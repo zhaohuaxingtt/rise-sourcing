@@ -90,15 +90,15 @@
           <iSelect
               class="multipleSelect"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              v-model="form['designatedSupplierId']"
+              v-model="form['linieId']"
               filterable
               collapse-tags
               multiple
           >
             <el-option
-                :value="item.supplierId"
-                :label="item.supplierName"
-                v-for="(item, index) in linleList"
+                :value="item.linieId"
+                :label="item.linieName"
+                v-for="(item, index) in linieList"
                 :key="index"
             ></el-option>
           </iSelect>
@@ -181,7 +181,8 @@ import {
   bmViewMoldInvestmentListStatusPullDown,
   bmViewSupplierPullDown,
   findBmViewPageList,
-  isPermission
+  isPermission,
+  bmViewLiniePullDown
 } from "@/api/ws2/purchase/mouldBook";
 import { cloneDeep } from "lodash";
 import { pageMixins } from "@/utils/pageMixins";
@@ -209,9 +210,9 @@ export default {
       fromGroup: [],  //  车型项目
       departmentList: [], //  科室
       statusList: [], //  模具投资清单状态
-      bmTableList: [{data1: '1123123'}],  //  table数据
+      bmTableList: [],  //  table数据
       supplierList: [], //  供应商列表
-      linleList: [],
+      linieList: [],
       tableLoading: false,
       loadingiSearch: false,
       exportLoding: false,
@@ -266,15 +267,16 @@ export default {
 
     getSearchData(){
       this.loadingiSearch = true;
-      //  车型项目、科室列表、清单状态、供应商
+      //  车型项目、科室列表、清单状态、Linie列表、供应商
       Promise.all([bmViewCarTypePullDown(), bmViewDeptPullDown(),
         bmViewMoldInvestmentListStatusPullDown(),
+        bmViewLiniePullDown(),
         //bmViewSupplierPullDown()
       ]).then(res => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
-        // const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn;
+        const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn;
 
         if(res[0].data){
           this.fromGroup = res[0].data;
@@ -295,7 +297,7 @@ export default {
         }
 
         if(res[3].data){
-          this.supplierList = res[3].data;
+          this.linieList = res[3].data;
         }else{
           iMessage.error(result3);
         }
@@ -314,14 +316,19 @@ export default {
     },
 
     openBMDetail(row){ //  跳转详情
-      isPermission().then(res => {
-        if(res.data){
-          let {href} = this.$router.resolve({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial }});
-          window.open(href, '_blank');
-        }else{
-          iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN', '对不起，您所在得岗位没有该材料组权限'));
-        }
-      })
+      // isPermission().then(res => {
+      //   if(res.data){
+      //     let {href} = this.$router.resolve({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
+      //     window.open(href, '_blank');
+      //   }else{
+      //     iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN', '对不起，您所在得岗位没有该材料组权限'));
+      //   }
+      // })
+
+      this.$router.push({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
+
+      // let {href} = this.$router.resolve({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
+      // window.open(href, '_blank');
       
     },
   }

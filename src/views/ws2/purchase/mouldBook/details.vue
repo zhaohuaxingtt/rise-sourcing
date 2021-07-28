@@ -1,7 +1,7 @@
 <template>
   <iPage>
     <div class="head">
-      <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：6584767893</div>
+      <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：{{bmSerial}}</div>
       <div class="edition">
         <div class="txt">{{language('LK_BANBENHAO', '版本号')}}:</div>
         <iSelect
@@ -185,7 +185,7 @@
         </div>
 
         <div class="top-r">
-          <iButton @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
+          <iButton :loading="exportLoding" @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
         </div>
         
       </div>
@@ -195,10 +195,14 @@
         :tableTitle="detailsTableHead"
         :tableLoading="detailsTableLoading"
         :selection="false"
+        :typeIndex="true"
       >
+        <!-- <template #number="scope">
+          {{scope.$index+1}}
+        </template> -->
         <!-- 照片 -->
         <template #img="scope">
-          <div class="table-link" @click="openPhoto(scope.row)">{{scope.row.img}}</div>
+          <div class="table-link" @click="openPhoto(scope.row)">查看</div>
         </template>
       </iTableList>
       
@@ -237,7 +241,9 @@ import { detailsTableHead, detailsBottomTableHead } from "./components/data";
 import UnitExplain from "./components/unitExplain";
 import PhotoList from "../components/photoList";
 import {
-  detailByBmSerial
+  detailByBmSerial,
+  findMoldList4Ledger,
+  exportsTableList
 } from "@/api/ws2/purchase/mouldBook";
 
 export default {
@@ -271,16 +277,40 @@ export default {
       visible: false,
       imgList: ['https://cdn6-banquan.ituchong.com/weili/l/919767005971611831.webp', 'https://cdn6-banquan.ituchong.com/weili/l/915608610047000641.webp', 'https://cdn9-banquan.ituchong.com/weili/l/903371741418749965.webp'],
       detailsData: {},
-      bmSerial: ''
+      bmSerial: '',
+      exportLoding: false,
     }
   },
 
   created(){
     this.bmSerial = this.$route.query.bmSerial;
     this.detailByBmSerial();
+    this.findMoldList4Ledger();
   },
 
   methods: {
+
+    findMoldList4Ledger(){
+      this.detailsTableLoading = true;
+      findMoldList4Ledger({
+        assetTypeNum: '', //  资产分类编号
+        bmId: this.$route.query.id,
+        craftType: '',  //  工艺类型
+        veriosn: '',  //  版本号
+      }).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+
+        if(res.data){
+          this.detailsTableList = res.data;
+        }else{
+          iMessage.error(result);
+        }
+
+        this.detailsTableLoading = false;
+      }).catch(err => {
+        this.detailsTableLoading = false;
+      })
+    },
 
     detailByBmSerial(){
       detailByBmSerial({bmSerial: this.bmSerial}).then(res => {
@@ -295,7 +325,7 @@ export default {
     },
 
     //  照片
-    openPhoto(){
+    openPhoto(scope, index){
       this.visible = true;
     },
 
@@ -304,7 +334,10 @@ export default {
     },
 
     exportList(){ //  导出
-
+      this.exportLoding = true;
+      exportsTableList(this.detailsTableList).then(res => {
+        this.exportLoding = false;
+      })
     },
   }
 }
