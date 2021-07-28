@@ -307,7 +307,6 @@ export default {
       // console.log(this.orgs)
     },
     toggleSelection(row, target) {
-      console.log('row',row, 'target',target);
       this.$refs.dataTable.toggleRowSelection(row, target)
     }
   },

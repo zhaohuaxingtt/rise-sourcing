@@ -109,10 +109,11 @@ export default {
     },
     // 初始化默认选中
     initDefaultSelection() {
-      this.tableListData.forEach(item => {
-        const obj = this.defaultList.find(defaultItem => defaultItem.supplierId == item.supplierId && defaultItem.partsId == item.partsId)
-        console.log('obj', obj);
-        if(obj) this.$refs.addTable.toggleSelection(item, true)
+      this.$nextTick(() => {
+        this.tableListData.forEach(item => {
+          const obj = this.defaultList.find(defaultItem => defaultItem.supplierId == item.supplierId && defaultItem.partsId == item.partsId)
+          if(obj) this.$refs.addTable.toggleSelection(item, true)
+        })
       })
       // this.$refs.addTable.$refs.dataTable.toggleAllSelection()
     },
@@ -160,7 +161,7 @@ export default {
   position: absolute;
   right: 65px;
   top: 24px;
-} 
+}
 .optionBox {
   .searchButton {
     margin-top: 50px;
@@ -194,5 +195,5 @@ export default {
     }
   }
 }
- 
+
 </style>
