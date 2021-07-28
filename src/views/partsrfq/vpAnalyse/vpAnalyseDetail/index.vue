@@ -326,7 +326,7 @@ export default {
         ).then(async () => {
           await this.handleSaveProcess(reqParams, true);
         }).catch(async () => {
-          await this.handleSaveProcess(reqParams);
+          this.saveDialog = true
         });
       } else {
         await this.handleSaveProcess(reqParams);
