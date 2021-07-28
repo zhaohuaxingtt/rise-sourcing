@@ -13,36 +13,29 @@
         <el-row class="margin-bottom20">
           <!--材料组-->
           <el-form-item :label="$t('LK_CAILIAOZU')">
-            <iInput
-              :placeholder="$t('TPZS.QSRCLZBHMC')"
-              v-model="form.group"
-            ></iInput>
+            <iInput :placeholder="$t('TPZS.QSRCLZBHMC')"
+                    v-model="form.group"></iInput>
           </el-form-item>
           <!--零件号-->
           <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-            <iInput
-              :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
-              v-model="form.num"
-            ></iInput>
+            <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
+                    v-model="form.num"></iInput>
           </el-form-item>
           <!--供应商状态-->
           <el-form-item :label="$t('TPZS.RFQHMC')">
-            <iInput
-              v-model="form.rfq"
-              :disabled="rfqStatus"
-              :placeholder="$t('TPZS.QSRRFQH')"
-            ></iInput>
+            <iInput v-model="form.rfq"
+                    :disabled="rfqStatus"
+                    :placeholder="$t('TPZS.QSRRFQH')"></iInput>
           </el-form-item>
           <el-form-item :label="$t('TPZS.CJR')">
-            <iInput
-              :placeholder="$t('TPZS.QINGSHURUCHUANGJIANRENMINGCHENG')"
-              v-model="form.owner"
-            />
+            <iInput :placeholder="$t('TPZS.QINGSHURUCHUANGJIANRENMINGCHENG')"
+                    v-model="form.owner" />
           </el-form-item>
         </el-row>
       </el-form>
     </iSearch>
-    <iCard :title="$t('TPZS.BOBFXK')" class="margin-top20">
+    <iCard :title="$t('TPZS.BOBFXK')"
+           class="margin-top20">
       <template v-slot:header-control>
         <div v-if="!edit">
           <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
@@ -61,7 +54,9 @@
                 row-key="id"
                 :max-height="450"
                 :tree-props="{ children: 'children' }"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange"
+                @select="rowSelect"
+                @select-all="selectAll">
         <el-table-column type="selection"
                          width="55"> </el-table-column>
         <el-table-column label="#"
@@ -71,12 +66,10 @@
                          header-align="center"
                          width="50">
         </el-table-column>
-        <el-table-column
-          align="center"
-          header-align="center"
-          :label="$t('TPZS.FXMC')"
-          width="250"
-        >
+        <el-table-column align="center"
+                         header-align="center"
+                         :label="$t('TPZS.FXMC')"
+                         width="250">
           <template slot-scope="scope">
             <div class="openPage">
               <el-row :gutter="20">
@@ -120,12 +113,11 @@
         <el-table-column :label="$t('LK_CAILIAOZU')"
                          prop="materialGroup">
         </el-table-column>
-        <el-table-column :label="$t('RFQ')" prop="rfqNo"> </el-table-column>
-        <el-table-column
-          :label="$t('TPZS.MRX')"
-          align="center"
-          header-align="center"
-        >
+        <el-table-column :label="$t('RFQ')"
+                         prop="rfqNo"> </el-table-column>
+        <el-table-column :label="$t('TPZS.MRX')"
+                         align="center"
+                         header-align="center">
           <template slot-scope="scope">
             <div v-if="!edit">
               {{ defaultStatus(scope.row, scope.row.isDefault) }}
@@ -146,31 +138,32 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('TPZS.WJLX')" prop="fileType">
+        <el-table-column :label="$t('TPZS.WJLX')"
+                         prop="fileType">
         </el-table-column>
-        <el-table-column :label="$t('TPZS.CJR')" prop="createNameZh">
+        <el-table-column :label="$t('TPZS.CJR')"
+                         prop="createNameZh">
         </el-table-column>
         <el-table-column :label="$t('LK_CHUANGJIANRIQI')"
                          prop="createDate"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column :label="$t('TPZS.SCXGRQ')" prop="updateDate" show-overflow-tooltip>
+        <el-table-column :label="$t('TPZS.SCXGRQ')"
+                         prop="updateDate"
+                         show-overflow-tooltip>
         </el-table-column>
         <el-table-column width="50">
           <template slot-scope="scope">
-            <div @click="handleStick(scope.row)" class="stickIcon">
-              <icon
-                v-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && scope.row.isTop"
-                name="iconliebiaoyizhiding"
-                class="iconliebiaoyizhiding"
-                symbol
-              />
-              <icon
-                v-else-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && !scope.row.isTop"
-                name="iconliebiaoweizhiding"
-                class="iconliebiaoweizhiding"
-                symbol
-              />
+            <div @click="handleStick(scope.row)"
+                 class="stickIcon">
+              <icon v-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && scope.row.isTop"
+                    name="iconliebiaoyizhiding"
+                    class="iconliebiaoyizhiding"
+                    symbol />
+              <icon v-else-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && !scope.row.isTop"
+                    name="iconliebiaoweizhiding"
+                    class="iconliebiaoweizhiding"
+                    symbol />
             </div>
           </template>
         </el-table-column>
@@ -363,11 +356,11 @@ export default {
           createByName: this.form.owner ? this.form.owner : null,
           materialGroup: this.form.group ? this.form.group : null,
           partsNo: this.form.num ? this.form.num : null,
-          
+
         };
         const status = this.$store.state.rfq.entryStatus
         const rfq = this.form.rfq ? this.form.rfq : null
-        if(status == 0) {
+        if (status == 0) {
           //外部进入
           params['rfqName'] = rfq
         } else if (status == 1) {
@@ -386,12 +379,12 @@ export default {
       });
     },
     //更新表格数据
-    updateTableData() {
-      if(this.updatedDefault) {
+    updateTableData () {
+      if (this.updatedDefault) {
         this.tableListData.map((item, index) => {
           let flag = item.isDefault === "是" || item.isDefault === "否" ? item.isDefault : null;
           if (this.currentDefaultObj && this.currentDefaultObj.isDefault == "是") {
-            if (item.id == this.currentDefaultObj.id )
+            if (item.id == this.currentDefaultObj.id)
               flag = "是";
             else if (!flag) flag = null;
             else flag = "否";
@@ -442,7 +435,7 @@ export default {
             this.$router.push({
               path: '/sourcing/partsrfq/bobNew',
               query: {
-                rfqId: res.data,
+                SchemeId: res.data,
                 newBuild: true,
               },
             })
@@ -476,14 +469,14 @@ export default {
       });
     },
     //编辑时，改变默认项事件
-    changeDefault(val, row) {
+    changeDefault (val, row) {
       this.$set(row, "isDefault", val);
       this.$set(this, "currentDefaultObj", row);
-      if(val == '是') this.updatedDefault = true
+      if (val == '是') this.updatedDefault = true
       this.updateTableData()
     },
     //保存编辑
-    saveEdit() {
+    saveEdit () {
       this.edit = false;
       const params = this.tableListData;
       fetchEdit(params).then((res) => {
@@ -497,6 +490,57 @@ export default {
     // 选中项发生改变
     handleSelectionChange (val) {
       this.selection = val;
+    },
+    rowSelect (selection, row) {
+      if (row.fileList) { //只对有子节点的行响应
+        if (!row.isChecked) {   //由行数据中的元素isChecked判断当前是否被选中
+          row.fileList.map((item) => { //遍历所有子节点
+            this.$refs.dataTable.toggleRowSelection(item, true); //切换该子节点选中状态
+            /*
+            方法名                    说明                                      参数
+                                 用于多选表格，切换某一行的选中状态，         row, selected
+            toggleRowSelection   如果使用了第二个参数，则是设置这一行
+                                 选中与否（selected 为 true 则选中）
+             */
+            item.isChecked = true;
+          });
+          row.isChecked = true; //当前行isChecked标志元素切换为false
+        } else {
+          row.fileList.map((item) => {
+            this.$refs.dataTable.toggleRowSelection(item, false);
+            item.isChecked = false;
+          });
+          row.isChecked = false;
+        }
+        // console.log(this.multipleSelection, row);
+      }
+    },
+    selectAll (selection) {
+      // selection 是选中的数据集合
+      this.$refs.dataTable.data.map((items) => { //使用$ref获取注册的子组件信息，用data获取所有行，并用map函数遍历行
+        if (items.fileList) {
+          if (!items.isChecked) { //若遍历出来的行未选中
+            this.$refs.dataTable.toggleRowSelection(items, true); //行变为选中状态
+            items.isChecked = true; //更新标志参数
+            items.fileList.map((item) => { //遍历子节点并改变状态与标志参数
+              this.$refs.dataTable.toggleRowSelection(item, true);
+              item.isChecked = true;
+            });
+          } else { //选中状态同理
+            this.$refs.dataTable.toggleRowSelection(items, false);
+            items.isChecked = false;
+            items.fileList.map((item) => {
+              this.$refs.dataTable.toggleRowSelection(item, false);
+              item.isChecked = false;
+            });
+          }
+        }
+        else {
+          if (!items.isChecked) items.isChecked = true;
+          else items.isChecked = false;
+        }
+      });
+      // console.log(this.orgs)
     },
     // 点击置顶按钮
     handleStick (val) {
@@ -513,12 +557,13 @@ export default {
       });
     },
     // 点击名称,触发跳转事件
-    clickName(val) {
+    clickName (val) {
       if (val.fileType == this.$t('TPZS.SCHEME_TYPE')) {
         this.$router.push({
           path: "/sourcing/partsrfq/bobNew",
           query: {
-            rfqId: val.id,
+            SchemeId: val.id,
+            rfqId: val.rfqNo || ''
           },
         });
       } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {

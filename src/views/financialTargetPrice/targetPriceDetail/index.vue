@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 11:59:32
+ * @LastEditTime: 2021-07-27 09:39:09
  * @Description: 目标价详情
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\index.vue
 -->
@@ -21,7 +21,7 @@
     <!------------------------------------------------------------------------>
     <!--                 定点信息                                          --->
     <!------------------------------------------------------------------------>
-    <designateInfo :partProjId="purchasingProjectId" />
+    <designateInfo :partProjId="purchasingProjectId" :partNum="partNum" />
   </iPage>
 </template>
 
@@ -52,6 +52,9 @@ export default {
     },
     purchasingProjectId() {
       return this.detailData.purchasingProjectId || ''
+    },
+    partNum() {
+      return this.detailData.partNum || ''
     }
   },
   methods: {

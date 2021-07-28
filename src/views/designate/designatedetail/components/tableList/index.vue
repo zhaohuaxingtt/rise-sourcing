@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-07-19 10:26:14
+ * @LastEditTime: 2021-07-23 10:30:26
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" >
@@ -102,7 +102,8 @@
               <!----------------------------备注列-------------------------------->
               <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>
               <span v-else-if="childItem.type === 'rate'">{{getRate(scope.row, childItem.props).partSupplierRate}}</span>
-              <icon v-if="childItem.type === 'rate' && getRate(scope.row, childItem.props).partSupplierRate === 0" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog', scope.row)"></icon>
+              <icon v-else-if="childItem.type == 'rate' && getRate(scope.row, childItem.props).partSupplierRate === 0" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog', scope.row)"></icon>
+              <span>{{scope.row[childItem.props]}}</span>
             </template>
           </el-table-column>
         </template>

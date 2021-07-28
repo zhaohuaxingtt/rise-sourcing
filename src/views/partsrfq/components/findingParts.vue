@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-07-16 14:10:53
+ * @LastEditTime: 2021-07-26 12:58:11
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -166,6 +166,9 @@ export default {
     justify-content: space-between;
     margin-bottom: 25px;
   }
+}
+::v-deep .el-table .el-table__body-wrapper {
+  overflow-x: hidden;
 }
 </style>
 

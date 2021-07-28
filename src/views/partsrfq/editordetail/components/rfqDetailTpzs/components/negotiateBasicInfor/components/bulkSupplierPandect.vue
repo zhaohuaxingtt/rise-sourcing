@@ -17,7 +17,7 @@
 <script>
 import { iCard, icon } from "rise";
 import map1 from "./map.vue";
-import { batchSupplierMapOverview } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import { overviewBatchSupplierMap } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import supplierCard from "./supplierCard.vue";
 export default {
   components: { iCard, icon, map1, supplierCard },
@@ -36,7 +36,7 @@ export default {
       const pms = {
         rfqId: this.$route.query.id
       }
-      const res = await batchSupplierMapOverview(pms)
+      const res = await overviewBatchSupplierMap(pms)
       this.mapListData = res.data
     }
   }

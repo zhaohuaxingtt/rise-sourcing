@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-21 18:05:18
+ * @LastEditTime: 2021-07-26 14:47:10
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -22,7 +22,7 @@
                     class="margin-left40 remark2">备注：{{ remark }}</span>
             </div>
           </div>
-          <div v-show="checkFLag">
+          <div v-show="checkFLag&&!$attrs.reportSave">
             <iButton v-show="flag"
                      @click="open">全部展开</iButton>
             <iButton v-show="flag1"
@@ -79,6 +79,7 @@
     <ungroupedTable ref="ungroupedTable"
                     class="margin-top10"
                     :tableList="ungroupList"
+                    @activeName="acitiveName"
                     v-if="groupby"
                     @groupBy="groupBtn"
                     v-bind="$attrs"></ungroupedTable>
@@ -153,24 +154,36 @@ export default {
     };
   },
   created () {
-
-    if (this.$store.state.rfq.entryStatus === 1) {
-      this.SchemeId = this.$route.query.rfqId
-      this.chargeRetrieve("all");
-    } else {
-      if (this.$route.query.rfqId) {
-        this.SchemeId = this.$route.query.rfqId
-        this.chargeRetrieve("all");
-      } else {
-        this.SchemeId = this.$store.state.rfq.SchemeId;
+    this.SchemeId = this.$attrs.analysisSchemeId
+    this.chargeRetrieve("all");
+    this.getRfqToRemark();
+    // if (this.$store.state.rfq.entryStatus === 1) {
+    //   this.SchemeId = this.$route.query.rfqId
+    //   this.chargeRetrieve("all");
+    // } else {
+    //   if (this.$route.query.rfqId) {
+    //     this.SchemeId = this.$route.query.rfqId
+    //     this.chargeRetrieve("all");
+    //   } else {
+    //     this.SchemeId = this.$store.state.rfq.SchemeId;
+    //   }
+    // }
+    // this.getRfqToRemark();
+  },
+  watch: {
+    activeName: {
+      handler (val) {
+        console.log(val, "acitve")
       }
     }
-    this.getRfqToRemark();
   },
   mounted () {
-    console.log(this.$attrs, '传值')
+    this.$EventBus.$on("activeName", res => {
+      this.activeName = res
+    })
   },
   methods: {
+
     getRfqToRemark () {
       getRfqToRemark({
         rfqCode: this.rfqCode,
@@ -188,21 +201,40 @@ export default {
         viewType: type,
       })
         .then((res) => {
-          this.tableList = res;
-          this.tableList.title.forEach(value => {
-            this.$attrs.supplierList.forEach(i => {
-              if (value.title == i.supplierId) {
-                value.title = i.shortNameZh
-              }
+          try {
+            this.tableList = res;
+            this.tableList.title.forEach(value => {
+              this.$attrs.supplierList.forEach(i => {
+                if (value.title == i.supplierId) {
+                  value.title = i.shortNameZh
+                }
+              })
             })
-          })
-          filterEmptyChildren(this.tableList.element, 'detailId')
-          console.log(this.tableList, 23232332)
-          this.$nextTick(() => {
-            this.open();
-          });
+            filterEmptyChildren(this.tableList.element, 'detailId')
+            this.tableList.element = this.arrayTreeAddLevel(this.tableList.element)
+            this.$nextTick(() => {
+              this.open();
+            });
+          } catch (err) {
+            console.log(err)
+          }
         })
-        .catch((err) => { });
+        .catch((err) => {
+          iMessage.error(err.desZh)
+        });
+    },
+    arrayTreeAddLevel (array, levelName = 'level', childrenName = 'child') {
+      if (!Array.isArray(array)) return []
+      const recursive = (array, level = 0) => {
+        level++
+        return array.map(v => {
+          v[levelName] = level
+          const child = v[childrenName]
+          if (child && child.length) recursive(child, level)
+          return v
+        })
+      }
+      return recursive(array)
     },
     open () {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
@@ -311,26 +343,25 @@ export default {
       this.visible1 = e;
       this.result = result
       this.activeName = activeName
-      console.log(result, activeName, 222222222)
       getGroupInfo({
         schemaId: this.SchemeId,
         code: activeName === 'rawUngrouped' ? '1' : '2'
       }).then(res => {
         this.options = res.data
       })
-
     },
     groupToList () {
       if (!this.value1) {
         this.$message.error('请选择分组');
         return
       }
+      console.log(this.activeName, "group")
       addComponentToGroup({
         groupId: this.value1.matchId,
         groupName: this.value1.groupName,
         roundDetailIdList: this.result
       }).then(res => {
-        this.$refs.ungroupedTable.activeName = ""
+        // this.$refs.ungroupedTable.activeName = ""
         this.$nextTick(() => {
           this.$refs.ungroupedTable.activeName = this.activeName
           this.$refs.ungroupedTable.chargeRetrieve(this.activeName)
@@ -341,11 +372,15 @@ export default {
     },
     handleChange (value) { },
     clear () {
+      if (!this.activeName) {
+        this.activeName = "rawUngrouped"
+      }
       const params = this.$refs.groupedTable.checkLists
       removeComponentFromGroup({
         roundDetailIdList: params
       }).then(res => {
-        this.$refs.groupedTable.chargeRetrieve(this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped')
+        this.$refs.groupedTable.chargeRetrieve(this.activeName === 'rawUngrouped' ? 'rawGrouped' : "maGrouped")
+        this.$refs.ungroupedTable.chargeRetrieve(this.activeName)
       })
     },
     finish () {

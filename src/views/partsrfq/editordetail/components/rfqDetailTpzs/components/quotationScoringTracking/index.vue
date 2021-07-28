@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-07-21 13:36:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-21 14:53:50
+ * @LastEditors: Luoshuang
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
 -->
@@ -61,8 +61,8 @@ export default{
      * @return {*}
      */
     getTypeWeek(list){
-      const lowNumberStatus = list.sort((a,b)=>a.taskStatus - b.taskStatus)
-      if(lowNumberStatus.taskStatus == -1){
+      const lowNumberStatus = JSON.parse(JSON.stringify(list)).sort((a,b)=>a.taskStatus - b.taskStatus)[0]
+      if(lowNumberStatus.taskStatus == 0){
         return lowNumberStatus.donePeriod
       }else{
         return list[list.length -1].donePeriod

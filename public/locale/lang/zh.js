@@ -1336,7 +1336,7 @@
             'DDJV': "定点记录", //定点记录
             'VPFX':"Volume Pricing分析",//Volume Pricing分析
             'VPFXK':"Volume Pricing分析库",//Volume Pricing分析库
-            'CXJHCLYXSLJCLFX':"车型计划产量与现实累计产量分析（截止2021-02）",//车型计划产量与现实累计产量分析（截止2021-02）
+            'CXJHCLYXSLJCLFX':"车型计划产量与现实累计产量分析",//车型计划产量与现实累计产量分析（截止2021-02）
             'DWL':"单位：辆",//单位：辆
             'ZF':"涨幅",//涨幅
             'SMZQ':"生命周期",//生命周期

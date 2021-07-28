@@ -13,7 +13,7 @@
           <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
           <span>{{item.supplierName}}</span>
         </div>
-        <iLabel class="margin-top8 title1" :label="$t('LK_CHEXINGXIANGMU')+':'"></iLabel>
+        <iLabel class="margin-top8 title1" :label="$t('LK_CHEXING')+':'"></iLabel>
         <div>{{item.factoryName}}</div>
         <iLabel class="margin-top8 title1" :label="$t('TPZS.SQDZDZ')"></iLabel>
         <div>{{item.address}}</div>

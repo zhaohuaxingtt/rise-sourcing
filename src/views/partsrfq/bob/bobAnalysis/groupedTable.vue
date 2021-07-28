@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-21 16:29:51
+ * @LastEditTime: 2021-07-26 15:34:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -13,9 +13,11 @@
               :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
               :row-key="getRowKey"
               :expand-row-keys="expends"
+              stripe
               v-loading="loading"
               :max-height="maxHeight"
               :cell-style="cellsytle"
+              :row-style="rowStyle"
               @selection-change="handleSelectionChange"
               @row-click="rowClick"
               @row-dblclick="rowDblclick"
@@ -80,6 +82,15 @@ export default {
           this.$refs.treeList.expandRowKeys = Array.from(val);
       },
     },
+    activeName: {
+      handler (val) {
+        if (val === 'rawUngrouped') {
+          this.chargeRetrieve('rawgrouped')
+        } else {
+          this.chargeRetrieve('maGrouped')
+        }
+      }
+    }
   },
   data () {
     return {
@@ -88,27 +99,28 @@ export default {
       SchemeId: "",
       usercheckedColumnIndex: [],
       checkedIds: [8],
-      checkLists: []
+      checkLists: [],
+      activeName: ""
     };
   },
   created () {
-    if (this.$store.state.rfq.entryStatus === 1) {
-      this.SchemeId = this.$route.query.rfqId
+    this.newBuild = this.$route.query.newBuild;
+    this.entryStatus = this.$store.state.rfq.entryStatus
+    if (this.newBuild && this.entryStatus === 0) {
+      this.SchemeId = this.$store.state.rfq.SchemeId;
     } else {
-      if (this.$route.query.rfqId) {
-        this.SchemeId = this.$route.query.rfqId
-      } else {
-        this.SchemeId = this.$store.state.rfq.SchemeId;
-      }
+      this.SchemeId = this.$attrs.analysisSchemeId;
     }
-    this.$EventBus.$on("acitveName", res => {
-    })
     this.$nextTick(() => {
       this.chargeRetrieve('rawGrouped');
     });
 
   },
-  mounted () { },
+  mounted () {
+    this.$EventBus.$on("activeName", res => {
+      this.activeName = res
+    })
+  },
   methods: {
     open () {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
@@ -156,7 +168,15 @@ export default {
     cellFunction ({ row, column, rowIndex, columnIndex }) {
       // console.log(row, column, rowIndex, columnIndex)
     },
-
+    rowStyle ({ row, rowIndex }) {
+      let styleJson
+      if (row.level === 1 || row.level === 2) {
+        styleJson = {
+          'background': 'rgb(231 239 255) !important'
+        }
+        return styleJson
+      }
+    },
     //获取表格数据
     chargeRetrieve (type) {
       chargeRetrieve({
@@ -256,7 +276,6 @@ export default {
       } else {
         this.checkLists.remove(newArr[1].child[0][labelIndex])
       }
-
       this.$set(this.tableList.element[0], 'child', newArr);
     },
     recursiveChildChecked (parentObj, checked) {

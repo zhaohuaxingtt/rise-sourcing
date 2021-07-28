@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-05 16:17:39
- * @LastEditTime: 2021-07-22 15:45:10
+ * @LastEditTime: 2021-07-23 14:41:05
  * @LastEditors: Please set LastEditors
  * @Description: 通用下拉值
  * @FilePath: /front-web/src/views/designate/home/components/options.js
@@ -47,6 +47,21 @@ export const applicationStatus = [
   {id:'M_CHECK_FAIL',name:'M审批退回',key:'LK_MSHENPITUIHUI'},
   {id:'M_CHECK_INPROCESS',name:'M审批中',key:'LK_MSHENPIZHONG'},
   {id:'FLOWED',name:'流转完成',key:'LK_LIUZHUANWANCHENG'},
+]
+
+// 上会复核 申请状态
+export const RSReviewApplicationStatus = [
+  {id:'NEW',name:'草稿',key:'LK_CAOGAO'},
+  {id:'SUBMIT',name:'已提交',key:'LK_YITIJIAO'},
+  {id:'NOTPASS',name:'未通过',key:'LK_WEITONGGUO'},
+  {id:'PASS',name:'通过',key:'LK_TONGGUO'},
+  {id:'CHECK_INPROCESS',name:'复核中',key:'LK_FUHEZHONG'},
+  {id:'CHECK_PASS',name:'复核通过',key:'LK_FUHETONGGUO'},
+  {id:'CHECK_FAIL',name:'复核失败',key:'LK_FUHESHIBAI'},
+  {id:'FREERE',name:'已冻结',key:'LK_YIDONGJIE'},
+  {id:'M_CHECK_INPROCESS',name:'M审批中',key:'LK_MSHENPIZHONG'},
+  {id:'M_CHECK_FAIL',name:'M审批退回',key:'LK_MSHENPITUIHUI'},
+  {id:'NOMINATE',name:'已定点',key:'LK_YIDINGDIAN'},
 ]
 // SEL单据确认状态
 export const selStatus = [

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-21 16:39:57
+ * @LastEditTime: 2021-07-26 15:35:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -179,14 +179,12 @@ export default {
     },
   },
   mounted () {
-    if (this.$store.state.rfq.entryStatus === 1) {
-      this.SchemeId = this.$route.query.rfqId
+    this.newBuild = this.$route.query.newBuild;
+    this.entryStatus = this.$store.state.rfq.entryStatus
+    if (this.newBuild && this.entryStatus === 0) {
+      this.SchemeId = this.$store.state.rfq.SchemeId;
     } else {
-      if (this.$route.query.rfqId) {
-        this.SchemeId = this.$route.query.rfqId
-      } else {
-        this.SchemeId = this.$store.state.rfq.SchemeId;
-      }
+      this.SchemeId = this.$attrs.analysisSchemeId;
     }
     setTimeout(() => {
       this.$nextTick(() => {
@@ -205,7 +203,7 @@ export default {
     activeName: {
       handler (val) {
         this.chargeRetrieve(val);
-        this.$EventBus.$emit("activeName", val);
+        // this.$EventBus.$emit("activeName", val);
       },
     },
     // tableList: {
@@ -317,6 +315,8 @@ export default {
       return row.index;
     },
     handleClick (val) {
+      console.log(val)
+      this.$EventBus.$emit("activeName", val.name);
       // this.activeName = val;
     },
     renderHeader (h, { column }) {
@@ -356,11 +356,17 @@ export default {
         // this.$el.getElementsByClassName(col.id).style.backgroudColor = "#0EBADD";
       });
     },
+    rowStyle ({ row, rowIndex }) {
+      let styleJson
+      if (row.level === 1 || row.level === 2) {
+        styleJson = {
+          'background': 'rgb(231 239 255) !important'
+        }
+        return styleJson
+      }
+    },
     rowClick (row, event, column) {
       this.$emit("row-click", row, event, column);
-    },
-    rowStyle ({ row, rowIndex }) {
-
     },
     cellClick (row, column, cell, event) {
       console.log(row, column, cell);
