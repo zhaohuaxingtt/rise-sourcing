@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-07-28 10:42:05
+ * @LastEditTime: 2021-07-28 11:09:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -19,7 +19,7 @@
     <iCard :title="language('LK_JICHUXINXI','基础信息')">
       <iFormGroup row="4" class="basic-form" label-width="100px">
           <template v-for="(item,index) in basicTitle">
-            <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)"  >
+            <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  >
               <iText>{{basicInfo[item.props]}}</iText>
             </iFormItem>
           </template>
@@ -46,6 +46,7 @@ import {
  } from "rise"
 import logButton from "@/components/logButton"
 import contentDeclare from "./components/contentDeclare"
+import partsList from "./components/partsList"
 
 
 export default {
@@ -57,10 +58,11 @@ export default {
     iFormGroup,
     iFormItem,
     iText,
+    partsList,
      },
   data() {
     return {
-      currentTab: "contentDeclare",
+      currentTab: "partsList",
       basicTitle:[
         {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'a'},
         {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'b'},
@@ -75,6 +77,7 @@ export default {
       },
       tabs: [
         { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", components: [ "contentDeclare" ] },
+        { label: "零件清单", name: "partsList", key: "LK_AEKO_PARTSLIST", components: [ "partsList" ] },
       ],
     }
   },

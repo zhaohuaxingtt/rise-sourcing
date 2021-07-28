@@ -14,8 +14,8 @@
       <iSearch @sure="getList" @reset="reset">
           <el-form>
               <el-form-item v-for="(item,index) in SearchList" :key="'SearchList_aeko'+index" :label="language(item.labelKey,item.label)">
-                  <iSelect v-update v-if="item.type === 'select'" :multiple="item.multiple" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
-                    <!-- <el-option v-if="item.props!='showSelf'" value="" :label="language('all','全部')"></el-option> -->
+                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
+                    <el-option v-if="!item.multiple" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="item in selectOptions[item.selectOption] || []"
                       :key="item.value"
