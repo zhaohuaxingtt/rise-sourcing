@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-28 17:51:37
+ * @LastEditTime: 2021-07-28 20:25:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -23,7 +23,7 @@
           <iButton @click="clickSaveEdit">{{$t('LK_BAOCUN')}}</iButton>
         </span>
       </div>
-      <analysisTable v-if="isShowTable" ref="analysisTable" :editMode="editMode"/>
+      <analysisTable v-if="isShowTable" ref="analysisTable" :editMode="editMode" :searchData="searchData"/>
     </iCard>
   </div>
 </template>
@@ -82,10 +82,16 @@ export default {
     },
     //点击搜索按钮
     handleSubmitSearch(searchData) {
-      this.$refs.analysisTable.getTableData(searchData).then(res => {
-        if(!res.data || res.data.length == 0) {
-          iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'))
-        }
+      console.log('searchData0000', searchData);
+      this.searchData = searchData
+      this.$refs.analysisTable.page.currPage = 1
+      this.$refs.analysisTable.page.pageSize = 10
+      this.$nextTick(() => {
+        this.$refs.analysisTable.getTableData().then(res => {
+          if(!res.data || res.data.length == 0) {
+            iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'))
+          }
+        })
       })
     },
   }
