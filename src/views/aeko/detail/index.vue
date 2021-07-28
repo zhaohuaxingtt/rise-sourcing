@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-07-28 15:57:15
+ * @LastEditTime: 2021-07-28 16:47:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -47,6 +47,7 @@ import {
 import logButton from "@/components/logButton"
 import contentDeclare from "./components/contentDeclare"
 import partsList from "./components/partsList"
+import cover from "./components/cover"
 
 
 export default {
@@ -59,10 +60,11 @@ export default {
     iFormItem,
     iText,
     partsList,
+    cover,
      },
   data() {
     return {
-      currentTab: "partsList",
+      currentTab: "cover",
       basicTitle:[
         {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'a'},
         {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'b'},
@@ -77,7 +79,7 @@ export default {
       },
       tabs: [
         { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", components: [ "contentDeclare" ] },
-        { label: "封⾯表态", name: "a", key: "FENGMIANBIAOTAI", components: [] },
+        { label: "封⾯表态", name: "cover", key: "FENGMIANBIAOTAI", components: ['cover'] },
         { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", components: ["partsList"] },
         { label: "审批附件", name: "c", key: "SHENPIFUJIAN", components: [] },
         { label: "审批记录", name: "d", key: "SHENPIFUJIAN", components: [] }
