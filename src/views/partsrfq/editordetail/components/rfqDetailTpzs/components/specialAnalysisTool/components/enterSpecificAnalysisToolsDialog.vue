@@ -19,13 +19,13 @@
     </el-form>
     <tableList height="300" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' @handleSelectionChange="handleSelectionChange">
       <template #categoryCode="scope">
-        <el-radio @change="handleRadio(scope.row.id)" v-model="form.radio" :label="scope.row.categoryCode">{{scope.row.categoryCode+scope.row.categoryName}}</el-radio>
+        <el-radio @change="handleRadio(scope.row.categoryName,scope.row.categoryCode,'','')" v-model="form.radio" :label="scope.row.categoryCode">{{scope.row.categoryCode+scope.row.categoryName}}</el-radio>
       </template>
       <template #id="scope">
-        <el-radio @change="handleRadio(scope.row.id)" v-model="form.radio" :label="scope.row.id">{{scope.row.id+scope.row.rfqName}}</el-radio>
+        <el-radio @change="handleRadio('','',scope.row.id,'')" v-model="form.radio" :label="scope.row.id">{{scope.row.id+scope.row.rfqName}}</el-radio>
       </template>
       <template #partNum="scope">
-        <el-radio @change="handleRadio(scope.row.id)" v-model="form.radio" :label="scope.row.partNum">{{scope.row.partNum}}</el-radio>
+        <el-radio @change="handleRadio('','','',scope.row.partNum)" v-model="form.radio" :label="scope.row.partNum">{{scope.row.partNum}}</el-radio>
       </template>
     </tableList>
     <div slot="footer" class="dialog-footer">
@@ -59,7 +59,10 @@ export default {
       form: {
         keyword: '',
         radio: '',
-        rfqId: ''
+        rfqId: '',
+        categoryName: '',
+        categoryCode: '',
+        partNum: '',
       },
       formGroup: {
         keywordList: []
@@ -69,8 +72,11 @@ export default {
   created() {
   },
   methods: {
-    handleRadio(val) {
-      this.form.rfqId = val
+    handleRadio(categoryName,categoryCode, id, partNum) {
+      this.form.categoryName = categoryName
+      this.form.categoryCode = categoryCode
+      this.form.rfqId = id
+      this.form.partNum = partNum
     },
     async handleKeyword(val) {
       const pms = {
@@ -92,7 +98,7 @@ export default {
       this.$emit('input', false);
     },
     handleSubmit() {
-      this.$emit('getDataList', this.form.rfqId)
+      this.$emit('getDataList', this.form)
     }
   },
   watch: {
