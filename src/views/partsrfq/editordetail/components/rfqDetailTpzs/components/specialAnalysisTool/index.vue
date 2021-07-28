@@ -82,14 +82,20 @@ export default {
         }
       }
     },
-    async getDataList(val) {
+    async getDataList(par) {
       if (this.$store.state.rfq.entryStatus === 0) {
-        window.sessionStorage.setItem('rfqId', val)
-        await this.$store.dispatch('setRfqId', val)
+        window.sessionStorage.setItem('rfqId', par.rfqId)
+        window.sessionStorage.setItem('materialGroup', par.categoryName)
+        window.sessionStorage.setItem('spareParts', par.partNum)
+        await this.$store.dispatch('setRfqId', par.rfqId)
+        await this.$store.dispatch('setMaterialGroup', par.categoryName)
+        await this.$store.dispatch('setSpareParts', par.partNum)
       }
       const pms = {
         isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,
         rfq: this.$store.state.rfq.rfqId,
+        materialGroup: par.categoryCode,
+        spareParts: par.partNum,
       }
       const res = await totalOverview(pms)
       if (res.result) {
