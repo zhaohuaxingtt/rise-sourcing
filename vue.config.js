@@ -352,7 +352,8 @@ module.exports = {
         },
       },
       '/aonApi': {
-        target: 'http://10.160.142.25:8036',
+        // target: 'http://10.160.138.166:8036',
+        target: 'http://10.122.17.38:8036',
         // target: 'http://10.122.18.166:8036',
         changeOrigin: true,
         pathRewrite: {

@@ -128,7 +128,6 @@ export default {
             })
             arr.forEach(value => {
               arr1.forEach(i => {
-
                 if (value.seriesName.replace("lv", "") === i.seriesName) {
                   domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + i.color + '"></span>'
                   result += domHtml + i.seriesName + ":" + value.value.toFixed(2) + '<br/>'
@@ -257,7 +256,6 @@ export default {
     },
     initData (newVal) {
       if (newVal.length !== 0) {
-
         this.chartArray = newVal;
         this.labelArray = [];
         this.labelArray1 = [];
@@ -275,6 +273,7 @@ export default {
           const subtext = row.spareParts + '\n' + row.fs
           //todo
           let name = row.supplierName
+
           // this.supplierList.forEach(value => {
           //   if (name == value.supplierId) {
           //     name = value.shortNameZh

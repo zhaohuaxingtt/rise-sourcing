@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-06-28 10:46:03
- * @LastEditTime: 2021-07-14 21:08:34
+ * @LastEditTime: 2021-07-27 11:56:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\bob\analysisList\index.js
@@ -67,6 +67,7 @@ export function update(parmars) {
     data: parmars,
   })
 }
+
 // 新增报告
 export function add(parmars) {
   return request({
@@ -75,6 +76,8 @@ export function add(parmars) {
     data: parmars,
   })
 }
+
+
 
 // 查询零件号列表
 export function part({ data, analysisSchemeId }) {
