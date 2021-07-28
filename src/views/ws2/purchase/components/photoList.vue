@@ -92,6 +92,8 @@ export default {
 
   ::v-deep .el-dialog__header{
     padding-top: 23px;
+    position: relative;
+    z-index: 333;
   }
 
   ::v-deep .el-dialog__body{

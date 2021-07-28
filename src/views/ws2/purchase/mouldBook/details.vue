@@ -35,25 +35,25 @@
               <div class="txt">
                 <span>{{ language('LK_BMDANLIUSHUIHAO', 'BM单流水号') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.bmSerial}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_TOUZIQINGDANLAIYUAN', '投资清单来源') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.investmentSourceName}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_LAIYUANBIANHAO', '来源编号') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.investmentSourceNum}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_SHIFOUHIL', '是否HIL') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.isHilName}}</div>
             </div>
           </div>
 
@@ -62,25 +62,25 @@
               <div class="txt">
                 <span>{{ language('LK_KESHI', '科室') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.deptName}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_LINIE', 'Linie') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.linieName}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_GONGYINGSHANG', '供应商') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.designatedSupplierName}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_RUZHANGRIQI', '入账日期') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.enterAccountDate}}</div>
             </div>
           </div>
 
@@ -89,25 +89,25 @@
               <div class="txt">
                 <span>{{ language('LK_WBSBIANHAO', 'WBS编号') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.wbsCode}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_DINGDANHAO', '订单号') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.orderNum}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_TOUZIZONGJINE', '投资总金额') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.investmentTotalAmount}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_RUZHANGDANHAO', '入账单号') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.enterAccountNum}}</div>
             </div>
           </div>
 
@@ -116,13 +116,13 @@
               <div class="txt">
                 <span>{{ language('LK_CHEXINGXIANGMU', '车型项目') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.tmCartypeProName}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_SAPDINGDANHAO', 'SAP订单号') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{detailsData.sapOrder}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -236,6 +236,9 @@ import {iPage, iMessage, iDialog, iButton, iSelect, iSearch, iInput,
 import { detailsTableHead, detailsBottomTableHead } from "./components/data";
 import UnitExplain from "./components/unitExplain";
 import PhotoList from "../components/photoList";
+import {
+  detailByBmSerial
+} from "@/api/ws2/purchase/mouldBook";
 
 export default {
   components: {
@@ -267,10 +270,29 @@ export default {
       detailsBottomTableLoading: false,
       visible: false,
       imgList: ['https://cdn6-banquan.ituchong.com/weili/l/919767005971611831.webp', 'https://cdn6-banquan.ituchong.com/weili/l/915608610047000641.webp', 'https://cdn9-banquan.ituchong.com/weili/l/903371741418749965.webp'],
+      detailsData: {},
+      bmSerial: ''
     }
   },
 
+  created(){
+    this.bmSerial = this.$route.query.bmSerial;
+    this.detailByBmSerial();
+  },
+
   methods: {
+
+    detailByBmSerial(){
+      detailByBmSerial({bmSerial: this.bmSerial}).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+
+        if(res.data){
+          this.detailsData = res.data;
+        }else{
+          iMessage.error(result);
+        }
+      })
+    },
 
     //  照片
     openPhoto(){
