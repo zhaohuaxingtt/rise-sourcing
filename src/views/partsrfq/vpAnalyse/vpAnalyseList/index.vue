@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-28 16:19:34
+ * @LastEditTime: 2021-07-28 17:51:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -23,7 +23,7 @@
           <iButton @click="clickSaveEdit">{{$t('LK_BAOCUN')}}</iButton>
         </span>
       </div>
-      <analysisTable ref="analysisTable" :editMode="editMode"/>
+      <analysisTable v-if="isShowTable" ref="analysisTable" :editMode="editMode"/>
     </iCard>
   </div>
 </template>
@@ -42,6 +42,7 @@ export default {
       round: null,        //round
       searchData: null,
       backUpData: [],
+      isShowTable: true
     }
   },
   created() {
@@ -75,7 +76,9 @@ export default {
     },
     //点击删除按钮
     clickDel() {
+      this.isShowTable = false
       this.$refs.analysisTable.clickSaveDel()
+      this.isShowTable = true
     },
     //点击搜索按钮
     handleSubmitSearch(searchData) {
