@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-23 10:14:44
+ * @LastEditTime: 2021-07-28 15:08:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -347,7 +347,7 @@ export default {
       const ids = []
       const reportIds = []
       if (!this.selectionData || this.selectionData.length == 0) {
-        iMessage.error(this.$t('TPZS.QXZYSCDSJ'));
+        iMessage.error(this.$t('TPZS.QXZXYCZDSJ'));
         return;
       }
       this.selectionData.map(item => {

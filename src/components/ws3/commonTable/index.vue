@@ -1,7 +1,7 @@
 <!--
  * @Author: yourname
  * @Date: 2021-04-13 17:30:36
- * @LastEditTime: 2021-07-21 21:13:52
+ * @LastEditTime: 2021-07-28 13:42:44
  * @LastEditors: Please set LastEditors
  * @Description: 通用表格
 -->
@@ -277,6 +277,7 @@ export default {
         }
         // console.log(this.multipleSelection, row);
       }
+      this.$emit('select', selection, row)
     },
     selectAll (selection) {
       // selection 是选中的数据集合
@@ -304,6 +305,9 @@ export default {
         }
       });
       // console.log(this.orgs)
+    },
+    toggleSelection(row, target) {
+      this.$refs.dataTable.toggleRowSelection(row, target)
     }
   },
 };

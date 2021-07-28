@@ -162,7 +162,7 @@ export default {
       currentSupplierId: '',
       saveDialog: false,
       currentSchemeId: this.$route.query.schemeId,
-      tableLoading: false
+      tableLoading: false,
     };
   },
   methods: {
@@ -207,6 +207,7 @@ export default {
         let req = {
           partsId: this.currentPartsId,
           supplierId: this.currentSupplierId,
+          inMode: this.$store.state.rfq.entryStatus,
         };
         if (this.$route.query.type === 'edit') {
           req.id = this.currentSchemeId;
@@ -246,6 +247,7 @@ export default {
           supplierId: this.currentSupplierId,
           batchNumber: this.currentBatchNumber,
           partsList: [this.partList[this.partItemCurrent]],
+          inMode: this.$store.state.rfq.entryStatus,
           ...extraParams,
         };
         if (this.$route.query.type === 'edit') {
@@ -260,10 +262,13 @@ export default {
         }
         if (params === 'all') {
           this.pageLoading = true;
+          req.operationFlag = 'S3';
         } else if (params === 'analyze') {
           this.analyzeLoading = true;
+          req.operationFlag = 'S1';
         } else if (params === 'table') {
           this.tableLoading = true;
+          req.operationFlag = 'S2';
         }
         req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(
             this.$refs.totalUnitPriceTable.hideTableData);
@@ -282,6 +287,8 @@ export default {
                 round: this.$route.query.round,
               },
             });
+          } else {
+            await this.getDataInfo();
           }
         } else {
           await this.getDataInfo();
@@ -321,7 +328,7 @@ export default {
         ).then(async () => {
           await this.handleSaveProcess(reqParams, true);
         }).catch(async () => {
-          await this.handleSaveProcess(reqParams);
+          this.saveDialog = true
         });
       } else {
         await this.handleSaveProcess(reqParams);
