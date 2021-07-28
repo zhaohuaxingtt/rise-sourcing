@@ -114,7 +114,7 @@
           @handleSelectionChange="handleSelectionChange"
       >
         <template #bmSerial="scope">
-          <div class="table-link" @click="toBmInfo">{{scope.row.bmSerial}}</div>
+          <div class="table-link" @click="toBmInfo(scope.row)">{{scope.row.bmSerial}}</div>
         </template>
         <template #akeoType="scope">
           <div>{{
@@ -344,9 +344,15 @@ export default {
         this.handoverSelfLoading = false
       });
     },
-    toBmInfo(){
+    toBmInfo(row){
       //  如当前用户没有查看“模具投资金额”的权限，点击流水号后提示“对不起，您所在的岗位没有该材料组权限”
-      this.$router.push({path: '/purchase/investmentList/bmInfo'})
+      this.$router.push({
+        path: '/purchase/investmentList/bmInfo',
+        query: {
+          bmSerial: row.bmSerial,
+          id: row.id
+        }
+      })
     },
     sure(){
       this.page.currPage = 1

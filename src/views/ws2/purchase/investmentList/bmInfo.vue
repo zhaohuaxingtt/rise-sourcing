@@ -1,27 +1,13 @@
 <template>
   <iPage>
     <div class="head">
-      <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：6584767893</div>
+      <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：{{ query.bmSerial }}</div>
       <div class="edition">
-        <div class="txt">{{language('LK_BANBENHAO', '版本号')}}:</div>
-        <iSelect
-            :placeholder="language('LK_QINGXUANZHE', '请选择')"
-            v-model="versionId"
-            filterable
-            ref="carTypeProjectRef"
-            clearable
-        >
-          <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
-              v-for="(item, index) in versionList"
-              :key="index"
-          ></el-option>
-        </iSelect>
+        <div class="txt">{{language('LK_BANBENHAO', '版本号')}}：{{ baseInfo.versions ? baseInfo.versions[0].versionName : '' }}</div>
       </div>
     </div>
 
-    <iCard>
+    <iCard v-loading="baseInfoLoading">
       <div class="head-serch">
         <div class="top-box">
           <div class="title">{{language('LK_JICHUXINXI', '基础信息')}}</div>
@@ -35,69 +21,69 @@
               <div class="txt">
                 <span>{{ language('LK_BMDANLIUSHUIHAO', 'BM单流水号') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.bmSerial }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_TOUZIQINGDANLAIYUAN', '投资清单来源') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.investmentSourceName }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_LAIYUANBIANHAO', '来源编号') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.investmentSourceNum }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_SHIFOUHIL', '是否HIL') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.isHilName }}</div>
             </div>
 
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_GONGYINGSHANG', '供应商') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.designatedSupplierName }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_KESHI', '科室') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.deptName }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_LINIE', 'Linie') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.linieName }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_XIANGMUCAIGOUYUAN', '项目采购员') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.projectPurchaser }}</div>
             </div>
 
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_WBSBIANHAO', 'WBS编号') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.wbsCode }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_CHEXINGXIANGMU', '车型项目') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.tmCartypeProName	 }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_TOUZIZONGJINE', '投资总金额') }}</span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.investmentTotalAmount ? getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) : baseInfo.investmentTotalAmount }}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -114,7 +100,7 @@
                     </Popover>
                 </span>
               </div>
-              <div class="disabled">123123123</div>
+              <div class="disabled">{{ baseInfo.moldInvestmentStatusName }}</div>
             </div>
           </div>
         </div>
@@ -122,14 +108,14 @@
       </div>
     </iCard>
 
-    <iCard class="table">
+    <iCard class="table" v-loading="tableLoading">
       <div class="table-top">
         <div class="top-l">
           <div class="item">
             <div style="widht: 80px">{{language('LK_GONGYILEIXING', '工艺类型')}}:</div>
             <iSelect
                 :placeholder="language('LK_QINGXUANZHE', '请选择')"
-                v-model="versionId"
+                v-model="craftType"
                 filterable
                 ref="carTypeProjectRef"
                 clearable
@@ -148,7 +134,7 @@
             <div style="widht: 112px">{{language('LK_ZICHANFENLEIBIANHAO', '资产分类编号')}}:</div>
             <iSelect
                 :placeholder="language('LK_QINGXUANZHE', '请选择')"
-                v-model="versionId"
+                v-model="assetTypeNum"
                 filterable
                 ref="carTypeProjectRef"
                 clearable
@@ -179,8 +165,14 @@
           :typeIndex="true"
       >
         <!-- BM单流⽔号 -->
-        <template #aa="scope">
-          <div class="table-link" @click="openPhotoList(scope.row)">{{scope.row.aa}}</div>
+        <template #assetPrice="scope">
+          <div>{{scope.row.assetPrice ? getTousandNum(Number(scope.row.assetPrice).toFixed(2)) : scope.row.assetPrice}}</div>
+        </template>
+        <template #assetTotal="scope">
+          <div>{{scope.row.assetTotal ? getTousandNum(Number(scope.row.assetTotal).toFixed(2)) : scope.row.assetTotal}}</div>
+        </template>
+        <template #picture="scope">
+          <div class="table-link" @click="openPhotoList(scope.row.picture)">查看</div>
         </template>
       </iTableList>
       <div style="color: #999999;font-size: 14px;text-align: right;margin: 10px 0;">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
@@ -205,6 +197,8 @@ import {bmInfoTitle} from "../components/data"
 import confirm from "../components/confirm"
 import photoList from "../components/photoList"
 import { Popover } from "element-ui"
+import {moldHeaderByBmSerial, findMoldViewList, bmMoldExport} from "@/api/ws2/purchase/investmentList/bmInfo";
+import {getTousandNum} from "@/utils/tool";
 
 export default {
   components: {
@@ -226,22 +220,83 @@ export default {
       technologyTypeList: [], //  工艺类型
       assetsTypeList: [], //  资产分类编号
       tableTitle: bmInfoTitle,
-      tableListData: [{aa: '查看'}],
+      tableListData: [],
       imgList: ['https://cdn6-banquan.ituchong.com/weili/l/919767005971611831.webp', 'https://cdn6-banquan.ituchong.com/weili/l/915608610047000641.webp', 'https://cdn9-banquan.ituchong.com/weili/l/903371741418749965.webp'],
       isOpen: false,
       confirmShow: false,
       photoListShow: false,
       detailsTableLoading: false,
+      baseInfoLoading: false,
+      tableLoading: false,
+      query: {
+        bmSerial: '',
+        id: '',
+      },
+      baseInfo: {},
+      assetTypeNum: '',
+      craftType: '',
+      getTousandNum: getTousandNum
     }
   },
-
+  created() {
+    this.query.bmSerial = this.$route.query.bmSerial
+    this.query.id = this.$route.query.id
+    this.moldHeaderByBmSerial()
+    this.findMoldViewList()
+  },
   methods: {
+    moldHeaderByBmSerial(){
+      this.baseInfoLoading = true
+      moldHeaderByBmSerial({
+        bmSerial: this.query.bmSerial
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.baseInfo = res.data
+        } else {
+          iMessage.error(result);
+        }
+        this.baseInfoLoading = false
+      }).catch(() => {
+        this.baseInfoLoading = false
+      });
+    },
+    findMoldViewList(){
+      this.tableLoading = true
+      findMoldViewList({
+        assetTypeNum: this.assetTypeNum,
+        bmId: this.query.id,
+        craftType: this.craftType,
+        veriosn: '',
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.tableListData = res.data
+        } else {
+          iMessage.error(result);
+        }
+        this.tableLoading = false
+      }).catch(() => {
+        this.tableLoading = false
+      });
+    },
     changeSerch(type){
       this.isOpen = type;
     },
 
     exportList(){ //  导出
-
+      this.tableLoading = true
+      bmMoldExport(this.tableListData).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+        }
+        this.tableLoading = false
+      }).catch(() => {
+        this.tableLoading = false
+      });
     },
     confirm(){
       this.confirmShow = true
@@ -334,6 +389,10 @@ export default {
           display: inline-block;
         }
       }
+      .disabled{
+        font-size: 14px;
+        color: #000000;
+      }
     }
   }
 
@@ -376,9 +435,12 @@ export default {
     align-items: center;
 
     .txt{
-      width: 68px;
       color: #0D2451;
       font-size: 14px;
+    }
+    .disabled{
+      font-size: 14px;
+      color: #000000;
     }
   }
 }
