@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-28 19:24:47
+ * @LastEditTime: 2021-07-28 20:23:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -183,6 +183,10 @@ export default {
       type: Boolean,
       default: false
     },
+    searchData: {
+      type: Object,
+      default: () => {}
+    }
   },
   data () {
     return {
@@ -234,15 +238,16 @@ export default {
       this.handleTableNumber(this.tableListData, 1, null)
     },
     // 初始化列表数据
-    getTableData (searchData) {
+    getTableData () {
       return new Promise(resolve => {
+        console.log('searchData', this.searchData);
         const params = {
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
-          createByName: searchData ? searchData.createByName : null,
-          materialGroup: searchData ? searchData.materialGroup : null,
-          partsNo: searchData ? searchData.partsNo : null,
-          rfqNo: searchData ? searchData.rfqNo : this.$store.state.rfq.rfqId,
+          createByName: this.searchData && this.searchData.createByName ? this.searchData.createByName : null,
+          materialGroup: this.searchData && this.searchData.materialGroup ? this.searchData.materialGroup : null,
+          partsNo: this.searchData && this.searchData.partsNo ? this.searchData.partsNo : null,
+          rfqNo: this.searchData && this.searchData.rfqNo ? this.searchData.rfqNo : this.$store.state.rfq.rfqId,
         }
         getVpAnalysisDataList(params).then(res => {
           if (res && res.code == 200) {
