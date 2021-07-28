@@ -88,7 +88,7 @@ export default {
                           <div class='flex'>
                             <div class="img"></div><div class='title'>${params.data.supplierName}</div>
                           </div>
-                          <div class='label'>${this.$t('LK_CHEXINGXIANGMU') + ':'}</div>
+                          <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
                           <div class='value'>${params.data.factoryName}</div>
                           <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
                           <div class='value'>${params.data.factoryAddress}</div>

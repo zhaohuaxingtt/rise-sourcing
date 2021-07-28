@@ -72,9 +72,9 @@ export function modifyRfqToRemark(parmars) {
   })
 }
 //map
-export function batchSupplierMapOverview(parmars) {
+export function overviewBatchSupplierMap(parmars) {
   return requst({
-    url: `/batchOverview/batchSupplierMapOverview`,
+    url: `/batchOverview/overviewBatchSupplierMap`,
     method: 'POST',
     data: parmars
   })

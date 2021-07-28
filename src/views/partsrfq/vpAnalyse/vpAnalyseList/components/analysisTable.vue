@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-23 10:14:44
+ * @LastEditTime: 2021-07-28 20:23:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -40,16 +40,16 @@
                   <el-tooltip :content="scope.row.analysisSchemeName"
                               placement="top"
                               effect="light">
-                    <p class="ellipsis"
+                    <span class="ellipsis"
                        v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
-                       @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</p>
+                       @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
                   </el-tooltip>
                   <el-tooltip :content="scope.row.reportName"
                               placement="top"
                               effect="light">
-                    <p class="ellipsis"
+                    <span class="ellipsis"
                        v-if="scope.row.type == $t('TPZS.REPORT_TYPE')"
-                       @click="clickReport(scope.row)">{{scope.row.reportName}}</p>
+                       @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
                   </el-tooltip>
                 </span>
                 <span v-else>
@@ -64,7 +64,7 @@
               <el-col :span="6">
                 <span v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')">
                   <span class="number">
-                    <p>{{scope.row.reportCount}}</p>
+                    {{scope.row.reportCount}}
                   </span>
                   <icon class="numberIcon"
                         style="{font-size:24px}"
@@ -183,6 +183,10 @@ export default {
       type: Boolean,
       default: false
     },
+    searchData: {
+      type: Object,
+      default: () => {}
+    }
   },
   data () {
     return {
@@ -234,15 +238,16 @@ export default {
       this.handleTableNumber(this.tableListData, 1, null)
     },
     // 初始化列表数据
-    getTableData (searchData) {
+    getTableData () {
       return new Promise(resolve => {
+        console.log('searchData', this.searchData);
         const params = {
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
-          createByName: searchData ? searchData.createByName : null,
-          materialGroup: searchData ? searchData.materialGroup : null,
-          partsNo: searchData ? searchData.partsNo : null,
-          rfqNo: searchData ? searchData.rfqNo : this.$store.state.rfq.rfqId,
+          createByName: this.searchData && this.searchData.createByName ? this.searchData.createByName : null,
+          materialGroup: this.searchData && this.searchData.materialGroup ? this.searchData.materialGroup : null,
+          partsNo: this.searchData && this.searchData.partsNo ? this.searchData.partsNo : null,
+          rfqNo: this.searchData && this.searchData.rfqNo ? this.searchData.rfqNo : this.$store.state.rfq.rfqId,
         }
         getVpAnalysisDataList(params).then(res => {
           if (res && res.code == 200) {
@@ -347,7 +352,7 @@ export default {
       const ids = []
       const reportIds = []
       if (!this.selectionData || this.selectionData.length == 0) {
-        iMessage.error(this.$t('TPZS.QXZYSCDSJ'));
+        iMessage.error(this.$t('TPZS.QXZXYCZDSJ'));
         return;
       }
       this.selectionData.map(item => {
@@ -507,31 +512,33 @@ export default {
       transform: rotate(270deg);
     }
   }
-  .openPage {
-    position: relative;
-    color: $color-blue;
-    font-size: 14px;
-    cursor: pointer;
-    width: 90%;
-    .number {
-      position: absolute;
-      right: 12px;
-      top: 2px;
-      color: #fff;
-      font-size: 10px;
-      z-index: 1;
-      width: 20px;
-    }
-    .numberIcon {
-      position: absolute;
-      font-size: 24px;
-      right: 10px;
-      top: 3px;
-    }
-  }
 
   .stickIcon:hover {
     cursor: pointer;
   }
 }
+
+.openPage {
+  position: relative;
+  color: $color-blue;
+  font-size: 14px;
+  cursor: pointer;
+  width: 90%;
+  .number {
+    position: absolute;
+    right: 12px;
+    top: 2px;
+    color: #fff;
+    font-size: 10px;
+    z-index: 1;
+    width: 20px;
+  }
+  .numberIcon {
+    position: absolute;
+    font-size: 24px;
+    right: 10px;
+    top: 3px;
+  }
+}
+
 </style>

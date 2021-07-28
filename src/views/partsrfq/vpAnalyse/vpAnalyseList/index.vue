@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-22 20:01:41
+ * @LastEditTime: 2021-07-28 20:25:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -23,7 +23,7 @@
           <iButton @click="clickSaveEdit">{{$t('LK_BAOCUN')}}</iButton>
         </span>
       </div>
-      <analysisTable ref="analysisTable" :editMode="editMode"/>
+      <analysisTable v-if="isShowTable" ref="analysisTable" :editMode="editMode" :searchData="searchData"/>
     </iCard>
   </div>
 </template>
@@ -42,6 +42,7 @@ export default {
       round: null,        //round
       searchData: null,
       backUpData: [],
+      isShowTable: true
     }
   },
   created() {
@@ -68,20 +69,29 @@ export default {
         path: targetUrl,
         query: {
           round: this.round,
-          partsNo: this.searchData ? this.searchData.partsNo : null 
+          partsNo: this.searchData ? this.searchData.partsNo : null,
+          materialGroup: this.searchData ? this.searchData.materialGroup : null,
         }
       })
     },
     //点击删除按钮
     clickDel() {
+      this.isShowTable = false
       this.$refs.analysisTable.clickSaveDel()
+      this.isShowTable = true
     },
     //点击搜索按钮
     handleSubmitSearch(searchData) {
-      this.$refs.analysisTable.getTableData(searchData).then(res => {
-        if(!res.data || res.data.length == 0) {
-          iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'))
-        }
+      console.log('searchData0000', searchData);
+      this.searchData = searchData
+      this.$refs.analysisTable.page.currPage = 1
+      this.$refs.analysisTable.page.pageSize = 10
+      this.$nextTick(() => {
+        this.$refs.analysisTable.getTableData().then(res => {
+          if(!res.data || res.data.length == 0) {
+            iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'))
+          }
+        })
       })
     },
   }

@@ -7,18 +7,27 @@
 -->
 <template>
   <!--深入评级-->
-  <iDialog :title="$t('TPZS.JRZXFXGJ')" :visible.sync="value" width="381px" @close="clearDiolog">
+  <iDialog :title="$t('TPZS.JRZXFXGJ')" :visible.sync="value" width="581px" @close="clearDiolog">
     <el-form>
       <el-form-item :label="$t('partsignLanguage.QingShuRu')">
-        <iSelect :multiple="false" remote reserve-keyword :remote-method="handleKeyword" :loading="keyLoading" filterable :placeholder="$t('TPZS.CLZRFQLJH')" v-model="form.keyword">
-          <el-option v-for="(item,index) in formGroup.keywordList" :key="index" :label="item.categoryCode+'|'+item.categoryName+'|'+item.id+'|'+item.rfqName+'|'+item.partNum" :value="item.id">
-          </el-option>
-        </iSelect>
-        <div class="icon-search">
+        <iInput @change="handleKeyword" :placeholder="$t('TPZS.CLZRFQLJH')" v-model="form.keyword">
+        </iInput>
+        <div @click="handleKeyword" class="icon-search">
           <icon name='iconshaixuankuangsousuo' symbol></icon>
         </div>
       </el-form-item>
     </el-form>
+    <tableList height="300" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' @handleSelectionChange="handleSelectionChange">
+      <template #categoryCode="scope">
+        <el-radio @change="handleRadio(scope.row.categoryName,scope.row.categoryCode,'','')" v-model="form.radio" :label="scope.row.categoryCode">{{scope.row.categoryCode+scope.row.categoryName}}</el-radio>
+      </template>
+      <template #id="scope">
+        <el-radio @change="handleRadio('','',scope.row.id,'')" v-model="form.radio" :label="scope.row.id">{{scope.row.id+scope.row.rfqName}}</el-radio>
+      </template>
+      <template #partNum="scope">
+        <el-radio @change="handleRadio('','','',scope.row.partNum)" v-model="form.radio" :label="scope.row.partNum">{{scope.row.partNum}}</el-radio>
+      </template>
+    </tableList>
     <div slot="footer" class="dialog-footer">
       <iButton @click="handleSubmit">{{ $t('LK_QUEREN') }}</iButton>
     </div>
@@ -28,13 +37,14 @@
 <script>
 import { iDialog, iSelect, iButton, iInput, icon } from 'rise';
 import { pageRfqBaseInfo } from "@/api/partsrfq/specialAnalysisTool/specialAnalysisTool.js";
-
+import tableList from '@/components/ws3/commonTable';
+import { tableTitle } from "./data.js";
 export default {
   components: {
     iDialog,
     iSelect,
     iButton,
-    iInput, icon
+    iInput, icon, tableList
   },
   props: {
     value: { type: Boolean },
@@ -42,9 +52,17 @@ export default {
   },
   data() {
     return {
+      tableListData: [],
+      tableTitle: tableTitle,
+      tableLoading: false,
       keyLoading: false,
       form: {
-        keyword: ''
+        keyword: '',
+        radio: '',
+        rfqId: '',
+        categoryName: '',
+        categoryCode: '',
+        partNum: '',
       },
       formGroup: {
         keywordList: []
@@ -54,27 +72,33 @@ export default {
   created() {
   },
   methods: {
+    handleRadio(categoryName,categoryCode, id, partNum) {
+      this.form.categoryName = categoryName
+      this.form.categoryCode = categoryCode
+      this.form.rfqId = id
+      this.form.partNum = partNum
+    },
     async handleKeyword(val) {
       const pms = {
         keyword: val
       }
-      this.keyLoading = true
+      this.tableLoading = true
       try {
         const res = await pageRfqBaseInfo(pms)
         if (res.result) {
-          this.formGroup.keywordList = res.data
+          this.tableListData = res.data
         }
-        this.keyLoading = false
+        this.tableLoading = false
       } catch (error) {
-        this.formGroup.keywordList = []
-        this.keyLoading = false
+        this.tableListData = []
+        this.tableLoading = false
       }
     },
     clearDiolog() {
       this.$emit('input', false);
     },
     handleSubmit() {
-      this.$emit('getDataList', this.form.keyword)
+      this.$emit('getDataList', this.form)
     }
   },
   watch: {
@@ -97,5 +121,8 @@ export default {
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   cursor: pointer;
+}
+::v-deep .el-form-item__content {
+  text-align: left;
 }
 </style>
