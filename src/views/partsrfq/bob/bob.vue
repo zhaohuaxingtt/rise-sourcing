@@ -465,7 +465,7 @@ export default {
     // 点击删除按钮
     deleteBob () {
       if (!this.selection || this.selection.length == 0) {
-        iMessage.error(this.$t('TPZS.QXZYSCDSJ'));
+        iMessage.error(this.$t('TPZS.QXZXYCZDSJ'));
         return;
       }
       fetchDel(this.selection).then((res) => {
