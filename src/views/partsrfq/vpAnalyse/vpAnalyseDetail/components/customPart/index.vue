@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-07-28 15:43:53
+ * @LastEditTime: 2021-07-28 16:30:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     dialogTitle() {
-      return this.addMode ? this.$t('查找零件') : this.$t('TPZS.LK_CUSTOM_TITLE')
+      return this.addMode ? this.language('CQLJ','查找零件') : this.$t('TPZS.LK_CUSTOM_TITLE')
     }
   },
   methods: {

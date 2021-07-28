@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-23 16:47:14
- * @LastEditTime: 2021-07-28 16:11:56
+ * @LastEditTime: 2021-07-28 16:35:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\components\add.vue
@@ -9,7 +9,7 @@
 <template>
   <div>
     <div class="topBox">
-      <iButton @click="handleCloseAdd">返回</iButton>
+      <iButton @click="handleCloseAdd">{{language('FH', '返回')}}</iButton>
     </div>
     <div class="optionBox">
       <el-form :inline="true" :model="searchForm" :label-position="labelPosition" class="demo-form-inline">
@@ -17,8 +17,8 @@
           <iInput v-model="searchForm[item.props]" ></iInput>
         </el-form-item>
         <el-form-item class="searchButton">
-          <el-button @click="handleSubmitSearch">确认</el-button>
-          <el-button @click="handleSearchReset">重置</el-button>
+          <el-button @click="handleSubmitSearch">{{language('QR', '确认')}}</el-button>
+          <el-button @click="handleSearchReset">{{language('CZ', '重置')}}</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -26,7 +26,7 @@
     <div class="contentBox" >
       <div class="tableOptionBox">
         <p class="tableTitle">搜索结果</p>
-        <iButton @click="handleSubmitAdd">添加</iButton>
+        <iButton @click="handleSubmitAdd">{{language('TJ', '添加')}}</iButton>
       </div>
       <tableList
         ref="addTable"
@@ -36,7 +36,7 @@
         :index="true"
         @select="rowSelect">
         <template #isNominate="scope">
-          {{scope.row.isNominate ? "已定点" : "未定点"}}
+          {{scope.row.isNominate ? language('YDD', '已定点') : language('WDD', '未定点') }}
         </template>
       </tableList>
       <iPagination
