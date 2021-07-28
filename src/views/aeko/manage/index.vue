@@ -37,21 +37,22 @@
           <iButton >{{language('LK_DAORUAEKO','导⼊AEKO')}} </iButton>
           <iButton>{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
           <iButton @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
-          <el-upload
-            class=" margin-left10 margin-right10"
-            :action="uploadUrl + '/rs/uploadNomiRsDoc'"
-            accept='.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif,.pptx,.zip'
-            style="display:none;"
-            ref="aekoUpload"
-            multiple
-            :show-file-list='false'
-            :on-progress='()=>{btnLoading.uploadFiles=true}'
-            :on-error='()=>{btnLoading.uploadFiles=false;iMessage.error(language("SHANGCHUANSHIBAI","上传失败！"))}'
-            :on-success='fileSuccess'
-          >
-          </el-upload>
-
-          <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
+          
+          <span class=" margin-left10 margin-right10">
+            <el-upload
+              :action="uploadUrl + '/rs/uploadNomiRsDoc'"
+              accept='.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif,.pptx,.zip'
+              style="display:none;"
+              ref="aekoUpload"
+              multiple
+              :show-file-list='false'
+              :on-progress='()=>{btnLoading.uploadFiles=true}'
+              :on-error='()=>{btnLoading.uploadFiles=false;iMessage.error(language("SHANGCHUANSHIBAI","上传失败！"))}'
+              :on-success='fileSuccess'
+            >
+            </el-upload>
+            <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
+          </span>
           <iButton>{{language('LK_AEKODAOCHU','导出')}} </iButton>
       </template>
       <!-- 表单区域 -->
@@ -203,7 +204,9 @@ export default {
       goToDetail(row){
         const routeData = this.$router.resolve({
           path: '/aeko/aekodetail',
-          query: {},
+          query: {
+            id:1,
+          },
         })
         window.open(routeData.href, '_blank')
       },

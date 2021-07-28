@@ -55,8 +55,8 @@ export default {
     .aekoFilesList{
         .filesList{
             li{
-                padding: 10px 0;
-                border-bottom: 1px dashed #909091;
+                padding: 15px 0;
+                border-bottom: 1px dashed rgba($color: #707070, $alpha: .2);
                 position: relative;
                 .list-index{
                     font-style: normal;
@@ -64,7 +64,7 @@ export default {
                     position: absolute;
                     width: 20px;
                     left: -20px;
-                    top: 11px;
+                    top: 16px;
                     text-align: right;
                 }
             }
