@@ -29,6 +29,7 @@
             <iButton @click="assign()">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
             <iButton>{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
             <iButton @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
+            <iButton disabled>{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
         </template>
         <!-- 表单区域 -->
         <tableList

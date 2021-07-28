@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-07-28 15:50:14
+ * @LastEditTime: 2021-07-28 15:57:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -78,7 +78,7 @@ export default {
       tabs: [
         { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", components: [ "contentDeclare" ] },
         { label: "封⾯表态", name: "a", key: "FENGMIANBIAOTAI", components: [] },
-        { label: "零件清单", name: "b", key: "LINGJIANQINGDAN", components: [partsList] },
+        { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", components: ["partsList"] },
         { label: "审批附件", name: "c", key: "SHENPIFUJIAN", components: [] },
         { label: "审批记录", name: "d", key: "SHENPIFUJIAN", components: [] }
       ],
