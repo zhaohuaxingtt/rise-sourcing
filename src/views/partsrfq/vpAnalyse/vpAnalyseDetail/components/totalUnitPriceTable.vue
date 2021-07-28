@@ -375,6 +375,10 @@ export default {
   margin-bottom: 0;
 }
 
+::v-deep .el-table .el-table__body-wrapper{
+  min-height: auto;
+}
+
 .iconStyle {
   font-size: 22px;
 }
