@@ -75,7 +75,7 @@ import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 import searchPartDialog from "./searchPartDialog.vue";
 import { getPartsList, saveCarParts } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate/index.js";
-import {toThousands} from '@/utils';
+import { toThousands } from '@/utils';
 
 export default {
   // import引入的组件需要注入到对象中才能使用
@@ -123,19 +123,22 @@ export default {
       try {
         const req = {
           carType: this.carType,
-          userId: this.$store.state.permission.userInfo.id
+          userId: this.$store.state.permission.userInfo.id,
+          rfqId: this.$store.state.rfq.rfqId,
         };
         const res = await getPartsList(req);
         if (res.result) {
           this.tableListData = res.data;
           // 通过分析库的零件号 查找对应的零件，进入已选零件
           var partsIds = []
+          var materialGroups = []
           this.middleListData.forEach(val => {
             partsIds.push(val.partsId)
+            materialGroups.push(val.materialGroup)
           })
-          if (!partsIds.includes(this.$route.query.partsNo)) {
+          if ((!partsIds.includes(this.$route.query.partsNo)) && (!materialGroups.includes(this.$route.query.materialGroup))) {
             this.tableListData.forEach(item => {
-              if (item.partsId === this.$route.query.partsNo) {
+              if (item.partsId === this.$route.query.partsNo || item.materialGroup === this.$route.query.materialGroup) {
                 this.middleListData.push(item)
               }
             })
