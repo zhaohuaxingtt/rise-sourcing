@@ -290,6 +290,8 @@ export default {
           } else {
             await this.getDataInfo();
           }
+        } else {
+          await this.getDataInfo();
         }
         this.pageLoading = false;
         this.analyzeLoading = false;
