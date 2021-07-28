@@ -11,7 +11,7 @@ export default [
     path: "/aeko",
     name: "aeko",
     component: () => import("@/layout/default"),
-    redirect: "/aekomanage/home",
+    redirect: "/aeko/home",
     children: [
       // aeko管理列表页
       {
@@ -23,6 +23,24 @@ export default [
         path: "aekodetail",
         name: "aekodetail",
         component: () => import("@/views/aeko/detail"),
+      },
+      {
+        path: "quondampart",
+        name: "quondampart",
+        component: () => import("@/views/aeko/quondampart"),
+        redirect: "quondampart/ledger",
+        children: [
+          {
+            path: "ledger",
+            name: "quondampartLedger",
+            component: () => import("@/views/aeko/quondampart/components/ledger"),
+          },
+          {
+            path: "aeko",
+            name: "quondampartAeko",
+            component: () => import("@/views/aeko/quondampart/components/aeko"),
+          },
+        ]
       },
       {
         path: "describe",
