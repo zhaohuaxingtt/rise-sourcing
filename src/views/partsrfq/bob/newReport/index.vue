@@ -230,7 +230,8 @@
                        :partList="partList"
                        :analysisSchemeId="analysisSchemeId"
                        :reportSave="reportSave"
-                       :label="label"></bobAnalysis>
+                       :label="label"
+                       :formUpdata="formUpdata"></bobAnalysis>
         </el-col>
       </el-row>
     </div>
@@ -343,7 +344,8 @@ export default {
       anchorList: ['原材料/散件', '制造费', '报废成本', '管理费', '其他费用', '利润'],
       current: null,
       isCover: true,
-      label: ""
+      label: "",
+      formUpdata: {}
     };
   },
   created () {
@@ -373,8 +375,6 @@ export default {
       this.analysisSchemeId = this.$route.query.SchemeId
       this.getChartData()
     }
-
-
 
     // console.log(this.$route.query, "query")
     // if (this.$store.state.rfq.entryStatus === 1) {
@@ -619,7 +619,7 @@ export default {
     searchChartData () {
       let params = {}
       let tableParams = {}
-      if (this.$store.state.rfq.entryStatus === 1) {
+      if (this.inside) {
         params = {
           analysisSchemeId: this.analysisSchemeId,
           analysisDimension: this.chartType,
@@ -719,7 +719,29 @@ export default {
           this.form.spareParts = this.Split(allData.spareParts, ",");
           console.log(this.form)
         }
-
+        if (this.inside) {
+          this.formUpdata = {
+            analysisDimension: this.chartType,
+            defaultBobOptions: this.bobType,
+            id: this.analysisSchemeId,
+            name: this.analysisName,
+            spareParts: this.form.spareParts.join(","),
+            supplierId: this.form.supplier.join(","),
+            turn: this.form.turn.join(","),
+            isCover: this.isCover,
+            remark: this.remark
+          };
+        } else {
+          this.formUpdata = {
+            analysisDimension: this.chartType,
+            defaultBobOptions: this.bobType,
+            id: this.analysisSchemeId,
+            name: this.analysisName,
+            combination: this.form.combination.join(','),
+            isCover: this.isCover,
+            remark: this.remark
+          };
+        }
       });
     },
     delOut () {
@@ -750,30 +772,6 @@ export default {
     },
     save () {
       let that = this;
-      let form = {}
-      if (this.inside) {
-        form = {
-          analysisDimension: this.chartType,
-          defaultBobOptions: this.bobType,
-          id: this.analysisSchemeId,
-          name: this.analysisName,
-          spareParts: this.form.spareParts.join(","),
-          supplierId: this.form.supplier.join(","),
-          turn: this.form.turn.join(","),
-          isCover: this.isCover,
-          remark: this.remark
-        };
-      } else {
-        form = {
-          analysisDimension: this.chartType,
-          defaultBobOptions: this.bobType,
-          id: this.analysisSchemeId,
-          name: this.analysisName,
-          combination: this.form.combination.join(','),
-          isCover: this.isCover,
-          remark: this.remark
-        };
-      }
       if (this.analysisSave) {
         this.dialogVisible = false
         if (this.isCover && !this.newBuild) {
@@ -782,7 +780,7 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            update(form)
+            update(this.formUpdata)
               .then((res) => {
                 iMessage.success("保存成功");
                 this.dialogVisible = false;
@@ -800,7 +798,7 @@ export default {
             });
           });
         } else {
-          update(form)
+          update(this.formUpdata)
             .then((res) => {
               iMessage.success("保存成功");
               this.dialogVisible = false;

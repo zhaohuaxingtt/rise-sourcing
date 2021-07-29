@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-28 21:05:23
+ * @LastEditTime: 2021-07-28 22:34:15
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -111,6 +111,7 @@ import {
   groupedCancel,
   groupedSubmit
 } from "@/api/partsrfq/bob";
+import { update } from "@/api/partsrfq/bob/analysisList";
 import {
   tableList,
   ungroupList,
@@ -183,6 +184,12 @@ export default {
     label: {
       type: String,
       default: ""
+    },
+    formUpdata: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   watch: {
@@ -403,21 +410,24 @@ export default {
       this.visible = true;
     },
     group () {
-      let that = this
-      // console.log(this.$parent.$parent.$parent.$parent, '222')
       this.$confirm('请保存数据！', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        that.$parent.$parent.$parent.$parent.save()
-        that.totalTable = false;
-        that.groupby = true;
-        that.checkFLag = false
+        // this.$parent.$parent.$parent.$parent.analysisSave = true
+        // this.$parent.$parent.$parent.$parent.isCover = false
+        // this.$parent.$parent.$parent.$parent.save()
+        update(this.formUpdata).then(res => {
+          iMessage.success("保存成功");
+          this.totalTable = false;
+          this.groupby = true;
+          this.checkFLag = false
+        })
       }).catch(() => {
-        that.totalTable = true;
-        that.groupby = false;
-        that.checkFLag = true
+        this.totalTable = true;
+        this.groupby = false;
+        this.checkFLag = true
       })
 
     },
@@ -485,10 +495,19 @@ export default {
       })
     },
     finish () {
-      this.finishGroup()
+      groupedSubmit({
+        schemaId: this.SchemeId
+      }).then((res) => {
+        this.finishGroup()
+      })
     },
     off () {
-      this.finishGroup()
+      groupedCancel({
+        schemaId: this.SchemeId
+      }).then(res => {
+        this.finishGroup()
+      })
+
     },
     finishGroup () {
       this.totalTable = true
@@ -501,9 +520,19 @@ export default {
       });
     },
     down () {
-      down({
-        schemaId: this.SchemeId,
-      }).then((res) => { });
+      this.$confirm('请保存数据！', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        update(this.formUpdata).then(res => {
+          iMessage.success("保存成功");
+          down({
+            schemaId: this.SchemeId,
+          }).then((res) => { });
+        })
+      })
+
     },
   },
 };
