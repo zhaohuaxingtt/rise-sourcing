@@ -160,6 +160,7 @@ export default {
             data: this.newestScatterData,
             color: '#0059FF',
             label: {
+              offset: [30, 0],
               rich: {
                 bg: this.setBg(proGrowthRate),
               },
