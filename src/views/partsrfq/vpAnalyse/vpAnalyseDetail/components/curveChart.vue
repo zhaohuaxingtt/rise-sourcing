@@ -4,6 +4,7 @@
 
 <script>
 import echarts from '@/utils/echarts';
+import {toFixedNumber} from '@/utils';
 
 export default {
   props: {
@@ -42,7 +43,13 @@ export default {
       default: () => {
         return [];
       },
-    }
+    },
+    dataInfo: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   mounted() {
     this.initEcharts();
@@ -57,7 +64,9 @@ export default {
       const targetScatterDataX = this.targetScatterData[0] ? this.targetScatterData[0][0] : 0;
       const newestScatterDataY = this.newestScatterData[0] ? this.newestScatterData[0][1] : 0;
       const targetScatterDataY = this.targetScatterData[0] ? this.targetScatterData[0][1] : 0;
-      const xMax = this.cpLineData[0]
+      const reductionPotential = this.dataInfo.reductionPotential;
+      const proGrowthRate = this.dataInfo.proGrowthRate;
+      const xMax = this.cpLineData[0];
       const option = {
         // ['最新定点单价', '目标单价']
         legend: {
@@ -104,17 +113,51 @@ export default {
             },
           },
           axisLabel: {
-            show: false
-          }
+            show: false,
+          },
         },
-        color: '#0059FF',
+        visualMap: {
+          type: 'piecewise',
+          show: false,
+          dimension: 0,
+          seriesIndex: 0,
+          pieces: [
+            {
+              gt: newestScatterDataX,
+              lt: targetScatterDataX,
+              color: '#0059FF',
+            },
+          ],
+        },
         series: [
+          {
+            type: 'line',
+            smooth: true,
+            data: this.lineData,
+            symbol: 'none',
+            lineStyle: {
+              color: '#0059FF',
+            },
+            areaStyle: {},
+          },
           {
             //最新定点单价
             name: this.$t('TPZS.ZUIXINDINGDIANDANJIA'),
             type: 'scatter',
             data: this.newestScatterData,
             color: '#0059FF',
+            label: {
+              show: true,
+              position: 'top',
+              color: proGrowthRate > 0 ? '#C00000' : '#70AD47',
+              formatter: () => {
+                if (proGrowthRate > 0) {
+                  return `+${toFixedNumber(proGrowthRate, 2)}%`;
+                } else {
+                  return `${toFixedNumber(proGrowthRate, 2)}%`;
+                }
+              },
+            },
           },
           {
             //目标单价
@@ -122,12 +165,18 @@ export default {
             type: 'scatter',
             data: this.targetScatterData,
             color: '#70AD47',
-          },
-          {
-            type: 'line',
-            smooth: true,
-            data: this.lineData,
-            symbol: 'none',
+            label: {
+              show: true,
+              position: 'top',
+              color: reductionPotential > 0 ? '#C00000' : '#70AD47',
+              formatter: () => {
+                if (reductionPotential > 0) {
+                  return `+${toFixedNumber(reductionPotential, 2)}%`;
+                } else {
+                  return `${toFixedNumber(reductionPotential, 2)}%`;
+                }
+              },
+            },
           },
           this.createXline(this.newestScatterData[0], newestScatterDataX),
           this.createXline(this.targetScatterData[0], targetScatterDataX),

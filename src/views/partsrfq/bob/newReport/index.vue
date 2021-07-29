@@ -182,7 +182,6 @@
               </el-col>
               <el-col :span="6"
                       v-if="inside">
-
                 <!-- <div style="border: 1px dashed #ccc;width: 1px;height:320px;"></div> -->
                 <div class="left-dash1">
                   <div v-if="chartData1.length > 0"
@@ -200,10 +199,8 @@
                            style="width:220px;height:300px">
                       <div style="text-align: center;color:#8F8F90">{{ $t("待添加") }}</div>
                     </div>
-
                   </div>
                 </div>
-
               </el-col>
             </iRow>
           </iCard>
@@ -355,7 +352,7 @@ export default {
       if (this.entryStatus === 1) {
         this.inside = true
         this.rfq = this.$store.state.rfq.rfqId
-        this.analysisSchemeId = this.$route.query.SchemeId
+        this.analysisSchemeId = this.$route.query.chemeId
         this.getChartData()
       } else if (this.entryStatus === 0) {
         this.findPart()
@@ -372,7 +369,7 @@ export default {
           this.inside = false
         }
       }
-      this.analysisSchemeId = this.$route.query.SchemeId
+      this.analysisSchemeId = this.$route.query.chemeId
       this.getChartData()
     }
 
@@ -701,6 +698,7 @@ export default {
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
         this.analysisName = allData.name
+        this.$refs.bobAnalysis.remark = allData.remark
         this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
         if (this.chartType === 'combination') {
           this.form = {
@@ -729,7 +727,7 @@ export default {
             supplierId: this.form.supplier.join(","),
             turn: this.form.turn.join(","),
             isCover: this.isCover,
-            remark: this.remark
+            // remark: this.$refs.bobAnalysis.remark
           };
         } else {
           this.formUpdata = {
@@ -739,9 +737,10 @@ export default {
             name: this.analysisName,
             combination: this.form.combination.join(','),
             isCover: this.isCover,
-            remark: this.remark
+            // remark: this.$refs.bobAnalysis.remark
           };
         }
+
       });
     },
     delOut () {
@@ -780,6 +779,7 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
+            this.formUpdata.remark = this.$refs.bobAnalysis.remark
             update(this.formUpdata)
               .then((res) => {
                 iMessage.success("保存成功");
