@@ -280,7 +280,7 @@ export default {
   }
   .left-dash1 {
     border: none;
-    border-left: 5px dashed grey;
+    // border-left: 5px dashed grey;
     .icon-add {
       margin-top: 100px;
       margin-bottom: 20px;

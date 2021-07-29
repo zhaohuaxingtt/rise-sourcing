@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-26 15:35:28
+ * @LastEditTime: 2021-07-28 19:00:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -11,7 +11,7 @@
     <template v-slot:header>
       <div class="flex-between-center titleBox">
         <div>
-          <span>待分配区域</span>
+          <span id="allocated">待分配区域</span>
           <span v-if="remark"
                 class="margin-left40">{{ remark }}</span>
         </div>
@@ -179,6 +179,7 @@ export default {
     },
   },
   mounted () {
+    
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
     if (this.newBuild && this.entryStatus === 0) {
@@ -188,7 +189,11 @@ export default {
     }
     setTimeout(() => {
       this.$nextTick(() => {
-        this.chargeRetrieve(this.activeName);
+        this.chargeRetrieve({
+          isDefault: true,
+          viewType: this.activeName,
+          schemaId: this.SchemeId
+        });
         // this.open();
       });
     }, 100);
@@ -202,7 +207,11 @@ export default {
     },
     activeName: {
       handler (val) {
-        this.chargeRetrieve(val);
+        this.chargeRetrieve({
+          isDefault: true,
+          viewType: val,
+          schemaId: this.SchemeId
+        });
         // this.$EventBus.$emit("activeName", val);
       },
     },
@@ -294,11 +303,8 @@ export default {
       console.log("checkList", this.checkList);
     },
     //获取表格数据
-    chargeRetrieve (type) {
-      chargeRetrieve({
-        schemaId: this.SchemeId,
-        viewType: type,
-      })
+    chargeRetrieve (params) {
+      chargeRetrieve(params)
         .then((res) => {
           this.tableList = res;
           filterEmptyChildren(this.tableList.element, 'detailId')
@@ -342,6 +348,7 @@ export default {
             els[i].style.opacity = "0.6";
           } else {
             els[i].style.backgroundColor = "";
+            els[i].style.opacity = "1";
           }
         }
         if (checked) {

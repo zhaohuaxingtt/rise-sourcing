@@ -12,10 +12,10 @@
       <div class="buttom-text">
         <div>
           <div v-if="labelData.title!=='PCA'&&labelData.title!=='TIA'&&labelData.title!=='Bid-Link'">{{$t('TPZS.FX')+labelData.analysisTotal}}</div>
-          <div>{{$t('TPZS.BG')+labelData.reportTotal}}</div>
+          <div>{{ $t('TPZS.BG')+labelData.reportTotal}}</div>
         </div>
         <div>
-          <div>{{$t('TPZS.SCGXSJ')+labelData.analysisLastUpdateDate}}</div>
+          <div>{{labelData.title==='PCA'||labelData.title==='TIA'?$t('TPZS.ZJSCSH'):$t('TPZS.SCGXSJ')+labelData.analysisLastUpdateDate}}</div>
           <div v-if="labelData.title!=='PCA'&&labelData.title!=='TIA'&&labelData.title!=='Bid-Link'">{{$t('TPZS.SCDCSJ')+labelData.reportLastUpdateDate}}</div>
         </div>
       </div>

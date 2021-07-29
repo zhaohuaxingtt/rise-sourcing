@@ -265,14 +265,13 @@ export default {
   methods: {
     //初始化查询数据
     initSearchData () {
-      const data = this.$store.state.rfq.rfqId;
       if (this.$store.state.rfq.entryStatus == 1) this.rfqStatus = true;
       this.form = {
         ...this.form,
-        group: null,
-        num: null,
+        group: this.$store.state.rfq.materialGroup,
+        num: this.$store.state.rfq.spareParts,
         owner: null,
-        rfq: data,
+        rfq: this.$store.state.rfq.rfqId,
       };
     },
     //表格序号函数
@@ -562,7 +561,7 @@ export default {
         this.$router.push({
           path: "/sourcing/partsrfq/bobNew",
           query: {
-            SchemeId: val.id,
+            chemeId: val.id,
             rfqId: val.rfqNo || ''
           },
         });
@@ -634,8 +633,7 @@ export default {
       transform: rotate(270deg);
     }
   }
-
-  .openPage {
+  ::v-deep .openPage {
     position: relative;
     color: $color-blue;
     font-size: 14px;
@@ -660,5 +658,6 @@ export default {
   .stickIcon :hover {
     cursor: pointer;
   }
+
 }
 </style>
