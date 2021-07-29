@@ -24,6 +24,7 @@
               :newestScatterData="newestScatterData"
               :targetScatterData="targetScatterData"
               :lineData="lineData"
+              :cpLineData="cpLineData"
           />
         </div>
         <div class="right">
