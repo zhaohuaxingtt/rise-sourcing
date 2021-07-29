@@ -1,7 +1,7 @@
 <template>
   <iPage>
     <div class="head">
-      <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：6584767893</div>
+      <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：{{bmSerial}}</div>
       <div class="edition">
         <div class="txt">{{language('LK_BANBENHAO', '版本号')}}:</div>
         <iSelect
@@ -149,15 +149,16 @@
             <div style="widht: 80px">{{language('LK_GONGYILEIXING', '工艺类型')}}:</div>
             <iSelect
                 :placeholder="language('LK_QINGXUANZHE', '请选择')"
-                v-model="versionId"
+                v-model="serchTable.craftType"
                 filterable
                 ref="carTypeProjectRef"
                 clearable
                 class="select"
+                @change="selectTable()"
             >
               <el-option
-                  :value="item.id"
-                  :label="item.cartypeNname"
+                  :value="item"
+                  :label="item"
                   v-for="(item, index) in technologyTypeList"
                   :key="index"
               ></el-option>
@@ -168,15 +169,16 @@
             <div style="widht: 112px">{{language('LK_ZICHANFENLEIBIANHAO', '资产分类编号')}}:</div>
             <iSelect
                 :placeholder="language('LK_QINGXUANZHE', '请选择')"
-                v-model="versionId"
+                v-model="serchTable.assetTypeNum"
                 filterable
                 ref="carTypeProjectRef"
                 clearable
                 class="select"
+                @change="selectTable()"
             >
               <el-option
-                  :value="item.id"
-                  :label="item.cartypeNname"
+                  :value="item.value"
+                  :label="item.name"
                   v-for="(item, index) in assetsTypeList"
                   :key="index"
               ></el-option>
@@ -185,7 +187,7 @@
         </div>
 
         <div class="top-r">
-          <iButton @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
+          <iButton :loading="exportLoding" @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
         </div>
         
       </div>
@@ -195,10 +197,11 @@
         :tableTitle="detailsTableHead"
         :tableLoading="detailsTableLoading"
         :selection="false"
+        :typeIndex="true"
       >
         <!-- 照片 -->
         <template #img="scope">
-          <div class="table-link" @click="openPhoto(scope.row)">{{scope.row.img}}</div>
+          <div class="table-link" @click="openPhoto(scope.row)">查看</div>
         </template>
       </iTableList>
       
@@ -237,7 +240,11 @@ import { detailsTableHead, detailsBottomTableHead } from "./components/data";
 import UnitExplain from "./components/unitExplain";
 import PhotoList from "../components/photoList";
 import {
-  detailByBmSerial
+  detailByBmSerial,
+  findMoldList4Ledger,
+  exportsTableList,
+  assetTypes,
+  craftTypes
 } from "@/api/ws2/purchase/mouldBook";
 
 export default {
@@ -271,16 +278,66 @@ export default {
       visible: false,
       imgList: ['https://cdn6-banquan.ituchong.com/weili/l/919767005971611831.webp', 'https://cdn6-banquan.ituchong.com/weili/l/915608610047000641.webp', 'https://cdn9-banquan.ituchong.com/weili/l/903371741418749965.webp'],
       detailsData: {},
-      bmSerial: ''
+      bmSerial: '',
+      exportLoding: false,
+      serchTable: {
+        assetTypeNum: '', //  资产分类编号
+        bmId: this.$route.query.id,
+        craftType: '',  //  工艺类型
+        veriosn: '',  //  版本号
+      }
     }
   },
 
   created(){
     this.bmSerial = this.$route.query.bmSerial;
     this.detailByBmSerial();
+    this.findMoldList4Ledger();
+    this.getDownList();
   },
 
   methods: {
+
+    selectTable(){
+      this.findMoldList4Ledger();
+    },
+
+    getDownList(){
+      //  工艺类型、资产分类
+      Promise.all([craftTypes(), assetTypes()]).then(res => {
+        const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
+
+        if(res[0].data){
+          this.technologyTypeList = res[0].data;
+        }else{
+          iMessage.error(result0);
+        }
+
+        if(res[1].data){
+          this.assetsTypeList = res[1].data;
+        }else{
+          iMessage.error(result1);
+        }
+      })
+    },
+
+    findMoldList4Ledger(){
+      this.detailsTableLoading = true;
+      findMoldList4Ledger(this.serchTable).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+
+        if(res.data){
+          this.detailsTableList = res.data;
+        }else{
+          iMessage.error(result);
+        }
+
+        this.detailsTableLoading = false;
+      }).catch(err => {
+        this.detailsTableLoading = false;
+      })
+    },
 
     detailByBmSerial(){
       detailByBmSerial({bmSerial: this.bmSerial}).then(res => {
@@ -295,7 +352,7 @@ export default {
     },
 
     //  照片
-    openPhoto(){
+    openPhoto(scope, index){
       this.visible = true;
     },
 
@@ -304,7 +361,10 @@ export default {
     },
 
     exportList(){ //  导出
-
+      this.exportLoding = true;
+      exportsTableList(this.detailsTableList).then(res => {
+        this.exportLoding = false;
+      })
     },
   }
 }

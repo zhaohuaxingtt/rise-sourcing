@@ -3,6 +3,53 @@ import axiosFile from '@/utils/axios.download'
 
 const VUE_APP_BMVIEW = axios(process.env.VUE_APP_BMVIEW)
 const VUE_APP_BMVIEW_FILE = axiosFile(process.env.VUE_APP_BMVIEW)
+const VUE_APP_BMMOLD = axios(process.env.VUE_APP_BMMOLD)
+const VUE_APP_BMMOLD_FILE = axiosFile(process.env.VUE_APP_BMMOLD)
+
+// 工艺类型集合
+export function craftTypes(parmars) {
+  return VUE_APP_BMMOLD({
+      url: '/craftTypes',
+      method: 'GET',
+      params: parmars
+  })
+}
+
+// 资产分类集合
+export function assetTypes(parmars) {
+  return VUE_APP_BMMOLD({
+      url: '/assetTypes',
+      method: 'GET',
+      params: parmars
+  })
+}
+
+//导出详情列表
+export function exportsTableList(parmars) {
+  return VUE_APP_BMMOLD_FILE({
+      url: '/export',
+      method: 'POST',
+      data: parmars
+  })
+}
+
+//详情列表
+export function findMoldList4Ledger(parmars) {
+  return VUE_APP_BMMOLD({
+      url: '/findMoldList4Ledger',
+      method: 'POST',
+      data: parmars
+  })
+}
+
+//LINIE下拉
+export function bmViewLiniePullDown(parmars) {
+  return VUE_APP_BMVIEW({
+      url: '/bmViewLiniePullDown',
+      method: 'GET',
+      params: parmars
+  })
+}
 
 //是否有跳转详情权限
 export function isPermission(parmars) {

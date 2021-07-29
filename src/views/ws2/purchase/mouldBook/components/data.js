@@ -97,110 +97,110 @@ export const bmTableHead = [
 
 //  详情表头
 export const detailsTableHead = [
+  // {
+  //   props: 'number',
+  //   name: '序号',
+  //   key: 'LK_XUHAO',
+  //   tooltip: false
+  // },
   {
-    props: '1',
-    name: '序号',
-    key: 'LK_XUHAO',
-    tooltip: false
-  },
-  {
-    props: '2',
+    props: 'moldId',
     name: '模具ID',
     key: 'LK_MUJUID',
     tooltip: false
   },
   {
-    props: '3',
+    props: 'assetNum',
     name: '固资编号',
     key: 'LK_GUZIBIANHAO',
     tooltip: false
   },
   {
-    props: '31',
+    props: 'assetName',
     name: '固资名称',
     key: 'LK_GUZIMINGCHEN',
     tooltip: false
   },
   {
-    props: '4',
+    props: 'moldManufacturer',
     name: '模具制造商',
     key: 'LK_MUJUZHIZHAOSHANG',
     tooltip: false
   },
   {
-    props: '5',
+    props: 'craftType',
     name: '工艺类型',
     key: 'LK_GONGYILEIXING',
     tooltip: false
   },
   {
-    props: '6',
+    props: 'moldType',
     name: '工模具种类',
     key: 'LK_GONGMUJUZHONGLEI',
     tooltip: false
   },
   {
-    props: '7',
+    props: 'assetTypeNum',
     name: '资产分类编号',
     key: 'LK_ZICHANFENLEIBIANHAO',
     tooltip: false
   },
   {
-    props: '8',
+    props: 'partsTotalName',
     name: '零件总成名称',
     key: 'LK_LINGJIANZONGCHENMINGCHEN',
     tooltip: false
   },
   {
-    props: '9',
+    props: 'partsTotalNum',
     name: '总成零件号',
     key: 'LK_ZONGCHENLINGJIANHAO',
     tooltip: false
   },
   {
-    props: '10',
+    props: 'partsShareNum',
     name: '共享零件号',
     key: 'LK_GONGXIANGLINGJIANHAO',
     tooltip: false
   },
   {
-    props: '11',
+    props: 'fsNum',
     name: 'FS号',
     key: 'LK_FSHAO',
     tooltip: false
   },
   {
-    props: '12',
+    props: 'moldType',
     name: '零部件名称',
     key: 'LK_LINGBUJIANMINGCHEN',
     tooltip: false
   },
   {
-    props: '13',
+    props: 'partsNum',
     name: '零件号',
     key: 'LK_LINGJIANHAO',
     tooltip: false
   },
   {
-    props: '13',
+    props: 'count',
     name: '数量',
     key: 'LK_SHULIANG',
     tooltip: false
   },
   {
-    props: '14',
+    props: 'assetPrice',
     name: '资产单价',
     key: 'LK_ZICHANDAN',
     tooltip: false
   },
   {
-    props: '15',
+    props: 'assetTotal',
     name: '资产总额',
     key: 'LK_ZICHANZONGE',
     tooltip: false
   },
   {
-    props: '16',
+    props: 'changeReason',
     name: '调整说明',
     key: 'LK_TIAOZHENGSHUOMING',
     tooltip: false
