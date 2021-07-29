@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-07-29 16:37:58
+ * @LastEditTime: 2021-07-29 19:08:04
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -108,7 +108,6 @@ export default {
   created () {
     this.status = this.$store.state.rfq.entryStatus
     this.pagePart();
-    this.dispatch('parentCom', 'event', "222")
     // this.category();
   },
   methods: {

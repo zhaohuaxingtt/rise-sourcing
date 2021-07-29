@@ -91,7 +91,6 @@ export default {
       return send;
     },
     doNumber (x) {
-      debugger
       var f = Math.round(x * 100) / 100;
       var s = f.toString();
       var rs = s.indexOf('.');
