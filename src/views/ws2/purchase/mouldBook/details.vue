@@ -149,15 +149,16 @@
             <div style="widht: 80px">{{language('LK_GONGYILEIXING', '工艺类型')}}:</div>
             <iSelect
                 :placeholder="language('LK_QINGXUANZHE', '请选择')"
-                v-model="versionId"
+                v-model="serchTable.craftType"
                 filterable
                 ref="carTypeProjectRef"
                 clearable
                 class="select"
+                @change="selectTable()"
             >
               <el-option
-                  :value="item.id"
-                  :label="item.cartypeNname"
+                  :value="item"
+                  :label="item"
                   v-for="(item, index) in technologyTypeList"
                   :key="index"
               ></el-option>
@@ -168,15 +169,16 @@
             <div style="widht: 112px">{{language('LK_ZICHANFENLEIBIANHAO', '资产分类编号')}}:</div>
             <iSelect
                 :placeholder="language('LK_QINGXUANZHE', '请选择')"
-                v-model="versionId"
+                v-model="serchTable.assetTypeNum"
                 filterable
                 ref="carTypeProjectRef"
                 clearable
                 class="select"
+                @change="selectTable()"
             >
               <el-option
-                  :value="item.id"
-                  :label="item.cartypeNname"
+                  :value="item.value"
+                  :label="item.name"
                   v-for="(item, index) in assetsTypeList"
                   :key="index"
               ></el-option>
@@ -197,9 +199,6 @@
         :selection="false"
         :typeIndex="true"
       >
-        <!-- <template #number="scope">
-          {{scope.$index+1}}
-        </template> -->
         <!-- 照片 -->
         <template #img="scope">
           <div class="table-link" @click="openPhoto(scope.row)">查看</div>
@@ -243,7 +242,9 @@ import PhotoList from "../components/photoList";
 import {
   detailByBmSerial,
   findMoldList4Ledger,
-  exportsTableList
+  exportsTableList,
+  assetTypes,
+  craftTypes
 } from "@/api/ws2/purchase/mouldBook";
 
 export default {
@@ -279,6 +280,12 @@ export default {
       detailsData: {},
       bmSerial: '',
       exportLoding: false,
+      serchTable: {
+        assetTypeNum: '', //  资产分类编号
+        bmId: this.$route.query.id,
+        craftType: '',  //  工艺类型
+        veriosn: '',  //  版本号
+      }
     }
   },
 
@@ -286,18 +293,38 @@ export default {
     this.bmSerial = this.$route.query.bmSerial;
     this.detailByBmSerial();
     this.findMoldList4Ledger();
+    this.getDownList();
   },
 
   methods: {
 
+    selectTable(){
+      this.findMoldList4Ledger();
+    },
+
+    getDownList(){
+      //  工艺类型、资产分类
+      Promise.all([craftTypes(), assetTypes()]).then(res => {
+        const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
+
+        if(res[0].data){
+          this.technologyTypeList = res[0].data;
+        }else{
+          iMessage.error(result0);
+        }
+
+        if(res[1].data){
+          this.assetsTypeList = res[1].data;
+        }else{
+          iMessage.error(result1);
+        }
+      })
+    },
+
     findMoldList4Ledger(){
       this.detailsTableLoading = true;
-      findMoldList4Ledger({
-        assetTypeNum: '', //  资产分类编号
-        bmId: this.$route.query.id,
-        craftType: '',  //  工艺类型
-        veriosn: '',  //  版本号
-      }).then(res => {
+      findMoldList4Ledger(this.serchTable).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
         if(res.data){
