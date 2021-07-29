@@ -10,7 +10,7 @@
     <div class="scroll flex">
       <div class="flex margin-right50" v-for="(item,index) in tableData" :key="index">
         <div :style="'background:'+color[index]" class="circle margin-right4"></div>
-        <div>{{item.supplierName}}</div>
+        <div>{{item.name}}</div>
       </div>
     </div>
     <div class="chartmap" ref="chart"></div>
@@ -26,7 +26,8 @@ export default {
   components: { iCard, icon, iLabel },
   props: {
     mapListData: {
-      type: Array, default: () => {
+      type: Object, default: (data) => {
+        console.log(data);
         return {}
       }
     }
@@ -37,9 +38,10 @@ export default {
     },
     mapListData: {
       handler(data) {
+        console.log(data);
         var sum = 0
-        this.svwData = data.addressPoint
-        this.tableData = data.listVO
+        this.svwData = data.purchaseDataList
+        this.tableData = data.offerDataList
         this.tableData.forEach(item => {
           sum = sum + item.toAmount
         })
@@ -84,17 +86,36 @@ export default {
 
             formatter: (params) => {
               console.log(params);
-              return `<div class='tooltip'>
+              let tooltip = ''
+              let carTypeList = ''
+              params.data.carTypeProjectList.forEach((item, index) => {
+                carTypeList += params.data.carTypeProjectList.length > index ? item + ' | ' : item
+              })
+              console.log(carTypeList);
+              if (params.data.title === 'OFFER') {
+                tooltip = `<div class='tooltip'>
                           <div class='flex'>
-                            <div class="img"></div><div class='title'>${params.data.supplierName}</div>
+                            <div class="img"></div><div class='title'>${params.data.name}</div>
                           </div>
                           <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
-                          <div class='value'>${params.data.factoryName}</div>
+                          <div class='value'>${carTypeList}</div>
                           <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
                           <div class='value'>${params.data.factoryAddress}</div>
                           <div class='label'>${this.$t('TPZS.ZXSE')}</div>
                           <div class='value'>${params.data.toAmount}</div>
                       </div>`
+              } else {
+                tooltip = `<div class='tooltip'>
+                              <div class='flex'>
+                                <div class="img-svw"></div><div class='title'>${params.data.name}</div>
+                              </div>
+                              <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
+                              <div class='value'>${carTypeList}</div>
+                              <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
+                              <div class='value'>${params.data.factoryAddress}</div>
+                          </div>`
+              }
+              return tooltip
             },
           },
           toolbox: {
@@ -226,6 +247,12 @@ export default {
   width: 33px;
   height: 25px;
   background: url("~@/assets/images/zl.png") center center no-repeat;
+  background-size: 33px auto;
+}
+.img-svw {
+  width: 33px;
+  height: 35px;
+  background: url("~@/assets/images/svw.png") center center no-repeat;
   background-size: 33px auto;
 }
 .label {
