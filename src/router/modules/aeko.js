@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-07-27 11:21:25
+ * @LastEditTime: 2021-07-28 16:17:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -19,6 +19,13 @@ export default [
           name: "aekoManageList",
           component: () => import ("@/views/aeko/manage")
       },
+      // AEKO表态
+      {
+        path: "stancelist",
+        name: "aekoStanceList",
+        component: () => import ("@/views/aeko/stance")
+    },
+      // 
       {
         path: "aekodetail",
         name: "aekodetail",

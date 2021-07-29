@@ -1,7 +1,7 @@
 <!--
  * @Author: wentliao
- * @Date: 2021-07-26 16:49:36
- * @Description: aeko操作页--AEKO管理
+ * @Date: 2021-07-28 16:10:40
+ * @Description: aeko表态
 -->
 
 <template>
@@ -28,33 +28,7 @@
               </el-form-item>
           </el-form>
       </iSearch>
-      <iCard class="contain margin-top20" :title="language('LK_AEKOGUANLI','AEKO管理')">
-      <!-- 按钮区域 -->
-      <template v-slot:header-control>
-          <iButton>{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton>
-          <iButton>{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
-          <iButton>{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
-          <iButton >{{language('LK_DAORUAEKO','导⼊AEKO')}} </iButton>
-          <iButton>{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
-          <iButton @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
-          
-          <span class=" margin-left10 margin-right10">
-            <el-upload
-              :action="uploadUrl + '/rs/uploadNomiRsDoc'"
-              accept='.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif,.pptx,.zip'
-              style="display:none;"
-              ref="aekoUpload"
-              multiple
-              :show-file-list='false'
-              :on-progress='()=>{btnLoading.uploadFiles=true}'
-              :on-error='()=>{btnLoading.uploadFiles=false;iMessage.error(language("SHANGCHUANSHIBAI","上传失败！"))}'
-              :on-success='fileSuccess'
-            >
-            </el-upload>
-            <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
-          </span>
-          <iButton>{{language('LK_AEKODAOCHU','导出')}} </iButton>
-      </template>
+      <iCard class="contain margin-top20" :title="language('LK_AEKOBIAOTAI','AEKO表态')">
       <!-- 表单区域 -->
       <tableList
         class="table"
@@ -83,6 +57,11 @@
         <span class="link" @click="checkDescribe(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
       </template>
 
+       <!-- 审批单 -->
+       <template #i="scoped">
+           <span class="link">{{language('LK_AEKO_CHAKAN','查看')}}</span>
+       </template>
+
       </tableList>
       <!-- 分页 -->
         <iPagination
@@ -98,8 +77,6 @@
         />
       </iCard>
 
-      <!-- 核销原因弹窗 -->
-      <revokeDialog v-if="revokeVisible" :dialogVisible="revokeVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
       <!-- 附件列表查看 -->
       <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible"/>
     </div>
@@ -115,7 +92,6 @@ import {
   iDatePicker,
   iInput,
   iCard,
-  iButton,
   iPagination,
   icon,
   iMessage,
@@ -124,10 +100,9 @@ import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
 import { TAB } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
-import revokeDialog from './components/revokeDialog'
-import filesListDialog from './components/filesListDialog'
+import filesListDialog from '../manage/components/filesListDialog'
 export default {
-    name:'aekoManageList',
+    name:'aekoStanceList',
     mixins: [pageMixins],
     components:{
       iPage,
@@ -137,11 +112,9 @@ export default {
       iDatePicker,
       iInput,
       iCard,
-      iButton,
       tableList,
       iPagination,
       icon,
-      revokeDialog,
       filesListDialog,
     },
     data(){
@@ -177,7 +150,6 @@ export default {
         ],
         tableTitle:tableTitle,
         loading:false,
-        revokeVisible:false,
         filesVisible:false,
         uploadUrl: process.env.VUE_APP_SOURCING_MH,
         btnLoading:{

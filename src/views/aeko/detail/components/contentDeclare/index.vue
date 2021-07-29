@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-07-28 19:06:46
+ * @LastEditTime: 2021-07-29 11:09:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -292,8 +292,8 @@ export default {
       
       getAekoLiniePartInfo({
         ...this.form,
-        cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? this.form.cartypeProjectCode : [],
-        status: Array.isArray(this.form.status) ? this.form.status : [],
+        cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
+        status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
         current: this.page.currPage,
         size: this.page.pageSize
       })
