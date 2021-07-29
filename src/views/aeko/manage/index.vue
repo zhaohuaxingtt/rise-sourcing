@@ -66,20 +66,24 @@
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- AEKO号 -->
-      <template #a="scope">
-        <icon class="margin-right5" symbol name="iconAEKO_TOP"></icon>
-        <span class="link" @click="goToDetail(scope.row)">{{scope.row.a}}-6666</span>
-        <a @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+      <template #aekoCode="scope">
+        
+        <div class="table-item-aeko">
+          <icon class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
+          <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </span>
+          <a class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+        </div>
+        
         
       </template>
 
       <!-- 日志 -->
-      <template #b="scope">
+      <template #log="scope">
         <span class="link" @click="checkLog(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
       </template>
 
       <!-- 描述 -->
-      <template #c="scope">
+      <template #describe="scope">
         <span class="link" @click="checkDescribe(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
       </template>
 
@@ -126,6 +130,9 @@ import { TAB } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
+import {
+  getManageList
+} from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
     mixins: [pageMixins],
@@ -143,13 +150,18 @@ export default {
       icon,
       revokeDialog,
       filesListDialog,
+      linkIcon,
     },
     data(){
       return{
         navList:TAB,
         SearchList:searchList,
         selectItems:[],
-        searchParams:{},
+        searchParams:{
+          brand:'',
+          coverStatus:'',
+          aekoStatus:'',
+        },
         selectOptions:{
           'f':[
             {label:'品牌1',value:'1'},
@@ -171,9 +183,7 @@ export default {
           ]
         },
         tableListData:[
-          {'a':'AE19221','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
-          {'a':'AE19222','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
-          {'a':'AE19223','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
+          {'aekoCode':'AE19221','aekoStatus':'已导⼊','coverStatus':'待表态','tcmResult':'T-go','createDate':'2021-03-01','deadLine':'2021-03-16','frozenDate':'2021-02-01'},
         ],
         tableTitle:tableTitle,
         loading:false,
@@ -184,6 +194,9 @@ export default {
           uploadFiles:false,
         }
       }
+    },
+    created(){
+      this.getList();
     },
     methods:{
       // 重置
@@ -196,8 +209,32 @@ export default {
       },
       
       // 获取列表数据
-      getList(){
-
+      async getList(){
+        this.loading = true;
+        const {searchParams,page} = this;
+        // 若有定点起止时间将其拆分成两个字段
+        const {frozenDate=[]} = searchParams;
+        const data = {
+            current:page.currPage,
+            size:page.pageSize
+        };
+        if(frozenDate.length){
+            data['frozenDateStart'] = frozenDate[0];
+            data['frozenDateEnd'] = frozenDate[1];
+        }
+        await getManageList({...searchParams,...data}).then((res)=>{
+          this.loading = false;
+          const {code,data={}} = res;
+          if(code==200){
+              const {records=[],total} = data;
+              this.tableListData = records;
+              this.page.totalCount = total;
+          }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch((err)=>{
+          this.loading = false;
+        })
       },
 
       // 跳转详情页
@@ -297,6 +334,27 @@ export default {
     ::v-deep .el-date-editor .el-range__close-icon{
         display: block;
         width: 10px;
+    }
+    .table-item-aeko{
+      position: relative;
+      padding-left: 28px;
+      .link{
+        display: block;
+        width: calc( 100% - 28px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .top-icon{
+        position: absolute;
+        left: 0;
+        top:1px;
+      }
+      .file-icon{
+        position: absolute;
+        right:0;
+        top: 0;
+      }
     }
   }
 </style>
