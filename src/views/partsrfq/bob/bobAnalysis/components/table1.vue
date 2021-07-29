@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-28 18:52:53
+ * @LastEditTime: 2021-07-29 17:45:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -32,7 +32,8 @@
                        :prop="i.label"
                        :align="i.label=='title'?'left':'center'"
                        :width="i.label=='title'?'230':''"
-                       show-overflow-tooltip>
+                       show-overflow-tooltip
+                       :render-header="renderHeader">
         <template slot-scope="scope">
           <span v-if="testing(scope.row[i.label])"
                 class=" scopeBox">
@@ -127,6 +128,14 @@ export default {
     };
   },
   methods: {
+    renderHeader (h, { column }) {
+      let header = column.label.split('<br/>');
+      console.log(header, 222)
+      return [h('p', [
+        h('p', {}, header[0]),
+        h('span', {}, header[1])
+      ])];
+    },
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
         if (columnIndex % 2 === 0) {
