@@ -182,7 +182,6 @@
               </el-col>
               <el-col :span="6"
                       v-if="inside">
-
                 <!-- <div style="border: 1px dashed #ccc;width: 1px;height:320px;"></div> -->
                 <div class="left-dash1">
                   <div v-if="chartData1.length > 0"
@@ -200,10 +199,8 @@
                            style="width:220px;height:300px">
                       <div style="text-align: center;color:#8F8F90">{{ $t("待添加") }}</div>
                     </div>
-
                   </div>
                 </div>
-
               </el-col>
             </iRow>
           </iCard>
