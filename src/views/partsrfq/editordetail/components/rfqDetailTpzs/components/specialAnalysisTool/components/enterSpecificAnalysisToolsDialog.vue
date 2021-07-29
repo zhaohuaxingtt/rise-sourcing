@@ -72,15 +72,15 @@ export default {
   created() {
   },
   methods: {
-    handleRadio(categoryName,categoryCode, id, partNum) {
+    handleRadio(categoryName, categoryCode, id, partNum) {
       this.form.categoryName = categoryName
       this.form.categoryCode = categoryCode
       this.form.rfqId = id
       this.form.partNum = partNum
     },
-    async handleKeyword(val) {
+    async handleKeyword() {
       const pms = {
-        keyword: val
+        keyword: this.form.keyword
       }
       this.tableLoading = true
       try {

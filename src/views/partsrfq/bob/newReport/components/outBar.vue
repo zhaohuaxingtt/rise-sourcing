@@ -226,11 +226,11 @@ export default {
           if (this.by === 'num') {
             name = row.spareParts
           }
-          let img = '\t{bobChange|}'
-          if (!this.preview) {
-            img = ''
-          }
-          const str = name + '   ' + img + '\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n' + "{font|" + temp + "}";
+          // let img = '\t{bobChange|}'
+          // if (!this.preview) {
+          //   img = ''
+          // }
+          const str = name + '   '  + '\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n' + "{font|" + temp + "}";
           const subtext = row.spareParts + '\n' + row.fs
           this.labelArray.push({
             value: str,

@@ -62,6 +62,7 @@
             :targetScatterData="curveChartData.targetScatterData"
             :cpLineData="curveChartData.cpLineData"
             :lineData="curveChartData.lineData"
+            :dataInfo="dataInfo"
         />
       </iCard>
 

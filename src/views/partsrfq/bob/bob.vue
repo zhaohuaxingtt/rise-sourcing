@@ -182,7 +182,7 @@
                      :reportUrl="reportUrl"
                      :title="reportTitle"
                      :key="reportKey"
-                     @handleCloseReport="handleCloseReport"/>
+                     @handleCloseReport="handleCloseReport" />
     </iCard>
   </div>
 </template>
@@ -447,6 +447,9 @@ export default {
             iMessage.error(res.desZh);
             loading.close()
           }
+        }).catch((error) => {
+          iMessage.error(error.desZh);
+          loading.close()
         });
       } else {
         this.$router.push({
@@ -577,7 +580,7 @@ export default {
       }
     },
     //点击关闭报告预览弹窗
-    handleCloseReport() {
+    handleCloseReport () {
       this.reportVisible = false
     }
   },
