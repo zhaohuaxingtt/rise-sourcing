@@ -52,6 +52,7 @@ export default {
         materialGroup: this.$store.state.rfq.materialGroup,
         partsNo: this.$store.state.rfq.spareParts,
       }
+      this.$emit('handleChangeSearchData', this.searchForm)
     },
     //点击确认按钮
     handleSubmitSearch() {
