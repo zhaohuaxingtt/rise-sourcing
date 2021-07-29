@@ -61,7 +61,7 @@ export default {
     setBg(data) {
       return {
         color: '#fff',
-        padding: [4,8,4,8],
+        padding: [4, 8],
         align: 'center',
         backgroundColor: data > 0 ? '#C00000' : '#70AD47',
         borderRadius: 5,
@@ -110,6 +110,10 @@ export default {
           type: 'value',
           // 单价\n' + '（元/件）
           name: this.$t('TPZS.DANJIA') + '\n' + this.$t('TPZS.YUANJIAN'),
+          nameTextStyle: {
+            align: 'center',
+            padding: [0, 0, 0, -50],
+          },
           splitLine: {
             lineStyle: {
               type: 'dashed',
@@ -156,10 +160,11 @@ export default {
             data: this.newestScatterData,
             color: '#0059FF',
             label: {
+              offset: [30, 0],
               rich: {
                 bg: this.setBg(proGrowthRate),
               },
-              distance: 12,
+              // distance: 12,
               show: true,
               position: 'top',
               formatter: () => {
@@ -181,9 +186,9 @@ export default {
               rich: {
                 bg: this.setBg(reductionPotential),
               },
-              distance: 12,
+              // distance: 12,
               show: true,
-              position: 'top',
+              position: 'right',
               formatter: () => {
                 if (reductionPotential > 0) {
                   return `{bg|+${toFixedNumber(reductionPotential, 2)}%}`;
