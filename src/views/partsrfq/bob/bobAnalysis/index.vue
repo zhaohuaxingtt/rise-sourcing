@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-28 22:34:15
+ * @LastEditTime: 2021-07-29 11:45:47
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -315,9 +315,7 @@ export default {
         for (let j1 = 0; j1 < els.length; j1++) {
           els[j1].classList.add("dafult");
         }
-        if (
-          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
-        ) {
+        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
           const open = this.$el.getElementsByClassName(
             "el-table__expand-icon--expanded"
           );
@@ -338,9 +336,7 @@ export default {
         const elsopen = this.$el.getElementsByClassName(
           "el-table__expand-icon--expanded"
         );
-        if (
-          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
-        ) {
+        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
           for (let i = 0; i < elsopen.length; i++) {
             elsopen[i].click();
           }

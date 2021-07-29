@@ -698,6 +698,7 @@ export default {
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
         this.analysisName = allData.name
+        this.$refs.bobAnalysis.remark = allData.remark
         this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
         if (this.chartType === 'combination') {
           this.form = {
@@ -726,7 +727,7 @@ export default {
             supplierId: this.form.supplier.join(","),
             turn: this.form.turn.join(","),
             isCover: this.isCover,
-            remark: this.remark
+            // remark: this.$refs.bobAnalysis.remark
           };
         } else {
           this.formUpdata = {
@@ -736,9 +737,10 @@ export default {
             name: this.analysisName,
             combination: this.form.combination.join(','),
             isCover: this.isCover,
-            remark: this.remark
+            // remark: this.$refs.bobAnalysis.remark
           };
         }
+
       });
     },
     delOut () {
@@ -777,6 +779,7 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
+            this.formUpdata.remark = this.$refs.bobAnalysis.remark
             update(this.formUpdata)
               .then((res) => {
                 iMessage.success("保存成功");
