@@ -552,9 +552,15 @@ export default {
         iMessage.error('请选择数据')
         return
       } else if (val.length > 20) {
-        iMessage.error('请选择数据')
+        iMessage.error('最多只能选择20条数据')
         return
       }
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
       if (this.inside) {
         addBobOut({
           analysisSchemeId: this.analysisSchemeId,
@@ -564,6 +570,7 @@ export default {
           supplierId: val[0].supplierId,
         }).then((res) => {
           if (res.code == 200) {
+            loading.close()
             this.$message.success(res.desZh);
             this.getChartData();
             this.$refs.bobAnalysis.chargeRetrieve({
@@ -573,10 +580,12 @@ export default {
             })
             this.closeDialog()
           } else {
+            loading.close()
             this.$message.error(res.desZh);
             this.closeDialog()
           }
         }).catch((error) => {
+          loading.close()
           this.$message.error(error.desZh);
           this.closeDialog()
         });
@@ -592,6 +601,7 @@ export default {
         })
         initOut({ list: arr }).then(res => {
           if (res.code === '200') {
+            loading.close()
             this.$message.success(res.desZh);
             this.analysisSchemeId = res.data
             this.$store.dispatch('setSchemeId', this.analysisSchemeId);
@@ -605,6 +615,7 @@ export default {
             this.getChartData()
             this.closeDialog()
           } else {
+            loading.close()
             this.$message.error(res.desZh);
             this.closeDialog()
           }
@@ -780,6 +791,7 @@ export default {
             type: 'warning'
           }).then(() => {
             this.formUpdata.remark = this.$refs.bobAnalysis.remark
+            this.formUpdata.name = this.analysisName
             update(this.formUpdata)
               .then((res) => {
                 iMessage.success("保存成功");

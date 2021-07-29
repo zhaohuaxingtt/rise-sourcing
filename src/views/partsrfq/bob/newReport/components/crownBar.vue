@@ -90,8 +90,23 @@ export default {
 
       return send;
     },
+    doNumber (x) {
+      debugger
+      var f = Math.round(x * 100) / 100;
+      var s = f.toString();
+      var rs = s.indexOf('.');
+      if (rs < 0) {
+        rs = s.length;
+        s += '.';
+      }
+      while (s.length <= rs + 2) {
+        s += '0';
+      }
+      return s;
+    },
     initCharts () {
       const myChart = echarts().init(this.$refs.chart);
+      let that = this
       // 绘制图表
       const option = {
         title: {
@@ -117,7 +132,6 @@ export default {
             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
           },
           formatter (params) {
-
             let result = ''
             let domHtml = ''
             let arr = params.filter((value, index) => {
@@ -130,7 +144,7 @@ export default {
               arr1.forEach(i => {
                 if (value.seriesName.replace("lv", "") === i.seriesName) {
                   domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + i.color + '"></span>'
-                  result += domHtml + i.seriesName + ":" + value.value.toFixed(2) + '<br/>'
+                  result += domHtml + i.seriesName + ":" + that.doNumber(value.value) + '<br/>'
                 }
               })
             })
@@ -152,7 +166,7 @@ export default {
         // },
         grid: {
           left: "6%",
-          top: '20%',
+          top: '25%',
           right: '0%',
           bottom: "25%",
           // containLabel: true,
@@ -209,7 +223,7 @@ export default {
               color: '#3C4F74'
             },
             triggerEvent: true,
-            offset: 10
+            offset: 30
           },
         ],
         yAxis: [
@@ -246,7 +260,7 @@ export default {
         series: this.dataArray,
       };
       myChart.setOption(option);
-      const that = this;
+
       myChart.on("click", function (params) {
         if (params.targetType === "axisLabel" && params.value === that.type) {
           that.$emit("select", params);
@@ -296,9 +310,6 @@ export default {
             row.totalTurn +
             "轮\n\n" +
             "{font|" + temp + "}";
-
-
-
           this.labelArray.push({
             value: str,
             textStyle: {
@@ -344,9 +355,10 @@ export default {
           const min = this.min(tempArr[row]);
           let data = min;
           if (this.type === "Best of Average") {
-            data = Number(
-              (this.sum(tempArr[row]) / tempArr[row].length).toFixed(2)
-            );
+            data = this.doNumber((this.sum(tempArr[row]) / tempArr[row].length))
+            // data = Number(
+            //   (this.sum(tempArr[row]) / tempArr[row].length).toFixed(2)
+            // );
           } else if (this.type === "Best of Second") {
             data = this.bos(tempArr[row]);
           }
@@ -375,9 +387,9 @@ export default {
               formatter: (params) => {
                 // console.log(params)
                 if (params.name === this.type) {
-                  return data;
+                  return this.doNumber(data);
                 } else {
-                  return tempArr[row][params.dataIndex];
+                  return this.doNumber(tempArr[row][params.dataIndex]);
                 }
               },
               rich: {
@@ -465,18 +477,18 @@ export default {
               if (params.name === this.type) {
                 const sum = this.sum(minList);
                 // console.log(sum)
-                return sum.toFixed(2);
+                return this.doNumber(sum)
                 // return '{bold|'+sum+'}'
               } else if (min) {
                 const sum = dataList1["利润"][index];
                 if (min === sum) {
-                  return "{Ball|}   {BB|Best Ball}\n\n" + sum.toFixed(2);
+                  return "{Ball|}   {BB|Best Ball}\n\n" + this.doNumber(sum)
                 } else {
-                  return sum.toFixed(2);
+                  return this.doNumber(sum)
                 }
               } else {
                 const sum = dataList1["利润"][index];
-                return sum.toFixed(2);
+                return this.doNumber(sum)
               }
             },
             rich: {
