@@ -5,7 +5,7 @@
 -->
 <template>
     <div>
-        <previewCover/>
+        <!-- <previewCover/> -->
         <editCover/>
     </div>
 </template>
