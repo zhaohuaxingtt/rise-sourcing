@@ -374,6 +374,14 @@ module.exports = {
           '^/newCommonApi': '',
         },
       },
+      //cf组件代理
+      '/baseInfo': {
+        target: 'http://10.122.17.38:8011/baseinfo',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/baseInfo': '',
+        },
+      },
     },
   },
 }

@@ -470,7 +470,7 @@ export default {
               } else if (min) {
                 const sum = dataList1["利润"][index];
                 if (min === sum) {
-                  return "{Ball|}   {BB|Best Ball}\n\n" + sum;
+                  return "{Ball|}   {BB|Best Ball}\n\n" + sum.toFixed(2);
                 } else {
                   return sum.toFixed(2);
                 }
