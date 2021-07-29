@@ -50,14 +50,8 @@
           <iInput v-model="scope.row.total" @input="handleNumber($event,scope.row, 'total')"/>
         </template>
       </template>
-      <template #apportionedNum>
-        <!--        <template v-if="apportionShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
-                  {{ scope.row.apportionedNum }}
-                </template>
-                <template v-else>
-                  <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
-                </template>-->
-        {{ toThousands(fiexedApportionedNum) }}
+      <template #apportionedNum="scope">
+        {{ toThousands(scope.row.apportionedNum) }}
       </template>
       <template #affectUnitPrice="scope">
         <template v-if="unitPriceShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
@@ -107,14 +101,8 @@
           <iInput v-model="scope.row.total" @input="handleNumber($event,scope.row, 'total')"/>
         </template>
       </template>
-      <template #apportionedNum>
-        <!--        <template v-if="apportionShowOnly.includes(scope.row.type)">
-                  {{ scope.row.apportionedNum }}
-                </template>
-                <template v-else>
-                  <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
-                </template>-->
-        {{ toThousands(fiexedApportionedNum) }}
+      <template #apportionedNum="scope">
+        {{ toThousands(scope.row.apportionedNum) }}
       </template>
       <template #affectUnitPrice="scope">
         <template v-if="unitPriceShowOnly.includes(scope.row.type)">
@@ -218,6 +206,7 @@ export default {
       this.tableListData.push({
         ...newItem,
         time,
+        apportionedNum: this.fiexedApportionedNum,
         isShow: true,
       });
     },
@@ -306,9 +295,7 @@ export default {
             this.hideTableData.push(item);
           }
         });
-        this.fiexedApportionedNum = this.tableListData.length > 0
-            ? this.tableListData[0].apportionedNum
-            : this.hideTableData[0].apportionedNum;
+        this.fiexedApportionedNum = this.dataInfo.planTotalPro
       } catch {
         this.tableListData = [];
         this.hideTableData = [];
@@ -343,10 +330,10 @@ export default {
     handleNumber(val, row, props) {
       this.$set(row, props, numberProcessor(val, 2));
       if (props === 'total') {
-        const result = row.total / this.fiexedApportionedNum;
+        const result = row.total / row.apportionedNum;
         this.$set(row, 'affectUnitPrice', result);
       } else if (props === 'affectUnitPrice') {
-        const result = row.affectUnitPrice * this.fiexedApportionedNum;
+        const result = row.affectUnitPrice * row.apportionedNum;
         this.$set(row, 'total', result);
       }
     },
@@ -375,7 +362,7 @@ export default {
   margin-bottom: 0;
 }
 
-::v-deep .el-table .el-table__body-wrapper{
+::v-deep .el-table .el-table__body-wrapper {
   min-height: auto;
 }
 
