@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-26 14:47:10
+ * @LastEditTime: 2021-07-28 22:34:15
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -41,7 +41,8 @@
       </template>
       <table1 :tableList="tableList"
               v-if="totalTable"
-              v-bind="$attrs"></table1>
+              v-bind="$attrs"
+              :expends="expedsArr"></table1>
       <groupedTable ref="groupedTable"
                     class="margin-top20"
                     :tableList="groupList"
@@ -106,8 +107,11 @@ import {
   getGroupInfo,
   addComponentToGroup,
   groupTerms,
-  removeComponentFromGroup
+  removeComponentFromGroup,
+  groupedCancel,
+  groupedSubmit
 } from "@/api/partsrfq/bob";
+import { update } from "@/api/partsrfq/bob/analysisList";
 import {
   tableList,
   ungroupList,
@@ -150,12 +154,18 @@ export default {
       result: [],
       activeName: "",
       checkFLag: true,
-      SchemeId: ""
+      SchemeId: "",
+      expedsArr: [],
+      expedsArr1: []
     };
   },
   created () {
     this.SchemeId = this.$attrs.analysisSchemeId
-    this.chargeRetrieve("all");
+    this.chargeRetrieve({
+      isDefault: true,
+      viewType: 'all',
+      schemaId: this.SchemeId
+    });
     this.getRfqToRemark();
     // if (this.$store.state.rfq.entryStatus === 1) {
     //   this.SchemeId = this.$route.query.rfqId
@@ -170,10 +180,34 @@ export default {
     // }
     // this.getRfqToRemark();
   },
+  props: {
+    label: {
+      type: String,
+      default: ""
+    },
+    formUpdata: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
   watch: {
     activeName: {
       handler (val) {
         console.log(val, "acitve")
+      }
+    },
+    label: {
+      handler (val) {
+        this.expedsArr = []
+        this.close()
+        this.$nextTick(function () {
+          this.expedsArr = []
+          this.expedsArr1 = this.tableList.element.filter(i => i.title === val)
+          this.recursion(this.expedsArr1)
+        });
+        // this.$set(this.expedsArr, 0, this.recursion(this.expedsArr1));
       }
     }
   },
@@ -181,9 +215,24 @@ export default {
     this.$EventBus.$on("activeName", res => {
       this.activeName = res
     })
+    window.addEventListener("scroll", this.handleScroll, true);
   },
   methods: {
-
+    handleScroll () {
+      let scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
+      scrolltop > 30 ? (this.gotop = true) : (this.gotop = false);
+    },
+    toTop () {
+      let top = document.documentElement.scrollTop || document.body.scrollTop;
+      // 实现滚动效果 
+      const timeTop = setInterval(() => {
+        this.$refs.ungroupedTable.$el.scrollTop = this.$refs.ungroupedTable.$el.offsetTop
+        // document.body.scrollTop = this.$refs.ungroupedTable.$el.offsetTop
+        if (top <= 0) {
+          clearInterval(timeTop);
+        }
+      }, 10);
+    },
     getRfqToRemark () {
       getRfqToRemark({
         rfqCode: this.rfqCode,
@@ -195,11 +244,8 @@ export default {
         }
       });
     },
-    chargeRetrieve (type) {
-      chargeRetrieve({
-        schemaId: this.SchemeId,
-        viewType: type,
-      })
+    chargeRetrieve (params) {
+      chargeRetrieve(params)
         .then((res) => {
           try {
             this.tableList = res;
@@ -236,6 +282,31 @@ export default {
       }
       return recursive(array)
     },
+    // allExpends () {
+    //   this.recursion
+    // },
+    recursion (data) {
+      if (!data) {
+        // return; 中断执行
+        return;
+      }
+      data.forEach(i => {
+        this.expedsArr.push(i.title)
+        if (i.child && i.child.length > 0) {
+          this.recursion(i.child)
+        }
+      })
+    },
+    // open () {
+    //   this.flag = false;
+    //   this.flag1 = true;
+    //   this.recursion(this.tableList.element)
+    // },
+    // close () {
+    //   this.flag = true;
+    //   this.flag1 = false;
+    //   this.$set(this.expedsArr, []);
+    // },
     open () {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
       if (this.tableList.element.length != 0 && els.length != 0) {
@@ -296,12 +367,20 @@ export default {
         }).then(res => {
           loading.close();
           iMessage.success('还原成功')
-          this.chargeRetrieve("all");
+          this.chargeRetrieve({
+            isDefault: true,
+            viewType: 'all',
+            schemaId: this.SchemeId
+          });
         })
       }).catch(() => {
         loading.close();
         iMessage.error('还原失败')
-        this.chargeRetrieve("all");
+        this.chargeRetrieve({
+          isDefault: true,
+          viewType: 'all',
+          schemaId: this.SchemeId
+        });
       });
 
 
@@ -309,10 +388,10 @@ export default {
     sure (val, flag) {
       this.visible = flag;
       this.remark = val;
-      modifyRfqToRemark({
-        remark: this.remark,
-        rfqCode: this.rfqCode,
-      }).then(() => iMessage.success("备注成功"));
+      // modifyRfqToRemark({
+      //   remark: this.remark,
+      //   rfqCode: this.rfqCode,
+      // }).then(() => iMessage.success("备注成功"));
     },
     // 递归获取checked属性方法
     getTreeExpandKeys (obj) {
@@ -331,9 +410,26 @@ export default {
       this.visible = true;
     },
     group () {
-      this.totalTable = false;
-      this.groupby = true;
-      this.checkFLag = false
+      this.$confirm('请保存数据！', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // this.$parent.$parent.$parent.$parent.analysisSave = true
+        // this.$parent.$parent.$parent.$parent.isCover = false
+        // this.$parent.$parent.$parent.$parent.save()
+        update(this.formUpdata).then(res => {
+          iMessage.success("保存成功");
+          this.totalTable = false;
+          this.groupby = true;
+          this.checkFLag = false
+        })
+      }).catch(() => {
+        this.totalTable = true;
+        this.groupby = false;
+        this.checkFLag = true
+      })
+
     },
     groupBtn (e, result, activeName) {
       if (result.length === 0) {
@@ -355,7 +451,6 @@ export default {
         this.$message.error('请选择分组');
         return
       }
-      console.log(this.activeName, "group")
       addComponentToGroup({
         groupId: this.value1.matchId,
         groupName: this.value1.groupName,
@@ -364,9 +459,17 @@ export default {
         // this.$refs.ungroupedTable.activeName = ""
         this.$nextTick(() => {
           this.$refs.ungroupedTable.activeName = this.activeName
-          this.$refs.ungroupedTable.chargeRetrieve(this.activeName)
+          this.$refs.ungroupedTable.chargeRetrieve({
+            isDefault: true,
+            viewType: this.activeName,
+            schemaId: this.SchemeId
+          })
         });
-        this.$refs.groupedTable.chargeRetrieve(this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped')
+        this.$refs.groupedTable.chargeRetrieve({
+          isDefault: true,
+          schemaId: this.SchemeId,
+          viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped'
+        })
         this.visible1 = false;
       })
     },
@@ -379,26 +482,57 @@ export default {
       removeComponentFromGroup({
         roundDetailIdList: params
       }).then(res => {
-        this.$refs.groupedTable.chargeRetrieve(this.activeName === 'rawUngrouped' ? 'rawGrouped' : "maGrouped")
-        this.$refs.ungroupedTable.chargeRetrieve(this.activeName)
+        this.$refs.groupedTable.chargeRetrieve({
+          isDefault: true,
+          viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : "maGrouped",
+          schemaId: this.SchemeId
+        })
+        this.$refs.ungroupedTable.chargeRetrieve({
+          isDefault: true,
+          viewType: this.activeName,
+          schemaId: this.SchemeId
+        })
       })
     },
     finish () {
-      this.finishGroup()
+      groupedSubmit({
+        schemaId: this.SchemeId
+      }).then((res) => {
+        this.finishGroup()
+      })
     },
     off () {
-      this.finishGroup()
+      groupedCancel({
+        schemaId: this.SchemeId
+      }).then(res => {
+        this.finishGroup()
+      })
+
     },
     finishGroup () {
       this.totalTable = true
       this.groupby = false
       this.checkFLag = true
-      this.chargeRetrieve("all");
+      this.chargeRetrieve({
+        isDefault: true,
+        viewType: 'all',
+        schemaId: this.SchemeId
+      });
     },
     down () {
-      down({
-        schemaId: this.SchemeId,
-      }).then((res) => { });
+      this.$confirm('请保存数据！', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        update(this.formUpdata).then(res => {
+          iMessage.success("保存成功");
+          down({
+            schemaId: this.SchemeId,
+          }).then((res) => { });
+        })
+      })
+
     },
   },
 };

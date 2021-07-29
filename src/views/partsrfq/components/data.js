@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-17 16:49:20
- * @LastEditTime: 2021-07-16 19:40:28
+ * @LastEditTime: 2021-07-26 19:40:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\components\data.js
@@ -27,13 +27,13 @@ export const confirmTableHead = [
   },
   { props: 'statusName', name: '状态', key: 'LK_ZHUANGTAI', tooltip: false },
   {
-    props: 'categoryName',
+    props: 'category',
     name: '材料组',
     key: 'LK_CAILIAOZU',
     tooltip: true,
   },
   {
-    props: 'supplierNameZh',
+    props: 'supplier',
     name: '供应商名称',
     key: 'LK_GONGYINGSHANGMINGCHENG',
     tooltip: false,

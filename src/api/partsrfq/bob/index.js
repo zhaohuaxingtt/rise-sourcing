@@ -52,6 +52,7 @@ export function getGroupInfo(parmars) {
     data: parmars,
   })
 }
+
 //添加至分组
 export function addComponentToGroup(parmars) {
   return requst({
@@ -61,10 +62,19 @@ export function addComponentToGroup(parmars) {
   })
 }
 
-//移除分组
-export function removeComponentFromGroup(parmars) {
+//分组取消
+export function groupedCancel(parmars) {
   return requst({
-    url: '/bobRoundDetail/removeComponentFromGroup',
+    url: '/bobRoundDetail/groupedCancel',
+    method: 'POST',
+    data: parmars,
+  })
+}
+
+//分组完成
+export function groupedSubmit(parmars) {
+  return requst({
+    url: '/bobRoundDetail/groupedSubmit',
     method: 'POST',
     data: parmars,
   })
@@ -103,5 +113,14 @@ export function modifyRfqToRemark(params) {
     url: `/rfqToRemarkEntity/modifyRfqToRemark`,
     method: 'POST',
     data: params,
+  })
+}
+
+// 重命名分组
+export function renameComponentGroup(parmars) {
+  return request({
+    url: '/bobRoundDetail/renameComponentGroup',
+    method: 'POST',
+    data: parmars,
   })
 }

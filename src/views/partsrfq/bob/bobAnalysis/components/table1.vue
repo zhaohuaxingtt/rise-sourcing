@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-26 10:53:13
+ * @LastEditTime: 2021-07-28 18:52:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -15,6 +15,7 @@
               :expand-row-keys="expends"
               v-loading="loading"
               stripe
+              height="450"
               :max-height="maxHeight"
               :cell-style="cellsytle"
               :row-style="rowStyle"
@@ -37,7 +38,17 @@
                 class=" scopeBox">
             <span v-for="(item,index) in scope.row[i.label]"
                   :key="index"
-                  class="flexSpan">{{ item }}</span>
+                  class="flexSpan">
+              <span v-if="item==minText(scope.row)"
+                    class=" minText">
+                {{ item}}
+              </span>
+              <span v-else>{{ item }}</span>
+            </span>
+          </span>
+          <span v-else-if="scope.row[i.label]==minText(scope.row)"
+                class=" minText">
+            {{ scope.row[i.label]}}
           </span>
           <span v-else
                 class="flex-center">
@@ -82,20 +93,28 @@ export default {
         }
       };
     },
+    minText (val) {
+      return function (val) {
+        let min
+        if (val.level === 1 || val.level === 2) {
+          const numOfCols = Object.keys(val).filter((key) => {
+            return key.indexOf("label#") >= 0
+          })
+          const dataArr = []
+          numOfCols.forEach((colNum) => {
+            dataArr.push(parseFloat(val[colNum]))
+          })
+          min = this.min(dataArr)
+        }
+        return min
+      }
+    }
   },
   watch: {
     expends: {
       handler (val) {
-        if (val.length === 0)
-          this.$refs.treeList.expandRowKeys = Array.from(val);
+        console.log(val)
       },
-    },
-    "tableList.headerList": {
-      handler (val) {
-
-      },
-      immediate: true,
-      deep: true,
     },
   },
   mounted () {
@@ -104,6 +123,7 @@ export default {
     return {
       checkList: [],
       hasChildren: true,
+      min: window._.min,
     };
   },
   methods: {
@@ -123,9 +143,14 @@ export default {
       }
     },
     cellsytle ({ row, column, rowIndex, columnIndex }) {
+      let styleJson = {}
       if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '报废成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
-        return "font-weight: bold"
+        // return "font-weight: bold"
+        styleJson = {
+          "font-weight": "bold"
+        }
       }
+      return styleJson
     },
     rowStyle ({ row, rowIndex }) {
       let styleJson
@@ -136,8 +161,24 @@ export default {
         return styleJson
       }
     },
+    close () {
+      if (this.tableList.element.length != 0) {
+        this.flag = true;
+        this.flag1 = false;
+        const elsopen = this.$el.getElementsByClassName(
+          "el-table__expand-icon--expanded"
+        );
+        if (
+          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
+        ) {
+          for (let i = 0; i < elsopen.length; i++) {
+            elsopen[i].click();
+          }
+        }
+      }
+    },
     getRowKey (row) {
-      return row.index;
+      return row.title;
     },
     render (h, { column, $index }) { },
     rowClick (row, event, column) {
@@ -178,11 +219,11 @@ export default {
   background-color: #fff;
 }
 
-::v-deep.el-table__body-wrapper.el-table__row.el-table__row--level-0
-  .el-table__row
-  .el-table__row--level-1 {
-  background: #e7efff !important;
-}
+// ::v-deep.el-table__body-wrapper.el-table__row.el-table__row--level-0
+//   .el-table__row
+//   .el-table__row--level-1 {
+//   background: #e7efff !important;
+// }
 </style>
 <style lang="scss">
 .addcss {
@@ -215,5 +256,8 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.minText {
+  color: #00c1b9;
 }
 </style>
