@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-07-22 17:52:47
+ * @LastEditTime: 2021-07-28 17:47:43
  * @LastEditors: Please set LastEditors
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js
@@ -65,3 +65,8 @@ export const allitemsList = {
 export const partProjTypes = Object.assign(JSON.parse(JSON.stringify(onlyselfProject)),JSON.parse(JSON.stringify(allitemsList)))
 // 扩产能角色tag id，cf提供
 export const BKMROLETAGID = 'KCNGLY'
+//钢材批量采购
+export const STEEL = {
+  STEELONECE:'1000030', //钢材一次性采购
+  STEELALL:'1000040'    //钢材批量采购
+}

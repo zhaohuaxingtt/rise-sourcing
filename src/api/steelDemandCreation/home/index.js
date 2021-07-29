@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-30 14:53:52
- * @LastEditTime: 2021-06-30 14:54:57
+ * @LastEditTime: 2021-07-28 15:46:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\steelDemandCreation\home\index.js
@@ -16,8 +16,8 @@ const requst = axios(process.env.VUE_APP_SUPPLIER_RFQLIST)
  */
 export function steeldemandcreation(parmars) {
     return requst({
-        url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/steeldemandcreation',
-        method: 'GET',
+        url: '/steelDemand/steelDemandPage',
+        method: 'POST',
         data: parmars
     })
 }
