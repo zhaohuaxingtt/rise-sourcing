@@ -19,7 +19,7 @@ export const investmentListTitle = [
         tooltip: false
     },
     {
-        props: 'akeoType',
+        props: 'bmTypeName',
         name: 'BM单类型',
         key: 'BM单类型',
         tooltip: false
@@ -28,12 +28,6 @@ export const investmentListTitle = [
         props: 'tmCartypeProName',
         name: '车型项目',
         key: '车型项目',
-        tooltip: false
-    },
-    {
-        props: 'supplierShortNameZh',
-        name: '供应商',
-        key: '供应商',
         tooltip: false
     },
     {
@@ -49,15 +43,15 @@ export const investmentListTitle = [
         tooltip: false
     },
     {
-        props: 'partsPurchaseTypeName',
-        name: '零件采购项目类型',
-        key: '零件采购项目类型',
+        props: 'taskAcceptDate',
+        name: '任务接收日期',
+        key: '任务接收日期',
         tooltip: false
     },
     {
-        props: 'nomiApplyNum',
-        name: '定点申请单号',
-        key: '定点申请单号',
+        props: 'taskDealDate',
+        name: '任务处理日期',
+        key: '任务处理日期',
         tooltip: false
     },
     {

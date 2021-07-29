@@ -7,6 +7,10 @@ const menuTooling = [
     title: '模具采购',
     url: '/purchase'
   },
+  {
+    title: '模具采购（供应商）',
+    url: '/purchaseSupplier'
+  },
 ]
 
 const menuPortal = [
