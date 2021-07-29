@@ -52,6 +52,7 @@ import {
     getBuyers,
     transfer,
 }from '@/api/letterAndLoi/letter';
+import {user as configUser } from '@/config'
 export default { //
     name:'turnSendDialog',
     components:{
@@ -88,13 +89,13 @@ export default { //
         // 获取目标采购员以及目标LINE的人员list
         getMemberList(){
             // tagId: 4 专业采购员，9 前期采购员
-           getBuyers({tagId:4}).then((res)=>{
+           getBuyers({tagId:configUser.LINLIE}).then((res)=>{
                const { code,data=[] } = res;
                if(code ==200){
                    this.linieList = data;
                }
             })
-            getBuyers({tagId:9}).then((res)=>{
+            getBuyers({tagId:configUser.BEFORBUYER}).then((res)=>{
                 const { code,data=[] } = res;
                if(code ==200){
                    this.cfList = data;
