@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-17 16:49:20
- * @LastEditTime: 2021-07-26 19:40:17
+ * @LastEditTime: 2021-07-29 16:37:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\components\data.js
@@ -11,7 +11,12 @@ export const confirmTableHead = [
   // export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST", [
   { props: 'index', name: '#', key: '#', tooltip: false, width: 40 },
   { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO', tooltip: true },
-  { props: 'fsNum', name: 'FS号', key: 'LK_FSHAO', tooltip: false },
+  {
+    props: 'fsNum',
+    name: '零件采购项目号',
+    key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
+    tooltip: false,
+  },
   { props: 'rfqId', name: 'RFQ号', key: 'LK_RFQHAO', tooltip: true },
   {
     props: 'cartypeProjectZh',

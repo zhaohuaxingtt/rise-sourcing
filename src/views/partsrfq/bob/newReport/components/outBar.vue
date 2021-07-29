@@ -63,6 +63,19 @@ export default {
       // console.log(send)
       return send
     },
+    doNumber (x) {
+      var f = Math.round(x * 100) / 100;
+      var s = f.toString();
+      var rs = s.indexOf('.');
+      if (rs < 0) {
+        rs = s.length;
+        s += '.';
+      }
+      while (s.length <= rs + 2) {
+        s += '0';
+      }
+      return s;
+    },
     initCharts () {
       const myChart = echarts().init(this.$refs.chart);
       // 绘制图表
@@ -91,7 +104,7 @@ export default {
         },
         grid: {
           left: "14%",
-          top: '20%',
+          top: '25%',
           right: '0%',
           bottom: "25%",
         },
@@ -118,7 +131,8 @@ export default {
               interval: 0,
               color: '#3C4F74'
             },
-            triggerEvent: true
+            triggerEvent: true,
+            offset: 6
           },
           {
             type: "category",
@@ -143,7 +157,7 @@ export default {
               color: '#3C4F74'
             },
             triggerEvent: true,
-            offset: 10
+            offset: 30
           },
         ],
         tooltip: {
@@ -156,7 +170,7 @@ export default {
             let domHtml = ''
             params.forEach(value => {
               domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + value.color + '"></span>'
-              result += domHtml + value.seriesName + ":" + value.value.toFixed(2) + '<br/>'
+              result += domHtml + value.seriesName + ":" + this.doNumber(value.value) + '<br/>'
             })
             return result
           },
@@ -230,7 +244,7 @@ export default {
           // if (!this.preview) {
           //   img = ''
           // }
-          const str = name + '   '  + '\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n' + "{font|" + temp + "}";
+          const str = name + '\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n' + "{font|" + temp + "}";
           const subtext = row.spareParts + '\n' + row.fs
           this.labelArray.push({
             value: str,

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-07-27 14:31:19
+ * @LastEditTime: 2021-07-29 16:37:58
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -31,7 +31,7 @@
                     v-model="form.rfqId"
                     clearable></iInput>
           </el-form-item>
-          <el-form-item :label="$t('LK_FSHAO')">
+          <el-form-item :label="$t('partsprocure.PARTSPROCUREFSNFGSNFSPNR')">
             <iInput placeholder="请输入"
                     v-model="form.fsNum"
                     clearable></iInput>
