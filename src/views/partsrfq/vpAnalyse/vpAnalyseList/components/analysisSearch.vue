@@ -1,7 +1,7 @@
 <!--
  * @Author: youy
  * @Date: 2021-06-21 19:38:02
- * @LastEditTime: 2021-07-29 10:55:56
+ * @LastEditTime: 2021-07-29 14:17:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisSearch.vue
@@ -60,7 +60,7 @@ export default {
     //点击重置按钮
     handleSearchReset() {
       this.initData()
-      this.$emit('handleSubmitSearch', null)
+      this.$emit('handleSubmitSearch', this.searchForm)
     },
   } 
 }

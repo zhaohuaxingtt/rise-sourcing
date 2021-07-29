@@ -335,11 +335,15 @@ export default {
     },
     //重置查询事件
     handleSearchReset () {
+      this.page.currPage = 1
+      this.page.pageSize = 10
       this.initSearchData();
       this.getTableList();
     },
     //检索事件
     handleSearch () {
+      this.page.currPage = 1
+      this.page.pageSize = 10
       this.getTableList().then((res) => {
         if (!res.data || res.data.length == 0) {
           iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
@@ -352,9 +356,9 @@ export default {
         const params = {
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
-          createByName: this.form.owner ? this.form.owner : null,
+          createName: this.form.owner ? this.form.owner : null,
           materialGroup: this.form.group ? this.form.group : null,
-          partsNo: this.form.num ? this.form.num : null,
+          spareParts: this.form.num ? this.form.num : null,
 
         };
         const status = this.$store.state.rfq.entryStatus

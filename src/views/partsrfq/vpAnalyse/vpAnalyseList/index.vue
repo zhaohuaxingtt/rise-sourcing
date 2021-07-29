@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-28 20:25:36
+ * @LastEditTime: 2021-07-29 14:17:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -82,7 +82,6 @@ export default {
     },
     //点击搜索按钮
     handleSubmitSearch(searchData) {
-      console.log('searchData0000', searchData);
       this.searchData = searchData
       this.$refs.analysisTable.page.currPage = 1
       this.$refs.analysisTable.page.pageSize = 10
