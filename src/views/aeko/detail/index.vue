@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-07-28 14:38:16
+ * @LastEditTime: 2021-07-29 10:24:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -47,17 +47,22 @@ import {
 import logButton from "@/components/logButton"
 import contentDeclare from "./components/contentDeclare"
 
-
 export default {
   components: { 
-    iPage, iTabsList, contentDeclare,
+    iPage, 
+    iTabsList, 
+    contentDeclare,
     iCard,
     iButton,
     logButton,
     iFormGroup,
     iFormItem,
     iText,
-     },
+  },
+  mounted() {
+    const component = this.$refs[this.currentTab][0]
+    if (typeof component.init === "function") component.init()
+  },
   data() {
     return {
       currentTab: "contentDeclare",
@@ -83,7 +88,13 @@ export default {
     }
   },
   methods: {
-    tabChange() {}
+    // 页签切换
+    tabChange() {
+      this.$nextTick(() => {
+        const component = this.$refs[this.currentTab][0]
+        if (typeof component.init === "function") component.init()
+      })
+    },
   }
 }
 </script>
