@@ -20,6 +20,7 @@
     :show-summary="showSummary"
     :summary-method="getSummaries"
     :sum-text="sumText"
+    :header-cell-class-name="headerClass"
   >
     <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="56"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
@@ -79,6 +80,7 @@ export default {
     },
     showSummary: { type: Boolean, default: false }, //  是否显示总结行
     getSummaries: { type: Function },
+    headerClass: { type: Function },
     sumText:{type:String,default:''}
   },
   created() {
