@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-28 14:48:44
+ * @LastEditTime: 2021-07-29 20:14:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -119,19 +119,18 @@ export default {
       handler (val) {
         if (val === 'rawUngrouped') {
           this.chargeRetrieve({
-              isDefault: true,
-              viewType: 'rawgrouped',
-              schemaId: this.SchemeId
-            })
+            isDefault: true,
+            viewType: 'rawgrouped',
+            schemaId: this.SchemeId
+          })
         } else {
           this.chargeRetrieve({
-              isDefault: true,
-              viewType: 'maGrouped',
-              schemaId: this.SchemeId
-            })
+            isDefault: true,
+            viewType: 'maGrouped',
+            schemaId: this.SchemeId
+          })
         }
       },
-      immediate: true
     }
   },
   data () {
@@ -339,6 +338,7 @@ export default {
       } else {
         this.checkLists.remove(newArr[1].child[0][labelIndex])
       }
+      console.log(this.checkLists)
       this.$set(this.tableList.element[0], 'child', newArr);
 
     },

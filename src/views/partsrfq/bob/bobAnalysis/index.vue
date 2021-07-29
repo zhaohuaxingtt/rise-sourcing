@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-29 11:45:47
+ * @LastEditTime: 2021-07-29 20:30:05
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -474,9 +474,8 @@ export default {
       if (!this.activeName) {
         this.activeName = "rawUngrouped"
       }
-      const params = this.$refs.groupedTable.checkLists
       removeComponentFromGroup({
-        roundDetailIdList: params
+        roundDetailIdList: this.$refs.groupedTable.checkLists
       }).then(res => {
         this.$refs.groupedTable.chargeRetrieve({
           isDefault: true,

@@ -1,7 +1,7 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-14 15:49:18
+ * @LastEditTime: 2021-07-29 20:02:39
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
@@ -155,9 +155,19 @@ export default {
       chooseCol: [],
       // tableTitleTemp: cloneDeep(this.tableTitle),
       tableTitleTemp: [],
+      multipleSelection: []
     }
   },
   mounted () {
+
+    this.multipleSelection = JSON.parse(localStorage.getItem('checkList'))
+    this.$nextTick(() => {
+      this.multipleSelection.forEach(i => {
+        console.log(this.$refs.moviesTable)
+        this.$refs.moviesTable.toggleRowSelection(i, true)
+      })
+    });
+
     if (this.filterTable) {
       this.initChoose()
     }
@@ -190,6 +200,8 @@ export default {
           this.$emit("handleSelectionChange", val);
         }
       } else {
+        this.multipleSelection = val
+        localStorage.setItem('checkList', JSON.stringify(val))
         this.$emit("handleSelectionChange", val);
       }
     },
