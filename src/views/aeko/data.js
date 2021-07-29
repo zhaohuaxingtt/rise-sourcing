@@ -9,12 +9,20 @@ export const TAB = [
         value: 1,
         name: "AEKO管理",
         message: 0,
-        url: "/sourcing/aeko/managelist",
-        activePath: "aekoManageList",
+        url: "/aeko/managelist",
+        activePath: "/managelist",
         key: "LK_AEKOGUANLI"
     },
     {
         value: 2,
+        name: "AEKO表态",
+        message: 0,
+        url: "/aeko/stancelist",
+        activePath: "/stancelist",
+        key: "LK_AEKOBIAOTAI"
+    },
+    {
+        value: 3,
         name: "AEKO查看",
         message: 0,
         url:'/sourcing/partsign',

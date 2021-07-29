@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-07-12 18:08:36
+ * @LastEditTime: 2021-07-27 15:17:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
@@ -78,6 +78,7 @@ export default {
         this.tableData.forEach(item => {
           if (item === row) return
           this.$refs.table.toggleRowSelection(item, false)
+          this.$set(item, "selectedBorder", false)
         })
 
         this.$refs.table.toggleRowSelection(row, !!selection.length)

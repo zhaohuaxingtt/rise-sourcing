@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-07-13 14:38:56
+ * @LastEditTime: 2021-07-28 15:38:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -105,7 +105,6 @@ export function getCarTypePro(data) {
   return requst({
     url: '/part-src-prjs/car-type-pro',
     method: "GET"
-    
   })
 }
 

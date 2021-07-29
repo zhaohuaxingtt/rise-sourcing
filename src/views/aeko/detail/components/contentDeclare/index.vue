@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-07-26 19:06:18
+ * @LastEditTime: 2021-07-29 11:09:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
 -->
 <template>
-  <div>
+  <div class="contentDeclare">
     <iSearch
       class="margin-top25"
       @sure="sure"
@@ -18,20 +18,25 @@
       <el-form>
         <el-form-item :label="language('LINGJIANHAO', '零件号')">
           <iInput
-            v-model="form.rfqId"
+            v-model="form.partNum"
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
         <el-form-item :label="language('GONGYINGSHANGBIANHAO', '供应商编号')">
           <iInput
-            v-model="form.rfqId"
+            v-model="form.supplierSapCode"
             :placeholder="language('QINGSHURUGONGYINGSHANGBIANHAO', '请输入供应商编号')"
           />
         </el-form-item>
         <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
           <iSelect
-            v-model="form.carTypeProject"
+            multiple
+            collapse-tags
+            filterable
+            class="multipleSelect"
+            v-model="form.cartypeProjectCode"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
+            @change="handleChangeByAll($event, 'cartypeProjectCode')"
           >
             <el-option
               value=""
@@ -47,8 +52,13 @@
         </el-form-item>
         <el-form-item :label="language('NEIRONGZHUANGTAI', '内容状态')">
           <iSelect
-            v-model="form.carTypeProject"
+            multiple
+            collapse-tags
+            filterable
+            class="multipleSelect"
+            v-model="form.status"
             :placeholder="language('QINGXUANZENEIRONGZHUANGTAI', '请选择内容状态')"
+            @change="handleChangeByAll($event, 'status')"
           >
             <el-option
               value=""
@@ -57,14 +67,15 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in carTypeProjectOptions"
+              v-for="item in contentStatusOptions"
               :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('MTZXIANGGUAN', 'MTZ相关')">
           <iSelect
-            v-model="form.carTypeProject"
+            filterable
+            v-model="form.isMtz"
             :placeholder="language('QINGXUANZEMTZXIANGGUAN', '请选择MTZ相关')"
           >
             <el-option
@@ -74,14 +85,15 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in carTypeProjectOptions"
+              v-for="item in mtzOptions"
               :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('CAIGOUGONGCHANG', '采购工厂')">
           <iSelect
-            v-model="form.carTypeProject"
+            filterable
+            v-model="form.procureFactory"
             :placeholder="language('QINGXUANZECAIGOUGONGCHANG', '请选择采购工厂')"
           >
             <el-option
@@ -91,20 +103,21 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in carTypeProjectOptions"
+              v-for="item in options"
               :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')">
           <iInput
-            v-model="form.rfqId"
+            v-model="form.supplierNameZh"
             :placeholder="language('QINGSHURUGONGYINGSHANGJIANCHENG', '请输入供应商简称')"
           />
         </el-form-item>
         <el-form-item :label="language('ZHIDINGTOUZICHEXINGXIANGMU', '指定投资⻋型项⽬')">
           <iSelect
-            v-model="form.carTypeProject"
+            filterable
+            v-model="form.investCarTypePro"
             :placeholder="language('QINGXUANZEZHIDINGTOUZICHEXINGXIANGMU', '请选择指定投资⻋型项⽬')"
           >
             <el-option
@@ -114,7 +127,7 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in carTypeProjectOptions"
+              v-for="item in options"
               :key="item.key"
             ></el-option>
           </iSelect>
@@ -123,75 +136,286 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
       <template v-slot:header-control>
-        <iButton>{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
-        <iButton>{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
-        <iButton>{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
-        <iButton>{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
+        <iButton :loading="declareToggleLoading" @click="handleDeclareToggle">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
+        <iButton @click="handleDeclareReset">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
+        <iButton disabled>{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
+        <iButton disabled>{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
         <iButton>{{ language("DAOCHU", "导出") }}</iButton>
         <iButton>{{ language("DAORU", "导⼊") }}</iButton>
         <iButton>{{ language("TIJIAO", "提交") }}</iButton>
         <iButton>{{ language("CHEHUI", "撤回") }}</iButton>
       </template>
       <div class="body">
-      <tableList
-        class="table"
-        index
-        :lang="true"
-        :tableData="tableListData"
-        :tableTitle="tableTitle"
-        :tableLoading="loading"
-        @handleSelectionChange="handleSelectionChange"
-      >
-        <template #l="scope">
-          <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
-        </template>
-        <template #m="scope">
-          <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
-        </template>
-        <template #n="scope">
-          <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
-        </template>
-      </tableList>
-      <iPagination 
-        v-update
-        class="margin-top30"
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
-        background
-        :current-page="page.currPage"
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :total="page.totalCount" />
-    </div>
+        <tableList
+          class="table"
+          index
+          :lang="true"
+          :tableData="tableListData"
+          :tableTitle="tableTitle"
+          :tableLoading="loading"
+          @handleSelectionChange="handleSelectionChange"
+        >
+          <template #isReference="scope">
+            <span>{{ scope.row.isReference | isReferenceFilter }}</span>
+          </template>
+          <template #oldPartNumPreset="scope">
+            <iInput class="oldPartNumPresetSelect" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly @click.native="handleSelect(scope.row)">
+              <div class="inputSearchIcon" slot="suffix">
+                <icon symbol name="iconshaixuankuangsousuo" />
+              </div>
+            </iInput>
+          </template>
+          <template #dosage="scope">
+            <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+          </template>
+          <template #quotation="scope">
+            <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+          </template>
+          <template #priceAxis="scope">
+            <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+          </template>
+          <template #investCarTypePro="scope">
+            <iSelect
+              v-model="scope.row.investCarTypePro"
+              :placeholder="language('QINGXUANZE', '请选择')"
+            >
+              <el-option
+                :value="item.value"
+                :label="item.label"
+                v-for="item in options"
+                :key="item.key"
+              ></el-option>
+            </iSelect>
+          </template>
+          <template #isMtz="scope">
+            <span v-if="isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+          </template>
+        </tableList>
+        <iPagination 
+          v-update
+          class="margin-top30"
+          @size-change="handleSizeChange($event, getList)"
+          @current-change="handleCurrentChange($event, getList)"
+          background
+          :current-page="page.currPage"
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :total="page.totalCount" />
+      </div>
     </iCard>
   </div>
 </template>
 
 <script>
-import { iSearch, iInput, iSelect, iCard, iButton, iPagination } from "rise"
+import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
-import { contentDeclareTableTitle as tableTitle } from "../data"
+import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle, isReferenceMap } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
+import { getAekoLiniePartInfo } from "@/api/aeko/detail"
+import { getCarTypePro } from "@/api/designate/nomination"
+import { getDictByCode } from "@/api/dictionary"
+import { cloneDeep } from "lodash"
 
 export default {
-  components: { iSearch, iInput, iSelect, iCard, iButton, tableList, iPagination },
+  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList },
   mixins: [ pageMixins ],
   data() {
     return {
-      form: {},
+      form: cloneDeep(contentDeclareQueryForm),
       carTypeProjectOptions: [],
+      contentStatusOptions: [],
+      mtzOptions,
+      options: [],
+      loading: false,
       tableTitle,
-      tableListData: []
+      tableListData: [],
+      multipleSelection: [],
+      declareToggleLoading: false,
+      declareResetLoading: false
     };
   },
+  created() {
+    this.getCarTypePro()
+    this.getDictByCode()
+  },
+  filters: {
+    isReferenceFilter(value) {
+      return isReferenceMap[value] ? isReferenceMap[value] : value
+    }
+  },
   methods: {
-    sure() {},
-    reset() {},
-    view() {}
+    getCarTypePro() {
+      getCarTypePro()
+      .then(res => {
+        if (res.code == 200) {
+          this.carTypeProjectOptions = 
+            Array.isArray(res.data.data) ?
+            res.data.data.map(item => ({
+              key: item.code,
+              label: item.name,
+              value: item.code
+            })) :
+            []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
+    getDictByCode() {
+      getDictByCode("CONTENT_STATUS")
+      .then(res => {
+        if (res.code == 200) {
+          this.contentStatusOptions = 
+            Array.isArray(res.data) && res.data[0] && Array.isArray(res.data[0].subDictResultVo) ?
+            res.data[0].subDictResultVo.map(item => ({
+              key: item.code,
+              label: item.name,
+              value: item.code
+            })) :
+            []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
+    handleChangeByAll(value, key) {
+      if (!value[value.length - 1]) {
+        this.$set(this.form, key, [""])
+      } else {
+        this.$set(this.form, key, this.form[key].filter(item => item || item === 0))
+      }
+    },
+    init() {
+      this.loading = true
+      
+      getAekoLiniePartInfo({
+        ...this.form,
+        cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
+        status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.total || 0
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.loading = false
+      })
+      .catch(() => this.loading = false)
+    },
+    query() {
+      this.page.currPage = 1
+      this.init()
+    },
+    sure() {
+      this.query()
+    },
+    reset() {
+      this.form = cloneDeep(contentDeclareQueryForm)
+      this.query()
+    },
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
+    view() {},
+    oldPartNumPresetSelect(row) {
+      this.$router.push({
+        path: "/aeko/quondampart/ledger",
+        query: {}
+      })
+    },
+    // 相关无关切换
+    handleDeclareToggle() {
+      const fn = function() {}
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOQIEHUANBIAOTAIDELINGJIAN", "请选择需要切换表态的零件"))
+
+      this.declareToggleLoading = true
+
+      fn()
+      .then(res => {
+        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+          this.getList()
+        } else {
+          iMessage.error(message)
+        }
+
+        this.declareToggleLoading = false
+      })
+      .catch(() => this.declareToggleLoading = false)
+    },
+    // 表态重置
+    handleDeclareReset() {
+      const fn = function() {}
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHONGZHIBIAOTAIDELINGJIAN", "请选择需要重置表态的零件"))
+
+      this.declareResetLoading = true
+
+      fn()
+      .then(res => {
+        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+          this.getList()
+        } else {
+          iMessage.error(message)
+        }
+
+        this.declareResetLoading = false
+      })
+      .catch(() => this.declareResetLoading = false)
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.contentDeclare {
+  .multipleSelect{
+    ::v-deep .el-tag{
+      max-width: calc(100% - 70px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .oldPartNumPresetSelect {
+    ::v-deep input {
+      cursor: pointer;
+    }
+
+    ::v-deep .el-input__suffix {
+      right: 0;
+    }
+  }
+
+  .oldPartNumPreset {
+    ::v-deep input {
+      color: #c7c7c7;
+    }
+  }
+
+  ::v-deep .el-input__suffix {
+    .inputSearchIcon {
+      display: inline-block;
+      width: 30px;
+      font-size: 16px;
+      height: 100%;
+
+      .icon {
+        height: 100% !important;
+      }
+    }
+  }
+}
 </style>
