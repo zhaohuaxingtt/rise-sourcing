@@ -39,7 +39,7 @@ export default {
     }
   },
   created() {
-    this.getDataList()
+    this.getDataList('','','','')
   },
   methods: {
     entrance(param) {
@@ -82,19 +82,19 @@ export default {
         }
       }
     },
-    async getDataList(par='') {
-      if (this.$store.state.rfq.entryStatus === 0 && !!par) {
-        window.sessionStorage.setItem('rfqId', par.rfqId)
-        window.sessionStorage.setItem('materialGroup', par.categoryName)
-        window.sessionStorage.setItem('spareParts', par.partNum)
-        await this.$store.dispatch('setRfqId', par.rfqId)
-        await this.$store.dispatch('setMaterialGroup', par.categoryName)
-        await this.$store.dispatch('setSpareParts', par.partNum)
+    async getDataList({ rfqId = '', categoryName = '', categoryCode = '', partNum = '' }) {
+      if (this.$store.state.rfq.entryStatus === 0) {
+        window.sessionStorage.setItem('rfqId', rfqId)
+        window.sessionStorage.setItem('materialGroup', categoryName)
+        window.sessionStorage.setItem('spareParts', partNum)
+        await this.$store.dispatch('setRfqId', rfqId)
+        await this.$store.dispatch('setMaterialGroup', categoryName)
+        await this.$store.dispatch('setSpareParts', partNum)
       }
       const pms = {
         isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,
         rfq: this.$store.state.rfq.rfqId,
-        materialGroup: this.$store.state.rfq.materialGroup,
+        materialGroup: categoryCode,
         spareParts: this.$store.state.rfq.spareParts,
       }
       const res = await totalOverview(pms)
