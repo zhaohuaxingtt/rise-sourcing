@@ -1,7 +1,7 @@
 <!--
- * @Author: your name
+ * @Author: yuszhou
  * @Date: 2021-06-29 17:02:51
- * @LastEditTime: 2021-06-30 15:01:57
+ * @LastEditTime: 2021-07-28 18:14:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steeldemandcreation\index.vue
@@ -12,7 +12,7 @@
       <iNavMvp class="margin-bottom30" lang @change="change" :list='navListLeft' routerPage lev="1" @message="clickMessage" />
       <iNavMvp class="margin-bottom30" lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
     </div>
-    <iSearch class="margin-bottom20">
+    <iSearch class="margin-bottom20" @sure="steeldemandcreation()">
       <el-form>
         <template v-for='(items,index) in searchForm'>
           <el-form-item :label='language(items.i18nKey,items.i18nName)' :key="index">
@@ -20,8 +20,8 @@
               <iInput v-model="form[items.moduleKey]" :placeholder='language("QINGITANXIE","请填写")'></iInput>
             </template>
             <template v-else>
-              <iSelect :placeholder='language("QINGXUANZE","请选择")'>
-                <el-option v-for="(item,i) in items.list" :key='i' :label="item.name" :value="item.code"></el-option>
+              <iSelect v-model="form[items.moduleKey]" :placeholder='language("QINGXUANZE","请选择")'>
+                <el-option v-for="(item,i) in items.List" :key='i' :label="item.name" :value="item.code"></el-option>
               </iSelect>
             </template>
           </el-form-item>
@@ -38,11 +38,11 @@
         <iButton>{{language('DAYINGDINGDANLIUZHUANDAN','打印订单流转单(一次性)')}}</iButton>
         <iButton>{{language('DAYINGDINGDANLIUZDPILIANG','打印订单流转单（批量）')}}</iButton>
       </div>
-      <el-table :data='tabelList' v-loading='tabelLoading'>
-        <template v-for='(items,index) in tableTitle'>
-          <el-table-column :prop="items.props" :label="language(items.key,items.name)" align="center" :key='index'></el-table-column>
+      <tablePart :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading'>
+        <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
+          {{row[currentProps].desc}}
         </template>
-      </el-table>
+      </tablePart>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
@@ -65,13 +65,15 @@ import {iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination} from 'ri
 import {searchForm,form,tableTitle} from './components/data'
 import {steeldemandcreation} from '@/api/steelDemandCreation/home'
 import {pageMixins} from "@/utils/pageMixins";
+import tablePart from '@/views/partsign/home/components/tableList'
+import { selectDictByKeys } from "@/api/dictionary"
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 export default{
   mixins:[pageMixins],
-  components:{iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination},
+  components:{iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,tablePart},
     created(){
-      this.searchForm = searchForm()
+      this.dictkey()
       this.steeldemandcreation()
     },
     data(){
@@ -80,7 +82,8 @@ export default{
         form:form,
         tableTitle:tableTitle,
         tabelLoading:false,
-        tabelList:[]
+        tabelList:[],
+        decArrayList:['applicationStatus','nominateProcessType','partProjectType']
       }
     },
     computed: {
@@ -88,11 +91,27 @@ export default{
       ...mapActions(["updateNavList"])
     },
     methods:{
+      /**
+       * @description: 获取钢材列表数据。
+       * @param {*}
+       * @return {*}
+       */
       steeldemandcreation(){
-        steeldemandcreation().then(res=>{
-          this.tabelList = res.data.list
-        }).catch(err=>{})
-      }
+        this.tabelLoading = true
+        steeldemandcreation({...{size:this.page.pageSize,current:this.page.currPage},...this.form}).then(res=>{
+          this.tabelList = res.data
+          this.page.currPage = res.pageNum
+          this.page.pageSize = res.pageSize
+          this.page.totalCount = res.total
+          this.tabelLoading = false
+        }).catch(err=>{this.tabelLoading = false})
+      },
+      dictkey(){
+        this.searchForm = searchForm({})
+        selectDictByKeys([{keys:'NOMINATE_APP_PROCESS_TYPE'},{keys:'MEETING_TYPE'},{keys:'NOMINATE_APP_STATUS_FILING'}]).then(res=>{
+          this.searchForm = searchForm(res.data)
+        })
+      },
     }
 }
 </script>
