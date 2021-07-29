@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-29 10:49:56
+ * @LastEditTime: 2021-07-29 14:23:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -240,7 +240,6 @@ export default {
     // 初始化列表数据
     getTableData () {
       return new Promise(resolve => {
-        console.log('searchData', this.searchData);
         const params = {
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
@@ -512,7 +511,6 @@ export default {
       transform: rotate(270deg);
     }
   }
-
   ::v-deep .openPage {
     position: relative;
     color: $color-blue;
