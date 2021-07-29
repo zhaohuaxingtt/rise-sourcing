@@ -22,21 +22,49 @@
       />
       <!-- 费用合计table -->
       <div class="margin-top40">
-        <iTableList
-            :key="index"
+        <tableList
+            class="summaryTable"
             :selection="false"
+            index
             :show-summary="true"
+            :lang="true"
+            :getSummaries="getSummaries"
             :tableData="tableTDataCost"
             :tableTitle="tableTitleCost"
             :tableLoading="tableLoading.cost"
-            :activeItems="'x'"
-            :typeIndex="true"
-            :sum-text="language('LK_AEKO_TOTAL','TOTAL')"
         >
-
-        </iTableList>
-        <p>Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder Invest≥10,000,000 RMB</p>
+      </tableList>
+        <p class="summaryTable-tips margin-top20">Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder Invest≥10,000,000 RMB</p>
       </div>
+        <p class="divider"></p>
+
+        <!-- 科室linie费用table -->
+        <div>
+            <p class="btn-list margin-bottom20">
+                <iButton>{{language('LK_JIEDONG','解冻')}}</iButton>
+            </p>
+            <tableList
+                index
+                :lang="true"
+                :tableData="tableListData"
+                :tableTitle="tableTitle"
+                :tableLoading="tableLoading.depart"
+                @handleSelectionChange="handleSelectionChange"
+            >
+            </tableList>
+            <!-- 分页 -->
+            <iPagination
+            v-update
+            @size-change="handleSizeChange($event, getList)"
+            @current-change="handleCurrentChange($event, getList)"
+            background
+            :current-page="page.currPage"
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :total="page.totalCount"
+            />
+        </div>
     </iCard>
 </template>
 
@@ -47,13 +75,16 @@ import {
     iFormItem,
     iText,
     iInput,
+    iButton,
+    iPagination,
 } from 'rise'
-import { previewBaicFrom,coverTableTitleCost } from '../../data'
-import { iTableList } from '@/components'
-import tableList from "@/views/partsign/editordetail/components/tableList"
-import {_getMathNumber} from '@/utils'
+import { previewBaicFrom,coverTableTitleCost,coverTableTitleDepart } from '../../data'
+import tableList from "../tableList"
+import { getTousandNum } from "@/utils/tool";
+import { pageMixins } from "@/utils/pageMixins";
 export default {
     name:'previewCover',
+    mixins: [pageMixins],
     components:{
         iCard,
         iFormGroup,
@@ -61,10 +92,12 @@ export default {
         iText,
         iInput,
         tableList,
-        iTableList,
+        iButton,
+        iPagination,
     },
     data(){
         return{
+            getTousandNum,
             basicTitle:previewBaicFrom,
             basicInfo:{ },
             tips:'',
@@ -79,10 +112,56 @@ export default {
                 {'a':'Tiguan L PHVE PA','b':'3.00','c':'2.00','d':'2.00'},
                 {'a':'Tiguan L PA','b':'0.00','c':'2.00','d':'2.00'},
             ],
+            tableListData:[
+                {'a':'CSI','b':'张三','c':'1.00','d':'1.00','e':'0.00','f':'封面状态','g':'2021-02-10'},
+            ],
+            tableTitle:coverTableTitleDepart,
+            selectItems:[],
+
         }
     },
     methods:{
+        // 表格金额合计
+        getSummaries(param){
+            const { columns, data } = param;
+            const total = this.language('LK_AEKO_TOTAL','TOTAL');
+            const sums = [];
+            columns.forEach((column, index) => {
+                if (index === 1) {
+                    sums[index] = total;
+                    return;
+                }
 
+                const keyArr = ['b', 'c', 'd'];
+                if(keyArr.includes(column.property)){
+                    const values = data.map(item => Number(item[column.property]) );
+                    if (!values.every(value => isNaN(value))) {
+                        sums[index] = values.reduce((prev, curr) => {
+                            const value = Number(curr);
+                            if (!isNaN(value)) {
+                                return prev + curr;
+                            } else {
+                                return prev;
+                            }
+                        }, 0);
+                        sums[index] = this.getTousandNum(sums[index].toFixed(2));
+                    } else {
+                        sums[index] = '';
+                    }
+                }else{
+                    sums[index] = '';
+                }
+            })
+            return sums;
+        },
+
+        handleSelectionChange(val) {
+          this.selectItems = val;
+        },
+        // 获取列表
+        getList(){
+
+        },
     }
 }
 </script>
@@ -94,8 +173,26 @@ export default {
                 margin-left: 0!important;
             }
         }
-        ::v-deep.el-table .el-table__body-wrapper{
-            min-height: auto;
+        .summaryTable{
+            ::v-deep .el-table__body-wrapper{
+                min-height: auto;
+            }
+            ::v-deep .el-table__footer-wrapper{
+                font-weight: bold;
+            }
         }
+        .summaryTable-tips{
+            color: #8C96A7;
+        }
+        .divider{
+            width: 100%;
+            height: 1px;
+            border-bottom: 1px dashed #dcdfe6;
+            margin: 20px 0;
+        }
+        .btn-list{
+            text-align: right;
+        }
+        
     }
 </style>
