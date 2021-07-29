@@ -1,14 +1,14 @@
 <!--
  * @Author: youy
  * @Date: 2021-06-21 19:38:02
- * @LastEditTime: 2021-07-29 14:17:07
+ * @LastEditTime: 2021-07-29 15:01:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisSearch.vue
 -->
 <template>
   <div>
-    <iSearch  @reset="handleSearchReset" @sure="handleSubmitSearch">
+    <iSearch  :icon="false" @reset="handleSearchReset" @sure="handleSubmitSearch">
       <el-form :model="searchForm">
         <el-form-item :label="item.key?$t(item.key):item.name" v-for="(item,index) in searchData" :key="index">
           <iInput class="margin-top6" v-model="searchForm[item.props]" :disabled="isDisabled(item.props)"></iInput>

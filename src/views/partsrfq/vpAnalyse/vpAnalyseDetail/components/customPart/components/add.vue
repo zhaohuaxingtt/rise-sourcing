@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-23 16:47:14
- * @LastEditTime: 2021-07-28 16:35:13
+ * @LastEditTime: 2021-07-29 15:38:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\components\add.vue
@@ -13,7 +13,7 @@
     </div>
     <div class="optionBox">
       <el-form :inline="true" :model="searchForm" :label-position="labelPosition" class="demo-form-inline">
-        <el-form-item style="marginRight:68px" :label="item.key?$t(item.key):item.name" v-for="(item,index) in searchData" :key="index">
+        <el-form-item style="marginRight:68px" :label="item.key ? language(item.key, item.name) : item.name" v-for="(item,index) in searchData" :key="index">
           <iInput v-model="searchForm[item.props]" ></iInput>
         </el-form-item>
         <el-form-item class="searchButton">
@@ -182,7 +182,7 @@ export default {
 }
 .contentBox {
   margin-top: 48px;
-  margin-bottom: 20px;
+  padding-bottom: 30px;
   .tableOptionBox {
     .tableTitle {
       display: inline;
