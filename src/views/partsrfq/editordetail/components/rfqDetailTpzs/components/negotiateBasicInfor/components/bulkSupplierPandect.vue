@@ -8,7 +8,7 @@
 <template>
   <iCard :title="$t('TPZS.PLGYSZL')" :defalutCollVal='false' collapse>
     <div class="center">
-      <supplierCard :mapListData="mapListData" class="card-right" />
+      <supplierCard :supplierDataList="supplierDataList" class="card-right" />
       <map1 :mapListData="mapListData" />
     </div>
   </iCard>
@@ -23,7 +23,8 @@ export default {
   components: { iCard, icon, map1, supplierCard },
   data() {
     return {
-      mapListData: []
+      mapListData: {},
+      supplierDataList: [],
     }
   },
   created() {
@@ -38,6 +39,7 @@ export default {
       }
       const res = await overviewBatchSupplierMap(pms)
       this.mapListData = res.data
+      this.supplierDataList = res.data.supplierDataList || []
     }
   }
 }

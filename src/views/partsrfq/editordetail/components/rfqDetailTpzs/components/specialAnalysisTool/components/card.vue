@@ -84,18 +84,18 @@ export default {
   width: 100%;
   height: 100%;
 }
-.bottom {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100px;
-  z-index: 2;
-}
 .cursor {
   height: 20rem;
 }
 .content {
   position: relative;
+  .bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    z-index: 2;
+  }
 }
 .border {
   border: 1px solid #c6deff;
