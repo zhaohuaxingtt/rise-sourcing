@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-29 14:23:26
+ * @LastEditTime: 2021-07-29 20:55:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -411,7 +411,6 @@ export default {
           });
           row.isChecked = false;
         }
-        // console.log(this.multipleSelection, row);
       }
     },
     selectAll (selection) {
@@ -439,7 +438,6 @@ export default {
           else items.isChecked = false;
         }
       });
-      // console.log(this.orgs)
 
     },
     //点击关闭报告预览弹窗

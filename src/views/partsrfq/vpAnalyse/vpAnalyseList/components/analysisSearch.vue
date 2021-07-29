@@ -1,7 +1,7 @@
 <!--
  * @Author: youy
  * @Date: 2021-06-21 19:38:02
- * @LastEditTime: 2021-07-29 15:01:22
+ * @LastEditTime: 2021-07-29 20:53:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisSearch.vue
@@ -52,7 +52,9 @@ export default {
         materialGroup: this.$store.state.rfq.materialGroup,
         partsNo: this.$store.state.rfq.spareParts,
       }
-      this.$emit('handleChangeSearchData', this.searchForm)
+      this.$nextTick(() => {
+        this.$emit('handleSubmitSearch', this.searchForm)
+      })
     },
     //点击确认按钮
     handleSubmitSearch() {
@@ -61,7 +63,6 @@ export default {
     //点击重置按钮
     handleSearchReset() {
       this.initData()
-      this.$emit('handleSubmitSearch', this.searchForm)
     },
   } 
 }

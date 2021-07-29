@@ -1,14 +1,14 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-29 16:18:32
+ * @LastEditTime: 2021-07-29 20:53:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
 -->
 <template>
   <div>
-    <analysisSearch @handleSubmitSearch="handleSubmitSearch" @handleChangeSearchData="handleChangeSearchData"/>
+    <analysisSearch @handleSubmitSearch="handleSubmitSearch"/>
     
     <iCard class="margin-top20">
       <div slot="header" class="headBox">
@@ -93,10 +93,6 @@ export default {
         })
       })
     },
-    // 查询数据发生改变
-    handleChangeSearchData(searchData) {
-      this.searchData = searchData
-    }
   }
 }
 </script>
