@@ -355,7 +355,7 @@ export default {
       if (this.entryStatus === 1) {
         this.inside = true
         this.rfq = this.$store.state.rfq.rfqId
-        this.analysisSchemeId = this.$route.query.SchemeId
+        this.analysisSchemeId = this.$route.query.chemeId
         this.getChartData()
       } else if (this.entryStatus === 0) {
         this.findPart()
@@ -372,7 +372,7 @@ export default {
           this.inside = false
         }
       }
-      this.analysisSchemeId = this.$route.query.SchemeId
+      this.analysisSchemeId = this.$route.query.chemeId
       this.getChartData()
     }
 
