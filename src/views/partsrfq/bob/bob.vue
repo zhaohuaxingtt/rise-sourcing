@@ -438,7 +438,7 @@ export default {
             this.$router.push({
               path: '/sourcing/partsrfq/bobNew',
               query: {
-                SchemeId: res.data,
+                chemeId: res.data,
                 newBuild: true,
               },
             })

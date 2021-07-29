@@ -58,6 +58,15 @@ export default {
     return {};
   },
   methods: {
+    setBg(data) {
+      return {
+        color: '#fff',
+        padding: [4, 8],
+        align: 'center',
+        backgroundColor: data > 0 ? '#C00000' : '#70AD47',
+        borderRadius: 5,
+      };
+    },
     initEcharts() {
       const chart = echarts().init(this.$refs.curve);
       const newestScatterDataX = this.newestScatterData[0] ? this.newestScatterData[0][0] : 0;
@@ -101,6 +110,10 @@ export default {
           type: 'value',
           // 单价\n' + '（元/件）
           name: this.$t('TPZS.DANJIA') + '\n' + this.$t('TPZS.YUANJIAN'),
+          nameTextStyle: {
+            align: 'center',
+            padding: [0, 0, 0, -50],
+          },
           splitLine: {
             lineStyle: {
               type: 'dashed',
@@ -147,14 +160,18 @@ export default {
             data: this.newestScatterData,
             color: '#0059FF',
             label: {
+              offset: [30, 0],
+              rich: {
+                bg: this.setBg(proGrowthRate),
+              },
+              // distance: 12,
               show: true,
               position: 'top',
-              color: proGrowthRate > 0 ? '#C00000' : '#70AD47',
               formatter: () => {
                 if (proGrowthRate > 0) {
-                  return `+${toFixedNumber(proGrowthRate, 2)}%`;
+                  return `{bg|+${toFixedNumber(proGrowthRate, 2)}%}`;
                 } else {
-                  return `${toFixedNumber(proGrowthRate, 2)}%`;
+                  return `bg|${toFixedNumber(proGrowthRate, 2)}%`;
                 }
               },
             },
@@ -166,14 +183,17 @@ export default {
             data: this.targetScatterData,
             color: '#70AD47',
             label: {
+              rich: {
+                bg: this.setBg(reductionPotential),
+              },
+              // distance: 12,
               show: true,
-              position: 'top',
-              color: reductionPotential > 0 ? '#C00000' : '#70AD47',
+              position: 'right',
               formatter: () => {
                 if (reductionPotential > 0) {
-                  return `+${toFixedNumber(reductionPotential, 2)}%`;
+                  return `{bg|+${toFixedNumber(reductionPotential, 2)}%}`;
                 } else {
-                  return `${toFixedNumber(reductionPotential, 2)}%`;
+                  return `{bg|${toFixedNumber(reductionPotential, 2)}%}`;
                 }
               },
             },
