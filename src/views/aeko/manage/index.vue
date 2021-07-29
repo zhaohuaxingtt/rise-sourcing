@@ -150,7 +150,6 @@ export default {
       icon,
       revokeDialog,
       filesListDialog,
-      linkIcon,
     },
     data(){
       return{
