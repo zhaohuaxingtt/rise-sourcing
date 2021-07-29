@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-28 20:23:28
+ * @LastEditTime: 2021-07-29 10:49:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -513,32 +513,34 @@ export default {
     }
   }
 
+  ::v-deep .openPage {
+    position: relative;
+    color: $color-blue;
+    font-size: 14px;
+    cursor: pointer;
+    width: 90%;
+    .number {
+      position: absolute;
+      right: 12px;
+      top: 2px;
+      color: #fff;
+      font-size: 10px;
+      z-index: 1;
+      width: 20px;
+    }
+    .numberIcon {
+      position: absolute;
+      font-size: 24px;
+      right: 10px;
+      top: 3px;
+    }
+  }
+
   .stickIcon:hover {
     cursor: pointer;
   }
 }
 
-.openPage {
-  position: relative;
-  color: $color-blue;
-  font-size: 14px;
-  cursor: pointer;
-  width: 90%;
-  .number {
-    position: absolute;
-    right: 12px;
-    top: 2px;
-    color: #fff;
-    font-size: 10px;
-    z-index: 1;
-    width: 20px;
-  }
-  .numberIcon {
-    position: absolute;
-    font-size: 24px;
-    right: 10px;
-    top: 3px;
-  }
-}
+
 
 </style>
