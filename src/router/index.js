@@ -20,6 +20,7 @@ import steeldemandcreation from './modules/steeldemandcreation'
 import negotiationAssistant from './modules/negotiationAssistant'
 import aekoRoutes from './modules/aeko'
 import supplierkpiRoutes from './modules/supplierkpi'
+import categoryManagementAssistant from './modules/categoryManagementAssistant'
 
 
 
@@ -402,7 +403,7 @@ export const staticRouter = [{
                 name: "fileManage",
                 meta: { title: "附件综合管理" },
                 component: () => import("@/views/designateFiles/fileManage/index"),
-            },   
+            },
             // 配件相关路由
             {
                 path: "/sourcing/signforpartsdemand",
@@ -426,7 +427,7 @@ export const staticRouter = [{
             {
                 path: "/supplier/quotationdetail",
                 name: "quotationDetail",
-                component: () => 
+                component: () =>
                     import ("@/views/supplier/quotationdetail")
             },
             {
@@ -606,7 +607,7 @@ export const staticRouter = [{
         component: () =>
             import (`@/views/404`)
     },
-    
+
 ]
 
 // eslint-disable-next-line no-undef
@@ -623,6 +624,8 @@ export default new VueRouter({
         ...supplierkpiRoutes,
         //谈判助手
         ...negotiationAssistant,
-        ...aekoRoutes
+        ...aekoRoutes,
+        //品类管理助手
+        ...categoryManagementAssistant
     ]
 });
