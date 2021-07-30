@@ -1,0 +1,198 @@
+<!--
+ * @Author: wentliao
+ * @Date: 2021-07-28 16:48:55
+ * @Description: 封面表态--预览--Aeko管理员/科室协调员/CSF分配人
+-->
+<template>
+    <iCard :title="language('LK_AEKO_FENGMIANBIAOTAI','封⾯表态')" class="previewCover">
+        <iFormGroup row="4" class="basic-form">
+          <template v-for="(item,index) in basicTitle">
+            <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  >
+              <iText>{{basicInfo[item.props] || '-'}}</iText>
+            </iFormItem>
+          </template>
+      </iFormGroup>
+      <p class="margin-bottom10">{{language('LK_BEIZHU','备注')}}:</p>
+      <iInput
+        disabled
+        type="textarea"
+        rows="10" 
+        resize="none"
+        v-model="tips"
+      />
+      <!-- 费用合计table -->
+      <div class="margin-top40">
+        <tableList
+            class="summaryTable"
+            :selection="false"
+            index
+            :show-summary="true"
+            :lang="true"
+            :getSummaries="getSummaries"
+            :tableData="tableTDataCost"
+            :tableTitle="tableTitleCost"
+            :tableLoading="tableLoading.cost"
+        >
+      </tableList>
+        <p class="summaryTable-tips margin-top20">Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder Invest≥10,000,000 RMB</p>
+      </div>
+        <p class="divider"></p>
+
+        <!-- 科室linie费用table -->
+        <div>
+            <p class="btn-list margin-bottom20">
+                <iButton>{{language('LK_JIEDONG','解冻')}}</iButton>
+            </p>
+            <tableList
+                index
+                :lang="true"
+                :tableData="tableListData"
+                :tableTitle="tableTitle"
+                :tableLoading="tableLoading.depart"
+                @handleSelectionChange="handleSelectionChange"
+            >
+            </tableList>
+            <!-- 分页 -->
+            <iPagination
+            v-update
+            @size-change="handleSizeChange($event, getList)"
+            @current-change="handleCurrentChange($event, getList)"
+            background
+            :current-page="page.currPage"
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :total="page.totalCount"
+            />
+        </div>
+    </iCard>
+</template>
+
+<script>
+import {
+    iCard,
+    iFormGroup,
+    iFormItem,
+    iText,
+    iInput,
+    iButton,
+    iPagination,
+} from 'rise'
+import { previewBaicFrom,coverTableTitleCost,coverTableTitleDepart } from '../../data'
+import tableList from "../tableList"
+import { getTousandNum } from "@/utils/tool";
+import { pageMixins } from "@/utils/pageMixins";
+export default {
+    name:'previewCover',
+    mixins: [pageMixins],
+    components:{
+        iCard,
+        iFormGroup,
+        iFormItem,
+        iText,
+        iInput,
+        tableList,
+        iButton,
+        iPagination,
+    },
+    data(){
+        return{
+            getTousandNum,
+            basicTitle:previewBaicFrom,
+            basicInfo:{ },
+            tips:'',
+            tableLoading:{
+                cost:false,
+                depart:false,
+            },
+            tableTitleCost:coverTableTitleCost,
+            tableTDataCost:[
+                {'a':'New Passat','b':'-1.00','c':'1.00','d':'1.00'},
+                {'a':'Tiguan L PHVE','b':'2.00','c':'2.00','d':'2.00'},
+                {'a':'Tiguan L PHVE PA','b':'3.00','c':'2.00','d':'2.00'},
+                {'a':'Tiguan L PA','b':'0.00','c':'2.00','d':'2.00'},
+            ],
+            tableListData:[
+                {'a':'CSI','b':'张三','c':'1.00','d':'1.00','e':'0.00','f':'封面状态','g':'2021-02-10'},
+            ],
+            tableTitle:coverTableTitleDepart,
+            selectItems:[],
+
+        }
+    },
+    methods:{
+        // 表格金额合计
+        getSummaries(param){
+            const { columns, data } = param;
+            const total = this.language('LK_AEKO_TOTAL','TOTAL');
+            const sums = [];
+            columns.forEach((column, index) => {
+                if (index === 1) {
+                    sums[index] = total;
+                    return;
+                }
+
+                const keyArr = ['b', 'c', 'd'];
+                if(keyArr.includes(column.property)){
+                    const values = data.map(item => Number(item[column.property]) );
+                    if (!values.every(value => isNaN(value))) {
+                        sums[index] = values.reduce((prev, curr) => {
+                            const value = Number(curr);
+                            if (!isNaN(value)) {
+                                return prev + curr;
+                            } else {
+                                return prev;
+                            }
+                        }, 0);
+                        sums[index] = this.getTousandNum(sums[index].toFixed(2));
+                    } else {
+                        sums[index] = '';
+                    }
+                }else{
+                    sums[index] = '';
+                }
+            })
+            return sums;
+        },
+
+        handleSelectionChange(val) {
+          this.selectItems = val;
+        },
+        // 获取列表
+        getList(){
+
+        },
+    }
+}
+</script>
+
+<style  lang="scss" scoped>
+    .previewCover{
+        .basic-form{
+            ::v-deep.el-form-item__content {
+                margin-left: 0!important;
+            }
+        }
+        .summaryTable{
+            ::v-deep .el-table__body-wrapper{
+                min-height: auto;
+            }
+            ::v-deep .el-table__footer-wrapper{
+                font-weight: bold;
+            }
+        }
+        .summaryTable-tips{
+            color: #8C96A7;
+        }
+        .divider{
+            width: 100%;
+            height: 1px;
+            border-bottom: 1px dashed #dcdfe6;
+            margin: 20px 0;
+        }
+        .btn-list{
+            text-align: right;
+        }
+        
+    }
+</style>
