@@ -19,6 +19,9 @@ import financialtargetpriceRoutes from './modules/financialtargetprice'
 import steeldemandcreation from './modules/steeldemandcreation'
 import negotiationAssistant from './modules/negotiationAssistant'
 import aekoRoutes from './modules/aeko'
+import supplierkpiRoutes from './modules/supplierkpi'
+
+
 
 Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
@@ -602,7 +605,8 @@ export const staticRouter = [{
         },
         component: () =>
             import (`@/views/404`)
-    }
+    },
+    
 ]
 
 // eslint-disable-next-line no-undef
@@ -616,6 +620,7 @@ export default new VueRouter({
         ...financialtargetpriceRoutes,
         ...financialtargetpriceRoutes,
         ...steeldemandcreation,
+        ...supplierkpiRoutes,
         //谈判助手
         ...negotiationAssistant,
         ...aekoRoutes
