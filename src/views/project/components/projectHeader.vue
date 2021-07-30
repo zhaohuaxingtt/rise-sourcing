@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-27 14:14:12
+ * @LastEditTime: 2021-07-29 19:02:09
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -35,5 +35,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
 }
 </style>

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-29 17:59:07
+ * @LastEditTime: 2021-07-30 16:48:34
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -24,7 +24,7 @@
     <div v-for="pro in products" :key="pro.label" class="productItem">
       <div class="productItem-top">
         <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">
-          {{pro.productGroupName}}
+          {{pro.productGroupNameZh}}
         </el-checkbox>
         <div class="productItem-top-targetList">
           <div v-for="item in targetList" :key="item.value" class="productItem-top-targetList-item">
@@ -69,18 +69,19 @@
         </div>
       </div>
     </div>
-    <fsConfirm :dialogVisible="fsConfirmDialogVisible" @changeVisible="changeFsConfirmVisible" />
+    <fsConfirm ref="fsConfirm" @handleConfirm="handleFSConfirm" :cartypeProId="cartypeProId" :tableList="fsTableList" :dialogVisible="fsConfirmDialogVisible" @changeVisible="changeFsConfirmVisible" />
   </div>
 </template>
 
 <script>
 import { iButton, icon, iInput, iText, iMessage } from 'rise'
 import fsConfirm from '../fsconfirm'
-import { getProductGroupInfoList, saveProductGroupInfoList } from '@/api/project'
+import { getProductGroupInfoList, saveProductGroupInfoList, deliveryProduct } from '@/api/project'
 export default {
   components: { iButton, fsConfirm, icon, iInput, iText },
   props: {
     cartypeProId: {type:String},
+    carProjectName: {type:String},
     isSop: {type:Boolean}
   },
   data() {
@@ -103,10 +104,26 @@ export default {
         {label: 'BF', const: 'keyBfToFirstTryoutWeek', keyPoint: 'constBfToFirstTryoutWeek', history: 'hiBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus'},
         {label: '1st Tryout', const: 'constFirstTryEmWeek', keyPoint: 'keyFirstTryEmWeek', history: 'hiFirstTryEmWeek', isChange: 'keyFirstTryEmStatus'},
         {label: 'EM(OTS)', const: 'constFirstTryOtsWeek', keyPoint: 'keyFirstTryOtsWeek', history: 'hiFirstTryOtsWeek', isChange: 'keyFirstTryOtsStatus'}
-      ]
+      ],
+      fsTableList: []
     }
   },
   methods: {
+    handleFSConfirm(val) {
+      deliveryProduct(val).then(res => {
+        if (res?.result) {
+          if (res.data) {
+            iMessage.warn(res.data.map(item => item.productGroupZh).join(',')+'产品组询价采购员还未确认，请勿重复发送')
+          } else {
+            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+            this.$refs.fsConfirm.changeSaveLoading(false)
+            this.changeFsConfirmVisible(false)
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
     handleSave() {
       if (!this.products.some(item => item.isChecked)) {
         iMessage.warn(this.language('QINGGOUXUANXUYAOBAOCUNDESHUJU','请勾选需要保存的数据'))
@@ -144,6 +161,16 @@ export default {
       window.open(router.href,'_blank')
     },
     handleSendFs() {
+      if (!this.products.some(item => item.isChecked)) {
+        iMessage.warn(this.language('QINGGOUXUANXUYAOFASONGDESHUJU','请勾选需要发送的数据'))
+        return
+      }
+      this.fsTableList = this.products.filter(item => item.isChecked).map(item => {
+        return {
+          ...item,
+          cartypeProject: this.carProjectName
+        }
+      })
       this.changeFsConfirmVisible(true)
     },
     changeFsConfirmVisible(visible) {
