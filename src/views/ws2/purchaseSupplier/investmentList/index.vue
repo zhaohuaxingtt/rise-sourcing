@@ -95,13 +95,13 @@
           <div v-else>-</div>
         </template>
         <template #moldInvestmentStatus="scope">
-          <div v-if="scope.row.moldInvestmentStatus !== '7'">{{
+          <div v-if="scope.row.moldInvestmentStatus !== '6'">{{
               scope.row.moldInvestmentStatus === '1' ?  '已定点待确认' :
                   (scope.row.moldInvestmentStatus === '2' ? '待供应商确认' :
                       (scope.row.moldInvestmentStatus === '3' ? '待采购员确认' :
                           (scope.row.moldInvestmentStatus === '4' ? '变更中' :
                               (scope.row.moldInvestmentStatus === '5' ? '供应商已变更待采购员确认' :
-                                  (scope.row.moldInvestmentStatus === '6' ? '供应商已退回' : ''
+                                  (scope.row.moldInvestmentStatus === '7' ? '模具投资清单已确认' : ''
                                   )
                               )
                           )
@@ -115,7 +115,7 @@
                 :content="language('LK_TUIHUIYUANYIN', '退回原因') + ':' + scope.row.backReason"
                 trigger="hover">
               <div slot="reference">
-                <span>模具投资清单已确认</span>
+                <span>供应商已退回</span>
                 <icon symbol name="iconzhongyaoxinxitishi"></icon>
               </div>
             </Popover>
