@@ -44,3 +44,22 @@ export function searchCoverStatus(params) {
     params,
   })
 }
+
+// 导入附件
+export function uploadFiles(data) {
+  return requst({
+    url: '/file-history/upload-files',
+    method: 'POST',
+    data,
+  })
+}
+
+// 
+// aeko撤销
+export function purchasingCancel(params) {
+  return requst({
+    url: '/aeko/purchasing/cancel',
+    method: 'GET',
+    params,
+  })
+}
