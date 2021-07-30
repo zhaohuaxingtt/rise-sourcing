@@ -53,6 +53,7 @@
                 style="width: 100%; margin-bottom: 20px"
                 row-key="id"
                 :max-height="450"
+                :row-class-name="rowStyle"
                 :tree-props="{ children: 'children' }"
                 @selection-change="handleSelectionChange"
                 @select="rowSelect"
@@ -598,6 +599,10 @@ export default {
     //点击关闭报告预览弹窗
     handleCloseReport () {
       this.reportVisible = false
+    },
+    //给方案数据设置斑马纹样式名
+    rowStyle({row}) { 
+      return row.fileType == this.$t('TPZS.SCHEME_TYPE') && row.number % 2 == 0 ? 'scheme' : 'report'
     }
   },
 };
@@ -624,6 +629,13 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   width: 96%;
+}
+
+::v-deep .el-table .scheme{
+  background-color: #e0eafd;
+}
+::v-deep .el-table .report {
+  background-color: #fff;
 }
 
 .bob-main {
