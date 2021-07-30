@@ -5,6 +5,7 @@
 }(this, function(i18n) {
     'use strict'
     const oldLanguage = {
+        '#':"#",
         'delete': "删除",
         "deleteSure":'您确定要执行删除操作吗？',
         "revokeSure":'您确定要执行撤回操作吗？',
@@ -217,7 +218,16 @@
         <!--                                                                   --->
         <!------------------------------------------------------------------------>
         */
-
+        'supplierkpi':{
+            'SUPPLIERRESULT':'供应商筛选结果',
+            'TOTAL':'总分',
+            'fuwuzhilian':'服务质量',
+            'chengben':'成本',
+            'jiaofu':'交付',
+            'bumen':'所属部门',
+            'cailiao':'材料组',
+            'gongyingshangmincheng':'供应商名称'
+        },
         'LK_CAIGOUFENEFENPEIDABUDAO': '采购份额分配达不到100%', // 采购份额分配达不到100%
         'LK_CAIGOUGONGCHNEGMINGCHENG': '采购工厂名称', // 采购工厂名称
         'LK_CAOZUOCHENGGONG': '操作成功', // 操作成功
@@ -1404,7 +1414,8 @@
             'BOBFXK': 'BoB分析库',//BoB分析库
             'FXMC': '分析名称',//分析名称
             'BQWFCXDJGSRCWHBCZQQRHCXSR': '抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入',//抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入
-            'QXZYSCDSJ': '请选中要删除的数据', //请选中要删除的数据
+            'QXZXYCZDSJ': '请选择需要操作的数据', //请选择需要操作的数据
+            'ZJSCSH': '最近上传时间:', //最近上传时间
         },
     }
     var xmlHttp = ''

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-26 10:53:13
+ * @LastEditTime: 2021-07-30 11:29:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -15,6 +15,7 @@
               :expand-row-keys="expends"
               v-loading="loading"
               stripe
+              height="450"
               :max-height="maxHeight"
               :cell-style="cellsytle"
               :row-style="rowStyle"
@@ -31,13 +32,32 @@
                        :prop="i.label"
                        :align="i.label=='title'?'left':'center'"
                        :width="i.label=='title'?'230':''"
-                       show-overflow-tooltip>
+                       show-overflow-tooltip
+                       :render-header="renderHeader">
         <template slot-scope="scope">
           <span v-if="testing(scope.row[i.label])"
                 class=" scopeBox">
             <span v-for="(item,index) in scope.row[i.label]"
                   :key="index"
-                  class="flexSpan">{{ item }}</span>
+                  class="flexSpan">
+              <span v-if="item==minText(scope.row)&&bobType==='Best of Best'"
+                    class=" minText">
+                {{ item}}
+              </span>
+              <span v-else-if="item==sendText(scope.row)&&bobType==='Best of Second'"
+                    class=" minText">
+                {{ item}}
+              </span>
+              <span v-else>{{ item }}</span>
+            </span>
+          </span>
+          <span v-else-if="scope.row[i.label]==minText(scope.row)&&bobType==='Best of Best'"
+                class=" minText">
+            {{ scope.row[i.label]}}
+          </span>
+          <span v-else-if="scope.row[i.label]==sendText(scope.row)&&bobType==='Best of Second'"
+                class=" minText">
+            {{ scope.row[i.label]}}
           </span>
           <span v-else
                 class="flex-center">
@@ -73,6 +93,10 @@ export default {
       type: Array,
       default: () => []
     },
+    bobType: {
+      type: String,
+      default: ""
+    }
   },
   computed: {
     testing (val) {
@@ -82,20 +106,49 @@ export default {
         }
       };
     },
+    minText (val) {
+      return function (val) {
+        let min
+        if (val.level === 1 || val.level === 2) {
+          const numOfCols = Object.keys(val).filter((key) => {
+            return key.indexOf("label#") >= 0
+          })
+          const dataArr = []
+          numOfCols.forEach((colNum) => {
+            dataArr.push(parseFloat(val[colNum]))
+          })
+          min = this.min(dataArr)
+        }
+        return min
+      }
+    },
+    sendText (val) {
+      return function (val) {
+        let min
+        if (val.level === 1 || val.level === 2) {
+          const numOfCols = Object.keys(val).filter((key) => {
+            return key.indexOf("label#") >= 0
+          })
+          const dataArr = []
+          numOfCols.forEach((colNum) => {
+            dataArr.push(parseFloat(val[colNum]))
+          })
+          min = this.bos(dataArr)
+        }
+        return min
+      }
+    }
   },
   watch: {
     expends: {
       handler (val) {
-        if (val.length === 0)
-          this.$refs.treeList.expandRowKeys = Array.from(val);
+   
       },
     },
-    "tableList.headerList": {
+    bobType: {
       handler (val) {
-
       },
-      immediate: true,
-      deep: true,
+      immediate: true
     },
   },
   mounted () {
@@ -104,28 +157,41 @@ export default {
     return {
       checkList: [],
       hasChildren: true,
+      min: window._.min,
+      max: window._.max,
+
     };
   },
   methods: {
-    objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 0) {
-        if (columnIndex % 2 === 0) {
-          return {
-            rowspan: 0,
-            colspan: 3,
-          };
-        } else {
-          return {
-            rowspan: 0,
-            colspan: 0,
-          };
+    renderHeader (h, { column }) {
+      let header = column.label.split('<br/>');
+      return [h('p', [
+        h('p', {}, header[0]),
+        h('span', {}, header[1])
+      ])];
+    },
+    //筛选第二
+    bos (arr) {
+      const min = this.min(arr);
+      let send = this.max(arr);
+      arr.forEach((i) => {
+        if (i > min) {
+          if (i < send) {
+            send = i;
+          }
         }
-      }
+      });
+      return send;
     },
     cellsytle ({ row, column, rowIndex, columnIndex }) {
+      let styleJson = {}
       if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '报废成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
-        return "font-weight: bold"
+        // return "font-weight: bold"
+        styleJson = {
+          "font-weight": "bold"
+        }
       }
+      return styleJson
     },
     rowStyle ({ row, rowIndex }) {
       let styleJson
@@ -136,8 +202,24 @@ export default {
         return styleJson
       }
     },
+    close () {
+      if (this.tableList.element.length != 0) {
+        this.flag = true;
+        this.flag1 = false;
+        const elsopen = this.$el.getElementsByClassName(
+          "el-table__expand-icon--expanded"
+        );
+        if (
+          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
+        ) {
+          for (let i = 0; i < elsopen.length; i++) {
+            elsopen[i].click();
+          }
+        }
+      }
+    },
     getRowKey (row) {
-      return row.index;
+      return row.title;
     },
     render (h, { column, $index }) { },
     rowClick (row, event, column) {
@@ -178,11 +260,11 @@ export default {
   background-color: #fff;
 }
 
-::v-deep.el-table__body-wrapper.el-table__row.el-table__row--level-0
-  .el-table__row
-  .el-table__row--level-1 {
-  background: #e7efff !important;
-}
+// ::v-deep.el-table__body-wrapper.el-table__row.el-table__row--level-0
+//   .el-table__row
+//   .el-table__row--level-1 {
+//   background: #e7efff !important;
+// }
 </style>
 <style lang="scss">
 .addcss {
@@ -215,5 +297,8 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.minText {
+  color: #00c1b9;
 }
 </style>

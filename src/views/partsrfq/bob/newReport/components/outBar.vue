@@ -24,6 +24,7 @@ export default {
     return {
       chartArray: [],
       labelArray: [],
+      labelArray1: [],
       legendKeys: {
         '原材料/散件': 'rawMaterialSummary',
         '制造费': 'manufacturingCostSummary',
@@ -62,6 +63,19 @@ export default {
       // console.log(send)
       return send
     },
+    doNumber (x) {
+      var f = Math.round(x * 100) / 100;
+      var s = f.toString();
+      var rs = s.indexOf('.');
+      if (rs < 0) {
+        rs = s.length;
+        s += '.';
+      }
+      while (s.length <= rs + 2) {
+        s += '0';
+      }
+      return s;
+    },
     initCharts () {
       const myChart = echarts().init(this.$refs.chart);
       // 绘制图表
@@ -90,7 +104,7 @@ export default {
         },
         grid: {
           left: "14%",
-          top: '20%',
+          top: '25%',
           right: '0%',
           bottom: "25%",
         },
@@ -117,8 +131,34 @@ export default {
               interval: 0,
               color: '#3C4F74'
             },
-            triggerEvent: true
-          }
+            triggerEvent: true,
+            offset: 6
+          },
+          {
+            type: "category",
+            data: [...this.labelArray1],
+            nameTextStyle: {
+              verticalAlign: "bottom",
+            },
+            axisLine: {
+              show: false
+            },
+            axisTick: {
+              show: false,
+              alignWithLabel: true,
+            },
+            axisLabel: {
+              align: 'center',
+              fontFamily: "Arial",
+              interval: 0,
+              fontSize: 12,
+              fontWeight: 400,
+              lineHeight: 18,
+              color: '#3C4F74'
+            },
+            triggerEvent: true,
+            offset: 30
+          },
         ],
         tooltip: {
           trigger: 'axis',
@@ -130,7 +170,7 @@ export default {
             let domHtml = ''
             params.forEach(value => {
               domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + value.color + '"></span>'
-              result += domHtml + value.seriesName + ":" + value.value.toFixed(2) + '<br/>'
+              result += domHtml + value.seriesName + ":" + this.doNumber(value.value) + '<br/>'
             })
             return result
           },
@@ -172,7 +212,7 @@ export default {
       myChart.setOption(option);
       const that = this
       myChart.on('click', function (params) {
-      
+
         if (params.componentType === 'title') {
           that.$emit('del')
         }
@@ -186,20 +226,26 @@ export default {
         // console.log(newVal)
         this.chartArray = newVal
         this.labelArray = []
+        this.labelArray1 = []
         this.dataArray = []
         const tempArr = []
         const dataList1 = []
         newVal.forEach((row, i) => {
+          const temp =
+            row.vehicleType +
+            "\n" +
+            window.moment(row.cbdQuotationTime).format("yyyy.MM");
           // console.log(row)
           let name = row.supplierName
           if (this.by === 'num') {
             name = row.spareParts
           }
-          let img = '\t{bobChange|}'
-          if (!this.preview) {
-            img = ''
-          }
-          const str = name + '   ' + img + '\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n\n\n'
+          // let img = '\t{bobChange|}'
+          // if (!this.preview) {
+          //   img = ''
+          // }
+          const str = name + '\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n' + "{font|" + temp + "}";
+          const subtext = row.spareParts + '\n' + row.fs
           this.labelArray.push({
             value: str,
             textStyle: {
@@ -214,11 +260,21 @@ export default {
                   backgroundColor: {
                     image: this.bobChange
                   }
+                },
+                font: {
+                  fontSize: 12,
+                  fontWeight: 400,
+                  color: "#7E84A3",
+                  fontFamily: "Arial",
+                  lineHeight: 23
                 }
               },
 
             }
           })
+          this.labelArray1.push({
+            value: subtext,
+          });
           // console.log(this.labelArray)
           this.legendArray.map((v, i) => {
             if (!tempArr[v]) {

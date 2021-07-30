@@ -53,6 +53,7 @@
                 style="width: 100%; margin-bottom: 20px"
                 row-key="id"
                 :max-height="450"
+                :row-class-name="rowStyle"
                 :tree-props="{ children: 'children' }"
                 @selection-change="handleSelectionChange"
                 @select="rowSelect"
@@ -64,16 +65,16 @@
                          :index="indexMethod"
                          align="center"
                          header-align="center"
-                         width="50">
+                         width="40">
         </el-table-column>
         <el-table-column align="center"
                          header-align="center"
                          :label="$t('TPZS.FXMC')"
-                         width="250">
+                         width="450">
           <template slot-scope="scope">
             <div class="openPage">
               <el-row :gutter="20">
-                <el-col :span="18"
+                <el-col :span="20"
                         style="textalgin: center">
                   <el-tooltip v-if="!edit"
                               :content="scope.row.name"
@@ -91,7 +92,7 @@
                           class="nameInput"
                           v-model="scope.row.name"></iInput>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="4">
                   <span v-if="scope.row.fileType == $t('TPZS.SCHEME_TYPE')">
                     <span class="number">
                       <p>{{ scope.row.reportList.length }}</p>
@@ -111,13 +112,19 @@
           </template>
         </el-table-column>
         <el-table-column :label="$t('LK_CAILIAOZU')"
-                         prop="materialGroup">
-        </el-table-column>
-        <el-table-column :label="$t('RFQ')"
-                         prop="rfqNo"> </el-table-column>
-        <el-table-column :label="$t('TPZS.MRX')"
+                         prop="materialGroup"
                          align="center"
                          header-align="center">
+        </el-table-column>
+        <el-table-column :label="$t('RFQ')"
+                         prop="rfqNo"
+                         width="100"
+                         align="center"
+                         header-align="center"> </el-table-column>
+        <el-table-column :label="$t('TPZS.MRX')"
+                         align="center"
+                         header-align="center"
+                         width="80">
           <template slot-scope="scope">
             <div v-if="!edit">
               {{ defaultStatus(scope.row, scope.row.isDefault) }}
@@ -139,20 +146,30 @@
           </template>
         </el-table-column>
         <el-table-column :label="$t('TPZS.WJLX')"
-                         prop="fileType">
+                         prop="fileType"
+                         align="center"
+                         header-align="center">
         </el-table-column>
         <el-table-column :label="$t('TPZS.CJR')"
-                         prop="createNameZh">
+                         prop="createNameZh"
+                         align="center"
+                         header-align="center">
         </el-table-column>
         <el-table-column :label="$t('LK_CHUANGJIANRIQI')"
                          prop="createDate"
-                         show-overflow-tooltip>
+                         show-overflow-tooltip
+                         align="center"
+                         header-align="center">
         </el-table-column>
         <el-table-column :label="$t('TPZS.SCXGRQ')"
                          prop="updateDate"
-                         show-overflow-tooltip>
+                         show-overflow-tooltip
+                         align="center"
+                         header-align="center">
         </el-table-column>
-        <el-table-column width="50">
+        <el-table-column  width="50"
+                          align="center"
+                          header-align="center">
           <template slot-scope="scope">
             <div @click="handleStick(scope.row)"
                  class="stickIcon">
@@ -182,7 +199,7 @@
                      :reportUrl="reportUrl"
                      :title="reportTitle"
                      :key="reportKey"
-                     @handleCloseReport="handleCloseReport"/>
+                     @handleCloseReport="handleCloseReport" />
     </iCard>
   </div>
 </template>
@@ -265,14 +282,13 @@ export default {
   methods: {
     //初始化查询数据
     initSearchData () {
-      const data = this.$store.state.rfq.rfqId;
       if (this.$store.state.rfq.entryStatus == 1) this.rfqStatus = true;
       this.form = {
         ...this.form,
-        group: null,
-        num: null,
+        group: this.$store.state.rfq.materialGroup,
+        num: this.$store.state.rfq.spareParts,
         owner: null,
-        rfq: data,
+        rfq: this.$store.state.rfq.rfqId,
       };
     },
     //表格序号函数
@@ -336,11 +352,15 @@ export default {
     },
     //重置查询事件
     handleSearchReset () {
+      this.page.currPage = 1
+      this.page.pageSize = 10
       this.initSearchData();
       this.getTableList();
     },
     //检索事件
     handleSearch () {
+      this.page.currPage = 1
+      this.page.pageSize = 10
       this.getTableList().then((res) => {
         if (!res.data || res.data.length == 0) {
           iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
@@ -353,9 +373,9 @@ export default {
         const params = {
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
-          createByName: this.form.owner ? this.form.owner : null,
+          createName: this.form.owner ? this.form.owner : null,
           materialGroup: this.form.group ? this.form.group : null,
-          partsNo: this.form.num ? this.form.num : null,
+          spareParts: this.form.num ? this.form.num : null,
 
         };
         const status = this.$store.state.rfq.entryStatus
@@ -435,7 +455,7 @@ export default {
             this.$router.push({
               path: '/sourcing/partsrfq/bobNew',
               query: {
-                SchemeId: res.data,
+                chemeId: res.data,
                 newBuild: true,
               },
             })
@@ -444,6 +464,9 @@ export default {
             iMessage.error(res.desZh);
             loading.close()
           }
+        }).catch((error) => {
+          iMessage.error(error.desZh);
+          loading.close()
         });
       } else {
         this.$router.push({
@@ -458,7 +481,7 @@ export default {
     // 点击删除按钮
     deleteBob () {
       if (!this.selection || this.selection.length == 0) {
-        iMessage.error(this.$t('TPZS.QXZYSCDSJ'));
+        iMessage.error(this.$t('TPZS.QXZXYCZDSJ'));
         return;
       }
       fetchDel(this.selection).then((res) => {
@@ -562,7 +585,7 @@ export default {
         this.$router.push({
           path: "/sourcing/partsrfq/bobNew",
           query: {
-            SchemeId: val.id,
+            chemeId: val.id,
             rfqId: val.rfqNo || ''
           },
         });
@@ -574,8 +597,12 @@ export default {
       }
     },
     //点击关闭报告预览弹窗
-    handleCloseReport() {
+    handleCloseReport () {
       this.reportVisible = false
+    },
+    //给方案数据设置斑马纹样式名
+    rowStyle({row}) { 
+      return row.fileType == this.$t('TPZS.SCHEME_TYPE') && row.number % 2 == 0 ? 'scheme' : 'report'
     }
   },
 };
@@ -601,7 +628,14 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  width: 150px;
+  width: 96%;
+}
+
+::v-deep .el-table .scheme{
+  background-color: #e0eafd;
+}
+::v-deep .el-table .report {
+  background-color: #fff;
 }
 
 .bob-main {
@@ -634,8 +668,7 @@ export default {
       transform: rotate(270deg);
     }
   }
-
-  .openPage {
+  ::v-deep .openPage {
     position: relative;
     color: $color-blue;
     font-size: 14px;
@@ -660,5 +693,6 @@ export default {
   .stickIcon :hover {
     cursor: pointer;
   }
+
 }
 </style>

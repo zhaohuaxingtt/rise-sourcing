@@ -1,6 +1,6 @@
 <!--
  * @Author: moxuan
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Description: VP分析详情
 -->
 <template>
@@ -62,6 +62,7 @@
             :targetScatterData="curveChartData.targetScatterData"
             :cpLineData="curveChartData.cpLineData"
             :lineData="curveChartData.lineData"
+            :dataInfo="dataInfo"
         />
       </iCard>
 
@@ -161,7 +162,8 @@ export default {
       analyzeLoading: false,
       currentSupplierId: '',
       saveDialog: false,
-      currentSchemeId: this.$route.query.schemeId
+      currentSchemeId: this.$route.query.schemeId,
+      tableLoading: false,
     };
   },
   methods: {
@@ -201,9 +203,12 @@ export default {
     async getDataInfo() {
       try {
         this.pageLoading = true;
+        this.analyzeLoading = true;
+        this.tableLoading = true;
         let req = {
           partsId: this.currentPartsId,
           supplierId: this.currentSupplierId,
+          inMode: this.$store.state.rfq.entryStatus,
         };
         if (this.$route.query.type === 'edit') {
           req.id = this.currentSchemeId;
@@ -224,9 +229,13 @@ export default {
         const analysisCurveData = Array.isArray(this.dataInfo.analysisCurve) ? this.dataInfo.analysisCurve : [];
         this.handleCurveData(analysisCurveData);
         this.pageLoading = false;
+        this.analyzeLoading = false;
+        this.tableLoading = false;
       } catch {
         this.dataInfo = {};
         this.pageLoading = false;
+        this.analyzeLoading = false;
+        this.tableLoading = false;
       }
     },
     async saveOrUpdateScheme(params, extraParams = {}) {
@@ -239,10 +248,11 @@ export default {
           supplierId: this.currentSupplierId,
           batchNumber: this.currentBatchNumber,
           partsList: [this.partList[this.partItemCurrent]],
+          inMode: this.$store.state.rfq.entryStatus,
           ...extraParams,
         };
         if (this.$route.query.type === 'edit') {
-          req.id = this.$route.query.schemeId;
+          req.id = this.currentSchemeId;
         }
         if (req.supplierId) {
           this.dataInfo.supplierList.map(item => {
@@ -253,20 +263,21 @@ export default {
         }
         if (params === 'all') {
           this.pageLoading = true;
+          req.operationFlag = 'S3';
         } else if (params === 'analyze') {
           this.analyzeLoading = true;
+          req.operationFlag = 'S1';
         } else if (params === 'table') {
           this.tableLoading = true;
+          req.operationFlag = 'S2';
         }
         req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(
             this.$refs.totalUnitPriceTable.hideTableData);
         req.estimatedActualTotalPro = deleteThousands(this.$refs.analyzeChart.dropPotential.estimatedActualTotalPro);
         const res = await saveOrUpdateScheme(req);
-        this.resultMessage(res);
-        this.getDataInfo();
-        this.pageLoading = false;
-        this.analyzeLoading = false;
-        this.tableLoading = false;
+        this.resultMessage(res, () => {
+          this.currentSchemeId = res.data;
+        });
         if (res.result) {
           if (this.$route.query.type === 'add') {
             this.$router.push({
@@ -277,8 +288,15 @@ export default {
                 round: this.$route.query.round,
               },
             });
+          } else {
+            await this.getDataInfo();
           }
+        } else {
+          await this.getDataInfo();
         }
+        this.pageLoading = false;
+        this.analyzeLoading = false;
+        this.tableLoading = false;
       } catch {
         this.pageLoading = false;
         this.analyzeLoading = false;
@@ -311,7 +329,7 @@ export default {
         ).then(async () => {
           await this.handleSaveProcess(reqParams, true);
         }).catch(async () => {
-          await this.handleSaveProcess(reqParams);
+          this.saveDialog = true
         });
       } else {
         await this.handleSaveProcess(reqParams);
@@ -382,6 +400,7 @@ export default {
     },
     // 保存自定义零件
     saveCustomPart() {
+      console.log('visible', this.customDialog.visible);
       this.$set(this.customDialog, 'visible', false);
       this.getDataInfo();
     },

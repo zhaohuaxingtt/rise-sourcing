@@ -7,7 +7,7 @@
         <div>{{ $t('TPZS.GHQSSJ') }}</div>
       </div>
       <div class="massProductionTime" :style="{'left': (this.massProductionTimeRateDot) + '%'}">
-<!--        <icon symbol name="iconbaojiapingfengenzong-jiedian-cheng" class="iconStyle"/>-->
+        <!--        <icon symbol name="iconbaojiapingfengenzong-jiedian-cheng" class="iconStyle"/>-->
         <img src="./images/orange.png" class="iconStyle" style="width: 16px; height: 16px">
         <div style="margin-left: -50%; text-align: center">
           <div class="margin-top26 iconColor" style="line-height: 16px;text-align: center">
@@ -18,9 +18,9 @@
         </div>
       </div>
       <div class="achievementRate" :style="{'left': (this.achievementRateDot) + '%'}">
-<!--        <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>-->
+        <!--        <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>-->
         <img src="./images/blue.png" class="iconStyle" style="width: 16px; height: 16px">
-        <div style="margin-left: -50%; text-align: center">
+        <div style="margin-left: -75%; text-align: center">
           <div class="iconColor" style="line-height: 16px; margin-top: -36px;text-align: center">{{
               this.achievementRate
             }}%
@@ -48,16 +48,16 @@
           <iText class="valueWidth">{{ toThousands(dataInfo.actualProEndLastMonth) }}</iText>
           <template v-if="dataInfo.proGrowthRate > 0">
             <div class="flex-align-center">
-<!--              <icon symbol name="iconshangsheng-VP" class="margin-left15 margin-right5"></icon>-->
+              <!--              <icon symbol name="iconshangsheng-VP" class="margin-left15 margin-right5"></icon>-->
               <img src="./images/upload.png" class="margin-left15 margin-right5" style="width: 10px; height: 10px">
-              <span class="up">{{ dataInfo.proGrowthRate }}%</span>
+              <span class="up">{{ toFixedNumber(dataInfo.proGrowthRate, 2) }}%</span>
             </div>
           </template>
           <template v-else-if="dataInfo.proGrowthRate < 0">
             <div class="flex-align-center">
-<!--              <icon symbol name="iconxiajiang-VP" class="margin-left15 margin-right5"></icon>-->
+              <!--              <icon symbol name="iconxiajiang-VP" class="margin-left15 margin-right5"></icon>-->
               <img src="./images/down.png" class="margin-left15 margin-right5" style="width: 10px; height: 10px">
-              <span class="down">{{ dataInfo.proGrowthRate }}%</span>
+              <span class="down">{{ toFixedNumber(dataInfo.proGrowthRate, 2) }}%</span>
             </div>
           </template>
 
@@ -97,29 +97,31 @@
                   <div class="subduction-num">1</div>
                   <div class="right-bracket">）</div>
                   <div class="multiply">✖️</div>
-                  <div class="multiply-num">{{ this.dropPotential.fixedCost }}%</div>
+                  <div class="multiply-num">{{ toFixedNumber(this.dropPotential.fixedCost, 2) }}%</div>
                 </div>
                 <div class="row2">
                   <div class="equal">=</div>
-                  <div class="result">{{ this.dropPotential.result }}%</div>
+                  <div class="result">{{ toFixedNumber(this.dropPotential.result, 2) }}%</div>
                 </div>
               </div>
               <!--              <div v-katex="dropPotentialTips"></div>-->
               <div class="margin-left32 margin-top10">
                 <!--                降本单价-->
                 <span class="font-weight" style="color:#000305">{{ $t('TPZS.JBDJ') }}</span>
-                <span style="color:#4C6C9C">{{ dropPotential.costReductionUnitPrice }}{{ $t('TPZS.YUAN') }}</span>
+                <span style="color:#4C6C9C">{{ toFixedNumber(dropPotential.costReductionUnitPrice, 2) }}{{
+                    $t('TPZS.YUAN')
+                  }}</span>
               </div>
               <icon symbol name="iconxinxitishi" class="tipIcon" slot="reference"></icon>
             </el-popover>
           </div>
           <iText class="valueWidth bgGreen" v-if="dataInfo.reductionPotential < 0">
-            {{ dataInfo.reductionPotential }}%
+            {{ toFixedNumber(dataInfo.reductionPotential, 2) }}%
           </iText>
           <iText class="valueWidth bgRed" v-else-if="dataInfo.reductionPotential > 0">
-            {{ dataInfo.reductionPotential }}%
+            {{ toFixedNumber(dataInfo.reductionPotential, 2) }}%
           </iText>
-          <iText class="valueWidth" v-else>{{ dataInfo.reductionPotential }}</iText>
+          <iText class="valueWidth" v-else>{{ toFixedNumber(dataInfo.reductionPotential, 2) }}</iText>
         </div>
       </div>
       <div class="right">
@@ -151,7 +153,10 @@
               <icon symbol name="iconxinxitishi" class="tipIcon2" slot="reference"></icon>
             </el-popover>
           </div>
-          <iText class="valueWidth font-weight">{{ toThousands(dataInfo.achievedReductionPrice) }}%</iText>
+          <iText class="valueWidth font-weight">{{
+              toThousands(toFixedNumber(dataInfo.achievedReductionPrice, 2))
+            }}%
+          </iText>
         </div>
       </div>
     </div>
@@ -163,7 +168,7 @@ import {icon, iInput, iLabel, iText} from 'rise';
 import moment from 'moment';
 import VueKatex from 'vue-katex';
 import 'katex/dist/katex.min.css';
-import {toThousands, deleteThousands} from '@/utils';
+import {toThousands, deleteThousands, toFixedNumber} from '@/utils';
 
 export default {
   components: {
@@ -193,15 +198,16 @@ export default {
           'TPZS.JIHUAZHONGCHANLIANG')}}}{\\mathrm{${this.$t(
           'TPZS.YUJIZONGCHANLIANG')}}}\\;\\;-\\;1\\right)\\times\\mathrm{${this.$t('TPZS.GUDINGCHENGBEN')}}\\%\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
       =\\left(\\frac{${this.dropPotential.totalPlannedOutputTipsData}}{${this.dropPotential.estimatedTotalProductionTipsData}}-\\;1\\right)\\times${this.dropPotential.fixedCost}\\%\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
-      =${this.dropPotential.result}\\%\\\\\\end{array}`;
+      =${this.toFixedNumber(this.dropPotential.result, 2)}\\%\\\\\\end{array}`;
     },
     additionalPriceReductionTips() {
       //总降价
       //降价
       return `\\begin{array}{l}\\\\=\\;\\mathrm{${this.$t('TPZS.ZONGJIANGJIA')}}\\;-\\;LTC\\mathrm{${this.$t(
           'TPZS.JIANGJIA')}}\\\\\\\\
-      =${this.additionalPriceReduction.totalPriceReduction}\\%\\;-（${this.additionalPriceReduction.priceReduction}\\%）\\\\\\\\
-      =${this.additionalPriceReduction.result}\\%\\\\\\end{array}`;
+      =${this.toFixedNumber(this.additionalPriceReduction.totalPriceReduction, 2)}\\%\\;-（${this.toFixedNumber(
+          this.additionalPriceReduction.priceReduction, 2)}\\%）\\\\\\\\
+      =${this.toFixedNumber(this.additionalPriceReduction.result, 2)}\\%\\\\\\end{array}`;
     },
   },
   mounted() {
@@ -228,6 +234,7 @@ export default {
     };
   },
   methods: {
+    toFixedNumber,
     toThousands,
     moment(date) {
       return moment(date);
@@ -324,7 +331,7 @@ export default {
     height: 80px;
 
     .iconStyle {
-      left: 18px;
+      //left: 18px;
     }
 
     .iconColor {

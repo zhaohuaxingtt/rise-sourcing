@@ -150,6 +150,12 @@ const menuApplication = [
   }
 ]
 
+const sprint12 = [
+  {
+    title: '供应商绩效',
+    url: '/supplier/kpi'
+  },
+]
 export default [
   {
     icon: 'iconhomeweixuanzhong',
@@ -166,6 +172,7 @@ export default [
     key: 'tow',
     url: '/supplier',
     // subMenus: menuApplication
+    subMenus: sprint12
   },
   {
     icon: 'iconcommonfunctionweixuanzhong',

@@ -4,6 +4,7 @@
 
 <script>
 import echarts from '@/utils/echarts';
+import {toFixedNumber} from '@/utils';
 
 export default {
   props: {
@@ -42,7 +43,13 @@ export default {
       default: () => {
         return [];
       },
-    }
+    },
+    dataInfo: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   mounted() {
     this.initEcharts();
@@ -51,13 +58,24 @@ export default {
     return {};
   },
   methods: {
+    setBg(data) {
+      return {
+        color: '#fff',
+        padding: [4, 8],
+        align: 'center',
+        backgroundColor: data > 0 ? '#C00000' : '#70AD47',
+        borderRadius: 5,
+      };
+    },
     initEcharts() {
       const chart = echarts().init(this.$refs.curve);
       const newestScatterDataX = this.newestScatterData[0] ? this.newestScatterData[0][0] : 0;
       const targetScatterDataX = this.targetScatterData[0] ? this.targetScatterData[0][0] : 0;
       const newestScatterDataY = this.newestScatterData[0] ? this.newestScatterData[0][1] : 0;
       const targetScatterDataY = this.targetScatterData[0] ? this.targetScatterData[0][1] : 0;
-      const xMax = this.cpLineData[0]
+      const reductionPotential = this.dataInfo.reductionPotential;
+      const proGrowthRate = this.dataInfo.proGrowthRate;
+      const xMax = this.cpLineData[0];
       const option = {
         // ['最新定点单价', '目标单价']
         legend: {
@@ -92,6 +110,10 @@ export default {
           type: 'value',
           // 单价\n' + '（元/件）
           name: this.$t('TPZS.DANJIA') + '\n' + this.$t('TPZS.YUANJIAN'),
+          nameTextStyle: {
+            align: 'center',
+            padding: [0, 0, 0, -50],
+          },
           splitLine: {
             lineStyle: {
               type: 'dashed',
@@ -104,17 +126,55 @@ export default {
             },
           },
           axisLabel: {
-            show: false
-          }
+            show: false,
+          },
         },
-        color: '#0059FF',
+        visualMap: {
+          type: 'piecewise',
+          show: false,
+          dimension: 0,
+          seriesIndex: 0,
+          pieces: [
+            {
+              gt: newestScatterDataX,
+              lt: targetScatterDataX,
+              color: '#0059FF',
+            },
+          ],
+        },
         series: [
+          {
+            type: 'line',
+            smooth: true,
+            data: this.lineData,
+            symbol: 'none',
+            lineStyle: {
+              color: '#0059FF',
+            },
+            areaStyle: {},
+          },
           {
             //最新定点单价
             name: this.$t('TPZS.ZUIXINDINGDIANDANJIA'),
             type: 'scatter',
             data: this.newestScatterData,
             color: '#0059FF',
+            label: {
+              offset: [30, 0],
+              rich: {
+                bg: this.setBg(proGrowthRate),
+              },
+              // distance: 12,
+              show: true,
+              position: 'top',
+              formatter: () => {
+                if (proGrowthRate > 0) {
+                  return `{bg|+${toFixedNumber(proGrowthRate, 2)}%}`;
+                } else {
+                  return `bg|${toFixedNumber(proGrowthRate, 2)}%`;
+                }
+              },
+            },
           },
           {
             //目标单价
@@ -122,12 +182,21 @@ export default {
             type: 'scatter',
             data: this.targetScatterData,
             color: '#70AD47',
-          },
-          {
-            type: 'line',
-            smooth: true,
-            data: this.lineData,
-            symbol: 'none',
+            label: {
+              rich: {
+                bg: this.setBg(reductionPotential),
+              },
+              // distance: 12,
+              show: true,
+              position: 'right',
+              formatter: () => {
+                if (reductionPotential > 0) {
+                  return `{bg|+${toFixedNumber(reductionPotential, 2)}%}`;
+                } else {
+                  return `{bg|${toFixedNumber(reductionPotential, 2)}%}`;
+                }
+              },
+            },
           },
           this.createXline(this.newestScatterData[0], newestScatterDataX),
           this.createXline(this.targetScatterData[0], targetScatterDataX),

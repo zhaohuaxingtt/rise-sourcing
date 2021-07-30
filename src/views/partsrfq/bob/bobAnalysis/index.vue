@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-26 14:47:10
+ * @LastEditTime: 2021-07-30 10:45:03
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -14,13 +14,14 @@
           <div class="flex-between-center">
             <span class="title">费用详情</span>
             <div class="wrap">
-              <span v-if="remark"
-                    class="margin-left40 remark">{{
-                remark
-              }}</span>
-              <span v-if="remark"
-                    class="margin-left40 remark2">备注：{{ remark }}</span>
+              <div v-if="remark"
+                   class="margin-left40 remark">
+                <span style="font-size:12px">{{ remark}}</span>
+              </div>
+              <div v-if="remark"
+                   class="margin-left40 remark2">备注：{{ remark }}</div>
             </div>
+
           </div>
           <div v-show="checkFLag&&!$attrs.reportSave">
             <iButton v-show="flag"
@@ -41,11 +42,13 @@
       </template>
       <table1 :tableList="tableList"
               v-if="totalTable"
-              v-bind="$attrs"></table1>
+              v-bind="$attrs"
+              :expends="expedsArr"></table1>
       <groupedTable ref="groupedTable"
                     class="margin-top20"
                     :tableList="groupList"
                     v-if="!totalTable"
+                    :activeName="activeName"
                     @removeList="removeList"
                     @groupBy="groupBtn"
                     v-bind="$attrs"></groupedTable>
@@ -106,8 +109,11 @@ import {
   getGroupInfo,
   addComponentToGroup,
   groupTerms,
-  removeComponentFromGroup
+  removeComponentFromGroup,
+  groupedCancel,
+  groupedSubmit
 } from "@/api/partsrfq/bob";
+import { update } from "@/api/partsrfq/bob/analysisList";
 import {
   tableList,
   ungroupList,
@@ -150,12 +156,18 @@ export default {
       result: [],
       activeName: "",
       checkFLag: true,
-      SchemeId: ""
+      SchemeId: "",
+      expedsArr: [],
+      expedsArr1: []
     };
   },
   created () {
     this.SchemeId = this.$attrs.analysisSchemeId
-    this.chargeRetrieve("all");
+    this.chargeRetrieve({
+      isDefault: true,
+      viewType: 'all',
+      schemaId: this.SchemeId
+    });
     this.getRfqToRemark();
     // if (this.$store.state.rfq.entryStatus === 1) {
     //   this.SchemeId = this.$route.query.rfqId
@@ -170,10 +182,34 @@ export default {
     // }
     // this.getRfqToRemark();
   },
+  props: {
+    label: {
+      type: String,
+      default: ""
+    },
+    formUpdata: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
   watch: {
     activeName: {
       handler (val) {
         console.log(val, "acitve")
+      }
+    },
+    label: {
+      handler (val) {
+        this.expedsArr = []
+        this.close()
+        this.$nextTick(function () {
+          this.expedsArr = []
+          this.expedsArr1 = this.tableList.element.filter(i => i.title === val)
+          this.recursion(this.expedsArr1)
+        });
+        // this.$set(this.expedsArr, 0, this.recursion(this.expedsArr1));
       }
     }
   },
@@ -181,9 +217,24 @@ export default {
     this.$EventBus.$on("activeName", res => {
       this.activeName = res
     })
+    window.addEventListener("scroll", this.handleScroll, true);
   },
   methods: {
-
+    handleScroll () {
+      let scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
+      scrolltop > 30 ? (this.gotop = true) : (this.gotop = false);
+    },
+    toTop () {
+      let top = document.documentElement.scrollTop || document.body.scrollTop;
+      // 实现滚动效果 
+      const timeTop = setInterval(() => {
+        this.$refs.ungroupedTable.$el.scrollTop = this.$refs.ungroupedTable.$el.offsetTop
+        // document.body.scrollTop = this.$refs.ungroupedTable.$el.offsetTop
+        if (top <= 0) {
+          clearInterval(timeTop);
+        }
+      }, 10);
+    },
     getRfqToRemark () {
       getRfqToRemark({
         rfqCode: this.rfqCode,
@@ -195,11 +246,8 @@ export default {
         }
       });
     },
-    chargeRetrieve (type) {
-      chargeRetrieve({
-        schemaId: this.SchemeId,
-        viewType: type,
-      })
+    chargeRetrieve (params) {
+      chargeRetrieve(params)
         .then((res) => {
           try {
             this.tableList = res;
@@ -236,6 +284,31 @@ export default {
       }
       return recursive(array)
     },
+    // allExpends () {
+    //   this.recursion
+    // },
+    recursion (data) {
+      if (!data) {
+        // return; 中断执行
+        return;
+      }
+      data.forEach(i => {
+        this.expedsArr.push(i.title)
+        if (i.child && i.child.length > 0) {
+          this.recursion(i.child)
+        }
+      })
+    },
+    // open () {
+    //   this.flag = false;
+    //   this.flag1 = true;
+    //   this.recursion(this.tableList.element)
+    // },
+    // close () {
+    //   this.flag = true;
+    //   this.flag1 = false;
+    //   this.$set(this.expedsArr, []);
+    // },
     open () {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
       if (this.tableList.element.length != 0 && els.length != 0) {
@@ -244,9 +317,7 @@ export default {
         for (let j1 = 0; j1 < els.length; j1++) {
           els[j1].classList.add("dafult");
         }
-        if (
-          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
-        ) {
+        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
           const open = this.$el.getElementsByClassName(
             "el-table__expand-icon--expanded"
           );
@@ -267,9 +338,7 @@ export default {
         const elsopen = this.$el.getElementsByClassName(
           "el-table__expand-icon--expanded"
         );
-        if (
-          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
-        ) {
+        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
           for (let i = 0; i < elsopen.length; i++) {
             elsopen[i].click();
           }
@@ -296,12 +365,20 @@ export default {
         }).then(res => {
           loading.close();
           iMessage.success('还原成功')
-          this.chargeRetrieve("all");
+          this.chargeRetrieve({
+            isDefault: true,
+            viewType: 'all',
+            schemaId: this.SchemeId
+          });
         })
       }).catch(() => {
         loading.close();
         iMessage.error('还原失败')
-        this.chargeRetrieve("all");
+        this.chargeRetrieve({
+          isDefault: true,
+          viewType: 'all',
+          schemaId: this.SchemeId
+        });
       });
 
 
@@ -309,10 +386,10 @@ export default {
     sure (val, flag) {
       this.visible = flag;
       this.remark = val;
-      modifyRfqToRemark({
-        remark: this.remark,
-        rfqCode: this.rfqCode,
-      }).then(() => iMessage.success("备注成功"));
+      // modifyRfqToRemark({
+      //   remark: this.remark,
+      //   rfqCode: this.rfqCode,
+      // }).then(() => iMessage.success("备注成功"));
     },
     // 递归获取checked属性方法
     getTreeExpandKeys (obj) {
@@ -331,9 +408,26 @@ export default {
       this.visible = true;
     },
     group () {
-      this.totalTable = false;
-      this.groupby = true;
-      this.checkFLag = false
+      this.$confirm('请保存数据！', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // this.$parent.$parent.$parent.$parent.analysisSave = true
+        // this.$parent.$parent.$parent.$parent.isCover = false
+        // this.$parent.$parent.$parent.$parent.save()
+        update(this.formUpdata).then(res => {
+          iMessage.success("保存成功");
+          this.totalTable = false;
+          this.groupby = true;
+          this.checkFLag = false
+        })
+      }).catch(() => {
+        this.totalTable = true;
+        this.groupby = false;
+        this.checkFLag = true
+      })
+
     },
     groupBtn (e, result, activeName) {
       if (result.length === 0) {
@@ -355,7 +449,6 @@ export default {
         this.$message.error('请选择分组');
         return
       }
-      console.log(this.activeName, "group")
       addComponentToGroup({
         groupId: this.value1.matchId,
         groupName: this.value1.groupName,
@@ -364,9 +457,17 @@ export default {
         // this.$refs.ungroupedTable.activeName = ""
         this.$nextTick(() => {
           this.$refs.ungroupedTable.activeName = this.activeName
-          this.$refs.ungroupedTable.chargeRetrieve(this.activeName)
+          this.$refs.ungroupedTable.chargeRetrieve({
+            isDefault: true,
+            viewType: this.activeName,
+            schemaId: this.SchemeId
+          })
         });
-        this.$refs.groupedTable.chargeRetrieve(this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped')
+        this.$refs.groupedTable.chargeRetrieve({
+          isDefault: true,
+          schemaId: this.SchemeId,
+          viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped'
+        })
         this.visible1 = false;
       })
     },
@@ -375,30 +476,61 @@ export default {
       if (!this.activeName) {
         this.activeName = "rawUngrouped"
       }
-      const params = this.$refs.groupedTable.checkLists
       removeComponentFromGroup({
-        roundDetailIdList: params
+        roundDetailIdList: this.$refs.groupedTable.checkLists
       }).then(res => {
-        this.$refs.groupedTable.chargeRetrieve(this.activeName === 'rawUngrouped' ? 'rawGrouped' : "maGrouped")
-        this.$refs.ungroupedTable.chargeRetrieve(this.activeName)
+        this.$refs.groupedTable.chargeRetrieve({
+          isDefault: true,
+          viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : "maGrouped",
+          schemaId: this.SchemeId
+        })
+        this.$refs.ungroupedTable.chargeRetrieve({
+          isDefault: true,
+          viewType: this.activeName,
+          schemaId: this.SchemeId
+        })
       })
     },
     finish () {
-      this.finishGroup()
+      groupedSubmit({
+        schemaId: this.SchemeId
+      }).then((res) => {
+        this.finishGroup()
+      })
     },
     off () {
-      this.finishGroup()
+      groupedCancel({
+        schemaId: this.SchemeId
+      }).then(res => {
+        this.finishGroup()
+      })
+
     },
     finishGroup () {
       this.totalTable = true
       this.groupby = false
       this.checkFLag = true
-      this.chargeRetrieve("all");
+      this.chargeRetrieve({
+        isDefault: true,
+        viewType: 'all',
+        schemaId: this.SchemeId
+      });
     },
     down () {
-      down({
-        schemaId: this.SchemeId,
-      }).then((res) => { });
+      this.formUpdata.remark = this.remark
+      this.$confirm('请保存数据！', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        update(this.formUpdata).then(res => {
+          iMessage.success("保存成功");
+          down({
+            schemaId: this.SchemeId,
+          }).then((res) => { });
+        })
+      })
+
     },
   },
 };
@@ -411,28 +543,29 @@ export default {
 //   font-size: $font-size18 ;
 // }
 .wrap {
-  width: 100px;
+  width: 300px;
   position: relative;
 }
 .title {
   font-size: $font-size18 !important;
 }
 .remark {
-  font-size: $font-size14 !important;
-  font-weight: normal;
-  color: #949494;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-size: $font-size12 !important;
+  line-height: 24px;
+  font-weight: normal;
+  color: #949494;
 }
 .remark2 {
+  width: 800px;
   font-size: $font-size14 !important;
   font-weight: normal;
   color: #949494;
   position: absolute;
   top: -40px;
   left: 40px;
-  width: 400px;
   padding: 10px;
   box-shadow: 0px 3px 10px rgba(27, 29, 33, 0.16);
   border-radius: 5px;

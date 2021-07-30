@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-07-21 11:21:47
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-27 14:46:00
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
 -->
@@ -17,7 +17,7 @@
     >
       <template #fsnrGsnrNum="scope">
         <span v-if="scope.row.partProjectType === partProjTypes.PEIJIAN" class="openLinkText cursor " @click="$emit('gotoAccessoryDetail', scope.row)"> {{ scope.row.fsnrGsnrNum }}</span>
-        <span v-else>{{ scope.row.fsnrGsnrNum }}</span>
+        <span v-else class="openLinkText cursor " @click="$emit('openPage', scope.row)">{{ scope.row.fsnrGsnrNum }}</span>
       </template>
     </tableList>
     <iPagination

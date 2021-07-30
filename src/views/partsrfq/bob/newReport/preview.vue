@@ -26,8 +26,12 @@
           </div>
         </el-col>
       </el-row>
-      <div>{{ $t("费用详情") }}</div>
-      <table1 :tableList="tableList"></table1>
+      <div style="margin-top:20px;">
+        <span style="font-weight:bold;font-size:14px">
+          {{ $t("费用详情") }}
+        </span>
+      </div>
+      <table1 :tableList="tableList" style="margin-top:20px"></table1>
       <!-- <table2 :dataList="dataList2"></table2>
       <table3 :dataList="dataList3"></table3>
       <table4 :dataList="dataList4"></table4>
@@ -111,7 +115,7 @@ export default {
   },
   mounted () {
     this.analysisSchemeId = this.$attrs.analysisSchemeId
-    this.chargeRetrieve("all");
+    this.chargeRetrieve();
     this.getChartData();
 
     // if (this.inside === 0) {
@@ -167,8 +171,9 @@ export default {
     },
     chargeRetrieve (type) {
       chargeRetrieve({
-        schemaId: this.analysisSchemeId,
-        viewType: type,
+        viewType: 'all',
+        isDefault: true,
+        schemaId: this.analysisSchemeId
       })
         .then((res) => {
           this.tableList = res;
@@ -280,7 +285,7 @@ export default {
   }
   .left-dash1 {
     border: none;
-    border-left: 5px dashed grey;
+    // border-left: 5px dashed grey;
     .icon-add {
       margin-top: 100px;
       margin-bottom: 20px;
@@ -295,5 +300,4 @@ export default {
   height: 0;
   clear: both;
 }
-
 </style>

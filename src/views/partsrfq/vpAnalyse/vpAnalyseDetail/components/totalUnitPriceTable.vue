@@ -2,10 +2,10 @@
   <div>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
-        <span class="margin-right30">{{ $t('TPZS.ZONGDANJIA') }}：{{ dataInfo.totalPrice }}{{
+        <span class="margin-right30">{{ $t('TPZS.ZONGDANJIA') }}：{{ toFixedNumber(dataInfo.totalPrice, 2) }}{{
             language('TPZS.YUANKUAHAO', '（元）')
           }}</span>
-        <span>{{ $t('TPZS.GUDINGCHENGBENZHANBI') }}：{{ dataInfo.costProportion }}%</span>
+        <span>{{ $t('TPZS.GUDINGCHENGBENZHANBI') }}：{{ toFixedNumber(dataInfo.costProportion, 2) }}%</span>
       </span>
       <div class="floatright">
         <template v-if="tableStatus === 'edit'">
@@ -50,14 +50,8 @@
           <iInput v-model="scope.row.total" @input="handleNumber($event,scope.row, 'total')"/>
         </template>
       </template>
-      <template #apportionedNum>
-        <!--        <template v-if="apportionShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
-                  {{ scope.row.apportionedNum }}
-                </template>
-                <template v-else>
-                  <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
-                </template>-->
-        {{ toThousands(fiexedApportionedNum) }}
+      <template #apportionedNum="scope">
+        {{ toThousands(scope.row.apportionedNum) }}
       </template>
       <template #affectUnitPrice="scope">
         <template v-if="unitPriceShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
@@ -68,7 +62,7 @@
         </template>
       </template>
       <template #proportionOfAffectedCost="scope">
-        {{ toFixedNumber(scope.row.proportionOfAffectedCost, 1) }}%
+        {{ toFixedNumber(scope.row.proportionOfAffectedCost, 2) }}%
       </template>
       <!--自定义列结束-->
       <template #isShow="scope">
@@ -107,14 +101,8 @@
           <iInput v-model="scope.row.total" @input="handleNumber($event,scope.row, 'total')"/>
         </template>
       </template>
-      <template #apportionedNum>
-        <!--        <template v-if="apportionShowOnly.includes(scope.row.type)">
-                  {{ scope.row.apportionedNum }}
-                </template>
-                <template v-else>
-                  <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
-                </template>-->
-        {{ toThousands(fiexedApportionedNum) }}
+      <template #apportionedNum="scope">
+        {{ toThousands(scope.row.apportionedNum) }}
       </template>
       <template #affectUnitPrice="scope">
         <template v-if="unitPriceShowOnly.includes(scope.row.type)">
@@ -125,7 +113,7 @@
         </template>
       </template>
       <template #proportionOfAffectedCost="scope">
-        {{ toFixedNumber(scope.row.proportionOfAffectedCost, 1) }}%
+        {{ toFixedNumber(scope.row.proportionOfAffectedCost, 2) }}%
       </template>
       <!--自定义列结束-->
       <template #isShow="scope">
@@ -218,6 +206,7 @@ export default {
       this.tableListData.push({
         ...newItem,
         time,
+        apportionedNum: this.fiexedApportionedNum,
         isShow: true,
       });
     },
@@ -306,7 +295,7 @@ export default {
             this.hideTableData.push(item);
           }
         });
-        this.fiexedApportionedNum = this.tableListData.length > 0 ? this.tableListData[0].apportionedNum : this.hideTableData[0].apportionedNum;
+        this.fiexedApportionedNum = this.dataInfo.planTotalPro
       } catch {
         this.tableListData = [];
         this.hideTableData = [];
@@ -341,10 +330,10 @@ export default {
     handleNumber(val, row, props) {
       this.$set(row, props, numberProcessor(val, 2));
       if (props === 'total') {
-        const result = row.total / this.fiexedApportionedNum;
+        const result = row.total / row.apportionedNum;
         this.$set(row, 'affectUnitPrice', result);
       } else if (props === 'affectUnitPrice') {
-        const result = row.affectUnitPrice * this.fiexedApportionedNum;
+        const result = row.affectUnitPrice * row.apportionedNum;
         this.$set(row, 'total', result);
       }
     },
@@ -371,6 +360,10 @@ export default {
 ::v-deep .el-form-item {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+::v-deep .el-table .el-table__body-wrapper {
+  min-height: auto;
 }
 
 .iconStyle {

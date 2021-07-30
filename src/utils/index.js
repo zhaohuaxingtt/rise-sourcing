@@ -246,9 +246,6 @@ export function filterProjectList(oldProjectList,currentProjectType){
 
 //小数点精确
 export function toFixedNumber(number, m) {
-  if (typeof number !== 'number') {
-    throw new Error("number不是数字");
-  }
   number = Number(number)
   let result = Math.round(Math.pow(10, m) * number) / Math.pow(10, m);
   result = String(result);

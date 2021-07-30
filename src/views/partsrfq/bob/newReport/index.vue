@@ -75,7 +75,7 @@
                                value-key
                                :multiple-limit="chartType === 'turn' ? 5 : 1"
                                v-model="form.turn">
-                      <el-option value="-1"
+                      <el-option :value="Number('-1')"
                                  label="最新"
                                  v-if="chartType!=='turn'"></el-option>
                       <el-option v-for="(i, index) in turnList"
@@ -182,7 +182,6 @@
               </el-col>
               <el-col :span="6"
                       v-if="inside">
-
                 <!-- <div style="border: 1px dashed #ccc;width: 1px;height:320px;"></div> -->
                 <div class="left-dash1">
                   <div v-if="chartData1.length > 0"
@@ -200,25 +199,24 @@
                            style="width:220px;height:300px">
                       <div style="text-align: center;color:#8F8F90">{{ $t("待添加") }}</div>
                     </div>
-
                   </div>
                 </div>
-
               </el-col>
             </iRow>
           </iCard>
         </el-col>
       </el-row>
       <el-row :gutter="20"
-              class="margin-top20">
-        <el-col :span="inside?4:5">
+              class="margin-top20"
+            >
+        <el-col :span="inside?4:5" >
           <iCard :collapse="false"
-                 style="height: 560px"
+                 
                  v-if="!reportSave">
             <ul class="anchorList flex">
               <li v-for="(i,index) in anchorList"
                   :key="index"
-                  @click="doActive(index)"
+                  @click="doActive(i,index)"
                   :class="{active:index==current}">{{i}}
               </li>
             </ul>
@@ -229,7 +227,10 @@
                        :supplierList="supplierList"
                        :partList="partList"
                        :analysisSchemeId="analysisSchemeId"
-                       :reportSave="reportSave"></bobAnalysis>
+                       :reportSave="reportSave"
+                       :label="label"
+                       :bobType="bobType"
+                       :formUpdata="formUpdata"></bobAnalysis>
         </el-col>
       </el-row>
     </div>
@@ -248,7 +249,8 @@
              @closeDialog="closePreView"></preview>
     <iDialog title="保存"
              :visible.sync="dialogVisible"
-             width="20%">
+             width="20%"
+             @close="close">
       <div>
         <div class="margin-bottom15 flex-between-center">
           <label for="">保存在分析库</label>
@@ -339,8 +341,10 @@ export default {
       analysisSave: false,
       reportSave: false,
       anchorList: ['原材料/散件', '制造费', '报废成本', '管理费', '其他费用', '利润'],
-      current: 0,
-      isCover: true
+      current: null,
+      isCover: true,
+      label: "",
+      formUpdata: {}
     };
   },
   created () {
@@ -350,7 +354,7 @@ export default {
       if (this.entryStatus === 1) {
         this.inside = true
         this.rfq = this.$store.state.rfq.rfqId
-        this.analysisSchemeId = this.$route.query.SchemeId
+        this.analysisSchemeId = this.$route.query.chemeId
         this.getChartData()
       } else if (this.entryStatus === 0) {
         this.findPart()
@@ -367,32 +371,10 @@ export default {
           this.inside = false
         }
       }
-      this.analysisSchemeId = this.$route.query.SchemeId
+      this.analysisSchemeId = this.$route.query.chemeId
       this.getChartData()
     }
-
-
-
-    // console.log(this.$route.query, "query")
-    // if (this.$store.state.rfq.entryStatus === 1) {
-    //   this.inside = true;
-    //   this.rfq = this.$store.state.rfq.rfqId
-    //   this.analysisSchemeId = this.$route.query.rfqId;
-    //   this.getChartData();
-    // } else {
-    //   if (this.$route.query.SchemeId) {
-    //     this.value = false
-    //     this.analysisSchemeId = this.$route.query.SchemeId;
-    //     this.getChartData();
-    //   } else {
-    //     this.findPart()
-    //     this.analysisSchemeId = this.$store.state.rfq.SchemeId;
-    //   }
-    // }
-    // this.newBuild = this.$route.query.newBuild;
-    // if (this.newBuild) {
-    //   this.analysisSave = true;
-    // }
+    console.log(document.body.clientHeight)
   },
   watch: {
     analysisName: {
@@ -413,13 +395,12 @@ export default {
     // },
     chartType: {
       handler (newval) {
-        console.log(this.inside, "hahahah")
         if (!this.inside) {
           this.chartType = 'combination'
         }
         // this.inside ? "supplier" : "mixComp"
       },
-    }
+    },
   },
   mounted () {
   },
@@ -494,7 +475,6 @@ export default {
     },
     sure () { },
     changeBy (e) {
-      console.log(e)
       this.chartType = e;
       if (this.chartType === 'combination') {
         this.form = {
@@ -510,8 +490,12 @@ export default {
     },
     changeType (e) {
       this.bobType = e;
-      this.initChartData();
       this.closeDiv();
+      this.$refs.bobAnalysis.chargeRetrieve({
+        isDefault: true,
+        viewType: 'all',
+        schemaId: this.analysisSchemeId
+      })
     },
     goToBob () {
       this.$router.push("bob");
@@ -519,11 +503,14 @@ export default {
     closeDiv () {
       this.showSelectDiv = false;
     },
+    close () {
+      this.reportSave = false
+    },
     showSelect (e) {
       const position = e.event.target.position;
       console.log(position)
       this.showSelectDiv = true;
-      this.$refs.toolTipDiv.style.left = position[0] + -20 + "px";
+      this.$refs.toolTipDiv.style.left = position[0] + -40 + "px";
       this.$refs.toolTipDiv.style.top = position[1] + 15 + "px";
       this.$refs.toolTipSelect.focus();
     },
@@ -547,7 +534,16 @@ export default {
       if (val.length && val.length === 0) {
         iMessage.error('请选择数据')
         return
+      } else if (val.length > 20) {
+        iMessage.error('最多只能选择20条数据')
+        return
       }
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
       if (this.inside) {
         addBobOut({
           analysisSchemeId: this.analysisSchemeId,
@@ -557,15 +553,22 @@ export default {
           supplierId: val[0].supplierId,
         }).then((res) => {
           if (res.code == 200) {
+            loading.close()
             this.$message.success(res.desZh);
             this.getChartData();
-            this.$refs.bobAnalysis.chargeRetrieve('all')
+            this.$refs.bobAnalysis.chargeRetrieve({
+              viewType: 'all',
+              isDefault: true,
+              schemaId: this.analysisSchemeId
+            })
             this.closeDialog()
           } else {
+            loading.close()
             this.$message.error(res.desZh);
             this.closeDialog()
           }
         }).catch((error) => {
+          loading.close()
           this.$message.error(error.desZh);
           this.closeDialog()
         });
@@ -581,15 +584,21 @@ export default {
         })
         initOut({ list: arr }).then(res => {
           if (res.code === '200') {
+            loading.close()
             this.$message.success(res.desZh);
             this.analysisSchemeId = res.data
             this.$store.dispatch('setSchemeId', this.analysisSchemeId);
             this.$refs.bobAnalysis.SchemeId = res.data
-            this.$refs.bobAnalysis.chargeRetrieve('all')
+            this.$refs.bobAnalysis.chargeRetrieve({
+              viewType: 'all',
+              isDefault: true,
+              schemaId: this.analysisSchemeId
+            })
             // this.querySupplierTurnPartList()
             this.getChartData()
             this.closeDialog()
           } else {
+            loading.close()
             this.$message.error(res.desZh);
             this.closeDialog()
           }
@@ -600,7 +609,8 @@ export default {
     },
     searchChartData () {
       let params = {}
-      if (this.$store.state.rfq.entryStatus === 1) {
+      let tableParams = {}
+      if (this.inside) {
         params = {
           analysisSchemeId: this.analysisSchemeId,
           analysisDimension: this.chartType,
@@ -609,12 +619,28 @@ export default {
           turn: this.form.turn.join(","),
           defaultBobOptions: this.bobType
         }
+        tableParams = {
+          schemaId: this.analysisSchemeId,
+          analysisDimension: this.chartType,
+          spareParts: this.form.spareParts.join(","),
+          supplier: this.form.supplier.join(","),
+          turn: this.form.turn.join(","),
+          isDefault: false,
+          viewType: 'all'
+        }
       } else {
         params = {
           analysisSchemeId: this.$store.state.rfq.SchemeId,
           analysisDimension: this.chartType,
           combination: this.form.combination.join(","),
           defaultBobOptions: this.bobType
+        }
+        tableParams = {
+          schemaId: this.analysisSchemeId,
+          analysisDimension: this.chartType,
+          combination: this.form.combination.join(","),
+          isDefault: false,
+          viewType: 'all'
         }
       }
       getBobLevelOne(params).then((res) => {
@@ -641,11 +667,12 @@ export default {
             spareParts: [],
           };
           this.form.supplier = this.Split(allData.supplier, ",").map(Number);
-          this.form.turn = this.Split(allData.turn, ",");
+          this.form.turn = this.Split(allData.turn, ",").map(Number);
           this.form.spareParts = this.Split(allData.spareParts, ",");
+          this.getOptions()
         }
       });
-      this.$refs.bobAnalysis.chargeRetrieve("all");
+      this.$refs.bobAnalysis.chargeRetrieve(tableParams);
     },
     async getChartData () {
       if (this.inside) {
@@ -666,9 +693,9 @@ export default {
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
         this.analysisName = allData.name
+        this.$refs.bobAnalysis.remark = allData.remark
         this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
         if (this.chartType === 'combination') {
-
           this.form = {
             combination: []
           }
@@ -681,8 +708,32 @@ export default {
             spareParts: [],
           };
           this.form.supplier = this.Split(allData.supplier, ",").map(Number);
-          this.form.turn = this.Split(allData.turn, ",");
+          this.form.turn = this.Split(allData.turn, ",").map(Number)
           this.form.spareParts = this.Split(allData.spareParts, ",");
+          console.log(this.form)
+        }
+        if (this.inside) {
+          this.formUpdata = {
+            analysisDimension: this.chartType,
+            defaultBobOptions: this.bobType,
+            id: this.analysisSchemeId,
+            name: this.analysisName,
+            spareParts: this.form.spareParts.join(","),
+            supplierId: this.form.supplier.join(","),
+            turn: this.form.turn.join(","),
+            isCover: this.isCover,
+            // remark: this.$refs.bobAnalysis.remark
+          };
+        } else {
+          this.formUpdata = {
+            analysisDimension: this.chartType,
+            defaultBobOptions: this.bobType,
+            id: this.analysisSchemeId,
+            name: this.analysisName,
+            combination: this.form.combination.join(','),
+            isCover: this.isCover,
+            // remark: this.$refs.bobAnalysis.remark
+          };
         }
 
       });
@@ -693,7 +744,11 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.$message.success(res.desZh);
-          this.$refs.bobAnalysis.chargeRetrieve('all')
+          this.$refs.bobAnalysis.chargeRetrieve({
+            viewType: 'all',
+            isDefault: true,
+            schemaId: this.analysisSchemeId
+          })
           this.getChartData();
         } else {
           this.$message.error(res.desZh);
@@ -711,28 +766,6 @@ export default {
     },
     save () {
       let that = this;
-      let form = {}
-      if (this.inside) {
-        form = {
-          analysisDimension: this.chartType,
-          defaultBobOptions: this.bobType,
-          id: this.analysisSchemeId,
-          name: this.analysisName,
-          spareParts: this.form.spareParts.join(","),
-          supplierId: this.form.supplier.join(","),
-          turn: this.form.turn.join(","),
-          isCover: this.isCover
-        };
-      } else {
-        form = {
-          analysisDimension: this.chartType,
-          defaultBobOptions: this.bobType,
-          id: this.analysisSchemeId,
-          name: this.analysisName,
-          combination: this.form.combination.join(','),
-          isCover: this.isCover
-        };
-      }
       if (this.analysisSave) {
         this.dialogVisible = false
         if (this.isCover && !this.newBuild) {
@@ -741,7 +774,9 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            update(form)
+            this.formUpdata.remark = this.$refs.bobAnalysis.remark
+            this.formUpdata.name = this.analysisName
+            update(this.formUpdata)
               .then((res) => {
                 iMessage.success("保存成功");
                 this.dialogVisible = false;
@@ -759,7 +794,9 @@ export default {
             });
           });
         } else {
-          update(form)
+          this.formUpdata.remark = this.$refs.bobAnalysis.remark
+          this.formUpdata.name = this.analysisName
+          update(this.formUpdata)
             .then((res) => {
               iMessage.success("保存成功");
               this.dialogVisible = false;
@@ -806,17 +843,18 @@ export default {
         });
       }
     },
-    doActive (index) {
-      this.$nextTick(() => {
-        //页面滚动了的距离
-        let height = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-        //指定dom到页面顶端的距离
-        let nodeList = this.$el.querySelectorAll('.el-table__row--level-0')
-        nodeList[index].scrollIntoView({
-          top: nodeList[index].offsetTop - 40,
-          behavior: 'smooth',
-        })
-      });
+    doActive (i, index) {
+      this.label = i
+      /*  this.$nextTick(() => {
+         //页面滚动了的距离
+         let height = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+         //指定dom到页面顶端的距离
+         let nodeList = this.$el.querySelectorAll('.el-table__row--level-0')
+         nodeList[index].scrollIntoView({
+           top: nodeList[index].offsetTop - 40,
+           behavior: 'smooth',
+         })
+       }); */
       this.current = index
     }
   },

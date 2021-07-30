@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-23 10:14:44
+ * @LastEditTime: 2021-07-30 14:05:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -12,6 +12,7 @@
               :data="tableListData"
               style="width: 100%;margin-bottom: 20px;"
               row-key="number"
+              :row-class-name="rowStyle"
               :max-height="450"
               :tree-props="{children: 'children'}"
               @selection-change="handleSelectionChange"
@@ -25,31 +26,31 @@
                        :index="indexMethod"
                        align="center"
                        header-align="center"
-                       width="50">
+                       width="40">
       </el-table-column>
       <el-table-column align="center"
                        header-align="center"
                        :label="$t('TPZS.FXMC')"
-                       width="250">
+                       width="450">
         <template slot-scope="scope">
           <div class="openPage">
             <el-row :gutter="20">
-              <el-col :span="18">
+              <el-col :span="20">
                 <span v-if="!editMode"
                       style="textAlgin: center">
                   <el-tooltip :content="scope.row.analysisSchemeName"
                               placement="top"
                               effect="light">
-                    <p class="ellipsis"
+                    <span class="ellipsis"
                        v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
-                       @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</p>
+                       @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
                   </el-tooltip>
                   <el-tooltip :content="scope.row.reportName"
                               placement="top"
                               effect="light">
-                    <p class="ellipsis"
+                    <span class="ellipsis"
                        v-if="scope.row.type == $t('TPZS.REPORT_TYPE')"
-                       @click="clickReport(scope.row)">{{scope.row.reportName}}</p>
+                       @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
                   </el-tooltip>
                 </span>
                 <span v-else>
@@ -61,10 +62,10 @@
                           v-model="scope.row.reportName"></iInput>
                 </span>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="4">
                 <span v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')">
                   <span class="number">
-                    <p>{{scope.row.reportCount}}</p>
+                    {{scope.row.reportCount}}
                   </span>
                   <icon class="numberIcon"
                         style="{font-size:24px}"
@@ -84,12 +85,14 @@
       <el-table-column prop="rfqId"
                        align="center"
                        header-align="center"
-                       label="RFQ">
+                       label="RFQ"
+                       width="100">
       </el-table-column>
       <el-table-column prop="isDefault"
                        align="center"
                        header-align="center"
-                       :label="$t('TPZS.MRX')">
+                       :label="$t('TPZS.MRX')"
+                       width="80">
         <template slot-scope="scope">
           <div v-if="!editMode">
             <!-- {{scope.row.isDefault === '是' || scope.row.isDefault === '否' ? scope.row.isDefault : null}} -->
@@ -183,6 +186,10 @@ export default {
       type: Boolean,
       default: false
     },
+    searchData: {
+      type: Object,
+      default: () => {}
+    }
   },
   data () {
     return {
@@ -199,11 +206,10 @@ export default {
       reportKey: 0,
       round: null,        //round
       currentDefaultObj: null, //当前编辑对象
-      updatedDefault: false //是否已更新默认项
+      updatedDefault: false, //是否已更新默认项
     }
   },
   created () {
-    this.getTableData()
     this.round = this.$route.query.round ? this.$route.query.round : this.round
   },
   computed: {
@@ -234,15 +240,15 @@ export default {
       this.handleTableNumber(this.tableListData, 1, null)
     },
     // 初始化列表数据
-    getTableData (searchData) {
+    getTableData () {
       return new Promise(resolve => {
         const params = {
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
-          createByName: searchData ? searchData.createByName : null,
-          materialGroup: searchData ? searchData.materialGroup : null,
-          partsNo: searchData ? searchData.partsNo : null,
-          rfqNo: searchData ? searchData.rfqNo : this.$store.state.rfq.rfqId,
+          createByName: this.searchData && this.searchData.createByName ? this.searchData.createByName : null,
+          materialGroup: this.searchData && this.searchData.materialGroup ? this.searchData.materialGroup : null,
+          partsNo: this.searchData && this.searchData.partsNo ? this.searchData.partsNo : null,
+          rfqNo: this.searchData && this.searchData.rfqNo ? this.searchData.rfqNo : this.$store.state.rfq.rfqId,
         }
         getVpAnalysisDataList(params).then(res => {
           if (res && res.code == 200) {
@@ -347,7 +353,7 @@ export default {
       const ids = []
       const reportIds = []
       if (!this.selectionData || this.selectionData.length == 0) {
-        iMessage.error(this.$t('TPZS.QXZYSCDSJ'));
+        iMessage.error(this.$t('TPZS.QXZXYCZDSJ'));
         return;
       }
       this.selectionData.map(item => {
@@ -407,7 +413,6 @@ export default {
           });
           row.isChecked = false;
         }
-        // console.log(this.multipleSelection, row);
       }
     },
     selectAll (selection) {
@@ -435,14 +440,16 @@ export default {
           else items.isChecked = false;
         }
       });
-      // console.log(this.orgs)
 
     },
     //点击关闭报告预览弹窗
     handleCloseReport () {
       this.reportVisible = false
+    },
+    //给方案数据设置斑马纹样式名
+    rowStyle({row, rowIndex}) { 
+      return row.type == this.$t('TPZS.SCHEME_TYPE') && row.number % 2 == 0 ? 'scheme' : 'report'
     }
-
   }
 }
 </script>
@@ -470,7 +477,14 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  width: 150px;
+  width: 96%;
+}
+
+::v-deep .el-table .scheme{
+  background-color: #e0eafd;
+}
+::v-deep .el-table .report {
+  background-color: #fff;
 }
 
 .vpMainBox {
@@ -507,7 +521,7 @@ export default {
       transform: rotate(270deg);
     }
   }
-  .openPage {
+  ::v-deep .openPage {
     position: relative;
     color: $color-blue;
     font-size: 14px;
@@ -529,9 +543,13 @@ export default {
       top: 3px;
     }
   }
-
   .stickIcon:hover {
     cursor: pointer;
   }
 }
+
+
+
+
+
 </style>
