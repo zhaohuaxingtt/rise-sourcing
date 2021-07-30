@@ -11,9 +11,9 @@ export const searchList = [
   {props:'linieDeptNum',label:'科室',type:'input',labelKey:'LK_AEKOKESHI'},
   {props:'cartypeCode',label:'⻋型项⽬',type:'input',labelKey:'LK_AEKOCHEXINGXIANGMU'},
   {props:'frozenDate',label:'冻结⽇期',type:'datePicker',labelKey:'LK_AEKODONGJIERIQI'},
-  {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'f'},
-  {props:'aekoStatus',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'g',multiple:true},
-  {props:'coverStatus',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'h',multiple:true},
+  {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand'},
+  {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',multiple:true},
+  {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'coverStatusList',multiple:true},
   {props:'buyerName',label:'Linie',type:'input',labelKey:'LK_AEKOLINIE'},
 ]
 

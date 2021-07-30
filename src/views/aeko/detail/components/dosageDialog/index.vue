@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-07-29 11:42:20
+ * @LastEditTime: 2021-07-29 16:51:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -16,33 +16,54 @@
     <template #title>
       <p class="title">{{ language("ZHUANGCHELVMEICHEYONGLIANG", "装⻋率/每⻋⽤量") }}</p>
       <div class="control" id="control">
-        <iButton @click="handleConfirm">{{ language("QUEREN", "确认") }}</iButton>
+        <iButton @click="handleConfirm">{{ language("BAOCUN", "保存") }}</iButton>
       </div>
     </template>
     <div class="body">
-      <tableList
-        index
-        height="100%"
-        class="table"
-        lang
-        singleSelect
-        :tableData="tableListData"
-        :tableTitle="tableTitle"
-        :tableLoading="loading"
-        @handleSingleSelectChange="handleSingleSelectChange">
-      </tableList>
+      <div v-for="(carTypeProject, $i) in carTypeProjectList" :key="$i" class="carTypeProject">
+        <iFormGroup class="form" :row="4" inline>
+          <iFormItem class="item" v-for="(item, $index) in form" :key="$index" :label="`${ language(item.key, item.name) }`">
+            <div v-if="item.props === 'a'">
+              <iText v-if="lll">bbbasss</iText>
+              <iSelect
+                v-else
+                :placeholder="language('QINGXUANZE', '请选择')"
+              >
+                <el-option
+                  :value="item.value"
+                  :label="item.label"
+                  v-for="item in options"
+                  :key="item.key"
+                ></el-option>
+              </iSelect>
+            </div>
+            <iText v-if="item.props === 'b' || item.props === 'c'"></iText>
+            <iInput v-else-if="item.props === 'd'"></iInput>
+          </iFormItem>
+        </iFormGroup>
+        <tableList
+          index
+          lang
+          class="table margin-top30"
+          :selection="false"
+          :tableData="tableListData"
+          :tableTitle="tableTitle"
+          :tableLoading="loading">
+        </tableList>
+        <i class="dashes"></i>
+      </div>
     </div>
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iButton, iMessage } from "rise"
+import { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
-import { presentAllInPriceDialogTableTitle as tableTitle } from "../data"
+import { dosageDialogForm as form, dosageDialogTableTitle as tableTitle } from "../data"
 import filters from "@/utils/filters"
 
 export default {
-  components: { iDialog, iButton, tableList },
+  components: { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, tableList },
   mixins: [ filters ],
   props: {
     ...iDialog.props,
@@ -56,7 +77,7 @@ export default {
       if (nv) {
         this.getList()
       } else {
-        this.selectRow = null
+        // this.selectRow = null
       }
     },
   },
@@ -73,9 +94,13 @@ export default {
   data() {
     return {
       loading: false,
+      form,
+      options: [],
+      carTypeProjectList: [{}, {}, {}],
       tableTitle,
       tableListData: [],
-      selectRow: null
+      // selectRow: null,
+      lll: false
     };
   },
   methods: {
@@ -106,12 +131,9 @@ export default {
       // })
       // .catch(() => this.loading = false)
     },
-    handleSingleSelectChange(row) {
-      this.selectRow = row
-    },
     // 确认
     handleConfirm() {
-      this.$emit("confirm", this.selectRow)
+      // this.$emit("confirm", this.selectRow)
       this.status = false
     },
   }
@@ -153,6 +175,8 @@ export default {
 
     .body {
       height: 580px;
+      overflow-y: scroll;
+      padding-right: 15px;
     }
 
     .el-dialog__header {
@@ -160,15 +184,47 @@ export default {
     }
 
     .el-dialog__body {
-      @include pdtb(6px, 0);
+      @include pdtb(6px, 60px);
+      padding-right: 13px;
+    }
+  }
+
+  .carTypeProject {
+    &:not(&:first-of-type) {
+      padding-top: 50px;
+    }
+  }
+
+  .form {
+    ::v-deep .el-form-item {
+      margin-right: 60px;
+      margin-bottom: 0;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+
+      .el-form-item__label {
+        width: 140px;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .dashes {
+    margin-top: 40px;
+    display: block;
+    height: 1px;
+    border: 1px dashed #CFD3DD;
+  }
+
+  ::v-deep .el-table {
+    .el-table__body-wrapper {
+      min-height: initial !important;  
     }
 
-    .pagination {
-      margin-top: 0;
-    }
-
-    .el-dialog__footer {
-      @include pdtb(28px, 28px);
+    &::before {
+      background: transparent;
     }
   }
 }
