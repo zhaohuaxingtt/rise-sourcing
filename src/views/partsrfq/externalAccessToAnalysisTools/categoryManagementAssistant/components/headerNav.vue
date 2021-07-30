@@ -2,13 +2,16 @@
   <div>
     <div class="navBox">
       <iNavMvp :list="tabRouterList" class="margin-bottom20" routerPage :lev="1"/>
-      <iNavMvp
-          :list="categoryManagementAssistantList"
-          :lev='2'
-          right
-          routerPage
-          class="rightNav"
-      />
+      <div class="rightNav">
+        <iNavMvp
+            :list="categoryManagementAssistantList"
+            :lev='2'
+            right
+            routerPage
+            class="margin-right20"
+        />
+        <slot name="extralButton" ></slot>
+      </div>
       <logButton class="logButton"/>
     </div>
   </div>
@@ -38,6 +41,7 @@ export default {
   position: relative;
 
   .rightNav {
+    display: flex;
     position: absolute;
     top: 0;
     right: 110px;
