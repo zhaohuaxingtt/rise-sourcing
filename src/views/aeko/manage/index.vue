@@ -303,7 +303,7 @@ export default {
         const routeData = this.$router.resolve({
           path: '/aeko/aekodetail',
           query: {
-            id:1,
+            requirementAekoId:1,
           },
         })
         window.open(routeData.href, '_blank')
