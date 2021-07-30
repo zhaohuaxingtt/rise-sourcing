@@ -6,6 +6,15 @@ const VUE_APP_BMVIEW_FILE = axiosFile(process.env.VUE_APP_BMVIEW)
 const VUE_APP_BMMOLD = axios(process.env.VUE_APP_BMMOLD)
 const VUE_APP_BMMOLD_FILE = axiosFile(process.env.VUE_APP_BMMOLD)
 
+// 点击订单号权限判断
+export function getOrderNumPermission(parmars) {
+  return VUE_APP_BMVIEW({
+      url: '/getOrderNumPermission',
+      method: 'GET',
+      params: parmars
+  })
+}
+
 // 工艺类型集合
 export function craftTypes(parmars) {
   return VUE_APP_BMMOLD({

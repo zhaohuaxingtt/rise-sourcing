@@ -95,7 +95,7 @@
               <div class="txt">
                 <span>{{ language('LK_DINGDANHAO', '订单号') }}</span>
               </div>
-              <div class="disabled">{{detailsData.orderNum}}</div>
+              <div @click="jumpDetails()" class="disabled table-link">{{detailsData.orderNum}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -244,7 +244,8 @@ import {
   findMoldList4Ledger,
   exportsTableList,
   assetTypes,
-  craftTypes
+  craftTypes,
+  getOrderNumPermission
 } from "@/api/ws2/purchase/mouldBook";
 
 export default {
@@ -297,6 +298,17 @@ export default {
   },
 
   methods: {
+
+    //  点击订单详情
+    jumpDetails(){
+      getOrderNumPermission().then(res => {
+        if(res.data){
+          //  ...
+        }else{
+          iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限'));
+        }
+      })
+    },
 
     selectTable(){
       this.findMoldList4Ledger();

@@ -50,8 +50,8 @@
         </el-form-item>
 
         <el-form-item :label="language('LK_GONGYINGSHANG', '供应商')">
-          <!-- <iInput clearable :placeholder="language('LK_QINGSHURUGONGYINGSHANG', '请输入(11025-上海汇众)')" v-model="form['behalfPartsNum']" ></iInput> -->
-          <iSelect
+          <iInput clearable :placeholder="language('LK_QINGSHURUGONGYINGSHANG', '请输入(11025-上海汇众)')" v-model="form['designatedSupplierId']" ></iInput>
+          <!-- <iSelect
               class="multipleSelect"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               v-model="form['designatedSupplierId']"
@@ -65,7 +65,7 @@
                 v-for="(item, index) in supplierList"
                 :key="index"
             ></el-option>
-          </iSelect>
+          </iSelect> -->
         </el-form-item>
 
         <el-form-item :label="language('LK_KESHI', '科室')">
@@ -231,7 +231,7 @@ export default {
   methods: {
 
     reset(){
-      this.form = bmForm;
+      this.form = cloneDeep(bmForm);
       this.getTableList();
     },
 
@@ -325,10 +325,16 @@ export default {
       //   }
       // })
 
-      this.$router.push({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
+      if(row.isPremission){
+        // this.$router.push({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
 
-      // let {href} = this.$router.resolve({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
-      // window.open(href, '_blank');
+        let {href} = this.$router.resolve({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
+        window.open(href, '_blank');
+      }else{
+        iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN', '对不起，您所在得岗位没有该材料组权限'));
+      }
+
+      
       
     },
   }
