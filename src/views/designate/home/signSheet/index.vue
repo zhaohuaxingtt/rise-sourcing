@@ -131,9 +131,7 @@ export default {
       createSignSheet({}).then(res => {
         if (res.code === '200') {
           query = {
-            signCode: res.data.signCode,
-            id: res.data.id,
-            status: res.data.status && res.data.status.name || res.data.status
+            id: res.data.id
           }
           this.$router.push({path: '/sourcing/partsnomination/signSheet/details?mode=add', query})
         } else {

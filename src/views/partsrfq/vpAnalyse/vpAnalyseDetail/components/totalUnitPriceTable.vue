@@ -2,8 +2,10 @@
   <div>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
-        <span class="margin-right30">{{ $t('TPZS.ZONGDANJIA') }}：{{ dataInfo.totalPrice }}</span>
-        <span>{{ $t('TPZS.GUDINGCHENGBENZHANBI') }}：{{ dataInfo.costProportion }}%</span>
+        <span class="margin-right30">{{ $t('TPZS.ZONGDANJIA') }}：{{ toFixedNumber(dataInfo.totalPrice, 2) }}{{
+            language('TPZS.YUANKUAHAO', '（元）')
+          }}</span>
+        <span>{{ $t('TPZS.GUDINGCHENGBENZHANBI') }}：{{ toFixedNumber(dataInfo.costProportion, 2) }}%</span>
       </span>
       <div class="floatright">
         <template v-if="tableStatus === 'edit'">
@@ -42,31 +44,25 @@
       </template>
       <template #total="scope">
         <template v-if="totalShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
-          {{ scope.row.total }}
+          {{ toThousands(toFixedNumber(Number(scope.row.total), 2)) }}
         </template>
         <template v-else>
           <iInput v-model="scope.row.total" @input="handleNumber($event,scope.row, 'total')"/>
         </template>
       </template>
-      <template #apportionedNum>
-        <!--        <template v-if="apportionShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
-                  {{ scope.row.apportionedNum }}
-                </template>
-                <template v-else>
-                  <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
-                </template>-->
-        {{ fiexedApportionedNum }}
+      <template #apportionedNum="scope">
+        {{ toThousands(scope.row.apportionedNum) }}
       </template>
       <template #affectUnitPrice="scope">
         <template v-if="unitPriceShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
-          {{ scope.row.affectUnitPrice }}
+          {{ toThousands(toFixedNumber(Number(scope.row.affectUnitPrice), 2)) }}
         </template>
         <template v-else>
           <iInput v-model="scope.row.affectUnitPrice" @input="handleNumber($event,scope.row, 'affectUnitPrice')"/>
         </template>
       </template>
       <template #proportionOfAffectedCost="scope">
-        {{ scope.row.proportionOfAffectedCost }}%
+        {{ toFixedNumber(scope.row.proportionOfAffectedCost, 2) }}%
       </template>
       <!--自定义列结束-->
       <template #isShow="scope">
@@ -99,31 +95,25 @@
       </template>
       <template #total="scope">
         <template v-if="totalShowOnly.includes(scope.row.type)">
-          {{ scope.row.total }}
+          {{ toThousands(toFixedNumber(Number(scope.row.total), 2)) }}
         </template>
         <template v-else>
           <iInput v-model="scope.row.total" @input="handleNumber($event,scope.row, 'total')"/>
         </template>
       </template>
-      <template #apportionedNum>
-        <!--        <template v-if="apportionShowOnly.includes(scope.row.type)">
-                  {{ scope.row.apportionedNum }}
-                </template>
-                <template v-else>
-                  <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
-                </template>-->
-        {{ fiexedApportionedNum }}
+      <template #apportionedNum="scope">
+        {{ toThousands(scope.row.apportionedNum) }}
       </template>
       <template #affectUnitPrice="scope">
         <template v-if="unitPriceShowOnly.includes(scope.row.type)">
-          {{ scope.row.affectUnitPrice }}
+          {{ toThousands(toFixedNumber(Number(scope.row.affectUnitPrice), 2)) }}
         </template>
         <template v-else>
           <iInput v-model="scope.row.affectUnitPrice" @input="handleNumber($event,scope.row, 'affectUnitPrice')"/>
         </template>
       </template>
       <template #proportionOfAffectedCost="scope">
-        {{ scope.row.proportionOfAffectedCost }}%
+        {{ toFixedNumber(scope.row.proportionOfAffectedCost, 2) }}%
       </template>
       <!--自定义列结束-->
       <template #isShow="scope">
@@ -139,7 +129,7 @@
 import {iButton, icon, iInput, iMessage, iMessageBox} from 'rise';
 import tableList from '@/components/ws3/commonTable';
 import {tableTitle, tableEditTitle} from './data';
-import {numberProcessor} from '@/utils';
+import {numberProcessor, toFixedNumber, toThousands, deleteThousands} from '@/utils';
 import _ from 'lodash';
 
 export default {
@@ -188,9 +178,11 @@ export default {
     };
   },
   created() {
-    this.getTableList()
+    this.getTableList();
   },
   methods: {
+    toFixedNumber,
+    toThousands,
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
@@ -214,6 +206,7 @@ export default {
       this.tableListData.push({
         ...newItem,
         time,
+        apportionedNum: this.fiexedApportionedNum,
         isShow: true,
       });
     },
@@ -284,7 +277,7 @@ export default {
         this.$emit('handlePriceTableFinish');
         this.tableStatus = '';
       } else {
-        iMessage.warn(this.$t('TPZS.FEIYONGZONGEHEYINGXIANGDANJIABUENGWEIKONG'))
+        iMessage.warn(this.$t('TPZS.FEIYONGZONGEHEYINGXIANGDANJIABUENGWEIKONG'));
       }
     },
     getTableList() {
@@ -293,8 +286,8 @@ export default {
         this.hideTableData = [];
         this.copyDataInfo = _.cloneDeep(this.dataInfo);
         this.copyDataInfo.costDetailList.map((item, index) => {
-          if(!item.id) {
-            item.time = new Date().getTime() + index
+          if (!item.id) {
+            item.time = new Date().getTime() + index;
           }
           if (item.isShow) {
             this.tableListData.push(item);
@@ -302,14 +295,14 @@ export default {
             this.hideTableData.push(item);
           }
         });
-        this.fiexedApportionedNum = this.tableListData[0].apportionedNum;
+        this.fiexedApportionedNum = this.dataInfo.planTotalPro
       } catch {
         this.tableListData = [];
         this.hideTableData = [];
       }
     },
     handleHide(row) {
-      if(row.time) {
+      if (row.time) {
         this.tableListData = this.tableListData.filter(item => {
           return item.time !== row.time;
         });
@@ -322,7 +315,7 @@ export default {
       this.hideTableData.push(row);
     },
     handleShow(row) {
-      if(row.time) {
+      if (row.time) {
         this.hideTableData = this.hideTableData.filter(item => {
           return item.time !== row.time;
         });
@@ -337,9 +330,11 @@ export default {
     handleNumber(val, row, props) {
       this.$set(row, props, numberProcessor(val, 2));
       if (props === 'total') {
-        this.$set(row, 'affectUnitPrice', (row.total / this.fiexedApportionedNum).toFixed(2));
+        const result = row.total / row.apportionedNum;
+        this.$set(row, 'affectUnitPrice', result);
       } else if (props === 'affectUnitPrice') {
-        this.$set(row, 'total', (row.affectUnitPrice * this.fiexedApportionedNum).toFixed(2));
+        const result = row.affectUnitPrice * row.apportionedNum;
+        this.$set(row, 'total', result);
       }
     },
   },
@@ -365,6 +360,10 @@ export default {
 ::v-deep .el-form-item {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+::v-deep .el-table .el-table__body-wrapper {
+  min-height: auto;
 }
 
 .iconStyle {

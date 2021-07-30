@@ -20,7 +20,8 @@
           <iButton @click="goToBob">BoB{{ $t("分析库") }}</iButton>
           <!--查找零件-->
           <iButton class="margin-left30"
-                   @click="findPart">{{
+                   @click="findPart"
+                   v-if="!inside">{{
             $t("查找零件")
           }}</iButton>
         </div>
@@ -29,7 +30,7 @@
               class="margin-top20">
         <el-col :span="inside?4:5">
           <iCard :collapse="false"
-                 style="height: 579px"
+                 style="height: 560px"
                  v-if="!reportSave">
             <el-form label-position="top"
                      :model="form"
@@ -74,8 +75,9 @@
                                value-key
                                :multiple-limit="chartType === 'turn' ? 5 : 1"
                                v-model="form.turn">
-                      <el-option value="-1"
-                                 label="最新"></el-option>
+                      <el-option :value="Number('-1')"
+                                 label="最新"
+                                 v-if="chartType!=='turn'"></el-option>
                       <el-option v-for="(i, index) in turnList"
                                  :key="index"
                                  :value="i.turn"
@@ -112,7 +114,8 @@
                                value-key
                                :multiple-limit="chartType === 'combination' ? 6 : 1"
                                v-model="form.combination"
-                               @change="selectChange">
+                               @change="selectChange"
+                               @remove-tag="closeTag">
                       <el-option v-for="(i) in options"
                                  :key="i.key"
                                  :value="i.key"
@@ -139,10 +142,21 @@
           </iCard>
         </el-col>
         <el-col :span="inside?20:19">
-          <iCard style="height: 579px"
+          <iCard style="height: 560px"
                  collapse>
+            <div class="legend">
+              <ul>
+                <li v-for="(item,index) in anchorList"
+                    :key="index">
+                  <i class="circle"
+                     :style="color(item)"></i>
+                  <span style="vertical-align: baseline">{{item}}</span>
+                </li>
+              </ul>
+            </div>
             <iRow>
-              <el-col :span="inside ? 18 : 24">
+              <el-col :span="inside ? 18 : 24"
+                      style="padding-left:0px">
                 <crown-bar :chartData="chartData"
                            :supplierList="supplierList"
                            :partList="partList"
@@ -166,21 +180,25 @@
                   </iSelect>
                 </div>
               </el-col>
-
               <el-col :span="6"
                       v-if="inside">
+                <!-- <div style="border: 1px dashed #ccc;width: 1px;height:320px;"></div> -->
                 <div class="left-dash1">
-                  <out-bar v-if="chartData1.length > 0"
-                           :chartData="chartData1"
-                           @del="delOut"
-                           @change="changeOut"></out-bar>
+                  <div v-if="chartData1.length > 0"
+                       style="flex:1">
+                    <out-bar :chartData="chartData1"
+                             @del="delOut"
+                             @change="changeOut"></out-bar>
+                  </div>
                   <div v-else
                        @click="findPart"
                        class="icon-add">
-                    <icon style="font-size:300px;width:230px"
-                          name="iconbob-daitianjia"
-                          symbol></icon>
-                    <div style="text-align: center">{{ $t("待添加") }}</div>
+                    <div>
+                      <img src="@/assets/images/newZhu.png"
+                           alt=""
+                           style="width:220px;height:300px">
+                      <div style="text-align: center;color:#8F8F90">{{ $t("待添加") }}</div>
+                    </div>
                   </div>
                 </div>
               </el-col>
@@ -189,15 +207,16 @@
         </el-col>
       </el-row>
       <el-row :gutter="20"
-              class="margin-top20">
-        <el-col :span="inside?4:5">
+              class="margin-top20"
+            >
+        <el-col :span="inside?4:5" >
           <iCard :collapse="false"
-                 style="height: 579px"
+                 
                  v-if="!reportSave">
             <ul class="anchorList flex">
               <li v-for="(i,index) in anchorList"
                   :key="index"
-                  @click="doActive(index)"
+                  @click="doActive(i,index)"
                   :class="{active:index==current}">{{i}}
               </li>
             </ul>
@@ -206,7 +225,12 @@
         <el-col :span="inside ? 20 : 19">
           <bobAnalysis ref="bobAnalysis"
                        :supplierList="supplierList"
-                       :partList="partList"></bobAnalysis>
+                       :partList="partList"
+                       :analysisSchemeId="analysisSchemeId"
+                       :reportSave="reportSave"
+                       :label="label"
+                       :bobType="bobType"
+                       :formUpdata="formUpdata"></bobAnalysis>
         </el-col>
       </el-row>
     </div>
@@ -219,10 +243,14 @@
     <preview ref="preview"
              v-if="pre"
              :value="pre"
+             :supplierList="supplierList"
+             :partList="partList"
+             :analysisSchemeId="analysisSchemeId"
              @closeDialog="closePreView"></preview>
     <iDialog title="保存"
              :visible.sync="dialogVisible"
-             width="20%">
+             width="20%"
+             @close="close">
       <div>
         <div class="margin-bottom15 flex-between-center">
           <label for="">保存在分析库</label>
@@ -280,7 +308,7 @@ export default {
     bobAnalysis,
     findingParts,
     OutBar,
-    icon,
+    // icon,
     preview,
     iDialog,
     iInput,
@@ -313,30 +341,40 @@ export default {
       analysisSave: false,
       reportSave: false,
       anchorList: ['原材料/散件', '制造费', '报废成本', '管理费', '其他费用', '利润'],
-      current: 0,
-      isCover: true
+      current: null,
+      isCover: true,
+      label: "",
+      formUpdata: {}
     };
   },
   created () {
-    if (this.$store.state.rfq.entryStatus === 1) {
-      this.inside = true;
-      this.rfq = this.$store.state.rfq.rfqId
-      this.analysisSchemeId = this.$route.query.rfqId;
-      this.getChartData();
-    } else {
-      if (this.$route.query.rfqId) {
-        this.value = false
-        this.analysisSchemeId = this.$route.query.rfqId;
-        this.getChartData();
-      } else {
-        this.findPart()
-        this.analysisSchemeId = this.$store.state.rfq.SchemeId;
-      }
-    }
-    // if (!this.inside)
     this.newBuild = this.$route.query.newBuild;
-    if (this.newBuild) this.analysisSave = true;
-    // this.getOptions();
+    this.entryStatus = this.$store.state.rfq.entryStatus
+    if (this.newBuild) {
+      if (this.entryStatus === 1) {
+        this.inside = true
+        this.rfq = this.$store.state.rfq.rfqId
+        this.analysisSchemeId = this.$route.query.chemeId
+        this.getChartData()
+      } else if (this.entryStatus === 0) {
+        this.findPart()
+      }
+      this.analysisSave = true;
+    } else {
+      if (this.entryStatus === 1) {
+        this.inside = true
+        this.rfq = this.$store.state.rfq.rfqId
+      } else {
+        if (this.$route.query.rfqId) {
+          this.inside = true
+        } else {
+          this.inside = false
+        }
+      }
+      this.analysisSchemeId = this.$route.query.chemeId
+      this.getChartData()
+    }
+    console.log(document.body.clientHeight)
   },
   watch: {
     analysisName: {
@@ -347,25 +385,22 @@ export default {
       },
       immediate: true
     },
-    reportName: {
-      handler (val, newval) {
-        if (newval && !this.newBuild) {
-          this.isCover = false
-        }
-      },
-      immediate: true
-    },
+    // reportName: {
+    //   handler (val, newval) {
+    //     if (newval && !this.newBuild) {
+    //       this.isCover = false
+    //     }
+    //   },
+    //   immediate: true
+    // },
     chartType: {
       handler (newval) {
-        console.log(this.inside, "hahahah")
-        if (this.inside) {
-          this.chartType = 'supplier'
-        } else {
+        if (!this.inside) {
           this.chartType = 'combination'
         }
         // this.inside ? "supplier" : "mixComp"
       },
-    }
+    },
   },
   mounted () {
   },
@@ -399,7 +434,7 @@ export default {
              <p class="el-select__tags-text">${value.nameZh}</p>
              <p class="el-select__tags-text">${value.value}</p>
             </div> 
-             <i class="el-tag__close el-icon-close"></i>
+             <i class="el-tag__close el-icon-close" style="z-index:1000" @click="closeTag"></i>
            </div>`
           })
           this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`
@@ -410,7 +445,6 @@ export default {
     selectChange (e) {
       this.$nextTick(() => {
         let html = ""
-        console.log(e)
         this.options.forEach((value, index) => {
           e.forEach((i, index) => {
             if (value.key == i) {
@@ -420,14 +454,15 @@ export default {
              <p class="el-select__tags-text">${value.nameZh}</p>
              <p class="el-select__tags-text">${value.value}</p>
             </div> 
-             <i class="el-tag__close el-icon-close"></i>
+             <i class="el-tag__close el-icon-close" style="z-index:1000" @click="closeTag(${e})"></i>
            </div>`
             }
           })
         })
         this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`
-
       });
+    },
+    closeTag (e) {
     },
     findPart () {
       this.value = true;
@@ -455,8 +490,12 @@ export default {
     },
     changeType (e) {
       this.bobType = e;
-      this.initChartData();
       this.closeDiv();
+      this.$refs.bobAnalysis.chargeRetrieve({
+        isDefault: true,
+        viewType: 'all',
+        schemaId: this.analysisSchemeId
+      })
     },
     goToBob () {
       this.$router.push("bob");
@@ -464,10 +503,14 @@ export default {
     closeDiv () {
       this.showSelectDiv = false;
     },
+    close () {
+      this.reportSave = false
+    },
     showSelect (e) {
       const position = e.event.target.position;
+      console.log(position)
       this.showSelectDiv = true;
-      this.$refs.toolTipDiv.style.left = position[0] + 210 + "px";
+      this.$refs.toolTipDiv.style.left = position[0] + -40 + "px";
       this.$refs.toolTipDiv.style.top = position[1] + 15 + "px";
       this.$refs.toolTipSelect.focus();
     },
@@ -484,11 +527,23 @@ export default {
       this.getChartData();
     },
     add (val) {
-      console.log(val, 2222)
       if (val.constructor === Object) {
         iMessage.error('请选择数据')
         return
       }
+      if (val.length && val.length === 0) {
+        iMessage.error('请选择数据')
+        return
+      } else if (val.length > 20) {
+        iMessage.error('最多只能选择20条数据')
+        return
+      }
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
       if (this.inside) {
         addBobOut({
           analysisSchemeId: this.analysisSchemeId,
@@ -498,17 +553,28 @@ export default {
           supplierId: val[0].supplierId,
         }).then((res) => {
           if (res.code == 200) {
+            loading.close()
             this.$message.success(res.desZh);
             this.getChartData();
+            this.$refs.bobAnalysis.chargeRetrieve({
+              viewType: 'all',
+              isDefault: true,
+              schemaId: this.analysisSchemeId
+            })
             this.closeDialog()
           } else {
+            loading.close()
             this.$message.error(res.desZh);
             this.closeDialog()
           }
+        }).catch((error) => {
+          loading.close()
+          this.$message.error(error.desZh);
+          this.closeDialog()
         });
       } else {
         let arr = []
-        val.forEach((value, index, array) => {
+        val.forEach(value => {
           arr.push({
             fs: value.fsNum,
             partNumber: value.partNum,
@@ -518,15 +584,21 @@ export default {
         })
         initOut({ list: arr }).then(res => {
           if (res.code === '200') {
+            loading.close()
             this.$message.success(res.desZh);
             this.analysisSchemeId = res.data
             this.$store.dispatch('setSchemeId', this.analysisSchemeId);
             this.$refs.bobAnalysis.SchemeId = res.data
-            this.$refs.bobAnalysis.chargeRetrieve('all')
-            this.querySupplierTurnPartList()
+            this.$refs.bobAnalysis.chargeRetrieve({
+              viewType: 'all',
+              isDefault: true,
+              schemaId: this.analysisSchemeId
+            })
+            // this.querySupplierTurnPartList()
             this.getChartData()
             this.closeDialog()
           } else {
+            loading.close()
             this.$message.error(res.desZh);
             this.closeDialog()
           }
@@ -537,19 +609,38 @@ export default {
     },
     searchChartData () {
       let params = {}
-      if (this.$store.state.rfq.entryStatus === 1) {
+      let tableParams = {}
+      if (this.inside) {
         params = {
           analysisSchemeId: this.analysisSchemeId,
           analysisDimension: this.chartType,
           spareParts: this.form.spareParts.join(","),
           supplier: this.form.supplier.join(","),
           turn: this.form.turn.join(","),
+          defaultBobOptions: this.bobType
+        }
+        tableParams = {
+          schemaId: this.analysisSchemeId,
+          analysisDimension: this.chartType,
+          spareParts: this.form.spareParts.join(","),
+          supplier: this.form.supplier.join(","),
+          turn: this.form.turn.join(","),
+          isDefault: false,
+          viewType: 'all'
         }
       } else {
         params = {
           analysisSchemeId: this.$store.state.rfq.SchemeId,
           analysisDimension: this.chartType,
-          combination: this.form.combination.join(",")
+          combination: this.form.combination.join(","),
+          defaultBobOptions: this.bobType
+        }
+        tableParams = {
+          schemaId: this.analysisSchemeId,
+          analysisDimension: this.chartType,
+          combination: this.form.combination.join(","),
+          isDefault: false,
+          viewType: 'all'
         }
       }
       getBobLevelOne(params).then((res) => {
@@ -576,11 +667,12 @@ export default {
             spareParts: [],
           };
           this.form.supplier = this.Split(allData.supplier, ",").map(Number);
-          this.form.turn = this.Split(allData.turn, ",");
+          this.form.turn = this.Split(allData.turn, ",").map(Number);
           this.form.spareParts = this.Split(allData.spareParts, ",");
+          this.getOptions()
         }
       });
-      this.$refs.bobAnalysis.chargeRetrieve("all");
+      this.$refs.bobAnalysis.chargeRetrieve(tableParams);
     },
     async getChartData () {
       if (this.inside) {
@@ -601,9 +693,9 @@ export default {
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
         this.analysisName = allData.name
+        this.$refs.bobAnalysis.remark = allData.remark
         this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
         if (this.chartType === 'combination') {
-
           this.form = {
             combination: []
           }
@@ -616,8 +708,32 @@ export default {
             spareParts: [],
           };
           this.form.supplier = this.Split(allData.supplier, ",").map(Number);
-          this.form.turn = this.Split(allData.turn, ",");
+          this.form.turn = this.Split(allData.turn, ",").map(Number)
           this.form.spareParts = this.Split(allData.spareParts, ",");
+          console.log(this.form)
+        }
+        if (this.inside) {
+          this.formUpdata = {
+            analysisDimension: this.chartType,
+            defaultBobOptions: this.bobType,
+            id: this.analysisSchemeId,
+            name: this.analysisName,
+            spareParts: this.form.spareParts.join(","),
+            supplierId: this.form.supplier.join(","),
+            turn: this.form.turn.join(","),
+            isCover: this.isCover,
+            // remark: this.$refs.bobAnalysis.remark
+          };
+        } else {
+          this.formUpdata = {
+            analysisDimension: this.chartType,
+            defaultBobOptions: this.bobType,
+            id: this.analysisSchemeId,
+            name: this.analysisName,
+            combination: this.form.combination.join(','),
+            isCover: this.isCover,
+            // remark: this.$refs.bobAnalysis.remark
+          };
         }
 
       });
@@ -628,6 +744,11 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.$message.success(res.desZh);
+          this.$refs.bobAnalysis.chargeRetrieve({
+            viewType: 'all',
+            isDefault: true,
+            schemaId: this.analysisSchemeId
+          })
           this.getChartData();
         } else {
           this.$message.error(res.desZh);
@@ -645,54 +766,47 @@ export default {
     },
     save () {
       let that = this;
-      let form = {}
-      if (this.inside) {
-        form = {
-          analysisDimension: this.chartType,
-          defaultBobOptions: this.bobType,
-          id: this.analysisSchemeId,
-          name: this.analysisName,
-          spareParts: this.form.spareParts.join(","),
-          supplierId: this.form.supplier.join(","),
-          turn: this.form.turn.join(","),
-          isCover: this.isCover
-        };
-      } else {
-        form = {
-          analysisDimension: this.chartType,
-          defaultBobOptions: this.bobType,
-          id: this.analysisSchemeId,
-          name: this.analysisName,
-          combination: this.form.combination.join(','),
-          isCover: this.isCover
-        };
-      }
-      if (this.isCover) {
-        if (this.analysisSave) {
+      if (this.analysisSave) {
+        this.dialogVisible = false
+        if (this.isCover && !this.newBuild) {
           this.$confirm('此样式/报告已存在, 是否覆盖?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            if (this.analysisSave) {
-              update(form)
-                .then((res) => {
-                  iMessage.success("保存成功");
-                  this.dialogVisible = false;
-                  this.reportSave = false;
-                })
-                .catch((err) => {
-                  iMessage.err("保存失败");
-                  this.dialogVisible = false;
-                  this.reportSave = false;
-                });
-            }
+            this.formUpdata.remark = this.$refs.bobAnalysis.remark
+            this.formUpdata.name = this.analysisName
+            update(this.formUpdata)
+              .then((res) => {
+                iMessage.success("保存成功");
+                this.dialogVisible = false;
+                this.reportSave = false;
+              })
+              .catch((err) => {
+                iMessage.err("保存失败");
+                this.dialogVisible = false;
+                this.reportSave = false;
+              });
           }).catch(() => {
             this.$message({
               type: 'info',
               message: '已取消'
             });
           });
+        } else {
+          this.formUpdata.remark = this.$refs.bobAnalysis.remark
+          this.formUpdata.name = this.analysisName
+          update(this.formUpdata)
+            .then((res) => {
+              iMessage.success("保存成功");
+              this.dialogVisible = false;
+              this.reportSave = false;
+            })
+            .catch((err) => {
+              iMessage.err("保存失败");
+              this.dialogVisible = false;
+              this.reportSave = false;
+            });
         }
       }
       if (this.reportSave) {
@@ -729,17 +843,18 @@ export default {
         });
       }
     },
-    doActive (index) {
-      this.$nextTick(() => {
-        //页面滚动了的距离
-        let height = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-        //指定dom到页面顶端的距离
-        let nodeList = this.$el.querySelectorAll('.el-table__row--level-0')
-        nodeList[index].scrollIntoView({
-          top: nodeList[index].offsetTop - 40,
-          behavior: 'smooth',
-        })
-      });
+    doActive (i, index) {
+      this.label = i
+      /*  this.$nextTick(() => {
+         //页面滚动了的距离
+         let height = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+         //指定dom到页面顶端的距离
+         let nodeList = this.$el.querySelectorAll('.el-table__row--level-0')
+         nodeList[index].scrollIntoView({
+           top: nodeList[index].offsetTop - 40,
+           behavior: 'smooth',
+         })
+       }); */
       this.current = index
     }
   },
@@ -757,6 +872,23 @@ export default {
         return ''
       }
     },
+    color (item) {
+      return function (item) {
+        if (item === '原材料/散件') {
+          return 'background: #C6DEFF'
+        } else if (item === '制造费') {
+          return 'background: #9BBEFF'
+        } else if (item === '报废成本') {
+          return 'background: #72AEFF'
+        } else if (item === '管理费') {
+          return 'background: #5993FF'
+        } else if (item === '其他费用') {
+          return 'background: #1763F7'
+        } else if (item === '利润') {
+          return 'background: #0040BE'
+        }
+      }
+    }
 
   },
 };
@@ -767,7 +899,7 @@ export default {
   .end {
     text-align: center;
     position: relative;
-    bottom: 30px;
+    bottom: 60px;
   }
   .toolTip-div {
     z-index: 20;
@@ -783,23 +915,35 @@ export default {
     left: 0;
     padding: 10px;
   }
+
   .left-dash1 {
+    display: flex;
+    height: auto;
     border: none;
-    border-left: 2px dashed #ced4e1;
     padding-left: 40px;
+    justify-content: center;
+    align-items: center;
     .icon-add {
-      margin-top: 80px;
-      margin-bottom: 20px;
+      display: flex;
+      flex: 1;
+      height: 560px;
+      // border-left: 2px dashed #ccc;
       text-align: center;
+      & > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 90px;
+      }
     }
   }
 }
+
 ::v-deep .el-select {
   width: 100%;
-  .el-select-dropdown.is-multiple
-    .el-select-dropdown__item.selected
-    .hover::after {
-    font-size: 0 !important;
+  .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {
+    right: 60px !important;
   }
 }
 
@@ -813,11 +957,7 @@ export default {
   overflow: hidden; //超出隐藏
   text-overflow: ellipsis; //变成...
 }
-::v-deep
-  .el-select-dropdown.is-multiple
-  .el-select-dropdown__item.selected::after {
-  content: none;
-}
+
 ::v-deep .el-tag--large {
   height: 3.5rem;
 }
@@ -828,6 +968,7 @@ export default {
   margin: 100px auto;
   li {
     width: 100%;
+    font-weight: 600;
     cursor: pointer;
     padding: 10px 0;
     color: #1b1d21;
@@ -857,5 +998,32 @@ export default {
 }
 ::v-deep.el-form-item {
   margin-bottom: 20px;
+}
+.legend {
+  position: absolute;
+  right: 95px;
+  top: 26px;
+  font-family: "Arial";
+  font-size: 16px;
+  color: #0d2451;
+  ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    li {
+      padding-right: 20px;
+    }
+  }
+}
+.card {
+  position: relative;
+}
+.circle {
+  display: inline-block;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  vertical-align: baseline;
+  margin-right: 10px;
 }
 </style>

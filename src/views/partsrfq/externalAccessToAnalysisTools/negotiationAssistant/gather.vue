@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-22 11:05:40
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
@@ -66,7 +66,7 @@ export default {
     }
   },
   created() {
-    if (!!this.$route.query.pageType) {
+    if (this.$route.query.pageType) {
       this.pageType = this.$route.query.pageType
     }
   },

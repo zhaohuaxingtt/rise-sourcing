@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 21:04:49
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 13:05:31
+ * @LastEditTime: 2021-07-23 10:16:14
  * @Description: 定点-审批人&审批记录
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\index.vue
 -->
@@ -63,7 +63,7 @@ import tableList from './tableList'
 import { tableTitle } from './data'
 import { cloneDeep, omit } from 'lodash'
 import approvalFlowDialog from './approvalFlow'
-import { getApprovalNode, approvalSync, updateApprovalNode, getDept } from '@/api/designate/decisiondata/approval'
+import { getApprovalNode, approvalSync, updateApprovalNode, getDept, getDeptSub } from '@/api/designate/decisiondata/approval'
 export default {
   components: { iPage, iCard, tableList, iButton, approvalFlowDialog, icon },
   data() {
@@ -175,32 +175,38 @@ export default {
         })
       }
     },
+    async getDeptSubOptions(item) {
+      const res = await getDeptSub(item.approveParentDeptNum)
+      return res.data.supDeptList?.map(item => {
+        return {
+          ...item,
+          label: item.nameZh,
+          value: item.id
+        }
+      })
+    },
     /**
      * @Description: 获取列表数据
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
      */    
-    getTableList() {
+    async getTableList() {
       this.tableLoading = true
       //this.$route.query.desinateId 
-      getApprovalNode(this.$route.query.desinateId).then(res => {
-        if (res?.result) {
-          this.tableDataTemp = cloneDeep(res.data.nomiApprovalProcessNodeVOList?.map(item => {
-            return {
-              ...item,
-              deptOptions: this.parentDeptOptions,
-              deptSubOptions: []
-            }
-          }))
-          this.processInstanceId = res.data.nominateAppVo?.processInstanceId
-          console.log(this.tableDataTemp)
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      const res = await getApprovalNode(this.$route.query.desinateId)
+      if (res?.result) {
+        for(var i = 0; i < (res.data.nomiApprovalProcessNodeVOList || []).length; i++) {
+          const deptSubOptions = await this.getDeptSubOptions(res.data.nomiApprovalProcessNodeVOList[i])
+          res.data.nomiApprovalProcessNodeVOList[i].deptOptions = this.parentDeptOptions
+          res.data.nomiApprovalProcessNodeVOList[i].deptSubOptions = deptSubOptions
         }
-      }).finally(() => {
-        this.tableLoading = false
-      })
+        this.tableDataTemp = cloneDeep(res.data.nomiApprovalProcessNodeVOList)
+        this.processInstanceId = res.data.nominateAppVo?.processInstanceId
+      } else {
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      }
+      this.tableLoading = false
     },
     /**
      * @Description: 同步按钮点击事件

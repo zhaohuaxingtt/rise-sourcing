@@ -29,7 +29,7 @@
           <el-option
             :value="items.key"
             :label="items.value"
-            v-for="(items, index) in mapOptions"
+            v-for="(items, index) in mapOptionsArray"
             :key="index"
           ></el-option>
         </iSelect>
@@ -69,6 +69,7 @@ export default {
   data() {
     return {
       mapControl: [],
+      mapOptionsArray: [],
       mapOptions: [
         {
           key: 0,
@@ -101,6 +102,8 @@ export default {
     init() {
       // 初始化，默认isShowWeightStick判断是否展示权重柱子
       const isShowWeightStick = this.data.isShowWeightStick || false
+      // 初始化，默认isShowGroupStick判断是否展示分组最佳柱子
+      const isShowGroupStick = this.data.isShowGroupStick || false
       const supplierInvo = this.data.supplier || []
       const supplierList = []
       this.supplier.forEach((sup, index) => {
@@ -112,7 +115,19 @@ export default {
         }
       })
       this.supplierList = supplierList
-      this.mapControl = isShowWeightStick ? [] : [0, 1, 2]
+      this.mapControl = [0,2]
+      if (isShowWeightStick) {
+        this.mapControl.push(3)
+      }
+      if (isShowGroupStick) {
+        this.mapControl.push(1)
+      }
+      const mapOptionsArray = []
+      this.mapControl.forEach(key => {
+        mapOptionsArray.push(this.mapOptions[key])
+      })
+      this.mapOptionsArray = mapOptionsArray
+      // this.mapControl = isShowWeightStick ? [] : [0, 1, 2]
       this.load()
     },
     load() {

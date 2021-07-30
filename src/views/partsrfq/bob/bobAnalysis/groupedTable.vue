@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-21 16:29:51
+ * @LastEditTime: 2021-07-30 10:14:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -13,32 +13,65 @@
               :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
               :row-key="getRowKey"
               :expand-row-keys="expends"
+              stripe
               v-loading="loading"
               :max-height="maxHeight"
               :cell-style="cellsytle"
+              :row-style="rowStyle"
               @selection-change="handleSelectionChange"
               @row-click="rowClick"
               @row-dblclick="rowDblclick"
               @cell-dblclick="cellBbClick"
               @cell-click="cellClick"
               @expand-change="expandChange">
+      <el-table-column key="id"
+                       label=""
+                       prop="title"
+                       align="left"
+                       width="200"
+                       show-overflow-tooltip>
+        <template slot-scope="scope">
+          <div v-if="scope.row.isFresh"
+               style="display:inline-block">
+            <el-input v-model="scope.row.title"
+                      style="width:100px;margin-right:10px"></el-input>
+            <i class="el-icon-check"
+               @click="sure(scope)"></i>
+            <!-- <i class="el-icon-close"></i> -->
+          </div>
+          <div v-else-if="scope.row.isFresh===false"
+               style="display:inline-block;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
+            <span style="max-width: 100px">
+              {{scope.row.title}}
+            </span>
+            <i class="el-icon-edit "
+               style="line-height:18px"
+               @click="edit(scope)"></i>
+          </div>
+          <span v-else>
+            {{scope.row.title}}
+          </span>
+
+        </template>
+      </el-table-column>
       <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
       <el-table-column v-for="i in tableList.title"
                        :key="i.id"
                        :label="i.title"
                        :prop="i.label"
-                       :align="i.label=='title'?'left':'center'"
-                       :width="i.label == 'title' ? '200' : ''"
+                       align="center"
                        show-overflow-tooltip>
         <template slot-scope="scope">
           <div v-if="scope.row.checkRow&&scope.row.level===2&&scope.column.label">
             <el-checkbox @change="check=>checkChang(check,scope,i.label)"></el-checkbox>
+
           </div>
           <span v-else>
             {{scope.row[i.label]}}
           </span>
         </template>
       </el-table-column>
+
     </el-table>
   </div>
 </template>
@@ -46,8 +79,10 @@
 <script>
 import {
   chargeRetrieve,
+  renameComponentGroup
 } from "@/api/partsrfq/bob";
 import { filterEmptyChildren } from '@/utils'
+import { iMessage } from '../../../../components';
 export default {
   props: {
     expends: {
@@ -80,6 +115,23 @@ export default {
           this.$refs.treeList.expandRowKeys = Array.from(val);
       },
     },
+    activeName: {
+      handler (val) {
+        if (val === 'rawUngrouped') {
+          this.chargeRetrieve({
+            isDefault: true,
+            viewType: 'rawGrouped',
+            schemaId: this.SchemeId
+          })
+        } else {
+          this.chargeRetrieve({
+            isDefault: true,
+            viewType: 'maGrouped',
+            schemaId: this.SchemeId
+          })
+        }
+      },
+    }
   },
   data () {
     return {
@@ -88,27 +140,32 @@ export default {
       SchemeId: "",
       usercheckedColumnIndex: [],
       checkedIds: [8],
-      checkLists: []
+      checkLists: [],
+      activeName: ""
     };
   },
   created () {
-    if (this.$store.state.rfq.entryStatus === 1) {
-      this.SchemeId = this.$route.query.rfqId
+    this.newBuild = this.$route.query.newBuild;
+    this.entryStatus = this.$store.state.rfq.entryStatus
+    if (this.newBuild && this.entryStatus === 0) {
+      this.SchemeId = this.$store.state.rfq.SchemeId;
     } else {
-      if (this.$route.query.rfqId) {
-        this.SchemeId = this.$route.query.rfqId
-      } else {
-        this.SchemeId = this.$store.state.rfq.SchemeId;
-      }
+      this.SchemeId = this.$attrs.analysisSchemeId;
     }
-    this.$EventBus.$on("acitveName", res => {
-    })
     this.$nextTick(() => {
-      this.chargeRetrieve('rawGrouped');
+      this.chargeRetrieve({
+        isDefault: true,
+        viewType: 'rawGrouped',
+        schemaId: this.SchemeId
+      });
     });
 
   },
-  mounted () { },
+  mounted () {
+    this.$EventBus.$on("activeName", res => {
+      this.activeName = res
+    })
+  },
   methods: {
     open () {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
@@ -156,23 +213,29 @@ export default {
     cellFunction ({ row, column, rowIndex, columnIndex }) {
       // console.log(row, column, rowIndex, columnIndex)
     },
-
+    rowStyle ({ row, rowIndex }) {
+      let styleJson
+      if (row.level === 1 || row.level === 2) {
+        styleJson = {
+          'background': 'rgb(231 239 255) !important'
+        }
+        return styleJson
+      }
+    },
     //获取表格数据
-    chargeRetrieve (type) {
-      chargeRetrieve({
-        schemaId: this.SchemeId,
-        viewType: type,
-      })
+    chargeRetrieve (params) {
+      chargeRetrieve(params)
         .then((res) => {
           this.tableList = res;
+          this.tableList.title.shift()
           this.tableList.element = this.arrayTreeSetLevel(this.tableList.element)
-          this.tableList.title.forEach(value => {
-            this.$attrs.supplierList.forEach(i => {
-              if (value.title == i.supplierId) {
-                value.title = i.shortNameZh
-              }
-            })
-          })
+          // this.tableList.title.forEach(value => {
+          //   this.$attrs.supplierList.forEach(i => {
+          //     if (value.title == i.supplierId) {
+          //       value.title = i.shortNameZh
+          //     }
+          //   })
+          // })
           console.log('----------------', this.tableList.element)
           // filterEmptyChildren(this.tableList.element, 'detailId')
           this.$nextTick(() => {
@@ -191,12 +254,34 @@ export default {
       return array;
     },
 
+    sure (scope) {
+      console.log(scope)
+      renameComponentGroup({
+        groupId: scope.row.matchId,
+        groupName: scope.row.title,
+        schemaId: this.SchemeId
+      }).then(res => {
+        iMessage.success('修改成功')
+        this.chargeRetrieve({
+          isDefault: true,
+          viewType: this.activeName,
+          schemaId: this.SchemeId
+        })
+      })
+    },
+
+    edit (scope) {
+      scope.row.isFresh = true
+    },
+
     recursiveArray (parentObj, level) {
+
       if (!level) level = 0;
       level++
       if (level === 2) {
         let addDatas = {}
         parentObj.child.forEach((value, index) => {
+          value.level = level
           const numOfCols = Object.keys(value).filter((key) => {
             return key.indexOf("label#") >= 0
           })
@@ -212,9 +297,9 @@ export default {
         }
         addDatas = {}
       } else {
-
         if (parentObj && parentObj.length) {
           parentObj.forEach((child, index) => {
+            child.level = level
             this.recursiveArray(child, level)
           })
         }
@@ -230,13 +315,11 @@ export default {
           this.splice(index, 1);
         }
       };
-      console.log(labelIndex)
       if (flag) {
         this.usercheckedColumnIndex.push(parseInt(labelIndex.split("#")[1]) + 1)
       } else {
         this.usercheckedColumnIndex.remove(parseInt(labelIndex.split("#")[1]) + 1)
       }
-      console.log(this.usercheckedColumnIndex)
       const selectedIndex = scope.row.checkIndex
       let newArr = this.tableList.element[0].child.map((value, index) => {
         if (selectedIndex == value.index) {
@@ -256,8 +339,9 @@ export default {
       } else {
         this.checkLists.remove(newArr[1].child[0][labelIndex])
       }
-
+      console.log(this.checkLists)
       this.$set(this.tableList.element[0], 'child', newArr);
+
     },
     recursiveChildChecked (parentObj, checked) {
       parentObj.forEach((child, index) => {

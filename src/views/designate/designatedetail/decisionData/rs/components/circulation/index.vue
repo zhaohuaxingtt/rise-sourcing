@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-21 16:38:01
+ * @LastEditTime: 2021-07-23 10:22:03
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -45,7 +45,7 @@
 
 <script>
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage } from 'rise'
-import { nomalTableTitle, checkList } from './data'
+import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
 import { cloneDeep } from "lodash"
@@ -71,7 +71,7 @@ export default {
         {label:'LINIE采购员',value:'胡伟', props: 'buyer'},
         {label:'Exchange rate',value:'1 RMB=1.00 RMB', props: ''},
       ],
-      tableTitle: cloneDeep(nomalTableTitle),
+      // tableTitle: cloneDeep(nomalTableTitle),
       tableData: [],
       remarkItem: [{value: '', checked: false},{value: '', checked: false},{value: '', checked: false}],
       checkList: checkList,
@@ -88,6 +88,14 @@ export default {
         return '附件采购 Nomination Recommendation – Accessory Purchasing'
       }
       return '生产采购 Nomination Recommendation - Production Purchasing'
+    },
+    tableTitle() {
+      if (this.projectType === partProjTypes.PEIJIAN) {
+        return sparePartTableTitle
+      } else if (this.projectType === partProjTypes.FUJIAN) {
+        return accessoryTableTitle
+      }
+      return nomalTableTitle
     }
   },
   methods: {

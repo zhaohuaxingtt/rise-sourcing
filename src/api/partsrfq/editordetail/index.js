@@ -378,3 +378,11 @@ export function deleteRfqPart(params) {
         data: params
     })
 }
+
+// 零件评分
+export function getAllParts(params) {
+    return requst({
+        url: `/supplier/${ params.rfqId }/${ params.supplierId }/getAllParts`,
+        method: 'GET'
+    })
+}

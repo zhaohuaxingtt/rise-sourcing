@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-21 16:39:57
+ * @LastEditTime: 2021-07-28 19:00:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -11,7 +11,7 @@
     <template v-slot:header>
       <div class="flex-between-center titleBox">
         <div>
-          <span>待分配区域</span>
+          <span id="allocated">待分配区域</span>
           <span v-if="remark"
                 class="margin-left40">{{ remark }}</span>
         </div>
@@ -179,18 +179,21 @@ export default {
     },
   },
   mounted () {
-    if (this.$store.state.rfq.entryStatus === 1) {
-      this.SchemeId = this.$route.query.rfqId
+    
+    this.newBuild = this.$route.query.newBuild;
+    this.entryStatus = this.$store.state.rfq.entryStatus
+    if (this.newBuild && this.entryStatus === 0) {
+      this.SchemeId = this.$store.state.rfq.SchemeId;
     } else {
-      if (this.$route.query.rfqId) {
-        this.SchemeId = this.$route.query.rfqId
-      } else {
-        this.SchemeId = this.$store.state.rfq.SchemeId;
-      }
+      this.SchemeId = this.$attrs.analysisSchemeId;
     }
     setTimeout(() => {
       this.$nextTick(() => {
-        this.chargeRetrieve(this.activeName);
+        this.chargeRetrieve({
+          isDefault: true,
+          viewType: this.activeName,
+          schemaId: this.SchemeId
+        });
         // this.open();
       });
     }, 100);
@@ -204,8 +207,12 @@ export default {
     },
     activeName: {
       handler (val) {
-        this.chargeRetrieve(val);
-        this.$EventBus.$emit("activeName", val);
+        this.chargeRetrieve({
+          isDefault: true,
+          viewType: val,
+          schemaId: this.SchemeId
+        });
+        // this.$EventBus.$emit("activeName", val);
       },
     },
     // tableList: {
@@ -296,11 +303,8 @@ export default {
       console.log("checkList", this.checkList);
     },
     //获取表格数据
-    chargeRetrieve (type) {
-      chargeRetrieve({
-        schemaId: this.SchemeId,
-        viewType: type,
-      })
+    chargeRetrieve (params) {
+      chargeRetrieve(params)
         .then((res) => {
           this.tableList = res;
           filterEmptyChildren(this.tableList.element, 'detailId')
@@ -317,6 +321,8 @@ export default {
       return row.index;
     },
     handleClick (val) {
+      console.log(val)
+      this.$EventBus.$emit("activeName", val.name);
       // this.activeName = val;
     },
     renderHeader (h, { column }) {
@@ -342,6 +348,7 @@ export default {
             els[i].style.opacity = "0.6";
           } else {
             els[i].style.backgroundColor = "";
+            els[i].style.opacity = "1";
           }
         }
         if (checked) {
@@ -356,11 +363,17 @@ export default {
         // this.$el.getElementsByClassName(col.id).style.backgroudColor = "#0EBADD";
       });
     },
+    rowStyle ({ row, rowIndex }) {
+      let styleJson
+      if (row.level === 1 || row.level === 2) {
+        styleJson = {
+          'background': 'rgb(231 239 255) !important'
+        }
+        return styleJson
+      }
+    },
     rowClick (row, event, column) {
       this.$emit("row-click", row, event, column);
-    },
-    rowStyle ({ row, rowIndex }) {
-
     },
     cellClick (row, column, cell, event) {
       console.log(row, column, cell);

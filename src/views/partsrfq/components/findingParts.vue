@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-07-16 14:10:53
+ * @LastEditTime: 2021-07-29 19:08:04
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -18,7 +18,8 @@
                @reset="reset">
         <el-form>
           <el-form-item :label="$t('LK_CAILIAOZU')">
-            <iSelect v-model="form.categoryCode">
+            <iSelect v-model="form.categoryCode"
+                     clearable>
               <el-option :value='item.categoryCode'
                          :label='item.categoryName'
                          v-for="item in optionList"
@@ -27,15 +28,18 @@
           </el-form-item>
           <el-form-item :label="$t('LK_RFQHAO')">
             <iInput placeholder="请输入"
-                    v-model="form.rfqId"></iInput>
+                    v-model="form.rfqId"
+                    clearable></iInput>
           </el-form-item>
-          <el-form-item :label="$t('LK_FSHAO')">
+          <el-form-item :label="$t('partsprocure.PARTSPROCUREFSNFGSNFSPNR')">
             <iInput placeholder="请输入"
-                    v-model="form.fsNum"></iInput>
+                    v-model="form.fsNum"
+                    clearable></iInput>
           </el-form-item>
           <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTNUMBER')">
             <iInput placeholder="请输入"
-                    v-model="form.partNum"></iInput>
+                    v-model="form.partNum"
+                    clearable></iInput>
           </el-form-item>
         </el-form>
       </iSearch>
@@ -95,6 +99,7 @@ export default {
         rfqId: "",
         fsNum: "",
         partNum: "",
+        size: 1000
       },
       status: 0,
       colData: {}
@@ -103,7 +108,6 @@ export default {
   created () {
     this.status = this.$store.state.rfq.entryStatus
     this.pagePart();
-    this.dispatch('parentCom', 'event', "222")
     // this.category();
   },
   methods: {
@@ -120,7 +124,9 @@ export default {
             this.confirmTableData.forEach((value, index) => {
               value.index = index + 1;
             });
-
+            if (!res.data) {
+              iMessage.error('抱歉，无法查询到结果（输入错误或者不存在），请确认后重新输入。')
+            }
           }
         })
         .catch((e) => { });
@@ -143,7 +149,7 @@ export default {
     reset () {
       this.form = {
         categoryCode: "",
-        rfqId: "",
+        rfq: "",
         fsNum: "",
         partNum: "",
       };
@@ -166,6 +172,9 @@ export default {
     justify-content: space-between;
     margin-bottom: 25px;
   }
+}
+::v-deep .el-table .el-table__body-wrapper {
+  overflow-x: hidden;
 }
 </style>
 

@@ -6,7 +6,7 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard style="min-height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')">
+  <iCard style="min-height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')+ `（截止${currentTime}）`" >
     <template slot="header-control">
       <div class="header">
         <div class="flex-between-center-center margin-right40">
@@ -60,6 +60,8 @@ import { iCard, icon } from "rise";
 import { tableTitle } from "./data.js";
 import tableList from '@/components/ws3/commonTable';
 import { getCarModelProjectList } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate";
+
+
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: { iCard, icon, tableList },
@@ -69,6 +71,7 @@ export default {
       tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
+      currentTime: window.moment(new Date()).subtract(1,'months').startOf('month').format('YYYY-MM')
     }
   },
   // 监听属性 类似于data概念

@@ -8,7 +8,7 @@
 <template>
   <iCard :title="$t('TPZS.PLGYSZL')" :defalutCollVal='false' collapse>
     <div class="center">
-      <supplierCard :mapListData="mapListData" class="card-right" />
+      <supplierCard :supplierDataList="supplierDataList" class="card-right" />
       <map1 :mapListData="mapListData" />
     </div>
   </iCard>
@@ -17,13 +17,14 @@
 <script>
 import { iCard, icon } from "rise";
 import map1 from "./map.vue";
-import { batchSupplierMapOverview } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import { overviewBatchSupplierMap } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import supplierCard from "./supplierCard.vue";
 export default {
   components: { iCard, icon, map1, supplierCard },
   data() {
     return {
-      mapListData: []
+      mapListData: {},
+      supplierDataList: [],
     }
   },
   created() {
@@ -36,8 +37,9 @@ export default {
       const pms = {
         rfqId: this.$route.query.id
       }
-      const res = await batchSupplierMapOverview(pms)
+      const res = await overviewBatchSupplierMap(pms)
       this.mapListData = res.data
+      this.supplierDataList = res.data.supplierDataList || []
     }
   }
 }

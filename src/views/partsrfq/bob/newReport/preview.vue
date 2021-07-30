@@ -26,8 +26,12 @@
           </div>
         </el-col>
       </el-row>
-      <div>{{ $t("费用详情") }}</div>
-      <table1 :tableList="tableList"></table1>
+      <div style="margin-top:20px;">
+        <span style="font-weight:bold;font-size:14px">
+          {{ $t("费用详情") }}
+        </span>
+      </div>
+      <table1 :tableList="tableList" style="margin-top:20px"></table1>
       <!-- <table2 :dataList="dataList2"></table2>
       <table3 :dataList="dataList3"></table3>
       <table4 :dataList="dataList4"></table4>
@@ -110,29 +114,16 @@ export default {
     };
   },
   mounted () {
-
-    if (this.$store.state.rfq.entryStatus === 1) {
-      this.inside = true;
-      this.rfq = this.$store.state.rfq.rfqId
-      this.analysisSchemeId = this.$route.query.rfqId;
-
-    } else {
-      if (this.$route.query.rfqId) {
-        this.value = false
-        this.analysisSchemeId = this.$route.query.rfqId;
-      } else {
-        this.analysisSchemeId = this.$store.state.rfq.SchemeId;
-
-      }
-    }
+    this.analysisSchemeId = this.$attrs.analysisSchemeId
+    this.chargeRetrieve();
     this.getChartData();
-    this.chargeRetrieve('all')
+
     // if (this.inside === 0) {
     //   this.analysisSchemeId = this.$parent.$options.parent.analysisSchemeId
     // }
     // this.analysisSchemeId = this.$store.state.rfq.SchemeId
-    this.reportName = this.$route.query.name;
-    this.id = this.$route.query.id;
+    // this.reportName = this.$route.query.name;
+    // this.id = this.$route.query.id;
     // this.initChartData()
     // this.analysisSchemeId = this.$route.query.analysisSchemeId;
 
@@ -180,8 +171,9 @@ export default {
     },
     chargeRetrieve (type) {
       chargeRetrieve({
-        schemaId: this.analysisSchemeId,
-        viewType: type,
+        viewType: 'all',
+        isDefault: true,
+        schemaId: this.analysisSchemeId
       })
         .then((res) => {
           this.tableList = res;
@@ -270,7 +262,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .new-bob {
   .end {
     text-align: center;
@@ -293,7 +285,7 @@ export default {
   }
   .left-dash1 {
     border: none;
-    border-left: 5px dashed grey;
+    // border-left: 5px dashed grey;
     .icon-add {
       margin-top: 100px;
       margin-bottom: 20px;
