@@ -416,6 +416,55 @@ export const staticRouter = [{
                 },
                 component: () => import (`@/views/ws2/purchase/investmentList/bmInfo`),
             },
+
+            {
+                path: '/purchaseSupplier',
+                name: 'purchaseSupplier',
+                meta: {
+                    title: '模具采购'
+                },
+                component: () => import (`@/views/ws2/purchaseSupplier`),
+                children: [
+                    {
+                        path: '/purchaseSupplier',
+                        redirect: '/purchaseSupplier/investmentList',
+                    },
+                    {
+                        path: '/purchaseSupplier/investmentList',
+                        name: 'investmentList',
+                        meta: {
+                            title: '模具投资清单'
+                        },
+                        component: () => import (`@/views/ws2/purchaseSupplier/investmentList`),
+                    },
+                    {
+                        path: '/purchaseSupplier/mouldBook',
+                        name: 'mouldBook',
+                        meta: {
+                            title: '模具台账'
+                        },
+                        component: () => import (`@/views/ws2/purchaseSupplier/mouldBook`),
+                    },
+                ]
+            },
+            {
+                path: '/purchaseSupplier/mouldBook/details',
+                name: 'mouldBook',
+                meta: {
+                    title: '模具台账详情'
+                },
+                component: () => import (`@/views/ws2/purchaseSupplier/mouldBook/details`),
+            },
+            {
+                path: '/purchaseSupplier/investmentList/bmInfo',
+                name: 'bmInfo',
+                meta: {
+                    title: '模具投资清单-BM详情页'
+                },
+                component: () => import (`@/views/ws2/purchaseSupplier/investmentList/bmInfo`),
+            },
+
+
             {
                 path: "/ws3-register",
                 name: "/ws3Register",

@@ -5,7 +5,7 @@
         style="margin-top: 20px"
         @sure="sure"
         @reset="reset"
-        :icon="false"
+        :icon="true"
         :resetKey="PARTSPROCURE_RESET"
         :searchKey="PARTSPROCURE_CONFIRM"
         v-loading="loadingiSearch"
@@ -13,30 +13,6 @@
       <el-form>
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
           <iInput v-model="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
-        </el-form-item>
-        <el-form-item :label="language('TPZS.GONGYINGSHANG', '供应商')">
-          <iInput v-model="supplier" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
-        </el-form-item>
-        <el-form-item :label="language('LK_BMDANLIUSHUIHAO', 'BM单流水号')">
-          <iInput v-model="bmSerial" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
-        </el-form-item>
-        <el-form-item :label="language('LK_MUJUTOUZIQINGDANZHUANGTAI', '模具投资清单状态')">
-          <iSelect
-              class="multipleSelect"
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              filterable
-              clearable
-              collapse-tags
-              multiple
-              v-model="moldInvestmentStatus"
-          >
-            <el-option
-                :value="item.code"
-                :label="item.zhMsg"
-                v-for="(item, index) in moldInvestmentStatusList"
-                :key="index"
-            ></el-option>
-          </iSelect>
         </el-form-item>
         <el-form-item :label="language('LK_CHEXINGXIANGMU', '车型项目')">
           <iSelect
@@ -52,24 +28,6 @@
                 :value="item.id"
                 :label="item.carTypeProjectName"
                 v-for="(item, index) in carTypeProjectList"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-        <el-form-item :label="language('LK_KESHI', '科室')">
-          <iSelect
-              class="multipleSelect"
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              filterable
-              clearable
-              collapse-tags
-              multiple
-              v-model="department"
-          >
-            <el-option
-                :value="item.deptId"
-                :label="item.commodity"
-                v-for="(item, index) in departmentsList"
                 :key="index"
             ></el-option>
           </iSelect>
@@ -92,21 +50,27 @@
             ></el-option>
           </iSelect>
         </el-form-item>
+        <el-form-item :label="language('LK_MUJUTOUZIQINGDANZHUANGTAI', '模具投资清单状态')">
+          <iSelect
+              class="multipleSelect"
+              :placeholder="language('LK_QINGXUANZHE', '请选择')"
+              filterable
+              clearable
+              collapse-tags
+              multiple
+              v-model="moldInvestmentStatus"
+          >
+            <el-option
+                :value="item.code"
+                :label="item.zhMsg"
+                v-for="(item, index) in moldInvestmentStatusList"
+                :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
       </el-form>
     </iSearch>
     <iCard v-loading="tableLoading">
-      <div class="icardHeader">
-        <el-switch
-            v-model="onleySelf"
-            @change="sure"
-            inactive-text="仅看自己">
-        </el-switch>
-        <div>
-          <iButton @click="handleHandover">{{ language('LK_ZHUANPAI', '转派') }}</iButton>
-          <iButton @click="sendSupplier">{{ language('LK_FASONGGONGYIUNGSHANGQUEREN', '发送供应商确认') }}</iButton>
-          <iButton @click="transferBtn">{{ language('LK_FAQIBIANGENG', '发起变更') }}</iButton>
-        </div>
-      </div>
       <!--      570-->
       <iTableList
           :tableData="tableListData"
@@ -186,6 +150,9 @@ import {
   sendSupplier,
   liniePullDownByDept,
 } from "@/api/ws2/purchase/investmentList";
+import {
+  findBmViewPageList,
+} from "@/api/ws2/purchaseSupplier/investmentList";
 import {pageMixins} from "@/utils/pageMixins";
 import {Switch, Popover} from "element-ui"
 import {
@@ -283,16 +250,12 @@ export default {
     },
     conditionConfirmTskList(){
       this.tableLoading = true
-      conditionConfirmTskList({
+      findBmViewPageList({
         current: this.page.currPage,
         size: this.page.pageSize,
-        bmSerial: this.bmSerial,
-        deptId: this.department.join(),
-        isOneself: this.onleySelf ? 1 : 2,
-        linieName: this.linieName.join(),
+        linieId: this.linieName,
         moldInvestmentStatus: this.moldInvestmentStatus.join(),
-        partsNum: this.partsNum,
-        supplierFuzzyName: this.supplier,
+        behalfPartsNum: this.partsNum,
         tmCartypeProId: this.carTypeProject.join(),
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
