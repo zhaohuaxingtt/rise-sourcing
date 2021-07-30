@@ -64,16 +64,16 @@
                          :index="indexMethod"
                          align="center"
                          header-align="center"
-                         width="50">
+                         width="40">
         </el-table-column>
         <el-table-column align="center"
                          header-align="center"
                          :label="$t('TPZS.FXMC')"
-                         width="250">
+                         width="450">
           <template slot-scope="scope">
             <div class="openPage">
               <el-row :gutter="20">
-                <el-col :span="18"
+                <el-col :span="20"
                         style="textalgin: center">
                   <el-tooltip v-if="!edit"
                               :content="scope.row.name"
@@ -91,7 +91,7 @@
                           class="nameInput"
                           v-model="scope.row.name"></iInput>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="4">
                   <span v-if="scope.row.fileType == $t('TPZS.SCHEME_TYPE')">
                     <span class="number">
                       <p>{{ scope.row.reportList.length }}</p>
@@ -111,13 +111,19 @@
           </template>
         </el-table-column>
         <el-table-column :label="$t('LK_CAILIAOZU')"
-                         prop="materialGroup">
-        </el-table-column>
-        <el-table-column :label="$t('RFQ')"
-                         prop="rfqNo"> </el-table-column>
-        <el-table-column :label="$t('TPZS.MRX')"
+                         prop="materialGroup"
                          align="center"
                          header-align="center">
+        </el-table-column>
+        <el-table-column :label="$t('RFQ')"
+                         prop="rfqNo"
+                         width="100"
+                         align="center"
+                         header-align="center"> </el-table-column>
+        <el-table-column :label="$t('TPZS.MRX')"
+                         align="center"
+                         header-align="center"
+                         width="80">
           <template slot-scope="scope">
             <div v-if="!edit">
               {{ defaultStatus(scope.row, scope.row.isDefault) }}
@@ -139,20 +145,30 @@
           </template>
         </el-table-column>
         <el-table-column :label="$t('TPZS.WJLX')"
-                         prop="fileType">
+                         prop="fileType"
+                         align="center"
+                         header-align="center">
         </el-table-column>
         <el-table-column :label="$t('TPZS.CJR')"
-                         prop="createNameZh">
+                         prop="createNameZh"
+                         align="center"
+                         header-align="center">
         </el-table-column>
         <el-table-column :label="$t('LK_CHUANGJIANRIQI')"
                          prop="createDate"
-                         show-overflow-tooltip>
+                         show-overflow-tooltip
+                         align="center"
+                         header-align="center">
         </el-table-column>
         <el-table-column :label="$t('TPZS.SCXGRQ')"
                          prop="updateDate"
-                         show-overflow-tooltip>
+                         show-overflow-tooltip
+                         align="center"
+                         header-align="center">
         </el-table-column>
-        <el-table-column width="50">
+        <el-table-column  width="50"
+                          align="center"
+                          header-align="center">
           <template slot-scope="scope">
             <div @click="handleStick(scope.row)"
                  class="stickIcon">
@@ -607,7 +623,7 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  width: 150px;
+  width: 96%;
 }
 
 .bob-main {

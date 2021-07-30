@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-29 20:55:37
+ * @LastEditTime: 2021-07-30 10:14:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -25,16 +25,16 @@
                        :index="indexMethod"
                        align="center"
                        header-align="center"
-                       width="50">
+                       width="40">
       </el-table-column>
       <el-table-column align="center"
                        header-align="center"
                        :label="$t('TPZS.FXMC')"
-                       width="250">
+                       width="450">
         <template slot-scope="scope">
           <div class="openPage">
             <el-row :gutter="20">
-              <el-col :span="18">
+              <el-col :span="20">
                 <span v-if="!editMode"
                       style="textAlgin: center">
                   <el-tooltip :content="scope.row.analysisSchemeName"
@@ -61,7 +61,7 @@
                           v-model="scope.row.reportName"></iInput>
                 </span>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="4">
                 <span v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')">
                   <span class="number">
                     {{scope.row.reportCount}}
@@ -84,12 +84,14 @@
       <el-table-column prop="rfqId"
                        align="center"
                        header-align="center"
-                       label="RFQ">
+                       label="RFQ"
+                       width="100">
       </el-table-column>
       <el-table-column prop="isDefault"
                        align="center"
                        header-align="center"
-                       :label="$t('TPZS.MRX')">
+                       :label="$t('TPZS.MRX')"
+                       width="80">
         <template slot-scope="scope">
           <div v-if="!editMode">
             <!-- {{scope.row.isDefault === '是' || scope.row.isDefault === '否' ? scope.row.isDefault : null}} -->
@@ -207,7 +209,6 @@ export default {
     }
   },
   created () {
-    this.getTableData()
     this.round = this.$route.query.round ? this.$route.query.round : this.round
   },
   computed: {
@@ -472,7 +473,7 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  width: 150px;
+  width: 96%;
 }
 
 .vpMainBox {
