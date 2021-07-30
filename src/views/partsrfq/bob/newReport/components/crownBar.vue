@@ -354,10 +354,11 @@ export default {
           const min = this.min(tempArr[row]);
           let data = min;
           if (this.type === "Best of Average") {
-            data = this.doNumber((this.sum(tempArr[row]) / tempArr[row].length))
-            // data = Number(
-            //   (this.sum(tempArr[row]) / tempArr[row].length).toFixed(2)
-            // );
+            // data = this.doNumber((this.sum(tempArr[row]) / tempArr[row].length))
+            data = Number(
+              (this.sum(tempArr[row]) / tempArr[row].length)
+            );
+            console.log(data)
           } else if (this.type === "Best of Second") {
             data = this.bos(tempArr[row]);
           }

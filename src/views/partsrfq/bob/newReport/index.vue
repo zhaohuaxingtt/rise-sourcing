@@ -207,10 +207,11 @@
         </el-col>
       </el-row>
       <el-row :gutter="20"
-              class="margin-top20">
-        <el-col :span="inside?4:5">
+              class="margin-top20"
+            >
+        <el-col :span="inside?4:5" >
           <iCard :collapse="false"
-                 style="height: 560px"
+                 
                  v-if="!reportSave">
             <ul class="anchorList flex">
               <li v-for="(i,index) in anchorList"
@@ -228,6 +229,7 @@
                        :analysisSchemeId="analysisSchemeId"
                        :reportSave="reportSave"
                        :label="label"
+                       :bobType="bobType"
                        :formUpdata="formUpdata"></bobAnalysis>
         </el-col>
       </el-row>
@@ -372,27 +374,7 @@ export default {
       this.analysisSchemeId = this.$route.query.chemeId
       this.getChartData()
     }
-
-    // console.log(this.$route.query, "query")
-    // if (this.$store.state.rfq.entryStatus === 1) {
-    //   this.inside = true;
-    //   this.rfq = this.$store.state.rfq.rfqId
-    //   this.analysisSchemeId = this.$route.query.rfqId;
-    //   this.getChartData();
-    // } else {
-    //   if (this.$route.query.SchemeId) {
-    //     this.value = false
-    //     this.analysisSchemeId = this.$route.query.SchemeId;
-    //     this.getChartData();
-    //   } else {
-    //     this.findPart()
-    //     this.analysisSchemeId = this.$store.state.rfq.SchemeId;
-    //   }
-    // }
-    // this.newBuild = this.$route.query.newBuild;
-    // if (this.newBuild) {
-    //   this.analysisSave = true;
-    // }
+    console.log(document.body.clientHeight)
   },
   watch: {
     analysisName: {
@@ -413,14 +395,12 @@ export default {
     // },
     chartType: {
       handler (newval) {
-        console.log(newval)
-        console.log(this.inside, "hahahah")
         if (!this.inside) {
           this.chartType = 'combination'
         }
         // this.inside ? "supplier" : "mixComp"
       },
-    }
+    },
   },
   mounted () {
   },
@@ -495,7 +475,6 @@ export default {
     },
     sure () { },
     changeBy (e) {
-      console.log(e)
       this.chartType = e;
       if (this.chartType === 'combination') {
         this.form = {
@@ -511,8 +490,12 @@ export default {
     },
     changeType (e) {
       this.bobType = e;
-      this.initChartData();
       this.closeDiv();
+      this.$refs.bobAnalysis.chargeRetrieve({
+        isDefault: true,
+        viewType: 'all',
+        schemaId: this.analysisSchemeId
+      })
     },
     goToBob () {
       this.$router.push("bob");
@@ -527,7 +510,7 @@ export default {
       const position = e.event.target.position;
       console.log(position)
       this.showSelectDiv = true;
-      this.$refs.toolTipDiv.style.left = position[0] + -20 + "px";
+      this.$refs.toolTipDiv.style.left = position[0] + -40 + "px";
       this.$refs.toolTipDiv.style.top = position[1] + 15 + "px";
       this.$refs.toolTipSelect.focus();
     },
@@ -686,6 +669,7 @@ export default {
           this.form.supplier = this.Split(allData.supplier, ",").map(Number);
           this.form.turn = this.Split(allData.turn, ",").map(Number);
           this.form.spareParts = this.Split(allData.spareParts, ",");
+          this.getOptions()
         }
       });
       this.$refs.bobAnalysis.chargeRetrieve(tableParams);
@@ -810,6 +794,8 @@ export default {
             });
           });
         } else {
+          this.formUpdata.remark = this.$refs.bobAnalysis.remark
+          this.formUpdata.name = this.analysisName
           update(this.formUpdata)
             .then((res) => {
               iMessage.success("保存成功");
