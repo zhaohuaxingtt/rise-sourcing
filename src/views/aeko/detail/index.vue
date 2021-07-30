@@ -74,7 +74,8 @@ export default {
   },
   data() {
     return {
-      currentTab: "cover",
+      aekoInfo: {},
+      currentTab: "contentDeclare",
       basicTitle:[
         {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'a'},
         {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'b'},

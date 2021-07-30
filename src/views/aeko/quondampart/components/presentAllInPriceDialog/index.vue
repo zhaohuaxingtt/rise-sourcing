@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 13:59:01
- * @LastEditTime: 2021-07-27 15:24:18
+ * @LastEditTime: 2021-07-30 15:53:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\presentAllInPriceDialog\index.vue
@@ -40,6 +40,7 @@ import { iDialog, iButton, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { presentAllInPriceDialogTableTitle as tableTitle } from "../data"
 import filters from "@/utils/filters"
+import { getAekoOriginPartAPrice } from "@/api/aeko/detail"
 
 export default {
   components: { iDialog, iButton, tableList },
@@ -49,6 +50,16 @@ export default {
     visible: {
       type: Boolean,
       default: false,
+    },
+    partNum: {
+      type: String,
+      require: true,
+      default: ""
+    },
+    factoryCode: {
+      type: String,
+      require: true,
+      default: ""
     },
   },
   watch: {
@@ -80,31 +91,25 @@ export default {
   },
   methods: {
     // 获取列表
-    getList() {
-      this.tableListData = [{}, {}, {}]
-      // this.loading = true
+    getAekoOriginPartAPrice() {
+      this.loading = true
 
-      // getPartsBySupplier({
-      //   current: this.page.currPage,
-      //   size: this.page.pageSize,
-      //   rfqId: this.rfqId,
-      //   partFsInfos: this.parts.map(part => ({
-      //     fs: part.fsnrGsnrNum,
-      //     partNum: part.partNum
-      //   }))
-      // })
-      // .then(res => {
-      //   if (res.code == 200) {
-      //     this.multipleSelection = []
-      //     this.tableListData = Array.isArray(res.data) ? res.data : []
-      //     this.page.totalCount = res.total || 0
-      //   } else {
-      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-      //   }
+      getAekoOriginPartAPrice({
+        partNum: this.partNum,
+        factoryCode: this.factoryCode
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.multipleSelection = []
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.total || 0
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
 
-      //   this.loading = false
-      // })
-      // .catch(() => this.loading = false)
+        this.loading = false
+      })
+      .catch(() => this.loading = false)
     },
     handleSingleSelectChange(row) {
       this.selectRow = row

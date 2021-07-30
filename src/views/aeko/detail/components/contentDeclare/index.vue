@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-07-29 18:17:01
+ * @LastEditTime: 2021-07-30 16:12:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -92,7 +92,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('CAIGOUGONGCHANG', '采购工厂')">
+        <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')">
           <iSelect
             filterable
             v-model="form.procureFactory"
@@ -312,7 +312,7 @@ export default {
       
       getAekoLiniePartInfo({
         ...this.form,
-        requirementAekoId: this.aekoInfo.requirementAekoId || "1",
+        requirementAekoId: this.aekoInfo.requirementAekoId || "10000",
         cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
         current: this.page.currPage,
@@ -338,6 +338,7 @@ export default {
       this.query()
     },
     reset() {
+      this.page.currPage = 1
       this.form = cloneDeep(contentDeclareQueryForm)
       this.query()
     },
@@ -352,7 +353,10 @@ export default {
     oldPartNumPresetSelect(row) {
       this.$router.push({
         path: "/aeko/quondampart/ledger",
-        query: {}
+        query: {
+          objectAekoPartId: row.objectAekoPartId,
+          requirementAekoId: this.aekoInfo.requirementAekoId
+        }
       })
     },
     // 相关无关切换
