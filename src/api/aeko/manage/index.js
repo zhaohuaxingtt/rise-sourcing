@@ -11,9 +11,36 @@ const requst = axios(process.env.VUE_APP_PARTS)
 
 // 列表查询
 export function getManageList(data) {
-    return requst({
-      url: '/aeko/purchasing/page',
-      method: 'POST',
-      data,
-    })
-  }
+  return requst({
+    url: '/aeko/purchasing/page',
+    method: 'POST',
+    data,
+  })
+}
+
+// aeko状态下拉框
+export function searchAekoStatus(params) {
+  return requst({
+    url: '/aeko/purchasing/search-aeko-status',
+    method: 'GET',
+    params,
+  })
+}
+
+// 品牌下拉框 
+export function searchBrand(params) {
+  return requst({
+    url: '/aeko/purchasing/search-brand',
+    method: 'GET',
+    params,
+  })
+}
+
+// 封面状态下拉框
+export function searchCoverStatus(params) {
+  return requst({
+    url: '/aeko/purchasing/search-cover-status',
+    method: 'GET',
+    params,
+  })
+}
