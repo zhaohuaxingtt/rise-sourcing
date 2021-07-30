@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-07-28 16:47:09
+ * @LastEditTime: 2021-07-29 17:11:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -28,7 +28,7 @@
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
       <!-- language(tab.key, tab.label) -->
       <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="tab.label" :name="tab.name">
-        <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" />
+        <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :aekoInfo="aekoInfo" />
       </el-tab-pane>
     </iTabsList>
   </iPage>
@@ -62,6 +62,11 @@ export default {
     iText,
     partsList,
     cover,
+  },
+  created() {
+    this.aekoInfo = {
+      requirementAekoId: this.$route.query.requirementAekoId
+    }
   },
   mounted() {
     const component = this.$refs[this.currentTab][0]

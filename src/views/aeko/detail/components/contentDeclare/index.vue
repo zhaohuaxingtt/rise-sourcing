@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-07-29 11:09:54
+ * @LastEditTime: 2021-07-29 18:17:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -33,6 +33,7 @@
             multiple
             collapse-tags
             filterable
+            size="mini"
             class="multipleSelect"
             v-model="form.cartypeProjectCode"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
@@ -55,6 +56,7 @@
             multiple
             collapse-tags
             filterable
+            size="mini"
             class="multipleSelect"
             v-model="form.status"
             :placeholder="language('QINGXUANZENEIRONGZHUANGTAI', '请选择内容状态')"
@@ -156,17 +158,21 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <template #isReference="scope">
-            <span>{{ scope.row.isReference | isReferenceFilter }}</span>
+            <span>{{ scope.row.isReference ? scope.row.isReference.desc : "" }}</span>
+          </template>
+          <template #status="scope">
+            <span>{{ scope.row.status ? scope.row.status.desc : "" }}</span>
           </template>
           <template #oldPartNumPreset="scope">
-            <iInput class="oldPartNumPresetSelect" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly @click.native="handleSelect(scope.row)">
+            <iInput v-if="scope.row.status.code === 'EMPTY'" class="oldPartNumPresetSelect" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly @click.native="oldPartNumPresetSelect(scope.row)">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" />
               </div>
             </iInput>
+            <iInput v-else v-model="scope.row.oldPartNumPreset" disabled readonly></iInput>
           </template>
           <template #dosage="scope">
-            <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotation="scope">
             <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -194,8 +200,8 @@
         <iPagination 
           v-update
           class="margin-top30"
-          @size-change="handleSizeChange($event, getList)"
-          @current-change="handleCurrentChange($event, getList)"
+          @size-change="handleSizeChange($event, init)"
+          @current-change="handleCurrentChange($event, init)"
           background
           :current-page="page.currPage"
           :page-sizes="page.pageSizes"
@@ -204,12 +210,14 @@
           :total="page.totalCount" />
       </div>
     </iCard>
+    <dosageDialog :visible.sync="dosageDialogVisible" />
   </div>
 </template>
 
 <script>
 import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
+import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle, isReferenceMap } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { getAekoLiniePartInfo } from "@/api/aeko/detail"
@@ -218,8 +226,14 @@ import { getDictByCode } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 
 export default {
-  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList },
+  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog },
   mixins: [ pageMixins ],
+  props: {
+    aekoInfo: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data() {
     return {
       form: cloneDeep(contentDeclareQueryForm),
@@ -232,7 +246,8 @@ export default {
       tableListData: [],
       multipleSelection: [],
       declareToggleLoading: false,
-      declareResetLoading: false
+      declareResetLoading: false,
+      dosageDialogVisible: false,
     };
   },
   created() {
@@ -274,6 +289,11 @@ export default {
               value: item.code
             })) :
             []
+          this.contentStatusOptions.unshift({
+            key: "EMPTY",
+            label: "(空)",
+            value: "EMPTY"
+          })
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -292,6 +312,7 @@ export default {
       
       getAekoLiniePartInfo({
         ...this.form,
+        requirementAekoId: this.aekoInfo.requirementAekoId || "1",
         cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
         current: this.page.currPage,
@@ -322,6 +343,10 @@ export default {
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
+    },
+    // 查看装⻋率/每⻋⽤量
+    viewDosage(row) {
+      this.dosageDialogVisible = true
     },
     view() {},
     oldPartNumPresetSelect(row) {
@@ -390,6 +415,8 @@ export default {
   }
 
   .oldPartNumPresetSelect {
+    cursor: pointer;
+    
     ::v-deep input {
       cursor: pointer;
     }

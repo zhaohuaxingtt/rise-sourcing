@@ -2,38 +2,38 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 22:46:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-28 10:53:47
+ * @LastEditTime: 2021-07-29 17:54:25
  * @Description: 车型项目详情
- * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\carProject\index.vue
+ * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\carprojectprogress\index.vue
 -->
 
 <template>
-  <div class="carProject">
+  <div class="carProject" v-loading="loading">
     <div class="carProject-detail">
       <img src="../../../../../../assets/images/car.png" />
-      <span class="carProject-detail-title">Tiguan X 2021</span>
+      <span class="carProject-detail-title">{{carProjectInfo.cartypeProCode}}</span>
       <div class="carProject-detail-info">
-        <span>上海工厂</span>
-        <span>SOP: 2020年12月</span>
+        <span>{{carProjectInfo.factory}}</span>
+        <span>SOP: {{carProjectInfo.pepSop ? moment(carProjectInfo.pepSop).format('YYYY年MM月'): ''}}</span>
       </div>
     </div>
     <div class="carProject-progress">
-      <div v-for="(item, index) in progressListWithWeek" :key="item.label" class="stepItem">
+      <div v-for="(item, index) in nodeList" :key="item.label" class="stepItem">
         <div class="stepItem-box">
             <!-- 已完成 -->
-          <icon v-if="item.isDone" symbol name="icondingdianguanli-yiwancheng"  class="step-icon"></icon> 
+          <icon v-if="item.isDone == 1" symbol name="icondingdianguanli-yiwancheng"  class="step-icon"></icon> 
           <!-- 正在进行中 -->
-          <icon v-else-if="index > 0 ? !item.isDone && progressListWithWeek[index - 1].isDone : !item.isDone" symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
+          <icon v-else-if="item.isDone == 2" symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
           <!-- 未完成 -->
           <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
           <span class="stepItem-box-title">{{item.label}}</span>
           <span class="stepItem-box-week">{{item.week}}</span>
         </div>
           <!-- 正在进行中 -->
-          <template v-if="index === progressListWithWeek.length - 1"></template>
-          <icon v-else-if="item.isDone && !progressListWithWeek[index+1].isDone" symbol name="iconchanpinzupaicheng_jinhangzhong" class="step-between-icon"></icon>
+          <template v-if="index === nodeList.length - 1"></template>
+          <icon v-else-if="item.isDone == 1 && !nodeList[index+1].isDone == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="step-between-icon"></icon>
           <!-- 已完成 -->
-          <icon v-else-if="item.isDone" symbol name="iconchanpinzupaicheng_yiwancheng" class="step-between-icon"></icon>
+          <icon v-else-if="item.isDone == 1" symbol name="iconchanpinzupaicheng_yiwancheng" class="step-between-icon"></icon>
           <!-- 未完成 -->
           <icon v-else symbol name="iconchanpinzupaicheng_weijinhang" class="step-between-icon"></icon>
       </div>
@@ -42,37 +42,70 @@
 </template>
 
 <script>
-import { icon } from 'rise'
+import { icon, iMessage } from 'rise'
 import moment from 'moment'
+import { getCarTypeProPepTimeNode } from '@/api/project'
 export default {
   components: { icon },
+  props: {
+    carProjectId: {type:String}
+  },
   data() {
     return {
+      moment,
+      loading: false,
+      carProjectInfo: {},
       progressList: [
-        { label: 'PD', date: '2020-05-01' },
-        { label: 'PF', date: '2020-05-01' },
-        { label: 'KF', date: '2020-05-01' },
-        { label: 'PLF', date: '2020-05-01' },
-        { label: 'BF', date: '2020-05-01' },
-        { label: 'LF', date: '2021-05-01' },
-        { label: 'VFF', date: '2021-06-01' },
-        { label: 'PVS', date: '2021-07-01' },
-        { label: '0S', date: '2021-08-01' },
-        { label: 'SOP', date: '2021-09-01' },
-        { label: 'ME', date: '2021-12-01' }
-      ]
+        { label: 'PD', date: '2020-05-01', value: 'pepPdWk', status: 'pepPdStatus' },
+        { label: 'PF', date: '2020-05-01', value: 'pepPfWk', status: 'pepPfStatus' },
+        { label: 'KF', date: '2020-05-01', value: 'pepKfWk', status: 'pepKfStatus' },
+        { label: 'PLF', date: '2020-05-01', value: 'pepPlfWk', status: 'pepPlfStatus' },
+        { label: 'BF', date: '2020-05-01', value: 'pepBfWk', status: 'pepBfStatus' },
+        { label: 'LF', date: '2021-05-01', value: 'pepLfWk', status: 'pepLfStatus' },
+        { label: 'VFF', date: '2021-06-01', value: 'pepVffWk', status: 'pepVffStatus' },
+        { label: 'PVS', date: '2021-07-01', value: 'pepPvsWk', status: 'pepPvsStatus' },
+        { label: '0S', date: '2021-08-01', value: 'pepOsWk', status: 'pepOsStatus' },
+        { label: 'SOP', date: '2021-09-01', value: 'pepSopWk', status: 'pepSopStatus' },
+        { label: 'ME', date: '2021-12-01', value: 'pepMeWk', status: 'pepMeStatus' }
+      ],
+      nodeList: []
     }
   },
-  computed: {
-    progressListWithWeek() {
-      return this.progressList.map(item => {
-        return {
-          ...item,
-          week: `${moment(item.date).year()}-KW${moment(item.date).week()}`,
-          isDone: moment(item.date).isBefore(moment())
+  watch: {
+    carProjectId: {
+      handler(id) {
+        if (id) {
+          this.getProgressList(id)
         }
-      })
+      },
+      immediate: true
     }
+  },
+  methods: {
+    async getProgressList(val) {
+      if (!val) {
+        return
+      }
+      this.loading = true
+      const res = await getCarTypeProPepTimeNode(val)
+      if (res?.result) {
+        this.carProjectInfo = res.data
+        this.nodeList = this.progressList.reduce((accu, curr) => {
+          if (!res.data[curr.value]) {
+            return accu
+          }
+          return [...accu, {
+            ...curr,
+            week: res.data[curr.value],
+            isDone: res.data[curr.status]
+          }]
+        },[])
+        this.$emit('changeSopStatus', moment(res.data.pepSop).isBefore(moment()))
+      } else {
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      }
+      this.loading = false
+    },
   }
 }
 </script>

@@ -16,6 +16,7 @@
     :http-request="onUploaded"
     :accept="accept"
     v-bind="props"
+    ref="uploadRef"
   >
 		<iButton :loading="uploading">{{buttonText || $t('LK_DIANJISHANGCHUAN')}}</iButton>
 		<div v-if="!hideTip" slot="tip" class="el-upload__tip">{{$t('LK_ZHINENGSHANGCHUANWENJIAN')}}</div>

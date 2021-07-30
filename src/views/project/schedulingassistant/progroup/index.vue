@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-29 14:00:35
+ * @LastEditTime: 2021-07-29 18:15:33
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
@@ -25,7 +25,7 @@
       </div>
       <div class="projectCard-content">
         <carEmpty v-if="!carProject" />
-        <carProject v-else />
+        <carProject v-else :carProjectId="carProject" @changeSopStatus="changeSopStatus" />
       </div>
     </iCard>
     <iCard class="margin-top20 projectCard">
@@ -44,8 +44,8 @@
       </div>
       <div class="projectCard-content">
         <proGroupEmpty v-if="!proGroup" />
-        <periodicView v-else-if="!isNodeView" @changeNodeView="changeNodeView(true)" />
-        <nodeView v-else @changeNodeView="changeNodeView(false)" />
+        <periodicView ref="periodicView" v-else-if="!isNodeView" @changeNodeView="changeNodeView(true)" :cartypeProId="carProject" :isSop="isSop" />
+        <nodeView ref="nodeView" v-else @changeNodeView="changeNodeView(false)" :cartypeProId="carProject" />
       </div>
     </iCard>
     <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="productLogicList" :logicData="productData" :selectOptions="selectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
@@ -64,6 +64,7 @@ import nodeView from './components/nodeview'
 import carEmpty from './components/empty/carEmpty'
 import proGroupEmpty from './components/empty/proGroupEmpty'
 import { selectDictByKeyss } from '@/api/dictionary'
+import { getCarTypePro } from '@/api/project'
 export default {
   components: { iPage, iCard, iSelect, iButton, carProject, logicSettingDialog, chooseProGroupDialog, icon, periodicView, nodeView, carEmpty, proGroupEmpty },
   data() {
@@ -91,14 +92,34 @@ export default {
       carProjectOptions: [
         {value: '1', label: 'Tiguan 2021'},
         {value: '2', label: 'Turan X4 2021'}
-      ]
+      ],
+      isSop: false
     }
   },
   created() {
     const keys = 'CATEGORY_CONFIG_OPTIONS,CALCULATE_CONFIG_OPTIONS,VALUE_CONFIG_OPTIONS,YEAR_CONFIG_OPTIONS,CAR_TYPE_CONFIG_OPTIONS'
     this.selectDictByKeys(keys)
+    this.getCarProjectOptinos()
   },
   methods: {
+    changeSopStatus(isSop) {
+      this.isSop = isSop
+    },
+    getCarProjectOptinos() {
+      getCarTypePro().then(res => {
+        if (res?.result) {
+          this.carProjectOptions = res.data.map(item => {
+            return {
+              ...item,
+              value: item.id,
+              label: item.cartypeProName
+            }
+          })
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
     selectDictByKeys(keys) {
       selectDictByKeyss(keys).then(res => {
         if (res?.result) {
@@ -123,21 +144,38 @@ export default {
         iMessage.error(this.language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目'))
         return
       }
+      if (this.isSop) {
+        return
+      }
       this.chooseVisible = true
     },
     changeChooseProGroup(visible) {
       this.chooseVisible = visible
     },
     handleChooseProGroup(val) {
-      console.log(this.chooseData)
       this.chooseData = val
       this.proGroup = this.chooseDataList.filter(item => this.chooseData.includes(item.key)).map(item => item.label).join(',')
       this.changeChooseProGroup(false)
       this.$refs.chooseProGroup.changeSaveLoading(false)
+      // this.$refs.periodicView.init()
+      // this.$refs.nodeView.init()
+      this.$nextTick(() => {
+        this.initView()
+      })
     },
     changeNodeView(isNodeView) {
       this.isNodeView = isNodeView
-    }
+      this.$nextTick(() => {
+        this.initView()
+      })
+    },
+    initView() {
+      if (this.isNodeView) {
+        this.$refs.nodeView && this.$refs.nodeView.init()
+      } else {
+        this.$refs.periodicView && this.$refs.periodicView.init()
+      }
+    },
   }
 }
 </script>
