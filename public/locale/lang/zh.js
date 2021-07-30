@@ -748,6 +748,7 @@
         'LK_SHANGHUI': '上会', // 上会
         'LK_LIUZHUAN': '流转', // 流转
         'LK_BEIAN': '备案', // 备案
+        'LK_QINGSHURUTUIHUIYUANYIN': '请输入退回原因', // 备案
 
         //摸具预算
         // 点击进入【生成投资清单】页面

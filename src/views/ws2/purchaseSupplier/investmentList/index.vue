@@ -75,6 +75,8 @@
       <iTableList
           :tableData="tableListData"
           :tableTitle="tableTitle"
+          :typeIndex="true"
+          :selection="false"
           @handleSelectionChange="handleSelectionChange"
       >
         <template #bmSerial="scope">
@@ -138,7 +140,7 @@
 </template>
 
 <script>
-import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage, icon} from 'rise';
+import {iCard, iSearch, iSelect, iPagination, iInput, iMessage, icon} from 'rise';
 import {iTableList} from "@/components";
 import {investmentListTitle} from "../components/data"
 import handover from "../components/handover"
@@ -146,7 +148,6 @@ import {
   getDepartmentsCombo,
   carCombo,
   moldInvestmentStatusCombo,
-  conditionConfirmTskList,
   sendSupplier,
   liniePullDownByDept,
 } from "@/api/ws2/purchase/investmentList";
@@ -154,13 +155,7 @@ import {
   findBmViewPageList,
 } from "@/api/ws2/purchaseSupplier/investmentList";
 import {pageMixins} from "@/utils/pageMixins";
-import {Switch, Popover} from "element-ui"
-import {
-  getModelProtitesPullDown,
-  proDeptPullDown
-} from "@/api/ws2/budgetManagement/investmentList";
-import {getCartypePulldown, saveCustomCart} from "@/api/ws2/budgetManagement/edit";
-import {cloneDeep} from "lodash";
+import {Popover} from "element-ui"
 
 export default {
   mixins: [pageMixins],
@@ -170,7 +165,6 @@ export default {
     iSelect,
     iTableList,
     iPagination,
-    iButton,
     iInput,
     handover,
     Popover,
@@ -305,7 +299,7 @@ export default {
     toBmInfo(row){
       //  如当前用户没有查看“模具投资金额”的权限，点击流水号后提示“对不起，您所在的岗位没有该材料组权限”
       this.$router.push({
-        path: '/purchase/investmentList/bmInfo',
+        path: '/purchaseSupplier/investmentList/bmInfo',
         query: {
           bmSerial: row.bmSerial,
           id: row.id

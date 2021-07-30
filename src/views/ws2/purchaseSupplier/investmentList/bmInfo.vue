@@ -153,15 +153,15 @@
           <iButton @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
           <iButton
               v-loading="bmBuberLoading"
-              v-if="baseInfo.moldInvestmentStatus === '2' || baseInfo.moldInvestmentStatus === '3'"
-              @click="bmBuberConfirmBefore">
-            {{ language('LK_CAIGOUYUANQUEREN', '采购员确认') }}
+              v-if="baseInfo.moldInvestmentStatus === '2'"
+              @click="returnShow = true">
+            {{ language('LK_TUIHUI', '退回') }}
           </iButton>
           <iButton
               v-loading="sendSupplierLoading"
-              v-if="baseInfo.moldInvestmentStatus === '1' || baseInfo.moldInvestmentStatus === '6'"
-              @click="sendSupplier">
-            {{ language('LK_FASONGGONGYIUNGSHANGQUEREN', '发送供应商确认') }}
+              v-if="baseInfo.moldInvestmentStatus === '2'"
+              @click="bmSupplierConfirm">
+            {{ language('LK_QUEREN', '确认') }}
           </iButton>
         </div>
 
@@ -192,6 +192,7 @@
 <!--      </div>-->
     </iCard>
     <confirm v-model="confirmShow" @sure="bmBuberConfirm"></confirm>
+    <returnModel v-model="returnShow" :id="query.id" @sure="findMoldViewList"></returnModel>
     <photoList :imgList="imgList" :visible="photoListShow" @changeLayer="() => photoListShow = false"></photoList>
   </iPage>
 </template>
@@ -200,23 +201,26 @@
 import {
   iTableList
 } from "@/components";
-import {iPage, iMessage, iDialog, iButton, iSelect, iSearch, iInput,
-  iCard, icon
+import {
+  iPage,
+  iMessage,
+  iButton,
+  iSelect,
+  iCard,
+  icon
 } from "rise";
 import {bmInfoTitle} from "../components/data"
 import confirm from "../components/confirm"
+import returnModel from "../components/return"
 import photoList from "../components/photoList"
 import { Popover } from "element-ui"
 import {
-  moldHeaderByBmSerial,
-  findMoldViewList,
   bmMoldExport,
   assetTypes,
   craftTypes,
-  bmBuberConfirm,
 } from "@/api/ws2/purchase/investmentList/bmInfo";
 import {getTousandNum} from "@/utils/tool";
-import {sendSupplier} from "@/api/ws2/purchase/investmentList";
+import {findModelViewList, moldHeaderByBmSerial, bmSupplierConfirm} from "@/api/ws2/purchaseSupplier/investmentList";
 
 export default {
   components: {
@@ -228,6 +232,7 @@ export default {
     iButton,
     Popover,
     confirm,
+    returnModel,
     photoList,
   },
 
@@ -244,6 +249,7 @@ export default {
       imgList: ['https://cdn6-banquan.ituchong.com/weili/l/919767005971611831.webp', 'https://cdn6-banquan.ituchong.com/weili/l/915608610047000641.webp', 'https://cdn9-banquan.ituchong.com/weili/l/903371741418749965.webp'],
       isOpen: false,
       confirmShow: false,
+      returnShow: false,
       photoListShow: false,
       detailsTableLoading: false,
       baseInfoLoading: false,
@@ -268,31 +274,9 @@ export default {
     this.findMoldViewList()
   },
   methods: {
-    bmBuberConfirmBefore(){
-      if(this.baseInfo.moldInvestmentStatus === '2'){
-        this.confirmShow = true
-      } else {
-        this.bmBuberConfirm()
-      }
-    },
-    bmBuberConfirm(){
-      this.bmBuberLoading = true
-      bmBuberConfirm({id: this.query.id}).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          this.moldHeaderByBmSerial()
-          iMessage.success(result);
-        } else {
-          iMessage.error(result);
-        }
-        this.bmBuberLoading = false
-      }).catch(() => {
-        this.bmBuberLoading = false
-      });
-    },
-    sendSupplier(){
+    bmSupplierConfirm(){
       this.sendSupplierLoading = true
-      sendSupplier([{bmid: this.query.id}]).then((res) => {
+      bmSupplierConfirm({id: this.query.id}).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.moldHeaderByBmSerial()
@@ -345,7 +329,7 @@ export default {
 
     findMoldViewList(){
       this.tableLoading = true
-      findMoldViewList({
+      findModelViewList({
         assetTypeNum: this.assetTypeNum,
         bmId: this.query.id,
         craftType: this.craftType,
