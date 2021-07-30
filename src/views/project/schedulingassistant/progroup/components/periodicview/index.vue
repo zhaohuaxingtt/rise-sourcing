@@ -2,21 +2,21 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-29 15:01:29
+ * @LastEditTime: 2021-07-29 17:59:07
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
 
 <template>
-  <div class="periodicView">
+  <div class="periodicView" v-loading="loading">
     <div class="periodicView-title">
       <div class="periodicView-title-span">
         <el-checkbox class="periodicView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <span class="periodicView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>
       </div>
-      <div>
+      <div v-if="!isSop">
         <iButton @click="$emit('changeNodeView')">{{language('QIEHUANJIEDIANSHITU', '切换节点视图')}}</iButton>
-        <iButton>{{language('BAOCUN', '保存')}}</iButton>
+        <iButton @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
         <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
         <iButton>{{language('DAOCHUFASONGPVPKQINGDAN', '导出发送PV/PK清单')}}</iButton>
       </div>
@@ -24,7 +24,7 @@
     <div v-for="pro in products" :key="pro.label" class="productItem">
       <div class="productItem-top">
         <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">
-          {{pro.label}}
+          {{pro.productGroupName}}
         </el-checkbox>
         <div class="productItem-top-targetList">
           <div v-for="item in targetList" :key="item.value" class="productItem-top-targetList-item">
@@ -74,45 +74,21 @@
 </template>
 
 <script>
-import { iButton, icon, iInput, iText } from 'rise'
+import { iButton, icon, iInput, iText, iMessage } from 'rise'
 import fsConfirm from '../fsconfirm'
+import { getProductGroupInfoList, saveProductGroupInfoList } from '@/api/project'
 export default {
   components: { iButton, fsConfirm, icon, iInput, iText },
+  props: {
+    cartypeProId: {type:String},
+    isSop: {type:Boolean}
+  },
   data() {
     return {
+      saveloading: false,
+      loading: false,
       checkAll: false,
-      products: [
-        {
-          label:'保险杠',
-          isChecked: false,
-          vffTarget:1,
-          keyReleaseToNomiWeek: 1,
-          keyNomiToBffWeek: 1,
-          keyBfToFirstTryoutWeek: 1,
-          keyFirstTryOtsWeek: 1,
-          keyFirstTryEmWeek: 1,
-          constReleaseToNomiWeek: 1,
-          constNomiToBffWeek: 1,
-          constBfToFirstTryoutWeek: 1,
-          constFirstTryOtsWeek: 1,
-          constFirstTryEmWeek: 1,
-          releaseToNomiWeek: 1,
-          hiNomiToBffWeek: 2,
-          hiBfToFirstTryoutWeek: 1,
-          hiFirstTryOtsWeek: 5,
-          hiFirstTryEmWeek: 1,
-          keyReleaseToNomiStatus: 1,
-          keyNomiToBffStatus: 0,
-          keyBfToFirstTryoutStatus: 0,
-          keyFirstTryOtsStatus: 0,
-          keyFirstTryEmStatus: 1,
-        }, 
-        {
-          label: '前大灯', 
-          isChecked: false, 
-          vffTarget:1
-        }
-      ],
+      products: [],
       checkedProducts: [],
       isIndeterminate: false,
       fsConfirmDialogVisible: false,
@@ -131,6 +107,38 @@ export default {
     }
   },
   methods: {
+    handleSave() {
+      if (!this.products.some(item => item.isChecked)) {
+        iMessage.warn(this.language('QINGGOUXUANXUYAOBAOCUNDESHUJU','请勾选需要保存的数据'))
+        return
+      }
+      this.saveloading = true
+      saveProductGroupInfoList(this.products.filter(item => item.isChecked)).then(res => {
+        if (res?.reuslt) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.init()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.saveloading = false
+      })
+    },
+    init() {
+      this.getProducts(this.cartypeProId)
+    },
+    getProducts(id) {
+      this.loading = true
+      getProductGroupInfoList(id).then(res => {
+        if (res?.result) {
+          this.products = res.data
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.loading = false
+      })
+    },
     gotoDBhistory() {
       const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`})
       window.open(router.href,'_blank')

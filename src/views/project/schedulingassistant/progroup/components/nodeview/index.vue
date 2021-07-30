@@ -2,12 +2,12 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:14:21
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-29 10:21:33
+ * @LastEditTime: 2021-07-29 18:27:49
  * @Description: 节点视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
 -->
 <template>
-  <div class="periodicView">
+  <div class="periodicView" v-loading="loading">
     <div class="periodicView-title">
       <div class="periodicView-title-span">
         <el-checkbox class="periodicView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -21,15 +21,8 @@
     <div v-for="pro in products" :key="pro.label" class="productItem">
       <div class="productItem-top">
         <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">
-          {{pro.label}}
+          {{pro.productGroupName}}
         </el-checkbox>
-        <!-- <div class="productItem-top-targetList">
-          <div v-for="item in targetList" :key="item.value" class="productItem-top-targetList-item">
-            <icon v-if="pro[item.value] == 1" symbol name="iconbaojiapingfengenzong-jiedian-lv" class="productItem-top-targetList-item-icon"></icon>
-            <icon v-else symbol name="iconbaojiapingfengenzong-jiedian-hong" class="productItem-top-targetList-item-icon"></icon>
-            <span class="productItem-top-targetList-item-label">{{language(item.key, item.label)}}</span>
-          </div>
-        </div> -->
       </div>
       <div class="productItem-bottom">
         <div class="productItem-bottom-text">
@@ -44,9 +37,9 @@
             <span class="productItem-bottom-nodeItem-label" v-if="!item.label.includes('1st')">{{item.key ? language(item.key, item.label) : item.label}}</span>
             <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span>
             <icon symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
-            <div class="flex-box margin-top20" v-for="item in targetList" :key="item.value" >
-              <iText class="productItem-bottom-stepBetween-input text "></iText>
-              <iText v-if="index === nodeList.length - 1" class="productItem-bottom-stepBetween-input text margin-left10"></iText>
+            <div class="flex-box margin-top20 " v-for="taItem in targetList" :key="taItem.value" >
+              <iText class="productItem-bottom-stepBetween-input text ">{{pro[item[taItem.props]]}}</iText>
+              <iText v-if="index === nodeList.length - 1" class="productItem-bottom-stepBetween-input text margin-left10">{{pro[item[taItem.props1]]}}</iText>
             </div>
           </div>
           <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
@@ -60,32 +53,52 @@
 </template>
 
 <script>
-import { iButton, icon, iText } from 'rise'
+import { iButton, icon, iText, iMessage } from 'rise'
 import fsConfirm from '../fsconfirm'
+import { getProductGroupNodeInfoList } from '@/api/project'
 export default {
   components: { iButton, fsConfirm, icon, iText },
+  props: {
+    cartypeProId: {type:String}
+  },
   data() {
     return {
+      loading: false,
       checkAll: false,
-      products: [{label:'保险杠',isChecked: false, vffTarget:1}, {label: '前大灯', isChecked: false}],
+      products: [],
       checkedProducts: [],
       isIndeterminate: false,
       fsConfirmDialogVisible: false,
       targetList: [
-        {label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget'},
-        {label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget'},
-        {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'}
+        {label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget', props: 'vff', props1: 'vff1'},
+        {label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget', props: 'pvs', props1: 'pvs1'},
+        {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget', props: 'os', props1: 'os1'}
       ],
       nodeList: [
-        {label: '释放', key: 'SHIFANG'},
-        {label: '定点', key: 'DINGDIAN'},
-        {label: 'BF'},
-        {label: '1st Tryout'},
-        {label: 'EM(OTS)'}
+        {label: '释放', key: 'SHIFANG', pvs: 'pvsTargetReleaseWeek', vff: 'vffTargetReleaseWeek', os: 'zerosTargetReleaseWeek'},
+        {label: '定点', key: 'DINGDIAN', pvs: 'pvsTargetNomiWeek', vff: 'vffTargetNomiWeek', os: 'zerosTargetNomiWeek'},
+        {label: 'BF', pvs: 'pvsTargetNomiWeek', vff: 'vffTargetBfWeek', os: 'zerosTargetBfWeek'},
+        {label: '1st Tryout', pvs: 'pvsTargetFirstTryWeek', vff: 'vffTargetFirstTryWeek', os: 'zerosTargetFirstTryWeek'},
+        {label: 'EM(OTS)', pvs: 'pvsTargetEmWeek', vff: 'vffTargetEmWeek', os: 'zerosTargetEmWeek', pvs1: 'pvsTargetOtsWeek', vff1: 'vffTargetOtsWeek', os1: 'zerosTargetOtsWeek'}
       ]
     }
   },
   methods: {
+    init() {
+      this.getProducts(this.cartypeProId)
+    },
+    getProducts(id) {
+      this.loading = true
+      getProductGroupNodeInfoList(id).then(res => {
+        if (res?.result) {
+          this.products = res.data || []
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.loading = false
+      })
+    },
     handleSendFs() {
       this.changeFsConfirmVisible(true)
     },
@@ -220,6 +233,10 @@ export default {
           &-input {
             height: 30px;
             width: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
             &.text {
               border: 1px solid rgba(181, 186, 198, 0.19);
               background-color: rgba(233, 236, 241, 0.75);
