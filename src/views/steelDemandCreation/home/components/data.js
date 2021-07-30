@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-06-30 13:56:01
- * @LastEditTime: 2021-07-28 18:39:52
+ * @LastEditTime: 2021-07-29 18:05:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steelDemandCreation\home\components\data.js
  */
 import {STEEL} from '@/config'
-export function searchForm({MEETING_TYPE=[],NOMINATE_APP_PROCESS_TYPE=[],NOMINATE_APP_STATUS_FILING=[]}){
+export function searchForm({MEETING_TYPE=[],NOMINATE_APP_PROCESS_TYPE=[],NOMINATE_APP_STATUS_FILING=[],LINLIE=[],BEFORBUYER=[]}){
   return [
     {
       i18nName:'申请单号',
@@ -78,7 +78,7 @@ export function searchForm({MEETING_TYPE=[],NOMINATE_APP_PROCESS_TYPE=[],NOMINAT
       i18nKey:'XUNJIACAIGOUYUAN',
       permissionKey:'SOURCING_XUNJIACAIGOUYUAN',
       type:'select',
-      List:[],
+      List:BEFORBUYER,
       moduleKey:'nominateUserName'
     },
     {
@@ -86,7 +86,7 @@ export function searchForm({MEETING_TYPE=[],NOMINATE_APP_PROCESS_TYPE=[],NOMINAT
       i18nKey:'ZHUANYECAIGOUYUAN',
       permissionKey:'SOURCING_ZHUANYECAIGOUYUAN',
       type:'select',
-      List:[],
+      List:LINLIE,
       moduleKey:'linieName'
     },
     {
