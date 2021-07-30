@@ -153,6 +153,7 @@ import {
   searchAekoStatus,
   searchBrand,
   searchCoverStatus,
+  uploadFiles,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
@@ -208,7 +209,12 @@ export default {
     methods:{
       // 重置
       reset(){
-        this.searchParams = {};
+        this.searchParams = {
+          brand:'',
+          aekoStatusList:[],
+          coverStatusList:[],
+        };
+        this.getList();
       },
 
       handleSelectionChange(val) {
@@ -219,7 +225,7 @@ export default {
       async getList(){
         this.loading = true;
         const {searchParams,page} = this;
-        // 若有定点起止时间将其拆分成两个字段
+        // 若有冻结起止时间将其拆分成两个字段
         const {frozenDate=[]} = searchParams;
         const data = {
             current:page.currPage,
@@ -256,6 +262,8 @@ export default {
           const {code,data=[]} = res;
           if(code ==200 && data){
             selectOptions.aekoStatusList = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
          //品牌
@@ -263,6 +271,8 @@ export default {
           const {code,data=[]} = res;
           if(code ==200 && data){
             selectOptions.brand = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
         // 封面状态
@@ -270,6 +280,8 @@ export default {
           const {code,data=[]} = res;
           if(code ==200 && data){
             selectOptions.coverStatusList = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
 
@@ -364,27 +376,50 @@ export default {
             cancelButtonText: this.language('nominationLanguage.No','否'),
           }
           ).then(()=>{
-            this.$refs['aekoUpload'].$refs['upload-inner'].handleClick()
+            this.$refs['aekoUpload'].$refs['uploadRef'].$refs['upload-inner'].handleClick();
             console.log('是')
           }).catch(()=>{
             console.log('否')
           })
         }else{
-          console.log(this.$refs);
           this.$refs['aekoUpload'].$refs['uploadRef'].$refs['upload-inner'].handleClick()
         }
         
       },
       // 导入附件
-      fileSuccess(data){
+      async fileSuccess(data){
+        this.btnLoading.uploadFiles = true;
         console.log(data,'data');
         const fileData = data.data;
-        const { name ,path,} = fileData;
-        const params = {
+        const { name ,path,size,id} = fileData;
+        const { selectItems } =this;
+        const fileItem = {
+          fileCode:'requirement',
+          fileName:name,
+          filePath:path,
+          fileSize:size,
           fileType:0,
-          uploadId:fileData.id,
-          // hostId:requirementAekoId
+          source:0,
+          uploadId:id,
         }
+        const params=[];
+        selectItems.forEach((item)=>{
+          item.requirementAekoId && params.push({
+            ...fileItem,
+            hostId:item.requirementAekoId
+          })
+        })
+        await uploadFiles({fileHistoryDTOS:params}).then((res)=>{
+          this.btnLoading.uploadFiles = false;
+          if(res.code ==200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getList();
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        }).catch((err)=>{
+          this.btnLoading.uploadFiles = false;
+        })
       },
     }
 }
