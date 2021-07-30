@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-29 20:14:11
+ * @LastEditTime: 2021-07-30 10:14:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -120,7 +120,7 @@ export default {
         if (val === 'rawUngrouped') {
           this.chargeRetrieve({
             isDefault: true,
-            viewType: 'rawgrouped',
+            viewType: 'rawGrouped',
             schemaId: this.SchemeId
           })
         } else {
@@ -255,6 +255,7 @@ export default {
     },
 
     sure (scope) {
+      console.log(scope)
       renameComponentGroup({
         groupId: scope.row.matchId,
         groupName: scope.row.title,

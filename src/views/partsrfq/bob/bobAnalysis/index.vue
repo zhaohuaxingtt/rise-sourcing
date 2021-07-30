@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-29 20:30:05
+ * @LastEditTime: 2021-07-30 10:45:03
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -14,13 +14,14 @@
           <div class="flex-between-center">
             <span class="title">费用详情</span>
             <div class="wrap">
-              <span v-if="remark"
-                    class="margin-left40 remark">{{
-                remark
-              }}</span>
-              <span v-if="remark"
-                    class="margin-left40 remark2">备注：{{ remark }}</span>
+              <div v-if="remark"
+                   class="margin-left40 remark">
+                <span style="font-size:12px">{{ remark}}</span>
+              </div>
+              <div v-if="remark"
+                   class="margin-left40 remark2">备注：{{ remark }}</div>
             </div>
+
           </div>
           <div v-show="checkFLag&&!$attrs.reportSave">
             <iButton v-show="flag"
@@ -47,6 +48,7 @@
                     class="margin-top20"
                     :tableList="groupList"
                     v-if="!totalTable"
+                    :activeName="activeName"
                     @removeList="removeList"
                     @groupBy="groupBtn"
                     v-bind="$attrs"></groupedTable>
@@ -515,6 +517,7 @@ export default {
       });
     },
     down () {
+      this.formUpdata.remark = this.remark
       this.$confirm('请保存数据！', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -540,28 +543,29 @@ export default {
 //   font-size: $font-size18 ;
 // }
 .wrap {
-  width: 100px;
+  width: 300px;
   position: relative;
 }
 .title {
   font-size: $font-size18 !important;
 }
 .remark {
-  font-size: $font-size14 !important;
-  font-weight: normal;
-  color: #949494;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-size: $font-size12 !important;
+  line-height: 24px;
+  font-weight: normal;
+  color: #949494;
 }
 .remark2 {
+  width: 800px;
   font-size: $font-size14 !important;
   font-weight: normal;
   color: #949494;
   position: absolute;
   top: -40px;
   left: 40px;
-  width: 400px;
   padding: 10px;
   box-shadow: 0px 3px 10px rgba(27, 29, 33, 0.16);
   border-radius: 5px;

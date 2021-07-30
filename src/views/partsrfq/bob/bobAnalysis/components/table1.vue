@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-29 17:45:22
+ * @LastEditTime: 2021-07-30 11:29:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -40,14 +40,22 @@
             <span v-for="(item,index) in scope.row[i.label]"
                   :key="index"
                   class="flexSpan">
-              <span v-if="item==minText(scope.row)"
+              <span v-if="item==minText(scope.row)&&bobType==='Best of Best'"
+                    class=" minText">
+                {{ item}}
+              </span>
+              <span v-else-if="item==sendText(scope.row)&&bobType==='Best of Second'"
                     class=" minText">
                 {{ item}}
               </span>
               <span v-else>{{ item }}</span>
             </span>
           </span>
-          <span v-else-if="scope.row[i.label]==minText(scope.row)"
+          <span v-else-if="scope.row[i.label]==minText(scope.row)&&bobType==='Best of Best'"
+                class=" minText">
+            {{ scope.row[i.label]}}
+          </span>
+          <span v-else-if="scope.row[i.label]==sendText(scope.row)&&bobType==='Best of Second'"
                 class=" minText">
             {{ scope.row[i.label]}}
           </span>
@@ -85,6 +93,10 @@ export default {
       type: Array,
       default: () => []
     },
+    bobType: {
+      type: String,
+      default: ""
+    }
   },
   computed: {
     testing (val) {
@@ -109,13 +121,34 @@ export default {
         }
         return min
       }
+    },
+    sendText (val) {
+      return function (val) {
+        let min
+        if (val.level === 1 || val.level === 2) {
+          const numOfCols = Object.keys(val).filter((key) => {
+            return key.indexOf("label#") >= 0
+          })
+          const dataArr = []
+          numOfCols.forEach((colNum) => {
+            dataArr.push(parseFloat(val[colNum]))
+          })
+          min = this.bos(dataArr)
+        }
+        return min
+      }
     }
   },
   watch: {
     expends: {
       handler (val) {
-        console.log(val)
+   
       },
+    },
+    bobType: {
+      handler (val) {
+      },
+      immediate: true
     },
   },
   mounted () {
@@ -125,31 +158,30 @@ export default {
       checkList: [],
       hasChildren: true,
       min: window._.min,
+      max: window._.max,
+
     };
   },
   methods: {
     renderHeader (h, { column }) {
       let header = column.label.split('<br/>');
-      console.log(header, 222)
       return [h('p', [
         h('p', {}, header[0]),
         h('span', {}, header[1])
       ])];
     },
-    objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 0) {
-        if (columnIndex % 2 === 0) {
-          return {
-            rowspan: 0,
-            colspan: 3,
-          };
-        } else {
-          return {
-            rowspan: 0,
-            colspan: 0,
-          };
+    //筛选第二
+    bos (arr) {
+      const min = this.min(arr);
+      let send = this.max(arr);
+      arr.forEach((i) => {
+        if (i > min) {
+          if (i < send) {
+            send = i;
+          }
         }
-      }
+      });
+      return send;
     },
     cellsytle ({ row, column, rowIndex, columnIndex }) {
       let styleJson = {}
