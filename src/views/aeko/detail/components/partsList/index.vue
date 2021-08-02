@@ -27,7 +27,7 @@
         <!-- 按钮区域 -->
         <template v-slot:header-control>
             <iButton @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
-            <iButton @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
+            <iButton v-if="isCommodityCoordinator" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
             <iButton>{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
             <iButton @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
             <iButton disabled>{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
@@ -87,10 +87,11 @@ import {
     iPagination,
     iMessage,
 } from 'rise';
-import { SearchList , tableTitle } from './data';
+import { SearchList , tableTitle, linieTableTitle } from './data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
+
 export default {
     name:'partsList',
     mixins: [pageMixins],
@@ -104,6 +105,25 @@ export default {
         iPagination,
         assignDialog,
     },
+    computed: {
+        // eslint-disable-next-line no-undef
+        ...Vuex.mapGetters([
+            "isAekoManager", // Aeko管理员
+            "isCommodityCoordinator", // 科室协调员
+            "isLinie", // 专业采购员
+        ]),
+    },
+    created() {
+        if (this.isLinie) {
+            this.tableTitle = linieTableTitle
+        } else if (this.isCommodityCoordinator) {
+            this.tableTitle = tableTitle
+        } else if (this.isAekoManager) {
+            this.tableTitle = tableTitle
+        } else {
+            this.tableTitle = []
+        }
+    },
     data(){
         return{
             SearchList:SearchList,
@@ -115,7 +135,7 @@ export default {
                 {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':10,'k':11},
                 {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':10,'k':11},
             ],
-            tableTitle:tableTitle,
+            tableTitle: [],
             assignVisible:false,
             singleAssign:[],
             assignType: ""

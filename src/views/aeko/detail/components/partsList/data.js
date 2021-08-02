@@ -27,3 +27,15 @@ export const tableTitle = [
     { props: "j", name: "Linie", key: "LK_AEKO_LINIE", tooltip: true },
     { props: "k", name: "退回原因", key: "LK_TUIHUIYUANYIN", tooltip: true },
 ]
+
+export const linieTableTitle = [
+  { props: "a", name: "零件号 ", key: "LK_LINGJIANHAO", tooltip: true },
+  { props: "b", name: "零件名称", key: "LK_LINGJIANMINGCHENG", tooltip: true },
+  { props: "c", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
+  { props: "d", name: "PR号", key: "LK_AEKOPRHAO", tooltip: true },
+  { props: "e", name: "品牌", key: "LK_AEKOPINGPAI", tooltip: true },
+  { props: "f", name: "涉及⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true,width:130 },
+  { props: "g", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
+  { props: "h", name: "Linie", key: "LK_AEKO_LINIE", tooltip: true },
+  { props: "i", name: "内容状态", key: "LK_AEKO_NEIRONGZHUANGTAI", tooltip: true },
+]
