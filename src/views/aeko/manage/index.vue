@@ -35,7 +35,7 @@
           <iButton>{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
           <iButton>{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
           <iButton >{{language('LK_DAORUAEKO','导⼊AEKO')}} </iButton>
-          <iButton>{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
+          <iButton @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
           <iButton @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
           
           <span class=" margin-left10 margin-right10">
@@ -78,9 +78,8 @@
         <div class="table-item-aeko">
           <icon v-if="scope.row.isTop && scope.row.isTop.code==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
           <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </span>
-          <a class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+          <a v-if="scope.row.fileCount && scope.row.fileCount > 0" class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
         </div>
-        
         
       </template>
 
@@ -154,6 +153,7 @@ import {
   searchBrand,
   searchCoverStatus,
   uploadFiles,
+  deleteAeko,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
@@ -199,6 +199,7 @@ export default {
         uploadUrl: process.env.VUE_APP_SOURCING_MH,
         btnLoading:{
           uploadFiles:false,
+          
         }
       }
     },
@@ -370,13 +371,12 @@ export default {
         if(selectItems.length > 1){
           await this.$confirm(
           this.language('LK_TIPS_IMPORFILES_AEKO','你选择的附件将被引⽤到多个AEKO中，请确认是否继续上传？'),
-          this.language('LK_AEKO_DAORUFUJIAN','导⼊附件'),
+          this.language('LK_SHANCHUAEKO','删除AEKO'),
           {
             confirmButtonText: this.language('nominationLanguage.Yes','是'),
             cancelButtonText: this.language('nominationLanguage.No','否'),
           }
           ).then(()=>{
-            this.$refs['aekoUpload'].$refs['uploadRef'].$refs['upload-inner'].handleClick();
             console.log('是')
           }).catch(()=>{
             console.log('否')
@@ -420,6 +420,34 @@ export default {
         }).catch((err)=>{
           this.btnLoading.uploadFiles = false;
         })
+      },
+      
+      // 删除aeko
+      async deleteItem(){
+        const isNext  = await this.isSelectItem(true);
+        const {selectItems} = this;
+        if(!isNext) return;
+        await this.$confirm(
+          this.language('LK_QINGQUERENSHIFOUSHANCHUAEKO','请确认是否删除该AEKO？'),
+          this.language('LK_SHANCHUAEKO','删除AEKO'),
+          {
+            confirmButtonText: this.language('nominationLanguage.Yes','是'),
+            cancelButtonText: this.language('nominationLanguage.No','否'),
+          }
+          ).then(()=>{
+            console.log('是',this.language('LK_CAOZUOCHENGGONG','操作成功'))
+            const requirementAekoIds = (selectItems.map((item)=>item.requirementAekoId)).join();
+            deleteAeko({requirementAekoIds}).then((res)=>{
+              if(res.code ==200){
+                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                this.getList();
+              }else{
+                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+              }
+            })
+          }).catch(()=>{
+            console.log('否')
+          })
       },
     }
 }

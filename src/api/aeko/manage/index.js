@@ -63,3 +63,13 @@ export function purchasingCancel(params) {
     params,
   })
 }
+
+
+// 删除aeko
+export function deleteAeko(params) {
+  return requst({
+    url: '/aeko/delete',
+    method: 'GET',
+    params,
+  })
+}
