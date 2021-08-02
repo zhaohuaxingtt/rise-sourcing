@@ -115,7 +115,8 @@ module.exports = {
     hotOnly: true,
     proxy: {
       '/projectApi': {
-        target: 'http://10.160.137.86:18005',
+        target: 'http://10.122.17.38:8005',
+        // target: 'http://10.160.141.116:10085',
         changeOrigin: true,
         pathRewrite: {
           '^/projectApi': ''
@@ -285,6 +286,7 @@ module.exports = {
       },
       '/dictionaryApi': {
         // 数据字典api地址
+        // target: 'http://10.122.18.166:8011',
         target: 'http://10.122.17.38:8011',
         changeOrigin: true,
         pathRewrite: {
@@ -293,6 +295,7 @@ module.exports = {
       },
       '/usercenterApi': {
         // usercenter.../唐开雄
+        // target: 'http://10.122.18.166:8015',
         target: 'http://10.122.17.38:8015',
         // target:'http://10.160.137.165:8015',
         changeOrigin: true,

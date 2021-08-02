@@ -2,18 +2,18 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-29 18:15:33
+ * @LastEditTime: 2021-07-30 15:36:09
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
 
 <template>
   <iPage class="projectGroup">
-    <iCard class="margin-top20 projectCard">
+    <iCard class="projectCard">
       <div class="margin-bottom20 clearFloat">
         <div class="titleSearch">
           <span class="margin-right20 titleSearch-label">{{language('CHEXINGXIANGMU','车型项目')}}</span>
-          <iSelect filterable v-model="carProject">
+          <iSelect filterable v-model="carProject" @change="handleCarProjectChange">
             <el-option
               v-for="item in carProjectOptions"
               :key="item.value"
@@ -44,7 +44,7 @@
       </div>
       <div class="projectCard-content">
         <proGroupEmpty v-if="!proGroup" />
-        <periodicView ref="periodicView" v-else-if="!isNodeView" @changeNodeView="changeNodeView(true)" :cartypeProId="carProject" :isSop="isSop" />
+        <periodicView ref="periodicView" v-else-if="!isNodeView" @changeNodeView="changeNodeView(true)" :cartypeProId="carProject" :carProjectName="carProjectName" :isSop="isSop" />
         <nodeView ref="nodeView" v-else @changeNodeView="changeNodeView(false)" :cartypeProId="carProject" />
       </div>
     </iCard>
@@ -64,7 +64,7 @@ import nodeView from './components/nodeview'
 import carEmpty from './components/empty/carEmpty'
 import proGroupEmpty from './components/empty/proGroupEmpty'
 import { selectDictByKeyss } from '@/api/dictionary'
-import { getCarTypePro } from '@/api/project'
+import { getCarTypePro, getLastOperateCarType } from '@/api/project'
 export default {
   components: { iPage, iCard, iSelect, iButton, carProject, logicSettingDialog, chooseProGroupDialog, icon, periodicView, nodeView, carEmpty, proGroupEmpty },
   data() {
@@ -89,10 +89,8 @@ export default {
       chooseData: [],
       isNodeView: false,
       carProject: '',
-      carProjectOptions: [
-        {value: '1', label: 'Tiguan 2021'},
-        {value: '2', label: 'Turan X4 2021'}
-      ],
+      carProjectName: '',
+      carProjectOptions: [],
       isSop: false
     }
   },
@@ -100,8 +98,22 @@ export default {
     const keys = 'CATEGORY_CONFIG_OPTIONS,CALCULATE_CONFIG_OPTIONS,VALUE_CONFIG_OPTIONS,YEAR_CONFIG_OPTIONS,CAR_TYPE_CONFIG_OPTIONS'
     this.selectDictByKeys(keys)
     this.getCarProjectOptinos()
+    this.getLastOperateCarType()
   },
   methods: {
+    getLastOperateCarType() {
+      getLastOperateCarType().then(res => {
+        if (res?.result) {
+          if (res.data.id) {
+            this.carProject = res.data.id
+            this.carProjectName = res.data.cartypeProName
+          }
+        }
+      })
+    },
+    handleCarProjectChange(val) {
+      this.carProjectName = this.carProjectOptions.find(item => item.value === val).label
+    },
     changeSopStatus(isSop) {
       this.isSop = isSop
     },

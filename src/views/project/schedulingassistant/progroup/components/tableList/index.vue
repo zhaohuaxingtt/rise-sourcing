@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 16:13:36
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-28 17:31:42
+ * @LastEditTime: 2021-07-30 16:32:36
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\tableList\index.vue
 -->
@@ -36,11 +36,11 @@
         </template>
         <template slot-scope="scope">
           <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]"></iInput>
-          <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]">
+          <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]" @change="val => $emit('handleSelectChange', val, scope.row)">
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="(item, index) in items.selectOption"
+              v-for="(item, index) in scope.row.selectOption"
               :key="index"
             ></el-option>
           </iSelect>
