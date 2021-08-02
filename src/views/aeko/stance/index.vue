@@ -5,7 +5,7 @@
 -->
 
 <template>
-  <iPage class="aeko-manage-list">
+  <iPage class="aeko-stance-list">
     <h2 class="floatleft">{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2>
     <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
 
@@ -40,11 +40,12 @@
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- AEKO号 -->
-      <template #a="scope">
-        <icon class="margin-right5" symbol name="iconAEKO_TOP"></icon>
-        <span class="link" @click="goToDetail(scope.row)">{{scope.row.a}}-6666</span>
-        <a v-if="scope.row.fileCount && scope.row.fileCount > 0" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
-        
+      <template #aekoCode="scope">
+        <div class="table-item-aeko">
+          <icon  v-if="scope.row.isTop && scope.row.isTop.code==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
+          <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}}</span>
+          <a v-if="scope.row.fileCount && scope.row.fileCount > 0" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+        </div> 
       </template>
 
       <!-- 日志 -->
@@ -150,9 +151,7 @@ export default {
           coverStatusList:[],
           cartypeCodeList:[],
         },
-        tableListData:[
-          {'a':'AE19221','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
-        ],
+        tableListData:[],
         tableTitle:tableTitle,
         loading:false,
         filesVisible:false,
@@ -266,7 +265,7 @@ export default {
         const routeData = this.$router.resolve({
           path: '/aeko/aekodetail',
           query: {
-            id:1,
+            requirementAekoId:1,
           },
         })
         window.open(routeData.href, '_blank')
@@ -279,10 +278,12 @@ export default {
 
       // 查看描述
       checkDescribe(row){
+        const { requirementAekoId,aekoCode } = row;
         const routeData = this.$router.resolve({
           path: '/aeko/describe',
           query: {
-            id:'1'
+            requirementAekoId,
+            aekoCode,
           },
         })
         window.open(routeData.href, '_blank')
@@ -318,10 +319,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .aeko-manage-list{
+  .aeko-stance-list{
     ::v-deep .el-date-editor .el-range__close-icon{
         display: block;
         width: 10px;
+    }
+    .table-item-aeko{
+      position: relative;
+      padding-left: 28px;
+      .link{
+        display: block;
+        width: calc( 100% - 28px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .top-icon{
+        position: absolute;
+        left: 0;
+        top:1px;
+      }
+      .file-icon{
+        position: absolute;
+        right:0;
+        top: 0;
+      }
     }
   }
 </style>

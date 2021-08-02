@@ -39,25 +39,14 @@
           <iButton @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
           
           <span class=" margin-left10 margin-right10">
-             <Upload 
-                  hideTip
-                  style="display:none;"
-                  ref="aekoUpload"
-                  :uploadRef="'aekoUpload'"
-                  :buttonText="language('LK_SHANGCHUANWENJIAN','上传文件')"
-                  @on-success="fileSuccess"
-              />
-            <!-- <el-upload
-              :action="uploadUrl + '/rs/uploadNomiRsDoc'"
-              accept='.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif,.pptx,.zip'
-              style="display:none;"
-              ref="aekoUpload"
-              :show-file-list='false'
-              :on-progress='()=>{btnLoading.uploadFiles=true}'
-              :on-error='()=>{btnLoading.uploadFiles=false;iMessage.error(language("SHANGCHUANSHIBAI","上传失败！"))}'
-              :on-success='fileSuccess'
-            >
-            </el-upload> -->
+            <Upload 
+                hideTip
+                style="display:none;"
+                ref="aekoUpload"
+                :uploadRef="'aekoUpload'"
+                :buttonText="language('LK_SHANGCHUANWENJIAN','上传文件')"
+                @on-success="fileSuccess"
+            />
             <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton>{{language('LK_AEKODAOCHU','导出')}} </iButton>
