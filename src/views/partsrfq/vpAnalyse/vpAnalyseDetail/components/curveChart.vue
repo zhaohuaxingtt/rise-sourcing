@@ -158,7 +158,7 @@ export default {
                 [
                   {xAxis: newestScatterDataX, yAxis: newestScatterDataY},
                   {xAxis: targetScatterDataX, yAxis: targetScatterDataY},
-                ]
+                ],
               ],
               itemStyle: {
                 color: '#E8EFFE',
@@ -182,9 +182,9 @@ export default {
               position: 'top',
               formatter: () => {
                 if (proGrowthRate > 0) {
-                  return `{bg|产量+${toFixedNumber(proGrowthRate, 2)}%}`;
+                  return `{bg|${this.language('TPZS.CHANLIANG', '产量')}+${toFixedNumber(proGrowthRate, 2)}%}`;
                 } else {
-                  return `bg|产量${toFixedNumber(proGrowthRate, 2)}%`;
+                  return `bg|${this.language('TPZS.CHANLIANG', '产量')}${toFixedNumber(proGrowthRate, 2)}%`;
                 }
               },
             },
@@ -204,9 +204,9 @@ export default {
               position: 'right',
               formatter: () => {
                 if (reductionPotential > 0) {
-                  return `{bg|单价+${toFixedNumber(reductionPotential, 2)}%}`;
+                  return `{bg|${this.language('TPZS.DANJIA', '单价')}+${toFixedNumber(reductionPotential, 2)}%}`;
                 } else {
-                  return `{bg|单价${toFixedNumber(reductionPotential, 2)}%}`;
+                  return `{bg|${this.language('TPZS.DANJIA', '单价')}${toFixedNumber(reductionPotential, 2)}%}`;
                 }
               },
             },
