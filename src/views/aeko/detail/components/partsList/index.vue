@@ -26,7 +26,8 @@
       <iCard :title="language('LK_AEKO_PARTSLIST','零件清单')" class="margin-top20">
         <!-- 按钮区域 -->
         <template v-slot:header-control>
-            <iButton @click="assign()">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
+            <iButton @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
+            <iButton @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
             <iButton>{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
             <iButton @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
             <iButton disabled>{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
@@ -72,7 +73,7 @@
 
       </iCard>
       <!-- 分配科室 -->
-      <assignDialog v-if="assignVisible" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign"/>
+      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign"/>
   </div>
 </template>
 
@@ -117,6 +118,7 @@ export default {
             tableTitle:tableTitle,
             assignVisible:false,
             singleAssign:[],
+            assignType: ""
         }
     },
     methods:{
@@ -155,11 +157,14 @@ export default {
             })
           }
         },
-        // 分配科室
-        assign(row=null){
+        // 分配科室/采购员
+        assign(row=null, type){
             console.log(row);
             const {selectItems} = this;
             // 判断是否是单一分派
+
+            this.assignType = type
+
             if(row){
                 this.singleAssign = [row];
                 this.assignVisible = true;
