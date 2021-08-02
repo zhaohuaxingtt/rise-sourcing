@@ -14,6 +14,8 @@
     <theSearch :list="searchProps" v-if="showStatus"/>
     <!--    数据页签栏-->
     <theDataTab :list="dataTabArray" v-if="showStatus"/>
+    <!--    echarts图表-->
+    <theChart v-if="showStatus"/>
   </iCard>
 </template>
 
@@ -22,6 +24,7 @@ import {iCard, iButton} from 'rise';
 import theTabs from './components/theTabs';
 import theSearch from './components/theSearch';
 import theDataTab from './components/theDataTab';
+import theChart from './components/theChart';
 import {rawMaterialSearch, manpowerSearch, energySearch} from './components/data';
 
 export default {
@@ -31,6 +34,7 @@ export default {
     theTabs,
     theSearch,
     theDataTab,
+    theChart
   },
   data() {
     return {
