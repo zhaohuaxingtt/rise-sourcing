@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-28 19:00:47
+ * @LastEditTime: 2021-07-30 13:41:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -179,7 +179,7 @@ export default {
     },
   },
   mounted () {
-    
+
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
     if (this.newBuild && this.entryStatus === 0) {
@@ -340,7 +340,9 @@ export default {
     select (checked, col) {
       // 如果checked为true则是勾选了对应的表头
       // console.log(col, checked);
+
       this.$nextTick(() => {
+
         const els = this.$el.getElementsByClassName(col.id);
         for (let i = 0; i < els.length; i++) {
           if (checked) {

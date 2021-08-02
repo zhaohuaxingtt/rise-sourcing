@@ -129,19 +129,20 @@ export default {
             show: false,
           },
         },
-        visualMap: {
-          type: 'piecewise',
-          show: false,
-          dimension: 0,
-          seriesIndex: 0,
-          pieces: [
-            {
-              gt: newestScatterDataX,
-              lt: targetScatterDataX,
-              color: '#0059FF',
-            },
-          ],
-        },
+        /* visualMap: {
+           type: 'piecewise',
+           show: false,
+           dimension: 0,
+           seriesIndex: 0,
+           pieces: [
+             {
+               gt: newestScatterDataX,
+               lt: targetScatterDataX,
+               color: '#E8EFFE',
+               opacity: 0.5
+             },
+           ],
+         },*/
         series: [
           {
             type: 'line',
@@ -151,7 +152,19 @@ export default {
             lineStyle: {
               color: '#0059FF',
             },
-            areaStyle: {},
+            /*areaStyle: {},*/
+            markArea: {
+              data: [
+                [
+                  {xAxis: newestScatterDataX, yAxis: newestScatterDataY},
+                  {xAxis: targetScatterDataX, yAxis: targetScatterDataY},
+                ]
+              ],
+              itemStyle: {
+                color: '#E8EFFE',
+                opacity: 0.5,
+              },
+            },
           },
           {
             //最新定点单价
@@ -169,9 +182,9 @@ export default {
               position: 'top',
               formatter: () => {
                 if (proGrowthRate > 0) {
-                  return `{bg|+${toFixedNumber(proGrowthRate, 2)}%}`;
+                  return `{bg|产量+${toFixedNumber(proGrowthRate, 2)}%}`;
                 } else {
-                  return `bg|${toFixedNumber(proGrowthRate, 2)}%`;
+                  return `bg|产量${toFixedNumber(proGrowthRate, 2)}%`;
                 }
               },
             },
@@ -191,9 +204,9 @@ export default {
               position: 'right',
               formatter: () => {
                 if (reductionPotential > 0) {
-                  return `{bg|+${toFixedNumber(reductionPotential, 2)}%}`;
+                  return `{bg|单价+${toFixedNumber(reductionPotential, 2)}%}`;
                 } else {
-                  return `{bg|${toFixedNumber(reductionPotential, 2)}%}`;
+                  return `{bg|单价${toFixedNumber(reductionPotential, 2)}%}`;
                 }
               },
             },

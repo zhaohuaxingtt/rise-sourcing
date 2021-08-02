@@ -5,6 +5,7 @@
 }(this, function(i18n) {
     'use strict'
     const oldLanguage = {
+        '#':"#",
         'delete': "删除",
         "deleteSure":'您确定要执行删除操作吗？',
         "revokeSure":'您确定要执行撤回操作吗？',
@@ -217,7 +218,16 @@
         <!--                                                                   --->
         <!------------------------------------------------------------------------>
         */
-
+        'supplierkpi':{
+            'SUPPLIERRESULT':'供应商筛选结果',
+            'TOTAL':'总分',
+            'fuwuzhilian':'服务质量',
+            'chengben':'成本',
+            'jiaofu':'交付',
+            'bumen':'所属部门',
+            'cailiao':'材料组',
+            'gongyingshangmincheng':'供应商名称'
+        },
         'LK_CAIGOUFENEFENPEIDABUDAO': '采购份额分配达不到100%', // 采购份额分配达不到100%
         'LK_CAIGOUGONGCHNEGMINGCHENG': '采购工厂名称', // 采购工厂名称
         'LK_CAOZUOCHENGGONG': '操作成功', // 操作成功

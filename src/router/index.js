@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-27 11:06:36
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-26 18:12:51
+ * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -20,6 +20,10 @@ import steeldemandcreation from './modules/steeldemandcreation'
 import negotiationAssistant from './modules/negotiationAssistant'
 import aekoRoutes from './modules/aeko'
 import projectRoutes from './modules/project'
+import supplierkpiRoutes from './modules/supplierkpi'
+import categoryManagementAssistant from './modules/categoryManagementAssistant'
+
+
 
 Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
@@ -189,7 +193,6 @@ export const staticRouter = [{
             },
             component: () => import (`@/views/ws2/baApply/details`),
         },
-
         // {
         //     path: '/tooling/investmentAdmin',
         //     name: 'toolingModelDetails',
@@ -372,101 +375,6 @@ export const staticRouter = [{
                 ]
             },
             {
-                path: '/purchase',
-                name: 'purchase',
-                meta: {
-                    title: '模具采购'
-                },
-                component: () => import (`@/views/ws2/purchase`),
-                children: [
-                    {
-                        path: '/purchase',
-                        redirect: '/purchase/investmentList',
-                    },
-                    {
-                        path: '/purchase/investmentList',
-                        name: 'investmentList',
-                        meta: {
-                            title: '模具投资清单'
-                        },
-                        component: () => import (`@/views/ws2/purchase/investmentList`),
-                    },
-                    {
-                        path: '/purchase/mouldBook',
-                        name: 'mouldBook',
-                        meta: {
-                            title: '模具台账'
-                        },
-                        component: () => import (`@/views/ws2/purchase/mouldBook`),
-                    },
-                ]
-            },
-            {
-                path: '/purchase/mouldBook/details',
-                name: 'mouldBook',
-                meta: {
-                    title: '模具台账详情'
-                },
-                component: () => import (`@/views/ws2/purchase/mouldBook/details`),
-            },
-            {
-                path: '/purchase/investmentList/bmInfo',
-                name: 'bmInfo',
-                meta: {
-                    title: '模具投资清单-BM详情页'
-                },
-                component: () => import (`@/views/ws2/purchase/investmentList/bmInfo`),
-            },
-
-            {
-                path: '/purchaseSupplier',
-                name: 'purchaseSupplier',
-                meta: {
-                    title: '模具采购'
-                },
-                component: () => import (`@/views/ws2/purchaseSupplier`),
-                children: [
-                    {
-                        path: '/purchaseSupplier',
-                        redirect: '/purchaseSupplier/investmentList',
-                    },
-                    {
-                        path: '/purchaseSupplier/investmentList',
-                        name: 'investmentList',
-                        meta: {
-                            title: '模具投资清单'
-                        },
-                        component: () => import (`@/views/ws2/purchaseSupplier/investmentList`),
-                    },
-                    {
-                        path: '/purchaseSupplier/mouldBook',
-                        name: 'mouldBook',
-                        meta: {
-                            title: '模具台账'
-                        },
-                        component: () => import (`@/views/ws2/purchaseSupplier/mouldBook`),
-                    },
-                ]
-            },
-            {
-                path: '/purchaseSupplier/mouldBook/details',
-                name: 'mouldBook',
-                meta: {
-                    title: '模具台账详情'
-                },
-                component: () => import (`@/views/ws2/purchaseSupplier/mouldBook/details`),
-            },
-            {
-                path: '/purchaseSupplier/investmentList/bmInfo',
-                name: 'bmInfo',
-                meta: {
-                    title: '模具投资清单-BM详情页'
-                },
-                component: () => import (`@/views/ws2/purchaseSupplier/investmentList/bmInfo`),
-            },
-
-
-            {
                 path: "/ws3-register",
                 name: "/ws3Register",
                 component: () =>
@@ -496,7 +404,7 @@ export const staticRouter = [{
                 name: "fileManage",
                 meta: { title: "附件综合管理" },
                 component: () => import("@/views/designateFiles/fileManage/index"),
-            },   
+            },
             // 配件相关路由
             {
                 path: "/sourcing/signforpartsdemand",
@@ -520,7 +428,7 @@ export const staticRouter = [{
             {
                 path: "/supplier/quotationdetail",
                 name: "quotationDetail",
-                component: () => 
+                component: () =>
                     import ("@/views/supplier/quotationdetail")
             },
             {
@@ -717,6 +625,8 @@ export default new VueRouter({
         ...negotiationAssistant,
         ...aekoRoutes,
         //项目管理
-        ...projectRoutes
+        ...projectRoutes,
+        //品类管理助手
+        ...categoryManagementAssistant
     ]
 });

@@ -336,14 +336,14 @@ export default {
           label: {
             show: true,
             position: 'top',
-            color: '#3C4F74',
-            fontSize: 18,
+            color: '#7E84A3',
+            fontSize: 12,
             fontFamily: "Arial",
             align: 'center',
             formatter: (params) => {
               // console.log(params)
               const sum = dataList1['利润'][0]
-              return sum
+              return this.doNumber(sum)
             },
           },
           labelLine: {
@@ -353,7 +353,7 @@ export default {
             barBorderRadius: [5, 5, 0, 0],
             color: '#fff'
           },
-          barWidth: '20%',
+          barWidth: 50,
           data: [dataList1['利润'][0]]
         })
 
