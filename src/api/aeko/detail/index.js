@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-07-30 14:50:02
+ * @LastEditTime: 2021-08-02 11:16:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -14,6 +14,24 @@ export function getAekoLiniePartInfo(params) {
   return requst({
     url: '/aeko/aeko-linie-part/info',
     method: 'POST',
+    data: params
+  })
+}
+
+// 无关相关切换
+export function patchAekoReference(params) {
+  return requst({
+    url: `/aeko/aeko-reference`,
+    method: 'PATCH',
+    data: params
+  })
+}
+
+// 重置表态
+export function patchAekoReset(params) {
+  return requst({
+    url: `/aeko/aeko-reset`,
+    method: 'PATCH',
     data: params
   })
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 13:59:01
- * @LastEditTime: 2021-07-30 15:53:44
+ * @LastEditTime: 2021-08-02 09:58:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\presentAllInPriceDialog\index.vue
@@ -102,7 +102,6 @@ export default {
         if (res.code == 200) {
           this.multipleSelection = []
           this.tableListData = Array.isArray(res.data) ? res.data : []
-          this.page.totalCount = res.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
