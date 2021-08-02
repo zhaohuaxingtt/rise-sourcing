@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-30 10:14:55
+ * @LastEditTime: 2021-08-02 14:03:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -64,7 +64,6 @@
         <template slot-scope="scope">
           <div v-if="scope.row.checkRow&&scope.row.level===2&&scope.column.label">
             <el-checkbox @change="check=>checkChang(check,scope,i.label)"></el-checkbox>
-
           </div>
           <span v-else>
             {{scope.row[i.label]}}
@@ -82,7 +81,7 @@ import {
   renameComponentGroup
 } from "@/api/partsrfq/bob";
 import { filterEmptyChildren } from '@/utils'
-import { iMessage } from '../../../../components';
+import { iMessage } from 'rise';
 export default {
   props: {
     expends: {
@@ -255,20 +254,27 @@ export default {
     },
 
     sure (scope) {
-      console.log(scope)
       renameComponentGroup({
         groupId: scope.row.matchId,
         groupName: scope.row.title,
         schemaId: this.SchemeId
       }).then(res => {
         iMessage.success('修改成功')
+        if (!this.activeName) {
+          this.activeName = "rawGrouped"
+        } else {
+          this.activeName = "maGrouped"
+        }
         this.chargeRetrieve({
           isDefault: true,
           viewType: this.activeName,
           schemaId: this.SchemeId
         })
+      }).catch((error) => {
+        iMessage.error('修改失败')
       })
     },
+
 
     edit (scope) {
       scope.row.isFresh = true

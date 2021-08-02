@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-30 10:45:03
+ * @LastEditTime: 2021-08-02 14:41:11
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -202,11 +202,12 @@ export default {
     },
     label: {
       handler (val) {
-        this.expedsArr = []
+        // this.expedsArr = []
         this.close()
         this.$nextTick(function () {
           this.expedsArr = []
           this.expedsArr1 = this.tableList.element.filter(i => i.title === val)
+          console.log(this.expedsArr1)
           this.recursion(this.expedsArr1)
         });
         // this.$set(this.expedsArr, 0, this.recursion(this.expedsArr1));
@@ -293,7 +294,7 @@ export default {
         return;
       }
       data.forEach(i => {
-        this.expedsArr.push(i.title)
+        this.expedsArr.push(i.index.toString())
         if (i.child && i.child.length > 0) {
           this.recursion(i.child)
         }
@@ -454,9 +455,12 @@ export default {
         groupName: this.value1.groupName,
         roundDetailIdList: this.result
       }).then(res => {
+        this.groupby = false
         // this.$refs.ungroupedTable.activeName = ""
         this.$nextTick(() => {
+          this.groupby = true
           this.$refs.ungroupedTable.activeName = this.activeName
+
           this.$refs.ungroupedTable.chargeRetrieve({
             isDefault: true,
             viewType: this.activeName,
