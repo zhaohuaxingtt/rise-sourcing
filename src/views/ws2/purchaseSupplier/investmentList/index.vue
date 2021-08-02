@@ -12,7 +12,7 @@
     >
       <el-form>
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput v-model="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
+          <iInput v-model.trim="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
         </el-form-item>
         <el-form-item :label="language('LK_CHEXINGXIANGMU', '车型项目')">
           <iSelect
@@ -91,7 +91,7 @@
             }}</div>
         </template>
         <template #moldInvestmentAmount="scope">
-          <div v-if="Number(isShowMoldInvestmentAmount) === 1">{{scope.row.moldInvestmentAmount}}</div>
+          <div v-if="Number(isShowMoldInvestmentAmount) === 1">{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
           <div v-else>-</div>
         </template>
         <template #moldInvestmentStatus="scope">
@@ -156,6 +156,7 @@ import {
 } from "@/api/ws2/purchaseSupplier/investmentList";
 import {pageMixins} from "@/utils/pageMixins";
 import {Popover} from "element-ui"
+import {getTousandNum} from "@/utils/tool";
 
 export default {
   mixins: [pageMixins],
@@ -195,7 +196,8 @@ export default {
         bmid: [],
         moldInvestmentStatus: [],
         departmentsList: [],
-      }
+      },
+      getTousandNum: getTousandNum
     }
   },
   created() {
@@ -298,13 +300,14 @@ export default {
     },
     toBmInfo(row){
       //  如当前用户没有查看“模具投资金额”的权限，点击流水号后提示“对不起，您所在的岗位没有该材料组权限”
-      this.$router.push({
+      let url = this.$router.resolve({
         path: '/purchaseSupplier/investmentList/bmInfo',
         query: {
           bmSerial: row.bmSerial,
           id: row.id
         }
       })
+      window.open(url.href, '_blank');
     },
     sure(){
       this.page.currPage = 1
@@ -348,7 +351,7 @@ export default {
 }
 .multipleSelect {
   ::v-deep .el-tag {
-    max-width: calc(100% - 65px);
+    max-width: calc(100% - 75px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
