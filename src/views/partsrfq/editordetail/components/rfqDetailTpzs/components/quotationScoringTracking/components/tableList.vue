@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-07-15 11:33:04
+ * @LastEditTime: 2021-07-23 11:16:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -64,7 +64,7 @@
         <el-table-column v-else :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" align="center">
           <template slot-scope="scope">
             <template v-if="scope.row && scope.row[item.props]">
-               <span>{{scope.row[item.props].rate}} <span @click="optionLog" class="cursor"><icon v-if='scope.row[item.props].rate == "C"' name='iconzhongyaoxinxitishi' symbol></icon></span></span>
+               <span>{{scope.row[item.props].rate}} <span @click="optionLog(scope.row)" class="cursor"><icon v-if='scope.row[item.props].rate == "C"' name='iconzhongyaoxinxitishi' symbol></icon></span></span>
             </template>
           </template>
         </el-table-column>
@@ -80,7 +80,7 @@
           <!------------------------零件评分弹窗----------------------->
           <!--------------------------------------------------------->
 
-    <riteDialog :dialogVisible='dialogVisible'></riteDialog>
+    <riteDialog :dialogVisible='dialogVisible' :rfqId='this.$route.query.id' :supplierId='supplierId'></riteDialog>
   </div>
 </template>
 <script>
@@ -105,7 +105,8 @@ export default{
     return {
       height:0,
       dialogVisible:false,
-      baseInfo:{}
+      baseInfo:{},
+      supplierId:''
     }
   },
   methods:{
@@ -153,7 +154,8 @@ export default{
      * @param {*}
      * @return {*}
      */
-    optionLog(){
+    optionLog(items){
+      this.supplierId = items.supplierId
       this.dialogVisible = !this.dialogVisible
     },
     /**

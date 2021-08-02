@@ -12,7 +12,7 @@
     >
       <el-form>
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput v-model="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
+          <iInput v-model.trim="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
         </el-form-item>
         <el-form-item :label="language('TPZS.GONGYINGSHANG', '供应商')">
           <iInput v-model="supplier" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
@@ -125,17 +125,17 @@
             }}</div>
         </template>
         <template #moldInvestmentAmount="scope">
-          <div v-if="Number(isShowMoldInvestmentAmount) === 1">{{scope.row.moldInvestmentAmount}}</div>
+          <div v-if="Number(isShowMoldInvestmentAmount) === 1">{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
           <div v-else>-</div>
         </template>
         <template #moldInvestmentStatus="scope">
-          <div v-if="scope.row.moldInvestmentStatus !== '7'">{{
+          <div v-if="scope.row.moldInvestmentStatus !== '6'">{{
               scope.row.moldInvestmentStatus === '1' ?  '已定点待确认' :
                   (scope.row.moldInvestmentStatus === '2' ? '待供应商确认' :
                       (scope.row.moldInvestmentStatus === '3' ? '待采购员确认' :
                           (scope.row.moldInvestmentStatus === '4' ? '变更中' :
                               (scope.row.moldInvestmentStatus === '5' ? '供应商已变更待采购员确认' :
-                                  (scope.row.moldInvestmentStatus === '6' ? '供应商已退回' : ''
+                                  (scope.row.moldInvestmentStatus === '7' ? '模具投资清单已确认' : ''
                                   )
                               )
                           )
@@ -149,7 +149,7 @@
                 :content="language('LK_TUIHUIYUANYIN', '退回原因') + ':' + scope.row.backReason"
                 trigger="hover">
               <div slot="reference">
-                <span>模具投资清单已确认</span>
+                <span>供应商已退回</span>
                 <icon symbol name="iconzhongyaoxinxitishi"></icon>
               </div>
             </Popover>
@@ -194,6 +194,7 @@ import {
 } from "@/api/ws2/budgetManagement/investmentList";
 import {getCartypePulldown, saveCustomCart} from "@/api/ws2/budgetManagement/edit";
 import {cloneDeep} from "lodash";
+import {getTousandNum} from "@/utils/tool";
 
 export default {
   mixins: [pageMixins],
@@ -234,10 +235,15 @@ export default {
         bmid: [],
         moldInvestmentStatus: [],
         departmentsList: [],
-      }
+      },
+      getTousandNum: getTousandNum
     }
   },
   created() {
+    let status = this.$route.query.status
+    if(status){
+      this.moldInvestmentStatus = status.split(',')
+    }
     this.getAllSelect()
     this.conditionConfirmTskList()
   },
@@ -341,13 +347,14 @@ export default {
     },
     toBmInfo(row){
       //  如当前用户没有查看“模具投资金额”的权限，点击流水号后提示“对不起，您所在的岗位没有该材料组权限”
-      this.$router.push({
+      let url = this.$router.resolve({
         path: '/purchase/investmentList/bmInfo',
         query: {
           bmSerial: row.bmSerial,
           id: row.id
         }
       })
+      window.open(url.href, '_blank');
     },
     sure(){
       this.page.currPage = 1
@@ -391,7 +398,7 @@ export default {
 }
 .multipleSelect {
   ::v-deep .el-tag {
-    max-width: calc(100% - 65px);
+    max-width: calc(100% - 75px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

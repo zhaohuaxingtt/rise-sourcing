@@ -50,8 +50,8 @@ export default {
   data() {
     return {
       form: {
-        category: '',
-        partNum: '',
+        category: this.$store.state.rfq.materialGroup,
+        partNum: this.$store.state.rfq.spareParts,
         rfq: this.$store.state.rfq.rfqId,
         createBy: '',
       },

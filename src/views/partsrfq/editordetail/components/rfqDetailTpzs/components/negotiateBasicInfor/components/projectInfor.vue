@@ -23,7 +23,7 @@
       </iFormItem>
       <iFormItem>
         <iLabel :label="'FOP'" slot="label"></iLabel>
-        <iText>{{  form.fop }}</iText>
+        <iText>{{  form.ep }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.MQXTY')" slot="label"></iLabel>
@@ -58,7 +58,7 @@
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.CFQK')" slot="label"></iLabel>
         <iText>
-          <icon :name="form.targetgradestatus==='1'?'iconbaojiapingfengenzong-jiedian-lv':form.targetgradestatus==='2'?'iconbaojiapingfengenzong-jiedian-huang':form.targetgradestatus==='3'?'iconbaojiapingfengenzong-jiedian-cheng':form.targetgradestatus==='4'?'iconbaojiapingfengenzong-jiedian-hong':''" symbol></icon>
+          <icon :name="form.targetGradeStatus==='1'?'iconbaojiapingfengenzong-jiedian-lv':form.targetGradeStatus==='2'?'iconbaojiapingfengenzong-jiedian-huang':form.targetGradeStatus==='3'?'iconbaojiapingfengenzong-jiedian-cheng':form.targetGradeStatus==='4'?'iconbaojiapingfengenzong-jiedian-hong':''" symbol></icon>
         </iText>
       </iFormItem>
     </iFormGroup>
@@ -87,7 +87,7 @@ export default {
         tpGradeStatus: '',//FOP情况
         mqGradeStatus: '',
         plStatus: '',
-        targetgradestatus: '',//cf情况
+        targetGradeStatus: '',//cf情况
       }
     }
   },

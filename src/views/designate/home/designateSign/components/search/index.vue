@@ -26,6 +26,14 @@
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
       </el-form-item>
+      <!-- FSNR/GSNR -->
+      <el-form-item label="FSNR/GSNR">
+        <iInput
+          v-model="form.fsnrGsnrNum"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
+        ></iInput>
+      </el-form-item>
       <!-- 车型项目 -->
       <el-form-item :label="language('nominationLanguage_CheXingXiangMu','车型项目')">
         <iSelect
@@ -125,10 +133,6 @@
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
           <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
-          <el-option
             :value="items.id"
             :label="language(items.key, items.name)"
             v-for="(items, index) in selStatus"
@@ -165,7 +169,7 @@ import { applyType } from '@/layout/nomination/components/data'
 import { form } from '../data'
 import {
   applicationStatus,
-  selStatus,
+  signSheetselStatus,
   priceConsistentStatus 
 } from '@/views/designate/home/components/options'
 
@@ -182,7 +186,7 @@ export default {
       form,
       ptocessType: applyType,
       applicationStatus,
-      selStatus,
+      selStatus: signSheetselStatus,
       priceConsistentStatus
     }
   },

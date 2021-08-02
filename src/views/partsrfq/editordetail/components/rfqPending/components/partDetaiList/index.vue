@@ -23,7 +23,7 @@
                @handleSelectionChange="handleSelectionChange" @openPage="openPage">
       <template #fsnrGsnrNum="scope">
         <span v-if="scope.row.partProjectType === partProjTypes.PEIJIAN" class="openLinkText cursor " @click="gotoAccessoryDetail(scope.row)"> {{ scope.row.fsnrGsnrNum }}</span>
-        <span v-else>{{ scope.row.fsnrGsnrNum }}</span>
+        <span v-else  class="openLinkText cursor "  @click="openPage(scope.row)">{{ scope.row.fsnrGsnrNum }}</span>
       </template>
     </tableList>
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)"
@@ -35,7 +35,7 @@
         {{ language('LK_TIANJIA','添加') }}
       </iButton>
     </div>
-    <partsTable ref="partsTable" :rfqId="rfqId" @targetHand="waitSelect" @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
+    <partsTable ref="partsTable" :rfqId="rfqId" @targetHand="waitSelect" @openPage='(row)=>openPage(row)' @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
     <!-- 发送KM -->
@@ -121,12 +121,13 @@ export default {
     },
     // 跳转详情
     openPage(item) {
-      this.$router.push({
+      const resolve = this.$router.resolve({
         path: "/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
         },
       });
+      window.open(resolve.href,'_blank')
     },
     validateStart() {
       return new Promise((r) => {

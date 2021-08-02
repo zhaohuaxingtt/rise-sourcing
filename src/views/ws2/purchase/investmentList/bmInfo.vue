@@ -83,14 +83,14 @@
               <div class="txt">
                 <span>{{ language('LK_TOUZIZONGJINE', '投资总金额') }}</span>
               </div>
-              <div class="disabled">{{ baseInfo.investmentTotalAmount ? getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) : baseInfo.investmentTotalAmount }}</div>
+              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>
                   {{ language('LK_TOUZIQINGDANZHUANGTAI', '投资清单状态') }}
                      <Popover
-                          v-if="baseInfo.linieConfirmSupplier === '1'"
+                          v-if="Number(baseInfo.linieConfirmSupplier) === 1"
                           class="popover"
                           placement="bottom-start"
                           :content="baseInfo.linieName + '在' + baseInfo.taskDealDate + '代确认'"
@@ -242,7 +242,7 @@ export default {
       assetTypesList: [],
       craftTypesList: [],
       imgList: ['https://cdn6-banquan.ituchong.com/weili/l/919767005971611831.webp', 'https://cdn6-banquan.ituchong.com/weili/l/915608610047000641.webp', 'https://cdn9-banquan.ituchong.com/weili/l/903371741418749965.webp'],
-      isOpen: false,
+      isOpen: true,
       confirmShow: false,
       photoListShow: false,
       detailsTableLoading: false,

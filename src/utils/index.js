@@ -1,17 +1,19 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-21 18:30:34
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-22 18:47:45
+ * @LastEditTime: 2021-07-22 10:56:12
+ * @LastEditors: zbin
  * @Description: 公共utils部分
- * @FilePath: \rise\src\utils\index.js
+ * @FilePath: \front-web\src\utils\index.js
  */
-import router from '../router'
-import store from '../store'
-import localStoreage from './localstorage'
-import jsencrypt from 'jsencrypt'
-import {sendKey} from '@/api/usercenter'
-import {onlyselfProject,allitemsList,BKMROLETAGID} from '@/config'
+import router from '../router';
+import store from '../store';
+import localStoreage from './localstorage';
+import jsencrypt from 'jsencrypt';
+import {sendKey} from '@/api/usercenter';
+import {allitemsList, BKMROLETAGID, onlyselfProject} from '@/config';
+
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
   return Cookies.set(cookieName, cookieData, {
@@ -203,6 +205,7 @@ router.afterEach(() => {
  * 1.如果当前的采购项目属于：【仅零件号变更，钢材一次性采购，钢材批量采购，配件，附件，一次性采购，DB一次性采购，工序委外，AEKO零件】 则过滤只有当前另加自己。
  * 2.剩下的零件只要出现一种，都要出现当前这个类型的全集：【FS零件，GS零件，COP零件，SPECIAL零件，DB零件，涨价，FS common sourcing，GS common sourcing，扩产能】
  * 3.如果当前当如果当前角色仅为扩产能角色则返回：【扩产能】
+ * 4.如果单项选择中 存在 【一次性采购，DB一次性采购】 则这两个要成对出现
  * @param {*} projectList - 徐睿数据字典返回的全量options
  * @param {*} currentProjectType - 当前的零件采购项目。
  * @return {*}
@@ -212,13 +215,19 @@ export function filterProjectList(oldProjectList,currentProjectType){
     let newProjectLists = []
     const onlyselfList = Object.keys(JSON.parse(JSON.stringify(onlyselfProject))).map(i=> onlyselfProject[i])
     const allreturnlist = Object.keys(JSON.parse(JSON.stringify(allitemsList))).map(i=> allitemsList[i])
+    const needHuc = [onlyselfProject.DBYICHIXINGCAIGOU,onlyselfProject.YICIXINGCAIGOU]
     if(currentProjectType == ""){newProjectLists = oldProjectList}
-    if(onlyselfList.includes(currentProjectType)){newProjectLists = oldProjectList.filter(i=>i.code == currentProjectType)}
+    if(onlyselfList.includes(currentProjectType)){
+      newProjectLists = oldProjectList.filter(i=>i.code == currentProjectType)
+      if(needHuc.includes(currentProjectType)){
+        newProjectLists = oldProjectList.filter(i=>needHuc.find((ii)=>ii == i.code))
+      }
+    }
     if(allreturnlist.includes(currentProjectType)){
       newProjectLists = oldProjectList.filter(i=>allreturnlist.find(ii=>i.code==ii))
       if(store.state.permission.roleList.length == 1){
         if(store.state.permission.roleList.find(i=>i == BKMROLETAGID)){
-          newProjectLists = oldProjectList.filter(i=>allreturnlist[i] == allitemsList['KUOCHANNENG'])
+          newProjectLists = newProjectLists.filter(i=>i.code == allitemsList['KUOCHANNENG'])
         }else{
           newProjectLists = newProjectLists.filter(ii=>!(ii.code == allitemsList['KUOCHANNENG']))
         }
@@ -233,4 +242,35 @@ export function filterProjectList(oldProjectList,currentProjectType){
     console.log(error)
     return []
   }
+}
+
+//小数点精确
+export function toFixedNumber(number, m) {
+  number = Number(number)
+  let result = Math.round(Math.pow(10, m) * number) / Math.pow(10, m);
+  result = String(result);
+  if (result.indexOf(".") === -1) {
+    result += ".";
+    result += new Array(m + 1).join('0');
+  } else {
+    let arr = result.split('.');
+    if (arr[1].length < m) {
+      arr[1] = arr[1] += new Array(m - arr[1].length + 1).join('0')
+    }
+    result = arr.join('.')
+  }
+  return result
+}
+
+//转千分位
+export function toThousands (number) {
+  return (number + '').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,')
+}
+
+//去除千分位
+export function deleteThousands (number) {
+  if(!number) return number;
+  number = number.toString();
+  number = number.replace(/,/gi, '');
+  return number;
 }

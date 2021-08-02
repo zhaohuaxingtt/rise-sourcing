@@ -1,7 +1,7 @@
 <!--
  * @Author: yourname
  * @Date: 2021-04-13 17:30:36
- * @LastEditTime: 2021-07-21 21:13:52
+ * @LastEditTime: 2021-07-28 15:26:34
  * @LastEditors: Please set LastEditors
  * @Description: 通用表格
 -->
@@ -43,7 +43,7 @@
                          :show-overflow-tooltip='items.tooltip'
                          v-if='items.props === openPageProps'
                          :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name"
+                         :label="items.key ? language(items.key, items.name) : items.name"
                          :fixed="items.fixed">
           <template slot-scope="scope">
             <el-form-item>
@@ -61,13 +61,13 @@
                          align='center'
                          v-else-if='inputProps.includes(items.props)'
                          :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name">
+                         :label="items.key ? language(items.key, items.name) : items.name">
           <template #header>
-            {{ items.key ? $t(items.key) : items.name }}
+            {{ items.key ? language(items.key, items.name) : items.name }}
             <span class="required"
                   v-if="items.required">*</span>
             <el-popover trigger="hover"
-                        :content="items.iconTextKey ? $t(items.iconTextKey) : items.iconText"
+                        :content="items.iconTextKey ? language(items.iconTextKey, items.iconText) : items.iconText"
                         placement="top-start">
               <icon slot="reference"
                     symbol
@@ -96,7 +96,7 @@
                          align='center'
                          v-else-if='selectProps.includes(items.props)'
                          :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name">
+                         :label="items.key ? language(items.key, items.name) : items.name">
           <template slot-scope="scope">
             <el-form-item :prop="'tableData.' + scope.$index + '.' + items.props"
                           :rules="items.rule ? items.rule : ''">
@@ -104,7 +104,7 @@
                 <el-option v-for="items in selectPropsOptionsObject[items.props]"
                            :key='items.code'
                            :value='customSelectValueKey ? items[customSelectValueKey] : items.code'
-                           :label="items.key ? $t(items.key) : items.name" />
+                           :label="items.key ? language(items.key, items.name) : items.name" />
               </i-select>
             </el-form-item>
           </template>
@@ -116,7 +116,7 @@
                          align='center'
                          v-else-if='items.props === fileSizeProps'
                          :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name">
+                         :label="items.key ? language(items.key, items.name) : items.name">
           <template slot-scope="scope">
             <el-form-item>
               {{ scope.row[items.props] ? scope.row[items.props] / 1024 / 1024 : 0 }}
@@ -129,16 +129,16 @@
                          :key="index"
                          align='center'
                          v-else
-                         :label="items.key ? $t(items.key) : items.name"
+                         :label="items.key ? language(items.key, items.name) : items.name"
                          :prop="items.props"
                          :fixed="items.fixed">
           <!--自定义嵌入-->
           <template #header>
-            {{ items.key ? $t(items.key) : items.name }}
+            {{ items.key ? language(items.key, items.name) : items.name }}
             <span class="required"
                   v-if="items.required">*</span>
             <el-popover trigger="hover"
-                        :content="items.iconTextKey ? $t(items.iconTextKey) : items.iconText"
+                        :content="items.iconTextKey ? language(items.iconTextKey, items.iconText) : items.iconText"
                         placement="top-start">
               <icon slot="reference"
                     symbol
@@ -277,6 +277,7 @@ export default {
         }
         // console.log(this.multipleSelection, row);
       }
+      this.$emit('select', selection, row)
     },
     selectAll (selection) {
       // selection 是选中的数据集合

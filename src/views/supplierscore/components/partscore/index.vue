@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 10:38:09
- * @LastEditTime: 2021-07-20 17:25:42
+ * @LastEditTime: 2021-07-27 19:16:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\partscore\index.vue
@@ -41,7 +41,7 @@
                 </template>
                 <template v-if="item.props === 'grade'" v-slot="scope">
                   <div v-if="editStatus">
-                    <iInput v-if="userInfo.id != 199 && userInfo.id != 207 && userInfo.id != 208" v-model="scope.row.grade" />
+                    <iInput v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.grade" />
                     <iSelect v-else v-model="scope.row.grade">
                       <el-option value="合格" :label="language('HEGE', '合格')" />
                       <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
@@ -81,6 +81,7 @@ import remarkDialog from "@/views/supplierscore/components/remarkDialog"
 import { tableTitle, deptScoreTableTitle } from "./components/data"
 import { cloneDeep, isEqual } from "lodash"
 import { getRfqPartRatingsByCurrentDept, updateRfqPartRatings, updateRfqPartRatingMemo } from "@/api/supplierscore"
+import { afterSaleLeaderIds } from "@/views/supplierscore/components/data"
 
 export default {
   components: {
@@ -106,7 +107,8 @@ export default {
       tableListDataCache: [],
       rateTag: "",
       remarkDialogVisible: false,
-      currentRow: {}
+      currentRow: {},
+      afterSaleLeaderIds,
     }
   },
   computed: {
@@ -120,7 +122,7 @@ export default {
     this.supplierId = this.$route.query.supplierId
     this.getRfqPartRatingsByCurrentDept()
 
-    if (this.userInfo.id == 199 || this.userInfo.id == 207 || this.userInfo.id == 208) {
+    if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
       this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "grade" || item.props === "remark")
     }
   },
@@ -136,7 +138,7 @@ export default {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
           this.tableListDataCache = cloneDeep(this.tableListData)
-          this.rateTag = this.tableListData[0] ? this.tableListData[0].rateTag : ""
+          this.rateTag = this.tableListData[0] && this.tableListData[0].rateTag ? this.tableListData[0].rateTag.desc : ""
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

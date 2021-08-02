@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-07-13 19:46:31
+ * @LastEditTime: 2021-07-22 17:53:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -85,7 +85,7 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iMessage, iDialog, iFormGroup, iFormItem, iSelect, iPagination} from '@/components'
+import {iButton, iMessage, iDialog, iFormGroup, iFormItem, iSelect, iPagination} from 'rise'
 import { iDatePicker } from "rise"
 import tablelist from './components/tablelist'
 import {pageMixins} from "@/utils/pageMixins";
