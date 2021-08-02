@@ -180,7 +180,14 @@ export function createParts(params){
     data: params
   })
 }
-
+// 创建采购项目
+export function getPageData(params){
+  return sourcing({
+    url: "/nominate/fs-record/list",
+    method: "GET",
+    params: params
+  })
+}
 // 获取定点信息
 export function findNominateInfo(fsNum) {
 	return sourcingDL({

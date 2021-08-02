@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-07-22 13:39:41
+ * @LastEditTime: 2021-08-02 11:01:59
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -204,12 +204,18 @@
         </iButton>
       </template>
     </iSearch>
+    <!---------------------------------------------------------------------->
+    <!----------------------------非仅零件变更-------------------------------->
+    <!---------------------------------------------------------------------->
     <outputPlan
       ref="outputPlan"
       class="margin-bottom20"
       @handleSelectionChange="handleSelectionChange"
       @updateCategoryGroup="updateCategoryGroup"
     />
+    <!---------------------------------------------------------------------->
+    <!----------------------------仅零件变更--------------------------------->
+    <!---------------------------------------------------------------------->
   </iPage>
 </template>
 <script>

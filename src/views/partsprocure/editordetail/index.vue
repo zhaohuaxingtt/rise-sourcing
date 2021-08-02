@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-22 17:39:23
+ * @LastEditTime: 2021-08-02 21:18:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -29,7 +29,7 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{language("LK_LINGJIANCAIGOUXIANGMU",'零件采购项目')}}</span>
 			<div class="floatright">
-				<iButton v-if="isAssembly" @click="handleCreateNomiApplication">{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
+				<iButton v-permission='PARTSPROCURE_EDITORDETAIL_CREATEDDSQD' @click="handleCreateNomiApplication">{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
 				<!-------------------------------------------------------------------------------->
 				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 				<!---出现此按钮。------------------------------------------------------------------->
@@ -127,6 +127,10 @@
 									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
 								</el-option>
 							</iSelect>
+						</iFormItem>
+						<!-----------------------采购项目为仅零件号变更-------------------------------------->
+						<iFormItem v-if='partProjTypes.JINLINGJIANHAOGENGGAI == detailData.partProjectType' :label="language('YUANLINGJIANHAO', '原FS/GS号') + ':'">
+							<iInput search> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{selectOldParts.show=true}"></i></iInput>	
 						</iFormItem>
 					</div>
 					<div class="col">
@@ -330,11 +334,13 @@
 		<!----------------------------现供供应商维护模块--------------------->
 		<!---------------------------------------------------------------->
 		<currentSupplier :dialogVisible='curentSupplierDialog'></currentSupplier>
+		<!-----------------------选择原fs号--------------------------------->
+		<selectOldpartsNumber :diolog='selectOldParts' v-model="selectOldParts.selectData"></selectOldpartsNumber>
 	</iPage>
 </template>
 <script>
 	import Vuex from 'vuex'
-	import {iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,iMessage,iDatePicker,icon,iMessageBox } from "rise";
+	import {iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,iMessage,iDatePicker,icon,iMessageBox,iInput } from "rise";
 	import logistics from "./components/logistics";
 	import targePrice from "./components/targetPrice";
 	import materialGroupInfo from "./components/materialGroupInfo";
@@ -355,8 +361,9 @@
 	import { getDictByCode } from '@/api/dictionary'
 	import {partProjTypes} from '@/config'
 	import {filterProjectList} from '@/utils'
+	import selectOldpartsNumber from './components/selectOldpartsNumber'
 	export default {
-		components: { iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon},
+		components: {selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon},
 		provide:function(){
 			return {detailData:this.getDetailData}
 		},
@@ -371,9 +378,6 @@
 				*/
 			currentSupplierButton:function(){
 				return (this.detailData.partProjectType == partProjTypes.GSLINGJIAN || this.detailData.partProjectType == partProjTypes.GSCOMMONSOURCING) && this.detailData.fsnrGsnrNum
-			},
-			isAssembly() {
-				return this.detailData.partType === "A"
 			},
 			// 根据角色控制零件项目类型下拉值
 			partProjectTypeArray() {
@@ -413,7 +417,11 @@
 				createNomiApplicationLoading: false,
 				curentSupplierDialog:{show:false},
 				fsnrGsnrNum: '',
-				partProjectType: ''
+				partProjectType: '',
+				selectOldParts:{
+					show:false,
+					selectData:[]
+				}
 			};
 		},
 		created() {
@@ -426,6 +434,14 @@
 			this.getDicts()
 		},
 		methods: {
+   /**
+    * @description: 创建自动定点申请。 
+    * @param {*}
+    * @return {*}
+    */
+			handleCreateNomiApplication(){
+
+			},
 			filterProjectList(a,b){
 				return filterProjectList(a,b)
 			},
@@ -741,6 +757,9 @@
 }
 </script>
 <style lang="scss" scoped>
+	.el-icon-search{
+		cursor: pointer;
+	}
 	.partsprocureEditordetail {
 		.card {
 			::v-deep .cardHeader {
