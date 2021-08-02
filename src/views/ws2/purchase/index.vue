@@ -23,6 +23,7 @@
           :isIconShow="isIconShow"
           :historyDataBase="false"
           :mouldBook="true"
+          hoverText="模具台账"
           @changeDataBase="$refs.iNavMvpRef.activeIndex = 999"
       ></iNavWS2>
     </div>
