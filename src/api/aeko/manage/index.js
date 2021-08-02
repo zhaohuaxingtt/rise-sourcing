@@ -73,3 +73,12 @@ export function deleteAeko(params) {
     params,
   })
 }
+
+// aeko-列表搜索-车型项目管理 
+export function getSearchCartype(params) {
+  return requst({
+    url: '/aeko/purchasing/search-cartype',
+    method: 'GET',
+    params,
+  })
+}

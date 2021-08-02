@@ -14,7 +14,7 @@
       <iSearch @sure="getList" @reset="reset">
           <el-form>
               <el-form-item v-for="(item,index) in SearchList" :key="'SearchList_aeko'+index" :label="language(item.labelKey,item.label)">
-                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
+                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
                     <el-option v-if="!item.multiple" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="item in selectOptions[item.selectOption] || []"
@@ -154,6 +154,7 @@ import {
   searchCoverStatus,
   uploadFiles,
   deleteAeko,
+  getSearchCartype,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
@@ -183,6 +184,7 @@ export default {
           brand:'',
           aekoStatusList:[],
           coverStatusList:[],
+          cartypeCode:'',
         },
         selectOptions:{
           'brand':[],
@@ -214,6 +216,7 @@ export default {
           brand:'',
           aekoStatusList:[],
           coverStatusList:[],
+          cartypeCode:'',
         };
         this.getList();
       },
@@ -257,6 +260,7 @@ export default {
           aekoStatusList:[],
           brand:[],
           coverStatus:[],
+          cartypeCode:[],
         };
         // aeko状态
         await searchAekoStatus().then((res)=>{
@@ -281,6 +285,21 @@ export default {
           const {code,data=[]} = res;
           if(code ==200 && data){
             selectOptions.coverStatusList = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+
+        // 车型项目
+        await getSearchCartype().then((res)=>{
+          const {code,data} = res;
+          if(code ==200 && data.infoList){
+            const {infoList =[]} = data;
+            infoList.map((item)=>{
+              item.code= item.key;
+              item.desc = item.value
+            });
+            selectOptions.cartypeCode = infoList;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -317,10 +336,12 @@ export default {
 
       // 查看描述
       checkDescribe(row){
+        const { requirementAekoId,aekoCode } = row;
         const routeData = this.$router.resolve({
           path: '/aeko/describe',
           query: {
-            id:'1'
+            requirementAekoId,
+            aekoCode,
           },
         })
         window.open(routeData.href, '_blank')
