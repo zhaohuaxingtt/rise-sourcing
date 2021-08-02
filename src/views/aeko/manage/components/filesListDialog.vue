@@ -60,7 +60,9 @@ import {pageMixins} from '@/utils/pageMixins'
 import { filesTableTitle } from '../data'
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { downloadUdFile as downloadFile } from '@/api/file'
-
+import {
+    getFilesList,
+} from '@/api/aeko/manage'
 export default {
     name:'filesListDialog',
     mixins:[pageMixins],
@@ -74,6 +76,10 @@ export default {
         dialogVisible:{
             type:Boolean,
             default:false,
+        },
+        itemFile:{
+            type:Object,
+            default:()=>{},
         }
     },
     data(){
@@ -94,7 +100,15 @@ export default {
 
         // 获取列表
         async getList(){
-           
+            const { itemFile,page } = this;
+            const data = {
+                hostId:itemFile.requirementAekoId,
+                current:page.currPage,
+                size:page.pageSize,
+            }
+            await getFilesList(data).then((res)=>{
+
+            })
         },
 
         handleSelectionChange(val) {

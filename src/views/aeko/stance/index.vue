@@ -285,7 +285,7 @@ export default {
             requirementAekoId,
             aekoCode,
           },
-        })
+        }) 
         window.open(routeData.href, '_blank')
       },
 

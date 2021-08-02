@@ -33,8 +33,16 @@
       <template v-slot:header-control>
           <iButton>{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton>
           <iButton>{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
-          <iButton>{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
-          <iButton >{{language('LK_DAORUAEKO','导⼊AEKO')}} </iButton>
+          <iButton @click="downloadTemplate">{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
+          <span class=" margin-left10 margin-right10">
+            <Upload 
+                hideTip
+                :buttonText="language('LK_DAORUAEKO','导⼊AEKO')"
+                :request="importAeko"
+                :onHttpUploaded="onHttpUploaded"
+                :accept="'.xlsx,.xls'"
+            />
+          </span>
           <iButton @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
           <iButton @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
           
@@ -110,7 +118,7 @@
       <!-- 核销原因弹窗 -->
       <revokeDialog v-if="revokeVisible" :dialogVisible="revokeVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
       <!-- 附件列表查看 -->
-      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible"/>
+      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData"/>
     </div>
   </iPage>
 </template>
@@ -144,6 +152,8 @@ import {
   uploadFiles,
   deleteAeko,
   getSearchCartype,
+  importAeko,
+  templateDowmload,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
@@ -190,8 +200,11 @@ export default {
         uploadUrl: process.env.VUE_APP_SOURCING_MH,
         btnLoading:{
           uploadFiles:false,
+          importAeko:false,
           
-        }
+        },
+        importAeko:importAeko,
+        itemFileData:{},
       }
     },
     created(){
@@ -369,6 +382,7 @@ export default {
 
       // 查看附件列表
       async checkFiles(row){
+        this.itemFileData = row;
         this.changeVisible('filesVisible',true);
       },
 
@@ -459,6 +473,27 @@ export default {
             console.log('否')
           })
       },
+      
+      // 导入AEKO
+       async onHttpUploaded(formData,content){
+        const newFormData = new FormData()
+        newFormData.append('file', content.file)
+        await importAeko(newFormData).then((res)=>{
+          const {code} = res;
+          if(code!=200){
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }else{
+            this.getList();
+          }
+        }).catch((e)=>{
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        });
+      },
+
+      // 下载模板
+      async downloadTemplate(){
+        await templateDowmload({fileName:'VZF666.xls'});
+      }
     }
 }
 </script>
