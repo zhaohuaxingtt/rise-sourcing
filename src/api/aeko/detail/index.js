@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-08-03 10:38:14
+ * @LastEditTime: 2021-08-03 16:27:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -69,5 +69,14 @@ export function saveAekoOriginPart(params) {
     url: '/aeko/aeko-origin-part/save',
     method: 'POST',
     data: params
+  })
+}
+
+// 获取AEKO详情 
+export function getAekoDetail(params) {
+  return requst({
+    url: '/aeko/purchasing/detail',
+    method: 'GET',
+    params,
   })
 }

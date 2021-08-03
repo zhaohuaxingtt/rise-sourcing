@@ -185,7 +185,7 @@ export default {
       revokeDialog,
       filesListDialog,
       Upload,
-      iSelectCustom,
+      // iSelectCustom,
     },
     data(){
       return{
