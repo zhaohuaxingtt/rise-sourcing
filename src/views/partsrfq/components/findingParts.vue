@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-07-29 19:08:04
+ * @LastEditTime: 2021-08-03 10:44:20
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -113,6 +113,7 @@ export default {
   methods: {
     async pagePart () {
       let res = await category({});
+      this.form.categoryCode = this.$store.state.rfq.materialGroup
       this.optionList = res.data
       if (this.status === 1) {
         this.form.status = '15'
