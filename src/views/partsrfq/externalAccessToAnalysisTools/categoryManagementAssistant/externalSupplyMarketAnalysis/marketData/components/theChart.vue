@@ -57,6 +57,8 @@ export default {
           type: 'value',
         },
         color: [
+          '#97D1FF',
+          '#0094FF',
           '#0C47A1',
           '#1765C0',
           '#1976D1',
