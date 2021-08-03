@@ -10,7 +10,7 @@
               class="deleteIcon"
         />
       </div>
-      {{ item.name }}
+      {{ item }}
     </div>
   </div>
 </template>
@@ -27,8 +27,6 @@ export default {
       type: Array,
       default: () => {
         return [
-          {name: '类别1'},
-          {name: '类别2'},
         ];
       },
     },
@@ -36,6 +34,7 @@ export default {
   methods: {
     handleDelete(e, item) {
       e.stopPropagation();
+      this.$emit('handleDelete', item)
     },
   },
 };

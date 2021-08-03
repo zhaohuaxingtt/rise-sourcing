@@ -13,9 +13,9 @@
     <!--    搜索栏-->
     <theSearch :list="searchProps" v-if="showStatus" ref="theSearch"/>
     <!--    数据页签栏-->
-    <theDataTab :list="dataTabArray" v-if="showStatus"/>
+    <theDataTab :list="dataTabArray" v-if="showStatus" @handleDelete="handleDataTabDelete"/>
     <!--    echarts图表-->
-    <theChart v-if="showStatus"/>
+    <theChart :chartData="chartData" :chartLoading="chartLoading" v-if="showStatus && showChart" ref="theChart"/>
   </iCard>
 </template>
 
@@ -26,7 +26,10 @@ import theSearch from './components/theSearch';
 import theDataTab from './components/theDataTab';
 import theChart from './components/theChart';
 import {rawMaterialSearch, manpowerSearch, energySearch} from './components/data';
-import {getRawMaterialGroupSelectList} from '../../../../../../api/categoryManagementAssistant/marketData';
+import {
+  getRawMaterialGroupSelectList,
+  getrawMaterialGroupData,
+} from '../../../../../../api/categoryManagementAssistant/marketData';
 import {cloneDeep} from 'lodash';
 
 export default {
@@ -40,43 +43,44 @@ export default {
   },
   data() {
     return {
+      current: 1,
       searchProps: rawMaterialSearch,
-      dataTabArray: [{name: '类别1'}],
+      dataTabArray: [],
       showStatus: true,
+      showChart: true,
+      chartLoading: false,
+      chartData: {},
     };
   },
-  created() {
-    this.getRawMaterialSearchProps();
+  async created() {
+    await this.getRawMaterialSearchProps();
+    await this.getRawMaterialGroupData();
   },
   methods: {
     handleTabsClick(val) {
+      this.current = val;
       this.showStatus = false;
       this.$nextTick(() => {
         this.showStatus = true;
         this.handleTabsChange(val);
       });
     },
-    handleTabsChange(val) {
+    async handleTabsChange(val) {
       switch (val) {
         case 1:
           this.searchProps = rawMaterialSearch;
-          this.dataTabArray = [{name: '类别1'}];
+          await this.getRawMaterialSearchProps();
+          await this.getRawMaterialGroupData();
           break;
         case 2:
           this.searchProps = manpowerSearch;
-          this.dataTabArray = [{name: '人工1'}];
           break;
         case 3:
           this.searchProps = energySearch;
-          this.dataTabArray = [{name: '产品1'}];
           break;
       }
     },
-    async getRawMaterialSearchProps() {
-      const res = await getRawMaterialGroupSelectList();
-      const data = res.data;
-      this.setSearchProps(data);
-    },
+    // 设置搜索框
     setSearchProps(data) {
       this.searchProps = this.searchProps.map(item => {
         switch (item.props) {
@@ -99,15 +103,67 @@ export default {
         return item;
       });
     },
-    handleSearch() {
+    // 获取搜索框参数
+    getSearchForm() {
       const form = cloneDeep(this.$refs.theSearch.form);
       if (form.rangeDate && Array.isArray(form.rangeDate)) {
         form['startDate'] = form.rangeDate[0];
         form['endDate'] = form.rangeDate[1];
-        delete form.rangeDate
+        delete form.rangeDate;
       }
-      form.dataSourceList = [form.dataSourceList]
-      return form
+      form.dataSourceList = [form.dataSourceList];
+      return form;
+    },
+    // 搜索
+    handleSearch() {
+      switch (this.current) {
+        case 1:
+          this.getRawMaterialGroupData();
+          break;
+        case 2:
+          break;
+        case 3:
+          break;
+      }
+    },
+    // 获取数据页签
+    getDataTabArray(data) {
+      if (data.resultList) {
+        this.dataTabArray = data.resultList.map(item => {
+          return item.classType;
+        });
+      }
+    },
+    // 删除数据页签
+    handleDataTabDelete(val) {
+      this.chartData.resultList = this.chartData.resultList.filter(item => {
+        return item['classType'] !== val;
+      });
+      this.dataTabArray = this.dataTabArray.filter(item => {
+        return item !== val;
+      });
+      this.showChart = false;
+      this.$nextTick(() => {
+        this.showChart = true;
+      });
+    },
+    // 原材料
+    async getRawMaterialSearchProps() {
+      const res = await getRawMaterialGroupSelectList();
+      const data = res.data;
+      this.setSearchProps(data);
+    },
+    async getRawMaterialGroupData() {
+      try {
+        this.chartLoading = true;
+        const form = this.getSearchForm();
+        const res = await getrawMaterialGroupData(form);
+        this.getDataTabArray(res.data);
+        this.chartData = res.data;
+        this.chartLoading = false;
+      } catch {
+        this.chartLoading = false;
+      }
     },
   },
 };

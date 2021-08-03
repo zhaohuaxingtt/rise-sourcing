@@ -1,38 +1,83 @@
 <template>
   <el-card>
     <div class="cardHeader">
-      {{title}}
-      <i class="el-icon-arrow-up collapse margin-left20 cursor" ></i>
+      <div class="title">
+        <icon symbol name="iconwenjianshuliangbeijing" class="titleIcon"/>
+        <span class="text">{{ title }}</span>
+      </div>
+      <i class="el-icon-arrow-up collapse margin-left20 cursor" @click="handleShowHide"
+         :class="{ rotate: !showSlot }"></i>
     </div>
-    <slot>
-
-    </slot>
+    <el-collapse-transition>
+      <slot v-if="showSlot"></slot>
+    </el-collapse-transition>
   </el-card>
 </template>
 
 <script>
+import {icon} from 'rise'
 export default {
+  components: {
+    icon
+  },
   props: {
     title: {
       type: String,
-      default: ''
-    }
-  }
+      default: '',
+    },
+  },
+  data() {
+    return {
+      showSlot: true,
+    };
+  },
+  methods: {
+    handleShowHide() {
+      this.showSlot = !this.showSlot;
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
 .cardHeader {
   width: 100%;
-  padding:  0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 5px 0;
   border-bottom: 1px solid #CDDAF0;
-  .collapse{
-    font-size: 20px;
-    color:#D3D3DB;
+  margin-bottom: 20px;
 
-    &:hover {
-      color:$color-blue;
+  .title{
+    .text{
+      font-size: 18px;
+      line-height: 21px;
+      color: #000000;
     }
   }
+
+  .rotate {
+    transform: rotate(180deg);
+  }
+
+  .collapse {
+    font-size: 25px;
+    color: #D3D3DB;
+
+    &:hover {
+      color: $color-blue;
+    }
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="theChart" ref="theChart" :style="{'height': chartHeight}"/>
+  <div class="theChart" ref="theChart" :style="{'height': chartHeight}" v-loading="chartLoading" v-if="showChart"/>
 </template>
 
 <script>
@@ -9,16 +9,28 @@ export default {
   props: {
     chartHeight: {
       type: String,
-      default: '600px',
+      default: '500px',
+    },
+    chartLoading: {
+      type: Boolean,
+      default: false,
+    },
+    chartData: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
   },
   mounted() {
-    this.initEcharts();
+    this.buildChart();
   },
   data() {
     return {
       seriesArray: [],
       legendData: [],
+      xAxisArray: [],
+      showChart: true,
     };
   },
   methods: {
@@ -26,7 +38,7 @@ export default {
       const chart = echarts().init(this.$refs.theChart);
       const option = {
         legend: {
-          data: ['类别1', '类别2', '类别3'],
+          data: this.legendData,
           icon: 'circle',
           left: 30,
           top: 20,
@@ -36,7 +48,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: this.xAxisArray,
           splitLine: {
             show: true,
           },
@@ -54,26 +66,7 @@ export default {
           '#a1d0fb',
           '#b7cbf3',
         ],
-        series: [
-          {
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            name: '类别1',
-            type: 'line',
-            smooth: true,
-          },
-          {
-            data: [320, 932, 901, 934, 1290, 1330, 1320],
-            name: '类别2',
-            type: 'line',
-            smooth: true,
-          },
-          {
-            data: [420, 932, 901, 934, 1290, 1330, 1320],
-            name: '类别3',
-            type: 'line',
-            smooth: true,
-          },
-        ],
+        series: this.seriesArray,
         grid: {
           top: 60,
           right: 40,
@@ -81,11 +74,44 @@ export default {
           bottom: 20,
         },
       };
-      chart.setOption(option);
+      chart.setOption(option, true);
     },
     assembleData() {
-
-    }
+      this.xAxisArray = [];
+      this.legendData = [];
+      this.seriesArray = [];
+      this.xAxisArray = this.chartData.yearsList;
+      const resultList = this.chartData.resultList;
+      if (Array.isArray(resultList) && resultList.length > 0) {
+        this.legendData = resultList.map(item => {
+          return item.classType;
+        });
+        this.seriesArray = resultList.map(item => {
+          const itemData = item.rmList.map(item => {
+            return item.account;
+          });
+          return {
+            data: itemData,
+            name: item.classType,
+            type: 'line',
+            smooth: true,
+          };
+        });
+      }
+      console.log(this.seriesArray);
+    },
+    buildChart() {
+      this.assembleData();
+      this.initEcharts();
+    },
+  },
+  watch: {
+    chartData: {
+      deep: true,
+      handler() {
+        this.buildChart();
+      },
+    },
   },
 };
 </script>
