@@ -87,10 +87,11 @@ import {
     iPagination,
     iMessage,
 } from 'rise';
-import { SearchList , tableTitle, linieTableTitle } from './data';
+import { SearchList , tableTitle, linieQueryForm, linieTableTitle } from './data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
+import { getAekoContentPart } from "@/api/aeko/detail"
 
 export default {
     name:'partsList',
@@ -200,6 +201,23 @@ export default {
                 }
             }
         },
+        // linie 获取列表
+        getAekoContentPart() {
+            getAekoContentPart({
+
+            })
+            .then(res => {
+                if (res.code == 200) {
+                    this.tableListData = Array.isArray(res.data) ? res.data : []
+                    this.page.totalCount = res.total || 0
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+
+                this.loading = false
+            })
+            .catch(() => this.loading = false)
+        }
     }
 }
 </script>

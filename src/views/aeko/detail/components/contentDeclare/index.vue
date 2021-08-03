@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-03 13:40:31
+ * @LastEditTime: 2021-08-03 14:13:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -215,7 +215,7 @@
 </template>
 
 <script>
-import { iSearch, iInput, iSelect, iSelectCustom, iCard, iButton, icon, iPagination, iMessage } from "rise"
+import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle, isReferenceMap } from "../data"
@@ -229,7 +229,7 @@ import { cloneDeep } from "lodash"
 const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 export default {
-  components: { iSearch, iInput, iSelect, iSelectCustom, iCard, iButton, icon, iPagination, tableList, dosageDialog },
+  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog },
   mixins: [ pageMixins ],
   props: {
     aekoInfo: {
