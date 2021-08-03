@@ -21,6 +21,7 @@
           :dataBaseInit="dataBaseInit"
           :navList="budgetManagement3rd"
           :isIconShow="isIconShow"
+          hoverText="历史数据库"
           @nextStep="nextStep"
           @changeDataBase="$refs.iNavMvpRef.activeIndex = 999"
       ></iNavWS2>
