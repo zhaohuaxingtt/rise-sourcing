@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 14:39:26
+ * @LastEditTime: 2021-08-03 15:03:48
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -227,17 +227,26 @@ export default {
         return
       }
       this.readQuotationLoading = true
-      const params = {
-        nominateId: this.$route.query.desinateId,
-        dtoList: this.selectedTableData.map(item => {
+      const params = this.selectedTableData.map(item => {
           return {
             nominateDetailId: item.nominateDetailId,
             rfqId: item.rfqId,
             fsnrGsnrNum: item.fsnrGsnrNum,
-            supplierId: item.supplierId
+            supplierId: item.supplierId,
+            nominateId: item.nominateAppId
           }
         })
-      }
+      // {
+      //   nominateId: this.$route.query.desinateId,
+      //   dtoList: this.selectedTableData.map(item => {
+      //     return {
+      //       nominateDetailId: item.nominateDetailId,
+      //       rfqId: item.rfqId,
+      //       fsnrGsnrNum: item.fsnrGsnrNum,
+      //       supplierId: item.supplierId
+      //     }
+      //   })
+      // }
       readQuotation(params).then(res => {
         if(res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
