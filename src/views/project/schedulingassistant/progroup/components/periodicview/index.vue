@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-30 16:48:34
+ * @LastEditTime: 2021-08-02 11:17:30
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -125,13 +125,13 @@ export default {
       })
     },
     handleSave() {
-      if (!this.products.some(item => item.isChecked)) {
-        iMessage.warn(this.language('QINGGOUXUANXUYAOBAOCUNDESHUJU','请勾选需要保存的数据'))
-        return
-      }
+      // if (!this.products.some(item => item.isChecked)) {
+      //   iMessage.warn(this.language('QINGGOUXUANXUYAOBAOCUNDESHUJU','请勾选需要保存的数据'))
+      //   return
+      // }
       this.saveloading = true
-      saveProductGroupInfoList(this.products.filter(item => item.isChecked)).then(res => {
-        if (res?.reuslt) {
+      saveProductGroupInfoList(this.products).then(res => {
+        if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.init()
         } else {

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-30 16:36:09
+ * @LastEditTime: 2021-08-03 11:13:48
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -14,7 +14,7 @@ const requst = axios(process.env.VUE_APP_PROJECT)
 // 产品组排程-获取车型项目下拉
 export function getCarTypePro() {
   return requst({
-    url: '/car-type/carTypePro',
+    url: '/car-type',
     method: 'GET',
   })
 }
@@ -22,7 +22,7 @@ export function getCarTypePro() {
 // 产品组排程-获取车型项目节点列表
 export function getCarTypeProPepTimeNode(cartypeProId) {
   return requst({
-    url: `/car-type/carTypeProPepTimeNode/${cartypeProId}`,
+    url: `/car-type/pepTimeNode/${cartypeProId}`,
     method: 'GET',
   })
 }
@@ -30,7 +30,7 @@ export function getCarTypeProPepTimeNode(cartypeProId) {
 // 获取产品组周期视图
 export function getProductGroupInfoList(cartypeProId) {
   return requst({
-    url: `/product-group-schedule/productGroupInfoList/${cartypeProId}`,
+    url: `/product-group-schedule/info/${cartypeProId}`,
     method: 'GET'
   })
 }
@@ -38,7 +38,7 @@ export function getProductGroupInfoList(cartypeProId) {
 // 获取产品组节点视图
 export function getProductGroupNodeInfoList(cartypeProId) {
   return requst({
-    url: `/product-group-schedule/productGroupInfoNodeList/${cartypeProId}`,
+    url: `/product-group-schedule/infoNode/${cartypeProId}`,
     method: 'GET'
   })
 }
@@ -46,7 +46,7 @@ export function getProductGroupNodeInfoList(cartypeProId) {
 // 保存产品组周期视图
 export function saveProductGroupInfoList(params) {
   return requst({
-    url: `/product-group-schedule/saveProductGroupInfoList`,
+    url: `/product-group-schedule/info`,
     method: 'POST',
     data: params
   })
@@ -55,7 +55,7 @@ export function saveProductGroupInfoList(params) {
 // 获取概览列表
 export function getOverview() {
   return requst({
-    url: '/car-type/getOverviewByCurrentUser',
+    url: '/car-type/user/overview',
     method: 'GET'
   })
 }
@@ -63,7 +63,7 @@ export function getOverview() {
 // 获取用户最后一次操作的车型项目
 export function getLastOperateCarType() {
   return requst({
-    url: '/car-type/getUserLastOperateCarTypePro',
+    url: '/car-type/userLastOperate',
     method: 'GET'
   })
 }
@@ -71,7 +71,7 @@ export function getLastOperateCarType() {
 // 获取可选择车型列表
 export function getSelectCarType(carTypeProId) {
   return requst({
-    url: '/car-type/getCarTypeProByCurrentUser?carTypeProId='+carTypeProId,
+    url: '/car-type/user?carTypeProId='+carTypeProId,
     method: 'GET'
   })
 }
@@ -79,8 +79,8 @@ export function getSelectCarType(carTypeProId) {
 // 更新可选择车型列表
 export function updateSelectCarType(params) {
   return requst({
-    url: '/car-type/updateCarTypeProAttention',
-    method: 'POST',
+    url: '/car-type/attention',
+    method: 'PUT',
     data: params
   })
 }
@@ -88,7 +88,7 @@ export function updateSelectCarType(params) {
 // 根据车型项目id查询项目采购员
 export function getBuyer(carTypeProjectId) {
   return requst({
-    url: `/progress-confirm/getProjectBuyerByCarTypeProjectId/${carTypeProjectId}`,
+    url: `/progress-confirm/user/${carTypeProjectId}`,
     method: 'GET'
   })
 }
@@ -96,15 +96,48 @@ export function getBuyer(carTypeProjectId) {
 // 查询询价采购员下拉
 export function getFsUserList(params) {
   return requst({
-    url: '/progress-confirm/getFsUserListByIds',
-    method: 'POST',
-    data: params
+    url: '/progress-confirm/user?ids='+params.join(','),
+    method: 'GET',
   })
 }
 
 export function deliveryProduct(params) {
   return requst({
-    url: '/progress-confirm/deliveryProductGroupSchedule',
+    url: '/progress-confirm/productGroupSchedule',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 获取产品组选择弹窗列表
+export function getProductSelectList(cartypeProId) {
+  return requst({
+    url: `/product-group-schedule/select/${cartypeProId}`,
+    method: 'GET'
+  })
+}
+
+// 获取车型算法配置
+export function getCarConfig(cartypeProId) {
+  return requst({
+    url: `/project-group-config/carTypePro/${cartypeProId}`,
+    method: 'GET'
+  })
+}
+
+// 保存车型算法配置
+export function updateCarConfig(params) {
+  return requst({
+    url: `/project-group-config/carTypePro`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 保存选择的产品组
+export function saveProductSelectList(params) {
+  return requst({
+    url: '/product-group-schedule/select',
     method: 'POST',
     data: params
   })

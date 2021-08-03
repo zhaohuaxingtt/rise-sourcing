@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-23 10:22:03
+ * @LastEditTime: 2021-08-03 14:25:20
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -13,15 +13,34 @@
       <iFormGroup row="4" class="csc">
         <div class="col">
           <iFormItem v-for="(item,index) in titleData" :key="'titleData'+index"  :label="item.label+':'">
-            <iText >
-              {{ item.value }}
+            <iText v-if="item.props === 'currency'">
+              {{ basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : '' }}
             </iText>
+            <iText v-else-if="item.props === 'exchangeRate'">
+              <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
+                1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].name : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.name : 'RMB'}}
+              </span>
+            </iText>
+            <iText v-else-if="item.props === 'partProjectType'">
+              {{basicData[item.props] === partProjTypes.PEIJIAN ? '配件' : '附件'}}
+            </iText>
+            <iText v-else>{{basicData[item.props]}}</iText>
           </iFormItem>
         </div>
       </iFormGroup>
     </iCard>
     <iCard :title="'流转定点推荐 - ' + cardTitle" :class="!isPreview && 'margin-top20'">
-      <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" />
+      <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
+        <!-- 年降 -->
+        <template #ltc="scope">
+          <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
+        </template>
+
+        <!-- 年降开始时间 -->
+        <template #beginYearReduce="scope">
+          <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
+        </template>
+      </tableList>
     </iCard>
     <iCard :title="language('BEIZHU','备注')" :class="!isPreview && 'margin-top20'">
       <template slot="header-control" v-if="!isPreview">
@@ -48,7 +67,6 @@ import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage } from '
 import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
-import { cloneDeep } from "lodash"
 import {partProjTypes} from '@/config'
 
 export default {
@@ -63,13 +81,13 @@ export default {
       // 零件项目类型
       partProjTypes,
       titleData:[
-        {label:'零件关系',value:'配件', props: ''},
+        {label:'零件关系',value:'配件', props: 'partProjectType'},
         {label:'询价采购员',value:'胡伟', props: 'fsBuyer'},
-        {label:'货币单位',value:'RMB', props: ''},
-        {label:'申请单号',value:'', props: ''},
-        {label:'申请日期',value:'2020-01-01', props: ''},
+        {label:'货币单位',value:'RMB', props: 'currency'},
+        {label:'申请单号',value:'', props: 'nominateAppId'},
+        {label:'申请日期',value:'2020-01-01', props: 'nominateAppTime'},
         {label:'LINIE采购员',value:'胡伟', props: 'buyer'},
-        {label:'Exchange rate',value:'1 RMB=1.00 RMB', props: ''},
+        {label:'Exchange rate',value:'1 RMB=1.00 RMB', props: 'exchangeRate'},
       ],
       // tableTitle: cloneDeep(nomalTableTitle),
       tableData: [],
@@ -77,10 +95,23 @@ export default {
       checkList: checkList,
       isEdit: false,
       saveLoading: false,
-      projectType: ''
+      projectType: '',
+      basicData: {}
     }
   },
   computed: {
+    exchangeRageCurrency() {
+      if (this.basicData.currencyRateMap) {
+        const exchangeRageCurrency = []
+        for (var key in this.basicData.currencyRateMap) {
+          if (key) {
+            exchangeRageCurrency.push(key)
+          }
+        }
+        return exchangeRageCurrency
+      }
+      return []
+    },
     cardTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
         return '配件采购 Nomination Recommendation - Spare Part Purchasing'
@@ -99,6 +130,28 @@ export default {
     }
   },
   methods: {
+    // 单独处理下年降或年降计划
+    resetLtcData(row=[],type){
+      // 年降开始时间
+      if(type == 'beginYearReduce'){
+        // 取第一个非0的年份
+        const list = row.filter((item)=> item.ltcRate!='0.00');
+        return list.length ? list[0].ltcDate : '-'
+      }else{ // 年降
+       // 从非0开始至非0截至的数据 不包含0
+       let strList = [];
+       let strFlag = false;
+       for(let i =0;i<row.length;i++){
+         if(row[i].ltcRate !='0.00'){
+            strFlag = true;
+           strList.push(row[i].ltcRate);
+         }else if(strFlag && row[i].ltcRate == '0.00'){
+           break
+         }
+       }
+       return strList.length ? strList.join('/') : '-'
+      }
+    },
     handleEdit() {
       this.isEdit = true
     },
@@ -196,6 +249,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.exchangeRageCurrency + .exchangeRageCurrency {
+  margin-left: 20px;
+}
 .meetingRemark {
   &-item {
     display: flex;

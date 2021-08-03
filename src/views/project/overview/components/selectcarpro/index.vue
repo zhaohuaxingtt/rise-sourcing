@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 23:35:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-30 14:45:58
+ * @LastEditTime: 2021-08-03 11:19:04
  * @Description: 选择车型项目弹窗
  * @FilePath: \front-web\src\views\project\overview\components\selectcarpro\index.vue
 -->
@@ -17,7 +17,7 @@
     <iSearch :icon="true" class="selectcarSearch">
       <template slot="button">
         <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
-        <iButton @click="handleReset">{{language('CHONGZHI', '重置')}}</iButton>
+        <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
       <el-form>
         <el-form-item :label="language('CHEXINGXIANGMU','车型项目')">
@@ -86,6 +86,7 @@ export default {
       this.getSelectCarPro(this.carProject)
     },
     handleSave() {
+      this.tableLoading = true
       const tableList = this.tableData.map(item => {
         return {
           ...item,
@@ -99,6 +100,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.tableLoading = false
       })
     },
     async getSelectCarPro(carTypeProId = '') {

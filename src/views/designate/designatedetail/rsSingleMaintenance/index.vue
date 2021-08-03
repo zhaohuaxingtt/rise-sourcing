@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-22 17:22:35
+ * @LastEditTime: 2021-08-03 14:39:26
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -203,7 +203,15 @@ export default {
         return
       }
       this.downloadLoading = true
-      const params = {recordIds:this.tableListData.map(item => item.nominateRecordId)}
+      const params = {
+        recordIds:this.tableListData.map(item => item.nominateRecordId),
+        fsnrGsnrNum: this.tableListData.map(item => item.fsnrGsnrNum),
+        nominateAppId: this.otherNominationId,
+        partNum: this.tableListData.map(item => item.partNum),
+        partProjId: this.tableListData.map(item => item.partProjId),
+        partProjType: this.partProjectType,
+        suggestionIds: this.tableListData.map(item => item.suggestionId)
+      }
       await downloadRSDoc(params)
       this.downloadLoading = false
     },
@@ -251,6 +259,8 @@ export default {
       this.saveLoading = true
       const params = this.tableListData.map(item => {
         return {
+          supplierId: item.supplierId,
+          fsnrGsnrNum: item.fsnrGsnrNum,
           nominateDetailId: item.nominateDetailId,
           aPrice: item.aprice,
           bPrice: item.bprice,
