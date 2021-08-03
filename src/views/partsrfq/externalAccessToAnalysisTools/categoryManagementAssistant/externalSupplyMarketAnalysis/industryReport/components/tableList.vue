@@ -1,7 +1,10 @@
 <!--
- * @Author: shujie
- * @Date: 2021-06-24 16:57:16
- * @Description: 舒杰RFQ table 封装
+ * @Author: 舒杰
+ * @Date: 2021-08-02 14:15:26
+ * @LastEditTime: 2021-08-02 14:43:39
+ * @LastEditors: 舒杰
+ * @Description: SOURCING TABLE 
+ * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\components\tableList.vue
 -->
 <template>
 	<el-table class="table" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading"
@@ -9,7 +12,7 @@
 		<el-table-column v-if="selection" type="selection" align="center" width="56"></el-table-column>
 		<el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
 		<template v-for="(item, $index) in tableTitle">
-			<el-table-column :key="$index" align="center" :label="item.key?$t(item.key):item.name" :prop="item.props"
+			<el-table-column :key="$index" align="center" :label="language(item.key,item.name)" :prop="item.props"
 				:show-overflow-tooltip="item.tooltip" :width="item.width">
 				<template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
 					<slot :name="item.props" :row="scope.row"></slot>

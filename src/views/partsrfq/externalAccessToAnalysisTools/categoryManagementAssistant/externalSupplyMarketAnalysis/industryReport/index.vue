@@ -1,18 +1,24 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-02 11:08:23
+ * @LastEditTime: 2021-08-02 14:53:34
  * @LastEditors: 舒杰
  * @Description: 行业报告
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\index.vue
 -->
 <template>
-	<iCard :title='language("hangyebaogao","行业报告")' class="margin-top20">
+	<iCard :title='language("HANGYEBAOGAO","行业报告")' class="margin-top20">
 		<template slot="header-control">
-        <iButton>{{ language("bianji", "编辑") }}</iButton>
-        <iButton>{{ language("shangchuan", "上传") }}</iButton>
-        <iButton>{{ language("XIAZAI", "下载") }}</iButton>
-        <iButton>{{ language("fanhui", "返回") }}</iButton>
+			<div v-if="isEdit"> 
+				<iButton @click="unEdit">{{ language("QUXIAO", "取消") }}</iButton>
+				<iButton>{{ language("BAOCUN", "保存") }}</iButton>
+			</div>
+			<div v-else>
+				<iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
+				<iButton>{{ language("SHUANGCHUAN", "上传") }}</iButton>
+				<iButton>{{ language("XIAZAI", "下载") }}</iButton>
+				<iButton>{{ language("FANHUI", "返回") }}</iButton>
+			</div>
       </template>
 		<tableList 
 			:tableData="tableListData"
@@ -21,12 +27,12 @@
 			index
 			@handleSelectionChange="handleSelectionChange">
 			<template #toolType="scope">
-				<span class="openPage" @click="openPdf(scope.row.downloadUrl)">{{scope.row.name}}</span>
+				<iInput v-model="scope.row.toolType" v-if="isEdit"></iInput>	
+				<span class="openPage" @click="openPdf(scope.row.downloadUrl)" v-else>{{scope.row.toolType}}</span>
 			</template>
 			<template #openFile="scope">
-				<span class="openPage" @click="openPdf(scope.row.downloadUrl)">预览</span>
+				<span class="openPage" @click="openPdf(scope.row.downloadUrl)">{{ language("YULAN","预览") }}</span>
 			</template>
-			
 		</tableList>
 		<iPagination
 			v-update
@@ -42,15 +48,16 @@
 </template>
 
 <script>
-	import {iCard,iPagination,iButton} from 'rise';
-	import tableList from '@/views/partsrfq/reportList/components/tableList.vue';
-	import {specialToolsTitle} from './data';
+	import {iCard,iPagination,iButton,iMessage,iInput} from 'rise';
+	import tableList from './components/tableList.vue';
+	import {specialToolsTitle} from './components/data';
 	import {pageMixins} from '@/utils/pageMixins';
-	import {reportList} from "@/api/partsrfq/reportList"
+	import {reportList} from "@/api/partsrfq/reportList";
+	import {downloadFile} from '@/api/file';
 	export default{
 		mixins: [pageMixins],
 		components:{
-			iCard,tableList,iPagination,iButton
+			iCard,tableList,iPagination,iButton,iInput
 		},
 		props:{
 			searchCriteria:{
@@ -65,7 +72,8 @@
 				tableListData:[],
 				tableTitle:specialToolsTitle,
 				tableLoading:false,
-				selectData:[]
+				selectData:[],
+				isEdit:false,// 是否编辑
 			}
 		},
 		created() {
@@ -91,9 +99,33 @@
 					}
 				})
 			},
+			// 编辑
+			edit(){
+				this.isEdit=true
+			},
+			// 取消编辑
+			unEdit(){
+				this.isEdit=false
+			},
 			openPdf(url){
 				window.open(url)
-			}
+			},
+			// 文件下载
+			down(){
+				if (this.selectData.length==0) {
+					iMessage.error(this.$t('TPZS.CANNOTSELECT'))
+					return
+				}
+				let fileName=[]
+				this.selectData.map(item=>{
+					fileName.push(item.downloadName)
+				})
+				const req = {
+					applicationName: 'rise',
+					fileList: [fileName],
+				}
+				downloadFile(req)
+			},
 		}
 	}
 </script>
