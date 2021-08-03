@@ -1,7 +1,15 @@
+<!--
+ * @Author: 舒杰
+ * @Date: 2021-08-03 10:42:23
+ * @LastEditTime: 2021-08-03 16:00:59
+ * @LastEditors: 舒杰
+ * @Description: 内部需求分析
+ * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\index.vue
+-->
 <template>
   <iPage>
     <headerNav/>
-    内部需求分析
+    <router-view></router-view>
   </iPage>
 </template>
 
@@ -11,7 +19,9 @@ import headerNav from '../components/headerNav'
 export default {
   components: {
     iPage,
-    headerNav
+    headerNav,
+  },
+  methods: {
   }
 };
 </script>

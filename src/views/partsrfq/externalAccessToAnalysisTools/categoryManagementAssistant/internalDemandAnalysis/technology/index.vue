@@ -1,38 +1,25 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-03 14:25:05
+ * @LastEditTime: 2021-08-03 16:02:53
  * @LastEditors: 舒杰
- * @Description: 行业报告
- * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\index.vue
+ * @Description: 技术路线
+ * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\technology\index.vue
 -->
 <template>
-	<iCard :title='language("HANGYEBAOGAO","行业报告")' class="margin-top20">
+	<iCard :title='language("JISHULUXIAN","技术路线")' class="margin-top20">
 		<template slot="header-control">
-			<div v-if="isEdit"> 
-				<iButton @click="unEdit">{{ language("QUXIAO", "取消") }}</iButton>
-				<iButton>{{ language("BAOCUN", "保存") }}</iButton>
-			</div>
-			<div v-else>
-				<iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
-				<iButton>{{ language("SHUANGCHUAN", "上传") }}</iButton>
-				<iButton>{{ language("XIAZAI", "下载") }}</iButton>
-				<iButton>{{ language("FANHUI", "返回") }}</iButton>
-			</div>
-      </template>
+			<iButton>{{ language("XIAZAI", "下载") }}</iButton>
+			<iButton>{{ language("SHUANGCHUAN", "上传") }}</iButton>
+			<iButton @click="deleted">{{ language("SHANCHU", "删除") }}</iButton>
+			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+		</template>
 		<tableList 
 			:tableData="tableListData"
 			:tableTitle="tableTitle"
 			:tableLoading="tableLoading"
 			index
 			@handleSelectionChange="handleSelectionChange">
-			<template #toolType="scope">
-				<iInput v-model="scope.row.toolType" v-if="isEdit"></iInput>	
-				<span class="openPage" @click="openPdf(scope.row.downloadUrl)" v-else>{{scope.row.toolType}}</span>
-			</template>
-			<template #openFile="scope">
-				<span class="openPage" @click="openPdf(scope.row.downloadUrl)">{{ language("YULAN","预览") }}</span>
-			</template>
 		</tableList>
 		<iPagination
 			v-update
@@ -48,7 +35,7 @@
 </template>
 
 <script>
-	import {iCard,iPagination,iButton,iMessage,iInput} from 'rise';
+	import {iCard,iPagination,iButton,iMessage,iMessageBox} from 'rise';
 	import tableList from '@/views/partsrfq/externalAccessToAnalysisTools/components/tableList.vue';
 	import {specialToolsTitle} from './data';
 	import {pageMixins} from '@/utils/pageMixins';
@@ -57,7 +44,7 @@
 	export default{
 		mixins: [pageMixins],
 		components:{
-			iCard,tableList,iPagination,iButton,iInput
+			iCard,tableList,iPagination,iButton,
 		},
 		props:{
 			searchCriteria:{
@@ -73,7 +60,6 @@
 				tableTitle:specialToolsTitle,
 				tableLoading:false,
 				selectData:[],
-				isEdit:false,// 是否编辑
 			}
 		},
 		created() {
@@ -99,13 +85,13 @@
 					}
 				})
 			},
-			// 编辑
-			edit(){
-				this.isEdit=true
-			},
-			// 取消编辑
-			unEdit(){
-				this.isEdit=false
+			//删除
+			deleted(){
+				iMessageBox(this.language('QRSCXZWJ','确认删除选中文件'),this.language('TISHI','提示')).then(()=>{
+					
+				}).catch(()=>{
+
+				})
 			},
 			openPdf(url){
 				window.open(url)
@@ -126,17 +112,13 @@
 				}
 				downloadFile(req)
 			},
+			// 返回
+			back(){
+				this.$router.go(-1)
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	.openPage{
-		color: $color-blue;
-		font-size: 14px;
-		text-decoration: underline;
-		cursor: pointer;
-		width: 100px;
-		@include text_;
-	}
 </style>
