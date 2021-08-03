@@ -161,12 +161,14 @@ export default {
   mounted () {
 
     this.multipleSelection = JSON.parse(localStorage.getItem('checkList'))
-    this.$nextTick(() => {
-      this.multipleSelection.forEach(i => {
-        console.log(this.$refs.moviesTable)
-        this.$refs.moviesTable.toggleRowSelection(i, true)
-      })
-    });
+    if(this.multipleSelection){
+      this.$nextTick(() => {
+        this.multipleSelection.forEach(i => {
+          console.log(this.$refs.moviesTable)
+          this.$refs.moviesTable.toggleRowSelection(i, true)
+        })
+      });
+    }
 
     if (this.filterTable) {
       this.initChoose()

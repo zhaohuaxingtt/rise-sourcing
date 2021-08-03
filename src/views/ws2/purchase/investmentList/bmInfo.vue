@@ -1,11 +1,18 @@
 <template>
   <iPage>
     <div class="head">
-      <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：{{ query.bmSerial }}</div>
-      <div class="edition">
-        <div class="txt">{{language('LK_BANBENHAO', '版本号')}}：{{ baseInfo.versions ? baseInfo.versions[0].versionName : '' }}</div>
+      <div style="display: flex;">
+        <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：{{ query.bmSerial }}</div>
+        <div class="edition">
+          <div class="txt">{{language('LK_BANBENHAO', '版本号')}}：{{ baseInfo.versions ? baseInfo.versions[0].versionName : '' }}</div>
+        </div>
+      </div>
+      <div class="logButton" @click="iLogShow = true">
+        <icon symbol name="iconrizhiwuzi" class="icon"/>
+        <span>{{ $t("LK_RIZHI") }}</span>
       </div>
     </div>
+    <iLog :show.sync="iLogShow" :bizId="query.bmSerial"></iLog>
 
     <iCard v-loading="baseInfoLoading">
       <div class="head-serch">
@@ -200,8 +207,14 @@
 import {
   iTableList
 } from "@/components";
-import {iPage, iMessage, iDialog, iButton, iSelect, iSearch, iInput,
-  iCard, icon
+import {
+  iPage,
+  iMessage,
+  iLog,
+  iButton,
+  iSelect,
+  iCard,
+  icon
 } from "rise";
 import {bmInfoTitle} from "../components/data"
 import confirm from "../components/confirm"
@@ -229,6 +242,7 @@ export default {
     Popover,
     confirm,
     photoList,
+    iLog,
   },
 
   data(){
@@ -250,6 +264,7 @@ export default {
       tableLoading: false,
       bmBuberLoading: false,
       sendSupplierLoading: false,
+      iLogShow: false,
       query: {
         bmSerial: '',
         id: '',
@@ -500,11 +515,22 @@ export default {
 }
 .head{
   display: flex;
+  justify-content: space-between;
   align-content: center;
   align-items: center;
   width: 100%;
   margin-bottom: 25px;
-
+  .logButton{
+    font-size: 14px;
+    color: #1763F7;
+    font-weight: bold;
+    cursor: pointer;
+    .icon{
+      font-size: 20px;
+      margin-right: 5px;
+      vertical-align: top;
+    }
+  }
   .title{
     font-size: 20px;
     font-weight: bold;
