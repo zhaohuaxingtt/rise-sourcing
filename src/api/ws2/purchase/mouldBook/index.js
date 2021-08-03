@@ -3,8 +3,39 @@ import axiosFile from '@/utils/axios.download'
 
 const VUE_APP_BMVIEW = axios(process.env.VUE_APP_BMVIEW)
 const VUE_APP_BMVIEW_FILE = axiosFile(process.env.VUE_APP_BMVIEW)
+
 const VUE_APP_BMMOLD = axios(process.env.VUE_APP_BMMOLD)
 const VUE_APP_BMMOLD_FILE = axiosFile(process.env.VUE_APP_BMMOLD)
+
+const VUE_APP_MOLDVIEW = axios(process.env.VUE_APP_MOLDVIEW)
+const VUE_APP_MOLDVIEW_FILE = axiosFile(process.env.VUE_APP_MOLDVIEW)
+
+// 模具视图-车型项目
+export function moldViewCarTypePullDown(parmars) {
+  return VUE_APP_MOLDVIEW({
+      url: '/moldViewCarTypePullDown',
+      method: 'GET',
+      params: parmars
+  })
+}
+
+// 模具视图-列表
+export function findMoldViewPage(parmars) {
+  return VUE_APP_MOLDVIEW({
+      url: '/findMoldViewPage',
+      method: 'POST',
+      data: parmars
+  })
+}
+
+// 模具视图-科室下拉
+export function moldViewDeptPullDown(parmars) {
+  return VUE_APP_MOLDVIEW({
+      url: '/moldViewDeptPullDown',
+      method: 'GET',
+      params: parmars
+  })
+}
 
 // 点击订单号权限判断
 export function getOrderNumPermission(parmars) {

@@ -86,7 +86,6 @@
         </el-form-item>
 
         <el-form-item :label="language('LK_LINLE', 'Linle')">
-          <!-- <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['linieId']" ></iInput> -->
           <iSelect
               class="multipleSelect"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
