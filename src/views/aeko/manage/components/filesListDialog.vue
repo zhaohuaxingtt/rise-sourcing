@@ -113,9 +113,10 @@ export default {
             }
             await getFilesList(data).then((res)=>{
                 this.loading = false;
-                const { code,data=[] } = res;
+                const { code,data=[],total } = res;
                 if(code == 200){
                     this.tableListData = data;
+                    this.page.totalCount = total;
                 }
             }).catch((err)=>{
                 this.loading = false;

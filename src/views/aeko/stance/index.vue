@@ -39,12 +39,12 @@
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange"
       >
-      <!-- AEKO号 -->
+      <!-- AEKO号  -->
       <template #aekoCode="scope">
         <div class="table-item-aeko">
           <icon  v-if="scope.row.isTop && scope.row.isTop.code==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
           <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}}</span>
-          <a v-if="scope.row.fileCount && scope.row.fileCount > 0" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+          <a v-if="scope.row.fileCount && scope.row.fileCount> 0"  @click="checkFiles(scope.row)" class="file-icon"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
         </div> 
       </template>
 
@@ -89,7 +89,7 @@
       </iCard>
 
       <!-- 附件列表查看 -->
-      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible"/>
+      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     </div>
   </iPage>
 </template>
@@ -155,10 +155,10 @@ export default {
         tableTitle:tableTitle,
         loading:false,
         filesVisible:false,
-        uploadUrl: process.env.VUE_APP_SOURCING_MH,
         btnLoading:{
           uploadFiles:false,
-        }
+        },
+        itemFileData:{},
       }
     },
     created(){
@@ -311,6 +311,7 @@ export default {
       
       // 查看附件列表
       async checkFiles(row){
+        this.itemFileData = row;
         this.changeVisible('filesVisible',true);
       },
 
@@ -345,5 +346,16 @@ export default {
         top: 0;
       }
     }
+    ::v-deep .el-select__tags-text{
+      display: inline-block;
+      max-width: 60px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    ::v-deep .el-select .el-tag__close.el-icon-close{
+      top: -4px;
+    }
+    
   }
 </style>

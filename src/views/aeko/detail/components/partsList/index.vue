@@ -9,14 +9,19 @@
     <!-- 搜索区域 -->
     <iSearch @sure="getList" @reset="reset">
         <el-form>
-            <el-form-item v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" :label="language(item.labelKey,item.label)">
-                <iSelect v-update v-if="item.type === 'select'" :multiple="item.multiple" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
+            <!-- AEKO类型为AeA显示车型，为aeko/mp显示车型项目 -->
+            <el-form-item
+            v-show="!item.showCode || (item.showCode && item.showCode == (aekoInfo.aekoType && aekoInfo.aekoType.code))"
+            v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
+            :label="language(item.labelKey,item.label)"  
+            >
+                <iSelect v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
                 <el-option  value="" :label="language('all','全部')"></el-option>
                 <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item.code"
+                    :label="item.desc"
+                    :value="item.code">
                 </el-option>  
                 </iSelect> 
                 <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]"></iInput> 
@@ -43,12 +48,16 @@
             @handleSelectionChange="handleSelectionChange"
         >
         <!-- 科室 -->
-        <template #h="scoped">
-            <span class="isPreset">{{scoped.row.h}}-科室</span>
+        <template #linieDeptName="scoped">
+            <span class="isPreset">{{scoped.row.linieDeptName}}</span>
         </template>
         <!-- linie -->
-        <template #j="scoped">
-            <span class="isPreset">{{scoped.row.j}}-linie</span>
+        <template #buyerName="scoped">
+            <span class="isPreset">{{scoped.row.buyerName}}</span>
+        </template>
+        <!-- 变更类型 -->
+        <template #changeType="scoped">
+            <span>{{scoped.row.changeType && scoped.row.changeType.desc}}</span>
         </template>
         <!-- 操作 -->
         <template #operate="scoped">
@@ -92,7 +101,13 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
-
+import {
+    getPartPage,
+} from '@/api/aeko/detail/partsList.js'
+import {
+    getSearchCartype,
+    searchBrand,
+} from '@/api/aeko/manage'
 export default {
     name:'partsList',
     mixins: [pageMixins],
@@ -114,13 +129,25 @@ export default {
             "isLinie", // 专业采购员
         ]),
     },
+    props:{
+        aekoInfo:{
+            type:Object,
+            default:()=>{},
+        }
+    },
+   
     created() {
+        this.getSearchList();
+
+
         if (this.isLinie) {
             this.tableTitle = linieTableTitle
         } else if (this.isCommodityCoordinator) {
-            this.tableTitle = tableTitle
+            this.tableTitle = tableTitle;
+            this.getList();
         } else if (this.isAekoManager) {
-            this.tableTitle = tableTitle
+            this.tableTitle = tableTitle;
+            this.getList();
         } else {
             this.tableTitle = []
         }
@@ -155,8 +182,55 @@ export default {
           this.singleAssign= [];
         },
         // 获取列表
-        getList(){
-
+        async getList(){
+            this.loading = true;
+            const {query} = this.$route;
+            const { page } = this;
+            const { requirementAekoId ='',} = query;
+            const data = {
+                requirementAekoId, 
+                current:page.currPage,
+                size:page.pageSize
+            }
+            getPartPage(data).then((res)=>{
+                this.loading = false;
+                const {code,data} = res;
+                if(code == 200){
+                    const { records=[],total } = data;
+                    this.tableListData =  records;
+                    this.page.totalCount = total;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch((err)=>{
+                this.loading = false;
+            })
+        },
+        // 获取搜索框下拉数据
+        async getSearchList(){
+            // 车型项目
+            await getSearchCartype().then((res)=>{
+                const {code,data} = res;
+                if(code ==200 && data.infoList){
+                    const {infoList =[]} = data;
+                    infoList.map((item)=>{
+                    item.code= item.key;
+                    item.desc = item.value
+                    });
+                    this.selectOptions.cartypeCode = infoList;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            })
+            //品牌
+            await searchBrand().then((res)=>{
+            const {code,data=[]} = res;
+            if(code ==200 && data){
+                this.selectOptions.brand = data;
+            }else{
+                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+            })
         },
         // 删除零件
         deleteParts(){

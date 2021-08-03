@@ -14,6 +14,16 @@
       <iSearch @sure="getList" @reset="reset">
           <el-form>
               <el-form-item v-for="(item,index) in SearchList" :key="'SearchList_aeko'+index" :label="language(item.labelKey,item.label)">
+                  <!-- <iSelectCustom 
+                  v-if="item.type === 'select' && item.multiple"
+                  :data="selectOptions[item.selectOption] || []"
+                  :multiple="item.multiple"
+                   v-model="searchParams[item.props]"
+                   :label="'desc'"
+                   :value="'code'"
+                   :popoverClass="'popover-class'"
+                   :searchMethod="searchMethod"
+                  /> -->
                   <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
                     <el-option v-if="!item.multiple" value="" :label="language('all','全部')"></el-option>
                     <el-option
@@ -136,6 +146,7 @@ import {
   iPagination,
   icon,
   iMessage,
+  iSelectCustom,
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
@@ -174,6 +185,7 @@ export default {
       revokeDialog,
       filesListDialog,
       Upload,
+      // iSelectCustom,
     },
     data(){
       return{
@@ -323,10 +335,11 @@ export default {
 
       // 跳转详情页
       goToDetail(row){
+        const { requirementAekoId } = row;
         const routeData = this.$router.resolve({
           path: '/aeko/aekodetail',
           query: {
-            requirementAekoId:1,
+            requirementAekoId,
           },
         })
         window.open(routeData.href, '_blank')
@@ -505,7 +518,10 @@ export default {
         downloadAeko(aekoIdList).then((res)=>{
 
         })
-      }
+      },
+      // searchMethod(val){
+      //   console.log(val);
+      // },
     }
 }
 </script>
@@ -536,6 +552,16 @@ export default {
         right:0;
         top: 0;
       }
+    }
+    ::v-deep .el-select__tags-text{
+      display: inline-block;
+      max-width: 90px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    ::v-deep .el-select .el-tag__close.el-icon-close{
+      top: -4px;
     }
   }
 </style>
