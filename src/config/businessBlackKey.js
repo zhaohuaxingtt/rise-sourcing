@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-02 15:35:55
- * @LastEditTime: 2021-08-02 18:36:16
+ * @LastEditTime: 2021-08-03 11:20:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\config\businessKey.js
@@ -19,8 +19,7 @@ translateBackToWhite(
     'PARTSPROCURE_EDITORDETAIL_CANCELITEMS', //采购项目详情-取消零件采购项目
     'PARTSPROCURE_EDITORDETAIL_SPLITFACTORY', //采购项目详情-采购采购工厂
     'PARTSPROCURE_EDITORDETAIL_ENDPROJECT', //采购项目详情-结束项目
-    'PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE',//采购项目详情-保存
-    'PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE' //采购项目详情-申请目标价
+    'PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE'//采购项目详情-保存
   ],
   partProjTypes,businessKey
   )
