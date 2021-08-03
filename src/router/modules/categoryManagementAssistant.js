@@ -44,6 +44,30 @@ export default [{
       path: 'categoryManagementAssistant/listOfInitiatives',
       name: 'listOfInitiatives',
       component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/listOfInitiatives')
+    },
+    {
+      //开发阶段用——成本结构分析图-系统筛选
+      path: 'categoryManagementAssistant/costAnalysisMain',
+      name: 'costAnalysisMain',
+      component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/components/costAnalysisMain/index')
+    },
+    {
+      //开发阶段用——成本结构分析图
+      path: 'categoryManagementAssistant/costAnalysis',
+      name: 'costAnalysis',
+      component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/components/costAnalysisMain/components/costAnalysis/index')
+    },
+    {
+      //开发阶段用——成本结构数据添加
+      path: 'categoryManagementAssistant/costAnalysisAdd',
+      name: 'costAnalysisAdd',
+      component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/components/costAnalysisMain/components/costAnalysisAdd/index')
+    },
+    {
+      //开发阶段用——成本结构分析图-手工输入
+      path: 'categoryManagementAssistant/costAnalysisHandleInput',
+      name: 'costAnalysisHandleInput',
+      component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/components/costAnalysisMain/components/costAnalysisHandleInput/index')
     }
   ]
 }]
