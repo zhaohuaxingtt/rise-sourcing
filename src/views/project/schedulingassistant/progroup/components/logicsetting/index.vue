@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 10:57:15
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-29 12:15:00
+ * @LastEditTime: 2021-08-03 10:25:36
  * @Description: 算法配置弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\logicsetting\index.vue
 -->
@@ -17,7 +17,8 @@
       <iButton @click="handleConfirm" :loading="saveLoading">{{language('YINGYONGPEIZHI','应用配置')}}</iButton>
     </template>
     <iFormGroup row="2" class="targetPriceDetail">
-      <iFormItem v-for="(item, index) in logicList" :key="index" :label="language(item.i18n_label, item.label)+':'" >
+      <iFormItem v-for="(item, index) in logicList" :key="index" >
+        <span v-if="item.label" slot="label">{{language(item.i18n_label, item.label)}}<span style="color:red;" v-if="item.required">*</span>:</span>
         <iInput v-if="item.type === 'input'" v-model="logicData[item.value]" />
         <iSelect v-else-if="item.type === 'select'" v-model="logicData[item.value]" >
           <el-option

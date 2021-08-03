@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-02 16:53:38
+ * @LastEditTime: 2021-08-03 13:40:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -143,8 +143,8 @@
         <iButton disabled>{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
         <iButton disabled>{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
         <iButton @click="handleExport">{{ language("DAOCHU", "导出") }}</iButton>
-        <iButton>{{ language("DAORU", "导⼊") }}</iButton>
-        <iButton>{{ language("TIJIAO", "提交") }}</iButton>
+        <iButton disabled>{{ language("DAORU", "导⼊") }}</iButton>
+        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
         <iButton disabled>{{ language("CHEHUI", "撤回") }}</iButton>
       </template>
       <div class="body">
@@ -221,7 +221,7 @@ import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle, isReferenceMap } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset } from "@/api/aeko/detail"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
 import { getCarTypePro } from "@/api/designate/nomination"
 import { getDictByCode } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
@@ -251,6 +251,7 @@ export default {
       declareToggleLoading: false,
       declareResetLoading: false,
       dosageDialogVisible: false,
+      submitLoading: false,
     };
   },
   created() {
@@ -367,7 +368,7 @@ export default {
     handleDeclareToggle() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOQIEHUANBIAOTAIDELINGJIAN", "请选择需要切换表态的零件"))
 
-      if (!this.multipleSelection.every(item => item.status.code === "TOBE_STATED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDAIBIAOTAIDELINGJIANJINXINGQIEHUAN", "请选择内容状态为待表态的零件进行切换"))
+      if (!this.multipleSelection.every(item => item.status.code === "TOBE_STATED" || item.status.code === "QUOTING" || item.status.code === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGQIEHUAN", "请选择内容状态为待表态、报价中、已报价的零件进行切换"))
 
       this.declareToggleLoading = true
 
@@ -393,12 +394,12 @@ export default {
     handleDeclareReset() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHONGZHIBIAOTAIDELINGJIAN", "请选择需要重置表态的零件"))
 
-      if (!this.multipleSelection.every(item => item.status.code === "TOBE_STATED" || item.status.code === "QUOTING" || item.status.code === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGQIEHUAN", "请选择内容状态为待表态、报价中、已报价的零件进行重置"))
+      if (!this.multipleSelection.every(item => item.status.code === "TOBE_STATED" || item.status.code === "QUOTING" || item.status.code === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI", "请选择内容状态为待表态、报价中、已报价的零件进行重置"))
 
       this.declareResetLoading = true
 
       patchAekoReset({
-        requirementAekoId: "10000",
+        requirementAekoId: "10001",
         // this.aekoInfo.requirementAekoId,
         objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
       })
@@ -427,6 +428,39 @@ export default {
       })
 
       excelExport(data, printTableTitle)
+    },
+    // 提交
+    handleSubmit() {
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIJIAOBIAOTAIDELINGJIAN", "请选择需要提交表态的零件"))
+
+      for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
+        if (item.status.code !== "TOBE_STATED" && item.status.code !== "QUOTING" && item.status.code !== "QUOTED")
+          return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价的零件进行提交"))
+
+        if (item.isDeclare != 1)
+          return iMessage.warn(this.language("QINGXUANZEYISHOUDONGSHEZHIAJIADELINGJIANJINXINGTIJIAO", "请选择已手动设置A价的零件进行提交"))
+      }
+
+      this.submitLoading = true
+
+      patchAekoContent({
+        requirementAekoId: "10001",
+        // this.aekoInfo.requirementAekoId,
+        objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
+      })
+      .then(res => {
+        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+          this.init()
+        } else {
+          iMessage.error(message)
+        }
+
+        this.submitLoading = false
+      })
+      .catch(() => this.submitLoading = false)
     }
   },
 };

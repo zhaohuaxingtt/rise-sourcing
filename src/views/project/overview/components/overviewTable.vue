@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-30 14:54:18
+ * @LastEditTime: 2021-07-30 19:06:06
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -33,7 +33,7 @@
           </div>
         </div>
         <div v-else-if="item.props === 'caozuo'" class="caozuo">
-          <div class="cursor">
+          <div class="cursor" @click="openAssistant(dataItem)">
             <icon symbol name="icontiaozhuanpaicheng"  class="margin-right10"></icon>
             <span class="openLinkText">{{language('TIAOZHUANPAICHENG','跳转排程')}}</span>
           </div>
@@ -100,6 +100,10 @@ export default {
     }
   },
   methods: {
+    openAssistant(row) {
+      const router =  this.$router.resolve({path: '/projectscheassistant/progroupscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      window.open(router.href,'_blank')
+    },
     getLastStatus(year, season, nodeList) {
       const sameYearLastNode = nodeList.filter(item => item.year == year && item.season < season)
       if (sameYearLastNode.length > 0) {
