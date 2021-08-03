@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-08-03 16:27:32
+ * @LastEditTime: 2021-08-03 18:34:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -70,6 +70,15 @@ export function saveAekoOriginPart(params) {
     method: 'POST',
     data: params
   })
+}
+
+// 获取以登陆人为范围的aeko下的零件列表
+export function getAekoContentPart(params) {
+  return requst({
+    url: '/aeko/aeko-content/part',
+    method: 'POST',
+    data: params
+  }) 
 }
 
 // 获取AEKO详情 
