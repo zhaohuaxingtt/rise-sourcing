@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-08-02 11:16:40
+ * @LastEditTime: 2021-08-03 10:38:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -31,6 +31,15 @@ export function patchAekoReference(params) {
 export function patchAekoReset(params) {
   return requst({
     url: `/aeko/aeko-reset`,
+    method: 'PATCH',
+    data: params
+  })
+}
+
+// 提交表态
+export function patchAekoContent(params) {
+  return requst({
+    url: `/aeko/aeko-content`,
     method: 'PATCH',
     data: params
   })
