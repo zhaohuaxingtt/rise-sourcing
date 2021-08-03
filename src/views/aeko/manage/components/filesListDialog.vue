@@ -31,6 +31,11 @@
             <template #fileName="scope">
                 <span class="link" @click="downloadSingleFile(scope.row)">{{scope.row.fileName}}</span>
             </template>
+
+            <!-- 来源 -->
+            <template #source="scope">
+                <span>{{scope.row.source && scope.row.source.desc}}</span>
+            </template>
         </tableList>
         <!-- 分页 -->
         <iPagination
@@ -60,6 +65,7 @@ import {pageMixins} from '@/utils/pageMixins'
 import { filesTableTitle } from '../data'
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { downloadUdFile as downloadFile } from '@/api/file'
+import { deleteFiles } from '@/api/aeko/manage'
 import {
     getFilesList,
 } from '@/api/aeko/manage'
@@ -84,9 +90,7 @@ export default {
     },
     data(){
         return{
-            tableListData:[
-                { fileName:'1',uploadDate:'2021-10-10','a':'手工导入',uploadBy:'张三',size:'3.15M'}
-            ],
+            tableListData:[],
             tableTitle:filesTableTitle,
             loading:false,
             selectItems:[],
@@ -100,14 +104,21 @@ export default {
 
         // 获取列表
         async getList(){
+            this.loading = true;
             const { itemFile,page } = this;
             const data = {
                 hostId:itemFile.requirementAekoId,
-                current:page.currPage,
-                size:page.pageSize,
+                pageNo:page.currPage,
+                pageSize:page.pageSize,
             }
             await getFilesList(data).then((res)=>{
-
+                this.loading = false;
+                const { code,data=[] } = res;
+                if(code == 200){
+                    this.tableListData = data;
+                }
+            }).catch((err)=>{
+                this.loading = false;
             })
         },
 
@@ -116,12 +127,14 @@ export default {
         },
 
         // 下载单文件
-        downloadSingleFile(row){
+        async downloadSingleFile(row){
             // 如果是pdf就直接新开页面预览
-             const { fileName,filePath } = row;
+             const { fileName,filePath,uploadId } = row;
             const isPdf = (fileName.toLowerCase()).indexOf('.pdf')>=0;
             if(isPdf){
                 window.open(filePath)
+            }else{
+                await downloadFile([uploadId]);
             }
         },
         // 删除附件
@@ -133,6 +146,15 @@ export default {
                 const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
                 if (confirmInfo !== 'confirm') return;
                 const attachmentIds = selectItems.map((item)=>item.id);
+                deleteFiles({fileIds:attachmentIds}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                        this.$emit('getTableList');
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
             }
         },
         

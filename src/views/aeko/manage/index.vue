@@ -57,7 +57,7 @@
             />
             <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
-          <iButton>{{language('LK_AEKODAOCHU','导出')}} </iButton>
+          <iButton @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
       </template>
       <!-- 表单区域 -->
       <tableList
@@ -118,7 +118,7 @@
       <!-- 核销原因弹窗 -->
       <revokeDialog v-if="revokeVisible" :dialogVisible="revokeVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
       <!-- 附件列表查看 -->
-      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData"/>
+      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     </div>
   </iPage>
 </template>
@@ -154,6 +154,7 @@ import {
   getSearchCartype,
   importAeko,
   templateDowmload,
+  downloadAeko,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
@@ -493,6 +494,17 @@ export default {
       // 下载模板
       async downloadTemplate(){
         await templateDowmload({fileName:'VZF666.xls'});
+      },
+      
+      // 导出
+      async exportAeko(){
+        const isNext  = await this.isSelectItem(true);
+        const {selectItems} = this;
+        if(!isNext) return;
+        const aekoIdList = selectItems.map((item)=>item.requirementAekoId);
+        downloadAeko(aekoIdList).then((res)=>{
+
+        })
       }
     }
 }

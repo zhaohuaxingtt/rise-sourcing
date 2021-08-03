@@ -34,7 +34,7 @@ export const tableTitle = [
 export const filesTableTitle = [
   {name:'文件名',key:'LK_WENJIANMING',props:'fileName'},
   {name:'上传日期',key:'LK_SHANGCHUANRIQI',props:'uploadDate'},
-  {name:'来源',key:'LK_AEKO_FILES_LAIYUAN',props:'a'},
+  {name:'来源',key:'LK_AEKO_FILES_LAIYUAN',props:'source'},
   {name:'上传人',key:'LK_SHANGCHUANREN',props:'uploadBy'},
-  {name:'大小',key:'LK_DAXIAO',props:'size'},
+  {name:'大小',key:'LK_DAXIAO',props:'fileSize'},
 ]

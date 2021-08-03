@@ -120,3 +120,21 @@ export function getFilesList(params) {
     params,
   })
 }
+
+// adeko项目导出
+export function downloadAeko(data) {
+  return fileRequst({
+      url: '/aeko/aeko-project/download',
+      method: 'POST',
+      data,
+  })
+}
+
+// 删除附件
+export function deleteFiles(data) {
+  return requst({
+      url: '/file-history/delete',
+      method: 'POST',
+      data,
+  })
+}
