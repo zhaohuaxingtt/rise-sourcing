@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-16 09:54:11
- * @LastEditors: Please set LastEditors
+ * @LastEditors: 舒杰
  * @Descripttion: your project
  */
 /*
@@ -25,7 +25,22 @@ export default [{
       //内部需求分析
       path: 'categoryManagementAssistant/internalDemandAnalysis',
       name: 'internalDemandAnalysis',
-      component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis')
+      redirect: 'categoryManagementAssistant/internalDemandAnalysis/overView',
+      component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis'),
+      children: [
+        {
+          path: 'overView',
+          name: 'overView',
+          meta: { title: "内部需求分析概览" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/overView'),
+        },
+        {
+          path: 'technology',
+          name: 'technology',
+          meta: { title: "技术路线" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/technology'),
+        }
+      ]
     },
     {
       //外部供应市场分析

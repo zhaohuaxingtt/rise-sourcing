@@ -1,10 +1,10 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 14:15:26
- * @LastEditTime: 2021-08-02 14:43:39
+ * @LastEditTime: 2021-08-03 14:23:25
  * @LastEditors: 舒杰
- * @Description: SOURCING TABLE 
- * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\components\tableList.vue
+ * @Description: SOURCING TABLE 封装
+ * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\components\tableList.vue
 -->
 <template>
 	<el-table class="table" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading"

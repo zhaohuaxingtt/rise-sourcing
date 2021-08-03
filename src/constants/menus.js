@@ -11,6 +11,10 @@ const menuTooling = [
     title: '模具采购（供应商）',
     url: '/purchaseSupplier'
   },
+  {
+    title: '品类管理助手',
+    url: '/sourcing/categoryManagementAssistant/internalDemandAnalysis'
+  },
 ]
 
 const menuPortal = [
