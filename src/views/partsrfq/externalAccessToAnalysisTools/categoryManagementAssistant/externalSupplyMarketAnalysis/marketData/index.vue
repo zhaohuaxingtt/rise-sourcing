@@ -3,7 +3,7 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font22 font-weight">{{ language('PLGLZS.SHICHANGSHUJU', '市场数据') }}</span>
       <div class="floatright">
-        <iButton>{{ language('LK_QUEREN', '确认') }}</iButton>
+        <iButton @click="handleSearch">{{ language('LK_QUEREN', '确认') }}</iButton>
         <iButton>{{ language('LK_BAOCUN', '保存') }}</iButton>
         <iButton>{{ language('LK_FANHUI', '返回') }}</iButton>
       </div>
@@ -11,7 +11,7 @@
     <!--    导航条-->
     <theTabs @handleClick="handleTabsClick"/>
     <!--    搜索栏-->
-    <theSearch :list="searchProps" v-if="showStatus"/>
+    <theSearch :list="searchProps" v-if="showStatus" ref="theSearch"/>
     <!--    数据页签栏-->
     <theDataTab :list="dataTabArray" v-if="showStatus"/>
     <!--    echarts图表-->
@@ -26,6 +26,8 @@ import theSearch from './components/theSearch';
 import theDataTab from './components/theDataTab';
 import theChart from './components/theChart';
 import {rawMaterialSearch, manpowerSearch, energySearch} from './components/data';
+import {getRawMaterialGroupSelectList} from '../../../../../../api/categoryManagementAssistant/marketData';
+import {cloneDeep} from 'lodash';
 
 export default {
   components: {
@@ -34,7 +36,7 @@ export default {
     theTabs,
     theSearch,
     theDataTab,
-    theChart
+    theChart,
   },
   data() {
     return {
@@ -42,6 +44,9 @@ export default {
       dataTabArray: [{name: '类别1'}],
       showStatus: true,
     };
+  },
+  created() {
+    this.getRawMaterialSearchProps();
   },
   methods: {
     handleTabsClick(val) {
@@ -66,6 +71,43 @@ export default {
           this.dataTabArray = [{name: '产品1'}];
           break;
       }
+    },
+    async getRawMaterialSearchProps() {
+      const res = await getRawMaterialGroupSelectList();
+      const data = res.data;
+      this.setSearchProps(data);
+    },
+    setSearchProps(data) {
+      this.searchProps = this.searchProps.map(item => {
+        switch (item.props) {
+          case 'classTypeList':
+            item.options = data.classTypeList;
+            break;
+          case 'specsList':
+            item.options = data.specsList;
+            break;
+          case 'areaList':
+            item.options = data.areaList;
+            break;
+          case 'dataSourceList':
+            item.options = data.dataSourceList;
+            if (data.dataSourceList.length !== 0) {
+              this.$refs.theSearch.form.dataSourceList = data.dataSourceList[0];
+            }
+            break;
+        }
+        return item;
+      });
+    },
+    handleSearch() {
+      const form = cloneDeep(this.$refs.theSearch.form);
+      if (form.rangeDate && Array.isArray(form.rangeDate)) {
+        form['startDate'] = form.rangeDate[0];
+        form['endDate'] = form.rangeDate[1];
+        delete form.rangeDate
+      }
+      form.dataSourceList = [form.dataSourceList]
+      return form
     },
   },
 };

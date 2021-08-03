@@ -1,7 +1,8 @@
 export const rawMaterialSearch = [
   {
     type: 'select',
-    props: 'a',
+    multiple: true,
+    props: 'classTypeList',
     options: [],
     labelLanguageKey: 'PLGLZS.LEIBIE',
     label: '类别',
@@ -10,7 +11,8 @@ export const rawMaterialSearch = [
   },
   {
     type: 'select',
-    props: 'b',
+    multiple: true,
+    props: 'specsList',
     options: [],
     labelLanguageKey: 'PLGLZS.GUIGEPAIHAO',
     label: '规格/牌号',
@@ -19,7 +21,8 @@ export const rawMaterialSearch = [
   },
   {
     type: 'select',
-    props: 'c',
+    multiple: true,
+    props: 'areaList',
     options: [],
     labelLanguageKey: 'PLGLZS.QUYU',
     label: '区域',
@@ -28,13 +31,14 @@ export const rawMaterialSearch = [
   },
   {
     type: 'dateMonth',
-    props: 'd',
+    props: 'rangeDate',
     labelLanguageKey: 'PLGLZS.SHIJIANFANWEI',
     label: '时间范围',
   },
   {
-    type: 'input',
-    props: 'e',
+    type: 'select',
+    multiple: false,
+    props: 'dataSourceList',
     labelLanguageKey: 'PLGLZS.SHUJULAIYUAN',
     label: '数据来源',
   },
@@ -52,7 +56,7 @@ export const manpowerSearch = [
   },
   {
     type: 'select',
-    props: 'b',
+    props: 'areaList',
     options: [],
     labelLanguageKey: 'PLGLZS.QUYU',
     label: '区域',
@@ -61,13 +65,13 @@ export const manpowerSearch = [
   },
   {
     type: 'dateMonth',
-    props: 'c',
+    props: 'rangeDate',
     labelLanguageKey: 'PLGLZS.SHIJIANFANWEI',
     label: '时间范围',
   },
   {
-    type: 'input',
-    props: 'd',
+    type: 'select',
+    props: 'dataSourceList',
     labelLanguageKey: 'PLGLZS.SHUJULAIYUAN',
     label: '数据来源',
   },
@@ -112,13 +116,13 @@ export const energySearch = [
   },
   {
     type: 'dateMonth',
-    props: 'e',
+    props: 'rangeDate',
     labelLanguageKey: 'PLGLZS.SHIJIANFANWEI',
     label: '时间范围',
   },
   {
-    type: 'input',
-    props: 'f',
+    type: 'select',
+    props: 'dataSourceList',
     labelLanguageKey: 'PLGLZS.SHUJULAIYUAN',
     label: '数据来源',
   },

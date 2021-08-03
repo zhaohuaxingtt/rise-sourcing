@@ -3,12 +3,22 @@
     <div v-for="(item,index) of list" :key="index" class="itemBox">
       <span class="label">{{ language(item.labelLanguageKey, item.label) }}：</span>
       <template v-if="item.type === 'select'">
-        <iSelect v-model="form[item.props]" :placeholder="item.placeholder">
-          <el-option :value="item.code" :label="item.name" v-for="item of item.options" :key="item.code"></el-option>
+        <iSelect
+            v-model="form[item.props]"
+            :placeholder="item.placeholder"
+            :multiple="item.multiple"
+            collapse-tags
+            clearable>
+          <el-option :value="item" :label="item" v-for="item of item.options" :key="item"></el-option>
         </iSelect>
       </template>
       <template v-else-if="item.type === 'dateMonth'">
-        <iDatePicker v-model='form[item.props]' value-format='yyyy-MM' type="monthrange" style="width: 200px"></iDatePicker>
+        <iDatePicker
+            v-model='form[item.props]'
+            value-format='yyyy-MM'
+            type="monthrange"
+            style="width: 200px"
+        ></iDatePicker>
       </template>
       <template v-else-if="item.type === 'input'">
         <iInput v-model="form[item.props]" :placeholder="item.placeholder"/>
@@ -40,7 +50,7 @@ export default {
     return {
       form: {},
     };
-  },
+  }
 };
 </script>
 
