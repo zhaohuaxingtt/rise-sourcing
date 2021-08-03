@@ -43,12 +43,16 @@
             @handleSelectionChange="handleSelectionChange"
         >
         <!-- 科室 -->
-        <template #h="scoped">
-            <span class="isPreset">{{scoped.row.h}}-科室</span>
+        <template #linieDeptName="scoped">
+            <span class="isPreset">{{scoped.row.linieDeptName}}</span>
         </template>
         <!-- linie -->
-        <template #j="scoped">
-            <span class="isPreset">{{scoped.row.j}}-linie</span>
+        <template #buyerName="scoped">
+            <span class="isPreset">{{scoped.row.buyerName}}</span>
+        </template>
+        <!-- 变更类型 -->
+        <template #changeType="scoped">
+            <span>{{scoped.row.changeType && scoped.row.changeType.desc}}</span>
         </template>
         <!-- 操作 -->
         <template #operate="scoped">
@@ -91,7 +95,9 @@ import { SearchList , tableTitle, linieTableTitle } from './data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
-
+import {
+    getPartPage,
+} from '@/api/aeko/detail/partsList.js'
 export default {
     name:'partsList',
     mixins: [pageMixins],
@@ -114,12 +120,15 @@ export default {
         ]),
     },
     created() {
+
         if (this.isLinie) {
             this.tableTitle = linieTableTitle
         } else if (this.isCommodityCoordinator) {
-            this.tableTitle = tableTitle
+            this.tableTitle = tableTitle;
+            this.getList();
         } else if (this.isAekoManager) {
-            this.tableTitle = tableTitle
+            this.tableTitle = tableTitle;
+            this.getList();
         } else {
             this.tableTitle = []
         }
@@ -154,8 +163,29 @@ export default {
           this.singleAssign= [];
         },
         // 获取列表
-        getList(){
-
+        async getList(){
+            this.loading = true;
+            const {query} = this.$route;
+            const { page } = this;
+            const { requirementAekoId ='',} = query;
+            const data = {
+                requirementAekoId, 
+                current:page.currPage,
+                size:page.pageSize
+            }
+            getPartPage(data).then((res)=>{
+                this.loading = false;
+                const {code,data} = res;
+                if(code == 200){
+                    const { records=[],total } = data;
+                    this.tableListData =  records;
+                    this.page.totalCount = total;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch((err)=>{
+                this.loading = false;
+            })
         },
         // 删除零件
         deleteParts(){

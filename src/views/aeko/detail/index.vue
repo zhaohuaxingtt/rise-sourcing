@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-07-29 17:11:55
+ * @LastEditTime: 2021-08-03 14:29:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       aekoInfo: {},
-      currentTab: "contentDeclare",
+      currentTab: "partsList",
       basicTitle:[
         {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'a'},
         {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'b'},
