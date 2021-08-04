@@ -2,17 +2,17 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 11:09:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-02 15:13:13
+ * @LastEditTime: 2021-08-03 16:06:57
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\data.js
  */
 
 export const searchList = [
-  {value: 'carProject', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'select', filterable: true, selectOption: 'carProjectOptions'},
-  {value: 'b', name: '产品组', key: 'CHANPINZU', type: 'input'},
-  {value: 'c', name: '确认状态', key: 'QUERENZHUANGTAI', type: 'select', selectOption: 'carProjectOptions'},
-  {value: 'd', name: '询价采购员', key: 'XUNJIACAIGOUYUAN', type: 'select', filterable: true, selectOption: 'carProjectOptions'},
-  {value: 'e', name: '项目采购员', key: 'XIANGMUCAIGOUYUAN', type: 'select', filterable: true, selectOption: 'carProjectOptions'}
+  {value: 'cartypeProId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'select', filterable: true, selectOption: 'carProjectOptions'},
+  {value: 'productGroup', name: '产品组', key: 'CHANPINZU', type: 'input'},
+  {value: 'confirmStatus', name: '确认状态', key: 'QUERENZHUANGTAI', type: 'select', selectOption: 'SCHEDULE_CONFIRM_STATUS'},
+  {value: 'fsId', name: '询价采购员', key: 'XUNJIACAIGOUYUAN', type: 'select', filterable: true, selectOption: 'fsOptions'},
+  {value: 'projectPurchaserId', name: '项目采购员', key: 'XIANGMUCAIGOUYUAN', type: 'select', filterable: true, selectOption: 'purchaseOptions'}
 ]
 
 export const tableTitle = [
@@ -25,6 +25,6 @@ export const tableTitle = [
   {props:'scheFirstTryOtsWeek',name:'1st tryout-OTS (周)', key: "1STTRYOUTOTSZHOU", tooltip: true},
   {props:'fs',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
   {props:'confirmDateDeadline',name:'确认截止日期', key: "QUERENJIEZHIRIQI", tooltip: true},
-  {props:'a',name:'确认状态', key: "QUERENZHUANGTAI", tooltip: true},
-  {props:'b',name:'备注', key: "BEIZHU", tooltip: true},
+  {props:'confirmStatus',name:'确认状态', key: "QUERENZHUANGTAI", tooltip: true},
+  {props:'remark',name:'备注', key: "BEIZHU", tooltip: true},
 ]

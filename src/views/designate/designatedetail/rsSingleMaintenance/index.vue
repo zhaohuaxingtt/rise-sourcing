@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 15:03:48
+ * @LastEditTime: 2021-08-04 10:45:25
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -233,7 +233,8 @@ export default {
             rfqId: item.rfqId,
             fsnrGsnrNum: item.fsnrGsnrNum,
             supplierId: item.supplierId,
-            nominateId: item.nominateAppId
+            nominateId: item.nominateAppId,
+            quotationId: item.quotationId
           }
         })
       // {
@@ -271,6 +272,7 @@ export default {
           supplierId: item.supplierId,
           fsnrGsnrNum: item.fsnrGsnrNum,
           nominateDetailId: item.nominateDetailId,
+          quotationId: item.quotationId,
           aPrice: item.aprice,
           bPrice: item.bprice,
           investFee: item.investFee,
