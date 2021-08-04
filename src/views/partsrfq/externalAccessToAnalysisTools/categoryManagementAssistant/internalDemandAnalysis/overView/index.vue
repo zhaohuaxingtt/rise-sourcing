@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-03 17:56:55
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-08-04 16:17:47
+ * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overview\index.vue
 -->
@@ -56,7 +56,8 @@ export default {
            },{
               name:"成本组成",
               key:"CHENGBENZUCHENG",
-              image:"iconAekojianzhiBMdanweixuanzhong"
+              image:"iconAekojianzhiBMdanweixuanzhong",
+              url:"/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain"
            },{
               name:"技术路线",
               key:"JISHULUXIAN",
