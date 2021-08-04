@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-08-03 14:44:35
+ * @LastEditTime: 2021-08-04 17:19:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -19,7 +19,7 @@
         <p class="headTitle">{{ language('CHENGBENJIEGOUFENXIKU', '分析名称') }}</p>
         <span class="buttonBox">
           <iButton @click="clickHandleInput">{{ language('SHOUGONGSHURU', '手工输入') }}</iButton>
-          <iButton>{{ language('FANHUIFENXIKU', '返回分析库') }}</iButton>
+          <iButton @click="clickBack">{{ language('FANHUIFENXIKU', '返回分析库') }}</iButton>
         </span>
       </div>
       <div class="searchBox">
@@ -43,7 +43,7 @@
       <div class="mainContent">
         <div class="tableOptionBox">
           <p class="tableTitle">{{language('SHAIXUANJIEGUO', '筛选结果')}}</p>
-          <iButton @click="handleSubmitAdd">{{language('SHENGCHENG', '生成')}}</iButton>
+          <iButton @click="clickCreate">{{language('SHENGCHENG', '生成')}}</iButton>
         </div>
         <tableList
           ref="multipleTable"
@@ -79,6 +79,9 @@ export default {
   components: {iCard, iButton, iInput, iPagination, tableList, iDatePicker, handleInput},
   data () {
     return {
+      costAnalysisMainUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain',
+      costAnalysisUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysis',
+      costAnalysisInputUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisHandleInput',
       searchForm: {},
       labelPosition: 'top',
       tableTitle,
@@ -110,10 +113,16 @@ export default {
     },
     // 点击手工输入
     clickHandleInput() {
-      this.$nextTick(_ => {
-        this.$set(this.modalParam, 'key', Math.random())
-        this.$set(this.modalParam, 'visible', true)
-      })
+      this.$set(this.modalParam, 'key', Math.random())
+      this.$set(this.modalParam, 'visible', true)
+    },
+    // 点击返回分析库
+    clickBack() {
+      this.$router.push(this.costAnalysisUrl)
+    },
+    // 点击生成
+    clickCreate() {
+      this.$router.push(this.costAnalysisMainUrl)
     },
     // 取消手工输入弹窗
     handleCancel() {
@@ -121,7 +130,7 @@ export default {
     },
     // 点击提交手工输入弹窗数据
     handleSubmitDialog(data) {
-      
+      this.$router.push(this.costAnalysisInputUrl)
     }
   }
 }
