@@ -382,6 +382,13 @@ module.exports = {
           '^/baseInfo': '',
         },
       },
+      '/bizlog':{//cf
+        target:'http://10.122.18.166:8013/bizlog',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/bizlog':''
+        }
+      },
     },
   },
 }
