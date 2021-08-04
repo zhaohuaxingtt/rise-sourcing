@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-08-02 14:41:11
+ * @LastEditTime: 2021-08-04 19:39:10
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -409,26 +409,12 @@ export default {
       this.visible = true;
     },
     group () {
-      this.$confirm('请保存数据！', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        // this.$parent.$parent.$parent.$parent.analysisSave = true
-        // this.$parent.$parent.$parent.$parent.isCover = false
-        // this.$parent.$parent.$parent.$parent.save()
-        update(this.formUpdata).then(res => {
-          iMessage.success("保存成功");
-          this.totalTable = false;
-          this.groupby = true;
-          this.checkFLag = false
-        })
-      }).catch(() => {
-        this.totalTable = true;
-        this.groupby = false;
-        this.checkFLag = true
+      update(this.formUpdata).then(res => {
+        // iMessage.success("保存成功");
+        this.totalTable = false;
+        this.groupby = true;
+        this.checkFLag = false
       })
-
     },
     groupBtn (e, result, activeName) {
       if (result.length === 0) {
@@ -522,7 +508,7 @@ export default {
     },
     down () {
       this.formUpdata.remark = this.remark
-      this.$confirm('请保存数据！', {
+      this.$confirm('此次导出将默认保存当前”费用详情“界面数据。', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -563,7 +549,7 @@ export default {
   color: #949494;
 }
 .remark2 {
-  width: 800px;
+  width: 1200px;
   font-size: $font-size14 !important;
   font-weight: normal;
   color: #949494;

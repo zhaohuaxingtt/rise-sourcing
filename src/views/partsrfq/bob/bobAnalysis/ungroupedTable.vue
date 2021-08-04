@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-30 13:41:14
+ * @LastEditTime: 2021-08-04 19:37:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -58,6 +58,14 @@
                 <template slot="header"
                           slot-scope="scope">
                   <el-checkbox @change="check=>select(check,scope.column)"></el-checkbox>
+                </template>
+                <template slot-scope="scope">
+                  <span>
+                    <span class="flexSpan"
+                          v-if="scope.row[item.label]=='true'||scope.row[item.label]=='false'">{{ scope.row[item.label]=='false'?'否':'是' }}</span>
+                    <span class="flexSpan"
+                          v-else>{{ scope.row[item.label] }}</span>
+                  </span>
                 </template>
               </el-table-column>
             </template>
@@ -116,6 +124,14 @@
                 <template slot="header"
                           slot-scope="scope">
                   <el-checkbox @change="check=>select(check,scope.column)"></el-checkbox>
+                </template>
+                <template slot-scope="scope">
+                  <span>
+                    <span class="flexSpan"
+                          v-if="scope.row[item.label]=='true'||scope.row[item.label]=='false'">{{ scope.row[item.label]=='false'?'否':'是' }}</span>
+                    <span class="flexSpan"
+                          v-else>{{ scope.row[item.label] }}</span>
+                  </span>
                 </template>
               </el-table-column>
             </template>
