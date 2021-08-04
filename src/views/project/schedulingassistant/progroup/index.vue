@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-02 14:32:34
+ * @LastEditTime: 2021-08-04 10:30:49
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
@@ -116,8 +116,14 @@ export default {
         }
       }
     },
-    handleCarProjectChange(val) {
+    async handleCarProjectChange(val) {
       this.carProjectName = this.carProjectOptions.find(item => item.value === val).label
+      if(val){
+        await this.getProductList()
+        this.$nextTick(() => {
+          this.initView()
+        })
+      }
     },
     changeSopStatus(isSop) {
       this.isSop = isSop
@@ -183,7 +189,7 @@ export default {
     async getProductList() {
       const res = await getProductSelectList(this.carProject)
       if (res?.result) {
-        this.chooseDataList = [...res.data.projectGroupsSelectList, ...res.data.projectGroupsUnSelectList].map(item => {
+        this.chooseDataList = [...(res.data.projectGroupsSelectList || []), ...(res.data.projectGroupsUnSelectList || [])].map(item => {
           return {
             ...item,
             key: item.id,

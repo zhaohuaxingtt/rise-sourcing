@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:14:21
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-29 18:27:49
+ * @LastEditTime: 2021-08-04 10:37:04
  * @Description: 节点视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
 -->
@@ -15,7 +15,7 @@
       </div>
       <div>
         <iButton @click="$emit('changeNodeView')">{{language('QIEHUANZHOUQISHITU', '切换周期视图')}}</iButton>
-        <iButton>{{language('DAOCHU', '导出')}}</iButton>
+        <iButton @click="handleDownloadNode" :loading="downloadLoading">{{language('DAOCHU', '导出')}}</iButton>
       </div>
     </div>
     <div v-for="pro in products" :key="pro.label" class="productItem">
@@ -55,7 +55,7 @@
 <script>
 import { iButton, icon, iText, iMessage } from 'rise'
 import fsConfirm from '../fsconfirm'
-import { getProductGroupNodeInfoList } from '@/api/project'
+import { getProductGroupNodeInfoList, downloadNodeView } from '@/api/project'
 export default {
   components: { iButton, fsConfirm, icon, iText },
   props: {
@@ -80,10 +80,16 @@ export default {
         {label: 'BF', pvs: 'pvsTargetNomiWeek', vff: 'vffTargetBfWeek', os: 'zerosTargetBfWeek'},
         {label: '1st Tryout', pvs: 'pvsTargetFirstTryWeek', vff: 'vffTargetFirstTryWeek', os: 'zerosTargetFirstTryWeek'},
         {label: 'EM(OTS)', pvs: 'pvsTargetEmWeek', vff: 'vffTargetEmWeek', os: 'zerosTargetEmWeek', pvs1: 'pvsTargetOtsWeek', vff1: 'vffTargetOtsWeek', os1: 'zerosTargetOtsWeek'}
-      ]
+      ],
+      downloadLoading: false
     }
   },
   methods: {
+    async handleDownloadNode() {
+      this.downloadLoading = true
+      await downloadNodeView(this.cartypeProId)
+      this.downloadLoading = false
+    },
     init() {
       this.getProducts(this.cartypeProId)
     },

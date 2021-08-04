@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:59:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-01 14:31:51
+ * @LastEditTime: 2021-08-03 17:02:30
  * @Description: 发送FS确认弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\fsconfirm\index.vue
 -->
@@ -33,15 +33,16 @@ export default {
   components: { iDialog, iButton, tableList },
   props: {
     dialogVisible: { type: Boolean, default: false },
-    allData: {type:Array, default: () => []},
-    selectValue: {type:Array, default: () => [{}]},
     tableList: {type: Array, default: () => []},
-    cartypeProId: {type:String}
+    cartypeProId: {type:String},
+    type: {type:String}
   },
   watch:{
     dialogVisible(val) {
       if(val) {
-        this.getBuyer()
+        if (this.type !== '1') {
+          this.getBuyer()
+        }
         this.getFsUserList()
       }
     }
@@ -61,22 +62,29 @@ export default {
       return this.tableList.map(item => {
         return {
           ...item,
-          projectPurchaser: this.buyer,
-          scheBfToFirstTryoutWeek: item.keyBfToFirstTryoutWeek,
-          scheFirstTryEmWeek: item.keyFirstTryEmWeek,
-          scheFirstTryOtsWeek: item.keyFirstTryOtsWeek,
-          productGroupDe: item.productGroupNameDe,
-          productGroupZh: item.productGroupNameZh,
+          projectPurchaser: item.projectPurchaser || this.buyer,
+          scheBfToFirstTryoutWeek: item.scheBfToFirstTryoutWeek || item.keyBfToFirstTryoutWeek,
+          scheFirstTryEmWeek: item.scheFirstTryEmWeek || item.keyFirstTryEmWeek,
+          scheFirstTryOtsWeek: item.scheFirstTryOtsWeek || item.keyFirstTryOtsWeek,
+          productGroupDe: item.productGroupDe || item.productGroupNameDe,
+          productGroupZh: item.productGroupZh || item.productGroupNameZh,
           cartypeProId: item.cartypeProId,
-          fs: item.selectOption ? item.selectOption[0].label || '' : '',
-          fsId: item.selectOption ? item.selectOption[0].value || '' : '',
-          projectPurchaserId: this.buyerId,
-          confirmDateDeadline: moment().format('YYYY-MM-DD')
+          fs: item.fs ? item.fs : item.selectOption ? item.selectOption[0].label || '' : '',
+          fsId: item.fsId ? item.fsId : item.selectOption ? item.selectOption[0].value || '' : '',
+          projectPurchaserId: item.projectPurchaserId || this.buyerId,
+          confirmDateDeadline: item.confirmDateDeadline || this.getNextThreeWorkDay()
         }
       })
     }
   },
   methods: {
+    getNextThreeWorkDay() {
+      if (moment().day() === 2 || moment().day() === 1) {
+        return moment().add(3, 'days')
+      } else {
+        return moment().add(5, 'days');
+      }
+    },
     handleSelectChange(val, row) {
       this.$set(row, 'fs', row.selectOption.find(item => item.value === val).label)
     },
@@ -122,7 +130,7 @@ export default {
     },
     handleConfirm() {
       if (this.selectData.length < 1) {
-        iMessage.warn('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据')
+        iMessage.warn(this.language('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据'))
         return
       }
       this.saveLoading = true

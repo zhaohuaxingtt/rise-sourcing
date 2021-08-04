@@ -2,14 +2,16 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 11:13:48
+ * @LastEditTime: 2021-08-04 10:37:24
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
 
 import axios from '@/utils/axios'
+import axiosDownload from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_PROJECT)
+const downloadRequst = axiosDownload(process.env.VUE_APP_PROJECT)
 
 // 产品组排程-获取车型项目下拉
 export function getCarTypePro() {
@@ -140,5 +142,82 @@ export function saveProductSelectList(params) {
     url: '/product-group-schedule/select',
     method: 'POST',
     data: params
+  })
+}
+
+// 进度确认汇总-分页列表
+export function getProductGroup(params) {
+  return requst({
+    url: '/progress-confirm/productGroupSchedule',
+    method: 'GET',
+    params
+  })
+}
+
+// 获取所有询价采购员
+export function getAllFS() {
+  return requst({
+    url: '/progress-confirm/user/allFs',
+    method: 'GET'
+  })
+}
+
+// 获取所有项目采购员
+export function getAllProPurchaser() {
+  return requst({
+    url: '/progress-confirm/user/allProPurchaser',
+    method: 'GET'
+  })
+}
+
+// 排程退回
+export function returnSchedule(params, remark) {
+  return requst({
+    url: '/progress-confirm/productGroupSchedule/return?remark='+remark,
+    method: 'PUT',
+    data: params
+  })
+}
+
+// 排程确认
+export function confirmSchedule(params) {
+  return requst({
+    url: '/progress-confirm/productGroupSchedule/confirm',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 排程转派
+export function transferSchedule(params, fsId) {
+  return requst({
+    url: '/progress-confirm/productGroupSchedule/transfer?fsId='+fsId,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 排程保存
+export function saveSchedule(params) {
+  return requst({
+    url: '/progress-confirm/productGroupSchedule/save',
+    method: 'PUT',
+    data: params
+  })
+}
+
+// 下载Pv/Pk文件
+export function downloadPvPk(cartypeProId) {
+  return downloadRequst({
+    url: `/product-group-schedule/pvPkFile/${cartypeProId}`,
+    method: 'GET'
+  })
+}
+
+// 下载节点视图文件
+export function downloadNodeView(cartypeProId) {
+  return downloadRequst({
+    url: '/product-group-schedule/nodeViewFile/'+cartypeProId,
+    method: 'GET'
   })
 }

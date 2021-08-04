@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-02 11:17:30
+ * @LastEditTime: 2021-08-04 10:36:57
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -18,7 +18,7 @@
         <iButton @click="$emit('changeNodeView')">{{language('QIEHUANJIEDIANSHITU', '切换节点视图')}}</iButton>
         <iButton @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
         <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
-        <iButton>{{language('DAOCHUFASONGPVPKQINGDAN', '导出发送PV/PK清单')}}</iButton>
+        <iButton @click="handleDownloadPvPk" :loading="downloadLoading">{{language('DAOCHUFASONGPVPKQINGDAN', '导出发送PV/PK清单')}}</iButton>
       </div>
     </div>
     <div v-for="pro in products" :key="pro.label" class="productItem">
@@ -76,7 +76,7 @@
 <script>
 import { iButton, icon, iInput, iText, iMessage } from 'rise'
 import fsConfirm from '../fsconfirm'
-import { getProductGroupInfoList, saveProductGroupInfoList, deliveryProduct } from '@/api/project'
+import { getProductGroupInfoList, saveProductGroupInfoList, deliveryProduct, downloadPvPk } from '@/api/project'
 export default {
   components: { iButton, fsConfirm, icon, iInput, iText },
   props: {
@@ -105,23 +105,30 @@ export default {
         {label: '1st Tryout', const: 'constFirstTryEmWeek', keyPoint: 'keyFirstTryEmWeek', history: 'hiFirstTryEmWeek', isChange: 'keyFirstTryEmStatus'},
         {label: 'EM(OTS)', const: 'constFirstTryOtsWeek', keyPoint: 'keyFirstTryOtsWeek', history: 'hiFirstTryOtsWeek', isChange: 'keyFirstTryOtsStatus'}
       ],
-      fsTableList: []
+      fsTableList: [],
+      downloadLoading: false
     }
   },
   methods: {
+    async handleDownloadPvPk() {
+      this.downloadLoading = true
+      await downloadPvPk(this.cartypeProId)
+      this.downloadLoading = false
+    },
     handleFSConfirm(val) {
       deliveryProduct(val).then(res => {
         if (res?.result) {
-          if (res.data) {
-            iMessage.warn(res.data.map(item => item.productGroupZh).join(',')+'产品组询价采购员还未确认，请勿重复发送')
+          if (res.data.length > 0) {
+            iMessage.warn(res.data?.map(item => item.productGroupZh).join(',')+'产品组询价采购员还未确认，请勿重复发送')
           } else {
             iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-            this.$refs.fsConfirm.changeSaveLoading(false)
             this.changeFsConfirmVisible(false)
           }
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.$refs.fsConfirm.changeSaveLoading(false)
       })
     },
     handleSave() {
@@ -165,7 +172,7 @@ export default {
         iMessage.warn(this.language('QINGGOUXUANXUYAOFASONGDESHUJU','请勾选需要发送的数据'))
         return
       }
-      this.fsTableList = this.products.filter(item => item.isChecked).map(item => {
+      this.fsTableList = this.products?.filter(item => item.isChecked).map(item => {
         return {
           ...item,
           cartypeProject: this.carProjectName
@@ -177,7 +184,7 @@ export default {
       this.fsConfirmDialogVisible = visible 
     },
     handleCheckAllChange(val) {
-      this.products = this.products.map(item => {
+      this.products = this.products?.map(item => {
         return {
           ...item,
           isChecked: val
