@@ -19,10 +19,10 @@
     </el-form>
     <tableList height="300" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' @handleSelectionChange="handleSelectionChange">
       <template #categoryCode="scope">
-        <el-radio @change="handleRadio(scope.row.categoryName,scope.row.categoryCode,'','')" v-model="form.radio" :label="scope.row.categoryCode">{{scope.row.categoryCode+scope.row.categoryName}}</el-radio>
+        <el-radio @change="handleRadio(scope.row.categoryName,scope.row.categoryCode,'','')" v-model="form.radio" :label="scope.row.categoryCode">{{scope.row.categoryCode+'-'+scope.row.categoryName}}</el-radio>
       </template>
       <template #id="scope">
-        <el-radio @change="handleRadio('','',scope.row.id,'')" v-model="form.radio" :label="scope.row.id">{{scope.row.id+scope.row.rfqName}}</el-radio>
+        <el-radio @change="handleRadio('','',scope.row.id,'')" v-model="form.radio" :label="scope.row.id">{{scope.row.id+'-'+scope.row.rfqName}}</el-radio>
       </template>
       <template #partNum="scope">
         <el-radio @change="handleRadio('','','',scope.row.partNum)" v-model="form.radio" :label="scope.row.partNum">{{scope.row.partNum}}</el-radio>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { iDialog, iSelect, iButton, iInput, icon } from 'rise';
+import { iDialog, iSelect, iButton, iInput, icon ,iMessage} from 'rise';
 import { pageRfqBaseInfo } from "@/api/partsrfq/specialAnalysisTool/specialAnalysisTool.js";
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from "./data.js";
@@ -87,6 +87,9 @@ export default {
         const res = await pageRfqBaseInfo(pms)
         if (res.result) {
           this.tableListData = res.data
+        }
+        if(res.total===0){
+          iMessage.error(this.language('BQBCZQCXSR','抱歉，不存在，请重新输入'))
         }
         this.tableLoading = false
       } catch (error) {

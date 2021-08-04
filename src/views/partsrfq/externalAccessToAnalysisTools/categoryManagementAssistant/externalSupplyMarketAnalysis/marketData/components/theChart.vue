@@ -1,5 +1,5 @@
 <template>
-  <div class="theChart" ref="theChart" :style="{'height': chartHeight}" v-loading="chartLoading" v-if="showChart"/>
+  <div class="theChart" ref="theChart" :style="{'height': chartHeight}" v-if="showChart"/>
 </template>
 
 <script>
@@ -10,10 +10,6 @@ export default {
     chartHeight: {
       type: String,
       default: '500px',
-    },
-    chartLoading: {
-      type: Boolean,
-      default: false,
     },
     chartData: {
       type: Object,
@@ -57,14 +53,16 @@ export default {
           type: 'value',
         },
         color: [
-          '#0C47A1',
-          '#1765C0',
-          '#1976D1',
-          '#1F88E5',
-          '#2297F3',
-          '#41A5F5',
-          '#a1d0fb',
-          '#b7cbf3',
+          '#1660F1',
+          '#5C6BC0',
+          '#3949AB',
+          '#ACB8CF',
+          '#00579B',
+          '#0188D1',
+          '#03A9F4',
+          '#50C2F7',
+          '#0094FF',
+          '#97D1FF',
         ],
         series: this.seriesArray,
         grid: {
@@ -84,21 +82,20 @@ export default {
       const resultList = this.chartData.resultList;
       if (Array.isArray(resultList) && resultList.length > 0) {
         this.legendData = resultList.map(item => {
-          return item.classType;
+          return item.dataType;
         });
         this.seriesArray = resultList.map(item => {
-          const itemData = item.rmList.map(item => {
+          const itemData = item.dataList.map(item => {
             return item.account;
           });
           return {
             data: itemData,
-            name: item.classType,
+            name: item.dataType,
             type: 'line',
             smooth: true,
           };
         });
       }
-      console.log(this.seriesArray);
     },
     buildChart() {
       this.assembleData();

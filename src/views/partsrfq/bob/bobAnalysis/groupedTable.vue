@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-08-02 14:03:23
+ * @LastEditTime: 2021-08-03 21:03:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -40,7 +40,7 @@
             <!-- <i class="el-icon-close"></i> -->
           </div>
           <div v-else-if="scope.row.isFresh===false"
-               style="display:inline-block;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
+               class="editBox">
             <span style="max-width: 100px">
               {{scope.row.title}}
             </span>
@@ -116,7 +116,8 @@ export default {
     },
     activeName: {
       handler (val) {
-        if (val === 'rawUngrouped') {
+        console.log(val)
+        if (val === 'rawGrouped') {
           this.chargeRetrieve({
             isDefault: true,
             viewType: 'rawGrouped',
@@ -259,17 +260,22 @@ export default {
         groupName: scope.row.title,
         schemaId: this.SchemeId
       }).then(res => {
-        iMessage.success('修改成功')
-        if (!this.activeName) {
-          this.activeName = "rawGrouped"
+        console.log(res)
+        if (res.code === '200') {
+          iMessage.success('修改成功')
+          if (!this.activeName) {
+            this.activeName = "rawGrouped"
+          } else {
+            this.activeName = "maGrouped"
+          }
+          // this.chargeRetrieve({
+          //   isDefault: true,
+          //   viewType: this.activeName,
+          //   schemaId: this.SchemeId
+          // })
         } else {
-          this.activeName = "maGrouped"
+          iMessage.error('修改失败')
         }
-        this.chargeRetrieve({
-          isDefault: true,
-          viewType: this.activeName,
-          schemaId: this.SchemeId
-        })
       }).catch((error) => {
         iMessage.error('修改失败')
       })
@@ -435,5 +441,12 @@ export default {
 }
 .add {
   background-color: red;
+}
+.editBox {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
 }
 </style>

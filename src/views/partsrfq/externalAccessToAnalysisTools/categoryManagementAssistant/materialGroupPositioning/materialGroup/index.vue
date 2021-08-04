@@ -1,13 +1,13 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-04 10:54:23
+ * @LastEditTime: 2021-08-04 17:55:33
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\index.vue
 -->
 <template>
-	<iCard :title='language("CAILIAOZUDINGWEI","材料定位")' class="margin-top20">
+	<iCard :title='language("CAILIAOZUDINGWEI","材料组定位")' class="margin-top20">
 		<template slot="header-control">
 			<iButton>{{ language("SHUANGCHUAN", "编辑") }}</iButton>
 			<iButton @click="deleted">{{ language("SHANCHU", "保存") }}</iButton>
