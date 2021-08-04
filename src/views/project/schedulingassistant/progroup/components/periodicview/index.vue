@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 16:25:47
+ * @LastEditTime: 2021-08-04 18:14:52
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -108,11 +108,20 @@ export default {
       ],
       fsTableList: [],
       downloadLoading: false,
-      selectOptions: {}
+      selectOptions: {},
+      interval: null
     }
   },
   created() {
     this.getFSOPtions()
+  },
+  mounted() {
+    this.interval = setInterval(() => {
+      this.autoSave()
+    },60000)
+  },
+  beforeDestroy() {
+    clearInterval(this.interval)
   },
   methods: {
     getFSOPtions() {
@@ -168,6 +177,9 @@ export default {
       })
     },
     autoSave() {
+      if (this.products.length < 1) {
+        return
+      }
       this.saveloading = true
       saveProductGroupInfoList(this.products).then(res => {
         if (res?.result) {
