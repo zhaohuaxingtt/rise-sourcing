@@ -8,7 +8,9 @@
             :placeholder="item.placeholder"
             :multiple="item.multiple"
             collapse-tags
-            clearable>
+            clearable
+            :style="{width: item.width ? item.width + 'px' : 'auto'}"
+        >
           <el-option :value="item" :label="item" v-for="item of item.options" :key="item"></el-option>
         </iSelect>
       </template>
@@ -17,7 +19,7 @@
             v-model='form[item.props]'
             value-format='yyyy-MM'
             type="monthrange"
-            style="width: 200px"
+            style="width: 150px"
         ></iDatePicker>
       </template>
       <template v-else-if="item.type === 'input'">

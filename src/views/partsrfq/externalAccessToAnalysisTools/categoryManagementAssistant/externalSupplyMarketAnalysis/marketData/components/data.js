@@ -47,6 +47,7 @@ export const rawMaterialSearch = [
 export const manpowerSearch = [
   {
     type: 'select',
+    multiple: true,
     props: 'professionList',
     options: [],
     labelLanguageKey: 'PLGLZS.GONGZHONG',
@@ -56,6 +57,7 @@ export const manpowerSearch = [
   },
   {
     type: 'select',
+    multiple: true,
     props: 'areaList',
     options: [],
     labelLanguageKey: 'PLGLZS.QUYU',
@@ -80,6 +82,8 @@ export const manpowerSearch = [
 export const energySearch = [
   {
     type: 'select',
+    multiple: true,
+    width: 140,
     props: 'productNameList',
     options: [],
     labelLanguageKey: 'PLGLZS.CHANPINMINGCHENG',
@@ -89,6 +93,7 @@ export const energySearch = [
   },
   {
     type: 'select',
+    multiple: true,
     props: 'marketNameList',
     options: [],
     labelLanguageKey: 'PLGLZS.SHICHANGMINGCHENG',
@@ -98,6 +103,7 @@ export const energySearch = [
   },
   {
     type: 'select',
+    multiple: true,
     props: 'priceTypeList',
     options: [],
     labelLanguageKey: 'PLGLZS.JIAGELEIXING',
@@ -107,6 +113,7 @@ export const energySearch = [
   },
   {
     type: 'select',
+    multiple: true,
     props: 'unitList',
     options: [],
     labelLanguageKey: 'PLGLZS.DANWEI',

@@ -52,7 +52,7 @@ export function getEnergyGroupSelectList() {
 //市场数据能源数据
 export function getEnergyGroupData(params) {
   return request({
-    url: '/cmMdLabourEntity/energyGroupData',
+    url: '/cmMdEnergyEntity/energyGroupData',
     method: 'POST',
     data: params,
   });

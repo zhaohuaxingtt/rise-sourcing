@@ -92,9 +92,9 @@ export default {
           await this.getChartGroupData({type: LABOUR});
           break;
         case 3:
+          this.searchProps = energySearch;
           await this.getSearchProps({type: ENERGY});
           await this.getChartGroupData({type: ENERGY});
-          this.searchProps = energySearch;
           break;
       }
       this.chartBoxLoading = false;
@@ -204,24 +204,39 @@ export default {
     async getChartGroupData({type}) {
       try {
         let res = '';
+        let resultList = '';
+        this.chartData = {};
+        this.dataTabArray = [];
         this.chartBoxLoading = true;
         const form = this.getSearchForm();
         switch (type) {
           case RAWMATERIAL:
             res = await getrawMaterialGroupData(form);
+            this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeList'});
             break;
           case LABOUR:
             res = await getLabourGroupData(form);
+            this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'professionList'});
             break;
           case ENERGY:
             res = await getEnergyGroupData(form);
+            this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'productNameList'});
             break;
         }
         this.getDataTabArray(res.data);
         this.chartData = res.data;
         this.chartBoxLoading = false;
       } catch {
+        this.chartData = {};
+        this.dataTabArray = [];
         this.chartBoxLoading = false;
+      }
+    },
+    setDataTypeDefault({resultList, formProps}) {
+      if (Array.isArray(resultList) && resultList.length > 0) {
+        this.$refs.theSearch.form[formProps] = resultList.map(item => {
+          return item.dataType;
+        });
       }
     },
   },
