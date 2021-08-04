@@ -11,7 +11,7 @@
     <el-row :gutter="20">
       <el-col :span="8">
         <el-card class="cardBox" @click="clickCard(card1Param)">
-          <p class="cardTitle">{{language('SVWGONGYINGSHANGSHICHANGZONGLAN', 'SVW供应商市场总览')}}</p>
+          <p class="cardTitle">{{ language('SVWGONGYINGSHANGSHICHANGZONGLAN', 'SVW供应商市场总览') }}</p>
           <div class="imgBox">
             <img src="@/assets/images/out_supplier.png" alt="">
           </div>
@@ -19,24 +19,26 @@
       </el-col>
       <el-col :span="8">
         <el-card class="cardBox" @click="clickCard(card2Param)">
-          <p class="cardTitle">{{language('HANGYEBAOGAO', '行业报告')}}</p>
+          <p class="cardTitle">{{ language('HANGYEBAOGAO', '行业报告') }}</p>
           <div class="imgBox">
             <img src="@/assets/images/out_industry_report.png" alt="">
           </div>
         </el-card>
       </el-col>
       <el-col :span="8">
-        <el-card class="cardBox" @click="clickCard(card3Param)">
-          <p class="cardTitle">{{language('SHICHANGSHUJU', '市场数据')}}</p>
-          <div class="imgBox">
-            <img src="@/assets/images/out_market.png" alt="">
+        <el-card class="cardBox">
+          <div @click="clickCard(card3Param)">
+            <p class="cardTitle">{{ language('SHICHANGSHUJU', '市场数据') }}</p>
+            <div class="imgBox">
+              <img src="@/assets/images/out_market.png" alt="">
+            </div>
           </div>
         </el-card>
       </el-col>
       <el-col :span="8">
         <el-card class="cardBox" @click="clickCard(card4Param)">
-          <p class="cardTitle">{{language('GONGYINGLIANGAILAN', '供应链概览（N级供应链管理）')}}</p>
-          <div class="imgBox"> 
+          <p class="cardTitle">{{ language('GONGYINGLIANGAILAN', '供应链概览（N级供应链管理）') }}</p>
+          <div class="imgBox">
             <img src="@/assets/images/out_supply_chain.png" alt="">
           </div>
         </el-card>
@@ -48,25 +50,25 @@
 <script>
 export default {
   name: '',
-  data () {
+  data() {
     return {
       card1Param: {
         url: '',
-        data: {}
+        data: {},
       },
       card2Param: {
         url: '',
-        data: {}
+        data: {},
       },
       card3Param: {
-        url: '',
-        data: {}
+        url: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis/marketData',
+        data: {},
       },
       card4Param: {
         url: '',
-        data: {}
+        data: {},
       },
-    }
+    };
   },
   created() {
 
@@ -75,11 +77,11 @@ export default {
     clickCard(params) {
       this.$router.push({
         path: params.url,
-        query: params.data
-      })
-    }
-  }
-}
+        query: params.data,
+      });
+    },
+  },
+};
 </script>
 
 <style lang='scss' scoped>
@@ -87,18 +89,21 @@ export default {
   height: 380px;
   margin: 10px 0;
   cursor: pointer;
+
   .cardTitle {
     font-weight: bold;
     font-size: 20px;
   }
+
   .imgBox {
     margin-top: 20px;
+
     img {
       height: 285px;
       width: 100%;
     }
   }
 }
- 
+
 </style>
 
