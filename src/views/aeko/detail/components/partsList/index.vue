@@ -104,6 +104,7 @@ import { getAekoContentPart } from "@/api/aeko/detail"
 import { getCarTypePro } from '@/api/designate/nomination'
 import {
     getPartPage,
+    deletePart,
 } from '@/api/aeko/detail/partsList.js'
 import {
     searchBrand,
@@ -161,10 +162,7 @@ export default {
             selectOptions:{},
             selectItems:[],
             loading:false,
-            tableListData:[
-                {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':10,'k':11},
-                {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':10,'k':11},
-            ],
+            tableListData:[ ],
             tableTitle: [],
             assignVisible:false,
             singleAssign:[],
@@ -204,8 +202,8 @@ export default {
             }
             // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
             if(partNum && partNum.trim().length < 9){
-            this.loading = false;
-            return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','零件号至少填写9位后可模糊搜索'));
+                this.loading = false;
+                return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
             }
             const data = {
                 requirementAekoId, 
@@ -265,6 +263,10 @@ export default {
                 cancelButtonText: this.language('nominationLanguage.No','否'),
             }
             ).then(()=>{
+                // cosnt aekoPartIdArr = selectItems.map((item)=>item.)
+                // deletePart().then((res)=>{
+
+                // })
                 console.log('是')
             }).catch(()=>{
                 console.log('否')
