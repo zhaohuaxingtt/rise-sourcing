@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-08-03 19:16:58
+ * @LastEditTime: 2021-08-03 21:03:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -116,7 +116,8 @@ export default {
     },
     activeName: {
       handler (val) {
-        if (val === 'rawUngrouped') {
+        console.log(val)
+        if (val === 'rawGrouped') {
           this.chargeRetrieve({
             isDefault: true,
             viewType: 'rawGrouped',
@@ -267,11 +268,11 @@ export default {
           } else {
             this.activeName = "maGrouped"
           }
-          this.chargeRetrieve({
-            isDefault: true,
-            viewType: this.activeName,
-            schemaId: this.SchemeId
-          })
+          // this.chargeRetrieve({
+          //   isDefault: true,
+          //   viewType: this.activeName,
+          //   schemaId: this.SchemeId
+          // })
         } else {
           iMessage.error('修改失败')
         }
