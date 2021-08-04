@@ -343,7 +343,7 @@ export const assetsTableHead = [
     tooltip: false
   },
   {
-    props: '17',
+    props: 'changeReason',
     name: '调整说明',
     key: 'LK_TIAOZHENGSHUOMING',
     tooltip: false

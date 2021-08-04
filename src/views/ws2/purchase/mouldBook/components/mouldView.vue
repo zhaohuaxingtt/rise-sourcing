@@ -118,7 +118,13 @@
         </template>
 
         <template #assetTotal="scope">
-          <div>{{getTousandNum(NumFormat(scope.row.assetTotal))}}</div>
+          <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.assetTotal))}}</div>
+          <div v-else>-</div>
+        </template>
+
+        <template #assetPrice="scope">
+          <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.assetPrice))}}</div>
+          <div v-else>-</div>
         </template>
       </iTableList>
 
