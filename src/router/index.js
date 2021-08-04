@@ -231,7 +231,7 @@ export const staticRouter = [{
                     title: '模具'
                 },
                 component: () => import (`@/views/ws2`),
-                children: [
+                children: [ 
                     {
                         path: '/',
                         redirect: 'budgetManagement/carTypeOverview',
