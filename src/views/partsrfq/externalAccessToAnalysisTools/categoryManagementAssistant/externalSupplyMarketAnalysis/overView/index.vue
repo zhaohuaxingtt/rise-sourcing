@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 19:45:03
- * @LastEditTime: 2021-08-03 22:17:18
+ * @LastEditTime: 2021-08-04 15:28:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\components\main.vue
@@ -10,7 +10,7 @@
   <div>
     <el-row :gutter="20">
       <el-col :span="8">
-        <el-card class="cardBox">
+        <el-card class="cardBox" @click="clickCard(card1Param)">
           <p class="cardTitle">{{language('SVWGONGYINGSHANGSHICHANGZONGLAN', 'SVW供应商市场总览')}}</p>
           <div class="imgBox">
             <img src="@/assets/images/out_supplier.png" alt="">
@@ -18,7 +18,7 @@
         </el-card>
       </el-col>
       <el-col :span="8">
-        <el-card class="cardBox">
+        <el-card class="cardBox" @click="clickCard(card2Param)">
           <p class="cardTitle">{{language('HANGYEBAOGAO', '行业报告')}}</p>
           <div class="imgBox">
             <img src="@/assets/images/out_industry_report.png" alt="">
@@ -26,7 +26,7 @@
         </el-card>
       </el-col>
       <el-col :span="8">
-        <el-card class="cardBox">
+        <el-card class="cardBox" @click="clickCard(card3Param)">
           <p class="cardTitle">{{language('SHICHANGSHUJU', '市场数据')}}</p>
           <div class="imgBox">
             <img src="@/assets/images/out_market.png" alt="">
@@ -34,7 +34,7 @@
         </el-card>
       </el-col>
       <el-col :span="8">
-        <el-card class="cardBox">
+        <el-card class="cardBox" @click="clickCard(card4Param)">
           <p class="cardTitle">{{language('GONGYINGLIANGAILAN', '供应链概览（N级供应链管理）')}}</p>
           <div class="imgBox"> 
             <img src="@/assets/images/out_supply_chain.png" alt="">
@@ -50,14 +50,34 @@ export default {
   name: '',
   data () {
     return {
-
+      card1Param: {
+        url: '',
+        data: {}
+      },
+      card2Param: {
+        url: '',
+        data: {}
+      },
+      card3Param: {
+        url: '',
+        data: {}
+      },
+      card4Param: {
+        url: '',
+        data: {}
+      },
     }
   },
   created() {
 
   },
   methods: {
-
+    clickCard(params) {
+      this.$router.push({
+        path: params.url,
+        query: params.data
+      })
+    }
   }
 }
 </script>
