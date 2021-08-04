@@ -103,11 +103,11 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
+import { getCarTypePro } from '@/api/designate/nomination'
 import {
     getPartPage,
 } from '@/api/aeko/detail/partsList.js'
 import {
-    getSearchCartype,
     searchBrand,
 } from '@/api/aeko/manage'
 import { cloneDeep } from "lodash"
@@ -168,7 +168,9 @@ export default {
     data(){
         return{
             SearchList:[],
-            searchParams:{},
+            searchParams:{
+                brand:'',
+            },
             selectOptions:{},
             selectItems:[],
             loading:false,
@@ -191,7 +193,9 @@ export default {
                 this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameZh
                 this.searchParams.buyerName = this.userInfo.nameZh
             } else {
-                this.searchParams = {};
+                this.searchParams = {
+                    brand:'',
+                };
             }
 
             this.init()
@@ -208,14 +212,30 @@ export default {
         async getList(){
             this.loading = true;
             const {query} = this.$route;
-            const { page } = this;
+            const { page,searchParams,aekoInfo={} } = this;
             const { requirementAekoId ='',} = query;
+            const {partNum} = searchParams;
+            let cartypeCode='';
+            // 车型和车型项目同一个code参数 单独处理下
+            if(aekoInfo && aekoInfo.aekoType ){
+                if(aekoInfo.aekoType.code == 'AeA'){  // 车型
+                    cartypeCode = searchParams.cartype;
+                }else if(aekoInfo.aekoType.code == 'aeko/mp'){ // 车型项目
+                    cartypeCode = searchParams.cartypeCode;
+                }
+            }
+            // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
+            if(partNum && partNum.trim().length < 9){
+            this.loading = false;
+            return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','零件号至少填写9位后可模糊搜索'));
+            }
             const data = {
                 requirementAekoId, 
                 current:page.currPage,
-                size:page.pageSize
+                size:page.pageSize,
+                cartypeCode,
             }
-            getPartPage(data).then((res)=>{
+            getPartPage({...searchParams,...data}).then((res)=>{
                 this.loading = false;
                 const {code,data} = res;
                 if(code == 200){
@@ -230,23 +250,21 @@ export default {
             })
         },
         // 获取搜索框下拉数据
-        async getSearchList(){
+        getSearchList(){
             // 车型项目
-            await getSearchCartype().then((res)=>{
-                const {code,data} = res;
-                if(code ==200 && data.infoList){
-                    const {infoList =[]} = data;
-                    infoList.map((item)=>{
-                    item.code= item.key;
-                    item.desc = item.value
-                    });
-                    this.selectOptions.cartypeCode = infoList;
+            getCarTypePro().then((res)=>{
+                 const {code,data} = res;
+                if(code ==200 ){
+                    (data.data).map((item)=>{
+                    item.desc = item.name;
+                    })
+                    this.selectOptions.cartypeCode = data.data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
             })
             //品牌
-            await searchBrand().then((res)=>{
+            searchBrand().then((res)=>{
             const {code,data=[]} = res;
             if(code ==200 && data){
                 this.selectOptions.brand = data;
