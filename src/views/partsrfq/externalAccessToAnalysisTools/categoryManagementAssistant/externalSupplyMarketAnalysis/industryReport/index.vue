@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-03 14:25:05
+ * @LastEditTime: 2021-08-04 18:04:52
  * @LastEditors: 舒杰
  * @Description: 行业报告
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\index.vue
@@ -17,7 +17,7 @@
 				<iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
 				<iButton>{{ language("SHUANGCHUAN", "上传") }}</iButton>
 				<iButton>{{ language("XIAZAI", "下载") }}</iButton>
-				<iButton>{{ language("FANHUI", "返回") }}</iButton>
+				<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 			</div>
       </template>
 		<tableList 
@@ -126,6 +126,10 @@
 				}
 				downloadFile(req)
 			},
+			// 返回
+			back(){
+				this.$router.go(-1)
+			}
 		}
 	}
 </script>

@@ -58,7 +58,9 @@
                 @selection-change="handleSelectionChange"
                 @select="rowSelect"
                 @select-all="selectAll">
-        <el-table-column type="selection"
+        <el-table-column align="center"
+                         header-align="center"
+                         type="selection"
                          width="55"> </el-table-column>
         <el-table-column label="#"
                          type="index"
