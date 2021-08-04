@@ -207,6 +207,8 @@ export default {
       }
       const data = res.data;
       this.setSearchProps(data);
+      const resRecent = await this.getRecentSearchData();
+      this.setRecentSearchData(resRecent);
     },
     // 获取图表数据
     async getChartGroupData({type}) {
@@ -293,7 +295,28 @@ export default {
     },
     // 获取最近搜索参数
     async getRecentSearchData() {
-
+      let res = '';
+      const req = {
+        categoryCode: this.categoryCode,
+      };
+      switch (this.current) {
+        case RAWMATERIAL:
+          res = await getRecentRawMaterialScheme(req);
+          return res.data.rawMaterialQueryDTO;
+      }
+    },
+    // 设置最近搜索参数
+    setRecentSearchData(data) {
+      const copyData = cloneDeep(data);
+      if (copyData.startDate && copyData.endDate) {
+        copyData.rangeDate = [copyData.startDate, copyData.endDate];
+        delete copyData.startDate;
+        delete copyData.endDate;
+      }
+      if (Array.isArray(copyData.dataSourceList) && copyData.dataSourceList.length > 0) {
+        copyData.dataSourceList = copyData.dataSourceList[0];
+      }
+      this.$refs.theSearch.form = copyData;
     },
     handleBack() {
       this.$router.push({
