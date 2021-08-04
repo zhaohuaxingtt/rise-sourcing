@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-08-03 21:03:17
+ * @LastEditTime: 2021-08-04 19:29:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -9,7 +9,7 @@
 <template>
   <div>
     <el-table ref="treeList"
-              :data="tableList.element"
+              :data="tableList1.element"
               :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
               :row-key="getRowKey"
               :expand-row-keys="expends"
@@ -66,7 +66,11 @@
             <el-checkbox @change="check=>checkChang(check,scope,i.label)"></el-checkbox>
           </div>
           <span v-else>
-            {{scope.row[i.label]}}
+            <span class="flexSpan"
+                  v-if="scope.row[i.label]=='true'||scope.row[i.label]=='false'">{{ scope.row[i.label]=='false'?'否':'是' }}</span>
+            <span class="flexSpan"
+                  v-else>{{ scope.row[i.label] }}</span>
+            <!-- {{scope.row[i.label]}} -->
           </span>
         </template>
       </el-table-column>
@@ -141,7 +145,9 @@ export default {
       usercheckedColumnIndex: [],
       checkedIds: [8],
       checkLists: [],
-      activeName: ""
+      activeName: "",
+      cloneDeep: window._.cloneDeep,
+      tableList1: []
     };
   },
   created () {
@@ -237,7 +243,8 @@ export default {
           //   })
           // })
           console.log('----------------', this.tableList.element)
-          // filterEmptyChildren(this.tableList.element, 'detailId')
+          this.tableList1.element = this.cloneDeep(this.tableList.element)
+          filterEmptyChildren(this.tableList1.element, 'detailId')
           this.$nextTick(() => {
             this.open();
           });
@@ -247,10 +254,7 @@ export default {
 
     arrayTreeSetLevel (array, levelName = 'level', childrenName = 'child') {
       if (!Array.isArray(array)) return []
-
       this.recursiveArray(array)
-      console.log("new point")
-      console.log(array)
       return array;
     },
 

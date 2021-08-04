@@ -15,12 +15,12 @@
         </iSelect>
       </template>
       <template v-else-if="item.type === 'dateMonth'">
-        <iDatePicker
+        <el-date-picker
             v-model='form[item.props]'
             value-format='yyyy-MM'
             type="monthrange"
             style="width: 150px"
-        ></iDatePicker>
+        ></el-date-picker>
       </template>
       <template v-else-if="item.type === 'input'">
         <iInput v-model="form[item.props]" :placeholder="item.placeholder"/>
@@ -30,12 +30,11 @@
 </template>
 
 <script>
-import {iSelect, iDatePicker, iInput} from 'rise';
+import {iSelect, iInput} from 'rise';
 
 export default {
   components: {
     iSelect,
-    iDatePicker,
     iInput,
   },
   props: {
@@ -57,6 +56,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.el-input{
+  width: 100%;
+  height: $input-height;
+  ::v-deep .el-input__inner{
+    @include input_inner;
+  }
+}
 .searchBox {
   margin-top: 30px;
   display: flex;

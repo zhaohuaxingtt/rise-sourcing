@@ -34,12 +34,12 @@
         </el-row>
       </el-form>
     </iSearch>
-    <iCard :title="$t('TPZS.BOBFXK')"
+    <iCard :title="$t('MEK分析库')"
            class="margin-top20">
       <template v-slot:header-control>
         <div v-if="!edit">
-          <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
           <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
+          <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
           <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
         </div>
         <div v-else>
@@ -54,13 +54,11 @@
                 row-key="id"
                 :max-height="450"
                 :row-class-name="rowStyle"
-                :tree-props="{ children: 'children' }"
+                :tree-props="{ children: 'reportList' }"
                 @selection-change="handleSelectionChange"
                 @select="rowSelect"
                 @select-all="selectAll">
-        <el-table-column align="center"
-                         header-align="center"
-                         type="selection"
+        <el-table-column type="selection"
                          width="55"> </el-table-column>
         <el-table-column label="#"
                          type="index"
@@ -97,7 +95,7 @@
                 <el-col :span="4">
                   <span v-if="scope.row.fileType == $t('TPZS.SCHEME_TYPE')">
                     <span class="number">
-                      <p>{{ scope.row.reportList.length }}</p>
+                      <p>{{ scope.row.reportList&&scope.row.reportList.length }}</p>
                     </span>
                     <icon class="numberIcon"
                           style="
@@ -169,9 +167,9 @@
                          align="center"
                          header-align="center">
         </el-table-column>
-        <el-table-column  width="50"
-                          align="center"
-                          header-align="center">
+        <el-table-column width="50"
+                         align="center"
+                         header-align="center">
           <template slot-scope="scope">
             <div @click="handleStick(scope.row)"
                  class="stickIcon">
@@ -263,9 +261,10 @@ export default {
   },
   created () {
     this.initSearchData();
+    this.initData()
   },
   mounted () {
-    this.getTableList();
+    // this.getTableList();
   },
   computed: {
     defaultStatus () {
@@ -294,18 +293,18 @@ export default {
       };
     },
     //表格序号函数
-    indexMethod (e) {
-      const rows = [];
-      this.tableListData.forEach((r) => {
-        rows.push(r.number);
-        if (r.reportList && r.reportList !== null) {
-          r.reportList.forEach((c) => {
-            rows.push(c.number);
-          });
-        }
-      });
-      return rows[e];
-    },
+    // indexMethod (e) {
+    //   const rows = [];
+    //   this.tableListData.forEach((r) => {
+    //     rows.push(r.number);
+    //     if (r.reportList && r.reportList !== null) {
+    //       r.reportList.forEach((c) => {
+    //         rows.push(c.number);
+    //       });
+    //     }
+    //   });
+    //   return rows[e];
+    // },
     //初始化测试数据
     initData () {
       this.tableListData = [
@@ -313,43 +312,45 @@ export default {
           id: 1,
           myindex: "1",
           name: "aaaa",
-          group: "1111",
-          rfqName: "bbbb",
-          defaultRule: "是",
+          materialGroup: "1111",
+          materialGroupCode: "222",
+          rfqNo: "bbbb",
+          isDefault: "是",
+          isTop: "是",
           fileType: "方案",
           owner: "11",
           createDate: "",
           modifyDate: "",
-          top: "1",
-          children: [
+          reportList: [
             {
               id: 2,
               myindex: "1.1",
-              name: "aaaa1",
-              group: "1111",
-              rfqName: "bbbb1",
-              defaultRule: "",
-              fileType: "报告",
-              owner: "111",
+              name: "aaaa",
+              materialGroup: "1111",
+              materialGroupCode: "222",
+              rfqNo: "bbbb",
+              isDefault: "是",
+              isTop: "是",
+              owner: "11",
               createDate: "",
               modifyDate: "",
             },
           ],
         },
-        {
-          id: 3,
-          myindex: "2",
-          name: "aaa2",
-          group: "1111",
-          rfqName: "bbbb2",
-          defaultRule: "",
-          fileType: "方案",
-          owner: "11",
-          createDate: "",
-          modifyDate: "",
-          top: "0",
-          children: null,
-        },
+        // {
+        //   id: 3,
+        //   myindex: "2",
+        //   name: "aaa2",
+        //   group: "1111",
+        //   rfqName: "bbbb2",
+        //   defaultRule: "",
+        //   fileType: "方案",
+        //   owner: "11",
+        //   createDate: "",
+        //   modifyDate: "",
+        //   top: "0",
+        //   children: null,
+        // },
       ];
     },
     //重置查询事件
@@ -357,49 +358,19 @@ export default {
       this.page.currPage = 1
       this.page.pageSize = 10
       this.initSearchData();
-      this.getTableList();
+      // this.getTableList();
     },
     //检索事件
     handleSearch () {
       this.page.currPage = 1
       this.page.pageSize = 10
-      this.getTableList().then((res) => {
-        if (!res.data || res.data.length == 0) {
-          iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
-        }
-      });
+      // this.getTableList().then((res) => {
+      //   if (!res.data || res.data.length == 0) {
+      //     iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
+      //   }
+      // });
     },
-    //获取表格数据
-    getTableList () {
-      return new Promise((resolve) => {
-        const params = {
-          pageNo: this.page.currPage,
-          pageSize: this.page.pageSize,
-          createName: this.form.owner ? this.form.owner : null,
-          materialGroup: this.form.group ? this.form.group : null,
-          spareParts: this.form.num ? this.form.num : null,
 
-        };
-        const status = this.$store.state.rfq.entryStatus
-        const rfq = this.form.rfq ? this.form.rfq : null
-        if (status == 0) {
-          //外部进入
-          params['rfqName'] = rfq
-        } else if (status == 1) {
-          //内部进入
-          params['rfqNo'] = rfq
-        }
-        getBobAnalysisDataList(params).then((res) => {
-          if (res && res.code == 200) {
-            this.page.totalCount = res.total;
-            this.tableListData = res.data;
-            this.handleTableNumber(this.tableListData, 1, null);
-            this.updateTableData()
-            resolve(res);
-          }
-        });
-      });
-    },
     //更新表格数据
     updateTableData () {
       if (this.updatedDefault) {
@@ -416,17 +387,17 @@ export default {
       }
     },
     //递归处理树结构数据的序号
-    handleTableNumber (data, suffix, prefix) {
-      data.forEach((item) => {
-        const number = prefix ? prefix + "." + suffix : suffix;
-        item["number"] = number;
-        if (item.reportList && item.reportList.length > 0) {
-          item["children"] = item.reportList;
-          this.handleTableNumber(item.reportList, 1, number);
-        }
-        suffix++;
-      });
-    },
+    // handleTableNumber (data, suffix, prefix) {
+    //   data.forEach((item) => {
+    //     const number = prefix ? prefix + "." + suffix : suffix;
+    //     item["number"] = number;
+    //     if (item.reportList && item.reportList.length > 0) {
+    //       item["children"] = item.reportList;
+    //       this.handleTableNumber(item.reportList, 1, number);
+    //     }
+    //     suffix++;
+    //   });
+    // },
     // 点击编辑按钮
     editBob () {
       this.backUpData = window._.cloneDeep(this.tableListData);
@@ -490,7 +461,7 @@ export default {
         if (res.code == 200) {
           iMessage.success(res.desZh);
         } else iMessage.error(res.desZh);
-        this.getTableList();
+        // this.getTableList();
       });
     },
     //编辑时，改变默认项事件
@@ -508,7 +479,7 @@ export default {
         if (res) {
           if (res.code == 200) iMessage.success(res.desZh);
           else iMessage.error(res.desZh);
-          this.getTableList();
+          // this.getTableList();
         }
       });
     },
@@ -576,7 +547,7 @@ export default {
           if (res.code == 200) {
             val.isTop = !val.isTop;
             iMessage.success(res.desZh);
-            this.getTableList();
+            // this.getTableList();
           } else iMessage.error(res.desZh);
         }
       });
@@ -603,7 +574,7 @@ export default {
       this.reportVisible = false
     },
     //给方案数据设置斑马纹样式名
-    rowStyle({row}) { 
+    rowStyle ({ row }) {
       return row.fileType == this.$t('TPZS.SCHEME_TYPE') && row.number % 2 == 0 ? 'scheme' : 'report'
     }
   },
@@ -633,7 +604,7 @@ export default {
   width: 96%;
 }
 
-::v-deep .el-table .scheme{
+::v-deep .el-table .scheme {
   background-color: #e0eafd;
 }
 ::v-deep .el-table .report {
@@ -647,7 +618,7 @@ export default {
   }
   //有子节点 且未展开
   ::v-deep .el-table .el-icon-arrow-right:before {
-    background: url("../../../assets/images/Icon - Arrow Drop Down.png")
+    background: url("../../../../../assets/images/Icon - Arrow Drop Down.png")
       no-repeat 0 0;
     content: "";
     display: block;
@@ -659,8 +630,8 @@ export default {
   //有子节点 且已展开
   ::v-deep .el-table .el-table__expand-icon--expanded {
     .el-icon-arrow-right:before {
-      background: url("../../../assets/images/Icon - Arrow收起.png") no-repeat 0
-        0;
+      background: url("../../../../../assets/images/Icon - Arrow收起.png")
+        no-repeat 0 0;
       content: "";
       display: block;
       width: 10px;
@@ -695,6 +666,5 @@ export default {
   .stickIcon :hover {
     cursor: pointer;
   }
-
 }
 </style>

@@ -401,8 +401,18 @@ export default {
     },
   },
   mounted () {
+    // window.addEventListener('scroll', this.handleScroll, true)
   },
   methods: {
+    // handleScroll () {
+    //   let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop // 滚动条偏移量
+    //   let offsetTop = this.$el.querySelector('.el-table__header-wrapper').scrollTop;  // 要滚动到顶部吸附的元素的偏移量
+    //   this.isFixed = scrollTop > offsetTop + 100 ? true : false;  // 如果滚动到了预定位置，this.isFixed就为true，否则为false
+    //   console.dir(this.$el.querySelector('.el-table__header-wrapper'), offsetTop)
+    //   if (offsetTop > offsetTop + 100) {
+    //     document.querySelector('.el-table__header-wrapper').style.position = "fixed"
+    //   }
+    // },
     getOptions () {
       part({
         analysisSchemeId: this.analysisSchemeId,
@@ -972,18 +982,21 @@ export default {
   flex-direction: column;
   text-align: center;
   margin: 100px auto;
+  & .active {
+    font-weight: bold;
+    color: #1660f1 !important;
+    list-style: url("../../../../assets/images/circle.png") outside circle !important;
+  }
   li {
     width: 100%;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
     padding: 10px 0;
-    color: #1b1d21;
-    list-style: disc !important;
+    color: #7e84a3;
+    list-style: url("../../../../assets/images/circle1.png") outside circle;
   }
 }
-.active {
-  color: #1660f1 !important;
-}
+
 ::v-deep .el-form-item {
   margin-bottom: 20px;
   .el-form-item__label {

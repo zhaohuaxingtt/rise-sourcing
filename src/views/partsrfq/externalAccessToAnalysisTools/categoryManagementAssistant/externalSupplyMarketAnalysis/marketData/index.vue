@@ -1,11 +1,11 @@
 <template>
-  <iCard>
+  <iCard id="allContainer" class="margin-top30">
     <div class="margin-bottom20 clearFloat">
       <span class="font22 font-weight">{{ language('PLGLZS.SHICHANGSHUJU', '市场数据') }}</span>
       <div class="floatright">
         <iButton @click="handleSearch">{{ language('LK_QUEREN', '确认') }}</iButton>
-        <iButton>{{ language('LK_BAOCUN', '保存') }}</iButton>
-        <iButton>{{ language('LK_FANHUI', '返回') }}</iButton>
+        <iButton @click="handleSave" :loading="saveButtonLoading">{{ language('LK_BAOCUN', '保存') }}</iButton>
+        <iButton @click="handleBack">{{ language('LK_FANHUI', '返回') }}</iButton>
       </div>
     </div>
     <!--    导航条-->
@@ -36,16 +36,29 @@ import {
   ENERGY,
 } from './components/data';
 import {
+  //原材料
   getRawMaterialGroupSelectList,
   getrawMaterialGroupData,
+  getRecentRawMaterialScheme,
+  saveRawMaterialScheme,
+  //劳动力
   getLabourGroupSelectList,
   getLabourGroupData,
+  getRecentLabourScheme,
+  saveLabourScheme,
+  //能源
   getEnergyGroupSelectList,
   getEnergyGroupData,
+  getRecentEnergyScheme,
+  saveEnergyScheme,
 } from '../../../../../../api/categoryManagementAssistant/marketData';
 import {cloneDeep} from 'lodash';
+import {dataURLtoFile, downloadPDF} from '@/utils/pdf';
+import {uploadFile} from '@/api/file/upload';
+import resultMessageMixin from '@/utils/resultMessageMixin';
 
 export default {
+  mixins: [resultMessageMixin],
   components: {
     iCard,
     iButton,
@@ -56,13 +69,16 @@ export default {
   },
   data() {
     return {
-      current: 1,
+      current: RAWMATERIAL,
       searchProps: rawMaterialSearch,
       dataTabArray: [],
       showStatus: true,
       showChart: true,
       chartData: {},
       chartBoxLoading: false,
+      saveButtonLoading: false,
+      categoryCode: '123',
+      copySearchProps: {},
     };
   },
   async created() {
@@ -81,17 +97,17 @@ export default {
     async handleTabsChange(val) {
       this.chartBoxLoading = true;
       switch (val) {
-        case 1:
+        case RAWMATERIAL:
           this.searchProps = rawMaterialSearch;
           await this.getSearchProps({type: RAWMATERIAL});
           await this.getChartGroupData({type: RAWMATERIAL});
           break;
-        case 2:
+        case LABOUR:
           this.searchProps = manpowerSearch;
           await this.getSearchProps({type: LABOUR});
           await this.getChartGroupData({type: LABOUR});
           break;
-        case 3:
+        case ENERGY:
           this.searchProps = energySearch;
           await this.getSearchProps({type: ENERGY});
           await this.getChartGroupData({type: ENERGY});
@@ -102,13 +118,13 @@ export default {
     // 搜索
     handleSearch() {
       switch (this.current) {
-        case 1:
+        case RAWMATERIAL:
           this.getChartGroupData({type: RAWMATERIAL});
           break;
-        case 2:
+        case LABOUR:
           this.getChartGroupData({type: LABOUR});
           break;
-        case 3:
+        case ENERGY:
           this.getChartGroupData({type: ENERGY});
           break;
       }
@@ -198,13 +214,15 @@ export default {
           break;
       }
       const data = res.data;
+      this.copySearchProps = cloneDeep(data);
       this.setSearchProps(data);
+      const resRecent = await this.getRecentSearchData();
+      this.setRecentSearchData(resRecent);
     },
     // 获取图表数据
     async getChartGroupData({type}) {
       try {
         let res = '';
-        let resultList = '';
         this.chartData = {};
         this.dataTabArray = [];
         this.chartBoxLoading = true;
@@ -212,20 +230,30 @@ export default {
         switch (type) {
           case RAWMATERIAL:
             res = await getrawMaterialGroupData(form);
-            this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeList'});
+            if (res.result) {
+              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeList'});
+            }
             break;
           case LABOUR:
             res = await getLabourGroupData(form);
-            this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'professionList'});
+            if (res.result) {
+              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'professionList'});
+            }
             break;
           case ENERGY:
             res = await getEnergyGroupData(form);
-            this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'productNameList'});
+            if (res.result) {
+              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'productNameList'});
+            }
             break;
+        }
+        if (!res.result) {
+          this.resultMessage(res);
         }
         this.getDataTabArray(res.data);
         this.chartData = res.data;
         this.chartBoxLoading = false;
+
       } catch {
         this.chartData = {};
         this.dataTabArray = [];
@@ -238,6 +266,96 @@ export default {
           return item.dataType;
         });
       }
+    },
+    getDownloadFile() {
+      return new Promise((resolve => {
+        downloadPDF({
+          idEle: 'allContainer',
+          pdfName: 'market data',
+          callback: async (pdf, pdfName) => {
+            const time = new Date().getTime();
+            const filename = pdfName + time + '.pdf';
+            const pdfFile = pdf.output('datauristring');
+            const blob = dataURLtoFile(pdfFile, filename);
+            const formData = new FormData();
+            formData.append('multipartFile', blob);
+            formData.append('applicationName', 'rise');
+            const res = await uploadFile(formData);
+            const data = res.data[0];
+            const req = {
+              downloadName: data.fileName,
+              downloadUrl: data.filePath,
+            };
+            resolve(req);
+          },
+        });
+      }));
+    },
+    // 处理保存
+    async handleSave() {
+      this.saveButtonLoading = true;
+      const resFile = await this.getDownloadFile();
+      const req = {
+        categoryCode: this.categoryCode,
+        reportFileName: resFile.downloadName,
+        reportName: resFile.downloadName,
+        reportUrl: resFile.downloadUrl,
+      };
+      let res = '';
+      switch (this.current) {
+        case RAWMATERIAL:
+          req.rawMaterialGroupDataDTO = this.getSearchForm();
+          res = await saveRawMaterialScheme(req);
+          break;
+        case LABOUR:
+          req.labourGroupDataDTO = this.getSearchForm();
+          res = await saveLabourScheme(req);
+          break;
+        case ENERGY:
+          req.energyGroupDataDTO = this.getSearchForm();
+          res = await saveEnergyScheme(req);
+          break;
+      }
+      this.resultMessage(res);
+      this.saveButtonLoading = false;
+    },
+    // 获取最近搜索参数
+    async getRecentSearchData() {
+      let res = '';
+      const req = {
+        categoryCode: this.categoryCode,
+      };
+      switch (this.current) {
+        case RAWMATERIAL:
+          res = await getRecentRawMaterialScheme(req);
+          return res.data.rawMaterialQueryDTO;
+        case LABOUR:
+          res = await getRecentLabourScheme(req);
+          return res.data.labourQueryDTO;
+        case ENERGY:
+          res = await getRecentEnergyScheme(req);
+          return res.data.energyQueryDTO;
+      }
+    },
+    // 设置最近搜索参数
+    setRecentSearchData(data) {
+      const copyData = cloneDeep(data);
+      if (data) {
+        if (copyData.startDate && copyData.endDate) {
+          copyData.rangeDate = [copyData.startDate, copyData.endDate];
+          delete copyData.startDate;
+          delete copyData.endDate;
+        }
+        if (Array.isArray(copyData.dataSourceList) && copyData.dataSourceList.length > 0) {
+          copyData.dataSourceList = copyData.dataSourceList[0];
+        }
+        this.$refs.theSearch.form = copyData;
+      }
+    },
+    handleBack() {
+      this.$router.push({
+        path: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis/overView',
+      });
     },
   },
 };
