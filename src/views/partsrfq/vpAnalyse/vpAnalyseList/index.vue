@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-29 20:53:36
+ * @LastEditTime: 2021-07-30 16:17:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -114,6 +114,4 @@ export default {
     right: 0;
   }
 }
-
- 
 </style>
