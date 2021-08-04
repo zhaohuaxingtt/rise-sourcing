@@ -56,8 +56,8 @@
             <!-- 分页 -->
             <iPagination
             v-update
-            @size-change="handleSizeChange($event, getList)"
-            @current-change="handleCurrentChange($event, getList)"
+            @size-change="handleSizeChange($event, getLinie)"
+            @current-change="handleCurrentChange($event, getLinie)"
             background
             :current-page="page.currPage"
             :page-sizes="page.pageSizes"
@@ -85,7 +85,8 @@ import tableList from "../tableList"
 import { getTousandNum } from "@/utils/tool";
 import { pageMixins } from "@/utils/pageMixins";
 import {
-    getCoverDetail
+    getCoverDetail,
+    getLiniePage,
 } from '@/api/aeko/detail/cover.js'
 export default {
     name:'previewCover',
@@ -120,25 +121,48 @@ export default {
     },
     created(){
         this.getList();
+        this.getLinie();
     },
     methods:{
-        // 获取列表
+        // 获取详情
         async getList(){
-            this.tableLoading={cost:true,depart:true,};
+            this.tableLoading={cost:true,};
             const {query} = this.$route;
             const { requirementAekoId ='',} = query;
             await getCoverDetail({requirementAekoId}).then((res)=>{
-                this.tableLoading={cost:false,depart:false,};
+                this.tableLoading={cost:false,};
                 const {code,data} = res;
                 if(code == 200){
                     this.basicInfo = data;
                     this.tableTDataCost = data.coverCostsWithCarType || []; // 费用汇总 车型维度
-                    this.tableListData = data.coverCostsWithLinie || []; // 费用汇总 linie维度
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
             }).catch((err)=>{
-                this.tableLoading={cost:false,depart:false,};
+                this.tableLoading={cost:false};
+            })
+        },
+        // 获取linie分页表格
+        async getLinie(){
+            const {query} = this.$route;
+            const { requirementAekoId ='',} = query;
+            const {page} = this;
+            const data = {
+                requirementAekoId,
+                current:page.currPage,
+                size:page.pageSize
+            };
+            this.tableLoading={depart:true,};
+            await getLiniePage(data).then((res)=>{
+                this.tableLoading={depart:false};
+                const {code,data={}} = res;
+                if(code ==200){
+                    const {records=[],total} = data;
+                    this.tableListData = records || []; // 费用汇总 linie维度
+                    this.page.totalCount = total;
+                }
+            }).catch((err)=>{
+                this.tableLoading={depart:false};
             })
         },
         handleSelectionChange(val) {

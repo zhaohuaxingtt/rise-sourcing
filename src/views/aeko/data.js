@@ -25,8 +25,6 @@ export const TAB = [
         value: 3,
         name: "AEKO查看",
         message: 0,
-        url:'/sourcing/partsign',
-        activePath: "partsign",
         key: "LK_AEKOCHAKAN"
     },
 ]
