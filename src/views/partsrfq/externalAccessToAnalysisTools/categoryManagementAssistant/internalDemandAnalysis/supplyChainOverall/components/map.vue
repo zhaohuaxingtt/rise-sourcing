@@ -19,9 +19,7 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import VueAMap from 'vue-amap';
-Vue.use(VueAMap);
-VueAMap.initAMapApiLoader({
+window.VueAMap.initAMapApiLoader({
   // 高德的key
   key: 'ad8bb27d93a0b17188e1b46872a446f8',
   // 插件集合
@@ -29,7 +27,7 @@ VueAMap.initAMapApiLoader({
   // 高德 sdk 版本，默认为 1.4.4
   v: '1.4.4'
 });
-let amapManager = new VueAMap.AMapManager();
+let amapManager = new window.VueAMap.AMapManager();
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: {},
@@ -134,10 +132,10 @@ export default {
   height: 60rem;
 }
 ::v-deep .amap-logo {
-  display: none !important; 
+  display: none !important;
 }
 ::v-deep .amap-copyright {
-  opacity: 0; 
+  opacity: 0;
 }
 .title {
   margin-left: 5px;
