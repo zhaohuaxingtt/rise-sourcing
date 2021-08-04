@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-04 14:29:00
- * @LastEditors: zbin
+ * @LastEditTime: 2021-08-04 17:52:11
+ * @LastEditors: 舒杰
  * @Description: 内部需求分析
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\index.vue
 -->
@@ -10,25 +10,20 @@
   <iPage>
     <headerNav/>
     <router-view></router-view>
-    <purchaseAmountOverall v-if="false" />
-    <supplyChainOverall v-if="false" />
   </iPage>
 </template>
 
 <script>
 import { iPage } from 'rise'
-import purchaseAmountOverall from "./purchaseAmountOverall/index.vue";
 import headerNav from '../components/headerNav'
-import supplyChainOverall from "./supplyChainOverall/index.vue";
 export default {
   components: {
     iPage,
     headerNav,
-    purchaseAmountOverall,
-    supplyChainOverall
   }
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
 </style>

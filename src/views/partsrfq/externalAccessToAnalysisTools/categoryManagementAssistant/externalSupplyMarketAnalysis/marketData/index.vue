@@ -36,14 +36,21 @@ import {
   ENERGY,
 } from './components/data';
 import {
+  //原材料
   getRawMaterialGroupSelectList,
   getrawMaterialGroupData,
   getRecentRawMaterialScheme,
   saveRawMaterialScheme,
+  //劳动力
   getLabourGroupSelectList,
   getLabourGroupData,
+  getRecentLabourScheme,
+  saveLabourScheme,
+  //能源
   getEnergyGroupSelectList,
   getEnergyGroupData,
+  getRecentEnergyScheme,
+  saveEnergyScheme,
 } from '../../../../../../api/categoryManagementAssistant/marketData';
 import {cloneDeep} from 'lodash';
 import {dataURLtoFile, downloadPDF} from '@/utils/pdf';
@@ -71,6 +78,7 @@ export default {
       chartBoxLoading: false,
       saveButtonLoading: false,
       categoryCode: '123',
+      copySearchProps: {},
     };
   },
   async created() {
@@ -206,6 +214,7 @@ export default {
           break;
       }
       const data = res.data;
+      this.copySearchProps = cloneDeep(data);
       this.setSearchProps(data);
       const resRecent = await this.getRecentSearchData();
       this.setRecentSearchData(resRecent);
@@ -214,7 +223,6 @@ export default {
     async getChartGroupData({type}) {
       try {
         let res = '';
-        let resultList = '';
         this.chartData = {};
         this.dataTabArray = [];
         this.chartBoxLoading = true;
@@ -222,20 +230,30 @@ export default {
         switch (type) {
           case RAWMATERIAL:
             res = await getrawMaterialGroupData(form);
-            this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeList'});
+            if (res.result) {
+              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeList'});
+            }
             break;
           case LABOUR:
             res = await getLabourGroupData(form);
-            this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'professionList'});
+            if (res.result) {
+              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'professionList'});
+            }
             break;
           case ENERGY:
             res = await getEnergyGroupData(form);
-            this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'productNameList'});
+            if (res.result) {
+              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'productNameList'});
+            }
             break;
+        }
+        if (!res.result) {
+          this.resultMessage(res);
         }
         this.getDataTabArray(res.data);
         this.chartData = res.data;
         this.chartBoxLoading = false;
+
       } catch {
         this.chartData = {};
         this.dataTabArray = [];
@@ -282,12 +300,20 @@ export default {
         reportFileName: resFile.downloadName,
         reportName: resFile.downloadName,
         reportUrl: resFile.downloadUrl,
-        rawMaterialGroupDataDTO: this.getSearchForm(),
       };
       let res = '';
       switch (this.current) {
         case RAWMATERIAL:
+          req.rawMaterialGroupDataDTO = this.getSearchForm();
           res = await saveRawMaterialScheme(req);
+          break;
+        case LABOUR:
+          req.labourGroupDataDTO = this.getSearchForm();
+          res = await saveLabourScheme(req);
+          break;
+        case ENERGY:
+          req.energyGroupDataDTO = this.getSearchForm();
+          res = await saveEnergyScheme(req);
           break;
       }
       this.resultMessage(res);
@@ -303,20 +329,28 @@ export default {
         case RAWMATERIAL:
           res = await getRecentRawMaterialScheme(req);
           return res.data.rawMaterialQueryDTO;
+        case LABOUR:
+          res = await getRecentLabourScheme(req);
+          return res.data.labourQueryDTO;
+        case ENERGY:
+          res = await getRecentEnergyScheme(req);
+          return res.data.energyQueryDTO;
       }
     },
     // 设置最近搜索参数
     setRecentSearchData(data) {
       const copyData = cloneDeep(data);
-      if (copyData.startDate && copyData.endDate) {
-        copyData.rangeDate = [copyData.startDate, copyData.endDate];
-        delete copyData.startDate;
-        delete copyData.endDate;
+      if (data) {
+        if (copyData.startDate && copyData.endDate) {
+          copyData.rangeDate = [copyData.startDate, copyData.endDate];
+          delete copyData.startDate;
+          delete copyData.endDate;
+        }
+        if (Array.isArray(copyData.dataSourceList) && copyData.dataSourceList.length > 0) {
+          copyData.dataSourceList = copyData.dataSourceList[0];
+        }
+        this.$refs.theSearch.form = copyData;
       }
-      if (Array.isArray(copyData.dataSourceList) && copyData.dataSourceList.length > 0) {
-        copyData.dataSourceList = copyData.dataSourceList[0];
-      }
-      this.$refs.theSearch.form = copyData;
     },
     handleBack() {
       this.$router.push({

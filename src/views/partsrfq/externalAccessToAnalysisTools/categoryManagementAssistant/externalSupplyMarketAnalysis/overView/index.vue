@@ -1,10 +1,10 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 19:45:03
- * @LastEditTime: 2021-08-04 15:46:04
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-04 18:01:40
+ * @LastEditors: 舒杰
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\components\main.vue
+ * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\overView\index.vue
 -->
 <template>
   <div>
@@ -63,7 +63,7 @@ export default {
         data: {},
       },
       card2Param: {
-        url: '',
+        url: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis/industryReport',
         data: {},
       },
       card3Param: {
