@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 16:37:12
- * @LastEditTime: 2021-08-04 10:35:04
+ * @LastEditTime: 2021-08-04 11:20:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisHandleInput\components\char.vue
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import imgUrl from '@/assets/images/pie-icon.png'
 import echarts from '@/utils/echarts'
 export default {
   props:{
@@ -45,6 +46,8 @@ export default {
   },
   methods: {
     initCharts() {
+      let count = 0;
+      let currentNum = 0;
       const myChart = echarts().init(this.$refs.pieChart);
       const option = {
         color: this.colors,
@@ -62,16 +65,23 @@ export default {
               show: true,
               position: 'outside',
               formatter: value => {
-                console.log('value', value);
-                const eValue = value.data; 
-                console.log('eValue', eValue);
-                return '{pieIcon|}' + eValue.name;
+                console.log('value', value)
+                let res = ''
+                currentNum = count + value.percent / 2
+                count += value.percent
+                if(currentNum <= 50){
+                  res = '{pieIcon|}   ' + value.data.name
+                } else {
+                  res = value.data.name + '   {pieIcon|}'
+                }
+                console.log('currentNum', currentNum, 'res', res)
+                return res
+                
               },
               rich: {
                 pieIcon: {
                   backgroundColor: {
-                    // image:'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png'
-                    // image: '../../../../../../../../assets/images/pie-icon.png'
+                    image: imgUrl
                   },
                   height: 20
                 }
