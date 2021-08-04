@@ -758,6 +758,7 @@
         'LK_SHANGHUI': '上会', // 上会
         'LK_LIUZHUAN': '流转', // 流转
         'LK_BEIAN': '备案', // 备案
+        'LK_QINGSHURUTUIHUIYUANYIN': '请输入退回原因', // 备案
 
         //摸具预算
         // 点击进入【生成投资清单】页面
@@ -1100,6 +1101,35 @@
 
         'DAXIAO': '大小', // 大小
         'WENJIANDAXIAO': '文件大小', // 文件大小
+
+        'LK_MUJUTOUZIJINE': '模具投资金额', //  模具投资金额
+        'LK_MUJUTOUZIQINGDANZHUANGTAI': '模具投资清单状态', //  模具投资清单状态
+        'LK_TOUZIQINGDANZHUANGTAI': '投资清单状态', //  投资清单状态
+        'LK_YEWUCHULIZHUANGTAI': '业务处理状态',    //  业务处理状态
+        'LK_XUHAO': '序号', //  序号
+        'LK_MUJUID': '模具ID',  //  模具ID
+        'LK_GUZIBIANHAO': '固资编号',   //  固资编号
+        'LK_MUJUZHIZHAOSHANG': '模具制造商',    //  模具制造商
+        'LK_GONGYILEIXING': '工艺类型', //  工艺类型
+        'LK_GONGMUJUZHONGLEI': '工模具种类',    //  工模具种类
+        'LK_ZICHANFENLEIBIANHAO': '资产分类编号',   //  资产分类编号
+        'LK_LINGJIANZONGCHENMINGCHEN': '零件总成名称',  //  零件总成名称
+        'LK_ZONGCHENLINGJIANHAO': '总成零件号', //  总成零件号
+        'LK_GONGXIANGLINGJIANHAO': '共享零件号',    //  共享零件号
+        'LK_LINGBUJIANMINGCHEN': '零部件名称',  //  零部件名称
+        'LK_ZICHANDANJIA': '资产单价',   //  资产单价
+        'LK_FASONGGONGYIUNGSHANGQUEREN': '发送供应商确认',   //  发送供应商确认
+        'LK_FAQIBIANGENG': '发起变更',   //  发起变更
+        'LK_ZHUANPAIZIJI': '转派自己',   //  转派自己
+        'LK_BIANGENDANHAO': '变更单号', //  变更单号
+        'LK_BIANGENHOUBANBEN': '变更后版本',    //  变更后版本
+        'LK_BIANGENLEIXING': '变更类型',    //  变更类型
+        'LK_FAQIREN': '发起人', //  发起人
+        'LK_BIANGENRIQI': '变更日期',   //  变更日期
+        'LK_ZICHANZONGE': '资产总额',   //  资产总额
+        'LK_TIAOZHENGSHUOMING': '调整说明', //  调整说明
+        'LK_ZHAOPIAN': '照片',  //  照片
+        'LK_GUZIMINGCHEN': '固资名称',  //  固资名称
 
         // 定点管理
         'nominationLanguage': {

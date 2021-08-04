@@ -14,13 +14,13 @@
       <iSearch @sure="getList" @reset="reset">
           <el-form>
               <el-form-item v-for="(item,index) in SearchList" :key="'SearchList_aeko'+index" :label="language(item.labelKey,item.label)">
-                  <iSelect v-update v-if="item.type === 'select'" :multiple="item.multiple" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
-                    <!-- <el-option v-if="item.props!='showSelf'" value="" :label="language('all','全部')"></el-option> -->
+                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
+                    <el-option v-if="!item.multiple" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="item in selectOptions[item.selectOption] || []"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
+                      :key="item.code"
+                      :label="item.desc"
+                      :value="item.code">
                     </el-option>  
                   </iSelect> 
                   <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
@@ -37,21 +37,29 @@
           <iButton >{{language('LK_DAORUAEKO','导⼊AEKO')}} </iButton>
           <iButton>{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
           <iButton @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
-          <el-upload
-            class=" margin-left10 margin-right10"
-            :action="uploadUrl + '/rs/uploadNomiRsDoc'"
-            accept='.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif,.pptx,.zip'
-            style="display:none;"
-            ref="aekoUpload"
-            multiple
-            :show-file-list='false'
-            :on-progress='()=>{btnLoading.uploadFiles=true}'
-            :on-error='()=>{btnLoading.uploadFiles=false;iMessage.error(language("SHANGCHUANSHIBAI","上传失败！"))}'
-            :on-success='fileSuccess'
-          >
-          </el-upload>
-
-          <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
+          
+          <span class=" margin-left10 margin-right10">
+             <Upload 
+                  hideTip
+                  style="display:none;"
+                  ref="aekoUpload"
+                  :uploadRef="'aekoUpload'"
+                  :buttonText="language('LK_SHANGCHUANWENJIAN','上传文件')"
+                  @on-success="fileSuccess"
+              />
+            <!-- <el-upload
+              :action="uploadUrl + '/rs/uploadNomiRsDoc'"
+              accept='.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif,.pptx,.zip'
+              style="display:none;"
+              ref="aekoUpload"
+              :show-file-list='false'
+              :on-progress='()=>{btnLoading.uploadFiles=true}'
+              :on-error='()=>{btnLoading.uploadFiles=false;iMessage.error(language("SHANGCHUANSHIBAI","上传失败！"))}'
+              :on-success='fileSuccess'
+            >
+            </el-upload> -->
+            <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
+          </span>
           <iButton>{{language('LK_AEKODAOCHU','导出')}} </iButton>
       </template>
       <!-- 表单区域 -->
@@ -65,21 +73,35 @@
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- AEKO号 -->
-      <template #a="scope">
-        <icon class="margin-right5" symbol name="iconAEKO_TOP"></icon>
-        <span class="link" @click="goToDetail(scope.row)">{{scope.row.a}}-6666</span>
-        <a @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+      <template #aekoCode="scope">
+        
+        <div class="table-item-aeko">
+          <icon v-if="scope.row.isTop && scope.row.isTop.code==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
+          <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </span>
+          <a class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+        </div>
+        
         
       </template>
 
       <!-- 日志 -->
-      <template #b="scope">
+      <template #log="scope">
         <span class="link" @click="checkLog(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
       </template>
 
       <!-- 描述 -->
-      <template #c="scope">
+      <template #describe="scope">
         <span class="link" @click="checkDescribe(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+      </template>
+
+      <!-- aeko状态 -->
+      <template #aekoStatus="scoped">
+        <span>{{scoped.row.aekoStatus && scoped.row.aekoStatus.desc}}</span>
+      </template>
+
+      <!-- 封面状态 -->
+      <template #coverStatus="scoped">
+        <span>{{scoped.row.coverStatus && scoped.row.coverStatus.desc}}</span>
       </template>
 
       </tableList>
@@ -125,6 +147,14 @@ import { TAB } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
+import Upload from '@/components/Upload'
+import {
+  getManageList,
+  searchAekoStatus,
+  searchBrand,
+  searchCoverStatus,
+  uploadFiles,
+} from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
     mixins: [pageMixins],
@@ -142,37 +172,25 @@ export default {
       icon,
       revokeDialog,
       filesListDialog,
+      Upload,
     },
     data(){
       return{
         navList:TAB,
         SearchList:searchList,
         selectItems:[],
-        searchParams:{},
+        searchParams:{
+          brand:'',
+          aekoStatusList:[],
+          coverStatusList:[],
+        },
         selectOptions:{
-          'f':[
-            {label:'品牌1',value:'1'},
-            {label:'品牌2',value:'2'},
-          ],
-          'g':[
-            {label:'已导入',value:'1'},
-            {label:'已分配',value:'2'},
-            {label:'已冻结',value:'3'},
-            {label:'已通过',value:'4'},
-            {label:'已撤销',value:'5'},
-          ],
-          'h':[
-            {label:'待表态',value:'1'},
-            {label:'已提交',value:'2'},
-            {label:'待审批',value:'3'},
-            {label:'Commodity K3通过',value:'4'},
-            {label:'Commodity 科室通过',value:'5'},
-          ]
+          'brand':[],
+          'aekoStatusList':[],
+          'coverStatusList':[]
         },
         tableListData:[
-          {'a':'AE19221','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
-          {'a':'AE19222','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
-          {'a':'AE19223','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
+          // {'aekoCode':'AE19221','aekoStatus':'已导⼊','coverStatus':'待表态','tcmResult':'T-go','createDate':'2021-03-01','deadLine':'2021-03-16','frozenDate':'2021-02-01'},
         ],
         tableTitle:tableTitle,
         loading:false,
@@ -184,10 +202,19 @@ export default {
         }
       }
     },
+    created(){
+      this.getList();
+      this.getSearchList();
+    },
     methods:{
       // 重置
       reset(){
-        this.searchParams = {};
+        this.searchParams = {
+          brand:'',
+          aekoStatusList:[],
+          coverStatusList:[],
+        };
+        this.getList();
       },
 
       handleSelectionChange(val) {
@@ -195,15 +222,89 @@ export default {
       },
       
       // 获取列表数据
-      getList(){
+      async getList(){
+        this.loading = true;
+        const {searchParams,page} = this;
+        // 若有冻结起止时间将其拆分成两个字段
+        const {frozenDate=[]} = searchParams;
+        const data = {
+            current:page.currPage,
+            size:page.pageSize
+        };
+        if(frozenDate.length){
+            data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
+            data['frozenDateEnd'] = frozenDate[1]+' 00:00:00';
+        }
+        await getManageList({...searchParams,...data}).then((res)=>{
+          this.loading = false;
+          const {code,data={}} = res;
+          if(code==200){
+              const {records=[],total} = data;
+              this.tableListData = records;
+              this.page.totalCount = total;
+          }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch((err)=>{
+          this.loading = false;
+        })
+      },
 
+      // 获取搜索框下拉数据
+      async getSearchList(){
+        const selectOptions = {
+          aekoStatusList:[],
+          brand:[],
+          coverStatus:[],
+        };
+        // aeko状态
+        await searchAekoStatus().then((res)=>{
+          const {code,data=[]} = res;
+          if(code ==200 && data){
+            selectOptions.aekoStatusList = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+         //品牌
+        await searchBrand().then((res)=>{
+          const {code,data=[]} = res;
+          if(code ==200 && data){
+            selectOptions.brand = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+        // 封面状态
+        await searchCoverStatus().then((res)=>{
+          const {code,data=[]} = res;
+          if(code ==200 && data){
+            selectOptions.coverStatusList = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+
+        this.selectOptions = selectOptions;
+        // Promise.all([searchAekoStatus(),searchBrand(),searchCoverStatus()]).then((res)=>{
+        //   this.selectOptions={
+        //     'aekoStatus':res[0].data || [], // aeko状态
+        //     'brand':res[1].data || [], //品牌
+        //     'coverStatus':res[2].data || [], //封面状态
+        //   }
+        //   console.log(res,'getSearchList')
+        // }).catch((err)=>{
+        //   console.log(err);
+        // })
       },
 
       // 跳转详情页
       goToDetail(row){
         const routeData = this.$router.resolve({
           path: '/aeko/aekodetail',
-          query: {},
+          query: {
+            id:1,
+          },
         })
         window.open(routeData.href, '_blank')
       },
@@ -275,15 +376,50 @@ export default {
             cancelButtonText: this.language('nominationLanguage.No','否'),
           }
           ).then(()=>{
-            this.$refs['aekoUpload'].$refs['upload-inner'].handleClick()
+            this.$refs['aekoUpload'].$refs['uploadRef'].$refs['upload-inner'].handleClick();
             console.log('是')
           }).catch(()=>{
             console.log('否')
           })
         }else{
-          this.$refs['aekoUpload'].$refs['upload-inner'].handleClick()
+          this.$refs['aekoUpload'].$refs['uploadRef'].$refs['upload-inner'].handleClick()
         }
         
+      },
+      // 导入附件
+      async fileSuccess(data){
+        this.btnLoading.uploadFiles = true;
+        console.log(data,'data');
+        const fileData = data.data;
+        const { name ,path,size,id} = fileData;
+        const { selectItems } =this;
+        const fileItem = {
+          fileCode:'requirement',
+          fileName:name,
+          filePath:path,
+          fileSize:size,
+          fileType:0,
+          source:0,
+          uploadId:id,
+        }
+        const params=[];
+        selectItems.forEach((item)=>{
+          item.requirementAekoId && params.push({
+            ...fileItem,
+            hostId:item.requirementAekoId
+          })
+        })
+        await uploadFiles({fileHistoryDTOS:params}).then((res)=>{
+          this.btnLoading.uploadFiles = false;
+          if(res.code ==200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getList();
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        }).catch((err)=>{
+          this.btnLoading.uploadFiles = false;
+        })
       },
     }
 }
@@ -294,6 +430,27 @@ export default {
     ::v-deep .el-date-editor .el-range__close-icon{
         display: block;
         width: 10px;
+    }
+    .table-item-aeko{
+      position: relative;
+      padding-left: 28px;
+      .link{
+        display: block;
+        width: calc( 100% - 28px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .top-icon{
+        position: absolute;
+        left: 0;
+        top:1px;
+      }
+      .file-icon{
+        position: absolute;
+        right:0;
+        top: 0;
+      }
     }
   }
 </style>

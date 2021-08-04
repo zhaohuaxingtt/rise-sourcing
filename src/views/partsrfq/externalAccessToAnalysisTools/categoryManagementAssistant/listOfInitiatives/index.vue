@@ -19,9 +19,11 @@
       </el-col>
       <el-col :span="8">
         <div class="header-title"> {{ language('PLGLZS.CAIGOUXUQIUGUANLI', '采购需求管理') }}</div>
-        <el-card>
-          123
-        </el-card>
+        <theCard title="12">
+          <div>
+            1233
+          </div>
+        </theCard>
       </el-col>
       <el-col :span="8">
         <div class="header-title"> {{ language('PLGLZS.ZONGCHENGBENGUANLI', '总成本管理') }}</div>

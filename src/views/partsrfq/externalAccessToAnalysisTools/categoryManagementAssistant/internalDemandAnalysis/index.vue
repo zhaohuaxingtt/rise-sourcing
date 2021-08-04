@@ -1,14 +1,15 @@
 <!--
- * @version: 1.0
- * @Author: zbin
- * @Date: 2021-07-30 17:08:26
+ * @Author: 舒杰
+ * @Date: 2021-08-03 10:42:23
+ * @LastEditTime: 2021-08-04 14:10:03
  * @LastEditors: zbin
- * @Descripttion: your project
+ * @Description: 内部需求分析
+ * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\index.vue
 -->
 <template>
   <iPage>
-    <headerNav />
-    <!-- 内部需求分析 -->
+    <headerNav/>
+    <router-view></router-view>
     <purchaseAmountOverall v-if="false" />
     <supplyChainOverall v-if="true" />
   </iPage>

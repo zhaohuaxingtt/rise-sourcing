@@ -127,7 +127,7 @@ export function modifyRfqToRemark(params) {
 
 // 重命名分组
 export function renameComponentGroup(parmars) {
-  return request({
+  return requst({
     url: '/bobRoundDetail/renameComponentGroup',
     method: 'POST',
     data: parmars,

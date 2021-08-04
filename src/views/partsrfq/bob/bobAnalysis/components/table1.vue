@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-30 11:29:59
+ * @LastEditTime: 2021-08-02 14:42:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -15,7 +15,6 @@
               :expand-row-keys="expends"
               v-loading="loading"
               stripe
-              height="450"
               :max-height="maxHeight"
               :cell-style="cellsytle"
               :row-style="rowStyle"
@@ -142,7 +141,6 @@ export default {
   watch: {
     expends: {
       handler (val) {
-   
       },
     },
     bobType: {
@@ -219,7 +217,7 @@ export default {
       }
     },
     getRowKey (row) {
-      return row.title;
+      return row.index.toString();
     },
     render (h, { column, $index }) { },
     rowClick (row, event, column) {

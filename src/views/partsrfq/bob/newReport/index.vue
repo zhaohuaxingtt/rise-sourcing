@@ -59,7 +59,7 @@
                                :multiple-limit="chartType === 'supplier' ? 5 : 1"
                                v-model="form.supplier">
                       <el-option v-for="(i, index) in supplierList"
-                                 :key="index"
+                                 :key="i.supplierId"
                                  :value="i.supplierId"
                                  :label="i.nameZh">
                         <span style="float: left">{{ i.nameZh }}</span>
@@ -75,11 +75,11 @@
                                value-key
                                :multiple-limit="chartType === 'turn' ? 5 : 1"
                                v-model="form.turn">
-                      <el-option :value="Number('-1')"
+                      <el-option :value="Number(-1)"
                                  label="最新"
                                  v-if="chartType!=='turn'"></el-option>
                       <el-option v-for="(i, index) in turnList"
-                                 :key="index"
+                                 :key="i.turn"
                                  :value="i.turn"
                                  :label="'第' + i.turn + '轮'"></el-option>
                     </el-select>
@@ -92,7 +92,7 @@
                                :multiple-limit="chartType === 'spareParts' ? 5 : 1"
                                v-model="form.spareParts">
                       <el-option v-for="(i, index) in partList"
-                                 :key="index"
+                                 :key="i.fsNo"
                                  :value="i.fsNo"
                                  :label="i.fsNo+'/'+i.spareParts"></el-option>
                     </el-select>
@@ -207,11 +207,9 @@
         </el-col>
       </el-row>
       <el-row :gutter="20"
-              class="margin-top20"
-            >
-        <el-col :span="inside?4:5" >
+              class="margin-top20">
+        <el-col :span="inside?4:5">
           <iCard :collapse="false"
-                 
                  v-if="!reportSave">
             <ul class="anchorList flex">
               <li v-for="(i,index) in anchorList"
@@ -519,11 +517,17 @@ export default {
       // this.chartData = data
     },
     handleSearchReset () {
-      this.form = {
-        supplier: [],
-        turn: [],
-        spareParts: [],
-      };
+      if (this.inside) {
+        this.form = {
+          supplier: [],
+          turn: [],
+          spareParts: [],
+        };
+      } else {
+        this.form = {
+          combination: []
+        }
+      }
       this.getChartData();
     },
     add (val) {
@@ -607,7 +611,12 @@ export default {
       }
 
     },
-    searchChartData () {
+    async searchChartData () {
+      if (this.inside) {
+        await this.getOptions();
+      } else {
+        await this.querySupplierTurnPartList()
+      }
       let params = {}
       let tableParams = {}
       if (this.inside) {
@@ -653,13 +662,11 @@ export default {
         );
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
-
         if (this.chartType === 'combination') {
           this.form = {
             combination: []
           }
           this.form.combination = this.Split(allData.combination, ",");
-          this.querySupplierTurnPartList()
         } else {
           this.form = {
             supplier: [],
@@ -669,11 +676,11 @@ export default {
           this.form.supplier = this.Split(allData.supplier, ",").map(Number);
           this.form.turn = this.Split(allData.turn, ",").map(Number);
           this.form.spareParts = this.Split(allData.spareParts, ",");
-          this.getOptions()
         }
       });
       this.$refs.bobAnalysis.chargeRetrieve(tableParams);
     },
+
     async getChartData () {
       if (this.inside) {
         await this.getOptions();
@@ -700,7 +707,6 @@ export default {
             combination: []
           }
           this.form.combination = this.Split(allData.combination, ",");
-
         } else {
           this.form = {
             supplier: [],
@@ -867,7 +873,7 @@ export default {
       } else if (this.chartType === "spareParts") {
         return this.form.supplier;
       } else if (this.chartType === 'combination') {
-        return this.form.combination;
+        return '';
       } else {
         return ''
       }

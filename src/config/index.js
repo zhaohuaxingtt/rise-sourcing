@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-07-22 17:52:47
+ * @LastEditTime: 2021-07-29 16:55:59
  * @LastEditors: Please set LastEditors
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js
@@ -65,3 +65,17 @@ export const allitemsList = {
 export const partProjTypes = Object.assign(JSON.parse(JSON.stringify(onlyselfProject)),JSON.parse(JSON.stringify(allitemsList)))
 // 扩产能角色tag id，cf提供
 export const BKMROLETAGID = 'KCNGLY'
+//钢材批量采购
+export const STEEL = {
+  STEELONECE:'1000030', //钢材一次性采购
+  STEELALL:'1000040'    //钢材批量采购
+}
+//用户角色,由于前期是用tag暂时判断，后期需要替换此处的角色ID
+export const user = {
+  //前期采购员
+  BEFORBUYER:9,
+  //linie
+  LINLIE:4,
+  //扩产能管理员
+  BKMROLETAGID:'KCNGLY'
+}

@@ -12,7 +12,7 @@
         :routerPage="true"
         :list="navList"
         class="iNavMvp"
-        v-if="($route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1) || $route.path.indexOf('investmentAdmin') > -1"
+        v-if="($route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1) || $route.path.indexOf('investmentAdmin') > -1 || $route.path.indexOf('purchase/investmentList') > -1 || $route.path.indexOf('purchaseSupplier/investmentList') > -1"
     ></iNavMvp>
     <iButton
         v-if="$route.path.indexOf('budgetManagement/generateInvestmentList') > -1"
@@ -26,7 +26,26 @@
     <!--        <icon symbol name="iconrizhiwuzi" class="icon"/>-->
     <!--        <span @click="changeDataBase">{{ $t("LK_RIZHI") }}</span>-->
     <!--      </div>-->
-    <span @click="changeDataBase" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
+    <span v-if="historyDataBase" @click="changeDataBase" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
+      <transition name="bounce">
+        <Popover
+            content="历史数据库"
+            placement="top-start"
+            trigger="hover">
+            <icon slot="reference" v-if="!dataBase" symbol name="icondatabaseweixuanzhong"></icon>
+        </Popover>
+      </transition>
+      <transition name="bounceTo">
+        <Popover
+            content="历史数据库"
+            placement="top-start"
+            trigger="hover">
+            <icon slot="reference" v-if="dataBase" symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>
+        </Popover>
+      </transition>
+    </span>
+
+    <span v-if="mouldBook" @click="changeDataBase1" class="dataBase">
       <transition name="bounce">
         <Popover
             content="历史数据库"
@@ -66,7 +85,15 @@ export default {
     isIconShow: {
       type: Boolean,
       default: false
-    }
+    },
+    historyDataBase: {
+      type: Boolean,
+      default: true
+    },
+    mouldBook: {
+      type: Boolean,
+      default: false
+    },
   },
   mounted() {
   },
@@ -115,6 +142,9 @@ export default {
     if(this.$route.path == '/tooling/dataBase'){
       this.dataBase = true
     }
+    if(this.$route.path == '/purchase/mouldBook'){
+      this.dataBase = true
+    }
   },
   methods: {
 
@@ -128,7 +158,14 @@ export default {
       this.activeIndex = 999
       this.$router.push({path: '/tooling/dataBase'})
       this.$emit('changeDataBase')
-    }
+    },
+
+    changeDataBase1(){
+      this.dataBase = true
+      this.activeIndex = 999
+      this.$router.push({path: '/purchase/mouldBook'})
+      this.$emit('changeDataBase')
+    },
   },
   watch: {
     dataBaseInit(val){
