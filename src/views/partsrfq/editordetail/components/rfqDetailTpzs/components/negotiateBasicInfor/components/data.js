@@ -10,7 +10,7 @@ export const tableTitle = [
   { props: 'partNum', name: '零件号', key: 'TPZS.LJH', tooltip: true },
   { props: 'partNameZh', name: '零件名', key: 'TPZS.LJM', tooltip: true },
   { props: 'procureFactoryName', name: '工厂', key: 'TPZS.GC', tooltip: true },
-  { props: 'ebrCalculatedValue', name: 'EBR%', key: 'TPZS.EBR', tooltip: true },
+  { props: 'ebrValue', name: 'EBR%', key: 'TPZS.EBR', tooltip: true },
   { props: 'cycleOutput', name: '全生命周期产量', key: 'TPZS.QSMZQCL', tooltip: true },
   { props: 'maxOutput', name: '峰值年产量', key: 'TPZS.FZNCL', tooltip: true },
   { props: 'cartypeProjectZh', name: '项目名称', key: 'TPZS.XMMC', tooltip: true },

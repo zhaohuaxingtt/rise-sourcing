@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-04 14:10:03
+ * @LastEditTime: 2021-08-04 14:29:00
  * @LastEditors: zbin
  * @Description: 内部需求分析
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\index.vue
@@ -11,7 +11,7 @@
     <headerNav/>
     <router-view></router-view>
     <purchaseAmountOverall v-if="false" />
-    <supplyChainOverall v-if="true" />
+    <supplyChainOverall v-if="false" />
   </iPage>
 </template>
 
