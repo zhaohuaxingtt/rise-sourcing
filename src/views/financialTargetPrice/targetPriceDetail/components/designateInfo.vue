@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:37:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-27 09:50:13
+ * @LastEditTime: 2021-08-03 11:20:49
  * @Description: 定点信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\designateInfo.vue
 -->
@@ -30,7 +30,7 @@
         </el-form-item>
         <el-form-item class="searchBtns">
           <iButton @click="sure">{{language('QUEREN','确认')}}</iButton>
-          <iButton @click="reset">{{language('CHONGZHI','重置')}}</iButton>
+          <iButton @click="reset">{{language('LK_CHONGZHI','重置')}}</iButton>
         </el-form-item>
       </el-form>
     </iSearch>

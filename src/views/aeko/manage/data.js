@@ -9,11 +9,11 @@ export const searchList = [
   {props:'aekoCode',label:'AEKO号',type:'input',labelKey:'LK_AEKOHAO_MANAGE'},
   {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO'},
   {props:'linieDeptNum',label:'科室',type:'input',labelKey:'LK_AEKOKESHI'},
-  {props:'cartypeCode',label:'⻋型项⽬',type:'input',labelKey:'LK_AEKOCHEXINGXIANGMU'},
+  {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',selectOption:'cartypeCode',filterable:true,noShowAll:true,clearable:true},
   {props:'frozenDate',label:'冻结⽇期',type:'datePicker',labelKey:'LK_AEKODONGJIERIQI'},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand'},
-  {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',multiple:true},
-  {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'coverStatusList',multiple:true},
+  {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',multiple:true,noShowAll:true,clearable:true},
+  {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'coverStatusList',multiple:true,noShowAll:true,clearable:true},
   {props:'buyerName',label:'Linie',type:'input',labelKey:'LK_AEKOLINIE'},
 ]
 
@@ -34,7 +34,7 @@ export const tableTitle = [
 export const filesTableTitle = [
   {name:'文件名',key:'LK_WENJIANMING',props:'fileName'},
   {name:'上传日期',key:'LK_SHANGCHUANRIQI',props:'uploadDate'},
-  {name:'来源',key:'LK_AEKO_FILES_LAIYUAN',props:'a'},
+  {name:'来源',key:'LK_AEKO_FILES_LAIYUAN',props:'source'},
   {name:'上传人',key:'LK_SHANGCHUANREN',props:'uploadBy'},
-  {name:'大小',key:'LK_DAXIAO',props:'size'},
+  {name:'大小',key:'LK_DAXIAO',props:'fileSize'},
 ]

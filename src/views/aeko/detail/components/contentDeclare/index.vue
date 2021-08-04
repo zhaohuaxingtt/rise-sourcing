@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-07-29 18:17:01
+ * @LastEditTime: 2021-08-03 14:13:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -92,7 +92,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('CAIGOUGONGCHANG', '采购工厂')">
+        <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')">
           <iSelect
             filterable
             v-model="form.procureFactory"
@@ -139,13 +139,13 @@
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
       <template v-slot:header-control>
         <iButton :loading="declareToggleLoading" @click="handleDeclareToggle">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
-        <iButton @click="handleDeclareReset">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
+        <iButton :loading="declareResetLoading" @click="handleDeclareReset">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
         <iButton disabled>{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
         <iButton disabled>{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
-        <iButton>{{ language("DAOCHU", "导出") }}</iButton>
-        <iButton>{{ language("DAORU", "导⼊") }}</iButton>
-        <iButton>{{ language("TIJIAO", "提交") }}</iButton>
-        <iButton>{{ language("CHEHUI", "撤回") }}</iButton>
+        <iButton @click="handleExport">{{ language("DAOCHU", "导出") }}</iButton>
+        <iButton disabled>{{ language("DAORU", "导⼊") }}</iButton>
+        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
+        <iButton disabled>{{ language("CHEHUI", "撤回") }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -220,10 +220,13 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle, isReferenceMap } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
-import { getAekoLiniePartInfo } from "@/api/aeko/detail"
+import { excelExport } from "@/utils/filedowLoad"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
 import { getCarTypePro } from "@/api/designate/nomination"
 import { getDictByCode } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
+
+const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog },
@@ -248,6 +251,7 @@ export default {
       declareToggleLoading: false,
       declareResetLoading: false,
       dosageDialogVisible: false,
+      submitLoading: false,
     };
   },
   created() {
@@ -312,7 +316,8 @@ export default {
       
       getAekoLiniePartInfo({
         ...this.form,
-        requirementAekoId: this.aekoInfo.requirementAekoId || "1",
+        requirementAekoId: "10001",
+        // this.aekoInfo.requirementAekoId || 
         cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
         current: this.page.currPage,
@@ -338,6 +343,7 @@ export default {
       this.query()
     },
     reset() {
+      this.page.currPage = 1
       this.form = cloneDeep(contentDeclareQueryForm)
       this.query()
     },
@@ -352,23 +358,30 @@ export default {
     oldPartNumPresetSelect(row) {
       this.$router.push({
         path: "/aeko/quondampart/ledger",
-        query: {}
+        query: {
+          requirementAekoId: this.aekoInfo.requirementAekoId,
+          objectAekoPartId: row.objectAekoPartId
+        }
       })
     },
     // 相关无关切换
     handleDeclareToggle() {
-      const fn = function() {}
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOQIEHUANBIAOTAIDELINGJIAN", "请选择需要切换表态的零件"))
+
+      if (!this.multipleSelection.every(item => item.status.code === "TOBE_STATED" || item.status.code === "QUOTING" || item.status.code === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGQIEHUAN", "请选择内容状态为待表态、报价中、已报价的零件进行切换"))
 
       this.declareToggleLoading = true
 
-      fn()
+      patchAekoReference({
+        requirementAekoId: this.aekoInfo.requirementAekoId,
+        objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
+      })
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 
         if (res.code == 200) {
           iMessage.success(message)
-          this.getList()
+          this.init()
         } else {
           iMessage.error(message)
         }
@@ -379,18 +392,23 @@ export default {
     },
     // 表态重置
     handleDeclareReset() {
-      const fn = function() {}
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHONGZHIBIAOTAIDELINGJIAN", "请选择需要重置表态的零件"))
+
+      if (!this.multipleSelection.every(item => item.status.code === "TOBE_STATED" || item.status.code === "QUOTING" || item.status.code === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI", "请选择内容状态为待表态、报价中、已报价的零件进行重置"))
 
       this.declareResetLoading = true
 
-      fn()
+      patchAekoReset({
+        requirementAekoId: "10001",
+        // this.aekoInfo.requirementAekoId,
+        objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
+      })
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 
         if (res.code == 200) {
           iMessage.success(message)
-          this.getList()
+          this.init()
         } else {
           iMessage.error(message)
         }
@@ -398,6 +416,51 @@ export default {
         this.declareResetLoading = false
       })
       .catch(() => this.declareResetLoading = false)
+    },
+    // 导出
+    handleExport() {
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAODAOCHUDEYUANLINGJIAN", "请选择需要导出的原零件"))
+    
+      const data = cloneDeep(this.multipleSelection)
+      data.forEach(item => {
+        item.isReference = item.isReference.desc
+        item.status = item.status.desc
+      })
+
+      excelExport(data, printTableTitle)
+    },
+    // 提交
+    handleSubmit() {
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIJIAOBIAOTAIDELINGJIAN", "请选择需要提交表态的零件"))
+
+      for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
+        if (item.status.code !== "TOBE_STATED" && item.status.code !== "QUOTING" && item.status.code !== "QUOTED")
+          return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价的零件进行提交"))
+
+        if (item.isDeclare != 1)
+          return iMessage.warn(this.language("QINGXUANZEYISHOUDONGSHEZHIAJIADELINGJIANJINXINGTIJIAO", "请选择已手动设置A价的零件进行提交"))
+      }
+
+      this.submitLoading = true
+
+      patchAekoContent({
+        requirementAekoId: "10001",
+        // this.aekoInfo.requirementAekoId,
+        objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
+      })
+      .then(res => {
+        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+          this.init()
+        } else {
+          iMessage.error(message)
+        }
+
+        this.submitLoading = false
+      })
+      .catch(() => this.submitLoading = false)
     }
   },
 };

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-30 15:36:09
+ * @LastEditTime: 2021-08-04 10:30:49
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
@@ -48,7 +48,7 @@
         <nodeView ref="nodeView" v-else @changeNodeView="changeNodeView(false)" :cartypeProId="carProject" />
       </div>
     </iCard>
-    <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="productLogicList" :logicData="productData" :selectOptions="selectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
+    <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="productLogicList" :logicData="logicData" :selectOptions="selectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
     <chooseProGroupDialog ref="chooseProGroup" :dialogVisible="chooseVisible" @handleConfirm="handleChooseProGroup" :allData="chooseDataList" :selectValue="chooseData" @changeVisible="changeChooseProGroup" />
   </iPage>
 </template>
@@ -64,28 +64,18 @@ import nodeView from './components/nodeview'
 import carEmpty from './components/empty/carEmpty'
 import proGroupEmpty from './components/empty/proGroupEmpty'
 import { selectDictByKeyss } from '@/api/dictionary'
-import { getCarTypePro, getLastOperateCarType } from '@/api/project'
+import { getCarTypePro, getLastOperateCarType, getProductSelectList, getCarConfig, updateCarConfig, saveProductSelectList } from '@/api/project'
 export default {
   components: { iPage, iCard, iSelect, iButton, carProject, logicSettingDialog, chooseProGroupDialog, icon, periodicView, nodeView, carEmpty, proGroupEmpty },
   data() {
     return {
       logicVisible: false,
       productLogicList,
-      productData: {},
+      logicData: {},
       selectOptions: {},
       proGroup: '',
       chooseVisible: false,
-      chooseDataList: [
-        {key: '1', label: '中央电脑'},
-        {key: '2', label: '多媒体显示屏'},
-        {key: '3', label: '燃油泵'},
-        {key: '4', label: '显示泵'},
-        {key: '5', label: '显示屏'},
-        {key: '6', label: '变速箱控制器'},
-        {key: '7', label: '保险杠'},
-        {key: '8', label: '前大灯'},
-        {key: '9', label: '多媒体线视频'},
-      ],
+      chooseDataList: [],
       chooseData: [],
       isNodeView: false,
       carProject: '',
@@ -98,21 +88,42 @@ export default {
     const keys = 'CATEGORY_CONFIG_OPTIONS,CALCULATE_CONFIG_OPTIONS,VALUE_CONFIG_OPTIONS,YEAR_CONFIG_OPTIONS,CAR_TYPE_CONFIG_OPTIONS'
     this.selectDictByKeys(keys)
     this.getCarProjectOptinos()
-    this.getLastOperateCarType()
+    if (this.$route.query.carProject) {
+      this.carProject = this.$route.query.carProject
+      this.carProjectName = this.$route.query.cartypeProjectZh
+      this.initProductList()
+    } else {
+      this.getLastOperateCarType()
+    }
   },
   methods: {
-    getLastOperateCarType() {
-      getLastOperateCarType().then(res => {
-        if (res?.result) {
-          if (res.data.id) {
-            this.carProject = res.data.id
-            this.carProjectName = res.data.cartypeProName
-          }
-        }
+    async initProductList() {
+      await this.getProductList()
+      this.$nextTick(() => {
+        this.initView()
       })
     },
-    handleCarProjectChange(val) {
+    async getLastOperateCarType() {
+      const res = await getLastOperateCarType()
+      if (res?.result) {
+        if (res.data.id) {
+          this.carProject = res.data.id
+          this.carProjectName = res.data.cartypeProName
+          await this.getProductList()
+          this.$nextTick(() => {
+            this.initView()
+          })
+        }
+      }
+    },
+    async handleCarProjectChange(val) {
       this.carProjectName = this.carProjectOptions.find(item => item.value === val).label
+      if(val){
+        await this.getProductList()
+        this.$nextTick(() => {
+          this.initView()
+        })
+      }
     },
     changeSopStatus(isSop) {
       this.isSop = isSop
@@ -142,14 +153,56 @@ export default {
       })
     },
     openLogicSetting() {
+      if (!this.carProject) {
+        iMessage.error(this.language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目'))
+        return
+      }
+      getCarConfig(this.carProject).then(res => {
+        if (res?.result) {
+          this.logicData = res.data
+        } else {
+          this.logicData = {}
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
       this.logicVisible = true
     },
     changeLogic(visible) {
       this.logicVisible = visible
     },
     handleUseLogic(data) {
-      this.changeLogic(false)
-      this.$refs.logic.changeSaveLoading(false)
+      updateCarConfig({...this.logicData,type:1,cartypeProId:this.carProject}).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeLogic(false)
+          this.$nextTick(() => {
+            this.initView()
+          })
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.$refs.logic.changeSaveLoading(false)
+      })
+      
+    },
+    async getProductList() {
+      const res = await getProductSelectList(this.carProject)
+      if (res?.result) {
+        this.chooseDataList = [...(res.data.projectGroupsSelectList || []), ...(res.data.projectGroupsUnSelectList || [])].map(item => {
+          return {
+            ...item,
+            key: item.id,
+            label: item.pgNameZh
+          }
+        })
+        this.chooseData = res.data.projectGroupsSelectList.map(item => item.id)
+        this.proGroup = res.data.projectGroupsSelectList.map(item => item.pgNameZh).join(',')
+      } else {
+        this.chooseDataList = []
+        this.chooseData = []
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      }
     },
     openChooseProGroup() {
       if (!this.carProject) {
@@ -160,20 +213,29 @@ export default {
         return
       }
       this.chooseVisible = true
+      this.getProductList()
     },
     changeChooseProGroup(visible) {
       this.chooseVisible = visible
     },
-    handleChooseProGroup(val) {
+    async handleChooseProGroup(val) {
       this.chooseData = val
-      this.proGroup = this.chooseDataList.filter(item => this.chooseData.includes(item.key)).map(item => item.label).join(',')
-      this.changeChooseProGroup(false)
+      const params = {
+        cartypeProId: this.carProject,
+        projectGroupsSelectList: this.chooseDataList.filter(item => val.includes(item.key))
+      }
+      const res = await saveProductSelectList(params)
+      if (res?.result) {
+        iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        this.changeChooseProGroup(false)
+        await this.getProductList()
+        this.$nextTick(() => {
+          this.initView()
+        })
+      } else {
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      }
       this.$refs.chooseProGroup.changeSaveLoading(false)
-      // this.$refs.periodicView.init()
-      // this.$refs.nodeView.init()
-      this.$nextTick(() => {
-        this.initView()
-      })
     },
     changeNodeView(isNodeView) {
       this.isNodeView = isNodeView
@@ -196,7 +258,8 @@ export default {
 .projectGroup {
   padding: 0;
   padding-top: 10px;
-  overflow-y: auto;
+  height: auto;
+  overflow: auto;
   .titleSearch {
     display: flex;
     align-items: center;
