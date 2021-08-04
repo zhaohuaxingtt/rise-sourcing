@@ -4,7 +4,7 @@
          :class="{'item-active': current === index + 1}"
          v-for="(item,index) of list"
          :key="item"
-         @click="handleItemClick(index + 1)"
+         @click="handleItemClick(index + 1,item.flag)"
     >
       {{ language(item.key, item.title) }}
     </div>
@@ -13,15 +13,17 @@
 
 <script>
 
+import {RAWMATERIAL, LABOUR, ENERGY} from './data';
+
 export default {
   props: {
     list: {
       type: Array,
       default: () => {
         return [
-          {title: '原材料', key: 'TPGLZS.YUANCHAOLIAO'},
-          {title: '劳动力', key: 'TPGLZS.LAODONGLI'},
-          {title: '能源', key: 'TPGLZS.NENGYUAN'},
+          {title: '原材料', key: 'TPGLZS.YUANCHAOLIAO', flag: RAWMATERIAL},
+          {title: '劳动力', key: 'TPGLZS.LAODONGLI', flag: LABOUR},
+          {title: '能源', key: 'TPGLZS.NENGYUAN', flag: ENERGY},
         ];
       },
     },
@@ -32,9 +34,9 @@ export default {
     };
   },
   methods: {
-    handleItemClick(index) {
+    handleItemClick(index, flag) {
       this.current = index;
-      this.$emit('handleClick', index);
+      this.$emit('handleClick', flag);
     },
   },
 };
