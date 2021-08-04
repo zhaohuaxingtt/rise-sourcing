@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-03 16:51:54
+ * @LastEditTime: 2021-08-04 15:20:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -29,7 +29,9 @@
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
       <!-- language(tab.key, tab.label) -->
       <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="tab.label" :name="tab.name">
-        <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :aekoInfo="aekoInfo" />
+        <template v-if="currentTab==tab.name">
+          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :aekoInfo="aekoInfo" />
+        </template>
       </el-tab-pane>
     </iTabsList>
   </iPage>
@@ -82,7 +84,7 @@ export default {
   data() {
     return {
       aekoInfo: {},
-      currentTab: "partsList",
+      currentTab: "cover",
       basicTitle:[
         {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'aekoStatus',isObj:true,},
         {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'sourse',isObj:true,},

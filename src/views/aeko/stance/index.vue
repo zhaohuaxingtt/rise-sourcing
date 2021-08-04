@@ -14,8 +14,8 @@
       <iSearch @sure="getList" @reset="reset">
           <el-form>
               <el-form-item v-for="(item,index) in SearchList" :key="'SearchList_aeko'+index" :label="language(item.labelKey,item.label)">
-                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
-                    <el-option v-if="!item.multiple" value="" :label="language('all','全部')"></el-option>
+                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
+                    <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="item in selectOptions[item.selectOption] || []"
                       :key="item.value"
@@ -182,6 +182,7 @@ export default {
       async getList(){
         this.loading = true;
         const {searchParams,page} = this;
+        const { partNum } = searchParams;
         // 若有截至或者分派起止时间将其拆分成两个字段
         const {linieAssignTime=[],deadLine=[]} = searchParams;
         const data = {
@@ -197,6 +198,12 @@ export default {
         if(deadLine.length){
             data['deadLineStart'] = deadLine[0];
             data['deadLineEnd'] = deadLine[1];
+        }
+
+        // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
+        if(partNum && partNum.trim().length < 9){
+          this.loading = false;
+          return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
         }
         await getLiniePage({...searchParams,...data}).then((res)=>{
           this.loading = false;

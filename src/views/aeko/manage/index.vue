@@ -24,8 +24,8 @@
                    :popoverClass="'popover-class'"
                    :searchMethod="searchMethod"
                   /> -->
-                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
-                    <el-option v-if="!item.multiple" value="" :label="language('all','全部')"></el-option>
+                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
+                    <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="item in selectOptions[item.selectOption] || []"
                       :key="item.code"
@@ -146,7 +146,7 @@ import {
   iPagination,
   icon,
   iMessage,
-  iSelectCustom,
+  // iSelectCustom,
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
@@ -155,6 +155,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
+import { getCarTypePro } from '@/api/designate/nomination'
 import {
   getManageList,
   searchAekoStatus,
@@ -244,6 +245,7 @@ export default {
       async getList(){
         this.loading = true;
         const {searchParams,page} = this;
+        const {partNum} = searchParams;
         // 若有冻结起止时间将其拆分成两个字段
         const {frozenDate=[]} = searchParams;
         const data = {
@@ -253,6 +255,12 @@ export default {
         if(frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
             data['frozenDateEnd'] = frozenDate[1]+' 00:00:00';
+        }
+
+        // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
+        if(partNum && partNum.trim().length < 9){
+          this.loading = false;
+          return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
         }
         await getManageList({...searchParams,...data}).then((res)=>{
           this.loading = false;
@@ -270,57 +278,48 @@ export default {
       },
 
       // 获取搜索框下拉数据
-      async getSearchList(){
-        const selectOptions = {
-          aekoStatusList:[],
-          brand:[],
-          coverStatus:[],
-          cartypeCode:[],
-        };
+      getSearchList(){
         // aeko状态
-        await searchAekoStatus().then((res)=>{
+        searchAekoStatus().then((res)=>{
           const {code,data=[]} = res;
           if(code ==200 && data){
-            selectOptions.aekoStatusList = data;
+            this.selectOptions.aekoStatusList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
          //品牌
-        await searchBrand().then((res)=>{
+        searchBrand().then((res)=>{
           const {code,data=[]} = res;
           if(code ==200 && data){
-            selectOptions.brand = data;
+            this.selectOptions.brand = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
         // 封面状态
-        await searchCoverStatus().then((res)=>{
+        searchCoverStatus().then((res)=>{
           const {code,data=[]} = res;
           if(code ==200 && data){
-            selectOptions.coverStatusList = data;
+            this.selectOptions.coverStatusList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
 
         // 车型项目
-        await getSearchCartype().then((res)=>{
+        getCarTypePro().then((res)=>{
           const {code,data} = res;
-          if(code ==200 && data.infoList){
-            const {infoList =[]} = data;
-            infoList.map((item)=>{
-              item.code= item.key;
-              item.desc = item.value
-            });
-            selectOptions.cartypeCode = infoList;
+          if(code ==200 ){
+            (data.data).map((item)=>{
+              item.desc = item.name;
+            })
+            this.selectOptions.cartypeCode = data.data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
 
-        this.selectOptions = selectOptions;
         // Promise.all([searchAekoStatus(),searchBrand(),searchCoverStatus()]).then((res)=>{
         //   this.selectOptions={
         //     'aekoStatus':res[0].data || [], // aeko状态
@@ -515,7 +514,7 @@ export default {
         const {selectItems} = this;
         if(!isNext) return;
         const aekoIdList = selectItems.map((item)=>item.requirementAekoId);
-        downloadAeko(aekoIdList).then((res)=>{
+          downloadAeko(aekoIdList).then((res)=>{
 
         })
       },

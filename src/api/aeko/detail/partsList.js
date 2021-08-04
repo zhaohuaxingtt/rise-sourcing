@@ -10,9 +10,18 @@ const requst = axios(process.env.VUE_APP_PARTS)
 
 // 零件清单分页查询  
 export function getPartPage(data) {
-    return requst({
-      url: '/aeko/part/page',
-      method: 'POST',
-      data,
-    })
-  }
+  return requst({
+    url: '/aeko/part/page',
+    method: 'POST',
+    data,
+  })
+}
+
+// 删除零件
+export function deletePart(data) {
+  return requst({
+    url: '/aeko/part/delete',
+    method: 'POST',
+    data,
+  })
+}
