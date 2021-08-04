@@ -26,7 +26,7 @@ export default [{
       path: 'categoryManagementAssistant/internalDemandAnalysis',
       name: 'internalDemandAnalysis',
       redirect: 'categoryManagementAssistant/internalDemandAnalysis/overView',
-      component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis'),
+      component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis'),
       children: [
         {
           path: 'overView',
@@ -51,8 +51,23 @@ export default [{
     {
       //材料组定位
       path: 'categoryManagementAssistant/materialGroupPositioning',
-      name: 'externalSupplyMarketAnalysis',
-      component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/materialGroupPositioning')
+      name: 'materialGroupPositioning',
+      redirect: 'categoryManagementAssistant/materialGroupPositioning/overView',
+      component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/materialGroupPositioning'),
+      children: [
+        {
+          path: 'overView',
+          name: 'overView',
+          meta: { title: "材料组定位概览" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/materialGroupPositioning/overView'),
+        },
+        {
+          path: 'materialGroup',
+          name: 'materialGroup',
+          meta: { title: "材料组定位" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/materialGroupPositioning/materialGroup'),
+        }
+      ]
     },
     {
       //举措清单
