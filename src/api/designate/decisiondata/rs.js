@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-04 14:41:32
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-07 15:42:49
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-03 13:53:30
  * @Description: rs单相关接口
  * @FilePath: \front-web\src\api\designate\decisiondata\rs.js
  */
@@ -24,7 +24,7 @@ export function readQuotation(params) {
 // rs单列表查询
 export function getList(nominateAppId) {
   return requst({
-    url: '/rs/list?nominateAppId='+nominateAppId,
+    url: '/rs/listRs?nominateAppId='+nominateAppId,
     method: "GET"
   })
 }

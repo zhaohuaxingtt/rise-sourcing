@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-07-29 16:55:59
+ * @LastEditTime: 2021-08-03 14:55:30
  * @LastEditors: Please set LastEditors
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js
@@ -79,3 +79,11 @@ export const user = {
   //扩产能管理员
   BKMROLETAGID:'KCNGLY'
 }
+// 测试用区分权限的用户id
+export const permissionUserIdMap = {
+  AEKO_MANAGER: new Set([4]), // Aeko管理员
+  COMMODITY_COORDINATOR: new Set([]), // 科室协调员
+  LINIE: new Set([ 51 ]) // 专业采购员
+}
+
+// 51 姜谷兰 WS1UAETEST02
