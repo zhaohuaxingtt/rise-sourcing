@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 10:37:24
+ * @LastEditTime: 2021-08-04 16:48:57
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -219,5 +219,40 @@ export function downloadNodeView(cartypeProId) {
   return downloadRequst({
     url: '/product-group-schedule/nodeViewFile/'+cartypeProId,
     method: 'GET'
+  })
+}
+
+// 获取经验常值列表
+export function getExperience(productGroup) {
+  return requst({
+    url: `/history-progress/experience?productGroup=${productGroup}`,
+    method: 'GET'
+  })
+}
+
+// 正常查询匹配零件号历史进度
+export function getCondition(params) {
+  return requst({
+    url: `/history-progress/parts/condition`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 拟合进度查询匹配零件号历史进度
+export function getFitting(params) {
+  return requst({
+    url: `/history-progress/parts/fitting`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 保存展示字段
+export function updateFields(params) {
+  return requst({
+    url: '/history-progress/fields',
+    method: 'PUT',
+    data: params
   })
 }

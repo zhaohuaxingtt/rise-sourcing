@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:59:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 17:02:30
+ * @LastEditTime: 2021-08-04 11:25:53
  * @Description: 发送FS确认弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\fsconfirm\index.vue
 -->
@@ -19,7 +19,7 @@
         <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton>
       </div>
     </template>
-    <tableList v-update indexKey :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @handleSelectChange="handleSelectChange"></tableList>
+    <tableList v-update indexKey :tableTitle="tableTitle" :tableData="tableList" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @handleSelectChange="handleSelectChange"></tableList>
   </iDialog>
 </template>
 
@@ -27,8 +27,6 @@
 import { iDialog, iButton, iMessage } from 'rise'
 import { tableTitle } from './data'
 import tableList from '../tableList'
-import { getBuyer, getFsUserList } from '@/api/project'
-import moment from 'moment'
 export default {
   components: { iDialog, iButton, tableList },
   props: {
@@ -37,16 +35,6 @@ export default {
     cartypeProId: {type:String},
     type: {type:String}
   },
-  watch:{
-    dialogVisible(val) {
-      if(val) {
-        if (this.type !== '1') {
-          this.getBuyer()
-        }
-        this.getFsUserList()
-      }
-    }
-  },
   data() {
     return {
       saveLoading: false,
@@ -54,75 +42,16 @@ export default {
       tableLoading: false,
       buyer: '',
       fsOptions: {},
-      selectData: []
-    }
-  },
-  computed: {
-    tableData() {
-      return this.tableList.map(item => {
-        return {
-          ...item,
-          projectPurchaser: item.projectPurchaser || this.buyer,
-          scheBfToFirstTryoutWeek: item.scheBfToFirstTryoutWeek || item.keyBfToFirstTryoutWeek,
-          scheFirstTryEmWeek: item.scheFirstTryEmWeek || item.keyFirstTryEmWeek,
-          scheFirstTryOtsWeek: item.scheFirstTryOtsWeek || item.keyFirstTryOtsWeek,
-          productGroupDe: item.productGroupDe || item.productGroupNameDe,
-          productGroupZh: item.productGroupZh || item.productGroupNameZh,
-          cartypeProId: item.cartypeProId,
-          fs: item.fs ? item.fs : item.selectOption ? item.selectOption[0].label || '' : '',
-          fsId: item.fsId ? item.fsId : item.selectOption ? item.selectOption[0].value || '' : '',
-          projectPurchaserId: item.projectPurchaserId || this.buyerId,
-          confirmDateDeadline: item.confirmDateDeadline || this.getNextThreeWorkDay()
-        }
-      })
+      selectData: [],
+      tableData: tableList
     }
   },
   methods: {
-    getNextThreeWorkDay() {
-      if (moment().day() === 2 || moment().day() === 1) {
-        return moment().add(3, 'days')
-      } else {
-        return moment().add(5, 'days');
-      }
-    },
     handleSelectChange(val, row) {
       this.$set(row, 'fs', row.selectOption.find(item => item.value === val).label)
     },
     handleSelectionChange(val) {
       this.selectData = val
-    },
-    getFsUserList() {
-      getFsUserList(this.tableList.map(item => item.productGroupId)).then(res => {
-        if (res?.result) {
-          this.fsOptions = res.data
-          this.tableList.forEach(element => {
-            element.selectOption = this.fsOptions[element.productGroupId]?.map(item => {
-            return {
-              ...item,
-              value: item.userId,
-              label: item.userName
-            }
-          })
-          });
-        } else {
-          this.fsOptions = {}
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
-    },
-    getBuyer() {
-      if (!this.cartypeProId) {
-        return
-      }
-      getBuyer(this.cartypeProId).then(res => {
-        if (res?.result) {
-          this.buyer = res.data.nameZh
-          this.buyerId = res.data.id
-        } else {
-          this.buyer = ''
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
     },
     clearDialog() {
       this.reasonDescription = ''

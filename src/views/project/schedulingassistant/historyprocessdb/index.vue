@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 11:20:13
+ * @LastEditTime: 2021-08-04 16:43:00
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
@@ -28,41 +28,77 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <productGroup ref="historyDBProductGroup" v-if="searchParams.level === '0'" />
-    <part ref="historyDBpart" v-else />
+    <productGroup ref="historyDBProductGroup" v-if="searchParams.level === '1'" :searchParams="searchParams" :carProjectOptions="this.selectOptions.carProjectOptions" />
+    <part ref="historyDBpart" v-else :searchParams="searchParams" :carProjectOptions="this.selectOptions.carProjectOptions" />
   </div>
 </template>
 
 <script>
-import { iSearch, iSelect, iInput, iButton } from 'rise'
+import { iSearch, iSelect, iInput, iButton, iMessage } from 'rise'
 import { searchListPro, searchListPart } from './data'
 import { cloneDeep } from 'lodash' 
 import productGroup from './components/productGroup'
 import part from './components/part'
+import { getCarTypePro } from '@/api/project'
 export default {
   components: { iSearch, iSelect, iInput, iButton, productGroup, part },
   data() {
     return {
       searchParams: {
-        level: '0'
+        level: '1'
       },
       selectOptions: {
         levelOptions: [
-          {value: '0', label: '产品组'},
-          {value: '1', label: '零件'}
+          {value: '1', label: '产品组'},
+          {value: '2', label: '零件'}
         ]
       },
     }
   },
   computed: {
     searchList() {
-      return this.searchParams.level === '0' ? cloneDeep(searchListPro) : cloneDeep(searchListPart)
+      return this.searchParams.level === '1' ? cloneDeep(searchListPro) : cloneDeep(searchListPart)
     }
   },
+  created() {
+    this.searchParams = {
+      level: '1',
+      cartypeProId: this.$route.query.cartypeProId || '',
+      productGroup: this.$route.query.productGroup || '',
+      sixPartCode: this.$route.query.sixPartCode || ''
+    }
+    this.getCarProjectOptions()
+  },
   methods: {
+    getCarProjectOptions() {
+      getCarTypePro().then(res => {
+        if (res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            carProjectOptions: res.data.map(item => {
+              return {
+                ...item,
+                value: item.id,
+                label: item.cartypeProName
+              }
+            })
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
     handleSure() {
-      this.$refs.historyDBProductGroup && this.$refs.historyDBProductGroup.changeProgress(false)
-      this.$refs.historyDBpart && this.$refs.historyDBpart.changeProgress(false)
+      this.$nextTick(() => {
+        this.$refs.historyDBProductGroup && this.$refs.historyDBProductGroup.handleNomalSearch()
+        this.$refs.historyDBpart && this.$refs.historyDBpart.handleNomalSearch(false)
+      })
+    },
+    handleReset() {
+      this.searchParams = {
+        level: this.searchParams.level
+      }
+      this.handleSure()
     }
   }
 }
