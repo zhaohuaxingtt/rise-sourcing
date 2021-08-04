@@ -15,7 +15,7 @@
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
             :label="language(item.labelKey,item.label)"  
             >
-                <iSelect v-update v-if="item.type === 'select'" :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
+                <iSelect v-update v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
                 <el-option  value="" :label="language('all','全部')"></el-option>
                 <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
@@ -175,8 +175,8 @@ export default {
             selectItems:[],
             loading:false,
             tableListData:[
-                {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':10,'k':11},
-                {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':10,'k':11},
+                // {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':10,'k':11},
+                // {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':10,'k':11},
             ],
             tableTitle: [],
             assignVisible:false,
@@ -324,6 +324,9 @@ export default {
         getAekoContentPart() {
             getAekoContentPart({
                 ...this.searchParams,
+                requirementAekoId: this.aekoInfo.requirementAekoId,
+                buyerName: undefined,
+                linieDeptNum: undefined,
                 current: this.page.currPage,
                 size: this.page.pageSize
             })
@@ -351,6 +354,14 @@ export default {
         }
         .isPreset{
             color: rgba($color: #5C6577, $alpha: .5);
+        }
+        .multipleSelect{
+            ::v-deep .el-tag{
+            max-width: calc(100% - 70px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            }
         }
     }
 </style>
