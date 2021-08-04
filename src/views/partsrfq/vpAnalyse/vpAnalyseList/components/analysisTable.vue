@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-30 14:05:14
+ * @LastEditTime: 2021-08-04 18:57:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -19,6 +19,8 @@
               @select="rowSelect"
               @select-all="selectAll">
       <el-table-column type="selection"
+                       align="center"
+                       header-align="center"
                        width="55">
       </el-table-column>
       <el-table-column label="#"
