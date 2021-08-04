@@ -178,7 +178,7 @@ export default {
                 bg: this.setBg(proGrowthRate),
               },
               // distance: 12,
-              show: true,
+              show: false,
               position: 'top',
               formatter: () => {
                 if (proGrowthRate > 0) {
@@ -197,17 +197,17 @@ export default {
             color: '#70AD47',
             label: {
               rich: {
-                bg: this.setBg(reductionPotential),
+                bgGrowth: this.setBg(proGrowthRate),
+                bgReduction: this.setBg(reductionPotential),
               },
-              // distance: 12,
+              //distance: 20,
               show: true,
-              position: 'right',
+              position: 'top',
+              offset: [50, 5],
               formatter: () => {
-                if (reductionPotential > 0) {
-                  return `{bg|${this.language('TPZS.DANJIA', '单价')}+${toFixedNumber(reductionPotential, 2)}%}`;
-                } else {
-                  return `{bg|${this.language('TPZS.DANJIA', '单价')}${toFixedNumber(reductionPotential, 2)}%}`;
-                }
+                const bgGrowthPlus = proGrowthRate > 0 ? '+' : '';
+                const bgReductionPlus = reductionPotential > 0 ? '+' : '';
+                return `{bgGrowth|${this.language('TPZS.CHANLIANG', '产量')}${bgGrowthPlus}${toFixedNumber(proGrowthRate, 2)}%}\n\n{bgReduction|${this.language('TPZS.DANJIA', '单价')}${bgReductionPlus}${toFixedNumber(reductionPotential, 2)}%} `;
               },
             },
           },
@@ -218,7 +218,7 @@ export default {
           this.createYline(this.cpLineData, this.cpLineData[1]),
         ],
         grid: {
-          top: 40,
+          top: 65,
           right: 80,
           left: 60,
         },
