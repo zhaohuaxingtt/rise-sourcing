@@ -62,7 +62,7 @@ export default {
   },
   data() {
     return {
-      current: 1,
+      current: RAWMATERIAL,
       searchProps: rawMaterialSearch,
       dataTabArray: [],
       showStatus: true,
@@ -89,17 +89,17 @@ export default {
     async handleTabsChange(val) {
       this.chartBoxLoading = true;
       switch (val) {
-        case 1:
+        case RAWMATERIAL:
           this.searchProps = rawMaterialSearch;
           await this.getSearchProps({type: RAWMATERIAL});
           await this.getChartGroupData({type: RAWMATERIAL});
           break;
-        case 2:
+        case LABOUR:
           this.searchProps = manpowerSearch;
           await this.getSearchProps({type: LABOUR});
           await this.getChartGroupData({type: LABOUR});
           break;
-        case 3:
+        case ENERGY:
           this.searchProps = energySearch;
           await this.getSearchProps({type: ENERGY});
           await this.getChartGroupData({type: ENERGY});
@@ -110,13 +110,13 @@ export default {
     // 搜索
     handleSearch() {
       switch (this.current) {
-        case 1:
+        case RAWMATERIAL:
           this.getChartGroupData({type: RAWMATERIAL});
           break;
-        case 2:
+        case LABOUR:
           this.getChartGroupData({type: LABOUR});
           break;
-        case 3:
+        case ENERGY:
           this.getChartGroupData({type: ENERGY});
           break;
       }
@@ -271,6 +271,7 @@ export default {
         });
       }));
     },
+    // 处理保存
     async handleSave() {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFile();
@@ -281,9 +282,18 @@ export default {
         reportUrl: resFile.downloadUrl,
         rawMaterialGroupDataDTO: this.getSearchForm(),
       };
-      const res = await saveRawMaterialScheme(req);
+      let res = '';
+      switch (this.current) {
+        case RAWMATERIAL:
+          res = await saveRawMaterialScheme(req);
+          break;
+      }
       this.resultMessage(res);
       this.saveButtonLoading = false;
+    },
+    // 获取最近搜索参数
+    async getRecentSearchData() {
+
     },
     handleBack() {
       this.$router.push({
