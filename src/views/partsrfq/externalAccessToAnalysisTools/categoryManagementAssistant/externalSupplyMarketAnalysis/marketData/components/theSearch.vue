@@ -57,7 +57,6 @@ export default {
 <style scoped lang="scss">
 .searchBox {
   margin-top: 30px;
-  margin-bottom: 20px;
   display: flex;
   align-items: center;
 

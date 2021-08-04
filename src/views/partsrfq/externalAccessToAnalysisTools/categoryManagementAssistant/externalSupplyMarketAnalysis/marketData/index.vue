@@ -12,10 +12,12 @@
     <theTabs @handleClick="handleTabsClick"/>
     <!--    搜索栏-->
     <theSearch :list="searchProps" v-if="showStatus" ref="theSearch"/>
-    <!--    数据页签栏-->
-    <theDataTab :list="dataTabArray" v-if="showStatus" @handleDelete="handleDataTabDelete"/>
-    <!--    echarts图表-->
-    <theChart :chartData="chartData" :chartLoading="chartLoading" v-if="showStatus && showChart" ref="theChart"/>
+    <div v-loading="chartBoxLoading" style="padding-top: 20px">
+      <!--    数据页签栏-->
+      <theDataTab :list="dataTabArray" v-if="showStatus" @handleDelete="handleDataTabDelete"/>
+      <!--    echarts图表-->
+      <theChart :chartData="chartData" v-if="showStatus && showChart" ref="theChart"/>
+    </div>
   </iCard>
 </template>
 
@@ -25,10 +27,21 @@ import theTabs from './components/theTabs';
 import theSearch from './components/theSearch';
 import theDataTab from './components/theDataTab';
 import theChart from './components/theChart';
-import {rawMaterialSearch, manpowerSearch, energySearch} from './components/data';
+import {
+  rawMaterialSearch,
+  manpowerSearch,
+  energySearch,
+  RAWMATERIAL,
+  LABOUR,
+  ENERGY,
+} from './components/data';
 import {
   getRawMaterialGroupSelectList,
   getrawMaterialGroupData,
+  getLabourGroupSelectList,
+  getLabourGroupData,
+  getEnergyGroupSelectList,
+  getEnergyGroupData,
 } from '../../../../../../api/categoryManagementAssistant/marketData';
 import {cloneDeep} from 'lodash';
 
@@ -48,13 +61,13 @@ export default {
       dataTabArray: [],
       showStatus: true,
       showChart: true,
-      chartLoading: false,
       chartData: {},
+      chartBoxLoading: false,
     };
   },
   async created() {
-    await this.getRawMaterialSearchProps();
-    await this.getRawMaterialGroupData();
+    await this.getSearchProps({type: RAWMATERIAL});
+    await this.getChartGroupData({type: RAWMATERIAL});
   },
   methods: {
     handleTabsClick(val) {
@@ -66,17 +79,37 @@ export default {
       });
     },
     async handleTabsChange(val) {
+      this.chartBoxLoading = true;
       switch (val) {
         case 1:
           this.searchProps = rawMaterialSearch;
-          await this.getRawMaterialSearchProps();
-          await this.getRawMaterialGroupData();
+          await this.getSearchProps({type: RAWMATERIAL});
+          await this.getChartGroupData({type: RAWMATERIAL});
           break;
         case 2:
           this.searchProps = manpowerSearch;
+          await this.getSearchProps({type: LABOUR});
+          await this.getChartGroupData({type: LABOUR});
           break;
         case 3:
+          await this.getSearchProps({type: ENERGY});
+          await this.getChartGroupData({type: ENERGY});
           this.searchProps = energySearch;
+          break;
+      }
+      this.chartBoxLoading = false;
+    },
+    // 搜索
+    handleSearch() {
+      switch (this.current) {
+        case 1:
+          this.getChartGroupData({type: RAWMATERIAL});
+          break;
+        case 2:
+          this.getChartGroupData({type: LABOUR});
+          break;
+        case 3:
+          this.getChartGroupData({type: ENERGY});
           break;
       }
     },
@@ -89,6 +122,21 @@ export default {
             break;
           case 'specsList':
             item.options = data.specsList;
+            break;
+          case 'professionList':
+            item.options = data.professionList;
+            break;
+          case 'productNameList':
+            item.options = data.productNameList;
+            break;
+          case 'marketNameList':
+            item.options = data.marketNameList;
+            break;
+          case 'priceTypeList':
+            item.options = data.priceTypeList;
+            break;
+          case 'unitList':
+            item.options = data.unitList;
             break;
           case 'areaList':
             item.options = data.areaList;
@@ -114,30 +162,18 @@ export default {
       form.dataSourceList = [form.dataSourceList];
       return form;
     },
-    // 搜索
-    handleSearch() {
-      switch (this.current) {
-        case 1:
-          this.getRawMaterialGroupData();
-          break;
-        case 2:
-          break;
-        case 3:
-          break;
-      }
-    },
     // 获取数据页签
     getDataTabArray(data) {
       if (data.resultList) {
         this.dataTabArray = data.resultList.map(item => {
-          return item.classType;
+          return item.dataType;
         });
       }
     },
     // 删除数据页签
     handleDataTabDelete(val) {
       this.chartData.resultList = this.chartData.resultList.filter(item => {
-        return item['classType'] !== val;
+        return item['dataType'] !== val;
       });
       this.dataTabArray = this.dataTabArray.filter(item => {
         return item !== val;
@@ -147,22 +183,45 @@ export default {
         this.showChart = true;
       });
     },
-    // 原材料
-    async getRawMaterialSearchProps() {
-      const res = await getRawMaterialGroupSelectList();
+    // 通过接口获取搜索下拉
+    async getSearchProps({type}) {
+      let res = '';
+      switch (type) {
+        case RAWMATERIAL:
+          res = await getRawMaterialGroupSelectList();
+          break;
+        case LABOUR:
+          res = await getLabourGroupSelectList();
+          break;
+        case ENERGY:
+          res = await getEnergyGroupSelectList();
+          break;
+      }
       const data = res.data;
       this.setSearchProps(data);
     },
-    async getRawMaterialGroupData() {
+    // 获取图表数据
+    async getChartGroupData({type}) {
       try {
-        this.chartLoading = true;
+        let res = '';
+        this.chartBoxLoading = true;
         const form = this.getSearchForm();
-        const res = await getrawMaterialGroupData(form);
+        switch (type) {
+          case RAWMATERIAL:
+            res = await getrawMaterialGroupData(form);
+            break;
+          case LABOUR:
+            res = await getLabourGroupData(form);
+            break;
+          case ENERGY:
+            res = await getEnergyGroupData(form);
+            break;
+        }
         this.getDataTabArray(res.data);
         this.chartData = res.data;
-        this.chartLoading = false;
+        this.chartBoxLoading = false;
       } catch {
-        this.chartLoading = false;
+        this.chartBoxLoading = false;
       }
     },
   },

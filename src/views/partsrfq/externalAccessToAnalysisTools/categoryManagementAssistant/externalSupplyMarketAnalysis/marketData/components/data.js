@@ -47,7 +47,7 @@ export const rawMaterialSearch = [
 export const manpowerSearch = [
   {
     type: 'select',
-    props: 'a',
+    props: 'professionList',
     options: [],
     labelLanguageKey: 'PLGLZS.GONGZHONG',
     label: '工种',
@@ -80,7 +80,7 @@ export const manpowerSearch = [
 export const energySearch = [
   {
     type: 'select',
-    props: 'a',
+    props: 'productNameList',
     options: [],
     labelLanguageKey: 'PLGLZS.CHANPINMINGCHENG',
     label: '产品名称',
@@ -89,7 +89,7 @@ export const energySearch = [
   },
   {
     type: 'select',
-    props: 'b',
+    props: 'marketNameList',
     options: [],
     labelLanguageKey: 'PLGLZS.SHICHANGMINGCHENG',
     label: '市场名称',
@@ -98,7 +98,7 @@ export const energySearch = [
   },
   {
     type: 'select',
-    props: 'c',
+    props: 'priceTypeList',
     options: [],
     labelLanguageKey: 'PLGLZS.JIAGELEIXING',
     label: '价格类型',
@@ -107,7 +107,7 @@ export const energySearch = [
   },
   {
     type: 'select',
-    props: 'd',
+    props: 'unitList',
     options: [],
     labelLanguageKey: 'PLGLZS.DANWEI',
     label: '单位',
@@ -126,4 +126,8 @@ export const energySearch = [
     labelLanguageKey: 'PLGLZS.SHUJULAIYUAN',
     label: '数据来源',
   },
-]
+];
+
+export const RAWMATERIAL = 'rawMaterial';
+export const LABOUR = 'labour';
+export const ENERGY = 'energy';
