@@ -55,6 +55,12 @@ export default [{
           meta: { title: "外部供应市场分析概览" },
           component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/overView'),
         },
+        {
+          path: 'marketData',
+          name: 'marketData',
+          meta: { title: "市场数据" },
+          component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/marketData'),
+        },
       ]
     },
     {

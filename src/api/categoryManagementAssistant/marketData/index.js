@@ -7,6 +7,8 @@ import axios from '@/utils/axios';
 
 const request = axios(process.env.VUE_APP_AON);
 
+// --原材料--
+
 //市场数据原材料下拉列表
 export function getRawMaterialGroupSelectList() {
   return request({
@@ -24,6 +26,26 @@ export function getrawMaterialGroupData(params) {
   });
 }
 
+//市场数据原材料获取上次操作查询条件
+export function getRecentRawMaterialScheme(params) {
+  return request({
+    url: '/cmMdRawMaterialEntity/getRecentRawMaterialScheme',
+    method: 'POST',
+    data: params,
+  });
+}
+
+//保存市场数据原材料查询条件和方案报告
+export function saveRawMaterialScheme(params) {
+  return request({
+    url: '/cmMdRawMaterialEntity/saveRawMaterialScheme',
+    method: 'POST',
+    data: params,
+  });
+}
+
+// --劳动力--
+
 //市场数据劳动力下拉列表
 export function getLabourGroupSelectList() {
   return request({
@@ -40,6 +62,9 @@ export function getLabourGroupData(params) {
     data: params,
   });
 }
+
+
+// --能源--
 
 //市场数据能源下拉列表
 export function getEnergyGroupSelectList() {

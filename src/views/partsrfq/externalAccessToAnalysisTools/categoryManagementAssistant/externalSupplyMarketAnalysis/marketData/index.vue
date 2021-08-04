@@ -1,11 +1,11 @@
 <template>
-  <iCard>
+  <iCard id="allContainer" class="margin-top30">
     <div class="margin-bottom20 clearFloat">
       <span class="font22 font-weight">{{ language('PLGLZS.SHICHANGSHUJU', '市场数据') }}</span>
       <div class="floatright">
         <iButton @click="handleSearch">{{ language('LK_QUEREN', '确认') }}</iButton>
-        <iButton>{{ language('LK_BAOCUN', '保存') }}</iButton>
-        <iButton>{{ language('LK_FANHUI', '返回') }}</iButton>
+        <iButton @click="handleSave" :loading="saveButtonLoading">{{ language('LK_BAOCUN', '保存') }}</iButton>
+        <iButton @click="handleBack">{{ language('LK_FANHUI', '返回') }}</iButton>
       </div>
     </div>
     <!--    导航条-->
@@ -38,14 +38,20 @@ import {
 import {
   getRawMaterialGroupSelectList,
   getrawMaterialGroupData,
+  getRecentRawMaterialScheme,
+  saveRawMaterialScheme,
   getLabourGroupSelectList,
   getLabourGroupData,
   getEnergyGroupSelectList,
   getEnergyGroupData,
 } from '../../../../../../api/categoryManagementAssistant/marketData';
 import {cloneDeep} from 'lodash';
+import {dataURLtoFile, downloadPDF} from '@/utils/pdf';
+import {uploadFile} from '@/api/file/upload';
+import resultMessageMixin from '@/utils/resultMessageMixin';
 
 export default {
+  mixins: [resultMessageMixin],
   components: {
     iCard,
     iButton,
@@ -63,6 +69,8 @@ export default {
       showChart: true,
       chartData: {},
       chartBoxLoading: false,
+      saveButtonLoading: false,
+      categoryCode: '123',
     };
   },
   async created() {
@@ -238,6 +246,49 @@ export default {
           return item.dataType;
         });
       }
+    },
+    getDownloadFile() {
+      return new Promise((resolve => {
+        downloadPDF({
+          idEle: 'allContainer',
+          pdfName: 'market data',
+          callback: async (pdf, pdfName) => {
+            const time = new Date().getTime();
+            const filename = pdfName + time + '.pdf';
+            const pdfFile = pdf.output('datauristring');
+            const blob = dataURLtoFile(pdfFile, filename);
+            const formData = new FormData();
+            formData.append('multipartFile', blob);
+            formData.append('applicationName', 'rise');
+            const res = await uploadFile(formData);
+            const data = res.data[0];
+            const req = {
+              downloadName: data.fileName,
+              downloadUrl: data.filePath,
+            };
+            resolve(req);
+          },
+        });
+      }));
+    },
+    async handleSave() {
+      this.saveButtonLoading = true;
+      const resFile = await this.getDownloadFile();
+      const req = {
+        categoryCode: this.categoryCode,
+        reportFileName: resFile.downloadName,
+        reportName: resFile.downloadName,
+        reportUrl: resFile.downloadUrl,
+        rawMaterialGroupDataDTO: this.getSearchForm(),
+      };
+      const res = await saveRawMaterialScheme(req);
+      this.resultMessage(res);
+      this.saveButtonLoading = false;
+    },
+    handleBack() {
+      this.$router.push({
+        path: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis/overView',
+      });
     },
   },
 };
