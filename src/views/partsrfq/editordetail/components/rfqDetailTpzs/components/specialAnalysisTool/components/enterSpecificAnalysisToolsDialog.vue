@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { iDialog, iSelect, iButton, iInput, icon } from 'rise';
+import { iDialog, iSelect, iButton, iInput, icon ,iMessage} from 'rise';
 import { pageRfqBaseInfo } from "@/api/partsrfq/specialAnalysisTool/specialAnalysisTool.js";
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from "./data.js";
@@ -87,6 +87,9 @@ export default {
         const res = await pageRfqBaseInfo(pms)
         if (res.result) {
           this.tableListData = res.data
+        }
+        if(res.total===0){
+          iMessage.error(this.language('BQBCZQCXSR','抱歉，不存在，请重新输入'))
         }
         this.tableLoading = false
       } catch (error) {

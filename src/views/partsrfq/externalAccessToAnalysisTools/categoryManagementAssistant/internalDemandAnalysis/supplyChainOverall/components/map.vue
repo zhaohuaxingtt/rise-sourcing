@@ -126,7 +126,7 @@ export default {
   },
 }
 </script>
-<style >
+<style lang='scss' scoped>
 .amap-wrapper {
   width: 100%;
   height: 60rem;
@@ -137,41 +137,40 @@ export default {
 ::v-deep .amap-copyright {
   opacity: 0;
 }
-.title {
-  margin-left: 5px;
-  color: #7e84a3;
-  font-size: 20px;
-}
-.img {
-  width: 33px;
-  height: 25px;
-  background: url("~@/assets/images/zl.png") center center no-repeat;
-  background-size: 33px auto;
-}
 .img-svw {
   width: 33px;
   height: 35px;
   background: url("~@/assets/images/svw.png") center center no-repeat;
   background-size: 33px auto;
 }
-.label {
-  color: #7e84a3;
-  font-size: 20px;
-  text-align: left;
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-.value {
-  color: #131523;
-  font-size: 16px;
-  text-align: left;
-}
-.tooltip {
+::v-deep .tooltip {
   padding: 30px;
   width: 20rem;
-}
-
-.flex {
-  align-items: center;
+  .flex {
+    align-items: center;
+    .img {
+      width: 33px;
+      height: 25px;
+      background: url("~@/assets/images/zl.png") center center no-repeat;
+      background-size: 33px auto;
+    }
+  }
+  .title {
+    margin-left: 5px;
+    color: #7e84a3;
+    font-size: 20px;
+  }
+  .label {
+    color: #7e84a3;
+    font-size: 20px;
+    text-align: left;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+  .value {
+    color: #131523;
+    font-size: 16px;
+    text-align: left;
+  }
 }
 </style>
