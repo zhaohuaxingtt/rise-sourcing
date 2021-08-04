@@ -39,7 +39,31 @@ export default [{
           name: 'technology',
           meta: { title: "技术路线" },
           component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/technology'),
-        }
+        },
+        {
+          path: 'costAnalysisMain',
+          name: 'costAnalysisMain',
+          meta: { title: "成本分析-系统筛选" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain'),
+        },
+        {
+          path: 'costAnalysis',
+          name: 'costAnalysis',
+          meta: { title: "成本分析库" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/costAnalysis'),
+        },
+        {
+          path: 'costAnalysisAdd',
+          name: 'costAnalysisAdd',
+          meta: { title: "成本分析新增" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/costAnalysisAdd'),
+        },
+        {
+          path: 'costAnalysisHandleInput',
+          name: 'costAnalysisHandleInput',
+          meta: { title: "手工输入" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/costAnalysisHandleInput'),
+        },
       ]
     },
     {
