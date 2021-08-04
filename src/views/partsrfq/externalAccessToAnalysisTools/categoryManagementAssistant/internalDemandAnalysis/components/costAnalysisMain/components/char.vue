@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 16:37:12
- * @LastEditTime: 2021-08-03 17:18:03
+ * @LastEditTime: 2021-08-04 10:35:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisHandleInput\components\char.vue
@@ -61,7 +61,21 @@ export default {
             label: {
               show: true,
               position: 'outside',
-              verticalAlign: 'middle',
+              formatter: value => {
+                console.log('value', value);
+                const eValue = value.data; 
+                console.log('eValue', eValue);
+                return '{pieIcon|}' + eValue.name;
+              },
+              rich: {
+                pieIcon: {
+                  backgroundColor: {
+                    // image:'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png'
+                    // image: '../../../../../../../../assets/images/pie-icon.png'
+                  },
+                  height: 20
+                }
+						  }
             },
             labelLine: {
               show: true,
