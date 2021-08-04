@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 16:38:55
- * @LastEditTime: 2021-08-03 10:32:12
+ * @LastEditTime: 2021-08-04 16:55:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysis\index.vue
@@ -12,7 +12,7 @@
       <div slot="header" class="headBox">
         <p class="headTitle">{{ language('CHENGBENJIEGOUFENXIKU', '成本结构分析库') }}</p>
         <span class="buttonBox">
-          <iButton>{{ language('FANHUI', '返回') }}</iButton>
+          <iButton @click="clickBack">{{ language('FANHUI', '返回') }}</iButton>
         </span>
       </div>
       <div class="searchBox">
@@ -40,9 +40,9 @@
       <div class="mainContent">
         <div class="tableOptionBox">
           <p class="tableTitle">分析库列表</p>
-          <iButton @click="handleSubmitAdd">{{language('SHANCHU', '删除')}}</iButton>
-          <iButton @click="handleSubmitAdd">{{language('XINZENG', '新增')}}</iButton>
-          <iButton @click="handleSubmitAdd">{{language('BIANJI', '编辑')}}</iButton>
+          <iButton @click="clickDel">{{language('SHANCHU', '删除')}}</iButton>
+          <iButton @click="clickAdd">{{language('XINZENG', '新增')}}</iButton>
+          <iButton @click="clickEdit">{{language('BIANJI', '编辑')}}</iButton>
         </div>
         <tableList
           ref="multipleTable"
@@ -95,11 +95,13 @@ export default {
   components: {iCard, iButton, iInput, iSelect, iPagination, tableList, icon},
   data () {
     return {
+      costAnalysisMainUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain',
+      costAnalysisAddUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisAdd',
       searchForm: {},
       labelPosition: 'top',
       tableTitle,
       tableListData: [],
-      loading: true
+      loading: true,
     }
   },
   created() {
@@ -119,9 +121,33 @@ export default {
     getTableData() {
       
     },
+    // 点击确认
+    handleSubmitSearch() {
+
+    },
+    // 点击重置
+    handleSearchReset() {
+
+    },
     // 点击置顶
     clickStick(val) {
       
+    },
+    // 点击返回
+    clickBack() {
+      this.$router.push(this.costAnalysisMainUrl)
+    },
+    // 点击新增
+    clickAdd() {
+      this.$router.push(this.costAnalysisAddUrl)
+    },
+    // 点击编辑
+    clickEdit() {
+
+    },
+    // 点击删除
+    clickDel() {
+
     }
   }
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-04 15:35:13
+ * @LastEditTime: 2021-08-04 16:57:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -21,7 +21,7 @@
       <div class="mainContent">
         <el-row :gutter="20">
           <el-col :span="10">
-            <costChar/>
+            <costChar :width="700" left="20%"/>
           </el-col>
           <el-col :span="14">
             <tableList
@@ -49,6 +49,9 @@ export default {
   components: {iCard, iButton, costChar, tableList},
   data () {
     return {
+      overViewUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/overView',
+      costAnalysisUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysis',
+      costAnalysisAddUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisAdd',
       tableTitle,
       tableListData: [],
     }
@@ -68,11 +71,11 @@ export default {
     },
     // 点击编辑按钮
     clickEdit() {
-
+      this.$router.push(this.costAnalysisAddUrl)
     },
     // 点击分析库按钮
     clickAnalysis() {
-
+      this.$router.push(this.costAnalysisUrl)
     },
     // 点击保存按钮
     clickSave() {
@@ -80,7 +83,7 @@ export default {
     },
     // 点击返回按钮
     clickBack() {
-      
+      this.$router.push(this.overViewUrl)
     }
   }
 }
