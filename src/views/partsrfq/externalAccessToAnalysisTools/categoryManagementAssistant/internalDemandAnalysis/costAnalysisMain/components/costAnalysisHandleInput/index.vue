@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 15:59:20
- * @LastEditTime: 2021-08-03 17:35:15
+ * @LastEditTime: 2021-08-04 15:35:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalyHandleInput.vue
@@ -54,7 +54,7 @@
 
 <script>
 import {iCard, iButton, iInput} from 'rise'
-import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/components/costAnalysisMain/components/char'
+import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/char'
 export default {
   name: 'CostAnalysisHandleInput',
   components: {iCard, iButton, iInput, costChar},

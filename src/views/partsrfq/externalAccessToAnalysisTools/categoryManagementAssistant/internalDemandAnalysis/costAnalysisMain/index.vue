@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-03 10:34:15
+ * @LastEditTime: 2021-08-04 15:35:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -41,7 +41,7 @@
 
 <script>
 import {iCard, iButton} from 'rise'
-import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/components/costAnalysisMain/components/char'
+import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/char'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data';
 export default {
