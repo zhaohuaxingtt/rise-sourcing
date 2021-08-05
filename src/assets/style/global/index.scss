@@ -481,3 +481,7 @@ a{
     backface-visibility: hidden!important;
   }
 }
+
+.el-message.el-message--warning {
+  z-index: 3000 !important;
+}
