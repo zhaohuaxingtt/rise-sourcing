@@ -25,6 +25,7 @@
             :iconName="level1Children.iconUrl"
             class="theCard"
         >
+          <!--第二级-->
           <div>
             <div
                 v-for="level2Children of level1Children.children"
@@ -32,23 +33,37 @@
                 class="level2BoxStyle"
             >
               <div class="flex">
-                <div class="blueDot" v-if="!editStatus"/>
-                <div v-else
-                     class="checkBoxStyle"
-                     :class="{'checkBoxStyleActive': level2Children.name === treeDataSelect[level1Children.name]}"
-                     @click="handleSelect({props:level1Children, value:level2Children})"
+                <div class="blueDot" v-if="!notHaveChildren(level2Children) || !editStatus"/>
+                <div
+                    v-if="notHaveChildren(level2Children) && editStatus"
+                    class="checkBoxStyle"
+                    :class="{'checkBoxStyleActive': level2Children.name === treeDataSelect[level1Children.name]}"
+                    @click="handleSelect({props:level1Children, value:level2Children})"
                 >
                   <div class="pitchOn"></div>
                 </div>
                 <span class="level2Text">{{ setName(level2Children) }}</span>
               </div>
-              <iInput v-model="form[level2Children.id]"
-                      type="textarea"
-                      :rows="2"
-                      resize="none"
-                      :placeholder="language('PLGLZS.QINGSHURU','请输入')"
-                      class="margin-top10"
-                      v-if="editStatus && (level2Children.name === treeDataSelect[level1Children.name])"/>
+              <iInput
+                  v-if="editStatus && (level2Children.name === treeDataSelect[level1Children.name])"
+                  v-model="form[level2Children.id]"
+                  type="textarea"
+                  :rows="2"
+                  resize="none"
+                  :placeholder="language('PLGLZS.QINGSHURU','请输入')"
+                  class="margin-top10"
+                  :maxlength="500"
+              />
+              <!--第三级-->
+              <div v-if="level2Children.children">
+                <div
+                    v-for="level3Children of level2Children.children"
+                    :key="level3Children.id"
+                    class="level3BoxStyle"
+                >
+                  {{ setName(level3Children) }}
+                </div>
+              </div>
             </div>
           </div>
         </theCard>
@@ -122,6 +137,9 @@ export default {
     handleSelect({props, value}) {
       this.treeDataSelect[props.name] = value.name;
     },
+    notHaveChildren(item) {
+      return item.children === null;
+    },
   },
 };
 </script>
@@ -144,11 +162,22 @@ export default {
   margin-top: 15px;
 }
 
+.level2BoxStyle {
+  color: #4F4F4F;
+}
+
+.level3BoxStyle {
+  margin-left: 35px;
+  font-size: 14px;
+  color: #838383;
+}
+
 .blueDot {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   background: #1763F7;
   border-radius: 50%;
+  margin-left: 5px;
   margin-right: 20px;
   margin-top: 7px;
 }
