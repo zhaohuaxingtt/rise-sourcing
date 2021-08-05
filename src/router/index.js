@@ -613,5 +613,6 @@ export default new VueRouter({
     ...projectRoutes,
     //品类管理助手
     ...categoryManagementAssistant,
+    ...supplierkpiRoutes
   ],
 })

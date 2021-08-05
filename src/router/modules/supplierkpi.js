@@ -16,6 +16,22 @@ export default [
             path: "/supplier/imgKpi",
             name: "imgKpi",
             component: () => import("@/views/kpiChart/imgKpi"),
+        },{
+            path: "/supplier/supplierList",
+            name: "supplierList",
+            component: () => import("@/views/kpiChart/supplierList"),
+        },{
+            path: "/supplier/supplierDetail",
+            name: "supplierDetail",
+            component: () => import("@/views/kpiChart/components/supplierDetail"),
+        },{
+            path: "/supplier/supplierPowerBi",
+            name: "supplierPowerBi",
+            component: () => import("@/views/kpiChart/supplierPowerBi"),
+        },{
+            path: "/supplier/supplierKpiTreeTable",
+            name: "supplierKpiTreeTable",
+            component: () => import("@/views/kpiChart/supplierKpiTreeTable"),
         }]
         
     }
