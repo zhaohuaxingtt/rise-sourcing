@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-05 19:01:20
+ * @LastEditTime: 2021-08-05 19:34:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
 -->
 <template>
-  <div style="height: 540px;width:100%" ref="chart"></div>
+  <div style="height: 480px;width:100%" ref="chart"></div>
 </template>
 
 <script>
@@ -31,9 +31,10 @@ export default {
       const option = {
         tooltip: {},
         title:{
-            subtextf:"产量",
-            left:40,
-            top:40
+            show:true,
+            subtext:"产量",
+            left:0,
+            top:-10
         },
         xAxis: [
           {
@@ -44,8 +45,8 @@ export default {
         ],
         grid: {
           left:40,
-          right:0,
-          bottom:'5%',
+          right:'-5%',
+          bottom:'8%',
           top:"20%"
         },
         yAxis: {
@@ -64,9 +65,9 @@ export default {
             emphasis: {
               focus: "series",
             },
-            barMinWidth: '10%',
+            barMinWidth: 30,
             barMaxWidth : 60,
-            data: [320],
+            data: [500],
           },
           {
             name: "Steppe",
@@ -74,9 +75,9 @@ export default {
             emphasis: {
               focus: "series",
             },
-            barMinWidth: '10%',
+            barMinWidth: 30,
             barMaxWidth : 60,
-            data: [220],
+            data: [550],
           },
           {
             name: "Desert",
@@ -84,20 +85,11 @@ export default {
             emphasis: {
               focus: "series",
             },
-            barMinWidth: '10%',
+            barMinWidth: 30,
             barMaxWidth : 60,
-            data: [150],
+            data: [600],
           },
-          {
-            name: "Wetland",
-            type: "bar",
-            emphasis: {
-              focus: "series",
-            },
-            barMinWidth:'10%',
-            barMaxWidth : 60,
-            data: [98],
-          },
+         
         ],
       };
       this.myChart.setOption(option);

@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-08-05 18:55:22
+ * @LastEditTime: 2021-08-05 19:34:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
 -->
 <template>
-  <div style="height: 540px;width:100%" ref="chart"></div>
+  <div style="height: 480px;width:100%" ref="chart"></div>
 </template>
 
 <script>
@@ -42,10 +42,10 @@ export default {
           },
         ],
         grid: {
-          left: "-10%",
-          right: "-10%",
-          bottom:'5%',
-           top:"20%"
+          left: 0,
+          right: 0,
+          bottom:'8%',
+          top:"20%"
         },
         yAxis: {
           type: "value",
@@ -58,7 +58,6 @@ export default {
             },
           },
         },
-
         // Declare several bar series, each will be mapped
         // to a column of dataset.source by default.
         series: [
@@ -68,9 +67,9 @@ export default {
             emphasis: {
               focus: "series",
             },
-            barMinWidth: "10%",
+            barMinWidth: 30,
             barMaxWidth: 60,
-            data: [320],
+            data: [500],
           },
           {
             name: "Steppe",
@@ -78,9 +77,9 @@ export default {
             emphasis: {
               focus: "series",
             },
-            barMinWidth: "10%",
+            barMinWidth: 30,
             barMaxWidth: 60,
-            data: [220],
+            data: [550],
           },
           {
             name: "Desert",
@@ -88,20 +87,11 @@ export default {
             emphasis: {
               focus: "series",
             },
-            barMinWidth: "10%",
+            barMinWidth: 30,
             barMaxWidth: 60,
-            data: [150],
+            data: [600],
           },
-          {
-            name: "Wetland",
-            type: "bar",
-            emphasis: {
-              focus: "series",
-            },
-            barMinWidth: "10%",
-            barMaxWidth: 60,
-            data: [98],
-          },
+         
         ],
       };
       this.myChart.setOption(option);
