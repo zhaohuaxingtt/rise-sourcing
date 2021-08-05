@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-08-03 13:41:12
+ * @LastEditTime: 2021-08-04 16:49:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\data.js
@@ -51,16 +51,16 @@ export const isReferenceMap = {
 }
 
 export const dosageDialogForm = [
-  { props: "a", name: "⻋型项⽬", key: "CHEXINGXIANGMU" },
-  { props: "b", name: "工厂", key: "GONGCHANG" },
-  { props: "c", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG" },
-  { props: "d", name: "沿⽤原零件份额", key: "YANYONGYUANLINGJIANFENE" }
+  { props: "cartypeProject", name: "⻋型项⽬", key: "CHEXINGXIANGMU" },
+  { props: "factory", name: "工厂", key: "GONGCHANG" },
+  { props: "supplierName", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG" },
+  { props: "oldPartShare", name: "沿⽤原零件份额", key: "YANYONGYUANLINGJIANFENE" }
 ]
 
 export const dosageDialogTableTitle = [
-  { props: "a", name: "配置", key: "PEIZHI", tooltip: true },
-  { props: "b", name: "发动机/电池", key: "FADONGJIDIANCHI", tooltip: true },
-  { props: "c", name: "变速箱/⾥程", key: "BIANSUXIANGLICHENG", tooltip: true },
-  { props: "d", name: "装⻋率", key: "ZHUANGCHELV", tooltip: true },
-  { props: "e", name: "⽤量", key: "YONGLIANG", tooltip: true },
+  { props: "levels", name: "配置", key: "PEIZHI", tooltip: true },
+  { props: "engineType", name: "发动机/电池", key: "FADONGJIDIANCHI", tooltip: true },
+  { props: "gearType", name: "变速箱/⾥程", key: "BIANSUXIANGLICHENG", tooltip: true },
+  { props: "assemblyRate", name: "装⻋率", key: "ZHUANGCHELV", tooltip: true },
+  { props: "consumption", name: "⽤量", key: "YONGLIANG", tooltip: true },
 ]

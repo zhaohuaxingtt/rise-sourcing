@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-03 14:13:24
+ * @LastEditTime: 2021-08-04 16:20:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -210,7 +210,7 @@
           :total="page.totalCount" />
       </div>
     </iCard>
-    <dosageDialog :visible.sync="dosageDialogVisible" />
+    <dosageDialog :visible.sync="dosageDialogVisible" :requirementAekoId="this.aekoInfo.requirementAekoId" :objectAekoPartId="currentRow.objectAekoPartId" />
   </div>
 </template>
 
@@ -250,6 +250,7 @@ export default {
       multipleSelection: [],
       declareToggleLoading: false,
       declareResetLoading: false,
+      currentRow: {},
       dosageDialogVisible: false,
       submitLoading: false,
     };
@@ -352,6 +353,7 @@ export default {
     },
     // 查看装⻋率/每⻋⽤量
     viewDosage(row) {
+      this.currentRow = row
       this.dosageDialogVisible = true
     },
     view() {},
