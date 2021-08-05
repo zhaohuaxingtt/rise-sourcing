@@ -34,14 +34,13 @@
             >
               <div class="flex">
                 <div class="blueDot" v-if="!notHaveChildren(level2Children) || !editStatus"/>
-                <div
-                    v-if="notHaveChildren(level2Children) && editStatus"
-                    class="checkBoxStyle"
-                    :class="{'checkBoxStyleActive': level2Children.name === treeDataSelect[level1Children.name]}"
-                    @click="handleSelect({props:level1Children, value:level2Children})"
-                >
-                  <div class="pitchOn"></div>
-                </div>
+                <theCheckBox
+                    :treeDataSelect="treeDataSelect"
+                    :currentChildren="level2Children"
+                    :categoryChildren="level1Children"
+                    :editStatus="editStatus"
+                    @handleSelect="handleSelect"
+                />
                 <span class="level2Text">{{ setName(level2Children) }}</span>
               </div>
               <iInput
@@ -52,7 +51,7 @@
                   resize="none"
                   :placeholder="language('PLGLZS.QINGSHURU','请输入')"
                   class="margin-top10"
-                  :maxlength="500"
+                  :maxlength="maxlength"
               />
               <!--第三级-->
               <div v-if="level2Children.children">
@@ -61,7 +60,26 @@
                     :key="level3Children.id"
                     class="level3BoxStyle"
                 >
-                  {{ setName(level3Children) }}
+                  <div class="flex">
+                    <theCheckBox
+                        :treeDataSelect="treeDataSelect"
+                        :currentChildren="level3Children"
+                        :categoryChildren="level1Children"
+                        :editStatus="editStatus"
+                        @handleSelect="handleSelect"
+                    />
+                    <span>{{ setName(level3Children) }}</span>
+                  </div>
+                  <iInput
+                      v-if="editStatus && (level3Children.name === treeDataSelect[level1Children.name])"
+                      v-model="form[level3Children.id]"
+                      type="textarea"
+                      :rows="2"
+                      resize="none"
+                      :placeholder="language('PLGLZS.QINGSHURU','请输入')"
+                      class="margin-top10"
+                      :maxlength="maxlength"
+                  />
                 </div>
               </div>
             </div>
@@ -77,6 +95,7 @@ import {iPage, iButton, iInput} from 'rise';
 import headerNav from '../components/headerNav';
 import theCard from './compoents/theCard';
 import {getList, saveInfos} from '../../../../../api/categoryManagementAssistant/listOfInitiatives';
+import theCheckBox from './compoents/theCheckBox';
 
 export default {
   components: {
@@ -85,6 +104,7 @@ export default {
     iInput,
     headerNav,
     theCard,
+    theCheckBox,
   },
   data() {
     return {
@@ -93,6 +113,7 @@ export default {
       treeDataSelect: {},
       editStatus: false,
       form: {},
+      maxlength: 500,
     };
   },
   created() {
@@ -167,6 +188,7 @@ export default {
 }
 
 .level3BoxStyle {
+  margin-top: 10px;
   margin-left: 35px;
   font-size: 14px;
   color: #838383;
@@ -180,32 +202,6 @@ export default {
   margin-left: 5px;
   margin-right: 20px;
   margin-top: 7px;
-}
-
-.checkBoxStyle {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  margin-top: 2px;
-  margin-right: 15px;
-  border: 1px solid #1763F7;
-  border-radius: 5px;
-  cursor: pointer;
-
-  .pitchOn {
-    position: absolute;
-    left: 50%;
-    top: 40%;
-    width: 6px;
-    height: 13px;
-    border-bottom: 2px solid #FFFFFF;
-    border-right: 2px solid #FFFFFF;
-    transform: translate(-50%, -50%) rotate(45deg);
-  }
-}
-
-.checkBoxStyleActive {
-  background: #1763F7;
 }
 
 .theCard + .theCard {
