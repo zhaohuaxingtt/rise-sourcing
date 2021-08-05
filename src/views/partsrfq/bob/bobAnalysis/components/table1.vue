@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-30 11:29:59
+ * @LastEditTime: 2021-08-04 19:25:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -15,7 +15,6 @@
               :expand-row-keys="expends"
               v-loading="loading"
               stripe
-              height="450"
               :max-height="maxHeight"
               :cell-style="cellsytle"
               :row-style="rowStyle"
@@ -61,7 +60,10 @@
           </span>
           <span v-else
                 class="flex-center">
-            <span class="flexSpan">{{ scope.row[i.label] }}</span>
+            <span class="flexSpan"
+                  v-if="scope.row[i.label]=='true'||scope.row[i.label]=='false'">{{ scope.row[i.label]=='false'?'否':'是' }}</span>
+            <span class="flexSpan"
+                  v-else>{{ scope.row[i.label] }}</span>
           </span>
         </template>
       </el-table-column>
@@ -142,7 +144,6 @@ export default {
   watch: {
     expends: {
       handler (val) {
-   
       },
     },
     bobType: {
@@ -152,6 +153,7 @@ export default {
     },
   },
   mounted () {
+    // window.addEventListener('scroll', this.handleScroll, true)
   },
   data () {
     return {
@@ -163,6 +165,7 @@ export default {
     };
   },
   methods: {
+
     renderHeader (h, { column }) {
       let header = column.label.split('<br/>');
       return [h('p', [
@@ -219,7 +222,7 @@ export default {
       }
     },
     getRowKey (row) {
-      return row.title;
+      return row.index.toString();
     },
     render (h, { column, $index }) { },
     rowClick (row, event, column) {

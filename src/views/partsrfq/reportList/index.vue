@@ -8,8 +8,12 @@
 		<div class="flex-between-center">
 			<!-- 报告清单 -->
 			<span class="pageTitle">{{$t('TPZS.BGQD')}}</span>
-			<!-- 导出 -->
-			<iButton @click="openExport">{{$t('LK_DAOCHU')}}</iButton>
+			<div>
+				<!-- 导出 -->
+				<iButton @click="openExport">{{$t('LK_DAOCHU')}}</iButton>
+				<!-- 返回 -->
+				<iButton @click="back">{{$t('LK_FANHUI')}}</iButton>
+			</div>
 		</div>
 		<iSearch class="margin-top20" @sure="sure" @reset="reset" icon="false">
 			<el-form>
@@ -96,15 +100,19 @@
 			},
 			//搜索
 			sure(){
-				this.$refs.specialTools.getTableList()
+				this.$refs.specialTools.search()
 			},
 			// 重置
 			reset() {
 				this.searchCriteria = {};
 				this.$nextTick(()=>{
-					this.$refs.specialTools.getTableList()
+					this.$refs.specialTools.search()
 				})
 			},
+			// 返回
+			back(){
+				this.$router.back(-1)
+			}
 		}
 	}
 </script>

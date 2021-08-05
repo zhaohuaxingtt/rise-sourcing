@@ -1,7 +1,7 @@
 <!--
- * @Author: your name
+ * @Author: yuszhou
  * @Date: 2021-06-29 17:02:51
- * @LastEditTime: 2021-06-30 15:01:57
+ * @LastEditTime: 2021-07-30 13:58:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steeldemandcreation\index.vue
@@ -12,7 +12,7 @@
       <iNavMvp class="margin-bottom30" lang @change="change" :list='navListLeft' routerPage lev="1" @message="clickMessage" />
       <iNavMvp class="margin-bottom30" lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
     </div>
-    <iSearch class="margin-bottom20">
+    <iSearch class="margin-bottom20" @sure="steeldemandcreation()" @reset='reset()'>
       <el-form>
         <template v-for='(items,index) in searchForm'>
           <el-form-item :label='language(items.i18nKey,items.i18nName)' :key="index">
@@ -20,8 +20,8 @@
               <iInput v-model="form[items.moduleKey]" :placeholder='language("QINGITANXIE","请填写")'></iInput>
             </template>
             <template v-else>
-              <iSelect :placeholder='language("QINGXUANZE","请选择")'>
-                <el-option v-for="(item,i) in items.list" :key='i' :label="item.name" :value="item.code"></el-option>
+              <iSelect v-model="form[items.moduleKey]" :placeholder='language("QINGXUANZE","请选择")'>
+                <el-option v-for="(item,i) in items.List" :key='i' :label="item.name" :value="item.code"></el-option>
               </iSelect>
             </template>
           </el-form-item>
@@ -32,17 +32,17 @@
     </iSearch>
     <iCard>
       <div class="textalign-right">
-        <iButton>{{language('XIAZAIPILIANGMOBAN','下载批量模板')}}</iButton>
-        <iButton>{{language('SHANGCHUANWENJIANYICIX','上传文件（一次性）')}}</iButton>
-        <iButton>{{language('SHANGCHUANWENJJIANPILIANG','上传文件批量')}}</iButton>
-        <iButton>{{language('DAYINGDINGDANLIUZHUANDAN','打印订单流转单(一次性)')}}</iButton>
-        <iButton>{{language('DAYINGDINGDANLIUZDPILIANG','打印订单流转单（批量）')}}</iButton>
+        <iButton @click="downloadTemplate">{{language('XIAZAIPILIANGMOBAN','下载批量模板')}}</iButton>
+        <el-upload class="uploadfile" :before-upload='()=>{uploadLoadingOne=true}' :on-success="(r)=>Message(r.desZh,1,'uploadLoadingOne')" :on-error="(r)=>Message(r.desZh || r.message,2,'uploadLoadingOne')" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelOne`" :show-file-list='false'><iButton :loading="uploadLoadingOne">{{language('SHANGCHUANWENJIANYICIX','上传文件（一次性）')}}</iButton></el-upload>
+        <el-upload :before-upload='()=>{uploadLoadingAll=true}' :on-success="(r)=>Message(r.desZh,1,'uploadLoadingAll')" :on-error="(r)=>Message(r.desZh || r.message,2,'uploadLoadingAll')" class="uploadfile" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelBatch`" :show-file-list='false'><iButton :loading='uploadLoadingAll'>{{language('SHANGCHUANWENJJIANPILIANG','上传文件批量')}}</iButton></el-upload>
+        <iButton @click="print(1)" :loading='printLoadingOne'>{{language('DAYINGDINGDANLIUZHUANDAN','打印定点流转单(一次性)')}}</iButton>
+        <iButton @click="print(2)" :loading='printLoadingAll'>{{language('DAYINGDINGDANLIUZDPILIANG','打印定点流转单（批量）')}}</iButton>
       </div>
-      <el-table :data='tabelList' v-loading='tabelLoading'>
-        <template v-for='(items,index) in tableTitle'>
-          <el-table-column :prop="items.props" :label="language(items.key,items.name)" align="center" :key='index'></el-table-column>
+      <tablePart radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading'>
+        <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
+          {{row[currentProps].desc}}
         </template>
-      </el-table>
+      </tablePart>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
@@ -61,26 +61,38 @@
   </iPage>
 </template>
 <script>
-import {iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination} from 'rise'
+import {iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,iMessage} from 'rise'
 import {searchForm,form,tableTitle} from './components/data'
-import {steeldemandcreation} from '@/api/steelDemandCreation/home'
+import {steeldemandcreation,downloadExcelBatch,printTransferOrderBatch,printTransferOrderOne} from '@/api/steelDemandCreation/home'
 import {pageMixins} from "@/utils/pageMixins";
+import tablePart from '@/views/partsign/home/components/tableList'
+import { selectDictByKeys } from "@/api/dictionary"
+import {getBuyers} from '@/api/letterAndLoi/letter'
+import {user} from '@/config'
+import {getToken} from '@/utils'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 export default{
   mixins:[pageMixins],
-  components:{iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination},
+  components:{iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,tablePart},
     created(){
-      this.searchForm = searchForm()
+      this.initSelectOptions()
       this.steeldemandcreation()
     },
     data(){
       return {
+        uploadLoadingOne:false,
+        uploadLoadingAll:false,
+        printLoadingAll:false,
+        printLoadingOne:false,
+        baseUrl:process.env.VUE_APP_SUPPLIER_RFQLIST,
         searchForm:[],
         form:form,
         tableTitle:tableTitle,
         tabelLoading:false,
-        tabelList:[]
+        tabelList:[],
+        decArrayList:['applicationStatus','nominateProcessType','partProjectType'],
+        selectRow:[]
       }
     },
     computed: {
@@ -88,10 +100,91 @@ export default{
       ...mapActions(["updateNavList"])
     },
     methods:{
+      /**
+       * @description: 获取钢材列表数据。
+       * @param {*}
+       * @return {*}
+       */
       steeldemandcreation(){
-        steeldemandcreation().then(res=>{
-          this.tabelList = res.data.list
-        }).catch(err=>{})
+        this.tabelLoading = true
+        steeldemandcreation({...{size:this.page.pageSize,current:this.page.currPage},...this.form}).then(res=>{
+          this.tabelList = res.data
+          this.page.currPage = res.pageNum
+          this.page.pageSize = res.pageSize
+          this.page.totalCount = res.total
+          this.tabelLoading = false
+        }).catch(err=>{this.tabelLoading = false})
+      },
+      dictkey(){
+        return new Promise(r=>{
+            selectDictByKeys([{keys:'NOMINATE_APP_PROCESS_TYPE'},{keys:'MEETING_TYPE'},{keys:'NOMINATE_APP_STATUS_FILING'}]).then(res=>{
+              r(res.data)
+            }).catch(()=>r({}))
+          })
+      },
+      getBuyers(tagId){
+        return new Promise(r=>{
+           getBuyers({tagId:tagId}).then(res=>{r(res.data)}).catch(()=>r({}))
+        })
+      },
+      async initSelectOptions(){    
+        const lineOptions = await this.getBuyers(user.LINLIE)
+        const beforBuyer = await this.getBuyers(user.BEFORBUYER)
+        const distKeys = await this.dictkey()
+        this.searchForm = searchForm({...this.translateOptions('LINLIE',lineOptions),...this.translateOptions('BEFORBUYER',beforBuyer),...distKeys})
+      },
+      /**
+       * @description: 转换数据为optionslist格式
+       * @param {*} props
+       * @return {*}
+       */
+      translateOptions(props,data){
+        let object = {}
+        object[props] = data.map(items=>{return {"name":items.nameZh,'code':items.id}})
+        return object
+      },
+      reset(){
+        Object.keys(this.form).forEach(element => {
+          this.form[element] = ''
+        });
+        this.steeldemandcreation()
+      },
+      downloadTemplate(){
+        downloadExcelBatch().then().catch(err=>{
+          iMessage.error(err.message)
+        })
+      },
+      getToken(){
+        return getToken()
+      },
+      Message(message,messageType,loadingType){
+        console.log(message,messageType,loadingType)
+        this[loadingType] = false
+        if(messageType == 1){
+          iMessage.success(message || '操作成功') 
+          this.steeldemandcreation()
+        }else{
+          iMessage.error(message || '操作失败') 
+        }
+      },
+      /**
+       * @description: 打印钢材批量AND一次性钢材
+       * @param {*}
+       * @return {*}
+       */
+      print(type){
+        if(this.selectRow.length == 0) return iMessage.warn('抱歉，您还未选择一条钢材定点数据，无法为您打印！')
+        if(type == 1){this.printLoadingOne = true} else {this.printLoadingAll = true}
+        this.translateHttpRequset(type).then(r=>{
+          if(type == 1){this.printLoadingOne = false} else {this.printLoadingAll = false}
+          }).catch(err=>{if(type == 1){this.printLoadingOne = false} else {this.printLoadingAll = false}})
+      },
+      translateHttpRequset(type){
+        if(type == 2){
+          return printTransferOrderBatch(this.selectRow[0].nominateId)
+        }else{
+          return printTransferOrderOne(this.selectRow[0].nominateId)
+        }
       }
     }
 }
@@ -104,5 +197,12 @@ export default{
   .textalign-right{
     text-align: right;
     margin-bottom: 20px;
+  }
+  .uploadfile{
+    display: inline-block;
+    margin: 10px 10px;
+    &:nth-child(2){
+      margin-right: 0px;
+    }
   }
 </style>

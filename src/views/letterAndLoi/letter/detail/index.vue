@@ -104,6 +104,7 @@ import {
     fsComplete,
     fsConfirm,
 } from  '@/api/letterAndLoi/letter'
+import {user as configUser } from '@/config'
 export default {
     name:'letterDetail',
     components:{
@@ -189,7 +190,7 @@ export default {
                 }
             })
             // linie
-            getBuyers({tagId:4}).then((res)=>{
+            getBuyers({tagId:configUser.LINLIE}).then((res)=>{
                const { code,data=[] } = res;
                if(code ==200){
                    this.linieList = data;

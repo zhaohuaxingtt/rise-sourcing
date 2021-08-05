@@ -1,4 +1,12 @@
 <!--
+ * @Author: 舒杰
+ * @Date: 2021-07-06 13:40:04
+ * @LastEditTime: 2021-07-28 15:17:48
+ * @LastEditors: 舒杰
+ * @Description: In User Settings Edit
+ * @FilePath: \front-sourcing\src\views\partsrfq\reportList\components\specialTools.vue
+-->
+<!--
  * @author: shujie
  * @createTime: 2021-6-16 4:08:35 
  * @Description:谈判助手-报告清单首页-专项分析工具
@@ -16,15 +24,15 @@
 			</template>
 		</tableList>
 		<iPagination
-		    v-update
-		    @size-change="handleSizeChange($event, getTableList)"
-		    @current-change="handleCurrentChange($event, getTableList)"
-		    background
-		    :page-sizes="page.pageSizes"
-		    :page-size="page.pageSize"
-		    :layout="page.layout"
-		    :current-page='page.currPage'
-		    :total="page.totalCount"/>
+			v-update
+			@size-change="handleSizeChange($event, getTableList)"
+			@current-change="handleCurrentChange($event, getTableList)"
+			background
+			:page-sizes="page.pageSizes"
+			:page-size="page.pageSize"
+			:layout="page.layout"
+			:current-page='page.currPage'
+			:total="page.totalCount"/>
 	</iCard>
 </template>
 
@@ -77,6 +85,11 @@
 						this.tableListData=res.data
 					}
 				})
+			},
+			// 搜索
+			search(){
+				this.page.currPage=1
+				this.getTableList()
 			},
 			openPdf(url){
 				window.open(url)

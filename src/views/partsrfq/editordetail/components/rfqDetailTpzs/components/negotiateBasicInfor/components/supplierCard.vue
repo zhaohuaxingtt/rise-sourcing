@@ -11,14 +11,14 @@
       <iCard class="right margin-bottom5" v-for="(item,index) in tableData" :key="index">
         <div class="flex">
           <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
-          <div class="title">{{item.title}}</div>
+          <div class="title">{{item.name}}</div>
         </div>
         <iLabel class="margin-top8 title1" :label="$t('LK_CHEXING')+':'"></iLabel>
         <div class="flex-align-center">
           <div v-for="(val,ix) in item.carTypeProjectList" :key="ix">{{item.carTypeProjectList.length-1>ix?val+' |&nbsp;':val}}</div>
         </div>
         <iLabel class="margin-top8 title1" :label="$t('TPZS.ZXSE')"></iLabel>
-        <div>{{item.toAmount}}</div>
+        <div>{{String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'}}</div>
       </iCard>
     </div>
   </div>

@@ -18,7 +18,7 @@
         :placeholder="language('LK_WEITIANXIECHEXIAOYUANYIN','未填写撤销原因，无法保存')"
         rows="10" 
         resize="none"
-        v-model="reason"
+        v-model="cancelReason"
      />
      <div class="confirmBtn padding-bottom20 padding-top20">
          <iButton :loading="isLoading" @click="sumbit">{{language('LK_BAOCUN','保存')}}</iButton>
@@ -34,6 +34,9 @@ import {
     iButton,
     iMessage,
 } from 'rise';
+import {
+  purchasingCancel,
+} from '@/api/aeko/manage'
 export default {
     name:"revokeDialog",
     components:{
@@ -50,7 +53,7 @@ export default {
     },
     data(){
         return{
-            reason:'',
+            cancelReason:'',
             isLoading:false,
         }
     },
@@ -59,14 +62,27 @@ export default {
             this.$emit('changeVisible','revokeVisible', false)
         },
         // 确认提交
-        sumbit(){
-            const {selectItems,reason} = this;
+        async sumbit(){
+            const {selectItems,cancelReason } = this;
             const data = {
-                reason,
+                cancelReason,
+                requirementAekoId:selectItems[0].requirementAekoId,
             };
-            if(!reason){
-                return iMessage.warn(this.language('LK_QINGSHURUCHEXIAOYUANYIN','请输⼊撤销原因'))
-            }
+            if(!cancelReason) return iMessage.warn(this.language('LK_QINGSHURUCHEXIAOYUANYIN','请输⼊撤销原因'));
+            this.isLoading = true;
+            await purchasingCancel(data).then((res)=>{
+                this.isLoading = false;
+                if(res.code == 200){
+                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                     this.clearDialog();
+                     this.$emit('getList');
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            }).catch((err)=>{
+                this.isLoading = false;
+            })
+            
         }
     }
 }
