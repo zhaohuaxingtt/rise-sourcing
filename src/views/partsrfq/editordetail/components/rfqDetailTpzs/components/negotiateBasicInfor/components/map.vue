@@ -22,6 +22,7 @@ import world from "./china.json";
 import echarts from '@/utils/echarts'
 import { iCard, icon, iLabel } from "rise";
 import svwImg from "@/assets/images/svw.png";
+import {cloneDeep} from "lodash";
 export default {
   components: { iCard, icon, iLabel },
   props: {
@@ -37,9 +38,11 @@ export default {
       this.handleMap();
     },
     mapListData: {
-      handler(data) {
+      handler(objects) {
+        const data=cloneDeep(objects)
         console.log(data);
         var sum = 0
+        
         this.svwData = data.purchaseDataList
         this.tableData = data.offerDataList
         this.tableData.forEach(item => {
@@ -47,6 +50,7 @@ export default {
         })
         this.tableData.map(item => {
           item.symbolSize = item.toAmount / sum * 100 / 5
+          item.toAmount = String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'
           return item.value = [item.lon, item.lat]
         })
         this.svwData.map(item => {
@@ -89,7 +93,7 @@ export default {
               let tooltip = ''
               let carTypeList = ''
               params.data.carTypeProjectList.forEach((item, index) => {
-                carTypeList += params.data.carTypeProjectList.length > index ? item + ' | ' : item
+                carTypeList += params.data.carTypeProjectList.length-1 > index ? item + ' | ' : item
               })
               console.log(carTypeList);
               if (params.data.title === 'OFFER') {

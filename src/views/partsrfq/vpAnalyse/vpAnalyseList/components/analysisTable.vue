@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-30 10:14:11
+ * @LastEditTime: 2021-08-04 18:57:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -12,12 +12,15 @@
               :data="tableListData"
               style="width: 100%;margin-bottom: 20px;"
               row-key="number"
+              :row-class-name="rowStyle"
               :max-height="450"
               :tree-props="{children: 'children'}"
               @selection-change="handleSelectionChange"
               @select="rowSelect"
               @select-all="selectAll">
       <el-table-column type="selection"
+                       align="center"
+                       header-align="center"
                        width="55">
       </el-table-column>
       <el-table-column label="#"
@@ -205,7 +208,7 @@ export default {
       reportKey: 0,
       round: null,        //round
       currentDefaultObj: null, //当前编辑对象
-      updatedDefault: false //是否已更新默认项
+      updatedDefault: false, //是否已更新默认项
     }
   },
   created () {
@@ -444,8 +447,11 @@ export default {
     //点击关闭报告预览弹窗
     handleCloseReport () {
       this.reportVisible = false
+    },
+    //给方案数据设置斑马纹样式名
+    rowStyle({row, rowIndex}) { 
+      return row.type == this.$t('TPZS.SCHEME_TYPE') && row.number % 2 == 0 ? 'scheme' : 'report'
     }
-
   }
 }
 </script>
@@ -474,6 +480,13 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   width: 96%;
+}
+
+::v-deep .el-table .scheme{
+  background-color: #e0eafd;
+}
+::v-deep .el-table .report {
+  background-color: #fff;
 }
 
 .vpMainBox {
@@ -532,11 +545,12 @@ export default {
       top: 3px;
     }
   }
-
   .stickIcon:hover {
     cursor: pointer;
   }
 }
+
+
 
 
 

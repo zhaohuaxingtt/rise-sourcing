@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-30 10:14:55
+ * @LastEditTime: 2021-08-04 19:29:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -9,7 +9,7 @@
 <template>
   <div>
     <el-table ref="treeList"
-              :data="tableList.element"
+              :data="tableList1.element"
               :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
               :row-key="getRowKey"
               :expand-row-keys="expends"
@@ -40,7 +40,7 @@
             <!-- <i class="el-icon-close"></i> -->
           </div>
           <div v-else-if="scope.row.isFresh===false"
-               style="display:inline-block;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
+               class="editBox">
             <span style="max-width: 100px">
               {{scope.row.title}}
             </span>
@@ -64,10 +64,13 @@
         <template slot-scope="scope">
           <div v-if="scope.row.checkRow&&scope.row.level===2&&scope.column.label">
             <el-checkbox @change="check=>checkChang(check,scope,i.label)"></el-checkbox>
-
           </div>
           <span v-else>
-            {{scope.row[i.label]}}
+            <span class="flexSpan"
+                  v-if="scope.row[i.label]=='true'||scope.row[i.label]=='false'">{{ scope.row[i.label]=='false'?'否':'是' }}</span>
+            <span class="flexSpan"
+                  v-else>{{ scope.row[i.label] }}</span>
+            <!-- {{scope.row[i.label]}} -->
           </span>
         </template>
       </el-table-column>
@@ -82,7 +85,7 @@ import {
   renameComponentGroup
 } from "@/api/partsrfq/bob";
 import { filterEmptyChildren } from '@/utils'
-import { iMessage } from '../../../../components';
+import { iMessage } from 'rise';
 export default {
   props: {
     expends: {
@@ -117,7 +120,8 @@ export default {
     },
     activeName: {
       handler (val) {
-        if (val === 'rawUngrouped') {
+        console.log(val)
+        if (val === 'rawGrouped') {
           this.chargeRetrieve({
             isDefault: true,
             viewType: 'rawGrouped',
@@ -141,7 +145,9 @@ export default {
       usercheckedColumnIndex: [],
       checkedIds: [8],
       checkLists: [],
-      activeName: ""
+      activeName: "",
+      cloneDeep: window._.cloneDeep,
+      tableList1: []
     };
   },
   created () {
@@ -237,7 +243,8 @@ export default {
           //   })
           // })
           console.log('----------------', this.tableList.element)
-          // filterEmptyChildren(this.tableList.element, 'detailId')
+          this.tableList1.element = this.cloneDeep(this.tableList.element)
+          filterEmptyChildren(this.tableList1.element, 'detailId')
           this.$nextTick(() => {
             this.open();
           });
@@ -247,28 +254,37 @@ export default {
 
     arrayTreeSetLevel (array, levelName = 'level', childrenName = 'child') {
       if (!Array.isArray(array)) return []
-
       this.recursiveArray(array)
-      console.log("new point")
-      console.log(array)
       return array;
     },
 
     sure (scope) {
-      console.log(scope)
       renameComponentGroup({
         groupId: scope.row.matchId,
         groupName: scope.row.title,
         schemaId: this.SchemeId
       }).then(res => {
-        iMessage.success('修改成功')
-        this.chargeRetrieve({
-          isDefault: true,
-          viewType: this.activeName,
-          schemaId: this.SchemeId
-        })
+        console.log(res)
+        if (res.code === '200') {
+          iMessage.success('修改成功')
+          if (!this.activeName) {
+            this.activeName = "rawGrouped"
+          } else {
+            this.activeName = "maGrouped"
+          }
+          // this.chargeRetrieve({
+          //   isDefault: true,
+          //   viewType: this.activeName,
+          //   schemaId: this.SchemeId
+          // })
+        } else {
+          iMessage.error('修改失败')
+        }
+      }).catch((error) => {
+        iMessage.error('修改失败')
       })
     },
+
 
     edit (scope) {
       scope.row.isFresh = true
@@ -429,5 +445,12 @@ export default {
 }
 .add {
   background-color: red;
+}
+.editBox {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
 }
 </style>

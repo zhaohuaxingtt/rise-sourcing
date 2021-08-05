@@ -109,6 +109,7 @@ import {
     getSupplierUsers,
     getBuyers,
 } from  '@/api/letterAndLoi/letter'
+import {user as configUser } from '@/config'
 export default {
     name:'loiDetail',
     components:{
@@ -323,7 +324,7 @@ export default {
                 }
             })
             // line
-            getBuyers({tagId:4}).then((res)=>{
+            getBuyers({tagId:configUser.LINLIE}).then((res)=>{
                const { code,data=[] } = res;
                if(code ==200){
                    this.linieList = data;

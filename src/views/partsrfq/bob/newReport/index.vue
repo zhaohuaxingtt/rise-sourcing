@@ -59,7 +59,7 @@
                                :multiple-limit="chartType === 'supplier' ? 5 : 1"
                                v-model="form.supplier">
                       <el-option v-for="(i, index) in supplierList"
-                                 :key="index"
+                                 :key="i.supplierId"
                                  :value="i.supplierId"
                                  :label="i.nameZh">
                         <span style="float: left">{{ i.nameZh }}</span>
@@ -75,11 +75,11 @@
                                value-key
                                :multiple-limit="chartType === 'turn' ? 5 : 1"
                                v-model="form.turn">
-                      <el-option :value="Number('-1')"
+                      <el-option :value="Number(-1)"
                                  label="最新"
                                  v-if="chartType!=='turn'"></el-option>
                       <el-option v-for="(i, index) in turnList"
-                                 :key="index"
+                                 :key="i.turn"
                                  :value="i.turn"
                                  :label="'第' + i.turn + '轮'"></el-option>
                     </el-select>
@@ -92,7 +92,7 @@
                                :multiple-limit="chartType === 'spareParts' ? 5 : 1"
                                v-model="form.spareParts">
                       <el-option v-for="(i, index) in partList"
-                                 :key="index"
+                                 :key="i.fsNo"
                                  :value="i.fsNo"
                                  :label="i.fsNo+'/'+i.spareParts"></el-option>
                     </el-select>
@@ -207,11 +207,9 @@
         </el-col>
       </el-row>
       <el-row :gutter="20"
-              class="margin-top20"
-            >
-        <el-col :span="inside?4:5" >
+              class="margin-top20">
+        <el-col :span="inside?4:5">
           <iCard :collapse="false"
-                 
                  v-if="!reportSave">
             <ul class="anchorList flex">
               <li v-for="(i,index) in anchorList"
@@ -403,8 +401,18 @@ export default {
     },
   },
   mounted () {
+    // window.addEventListener('scroll', this.handleScroll, true)
   },
   methods: {
+    // handleScroll () {
+    //   let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop // 滚动条偏移量
+    //   let offsetTop = this.$el.querySelector('.el-table__header-wrapper').scrollTop;  // 要滚动到顶部吸附的元素的偏移量
+    //   this.isFixed = scrollTop > offsetTop + 100 ? true : false;  // 如果滚动到了预定位置，this.isFixed就为true，否则为false
+    //   console.dir(this.$el.querySelector('.el-table__header-wrapper'), offsetTop)
+    //   if (offsetTop > offsetTop + 100) {
+    //     document.querySelector('.el-table__header-wrapper').style.position = "fixed"
+    //   }
+    // },
     getOptions () {
       part({
         analysisSchemeId: this.analysisSchemeId,
@@ -519,11 +527,17 @@ export default {
       // this.chartData = data
     },
     handleSearchReset () {
-      this.form = {
-        supplier: [],
-        turn: [],
-        spareParts: [],
-      };
+      if (this.inside) {
+        this.form = {
+          supplier: [],
+          turn: [],
+          spareParts: [],
+        };
+      } else {
+        this.form = {
+          combination: []
+        }
+      }
       this.getChartData();
     },
     add (val) {
@@ -607,7 +621,12 @@ export default {
       }
 
     },
-    searchChartData () {
+    async searchChartData () {
+      if (this.inside) {
+        await this.getOptions();
+      } else {
+        await this.querySupplierTurnPartList()
+      }
       let params = {}
       let tableParams = {}
       if (this.inside) {
@@ -653,13 +672,11 @@ export default {
         );
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
-
         if (this.chartType === 'combination') {
           this.form = {
             combination: []
           }
           this.form.combination = this.Split(allData.combination, ",");
-          this.querySupplierTurnPartList()
         } else {
           this.form = {
             supplier: [],
@@ -669,11 +686,11 @@ export default {
           this.form.supplier = this.Split(allData.supplier, ",").map(Number);
           this.form.turn = this.Split(allData.turn, ",").map(Number);
           this.form.spareParts = this.Split(allData.spareParts, ",");
-          this.getOptions()
         }
       });
       this.$refs.bobAnalysis.chargeRetrieve(tableParams);
     },
+
     async getChartData () {
       if (this.inside) {
         await this.getOptions();
@@ -700,7 +717,6 @@ export default {
             combination: []
           }
           this.form.combination = this.Split(allData.combination, ",");
-
         } else {
           this.form = {
             supplier: [],
@@ -867,7 +883,7 @@ export default {
       } else if (this.chartType === "spareParts") {
         return this.form.supplier;
       } else if (this.chartType === 'combination') {
-        return this.form.combination;
+        return '';
       } else {
         return ''
       }
@@ -966,18 +982,21 @@ export default {
   flex-direction: column;
   text-align: center;
   margin: 100px auto;
+  & .active {
+    font-weight: bold;
+    color: #1660f1 !important;
+    list-style: url("../../../../assets/images/circle.png") outside circle !important;
+  }
   li {
     width: 100%;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
     padding: 10px 0;
-    color: #1b1d21;
-    list-style: disc !important;
+    color: #7e84a3;
+    list-style: url("../../../../assets/images/circle1.png") outside circle;
   }
 }
-.active {
-  color: #1660f1 !important;
-}
+
 ::v-deep .el-form-item {
   margin-bottom: 20px;
   .el-form-item__label {
