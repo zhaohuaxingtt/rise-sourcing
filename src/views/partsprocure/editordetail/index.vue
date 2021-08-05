@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-02 21:18:58
+ * @LastEditTime: 2021-08-04 16:43:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -29,7 +29,8 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{language("LK_LINGJIANCAIGOUXIANGMU",'零件采购项目')}}</span>
 			<div class="floatright">
-				<iButton v-permission='PARTSPROCURE_EDITORDETAIL_CREATEDDSQD' @click="handleCreateNomiApplication">{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
+				<!-- 供应商创建定点申请单 -->
+				<createNomiApplication></createNomiApplication>
 				<!-------------------------------------------------------------------------------->
 				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 				<!---出现此按钮。------------------------------------------------------------------->
@@ -304,7 +305,7 @@
 			<el-tab-pane :label="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN">
 				<outputPlan ref="outputPlan" :params="infoItem" @updateStartYear="updateStartYear" />
-				<outputRecord ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
+				<outputRecord v-permission="PARTSPROCURE_EDITORDETAIL_LINGJIANCHANLIANGJILU" ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
 				<volume ref="volume" class="margin-top20" :params="infoItem" />
 			</el-tab-pane>
 			<el-tab-pane :label="language('LK_TUZHIHETPDANXIANGQING','图纸和信息单详情')"
@@ -362,8 +363,9 @@
 	import {partProjTypes} from '@/config'
 	import {filterProjectList} from '@/utils'
 	import selectOldpartsNumber from './components/selectOldpartsNumber'
+	import createNomiApplication from './components/createNomiappBtn'
 	export default {
-		components: {selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon},
+		components: {createNomiApplication,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon},
 		provide:function(){
 			return {detailData:this.getDetailData}
 		},
@@ -434,14 +436,6 @@
 			this.getDicts()
 		},
 		methods: {
-   /**
-    * @description: 创建自动定点申请。 
-    * @param {*}
-    * @return {*}
-    */
-			handleCreateNomiApplication(){
-
-			},
 			filterProjectList(a,b){
 				return filterProjectList(a,b)
 			},

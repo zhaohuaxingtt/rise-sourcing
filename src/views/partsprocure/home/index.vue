@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-08-02 17:52:41
+ * @LastEditTime: 2021-08-04 11:53:27
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -303,7 +303,7 @@ import {
 import { iNavMvp } from "rise";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
-import { tableTitle, form } from "./components/data";
+import { tableTitle, form,validateProjectConfig } from "./components/data";
 import tablelist from "../../partsign/home/components/tableList";
 import {
   getTabelData,
@@ -575,17 +575,20 @@ export default {
     },
     // 跳转批量维护
     openBatchmiantain() {
-      if (this.selectTableData.length == 0)
+      if (this.selectTableData.length == 0){
         return iMessage.warn(
           this.language(
             "LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU",
             '抱歉，您当前还未选择您需要生批量维护的项目！'
           )
         );
+      }
+      if(this.validateProject()) return false
       this.$router.push({
         path: "/sourcing/partsprocure/batchmiantain",
         query: {
           ids: this.getPurchasePrjectId(),
+          businessKey:this.selectTableData[0].partProjectType
         },
       });
     },
@@ -594,14 +597,32 @@ export default {
     },
     // 通过待办数跳转
     clickMessage,
+    /**
+     * @description: 验证零件采购项目中是否包含特殊零件采购项目类型。 
+     * @param {*}
+     * @return {*}
+     */
+    validateProject(){
+      let tsParts = null
+      let partsProjectCodeString = this.selectTableData.map(i=>i.partProjectType)
+      validateProjectConfig.forEach(items=>{
+        if(partsProjectCodeString.includes(items.key)){
+          tsParts = items
+        }
+      })
+      if(tsParts && !this.selectTableData.every(items=>items.partProjectType == tsParts.key)){
+        iMessage.warn(tsParts.message)
+        return true
+      }
+      return false
+    }
+
   },
   beforeRouteUpdate(to, from, next) {
     this.form = cloneDeep(form)
-
     Object.keys(to.query).forEach(key => {
       this.$set(this.form, `search.${ key }`, to.query[key])
     })
-
     this.getTableListFn()
     next()
   },
