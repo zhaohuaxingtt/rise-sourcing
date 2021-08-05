@@ -244,7 +244,7 @@ export default {
           // if (!this.preview) {
           //   img = ''
           // }
-          const str = name + '\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n' + "{font|" + temp + "}";
+          const str = name + '\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n\n' + "{font|" + temp + "}";
           const subtext = row.spareParts + '\n' + row.fs
           this.labelArray.push({
             value: str,

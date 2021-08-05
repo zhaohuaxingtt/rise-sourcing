@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-08-04 19:29:27
+ * @LastEditTime: 2021-08-04 20:22:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -9,7 +9,7 @@
 <template>
   <div>
     <el-table ref="treeList"
-              :data="tableList1.element"
+              :data="tableList.element"
               :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
               :row-key="getRowKey"
               :expand-row-keys="expends"
@@ -70,6 +70,9 @@
                   v-if="scope.row[i.label]=='true'||scope.row[i.label]=='false'">{{ scope.row[i.label]=='false'?'否':'是' }}</span>
             <span class="flexSpan"
                   v-else>{{ scope.row[i.label] }}</span>
+            <span class="flexSpan"
+                  v-show="scope.row.code!=='detailId'">
+            </span>
             <!-- {{scope.row[i.label]}} -->
           </span>
         </template>
@@ -225,8 +228,12 @@ export default {
         styleJson = {
           'background': 'rgb(231 239 255) !important'
         }
-        return styleJson
+      } else if (row.code === 'detailId') {
+        styleJson = {
+          display: 'none'
+        }
       }
+      return styleJson
     },
     //获取表格数据
     chargeRetrieve (params) {
@@ -243,8 +250,8 @@ export default {
           //   })
           // })
           console.log('----------------', this.tableList.element)
-          this.tableList1.element = this.cloneDeep(this.tableList.element)
-          filterEmptyChildren(this.tableList1.element, 'detailId')
+          // this.tableList1.element = this.cloneDeep(this.tableList.element)
+          // filterEmptyChildren(this.tableList1.element, 'detailId')
           this.$nextTick(() => {
             this.open();
           });
