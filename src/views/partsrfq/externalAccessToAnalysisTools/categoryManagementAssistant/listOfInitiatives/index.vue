@@ -43,6 +43,7 @@
                 />
                 <span class="level2Text">{{ setName(level2Children) }}</span>
               </div>
+              <theRemark :children="level2Children" :editStatus="editStatus"/>
               <iInput
                   v-if="editStatus && (level2Children.name === treeDataSelect[level1Children.name])"
                   v-model="form[level2Children.id]"
@@ -70,6 +71,7 @@
                     />
                     <span>{{ setName(level3Children) }}</span>
                   </div>
+                  <theRemark :children="level3Children" :editStatus="editStatus"/>
                   <iInput
                       v-if="editStatus && (level3Children.name === treeDataSelect[level1Children.name])"
                       v-model="form[level3Children.id]"
@@ -96,6 +98,7 @@ import headerNav from '../components/headerNav';
 import theCard from './compoents/theCard';
 import {getList, saveInfos} from '../../../../../api/categoryManagementAssistant/listOfInitiatives';
 import theCheckBox from './compoents/theCheckBox';
+import theRemark from './compoents/theRemark';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 
 export default {
@@ -107,6 +110,7 @@ export default {
     headerNav,
     theCard,
     theCheckBox,
+    theRemark,
   },
   data() {
     return {
@@ -172,6 +176,9 @@ export default {
             obj[itemChildren.name] = '';
           });
         });
+        const formData = {};
+        this.getFormData({treeData: res.data, formData: formData});
+        this.form = formData;
         this.treeDataSelect = obj;
         this.pageLoading = false;
       } catch {
@@ -179,6 +186,16 @@ export default {
         this.treeDataSelect = {};
         this.pageLoading = false;
       }
+    },
+    // 递归数据回显
+    getFormData({treeData, formData}) {
+      treeData.map(item => {
+        if (!item.children) {
+          formData[item.id] = item.context;
+        } else {
+          this.getFormData({treeData: item.children, formData});
+        }
+      });
     },
     setName(item) {
       return this.$i18n.locale === 'zh' ? item.name : item.nameEn;
@@ -235,5 +252,6 @@ export default {
 .theCard + .theCard {
   margin-top: 20px;
 }
+
 
 </style>
