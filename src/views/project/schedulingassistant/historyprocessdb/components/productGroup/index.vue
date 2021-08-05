@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 16:19:06
+ * @LastEditTime: 2021-08-05 18:54:05
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -18,24 +18,24 @@
           <!--------------------配置显示字段按钮----------------------------------->
           <iButton @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="$emit('handleSend')" >{{language('DAOCHU','导出')}}</iButton>
+          <iButton @click="handleExport" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
-      <tableList indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChange">
+      <tableList indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular">
       </tableList> 
     </template>
     <template v-if="isShowProgress">
       <div class="margin-bottom20 clearFloat margin-top20">
         <span class="font18 font-weight">{{language('NIHEJINDU', '拟合进度')}}</span>
       </div>
-      <tableList v-update indexKey :tableTitle="partTableTitle" :tableData="fitTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChange">
+      <tableList v-update indexKey :tableTitle="partTableTitle" :tableData="fitTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
       </tableList> 
     </template>
     <template>
       <div class="margin-bottom20 clearFloat margin-top20">
         <span class="font18 font-weight">{{language('PIPEILINGJIANHAOLISHIJINDU', '匹配零件号历史进度')}}</span>
       </div>
-      <tableList v-update indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChange">
+      <tableList v-update indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangePart">
       </tableList> 
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
@@ -58,7 +58,7 @@ import logicSettingDialog from '@/views/project/schedulingassistant/progroup/com
 import { selectDictByKeyss } from '@/api/dictionary'
 import showItemDialog from '../showItem'
 import { cloneDeep } from 'lodash'
-import { getExperience, getCondition, getFitting } from '@/api/project'
+import { getExperience, getCondition, getFitting, downloadHistoryProgressFile } from '@/api/project'
 export default {
   mixins: [pageMixins],
   components: { iCard, tableList, iPagination, iButton, logicSettingDialog, showItemDialog },
@@ -81,7 +81,11 @@ export default {
       logicVisible: false,
       selectOptions: {},
       showItemVisible: false,
-      selectColumn: []
+      selectColumn: [],
+      selectRowRegular: [],
+      selectRowFit: [],
+      selectRowPart: [],
+      downloadLoading: false
     }
   },
   computed: {
@@ -115,6 +119,56 @@ export default {
     this.init()
   },
   methods: {
+    handleSelectionChangeRegular(val) {
+      this.selectRowRegular = val
+    },
+    handleSelectionChangeFit(val) {
+      this.selectRowFit = val
+    },
+    handleSelectionChangePart(val) {
+      this.selectRowPart = val
+    },
+    getCartypeName(id) {
+      const cartype = this.carProjectOptions.find(item => item.value === id)
+      if (cartype) {
+        return cartype.label
+      }
+      return ''
+    },
+    async handleExport() {
+      if (this.selectRowRegular.length < 1 && this.selectRowFit.length < 1 && this.selectRowPart.length < 1) {
+        iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
+        return
+      }
+      this.downloadLoading = true
+      try {
+        const params = {
+          cartypeProId: '3',
+          experienceVOList: this.selectRowRegular,
+          fields: this.partTableTitle.map(item => {
+            return {
+              gridFieldZh: item.name,
+              gridField: item.props
+            }
+          }),
+          fittingProgressList: this.selectRowFit,
+          partHistoryProgressVOList: this.selectRowPart,
+          partsHistoryProgressDTO: this.isShowProgress ? {
+            ...this.searchParams,
+            ...this.logicData,
+            cartypeProName: this.getCartypeName(this.logicData.cartypeProId)
+          } : {
+            ...this.searchParams,
+            cartypeProName: this.getCartypeName(this.searchParams.cartypeProId)
+          }
+        }
+        await downloadHistoryProgressFile(params)
+        this.downloadLoading = false
+      } catch(error) {
+        this.downloadLoading = false
+      }
+      
+    },
     getTableList() {
       if (this.isShowProgress) {
         this.getFitting()
