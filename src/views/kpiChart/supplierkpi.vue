@@ -3,7 +3,8 @@
         <iPage>
             <div class="head">
                 <div class="head-left">
-                    
+                    <iCard></iCard>
+                    <iCard></iCard>
                 </div>
                 <div class="head-right">
                     <div class="head-right-tittle">
@@ -26,13 +27,14 @@
 <script>
 import kpiEchart from './components/kpiEchart'
 import supplierTable from './components/supplierTable'
-import {iButton,iPage} from 'rise'
+import {iButton,iPage,iCard} from 'rise'
 export default {
     components:{
         kpiEchart,
         supplierTable,
         iButton,
-        iPage
+        iPage,
+        iCard
     },
     data(){
         return {
