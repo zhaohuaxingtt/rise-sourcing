@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-03 10:47:50
+ * @LastEditTime: 2021-08-05 07:35:35
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -22,6 +22,7 @@ import aekoRoutes from './modules/aeko'
 import projectRoutes from './modules/project'
 import supplierkpiRoutes from './modules/supplierkpi'
 import categoryManagementAssistant from './modules/categoryManagementAssistant'
+import mek from './modules/mek'
 
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
@@ -613,5 +614,7 @@ export default new VueRouter({
     ...projectRoutes,
     //品类管理助手
     ...categoryManagementAssistant,
+    //MEK
+    ...mek
   ],
 })
