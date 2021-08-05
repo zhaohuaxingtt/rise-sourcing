@@ -1,26 +1,55 @@
 <template>
-  <iPage>
+  <iPage v-loading="pageLoading">
     <headerNav>
       <template #extralButton>
         <iButton>{{ language('PLGLZS.CAILIAOZU', '材料组') }}</iButton>
         <iButton>{{ language('PLGLZS.BAOGAOQINGDAN', '报告清单') }}</iButton>
-        <iButton @click="handleEdit">{{ language('PLGLZS.BIANJI', '编辑') }}</iButton>
+        <template v-if="!editStatus">
+          <iButton @click="handleEdit">{{ language('PLGLZS.BIANJI', '编辑') }}</iButton>
+        </template>
+        <template v-else>
+          <iButton @click="handleCancel">{{ language('PLGLZS.QUXIAO', '取消') }}</iButton>
+          <iButton @click="handleSave">{{ language('PLGLZS.BAOCUN', '保存') }}</iButton>
+        </template>
         <iButton>{{ language('PLGLZS.DAOCHU', '导出') }}</iButton>
       </template>
     </headerNav>
     <el-row :gutter="20">
       <el-col :span="8" v-for="item of treeData" :key="item.id">
-        <div class="header-title"> {{ $i18n.locale === 'zh' ? item.name : item.nameEn }}</div>
+        <div class="header-title"> {{ setName(item) }}</div>
         <theCard
             v-for="level1Children of item.children"
             :key="level1Children.id"
-            :title="$i18n.locale === 'zh' ? level1Children.name : level1Children.nameEn"
+            :title="setName(level1Children)"
             :star="level1Children.star"
             :iconName="level1Children.iconUrl"
             class="theCard"
         >
           <div>
-            1233
+            <div
+                v-for="level2Children of level1Children.children"
+                :key="level2Children.id"
+                class="level2BoxStyle"
+            >
+              <div class="flex">
+                <div class="blueDot" v-if="!editStatus"/>
+                <div v-else
+                     class="checkBoxStyle"
+                     :class="{'checkBoxStyleActive': level2Children.name === treeDataSelect[level1Children.name]}"
+                     @click="handleSelect({props:level1Children, value:level2Children})"
+                >
+                  <div class="pitchOn"></div>
+                </div>
+                <span class="level2Text">{{ setName(level2Children) }}</span>
+              </div>
+              <iInput v-model="form[level2Children.id]"
+                      type="textarea"
+                      :rows="2"
+                      resize="none"
+                      :placeholder="language('PLGLZS.QINGSHURU','请输入')"
+                      class="margin-top10"
+                      v-if="editStatus && (level2Children.name === treeDataSelect[level1Children.name])"/>
+            </div>
           </div>
         </theCard>
       </el-col>
@@ -29,7 +58,7 @@
 </template>
 
 <script>
-import {iPage, iButton} from 'rise';
+import {iPage, iButton, iInput} from 'rise';
 import headerNav from '../components/headerNav';
 import theCard from './compoents/theCard';
 import {getList, saveInfos} from '../../../../../api/categoryManagementAssistant/listOfInitiatives';
@@ -38,12 +67,17 @@ export default {
   components: {
     iPage,
     iButton,
+    iInput,
     headerNav,
     theCard,
   },
   data() {
     return {
+      pageLoading: false,
       treeData: {},
+      treeDataSelect: {},
+      editStatus: false,
+      form: {},
     };
   },
   created() {
@@ -51,19 +85,42 @@ export default {
   },
   methods: {
     handleEdit() {
-
+      this.editStatus = true;
     },
+    handleCancel() {
+      this.editStatus = false;
+    },
+    handleSave() {},
     async getList() {
       try {
+        this.pageLoading = true;
+        this.treeData = {};
+        this.treeDataSelect = {};
         const req = {
           categoryCode: '111',
           quadrant: 'LEVERAGE',
         };
         const res = await getList(req);
         this.treeData = res.data;
+        const obj = {};
+        this.treeDataSelect = res.data.map(item => {
+          item.children.map(itemChildren => {
+            obj[itemChildren.name] = '';
+          });
+        });
+        this.treeDataSelect = obj;
+        this.pageLoading = false;
       } catch {
         this.treeData = {};
+        this.treeDataSelect = {};
+        this.pageLoading = false;
       }
+    },
+    setName(item) {
+      return this.$i18n.locale === 'zh' ? item.name : item.nameEn;
+    },
+    handleSelect({props, value}) {
+      this.treeDataSelect[props.name] = value.name;
     },
   },
 };
@@ -77,6 +134,49 @@ export default {
   font-weight: bold;
   line-height: 26px;
   color: #000000;
+}
+
+.flex {
+  display: flex;
+}
+
+.level2BoxStyle + .level2BoxStyle {
+  margin-top: 15px;
+}
+
+.blueDot {
+  width: 9px;
+  height: 9px;
+  background: #1763F7;
+  border-radius: 50%;
+  margin-right: 20px;
+  margin-top: 7px;
+}
+
+.checkBoxStyle {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  margin-right: 15px;
+  border: 1px solid #1763F7;
+  border-radius: 5px;
+  cursor: pointer;
+
+  .pitchOn {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    width: 6px;
+    height: 13px;
+    border-bottom: 2px solid #FFFFFF;
+    border-right: 2px solid #FFFFFF;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+}
+
+.checkBoxStyleActive {
+  background: #1763F7;
 }
 
 .theCard + .theCard {
