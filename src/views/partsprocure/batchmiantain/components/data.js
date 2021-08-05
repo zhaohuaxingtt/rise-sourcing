@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-04-12 23:48:38
+ * @LastEditTime: 2021-08-04 15:21:57
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\data.js
+ */
 export const tableTitle = [
   { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO' },
   { props: 'partNameZh', name: '零件名（中）',  key: 'LK_LINGJIANMINGZHONG' },
@@ -11,4 +19,19 @@ export const tableTitle = [
   { props: 'year2', name: '+2' },
   { props: 'year3', name: '+3' },
   { props: 'year4', name: '+4' }
+]
+
+export const tableTitleOnlyPartsChange = [
+  { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO' },
+  { props: 'partNum', name: '原零件号', key: 'LK_YUANLINGJIANHAO' },
+  { props: 'partNameZh', name: '零件号（中）', key: 'LK_LINGJIANHAOHZONG' },
+  { props: 'partNameDe', name: '零件名（德）', key: 'LK_LINGJIANHAODE' },
+  { props: 'modelNameZhName', name: '车型', key: 'LK_CHEXING' },
+  { props: 'cartypeProjectZh', name: '车型项目', key: 'LK_CHEXINGXIANGMU' },
+  { props: 'partNum', name: 'LINIE部门', key: 'LK_LINEBUMEN' },
+  { props: 'partProjectTypeName', name: '零件类型', key: 'LK_LINGJIANLEIX' },
+  { props: 'procureFactoryName', name: '采购工厂', key: 'LK_CAIGOUGONGCHANG' },
+  { props: 'linieName', name: 'LINIE', key: 'LK_LINE' },
+  { props: 'cfControllerZh', name: 'CF控制员', key: 'LK_CFKONGZHIYUAN' },
+  { props: 'partNum', name: '原FS号', key: 'LK_YUANFSHAO' }
 ]

@@ -481,3 +481,12 @@ a{
     backface-visibility: hidden!important;
   }
 }
+.text-align-right{
+  text-align: right;
+}
+.inline{
+  display: inline-block;
+}
+.el-message.el-message--warning {
+  z-index: 3000 !important;
+}

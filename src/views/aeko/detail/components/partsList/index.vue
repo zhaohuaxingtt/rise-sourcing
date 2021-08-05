@@ -35,7 +35,7 @@
                 <iButton @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton v-if="isCommodityCoordinator" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
                 <iButton>{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
-                <iButton @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
+                <iButton :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
                 <iButton disabled>{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
             </div>
         </template>
@@ -51,12 +51,13 @@
             @handleSelectionChange="handleSelectionChange"
         >
         <!-- 科室 -->
+        <!-- 实际分配科室有就显示实际科室，否则就显示预设科室  表示科室是预设的 -->
         <template #linieDeptName="scoped">
-            <span class="isPreset">{{scoped.row.linieDeptName}}</span>
+            <span :class="!scoped.row.linieDeptName ? 'isPreset' : '' ">{{scoped.row.linieDeptName || scoped.row.refferenceSmt}}</span>
         </template>
         <!-- linie -->
         <template #buyerName="scoped">
-            <span class="isPreset">{{scoped.row.buyerName}}</span>
+            <span :class="!scoped.row.buyerName ? 'isPreset' : '' ">{{scoped.row.buyerName || scoped.row.refferenceByuerName}}</span>
         </template>
         <!-- 变更类型 -->
         <template #changeType="scoped">
@@ -64,7 +65,7 @@
         </template>
         <!-- 操作 -->
         <template #operate="scoped">
-            <span class="link-underline" @click="assign(scoped.row)">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
+            <span v-if="!scoped.row.linieDeptName" class="link-underline" @click="assign(scoped.row)">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
         </template>
 
         </tableList>
@@ -104,13 +105,13 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
-import { getCarTypePro } from '@/api/designate/nomination'
 import {
     getPartPage,
     deletePart,
 } from '@/api/aeko/detail/partsList.js'
 import {
     searchBrand,
+    searchCartypeProject,
 } from '@/api/aeko/manage'
 import { cloneDeep } from "lodash"
 export default {
@@ -157,21 +158,21 @@ export default {
         } else if (this.isCommodityCoordinator) {
             this.SearchList = SearchList
             this.tableTitle = tableTitle;
-            this.getList();
         } else if (this.isAekoManager) {
             this.SearchList = SearchList
             this.tableTitle = tableTitle;
-            this.getList();
         } else {
             this.SearchList = []
             this.tableTitle = []
         }
+
     },
     data(){
         return{
             SearchList:[],
             searchParams:{
                 brand:'',
+                cartypeCode:[],
             },
             selectOptions:{},
             selectItems:[],
@@ -180,7 +181,10 @@ export default {
             tableTitle: [],
             assignVisible:false,
             singleAssign:[],
-            assignType: ""
+            assignType: "",
+            btnLoading:{
+                deleteParts:false,
+            }
         }
     },
     methods:{
@@ -204,6 +208,7 @@ export default {
             } else {
                 this.searchParams = {
                     brand:'',
+                    cartypeCode:[],
                 };
             }
 
@@ -224,11 +229,11 @@ export default {
             const { page,searchParams,aekoInfo={} } = this;
             const { requirementAekoId ='',} = query;
             // const {partNum} = searchParams;
-            let cartypeCode='';
+            let cartypeCode=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
                 if(aekoInfo.aekoType.code == 'AeA'){  // 车型
-                    cartypeCode = searchParams.cartype;
+                    cartypeCode = searchParams.cartype ? [searchParams.cartype.trim()] : [];
                 }else if(aekoInfo.aekoType.code == 'aeko/mp'){ // 车型项目
                     cartypeCode = searchParams.cartypeCode;
                 }
@@ -257,13 +262,13 @@ export default {
         // 获取搜索框下拉数据
         getSearchList(){
             // 车型项目
-            getCarTypePro().then((res)=>{
+            searchCartypeProject().then((res)=>{
                  const {code,data} = res;
                 if(code ==200 ){
-                    (data.data).map((item)=>{
-                    item.desc = item.name;
+                    data.map((item)=>{
+                        item.desc = item.name;
                     })
-                    this.selectOptions.cartypeCode = data.data;
+                    this.selectOptions.cartypeCode = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -292,13 +297,27 @@ export default {
                 cancelButtonText: this.language('nominationLanguage.No','否'),
             }
             ).then(()=>{
-                // cosnt aekoPartIdArr = selectItems.map((item)=>item.)
-                // deletePart().then((res)=>{
-
-                // })
+                this.btnLoading.deleteParts = true;
+                const aekoPartIdList = selectItems.map((item)=>item.aekoPartId);
+                const data = {
+                    aekoPartIdList,
+                    requirementAekoId: this.aekoInfo.requirementAekoId,
+                }
+                deletePart(data).then((res)=>{
+                    this.btnLoading.deleteParts = false;
+                    const {code} = res;
+                    if(code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                    }
+                }).catch((err)=>{
+                    this.btnLoading.deleteParts = false;
+                })
                 console.log('是')
             }).catch(()=>{
-                console.log('否')
+                console.log('否') 
             })
           }
         },
