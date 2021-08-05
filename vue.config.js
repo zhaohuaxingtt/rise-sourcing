@@ -252,6 +252,7 @@ module.exports = {
       '/partProcureApi': {
         //赵文鹏服务地址
         target: 'http://10.122.17.38:8025',
+        //target: 'http://10.160.136.148:18025',
         changeOrigin: true,
         pathRewrite: {
           '^/partProcureApi': '',
