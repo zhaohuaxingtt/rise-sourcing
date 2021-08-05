@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:54:35
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 17:59:51
+ * @LastEditTime: 2021-08-04 13:41:02
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\index.vue
 -->
@@ -68,7 +68,7 @@
       />
     </iCard>
     <backDialog ref="productGroupBack" :dialogVisible="backDialogVisible" @changeVisible="changeBackVisible" @handleBack="handleBack" />
-    <fsConfirmDialog ref="fsConfirm" @handleConfirm="handleFSConfirm" :dialogVisible="fsDialogVisible" @changeVisible="changeFSVisible" :tableList="selectRows" type="1" />
+    <fsConfirmDialog ref="fsConfirm" @handleConfirm="handleFSConfirm" :dialogVisible="fsDialogVisible" @changeVisible="changeFSVisible" :tableList="sendRows" type="1" />
     <transferDialog ref="productGroupTransfer" :dialogVisible="transferDialogVisible" @changeVisible="changeTransferVisible" @handleTransfer="handleTransfer" :selectOptions="selectOptions.fsOptions" />
   </div>
 </template>
@@ -99,7 +99,8 @@ export default {
       backDialogVisible: false,
       selectRows: [],
       fsDialogVisible: false,
-      transferDialogVisible: false
+      transferDialogVisible: false,
+      sendRows: []
     }
   },
   computed: {
@@ -214,6 +215,12 @@ export default {
         iMessage.warn(this.language('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据'))
         return
       }
+      this.sendRows = this.selectRows.map(item => {
+        return {
+          ...item,
+          selectOption:this.selectOptions.fsOptions
+        }
+      })
       this.changeFSVisible(true)
     },
     changeFSVisible(visible) {

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-03 10:39:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 11:31:10
+ * @LastEditTime: 2021-08-04 17:30:55
  * @Description: 配置显示字段弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\showItem\index.vue
 -->
@@ -17,26 +17,28 @@
       <div class="chosseProGroup">
         <span class="chosseProGroup-title">{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</span>
         <div>
-          <iButton>{{language('QUANXUAN','全选')}}</iButton>
-          <iButton>{{language('LK_CHONGZHI','重置')}}</iButton>
-          <iButton>{{language('QUEREN','确认')}}</iButton>
+          <iButton @click="handleAllSelect">{{language('QUANXUAN','全选')}}</iButton>
+          <iButton @click="handleReset">{{language('LK_CHONGZHI','重置')}}</iButton>
+          <iButton @click="handleConfirm" :loading="saveLoading">{{language('QUEREN','确认')}}</iButton>
         </div>
       </div>
     </template>
     <div class="checkList">
-      <el-checkbox class="checkList-item" v-for="item in checkList" :key="item.key" :label="language(item.key, item.name)" :checked="item.isSelect" :disabled="item.disabled"></el-checkbox>
+      <el-checkbox class="checkList-item" :style="`width:${item.width ? item.width : '18%'}`" v-for="item in list" :key="item.key" :label="language(item.key, item.name)" v-model="item.isSelect" :disabled="item.disabled"></el-checkbox>
     </div>
   </iDialog>
 </template>
 
 <script>
 import { iDialog, iButton, iMessage } from 'rise'
-import { getBuyer, getFsUserList } from '@/api/project'
+import { updateFields } from '@/api/project'
+import { cloneDeep } from 'lodash'
 export default {
   components: { iDialog, iButton },
   props: {
     dialogVisible: { type: Boolean, default: false },
-    checkList: { type: Array, default: () => [] }
+    checkList: { type: Array, default: () => [] },
+    type: {type:String}
   },
   watch:{
     dialogVisible(val) {
@@ -50,21 +52,48 @@ export default {
       saveLoading: false,
       buyer: '',
       fsOptions: {},
-      selectData: []
+      selectData: [],
+      list: cloneDeep(this.checkList)
     }
   },
   methods: {
+    handleConfirm() {
+      this.saveLoading = true
+      const params = {
+        type: this.type,
+        fieldList: this.list.filter(item => item.disabled || item.isSelect).map(item => item.props)
+      }
+      updateFields(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.$emit('changeVisible', false)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.saveLoading = false
+      })
+    },
+    handleReset() {
+      this.list = this.list.map(item => {
+        return {
+          ...item,
+          isSelect: item.disabled ? true : false
+        }
+      })
+    },
+    handleAllSelect() {
+      this.list = this.list.map(item => {
+        return {
+          ...item,
+          isSelect: true
+        }
+      })
+      // this.$emit('handleAllSelect')
+    },
     clearDialog() {
       this.reasonDescription = ''
       this.$emit('changeVisible', false)
-    },
-    handleConfirm() {
-      if (this.selectData.length < 1) {
-        iMessage.warn('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据')
-        return
-      }
-      this.saveLoading = true
-      this.$emit('handleConfirm', this.selectData)
     },
     changeSaveLoading(loading) {
       this.saveLoading = loading

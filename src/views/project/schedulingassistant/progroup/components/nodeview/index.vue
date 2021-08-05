@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:14:21
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 10:37:04
+ * @LastEditTime: 2021-08-04 15:53:00
  * @Description: 节点视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
 -->
@@ -21,7 +21,7 @@
     <div v-for="pro in products" :key="pro.label" class="productItem">
       <div class="productItem-top">
         <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">
-          {{pro.productGroupName}}
+          {{pro.productGroupNameZh}}
         </el-checkbox>
       </div>
       <div class="productItem-bottom">

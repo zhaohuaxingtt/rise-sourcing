@@ -5,31 +5,31 @@
  */
 
 export const previewBaicFrom = [
-    {label:'是否TOP',labelKey:'LK_AEKO_SHIFOUTOP',props:'a',type:'select',selectOption:'a',required:true,editable:true},
-    {label:'是否相关',labelKey:'LK_AEKO_SHIFOUXIANGGUAN',props:'b',type:'select',selectOption:'b',required:true,editable:true},
-    {label:'更改零件名称',labelKey:'LK_AEKO_GENGGAILINGJIANMINGCHENG',props:'c',type:'input',required:true,editable:true},
-    {label:'主要供应商',labelKey:'LK_AEKO_ZHUYAOGONGYINGSHANG',props:'d',type:'input',required:true,editable:true},
-    {label:'新⾸批送样周期(周数)',labelKey:'LK_AEKO_XINSHOUPISONGYANGZHOUQI',props:'e',type:'input',required:true,editable:true},
-    {label:'影响进度',labelKey:'LK_AEKO_YINGXIANGJINDU',props:'f',type:'select',selectOption:'f',required:true,editable:true},
-    {label:'指定前期采购',labelKey:'LK_AEKO_ZHIDINGQIANQICAIGOU',props:'g',type:'select',selectOption:'g',required:true,editable:true},
-    {label:'封⾯状态',labelKey:'LK_AEKOFENGMIANZHUANGTAI',props:'h'},
+    {label:'是否TOP',labelKey:'LK_AEKO_SHIFOUTOP',props:'isTop',type:'select',selectOption:'a',required:true,editable:true,isObj:true,},
+    {label:'是否相关',labelKey:'LK_AEKO_SHIFOUXIANGGUAN',props:'isReference',type:'select',selectOption:'b',required:true,editable:true,isObj:true,},
+    {label:'更改零件名称',labelKey:'LK_AEKO_GENGGAILINGJIANMINGCHENG',props:'partName',type:'input',required:true,editable:true},
+    {label:'主要供应商',labelKey:'LK_AEKO_ZHUYAOGONGYINGSHANG',props:'mainSupplier',type:'input',required:true,editable:true},
+    {label:'新⾸批送样周期(周数)',labelKey:'LK_AEKO_XINSHOUPISONGYANGZHOUQI',props:'sendCycle',type:'input',required:true,editable:true},
+    {label:'影响进度',labelKey:'LK_AEKO_YINGXIANGJINDU',props:'isEffectpro',type:'select',selectOption:'f',required:true,editable:true,isObj:true,},
+    {label:'指定前期采购',labelKey:'LK_AEKO_ZHIDINGQIANQICAIGOU',props:'fsName',type:'select',selectOption:'g',required:true,editable:true},
+    {label:'封⾯状态',labelKey:'LK_AEKOFENGMIANZHUANGTAI',props:'coverStatus',isObj:true,},
 ]
 
 export const coverTableTitleCost=[
-    { props: "a", name: "⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true },
-    { props: "b", name: "增加材料成本(RMB/⻋)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true },
-    { props: "c", name: "增加投资费⽤(不含税)", key: "LK_AEKO_ZENGJIATOUZIFEIYONG", tooltip: true },
-    { props: "d", name: "其他费⽤(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true },
+    { props: "cartypeCode", name: "⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true },
+    { props: "materialIncrease", name: "增加材料成本(RMB/⻋)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true },
+    { props: "investmentIncrease", name: "增加投资费⽤(不含税)", key: "LK_AEKO_ZENGJIATOUZIFEIYONG", tooltip: true },
+    { props: "otherCost", name: "其他费⽤(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true },
 ]
 
 
 export const coverTableTitleDepart=[
-    { props: "a", name: "科室", key: "LK_KESHI", tooltip: true },
-    { props: "b", name: "Linie", key: "LK_LINIE", tooltip: true },
-    { props: "c", name: "增加材料成本(RMB/⻋)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true },
-    { props: "d", name: "增加投资费⽤(不含税)", key: "LK_AEKO_ZENGJIATOUZIFEIYONG", tooltip: true },
-    { props: "e", name: "其他费⽤(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true },
-    { props: "f", name: "封面状态", key: "LK_AEKOFENGMIANZHUANGTAI", tooltip: true },
-    { props: "g", name: "提交时间", key: "LK_AEKO_TIJIAOSHIJIAN", tooltip: true },
+    { props: "linieDeptNum", name: "科室", key: "LK_KESHI", tooltip: true },
+    { props: "linieName", name: "Linie", key: "LK_LINIE", tooltip: true },
+    { props: "materialIncrease", name: "增加材料成本(RMB/⻋)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true },
+    { props: "investmentIncrease", name: "增加投资费⽤(不含税)", key: "LK_AEKO_ZENGJIATOUZIFEIYONG", tooltip: true },
+    { props: "otherCost", name: "其他费⽤(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true },
+    { props: "coverStatus", name: "封面状态", key: "LK_AEKOFENGMIANZHUANGTAI", tooltip: true },
+    { props: "submitTime", name: "提交时间", key: "LK_AEKO_TIJIAOSHIJIAN", tooltip: true },
 
 ]
