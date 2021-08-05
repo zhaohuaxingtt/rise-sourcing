@@ -176,6 +176,9 @@ export default {
             obj[itemChildren.name] = '';
           });
         });
+        const formData = {};
+        this.getFormData({treeData: res.data, formData: formData});
+        this.form = formData;
         this.treeDataSelect = obj;
         this.pageLoading = false;
       } catch {
@@ -183,6 +186,16 @@ export default {
         this.treeDataSelect = {};
         this.pageLoading = false;
       }
+    },
+    // 递归数据回显
+    getFormData({treeData, formData}) {
+      treeData.map(item => {
+        if (!item.children) {
+          formData[item.id] = item.context;
+        } else {
+          this.getFormData({treeData: item.children, formData});
+        }
+      });
     },
     setName(item) {
       return this.$i18n.locale === 'zh' ? item.name : item.nameEn;

@@ -31,6 +31,7 @@ export default {
 
 <style scoped lang="scss">
 .remark {
+  margin-top: 10px;
   height: 55px;
   background: #F8F8FA;
   border-radius: 5px;
