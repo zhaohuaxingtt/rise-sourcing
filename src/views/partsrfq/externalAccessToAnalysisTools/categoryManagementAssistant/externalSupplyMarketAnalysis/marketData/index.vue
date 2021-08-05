@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import {iCard, iButton} from 'rise';
+import {iCard, iButton, iMessageBox} from 'rise';
 import theTabs from './components/theTabs';
 import theSearch from './components/theSearch';
 import theDataTab from './components/theDataTab';
@@ -56,6 +56,7 @@ import {cloneDeep} from 'lodash';
 import {dataURLtoFile, downloadPDF} from '@/utils/pdf';
 import {uploadFile} from '@/api/file/upload';
 import resultMessageMixin from '@/utils/resultMessageMixin';
+import {deletePartsCustomerList} from '../../../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 
 export default {
   mixins: [resultMessageMixin],
@@ -248,7 +249,12 @@ export default {
             break;
         }
         if (!res.result) {
-          this.resultMessage(res);
+          const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+          iMessageBox(
+              message,
+              this.language('PLGLZS.TISHI', '提示'),
+              {confirmButtonText: this.$t('LK_QUEDING'), showCancelButton: false},
+          );
         }
         this.getDataTabArray(res.data);
         this.chartData = res.data;
