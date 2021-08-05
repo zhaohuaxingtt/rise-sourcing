@@ -139,7 +139,7 @@ export default {
     handleCancel() {
       this.editStatus = false;
     },
-    async handleSave() {
+    /*async handleSave() {
       try {
         this.pageLoading = true;
         const req = {
@@ -164,7 +164,7 @@ export default {
       } catch {
         this.pageLoading = false;
       }
-    },
+    },*/
     async getList() {
       try {
         this.pageLoading = true;
