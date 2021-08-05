@@ -44,6 +44,7 @@
             class="table"
             index
             :lang="true"
+            :selection="isAekoManager || isCommodityCoordinator"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :tableLoading="loading"

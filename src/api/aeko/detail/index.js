@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-08-03 18:34:39
+ * @LastEditTime: 2021-08-04 19:48:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -67,6 +67,24 @@ export function getAekoOriginPartAPrice(params) {
 export function saveAekoOriginPart(params) {
   return requst({
     url: '/aeko/aeko-origin-part/save',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 获取Aeko车型项目
+export function getAekoCarProject(params) {
+  return requst({
+    url: `/aeko/aeko-car-project`,
+    method: 'GET',
+    params
+  })
+}
+
+// 获取每车用量列表
+export function getAekoCarDosage(params) {
+  return requst({
+    url: `/aeko/aeko-car-dosage`,
     method: 'POST',
     data: params
   })
