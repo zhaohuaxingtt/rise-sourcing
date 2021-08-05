@@ -139,6 +139,8 @@ export default {
             let arr1 = params.filter((value, index) => {
               return !(value.seriesName.indexOf('lv') > -1)
             })
+            arr = arr.reverse()
+            arr1 = arr1.reverse()
             arr.forEach(value => {
               arr1.forEach(i => {
                 if (value.seriesName.replace("lv", "") === i.seriesName) {
