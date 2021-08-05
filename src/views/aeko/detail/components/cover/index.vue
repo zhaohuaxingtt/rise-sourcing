@@ -5,8 +5,8 @@
 -->
 <template>
     <div>
-        <!-- <previewCover/> -->
-        <editCover/>
+        <editCover v-if="isLinie"/>
+        <previewCover v-else/>
     </div>
 </template>
 
@@ -18,7 +18,15 @@ export default {
     components:{
         previewCover,
         editCover,
-    }
+    },
+    computed: {
+        // eslint-disable-next-line no-undef
+        ...Vuex.mapGetters([
+            "isAekoManager", // Aeko管理员
+            "isCommodityCoordinator", // 科室协调员
+            "isLinie", // 专业采购员
+        ]),
+    },
 }
 </script>
 

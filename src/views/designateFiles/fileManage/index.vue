@@ -9,12 +9,16 @@
 
 <template>
   <iPage class="signForParts" >
-    <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
+    <!-- <el-tabs v-model="tab" class="tab"> -->
+      <!-- <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
+        <div class="topMenu">
+          <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+          <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
+        </div>
         <div>
-          <div class="margin-bottom33">
+          <!-- <div class="margin-bottom33">
             <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div>
+          </div> -->
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
@@ -95,9 +99,9 @@
           <!------------------------------------------------------------------------>
           <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" :partType="partProjTypes.FUJIAN" />
         </div>
-      </el-tab-pane>
+      <!-- </el-tab-pane> -->
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
-    </el-tabs>
+    <!-- </el-tabs> -->
   </iPage>
 </template>
 
@@ -114,7 +118,7 @@ import { downloadFile, downloadUdFile } from '@/api/file'
 import { insertRfq } from '@/api/accessoryPart/index'
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
 import { getDictByCode } from '@/api/dictionary'
-import { clickMessage } from "@/views/partsign/home/components/data"
+import { clickMessage,TAB } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
 
 // eslint-disable-next-line no-undef
@@ -148,7 +152,8 @@ export default {
       selectLinie: '',
       selectLinieDept: '',
       loading: false,
-      options: []
+      options: [],
+      list:TAB,
     }
   },
   created() {
@@ -584,6 +589,10 @@ export default {
         font-weight: bold;
       }
     }
+  }
+  .topMenu{
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>
