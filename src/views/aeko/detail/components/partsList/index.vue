@@ -7,7 +7,7 @@
 <template>
   <div class="aeko-partsList">
     <!-- 搜索区域 -->
-    <iSearch @sure="getList" @reset="reset">
+    <iSearch @sure="sure" @reset="reset">
         <el-form>
             <!-- AEKO类型为AeA显示车型，为aeko/mp显示车型项目 -->
             <el-form-item
@@ -184,7 +184,17 @@ export default {
         }
     },
     methods:{
-        reset(){
+        sure() {
+            // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
+            if(this.searchParams.partNum && this.searchParams.partNum.trim().length < 9){
+                this.loading = false;
+                return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+            }
+
+            this.page.currPage = 1
+            this.init()
+        },
+        reset() {
             this.page.currPage = 1
 
             if (this.isLinie) {
@@ -213,7 +223,7 @@ export default {
             const {query} = this.$route;
             const { page,searchParams,aekoInfo={} } = this;
             const { requirementAekoId ='',} = query;
-            const {partNum} = searchParams;
+            // const {partNum} = searchParams;
             let cartypeCode='';
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
@@ -223,11 +233,7 @@ export default {
                     cartypeCode = searchParams.cartypeCode;
                 }
             }
-            // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
-            if(partNum && partNum.trim().length < 9){
-                this.loading = false;
-                return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
-            }
+            
             const data = {
                 requirementAekoId, 
                 current:page.currPage,
@@ -325,6 +331,8 @@ export default {
         },
         // linie 获取列表
         getAekoContentPart() {
+            this.loading = true
+
             getAekoContentPart({
                 ...this.searchParams,
                 requirementAekoId: this.aekoInfo.requirementAekoId,

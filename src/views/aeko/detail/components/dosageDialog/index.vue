@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-08-04 19:56:45
+ * @LastEditTime: 2021-08-05 14:49:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -16,18 +16,18 @@
     <template #title>
       <p class="title">{{ language("ZHUANGCHELVMEICHEYONGLIANG", "装⻋率/每⻋⽤量") }}</p>
       <div class="control" id="control">
-        <iButton @click="handleConfirm">{{ language("BAOCUN", "保存") }}</iButton>
+        <iButton :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
       </div>
     </template>
     <div class="body" v-loading="loading">
       <iFormGroup class="form" :row="4" inline>
         <iFormItem class="item" v-for="(item, $index) in form" :key="$index" :label="`${ language(item.key, item.name) }`">
           <div v-if="item.props === 'cartypeProject'">
-            <iText v-if="lll">{{ dosage.cartypeProjectZh }}</iText>
             <iSelect
-              v-else
+              v-if="aekoInfo.aekoType.code == 'AeA'"
               v-model="dosage.cartypeProjectCode"
               :placeholder="language('QINGXUANZE', '请选择')"
+              @change="handleChangeByCarTypeProject"
             >
               <el-option
                 :value="item.value"
@@ -36,20 +36,24 @@
                 :key="item.key"
               ></el-option>
             </iSelect>
+            <iText v-else>{{ dosage.cartypeProjectZh }}</iText>
           </div>
           <iText v-if="item.props === 'factory' || item.props === 'supplierName'">{{ dosage[item.props] }}</iText>
-          <iInput class="percentInput" v-else-if="item.props === 'oldPartShare'" v-model="dosage[item.props]"></iInput>
+          <iInput class="percentInput" v-else-if="item.props === 'oldPartShare'" v-model="dosage[item.props]" @input="handleInputByOldPartShare">
+            <template slot="append">%</template>
+          </iInput>
         </iFormItem>
       </iFormGroup>
       <tableList
         index
         lang
         class="table margin-top30"
+        height="80%"
         :selection="false"
         :tableData="Array.isArray(dosage.aekoProjectCarDosageList) ? dosage.aekoProjectCarDosageList : []"
         :tableTitle="tableTitle">
         <template #consumption="scope">
-          <iInput v-model="scope.row.consumption" @input="handleInputByConsumption($event, scope.row)"></iInput>
+          <iInput class="consumption" v-model="scope.row.consumption" @input="handleInputByConsumption($event, scope.row)"></iInput>
         </template>
       </tableList>
       <i class="dashes"></i>
@@ -63,7 +67,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { dosageDialogForm as form, dosageDialogTableTitle as tableTitle } from "../data"
 import { numberProcessor } from "@/utils"
 import filters from "@/utils/filters"
-import { getAekoCarProject, getAekoCarDosage } from "@/api/aeko/detail"
+import { getAekoCarProject, getAekoCarDosage, saveAekoCarDosage } from "@/api/aeko/detail"
 
 export default {
   components: { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, tableList },
@@ -74,10 +78,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    requirementAekoId: {
-      type: String,
+    aekoInfo: {
+      type: Object,
       require: true,
-      default: ""
+      default: () => ({ aekoType: {} })
     },
     objectAekoPartId: {
       type: String,
@@ -91,7 +95,8 @@ export default {
         this.getAekoCarProject()
         this.getAekoCarDosage()
       } else {
-        // this.selectRow = null
+        this.dosage = {}
+        this.saveLoading = false
       }
     },
   },
@@ -112,14 +117,13 @@ export default {
       carProjectOptions: [],
       dosage: {},
       tableTitle,
-      // selectRow: null,
-      lll: true
+      saveLoading: false
     };
   },
   methods: {
     getAekoCarProject() {
       getAekoCarProject({
-        requirementAekoId: this.requirementAekoId
+        requirementAekoId: this.aekoInfo.requirementAekoId
       })
       .then(res => {
         if (res.code == 200) {
@@ -142,7 +146,7 @@ export default {
       this.loading = true
 
       getAekoCarDosage({
-        requirementAekoId: this.requirementAekoId,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: this.objectAekoPartId,
       })
       .then(res => {
@@ -156,13 +160,39 @@ export default {
       })
       .catch(() => this.loading = false)
     },
-    // 确认
-    handleConfirm() {
-      // this.$emit("confirm", this.selectRow)
-      this.status = false
+    handleChangeByCarTypeProject(value) {
+      this.dosage.carTypeProjectZh = this.carProjectOptions.find(item => item.value === value).label
+    },
+    handleInputByOldPartShare(value) {
+      this.$set(this.dosage, "oldPartShare", numberProcessor(value, 2))
     },
     handleInputByConsumption(value, row) {
       this.$set(row, "consumption", numberProcessor(value, 2))
+    },
+    // 保存
+    handleSave() {
+      if (+this.dosage.oldPartShare > 100) return iMessage.warn(this.language("YANYONGYUANLINGJIANFENEBUNENGDAYUBAIFENZHIBAI", "沿⽤原零件份额不能大于100%"))
+
+      this.saveLoading = true
+
+      saveAekoCarDosage({
+        ...this.dosage,
+        objectAekoPartId: this.objectAekoPartId
+      })
+      .then(res => {
+        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+          // this.$emit("confirm", this.selectRow)
+          this.status = false
+        } else {
+          iMessage.error(message)
+        }
+
+        this.saveLoading = false
+      })
+      .catch(() => this.saveLoading = false)
     },
   }
 };
@@ -203,7 +233,6 @@ export default {
 
     .body {
       height: 580px;
-      overflow-y: scroll;
       padding-right: 15px;
     }
 
@@ -250,10 +279,22 @@ export default {
     }
   }
 
+  .consumption {
+    width: 110px;
+
+    ::v-deep input {
+      text-align: center;
+    }
+  }
+
   .percentInput {
     ::v-deep input {
       text-align: center;
     }
+  }
+
+  ::v-deep .el-table .el-table__body-wrapper {
+    overflow: initial;
   }
 }
 </style>
