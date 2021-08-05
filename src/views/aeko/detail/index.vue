@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-04 15:20:28
+ * @LastEditTime: 2021-08-05 14:57:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -77,9 +77,13 @@ export default {
     }
     this.getBbasicInfo();
   },
-  mounted() {
-    const component = this.$refs[this.currentTab][0]
-    if (typeof component.init === "function") component.init()
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapGetters([
+        "isAekoManager", // Aeko管理员
+        "isCommodityCoordinator", // 科室协调员
+        "isLinie", // 专业采购员
+    ]),
   },
   data() {
     return {
@@ -117,6 +121,12 @@ export default {
         const {code,data={}} = res;
         if(code == 200){
           this.aekoInfo = {...aekoInfo,...data};
+
+          if (this.isLinie) {
+            this.currentTab = "contentDeclare"
+          }
+          
+          this.tabChange()
         }else{
            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

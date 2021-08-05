@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-04 16:20:44
+ * @LastEditTime: 2021-08-05 14:54:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -175,10 +175,10 @@
             <span class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotation="scope">
-            <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #priceAxis="scope">
-            <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #investCarTypePro="scope">
             <iSelect
@@ -210,7 +210,7 @@
           :total="page.totalCount" />
       </div>
     </iCard>
-    <dosageDialog :visible.sync="dosageDialogVisible" :requirementAekoId="this.aekoInfo.requirementAekoId" :objectAekoPartId="currentRow.objectAekoPartId" />
+    <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" />
   </div>
 </template>
 
@@ -336,17 +336,19 @@ export default {
       })
       .catch(() => this.loading = false)
     },
-    query() {
+    sure() {
+      // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
+      if(this.form.partNum && this.form.partNum.trim().length < 9){
+        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+      }
+
       this.page.currPage = 1
       this.init()
-    },
-    sure() {
-      this.query()
     },
     reset() {
       this.page.currPage = 1
       this.form = cloneDeep(contentDeclareQueryForm)
-      this.query()
+      this.sure()
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
