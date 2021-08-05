@@ -86,7 +86,6 @@
         </el-form-item>
 
         <el-form-item :label="language('LK_LINLE', 'Linle')">
-          <!-- <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['linieId']" ></iInput> -->
           <iSelect
               class="multipleSelect"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
@@ -141,6 +140,11 @@
         <template #bmSerial="scope">
           <div class="table-link" @click="openBMDetail(scope.row)">{{scope.row.bmSerial}}</div>
         </template>
+
+        <template #moldInvestmentAmount="scope">
+          <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.moldInvestmentAmount))}}</div>
+          <div v-else>-</div>
+        </template>
       </iTableList>
 
       <iPagination
@@ -187,6 +191,7 @@ import {
 import { cloneDeep } from "lodash";
 import { pageMixins } from "@/utils/pageMixins";
 import { tableHeight } from "@/utils/tableHeight";
+import { getTousandNum, NumFormat } from "@/utils/tool";
 
 
 export default {
@@ -220,6 +225,8 @@ export default {
         currPage: 1,
         pageSize: 10,
       },
+      getTousandNum,
+      NumFormat,
     }
   },
 

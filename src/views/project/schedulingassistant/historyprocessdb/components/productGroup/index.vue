@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 17:26:54
+ * @LastEditTime: 2021-08-05 16:19:06
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -98,13 +98,13 @@ export default {
       }
     },
     partTableTitle() {
-      return partTableTitle.filter(item => item.disabled || this.selectColumn.includes(item.props))
+      return partTableTitle.filter(item => item.disabled || this.selectColumn.includes(item.key))
     },
     checkList() {
       return cloneDeep(partTableTitle).map(item => {
         return {
           ...item,
-          isSelect: item.disabled || this.selectColumn.includes(item.props)
+          isSelect: item.disabled || this.selectColumn.includes(item.key)
         }
       })
     },

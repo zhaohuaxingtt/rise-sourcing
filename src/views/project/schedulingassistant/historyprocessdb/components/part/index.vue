@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 17:18:50
+ * @LastEditTime: 2021-08-05 16:19:33
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -45,7 +45,7 @@
         :total="page.totalCount"
       />
     </template>
-    <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="partLogicList" :logicData="logicData" :selectOptions="selectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
+    <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="partLogicList" :logicData="logicData" :selectOptions="logicSelectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
     <showItemDialog ref="showItem" type="2" :dialogVisible="showItemVisible" @changeVisible="changeShowItem" :checkList="checkList" />
   </iCard>
 </template>
@@ -109,7 +109,7 @@ export default {
       }
     },
     partTableTitle() {
-      return partTableTitle.filter(item => !this.productColumns.includes(item.key) && (item.disabled || this.selectColumn.includes(item.props)))
+      return partTableTitle.filter(item => !this.productColumns.includes(item.key) && (item.disabled || this.selectColumn.includes(item.key)))
     },
     checkList() {
       return cloneDeep(partTableTitle).reduce((accu, item) => {
@@ -118,7 +118,7 @@ export default {
         }
         return [...accu, {
           ...item,
-          isSelect: item.disabled || this.selectColumn.includes(item.props)
+          isSelect: item.disabled || this.selectColumn.includes(item.key)
         }]
       },[])
     },

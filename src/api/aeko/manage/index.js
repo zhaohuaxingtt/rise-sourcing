@@ -47,6 +47,35 @@ export function searchCoverStatus(params) {
   })
 }
 
+// 科室列表下拉
+export function searchCommodity(data) {
+  return requst({
+      url: '/aeko/purchasing/search-commodity',
+      method: 'POST',
+      data,
+  })
+}
+
+// aeko-列表搜索-车型下拉 
+export function getSearchCartype(params) {
+  return requst({
+    url: '/aeko/purchasing/search-cartype',
+    method: 'GET',
+    params,
+  })
+}
+
+// aeko -列表查询- 车型项目下拉
+export function searchCartypeProject(params) {
+  return requst({
+    url: '/aeko/purchasing/search-cartype-project',
+    method: 'GET',
+    params,
+  })
+}
+
+
+
 // 导入附件
 export function uploadFiles(data) {
   return requst({
@@ -71,15 +100,6 @@ export function purchasingCancel(params) {
 export function deleteAeko(params) {
   return requst({
     url: '/aeko/delete',
-    method: 'GET',
-    params,
-  })
-}
-
-// aeko-列表搜索-车型项目管理 
-export function getSearchCartype(params) {
-  return requst({
-    url: '/aeko/purchasing/search-cartype',
     method: 'GET',
     params,
   })
@@ -138,3 +158,5 @@ export function deleteFiles(data) {
       data,
   })
 }
+
+

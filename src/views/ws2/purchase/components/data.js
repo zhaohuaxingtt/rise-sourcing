@@ -34,6 +34,7 @@ export const investmentListTitle = [
         props: 'supplierShortNameZh',
         name: '供应商',
         key: '供应商',
+        width: 250,
         tooltip: false
     },
     {

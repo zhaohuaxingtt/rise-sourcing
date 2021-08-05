@@ -1,10 +1,10 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-29 20:02:39
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-05 15:23:32
+ * @LastEditors: Luoshuang
  * @Description: 零件签收-table组件。
- * @FilePath: \rise\src\views\partsign\components\tableList.vue
+ * @FilePath: \front-web\src\components\iTableList\index.vue
 -->
 <template>
   <div class="tableContent">
@@ -21,42 +21,58 @@
                  v-for="(item, index) in tableTitle"
                  :key="index"></el-option>
     </iSelect>
-    <el-table tooltip-effect="light"
-              :height="height"
-              :data="tableData"
-              v-loading="tableLoading"
-              @selection-change="handleSelectionChange"
-              :empty-text="$t('LK_ZANWUSHUJU')"
-              ref="moviesTable"
-              :class="radio && 'radio'"
-              :show-summary="showSummary"
-              :summary-method="getSummaries"
-              :row-class-name="tableRowClassName"
-              @cell-mouse-leave="cellMouseLeave"
-              @cell-mouse-enter="cellMouseEnter">
-      <el-table-column v-if="selection"
-                       type="selection"
-                       :width="selectionWidth"
-                       align="center"></el-table-column>
-      <el-table-column v-if="typeIndex"
-                       type="index"
-                       align="center"
-                       label="序号"
-                       width="50">
+    <el-table
+      tooltip-effect="light"
+      :height="height"
+      :data="tableData"
+      v-loading="tableLoading"
+      @selection-change="handleSelectionChange"
+      :empty-text="$t('LK_ZANWUSHUJU')"
+      ref="moviesTable"
+      :class="radio && 'radio'"
+      :show-summary="showSummary"
+      :summary-method="getSummaries"
+      :row-class-name="tableRowClassName"
+      @cell-mouse-leave="cellMouseLeave" 
+      @cell-mouse-enter="cellMouseEnter"
+      @select="handleSelect" 
+      @select-all="handleSelectAll" 
+      :cell-style="borderLeft" 
+    >
+      <el-table-column
+        v-if="selection"
+        type="selection"
+        :width="selectionWidth"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+          v-if="typeIndex"
+          type="index"
+          align="center"
+          label="序号"
+          width="50">
       </el-table-column>
       <template v-for="(items, index) in tableTitle">
-        <el-table-column :key="index"
-                         align="center"
-                         :show-overflow-tooltip="items.tooltip"
-                         v-if="items.props == activeItems"
-                         :prop="items.props"
-                         :label="$t(items.key)"
-                         :min-width="items.minWidth"
-                         :width="items.width">
-          <template slot-scope="row"><span class="openLinkText cursor"
-                  @click="openPage(row.row)">{{
-              row.row[activeItems]
-            }}</span></template>
+        <el-table-column
+          :key="index"
+          align="center"
+          :show-overflow-tooltip="items.tooltip"
+          v-if="items.props == activeItems"
+          :prop="items.props"
+          :label="$t(items.key)"
+          :min-width="items.minWidth"
+          :width="items.width"
+        >
+          <template slot-scope="row">
+            <span class="flexRow">
+              <span class="openLinkText cursor " @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
+              <span v-if="row.row[activeItems]" class="icon-gray  cursor "  @click="openPage(row.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+              </span>
+            </span>
+          </template
+          >
         </el-table-column>
         <el-table-column :key="index"
                          align="center"
@@ -161,12 +177,14 @@ export default {
   mounted () {
 
     this.multipleSelection = JSON.parse(localStorage.getItem('checkList'))
-    this.$nextTick(() => {
-      this.multipleSelection.forEach(i => {
-        console.log(this.$refs.moviesTable)
-        this.$refs.moviesTable.toggleRowSelection(i, true)
-      })
-    });
+    if(this.multipleSelection){
+      this.$nextTick(() => {
+        this.multipleSelection.forEach(i => {
+          console.log(this.$refs.moviesTable)
+          this.$refs.moviesTable.toggleRowSelection(i, true)
+        })
+      });
+    }
 
     if (this.filterTable) {
       this.initChoose()
@@ -221,6 +239,25 @@ export default {
     cellMouseEnter (row) {
       this.$emit("cellMouseEnter", row);
     },
+    handleSelect(selection,row){
+      const selectdBorder = row.selectedBorder
+      this.$set(row,'selectedBorder',!selectdBorder)
+    },
+    handleSelectAll(selection){  
+      const flag = selection.length
+      for(let i= 0  ; i<flag;i++){
+        this.$set(selection[i],'selectedBorder',!!flag)
+      }
+      !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+    },
+    borderLeft({row, column, rowIndex, columnIndex}){
+      if(columnIndex === 0 && row.selectedBorder === true){
+         return "border-left:2px solid #1660F1;"
+      }
+      else{
+        return ""
+      }
+    }
   },
 };
 </script>
@@ -245,6 +282,29 @@ export default {
 .radio {
   ::v-deep thead .el-table-column--selection .cell {
     display: none;
+  }
+  .icon-gray{
+    cursor: pointer;
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+  .flexRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-gray:hover{
+    cursor: pointer;
+    .show{
+      display: none;
+    }
+    .active{
+      display: block;
+    }
   }
 }
 </style>
