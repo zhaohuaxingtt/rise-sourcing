@@ -163,7 +163,6 @@ import {
   searchCoverStatus,
   uploadFiles,
   deleteAeko,
-  getSearchCartype,
   searchCartypeProject,
   importAeko,
   templateDowmload,
