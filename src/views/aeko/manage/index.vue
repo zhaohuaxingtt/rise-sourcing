@@ -340,11 +340,6 @@ export default {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
-
-        console.log(this.selectOptions,'selectOptionsselectOptionsselectOptionsselectOptions');
-        setTimeout(()=>{
-          console.log(this.selectOptions,'selectOptions')
-        },2000)
       },
 
       // 跳转详情页
