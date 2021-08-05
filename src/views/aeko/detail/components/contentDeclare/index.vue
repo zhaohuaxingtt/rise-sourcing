@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-05 14:54:32
+ * @LastEditTime: 2021-08-05 18:04:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -164,9 +164,10 @@
             <span>{{ scope.row.status ? scope.row.status.desc : "" }}</span>
           </template>
           <template #oldPartNumPreset="scope">
-            <iInput v-if="scope.row.status.code === 'EMPTY'" class="oldPartNumPresetSelect" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly @click.native="oldPartNumPresetSelect(scope.row)">
+            <iInput v-if="scope.row.status.code === 'EMPTY'" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
               <div class="inputSearchIcon" slot="suffix">
-                <icon symbol name="iconshaixuankuangsousuo" />
+                <icon v-if="!scope.row.judgeLoading" symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon"  @click.native="oldPartNumPresetSelect(scope.row)"/>
+                <i v-else class="el-icon-loading"></i>
               </div>
             </iInput>
             <iInput v-else v-model="scope.row.oldPartNumPreset" disabled readonly></iInput>
@@ -221,7 +222,7 @@ import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle, isReferenceMap } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent, judgeRight } from "@/api/aeko/detail"
 import { getCarTypePro } from "@/api/designate/nomination"
 import { getDictByCode } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
@@ -236,6 +237,12 @@ export default {
       type: Object,
       default: () => ({})
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
   },
   data() {
     return {
@@ -252,7 +259,7 @@ export default {
       declareResetLoading: false,
       currentRow: {},
       dosageDialogVisible: false,
-      submitLoading: false,
+      submitLoading: false
     };
   },
   created() {
@@ -360,13 +367,34 @@ export default {
     },
     view() {},
     oldPartNumPresetSelect(row) {
-      this.$router.push({
-        path: "/aeko/quondampart/ledger",
-        query: {
-          requirementAekoId: this.aekoInfo.requirementAekoId,
-          objectAekoPartId: row.objectAekoPartId
+      this.$set(row, "judgeLoading", true)
+
+      judgeRight([
+        {
+          partNum: row.oldPartNumPreset,
+          userId: this.userInfo.id
         }
+      ])
+      .then(res => {
+        if (res.code == 200) {
+          if (res.data[0].isView) {
+            this.$router.push({
+              path: "/aeko/quondampart/ledger",
+              query: {
+                requirementAekoId: this.aekoInfo.requirementAekoId,
+                objectAekoPartId: row.objectAekoPartId
+              }
+            })
+          } else {
+            iMessage.error(res.data[0].describe)   
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.$set(row, "judgeLoading", false)
       })
+      .catch(() => this.$set(row, "judgeLoading", false))
     },
     // 相关无关切换
     handleDeclareToggle() {
@@ -472,24 +500,50 @@ export default {
 
 <style lang="scss" scoped>
 .contentDeclare {
-  .multipleSelect{
-    ::v-deep .el-tag{
-      max-width: calc(100% - 70px);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+  .multipleSelect {
+    ::v-deep .el-tag {
+      position: relative;
+
+      &:last-of-type {
+        padding-right: 5px;
+      }
+
+      &:first-of-type {
+        padding-right: 10px;
+      }
+
+      .el-select__tags-text {
+        display: inline-block;
+        max-width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .el-tag__close {
+        top: -25%;
+      }
     }
   }
 
-  .oldPartNumPresetSelect {
-    cursor: pointer;
-    
+  .oldPartNumPresetQuery {
     ::v-deep input {
-      cursor: pointer;
+      caret-color: rgb(96, 98, 102);
     }
 
-    ::v-deep .el-input__suffix {
+    .oldPartNumPresetIcon {
+      cursor: pointer;
+
+      ::v-deep .el-input__suffix {
+        right: 0;
+      }
+    }
+    
+    ::v-deep .el-input__suffix-inner {
+      position: absolute;
+      top: 50%;
       right: 0;
+      transform: translate(0, -50%);
     }
   }
 
