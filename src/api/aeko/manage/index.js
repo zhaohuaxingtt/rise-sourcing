@@ -6,8 +6,10 @@
 
 
 import axios from '@/utils/axios'
+import download from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_PARTS)
+const fileRequst = download(process.env.VUE_APP_PARTS)
 
 // 列表查询
 export function getManageList(data) {
@@ -45,6 +47,35 @@ export function searchCoverStatus(params) {
   })
 }
 
+// 科室列表下拉
+export function searchCommodity(data) {
+  return requst({
+      url: '/aeko/purchasing/search-commodity',
+      method: 'POST',
+      data,
+  })
+}
+
+// aeko-列表搜索-车型下拉 
+export function getSearchCartype(params) {
+  return requst({
+    url: '/aeko/purchasing/search-cartype',
+    method: 'GET',
+    params,
+  })
+}
+
+// aeko -列表查询- 车型项目下拉
+export function searchCartypeProject(params) {
+  return requst({
+    url: '/aeko/purchasing/search-cartype-project',
+    method: 'GET',
+    params,
+  })
+}
+
+
+
 // 导入附件
 export function uploadFiles(data) {
   return requst({
@@ -63,3 +94,69 @@ export function purchasingCancel(params) {
     params,
   })
 }
+
+
+// 删除aeko
+export function deleteAeko(params) {
+  return requst({
+    url: '/aeko/delete',
+    method: 'GET',
+    params,
+  })
+}
+
+
+// 导入AEKO
+export function importAeko(data) {
+  return requst({
+      url: '/aeko/importAeko',
+      method: 'POST',
+      data,
+  })
+}
+
+// 模板下载
+export function templateDowmload(params) {
+  return fileRequst({
+    url: '/template/dowmload',
+    method: 'GET',
+    params,
+  })
+}
+
+// 获取附件列表 
+export function getFilesList(params) {
+  const {
+    hostId,
+    sortColumn=null,
+    isAsc=true,
+    fileType=0,
+    pageNo,
+    pageSize=10,
+  } = params;
+  return requst({
+    url: `/file-history/file-history/${hostId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
+    method: 'GET',
+    params,
+  })
+}
+
+// adeko项目导出
+export function downloadAeko(data) {
+  return fileRequst({
+      url: '/aeko/aeko-project/download',
+      method: 'POST',
+      data,
+  })
+}
+
+// 删除附件
+export function deleteFiles(data) {
+  return requst({
+      url: '/file-history/delete',
+      method: 'POST',
+      data,
+  })
+}
+
+

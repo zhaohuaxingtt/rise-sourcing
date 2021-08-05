@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-29 17:59:07
+ * @LastEditTime: 2021-08-04 18:14:52
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -18,13 +18,13 @@
         <iButton @click="$emit('changeNodeView')">{{language('QIEHUANJIEDIANSHITU', '切换节点视图')}}</iButton>
         <iButton @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
         <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
-        <iButton>{{language('DAOCHUFASONGPVPKQINGDAN', '导出发送PV/PK清单')}}</iButton>
+        <iButton @click="handleDownloadPvPk" :loading="downloadLoading">{{language('DAOCHUFASONGPVPKQINGDAN', '导出发送PV/PK清单')}}</iButton>
       </div>
     </div>
     <div v-for="pro in products" :key="pro.label" class="productItem">
       <div class="productItem-top">
         <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">
-          {{pro.productGroupName}}
+          {{pro.productGroupNameZh}}
         </el-checkbox>
         <div class="productItem-top-targetList">
           <div v-for="item in targetList" :key="item.value" class="productItem-top-targetList-item">
@@ -37,7 +37,7 @@
       <div class="productItem-bottom">
         <div class="productItem-bottom-text">
           <span class="margin-bottom14">{{language('JINGYANCHANGZHI', '经验常值')}}</span>
-          <span>{{language('LISHICANKAOZHI', '历史参考值')}}<icon @click.native="gotoDBhistory" symbol name="iconlishicankaozhi" class="margin-left8 cursor"></icon></span>
+          <span>{{language('LISHICANKAOZHI', '历史参考值')}}<icon @click.native="gotoDBhistory(pro)" symbol name="iconlishicankaozhi" class="margin-left8 cursor"></icon></span>
         </div>
         <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node">
           <div class="productItem-bottom-nodeItem">
@@ -69,18 +69,20 @@
         </div>
       </div>
     </div>
-    <fsConfirm :dialogVisible="fsConfirmDialogVisible" @changeVisible="changeFsConfirmVisible" />
+    <fsConfirm ref="fsConfirm" @handleConfirm="handleFSConfirm" :cartypeProId="cartypeProId" :tableList="fsTableList" :dialogVisible="fsConfirmDialogVisible" @changeVisible="changeFsConfirmVisible" />
   </div>
 </template>
 
 <script>
 import { iButton, icon, iInput, iText, iMessage } from 'rise'
 import fsConfirm from '../fsconfirm'
-import { getProductGroupInfoList, saveProductGroupInfoList } from '@/api/project'
+import { getProductGroupInfoList, saveProductGroupInfoList, deliveryProduct, getAllFS, downloadPvPk, getFsUserList, getBuyer } from '@/api/project'
+import moment from 'moment'
 export default {
   components: { iButton, fsConfirm, icon, iInput, iText },
   props: {
     cartypeProId: {type:String},
+    carProjectName: {type:String},
     isSop: {type:Boolean}
   },
   data() {
@@ -103,20 +105,85 @@ export default {
         {label: 'BF', const: 'keyBfToFirstTryoutWeek', keyPoint: 'constBfToFirstTryoutWeek', history: 'hiBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus'},
         {label: '1st Tryout', const: 'constFirstTryEmWeek', keyPoint: 'keyFirstTryEmWeek', history: 'hiFirstTryEmWeek', isChange: 'keyFirstTryEmStatus'},
         {label: 'EM(OTS)', const: 'constFirstTryOtsWeek', keyPoint: 'keyFirstTryOtsWeek', history: 'hiFirstTryOtsWeek', isChange: 'keyFirstTryOtsStatus'}
-      ]
+      ],
+      fsTableList: [],
+      downloadLoading: false,
+      selectOptions: {},
+      interval: null
     }
   },
+  created() {
+    this.getFSOPtions()
+  },
+  mounted() {
+    this.interval = setInterval(() => {
+      this.autoSave()
+    },60000)
+  },
+  beforeDestroy() {
+    clearInterval(this.interval)
+  },
   methods: {
+    getFSOPtions() {
+      getAllFS().then(res => {
+        if (res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            fsOptions: res.data.map(item => {
+              return {
+                ...item,
+                value: item.id,
+                label: item.nameZh
+              }
+            })
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    async handleDownloadPvPk() {
+      this.downloadLoading = true
+      await downloadPvPk(this.cartypeProId)
+      this.downloadLoading = false
+    },
+    handleFSConfirm(val) {
+      deliveryProduct(val).then(res => {
+        if (res?.result) {
+          if (res.data.length > 0) {
+            iMessage.warn(res.data?.map(item => item.productGroupZh).join(',')+'产品组询价采购员还未确认，请勿重复发送')
+          } else {
+            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+            this.changeFsConfirmVisible(false)
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.$refs.fsConfirm.changeSaveLoading(false)
+      })
+    },
     handleSave() {
-      if (!this.products.some(item => item.isChecked)) {
-        iMessage.warn(this.language('QINGGOUXUANXUYAOBAOCUNDESHUJU','请勾选需要保存的数据'))
+      this.saveloading = true
+      saveProductGroupInfoList(this.products).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.init()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.saveloading = false
+      })
+    },
+    autoSave() {
+      if (this.products.length < 1) {
         return
       }
       this.saveloading = true
-      saveProductGroupInfoList(this.products.filter(item => item.isChecked)).then(res => {
-        if (res?.reuslt) {
+      saveProductGroupInfoList(this.products).then(res => {
+        if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.init()
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -139,18 +206,81 @@ export default {
         this.loading = false
       })
     },
-    gotoDBhistory() {
-      const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`})
+    gotoDBhistory(pro) {
+      const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {cartypeProId:this.cartypeProId,productGroup:pro.productGroupNameZh}})
       window.open(router.href,'_blank')
     },
-    handleSendFs() {
+    async getFsUserList(tableList) {
+      const res = await getFsUserList(tableList.map(item => item.productGroupId))
+        if (res?.result) {
+          return res.data
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          return null
+        }
+    },
+    async getBuyer() {
+      if (!this.cartypeProId) {
+        return null
+      }
+      const res = await getBuyer(this.cartypeProId)
+      if (res?.result) {
+        return res.data
+      } else {
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        return null
+      }
+    },
+    async handleSendFs() {
+      await this.autoSave()
+      if (!this.products?.some(item => item.isChecked)) {
+        iMessage.warn(this.language('QINGGOUXUANXUYAOFASONGDESHUJU','请勾选需要发送的数据'))
+        return
+      }
+      this.loading = true
+      const selectRows = this.products.filter(item => item.isChecked)
+      const fsOptions = await this.getFsUserList(selectRows)
+      const projectPurchaser = await this.getBuyer()
+      this.fsTableList = selectRows.filter(item => item.isChecked).map(item => {
+        const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
+          return {
+            ...item,
+            value: item.userId,
+            label: item.userName
+          }
+        }) : []
+        return {
+          ...item,
+          cartypeProject: this.carProjectName,
+          scheBfToFirstTryoutWeek: item.keyBfToFirstTryoutWeek,
+          scheFirstTryEmWeek: item.keyFirstTryEmWeek,
+          scheFirstTryOtsWeek: item.keyFirstTryOtsWeek,
+          productGroupDe: item.productGroupNameDe,
+          productGroupZh: item.productGroupNameZh,
+          confirmDateDeadline: this.getNextThreeWorkDay(),
+          projectPurchaser: projectPurchaser?.nameZh,
+          projectPurchaserId: projectPurchaser?.id,
+          selectOption: this.selectOptions.fsOptions,
+          fs: options && options[0] ? options[0].value : '',
+          fsId: options && options[0] ? options[0].label : ''
+        }
+      })
+      console.log(this.fsTableList)
+      this.loading = false
       this.changeFsConfirmVisible(true)
+    },
+    getNextThreeWorkDay() {
+      if (moment().day() === 2 || moment().day() === 1) {
+        return moment().add(3, 'days').format('YYYY-MM-DD')
+      } else {
+        return moment().add(5, 'days').format('YYYY-MM-DD')
+      }
     },
     changeFsConfirmVisible(visible) {
       this.fsConfirmDialogVisible = visible 
     },
     handleCheckAllChange(val) {
-      this.products = this.products.map(item => {
+      this.products = this.products?.map(item => {
         return {
           ...item,
           isChecked: val

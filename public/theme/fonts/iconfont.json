@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "23225544",
+      "name": "跳转监控",
+      "font_class": "tiaozhuanjiankong",
+      "unicode": "e6d5",
+      "unicode_decimal": 59093
+    },
+    {
+      "icon_id": "23225545",
+      "name": "跳转排程",
+      "font_class": "tiaozhuanpaicheng",
+      "unicode": "e6d6",
+      "unicode_decimal": 59094
+    },
+    {
+      "icon_id": "23225546",
+      "name": "编辑",
+      "font_class": "bianji",
+      "unicode": "e6d7",
+      "unicode_decimal": 59095
+    },
+    {
       "icon_id": "23212091",
       "name": "增加材料成本_蓝",
       "font_class": "zengjiacailiaochengben_lan",

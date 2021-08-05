@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:02:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-29 15:03:26
+ * @LastEditTime: 2021-08-05 14:44:12
  * @Description: 
  * @FilePath: \front-web\src\router\modules\project.js
  */
@@ -69,8 +69,32 @@ export default [
               title: "项目管理-排程助手-历史进度数据库",
             },
             component: () => import("@/views/project/schedulingassistant/historyprocessdb")
+          },
+          {
+            path: 'proconfirm',
+            name: "proconfirm",
+            meta: {
+              title: "项目管理-排程助手-进度确认",
+            },
+            component: () => import("@/views/project/schedulingassistant/progressconfirm")
           }
         ]
+      },
+      {
+        path: "/projectprogressmonitoring",
+        name: "projectProgressMonitoring",
+        meta: {
+          title: "项目管理-项目进度监控",
+        },
+        component: () => import("@/views/project/progressmonitoring"),
+      },
+      {
+        path: "/projectprogressreport",
+        name: "projectProgressReport",
+        meta: {
+          title: "项目管理-项目进度报告",
+        },
+        component: () => import("@/views/project/progressreport"),
       }
     ]
   }
