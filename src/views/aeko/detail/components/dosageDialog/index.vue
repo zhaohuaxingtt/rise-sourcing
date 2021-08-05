@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-07-29 16:51:33
+ * @LastEditTime: 2021-08-04 19:56:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -19,39 +19,40 @@
         <iButton @click="handleConfirm">{{ language("BAOCUN", "保存") }}</iButton>
       </div>
     </template>
-    <div class="body">
-      <div v-for="(carTypeProject, $i) in carTypeProjectList" :key="$i" class="carTypeProject">
-        <iFormGroup class="form" :row="4" inline>
-          <iFormItem class="item" v-for="(item, $index) in form" :key="$index" :label="`${ language(item.key, item.name) }`">
-            <div v-if="item.props === 'a'">
-              <iText v-if="lll">bbbasss</iText>
-              <iSelect
-                v-else
-                :placeholder="language('QINGXUANZE', '请选择')"
-              >
-                <el-option
-                  :value="item.value"
-                  :label="item.label"
-                  v-for="item in options"
-                  :key="item.key"
-                ></el-option>
-              </iSelect>
-            </div>
-            <iText v-if="item.props === 'b' || item.props === 'c'"></iText>
-            <iInput v-else-if="item.props === 'd'"></iInput>
-          </iFormItem>
-        </iFormGroup>
-        <tableList
-          index
-          lang
-          class="table margin-top30"
-          :selection="false"
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="loading">
-        </tableList>
-        <i class="dashes"></i>
-      </div>
+    <div class="body" v-loading="loading">
+      <iFormGroup class="form" :row="4" inline>
+        <iFormItem class="item" v-for="(item, $index) in form" :key="$index" :label="`${ language(item.key, item.name) }`">
+          <div v-if="item.props === 'cartypeProject'">
+            <iText v-if="lll">{{ dosage.cartypeProjectZh }}</iText>
+            <iSelect
+              v-else
+              v-model="dosage.cartypeProjectCode"
+              :placeholder="language('QINGXUANZE', '请选择')"
+            >
+              <el-option
+                :value="item.value"
+                :label="item.label"
+                v-for="item in carProjectOptions"
+                :key="item.key"
+              ></el-option>
+            </iSelect>
+          </div>
+          <iText v-if="item.props === 'factory' || item.props === 'supplierName'">{{ dosage[item.props] }}</iText>
+          <iInput class="percentInput" v-else-if="item.props === 'oldPartShare'" v-model="dosage[item.props]"></iInput>
+        </iFormItem>
+      </iFormGroup>
+      <tableList
+        index
+        lang
+        class="table margin-top30"
+        :selection="false"
+        :tableData="Array.isArray(dosage.aekoProjectCarDosageList) ? dosage.aekoProjectCarDosageList : []"
+        :tableTitle="tableTitle">
+        <template #consumption="scope">
+          <iInput v-model="scope.row.consumption" @input="handleInputByConsumption($event, scope.row)"></iInput>
+        </template>
+      </tableList>
+      <i class="dashes"></i>
     </div>
   </iDialog>
 </template>
@@ -60,7 +61,9 @@
 import { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { dosageDialogForm as form, dosageDialogTableTitle as tableTitle } from "../data"
+import { numberProcessor } from "@/utils"
 import filters from "@/utils/filters"
+import { getAekoCarProject, getAekoCarDosage } from "@/api/aeko/detail"
 
 export default {
   components: { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, tableList },
@@ -71,11 +74,22 @@ export default {
       type: Boolean,
       default: false,
     },
+    requirementAekoId: {
+      type: String,
+      require: true,
+      default: ""
+    },
+    objectAekoPartId: {
+      type: String,
+      require: true,
+      default: ""
+    }
   },
   watch: {
     status(nv) {
       if (nv) {
-        this.getList()
+        this.getAekoCarProject()
+        this.getAekoCarDosage()
       } else {
         // this.selectRow = null
       }
@@ -95,46 +109,60 @@ export default {
     return {
       loading: false,
       form,
-      options: [],
-      carTypeProjectList: [{}, {}, {}],
+      carProjectOptions: [],
+      dosage: {},
       tableTitle,
-      tableListData: [],
       // selectRow: null,
-      lll: false
+      lll: true
     };
   },
   methods: {
+    getAekoCarProject() {
+      getAekoCarProject({
+        requirementAekoId: this.requirementAekoId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.carProjectOptions =
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              key: item.carTypeProjectCode,
+              label: item.carTypeProjectZh,
+              value: item.carTypeProjectCode
+            })) :
+            []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
     // 获取列表
-    getList() {
-      this.tableListData = [{}, {}, {}]
-      // this.loading = true
+    getAekoCarDosage() {
+      this.loading = true
 
-      // getPartsBySupplier({
-      //   current: this.page.currPage,
-      //   size: this.page.pageSize,
-      //   rfqId: this.rfqId,
-      //   partFsInfos: this.parts.map(part => ({
-      //     fs: part.fsnrGsnrNum,
-      //     partNum: part.partNum
-      //   }))
-      // })
-      // .then(res => {
-      //   if (res.code == 200) {
-      //     this.multipleSelection = []
-      //     this.tableListData = Array.isArray(res.data) ? res.data : []
-      //     this.page.totalCount = res.total || 0
-      //   } else {
-      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-      //   }
+      getAekoCarDosage({
+        requirementAekoId: this.requirementAekoId,
+        objectAekoPartId: this.objectAekoPartId,
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.dosage = res.data || {}
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
 
-      //   this.loading = false
-      // })
-      // .catch(() => this.loading = false)
+        this.loading = false
+      })
+      .catch(() => this.loading = false)
     },
     // 确认
     handleConfirm() {
       // this.$emit("confirm", this.selectRow)
       this.status = false
+    },
+    handleInputByConsumption(value, row) {
+      this.$set(row, "consumption", numberProcessor(value, 2))
     },
   }
 };
@@ -189,12 +217,6 @@ export default {
     }
   }
 
-  .carTypeProject {
-    &:not(&:first-of-type) {
-      padding-top: 50px;
-    }
-  }
-
   .form {
     ::v-deep .el-form-item {
       margin-right: 60px;
@@ -225,6 +247,12 @@ export default {
 
     &::before {
       background: transparent;
+    }
+  }
+
+  .percentInput {
+    ::v-deep input {
+      text-align: center;
     }
   }
 }
