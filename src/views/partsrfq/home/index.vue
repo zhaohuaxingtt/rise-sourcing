@@ -8,12 +8,16 @@
 -->
 <template>
   <iPage class="partsrfqHome" v-permission="PARTSRFQ_INDEXPAGE">
-    <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
+    <!-- <el-tabs v-model="tab" class="tab">
+      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
+        <div class="topMenu">
+          <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+          <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
+        </div>
         <div>
-          <div class="margin-bottom33">
+          <!-- <div class="margin-bottom33">
             <iNavMvp lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div>
+          </div> -->
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
@@ -157,9 +161,9 @@
           </iCard>
           <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
         </div>
-      </el-tab-pane>
+      <!-- </el-tab-pane> -->
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
-    </el-tabs>
+    <!-- </el-tabs> -->
   </iPage>
 
 </template>
@@ -182,7 +186,7 @@ import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { downloadFile, downloadUdFile } from "@/api/file"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
-import { clickMessage } from "@/views/partsign/home/components/data"
+import { clickMessage, TAB} from "@/views/partsign/home/components/data"
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -238,6 +242,7 @@ export default {
       cartTypeOptions: [],
       createDesignateLoading: false,
       nominateTypeDialogVisible: false,
+      list:TAB
     };
   },
   created() {
@@ -569,6 +574,10 @@ export default {
 
   .tick {
     font-size: 18px;
+  }
+  .topMenu{
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

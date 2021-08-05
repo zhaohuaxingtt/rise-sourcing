@@ -8,7 +8,8 @@
         <iFormGroup row="4" class="basic-form">
           <template v-for="(item,index) in basicTitle">
             <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  >
-              <iText>{{basicInfo[item.props] || '-'}}</iText>
+                <iText v-if="item.isObj">{{basicInfo[item.props] && basicInfo[item.props]['desc']}}</iText>
+                <iText  v-else >{{basicInfo[item.props]}}</iText>
             </iFormItem>
           </template>
       </iFormGroup>
@@ -18,7 +19,7 @@
         type="textarea"
         rows="10" 
         resize="none"
-        v-model="tips"
+        v-model="basicInfo.remark"
       />
       <!-- 费用合计table -->
       <div class="margin-top40">
@@ -41,7 +42,7 @@
         <!-- 科室linie费用table -->
         <div>
             <p class="btn-list margin-bottom20">
-                <iButton>{{language('LK_JIEDONG','解冻')}}</iButton>
+                <iButton disabled>{{language('LK_JIEDONG','解冻')}}</iButton>
             </p>
             <tableList
                 index
@@ -55,8 +56,8 @@
             <!-- 分页 -->
             <iPagination
             v-update
-            @size-change="handleSizeChange($event, getList)"
-            @current-change="handleCurrentChange($event, getList)"
+            @size-change="handleSizeChange($event, getLinie)"
+            @current-change="handleCurrentChange($event, getLinie)"
             background
             :current-page="page.currPage"
             :page-sizes="page.pageSizes"
@@ -77,11 +78,16 @@ import {
     iInput,
     iButton,
     iPagination,
+    iMessage,
 } from 'rise'
 import { previewBaicFrom,coverTableTitleCost,coverTableTitleDepart } from '../../data'
 import tableList from "../tableList"
 import { getTousandNum } from "@/utils/tool";
 import { pageMixins } from "@/utils/pageMixins";
+import {
+    getCoverDetail,
+    getLiniePage,
+} from '@/api/aeko/detail/cover.js'
 export default {
     name:'previewCover',
     mixins: [pageMixins],
@@ -106,21 +112,62 @@ export default {
                 depart:false,
             },
             tableTitleCost:coverTableTitleCost,
-            tableTDataCost:[
-                {'a':'New Passat','b':'-1.00','c':'1.00','d':'1.00'},
-                {'a':'Tiguan L PHVE','b':'2.00','c':'2.00','d':'2.00'},
-                {'a':'Tiguan L PHVE PA','b':'3.00','c':'2.00','d':'2.00'},
-                {'a':'Tiguan L PA','b':'0.00','c':'2.00','d':'2.00'},
-            ],
-            tableListData:[
-                {'a':'CSI','b':'张三','c':'1.00','d':'1.00','e':'0.00','f':'封面状态','g':'2021-02-10'},
-            ],
+            tableTDataCost:[],
+            tableListData:[ ],
             tableTitle:coverTableTitleDepart,
             selectItems:[],
 
         }
     },
+    created(){
+        this.getList();
+        this.getLinie();
+    },
     methods:{
+        // 获取详情
+        async getList(){
+            this.tableLoading={cost:true,};
+            const {query} = this.$route;
+            const { requirementAekoId ='',} = query;
+            await getCoverDetail({requirementAekoId}).then((res)=>{
+                this.tableLoading={cost:false,};
+                const {code,data} = res;
+                if(code == 200){
+                    this.basicInfo = data;
+                    this.tableTDataCost = data.coverCostsWithCarType || []; // 费用汇总 车型维度
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch((err)=>{
+                this.tableLoading={cost:false};
+            })
+        },
+        // 获取linie分页表格
+        async getLinie(){
+            const {query} = this.$route;
+            const { requirementAekoId ='',} = query;
+            const {page} = this;
+            const data = {
+                requirementAekoId,
+                current:page.currPage,
+                size:page.pageSize
+            };
+            this.tableLoading={depart:true,};
+            await getLiniePage(data).then((res)=>{
+                this.tableLoading={depart:false};
+                const {code,data={}} = res;
+                if(code ==200){
+                    const {records=[],total} = data;
+                    this.tableListData = records || []; // 费用汇总 linie维度
+                    this.page.totalCount = total;
+                }
+            }).catch((err)=>{
+                this.tableLoading={depart:false};
+            })
+        },
+        handleSelectionChange(val) {
+          this.selectItems = val;
+        },
         // 表格金额合计
         getSummaries(param){
             const { columns, data } = param;
@@ -132,7 +179,7 @@ export default {
                     return;
                 }
 
-                const keyArr = ['b', 'c', 'd'];
+                const keyArr = ['investmentIncrease', 'materialIncrease', 'otherCost'];
                 if(keyArr.includes(column.property)){
                     const values = data.map(item => Number(item[column.property]) );
                     if (!values.every(value => isNaN(value))) {
@@ -153,14 +200,6 @@ export default {
                 }
             })
             return sums;
-        },
-
-        handleSelectionChange(val) {
-          this.selectItems = val;
-        },
-        // 获取列表
-        getList(){
-
         },
     }
 }

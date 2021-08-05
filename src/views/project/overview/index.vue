@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-30 14:56:00
+ * @LastEditTime: 2021-08-04 14:00:14
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
@@ -13,8 +13,8 @@
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
         <iButton @click="openSelectCar">{{language('XUANZEXIANSHICHEXINGXIANGMU', '选择显示车型项目')}}</iButton>
-        <iButton>{{language('QUEREN', '确认')}}</iButton>
-        <iButton>{{language('CHONGZHI', '重置')}}</iButton>
+        <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+        <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
       <el-form>
         <el-form-item :label="language('CHEXINGXIANGMU','车型项目')">
@@ -33,7 +33,7 @@
         <el-form-item :label="language('XIANGMUCAIGOUYUAN','项目采购员')">
           <iSelect filterable v-model="searchParams.buyerName">
             <el-option
-              v-for="item in carProjectOptions"
+              v-for="item in purchaseOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value">
@@ -55,7 +55,8 @@ import projectTop from '../components/projectHeader'
 import moment from 'moment'
 import tableList from './components/overviewTable'
 import selectCarProDialog from './components/selectcarpro'
-import { getOverview } from '@/api/project'
+import { getOverview, getAllProPurchaser } from '@/api/project'
+import { cloneDeep } from 'lodash'
 export default {
   components: { iPage, projectTop, iCard, iSearch, iButton, iDatePicker, iSelect, tableList, selectCarProDialog },
   data() {
@@ -66,6 +67,7 @@ export default {
         carProject: ''
       },
       carProjectOptions: [],
+      purchaseOptions: [],
       tableTitle: [
         {props: 'basic', name: '基础信息', key: 'JICHUXINXI'},
         {props: currentYear, name: currentYear, type: 'year'},
@@ -91,12 +93,48 @@ export default {
         { label: 'SOP', date: 'pepSop', value: 'pepSopWk', status: 'pepSopStatus' },
         { label: 'ME', date: 'pepMe', value: 'pepMeWk', status: 'pepMeStatus' }
       ],
+      tableDataTemp: []
     }
   },
   created() {
     this.getOverviewList()
+    this.getProductPurchaserOptions()
   },
   methods: {
+    getProductPurchaserOptions() {
+      getAllProPurchaser().then(res => {
+        if (res?.result) {
+          this.purchaseOptions = res.data.map(item => {
+              return {
+                ...item,
+                value: item.id,
+                label: item.nameZh
+              }
+            })
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    handleSure() {
+      this.tableData = this.tableDataTemp.filter(item => {
+        let result = false
+        if (this.searchParams.carProject) {
+          result = item.id === this.searchParams.carProject
+        }
+        if (this.searchParams.buyerName) {
+          result = item.projectPurchaser.includes(this.searchParams.buyerName)
+        }
+        if (this.searchParams.sopDate) {
+          result = moment(item.sop).isBefore(moment(this.searchParams.sopDate[1])) && moment(item.sop).isAfter(moment(this.searchParams.sopDate[0]))
+        }
+        return result
+      })
+    },
+    handleReset() {
+      this.searchParams = {}
+      this.tableData = cloneDeep(this.tableDataTemp)
+    },
     getStatus(currDate, beforeDate) {
       if (moment(currDate).isBefore(moment())) {
         return 1
@@ -144,13 +182,15 @@ export default {
       this.tableLoading = true
       getOverview().then(res => {
         if (res?.result) {
-          this.tableData = (res.data || []).map(item => {
+          const list = (res.data || []).map(item => {
             const nodeList = this.getNodeList(item.pepTimeNode)
             return {
               ...item,
               nodeList: nodeList,
             }
           })
+          this.tableData = cloneDeep(list)
+          this.tableDataTemp = cloneDeep(list)
           this.carProjectOptions = (res.data || []).map(item => {
             return {
               ...item,

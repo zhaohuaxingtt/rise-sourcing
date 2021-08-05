@@ -5,7 +5,7 @@
 -->
 
 <template>
-  <iPage class="aeko-manage-list">
+  <iPage class="aeko-stance-list">
     <h2 class="floatleft">{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2>
     <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
 
@@ -14,12 +14,12 @@
       <iSearch @sure="getList" @reset="reset">
           <el-form>
               <el-form-item v-for="(item,index) in SearchList" :key="'SearchList_aeko'+index" :label="language(item.labelKey,item.label)">
-                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
-                    <el-option v-if="!item.multiple" value="" :label="language('all','全部')"></el-option>
+                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
+                    <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="item in selectOptions[item.selectOption] || []"
                       :key="item.value"
-                      :label="item.label"
+                      :label="item.name"
                       :value="item.value">
                     </el-option>  
                   </iSelect> 
@@ -39,26 +39,37 @@
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange"
       >
-      <!-- AEKO号 -->
-      <template #a="scope">
-        <icon class="margin-right5" symbol name="iconAEKO_TOP"></icon>
-        <span class="link" @click="goToDetail(scope.row)">{{scope.row.a}}-6666</span>
-        <a @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
-        
+      <!-- AEKO号  -->
+      <template #aekoCode="scope">
+        <div class="table-item-aeko">
+          <icon  v-if="scope.row.isTop && scope.row.isTop.code==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
+          <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}}</span>
+          <a v-if="scope.row.fileCount && scope.row.fileCount> 0"  @click="checkFiles(scope.row)" class="file-icon"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+        </div> 
       </template>
 
       <!-- 日志 -->
-      <template #b="scope">
+      <template #log="scope">
         <span class="link" @click="checkLog(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
       </template>
 
       <!-- 描述 -->
-      <template #c="scope">
+      <template #describe="scope">
         <span class="link" @click="checkDescribe(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
       </template>
 
+      <!-- AEKO状态 -->
+      <template #aekoStatus="scoped">
+        <span>{{scoped.row.aekoStatus && scoped.row.aekoStatus.desc}}</span>
+      </template>
+
+      <!-- 封面状态 -->
+      <template #coverStatus="scoped">
+        <span>{{scoped.row.coverStatus && scoped.row.coverStatus.desc}}</span>
+      </template>
+
        <!-- 审批单 -->
-       <template #i="scoped">
+       <template #approval="scoped">
            <span class="link">{{language('LK_AEKO_CHAKAN','查看')}}</span>
        </template>
 
@@ -78,7 +89,7 @@
       </iCard>
 
       <!-- 附件列表查看 -->
-      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible"/>
+      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     </div>
   </iPage>
 </template>
@@ -101,6 +112,15 @@ import { pageMixins } from "@/utils/pageMixins";
 import { TAB } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import filesListDialog from '../manage/components/filesListDialog'
+import {
+  getLiniePage,
+} from '@/api/aeko/stance'
+import { getCarTypePro } from '@/api/designate/nomination'
+import { getCartypeDict } from '@/api/partsrfq/home'
+import {
+  searchAekoStatus,
+  searchCoverStatus,
+} from '@/api/aeko/manage'
 export default {
     name:'aekoStanceList',
     mixins: [pageMixins],
@@ -122,45 +142,36 @@ export default {
         navList:TAB,
         SearchList:searchList,
         selectItems:[],
-        searchParams:{},
-        selectOptions:{
-          'f':[
-            {label:'品牌1',value:'1'},
-            {label:'品牌2',value:'2'},
-          ],
-          'g':[
-            {label:'已导入',value:'1'},
-            {label:'已分配',value:'2'},
-            {label:'已冻结',value:'3'},
-            {label:'已通过',value:'4'},
-            {label:'已撤销',value:'5'},
-          ],
-          'h':[
-            {label:'待表态',value:'1'},
-            {label:'已提交',value:'2'},
-            {label:'待审批',value:'3'},
-            {label:'Commodity K3通过',value:'4'},
-            {label:'Commodity 科室通过',value:'5'},
-          ]
+        searchParams:{
+          coverStatusList:['TOBE_STATED']
         },
-        tableListData:[
-          {'a':'AE19221','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
-          {'a':'AE19222','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
-          {'a':'AE19223','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
-        ],
+        selectOptions:{
+          cartypeProjectCodeList:[],
+          aekoStatusList:[],
+          coverStatusList:[],
+          cartypeCodeList:[],
+        },
+        tableListData:[],
         tableTitle:tableTitle,
         loading:false,
         filesVisible:false,
-        uploadUrl: process.env.VUE_APP_SOURCING_MH,
         btnLoading:{
           uploadFiles:false,
-        }
+        },
+        itemFileData:{},
       }
+    },
+    created(){
+      this.getList();
+      this.getSearchList();
     },
     methods:{
       // 重置
       reset(){
-        this.searchParams = {};
+        this.searchParams = {
+          coverStatusList:['TOBE_STATED']
+        };
+        this.getList();
       },
 
       handleSelectionChange(val) {
@@ -168,8 +179,92 @@ export default {
       },
       
       // 获取列表数据
-      getList(){
+      async getList(){
+        this.loading = true;
+        const {searchParams,page} = this;
+        const { partNum } = searchParams;
+        // 若有截至或者分派起止时间将其拆分成两个字段
+        const {linieAssignTime=[],deadLine=[]} = searchParams;
+        const data = {
+            current:page.currPage,
+            size:page.pageSize
+        };
+        // 分派日期
+        if(linieAssignTime.length){
+            data['linieAssignTimeStart'] = linieAssignTime[0];
+            data['linieAssignTimeEnd'] = linieAssignTime[1];
+        }
+        // 截至日期
+        if(deadLine.length){
+            data['deadLineStart'] = deadLine[0];
+            data['deadLineEnd'] = deadLine[1];
+        }
 
+        // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
+        if(partNum && partNum.trim().length < 9){
+          this.loading = false;
+          return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+        }
+        await getLiniePage({...searchParams,...data}).then((res)=>{
+          this.loading = false;
+          const {code,data={}} = res;
+          if(code==200){
+              const {records=[],total} = data;
+              this.tableListData = records;
+              this.page.totalCount = total;
+          }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+
+        }).catch((err)=>{
+
+        })
+      },
+
+       // 获取搜索框下拉数据
+      getSearchList(){
+        // 车型项目
+         getCarTypePro().then((res)=>{
+          console.log(res.data);
+          if(res.code ==200){
+            this.selectOptions.cartypeProjectCodeList = res.data.data || [];
+          }
+        })
+
+        // 车型
+        getCartypeDict().then((res)=>{
+          if(res.code ==200){
+            this.selectOptions.cartypeCodeList = res.data || [];
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+        // aeko状态
+        searchAekoStatus().then((res)=>{
+          const {code,data=[]} = res;
+          if(code ==200 && data){
+            data.map((item)=>{
+              item.name = item.desc;
+              item.value = item.code;
+            });
+            this.selectOptions.aekoStatusList = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+        // 封面状态
+        searchCoverStatus().then((res)=>{
+          const {code,data=[]} = res;
+          if(code ==200 && data){
+            data.map((item)=>{
+              item.name = item.desc;
+              item.value = item.code;
+            });
+            this.selectOptions.coverStatusList = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
       },
 
       // 跳转详情页
@@ -177,7 +272,7 @@ export default {
         const routeData = this.$router.resolve({
           path: '/aeko/aekodetail',
           query: {
-            id:1,
+            requirementAekoId:1,
           },
         })
         window.open(routeData.href, '_blank')
@@ -190,12 +285,14 @@ export default {
 
       // 查看描述
       checkDescribe(row){
+        const { requirementAekoId,aekoCode } = row;
         const routeData = this.$router.resolve({
           path: '/aeko/describe',
           query: {
-            id:'1'
+            requirementAekoId,
+            aekoCode,
           },
-        })
+        }) 
         window.open(routeData.href, '_blank')
       },
 
@@ -219,56 +316,53 @@ export default {
           }
       },
       
-      // 撤销
-     async revoke(){
-        const isNext  = await this.isSelectItem(true);
-        if(!isNext) return;
-        // 一次只能撤销一个AEKO
-        const {selectItems} = this;
-        if(selectItems.length > 1) return iMessage.warn(this.language('LK_AEKO_YICIZHINENGCHEXIAOYIGEAEKO','一次只能撤销一个AEKO，请修改！'));
-        console.log(isNext,'isNext');
-        this.changeVisible('revokeVisible',true);
-      },
-
       // 查看附件列表
       async checkFiles(row){
+        this.itemFileData = row;
         this.changeVisible('filesVisible',true);
       },
 
-      // 导入AEKO附件
-      async importFiles(){
-        const isNext  = await this.isSelectItem(true);
-        if(!isNext) return;
-        // 多选多个AEKO后弹出提示
-        const {selectItems} = this;
-        if(selectItems.length > 1){
-          await this.$confirm(
-          this.language('LK_TIPS_IMPORFILES_AEKO','你选择的附件将被引⽤到多个AEKO中，请确认是否继续上传？'),
-          this.language('LK_AEKO_DAORUFUJIAN','导⼊附件'),
-          {
-            confirmButtonText: this.language('nominationLanguage.Yes','是'),
-            cancelButtonText: this.language('nominationLanguage.No','否'),
-          }
-          ).then(()=>{
-            this.$refs['aekoUpload'].$refs['upload-inner'].handleClick()
-            console.log('是')
-          }).catch(()=>{
-            console.log('否')
-          })
-        }else{
-          this.$refs['aekoUpload'].$refs['upload-inner'].handleClick()
-        }
-        
-      },
     }
 }
 </script>
 
 <style lang="scss" scoped>
-  .aeko-manage-list{
+  .aeko-stance-list{
     ::v-deep .el-date-editor .el-range__close-icon{
         display: block;
         width: 10px;
     }
+    .table-item-aeko{
+      position: relative;
+      padding-left: 28px;
+      .link{
+        display: block;
+        width: calc( 100% - 28px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .top-icon{
+        position: absolute;
+        left: 0;
+        top:1px;
+      }
+      .file-icon{
+        position: absolute;
+        right:0;
+        top: 0;
+      }
+    }
+    ::v-deep .el-select__tags-text{
+      display: inline-block;
+      max-width: 60px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    ::v-deep .el-select .el-tag__close.el-icon-close{
+      top: -4px;
+    }
+    
   }
 </style>

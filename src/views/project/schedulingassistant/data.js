@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:17:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-29 15:02:45
+ * @LastEditTime: 2021-08-02 15:29:06
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\data.js
  */
@@ -48,4 +48,15 @@ export const MENU = [
     activePath: 'historyprocessdb',
     key: 'LISHIJINDUSHUJUKU'
   }
+]
+
+export const MENUFS = [
+  {
+    value: 1,
+    name: '进度确认',
+    message: 0,
+    url: '/projectscheassistant/proconfirm',
+    activePath: 'proconfirm',
+    key: 'JINDUQUEREN'
+  },
 ]
