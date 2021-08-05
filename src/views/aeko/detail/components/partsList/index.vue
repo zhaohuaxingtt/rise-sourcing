@@ -35,7 +35,7 @@
                 <iButton @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton v-if="isCommodityCoordinator" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
                 <iButton>{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
-                <iButton @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
+                <iButton :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
                 <iButton disabled>{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
             </div>
         </template>
@@ -180,7 +180,10 @@ export default {
             tableTitle: [],
             assignVisible:false,
             singleAssign:[],
-            assignType: ""
+            assignType: "",
+            btnLoading:{
+                deleteParts:false,
+            }
         }
     },
     methods:{
@@ -219,6 +222,8 @@ export default {
         },
         // 获取列表
         async getList(){
+            const { loading } = this;
+            if(loading) return; 
             this.loading = true;
             const {query} = this.$route;
             const { page,searchParams,aekoInfo={} } = this;
@@ -292,13 +297,27 @@ export default {
                 cancelButtonText: this.language('nominationLanguage.No','否'),
             }
             ).then(()=>{
-                // cosnt aekoPartIdArr = selectItems.map((item)=>item.)
-                // deletePart().then((res)=>{
-
-                // })
+                this.btnLoading.deleteParts = true;
+                const aekoPartIdList = selectItems.map((item)=>item.aekoPartId);
+                const data = {
+                    aekoPartIdList,
+                    requirementAekoId: this.aekoInfo.requirementAekoId,
+                }
+                deletePart(data).then((res)=>{
+                    this.btnLoading.deleteParts = false;
+                    const {code} = res;
+                    if(code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                    }
+                }).catch((err)=>{
+                    this.btnLoading.deleteParts = false;
+                })
                 console.log('是')
             }).catch(()=>{
-                console.log('否')
+                console.log('否') 
             })
           }
         },
