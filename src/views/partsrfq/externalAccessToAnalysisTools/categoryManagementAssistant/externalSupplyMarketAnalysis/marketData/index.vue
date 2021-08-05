@@ -56,7 +56,6 @@ import {cloneDeep} from 'lodash';
 import {dataURLtoFile, downloadPDF} from '@/utils/pdf';
 import {uploadFile} from '@/api/file/upload';
 import resultMessageMixin from '@/utils/resultMessageMixin';
-import {deletePartsCustomerList} from '../../../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 
 export default {
   mixins: [resultMessageMixin],

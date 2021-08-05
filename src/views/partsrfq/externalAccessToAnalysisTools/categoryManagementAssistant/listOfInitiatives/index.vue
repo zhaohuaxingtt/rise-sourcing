@@ -96,8 +96,10 @@ import headerNav from '../components/headerNav';
 import theCard from './compoents/theCard';
 import {getList, saveInfos} from '../../../../../api/categoryManagementAssistant/listOfInitiatives';
 import theCheckBox from './compoents/theCheckBox';
+import resultMessageMixin from '@/utils/resultMessageMixin';
 
 export default {
+  mixins: [resultMessageMixin],
   components: {
     iPage,
     iButton,
@@ -114,6 +116,7 @@ export default {
       editStatus: false,
       form: {},
       maxlength: 500,
+      categoryCode: '111',
     };
   },
   created() {
@@ -126,14 +129,39 @@ export default {
     handleCancel() {
       this.editStatus = false;
     },
-    handleSave() {},
+    async handleSave() {
+      try {
+        this.pageLoading = true;
+        const req = {
+          categoryCode: this.categoryCode,
+          selectList: [],
+        };
+        const selectList = [];
+        for (const [key, value] of Object.entries(this.form)) {
+          const item = {
+            actionInfoId: key,
+            context: value,
+          };
+          selectList.push(item);
+        }
+        req.selectList = selectList;
+        const res = await saveInfos(req);
+        this.resultMessage(res, () => {
+          this.editStatus = false;
+          this.getList();
+        });
+        this.pageLoading = false;
+      } catch {
+        this.pageLoading = false;
+      }
+    },
     async getList() {
       try {
         this.pageLoading = true;
         this.treeData = {};
         this.treeDataSelect = {};
         const req = {
-          categoryCode: '111',
+          categoryCode: this.categoryCode,
           quadrant: 'LEVERAGE',
         };
         const res = await getList(req);
