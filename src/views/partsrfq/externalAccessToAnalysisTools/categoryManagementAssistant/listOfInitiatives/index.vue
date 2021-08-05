@@ -9,24 +9,20 @@
       </template>
     </headerNav>
     <el-row :gutter="20">
-      <el-col :span="8">
-        <div class="header-title"> {{ language('PLGLZS.CAIGOUCELUE', '采购策略') }}</div>
-        <theCard title="12">
+      <el-col :span="8" v-for="item of treeData" :key="item.id">
+        <div class="header-title"> {{ $i18n.locale === 'zh' ? item.name : item.nameEn }}</div>
+        <theCard
+            v-for="level1Children of item.children"
+            :key="level1Children.id"
+            :title="$i18n.locale === 'zh' ? level1Children.name : level1Children.nameEn"
+            :star="level1Children.star"
+            :iconName="level1Children.iconUrl"
+            class="theCard"
+        >
           <div>
             1233
           </div>
         </theCard>
-      </el-col>
-      <el-col :span="8">
-        <div class="header-title"> {{ language('PLGLZS.CAIGOUXUQIUGUANLI', '采购需求管理') }}</div>
-        <theCard title="12">
-          <div>
-            1233
-          </div>
-        </theCard>
-      </el-col>
-      <el-col :span="8">
-        <div class="header-title"> {{ language('PLGLZS.ZONGCHENGBENGUANLI', '总成本管理') }}</div>
       </el-col>
     </el-row>
   </iPage>
@@ -35,23 +31,39 @@
 <script>
 import {iPage, iButton} from 'rise';
 import headerNav from '../components/headerNav';
-import theCard from './compoents/theCard'
+import theCard from './compoents/theCard';
+import {getList, saveInfos} from '../../../../../api/categoryManagementAssistant/listOfInitiatives';
 
 export default {
   components: {
     iPage,
     iButton,
     headerNav,
-    theCard
+    theCard,
   },
   data() {
     return {
-      collapseValue: false,
+      treeData: {},
     };
+  },
+  created() {
+    this.getList();
   },
   methods: {
     handleEdit() {
-      this.$refs.card1.handleCollapse();
+
+    },
+    async getList() {
+      try {
+        const req = {
+          categoryCode: '111',
+          quadrant: 'LEVERAGE',
+        };
+        const res = await getList(req);
+        this.treeData = res.data;
+      } catch {
+        this.treeData = {};
+      }
     },
   },
 };
@@ -65,6 +77,10 @@ export default {
   font-weight: bold;
   line-height: 26px;
   color: #000000;
+}
+
+.theCard + .theCard {
+  margin-top: 20px;
 }
 
 </style>
