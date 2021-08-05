@@ -15,14 +15,14 @@
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
             :label="language(item.labelKey,item.label)"  
             >
-                <iSelect v-update v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
-                <el-option  value="" :label="language('all','全部')"></el-option>
-                <el-option
-                    v-for="item in selectOptions[item.selectOption] || []"
-                    :key="item.code"
-                    :label="item.desc"
-                    :value="item.code">
-                </el-option>  
+                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')" @change="handleMultipleChange($event, item.props)">
+                    <el-option value="" :label="language('all','全部')"></el-option>
+                    <el-option
+                        v-for="item in selectOptions[item.selectOption] || []"
+                        :key="item.code"
+                        :label="item.desc"
+                        :value="item.code">
+                    </el-option>
                 </iSelect> 
                 <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model="searchParams[item.props]"></iInput> 
             </el-form-item>
@@ -354,6 +354,7 @@ export default {
 
             getAekoContentPart({
                 ...this.searchParams,
+                cartypeCode: Array.isArray(this.searchParams.cartypeCode) ? (this.searchParams.cartypeCode.length === 1 && this.searchParams.cartypeCode[0] === "" ? null : this.searchParams.cartypeCode) : null,
                 requirementAekoId: this.aekoInfo.requirementAekoId,
                 buyerName: undefined,
                 linieDeptNum: undefined,
@@ -371,6 +372,14 @@ export default {
                 this.loading = false
             })
             .catch(() => this.loading = false)
+        },
+        // 多选处理
+        handleMultipleChange(value, key) {
+            if (!value[value.length - 1]) {
+                this.$set(this.searchParams, key, [""])
+            } else {
+                this.$set(this.searchParams, key, this.searchParams[key].filter(item => item || item === 0))
+            }
         }
     }
 }
@@ -385,12 +394,29 @@ export default {
         .isPreset{
             color: rgba($color: #5C6577, $alpha: .5);
         }
-        .multipleSelect{
-            ::v-deep .el-tag{
-            max-width: calc(100% - 70px);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        .multipleSelect {
+            ::v-deep .el-tag {
+                position: relative;
+
+                &:last-of-type {
+                    padding-right: 5px;
+                }
+
+                &:first-of-type {
+                    padding-right: 10px;
+                }
+
+                .el-select__tags-text {
+                    display: inline-block;
+                    max-width: 80px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .el-tag__close {
+                    top: -25%;
+                }
             }
         }
     }
