@@ -10,6 +10,15 @@ const VUE_APP_BMMOLD_FILE = axiosFile(process.env.VUE_APP_BMMOLD)
 const VUE_APP_MOLDVIEW = axios(process.env.VUE_APP_MOLDVIEW)
 const VUE_APP_MOLDVIEW_FILE = axiosFile(process.env.VUE_APP_MOLDVIEW)
 
+//模具视图-导出
+export function moldViewExport(parmars) {
+  return VUE_APP_MOLDVIEW_FILE({
+      url: '/moldViewExport',
+      method: 'POST',
+      data: parmars
+  })
+}
+
 // 模具视图-车型项目
 export function moldViewCarTypePullDown(parmars) {
   return VUE_APP_MOLDVIEW({

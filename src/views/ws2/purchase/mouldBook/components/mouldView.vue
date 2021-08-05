@@ -104,7 +104,7 @@
     <iCard>
 
       <div class="bnts">
-        <iButton @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
+        <iButton :loading="exportLoding" @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
       </div>
 
       <iTableList
@@ -169,7 +169,8 @@ import {
   moldViewDeptPullDown,
   moldViewCarTypePullDown,
   craftTypes,
-  findMoldViewPage
+  findMoldViewPage,
+  moldViewExport
 } from "@/api/ws2/purchase/mouldBook";
 import { cloneDeep } from "lodash";
 import { pageMixins } from "@/utils/pageMixins";
@@ -206,7 +207,8 @@ export default {
         pageSize: 10,
       },
       getTousandNum,
-      NumFormat
+      NumFormat,
+      exportLoding: false,
     }
   },
 
@@ -290,7 +292,10 @@ export default {
     },
 
     exportList(){   //  导出
-
+      this.exportLoding = true;
+      moldViewExport(this.tableList).then(res => {
+        this.exportLoding = false;
+      })
     }
   }
 }
