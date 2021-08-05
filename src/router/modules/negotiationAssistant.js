@@ -58,6 +58,22 @@ export default [{
       },
       component: () =>
         import("@/views/partsrfq/bob/newReport"),
+    },
+    { 
+      path: "partsrfq/pi",
+      name: "pi",
+      meta: {
+        title: "PI分析库",
+      },
+      component: () => import("@/views/partsrfq/piAnalyse/index")
+    },
+    {
+      path: "partsrfq/rawMateria",
+      name: "rawMateria",
+      meta: {
+        title: "原材料价格总览",
+      },
+      component: () => import("@/views/partsrfq/piAnalyse/components/rawMateria/index"),
     }
   ]
 }]

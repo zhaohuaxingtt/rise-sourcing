@@ -67,7 +67,7 @@
                          :index="indexMethod"
                          align="center"
                          header-align="center"
-                         width="40">
+                         width="50">
         </el-table-column>
         <el-table-column align="center"
                          header-align="center"
@@ -695,6 +695,5 @@ export default {
   .stickIcon :hover {
     cursor: pointer;
   }
-
 }
 </style>
