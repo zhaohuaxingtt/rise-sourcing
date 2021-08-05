@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-16 09:54:11
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Descripttion: your project
  */
 /*
@@ -58,6 +58,15 @@ export default [{
       },
       component: () =>
         import("@/views/partsrfq/bob/newReport"),
+    },
+    { 
+      path: "partsrfq/mekInfoData",
+      name: "mekInfoData",
+      meta: {
+        title: "MEKInfoData",
+      },
+      component: () =>
+        import("@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekInfoData/index.vue"),
     }
   ]
 }]
