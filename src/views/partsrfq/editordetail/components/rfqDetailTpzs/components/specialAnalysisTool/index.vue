@@ -7,7 +7,7 @@
 -->
 <template>
   <div>
-    <enterSpecificAnalysisToolsDialog @getDataList='getDataList' v-model="viewModelDialog" />
+    <enterSpecificAnalysisToolsDialog :keyword="keyword" @getDataList='getDataList' v-model="viewModelDialog" />
     <el-row :gutter="16">
       <el-col v-for="(item,index) in cardData" :key="index" :span="12">
         <card @click.native="entrance(item)" :cardData="item" />
@@ -36,10 +36,11 @@ export default {
       title: '',
       viewModelDialog: false,
       cardData: [],
+      keyword: ''
     }
   },
   created() {
-    this.getDataList('','','','')
+    this.getDataList('', '', '', '', '')
   },
   methods: {
     entrance(param) {
@@ -82,7 +83,7 @@ export default {
         }
       }
     },
-    async getDataList({ rfqId = '', categoryName = '', categoryCode = '', partNum = '' }) {
+    async getDataList({ rfqId = '', categoryName = '', categoryCode = '', partNum = '', rfqName = '' }) {
       if (this.$store.state.rfq.entryStatus === 0) {
         window.sessionStorage.setItem('rfqId', rfqId)
         window.sessionStorage.setItem('materialGroup', categoryName)
@@ -90,6 +91,13 @@ export default {
         await this.$store.dispatch('setRfqId', rfqId)
         await this.$store.dispatch('setMaterialGroup', categoryName)
         await this.$store.dispatch('setSpareParts', partNum)
+      }
+      if (categoryCode && categoryName) {
+        this.keyword = categoryCode + '-' + categoryName
+      } else if (rfqId && rfqName) {
+        this.keyword = rfqId + '-' + rfqName
+      } else if (partNum) {
+        this.keyword = partNum
       }
       const pms = {
         isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,

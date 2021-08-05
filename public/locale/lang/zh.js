@@ -1447,6 +1447,9 @@
             'QXZXYCZDSJ': '请选择需要操作的数据', //请选择需要操作的数据
             'ZJSCSH': '最近上传时间:', //最近上传时间
         },
+        'MEK':{
+            'QIEHUANCAILIAOZU':"切换材料组"
+        }
     }
     var xmlHttp = ''
     if(window.XMLHttpRequest){

@@ -2,8 +2,11 @@
   <el-card>
     <div class="cardHeader">
       <div class="title">
-        <icon symbol name="iconwenjianshuliangbeijing" class="titleIcon"/>
-        <span class="text">{{ title }}</span>
+        <div class="textBox">
+          <img :src="require('../images/' + iconName +'.png')" class="textIcon">
+          <span class="text">{{ title }}</span>
+        </div>
+        <img src="../images/star.png" v-for="(item,index) of star" :key="index" class="starIcon"/>
       </div>
       <i class="el-icon-arrow-up collapse margin-left20 cursor" @click="handleShowHide"
          :class="{ rotate: !showSlot }"></i>
@@ -15,13 +18,18 @@
 </template>
 
 <script>
-import {icon} from 'rise'
+
 export default {
-  components: {
-    icon
-  },
   props: {
     title: {
+      type: String,
+      default: '',
+    },
+    star: {
+      type: Number,
+      default: null,
+    },
+    iconName: {
       type: String,
       default: '',
     },
@@ -49,11 +57,37 @@ export default {
   border-bottom: 1px solid #CDDAF0;
   margin-bottom: 20px;
 
-  .title{
-    .text{
-      font-size: 18px;
-      line-height: 21px;
-      color: #000000;
+  .title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .textBox {
+      flex: 1;
+      display: flex;
+      align-items: center;
+
+      .text {
+        font-size: 18px;
+        line-height: 21px;
+        color: #000000;
+      }
+
+      .textIcon {
+        width: 19px;
+        height: 19px;
+        margin-right: 10px;
+      }
+    }
+
+    .starIcon {
+      width: 22px;
+      height: 22px;
+    }
+
+    .starIcon + .starIcon {
+      margin-left: 10px;
     }
   }
 
