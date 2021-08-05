@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-16 09:54:11
- * @LastEditors: 舒杰
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
  */
 /*
@@ -119,7 +119,8 @@ export default [{
       path: 'categoryManagementAssistant/listOfInitiatives',
       name: 'listOfInitiatives',
       component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/listOfInitiatives')
-    }
+    },
+    
   ]
 }]
 

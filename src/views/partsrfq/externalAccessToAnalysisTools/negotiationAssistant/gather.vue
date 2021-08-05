@@ -52,7 +52,7 @@ import { tabRouterList } from '../data';
 import pcaOverview from '../../pcaAnalyse/pcaOverview';
 import vpAnalyseList from '@/views/partsrfq/vpAnalyse/vpAnalyseList/index.vue';
 import bobOverview from '../../bob/bob';
-import mekOverview from "@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/index.vue"
+import mekOverview from "@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mek.vue"
 import specialAnalysisTool
   from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/specialAnalysisTool/index.vue';
 import { icon, iButton, iNavMvp } from 'rise';
