@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 10:30:49
+ * @LastEditTime: 2021-08-05 14:24:14
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
@@ -13,7 +13,7 @@
       <div class="margin-bottom20 clearFloat">
         <div class="titleSearch">
           <span class="margin-right20 titleSearch-label">{{language('CHEXINGXIANGMU','车型项目')}}</span>
-          <iSelect filterable v-model="carProject" @change="handleCarProjectChange">
+          <iSelect filterable v-model="carProject" @change="handleCarProjectChange" :disabled="isNodeView">
             <el-option
               v-for="item in carProjectOptions"
               :key="item.value"
@@ -32,14 +32,14 @@
       <div class="margin-bottom20 clearFloat">
         <div class="titleSearch">
           <span class="margin-right20 titleSearch-label">{{language('CHANPINZU','产品组')}}</span>
-          <div :class="`chooseProGroup ${!proGroup ? 'noPro' : ''}`" @click="openChooseProGroup">
+          <div :class="`chooseProGroup ${!proGroup ? 'noPro' : ''} ${isSop || isNodeView ? 'disabled' : ''}`" @click="openChooseProGroup">
             <div :title="proGroup">{{proGroup || '请选择'}}</div>
             <icon symbol name="iconshaixuankuangsousuo" class="step-icon"></icon>
           </div>
         </div>
         <div class="floatright">
           <!--------------------应用默认配置按钮----------------------------------->
-          <iButton @click="openLogicSetting">{{language('SUANFAPEIZHI','算法配置')}}</iButton>
+          <iButton @click="openLogicSetting" :disabled="isNodeView">{{language('SUANFAPEIZHI','算法配置')}}</iButton>
         </div>
       </div>
       <div class="projectCard-content">
@@ -209,7 +209,7 @@ export default {
         iMessage.error(this.language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目'))
         return
       }
-      if (this.isSop) {
+      if (this.isSop || this.isNodeView) {
         return
       }
       this.chooseVisible = true
@@ -298,6 +298,12 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+    &.disabled {
+      background-color: #F5F7FA;
+      border-color: #E4E7ED;
+      color: #C0C4CC;
+      cursor: not-allowed;
     }
   }
 }
