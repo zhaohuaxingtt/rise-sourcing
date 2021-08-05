@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-03 10:47:50
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-05 10:13:13
+ * @LastEditors: Luoshuang
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -368,6 +368,52 @@ export const staticRouter = [
             component: () => import(`@/views/ws2/investmentReport`),
           },
         ],
+      },
+      {
+        path: '/purchase',
+        name: 'purchase',
+        meta: {
+            title: '模具采购'
+        },
+        component: () => import (`@/views/ws2/purchase`),
+        children: [
+            {
+                path: '/purchase',
+                redirect: '/purchase/investmentList',
+            },
+            {
+                path: '/purchase/investmentList',
+                name: 'investmentList',
+                meta: {
+                    title: '模具投资清单'
+                },
+                component: () => import (`@/views/ws2/purchase/investmentList`),
+            },
+            {
+                path: '/purchase/mouldBook',
+                name: 'mouldBook',
+                meta: {
+                    title: '模具台账'
+                },
+                component: () => import (`@/views/ws2/purchase/mouldBook`),
+            },
+        ]
+      },
+      {
+          path: '/purchase/mouldBook/details',
+          name: 'mouldBook',
+          meta: {
+              title: '模具台账详情'
+          },
+          component: () => import (`@/views/ws2/purchase/mouldBook/details`),
+      },
+      {
+          path: '/purchase/investmentList/bmInfo',
+          name: 'bmInfo',
+          meta: {
+              title: '模具投资清单-BM详情页'
+          },
+          component: () => import (`@/views/ws2/purchase/investmentList/bmInfo`),
       },
       {
         path: '/ws3-register',
