@@ -11,84 +11,87 @@
           <iButton @click="handleCancel">{{ language('PLGLZS.QUXIAO', '取消') }}</iButton>
           <iButton @click="handleSave">{{ language('PLGLZS.BAOCUN', '保存') }}</iButton>
         </template>
-        <iButton>{{ language('PLGLZS.DAOCHU', '导出') }}</iButton>
+        <iButton @click="handleExport" :loading="exportButtonLoading">{{ language('PLGLZS.DAOCHU', '导出') }}</iButton>
       </template>
     </headerNav>
-    <el-row :gutter="20">
-      <el-col :span="8" v-for="item of treeData" :key="item.id">
-        <div class="header-title"> {{ setName(item) }}</div>
-        <theCard
-            v-for="level1Children of item.children"
-            :key="level1Children.id"
-            :title="setName(level1Children)"
-            :star="level1Children.star"
-            :iconName="level1Children.iconUrl"
-            class="theCard"
-        >
-          <!--第二级-->
-          <div>
-            <div
-                v-for="level2Children of level1Children.children"
-                :key="level2Children.id"
-                class="level2BoxStyle"
-            >
-              <div class="flex">
-                <div class="blueDot" v-if="!notHaveChildren(level2Children) || !editStatus"/>
-                <theCheckBox
-                    :treeDataSelect="treeDataSelect"
-                    :currentChildren="level2Children"
-                    :categoryChildren="level1Children"
-                    :editStatus="editStatus"
-                    @handleSelect="handleSelect"
-                />
-                <span class="level2Text">{{ setName(level2Children) }}</span>
-              </div>
-              <theRemark :children="level2Children" :editStatus="editStatus"/>
-              <iInput
-                  v-if="editStatus && (level2Children.name === treeDataSelect[level1Children.name])"
-                  v-model="form[level2Children.id]"
-                  type="textarea"
-                  :rows="2"
-                  resize="none"
-                  :placeholder="language('PLGLZS.QINGSHURU','请输入')"
-                  class="margin-top10"
-                  :maxlength="maxlength"
-              />
-              <!--第三级-->
-              <div v-if="level2Children.children">
-                <div
-                    v-for="level3Children of level2Children.children"
-                    :key="level3Children.id"
-                    class="level3BoxStyle"
-                >
-                  <div class="flex">
-                    <theCheckBox
-                        :treeDataSelect="treeDataSelect"
-                        :currentChildren="level3Children"
-                        :categoryChildren="level1Children"
-                        :editStatus="editStatus"
-                        @handleSelect="handleSelect"
-                    />
-                    <span>{{ setName(level3Children) }}</span>
-                  </div>
-                  <theRemark :children="level3Children" :editStatus="editStatus"/>
-                  <iInput
-                      v-if="editStatus && (level3Children.name === treeDataSelect[level1Children.name])"
-                      v-model="form[level3Children.id]"
-                      type="textarea"
-                      :rows="2"
-                      resize="none"
-                      :placeholder="language('PLGLZS.QINGSHURU','请输入')"
-                      class="margin-top10"
-                      :maxlength="maxlength"
+    <div id="container">
+      <el-row :gutter="20">
+        <el-col :span="8" v-for="item of treeData" :key="item.id">
+          <div class="header-title"> {{ setName(item) }}</div>
+          <theCard
+              v-for="level1Children of item.children"
+              :key="level1Children.id"
+              :title="setName(level1Children)"
+              :star="level1Children.star"
+              :iconName="level1Children.iconUrl"
+              class="theCard"
+              :ref="'theCard'+level1Children.id"
+          >
+            <!--第二级-->
+            <div>
+              <div
+                  v-for="level2Children of level1Children.children"
+                  :key="level2Children.id"
+                  class="level2BoxStyle"
+              >
+                <div class="flex">
+                  <div class="blueDot" v-if="!notHaveChildren(level2Children) || !editStatus"/>
+                  <theCheckBox
+                      :treeDataSelect="treeDataSelect"
+                      :currentChildren="level2Children"
+                      :categoryChildren="level1Children"
+                      :editStatus="editStatus"
+                      @handleSelect="handleSelect"
                   />
+                  <span class="level2Text">{{ setName(level2Children) }}</span>
+                </div>
+                <theRemark :children="level2Children" :editStatus="editStatus" :exportStatus="exportStatus"/>
+                <iInput
+                    v-if="editStatus && (level2Children.name === treeDataSelect[level1Children.name])"
+                    v-model="form[level2Children.id]"
+                    type="textarea"
+                    :rows="2"
+                    resize="none"
+                    :placeholder="language('PLGLZS.QINGSHURU','请输入')"
+                    class="margin-top10"
+                    :maxlength="maxlength"
+                />
+                <!--第三级-->
+                <div v-if="level2Children.children">
+                  <div
+                      v-for="level3Children of level2Children.children"
+                      :key="level3Children.id"
+                      class="level3BoxStyle"
+                  >
+                    <div class="flex">
+                      <theCheckBox
+                          :treeDataSelect="treeDataSelect"
+                          :currentChildren="level3Children"
+                          :categoryChildren="level1Children"
+                          :editStatus="editStatus"
+                          @handleSelect="handleSelect"
+                      />
+                      <span>{{ setName(level3Children) }}</span>
+                    </div>
+                    <theRemark :children="level3Children" :editStatus="editStatus" :exportStatus="exportStatus"/>
+                    <iInput
+                        v-if="editStatus && (level3Children.name === treeDataSelect[level1Children.name])"
+                        v-model="form[level3Children.id]"
+                        type="textarea"
+                        :rows="2"
+                        resize="none"
+                        :placeholder="language('PLGLZS.QINGSHURU','请输入')"
+                        class="margin-top10"
+                        :maxlength="maxlength"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </theCard>
-      </el-col>
-    </el-row>
+          </theCard>
+        </el-col>
+      </el-row>
+    </div>
   </iPage>
 </template>
 
@@ -100,6 +103,7 @@ import {getList, saveInfos} from '../../../../../api/categoryManagementAssistant
 import theCheckBox from './compoents/theCheckBox';
 import theRemark from './compoents/theRemark';
 import resultMessageMixin from '@/utils/resultMessageMixin';
+import {downloadPDF} from '@/utils/pdf';
 
 export default {
   mixins: [resultMessageMixin],
@@ -121,6 +125,8 @@ export default {
       form: {},
       maxlength: 500,
       categoryCode: '111',
+      exportStatus: false,
+      exportButtonLoading: false,
     };
   },
   created() {
@@ -177,7 +183,7 @@ export default {
           });
         });
         const formData = {};
-        this.getFormData({treeData: res.data, formData: formData});
+        this.getFormData({treeData: res.data, formData});
         this.form = formData;
         this.treeDataSelect = obj;
         this.pageLoading = false;
@@ -205,6 +211,24 @@ export default {
     },
     notHaveChildren(item) {
       return item.children === null;
+    },
+    handleExport() {
+      this.exportButtonLoading = true;
+      this.exportStatus = true;
+      Object.keys(this.$refs).map(item => {
+        this.$refs[item][0].handleShowHide(true);
+      });
+      setTimeout(() => {
+        this.downloadFile();
+        this.exportButtonLoading = false;
+        this.exportStatus = false;
+      }, 1000);
+    },
+    downloadFile() {
+      downloadPDF({
+        idEle: 'container',
+        pdfName: 'overview',
+      });
     },
   },
 };
