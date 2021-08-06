@@ -421,5 +421,10 @@ export default new VueRouter({
     ...projectRoutes,
     //品类管理助手
     ...categoryManagementAssistant,
+    //ws2
+    ...ws2,
+    //MEK
+    ...mek,
+    ...supplierkpiRoutes
   ],
 })
