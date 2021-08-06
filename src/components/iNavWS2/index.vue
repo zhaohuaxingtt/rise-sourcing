@@ -29,7 +29,7 @@
     <span v-if="historyDataBase" @click="changeDataBase" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
       <transition name="bounce">
         <Popover
-            content="历史数据库"
+            :content="hoverText"
             placement="top-start"
             trigger="hover">
             <icon slot="reference" v-if="!dataBase" symbol name="icondatabaseweixuanzhong"></icon>
@@ -37,7 +37,7 @@
       </transition>
       <transition name="bounceTo">
         <Popover
-            content="历史数据库"
+            :content="hoverText"
             placement="top-start"
             trigger="hover">
             <icon slot="reference" v-if="dataBase" symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>
@@ -48,7 +48,7 @@
     <span v-if="mouldBook" @click="changeDataBase1" class="dataBase">
       <transition name="bounce">
         <Popover
-            content="历史数据库"
+            :content="hoverText"
             placement="top-start"
             trigger="hover">
             <icon slot="reference" v-if="!dataBase" symbol name="icondatabaseweixuanzhong"></icon>
@@ -56,7 +56,7 @@
       </transition>
       <transition name="bounceTo">
         <Popover
-            content="历史数据库"
+            :content="hoverText"
             placement="top-start"
             trigger="hover">
             <icon slot="reference" v-if="dataBase" symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>
@@ -94,6 +94,10 @@ export default {
       type: Boolean,
       default: false
     },
+    hoverText: {
+      type: String,
+      default: '',
+    }
   },
   mounted() {
   },

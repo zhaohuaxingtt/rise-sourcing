@@ -1,12 +1,13 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-07-06 12:19:03
+ * @LastEditTime: 2021-08-04 11:44:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
  */
 import {permissionTitle} from '@/utils'
+import {partProjTypes} from '@/config'
 export const tableTitle = [{
 		//export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		props: 'fsnrGsnrNum',
@@ -128,5 +129,13 @@ export const addRfqTitle =[
 	{props:'currentStatus',name:'RFQ状态',key: 'LK_RFQZHUANGTAI'},
 	{props:'updateDate',name:'操作时间',key: 'LK_UpdateDate'},
 
+]
+
+//特殊零件采购项目validate
+export const validateProjectConfig = [
+	{
+		key:partProjTypes.JINLINGJIANHAOGENGGAI,
+		message:'抱歉！当前零件中包含仅零件号变更零件，此零件不能与其他类型的采购项目一起维护。'
+	}
 ]
 
