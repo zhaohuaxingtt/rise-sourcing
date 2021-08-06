@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-08-05 16:52:36
+ * @LastEditTime: 2021-08-05 21:53:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -106,6 +106,7 @@ export default {
     },
     // 点击返回
     clickBack() {
+      const entryStatus = this.$store.state.rfq.entryStatus
       
     },
     // 点击查看

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-08-05 18:11:58
+ * @LastEditTime: 2021-08-05 21:42:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -261,6 +261,10 @@
         :key="reportKey"
         @handleCloseReport="handleCloseReport"
       />
+      <addScheme
+        :key="addPiParams.key"
+        v-model="addPiParams.visible"
+      />
     </iCard>
   </div>
 </template>
@@ -281,10 +285,10 @@ import {
   fetchStaick,
   fetchEdit,
   fetchDel,
-  initIn,
 } from "@/api/partsrfq/bob/analysisList";
 import { pageMixins } from "@/utils/pageMixins";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
+import addScheme from './components/add'
 export default {
   mixins: [pageMixins],
   components: {
@@ -296,29 +300,32 @@ export default {
     iSelect,
     icon,
     reportPreview,
+    addScheme
   },
   data() {
     return {
-      form: {},
-      rfqID: "220",
-      edit: false,
-      tableListData: [],
-      backUpData: [],
-      selection: [],
-      entryStatus: this.$store.state.rfq.entryStatus,
-      rfqStatus: false,
-      reportVisible: false,
-      reportUrl: null,
-      reportTitle: null,
-      reportKey: 0,
-      defaultData: [
+      form: {}, //检索条件
+      edit: false, //编辑模式
+      tableListData: [], //表格数据
+      backUpData: [], //备份数据
+      selection: [],  //选中数据
+      entryStatus: this.$store.state.rfq.entryStatus, //内部进入/外部进入
+      rfqStatus: false, //rfq输入框禁用/启用状态
+      reportVisible: false, //报告pdf弹窗是否显示
+      reportUrl: null,  //报告地址
+      reportTitle: null, //报告名称
+      reportKey: 0, //报告弹窗key
+      defaultData: [ //默认项下拉框
         { value: "是", label: this.$t("nominationLanguage.Yes") },
         { value: "否", label: this.$t("nominationLanguage.No") },
       ],
       currentDefaultObj: null, //当前编辑对象
       updatedDefault: false, //是否已更新默认项
-      rawMaterialUrl: '/sourcing/partsrfq/rawMateria',
-      addPiAnalysislyUrl: ''
+      rawMaterialUrl: '/sourcing/partsrfq/rawMateria', //原材料组件路由地址
+      addPiParams: { //新增PI分析方案弹窗参数
+        key: 0,
+        visible: false
+      }
     };
   },
   created() {
@@ -713,12 +720,11 @@ export default {
     },
     // 点击新建按钮
     clickAdd() {
-      this.$router.push({
-        path: '',
-        query: {
-
-        }
-      })
+      this.addPiParams = {
+        ...this.addPiParams,
+        key: Math.random(),
+        visible: true
+      }
     },
     // 点击删除按钮
     clickDel() {

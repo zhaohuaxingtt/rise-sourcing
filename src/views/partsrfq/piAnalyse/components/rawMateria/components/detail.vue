@@ -1,30 +1,30 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 16:41:49
- * @LastEditTime: 2021-08-05 17:45:05
+ * @LastEditTime: 2021-08-06 10:13:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\components\detail.vue
 -->
 <template>
   <div>
-    <iDialog :title="language('YUANCAILIAOXIANGQING', '原材料价格总览-原材料名称')" :visible.sync="value" width="100%">
+    <iDialog :title="language('YUANCAILIAOXIANGQING', '原材料价格总览-原材料名称')" :visible.sync="value" width="80%">
       <div class="optionBox">
         <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
           <el-form-item style="marginRight:68px" :label="language('LINGJIANHAO', '零件号')">
-            <iInput v-model="searchForm['partNo']" ></iInput>
+            <iInput v-model="searchForm['partNo']" :placeholder="language('QINGSHURU','请输入')"></iInput>
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('LINGJIANHAO', '材料组')">
-            <iInput v-model="searchForm['materialGroup']" ></iInput>
+            <iInput v-model="searchForm['materialGroup']" :placeholder="language('QINGSHURU','请输入')"></iInput>
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('RFQHAO', 'RFQ号')">
-            <iInput v-model="searchForm['rfqNo']" ></iInput>
+            <iInput v-model="searchForm['rfqNo']" :placeholder="language('QINGSHURU','请输入')"></iInput>
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('CHEXINGXIANGMU', '车型项目')">
-            <iInput v-model="searchForm['cartTypeProject']" ></iInput>
+            <iInput v-model="searchForm['cartTypeProject']" :placeholder="language('QINGSHURU','请输入')"></iInput>
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('SHIFOUEOP', '是否EOP')">
-            <iSelect v-model="searchForm['isEop']">
+            <iSelect v-model="searchForm['isEop']" :placeholder="language('QINGXUANZE','请选择')">
               <el-option value='' label='全部'></el-option>
             </iSelect>
           </el-form-item>

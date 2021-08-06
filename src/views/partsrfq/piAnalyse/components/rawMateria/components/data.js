@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-05 14:26:43
- * @LastEditTime: 2021-08-05 17:39:31
+ * @LastEditTime: 2021-08-06 10:23:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\components\data.js
@@ -26,3 +26,4 @@ export const detailTableTitle = [
   {props: 'factory', name: '工厂', key: 'GONGCHANG'},
   {props: 'quotationPrice', name: '报价单价', key: 'BAOJIADANJIA'},
 ]
+
