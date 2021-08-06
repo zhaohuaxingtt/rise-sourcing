@@ -24,6 +24,7 @@
 <script>
 import {iButton,iPage,iCard,iInput,iSelect,iTableCustom} from 'rise'
 import * as pbi from 'powerbi-client';
+import { getPowerBiKpi } from '@/api/kpiChart'
 export default {
     components:{
         iButton,
@@ -40,8 +41,12 @@ export default {
             config:{},
             reportContainer:null,
             report:null,
-     
         }
+    },
+    created(){
+         getPowerBiKpi({}).then(res=>{
+            console.log(res)
+        })
     },
     mounted(){
         this.init()

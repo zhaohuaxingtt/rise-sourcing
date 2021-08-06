@@ -400,6 +400,22 @@ module.exports = {
           '^/bizlog':''
         }
       },
+      //kpi杜玲聪的代理
+      '/kpiInfo': {
+        target: 'http://10.122.18.166:8010',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/kpiInfo': '',
+        },
+      },
+      //椿慧的代理
+      '/kpiPowerBiInfo': {
+        target: 'http://10.122.18.166:8036',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/kpiPowerBiInfo': '',
+        },
+      },
     },
   },
 }
