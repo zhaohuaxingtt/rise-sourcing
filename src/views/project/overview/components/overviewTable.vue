@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 11:02:31
+ * @LastEditTime: 2021-08-06 11:24:41
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -164,7 +164,7 @@ export default {
       if (year === moment().year()) {
         return -1
       }
-      const nodeListBeforeYear = nodeList.filter(item => item.year < year)
+      const nodeListBeforeYear = nodeList.filter(item => item.year < year && item.year > moment().year() - 1)
       if (nodeListBeforeYear.length > 0) {
         return nodeListBeforeYear[nodeListBeforeYear.length - 1].status
       }
