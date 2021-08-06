@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-08-04 19:39:10
+ * @LastEditTime: 2021-08-04 19:49:48
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -540,6 +540,7 @@ export default {
   font-size: $font-size18 !important;
 }
 .remark {
+  width: 550px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -549,7 +550,7 @@ export default {
   color: #949494;
 }
 .remark2 {
-  width: 1200px;
+  width: 800px;
   font-size: $font-size14 !important;
   font-weight: normal;
   color: #949494;
