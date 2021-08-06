@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 10:24:47
+ * @LastEditTime: 2021-08-06 11:24:41
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -56,7 +56,7 @@
         <!---------------------------------------------------------------------->
         <div v-else-if="item.type === 'year'" class="yearCell">
           <div v-for="indexItem in [1,2,3,4]" :key="indexItem" class="yearCell-item">
-            <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" class="node">
+            <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" :class="`node ${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1 && 'small-node'+getNodeList(item.props, indexItem, dataItem.nodeList).length}`">
               <!-- 已完成 -->
               <icon v-if="nodeItem.status == 1" symbol name="icondingdianguanli-yiwancheng"  class="step-icon"></icon> 
               <!-- 正在进行中 -->
@@ -164,7 +164,7 @@ export default {
       if (year === moment().year()) {
         return -1
       }
-      const nodeListBeforeYear = nodeList.filter(item => item.year < year)
+      const nodeListBeforeYear = nodeList.filter(item => item.year < year && item.year > moment().year() - 1)
       if (nodeListBeforeYear.length > 0) {
         return nodeListBeforeYear[nodeListBeforeYear.length - 1].status
       }
@@ -384,6 +384,24 @@ export default {
               width: 20px;
               right: -20px;
               top: 12px;
+            }
+          }
+          @for $i from 1 through 5 {
+            .small-node#{$i} {
+              .step-icon {
+                width: #{36/$i}px;
+                height: #{36/$i}px;
+              }
+              .node-title {
+                font-size: 12px;
+              }
+              .node-week {
+                font-size: 10px;
+              }
+              .short-between-icon {
+                width: #{20/$i}px;
+                right: -#{20/$i}px;
+              }
             }
           }
           .nodeLine {
