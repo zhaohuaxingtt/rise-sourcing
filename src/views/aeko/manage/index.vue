@@ -328,7 +328,7 @@ export default {
 
         // 科室
         searchCommodity().then((res)=>{
-           const {code,data} = res;
+          const {code,data} = res;
           if(code ==200 ){
             data.map((item)=>{
               item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
