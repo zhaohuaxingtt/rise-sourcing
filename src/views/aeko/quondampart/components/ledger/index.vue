@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-06 15:18:20
+ * @LastEditTime: 2021-08-06 15:37:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -183,7 +183,7 @@ export default {
       this.saveLoading = true
       saveAekoOriginPart({
         originPartList: this.multipleSelection,
-        objectAekoPartId: this.objectAekoPartId,
+        objectAekoPartId: this.$route.query.objectAekoPartId,
         requirementAekoId: this.requirementAekoId
       })
       .then(res => {
