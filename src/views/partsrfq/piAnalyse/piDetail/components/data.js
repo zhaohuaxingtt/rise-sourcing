@@ -4,3 +4,6 @@ export const baseInfo = [
   {name: '车型项目', key: 'PI.CHEXINGXIANGMU', props: 'c'},
   {name: '工厂', key: 'PI.GONGCHANG', props: 'd'},
 ];
+
+export const CURRENTTIME = 'currentTime'
+export const AVERAGE = 'average'
