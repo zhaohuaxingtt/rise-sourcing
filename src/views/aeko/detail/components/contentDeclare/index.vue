@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-06 14:37:21
+ * @LastEditTime: 2021-08-06 18:36:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -166,8 +166,7 @@
           <template #oldPartNumPreset="scope">
             <iInput v-if="scope.row.status.code === 'EMPTY'" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
               <div class="inputSearchIcon" slot="suffix">
-                <icon v-if="!scope.row.judgeLoading" symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon"  @click.native="oldPartNumPresetSelect(scope.row)"/>
-                <i v-else class="el-icon-loading"></i>
+                <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
             </iInput>
             <iInput v-else v-model="scope.row.oldPartNumPreset" disabled readonly></iInput>
@@ -222,7 +221,7 @@ import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle, isReferenceMap } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent, judgeRight } from "@/api/aeko/detail"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { cloneDeep } from "lodash"
@@ -237,12 +236,6 @@ export default {
       type: Object,
       default: () => ({})
     }
-  },
-  computed: {
-    // eslint-disable-next-line no-undef
-    ...Vuex.mapState({
-      userInfo: state => state.permission.userInfo,
-    })
   },
   data() {
     return {
@@ -378,41 +371,22 @@ export default {
     },
     view() {},
     oldPartNumPresetSelect(row) {
-      this.$set(row, "judgeLoading", true)
-
-      judgeRight([
-        {
-          partNum: row.oldPartNumPreset,
-          userId: this.userInfo.id
+      this.$router.push({
+        path: "/aeko/quondampart/ledger",
+        query: {
+          requirementAekoId: this.aekoInfo.requirementAekoId,
+          objectAekoPartId: row.objectAekoPartId,
+          oldPartNumPreset: row.oldPartNumPreset
         }
-      ])
-      .then(res => {
-        if (res.code == 200) {
-          if (res.data[0].isView) {
-            this.$router.push({
-              path: "/aeko/quondampart/ledger",
-              query: {
-                requirementAekoId: this.aekoInfo.requirementAekoId,
-                objectAekoPartId: row.objectAekoPartId
-              }
-            })
-          
-            sessionStorage.setItem("aekoConatentDeclareParams", JSON.stringify({
-              form: this.form,
-              requirementAekoId: this.aekoInfo.requirementAekoId,
-              currPage: this.page.currPage,
-              pageSize: this.page.pageSize
-            }))
-          } else {
-            iMessage.error(res.data[0].describe)   
-          }
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-
-        this.$set(row, "judgeLoading", false)
       })
-      .catch(() => this.$set(row, "judgeLoading", false))
+    
+      sessionStorage.setItem("aekoConatentDeclareParams", JSON.stringify({
+        form: this.form,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
+        currPage: this.page.currPage,
+        pageSize: this.page.pageSize,
+        currentTab: "contentDeclare"
+      }))
     },
     // 相关无关切换
     handleDeclareToggle() {
@@ -485,9 +459,6 @@ export default {
       for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
         if (item.status.code !== "TOBE_STATED" && item.status.code !== "QUOTING" && item.status.code !== "QUOTED")
           return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价的零件进行提交"))
-
-        if (item.isDeclare != 1)
-          return iMessage.warn(this.language("QINGXUANZEYISHOUDONGSHEZHIAJIADELINGJIANJINXINGTIJIAO", "请选择已手动设置A价的零件进行提交"))
       }
 
       this.submitLoading = true
