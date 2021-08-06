@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 22:46:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-29 17:54:25
+ * @LastEditTime: 2021-08-06 16:47:29
  * @Description: 车型项目详情
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\carprojectprogress\index.vue
 -->
@@ -31,7 +31,7 @@
         </div>
           <!-- 正在进行中 -->
           <template v-if="index === nodeList.length - 1"></template>
-          <icon v-else-if="item.isDone == 1 && !nodeList[index+1].isDone == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="step-between-icon"></icon>
+          <icon v-else-if="item.isDone == 1 && nodeList[index+1].isDone == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="step-between-icon"></icon>
           <!-- 已完成 -->
           <icon v-else-if="item.isDone == 1" symbol name="iconchanpinzupaicheng_yiwancheng" class="step-between-icon"></icon>
           <!-- 未完成 -->
