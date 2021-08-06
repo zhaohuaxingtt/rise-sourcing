@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:54:35
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 13:41:02
+ * @LastEditTime: 2021-08-05 18:06:21
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\index.vue
 -->
@@ -33,7 +33,7 @@
         <span class="font18 font-weight">{{language('CHANPINZUJINDUQUERENHUIZONG', '产品组进度确认汇总')}}</span>
         <div class="floatright">
           <!--------------------发送按钮----------------------------------->
-          <iButton v-if="!isFS && searchParams.confirmStatus === 'RETURNED'" @click="handleSend" >{{language('FASONG','发送')}}</iButton>
+          <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('FASONG','发送')}}</iButton>
           <template v-if="isFS">
             <!--------------------转派按钮----------------------------------->
             <iButton @click="openTransfer" >{{language('ZHUANPAI','转派')}}</iButton>
@@ -100,7 +100,8 @@ export default {
       selectRows: [],
       fsDialogVisible: false,
       transferDialogVisible: false,
-      sendRows: []
+      sendRows: [],
+      withSend: false
     }
   },
   computed: {
@@ -323,6 +324,11 @@ export default {
       this.backDialogVisible = visible
     },
     getTableList() {
+      if (this.searchParams.confirmStatus === 'RETURNED') {
+        this.withSend = true
+      } else {
+        this.withSend = false
+      }
       const params = {
         ...this.searchParams,
         size: this.page.pageSize,

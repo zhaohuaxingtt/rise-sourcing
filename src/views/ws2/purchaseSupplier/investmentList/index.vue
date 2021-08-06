@@ -12,7 +12,7 @@
     >
       <el-form>
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput v-model.trim="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
+          <iInput type="textarea"  v-model.trim="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
         </el-form-item>
         <el-form-item :label="language('LK_CHEXINGXIANGMU', '车型项目')">
           <iSelect
@@ -229,7 +229,7 @@ export default {
           iMessage.error(result1);
         }
         if (res[2].data) {
-          this.moldInvestmentStatusList = res[2].data;
+          this.moldInvestmentStatusList = res[2].data.filter(item => item.code !== '1')
         } else {
           iMessage.error(result2);
         }
@@ -355,6 +355,11 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+.giSearch{
+  ::v-deep .el-textarea__inner{
+    height: 35px;
   }
 }
 </style>
