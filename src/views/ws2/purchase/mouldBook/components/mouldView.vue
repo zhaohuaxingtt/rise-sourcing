@@ -13,7 +13,7 @@
       <el-form>
 
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['partsNum']" ></iInput>
+          <iInput type="textarea" clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model.trim="form['partsNum']" ></iInput>
         </el-form-item>
 
         <el-form-item :label="language('LK_CAILIAOZU', '材料组')">
@@ -144,6 +144,8 @@
       </div>
       
     </iCard>
+
+    <PhotoList :imgList="imgList" :visible="visible" @changeLayer="() => visible = false" />
   </div>
 </template>
 
@@ -154,17 +156,10 @@ import {iPage, iMessage, iDialog, iButton, iSelect, iSearch, iInput,
 import {
   iTableList
 } from "@/components";
+import PhotoList from "../../components/photoList";
 import { mouldForm, assetsTableHead } from "./data";
 import UnitExplain from "./unitExplain";
 import {
-  bmViewCarTypePullDown,
-  bmViewDeptPullDown,
-  bmViewExport,
-  bmViewMoldInvestmentListStatusPullDown,
-  bmViewSupplierPullDown,
-  findBmViewPageList,
-  isPermission,
-  bmViewLiniePullDown,
   assetTypes,
   moldViewDeptPullDown,
   moldViewCarTypePullDown,
@@ -186,7 +181,8 @@ export default {
     iTableList,
     iButton,
     UnitExplain,
-    iPagination
+    iPagination,
+    PhotoList
   },
 
   mixins: [tableHeight, pageMixins],
@@ -209,6 +205,8 @@ export default {
       getTousandNum,
       NumFormat,
       exportLoding: false,
+      imgList: [],
+      visible: false,
     }
   },
 
@@ -218,6 +216,13 @@ export default {
   },
 
   methods: {
+
+    openPhoto(scope){
+      if(scope.picture){
+        this.imgList = scope.picture.split(',');
+        this.visible = true;
+      }
+    },
 
     getTableData(){
       this.tableLoading = true;
@@ -302,6 +307,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.giSearch{
+  ::v-deep .el-textarea__inner{
+    height: 35px;
+  }
+}
 .table-link{
   color: #1763F7;
   cursor: pointer;
