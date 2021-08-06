@@ -50,7 +50,7 @@ export default [{
       component: () =>
         import("@/views/partsrfq/bob/bob"),
     },
-    { 
+    {
       path: "partsrfq/bobNew",
       name: "bobNew",
       meta: {
@@ -59,7 +59,7 @@ export default [{
       component: () =>
         import("@/views/partsrfq/bob/newReport"),
     },
-    { 
+    {
       path: "partsrfq/mekInfoData",
       name: "mekInfoData",
       meta: {
@@ -67,7 +67,12 @@ export default [{
       },
       component: () =>
         import("@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekInfoData/index.vue"),
-    }
+    },
+    {
+      path: 'partsrfq/piAnalyseDetail',
+      name: 'piAnalyseDetail',
+      component: () => import('../../views/partsrfq/piAnalyse/piDetail')
+    },
   ]
 }]
 
