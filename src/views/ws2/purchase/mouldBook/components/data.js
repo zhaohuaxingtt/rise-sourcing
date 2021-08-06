@@ -5,9 +5,9 @@ export const bmForm = {
   bmNum: '', //  Bm单号
   sapOrder: '', //  SAP订单号
   enterAccountNum: '', //  入账单号
-  tmCartypeProId: '',  //  车型项目
+  tmCartypeProId: [],  //  车型项目
   designatedSupplierId: '',  //  供应商id数组
-  deptId: '',  //  科室
+  deptId: [],  //  科室
   linieId: [],  //  line
   moldInvestmentStatus: '', //  摸具投资状态
 }
