@@ -17,12 +17,17 @@
         @handlePartItemClose="handlePartItemClose"
         @handlePartItemClick="handlePartItemClick"
     />
+    <!--信息-->
+    <iCard tabCard class="margin-bottom20">
+      <theBaseInfo/>
+    </iCard>
   </iPage>
 </template>
 
 <script>
-import {iPage, iButton, iMessageBox} from 'rise';
+import {iPage, iButton, iMessageBox, iCard} from 'rise';
 import thePartsList from './components/thePartsList';
+import theBaseInfo from './components/theBaseInfo';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 
 export default {
@@ -30,7 +35,9 @@ export default {
   components: {
     iPage,
     iButton,
+    iCard,
     thePartsList,
+    theBaseInfo,
   },
   data() {
     return {
