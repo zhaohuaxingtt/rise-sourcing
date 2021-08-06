@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-07-30 16:11:42
+ * @LastEditTime: 2021-08-06 15:18:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -102,7 +102,7 @@ import { ledgerQueryForm, ledgerTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
 import { getAekoOriginPartInfo, saveAekoOriginPart } from "@/api/aeko/detail"
-import { cloneDeep } from "lodash"
+import { cloneDeep, isEqual } from "lodash"
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, iPagination, tableList, icon, presentAllInPriceDialog },
@@ -118,6 +118,16 @@ export default {
       currentRow: {},
     }
   },
+  watch: {
+    form: {
+      handler(data) {
+        if (isEqual(data, ledgerQueryForm)) {
+          this.objectAekoPartId = this.$route.query.objectAekoPartId
+        }
+      },
+      deep: true
+    }
+  },
   created() {
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
@@ -127,6 +137,7 @@ export default {
     getAekoOriginPartInfo() {
       getAekoOriginPartInfo({
         ...this.form,
+        objectAekoPartId: this.objectAekoPartId,
         current: this.page.currPage,
         size: this.page.pageSize
       })
@@ -144,11 +155,13 @@ export default {
     },
     sure() {
       this.page.currPage = 1
+      this.objectAekoPartId = ""
       this.getAekoOriginPartInfo()
     },
     reset() {
       this.page.currPage = 1
       this.form = cloneDeep(ledgerQueryForm)
+      this.objectAekoPartId = this.$route.query.objectAekoPartId
       this.getAekoOriginPartInfo()
     },
     handleSelectionChange(list) {
