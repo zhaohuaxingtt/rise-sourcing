@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 14:49:52
+ * @LastEditTime: 2021-08-06 10:24:47
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -186,7 +186,7 @@ export default {
       if (year === moment().year() + 3) {
         return -1
       }
-      const nodeListNextYear = nodeList.filter(item => item.year > year)
+      const nodeListNextYear = nodeList.filter(item => item.year > year && item.year < moment().year() + 4)
       if (nodeListNextYear.length > 0) {
         return nodeListNextYear[0].status
       }
@@ -225,6 +225,9 @@ export default {
               lineStatus: 2
             }
           }
+          // return {
+          //     lineStatus: 2
+          //   }
         }
         return null
       }
@@ -353,7 +356,7 @@ export default {
           flex-shrink: 0;
           width: 60px;
           display: flex;
-          flex-direction: column;
+          // flex-direction: column;
           align-items: center;
           justify-content: center;
           .node {
