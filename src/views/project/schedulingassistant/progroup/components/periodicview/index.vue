@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 18:14:52
+ * @LastEditTime: 2021-08-06 13:37:13
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -100,7 +100,7 @@ export default {
         {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'}
       ],
       nodeList: [
-        {label: '释放', key: 'SHIFANG', const: 'constReleaseToNomiWeek', keyPoint: 'keyReleaseToNomiWeek', history: 'releaseToNomiWeek', isChange: 'keyReleaseToNomiStatus'},
+        {label: '释放', key: 'SHIFANG', const: 'constReleaseToNomiWeek', keyPoint: 'keyReleaseToNomiWeek', history: 'hiReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus'},
         {label: '定点', key: 'DINGDIAN', const: 'constNomiToBffWeek', keyPoint: 'keyNomiToBffWeek', history: 'hiNomiToBffWeek', isChange: 'keyNomiToBffStatus'},
         {label: 'BF', const: 'keyBfToFirstTryoutWeek', keyPoint: 'constBfToFirstTryoutWeek', history: 'hiBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus'},
         {label: '1st Tryout', const: 'constFirstTryEmWeek', keyPoint: 'keyFirstTryEmWeek', history: 'hiFirstTryEmWeek', isChange: 'keyFirstTryEmStatus'},

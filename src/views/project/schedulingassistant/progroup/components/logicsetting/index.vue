@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 10:57:15
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 16:09:46
+ * @LastEditTime: 2021-08-05 15:14:25
  * @Description: 算法配置弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\logicsetting\index.vue
 -->

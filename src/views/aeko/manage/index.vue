@@ -155,7 +155,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
-import { getCarTypePro } from '@/api/designate/nomination'
+import {user as configUser } from '@/config'
 import {
   getManageList,
   searchAekoStatus,
@@ -163,10 +163,12 @@ import {
   searchCoverStatus,
   uploadFiles,
   deleteAeko,
-  getSearchCartype,
+  searchCartypeProject,
   importAeko,
   templateDowmload,
   downloadAeko,
+  searchCommodity,
+  searchLinie,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
@@ -198,15 +200,17 @@ export default {
           aekoStatusList:[],
           coverStatusList:[],
           cartypeCode:'',
+          linieDeptNum:'',
         },
         selectOptions:{
           'brand':[],
           'aekoStatusList':[],
-          'coverStatusList':[]
+          'coverStatusList':[],
+          'linieDeptNum':[],
+          'cartypeCode':[],
+          'buyerName':[],
         },
-        tableListData:[
-          // {'aekoCode':'AE19221','aekoStatus':'已导⼊','coverStatus':'待表态','tcmResult':'T-go','createDate':'2021-03-01','deadLine':'2021-03-16','frozenDate':'2021-02-01'},
-        ],
+        tableListData:[],
         tableTitle:tableTitle,
         loading:false,
         revokeVisible:false,
@@ -233,6 +237,7 @@ export default {
           aekoStatusList:[],
           coverStatusList:[],
           cartypeCode:'',
+          linieDeptNum:'',
         };
         this.getList();
       },
@@ -292,6 +297,9 @@ export default {
         searchBrand().then((res)=>{
           const {code,data=[]} = res;
           if(code ==200 && data){
+             data.map((item)=>{
+              item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
+            })
             this.selectOptions.brand = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -308,28 +316,45 @@ export default {
         })
 
         // 车型项目
-        getCarTypePro().then((res)=>{
+        searchCartypeProject().then((res)=>{
           const {code,data} = res;
           if(code ==200 ){
-            (data.data).map((item)=>{
+            data.map((item)=>{
               item.desc = item.name;
             })
-            this.selectOptions.cartypeCode = data.data;
+            this.selectOptions.cartypeCode = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
 
-        // Promise.all([searchAekoStatus(),searchBrand(),searchCoverStatus()]).then((res)=>{
-        //   this.selectOptions={
-        //     'aekoStatus':res[0].data || [], // aeko状态
-        //     'brand':res[1].data || [], //品牌
-        //     'coverStatus':res[2].data || [], //封面状态
-        //   }
-        //   console.log(res,'getSearchList')
-        // }).catch((err)=>{
-        //   console.log(err);
-        // })
+        // 科室
+        searchCommodity().then((res)=>{
+          const {code,data} = res;
+          if(code ==200 ){
+            data.map((item)=>{
+              item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+              item.code = item.deptNum;
+            })
+            this.selectOptions.linieDeptNum = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+
+        // LINIE
+        searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+          const {code,data} = res;
+          if(code ==200 ){
+            data.map((item)=>{
+              item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+              item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+            })
+            this.selectOptions.buyerName = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
       },
 
       // 跳转详情页
