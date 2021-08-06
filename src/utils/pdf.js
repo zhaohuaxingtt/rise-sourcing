@@ -1,5 +1,6 @@
 import html2canvas from 'html2canvas';
 import JsPDF from 'jspdf';
+import {uploadFile} from '@/api/file/upload';
 
 /**
  * @param  ele          要生成 pdf 的DOM元素（容器）
@@ -93,3 +94,36 @@ export function dataURLtoFile(dataurl, filename) {
   //转换成成blob对象
   //return new Blob([u8arr],{type:mime});
 }
+
+// pdf相关处理
+export const downloadPdfMixins = {
+  methods: {
+    getDownloadFileAndExportPdf({domId, pdfName, callBack}) {
+      return new Promise((resolve => {
+        downloadPDF({
+          idEle: domId,
+          pdfName: pdfName,
+          callback: async (pdf, pdfName) => {
+            const time = new Date().getTime();
+            const filename = pdfName + time + '.pdf';
+            const pdfFile = pdf.output('datauristring');
+            const blob = dataURLtoFile(pdfFile, filename);
+            const formData = new FormData();
+            formData.append('multipartFile', blob);
+            formData.append('applicationName', 'rise');
+            const res = await uploadFile(formData);
+            const data = res.data[0];
+            const req = {
+              downloadName: data.fileName,
+              downloadUrl: data.filePath,
+            };
+            resolve(req);
+            if (callBack) {
+              callBack();
+            }
+          },
+        });
+      }));
+    },
+  },
+};

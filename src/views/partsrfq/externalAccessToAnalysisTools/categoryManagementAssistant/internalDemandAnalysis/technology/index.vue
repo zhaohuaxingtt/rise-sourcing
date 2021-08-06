@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-03 16:02:53
+ * @LastEditTime: 2021-08-05 15:49:05
  * @LastEditors: 舒杰
  * @Description: 技术路线
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\technology\index.vue
@@ -10,7 +10,16 @@
 	<iCard :title='language("JISHULUXIAN","技术路线")' class="margin-top20">
 		<template slot="header-control">
 			<iButton>{{ language("XIAZAI", "下载") }}</iButton>
-			<iButton>{{ language("SHUANGCHUAN", "上传") }}</iButton>
+			<el-upload
+				class="upload"
+				:show-file-list="false"
+				name="multipartFile"
+				with-credentials
+				:on-success="handleAvatarSuccess"
+				:http-request="myUpload"
+				accept=".pdf">	
+				<iButton :loading="uploadButtonLoading">{{ language("SHUANGCHUAN", "上传") }}</iButton>
+			</el-upload>
 			<iButton @click="deleted">{{ language("SHANCHU", "删除") }}</iButton>
 			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 		</template>
@@ -39,10 +48,12 @@
 	import tableList from '@/views/partsrfq/externalAccessToAnalysisTools/components/tableList.vue';
 	import {specialToolsTitle} from './data';
 	import {pageMixins} from '@/utils/pageMixins';
-	import {reportList} from "@/api/partsrfq/reportList";
+	import {technologyFile,technologyAdd,technologyDelete} from "@/api/categoryManagementAssistant/internalDemandAnalysis/technology";
 	import {downloadFile} from '@/api/file';
+	import {uploadFile} from '@/api/file/upload';
+	import resultMessageMixin from '@/utils/resultMessageMixin';
 	export default{
-		mixins: [pageMixins],
+		mixins: [pageMixins,resultMessageMixin],
 		components:{
 			iCard,tableList,iPagination,iButton,
 		},
@@ -60,6 +71,7 @@
 				tableTitle:specialToolsTitle,
 				tableLoading:false,
 				selectData:[],
+				uploadButtonLoading:false,
 			}
 		},
 		created() {
@@ -72,11 +84,11 @@
 			getTableList(){
 				this.tableLoading=true
 				let data={
-					...this.searchCriteria,
+					categoryCode:"",
 					pageNo:this.page.currPage,
-					pageSize:this.page.pageSize,
+					pageSize:this.page.pageSize
 				}
-				reportList(data).then(res=>{
+				technologyFile(data).then(res=>{
 					if (res.data) {
 						this.page.currPage = res.pageNum;
 						this.page.totalCount = res.total;
@@ -87,14 +99,42 @@
 			},
 			//删除
 			deleted(){
-				iMessageBox(this.language('QRSCXZWJ','确认删除选中文件'),this.language('TISHI','提示')).then(()=>{
-					
-				}).catch(()=>{
+				if(this.selectData.length>0){
+					iMessageBox(this.language('QRSCXZWJ','确认删除选中文件'),this.language('TISHI','提示')).then(()=>{
+						let idList=this.selectData.map(res=>{
+							return res.id
+						})
+						technologyDelete({idList:idList}).then(res=>{
+							this.resultMessage(res,()=>{
+								this.getTableList()
+							})
+						})
+					}).catch(()=>{
 
-				})
+					})
+				}
 			},
 			openPdf(url){
 				window.open(url)
+			},
+			//上传
+			async myUpload(content) {
+				const loading = this.$loading({
+					lock: true,
+				});
+				const formData = new FormData();
+				formData.append('multipartFile', content.file);
+				formData.append('applicationName', 'rise');
+				const res = await uploadFile(formData);
+				const result=await technologyAdd({
+					fileName:res.data[0].fileName,
+					fileUrl:res.data[0].filePath,
+					categoryCode:""
+				})
+				loading.close()
+				this.resultMessage(result,()=>{
+					this.getTableList()
+				})
 			},
 			// 文件下载
 			down(){
@@ -121,4 +161,8 @@
 </script>
 
 <style lang="scss">
+	.upload{
+		display: inline-block;
+		margin:0 15px;
+	}
 </style>

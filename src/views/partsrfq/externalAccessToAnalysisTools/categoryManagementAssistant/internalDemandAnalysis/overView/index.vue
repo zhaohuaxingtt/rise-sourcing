@@ -1,10 +1,10 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-04 17:53:05
+ * @LastEditTime: 2021-08-05 17:18:55
  * @LastEditors: 舒杰
  * @Description: 内部需求分析概览
- * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overview\index.vue
+ * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
 <template>
    <el-row gutter="20">
@@ -35,15 +35,18 @@ export default {
            {
               name:"产量总览",
               key:"CAILIANGZONGLAN",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis02.png")
+              image:require("@/assets/images/partRfq/internalDemandAnalysis02.png"),
+              url:"/sourcing/categoryManagementAssistant/internalDemandAnalysis/output"
            },{
               name:"批量供应商概览",
               key:"PLGYSGL",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis03.png")
+              image:require("@/assets/images/partRfq/internalDemandAnalysis03.png"),
+              url:"/sourcing/categoryManagementAssistant/internalDemandAnalysis/batchSupplier"
            },{
               name:"车型价格对比",
               key:"CHEXINGJIAGEDUIBI",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis04.png")
+              image:require("@/assets/images/partRfq/internalDemandAnalysis04.png"),
+              url:"/sourcing/categoryManagementAssistant/internalDemandAnalysis/carPrice"
            },{
               name:"EKL",
               key:"EKL",

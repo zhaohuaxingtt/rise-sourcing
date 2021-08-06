@@ -5,8 +5,11 @@
         width="400"
         trigger="hover"
         :content="children.context">
-      <div class="remark" v-if="children.context && !editStatus" slot="reference">
-        <div class="textBox">{{ children.context }}</div>
+      <div
+          :class="{'remark': !exportStatus, 'remarkExport': exportStatus}"
+          v-if="children.context && !editStatus"
+          slot="reference">
+        <div :class="{'textBox': !exportStatus, 'textBoxExport': exportStatus}">{{ children.context }}</div>
       </div>
     </el-popover>
   </div>
@@ -25,12 +28,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    exportStatus: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
 .remark {
+  margin-top: 10px;
   height: 55px;
   background: #F8F8FA;
   border-radius: 5px;
@@ -44,6 +52,21 @@ export default {
     word-wrap: break-word; //中文换行
     word-break: break-all; //英文换行
     height: 40px;
+    font-size: 14px;
+    line-height: 16px;
+    color: #8C98AC;
+    padding: 10px 24px;
+  }
+}
+
+.remarkExport {
+  margin-top: 10px;
+  background: #F8F8FA;
+  border-radius: 5px;
+
+  .textBoxExport {
+    word-wrap: break-word; //中文换行
+    word-break: break-all; //英文换行
     font-size: 14px;
     line-height: 16px;
     color: #8C98AC;
