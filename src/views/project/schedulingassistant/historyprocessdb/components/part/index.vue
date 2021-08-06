@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 18:52:50
+ * @LastEditTime: 2021-08-06 09:34:15
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -14,7 +14,7 @@
         <span class="font18 font-weight">{{language('NIHEJINDU', '拟合进度')}}</span>
         <div class="floatright">
           <!--------------------拟合进度按钮----------------------------------->
-          <iButton @click="showProgress" >{{language('NIHEJINDU','拟合进度')}}</iButton>
+          <iButton @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
           <!--------------------配置显示字段按钮----------------------------------->
           <iButton @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
           <!--------------------导出按钮----------------------------------->
@@ -29,7 +29,7 @@
         <span class="font18 font-weight">{{language('PIPEILINGJIANHAOLISHIJINDU', '匹配零件号历史进度')}}</span>
         <div class="floatright" v-if="!isShowProgress">
           <!--------------------拟合进度按钮----------------------------------->
-          <iButton @click="showProgress" >{{language('NIHEJINDU','拟合进度')}}</iButton>
+          <iButton @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
           <!--------------------配置显示字段按钮----------------------------------->
           <iButton @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
           <!--------------------导出按钮----------------------------------->
@@ -160,8 +160,20 @@ export default {
               gridField: item.props
             }
           }),
-          fittingProgressList: this.selectRowFit,
-          partHistoryProgressVOList: this.selectRowPart,
+          fittingProgressList: this.selectRowFit.map(item => {
+            const returnItem = {}
+            this.partTableTitle.forEach(element => {
+              returnItem[element.props] = item[element.props]
+            })
+            return returnItem
+          }),
+          partHistoryProgressVOList: this.selectRowPart.map(item => {
+            const returnItem = {}
+            this.partTableTitle.forEach(element => {
+              returnItem[element.props] = item[element.props]
+            })
+            return returnItem
+          }),
           partsHistoryProgressDTO: this.isShowProgress ? {
             ...this.searchParams,
             ...this.logicData,
@@ -307,5 +319,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.withBorder {
+  border: 2px solid #1763F7;
+}
 </style>
