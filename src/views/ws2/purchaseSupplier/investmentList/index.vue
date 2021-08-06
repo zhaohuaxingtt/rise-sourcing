@@ -12,7 +12,7 @@
     >
       <el-form>
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput type="textarea"  v-model.trim="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
+          <iInput v-model.trim="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
         </el-form-item>
         <el-form-item :label="language('LK_CHEXINGXIANGMU', '车型项目')">
           <iSelect
