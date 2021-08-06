@@ -155,7 +155,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
-// import { getCarTypePro } from '@/api/designate/nomination'
+import {user as configUser } from '@/config'
 import {
   getManageList,
   searchAekoStatus,
@@ -168,6 +168,7 @@ import {
   templateDowmload,
   downloadAeko,
   searchCommodity,
+  searchLinie,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
@@ -207,6 +208,7 @@ export default {
           'coverStatusList':[],
           'linieDeptNum':[],
           'cartypeCode':[],
+          'buyerName':[],
         },
         tableListData:[],
         tableTitle:tableTitle,
@@ -335,6 +337,20 @@ export default {
               item.code = item.deptNum;
             })
             this.selectOptions.linieDeptNum = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+
+        // LINIE
+        searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+          const {code,data} = res;
+          if(code ==200 ){
+            data.map((item)=>{
+              item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+              item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+            })
+            this.selectOptions.buyerName = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }

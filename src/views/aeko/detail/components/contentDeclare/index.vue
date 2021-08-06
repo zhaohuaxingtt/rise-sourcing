@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-05 18:04:45
+ * @LastEditTime: 2021-08-06 14:37:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -211,7 +211,7 @@
           :total="page.totalCount" />
       </div>
     </iCard>
-    <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" />
+    <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" @update="init" />
   </div>
 </template>
 
@@ -223,8 +223,8 @@ import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableT
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
 import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent, judgeRight } from "@/api/aeko/detail"
-import { getCarTypePro } from "@/api/designate/nomination"
 import { getDictByCode } from "@/api/dictionary"
+import { searchCartypeProject } from "@/api/aeko/manage"
 import { cloneDeep } from "lodash"
 
 const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
@@ -263,8 +263,20 @@ export default {
     };
   },
   created() {
-    this.getCarTypePro()
+    this.searchCartypeProject()
     this.getDictByCode()
+
+    if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+      try {
+        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+
+        this.form = aekoConatentDeclareParams.form
+        this.page.currPage = this.form.currPage
+        this.page.pageSize = this.form.pageSize
+      } catch(e) {
+        console.error(e)
+      }
+    }
   },
   filters: {
     isReferenceFilter(value) {
@@ -272,8 +284,8 @@ export default {
     }
   },
   methods: {
-    getCarTypePro() {
-      getCarTypePro()
+    searchCartypeProject() {
+      searchCartypeProject()
       .then(res => {
         if (res.code == 200) {
           this.carTypeProjectOptions = 
@@ -324,8 +336,7 @@ export default {
       
       getAekoLiniePartInfo({
         ...this.form,
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId || 
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
         current: this.page.currPage,
@@ -385,6 +396,13 @@ export default {
                 objectAekoPartId: row.objectAekoPartId
               }
             })
+          
+            sessionStorage.setItem("aekoConatentDeclareParams", JSON.stringify({
+              form: this.form,
+              requirementAekoId: this.aekoInfo.requirementAekoId,
+              currPage: this.page.currPage,
+              pageSize: this.page.pageSize
+            }))
           } else {
             iMessage.error(res.data[0].describe)   
           }
@@ -431,8 +449,7 @@ export default {
       this.declareResetLoading = true
 
       patchAekoReset({
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
       })
       .then(res => {
@@ -476,8 +493,7 @@ export default {
       this.submitLoading = true
 
       patchAekoContent({
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
       })
       .then(res => {

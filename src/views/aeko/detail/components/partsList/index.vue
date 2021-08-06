@@ -15,8 +15,8 @@
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
             :label="language(item.labelKey,item.label)"  
             >
-                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')" @change="handleMultipleChange($event, item.props)">
-                    <el-option value="" :label="language('all','全部')"></el-option>
+                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props)">
+                    <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                         v-for="item in selectOptions[item.selectOption] || []"
                         :key="item.code"
@@ -112,8 +112,10 @@ import {
 import {
     searchBrand,
     searchCartypeProject,
+    searchLinie,
 } from '@/api/aeko/manage'
 import { cloneDeep } from "lodash"
+import {user as configUser } from '@/config'
 export default {
     name:'partsList',
     mixins: [pageMixins],
@@ -174,7 +176,10 @@ export default {
                 brand:'',
                 cartypeCode:[],
             },
-            selectOptions:{},
+            selectOptions:{
+                cartypeCode:[],
+                buyerName:[],
+            },
             selectItems:[],
             loading:false,
             tableListData:[ ],
@@ -275,13 +280,28 @@ export default {
             })
             //品牌
             searchBrand().then((res)=>{
-            const {code,data=[]} = res;
-            if(code ==200 && data){
-                this.selectOptions.brand = data;
-            }else{
-                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-            }
+                const {code,data=[]} = res;
+                if(code ==200 && data){
+                    this.selectOptions.brand = data;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
             })
+
+            // LINIE
+            searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+                const {code,data} = res;
+                if(code ==200 ){
+                    data.map((item)=>{
+                    item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                    item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                    })
+                    this.selectOptions.buyerName = data;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            })
+
         },
         // 删除零件
         deleteParts(){

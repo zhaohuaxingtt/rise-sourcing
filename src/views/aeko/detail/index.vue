@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-05 17:55:17
+ * @LastEditTime: 2021-08-06 14:14:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="aekodetail">
     <div class="header flex-between-center margin-bottom20">
-      <h2>AEKO号：AE19221</h2>
+      <h2>AEKO号：{{ aekoInfo.aekoCode }}</h2>
       <div>
         <iButton>AEKO详情</iButton>
         <logButton class="margin-left20" />
