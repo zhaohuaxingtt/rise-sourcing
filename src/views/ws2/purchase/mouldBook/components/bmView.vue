@@ -13,7 +13,7 @@
       <el-form>
 
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput type="textarea" clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model.trim="form['behalfPartsNum']" ></iInput>
+          <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model.trim="form['behalfPartsNum']" ></iInput>
         </el-form-item>
 
         <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')">
@@ -354,11 +354,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.giSearch{
-  ::v-deep .el-textarea__inner{
-    height: 35px;
-  }
-}
 .multipleSelect{
   ::v-deep .el-tag{
     max-width: calc(100% - 65px);
