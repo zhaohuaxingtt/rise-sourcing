@@ -32,7 +32,7 @@
         <!-- 按钮区域 -->
         <template v-slot:header-control>
             <div v-if="isAekoManager || isCommodityCoordinator">
-                <iButton @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
+                <iButton v-if="isAekoManager" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton v-if="isCommodityCoordinator" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
                 <iButton>{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
                 <iButton :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
@@ -53,11 +53,11 @@
         <!-- 科室 -->
         <!-- 实际分配科室有就显示实际科室，否则就显示预设科室  表示科室是预设的 -->
         <template #linieDeptName="scoped">
-            <span :class="!scoped.row.linieDeptName ? 'isPreset' : '' ">{{scoped.row.linieDeptName || scoped.row.refferenceSmt}}</span>
+            <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptName || scoped.row.refferenceSmt}}</span>
         </template>
         <!-- linie -->
         <template #buyerName="scoped">
-            <span :class="!scoped.row.buyerName ? 'isPreset' : '' ">{{scoped.row.buyerName || scoped.row.refferenceByuerName}}</span>
+            <span :class="!scoped.row.buyerId ? 'isPreset' : '' ">{{scoped.row.buyerName || scoped.row.refferenceByuerName}}</span>
         </template>
         <!-- 变更类型 -->
         <template #changeType="scoped">
@@ -65,7 +65,7 @@
         </template>
         <!-- 操作 -->
         <template #operate="scoped">
-            <span v-if="!scoped.row.linieDeptName" class="link-underline" @click="assign(scoped.row)">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
+            <span v-if="!scoped.row.linieDeptNum" class="link-underline" @click="assign(scoped.row,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
         </template>
 
         </tableList>
@@ -86,7 +86,7 @@
 
       </iCard>
       <!-- 分配科室 -->
-      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign"/>
+      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId"/>
   </div>
 </template>
 
@@ -336,6 +336,12 @@ export default {
                 if(!selectItems.length){
                     iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
                 }else{
+                    // 判断勾选项是否包含无预设科室的
+                    const arr = selectItems.filter((item)=>item.linieDeptNum);
+                    if(arr.length){
+                        const str = arr.map((item)=>item.partNum).toString();
+                        return iMessage.warn(str+this.language('LK_AEKO_LINGJIANWUYUSHEKESHIQINGCHONGXINXUANZE','零件无预设科室，请重新选择!'))
+                    }
                     // 判断是否是单一分派
                     if(selectItems.length == 1){
                         this.singleAssign = selectItems;
