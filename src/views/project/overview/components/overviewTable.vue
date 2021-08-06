@@ -2,18 +2,24 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-30 19:06:06
+ * @LastEditTime: 2021-08-06 11:24:41
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
 
 <template>
   <div class="overviewTable" v-loading="tableLoading">
-    <div v-for="(item, index) in tableTitle" :key="index" class="overviewTable-column">
+    <div v-for="(item, index) in tableTitle" :key="index" class="overviewTable-column" >
+      <!---------------------------------------------------------------------->
+      <!----------                 表头                        ---------------->
+      <!---------------------------------------------------------------------->
       <div class="overviewTable-cell title">
         {{item.key ? language(item.key, item.name) : item.name}}
       </div>
       <div v-for="(dataItem, index) in tableData" :key="index" class="overviewTable-cell">
+        <!---------------------------------------------------------------------->
+        <!----------                  基础信息列                 ---------------->
+        <!---------------------------------------------------------------------->
         <div class="baiscInfo" v-if="item.props === 'basic'">
           <div class="baiscInfo-top">
             <img src="../../../../assets/images/car.png" />
@@ -32,19 +38,25 @@
             </ol>
           </div>
         </div>
+        <!---------------------------------------------------------------------->
+        <!----------                  操作列                 -------------------->
+        <!---------------------------------------------------------------------->
         <div v-else-if="item.props === 'caozuo'" class="caozuo">
           <div class="cursor" @click="openAssistant(dataItem)">
             <icon symbol name="icontiaozhuanpaicheng"  class="margin-right10"></icon>
             <span class="openLinkText">{{language('TIAOZHUANPAICHENG','跳转排程')}}</span>
           </div>
-          <div class="cursor margin-top30">
+          <div class="cursor margin-top30" @click="openMonitoring(dataItem)">
             <icon symbol name="icontiaozhuanjiankong"  class="margin-right10"></icon>
             <span class="openLinkText">{{language('TIAOZHUANJIANKONG','跳转监控')}}</span>
           </div>
         </div>
+        <!---------------------------------------------------------------------->
+        <!----------                年份列-节点渲染               ---------------->
+        <!---------------------------------------------------------------------->
         <div v-else-if="item.type === 'year'" class="yearCell">
           <div v-for="indexItem in [1,2,3,4]" :key="indexItem" class="yearCell-item">
-            <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" class="node">
+            <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" :class="`node ${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1 && 'small-node'+getNodeList(item.props, indexItem, dataItem.nodeList).length}`">
               <!-- 已完成 -->
               <icon v-if="nodeItem.status == 1" symbol name="icondingdianguanli-yiwancheng"  class="step-icon"></icon> 
               <!-- 正在进行中 -->
@@ -53,6 +65,13 @@
               <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
               <span class="node-title">{{nodeItem.label}}</span>
               <span class="node-week">KW{{nodeItem.week}}</span>
+              <template v-if="nodeItem.withLine">
+                <icon v-if="nodeItem.line.lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="short-between-icon"></icon>
+                <!-- 已完成 -->
+                <icon v-else-if="nodeItem.line.lineStatus == 1" symbol name="iconchanpinzupaicheng_yiwancheng" class="short-between-icon"></icon>
+                <!-- 未完成 -->
+                <icon v-else symbol name="iconchanpinzupaicheng_weijinhang" class="short-between-icon"></icon>
+              </template>
             </div>
             <div v-if="getLineNode(item.props, indexItem, dataItem.nodeList)" class="node nodeLine">
               <icon v-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="step-between-icon"></icon>
@@ -65,8 +84,17 @@
             </div>
           </div>
         </div>
+        <!---------------------------------------------------------------------->
+        <!----------                  常规列                     ---------------->
+        <!---------------------------------------------------------------------->
         <div v-else class="nomal-cell">{{dataItem[item.props]}}</div>
       </div>
+    </div>
+    <!---------------------------------------------------------------------->
+    <!----------                  暂无数据                      ------------->
+    <!---------------------------------------------------------------------->
+    <div class="noData" v-if="tableData.length < 1">
+      {{language('ZANWUSHUJU','暂无数据')}}
     </div>
   </div>
 </template>
@@ -100,38 +128,78 @@ export default {
     }
   },
   methods: {
+    /**
+     * @Description: 跳转排程
+     * @Author: Luoshuang
+     * @param {*} row
+     * @return {*}
+     */    
     openAssistant(row) {
       const router =  this.$router.resolve({path: '/projectscheassistant/progroupscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
       window.open(router.href,'_blank')
     },
+    /**
+     * @Description: 跳转监控
+     * @Author: Luoshuang
+     * @param {*} row
+     * @return {*}
+     */    
+    openMonitoring(row) {
+      const router =  this.$router.resolve({path: '/projectprogressmonitoring', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      window.open(router.href,'_blank')
+    },
+    /**
+     * @Description: 获取上一个最近节点状态
+     * @Author: Luoshuang
+     * @param {*} year
+     * @param {*} season
+     * @param {*} nodeList
+     * @return {*}
+     */    
     getLastStatus(year, season, nodeList) {
-      const sameYearLastNode = nodeList.filter(item => item.year == year && item.season < season)
+      const sameYearLastNode = nodeList.filter(item => item.year === year && item.season < season)
       if (sameYearLastNode.length > 0) {
         return sameYearLastNode[sameYearLastNode.length - 1].status
       }
-      if (year == moment().year()) {
+      if (year === moment().year()) {
         return -1
       }
-      const nodeListBeforeYear = nodeList.filter(item => item.year < year)
+      const nodeListBeforeYear = nodeList.filter(item => item.year < year && item.year > moment().year() - 1)
       if (nodeListBeforeYear.length > 0) {
         return nodeListBeforeYear[nodeListBeforeYear.length - 1].status
       }
       return -1
     },
+    /**
+     * @Description: 获取下一个最近节点状态
+     * @Author: Luoshuang
+     * @param {*} year
+     * @param {*} season
+     * @param {*} nodeList
+     * @return {*}
+     */    
     getNextStatus(year, season, nodeList) {
-      const sameYearNextNode = nodeList.filter(item => item.year == year && item.season > season)
+      const sameYearNextNode = nodeList.filter(item => item.year === year && item.season > season)
       if (sameYearNextNode.length > 0) {
         return sameYearNextNode[0].status
       }
-      if (year == moment().year() + 3) {
+      if (year === moment().year() + 3) {
         return -1
       }
-      const nodeListNextYear = nodeList.filter(item => item.year > year)
+      const nodeListNextYear = nodeList.filter(item => item.year > year && item.year < moment().year() + 4)
       if (nodeListNextYear.length > 0) {
         return nodeListNextYear[0].status
       }
       return -1
     },
+    /**
+     * @Description: 获取连接线节点
+     * @Author: Luoshuang
+     * @param {*} year
+     * @param {*} season
+     * @param {*} nodeList
+     * @return {*}
+     */    
     getLineNode(year, season, nodeList) {
       if (!nodeList) {
         return null
@@ -157,23 +225,47 @@ export default {
               lineStatus: 2
             }
           }
+          // return {
+          //     lineStatus: 2
+          //   }
         }
         return null
       }
     },
+    getNextSeasonStatus(year, season, nodeList) {
+      if (season == 4) {
+        const nextNodeList = nodeList.filter(item => item.year === year + 1 && item.season == 1)
+        if (nextNodeList.length > 0) {
+          return nextNodeList[0].status
+        }
+      } else {
+        const nextNodeList = nodeList.filter(item => item.year === year && item.season == season + 1)
+        if (nextNodeList.length > 0) {
+          return nextNodeList[0].status
+        }
+      }
+      return -1
+    },
+    /**
+     * @Description: 根据年份和季节获取节点列表
+     * @Author: Luoshuang
+     * @param {*} year
+     * @param {*} season
+     * @param {*} nodeList 原始节点列表
+     * @return {*}
+     */    
     getNodeList(year, season, nodeList) {
       if (!nodeList) {
         return []
       }
-      return nodeList.filter(item => {
-        if (item.year == year) {
-          if (season < 4) {
-            return item.week > (season - 1) * 13 && item.week < (season * 13 + 1)
-          } else {
-            return item.week > (season - 1) * 13
+      return nodeList.filter(item => item.year === year && item.season === season).map(item => {
+        const nextSeasonStatus = this.getNextSeasonStatus(year, season, nodeList)
+        return {
+          ...item,
+          withLine: nextSeasonStatus != -1,
+          line: {
+            lineStatus: item.status === 2 || item.status === 3 ? 3 : nextSeasonStatus
           }
-        } else {
-          return false
         }
       })
     }
@@ -185,9 +277,23 @@ export default {
 .overviewTable {
   display: flex;
   overflow: auto;
+  position: relative;
   &-column {
     flex-shrink: 0;
-    min-width: 130px;
+    width: 136px;
+    min-height: 400px;
+    &:first-child {
+      width: auto;
+      min-width: 264px;
+    }
+    &:nth-child(2),&:nth-child(3),&:nth-child(4),&:nth-child(5) {
+      width: auto;
+      min-width: 240px;
+    }
+    &:nth-child(8) {
+      width: auto;
+      min-width: 160px;
+    }
     .overviewTable-cell {
       height: 200px;
       background-color: rgba(236, 239, 245, 0.2);
@@ -200,10 +306,10 @@ export default {
         background-color: rgba(231, 234, 240, 1);
         font-size: 16px;
         font-weight: bold;
-        padding: 9px 20px;
+        padding: 9px 0;
       }
       .nomal-cell {
-        padding: 0 30px;
+        padding: 0 28px;
         font-size: 14px;
       }
       .caozuo {
@@ -250,7 +356,7 @@ export default {
           flex-shrink: 0;
           width: 60px;
           display: flex;
-          flex-direction: column;
+          // flex-direction: column;
           align-items: center;
           justify-content: center;
           .node {
@@ -258,6 +364,7 @@ export default {
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            position: relative;
             .step-icon {
               width: 36px;
               height: 36px;
@@ -271,6 +378,30 @@ export default {
               font-size: 14px;
               color: rgba(95, 104, 121, 1);
               margin-top: 8px;
+            }
+            .short-between-icon {
+              position: absolute;
+              width: 20px;
+              right: -20px;
+              top: 12px;
+            }
+          }
+          @for $i from 1 through 5 {
+            .small-node#{$i} {
+              .step-icon {
+                width: #{36/$i}px;
+                height: #{36/$i}px;
+              }
+              .node-title {
+                font-size: 12px;
+              }
+              .node-week {
+                font-size: 10px;
+              }
+              .short-between-icon {
+                width: #{20/$i}px;
+                right: -#{20/$i}px;
+              }
             }
           }
           .nodeLine {
@@ -290,6 +421,15 @@ export default {
   .openLinkText {
     color:$color-blue;
     text-decoration: underline;
+  }
+  .noData {
+    height: 200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    color: #707070;
   }
 }
 </style>

@@ -1,9 +1,9 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-22 18:47:45
- * @LastEditTime: 2021-07-22 10:56:12
- * @LastEditors: zbin
+ * @LastEditTime: 2021-08-05 18:09:26
+ * @LastEditTime: 2021-07-21 17:57:58
+ * @LastEditors: Luoshuang
  * @Description: 公共utils部分
  * @FilePath: \front-web\src\utils\index.js
  */
@@ -206,10 +206,10 @@ router.afterEach(() => {
  * 2.剩下的零件只要出现一种，都要出现当前这个类型的全集：【FS零件，GS零件，COP零件，SPECIAL零件，DB零件，涨价，FS common sourcing，GS common sourcing，扩产能】
  * 3.如果当前当如果当前角色仅为扩产能角色则返回：【扩产能】
  * 4.如果单项选择中 存在 【一次性采购，DB一次性采购】 则这两个要成对出现
- * @param {*} projectList - 徐睿数据字典返回的全量options
- * @param {*} currentProjectType - 当前的零件采购项目。
+ * @param {*} projectList          徐睿数据字典返回的全量options
+ * @param {*} currentProjectType   当前的零件采购项目。
  * @return {*}
- */
+ *********************************************************************************************************************************************/
 export function filterProjectList(oldProjectList,currentProjectType){
   try {
     let newProjectLists = []
@@ -273,4 +273,43 @@ export function deleteThousands (number) {
   number = number.toString();
   number = number.replace(/,/gi, '');
   return number;
+}
+/*********************************************************************************************************************************************
+ * @description: 业务场景：用户在满足当前角色权限的情况下，业务不满足他去操作当前的组件，列如：仅零件号变更的零件采购项目，rfq，定点管理等...不需要展示。但是同一个
+ * 控件已经定义了唯一key，为了复用当前key所衍生的业务权限判断方法，属于增量修改。
+ * 1.当前方法在v-permission中去调用，会结合router中的parmars(businessKey)来协同控制。
+ * 2.businessKey代表当前业务的类型，比如仅零件号变更，在config中会存在一份黑名单。此黑名单需要开发结合业务去维护，无法做到自动化。
+ * 3.config businessBlackKey.js 中将会维护所有业务存在的黑名单key.
+ * 4.如果以后业务黑名单由后台接管，提前做出业务key的提取，方便迁移。
+ * @param {*} currentPermissinKey     当前控件的permissionKey
+ * @param {*} currentProjectParmars   当前的业务ID
+ * @return {*} Boolean
+ ********************************************************************************************************************************************/
+import {businessKey} from '@/config/businessBlackKey'
+export function businessPermission(currentPermissinKey,currentProjectParmars){
+  try {
+    const businessKeyQuery = currentProjectParmars.businessKey;
+    if(businessKey[businessKeyQuery].find(i=>i == currentPermissinKey)) return true;
+  } catch (error) {
+    return false
+  }
+}
+/*********************************************************************************************************************************************
+ * @description: 转换所有零件采购项目黑名单，白名单方法。对于某个业务场景下的业务白名单KEY 相对于相同业务场景的其他类型就是黑名单KEY. 所以需要构造一份正向和反向的
+ * KEY出来。
+ * @param {*} currentKeyBusinessKey   当前业务key
+ * @param {*} whiteList               当前业务key所对应的白名单
+ * @param {*} blackList               当前业务场景需要对应的黑名单
+ * @param {*} allBusinessKey          所有业务场景值
+ * @param {*} config                  需要改变的原始对象
+ * @return {*}
+ ********************************************************************************************************************************************/
+export function translateBackToWhite(currentKeyBusinessKey,whiteList,blackList,allBusinessKey,config){
+  Object.keys(allBusinessKey).forEach(i=>{
+    if(allBusinessKey[i] == currentKeyBusinessKey){
+      config[currentKeyBusinessKey] = [...(config[currentKeyBusinessKey] || []),...blackList]
+    }else{
+      config[allBusinessKey[i]] = [...(config[allBusinessKey[i]] || []),...whiteList]
+    }
+  })
 }
