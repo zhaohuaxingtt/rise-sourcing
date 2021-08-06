@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-05 17:55:17
+ * @LastEditTime: 2021-08-06 16:45:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -96,9 +96,9 @@ export default {
         {label:'截⽌⽇期',labelKey:'LK_AEKOJIEZHIRIQI',props:'deadLine'},
       ],
       tabs: [
+        { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", components: ["partsList"] },
         { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", components: [ "contentDeclare" ] },
         { label: "封⾯表态", name: "cover", key: "FENGMIANBIAOTAI", components: ['cover'] },
-        { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", components: ["partsList"] },
         { label: "审批附件", name: "c", key: "SHENPIFUJIAN", components: [] },
         { label: "审批记录", name: "d", key: "SHENPIFUJIAN", components: [] }
       ],
