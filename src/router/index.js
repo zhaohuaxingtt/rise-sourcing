@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-05 19:02:48
+ * @LastEditTime: 2021-08-06 15:19:49
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -23,6 +23,7 @@ import projectRoutes from './modules/project'
 import supplierkpiRoutes from './modules/supplierkpi'
 import categoryManagementAssistant from './modules/categoryManagementAssistant'
 import mek from './modules/mek'
+import ws2 from './modules/ws2'
 
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
@@ -176,200 +177,6 @@ export const staticRouter = [
         component: () => import('@/views/demo/customSelect'),
       },
       /** work stream 2 组织/用户权限 */
-      {
-        path: '/tooling/modelDetails',
-        name: 'toolingModelDetails',
-        meta: {
-          title: '车型项目详情',
-        },
-        component: () => import(`@/views/ws2/baApply/details`),
-      },
-      // {
-      //     path: '/tooling/investmentAdmin',
-      //     name: 'toolingModelDetails',
-      //     redirect: '/tooling/investmentAdmin/payBlock',
-      //     meta: {
-      //         title: '模具投资付款管理员'
-      //     },
-      //     component: () => import (`@/views/ws2/investmentAdmin`),
-      //     children: [
-      //         {
-      //             path: '/tooling/investmentAdmin/payBlock',
-      //             name: 'investmentAdminPayBlock',
-      //             meta: {
-      //                 title: '付款看板'
-      //             },
-      //             component: () => import (`@/views/ws2/investmentAdmin/payBlock`),
-      //         },
-      //         {
-      //             path: '/tooling/investmentAdmin/yearlyPlan',
-      //             name: 'investmentAdminYearlyPlan',
-      //             meta: {
-      //                 title: '年度计划'
-      //             },
-      //             component: () => import (`@/views/ws2/investmentAdmin/yearlyPlan`),
-      //         },
-      //         {
-      //             path: '/tooling/investmentAdmin/monthlyPlan',
-      //             name: 'investmentAdminMonthlyPlan',
-      //             meta: {
-      //                 title: '月度计划'
-      //             },
-      //             component: () => import (`@/views/ws2/investmentAdmin/monthlyPlan`),
-      //         }
-      //     ]
-      // },
-      {
-        path: '/tooling',
-        name: 'tooling',
-        meta: {
-          title: '模具',
-        },
-        component: () => import(`@/views/ws2`),
-        children: [
-          {
-            path: '/',
-            redirect: 'budgetManagement/carTypeOverview',
-          },
-          //  付款计划制定与查看
-          {
-            path: '/tooling/investmentAdmin',
-            redirect: '/tooling/investmentAdmin/payBlock',
-          },
-          {
-            path: '/tooling/investmentAdmin/payBlock',
-            name: 'investmentAdminPayBlock',
-            meta: {
-              title: '付款看板',
-            },
-            component: () => import(`@/views/ws2/investmentAdmin/payBlock`),
-          },
-          {
-            path: '/tooling/investmentAdmin/yearlyPlan',
-            name: 'investmentAdminYearlyPlan',
-            meta: {
-              title: '年度计划',
-            },
-            component: () => import(`@/views/ws2/investmentAdmin/yearlyPlan`),
-          },
-          {
-            path: '/tooling/investmentAdmin/monthlyPlan',
-            name: 'investmentAdminMonthlyPlan',
-            meta: {
-              title: '月度计划',
-            },
-            component: () => import(`@/views/ws2/investmentAdmin/monthlyPlan`),
-          },
-          // 预算管理
-          {
-            path: '/tooling/budgetManagement',
-            redirect: 'budgetManagement/carTypeOverview',
-          },
-          {
-            path: '/tooling/budgetManagement/carTypeOverview',
-            name: 'carTypeOverview',
-            meta: {
-              title: '生成投资清单',
-            },
-            component: () =>
-              import(`@/views/ws2/budgetManagement/carTypeOverview`),
-          },
-          {
-            path: '/tooling/budgetManagement/generateInvestmentList',
-            name: 'generateInvestmentList',
-            meta: {
-              title: '生成投资清单',
-            },
-            component: () =>
-              import(`@/views/ws2/budgetManagement/generateInvestmentList`),
-          },
-          {
-            path: '/tooling/budgetManagement/investmentListJV',
-            name: 'investmentListJV',
-            meta: {
-              title: '投资清单JV',
-            },
-            component: () =>
-              import(`@/views/ws2/budgetManagement/investmentListJV`),
-          },
-          {
-            path: '/tooling/budgetManagement/investmentListCommon',
-            name: 'investmentListCommon',
-            meta: {
-              title: '投资清单Common',
-            },
-            component: () =>
-              import(`@/views/ws2/budgetManagement/investmentListCommon`),
-          },
-          {
-            path: '/tooling/budgetManagement/commonSourcing',
-            name: 'commonSourcing',
-            meta: {
-              title: 'commonSourcing',
-            },
-            component: () =>
-              import(`@/views/ws2/budgetManagement/commonSourcing/index`),
-          },
-          {
-            path: '/tooling/baApplyIndex',
-            name: 'baApplyIndex',
-            meta: {
-              title: 'BA申请',
-            },
-            component: () => import(`@/views/ws2/baApply`),
-          },
-          {
-            path: '/tooling/baApprovalIndex',
-            name: 'baApprovalIndex',
-            meta: {
-              title: 'BA审批',
-            },
-            component: () => import(`@/views/ws2/baApproval`),
-          },
-          //历史数据库
-          {
-            path: '/tooling/dataBase',
-            name: 'dataBase',
-            meta: {
-              title: '历史数据库',
-            },
-            component: () => import(`@/views/ws2/dataBase`),
-          },
-          //预算审批
-          {
-            path: '/tooling/budgetApproval',
-            name: 'budgetApproval',
-            meta: {
-              title: '预算审批',
-            },
-            component: () => import(`@/views/ws2/budgetApproval`),
-          },
-          {
-            path: '/tooling/bmApplyIndex',
-            name: 'bmApplyIndex',
-            meta: {
-              title: 'BM申请',
-            },
-            component: () => import(`@/views/ws2/bmApply`),
-          },
-          {
-            path: '/tooling/carTypeProOverview',
-            name: 'carTypeProOverview',
-            meta: {
-              title: '车型项目概览',
-            },
-            component: () => import(`@/views/ws2/investmentReport`),
-          },
-          {
-            path: '/tooling/investmentReport',
-            name: 'investmentReport',
-            meta: {
-              title: '投资报告',
-            },
-            component: () => import(`@/views/ws2/investmentReport`),
-          },
-        ],
-      },
       {
         path: '/ws3-register',
         name: '/ws3Register',
@@ -614,6 +421,8 @@ export default new VueRouter({
     ...projectRoutes,
     //品类管理助手
     ...categoryManagementAssistant,
+    //ws2
+    ...ws2,
     //MEK
     ...mek,
     ...supplierkpiRoutes

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 23:35:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 18:33:30
+ * @LastEditTime: 2021-08-05 14:56:03
  * @Description: 选择车型项目弹窗
  * @FilePath: \front-web\src\views\project\overview\components\selectcarpro\index.vue
 -->
@@ -32,7 +32,7 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <div class="tableBox">
+    <div class="tableBox padding-bottom40">
       <div class="tableBox-btn">
         <iButton @click="handleSave">{{language('BAOCUN', '保存')}}</iButton>
       </div>
@@ -104,7 +104,13 @@ export default {
         this.tableLoading = false
       })
     },
-    async getSelectCarPro(carTypeProId = '') {
+    /**
+     * @Description: 获取车型项目列表
+     * @Author: Luoshuang
+     * @param {*} carTypeProId
+     * @return {*}
+     */    
+    async getSelectCarPro(carTypeProId = this.carProject) {
       this.tableLoading = true
       try {
         const res = await getSelectCarType(carTypeProId)
@@ -122,6 +128,12 @@ export default {
         this.tableLoading = false
       }
     },
+    /**
+     * @Description: 获取车型项目下拉框数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getCarProjectOptions() {
       getCarTypePro().then(res => {
         if (res?.result) {
@@ -140,10 +152,6 @@ export default {
     clearDialog() {
       this.reasonDescription = ''
       this.$emit('changeVisible', false)
-    },
-    handleConfirm() {
-      this.saveLoading = true
-      this.$emit('handleConfirm', this.reasonDescription)
     },
     changeSaveLoading(loading) {
       this.saveLoading = loading

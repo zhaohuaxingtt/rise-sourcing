@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 17:18:50
+ * @LastEditTime: 2021-08-06 09:34:15
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -14,14 +14,14 @@
         <span class="font18 font-weight">{{language('NIHEJINDU', '拟合进度')}}</span>
         <div class="floatright">
           <!--------------------拟合进度按钮----------------------------------->
-          <iButton @click="showProgress" >{{language('NIHEJINDU','拟合进度')}}</iButton>
+          <iButton @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
           <!--------------------配置显示字段按钮----------------------------------->
           <iButton @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="$emit('handleSend')" >{{language('DAOCHU','导出')}}</iButton>
+          <iButton @click="handleExport" :loading="downloadLoading">{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
-      <tableList indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChange">
+      <tableList indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
       </tableList> 
     </template>
     <template>
@@ -29,14 +29,14 @@
         <span class="font18 font-weight">{{language('PIPEILINGJIANHAOLISHIJINDU', '匹配零件号历史进度')}}</span>
         <div class="floatright" v-if="!isShowProgress">
           <!--------------------拟合进度按钮----------------------------------->
-          <iButton @click="showProgress" >{{language('NIHEJINDU','拟合进度')}}</iButton>
+          <iButton @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
           <!--------------------配置显示字段按钮----------------------------------->
           <iButton @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="$emit('handleSend')" >{{language('DAOCHU','导出')}}</iButton>
+          <iButton @click="handleExport" :loading="downloadLoading">{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
-      <tableList indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChange">
+      <tableList indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangePart">
       </tableList> 
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
@@ -45,7 +45,7 @@
         :total="page.totalCount"
       />
     </template>
-    <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="partLogicList" :logicData="logicData" :selectOptions="selectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
+    <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="partLogicList" :logicData="logicData" :selectOptions="logicSelectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
     <showItemDialog ref="showItem" type="2" :dialogVisible="showItemVisible" @changeVisible="changeShowItem" :checkList="checkList" />
   </iCard>
 </template>
@@ -59,7 +59,7 @@ import logicSettingDialog from '@/views/project/schedulingassistant/progroup/com
 import { selectDictByKeyss } from '@/api/dictionary'
 import showItemDialog from '../showItem'
 import { cloneDeep } from 'lodash'
-import { getCondition, getFitting } from '@/api/project'
+import { getCondition, getFitting, downloadHistoryProgressFile } from '@/api/project'
 export default {
   mixins: [pageMixins],
   components: { iCard, tableList, iPagination, iButton, logicSettingDialog, showItemDialog },
@@ -92,7 +92,10 @@ export default {
         'BFIST',
         'BFSHIFOUYANWU',
         'BFYANWUYUANYIN'
-      ]
+      ],
+      selectRowFit: [],
+      selectRowPart: [],
+      downloadLoading: false
     }
   },
   computed: {
@@ -109,7 +112,7 @@ export default {
       }
     },
     partTableTitle() {
-      return partTableTitle.filter(item => !this.productColumns.includes(item.key) && (item.disabled || this.selectColumn.includes(item.props)))
+      return partTableTitle.filter(item => !this.productColumns.includes(item.key) && (item.disabled || this.selectColumn.includes(item.key)))
     },
     checkList() {
       return cloneDeep(partTableTitle).reduce((accu, item) => {
@@ -118,7 +121,7 @@ export default {
         }
         return [...accu, {
           ...item,
-          isSelect: item.disabled || this.selectColumn.includes(item.props)
+          isSelect: item.disabled || this.selectColumn.includes(item.key)
         }]
       },[])
     },
@@ -129,6 +132,64 @@ export default {
     this.init()
   },
   methods: {
+    handleSelectionChangeFit(val) {
+      this.selectRowFit = val
+    },
+    handleSelectionChangePart(val) {
+      this.selectRowPart = val
+    },
+    getCartypeName(id) {
+      const cartype = this.carProjectOptions.find(item => item.value === id)
+      if (cartype) {
+        return cartype.label
+      }
+      return ''
+    },
+    async handleExport() {
+      if (this.selectRowFit.length < 1 && this.selectRowPart.length < 1) {
+        iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
+        return
+      }
+      this.downloadLoading = true
+      try {
+        const params = {
+          experienceVOList: [],
+          fields: this.partTableTitle.map(item => {
+            return {
+              gridFieldZh: item.name,
+              gridField: item.props
+            }
+          }),
+          fittingProgressList: this.selectRowFit.map(item => {
+            const returnItem = {}
+            this.partTableTitle.forEach(element => {
+              returnItem[element.props] = item[element.props]
+            })
+            return returnItem
+          }),
+          partHistoryProgressVOList: this.selectRowPart.map(item => {
+            const returnItem = {}
+            this.partTableTitle.forEach(element => {
+              returnItem[element.props] = item[element.props]
+            })
+            return returnItem
+          }),
+          partsHistoryProgressDTO: this.isShowProgress ? {
+            ...this.searchParams,
+            ...this.logicData,
+            cartypeProName: this.getCartypeName(this.logicData.cartypeProId)
+          } : {
+            ...this.searchParams,
+            cartypeProName: this.getCartypeName(this.searchParams.cartypeProId)
+          }
+        }
+        await downloadHistoryProgressFile(params)
+        this.downloadLoading = false
+      } catch(error) {
+        this.downloadLoading = false
+      }
+      
+    },
     getTableList() {
       if (this.isShowProgress) {
         this.getFitting()
@@ -258,5 +319,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.withBorder {
+  border: 2px solid #1763F7;
+}
 </style>
