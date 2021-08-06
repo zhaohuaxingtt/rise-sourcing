@@ -102,7 +102,7 @@ export default {
       const pms = {
         isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,
         rfq: this.$store.state.rfq.rfqId,
-        materialGroup: categoryCode,
+        materialGroup: categoryName,
         spareParts: this.$store.state.rfq.spareParts,
       }
       const res = await totalOverview(pms)
