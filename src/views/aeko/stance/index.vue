@@ -115,11 +115,13 @@ import filesListDialog from '../manage/components/filesListDialog'
 import {
   getLiniePage,
 } from '@/api/aeko/stance'
-import { getCarTypePro } from '@/api/designate/nomination'
-import { getCartypeDict } from '@/api/partsrfq/home'
+// import { getCarTypePro } from '@/api/designate/nomination'
+// import { getCartypeDict } from '@/api/partsrfq/home'
 import {
   searchAekoStatus,
   searchCoverStatus,
+  searchCartypeProject,
+  getSearchCartype,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoStanceList',
@@ -224,17 +226,26 @@ export default {
        // 获取搜索框下拉数据
       getSearchList(){
         // 车型项目
-         getCarTypePro().then((res)=>{
-          console.log(res.data);
-          if(res.code ==200){
-            this.selectOptions.cartypeProjectCodeList = res.data.data || [];
+         searchCartypeProject().then((res)=>{
+          const {code,data} = res;
+          if(code ==200){
+            data.map((item)=>{
+              item.desc = item.name;
+            })
+            this.selectOptions.cartypeProjectCodeList = data || [];
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
 
         // 车型
-        getCartypeDict().then((res)=>{
-          if(res.code ==200){
-            this.selectOptions.cartypeCodeList = res.data || [];
+        getSearchCartype().then((res)=>{
+          const {code,data} = res;
+          if(code ==200){
+            data.map((item)=>{
+              item.desc = item.name;
+            })
+            this.selectOptions.cartypeCodeList = data || [];
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }

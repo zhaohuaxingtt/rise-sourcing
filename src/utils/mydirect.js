@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-22 17:44:54
+ * @LastEditTime: 2021-08-02 18:30:04
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \rise\src\utils\mydirect.js
@@ -9,17 +9,24 @@
 
 import Vue from 'vue';
 import store from '../store'
+import router from '@/router'
+import {businessPermission} from '@/utils'
+console.log(router)
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
-        inserted: function(el, binding) {  // dist
+        inserted: function(el, binding,vnode) {  // dist
             if (binding.modifiers.disabled) {
                 if (store.state.permission.whiteBtnList[binding.expression]) {
                     el.classList.add("is-disabled")
                 }
-            } else { //remov
-                if (!store.state.permission.whiteBtnList[binding.expression]) {
-                    //el.parentNode.removeChild(el)
+            } else { //remove
+                // if (!store.state.permission.whiteBtnList[binding.expression] && businessPermission(binding.expression,router.currentRoute.query)) {
+                //     el.parentNode.removeChild(el)
+                // }
+                if (businessPermission(binding.expression,router.currentRoute.query)) {
+                    //remove paneTabs
+                    el.parentNode.removeChild(el)
                 }
             }
         }

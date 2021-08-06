@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 20:00:13
- * @LastEditTime: 2021-07-27 16:03:05
+ * @LastEditTime: 2021-08-06 14:32:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\index.vue
@@ -41,11 +41,30 @@ export default {
   },
   methods: {
     handleBack() {
-      // this.$router.go(-1)
-      this.$router.replace({
-        path: "/aeko/aekodetail",
-        query: {}
-      })
+      if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+        try {
+          const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+
+          this.$router.replace({
+            path: "/aeko/aekodetail",
+            query: {
+              requirementAekoId: aekoConatentDeclareParams.requirementAekoId
+            }
+          })
+        } catch(e) {
+          console.error(e)
+
+          this.$router.replace({
+            path: "/aeko/managelist",
+            query: {}
+          })
+        }
+      } else {
+        this.$router.replace({
+          path: "/aeko/managelist",
+          query: {}
+        })
+      }
     }
   }
 }
