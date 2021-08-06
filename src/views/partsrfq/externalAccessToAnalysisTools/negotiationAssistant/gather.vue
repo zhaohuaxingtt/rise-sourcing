@@ -43,6 +43,8 @@
     <bobOverview v-else-if="pageType === 'BoB'"
                  pageType="BoB" />
     <mekOverview v-else-if="pageType==='MEK'"></mekOverview>
+    <piOverView v-else-if="pageType === 'PI'"
+                 pageType="PI"/>
     <vpAnalyseList v-else-if="pageType==='VP'" />
   </div>
 </template>
@@ -55,6 +57,7 @@ import bobOverview from '../../bob/bob';
 import mekOverview from "@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mek.vue"
 import specialAnalysisTool
   from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/specialAnalysisTool/index.vue';
+import piOverView from '@/views/partsrfq/piAnalyse/index'
 import { icon, iButton, iNavMvp } from 'rise';
 
 export default {
@@ -63,6 +66,7 @@ export default {
     bobOverview,
     vpAnalyseList,
     mekOverview,
+    piOverView,
     specialAnalysisTool, icon, iNavMvp, iButton
   },
   data () {

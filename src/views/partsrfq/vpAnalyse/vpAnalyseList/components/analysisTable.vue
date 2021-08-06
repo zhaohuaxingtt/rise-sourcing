@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-08-04 18:57:49
+ * @LastEditTime: 2021-08-06 11:12:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -28,7 +28,7 @@
                        :index="indexMethod"
                        align="center"
                        header-align="center"
-                       width="40">
+                       width="50">
       </el-table-column>
       <el-table-column align="center"
                        header-align="center"
