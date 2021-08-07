@@ -180,6 +180,15 @@ export function createParts(params){
     data: params
   })
 }
+// 搜索原零件号
+export function getPageData(params){
+  return sourcing({
+    url: "/nominate/fs-record/list",
+    method: "GET",
+    params: params
+  })
+}
+//批量修改零件采购项目特殊零件仅零件号变更
 
 // 获取定点信息
 export function findNominateInfo(fsNum) {

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:11:17
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-02 14:42:39
+ * @LastEditTime: 2021-08-05 14:42:45
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\data.js
  */
@@ -23,5 +23,21 @@ export const TAB = [
     url: '/projectscheassistant',
     activePath: 'projectscheassistant',
     key: 'PAICHENGZHUSHOU'
+  },
+  {
+    value: 3,
+    name: '项目进度监控',
+    message: 0,
+    url: '/projectprogressmonitoring',
+    activePath: 'projectprogressmonitoring',
+    key: 'XIANGMUJINDUJIANKONG'
+  },
+  {
+    value: 4,
+    name: '项目进度报告',
+    message: 0,
+    url: '/projectprogressreport',
+    activePath: 'projectprogressreport',
+    key: 'XIANGMUJINDUBAOGAO'
   }
 ]

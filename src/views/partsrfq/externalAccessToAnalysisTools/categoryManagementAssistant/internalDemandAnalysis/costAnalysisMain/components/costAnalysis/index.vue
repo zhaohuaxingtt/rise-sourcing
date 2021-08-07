@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 16:38:55
- * @LastEditTime: 2021-08-04 16:55:50
+ * @LastEditTime: 2021-08-07 10:10:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysis\index.vue
@@ -89,6 +89,7 @@ import {iCard, iButton, iInput, iSelect, iPagination, icon} from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import {pageMixins} from '@/utils/pageMixins';
+import { getAllData } from '@/api/partsrfq/costAnalysis/index'
 export default {
   name: 'CostAnalysis',
   mixins: [pageMixins],
@@ -106,6 +107,7 @@ export default {
   },
   created() {
     this.initTestData()
+    this.fetchTableData()
   },
   methods: {
     // 初始化测试数据
@@ -120,6 +122,19 @@ export default {
     // 获取表格数据
     getTableData() {
       
+    },
+    // 初始化数据
+    fetchTableData() {
+      const params = {
+        pageNo: this.page.currPage,
+        pageSize: this.page.pageSize,
+        categoryCode: this.searchForm.categoryCode,
+        createByName: this.searchForm.createBy,
+        fileType: this.searchForm.fileType
+      }
+      getAllData(params).then(res => {
+        console.log('res', res);
+      })
     },
     // 点击确认
     handleSubmitSearch() {

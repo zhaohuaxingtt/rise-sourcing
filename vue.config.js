@@ -240,8 +240,7 @@ module.exports = {
       },
       '/tpInfoApi': {
         //高攀弘服务地址
-        // target: 'http://10.122.17.38:8023',
-        target: 'http://10.160.138.71:8083',
+        target: 'http://10.122.17.38:8023',
         // target: 'http://10.160.142.20:8023',
         // target: 'http://10.160.141.45:8023',
         changeOrigin: true,
@@ -252,6 +251,7 @@ module.exports = {
       '/partProcureApi': {
         //赵文鹏服务地址
         target: 'http://10.122.17.38:8025',
+        //target: 'http://10.160.136.148:18025',
         changeOrigin: true,
         pathRewrite: {
           '^/partProcureApi': '',
@@ -391,6 +391,29 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/baseInfo': '',
+        },
+      },
+      '/bizlog':{//cf
+        target:'http://10.122.18.166:8013/bizlog',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/bizlog':''
+        }
+      },
+      //kpi杜玲聪的代理
+      '/kpiInfo': {
+        target: 'http://10.122.18.166:8010',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/kpiInfo': '',
+        },
+      },
+      //椿慧的代理
+      '/kpiPowerBiInfo': {
+        target: 'http://10.122.18.166:8036/aon',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/kpiPowerBiInfo': '',
         },
       },
     },

@@ -25,3 +25,12 @@ export function deletePart(data) {
     data,
   })
 }
+
+// 分配科室
+export function assignDept(data) {
+  return requst({
+    url: '/aeko/part/assign-dept',
+    method: 'POST',
+    data,
+  })
+}

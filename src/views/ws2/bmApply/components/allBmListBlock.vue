@@ -13,7 +13,13 @@
         >
           <!-- BM单流⽔号 -->
           <template #bmSerial="scope">
-            <div class="table-link" @click="openBMDetail(scope.row)">{{scope.row.bmSerial}}</div>
+            <span class="flexRow">
+              <span class="openLinkText cursor " @click="openBMDetail(scope.row)"> {{ scope.row.bmSerial }}</span>
+              <span v-if="scope.row.bmSerial" class="icon-gray  cursor "  @click="openBMDetail(scope.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+              </span>
+            </span>  
           </template>
 
           <!-- RS单号 -->
@@ -53,6 +59,7 @@ import {
   iDialog,
   iInput,
   iSelect,
+  icon
 } from "rise";
 import SearchBlock from "./searchBlock";
 import { findAllBmList } from "@/api/ws2/bmApply";
@@ -66,7 +73,7 @@ import Moment from 'moment';
 export default {
   components: {
     SearchBlock, iTableList, iCard, iButton, iPagination,
-    UnitExplain,
+    UnitExplain,icon
   },
 
   mixins: [pageMixins],
@@ -174,7 +181,9 @@ export default {
     justify-content: flex-end;
     margin-top: 10px;
   }
-
+  .openLinkText {
+    color: $color-blue;
+  }
   .table-link{
     color: #1663F6;
     text-decoration: underline;
@@ -186,6 +195,29 @@ export default {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 20px;
+  }
+  .icon-gray{
+    cursor: pointer;
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+  .flexRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-gray:hover{
+    cursor: pointer;
+    .show{
+      display: none;
+    }
+    .active{
+      display: block;
+    }
   }
 }
 

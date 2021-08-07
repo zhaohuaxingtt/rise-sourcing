@@ -13,7 +13,7 @@
       <el-form>
 
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['behalfPartsNum']" ></iInput>
+          <iInput type="textarea" clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model.trim="form['behalfPartsNum']" ></iInput>
         </el-form-item>
 
         <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')">
@@ -39,6 +39,8 @@
               filterable
               ref="carTypeProjectRef"
               clearable
+              collapse-tags
+              multiple
           >
             <el-option
                 :value="item.tmCartypeProId"
@@ -75,6 +77,8 @@
               filterable
               ref="carTypeProjectRef"
               clearable
+              collapse-tags
+              multiple
           >
             <el-option
                 :value="item.deptId"
@@ -85,13 +89,13 @@
           </iSelect>
         </el-form-item>
 
-        <el-form-item :label="language('LK_LINLE', 'Linle')">
-          <!-- <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['linieId']" ></iInput> -->
+        <el-form-item :label="language('LK_LINLE', 'Linie')">
           <iSelect
               class="multipleSelect"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               v-model="form['linieId']"
               filterable
+              clearable
               collapse-tags
               multiple
           >
@@ -141,6 +145,11 @@
         <template #bmSerial="scope">
           <div class="table-link" @click="openBMDetail(scope.row)">{{scope.row.bmSerial}}</div>
         </template>
+
+        <template #moldInvestmentAmount="scope">
+          <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.moldInvestmentAmount))}}</div>
+          <div v-else>-</div>
+        </template>
       </iTableList>
 
       <iPagination
@@ -187,6 +196,7 @@ import {
 import { cloneDeep } from "lodash";
 import { pageMixins } from "@/utils/pageMixins";
 import { tableHeight } from "@/utils/tableHeight";
+import { getTousandNum, NumFormat } from "@/utils/tool";
 
 
 export default {
@@ -220,6 +230,8 @@ export default {
         currPage: 1,
         pageSize: 10,
       },
+      getTousandNum,
+      NumFormat,
     }
   },
 
@@ -342,6 +354,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.giSearch{
+  ::v-deep .el-textarea__inner{
+    height: 35px;
+  }
+}
 .multipleSelect{
   ::v-deep .el-tag{
     max-width: calc(100% - 65px);

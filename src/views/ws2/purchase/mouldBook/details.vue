@@ -101,7 +101,7 @@
               <div class="txt">
                 <span>{{ language('LK_TOUZIZONGJINE', '投资总金额') }}</span>
               </div>
-              <div class="disabled">{{detailsData.investmentTotalAmount}}</div>
+              <div class="disabled">{{getTousandNum(NumFormat(detailsData.investmentTotalAmount))}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -199,6 +199,11 @@
         :selection="false"
         :typeIndex="true"
       >
+
+        <template #assetTotal="scope">
+          <div>{{getTousandNum(NumFormat(scope.row.assetTotal))}}</div>
+        </template>
+
         <!-- 照片 -->
         <template #img="scope">
           <div class="table-link" @click="openPhoto(scope.row)">查看</div>
@@ -247,6 +252,7 @@ import {
   craftTypes,
   getOrderNumPermission
 } from "@/api/ws2/purchase/mouldBook";
+import { getTousandNum, NumFormat } from "@/utils/tool";
 
 export default {
   components: {
@@ -271,7 +277,7 @@ export default {
         {data1: 'TC0000000004', data2: 'V05-20210303', data3: 'CBD变更', data4: '张三', data5: '2021-03-03'},
         {data1: 'TC0000000003', data2: 'V04-20210204', data3: 'Aeko减值(Aeko号)', data4: '系统自动', data5: '2021-02-04'},
       ],
-      isOpen: false,
+      isOpen: true,
       detailsTableHead,
       detailsBottomTableHead,
       detailsTableLoading: false,
@@ -286,7 +292,9 @@ export default {
         bmId: this.$route.query.id,
         craftType: '',  //  工艺类型
         veriosn: '',  //  版本号
-      }
+      },
+      getTousandNum,
+      NumFormat
     }
   },
 
@@ -364,8 +372,11 @@ export default {
     },
 
     //  照片
-    openPhoto(scope, index){
-      this.visible = true;
+    openPhoto(scope){
+      if(scope.picture){
+        this.imgList = scope.picture.split(',');
+        this.visible = true;
+      }
     },
 
     changeSerch(type){

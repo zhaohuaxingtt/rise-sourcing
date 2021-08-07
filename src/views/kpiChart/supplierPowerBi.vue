@@ -7,7 +7,10 @@
                 <el-form-item
                   class="SearchOption"
                 >
-                <iInput suffix-icon="el-icon-search"></iInput>
+                <iInput 
+                suffix-icon="el-icon-search"
+                v-model="state"
+                @select="handleSelect"></iInput>
                 </el-form-item>
                </el-form>
                <div>
@@ -24,6 +27,7 @@
 <script>
 import {iButton,iPage,iCard,iInput,iSelect,iTableCustom} from 'rise'
 import * as pbi from 'powerbi-client';
+import { getPowerBiKpi,getPowerBiSupplier } from '@/api/kpiChart'
 export default {
     components:{
         iButton,
@@ -40,8 +44,16 @@ export default {
             config:{},
             reportContainer:null,
             report:null,
-     
+            supplierName:""
         }
+    },
+    created(){
+         getPowerBiKpi().then(res=>{
+            console.log(res)
+        })
+        getPowerBiSupplier({keyWord:this.supplierName,supplierType:'pp'}).then(res=>{
+            console.log(res)
+        })
     },
     mounted(){
         this.init()
@@ -112,6 +124,24 @@ export default {
 				});
 				this.report=report
 			},
+            querySearchAsync(queryString, cb) {
+                    var restaurants = this.restaurants;
+                    var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+
+                    clearTimeout(this.timeout);
+                    this.timeout = setTimeout(() => {
+                    cb(results);
+                    }, 3000 * Math.random());
+                },
+                createStateFilter(queryString) {
+                    return (state) => {
+                    return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                    };
+                },
+            handleSelect(item) {
+                console.log(item);
+            },
+
     }
 }
 </script>

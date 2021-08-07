@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-03 10:39:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 17:30:55
+ * @LastEditTime: 2021-08-05 16:43:19
  * @Description: 配置显示字段弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\showItem\index.vue
 -->
@@ -24,7 +24,16 @@
       </div>
     </template>
     <div class="checkList">
-      <el-checkbox class="checkList-item" :style="`width:${item.width ? item.width : '18%'}`" v-for="item in list" :key="item.key" :label="language(item.key, item.name)" v-model="item.isSelect" :disabled="item.disabled"></el-checkbox>
+      <el-checkbox 
+        class="checkList-item" 
+        :style="`width:${item.checkWidth ? item.checkWidth : '18%'}`" 
+        v-for="item in list" 
+        :key="item.key" 
+        :label="language(item.key, item.name)" 
+        v-model="item.isSelect" 
+        :disabled="item.disabled"
+      >
+      </el-checkbox>
     </div>
   </iDialog>
 </template>
@@ -41,10 +50,11 @@ export default {
     type: {type:String}
   },
   watch:{
-    dialogVisible(val) {
-      if(val) {
-        //
-      }
+    checkList: {
+      handler() {
+        this.list = cloneDeep(this.checkList)
+      },
+      deep: true
     }
   },
   data() {
@@ -61,7 +71,7 @@ export default {
       this.saveLoading = true
       const params = {
         type: this.type,
-        fieldList: this.list.filter(item => item.disabled || item.isSelect).map(item => item.props)
+        fieldList: this.list.filter(item => item.disabled || item.isSelect).map(item => item.key)
       }
       updateFields(params).then(res => {
         if (res?.result) {
@@ -89,7 +99,6 @@ export default {
           isSelect: true
         }
       })
-      // this.$emit('handleAllSelect')
     },
     clearDialog() {
       this.reasonDescription = ''
