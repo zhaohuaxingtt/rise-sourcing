@@ -56,7 +56,7 @@ import resultMessageMixin from '@/utils/resultMessageMixin.js';
 import { pageMixins } from '@/utils/pageMixins';
 import { materialGroupSelectDict } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate/index.js";
 export default {
-  mixins:[resultMessageMixin,pageMixins],
+  mixins: [resultMessageMixin, pageMixins],
   components: {
     iInput, iButton, iDialog, icon, tableList, iSelect, iPagination
   },
@@ -95,34 +95,38 @@ export default {
       fieldList: []
     }
   },
-  // created() {
-  //   this.getDictByCode()
-  // },
-  // methods: {
-  //   async getDictByCode() {
-  //     const res = await materialGroupSelectDict()
-  //     this.formGoup.materialGroupList = res.data
-  //   },
-  //   handleSearchReset() {
-  //     this.form = {
-  //       materialGroup: '',
-  //       rfqId: '',
-  //       fsId: '',
-  //       partsId: '',
-  //       materialGroupCode: ''
-  //     }
-  //     this.getTableList()
-  //   },
-  //   getTableList() {
-  //     this.form.materialGroupCode && this.formGoup.materialGroupList.forEach((item) => {
-  //       if (item.code === this.form.materialGroupCode) {
-  //         this.form.materialGroup = item.name
-  //         return
-  //       }
-  //     })
-  //     this.$emit('getTableList', this.form)
-  //   },
-  // }
+  created() {
+    // this.getDictByCode()
+  },
+
+  methods: {
+    clearDiolog() {
+      this.$emit('input', false);
+    },
+    async getDictByCode() {
+      const res = await materialGroupSelectDict()
+      this.formGoup.materialGroupList = res.data
+    },
+    handleSearchReset() {
+      this.form = {
+        materialGroup: '',
+        rfqId: '',
+        fsId: '',
+        partsId: '',
+        materialGroupCode: ''
+      }
+      this.getTableList()
+    },
+    getTableList() {
+      this.form.materialGroupCode && this.formGoup.materialGroupList.forEach((item) => {
+        if (item.code === this.form.materialGroupCode) {
+          this.form.materialGroup = item.name
+          return
+        }
+      })
+      this.$emit('getTableList', this.form)
+    },
+  }
 }
 </script>
 

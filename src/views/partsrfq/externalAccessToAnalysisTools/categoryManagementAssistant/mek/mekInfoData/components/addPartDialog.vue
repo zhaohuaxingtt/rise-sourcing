@@ -46,7 +46,6 @@
 import { iInput, iButton, iDialog, icon } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addPartTableTitle } from "./data.js";
-import { materialGroupSelectDict } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate/index.js";
 export default {
   components: {
     iInput, iButton, iDialog, icon, tableList
@@ -86,34 +85,36 @@ export default {
       fieldList: []
     }
   },
-  // created() {
-  //   this.getDictByCode()
-  // },
-  // methods: {
-  //   async getDictByCode() {
-  //     const res = await materialGroupSelectDict()
-  //     this.formGoup.materialGroupList = res.data
-  //   },
-  //   handleSearchReset() {
-  //     this.form = {
-  //       materialGroup: '',
-  //       rfqId: '',
-  //       fsId: '',
-  //       partsId: '',
-  //       materialGroupCode: ''
-  //     }
-  //     this.getTableList()
-  //   },
-  //   getTableList() {
-  //     this.form.materialGroupCode && this.formGoup.materialGroupList.forEach((item) => {
-  //       if (item.code === this.form.materialGroupCode) {
-  //         this.form.materialGroup = item.name
-  //         return
-  //       }
-  //     })
-  //     this.$emit('getTableList', this.form)
-  //   },
-  // }
+  created() {
+    this.getDictByCode()
+  },
+  methods: {
+    clearDiolog() {
+      this.$emit('input', false);
+    },
+    async getDictByCode() {
+     
+    },
+    handleSearchReset() {
+      this.form = {
+        materialGroup: '',
+        rfqId: '',
+        fsId: '',
+        partsId: '',
+        materialGroupCode: ''
+      }
+      this.getTableList()
+    },
+    getTableList() {
+      this.form.materialGroupCode && this.formGoup.materialGroupList.forEach((item) => {
+        if (item.code === this.form.materialGroupCode) {
+          this.form.materialGroup = item.name
+          return
+        }
+      })
+      this.$emit('getTableList', this.form)
+    },
+  }
 }
 </script>
 
