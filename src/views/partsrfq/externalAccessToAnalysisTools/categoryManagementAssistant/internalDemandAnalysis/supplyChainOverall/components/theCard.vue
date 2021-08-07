@@ -10,7 +10,7 @@
     <carType v-bind="$attrs" />
     <region v-bind="$attrs" class="margin-top20" />
     <materials v-bind="$attrs" class="margin-top20" />
-    <supplier class="margin-top20" />
+    <supplier v-if="false" class="margin-top20" />
   </div>
 </template>
 
