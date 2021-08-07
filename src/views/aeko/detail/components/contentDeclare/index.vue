@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-05 18:04:45
+ * @LastEditTime: 2021-08-06 18:36:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -166,8 +166,7 @@
           <template #oldPartNumPreset="scope">
             <iInput v-if="scope.row.status.code === 'EMPTY'" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
               <div class="inputSearchIcon" slot="suffix">
-                <icon v-if="!scope.row.judgeLoading" symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon"  @click.native="oldPartNumPresetSelect(scope.row)"/>
-                <i v-else class="el-icon-loading"></i>
+                <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
             </iInput>
             <iInput v-else v-model="scope.row.oldPartNumPreset" disabled readonly></iInput>
@@ -211,7 +210,7 @@
           :total="page.totalCount" />
       </div>
     </iCard>
-    <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" />
+    <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" @update="init" />
   </div>
 </template>
 
@@ -222,9 +221,9 @@ import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle, isReferenceMap } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent, judgeRight } from "@/api/aeko/detail"
-import { getCarTypePro } from "@/api/designate/nomination"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
+import { searchCartypeProject } from "@/api/aeko/manage"
 import { cloneDeep } from "lodash"
 
 const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
@@ -237,12 +236,6 @@ export default {
       type: Object,
       default: () => ({})
     }
-  },
-  computed: {
-    // eslint-disable-next-line no-undef
-    ...Vuex.mapState({
-      userInfo: state => state.permission.userInfo,
-    })
   },
   data() {
     return {
@@ -263,8 +256,20 @@ export default {
     };
   },
   created() {
-    this.getCarTypePro()
+    this.searchCartypeProject()
     this.getDictByCode()
+
+    if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+      try {
+        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+
+        this.form = aekoConatentDeclareParams.form
+        this.page.currPage = this.form.currPage
+        this.page.pageSize = this.form.pageSize
+      } catch(e) {
+        console.error(e)
+      }
+    }
   },
   filters: {
     isReferenceFilter(value) {
@@ -272,8 +277,8 @@ export default {
     }
   },
   methods: {
-    getCarTypePro() {
-      getCarTypePro()
+    searchCartypeProject() {
+      searchCartypeProject()
       .then(res => {
         if (res.code == 200) {
           this.carTypeProjectOptions = 
@@ -324,8 +329,7 @@ export default {
       
       getAekoLiniePartInfo({
         ...this.form,
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId || 
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
         current: this.page.currPage,
@@ -367,34 +371,22 @@ export default {
     },
     view() {},
     oldPartNumPresetSelect(row) {
-      this.$set(row, "judgeLoading", true)
-
-      judgeRight([
-        {
-          partNum: row.oldPartNumPreset,
-          userId: this.userInfo.id
+      this.$router.push({
+        path: "/aeko/quondampart/ledger",
+        query: {
+          requirementAekoId: this.aekoInfo.requirementAekoId,
+          objectAekoPartId: row.objectAekoPartId,
+          oldPartNumPreset: row.oldPartNumPreset
         }
-      ])
-      .then(res => {
-        if (res.code == 200) {
-          if (res.data[0].isView) {
-            this.$router.push({
-              path: "/aeko/quondampart/ledger",
-              query: {
-                requirementAekoId: this.aekoInfo.requirementAekoId,
-                objectAekoPartId: row.objectAekoPartId
-              }
-            })
-          } else {
-            iMessage.error(res.data[0].describe)   
-          }
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-
-        this.$set(row, "judgeLoading", false)
       })
-      .catch(() => this.$set(row, "judgeLoading", false))
+    
+      sessionStorage.setItem("aekoConatentDeclareParams", JSON.stringify({
+        form: this.form,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
+        currPage: this.page.currPage,
+        pageSize: this.page.pageSize,
+        currentTab: "contentDeclare"
+      }))
     },
     // 相关无关切换
     handleDeclareToggle() {
@@ -431,8 +423,7 @@ export default {
       this.declareResetLoading = true
 
       patchAekoReset({
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
       })
       .then(res => {
@@ -468,16 +459,12 @@ export default {
       for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
         if (item.status.code !== "TOBE_STATED" && item.status.code !== "QUOTING" && item.status.code !== "QUOTED")
           return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价的零件进行提交"))
-
-        if (item.isDeclare != 1)
-          return iMessage.warn(this.language("QINGXUANZEYISHOUDONGSHEZHIAJIADELINGJIANJINXINGTIJIAO", "请选择已手动设置A价的零件进行提交"))
       }
 
       this.submitLoading = true
 
       patchAekoContent({
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
       })
       .then(res => {

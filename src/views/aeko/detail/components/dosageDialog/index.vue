@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-08-05 18:33:35
+ * @LastEditTime: 2021-08-06 13:59:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -95,9 +95,14 @@ export default {
         this.getAekoCarProject()
         this.getAekoCarDosage()
       } else {
+        if (this.isUpdate) {
+          this.$emit("update")
+        }
+
         this.dosage = {}
         this.sourceCarTypeProject = {}
         this.saveLoading = false
+        this.isUpdate = false
       }
     },
   },
@@ -118,7 +123,8 @@ export default {
       carProjectOptions: [],
       dosage: {},
       tableTitle,
-      saveLoading: false
+      saveLoading: false,
+      isUpdate: false
     };
   },
   methods: {
@@ -203,8 +209,8 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
-          // this.$emit("confirm", this.selectRow)
-          this.status = false
+          this.getAekoCarDosage()
+          this.isUpdate = true
         } else {
           iMessage.error(message)
         }

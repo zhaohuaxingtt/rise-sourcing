@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:14:21
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 15:53:00
+ * @LastEditTime: 2021-08-06 18:08:40
  * @Description: 节点视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
 -->
@@ -36,7 +36,8 @@
           <div class="productItem-bottom-nodeItem">
             <span class="productItem-bottom-nodeItem-label" v-if="!item.label.includes('1st')">{{item.key ? language(item.key, item.label) : item.label}}</span>
             <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span>
-            <icon symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
+            <icon v-if="pro[item.status] === 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon>
+            <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
             <div class="flex-box margin-top20 " v-for="taItem in targetList" :key="taItem.value" >
               <iText class="productItem-bottom-stepBetween-input text ">{{pro[item[taItem.props]]}}</iText>
               <iText v-if="index === nodeList.length - 1" class="productItem-bottom-stepBetween-input text margin-left10">{{pro[item[taItem.props1]]}}</iText>
@@ -75,11 +76,11 @@ export default {
         {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget', props: 'os', props1: 'os1'}
       ],
       nodeList: [
-        {label: '释放', key: 'SHIFANG', pvs: 'pvsTargetReleaseWeek', vff: 'vffTargetReleaseWeek', os: 'zerosTargetReleaseWeek'},
-        {label: '定点', key: 'DINGDIAN', pvs: 'pvsTargetNomiWeek', vff: 'vffTargetNomiWeek', os: 'zerosTargetNomiWeek'},
-        {label: 'BF', pvs: 'pvsTargetNomiWeek', vff: 'vffTargetBfWeek', os: 'zerosTargetBfWeek'},
-        {label: '1st Tryout', pvs: 'pvsTargetFirstTryWeek', vff: 'vffTargetFirstTryWeek', os: 'zerosTargetFirstTryWeek'},
-        {label: 'EM(OTS)', pvs: 'pvsTargetEmWeek', vff: 'vffTargetEmWeek', os: 'zerosTargetEmWeek', pvs1: 'pvsTargetOtsWeek', vff1: 'vffTargetOtsWeek', os1: 'zerosTargetOtsWeek'}
+        {label: '释放', key: 'SHIFANG', pvs: 'pvsTargetReleaseWeek', vff: 'vffTargetReleaseWeek', os: 'zerosTargetReleaseWeek', status: 'releaseStatus'},
+        {label: '定点', key: 'DINGDIAN', pvs: 'pvsTargetNomiWeek', vff: 'vffTargetNomiWeek', os: 'zerosTargetNomiWeek', status: 'nomiStatus'},
+        {label: 'BF', pvs: 'pvsTargetNomiWeek', vff: 'vffTargetBfWeek', os: 'zerosTargetBfWeek', status: 'bfStatus'},
+        {label: '1st Tryout', pvs: 'pvsTargetFirstTryWeek', vff: 'vffTargetFirstTryWeek', os: 'zerosTargetFirstTryWeek', status: 'firstTryStatus'},
+        {label: 'EM(OTS)', pvs: 'pvsTargetEmWeek', vff: 'vffTargetEmWeek', os: 'zerosTargetEmWeek', pvs1: 'pvsTargetOtsWeek', vff1: 'vffTargetOtsWeek', os1: 'zerosTargetOtsWeek', status: 'emStatus'}
       ],
       downloadLoading: false
     }

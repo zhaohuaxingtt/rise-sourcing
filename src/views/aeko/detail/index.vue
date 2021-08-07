@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-07 10:27:34
+ * @LastEditTime: 2021-08-07 10:32:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="aekodetail">
     <div class="header flex-between-center margin-bottom20">
-      <h2>AEKO号：AE19221</h2>
+      <h2>AEKO号：{{ aekoInfo.aekoCode }}</h2>
       <div>
         <iButton>AEKO详情</iButton>
         <logButton class="margin-left20" />
@@ -79,6 +79,16 @@ export default {
     this.aekoInfo = {
       requirementAekoId: this.$route.query.requirementAekoId
     }
+    
+    if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+      try {
+        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+        this.currentTab = aekoConatentDeclareParams.currentTab
+      } catch(e) {
+        console.error(e)
+      }
+    }
+
     this.getBbasicInfo();
   },
   computed: {

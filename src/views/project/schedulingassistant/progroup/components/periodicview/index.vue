@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 13:37:13
+ * @LastEditTime: 2021-08-06 18:34:34
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -76,7 +76,7 @@
 <script>
 import { iButton, icon, iInput, iText, iMessage } from 'rise'
 import fsConfirm from '../fsconfirm'
-import { getProductGroupInfoList, saveProductGroupInfoList, deliveryProduct, getAllFS, downloadPvPk, getFsUserList, getBuyer } from '@/api/project'
+import { getProductGroupInfoList, saveProductGroupInfoList, deliveryProduct, getAllFS, downloadPvPk, getFsUserList, getBuyer, getCarConfig, validSchedule } from '@/api/project'
 import moment from 'moment'
 export default {
   components: { iButton, fsConfirm, icon, iInput, iText },
@@ -102,7 +102,7 @@ export default {
       nodeList: [
         {label: '释放', key: 'SHIFANG', const: 'constReleaseToNomiWeek', keyPoint: 'keyReleaseToNomiWeek', history: 'hiReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus'},
         {label: '定点', key: 'DINGDIAN', const: 'constNomiToBffWeek', keyPoint: 'keyNomiToBffWeek', history: 'hiNomiToBffWeek', isChange: 'keyNomiToBffStatus'},
-        {label: 'BF', const: 'keyBfToFirstTryoutWeek', keyPoint: 'constBfToFirstTryoutWeek', history: 'hiBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus'},
+        {label: 'BF', const: 'constBfToFirstTryoutWeek', keyPoint: 'keyBfToFirstTryoutWeek', history: 'hiBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus'},
         {label: '1st Tryout', const: 'constFirstTryEmWeek', keyPoint: 'keyFirstTryEmWeek', history: 'hiFirstTryEmWeek', isChange: 'keyFirstTryEmStatus'},
         {label: 'EM(OTS)', const: 'constFirstTryOtsWeek', keyPoint: 'keyFirstTryOtsWeek', history: 'hiFirstTryOtsWeek', isChange: 'keyFirstTryOtsStatus'}
       ],
@@ -115,14 +115,14 @@ export default {
   created() {
     this.getFSOPtions()
   },
-  mounted() {
-    this.interval = setInterval(() => {
-      this.autoSave()
-    },60000)
-  },
-  beforeDestroy() {
-    clearInterval(this.interval)
-  },
+  // mounted() {
+  //   this.interval = setInterval(() => {
+  //     this.autoSave()
+  //   },60000)
+  // },
+  // beforeDestroy() {
+  //   clearInterval(this.interval)
+  // },
   methods: {
     getFSOPtions() {
       getAllFS().then(res => {
@@ -206,9 +206,22 @@ export default {
         this.loading = false
       })
     },
-    gotoDBhistory(pro) {
-      const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {cartypeProId:this.cartypeProId,productGroup:pro.productGroupNameZh}})
-      window.open(router.href,'_blank')
+    async gotoDBhistory(pro) {
+      this.loading = true
+      try{
+        const res = await getCarConfig(this.cartypeProId)
+        this.loading = false
+        if (res?.result) {
+          const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {cartypeProId:this.cartypeProId,productGroup:pro.productGroupNameZh,...res.data}})
+          window.open(router.href,'_blank')
+        } else {
+          iMessage.warn('HUOQUSUANFAPEIZHISHIBAI','获取算法配置失败')
+        }
+      } catch(error) {
+        this.loading = false
+      }
+      // const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {cartypeProId:this.cartypeProId,productGroup:pro.productGroupNameZh}})
+      // window.open(router.href,'_blank')
     },
     async getFsUserList(tableList) {
       const res = await getFsUserList(tableList.map(item => item.productGroupId))
@@ -233,41 +246,53 @@ export default {
     },
     async handleSendFs() {
       await this.autoSave()
+      
       if (!this.products?.some(item => item.isChecked)) {
         iMessage.warn(this.language('QINGGOUXUANXUYAOFASONGDESHUJU','请勾选需要发送的数据'))
         return
       }
-      this.loading = true
-      const selectRows = this.products.filter(item => item.isChecked)
-      const fsOptions = await this.getFsUserList(selectRows)
-      const projectPurchaser = await this.getBuyer()
-      this.fsTableList = selectRows.filter(item => item.isChecked).map(item => {
-        const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
+      try {
+        this.loading = true
+        const selectRows = this.products.filter(item => item.isChecked)
+        const validScheduleRowsRes = await validSchedule(selectRows)
+        if (validScheduleRowsRes.result && validScheduleRowsRes.data && validScheduleRowsRes.data.length === selectRows.length) {
+          iMessage.warn(this.language('GOUXUANCHANPINZUDOUYIFASONGJINDUQUERENRENWU','勾选产品组都已发送进度确认任务，如需查看请前往进度确认汇总页面'))
+          throw(false)
+        }
+        const canSendRows = selectRows.filter(item => !(validScheduleRowsRes.data || []).some(rItem => rItem.productGroupId === item.productGroupId))
+        const fsOptions = await this.getFsUserList(canSendRows)
+        const projectPurchaser = await this.getBuyer()
+        this.fsTableList = canSendRows.map(item => {
+          const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
+            return {
+              ...item,
+              value: item.userId,
+              label: item.userName
+            }
+          }) : []
           return {
             ...item,
-            value: item.userId,
-            label: item.userName
+            cartypeProject: this.carProjectName,
+            scheBfToFirstTryoutWeek: item.keyBfToFirstTryoutWeek,
+            scheFirstTryEmWeek: item.keyFirstTryEmWeek,
+            scheFirstTryOtsWeek: item.keyFirstTryOtsWeek,
+            productGroupDe: item.productGroupNameDe,
+            productGroupZh: item.productGroupNameZh,
+            confirmDateDeadline: this.getNextThreeWorkDay(),
+            projectPurchaser: projectPurchaser?.nameZh,
+            projectPurchaserId: projectPurchaser?.id,
+            selectOption: this.selectOptions.fsOptions,
+            fs: options && options[0] ? options[0].value : '',
+            fsId: options && options[0] ? options[0].label : ''
           }
-        }) : []
-        return {
-          ...item,
-          cartypeProject: this.carProjectName,
-          scheBfToFirstTryoutWeek: item.keyBfToFirstTryoutWeek,
-          scheFirstTryEmWeek: item.keyFirstTryEmWeek,
-          scheFirstTryOtsWeek: item.keyFirstTryOtsWeek,
-          productGroupDe: item.productGroupNameDe,
-          productGroupZh: item.productGroupNameZh,
-          confirmDateDeadline: this.getNextThreeWorkDay(),
-          projectPurchaser: projectPurchaser?.nameZh,
-          projectPurchaserId: projectPurchaser?.id,
-          selectOption: this.selectOptions.fsOptions,
-          fs: options && options[0] ? options[0].value : '',
-          fsId: options && options[0] ? options[0].label : ''
-        }
-      })
-      console.log(this.fsTableList)
-      this.loading = false
-      this.changeFsConfirmVisible(true)
+        })
+        // console.log(this.fsTableList)
+        this.loading = false
+        this.changeFsConfirmVisible(true)
+      } catch(error) {
+        this.loading = false
+      }
+      
     },
     getNextThreeWorkDay() {
       if (moment().day() === 2 || moment().day() === 1) {

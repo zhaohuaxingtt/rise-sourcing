@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 11:24:41
+ * @LastEditTime: 2021-08-06 17:54:05
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -51,6 +51,7 @@
             <span class="openLinkText">{{language('TIAOZHUANJIANKONG','跳转监控')}}</span>
           </div>
         </div>
+        <div v-else-if="item.props === 'output'">{{getTousandNum(dataItem[item.props])}}</div>
         <!---------------------------------------------------------------------->
         <!----------                年份列-节点渲染               ---------------->
         <!---------------------------------------------------------------------->
@@ -102,6 +103,7 @@
 <script>
 import { icon } from 'rise'
 import moment from 'moment'
+import { getTousandNum } from '@/utils/tool'
 export default {
   components: { icon },
   props: {
@@ -125,6 +127,7 @@ export default {
         { label: 'SOP', date: 'pepSop', value: 'pepSopWk', status: 'pepSopStatus' },
         { label: 'ME', date: 'pepMe', value: 'pepMeWk', status: 'pepMeStatus' }
       ],
+      getTousandNum
     }
   },
   methods: {
