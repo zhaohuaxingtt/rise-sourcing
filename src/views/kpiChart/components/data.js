@@ -60,13 +60,13 @@ export const tabSetting = [
       width: 50,
       align: 'center',
     },{
-      prop: 'name',
+      prop: 'nameZh',
       label: '供应商名称',
       i18n: 'partsprocure.GongYingShangMingCheng',
       align: 'center',
       emit: 'go-detail',
       customRender: (h, scope) => {
-        return <span class="open-link-text">{scope.row.name}</span>
+        return <span class="open-link-text">{scope.row.nameZh}</span>
       },
       tooltip: true,
     }]

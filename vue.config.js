@@ -416,6 +416,13 @@ module.exports = {
           '^/kpiPowerBiInfo': '',
         },
       },
+      '/supplierSpiApi': {
+        target: 'http://10.122.18.166:8010',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/supplierSpiApi': '',
+        },
+      },
     },
   },
 }
