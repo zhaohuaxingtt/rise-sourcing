@@ -30,11 +30,28 @@ export function dowbloadAPI(data) {
 }
 
 // 概览api
-export function getPowerBiKpi(params) {
+export function getPowerBiKpi() {
   return chrequst({
     url: '/api/aon/batchOverview/getSpiPbi',
+    method: 'GET'
+  })
+}
+
+// 查询供应商api
+export function getPowerBiSupplier(params) {
+  return requst({
+    url: '/web/supplierInfo/queryByParam',
     method: 'GET',
     params: params
   })
 }
 
+
+// 查询供应商api
+export function getMaterialGroupByUserIds(data) {
+  return chrequst({
+    url: '/api/aon/costStructure/getMaterialGroupByUserIds',
+    method: 'POST',
+    data: data
+  })
+}
