@@ -6,9 +6,10 @@
  * @Descripttion: your project
 -->
 <template>
-  <div class="content">
-    <theSearch class="search" />
-    <chartMap class="map" />
+  <div id="allContainer" class="content">
+    <theSearch :ntierQueryConditionDTO="ntierQueryConditionDTO" @handleSave="handleSave" @getMapList="getMapList" class="search" />
+    <theCard :object="object" class="card-right" />
+    <chartMap ref="chartMap" :mapListData="mapListData" class="map" />
   </div>
 </template>
 
@@ -17,14 +18,21 @@
 // 例如：import 《组件名称》 from '《组件路径》';
 import chartMap from "./components/map.vue";
 import theSearch from "./components/theSearch.vue";
+import theCard from "./components/theCard.vue";
+import { nTierCard, nTierSave } from "@/api/partsrfq/supplyChainOverall/index.js";
+import { downloadPdfMixins } from '@/utils/pdf';
+import resultMessageMixin from '@/utils/resultMessageMixin';
 import { iCard } from "rise";
 export default {
   // import引入的组件需要注入到对象中才能使用
-  components: { chartMap, iCard, theSearch },
+  components: { chartMap, iCard, theSearch, theCard },
+  mixins: [resultMessageMixin, downloadPdfMixins],
   data() {
     // 这里存放数据
     return {
-
+      saveButtonLoading: false,
+      object: {},
+      ntierQueryConditionDTO: {}
     }
   },
   // 监听属性 类似于data概念
@@ -33,11 +41,40 @@ export default {
   watch: {},
   // 方法集合
   methods: {
+    async handleSave(params) {
+      // this.$refs.chartMap.handleSave(params)
+      this.saveButtonLoading = true;
+      const resFile = await this.getDownloadFileAndExportPdf({
+        domId: 'allContainer',
+        pdfName: 'purchaseAmountOverall',
+      });
+      const req = {
+        ...params,
+        reportFileName: resFile.downloadName,
+        reportName: resFile.downloadName,
+        reportUrl: resFile.downloadUrl,
+        id: '',
+        schemeName: ''
+      };
+      const res = await nTierSave(req)
+      this.resultMessage(res, () => {
+        this.saveButtonLoading = false;
+      });
 
+    },
+    async getMapList(par) {
+      const pms = {
+        ...par
+      }
+      const res = await nTierCard(pms)
+      this.object = res.data
+      this.ntierQueryConditionDTO = res.data.ntierQueryConditionDTO
+      // this.mapListData = res.data.supplierAddressAllDTO.supplierPlantAddressDTOList
+    }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
-
+    this.getMapList()
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
@@ -55,5 +92,15 @@ export default {
   z-index: 2;
   width: 100%;
   padding: 20px;
+}
+.card-right {
+  width: 40%;
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  top: 7rem;
+  padding: 20px;
+  height: 87%;
+  overflow: auto;
 }
 </style>

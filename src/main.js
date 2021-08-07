@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-07-28 14:19:12
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-05 12:06:34
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\main.js
  */
@@ -14,6 +14,9 @@ import '../public/theme/index.css'
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 import './permission'
+// import AmapVue from '@amap/amap-vue'
+
+// AmapVue.config.key = 'ad8bb27d93a0b17188e1b46872a446f8'
 require('./auto').init()
 Vue.config.productionTip = false
 Vue.prototype.$t = (key, value) => i18n.t(key, value);

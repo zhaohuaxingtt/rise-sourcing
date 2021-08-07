@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-07 16:15:08
+ * @LastEditTime: 2021-08-07 19:37:56
  * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
@@ -32,7 +32,8 @@ export default {
            {
               name:"采购金额总览",
               key:"CAIGOUJINEZONGLAN",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis01.png")
+              image:require("@/assets/images/partRfq/internalDemandAnalysis01.png"),
+              url:'/sourcing/categoryManagementAssistant/internalDemandAnalysis/purchaseAmountOverall'
            },
            {
               name:"产量总览",
@@ -70,7 +71,8 @@ export default {
            },{
               name:"批量供应商概览",
               key:"PLGYJZL",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis09.png")
+              image:require("@/assets/images/partRfq/internalDemandAnalysis09.png"),
+              url:'/sourcing/categoryManagementAssistant/internalDemandAnalysis/supplyChainOverall'
            },{
               name:"定点历史记录",
               key:"DINGDIANLISHIJILU",
