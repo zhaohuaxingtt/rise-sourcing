@@ -111,7 +111,6 @@ export default {
         this.cardData = res.data
         this.cardData.push(
           { title: 'Pricing Index', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
-          { title: 'MEK', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
           { title: 'Bid-Link', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' }
         )
         this.cardData.map((item) => {

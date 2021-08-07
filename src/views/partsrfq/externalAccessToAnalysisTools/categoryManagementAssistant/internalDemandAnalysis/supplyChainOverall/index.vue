@@ -42,24 +42,24 @@ export default {
   // 方法集合
   methods: {
     async handleSave(params) {
-      this.$refs.chartMap.handleSave(params)
-      // this.saveButtonLoading = true;
-      // const resFile = await this.getDownloadFileAndExportPdf({
-      //   domId: 'allContainer',
-      //   pdfName: 'purchaseAmountOverall',
-      // });
-      // const req = {
-      //   ...params,
-      //   reportFileName: resFile.downloadName,
-      //   reportName: resFile.downloadName,
-      //   reportUrl: resFile.downloadUrl,
-      //   id: '',
-      //   schemeName: ''
-      // };
-      // const res = await nTierSave(req)
-      // this.resultMessage(res, () => {
-      //   this.saveButtonLoading = false;
-      // });
+      // this.$refs.chartMap.handleSave(params)
+      this.saveButtonLoading = true;
+      const resFile = await this.getDownloadFileAndExportPdf({
+        domId: 'allContainer',
+        pdfName: 'purchaseAmountOverall',
+      });
+      const req = {
+        ...params,
+        reportFileName: resFile.downloadName,
+        reportName: resFile.downloadName,
+        reportUrl: resFile.downloadUrl,
+        id: '',
+        schemeName: ''
+      };
+      const res = await nTierSave(req)
+      this.resultMessage(res, () => {
+        this.saveButtonLoading = false;
+      });
 
     },
     async getMapList(par) {

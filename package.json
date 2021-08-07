@@ -17,6 +17,7 @@
     "conect": "node ./loadersPlugins/publishDevCode.js"
   },
   "dependencies": {
+    "@amap/amap-vue": "^2.0.13",
     "core-js": "^3.6.5",
     "lodash": "^4.17.21"
   },

@@ -36,26 +36,6 @@ export default {
     this.showCityInfo();
   },
   methods: {
-    async handleSave(params) {
-      this.saveButtonLoading = true;
-      const resFile = await this.getDownloadFileAndExportPdf({
-        domId: 'container',
-        pdfName: 'purchaseAmountOverall',
-      });
-      const req = {
-        ...params,
-        reportFileName: resFile.downloadName,
-        reportName: resFile.downloadName,
-        reportUrl: resFile.downloadUrl,
-        id: '',
-        schemeName: ''
-      };
-      const res = await nTierSave(req)
-      this.resultMessage(res, () => {
-        this.saveButtonLoading = false;
-      });
-
-    },
     showCityInfo() {
       var map = new AMap.Map('container', {
         resizeEnable: true, //是否监控地图容器尺寸变化
