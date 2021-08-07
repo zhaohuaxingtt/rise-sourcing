@@ -1,6 +1,15 @@
+/*
+ * @Author: your name
+ * @Date: 2021-08-07 10:24:35
+ * @LastEditTime: 2021-08-07 12:06:02
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\api\kpiChart\index.js
+ */
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_KPI)
 const chrequst = axios(process.env.VUE_APP_POWEBI_KPI)
+const rr = axios(process.env.VUE_APP_AON)
 
 export function kpiDetail(params) {
   return requst({
@@ -31,8 +40,8 @@ export function dowbloadAPI(data) {
 
 // 概览api
 export function getPowerBiKpi() {
-  return chrequst({
-    url: '/api/aon/batchOverview/getSpiPbi',
+  return rr({
+    url: '/batchOverview/getSpiPbi',
     method: 'GET'
   })
 }

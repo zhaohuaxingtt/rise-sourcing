@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-07 10:54:51
+ * @LastEditTime: 2021-08-07 10:56:33
  * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
@@ -83,7 +83,6 @@ export default {
   },
   methods: {
     onJump(item){
-      console.log('item', item);
       switch (item.key) {
         // 成本结构
         case 'CHENGBENZUCHENG':
