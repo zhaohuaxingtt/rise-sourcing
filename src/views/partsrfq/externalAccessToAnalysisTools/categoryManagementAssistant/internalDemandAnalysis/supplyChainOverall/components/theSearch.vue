@@ -10,7 +10,7 @@
     <div class="flex-between-center-center">
       <div class="text margin-bottom20">{{ language('GYLGLNJGYLGL','供应链概览（N级供应链管理）')}}</div>
       <div>
-        <iButton>{{language('BAOCUN','保存')}}</iButton>
+        <iButton @click="$emit('handleSave',form)">{{language('BAOCUN','保存')}}</iButton>
         <iButton>{{language('FANHUI','返回')}}</iButton>
       </div>
     </div>
@@ -18,34 +18,37 @@
       <el-row type="flex" align='bottom' justify="space-between	">
         <el-col :span="3">
           <el-form-item :label="language('CHEXING','车型:')">
-            <iSelect :placeholder="language('CHEXING','车型')" v-model="form.materialGroupCode">
-              <el-option :value="item.code" :label="item.name" v-for="item of formGoup.materialGroupList" :key="item.code"></el-option>
-            </iSelect>
+            <iInput :placeholder="language('CHEXING','车型')" v-model="form.carType">
+            </iInput>
           </el-form-item>
         </el-col>
         <el-col :span="3">
           <el-form-item :label="language('DIQU','地区:')">
-            <iInput :placeholder="language('DIQU','地区')" v-model="form.rfqId"></iInput>
+            <iSelect :placeholder="language('DIQU','地区')" v-model="form.province">
+              <el-option :value="item.cityId" :label="item.cityNameCn" v-for="item of formGoup.provinceList" :key="item.cityId"></el-option>
+            </iSelect>
           </el-form-item>
         </el-col>
         <el-col :span="3">
           <el-form-item :label="language('CAILIAOZU','材料组:')">
-            <iInput :placeholder="language('CAILIAOZU','材料组')" v-model="form.fsId"></iInput>
+            <iSelect :placeholder="language('CAILIAOZU','材料组')" v-model="form.categoryCode">
+              <el-option :value="item.categoryCode" :label="item.categoryName" v-for="item of formGoup.materialGroupList" :key="item.categoryCode"></el-option>
+            </iSelect>
           </el-form-item>
         </el-col>
         <el-col :span="3">
           <el-form-item :label="language('GONGYINGSHANG','供应商:')">
-            <iInput :placeholder="language('GONGYINGSHANG','供应商')" v-model="form.partsId"></iInput>
+            <iInput :placeholder="language('GONGYINGSHANG','供应商')" v-model="form.supplierName"></iInput>
           </el-form-item>
         </el-col>
         <el-col :span="3">
           <el-form-item :label="language('LINGJIAN','零件:')">
-            <iInput :placeholder="language('LINGJIAN','零件')" v-model="form.partsId"></iInput>
+            <iInput :placeholder="language('LINGJIAN','零件')" v-model="form.part"></iInput>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item>
-            <iButton @click="getTableList">{{language('QUEDING','确定')}}</iButton>
+            <iButton @click="getMapList">{{language('QUEDING','确定')}}</iButton>
             <iButton @click="handleSearchReset">{{language('CHONGZHI','重置')}}</iButton>
           </el-form-item>
         </el-col>
@@ -57,36 +60,60 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
+import { userCategory, getCityInfo } from "@/api/partsrfq/supplyChainOverall/index.js";
 import { iSelect, iInput, iButton } from 'rise'
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: { iSelect, iInput, iButton },
+  props: {
+    ntierQueryConditionDTO: { type: Object, default: {} }
+  },
   data() {
     // 这里存放数据
     return {
       form: {
-        materialGroup: '',
-        materialGroupCode: '',
-        rfqId: '',
-        fsId: '',
+        categoryCode: '',
+        carType: '',
+        part: '',
+        province: '',
         partsId: '',
+        supplierName: '',
+
       },
       formGoup: {
         materialGroupList: [],
+        provinceList: []
       },
     }
   },
   // 监听属性 类似于data概念
   computed: {},
   // 监控data中的数据变化
-  watch: {},
+  watch: {
+    ntierQueryConditionDTO: {
+      deep: true,
+      handler(object) {
+        this.form = object
+      }
+    }
+  },
   // 方法集合
   methods: {
-
+    getMapList() {
+      this.$emit('getMapList', this.form)
+    },
+    // 获取材料组数据||地区数据
+    async dictByCode() {
+      const res = await userCategory()
+      const res1 = await getCityInfo()
+      this.formGoup.materialGroupList = res.data
+      console.log(res1);
+      this.formGoup.provinceList = res1.data
+    }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
-
+    this.dictByCode()
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
