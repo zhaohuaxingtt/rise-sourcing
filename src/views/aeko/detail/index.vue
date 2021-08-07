@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-06 16:45:09
+ * @LastEditTime: 2021-08-07 10:27:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -52,6 +52,8 @@ import logButton from "@/components/logButton"
 import contentDeclare from "./components/contentDeclare"
 import partsList from "./components/partsList"
 import cover from "./components/cover"
+import attachment from "./components/attachment"
+import record from "./components/record"
 
 import {
   getAekoDetail,
@@ -70,6 +72,8 @@ export default {
     iText,
     partsList,
     cover,
+    attachment,
+    record,
   },
   created() {
     this.aekoInfo = {
@@ -99,8 +103,8 @@ export default {
         { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", components: ["partsList"] },
         { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", components: [ "contentDeclare" ] },
         { label: "封⾯表态", name: "cover", key: "FENGMIANBIAOTAI", components: ['cover'] },
-        { label: "审批附件", name: "c", key: "SHENPIFUJIAN", components: [] },
-        { label: "审批记录", name: "d", key: "SHENPIFUJIAN", components: [] }
+        { label: "审批附件", name: "attachment", key: "SHENPIFUJIAN", components: ['attachment'] },
+        { label: "审批记录", name: "record", key: "SHENPIFUJIAN", components: ['record'] }
       ],
     }
   },
