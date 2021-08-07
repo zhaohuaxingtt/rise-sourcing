@@ -9,7 +9,7 @@
     <iButton>{{language('LK_BAOCUN','保存')}}</iButton>
     <iButton>{{language('LK_TIJIAO','提交')}}</iButton>
     <iButton>{{language('LK_AEKO_CHEHUI','撤回')}}</iButton>
-    <iButton>{{language('LK_ZHONGZHI','重置')}}</iButton>
+    <iButton :loading="btnLoading" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
       <iFormGroup row="4">
@@ -145,6 +145,7 @@ export default {
         tableData:[],
         tableTitle:coverTableTitleCost,
         tableLoading:false,
+        btnLoading:false,
 
       }
     },
@@ -153,15 +154,13 @@ export default {
       this.getSearchUserList();
     },
     methods:{
-      // 获取列表
-      getList(){
-
-      },
       // 获取详情
       async getDetail(){
+        this.tableLoading = true;
         const {query} = this.$route;
         const { requirementAekoId =''} = query;
         await getLinieCoverDetail({requirementAekoId}).then((res)=>{
+          this.tableLoading = false;
           const { code,data={} } = res;
           if(code == 200){
             const {isTop={},isReference={},coverStatus={},isEffectpro={},fsId='',coverCostsWithCarType=[]} = data;
@@ -177,6 +176,8 @@ export default {
           }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
+        }).catch((err)=>{
+          this.tableLoading = false;
         })
       },
       // 获取前期采购员下拉列表
