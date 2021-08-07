@@ -410,7 +410,7 @@ module.exports = {
       },
       //椿慧的代理
       '/kpiPowerBiInfo': {
-        target: 'http://10.122.18.166:8036',
+        target: 'http://10.122.18.166:8036/aon',
         changeOrigin: true,
         pathRewrite: {
           '^/kpiPowerBiInfo': '',

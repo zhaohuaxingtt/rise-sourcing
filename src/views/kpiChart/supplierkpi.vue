@@ -3,8 +3,10 @@
         <iPage>
             <div class="head">
                 <div class="head-left">
-                    <iCard></iCard>
-                    <iCard></iCard>
+                    <div>
+                        <supplierkpiSearchFrom></supplierkpiSearchFrom>
+                    </div>
+                    <div></div>
                 </div>
                 <div class="head-right">
                     <div class="head-right-tittle">
@@ -28,13 +30,15 @@
 import kpiEchart from './components/kpiEchart'
 import supplierTable from './components/supplierTable'
 import {iButton,iPage,iCard} from 'rise'
+import supplierkpiSearchFrom from './components/supplierkpiSearchFrom'
 export default {
     components:{
         kpiEchart,
         supplierTable,
         iButton,
         iPage,
-        iCard
+        iCard,
+        supplierkpiSearchFrom
     },
     data(){
         return {
@@ -61,6 +65,11 @@ export default {
             height: 100%;
             background: #fff;
             border-radius: 10px;
+            .tittle{
+                font-size: 18px;
+                color: #000;
+                font-weight: bold;
+            }
         }
         .head-right{
             width: 24%;
