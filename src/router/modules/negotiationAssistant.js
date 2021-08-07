@@ -50,7 +50,7 @@ export default [{
       component: () =>
         import("@/views/partsrfq/bob/bob"),
     },
-    { 
+    {
       path: "partsrfq/bobNew",
       name: "bobNew",
       meta: {
@@ -59,7 +59,7 @@ export default [{
       component: () =>
         import("@/views/partsrfq/bob/newReport"),
     },
-    { 
+    {
       path: "partsrfq/mekInfoData",
       name: "mekInfoData",
       meta: {
@@ -83,7 +83,12 @@ export default [{
         title: "原材料价格总览",
       },
       component: () => import("@/views/partsrfq/piAnalyse/components/rawMateria/index"),
-    }
+    },
+    {
+      path: 'partsrfq/piAnalyseDetail',
+      name: 'piAnalyseDetail',
+      component: () => import('../../views/partsrfq/piAnalyse/piDetail')
+    },
   ]
 }]
 
