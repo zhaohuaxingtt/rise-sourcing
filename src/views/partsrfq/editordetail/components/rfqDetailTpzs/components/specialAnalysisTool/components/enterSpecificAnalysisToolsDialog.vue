@@ -91,8 +91,8 @@ export default {
         if (res.result) {
           this.tableListData = res.data
         }
-        if (res.total === 0) {
-          iMessage.error(this.language('BQBCZQCXSR', '抱歉，不存在，请重新输入'))
+        if(res.total===0){
+          iMessage.error(this.language('BQWFCXDJGQQRHCXSR','抱歉，无法查询到结果，请确认后重新输入'))
         }
         this.tableLoading = false
       } catch (error) {
