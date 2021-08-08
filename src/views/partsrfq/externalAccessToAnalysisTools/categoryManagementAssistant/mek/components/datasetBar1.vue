@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-05 19:34:44
+ * @LastEditTime: 2021-08-07 16:08:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -18,8 +18,7 @@ export default {
       myChart: null,
     };
   },
-  props: {
-  },
+  props: {},
   mounted() {
     this.$nextTick(() => {
       this.initCharts();
@@ -28,31 +27,32 @@ export default {
   methods: {
     initCharts() {
       this.myChart = echarts().init(this.$refs.chart);
+
       const option = {
         tooltip: {},
-        title:{
-            show:true,
-            subtext:"产量",
-            left:0,
-            top:-10
+        title: {
+          show: true,
+          subtext: "产量",
+          left: 0,
+          top: -10,
         },
         xAxis: [
           {
             type: "category",
             axisTick: { show: false },
-            data: ["2012"],
+            data: ["MIX", "配置一", "配置二"],
           },
         ],
         grid: {
-          left:40,
-          right:'-5%',
-          bottom:'8%',
-          top:"20%"
+          left: 40,
+          right: "-5%",
+          bottom: "8%",
+          top: "20%",
         },
         yAxis: {
           type: "value",
           axisLine: {
-            show: true,
+            show: false,
           },
         },
 
@@ -65,31 +65,33 @@ export default {
             emphasis: {
               focus: "series",
             },
-            barMinWidth: 30,
-            barMaxWidth : 60,
-            data: [500],
+            // barMinWidth: 30,
+            // barMaxWidth: 60,
+             barCategoryGap :"20%",
+            data: [
+              {
+                value: 400,
+                itemStyle: {
+                  color: "#A1D0FF",
+                },
+              },
+              {
+                value: 500,
+                itemStyle: {
+                  color: "#92B8FF",
+                },
+              },
+              {
+                value: 600,
+                itemStyle: {
+                  color: "#A1D0FF",
+                  itemStyle: {
+                    color: "#92B8FF",
+                  },
+                },
+              },
+            ],
           },
-          {
-            name: "Steppe",
-            type: "bar",
-            emphasis: {
-              focus: "series",
-            },
-            barMinWidth: 30,
-            barMaxWidth : 60,
-            data: [550],
-          },
-          {
-            name: "Desert",
-            type: "bar",
-            emphasis: {
-              focus: "series",
-            },
-            barMinWidth: 30,
-            barMaxWidth : 60,
-            data: [600],
-          },
-         
         ],
       };
       this.myChart.setOption(option);
