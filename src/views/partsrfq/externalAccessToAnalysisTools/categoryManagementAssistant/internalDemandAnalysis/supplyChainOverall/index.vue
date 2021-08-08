@@ -9,7 +9,7 @@
   <div id="allContainer" class="content">
     <theSearch :ntierQueryConditionDTO="ntierQueryConditionDTO" @handleSave="handleSave" @getMapList="getMapList" class="search" />
     <theCard :object="object" class="card-right" />
-    <chartMap ref="chartMap" :mapListData="mapListData" class="map" />
+    <chartMap ref="chartMap" :mapListData="mapListData" />
   </div>
 </template>
 
