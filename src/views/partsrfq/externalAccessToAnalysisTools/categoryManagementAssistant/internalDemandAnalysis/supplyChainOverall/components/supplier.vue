@@ -6,9 +6,12 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard :title="language('GONGYINGSHANG','供应商')">
+  <iCard>
     <el-row type="flex" justify="space-between" align="middle">
       <el-col :span="4">
+        <div class="title margin-bottom20">
+          {{language('GONGYINGSHANG','供应商')}}
+        </div>
         <img :src="supplier" alt="" width="50px">
       </el-col>
       <el-col :span="20">
@@ -35,7 +38,7 @@ export default {
   data() {
     // 这里存放数据
     return {
-      supplier:supplier,
+      supplier: supplier,
       tableListData: [
         {
           rfq: '256',
@@ -75,4 +78,8 @@ export default {
 </script>
 <style lang='scss' scoped>
 // @import url(); 引入公共css类
+.title {
+  font-size: 1.125rem;
+  font-weight: bold;
+}
 </style>

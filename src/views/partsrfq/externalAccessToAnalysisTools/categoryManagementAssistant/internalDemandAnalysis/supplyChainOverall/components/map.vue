@@ -38,6 +38,9 @@ export default {
   methods: {
     showCityInfo() {
       var map = new AMap.Map('container', {
+        WebGLParams: {
+          preserveDrawingBuffer: true
+        },
         resizeEnable: true, //是否监控地图容器尺寸变化
         zoom: 4, //初始地图级别
         center: [130, 39.239637], //初始地图中心点

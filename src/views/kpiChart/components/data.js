@@ -44,7 +44,7 @@ export const tabSetting = [
       align: 'center',
     },
     {
-      prop: 'supplierName',
+      prop: 'nameZh',
       label: '供应商名称',
       i18n: 'LK_GONGYINGSHANGMINGCHENG',
       align: 'center',

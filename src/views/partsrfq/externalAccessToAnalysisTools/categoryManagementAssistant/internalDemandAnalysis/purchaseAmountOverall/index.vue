@@ -23,10 +23,10 @@
       </div>
       <div>
         <iButton @click="handleSave" :loading="saveButtonLoading">{{$t('LK_BAOCUN')}}</iButton>
-        <iButton>{{$t('LK_FANHUI')}}</iButton>
+        <iButton @click="handleBack">{{$t('LK_FANHUI')}}</iButton>
         <div class="margin-top30">
           <iButton @click="handle">{{$t('LK_QUEREN')}}</iButton>
-          <iButton>{{$t('LK_CHONGZHI')}}</iButton>
+          <iButton @click="handleSearchReset">{{$t('LK_CHONGZHI')}}</iButton>
         </div>
       </div>
     </div>
@@ -220,6 +220,17 @@ export default {
       this.report = report
 
     },
+    // 返回
+    handleBack() {
+      this.$router.go(-1)
+    },
+    // 重置
+    handleSearchReset() {
+      this.form = {
+        year: '',
+        page: ''
+      }
+    }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {

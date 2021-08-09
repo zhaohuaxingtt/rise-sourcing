@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-07 10:24:35
- * @LastEditTime: 2021-08-07 12:06:02
+ * @LastEditTime: 2021-08-09 10:31:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\kpiChart\index.js
@@ -40,8 +40,8 @@ export function dowbloadAPI(data) {
 
 // 概览api
 export function getPowerBiKpi() {
-  return rr({
-    url: '/batchOverview/getSpiPbi',
+  return chrequst({
+    url: '/web/aon/batchOverview/getSpiPbi',
     method: 'GET'
   })
 }
@@ -56,11 +56,47 @@ export function getPowerBiSupplier(params) {
 }
 
 
-// 查询供应商api
+// 查询材料组
 export function getMaterialGroupByUserIds(data) {
   return chrequst({
-    url: '/api/aon/costStructure/getMaterialGroupByUserIds',
+    url: '/web/aon/costStructure/getMaterialGroupByUserIds',
     method: 'POST',
     data: data
   })
 }
+
+// 获取折线图
+
+export function getLine(data) {
+  return requst({
+    url: '/web/spi/spiTotalScore/getSpiIndexDistribute',
+    method: 'POST',
+    data: data
+  })
+}
+// 获取供应商列表
+export function spiTotalScore(data) {
+  return requst({
+    url: '/web/spi/spiTotalScore/info',
+    method: 'POST',
+    data: data
+  })
+}
+
+// 科股
+export function getRelationship(data) {
+  return requst({
+    url: '/web/shareRelationship/getRelationship',
+    method: 'POST',
+    data: data
+  })
+}
+// 工艺组
+export function getStuffByCategory(data) {
+  return requst({
+    url: '/web/spi/spiTotalScore/getStuffByCategory',
+    method: 'POST',
+    data: data
+  })
+}
+

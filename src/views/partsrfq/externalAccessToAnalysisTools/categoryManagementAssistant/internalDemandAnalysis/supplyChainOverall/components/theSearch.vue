@@ -11,7 +11,7 @@
       <div class="text margin-bottom20">{{ language('GYLGLNJGYLGL','供应链概览（N级供应链管理）')}}</div>
       <div>
         <iButton @click="$emit('handleSave',form)">{{language('BAOCUN','保存')}}</iButton>
-        <iButton>{{language('FANHUI','返回')}}</iButton>
+        <iButton @click="handleBack">{{language('FANHUI','返回')}}</iButton>
       </div>
     </div>
     <el-form label-width="50px" label-position="left">
@@ -76,9 +76,7 @@ export default {
         carType: '',
         part: '',
         province: '',
-        partsId: '',
         supplierName: '',
-
       },
       formGoup: {
         materialGroupList: [],
@@ -104,11 +102,25 @@ export default {
     },
     // 获取材料组数据||地区数据
     async dictByCode() {
-      const res = await userCategory()
+      const res = await userCategory({})
       const res1 = await getCityInfo()
       this.formGoup.materialGroupList = res.data
       console.log(res1);
       this.formGoup.provinceList = res1.data
+    },
+    // 返回
+    handleBack() {
+      this.$router.go(-1)
+    },
+    // 重置
+    handleSearchReset() {
+      this.form = {
+        categoryCode: '',
+        carType: '',
+        part: '',
+        province: '',
+        supplierName: '',
+      }
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

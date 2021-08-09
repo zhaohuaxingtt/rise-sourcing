@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 16:01:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-30 14:55:51
+ * @LastEditTime: 2021-08-06 17:09:05
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\selectcarpro\data.js
  */
@@ -13,5 +13,5 @@ export const tableTitle = [
   {props:'cartypeProType',name:'车型项目类型', key: "CHEXINGXIANGMULEIXING", tooltip: true},
   {props:'projectPurchaserName',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true},
   {props:'sop',name:'SOP时间', key: "SOPSHIJIAN", tooltip: true},
-  {props:'factoryNames',name:'工厂', key: "GONGCHANG", tooltip: true},
+  {props:'werk',name:'工厂', key: "GONGCHANG", tooltip: true},
 ]

@@ -6,9 +6,12 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard :title="language('CAILIAOZU','材料组')">
+  <iCard>
     <el-row type="flex" justify="space-between" align="middle">
       <el-col :span="4">
+        <div class="title margin-bottom20">
+          {{language('CAILIAOZU','材料组')}}
+        </div>
         <img :src="supplier" alt="" width="50px">
       </el-col>
       <el-col :span="20">
@@ -70,4 +73,8 @@ export default {
 </script>
 <style lang='scss' scoped>
 // @import url(); 引入公共css类
+.title {
+  font-size: 1.125rem;
+  font-weight: bold;
+}
 </style>
