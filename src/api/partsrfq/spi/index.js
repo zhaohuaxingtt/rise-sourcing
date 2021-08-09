@@ -10,10 +10,34 @@ import axios from '@/utils/axios'
 
 const request = axios(process.env.VUE_APP_AON)
 
-export function getDefaultCostStructure(params) {
+export function getFocusSupplierList(params) {
   return request({
-    url: '/costStructure/getDefaultCostStructure',
-    method: 'POST',
+    url: '/spiReport/getFocusSupplierList',
+    method: 'post',
     data: params
+  })
+}
+
+export function getReason(params) {
+  return request({
+    url: '/spiReport/getReason',
+    method: 'get',
+    params: params
+  })
+}
+
+export function getReportDetail(params) {
+  return request({
+      url: '/spiReport/getReportDetail',
+      method: 'POST',
+      data: params
+  })
+}
+
+export function getInfo(params) {
+  return request({
+    url: '/spiReport/info',
+    method: 'get',
+    params: params
   })
 }

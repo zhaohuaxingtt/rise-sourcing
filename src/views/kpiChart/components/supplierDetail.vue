@@ -79,7 +79,7 @@
 
 <script>
 import {iPage,iCard,iSelect} from 'rise'
-import { getReason, getInfo, getReportDetail } from '@/api/partsrfq/costAnalysis/index.js'
+import { getReason, getInfo, getReportDetail } from '@/api/partsrfq/spi/index.js'
 import { iMessage } from '@/components';
 export default {
     components:{

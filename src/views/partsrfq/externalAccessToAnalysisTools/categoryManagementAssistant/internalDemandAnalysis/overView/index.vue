@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-07 19:37:56
+ * @LastEditTime: 2021-08-09 10:28:37
  * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
@@ -88,7 +88,9 @@ export default {
       switch (item.key) {
         // 成本结构
         case 'CHENGBENZUCHENG':
-          this.getCostData().then(type => {
+          this.getCostData({
+            categoryCode: '111'
+          }).then(type => {
             if(type == 1) {
               //跳转系统
               this.$router.push({

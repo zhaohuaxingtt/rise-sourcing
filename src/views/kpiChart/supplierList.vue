@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-07 19:35:29
+ * @LastEditTime: 2021-08-09 09:46:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\supplierList.vue
@@ -38,7 +38,7 @@ import {setCloum} from './components/data'
 import supplierDetail from './components/supplierDetail'
 import iDialog from '@/components/iDialog/index'
 import { iMessage } from '@/components';
-import { getFocusSupplierList } from '@/api/partsrfq/costAnalysis/index.js'
+import { getFocusSupplierList } from '@/api/partsrfq/spi/index.js'
 export default {
     components:{
         iButton,
