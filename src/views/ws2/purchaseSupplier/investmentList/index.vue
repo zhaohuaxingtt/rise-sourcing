@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-permission="PURCHASE_MOULDINVESTMENTSUPPLIER_LIST">
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
