@@ -6,16 +6,20 @@
 <template>
   <iCard class="aeko-editCover">
     <template v-slot:header-control>
-    <iButton :loading="btnLoading" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
-    <iButton :loading="btnLoading">{{language('LK_TIJIAO','提交')}}</iButton>
+    <iButton :loading="btnLoading" @click="save()">{{language('LK_BAOCUN','保存')}}</iButton>
+    <iButton :loading="btnLoading" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
     <iButton :loading="btnLoading">{{language('LK_AEKO_CHEHUI','撤回')}}</iButton>
     <iButton :loading="btnLoading" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
-      <iFormGroup row="4">
+      <iFormGroup row='4'>
         <iFormItem v-for="(item, index) in basicTitle" :key="index" :required="item.required" :label="language(item.labelKey, item.label)+':'" >
           <template v-if="item.editable && isEdit">
-            <iInput v-if="item.type === 'input'" v-model="basicInfo[item.props]"  />
+            <template v-if="item.type === 'input'">
+              <!-- 新⾸批送样周期(周数)处理正整数 -->
+              <iInput v-if="item.props == 'sendCycle'" @input="handleNumber($event,basicInfo,'sendCycle')" v-model="basicInfo[item.props]"  />
+              <iInput v-else v-model="basicInfo[item.props]"  />
+            </template>
             <iSelect v-else-if="item.type === 'select'" v-model="basicInfo[item.props]" >
               <el-option
                 :value="item.value"
@@ -108,6 +112,7 @@ import {
   getLinieCoverDetail,
   getFsUser,
   coverSave,
+  coverSubmit,
 } from '@/api/aeko/detail/cover.js'
 export default {
     name:'editCover',
@@ -207,11 +212,15 @@ export default {
       },
       
       handleNumber(val, row, props) {
-        console.log(val, row, props);
-        this.$set(row, props, numberProcessor(val, 2));
+        if(props == 'sendCycle'){
+           this.$set(this.basicInfo, props, numberProcessor(val, 0));
+        }else{
+           this.$set(row, props, numberProcessor(val, 2));
+        }
+       
       },
-      // 保存
-      async save(){
+      // 保存或者提交
+      async save(type='save'){
         const {basicInfo,selectOptions} = this;
         const {fsList=[]} = selectOptions;
         const fsName = fsList.filter((item)=>item.value == basicInfo.fsName);
@@ -223,19 +232,35 @@ export default {
           fsName:fsName.length ? fsName[0].label : '',
         }
         this.btnLoading = true;
-        await coverSave(data).then((res)=>{
-          this.btnLoading = false;
-          const {code} = res;
-          if(code == 200){
-            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-            this.getDetail();
-          }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          }
+        if(type == 'submit'){ // 提交
+          await coverSubmit(data).then((res)=>{
+              this.btnLoading = false;
+              const {code} = res;
+              if(code == 200){
+                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                this.getDetail();
+              }else{
+                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+              }
 
-        }).catch((err)=>{
-          this.btnLoading = false;
-        })
+            }).catch((err)=>{
+            this.btnLoading = false;
+          })
+        }else{ // 保存
+          await coverSave(data).then((res)=>{
+            this.btnLoading = false;
+            const {code} = res;
+            if(code == 200){
+              iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+              this.getDetail();
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            }
+
+          }).catch((err)=>{
+            this.btnLoading = false;
+          })
+        }
       },
     }
 }
