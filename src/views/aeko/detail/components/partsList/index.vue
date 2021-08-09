@@ -15,7 +15,7 @@
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
             :label="language(item.labelKey,item.label)"  
             >
-                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props)">
+                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
                     <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                         v-for="item in selectOptions[item.selectOption] || []"
@@ -117,6 +117,7 @@ import {
     searchBrand,
     searchCartypeProject,
     searchLinie,
+    getSearchCartype,
 } from '@/api/aeko/manage'
 import { cloneDeep } from "lodash"
 import {user as configUser } from '@/config'
@@ -180,10 +181,12 @@ export default {
             searchParams:{
                 brand:'',
                 cartypeCode:[],
+                cartype:'',
             },
             selectOptions:{
                 cartypeCode:[],
                 buyerName:[],
+                cartype:[],
             },
             selectItems:[],
             loading:false,
@@ -239,12 +242,12 @@ export default {
             const {query} = this.$route;
             const { requirementAekoId ='',} = query;
             const { page,searchParams,aekoInfo={} } = this;
-            // const {partNum} = searchParams;
+            console.log(searchParams,'searchParams');
             let cartypeCode=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
                 if(aekoInfo.aekoType.code == 'AeA'){  // 车型
-                    cartypeCode = searchParams.cartype ? [searchParams.cartype.trim()] : [];
+                    cartypeCode = searchParams.cartype ? [searchParams.cartype] : [];
                 }else if(aekoInfo.aekoType.code == 'aeko/mp'){ // 车型项目
                     cartypeCode = searchParams.cartypeCode;
                 }
@@ -306,6 +309,20 @@ export default {
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
+            })
+
+            // 车型
+            getSearchCartype().then((res)=>{
+            const {code,data} = res;
+            if(code ==200){
+                data.map((item)=>{
+                item.desc = item.name;
+                item.code = item.name;
+                })
+                this.selectOptions.cartype = data.filter((item)=>item.name) || [];
+            }else{
+                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
             })
 
         },
@@ -406,7 +423,10 @@ export default {
             .catch(() => this.loading = false)
         },
         // 多选处理
-        handleMultipleChange(value, key) {
+        handleMultipleChange(value, key,multiple) {
+            // 单选不处理
+            if(!multiple) return;
+
             if (!value[value.length - 1]) {
                 this.$set(this.searchParams, key, [""])
             } else {

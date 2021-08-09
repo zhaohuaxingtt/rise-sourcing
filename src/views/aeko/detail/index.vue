@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-09 14:27:05
+ * @LastEditTime: 2021-08-09 14:29:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -149,7 +149,6 @@ export default {
 
     // 跳转到描述页
     goToDetail(){
-      // aekoInfo.aekoCode
        const { aekoInfo } = this;
        const {requirementAekoId,aekoCode} = aekoInfo;
         const routeData = this.$router.resolve({
