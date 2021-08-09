@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 17:45:55
+ * @LastEditTime: 2021-08-09 16:49:44
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -21,18 +21,18 @@
           <iButton @click="handleExport" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
-      <tableList indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular">
+      <tableList class="regularTable" indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular">
       </tableList> 
     </template>
     <template v-if="isShowProgress">
-      <div class="margin-bottom20 clearFloat margin-top20">
+      <div class="margin-bottom20 clearFloat margin-top30 padding-top30 borderTop">
         <span class="font18 font-weight">{{language('NIHEJINDU', '拟合进度')}}</span>
       </div>
-      <tableList v-update indexKey :tableTitle="partTableTitle" :tableData="fitTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
+      <tableList class="fitTable" v-update indexKey :tableTitle="partTableTitle" :tableData="fitTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
       </tableList> 
     </template>
     <template>
-      <div class="margin-bottom20 clearFloat margin-top20">
+      <div class="margin-bottom20 clearFloat margin-top30 padding-top30 borderTop">
         <span class="font18 font-weight">{{language('PIPEILINGJIANHAOLISHIJINDU', '匹配零件号历史进度')}}</span>
       </div>
       <tableList v-update indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangePart">
@@ -45,7 +45,7 @@
       />
     </template>
     <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="productLogicList" :logicData="logicData" :selectOptions="logicSelectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
-    <showItemDialog ref="showItem" :dialogVisible="showItemVisible" @changeVisible="changeShowItem" :checkList="checkList" type="1" />
+    <showItemDialog ref="showItem" :dialogVisible="showItemVisible" @changeVisible="changeShowItem" :checkList="checkList" type="1" :disabledColumn="disabledColumn" :defaultColumn="defaultColumn" />
   </iCard>
 </template>
 
@@ -85,7 +85,28 @@ export default {
       selectRowRegular: [],
       selectRowFit: [],
       selectRowPart: [],
-      downloadLoading: false
+      downloadLoading: false,
+      defaultColumn: [
+        'CHANPINZUBIANHAO',
+        'CHANPINZUZHONGWENMINGCHENG',
+        'CHANPINZUDEWENMINGCHENG',
+        'LINGJIANHAO',
+        'CHEXINGXIANGMU',
+        'SHIFANGDINGDIANZHOU',
+        'DINGDIANBFZHOU',
+        'BFFIRSTTRYOUTZHOU',
+        'FIRSTTRYOUTOTSZHOU',
+        'FIRSTTRYOUTEMZHOU',
+        'SOURCINGLEIXING',
+        'SHIFOUBMG',
+        'SHIFOUSEL'
+      ],
+      disabledColumn: [
+        'CHANPINZUBIANHAO',
+        'CHANPINZUZHONGWENMINGCHENG',
+        'CHANPINZUDEWENMINGCHENG',
+        'LINGJIANHAO'
+      ]
     }
   },
   computed: {
@@ -102,13 +123,16 @@ export default {
       }
     },
     partTableTitle() {
-      return partTableTitle.filter(item => item.disabled || this.selectColumn.includes(item.key))
+      if (this.selectColumn.length < 1) {
+        return partTableTitle.filter(item => this.defaultColumn.includes(item.key))
+      }
+      return partTableTitle.filter(item => this.selectColumn.includes(item.key))
     },
     checkList() {
       return cloneDeep(partTableTitle).map(item => {
         return {
           ...item,
-          isSelect: item.disabled || this.selectColumn.includes(item.key)
+          isSelect: this.selectColumn.length < 1 ? this.defaultColumn.includes(item.key) : this.selectColumn.includes(item.key)
         }
       })
     },
@@ -340,5 +364,22 @@ export default {
 <style lang="scss" scoped>
 .withBorder {
   border: 2px solid #1763F7;
+}
+.fitTable {
+  ::v-deep .el-table__body-wrapper{
+    min-height: unset;
+  }
+}
+.regularTable {
+  ::v-deep .el-table__body-wrapper{
+    min-height: 200px;
+    // max-height: 200px;
+  }
+  &::before {
+    height: 0;
+  }
+}
+.borderTop {
+  border-top: 1px dashed rgba(65, 67, 74, .2);
 }
 </style>

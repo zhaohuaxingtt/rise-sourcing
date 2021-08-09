@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 18:20:21
+ * @LastEditTime: 2021-08-09 16:46:38
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -14,10 +14,11 @@ const requst = axios(process.env.VUE_APP_PROJECT)
 const downloadRequst = axiosDownload(process.env.VUE_APP_PROJECT)
 
 // 产品组排程-获取车型项目下拉
-export function getCarTypePro() {
+export function getCarTypePro(params) {
   return requst({
     url: '/car-type',
     method: 'GET',
+    params
   })
 }
 
