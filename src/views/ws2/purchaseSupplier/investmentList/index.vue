@@ -252,7 +252,7 @@ export default {
         linieId: this.linieName,
         moldInvestmentStatus: this.moldInvestmentStatus.join(),
         behalfPartsNum: this.partsNum,
-        tmCartypeProId: this.carTypeProject.join(),
+        tmCartypeProId: this.carTypeProject,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
