@@ -76,7 +76,7 @@ export const bmTableHead = [
     tooltip: false
   },
   {
-    props: 'bmStatusName',
+    props: 'businessStatusName',
     name: '业务处理状态',
     key: 'LK_YEWUCHULIZHUANGTAI',
     tooltip: false

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-permission="PURCHASE_MOULDINVESTMENTSUPPLIER_LIST">
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
@@ -7,7 +7,7 @@
         @reset="reset"
         :icon="true"
         :resetKey="PARTSPROCURE_RESET"
-        :searchKey="PARTSPROCURE_CONFIRM"
+        :searchKey="LK_CHAXUN"
         v-loading="loadingiSearch"
     >
       <el-form>
