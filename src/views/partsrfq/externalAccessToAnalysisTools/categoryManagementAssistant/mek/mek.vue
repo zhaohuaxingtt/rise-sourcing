@@ -39,7 +39,7 @@
           <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
         </div>
       </template>
-      <el-table tooltip-effect='light' ref="multipleTable" :data="tableListData" style="width: 100%; margin-bottom: 20px" row-key="id" :max-height="450" :row-class-name="rowStyle" :tree-props="{ children: 'reportList' }" @selection-change="handleSelectionChange" @select="rowSelect" @select-all="selectAll">
+      <el-table v-loading="tableLoading" tooltip-effect='light' ref="multipleTable" :data="tableListData" style="width: 100%; margin-bottom: 20px" row-key="id" :max-height="450" :row-class-name="rowStyle" :tree-props="{ children: 'reportList' }" @selection-change="handleSelectionChange" @select="rowSelect" @select-all="selectAll">
         <el-table-column type="selection" width="55"> </el-table-column>
         <el-table-column label="#" type="index" :index="indexMethod" align="center" header-align="center" width="40">
         </el-table-column>
@@ -386,17 +386,13 @@ export default {
     },
     // 点击置顶按钮
     handleStick(val) {
-      const params = window._.cloneDeep(val);
-      params.isTop = !val.isTop;
-      fetchStaick(params).then((res) => {
-        if (res) {
-          if (res.code == 200) {
-            val.isTop = !val.isTop;
-            iMessage.success(res.desZh);
-            // this.getTableList();
-          } else iMessage.error(res.desZh);
+      console.log(val);
+      this.tableListData.map(item => {
+        if (item.id === val.id) {
+          return item.isTop = !item.isTop
         }
-      });
+      })
+      this.saveEdit()
     },
     // 点击名称,触发跳转事件
     clickName(val) {
