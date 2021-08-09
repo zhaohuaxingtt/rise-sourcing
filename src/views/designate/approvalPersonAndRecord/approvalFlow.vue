@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 00:41:04
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 12:27:37
+ * @LastEditTime: 2021-08-09 14:46:17
  * @Description: 审批流弹窗
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\approvalFlow.vue
 -->
@@ -86,6 +86,9 @@ export default {
       this.$emit('changeVisible', false)
     },
     async getFlow() {
+      if (!this.processInstanceId) {
+        return
+      }
       const res = await getInstDetail(this.processInstanceId) || mockData
         if(res) {
           this.flowData = [
