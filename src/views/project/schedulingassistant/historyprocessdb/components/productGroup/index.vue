@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 09:36:01
+ * @LastEditTime: 2021-08-06 17:45:55
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -206,7 +206,12 @@ export default {
     },
     init() {
       this.getExperience()
-      this.getCondition()
+      if (this.$route.query.cartypeProId) {
+        this.logicData = this.searchParams
+        this.getFitting()
+      } else {
+        this.getCondition()
+      }
     },
     /**
      * @Description: 获取经验常值列表
