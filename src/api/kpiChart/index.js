@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-07 10:24:35
- * @LastEditTime: 2021-08-09 10:31:43
+ * @LastEditTime: 2021-08-09 13:48:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\kpiChart\index.js
@@ -99,4 +99,15 @@ export function getStuffByCategory(data) {
     data: data
   })
 }
+
+// 折叠表头页面
+export function getTableData(data) {
+  return requst({
+    url: '/web/kpi/totalScore/list',
+    method: 'GET',
+    params: data
+  })
+}
+
+
 

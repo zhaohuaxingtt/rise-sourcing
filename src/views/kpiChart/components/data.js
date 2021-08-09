@@ -1,35 +1,47 @@
 /*
+ * @Author: your name
+ * @Date: 2021-08-04 20:49:10
+ * @LastEditTime: 2021-08-09 15:45:29
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\kpiChart\components\data.js
+ */
+/*
     设置开始点 start:true
     设置开始点 start:true
 */
 export const tabSetting = [
-  {
-    prop:"roleName",
-    label: '角色ID',
-  },
-  {
-    prop:"id",
-    label: '开始代码',
-    icon:"el-icon-minus",
-    start:true
-  },
-  {
-    prop:"code",
-    label: '角色名称',
-  },{
-    prop:"fullNameZh",
-    label: '角色ID',
-  },
-  {
-    prop:"code",
-    label: '结束代码',
-    icon:"el-icon-plus",
-    start:false
-  },
-  {
-    prop:"aa",
-    label: '角色名称',
-  },]
+    {
+      prop:"nameZh",
+      label: '供应商名称',
+    },
+    {
+      prop: "all",
+      label: 'KPI(ALL)',
+    },
+    {
+      prop:"cs",
+      label: 'KPI(CS)',
+      icon:"el-icon-minus",
+      start:true
+    },
+    {
+      prop: "mq",
+      label: 'KPI(MQ)',
+    },
+    {
+      prop: "tl",
+      label: 'KPI(TL)',
+    },
+    {
+      prop: "tp",
+      label: 'KPI(TP)',
+    },
+    {
+      prop: "kpi",
+      label: 'KPI(SA)',
+    },
+  ]
 
   export const tabsetting = [
     {
