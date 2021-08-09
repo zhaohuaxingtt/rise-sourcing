@@ -1,6 +1,7 @@
 <template>
     <div>
         <iPage>
+            <publicHeaderMenu></publicHeaderMenu>
             <div class="head">
                 <div class="head-left">
                     <div>
@@ -35,9 +36,11 @@ import supplierTable from './components/supplierTable'
 import {iButton,iPage,iCard} from 'rise'
 import supplierkpiSearchFrom from './components/supplierkpiSearchFrom'
 import {spiTotalScore} from '@/api/kpiChart'
+import publicHeaderMenu from './commonHeardNav/headerNav'
 
 export default {
     components:{
+        publicHeaderMenu,
         kpiEchart,
         supplierTable,
         iButton,

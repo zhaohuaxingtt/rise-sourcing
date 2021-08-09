@@ -121,6 +121,12 @@ export default [{
           meta: { title: "市场数据" },
           component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/marketData'),
         },
+        {
+          path: '/svwInfo',
+          name: 'svwInfo',
+          meta: { title: "svw" },
+          component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/svw'),
+        },
       ]
     },
     {

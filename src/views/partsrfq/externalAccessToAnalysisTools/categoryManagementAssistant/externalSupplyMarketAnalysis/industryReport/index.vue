@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-09 10:27:58
+ * @LastEditTime: 2021-08-09 20:21:47
  * @LastEditors: 舒杰
  * @Description: 行业报告
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\index.vue
@@ -23,9 +23,9 @@
 				:on-success="handleAvatarSuccess"
 				:http-request="myUpload"
 				accept=".pdf">	
-				<iButton :loading="uploadButtonLoading">{{ language("SHUANGCHUAN", "上传") }}</iButton>
+				<iButton :loading="uploadButtonLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
 			</el-upload>
-				<iButton>{{ language("XIAZAI", "下载") }}</iButton>
+				<iButton @click="down">{{ language("XIAZAI", "下载") }}</iButton>
 				<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 			</div>
       </template>
@@ -37,10 +37,10 @@
 			@handleSelectionChange="handleSelectionChange">
 			<template #onlineWeb="scope">
 				<iInput v-model="scope.row.onlineWeb" v-if="isEdit"></iInput>	
-				<span class="openPage" @click="openPdf(scope.row.downloadUrl)" v-else>{{scope.row.onlineWeb}}</span>
+				<span class="openPage" @click="openPdf(scope.row.onlineWeb)" v-else>{{scope.row.onlineWeb}}</span>
 			</template>
 			<template #openFile="scope">
-				<span class="openPage" @click="openPdf(scope.row.downloadUrl)">{{ language("YULAN","预览") }}</span>
+				<span class="openPage" @click="openPdf(scope.row.fileUrl)">{{ language("YULAN","预览") }}</span>
 			</template>
 		</tableList>
 		<iPagination
@@ -79,9 +79,11 @@
 				tableLoading:false,
 				selectData:[],
 				isEdit:false,// 是否编辑
+				categoryCode:""
 			}
 		},
 		created() {
+			this.categoryCode=this.$store.state.rfq.categoryCode
 			this.getTableList()
 		},
 		methods:{
@@ -91,7 +93,7 @@
 			getTableList(){
 				this.tableLoading=true
 				let data={
-					categoryCodeList:["1"],
+					categoryCodeList:[this.categoryCode],
 					pageNo:this.page.currPage,
 					pageSize:this.page.pageSize,
 				}
@@ -123,7 +125,7 @@
 				}
 				let fileName=[]
 				this.selectData.map(item=>{
-					fileName.push(item.downloadName)
+					fileName.push(item.reportName)
 				})
 				const req = {
 					applicationName: 'rise',
@@ -138,13 +140,9 @@
 				});
 				const formData = new FormData();
 				formData.append('file', content.file);
-				formData.append('categoryCode', '');
+				formData.append('categoryCode', this.categoryCode);
+				formData.append('userId ', this.$store.state.permission.userInfo.id);
 				const res = await uploadReport(formData);
-				// const result=await saveReport({
-				// 	fileName:res.data[0].fileName,
-				// 	fileUrl:res.data[0].filePath,
-				// 	categoryCode:""
-				// })
 				loading.close()
 				this.resultMessage(res,()=>{
 					this.getTableList()

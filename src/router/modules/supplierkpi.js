@@ -1,10 +1,14 @@
 export default [
     {
-        path: "/supplier/kpi",
+        path: "/supplier/index",
         name: "index",
         component: () => import ("@/layout/default"),
         redirect: "/supplier/kpi",
         children:[{
+            path: "/supplier/index",
+            name: "index",
+            component: () => import("@/views/kpiChart/index"),
+        },{
             path: "/supplier/kpi",
             name: "supplierkpi",
             component: () => import("@/views/kpiChart/supplierkpi"),
@@ -32,6 +36,10 @@ export default [
             path: "/supplier/supplierKpiTreeTable",
             name: "supplierKpiTreeTable",
             component: () => import("@/views/kpiChart/supplierKpiTreeTable"),
+        },{
+            path: "/supplier/svw",
+            name: "svw",
+            component: () => import("@/views/kpiChart/svw"),
         }]
         
     }

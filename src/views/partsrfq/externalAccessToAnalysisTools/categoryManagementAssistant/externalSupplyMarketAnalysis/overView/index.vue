@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       card1Param: {
-        url: '',
+        url: '/svwInfo',
         data: {},
       },
       card2Param: {
