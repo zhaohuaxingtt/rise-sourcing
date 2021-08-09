@@ -7,7 +7,11 @@
                 <el-form-item
                   class="SearchOption"
                 >
-                <iInput suffix-icon="el-icon-search"></iInput>
+                <iInput 
+                suffix-icon="el-icon-search"
+                v-model="supplierName"
+                @select="handleSelect"
+                ></iInput>
                 </el-form-item>
                </el-form>
                <div>
@@ -24,6 +28,7 @@
 <script>
 import {iButton,iPage,iCard,iInput,iSelect,iTableCustom} from 'rise'
 import * as pbi from 'powerbi-client';
+import { getPowerBiKpi,getPowerBiSupplier } from '@/api/kpiChart'
 export default {
     components:{
         iButton,
@@ -40,12 +45,24 @@ export default {
             config:{},
             reportContainer:null,
             report:null,
-     
+            supplierName:"公司",
+            configApiData:{},
+            company:[]
         }
     },
+    created(){
+         getPowerBiKpi({}).then(res=>{
+            this.configApiData={...res.data}
+        })
+        getPowerBiSupplier({keyWord:"1234"}).then(res=>{
+            this.company=this.data
+        })
+    },
     mounted(){
+        console.log(this.configApiData.embedUrl)
         this.init()
         this.renderBi()
+
     },
     methods:{
         // 初始化配置
@@ -54,7 +71,8 @@ export default {
 				this.config = {
                     type: 'report',
 					tokenType: pbi.models.TokenType.Embed,
-                    embedUrl:'',
+                    embedUrl:this.configApiData.embedUrl,
+                    accessToken:this.configApiData.accessToken,
 					workspaceid:'876776a9-f959-442e-a011-b4bade0dd862',
                     reportid:'437fd85e-323d-48b6-aedd-de8d63ce6f37',
                     pageName:'ReportSection680575c9e561c8d8bd83',
@@ -112,6 +130,24 @@ export default {
 				});
 				this.report=report
 			},
+            querySearchAsync(queryString, cb) {
+                    var restaurants = this.restaurants;
+                    var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+
+                    clearTimeout(this.timeout);
+                    this.timeout = setTimeout(() => {
+                    cb(results);
+                    }, 3000 * Math.random());
+                },
+                createStateFilter(queryString) {
+                    return (state) => {
+                    return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                    };
+                },
+            handleSelect(item) {
+                console.log(item);
+            },
+
     }
 }
 </script>

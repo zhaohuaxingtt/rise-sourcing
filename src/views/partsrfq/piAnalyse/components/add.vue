@@ -1,0 +1,175 @@
+<!--
+ * @Author: youyuan
+ * @Date: 2021-08-05 21:18:14
+ * @LastEditTime: 2021-08-06 14:42:50
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
+-->
+<template>
+  <div class="contentBox">
+    <iDialog :title="language('XINZENGFENXIFANGAN', '新增分析方案')" :visible.sync="value" width="80%">
+      <div class="optionBox">
+        <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
+          <el-form-item style="marginRight:68px" :label="language('LINGJIANHAO', '零件号')">
+            <iInput v-model="searchForm['partNo']" :placeholder="language('QINGSHURU','请输入')"></iInput>
+          </el-form-item>
+          <el-form-item style="marginRight:68px" :label="language('RFQHAOMINGCHENG', 'RFQ号-名称')">
+            <iInput v-model="searchForm['rfq']" :placeholder="language('QINGSHURU','请输入')"></iInput>
+          </el-form-item>
+          <el-form-item class="searchButton">
+            <el-button @click="handleSubmitSearch">{{language('QR', '确认')}}</el-button>
+            <el-button @click="handleSearchReset">{{language('CZ', '重置')}}</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class="targetTableBox" v-if="targetTableData.length > 0">
+        <tableList
+          ref="targetTable"
+          :tableData="targetTableData"
+          :tableTitle="addTableTitle"
+          :tableLoading="loading"
+          :index="true"
+          @handleSelectionChange="selectMainTableData">
+        </tableList>
+      </div>
+      <el-divider style="marginTop: 20px;"></el-divider>
+      <div class="mainTableBox">
+        <tableList
+          :tableData="mainTableData"
+          :tableTitle="addTableTitle"
+          :tableLoading="loading"
+          :index="true"
+          @handleSelectionChange="selectMainTableData">
+        </tableList>
+      </div>
+      <div class="flooterBox">
+        <iButton @click="clickAdd">{{language('TIANJIA', '添加')}}</iButton>
+        <iButton @clicl="clickAnalysis">{{language('JINRUFENXI', '进入分析')}}</iButton>
+      </div>
+    </iDialog>
+  </div>
+</template>
+
+<script>
+import { iDialog, iInput, iButton } from 'rise'
+import tableList from '@/components/ws3/commonTable';
+import { addTableTitle } from './data'
+export default {
+  components: {
+    iDialog,
+    iInput,
+    iButton,
+    tableList
+  },
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    },
+  },
+  data () {
+    return {
+      searchForm: {},
+      addTableTitle,
+      mainTableData: [],
+      targetTableData: [],
+      selectMainData: [],
+      selectTargetData: [],
+      loading: true,
+    }
+  },
+  created() {
+    this.initTestData()
+  },
+  methods: {
+    // 初始化测试数据
+    initTestData() {
+      this.mainTableData = [
+        {id: 1, fsNo: '21-12222', partNo: '20D 023 306 11A', rfq: '123231231-名称', supplierName: '上海AA汽车', factory: 'OD', cardTypeProject: 'SOP (Lavida A)', sopDate: '2021/09至2021/03'},
+        {id: 2, fsNo: '21-13333', partNo: '20D 023 306 11A', rfq: '123231231-名称', supplierName: '上海AA汽车', factory: 'OD', cardTypeProject: 'SOP (Lavida A)', sopDate: '2021/09至2021/03'},
+        {id: 3, fsNo: '21-14444', partNo: '20D 023 306 11A', rfq: '123231231-名称', supplierName: '上海AA汽车', factory: 'OD', cardTypeProject: 'SOP (Lavida A)', sopDate: '2021/09至2021/03'},
+        {id: 4, fsNo: '21-15555', partNo: '20D 023 306 11A', rfq: '123231231-名称', supplierName: '上海AA汽车', factory: 'OD', cardTypeProject: 'SOP (Lavida A)', sopDate: '2021/09至2021/03'},
+      ]
+      this.loading = false
+    },
+    // 选中主表格数据
+    selectMainTableData(val) {
+      this.selectMainData = val
+    },
+    // 点击添加按钮
+    clickAdd() {
+      this.targetTableData = this.targetTableData.concat(this.selectMainData)
+      this.selectTargetData = this.selectTargetData.concat(this.selectMainData)
+      this.selectMainData.forEach(item => {
+        const index = this.mainTableData.findIndex(mainItem => mainItem == item)
+        this.mainTableData.splice(index, index + 1)
+      })
+      this.$nextTick(() => {
+        this.renderTargetTable()
+
+      })
+    },
+    // 默认选中target表格数据
+    renderTargetTable() {
+      this.selectTargetData.forEach(item => {
+        this.$refs.targetTable.$refs.dataTable.toggleRowSelection(item, true)
+      })
+    },
+    // 点击进入分析
+    clickAnalysis() {
+      
+    },
+  }
+}
+</script>
+
+<style lang='scss' scoped>
+.contentBox {
+  position: relative;
+  .optionBox {
+    .searchButton {
+      margin-top: 50px;
+      float: right;
+      z-index: 100;
+      button {
+        width: 100px;
+        height: 35px;
+        border: none;
+        background-color: #EEF2FB;
+        font-weight: bold;
+        color: #1660F1;
+        font-size: 16px;
+      }
+    }
+  }
+  .contentBox {
+    margin-top: 48px;
+    padding-bottom: 30px;
+    .tableOptionBox {
+      .tableTitle {
+        display: inline;
+        font-weight: bold;
+        font-size: 16px;
+        color: #000;
+      }
+      button {
+        float: right;
+        z-index: 100;
+        margin-bottom: 20px;
+      }
+    }
+  }
+  .targetTableBox {
+    ::v-deep .el-table .el-table__body-wrapper {
+      min-height: auto;
+    }
+  }
+  .flooterBox {
+    position: absolute;
+    bottom: 10px;
+    right: 40px;
+  }
+}
+ 
+</style>

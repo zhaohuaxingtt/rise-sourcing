@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 18:18:47
+ * @LastEditTime: 2021-08-06 18:20:21
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -261,6 +261,15 @@ export function updateFields(params) {
 export function downloadHistoryProgressFile(params) {
   return downloadRequst({
     url: '/history-progress/historyProgressFile',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 验证产品组是否能发送
+export function validSchedule(params) {
+  return requst({
+    url: '/progress-confirm/validSchedule',
     method: 'POST',
     data: params
   })
