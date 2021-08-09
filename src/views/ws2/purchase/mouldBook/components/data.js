@@ -44,7 +44,7 @@ export const bmTableHead = [
     tooltip: false
   },
   {
-    props: 'behalfPartsName',
+    props: 'behalfPartsNum',
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     tooltip: false
@@ -256,12 +256,14 @@ export const assetsTableHead = [
     props: 'assetNum',
     name: '固资编号',
     key: 'LK_GUZIBIANHAO',
+    width: 100,
     tooltip: false
   },
   {
     props: 'assetName',
     name: '固资名称',
     key: 'LK_GUZIMINGCHEN',
+    width: 200,
     tooltip: false
   },
   {
@@ -286,12 +288,14 @@ export const assetsTableHead = [
     props: 'assetTypeNum',
     name: '资产分类编号',
     key: 'LK_ZICHANFENLEIBIANHAO',
+    width: 100,
     tooltip: false
   },
   {
     props: 'partsTotalName',
     name: '零件总成名称',
     key: 'LK_LINGJIANZONGCHENMINGCHEN',
+    width: 100,
     tooltip: false
   },
   {
@@ -313,9 +317,16 @@ export const assetsTableHead = [
     tooltip: false
   },
   {
+    props: 'carTypeProName',
+    name: '车型项目',
+    key: 'LK_CHEXINGXIANGMU',
+    tooltip: false
+  },
+  {
     props: 'partsName',
     name: '零部件名称',
     key: 'LK_LINGBUJIANMINGCHEN',
+    width: 150,
     tooltip: false
   },
   {
