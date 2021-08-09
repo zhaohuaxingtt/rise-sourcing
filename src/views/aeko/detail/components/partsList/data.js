@@ -10,7 +10,7 @@ export const SearchList = [
   {props:'linieDeptNum',label:'科室',type:'input',labelKey:'LK_AEKOKESHI'},
   {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',selectOption:'buyerName',noShowAll:true,filterable:true,clearable:true},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand'},
-  {props:'cartype',label:'车型',type:'input',labelKey:'LK_AEKO_CHEXING',showCode:'AeA',filterable:true},
+  {props:'cartype',label:'车型',type:'select',labelKey:'LK_AEKO_CHEXING',selectOption:'cartype',showCode:'AeA',filterable:true},
 ]
 
 
