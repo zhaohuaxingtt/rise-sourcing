@@ -194,7 +194,7 @@ export default {
         //this.copyDataInfo = _.cloneDeep(this.dataInfo);
         this.copyDataInfo = [
           {'a': 1, 'b': 2, 'c': 1, 'q': 1, 'w': 212312323, 'e': 3, isShow: true},
-          {'a': 1, 'b': 2, 'c': 1,'q': 112, 'w': 2, 'e': 3, isShow: true}];
+          {'a': 2, 'b': 2, 'c': 1,'q': 112, 'w': 2, 'e': 3, isShow: true}];
         this.copyDataInfo.map((item, index) => {
           if (!item.id) {
             item.time = new Date().getTime() + index;

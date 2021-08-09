@@ -7,6 +7,7 @@
 -->
 <template>
   <el-table :height="height"
+            class="tableBox"
             ref="dataTable"
             tooltip-effect='light'
             :data='tableData'
@@ -14,8 +15,9 @@
             v-loading='tableLoading'
             @selection-change="handleSelectionChange"
             :row-key="rowKey"
-            :cell-style="borderLeftStyle"
-            :header-cell-style="borderLeftStyle"
+            :cell-style="borderStyle"
+            :header-cell-style="headerBorderStyle"
+            :row-class-name="rowStyle"
   >
     <el-table-column v-if="selection"
                      type='selection'
@@ -227,67 +229,84 @@ export default {
     handleShow(row) {
       this.$emit('handleShow', row);
     },
-    borderLeftStyle({row, column}) {
+    borderStyle({row, column}) {
       switch (column.property) {
         case 'systemMatch':
         case 'isShow':
           return 'border-left: 3px solid white';
       }
     },
+    headerBorderStyle({row, column}) {
+      switch (column.property) {
+        case 'systemMatch':
+        case 'isShow':
+          return 'border-left: 3px solid white';
+      }
+    },
+    rowStyle({row, column}) {
+      if (row.a === 2) {
+        return 'rowStyle';
+      }
+    },
   },
 };
 </script>
-<style lang='scss' scoped>
-.el-select {
-  margin: 2px 0;
-}
+<style lang='scss'>
+.tableBox {
+  .el-select {
+    margin: 2px 0;
+  }
 
-::v-deep .el-table__row .el-input {
-  height: 35px !important;
-
-  .el-input__inner {
+  ::v-deep .el-table__row .el-input {
     height: 35px !important;
+
+    .el-input__inner {
+      height: 35px !important;
+    }
+  }
+
+  .iconStyle {
+    font-size: 22px;
+  }
+
+  .systemMatchBox {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .systemMatchText {
+    width: 120px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #000000;
+    white-space: nowrap;
+  }
+
+  .hintIcon {
+    font-size: 16px;
+    margin-left: 6px;
+  }
+
+  .whiteBorder {
+    border-left: 5px solid white;
+    background: red;
+  }
+
+  .rateOfChange {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 84px;
+    height: 35px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFFFFF;
   }
 }
-
-.iconStyle {
-  font-size: 22px;
-}
-
-.systemMatchBox {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.systemMatchText {
-  width: 120px;
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  color: #000000;
-  white-space: nowrap;
-}
-
-.hintIcon {
-  font-size: 16px;
-  margin-left: 6px;
-}
-
-.whiteBorder {
-  border-left: 5px solid white;
-  background: red;
-}
-
-.rateOfChange {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 84px;
-  height: 35px;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #FFFFFF;
+.el-table .rowStyle td {
+  border-top: 3px dashed #727272;
 }
 </style>
