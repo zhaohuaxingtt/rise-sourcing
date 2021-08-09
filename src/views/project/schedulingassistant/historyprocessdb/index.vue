@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 16:43:00
+ * @LastEditTime: 2021-08-06 17:47:39
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
@@ -16,7 +16,7 @@
       </template>
       <el-form>
         <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)">
-          <iSelect v-if="item.type ==='select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="item.placeholder ? language(item.placeholderKey, item.placeholder) : language('QINGXUANZE', '请选择')">
+          <iSelect v-if="item.type ==='select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="item.placeholder ? language(item.placeholderKey, item.placeholder) : language('QINGXUANZE', '请选择')" @change="handleChange($event, item.value)">
             <el-option
               v-for="item in selectOptions[item.selectOption]"
               :key="item.value"
@@ -63,13 +63,22 @@ export default {
   created() {
     this.searchParams = {
       level: '1',
-      cartypeProId: this.$route.query.cartypeProId || '',
-      productGroup: this.$route.query.productGroup || '',
-      sixPartCode: this.$route.query.sixPartCode || ''
+      ...this.$route.query
+      // cartypeProId: this.$route.query.cartypeProId || '',
+      // productGroup: this.$route.query.productGroup || '',
+      // sixPartCode: this.$route.query.sixPartCode || ''
     }
     this.getCarProjectOptions()
   },
   methods: {
+    handleChange(val, props) {
+      if (props === 'level'){
+        this.searchParams = {
+          level: val,
+          productGroup: ''
+        }
+      }
+    },
     getCarProjectOptions() {
       getCarTypePro().then(res => {
         if (res?.result) {
@@ -96,7 +105,8 @@ export default {
     },
     handleReset() {
       this.searchParams = {
-        level: this.searchParams.level
+        level: this.searchParams.level,
+        productGroup: ''
       }
       this.handleSure()
     }
