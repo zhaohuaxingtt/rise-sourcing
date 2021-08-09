@@ -43,3 +43,12 @@ export function assignLinie(data) {
     data,
   })
 }
+
+// 科室退回  
+export function deptRollback(data) {
+  return requst({
+    url: '/aeko/part/dept-rollback',
+    method: 'POST',
+    data,
+  })
+}
