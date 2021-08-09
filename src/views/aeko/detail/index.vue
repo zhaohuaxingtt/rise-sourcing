@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-09 11:15:54
+ * @LastEditTime: 2021-08-09 14:27:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -11,7 +11,7 @@
     <div class="header flex-between-center margin-bottom20">
       <h2>AEKO号：{{ aekoInfo.aekoCode }}</h2>
       <div>
-        <iButton>AEKO详情</iButton>
+        <iButton @click="goToDetail">{{language('LK_AEKO_BUTTON_DETAIL','AEKO详情')}}</iButton>
         <logButton class="margin-left20" />
       </div>
     </div>
@@ -145,6 +145,21 @@ export default {
            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
+    },
+
+    // 跳转到描述页
+    goToDetail(){
+      // aekoInfo.aekoCode
+       const { aekoInfo } = this;
+       const {requirementAekoId,aekoCode} = aekoInfo;
+        const routeData = this.$router.resolve({
+          path: '/aeko/describe',
+          query: {
+            requirementAekoId,
+            aekoCode,
+          },
+        })
+        window.open(routeData.href, '_blank')
     },
   }
 }
