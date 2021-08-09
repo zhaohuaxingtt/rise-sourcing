@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-08-03 14:55:30
+ * @LastEditTime: 2021-08-06 17:21:15
  * @LastEditors: Please set LastEditors
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js
@@ -82,7 +82,7 @@ export const user = {
 // 测试用区分权限的用户id
 export const permissionUserIdMap = {
   AEKO_MANAGER: new Set([4]), // Aeko管理员
-  COMMODITY_COORDINATOR: new Set([]), // 科室协调员
+  COMMODITY_COORDINATOR: new Set([12]), // 科室协调员
   LINIE: new Set([ 51 ]) // 专业采购员
 }
 

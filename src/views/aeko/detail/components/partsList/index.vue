@@ -34,9 +34,9 @@
             <div v-if="isAekoManager || isCommodityCoordinator">
                 <iButton v-if="isAekoManager" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton v-if="isCommodityCoordinator" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
-                <iButton>{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
+                <iButton >{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
                 <iButton :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
-                <iButton disabled>{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
+                <iButton >{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
             </div>
         </template>
         <!-- 表单区域 -->
@@ -65,7 +65,8 @@
         </template>
         <!-- 操作 -->
         <template #operate="scoped">
-            <span v-if="!scoped.row.linieDeptNum" class="link-underline" @click="assign(scoped.row,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
+            <span v-if="!scoped.row.linieDeptNum && isAekoManager" class="link-underline" @click="assign(scoped.row,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
+            <span v-if="!scoped.row.buyerId && isCommodityCoordinator" class="link-underline" @click="assign(scoped.row,'linie')">{{language('LK_AEKO_FENPAICAIGOUYUAN_LINE','分派采购员')}}</span>
         </template>
 
         </tableList>
