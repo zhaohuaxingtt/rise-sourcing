@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-03 10:39:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 16:43:19
+ * @LastEditTime: 2021-08-09 16:50:06
  * @Description: 配置显示字段弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\showItem\index.vue
 -->
@@ -31,7 +31,7 @@
         :key="item.key" 
         :label="language(item.key, item.name)" 
         v-model="item.isSelect" 
-        :disabled="item.disabled"
+        :disabled="disabledColumn.includes(item.key)"
       >
       </el-checkbox>
     </div>
@@ -47,7 +47,9 @@ export default {
   props: {
     dialogVisible: { type: Boolean, default: false },
     checkList: { type: Array, default: () => [] },
-    type: {type:String}
+    type: {type:String},
+    disabledColumn: {type: Array, default: () => []},
+    defaultColumn: {type: Array, default: () => []},
   },
   watch:{
     checkList: {
@@ -88,7 +90,7 @@ export default {
       this.list = this.list.map(item => {
         return {
           ...item,
-          isSelect: item.disabled ? true : false
+          isSelect: this.defaultColumn.includes(item.key) ? true : false
         }
       })
     },
