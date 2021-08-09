@@ -43,3 +43,12 @@ export function getFsUser(params) {
     params,
   })
 }
+
+// 保存封面表态数据
+export function coverSave(data) {
+  return requst({
+    url: '/aeko/cover/save',
+    method: 'POST',
+    data,
+  })
+}
