@@ -1,35 +1,35 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-07 16:08:47
+ * @LastEditTime: 2021-08-09 09:43:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
 -->
 <template>
-  <div style="height: 480px;width:100%" ref="chart"></div>
+  <div style="height: 480px;width:100%"
+       ref="chart"></div>
 </template>
 
 <script>
 import echarts from "@/utils/echarts";
 export default {
-  data() {
+  data () {
     return {
       myChart: null,
     };
   },
   props: {},
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       this.initCharts();
     });
   },
   methods: {
-    initCharts() {
+    initCharts () {
       this.myChart = echarts().init(this.$refs.chart);
 
       const option = {
-        tooltip: {},
         title: {
           show: true,
           subtext: "产量",
@@ -40,7 +40,10 @@ export default {
           {
             type: "category",
             axisTick: { show: false },
-            data: ["MIX", "配置一", "配置二"],
+            data: ["Mix", "配置1", "配置2"],
+            axisLine: {
+              show: false
+            }
           },
         ],
         grid: {
@@ -54,10 +57,16 @@ export default {
           axisLine: {
             show: false,
           },
+          splitLine: {
+            show: false
+          }
         },
-
-        // Declare several bar series, each will be mapped
-        // to a column of dataset.source by default.
+        color: [
+          "#A1D0FF",
+          "#92B8FF",
+          "#5993FF",
+          "#0059FF"
+        ],
         series: [
           {
             name: "Forest",
@@ -65,35 +74,44 @@ export default {
             emphasis: {
               focus: "series",
             },
-            // barMinWidth: 30,
-            // barMaxWidth: 60,
-             barCategoryGap :"20%",
-            data: [
-              {
-                value: 400,
-                itemStyle: {
-                  color: "#A1D0FF",
-                },
+            // barCategoryGap: '50%',
+            barMinWidth: 30,
+            // // barMaxWidth: 30,
+            itemStyle: {
+              barBorderRadius: [5, 5, 0, 0],
+            },
+            data: [{
+              value: 400,
+              label: {
+                show: true
               },
-              {
-                value: 500,
-                itemStyle: {
-                  color: "#92B8FF",
-                },
+              itemStyle: {
+                color: "#A1D0FF"
+              }
+            },
+            {
+              value: 450,
+              label: {
+                show: true
               },
-              {
-                value: 600,
-                itemStyle: {
-                  color: "#A1D0FF",
-                  itemStyle: {
-                    color: "#92B8FF",
-                  },
-                },
+              itemStyle: {
+                color: "#92B8FF"
+              }
+            },
+            {
+              value: 500,
+              label: {
+                show: true
               },
-            ],
+              itemStyle: {
+                color: "#5993FF"
+              }
+            }],
           },
         ],
       };
+      this.myChart.clear();
+      this.myChart.resize();
       this.myChart.setOption(option);
     },
   },
