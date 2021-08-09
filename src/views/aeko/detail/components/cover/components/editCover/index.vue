@@ -6,9 +6,9 @@
 <template>
   <iCard class="aeko-editCover">
     <template v-slot:header-control>
-    <iButton>{{language('LK_BAOCUN','保存')}}</iButton>
-    <iButton>{{language('LK_TIJIAO','提交')}}</iButton>
-    <iButton>{{language('LK_AEKO_CHEHUI','撤回')}}</iButton>
+    <iButton :loading="btnLoading" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
+    <iButton :loading="btnLoading">{{language('LK_TIJIAO','提交')}}</iButton>
+    <iButton :loading="btnLoading">{{language('LK_AEKO_CHEHUI','撤回')}}</iButton>
     <iButton :loading="btnLoading" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
@@ -47,8 +47,8 @@
           :headerClass="headerClass"
         >
         <!-- 增加材料成本(RMB/⻋) -->
-        <template #materialIncrease="scoped">
-          <iInput v-model="scoped.row['materialIncrease']" style="width:100px"/>
+        <template #materialIncrease="scope">
+          <iInput v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
           <!-- <el-tooltip placement="top" effect="light">
             <div slot="content">
               <p class="font-weight margin-bottom5" style="text-align:center">100=5*1*1*2+5*1*1*2 +10*2*2*2</p>
@@ -61,12 +61,12 @@
             
         </template>
         <!-- 增加投资费⽤(不含税) -->
-        <template #investmentIncrease="scoped">
-          <iInput v-model="scoped.row['investmentIncrease']" style="width:100px" />
+        <template #investmentIncrease="scope">
+          <iInput v-model="scope.row['investmentIncrease']" @input="handleNumber($event,scope.row,'investmentIncrease')" style="width:100px" />
         </template>
         <!-- 其他费⽤(不含税) -->
-        <template #otherCost="scoped">
-          <iInput v-model="scoped.row['otherCost']" style="width:100px"/>
+        <template #otherCost="scope">
+          <iInput v-model="scope.row['otherCost']" @input="handleNumber($event,scope.row,'otherCost')" style="width:100px"/>
         </template>
         </tableList>
         <!-- 分页 -->
@@ -97,15 +97,17 @@ import {
   iSelect,
   iText,
   // iPagination,
-  icon,
+  // icon,
   iMessage,
 } from 'rise';
 import { previewBaicFrom,coverTableTitleCost } from '../../data'
 import tableList from "../tableList"
 import { pageMixins } from "@/utils/pageMixins";
+import {numberProcessor} from '@/utils';
 import {
   getLinieCoverDetail,
   getFsUser,
+  coverSave,
 } from '@/api/aeko/detail/cover.js'
 export default {
     name:'editCover',
@@ -120,7 +122,7 @@ export default {
       iText,
       tableList,
       // iPagination,
-      icon,
+      // icon,
     },
     data(){
       return{
@@ -166,9 +168,9 @@ export default {
             const {isTop={},isReference={},coverStatus={},isEffectpro={},fsId='',coverCostsWithCarType=[]} = data;
             this.basicInfo = {
               ...data,
-              isTop:isTop.code || '',
-              isReference:isReference.code || '',
-              isEffectpro:isEffectpro.code || '',
+              isTop:isTop.code,
+              isReference:isReference.code,
+              isEffectpro:isEffectpro.code,
               coverStatus:coverStatus.desc || '-',
               fsName:fsId
             };
@@ -202,7 +204,39 @@ export default {
         if(list.includes(columnIndex)){
           return 'label-require'
         }
-      }
+      },
+      
+      handleNumber(val, row, props) {
+        console.log(val, row, props);
+        this.$set(row, props, numberProcessor(val, 2));
+      },
+      // 保存
+      async save(){
+        const {basicInfo,selectOptions} = this;
+        const {fsList=[]} = selectOptions;
+        const fsName = fsList.filter((item)=>item.value == basicInfo.fsName);
+        // 指定前期采购员参数需要处理一下
+        const data = {
+          ...basicInfo,
+          coverCosts:basicInfo.coverCostsWithCarType || [],
+          fsId:basicInfo.fsName,
+          fsName:fsName.length ? fsName[0].label : '',
+        }
+        this.btnLoading = true;
+        await coverSave(data).then((res)=>{
+          this.btnLoading = false;
+          const {code} = res;
+          if(code == 200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getDetail();
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+
+        }).catch((err)=>{
+          this.btnLoading = false;
+        })
+      },
     }
 }
 </script>
