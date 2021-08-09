@@ -24,9 +24,15 @@
 
     <!--类型标签-->
     <theTabs
+        class="margin-bottom20"
         @handleItemClick="handleTabsClick"
         @handleTimeChange="handleTimeChange"
     />
+
+    <!--表格-->
+    <iCard tabCard class="margin-bottom20">
+      <theTable/>
+    </iCard>
   </iPage>
 </template>
 
@@ -35,8 +41,9 @@ import {iPage, iButton, iMessageBox, iCard} from 'rise';
 import thePartsList from './components/thePartsList';
 import theBaseInfo from './components/theBaseInfo';
 import theTabs from './components/theTabs';
+import theTable from './components/theTable';
 import resultMessageMixin from '@/utils/resultMessageMixin';
-import {CURRENTTIME, AVERAGE}from './components/data'
+import {CURRENTTIME, AVERAGE} from './components/data';
 
 export default {
   mixins: [resultMessageMixin],
@@ -47,6 +54,7 @@ export default {
     thePartsList,
     theBaseInfo,
     theTabs,
+    theTable,
   },
   data() {
     return {
@@ -57,7 +65,7 @@ export default {
         {partsId: 2},
       ],
       partItemCurrent: 0,
-      currentTab: CURRENTTIME
+      currentTab: CURRENTTIME,
     };
   },
   methods: {
