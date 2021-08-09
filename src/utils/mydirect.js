@@ -21,13 +21,13 @@ Vue.directive('permission', {
                     el.classList.add("is-disabled")
                 }
             } else { //remove
-                // if (!store.state.permission.whiteBtnList[binding.expression] && businessPermission(binding.expression,router.currentRoute.query)) {
-                //     el.parentNode.removeChild(el)
-                // }
-                if (businessPermission(binding.expression,router.currentRoute.query)) {
-                    //remove paneTabs
+                if (!store.state.permission.whiteBtnList[binding.expression] && businessPermission(binding.expression,router.currentRoute.query)) {
                     el.parentNode.removeChild(el)
                 }
+                // if (businessPermission(binding.expression,router.currentRoute.query)) {
+                //     //remove paneTabs
+                //     el.parentNode.removeChild(el)
+                // }
             }
         }
     })
