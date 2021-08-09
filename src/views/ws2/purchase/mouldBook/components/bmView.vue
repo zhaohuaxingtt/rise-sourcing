@@ -1,176 +1,176 @@
 <template>
   <div>
-    <iSearch
-        class="margin-bottom20 giSearch"
-        style="margin-top: 20px"
-        @sure="sure"
-        @reset="reset"
-        :icon="false"
-        :resetKey="PARTSPROCURE_RESET"
-        :searchKey="PARTSPROCURE_CONFIRM"
-        v-loading="loadingiSearch"
-    >
-      <el-form>
-
-        <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model.trim="form['behalfPartsNum']" ></iInput>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')">
-          <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['aekoNum']" ></iInput>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_BMDANHAO', 'BM单号')">
-          <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['bmNum']" ></iInput>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_SAPDINGDANHAO', 'SAP订单号')">
-          <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['sapOrder']" ></iInput>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_RUZHANGDANHAO', '入账单号')">
-          <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['enterAccountNum']" ></iInput>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_CHEXINXIANGMU', '车型项目')">
-          <iSelect
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              v-model="form['tmCartypeProId']"
-              filterable
-              ref="carTypeProjectRef"
-              clearable
-              collapse-tags
-              multiple
-          >
-            <el-option
-                :value="item.tmCartypeProId"
-                :label="item.tmCartypeProName"
-                v-for="(item, index) in fromGroup"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_GONGYINGSHANG', '供应商')">
-          <iInput clearable :placeholder="language('LK_QINGSHURUGONGYINGSHANG', '请输入(11025-上海汇众)')" v-model="form['designatedSupplierId']" ></iInput>
-          <!-- <iSelect
-              class="multipleSelect"
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              v-model="form['designatedSupplierId']"
-              filterable
-              collapse-tags
-              multiple
-          >
-            <el-option
-                :value="item.supplierId"
-                :label="item.supplierName"
-                v-for="(item, index) in supplierList"
-                :key="index"
-            ></el-option>
-          </iSelect> -->
-        </el-form-item>
-
-        <el-form-item :label="language('LK_KESHI', '科室')">
-          <iSelect
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              v-model="form['deptId']"
-              filterable
-              ref="carTypeProjectRef"
-              clearable
-              collapse-tags
-              multiple
-          >
-            <el-option
-                :value="item.deptId"
-                :label="item.deptName"
-                v-for="(item, index) in departmentList"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_LINLE', 'Linie')">
-          <iSelect
-              class="multipleSelect"
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              v-model="form['linieId']"
-              filterable
-              clearable
-              collapse-tags
-              multiple
-          >
-            <el-option
-                :value="item.linieId"
-                :label="item.linieName"
-                v-for="(item, index) in linieList"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_MUJUTOUZIQINGDANZHUANGTAI', '模具投资清单状态')">
-          <iSelect
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              v-model="form['moldInvestmentStatus']"
-              filterable
-              ref="carTypeProjectRef"
-              clearable
-          >
-            <el-option
-                :value="item.bmStatus"
-                :label="item.bmStatusName"
-                v-for="(item, index) in statusList"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-
-        
-      </el-form>
-    </iSearch>
-
-    <iCard>
-
-      <div class="bnts">
-        <iButton :loading="exportLoding" @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
-      </div>
-
-      <iTableList
-        :tableData="bmTableList"
-        :tableTitle="bmTableHead"
-        :tableLoading="tableLoading"
-        :selection="false"
+    <div v-permission="PURCHASE_MOULDBOOK_BMVIEW">
+      <iSearch
+          class="margin-bottom20 giSearch"
+          style="margin-top: 20px"
+          @sure="sure"
+          @reset="reset"
+          :icon="false"
+          :resetKey="PARTSPROCURE_RESET"
+          :searchKey="PARTSPROCURE_CONFIRM"
+          v-loading="loadingiSearch"
       >
-        <!-- BM单流⽔号 -->
-        <template #bmSerial="scope">
-          <div class="table-link" @click="openBMDetail(scope.row)">{{scope.row.bmSerial}}</div>
-        </template>
+        <el-form>
 
-        <template #moldInvestmentAmount="scope">
-          <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.moldInvestmentAmount))}}</div>
-          <div v-else>-</div>
-        </template>
-      </iTableList>
+          <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
+            <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model.trim="form['behalfPartsNum']" ></iInput>
+          </el-form-item>
 
-      <iPagination
-          v-update
-          @size-change="handleSizeChange($event, getTableList)"
-          @current-change="handleCurrentChange($event, getTableList)"
-          background
-          :current-page="page.currPage"
-          :page-sizes="page.pageSizes"
-          :page-size="page.pageSize"
-          :layout="page.layout"
-          :total="page.totalCount"
-      />
+          <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')">
+            <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['aekoNum']" ></iInput>
+          </el-form-item>
 
-      <div class="UnitExplain">
-        <UnitExplain />
-      </div>
-      
-    </iCard>
-    
+          <el-form-item :label="language('LK_BMDANHAO', 'BM单号')">
+            <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['bmNum']" ></iInput>
+          </el-form-item>
 
+          <el-form-item :label="language('LK_SAPDINGDANHAO', 'SAP订单号')">
+            <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['sapOrder']" ></iInput>
+          </el-form-item>
+
+          <el-form-item :label="language('LK_RUZHANGDANHAO', '入账单号')">
+            <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['enterAccountNum']" ></iInput>
+          </el-form-item>
+
+          <el-form-item :label="language('LK_CHEXINXIANGMU', '车型项目')">
+            <iSelect
+                :placeholder="language('LK_QINGXUANZHE', '请选择')"
+                v-model="form['tmCartypeProId']"
+                filterable
+                ref="carTypeProjectRef"
+                clearable
+                collapse-tags
+                multiple
+            >
+              <el-option
+                  :value="item.tmCartypeProId"
+                  :label="item.tmCartypeProName"
+                  v-for="(item, index) in fromGroup"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </el-form-item>
+
+          <el-form-item :label="language('LK_GONGYINGSHANG', '供应商')">
+            <iInput clearable :placeholder="language('LK_QINGSHURUGONGYINGSHANG', '请输入(11025-上海汇众)')" v-model="form['designatedSupplierId']" ></iInput>
+            <!-- <iSelect
+                class="multipleSelect"
+                :placeholder="language('LK_QINGXUANZHE', '请选择')"
+                v-model="form['designatedSupplierId']"
+                filterable
+                collapse-tags
+                multiple
+            >
+              <el-option
+                  :value="item.supplierId"
+                  :label="item.supplierName"
+                  v-for="(item, index) in supplierList"
+                  :key="index"
+              ></el-option>
+            </iSelect> -->
+          </el-form-item>
+
+          <el-form-item :label="language('LK_KESHI', '科室')">
+            <iSelect
+                :placeholder="language('LK_QINGXUANZHE', '请选择')"
+                v-model="form['deptId']"
+                filterable
+                ref="carTypeProjectRef"
+                clearable
+                collapse-tags
+                multiple
+            >
+              <el-option
+                  :value="item.deptId"
+                  :label="item.deptName"
+                  v-for="(item, index) in departmentList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </el-form-item>
+
+          <el-form-item :label="language('LK_LINLE', 'Linie')">
+            <iSelect
+                class="multipleSelect"
+                :placeholder="language('LK_QINGXUANZHE', '请选择')"
+                v-model="form['linieId']"
+                filterable
+                clearable
+                collapse-tags
+                multiple
+            >
+              <el-option
+                  :value="item.linieId"
+                  :label="item.linieName"
+                  v-for="(item, index) in linieList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </el-form-item>
+
+          <el-form-item :label="language('LK_MUJUTOUZIQINGDANZHUANGTAI', '模具投资清单状态')">
+            <iSelect
+                :placeholder="language('LK_QINGXUANZHE', '请选择')"
+                v-model="form['moldInvestmentStatus']"
+                filterable
+                ref="carTypeProjectRef"
+                clearable
+            >
+              <el-option
+                  :value="item.bmStatus"
+                  :label="item.bmStatusName"
+                  v-for="(item, index) in statusList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </el-form-item>
+
+          
+        </el-form>
+      </iSearch>
+
+      <iCard>
+
+        <div class="bnts">
+          <iButton :loading="exportLoding" @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
+        </div>
+
+        <iTableList
+          :tableData="bmTableList"
+          :tableTitle="bmTableHead"
+          :tableLoading="tableLoading"
+          :selection="false"
+        >
+          <!-- BM单流⽔号 -->
+          <template #bmSerial="scope">
+            <div class="table-link" @click="openBMDetail(scope.row)">{{scope.row.bmSerial}}</div>
+          </template>
+
+          <template #moldInvestmentAmount="scope">
+            <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.moldInvestmentAmount))}}</div>
+            <div v-else>-</div>
+          </template>
+        </iTableList>
+
+        <iPagination
+            v-update
+            @size-change="handleSizeChange($event, getTableList)"
+            @current-change="handleCurrentChange($event, getTableList)"
+            background
+            :current-page="page.currPage"
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :total="page.totalCount"
+        />
+
+        <div class="UnitExplain">
+          <UnitExplain />
+        </div>
+        
+      </iCard>
+    </div>
   </div>
 </template>
 
@@ -343,7 +343,8 @@ export default {
         let {href} = this.$router.resolve({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
         window.open(href, '_blank');
       }else{
-        iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN', '对不起，您所在得岗位没有该材料组权限'));
+        // iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN', '对不起，您所在得岗位没有该材料组权限'));
+        iMessage.warn(this.$t('LK_DUIBUQIMEIYOUQUANXIAN'));
       }
 
       
