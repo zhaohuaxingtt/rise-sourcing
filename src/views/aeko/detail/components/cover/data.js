@@ -5,13 +5,13 @@
  */
 
 export const previewBaicFrom = [
-    {label:'是否TOP',labelKey:'LK_AEKO_SHIFOUTOP',props:'isTop',type:'select',selectOption:'a',required:true,editable:true,isObj:true,},
-    {label:'是否相关',labelKey:'LK_AEKO_SHIFOUXIANGGUAN',props:'isReference',type:'select',selectOption:'b',required:true,editable:true,isObj:true,},
+    {label:'是否TOP',labelKey:'LK_AEKO_SHIFOUTOP',props:'isTop',type:'select',selectOption:'isTop',required:true,editable:true,isObj:true,},
+    {label:'是否相关',labelKey:'LK_AEKO_SHIFOUXIANGGUAN',props:'isReference',type:'select',selectOption:'isReference',required:true,editable:true,isObj:true,},
     {label:'更改零件名称',labelKey:'LK_AEKO_GENGGAILINGJIANMINGCHENG',props:'partName',type:'input',required:true,editable:true},
     {label:'主要供应商',labelKey:'LK_AEKO_ZHUYAOGONGYINGSHANG',props:'mainSupplier',type:'input',required:true,editable:true},
     {label:'新⾸批送样周期(周数)',labelKey:'LK_AEKO_XINSHOUPISONGYANGZHOUQI',props:'sendCycle',type:'input',required:true,editable:true},
-    {label:'影响进度',labelKey:'LK_AEKO_YINGXIANGJINDU',props:'isEffectpro',type:'select',selectOption:'f',required:true,editable:true,isObj:true,},
-    {label:'指定前期采购',labelKey:'LK_AEKO_ZHIDINGQIANQICAIGOU',props:'fsName',type:'select',selectOption:'g',required:true,editable:true},
+    {label:'影响进度',labelKey:'LK_AEKO_YINGXIANGJINDU',props:'isEffectpro',type:'select',selectOption:'isEffectpro',required:true,editable:true,isObj:true,},
+    {label:'指定前期采购',labelKey:'LK_AEKO_ZHIDINGQIANQICAIGOU',props:'fsName',type:'select',selectOption:'fsList',required:true,editable:true},
     {label:'封⾯状态',labelKey:'LK_AEKOFENGMIANZHUANGTAI',props:'coverStatus',isObj:true,},
 ]
 

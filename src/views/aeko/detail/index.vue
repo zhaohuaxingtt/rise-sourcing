@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-06 14:14:48
+ * @LastEditTime: 2021-08-07 13:02:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -52,6 +52,8 @@ import logButton from "@/components/logButton"
 import contentDeclare from "./components/contentDeclare"
 import partsList from "./components/partsList"
 import cover from "./components/cover"
+import attachment from "./components/attachment"
+import record from "./components/record"
 
 import {
   getAekoDetail,
@@ -70,11 +72,23 @@ export default {
     iText,
     partsList,
     cover,
+    attachment,
+    record,
   },
   created() {
     this.aekoInfo = {
       requirementAekoId: this.$route.query.requirementAekoId
     }
+    
+    if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+      try {
+        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+        this.currentTab = aekoConatentDeclareParams.currentTab
+      } catch(e) {
+        console.error(e)
+      }
+    }
+
     this.getBbasicInfo();
   },
   computed: {
@@ -88,7 +102,7 @@ export default {
   data() {
     return {
       aekoInfo: {},
-      currentTab: "partsList",
+      currentTab: "cover",
       basicTitle:[
         {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'aekoStatus',isObj:true,},
         {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'sourse',isObj:true,},
@@ -96,11 +110,11 @@ export default {
         {label:'截⽌⽇期',labelKey:'LK_AEKOJIEZHIRIQI',props:'deadLine'},
       ],
       tabs: [
+        { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", components: ["partsList"] },
         { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", components: [ "contentDeclare" ] },
         { label: "封⾯表态", name: "cover", key: "FENGMIANBIAOTAI", components: ['cover'] },
-        { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", components: ["partsList"] },
-        { label: "审批附件", name: "c", key: "SHENPIFUJIAN", components: [] },
-        { label: "审批记录", name: "d", key: "SHENPIFUJIAN", components: [] }
+        { label: "审批附件", name: "attachment", key: "SHENPIFUJIAN", components: ['attachment'] },
+        { label: "审批记录", name: "record", key: "SHENPIFUJIAN", components: ['record'] }
       ],
     }
   },
