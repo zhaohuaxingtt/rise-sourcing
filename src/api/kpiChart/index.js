@@ -1,6 +1,15 @@
+/*
+ * @Author: your name
+ * @Date: 2021-08-07 10:24:35
+ * @LastEditTime: 2021-08-09 13:48:58
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\api\kpiChart\index.js
+ */
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_KPI)
 const chrequst = axios(process.env.VUE_APP_POWEBI_KPI)
+const rr = axios(process.env.VUE_APP_AON)
 
 export function kpiDetail(params) {
   return requst({
@@ -91,3 +100,48 @@ export function getStuffByCategory(data) {
   })
 }
 
+// 折叠表头页面
+export function getTableData(data) {
+  return requst({
+    url: '/web/kpi/totalScore/list',
+    method: 'GET',
+    params: data
+  })
+}
+// 查询模板kpi
+export function templateDetail(params) {
+  return requst({
+    url: '/web/kpi/template/detail',
+    method: 'GET',
+    params: params
+  })
+}
+// 保存模板
+export function saveTemplateDetail(data) {
+  return requst({
+    url: '/web/kpi/template',
+    method: 'POST',
+    data: data
+  })
+}
+
+
+
+// 删除模板
+export function deleteTemplate(data) {
+  return requst({
+    url: '/web/kpi/template/remove',
+    method: 'POST',
+    data: data
+  })
+}
+
+// 下载模板
+export function downloadTemplate(data) {
+  return requst({
+    url: '/web/kpi/template/download',
+    method: 'POST',
+    responseType: 'blob',
+    data: data
+  })
+}

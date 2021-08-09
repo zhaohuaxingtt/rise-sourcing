@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-06 10:22:49
- * @LastEditTime: 2021-08-06 14:29:27
+ * @LastEditTime: 2021-08-07 16:56:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\data.js

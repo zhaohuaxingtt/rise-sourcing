@@ -39,9 +39,11 @@ export default {
             tableData:[],
         }
     },
+    created() {
+      this.tableTittle = window._.cloneDeep(this.tabSetting)
+      this.tableData = window._.cloneDeep(this.tableDataBefore)
+    },
     mounted(){
-        this.tableTittle=JSON.parse(JSON.stringify(this.tabSetting))
-        this.tableData=JSON.parse(JSON.stringify(this.tableDataBefore))
     },
     methods:{
         handleFold(){
