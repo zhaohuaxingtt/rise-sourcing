@@ -33,9 +33,10 @@
                                     class="SearchOption"
                                     prop="userNum"
                                     >
-                                    <iSelect v-model="formData.spiBaseDTO" :placeholder="$t('partsignLanguage.QingXuanZe')">
+                                    <!-- <iSelect v-model="formData.spiBaseDTO" :placeholder="$t('partsignLanguage.QingXuanZe')">
                                         <el-option value='' label='全部'></el-option>
-                                    </iSelect>
+                                    </iSelect> -->
+                                    <el-cascader :props="props"></el-cascader>
                                     </iFormItem>
                                 </el-col>
                              
@@ -109,9 +110,10 @@
                                     class="SearchOption"
                                     prop="userNum"
                                     >
-                                    <iSelect v-model="formData.userNum" :placeholder="$t('partsignLanguage.QingXuanZe')">
+                                    <!-- <iSelect v-model="formData.userNum" :placeholder="$t('partsignLanguage.QingXuanZe')">
                                         <el-option value='' label='全部'></el-option>
-                                    </iSelect>
+                                    </iSelect> -->
+                                    <el-cascader :props="props"></el-cascader>
                                     </iFormItem>
                                 </el-col>
                                 <el-col :span="6">
@@ -206,7 +208,7 @@
 <script>
 import {iButton,iPage,iCard,iFormItem,iInput,iSelect,iDatePicker} from 'rise'
 import {getMaterialGroupByUserIds,spiTotalScore,getRelationship,getStuffByCategory,getLine} from '@/api/kpiChart'
-import { querySupplierTurnPartList } from "@/api/partsrfq/bob/analysisList";
+import { getCityInfo } from "@/api/partsrfq/supplyChainOverall";
 export default {
     components:{
         iButton,
@@ -235,7 +237,8 @@ export default {
             exisList:[],
             StuffByCategory:[],
             startyear:null,
-            endyear:null
+            endyear:null,
+            getCityid:"-1",
         }
     },
     mounted(){
@@ -244,17 +247,17 @@ export default {
            if(res.code==="200"){
                 this.material=res.data
            }
-           
        })
-    //    城市
-       querySupplierTurnPartList({}).then(res=>{
-           console.log(res)
-       })
-       
        this.getRelationship()
        this.getStuffByCategory()
     },
     methods:{
+         //城市
+        getcity(x){
+            getCityInfo({parentCityId:x}).then(res=>{
+                console.log(res)
+            })
+        },
         // 科股
         getRelationship(){
             getRelationship({}).then(res=>{

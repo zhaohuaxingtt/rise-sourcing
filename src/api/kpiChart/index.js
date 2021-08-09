@@ -38,11 +38,11 @@ export function getPowerBiKpi() {
 }
 
 // 查询供应商api
-export function getPowerBiSupplier(params) {
+export function getPowerBiSupplier(data) {
   return requst({
     url: '/web/supplierInfo/queryByParam',
-    method: 'GET',
-    params: params
+    method: 'POST',
+    data: data
   })
 }
 

@@ -23,6 +23,7 @@
                 <div class="kpichart"><div class="tittle">服务质量</div><kpiEchart :options="quality"></kpiEchart></div>
                 <div class="kpichart"><div class="tittle">成本竞争力</div><kpiEchart :options="cost"></kpiEchart></div>
                 <div class="kpichart"><div class="tittle">交付</div><kpiEchart :options="delivery"></kpiEchart></div>
+                <div class="kpichart"><div class="tittle">可持续发展</div><kpiEchart :options="sustainable"></kpiEchart></div>
             </div>
         </iPage>
     </div>
@@ -111,14 +112,6 @@ export default {
                         axisTick: {
                             show:false
                         },
-                        // axisPointer: {
-                        //     label: {
-                        //         formatter: function (params) {
-                        //             return '降水量  ' + params.value
-                        //                 + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-                        //         }
-                        //     }
-                        // },
                         splitNumber:10,
                         axisLabel:{
                             interval:1
@@ -166,6 +159,7 @@ export default {
             totalScore:{},
             quality:{},
             cost:{},
+            sustainable:{},
             delivery:{},
             idList:[]
         }
@@ -175,6 +169,8 @@ export default {
         this.quality=JSON.parse(JSON.stringify(this.option)),
         this.cost=JSON.parse(JSON.stringify(this.option)),
         this.delivery=JSON.parse(JSON.stringify(this.option))    
+        this.sustainable=JSON.parse(JSON.stringify(this.option))         
+
     },
     methods:{
         initOptions:{
@@ -187,13 +183,14 @@ export default {
             x.oneMaps.PP01000.oneSupplierList.forEach(z=>{this.quality.series[0].data.push({value:z,symbol:'none'})})
             x.oneMaps.PP02000.oneSupplierList.forEach(z=>{this.cost.series[0].data.push({value:z,symbol:'none'})})
             x.oneMaps.PP03000.oneSupplierList.forEach(z=>{this.delivery.series[0].data.push({value:z,symbol:'none'})})
+            x.oneMaps.PP04000.oneSupplierList.forEach(z=>{this.sustainable.series[0].data.push({value:z,symbol:'none'})})
+            
         },
         returnData(x){
             this.idList=x
         },
         getScore(){
              spiTotalScore({idList:this.idList}).then(res=>{
-                console.log(res)
                this.changeTotalX(res.data)
                this.changeOneListX(res.data)
             })
@@ -203,7 +200,6 @@ export default {
                 console.log(this.totalScore.series[0].data)
                  x.totalList.forEach(score => {
                      if(score.totalScore>9){
-                         console.log(Math.floor((score.totalScore/10)))
                          this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].symbol='emptyCircle'
                      }else{
                          this.totalScore.series[0].data[0].symbol='emptyCircle'
@@ -214,25 +210,25 @@ export default {
             }
         },
         changeOneListX(x){
-            // if(x.oneList.oneList.length>0){
-            //      x.totalList.forEach(score => {
-            //          if(){
-
-            //          }
-                    
-                     
-            //      });   
+            if(x.oneList.length>0){
+                 x.oneList.forEach(score => {
+                     if(score.levelOneCode=="PP01000" || score.levelOneCode=="PP01000"){
+                         this.quality.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                     }
+                    if(score.levelOneCode=="PP02000" || score.levelOneCode=="PP02000"){
+                        this.cost.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                     }
+                     if(score.levelOneCode=="PP03000" || score.levelOneCode=="PP03000"){
+                         this.delivery.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                     }
+                     if(score.levelOneCode=="PP04000" || score.levelOneCode=="PP04000"){
+                         this.sustainable.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                     }
+                 });   
                  
-            // }
+            }
         },
-        computedScore(score){
-            //  if(score.totalScore>9){
-            //     console.log(Math.floor((score.totalScore/10)))
-            //     this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].symbol='circle'
-            // }else{
-            //     this.totalScore.series[0].data[0].symbol='circle'
-            // }
-        }
+      
     }
 }
 </script>
@@ -277,12 +273,14 @@ export default {
     .foot{
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         background-color: #fff;
         padding: 20px;
         border-radius: 10px;
+        overflow-x: auto;
         .kpichart{
-            width: calc(25% - 20px);
+            width: 410px;
+            margin-right: 30px;
             .tittle{
                 font-weight: bold;
                 width: 100%;
