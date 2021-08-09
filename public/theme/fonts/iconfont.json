@@ -6,6 +6,160 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "23391700",
+      "name": "树-父级",
+      "font_class": "shu-fuji",
+      "unicode": "e6ed",
+      "unicode_decimal": 59117
+    },
+    {
+      "icon_id": "23390824",
+      "name": "材料组",
+      "font_class": "cailiaozu",
+      "unicode": "e6e8",
+      "unicode_decimal": 59112
+    },
+    {
+      "icon_id": "23390825",
+      "name": "零件",
+      "font_class": "lingjian",
+      "unicode": "e6e9",
+      "unicode_decimal": 59113
+    },
+    {
+      "icon_id": "23390826",
+      "name": "地区",
+      "font_class": "diqu",
+      "unicode": "e6ea",
+      "unicode_decimal": 59114
+    },
+    {
+      "icon_id": "23390827",
+      "name": "供应商",
+      "font_class": "gongyingshang",
+      "unicode": "e6eb",
+      "unicode_decimal": 59115
+    },
+    {
+      "icon_id": "23390828",
+      "name": "车型",
+      "font_class": "chexing",
+      "unicode": "e6ec",
+      "unicode_decimal": 59116
+    },
+    {
+      "icon_id": "23386439",
+      "name": "N-tire高亮图标",
+      "font_class": "N-tiregaoliangtubiao",
+      "unicode": "e6e5",
+      "unicode_decimal": 59109
+    },
+    {
+      "icon_id": "23386440",
+      "name": "N-tire置灰图标",
+      "font_class": "N-tirezhihuitubiao",
+      "unicode": "e6e6",
+      "unicode_decimal": 59110
+    },
+    {
+      "icon_id": "23386441",
+      "name": "上汽大众",
+      "font_class": "shangqidazhong1",
+      "unicode": "e6e7",
+      "unicode_decimal": 59111
+    },
+    {
+      "icon_id": "23376244",
+      "name": "MEK-虚线",
+      "font_class": "MEK-xuxian",
+      "unicode": "e6e4",
+      "unicode_decimal": 59108
+    },
+    {
+      "icon_id": "22596748",
+      "name": "敬请期待",
+      "font_class": "jingqingqidai",
+      "unicode": "e6e3",
+      "unicode_decimal": 59107
+    },
+    {
+      "icon_id": "23322130",
+      "name": "KPI树状图-增加",
+      "font_class": "KPIshuzhuangtu-zengjia",
+      "unicode": "e6e1",
+      "unicode_decimal": 59105
+    },
+    {
+      "icon_id": "23322131",
+      "name": "KPI树状图-删除",
+      "font_class": "KPIshuzhuangtu-shanchu",
+      "unicode": "e6e2",
+      "unicode_decimal": 59106
+    },
+    {
+      "icon_id": "23315500",
+      "name": "供应商主要客户",
+      "font_class": "gongyingshangzhuyaokehu",
+      "unicode": "e6de",
+      "unicode_decimal": 59102
+    },
+    {
+      "icon_id": "23315501",
+      "name": "供应商财务状况",
+      "font_class": "gongyingshangcaiwuzhuangkuang",
+      "unicode": "e6df",
+      "unicode_decimal": 59103
+    },
+    {
+      "icon_id": "23315502",
+      "name": "SVW营业额占比",
+      "font_class": "SVWyingyeezhanbi",
+      "unicode": "e6e0",
+      "unicode_decimal": 59104
+    },
+    {
+      "icon_id": "23315373",
+      "name": "战略方向",
+      "font_class": "zhanlvefangxiang",
+      "unicode": "e6da",
+      "unicode_decimal": 59098
+    },
+    {
+      "icon_id": "23315374",
+      "name": "业务影响度特征分布",
+      "font_class": "yewuyingxiangdutezhengfenbu",
+      "unicode": "e6db",
+      "unicode_decimal": 59099
+    },
+    {
+      "icon_id": "23315375",
+      "name": "材料组占比情况",
+      "font_class": "cailiaozuzhanbiqingkuang",
+      "unicode": "e6dc",
+      "unicode_decimal": 59100
+    },
+    {
+      "icon_id": "23315376",
+      "name": "供应复杂度特征分布",
+      "font_class": "gongyingfuzadutezhengfenbu",
+      "unicode": "e6dd",
+      "unicode_decimal": 59101
+    },
+    {
+      "icon_id": "23315071",
+      "name": "材料组定位",
+      "font_class": "cailiaozudingwei",
+      "unicode": "e6d9",
+      "unicode_decimal": 59097
+    },
+    {
+      "icon_id": "23294177",
+      "name": "饼状图色环",
+      "font_class": "bingzhuangtusehuan",
+      "unicode": "e6d8",
+      "unicode_decimal": 59096
+    },
+    {
       "icon_id": "23225544",
       "name": "跳转监控",
       "font_class": "tiaozhuanjiankong",

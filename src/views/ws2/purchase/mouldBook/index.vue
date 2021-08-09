@@ -5,13 +5,23 @@
       <div :class="tableIndex === 2 ? 'onSwitch' : ''" @click="switchTable(2)">模具视图</div>
     </div>
 
+  
     <template v-if="tableIndex === 1">
-      <BmView />
+      <kee-alive>
+        <BmView />
+      </kee-alive>
+      
     </template>
 
     <template v-if="tableIndex === 2">
-      <MouldView />
+      <kee-alive>
+        <MouldView />
+      </kee-alive>
     </template>
+    
+
+    
+    
   </div>
 </template>
 

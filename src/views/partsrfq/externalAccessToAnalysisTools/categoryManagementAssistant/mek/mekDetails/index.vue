@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-06 19:46:51
+ * @LastEditTime: 2021-08-09 09:45:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -38,11 +38,14 @@
                 class="margin-left30 "></icon>
         </div>
       </div>
-      <div class="flex bodyBox">
-        <iCard style="width:260px;">
+    </div>
+    <div class=" bodyBox clearFloat">
+      <div class="cardBox"
+           style="width:15%;height:579px">
+        <iCard>
           <el-form label-position="top"
                    :model="form"
-                   style="height: 530px">
+                   style="height: 565px">
             <el-row class="margin-bottom20">
               <!--对标车型-->
               <el-form-item :label="$t('对标车型')">
@@ -133,159 +136,145 @@
                      @click="handleSearchReset">{{ $t("LK_ZHONGZHI") }}</iButton>
           </div>
         </iCard>
-        <iCard style="overflow:hidden;flex:1"
-               class="margin-left20">
-          <div class="flex chartBox">
-            <div class="flex chartItem">
-              <div class="operation">
-                <icon symbol
-                      name="iconbob-shanchu"
-                      class="margin-bottom10 "
-                      style="width:20px;height:20px "></icon>
-                <iSelect v-model="carType"
-                         @change="changeBy"
-                         style="width:150px"
-                         class="margin-bottom10"
-                         multiple>
-                  <el-option value="1"
-                             :label="$t('车型1')"> </el-option>
-                  <el-option value="2"
-                             :label="$t('车型2')"></el-option>
-                  <el-option value="3"
-                             :label="$t('车型3')"></el-option>
-                  <el-option value="4"
-                             :label="$t('车型4')"></el-option>
-                </iSelect>
-                <span class="margin-bottom10 ">Best Ball</span>
-                <span class="yield">22,000</span>
-              </div>
-              <datasetBar1 ref="datasetBar1"></datasetBar1>
-            </div>
-            <div class="flex chartItem">
-              <div class="operation">
-                <icon symbol
-                      name="iconbob-shanchu"
-                      class="margin-bottom10 "
-                      style="width:20px;height:20px"></icon>
-                <iSelect v-model="carType"
-                         @change="changeBy"
-                         style="width:150px"
-                         class="margin-bottom10"
-                         multiple>
-                  <el-option value="1"
-                             :label="$t('车型1')"> </el-option>
-                  <el-option value="2"
-                             :label="$t('车型2')"></el-option>
-                  <el-option value="3"
-                             :label="$t('车型3')"></el-option>
-                  <el-option value="4"
-                             :label="$t('车型4')"></el-option>
-                </iSelect>
-                <span class="margin-bottom10 ">Best Ball</span>
-                <span class="yield">22,000</span>
-              </div>
-              <datasetBar ref="datasetBar"
-                          :notY="true"></datasetBar>
-            </div>
-            <div class="flex chartItem">
-              <div class="operation">
-                <icon symbol
-                      name="iconbob-shanchu"
-                      class="margin-bottom10 "
-                      style="width:20px;height:20px"></icon>
-                <iSelect v-model="carType"
-                         @change="changeBy"
-                         style="width:150px"
-                         class="margin-bottom10"
-                         multiple>
-                  <el-option value="1"
-                             :label="$t('车型1')"> </el-option>
-                  <el-option value="2"
-                             :label="$t('车型2')"></el-option>
-                  <el-option value="3"
-                             :label="$t('车型3')"></el-option>
-                  <el-option value="4"
-                             :label="$t('车型4')"></el-option>
-                </iSelect>
-                <span class="margin-bottom10 ">Best Ball</span>
-                <span class="yield">22,000</span>
-              </div>
-              <datasetBar ref="datasetBar"
-                          :notY="true"></datasetBar>
-            </div>
-            <!-- <div class="flex chartItem">
-              <div class="operation">
-                <icon symbol
-                      name="iconbob-shanchu"
-                      class="margin-bottom10 "
-                      style="width:20px;height:20px"></icon>
-                <iSelect v-model="carType"
-                         @change="changeBy"
-                         style="width:150px"
-                         class="margin-bottom10"
-                         multiple>
-                  <el-option value="1"
-                             :label="$t('车型1')"> </el-option>
-                  <el-option value="2"
-                             :label="$t('车型2')"></el-option>
-                  <el-option value="3"
-                             :label="$t('车型3')"></el-option>
-                  <el-option value="4"
-                             :label="$t('车型4')"></el-option>
-                </iSelect>
-                <span class="margin-bottom10 ">Best Ball</span>
-                <span class="yield">22,000</span>
-              </div>
-              <datasetBar ref="datasetBar"
-                          :notY="true"></datasetBar>
-            </div>
-            <div class="flex chartItem">
-              <div class="operation">
-                <icon symbol
-                      name="iconbob-shanchu"
-                      class="margin-bottom10 "
-                      style="width:20px;height:20px"></icon>
-                <iSelect v-model="carType"
-                         @change="changeBy"
-                         style="width:150px"
-                         class="margin-bottom10"
-                         multiple>
-                  <el-option value="1"
-                             :label="$t('车型1')"> </el-option>
-                  <el-option value="2"
-                             :label="$t('车型2')"></el-option>
-                  <el-option value="3"
-                             :label="$t('车型3')"></el-option>
-                  <el-option value="4"
-                             :label="$t('车型4')"></el-option>
-                </iSelect>
-                <span class="margin-bottom10 ">Best Ball</span>
-                <span class="yield">22,000</span>
-              </div>
-              <datasetBar ref="datasetBar"
-                          :notY="true"></datasetBar>
-            </div> -->
-          </div>
-        </iCard>
-
       </div>
-      <div class="tableList">
-        <iCard>
-          <template v-slot:header>
-            <div class="titleBox">
-              <div v-if="!editFlag">
-                <iButton>新增</iButton>
-                <iButton>删除</iButton>
-                <iButton @click="edit">编辑</iButton>
+      <div class="cardBox"
+           style="width:85%">
+        <iCard style="flex:1"
+               class="margin-left20">
+          <div class="chartBox1">
+            <div class="chartBox">
+              <div class="flex chartItem">
+                <div class="operation">
+                  <icon symbol
+                        name="iconbob-shanchu"
+                        class="margin-bottom10 "
+                        style="width:20px;height:20px "></icon>
+                  <iSelect v-model="carType"
+                           @change="changeBy"
+                           style="width:150px"
+                           class="margin-bottom10"
+                           multiple>
+                    <el-option value="1"
+                               :label="$t('车型1')"> </el-option>
+                    <el-option value="2"
+                               :label="$t('车型2')"></el-option>
+                    <el-option value="3"
+                               :label="$t('车型3')"></el-option>
+                    <el-option value="4"
+                               :label="$t('车型4')"></el-option>
+                  </iSelect>
+                  <span class="margin-bottom10 ">Best Ball</span>
+                  <span class="yield">22,000</span>
+                </div>
+                <datasetBar1 ref="datasetBar1"></datasetBar1>
               </div>
-              <div v-else>
-                <iButton @click="save">保存</iButton>
-                <iButton @click="cancel">取消</iButton>
+              <div class="flex chartItem">
+                <div class="operation">
+                  <icon symbol
+                        name="iconbob-shanchu"
+                        class="margin-bottom10 "
+                        style="width:20px;height:20px"></icon>
+                  <iSelect v-model="carType"
+                           @change="changeBy"
+                           style="width:150px"
+                           class="margin-bottom10"
+                           multiple>
+                    <el-option value="1"
+                               :label="$t('车型1')"> </el-option>
+                    <el-option value="2"
+                               :label="$t('车型2')"></el-option>
+                    <el-option value="3"
+                               :label="$t('车型3')"></el-option>
+                    <el-option value="4"
+                               :label="$t('车型4')"></el-option>
+                  </iSelect>
+                  <span class="margin-bottom10 ">Best Ball</span>
+                  <span class="yield">22,000</span>
+                </div>
+                <datasetBar ref="datasetBar"
+                            :notY="true"></datasetBar>
+              </div>
+              <div class="flex chartItem">
+                <div class="operation">
+                  <icon symbol
+                        name="iconbob-shanchu"
+                        class="margin-bottom10 "
+                        style="width:20px;height:20px"></icon>
+                  <iSelect v-model="carType"
+                           @change="changeBy"
+                           style="width:150px"
+                           class="margin-bottom10"
+                           multiple>
+                    <el-option value="1"
+                               :label="$t('车型1')"> </el-option>
+                    <el-option value="2"
+                               :label="$t('车型2')"></el-option>
+                    <el-option value="3"
+                               :label="$t('车型3')"></el-option>
+                    <el-option value="4"
+                               :label="$t('车型4')"></el-option>
+                  </iSelect>
+                  <span class="margin-bottom10 ">Best Ball</span>
+                  <span class="yield">22,000</span>
+                </div>
+                <datasetBar ref="datasetBar"
+                            :notY="true"></datasetBar>
+              </div>
+              <div class="flex chartItem">
+                <div class="operation">
+                  <icon symbol
+                        name="iconbob-shanchu"
+                        class="margin-bottom10 "
+                        style="width:20px;height:20px"></icon>
+                  <iSelect v-model="carType"
+                           @change="changeBy"
+                           style="width:150px"
+                           class="margin-bottom10"
+                           multiple>
+                    <el-option value="1"
+                               :label="$t('车型1')"> </el-option>
+                    <el-option value="2"
+                               :label="$t('车型2')"></el-option>
+                    <el-option value="3"
+                               :label="$t('车型3')"></el-option>
+                    <el-option value="4"
+                               :label="$t('车型4')"></el-option>
+                  </iSelect>
+                  <span class="margin-bottom10 ">Best Ball</span>
+                  <span class="yield">22,000</span>
+                </div>
+                <datasetBar ref="datasetBar"
+                            :notY="true"></datasetBar>
+              </div>
+              <div class="flex chartItem">
+                <div class="operation">
+                  <icon symbol
+                        name="iconbob-shanchu"
+                        class="margin-bottom10 "
+                        style="width:20px;height:20px"></icon>
+                  <iSelect v-model="carType"
+                           @change="changeBy"
+                           style="width:150px"
+                           class="margin-bottom10"
+                           multiple>
+                    <el-option value="1"
+                               :label="$t('车型1')"> </el-option>
+                    <el-option value="2"
+                               :label="$t('车型2')"></el-option>
+                    <el-option value="3"
+                               :label="$t('车型3')"></el-option>
+                    <el-option value="4"
+                               :label="$t('车型4')"></el-option>
+                  </iSelect>
+                  <span class="margin-bottom10 ">Best Ball</span>
+                  <span class="yield">22,000</span>
+                </div>
+                <datasetBar ref="datasetBar"
+                            :notY="true"></datasetBar>
               </div>
             </div>
-          </template>
-          <tableList :gridData="gridData"
-                     :editFlag="editFlag"></tableList>
+          </div>
+          <report :dialogVisible="true"></report>
         </iCard>
       </div>
     </div>
@@ -393,14 +382,18 @@ export default {
     justify-content: space-between;
   }
 }
+.cardBox {
+  float: left;
+}
 .chartItem {
-  flex-shrink: 0;
-  flex-basis: 400px;
-  white-space: nowrap;
-  margin-left: 60px;
+  flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-right: 60px;
+  &:last-child {
+    margin-right: 0;
+  }
 }
 .operation {
   display: flex;
@@ -430,17 +423,13 @@ export default {
   border-radius: 20px;
   padding: 9px 26px;
 }
-.tableList {
-  margin-top: 20px;
-}
-.titleBox {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-}
 .chartBox {
-  overflow-x: auto;
-  justify-content: space-between;
+  display: flex;
+  overflow: auto;
+}
+.chartBox1 {
+  width: 100%;
+  overflow: hidden;
 }
 </style>
 <style lang="scss">

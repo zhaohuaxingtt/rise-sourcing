@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-03 14:13:24
+ * @LastEditTime: 2021-08-06 14:37:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -164,9 +164,10 @@
             <span>{{ scope.row.status ? scope.row.status.desc : "" }}</span>
           </template>
           <template #oldPartNumPreset="scope">
-            <iInput v-if="scope.row.status.code === 'EMPTY'" class="oldPartNumPresetSelect" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly @click.native="oldPartNumPresetSelect(scope.row)">
+            <iInput v-if="scope.row.status.code === 'EMPTY'" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
               <div class="inputSearchIcon" slot="suffix">
-                <icon symbol name="iconshaixuankuangsousuo" />
+                <icon v-if="!scope.row.judgeLoading" symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon"  @click.native="oldPartNumPresetSelect(scope.row)"/>
+                <i v-else class="el-icon-loading"></i>
               </div>
             </iInput>
             <iInput v-else v-model="scope.row.oldPartNumPreset" disabled readonly></iInput>
@@ -175,10 +176,10 @@
             <span class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotation="scope">
-            <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #priceAxis="scope">
-            <span class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #investCarTypePro="scope">
             <iSelect
@@ -210,7 +211,7 @@
           :total="page.totalCount" />
       </div>
     </iCard>
-    <dosageDialog :visible.sync="dosageDialogVisible" />
+    <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" @update="init" />
   </div>
 </template>
 
@@ -221,9 +222,9 @@ import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle, isReferenceMap } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
-import { getCarTypePro } from "@/api/designate/nomination"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent, judgeRight } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
+import { searchCartypeProject } from "@/api/aeko/manage"
 import { cloneDeep } from "lodash"
 
 const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
@@ -236,6 +237,12 @@ export default {
       type: Object,
       default: () => ({})
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
   },
   data() {
     return {
@@ -250,13 +257,26 @@ export default {
       multipleSelection: [],
       declareToggleLoading: false,
       declareResetLoading: false,
+      currentRow: {},
       dosageDialogVisible: false,
-      submitLoading: false,
+      submitLoading: false
     };
   },
   created() {
-    this.getCarTypePro()
+    this.searchCartypeProject()
     this.getDictByCode()
+
+    if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+      try {
+        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+
+        this.form = aekoConatentDeclareParams.form
+        this.page.currPage = this.form.currPage
+        this.page.pageSize = this.form.pageSize
+      } catch(e) {
+        console.error(e)
+      }
+    }
   },
   filters: {
     isReferenceFilter(value) {
@@ -264,8 +284,8 @@ export default {
     }
   },
   methods: {
-    getCarTypePro() {
-      getCarTypePro()
+    searchCartypeProject() {
+      searchCartypeProject()
       .then(res => {
         if (res.code == 200) {
           this.carTypeProjectOptions = 
@@ -316,8 +336,7 @@ export default {
       
       getAekoLiniePartInfo({
         ...this.form,
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId || 
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
         current: this.page.currPage,
@@ -335,34 +354,65 @@ export default {
       })
       .catch(() => this.loading = false)
     },
-    query() {
+    sure() {
+      // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
+      if(this.form.partNum && this.form.partNum.trim().length < 9){
+        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+      }
+
       this.page.currPage = 1
       this.init()
-    },
-    sure() {
-      this.query()
     },
     reset() {
       this.page.currPage = 1
       this.form = cloneDeep(contentDeclareQueryForm)
-      this.query()
+      this.sure()
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
     },
     // 查看装⻋率/每⻋⽤量
     viewDosage(row) {
+      this.currentRow = row
       this.dosageDialogVisible = true
     },
     view() {},
     oldPartNumPresetSelect(row) {
-      this.$router.push({
-        path: "/aeko/quondampart/ledger",
-        query: {
-          requirementAekoId: this.aekoInfo.requirementAekoId,
-          objectAekoPartId: row.objectAekoPartId
+      this.$set(row, "judgeLoading", true)
+
+      judgeRight([
+        {
+          partNum: row.oldPartNumPreset,
+          userId: this.userInfo.id
         }
+      ])
+      .then(res => {
+        if (res.code == 200) {
+          if (res.data[0].isView) {
+            this.$router.push({
+              path: "/aeko/quondampart/ledger",
+              query: {
+                requirementAekoId: this.aekoInfo.requirementAekoId,
+                objectAekoPartId: row.objectAekoPartId
+              }
+            })
+          
+            sessionStorage.setItem("aekoConatentDeclareParams", JSON.stringify({
+              form: this.form,
+              requirementAekoId: this.aekoInfo.requirementAekoId,
+              currPage: this.page.currPage,
+              pageSize: this.page.pageSize
+            }))
+          } else {
+            iMessage.error(res.data[0].describe)   
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.$set(row, "judgeLoading", false)
       })
+      .catch(() => this.$set(row, "judgeLoading", false))
     },
     // 相关无关切换
     handleDeclareToggle() {
@@ -399,8 +449,7 @@ export default {
       this.declareResetLoading = true
 
       patchAekoReset({
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
       })
       .then(res => {
@@ -444,8 +493,7 @@ export default {
       this.submitLoading = true
 
       patchAekoContent({
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
       })
       .then(res => {
@@ -468,24 +516,50 @@ export default {
 
 <style lang="scss" scoped>
 .contentDeclare {
-  .multipleSelect{
-    ::v-deep .el-tag{
-      max-width: calc(100% - 70px);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+  .multipleSelect {
+    ::v-deep .el-tag {
+      position: relative;
+
+      &:last-of-type {
+        padding-right: 5px;
+      }
+
+      &:first-of-type {
+        padding-right: 10px;
+      }
+
+      .el-select__tags-text {
+        display: inline-block;
+        max-width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .el-tag__close {
+        top: -25%;
+      }
     }
   }
 
-  .oldPartNumPresetSelect {
-    cursor: pointer;
-    
+  .oldPartNumPresetQuery {
     ::v-deep input {
-      cursor: pointer;
+      caret-color: rgb(96, 98, 102);
     }
 
-    ::v-deep .el-input__suffix {
+    .oldPartNumPresetIcon {
+      cursor: pointer;
+
+      ::v-deep .el-input__suffix {
+        right: 0;
+      }
+    }
+    
+    ::v-deep .el-input__suffix-inner {
+      position: absolute;
+      top: 50%;
       right: 0;
+      transform: translate(0, -50%);
     }
   }
 

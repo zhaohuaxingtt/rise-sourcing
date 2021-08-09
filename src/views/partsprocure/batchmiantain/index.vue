@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-07-22 13:39:41
+ * @LastEditTime: 2021-08-05 17:05:23
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -17,6 +17,8 @@
         language("LK_PILIANGWEIHULINGJIANCAIGOUXIANGMU",'批量维护零件采购项目')
       }}</span>
       <div class="floatright">
+        <!-- 供应商创建定点申请单 -->
+				<createNomiApplication></createNomiApplication>
         <iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">{{
           language("LK_FANHUI",'返回')
         }}</iButton>
@@ -47,7 +49,7 @@
             <el-option
               :value="item.code"
               :label="item.name"
-              v-for="(item, index) in filterProjectList(fromGroup.PART_PROJECT_TYPE,batch.type)"
+              v-for="(item, index) in filterProjectList(fromGroup.PART_PROJECT_TYPE,$route.query.businessKey)"
               :key="index"
             ></el-option>
           </iSelect>
@@ -86,7 +88,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')">
+        <el-form-item v-permission='PARTSPROCURE_BATCHMIANTAIN_CHEXINXIANGMU' :label="language('LK_CHEXINGXIANGMU','车型项目')">
           <iSelect
             :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model="cartypeProject"
@@ -204,12 +206,20 @@
         </iButton>
       </template>
     </iSearch>
+    <!---------------------------------------------------------------------->
+    <!----------------------------非仅零件变更-------------------------------->
+    <!---------------------------------------------------------------------->
     <outputPlan
+      v-permission='PARTSPROCURE_BATCHMIANTAIN_OUTPUTLINE'
       ref="outputPlan"
       class="margin-bottom20"
       @handleSelectionChange="handleSelectionChange"
       @updateCategoryGroup="updateCategoryGroup"
     />
+    <!---------------------------------------------------------------------->
+    <!----------------------------仅零件变更--------------------------------->
+    <!---------------------------------------------------------------------->
+    <onlyPartsChange v-permission='PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE' @handleSelectionChange="handleSelectionChange"></onlyPartsChange>
   </iPage>
 </template>
 <script>
@@ -217,6 +227,7 @@ import { iPage, iButton, iSearch, iSelect, iMessage } from "@/components";
 import outputPlan from "./components/outputPlan";
 import { changeProcure, getProcureGroup } from "@/api/partsprocure/home";
 import { insertRfq } from "@/api/partsrfq/home";
+import onlyPartsChange from './components/onlyPartsChange'
 import {
   materialGroupByLinie,
   getStuffByCategory,
@@ -226,6 +237,7 @@ import {
 import { getPageGroup } from "@/api/partsign/home";
 import creatFs from "../home/components/creatFs";
 import {filterProjectList} from '@/utils'
+import createNomiApplication from '@/views/partsprocure/editordetail/components/createNomiappBtn'
 export default {
   components: {
     iPage,
@@ -234,6 +246,8 @@ export default {
     iSelect,
     outputPlan,
     creatFs,
+    createNomiApplication,
+    onlyPartsChange
   },
   data() {
     return {
@@ -265,7 +279,8 @@ export default {
       cartypeProject: {}, //车型项目
       selectTableData: [],
       startLoding: false,
-      purchaseProjectIds: []
+      purchaseProjectIds: [],
+      onlyPartsSelect:[]
     };
   },
   created() {
@@ -492,6 +507,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.batchmiantain {
+.batchmiantain {  
 }
 </style>

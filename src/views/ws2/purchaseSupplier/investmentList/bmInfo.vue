@@ -247,7 +247,7 @@ export default {
       assetTypesList: [],
       craftTypesList: [],
       imgList: ['https://cdn6-banquan.ituchong.com/weili/l/919767005971611831.webp', 'https://cdn6-banquan.ituchong.com/weili/l/915608610047000641.webp', 'https://cdn9-banquan.ituchong.com/weili/l/903371741418749965.webp'],
-      isOpen: false,
+      isOpen: true,
       confirmShow: false,
       returnShow: false,
       photoListShow: false,

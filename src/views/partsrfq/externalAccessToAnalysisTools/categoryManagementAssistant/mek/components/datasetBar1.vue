@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-06 19:48:50
+ * @LastEditTime: 2021-08-09 09:43:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -19,8 +19,7 @@ export default {
       myChart: null,
     };
   },
-  props: {
-  },
+  props: {},
   mounted () {
     this.$nextTick(() => {
       this.initCharts();
@@ -29,13 +28,13 @@ export default {
   methods: {
     initCharts () {
       this.myChart = echarts().init(this.$refs.chart);
-      const option = {
 
+      const option = {
         title: {
           show: true,
           subtext: "产量",
           left: 0,
-          top: 30
+          top: -10,
         },
         xAxis: [
           {
@@ -43,15 +42,15 @@ export default {
             axisTick: { show: false },
             data: ["Mix", "配置1", "配置2"],
             axisLine: {
-              show:false
+              show: false
             }
           },
         ],
         grid: {
           left: 40,
-          right: '0%',
-          bottom: '8%',
-          top: "40%"
+          right: "-5%",
+          bottom: "8%",
+          top: "20%",
         },
         yAxis: {
           type: "value",
@@ -111,10 +110,9 @@ export default {
           },
         ],
       };
+      this.myChart.clear();
+      this.myChart.resize();
       this.myChart.setOption(option);
-      window.onresize = function () {
-        this.smyChart.resize();
-      }
     },
   },
 };

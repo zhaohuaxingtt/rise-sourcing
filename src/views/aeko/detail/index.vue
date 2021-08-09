@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-04 15:20:28
+ * @LastEditTime: 2021-08-06 14:14:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="aekodetail">
     <div class="header flex-between-center margin-bottom20">
-      <h2>AEKO号：AE19221</h2>
+      <h2>AEKO号：{{ aekoInfo.aekoCode }}</h2>
       <div>
         <iButton>AEKO详情</iButton>
         <logButton class="margin-left20" />
@@ -77,14 +77,18 @@ export default {
     }
     this.getBbasicInfo();
   },
-  mounted() {
-    const component = this.$refs[this.currentTab][0]
-    if (typeof component.init === "function") component.init()
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapGetters([
+        "isAekoManager", // Aeko管理员
+        "isCommodityCoordinator", // 科室协调员
+        "isLinie", // 专业采购员
+    ]),
   },
   data() {
     return {
       aekoInfo: {},
-      currentTab: "cover",
+      currentTab: "partsList",
       basicTitle:[
         {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'aekoStatus',isObj:true,},
         {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'sourse',isObj:true,},
@@ -117,6 +121,12 @@ export default {
         const {code,data={}} = res;
         if(code == 200){
           this.aekoInfo = {...aekoInfo,...data};
+
+          if (this.isLinie) {
+            this.currentTab = "contentDeclare"
+          }
+          
+          this.tabChange()
         }else{
            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

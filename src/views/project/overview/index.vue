@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 14:00:14
+ * @LastEditTime: 2021-08-05 14:53:58
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
@@ -10,6 +10,9 @@
 <template>
   <iPage class="projectoverview">
     <projectTop />
+    <!---------------------------------------------------------------------->
+    <!----------                  筛选部分                   ---------------->
+    <!---------------------------------------------------------------------->
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
         <iButton @click="openSelectCar">{{language('XUANZEXIANSHICHEXINGXIANGMU', '选择显示车型项目')}}</iButton>
@@ -42,9 +45,15 @@
         </el-form-item>
       </el-form>
     </iSearch>
+    <!---------------------------------------------------------------------->
+    <!----------                 表格                        ---------------->
+    <!---------------------------------------------------------------------->
     <iCard class="margin-top20">
       <tableList :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" ></tableList>
     </iCard>
+    <!---------------------------------------------------------------------->
+    <!----------                  配置显示车型项目弹窗        ---------------->
+    <!---------------------------------------------------------------------->
     <selectCarProDialog :dialogVisible="selectCarVisible" @changeVisible="changeSelectCarVisible" />
   </iPage>
 </template>
@@ -101,6 +110,12 @@ export default {
     this.getProductPurchaserOptions()
   },
   methods: {
+    /**
+     * @Description: 获取项目采购员下拉
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getProductPurchaserOptions() {
       getAllProPurchaser().then(res => {
         if (res?.result) {
@@ -116,9 +131,16 @@ export default {
         }
       })
     },
+    /**
+     * @Description: 根据筛选条件筛选
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleSure() {
+      console.log(this.searchParams, this.tableDataTemp)
       this.tableData = this.tableDataTemp.filter(item => {
-        let result = false
+        let result = true
         if (this.searchParams.carProject) {
           result = item.id === this.searchParams.carProject
         }
@@ -130,11 +152,25 @@ export default {
         }
         return result
       })
+      console.log(this.tableData)
     },
+    /**
+     * @Description: 重置
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleReset() {
       this.searchParams = {}
-      this.tableData = cloneDeep(this.tableDataTemp)
+      this.handleSure()
     },
+    /**
+     * @Description: 获取节点状态
+     * @Author: Luoshuang
+     * @param {*} currDate
+     * @param {*} beforeDate
+     * @return {*}
+     */    
     getStatus(currDate, beforeDate) {
       if (moment(currDate).isBefore(moment())) {
         return 1
@@ -148,15 +184,12 @@ export default {
         return 2
       }
     },
-    getLineStatus(currDate, nextDate) {
-      if (moment(nextDate).isBefore(moment())) {
-        return 1
-      } else if(moment(currDate).isBefore(moment())) {
-        return 2
-      } else {
-        return 3
-      }
-    },
+    /**
+     * @Description: 整合节点信息
+     * @Author: Luoshuang
+     * @param {*} node
+     * @return {*}
+     */    
     getNodeList(node) {
       if(node) {
         const nodeInYearList = this.progressList.reduce((accu, curr, index) => {
@@ -178,7 +211,14 @@ export default {
       }
       return []
     },
+    /**
+     * @Description: 获取列表数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getOverviewList() {
+      this.searchParams = {}
       this.tableLoading = true
       getOverview().then(res => {
         if (res?.result) {
@@ -205,9 +245,21 @@ export default {
         this.tableLoading = false
       })
     },
+    /**
+     * @Description: 打开配置车型项目弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     openSelectCar() {
       this.changeSelectCarVisible(true)
     },
+    /**
+     * @Description: 配置项目弹窗状态修改
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
     changeSelectCarVisible(visible) {
       this.selectCarVisible = visible
       if (!visible) {

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-08-06 19:49:02
+ * @LastEditTime: 2021-08-09 09:41:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -33,6 +33,9 @@ export default {
   methods: {
     initCharts () {
       this.myChart = echarts().init(this.$refs.chart);
+      console.log(this.$refs.chart);
+      this.$refs.chart.style.width = "400px";
+
       const option = {
         xAxis: [
           {
@@ -149,10 +152,9 @@ export default {
           }
         ],
       };
+      this.myChart.clear();
+      this.myChart.resize();
       this.myChart.setOption(option);
-      window.onresize = function () {
-        this.myChart.resize();
-      }
     },
   },
 };
