@@ -1,7 +1,21 @@
 <template>
   <div>
       <iCard>
-          <slot></slot>
+          <div class="imgkpi-head">
+               <el-form label-position="left" label-width="60px">
+                <el-form-item
+                label="版本："
+                class="SearchOption"
+                >
+                 <iInput v-model="childTemplateName"></iInput>
+                </el-form-item>
+               </el-form>
+               <div>
+                   <iButton @click="deleteTemplate">删除</iButton>
+                   <iButton @click="downloadTeplate">下载</iButton>
+                   <iButton @click="save">保存</iButton>
+               </div>
+            </div>
           <div>
           <div class="kpi-chart">
               <div class="tab1">
@@ -33,14 +47,14 @@
           :class="index<formDataLevel2.length-1?'second-cloum-before':''"
           >
                 <div class="cell">
-                    <div :class="item.formDataLevel3.length>0?'content kpi-module second-before second-after':'content kpi-module second-before'">
+                    <div :class="item.children.length>0?'content kpi-module second-before second-after':'content kpi-module second-before'">
                         <div class="case">
                             <label>单位</label>
-                            <iInput class="kpi-input" v-model="item.unit"></iInput>
+                            <iInput class="kpi-input" v-model="item.name"></iInput>
                         </div>
                         <div class="case">
                             <label>比重</label>
-                            <iInput class="kpi-input" v-model="item.proportion"></iInput>
+                            <iInput class="kpi-input" v-model="item.weight"></iInput>
                         </div>
                         <i class="add el-icon-circle-plus-outline" @click="handleAdd(index,'','2')"></i>
                         <i class="less el-icon-remove-outline" @click="handleLess(index,'','','2')"></i>
@@ -49,18 +63,18 @@
                 <div class="part2">
                     <div 
                     class="itemList" 
-                    v-for="(lev3,index3) in item.formDataLevel3" 
+                    v-for="(lev3,index3) in item.children" 
                     :key="index3"
                     >
-                        <div class="cell third-cell" :class="index3<item.formDataLevel3.length-1?'cloum-before':''">
-                            <div :class="lev3.formDataLevel4.length>0?'content kpi-module third-border-before third-border-after':'content kpi-module third-border-before'">
+                        <div class="cell third-cell" :class="index3<item.children.length-1?'cloum-before':''">
+                            <div :class="lev3.children.length>0?'content kpi-module third-border-before third-border-after':'content kpi-module third-border-before'">
                                 <div class="case">
                                     <label>单位</label>
-                                    <iInput class="kpi-input" v-model="lev3.unit"></iInput>
+                                    <iInput class="kpi-input" v-model="lev3.name"></iInput>
                                 </div>
                                 <div class="case">
                                     <label>比重</label>
-                                    <iInput class="kpi-input" v-model="lev3.proportion"></iInput>
+                                    <iInput class="kpi-input" v-model="lev3.weight"></iInput>
                                 </div>
                                 <i class="add el-icon-circle-plus-outline" @click="handleAdd(index,index3,'3')"></i>
                                 <i class="less el-icon-remove-outline" @click="handleLess(index,index3,'','3')"></i>
@@ -69,16 +83,16 @@
                         
                         <div class="cell last-cell" :key="index3+'lev3'">
                             <div class="content kpi-module last-border"
-                            v-for="(lev4,index4) in lev3.formDataLevel4" 
+                            v-for="(lev4,index4) in lev3.children" 
                             :key="index4+'lev4'"
                         >
                                 <div class="case">
                                     <label>单位</label>
-                                    <iInput class="kpi-input" v-model="lev4.unit"></iInput>
+                                    <iInput class="kpi-input" v-model="lev4.name"></iInput>
                                 </div>
                                 <div class="case">
                                     <label>比重</label>
-                                    <iInput class="kpi-input" v-model="lev4.proportion"></iInput>
+                                    <iInput class="kpi-input" v-model="lev4.weight"></iInput>
                                 </div>
                                 <i class="less el-icon-remove-outline" @click="handleLess(index,index3,index,'4')"></i>
                             </div>
@@ -93,31 +107,63 @@
 </template>
 
 <script>
-import { iCard,iInput } from 'rise'
+import { iCard,iInput,iButton } from 'rise'
+import { saveTemplateDetail,deleteTemplate,downloadTemplate } from '@/api/kpiChart'
 export default {
+    props:{
+        treeData:{
+            type:Array
+        },
+        temId:{
+            type:String
+        },
+        templateName:{
+            type:String
+        }
+    },
     components:{
         iCard,
-        iInput
+        iInput,
+        iButton
     },
     data(){
         return {
             formDataLevel2:[],
+            childTemplateName:""
+        }
+    },
+    mounted(){
+        this.formDataLevel2=this.treeData
+        console.log(this.$store.state.permission.userInfo.deptDTO.deptNum)
+    },
+    watch:{
+        treeData:{
+           handler(curVal,oldVal){
+               this.formDataLevel2=this.treeData
+               this.childTemplateName=this.templateName
+            },
+            immediate: true,
+            deep: true
+        },
+        templateName(){
+             this.childTemplateName=this.templateName
+              this.formDataLevel2=[]
         }
     },
     methods:{
         addCell(){
-            this.formDataLevel2.push({unit:"",
-                proportion:"",formDataLevel3:[]})
+            this.formDataLevel2.push({id:'',name:"",
+                weight:"",children:[]})
         },
         handleAdd(index,idx3,str){
             if(str==="2"){
-                 this.formDataLevel2[index].formDataLevel3.push({
-                unit:"",
-                proportion:"",formDataLevel4:[]})
+                 this.formDataLevel2[index].children.push({
+                id:'',name:"",
+                weight:"",children:[]})
             }else if(str==="3"){
-                this.formDataLevel2[index].formDataLevel3[idx3].formDataLevel4.push({
-                unit:"",
-                proportion:""})
+                this.formDataLevel2[index].children[idx3].children.push({
+                id:'',name:"",
+                weight:"",children:[]})
                 
             }
         },
@@ -125,11 +171,53 @@ export default {
             if(str==="2"){
                this.formDataLevel2.splice(index,1)
             }else if(str==="3"){
-               this.formDataLevel2[index].formDataLevel3.splice(index3,1)
+               this.formDataLevel2[index].children.splice(index3,1)
             }else{
-               this.formDataLevel2[index].formDataLevel3[index3].formDataLevel4.splice(index4,1)
+               this.formDataLevel2[index].children[index3].children.splice(index4,1)
             }
-        }
+        },
+        save(){
+            saveTemplateDetail({
+            deptCode:this.$store.state.permission.userInfo.deptDTO.deptNum,
+            id:this.temId,
+            name:this.childTemplateName,
+            list:[...this.formDataLevel2]}).then(res=>{
+             this.$router.go(0)
+            })
+      },
+      deleteTemplate(){
+          this.$confirm('此操作将永久删除该模板, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteTemplate({templateId:this.temId}).then(res=>{
+              this.$message({
+                    type: 'success',
+                    message: '删除成功!'
+                });
+            this.$router.go(0)
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+          
+      },
+      downloadTeplate(){
+          downloadTemplate({templateId:this.temId}).then(res=>{
+                let URL = window.URL || window.webkitURL;
+                let objectUrl = URL.createObjectURL(res);
+                let a = document.createElement('a');
+                a.href = objectUrl; 
+                a.download = `${this.childTemplateName}.xls`; 
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+          })
+      }
     }
   
 }
@@ -421,5 +509,8 @@ export default {
             }
         }
     }
-    
+  .imgkpi-head{
+        display: flex;
+        justify-content: space-between;
+    }  
 </style>
