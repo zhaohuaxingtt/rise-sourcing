@@ -7,11 +7,19 @@ const rich = {
       color: '#a2a5aa'
     }
 }
+const symbolImg = require('@/assets/images/symbal.png')
 // 平均定点周期
-const freqData = [14, 22,39,36,14, 22,39,36]
+const freq = [14, 22,39,36,14, 22,39, 40]
+// 生成freqData
+const freqData = []
 // 平均定点周期标记
 const xAxisTopData = []
-freqData.forEach(d => {
+freq.forEach(d => {
+    freqData.push({
+        value: d,
+        symbol:`image://${symbolImg}`,
+        symbolSize:10,
+    })
     xAxisTopData.push({
         value: d,
         textStyle: {
@@ -38,8 +46,8 @@ fugroup.forEach(d => {
 export const option = {
     color: colors,
     grid: {
-        left: '10',
-        right: '10',
+        left: '40',
+        right: '40',
         bottom: '0',
         top: '10%',
         containLabel: true
@@ -104,6 +112,7 @@ export const option = {
             nameGap: 60,
             nameLocation: 'middle',
             nameTextStyle: {
+                color: '#abacb2',
                 align: 'center'
             },
             min: 0,
@@ -116,6 +125,7 @@ export const option = {
             },
             axisTick: {show: false,},
             axisLabel: {
+                color: '#abacb2',
                 formatter: '{value}%'
             }
         },
@@ -126,6 +136,7 @@ export const option = {
             nameGap: 50,
             nameLocation: 'middle',
             nameTextStyle: {
+                color: '#abacb2',
                 align: 'center'
             },
             min: 0,
@@ -142,6 +153,7 @@ export const option = {
                 }
             },
             axisLabel: {
+                color: '#abacb2',
                 formatter: '{value}'
             }
         }
