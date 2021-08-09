@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-04 18:04:52
+ * @LastEditTime: 2021-08-09 10:27:58
  * @LastEditors: 舒杰
  * @Description: 行业报告
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\index.vue
@@ -11,11 +11,20 @@
 		<template slot="header-control">
 			<div v-if="isEdit"> 
 				<iButton @click="unEdit">{{ language("QUXIAO", "取消") }}</iButton>
-				<iButton>{{ language("BAOCUN", "保存") }}</iButton>
+				<iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
 			</div>
 			<div v-else>
 				<iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
-				<iButton>{{ language("SHUANGCHUAN", "上传") }}</iButton>
+				<el-upload
+				class="upload"
+				:show-file-list="false"
+				name="multipartFile"
+				with-credentials
+				:on-success="handleAvatarSuccess"
+				:http-request="myUpload"
+				accept=".pdf">	
+				<iButton :loading="uploadButtonLoading">{{ language("SHUANGCHUAN", "上传") }}</iButton>
+			</el-upload>
 				<iButton>{{ language("XIAZAI", "下载") }}</iButton>
 				<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 			</div>
@@ -26,9 +35,9 @@
 			:tableLoading="tableLoading"
 			index
 			@handleSelectionChange="handleSelectionChange">
-			<template #toolType="scope">
-				<iInput v-model="scope.row.toolType" v-if="isEdit"></iInput>	
-				<span class="openPage" @click="openPdf(scope.row.downloadUrl)" v-else>{{scope.row.toolType}}</span>
+			<template #onlineWeb="scope">
+				<iInput v-model="scope.row.onlineWeb" v-if="isEdit"></iInput>	
+				<span class="openPage" @click="openPdf(scope.row.downloadUrl)" v-else>{{scope.row.onlineWeb}}</span>
 			</template>
 			<template #openFile="scope">
 				<span class="openPage" @click="openPdf(scope.row.downloadUrl)">{{ language("YULAN","预览") }}</span>
@@ -50,27 +59,23 @@
 <script>
 	import {iCard,iPagination,iButton,iMessage,iInput} from 'rise';
 	import tableList from '@/views/partsrfq/externalAccessToAnalysisTools/components/tableList.vue';
-	import {specialToolsTitle} from './data';
+	import {tableTitle} from './data';
 	import {pageMixins} from '@/utils/pageMixins';
-	import {reportList} from "@/api/partsrfq/reportList";
+	import {getReport,saveReport,uploadReport} from "@/api/categoryManagementAssistant/externalSupplyMarketAnalysis/industryReport";
 	import {downloadFile} from '@/api/file';
+	import {uploadFile} from '@/api/file/upload';
+	import resultMessageMixin from '@/utils/resultMessageMixin';
 	export default{
-		mixins: [pageMixins],
+		mixins: [pageMixins,resultMessageMixin],
 		components:{
 			iCard,tableList,iPagination,iButton,iInput
-		},
-		props:{
-			searchCriteria:{
-				type:Object,
-				default:()=>{}
-			}
 		},
 		computed:{
 		},
 		data() {
 			return {
 				tableListData:[],
-				tableTitle:specialToolsTitle,
+				tableTitle,
 				tableLoading:false,
 				selectData:[],
 				isEdit:false,// 是否编辑
@@ -86,11 +91,11 @@
 			getTableList(){
 				this.tableLoading=true
 				let data={
-					...this.searchCriteria,
+					categoryCodeList:["1"],
 					pageNo:this.page.currPage,
 					pageSize:this.page.pageSize,
 				}
-				reportList(data).then(res=>{
+				getReport(data).then(res=>{
 					if (res.data) {
 						this.page.currPage = res.pageNum;
 						this.page.totalCount = res.total;
@@ -126,6 +131,37 @@
 				}
 				downloadFile(req)
 			},
+			//上传
+			async myUpload(content) {
+				const loading = this.$loading({
+					lock: true,
+				});
+				const formData = new FormData();
+				formData.append('file', content.file);
+				formData.append('categoryCode', '');
+				const res = await uploadReport(formData);
+				// const result=await saveReport({
+				// 	fileName:res.data[0].fileName,
+				// 	fileUrl:res.data[0].filePath,
+				// 	categoryCode:""
+				// })
+				loading.close()
+				this.resultMessage(res,()=>{
+					this.getTableList()
+				})
+			},
+			// 保存
+			save(){
+				let data={
+					reportList:this.tableListData
+				}
+				saveReport(data).then(res=>{
+					this.resultMessage(res,()=>{
+						this.isEdit=false
+						this.getTableList()
+				})
+				})
+			},
 			// 返回
 			back(){
 				this.$router.go(-1)
@@ -142,5 +178,9 @@
 		cursor: pointer;
 		width: 100px;
 		@include text_;
+	}
+	.upload{
+		display: inline-block;
+		margin:0 15px;
 	}
 </style>

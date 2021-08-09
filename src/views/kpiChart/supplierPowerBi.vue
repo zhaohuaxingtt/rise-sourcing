@@ -9,8 +9,9 @@
                 >
                 <iInput 
                 suffix-icon="el-icon-search"
-                v-model="state"
-                @select="handleSelect"></iInput>
+                v-model="supplierName"
+                @select="handleSelect"
+                ></iInput>
                 </el-form-item>
                </el-form>
                <div>
@@ -44,20 +45,24 @@ export default {
             config:{},
             reportContainer:null,
             report:null,
-            supplierName:""
+            supplierName:"公司",
+            configApiData:{},
+            company:[]
         }
     },
     created(){
-         getPowerBiKpi().then(res=>{
-            console.log(res)
+         getPowerBiKpi({}).then(res=>{
+            this.configApiData={...res.data}
         })
-        getPowerBiSupplier({keyWord:this.supplierName,supplierType:'pp'}).then(res=>{
-            console.log(res)
+        getPowerBiSupplier({keyWord:"1234"}).then(res=>{
+            this.company=this.data
         })
     },
     mounted(){
+        console.log(this.configApiData.embedUrl)
         this.init()
         this.renderBi()
+
     },
     methods:{
         // 初始化配置
@@ -66,7 +71,8 @@ export default {
 				this.config = {
                     type: 'report',
 					tokenType: pbi.models.TokenType.Embed,
-                    embedUrl:'',
+                    embedUrl:this.configApiData.embedUrl,
+                    accessToken:this.configApiData.accessToken,
 					workspaceid:'876776a9-f959-442e-a011-b4bade0dd862',
                     reportid:'437fd85e-323d-48b6-aedd-de8d63ce6f37',
                     pageName:'ReportSection680575c9e561c8d8bd83',

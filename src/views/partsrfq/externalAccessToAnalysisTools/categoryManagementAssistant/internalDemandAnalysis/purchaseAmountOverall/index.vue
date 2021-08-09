@@ -12,7 +12,7 @@
         <div class="text">采购金额总览</div>
         <el-row class="margin-top35" style="width:430px" :gutter="15">
           <el-col :span="12">
-            <iDatePicker :placeholder="language('QINGXUANZHEMNIANFENG','请选择年份')" value-format="yyyy" type="year" v-model="form.year" />
+            <iDatePicker :placeholder="language('QINGXUANZHEMNIANFENG','请选择年份')" value-format="yyyy" type="year" v-model="form.year" :picker-options="pickerOptions" />
           </el-col>
           <el-col :span="12">
             <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.page">
@@ -90,7 +90,13 @@ export default {
       formGoup: {
         yearList: [],
         pageList: []
-      }
+      },
+      pickerOptions: {
+        disabledDate(time) {
+          let currentYear = new Date().getFullYear()
+          return time.getFullYear() !== currentYear && time.getFullYear() !== currentYear + 1 && time.getFullYear() !== currentYear + 2;
+        }
+      },
     }
   },
   // 监听属性 类似于data概念
