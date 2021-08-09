@@ -36,7 +36,7 @@
                 <iButton v-if="isCommodityCoordinator" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
                 <iButton >{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
                 <iButton :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
-                <iButton >{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
+                <iButton @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
             </div>
         </template>
         <!-- 表单区域 -->
@@ -88,6 +88,8 @@
       </iCard>
       <!-- 分配科室 -->
       <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId"/>
+      <!-- 退回原因 -->
+      <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
   </div>
 </template>
 
@@ -105,6 +107,7 @@ import { SearchList, linieSearchList , tableTitle, linieQueryForm, linieTableTit
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
+import departBackDialog from './components/departBackDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
 import {
     getPartPage,
@@ -129,6 +132,7 @@ export default {
         tableList,
         iPagination,
         assignDialog,
+        departBackDialog,
     },
     computed: {
         //eslint-disable-next-line no-undef
@@ -190,7 +194,8 @@ export default {
             assignType: "",
             btnLoading:{
                 deleteParts:false,
-            }
+            },
+            departBackVisible:false,
         }
     },
     methods:{
@@ -232,8 +237,8 @@ export default {
         async getList(){
             this.loading = true;
             const {query} = this.$route;
-            const { page,searchParams,aekoInfo={} } = this;
             const { requirementAekoId ='',} = query;
+            const { page,searchParams,aekoInfo={} } = this;
             // const {partNum} = searchParams;
             let cartypeCode=[];
             // 车型和车型项目同一个code参数 单独处理下
@@ -407,7 +412,29 @@ export default {
             } else {
                 this.$set(this.searchParams, key, this.searchParams[key].filter(item => item || item === 0))
             }
-        }
+        },
+
+        // 判断是否勾选项
+        async isSelectItem(type=false){
+            const {selectItems} = this;
+            if(!selectItems.length){
+                iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+                return false;
+            }else{
+                if(type){
+                    return true;
+                }else{
+                    const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
+                    return confirmInfo == 'confirm';
+                }
+            }
+        },
+
+        // 科室退回
+        async back(){
+            const isNext  = await this.isSelectItem(true);
+            if(isNext) this.changeVisible('departBackVisible',true);
+        },
     }
 }
 </script>
@@ -444,6 +471,9 @@ export default {
                 .el-tag__close {
                     top: -25%;
                 }
+            }
+            ::v-deep .el-input__inner{
+                height: 35px !important;
             }
         }
     }
