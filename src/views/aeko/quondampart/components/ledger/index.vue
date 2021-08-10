@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-10 13:43:37
+ * @LastEditTime: 2021-08-10 16:43:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -47,7 +47,7 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in options"
+              v-for="item in procureFactoryOptiopns"
               :key="item.key"
             ></el-option>
           </iSelect>
@@ -102,6 +102,7 @@ import { ledgerQueryForm, ledgerTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
 import { getAekoOriginPartInfo, saveAekoOriginPart, judgeRight } from "@/api/aeko/detail"
+import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, isEqual } from "lodash"
 
 export default {
@@ -118,7 +119,7 @@ export default {
       objectAekoPartId: "",
       requirementAekoId: "",
       oldPartNumPreset: "",
-      options: [],
+      procureFactoryOptiopns: [],
       form: cloneDeep(ledgerQueryForm),
       loading: false,
       tableTitle,
@@ -155,6 +156,7 @@ export default {
       .then(res => {
         if (res.code == 200) {
           if (res.data[0].isView) {
+            this.procureFactorySelectVo()
             this.getAekoOriginPartInfo()
           } else {
             iMessage.error(res.data[0].describe)
@@ -165,6 +167,24 @@ export default {
         }
       })
       .catch(() => this.loading = false)
+    },
+    procureFactorySelectVo() {
+      procureFactorySelectVo()
+      .then(res => {
+        if (res.code == 200) {
+          this.procureFactoryOptiopns = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              key: item.code,
+              label: item.name,
+              value: item.code
+            })) :
+            []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
     },
     getAekoOriginPartInfo() {
       this.loading = true
