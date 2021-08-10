@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 22:46:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 16:47:29
+ * @LastEditTime: 2021-08-10 14:10:53
  * @Description: 车型项目详情
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\carprojectprogress\index.vue
 -->
@@ -14,7 +14,7 @@
       <span class="carProject-detail-title">{{carProjectInfo.cartypeProCode}}</span>
       <div class="carProject-detail-info">
         <span>{{carProjectInfo.factory}}</span>
-        <span>SOP: {{carProjectInfo.pepSop ? moment(carProjectInfo.pepSop).format('YYYY年MM月'): ''}}</span>
+        <span>SOP: {{carProjectInfo.pepSopWk}}</span>
       </div>
     </div>
     <div class="carProject-progress">
@@ -87,24 +87,28 @@ export default {
         return
       }
       this.loading = true
-      const res = await getCarTypeProPepTimeNode(val)
-      if (res?.result) {
-        this.carProjectInfo = res.data
-        this.nodeList = this.progressList.reduce((accu, curr) => {
-          if (!res.data[curr.value]) {
-            return accu
-          }
-          return [...accu, {
-            ...curr,
-            week: res.data[curr.value],
-            isDone: res.data[curr.status]
-          }]
-        },[])
-        this.$emit('changeSopStatus', moment(res.data.pepSop).isBefore(moment()))
-      } else {
-        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      try {
+        const res = await getCarTypeProPepTimeNode(val)
+        if (res?.result) {
+          this.carProjectInfo = res.data
+          this.nodeList = this.progressList.reduce((accu, curr) => {
+            if (!res.data[curr.value]) {
+              return accu
+            }
+            return [...accu, {
+              ...curr,
+              week: res.data[curr.value],
+              isDone: res.data[curr.status]
+            }]
+          },[])
+          this.$emit('changeSopStatus', moment(res.data.pepSop).isBefore(moment()))
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+        this.loading = false
+      } catch(error) {
+        this.loading = false
       }
-      this.loading = false
     },
   }
 }
