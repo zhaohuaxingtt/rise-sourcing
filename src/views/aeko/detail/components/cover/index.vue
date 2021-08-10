@@ -5,7 +5,7 @@
 -->
 <template>
     <div>
-        <editCover v-if="isLinie"/>
+        <editCover :aekoInfo="aekoInfo" v-if="isLinie" @getBbasicInfo="getBbasicInfo"/>
         <previewCover v-else/>
     </div>
 </template>
@@ -19,6 +19,12 @@ export default {
         previewCover,
         editCover,
     },
+    props:{
+        aekoInfo:{
+            type:Object,
+            default:()=>{},
+        }
+    },
     computed: {
         // eslint-disable-next-line no-undef
         ...Vuex.mapGetters([
@@ -27,6 +33,11 @@ export default {
             "isLinie", // 专业采购员
         ]),
     },
+    methods:{
+        getBbasicInfo(){
+            this.$emit('getBbasicInfo','cover');
+        }
+    }
 }
 </script>
 

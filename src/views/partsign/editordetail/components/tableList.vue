@@ -8,8 +8,8 @@
 -->
 <template>
   <el-table ref="table" class="table" :class="singleSelect ? 'singleSelectTable' : ''" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" @select-all="handleSelectAll" :cell-style="borderLeft" >
-    <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="56"></el-table-column>
-    <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
+    <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="56" :fixed="fixed"></el-table-column>
+    <el-table-column v-if="index" type="index" align="center" :label="indexLabel" :fixed="fixed"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
       <el-table-column :key="$index" align="center" :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
@@ -61,6 +61,10 @@ export default {
       type: Function
     },
     lang: {
+      type: Boolean,
+      default: false
+    },
+    fixed: {
       type: Boolean,
       default: false
     }

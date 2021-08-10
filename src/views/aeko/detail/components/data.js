@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-08-05 18:31:05
+ * @LastEditTime: 2021-08-10 15:05:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\data.js
@@ -20,8 +20,8 @@ export const contentDeclareQueryForm = {
 export const contentDeclareTableTitle = [
   { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true, fixed: true, width: "100" },
   { props: "partNameZh", name: "零件名称", key: "LINGJIANMINGCHENG", tooltip: true, fixed: true, width: "100" },
-  { props: "isReference", name: "相关表态", key: "XIANGGUANBIAOTAI", tooltip: true },
-  { props: "status", name: "内容状态", key: "NEIRONGZHUANGTAI", tooltip: true },
+  { props: "isReferenceDesc", name: "相关表态", key: "XIANGGUANBIAOTAI", tooltip: true },
+  { props: "statusDesc", name: "内容状态", key: "NEIRONGZHUANGTAI", tooltip: true },
   { props: "changeType", name: "变更类型", key: "BIANGENGLEIXING", tooltip: true },
   { props: "cartypeZh", name: "涉及⻋型/⻋型项⽬", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width: 130 },
   { props: "oldPartNumPreset", name: "原零件号", key: "YUANLINGJIANHAO", tooltip: true, width: 140 },
@@ -44,11 +44,6 @@ export const mtzOptions = [
   { key: 1, label: "是", value: 1 },
   { key: 0, label: "否", value: 0 }
 ]
-
-export const isReferenceMap = {
-  0: "无关",
-  1: "相关"
-}
 
 export const dosageDialogForm = [
   { props: "cartypeProject", name: "⻋型项⽬", key: "CHEXINGXIANGMU" },

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-09 14:29:30
+ * @LastEditTime: 2021-08-10 10:44:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -30,7 +30,7 @@
       <!-- language(tab.key, tab.label) -->
       <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="tab.label" :name="tab.name">
         <template v-if="currentTab==tab.name">
-          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :aekoInfo="aekoInfo" />
+          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :aekoInfo="aekoInfo" @getBbasicInfo="getBbasicInfo"/>
         </template>
       </el-tab-pane>
     </iTabsList>
@@ -104,8 +104,8 @@ export default {
       aekoInfo: {},
       currentTab: "partsList",
       basicTitle:[
-        {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'aekoStatus',isObj:true,},
-        {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'sourse',isObj:true,},
+        {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'aekoStatusDesc',},
+        {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'sourseDesc'},
         {label:'创建⽇期',labelKey:'LK_AEKOCHUANGJIANRIQI',props:'createDate'},
         {label:'截⽌⽇期',labelKey:'LK_AEKOJIEZHIRIQI',props:'deadLine'},
       ],
@@ -127,7 +127,7 @@ export default {
       })
     },
     // 获取基础信息
-    async getBbasicInfo(){
+    async getBbasicInfo(type=null){
       const {query} = this.$route;
       const { requirementAekoId =''} = query;
       const { aekoInfo={} } = this;
@@ -136,11 +136,14 @@ export default {
         if(code == 200){
           this.aekoInfo = {...aekoInfo,...data};
 
-          if (this.isLinie) {
-            this.currentTab = "contentDeclare"
+          if(!type){
+            // if (this.isLinie) {
+            //   this.currentTab = "contentDeclare"
+            // }
+            this.tabChange();
           }
-          
-          this.tabChange()
+
+         
         }else{
            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
