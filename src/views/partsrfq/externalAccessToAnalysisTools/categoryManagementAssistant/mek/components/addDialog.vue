@@ -20,7 +20,7 @@
         </iSelect>
       </el-form-item>
       <el-form-item :label="language('QINGXUANZHEMUBIAOCHEXING','请选择目标车型')">
-        <iSelect :placeholder="language('QINGSHURUMUBIAOCHEXINGGONGCHANGXINGXI','请输入目标车型/工厂信息')" v-model="form.carType">
+        <iSelect filterable :placeholder="language('QINGSHURUMUBIAOCHEXINGGONGCHANGXINGXI','请输入目标车型/工厂信息')" v-model="form.carType">
           <el-option v-for="(item,index) in formGoup.carTypeList" :key="index" :label="item.modelNameZh	" :value="item.vwModelCode"></el-option>
         </iSelect>
       </el-form-item>
@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     async handleCarType() {
-      const res = await carTypeList({ factoryOrCode: this.form.materialGroupCode })
+      const res = await carTypeList({ materialGroupCode: this.form.materialGroupCode })
       this.formGoup.carTypeList = res.data
     },
     clearDiolog() {

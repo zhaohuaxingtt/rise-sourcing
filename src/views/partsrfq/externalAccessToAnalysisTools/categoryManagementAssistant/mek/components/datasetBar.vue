@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-08-09 09:41:47
+ * @LastEditTime: 2021-08-09 19:34:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
 -->
 <template>
-  <div style="height: 480px;width:100%"
+  <div style="height: 440px;width:100%"
        ref="chart"></div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
     initCharts () {
       this.myChart = echarts().init(this.$refs.chart);
       console.log(this.$refs.chart);
-      this.$refs.chart.style.width = "400px";
+      this.$refs.chart.style.width = 6 * 60 + 'px';
 
       const option = {
         xAxis: [
@@ -47,14 +47,15 @@ export default {
             axisLine: {
               show: false
             },
+            offset: 6,
             data: ["Mix", "配置1", "配置2", "Mix1", "配置3", "配置4"],
           }
         ],
         grid: {
           left: 0,
           right: 0,
-          bottom: '8%',
-          top: "40%"
+          bottom: '15%',
+          top: "30%"
         },
         yAxis: {
           type: "value",
@@ -70,12 +71,6 @@ export default {
             },
           },
         },
-        color: [
-          "#A1D0FF",
-          "#92B8FF",
-          "#5993FF",
-          "#0059FF"
-        ],
         // Declare several bar series, each will be mapped
         // to a column of dataset.source by default.
         series: [
@@ -94,11 +89,14 @@ export default {
             },
             // barCategoryGap: '50%',
             // barMinWidth: 30,
-            barMaxWidth: 30,
+            // barMinWidth: 30,
+            barWidth: 30,
             data: [{
               value: 400,
               label: {
-                show: true
+                show: true,
+                position: 'top',
+                color: "#000"
               },
               itemStyle: {
                 color: "#A1D0FF"
@@ -107,7 +105,9 @@ export default {
             {
               value: 450,
               label: {
-                show: true
+                show: true,
+                position: 'top',
+                color: "#000"
               },
               itemStyle: {
                 color: "#92B8FF"
@@ -116,7 +116,9 @@ export default {
             {
               value: 500,
               label: {
-                show: true
+                show: true,
+                position: 'top',
+                color: "#000"
               },
               itemStyle: {
                 color: "#5993FF"
@@ -125,7 +127,9 @@ export default {
             {
               value: 400,
               label: {
-                show: true
+                show: true,
+                position: 'top',
+                color: "#000"
               },
               itemStyle: {
                 color: "#A1D0FF"
@@ -134,7 +138,9 @@ export default {
             {
               value: 450,
               label: {
-                show: true
+                show: true,
+                position: 'top',
+                color: "#000"
               },
               itemStyle: {
                 color: "#92B8FF"
@@ -143,7 +149,9 @@ export default {
             {
               value: 500,
               label: {
-                show: true
+                show: true,
+                position: 'top',
+                color: "#000"
               },
               itemStyle: {
                 color: "#5993FF"

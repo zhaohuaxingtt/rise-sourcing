@@ -8,7 +8,7 @@
 <template>
   <iCard :title="$t('TPZS.PLGYSZL')" :defalutCollVal="$route.path==='/sourcing/partsrfq/assistant'?false:true" collapse>
     <div class="center">
-      <iButton v-if="$route.path!=='/sourcing/partsrfq/assistant'">{{language("FANHUI","返回")}}</iButton>
+      <iButton v-if="$route.path==='/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'">{{language("FANHUI","返回")}}</iButton>
       <supplierCard :supplierDataList="supplierDataList" class="card-right" />
       <map1 :mapListData="mapListData" />
       <theMapIcon :mapListData="mapListData" />
