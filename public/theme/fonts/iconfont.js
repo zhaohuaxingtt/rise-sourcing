@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-04-20 19:16:52
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-30 16:58:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-10 16:48:19
  * @Description: 
  * @FilePath: \front-web\public\theme\fonts\iconfont.js
  */

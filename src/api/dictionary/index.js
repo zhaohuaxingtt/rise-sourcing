@@ -36,3 +36,11 @@ export function selectDictByKeyss(type) {
         method: 'GET'
     })
 }
+
+//查询采购工厂
+export function procureFactorySelectVo(type) {
+    return requst({
+        url: `/procureFactorySelectVo`,
+        method: 'POST'
+    })
+}
