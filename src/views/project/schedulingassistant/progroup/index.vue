@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 14:07:09
+ * @LastEditTime: 2021-08-10 18:38:53
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
@@ -64,7 +64,7 @@ import nodeView from './components/nodeview'
 import carEmpty from './components/empty/carEmpty'
 import proGroupEmpty from './components/empty/proGroupEmpty'
 import { selectDictByKeyss } from '@/api/dictionary'
-import { getCarTypePro, getLastOperateCarType, getProductSelectList, getCarConfig, updateCarConfig, saveProductSelectList } from '@/api/project'
+import { getSelectCarType, getLastOperateCarType, getProductSelectList, getCarConfig, updateCarConfig, saveProductSelectList } from '@/api/project'
 export default {
   components: { iPage, iCard, iSelect, iButton, carProject, logicSettingDialog, chooseProGroupDialog, icon, periodicView, nodeView, carEmpty, proGroupEmpty },
   data() {
@@ -129,13 +129,13 @@ export default {
       this.isSop = isSop
     },
     getCarProjectOptinos() {
-      getCarTypePro().then(res => {
+      getSelectCarType().then(res => {
         if (res?.result) {
           this.carProjectOptions = res.data.map(item => {
             return {
               ...item,
               value: item.id,
-              label: item.cartypeProName
+              label: item.cartypeProjectZh
             }
           })
         } else {
