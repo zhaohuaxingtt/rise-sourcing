@@ -312,8 +312,8 @@ export default {
                 const {code,data} = res;
                 if(code ==200 ){
                     data.map((item)=>{
-                    item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                    item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
                     })
                     this.selectOptions.buyerName = data;
                 }else{
