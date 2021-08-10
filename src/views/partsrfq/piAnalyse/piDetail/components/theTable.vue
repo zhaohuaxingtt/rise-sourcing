@@ -2,8 +2,8 @@
   <div>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
-        <span class="margin-right30">{{ language('PI.DANGQIANJIAGE', '当前价格：') }}：</span>
-        <span>{{ language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响：') }}</span>
+        <span class="margin-right30">{{ language('PI.DANGQIANJIAGE', '当前价格') }}：</span>
+        <span>{{ language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响') }}：</span>
       </span>
       <div class="floatright">
         <template v-if="tableStatus === 'edit'">
