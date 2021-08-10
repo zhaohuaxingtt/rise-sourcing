@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-10 15:50:06
+ * @LastEditTime: 2021-08-10 16:37:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -105,7 +105,7 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in options"
+              v-for="item in procureFactoryOptiopns"
               :key="item.key"
             ></el-option>
           </iSelect>
@@ -219,6 +219,7 @@ import { excelExport } from "@/utils/filedowLoad"
 import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
+import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 
 const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
@@ -238,6 +239,7 @@ export default {
       carTypeProjectOptions: [],
       contentStatusOptions: [],
       mtzOptions,
+      procureFactoryOptiopns: [],
       options: [],
       loading: false,
       tableTitle,
@@ -253,6 +255,7 @@ export default {
   created() {
     this.searchCartypeProject()
     this.getDictByCode()
+    this.procureFactorySelectVo()
 
     if (sessionStorage.getItem("aekoConatentDeclareParams")) {
       try {
@@ -301,6 +304,24 @@ export default {
             label: "(空)",
             value: "EMPTY"
           })
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
+    procureFactorySelectVo() {
+      procureFactorySelectVo()
+      .then(res => {
+        if (res.code == 200) {
+          this.procureFactoryOptiopns = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              key: item.code,
+              label: item.name,
+              value: item.code
+            })) :
+            []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

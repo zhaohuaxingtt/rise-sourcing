@@ -18,7 +18,7 @@
         @handlePartItemClick="handlePartItemClick"
     />
     <!--信息-->
-    <iCard tabCard class="margin-bottom20">
+    <iCard class="margin-bottom20">
       <theBaseInfo/>
     </iCard>
 
@@ -33,6 +33,18 @@
     <iCard tabCard class="margin-bottom20">
       <theTable/>
     </iCard>
+
+    <!--图形-->
+    <div class="chartBox">
+      <!--      Price Index价格分析-->
+      <iCard class="lineBox">
+        <thePriceIndexChart/>
+      </iCard>
+      <!--      零件成本构成-->
+      <iCard class="pieBox">
+        <thePartsCostChart/>
+      </iCard>
+    </div>
   </iPage>
 </template>
 
@@ -42,6 +54,8 @@ import thePartsList from './components/thePartsList';
 import theBaseInfo from './components/theBaseInfo';
 import theTabs from './components/theTabs';
 import theTable from './components/theTable';
+import thePartsCostChart from './components/thePartsCostChart';
+import thePriceIndexChart from './components/thePriceIndexChart';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import {CURRENTTIME, AVERAGE} from './components/data';
 
@@ -52,6 +66,8 @@ export default {
     iButton,
     iCard,
     thePartsList,
+    thePartsCostChart,
+    thePriceIndexChart,
     theBaseInfo,
     theTabs,
     theTable,
@@ -111,6 +127,20 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.chartBox {
+  display: flex;
+  justify-content: space-between;
+  height: 573px;
 
+  .lineBox {
+    width: 69%;
+    height: 100%;
+  }
+
+  .pieBox {
+    width: 30%;
+    height: 100%;
+  }
+}
 </style>

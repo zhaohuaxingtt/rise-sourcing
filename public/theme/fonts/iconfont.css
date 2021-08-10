@@ -641,6 +641,10 @@
   content: "\e66f";
 }
 
+.iconicon-xiazai-copy:before {
+  content: "\e6ee";
+}
+
 .iconlingjianxianxing2:before {
   content: "\e650";
 }
