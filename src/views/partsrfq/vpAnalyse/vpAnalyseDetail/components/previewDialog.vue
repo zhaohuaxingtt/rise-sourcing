@@ -42,11 +42,10 @@ import baseInfo from './baseInfo';
 import totalUnitPriceTable from './totalUnitPriceTable';
 import curveChart from './curveChart';
 import analyzeChart from './analyzeChart';
-import {dataURLtoFile, downloadPDF} from '@/utils/pdf';
-import {uploadFile} from '@/api/file/upload';
-import {addVpReports} from '../../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
+import {downloadPdfMixins} from '@/utils/pdf';
 
 export default {
+  mixins: [downloadPdfMixins],
   props: {
     dataInfo: {
       type: Object,
@@ -97,64 +96,12 @@ export default {
     clearDiolog() {
       this.$emit('input', false);
     },
-    /*handleDownload({callBack}) {
-      downloadPDF({
-        idEle: 'content',
-        pdfName: 'Volume Pricing Overview',
-        callback: async (pdf, pdfName) => {
-          try {
-            this.downloadButtonLoading = true;
-            const time = new Date().getTime();
-            const filename = pdfName + time + '.pdf';
-            const pdfFile = pdf.output('datauristring');
-            const blob = dataURLtoFile(pdfFile, filename);
-            const formData = new FormData();
-            formData.append('multipartFile', blob);
-            formData.append('applicationName', 'rise');
-            const res = await uploadFile(formData);
-            const data = res.data[0];
-            const req = {
-              analysisSchemeId: this.$route.query.schemeId,
-              downloadName: data.fileName,
-              downloadUrl: data.filePath,
-            };
-            await addVpReports(req);
-            this.downloadButtonLoading = false;
-            if (callBack) {
-              callBack();
-            }
-          } catch {
-            this.downloadButtonLoading = false;
-          }
-        },
-      });
-    },*/
     getDownloadFile({callBack}) {
-      return new Promise((resolve => {
-        downloadPDF({
-          idEle: 'content',
-          pdfName: 'Volume Pricing Overview',
-          callback: async (pdf, pdfName) => {
-            const time = new Date().getTime();
-            const filename = pdfName + time + '.pdf';
-            const pdfFile = pdf.output('datauristring');
-            const blob = dataURLtoFile(pdfFile, filename);
-            const formData = new FormData();
-            formData.append('multipartFile', blob);
-            formData.append('applicationName', 'rise');
-            const res = await uploadFile(formData);
-            const data = res.data[0];
-            const req = {
-              downloadName: data.fileName,
-              downloadUrl: data.filePath,
-            };
-            resolve(req);
-            if (callBack) {
-              callBack();
-            }
-          },
-        });
-      }));
+      return this.getDownloadFileAndExportPdf({
+        domId: 'content',
+        pdfName: 'Volume Pricing Overview',
+        callBack,
+      });
     },
   },
 };

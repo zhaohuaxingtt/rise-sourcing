@@ -8,7 +8,7 @@
         </div>
         <img src="../images/star.png" v-for="(item,index) of star" :key="index" class="starIcon"/>
       </div>
-      <i class="el-icon-arrow-up collapse margin-left20 cursor" @click="handleShowHide"
+      <i class="el-icon-arrow-up collapse margin-left20 cursor" @click="handleShowHide(false)"
          :class="{ rotate: !showSlot }"></i>
     </div>
     <el-collapse-transition>
@@ -40,8 +40,12 @@ export default {
     };
   },
   methods: {
-    handleShowHide() {
-      this.showSlot = !this.showSlot;
+    handleShowHide(params = false) {
+      if (params) {
+        this.showSlot = true;
+      } else {
+        this.showSlot = !this.showSlot;
+      }
     },
   },
 };

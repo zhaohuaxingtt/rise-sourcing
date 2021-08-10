@@ -35,6 +35,24 @@ export default [{
           component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/overView'),
         },
         {
+          path: 'output',
+          name: 'output',
+          meta: { title: "产量总览" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/output'),
+        },
+        {
+          path: 'batchSupplier',
+          name: 'batchSupplier',
+          meta: { title: "批量供应商概览" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/batchSupplier'),
+        },
+        {
+          path: 'carPrice',
+          name: 'carPrice',
+          meta: { title: "车型价格对比" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/carPrice'),
+        },
+        {
           path: 'technology',
           name: 'technology',
           meta: { title: "技术路线" },

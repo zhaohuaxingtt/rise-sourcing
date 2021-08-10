@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-permission="PURCHASE_MOULDINVESTMENTBUYER_LIST">
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
@@ -7,7 +7,7 @@
         @reset="reset"
         :icon="false"
         :resetKey="PARTSPROCURE_RESET"
-        :searchKey="PARTSPROCURE_CONFIRM"
+        :searchKey="LK_CHAXUN"
         v-loading="loadingiSearch"
     >
       <el-form>
@@ -245,7 +245,6 @@ export default {
       this.moldInvestmentStatus = status.split(',')
     }
     this.getAllSelect()
-    this.conditionConfirmTskList()
   },
   methods: {
     handleSelectionChange(list) {
@@ -273,6 +272,8 @@ export default {
         }
         if (res[2].data) {
           this.moldInvestmentStatusList = res[2].data;
+          this.moldInvestmentStatus = this.moldInvestmentStatusList.filter(a => a.code !== '7').map(b => b.code)
+
         } else {
           iMessage.error(result2);
         }
@@ -281,6 +282,7 @@ export default {
         } else {
           iMessage.error(result3);
         }
+        this.conditionConfirmTskList()
         this.loadingiSearch = false
       }).catch(() => {
         this.loadingiSearch = false
@@ -402,6 +404,11 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+.giSearch{
+  ::v-deep .el-textarea__inner{
+    height: 35px;
   }
 }
 </style>

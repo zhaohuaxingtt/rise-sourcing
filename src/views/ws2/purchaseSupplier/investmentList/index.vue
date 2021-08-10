@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-permission="PURCHASE_MOULDINVESTMENTSUPPLIER_LIST">
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
@@ -7,7 +7,7 @@
         @reset="reset"
         :icon="true"
         :resetKey="PARTSPROCURE_RESET"
-        :searchKey="PARTSPROCURE_CONFIRM"
+        :searchKey="LK_CHAXUN"
         v-loading="loadingiSearch"
     >
       <el-form>
@@ -229,7 +229,7 @@ export default {
           iMessage.error(result1);
         }
         if (res[2].data) {
-          this.moldInvestmentStatusList = res[2].data;
+          this.moldInvestmentStatusList = res[2].data.filter(item => item.code !== '1')
         } else {
           iMessage.error(result2);
         }
@@ -252,7 +252,7 @@ export default {
         linieId: this.linieName,
         moldInvestmentStatus: this.moldInvestmentStatus.join(),
         behalfPartsNum: this.partsNum,
-        tmCartypeProId: this.carTypeProject.join(),
+        tmCartypeProId: this.carTypeProject,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
@@ -355,6 +355,11 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+.giSearch{
+  ::v-deep .el-textarea__inner{
+    height: 35px;
   }
 }
 </style>

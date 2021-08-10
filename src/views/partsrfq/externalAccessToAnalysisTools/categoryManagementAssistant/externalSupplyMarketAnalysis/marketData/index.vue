@@ -53,12 +53,11 @@ import {
   saveEnergyScheme,
 } from '../../../../../../api/categoryManagementAssistant/marketData';
 import {cloneDeep} from 'lodash';
-import {dataURLtoFile, downloadPDF} from '@/utils/pdf';
-import {uploadFile} from '@/api/file/upload';
+import {downloadPdfMixins} from '@/utils/pdf';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 
 export default {
-  mixins: [resultMessageMixin],
+  mixins: [resultMessageMixin, downloadPdfMixins],
   components: {
     iCard,
     iButton,
@@ -272,34 +271,13 @@ export default {
         });
       }
     },
-    getDownloadFile() {
-      return new Promise((resolve => {
-        downloadPDF({
-          idEle: 'allContainer',
-          pdfName: 'market data',
-          callback: async (pdf, pdfName) => {
-            const time = new Date().getTime();
-            const filename = pdfName + time + '.pdf';
-            const pdfFile = pdf.output('datauristring');
-            const blob = dataURLtoFile(pdfFile, filename);
-            const formData = new FormData();
-            formData.append('multipartFile', blob);
-            formData.append('applicationName', 'rise');
-            const res = await uploadFile(formData);
-            const data = res.data[0];
-            const req = {
-              downloadName: data.fileName,
-              downloadUrl: data.filePath,
-            };
-            resolve(req);
-          },
-        });
-      }));
-    },
     // 处理保存
     async handleSave() {
       this.saveButtonLoading = true;
-      const resFile = await this.getDownloadFile();
+      const resFile = await this.getDownloadFileAndExportPdf({
+        domId: 'allContainer',
+        pdfName: 'market data',
+      });
       const req = {
         categoryCode: this.categoryCode,
         reportFileName: resFile.downloadName,

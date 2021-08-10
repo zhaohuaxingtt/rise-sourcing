@@ -372,8 +372,11 @@ export default {
     },
 
     //  照片
-    openPhoto(scope, index){
-      this.visible = true;
+    openPhoto(scope){
+      if(scope.picture){
+        this.imgList = scope.picture.split(',');
+        this.visible = true;
+      }
     },
 
     changeSerch(type){

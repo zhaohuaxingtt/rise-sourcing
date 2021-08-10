@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-08-05 18:13:54
+ * @LastEditTime: 2021-08-06 15:35:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -76,7 +76,7 @@ export function getAekoOriginPartAPrice(params) {
 // 保存原零件A价
 export function saveAekoOriginPart(params) {
   return requst({
-    url: '/aeko/aeko-origin-part/save',
+    url: '/aeko/aeko-origin-part',
     method: 'POST',
     data: params
   })

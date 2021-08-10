@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-07-30 16:11:42
+ * @LastEditTime: 2021-08-06 18:30:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -69,7 +69,7 @@
           :tableLoading="loading"
           @handleSelectionChange="handleSelectionChange"
         >
-          <template #currentAPrice="scope">
+          <template #aprice="scope">
             <iInput class="aPriceSelect" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.aprice" readonly @click.native="aPriceSelect(scope.row)">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" />
@@ -101,32 +101,77 @@ import presentAllInPriceDialog from "../presentAllInPriceDialog"
 import { ledgerQueryForm, ledgerTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
-import { getAekoOriginPartInfo, saveAekoOriginPart } from "@/api/aeko/detail"
-import { cloneDeep } from "lodash"
+import { getAekoOriginPartInfo, saveAekoOriginPart, judgeRight } from "@/api/aeko/detail"
+import { cloneDeep, isEqual } from "lodash"
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, iPagination, tableList, icon, presentAllInPriceDialog },
   mixins: [ pageMixins ],
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
+  },
   data() {
     return {
+      objectAekoPartId: "",
+      requirementAekoId: "",
+      oldPartNumPreset: "",
       options: [],
       form: cloneDeep(ledgerQueryForm),
+      loading: false,
       tableTitle,
-      tableListData: [{}],
+      tableListData: [],
       multipleSelection: [],
       visible: false,
       currentRow: {},
     }
   },
+  watch: {
+    form: {
+      handler(data) {
+        if (isEqual(data, ledgerQueryForm)) {
+          this.objectAekoPartId = this.$route.query.objectAekoPartId
+        }
+      },
+      deep: true
+    }
+  },
   created() {
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
-    this.getAekoOriginPartInfo()
+    this.oldPartNumPreset = this.$route.query.oldPartNumPreset
+    this.judgeRight()
   },
   methods: {
+    judgeRight() {
+      judgeRight([
+        {
+          partNum: this.oldPartNumPreset,
+          userId: this.userInfo.id
+        }
+      ])
+      .then(res => {
+        if (res.code == 200) {
+          if (res.data[0].isView) {
+            this.getAekoOriginPartInfo()
+          } else {
+            iMessage.error(res.data[0].describe)
+            this.loading = false
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => this.loading = false)
+    },
     getAekoOriginPartInfo() {
+      this.loading = true
+
       getAekoOriginPartInfo({
         ...this.form,
+        objectAekoPartId: this.objectAekoPartId,
         current: this.page.currPage,
         size: this.page.pageSize
       })
@@ -144,11 +189,13 @@ export default {
     },
     sure() {
       this.page.currPage = 1
+      this.objectAekoPartId = ""
       this.getAekoOriginPartInfo()
     },
     reset() {
       this.page.currPage = 1
       this.form = cloneDeep(ledgerQueryForm)
+      this.objectAekoPartId = this.$route.query.objectAekoPartId
       this.getAekoOriginPartInfo()
     },
     handleSelectionChange(list) {
@@ -170,7 +217,7 @@ export default {
       this.saveLoading = true
       saveAekoOriginPart({
         originPartList: this.multipleSelection,
-        objectAekoPartId: this.objectAekoPartId,
+        objectAekoPartId: this.$route.query.objectAekoPartId,
         requirementAekoId: this.requirementAekoId
       })
       .then(res => {
