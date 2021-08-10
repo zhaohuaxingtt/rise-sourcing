@@ -18,9 +18,9 @@
             <iSelect v-model="refferenceSmtNum" class="margin-top20" style="width:100%">
                 <el-option
                     v-for="item in (assignType === 'commodity' ? commoditySelectOptions : linieSelectOptions) || []"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item.code"
+                    :label="item.desc"
+                    :value="item.code">
                 </el-option> 
             </iSelect>
         </div>
@@ -35,9 +35,9 @@
                 <iSelect  v-model="refferenceSmtNum" :disabled="radioType=='1'" :placeholder="language('LK_AEKO_DAIXUANZE','待选择')" class="margin-top20" style="width:100%" >
                     <el-option
                         v-for="item in (assignType === 'commodity' ? commoditySelectOptions : linieSelectOptions) || []"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        :key="item.code"
+                        :label="item.desc"
+                        :value="item.code">
                     </el-option> 
                 </iSelect>
             </el-radio>
@@ -94,6 +94,10 @@ export default {
         requirementAekoId:{
             type:String,
             default:'',
+        },
+        linieDeptNum:{
+            type:Array,
+            default:()=>[],
         }
     },
     computed: {
@@ -157,18 +161,23 @@ export default {
         },
         // 获取科室列表
         async getDePartList(){
-            searchCommodity().then((res)=>{
-                const {code,data} = res;
-                if(code ==200 ){
-                    data.map((item)=>{
-                    item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                    item.value = item.deptNum;
-                    })
-                    this.commoditySelectOptions = data;
-                }else{
-                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-                }
-            })
+            const { linieDeptNum=[] } = this;
+            if(linieDeptNum.length){
+                this.commoditySelectOptions = linieDeptNum;
+            }else{
+                searchCommodity().then((res)=>{
+                    const {code,data} = res;
+                    if(code ==200 ){
+                        data.map((item)=>{
+                        item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.code = item.deptNum;
+                        })
+                        this.commoditySelectOptions = data;
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
+            }
         },
 
         // 分派科室

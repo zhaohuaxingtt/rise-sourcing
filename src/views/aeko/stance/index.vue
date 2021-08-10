@@ -145,7 +145,7 @@ export default {
         SearchList:searchList,
         selectItems:[],
         searchParams:{
-          coverStatusList:['TOBE_STATED']
+          coverStatusList:['TOBE_STATED'],
         },
         selectOptions:{
           cartypeProjectCodeList:[],
@@ -219,7 +219,7 @@ export default {
           }
 
         }).catch((err)=>{
-
+          this.loading = false;
         })
       },
 
@@ -245,7 +245,7 @@ export default {
             data.map((item)=>{
               item.desc = item.name;
             })
-            this.selectOptions.cartypeCodeList = data || [];
+            this.selectOptions.cartypeCodeList = data.filter((item)=>item.name) || [];
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }

@@ -104,8 +104,8 @@ export default {
       aekoInfo: {},
       currentTab: "partsList",
       basicTitle:[
-        {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'aekoStatus',isObj:true,},
-        {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'sourse',isObj:true,},
+        {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'aekoStatusDesc',},
+        {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'sourseDesc'},
         {label:'创建⽇期',labelKey:'LK_AEKOCHUANGJIANRIQI',props:'createDate'},
         {label:'截⽌⽇期',labelKey:'LK_AEKOJIEZHIRIQI',props:'deadLine'},
       ],
