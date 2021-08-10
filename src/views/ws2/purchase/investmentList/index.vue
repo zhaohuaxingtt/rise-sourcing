@@ -185,6 +185,7 @@ import {
   conditionConfirmTskList,
   sendSupplier,
   liniePullDownByDept,
+  verifyLine,
 } from "@/api/ws2/purchase/investmentList";
 import {pageMixins} from "@/utils/pageMixins";
 import {Switch, Popover} from "element-ui"
@@ -356,7 +357,20 @@ export default {
           id: row.id
         }
       })
-      window.open(url.href, '_blank');
+      if(Number(row.isShowMoldInvestmentAmount) === 1){
+        window.open(url.href, '_blank');
+      } else {
+        verifyLine({linie: row.linieId}).then((res) => {
+          if(res){
+            window.open(url.href, '_blank');
+          } else {
+            iMessage.warn(this.$t('LK_DUIBUQIMEIYOUQUANXIAN'));
+          }
+          // this.handoverSelfLoading = false
+        }).catch(() => {
+          // this.handoverSelfLoading = false
+        });
+      }
     },
     sure(){
       this.page.currPage = 1

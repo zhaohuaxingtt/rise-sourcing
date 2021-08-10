@@ -2,6 +2,7 @@ import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 
 const VUE_APP_BMCONFIRMTASK = axios(process.env.VUE_APP_BMCONFIRMTASK)
+const VUE_APP_BMAPPROVE = axios(process.env.VUE_APP_BMAPPROVE)
 const INVESTMENTFile = axiosFile(process.env.VUE_APP_INVESTMENT)
 //获取科室下拉信息
 export function getDepartmentsCombo(parmars) {
@@ -72,6 +73,15 @@ export function sendSupplier(data) {
         url: '/sendSupplier',
         method: 'POST',
         data: data
+    })
+}
+
+//发送供应商
+export function verifyLine(parmars) {
+    return VUE_APP_BMAPPROVE({
+        url: '/verifyLine',
+        method: 'GET',
+        params: parmars
     })
 }
 
