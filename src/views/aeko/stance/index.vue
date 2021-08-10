@@ -42,7 +42,7 @@
       <!-- AEKO号  -->
       <template #aekoCode="scope">
         <div class="table-item-aeko">
-          <icon  v-if="scope.row.isTop && scope.row.isTop.code==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
+          <icon  v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
           <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}}</span>
           <a v-if="scope.row.fileCount && scope.row.fileCount> 0"  @click="checkFiles(scope.row)" class="file-icon"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
         </div> 
