@@ -89,6 +89,7 @@ module.exports = {
       i18n: 'i18n',
       Ellipsis: 'Ellipsis',
     }
+    config.devtool = 'source-map'
     //开启gizp压缩
   },
   //引入全局css变量
@@ -122,8 +123,8 @@ module.exports = {
         // target: 'http://10.160.141.116:10085',
         changeOrigin: true,
         pathRewrite: {
-          '^/projectApi': ''
-        }
+          '^/projectApi': '',
+        },
       },
       '/approvalApi': {
         target: 'http://10.122.17.38:8012',
@@ -393,12 +394,13 @@ module.exports = {
           '^/baseInfo': '',
         },
       },
-      '/bizlog':{//cf
-        target:'http://10.122.18.166:8013/bizlog',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/bizlog':''
-        }
+      '/bizlog': {
+        //cf
+        target: 'http://10.122.18.166:8013/bizlog',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/bizlog': '',
+        },
       },
       //kpi杜玲聪的代理
       '/kpiInfo': {
