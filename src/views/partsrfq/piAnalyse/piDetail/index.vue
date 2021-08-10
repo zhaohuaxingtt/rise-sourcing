@@ -38,7 +38,7 @@
     <div class="chartBox">
       <!--      Price Index价格分析-->
       <iCard class="lineBox">
-
+        <thePriceIndexChart/>
       </iCard>
       <!--      零件成本构成-->
       <iCard class="pieBox">
@@ -55,6 +55,7 @@ import theBaseInfo from './components/theBaseInfo';
 import theTabs from './components/theTabs';
 import theTable from './components/theTable';
 import thePartsCostChart from './components/thePartsCostChart';
+import thePriceIndexChart from './components/thePriceIndexChart';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import {CURRENTTIME, AVERAGE} from './components/data';
 
@@ -66,6 +67,7 @@ export default {
     iCard,
     thePartsList,
     thePartsCostChart,
+    thePriceIndexChart,
     theBaseInfo,
     theTabs,
     theTable,
