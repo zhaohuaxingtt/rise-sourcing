@@ -5,11 +5,11 @@
 -->
 <template>
   <iCard class="aeko-editCover">
-    <template v-slot:header-control>
-      <iButton :disabled="isFrozen" :loading="btnLoading" @click="save()">{{language('LK_BAOCUN','保存')}}</iButton>
-      <iButton :disabled="isFrozen" :loading="btnLoading" v-if="basicInfo.aekoCoverId" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
-      <iButton :disabled="isFrozen" :loading="btnLoading">{{language('LK_AEKO_CHEHUI','撤回')}}</iButton>
-      <iButton :disabled="isFrozen" :loading="btnLoading" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
+    <template v-if="!isFrozen" v-slot:header-control>
+      <iButton  :loading="btnLoading" @click="save()">{{language('LK_BAOCUN','保存')}}</iButton>
+      <iButton  :loading="btnLoading" v-if="basicInfo.aekoCoverId" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
+      <iButton  :loading="btnLoading">{{language('LK_AEKO_CHEHUI','撤回')}}</iButton>
+      <iButton  :loading="btnLoading" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
       <iFormGroup row='4'>
