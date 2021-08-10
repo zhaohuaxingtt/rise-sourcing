@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-09 13:55:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-09 16:57:11
+ * @LastEditors: Luoshuang
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -24,6 +24,7 @@ import supplierkpiRoutes from './modules/supplierkpi'
 import categoryManagementAssistant from './modules/categoryManagementAssistant'
 import mek from './modules/mek'
 import ws2 from './modules/ws2'
+import reportmanage from './modules/reportmanage'
 
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
@@ -425,6 +426,8 @@ export default new VueRouter({
     ...ws2,
     //MEK
     ...mek,
-    ...supplierkpiRoutes
+    ...supplierkpiRoutes,
+    // 报表管理
+    ...reportmanage
   ],
 })

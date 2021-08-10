@@ -1,24 +1,24 @@
 <!--
  * @Author: wentliao
- * @Date: 2021-07-27 13:45:04
- * @Description: 撤销原因弹窗
+ * @Date: 2021-08-09 11:28:36
+ * @Description: 科室退回弹窗
 -->
 <template>
     <iDialog
         :visible.sync="dialogVisible"
         @close="clearDialog"
         width="50%"
-        class="revokeDialog"
+        class="departBackDialog"
         >
         <template slot="title">
-            <h2>{{language('LK_AEKOCHEXIAOYUANYIN','撤销原因')}}<span style="color:red;fontWeight:normal">*</span></h2>
+            <h2>{{language('LK_AEKO_TUIHUIYUANYIN','退回原因')}}<span style="color:red;fontWeight:normal">*</span></h2>
         </template>
         <iInput
             type="textarea"
-            :placeholder="language('LK_WEITIANXIECHEXIAOYUANYIN','未填写撤销原因，无法保存')"
+            :placeholder="language('LK_WEITIANXIETUIHUIYUANYIN','未填写退回原因，无法保存')"
             rows="10" 
             resize="none"
-            v-model="cancelReason"
+            v-model="withdrawReason"
         />
         <div class="confirmBtn padding-bottom20 padding-top20">
             <iButton :loading="isLoading" @click="sumbit">{{language('LK_BAOCUN','保存')}}</iButton>
@@ -35,10 +35,10 @@ import {
     iMessage,
 } from 'rise';
 import {
-  purchasingCancel,
-} from '@/api/aeko/manage'
+    deptRollback,
+} from '@/api/aeko/detail/partsList.js'
 export default {
-    name:"revokeDialog",
+    name:'departBackDialog',
     components:{
         iDialog,
         iInput,
@@ -53,24 +53,26 @@ export default {
     },
     data(){
         return{
-            cancelReason:'',
+            withdrawReason:'非本科室零件',
             isLoading:false,
         }
     },
     methods:{
         clearDialog() {
-            this.$emit('changeVisible','revokeVisible', false)
+            this.$emit('changeVisible','departBackVisible', false)
         },
-        // 确认提交
+        // 保存
         async sumbit(){
-            const {selectItems,cancelReason } = this;
+            const {query} = this.$route;
+            const { requirementAekoId ='',} = query;
+            const {selectItems,withdrawReason } = this;
             const data = {
-                cancelReason,
-                requirementAekoId:selectItems[0].requirementAekoId,
+                withdrawReason,
+                aekoPartIdArr:selectItems.map((item)=>item.aekoPartId),
+                requirementAekoId,
             };
-            if(!cancelReason) return iMessage.warn(this.language('LK_QINGSHURUCHEXIAOYUANYIN','请输⼊撤销原因'));
             this.isLoading = true;
-            await purchasingCancel(data).then((res)=>{
+            await deptRollback(data).then((res)=>{
                 this.isLoading = false;
                 if(res.code == 200){
                      iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
@@ -82,14 +84,13 @@ export default {
             }).catch((err)=>{
                 this.isLoading = false;
             })
-            
-        }
-    }
+        },
+    },
 }
 </script>
 
 <style lang="scss" scoped>
-.revokeDialog{
+.departBackDialog{
     .confirmBtn{
         text-align: right;
     }

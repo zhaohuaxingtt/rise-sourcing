@@ -28,13 +28,13 @@ export default [{
         title: "报告清单",
       },
       component: () =>
-        import("@/views/partsrfq/reportList"),
+          import("@/views/partsrfq/reportList"),
     },
     {
       path: "partsrfq/vpAnalyCreat",
       name: "vpAnalyCreat",
       component: () =>
-        import("@/views/partsrfq/vpAnalyse/vpAnalyCreat/index"),
+          import("@/views/partsrfq/vpAnalyse/vpAnalyCreat/index"),
     },
     {
       path: 'partsrfq/externalNegotiationAssistant',
@@ -48,7 +48,7 @@ export default [{
         title: "BOB",
       },
       component: () =>
-        import("@/views/partsrfq/bob/bob"),
+          import("@/views/partsrfq/bob/bob"),
     },
     {
       path: "partsrfq/bobNew",
@@ -57,7 +57,7 @@ export default [{
         title: "BOBNew",
       },
       component: () =>
-        import("@/views/partsrfq/bob/newReport"),
+          import("@/views/partsrfq/bob/newReport"),
     },
     {
       path: "partsrfq/mekInfoData",
@@ -66,8 +66,8 @@ export default [{
         title: "MEKInfoData",
       },
       component: () =>
-        import("@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekInfoData/index.vue"),
-    }, 
+          import("@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekInfoData/index.vue"),
+    },
     {
       path: "partsrfq/pi",
       name: "pi",
