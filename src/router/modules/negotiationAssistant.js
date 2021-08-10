@@ -28,13 +28,13 @@ export default [{
         title: "报告清单",
       },
       component: () =>
-        import("@/views/partsrfq/reportList"),
+          import("@/views/partsrfq/reportList"),
     },
     {
       path: "partsrfq/vpAnalyCreat",
       name: "vpAnalyCreat",
       component: () =>
-        import("@/views/partsrfq/vpAnalyse/vpAnalyCreat/index"),
+          import("@/views/partsrfq/vpAnalyse/vpAnalyCreat/index"),
     },
     {
       path: 'partsrfq/externalNegotiationAssistant',
@@ -48,16 +48,16 @@ export default [{
         title: "BOB",
       },
       component: () =>
-        import("@/views/partsrfq/bob/bob"),
+          import("@/views/partsrfq/bob/bob"),
     },
-    { 
+    {
       path: "partsrfq/bobNew",
       name: "bobNew",
       meta: {
         title: "BOBNew",
       },
       component: () =>
-        import("@/views/partsrfq/bob/newReport"),
+          import("@/views/partsrfq/bob/newReport"),
     },
     {
       path: "partsrfq/mekInfoData",

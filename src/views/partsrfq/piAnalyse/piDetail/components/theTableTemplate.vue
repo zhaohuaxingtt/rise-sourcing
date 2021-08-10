@@ -146,13 +146,12 @@
             </template>
             <div class="systemMatchText" style="width: auto;">
               <span>数据来源: XXXXXXXX</span>
-              <el-popover
-                  placement="top-start"
-                  width="300"
-                  trigger="hover"
-                  :content="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成\n'+'对应的指数变动百分比，可手动补充系统匹配\n'+'模块信息。')">
-                <icon symbol name="iconzhongyaoxinxitishi" class="hintIcon" slot="reference"/>
-              </el-popover>
+              <iconTips
+                  iconName="iconzhongyaoxinxitishi"
+                  :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成\n'+'对应的指数变动百分比，可手动补充系统匹配\n'+'模块信息。')"
+                  class="margin-left6"
+                  :iconStyle="{'fontSize': '12px'}"
+              />
             </div>
           </div>
         </template>
@@ -182,6 +181,7 @@
 <script>
 import {iInput, iSelect, icon} from 'rise';
 import {getColor, rawMaterialColor} from './data';
+import iconTips from '../../../../../components/ws3/iconTips';
 
 export default {
   props: {
@@ -201,6 +201,7 @@ export default {
     iInput,
     iSelect,
     icon,
+    iconTips,
   },
   data() {
     return {
@@ -284,11 +285,6 @@ export default {
     white-space: nowrap;
   }
 
-  .hintIcon {
-    font-size: 16px;
-    margin-left: 6px;
-  }
-
   .whiteBorder {
     border-left: 5px solid white;
     background: red;
@@ -306,6 +302,7 @@ export default {
     color: #FFFFFF;
   }
 }
+
 .el-table .rowStyle td {
   border-top: 3px dashed #727272;
 }

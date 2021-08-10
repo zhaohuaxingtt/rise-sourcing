@@ -93,6 +93,7 @@ export default {
       })
       if (!pms.ids.length) {
         iMessage.warn(language('BQNMYXZSJ', '抱歉，你没有选择数据'))
+        return
       }
       await categoryReportExport(pms)
     },

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-27 10:49:28
- * @LastEditTime: 2021-07-30 14:34:58
+ * @LastEditTime: 2021-08-10 13:39:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\data.js
@@ -43,12 +43,12 @@ export const ledgerTableTitle = [
 ]
 
 export const presentAllInPriceDialogTableTitle = [
-  { props: "aprice", name: "A价", key: "AJIA", tooltip: true },
+  { props: "price", name: "A价", key: "AJIA", tooltip: true },
   { props: "currency", name: "货币", key: "HUOBI", tooltip: true },
-  { props: "startTime", name: "起始时间", key: "QISHISHIJIAN", tooltip: true },
-  { props: "endTime", name: "结束时间", key: "JIESHUSHIJIAN", tooltip: true },
+  { props: "startDate", name: "起始时间", key: "QISHISHIJIAN", tooltip: true },
+  { props: "endDate", name: "结束时间", key: "JIESHUSHIJIAN", tooltip: true },
   { props: "priceUnit", name: "价格单位", key: "JIAGEDANWEI", tooltip: true },
   { props: "measureUnit", name: "计量单位", key: "JILIANGDANWEI", tooltip: true },
-  { props: "applyCode", name: "申请单号", key: "SHENQINGDANHAO", tooltip: true },
+  { props: "appFormCode", name: "申请单号", key: "SHENQINGDANHAO", tooltip: true },
   { props: "linieName", name: "Linie", key: "LINIE", tooltip: true },
 ]

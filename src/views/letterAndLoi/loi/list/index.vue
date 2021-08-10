@@ -63,10 +63,6 @@
                         </span>
                     </span>  
             </template>
-            <!-- LOI状态 -->
-            <template #loiStatus="scope">
-                <span >{{ scope.row.loiStatus &&  scope.row.loiStatus.desc}}</span>
-            </template>
         </tableList>
         <!-- 分页 -->
         <iPagination
