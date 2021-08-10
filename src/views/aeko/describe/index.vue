@@ -11,14 +11,14 @@
       </h2>
       <div class="contain margin-top20" ref="aekoDescribe">
         <el-row :gutter="10">
-          <el-col :span="8">
+          <el-col :span="6">
             <iCard :class="noScorll.files ? 'needScorll' : ''" :title="language('LK_AEKOFUJIAN','AEKO附件')">
               <aekoFilesList class="card-files" :attachmentList="attachmentList"/>
             </iCard>
           </el-col>
-          <el-col :span="16">
+          <el-col :span="18">
             <iCard :class="noScorll.contain ? 'needScorll' : ''" :title="language('LK_AEKOFUJIANMIAOSHU','AEKO描述')">
-              <div class="card-contain">
+              <div class="card-contain font14">
                 {{remark}}
 
                 <p class="remark-tips">{{language('LK_ZHONGWENFANYIJINGONGCANKAOYIDEWENWEIZHUN','中文翻译仅供参考，以德文为准：')}}</p>
