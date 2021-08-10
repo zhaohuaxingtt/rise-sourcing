@@ -8,6 +8,8 @@ const rich = {
     }
 }
 const symbolImg = require('@/assets/images/symbal.png')
+const maker0 = `<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${colors[0]};"></span>`
+const maker1 = `<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${colors[1]};"></span>`
 
 // 给标题每隔Num个字符加上\n 换行符
 function splitStr(str, num){
@@ -77,6 +79,17 @@ export function generateOptions(params) {
                     fontSize: 12,
                     color: '#333'
                 },
+                formatter: function(params) {
+                    return `<div class="dashboard-tooltip">
+                        <span class="item-name">${params[0].name}</span><br>
+                        <p style="padding-left: 5px; padding-top: 5px;">
+                            ${maker0} ${params[0].seriesName}:${params[0].value}%
+                        <p>
+                        <p style="padding-left: 5px;">
+                            ${maker1} ${params[0].seriesName}:${params[1].value}
+                        <p>
+                    </div>`
+                }
             },
             dataZoom: [
                 {
