@@ -128,8 +128,8 @@ export default [{
           component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/svw'),
         },
         {
-          path: '/purchaseAmountOverall',
-          name: 'purchaseAmountOverall',
+          path: 'supplyChainOverall',
+          name: 'supplyChainOverall',
           meta: { title: "采购金额总览" },
           component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/supplyChainOverall/index.vue'),
         },
