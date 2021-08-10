@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-06 16:27:41
- * @LastEditTime: 2021-08-09 18:11:08
+ * @LastEditTime: 2021-08-10 15:13:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\costAnalysis\index.js
@@ -24,9 +24,13 @@ export function getCostStructureAnalysis() {
 
 }
 
-//获取默认Cost structure分析信息
-export function getMaterialGroupByUserIds() {
-
+//获取当前登录用户对应的材料组数据
+export function getMaterialGroupByUserIds(params) {
+  return request({
+    url: '/costStructure/getMaterialGroupByUserIds',
+    method: 'POST',
+    data: params
+  })
 }
 
 //获取cbd
@@ -38,7 +42,7 @@ export function getTotalCbdData(params) {
   })
 }
 
-//获取cbd
+//获取定点历史记录
 export function listNomiData(params) {
   return request({
     url: '/costStructure/listNomiData',
@@ -48,7 +52,7 @@ export function listNomiData(params) {
 }
 
 //分页查询
-export function getAllData(params) {
+export function getAnalysisList(params) {
   return request({
       url: '/costStructure/page',
       method: 'POST',
@@ -58,7 +62,7 @@ export function getAllData(params) {
 
 //保存
 export function fetchSave() {
-
+  
 }
 
 //删除
