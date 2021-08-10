@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-09 16:45:42
+ * @LastEditTime: 2021-08-10 14:03:34
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
@@ -28,8 +28,8 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <productGroup ref="historyDBProductGroup" v-if="searchParams.level === '1'" :searchParams="searchParams" :carProjectOptions="this.selectOptions.carProjectOptions" />
-    <part ref="historyDBpart" v-else :searchParams="searchParams" :carProjectOptions="this.selectOptions.carProjectOptions" />
+    <productGroup ref="historyDBProductGroup" v-if="searchParams.level === '1'" :searchParams="searchParams" :carProjectOptions="this.selectOptions.carProjectOptionsALL" />
+    <part ref="historyDBpart" v-else :searchParams="searchParams" :carProjectOptions="this.selectOptions.carProjectOptionsALL" />
   </div>
 </template>
 
@@ -63,8 +63,8 @@ export default {
   created() {
     this.searchParams = {
       level: '1',
-      ...this.$route.query,
-      productGroup: this.$route.query.productGroup || ''
+      // productGroup: this.$route.query.productGroup || '',
+      productGroup: ''
     }
     this.getCarProjectOptions()
   },
@@ -83,6 +83,22 @@ export default {
           this.selectOptions = {
             ...this.selectOptions,
             carProjectOptions: res.data.map(item => {
+              return {
+                ...item,
+                value: item.id,
+                label: item.cartypeProName
+              }
+            })
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+      getCarTypePro().then(res => {
+        if (res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            carProjectOptionsALL: res.data.map(item => {
               return {
                 ...item,
                 value: item.id,

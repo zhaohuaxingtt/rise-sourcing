@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-10 15:05:56
+ * @LastEditTime: 2021-08-10 15:50:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -189,7 +189,7 @@
             </iSelect>
           </template>
           <template #isMtz="scope">
-            <span v-if="isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.isMtz == 1" class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
         </tableList>
         <iPagination 
