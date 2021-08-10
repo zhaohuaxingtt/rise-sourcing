@@ -74,18 +74,6 @@
           <iInput :disabled="isFrozen" v-model="scope.row['otherCost']" @input="handleNumber($event,scope.row,'otherCost')" style="width:100px"/>
         </template>
         </tableList>
-        <!-- 分页 -->
-        <!-- <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
-        background
-        :current-page="page.currPage"
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :total="page.totalCount"
-        /> -->
         <p class="bottom-tips margin-top20">Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder Invest≥10,000,000 RMB</p>
       </div>
       
@@ -101,7 +89,6 @@ import {
   iInput,
   iSelect,
   iText,
-  // iPagination,
   // icon,
   iMessage,
 } from 'rise';
@@ -127,7 +114,6 @@ export default {
       iSelect,
       iText,
       tableList,
-      // iPagination,
       // icon,
     },
     props:{
@@ -140,8 +126,7 @@ export default {
       // adeko状态已冻结时 禁用操作按钮
       isFrozen(){
         const { aekoInfo={} } = this;
-        const code = aekoInfo.aekoStatus && aekoInfo.aekoStatus.code;
-        return code == 'FROZEN';
+        return aekoInfo.aekoStatus == 'FROZEN';
       }
     },
     data(){
@@ -185,13 +170,9 @@ export default {
           this.tableLoading = false;
           const { code,data={} } = res;
           if(code == 200){
-            const {isTop={},isReference={},coverStatus={},isEffectpro={},fsId='',coverCostsWithCarType=[]} = data;
+            const {fsId='',coverCostsWithCarType=[]} = data;
             this.basicInfo = {
               ...data,
-              isTop:isTop.code,
-              isReference:isReference.code,
-              isEffectpro:isEffectpro.code,
-              coverStatus:coverStatus.desc || '-',
               fsName:fsId
             };
             this.tableData = coverCostsWithCarType;

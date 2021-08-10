@@ -12,7 +12,7 @@ export const searchList = [
     {props:'cartypeProjectCodeList',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',selectOption:'cartypeProjectCodeList',multiple:true,filterable:true,noShowAll:true,clearable:true},
     {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',multiple:true,clearable:true,noShowAll:true},
     {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'coverStatusList',multiple:true,clearable:true,noShowAll:true},
-    {props:'cartypeCodeList',label:'车型',type:'select',labelKey:'LK_AEKO_CHEXING',selectOption:'cartypeCodeList',multiple:true,filterable:true,clearable:true},
+    {props:'cartypeCodeList',label:'车型',type:'select',labelKey:'LK_AEKO_CHEXING',selectOption:'cartypeCodeList',multiple:true,filterable:true,clearable:true,noShowAll:true,},
     {props:'linieAssignTime',label:'分派日期',type:'datePicker',labelKey:'LK_AEKOFENPAIRIQI'},
     {props:'deadLine',label:'截至日期',type:'datePicker',labelKey:'LK_AEKOJIEZHIRIQI'},
   ]
