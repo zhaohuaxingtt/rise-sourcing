@@ -171,6 +171,7 @@ export default {
         // 表格金额合计
         getSummaries(param){
             const { columns, data } = param;
+            const { basicInfo } = this;
             const total = this.language('LK_AEKO_TOTAL','TOTAL');
             const sums = [];
             columns.forEach((column, index) => {
@@ -181,20 +182,24 @@ export default {
 
                 const keyArr = ['investmentIncrease', 'materialIncrease', 'otherCost'];
                 if(keyArr.includes(column.property)){
-                    const values = data.map(item => Number(item[column.property]) );
-                    if (!values.every(value => isNaN(value))) {
-                        sums[index] = values.reduce((prev, curr) => {
-                            const value = Number(curr);
-                            if (!isNaN(value)) {
-                                return prev + curr;
-                            } else {
-                                return prev;
-                            }
-                        }, 0);
-                        sums[index] = this.getTousandNum(sums[index].toFixed(2));
-                    } else {
-                        sums[index] = '';
-                    }
+                    if(column.property == 'investmentIncrease') sums[index] = basicInfo.investmentIncreaseTotal || '';
+                    else if(column.property == 'materialIncrease') sums[index] = basicInfo.materialIncreaseTotal || '';
+                    else if(column.property == 'otherCost') sums[index] = basicInfo.otherCostTotal || '';
+                    else sums[index] = ''
+                    // const values = data.map(item => Number(item[column.property]) );
+                    // if (!values.every(value => isNaN(value))) {
+                    //     sums[index] = values.reduce((prev, curr) => {
+                    //         const value = Number(curr);
+                    //         if (!isNaN(value)) {
+                    //             return prev + curr;
+                    //         } else {
+                    //             return prev;
+                    //         }
+                    //     }, 0);
+                    //     sums[index] = this.getTousandNum(sums[index].toFixed(2));
+                    // } else {
+                    //     sums[index] = '';
+                    // }
                 }else{
                     sums[index] = '';
                 }
