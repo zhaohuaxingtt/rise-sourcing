@@ -111,11 +111,14 @@
 
           <el-form-item :label="language('LK_MUJUTOUZIQINGDANZHUANGTAI', '模具投资清单状态')">
             <iSelect
+                class="multipleSelect"
                 :placeholder="language('LK_QINGXUANZHE', '请选择')"
                 v-model="form['moldInvestmentStatus']"
                 filterable
                 ref="carTypeProjectRef"
                 clearable
+                collapse-tags
+                multiple
             >
               <el-option
                   :value="item.bmStatus"
@@ -357,7 +360,7 @@ export default {
 <style lang="scss" scoped>
 .multipleSelect{
   ::v-deep .el-tag{
-    max-width: calc(100% - 65px);
+    max-width: calc(100% - 85px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
