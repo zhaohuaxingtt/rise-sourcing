@@ -280,10 +280,11 @@ export default {
 
       // 跳转详情页
       goToDetail(row){
+        const { requirementAekoId } = row;
         const routeData = this.$router.resolve({
           path: '/aeko/aekodetail',
           query: {
-            requirementAekoId:1,
+            requirementAekoId,
           },
         })
         window.open(routeData.href, '_blank')
