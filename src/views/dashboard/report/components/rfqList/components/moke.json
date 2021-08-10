@@ -1,0 +1,88 @@
+[
+  {
+    "wholeProgressRisk": 1,
+    "wholeTaskProgress": 2,
+    "rfqId": "RFQ766152653",
+    "rfqTimeAxisProgressVOList": [
+      {
+        "progressTypeDesc": "第一轮询价",
+        "doneWeek": 1,
+        "donePeriod": 30,
+        "doneYear": 2021,
+        "taskStatus": 2,
+        "createDate": "2021-07-22 15:37:43"
+      },
+      {
+        "progressTypeDesc": "转谈判",
+        "doneWeek": 3,
+        "donePeriod": 30,
+        "doneYear": 2021,
+        "taskStatus": 2,
+        "createDate": "2021-07-22 15:37:43"
+      },
+      {
+        "progressTypeDesc": "EP评分",
+        "doneWeek": 3,
+        "donePeriod": 30,
+        "doneYear": 2021,
+        "taskStatus": 2,
+        "createDate": "2021-07-22 15:37:43"
+      },
+      {
+        "progressTypeDesc": "MQ评分",
+        "doneWeek": 3,
+        "donePeriod": 30,
+        "doneYear": 2021,
+        "taskStatus": 2,
+        "createDate": "2021-07-22 15:37:43"
+      },
+      {
+        "progressTypeDesc": "财务目标价",
+        "doneWeek": 6,
+        "donePeriod": 30,
+        "doneYear": 2021,
+        "taskStatus": 2,
+        "createDate": "2021-07-22 15:37:43"
+      }
+    ]
+  },
+  {
+    "wholeProgressRisk": 1,
+    "wholeTaskProgress": 2,
+    "rfqId": "RFQ766111653",
+    "rfqTimeAxisProgressVOList": [
+      {
+        "progressTypeDesc": "第一轮询价",
+        "doneWeek": 2,
+        "donePeriod": 30,
+        "doneYear": 2021,
+        "taskStatus": 2,
+        "createDate": "2021-07-22 15:37:43"
+      },
+      {
+        "progressTypeDesc": "转谈判",
+        "doneWeek": 3,
+        "donePeriod": 30,
+        "doneYear": 2021,
+        "taskStatus": 2,
+        "createDate": "2021-07-22 15:37:43"
+      },
+      {
+        "progressTypeDesc": "EP评分",
+        "doneWeek": 3,
+        "donePeriod": 30,
+        "doneYear": 2021,
+        "taskStatus": 2,
+        "createDate": "2021-07-22 15:37:43"
+      },
+      {
+        "progressTypeDesc": "MQ评分",
+        "doneWeek": 3,
+        "donePeriod": 30,
+        "doneYear": 2021,
+        "taskStatus": 2,
+        "createDate": "2021-07-22 15:37:43"
+      }
+    ]
+  }
+]

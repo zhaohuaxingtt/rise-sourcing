@@ -999,6 +999,7 @@
         'LK_TIAOZHENGSHUOMING': '调整说明', //  调整说明
         'LK_ZHAOPIAN': '照片',  //  照片
         'LK_GUZIMINGCHEN': '固资名称',  //  固资名称
+        'LK_DUIBUQIMEIYOUQUANXIAN': '对不起，您所在得岗位没有该材料组权限', //  对不起，您所在得岗位没有该材料组权限
 
         // 定点管理
         'nominationLanguage': {

@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-06 16:27:41
- * @LastEditTime: 2021-08-09 10:29:28
+ * @LastEditTime: 2021-08-09 18:11:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\costAnalysis\index.js
@@ -30,13 +30,21 @@ export function getMaterialGroupByUserIds() {
 }
 
 //获取cbd
-export function getTotalCbdData() {
-
+export function getTotalCbdData(params) {
+  return request({
+    url: '/costStructure/getTotalCbdData',
+    method: 'POST',
+    data: params
+  })
 }
 
-//
-export function listNomiData() {
-  
+//获取cbd
+export function listNomiData(params) {
+  return request({
+    url: '/costStructure/listNomiData',
+    method: 'POST',
+    data: params
+  })
 }
 
 //分页查询

@@ -1,5 +1,5 @@
 <template>
-  <iPage>
+  <iPage v-permission="PURCHASE_MOULDINVESTMENTBUYER_DETAILS">
     <div class="head">
       <div style="display: flex;">
         <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：{{ query.bmSerial }}</div>
@@ -161,13 +161,13 @@
           <iButton
               v-loading="bmBuberLoading"
               v-if="baseInfo.moldInvestmentStatus === '2' || baseInfo.moldInvestmentStatus === '3'"
-              @click="bmBuberConfirmBefore">
+              @click="findMoldViewList">
             {{ language('LK_CAIGOUYUANQUEREN', '采购员确认') }}
           </iButton>
           <iButton
               v-loading="sendSupplierLoading"
               v-if="baseInfo.moldInvestmentStatus === '1' || baseInfo.moldInvestmentStatus === '6'"
-              @click="sendSupplier">
+              @click="findMoldViewList">
             {{ language('LK_FASONGGONGYIUNGSHANGQUEREN', '发送供应商确认') }}
           </iButton>
         </div>

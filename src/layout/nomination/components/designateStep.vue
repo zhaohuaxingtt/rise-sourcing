@@ -284,23 +284,23 @@ export default {
             return state
         },
          // 定点建议
-        async onSuggestionSave() {
-            let state = false
-            try {
-                const res = await sugesstionInitReCord({
-                    nominateAppId: this.$store.getters.nomiAppId,
-                })
-                if (res.code === '200') {
-                    state = true
-                } else {
-                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                }
-            } catch (e) {
-                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-                state = false
-            }
-            return state
-        },
+        // async onSuggestionSave() {
+        //     let state = false
+        //     try {
+        //         const res = await sugesstionInitReCord({
+        //             nominateAppId: this.$store.getters.nomiAppId,
+        //         })
+        //         if (res.code === '200') {
+        //             state = true
+        //         } else {
+        //             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        //         }
+        //     } catch (e) {
+        //         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        //         state = false
+        //     }
+        //     return state
+        // },
         // 跳转下一步
         async toNextStep() {
             let step = Number(this.$store.getters.phaseType || '1')
@@ -327,12 +327,13 @@ export default {
                 console.log('step 2', proc)
                 if (!proc) return
             }
+            // 流程有调整，取消这个接口
             // 当前步骤在定点建议
-            if (step === 3) {
-                const proc = await this.onSuggestionSave()
-                console.log('step 3', proc)
-                if (!proc) return
-            }
+            // if (step === 3) {
+            //     const proc = await this.onSuggestionSave()
+            //     console.log('step 3', proc)
+            //     if (!proc) return
+            // }
             updatePresenPageSeat({
                 nominateId: this.$store.getters.nomiAppId,
                 phaseType: this.$store.getters.phaseType,

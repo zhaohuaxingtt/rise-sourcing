@@ -1,5 +1,5 @@
 <template>
-  <iPage>
+  <iPage v-permission="PURCHASE_MOULDINVESTMENTSUPPLIER_DETAILS">
     <div class="head">
       <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：{{ query.bmSerial }}</div>
       <div class="edition">

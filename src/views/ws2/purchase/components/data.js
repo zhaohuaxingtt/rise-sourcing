@@ -15,6 +15,7 @@ export const investmentListTitle = [
         props: 'bmSerial',
         name: 'BM单流水号',
         key: 'BM单流水号',
+        width: 180,
         isMoney: true,
         tooltip: false
     },
@@ -22,12 +23,14 @@ export const investmentListTitle = [
         props: 'akeoType',
         name: 'BM单类型',
         key: 'BM单类型',
+        width: 150,
         tooltip: false
     },
     {
         props: 'tmCartypeProName',
         name: '车型项目',
         key: '车型项目',
+        width: 150,
         tooltip: false
     },
     {
@@ -41,30 +44,35 @@ export const investmentListTitle = [
         props: 'moldInvestmentAmount',
         name: '模具投资金额',
         key: '模具投资金额',
+        width: 200,
         tooltip: false
     },
     {
         props: 'behalfPartsNum',
         name: '代表零件号',
         key: '代表零件号',
+        width: 180,
         tooltip: false
     },
     {
         props: 'partsPurchaseTypeName',
         name: '零件采购项目类型',
         key: '零件采购项目类型',
+        width: 220,
         tooltip: false
     },
     {
         props: 'nomiApplyNum',
         name: '定点申请单号',
         key: '定点申请单号',
+        width: 200,
         tooltip: false
     },
     {
         props: 'linieName',
         name: 'Linie',
         key: 'Linie',
+        width: 100,
         tooltip: false
     },
     {

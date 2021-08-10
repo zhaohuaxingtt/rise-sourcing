@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="switch-box">
-      <div :class="tableIndex === 1 ? 'onSwitch' : ''" @click="switchTable(1)">BM单视图</div>
-      <div :class="tableIndex === 2 ? 'onSwitch' : ''" @click="switchTable(2)">模具视图</div>
+      <div v-permission="PURCHASE_MOULDBOOK_BMVIEW" :class="tableIndex === 1 ? 'onSwitch' : ''" @click="switchTable(1)">BM单视图</div>
+      <div v-permission="PURCHASE_MOULDBOOK_MOULDVIEW" :class="tableIndex === 2 ? 'onSwitch' : ''" @click="switchTable(2)">模具视图</div>
     </div>
 
   
