@@ -41,3 +41,11 @@ export function update(parmars) {
     data: parmars
   })
 }
+//列表--保存
+export function mekInfoList(parmars) {
+  return requst({
+    url: `/mekMaterial/page`,
+    method: 'POST',
+    data: parmars
+  })
+}

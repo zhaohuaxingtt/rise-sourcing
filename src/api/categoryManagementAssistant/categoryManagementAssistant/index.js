@@ -27,3 +27,11 @@ export function categoryReport(par) {
     method: 'GET',
   });
 }
+//查看历史---列表
+export function getReportList(params) {
+  return request({
+    url: `/categoryReport/getReportList`,
+    method: 'POST',
+    data: params
+  });
+}
