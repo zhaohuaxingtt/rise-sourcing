@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 14:01:06
+ * @LastEditTime: 2021-08-10 17:24:02
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -64,7 +64,8 @@ export default {
   components: { iCard, tableList, iPagination, iButton, logicSettingDialog, showItemDialog },
   props: {
     searchParams: { type:Object, default: () => {}},
-    carProjectOptions: {type: Array, default: () => []}
+    carProjectOptions: {type: Array, default: () => []},
+    productGroupOptions: {type: Array, default: () => []}
   },
   data() {
     return {
@@ -119,7 +120,8 @@ export default {
             code: item.value,
             name: item.label
           }
-        })
+        }),
+        productGroupOptions: this.productGroupOptions
       }
     },
     partTableTitle() {
