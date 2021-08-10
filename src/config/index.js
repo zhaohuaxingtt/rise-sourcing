@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-08-06 17:21:15
+ * @LastEditTime: 2021-08-10 17:27:37
  * @LastEditors: Please set LastEditors
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js
@@ -82,8 +82,11 @@ export const user = {
 // 测试用区分权限的用户id
 export const permissionUserIdMap = {
   AEKO_MANAGER: new Set([4]), // Aeko管理员
-  COMMODITY_COORDINATOR: new Set([12]), // 科室协调员
+  COMMODITY_COORDINATOR: new Set([12,34]), // Aeko科室协调员
   LINIE: new Set([ 51 ]) // 专业采购员
 }
 
+// 4 马家骏 WS1SUPTEST01
+// 12 穆增志 ETEST01
+// 34 孙途观 WS2TEST002
 // 51 姜谷兰 WS1UAETEST02
