@@ -381,7 +381,14 @@ module.exports = {
 				pathRewrite: {
 					"^/newCommonApi": ""
 				}
-			}
+			},
+      '/priceledgerApi': {
+        target: 'http://10.122.17.38:8028',
+				changeOrigin: true,
+				pathRewrite: {
+					"^/priceledgerApi": ""
+				}
+      }
     }
   }
 }
