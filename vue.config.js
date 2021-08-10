@@ -421,7 +421,8 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/supplierSpiApi': '',
-        },
+        }
+      },
         '/priceledgerApi': {
           target: 'http://10.122.17.38:8028',
           changeOrigin: true,
@@ -429,7 +430,14 @@ module.exports = {
             "^/priceledgerApi": ""
           }
         },
-      }
+        '/lier':{
+          target: 'http://10.160.142.130:8036',
+          changeOrigin: true,
+          pathRewrite: {
+            '^/lier': '',
+          }
+        },
+    }
     }
   }
-}
+      
