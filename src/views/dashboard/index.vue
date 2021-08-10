@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-10 14:02:34
+ * @LastEditTime: 2021-08-10 16:12:32
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -16,7 +16,7 @@
         <el-col :span="4">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
-              <icon symbol name="icondingdianguanlijiedian-yiwancheng" class="cardicon"></icon>
+              <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
               <span>{{language('LK_LINGJIANQIANSHOU','零件签收')}}</span>
             </div>
             <div class="dashboard-card-content">
@@ -28,7 +28,7 @@
         <el-col :span="4">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
-              <icon symbol name="icondingdianguanlijiedian-yiwancheng" class="cardicon"></icon>
+              <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
               <span>{{language('LK_CAIGOUXIANGMUJIANLI','采购项目建立')}}</span>
             </div>
             <div class="dashboard-card-content">
@@ -53,7 +53,7 @@
         <el-col :span="8">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
-              <icon symbol name="icondingdianguanlijiedian-yiwancheng" class="cardicon"></icon>
+              <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
               <span>{{language('LK_RFQGUANLI','RFQ管理')}}</span>
             </div>
             <div class="dashboard-card-content flexbox">
@@ -102,7 +102,7 @@
         <el-col :span="4">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
-              <icon symbol name="icondingdianguanlijiedian-yiwancheng" class="cardicon"></icon>
+              <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
               <span>{{language('LK_DINGDIANGUANLI','定点管理')}}</span>
             </div>
             <div class="dashboard-card-content">
@@ -118,7 +118,7 @@
         <el-col :span="4">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
-              <icon symbol name="icondingdianguanlijiedian-yiwancheng" class="cardicon"></icon>
+              <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
               <span>{{language('LK_DINGDIANXINLOI','定点信/LOI')}}</span>
             </div>
             <div class="dashboard-card-content">
@@ -242,6 +242,7 @@ export default {
         font-size: 22PX;
         display: inline-block;
         vertical-align: middle;
+        color: #5F6879;
         svg {
           font-size: 22PX;
         }

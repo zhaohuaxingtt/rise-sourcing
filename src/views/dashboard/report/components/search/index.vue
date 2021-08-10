@@ -107,7 +107,7 @@
 <script>
 
 import { applyType } from '@/layout/nomination/components/data'
-import { form } from '../data'
+// import { form } from '../data'
 import {
   applicationStatus,
   signSheetselStatus,
@@ -123,7 +123,7 @@ import {
 export default {
   data() {
     return {
-      form,
+      form: {},
       ptocessType: applyType,
       applicationStatus,
       selStatus: signSheetselStatus,
