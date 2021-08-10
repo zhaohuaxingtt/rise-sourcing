@@ -9,7 +9,7 @@ export const bmForm = {
   designatedSupplierId: '',  //  供应商id数组
   deptId: [],  //  科室
   linieId: [],  //  line
-  moldInvestmentStatus: '', //  摸具投资状态
+  moldInvestmentStatus: [], //  摸具投资状态
 }
 
 //  模具视图查询
