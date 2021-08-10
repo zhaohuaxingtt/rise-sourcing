@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-09 16:49:33
+ * @LastEditTime: 2021-08-10 13:43:34
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -236,7 +236,10 @@ export default {
     },
     init() {
       if (this.$route.query.cartypeProId) {
-        this.logicData = this.searchParams
+        this.logicData = {
+          ...this.logicData,
+          ...this.$route.query
+        }
         this.getFitting()
       } else {
         this.getCondition()

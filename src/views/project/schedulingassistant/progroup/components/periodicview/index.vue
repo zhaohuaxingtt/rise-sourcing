@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 18:34:34
+ * @LastEditTime: 2021-08-10 15:18:18
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -124,6 +124,12 @@ export default {
   //   clearInterval(this.interval)
   // },
   methods: {
+    /**
+     * @Description: 获取fs下拉选项
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getFSOPtions() {
       getAllFS().then(res => {
         if (res?.result) {
@@ -142,11 +148,24 @@ export default {
         }
       })
     },
+    /**
+     * @Description: 下载pvpk
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async handleDownloadPvPk() {
+      await this.autoSave()
       this.downloadLoading = true
       await downloadPvPk(this.cartypeProId)
       this.downloadLoading = false
     },
+    /**
+     * @Description: 发送fs
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     handleFSConfirm(val) {
       deliveryProduct(val).then(res => {
         if (res?.result) {
@@ -163,6 +182,12 @@ export default {
         this.$refs.fsConfirm.changeSaveLoading(false)
       })
     },
+    /**
+     * @Description: 保存按钮触发保存
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleSave() {
       this.saveloading = true
       saveProductGroupInfoList(this.products).then(res => {
@@ -176,6 +201,12 @@ export default {
         this.saveloading = false
       })
     },
+    /**
+     * @Description: 自动保存，只做保存操作不刷新页面
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     autoSave() {
       if (this.products.length < 1) {
         return
@@ -191,9 +222,21 @@ export default {
         this.saveloading = false
       })
     },
+    /**
+     * @Description: 页面初始化
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     init() {
       this.getProducts(this.cartypeProId)
     },
+    /**
+     * @Description: 根据车型项目获取产品组
+     * @Author: Luoshuang
+     * @param {*} id
+     * @return {*}
+     */    
     getProducts(id) {
       this.loading = true
       getProductGroupInfoList(id).then(res => {
@@ -206,6 +249,12 @@ export default {
         this.loading = false
       })
     },
+    /**
+     * @Description: 跳转历史数据库
+     * @Author: Luoshuang
+     * @param {*} pro
+     * @return {*}
+     */    
     async gotoDBhistory(pro) {
       this.loading = true
       try{
@@ -223,6 +272,12 @@ export default {
       // const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {cartypeProId:this.cartypeProId,productGroup:pro.productGroupNameZh}})
       // window.open(router.href,'_blank')
     },
+    /**
+     * @Description: 根据选中的行获取每一行的fs下拉列表
+     * @Author: Luoshuang
+     * @param {*} tableList
+     * @return {*}
+     */    
     async getFsUserList(tableList) {
       const res = await getFsUserList(tableList.map(item => item.productGroupId))
         if (res?.result) {
@@ -232,6 +287,12 @@ export default {
           return null
         }
     },
+    /**
+     * @Description: 获取项目采购员
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async getBuyer() {
       if (!this.cartypeProId) {
         return null
@@ -244,6 +305,12 @@ export default {
         return null
       }
     },
+    /**
+     * @Description: 点击发送fs按钮打开对应弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async handleSendFs() {
       await this.autoSave()
       
@@ -294,6 +361,12 @@ export default {
       }
       
     },
+    /**
+     * @Description: 获取三个工作日后的日期
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getNextThreeWorkDay() {
       if (moment().day() === 2 || moment().day() === 1) {
         return moment().add(3, 'days').format('YYYY-MM-DD')
@@ -301,9 +374,21 @@ export default {
         return moment().add(5, 'days').format('YYYY-MM-DD')
       }
     },
+    /**
+     * @Description: 切换fs确认弹窗状态
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
     changeFsConfirmVisible(visible) {
       this.fsConfirmDialogVisible = visible 
     },
+    /**
+     * @Description: 选中全部产品组状态切换
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     handleCheckAllChange(val) {
       this.products = this.products?.map(item => {
         return {
@@ -313,6 +398,13 @@ export default {
       })
       this.isIndeterminate = false;
     },
+    /**
+     * @Description: 产品组checkbox选中状态变更
+     * @Author: Luoshuang
+     * @param {*} value
+     * @param {*} pro
+     * @return {*}
+     */    
     handleCheckboxChange(value, pro) {
       console.log(this.products)
       let checkedCount = this.products.filter(item => item.isChecked).length;
