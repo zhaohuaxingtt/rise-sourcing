@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 16:16:30
- * @LastEditTime: 2021-08-06 14:36:15
+ * @LastEditTime: 2021-08-10 13:54:59
  * @LastEditors: Please set LastEditors
  * @Description: 材料组定点时率及平均定点周期
  * @FilePath: /front-web/src/views/designate/home/components/headerNav/components/nomiCharts.vue
@@ -25,13 +25,13 @@
         <ul>
           <li>
             <p class="legend-title">{{language('LIUZHUAN4ZHOUNEI','流转4周内')}}</p>
-            <p class="legend-value"><strong>100</strong></p>
-            <p class="legend-percent">（83.33%）</p>
+            <p class="legend-value"><strong>{{(data && data.leWeekNum) || 0 }}</strong></p>
+            <p class="legend-percent">（{{(data && data.leWeekPercent) || 0 }}%）</p>
           </li>
           <li>
             <p class="legend-title">{{language('LIUZHUANCHAO4ZHOU', '流转超4周')}}</p>
-            <p class="legend-value"><strong>20</strong></p>
-            <p class="legend-percent">（16.67%）</p>
+            <p class="legend-value"><strong>{{(data && data.gtWeekNum) || 0 }}</strong></p>
+            <p class="legend-percent"> ({{(data && data.gtWeekPercent) || 0 }}%)</p>
           </li>
         </ul>
       </div>
@@ -43,10 +43,16 @@
 <script>
 import echarts from "@/utils/echarts";
 import {iCard} from 'rise'
-import {option as mokeChartsData} from '../pieChartsData'
+import {generateOptions} from '../pieChartsData'
 import moment from 'moment'
 
 export default {
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   components: {
     iCard
   },
@@ -57,15 +63,19 @@ export default {
   },
   data() {
   },
+  watch: {
+    data(data) {
+      this.init(data)
+    }
+  },
   mounted() {
-    this.init()
+    this.init(this.data)
   },
   methods: {
-    init() {
-      console.log('mokeChartsData', mokeChartsData)
+    init(params) {
+      if (!Object.keys(params).length) return
       const vm = echarts().init(document.getElementById("charts1"));
-      const self = this
-      let option = mokeChartsData
+      let option = generateOptions(params)
       vm.clear()
       vm.setOption(option);
     }
