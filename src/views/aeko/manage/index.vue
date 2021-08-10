@@ -54,6 +54,7 @@
                 :uploadRef="'aekoUpload'"
                 :buttonText="language('LK_SHANGCHUANWENJIAN','上传文件')"
                 @on-success="fileSuccess"
+                :uploadButtonLoading="btnLoading.uploadFiles"
             />
             <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
@@ -278,7 +279,6 @@ export default {
           if(code ==200 && data){
              data.map((item)=>{
               item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
-              item.code = item.value;
             })
             this.selectOptions.brand = data;
           }else{
@@ -440,7 +440,7 @@ export default {
           fileName:name,
           filePath:path,
           fileSize:size,
-          fileType:0,
+          fileType:1000,
           source:0,
           uploadId:id,
         }

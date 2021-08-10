@@ -31,11 +31,7 @@
             <template #fileName="scope">
                 <span class="link" @click="downloadSingleFile(scope.row)">{{scope.row.fileName}}</span>
             </template>
-
-            <!-- 来源 -->
-            <template #source="scope">
-                <span>{{scope.row.source && scope.row.source.desc}}</span>
-            </template>
+            
         </tableList>
         <!-- 分页 -->
         <iPagination
