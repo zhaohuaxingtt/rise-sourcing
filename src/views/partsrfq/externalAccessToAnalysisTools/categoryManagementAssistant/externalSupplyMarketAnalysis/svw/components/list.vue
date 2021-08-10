@@ -7,6 +7,14 @@
                 <div>单位: 百万元</div>
             </div>
             <div style="height:360px" ref="chart"></div>
+            <div class="interests">
+                <iSelect>
+                    <option v-for="(x,index) in iSelectOption" :value="x.value" :label="x.name" :key="index"></option>
+                </iSelect>
+                <iInput/>
+                <iInput/>
+                <iInput/>
+            </div>
         </div>
         <div class="width3-1">
             <div style="height:360px" ref="turnover"></div>
@@ -34,8 +42,12 @@
 
 <script>
 import echarts from '@/utils/echarts'
-
+import {iInput,iSelect} from 'rise'
 export default {
+    components:{
+        iInput,
+        iSelect
+    },
     props:{
         MarketOverviewObj:{
             type:Object
@@ -43,6 +55,17 @@ export default {
     },
     data(){
         return {
+            interestsStatus:'',
+            iSelectOption:[{
+                value:'1',
+                name:"利润(%）"
+            },{
+                value:'2',
+                name:"svw(元)"
+            },{
+                value:'3',
+                name:"其它(元)"
+            }],
             bgimg:require('../img/list.png'),
             upImg:require('../img/up.png'),
             option : {
@@ -317,5 +340,9 @@ export default {
                 display: inline-block;
                 margin-left: 10px;
             }
+    }
+    .interests{
+        display: flex;
+        justify-content: space-between;
     }
 </style>
