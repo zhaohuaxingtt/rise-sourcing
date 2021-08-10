@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 10:57:15
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 15:14:25
+ * @LastEditTime: 2021-08-10 17:23:49
  * @Description: 算法配置弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\logicsetting\index.vue
 -->
@@ -28,6 +28,7 @@
             :key="item.code"
           ></el-option>
         </iSelect>
+        <el-autocomplete v-else-if="item.type === 'inputFilter'" :fetch-suggestions="querySearch" v-model="logicData[item.value]" />
       </iFormItem>
     </iFormGroup>
   </iDialog>
@@ -57,6 +58,17 @@ export default {
     }
   },
   methods: {
+    querySearch(queryString, cb) {
+      var restaurants = this.selectOptions.productGroupOptions;
+      var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+      // 调用 callback 返回建议列表的数据
+      cb(results);
+    },
+    createFilter(queryString) {
+      return (restaurant=this.selectOptions.productGroupOptions) => {
+        return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+      };
+    },
     clearDialog() {
       this.reasonDescription = ''
       this.$emit('changeVisible', false)

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 15:08:03
+ * @LastEditTime: 2021-08-10 17:07:17
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -12,7 +12,7 @@
     <iNavMvp v-if="navList" :lev="1" :list="navList" :lang="true" routerPage class="nav" />
     <div style="display:flex;align-items:center">
       <iNavMvp v-if="subNavList" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
-      <logButton class="margin-left20" />
+      <logButton class="margin-left20" @click="toLogPage" />
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
     </div>
   </div>
@@ -40,6 +40,13 @@ export default {
     }
   },
   methods: {
+    // 跳转查看日志
+    toLogPage() {
+      const id = 'scheduleReturn'
+      if (id) {
+          window.open(`/#/log?recordId=${id}`, '_blank')
+      }
+    },
     gotoDBhistory() {
       const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`})
       window.open(router.href,'_blank')
