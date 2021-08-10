@@ -124,7 +124,7 @@ export default {
       editStatus: false,
       form: {},
       maxlength: 500,
-      categoryCode: '111',
+      categoryCode: this.$store.state.rfq.categoryCode,
       exportStatus: false,
       exportButtonLoading: false,
     };

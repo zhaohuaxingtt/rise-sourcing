@@ -17,20 +17,44 @@
         @handlePartItemClose="handlePartItemClose"
         @handlePartItemClick="handlePartItemClick"
     />
+    <!--信息-->
+    <iCard tabCard class="margin-bottom20">
+      <theBaseInfo/>
+    </iCard>
+
+    <!--类型标签-->
+    <theTabs
+        class="margin-bottom20"
+        @handleItemClick="handleTabsClick"
+        @handleTimeChange="handleTimeChange"
+    />
+
+    <!--表格-->
+    <iCard tabCard class="margin-bottom20">
+      <theTable/>
+    </iCard>
   </iPage>
 </template>
 
 <script>
-import {iPage, iButton, iMessageBox} from 'rise';
+import {iPage, iButton, iMessageBox, iCard} from 'rise';
 import thePartsList from './components/thePartsList';
+import theBaseInfo from './components/theBaseInfo';
+import theTabs from './components/theTabs';
+import theTable from './components/theTable';
 import resultMessageMixin from '@/utils/resultMessageMixin';
+import {CURRENTTIME, AVERAGE} from './components/data';
 
 export default {
   mixins: [resultMessageMixin],
   components: {
     iPage,
     iButton,
+    iCard,
     thePartsList,
+    theBaseInfo,
+    theTabs,
+    theTable,
   },
   data() {
     return {
@@ -41,6 +65,7 @@ export default {
         {partsId: 2},
       ],
       partItemCurrent: 0,
+      currentTab: CURRENTTIME,
     };
   },
   methods: {
@@ -72,6 +97,15 @@ export default {
     // 点击零件
     handlePartItemClick({item, index}) {
       this.partItemCurrent = index;
+    },
+    // 点击标签
+    handleTabsClick(val) {
+      this.currentTab = val;
+    },
+    // 时间改变
+    handleTimeChange(time) {
+      console.log(111);
+      console.log(time);
     },
   },
 };

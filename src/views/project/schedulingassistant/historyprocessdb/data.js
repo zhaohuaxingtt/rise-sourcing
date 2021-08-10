@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:35:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 09:22:01
+ * @LastEditTime: 2021-08-06 16:10:13
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\data.js
  */
@@ -24,7 +24,7 @@ export const searchListPart = [
 ]
 
 export const regularTableTitle = [
-  {props:'code	',name:'产品组编号', key: "CHEXINGXIANGMU", tooltip: true},
+  {props:'code',name:'产品组编号', key: "CHANPINZUBIANHAO", tooltip: true},
   {props:'pgNameZh',name:'产品组中文名称', key: "CHANPINZUZHONGWENMINGCHENG", tooltip: true},
   {props:'pgNameDe',name:'产品组德文名称', key: "CHANPINZUDEWENMINGCHENG", tooltip: true},
   {props:'releaseNomiWeek',name:'释放-定点(周)', key: "SHIFANGDINGDIANZHOU", tooltip: true},

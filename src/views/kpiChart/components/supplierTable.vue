@@ -2,7 +2,8 @@
     <div>
        <iTableCustom
        :data="tabledata"
-       :columns="tabsetting">
+       :columns="tabsetting"
+       @handle-selection-change="handleSelectChange">
        </iTableCustom>
     </div>
 </template>
@@ -10,6 +11,7 @@
 <script>
 import iTableCustom from '@/components/iTableCustom'
 import {tabsetting} from './data.js'
+import {spiTotalScore} from '@/api/kpiChart'
 export default {
     props:{
         tabledata:{
@@ -23,11 +25,20 @@ export default {
     data(){
         return {
             tabsetting:tabsetting,
-            tabledata:[...this.tabledata]
+            tabledata:[...this.tabledata],
+            idList:[]
         }
     },
     methods:{
-
+        handleSelectChange(x){
+            if(x.length>0){
+                this.idList=[]
+                x.forEach(x => {
+                    this.idList.push(x.supplierId)
+                })
+            }
+            this.$emit("returnScoreID",this.idList)
+        }
     }
 }
 </script>

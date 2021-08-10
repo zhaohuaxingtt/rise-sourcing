@@ -22,6 +22,8 @@
         <iText>{{  form.buyerName }}</iText>
       </iFormItem>
       <iFormItem>
+      </iFormItem>
+      <iFormItem>
         <iLabel :label="'FOP'" slot="label"></iLabel>
         <iText>{{  form.ep }}</iText>
       </iFormItem>

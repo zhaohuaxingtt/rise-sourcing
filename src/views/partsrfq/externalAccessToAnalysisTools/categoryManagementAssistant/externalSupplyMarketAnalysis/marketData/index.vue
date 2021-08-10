@@ -76,7 +76,7 @@ export default {
       chartData: {},
       chartBoxLoading: false,
       saveButtonLoading: false,
-      categoryCode: '123',
+      categoryCode: this.$store.state.rfq.categoryCode,
       copySearchProps: {},
     };
   },
