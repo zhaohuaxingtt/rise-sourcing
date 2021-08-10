@@ -56,7 +56,7 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_LINIE', 'Linie') }}</span>
+                <span>Linie</span>
               </div>
               <div class="disabled">{{ baseInfo.linieName }}</div>
             </div>
