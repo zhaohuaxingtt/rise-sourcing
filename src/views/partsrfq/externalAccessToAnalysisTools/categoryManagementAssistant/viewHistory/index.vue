@@ -1,9 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-08 14:31:25
- * @LastEditTime: 2021-08-10 16:39:41
  * @LastEditors: zbin
- * @Description: 品类管理
+ * @Description: 查看历史
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\pinleiDialog.vue
 -->
 <template>
@@ -129,9 +128,9 @@ export default {
           ...this.form
         }
         const res = await getReportList(pms)
-        this.page.currPage = res.data.pageNum;
-        this.page.pageSize = res.data.pageSize;
-        this.page.totalCount = res.data.total;
+        this.page.currPage = res.pageNum;
+        this.page.pageSize = res.pageSize;
+        this.page.totalCount = res.total;
         this.tableListData = res.data
         this.tableLoading = false
       } catch (error) {
