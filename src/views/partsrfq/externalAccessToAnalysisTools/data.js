@@ -54,6 +54,6 @@ export const categoryManagementAssistantList = [
     url: '/sourcing/categoryManagementAssistant/listOfInitiatives',
     activePath: '/sourcing/categoryManagementAssistant/listOfInitiatives',
     key: '举措清单',
-  },
+  }
 ];
 

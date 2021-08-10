@@ -59,7 +59,16 @@ export default [{
       component: () =>
         import("@/views/partsrfq/bob/newReport"),
     },
-    { 
+    {
+      path: "partsrfq/mekInfoData",
+      name: "mekInfoData",
+      meta: {
+        title: "MEKInfoData",
+      },
+      component: () =>
+        import("@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekInfoData/index.vue"),
+    }, 
+    {
       path: "partsrfq/pi",
       name: "pi",
       meta: {
@@ -74,15 +83,6 @@ export default [{
         title: "原材料价格总览",
       },
       component: () => import("@/views/partsrfq/piAnalyse/components/rawMateria/index"),
-    },
-    {
-      path: "partsrfq/mekInfoData",
-      name: "mekInfoData",
-      meta: {
-        title: "MEKInfoData",
-      },
-      component: () =>
-        import("@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekInfoData/index.vue"),
     },
     {
       path: 'partsrfq/piAnalyseDetail',

@@ -7,7 +7,11 @@
                 <el-form-item
                   class="SearchOption"
                 >
-                <iInput suffix-icon="el-icon-search"></iInput>
+                <iInput 
+                suffix-icon="el-icon-search"
+                v-model="supplierName"
+                @select="handleSelect"
+                ></iInput>
                 </el-form-item>
                </el-form>
                <div>
@@ -16,6 +20,7 @@
                </div>
                </div>
            </iCard>
+           <!-- NGK(苏州)环保陶瓷有限公司 -->
            <iCard id="powerBi"></iCard>
       </iPage>
   </div>
@@ -24,6 +29,7 @@
 <script>
 import {iButton,iPage,iCard,iInput,iSelect,iTableCustom} from 'rise'
 import * as pbi from 'powerbi-client';
+import { getPowerBiKpi,getPowerBiSupplier } from '@/api/kpiChart'
 export default {
     components:{
         iButton,
@@ -40,12 +46,24 @@ export default {
             config:{},
             reportContainer:null,
             report:null,
-     
+            supplierName:"",
+            configApiData:{},
+            supplierId:null
         }
     },
+    created(){
+         getPowerBiKpi({}).then(res=>{
+            this.configApiData={...res.data}
+            console.log(this.configApiData)
+            this.init()
+             this.renderBi()
+        })
+        getPowerBiSupplier({keyWord:this.supplierName}).then(res=>{
+            this.supplierId=this.data[0].supplierId
+        })
+    },
     mounted(){
-        this.init()
-        this.renderBi()
+        console.log(this.configApiData)
     },
     methods:{
         // 初始化配置
@@ -54,7 +72,8 @@ export default {
 				this.config = {
                     type: 'report',
 					tokenType: pbi.models.TokenType.Embed,
-                    embedUrl:'',
+                    embedUrl:this.configApiData.embedUrl,
+                    accessToken:this.configApiData.accessToken,
 					workspaceid:'876776a9-f959-442e-a011-b4bade0dd862',
                     reportid:'437fd85e-323d-48b6-aedd-de8d63ce6f37',
                     pageName:'ReportSection680575c9e561c8d8bd83',
@@ -64,7 +83,7 @@ export default {
 			},
         renderBi() {
 				var report = this.powerbi.embed(this.reportContainer, this.config);
-
+                 
 				// Report.off removes a given event handler if it exists.
 				report.off("loaded");
 
@@ -112,6 +131,45 @@ export default {
 				});
 				this.report=report
 			},
+            querySearchAsync(queryString, cb) {
+                    var restaurants = this.restaurants;
+                    var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+
+                    clearTimeout(this.timeout);
+                    this.timeout = setTimeout(() => {
+                    cb(results);
+                    }, 3000 * Math.random());
+                },
+                createStateFilter(queryString) {
+                    return (state) => {
+                    return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                    };
+                },
+            handleSelect(item) {
+                console.log(item);
+            },
+            handleOk(){
+                // var filter_suppliers = {
+                //     $schema: "http://powerbi.com/product/schema#basic",
+                //     target: {
+                //         table: "Fact_01_Supplier_SPI",
+                //         column: "supplier_id"
+                //     },
+                //     operator: "In",
+                //     values: [...this.supplierId],
+                //     filterType: models.FilterType.BasicFilter,
+                //     requireSingleSelection: true
+                // };
+                this.industry = false
+				console.log(data);
+				this.values= [...this.supplierId]
+				let newfilter = window._.cloneDeep(this.filter);
+
+				newfilter.values=this.values
+				console.log(newfilter);
+                this.report.setFilters([newfilter])   
+            }
+
     }
 }
 </script>
@@ -120,5 +178,11 @@ export default {
     .imgkpi-head{
         display: flex;
         justify-content: space-between;
+    }
+    #powerBi{
+        margin-top: 20px;
+        width: 100%;
+        padding: 0 40px;
+        height: calc(100vh - 150px);
     }
 </style>

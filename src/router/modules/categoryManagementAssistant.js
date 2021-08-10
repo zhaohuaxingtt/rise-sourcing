@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-16 09:54:11
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Descripttion: your project
  */
 /*
@@ -82,6 +82,18 @@ export default [{
           meta: { title: "手工输入" },
           component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/costAnalysisHandleInput'),
         },
+        {
+          path: 'supplyChainOverall',
+          name: 'supplyChainOverall',
+          meta: { title: "批量供应商概览" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/supplyChainOverall/index.vue'),
+        },
+        {
+          path: 'purchaseAmountOverall',
+          name: 'purchaseAmountOverall',
+          meta: { title: "采购金额总览" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/purchaseAmountOverall/index.vue'),
+        },
       ]
     },
     {
@@ -108,6 +120,12 @@ export default [{
           name: 'marketData',
           meta: { title: "市场数据" },
           component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/marketData'),
+        },
+        {
+          path: '/svwInfo',
+          name: 'svwInfo',
+          meta: { title: "svw" },
+          component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/svw'),
         },
       ]
     },

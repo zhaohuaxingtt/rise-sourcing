@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-10 09:50:16
+ * @LastEditTime: 2021-08-10 09:51:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -21,7 +21,7 @@
       <div class="mainContent">
         <el-row :gutter="20">
           <el-col :span="10">
-            <costChar :width="700" left="20%"/>
+            <costChar left="20%" :width="700" :chartData="pieData"/>
           </el-col>
           <el-col :span="14">
             <tableList
@@ -45,6 +45,8 @@ import {iCard, iButton} from 'rise'
 import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/char'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data';
+import { iMessage } from '@/components';
+import { getTotalCbdData, listNomiData } from '@/api/partsrfq/costAnalysis/index.js'
 export default {
   name: 'CostAnalysisMain',
   components: {iCard, iButton, costChar, tableList},
@@ -60,7 +62,9 @@ export default {
     }
   },
   created() {
-    this.initTestData()
+    // this.initTestData()
+    this.getTableData()
+    
   },
   methods: {
     // 初始化测试数据

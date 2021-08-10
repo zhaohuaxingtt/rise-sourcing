@@ -7,9 +7,15 @@
 <script>
 import echarts from '@/utils/echarts'
 export default {
+    props:{
+        options:{
+            type:Object
+        }
+    },
     data(){
         return {
             value:"供应商数量",
+            
             option : {
                 color: ['#1763F7'],
                 tooltip: {
@@ -69,14 +75,6 @@ export default {
                         axisTick: {
                             show:false
                         },
-                        // axisPointer: {
-                        //     label: {
-                        //         formatter: function (params) {
-                        //             return '降水量  ' + params.value
-                        //                 + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-                        //         }
-                        //     }
-                        // },
                         splitNumber:10,
                         axisLabel:{
                             interval:1
@@ -89,7 +87,7 @@ export default {
                     type:'value',
                     name:'该分数段下供应商数量：',
                     min: 0,
-                    max: 1000,
+                    max: 10,
                 },
                 series: [
                     {
@@ -101,32 +99,7 @@ export default {
                         emphasis: {
                             focus: 'series'
                         },
-                        data: [{
-                            value:100,
-                            itemStyle:{
-                                color:'red',
-                            }
-                        },{
-                            value: 70,
-                            itemStyle:{
-                                color:'#000',
-                            }
-                        },{
-                            value: 100,
-                            itemStyle:{
-                                color:'yellow',
-                            }
-                        }, {
-                            value: 400,
-                            itemStyle:{
-                                color:'blue',
-                            }
-                        },{
-                            value: 500,
-                            itemStyle:{
-                                color:'green',
-                            }
-                        } , 700, 230, 60, 60, 90,100],
+                        data: [1,2,3,4,5,6,7,8,9,1],
                         markLine: {
                             lineStyle: {
                                 type:'solid',
@@ -137,7 +110,7 @@ export default {
                             symbol: 'none', // 去掉箭头
                             data: [[
                                 { coord: ['50', 0] }, // [x第几个（从0开始），y轴起始点 ]
-                                { coord: ['50', 1000] } // [x第几个（从0开始），y轴起始点 ]
+                                { coord: ['50', 10] } // [x第几个（从0开始），y轴起始点 ]
                             ]]
                         },
                         markPoint:{
@@ -149,10 +122,25 @@ export default {
         }
     },
     mounted(){
-        // var chartDom = document.getElementById('main');
-        // var myChart = echarts.init(chartDom);
-        // option && myChart.setOption(this.option)
+        this.option={...this.options}
         this.initCharts();
+        console.log(this.option)
+    },
+    watch:{
+        option:{
+            handler(curVal,oldVal){
+                this.option.tooltip.formatter=function(params){
+                        const str = `<div style="padding:10px">
+                            <div>该分数断下供应商数量:<span style="color:#1763F7">${params.value}家</span></div>
+                            <div>${params.seriesName}:${params.name}分</div>
+                        </div>`
+                        return str
+                    }
+                this.initCharts()
+            },
+            immediate: true,
+            deep: true
+        }
     },
     methods:{
         initCharts() {
@@ -161,6 +149,8 @@ export default {
             const option = this.option
             myChart.setOption(option);
         }
+
+
     }
 }
 </script>
