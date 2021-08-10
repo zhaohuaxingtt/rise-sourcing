@@ -368,6 +368,7 @@ export default {
           }
           // this.handoverSelfLoading = false
         }).catch(() => {
+          iMessage.warn(this.$t('LK_DUIBUQIMEIYOUQUANXIAN'));
           // this.handoverSelfLoading = false
         });
       }
