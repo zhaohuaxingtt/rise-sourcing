@@ -20,6 +20,7 @@
                </div>
                </div>
            </iCard>
+           <!-- NGK(苏州)环保陶瓷有限公司 -->
            <iCard id="powerBi"></iCard>
       </iPage>
   </div>
@@ -45,24 +46,24 @@ export default {
             config:{},
             reportContainer:null,
             report:null,
-            supplierName:"公司",
+            supplierName:"",
             configApiData:{},
-            company:[]
+            supplierId:null
         }
     },
     created(){
          getPowerBiKpi({}).then(res=>{
             this.configApiData={...res.data}
+            console.log(this.configApiData)
+            this.init()
+             this.renderBi()
         })
-        getPowerBiSupplier({keyWord:"1234"}).then(res=>{
-            this.company=this.data
+        getPowerBiSupplier({keyWord:this.supplierName}).then(res=>{
+            this.supplierId=this.data[0].supplierId
         })
     },
     mounted(){
-        console.log(this.configApiData.embedUrl)
-        this.init()
-        this.renderBi()
-
+        console.log(this.configApiData)
     },
     methods:{
         // 初始化配置
@@ -82,7 +83,7 @@ export default {
 			},
         renderBi() {
 				var report = this.powerbi.embed(this.reportContainer, this.config);
-
+                 
 				// Report.off removes a given event handler if it exists.
 				report.off("loaded");
 
@@ -147,6 +148,27 @@ export default {
             handleSelect(item) {
                 console.log(item);
             },
+            handleOk(){
+                // var filter_suppliers = {
+                //     $schema: "http://powerbi.com/product/schema#basic",
+                //     target: {
+                //         table: "Fact_01_Supplier_SPI",
+                //         column: "supplier_id"
+                //     },
+                //     operator: "In",
+                //     values: [...this.supplierId],
+                //     filterType: models.FilterType.BasicFilter,
+                //     requireSingleSelection: true
+                // };
+                this.industry = false
+				console.log(data);
+				this.values= [...this.supplierId]
+				let newfilter = window._.cloneDeep(this.filter);
+
+				newfilter.values=this.values
+				console.log(newfilter);
+                this.report.setFilters([newfilter])   
+            }
 
     }
 }
@@ -156,5 +178,11 @@ export default {
     .imgkpi-head{
         display: flex;
         justify-content: space-between;
+    }
+    #powerBi{
+        margin-top: 20px;
+        width: 100%;
+        padding: 0 40px;
+        height: calc(100vh - 150px);
     }
 </style>

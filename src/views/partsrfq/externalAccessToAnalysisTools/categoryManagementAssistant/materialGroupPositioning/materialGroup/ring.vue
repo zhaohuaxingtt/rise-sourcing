@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-06 16:59:08
- * @LastEditTime: 2021-08-06 18:01:20
+ * @LastEditTime: 2021-08-09 16:14:33
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\ring.vue
@@ -14,7 +14,6 @@ import echarts from '@/utils/echarts'
 export default {
    data () {
       return {
-         myChart:null
       }
    },
    mounted () {
@@ -28,7 +27,7 @@ export default {
             tooltip: {
                trigger: 'item'
             },
-            color:[],
+            color:["#1976D1","#1F88E5","#2297F3","#41A5F5"],
             legend: {
                orient: 'horizontal',
                left: 'center',

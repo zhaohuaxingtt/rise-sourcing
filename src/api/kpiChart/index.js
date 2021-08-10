@@ -108,6 +108,40 @@ export function getTableData(data) {
     params: data
   })
 }
+// 查询模板kpi
+export function templateDetail(params) {
+  return requst({
+    url: '/web/kpi/template/detail',
+    method: 'GET',
+    params: params
+  })
+}
+// 保存模板
+export function saveTemplateDetail(data) {
+  return requst({
+    url: '/web/kpi/template',
+    method: 'POST',
+    data: data
+  })
+}
 
 
 
+// 删除模板
+export function deleteTemplate(data) {
+  return requst({
+    url: '/web/kpi/template/remove',
+    method: 'POST',
+    data: data
+  })
+}
+
+// 下载模板
+export function downloadTemplate(data) {
+  return requst({
+    url: '/web/kpi/template/download',
+    method: 'POST',
+    responseType: 'blob',
+    data: data
+  })
+}

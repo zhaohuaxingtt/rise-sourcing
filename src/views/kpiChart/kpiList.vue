@@ -1,6 +1,7 @@
 <template>
   <div>
     <iPage class="template">
+      <publicHeaderMenu></publicHeaderMenu>
       <div class="Main">
         <!-- 搜索条件 -->
         <div class="SearchMenu">
@@ -96,6 +97,7 @@ import { pageMixins } from '@/utils/pageMixins'
 import { tabSetting } from './components/data'
 import { iMessage } from '@/components';
 import { getTableData, getMaterialGroupByUserIds, getRelationship } from '@/api/kpiChart/index.js'
+import publicHeaderMenu from './commonHeardNav/headerNav'
 // import {
 //   deleteUsers,
 //   getPageListByParams,
@@ -110,7 +112,8 @@ export default {
     iCard,
     iButton,
     iPagination,
-    tableFold
+    tableFold,
+    publicHeaderMenu
   },
   mixins: [pageMixins],
   data() {
