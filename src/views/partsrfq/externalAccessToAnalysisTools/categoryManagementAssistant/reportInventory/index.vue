@@ -74,6 +74,9 @@ export default {
           break;
       }
     },
+    clearDiolog() {
+      this.$emit('input', false);
+    },
     async handleExport() {
       const pms = {
         categoryCode: this.$store.state.rfq.categoryCode || '',
@@ -92,7 +95,8 @@ export default {
         pms.ids.push(item.id)
       })
       if (!pms.ids.length) {
-        iMessage.warn(language('BQNMYXZSJ', '抱歉，你没有选择数据'))
+        iMessage.warn(this.language('BQNMYXZSJ', '抱歉，你没有选择数据'))
+        return
       }
       await categoryReportExport(pms)
     },
@@ -148,7 +152,10 @@ export default {
     margin-right: 0;
   }
 }
-::v-deep .el-table th > .cell {
-  padding-left: 0.875rem;
+::v-deep td > .cell {
+  text-align: center;
+}
+::v-deep th > .cell {
+  text-align: center;
 }
 </style>

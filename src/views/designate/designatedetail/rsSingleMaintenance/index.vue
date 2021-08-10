@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 13:53:06
+ * @LastEditTime: 2021-08-07 08:13:54
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -205,29 +205,11 @@ export default {
       this.downloadLoading = true
       const params = this.tableListData.map(item => {
         return {
-          partProjType: item.partProjectType,
           supplierId: item.supplierId,
+          rfqId: item.rfqId,
           fsnrGsnrNum: item.fsnrGsnrNum,
           nominateAppId: item.nominateAppId,
-          nominateRecordId: item.nominateRecordId,
-          nominateDetailId: item.nominateDetailId,
-          quotationId: item.quotationId,
-          presentPrice: item.presentPrice,
-          addFee: item.addFee,
-          aPrice: item.aprice,
-          bPrice: item.bprice,
-          investFee: item.investFee,
-          investFeeIsShared: item.investFeeIsShared,
-          devFee: item.devFee,
-          devFeeIsShared: item.devFeeIsShared,
-          ltcs: defaultLtcs.map((ltcsItem, ltcIndex) => {
-            return {
-              ltcDate: item['ltcDate'+(ltcIndex+1)] ? moment(item['ltcDate'+(ltcIndex+1)]).format('yyyy-MM') : '',
-              ltcDateIsChange:item['ltcDateIsChange'+(ltcIndex+1)],
-              ltcRate:item['ltcRate'+(ltcIndex+1)],
-              ltcRateIsChange:item['ltcRateIsChange'+(ltcIndex+1)]
-            }
-          })
+          quotationId: item.quotationId
         }
       })
       await downloadRSDoc(params)
@@ -245,27 +227,21 @@ export default {
         return
       }
       this.readQuotationLoading = true
-      const params = this.selectedTableData.map(item => {
-          return {
-            nominateDetailId: item.nominateDetailId,
-            rfqId: item.rfqId,
-            fsnrGsnrNum: item.fsnrGsnrNum,
-            supplierId: item.supplierId,
-            nominateId: item.nominateAppId,
-            quotationId: item.quotationId
-          }
-        })
-      // {
-      //   nominateId: this.$route.query.desinateId,
-      //   dtoList: this.selectedTableData.map(item => {
+      const params = {
+        nominateAppId: this.$route.query.desinateId,
+        nomiMaintenanceRecordIdlist: this.selectedTableData.map(item => item.nominateRecordId)
+      }
+      // this.selectedTableData.map(item => {
       //     return {
-      //       nominateDetailId: item.nominateDetailId,
+      //       // nominateDetailId: item.nominateDetailId,
       //       rfqId: item.rfqId,
       //       fsnrGsnrNum: item.fsnrGsnrNum,
-      //       supplierId: item.supplierId
+      //       supplierId: item.supplierId,
+      //       nominateId: item.nominateAppId,
+      //       quotationId: item.quotationId
       //     }
       //   })
-      // }
+      
       readQuotation(params).then(res => {
         if(res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -290,6 +266,7 @@ export default {
           supplierId: item.supplierId,
           fsnrGsnrNum: item.fsnrGsnrNum,
           nominateDetailId: item.nominateDetailId,
+          nominateRecordId: item.nominateRecordId,
           quotationId: item.quotationId,
           aPrice: item.aprice,
           bPrice: item.bprice,

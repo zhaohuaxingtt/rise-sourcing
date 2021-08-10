@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-09 20:50:35
+ * @LastEditTime: 2021-08-10 09:51:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -30,6 +30,7 @@
               :tableLoading="false"
               :index="true"
               :max-height="600"
+              @handleSelectionChange="handleSelectionChange"
             >
             </tableList>
           </el-col>
@@ -57,6 +58,7 @@ export default {
       tableTitle,
       tableListData: [],
       pieData: [],
+      selection: []
     }
   },
   created() {
@@ -87,7 +89,10 @@ export default {
         } else iMessage.error(res.desZh)
       })
     },
-    
+    // 选中表格事件
+    handleSelectionChange(val) {
+      this.selection = val
+    },
     // 获取pie数据（cbd）
     getPieData() {
       const params = {
@@ -108,7 +113,12 @@ export default {
     },
     // 点击编辑按钮
     clickEdit() {
-      this.$router.push(this.costAnalysisAddUrl)
+      if(this.selection.length != 1) {
+        iMessage.error('请选中一条数据')
+      }
+      this.$router.push({
+        path: this.costAnalysisAddUrl,
+        query: this.selection[0]})
     },
     // 点击分析库按钮
     clickAnalysis() {
