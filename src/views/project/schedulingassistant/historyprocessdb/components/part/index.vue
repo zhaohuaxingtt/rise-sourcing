@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 09:34:15
+ * @LastEditTime: 2021-08-06 17:48:54
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -211,7 +211,12 @@ export default {
       this.getFitting()
     },
     init() {
-      this.getCondition()
+      if (this.$route.query.cartypeProId) {
+        this.logicData = this.searchParams
+        this.getFitting()
+      } else {
+        this.getCondition()
+      }
     },
     /**
      * @Description: 根据拟合进度查询匹配零件号历史进度列表

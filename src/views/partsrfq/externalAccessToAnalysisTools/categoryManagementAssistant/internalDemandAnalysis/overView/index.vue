@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-05 17:18:55
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-08-09 20:12:18
+ * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
@@ -10,7 +10,7 @@
    <el-row gutter="20">
       <el-col :span="8" v-for="(item,index) in list" :key="index">
          <iCard class="icard" :title='language(item.key,item.name)'>
-            <div @click="onJump(item.url)" class="img">
+            <div @click="onJump(item)" class="img">
                <img :src="item.image">
             </div>     
          </iCard> 
@@ -20,6 +20,8 @@
 
 <script>
 import {iCard} from 'rise'
+import { iMessage } from '@/components';
+import { getDefaultCostStructure } from '@/api/partsrfq/costAnalysis/index.js'
 export default {
   components: {
     iCard,
@@ -30,7 +32,8 @@ export default {
            {
               name:"采购金额总览",
               key:"CAIGOUJINEZONGLAN",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis01.png")
+              image:require("@/assets/images/partRfq/internalDemandAnalysis01.png"),
+              url:'/sourcing/categoryManagementAssistant/internalDemandAnalysis/purchaseAmountOverall'
            },
            {
               name:"产量总览",
@@ -68,18 +71,59 @@ export default {
            },{
               name:"批量供应商概览",
               key:"PLGYJZL",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis09.png")
+              image:require("@/assets/images/partRfq/internalDemandAnalysis09.png"),
+              url:'/sourcing/categoryManagementAssistant/internalDemandAnalysis/supplyChainOverall'
            },{
               name:"定点历史记录",
               key:"DINGDIANLISHIJILU",
               image:require("@/assets/images/partRfq/internalDemandAnalysis10.png")
            }
-        ]
+        ],
+        // 成本组成-手工输入
+        costAnalysisInputUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisHandleInput',
      }
   },
   methods: {
-    onJump(url){
-      this.$router.push(url)
+    onJump(item){
+      switch (item.key) {
+        // 成本结构
+        case 'CHENGBENZUCHENG':
+          this.getCostData().then(type => {
+            if(type == 1) {
+              //跳转系统
+              this.$router.push({
+                path: item.url,
+                query: item.params || null
+              })
+            } else {
+              //跳转手工
+              this.$router.push({
+                path: this.costAnalysisInputUrl,
+                query: item.params || null
+              })
+            }
+          })
+          break;
+        default:
+           this.$router.push({
+              path: item.url,
+              query: item.params || null
+            })
+          break  
+      }
+     
+    },
+    // 获取成本结构数据，用于判断跳转系统/手工页面
+    getCostData() {
+      const params = {
+        categoryCode: this.$store.state.rfq.categoryCode || '111'
+      }
+      return new Promise(resolve => {
+        getDefaultCostStructure(params).then(res => {
+          if(res && res.code == 200) resolve(res.data.analysisType)
+          else iMessage.error(res.desZh)
+        })
+      })
     }
   }
 };

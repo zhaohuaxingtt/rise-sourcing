@@ -1,14 +1,16 @@
 <template>
-  <div>
+  <iPage>
       <publicHeaderMenu></publicHeaderMenu>
-  </div>
+  </iPage>
 </template>
 
 <script>
-import publicHeaderMenu from './components/publicHeaderMenu'
+import publicHeaderMenu from './commonHeardNav/headerNav'
+import {iButton,iPage,iCard,iInput,iSelect,iTableCustom} from 'rise'
 export default {
     components:{
-        publicHeaderMenu
+        publicHeaderMenu,
+        iPage
     }
 }
 </script>

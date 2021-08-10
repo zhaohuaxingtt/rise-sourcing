@@ -1,6 +1,7 @@
 <template>
   <div>
     <iPage class="template">
+      <publicHeaderMenu></publicHeaderMenu>
       <div class="Main">
         <!-- 搜索条件 -->
         <div class="SearchMenu">
@@ -8,47 +9,44 @@
             <i-search @sure="sure" @reset="reset">
               <el-form>
                 <el-form-item
-                  :label="$t('supplierkpi.bumen')"
+                  :label="language('SUOSHUBUMEN','所属部门')"
                   class="SearchOption"
                 >
                   <i-select
-                    :placeholder="$t('staffManagement.SELECT_PLACEHOLDER')"
-                    v-model="formData.deptId"
-                  >
+                    :placeholder="language('QINGXUANZE','请选择')"
+                    v-model="formData.scoreDeptId">
+                    <el-option value="">全部</el-option>
                     <el-option
                       v-for="item in organizationMenu"
-                      :key="item.value"
-                      :label="item.nameZh"
-                      :value="item.id"
-                    >
+                      :key="item.existShareId"
+                      :label="item.existShareName"
+                      :value="item.existShareId">
                     </el-option>
                   </i-select>
                 </el-form-item>
                 <el-form-item
-                  :label="$t('supplierkpi.cailiao')"
-                  class="LastSearchOption"
-                >
+                  :label="language('CAILIAOZU','材料组')"
+                  class="SearchOption">
                   <i-select
-                    :placeholder="$t('staffManagement.SELECT_PLACEHOLDER')"
-                    v-model="formData.status"
-                  >
+                    :placeholder="language('QINGXUANZE','请选择')"
+                    v-model="formData.categoryCode">
+                    <el-option value="">全部</el-option>
                     <el-option
-                      v-for="item in status"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    >
+                      v-for="item in categoryList"
+                      :key="item.categoryId"
+                      :label="item.categoryName"
+                      :value="item.categoryCode">
                     </el-option>
                   </i-select>
                 </el-form-item>
                 <el-form-item
-                  :label="$t('supplierkpi.ENGLISHNAME')"
+                  :label="language('GONGYINGSHANGMINGCHENG','供应商名称')"
                   class="SearchOption"
                 >
                   <i-input
-                    :placeholder="$t('staffManagement.gongyingshangmincheng')"
+                    :placeholder="language('QINGSHURU','请输入')"
                     class=""
-                    v-model="formData.nameEn"
+                    v-model="formData.name"
                   ></i-input>
                 </el-form-item>
               </el-form>
@@ -58,8 +56,9 @@
           <div class="OrganizationListContainer">
             <iCard>
                 <tableFold
+                v-if="isRender"
                 :tabelTittle="tabSetting"
-                :tableDataBefore="tableDataBefore"
+                :tableDataBefore="tableListData"
                 ></tableFold>
                 <!-- 分页标签 -->
                 <iPagination
@@ -96,6 +95,9 @@ import {
 import tableFold from './components/tableFold'
 import { pageMixins } from '@/utils/pageMixins'
 import { tabSetting } from './components/data'
+import { iMessage } from '@/components';
+import { getTableData, getMaterialGroupByUserIds, getRelationship } from '@/api/kpiChart/index.js'
+import publicHeaderMenu from './commonHeardNav/headerNav'
 // import {
 //   deleteUsers,
 //   getPageListByParams,
@@ -110,90 +112,106 @@ export default {
     iCard,
     iButton,
     iPagination,
-    tableFold
+    tableFold,
+    publicHeaderMenu
   },
   mixins: [pageMixins],
   data() {
     return {
       tableListData: [],
-      tabSetting:tabSetting,
+      tabSetting:_.cloneDeep(tabSetting),
       formData: {},
       organizationMenu: [],
-      selectData: [],
-      delDisabled: true,
-      editDisabled: true,
-      status: [
-        {
-          value: true,
-          label: '有效'
-        },
-        {
-          value: false,
-          label: '无效'
-        }
-      ],
-      tableHeight: '',
-      tableLoading:false,
-      tableDataBefore:[{
-                roleName:'1232132',
-                id:"123",
-                code:"dwqdwsd",
-                fullNameZh:"dsfdsfsdf",
-                code:"dwqdwsd",
-                aa:"dsfdsfsdf",
-            },
-            {
-                roleName:'1232132',
-                id:"123",
-                code:"dwqdwsd",
-                fullNameZh:"dsfdsfsdf",
-                code:"dwqdwsd",
-                aa:"aaa"
-            },{
-                roleName:'1232132',
-                id:"123",
-                code:"dwqdwsd",
-                fullNameZh:"dsfdsfsdf",
-                code:"dwqdwsd",
-                fullNameZh:"dsfdsfsdf"
-            },{
-                roleName:'1232132',
-                id:"123",
-                code:"dwqdwsd",
-                fullNameZh:"dsfdsfsdf",
-                code:"dwqdwsd",
-                aa:"test data"
-            }],
+      categoryList: [],
+      tableLoading: false,
+      isRender: true
     }
   },
   created() {
-    //this.getList()
-    // 查询部门列表
-    // getDeptDropDownList({}).then(res => {
-    //   this.organizationMenu = res.data
-    // })
+    this.getTableData()
+    this.getMaterialGroupByUserIds()
+    this.getRelationship()
+      
   },
   mounted() {
+ 
     
   },
   methods: {
+    //获取表格数据（包含表头和表格数据）
+    getTableData() {
+      this.isRender = false
+      const params = {
+        ...this.formData,
+        pageNo: this.page.currPage,
+        pageSize: this.page.pageSize,
+      }
+      getTableData(params).then(res => {
+        if(res && res.code == 200) {
+          this.tableLoading = false
+          this.page.totalCount = res.data.data.total
+          this.initTableTitle(res.data.titles)
+          this.initTableData(res.data.data.data)
+          this.isRender = true
+        } else {
+          iMessage.error(res.data.desZh)
+          this.isRender = true
+        }
+      })
+    },
+    // 初始化表头数据
+    initTableTitle(values) {
+      this.tabSetting = _.cloneDeep(tabSetting)
+      values.map((item, index) => {
+        const titleColumnIndex = this.tabSetting.findIndex(titleItem => titleItem.start == true) 
+        const target = {
+          prop: item.key,
+          label: item.value,
+        }
+        if(index == values.length - 1) {
+          target['start'] = false
+          target['icon'] = 'el-icon-plus'
+        }
+      this.tabSetting.splice(titleColumnIndex + 1 + index, 0, target)
+      // this.$set(this.tabSetting,titleColumnIndex + 1 + index,target)
+        // this.tabSetting= [...this.tabSetting.splice(titleColumnIndex + 1 + index, 0, target)]
+      })
+      this.tabSetting= [...this.tabSetting]
+    },
+    // 初始化表格数据.
+    initTableData(values) {
+      this.tableListData = []
+      values.map(item => {
+        for(const key in item.rows) {
+          item[key] = item.rows[key]
+        }
+      })
+      this.tableListData = values
+    },
+    // 获取材料组数据
+    getMaterialGroupByUserIds() {
+      getMaterialGroupByUserIds({}).then(res => {
+        if(res && res.code == 200) {
+          this.categoryList = res.data
+        } else {
+          iMessage.error(res.data.desZh)
+        }
+      })
+    },
+    // 获取科股（部门）数据
+    getRelationship() {
+      getRelationship({}).then(res => {
+        if(res && res.code == 200) {
+          this.organizationMenu = res.data
+        } else {
+          iMessage.error(res.data.desZh)
+        }
+      })
+    },
+
     sure() {
       this.page.currPage = 1
-      this.getList()
-    },
-    getList() {
-      this.formData.current = this.page.currPage
-      this.formData.size = this.page.pageSize
-      this.tableLoading=true
-      getPageListByParams(this.formData).then(res => {
-        this.tableLoading=false
-        this.tableListData = res.data
-        this.page.totalCount = res.total
-        this.tableListData.forEach(x => {
-          x.status !== null && x.status ? (x.status = '有效') : '无效'
-          x.updateDate=x.updateDate?x.updateDate.substring(0,10):''
-        })
-      })
+      this.getTableData()
     },
     // 重置数据
     reset() {
@@ -201,16 +219,16 @@ export default {
         this.formData[key] = ''
       }
       this.page.currPage = 1
-      this.getList()
+      this.getTableData()
     },
     // //改变page操作
     handleSizeChange(event) {
       this.page.pageSize = event
-      this.getList()
+      this.getTableData()
     }, // //改变页码操作
     handleCurrentChange(event) {
       this.page.currPage = event
-      this.getList()
+      this.getTableData()
     }
   }
 }
