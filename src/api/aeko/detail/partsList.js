@@ -34,3 +34,21 @@ export function assignDept(data) {
     data,
   })
 }
+
+// 分派采购员   
+export function assignLinie(data) {
+  return requst({
+    url: '/aeko/part/assign-linie',
+    method: 'POST',
+    data,
+  })
+}
+
+// 科室退回  
+export function deptRollback(data) {
+  return requst({
+    url: '/aeko/part/dept-rollback',
+    method: 'POST',
+    data,
+  })
+}

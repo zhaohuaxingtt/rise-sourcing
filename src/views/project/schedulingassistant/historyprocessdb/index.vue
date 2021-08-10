@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 17:47:39
+ * @LastEditTime: 2021-08-09 16:45:42
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
@@ -63,10 +63,8 @@ export default {
   created() {
     this.searchParams = {
       level: '1',
-      ...this.$route.query
-      // cartypeProId: this.$route.query.cartypeProId || '',
-      // productGroup: this.$route.query.productGroup || '',
-      // sixPartCode: this.$route.query.sixPartCode || ''
+      ...this.$route.query,
+      productGroup: this.$route.query.productGroup || ''
     }
     this.getCarProjectOptions()
   },
@@ -80,7 +78,7 @@ export default {
       }
     },
     getCarProjectOptions() {
-      getCarTypePro().then(res => {
+      getCarTypePro({isSop:true}).then(res => {
         if (res?.result) {
           this.selectOptions = {
             ...this.selectOptions,
