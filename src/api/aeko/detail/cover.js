@@ -24,3 +24,40 @@ export function getLiniePage(params) {
     params,
   })
 }
+
+
+// 封面表态详情 linie视角
+export function getLinieCoverDetail(params) {
+  return requst({
+    url: '/aeko/linie_cover-detail',
+    method: 'GET',
+    params,
+  })
+}
+
+// 查询本部门下的前期采购员
+export function getFsUser(params) {
+  return requst({
+    url: '/aeko/fs-user',
+    method: 'GET',
+    params,
+  })
+}
+
+// 保存封面表态数据
+export function coverSave(data) {
+  return requst({
+    url: '/aeko/cover/save',
+    method: 'POST',
+    data,
+  })
+}
+
+// 提交封面表态数据
+export function coverSubmit(data) {
+  return requst({
+    url: '/aeko/cover/submit',
+    method: 'POST',
+    data,
+  })
+}

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 20:00:13
- * @LastEditTime: 2021-08-06 14:32:18
+ * @LastEditTime: 2021-08-09 16:55:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\index.vue
@@ -11,7 +11,7 @@
     <div class="header">
       <div class="title">{{ language("ZHIDINGYUANLINGJIAN", "指定原零件") }}</div>
       <div class="control">
-        <iNavMvp class="nav margin-right20" :lev="2" :list="navList" lang routerPage />
+        <iNavMvp class="nav margin-right20" :lev="2" :list="navList" lang routerPage routerParam />
         <iButton @click="handleBack">{{ language("FANHUI", "返回") }}</iButton>
         <div class="control">
           <logButton class="margin-left20" />

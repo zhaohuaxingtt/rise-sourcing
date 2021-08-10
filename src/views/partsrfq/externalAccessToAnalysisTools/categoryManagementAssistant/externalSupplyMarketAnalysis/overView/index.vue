@@ -1,8 +1,8 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 19:45:03
- * @LastEditTime: 2021-08-04 18:01:40
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-08-10 09:42:18
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\overView\index.vue
 -->
@@ -71,7 +71,7 @@ export default {
         data: {},
       },
       card4Param: {
-        url: '',
+        url: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis/supplyChainOverall',
         data: {},
       },
     };

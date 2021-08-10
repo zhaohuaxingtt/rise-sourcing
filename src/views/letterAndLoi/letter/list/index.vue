@@ -61,10 +61,6 @@
             <template #parts="scope">
                 <span>{{getRfqId(scope.row)}}</span>
             </template>
-            <!-- 定点信状态 -->
-            <template #status="scope">
-                <span >{{ scope.row.status && scope.row.status.desc }}</span>
-            </template>
             <!-- 是否签署协议 -->
             <template #isSignAgreement="scope">
                 <span>{{scope.row.isSignAgreement ? language('nominationLanguage.Yes','是') :language('nominationLanguage.No','否')}}</span>
