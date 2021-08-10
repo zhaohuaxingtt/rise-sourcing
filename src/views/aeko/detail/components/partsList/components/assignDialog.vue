@@ -98,6 +98,10 @@ export default {
         linieDeptNum:{
             type:Array,
             default:()=>[],
+        },
+        buyerName:{
+            type:Array,
+            default:()=>[],
         }
     },
     computed: {
@@ -287,18 +291,24 @@ export default {
 
         // 获取linie列表
         async getLinieList(){
-            searchLinie({tagId:configUser.LINLIE}).then((res)=>{
-                const {code,data} = res;
-                if(code ==200 ){
-                    data.map((item)=>{
-                    item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                    item.value = item.id;
-                    })
-                    this.linieSelectOptions = data;
-                }else{
-                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-                }
-            })
+            const { buyerName=[] } = this;
+            if(buyerName.length){
+                this.linieSelectOptions = buyerName;
+            }else{
+                searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+                    const {code,data} = res;
+                    if(code ==200 ){
+                        data.map((item)=>{
+                        item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.value = item.id;
+                        })
+                        this.linieSelectOptions = data;
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
+            }
+            
         },
     }
 }
