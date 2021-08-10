@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-10 13:34:41
+ * @LastEditTime: 2021-08-10 10:44:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -136,11 +136,10 @@ export default {
         if(code == 200){
           this.aekoInfo = {...aekoInfo,...data};
 
-
           if(!type){
-            if (this.isLinie) {
-              this.currentTab = "contentDeclare"
-            }
+            // if (this.isLinie) {
+            //   this.currentTab = "contentDeclare"
+            // }
             this.tabChange();
           }
 
