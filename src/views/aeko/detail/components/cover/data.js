@@ -29,7 +29,7 @@ export const coverTableTitleDepart=[
     { props: "materialIncrease", name: "增加材料成本(RMB/⻋)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true },
     { props: "investmentIncrease", name: "增加投资费⽤(不含税)", key: "LK_AEKO_ZENGJIATOUZIFEIYONG", tooltip: true },
     { props: "otherCost", name: "其他费⽤(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true },
-    { props: "coverStatus", name: "封面状态", key: "LK_AEKOFENGMIANZHUANGTAI", tooltip: true },
+    { props: "coverStatusDesc", name: "封面状态", key: "LK_AEKOFENGMIANZHUANGTAI", tooltip: true },
     { props: "submitTime", name: "提交时间", key: "LK_AEKO_TIJIAOSHIJIAN", tooltip: true },
 
 ]
