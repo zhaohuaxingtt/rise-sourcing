@@ -278,7 +278,6 @@ export default {
           if(code ==200 && data){
              data.map((item)=>{
               item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
-              item.code = item.value;
             })
             this.selectOptions.brand = data;
           }else{
