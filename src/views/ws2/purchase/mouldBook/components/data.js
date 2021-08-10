@@ -95,12 +95,6 @@ export const bmTableHead = [
 
 //  详情表头
 export const detailsTableHead = [
-  // {
-  //   props: 'number',
-  //   name: '序号',
-  //   key: 'LK_XUHAO',
-  //   tooltip: false
-  // },
   {
     props: 'moldId',
     name: '模具ID',
@@ -111,18 +105,21 @@ export const detailsTableHead = [
     props: 'assetNum',
     name: '固资编号',
     key: 'LK_GUZIBIANHAO',
+    width: 100,
     tooltip: false
   },
   {
     props: 'assetName',
     name: '固资名称',
     key: 'LK_GUZIMINGCHEN',
+    width: 150,
     tooltip: false
   },
   {
     props: 'moldManufacturer',
     name: '模具制造商',
     key: 'LK_MUJUZHIZHAOSHANG',
+    width: 150,
     tooltip: false
   },
   {
@@ -135,30 +132,35 @@ export const detailsTableHead = [
     props: 'moldType',
     name: '工模具种类',
     key: 'LK_GONGMUJUZHONGLEI',
+    width: 100,
     tooltip: false
   },
   {
     props: 'assetTypeNum',
     name: '资产分类编号',
     key: 'LK_ZICHANFENLEIBIANHAO',
+    width: 100,
     tooltip: false
   },
   {
     props: 'partsTotalName',
     name: '零件总成名称',
     key: 'LK_LINGJIANZONGCHENMINGCHEN',
+    width: 100,
     tooltip: false
   },
   {
     props: 'partsTotalNum',
     name: '总成零件号',
     key: 'LK_ZONGCHENLINGJIANHAO',
+    width: 100,
     tooltip: false
   },
   {
     props: 'partsShareNum',
     name: '共享零件号',
     key: 'LK_GONGXIANGLINGJIANHAO',
+    width: 100,
     tooltip: false
   },
   {
@@ -188,7 +190,7 @@ export const detailsTableHead = [
   {
     props: 'assetPrice',
     name: '资产单价',
-    key: 'LK_ZICHANDAN',
+    key: 'LK_ZICHANDANJIA',
     tooltip: false
   },
   {
