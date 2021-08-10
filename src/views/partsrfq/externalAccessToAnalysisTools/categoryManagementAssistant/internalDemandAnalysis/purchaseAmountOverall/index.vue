@@ -68,7 +68,18 @@ export default {
           column: "YearNo"
         },
         operator: "In",
-        values: [],//this.year
+        values: [2022],//this.year
+        filterType: pbi.models.FilterType.BasicFilter,
+        requireSingleSelection: true
+      },
+      filter_category: {
+        $schema: "http://powerbi.com/product/schema#basic",
+        target: {
+          table: "2_tovlo_overview",
+          column: "category_id"
+        },
+        operator: "In",
+        values: [this.$store.state.rfq.categoryCode],//this.year
         filterType: pbi.models.FilterType.BasicFilter,
         requireSingleSelection: true
       },
@@ -84,7 +95,7 @@ export default {
         requireSingleSelection: true
       },
       form: {
-        year: '',
+        year: '2022',
         page: ''
       },
       formGoup: {
@@ -106,8 +117,49 @@ export default {
   // 方法集合
   methods: {
     handle() {
-      this.config.pageName = this.form.page
-      this.renderBi()
+      this.filter_year.values = [parseInt(this.form.year)]
+      this.report.setPage(this.form.page);
+      let filterAll = [this.filter_year]
+      var filter_category = {
+        $schema: "http://powerbi.com/product/schema#basic",
+        target: {
+          table: "2_tovlo_overview",
+          column: "category_id"
+        },
+        operator: "In",
+        values: ['a'],//this.year
+        filterType: pbi.models.FilterType.BasicFilter,
+        requireSingleSelection: true
+      }
+      var filter_year = {
+        $schema: "http://powerbi.com/product/schema#basic",
+        target: {
+          table: "DimYear",
+          column: "YearNo"
+        },
+        operator: "In",
+        values: [parseInt(this.form.year)],//this.year
+        filterType: pbi.models.FilterType.BasicFilter,
+        requireSingleSelection: true
+      }
+      var basicFilter1 = {
+        $schema: "http://powerbi.com/product/schema#basic",
+        target: {
+          table: "2_tovlo_overview",
+          column: "category_id"
+        },
+        operator: "In",
+        //values: ["Plant","China","England","Russia"],
+        values: ['a'],
+        filterType: pbi.models.FilterType.BasicFilter
+      };
+      // if (!!this.$store.state.rfq.categoryCode) {
+
+      // }
+      console.log(filterAll);
+
+      this.report.setFilters([filter_year, basicFilter1]);
+      // this.renderBi()
     },
     async dictByCode() {
       const res = await dictByCode('CATEGORY_MANAGEMENT_LIST')
@@ -166,10 +218,10 @@ export default {
         settings: {
           panes: {
             filters: {
-              visible: false
+              visible: true
             },
             pageNavigation: {
-              visible: false
+              visible: true
             }
           }
         }
@@ -179,18 +231,45 @@ export default {
     },
     // 初始化页面
     renderBi() {
-      var report = this.powerbi.embed(this.reportContainer, this.config);
+      this.report = this.powerbi.embed(this.reportContainer, this.config);
+      this.filter_year.values = parseInt(this.form.year)
+      let report = this.report
+      var filter_year = {
+        $schema: "http://powerbi.com/product/schema#basic",
+        target: {
+          table: "DimYear",
+          column: "YearNo"
+        },
+        operator: "In",
+        values: [parseInt(this.form.year)],//this.year
+        filterType: pbi.models.FilterType.BasicFilter,
+        requireSingleSelection: true
+      }
+      console.log(this.$store.state.rfq.categoryCode);
+      var filter_category = {
+        $schema: "http://powerbi.com/product/schema#basic",
+        target: {
+          table: "2_tovlo_overview",
+          column: "category_id"
+        },
+        operator: "In",
+        values: ['a'],//this.year
+        filterType: pbi.models.FilterType.BasicFilter,
+        requireSingleSelection: true
+      }
       // Report.off removes a given event handler if it exists.
       report.off("loaded");
       // Report.on will add an event handler which prints to Log window.
-      this.config.pageName = this.form.page
-      this.filter_year.values = [this.form.year]
-      this.filter_page.values = [this.form.page]
-      console.log(this.filter_year);
+      // this.config.pageName = this.form.page
+      let filterAll = [filter_year]
+      if (!!this.$store.state.rfq.categoryCode) {
+        filterAll.push(filter_category)
+      }
       report.on("loaded", function() {
         // 年份
         //设置过滤条件	
-        report.setFilters([this.filter_year]);
+        report.setFilters(filterAll);
+
         //report.updateFilters(models.FiltersOperations.Add, [filter_suppliers]);
         console.log("Report filter was added.");
         console.log("Loaded");

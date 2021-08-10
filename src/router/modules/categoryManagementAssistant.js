@@ -83,10 +83,10 @@ export default [{
           component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/costAnalysisHandleInput'),
         },
         {
-          path: 'supplyChainOverall',
-          name: 'supplyChainOverall',
+          path: 'bulkSupplierPandect',
+          name: 'bulkSupplierPandect',
           meta: { title: "批量供应商概览" },
-          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/supplyChainOverall/index.vue'),
+          component: () => import('@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/negotiateBasicInfor/components/bulkSupplierPandect.vue'),
         },
         {
           path: 'purchaseAmountOverall',
@@ -126,6 +126,12 @@ export default [{
           name: 'svwInfo',
           meta: { title: "svw" },
           component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/svw'),
+        },
+        {
+          path: '/purchaseAmountOverall',
+          name: 'purchaseAmountOverall',
+          meta: { title: "采购金额总览" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/supplyChainOverall/index.vue'),
         },
       ]
     },
