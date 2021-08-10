@@ -7,7 +7,7 @@ export const SearchList = [
   {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO'},
   {props:'partNameZh',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG'},
   {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',selectOption:'cartypeCode',noShowAll:true,showCode:'Aeko',multiple:true,filterable:true},
-  {props:'linieDeptNum',label:'科室',type:'input',labelKey:'LK_AEKOKESHI'},
+  {props:'linieDeptNum',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNum',noShowAll:true,filterable:true,clearable:true},
   {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',selectOption:'buyerName',noShowAll:true,filterable:true,clearable:true},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand'},
   {props:'cartype',label:'车型',type:'select',labelKey:'LK_AEKO_CHEXING',selectOption:'cartype',showCode:'AeA',filterable:true},
@@ -17,7 +17,7 @@ export const SearchList = [
 export const tableTitle = [
     { props: "partNum", name: "零件号 ", key: "LK_LINGJIANHAO", tooltip: true },
     { props: "partNameZh", name: "零件名称", key: "LK_LINGJIANMINGCHENG", tooltip: true },
-    { props: "changeType", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
+    { props: "changeTypeDesc", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
     { props: "prNumber", name: "PR号", key: "LK_AEKOPRHAO", tooltip: true },
     { props: "brand", name: "品牌", key: "LK_AEKOPINGPAI", tooltip: true },
     { props: "cartypeZh", name: "涉及⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true,width:130 },

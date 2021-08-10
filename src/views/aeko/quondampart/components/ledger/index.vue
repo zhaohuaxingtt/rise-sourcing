@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-06 18:30:08
+ * @LastEditTime: 2021-08-10 13:43:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -90,7 +90,7 @@
           :total="page.totalCount" />
       </div>
     </iCard>
-    <presentAllInPriceDialog :visible.sync="visible" :partNum="currentRow.partNum" :factoryCode="currentRow.factoryCode" @confirm="confirmAPrice" />
+    <presentAllInPriceDialog :visible.sync="visible" :apriceId="currentRow.apriceId" @confirm="confirmAPrice" />
   </div>
 </template>
 
@@ -189,7 +189,12 @@ export default {
     },
     sure() {
       this.page.currPage = 1
-      this.objectAekoPartId = ""
+      if (isEqual(this.form, ledgerQueryForm)) {
+        this.objectAekoPartId = this.$route.query.objectAekoPartId
+      } else {
+        this.objectAekoPartId = ""
+      }
+      
       this.getAekoOriginPartInfo()
     },
     reset() {
@@ -205,9 +210,10 @@ export default {
       this.visible = true
 
       this.currentRow = row
+      console.log("this.currentRow.apriceId", this.currentRow.apriceId)
     },
     confirmAPrice(row) {
-      this.currentRow.aprice = row.aprice
+      this.currentRow.aprice = row.price
       this.currentRow = {}
     },
     // 保存

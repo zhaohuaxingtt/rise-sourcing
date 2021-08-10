@@ -8,8 +8,7 @@
         <iFormGroup row="4" class="basic-form">
           <template v-for="(item,index) in basicTitle">
             <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  >
-                <iText v-if="item.isObj">{{basicInfo[item.props] && basicInfo[item.props]['desc']}}</iText>
-                <iText  v-else >{{basicInfo[item.props]}}</iText>
+                <iText >{{ item.isObj ? basicInfo[item.props+'Desc'] : basicInfo[item.props]}}</iText>
             </iFormItem>
           </template>
       </iFormGroup>
