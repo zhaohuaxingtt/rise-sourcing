@@ -17,13 +17,18 @@
             </div>
             <div class="module3"><img class="imgStatus" :src="userImg"/>供应商主要客户</div>
         </div>
-        <list></list>
+        <list  
+        v-for="(x,index) of MarketOverviewDTO"
+        :key="index"
+        :MarketOverviewObj=x
+        ></list>
     </iCard>
     </iPage>
 </template>
 
 <script>
 import {iButton,iPage,iCard,iInput,iSelect} from 'rise'
+import {marketOverview} from '@/api/partsrfq/svw/index.js'
 import list from './components/list'
 export default {
     data(){
@@ -31,6 +36,7 @@ export default {
             statueImg:require('./img/img.png'),
             svwImg:require('./img/note.png'),
             userImg:require('./img/user.png'),
+            MarketOverviewDTO:[]
         }
     },
     components:{
@@ -41,8 +47,16 @@ export default {
         iSelect,
         list
     },
+    created(){
+        this.getmarketOverview()
+    },
     methods:{
-        
+         getmarketOverview(){
+            marketOverview({categoryCode:'9999'}).then(res=>{
+                console.log(res)
+                this.MarketOverviewDTO=JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
+            })        
+        }
     }
 }
 </script>

@@ -3,7 +3,7 @@
         <div class="width3-1">
             <h3>Top1</h3>
             <div class="flex">
-                <div class="score">Supplier A <span>7.77%</span><img :src="upImg" alt=""></div>
+                <div class="score">{{MarketOverviewObj.supplierName}} <span>{{MarketOverviewObj.otherCagrRate}}</span><img :src="upImg" alt=""></div>
                 <div>单位: 百万元</div>
             </div>
             <div style="height:360px" ref="chart"></div>
@@ -13,17 +13,20 @@
         </div>
         <div class="width3-1">
             <div class="thead bg">
-                <div>公司名称</div>
-                <div>份额</div>
+                <div class="first">公司名称</div>
+                <div class="last">份额</div>
             </div>
-            <div class="thead">
+            <div class="thead" 
+            v-for="(x,index) in MarketOverviewObj.mainCustomerDTOList"
+            :key="index">
                 <div class="border first">
                     <div class="index">
-                        1
+                        <img :src="bgimg" alt="" />
+                        <div>{{index+1}}</div>
                     </div>
-                    <div class="name">公司名称</div>
+                    <div class="name">{{x.customerName}}</div>
                 </div>
-                <div class="border">份额</div>
+                <div class="border last">{{x.totalSalesPro}}</div>
             </div>
         </div>
     </div>
@@ -31,9 +34,16 @@
 
 <script>
 import echarts from '@/utils/echarts'
+
 export default {
+    props:{
+        MarketOverviewObj:{
+            type:Object
+        }
+    },
     data(){
         return {
+            bgimg:require('../img/list.png'),
             upImg:require('../img/up.png'),
             option : {
                 tooltip: {
@@ -186,10 +196,18 @@ export default {
                         }
                     }
                 ]
-            }
+            },
+            
         }
     },
+    created(){
+      
+    },
     mounted(){
+        let date = new Date();
+        this.option.xAxis[0].data[0]=date.getFullYear()-3
+        this.option.xAxis[0].data[1]=date.getFullYear()-2
+        this.option.xAxis[0].data[2]=date.getFullYear()-1
         this.initCharts()
         this.initturnover()
     },
@@ -205,7 +223,8 @@ export default {
             // 绘制图表
             const option = this.turnover
             myChart.setOption(option);
-        }
+        },
+       
     }
 }
 </script>
@@ -222,6 +241,7 @@ export default {
         border:1px solid #ACB8CF;
         border-radius: 10px;
         padding: 20px 30px;
+        margin-bottom: 20px;
         .width3-1{
             width: calc(33.33% - 94px);
             .bg{
@@ -243,11 +263,7 @@ export default {
                     height: 40px;
                    line-height: 40px;
                 }
-                div:first-child{
-                    width: calc(73% - 10px);
-                    
-                }
-                div:last-child{
+                .last{
                     width: 27%;
                     text-align: center;
                 }
@@ -258,6 +274,7 @@ export default {
                 .first{
                     display: flex;
                     justify-content: flex-start;
+                    width: calc(73% - 10px);
                 }
                 .name{
                     width: calc(100% - 50px);
@@ -267,6 +284,21 @@ export default {
                     width: 50px;
                     text-align: center;
                     border-right: 1px solid #F1F1F5;
+                    position: relative;
+                    img{
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%,-50%);
+                        z-index: 2;
+                    }
+                    div{
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%,-50%);
+                        z-index: 3;
+                    }
                 }
             }
         }
