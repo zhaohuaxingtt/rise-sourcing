@@ -14,16 +14,6 @@
       <iSearch @sure="getList" @reset="reset">
           <el-form>
               <el-form-item v-for="(item,index) in SearchList" :key="'SearchList_aeko'+index" :label="language(item.labelKey,item.label)">
-                  <!-- <iSelectCustom 
-                  v-if="item.type === 'select' && item.multiple"
-                  :data="selectOptions[item.selectOption] || []"
-                  :multiple="item.multiple"
-                   v-model="searchParams[item.props]"
-                   :label="'desc'"
-                   :value="'code'"
-                   :popoverClass="'popover-class'"
-                   :searchMethod="searchMethod"
-                  /> -->
                   <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
@@ -83,7 +73,7 @@
       <template #aekoCode="scope">
         
         <div class="table-item-aeko">
-          <icon v-if="scope.row.isTop && scope.row.isTop.code==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
+          <icon v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
           <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </span>
           <a v-if="scope.row.fileCount && scope.row.fileCount > 0" class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
         </div>
@@ -98,16 +88,6 @@
       <!-- 描述 -->
       <template #describe="scope">
         <span class="link" @click="checkDescribe(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
-      </template>
-
-      <!-- aeko状态 -->
-      <template #aekoStatus="scoped">
-        <span>{{scoped.row.aekoStatus && scoped.row.aekoStatus.desc}}</span>
-      </template>
-
-      <!-- 封面状态 -->
-      <template #coverStatus="scoped">
-        <span>{{scoped.row.coverStatus && scoped.row.coverStatus.desc}}</span>
       </template>
 
       </tableList>
@@ -146,7 +126,6 @@ import {
   iPagination,
   icon,
   iMessage,
-  // iSelectCustom,
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
@@ -299,6 +278,7 @@ export default {
           if(code ==200 && data){
              data.map((item)=>{
               item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
+              item.code = item.value;
             })
             this.selectOptions.brand = data;
           }else{
@@ -543,9 +523,6 @@ export default {
 
         })
       },
-      // searchMethod(val){
-      //   console.log(val);
-      // },
     }
 }
 </script>

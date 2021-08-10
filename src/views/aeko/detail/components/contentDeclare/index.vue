@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-06 18:36:00
+ * @LastEditTime: 2021-08-10 15:05:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -151,20 +151,15 @@
         <tableList
           class="table"
           index
+          fixed
           :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
           @handleSelectionChange="handleSelectionChange"
         >
-          <template #isReference="scope">
-            <span>{{ scope.row.isReference ? scope.row.isReference.desc : "" }}</span>
-          </template>
-          <template #status="scope">
-            <span>{{ scope.row.status ? scope.row.status.desc : "" }}</span>
-          </template>
           <template #oldPartNumPreset="scope">
-            <iInput v-if="scope.row.status.code === 'EMPTY'" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
+            <iInput v-if="scope.row.status === 'EMPTY'" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
@@ -218,7 +213,7 @@
 import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import dosageDialog from "../dosageDialog"
-import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle, isReferenceMap } from "../data"
+import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
 import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
@@ -269,11 +264,6 @@ export default {
       } catch(e) {
         console.error(e)
       }
-    }
-  },
-  filters: {
-    isReferenceFilter(value) {
-      return isReferenceMap[value] ? isReferenceMap[value] : value
     }
   },
   methods: {
@@ -371,12 +361,14 @@ export default {
     },
     view() {},
     oldPartNumPresetSelect(row) {
+      if (!row.oldPartNumPreset) return
+
       this.$router.push({
         path: "/aeko/quondampart/ledger",
         query: {
           requirementAekoId: this.aekoInfo.requirementAekoId,
           objectAekoPartId: row.objectAekoPartId,
-          oldPartNumPreset: row.oldPartNumPreset
+          oldPartNumPreset: row.oldPartNumPreset.trim()
         }
       })
     
@@ -392,7 +384,7 @@ export default {
     handleDeclareToggle() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOQIEHUANBIAOTAIDELINGJIAN", "请选择需要切换表态的零件"))
 
-      if (!this.multipleSelection.every(item => item.status.code === "TOBE_STATED" || item.status.code === "QUOTING" || item.status.code === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGQIEHUAN", "请选择内容状态为待表态、报价中、已报价的零件进行切换"))
+      if (!this.multipleSelection.every(item => item.status === "TOBE_STATED" || item.status === "QUOTING" || item.status === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGQIEHUAN", "请选择内容状态为待表态、报价中、已报价的零件进行切换"))
 
       this.declareToggleLoading = true
 
@@ -418,7 +410,7 @@ export default {
     handleDeclareReset() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHONGZHIBIAOTAIDELINGJIAN", "请选择需要重置表态的零件"))
 
-      if (!this.multipleSelection.every(item => item.status.code === "TOBE_STATED" || item.status.code === "QUOTING" || item.status.code === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI", "请选择内容状态为待表态、报价中、已报价的零件进行重置"))
+      if (!this.multipleSelection.every(item => item.status === "TOBE_STATED" || item.status === "QUOTING" || item.status === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI", "请选择内容状态为待表态、报价中、已报价的零件进行重置"))
 
       this.declareResetLoading = true
 
@@ -443,21 +435,14 @@ export default {
     // 导出
     handleExport() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAODAOCHUDEYUANLINGJIAN", "请选择需要导出的原零件"))
-    
-      const data = cloneDeep(this.multipleSelection)
-      data.forEach(item => {
-        item.isReference = item.isReference.desc
-        item.status = item.status.desc
-      })
-
-      excelExport(data, printTableTitle)
+      excelExport(this.multipleSelection, printTableTitle)
     },
     // 提交
     handleSubmit() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIJIAOBIAOTAIDELINGJIAN", "请选择需要提交表态的零件"))
 
       for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
-        if (item.status.code !== "TOBE_STATED" && item.status.code !== "QUOTING" && item.status.code !== "QUOTED")
+        if (item.status !== "TOBE_STATED" && item.status !== "QUOTING" && item.status !== "QUOTED")
           return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价的零件进行提交"))
       }
 
