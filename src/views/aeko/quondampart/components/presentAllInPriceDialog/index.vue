@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 13:59:01
- * @LastEditTime: 2021-08-06 18:47:58
+ * @LastEditTime: 2021-08-10 13:38:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\presentAllInPriceDialog\index.vue
@@ -51,16 +51,11 @@ export default {
       type: Boolean,
       default: false,
     },
-    partNum: {
-      type: String,
+    apriceId: {
+      type: String || Number,
       require: true,
       default: ""
-    },
-    factoryCode: {
-      type: String,
-      require: true,
-      default: ""
-    },
+    }
   },
   watch: {
     status(nv) {
@@ -96,8 +91,7 @@ export default {
       this.loading = true
 
       getAekoOriginPartAPrice({
-        partNum: this.partNum,
-        factoryCode: this.factoryCode
+        apriceId: this.apriceId
       })
       .then(res => {
         if (res.code == 200) {

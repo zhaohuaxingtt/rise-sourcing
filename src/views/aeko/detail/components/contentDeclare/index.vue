@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-06 18:36:00
+ * @LastEditTime: 2021-08-09 13:48:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -371,12 +371,14 @@ export default {
     },
     view() {},
     oldPartNumPresetSelect(row) {
+      if (!row.oldPartNumPreset) return
+
       this.$router.push({
         path: "/aeko/quondampart/ledger",
         query: {
           requirementAekoId: this.aekoInfo.requirementAekoId,
           objectAekoPartId: row.objectAekoPartId,
-          oldPartNumPreset: row.oldPartNumPreset
+          oldPartNumPreset: row.oldPartNumPreset.trim()
         }
       })
     

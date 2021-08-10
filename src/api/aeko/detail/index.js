@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-08-06 15:35:54
+ * @LastEditTime: 2021-08-10 11:22:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -10,6 +10,7 @@ import axios from '@/utils/axios'
 
 const requst = axios(process.env.VUE_APP_PARTS)
 const partRequst = axios(process.env.VUE_APP_PARTSPROCURE)
+const priceRequst = axios(process.env.VUE_APP_PRICE_LEDGER)
 
 export function getAekoLiniePartInfo(params) {
   return requst({
@@ -65,9 +66,16 @@ export function getAekoOriginPartInfo(params) {
 }
 
 // 获取原零件的历史A价列表
+// export function getAekoOriginPartAPrice(params) {
+//   return requst({
+//     url: '/aeko/aeko-origin-part/A-price',
+//     method: 'POST',
+//     data: params
+//   })
+// }
 export function getAekoOriginPartAPrice(params) {
-  return requst({
-    url: '/aeko/aeko-origin-part/A-price',
+  return priceRequst({
+    url: '/aprice/findRecordList',
     method: 'POST',
     data: params
   })
