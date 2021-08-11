@@ -5,23 +5,23 @@
   "desZh": "操作成功",
   "data": {
     "sourcingOverviewDTO": {
-      "partSigningNum": 2,
+      "partSigningNum": 0,
       "nomiManageNum": 196,
       "purchaseItemOverviewDTO": {
-        "notPurchaseItem": 2,
-        "notPurchaseItemSum": 5,
-        "notJoinRfq": 1,
-        "notJoinRfqSum": 2
+        "notPurchaseItem": 55,
+        "notPurchaseItemSum": 55,
+        "notJoinRfq": 55,
+        "notJoinRfqSum": 56
       },
       "rfqOverviewDTO": {
-        "notNego": 0,
-        "notNegoSum": 0,
-        "circulation": 493,
-        "financialPrice": 306,
-        "financialPriceSum": 492,
-        "epScore": 307,
-        "epScoreSum": 496,
-        "mqScore": 282,
+        "notNego": 2,
+        "notNegoSum": 2,
+        "circulation": 498,
+        "financialPrice": 383,
+        "financialPriceSum": 496,
+        "epScore": 371,
+        "epScoreSum": 495,
+        "mqScore": 310,
         "mqScoreSum": 336
       },
       "nomiLetterOverviewDTO": {
@@ -30,25 +30,25 @@
       }
     },
     "circulationOverviewDTO": {
-      "leWeekPercent": "25.00",
-      "gtWeekPercent": "75.00",
-      "leWeekNum": 4,
-      "gtWeekNum": 12
+      "leWeekPercent": "0.00",
+      "gtWeekPercent": "100.00",
+      "leWeekNum": 0,
+      "gtWeekNum": 2
     },
     "materialGroupOverviewDTO": [
       {
         "timeRate": 100,
-        "timeRateSum": 488,
-        "timeRatePercent": "20.49",
-        "avgPeriod": 31,
+        "timeRateSum": 504,
+        "timeRatePercent": "19.84",
+        "avgPeriod": 35,
         "avgPeriodSum": 162,
-        "avgPeriodPercent": "19.14",
+        "avgPeriodPercent": "21.60",
         "materialGroupName": "手动变速箱，直接变速机构"
       },
       {
         "timeRate": 16,
-        "timeRateSum": 90,
-        "timeRatePercent": "17.78",
+        "timeRateSum": 89,
+        "timeRatePercent": "17.98",
         "avgPeriod": 1,
         "avgPeriodSum": 67,
         "avgPeriodPercent": "1.49",
@@ -100,6 +100,24 @@
         "materialGroupName": "成型件< DIN A4 300-399 G"
       },
       {
+        "timeRate": 2,
+        "timeRateSum": 3,
+        "timeRatePercent": "66.67",
+        "avgPeriod": 0,
+        "avgPeriodSum": 2,
+        "avgPeriodPercent": "0.00",
+        "materialGroupName": "行车辅助系统"
+      },
+      {
+        "timeRate": 2,
+        "timeRateSum": 3,
+        "timeRatePercent": "66.67",
+        "avgPeriod": 2,
+        "avgPeriodSum": 2,
+        "avgPeriodPercent": "100.00",
+        "materialGroupName": "铸铁 底盘部件"
+      },
+      {
         "timeRate": 1,
         "timeRateSum": 2,
         "timeRatePercent": "50.00",
@@ -118,103 +136,55 @@
         "materialGroupName": "平面密封"
       },
       {
-        "timeRate": 2,
-        "timeRateSum": 3,
-        "timeRatePercent": "66.67",
-        "avgPeriod": 0,
-        "avgPeriodSum": 2,
+        "timeRatePercent": "0.00",
+        "avgPeriodSum": 1,
         "avgPeriodPercent": "0.00",
-        "materialGroupName": "行车辅助系统"
+        "materialGroupName": "外六角/焊接螺栓"
       },
       {
-        "timeRate": 100,
-        "timeRateSum": 488,
-        "timeRatePercent": "20.49",
-        "avgPeriod": 31,
-        "avgPeriodSum": 162,
-        "avgPeriodPercent": "19.14",
-        "materialGroupName": "手动变速箱，直接变速机构"
-      },
-      {
-        "timeRate": 16,
-        "timeRateSum": 90,
-        "timeRatePercent": "17.78",
-        "avgPeriod": 1,
-        "avgPeriodSum": 67,
-        "avgPeriodPercent": "1.49",
-        "materialGroupName": "手动变速箱，直接变速机构"
-      },
-      {
-        "timeRate": 9,
-        "timeRateSum": 16,
-        "timeRatePercent": "56.25",
-        "avgPeriod": 20,
-        "avgPeriodSum": 12,
-        "avgPeriodPercent": "166.67",
-        "materialGroupName": "空调控制头"
+        "timeRatePercent": "0.00",
+        "avgPeriodSum": 1,
+        "avgPeriodPercent": "0.00",
+        "materialGroupName": "链传动模块"
       },
       {
         "timeRate": 1,
-        "timeRateSum": 84,
-        "timeRatePercent": "1.19",
-        "avgPeriod": 0,
-        "avgPeriodSum": 9,
-        "avgPeriodPercent": "0.00",
-        "materialGroupName": "橡胶件 ab Mgr. 600"
-      },
-      {
-        "timeRate": 4,
-        "timeRateSum": 6,
-        "timeRatePercent": "66.67",
-        "avgPeriod": 0,
-        "avgPeriodSum": 6,
-        "avgPeriodPercent": "0.00",
+        "timeRateSum": 2,
+        "timeRatePercent": "50.00",
+        "avgPeriod": 2,
+        "avgPeriodSum": 1,
+        "avgPeriodPercent": "200.00",
         "materialGroupName": "火花塞"
       },
       {
-        "timeRate": 4,
-        "timeRateSum": 7,
-        "timeRatePercent": "57.14",
-        "avgPeriod": 2,
-        "avgPeriodSum": 4,
-        "avgPeriodPercent": "50.00",
-        "materialGroupName": "制动硬管"
+        "timeRate": 1,
+        "timeRateSum": 1,
+        "timeRatePercent": "100.00",
+        "avgPeriod": 0,
+        "avgPeriodSum": 1,
+        "avgPeriodPercent": "0.00",
+        "materialGroupName": "ABS，EPS"
+      },
+      {
+        "timeRatePercent": "0.00",
+        "avgPeriodSum": 1,
+        "avgPeriodPercent": "0.00",
+        "materialGroupName": "线束"
       },
       {
         "timeRate": 1,
         "timeRateSum": 6,
         "timeRatePercent": "16.67",
         "avgPeriod": 0,
-        "avgPeriodSum": 3,
+        "avgPeriodSum": 1,
         "avgPeriodPercent": "0.00",
-        "materialGroupName": "成型件< DIN A4 300-399 G"
+        "materialGroupName": "其他(内)饰件"
       },
       {
-        "timeRate": 1,
-        "timeRateSum": 2,
-        "timeRatePercent": "50.00",
-        "avgPeriod": 0,
-        "avgPeriodSum": 2,
+        "timeRatePercent": "0.00",
+        "avgPeriodSum": 1,
         "avgPeriodPercent": "0.00",
-        "materialGroupName": "成型件< DIN A4 000-099 Z"
-      },
-      {
-        "timeRate": 2,
-        "timeRateSum": 2,
-        "timeRatePercent": "100.00",
-        "avgPeriod": 0,
-        "avgPeriodSum": 2,
-        "avgPeriodPercent": "0.00",
-        "materialGroupName": "平面密封"
-      },
-      {
-        "timeRate": 2,
-        "timeRateSum": 3,
-        "timeRatePercent": "66.67",
-        "avgPeriod": 0,
-        "avgPeriodSum": 2,
-        "avgPeriodPercent": "0.00",
-        "materialGroupName": "行车辅助系统"
+        "materialGroupName": "底盘-,制动-变速-"
       }
     ]
   }
