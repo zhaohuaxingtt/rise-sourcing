@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-06 16:27:41
- * @LastEditTime: 2021-08-10 15:13:18
+ * @LastEditTime: 2021-08-11 11:05:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\costAnalysis\index.js
@@ -61,8 +61,12 @@ export function getAnalysisList(params) {
 }
 
 //保存
-export function fetchSave() {
-  
+export function fetchSave(params) {
+  return request({
+    url: '/costStructure/save',
+    method: 'POST',
+    data: params
+  })
 }
 
 //删除

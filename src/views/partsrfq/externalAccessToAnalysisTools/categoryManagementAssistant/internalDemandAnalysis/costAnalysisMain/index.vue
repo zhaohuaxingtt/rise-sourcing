@@ -1,20 +1,20 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-10 17:35:56
+ * @LastEditTime: 2021-08-11 11:18:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
 -->
 <template>
-  <div>
+  <div id="content">
     <iCard>
       <div slot="header" class="headBox">
         <p class="headTitle">{{ language('CHENGBENJIEGOUFENXITUXITONGSHAIXUAN', '成本结构分析图-系统筛选') }}</p>
         <span class="buttonBox">
           <iButton @click="clickEdit">{{ language('BIANJI', '编辑') }}</iButton>
           <iButton @click="clickAnalysis">{{ language('FENXIKU', '分析库') }}</iButton>
-          <iButton @click="clickSave">{{ language('BAOCUN', '保存') }}</iButton>
+          <iButton @click="clickSave" :loading="downloadButtonLoading">{{ language('BAOCUN', '保存') }}</iButton>
           <iButton @click="clickBack">{{ language('FANHUI', '返回') }}</iButton>
         </span>
       </div>
@@ -46,10 +46,12 @@ import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryMan
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data';
 import { iMessage } from '@/components';
-import { getTotalCbdData, listNomiData } from '@/api/partsrfq/costAnalysis/index.js'
+import {downloadPdfMixins} from '@/utils/pdf';
+import { getTotalCbdData, listNomiData, fetchSave} from '@/api/partsrfq/costAnalysis/index.js'
 export default {
   name: 'CostAnalysisMain',
   components: {iCard, iButton, costChar, tableList},
+  mixins: [downloadPdfMixins],
   data () {
     return {
       overViewUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/overView',
@@ -58,7 +60,8 @@ export default {
       tableTitle,
       tableListData: [],
       pieData: [],
-      selection: []
+      selection: [],
+      downloadButtonLoading: false,
     }
   },
   created() {
@@ -89,10 +92,6 @@ export default {
         } else iMessage.error(res.desZh)
       })
     },
-    // 选中表格事件
-    handleSelectionChange(val) {
-      this.selection = val
-    },
     // 获取pie数据（cbd）
     getPieData() {
       const params = {
@@ -108,6 +107,10 @@ export default {
           })
         } else iMessage.error(res.desZh)
       })
+    },
+    // 选中表格事件
+    handleSelectionChange(val) {
+      this.selection = val
     },
     // 点击编辑按钮
     clickEdit() {
@@ -125,11 +128,39 @@ export default {
     },
     // 点击保存按钮
     clickSave() {
-
+      const pdf = this.createPdf()
+      if(!pdf) {
+        iMessage.error(this.language('CHUANGJIANPDFSHIBAI', '创建PDF失败'))
+        return
+      }
+      const params = {
+        analysisType: 1,//系统
+        categoryCode: this.$store.state.rfq.categoryCode,
+        reportFileName: pdf.downloadName,
+        reportName: pdf.downloadName,
+        reportUrl: pdf.downloadUrl,
+        
+      }
+      fetchSave().then(res => {
+        
+      })
     },
     // 点击返回按钮
     clickBack() {
       this.$router.push(this.overViewUrl)
+    },
+    // 生成PDF
+    createPdf() {
+      this.downloadButtonLoading = true
+      const pdfParam = {
+        domId: 'content',
+        pdfName: 'costAnalysis',
+      }
+      this.getDownloadFileAndExportPdf(pdfParam).then(res => {
+        this.downloadButtonLoading = false
+        return res
+      })
+      
     }
   }
 }
