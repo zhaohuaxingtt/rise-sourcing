@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-11 10:31:39
+ * @LastEditTime: 2021-08-11 15:14:03
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -73,7 +73,7 @@ export function getLastOperateCarType() {
 }
 
 // 获取可选择车型列表
-export function getSelectCarType(carTypeProId) {
+export function getSelectCarType(carTypeProId = '') {
   return requst({
     url: '/car-type/user?carTypeProId='+carTypeProId,
     method: 'GET'
