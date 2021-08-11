@@ -1,6 +1,7 @@
 <template>
   <div>
       <iPage>
+          <publicHeaderMenu></publicHeaderMenu>
           <iCard>
                <div class="imgkpi-head">
                <el-form>
@@ -30,6 +31,7 @@
 import {iButton,iPage,iCard,iInput,iSelect,iTableCustom} from 'rise'
 import * as pbi from 'powerbi-client';
 import { getPowerBiKpi,getPowerBiSupplier } from '@/api/kpiChart'
+import publicHeaderMenu from './commonHeardNav/headerNav'
 export default {
     components:{
         iButton,
@@ -37,6 +39,7 @@ export default {
         iCard,
         iInput,
         iSelect,
+        publicHeaderMenu
     },
     data(){
         return {
@@ -183,6 +186,7 @@ export default {
         margin-top: 20px;
         width: 100%;
         padding: 0 40px;
-        height: calc(100vh - 150px);
+        height: calc(100vh - 294px);
+        overflow-y: auto;
     }
 </style>

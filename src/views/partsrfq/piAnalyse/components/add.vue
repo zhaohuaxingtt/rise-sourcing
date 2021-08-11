@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-06 14:42:50
+ * @LastEditTime: 2021-08-11 10:06:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -30,7 +30,7 @@
           :tableTitle="addTableTitle"
           :tableLoading="loading"
           :index="true"
-          @handleSelectionChange="selectMainTableData">
+          @rowSelect="handleSelectTarget">
         </tableList>
       </div>
       <el-divider style="marginTop: 20px;"></el-divider>
@@ -40,7 +40,7 @@
           :tableTitle="addTableTitle"
           :tableLoading="loading"
           :index="true"
-          @handleSelectionChange="selectMainTableData">
+           @handleSelectionChange="handleSelectMainTable">
         </tableList>
       </div>
       <div class="flooterBox">
@@ -93,8 +93,12 @@ export default {
       ]
       this.loading = false
     },
+    // 选中目标表格数据
+    handleSelectTarget(val) {
+      this.selectTargetData = val
+    },
     // 选中主表格数据
-    selectMainTableData(val) {
+    handleSelectMainTable(val) {
       this.selectMainData = val
     },
     // 点击添加按钮

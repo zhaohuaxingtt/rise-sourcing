@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-10 09:51:40
+ * @LastEditTime: 2021-08-10 17:35:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -80,7 +80,7 @@ export default {
     getTableData() {
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode,
-        partNumList: [],
+        partNumList: this.$route.query.fsNumList || [],
       }
       listNomiData(params).then(res => {
         if(res && res.code == 200) {
@@ -100,14 +100,12 @@ export default {
         fsList: this.tableListData.map(item => item.fsNum)
       }
       getTotalCbdData(params).then(res => {
-        console.log('cbd_res', res);
         if(res && res.code == 200) {
           for(const key in res.data)
           this.pieData.push({
             name: key,
             value: res.data[key]
           })
-          console.log('pieData', this.pieData);
         } else iMessage.error(res.desZh)
       })
     },
@@ -115,6 +113,7 @@ export default {
     clickEdit() {
       if(this.selection.length != 1) {
         iMessage.error('请选中一条数据')
+        return
       }
       this.$router.push({
         path: this.costAnalysisAddUrl,

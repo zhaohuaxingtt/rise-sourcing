@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-08-09 09:44:05
+ * @LastEditTime: 2021-08-10 16:04:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -30,16 +30,19 @@
                        width="55">
       </el-table-column>
 
-      <el-table-column label="Name"
+      <el-table-column v-for="(item,index) in gridData.title"
+                       :key="index"
+                       :label="item.motorTypeName"
+                       :prop="item.label"
                        min-width="180">
         <editable-cell :show-input="row.editMode"
                        slot-scope="{row}"
                        v-model="row.name">
-          <span slot="content">{{row.name}}</span>
+          <span slot="content">{{row[item.label]}}</span>
         </editable-cell>
       </el-table-column>
 
-      <el-table-column min-wwidth="150"
+      <!-- <el-table-column min-wwidth="150"
                        label="Gender">
         <editable-cell :show-input="row.editMode"
                        slot-scope="{row}"
@@ -70,7 +73,7 @@
                        v-model="row.date">
           <span slot="content">{{row.date}}</span>
         </editable-cell>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
   </div>
 </template>
@@ -84,9 +87,9 @@ export default {
   },
   props: {
     gridData: {
-      type: Array,
+      type: Object,
       default: () => {
-        return []
+        return {}
       }
     },
     editFlag: {
@@ -99,20 +102,45 @@ export default {
       handler (newVal) {
         console.log(newVal)
         if (newVal) {
-          this.gridData1.forEach(item => {
-            item.editMode = true
+          this.gridData1.forEach((item, index) => {
+            if (index !== 0) {
+              item.editMode = true
+            }
+
           })
         } else {
-          this.gridData1.forEach(item => {
-            item.editMode = false
+          this.gridData1.forEach((item, index) => {
+            if (index !== 0) {
+              item.editMode = false
+            }
           })
+        }
+      }
+    },
+    gridData: {
+      handler (newVal) {
+        if (newVal) {
+          this.tableData = [this.gridData.config, ...this.gridData.data]
+          this.gridData1 = this.tableData.map((row, index) => {
+            if (index === 0) {
+              return {
+                ...row,
+              };
+            } else {
+              return {
+                ...row,
+                editMode: false
+              }
+            }
+          });
+          console.log(this.gridData1)
         }
       }
     }
   },
   data () {
     return {
-      gridData1: []
+      tableData: []
     };
   },
   methods: {
@@ -124,12 +152,7 @@ export default {
     }
   },
   mounted () {
-    this.gridData1 = this.gridData.map(row => {
-      return {
-        ...row,
-        editMode: false
-      };
-    });
+
   }
 };
 </script>

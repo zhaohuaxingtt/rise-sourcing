@@ -1,7 +1,7 @@
 <!--
  * @Author: xuxin
  * @Date: 2021-06-16 10:41:04
- * @Description: BOB主页面
+ * @Description: MEK主页面
  * @FilePath: \front-web\src\views\bob\bob.vue
 -->
 <template>
@@ -398,7 +398,7 @@ export default {
     clickName(val) {
       if (val.fileType == this.$t('TPZS.SCHEME_TYPE')) {
         this.$router.push({
-          path: "/sourcing/partsrfq/bobNew",
+          path: "/sourcing/mek/mekDetails",
           query: {
             chemeId: val.id,
             rfqId: val.rfqNo || ''
@@ -508,5 +508,8 @@ export default {
   .stickIcon :hover {
     cursor: pointer;
   }
+}
+::v-deep .el-table .cell{
+  text-align: center;
 }
 </style>
