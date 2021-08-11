@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-06 14:42:20
+ * @LastEditTime: 2021-08-10 16:12:32
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -16,11 +16,11 @@
         <el-col :span="4">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
-              <icon symbol name="icondingdianguanlijiedian-yiwancheng" class="cardicon"></icon>
+              <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
               <span>{{language('LK_LINGJIANQIANSHOU','零件签收')}}</span>
             </div>
             <div class="dashboard-card-content">
-              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong>26</strong></dd></dl>
+              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong>{{basicData.partSigningNum || 0}}</strong></dd></dl>
             </div>
           </iCard>
         </el-col>
@@ -28,12 +28,24 @@
         <el-col :span="4">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
-              <icon symbol name="icondingdianguanlijiedian-yiwancheng" class="cardicon"></icon>
+              <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
               <span>{{language('LK_CAIGOUXIANGMUJIANLI','采购项目建立')}}</span>
             </div>
             <div class="dashboard-card-content">
-              <dl><dt>{{language('WEICHUANGJIANCAIGOUXIANGMU','未创建采购项目')}}</dt><dd><strong class="note">21</strong>/45</dd></dl>
-              <dl><dt>{{language('WEIJIARURFQ','未加入RFQ')}}</dt><dd><strong class="note">11</strong>/22</dd></dl>
+              <dl>
+                <dt>{{language('WEICHUANGJIANCAIGOUXIANGMU','未创建采购项目')}}</dt>
+                <dd>
+                <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
+                /{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItemSum || 0}}
+                </dd>
+              </dl>
+              <dl>
+                <dt>{{language('WEIJIARURFQ','未加入RFQ')}}</dt>
+                <dd>
+                  <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
+                  /{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfqSum || 0}}
+                </dd>
+              </dl>
             </div>
           </iCard>
         </el-col>
@@ -41,18 +53,47 @@
         <el-col :span="8">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
-              <icon symbol name="icondingdianguanlijiedian-yiwancheng" class="cardicon"></icon>
+              <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
               <span>{{language('LK_RFQGUANLI','RFQ管理')}}</span>
             </div>
             <div class="dashboard-card-content flexbox">
               <div>
-                <dl><dt>{{language('WEIZHUANTANPAN','未转谈判')}}</dt><dd><strong class="note">7</strong>/15</dd></dl>
-                <dl><dt>{{language('DAISHANGHUIORLIUZHUAN','待上会/流转')}}</dt><dd><strong class="note">2</strong>/8</dd></dl>
+                <dl>
+                  <dt>{{language('WEIZHUANTANPAN','未转谈判')}}</dt>
+                  <dd>
+                    <strong class="note">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.notNego || 0}}</strong>
+                    /{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.notNegoSum || 0}}
+                  </dd>
+                </dl>
+                <dl>
+                  <dt>{{language('DAISHANGHUIORLIUZHUAN','待上会/流转')}}</dt>
+                  <dd>
+                    <strong class="note">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.circulation || 0}}</strong>
+                  </dd>
+                </dl>
               </div>
               <div>
-                <dl><dt>{{language('LK_CAIWUMUBIAOJIA','财务目标价')}}</dt><dd><strong class="note">7</strong>/15</dd></dl>
-                <dl><dt>{{language('EPPINGFEN','EP评分')}}</dt><dd><strong class="note">2</strong>/8</dd></dl>
-                <dl><dt>{{language('MQPINGFEN','MQ评分')}}</dt><dd><strong class="note">6</strong>/17</dd></dl>
+                <dl>
+                  <dt>{{language('LK_CAIWUMUBIAOJIA','财务目标价')}}</dt>
+                  <dd>
+                    <strong class="note">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.financialPrice || 0}}</strong>
+                    /{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.financialPriceSum || 0}}
+                  </dd>
+                </dl>
+                <dl>
+                  <dt>{{language('EPPINGFEN','EP评分')}}</dt>
+                  <dd>
+                    <strong class="note">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.epScore || 0}}</strong>
+                    /{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.epScoreSum || 0}}
+                  </dd>
+                </dl>
+                <dl>
+                  <dt>{{language('MQPINGFEN','MQ评分')}}</dt>
+                  <dd>
+                    <strong class="note">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.mqScore || 0}}</strong>
+                    /{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.mqScoreSum || 0}}
+                  </dd>
+                </dl>
               </div>
             </div>
           </iCard>
@@ -61,11 +102,15 @@
         <el-col :span="4">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
-              <icon symbol name="icondingdianguanlijiedian-yiwancheng" class="cardicon"></icon>
+              <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
               <span>{{language('LK_DINGDIANGUANLI','定点管理')}}</span>
             </div>
             <div class="dashboard-card-content">
-              <dl><dt>{{language('LK_DAIDINGDIAN','待定点')}}</dt><dd><strong class="note">12</strong></dd></dl>
+              <dl>
+                <dt>{{language('LK_DAIDINGDIAN','待定点')}}</dt>
+                <dd><strong class="note">{{basicData.nomiManageNum || 0}}</strong>
+                </dd>
+              </dl>
             </div>
           </iCard>
         </el-col>
@@ -73,12 +118,22 @@
         <el-col :span="4">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
-              <icon symbol name="icondingdianguanlijiedian-yiwancheng" class="cardicon"></icon>
+              <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
               <span>{{language('LK_DINGDIANXINLOI','定点信/LOI')}}</span>
             </div>
             <div class="dashboard-card-content">
-              <dl><dt>{{language('LK_DAIQUERENDINGDIANXIN','待确认定点信')}}</dt><dd><strong>8</strong></dd></dl>
-              <dl><dt>{{language('LK_DAIQUERENLOI','待确认LOI')}}</dt><dd><strong>12</strong></dd></dl>
+              <dl>
+                <dt>{{language('LK_DAIQUERENDINGDIANXIN','待确认定点信')}}</dt>
+                <dd>
+                  <strong>{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLetterNum || 0}}</strong>
+                </dd>
+              </dl>
+              <dl>
+                <dt>{{language('LK_DAIQUERENLOI','待确认LOI')}}</dt>
+                <dd>
+                  <strong>{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLoiNum || 0}}</strong>
+                </dd>
+              </dl>
             </div>
           </iCard>
         </el-col>
@@ -89,10 +144,10 @@
       <el-row :gutter="10">
         <!-- 材料组定点时率及平均定点周期 -->
         <el-col :span="16">
-          <nomicharts />
+          <nomicharts :data="materialGroupData" />
         </el-col>
         <el-col :span="8">
-          <pieCharts />
+          <pieCharts :data="circulationData" />
         </el-col>
       </el-row>
     </div>
@@ -103,7 +158,9 @@
 import headerNav from './components/headerNav'
 import nomicharts from './components/nomicharts'
 import pieCharts from './components/pieCharts'
-import {iPage, iCard, icon} from 'rise'
+import {sourcingOverview} from '@/api/dashboard'
+import {iPage, iCard, icon, iMessage} from 'rise'
+
 export default {
   components: {
     iPage,
@@ -112,6 +169,44 @@ export default {
     headerNav,
     nomicharts,
     pieCharts
+  },
+  data() {
+    return {
+      // 基本卡片统计信息
+      basicData: {},
+      materialGroupData: {},
+      circulationData: {}
+    }
+  },
+  created() {
+    this.init()
+  },
+  methods: {
+    async init() {
+      try {
+        // const res = await sourcingOverview({})
+        const res = require('./components/moke.json')
+        if (res.code === '200') {
+          // 卡片统计信息区
+          this.basicData = res.data.sourcingOverviewDTO || {}
+          // 材料组定点及时率及平均定点周期
+          const materialGroupOverviewDTO = res.data.materialGroupOverviewDTO || []
+          this.materialGroupData = {
+            freqData: materialGroupOverviewDTO.map(o => o.avgPeriod) || [],
+            nomiData: materialGroupOverviewDTO.map(o => o.timeRatePercent) || [],
+            fugroup: materialGroupOverviewDTO.map(o => o.materialGroupName) || [],
+          }
+          // 流转状态跟踪
+          const circulationData = res.data.circulationOverviewDTO || {}
+          this.circulationData = circulationData
+
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    }
   }
   
 }
@@ -147,6 +242,7 @@ export default {
         font-size: 22PX;
         display: inline-block;
         vertical-align: middle;
+        color: #5F6879;
         svg {
           font-size: 22PX;
         }
@@ -190,14 +286,14 @@ export default {
         display: flex;
         align-content: space-between;
         dt {
-          width: 70%;
+          width: 60%;
           text-align: left;
           box-sizing: border-box;
           padding-left: 5px;
           line-height: 28PX;
         }
         dd {
-          width: 30%;
+          width: 40%;
           text-align: right;
           line-height: 28PX;
           strong {

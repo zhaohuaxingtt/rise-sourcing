@@ -7,8 +7,8 @@
     <div class="aekoFilesList">
         <ul class="filesList">
             <li v-for="(item,index) in attachmentList" :key="'aekoFilesList_'+index">
-                <i class="list-index">{{index+1}}.</i>
-                <span class="link-underline" @click="downloadFile(item)">{{item.fileName}}</span>
+                <i class="list-index font14">{{index+1}}.</i>
+                <span class="link-underline font14" @click="downloadFile(item)">{{item.fileName}}</span>
             </li>
         </ul>
     </div>

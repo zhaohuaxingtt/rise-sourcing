@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "23469232",
+      "name": "定点管理节点-已完成 - 副本",
+      "font_class": "a-dingdianguanlijiedian-yiwancheng-fuben",
+      "unicode": "e6ef",
+      "unicode_decimal": 59119
+    },
+    {
       "icon_id": "23391700",
       "name": "树-父级",
       "font_class": "shu-fuji",
@@ -1103,6 +1110,13 @@
       "font_class": "dingdianguanlizhou-zhengzaijinhang",
       "unicode": "e66f",
       "unicode_decimal": 58991
+    },
+    {
+      "icon_id": "23407796",
+      "name": "icon-下载",
+      "font_class": "icon-xiazai-copy",
+      "unicode": "e6ee",
+      "unicode_decimal": 59118
     },
     {
       "icon_id": "21598381",

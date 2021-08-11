@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 17:54:05
+ * @LastEditTime: 2021-08-10 15:37:13
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -212,6 +212,9 @@ export default {
       } else {
         const lastStatus = this.getLastStatus(year, season, nodeList)
         const nextStatus = this.getNextStatus(year, season, nodeList)
+        if (nextStatus === -1) {
+          return null
+        }
         if (lastStatus === 2 || lastStatus === 3){
           return {
             lineStatus: 3

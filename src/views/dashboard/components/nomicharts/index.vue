@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 16:16:30
- * @LastEditTime: 2021-08-06 14:44:10
+ * @LastEditTime: 2021-08-10 13:36:42
  * @LastEditors: Please set LastEditors
  * @Description: 材料组定点时率及平均定点周期
  * @FilePath: /front-web/src/views/designate/home/components/headerNav/components/nomiCharts.vue
@@ -26,10 +26,16 @@
 <script>
 import echarts from "@/utils/echarts";
 import {iCard} from 'rise'
-import {option as mokeChartsData} from '../mokeChartsData'
+import {generateOptions} from '../mokeChartsData'
 import moment from 'moment'
 
 export default {
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   components: {
     iCard
   },
@@ -39,18 +45,24 @@ export default {
     }
   },
   data() {
+    return {}
+  },
+  watch: {
+    data(data) {
+      this.init(data)
+    }
   },
   mounted() {
-    this.init()
+    this.init(this.data)
   },
   methods: {
-    init() {
-      console.log('mokeChartsData', mokeChartsData)
+    init(params) {
+      if (!Object.keys(params).length) return
+      const options = generateOptions(params)
+      console.log('-mokeChartsData-', options)
       const vm = echarts().init(document.getElementById("charts0"));
-      const self = this
-      let option = mokeChartsData
       vm.clear()
-      vm.setOption(option);
+      vm.setOption(options);
     }
   }
 }

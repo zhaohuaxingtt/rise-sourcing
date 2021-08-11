@@ -89,7 +89,6 @@ module.exports = {
       i18n: 'i18n',
       Ellipsis: 'Ellipsis',
     }
-    config.devtool = 'source-map'
     //开启gizp压缩
   },
   //引入全局css变量
@@ -123,8 +122,8 @@ module.exports = {
         // target: 'http://10.160.141.116:10085',
         changeOrigin: true,
         pathRewrite: {
-          '^/projectApi': '',
-        },
+          '^/projectApi': ''
+        }
       },
       '/approvalApi': {
         target: 'http://10.122.17.38:8012',
@@ -364,7 +363,7 @@ module.exports = {
         },
       },
       '/aonApi': {
-        // target: 'http://10.122.17.38:8036',
+        // target: 'http://10.160.138.166:8036',
         target: 'http://10.122.18.166:8036',
         // target: 'http://192.168.50.230:8036',
         changeOrigin: true,
@@ -431,7 +430,14 @@ module.exports = {
         pathRewrite: {
           '^/lier': '',
         },
-      }
+      },
+      '/priceledgerApi': {
+        target: 'http://10.122.17.38:8028',
+        changeOrigin: true,
+        pathRewrite: {
+          "^/priceledgerApi": ""
+        }
+      },
     },
   },
 }
