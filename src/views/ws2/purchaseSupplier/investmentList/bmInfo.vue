@@ -90,7 +90,7 @@
                 <span>
                   {{ language('LK_TOUZIQINGDANZHUANGTAI', '投资清单状态') }}
                      <Popover
-                          v-if="baseInfo.linieConfirmSupplier === '1'"
+                          v-if="Number(baseInfo.linieConfirmSupplier) === '1'"
                           class="popover"
                           placement="bottom-start"
                           :content="baseInfo.linieName + '在' + baseInfo.taskDealDate + '代确认'"
