@@ -66,7 +66,7 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_LINIE', 'Linie') }}</span>
+                <span>{{ $t('LK_XINDELINIE') }}</span>
               </div>
               <div class="disabled">{{detailsData.linieName}}</div>
             </div>
@@ -95,7 +95,9 @@
               <div class="txt">
                 <span>{{ language('LK_DINGDANHAO', '订单号') }}</span>
               </div>
-              <div @click="jumpDetails()" class="disabled table-link">{{detailsData.orderNum}}</div>
+              <div class="disabled">
+                <span @click="jumpDetails()" class="table-link">{{detailsData.orderNum}}</span>
+              </div>
             </div>
             <div class="item">
               <div class="txt">
@@ -206,7 +208,7 @@
 
         <!-- 照片 -->
         <template #img="scope">
-          <div class="table-link" @click="openPhoto(scope.row)">查看</div>
+          <div v-if="scope.row.picture && scope.row.picture !== ''" class="table-link" @click="openPhoto(scope.row)">查看</div>
         </template>
       </iTableList>
       

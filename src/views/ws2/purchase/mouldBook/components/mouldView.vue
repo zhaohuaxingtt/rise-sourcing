@@ -116,7 +116,7 @@
           :selection="false"
         >
           <template #img="scope">
-            <div class="table-link" @click="openPhoto(scope.row)">查看</div>
+            <div v-if="scope.row.picture && scope.row.picture !== ''" class="table-link" @click="openPhoto(scope.row)">查看</div>
           </template>
 
           <template #assetTotal="scope">
