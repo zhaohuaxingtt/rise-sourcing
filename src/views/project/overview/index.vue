@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 14:53:58
+ * @LastEditTime: 2021-08-11 10:08:47
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
@@ -138,7 +138,6 @@ export default {
      * @return {*}
      */    
     handleSure() {
-      console.log(this.searchParams, this.tableDataTemp)
       this.tableData = this.tableDataTemp.filter(item => {
         let result = true
         if (this.searchParams.carProject) {
@@ -152,7 +151,6 @@ export default {
         }
         return result
       })
-      console.log(this.tableData)
     },
     /**
      * @Description: 重置
@@ -194,10 +192,10 @@ export default {
       if(node) {
         const nodeInYearList = this.progressList.reduce((accu, curr, index) => {
           if (curr.label !== 'PD') {
-            const week = moment(node[curr.date]).week()
+            const week = Number(node[curr.value].split('KW')[1])
             return [...accu, {
               ...curr,
-              year: moment(node[curr.date]).year(),
+              year: Number(node[curr.value].split('-')[0]),
               week: week,
               season: week < 14 ? 1 : week < 27 ? 2 : week < 39 ? 3 : 4,  
               fullDate: node[curr.date],

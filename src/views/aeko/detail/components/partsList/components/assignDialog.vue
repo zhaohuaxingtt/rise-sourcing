@@ -5,7 +5,7 @@
 -->
 <template>
     <iDialog     
-        :title="language('LK_AEKO_FENPAIKESHI','分派科室')"
+        :title="assignType === 'commodity' ? language('LK_AEKO_FENPAIKESHI','分派科室') : language('LK_AEKO_FENPAICAIGOUYUAN','分派采购员')"
         :visible.sync="dialogVisible"
         @close="clearDialog"
         width="25%"
@@ -15,7 +15,7 @@
         <!-- 单一分派 -->
         <div v-if="singleAssign.length">
             <p>{{ assignType === "commodity" ? language("XUANZEFENPAIKESHI", "选择分派科室") : language("XUANZEFENPAICAIGOUYUAN", "选择分派采购员") }}</p>
-            <iSelect :disabled="radioType=='1'" class="margin-top20" style="width:100%">
+            <iSelect v-model="refferenceSmtNum" class="margin-top20" style="width:100%">
                 <el-option
                     v-for="item in (assignType === 'commodity' ? commoditySelectOptions : linieSelectOptions) || []"
                     :key="item.value"
@@ -32,7 +32,7 @@
             <el-radio v-model="radioType" label="2" class="radio-select">
                 {{ assignType === "commodity" ? language('LK_AEKO_SHOUDONGFENPAIKESHI','⼿动分派科室') : language('LK_AEKO_SHOUDONGFENPAICAIGOUYUAN','⼿动分派采购员') }}
                 <br/>
-                <iSelect :disabled="radioType=='1'" class="margin-top20" style="width:100%">
+                <iSelect  v-model="refferenceSmtNum" :disabled="radioType=='1'" :placeholder="language('LK_AEKO_DAIXUANZE','待选择')" class="margin-top20" style="width:100%" >
                     <el-option
                         v-for="item in (assignType === 'commodity' ? commoditySelectOptions : linieSelectOptions) || []"
                         :key="item.value"
@@ -44,8 +44,8 @@
         </div>
     </div>
      <div class="confirmBtn padding-bottom20 padding-top20 ">
-        <iButton v-if="assignType === 'commodity'" :loading="isLoading">{{language('LK_AEKO_FENPAI','分派')}}</iButton>
-        <iButton v-else>{{language('BAOCUN','保存')}}</iButton>
+        <iButton v-if="assignType === 'commodity'" @click="assign" :loading="isLoading">{{language('LK_AEKO_FENPAI','分派')}}</iButton>
+        <iButton @click="save" :loading="isLoading" v-else>{{language('BAOCUN','保存')}}</iButton>
      </div>
   </iDialog>
 </template>
@@ -55,7 +55,17 @@ import {
     iDialog,
     iSelect,
     iButton,
+    iMessage,
 } from 'rise';
+import {
+    searchCommodity,
+    searchLinie,
+} from '@/api/aeko/manage';
+import {
+    assignDept,
+    assignLinie,
+} from '@/api/aeko/detail/partsList.js'
+import {user as configUser } from '@/config'
 export default {
     name:'assignDialog',
     components:{
@@ -80,22 +90,261 @@ export default {
         assignType: {
             type: String,
             default: ""
+        },
+        requirementAekoId:{
+            type:String,
+            default:'',
+        },
+        linieDeptNum:{
+            type:Array,
+            default:()=>[],
+        },
+        buyerName:{
+            type:Array,
+            default:()=>[],
         }
     },
+    computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: (state) => state.permission.userInfo,
+    }),
+  },
     data(){
         return{
             radioType:'1',
-            commoditySelectOptions:[
-                {label:'科室1',value:'1'},
-                {label:'科室2',value:'2'},
-            ],
-            linieSelectOptions: []
+            isLoading:false,
+            commoditySelectOptions:[],
+            linieSelectOptions: [],
+            refferenceSmtNum:'',
         }
+    },
+    created(){
+        if(this.assignType === 'commodity'){
+            this.getDePartList();
+        }else{
+            this.getLinieList();
+        }
+        this.init();
     },
     methods:{
         clearDialog(){
             this.$emit('changeVisible','assignVisible',false);
-        }
+        },
+        init(){
+            // 分配科室
+           if(this.assignType === 'commodity'){
+                // 单一分配时将预设科室回填
+                if(this.singleAssign.length){
+                    this.refferenceSmtNum = this.singleAssign[0].refferenceSmtNum;
+                }else{
+                    // 批量分派
+                    // 需判断一下预设科室是否相同
+                    const { selectItems } = this;
+                    const arr = selectItems.map((item)=>item.refferenceSmtNum);
+                    const filterArr = Array.from(new Set(arr));
+                    if(filterArr.length ==1){ // 批量处理的预设科室一致
+                            this.refferenceSmtNum = filterArr[0];
+                    }
+                }
+           }else{  // 分派采购员
+           if(this.singleAssign.length){
+                    this.refferenceSmtNum = this.singleAssign[0].refferenceByuerId;
+                }else{
+                     // 批量分派
+                     // 需判断一下预设科室是否相同
+                    const { selectItems } = this;
+                    const arr = selectItems.map((item)=>item.refferenceByuerId);
+                    const filterArr = Array.from(new Set(arr));
+                    if(filterArr.length ==1){ // 批量处理的预设科室一致
+                            this.refferenceSmtNum = filterArr[0];
+                    }
+                }
+           }
+           
+        },
+        // 获取科室列表
+        async getDePartList(){
+            const { linieDeptNum=[] } = this;
+            if(linieDeptNum.length){
+                linieDeptNum.map((item)=>{
+                    item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                    item.value = item.deptNum;
+                })
+                this.commoditySelectOptions = linieDeptNum;
+            }else{
+                searchCommodity().then((res)=>{
+                    const {code,data} = res;
+                    if(code ==200 ){
+                        data.map((item)=>{
+                        item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.value = item.deptNum;
+                        })
+                        this.commoditySelectOptions = data;
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
+            }
+        },
+
+        // 分派科室
+        async assign(){
+            let data = [];
+            const {singleAssign,requirementAekoId,refferenceSmtNum,commoditySelectOptions,selectItems} = this;
+            if(singleAssign.length){
+                // 单一分配
+                const depArr = commoditySelectOptions.filter((item)=>item.deptNum ==refferenceSmtNum );
+                const singleData = {
+                    aekoPartId:singleAssign[0].aekoPartId,
+                    requirementAekoId,
+                    linieDeptNum:refferenceSmtNum,
+                    linieDeptName:depArr.length ? depArr[0].nameZh : '',
+                }
+                data.push(singleData);
+            }else{ // 批量分派
+                const { radioType } = this;
+                if(radioType == 1){ // 预设
+
+                    // 批量分派时若勾选了无法分派的需要过滤掉已分派的
+                    const arr = selectItems.filter((item)=>!item.linieDeptNum);
+
+
+                    // 判断勾选项是否无预设科室 若没有弹出提示
+                    const refferArr = arr.filter((item)=>!item.refferenceSmtNum);
+
+                    if(refferArr.length){
+                        const str = refferArr.map((item)=>item.partNum).toString();
+                        return iMessage.warn(str+this.language('LK_AEKO_LINGJIANWUYUSHEKESHIQINGCHONGXINXUANZE','零件无预设科室，请重新选择!'))
+                    }
+                    
+                    arr.map((item)=>{
+                        data.push({
+                            requirementAekoId,
+                            aekoPartId:item.aekoPartId,
+                            linieDeptName:item.refferenceSmt,
+                            linieDeptNum:item.refferenceSmtNum,
+                        })
+                    })
+                }else{ // 手动分派
+                    const depArr = commoditySelectOptions.filter((item)=>item.deptNum ==refferenceSmtNum );
+                    selectItems.map((item)=>{
+                        data.push({
+                            requirementAekoId,
+                            aekoPartId:item.aekoPartId,
+                            linieDeptName:depArr.length ? depArr[0].nameZh : '',
+                            linieDeptNum:refferenceSmtNum,
+                        })
+                    })
+                }
+            }
+            this.isLoading = true;
+            await assignDept(data).then((res)=>{
+                this.isLoading = false;
+                const { code } = res;
+                if(code == 200){
+                    this.clearDialog();
+                    this.$emit('getList');
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch((err)=>{
+                this.isLoading = false;
+            })
+
+        },
+
+        // 分派采购员
+        async save(){
+            let data = [];
+            const {singleAssign,requirementAekoId,refferenceSmtNum,linieSelectOptions,selectItems} = this;
+            if(singleAssign.length){
+                // 单一分配
+                const depArr = linieSelectOptions.filter((item)=>item.id ==refferenceSmtNum );
+                const singleData = {
+                    aekoPartId:singleAssign[0].aekoPartId,
+                    requirementAekoId,
+                    buyerId:refferenceSmtNum,
+                    buyerName:depArr.length ? depArr[0].nameZh : '',
+                }
+                data.push(singleData);
+            }else{ // 批量分派
+                const { radioType } = this;
+                if(radioType == 1){ // 预设
+
+                    // 批量分派时若勾选了无法分派的需要过滤掉已分派的
+                    const arr = selectItems.filter((item)=>!item.isOperate);
+
+
+                    // 判断勾选项是否无预设采购员 若没有弹出提示
+                    const refferArr = arr.filter((item)=>!item.refferenceByuerId);
+
+
+                    if(refferArr.length){
+                        const str = refferArr.map((item)=>item.partNum).toString();
+                        return iMessage.warn(str+this.language('LK_AEKO_LINGJIANWUYUSHECAIGOUYUANQINGCHONGXINXUANZE','零件无预设采购员，请重新选择!'))
+                    }
+
+                    arr.map((item)=>{
+                        data.push({
+                            requirementAekoId,
+                            aekoPartId:item.aekoPartId,
+                            buyerId:item.refferenceByuerId,
+                            buyerName:item.refferenceByuerName,
+                        })
+                    })
+                }else{ // 手动分派
+                    const depArr = linieSelectOptions.filter((item)=>item.id ==refferenceSmtNum );
+                    selectItems.map((item)=>{
+                        data.push({
+                            requirementAekoId,
+                            aekoPartId:item.aekoPartId,
+                            buyerId:refferenceSmtNum,
+                            buyerName:depArr.length ? depArr[0].nameZh : '',
+                        })
+                    })
+                }
+            }
+            this.isLoading = true;
+            await assignLinie(data).then((res)=>{
+                this.isLoading = false;
+                const { code } = res;
+                if(code == 200){
+                    this.clearDialog();
+                    this.$emit('getList');
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch((err)=>{
+                this.isLoading = false;
+            })
+        },
+
+        // 获取linie列表
+        async getLinieList(){
+            const { buyerName=[] } = this;
+            if(buyerName.length){
+                buyerName.map((item)=>{
+                    item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                    item.value = item.id;
+                })
+                this.linieSelectOptions = buyerName;
+            }else{
+                searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+                    const {code,data} = res;
+                    if(code ==200 ){
+                        data.map((item)=>{
+                        item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.value = item.id;
+                        })
+                        this.linieSelectOptions = data;
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
+            }
+            
+        },
     }
 }
 </script>

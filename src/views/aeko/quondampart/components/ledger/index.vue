@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-07-30 16:11:42
+ * @LastEditTime: 2021-08-11 10:53:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -47,7 +47,7 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in options"
+              v-for="item in procureFactoryOptiopns"
               :key="item.key"
             ></el-option>
           </iSelect>
@@ -69,7 +69,7 @@
           :tableLoading="loading"
           @handleSelectionChange="handleSelectionChange"
         >
-          <template #currentAPrice="scope">
+          <template #aprice="scope">
             <iInput class="aPriceSelect" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.aprice" readonly @click.native="aPriceSelect(scope.row)">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" />
@@ -90,7 +90,7 @@
           :total="page.totalCount" />
       </div>
     </iCard>
-    <presentAllInPriceDialog :visible.sync="visible" :partNum="currentRow.partNum" :factoryCode="currentRow.factoryCode" @confirm="confirmAPrice" />
+    <presentAllInPriceDialog :visible.sync="visible" :apriceId="currentRow.apriceId" @confirm="confirmAPrice" />
   </div>
 </template>
 
@@ -101,32 +101,97 @@ import presentAllInPriceDialog from "../presentAllInPriceDialog"
 import { ledgerQueryForm, ledgerTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
-import { getAekoOriginPartInfo, saveAekoOriginPart } from "@/api/aeko/detail"
-import { cloneDeep } from "lodash"
+import { getAekoOriginPartInfo, saveAekoOriginPart, judgeRight } from "@/api/aeko/detail"
+import { procureFactorySelectVo } from "@/api/dictionary"
+import { cloneDeep, isEqual } from "lodash"
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, iPagination, tableList, icon, presentAllInPriceDialog },
   mixins: [ pageMixins ],
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
+  },
   data() {
     return {
-      options: [],
+      objectAekoPartId: "",
+      requirementAekoId: "",
+      oldPartNumPreset: "",
+      procureFactoryOptiopns: [],
       form: cloneDeep(ledgerQueryForm),
+      loading: false,
       tableTitle,
-      tableListData: [{}],
+      tableListData: [],
       multipleSelection: [],
       visible: false,
       currentRow: {},
     }
   },
+  watch: {
+    form: {
+      handler(data) {
+        if (isEqual(data, ledgerQueryForm)) {
+          this.objectAekoPartId = this.$route.query.objectAekoPartId
+        }
+      },
+      deep: true
+    }
+  },
   created() {
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
-    this.getAekoOriginPartInfo()
+    this.oldPartNumPreset = this.$route.query.oldPartNumPreset
+    this.judgeRight()
   },
   methods: {
+    judgeRight() {
+      judgeRight([
+        {
+          partNum: this.oldPartNumPreset,
+          userId: this.userInfo.id
+        }
+      ])
+      .then(res => {
+        if (res.code == 200) {
+          if (res.data[0].isView) {
+            this.procureFactorySelectVo()
+            this.getAekoOriginPartInfo()
+          } else {
+            iMessage.error(res.data[0].describe)
+            this.loading = false
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => this.loading = false)
+    },
+    procureFactorySelectVo() {
+      procureFactorySelectVo()
+      .then(res => {
+        if (res.code == 200) {
+          this.procureFactoryOptiopns = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              key: item.code,
+              label: item.name,
+              value: item.code
+            })) :
+            []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
     getAekoOriginPartInfo() {
+      this.loading = true
+
       getAekoOriginPartInfo({
         ...this.form,
+        objectAekoPartId: this.objectAekoPartId,
         current: this.page.currPage,
         size: this.page.pageSize
       })
@@ -144,11 +209,18 @@ export default {
     },
     sure() {
       this.page.currPage = 1
+      if (isEqual(this.form, ledgerQueryForm)) {
+        this.objectAekoPartId = this.$route.query.objectAekoPartId
+      } else {
+        this.objectAekoPartId = ""
+      }
+      
       this.getAekoOriginPartInfo()
     },
     reset() {
       this.page.currPage = 1
       this.form = cloneDeep(ledgerQueryForm)
+      this.objectAekoPartId = this.$route.query.objectAekoPartId
       this.getAekoOriginPartInfo()
     },
     handleSelectionChange(list) {
@@ -158,9 +230,10 @@ export default {
       this.visible = true
 
       this.currentRow = row
+      console.log("this.currentRow.apriceId", this.currentRow.apriceId)
     },
     confirmAPrice(row) {
-      this.currentRow.aprice = row.aprice
+      this.currentRow.aprice = row.price
       this.currentRow = {}
     },
     // 保存
@@ -170,7 +243,7 @@ export default {
       this.saveLoading = true
       saveAekoOriginPart({
         originPartList: this.multipleSelection,
-        objectAekoPartId: this.objectAekoPartId,
+        objectAekoPartId: this.$route.query.objectAekoPartId,
         requirementAekoId: this.requirementAekoId
       })
       .then(res => {
@@ -178,10 +251,30 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
-          this.$router.replace({
-            path: "/aeko/aekodetail",
-            query: {}
-          })
+          if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+            try {
+              const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+
+              this.$router.replace({
+                path: "/aeko/aekodetail",
+                query: {
+                  requirementAekoId: aekoConatentDeclareParams.requirementAekoId
+                }
+              })
+            } catch(e) {
+              console.error(e)
+
+              this.$router.replace({
+                path: "/aeko/managelist",
+                query: {}
+              })
+            }
+          } else {
+            this.$router.replace({
+              path: "/aeko/managelist",
+              query: {}
+            })
+          }
         } else {
           iMessage.error(message)
         }
@@ -213,6 +306,10 @@ export default {
   }
 
   ::v-deep .el-input__suffix {
+    .el-input__suffix-inner {
+      height: 100% !important;
+    }
+    
     .inputSearchIcon {
       display: inline-block;
       width: 30px;

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-08-05 14:49:35
+ * @LastEditTime: 2021-08-11 11:17:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -24,7 +24,7 @@
         <iFormItem class="item" v-for="(item, $index) in form" :key="$index" :label="`${ language(item.key, item.name) }`">
           <div v-if="item.props === 'cartypeProject'">
             <iSelect
-              v-if="aekoInfo.aekoType.code == 'AeA'"
+              v-if="aekoInfo.aekoType && aekoInfo.aekoType.code == 'AeA'"
               v-model="dosage.cartypeProjectCode"
               :placeholder="language('QINGXUANZE', '请选择')"
               @change="handleChangeByCarTypeProject"
@@ -39,7 +39,7 @@
             <iText v-else>{{ dosage.cartypeProjectZh }}</iText>
           </div>
           <iText v-if="item.props === 'factory' || item.props === 'supplierName'">{{ dosage[item.props] }}</iText>
-          <iInput class="percentInput" v-else-if="item.props === 'oldPartShare'" v-model="dosage[item.props]" @input="handleInputByOldPartShare">
+          <iInput class="percentInput" v-else-if="item.props === 'usePortion'" v-model="dosage[item.props]" @input="handleInputByUsePortion">
             <template slot="append">%</template>
           </iInput>
         </iFormItem>
@@ -52,8 +52,8 @@
         :selection="false"
         :tableData="Array.isArray(dosage.aekoProjectCarDosageList) ? dosage.aekoProjectCarDosageList : []"
         :tableTitle="tableTitle">
-        <template #consumption="scope">
-          <iInput class="consumption" v-model="scope.row.consumption" @input="handleInputByConsumption($event, scope.row)"></iInput>
+        <template #perCarDosage="scope">
+          <iInput class="perCarDosage" v-model="scope.row.perCarDosage" @input="handleInputByPerCarDosage($event, scope.row)"></iInput>
         </template>
       </tableList>
       <i class="dashes"></i>
@@ -67,7 +67,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { dosageDialogForm as form, dosageDialogTableTitle as tableTitle } from "../data"
 import { numberProcessor } from "@/utils"
 import filters from "@/utils/filters"
-import { getAekoCarProject, getAekoCarDosage, saveAekoCarDosage } from "@/api/aeko/detail"
+import { getAekoCarProject, getAekoCarDosage, getAekoCarDosageByCarTypeProjectCode, saveAekoCarDosage } from "@/api/aeko/detail"
 
 export default {
   components: { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, tableList },
@@ -95,8 +95,14 @@ export default {
         this.getAekoCarProject()
         this.getAekoCarDosage()
       } else {
+        if (this.isUpdate) {
+          this.$emit("update")
+        }
+
         this.dosage = {}
+        this.sourceCarTypeProject = {}
         this.saveLoading = false
+        this.isUpdate = false
       }
     },
   },
@@ -117,13 +123,14 @@ export default {
       carProjectOptions: [],
       dosage: {},
       tableTitle,
-      saveLoading: false
+      saveLoading: false,
+      isUpdate: false
     };
   },
   methods: {
     getAekoCarProject() {
       getAekoCarProject({
-        requirementAekoId: this.aekoInfo.requirementAekoId
+        objectAekoPartId: this.objectAekoPartId
       })
       .then(res => {
         if (res.code == 200) {
@@ -160,14 +167,32 @@ export default {
       })
       .catch(() => this.loading = false)
     },
+    // 根据车型项目code获取每车用量
+    getAekoCarDosageByCarTypeProjectCode(carTypeProjectCode) {
+      this.loading = true
+      
+      getAekoCarDosageByCarTypeProjectCode({ carTypeProjectCode })
+      .then(res => {
+        if (res.code == 200) {
+          this.dosage.aekoProjectCarDosageList = Array.isArray(res.data) ? res.data : []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.loading = false
+      })
+      .catch(() => this.loading = false)
+    },
     handleChangeByCarTypeProject(value) {
       this.dosage.carTypeProjectZh = this.carProjectOptions.find(item => item.value === value).label
+
+      this.getAekoCarDosageByCarTypeProjectCode(value)
     },
-    handleInputByOldPartShare(value) {
+    handleInputByUsePortion(value) {
       this.$set(this.dosage, "oldPartShare", numberProcessor(value, 2))
     },
-    handleInputByConsumption(value, row) {
-      this.$set(row, "consumption", numberProcessor(value, 2))
+    handleInputByPerCarDosage(value, row) {
+      this.$set(row, "perCarDosage", numberProcessor(value, 2))
     },
     // 保存
     handleSave() {
@@ -184,8 +209,8 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
-          // this.$emit("confirm", this.selectRow)
-          this.status = false
+          this.getAekoCarDosage()
+          this.isUpdate = true
         } else {
           iMessage.error(message)
         }
@@ -279,7 +304,7 @@ export default {
     }
   }
 
-  .consumption {
+  .perCarDosage {
     width: 110px;
 
     ::v-deep input {

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 16:19:06
+ * @LastEditTime: 2021-08-10 17:24:02
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -14,28 +14,28 @@
         <span class="font18 font-weight">{{language('JINGYANCHANGZHI', '经验常值')}}</span>
         <div class="floatright">
           <!--------------------拟合进度按钮----------------------------------->
-          <iButton @click="showProgress" >{{language('NIHEJINDU','拟合进度')}}</iButton>
+          <iButton @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
           <!--------------------配置显示字段按钮----------------------------------->
           <iButton @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="$emit('handleSend')" >{{language('DAOCHU','导出')}}</iButton>
+          <iButton @click="handleExport" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
-      <tableList indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChange">
+      <tableList class="regularTable" indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular">
       </tableList> 
     </template>
     <template v-if="isShowProgress">
-      <div class="margin-bottom20 clearFloat margin-top20">
+      <div class="margin-bottom20 clearFloat margin-top30 padding-top30 borderTop">
         <span class="font18 font-weight">{{language('NIHEJINDU', '拟合进度')}}</span>
       </div>
-      <tableList v-update indexKey :tableTitle="partTableTitle" :tableData="fitTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChange">
+      <tableList class="fitTable" v-update indexKey :tableTitle="partTableTitle" :tableData="fitTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
       </tableList> 
     </template>
     <template>
-      <div class="margin-bottom20 clearFloat margin-top20">
+      <div class="margin-bottom20 clearFloat margin-top30 padding-top30 borderTop">
         <span class="font18 font-weight">{{language('PIPEILINGJIANHAOLISHIJINDU', '匹配零件号历史进度')}}</span>
       </div>
-      <tableList v-update indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChange">
+      <tableList v-update indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangePart">
       </tableList> 
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
@@ -45,7 +45,7 @@
       />
     </template>
     <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="productLogicList" :logicData="logicData" :selectOptions="logicSelectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
-    <showItemDialog ref="showItem" :dialogVisible="showItemVisible" @changeVisible="changeShowItem" :checkList="checkList" type="1" />
+    <showItemDialog ref="showItem" :dialogVisible="showItemVisible" @changeVisible="changeShowItem" :checkList="checkList" type="1" :disabledColumn="disabledColumn" :defaultColumn="defaultColumn" />
   </iCard>
 </template>
 
@@ -58,13 +58,14 @@ import logicSettingDialog from '@/views/project/schedulingassistant/progroup/com
 import { selectDictByKeyss } from '@/api/dictionary'
 import showItemDialog from '../showItem'
 import { cloneDeep } from 'lodash'
-import { getExperience, getCondition, getFitting } from '@/api/project'
+import { getExperience, getCondition, getFitting, downloadHistoryProgressFile } from '@/api/project'
 export default {
   mixins: [pageMixins],
   components: { iCard, tableList, iPagination, iButton, logicSettingDialog, showItemDialog },
   props: {
     searchParams: { type:Object, default: () => {}},
-    carProjectOptions: {type: Array, default: () => []}
+    carProjectOptions: {type: Array, default: () => []},
+    productGroupOptions: {type: Array, default: () => []}
   },
   data() {
     return {
@@ -81,7 +82,32 @@ export default {
       logicVisible: false,
       selectOptions: {},
       showItemVisible: false,
-      selectColumn: []
+      selectColumn: [],
+      selectRowRegular: [],
+      selectRowFit: [],
+      selectRowPart: [],
+      downloadLoading: false,
+      defaultColumn: [
+        'CHANPINZUBIANHAO',
+        'CHANPINZUZHONGWENMINGCHENG',
+        'CHANPINZUDEWENMINGCHENG',
+        'LINGJIANHAO',
+        'CHEXINGXIANGMU',
+        'SHIFANGDINGDIANZHOU',
+        'DINGDIANBFZHOU',
+        'BFFIRSTTRYOUTZHOU',
+        'FIRSTTRYOUTOTSZHOU',
+        'FIRSTTRYOUTEMZHOU',
+        'SOURCINGLEIXING',
+        'SHIFOUBMG',
+        'SHIFOUSEL'
+      ],
+      disabledColumn: [
+        'CHANPINZUBIANHAO',
+        'CHANPINZUZHONGWENMINGCHENG',
+        'CHANPINZUDEWENMINGCHENG',
+        'LINGJIANHAO'
+      ]
     }
   },
   computed: {
@@ -94,17 +120,21 @@ export default {
             code: item.value,
             name: item.label
           }
-        })
+        }),
+        productGroupOptions: this.productGroupOptions
       }
     },
     partTableTitle() {
-      return partTableTitle.filter(item => item.disabled || this.selectColumn.includes(item.key))
+      if (this.selectColumn.length < 1) {
+        return partTableTitle.filter(item => this.defaultColumn.includes(item.key))
+      }
+      return partTableTitle.filter(item => this.selectColumn.includes(item.key))
     },
     checkList() {
       return cloneDeep(partTableTitle).map(item => {
         return {
           ...item,
-          isSelect: item.disabled || this.selectColumn.includes(item.key)
+          isSelect: this.selectColumn.length < 1 ? this.defaultColumn.includes(item.key) : this.selectColumn.includes(item.key)
         }
       })
     },
@@ -115,6 +145,68 @@ export default {
     this.init()
   },
   methods: {
+    handleSelectionChangeRegular(val) {
+      this.selectRowRegular = val
+    },
+    handleSelectionChangeFit(val) {
+      this.selectRowFit = val
+    },
+    handleSelectionChangePart(val) {
+      this.selectRowPart = val
+    },
+    getCartypeName(id) {
+      const cartype = this.carProjectOptions.find(item => item.value === id)
+      if (cartype) {
+        return cartype.label
+      }
+      return ''
+    },
+    async handleExport() {
+      if (this.selectRowRegular.length < 1 && this.selectRowFit.length < 1 && this.selectRowPart.length < 1) {
+        iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
+        return
+      }
+      this.downloadLoading = true
+      try {
+        const params = {
+          cartypeProId: '3',
+          experienceVOList: this.selectRowRegular,
+          fields: this.partTableTitle.map(item => {
+            return {
+              gridFieldZh: item.name,
+              gridField: item.props
+            }
+          }),
+          fittingProgressList: this.selectRowFit.map(item => {
+            const returnItem = {}
+            this.partTableTitle.forEach(element => {
+              returnItem[element.props] = item[element.props]
+            })
+            return returnItem
+          }),
+          partHistoryProgressVOList: this.selectRowPart.map(item => {
+            const returnItem = {}
+            this.partTableTitle.forEach(element => {
+              returnItem[element.props] = item[element.props]
+            })
+            return returnItem
+          }),
+          partsHistoryProgressDTO: this.isShowProgress ? {
+            ...this.searchParams,
+            ...this.logicData,
+            cartypeProName: this.getCartypeName(this.logicData.cartypeProId)
+          } : {
+            ...this.searchParams,
+            cartypeProName: this.getCartypeName(this.searchParams.cartypeProId)
+          }
+        }
+        await downloadHistoryProgressFile(params)
+        this.downloadLoading = false
+      } catch(error) {
+        this.downloadLoading = false
+      }
+      
+    },
     getTableList() {
       if (this.isShowProgress) {
         this.getFitting()
@@ -137,10 +229,20 @@ export default {
       this.$refs.logic.changeSaveLoading(false)
       this.page.currPage = 1
       this.getFitting()
+      this.getExperience(this.logicData.productGroup)
     },
     init() {
-      this.getExperience()
-      this.getCondition()
+      if (this.$route.query.cartypeProId) {
+        this.logicData = {
+          ...this.logicData,
+          ...this.$route.query
+        }
+        this.getExperience(this.$route.query.productGroup)
+        this.getFitting()
+      } else {
+        this.getExperience()
+        this.getCondition()
+      }
     },
     /**
      * @Description: 获取经验常值列表
@@ -148,9 +250,10 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    getExperience() {
+    getExperience(productGroup = this.searchParams.productGroup) {
       this.regularTableLoading = true
-      getExperience(this.searchParams.productGroup).then(res => {
+      // const productGroup = this.searchParams.productGroup
+      getExperience(productGroup).then(res => {
         if (res?.result) {
           this.regularTableData = res.data || []
         } else {
@@ -267,5 +370,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.withBorder {
+  border: 2px solid #1763F7;
+}
+.fitTable {
+  ::v-deep .el-table__body-wrapper{
+    min-height: unset;
+  }
+}
+.regularTable {
+  ::v-deep .el-table__body-wrapper{
+    min-height: 200px;
+    // max-height: 200px;
+  }
+  &::before {
+    height: 0;
+  }
+}
+.borderTop {
+  border-top: 1px dashed rgba(65, 67, 74, .2);
+}
 </style>

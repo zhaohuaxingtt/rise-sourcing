@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 18:14:52
+ * @LastEditTime: 2021-08-11 17:26:47
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -76,7 +76,7 @@
 <script>
 import { iButton, icon, iInput, iText, iMessage } from 'rise'
 import fsConfirm from '../fsconfirm'
-import { getProductGroupInfoList, saveProductGroupInfoList, deliveryProduct, getAllFS, downloadPvPk, getFsUserList, getBuyer } from '@/api/project'
+import { getProductGroupInfoList, saveProductGroupInfoList, deliveryProduct, getAllFS, downloadPvPk, getFsUserList, getBuyer, getCarConfig, validSchedule } from '@/api/project'
 import moment from 'moment'
 export default {
   components: { iButton, fsConfirm, icon, iInput, iText },
@@ -100,9 +100,9 @@ export default {
         {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'}
       ],
       nodeList: [
-        {label: '释放', key: 'SHIFANG', const: 'constReleaseToNomiWeek', keyPoint: 'keyReleaseToNomiWeek', history: 'releaseToNomiWeek', isChange: 'keyReleaseToNomiStatus'},
+        {label: '释放', key: 'SHIFANG', const: 'constReleaseToNomiWeek', keyPoint: 'keyReleaseToNomiWeek', history: 'hiReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus'},
         {label: '定点', key: 'DINGDIAN', const: 'constNomiToBffWeek', keyPoint: 'keyNomiToBffWeek', history: 'hiNomiToBffWeek', isChange: 'keyNomiToBffStatus'},
-        {label: 'BF', const: 'keyBfToFirstTryoutWeek', keyPoint: 'constBfToFirstTryoutWeek', history: 'hiBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus'},
+        {label: 'BF', const: 'constBfToFirstTryoutWeek', keyPoint: 'keyBfToFirstTryoutWeek', history: 'hiBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus'},
         {label: '1st Tryout', const: 'constFirstTryEmWeek', keyPoint: 'keyFirstTryEmWeek', history: 'hiFirstTryEmWeek', isChange: 'keyFirstTryEmStatus'},
         {label: 'EM(OTS)', const: 'constFirstTryOtsWeek', keyPoint: 'keyFirstTryOtsWeek', history: 'hiFirstTryOtsWeek', isChange: 'keyFirstTryOtsStatus'}
       ],
@@ -115,15 +115,21 @@ export default {
   created() {
     this.getFSOPtions()
   },
-  mounted() {
-    this.interval = setInterval(() => {
-      this.autoSave()
-    },60000)
-  },
-  beforeDestroy() {
-    clearInterval(this.interval)
-  },
+  // mounted() {
+  //   this.interval = setInterval(() => {
+  //     this.autoSave()
+  //   },60000)
+  // },
+  // beforeDestroy() {
+  //   clearInterval(this.interval)
+  // },
   methods: {
+    /**
+     * @Description: 获取fs下拉选项
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getFSOPtions() {
       getAllFS().then(res => {
         if (res?.result) {
@@ -142,11 +148,24 @@ export default {
         }
       })
     },
+    /**
+     * @Description: 下载pvpk
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async handleDownloadPvPk() {
+      await this.autoSave()
       this.downloadLoading = true
       await downloadPvPk(this.cartypeProId)
       this.downloadLoading = false
     },
+    /**
+     * @Description: 发送fs
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     handleFSConfirm(val) {
       deliveryProduct(val).then(res => {
         if (res?.result) {
@@ -163,6 +182,12 @@ export default {
         this.$refs.fsConfirm.changeSaveLoading(false)
       })
     },
+    /**
+     * @Description: 保存按钮触发保存
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleSave() {
       this.saveloading = true
       saveProductGroupInfoList(this.products).then(res => {
@@ -176,6 +201,12 @@ export default {
         this.saveloading = false
       })
     },
+    /**
+     * @Description: 自动保存，只做保存操作不刷新页面
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     autoSave() {
       if (this.products.length < 1) {
         return
@@ -191,9 +222,21 @@ export default {
         this.saveloading = false
       })
     },
+    /**
+     * @Description: 页面初始化
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     init() {
       this.getProducts(this.cartypeProId)
     },
+    /**
+     * @Description: 根据车型项目获取产品组
+     * @Author: Luoshuang
+     * @param {*} id
+     * @return {*}
+     */    
     getProducts(id) {
       this.loading = true
       getProductGroupInfoList(id).then(res => {
@@ -206,10 +249,36 @@ export default {
         this.loading = false
       })
     },
-    gotoDBhistory(pro) {
-      const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {cartypeProId:this.cartypeProId,productGroup:pro.productGroupNameZh}})
-      window.open(router.href,'_blank')
+    /**
+     * @Description: 跳转历史数据库
+     * @Author: Luoshuang
+     * @param {*} pro
+     * @return {*}
+     */    
+    async gotoDBhistory(pro) {
+      this.loading = true
+      try{
+        const res = await getCarConfig(this.cartypeProId)
+        this.loading = false
+        if (res?.result) {
+          // console.log(this.cartypeProId)
+          const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId,productGroup:pro.productGroupNameZh}})
+          window.open(router.href,'_blank')
+        } else {
+          iMessage.warn('HUOQUSUANFAPEIZHISHIBAI','获取算法配置失败')
+        }
+      } catch(error) {
+        this.loading = false
+      }
+      // const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {cartypeProId:this.cartypeProId,productGroup:pro.productGroupNameZh}})
+      // window.open(router.href,'_blank')
     },
+    /**
+     * @Description: 根据选中的行获取每一行的fs下拉列表
+     * @Author: Luoshuang
+     * @param {*} tableList
+     * @return {*}
+     */    
     async getFsUserList(tableList) {
       const res = await getFsUserList(tableList.map(item => item.productGroupId))
         if (res?.result) {
@@ -219,6 +288,12 @@ export default {
           return null
         }
     },
+    /**
+     * @Description: 获取项目采购员
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async getBuyer() {
       if (!this.cartypeProId) {
         return null
@@ -231,44 +306,68 @@ export default {
         return null
       }
     },
+    /**
+     * @Description: 点击发送fs按钮打开对应弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async handleSendFs() {
       await this.autoSave()
+      
       if (!this.products?.some(item => item.isChecked)) {
         iMessage.warn(this.language('QINGGOUXUANXUYAOFASONGDESHUJU','请勾选需要发送的数据'))
         return
       }
-      this.loading = true
-      const selectRows = this.products.filter(item => item.isChecked)
-      const fsOptions = await this.getFsUserList(selectRows)
-      const projectPurchaser = await this.getBuyer()
-      this.fsTableList = selectRows.filter(item => item.isChecked).map(item => {
-        const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
+      try {
+        this.loading = true
+        const selectRows = this.products.filter(item => item.isChecked)
+        const validScheduleRowsRes = await validSchedule(selectRows)
+        if (validScheduleRowsRes.result && validScheduleRowsRes.data && validScheduleRowsRes.data.length === selectRows.length) {
+          iMessage.warn(this.language('GOUXUANCHANPINZUDOUYIFASONGJINDUQUERENRENWU','勾选产品组都已发送进度确认任务，如需查看请前往进度确认汇总页面'))
+          throw(false)
+        }
+        const canSendRows = selectRows.filter(item => !(validScheduleRowsRes.data || []).some(rItem => rItem.productGroupId === item.productGroupId))
+        const fsOptions = await this.getFsUserList(canSendRows)
+        const projectPurchaser = await this.getBuyer()
+        this.fsTableList = canSendRows.map(item => {
+          const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
+            return {
+              ...item,
+              value: item.userId,
+              label: item.userName
+            }
+          }) : []
           return {
             ...item,
-            value: item.userId,
-            label: item.userName
+            cartypeProject: this.carProjectName,
+            scheBfToFirstTryoutWeek: item.keyBfToFirstTryoutWeek,
+            scheFirstTryEmWeek: item.keyFirstTryEmWeek,
+            scheFirstTryOtsWeek: item.keyFirstTryOtsWeek,
+            productGroupDe: item.productGroupNameDe,
+            productGroupZh: item.productGroupNameZh,
+            confirmDateDeadline: this.getNextThreeWorkDay(),
+            projectPurchaser: projectPurchaser?.nameZh,
+            projectPurchaserId: projectPurchaser?.id,
+            selectOption: this.selectOptions.fsOptions,
+            fs: options && options[0] ? options[0].value : '',
+            fsId: options && options[0] ? options[0].label : ''
           }
-        }) : []
-        return {
-          ...item,
-          cartypeProject: this.carProjectName,
-          scheBfToFirstTryoutWeek: item.keyBfToFirstTryoutWeek,
-          scheFirstTryEmWeek: item.keyFirstTryEmWeek,
-          scheFirstTryOtsWeek: item.keyFirstTryOtsWeek,
-          productGroupDe: item.productGroupNameDe,
-          productGroupZh: item.productGroupNameZh,
-          confirmDateDeadline: this.getNextThreeWorkDay(),
-          projectPurchaser: projectPurchaser?.nameZh,
-          projectPurchaserId: projectPurchaser?.id,
-          selectOption: this.selectOptions.fsOptions,
-          fs: options && options[0] ? options[0].value : '',
-          fsId: options && options[0] ? options[0].label : ''
-        }
-      })
-      console.log(this.fsTableList)
-      this.loading = false
-      this.changeFsConfirmVisible(true)
+        })
+        // console.log(this.fsTableList)
+        this.loading = false
+        this.changeFsConfirmVisible(true)
+      } catch(error) {
+        this.loading = false
+      }
+      
     },
+    /**
+     * @Description: 获取三个工作日后的日期
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getNextThreeWorkDay() {
       if (moment().day() === 2 || moment().day() === 1) {
         return moment().add(3, 'days').format('YYYY-MM-DD')
@@ -276,9 +375,21 @@ export default {
         return moment().add(5, 'days').format('YYYY-MM-DD')
       }
     },
+    /**
+     * @Description: 切换fs确认弹窗状态
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
     changeFsConfirmVisible(visible) {
       this.fsConfirmDialogVisible = visible 
     },
+    /**
+     * @Description: 选中全部产品组状态切换
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     handleCheckAllChange(val) {
       this.products = this.products?.map(item => {
         return {
@@ -288,6 +399,13 @@ export default {
       })
       this.isIndeterminate = false;
     },
+    /**
+     * @Description: 产品组checkbox选中状态变更
+     * @Author: Luoshuang
+     * @param {*} value
+     * @param {*} pro
+     * @return {*}
+     */    
     handleCheckboxChange(value, pro) {
       console.log(this.products)
       let checkedCount = this.products.filter(item => item.isChecked).length;

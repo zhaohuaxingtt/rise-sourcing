@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-08-05 11:02:23
+ * @LastEditTime: 2021-08-10 11:22:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -9,6 +9,8 @@
 import axios from '@/utils/axios'
 
 const requst = axios(process.env.VUE_APP_PARTS)
+const partRequst = axios(process.env.VUE_APP_PARTSPROCURE)
+const priceRequst = axios(process.env.VUE_APP_PRICE_LEDGER)
 
 export function getAekoLiniePartInfo(params) {
   return requst({
@@ -45,6 +47,15 @@ export function patchAekoContent(params) {
   })
 }
 
+// 判断当前用户是否拥有跳转原零件列表的权限
+export function judgeRight(params) {
+  return partRequst({
+    url: '/judgeRight',
+    method: 'POST',
+    data: params
+  })
+}
+
 // 获取指定台账库原零件列表
 export function getAekoOriginPartInfo(params) {
   return requst({
@@ -55,9 +66,16 @@ export function getAekoOriginPartInfo(params) {
 }
 
 // 获取原零件的历史A价列表
+// export function getAekoOriginPartAPrice(params) {
+//   return requst({
+//     url: '/aeko/aeko-origin-part/A-price',
+//     method: 'POST',
+//     data: params
+//   })
+// }
 export function getAekoOriginPartAPrice(params) {
-  return requst({
-    url: '/aeko/aeko-origin-part/A-price',
+  return priceRequst({
+    url: '/aprice/findRecordList',
     method: 'POST',
     data: params
   })
@@ -66,7 +84,7 @@ export function getAekoOriginPartAPrice(params) {
 // 保存原零件A价
 export function saveAekoOriginPart(params) {
   return requst({
-    url: '/aeko/aeko-origin-part/save',
+    url: '/aeko/aeko-origin-part',
     method: 'POST',
     data: params
   })
@@ -75,7 +93,7 @@ export function saveAekoOriginPart(params) {
 // 获取Aeko车型项目
 export function getAekoCarProject(params) {
   return requst({
-    url: `/aeko/aeko-car-project/${ params.requirementAekoId }`,
+    url: `/aeko/aeko-car-project/${ params.objectAekoPartId }`,
     method: 'GET',
   })
 }
@@ -86,6 +104,14 @@ export function getAekoCarDosage(params) {
     url: `/aeko/aeko-car-dosage`,
     method: 'POST',
     data: params
+  })
+}
+
+// 根据车型项目获取每车用量数据
+export function getAekoCarDosageByCarTypeProjectCode(params) {
+  return requst({
+    url: `/aeko/aeko-project-change/${ params.carTypeProjectCode }`,
+    method: 'GET'
   })
 }
 

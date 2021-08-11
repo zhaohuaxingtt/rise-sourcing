@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 14:49:52
+ * @LastEditTime: 2021-08-11 15:50:59
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -32,8 +32,8 @@
               <li>{{dataItem.carTypeLevel}} class</li>
             </ol>
             <ol class="baiscInfo-bottom-column">
-              <li>{{dataItem.werk}}</li>
-              <li>SOP:{{`${moment(dataItem.sop).year()}-KW${moment(dataItem.sop).week()}`}}</li>
+              <li>{{dataItem.factoryName}}</li>
+              <li>SOP:{{dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk}}</li>
               <li>KPE:{{dataItem.kpe}}<icon symbol name="iconbianji"  class="margin-left10 cursor"></icon></li>
             </ol>
           </div>
@@ -51,12 +51,13 @@
             <span class="openLinkText">{{language('TIAOZHUANJIANKONG','跳转监控')}}</span>
           </div>
         </div>
+        <div v-else-if="item.props === 'output'">{{getTousandNum(dataItem[item.props])}}</div>
         <!---------------------------------------------------------------------->
         <!----------                年份列-节点渲染               ---------------->
         <!---------------------------------------------------------------------->
         <div v-else-if="item.type === 'year'" class="yearCell">
           <div v-for="indexItem in [1,2,3,4]" :key="indexItem" class="yearCell-item">
-            <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" class="node">
+            <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" :class="`node ${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1 && 'small-node'+getNodeList(item.props, indexItem, dataItem.nodeList).length}`">
               <!-- 已完成 -->
               <icon v-if="nodeItem.status == 1" symbol name="icondingdianguanli-yiwancheng"  class="step-icon"></icon> 
               <!-- 正在进行中 -->
@@ -102,6 +103,7 @@
 <script>
 import { icon } from 'rise'
 import moment from 'moment'
+import { getTousandNum } from '@/utils/tool'
 export default {
   components: { icon },
   props: {
@@ -125,6 +127,7 @@ export default {
         { label: 'SOP', date: 'pepSop', value: 'pepSopWk', status: 'pepSopStatus' },
         { label: 'ME', date: 'pepMe', value: 'pepMeWk', status: 'pepMeStatus' }
       ],
+      getTousandNum
     }
   },
   methods: {
@@ -164,7 +167,7 @@ export default {
       if (year === moment().year()) {
         return -1
       }
-      const nodeListBeforeYear = nodeList.filter(item => item.year < year)
+      const nodeListBeforeYear = nodeList.filter(item => item.year < year && item.year > moment().year() - 1)
       if (nodeListBeforeYear.length > 0) {
         return nodeListBeforeYear[nodeListBeforeYear.length - 1].status
       }
@@ -186,7 +189,7 @@ export default {
       if (year === moment().year() + 3) {
         return -1
       }
-      const nodeListNextYear = nodeList.filter(item => item.year > year)
+      const nodeListNextYear = nodeList.filter(item => item.year > year && item.year < moment().year() + 4)
       if (nodeListNextYear.length > 0) {
         return nodeListNextYear[0].status
       }
@@ -209,6 +212,9 @@ export default {
       } else {
         const lastStatus = this.getLastStatus(year, season, nodeList)
         const nextStatus = this.getNextStatus(year, season, nodeList)
+        if (nextStatus === -1) {
+          return null
+        }
         if (lastStatus === 2 || lastStatus === 3){
           return {
             lineStatus: 3
@@ -225,6 +231,9 @@ export default {
               lineStatus: 2
             }
           }
+          // return {
+          //     lineStatus: 2
+          //   }
         }
         return null
       }
@@ -353,7 +362,7 @@ export default {
           flex-shrink: 0;
           width: 60px;
           display: flex;
-          flex-direction: column;
+          // flex-direction: column;
           align-items: center;
           justify-content: center;
           .node {
@@ -381,6 +390,24 @@ export default {
               width: 20px;
               right: -20px;
               top: 12px;
+            }
+          }
+          @for $i from 1 through 5 {
+            .small-node#{$i} {
+              .step-icon {
+                width: #{36/$i}px;
+                height: #{36/$i}px;
+              }
+              .node-title {
+                font-size: 12px;
+              }
+              .node-week {
+                font-size: 10px;
+              }
+              .short-between-icon {
+                width: #{20/$i}px;
+                right: -#{20/$i}px;
+              }
             }
           }
           .nodeLine {

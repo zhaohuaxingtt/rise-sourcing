@@ -14,16 +14,6 @@
       <iSearch @sure="getList" @reset="reset">
           <el-form>
               <el-form-item v-for="(item,index) in SearchList" :key="'SearchList_aeko'+index" :label="language(item.labelKey,item.label)">
-                  <!-- <iSelectCustom 
-                  v-if="item.type === 'select' && item.multiple"
-                  :data="selectOptions[item.selectOption] || []"
-                  :multiple="item.multiple"
-                   v-model="searchParams[item.props]"
-                   :label="'desc'"
-                   :value="'code'"
-                   :popoverClass="'popover-class'"
-                   :searchMethod="searchMethod"
-                  /> -->
                   <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
@@ -64,6 +54,7 @@
                 :uploadRef="'aekoUpload'"
                 :buttonText="language('LK_SHANGCHUANWENJIAN','上传文件')"
                 @on-success="fileSuccess"
+                :uploadButtonLoading="btnLoading.uploadFiles"
             />
             <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
@@ -83,7 +74,7 @@
       <template #aekoCode="scope">
         
         <div class="table-item-aeko">
-          <icon v-if="scope.row.isTop && scope.row.isTop.code==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
+          <icon v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
           <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </span>
           <a v-if="scope.row.fileCount && scope.row.fileCount > 0" class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
         </div>
@@ -98,16 +89,6 @@
       <!-- 描述 -->
       <template #describe="scope">
         <span class="link" @click="checkDescribe(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
-      </template>
-
-      <!-- aeko状态 -->
-      <template #aekoStatus="scoped">
-        <span>{{scoped.row.aekoStatus && scoped.row.aekoStatus.desc}}</span>
-      </template>
-
-      <!-- 封面状态 -->
-      <template #coverStatus="scoped">
-        <span>{{scoped.row.coverStatus && scoped.row.coverStatus.desc}}</span>
       </template>
 
       </tableList>
@@ -146,7 +127,6 @@ import {
   iPagination,
   icon,
   iMessage,
-  // iSelectCustom,
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
@@ -155,7 +135,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
-// import { getCarTypePro } from '@/api/designate/nomination'
+import {user as configUser } from '@/config'
 import {
   getManageList,
   searchAekoStatus,
@@ -163,12 +143,12 @@ import {
   searchCoverStatus,
   uploadFiles,
   deleteAeko,
-  getSearchCartype,
   searchCartypeProject,
   importAeko,
   templateDowmload,
   downloadAeko,
   searchCommodity,
+  searchLinie,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
@@ -199,15 +179,16 @@ export default {
           brand:'',
           aekoStatusList:[],
           coverStatusList:[],
-          cartypeCode:'',
-          linieDeptNum:'',
+          carTypeCodeList:[],
+          linieDeptNumList:[],
         },
         selectOptions:{
           'brand':[],
           'aekoStatusList':[],
           'coverStatusList':[],
-          'linieDeptNum':[],
-          'cartypeCode':[],
+          'linieDeptNumList':[],
+          'carTypeCodeList':[],
+          'buyerName':[],
         },
         tableListData:[],
         tableTitle:tableTitle,
@@ -235,8 +216,8 @@ export default {
           brand:'',
           aekoStatusList:[],
           coverStatusList:[],
-          cartypeCode:'',
-          linieDeptNum:'',
+          carTypeCodeList:[],
+          linieDeptNumList:[],
         };
         this.getList();
       },
@@ -254,7 +235,7 @@ export default {
         const {frozenDate=[]} = searchParams;
         const data = {
             current:page.currPage,
-            size:page.pageSize
+            size:page.pageSize,
         };
         if(frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
@@ -321,7 +302,7 @@ export default {
             data.map((item)=>{
               item.desc = item.name;
             })
-            this.selectOptions.cartypeCode = data;
+            this.selectOptions.carTypeCodeList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -329,13 +310,27 @@ export default {
 
         // 科室
         searchCommodity().then((res)=>{
-           const {code,data} = res;
+          const {code,data} = res;
           if(code ==200 ){
             data.map((item)=>{
               item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
               item.code = item.deptNum;
             })
-            this.selectOptions.linieDeptNum = data;
+            this.selectOptions.linieDeptNumList = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+
+        // LINIE
+        searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+          const {code,data} = res;
+          if(code ==200 ){
+            data.map((item)=>{
+              item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+              item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+            })
+            this.selectOptions.buyerName = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -377,10 +372,11 @@ export default {
       },
 
       // 判断是否勾选项
-      async isSelectItem(type=false){
+      async isSelectItem(type=false,tips=null){
           const {selectItems} = this;
+          tips = tips || this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据');
           if(!selectItems.length){
-              iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+              iMessage.warn(tips);
               return false;
           }else{
               if(type){
@@ -399,9 +395,14 @@ export default {
         // 一次只能撤销一个AEKO
         const {selectItems} = this;
         if(selectItems.length > 1) return iMessage.warn(this.language('LK_AEKO_YICIZHINENGCHEXIAOYIGEAEKO','一次只能撤销一个AEKO，请修改！'));
-        console.log(isNext,'isNext');
+        // 选中的aeko非处于”已导入”或”已分配”状态  不能进行撤销操作
+        const {aekoStatus=''} = selectItems[0];
+        if(aekoStatus != 'IMPORTED' && aekoStatus !='ASSIGNED'){
+          return iMessage.warn(this.language('LK_AEKO_DANGQIANAEKOBUNENGJINXINGCAOZUO','当前aeko不能进行撤销操作'));
+        }
         this.changeVisible('revokeVisible',true);
       },
+      
 
       // 查看附件列表
       async checkFiles(row){
@@ -445,7 +446,7 @@ export default {
           fileName:name,
           filePath:path,
           fileSize:size,
-          fileType:0,
+          fileType:1000,
           source:0,
           uploadId:id,
         }
@@ -520,7 +521,8 @@ export default {
       
       // 导出
       async exportAeko(){
-        const isNext  = await this.isSelectItem(true);
+        const tips = this.language('LK_AEKO_QINGXUANZEYAODAOCHUDEHANGXIANGMU','请选择要导出的行项目');
+        const isNext  = await this.isSelectItem(true,tips);
         const {selectItems} = this;
         if(!isNext) return;
         const aekoIdList = selectItems.map((item)=>item.requirementAekoId);
@@ -528,9 +530,6 @@ export default {
 
         })
       },
-      // searchMethod(val){
-      //   console.log(val);
-      // },
     }
 }
 </script>

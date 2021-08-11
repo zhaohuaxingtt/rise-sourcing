@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-04 16:43:00
+ * @LastEditTime: 2021-08-10 17:17:42
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
@@ -16,7 +16,7 @@
       </template>
       <el-form>
         <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)">
-          <iSelect v-if="item.type ==='select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="item.placeholder ? language(item.placeholderKey, item.placeholder) : language('QINGXUANZE', '请选择')">
+          <iSelect v-if="item.type ==='select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="item.placeholder ? language(item.placeholderKey, item.placeholder) : language('QINGXUANZE', '请选择')" @change="handleChange($event, item.value)">
             <el-option
               v-for="item in selectOptions[item.selectOption]"
               :key="item.value"
@@ -25,11 +25,12 @@
             </el-option>
           </iSelect>
           <iInput v-else-if="item.type === 'input'" v-model="searchParams[item.value]" :placeholder="item.placeholder ? language(item.placeholderKey, item.placeholder) : language('QINGSHURU', '请输入')" />
+          <el-autocomplete v-else-if="item.type === 'inputFilter'" :fetch-suggestions="querySearch" v-model="searchParams[item.value]" :placeholder="item.placeholder ? language(item.placeholderKey, item.placeholder) : language('QINGSHURU', '请输入')" />
         </el-form-item>
       </el-form>
     </iSearch>
-    <productGroup ref="historyDBProductGroup" v-if="searchParams.level === '1'" :searchParams="searchParams" :carProjectOptions="this.selectOptions.carProjectOptions" />
-    <part ref="historyDBpart" v-else :searchParams="searchParams" :carProjectOptions="this.selectOptions.carProjectOptions" />
+    <productGroup ref="historyDBProductGroup" v-if="searchParams.level === '1'" :searchParams="searchParams" :carProjectOptions="selectOptions.carProjectOptionsALL" :productGroupOptions="selectOptions.productGroupOptions" />
+    <part ref="historyDBpart" v-else :searchParams="searchParams" :carProjectOptions="selectOptions.carProjectOptionsALL" :productGroupOptions="selectOptions.productGroupOptions" />
   </div>
 </template>
 
@@ -39,7 +40,7 @@ import { searchListPro, searchListPart } from './data'
 import { cloneDeep } from 'lodash' 
 import productGroup from './components/productGroup'
 import part from './components/part'
-import { getCarTypePro } from '@/api/project'
+import { getCarTypePro, getProductGroupAll } from '@/api/project'
 export default {
   components: { iSearch, iSelect, iInput, iButton, productGroup, part },
   data() {
@@ -63,19 +64,70 @@ export default {
   created() {
     this.searchParams = {
       level: '1',
-      cartypeProId: this.$route.query.cartypeProId || '',
-      productGroup: this.$route.query.productGroup || '',
-      sixPartCode: this.$route.query.sixPartCode || ''
+      // productGroup: this.$route.query.productGroup || '',
+      productGroup: ''
     }
     this.getCarProjectOptions()
+    this.getProductGroupAll()
   },
   methods: {
+    querySearch(queryString, cb) {
+      var restaurants = this.selectOptions.productGroupOptions;
+      var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+      // 调用 callback 返回建议列表的数据
+      cb(results);
+    },
+    createFilter(queryString) {
+      return (restaurant=this.selectOptions.productGroupOptions) => {
+        return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+      };
+    },
+    getProductGroupAll() {
+      getProductGroupAll().then(res => {
+        if (res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            productGroupOptions: res.data.map(item => {
+              return {
+                ...item,
+                value: item.pgNameZh,
+                label: item.pgNameZh
+              }
+            })
+          }
+        }
+      })
+    },
+    handleChange(val, props) {
+      if (props === 'level'){
+        this.searchParams = {
+          level: val,
+          productGroup: ''
+        }
+      }
+    },
     getCarProjectOptions() {
-      getCarTypePro().then(res => {
+      getCarTypePro({isSop:true}).then(res => {
         if (res?.result) {
           this.selectOptions = {
             ...this.selectOptions,
             carProjectOptions: res.data.map(item => {
+              return {
+                ...item,
+                value: item.id,
+                label: item.cartypeProName
+              }
+            })
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+      getCarTypePro().then(res => {
+        if (res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            carProjectOptionsALL: res.data.map(item => {
               return {
                 ...item,
                 value: item.id,
@@ -96,7 +148,8 @@ export default {
     },
     handleReset() {
       this.searchParams = {
-        level: this.searchParams.level
+        level: this.searchParams.level,
+        productGroup: ''
       }
       this.handleSure()
     }
@@ -105,5 +158,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+::v-deep .el-autocomplete {
+  height: $input-height;
+  width: 100%;
+  .el-input{
+    height: $input-height;
+    .el-input__inner{
+      @include input_inner;
+    }
+  }
+}
 </style>

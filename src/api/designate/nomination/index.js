@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-07-28 15:38:04
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-09 16:46:25
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\api\designate\index.js
+ * @FilePath: \front-web\src\api\designate\nomination\index.js
  */
 import axios from "@/utils/axios"
 

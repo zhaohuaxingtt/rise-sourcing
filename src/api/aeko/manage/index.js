@@ -74,6 +74,15 @@ export function searchCartypeProject(params) {
   })
 }
 
+// aeko-列表查询-linie下拉
+export function searchLinie(params) {
+  return requst({
+    url: '/aeko/purchasing/search-linie',
+    method: 'GET',
+    params,
+  })
+}
+
 
 
 // 导入附件
@@ -124,13 +133,13 @@ export function templateDowmload(params) {
   })
 }
 
-// 获取附件列表 
+// 获取AEKO附件列表 
 export function getFilesList(params) {
   const {
     hostId,
     sortColumn=null,
     isAsc=true,
-    fileType=0,
+    fileType=1000,
     pageNo,
     pageSize=10,
   } = params;

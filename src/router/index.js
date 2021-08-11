@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-27 11:06:36
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-06 15:52:56
+ * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -20,6 +20,7 @@ import steeldemandcreation from './modules/steeldemandcreation'
 import negotiationAssistant from './modules/negotiationAssistant'
 import aekoRoutes from './modules/aeko'
 import projectRoutes from './modules/project'
+import reportmanage from './modules/reportmanage'
 
 Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
@@ -574,6 +575,12 @@ export const staticRouter = [{
             name: "loidetail",
             component: () => import ("@/views/letterAndLoi/loi/detail")
         },
+        // 寻源概览
+        {
+            path: "/sourcing/dashboard",
+            name: "dashboard",
+            component: () => import ("@/views/dashboard/index")
+        },
 
     ],
 },
@@ -621,6 +628,8 @@ export default new VueRouter({
         ...negotiationAssistant,
         ...aekoRoutes,
         //项目管理
-        ...projectRoutes
+        ...projectRoutes,
+        // 报表管理
+        ...reportmanage
     ]
 });

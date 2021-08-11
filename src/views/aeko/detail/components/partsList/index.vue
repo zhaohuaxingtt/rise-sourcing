@@ -11,18 +11,18 @@
         <el-form>
             <!-- AEKO类型为AeA显示车型，为aeko/mp显示车型项目 -->
             <el-form-item
-            v-show="!item.showCode || (item.showCode && item.showCode == (aekoInfo.aekoType && aekoInfo.aekoType.code))"
+            v-show="!item.showCode || (item.showCode && item.showCode == aekoInfo.aekoType)"
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
             :label="language(item.labelKey,item.label)"  
             >
-                <iSelect v-update v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
-                <el-option  value="" :label="language('all','全部')"></el-option>
-                <el-option
-                    v-for="item in selectOptions[item.selectOption] || []"
-                    :key="item.code"
-                    :label="item.desc"
-                    :value="item.code">
-                </el-option>  
+                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
+                    <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
+                    <el-option
+                        v-for="item in selectOptions[item.selectOption] || []"
+                        :key="item.code"
+                        :label="item.desc"
+                        :value="item.code">
+                    </el-option>
                 </iSelect> 
                 <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model="searchParams[item.props]"></iInput> 
             </el-form-item>
@@ -32,11 +32,11 @@
         <!-- 按钮区域 -->
         <template v-slot:header-control>
             <div v-if="isAekoManager || isCommodityCoordinator">
-                <iButton @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
+                <iButton v-if="isAekoManager" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton v-if="isCommodityCoordinator" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
-                <iButton>{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
+                <iButton >{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
                 <iButton :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
-                <iButton disabled>{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
+                <iButton @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
             </div>
         </template>
         <!-- 表单区域 -->
@@ -51,20 +51,26 @@
             @handleSelectionChange="handleSelectionChange"
         >
         <!-- 科室 -->
+        <!-- 实际分配科室有就显示实际科室，否则就显示预设科室  表示科室是预设的 -->
         <template #linieDeptName="scoped">
-            <span class="isPreset">{{scoped.row.linieDeptName}}</span>
+            <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptName || scoped.row.refferenceSmt}}</span>
         </template>
         <!-- linie -->
         <template #buyerName="scoped">
-            <span class="isPreset">{{scoped.row.buyerName}}</span>
-        </template>
-        <!-- 变更类型 -->
-        <template #changeType="scoped">
-            <span>{{scoped.row.changeType && scoped.row.changeType.desc}}</span>
+            <span :class="!scoped.row.buyerId ? 'isPreset' : '' ">{{scoped.row.buyerName || scoped.row.refferenceByuerName}}</span>
         </template>
         <!-- 操作 -->
         <template #operate="scoped">
-            <span class="link-underline" @click="assign(scoped.row)">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
+            <span v-if="!scoped.row.linieDeptNum && isAekoManager" class="link-underline" @click="assign(scoped.row,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
+            <!-- 1.未分配过 2.分配过 分配人未操作过 【buyerId表示已有分配人,oldPartNumPreset不为空标识操作过】-->
+            <!-- v-if="(!scoped.row.buyerId || ( scoped.row.buyerId && !oldPartNumPreset)) && isCommodityCoordinator"  -->
+            <span 
+                v-if="isCommodityCoordinator && !scoped.row.isOperate" 
+                class="link-underline" 
+                @click="assign(scoped.row,'linie')"
+            >
+                {{language('LK_AEKO_FENPAICAIGOUYUAN_LINE','分派采购员')}}
+            </span>
         </template>
 
         </tableList>
@@ -85,7 +91,9 @@
 
       </iCard>
       <!-- 分配科室 -->
-      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign"/>
+      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNumList" :buyerName="selectOptions.buyerName"/>
+      <!-- 退回原因 -->
+      <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
   </div>
 </template>
 
@@ -103,16 +111,21 @@ import { SearchList, linieSearchList , tableTitle, linieQueryForm, linieTableTit
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
+import departBackDialog from './components/departBackDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
-import { getCarTypePro } from '@/api/designate/nomination'
 import {
     getPartPage,
     deletePart,
 } from '@/api/aeko/detail/partsList.js'
 import {
     searchBrand,
+    searchCartypeProject,
+    searchLinie,
+    getSearchCartype,
+    searchCommodity,
 } from '@/api/aeko/manage'
 import { cloneDeep } from "lodash"
+import {user as configUser } from '@/config'
 export default {
     name:'partsList',
     mixins: [pageMixins],
@@ -125,6 +138,7 @@ export default {
         tableList,
         iPagination,
         assignDialog,
+        departBackDialog,
     },
     computed: {
         //eslint-disable-next-line no-undef
@@ -157,23 +171,30 @@ export default {
         } else if (this.isCommodityCoordinator) {
             this.SearchList = SearchList
             this.tableTitle = tableTitle;
-            this.getList();
         } else if (this.isAekoManager) {
             this.SearchList = SearchList
             this.tableTitle = tableTitle;
-            this.getList();
         } else {
             this.SearchList = []
             this.tableTitle = []
         }
+
     },
     data(){
         return{
             SearchList:[],
             searchParams:{
                 brand:'',
+                cartypeCode:[''],
+                cartype:[''],
+                linieDeptNumList:[''],
             },
-            selectOptions:{},
+            selectOptions:{
+                cartypeCode:[],
+                buyerName:[],
+                cartype:[],
+                linieDeptNumList:[],
+            },
             selectItems:[],
             loading:false,
             tableListData:[ ],
@@ -183,7 +204,8 @@ export default {
             assignType: "",
             btnLoading:{
                 deleteParts:false,
-            }
+            },
+            departBackVisible:false,
         }
     },
     methods:{
@@ -206,7 +228,10 @@ export default {
                 this.searchParams.buyerName = this.userInfo.nameZh
             } else {
                 this.searchParams = {
-                    brand:'',
+                     brand:'',
+                    cartypeCode:[''],
+                    cartype:[''],
+                    linieDeptNumList:[''],
                 };
             }
 
@@ -222,30 +247,38 @@ export default {
         },
         // 获取列表
         async getList(){
-            const { loading } = this;
-            if(loading) return; 
             this.loading = true;
             const {query} = this.$route;
-            const { page,searchParams,aekoInfo={} } = this;
             const { requirementAekoId ='',} = query;
-            // const {partNum} = searchParams;
-            let cartypeCode='';
+            const { page,searchParams,aekoInfo={} } = this;
+            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName} = searchParams;
+            let carTypeCodeList=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
-                if(aekoInfo.aekoType.code == 'AeA'){  // 车型
-                    cartypeCode = searchParams.cartype;
-                }else if(aekoInfo.aekoType.code == 'aeko/mp'){ // 车型项目
-                    cartypeCode = searchParams.cartypeCode;
+                if(aekoInfo.aekoType == 'AeA'){  // 车型
+                    carTypeCodeList = searchParams.cartype;
+                }else if(aekoInfo.aekoType == 'Aeko'){ // 车型项目
+                    carTypeCodeList = searchParams.cartypeCode;
                 }
+            }
+
+            // 多选为全部时单独处理
+            if(carTypeCodeList.length == 1 && carTypeCodeList[0] === ''){
+                carTypeCodeList=[];
             }
             
             const data = {
                 requirementAekoId, 
                 current:page.currPage,
                 size:page.pageSize,
-                cartypeCode,
+                carTypeCodeList,
+                brand,
+                partNum,
+                partNameZh,
+                buyerName,
+                linieDeptNumList:(linieDeptNumList.length == 1 && searchParams.linieDeptNumList[0] === '') ? [] : linieDeptNumList,
             }
-            getPartPage({...searchParams,...data}).then((res)=>{
+            getPartPage(data).then((res)=>{
                 this.loading = false;
                 const {code,data} = res;
                 if(code == 200){
@@ -262,26 +295,71 @@ export default {
         // 获取搜索框下拉数据
         getSearchList(){
             // 车型项目
-            getCarTypePro().then((res)=>{
+            searchCartypeProject().then((res)=>{
                  const {code,data} = res;
                 if(code ==200 ){
-                    (data.data).map((item)=>{
-                    item.desc = item.name;
+                    data.map((item)=>{
+                        item.desc = item.name;
                     })
-                    this.selectOptions.cartypeCode = data.data;
+                    this.selectOptions.cartypeCode = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
             })
             //品牌
             searchBrand().then((res)=>{
-            const {code,data=[]} = res;
-            if(code ==200 && data){
-                this.selectOptions.brand = data;
+                const {code,data=[]} = res;
+                if(code ==200 && data){
+                    data.map((item)=>{
+                        item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
+                    })
+                    this.selectOptions.brand = data;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            })
+
+            // LINIE
+            searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+                const {code,data} = res;
+                if(code ==200 ){
+                    data.map((item)=>{
+                        item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                    })
+                    this.selectOptions.buyerName = data;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            })
+            // 科室
+            searchCommodity().then((res)=>{
+                const {code,data} = res;
+                if(code ==200 ){
+                    data.map((item)=>{
+                        item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.code = item.deptNum;
+                    })
+                    this.selectOptions.linieDeptNumList = data;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            })
+
+            // 车型
+            getSearchCartype().then((res)=>{
+            const {code,data} = res;
+            if(code ==200){
+                data.map((item)=>{
+                item.desc = item.name;
+                item.code = item.name;
+                })
+                this.selectOptions.cartype = data.filter((item)=>item.name) || [];
             }else{
                 iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }
             })
+
         },
         // 删除零件
         deleteParts(){
@@ -325,19 +403,27 @@ export default {
         assign(row=null, type){
             console.log(row);
             const {selectItems} = this;
-            // 判断是否是单一分派
 
             this.assignType = type
 
+            // 判断是否是单一分派
             if(row){
                 this.singleAssign = [row];
                 this.assignVisible = true;
             }else{
                 if(!selectItems.length){
-                    iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+                    return iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
                 }else{
                     // 判断是否是单一分派
                     if(selectItems.length == 1){
+                        // 判断所选项是否已分派
+                        if(type == 'commodity'){  // 科室
+                            const arr = selectItems.filter((item)=>item.linieDeptNum);
+                            if(arr.length) return iMessage.warn(this.language('LK_AEKO_GAILINGJIANYIFENPEI','该零件已分派'))
+                        }else{ // 采购员linie  
+                            const arr = selectItems.filter((item)=>item.isOperate);
+                            if(arr.length) return iMessage.warn(this.language('LK_AEKO_GAILINGJIANYIFENPEI','该零件已分派'))
+                        }
                         this.singleAssign = selectItems;
                     }
                     this.assignVisible = true;
@@ -354,6 +440,7 @@ export default {
 
             getAekoContentPart({
                 ...this.searchParams,
+                cartypeCode: Array.isArray(this.searchParams.cartypeCode) ? (this.searchParams.cartypeCode.length === 1 && this.searchParams.cartypeCode[0] === "" ? null : this.searchParams.cartypeCode) : null,
                 requirementAekoId: this.aekoInfo.requirementAekoId,
                 buyerName: undefined,
                 linieDeptNum: undefined,
@@ -371,7 +458,40 @@ export default {
                 this.loading = false
             })
             .catch(() => this.loading = false)
-        }
+        },
+        // 多选处理
+        handleMultipleChange(value, key,multiple) {
+            // 单选不处理
+            if(!multiple) return;
+
+            if (!value[value.length - 1]) {
+                this.$set(this.searchParams, key, [""])
+            } else {
+                this.$set(this.searchParams, key, this.searchParams[key].filter(item => item || item === 0))
+            }
+        },
+
+        // 判断是否勾选项
+        async isSelectItem(type=false){
+            const {selectItems} = this;
+            if(!selectItems.length){
+                iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+                return false;
+            }else{
+                if(type){
+                    return true;
+                }else{
+                    const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
+                    return confirmInfo == 'confirm';
+                }
+            }
+        },
+
+        // 科室退回
+        async back(){
+            const isNext  = await this.isSelectItem(true);
+            if(isNext) this.changeVisible('departBackVisible',true);
+        },
     }
 }
 </script>
@@ -385,12 +505,32 @@ export default {
         .isPreset{
             color: rgba($color: #5C6577, $alpha: .5);
         }
-        .multipleSelect{
-            ::v-deep .el-tag{
-            max-width: calc(100% - 70px);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        .multipleSelect {
+            ::v-deep .el-tag {
+                position: relative;
+
+                &:last-of-type {
+                    padding-right: 5px;
+                }
+
+                &:first-of-type {
+                    padding-right: 10px;
+                }
+
+                .el-select__tags-text {
+                    display: inline-block;
+                    max-width: 80px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .el-tag__close {
+                    top: -25%;
+                }
+            }
+            ::v-deep .el-input__inner{
+                height: 35px !important;
             }
         }
     }

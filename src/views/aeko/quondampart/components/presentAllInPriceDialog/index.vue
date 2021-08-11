@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 13:59:01
- * @LastEditTime: 2021-08-02 09:58:11
+ * @LastEditTime: 2021-08-11 15:01:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\presentAllInPriceDialog\index.vue
@@ -51,23 +51,19 @@ export default {
       type: Boolean,
       default: false,
     },
-    partNum: {
-      type: String,
+    apriceId: {
+      type: String || Number,
       require: true,
       default: ""
-    },
-    factoryCode: {
-      type: String,
-      require: true,
-      default: ""
-    },
+    }
   },
   watch: {
     status(nv) {
       if (nv) {
-        this.getList()
+        this.getAekoOriginPartAPrice()
       } else {
         this.selectRow = null
+        this.tableListData = []
       }
     },
   },
@@ -95,12 +91,11 @@ export default {
       this.loading = true
 
       getAekoOriginPartAPrice({
-        partNum: this.partNum,
-        factoryCode: this.factoryCode
+        apriceId: this.apriceId
       })
       .then(res => {
         if (res.code == 200) {
-          this.multipleSelection = []
+          this.selectRow = {}
           this.tableListData = Array.isArray(res.data) ? res.data : []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -115,6 +110,8 @@ export default {
     },
     // 确认
     handleConfirm() {
+      if (!this.selectRow) return iMessage.warn(this.language("QINGXUANZEYIGEAJIASHUJU", "请选择一个A价数据"))
+
       this.$emit("confirm", this.selectRow)
       this.status = false
     },

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 20:00:13
- * @LastEditTime: 2021-07-27 16:03:05
+ * @LastEditTime: 2021-08-09 16:55:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\index.vue
@@ -11,7 +11,7 @@
     <div class="header">
       <div class="title">{{ language("ZHIDINGYUANLINGJIAN", "指定原零件") }}</div>
       <div class="control">
-        <iNavMvp class="nav margin-right20" :lev="2" :list="navList" lang routerPage />
+        <iNavMvp class="nav margin-right20" :lev="2" :list="navList" lang routerPage routerParam />
         <iButton @click="handleBack">{{ language("FANHUI", "返回") }}</iButton>
         <div class="control">
           <logButton class="margin-left20" />
@@ -41,11 +41,30 @@ export default {
   },
   methods: {
     handleBack() {
-      // this.$router.go(-1)
-      this.$router.replace({
-        path: "/aeko/aekodetail",
-        query: {}
-      })
+      if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+        try {
+          const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+
+          this.$router.replace({
+            path: "/aeko/aekodetail",
+            query: {
+              requirementAekoId: aekoConatentDeclareParams.requirementAekoId
+            }
+          })
+        } catch(e) {
+          console.error(e)
+
+          this.$router.replace({
+            path: "/aeko/managelist",
+            query: {}
+          })
+        }
+      } else {
+        this.$router.replace({
+          path: "/aeko/managelist",
+          query: {}
+        })
+      }
     }
   }
 }

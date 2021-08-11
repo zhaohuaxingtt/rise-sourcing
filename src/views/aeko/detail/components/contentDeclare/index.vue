@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-05 14:54:32
+ * @LastEditTime: 2021-08-11 18:18:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -105,7 +105,7 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in options"
+              v-for="item in procureFactoryOptiopns"
               :key="item.key"
             ></el-option>
           </iSelect>
@@ -151,22 +151,17 @@
         <tableList
           class="table"
           index
+          fixed
           :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
           @handleSelectionChange="handleSelectionChange"
         >
-          <template #isReference="scope">
-            <span>{{ scope.row.isReference ? scope.row.isReference.desc : "" }}</span>
-          </template>
-          <template #status="scope">
-            <span>{{ scope.row.status ? scope.row.status.desc : "" }}</span>
-          </template>
           <template #oldPartNumPreset="scope">
-            <iInput v-if="scope.row.status.code === 'EMPTY'" class="oldPartNumPresetSelect" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly @click.native="oldPartNumPresetSelect(scope.row)">
+            <iInput v-if="scope.row.status === 'EMPTY'" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
               <div class="inputSearchIcon" slot="suffix">
-                <icon symbol name="iconshaixuankuangsousuo" />
+                <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
             </iInput>
             <iInput v-else v-model="scope.row.oldPartNumPreset" disabled readonly></iInput>
@@ -194,7 +189,7 @@
             </iSelect>
           </template>
           <template #isMtz="scope">
-            <span v-if="isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.isMtz == 1" class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
         </tableList>
         <iPagination 
@@ -210,7 +205,7 @@
           :total="page.totalCount" />
       </div>
     </iCard>
-    <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" />
+    <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" @update="init" />
   </div>
 </template>
 
@@ -218,12 +213,13 @@
 import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import dosageDialog from "../dosageDialog"
-import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle, isReferenceMap } from "../data"
+import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
 import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
-import { getCarTypePro } from "@/api/designate/nomination"
 import { getDictByCode } from "@/api/dictionary"
+import { searchCartypeProject } from "@/api/aeko/manage"
+import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 
 const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
@@ -243,6 +239,7 @@ export default {
       carTypeProjectOptions: [],
       contentStatusOptions: [],
       mtzOptions,
+      procureFactoryOptiopns: [],
       options: [],
       loading: false,
       tableTitle,
@@ -252,26 +249,34 @@ export default {
       declareResetLoading: false,
       currentRow: {},
       dosageDialogVisible: false,
-      submitLoading: false,
+      submitLoading: false
     };
   },
   created() {
-    this.getCarTypePro()
+    this.searchCartypeProject()
     this.getDictByCode()
-  },
-  filters: {
-    isReferenceFilter(value) {
-      return isReferenceMap[value] ? isReferenceMap[value] : value
+    this.procureFactorySelectVo()
+
+    if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
+      try {
+        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
+
+        this.form = aekoConatentDeclareParams.form
+        // this.page.currPage = aekoConatentDeclareParams.currPage
+        // this.page.pageSize = aekoConatentDeclareParams.pageSize
+      } catch(e) {
+        console.error(e)
+      }
     }
   },
   methods: {
-    getCarTypePro() {
-      getCarTypePro()
+    searchCartypeProject() {
+      searchCartypeProject()
       .then(res => {
         if (res.code == 200) {
           this.carTypeProjectOptions = 
-            Array.isArray(res.data.data) ?
-            res.data.data.map(item => ({
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
               key: item.code,
               label: item.name,
               value: item.code
@@ -305,6 +310,24 @@ export default {
       })
       .catch(() => {})
     },
+    procureFactorySelectVo() {
+      procureFactorySelectVo()
+      .then(res => {
+        if (res.code == 200) {
+          this.procureFactoryOptiopns = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              key: item.code,
+              label: item.name,
+              value: item.code
+            })) :
+            []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
     handleChangeByAll(value, key) {
       if (!value[value.length - 1]) {
         this.$set(this.form, key, [""])
@@ -317,8 +340,7 @@ export default {
       
       getAekoLiniePartInfo({
         ...this.form,
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId || 
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
         current: this.page.currPage,
@@ -360,19 +382,30 @@ export default {
     },
     view() {},
     oldPartNumPresetSelect(row) {
+      if (!row.oldPartNumPreset) return
+
       this.$router.push({
         path: "/aeko/quondampart/ledger",
         query: {
           requirementAekoId: this.aekoInfo.requirementAekoId,
-          objectAekoPartId: row.objectAekoPartId
+          objectAekoPartId: row.objectAekoPartId,
+          oldPartNumPreset: row.oldPartNumPreset.trim()
         }
       })
+    
+      sessionStorage.setItem(`aekoConatentDeclareParams_${ this.aekoInfo.requirementAekoId }`, JSON.stringify({
+        form: this.form,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
+        currPage: this.page.currPage,
+        pageSize: this.page.pageSize,
+        currentTab: "contentDeclare"
+      }))
     },
     // 相关无关切换
     handleDeclareToggle() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOQIEHUANBIAOTAIDELINGJIAN", "请选择需要切换表态的零件"))
 
-      if (!this.multipleSelection.every(item => item.status.code === "TOBE_STATED" || item.status.code === "QUOTING" || item.status.code === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGQIEHUAN", "请选择内容状态为待表态、报价中、已报价的零件进行切换"))
+      if (!this.multipleSelection.every(item => item.status === "TOBE_STATED" || item.status === "QUOTING" || item.status === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGQIEHUAN", "请选择内容状态为待表态、报价中、已报价的零件进行切换"))
 
       this.declareToggleLoading = true
 
@@ -398,13 +431,12 @@ export default {
     handleDeclareReset() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHONGZHIBIAOTAIDELINGJIAN", "请选择需要重置表态的零件"))
 
-      if (!this.multipleSelection.every(item => item.status.code === "TOBE_STATED" || item.status.code === "QUOTING" || item.status.code === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI", "请选择内容状态为待表态、报价中、已报价的零件进行重置"))
+      if (!this.multipleSelection.every(item => item.status === "TOBE_STATED" || item.status === "QUOTING" || item.status === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI", "请选择内容状态为待表态、报价中、已报价的零件进行重置"))
 
       this.declareResetLoading = true
 
       patchAekoReset({
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
       })
       .then(res => {
@@ -424,32 +456,21 @@ export default {
     // 导出
     handleExport() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAODAOCHUDEYUANLINGJIAN", "请选择需要导出的原零件"))
-    
-      const data = cloneDeep(this.multipleSelection)
-      data.forEach(item => {
-        item.isReference = item.isReference.desc
-        item.status = item.status.desc
-      })
-
-      excelExport(data, printTableTitle)
+      excelExport(this.multipleSelection, printTableTitle)
     },
     // 提交
     handleSubmit() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIJIAOBIAOTAIDELINGJIAN", "请选择需要提交表态的零件"))
 
       for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
-        if (item.status.code !== "TOBE_STATED" && item.status.code !== "QUOTING" && item.status.code !== "QUOTED")
+        if (item.status !== "TOBE_STATED" && item.status !== "QUOTING" && item.status !== "QUOTED")
           return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价的零件进行提交"))
-
-        if (item.isDeclare != 1)
-          return iMessage.warn(this.language("QINGXUANZEYISHOUDONGSHEZHIAJIADELINGJIANJINXINGTIJIAO", "请选择已手动设置A价的零件进行提交"))
       }
 
       this.submitLoading = true
 
       patchAekoContent({
-        requirementAekoId: "10001",
-        // this.aekoInfo.requirementAekoId,
+        requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
       })
       .then(res => {
@@ -472,24 +493,50 @@ export default {
 
 <style lang="scss" scoped>
 .contentDeclare {
-  .multipleSelect{
-    ::v-deep .el-tag{
-      max-width: calc(100% - 70px);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+  .multipleSelect {
+    ::v-deep .el-tag {
+      position: relative;
+
+      &:last-of-type {
+        padding-right: 5px;
+      }
+
+      &:first-of-type {
+        padding-right: 10px;
+      }
+
+      .el-select__tags-text {
+        display: inline-block;
+        max-width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .el-tag__close {
+        top: -25%;
+      }
     }
   }
 
-  .oldPartNumPresetSelect {
-    cursor: pointer;
-    
+  .oldPartNumPresetQuery {
     ::v-deep input {
-      cursor: pointer;
+      caret-color: rgb(96, 98, 102);
     }
 
-    ::v-deep .el-input__suffix {
+    .oldPartNumPresetIcon {
+      cursor: pointer;
+
+      ::v-deep .el-input__suffix {
+        right: 0;
+      }
+    }
+    
+    ::v-deep .el-input__suffix-inner {
+      position: absolute;
+      top: 50%;
       right: 0;
+      transform: translate(0, -50%);
     }
   }
 
@@ -500,6 +547,10 @@ export default {
   }
 
   ::v-deep .el-input__suffix {
+    .el-input__suffix-inner {
+      height: 100% !important;
+    }
+
     .inputSearchIcon {
       display: inline-block;
       width: 30px;

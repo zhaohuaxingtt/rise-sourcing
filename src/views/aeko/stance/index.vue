@@ -42,7 +42,7 @@
       <!-- AEKO号  -->
       <template #aekoCode="scope">
         <div class="table-item-aeko">
-          <icon  v-if="scope.row.isTop && scope.row.isTop.code==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
+          <icon  v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
           <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}}</span>
           <a v-if="scope.row.fileCount && scope.row.fileCount> 0"  @click="checkFiles(scope.row)" class="file-icon"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
         </div> 
@@ -115,11 +115,13 @@ import filesListDialog from '../manage/components/filesListDialog'
 import {
   getLiniePage,
 } from '@/api/aeko/stance'
-import { getCarTypePro } from '@/api/designate/nomination'
-import { getCartypeDict } from '@/api/partsrfq/home'
+// import { getCarTypePro } from '@/api/designate/nomination'
+// import { getCartypeDict } from '@/api/partsrfq/home'
 import {
   searchAekoStatus,
   searchCoverStatus,
+  searchCartypeProject,
+  getSearchCartype,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoStanceList',
@@ -143,7 +145,7 @@ export default {
         SearchList:searchList,
         selectItems:[],
         searchParams:{
-          coverStatusList:['TOBE_STATED']
+          coverStatusList:['TOBE_STATED'],
         },
         selectOptions:{
           cartypeProjectCodeList:[],
@@ -217,24 +219,33 @@ export default {
           }
 
         }).catch((err)=>{
-
+          this.loading = false;
         })
       },
 
        // 获取搜索框下拉数据
       getSearchList(){
         // 车型项目
-         getCarTypePro().then((res)=>{
-          console.log(res.data);
-          if(res.code ==200){
-            this.selectOptions.cartypeProjectCodeList = res.data.data || [];
+         searchCartypeProject().then((res)=>{
+          const {code,data} = res;
+          if(code ==200){
+            data.map((item)=>{
+              item.desc = item.name;
+            })
+            this.selectOptions.cartypeProjectCodeList = data || [];
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
 
         // 车型
-        getCartypeDict().then((res)=>{
-          if(res.code ==200){
-            this.selectOptions.cartypeCodeList = res.data || [];
+        getSearchCartype().then((res)=>{
+          const {code,data} = res;
+          if(code ==200){
+            data.map((item)=>{
+              item.desc = item.name;
+            })
+            this.selectOptions.cartypeCodeList = data.filter((item)=>item.name) || [];
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -269,10 +280,11 @@ export default {
 
       // 跳转详情页
       goToDetail(row){
+        const { requirementAekoId } = row;
         const routeData = this.$router.resolve({
           path: '/aeko/aekodetail',
           query: {
-            requirementAekoId:1,
+            requirementAekoId,
           },
         })
         window.open(routeData.href, '_blank')
