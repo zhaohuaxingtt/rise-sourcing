@@ -54,7 +54,7 @@
           </el-form-item>
 
           <el-form-item :label="language('LK_GONGYINGSHANG', '供应商')">
-            <iInput clearable :placeholder="language('LK_QINGSHURUGONGYINGSHANG', '请输入(11025-上海汇众)')" v-model="form['designatedSupplierId']" ></iInput>
+            <iInput clearable :placeholder="language('LK_QINGSHURUGONGYINGSHANGHUOBIANHAO', '请输入(11025或上海汇众)')" v-model="form['designatedSupplierId']" ></iInput>
             <!-- <iSelect
                 class="multipleSelect"
                 :placeholder="language('LK_QINGXUANZHE', '请选择')"

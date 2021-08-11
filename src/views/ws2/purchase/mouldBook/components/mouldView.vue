@@ -115,9 +115,10 @@
           :tableLoading="tableLoading"
           :selection="false"
         >
-          <template #img="scope">
-            <div v-if="scope.row.picture && scope.row.picture !== ''" class="table-link" @click="openPhoto(scope.row)">查看</div>
-          </template>
+          <template #picture="scope">
+          <div v-if="scope.row.picture" class="table-link" @click="openPhotoList(scope.row.picture.split(','))">查看</div>
+          <div v-else></div>
+        </template>
 
           <template #assetTotal="scope">
             <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.assetTotal))}}</div>
@@ -220,11 +221,9 @@ export default {
 
   methods: {
 
-    openPhoto(scope){
-      if(scope.picture){
-        this.imgList = scope.picture.split(',');
-        this.visible = true;
-      }
+    openPhotoList(imgList){
+      this.visible = true;
+      this.imgList = imgList;
     },
 
     getTableData(){
