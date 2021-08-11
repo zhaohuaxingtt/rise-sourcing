@@ -6,19 +6,24 @@
         <span>{{ language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响') }}：</span>
       </span>
       <div class="floatright">
-        <template v-if="tableStatus === 'edit'">
-          <!--新增-->
-          <iButton @click="handleAdd">{{ language('PI.XINZENG', '新增') }}</iButton>
-          <!--删除-->
-          <iButton @click="handleDelete">{{ $t('delete') }}</iButton>
-          <!--取消-->
-          <iButton @click="handleCancel">{{ $t('LK_QUXIAO') }}</iButton>
-          <!--完成-->
-          <iButton @click="handleFinish">{{ language('PI.BAOCUN', '保存') }}</iButton>
+        <template v-if="isPreview">
+          <span class="text timeRange">{{ language('PI.SHIJIANDAN', '时间段') }}：2020/09 - 2021/03</span>
         </template>
         <template v-else>
-          <!--编辑-->
-          <iButton @click="handleEdit" v-if="tableStatus !== 'edit' && showEditButton">{{ $t('LK_BIANJI') }}</iButton>
+          <template v-if="tableStatus === 'edit'">
+            <!--新增-->
+            <iButton @click="handleAdd">{{ language('PI.XINZENG', '新增') }}</iButton>
+            <!--删除-->
+            <iButton @click="handleDelete">{{ $t('delete') }}</iButton>
+            <!--取消-->
+            <iButton @click="handleCancel">{{ $t('LK_QUXIAO') }}</iButton>
+            <!--完成-->
+            <iButton @click="handleFinish">{{ language('PI.BAOCUN', '保存') }}</iButton>
+          </template>
+          <template v-else>
+            <!--编辑-->
+            <iButton @click="handleEdit" v-if="tableStatus !== 'edit' && showEditButton">{{ $t('LK_BIANJI') }}</iButton>
+          </template>
         </template>
       </div>
     </div>
@@ -34,7 +39,7 @@
         @handleSelectionChange="handleSelectionChange"
         @handleHide="handleHide"
     />
-    <el-divider class="margin-top20 margin-bottom20"/>
+    <el-divider class="margin-top20 margin-bottom20"  v-if="tableStatus === 'edit'"/>
     <!--隐藏表格-->
     <theTableTemplate
         v-if="tableStatus === 'edit'"
@@ -75,6 +80,10 @@ export default {
       },
     },
     tableLoading: {
+      type: Boolean,
+      default: false,
+    },
+    isPreview: {
       type: Boolean,
       default: false,
     },
@@ -126,7 +135,7 @@ export default {
         ...newItem,
         time,
         isShow: true,
-        newRow: true
+        newRow: true,
       });
     },
     handleDelete() {
@@ -194,7 +203,7 @@ export default {
         //this.copyDataInfo = _.cloneDeep(this.dataInfo);
         this.copyDataInfo = [
           {'a': 1, 'b': 2, 'c': 1, 'q': 1, 'w': 212312323, 'e': 3, isShow: true},
-          {'a': 2, 'b': 2, 'c': 1,'q': 112, 'w': 2, 'e': 3, isShow: true}];
+          {'a': 2, 'b': 2, 'c': 1, 'q': 112, 'w': 2, 'e': 3, isShow: true}];
         this.copyDataInfo.map((item, index) => {
           if (!item.id) {
             item.time = new Date().getTime() + index;
@@ -267,5 +276,11 @@ export default {
 
 .iconStyle {
   font-size: 22px;
+}
+
+.timeRange{
+  font-size: 16px;
+  font-weight: bold;
+  color: #000000;
 }
 </style>
