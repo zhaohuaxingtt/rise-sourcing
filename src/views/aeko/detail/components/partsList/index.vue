@@ -91,7 +91,7 @@
 
       </iCard>
       <!-- 分配科室 -->
-      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNum" :buyerName="selectOptions.buyerName"/>
+      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNumList" :buyerName="selectOptions.buyerName"/>
       <!-- 退回原因 -->
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
   </div>
@@ -185,15 +185,12 @@ export default {
             SearchList:[],
             searchParams:{
                 brand:'',
-                cartypeCode:[],
-                cartype:'',
-                linieDeptNum:'',
             },
             selectOptions:{
                 cartypeCode:[],
                 buyerName:[],
                 cartype:[],
-                linieDeptNum:[],
+                linieDeptNumList:[],
             },
             selectItems:[],
             loading:false,
@@ -229,7 +226,6 @@ export default {
             } else {
                 this.searchParams = {
                     brand:'',
-                    cartypeCode:[],
                 };
             }
 
@@ -250,13 +246,14 @@ export default {
             const { requirementAekoId ='',} = query;
             const { page,searchParams,aekoInfo={} } = this;
             console.log(searchParams,'searchParams');
-            let cartypeCode=[];
+            console.log(aekoInfo,'aekoInfo');
+            let carTypeCodeList=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
-                if(aekoInfo.aekoType.code == 'AeA'){  // 车型
-                    cartypeCode = searchParams.cartype ? [searchParams.cartype] : [];
-                }else if(aekoInfo.aekoType.code == 'aeko/mp'){ // 车型项目
-                    cartypeCode = searchParams.cartypeCode;
+                if(aekoInfo.aekoType == 'AeA'){  // 车型
+                    carTypeCodeList = searchParams.cartype ? [searchParams.cartype] : [];
+                }else if(aekoInfo.aekoType == 'Aeko'){ // 车型项目
+                    carTypeCodeList = searchParams.cartypeCode;
                 }
             }
             
@@ -264,7 +261,7 @@ export default {
                 requirementAekoId, 
                 current:page.currPage,
                 size:page.pageSize,
-                cartypeCode,
+                carTypeCodeList,
             }
             getPartPage({...searchParams,...data}).then((res)=>{
                 this.loading = false;
@@ -328,7 +325,7 @@ export default {
                         item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
                         item.code = item.deptNum;
                     })
-                    this.selectOptions.linieDeptNum = data;
+                    this.selectOptions.linieDeptNumList = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
