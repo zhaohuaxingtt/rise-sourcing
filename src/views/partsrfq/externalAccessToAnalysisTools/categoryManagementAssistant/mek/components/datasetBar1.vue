@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-10 19:11:04
+ * @LastEditTime: 2021-08-11 11:29:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -29,6 +29,7 @@ export default {
     initCharts () {
       this.myChart = echarts().init(this.$refs.chart);
       this.$refs.chart.style.width = 6 * 60 + 'px';
+      this.$refs.chart.style.minWidth = '100%';
       const str = "MIX" + "\n\n 5%"
       const option = {
         title: {
@@ -39,20 +40,30 @@ export default {
         },
         xAxis: [
           {
+            show: false,
             type: "category",
             axisTick: { show: false },
+            // data: [{
+            //   value: str
+            // }, "配置1", "配置2"],
+            axisLabel: {
+              color: "#3C4F74",
+              fontSize: 12,
+              fontFamily: "Arial"
+            },
             data: [{
               value: str
-            }, "配置1", "配置2"],
+            }],
             axisLine: {
               show: false
             },
-            offset: 6
+            offset: 6,
+            triggerEvent: true
           },
         ],
         grid: {
-          left: 40,
-          right: "-5%",
+          left: 0,
+          right: 0,
           bottom: "15%",
           top: "30%",
         },
@@ -74,7 +85,7 @@ export default {
           axisTick: {
             show: false,
           },
-          offset: 5,
+          offset: -16,
           splitNumber: 4,
           nameLocation: "start",
         },
@@ -131,13 +142,8 @@ export default {
       this.myChart.clear();
       this.myChart.resize();
       this.myChart.setOption(option);
-      this.myChart.on('click', 'xAxis.category', function (params) {
-        alert("点击了x轴标签：" + params.value);
+      this.myChart.on('click', function (params) {
       });
-      this.myChart.on("click", (params) => {
-        console.log(params)
-      })
-
     },
   },
 };

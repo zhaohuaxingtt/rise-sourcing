@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-08-09 19:34:24
+ * @LastEditTime: 2021-08-11 11:28:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -35,6 +35,7 @@ export default {
       this.myChart = echarts().init(this.$refs.chart);
       console.log(this.$refs.chart);
       this.$refs.chart.style.width = 6 * 60 + 'px';
+      this.$refs.chart.style.minWidth = '100%';
 
       const option = {
         xAxis: [
@@ -43,6 +44,9 @@ export default {
             axisTick: { show: false },
             axisLabel: {
               show: true,
+              color: "#3C4F74",
+              fontSize: 12,
+              fontFamily: "Arial"
             },
             axisLine: {
               show: false
