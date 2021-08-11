@@ -17,6 +17,8 @@
         @handlePartItemClose="handlePartItemClose"
         @handlePartItemClick="handlePartItemClick"
     />
+    <!-- 自定义零件弹窗 -->
+    <customPart :key="customParams.key" v-model="customParams.visible"/>
     <!--信息-->
     <iCard class="margin-bottom20">
       <theBaseInfo/>
@@ -54,6 +56,7 @@ import thePartsList from './components/thePartsList';
 import theBaseInfo from './components/theBaseInfo';
 import theTabs from './components/theTabs';
 import theTable from './components/theTable';
+import customPart from './components/customPart'
 import thePartsCostChart from './components/thePartsCostChart';
 import thePriceIndexChart from './components/thePriceIndexChart';
 import resultMessageMixin from '@/utils/resultMessageMixin';
@@ -66,6 +69,7 @@ export default {
     iButton,
     iCard,
     thePartsList,
+    customPart,
     thePartsCostChart,
     thePriceIndexChart,
     theBaseInfo,
@@ -82,13 +86,23 @@ export default {
       ],
       partItemCurrent: 0,
       currentTab: CURRENTTIME,
+      customParams: {
+        key: 0,
+        visible: false
+      }
     };
   },
   methods: {
     handleBack() {},
     handlePreview() {},
     // 打开自定义零件
-    handleOpenCustomDialog() {},
+    handleOpenCustomDialog() {
+      this.customParams = {
+        ...this.customParams,
+        key: Math.random(),
+        visible: true
+      }
+    },
     // 关闭零件
     handlePartItemClose({event, item}) {
       event.stopPropagation();
