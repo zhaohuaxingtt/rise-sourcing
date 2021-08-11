@@ -194,6 +194,21 @@
           <div v-if="scope.row.picture" class="table-link" @click="openPhotoList(scope.row.picture.split(','))">查看</div>
           <div v-else></div>
         </template>
+        <template #partsShareNum="scope">
+          <div v-if="scope.row.partsShareNum">
+            <Popover
+                placement="bottom"
+                trigger="hover">
+              <div>
+                <div v-for="(item, index) in scope.row.partsShareNum.split(',')" :key="index">{{ item }}</div>
+              </div>
+              <div slot="reference">
+                {{ scope.row.partsShareNum.split(',')[0] }}
+              </div>
+            </Popover>
+          </div>
+          <div v-else>{{ scope.row.partsShareNum }}</div>
+        </template>
       </iTableList>
       <div style="color: #999999;font-size: 14px;text-align: right;margin: 10px 0;">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
 
