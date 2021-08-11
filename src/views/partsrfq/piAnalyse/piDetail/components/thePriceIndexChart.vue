@@ -146,7 +146,7 @@ export default {
         grid: {
           top: 30,
           left: '3%',
-          right: '3%',
+          right: 60,
           bottom: '3%',
           containLabel: true,
         },
@@ -172,36 +172,24 @@ export default {
           },
         },
         series: [
-          {
+          this.setLineData({
+            lineType: 'solid',
+            lineColor: '#C62928',
             name: '汇率合成波动比例',
-            type: 'line',
-            symbol: 'none',
-            lineStyle: {
-              type: 'solid',
-              color: '#C62928',
-            },
             data: [120, 132, 101, 134, 90, 230, 210],
-          },
-          {
+          }),
+          this.setLineData({
+            lineType: 'dashed',
+            lineColor: '#C62928',
             name: '汇率合成波动均线',
-            type: 'line',
-            symbol: 'none',
-            lineStyle: {
-              type: 'dashed',
-              color: '#C62928',
-            },
             data: [150, 150, 150, 150, 150, 150, 150],
-          },
-          {
+          }),
+          this.setLineData({
+            lineType: 'dotted',
+            lineColor: '#C62928',
             name: '汇率1波动比例',
-            type: 'line',
-            symbol: 'none',
-            lineStyle: {
-              type: 'dotted',
-              color: '#C62928',
-            },
             data: [150, 232, 201, 154, 190, 330, 410],
-          },
+          }),
         ],
       };
       chart.setOption(option, true);
@@ -212,6 +200,66 @@ export default {
     buildChart() {
       this.assembleData();
       this.initEcharts();
+    },
+    setNormalLineLastDataMark(data) {
+      const lastIndex = data.length - 1;
+      const resData = data.map(item => {
+        return {
+          value: item,
+        };
+      });
+      resData[lastIndex]['label'] = {
+        show: true,
+        color: '#000000',
+        fontWeight: 'bold',
+        position: 'right',
+        formatter: (obj) => {
+          return `${obj.value}%`;
+        },
+      };
+      return resData;
+    },
+    setAverageLineLastDataMark(data, backgroundColor) {
+      const lastIndex = data.length - 1;
+      const resData = data.map(item => {
+        return {
+          value: item,
+        };
+      });
+      resData[lastIndex]['label'] = {
+        rich: {
+          bg: {
+            padding: [4, 12],
+            backgroundColor,
+            color: '#fff',
+            fontWeight: 'bold'
+          },
+        },
+        show: true,
+        color: '#000000',
+        position: 'right',
+        formatter: (obj) => {
+          return `{bg|${obj.value}%}`;
+        },
+      };
+      return resData;
+    },
+    setLineData({lineType, lineColor, name, data}) {
+      const obj = {
+        name: name,
+        type: 'line',
+        symbolSize: 1,
+        lineStyle: {
+          type: lineType,
+          color: lineColor,
+        },
+      };
+      if (lineType === 'dashed') {
+        obj.data = this.setAverageLineLastDataMark(data, lineColor);
+      } else {
+        obj.data = this.setNormalLineLastDataMark(data);
+      }
+      return obj;
     },
   },
   watch: {
