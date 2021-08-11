@@ -179,7 +179,7 @@ export default {
           brand:'',
           aekoStatusList:[],
           coverStatusList:[],
-          cartypeCode:'',
+          cartypeCode:[],
           linieDeptNum:'',
         },
         selectOptions:{
@@ -216,7 +216,7 @@ export default {
           brand:'',
           aekoStatusList:[],
           coverStatusList:[],
-          cartypeCode:'',
+          cartypeCode:[],
           linieDeptNum:'',
         };
         this.getList();
@@ -235,7 +235,8 @@ export default {
         const {frozenDate=[]} = searchParams;
         const data = {
             current:page.currPage,
-            size:page.pageSize
+            size:page.pageSize,
+            cartypeCode:searchParams.cartypeCode.length ? searchParams.cartypeCode : null,
         };
         if(frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
@@ -394,9 +395,14 @@ export default {
         // 一次只能撤销一个AEKO
         const {selectItems} = this;
         if(selectItems.length > 1) return iMessage.warn(this.language('LK_AEKO_YICIZHINENGCHEXIAOYIGEAEKO','一次只能撤销一个AEKO，请修改！'));
-        console.log(isNext,'isNext');
+        // 选中的aeko非处于”已导入”或”已分配”状态  不能进行撤销操作
+        const {aekoStatus=''} = selectItems[0];
+        if(aekoStatus != 'IMPORTED' && aekoStatus !='ASSIGNED'){
+          return iMessage.warn(this.language('LK_AEKO_DANGQIANAEKOBUNENGJINXINGCAOZUO','当前aeko不能进行撤销操作'));
+        }
         this.changeVisible('revokeVisible',true);
       },
+      
 
       // 查看附件列表
       async checkFiles(row){
