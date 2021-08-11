@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-09 16:46:38
+ * @LastEditTime: 2021-08-10 16:06:03
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -12,6 +12,7 @@ import axiosDownload from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_PROJECT)
 const downloadRequst = axiosDownload(process.env.VUE_APP_PROJECT)
+const partsRequest = axios(process.env.VUE_APP_PARTSPROCURE)
 
 // 产品组排程-获取车型项目下拉
 export function getCarTypePro(params) {
@@ -271,6 +272,15 @@ export function downloadHistoryProgressFile(params) {
 export function validSchedule(params) {
   return requst({
     url: '/progress-confirm/validSchedule',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 历史进度数据库-获取产品组下拉
+export function getProductGroupAll(params={}) {
+  return partsRequest({
+    url: '/productGroupList',
     method: 'POST',
     data: params
   })

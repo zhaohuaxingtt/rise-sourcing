@@ -28,7 +28,8 @@
           :treeData="allData"
           :temId="selectValue"
           :templateName="templateName"
-          @click="changeSaveData"></kpiStructure>
+          @click="changeSaveData"
+          @saveVersion="saveVersion"></kpiStructure>
       </iPage>
   </div>
 </template>
@@ -67,9 +68,11 @@ export default {
       // this.getDetail("1")
     },
     methods:{
+      saveVersion(){
+        this.getSelectKpiList({deptCode:this.$store.state.permission.userInfo.deptDTO.deptNum})
+      },
       getSelectKpiList(params){
             slelectkpiList(params).then(res=>{
-              console.log(res)
                 this.dropDownOptions=res.data
             })
         },

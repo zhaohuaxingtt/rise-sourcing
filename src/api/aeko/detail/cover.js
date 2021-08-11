@@ -52,3 +52,12 @@ export function coverSave(data) {
     data,
   })
 }
+
+// 提交封面表态数据
+export function coverSubmit(data) {
+  return requst({
+    url: '/aeko/cover/submit',
+    method: 'POST',
+    data,
+  })
+}
