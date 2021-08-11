@@ -251,7 +251,7 @@ export default {
             const {query} = this.$route;
             const { requirementAekoId ='',} = query;
             const { page,searchParams,aekoInfo={} } = this;
-            const {linieDeptNumList=[]} = searchParams;
+            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName} = searchParams;
             let carTypeCodeList=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
@@ -272,9 +272,13 @@ export default {
                 current:page.currPage,
                 size:page.pageSize,
                 carTypeCodeList,
+                brand,
+                partNum,
+                partNameZh,
+                buyerName,
                 linieDeptNumList:(linieDeptNumList.length == 1 && searchParams.linieDeptNumList[0] === '') ? [] : linieDeptNumList,
             }
-            getPartPage({...searchParams,...data}).then((res)=>{
+            getPartPage(data).then((res)=>{
                 this.loading = false;
                 const {code,data} = res;
                 if(code == 200){
