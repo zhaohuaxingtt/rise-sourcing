@@ -122,8 +122,8 @@ export default [{
           component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/marketData'),
         },
         {
-          path: '/svwInfo',
-          name: 'svwInfo',
+          path: 'svw',
+          name: 'svw',
           meta: { title: "svw" },
           component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/svw'),
         },
