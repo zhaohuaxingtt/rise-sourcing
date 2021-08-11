@@ -262,6 +262,18 @@ export default {
           })
         }
       },
+
+      // 提交时校验一下
+      validateData(data){
+        const { basicTitle } = this;
+        for(let i;i<basicTitle.length;i++){
+          if(basicTitle[i]['required'] && !data[basicTitle[i]['props']]){
+              const tips = this.language(basicTitle[i]['labelKey'],basicTitle[i]['label'])+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
+              iMessage.warn(tips);
+              break;
+          }
+        }
+      },
     }
 }
 </script>
