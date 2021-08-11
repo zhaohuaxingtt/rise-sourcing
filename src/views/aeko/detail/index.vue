@@ -28,7 +28,7 @@
     </iCard>
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
       <!-- language(tab.key, tab.label) -->
-      <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="tab.label" :name="tab.name">
+      <el-tab-pane lazy v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="tab.label" :name="tab.name">
         <template v-if="currentTab==tab.name">
           <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :aekoInfo="aekoInfo" />
         </template>

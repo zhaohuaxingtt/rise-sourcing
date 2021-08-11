@@ -20,7 +20,7 @@
       </div>
     </template>
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="原材料/散件" name="first">
+      <el-tab-pane lazy label="原材料/散件" name="first">
         <el-table
           ref="treeList"
           :data="tableList.dataList"
@@ -80,7 +80,7 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="制造费" name="second">
+      <el-tab-pane lazy label="制造费" name="second">
         <el-table
           ref="treeList1"
           :data="tableList.dataList"

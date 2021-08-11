@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import {iCard, iPagination, iButton, iMessage} from "@/components";
+import {iCard, iPagination, iButton, iMessage} from 'rise';
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";

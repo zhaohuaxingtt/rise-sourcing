@@ -17,7 +17,7 @@
 <script>
 import { infos } from './data'
 import { chunk, cloneDeep } from 'lodash'
-import { iFormGroup, iFormItem, iText } from '@/components'
+import { iFormGroup, iFormItem, iText } from 'rise'
 
 export default {
   components: { iFormGroup, iFormItem, iText },

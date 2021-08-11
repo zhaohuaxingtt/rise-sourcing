@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { iButton, iPagination } from '@/components'
+import { iButton, iPagination } from 'rise'
 import tableList from './tableList'
 import { logTableTitle as tableTitle } from './data'
 import { getVolume } from '@/api/partsign/editordetail'

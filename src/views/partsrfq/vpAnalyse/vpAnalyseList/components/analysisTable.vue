@@ -142,7 +142,7 @@
 <script>
 import {icon, iPagination, iInput, iSelect} from 'rise'
 import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/partsrfq/vpAnalysis/vpAnalysisList'
-import {iMessage} from '@/components';
+import {iMessage} from 'rise';
 import {pageMixins} from '@/utils/pageMixins';
 import reportPreview from './reportPreview'
 // import '@/assets/style/global/element-ui.scss'

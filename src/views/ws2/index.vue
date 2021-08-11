@@ -42,7 +42,7 @@
 </template>
 <script>
 import {iPage, iMessage, iDialog, iButton, iNavMvp} from "rise";
-import {iNavWS2} from "@/components";
+import {iNavWS2} from '@/components';
 import {tabtitle} from "./budgetManagement/components/data";
 import store from '@/store';
 import {

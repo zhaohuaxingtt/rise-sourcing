@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination, iMessage} from "@/components";
+import {iCard, iButton, iPagination, iMessage} from 'rise';
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {partsProductionTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";

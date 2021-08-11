@@ -73,7 +73,7 @@
 		iInput,
 		iButton,
 		iMessage
-	} from "@/components";
+	} from 'rise';
 
 	export default {
 		components: {
@@ -92,6 +92,10 @@
 					return detailData;
 				},
 			},
+			getDatailFn:{
+				type:Function,
+				default:()=> {}
+			}
 		},
 		created() {},
 		methods: {
@@ -108,7 +112,7 @@
 					.then((res) => {
 						if (res.data) {
 							iMessage.success(this.language('LK_XIUGAICHENGGONG','修改成功'))
-							this.getDatail();
+							this.getDatailFn();
 						} else {
 							iMessage.error(res.desZh);
 						}

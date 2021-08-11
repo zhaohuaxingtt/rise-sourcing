@@ -25,11 +25,11 @@
     <div class="itab">
       <iTabsList v-model="activityTabIndex" @tab-click="handleTabClick" type="card" slot="components" class='margin-top20'>
         <!-------------------------已选零件-  ----------------------------------------->
-        <el-tab-pane name="unSelect" :label="$t('TPZS.QLLJ')">
+        <el-tab-pane lazy name="unSelect" :label="$t('TPZS.QLLJ')">
           <tableList :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' @handleSelectionChange="handleSelectionChange" />
           <iPagination :pager-count='3' v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
         </el-tab-pane>
-        <el-tab-pane name="selected" :label="$t('TPZS.YXLJ')">
+        <el-tab-pane lazy name="selected" :label="$t('TPZS.YXLJ')">
           <tableList ref="tableList" :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' @handleSelectionChange="handleSelectionChange" />
           <iPagination :pager-count='3' v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
         </el-tab-pane>
@@ -87,7 +87,7 @@ export default {
       this.partsDialog = true
     },
     async getTableList(data) {
-      if (!!data) {
+      if (data) {
         this.carType = data.carType
       }
       this.activityTabIndex='unSelect'

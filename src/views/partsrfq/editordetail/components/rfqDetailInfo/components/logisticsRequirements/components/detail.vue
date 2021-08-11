@@ -177,7 +177,7 @@
   </iDialog>
 </template>
 <script>
-import {iMessage, iDialog, iFormGroup, iFormItem, iInput, iText} from '@/components'
+import {iMessage, iDialog, iFormGroup, iFormItem, iInput, iText} from 'rise'
 
 
 export default {

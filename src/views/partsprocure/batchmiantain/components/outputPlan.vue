@@ -1,12 +1,16 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-04-12 23:48:38
+ * @LastEditTime: 2021-08-11 14:42:08
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\outputPlan.vue
+-->
 <template>
 	<iCard class="outputPlan" :title="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')" tabCard>
 		<div class="body">
 			<tablelist class="table" index :tableData="tableListData" :tableTitle="tableTitle"
 				:tableLoading="loading" @handleSelectionChange="handleSelectionChange" activeItems="partNum" @openPage="openPage"/>
-	<!-- 		<iPagination class="pagination margin-top30" @size-change="handleSizeChange($event, getUsage)"
-				@current-change="handleCurrentChange($event, getUsage)" background :current-page="page.currPage"
-				:page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout"
-				:total="page.totalCount" v-update /> -->
 		</div>
 	</iCard>
 </template>
@@ -15,7 +19,7 @@
 	import {
 		iCard,
 		// iPagination
-	} from '@/components'
+	} from 'rise'
 	import tablelist from '@/views/partsign/home/components/tableList'
 	import {
 		pageMixins

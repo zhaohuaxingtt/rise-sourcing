@@ -55,7 +55,7 @@
 		iButton,
 		iMessage,
 		iPagination
-	} from "@/components";
+	} from 'rise';
 	import tablelist from '@/views/partsprocure/editordetail/components/targetPrice/components/tablelist'
 	import {
 		targeTitle,

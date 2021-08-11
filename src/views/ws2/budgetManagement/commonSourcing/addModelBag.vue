@@ -172,7 +172,7 @@
 <script>
 import {
   iTableList
-} from "@/components"
+} from '@/components'
 import {iButton, iMessage, iSelect, iCard} from 'rise'
 import {Upload} from "element-ui"
  import {
@@ -186,7 +186,7 @@ import {Upload} from "element-ui"
   sendToAdmin,
   updateCateGory,
  } from '@/api/ws2/commonSourcing'
-import {iNavWS2} from "@/components";
+import {iNavWS2} from '@/components';
 import echarts from "@/utils/echarts";
 import targetBudget from "../components/targetBudget";
 import fixedAssignment from "../components/fixedAssignment";

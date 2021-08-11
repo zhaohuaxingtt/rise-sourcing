@@ -74,7 +74,7 @@
 </template>
 <script>
 import { splitPurchTitle } from "../data";
-import { iDialog,iButton,iPagination,iInput,iMessage } from '@/components'
+import { iDialog,iButton,iPagination,iInput,iMessage } from 'rise'
 import {purchaseFactory} from '@/api/partsprocure/editordetail'
 import {pageMixins} from '@/utils/pageMixins'
 import {_getMathNumber} from "@/utils"

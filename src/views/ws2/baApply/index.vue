@@ -77,7 +77,7 @@ import { detailsForm } from "./components/data";
 import UnitExplain from "./components/unitExplain";
 import {
   iTableList
-} from "@/components"
+} from '@/components'
 
 import {
   iButton,

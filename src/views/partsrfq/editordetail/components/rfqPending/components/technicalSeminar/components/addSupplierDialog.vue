@@ -34,7 +34,7 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iMessage, iDialog, iPagination} from '@/components'
+import {iButton, iMessage, iDialog, iPagination} from 'rise'
 import tablelist from "pages/partsrfq/components/tablelist";
 import {addSupplierTitle} from "./data"
 import {getAllRfqSupplier} from "@/api/partsrfq/editordetail";

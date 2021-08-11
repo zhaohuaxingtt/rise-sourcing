@@ -23,7 +23,7 @@
 		iFormGroup,
 		iFormItem,
 		iText,
-	} from "@/components"
+	} from 'rise'
 	import filters from "@/utils/filters"
 	export default {
 		mixins: [filters],

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-08-05 17:05:23
+ * @LastEditTime: 2021-08-10 21:48:13
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -18,24 +18,15 @@
       }}</span>
       <div class="floatright">
         <!-- 供应商创建定点申请单 -->
-				<createNomiApplication></createNomiApplication>
+				<createNomiappBtn v-permission='PARTSPROCURE_EDITORDETAIL_CREATEDDSQD'></createNomiappBtn>
         <iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">{{
           language("LK_FANHUI",'返回')
         }}</iButton>
         <!-- 	<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">
 					{{ $t("LK_SHENGCHENGFSHAO") }}
 				</iButton> -->
-        <creatFs
-          :projectIds="purchaseProjectIds"
-          v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER"
-        ></creatFs>
-        <iButton
-          @click="start"
-          :loading="startLoding"
-          v-permission="PARTSPROCURE_BATCHMIANTAIN_STARTINQUIRY"
-        >
-          {{ language("LK_QIDONGXUNJIA",'启动询价') }}
-        </iButton>
+        <creatFsGsNr :projectItems="selectTableData" keys='purchaseProjectId' @refresh="getTableListFn" v-permission="PARTSPROCURE_GENERATEFSBUTTON" ></creatFsGsNr>
+        <startProject :startItems='selectTableData' keys='purchaseProjectId' v-permission="PARTSPROCURE_BATCHMIANTAIN_STARTINQUIRY"></startProject>
       </div>
     </div>
     <iSearch
@@ -141,7 +132,7 @@
       </el-form>
       <template slot="button">
         <iButton
-          @click="save('partSrcProjec')"
+          @click="saveDetail"
           v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRM"
           >{{ language("LK_QUEREN",'确认') }}
         </iButton>
@@ -223,21 +214,13 @@
   </iPage>
 </template>
 <script>
-import { iPage, iButton, iSearch, iSelect, iMessage } from "@/components";
+import { iPage, iButton, iSearch, iSelect, iMessage } from 'rise';
 import outputPlan from "./components/outputPlan";
-import { changeProcure, getProcureGroup } from "@/api/partsprocure/home";
-import { insertRfq } from "@/api/partsrfq/home";
+import { changeProcure } from "@/api/partsprocure/home";
 import onlyPartsChange from './components/onlyPartsChange'
-import {
-  materialGroupByLinie,
-  getStuffByCategory,
-  putMaterialGroup,
-  dictkey,
-} from "@/api/partsprocure/editordetail";
-import { getPageGroup } from "@/api/partsign/home";
-import creatFs from "../home/components/creatFs";
+import {materialGroupByLinie,getStuffByCategory,putMaterialGroup,dictkey} from "@/api/partsprocure/editordetail";
+import {creatFsGsNr,startProject,createNomiappBtn} from '@/components'
 import {filterProjectList} from '@/utils'
-import createNomiApplication from '@/views/partsprocure/editordetail/components/createNomiappBtn'
 export default {
   components: {
     iPage,
@@ -245,9 +228,10 @@ export default {
     iSearch,
     iSelect,
     outputPlan,
-    creatFs,
-    createNomiApplication,
-    onlyPartsChange
+    creatFsGsNr,
+    createNomiappBtn,
+    onlyPartsChange,
+    startProject
   },
   data() {
     return {
@@ -279,8 +263,7 @@ export default {
       cartypeProject: {}, //车型项目
       selectTableData: [],
       startLoding: false,
-      purchaseProjectIds: [],
-      onlyPartsSelect:[]
+      purchaseProjectIds: []
     };
   },
   created() {
@@ -314,15 +297,6 @@ export default {
         return obj.list;
       }
     },
-    // 获取材料组数据
-    // getMaterialGroupByLinie() {
-    //   let data = {
-    //     LinieId: this.$store.state.permission.userInfo.id,
-    //   };
-    //   materialGroupByLinie(data).then((res) => {
-    //     this.category = res.data || [];
-    //   });
-    // },
     // 更新材料组值域
     updateCategoryGroup(group) {
       this.categoryObj = {}
@@ -349,7 +323,6 @@ export default {
       const batch = { operator: this.userInfo.id }
       if (type === "partSrcProjec") {
         const factoryItems = this.fromGroup.PURCHASE_FACTORY.find(items => items.code == this.batch.procureFactory)
-
         batch.partSrcProjectDTO = {
           carTypeProjectNum: this.cartypeProject.code,
           carTypeProjectZh: this.cartypeProject.name,
@@ -399,18 +372,6 @@ export default {
         }
       });
     },
-    // pushKey() {
-    //   const factoryItems = this.fromGroup.PURCHASE_FACTORY.find(items=>items.code == this.batch.procureFactory)
-    //   this.batch.stuffName = this.stuff.stuffName;
-    //   this.batch.stuffCode = this.stuff.stuffCode;
-    //   this.batch.stuffId = this.stuff.id;
-    //   this.batch.cartypeProjectZh = this.cartypeProject.name;
-    //   this.batch.cartypeProjectNum = this.cartypeProject.code;
-    //   this.batch.linieName = this.linie.name;
-    //   this.batch.linieNum = this.linie.code;
-    //   this.batch.categoryName = this.categoryObj.categoryNameZh?this.categoryObj.categoryNameZh:'';
-    //   this.batch['procureFactoryName'] = factoryItems?factoryItems.name:''
-    // },
     // 重置采购信息数据
     reset() {
       for (let i in this.batch) {
@@ -428,76 +389,6 @@ export default {
       // this.categoryObj = {};
       this.stuff = {};
       this.stuffArr = [];
-    },
-    // 生成fs号
-    creatFs() {
-      if (this.selectTableData.length == 0)
-        return iMessage.warn(
-          this.language(
-            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU",
-            '抱歉，您当前还未选择您需要生成FS号的零件采购项目！'
-          )
-        );
-      let fs = {
-        purchaseProjectIds: this.batch.purchaseProjectIds,
-      };
-      changeProcure({
-        fs,
-      }).then((res) => {
-        if (res.data) {
-          iMessage.success(this.language("LK_CAOZUOCHENGGONG",'操作成功'));
-        } else {
-          iMessage.error(res.desZh);
-        }
-      });
-    },
-    validateStart() {
-      return new Promise((r) => {
-        if (this.selectTableData.length == 0) {
-          r(false);
-          iMessage.warn(
-            this.language(
-              "LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU",
-              '抱歉，您当前还未选择需要启动询价的采购项目！'
-            )
-          );
-          return;
-        }
-        if (this.selectTableData.find((items) => items.fsnrGsnrNum == "")) {
-          r(false);
-          iMessage.warn(
-            this.language(
-              "LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA",
-              '抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您启动询价！'
-            )
-          );
-          return;
-        }
-        r(true);
-      });
-    },
-    async start() {
-      if (!(await this.validateStart())) return;
-      this.startLoding = true;
-      insertRfq({
-        rfqPartDTOList: this.selectTableData,
-      })
-        .then((res) => {
-          this.startLoding = false;
-          if (res.data && res.data.rfqId) {
-            this.$router.push({
-              path: "/sourcing/partsrfq/editordetail",
-              query: {
-                id: res.rfqId,
-              },
-            });
-          } else {
-            iMessage.warn(res.desZh);
-          }
-        })
-        .catch((err) => {
-          this.startLoding = false;
-        });
     },
     //back
     back() {

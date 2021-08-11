@@ -1,6 +1,6 @@
 <template>
 	<div class="fs margin-left10 margin-right10">
-		<iButton  @click="creatFs()">
+		<iButton  @click="validateFs()" :loading='partNumberLoading'>
 			{{ language('partsprocure.PARTSPROCUREGENERATEFSGSNR','生成零件采购项目号') }}
 		</iButton>
 		<!-- 单条插入RFQ表格 -->
@@ -8,26 +8,32 @@
 			<div class="flex-align-center add">
 				<iButton @click="addRfq">{{ language('LK_TIANJIA','添加') }}</iButton>
 			</div>
-			<tableList  :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" radio></tableList>
+			<tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" radio></tableList>
 			<div class="placeholder"></div>
 		</iDialog>
 	</div>
 </template>
 
 <script>
-	import {iButton,iMessage,iMessageBox,iDialog} from '@/components';
-	import {changeProcure} from "@/api/partsprocure/home";
+	import {iButton,iMessage,iMessageBox,iDialog} from 'rise';
+	import {generateFs} from "@/api/partsprocure/home";
 	import {insertRfq,addRfq} from "@/api/partsrfq/home";
 	import tableList from "@/views/partsign/home/components/tableList";
-	import {addRfqTitle} from "../data";
+	import {addRfqTitle} from "./data";
 	import store from "@/store";
+	import {partProjTypes} from '@/config'
 	export default {
 		components: {iButton,iDialog,tableList},
 		props: {
-			projectIds: {type: Array}
+			projectItems: {type: Array},
+			keys:{
+				type:String,
+				default:'id'
+			}
 		},
 		data() {
 			return {
+				partNumberLoading:false,
 				visible: false,
 				handleSelectArr:[],
 				tableListData:[],
@@ -37,13 +43,17 @@
 			}
 		},
 		methods: {
+			validateFs(){
+				this.fsProjectTypeAnIscommonSroucing(this.creatFs)
+			},
 			// 生成fs号
 			creatFs() {
-				if (this.projectIds.length == 0) return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU','抱歉，您当前还未选择您需要生成FS号的零件采购项目！'));
+				if (this.projectItems.length == 0) return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU','抱歉，您当前还未选择您需要生成FS号的零件采购项目！'));
+				this.partNumberLoading = true
 				let fs = {
-					purchaseProjectIds: this.projectIds,
+					ids: this.projectItems.map(res=>res[this.keys]),
 				};
-				changeProcure({fs}).then((res) => {
+				generateFs(fs).then((res) => {
 					if (res.data) {
 						// 多条组合RFQ
 						let tip=""
@@ -76,7 +86,8 @@
 					} else {
 						iMessage.error(res.desZh)
 					}
-				});
+					this.partNumberLoading = false
+				})
 			},
 			// 添加零件到RFQ
 			addRfq(){
@@ -104,6 +115,27 @@
 			},
 			handleSelectionChange(rows) {
 				this.handleSelectArr = rows;
+			},
+			/**
+			* @description: 限制保存和提交的零件类型和是否commonsourcing是否匹配
+			* @param {*}
+			* @return {*}
+			*/
+			fsProjectTypeAnIscommonSroucing(callBack){
+				try {
+					if(this.projectItems.find(i=>(i.isCommonSourcing != undefined && i.partProjectType))){
+						if(this.projectItems.find(res=>(!res.isCommonSourcing) && (res.partProjectType == partProjTypes.FSCOMMONSOURCING || res.partProjectType == partProjTypes.GSCOMMONSOURCING))){
+							iMessageBox(this.language('SPIRNT11COMMONSS','存在零件采购项目类型与commonSourcing为[否]不统一，是否继续？')).then(res=>{
+								callBack()
+							})
+						}
+					}else{
+						callBack()
+					}
+					} catch (error) {
+						console.warn(error)
+						callBack()
+					}
 			},
 		}
 	}

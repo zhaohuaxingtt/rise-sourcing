@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import {iCard, iButton, iFormGroup, iFormItem, iInput, iMessage, icon} from '@/components'
+import {iCard, iButton, iFormGroup, iFormItem, iInput, iMessage, icon} from 'rise'
 
 export default {
   components: {

@@ -10,7 +10,7 @@
 <template>
   <iPage class="signForParts" >
     <!-- <el-tabs v-model="tab" class="tab"> -->
-      <!-- <el-tab-pane :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
+      <!-- <el-tab-pane lazy :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
         <div>
           <div class="topMenu">
             <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
@@ -80,7 +80,7 @@
           <backDialog ref="backEPS" :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBackEPS" />
         </div>
       <!-- </el-tab-pane> -->
-      <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
+      <!-- <el-tab-pane lazy label="进度监控" name="progress"></el-tab-pane> -->
     <!-- </el-tabs> -->
   </iPage>
 </template>

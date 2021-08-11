@@ -302,7 +302,7 @@ export function negoAnalysisSummaryGroupDelete(data){
 // 获取对应供应商的零件清单
 export function getPartsBySupplier(params) {
     return requst({
-        url: `/partSupplier/List`,
+        url: `/km/page/suppliers`,
         method: 'POST',
         data: params
     })
@@ -311,7 +311,7 @@ export function getPartsBySupplier(params) {
 // 发送KM
 export function sendKm(params) {
     return requst({
-        url: `/sendKm`,
+        url: `/km/send`,
         method: 'POST',
         data: params
     })

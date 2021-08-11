@@ -311,9 +311,8 @@
 
 <script>
 import {
-  icon,
   iTableList
-} from "@/components";
+} from '@/components';
 import {
   iMessage,
   iButton,
@@ -322,6 +321,7 @@ import {
   iDialog,
   iInput,
   iSelect,
+  icon
 } from "rise";
 // import SearchBlock from "./components/searchBlock";
 import { bmPopupTableHead } from "./components/data";

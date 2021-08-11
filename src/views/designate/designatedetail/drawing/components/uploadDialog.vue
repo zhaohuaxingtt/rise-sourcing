@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton } from '@/components'
+import { iPagination, iDialog, iButton } from 'rise'
 import { uploadtableTitle as tableTitle } from './data'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'

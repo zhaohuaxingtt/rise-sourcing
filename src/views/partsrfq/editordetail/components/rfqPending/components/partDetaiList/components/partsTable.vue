@@ -37,7 +37,7 @@
 <script>
 import {
   iPagination,
-} from "@/components";
+} from 'rise';
 import {
   tableTitle,
   form

@@ -62,7 +62,7 @@
 
 <script>
 import { tableTitle } from './components/data'
-import { iButton, iCard, iPagination, iMessage } from '@/components'
+import { iButton, iCard, iPagination, iMessage } from 'rise'
 import infos from './components/infos'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'

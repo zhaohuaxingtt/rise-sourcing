@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-03 10:40:41
- * @LastEditTime: 2021-06-04 16:06:19
+ * @LastEditTime: 2021-08-11 18:10:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\costanalysismanage\home\index.js
@@ -22,7 +22,7 @@ export function getSelectOptions(type) {
 // 获取KM的RFQ列表
 export function getKmRfqList(params) {
   return requst({
-    url: '/KmRfqList',
+    url: '/km/page/rfqs',
     method: 'POST',
     data: params
   })
