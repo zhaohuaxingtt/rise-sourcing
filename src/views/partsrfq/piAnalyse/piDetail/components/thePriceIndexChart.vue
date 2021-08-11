@@ -12,27 +12,32 @@
         />
       </div>
       <div class="select-box">
-        <div class="select-item">
-          <div class="label">{{ language('PI.JIAGEWEIDU', '价格维度') }}</div>
-          <el-cascader
-              v-model="form.priceLatitude"
-              :options="priceLatitudeOptions"
-              :props="{ multiple: true }"
-              @change="handlePriceLatitudeChange"
-              collapse-tags
-              clearable></el-cascader>
-        </div>
-        <div class="select-item margin-left30">
-          <div class="label">{{ language('PI.SHIJIANKELIDU', '时间颗粒度') }}</div>
-          <iSelect v-model="form.timeGranularity" @change="handleTimeGranularityChange">
-            <el-option
-                v-for="item of timeGranularityOptions"
-                :key="item.name"
-                :label="item.name"
-                :value="item.value"
-            ></el-option>
-          </iSelect>
-        </div>
+        <template v-if="isPreview">
+          <span class="text">{{ language('PI.SHIJIANKELIDU', '时间颗粒度') }}：xx</span>
+        </template>
+        <template v-else>
+          <div class="select-item">
+            <div class="label">{{ language('PI.JIAGEWEIDU', '价格维度') }}</div>
+            <el-cascader
+                v-model="form.priceLatitude"
+                :options="priceLatitudeOptions"
+                :props="{ multiple: true }"
+                @change="handlePriceLatitudeChange"
+                collapse-tags
+                clearable></el-cascader>
+          </div>
+          <div class="select-item margin-left30">
+            <div class="label">{{ language('PI.SHIJIANKELIDU', '时间颗粒度') }}</div>
+            <iSelect v-model="form.timeGranularity" @change="handleTimeGranularityChange">
+              <el-option
+                  v-for="item of timeGranularityOptions"
+                  :key="item.name"
+                  :label="item.name"
+                  :value="item.value"
+              ></el-option>
+            </iSelect>
+          </div>
+        </template>
       </div>
     </div>
     <div class="chartBox">
@@ -84,6 +89,10 @@ export default {
       default: () => {
         return {};
       },
+    },
+    isPreview: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -232,6 +241,12 @@ export default {
   .select-box {
     display: flex;
     align-items: center;
+
+    .text {
+      font-size: 16px;
+      margin-right: 40px;
+      color: #000000;
+    }
 
     .select-item {
       display: flex;

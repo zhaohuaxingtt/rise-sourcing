@@ -47,6 +47,11 @@
         <thePartsCostChart/>
       </iCard>
     </div>
+
+    <!--预览-->
+    <previewDialog
+        v-model="previewDialog"
+    />
   </iPage>
 </template>
 
@@ -59,6 +64,7 @@ import theTable from './components/theTable';
 import customPart from './components/customPart'
 import thePartsCostChart from './components/thePartsCostChart';
 import thePriceIndexChart from './components/thePriceIndexChart';
+import previewDialog from './components/previewDialog';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import {CURRENTTIME, AVERAGE} from './components/data';
 
@@ -73,6 +79,7 @@ export default {
     thePartsCostChart,
     thePriceIndexChart,
     theBaseInfo,
+    previewDialog,
     theTabs,
     theTable,
   },
@@ -86,6 +93,7 @@ export default {
       ],
       partItemCurrent: 0,
       currentTab: CURRENTTIME,
+      previewDialog: false,
       customParams: {
         key: 0,
         visible: false
@@ -94,7 +102,9 @@ export default {
   },
   methods: {
     handleBack() {},
-    handlePreview() {},
+    handlePreview() {
+      this.previewDialog = true
+    },
     // 打开自定义零件
     handleOpenCustomDialog() {
       this.customParams = {
