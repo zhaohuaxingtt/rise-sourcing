@@ -185,6 +185,9 @@ export default {
             SearchList:[],
             searchParams:{
                 brand:'',
+                cartypeCode:[''],
+                cartype:[''],
+                linieDeptNumList:[''],
             },
             selectOptions:{
                 cartypeCode:[],
@@ -245,16 +248,20 @@ export default {
             const {query} = this.$route;
             const { requirementAekoId ='',} = query;
             const { page,searchParams,aekoInfo={} } = this;
-            console.log(searchParams,'searchParams');
-            console.log(aekoInfo,'aekoInfo');
+            const {linieDeptNumList=[]} = searchParams;
             let carTypeCodeList=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
                 if(aekoInfo.aekoType == 'AeA'){  // 车型
-                    carTypeCodeList = searchParams.cartype ? [searchParams.cartype] : [];
+                    carTypeCodeList = searchParams.cartype;
                 }else if(aekoInfo.aekoType == 'Aeko'){ // 车型项目
                     carTypeCodeList = searchParams.cartypeCode;
                 }
+            }
+
+            // 多选为全部时单独处理
+            if(carTypeCodeList.length == 1 && carTypeCodeList[0] === ''){
+                carTypeCodeList=[];
             }
             
             const data = {
@@ -262,6 +269,7 @@ export default {
                 current:page.currPage,
                 size:page.pageSize,
                 carTypeCodeList,
+                linieDeptNumList:(linieDeptNumList.length == 1 && searchParams.linieDeptNumList[0] === '') ? [] : linieDeptNumList,
             }
             getPartPage({...searchParams,...data}).then((res)=>{
                 this.loading = false;
