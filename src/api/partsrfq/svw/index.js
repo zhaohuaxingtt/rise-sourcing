@@ -12,6 +12,14 @@
      data: data
    })
  }
+  // 保存总览
+  export function saveMarketOverview(data) {
+    return requst({
+      url: '/web/aon/marketOverview/marketOverviewSave',
+      method: 'POST',
+      data: data
+    })
+  }
  
  
  
