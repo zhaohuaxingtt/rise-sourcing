@@ -7,7 +7,7 @@ export const SearchList = [
   {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO'},
   {props:'partNameZh',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG'},
   {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',selectOption:'cartypeCode',noShowAll:true,showCode:'Aeko',multiple:true,filterable:true},
-  {props:'linieDeptNum',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNum',noShowAll:true,filterable:true,clearable:true},
+  {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNumList',noShowAll:true,filterable:true,clearable:true,multiple:true,},
   {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',selectOption:'buyerName',noShowAll:true,filterable:true,clearable:true},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand'},
   {props:'cartype',label:'车型',type:'select',labelKey:'LK_AEKO_CHEXING',selectOption:'cartype',showCode:'AeA',filterable:true},

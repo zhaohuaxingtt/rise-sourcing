@@ -179,15 +179,15 @@ export default {
           brand:'',
           aekoStatusList:[],
           coverStatusList:[],
-          cartypeCode:[],
-          linieDeptNum:'',
+          carTypeCodeList:[],
+          linieDeptNumList:[],
         },
         selectOptions:{
           'brand':[],
           'aekoStatusList':[],
           'coverStatusList':[],
-          'linieDeptNum':[],
-          'cartypeCode':[],
+          'linieDeptNumList':[],
+          'carTypeCodeList':[],
           'buyerName':[],
         },
         tableListData:[],
@@ -216,8 +216,8 @@ export default {
           brand:'',
           aekoStatusList:[],
           coverStatusList:[],
-          cartypeCode:[],
-          linieDeptNum:'',
+          carTypeCodeList:[],
+          linieDeptNumList:[],
         };
         this.getList();
       },
@@ -236,7 +236,6 @@ export default {
         const data = {
             current:page.currPage,
             size:page.pageSize,
-            cartypeCode:searchParams.cartypeCode.length ? searchParams.cartypeCode : null,
         };
         if(frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
@@ -303,7 +302,7 @@ export default {
             data.map((item)=>{
               item.desc = item.name;
             })
-            this.selectOptions.cartypeCode = data;
+            this.selectOptions.carTypeCodeList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -317,7 +316,7 @@ export default {
               item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
               item.code = item.deptNum;
             })
-            this.selectOptions.linieDeptNum = data;
+            this.selectOptions.linieDeptNumList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -373,10 +372,11 @@ export default {
       },
 
       // 判断是否勾选项
-      async isSelectItem(type=false){
+      async isSelectItem(type=false,tips=null){
           const {selectItems} = this;
+          tips = tips || this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据');
           if(!selectItems.length){
-              iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+              iMessage.warn(tips);
               return false;
           }else{
               if(type){
@@ -521,7 +521,8 @@ export default {
       
       // 导出
       async exportAeko(){
-        const isNext  = await this.isSelectItem(true);
+        const tips = this.language('LK_AEKO_QINGXUANZEYAODAOCHUDEHANGXIANGMU','请选择要导出的行项目');
+        const isNext  = await this.isSelectItem(true,tips);
         const {selectItems} = this;
         if(!isNext) return;
         const aekoIdList = selectItems.map((item)=>item.requirementAekoId);
