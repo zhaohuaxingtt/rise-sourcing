@@ -186,6 +186,7 @@ export default {
         margin-top: 20px;
         width: 100%;
         padding: 0 40px;
-        height: calc(100vh - 150px);
+        height: calc(100vh - 294px);
+        overflow-y: auto;
     }
 </style>
