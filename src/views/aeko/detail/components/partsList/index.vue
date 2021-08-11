@@ -228,7 +228,10 @@ export default {
                 this.searchParams.buyerName = this.userInfo.nameZh
             } else {
                 this.searchParams = {
-                    brand:'',
+                     brand:'',
+                    cartypeCode:[''],
+                    cartype:[''],
+                    linieDeptNumList:[''],
                 };
             }
 
