@@ -206,7 +206,7 @@ export const detailsTableHead = [
     tooltip: false
   },
   {
-    props: 'img',
+    props: 'picture',
     name: '照片',
     key: 'LK_ZHAOPIAN',
     tooltip: false
@@ -362,7 +362,7 @@ export const assetsTableHead = [
     tooltip: false
   },
   {
-    props: 'img',
+    props: 'picture',
     name: '照片',
     key: 'LK_ZHAOPIAN',
     tooltip: false
