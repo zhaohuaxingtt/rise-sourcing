@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 15:37:13
+ * @LastEditTime: 2021-08-11 15:50:59
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -32,8 +32,8 @@
               <li>{{dataItem.carTypeLevel}} class</li>
             </ol>
             <ol class="baiscInfo-bottom-column">
-              <li>{{dataItem.werk}}</li>
-              <li>SOP:{{`${moment(dataItem.sop).year()}-KW${moment(dataItem.sop).week()}`}}</li>
+              <li>{{dataItem.factoryName}}</li>
+              <li>SOP:{{dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk}}</li>
               <li>KPE:{{dataItem.kpe}}<icon symbol name="iconbianji"  class="margin-left10 cursor"></icon></li>
             </ol>
           </div>
