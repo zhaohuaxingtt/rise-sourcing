@@ -35,17 +35,56 @@
         </div>
       </div>
     </div>
+    <div class="chartBox">
+      <div class="theChart" ref="theChart" :style="{'height': chartHeight}"/>
+      <div class="legendBox">
+        <div class="legendItem">
+          <div class="shape rect"></div>
+          <div class="text">汇率合成波动比例</div>
+        </div>
+        <div class="legendItem">
+          <div class="shape">
+            <div class="doubleBox"></div>
+            <div class="doubleBox"></div>
+          </div>
+          <div class="text">汇率合成波动均线</div>
+        </div>
+        <div class="legendItem">
+          <div class="shape">
+            <div class="dotBox"></div>
+            <div class="dotBox"></div>
+            <div class="dotBox"></div>
+            <div class="dotBox"></div>
+            <div class="dotBox"></div>
+          </div>
+          <div class="text">汇率1波动比例</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import {iSelect} from 'rise';
 import iconTips from '../../../../../components/ws3/iconTips';
+import echarts from '@/utils/echarts';
 
 export default {
   components: {
     iconTips,
     iSelect,
+  },
+  props: {
+    chartHeight: {
+      type: String,
+      default: '350px',
+    },
+    chartData: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   data() {
     return {
@@ -75,7 +114,12 @@ export default {
         priceLatitude: [],
         timeGranularity: '',
       },
+      seriesArray: [],
+      legendData: [],
     };
+  },
+  mounted() {
+    this.buildChart();
   },
   methods: {
     handleTimeGranularityChange(val) {
@@ -83,6 +127,90 @@ export default {
     },
     handlePriceLatitudeChange(val) {
       console.log(val);
+    },
+    initEcharts() {
+      const chart = echarts().init(this.$refs.theChart);
+      const option = {
+        tooltip: {
+          trigger: 'axis',
+        },
+        grid: {
+          top: 30,
+          left: '3%',
+          right: '3%',
+          bottom: '3%',
+          containLabel: true,
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+          axisTick: {
+            show: false,
+          },
+          axisLine: {
+            show: false,
+          },
+        },
+        yAxis: {
+          type: 'value',
+          splitLine: {
+            show: false,
+          },
+          name: this.language('PI.PIJIAGEDANWEI', '单位：%'),
+          axisTick: {
+            show: false,
+          },
+        },
+        series: [
+          {
+            name: '汇率合成波动比例',
+            type: 'line',
+            symbol: 'none',
+            lineStyle: {
+              type: 'solid',
+              color: '#C62928',
+            },
+            data: [120, 132, 101, 134, 90, 230, 210],
+          },
+          {
+            name: '汇率合成波动均线',
+            type: 'line',
+            symbol: 'none',
+            lineStyle: {
+              type: 'dashed',
+              color: '#C62928',
+            },
+            data: [150, 150, 150, 150, 150, 150, 150],
+          },
+          {
+            name: '汇率1波动比例',
+            type: 'line',
+            symbol: 'none',
+            lineStyle: {
+              type: 'dotted',
+              color: '#C62928',
+            },
+            data: [150, 232, 201, 154, 190, 330, 410],
+          },
+        ],
+      };
+      chart.setOption(option, true);
+    },
+    assembleData() {
+
+    },
+    buildChart() {
+      this.assembleData();
+      this.initEcharts();
+    },
+  },
+  watch: {
+    chartData: {
+      deep: true,
+      handler() {
+        this.buildChart();
+      },
     },
   },
 };
@@ -115,6 +243,61 @@ export default {
         color: #000000;
         margin-right: 20px;
       }
+    }
+  }
+}
+
+.chartBox {
+  display: flex;
+
+  .theChart {
+    flex: 1;
+    margin-right: 20px;
+  }
+
+  .legendBox {
+    width: 200px;
+    margin-top: 30px;
+
+    .legendItem {
+      display: flex;
+      align-items: center;
+
+      .shape {
+        display: flex;
+        align-items: center;
+        width: 20px;
+        height: 8px;
+        margin-right: 10px;
+
+        .doubleBox {
+          width: 9px;
+          height: 3px;
+          margin-right: 2px;
+          background: #C62928;
+        }
+
+        .dotBox {
+          width: 3px;
+          height: 3px;
+          margin-right: 1.25px;
+          background: #C62928;
+        }
+      }
+
+      .rect {
+        background: #C62928;
+      }
+
+      .text {
+        white-space: nowrap;
+        font-size: 12px;
+        color: #41434A;
+      }
+    }
+
+    .legendItem + .legendItem {
+      margin-top: 10px;
     }
   }
 }

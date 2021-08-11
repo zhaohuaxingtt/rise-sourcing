@@ -9,6 +9,7 @@
 <template>
   <div>
       <iPage>
+        <publicHeaderMenu></publicHeaderMenu>
           <iCard>
                <div class="imgkpi-head">
                <el-form :model="formData">
@@ -39,6 +40,7 @@ import supplierDetail from './components/supplierDetail'
 import iDialog from '@/components/iDialog/index'
 import { iMessage } from '@/components';
 import { getFocusSupplierList } from '@/api/partsrfq/spi/index.js'
+import publicHeaderMenu from './commonHeardNav/headerNav'
 export default {
     components:{
         iButton,
@@ -48,7 +50,8 @@ export default {
         iSelect,
         iTableCustom,
         supplierDetail,
-        iDialog
+        iDialog,
+        publicHeaderMenu
     },
     data(){
       return {

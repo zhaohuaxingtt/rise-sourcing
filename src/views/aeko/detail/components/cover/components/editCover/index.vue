@@ -220,12 +220,15 @@ export default {
         const {basicInfo,selectOptions} = this;
         const {fsList=[]} = selectOptions;
         const fsName = fsList.filter((item)=>item.value == basicInfo.fsName);
+        const {query} = this.$route;
+        const { requirementAekoId =''} = query;
         // 指定前期采购员参数需要处理一下
         const data = {
           ...basicInfo,
           coverCosts:basicInfo.coverCostsWithCarType || [],
           fsId:basicInfo.fsName,
           fsName:fsName.length ? fsName[0].label : '',
+          requirementAekoId,
         }
         this.btnLoading = true;
         if(type == 'submit'){ // 提交

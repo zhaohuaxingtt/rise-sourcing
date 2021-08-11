@@ -1,6 +1,7 @@
 <template>
   <div>
       <iPage>
+          <publicHeaderMenu></publicHeaderMenu>
            <iCard style="margin-top:20px">
                <div class="top">
                    <div class="searchOptions">
@@ -126,7 +127,7 @@
 import {iButton,iPage,iCard,iInput,iSelect,iPagination} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import { kpiDetail,slelectkpiList,dowbloadAPI } from '@/api/kpiChart'
-
+import publicHeaderMenu from './commonHeardNav/headerNav'
 export default {
     mixins: [pageMixins],
     components:{
@@ -136,7 +137,8 @@ export default {
         iInput,
         iSelect,
         iPagination,
-        slelectkpiList
+        slelectkpiList,
+        publicHeaderMenu
     },
     data(){
         return {
