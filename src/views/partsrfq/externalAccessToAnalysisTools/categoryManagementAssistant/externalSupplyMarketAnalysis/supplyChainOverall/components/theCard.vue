@@ -1,26 +1,30 @@
 <!--
  * @version: 1.0
  * @Author: zbin
- * @Date: 2021-08-02 09:56:38
+ * @Date: 2021-08-03 11:00:56
  * @LastEditors: zbin
  * @Descripttion: your project
 -->
 <template>
-  <div class="content">
-    <theSearch class="search" />
-    <chartMap class="map" />
+  <div class="right" width="4rem">
+    <carType v-bind="$attrs" />
+    <region v-bind="$attrs" class="margin-top20" />
+    <materials v-bind="$attrs" class="margin-top20" />
+    <supplier v-if="false" class="margin-top20" />
   </div>
 </template>
 
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import chartMap from "./components/map.vue";
-import theSearch from "./components/theSearch.vue";
-import { iCard } from "rise";
+import carType from "./carType.vue";
+import region from "./region.vue";
+import supplier from "./supplier.vue";
+import part from "./part.vue";
+import materials from "./materials.vue";
 export default {
   // import引入的组件需要注入到对象中才能使用
-  components: { chartMap, iCard, theSearch },
+  components: { carType, region, supplier, part, materials },
   data() {
     // 这里存放数据
     return {
@@ -45,15 +49,11 @@ export default {
   },
 }
 </script>
-<style lang='scss' scoped>
+<style lang='scss'>
 // @import url(); 引入公共css类
-.content {
-  position: relative;
-}
-.search {
-  position: absolute;
-  z-index: 2;
-  width: 100%;
-  padding: 20px;
+.right {
+  .icon {
+    font-size: 60px;
+  }
 }
 </style>

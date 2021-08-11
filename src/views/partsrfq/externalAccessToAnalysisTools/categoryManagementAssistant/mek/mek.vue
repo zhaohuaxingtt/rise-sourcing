@@ -6,40 +6,32 @@
 -->
 <template>
   <div class="bob-main">
-    <iSearch @reset="handleSearchReset"
-             @sure="handleSearch"
-             :icon="false">
+    <iSearch @reset="handleSearchReset" @sure="handleSearch" :icon="false">
       <el-form label-position="top">
         <el-row class="margin-bottom20">
           <!--材料组-->
           <el-form-item :label="$t('LK_CAILIAOZU')">
-            <iInput :placeholder="$t('TPZS.QSRCLZBHMC')"
-                    v-model="form.group"></iInput>
+            <iInput :placeholder="$t('TPZS.QSRCLZBHMC')" v-model="form.materialGroup"></iInput>
           </el-form-item>
           <!--零件号-->
           <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-            <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
-                    v-model="form.num"></iInput>
+            <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')" v-model="form.spareParts"></iInput>
           </el-form-item>
           <!--供应商状态-->
           <el-form-item :label="$t('TPZS.RFQHMC')">
-            <iInput v-model="form.rfq"
-                    :disabled="rfqStatus"
-                    :placeholder="$t('TPZS.QSRRFQH')"></iInput>
+            <iInput v-model="form.rfqNo" :disabled="$store.state.rfq.entryStatus?true:false" :placeholder="$t('TPZS.QSRRFQH')"></iInput>
           </el-form-item>
           <el-form-item :label="$t('TPZS.CJR')">
-            <iInput :placeholder="$t('TPZS.QINGSHURUCHUANGJIANRENMINGCHENG')"
-                    v-model="form.owner" />
+            <iInput :placeholder="$t('TPZS.QINGSHURUCHUANGJIANRENMINGCHENG')" v-model="form.createName" />
           </el-form-item>
         </el-row>
       </el-form>
     </iSearch>
-    <iCard :title="$t('MEK分析库')"
-           class="margin-top20">
+    <iCard :title="$t('MEK分析库')" class="margin-top20">
       <template v-slot:header-control>
         <div v-if="!edit">
           <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
-          <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
+          <iButton @click="handleAdd">{{ $t("LK_XINZENG") }}</iButton>
           <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
         </div>
         <div v-else>
@@ -47,84 +39,44 @@
           <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
         </div>
       </template>
-      <el-table tooltip-effect='light'
-                ref="multipleTable"
-                :data="tableListData"
-                style="width: 100%; margin-bottom: 20px"
-                row-key="id"
-                :max-height="450"
-                :row-class-name="rowStyle"
-                :tree-props="{ children: 'reportList' }"
-                @selection-change="handleSelectionChange"
-                @select="rowSelect"
-                @select-all="selectAll">
-        <el-table-column type="selection"
-                         width="55"> </el-table-column>
-        <el-table-column label="#"
-                         type="index"
-                         :index="indexMethod"
-                         align="center"
-                         header-align="center"
-                         width="40">
+      <el-table v-loading="tableLoading" tooltip-effect='light' ref="multipleTable" :data="tableListData" style="width: 100%; margin-bottom: 20px" row-key="id" :max-height="450" :row-class-name="rowStyle" :tree-props="{ children: 'reportList' }" @selection-change="handleSelectionChange" @select="rowSelect" @select-all="selectAll">
+        <el-table-column type="selection" width="55"> </el-table-column>
+        <el-table-column label="#" type="index" :index="indexMethod" align="center" header-align="center" width="40">
         </el-table-column>
-        <el-table-column align="center"
-                         header-align="center"
-                         :label="$t('TPZS.FXMC')"
-                         width="450">
+        <el-table-column align="center" header-align="center" :label="$t('TPZS.FXMC')" width="450">
           <template slot-scope="scope">
             <div class="openPage">
               <el-row :gutter="20">
-                <el-col :span="20"
-                        style="textalgin: center">
-                  <el-tooltip v-if="!edit"
-                              :content="scope.row.name"
-                              placement="top"
-                              effect="light">
-                    <p v-if="!edit"
-                       class="ellipsis"
-                       @click="clickName(scope.row)">
+                <el-col :span="20" style="textalgin: center">
+                  <el-tooltip v-if="!edit" :content="scope.row.name" placement="top" effect="light">
+                    <p v-if="!edit" class="ellipsis" @click="clickName(scope.row)">
                       {{
                         scope.row.name
                     }}
                     </p>
                   </el-tooltip>
-                  <iInput v-else
-                          class="nameInput"
-                          v-model="scope.row.name"></iInput>
+                  <iInput v-else class="nameInput" v-model="scope.row.name"></iInput>
                 </el-col>
                 <el-col :span="4">
                   <span v-if="scope.row.fileType == $t('TPZS.SCHEME_TYPE')">
                     <span class="number">
                       <p>{{ scope.row.reportList&&scope.row.reportList.length }}</p>
                     </span>
-                    <icon class="numberIcon"
-                          style="
+                    <icon class="numberIcon" style="
                          {
                           font-size: 24px;
                         }
-                      "
-                          symbol
-                          name="iconwenjianshuliangbeijing"></icon>
+                      " symbol name="iconwenjianshuliangbeijing"></icon>
                   </span>
                 </el-col>
               </el-row>
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('LK_CAILIAOZU')"
-                         prop="materialGroup"
-                         align="center"
-                         header-align="center">
+        <el-table-column :label="$t('LK_CAILIAOZU')" prop="materialGroup" align="center" header-align="center">
         </el-table-column>
-        <el-table-column :label="$t('RFQ')"
-                         prop="rfqNo"
-                         width="100"
-                         align="center"
-                         header-align="center"> </el-table-column>
-        <el-table-column :label="$t('TPZS.MRX')"
-                         align="center"
-                         header-align="center"
-                         width="80">
+        <el-table-column :label="$t('RFQ')" prop="rfqNo" width="100" align="center" header-align="center"> </el-table-column>
+        <el-table-column :label="$t('TPZS.MRX')" align="center" header-align="center" width="80">
           <template slot-scope="scope">
             <div v-if="!edit">
               {{ defaultStatus(scope.row, scope.row.isDefault) }}
@@ -135,71 +87,33 @@
                 scope.row.isDefault != '空' &&
                 scope.row.isDefault
               ">
-              <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)"
-                       @change="changeDefault($event, scope.row)">
-                <el-option :value="item.value"
-                           :label="item.label"
-                           v-for="(item, index) in defaultData"
-                           :key="index"></el-option>
+              <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)" @change="changeDefault($event, scope.row)">
+                <el-option :value="item.value" :label="item.label" v-for="(item, index) in defaultData" :key="index"></el-option>
               </iSelect>
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('TPZS.WJLX')"
-                         prop="fileType"
-                         align="center"
-                         header-align="center">
+        <el-table-column :label="$t('TPZS.WJLX')" prop="fileType" align="center" header-align="center">
         </el-table-column>
-        <el-table-column :label="$t('TPZS.CJR')"
-                         prop="createNameZh"
-                         align="center"
-                         header-align="center">
+        <el-table-column :label="$t('TPZS.CJR')" prop="createNameZh" align="center" header-align="center">
         </el-table-column>
-        <el-table-column :label="$t('LK_CHUANGJIANRIQI')"
-                         prop="createDate"
-                         show-overflow-tooltip
-                         align="center"
-                         header-align="center">
+        <el-table-column :label="$t('LK_CHUANGJIANRIQI')" prop="createDate" show-overflow-tooltip align="center" header-align="center">
         </el-table-column>
-        <el-table-column :label="$t('TPZS.SCXGRQ')"
-                         prop="updateDate"
-                         show-overflow-tooltip
-                         align="center"
-                         header-align="center">
+        <el-table-column :label="$t('TPZS.SCXGRQ')" prop="updateDate" show-overflow-tooltip align="center" header-align="center">
         </el-table-column>
-        <el-table-column width="50"
-                         align="center"
-                         header-align="center">
+        <el-table-column width="50" align="center" header-align="center">
           <template slot-scope="scope">
-            <div @click="handleStick(scope.row)"
-                 class="stickIcon">
-              <icon v-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && scope.row.isTop"
-                    name="iconliebiaoyizhiding"
-                    class="iconliebiaoyizhiding"
-                    symbol />
-              <icon v-else-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && !scope.row.isTop"
-                    name="iconliebiaoweizhiding"
-                    class="iconliebiaoweizhiding"
-                    symbol />
+            <div @click="handleStick(scope.row)" class="stickIcon">
+              <icon v-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && scope.row.isTop" name="iconliebiaoyizhiding" class="iconliebiaoyizhiding" symbol />
+              <icon v-else-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && !scope.row.isTop" name="iconliebiaoweizhiding" class="iconliebiaoweizhiding" symbol />
             </div>
           </template>
         </el-table-column>
       </el-table>
-      <iPagination v-update
-                   @size-change="handleSizeChange($event, getTableList)"
-                   @current-change="handleCurrentChange($event, getTableList)"
-                   background
-                   :page-sizes="page.pageSizes"
-                   :page-size="page.pageSize"
-                   :layout="page.layout"
-                   :current-page="page.currPage"
-                   :total="page.totalCount" />
+      <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount" />
 
-      <reportPreview :visible="reportVisible"
-                     :reportUrl="reportUrl"
-                     :title="reportTitle"
-                     :key="reportKey"
-                     @handleCloseReport="handleCloseReport" />
+      <reportPreview :visible="reportVisible" :reportUrl="reportUrl" :title="reportTitle" :key="reportKey" @handleCloseReport="handleCloseReport" />
+      <addDialog v-model="addDialog" />
     </iCard>
   </div>
 </template>
@@ -215,15 +129,10 @@ import {
   icon,
   iMessage,
 } from "rise";
-import {
-  getBobAnalysisDataList,
-  fetchStaick,
-  fetchEdit,
-  fetchDel,
-  initIn,
-} from "@/api/partsrfq/bob/analysisList";
+import { getList, update } from "@/api/partsrfq/mek/index.js";
 import { pageMixins } from "@/utils/pageMixins";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
+import addDialog from "./components/addDialog.vue";
 export default {
   mixins: [pageMixins],
   components: {
@@ -235,10 +144,19 @@ export default {
     iSelect,
     icon,
     reportPreview,
+    addDialog,
   },
-  data () {
+  data() {
     return {
-      form: {},
+      tableLoading: false,
+      addDialog: false,
+      form: {
+        materialGroup: this.$store.state.rfq.materialGroup || '',
+        createName: "",
+        spareParts: this.$store.state.rfq.spareParts || "",
+        rfqNo: '',
+        rfqName: this.$store.state.rfq.rfqId || ""
+      },
       rfqID: "220",
       edit: false,
       tableListData: [],
@@ -246,7 +164,6 @@ export default {
       selection: [],
       entryStatus: this.$store.state.rfq.entryStatus,
       pre: false,
-      rfqStatus: false,
       reportVisible: false,
       reportUrl: null,
       reportTitle: null,
@@ -259,16 +176,15 @@ export default {
       updatedDefault: false //是否已更新默认项
     };
   },
-  created () {
-    this.initSearchData();
+  created() {
     this.initData()
   },
-  mounted () {
+  mounted() {
     // this.getTableList();
   },
   computed: {
-    defaultStatus () {
-      return function (val, status) {
+    defaultStatus() {
+      return function(val, status) {
         let flag = status === "是" || status === "否" ? status : null;
         if (this.currentDefaultObj && this.currentDefaultObj.isDefault == "是") {
           if (val.id == this.currentDefaultObj.id)
@@ -281,17 +197,7 @@ export default {
     },
   },
   methods: {
-    //初始化查询数据
-    initSearchData () {
-      if (this.$store.state.rfq.entryStatus == 1) this.rfqStatus = true;
-      this.form = {
-        ...this.form,
-        group: this.$store.state.rfq.materialGroup,
-        num: this.$store.state.rfq.spareParts,
-        owner: null,
-        rfq: this.$store.state.rfq.rfqId,
-      };
-    },
+
     //表格序号函数
     // indexMethod (e) {
     //   const rows = [];
@@ -306,64 +212,40 @@ export default {
     //   return rows[e];
     // },
     //初始化测试数据
-    initData () {
-      this.tableListData = [
-        {
-          id: 1,
-          myindex: "1",
-          name: "aaaa",
-          materialGroup: "1111",
-          materialGroupCode: "222",
-          rfqNo: "bbbb",
-          isDefault: "是",
-          isTop: "是",
-          fileType: "方案",
-          owner: "11",
-          createDate: "",
-          modifyDate: "",
-          reportList: [
-            {
-              id: 2,
-              myindex: "1.1",
-              name: "aaaa",
-              materialGroup: "1111",
-              materialGroupCode: "222",
-              rfqNo: "bbbb",
-              isDefault: "是",
-              isTop: "是",
-              owner: "11",
-              createDate: "",
-              modifyDate: "",
-            },
-          ],
-        },
-        // {
-        //   id: 3,
-        //   myindex: "2",
-        //   name: "aaa2",
-        //   group: "1111",
-        //   rfqName: "bbbb2",
-        //   defaultRule: "",
-        //   fileType: "方案",
-        //   owner: "11",
-        //   createDate: "",
-        //   modifyDate: "",
-        //   top: "0",
-        //   children: null,
-        // },
-      ];
+    async initData() {
+      try {
+        this.tableLoading = true
+        const pms = {
+          ...this.form,
+          pageNo: this.page.currPage,
+          pageSize: this.page.pageSize
+        }
+        const res = await getList(pms)
+        this.tableListData = res.data
+        this.tableLoading = false
+
+      } catch {
+        this.tableListData = []
+        this.tableLoading = false
+      }
     },
     //重置查询事件
-    handleSearchReset () {
+    handleSearchReset() {
       this.page.currPage = 1
       this.page.pageSize = 10
+      this.form = {
+        materialGroup: '',
+        createName: "",
+        spareParts: "",
+        rfqNo: '',
+        rfqName: ""
+      }
       this.initSearchData();
       // this.getTableList();
     },
     //检索事件
-    handleSearch () {
-      this.page.currPage = 1
-      this.page.pageSize = 10
+    handleSearch() {
+      this.initData()
       // this.getTableList().then((res) => {
       //   if (!res.data || res.data.length == 0) {
       //     iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
@@ -372,7 +254,7 @@ export default {
     },
 
     //更新表格数据
-    updateTableData () {
+    updateTableData() {
       if (this.updatedDefault) {
         this.tableListData.map((item, index) => {
           let flag = item.isDefault === "是" || item.isDefault === "否" ? item.isDefault : null;
@@ -399,12 +281,12 @@ export default {
     //   });
     // },
     // 点击编辑按钮
-    editBob () {
+    editBob() {
       this.backUpData = window._.cloneDeep(this.tableListData);
       this.edit = !this.edit;
     },
     //取消保存編輯狀態下的數據
-    cancelEditBob () {
+    cancelEditBob() {
       this.backUpData.map((item, index) => {
         this.$set(this.tableListData[index], 'name', item.name)
         this.$set(this.tableListData[index], 'isDefault', item.isDefault)
@@ -412,47 +294,11 @@ export default {
       this.edit = !this.edit;
     },
     // 点击新建按钮
-    newBob () {
-      const loading = this.$loading({
-        lock: true,
-        text: "Loading",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)",
-      });
-      if (this.entryStatus === 1) {
-        initIn({
-          rfqId: this.form.rfq,
-        }).then((res) => {
-          // this.$store.dispatch('setSchemeId', res.data);
-          if (res.code === '200') {
-            this.$router.push({
-              path: '/sourcing/partsrfq/bobNew',
-              query: {
-                chemeId: res.data,
-                newBuild: true,
-              },
-            })
-            loading.close()
-          } else {
-            iMessage.error(res.desZh);
-            loading.close()
-          }
-        }).catch((error) => {
-          iMessage.error(error.desZh);
-          loading.close()
-        });
-      } else {
-        this.$router.push({
-          path: "/sourcing/partsrfq/bobNew",
-          query: {
-            newBuild: true,
-          },
-        });
-        loading.close();
-      }
+    handleAdd() {
+      this.addDialog = true
     },
     // 点击删除按钮
-    deleteBob () {
+    deleteBob() {
       if (!this.selection || this.selection.length == 0) {
         iMessage.error(this.$t('TPZS.QXZXYCZDSJ'));
         return;
@@ -465,17 +311,17 @@ export default {
       });
     },
     //编辑时，改变默认项事件
-    changeDefault (val, row) {
+    changeDefault(val, row) {
       this.$set(row, "isDefault", val);
       this.$set(this, "currentDefaultObj", row);
       if (val == '是') this.updatedDefault = true
       this.updateTableData()
     },
     //保存编辑
-    saveEdit () {
+    saveEdit() {
       this.edit = false;
       const params = this.tableListData;
-      fetchEdit(params).then((res) => {
+      update(params).then((res) => {
         if (res) {
           if (res.code == 200) iMessage.success(res.desZh);
           else iMessage.error(res.desZh);
@@ -484,10 +330,10 @@ export default {
       });
     },
     // 选中项发生改变
-    handleSelectionChange (val) {
+    handleSelectionChange(val) {
       this.selection = val;
     },
-    rowSelect (selection, row) {
+    rowSelect(selection, row) {
       if (row.fileList) { //只对有子节点的行响应
         if (!row.isChecked) {   //由行数据中的元素isChecked判断当前是否被选中
           row.fileList.map((item) => { //遍历所有子节点
@@ -511,7 +357,7 @@ export default {
         // console.log(this.multipleSelection, row);
       }
     },
-    selectAll (selection) {
+    selectAll(selection) {
       // selection 是选中的数据集合
       this.$refs.dataTable.data.map((items) => { //使用$ref获取注册的子组件信息，用data获取所有行，并用map函数遍历行
         if (items.fileList) {
@@ -539,21 +385,17 @@ export default {
       // console.log(this.orgs)
     },
     // 点击置顶按钮
-    handleStick (val) {
-      const params = window._.cloneDeep(val);
-      params.isTop = !val.isTop;
-      fetchStaick(params).then((res) => {
-        if (res) {
-          if (res.code == 200) {
-            val.isTop = !val.isTop;
-            iMessage.success(res.desZh);
-            // this.getTableList();
-          } else iMessage.error(res.desZh);
+    handleStick(val) {
+      console.log(val);
+      this.tableListData.map(item => {
+        if (item.id === val.id) {
+          return item.isTop = !item.isTop
         }
-      });
+      })
+      this.saveEdit()
     },
     // 点击名称,触发跳转事件
-    clickName (val) {
+    clickName(val) {
       if (val.fileType == this.$t('TPZS.SCHEME_TYPE')) {
         this.$router.push({
           path: "/sourcing/partsrfq/bobNew",
@@ -570,11 +412,11 @@ export default {
       }
     },
     //点击关闭报告预览弹窗
-    handleCloseReport () {
+    handleCloseReport() {
       this.reportVisible = false
     },
     //给方案数据设置斑马纹样式名
-    rowStyle ({ row }) {
+    rowStyle({ row }) {
       return row.fileType == this.$t('TPZS.SCHEME_TYPE') && row.number % 2 == 0 ? 'scheme' : 'report'
     }
   },

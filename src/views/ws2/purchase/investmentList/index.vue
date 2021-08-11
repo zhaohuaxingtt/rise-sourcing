@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-permission="PURCHASE_MOULDINVESTMENTBUYER_LIST">
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
@@ -7,7 +7,7 @@
         @reset="reset"
         :icon="false"
         :resetKey="PARTSPROCURE_RESET"
-        :searchKey="PARTSPROCURE_CONFIRM"
+        :searchKey="LK_CHAXUN"
         v-loading="loadingiSearch"
     >
       <el-form>
@@ -125,7 +125,7 @@
             }}</div>
         </template>
         <template #moldInvestmentAmount="scope">
-          <div v-if="Number(isShowMoldInvestmentAmount) === 1">{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
+          <div v-if="Number(scope.row.isShowMoldInvestmentAmount) === 1">{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
           <div v-else>-</div>
         </template>
         <template #moldInvestmentStatus="scope">
@@ -185,6 +185,7 @@ import {
   conditionConfirmTskList,
   sendSupplier,
   liniePullDownByDept,
+  verifyLine,
 } from "@/api/ws2/purchase/investmentList";
 import {pageMixins} from "@/utils/pageMixins";
 import {Switch, Popover} from "element-ui"
@@ -245,7 +246,6 @@ export default {
       this.moldInvestmentStatus = status.split(',')
     }
     this.getAllSelect()
-    this.conditionConfirmTskList()
   },
   methods: {
     handleSelectionChange(list) {
@@ -273,6 +273,8 @@ export default {
         }
         if (res[2].data) {
           this.moldInvestmentStatusList = res[2].data;
+          this.moldInvestmentStatus = this.moldInvestmentStatusList.filter(a => a.code !== '7').map(b => b.code)
+
         } else {
           iMessage.error(result2);
         }
@@ -281,6 +283,7 @@ export default {
         } else {
           iMessage.error(result3);
         }
+        this.conditionConfirmTskList()
         this.loadingiSearch = false
       }).catch(() => {
         this.loadingiSearch = false
@@ -354,7 +357,21 @@ export default {
           id: row.id
         }
       })
-      window.open(url.href, '_blank');
+      if(Number(row.isShowMoldInvestmentAmount) === 1){
+        window.open(url.href, '_blank');
+      } else {
+        verifyLine({linie: row.linieId}).then((res) => {
+          if(res){
+            window.open(url.href, '_blank');
+          } else {
+            iMessage.warn(this.$t('LK_DUIBUQIMEIYOUQUANXIAN'));
+          }
+          // this.handoverSelfLoading = false
+        }).catch(() => {
+          iMessage.warn(this.$t('LK_DUIBUQIMEIYOUQUANXIAN'));
+          // this.handoverSelfLoading = false
+        });
+      }
     },
     sure(){
       this.page.currPage = 1

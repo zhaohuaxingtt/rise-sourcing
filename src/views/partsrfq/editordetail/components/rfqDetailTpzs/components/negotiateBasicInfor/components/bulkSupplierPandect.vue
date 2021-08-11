@@ -6,21 +6,24 @@
  * @Descripttion: 总览
 -->
 <template>
-  <iCard :title="$t('TPZS.PLGYSZL')" :defalutCollVal='false' collapse>
+  <iCard :title="$t('TPZS.PLGYSZL')" :defalutCollVal="$route.path==='/sourcing/partsrfq/assistant'?false:true" collapse>
     <div class="center">
+      <iButton v-if="$route.path==='/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'">{{language("FANHUI","返回")}}</iButton>
       <supplierCard :supplierDataList="supplierDataList" class="card-right" />
       <map1 :mapListData="mapListData" />
+      <theMapIcon :mapListData="mapListData" />
     </div>
   </iCard>
 </template>
 
 <script>
-import { iCard, icon } from "rise";
+import { iCard, icon, iButton } from "rise";
 import map1 from "./map.vue";
+import theMapIcon from "./theMapIcon.vue";
 import { overviewBatchSupplierMap } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import supplierCard from "./supplierCard.vue";
 export default {
-  components: { iCard, icon, map1, supplierCard },
+  components: { iCard, icon, iButton, map1, supplierCard, theMapIcon },
   data() {
     return {
       mapListData: {},
@@ -45,7 +48,7 @@ export default {
 }
 </script>
 
-<style lang='scss' >
+<style lang='scss' scoped>
 .center {
   position: relative;
   width: 100%;
@@ -54,5 +57,12 @@ export default {
     right: 0;
     z-index: 2;
   }
+}
+.el-button {
+  position: absolute;
+  top: -3.625rem;
+  right: 0;
+  display: flex;
+  justify-content: center;
 }
 </style>

@@ -363,7 +363,7 @@ module.exports = {
         },
       },
       '/aonApi': {
-        // target: 'http://10.160.138.166:8036',
+        // target: 'http://10.122.17.38:8036',
         target: 'http://10.122.18.166:8036',
         // target: 'http://192.168.50.230:8036',
         changeOrigin: true,
@@ -400,13 +400,44 @@ module.exports = {
           '^/bizlog':''
         }
       },
-      '/priceledgerApi': {
-        target: 'http://10.122.17.38:8028',
-				changeOrigin: true,
-				pathRewrite: {
-					"^/priceledgerApi": ""
-				}
+      //kpi杜玲聪的代理
+      '/kpiInfo': {
+        target: 'http://10.122.18.166:8010',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/kpiInfo': '',
+        },
       },
-    },
+      //椿慧的代理
+      '/kpiPowerBiInfo': {
+        target: 'http://10.122.18.166:8036/aon',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/kpiPowerBiInfo': '',
+        },
+      },
+      '/supplierSpiApi': {
+        target: 'http://10.122.18.166:8010',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/supplierSpiApi': '',
+        }
+      },
+        '/priceledgerApi': {
+          target: 'http://10.122.17.38:8028',
+          changeOrigin: true,
+          pathRewrite: {
+            "^/priceledgerApi": ""
+          }
+        },
+        '/lier':{
+          target: 'http://10.160.142.130:8036',
+          changeOrigin: true,
+          pathRewrite: {
+            '^/lier': '',
+          }
+        },
+    }
+    }
   }
-}
+      

@@ -1,13 +1,19 @@
+<!--
+ * @Author: youyuan
+ * @Date: 2021-08-06 14:46:27
+ * @LastEditTime: 2021-08-09 09:46:57
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\kpiChart\supplierList.vue
+-->
 <template>
   <div>
       <iPage>
           <iCard>
                <div class="imgkpi-head">
-               <el-form>
-                <el-form-item
-                  class="SearchOption"
-                >
-                <iInput suffix-icon="el-icon-search"></iInput>
+               <el-form :model="formData">
+                <el-form-item class="SearchOption">
+                  <iInput v-model="formData.supplierName" suffix-icon="el-icon-search" :placeholder="language('SHURUCHAXUNGONGYINGSHANGMINGCHENG', '输入查询供应商名称')"></iInput>
                 </el-form-item>
                </el-form>
                <div>
@@ -31,6 +37,8 @@ import {iButton,iPage,iCard,iInput,iSelect,iTableCustom} from 'rise'
 import {setCloum} from './components/data'
 import supplierDetail from './components/supplierDetail'
 import iDialog from '@/components/iDialog/index'
+import { iMessage } from '@/components';
+import { getFocusSupplierList } from '@/api/partsrfq/spi/index.js'
 export default {
     components:{
         iButton,
@@ -43,19 +51,42 @@ export default {
         iDialog
     },
     data(){
-        return {
-            formData:{
-                deptId:''
-            },
-            setCloum:setCloum,
-            tabledata:[{index:1,name:"aaaaaaa"}],
-     
-        }
+      return {
+        formData:{},
+        setCloum:setCloum,
+        tabledata:[],
+      }
+    },
+    created () {
+      this.getTableData()
     },
     methods:{
-        handleGoDetail(){
-            this.$router.push('/supplier/supplierDetail')
+      handleGoDetail(row){
+        console.log('supplierId', row.supplierId);
+        this.$router.push({
+          path: '/supplier/supplierDetail',
+          query: {
+            supplierId: row.supplierId
+          }
+        })
+      },
+      getTableData() {
+        const params = {
+          keyWord: this.formData.supplierName,
+          supplierType: "PP"
         }
+        getFocusSupplierList(params).then(res => {
+          if(res && res.code == 200) {
+            this.tabledata = res.data
+            this.initHandleData()
+          } else iMessage.error(res.desZh)
+        })
+      },
+      initHandleData() {
+        this.tabledata.forEach((item, index) => {
+          item['index'] = index + 1
+        })
+      }
     }
 }
 </script>
