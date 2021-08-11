@@ -388,25 +388,27 @@ export default {
         assign(row=null, type){
             console.log(row);
             const {selectItems} = this;
-            // 判断是否是单一分派
 
             this.assignType = type
 
+            // 判断是否是单一分派
             if(row){
                 this.singleAssign = [row];
                 this.assignVisible = true;
             }else{
                 if(!selectItems.length){
-                    iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+                    return iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
                 }else{
-                    // 判断勾选项是否包含无预设科室的
-                    const arr = selectItems.filter((item)=>item.linieDeptNum);
-                    if(arr.length){
-                        const str = arr.map((item)=>item.partNum).toString();
-                        return iMessage.warn(str+this.language('LK_AEKO_LINGJIANWUYUSHEKESHIQINGCHONGXINXUANZE','零件无预设科室，请重新选择!'))
-                    }
                     // 判断是否是单一分派
                     if(selectItems.length == 1){
+                        // 判断所选项是否已分派
+                        if(type == 'commodity'){  // 科室
+                            const arr = selectItems.filter((item)=>item.linieDeptNum);
+                            if(arr.length) return iMessage.warn(this.language('LK_AEKO_GAILINGJIANYIFENPEI','该零件已分派'))
+                        }else{ // 采购员linie  
+                            const arr = selectItems.filter((item)=>item.isOperate);
+                            if(arr.length) return iMessage.warn(this.language('LK_AEKO_GAILINGJIANYIFENPEI','该零件已分派'))
+                        }
                         this.singleAssign = selectItems;
                     }
                     this.assignVisible = true;
