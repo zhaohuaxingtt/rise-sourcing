@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-11 17:16:18
+ * @LastEditTime: 2021-08-11 17:41:09
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -35,14 +35,14 @@
               <dl>
                 <dt>{{language('WEICHUANGJIANCAIGOUXIANGMU','未创建采购项目')}}</dt>
                 <dd>
-                <strong class="note cursor" @click="toLink('/sourcing/partsprocure')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
+                <strong class="note cursor" @click="toLink('/sourcing/partsprocure?projectStatus=10')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
                 /{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItemSum || 0}}
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('WEIJIARURFQ','未加入RFQ')}}</dt>
                 <dd>
-                  <strong class="note cursor" @click="toLink('/sourcing/partsprocure')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
+                  <strong class="note cursor" @click="toLink('/sourcing/partsprocure?projectStatus=11')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
                   /{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfqSum || 0}}
                 </dd>
               </dl>
@@ -125,13 +125,13 @@
               <dl>
                 <dt>{{language('LK_DAIQUERENDINGDIANXIN','待确认定点信')}}</dt>
                 <dd>
-                  <strong class="cursor" @click="toLink('/sourcing/partsletter')">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLetterNum || 0}}</strong>
+                  <strong class="cursor" @click="toLink('/sourcing/partsletter?status=CSF_HANDLING')">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLetterNum || 0}}</strong>
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('LK_DAIQUERENLOI','待确认LOI')}}</dt>
                 <dd>
-                  <strong class="cursor" @click="toLink('/sourcing/partsletter')">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLoiNum || 0}}</strong>
+                  <strong class="cursor" @click="toLink('/sourcing/partsletter?loiStatus=LINIE_CONFIRING&cardType=LOI')">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLoiNum || 0}}</strong>
                 </dd>
               </dl>
             </div>
