@@ -22,8 +22,8 @@ export const tableTitle = [
     { props: "aekoCode", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true },
     { props: "log", name: "⽇志", key: "LK_RIZHI", tooltip: true },
     { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true },
-    { props: "aekoStatus", name: "AEKO状态", key: "LK_AEKOZHUANGTAI", tooltip: true },
-    { props: "coverStatus", name: "封⾯状态", key: "LK_AEKOFENGMIANZHUANGTAI", tooltip: true },
+    { props: "aekoStatusDesc", name: "AEKO状态", key: "LK_AEKOZHUANGTAI", tooltip: true },
+    { props: "coverStatusDesc", name: "封⾯状态", key: "LK_AEKOFENGMIANZHUANGTAI", tooltip: true },
     { props: "tcmResult", name: "狼堡决议", key: "LK_AEKOLANGBAOJUEYI", tooltip: true },
     { props: "createDate", name: "创建⽇期", key: "LK_AEKOCHUANGJIANRIQI", tooltip: true },
     { props: "deadLine", name: "截⽌⽇期", key: "LK_AEKOJIEZHIRIQI", tooltip: true },
@@ -34,7 +34,7 @@ export const tableTitle = [
 export const filesTableTitle = [
   {name:'文件名',key:'LK_WENJIANMING',props:'fileName'},
   {name:'上传日期',key:'LK_SHANGCHUANRIQI',props:'uploadDate'},
-  {name:'来源',key:'LK_AEKO_FILES_LAIYUAN',props:'source'},
+  {name:'来源',key:'LK_AEKO_FILES_LAIYUAN',props:'sourceDesc'},
   {name:'上传人',key:'LK_SHANGCHUANREN',props:'uploadBy'},
   {name:'大小',key:'LK_DAXIAO',props:'fileSize'},
 ]

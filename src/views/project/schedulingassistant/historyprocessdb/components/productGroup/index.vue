@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-09 16:49:44
+ * @LastEditTime: 2021-08-10 17:24:02
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -64,7 +64,8 @@ export default {
   components: { iCard, tableList, iPagination, iButton, logicSettingDialog, showItemDialog },
   props: {
     searchParams: { type:Object, default: () => {}},
-    carProjectOptions: {type: Array, default: () => []}
+    carProjectOptions: {type: Array, default: () => []},
+    productGroupOptions: {type: Array, default: () => []}
   },
   data() {
     return {
@@ -119,7 +120,8 @@ export default {
             code: item.value,
             name: item.label
           }
-        })
+        }),
+        productGroupOptions: this.productGroupOptions
       }
     },
     partTableTitle() {
@@ -227,13 +229,18 @@ export default {
       this.$refs.logic.changeSaveLoading(false)
       this.page.currPage = 1
       this.getFitting()
+      this.getExperience(this.logicData.productGroup)
     },
     init() {
-      this.getExperience()
       if (this.$route.query.cartypeProId) {
-        this.logicData = this.searchParams
+        this.logicData = {
+          ...this.logicData,
+          ...this.$route.query
+        }
+        this.getExperience(this.$route.query.productGroup)
         this.getFitting()
       } else {
+        this.getExperience()
         this.getCondition()
       }
     },
@@ -243,9 +250,10 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    getExperience() {
+    getExperience(productGroup = this.searchParams.productGroup) {
       this.regularTableLoading = true
-      getExperience(this.searchParams.productGroup).then(res => {
+      // const productGroup = this.searchParams.productGroup
+      getExperience(productGroup).then(res => {
         if (res?.result) {
           this.regularTableData = res.data || []
         } else {

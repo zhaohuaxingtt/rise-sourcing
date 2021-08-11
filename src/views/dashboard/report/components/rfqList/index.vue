@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 17:05:28
- * @LastEditTime: 2021-08-09 15:44:52
+ * @LastEditTime: 2021-08-10 14:30:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/dashboard/report/components/rfqList/index.vue
@@ -67,7 +67,7 @@ export default {
       mark: ''
     }
   },
-  mounted() {
+  created() {
     this.init()
   },
   methods: {
