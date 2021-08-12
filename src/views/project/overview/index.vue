@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-11 10:08:47
+ * @LastEditTime: 2021-08-12 16:39:23
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
@@ -140,14 +140,14 @@ export default {
     handleSure() {
       this.tableData = this.tableDataTemp.filter(item => {
         let result = true
-        if (this.searchParams.carProject) {
+        if (this.searchParams.carProject && result === true) {
           result = item.id === this.searchParams.carProject
         }
-        if (this.searchParams.buyerName) {
+        if (this.searchParams.buyerName && result === true) {
           result = item.projectPurchaser.includes(this.searchParams.buyerName)
         }
-        if (this.searchParams.sopDate) {
-          result = moment(item.sop).isBefore(moment(this.searchParams.sopDate[1])) && moment(item.sop).isAfter(moment(this.searchParams.sopDate[0]))
+        if (this.searchParams.sopDate && result === true) {
+          result = moment(item.sopDate).isBefore(moment(this.searchParams.sopDate[1]).add(1, 'days')) && moment(item.sopDate).isAfter(moment(this.searchParams.sopDate[0]).subtract(1, 'days'))
         }
         return result
       })
@@ -191,7 +191,7 @@ export default {
     getNodeList(node) {
       if(node) {
         const nodeInYearList = this.progressList.reduce((accu, curr, index) => {
-          if (curr.label !== 'PD') {
+          if (curr.label !== 'PD' && node[curr.date] && node[curr.date] !== '') {
             const week = Number(node[curr.value].split('KW')[1])
             return [...accu, {
               ...curr,

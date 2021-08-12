@@ -128,7 +128,7 @@ export default {
     };
   },
   created() {
-    //this.getList();
+    this.getList();
   },
   methods: {
     handleEdit() {
@@ -230,7 +230,8 @@ export default {
   },
   watch: {
     '$store.state.rfq.categoryCode'() {
-      this.getList()
+      this.categoryCode = this.$store.state.rfq.categoryCode;
+      this.getList();
     },
   },
 };

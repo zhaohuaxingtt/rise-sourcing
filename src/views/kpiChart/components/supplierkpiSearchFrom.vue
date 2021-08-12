@@ -13,9 +13,10 @@
                                     class="SearchOption"
                                     prop="userNum"
                                     >
-                                    <iSelect v-model="exisList" 
+                                    <iSelect 
+                                    v-model="formData.spiBaseDTO.existShareIdList" 
                                     :placeholder="$t('partsignLanguage.QingXuanZe')"
-                                    @change="handlechange"
+                                    @change="handlechangeSeccoStock('base',$event)"
                                     multiple
                                     collapse-tags>
                                         <el-option 
@@ -29,7 +30,7 @@
                              
                                 <el-col :span="6">
                                     <div style="margin-bottom:10px;margin-top:10px;">地区</div>
-                                    <div class="TOCase">
+                                    <div class="TOCaseArea">
                                         <el-cascader 
                                         :props="props"
                                         @change="handleChangeArea($event)"
@@ -55,6 +56,7 @@
                                     type="year"
                                     format="yyyy"
                                     value-format="yyyy"
+                                    :picker-options="expireTimeOption"
                                     @change="endchange"
                                     >
                                     </el-date-picker>
@@ -88,13 +90,14 @@
                                     class="SearchOption"
                                     prop="userNum"
                                     >
-                                    <iSelect v-model="exisList" 
+                                    <iSelect 
+                                    v-model="formData.spiSupplierDTO.existShareIdList" 
                                     :placeholder="$t('partsignLanguage.QingXuanZe')"
-                                    @change="handlechange"
+                                    @change="handlechangeSeccoStock('supplier',$event)"
                                      multiple
                                     collapse-tags>
                                         <el-option 
-                                        v-for="(x,index) in Relationship"
+                                        v-for="(x,index) in supplierSeccoStockOption"
                                          :value='x.existShareId' 
                                          :label='x.existShareName'
                                          :key="index"></el-option>
@@ -104,8 +107,12 @@
                            
                                 <el-col :span="6">
                                     <div style="margin-bottom:10px;margin-top:10px;">地区</div>
-                                    <div class="TOCase">
-                                        <el-cascader :props="props"></el-cascader>
+                                    <div class="TOCaseArea">
+                                        <el-cascader 
+                                        :props="props"
+                                        @change="handleChangeArea($event)"
+                                        :clearable="true"
+                                        collapse-tags ></el-cascader>
                                     </div>
                                 </el-col>
                                 <el-col :span="6">
@@ -118,6 +125,8 @@
                                     v-model="formData.spiSupplierDTO.categoryCodeList" 
                                     multiple
                                     collapse-tags
+                                    @change="materialValue"
+                                    :multiple-limit="5"
                                     :placeholder="$t('partsignLanguage.QingXuanZe')">
                                         <el-option 
                                         v-for="(x,index) in material"
@@ -136,6 +145,9 @@
                                     >
                                      <iSelect 
                                      v-model="formData.spiSupplierDTO.stuffCodeList" 
+                                     multiple
+                                    collapse-tags
+                                     :multiple-limit="5"
                                      :placeholder="$t('partsignLanguage.QingXuanZe')">
                                         <el-option 
                                         v-for="(x,index) in StuffByCategory" 
@@ -199,7 +211,7 @@
 
 <script>
 import {iButton,iPage,iCard,iFormItem,iInput,iSelect,iDatePicker} from 'rise'
-import {getMaterialGroupByUserIds,spiTotalScore,getRelationship,getStuffByCategory,getLine} from '@/api/kpiChart'
+import {getMaterialGroupByUserIds,spiTotalScore,getRelationship,getStuffByCategory,getLine,getTO} from '@/api/kpiChart'
 import { getCityInfo } from "@/api/partsrfq/supplyChainOverall";
 export default {
     components:{
@@ -261,17 +273,27 @@ export default {
                         }
                         if(level==2){
                            getCityInfo({parentCityId:node.value}).then(res=>{
+                               console.log(res)
                                 const city = res.data.map(val=>({
                                     value: val.cityId,
                                     label: val.cityNameCn,
                                     leaf: level >= 2
+
                                 }))
                                 resolve(city)
                             })
                         }
                         }, 1000);
                     }
-                }
+                },
+            expireTimeOption:{
+                // disabledDate(date) {
+                //     return (
+                //         date.getTime() = new Date(new Date().getFullYear())
+                //     )
+                // }
+            },
+            supplierSeccoStockOption:[]
         }
     },
     created(){
@@ -343,6 +365,20 @@ export default {
             }
 
         },
+        //科股监听
+        handlechangeSeccoStock(str,val){
+            if(str=="base" && val.length>0){
+                this.supplierSeccoStockOption=[]
+                val.forEach(x=>{
+                  let fdx =this.Relationship.filter(y=>{return y.existShareId==x})
+                  this.supplierSeccoStockOption=this.supplierSeccoStockOption.concat(fdx)
+                })
+            }
+            if(str=="base" && val.length==0){
+                debu
+                this.supplierSeccoStockOption=[]
+            }
+        },
         handleOk(){
             getLine(this.formData).then(res=>{
                 this.$emit("chartData",res.data)
@@ -363,13 +399,15 @@ export default {
        }
    }
    ::v-deep.TOCase{
-       display: flex;
-           justify-content: space-between;
-           align-items: center;
-           position: relative;
-    //    input{
-    //        width: 40%;
-    //    }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+   }
+   .TOCaseArea{
+       position: relative;
+        .el-cascader-panel {
+            height: 200px;
+        }
    }
    .bottom-underline{
        border-bottom: 1px solid #E3E3E3;
@@ -379,9 +417,5 @@ export default {
    .el-cascader{
        width: 100%;
    }
-   .el-popper{
-       height: 200px;
-       overflow-y: auto;
-       top: 172px;
-   }
+  
 </style>

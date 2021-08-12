@@ -386,3 +386,39 @@ export function getAllParts(params) {
         method: 'GET'
     })
 }
+
+// 获取未选择的BDL列表
+export function unselectRfqBdlPage(params) {
+    return requst({
+        url: `/rfqs/unselectRfqBdlPage`,
+        method: 'POST',
+        data: params
+    })
+}
+
+// 添加BDL
+export function addRfqBdl(params) {
+    return requst({
+        url: `/rfqs/addRfqBdl`,
+        method: 'POST',
+        data: params
+    })
+}
+
+// 获取已选择的BDL列表
+export function rfqBdlPage(params) {
+    return requst({
+        url: `/rfqs/rfqBdlPage`,
+        method: 'POST',
+        data: params
+    })
+}
+
+// 删除BDL
+export function deleteRfqBdl(params) {
+    return requst({
+        url: `/rfqs/deleteRfqBdl`,
+        method: 'POST',
+        data: params
+    })
+}

@@ -41,7 +41,7 @@ export function dowbloadAPI(data) {
 // 概览api
 export function getPowerBiKpi() {
   return chrequst({
-    url: '/web/aon/batchOverview/getSpiPbi',
+    url: '/aon/web/aon/batchOverview/getSpiPbi',
     method: 'GET'
   })
 }
@@ -151,7 +151,15 @@ export function uploadTemplate(data) {
   return requst({
     url: '/web/kpi/template/upload',
     method: 'POST',
-    // responseType: 'blob',
+    data: data
+  })
+}
+
+// 获取TO量级
+export function getTO(data) {
+  return requst({
+    url: '/web/supplierToData/yearByAmount',
+    method: 'POST',
     data: data
   })
 }
