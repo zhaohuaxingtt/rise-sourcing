@@ -41,7 +41,7 @@ export function dowbloadAPI(data) {
 // 概览api
 export function getPowerBiKpi() {
   return chrequst({
-    url: '/web/aon/batchOverview/getSpiPbi',
+    url: '/aon/web/aon/batchOverview/getSpiPbi',
     method: 'GET'
   })
 }
