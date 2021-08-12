@@ -43,7 +43,7 @@ export function findMoldViewList(data) {
 //导出模具投资清单视图列表
 export function bmMoldExport(data) {
     return BMMOLDFile({
-        url: '/export',
+        url: '/export4buyer',
         method: 'POST',
         data: data
     })
