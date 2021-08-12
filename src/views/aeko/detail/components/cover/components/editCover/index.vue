@@ -175,6 +175,10 @@ export default {
               ...data,
               fsName:fsId
             };
+            coverCostsWithCarType.map((item)=>{
+              item.investmentIncrease = this.fixNumber(item.investmentIncrease,0);
+              item.otherCost = this.fixNumber(item.otherCost,0);
+            })
             this.tableData = coverCostsWithCarType;
           }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -305,6 +309,18 @@ export default {
             }
           }
           return isValidate;
+      },
+
+      // 费用千分位处理
+      fixNumber(str,precision=2){
+          if(!str) return null;
+          var re=/(?=(?!(\b))(\d{3})+$)/g;
+          var fixstr =  str.replace(re,",");
+          if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
+              var last = fixstr.substr(fixstr.length-3,3);
+              if(last == '.00') fixstr = fixstr.substr(0,fixstr.length-3);
+          }
+          return fixstr;
       },
     }
 }
