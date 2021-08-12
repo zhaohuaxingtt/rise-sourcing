@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-12 14:44:45
+ * @LastEditTime: 2021-08-12 16:44:10
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -26,15 +26,15 @@
             <span>{{dataItem.cartypeProjectZh}}</span>
           </div>
           <div class="baiscInfo-bottom">
-            <ol class="baiscInfo-bottom-column">
-              <li>{{dataItem.carPlatformCode}}</li>
-              <li>{{dataItem.brandName}}</li>
-              <li>{{dataItem.carTypeLevel}} class</li>
+            <ol clasdivs="baiscInfo-bottom-column">
+              <li><div>{{dataItem.carPlatformCode}}</div></li>
+              <li><div>{{dataItem.brandName}}</div></li>
+              <li><div>{{dataItem.carTypeLevel}} class</div></li>
             </ol>
             <ol class="baiscInfo-bottom-column">
-              <li>{{dataItem.factoryName}}</li>
-              <li>SOP:{{dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk}}</li>
-              <li>KPE:{{dataItem.kpe}}<icon symbol name="iconbianji"  class="margin-left10 cursor"></icon></li>
+              <li><div>{{dataItem.factoryName}}</div></li>
+              <li><div>SOP:{{dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk}}</div></li>
+              <li><div>KPE:{{dataItem.kpe}}<icon symbol name="iconbianji"  class="margin-left10 cursor"></icon></div></li>
             </ol>
           </div>
         </div>
@@ -65,7 +65,7 @@
               <!-- 未完成 -->
               <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
               <span class="node-title">{{nodeItem.label}}</span>
-              <span class="node-week">KW{{nodeItem.week}}</span>
+              <span class="node-week">KW{{ nodeItem.week < 10 ? '0'+nodeItem.week : nodeItem.week }}</span>
               <template v-if="nodeItem.withLine">
                 <icon v-if="nodeItem.line.lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="short-between-icon"></icon>
                 <!-- 已完成 -->
@@ -342,12 +342,29 @@ export default {
           font-size: 14px;
           color: rgba(92, 99, 113, 1);
           padding: 20px 0 0 20px;
-          &-column {
+          ul, li {
+            list-style: disc;
+            margin-bottom: 5px;
+            div {
+              width: 100%;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              // margin-bottom: 5px;
+            }
+          }
+          ol {
             display: flex;
             flex-direction: column;
+            &:first-child {
+              width: 30%;
+            }
+            &:last-child {
+              width: 50%;
+            }
             li {
-              margin-bottom: 5px;
               list-style-type: disc;
+              
             }
           }
         }
@@ -387,7 +404,7 @@ export default {
             }
             .short-between-icon {
               position: absolute;
-              width: 20px;
+              width: 18px;
               right: -20px;
               top: 12px;
             }
@@ -411,8 +428,8 @@ export default {
               }
               &:last-child {
                 .short-between-icon {
-                  width: 20px;
-                  right: -16px;
+                  width: 16px;
+                  right: -12px;
                   top: 5px;
                 }
               }
