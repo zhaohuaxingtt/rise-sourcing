@@ -261,10 +261,12 @@ export default {
                         }
                         if(level==2){
                            getCityInfo({parentCityId:node.value}).then(res=>{
+                               console.log(res)
                                 const city = res.data.map(val=>({
                                     value: val.cityId,
                                     label: val.cityNameCn,
                                     leaf: level >= 2
+
                                 }))
                                 resolve(city)
                             })
