@@ -233,7 +233,7 @@ export default {
             return {
               ...item,
               value: item.id,
-              label: item.cartypeProjectZh
+              label: item.carTypeProjectZh
             }
           })
         } else {

@@ -68,8 +68,8 @@ export default{
     },
     getPageData(){
       this.loading = true
-      let {partNum,cartypeProjectNum,procureFactory} = this.detailData()
-      getPageData({...{carTypeProject:cartypeProjectNum,partNum:partNum,procureFactory:procureFactory},...{current:this.page.currPage,size:this.page.pageSize}}).then(res=>{
+      let {partNum,carTypeProjectNum,procureFactory} = this.detailData()
+      getPageData({...{carTypeProject:carTypeProjectNum,partNum:partNum,procureFactory:procureFactory},...{current:this.page.currPage,size:this.page.pageSize}}).then(res=>{
          this.tableData = res.data
          this.page.currPage = res.pageNum
          this.page.totalCount = res.total

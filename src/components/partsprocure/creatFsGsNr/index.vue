@@ -54,16 +54,17 @@
 					ids: this.projectItems.map(res=>res[this.keys]),
 				};
 				generateFs(fs).then((res) => {
+					this.partNumberLoading = false
 					if (res.data) {
 						// 多条组合RFQ
 						let tip=""
-						if (res.data.fs.projectList) {
-							res.data.fs.projectList.map(res=>{
+						if (res.data.canJoinProjectList) {
+							res.data.canJoinProjectList.map(res=>{
 								tip=tip+res.fsnrGsnrNum+','
 							})
 							tip=tip+this.language('LK_SHIFOUZUHEXINJIANRFQ','是否组合新建RFQ')
 							iMessageBox(tip,'',{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(val=>{
-								insertRfq({ rfqPartDTOList: res.data.fs.projectList}).then((res) => {
+								insertRfq({ rfqPartDTOList: res.data.canJoinProjectList.map(r=>{return {...r,...{purchaseProjectId:r.id}}})}).then((res) => {
 									if (res.data && res.data.rfqId) {
 										iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 										this.$emit('refresh')
@@ -71,14 +72,18 @@
 										iMessage.warn(res.desZh);
 									}
 								})
+							}).catch(()=>{
+								this.$emit('refresh')
 							})	
-						}else if(res.data.fs.rfqResult){
+						}else if(res.data.canJoinRfqList){
 							// 单条插入RFQ
 							iMessageBox(this.language('LK_SHIFOUJIARUYIYOURFQ','是否加入已有RFQ'),'',{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(val=>{
 								this.visible=true
-								this.tableListData=res.data.fs.rfqResult.list
-								this.rfqPartDTOList.push(res.data.fs.rfqResult.project) 
-							})	
+								this.tableListData=res.data.canJoinRfqList
+								this.rfqPartDTOList = res.data.projectList.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) 
+							}).catch(()=>{
+								this.$emit('refresh')
+							})
 						}else{
 							iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 							this.$emit('refresh')
@@ -86,7 +91,6 @@
 					} else {
 						iMessage.error(res.desZh)
 					}
-					this.partNumberLoading = false
 				})
 			},
 			// 添加零件到RFQ
@@ -128,6 +132,8 @@
 							iMessageBox(this.language('SPIRNT11COMMONSS','存在零件采购项目类型与commonSourcing为[否]不统一，是否继续？')).then(res=>{
 								callBack()
 							})
+						}else{
+							callBack()
 						}
 					}else{
 						callBack()

@@ -205,7 +205,7 @@ export function getPageData(params){
 //批量修改零件采购项目特殊零件仅零件号变更
 export function getDataListBatchList(data){
 	return sourcing({
-		url:'projectList',
+		url:'/purchasing-project-parts/list',
 		method:'POST',
 		data:data
 	})

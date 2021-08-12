@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-08-10 18:24:35
+ * @LastEditTime: 2021-08-12 18:02:20
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -88,7 +88,7 @@
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREPARTSTATUS','零件状态')
                   "
-                  v-model="form['projectStatus']"
+                  v-model="form['status']"
                   v-permission="PARTSPROCURE_PARTSTATUS"
                 >
                   <el-option
@@ -111,7 +111,7 @@
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREVEHICLECATEGORIES','车型大类')
                   "
-                  v-model="form['cartypeCategory']"
+                  v-model="form['carTypeCategory']"
                   v-permission="PARTSPROCURE_VEHICLECATEGORIES"
                 >
                   <el-option
@@ -135,7 +135,7 @@
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREMODELPROJECT','车型项目')
                   "
-                  v-model="form['cartypeProjectZh']"
+                  v-model="form['carTypeProjectZh']"
                   v-permission="PARTSPROCURE_MODELPROJECT"
                 >
                   <el-option
@@ -159,7 +159,7 @@
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREPARTITEMTYPE','零件项目类型')
                   "
-                  v-model="form['partPrejectType']"
+                  v-model="form['partProjectType']"
                   v-permission="PARTSPROCURE_PARTITEMTYPE"
                 >
                   <el-option
@@ -324,8 +324,6 @@ export default {
   created() {
     this.getTableListFn();
     this.getProcureGroup();
-    this.getCartypeDict();
-    this.procureFactorySelectVo()
     this.updateNavList
   },
   methods: {
@@ -339,6 +337,8 @@ export default {
     getCartypeDict() {
       getCartypeDict().then(res => {
         this.fromGroup['CARTYPE_CATEGORY'] = res.data
+      }).catch(err=>{
+        console.log(err)  
       })
     },
     // 跳转详情
@@ -375,6 +375,8 @@ export default {
       ];
       selectDictByKeyss(types).then((res) => {
         this.fromGroup = res.data;
+        this.getCartypeDict();
+        this.procureFactorySelectVo()
       });
     },
     //转派
@@ -443,8 +445,8 @@ export default {
      *********************************************************************/
     // 获取选中零件号ID
     getPurchasePrjectId() {
-      let purchasePrjectId = this.selectTableData.map((res) => res.id);
-      return purchasePrjectId;
+      let purchaseProjectId = this.selectTableData.map((res) => res.id);
+      return purchaseProjectId;
     },
     // 跳转批量维护
     openBatchmiantain() {

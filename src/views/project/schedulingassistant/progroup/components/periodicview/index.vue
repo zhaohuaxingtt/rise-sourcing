@@ -340,7 +340,7 @@ export default {
           }) : []
           return {
             ...item,
-            cartypeProject: this.carProjectName,
+            carTypeProject: this.carProjectName,
             scheBfToFirstTryoutWeek: item.keyBfToFirstTryoutWeek,
             scheFirstTryEmWeek: item.keyFirstTryEmWeek,
             scheFirstTryOtsWeek: item.keyFirstTryOtsWeek,

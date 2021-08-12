@@ -35,7 +35,7 @@ export const partsListTitle = [
   {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true},
   {props:'partProjectType',name:'零件项目类型', key: "LINGJIANXIANGMULEIXING", tooltip: true, width: 120},
   {props:'cartypeCategory',name:'车型大类', key: "CHEXINGDALEI", tooltip: true},
-  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
+  {props:'carTypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
   {props:'partStatus',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true},
   {props:'buyerName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
   {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true},

@@ -9,7 +9,7 @@
 export const contentDeclareQueryForm = {
   partNum: "",
   supplierSapCode: "",
-  cartypeProjectCode: [""],
+  carTypeProjectCode: [""],
   status: [""],
   isMtz: "",
   procureFactory: "",
@@ -46,7 +46,7 @@ export const mtzOptions = [
 ]
 
 export const dosageDialogForm = [
-  { props: "cartypeProject", name: "⻋型项⽬", key: "CHEXINGXIANGMU" },
+  { props: 'carTypeProject', name: "⻋型项⽬", key: "CHEXINGXIANGMU" },
   { props: "factory", name: "工厂", key: "GONGCHANG" },
   { props: "supplierName", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG" },
   { props: "usePortion", name: "沿⽤原零件份额", key: "YANYONGYUANLINGJIANFENE" }

@@ -90,7 +90,7 @@ export default {
     this.getCarProjectOptinos()
     if (this.$route.query.carProject) {
       this.carProject = this.$route.query.carProject
-      this.carProjectName = this.$route.query.cartypeProjectZh
+      this.carProjectName = this.$route.query.carTypeProjectZh
       this.initProductList()
     } else {
       this.getLastOperateCarType()
@@ -135,7 +135,7 @@ export default {
             return {
               ...item,
               value: item.id,
-              label: item.cartypeProjectZh
+              label: item.carTypeProjectZh
             }
           })
         } else {

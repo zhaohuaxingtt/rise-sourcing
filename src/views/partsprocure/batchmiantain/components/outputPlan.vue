@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-08-11 14:42:08
+ * @LastEditTime: 2021-08-12 14:28:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\outputPlan.vue
@@ -16,26 +16,13 @@
 </template>
 
 <script>
-	import {
-		iCard,
-		// iPagination
-	} from 'rise'
+	import {iCard} from 'rise'
 	import tablelist from '@/views/partsign/home/components/tableList'
-	import {
-		pageMixins
-	} from '@/utils/pageMixins'
-	import {
-		tableTitle
-	} from './data'
-	import {
-		getAllTable
-	} from "@/api/partsprocure/home";
+	import {pageMixins} from '@/utils/pageMixins'
+	import {tableTitle} from './data'
+	import {getPartslistButch} from "@/api/partsprocure/home";
 	export default {
-		components: {
-			iCard,
-			tablelist,
-			// iPagination
-		},
+		components: {iCard,tablelist},
 		mixins: [pageMixins],
 		data() {
 			return {
@@ -52,35 +39,23 @@
 		methods: {
 			// 获取批量数据
 			getData() {
-				getAllTable(this.getIds(this.purchaseProjectIds)).then((res) => {
-					if (res.data.partOutPutPlanBatchs) {
-						let  arr=res.data.partOutPutPlanBatchs
-
+				getPartslistButch({purchaseProjectIds:this.purchaseProjectIds}).then((res) => {
+					if (res.data) {
+						let arr=res.data
 						const categoryMap = {}
-
 						arr.forEach(res => {
 							res.outputPlanList.forEach((val, i) => {
 								res['year' + i] = val.outPut
 							})
 							res.startYear = res.outputPlanList[0].year
-
 							if (res.categoryId) {
 								categoryMap[res.categoryId] = { categoryName: res.categoryName, categoryCode: res.categoryCode }
 							}
 						})
 						this.tableListData = arr;
-
 						this.$emit('updateCategoryGroup', Object.keys(categoryMap).map(key => ({ categoryId: key, categoryCode: categoryMap[key].categoryCode, categoryName: categoryMap[key].categoryName })))
 					}
 				})
-			},
-			// 组装请求ids\
-			getIds(arr) {
-				let url = ''
-				for (let i = 0; i < arr.length; i++) {
-					url += 'partOutputPlanByBatchFacadeDTO.purchaseProjectIds=' + arr[i] + (i == arr.length - 1 ? '' : "&")
-				}
-				return url
 			},
 			handleSelectionChange(e){
 				this.$emit('handleSelectionChange',e)
@@ -99,7 +74,3 @@
 		}
 	}
 </script>
-
-<style lang="scss" scoped>
-	.outputPlan {}
-</style>

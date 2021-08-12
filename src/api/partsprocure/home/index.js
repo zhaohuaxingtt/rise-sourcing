@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 11:07:22
- * @LastEditTime: 2021-08-10 19:22:23
+ * @LastEditTime: 2021-08-12 14:25:04
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目创建模块API
  * @FilePath: \rise\src\api\partsprocure\home\index.js
@@ -31,10 +31,11 @@ export function getTargetPrice(params) {
     data: params
   })
 }
-export function getAllTable(parmars){
+export function getPartslistButch(parmars){
   return requst({
-    url:'/part-src-prjs?'+parmars,
-    method:'GET'
+    url:'/part-output/record/list',
+    method:'POST',
+    data:parmars
   })
 }
 //转派零件采购项目
@@ -43,6 +44,38 @@ export function changeProcure(parmars){
     url:'/purchasing-project-parts/forward',
     method:'PATCH',
     data:parmars
+  })
+}
+//单个更新保存零件采购项目
+export function updateProcure(data){
+  return requst({
+    url:'/purchasing-project-parts/update',
+    method:'PATCH',
+    data:data
+  })
+}
+//单个更新保存零件采购项目
+export function updateProcureButch(data){
+  return requst({
+    url:'/purchasing-project-parts/update',
+    method:'PATCH',
+    data:data
+  })
+}
+//批量材料组工艺组保存
+export function batchUpdateStuff(data){
+  return requst({
+    url:'/purchasing-project-parts/batch-update/stuff',
+    method:'PATCH',
+    data:data
+  })
+}
+//拆分采购工厂
+export function splitFactorySave(data){
+  return requst({
+    url:'/purchasing-project-parts/update',
+    method:'PATCH',
+    data:data
   })
 }
 //生成零件采购项目号

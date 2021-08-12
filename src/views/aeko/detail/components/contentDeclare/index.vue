@@ -35,9 +35,9 @@
             filterable
             size="mini"
             class="multipleSelect"
-            v-model="form.cartypeProjectCode"
+            v-model="form.carTypeProjectCode"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
-            @change="handleChangeByAll($event, 'cartypeProjectCode')"
+            @change="handleChangeByAll($event, 'carTypeProjectCode')"
           >
             <el-option
               value=""
@@ -341,7 +341,7 @@ export default {
       getAekoLiniePartInfo({
         ...this.form,
         requirementAekoId: this.aekoInfo.requirementAekoId,
-        cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
+        carTypeProjectCode: Array.isArray(this.form.carTypeProjectCode) ? (this.form.carTypeProjectCode.length === 1 && this.form.carTypeProjectCode[0] === "" ? null : this.form.carTypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
         current: this.page.currPage,
         size: this.page.pageSize

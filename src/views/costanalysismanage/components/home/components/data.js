@@ -32,7 +32,7 @@ export const FilesTitle = [
     {props:'partNum',name:'零件号', key: "LK_LINGJIANHAO", tooltip: true},
     {props:'partNameZh',name:'零件名（中）', key: "LK_LINGJIANMINGZHONG", tooltip: true},
     {props:'partNameDe',name:'零件名（德）', key: "LK_LINGJIANMINGDE", tooltip: true},
-    {props:'cartypeProjectZh',name:'车型项目', key: "partsignLanguage.CheXingXiangMu", tooltip: true},
+    {props:'carTypeProjectZh',name:'车型项目', key: "partsignLanguage.CheXingXiangMu", tooltip: true},
     {props:'supplierName',name:'供应商', key: "LK_GONGYINGSHANGMING", tooltip: true},
     {props:'sendDate',name:'发送时间', key: "costanalysismanage.FaSongShiJian", tooltip: true},
     {props:'round',name:'RFQ轮次', key: "costanalysismanage.RfqLunCi", tooltip: true},

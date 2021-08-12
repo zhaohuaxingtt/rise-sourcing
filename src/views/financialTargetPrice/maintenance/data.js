@@ -13,7 +13,7 @@ export const tableTitle = [
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 120},
   {props:'partNameZh',name:'零件名称', key: "LINGJIANMINGCHENG", tooltip: true, width: 120},
   {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100},
-  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, width: 120},
+  {props:'carTypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, width: 120},
   {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true},
   {props:'caozuo',name:'操作', key: "LK_CAOZUO", tooltip: true},
   {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 120},

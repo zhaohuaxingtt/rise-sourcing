@@ -18,7 +18,7 @@
           <iInput :placeholder="language('QINGXUANZE','请选择')" v-model="form.fsnrGsnrNum"></iInput>
         </el-form-item>
         <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
-          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.cartypeProjectZh">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.carTypeProjectZh">
             <el-option value="" :label="language('ALL', '全部')"></el-option>
             <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
           </iSelect>
@@ -103,7 +103,7 @@ export default {
       rfqStatusOptions: [],
       partTypeOptions: [],
       form: {
-        cartypeProjectZh: '',
+        carTypeProjectZh: '',
         partProjectType: '',
         currentStatus: '',
         fsnrGsnrNum: ''
@@ -156,7 +156,7 @@ export default {
     },
     handleSearchReset() {
       this.form = {
-        cartypeProjectZh: '',
+        carTypeProjectZh: '',
         partProjectType: '',
         currentStatus: '',
         fsnrGsnrNum: ''

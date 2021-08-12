@@ -23,6 +23,6 @@ export const partListTableTitle = [
   { props: "procureFactoryName", name: "采购工厂", key: "CAIGOUGONGCHANG", tooltip: true },
   { props: "partNameZh", name: "零件名(中)", key: "LINGJIANMINGZHONG", tooltip: true },
   { props: "partNameDe", name: "零件名(德)", key: "LINGJIANMINGDE", tooltip: true },
-  { props: "cartypeProjectZh", name: "车型项目", key: "CHEXINGXIANGMU", tooltip: true },
+  { props: "carTypeProjectZh", name: "车型项目", key: "CHEXINGXIANGMU", tooltip: true },
   { props: "modelNameZh", name: "相关车型", key: "XIANGGUANCHEXING", tooltip: true }
 ]

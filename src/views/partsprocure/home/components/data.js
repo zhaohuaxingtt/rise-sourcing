@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-08-10 14:10:23
+ * @LastEditTime: 2021-08-12 18:01:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -104,18 +104,18 @@ export const tableTitle = [{
 //零件采购列表入参
 export const form = {
 	'buyerName': '', //询价采购员
-	'cartypeCategory': '', //车型大类
-	'cartypeProjectNum': '', //车型项目编号	
-	'cartypeProjectZh': '', //车型项目
+	'carTypeCategory': '', //车型大类
+	'carTypeProjectNum': '', //车型项目编号	
+	'carTypeProjectZh': '', //车型项目
 	'categoryCode': '', //材料组编号
 	'fsnrGsnrNum': "", //FSNR/GSNR/SPNR
 	'linieName': '', //LINIE
 	'partNameZh': '', //零件名称(中)
 	'partNum': '', //零件号
-	'partPrejectType': '', //零件项目类型
+	'partProjectType': '', //零件项目类型
 	'partStatus': '', //零件状态
 	'procureFactory': '', //采购工厂
-	'projectStatus': '', //采购项目状态
+	'status': '', //采购项目状态
 	'rfqId': '', //rfq编号
 	'size': '',
 	'current': ""

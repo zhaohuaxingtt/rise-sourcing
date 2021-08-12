@@ -22,10 +22,10 @@
     <div class="body" v-loading="loading">
       <iFormGroup class="form" :row="4" inline>
         <iFormItem class="item" v-for="(item, $index) in form" :key="$index" :label="`${ language(item.key, item.name) }`">
-          <div v-if="item.props === 'cartypeProject'">
+          <div v-if="item.props === 'carTypeProject'">
             <iSelect
               v-if="aekoInfo.aekoType && aekoInfo.aekoType.code == 'AeA'"
-              v-model="dosage.cartypeProjectCode"
+              v-model="dosage.carTypeProjectCode"
               :placeholder="language('QINGXUANZE', '请选择')"
               @change="handleChangeByCarTypeProject"
             >
@@ -36,7 +36,7 @@
                 :key="item.key"
               ></el-option>
             </iSelect>
-            <iText v-else>{{ dosage.cartypeProjectZh }}</iText>
+            <iText v-else>{{ dosage.carTypeProjectZh }}</iText>
           </div>
           <iText v-if="item.props === 'factory' || item.props === 'supplierName'">{{ dosage[item.props] }}</iText>
           <iInput class="percentInput" v-else-if="item.props === 'usePortion'" v-model="dosage[item.props]" @input="handleInputByUsePortion">

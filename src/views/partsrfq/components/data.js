@@ -14,7 +14,7 @@ export const confirmTableHead = [
   { props: "fsNum", name: "FS号", key: "LK_FSHAO", tooltip: false },
   { props: "rfqId", name: "RFQ号", key: "LK_RFQHAO", tooltip: true },
   {
-    props: "cartypeProjectZh",
+    props: "carTypeProjectZh",
     name: "车型项目名称",
     key: "LK_CHEXINGXIANGMUMINGCHENG",
     tooltip: false,

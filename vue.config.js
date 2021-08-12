@@ -187,7 +187,7 @@ module.exports = {
         }
       },
       supplierApiWDL: {
-        target: 'http://10.160.141.239:18025',
+        target: 'http://10.160.137.254:8025',
         // target: 'http://10.160.137.16:8029/',
         changeOrigin: true,
         pathRewrite: {
@@ -248,7 +248,7 @@ module.exports = {
       '/partProcureApi': {
         //赵文鹏服务地址
         //target: 'http://10.122.17.38:8025',
-        target: 'http://10.160.140.210:18025',
+        target: 'http://10.160.137.254:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/partProcureApi': ''
@@ -287,7 +287,7 @@ module.exports = {
       },
       '/dictionaryApi': {
         // 数据字典api地址
-        target: 'http://10.122.18.166:8011',
+        target: 'http://10.122.17.38:8011',
         //target: 'http://10.122.17.38:8011',
         changeOrigin: true,
         pathRewrite: {

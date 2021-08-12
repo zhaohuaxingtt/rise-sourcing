@@ -148,7 +148,7 @@ export default {
           coverStatusList:['TOBE_STATED'],
         },
         selectOptions:{
-          cartypeProjectCodeList:[],
+          carTypeProjectCodeList:[],
           aekoStatusList:[],
           coverStatusList:[],
           cartypeCodeList:[],
@@ -232,7 +232,7 @@ export default {
             data.map((item)=>{
               item.desc = item.name;
             })
-            this.selectOptions.cartypeProjectCodeList = data || [];
+            this.selectOptions.carTypeProjectCodeList = data || [];
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }

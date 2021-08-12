@@ -23,7 +23,7 @@
         <div class="baiscInfo" v-if="item.props === 'basic'">
           <div class="baiscInfo-top">
             <img src="../../../../assets/images/car.png" />
-            <span>{{dataItem.cartypeProjectZh}}</span>
+            <span>{{dataItem.carTypeProjectZh}}</span>
           </div>
           <div class="baiscInfo-bottom">
             <ol class="baiscInfo-bottom-column">
@@ -138,7 +138,7 @@ export default {
      * @return {*}
      */    
     openAssistant(row) {
-      const router =  this.$router.resolve({path: '/projectscheassistant/progroupscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      const router =  this.$router.resolve({path: '/projectscheassistant/progroupscheduling', query: { carProject: row.id, carTypeProjectZh: row.carTypeProjectZh }})
       window.open(router.href,'_blank')
     },
     /**
@@ -148,7 +148,7 @@ export default {
      * @return {*}
      */    
     openMonitoring(row) {
-      const router =  this.$router.resolve({path: '/projectprogressmonitoring', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      const router =  this.$router.resolve({path: '/projectprogressmonitoring', query: { carProject: row.id, carTypeProjectZh: row.carTypeProjectZh }})
       window.open(router.href,'_blank')
     },
     /**

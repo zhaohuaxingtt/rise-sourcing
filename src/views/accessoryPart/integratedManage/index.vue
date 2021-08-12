@@ -223,9 +223,9 @@ export default {
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID
               stuffName: item.stuffName, // 工艺组name
-              purchasePrjectId: item.purchasingProjectId,
+              purchaseProjectId: item.purchasingProjectId,
               partNameZh: item.partNameCh,
-              partPrejectType: partProjTypes.PEIJIAN,
+              partProjectType: partProjTypes.PEIJIAN,
             }
           }),
           userId: this.$store.state.permission.userInfo.id
