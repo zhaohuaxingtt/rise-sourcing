@@ -427,12 +427,20 @@ export default {
                         // 判断所选项是否已分派
                         if(type == 'commodity'){  // 科室分派
                             const arr = selectItems.filter((item)=>item.linieDeptNum);
-                            const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGYIFENPAIKESHIWUFAJINXINGCHONGXINFENPAI','行已分派科室，无法进行重新分派')
-                            if(arr.length) return iMessage.warn(tips);
+                            if(arr.length){
+                                const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGYIFENPAIKESHIWUFAJINXINGCHONGXINFENPAI','行已分派科室，无法进行重新分派')
+                                return iMessage.warn(tips);
+                            }else{
+                                this.assignVisible = true;
+                            }
                         }else{ // 采购员分派 
                             const arr = selectItems.filter((item)=>item.isOperate);
-                            const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGYIFENPAICAIGOUYUANQINGQUERENSHIFOUCHONGXINFENPAI','行已分派采购员，请确认是否重新分派');
-                            if(arr.length) return iMessage.warn(tips)
+                            if(arr.length){
+                                const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGYIFENPAICAIGOUYUANQINGQUERENSHIFOUCHONGXINFENPAI','行已分派采购员，请确认是否重新分派');
+                                return iMessage.warn(tips);
+                            }else{
+                                this.assignVisible = true;
+                            } 
                         }
                         this.singleAssign = selectItems;
                     }else{ // 批量分派
