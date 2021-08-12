@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-16 09:54:11
- * @LastEditors: zbin
+ * @LastEditors: 舒杰
  * @Descripttion: your project
  */
 /*
@@ -87,6 +87,12 @@ export default [{
           name: 'supplyChainOverall',
           meta: { title: "批量供应商概览" },
           component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/supplyChainOverall/index.vue'),
+        },
+        {
+          path: 'historyPoint',
+          name: 'historyPoint',
+          meta: { title: "定点历史记录" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/historyPoint/index.vue'),
         },
         {
           path: 'purchaseAmountOverall',

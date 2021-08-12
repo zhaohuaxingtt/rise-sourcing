@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-09 15:33:42
+ * @LastEditTime: 2021-08-10 16:12:19
  * @LastEditors: 舒杰
  * @Description: 内部需求分析
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\index.vue
@@ -73,7 +73,7 @@ export default {
     },
     // 确认
     confirm(){
-      this.$store.dispatch('setCategoryCode',this.categoryCode)
+      this.$store.dispatch('setCategoryCode',"051")
       this.value=false
     },
     // 重新定位材料组
