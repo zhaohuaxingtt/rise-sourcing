@@ -215,12 +215,13 @@ export default {
         fixNumber(str,precision=2){
             if(!str) return null;
             var re=/(?=(?!(\b))(\d{3})+$)/g;
-            var fixstr =  str.replace(re,",");
+            var fixstr = (str || 0).toString().split(".");
+            fixstr[0] =  fixstr[0].replace(re,",");
             if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
-                var last = fixstr.substr(fixstr.length-3,3);
-                if(last == '.00') fixstr = fixstr.substr(0,fixstr.length-3);
+                if( fixstr[1] && fixstr[1] == '00') return fixstr[0];
             }
-            return fixstr;
+            
+            return fixstr.join('.');
         },
     }
 }
