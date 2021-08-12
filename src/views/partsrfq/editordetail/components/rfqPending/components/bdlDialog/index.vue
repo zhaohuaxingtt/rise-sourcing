@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-11 14:54:24
- * @LastEditTime: 2021-08-12 17:54:22
+ * @LastEditTime: 2021-08-12 18:04:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\bdlDialog\index.vue
@@ -160,7 +160,7 @@ export default {
         }
 
         this.tableListData.forEach(item => {
-          if (this.multipleSelectionCache.some(cacheItem => cacheItem.supplierSubId === item.supplierSubId)) this.$nextTick(() => this.$refs.table.$refs.table.toggleRowSelection(item, true))
+          if (this.multipleSelectionCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.table.toggleRowSelection(item, true))
         })
 
         this.loading = false
@@ -173,18 +173,18 @@ export default {
     },
     handleSelectionChange(list) {
       this.multipleSelectionCache = this.multipleSelectionCache.concat(
-        list.filter(item => !this.multipleSelectionCache.some(cacheItem => cacheItem.supplierSubId === item.supplierSubId))
+        list.filter(item => !this.multipleSelectionCache.some(cacheItem => cacheItem.supplierId === item.supplierId))
       )
     },
     handleSelect(selection, row) {
       if (!selection.includes(row)) { // 从cache中删除
-        this.multipleSelectionCache = this.multipleSelectionCache.filter(item => item.supplierSubId !== row.supplierSubId)
+        this.multipleSelectionCache = this.multipleSelectionCache.filter(item => item.supplierId !== row.supplierId)
       }
     },
     handleSelectAll(selection) {
       if (!selection.length) { // 当前页取消选中操作
         // 用于删除操作的cache列表
-        this.multipleSelectionCache = this.multipleSelectionCache.filter(cacheItem => !this.tableListData.some(item => item.supplierSubId === cacheItem.supplierSubId))
+        this.multipleSelectionCache = this.multipleSelectionCache.filter(cacheItem => !this.tableListData.some(item => item.supplierId === cacheItem.supplierId))
       }
     },
     onJump360(row) {
@@ -207,7 +207,7 @@ export default {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 
         if (res.code == 200) {
-          this.$emit("confirm", this.selectRow)
+          this.$emit("confirm", this.multipleSelectionCache)
           this.status = false
           iMessage.success(message)
         } else {
