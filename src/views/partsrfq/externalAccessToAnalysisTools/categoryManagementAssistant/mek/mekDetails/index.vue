@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-12 11:04:29
+ * @LastEditTime: 2021-08-12 17:34:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -174,7 +174,8 @@
                   </div>
                   <datasetBar1 ref="datasetBar1"
                                :typeSelection="type"
-                               :firstBarData="firstBarData.detail"></datasetBar1>
+                               :firstBarData="firstBarData.detail"
+                               :maxWidth="maxWidth"></datasetBar1>
                   <div class="xAxis"
                        v-if="type==='5'">
                     <span @click=" computeModal">MIX</span>
@@ -191,18 +192,19 @@
                     <el-popover placement="bottom"
                                 width="80"
                                 trigger="click"
-                                visible-arrow>
+                                visible-arrow
+                                class="margin-bottom15">
                       <el-checkbox-group v-model="checkList"
                                          class="checkList">
                         <el-checkbox v-for="(i,index) in item.detail"
                                      :key="index"
-                                     :label="i.value">i.title</el-checkbox>
+                                     :label="i.value">{{i.title}}</el-checkbox>
                       </el-checkbox-group>
-                      <div style="line-height:28px"
-                           class="margin-bottom15"
-                           slot="reference">item.motorName</div>
+                      <div style="line-height:25px"
+                           slot="reference">{{item.motorName}}</div>
                     </el-popover>
-                    <span class="margin-bottom15">{{item.factory}}</span>
+                    <span class="margin-bottom15"
+                          style="line-height:16px">{{item.factory}}</span>
                     <span class="yield margin-bottom15">{{item.output}}</span>
                     <div>
                       <el-select v-model="priceType"
@@ -226,10 +228,10 @@
                     </div>
 
                   </div>
-                  <datasetBar ref="datasetBar"
-                              :notY="true"></datasetBar>
+                  <datasetBar :barData="item.detail"
+                              :maxWidth="maxWidth"></datasetBar>
                 </div>
-                <div class="flex chartItem">
+                <!-- <div class="flex chartItem">
                   <div class="operation">
                     <icon symbol
                           name="iconbob-shanchu"
@@ -339,7 +341,7 @@
                   </div>
                   <datasetBar ref="datasetBar"
                               :notY="true"></datasetBar>
-                </div>
+                </div> -->
               </div>
             </div>
             <!-- <report :dialogVisible="true"></report> -->
@@ -450,7 +452,9 @@ export default {
       editFlag: false,
       checkList: [],
       //第一个柱状图
-      firstBarData: {}
+      firstBarData: {},
+      //柱状图最大宽度
+      maxWidth: null
     };
   },
   async created () {
@@ -502,16 +506,39 @@ export default {
         "comparedType": "mekConfig",
         "info": [
           {
-            "motorId": 50014051,
+            "motorId": 50044101,
+            "priceType": "latestPrice"
+          },
+          {
+            "motorId": 50048103,
+            "priceType": "latestPrice"
+          },
+          {
+            "motorId": 2000000166,
+            "priceType": "latestPrice"
+          },
+          {
+            "motorId": 2000000084,
+            "priceType": "latestPrice"
+          },
+          {
+            "motorId": 2000000164,
             "priceType": "latestPrice"
           }
         ],
+        "categoryId": 600029,
         "schemeId": 3
       }).then(res => {
         let data = res.data
+        let maxWidthList = []
+        data.forEach(item => {
+          maxWidthList.push(item.detail.length)
+        })
+        this.maxWidth = _.max(maxWidthList)
         this.firstBarData = data[0]
         data.shift()
         this.barData = data
+        console.log(this.barData, "barData")
       })
     },
     changeBy () {
@@ -557,7 +584,7 @@ export default {
 }
 .chartItem {
   position: relative;
-  flex: 1;
+  // flex: 1;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;

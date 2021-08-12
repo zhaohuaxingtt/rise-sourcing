@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-11 19:19:14
+ * @LastEditTime: 2021-08-12 17:36:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -31,6 +31,9 @@ export default {
       default: () => {
         return []
       },
+    },
+    maxWidth: {
+      type: Number
     }
   },
   watch: {
@@ -49,7 +52,6 @@ export default {
     firstBarData: {
       handler (val) {
         if (val) {
-
           val.forEach((item, index) => {
             const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
             const itemData = {
@@ -63,28 +65,29 @@ export default {
                 color: colorList[index]
               }
             }
+            const str = item.title + "\n\n" + item.ebr
             this.barData.push(itemData)
-            this.barxAxis.push(item.title)
+            this.barxAxis.push(str)
           })
           this.$nextTick(() => {
             this.initCharts();
           });
         }
       },
-      immediate: true
     }
   },
   mounted () {
-    this.$nextTick(() => {
-      this.initCharts();
-    });
+    // this.$nextTick(() => {
+    //   this.initCharts();
+    // });
   },
   methods: {
     initCharts () {
-      this.myChart = echarts().init(this.$refs.chart);
-      this.$refs.chart.style.width = 6 * 60 + 'px';
+      this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+      console.log(this.$refs.chart.style.width)
       this.$refs.chart.style.minWidth = '100%';
-      const str = "MIX" + "\n\n 5%"
+      this.myChart = echarts().init(this.$refs.chart);
+
       this.option = {
         title: {
           show: true,
@@ -114,7 +117,7 @@ export default {
           },
         ],
         grid: {
-          left: 0,
+          left: 20,
           right: 0,
           bottom: "15%",
           top: "30%",
@@ -137,7 +140,7 @@ export default {
           axisTick: {
             show: false,
           },
-          offset: -16,
+          offset: 0,
           splitNumber: 4,
           nameLocation: "start",
         },
@@ -148,10 +151,10 @@ export default {
             emphasis: {
               focus: "series",
             },
-            // barCategoryGap: '50%',
+            barCategoryGap: '50%',
             // barMinWidth: 30,
             // // barMaxWidth: 30,
-            barWidth: 30,
+            // barWidth: 30,
             itemStyle: {
               barBorderRadius: [5, 5, 0, 0],
             },
