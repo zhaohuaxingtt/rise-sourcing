@@ -19,7 +19,7 @@
         <div v-if="!addCustomStatus">
           <iButton v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" @click="handleAdd">{{ language("TIANJIA", "添加") }}</iButton>
           <!-- <iButton v-if="editSelectTableDataCache.length" @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ language('LK_QUEREN','确认') }}</iButton> -->
-          <iButton v-if="selectTableData.length" @click="handleDelete" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER" :loading="deleteLoading">{{ language('LK_SHANCHUGONGYINGSHANG','删除供应商') }}</iButton>
+          <iButton v-if="selectTableDataCache.length" @click="handleDelete" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER" :loading="deleteLoading">{{ language('LK_SHANCHUGONGYINGSHANG','删除供应商') }}</iButton>
           <iButton @click="addCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM">{{ language('LK_TIANJIAZIDINGYIPINGFENXIANG','添加自定义评分项') }}</iButton>
         </div>
         <div v-else>
@@ -80,9 +80,10 @@ export default {
       searchKey: "",//搜索关键词	
       logVisible: false,
       rfqId:'',
-      selectTableData: [],
-      editSelectTableDataCache: [],
-      noEditSelectTableDataCache: [],
+      // selectTableData: [],
+      selectTableDataCache: [],
+      // editSelectTableDataCache: [],
+      // noEditSelectTableDataCache: [],
       saveLoading: false,
       deleteLoading: false,
       addCustomStatus: false,
@@ -130,7 +131,7 @@ export default {
     // },
     // 删除
     handleDelete() {
-      if(!this.selectTableData.length) return iMessage.warn(this.language('LK_NHWXZBDL','您还未选择BDL')) 
+      if(!this.selectTableDataCache.length) return iMessage.warn(this.language('LK_NHWXZBDL','您还未选择BDL')) 
       iMessageBox(this.language('deleteSure','您确定要执行删除操作吗？'),this.language('LK_WENXINTISHI','温馨提示')).then(()=>{
         this.deleteLoading = true
       //   updateRfq({
@@ -154,13 +155,13 @@ export default {
       // })
       deleteRfqBdl({
         userId: this.userInfo.id,
-        ids: this.selectTableData.map(item => item.id),
+        ids: this.selectTableDataCache.map(item => item.id),
         rfqId: this.rfqId
       })
       .then(res => {
         if (res.code == 200) {
           this.getTableList()
-          this.selectTableData = []
+          this.selectTableDataCache = []
           this.resultMessage(res)
         } else {
           this.resultMessage(res)
@@ -197,6 +198,10 @@ export default {
           }
         }
 
+        this.tableData.forEach(item => {
+          if (this.selectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
+        })
+
         // this.tableData.forEach(item => {
         //   if (item.isEdit) {
         //     if (this.editSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
@@ -216,7 +221,7 @@ export default {
     },
     //修改表格改动列
     handleSelectionChange(val) {
-      this.selectTableData = val
+      // this.selectTableData = val
       // const editSelectTableData = [] // 没有保存过的bdl
       // const noEditSelectTableData = [] // 保存过的bdl
       // for (let i = 0, item; (item = val[i++]); ) {
@@ -234,6 +239,9 @@ export default {
       // this.noEditSelectTableDataCache = this.noEditSelectTableDataCache.concat(
       //   noEditSelectTableData.filter(item => !this.noEditSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId))
       // )
+      this.selectTableDataCache = this.selectTableDataCache.concat(
+        val.filter(item => !this.selectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId))
+      )
     },
     handleSelect(selection, row) {
     //   if (!selection.includes(row)) { // 从cache中删除
@@ -241,6 +249,9 @@ export default {
     //       this.editSelectTableDataCache = this.editSelectTableDataCache.filter(item => item.supplierId !== row.supplierId) :
     //       this.noEditSelectTableDataCache = this.noEditSelectTableDataCache.filter(item => item.supplierId !== row.supplierId)
     //   }
+      if (!selection.includes(row)) { // 从cache中删除
+        this.selectTableDataCache = this.selectTableDataCache.filter(item => item.supplierId !== row.supplierId)
+      }
     },
     handleSelectAll(selection) {
     //   if (!selection.length) { // 当前页取消选中操作
@@ -258,6 +269,10 @@ export default {
     //     // 用于删除操作的cache列表
     //     this.noEditSelectTableDataCache = this.noEditSelectTableDataCache.filter(cacheItem => !noEditNoSelectTableData.some(item => item.supplierId === cacheItem.supplierId))
     //   }
+      if (!selection.length) { // 当前页取消选中操作
+        // 用于删除操作的cache列表
+        this.selectTableDataCache = this.selectTableDataCache.filter(cacheItem => !this.tableData.some(item => item.supplierId === cacheItem.supplierId))
+      }
     },
     // 跳转
     openPage(row) {
@@ -285,7 +300,7 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.getTableList()
-            this.editSelectTableDataCache = []
+            this.selectTableDataCache = []
             this.addCustomStatus = false
             this.resultMessage(res)
           } else {
