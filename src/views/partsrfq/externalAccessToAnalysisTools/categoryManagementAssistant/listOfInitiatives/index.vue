@@ -122,10 +122,13 @@ export default {
       editStatus: false,
       form: {},
       maxlength: 500,
-      categoryCode: '',
+      categoryCode: this.$store.state.rfq.categoryCode,
       exportStatus: false,
       exportButtonLoading: false,
     };
+  },
+  created() {
+    this.getList();
   },
   methods: {
     handleEdit() {
@@ -227,8 +230,8 @@ export default {
   },
   watch: {
     '$store.state.rfq.categoryCode'() {
-      this.categoryCode = this.$store.state.rfq.categoryCode
-      this.getList()
+      this.categoryCode = this.$store.state.rfq.categoryCode;
+      this.getList();
     },
   },
 };
