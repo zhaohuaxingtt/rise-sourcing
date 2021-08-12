@@ -508,6 +508,7 @@ export default {
           if(code!=200){
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }else{
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getList();
           }
         }).catch((e)=>{
