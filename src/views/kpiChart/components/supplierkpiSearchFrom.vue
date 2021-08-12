@@ -28,21 +28,14 @@
                                 </el-col>
                              
                                 <el-col :span="6">
-                                    <iFormItem
-                                    label="地区"
-                                    class="SearchOption"
-                                    prop="userNum"
-                                    >
-                                    <!-- <iSelect v-model="formData.spiBaseDTO" :placeholder="$t('partsignLanguage.QingXuanZe')">
-                                        <el-option value='' label='全部'></el-option>
-                                    </iSelect> -->
-                                    <el-cascader  
-                                    v-model="areaData" 
-                                    :options="areaOptions"
-                                     @change="handleChangeArea"
-                                     @expand-change="expandChange"
-                                     @getCheckedNodes="getNodeNumber"></el-cascader>
-                                    </iFormItem>
+                                    <div style="margin-bottom:10px;margin-top:10px;">地区</div>
+                                    <div class="TOCase">
+                                        <el-cascader 
+                                        :props="props"
+                                        @change="handleChangeArea($event)"
+                                        :clearable="true"
+                                        collapse-tags ></el-cascader>
+                                    </div>
                                 </el-col>
                              
                                 <el-col :span="6">
@@ -110,16 +103,10 @@
                                 </el-col>
                            
                                 <el-col :span="6">
-                                    <iFormItem
-                                    label="地区"
-                                    class="SearchOption"
-                                    prop="userNum"
-                                    >
-                                    <!-- <iSelect v-model="formData.userNum" :placeholder="$t('partsignLanguage.QingXuanZe')">
-                                        <el-option value='' label='全部'></el-option>
-                                    </iSelect> -->
-                                    <el-cascader :props="props"></el-cascader>
-                                    </iFormItem>
+                                    <div style="margin-bottom:10px;margin-top:10px;">地区</div>
+                                    <div class="TOCase">
+                                        <el-cascader :props="props"></el-cascader>
+                                    </div>
                                 </el-col>
                                 <el-col :span="6">
                                     <iFormItem
@@ -227,8 +214,7 @@ export default {
     },
     data(){
         return {
-            areaData:[],
-            areaOptions:[],
+           partyOrganId:[],
            formData:{
                spiBaseDTO:{
                    yearList:[],
@@ -246,6 +232,46 @@ export default {
             startyear:null,
             endyear:null,
             getCityid:"-1",
+            props: {
+                lazy: true,
+                multiple: true,
+                lazyLoad (node, resolve) {
+                    const { level } = node;
+                    setTimeout(() => {
+                        if(level==0){
+                            getCityInfo({parentCityId:"-1"}).then(res=>{
+                                const country = res.data.map(val=>({
+                                    value: val.cityId,
+                                    label: val.cityNameCn,
+                                    leaf: level >= 2
+                                }))
+                                resolve(country)
+                            })
+                        }
+                        if(level==1){
+                            console.log(level)
+                            getCityInfo({parentCityId:node.value}).then(res=>{
+                                const province = res.data.map(val=>({
+                                    value: val.cityId,
+                                    label: val.cityNameCn,
+                                    leaf: level >= 2
+                                }))
+                                resolve(province)
+                            })
+                        }
+                        if(level==2){
+                           getCityInfo({parentCityId:node.value}).then(res=>{
+                                const city = res.data.map(val=>({
+                                    value: val.cityId,
+                                    label: val.cityNameCn,
+                                    leaf: level >= 2
+                                }))
+                                resolve(city)
+                            })
+                        }
+                        }, 1000);
+                    }
+                }
         }
     },
     created(){
@@ -260,34 +286,22 @@ export default {
         })
     },
     mounted(){
-        // 查询材料组
-       getMaterialGroupByUserIds({}).then(res=>{
-           if(res.code==="200"){
-                this.material=res.data
-           }
-       })
+       this.getMaterialGroupByUserIds()
        this.getRelationship()
        this.getStuffByCategory()
     },
     methods:{
-        expandChange(x){
-            console.log(x)
-            //this.getcity(x[0])
-        },
-        handleChangeArea(x){
-            
-        },
-        getNodeNumber(x){
-            console.log(x)
+        // 查询材料组
+        getMaterialGroupByUserIds(){
+            getMaterialGroupByUserIds({}).then(res=>{
+                if(res.code==="200"){
+                        this.material=res.data
+                }
+            })
         },
          //城市
-        getcity(x){
-            getCityInfo({parentCityId:x}).then(res=>{
-                console.log(res)
-                // this.areaOptions=this.areaOptions.map(c=>{
-                //     c.children=res
-                // })
-            })
+        handleChangeArea(e){
+            console.log(e)
         },
         // 科股
         getRelationship(){
@@ -345,12 +359,14 @@ export default {
        .tittle{
            font-weight: bold;
            font-size: 18px;
+           position: relative;
        }
    }
    ::v-deep.TOCase{
        display: flex;
            justify-content: space-between;
            align-items: center;
+           position: relative;
     //    input{
     //        width: 40%;
     //    }
@@ -359,5 +375,13 @@ export default {
        border-bottom: 1px solid #E3E3E3;
        margin-bottom: 20px;
        padding-bottom: 10px;
+   }
+   .el-cascader{
+       width: 100%;
+   }
+   .el-popper{
+       height: 200px;
+       overflow-y: auto;
+       top: 172px;
    }
 </style>
