@@ -253,7 +253,7 @@ export const mouldBudgetManagementDialogTableTitle = [
   { props: "fsnrGsnrNum", name: "FSNR/GSNR", tooltip: true, key: "FSNRGSNR" },
   { props: "rfqId", name: "RFQ编号", tooltip: true, key: "RFQBIANHAO" },
   { props: "applyTime", name: "申请日期", tooltip: true, key: "SHENQINGRIQI" },
-  { props: "carTypeProjectZh", name: "车型项目", tooltip: true, key: "CHEXINGXIANGMU" },
+  { props: "cartypeProjectZh", name: "车型项目", tooltip: true, key: "CHEXINGXIANGMU" },
   { props: "budget", name: "投资预算(RMB)", tooltip: true, key: "TOUZIYUSUANRMB" },
   { props: "csfPDiretor", name: "CSF(P)负责人", tooltip: true, key: "CSFPFUZEREN" },
   { props: "approvalStatus", name: "审批状态", tooltip: true, key: "SHENPIZHUANGTAI" },

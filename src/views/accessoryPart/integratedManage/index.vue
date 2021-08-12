@@ -151,7 +151,7 @@ export default {
       tab: "source",
       selectOptions: {
         yesOrNoOption: [{value: '1', label: this.language('YES','是')},{value: '0', label: this.language('NO','否')}],
-        carTypeProjectOptions: [],
+        cartypeProjectOptions: [],
         carTypeOptions: []
       },
       selectDeptId: '',
@@ -192,7 +192,7 @@ export default {
       dictkey().then((res) => {
         if (res.data) {
           this.fromGroup = res.data;
-          this.selectOptions.carTypeProjectOptions = res.data.CAR_TYPE_PRO.map(item => {
+          this.selectOptions.cartypeProjectOptions = res.data.CAR_TYPE_PRO.map(item => {
             return {
               ...item,
               value: item.code,
@@ -295,7 +295,7 @@ export default {
      */    
     async getCarTypeOptions() {
       const res = await findBySearches('01')
-      this.selectOptions.carTypeProjectOptions = res.data
+      this.selectOptions.cartypeProjectOptions = res.data
     },
     /**
      * @Description: 调取数据字典获取下拉

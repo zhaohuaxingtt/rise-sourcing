@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-08-12 20:10:05
+ * @LastEditTime: 2021-08-12 20:54:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -22,10 +22,10 @@
     <div class="body" v-loading="loading">
       <iFormGroup class="form" :row="4" inline>
         <iFormItem class="item" v-for="(item, $index) in form" :key="$index" :label="`${ language(item.key, item.name) }`">
-          <div v-if="item.props === 'carTypeProject'">
+          <div v-if="item.props === 'cartypeProject'">
             <iSelect
               v-if="aekoInfo.aekoType == 'AeA'"
-              v-model="dosage.carTypeProjectCode"
+              v-model="dosage.cartypeProjectCode"
               :placeholder="language('QINGXUANZE', '请选择')"
               @change="handleChangeByCarTypeProject"
             >
@@ -36,7 +36,7 @@
                 :key="item.key"
               ></el-option>
             </iSelect>
-            <iText v-else>{{ dosage.carTypeProjectZh }}</iText>
+            <iText v-else>{{ dosage.cartypeProjectZh }}</iText>
           </div>
           <iText v-if="item.props === 'factory' || item.props === 'supplierName'">{{ dosage[item.props] }}</iText>
           <iInput class="percentInput" v-else-if="item.props === 'usePortion'" v-model="dosage[item.props]" @input="handleInputByUsePortion">

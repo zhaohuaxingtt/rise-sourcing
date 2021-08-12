@@ -135,12 +135,12 @@ export default {
             await getSingleSourcing(params).then((res)=>{
                 const {code,data={}} =res;
                 if(code == '200'){
-                    const {resultPage={},nominateId='',carTypeProjectZhList=[]} = data;
+                    const {resultPage={},nominateId='',cartypeProjectZhList=[]} = data;
                     const {total} = resultPage;
                     this.tableListData = resultPage.data || [];
                     this.page.totalCount = total;
                     this.nominateId = nominateId;
-                    this.projectName = carTypeProjectZhList ? carTypeProjectZhList.join() : '';
+                    this.projectName = cartypeProjectZhList ? cartypeProjectZhList.join() : '';
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }

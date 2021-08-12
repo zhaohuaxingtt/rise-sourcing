@@ -111,14 +111,14 @@ export function searchForm({MEETING_TYPE=[],NOMINATE_APP_PROCESS_TYPE=[],NOMINAT
       permissionKey:'SOURCING_CHEXINGXIANGMU',
       type:'input',
       List:[],
-      moduleKey:'carTypeProjectZh'
+      moduleKey:'cartypeProjectZh'
     }
   ]
 }
 
 export const form = {
   applicationStatus:'', //申请状态
-  carTypeProjectZh:'', //车型项目
+  cartypeProjectZh:'', //车型项目
   fsnrGsnrNum:'', //fs号
   linieName:'', //linie名称
   meetingType:'', //会议类型

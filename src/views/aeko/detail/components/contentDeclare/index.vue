@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-12 16:03:05
+ * @LastEditTime: 2021-08-12 20:57:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -35,9 +35,9 @@
             filterable
             size="mini"
             class="multipleSelect"
-            v-model="form.carTypeProjectCode"
+            v-model="form.cartypeProjectCode"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
-            @change="handleChangeByAll($event, 'carTypeProjectCode')"
+            @change="handleChangeByAll($event, 'cartypeProjectCode')"
           >
             <el-option
               value=""
@@ -341,7 +341,7 @@ export default {
       getAekoLiniePartInfo({
         ...this.form,
         requirementAekoId: this.aekoInfo.requirementAekoId,
-        carTypeProjectCode: Array.isArray(this.form.carTypeProjectCode) ? (this.form.carTypeProjectCode.length === 1 && this.form.carTypeProjectCode[0] === "" ? null : this.form.carTypeProjectCode) : null,
+        cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
         current: this.page.currPage,
         size: this.page.pageSize

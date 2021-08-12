@@ -254,7 +254,7 @@ export const partTitle = [
     tooltip: false
   },
   {
-    props: 'carTypeProjectZh',
+    props: 'cartypeProjectZh',
     name: '车型项目',
     key: 'nominationSupplier_CheXingXiangMu',
     tooltip: false

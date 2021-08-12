@@ -15,7 +15,7 @@ export const tableTitle = [
   { props: 'ebrCalculatedValue', name: 'EBR%', key: 'TPZS.EBR', },
   { props: 'cycleOutput', name: '全生命周期产量', key: 'TPZS.QSMZQCL', },
   { props: 'maxOutput', name: '峰值年产量', key: 'TPZS.FZNCL', },
-  { props: 'carTypeProjectZh', name: '项目名称', key: 'TPZS.XMMC', },
+  { props: 'cartypeProjectZh', name: '项目名称', key: 'TPZS.XMMC', },
   { props: 'sopDate', name: 'SOP日期', key: 'LK_SOPRIQI', },
 ]
 export const supplierTableTitle = [
