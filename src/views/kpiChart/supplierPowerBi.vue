@@ -8,10 +8,25 @@
                 <el-form-item
                   class="SearchOption"
                 >
-                <iInput 
+                <!-- <iInput 
                 suffix-icon="el-icon-search"
                 v-model="supplierName"
-                ></iInput>
+                ></iInput> -->
+                <el-select
+                    v-model="supplierId"
+                    filterable
+                    remote
+                    reserve-keyword
+                    placeholder="请输入关键词"
+                    :remote-method="remoteMethod"
+                    :loading="loading">
+                    <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
                 </el-form-item>
                </el-form>
                <div>
@@ -63,14 +78,15 @@ export default {
             configApiData:{},
             supplierId:null,
             name:null,
-            values:[]
+            values:[],
+            options:[]
         }
     },
     mounted(){
        getPowerBiKpi({}).then(res=>{
             this.configApiData={...res.data}
             this.init()
-            this.renderBi()
+            //this.renderBi()
         })
     },
     methods:{
@@ -154,15 +170,40 @@ export default {
                     };
                 },
             handleOk(){
-                 getPowerBiSupplier({keyWord:this.supplierName}).then(res=>{
-                    this.supplierId=res.data[0].supplierId
-                    this.renderBi()
-                })
+                //  getPowerBiSupplier({keyWord:this.supplierName}).then(res=>{
+                //     this.supplierId=res.data[0].supplierId
+                    
+                // })
+                this.renderBi()
             },
             handleRest(){
                 this.supplierName=""
                 this.supplierId=null
                 this.renderBi()
+            },
+            remoteMethod(query) {
+                if (query !== '') {
+                this.loading = true;
+                setTimeout(() => {
+                    getPowerBiSupplier({keyWord:query}).then(res=>{
+                        console.log(res)
+                        if(res.data.length>0){
+                            this.options = res.data.map(z=>({
+                                label:z.nameZh,
+                                value:z.supplierId
+                            }))
+                            console.log(this.options)
+                            this.loading = false;
+                            this.options = this.options.filter(item => {
+                            return item.label.toLowerCase()
+                                .indexOf(query.toLowerCase()) > -1;
+                            })
+                        }
+                    })
+                }, 200);
+                } else {
+                    this.options = [];
+                }
             }
 
     }
