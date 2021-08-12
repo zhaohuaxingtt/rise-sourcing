@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-11 15:50:59
+ * @LastEditTime: 2021-08-12 14:44:45
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -238,14 +238,14 @@ export default {
         return null
       }
     },
-    getNextSeasonStatus(year, season, nodeList) {
+    getNextSeasonStatus(year, season, nodeList, currNode) {
       if (season == 4) {
         const nextNodeList = nodeList.filter(item => item.year === year + 1 && item.season == 1)
         if (nextNodeList.length > 0) {
           return nextNodeList[0].status
         }
       } else {
-        const nextNodeList = nodeList.filter(item => item.year === year && item.season == season + 1)
+        const nextNodeList = nodeList.filter(item => item.year === year && (item.season == season && item.label !== currNode.label && item.week > currNode.week || item.season == season + 1))
         if (nextNodeList.length > 0) {
           return nextNodeList[0].status
         }
@@ -265,7 +265,7 @@ export default {
         return []
       }
       return nodeList.filter(item => item.year === year && item.season === season).map(item => {
-        const nextSeasonStatus = this.getNextSeasonStatus(year, season, nodeList)
+        const nextSeasonStatus = this.getNextSeasonStatus(year, season, nodeList, item)
         return {
           ...item,
           withLine: nextSeasonStatus != -1,
@@ -406,7 +406,15 @@ export default {
               }
               .short-between-icon {
                 width: #{20/$i}px;
-                right: -#{20/$i}px;
+                right: -#{10/$i}px;
+                top: #{10/$i}px;
+              }
+              &:last-child {
+                .short-between-icon {
+                  width: 20px;
+                  right: -16px;
+                  top: 5px;
+                }
               }
             }
           }
