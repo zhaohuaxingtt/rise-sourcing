@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-09 16:46:34
+ * @LastEditTime: 2021-08-10 20:04:16
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\index.vue
@@ -9,14 +9,14 @@
 <template>
 	<iCard :title='language("CAILIAOZUDINGWEI","材料组定位")' class="margin-top20">
 		<template slot="header-control">
-			<iButton>{{ language("SHUANGCHUAN", "编辑") }}</iButton>
-			<iButton @click="deleted">{{ language("SHANCHU", "保存") }}</iButton>
+			<iButton>{{ language("BIANJI", "编辑") }}</iButton>
+			<iButton @click="deleted">{{ language("BAOCUN", "保存") }}</iButton>
 			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 		</template>
 		<!-- 材料组定位/材料组占比情况 -->
 		<div>
 			<div class="cardTitle flex-align-center">
-				<icon symbol name="iconzhanlvefangxiang" class="font30"></icon>
+				<icon symbol name="iconcailiaozudingwei" class="font30"></icon>
 				<span>{{ language("CAILIAOZUDINGWEI", "材料组定位") }}</span>
 			</div>
 			<piecewise></piecewise>
@@ -25,24 +25,24 @@
 		<el-row gutter="50" class="margin-top35">
 			<el-col :span="8">
 				<div class="cardTitle flex-align-center">
-					<icon symbol name="iconzhanlvefangxiang" class="font30"></icon>
+					<icon symbol name="iconyewuyingxiangdutezhengfenbu" class="font30"></icon>
 					<span>{{ language("YWYXDTZFBQK", "业务影响度特征分布情况") }}</span>
 				</div>
-				<tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection="false" />
+				<tableList class="margin-top20" :tableData="materialGroup.kpiDistribution.importantFeaturesMoneys" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection="false" />
 			</el-col>
 			<el-col :span="8">
 				<div class="cardTitle flex-align-center">
-					<icon symbol name="iconzhanlvefangxiang" class="font30"></icon>
+					<icon symbol name="icongongyingfuzadutezhengfenbu" class="font30"></icon>
 					<span>{{ language("YSFZDTZFBQK", "供应复杂度特征分布") }}</span>
 				</div>
-				<tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection="false" />
+				<tableList class="margin-top20" :tableData="materialGroup.kpiDistribution.importantFeaturesRisk" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection="false" />
 			</el-col>
 			<el-col :span="8">
 				<div class="cardTitle flex-align-center">
-					<icon symbol name="iconzhanlvefangxiang" class="font30"></icon>
+					<icon symbol name="iconcailiaozuzhanbiqingkuang" class="font30"></icon>
 					<span>{{ language("CLZZBQK", "材料组占比情况") }}</span>
 				</div>
-				<ring></ring>
+				<ring :ringData="materialGroup.materialGroupProportionList"></ring>
 			</el-col>
 		</el-row>
 		<!-- 战略方向/采购策略 -->
@@ -51,25 +51,11 @@
 			<span>{{ language("ZLFXCGCL", "战略方向/采购策略") }}</span>
 		</div>
 		<div class="flex-between-center">
-			<div class="problem">
-				<p>{{ language("RHKZGYSZY", "1.如何控制供应商数量最优") }}</p>
-				<iInput type="textarea" rows="2" resize="none"></iInput>
-			</div>
-			<div class="problem">
-				<p>{{ language("RHGLJGCBSMZQCB", "2.如何管理价格成本/生命周期成本") }}</p>
-				<iInput type="textarea" rows="2" resize="none"></iInput>
-			</div>
-			<div class="problem">
-				<p>{{ language("RHQDHZFSYHZSJ", "3.如何确定合作方式合作时长") }}</p>
-				<iInput type="textarea" rows="2" resize="none"></iInput>
-			</div>
-			<div class="problem">
-				<p>{{ language("RHQDWLGL", "4.如何牵动物流管理") }}</p>
-				<iInput type="textarea" rows="2" resize="none"></iInput>
-			</div>
-			<div class="problem">
-				<p>{{ language("RHGKPZ", "5.如何管控品质") }}</p>
-				<iInput type="textarea" rows="2" resize="none"></iInput>
+			<div class="problem" v-for="(item,index) in materialGroup.problemAndSuggestionList" :key="index">
+				<el-tooltip :content="item.problemName" placement="top" effect="light">
+					<p class="problemTitle">{{item.problemName}}</p>
+            </el-tooltip>
+				<iInput type="textarea" rows="2" resize="none" v-model="item.suggestContent"></iInput>
 			</div>
 		</div>
 	</iCard>
@@ -79,7 +65,7 @@
 	import {iCard,iPagination,iButton,iMessage,iMessageBox,icon,iInput} from 'rise';
 	import tableList from '@/views/partsrfq/externalAccessToAnalysisTools/components/tableList.vue';
 	import {tableTitle} from './data';
-	import {reportList} from "@/api/partsrfq/reportList";
+	import {materialGroupPosition} from "@/api/categoryManagementAssistant/marketData/materialGroup";
 	import ring from "./ring";
 	import piecewise from "./piecewise";
 	export default{
@@ -100,25 +86,35 @@
 				tableTitle,
 				tableLoading:false,
 				selectData:[],
+				categoryCode:"",
+				materialGroup:{
+					kpiDistribution:{
+						importantFeaturesMoneys:[],
+						importantFeaturesRisk:[]
+					},
+					problemAndSuggestionList:[],
+					materialGroupProportionList:[]
+				}
 			}
 		},
 		created() {
-			this.getTableList()
+			this.categoryCode=this.$store.state.rfq.categoryCode
+			this.getMaterialGroup()
 		},
 		methods:{
 			handleSelectionChange(list){
 				this.selectData=list
 			},
-			getTableList(){
+			getMaterialGroup(){
 				this.tableLoading=true
 				let data={
-					pageNo:1,
-					pageSize:12,
+					materialGroupCode:this.categoryCode,
+					userId:this.$store.state.permission.userInfo.id
 				}
-				reportList(data).then(res=>{
+				materialGroupPosition(data).then(res=>{
 					if (res.data) {
 						this.tableLoading=false
-						this.tableListData=res.data
+						this.materialGroup=res.data
 					}
 				})
 			},
@@ -131,6 +127,9 @@
 </script>
 
 <style lang="scss">
+.el-table .el-table__body-wrapper{
+	min-height: auto;
+}
 .cardTitle{
 	padding-bottom: 10px;
 	border-bottom:1px solid #CED4E1;
@@ -154,5 +153,8 @@
 		color: #6E7C97;
 		font-size: 14px;
 	}
+}
+.problemTitle{
+	@include text_;
 }
 </style>

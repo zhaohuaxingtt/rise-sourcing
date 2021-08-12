@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-10 10:06:18
- * @LastEditors: zbin
+ * @LastEditTime: 2021-08-12 09:52:40
+ * @LastEditors: 舒杰
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
@@ -76,7 +76,8 @@ export default {
            },{
               name:"定点历史记录",
               key:"DINGDIANLISHIJILU",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis10.png")
+              image:require("@/assets/images/partRfq/internalDemandAnalysis10.png"),
+              url:'/sourcing/categoryManagementAssistant/internalDemandAnalysis/historyPoint'
            }
         ],
         // 成本组成-手工输入

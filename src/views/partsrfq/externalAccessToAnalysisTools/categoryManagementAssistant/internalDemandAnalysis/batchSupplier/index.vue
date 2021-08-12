@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-08-05 19:50:39
+ * @LastEditTime: 2021-08-11 16:14:48
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
@@ -38,8 +38,8 @@ export default {
          filter : {
             $schema: "http://powerbi.com/product/schema#basic",
             target: {
-               table: "app_supplier_fin_analysis_sum_nt_daily",
-               column: "subject_name"
+               table: "Fact_01_Supplier_SPI",
+               column: "supplier_id"
             },
             operator: "In",
             values: [],//[this.name],// values
@@ -58,12 +58,11 @@ export default {
       }
    },
    created () {
-      if (this.$route.query.name) {
-         this.name = this.$route.query.name;
-      }
+      
    },
    mounted () {
-      this.filter={...this.filter,filterType:pbi.models.FilterType.BasicFilter},
+      this.filter.values=this.$store.state.rfq.categoryCode
+      this.filter.filterType=pbi.models.FilterType.BasicFilter,
 		this.getPowerBiUrl()
    },
    watch:{
@@ -115,11 +114,12 @@ export default {
          // Report.off removes a given event handler if it exists.
          report.off("loaded");
          // Report.on will add an event handler which prints to Log window.
-         const name = this.name
+         // const name = this.name
          const newfilter = window._.cloneDeep(this.filter);
-         newfilter.values=[name]
-         this.values=[name]
-         console.log(newfilter);
+         console.log(newfilter)
+         // newfilter.values=[name]
+         // this.values=[name]
+         // console.log(newfilter);
          report.on("loaded", ()=> {
             console.log("Loaded");
             // if(name==""){

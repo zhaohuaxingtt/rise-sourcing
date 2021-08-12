@@ -59,7 +59,7 @@ export function getPowerBiSupplier(data) {
 // 查询材料组
 export function getMaterialGroupByUserIds(data) {
   return chrequst({
-    url: '/web/aon/costStructure/getMaterialGroupByUserIds',
+    url: '/aon/web/aon/costStructure/getMaterialGroupByUserIds',
     method: 'POST',
     data: data
   })
