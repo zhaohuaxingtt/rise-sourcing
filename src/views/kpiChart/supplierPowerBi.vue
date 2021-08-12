@@ -174,6 +174,7 @@ export default {
                 //     this.supplierId=res.data[0].supplierId
                     
                 // })
+                this.supplierId=this.supplierId.toString()
                 this.renderBi()
             },
             handleRest(){
@@ -192,7 +193,6 @@ export default {
                                 label:z.nameZh,
                                 value:z.supplierId
                             }))
-                            console.log(this.options)
                             this.loading = false;
                             this.options = this.options.filter(item => {
                             return item.label.toLowerCase()
