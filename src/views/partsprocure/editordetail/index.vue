@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-12 18:50:43
+ * @LastEditTime: 2021-08-12 23:08:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -39,9 +39,9 @@
 					v-if="detailData.status == '16'">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
 				<creatFsGsNr :projectItems="[detailData]" @refresh="getDatailFn" v-permission="PARTSPROCURE_GENERATEFSBUTTON"></creatFsGsNr>
 				<cancelProject :backItems='[detailData]'  @refresh="getDatailFn" v-permission="PARTSPROCURE_CANCELPROCUREMENTITEMS"></cancelProject>
-				<iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
+				<!-- <iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
 					{{ language("LK_CHAIFENCAIGOUGONGCHANG",'拆分采购工厂') }}
-				</iButton>
+				</iButton> -->
 				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT"
 					v-if="detailData.status != '16'">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
 				<iButton :loading='saveLoading' @click="saveFn" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ language("LK_BAOCUN",'保存') }}
