@@ -240,7 +240,7 @@
 import { iSelect, iButton, iCard, iInput, icon } from "rise";
 import echarts from "@/utils/echarts";
 import { tableTitle, dataList } from "./components/data";
-import { iTableList } from "@/components";
+import { iTableList } from '@/components';
 import { cloneDeep } from "lodash";
 import { tableHeight } from "@/utils/tableHeight";
 import NewVersionDialog from "./components/newVersionDialog.vue";
@@ -549,7 +549,7 @@ export default {
         row[key] = row[key].substring(0, row[key].length - 1);
       } else {
         if (count == 2 && tempArr[1].length > 2) {
-          row[key] = temp.substring(0, row[key].length - 1);;
+          row[key] = temp.substring(0, row[key].length - 1);
         } else {
           row[key] = temp;
         }

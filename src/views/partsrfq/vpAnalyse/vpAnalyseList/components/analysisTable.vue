@@ -1,8 +1,8 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-08-12 17:59:09
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-12 21:56:23
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisTable.vue
 -->

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-08-04 15:21:57
+ * @LastEditTime: 2021-08-06 18:41:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\data.js
@@ -12,7 +12,7 @@ export const tableTitle = [
   { props: 'partNameDe', name: '零件名（德）',  key: 'LK_LINGJIANMINGDE' },
   { props: 'stuffName', name: '材料组', key: 'LK_CAILIAOZU' },
   { props: 'categoryName', name: '工艺组', key: 'LK_GONGYIZU' },
-  { props: 'cartypeProjectZh', name: '车型项目',  key: 'LK_CHEXINGXIANGMU' },
+  { props: 'carTypeProjectZh', name: '车型项目',  key: 'LK_CHEXINGXIANGMU' },
   { props: 'startYear', name: '开始年份',  key: 'LK_KAISHINIANFEN' },
   { props: 'year0', name: '+0' },
   { props: 'year1', name: '+1' },
@@ -23,15 +23,15 @@ export const tableTitle = [
 
 export const tableTitleOnlyPartsChange = [
   { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO' },
-  { props: 'partNum', name: '原零件号', key: 'LK_YUANLINGJIANHAO' },
+  { props: 'oldPartNum', name: '原零件号', key: 'LK_YUANLINGJIANHAO' },
   { props: 'partNameZh', name: '零件号（中）', key: 'LK_LINGJIANHAOHZONG' },
   { props: 'partNameDe', name: '零件名（德）', key: 'LK_LINGJIANHAODE' },
-  { props: 'modelNameZhName', name: '车型', key: 'LK_CHEXING' },
-  { props: 'cartypeProjectZh', name: '车型项目', key: 'LK_CHEXINGXIANGMU' },
+  { props: 'modelNameZh', name: '车型', key: 'LK_CHEXING' },
+  { props: 'carTypeProjectZh', name: '车型项目', key: 'LK_CHEXINGXIANGMU' },
   { props: 'partNum', name: 'LINIE部门', key: 'LK_LINEBUMEN' },
   { props: 'partProjectTypeName', name: '零件类型', key: 'LK_LINGJIANLEIX' },
   { props: 'procureFactoryName', name: '采购工厂', key: 'LK_CAIGOUGONGCHANG' },
   { props: 'linieName', name: 'LINIE', key: 'LK_LINE' },
   { props: 'cfControllerZh', name: 'CF控制员', key: 'LK_CFKONGZHIYUAN' },
-  { props: 'partNum', name: '原FS号', key: 'LK_YUANFSHAO' }
+  { props: 'oldFsnrGsnrNum', name: '原FS号', key: 'LK_YUANFSHAO' }
 ]

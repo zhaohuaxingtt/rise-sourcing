@@ -23,9 +23,8 @@
   </el-upload>
 </template>
 <script>
-import {iButton} from '@/components'
+import {iButton} from 'rise'
 import {uploadUdFile as uploadFile} from "@/api/file/upload";
-
 export default {
   props: {
     buttonText: {type: String, default: 'LK_SHANGCHUANFUJIAN'},

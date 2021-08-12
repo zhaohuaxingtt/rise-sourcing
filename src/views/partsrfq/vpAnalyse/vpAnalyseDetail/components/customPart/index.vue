@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-08-05 16:54:02
+ * @LastEditTime: 2021-08-12 21:56:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue

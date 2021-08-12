@@ -27,7 +27,7 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iDialog} from '@/components'
+import {iButton, iDialog} from 'rise'
 
 export default {
   components: {

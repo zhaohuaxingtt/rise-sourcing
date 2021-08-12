@@ -50,7 +50,7 @@
 <script>
 import {
   iTableList
-} from "@/components";
+} from '@/components';
 import {
   iMessage,
   iButton,

@@ -21,7 +21,7 @@
   </iDialog>
 </template>
 <script>
-import { iButton, iDialog, iFormGroup, iFormItem, iInput, iMessage } from '@/components'
+import { iButton, iDialog, iFormGroup, iFormItem, iInput, iMessage } from 'rise'
 import { modifyRfqToRemark } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 

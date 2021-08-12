@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { iDialog, iSelect, iFormGroup, iFormItem, iButton, iMessage } from "@/components"
+import { iDialog, iSelect, iFormGroup, iFormItem, iButton, iMessage } from 'rise'
 import { getRater, findRaterByCurrentUser } from "@/api/supplierscore"
 
 export default {

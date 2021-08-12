@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { iPagination, iDialog } from '@/components'
+import { iPagination, iDialog } from 'rise'
 import tableList from './tableList'
 import { volumeDialogTableTitle as tableTitle } from './data'
 import { getPerCarDosageInfo } from '@/api/partsign/editordetail'

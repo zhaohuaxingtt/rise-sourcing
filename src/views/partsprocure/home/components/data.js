@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-08-04 11:44:58
+ * @LastEditTime: 2021-08-12 20:12:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -65,28 +65,28 @@ export const tableTitle = [{
 		width:80
 	},
 	{
-		props: 'partProjectTypeName',
+		props: 'partProjectTypeDesc',
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 		tooltip: true,
 		width:140
 	},
 	{
-		props: 'cartypeCategory',
+		props: 'carTypeCategory',
 		name: '车型大类',
 		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
 		tooltip: true,
 		width:120
 	},
 	{
-		props: 'cartypeProjectZh',
+		props: 'carTypeProjectZh',
 		name: '车型项目',
 		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
 		tooltip: true,
 		width:130
 	},
 	{
-		props: 'statusName',
+		props: 'statusDesc',
 		name: '零件状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
 		tooltip: true,
@@ -97,39 +97,45 @@ export const tableTitle = [{
 		name: '询价采购员',
 		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
 		tooltip: true,
+		width:90
+	},
+	{
+		props: 'linieName',
+		name: 'LINIE',
+		key: 'partsprocure.PARTSPROCURELINIE',
+		tooltip: true,
+		width:90
+	},
+	{
+		props: 'cfControllerName',
+		name: 'CF',
+		key: 'partsprocure.CF',
+		tooltip: true,
 		width:80
 	}
 ]
-//)
 
 //零件采购列表入参
 export const form = {
-	'search.buyerName': '', //询价采购员
-	'search.cartypeCategory': '', //车型大类
-	'search.cartypeProjectNum': '', //车型项目编号	
-	'search.cartypeProjectZh': '', //车型项目
-	'search.categoryCode': '', //材料组编号
-	'search.fsnrGsnrNum': "", //FSNR/GSNR/SPNR
-	'search.linieName': '', //LINIE
-	'search.partNameZh': '', //零件名称(中)
-	'search.partNum': '', //零件号
-	'search.partPrejectType': '', //零件项目类型
-	'search.partStatus': '', //零件状态
-	'search.procureFactory': '', //采购工厂
-	'search.projectStatus': '', //采购项目状态
-	'search.rfqId': '', //rfq编号
-	'search.size': '',
-	'search.current': ""
+	'buyerName': '', //询价采购员
+	'carTypeCategory': '', //车型大类
+	'carTypeProjectNum': '', //车型项目编号	
+	'carTypeProjectZh': '', //车型项目
+	'categoryCode': '', //材料组编号
+	'fsnrGsnrNum': "", //FSNR/GSNR/SPNR
+	'linieName': '', //LINIE
+	'partNameZh': '', //零件名称(中)
+	'partNum': '', //零件号
+	'partProjectType': '', //零件项目类型
+	'partStatus': '', //零件状态
+	'procureFactory': '', //采购工厂
+	'status': '', //采购项目状态
+	'rfqId': '', //rfq编号
+	'size': '',
+	'current': ""
 }
 
-// addRfq
-export const addRfqTitle =[
-	{props:'id',name:'RFQ#',key: 'RFQ#'},
-	{props:'rfqName',name:'RFQ名称',key: 'LK_RFQMINGCHENG',},
-	{props:'currentStatus',name:'RFQ状态',key: 'LK_RFQZHUANGTAI'},
-	{props:'updateDate',name:'操作时间',key: 'LK_UpdateDate'},
 
-]
 
 //特殊零件采购项目validate
 export const validateProjectConfig = [

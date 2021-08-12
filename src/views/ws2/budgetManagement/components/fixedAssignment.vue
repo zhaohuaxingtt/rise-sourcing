@@ -52,7 +52,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {fixedAssignmentTitle} from "pages/ws2/dataBase/components/data";
 import {
   iTableList
-} from "@/components"
+} from '@/components'
 import {
   partsPackageShareDetail,
   updatePackageShareAmount

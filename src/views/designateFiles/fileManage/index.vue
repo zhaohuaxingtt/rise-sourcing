@@ -10,7 +10,7 @@
 <template>
   <iPage class="signForParts" >
     <!-- <el-tabs v-model="tab" class="tab"> -->
-      <!-- <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
+      <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div class="topMenu">
           <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
           <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
@@ -100,7 +100,7 @@
           <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" :partType="partProjTypes.FUJIAN" />
         </div>
       <!-- </el-tab-pane> -->
-      <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
+      <!-- <el-tab-pane lazy label="进度监控" name="progress"></el-tab-pane> -->
     <!-- </el-tabs> -->
   </iPage>
 </template>
@@ -328,9 +328,9 @@ export default {
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID
               stuffName: item.stuffName, // 工艺组name
-              purchasePrjectId: item.purchasingProjectId,
+              purchaseProjectId: item.purchasingProjectId,
               partNameZh: item.partNameCh,
-              partPrejectType: partProjTypes.FUJIAN,
+              partProjectType: partProjTypes.FUJIAN,
             }
           }),
           userId: this.$store.state.permission.userInfo.id

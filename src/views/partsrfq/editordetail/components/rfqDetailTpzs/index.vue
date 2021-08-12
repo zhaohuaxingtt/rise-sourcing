@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
 -->
 <template>
   <iTabsList v-model="activityTabIndex" @tab-click="handleTabClick" type="card" slot="components" class='margin-top20'>
-    <el-tab-pane name="one" label="报价分析">
+    <el-tab-pane lazy name="one" label="报价分析">
       <template>
         <!--------------------报价评分跟踪----------------------------------------->
         <iCard title="报价与评分跟踪" @handleCollapse='handleCollapse($event,"1")' collapse>
@@ -28,10 +28,10 @@
         <iCard title="业务分配模拟" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"5")' collapse :defalutCollVal='false'></iCard>
       </template>
     </el-tab-pane>
-    <el-tab-pane name="two" label="专项分析工具">
+    <el-tab-pane lazy label="专项分析工具">
       <gather />
     </el-tab-pane>
-    <el-tab-pane name="three" label="谈判基本信息">
+    <el-tab-pane lazy label="谈判基本信息">
       <negotiateBasicInfor></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>
