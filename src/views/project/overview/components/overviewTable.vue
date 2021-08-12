@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-12 16:14:02
+ * @LastEditTime: 2021-08-12 16:44:10
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -65,7 +65,7 @@
               <!-- 未完成 -->
               <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
               <span class="node-title">{{nodeItem.label}}</span>
-              <span class="node-week">KW{{nodeItem.week}}</span>
+              <span class="node-week">KW{{ nodeItem.week < 10 ? '0'+nodeItem.week : nodeItem.week }}</span>
               <template v-if="nodeItem.withLine">
                 <icon v-if="nodeItem.line.lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="short-between-icon"></icon>
                 <!-- 已完成 -->
@@ -428,8 +428,8 @@ export default {
               }
               &:last-child {
                 .short-between-icon {
-                  width: 18px;
-                  right: -18px;
+                  width: 16px;
+                  right: -12px;
                   top: 5px;
                 }
               }
