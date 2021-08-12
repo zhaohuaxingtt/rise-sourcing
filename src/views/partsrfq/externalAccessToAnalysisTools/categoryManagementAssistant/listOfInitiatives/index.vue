@@ -2,8 +2,6 @@
   <iPage v-loading="pageLoading">
     <headerNav>
       <template #extralButton>
-        <iButton>{{ language('PLGLZS.CAILIAOZU', '材料组') }}</iButton>
-        <iButton>{{ language('PLGLZS.BAOGAOQINGDAN', '报告清单') }}</iButton>
         <template v-if="!editStatus">
           <iButton @click="handleEdit">{{ language('PLGLZS.BIANJI', '编辑') }}</iButton>
         </template>
@@ -130,7 +128,7 @@ export default {
     };
   },
   created() {
-    this.getList();
+    //this.getList();
   },
   methods: {
     handleEdit() {
@@ -172,7 +170,6 @@ export default {
         this.treeDataSelect = {};
         const req = {
           categoryCode: this.categoryCode,
-          quadrant: 'LEVERAGE',
         };
         const res = await getList(req);
         this.treeData = res.data;
@@ -229,6 +226,11 @@ export default {
         idEle: 'container',
         pdfName: 'overview',
       });
+    },
+  },
+  watch: {
+    '$store.state.rfq.categoryCode'() {
+      this.getList()
     },
   },
 };

@@ -91,7 +91,7 @@
 
       </iCard>
       <!-- 分配科室 -->
-      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNum" :buyerName="selectOptions.buyerName"/>
+      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNumList" :buyerName="selectOptions.buyerName"/>
       <!-- 退回原因 -->
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
   </div>
@@ -185,15 +185,15 @@ export default {
             SearchList:[],
             searchParams:{
                 brand:'',
-                cartypeCode:[],
-                cartype:'',
-                linieDeptNum:'',
+                cartypeCode:[''],
+                cartype:[''],
+                linieDeptNumList:[''],
             },
             selectOptions:{
                 cartypeCode:[],
                 buyerName:[],
                 cartype:[],
-                linieDeptNum:[],
+                linieDeptNumList:[],
             },
             selectItems:[],
             loading:false,
@@ -228,8 +228,10 @@ export default {
                 this.searchParams.buyerName = this.userInfo.nameZh
             } else {
                 this.searchParams = {
-                    brand:'',
-                    cartypeCode:[],
+                     brand:'',
+                    cartypeCode:[''],
+                    cartype:[''],
+                    linieDeptNumList:[''],
                 };
             }
 
@@ -249,24 +251,34 @@ export default {
             const {query} = this.$route;
             const { requirementAekoId ='',} = query;
             const { page,searchParams,aekoInfo={} } = this;
-            console.log(searchParams,'searchParams');
-            let cartypeCode=[];
+            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName} = searchParams;
+            let carTypeCodeList=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
-                if(aekoInfo.aekoType.code == 'AeA'){  // 车型
-                    cartypeCode = searchParams.cartype ? [searchParams.cartype] : [];
-                }else if(aekoInfo.aekoType.code == 'aeko/mp'){ // 车型项目
-                    cartypeCode = searchParams.cartypeCode;
+                if(aekoInfo.aekoType == 'AeA'){  // 车型
+                    carTypeCodeList = searchParams.cartype;
+                }else if(aekoInfo.aekoType == 'Aeko'){ // 车型项目
+                    carTypeCodeList = searchParams.cartypeCode;
                 }
+            }
+
+            // 多选为全部时单独处理
+            if(carTypeCodeList.length == 1 && carTypeCodeList[0] === ''){
+                carTypeCodeList=[];
             }
             
             const data = {
                 requirementAekoId, 
                 current:page.currPage,
                 size:page.pageSize,
-                cartypeCode,
+                carTypeCodeList,
+                brand,
+                partNum,
+                partNameZh,
+                buyerName,
+                linieDeptNumList:(linieDeptNumList.length == 1 && searchParams.linieDeptNumList[0] === '') ? [] : linieDeptNumList,
             }
-            getPartPage({...searchParams,...data}).then((res)=>{
+            getPartPage(data).then((res)=>{
                 this.loading = false;
                 const {code,data} = res;
                 if(code == 200){
@@ -312,8 +324,8 @@ export default {
                 const {code,data} = res;
                 if(code ==200 ){
                     data.map((item)=>{
-                    item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                    item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
                     })
                     this.selectOptions.buyerName = data;
                 }else{
@@ -328,7 +340,7 @@ export default {
                         item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
                         item.code = item.deptNum;
                     })
-                    this.selectOptions.linieDeptNum = data;
+                    this.selectOptions.linieDeptNumList = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -391,25 +403,27 @@ export default {
         assign(row=null, type){
             console.log(row);
             const {selectItems} = this;
-            // 判断是否是单一分派
 
             this.assignType = type
 
+            // 判断是否是单一分派
             if(row){
                 this.singleAssign = [row];
                 this.assignVisible = true;
             }else{
                 if(!selectItems.length){
-                    iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+                    return iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
                 }else{
-                    // 判断勾选项是否包含无预设科室的
-                    const arr = selectItems.filter((item)=>item.linieDeptNum);
-                    if(arr.length){
-                        const str = arr.map((item)=>item.partNum).toString();
-                        return iMessage.warn(str+this.language('LK_AEKO_LINGJIANWUYUSHEKESHIQINGCHONGXINXUANZE','零件无预设科室，请重新选择!'))
-                    }
                     // 判断是否是单一分派
                     if(selectItems.length == 1){
+                        // 判断所选项是否已分派
+                        if(type == 'commodity'){  // 科室
+                            const arr = selectItems.filter((item)=>item.linieDeptNum);
+                            if(arr.length) return iMessage.warn(this.language('LK_AEKO_GAILINGJIANYIFENPEI','该零件已分派'))
+                        }else{ // 采购员linie  
+                            const arr = selectItems.filter((item)=>item.isOperate);
+                            if(arr.length) return iMessage.warn(this.language('LK_AEKO_GAILINGJIANYIFENPEI','该零件已分派'))
+                        }
                         this.singleAssign = selectItems;
                     }
                     this.assignVisible = true;

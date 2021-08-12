@@ -27,3 +27,19 @@ export function categoryReport(par) {
     method: 'GET',
   });
 }
+//查看历史---列表
+export function getReportList(params) {
+  return request({
+    url: `/categoryReport/getReportList`,
+    method: 'POST',
+    data: params
+  });
+}
+//获取内部需求分析操作记录 最近方案信息
+export function getCategoryAnalysis(params) {
+  return request({
+    url: `/categoryAnalysis/getCategoryAnalysis`,
+    method: 'POST',
+    data: params
+  });
+}

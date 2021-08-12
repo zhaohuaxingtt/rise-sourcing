@@ -59,7 +59,7 @@ export function getPowerBiSupplier(data) {
 // 查询材料组
 export function getMaterialGroupByUserIds(data) {
   return chrequst({
-    url: '/web/aon/costStructure/getMaterialGroupByUserIds',
+    url: '/aon/web/aon/costStructure/getMaterialGroupByUserIds',
     method: 'POST',
     data: data
   })
@@ -142,6 +142,16 @@ export function downloadTemplate(data) {
     url: '/web/kpi/template/download',
     method: 'POST',
     responseType: 'blob',
+    data: data
+  })
+}
+
+// 上传模板
+export function uploadTemplate(data) {
+  return requst({
+    url: '/web/kpi/template/upload',
+    method: 'POST',
+    // responseType: 'blob',
     data: data
   })
 }

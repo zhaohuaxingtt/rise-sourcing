@@ -220,15 +220,23 @@ export default {
         const {basicInfo,selectOptions} = this;
         const {fsList=[]} = selectOptions;
         const fsName = fsList.filter((item)=>item.value == basicInfo.fsName);
+        const {query} = this.$route;
+        const { requirementAekoId =''} = query;
         // 指定前期采购员参数需要处理一下
         const data = {
           ...basicInfo,
           coverCosts:basicInfo.coverCostsWithCarType || [],
           fsId:basicInfo.fsName,
           fsName:fsName.length ? fsName[0].label : '',
+          requirementAekoId,
         }
         this.btnLoading = true;
         if(type == 'submit'){ // 提交
+          const validate =  this.validateData(data);
+          if(!validate) {
+            this.btnLoading = false;
+            return;
+          }
           await coverSubmit(data).then((res)=>{
               this.btnLoading = false;
               const {code} = res;
@@ -258,6 +266,45 @@ export default {
             this.btnLoading = false;
           })
         }
+      },
+
+      // 提交时校验一下
+      validateData(data){
+        const { basicTitle } = this;
+        let isValidate = true;
+        for(let i=0;i<basicTitle.length;i++){
+          const basic = basicTitle[i];
+          if(basic['required']){
+              if((!data[basic['props']] && basic['type']=='input') || (data[basic['props']]==='' && basic['type']=='select')){
+                const tips = this.language(basicTitle[i]['labelKey'],basicTitle[i]['label'])+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
+                iMessage.warn(tips);
+                isValidate = false;
+                break;
+              }
+          }
+        }
+        
+          // 备注
+          if(isValidate && !data.remark){
+            const tips = this.language('LK_BEIZHU','备注')+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
+            iMessage.warn(tips);
+            isValidate = false;
+          }
+
+          // 表格内输入框
+          if(isValidate){
+            const {coverCostsWithCarType} = data;
+            for(let i=0;i<coverCostsWithCarType.length;i++){
+              const cost = coverCostsWithCarType[i] || {};
+              if(!cost['investmentIncrease'] || !cost['materialIncrease'] ||!cost['otherCost']){
+                const tips = this.language('LK_AEKO_BIAODANNEIFEIYONG','表单内费用') + this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
+                iMessage.warn(tips);
+                isValidate = false;
+                break;
+              }
+            }
+          }
+          return isValidate;
       },
     }
 }

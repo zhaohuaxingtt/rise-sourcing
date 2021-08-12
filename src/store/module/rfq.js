@@ -1,8 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 20:16:45
- * @LastEditTime: 2021-08-09 20:13:23
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\store\module\rfq.js
  */
@@ -13,7 +12,7 @@ const state = {
   SchemeId: window.sessionStorage.getItem('SchemeId') || '',
   materialGroup: window.sessionStorage.getItem('materialGroup') || '',//材料组
   spareParts: window.sessionStorage.getItem('spareParts') || '',//零件号
-  categoryCode:window.sessionStorage.getItem('categoryCode') || '111',//材料组code
+  categoryCode:window.sessionStorage.getItem('categoryCode') || '',//材料组code
 }
 const mutations = {
   SET_PENDING_PARTS_LIST(state, data) {

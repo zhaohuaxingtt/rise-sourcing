@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-09 19:17:49
- * @LastEditors: zbin
+ * @LastEditTime: 2021-08-12 11:08:42
+ * @LastEditors: 舒杰
  * @Description: 内部需求分析
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\index.vue
 -->
@@ -10,44 +10,31 @@
   <iPage>
     <headerNav>
       <div slot="extralButton">
-        <iButton @click="openCategoryCode">{{ language("CAILIAOZU", "材料组") }}</iButton>
-        <iButton @click="handleReport">{{ language("BAOGAOQINGDAN", "报告清单") }}</iButton>
-        <iButton>{{ language("CHAKANLISHI", "查看历史") }}</iButton>
+        <iButton @click="handleView">{{ language("CHAKANLISHI", "查看历史") }}</iButton>
       </div>
     </headerNav>
     <router-view></router-view>
-    <reportInventory v-model="reportInventory" />
-    <!-- 材料组定位 -->
-    <iDialog :title='language("CAILIAOZU", "材料组")' :visible.sync="value" class="iDialog" width="400px" @close='clearDiolog' top="40vh">
-      <p class="tip margin-bottom10">{{ language("QXZCAILIAOZU", "请选择材料组") }}</p>
-      <!-- <iInput v-model="categoryCode"></iInput> -->
-      <el-autocomplete class="autocomplete" v-model="categoryName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
-      <span slot="footer" class="dialog-footer">
-        <iButton @click="confirm">{{ language("QUEREN", "确认") }}</iButton>
-      </span>
-    </iDialog>
+    <viewHistory v-model="viewHistory" />
   </iPage>
 </template>
 
 <script>
-import { iPage, iButton, iDialog } from 'rise';
+import { iPage, iButton } from 'rise';
 import headerNav from '../components/headerNav';
 import { pageRfqBaseInfo } from "@/api/partsrfq/specialAnalysisTool/specialAnalysisTool";
-import reportInventory from "@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/reportInventory/index.vue";
+import viewHistory from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/viewHistory/index.vue';
 export default {
   components: {
     iPage,
     headerNav,
     iButton,
-    iDialog,
-    reportInventory
+    viewHistory
   },
   data() {
     return {
-      value: false,
       categoryName: "",//材料组名称
       categoryCode: "",//材料组编号
-      reportInventory: false
+      viewHistory: false
     }
   },
   created() {
@@ -56,9 +43,8 @@ export default {
     }
   },
   methods: {
-    handleReport() {
-      console.log(23456789);
-      this.reportInventory = true
+    handleView() {
+      this.viewHistory = true
     },
     querySearchAsync(queryString, cb) {
       pageRfqBaseInfo({ keyword: queryString }).then(res => {

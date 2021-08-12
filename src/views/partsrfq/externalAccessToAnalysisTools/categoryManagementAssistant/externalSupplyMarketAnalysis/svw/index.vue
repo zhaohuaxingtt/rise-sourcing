@@ -4,8 +4,8 @@
         <div class="head">
             <div class="left">供应商市场总览<span>材料组编号-材料组名称</span></div>
             <div class="right">
-                <iButton>编辑</iButton>
-                <iButton @click="$router.go(-1)">返回</iButton>
+                <iButton @click="edite=!edite">{{edite?'编辑':'取消'}}</iButton>
+                <iButton @click="$router.go(-1)">{{edite?'返回':'保存'}}</iButton>
             </div>
         </div>
         <!-- tittle -->
@@ -21,6 +21,8 @@
         v-for="(x,index) of MarketOverviewDTO"
         :key="index"
         :MarketOverviewObj=x
+        :index="index+1"
+        :edite="edite"
         ></list>
     </iCard>
     </iPage>
@@ -33,6 +35,7 @@ import list from './components/list'
 export default {
     data(){
         return {
+            edite:true,
             statueImg:require('./img/img.png'),
             svwImg:require('./img/note.png'),
             userImg:require('./img/user.png'),

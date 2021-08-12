@@ -90,7 +90,7 @@
                 <span>
                   {{ language('LK_TOUZIQINGDANZHUANGTAI', '投资清单状态') }}
                      <Popover
-                          v-if="Number(baseInfo.linieConfirmSupplier) === '1'"
+                          v-if="Number(baseInfo.linieConfirmSupplier) === 1"
                           class="popover"
                           placement="bottom-start"
                           :content="baseInfo.linieName + '在' + baseInfo.taskDealDate + '代确认'"
@@ -119,6 +119,7 @@
                 v-model="craftType"
                 filterable
                 clearable
+                @change="findMoldViewList"
                 class="select"
             >
               <el-option
@@ -137,6 +138,7 @@
                 v-model="assetTypeNum"
                 filterable
                 clearable
+                @change="findMoldViewList"
                 class="select"
             >
               <el-option
@@ -193,7 +195,7 @@
                 <div v-for="(item, index) in scope.row.partsShareNum.split(',')" :key="index">{{ item }}</div>
               </div>
               <div slot="reference">
-                {{ scope.row.partsShareNum.split(',')[0] }}
+                {{ scope.row.partsShareNum.split(',')[0] }}<span v-if="scope.row.partsShareNum && scope.row.partsShareNum.includes(',')">...</span>
               </div>
             </Popover>
           </div>

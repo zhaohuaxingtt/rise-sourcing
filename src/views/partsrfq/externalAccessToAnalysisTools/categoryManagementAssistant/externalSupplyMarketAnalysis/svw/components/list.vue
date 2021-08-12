@@ -1,12 +1,24 @@
 <template>
     <div class="charts">
         <div class="width3-1">
-            <h3>Top1</h3>
+            <h3>Top{{index}}</h3>
             <div class="flex">
                 <div class="score">{{MarketOverviewObj.supplierName}} <span>{{MarketOverviewObj.otherCagrRate}}</span><img :src="upImg" alt=""></div>
                 <div>单位: 百万元</div>
             </div>
             <div style="height:360px" ref="chart"></div>
+            <div class="interests">
+                <iSelect v-model="interestsStatus" :disabled="isEdite" @change="handleChange">
+                    <el-option 
+                    v-for="(x,index) in iSelectOption" 
+                    :value="x.value" 
+                    :label="x.name" 
+                    :key="index"></el-option>
+                </iSelect>
+                <iInput v-model="year1" class="ml-49" :disabled="isEdite"/>
+                <iInput v-model="year2" class="ml-49" :disabled="isEdite"/>
+                <iInput v-model="year3" class="ml-49" :disabled="isEdite"/>
+            </div>
         </div>
         <div class="width3-1">
             <div style="height:360px" ref="turnover"></div>
@@ -34,15 +46,37 @@
 
 <script>
 import echarts from '@/utils/echarts'
-
+import {iInput,iSelect} from 'rise'
 export default {
+    components:{
+        iInput,
+        iSelect
+    },
     props:{
         MarketOverviewObj:{
             type:Object
+        },
+        edite:{
+            type:Object
+        },
+        index:{
+            type:Number
         }
     },
     data(){
         return {
+            isEdite:true,
+            interestsStatus:'',
+            iSelectOption:[{
+                value:'1',
+                name:"利润(%）"
+            },{
+                value:'2',
+                name:"svw(元)"
+            },{
+                value:'3',
+                name:"其它(元)"
+            }],
             bgimg:require('../img/list.png'),
             upImg:require('../img/up.png'),
             option : {
@@ -78,12 +112,6 @@ export default {
                 series: [
                     {
                         name: 'svw',
-                        label:{
-                            normal:{
-                                show: true,
-                                formatter:'{c}%'
-                            }
-                        },
                         itemStyle:{
                             color:"#0059FF"
                         },
@@ -92,17 +120,36 @@ export default {
                         data: [{
                             value:20,
                             itemStyle:{
-                                borderRadius: [25,25,0,0]
-                            }
+                                borderRadius: [25,25,0,0],
+                            },
+                            label:{
+                                    normal:{
+                                        show: true,
+                                        formatter:''
+                                    }
+                                }
+                            
                         },{
                             value:50,
                             itemStyle:{
                                 borderRadius: [25,25,0,0]
+                            },
+                            label:{
+                                normal:{
+                                    show: true,
+                                    formatter:''
+                                }
                             }
                         },{
                             value:60,
                             itemStyle:{
                                 borderRadius: [25,25,0,0]
+                            },
+                            label:{
+                                normal:{
+                                    show: true,
+                                    formatter:''
+                                }
                             }
                         }]
                     },
@@ -111,28 +158,40 @@ export default {
                         itemStyle:{
                             color:"#B4CBF7"
                         },
-                        label:{
-                            normal:{
-                                show: true,
-                                formatter:'{c}%'
-                            }
-                        },
                         stack: "check",
                         type: 'bar',
                         data: [{
                             value:20,
                             itemStyle:{
                                 borderRadius: [25,25,0,0]
+                            },
+                            label:{
+                                normal:{
+                                    show: true,
+                                    formatter:''
+                                }
                             }
                         },{
                             value:50,
                             itemStyle:{
                                 borderRadius: [25,25,0,0]
+                            },
+                            label:{
+                                normal:{
+                                    show: true,
+                                    formatter:''
+                                }
                             }
                         },{
                             value:47,
                             itemStyle:{
                                 borderRadius: [25,25,0,0]
+                            },
+                            label:{
+                                normal:{
+                                    show: true,
+                                    formatter:''
+                                }
                             }
                         }]
                     }
@@ -151,18 +210,18 @@ export default {
                         // name: '访问来源',
                         type: 'pie',
                         radius: '50%',
-                        label:{
-                            normal:{
-                                show: true,
-                                formatter:'{d}%'
-                            }
-                        },
                         data: [
                             {
                                 value: 1048,
                                 name: '材料组A',
                                 itemStyle:{
                                     color:"#0058FF"
+                                },
+                                label:{
+                                    normal:{
+                                        show: true,
+                                        formatter:'{d}%'
+                                    }
                                 }
                             },
                             {
@@ -170,6 +229,12 @@ export default {
                                 name: '材料组B',
                                 itemStyle:{
                                     color:"#6EA0FF"
+                                },
+                                label:{
+                                    normal:{
+                                        show: true,
+                                        formatter:'{d}%'
+                                    }
                                 }
                             },
                             {
@@ -177,6 +242,12 @@ export default {
                                 name: '材料组C',
                                 itemStyle:{
                                     color:"#97D1FF"
+                                },
+                                label:{
+                                    normal:{
+                                        show: true,
+                                        formatter:'{d}%'
+                                    }
                                 }
                             },
                             {
@@ -184,6 +255,12 @@ export default {
                                 name: '材料组D',
                                 itemStyle:{
                                     color:"#0094FF"
+                                },
+                                label:{
+                                    normal:{
+                                        show: true,
+                                        formatter:'{d}%'
+                                    }
                                 }
                             },
                         ],
@@ -197,19 +274,86 @@ export default {
                     }
                 ]
             },
-            
+            year1:"",
+            year2:"",
+            year3:""
         }
     },
     created(){
       
     },
     mounted(){
-        let date = new Date();
+        let date = new Date()
         this.option.xAxis[0].data[0]=date.getFullYear()-3
         this.option.xAxis[0].data[1]=date.getFullYear()-2
         this.option.xAxis[0].data[2]=date.getFullYear()-1
         this.initCharts()
         this.initturnover()
+    },
+    watch:{
+        edite(){
+            this.isEdite=this.edite
+        },
+        MarketOverviewObj:{
+            handler(curVal,oldVal){
+                let date = new Date().getFullYear();
+                // 柱状图
+                if(this.MarketOverviewObj.supplierFinanceDTOList.length<1) return
+                this.MarketOverviewObj.supplierFinanceDTOList.forEach(x => {
+                    if(x.year==date-3){
+                        this.option.series[0].data[0].label.normal.formatter=x.svwRate+'%'
+                        this.option.series[0].data[0].value=x.svwAmount
+                        this.option.series[1].data[0].value=x.otherRate
+                        this.option.series[1].data[0].label.normal.formatter=x.otherRate+'%'
+                    }
+                    if(x.year==date-2){
+                        this.option.series[0].data[1].label.normal.formatter=x.svwRate+'%'
+                        this.option.series[0].data[1].value=x.svwAmount
+                        this.option.series[1].data[1].value=x.otherRate
+                        this.option.series[1].data[1].label.normal.formatter=x.otherRate+'%'
+                    }
+                    if(x.year==date-1){
+                        this.option.series[0].data[2].label.normal.formatter=x.svwRate+'%'
+                        this.option.series[0].data[2].value=x.svwAmount
+                        this.option.series[1].data[2].value=x.otherRate
+                        this.option.series[1].data[2].label.normal.formatter=x.otherRate+'%'
+                        
+                    }
+                });
+                // 饼图
+                if(this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length>0){
+                     
+                     let seriesObj = {
+                                value: 1048,
+                                name: '材料组A',
+                                itemStyle:{
+                                    color:"#0058FF"
+                                },
+                                label:{
+                                    normal:{
+                                        show: true,
+                                        formatter:'{d}%'
+                                    }
+                                }
+                            }
+                     let data = []
+                     this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.forEach(x=>{
+                         seriesObj.value=x.postAmount
+                         seriesObj.name=x.categoryNameZh
+                         seriesObj.label.normal.formatter=x.rate+'%'
+                         data.push(seriesObj)
+                     })
+                     this.turnover.series[0].data = data
+                }
+                console.log(this.turnover.series[0].data)
+            },
+            immediate: true,
+            deep: true
+            
+        },
+        handleChange(){
+            console.log("change")
+        }
     },
     methods:{
         initCharts() {
@@ -223,9 +367,10 @@ export default {
             // 绘制图表
             const option = this.turnover
             myChart.setOption(option);
-        },
+        }
        
     }
+    
 }
 </script>
 
@@ -317,5 +462,13 @@ export default {
                 display: inline-block;
                 margin-left: 10px;
             }
+    }
+    .interests{
+        display: flex;
+        justify-content: space-between;
+        .ml-49{
+            margin-left: 49px;
+            width: calc(33%.33 - 49px);
+        }
     }
 </style>
