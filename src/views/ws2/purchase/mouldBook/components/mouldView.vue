@@ -115,10 +115,27 @@
           :tableLoading="tableLoading"
           :selection="false"
         >
+
+          <template #partsShareNum="scope">
+            <div v-if="scope.row.partsShareNum">
+              <Popover
+                  placement="bottom"
+                  trigger="hover">
+                <div>
+                  <div v-for="(item, index) in scope.row.partsShareNum.split(',')" :key="index">{{ item }}</div>
+                </div>
+                <div slot="reference">
+                  {{ scope.row.partsShareNum.split(',')[0] }}<span v-if="scope.row.partsShareNum.split(',').length > 1">...</span>
+                </div>
+              </Popover>
+            </div>
+            <div v-else>{{ scope.row.partsShareNum }}</div>
+          </template>
+
           <template #picture="scope">
-          <div v-if="scope.row.picture" class="table-link" @click="openPhotoList(scope.row.picture.split(','))">查看</div>
-          <div v-else></div>
-        </template>
+            <div v-if="scope.row.picture" class="table-link" @click="openPhotoList(scope.row.picture.split(','))">查看</div>
+            <div v-else></div>
+          </template>
 
           <template #assetTotal="scope">
             <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.assetTotal))}}</div>
@@ -175,6 +192,7 @@ import { cloneDeep } from "lodash";
 import { pageMixins } from "@/utils/pageMixins";
 import { tableHeight } from "@/utils/tableHeight";
 import { getTousandNum, NumFormat } from "@/utils/tool";
+import {Switch, Popover} from "element-ui"
 
 export default {
   components: {
@@ -186,7 +204,8 @@ export default {
     iButton,
     UnitExplain,
     iPagination,
-    PhotoList
+    PhotoList,
+    Popover
   },
 
   mixins: [tableHeight, pageMixins],
