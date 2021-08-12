@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-12 15:39:27
+ * @LastEditTime: 2021-08-12 16:39:23
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
@@ -191,7 +191,7 @@ export default {
     getNodeList(node) {
       if(node) {
         const nodeInYearList = this.progressList.reduce((accu, curr, index) => {
-          if (curr.label !== 'PD') {
+          if (curr.label !== 'PD' && node[curr.date] && node[curr.date] !== '') {
             const week = Number(node[curr.value].split('KW')[1])
             return [...accu, {
               ...curr,
