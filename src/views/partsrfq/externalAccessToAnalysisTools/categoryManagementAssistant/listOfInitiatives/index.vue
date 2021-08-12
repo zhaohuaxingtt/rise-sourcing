@@ -128,7 +128,7 @@ export default {
     };
   },
   created() {
-    this.getList();
+    //this.getList();
   },
   methods: {
     handleEdit() {
@@ -226,6 +226,11 @@ export default {
         idEle: 'container',
         pdfName: 'overview',
       });
+    },
+  },
+  watch: {
+    '$store.state.rfq.categoryCode'() {
+      this.getList()
     },
   },
 };
