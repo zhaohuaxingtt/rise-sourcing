@@ -228,6 +228,12 @@ export default {
       });
     },
   },
+  watch: {
+    '$store.state.rfq.categoryCode'() {
+      this.categoryCode = this.$store.state.rfq.categoryCode;
+      this.getList();
+    },
+  },
 };
 </script>
 
