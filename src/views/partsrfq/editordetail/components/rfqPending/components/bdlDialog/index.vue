@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-11 14:54:24
- * @LastEditTime: 2021-08-12 14:31:20
+ * @LastEditTime: 2021-08-12 18:04:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\bdlDialog\index.vue
@@ -32,10 +32,13 @@
         height="100%"
         class="table margin-top20"
         lang
+        ref="table"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
-        @handleSelectionChange="handleSelectionChange">
+        @handleSelectionChange="handleSelectionChange"
+        @handleSelect="handleSelect"
+        @handleSelectAll="handleSelectAll">
         <template #supplierNameZh="scope">
           <div class="flexRow">
             <span class="openLinkText cursor " @click="onJump360(scope.row)"> {{ scope.row.supplierNameZh }}
@@ -106,7 +109,7 @@ export default {
       if (nv) {
         this.unselectRfqBdlPage()
       } else {
-        this.multipleSelection = []
+        this.multipleSelectionCache = []
         this.tableListData = []
         this.confirmLoading = false
       }
@@ -132,7 +135,7 @@ export default {
       supplierName: "",
       tableTitle,
       tableListData: [],
-      multipleSelection: [],
+      multipleSelectionCache: [],
       confirmLoading: false,
     };
   },
@@ -150,12 +153,15 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          this.multipleSelection = []
           this.tableListData = Array.isArray(res.data) ? res.data : []
           this.page.totalCount = res.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+
+        this.tableListData.forEach(item => {
+          if (this.multipleSelectionCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.table.toggleRowSelection(item, true))
+        })
 
         this.loading = false
       })
@@ -166,14 +172,27 @@ export default {
       this.unselectRfqBdlPage()
     },
     handleSelectionChange(list) {
-      this.multipleSelection = list
+      this.multipleSelectionCache = this.multipleSelectionCache.concat(
+        list.filter(item => !this.multipleSelectionCache.some(cacheItem => cacheItem.supplierId === item.supplierId))
+      )
+    },
+    handleSelect(selection, row) {
+      if (!selection.includes(row)) { // 从cache中删除
+        this.multipleSelectionCache = this.multipleSelectionCache.filter(item => item.supplierId !== row.supplierId)
+      }
+    },
+    handleSelectAll(selection) {
+      if (!selection.length) { // 当前页取消选中操作
+        // 用于删除操作的cache列表
+        this.multipleSelectionCache = this.multipleSelectionCache.filter(cacheItem => !this.tableListData.some(item => item.supplierId === cacheItem.supplierId))
+      }
     },
     onJump360(row) {
       window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${ row.supplierSubId }&supplierType=${ row.supplierType }&nameZh=${ row.supplierNameZh }&nameEn=${ row.supplierNameEn }`, "_blank")
     },
     // 确认
     handleConfirm() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIANJIADEBDL", "请选择需要添加的BDL"))
+      if (!this.multipleSelectionCache.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIANJIADEBDL", "请选择需要添加的BDL"))
 
       this.confirmLoading = true
       addRfqBdl({
@@ -181,14 +200,14 @@ export default {
           rfqId: this.rfqId,
           updateType: "2",
           userId: this.userInfo.id,
-          bdlInfoList: this.multipleSelection
+          bdlInfoList: this.multipleSelectionCache
         }
       })
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 
         if (res.code == 200) {
-          this.$emit("confirm", this.selectRow)
+          this.$emit("confirm", this.multipleSelectionCache)
           this.status = false
           iMessage.success(message)
         } else {

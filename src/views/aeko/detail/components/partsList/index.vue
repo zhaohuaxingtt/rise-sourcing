@@ -7,7 +7,7 @@
 <template>
   <div class="aeko-partsList">
     <!-- 搜索区域 -->
-    <iSearch @sure="sure" @reset="reset">
+    <iSearch @sure="sure" @reset="reset" class="search-form">
         <el-form>
             <!-- AEKO类型为AeA显示车型，为aeko/mp显示车型项目 -->
             <el-form-item
@@ -15,7 +15,7 @@
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
             :label="language(item.labelKey,item.label)"  
             >
-                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
+                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :clearable="item.clearable" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
                     <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                         v-for="item in selectOptions[item.selectOption] || []"
@@ -559,6 +559,12 @@ export default {
 
 <style lang="scss" scoped>
     .aeko-partsList{
+        .search-form{
+            ::v-deep .el-date-editor .el-range__close-icon{
+                display: block;
+                width: 10px;
+            }
+        }
         .table-tips{
             color: #747F9D;
             margin-top: 10px;

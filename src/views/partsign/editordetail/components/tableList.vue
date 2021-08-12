@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-08-03 11:34:22
+ * @LastEditTime: 2021-08-12 17:24:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
@@ -90,6 +90,8 @@ export default {
       }
       const selectdBorder = row.selectedBorder
       this.$set(row,'selectedBorder',!selectdBorder)
+
+      this.$emit('handleSelect', selection, row)
     },
     handleSelectAll(selection){  
       const flag = selection.length
@@ -97,6 +99,8 @@ export default {
         this.$set(selection[i],'selectedBorder',!!flag)
       }
       !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+
+      this.$emit('handleSelectAll', selection)
     },
     borderLeft({row, column, rowIndex, columnIndex}){
       if(columnIndex === 0 && row.selectedBorder === true){
