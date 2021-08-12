@@ -363,13 +363,15 @@ export default {
        }
    }
    ::v-deep.TOCase{
-       display: flex;
-           justify-content: space-between;
-           align-items: center;
-           position: relative;
-    //    input{
-    //        width: 40%;
-    //    }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        .el-popper{
+            height: 200px;
+            overflow-y: auto;
+            top: 172px;
+        }
    }
    .bottom-underline{
        border-bottom: 1px solid #E3E3E3;
@@ -378,10 +380,5 @@ export default {
    }
    .el-cascader{
        width: 100%;
-   }
-   .el-popper{
-       height: 200px;
-       overflow-y: auto;
-       top: 172px;
    }
 </style>
