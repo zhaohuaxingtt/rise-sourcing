@@ -5,7 +5,7 @@
 -->
 <template>
     <iDialog     
-        :title="language('LK_AEKO_FENPAIKESHI','分派科室')"
+        :title="assignType === 'commodity' ? language('LK_AEKO_FENPAIKESHI','分派科室') : language('LK_AEKO_FENPAICAIGOUYUAN','分派采购员')"
         :visible.sync="dialogVisible"
         @close="clearDialog"
         width="25%"
@@ -35,9 +35,9 @@
                 <iSelect  v-model="refferenceSmtNum" :disabled="radioType=='1'" :placeholder="language('LK_AEKO_DAIXUANZE','待选择')" class="margin-top20" style="width:100%" >
                     <el-option
                         v-for="item in (assignType === 'commodity' ? commoditySelectOptions : linieSelectOptions) || []"
-                        :key="item.code"
-                        :label="item.desc"
-                        :value="item.code">
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
                     </el-option> 
                 </iSelect>
             </el-radio>
@@ -205,6 +205,15 @@ export default {
             }else{ // 批量分派
                 const { radioType } = this;
                 if(radioType == 1){ // 预设
+
+                    // 判断勾选项是否无预设科室 若没有弹出提示
+                    const refferArr = selectItems.filter((item)=>!item.refferenceSmtNum);
+
+                    if(refferArr.length){
+                        const str = refferArr.map((item)=>item.partNum).toString();
+                        return iMessage.warn(str+this.language('LK_AEKO_LINGJIANWUYUSHEKESHIQINGCHONGXINXUANZE','零件无预设科室，请重新选择!'))
+                    }
+                    
                     selectItems.map((item)=>{
                         data.push({
                             requirementAekoId,
@@ -258,6 +267,16 @@ export default {
             }else{ // 批量分派
                 const { radioType } = this;
                 if(radioType == 1){ // 预设
+
+                    // 判断勾选项是否无预设采购员 若没有弹出提示
+                    const refferArr = selectItems.filter((item)=>!item.refferenceByuerId);
+
+
+                    if(refferArr.length){
+                        const str = refferArr.map((item)=>item.partNum).toString();
+                        return iMessage.warn(str+this.language('LK_AEKO_LINGJIANWUYUSHECAIGOUYUANQINGCHONGXINXUANZE','零件无预设采购员，请重新选择!'))
+                    }
+
                     selectItems.map((item)=>{
                         data.push({
                             requirementAekoId,
