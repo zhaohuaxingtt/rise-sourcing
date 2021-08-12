@@ -33,6 +33,16 @@
             :tableTitle="tableTitleCost"
             :tableLoading="tableLoading.cost"
         >
+            <template #materialIncrease="scope">
+                {{fixNumber(scope.row.materialIncrease,2) || ''}}
+            </template>
+            <template #investmentIncrease="scope">
+                {{fixNumber(scope.row.investmentIncrease,0) || ''}}
+            </template>
+            <template #otherCost="scope">
+                {{fixNumber(scope.row.otherCost,0) || ''}}
+            </template>
+
       </tableList>
         <p class="summaryTable-tips margin-top20">Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder Invest≥10,000,000 RMB</p>
       </div>
@@ -52,13 +62,13 @@
                 @handleSelectionChange="handleSelectionChange"
             >
                 <template #materialIncrease="scope">
-                    {{fixNumber(scope.row.materialIncrease) || ''}}
+                    {{fixNumber(scope.row.materialIncrease,2) || ''}}
                 </template>
                 <template #investmentIncrease="scope">
-                    {{fixNumber(scope.row.investmentIncrease) || ''}}
+                    {{fixNumber(scope.row.investmentIncrease,0) || ''}}
                 </template>
                 <template #otherCost="scope">
-                    {{fixNumber(scope.row.otherCost) || ''}}
+                    {{fixNumber(scope.row.otherCost,0) || ''}}
                 </template>
             </tableList>
             <!-- 分页 -->
@@ -190,24 +200,10 @@ export default {
 
                 const keyArr = ['investmentIncrease', 'materialIncrease', 'otherCost'];
                 if(keyArr.includes(column.property)){
-                    if(column.property == 'investmentIncrease') sums[index] = this.fixNumber(basicInfo.investmentIncreaseTotal) || '';
+                    if(column.property == 'investmentIncrease') sums[index] = this.fixNumber(basicInfo.investmentIncreaseTotal,0) || '';
                     else if(column.property == 'materialIncrease') sums[index] = this.fixNumber(basicInfo.materialIncreaseTotal)  || '';
-                    else if(column.property == 'otherCost') sums[index] = this.fixNumber(basicInfo.otherCostTotal)  || '';
+                    else if(column.property == 'otherCost') sums[index] = this.fixNumber(basicInfo.otherCostTotal,0)  || '';
                     else sums[index] = ''
-                    // const values = data.map(item => Number(item[column.property]) );
-                    // if (!values.every(value => isNaN(value))) {
-                    //     sums[index] = values.reduce((prev, curr) => {
-                    //         const value = Number(curr);
-                    //         if (!isNaN(value)) {
-                    //             return prev + curr;
-                    //         } else {
-                    //             return prev;
-                    //         }
-                    //     }, 0);
-                    //     sums[index] = this.getTousandNum(sums[index].toFixed(2));
-                    // } else {
-                    //     sums[index] = '';
-                    // }
                 }else{
                     sums[index] = '';
                 }
@@ -216,10 +212,15 @@ export default {
         },
 
         // 费用千分位处理
-        fixNumber(str){
+        fixNumber(str,precision=2){
             if(!str) return null;
             var re=/(?=(?!(\b))(\d{3})+$)/g;
-            return str.replace(re,",");
+            var fixstr =  str.replace(re,",");
+            if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
+                var last = fixstr.substr(fixstr.length-3,3);
+                if(last == '.00') fixstr = fixstr.substr(0,fixstr.length-3);
+            }
+            return fixstr;
         },
     }
 }
