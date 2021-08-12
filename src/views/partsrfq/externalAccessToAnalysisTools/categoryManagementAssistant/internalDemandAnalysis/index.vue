@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-12 11:08:42
+ * @LastEditTime: 2021-08-12 14:39:36
  * @LastEditors: 舒杰
  * @Description: 内部需求分析
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\index.vue
@@ -59,18 +59,6 @@ export default {
         }
       })
     },
-    // 确认
-    confirm() {
-      this.$store.dispatch('setCategoryCode', this.categoryCode)
-      this.value = false
-    },
-    // 重新定位材料组
-    openCategoryCode() {
-      this.value = true
-    },
-    handleSelect(item) {
-      this.categoryCode = item.categoryCode
-    }
   }
 };
 </script>

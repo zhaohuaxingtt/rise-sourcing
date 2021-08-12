@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 14:15:26
- * @LastEditTime: 2021-08-10 15:29:54
+ * @LastEditTime: 2021-08-12 16:56:54
  * @LastEditors: 舒杰
  * @Description: SOURCING TABLE 封装
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\tableList.vue
@@ -22,8 +22,8 @@
 				</template>
 				<template slot-scope="scope">
 					<p class="tableTitleSolt">
-						<span>{{scope.row.fileName}}</span>
-						<span>{{scope.row.fileName}}</span>
+						<span>{{scope.row.partsId}}</span>
+						<span>{{scope.row.partsNameZh}}</span>
 					</p>
 				</template>
 			</el-table-column>
@@ -38,8 +38,8 @@
 				</template>
 				<template slot-scope="scope">
 					<p class="tableTitleSolt">
-						<span>{{scope.row.fileName}}</span>
-						<span>{{scope.row.fileName}}</span>
+						<span>{{scope.row.fsnrGsnrNum}}</span>
+						<span>{{scope.row.partProjectType}}</span>
 					</p>
 				</template>
 			</el-table-column>
@@ -54,15 +54,14 @@
 				</template>
 				<template slot-scope="scope">
 					<p class="tableTitleSolt">
-						<span>{{scope.row.fileName}}</span>
-						<span>{{scope.row.fileName}}</span>
+						<span>{{scope.row.categoryName}}</span>
+						<span>{{scope.row.stuffName}}</span>
 					</p>
 				</template>
 			</el-table-column>
 
 			<el-table-column v-else :key="$index" align="center" :label="language(item.key,item.name)" :prop="item.props"
 				:show-overflow-tooltip="item.tooltip" :width="item.width">
-				
 			</el-table-column>
 		</template>
 	</el-table>
