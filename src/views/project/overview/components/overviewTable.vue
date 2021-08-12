@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 17:54:05
+ * @LastEditTime: 2021-08-11 15:50:59
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -32,8 +32,8 @@
               <li>{{dataItem.carTypeLevel}} class</li>
             </ol>
             <ol class="baiscInfo-bottom-column">
-              <li>{{dataItem.werk}}</li>
-              <li>SOP:{{`${moment(dataItem.sop).year()}-KW${moment(dataItem.sop).week()}`}}</li>
+              <li>{{dataItem.factoryName}}</li>
+              <li>SOP:{{dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk}}</li>
               <li>KPE:{{dataItem.kpe}}<icon symbol name="iconbianji"  class="margin-left10 cursor"></icon></li>
             </ol>
           </div>
@@ -212,6 +212,9 @@ export default {
       } else {
         const lastStatus = this.getLastStatus(year, season, nodeList)
         const nextStatus = this.getNextStatus(year, season, nodeList)
+        if (nextStatus === -1) {
+          return null
+        }
         if (lastStatus === 2 || lastStatus === 3){
           return {
             lineStatus: 3

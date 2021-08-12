@@ -11,25 +11,31 @@
       <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="5">
           <el-form-item :label="language('CAILIAOZU','材料组')">
-            <iSelect :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
+            <iSelect @change="$emit('getTableList',form)" :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
               <el-option :value="item.code" :label="item.name" v-for="item of formGoup.materialGroupList" :key="item.code"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
         <el-col :span="5">
           <el-form-item :label="language('CHEXING','车型')">
-            <iSelect :placeholder="language('QXZCX','请选择车型')" v-model="form.materialGroupCode">
+            <iSelect @change="$emit('getTableList',form)" :placeholder="language('QXZCX','请选择车型')" v-model="form.motorId">
               <el-option :value="item.code" :label="item.name" v-for="item of formGoup.materialGroupList" :key="item.code"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item>
-            <iButton>{{language('BIANJI','编辑')}}</iButton>
-            <iButton @click="add">{{language('TIANJIA','添加')}}</iButton>
-            <iButton>{{language('SHANCHU','删除')}}</iButton>
-            <iButton>{{language('DAOCHU','导出')}}</iButton>
-            <iButton @click="handleLog">{{language('Change Log','Change Log')}}</iButton>
+            <div v-if="isEdit">
+              <iButton @click="edit">{{language('BIANJI','编辑')}}</iButton>
+              <iButton @click="add">{{language('TIANJIA','添加')}}</iButton>
+              <iButton>{{language('SHANCHU','删除')}}</iButton>
+              <iButton>{{language('DAOCHU','导出')}}</iButton>
+              <iButton @click="handleLog">{{language('Change Log','Change Log')}}</iButton>
+            </div>
+            <div v-else>
+              <iButton @click="edit">{{language('QUXIAO','取消')}}</iButton>
+              <iButton @click="save">{{language('BAOCUN','保存')}}</iButton>
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -47,18 +53,16 @@ import addPartDialog from "./addPartDialog";
 import changeLogDialog from "./changeLogDialog";
 export default {
   // import引入的组件需要注入到对象中才能使用
-  components: { iSelect, iButton,addPartDialog,changeLogDialog },
+  components: { iSelect, iButton, addPartDialog, changeLogDialog },
   data() {
     // 这里存放数据
     return {
+      isEdit: true,
       addPartDialog: false,
       changeLogDialog: false,
       form: {
-        materialGroup: '',
+        motorId: '',
         materialGroupCode: '',
-        rfqId: '',
-        fsId: '',
-        partsId: '',
       },
       formGoup: {
         materialGroupList: [],
@@ -73,6 +77,10 @@ export default {
   methods: {
     add() {
       this.addPartDialog = true
+    },
+    edit() {
+      this.isEdit = !this.isEdit
+      this.$emit('edit',this.isEdit)
     },
     handleLog() {
       this.changeLogDialog = true

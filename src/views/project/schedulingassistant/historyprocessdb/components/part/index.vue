@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 17:48:54
+ * @LastEditTime: 2021-08-10 13:43:34
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -46,7 +46,7 @@
       />
     </template>
     <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="partLogicList" :logicData="logicData" :selectOptions="logicSelectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
-    <showItemDialog ref="showItem" type="2" :dialogVisible="showItemVisible" @changeVisible="changeShowItem" :checkList="checkList" />
+    <showItemDialog ref="showItem" type="2" :dialogVisible="showItemVisible" @changeVisible="changeShowItem" :checkList="checkList" :disabledColumn="disabledColumn" :defaultColumn="defaultColumn" />
   </iCard>
 </template>
 
@@ -95,7 +95,28 @@ export default {
       ],
       selectRowFit: [],
       selectRowPart: [],
-      downloadLoading: false
+      downloadLoading: false,
+      defaultColumn: [
+        'LINGJIANHAO',
+        'LINGJIANZHONGWENMINGCHENG',
+        'LINGJIANDEWENMINGCHENG',
+        'CAILIAOZUBIANHAO',
+        'CAILIAOZUMINGCHENG',
+        'CHEXINGXIANGMU',
+        'SHIFANGDINGDIANZHOU',
+        'DINGDIANBFZHOU',
+        'BFFIRSTTRYOUTZHOU',
+        'FIRSTTRYOUTOTSZHOU',
+        'FIRSTTRYOUTEMZHOU',
+        'SOURCINGLEIXING',
+        'SHIFOUBMG',
+        'SHIFOUSEL'
+      ],
+      disabledColumn: [
+        'LINGJIANHAO',
+        'LINGJIANZHONGWENMINGCHENG',
+        'LINGJIANDEWENMINGCHENG',
+      ]
     }
   },
   computed: {
@@ -112,7 +133,10 @@ export default {
       }
     },
     partTableTitle() {
-      return partTableTitle.filter(item => !this.productColumns.includes(item.key) && (item.disabled || this.selectColumn.includes(item.key)))
+      if (this.selectColumn.length < 1) {
+        return partTableTitle.filter(item => !this.productColumns.includes(item.key) && this.defaultColumn.includes(item.key))
+      }
+      return partTableTitle.filter(item => !this.productColumns.includes(item.key) && (this.selectColumn.includes(item.key)))
     },
     checkList() {
       return cloneDeep(partTableTitle).reduce((accu, item) => {
@@ -121,7 +145,7 @@ export default {
         }
         return [...accu, {
           ...item,
-          isSelect: item.disabled || this.selectColumn.includes(item.key)
+          isSelect: this.selectColumn.length < 1 ? this.defaultColumn.includes(item.key) : this.selectColumn.includes(item.key)
         }]
       },[])
     },
@@ -212,7 +236,10 @@ export default {
     },
     init() {
       if (this.$route.query.cartypeProId) {
-        this.logicData = this.searchParams
+        this.logicData = {
+          ...this.logicData,
+          ...this.$route.query
+        }
         this.getFitting()
       } else {
         this.getCondition()

@@ -1,6 +1,7 @@
 <template>
   <div>
       <iPage>
+          <publicHeaderMenu></publicHeaderMenu>
           <iCard>
                <div class="imgkpi-head">
                <el-form>
@@ -10,17 +11,15 @@
                 <iInput 
                 suffix-icon="el-icon-search"
                 v-model="supplierName"
-                @select="handleSelect"
                 ></iInput>
                 </el-form-item>
                </el-form>
                <div>
-                   <iButton>{{language('QUEREN','确认')}}</iButton>
-                   <iButton>{{language('CHONGZHI','重置')}}</iButton>
+                   <iButton @click="handleOk">{{language('QUEREN','确认')}}</iButton>
+                   <iButton @click="handleRest">{{language('CHONGZHI','重置')}}</iButton>
                </div>
                </div>
            </iCard>
-           <!-- NGK(苏州)环保陶瓷有限公司 -->
            <iCard id="powerBi"></iCard>
       </iPage>
   </div>
@@ -30,6 +29,7 @@
 import {iButton,iPage,iCard,iInput,iSelect,iTableCustom} from 'rise'
 import * as pbi from 'powerbi-client';
 import { getPowerBiKpi,getPowerBiSupplier } from '@/api/kpiChart'
+import publicHeaderMenu from './commonHeardNav/headerNav'
 export default {
     components:{
         iButton,
@@ -37,33 +37,41 @@ export default {
         iCard,
         iInput,
         iSelect,
+        publicHeaderMenu
     },
     data(){
         return {
+            filter : {
+                $schema: "http://powerbi.com/product/schema#basic",
+                target: {
+                    table: "Fact_01_Supplier_SPI",
+                    column: "supplier_id"
+                },
+                operator: "In",
+                values: [],
+                filterType: null,
+                requireSingleSelection: true
+            },
             formData:{
                 deptId:''
             },
             config:{},
             reportContainer:null,
             report:null,
+            // 阿里巴巴（中国）有限公司
             supplierName:"",
             configApiData:{},
-            supplierId:null
+            supplierId:null,
+            name:null,
+            values:[]
         }
     },
-    created(){
-         getPowerBiKpi({}).then(res=>{
-            this.configApiData={...res.data}
-            console.log(this.configApiData)
-            this.init()
-             this.renderBi()
-        })
-        getPowerBiSupplier({keyWord:this.supplierName}).then(res=>{
-            this.supplierId=this.data[0].supplierId
-        })
-    },
     mounted(){
-        console.log(this.configApiData)
+       getPowerBiKpi({}).then(res=>{
+            this.configApiData={...res.data}
+            this.init()
+            this.renderBi()
+        })
     },
     methods:{
         // 初始化配置
@@ -88,19 +96,19 @@ export default {
 				report.off("loaded");
 
 				// Report.on will add an event handler which prints to Log window.
-				// const name = this.name
-				// const newfilter = window._.cloneDeep(this.filter);
-				// newfilter.values=[name]
-				// this.values=[name]
-				// console.log(newfilter);
-				// report.on("loaded", ()=> {
-				// 	console.log("Loaded");
-				// 	// if(name==""){
-				// 		// newfilter.values=[]
-				// 	// report.updateFilters(pbi.models.FiltersOperations.Add, [newfilter]);
-				// 	// }
-				// 	report.setFilters([newfilter])
-				// });
+				const name = this.supplierId
+				const newfilter = window._.cloneDeep(this.filter);
+				newfilter.values=[name]
+				this.values=[name]
+				console.log(newfilter);
+				report.on("loaded", ()=> {
+					// console.log("Loaded");
+					// if(name==""){
+					// 	newfilter.values=[]
+					//     report.updateFilters(pbi.models.FiltersOperations.Add, [newfilter]);
+					// }
+					report.setFilters([newfilter])
+				});
 
 				// Report.off removes a given event handler if it exists.
 				report.off("rendered");
@@ -145,29 +153,16 @@ export default {
                     return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                     };
                 },
-            handleSelect(item) {
-                console.log(item);
-            },
             handleOk(){
-                // var filter_suppliers = {
-                //     $schema: "http://powerbi.com/product/schema#basic",
-                //     target: {
-                //         table: "Fact_01_Supplier_SPI",
-                //         column: "supplier_id"
-                //     },
-                //     operator: "In",
-                //     values: [...this.supplierId],
-                //     filterType: models.FilterType.BasicFilter,
-                //     requireSingleSelection: true
-                // };
-                this.industry = false
-				console.log(data);
-				this.values= [...this.supplierId]
-				let newfilter = window._.cloneDeep(this.filter);
-
-				newfilter.values=this.values
-				console.log(newfilter);
-                this.report.setFilters([newfilter])   
+                 getPowerBiSupplier({keyWord:this.supplierName}).then(res=>{
+                    this.supplierId=res.data[0].supplierId
+                    this.renderBi()
+                })
+            },
+            handleRest(){
+                this.supplierName=""
+                this.supplierId=null
+                this.renderBi()
             }
 
     }
@@ -183,6 +178,7 @@ export default {
         margin-top: 20px;
         width: 100%;
         padding: 0 40px;
-        height: calc(100vh - 150px);
+        height: calc(100vh - 294px);
+        overflow-y: auto;
     }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <iPage>
+  <iPage v-permission="PURCHASE_MOULDINVESTMENTBUYER_DETAILS">
     <div class="head">
       <div style="display: flex;">
         <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：{{ query.bmSerial }}</div>
@@ -63,7 +63,7 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_LINIE', 'Linie') }}</span>
+                <span>Linie</span>
               </div>
               <div class="disabled">{{ baseInfo.linieName }}</div>
             </div>
@@ -127,6 +127,7 @@
                 filterable
                 clearable
                 class="select"
+                @change="findMoldViewList"
             >
               <el-option
                   :value="item"
@@ -145,6 +146,7 @@
                 filterable
                 clearable
                 class="select"
+                @change="findMoldViewList"
             >
               <el-option
                   :value="item.value"
@@ -189,7 +191,23 @@
           <div>{{scope.row.assetTotal ? getTousandNum(Number(scope.row.assetTotal).toFixed(2)) : scope.row.assetTotal}}</div>
         </template>
         <template #picture="scope">
-          <div class="table-link" @click="openPhotoList(scope.row.picture)">查看</div>
+          <div v-if="scope.row.picture" class="table-link" @click="openPhotoList(scope.row.picture.split(','))">查看</div>
+          <div v-else></div>
+        </template>
+        <template #partsShareNum="scope">
+          <div v-if="scope.row.partsShareNum">
+            <Popover
+                placement="bottom"
+                trigger="hover">
+              <div>
+                <div v-for="(item, index) in scope.row.partsShareNum.split(',')" :key="index">{{ item }}</div>
+              </div>
+              <div slot="reference">
+                {{ scope.row.partsShareNum.split(',')[0] }}
+              </div>
+            </Popover>
+          </div>
+          <div v-else>{{ scope.row.partsShareNum }}</div>
         </template>
       </iTableList>
       <div style="color: #999999;font-size: 14px;text-align: right;margin: 10px 0;">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
@@ -255,7 +273,7 @@ export default {
       tableListData: [],
       assetTypesList: [],
       craftTypesList: [],
-      imgList: ['https://cdn6-banquan.ituchong.com/weili/l/919767005971611831.webp', 'https://cdn6-banquan.ituchong.com/weili/l/915608610047000641.webp', 'https://cdn9-banquan.ituchong.com/weili/l/903371741418749965.webp'],
+      imgList: [],
       isOpen: true,
       confirmShow: false,
       photoListShow: false,
@@ -398,8 +416,9 @@ export default {
     confirm(){
       this.confirmShow = true
     },
-    openPhotoList(){
+    openPhotoList(imgList){
       this.photoListShow = true
+      this.imgList = imgList
     }
   }
 }

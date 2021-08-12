@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:35:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 16:10:13
+ * @LastEditTime: 2021-08-10 17:20:02
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\data.js
  */
@@ -10,7 +10,7 @@
 export const searchListPro = [
   {value: 'level', name: '查看维度', key: 'CHAKANWEIDU', type: 'select', selectOption: 'levelOptions'},
   {value: 'cartypeProId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'select', filterable: true, selectOption: 'carProjectOptions'},
-  {value: 'productGroup', name: '产品组', key: 'LK_CHANPINZU', type: 'input', placeholder: '输入产品组搜索', placeholderKey: 'SHURUCHANPINZUSOUSUO'},
+  {value: 'productGroup', name: '产品组', key: 'LK_CHANPINZU', type: 'inputFilter', placeholder: '输入产品组搜索', placeholderKey: 'SHURUCHANPINZUSOUSUO'},
   {value: 'partNum', name: '零件号', key: 'LINGJIANHAO', type: 'input', placeholder: '输入零件号搜索', placeholderKey: 'SHURULINGJIANHAOSOUSUO'},
   {value: 'categoryName', name: '材料组', key: 'CAILIAOZU', type: 'input', placeholder: '输入材料组搜索', placeholderKey: 'SHURUCAILIAOZUSOUSUO' },
 ]
@@ -118,7 +118,7 @@ export const partTableTitle = [
 export const productLogicList = [
   {value: 'cartypeProId', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'carProjectOptions', filterable: true, required: true},
   {value: 'cartype', label: '车型', type: 'select', i18n_label: 'CHEXING', selectOption: 'CAR_TYPE_CONFIG_OPTIONS'},
-  {value: 'productGroup', label: '产品组', type: 'input', i18n_label: 'CHANPINZU', required: true},
+  {value: 'productGroup', label: '产品组', type: 'inputFilter', i18n_label: 'CHANPINZU', required: true},
   {value: 'year', label: '年份', type: 'select', i18n_label: 'NIANFEN', selectOption: 'YEAR_CONFIG_OPTIONS'},
   {},
   {value: 'value', label: '取值处理', type: 'select', i18n_label: 'QUZHICHULI', selectOption: 'VALUE_CONFIG_OPTIONS'},

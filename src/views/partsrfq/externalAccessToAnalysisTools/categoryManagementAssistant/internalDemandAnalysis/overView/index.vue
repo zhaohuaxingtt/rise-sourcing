@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-10 11:28:16
+ * @LastEditTime: 2021-08-12 09:52:40
  * @LastEditors: 舒杰
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
@@ -72,7 +72,7 @@ export default {
               name:"批量供应商概览",
               key:"PLGYJZL",
               image:require("@/assets/images/partRfq/internalDemandAnalysis09.png"),
-              url:'/sourcing/categoryManagementAssistant/internalDemandAnalysis/supplyChainOverall'
+              url:'/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'
            },{
               name:"定点历史记录",
               key:"DINGDIANLISHIJILU",
@@ -89,9 +89,7 @@ export default {
       switch (item.key) {
         // 成本结构
         case 'CHENGBENZUCHENG':
-          this.getCostData({
-            categoryCode: '111'
-          }).then(type => {
+          this.getCostData().then(type => {
             if(type == 1) {
               //跳转系统
               this.$router.push({
@@ -118,8 +116,11 @@ export default {
     },
     // 获取成本结构数据，用于判断跳转系统/手工页面
     getCostData() {
+      const params = {
+        categoryCode: this.$store.state.rfq.categoryCode || '111'
+      }
       return new Promise(resolve => {
-        getDefaultCostStructure().then(res => {
+        getDefaultCostStructure(params).then(res => {
           if(res && res.code == 200) resolve(res.data.analysisType)
           else iMessage.error(res.desZh)
         })

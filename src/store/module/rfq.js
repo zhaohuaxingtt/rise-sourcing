@@ -1,8 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 20:16:45
- * @LastEditTime: 2021-08-09 14:49:24
- * @LastEditors: 舒杰
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\store\module\rfq.js
  */

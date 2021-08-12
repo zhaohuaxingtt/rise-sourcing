@@ -12,11 +12,11 @@
                </el-form>
                <div>
                    <iButton @click="deleteTemplate">删除</iButton>
-                   <iButton @click="downloadTeplate">下载</iButton>
+                   <!-- <iButton @click="downloadTeplate">下载</iButton> -->
                    <iButton @click="save">保存</iButton>
                </div>
             </div>
-          <div>
+          <div class="scoll-y">
           <div class="kpi-chart">
               <div class="tab1">
                   <div class="head">总体</div>
@@ -27,15 +27,15 @@
                 </div>
               </div>
               <div class="tab2">
-                   <div class="head"><p class="border-class">指标一</p></div>
+                   <div class="head"><p class="border-class">指标1</p></div>
                 
               </div>
               <div class="tab3">
-                   <div class="head"><p class="border-class">指标二</p></div>
+                   <div class="head"><p class="border-class">指标2</p></div>
                 
               </div>
               <div class="tab4">
-                   <div class="head"><p class="border-class">指标三</p></div>
+                   <div class="head"><p class="border-class">指标3</p></div>
                    
               </div>
           </div>
@@ -49,7 +49,7 @@
                 <div class="cell">
                     <div :class="item.children.length>0?'content kpi-module second-before second-after':'content kpi-module second-before'">
                         <div class="case">
-                            <label>单位</label>
+                            <label>名称</label>
                             <iInput class="kpi-input" v-model="item.name"></iInput>
                         </div>
                         <div class="case">
@@ -69,7 +69,7 @@
                         <div class="cell third-cell" :class="index3<item.children.length-1?'cloum-before':''">
                             <div :class="lev3.children.length>0?'content kpi-module third-border-before third-border-after':'content kpi-module third-border-before'">
                                 <div class="case">
-                                    <label>单位</label>
+                                    <label>名称</label>
                                     <iInput class="kpi-input" v-model="lev3.name"></iInput>
                                 </div>
                                 <div class="case">
@@ -87,7 +87,7 @@
                             :key="index4+'lev4'"
                         >
                                 <div class="case">
-                                    <label>单位</label>
+                                    <label>名称</label>
                                     <iInput class="kpi-input" v-model="lev4.name"></iInput>
                                 </div>
                                 <div class="case">
@@ -134,7 +134,6 @@ export default {
     },
     mounted(){
         this.formDataLevel2=this.treeData
-        console.log(this.$store.state.permission.userInfo.deptDTO.deptNum)
     },
     watch:{
         treeData:{
@@ -182,8 +181,12 @@ export default {
             id:this.temId,
             name:this.childTemplateName,
             list:[...this.formDataLevel2]}).then(res=>{
-             this.$router.go(0)
+            //  this.$router.go(0)
+                this.$message("操作成功")
+            }).catch(error=>{
+               this.$message.error('指标权重设置有误，请重新设置');
             })
+            this.$emit("saveVersion")
       },
       deleteTemplate(){
           this.$confirm('此操作将永久删除该模板, 是否继续?', '提示', {
@@ -333,6 +336,7 @@ export default {
             border-radius: 4px;
         }
     }
+    .scoll-y{height: calc(100vh - 436px);overflow-y: auto}
     .list2{margin-top:-140px;min-height: 120px;position: relative;}
     .second-cloum-before::before{
         content: '';

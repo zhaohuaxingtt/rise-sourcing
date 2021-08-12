@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-06 16:40:11
+ * @LastEditTime: 2021-08-10 17:35:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -21,7 +21,7 @@
       <div class="mainContent">
         <el-row :gutter="20">
           <el-col :span="10">
-            <costChar :width="700" left="20%"/>
+            <costChar left="20%" :width="700" :chartData="pieData"/>
           </el-col>
           <el-col :span="14">
             <tableList
@@ -30,6 +30,7 @@
               :tableLoading="false"
               :index="true"
               :max-height="600"
+              @handleSelectionChange="handleSelectionChange"
             >
             </tableList>
           </el-col>
@@ -44,6 +45,8 @@ import {iCard, iButton} from 'rise'
 import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/char'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data';
+import { iMessage } from '@/components';
+import { getTotalCbdData, listNomiData } from '@/api/partsrfq/costAnalysis/index.js'
 export default {
   name: 'CostAnalysisMain',
   components: {iCard, iButton, costChar, tableList},
@@ -54,10 +57,14 @@ export default {
       costAnalysisAddUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisAdd',
       tableTitle,
       tableListData: [],
+      pieData: [],
+      selection: []
     }
   },
   created() {
-    this.initTestData()
+    // this.initTestData()
+    this.getTableData()
+    
   },
   methods: {
     // 初始化测试数据
@@ -69,9 +76,48 @@ export default {
         {id: 4, partsId: '123 456 789A', fsId: 'FS20-12345', supplierName: '上海汇众汽车有限公司', linie: 'XXXX', date: 'YYYY-MM-DD', carTypeProj: 'Tiguan L'},
       ]
     },
+    // 获取表格数据
+    getTableData() {
+      const params = {
+        categoryCode: this.$store.state.rfq.categoryCode,
+        partNumList: this.$route.query.fsNumList || [],
+      }
+      listNomiData(params).then(res => {
+        if(res && res.code == 200) {
+          this.tableListData = res.data
+          this.getPieData()
+        } else iMessage.error(res.desZh)
+      })
+    },
+    // 选中表格事件
+    handleSelectionChange(val) {
+      this.selection = val
+    },
+    // 获取pie数据（cbd）
+    getPieData() {
+      const params = {
+        categoryCode: this.$store.state.rfq.categoryCode,
+        fsList: this.tableListData.map(item => item.fsNum)
+      }
+      getTotalCbdData(params).then(res => {
+        if(res && res.code == 200) {
+          for(const key in res.data)
+          this.pieData.push({
+            name: key,
+            value: res.data[key]
+          })
+        } else iMessage.error(res.desZh)
+      })
+    },
     // 点击编辑按钮
     clickEdit() {
-      this.$router.push(this.costAnalysisAddUrl)
+      if(this.selection.length != 1) {
+        iMessage.error('请选中一条数据')
+        return
+      }
+      this.$router.push({
+        path: this.costAnalysisAddUrl,
+        query: this.selection[0]})
     },
     // 点击分析库按钮
     clickAnalysis() {

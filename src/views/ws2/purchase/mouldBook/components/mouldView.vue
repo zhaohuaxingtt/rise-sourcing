@@ -1,151 +1,155 @@
 <template>
   <div>
-    <iSearch
-        class="margin-bottom20 giSearch"
-        style="margin-top: 20px"
-        @sure="() => getTableData()"
-        @reset="reset"
-        :icon="false"
-        :resetKey="PARTSPROCURE_RESET"
-        :searchKey="PARTSPROCURE_CONFIRM"
-        v-loading="loadingiSearch"
-    >
-      <el-form>
-
-        <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput type="textarea" clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model.trim="form['partsNum']" ></iInput>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_CAILIAOZU', '材料组')">
-          <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['categoryName']" ></iInput>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_CHEXINXIANGMU', '车型项目')">
-          <iSelect
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              v-model="form['tmCartypeProId']"
-              filterable
-              ref="carTypeProjectRef"
-              clearable
-              collapse-tags
-              multiple
-          >
-            <el-option
-                :value="item.tmCartypeProId"
-                :label="item.tmCartypeProName"
-                v-for="(item, index) in fromGroup"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_KESHI', '科室')">
-          
-          <iSelect
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              v-model="form['deptId']"
-              filterable
-              ref="carTypeProjectRef"
-              clearable
-              collapse-tags
-              multiple
-          >
-            <el-option
-                :value="item.deptId"
-                :label="item.deptName"
-                v-for="(item, index) in departmentList"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_GONGYINGSHANG', '供应商')">
-          <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['supplier']" ></iInput>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_GONGYILEIXING', '工艺类型')">
-          <!-- <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['behalfPartsNum']" ></iInput> -->
-          <iSelect
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              v-model="form['craftType']"
-              filterable
-              ref="carTypeProjectRef"
-              clearable
-          >
-            <el-option
-                :value="item"
-                :label="item"
-                v-for="(item, index) in processTypeList"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-
-        <el-form-item :label="language('LK_ZICHANFENLEIBIANHAO', '资产分类编号')">
-          <iSelect
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              v-model="form['assetTypeNum']"
-              filterable
-              ref="carTypeProjectRef"
-              clearable
-          >
-            <el-option
-                :value="item.value"
-                :label="item.name"
-                v-for="(item, index) in assetsTypeList"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-
-      </el-form>
-    </iSearch>
-
-    <iCard>
-
-      <div class="bnts">
-        <iButton :loading="exportLoding" @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
-      </div>
-
-      <iTableList
-        :tableData="tableList"
-        :tableTitle="assetsTableHead"
-        :tableLoading="tableLoading"
-        :selection="false"
+    <div v-permission="PURCHASE_MOULDBOOK_MOULDVIEW">
+      <iSearch
+          class="margin-bottom20 giSearch"
+          style="margin-top: 20px"
+          @sure="() => getTableData()"
+          @reset="reset"
+          :icon="false"
+          :resetKey="PARTSPROCURE_RESET"
+          :searchKey="PARTSPROCURE_CONFIRM"
+          v-loading="loadingiSearch"
       >
-        <template #img="scope">
-          <div class="table-link" @click="openPhoto(scope.row)">查看</div>
+        <el-form>
+
+          <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
+            <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model.trim="form['partsNum']" ></iInput>
+          </el-form-item>
+
+          <el-form-item :label="language('LK_CAILIAOZU', '材料组')">
+            <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['categoryName']" ></iInput>
+          </el-form-item>
+
+          <el-form-item :label="language('LK_CHEXINXIANGMU', '车型项目')">
+            <iSelect
+                class="multipleSelect"
+                :placeholder="language('LK_QINGXUANZHE', '请选择')"
+                v-model="form['tmCartypeProId']"
+                filterable
+                ref="carTypeProjectRef"
+                clearable
+                collapse-tags
+                multiple
+            >
+              <el-option
+                  :value="item.tmCartypeProId"
+                  :label="item.tmCartypeProName"
+                  v-for="(item, index) in fromGroup"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </el-form-item>
+
+          <el-form-item :label="language('LK_KESHI', '科室')">
+            
+            <iSelect
+                :placeholder="language('LK_QINGXUANZHE', '请选择')"
+                v-model="form['deptId']"
+                filterable
+                ref="carTypeProjectRef"
+                clearable
+                collapse-tags
+                multiple
+            >
+              <el-option
+                  :value="item.deptId"
+                  :label="item.deptName"
+                  v-for="(item, index) in departmentList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </el-form-item>
+
+          <el-form-item :label="language('LK_GONGYINGSHANG', '供应商')">
+            <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['supplier']" ></iInput>
+          </el-form-item>
+
+          <el-form-item :label="language('LK_GONGYILEIXING', '工艺类型')">
+            <!-- <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model="form['behalfPartsNum']" ></iInput> -->
+            <iSelect
+                :placeholder="language('LK_QINGXUANZHE', '请选择')"
+                v-model="form['craftType']"
+                filterable
+                ref="carTypeProjectRef"
+                clearable
+            >
+              <el-option
+                  :value="item"
+                  :label="item"
+                  v-for="(item, index) in processTypeList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </el-form-item>
+
+          <el-form-item :label="language('LK_ZICHANFENLEIBIANHAO', '资产分类编号')">
+            <iSelect
+                :placeholder="language('LK_QINGXUANZHE', '请选择')"
+                v-model="form['assetTypeNum']"
+                filterable
+                ref="carTypeProjectRef"
+                clearable
+            >
+              <el-option
+                  :value="item.value"
+                  :label="item.name"
+                  v-for="(item, index) in assetsTypeList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </el-form-item>
+
+        </el-form>
+      </iSearch>
+
+      <iCard>
+
+        <div class="bnts">
+          <iButton :loading="exportLoding" @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
+        </div>
+
+        <iTableList
+          :tableData="tableList"
+          :tableTitle="assetsTableHead"
+          :tableLoading="tableLoading"
+          :selection="false"
+        >
+          <template #picture="scope">
+          <div v-if="scope.row.picture" class="table-link" @click="openPhotoList(scope.row.picture.split(','))">查看</div>
+          <div v-else></div>
         </template>
 
-        <template #assetTotal="scope">
-          <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.assetTotal))}}</div>
-          <div v-else>-</div>
-        </template>
+          <template #assetTotal="scope">
+            <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.assetTotal))}}</div>
+            <div v-else>-</div>
+          </template>
 
-        <template #assetPrice="scope">
-          <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.assetPrice))}}</div>
-          <div v-else>-</div>
-        </template>
-      </iTableList>
+          <template #assetPrice="scope">
+            <div v-if="scope.row.isPremission">{{getTousandNum(NumFormat(scope.row.assetPrice))}}</div>
+            <div v-else>-</div>
+          </template>
+        </iTableList>
 
-      <iPagination
-          v-update
-          @size-change="handleSizeChange($event, getTableData)"
-          @current-change="handleCurrentChange($event, getTableData)"
-          background
-          :current-page="page.currPage"
-          :page-sizes="page.pageSizes"
-          :page-size="page.pageSize"
-          :layout="page.layout"
-          :total="page.totalCount"
-      />
-      <div class="UnitExplain">
-        <UnitExplain />
-      </div>
-      
-    </iCard>
+        <iPagination
+            v-update
+            @size-change="handleSizeChange($event, getTableData)"
+            @current-change="handleCurrentChange($event, getTableData)"
+            background
+            :current-page="page.currPage"
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :total="page.totalCount"
+        />
+        <div class="UnitExplain">
+          <UnitExplain />
+        </div>
+        
+      </iCard>
 
-    <PhotoList :imgList="imgList" :visible="visible" @changeLayer="() => visible = false" />
+      <PhotoList :imgList="imgList" :visible="visible" @changeLayer="() => visible = false" />
+    </div>
   </div>
 </template>
 
@@ -217,11 +221,9 @@ export default {
 
   methods: {
 
-    openPhoto(scope){
-      if(scope.picture){
-        this.imgList = scope.picture.split(',');
-        this.visible = true;
-      }
+    openPhotoList(imgList){
+      this.visible = true;
+      this.imgList = imgList;
     },
 
     getTableData(){
@@ -307,9 +309,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.giSearch{
-  ::v-deep .el-textarea__inner{
-    height: 35px;
+.multipleSelect {
+  ::v-deep .el-tag {
+    max-width: calc(100% - 75px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 .table-link{

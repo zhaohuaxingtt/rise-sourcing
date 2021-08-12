@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-permission="PURCHASE_MOULDINVESTMENTSUPPLIER_LIST">
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
@@ -7,12 +7,12 @@
         @reset="reset"
         :icon="true"
         :resetKey="PARTSPROCURE_RESET"
-        :searchKey="PARTSPROCURE_CONFIRM"
+        :searchKey="LK_CHAXUN"
         v-loading="loadingiSearch"
     >
       <el-form>
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput type="textarea"  v-model.trim="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
+          <iInput v-model.trim="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
         </el-form-item>
         <el-form-item :label="language('LK_CHEXINGXIANGMU', '车型项目')">
           <iSelect
@@ -250,9 +250,9 @@ export default {
         current: this.page.currPage,
         size: this.page.pageSize,
         linieId: this.linieName,
-        moldInvestmentStatus: this.moldInvestmentStatus.join(),
+        moldInvestmentStatus: this.moldInvestmentStatus,
         behalfPartsNum: this.partsNum,
-        tmCartypeProId: this.carTypeProject.join(),
+        tmCartypeProId: this.carTypeProject,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {

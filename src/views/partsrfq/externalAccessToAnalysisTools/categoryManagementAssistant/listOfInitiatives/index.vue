@@ -172,7 +172,6 @@ export default {
         this.treeDataSelect = {};
         const req = {
           categoryCode: this.categoryCode,
-          quadrant: 'LEVERAGE',
         };
         const res = await getList(req);
         this.treeData = res.data;

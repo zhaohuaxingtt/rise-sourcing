@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-08-04 17:19:30
+ * @LastEditTime: 2021-08-10 17:35:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -25,13 +25,13 @@
       <div class="searchBox">
         <el-form :inline="true" :model="searchForm" :label-position="labelPosition" class="demo-form-inline">
           <el-form-item style="width: 220px; marginRight: 53px;" :label="language('DINGDIANRIQI', '定点日期')">
-            <iDatePicker v-moudel="searchForm['date']"  type="daterange"></iDatePicker>
+            <iDatePicker v-model="searchForm['date']" valueFormat="yyyy-MM-dd" type="daterange"></iDatePicker>
           </el-form-item>
           <el-form-item style="width: 220px; marginRight: 53px;" :label="language('ZUIJINNCIDINGDIANSHU', '最近n次定点数（n≤50）')">
-            <iInput v-model="searchForm['fixedPointNum']" :placeholder="language('QINGSHURU', '请输入')"></iInput>
+            <iInput v-positive="'num'" v-model="searchForm['nomiNum']" :placeholder="language('QINGSHURU', '请输入')"></iInput>
           </el-form-item>
           <el-form-item style="width: 220px; marginRight: 53px;" :label="language('LIUWEIHAO', '六位号')">
-            <iInput v-model="searchForm['sixNo']" :placeholder="language('QINGSHURU', '请输入')"></iInput>
+            <iInput v-positive="'num'" v-model="searchForm['sixNum']" :placeholder="language('QINGSHURU', '请输入')"></iInput>
           </el-form-item>
           <el-form-item class="searchButton">
             <el-button @click="handleSubmitSearch">{{language('QUEREN', '确认')}}</el-button>
@@ -50,7 +50,8 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
-          :index="true">
+          :index="true"
+          @handleSelectionChange="handleSelectionChange">
         </tableList>
         <iPagination
           v-update
@@ -73,6 +74,8 @@ import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import {pageMixins} from '@/utils/pageMixins';
 import handleInput from './components/handleInput'
+import { iMessage } from '@/components';
+import { listNomiData } from '@/api/partsrfq/costAnalysis/index.js'
 export default {
   name: 'CostAnalysis',
   mixins: [pageMixins],
@@ -82,19 +85,22 @@ export default {
       costAnalysisMainUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain',
       costAnalysisUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysis',
       costAnalysisInputUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisHandleInput',
-      searchForm: {},
+      searchForm: {
+      },
       labelPosition: 'top',
       tableTitle,
       tableListData: [],
-      loading: true,
+      loading: false,
       modalParam: {
         key: 0,
         visible: false,
-      }
+      },
+      selection: [],
     }
   },
   created() {
-    this.initTestData()
+    // this.initTestData()
+    this.getTableData()
   },
   methods: {
     // 初始化测试数据
@@ -109,7 +115,32 @@ export default {
     },
     // 获取表格数据
     getTableData() {
-      
+      return new Promise(resolve => {
+        this.loading = true
+        if(this.searchForm.nomiNum > 50) {
+          iMessage.error(this.language('NOMINUMVERIFY',"输入数字不能大于50"))
+          this.loading = false
+          return
+        }
+        const params = {
+          categoryCode: this.$store.state.rfq.categoryCode,
+          startDate: this.searchForm.date && this.searchForm.date.length > 0 ? this.searchForm.date[0] : null,
+          endDate: this.searchForm.date && this.searchForm.date.length > 0 ? this.searchForm.date[1] : null,
+          nomiNum: this.searchForm.nomiNum,
+          sixNum: this.searchForm.sixNum
+        }
+        listNomiData(params).then(res => {
+          if(res && res.code == 200) {
+            this.tableListData = res.data
+            this.loading = false
+            resolve(res.data)
+          } else iMessage.error(res.desZh)
+        })
+      })
+    },
+    // 表格选中事件
+    handleSelectionChange(val) {
+      this.selection = val
     },
     // 点击手工输入
     clickHandleInput() {
@@ -120,9 +151,41 @@ export default {
     clickBack() {
       this.$router.push(this.costAnalysisUrl)
     },
+    // 初始化检索条件数据
+    initSearchData() {
+      for(const key in this.searchForm) {
+        this.searchForm[key] = null
+      }
+    },
+    // 点击确定查询
+    handleSubmitSearch() {
+      this.page.currPage = 1
+      this.page.pageSize = 10
+      this.getTableData().then(res => {
+        if (!res || res.length == 0) {
+          iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
+        }
+      })
+    },
+    // 点击重置查询
+    handleSearchReset() {
+      this.page.currPage = 1
+      this.page.pageSize = 10
+      this.initSearchData()
+      this.getTableData()
+    },
     // 点击生成
     clickCreate() {
-      this.$router.push(this.costAnalysisMainUrl)
+      if(this.selection.length === 0) {
+        iMessage.error(this.language('QINGXUANZHONGZHISHAOYITIAOSHUJU',"请选中至少一条数据"))
+        return 
+      }
+      this.$router.push({
+        path: this.costAnalysisMainUrl,
+        query: {
+          fsNumList: this.tableListData.map(item => item.fsNum)
+        }
+      })
     },
     // 取消手工输入弹窗
     handleCancel() {

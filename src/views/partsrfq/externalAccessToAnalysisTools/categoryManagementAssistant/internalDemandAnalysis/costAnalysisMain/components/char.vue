@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 16:37:12
- * @LastEditTime: 2021-08-06 16:30:42
+ * @LastEditTime: 2021-08-10 09:35:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisHandleInput\components\char.vue
@@ -83,9 +83,9 @@ export default {
                   currentNum = count + value.percent / 2
                   count += value.percent
                   if(currentNum <= 50){
-                    res = '{pieIcon|}   ' + value.data.name
+                    res = '{pieIcon|}   ' + value.data.name + ('  ' + value.percent + '%')
                   } else {
-                    res = value.data.name + '   {pieIcon|}'
+                    res = value.data.name + ('  ' + value.percent + '%') + '   {pieIcon|}'
                   }
                   renderArr.push(value.data.name)
                   return res
@@ -102,18 +102,13 @@ export default {
             },
             labelLine: {
               show: true,
+              length: 40,
+              length2: 40,
               lineStyle: {
                 color: '#C0C9D9'
               }
             },
-            data: [
-              {value: 25, name: '原材料/散件 25%'},
-              {value: 30, name: '制造成本 30%'},
-              {value: 15, name: '报废成本 15%'},
-              {value: 5, name: '管理费 5%'},
-              {value: 10, name: '其他费用 10%'},
-              {value: 15, name: '利润 15%'},
-            ]
+            data: this.chartData
           }
         ]
       }
@@ -124,7 +119,7 @@ export default {
     chartData:{
       handler(newVal){
         if(newVal){
-          if(this.$refs.chart && newVal.data.length>0){
+          if(this.$refs.pieChart && newVal.length>0){
             this.initCharts();
           }
         }

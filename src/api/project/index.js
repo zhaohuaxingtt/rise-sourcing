@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-06 18:20:21
+ * @LastEditTime: 2021-08-11 15:14:03
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -10,14 +10,16 @@
 import axios from '@/utils/axios'
 import axiosDownload from '@/utils/axios.download'
 
-const requst = axios(process.env.VUE_APP_PROJECT)
-const downloadRequst = axiosDownload(process.env.VUE_APP_PROJECT)
+const requst = axios(process.env.VUE_APP_PROJECTMGT)
+const downloadRequst = axiosDownload(process.env.VUE_APP_PROJECTMGT)
+const partsRequest = axios(process.env.VUE_APP_PARTSPROCURE)
 
 // 产品组排程-获取车型项目下拉
-export function getCarTypePro() {
+export function getCarTypePro(params) {
   return requst({
     url: '/car-type',
     method: 'GET',
+    params
   })
 }
 
@@ -71,7 +73,7 @@ export function getLastOperateCarType() {
 }
 
 // 获取可选择车型列表
-export function getSelectCarType(carTypeProId) {
+export function getSelectCarType(carTypeProId = '') {
   return requst({
     url: '/car-type/user?carTypeProId='+carTypeProId,
     method: 'GET'
@@ -270,6 +272,15 @@ export function downloadHistoryProgressFile(params) {
 export function validSchedule(params) {
   return requst({
     url: '/progress-confirm/validSchedule',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 历史进度数据库-获取产品组下拉
+export function getProductGroupAll(params={}) {
+  return partsRequest({
+    url: '/productGroupList',
     method: 'POST',
     data: params
   })

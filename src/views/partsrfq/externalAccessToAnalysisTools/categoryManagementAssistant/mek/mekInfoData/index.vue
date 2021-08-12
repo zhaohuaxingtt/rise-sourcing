@@ -7,10 +7,10 @@
 -->
 <template>
   <iPage class=''>
-    <handleNav/>
+    <handleNav />
     <iCard class="margin-top20">
-      <theSearch />
-      <theTable />
+      <theSearch @getTableList="getTableList" @edit="edit"/>
+      <theTable ref="theTable" />
     </iCard>
   </iPage>
 </template>
@@ -21,10 +21,10 @@
 import theSearch from "./components/theSearch.vue";
 import handleNav from "./components/handleNav.vue";
 import theTable from "./components/theTable.vue";
-import { iPage,iCard } from "rise";
+import { iPage, iCard } from "rise";
 export default {
   // import引入的组件需要注入到对象中才能使用
-  components: { iPage,iCard ,theSearch, theTable, handleNav },
+  components: { iPage, iCard, theSearch, theTable, handleNav },
   data() {
     // 这里存放数据
     return {
@@ -37,7 +37,12 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-
+    getTableList(par) {
+      this.$refs.theTable.getTableList(par)
+    },
+    edit(){
+      
+    }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {

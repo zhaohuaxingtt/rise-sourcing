@@ -13,7 +13,7 @@
       </el-col>
       <el-col :span="20">
         <div class="title">{{language('CHEXING','车型')}}</div>
-        <span class="text" v-for="(item,index) in carTypeDTOList" :key="index">{{carTypeDTOList.length-1>index?item+' |&nbsp;':item}}</span>
+        <span class="text" v-for="(item,index) in carTypeDTOList" :key="index">{{carTypeDTOList.length-1>index?item.carTypeName+' |&nbsp;':item.carTypeName}}</span>
       </el-col>
     </el-row>
 

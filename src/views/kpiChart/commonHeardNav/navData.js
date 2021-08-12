@@ -34,64 +34,57 @@ export const tabRouterList = [
       {
         value: 4,
         name: '黑名单',
-        url: '/supplier/kpi',
+        // url: '/supplier/kpi',
         activePath: '/supplier/kpi',
         key: '黑名单',
       },
       {
         value: 2,
         name: 'N级供应链',
-        url: '/supplier/kpi',
+        //url: '/supplier/kpi',
         activePath: '/supplier/kpi',
         key: 'N级供应链',
       },
   ];
   
-//   export const categoryManagementAssistantList = [
-//     {
-//       value: 1,
-//       name: '总览',
-//       url: '/sourcing/categoryManagementAssistant/internalDemandAnalysis',
-//       activePath: '/sourcing/categoryManagementAssistant/internalDemandAnalysis',
-//       key: '总览',
-//     },
-//     {
-//       value: 2,
-//       name: '供应商绩效',
-//       url: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis',
-//       activePath: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis',
-//       key: '供应商绩效',
-//     },
-//     {
-//       value: 3,
-//       name: '年度回顾&绩效追踪 ',
-//       url: '/sourcing/categoryManagementAssistant/materialGroupPositioning',
-//       activePath: '/sourcing/categoryManagementAssistant/materialGroupPositioning',
-//       key: '年度回顾&绩效追踪 ',
-//     },
-//     {
-//       value: 4,
-//       name: '举措清单',
-//       url: '/sourcing/categoryManagementAssistant/listOfInitiatives',
-//       activePath: '/sourcing/categoryManagementAssistant/listOfInitiatives',
-//       key: '举措清单',
-//     },
-//   ];
-
   export const categoryManagementAssistantList = [
     {
       value: 1,
       name: '总览',
-      url: '/supplier/supplierKpiTreeTable',
-      activePath: '/supplier/supplierKpiTreeTable',
+      url: '/supplier/kpi',
+      activePath: '/supplier/kpi',
       key: '总览',
     },
     {
       value: 2,
-      name: '维护',
-      url: '/supplier/imgKpi',
-      activePath: '/supplier/imgKpi',
-      key: '维护',
+      name: '供应商绩效',
+      url: '/supplier/supplierPowerBi',
+      activePath: '/supplier/supplierPowerBi',
+      key: '供应商绩效',
+    },
+    {
+      value: 3,
+      name: '年度回顾&绩效追踪 ',
+      url: '/supplier/supplierList',
+      activePath: '/supplier/supplierList',
+      key: '年度回顾&绩效追踪 ',
     }
   ];
+
+  // export const categoryManagementAssistantList = [
+  //   {
+  //     value: 1,
+  //     name: '总览',
+  //     url: '/supplier/supplierKpiTreeTable',
+  //     activePath: '/supplier/supplierKpiTreeTable',
+  //     key: '总览',
+  //   },
+  //   {
+  //     value: 2,
+  //     name: '维护',
+  //     url: '/supplier/imgKpi',
+  //     activePath: '/supplier/imgKpi',
+  //     key: '维护',
+  //   }
+  // ];
   

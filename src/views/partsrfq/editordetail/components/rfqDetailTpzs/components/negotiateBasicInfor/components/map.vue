@@ -6,40 +6,16 @@
  * @Descripttion: 总览
 -->
 <template>
-  <div class="chartmap">
-    <el-amap map-style="amap://styles/macaron" :dragEnable="false" vid="amapDemo" :roam="false" :zoomEnable="false" :zoom="4" :center="[130,33]">
-      <!-- <el-amap-text v-if="tooltipShow" :position="tooltipSite" :text="tooltipText" /> -->
-      <el-amap-circle v-for="(circle,index) in circles" :key="index" :center="circle.center" :radius="circle.radius" :fill-opacity="circle.fillOpacity" :events="circle.events"></el-amap-circle>
-      <el-amap-marker v-for="(item,index) in tableData" :content='item.content' :key="index" :events='events' :position="[item.lon,item.lat]"></el-amap-marker>
-      <el-amap-circle :center="[111,30]" :radius="11" :fillOpacity="1" strokeStyle="solid"></el-amap-circle>
-      <el-amap-circle :zIndex="10" :radius="item.symbolSize" :stroke-weight="0" :stroke-color="color[index]" :fill-color="color[index]" v-for="(item,index) in tableData" :key="index" :center="[item.lon, item.lat]" />
-      <!-- <el-amap-marker :stroke-weight="7" :icon='svwImg' v-for="(item,index) in svwData" :key="index" :label='tooltipSvw' @mouseout="handleOut()" @mouseover="handleOver(item)" :position="[item.lon, item.lat]" /> -->
-    </el-amap>
-  </div>
+  <div ref="charMap" id="container" class="amap-wrapper" />
 </template>
 
 <script>
-
+import lg from "@/assets/images/N-tire-grayness.png";
+import highlight from "@/assets/images/N-tire-highlight.png";
 import { iCard, icon, iLabel } from "rise";
 import svwImg from "@/assets/images/svw.png";
 import { cloneDeep } from "lodash";
-// window.AmapVue.config={
-//   // 高德的key
-//   key: 'ad8bb27d93a0b17188e1b46872a446f8',
-//   // 插件集合
-//   plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
-//   // 高德 sdk 版本，默认为 1.4.4
-//   version: '2.0'
-// };
-// console.log(window);
-window.VueAMap.initAMapApiLoader({
-  // 高德的key
-  key: 'ad8bb27d93a0b17188e1b46872a446f8',
-  // 插件集合
-  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
-  // 高德 sdk 版本，默认为 1.4.4
-  v: '1.4.4'
-});
+
 export default {
   components: { iCard, icon, iLabel },
   props: {
@@ -48,6 +24,16 @@ export default {
         console.log(data);
         return {}
       }
+    }
+  },
+  data() {
+    return {
+      lg: lg,
+      highlight: highlight,
+      svwImg: svwImg,
+      svwData: [],
+      color: ['#B9DDFA', '#8BC7F7', '#46B3F3', '#009FEF', '#008CEE', '#0078ED', '#0050EB', '#0641C8', '#0B31A5', '#46647C', '#235A7A', '#005078'],
+      tableData: []
     }
   },
   watch: {
@@ -73,103 +59,209 @@ export default {
         this.svwData.map(item => {
           return item.value = [item.lon, item.lat]
         })
+        if (this.$refs.charMap && (this.tableData.length || this.svwData)) {
+          this.handleMap()
+        }
       },
       deep: true,
-    }
-  },
-  data() {
-    return {
-      zoom: 15,
-      center: [121.5273285, 31.21515044],
-      circles: [
-        {
-          center: [121.5273285, 31.21515044],
-          radius: 200,
-          fillOpacity: 0.5,
-          events: {
-            click: () => {
-              alert('click');
-            }
-          }
-        }
-      ],
-      svwImg: {
-        image: svwImg,
-        imageSize: [15, 15],
-      },
-      tooltipShow: false,
-      tooltipSite: [],
-      tooltipText: '',
-      tooltipSvw: {
-        content: '',
-        offset: [0, 0],
-        direction: 'top'
-      },
-      svwData: [],
-      color: ['#B9DDFA', '#8BC7F7', '#46B3F3', '#009FEF', '#008CEE', '#0078ED', '#0050EB', '#0641C8', '#0B31A5', '#46647C', '#235A7A', '#005078'],
-      tableData: []
     }
   },
   created() {
   },
   mounted() {
+    this.handleMap()
   },
   methods: {
-    handleOut() {
-      this.tooltipSvw.content = ''
-      this.tooltipShow = false
-    },
-    handleOver(params) {
-      console.log(params);
-      let carTypeList = ''
-      params.carTypeProjectList.forEach((item, index) => {
-        carTypeList += params.carTypeProjectList.length - 1 > index ? item + ' | ' : item
-      })
-      console.log(carTypeList);
-      if (params.title === 'OFFER') {
-        this.tooltipSite = [params.lon, params.lat]
-        this.tooltipShow = true
-        this.tooltipText = `<div class='tooltip'>
-                                    <div class='flex'>
-                                      <div class="img"></div><div class='title'>${params.name}</div>
-                                    </div>
-                                    <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
-                                    <div class='value'>${carTypeList}</div>
-                                    <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
-                                    <div class='value'>${params.factoryAddress}</div>
-                                    <div class='label'>${this.$t('TPZS.ZXSE')}</div>
-                                    <div class='value'>${params.toAmount}</div>
-                                </div>`
-      } else {
-        this.tooltipSvw.content = `<div class='tooltip'>
-                                  <div class='flex'>
-                                    <div class="img-svw"></div><div class='title'>${params.name}</div>
-                                  </div>
-                                  <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
-                                  <div class='value'>${carTypeList}</div>
-                                  <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
-                                  <div class='value'>${params.factoryAddress}</div>
-                                </div>`
-      }
-    },
+    handleMap() {
+      console.log('creat map');
+      var map = new AMap.Map('container', {
+        WebGLParams: {
+          preserveDrawingBuffer: true
+        },
+        resizeEnable: true, //是否监控地图容器尺寸变化
+        zoom: 4, //初始地图级别
+        center: [121, 31], //初始地图中心点
+        showIndoorMap: false, //关闭室内地图
+        roam: false,
+        zoomEnable: false,
+        dragEnable: false,
+        mapStyle: 'amap://styles/macaron'
+      });
 
+      // var lineArr = [
+      //   ['75', '38'],
+      //   ['117', '24']
+      // ];
+      // var polyline = new AMap.Polyline({
+      //   path: lineArr,            // 设置线覆盖物路径
+      //   strokeColor: '#3366FF',   // 线颜色
+      //   strokeOpacity: 1,         // 线透明度
+      //   strokeWeight: 2,          // 线宽
+      //   strokeStyle: 'solid',     // 线样式
+      //   strokeDasharray: [10, 5], // 补充线样式
+      //   geodesic: true            // 绘制大地线
+      // });
+      // polyline.setMap(map);
+      // console.log(this.markerList);
+      // 圆点
+      this.tableData.map((item, index) => {
+        let carTypeList = ''
+        item.carTypeProjectList.forEach((val, index) => {
+          carTypeList += item.carTypeProjectList.length - 1 > index ? val + ' | ' : val
+        })
+        var circleMarker = new AMap.CircleMarker({
+          center: [item.lon, item.lat],
+          radius: item.symbolSize,//3D视图下，CircleMarker半径不要超过64px
+          strokeColor: this.color[index],
+          strokeWeight: 2,
+          strokeOpacity: 0.5,
+          fillColor: this.color[index],
+          fillOpacity: 0.5,
+          zIndex: 10,
+          bubble: true,
+          cursor: 'pointer',
+          clickable: true,
+          data: item
+        })
+        circleMarker.setMap(map)
+        let clickIcon = new AMap.Icon({
+          image: this.highlight,
+          size: new AMap.Size(135, 40), //图标大小
+          imageSize: new AMap.Size(135, 40)
+        });
+        // 点
+        let marker = new AMap.Marker({
+          position: new AMap.LngLat(item.lon, item.lat),
+          icon: clickIcon,
+          clickable: true,
+          anchor: "center",
+          offset: new AMap.Pixel(-17, 0) //设置偏移量
+        });
+        marker.setMap(map)
+        marker.hide()
+        circleMarker.on('mouseover', (e) => {
+          console.log('off');
+          marker.show()
+          var text = new AMap.Text({
+            text: `<div class='tooltip'>
+                      <div class='flex'>
+                        <div class="img"></div><div class='title'>${item.name}</div>
+                      </div>
+                      <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
+                      <div class='value'>${carTypeList}</div>
+                      <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
+                      <div class='value'>${item.factoryAddress}</div>
+                      <div class='label'>${this.$t('TPZS.ZXSE')}</div>
+                      <div class='value'>${item.toAmount}</div>
+                  </div>`,
+            anchor: 'center', // 设置文本标记锚点
+            draggable: false,
+            cursor: 'pointer',
+            position: [item.lon, item.lat],
+            offset: new AMap.Pixel(0, -155) //设置偏移量
+          });
+          text.setMap(map);
+        })
+
+        circleMarker.on('mouseout', () => {
+          marker.hide()
+          var obj = document.getElementsByClassName('amap-overlay-text-container')[0]
+          obj.remove()
+        })
+      })
+      // svw图标
+      this.svwData.map(item => {
+        let carTypeList = ''
+        item.carTypeProjectList.forEach((val, index) => {
+          carTypeList += item.carTypeProjectList.length - 1 > index ? val + ' | ' : val
+        })
+        // 图标
+        var svwImg = new AMap.Icon({
+          size: new AMap.Size(40, 40),
+          imageSize: new AMap.Size(20, 20),
+          image: this.svwImg,
+          anchor: 'center',
+        });
+        let clickIcon = new AMap.Icon({
+          image: this.highlight,
+          size: new AMap.Size(135, 40), //图标大小
+          imageSize: new AMap.Size(135, 40)
+        });
+        // 点
+        let marker = new AMap.Marker({
+          position: new AMap.LngLat(item.lon, item.lat),
+          icon: svwImg,
+          clickable: true,
+          anchor: "center"
+        });
+        marker.setMap(map)
+        marker.on('mouseover', (e) => {
+          console.log('purchase');
+          // e.target.setIcon(clickIcon);
+          marker.setLabel({
+            offset: new AMap.Pixel(0, -24),  //设置文本标注偏移量
+            content: `<div class='tooltip'>
+                        <div class='flex'>
+                          <div class="img-svw"></div><div class='title'>${item.name}</div>
+                        </div>
+                        <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
+                        <div class='value'>${carTypeList}</div>
+                        <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
+                        <div class='value'>${item.factoryAddress}</div>
+                      </div>`, //设置文本标注内容
+            direction: 'top' //设置文本标注方位
+          });
+        })
+        marker.on('mouseout', (e) => {
+          marker.setLabel({
+            offset: new AMap.Pixel(0, 0),  //设置文本标注偏移量
+            content: '', //设置文本标注内容
+            direction: 'top' //设置文本标注方位
+          });
+        })
+      })
+      // var path = [//每个弧线段有两种描述方式
+      //   ['75', '38'],
+      //   ['117', '24']
+      // ];
+      // var bezierCurve = new AMap.BezierCurve({
+      //   path: path,
+      //   isOutline: true,
+      //   outlineColor: '#ffeeff',
+      //   borderWeight: 3,
+      //   strokeColor: "#3366FF",
+      //   strokeOpacity: 1,
+      //   strokeWeight: 6,
+      //   // 线样式还支持 'dashed'
+      //   strokeStyle: "solid",
+      //   // strokeStyle是dashed时有效
+      //   strokeDasharray: [10, 10],
+      //   lineJoin: 'round',
+      //   lineCap: 'round',
+      //   zIndex: 50,
+      // })
+      // bezierCurve.setMap(map)
+    },
   }
 }
 </script>
 
 <style lang='scss' scoped>
-.chartmap {
+::v-deep.amap-wrapper {
   width: 100%;
   height: 60rem;
 }
-::v-deep .amap-logo,
-.amap-copyright {
+::v-deep .amap-logo {
   display: none !important;
 }
-
+::v-deep .amap-copyright {
+  display: none !important;
+}
 ::v-deep .tooltip {
+  position: relative;
   padding: 30px;
-  /* width: 40rem; */
+  background-color: #fff;
+  width: 20rem;
   .flex {
     align-items: center;
     .title {
@@ -194,7 +286,7 @@ export default {
     color: #7e84a3;
     font-size: 20px;
     text-align: left;
-    margin-top: 8px;
+    margin-top: 20px;
     margin-bottom: 8px;
   }
   .value {
@@ -202,5 +294,38 @@ export default {
     font-size: 16px;
     text-align: left;
   }
+}
+::v-deep .amap-overlay-text-container:before {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 20px solid #fff;
+}
+::v-deep .amap-marker-label {
+  border: none;
+}
+::v-deep .amap-marker-label:before {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 20px solid #fff;
+}
+::v-deep .amap-overlay-text-container:before,
+.amap-overlay-text-container:after {
+  content: " ";
+  height: 56px;
+  top: 99%;
+  position: absolute;
+  width: 0px;
+}
+::v-deep .amap-marker-label::before,
+.amap-marker-label::after {
+  content: " ";
+  height: 56px;
+  top: 99%;
+  position: absolute;
+  width: 0px;
 }
 </style>

@@ -3,13 +3,13 @@
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="381px" top="0" @close='clearDiolog' class="iDialogCon" v-loading="dialogLoading">
+  <iDialog :title="$t(title)" :visible.sync="value" width="381px" top="0" @close='clearDiolog' class="iDialogCon">
     <div slot="title" class="title">
       <div class="text">
         {{ $t(title) }}
       </div>
     </div>
-      <el-form>
+      <el-form v-loading="dialogLoading">
         <el-form-item :label="language('LK_KESHI', '科室')">
           <iSelect
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
@@ -101,7 +101,7 @@ export default {
     },
     changeDept(val){
       if(val){
-        this.deptId = ''
+        this.linieID = ''
         this.liniePullDownByDept()
       }
     },

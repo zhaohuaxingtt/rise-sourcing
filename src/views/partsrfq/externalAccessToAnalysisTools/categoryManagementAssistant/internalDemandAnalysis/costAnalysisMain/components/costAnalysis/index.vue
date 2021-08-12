@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 16:38:55
- * @LastEditTime: 2021-08-07 12:48:46
+ * @LastEditTime: 2021-08-10 17:22:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysis\index.vue
@@ -20,11 +20,13 @@
           <el-form-item style="marginRight: 53px;" :label="language('CHAILIAOZU', '材料组')">
             <iSelect v-model="searchForm['categoryCode']" :placeholder="language('QINGXUANZECHAILIAOZU', '请选择材料组')">
                <el-option value='' label='全部'></el-option>
+               <el-option v-for="(item, index) in materialGroupList" :key="index" :value='item.categoryCode' :label='item.categoryName'></el-option>
             </iSelect>
           </el-form-item>
           <el-form-item style="marginRight: 53px;" :label="language('WENJIANLEIXING', '文件类型')">
             <iSelect v-model="searchForm['fileType']" :placeholder="language('QINGXUANZEWENJIANLEIXING', '请选择文件类型')">
                <el-option value='' label='全部'></el-option>
+               <el-option v-for="(item, index) in fileTypeList" :key="index" :value='item.val' :label='item.label'></el-option>
             </iSelect>
           </el-form-item>
           <el-form-item style="marginRight: 53px;" :label="language('CHUANGJIANREN', '创建人')">
@@ -89,7 +91,8 @@ import {iCard, iButton, iInput, iSelect, iPagination, icon} from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import {pageMixins} from '@/utils/pageMixins';
-import { getAllData } from '@/api/partsrfq/costAnalysis/index'
+import { getAnalysisList, getMaterialGroupByUserIds } from '@/api/partsrfq/costAnalysis/index'
+import { iMessage } from '@/components';
 export default {
   name: 'CostAnalysis',
   mixins: [pageMixins],
@@ -103,11 +106,17 @@ export default {
       tableTitle,
       tableListData: [],
       loading: true,
+      materialGroupList: [],
+      fileTypeList: [
+        {label: '系统筛选', val: 1},
+        {label: '人工输入', val: 2},
+      ]
     }
   },
   created() {
-    this.initTestData()
-    this.fetchTableData()
+    // this.initTestData()
+    this.getTableData()
+    this.getMaterialGroupData()
   },
   methods: {
     // 初始化测试数据
@@ -119,30 +128,57 @@ export default {
       ]
       this.loading = false
     },
+    // 获取材料组数据
+    getMaterialGroupData() {
+      getMaterialGroupByUserIds({}).then(res => {
+        if(res && res.code == 200) {
+          this.materialGroupList = res.data
+        } else iMessage.error(res.desZh)
+      })
+    },
     // 获取表格数据
     getTableData() {
-      
-    },
-    // 初始化数据
-    fetchTableData() {
-      const params = {
-        pageNo: this.page.currPage,
-        pageSize: this.page.pageSize,
-        categoryCode: this.searchForm.categoryCode,
-        createByName: this.searchForm.createBy,
-        fileType: this.searchForm.fileType
-      }
-      getAllData(params).then(res => {
-        console.log('res', res);
+      return new Promise(resolve => {
+        this.loading = true
+        const params = {
+          pageNo: this.page.currPage,
+          pageSize: this.page.pageSize,
+          categoryCode: this.searchForm.categoryCode,
+          createByName: this.searchForm.createBy,
+          fileType: this.searchForm.fileType
+        }
+        getAnalysisList(params).then(res => {
+          if(res && res.code == 200) {
+            this.page.totalCount = res.total
+            this.loading = false
+            this.tableListData = res.data
+            resolve(res.data)
+          } else iMessage.error(res.desZh)
+        })
       })
+    },
+    // 初始化检索条件数据
+    initSearchData() {
+      for(const key in this.searchForm) {
+        this.searchForm[key] = null
+      }
     },
     // 点击确认
     handleSubmitSearch() {
-
+      this.page.currPage = 1
+      this.page.pageSize = 10
+      this.getTableData().then(res => {
+        if (!res || res.length == 0) {
+          iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
+        }
+      })
     },
     // 点击重置
     handleSearchReset() {
-
+      this.page.currPage = 1
+      this.page.pageSize = 10
+      this.initSearchData()
+      this.getTableData()
     },
     // 点击置顶
     clickStick(val) {

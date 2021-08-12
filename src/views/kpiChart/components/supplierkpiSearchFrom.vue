@@ -36,7 +36,12 @@
                                     <!-- <iSelect v-model="formData.spiBaseDTO" :placeholder="$t('partsignLanguage.QingXuanZe')">
                                         <el-option value='' label='全部'></el-option>
                                     </iSelect> -->
-                                    <el-cascader :props="props"></el-cascader>
+                                    <el-cascader  
+                                    v-model="areaData" 
+                                    :options="areaOptions"
+                                     @change="handleChangeArea"
+                                     @expand-change="expandChange"
+                                     @getCheckedNodes="getNodeNumber"></el-cascader>
                                     </iFormItem>
                                 </el-col>
                              
@@ -222,6 +227,8 @@ export default {
     },
     data(){
         return {
+            areaData:[],
+            areaOptions:[],
            formData:{
                spiBaseDTO:{
                    yearList:[],
@@ -241,6 +248,17 @@ export default {
             getCityid:"-1",
         }
     },
+    created(){
+        // 初始化国家
+        getCityInfo({parentCityId:this.getCityid}).then(res=>{
+            console.log(res)
+            this.areaOptions=res.data.map(x=>{
+                return {...x,
+                label:x.cityNameCn,
+                value:x.cityId,
+                children:[]}})
+        })
+    },
     mounted(){
         // 查询材料组
        getMaterialGroupByUserIds({}).then(res=>{
@@ -252,10 +270,23 @@ export default {
        this.getStuffByCategory()
     },
     methods:{
+        expandChange(x){
+            console.log(x)
+            //this.getcity(x[0])
+        },
+        handleChangeArea(x){
+            
+        },
+        getNodeNumber(x){
+            console.log(x)
+        },
          //城市
         getcity(x){
             getCityInfo({parentCityId:x}).then(res=>{
                 console.log(res)
+                // this.areaOptions=this.areaOptions.map(c=>{
+                //     c.children=res
+                // })
             })
         },
         // 科股
