@@ -1,40 +1,40 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-12 11:08:42
+ * @LastEditTime: 2021-08-12 11:05:25
  * @LastEditors: 舒杰
- * @Description: 内部需求分析
- * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\index.vue
+ * @Description: 材料组定位
+ * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\categoryGroup.vue
 -->
 <template>
-  <iPage>
-    <headerNav>
-      <div slot="extralButton">
-        <iButton @click="handleView">{{ language("CHAKANLISHI", "查看历史") }}</iButton>
-      </div>
-    </headerNav>
-    <router-view></router-view>
-    <viewHistory v-model="viewHistory" />
-  </iPage>
+    <!-- 材料组定位 -->
+    <iDialog :title='language("CAILIAOZU", "材料组")' :visible.sync="value" class="iDialog" width="400px" @close='clearDiolog' top="40vh">
+      <p class="tip margin-bottom10">{{ language("QXZCAILIAOZU", "请选择材料组") }}</p>
+      <el-autocomplete class="autocomplete" v-model="categoryName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
+      <span slot="footer" class="dialog-footer">
+        <iButton @click="confirm">{{ language("QUEREN", "确认") }}</iButton>
+      </span>
+    </iDialog>
 </template>
 
 <script>
-import { iPage, iButton } from 'rise';
-import headerNav from '../components/headerNav';
+import {iButton, iDialog } from 'rise';
 import { pageRfqBaseInfo } from "@/api/partsrfq/specialAnalysisTool/specialAnalysisTool";
-import viewHistory from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/viewHistory/index.vue';
 export default {
   components: {
-    iPage,
-    headerNav,
     iButton,
-    viewHistory
+    iDialog,
+  },
+  props: {
+     value:{
+        type:Boolean,
+        default:false
+     }
   },
   data() {
     return {
       categoryName: "",//材料组名称
       categoryCode: "",//材料组编号
-      viewHistory: false
     }
   },
   created() {
@@ -43,9 +43,6 @@ export default {
     }
   },
   methods: {
-    handleView() {
-      this.viewHistory = true
-    },
     querySearchAsync(queryString, cb) {
       pageRfqBaseInfo({ keyword: queryString }).then(res => {
         if (res.data) {
@@ -61,7 +58,7 @@ export default {
     },
     // 确认
     confirm() {
-      this.$store.dispatch('setCategoryCode', this.categoryCode)
+      this.$store.dispatch('setCategoryCode', '051')
       this.value = false
     },
     // 重新定位材料组

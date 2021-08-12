@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-10 14:38:32
+ * @LastEditTime: 2021-08-12 10:51:04
  * @LastEditors: 舒杰
  * @Description: 按定点记录查看
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\pointTable.vue
@@ -32,7 +32,7 @@
 	import tableList from './tableList';
 	import {tableTitle} from './data';
 	import {pageMixins} from '@/utils/pageMixins';
-	import {technologyFile,technologyAdd,technologyDelete} from "@/api/categoryManagementAssistant/internalDemandAnalysis/technology";
+	import {page} from "@/api/categoryManagementAssistant/internalDemandAnalysis/historyPoint.js"
 	import {downloadFile} from '@/api/file';
 	import resultMessageMixin from '@/utils/resultMessageMixin';
 	export default{
@@ -66,11 +66,11 @@
 			getTableList(){
 				this.tableLoading=true
 				let data={
-					categoryCode:"",
+					...this.searchCriteria,
 					pageNo:this.page.currPage,
 					pageSize:this.page.pageSize
 				}
-				technologyFile(data).then(res=>{
+				page(data).then(res=>{
 					if (res.data) {
 						this.page.currPage = res.pageNum;
 						this.page.totalCount = res.total;
@@ -78,23 +78,6 @@
 						this.tableListData=res.data
 					}
 				})
-			},
-			//删除
-			deleted(){
-				if(this.selectData.length>0){
-					iMessageBox(this.language('QRSCXZWJ','确认删除选中文件'),this.language('TISHI','提示')).then(()=>{
-						let idList=this.selectData.map(res=>{
-							return res.id
-						})
-						technologyDelete({idList:idList}).then(res=>{
-							this.resultMessage(res,()=>{
-								this.getTableList()
-							})
-						})
-					}).catch(()=>{
-
-					})
-				}
 			},
 			openPdf(url){
 				window.open(url)
