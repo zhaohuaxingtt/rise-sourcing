@@ -113,13 +113,13 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_XINXIDANLIUSHUIHAO','信息单流水号')">
+              <!-- <el-form-item :label="language('LK_XINXIDANLIUSHUIHAO','信息单流水号')">
                 <iInput
                   v-model="form.tpId"
                   :placeholder="language('LK_QINGTIANXIEXINXIDANLIUSHUIHAO','请填写信息单流水号')"
                   v-permission="PARTSIGN_PARTINFOID"
                 ></iInput>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item :label="language('LK_XUNJIAZILIAOZHUANGTAI','询价资料状态')">
                 <iSelect
                   v-model="form.attachmentStatus"
