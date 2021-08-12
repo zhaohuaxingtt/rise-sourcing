@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-10 10:44:22
+ * @LastEditTime: 2021-08-12 16:08:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -80,9 +80,9 @@ export default {
       requirementAekoId: this.$route.query.requirementAekoId
     }
     
-    if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+    if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
       try {
-        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
         this.currentTab = aekoConatentDeclareParams.currentTab
       } catch(e) {
         console.error(e)
