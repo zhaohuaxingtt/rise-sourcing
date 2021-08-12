@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-08-06 13:59:01
+ * @LastEditTime: 2021-08-11 11:17:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -24,7 +24,7 @@
         <iFormItem class="item" v-for="(item, $index) in form" :key="$index" :label="`${ language(item.key, item.name) }`">
           <div v-if="item.props === 'cartypeProject'">
             <iSelect
-              v-if="aekoInfo.aekoType.code == 'AeA'"
+              v-if="aekoInfo.aekoType && aekoInfo.aekoType.code == 'AeA'"
               v-model="dosage.cartypeProjectCode"
               :placeholder="language('QINGXUANZE', '请选择')"
               @change="handleChangeByCarTypeProject"

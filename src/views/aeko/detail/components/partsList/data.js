@@ -53,5 +53,5 @@ export const linieTableTitle = [
   { props: "carTypeZh", name: "涉及⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true,width:130 },
   { props: "linieDeptName", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
   { props: "buyerName", name: "Linie", key: "LK_AEKO_LINIE", tooltip: true },
-  { props: "aekoPartStatus", name: "内容状态", key: "LK_AEKO_NEIRONGZHUANGTAI", tooltip: true },
+  { props: "aekoPartStatusDesc", name: "内容状态", key: "LK_AEKO_NEIRONGZHUANGTAI", tooltip: true },
 ]
