@@ -190,7 +190,7 @@ module.exports = {
         },
       },
       supplierApiWDL: {
-        target: 'http://10.160.137.254:8025',
+        target: 'http://10.122.17.38:8025',
         // target: 'http://10.160.137.16:8029/',
         changeOrigin: true,
         pathRewrite: {
@@ -232,7 +232,7 @@ module.exports = {
         },
       },
       '/nego': {
-        target: 'http://10.122.17.38:8035',
+        target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/nego': '/nego',
@@ -250,8 +250,8 @@ module.exports = {
       },
       '/partProcureApi': {
         //赵文鹏服务地址
-        //target: 'http://10.122.17.38:8025',
-        target: 'http://10.160.137.254:8025',
+        target: 'http://10.122.17.38:8025',
+        //target: 'http://10.160.137.254:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/partProcureApi': '',
