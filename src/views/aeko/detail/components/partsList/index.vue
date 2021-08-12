@@ -531,12 +531,18 @@ export default {
         // 是否展示linie
         isShowLine(row){
             const {buyerName,refferenceByuerName,refferenceSmtNum,linieDeptNum} = row;
-            // 若已分派科室与实际分派科室不一致时不展示linie
+            // 若已分派采购员就直接展示
+            if(buyerName){
+                return buyerName
+            }else{
+                // 若没有分派采购员 已分派科室与实际分派科室不一致时不展示linie
             if(linieDeptNum && (linieDeptNum != refferenceSmtNum)){
                 return ''
             }else{
-                return buyerName || refferenceByuerName
+                return refferenceByuerName
             }
+            }
+            
             
         },
     }
