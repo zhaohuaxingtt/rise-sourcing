@@ -1,7 +1,7 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-08-11 15:41:39
+ * @LastEditTime: 2021-08-11 16:10:57
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \front-web\src\components\iTableList\index.vue
@@ -53,7 +53,7 @@
                          :show-overflow-tooltip="items.tooltip"
                          v-if="items.props == activeItems"
                          :prop="items.props"
-                         :label="language(item.key,item.name)"
+                         :label="items.key?language(items.key,items.name):items.name"
                          :min-width="items.minWidth"
                          :width="items.width">
           <template slot-scope="row">
@@ -77,7 +77,7 @@
                          align="center"
                          :show-overflow-tooltip="items.tooltip"
                          v-else-if="items.props == 'tpInfoType'"
-                         :label="items.name"
+                         :label="items.key?language(items.key,items.name):items.name"
                          :prop="items.props"
                          :min-width="items.minWidth"
                          :width="items.width">
@@ -91,7 +91,7 @@
                          align="center"
                          :show-overflow-tooltip="items.tooltip"
                          v-else
-                         :label="items.name"
+                         :label="items.key?language(items.key,items.name):items.name"
                          :prop="items.props"
                          :min-width="items.minWidth"
                          :width="items.width">

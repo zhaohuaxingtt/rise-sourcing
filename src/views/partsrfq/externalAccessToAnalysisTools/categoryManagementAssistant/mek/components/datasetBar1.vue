@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-11 11:29:26
+ * @LastEditTime: 2021-08-11 19:19:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -17,9 +17,63 @@ export default {
   data () {
     return {
       myChart: null,
+      barData: [],
+      barxAxis: []
     };
   },
-  props: {},
+  props: {
+    typeSelection: {
+      type: String,
+      default: "",
+    },
+    firstBarData: {
+      type: Array,
+      default: () => {
+        return []
+      },
+    }
+  },
+  watch: {
+    typeSelection (val) {
+      if (val === '5') {
+        this.$nextTick(() => {
+          this.initCharts();
+        });
+      } else {
+        this.typeSelection = ""
+        this.$nextTick(() => {
+          this.initCharts();
+        });
+      }
+    },
+    firstBarData: {
+      handler (val) {
+        if (val) {
+
+          val.forEach((item, index) => {
+            const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
+            const itemData = {
+              value: item.value,
+              label: {
+                show: true,
+                position: 'top',
+                color: "#000"
+              },
+              itemStyle: {
+                color: colorList[index]
+              }
+            }
+            this.barData.push(itemData)
+            this.barxAxis.push(item.title)
+          })
+          this.$nextTick(() => {
+            this.initCharts();
+          });
+        }
+      },
+      immediate: true
+    }
+  },
   mounted () {
     this.$nextTick(() => {
       this.initCharts();
@@ -31,7 +85,7 @@ export default {
       this.$refs.chart.style.width = 6 * 60 + 'px';
       this.$refs.chart.style.minWidth = '100%';
       const str = "MIX" + "\n\n 5%"
-      const option = {
+      this.option = {
         title: {
           show: true,
           subtext: "产量",
@@ -40,7 +94,7 @@ export default {
         },
         xAxis: [
           {
-            show: false,
+            show: this.typeSelection === '5' ? false : true,
             type: "category",
             axisTick: { show: false },
             // data: [{
@@ -51,9 +105,7 @@ export default {
               fontSize: 12,
               fontFamily: "Arial"
             },
-            data: [{
-              value: str
-            }],
+            data: this.barxAxis,
             axisLine: {
               show: false
             },
@@ -103,47 +155,48 @@ export default {
             itemStyle: {
               barBorderRadius: [5, 5, 0, 0],
             },
-            data: [{
-              value: 400,
-              label: {
-                show: true,
-                position: 'top',
-                color: "#000"
-              },
-              itemStyle: {
-                color: "#A1D0FF"
-              }
-            },
-            {
-              value: 450,
-              label: {
-                show: true,
-                position: 'top',
-                color: "#000"
-              },
-              itemStyle: {
-                color: "#92B8FF"
-              }
-            },
-            {
-              value: 500,
-              label: {
-                show: true,
-                position: 'top',
-                color: "#000"
-              },
-              itemStyle: {
-                color: "#5993FF"
-              }
-            }],
+            data: this.barData
+            // data: [{
+            //   value: 400,
+            //   label: {
+            //     show: true,
+            //     position: 'top',
+            //     color: "#000"
+            //   },
+            //   itemStyle: {
+            //     color: "#A1D0FF"
+            //   }
+            // },
+            // {
+            //   value: 450,
+            //   label: {
+            //     show: true,
+            //     position: 'top',
+            //     color: "#000"
+            //   },
+            //   itemStyle: {
+            //     color: "#92B8FF"
+            //   }
+            // },
+            // {
+            //   value: 500,
+            //   label: {
+            //     show: true,
+            //     position: 'top',
+            //     color: "#000"
+            //   },
+            //   itemStyle: {
+            //     color: "#5993FF"
+            //   }
+            // }],
           },
         ],
       };
       this.myChart.clear();
       this.myChart.resize();
-      this.myChart.setOption(option);
-      this.myChart.on('click', function (params) {
-      });
+      this.myChart.setOption(this.option);
+      // this.myChart.on('click', function (params) {
+      // });
     },
   },
 };

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-11 15:45:19
+ * @LastEditTime: 2021-08-12 11:04:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -167,15 +167,22 @@
                       <el-option value="4"
                                  :label="$t('车型4')"></el-option>
                     </el-select>
-                    <span class="margin-bottom15 ">Best Ball</span>
-                    <span class="yield">22,000</span>
+                    <span class="margin-bottom15 "
+                          style="min-height:14px">{{firstBarData.motorName}}</span>
+                    <span class="yield"
+                          style="line-height:12px">{{firstBarData.output}}</span>
                   </div>
-                  <datasetBar1 ref="datasetBar1"></datasetBar1>
-                  <div class="xAxis">
+                  <datasetBar1 ref="datasetBar1"
+                               :typeSelection="type"
+                               :firstBarData="firstBarData.detail"></datasetBar1>
+                  <div class="xAxis"
+                       v-if="type==='5'">
                     <span @click=" computeModal">MIX</span>
                   </div>
                 </div>
-                <div class="flex chartItem">
+                <div class="flex chartItem"
+                     v-for="item in barData"
+                     :key="item.motorId">
                   <div class="operation">
                     <icon symbol
                           name="iconbob-shanchu"
@@ -187,16 +194,16 @@
                                 visible-arrow>
                       <el-checkbox-group v-model="checkList"
                                          class="checkList">
-                        <el-checkbox label="1">配置1</el-checkbox>
-                        <el-checkbox label="2">配置2</el-checkbox>
-                        <el-checkbox label="3">配置3</el-checkbox>
+                        <el-checkbox v-for="(i,index) in item.detail"
+                                     :key="index"
+                                     :label="i.value">i.title</el-checkbox>
                       </el-checkbox-group>
                       <div style="line-height:28px"
                            class="margin-bottom15"
-                           slot="reference">车型1</div>
+                           slot="reference">item.motorName</div>
                     </el-popover>
-                    <span class="margin-bottom15">Best Ball</span>
-                    <span class="yield margin-bottom15">22,000</span>
+                    <span class="margin-bottom15">{{item.factory}}</span>
+                    <span class="yield margin-bottom15">{{item.output}}</span>
                     <div>
                       <el-select v-model="priceType"
                                  @change="changeBy"
@@ -394,7 +401,7 @@ import datasetBar from "../components/datasetBar";
 import datasetBar1 from "../components/datasetBar1";
 import tableList from "../components/tableList";
 import modalDialog from "../components/modalDialog";
-import { getMekTable } from '@/api/categoryManagementAssistant/mek'
+import { getMekTable, getHistogram } from '@/api/categoryManagementAssistant/mek'
 export default {
   name: "mekDetails",
   components: {
@@ -442,10 +449,12 @@ export default {
       reportName: "",
       editFlag: false,
       checkList: [],
-
+      //第一个柱状图
+      firstBarData: {}
     };
   },
   async created () {
+    await this.getHistogram()
     await this.getMekTable()
   },
   mounted () {
@@ -474,6 +483,7 @@ export default {
     closeModalDialog (val) {
       this.modalVisible = val
     },
+    //获取表格
     getMekTable () {
       getMekTable({
         "comparedType": "mekConfig",
@@ -485,6 +495,23 @@ export default {
       }).then(res => {
         this.gridData = res
         console.log(this.gridData)
+      })
+    },
+    getHistogram () {
+      getHistogram({
+        "comparedType": "mekConfig",
+        "info": [
+          {
+            "motorId": 50014051,
+            "priceType": "latestPrice"
+          }
+        ],
+        "schemeId": 3
+      }).then(res => {
+        let data = res.data
+        this.firstBarData = data[0]
+        data.shift()
+        this.barData = data
       })
     },
     changeBy () {
@@ -653,7 +680,4 @@ export default {
 }
 </style>
 <style lang="scss">
-.el-scrollbar__wrap {
-  overflow-x: hidden;
-}
 </style>

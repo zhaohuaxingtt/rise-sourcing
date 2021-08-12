@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-08-11 11:28:01
+ * @LastEditTime: 2021-08-11 16:25:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -40,10 +40,10 @@ export default {
       const option = {
         xAxis: [
           {
+            show: true,
             type: "category",
             axisTick: { show: false },
             axisLabel: {
-              show: true,
               color: "#3C4F74",
               fontSize: 12,
               fontFamily: "Arial"

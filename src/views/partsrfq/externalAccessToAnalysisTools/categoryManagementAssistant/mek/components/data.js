@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-06 15:49:37
- * @LastEditTime: 2021-08-11 15:58:50
+ * @LastEditTime: 2021-08-11 16:16:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\data.js
@@ -29,8 +29,8 @@ export const confirmTableHead = [
   },
   {
     props: '配置',
-    name: '工厂',
-    key: 'GONGCHANG',
+    name: '配置',
+    key: 'PEIZHI',
     tooltip: false,
   },
   {
