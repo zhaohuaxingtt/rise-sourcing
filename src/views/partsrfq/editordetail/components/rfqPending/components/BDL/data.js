@@ -7,7 +7,7 @@
 import {permissionTitle} from '@/utils'
 export const tableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQPENDING_LIST_360VIEWCOLUMN",[
     {props:'sapNum',name:'SAP号', key:'LK_SAPHAO', tooltip: true},
-    {props:'supplierNameZh',name:'供应商名称', key:'LK_GONGYINGSHANGMINGCHENG', tooltip: true, minWidth:80},
+    {props:'supplierNameZh',name:'供应商名称', key:'LK_GONGYINGSHANGMINGCHENG', minWidth:80},
     // {props:'pupplierProductionPlace',name:'供应商生产场地', key:'LK_GONGYINGSHANGSHENGCHANCHANGDI', tooltip: true}, // sp10去除
     {props:'bdlType',name:'MBDL', key: 'LK_MBDL', tooltip: true},
     {props:'isCheckCbd',name:'是否验证CBD', key: 'LK_SHIFOUYANZHENGCBD', tooltip: true},
