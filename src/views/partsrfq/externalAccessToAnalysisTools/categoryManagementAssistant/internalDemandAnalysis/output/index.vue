@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-11 18:29:49
+ * @LastEditTime: 2021-08-12 16:25:36
  * @LastEditors: 舒杰
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
@@ -21,7 +21,7 @@
          </div>
          <div>
             <iButton @click="confirmFilter">{{ language("QUEREN", "确认") }}</iButton>
-            <iButton @click="back">{{ language("CHONGZHI", "重置") }}</iButton>
+            <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
          </div>
       </div>
       <!-- powerBi -->
@@ -32,7 +32,7 @@
 import {iCard,iButton,iSelect,iDatePicker} from "rise";
 import {getCmOutputPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/output";
 import * as pbi from 'powerbi-client';
-import { selectDictByKeys } from "@/api/dictionary"
+import { selectDictByKeys } from "@/api/dictionary";
 export default {
    components:{iCard,iButton,iSelect,iDatePicker},
    data () {
@@ -41,7 +41,7 @@ export default {
           //初始化配置
          config:{
             type: 'report',
-            tokeTnype: pbi.models.TokenType.Embed,
+            tokenType: pbi.models.TokenType.Embed,
             accessToken:"",
             embedUrl: "",
             pageName:"",
@@ -74,7 +74,7 @@ export default {
                column: "YearNo"
             },
             operator: "In",
-            values: ["2021"],//年份
+            values: [],//年份
             filterType: pbi.models.FilterType.BasicFilter,
             requireSingleSelection: true
          },
@@ -101,10 +101,7 @@ export default {
       this.categoryCode=this.$store.state.rfq.categoryCode
    },
    mounted () {
-      // console.log(pbi.models.FilterType)
-      // this.filter.filterType=pbi.models.FilterType.BasicFilter
-      
-		// this.getPowerBiUrl()
+		this.getPowerBiUrl()
    },
    methods: {
       // 保存
@@ -115,11 +112,16 @@ export default {
       confirmFilter(){
          this.renderBi()
       },
+      // 重置
+      reset(){
+         this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
+         this.selectFilterYear= String(new Date().getFullYear()) 
+         this.renderBi()
+      },
       // 数据字典
       getDict() {
          selectDictByKeys([{ keys: "CATEGORY_MANAGEMENT_LIST" }]).then(res=>{
             this.dictData=res.data
-            this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
             this.init()
             this.renderBi()
          })
@@ -137,18 +139,18 @@ export default {
       init(){
          this.config.embedUrl=this.url.embedUrl
          this.config.accessToken=this.url.accessToken
-         this.filter.values.push(this.categoryCode)
+         this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
+         this.selectFilterYear= String(new Date().getFullYear()) 
          this.reportContainer = document.getElementById('powerBi');
          this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       },
       renderBi() {
-         console.log(this.filterYear)
-         console.log(this.filter)
-         this.filterYear.values=[this.selectFilterYear]
+         this.filter.values=[this.categoryCode]
+         this.filterYear.values=[parseInt(this.selectFilterYear)]
          var report = this.powerbi.embed(this.reportContainer, this.config);
          report.off("loaded");
          report.on("loaded", ()=> {
-            report.setFilters([this.filter],[this.filterYear])
+            report.setFilters([this.filter,this.filterYear])
          });
          // Report.off removes a given event handler if it exists.
          report.off("rendered");
