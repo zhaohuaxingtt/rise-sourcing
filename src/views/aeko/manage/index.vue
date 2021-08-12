@@ -425,6 +425,7 @@ export default {
             cancelButtonText: this.language('nominationLanguage.No','否'),
           }
           ).then(()=>{
+            this.$refs['aekoUpload'].$refs['uploadRef'].$refs['upload-inner'].handleClick()
             console.log('是')
           }).catch(()=>{
             console.log('否')
