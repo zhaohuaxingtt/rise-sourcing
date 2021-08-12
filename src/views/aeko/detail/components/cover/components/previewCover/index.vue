@@ -51,6 +51,15 @@
                 :tableLoading="tableLoading.depart"
                 @handleSelectionChange="handleSelectionChange"
             >
+                <template #materialIncrease="scope">
+                    {{fixNumber(scope.row.materialIncrease) || ''}}
+                </template>
+                <template #investmentIncrease="scope">
+                    {{fixNumber(scope.row.investmentIncrease) || ''}}
+                </template>
+                <template #otherCost="scope">
+                    {{fixNumber(scope.row.otherCost) || ''}}
+                </template>
             </tableList>
             <!-- 分页 -->
             <iPagination
@@ -181,9 +190,9 @@ export default {
 
                 const keyArr = ['investmentIncrease', 'materialIncrease', 'otherCost'];
                 if(keyArr.includes(column.property)){
-                    if(column.property == 'investmentIncrease') sums[index] = basicInfo.investmentIncreaseTotal || '';
-                    else if(column.property == 'materialIncrease') sums[index] = basicInfo.materialIncreaseTotal || '';
-                    else if(column.property == 'otherCost') sums[index] = basicInfo.otherCostTotal || '';
+                    if(column.property == 'investmentIncrease') sums[index] = this.fixNumber(basicInfo.investmentIncreaseTotal) || '';
+                    else if(column.property == 'materialIncrease') sums[index] = this.fixNumber(basicInfo.materialIncreaseTotal)  || '';
+                    else if(column.property == 'otherCost') sums[index] = this.fixNumber(basicInfo.otherCostTotal)  || '';
                     else sums[index] = ''
                     // const values = data.map(item => Number(item[column.property]) );
                     // if (!values.every(value => isNaN(value))) {
@@ -204,6 +213,13 @@ export default {
                 }
             })
             return sums;
+        },
+
+        // 费用千分位处理
+        fixNumber(str){
+            if(!str) return null;
+            var re=/(?=(?!(\b))(\d{3})+$)/g;
+            return str.replace(re,",");
         },
     }
 }
