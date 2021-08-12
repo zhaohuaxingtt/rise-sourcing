@@ -28,14 +28,14 @@ export const tableTitle = [{
 		name: '零件名（中）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
 		tooltip: true,
-		width:150
+		width:120
 	},
 	{
 		props: 'partNameDe',
 		name: '零件名（德）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
 		tooltip: true,
-		width:150
+		width:140
 	},
 	// {
 	// 	props: 'statusName',
@@ -44,60 +44,60 @@ export const tableTitle = [{
 	// 	tooltip:false
 	// },
 	{
-		props: 'procureFactoryName',
-		name: '采购工厂',
-		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
-		tooltip: true,
-		width:120
-	},
-	{
-		props: 'partProjectTypeName',
-		name: '零件项目类型',
-		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
-		tooltip: true,
-		width:150
-	},
-	{
-		props: 'cartypeCategory',
-		name: '车型大类',
-		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
-		tooltip: true,
-		width:150
-	},
-	{
-		props: 'cartypeProjectZh',
-		name: '车型项目',
-		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
-		tooltip: true,
-		width:150
-	},
-	{
-		props: 'statusName',
-		name: '零件状态',
-		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
-		tooltip: true,
-		width:150
-	},
-	{
-		props: 'buyerName',
-		name: '询价采购员',
-		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
-		tooltip: true,
-		width:90
-	},
-	{
 		props: 'linieName',
 		name: 'LINIE',
 		key: 'partsprocure.PARTSPROCURELINIE',
 		tooltip: true,
-		width:90
+		width:60
 	},
 	{
 		props: 'cfControllerZh',
 		name: 'CF',
 		key: 'partsprocure.CF',
 		tooltip: true,
+		width:60
+	},
+	{
+		props: 'procureFactoryName',
+		name: '采购工厂',
+		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+		tooltip: true,
+		width:80
+	},
+	{
+		props: 'partProjectTypeName',
+		name: '零件项目类型',
+		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
+		tooltip: true,
+		width:140
+	},
+	{
+		props: 'cartypeCategory',
+		name: '车型大类',
+		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
+		tooltip: true,
+		width:120
+	},
+	{
+		props: 'cartypeProjectZh',
+		name: '车型项目',
+		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
+		tooltip: true,
+		width:130
+	},
+	{
+		props: 'statusName',
+		name: '零件状态',
+		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
+		tooltip: true,
 		width:90
+	},
+	{
+		props: 'buyerName',
+		name: '询价采购员',
+		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
+		tooltip: true,
+		width:80
 	}
 ]
 //)
