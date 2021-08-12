@@ -18,9 +18,9 @@
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="item in selectOptions[item.selectOption] || []"
-                      :key="item.value"
+                      :key="item.code"
                       :label="item.name"
-                      :value="item.value">
+                      :value="item.code">
                     </el-option>  
                   </iSelect> 
                   <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
@@ -256,7 +256,6 @@ export default {
           if(code ==200 && data){
             data.map((item)=>{
               item.name = item.desc;
-              item.value = item.code;
             });
             this.selectOptions.aekoStatusList = data;
           }else{
@@ -269,7 +268,6 @@ export default {
           if(code ==200 && data){
             data.map((item)=>{
               item.name = item.desc;
-              item.value = item.code;
             });
             this.selectOptions.coverStatusList = data;
           }else{

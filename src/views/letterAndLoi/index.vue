@@ -77,7 +77,7 @@ export default {
     data(){
       return{
         tab:'source',
-        cardType:'letter',
+        cardType:this.$route.query.cardType || 'letter',
         tabData:letterAndLoiType,
         list: TAB,
       }

@@ -59,7 +59,7 @@
         @select="checkChildren"
         @select-all="checkAll"
       >
-        <el-table-column type="selection" width="55"> </el-table-column>
+        <el-table-column type="selection" width="40"> </el-table-column>
         <el-table-column
           label="#"
           type="index"

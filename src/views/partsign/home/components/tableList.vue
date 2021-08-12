@@ -8,7 +8,7 @@
 -->
 <template>
   <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" ref="moviesTable" :class="radio && 'radio'" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft">
-    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="40" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key,items.name) : items.name">
