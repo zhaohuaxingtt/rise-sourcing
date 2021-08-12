@@ -57,7 +57,10 @@
         </template>
         <!-- linie -->
         <template #buyerName="scoped">
-            <span :class="!scoped.row.buyerId ? 'isPreset' : '' ">{{scoped.row.buyerName || scoped.row.refferenceByuerName}}</span>
+            <span :class="!scoped.row.buyerId ? 'isPreset' : '' ">
+                <!-- {{scoped.row.buyerName || scoped.row.refferenceByuerName}} -->
+                {{isShowLine(scoped.row)}}
+            </span>
         </template>
         <!-- 操作 -->
         <template #operate="scoped">
@@ -523,6 +526,18 @@ export default {
         async back(){
             const isNext  = await this.isSelectItem(true);
             if(isNext) this.changeVisible('departBackVisible',true);
+        },
+
+        // 是否展示linie
+        isShowLine(row){
+            const {buyerName,refferenceByuerName,refferenceSmtNum,linieDeptNum} = row;
+            // 若已分派科室与实际分派科室不一致时不展示linie
+            if(linieDeptNum && (linieDeptNum != refferenceSmtNum)){
+                return ''
+            }else{
+                return buyerName || refferenceByuerName
+            }
+            
         },
     }
 }
