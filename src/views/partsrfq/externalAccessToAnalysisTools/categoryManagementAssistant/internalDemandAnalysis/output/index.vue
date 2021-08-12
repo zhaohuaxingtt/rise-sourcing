@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-05 19:35:43
+ * @LastEditTime: 2021-08-12 16:25:36
  * @LastEditors: 舒杰
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
@@ -14,20 +14,14 @@
 		</template>
       <div class="flex-between-center">
          <div class="flex">
-            <iSelect class="select">
-               <el-option>
-                  dadsa
-               </el-option>
-            </iSelect>
-            <iSelect class="select">
-               <el-option>
-                  dadsa
-               </el-option>
+            <iDatePicker class="select" :placeholder="language('QINGXUANZHEMNIANFENG','请选择年份')" value-format="yyyy" type="year" v-model="selectFilterYear" :picker-options="pickerOptions" />
+            <iSelect class="select" v-model="config.pageName">
+               <el-option :value="item.code" :label="item.name" v-for="(item,index) in dictData.CATEGORY_MANAGEMENT_LIST" :key="index"></el-option>
             </iSelect>
          </div>
          <div>
-            <iButton @click="back">{{ language("QUEREN", "确认") }}</iButton>
-            <iButton @click="back">{{ language("CHONGZHI", "重置") }}</iButton>
+            <iButton @click="confirmFilter">{{ language("QUEREN", "确认") }}</iButton>
+            <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
          </div>
       </div>
       <!-- powerBi -->
@@ -35,74 +29,22 @@
    </iCard>
 </template>
 <script>
-import {iCard,iButton,iSelect} from "rise";
+import {iCard,iButton,iSelect,iDatePicker} from "rise";
 import {getCmOutputPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/output";
 import * as pbi from 'powerbi-client';
+import { selectDictByKeys } from "@/api/dictionary";
 export default {
-   components:{iCard,iButton,iSelect},
+   components:{iCard,iButton,iSelect,iDatePicker},
    data () {
       return {
-         filter : {
-            $schema: "http://powerbi.com/product/schema#basic",
-            target: {
-               table: "app_supplier_fin_analysis_sum_nt_daily",
-               column: "subject_name"
-            },
-            operator: "In",
-            values: [],//[this.name],// values
-            filterType: null,
-            requireSingleSelection: true
-         },
-         report:null,
-         name:"",
-         url: {
-            accessToken: "", //验证token
-            embedUrl: "", //报告信息内嵌地址
-            tokenExpiry: ""//token过期时间
-         },
-         values:[],
-         reportContainer:null
-      }
-   },
-   created () {
-      if (this.$route.query.name) {
-         this.name = this.$route.query.name;
-      }
-   },
-   mounted () {
-      this.filter={...this.filter,filterType:pbi.models.FilterType.BasicFilter},
-		this.getPowerBiUrl()
-   },
-   watch:{
-      '$i18n.locale':{
-         handler(newValue){
-         this.config.pageName=newValue=='zh'?'ReportSectione9fe87a027d2550c28a9':'ReportSection616eb7861df2ef50a3cd'
-         this.renderBi()
-      }}
-   },
-   methods: {
-      // 获取财报iframeurl
-      getPowerBiUrl() {
-            getCmOutputPbi().then(res => {
-            if (res.data) {
-               this.url = res.data
-               this.init()
-               this.renderBi()
-            }
-         })
-      },
-      // 初始化配置
-      init(){
-         // this.permissions = pbi.models.Permissions.All
-         this.config = {
+         categoryCode:"",
+          //初始化配置
+         config:{
             type: 'report',
             tokenType: pbi.models.TokenType.Embed,
-            accessToken: this.url.accessToken,
-            embedUrl: this.url.embedUrl,
-            pageName:"ReportSectione9fe87a027d2550c28a9",// 中文ReportSectione9fe87a027d2550c28a9 英文 ReportSection616eb7861df2ef50a3cd
-            // id: 'f6bfd646-b718-44dc-a378-b73e6b528204',
-            // visualName: '47eb6c0240defd498d4b',
-            // permissions: permissions,
+            accessToken:"",
+            embedUrl: "",
+            pageName:"",
             settings: {
                panes: {
                   filters: {
@@ -113,27 +55,102 @@ export default {
                   }
                }
             }
-         };
+         },
+         filter : {
+            $schema: "http://powerbi.com/product/schema#basic",
+            target: {
+               table: "2_tovlo_overview",
+               column: "category_id"
+            },
+            operator: "In",
+            values: [],//材料组code
+            filterType: pbi.models.FilterType.BasicFilter,
+            requireSingleSelection: true
+         },
+         filterYear : {
+            $schema: "http://powerbi.com/product/schema#basic",
+            target: {
+               table: "DimYear",
+               column: "YearNo"
+            },
+            operator: "In",
+            values: [],//年份
+            filterType: pbi.models.FilterType.BasicFilter,
+            requireSingleSelection: true
+         },
+         report:null,
+         url: {
+            accessToken: "", //验证token
+            embedUrl: "", //报告信息内嵌地址
+            tokenExpiry: ""//token过期时间
+         },
+         reportContainer:null,
+         dictData:{
+            CATEGORY_MANAGEMENT_LIST:[]
+         },
+         selectFilterYear:"",//当前选择的年
+         pickerOptions: {
+            disabledDate(time) {
+               let currentYear = new Date().getFullYear()
+               return time.getFullYear() !== currentYear && time.getFullYear() !== currentYear - 1 && time.getFullYear() !== currentYear - 2;
+            }
+         },
+      }
+   },
+   created () {
+      this.categoryCode=this.$store.state.rfq.categoryCode
+   },
+   mounted () {
+		this.getPowerBiUrl()
+   },
+   methods: {
+      // 保存
+      save(){
+
+      },
+      // 切换类型
+      confirmFilter(){
+         this.renderBi()
+      },
+      // 重置
+      reset(){
+         this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
+         this.selectFilterYear= String(new Date().getFullYear()) 
+         this.renderBi()
+      },
+      // 数据字典
+      getDict() {
+         selectDictByKeys([{ keys: "CATEGORY_MANAGEMENT_LIST" }]).then(res=>{
+            this.dictData=res.data
+            this.init()
+            this.renderBi()
+         })
+      },
+      // 获取财报iframeurl
+      getPowerBiUrl() {
+            getCmOutputPbi().then(res => {
+            if (res.data) {
+               this.url = res.data
+               this.getDict()
+            }
+         })
+      },
+      // 初始化配置
+      init(){
+         this.config.embedUrl=this.url.embedUrl
+         this.config.accessToken=this.url.accessToken
+         this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
+         this.selectFilterYear= String(new Date().getFullYear()) 
          this.reportContainer = document.getElementById('powerBi');
          this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       },
       renderBi() {
+         this.filter.values=[this.categoryCode]
+         this.filterYear.values=[parseInt(this.selectFilterYear)]
          var report = this.powerbi.embed(this.reportContainer, this.config);
-         // Report.off removes a given event handler if it exists.
          report.off("loaded");
-         // Report.on will add an event handler which prints to Log window.
-         const name = this.name
-         const newfilter = window._.cloneDeep(this.filter);
-         newfilter.values=[name]
-         this.values=[name]
-         console.log(newfilter);
          report.on("loaded", ()=> {
-            console.log("Loaded");
-            // if(name==""){
-               // newfilter.values=[]
-            // report.updateFilters(pbi.models.FiltersOperations.Add, [newfilter]);
-            // }
-            report.setFilters([newfilter])
+            report.setFilters([this.filter,this.filterYear])
          });
          // Report.off removes a given event handler if it exists.
          report.off("rendered");
@@ -151,16 +168,10 @@ export default {
          report.off("saved");
          report.on("saved", function(event) {
             if (event.detail.saveAs) {
-               console.log(
-                  'In order to interact with the new report, create a new token and load the new report'
-                  );
+               console.log('In order to interact with the new report, create a new token and load the new report');
             }
          });
          this.report=report
-      },
-      // 保存
-      save(){
-
       },
       // 返回
       back(){

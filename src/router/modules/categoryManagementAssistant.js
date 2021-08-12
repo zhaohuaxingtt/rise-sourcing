@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-16 09:54:11
- * @LastEditors: zbin
+ * @LastEditors: 舒杰
  * @Descripttion: your project
  */
 /*
@@ -89,6 +89,12 @@ export default [{
           component: () => import('@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/negotiateBasicInfor/components/bulkSupplierPandect.vue'),
         },
         {
+          path: 'historyPoint',
+          name: 'historyPoint',
+          meta: { title: "定点历史记录" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/historyPoint/index.vue'),
+        },
+        {
           path: 'purchaseAmountOverall',
           name: 'purchaseAmountOverall',
           meta: { title: "采购金额总览" },
@@ -122,8 +128,8 @@ export default [{
           component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/marketData'),
         },
         {
-          path: '/svwInfo',
-          name: 'svwInfo',
+          path: 'svw',
+          name: 'svw',
           meta: { title: "svw" },
           component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/externalSupplyMarketAnalysis/svw'),
         },
