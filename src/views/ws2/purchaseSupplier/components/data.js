@@ -23,14 +23,12 @@ export const investmentListTitle = [
         props: 'bmTypeName',
         name: 'BM单类型',
         key: 'BM单类型',
-        width: 150,
         tooltip: false
     },
     {
         props: 'tmCartypeProName',
         name: '车型项目',
         key: '车型项目',
-        width: 150,
         tooltip: false
     },
     {
@@ -65,7 +63,6 @@ export const investmentListTitle = [
         props: 'linieName',
         name: 'Linie',
         key: 'Linie',
-        width: 100,
         tooltip: false
     },
     {

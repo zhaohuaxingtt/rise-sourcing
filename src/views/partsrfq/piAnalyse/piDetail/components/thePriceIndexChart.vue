@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="the-price-chart">
     <div class="header-box">
       <div class="title">
         {{ language('PI.PIJIAGEFENXI', 'Price Index价格分析') }}
@@ -142,6 +142,27 @@ export default {
       const option = {
         tooltip: {
           trigger: 'axis',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          formatter: (obj) => {
+            const titleDiv = `<div class="tooltipText">${obj[0].name}</div>`;
+            const contentDiv = [];
+            obj.map(item => {
+              const itemDiv = `<div>
+              <span class="tooltipText">${item.seriesName}：</span>
+              <span class="tooltipText">幅度</span>
+              <span class="tooltipText">${item.value}，</span>
+              <span class="tooltipText">值</span>
+              <span class="tooltipText">${item.value}</span>
+              </div>`;
+              contentDiv.push(itemDiv);
+            });
+            return `
+                <div class="tooltipContainer">
+                 ${titleDiv}
+                 ${contentDiv.join('')}
+                </div>
+            `;
+          },
         },
         grid: {
           top: 30,
@@ -232,7 +253,7 @@ export default {
             padding: [4, 12],
             backgroundColor,
             color: '#fff',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
           },
         },
         show: true,
@@ -273,94 +294,109 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.header-box {
-  display: flex;
-  justify-content: space-between;
-  font-size: 16px;
-  font-weight: bold;
-  color: #000000;
-
-  .title {
+<style lang="scss">
+.the-price-chart {
+  .header-box {
     display: flex;
-    align-items: center;
-  }
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
 
-  .select-box {
-    display: flex;
-    align-items: center;
-
-    .text {
-      font-size: 16px;
-      margin-right: 40px;
-      color: #000000;
-    }
-
-    .select-item {
+    .title {
       display: flex;
       align-items: center;
-
-      .label {
-        white-space: nowrap;
-        font-size: 16px;
-        color: #000000;
-        margin-right: 20px;
-      }
     }
-  }
-}
 
-.chartBox {
-  display: flex;
-
-  .theChart {
-    flex: 1;
-    margin-right: 20px;
-  }
-
-  .legendBox {
-    width: 200px;
-    margin-top: 30px;
-
-    .legendItem {
+    .select-box {
       display: flex;
       align-items: center;
-
-      .shape {
-        display: flex;
-        align-items: center;
-        width: 20px;
-        height: 8px;
-        margin-right: 10px;
-
-        .doubleBox {
-          width: 9px;
-          height: 3px;
-          margin-right: 2px;
-          background: #C62928;
-        }
-
-        .dotBox {
-          width: 3px;
-          height: 3px;
-          margin-right: 1.25px;
-          background: #C62928;
-        }
-      }
-
-      .rect {
-        background: #C62928;
-      }
 
       .text {
-        white-space: nowrap;
-        font-size: 12px;
-        color: #41434A;
+        font-size: 16px;
+        margin-right: 40px;
+        color: #000000;
+      }
+
+      .select-item {
+        display: flex;
+        align-items: center;
+
+        .label {
+          white-space: nowrap;
+          font-size: 16px;
+          color: #000000;
+          margin-right: 20px;
+        }
       }
     }
+  }
 
-    .legendItem + .legendItem {
-      margin-top: 10px;
+  .chartBox {
+    display: flex;
+
+    .theChart {
+      flex: 1;
+      margin-right: 20px;
+    }
+
+    .legendBox {
+      width: 200px;
+      margin-top: 30px;
+
+      .legendItem {
+        display: flex;
+        align-items: center;
+
+        .shape {
+          display: flex;
+          align-items: center;
+          width: 20px;
+          height: 8px;
+          margin-right: 10px;
+
+          .doubleBox {
+            width: 9px;
+            height: 3px;
+            margin-right: 2px;
+            background: #C62928;
+          }
+
+          .dotBox {
+            width: 3px;
+            height: 3px;
+            margin-right: 1.25px;
+            background: #C62928;
+          }
+        }
+
+        .rect {
+          background: #C62928;
+        }
+
+        .text {
+          white-space: nowrap;
+          font-size: 12px;
+          color: #41434A;
+        }
+      }
+
+      .legendItem + .legendItem {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .tooltipContainer {
+    box-sizing: border-box;
+    padding: 5px;
+    background: #FFFFFF;
+    box-shadow: 0 3px 10px rgba(27, 29, 33, 0.16);
+    border-radius: 5px;
+
+    .tooltipText {
+      font-size: 14px;
+      color: #000000;
     }
   }
 }

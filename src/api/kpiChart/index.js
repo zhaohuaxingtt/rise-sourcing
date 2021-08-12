@@ -145,3 +145,13 @@ export function downloadTemplate(data) {
     data: data
   })
 }
+
+// 上传模板
+export function uploadTemplate(data) {
+  return requst({
+    url: '/web/kpi/template/upload',
+    method: 'POST',
+    // responseType: 'blob',
+    data: data
+  })
+}
