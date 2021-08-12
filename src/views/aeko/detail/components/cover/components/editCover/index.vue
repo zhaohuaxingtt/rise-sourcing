@@ -219,7 +219,6 @@ export default {
       },
       
       handleNumber(val, row, props) {
-        console.log(val,'handleNumber');
         if(props == 'sendCycle'){
            this.$set(row, props, numberProcessor(val, 0));
         }else{
