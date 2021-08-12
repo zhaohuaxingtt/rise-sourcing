@@ -10,30 +10,46 @@
             routerPage
             class="margin-right20"
         />
-        <slot name="extralButton" ></slot>
+        <iButton>{{ language('PLGLZS.CAILIAOZU', '材料组') }}</iButton>
+        <iButton @click="openReportInventoryDialog">{{ language('PLGLZS.BAOGAOQINGDAN', '报告清单') }}</iButton>
+        <slot name="extralButton"></slot>
       </div>
       <logButton class="logButton"/>
+
+      <!--      报告清单-->
+      <reportInventory
+          v-model="reportInventoryDialog"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import {iNavMvp } from 'rise'
-import { tabRouterList, categoryManagementAssistantList } from '../../data'
-import logButton from '@/components/logButton'
+import {iNavMvp, iButton} from 'rise';
+import {tabRouterList, categoryManagementAssistantList} from '../../data';
+import reportInventory from '../reportInventory';
+import logButton from '@/components/logButton';
 
 export default {
   components: {
     iNavMvp,
-    logButton
+    iButton,
+    reportInventory,
+    logButton,
   },
-  data () {
+  data() {
     return {
       tabRouterList,
-      categoryManagementAssistantList
-    }
-  }
-}
+      categoryManagementAssistantList,
+      reportInventoryDialog: false,
+    };
+  },
+  methods: {
+    openReportInventoryDialog() {
+      this.reportInventoryDialog = true;
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

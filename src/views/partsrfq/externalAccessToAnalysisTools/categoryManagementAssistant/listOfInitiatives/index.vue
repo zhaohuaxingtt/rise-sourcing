@@ -2,8 +2,6 @@
   <iPage v-loading="pageLoading">
     <headerNav>
       <template #extralButton>
-        <iButton>{{ language('PLGLZS.CAILIAOZU', '材料组') }}</iButton>
-        <iButton>{{ language('PLGLZS.BAOGAOQINGDAN', '报告清单') }}</iButton>
         <template v-if="!editStatus">
           <iButton @click="handleEdit">{{ language('PLGLZS.BIANJI', '编辑') }}</iButton>
         </template>
