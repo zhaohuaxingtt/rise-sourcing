@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-12 11:05:25
+ * @LastEditTime: 2021-08-12 11:19:06
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\categoryGroup.vue
@@ -67,7 +67,10 @@ export default {
     },
     handleSelect(item) {
       this.categoryCode = item.categoryCode
-    }
+    },
+     clearDiolog() {
+      this.$emit('input', false);
+    },
   }
 };
 </script>
