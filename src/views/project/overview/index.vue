@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-12 15:19:43
+ * @LastEditTime: 2021-08-12 15:39:27
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
@@ -140,13 +140,13 @@ export default {
     handleSure() {
       this.tableData = this.tableDataTemp.filter(item => {
         let result = true
-        if (this.searchParams.carProject) {
+        if (this.searchParams.carProject && result === true) {
           result = item.id === this.searchParams.carProject
         }
-        if (this.searchParams.buyerName) {
+        if (this.searchParams.buyerName && result === true) {
           result = item.projectPurchaser.includes(this.searchParams.buyerName)
         }
-        if (this.searchParams.sopDate) {
+        if (this.searchParams.sopDate && result === true) {
           result = moment(item.sopDate).isBefore(moment(this.searchParams.sopDate[1]).add(1, 'days')) && moment(item.sopDate).isAfter(moment(this.searchParams.sopDate[0]).subtract(1, 'days'))
         }
         return result
