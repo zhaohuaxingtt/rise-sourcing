@@ -82,8 +82,8 @@
         <!-- 分页 -->
         <iPagination
           v-update
-          @size-change="handleSizeChange($event, getList)"
-          @current-change="handleCurrentChange($event, getList)"
+          @size-change="handleSizeChange($event, init)"
+          @current-change="handleCurrentChange($event, init)"
           background
           :current-page="page.currPage"
           :page-sizes="page.pageSizes"
