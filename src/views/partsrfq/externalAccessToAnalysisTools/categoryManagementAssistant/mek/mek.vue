@@ -113,7 +113,7 @@
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount" />
 
       <reportPreview :visible="reportVisible" :reportUrl="reportUrl" :title="reportTitle" :key="reportKey" @handleCloseReport="handleCloseReport" />
-      <addDialog v-model="addDialog" />
+      <addDialog @add="add" v-model="addDialog" />
     </iCard>
   </div>
 </template>
@@ -129,12 +129,13 @@ import {
   icon,
   iMessage,
 } from "rise";
-import { getList, update } from "@/api/partsrfq/mek/index.js";
+import { getList, update, add } from "@/api/partsrfq/mek/index.js";
 import { pageMixins } from "@/utils/pageMixins";
+import resultMessageMixin from "@/utils/resultMessageMixin";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
 import addDialog from "./components/addDialog.vue";
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, resultMessageMixin],
   components: {
     iCard,
     iInput,
@@ -197,7 +198,26 @@ export default {
     },
   },
   methods: {
-
+    async add(params) {
+      let pms = {}
+      if (this.$store.state.rfq.entryStatus) {
+        pms.rfq = this.$store.state.rfq.rfqId
+      } else {
+        pms = {
+          ...params
+        }
+      }
+      const res = await add(pms)
+      this.resultMessage(res, () => {
+        this.$router.push({
+          path: "/sourcing/mek/mekDetails",
+          query: {
+            materialGroupCode: pms.materialGroupCode,
+            SchemeId: res.data,
+          },
+        })
+      })
+    },
     //表格序号函数
     // indexMethod (e) {
     //   const rows = [];
@@ -295,7 +315,11 @@ export default {
     },
     // 点击新建按钮
     handleAdd() {
-      this.addDialog = true
+      if (this.$store.state.rfq.entryStatus) {
+        this.add()
+      } else {
+        this.addDialog = true
+      }
     },
     // 点击删除按钮
     deleteBob() {
@@ -509,7 +533,7 @@ export default {
     cursor: pointer;
   }
 }
-::v-deep .el-table .cell{
+::v-deep .el-table .cell {
   text-align: center;
 }
 </style>

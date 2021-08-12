@@ -26,7 +26,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <iButton @click="handleSearchReset">{{language('TIANJIA','添加')}}</iButton>
+      <iButton @click="handleAdd">{{language('TIANJIA','添加')}}</iButton>
     </div>
   </iDialog>
 </template>
@@ -34,7 +34,6 @@
 <script>
 import { iSelect, iButton, iDialog } from 'rise'
 import { categoryList, carTypeList } from "@/api/partsrfq/mek/index.js";
-
 export default {
   components: {
     iSelect, iButton, iDialog
@@ -61,6 +60,22 @@ export default {
     this.categoryList()
   },
   methods: {
+    async handleAdd() {
+      const pms = {
+        isBindingRfq: !!this.$store.state.rfq.entryStatus,
+        materialGroupCode: '',
+        materialGroupId: '',
+        materialGroupName: '',
+      }
+      this.formGoup.materialGroupList.forEach(item => {
+        if (item.categoryCode === this.form.materialGroupCode) {
+          pms.materialGroupCode = item.categoryCode
+          pms.materialGroupId = item.categoryId
+          pms.materialGroupName = item.categoryName
+        }
+      })
+      this.$emit('add', pms)
+    },
     async handleCarType() {
       const res = await carTypeList({ materialGroupCode: this.form.materialGroupCode })
       this.formGoup.carTypeList = res.data
