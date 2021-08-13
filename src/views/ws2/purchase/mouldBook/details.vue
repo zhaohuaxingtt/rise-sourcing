@@ -342,14 +342,14 @@ export default {
 
     //  点击订单详情
     jumpDetails(){
-      iMessage.warn('功能开发中...');
-      // getOrderNumPermission().then(res => {
-      //   if(res.data){
-      //     //  ...
-      //   }else{
-      //     iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限'));
-      //   }
-      // })
+      getOrderNumPermission().then(res => {
+        if(res.data){
+          //  ...
+          iMessage.warn('功能开发中...');
+        }else{
+          iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限'));
+        }
+      })
     },
 
     selectTable(){

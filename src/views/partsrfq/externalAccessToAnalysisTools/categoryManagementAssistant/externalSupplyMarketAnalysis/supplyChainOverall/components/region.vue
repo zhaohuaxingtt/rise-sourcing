@@ -13,7 +13,7 @@
       </el-col>
       <el-col :span="20">
         <div class="title">{{language('DIQU','地区')}}</div>
-        <span>{{province}}</span>
+        <span>{{provinceZh}}</span>
       </el-col>
     </el-row>
 
@@ -29,7 +29,8 @@ export default {
   // import引入的组件需要注入到对象中才能使用
   components: { iCard, },
   props: {
-    object: { type: Object, default: {} }
+    object: { type: Object, default: {} },
+    provinceZh: { type: String, default: '' }
   },
   data() {
     // 这里存放数据
