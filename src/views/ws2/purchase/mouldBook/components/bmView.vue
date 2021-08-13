@@ -252,6 +252,7 @@ export default {
     },
 
     sure(){
+      this.page.currPage = 1;
       this.getTableList();
     },
 
