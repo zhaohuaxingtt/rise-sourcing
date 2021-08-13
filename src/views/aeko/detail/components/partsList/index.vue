@@ -45,7 +45,7 @@
                 class="table"
                 index
                 :lang="true"
-                 v-permissionArr="['AEKO_AEKODETAIL_PARTLIST_TABLE']"
+                 v-permissionArr="['AEKO_AEKODETAIL_PARTLIST_TABLE','AEKO_DETAIL_TAB_LINGJIANQINGDAN_TABLE']"
                 :selection="isAekoManager || isCommodityCoordinator"
                 :tableData="tableListData"
                 :tableTitle="tableTitle"

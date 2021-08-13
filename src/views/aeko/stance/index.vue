@@ -116,7 +116,7 @@ import {
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
-import { TAB } from '../data';
+import { TAB,filterRole } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import filesListDialog from '../manage/components/filesListDialog'
 import {
@@ -186,18 +186,15 @@ export default {
       this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
       this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
 
-      const {navList,$route} = this;
-      const { name } = $route;
-      if(this.isAekoManager || this.isCommodityCoordinator){
-        this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_STANCE');
-        if(name == 'aekoStanceList'){
-           this.$router.push({
-              path:'/aeko/managelist'
-          });
-        }
-      }else{
-        this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_MANAGE');
-      }
+      const { isAekoManager,isCommodityCoordinator,isLinie } = this;
+      const role = {
+        isAekoManager,
+        isCommodityCoordinator,
+        isLinie,
+      };
+      this.navList = filterRole(role);
+
+
     },
     methods:{
       // 重置

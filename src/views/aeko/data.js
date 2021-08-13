@@ -13,6 +13,7 @@ export const TAB = [
         activePath: "/managelist",
         key: "LK_AEKOGUANLI",
         permissionKey:'AEKO_MANAGE',
+        role:['isAekoManager','isCommodityCoordinator'],
     },
     {
         value: 2,
@@ -22,6 +23,7 @@ export const TAB = [
         activePath: "/stancelist",
         key: "LK_AEKOBIAOTAI",
         permissionKey:'AEKO_STANCE',
+        role:['isLinie'],
     },
     {
         value: 3,
@@ -29,5 +31,20 @@ export const TAB = [
         message: 0,
         key: "LK_AEKOCHAKAN",
         permissionKey:'AEKO_CHECK',
+        role:['isAekoManager','isCommodityCoordinator','isLinie'],
     },
 ]
+
+export const filterRole = function(role = {}){
+    console.log(role);
+    TAB.map((item)=>{
+        for(let key  in role){
+            if(role[key]) item.show = item.role.includes(key);
+            
+        }
+    })
+    const filterTab = TAB.filter((item)=>item.show);
+    return filterTab
+}
+
+
