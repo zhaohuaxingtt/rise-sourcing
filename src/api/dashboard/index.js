@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-09 17:56:50
- * @LastEditTime: 2021-08-11 13:55:14
+ * @LastEditTime: 2021-08-13 10:44:06
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/api/dashboard/index.js
@@ -18,18 +18,28 @@ export function sourcingOverview() {
     method: "GET",
   })
 }
-// 获取
-export function rfqTimeOverview() {
+// 获取状态跟踪详情
+export function rfqTimeOverview(data) {
   return requst({
     url: `/overview/rfqTimeOverview`,
-    method: "GET",
+    method: "POST",
+    data
   })
 }
 
-// 获取
+// 获取获取状态跟踪报表
 export function powerBiService() {
   return requst({
     url: `/overview/powerBiService`,
     method: "GET",
+  })
+}
+
+// 获取状态跟踪详情筛选条件
+export function findBySearchesList(data) {
+  return requst({
+    url: `/rfqs/findBySearchesList`,
+    method: "POST",
+    data
   })
 }
