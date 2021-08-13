@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-13 10:36:25
+ * @LastEditTime: 2021-08-13 11:08:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -76,6 +76,10 @@ export default {
     record,
   },
   created() {
+    this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
+    this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
+    this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+
     this.aekoInfo = {
       requirementAekoId: this.$route.query.requirementAekoId
     }
@@ -92,12 +96,10 @@ export default {
     this.getBbasicInfo();
   },
   computed: {
-    // eslint-disable-next-line no-undef
-    ...Vuex.mapGetters([
-        "isAekoManager", // Aeko管理员
-        "isCommodityCoordinator", // 科室协调员
-        "isLinie", // 专业采购员
-    ]),
+    //eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      permission: state => state.permission.permission
+    }),
   },
   data() {
     return {
@@ -116,6 +118,9 @@ export default {
         { label: "审批附件", name: "attachment", key: "SHENPIFUJIAN", permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_ATTACHMENT", components: ['attachment'] },
         { label: "审批记录", name: "record", key: "SHENPIFUJIAN", permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_RECORD", components: ['record'] }
       ],
+      isAekoManager: false,
+      isCommodityCoordinator: false,
+      isLinie: false
     }
   },
   methods: {
