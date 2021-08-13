@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-13 02:50:03
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-13 12:56:44
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
+ * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
 <template>
   <div class="contentDeclare">

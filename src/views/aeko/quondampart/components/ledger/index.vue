@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-13 03:09:56
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-13 12:57:57
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -135,6 +135,8 @@ export default {
       handler(data) {
         if (isEqual(data, ledgerQueryForm)) {
           this.objectAekoPartId = this.$route.query.objectAekoPartId
+        } else {
+          this.objectAekoPartId = ""
         }
       },
       deep: true

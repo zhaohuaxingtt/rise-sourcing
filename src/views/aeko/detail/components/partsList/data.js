@@ -4,13 +4,13 @@
  * @Description: ；零件清单相关data
  */
 export const SearchList = [
-  {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO'},
-  {props:'partNameZh',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG'},
-  {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',selectOption:'cartypeCode',showCode:'Aeko',multiple:true,filterable:true},
-  {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNumList',filterable:true,multiple:true,},
-  {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',selectOption:'buyerName',noShowAll:true,filterable:true,clearable:true},
-  {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand'},
-  {props:'cartype',label:'车型',type:'select',labelKey:'LK_AEKO_CHEXING',selectOption:'cartype',multiple:true,showCode:'AeA',filterable:true},
+  {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_PARTNUM'},
+  {props:'partNameZh',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_PARTNAME'},
+  {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_CARTYPECODE',selectOption:'cartypeCode',showCode:'Aeko',multiple:true,filterable:true},
+  {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNumList',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_LINIEDEP',filterable:true,multiple:true,},
+  {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_BUYERNAME',selectOption:'buyerName',noShowAll:true,filterable:true,clearable:true},
+  {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_BRAND',selectOption:'brand'},
+  {props:'cartype',label:'车型',type:'select',labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_CARTYPE',selectOption:'cartype',multiple:true,showCode:'AeA',filterable:true},
 ]
 
 

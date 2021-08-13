@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-13 02:25:46
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-13 12:55:38
+ * @LastEditors: Luoshuang
  * @Description: 自定义指令文件。
- * @FilePath: \rise\src\utils\mydirect.js
+ * @FilePath: \front-web\src\utils\mydirect.js
  */
 
 import Vue from 'vue';
