@@ -104,13 +104,19 @@ export default {
       this.getTableList()
     },
     async getTableList() {
-      const pms = {
-        ...this.form,
-        categoryCode: this.$route.query.categoryCode,
-        vwModelCodes: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || []
+      try {
+        this.tableLoading = true
+        const pms = {
+          ...this.form,
+          categoryCode: this.$route.query.categoryCode || '',
+          vwModelCodes: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || []
+        }
+        const res = await partNumList(pms)
+        this.tableListData = res.data
+        this.tableLoading = false
+      } catch (error) {
+        this.tableLoading = false
       }
-      const res = await partNumList(pms)
-      this.tableListData = res.data
     },
   }
 }
