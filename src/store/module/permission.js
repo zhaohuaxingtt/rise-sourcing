@@ -1,13 +1,12 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-02 19:34:47
+ * @LastEditTime: 2021-08-13 11:06:35
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
  */
 import {getUserInfoByToken,getSystemMeun} from '@/api/usercenter'
-import { permissionUserIdMap } from "@/config"
 
 const routerLayout = ()=> import('@/layout/default.vue')
 const getVuerouter = function(router){
@@ -134,9 +133,6 @@ const actions = {
   }
 };
 const getters = {
-  isAekoManager: (state) => permissionUserIdMap.AEKO_MANAGER.has(state.userInfo.id), // Aeko管理员
-  isCommodityCoordinator: (state) => permissionUserIdMap.COMMODITY_COORDINATOR.has(state.userInfo.id), // 科室协调员
-  isLinie: (state) => permissionUserIdMap.LINIE.has(state.userInfo.id), // 专业采购员
 };
 export default {
   state,
