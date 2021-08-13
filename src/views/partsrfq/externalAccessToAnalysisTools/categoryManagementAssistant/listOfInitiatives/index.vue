@@ -1,6 +1,6 @@
 <template>
   <iPage v-loading="pageLoading">
-    <headerNav>
+    <headerNav ref="headerNav">
       <template #extralButton>
         <template v-if="!editStatus">
           <iButton @click="handleEdit">{{ language('PLGLZS.BIANJI', '编辑') }}</iButton>
@@ -12,7 +12,7 @@
         <iButton @click="handleExport" :loading="exportButtonLoading">{{ language('PLGLZS.DAOCHU', '导出') }}</iButton>
       </template>
     </headerNav>
-    <div id="container">
+    <div id="container" @click="jump">
       <el-row :gutter="20">
         <el-col :span="8" v-for="item of treeData" :key="item.id">
           <div class="header-title"> {{ setName(item) }}</div>
@@ -215,9 +215,9 @@ export default {
         level1Array.map(level1Item => {
           if (level1Item.name === item) {
             level1Item.children.map(level2Item => {
-              level2Item.isEdit && this.treeDataSelect[item].push(level2Item.name);
+              level2Item.effectFlag === 1 && this.treeDataSelect[item].push(level2Item.name);
               level2Item.children && level2Item.children.map(level3Item => {
-                level3Item.isEdit && this.treeDataSelect[item].push(level3Item.name);
+                level3Item.effectFlag === 1 && this.treeDataSelect[item].push(level3Item.name);
               });
             });
           }
@@ -250,6 +250,11 @@ export default {
         idEle: 'container',
         pdfName: 'overview',
       });
+    },
+    jump() {
+      if (!this.$store.state.rfq.categoryCode) {
+        this.$refs.headerNav.openCatecory();
+      }
     },
   },
   watch: {
