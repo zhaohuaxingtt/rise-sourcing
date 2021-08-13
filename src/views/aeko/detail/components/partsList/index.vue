@@ -348,7 +348,7 @@ export default {
                 if(code ==200 ){
                     data.map((item)=>{
                         item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                        item.code = item.deptNum;
+                        item.code = item.id;
                     })
                     this.selectOptions.linieDeptNumList = data;
                 }else{
@@ -440,7 +440,7 @@ export default {
                         }else{ // 采购员分派 
                             const arr = selectItems.filter((item)=>item.isOperate);
                             if(arr.length){
-                                const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGYIFENPAICAIGOUYUANQINGQUERENSHIFOUCHONGXINFENPAI','行已分派采购员，请确认是否重新分派');
+                                const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGLINGJIANYIBIAOTAILINIEWUFAXIUGAI','行零件已表态,linie无法修改');
                                 return iMessage.warn(tips);
                             }else{
                                 this.assignVisible = true;
