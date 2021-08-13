@@ -45,7 +45,7 @@
                 </div>
                 <theRemark :children="level2Children" :editStatus="editStatus" :exportStatus="exportStatus"/>
                 <iInput
-                    v-if="editStatus && (level2Children.name === treeDataSelect[level1Children.name])"
+                    v-if="editStatus && ( treeDataSelect[level1Children.name].includes(level2Children.name))"
                     v-model="form[level2Children.id]"
                     type="textarea"
                     :rows="2"
@@ -73,7 +73,7 @@
                     </div>
                     <theRemark :children="level3Children" :editStatus="editStatus" :exportStatus="exportStatus"/>
                     <iInput
-                        v-if="editStatus && (level3Children.name === treeDataSelect[level1Children.name])"
+                        v-if="editStatus && (treeDataSelect[level1Children.name].includes(level3Children.name))"
                         v-model="form[level3Children.id]"
                         type="textarea"
                         :rows="2"
@@ -176,7 +176,7 @@ export default {
         const obj = {};
         this.treeDataSelect = res.data.map(item => {
           item.children.map(itemChildren => {
-            obj[itemChildren.name] = '';
+            obj[itemChildren.name] = [];
           });
         });
         const formData = {};
@@ -204,7 +204,7 @@ export default {
       return this.$i18n.locale === 'zh' ? item.name : item.nameEn;
     },
     handleSelect({props, value}) {
-      this.treeDataSelect[props.name] = value.name;
+      this.treeDataSelect[props.name].push(value.name);
     },
     notHaveChildren(item) {
       return item.children === null;
