@@ -25,7 +25,7 @@
                         :value="item.code">
                     </el-option>
                 </iSelect> 
-                <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model="searchParams[item.props]"></iInput> 
+                <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model.trim="searchParams[item.props]"></iInput> 
             </el-form-item>
         </el-form>
     </iSearch>
