@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-10 16:37:11
+ * @LastEditTime: 2021-08-12 20:57:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -257,13 +257,13 @@ export default {
     this.getDictByCode()
     this.procureFactorySelectVo()
 
-    if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+    if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
       try {
-        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
 
         this.form = aekoConatentDeclareParams.form
-        this.page.currPage = this.form.currPage
-        this.page.pageSize = this.form.pageSize
+        // this.page.currPage = aekoConatentDeclareParams.currPage
+        // this.page.pageSize = aekoConatentDeclareParams.pageSize
       } catch(e) {
         console.error(e)
       }
@@ -275,8 +275,8 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.carTypeProjectOptions = 
-            Array.isArray(res.data.data) ?
-            res.data.data.map(item => ({
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
               key: item.code,
               label: item.name,
               value: item.code
@@ -393,7 +393,7 @@ export default {
         }
       })
     
-      sessionStorage.setItem("aekoConatentDeclareParams", JSON.stringify({
+      sessionStorage.setItem(`aekoConatentDeclareParams_${ this.aekoInfo.requirementAekoId }`, JSON.stringify({
         form: this.form,
         requirementAekoId: this.aekoInfo.requirementAekoId,
         currPage: this.page.currPage,
@@ -547,6 +547,10 @@ export default {
   }
 
   ::v-deep .el-input__suffix {
+    .el-input__suffix-inner {
+      height: 100% !important;
+    }
+
     .inputSearchIcon {
       display: inline-block;
       width: 30px;

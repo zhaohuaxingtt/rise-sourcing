@@ -425,6 +425,7 @@ export default {
             cancelButtonText: this.language('nominationLanguage.No','否'),
           }
           ).then(()=>{
+            this.$refs['aekoUpload'].$refs['uploadRef'].$refs['upload-inner'].handleClick()
             console.log('是')
           }).catch(()=>{
             console.log('否')
@@ -507,6 +508,7 @@ export default {
           if(code!=200){
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }else{
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getList();
           }
         }).catch((e)=>{

@@ -45,7 +45,7 @@ import {
   iButton,
   icon,
   iSelect,
-} from "@/components";
+} from 'rise';
 import logButton from '@/components/logButton'
 import { applyType,applyStep } from './data'
 export default {

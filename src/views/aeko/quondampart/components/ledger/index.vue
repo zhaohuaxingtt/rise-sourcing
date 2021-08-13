@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-10 16:43:47
+ * @LastEditTime: 2021-08-11 10:53:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -251,10 +251,30 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
-          this.$router.replace({
-            path: "/aeko/aekodetail",
-            query: {}
-          })
+          if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+            try {
+              const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+
+              this.$router.replace({
+                path: "/aeko/aekodetail",
+                query: {
+                  requirementAekoId: aekoConatentDeclareParams.requirementAekoId
+                }
+              })
+            } catch(e) {
+              console.error(e)
+
+              this.$router.replace({
+                path: "/aeko/managelist",
+                query: {}
+              })
+            }
+          } else {
+            this.$router.replace({
+              path: "/aeko/managelist",
+              query: {}
+            })
+          }
         } else {
           iMessage.error(message)
         }
@@ -286,6 +306,10 @@ export default {
   }
 
   ::v-deep .el-input__suffix {
+    .el-input__suffix-inner {
+      height: 100% !important;
+    }
+    
     .inputSearchIcon {
       display: inline-block;
       width: 30px;

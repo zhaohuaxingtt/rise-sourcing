@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 16:12:47
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
@@ -115,7 +115,7 @@ export default {
       this.partsDialog = true
     },
     async getTableList(data) {
-      if (!!data) {
+      if (data) {
         this.carType = data.carType
       }
       this.activityTabIndex = 'unSelect'

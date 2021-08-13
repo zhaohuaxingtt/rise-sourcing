@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton, iInput } from '@/components'
+import { iPagination, iDialog, iButton, iInput } from 'rise'
 import tableList from './tableList'
 import { mouldTitle as tableTitle, mokeMouldData } from './data'
 import { pageMixins } from '@/utils/pageMixins'

@@ -20,13 +20,13 @@
         </iSelect>
       </el-form-item>
       <el-form-item :label="language('QINGXUANZHEMUBIAOCHEXING','请选择目标车型')">
-        <iSelect filterable :placeholder="language('QINGSHURUMUBIAOCHEXINGGONGCHANGXINGXI','请输入目标车型/工厂信息')" v-model="form.carType">
-          <el-option v-for="(item,index) in formGoup.carTypeList" :key="index" :label="item.modelNameZh	" :value="item.vwModelCode"></el-option>
+        <iSelect filterable :placeholder="language('QINGSHURUMUBIAOCHEXINGGONGCHANGXINGXI','请输入目标车型/工厂信息')" v-model="form.targetMotor">
+          <el-option v-for="(item,index) in formGoup.carTypeList" :key="index" :label="item.modelNameZh	" :value="item.id"></el-option>
         </iSelect>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <iButton @click="handleSearchReset">{{language('TIANJIA','添加')}}</iButton>
+      <iButton @click="handleAdd">{{language('TIANJIA','添加')}}</iButton>
     </div>
   </iDialog>
 </template>
@@ -34,7 +34,6 @@
 <script>
 import { iSelect, iButton, iDialog } from 'rise'
 import { categoryList, carTypeList } from "@/api/partsrfq/mek/index.js";
-
 export default {
   components: {
     iSelect, iButton, iDialog
@@ -46,7 +45,7 @@ export default {
     return {
       form: {
         materialGroupCode: '',
-        carType: ""
+        targetMotor: ""
       },
       categoryLoading: false,
       carTypeLoading: false,
@@ -61,6 +60,23 @@ export default {
     this.categoryList()
   },
   methods: {
+    async handleAdd() {
+      const pms = {
+        isBindingRfq: !!this.$store.state.rfq.entryStatus,
+        materialGroupCode: '',
+        materialGroupId: '',
+        materialGroupName: '',
+        targetMotor: this.form.targetMotor
+      }
+      this.formGoup.materialGroupList.forEach(item => {
+        if (item.categoryCode === this.form.materialGroupCode) {
+          pms.materialGroupCode = item.categoryCode
+          pms.materialGroupId = item.categoryId
+          pms.materialGroupName = item.categoryName
+        }
+      })
+      this.$emit('add', pms)
+    },
     async handleCarType() {
       const res = await carTypeList({ materialGroupCode: this.form.materialGroupCode })
       this.formGoup.carTypeList = res.data

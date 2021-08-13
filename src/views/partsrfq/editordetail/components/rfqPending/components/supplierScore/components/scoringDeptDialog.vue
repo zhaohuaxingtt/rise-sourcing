@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { iDialog, iSelect, iButton, iMessage } from '@/components'
+import { iDialog, iSelect, iButton, iMessage } from 'rise'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { scoringDeptTitle as tableTitle } from './data'
 import { getAllScoringDepartmentInfo, getRaterAndCoordinatorByDepartmentId, setRaterAndCoordinatorByDepartmentId, findRateDeptInfo } from '@/api/partsrfq/editordetail'

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-10 10:44:22
+ * @LastEditTime: 2021-08-12 16:08:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -28,7 +28,7 @@
     </iCard>
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
       <!-- language(tab.key, tab.label) -->
-      <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="tab.label" :name="tab.name">
+      <el-tab-pane lazy v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="tab.label" :name="tab.name">
         <template v-if="currentTab==tab.name">
           <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :aekoInfo="aekoInfo" @getBbasicInfo="getBbasicInfo"/>
         </template>
@@ -80,9 +80,9 @@ export default {
       requirementAekoId: this.$route.query.requirementAekoId
     }
     
-    if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+    if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
       try {
-        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+        const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
         this.currentTab = aekoConatentDeclareParams.currentTab
       } catch(e) {
         console.error(e)

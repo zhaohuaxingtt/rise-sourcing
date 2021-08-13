@@ -1,10 +1,10 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-08-10 13:57:36
+ * @LastEditTime: 2021-08-12 21:56:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
+ * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisTable.vue
 -->
 <template>
   <div class="vpMainBox">

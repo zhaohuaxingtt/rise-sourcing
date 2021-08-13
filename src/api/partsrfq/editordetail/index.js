@@ -302,7 +302,7 @@ export function negoAnalysisSummaryGroupDelete(data){
 // 获取对应供应商的零件清单
 export function getPartsBySupplier(params) {
     return requst({
-        url: `/partSupplier/List`,
+        url: `/km/page/suppliers`,
         method: 'POST',
         data: params
     })
@@ -311,7 +311,7 @@ export function getPartsBySupplier(params) {
 // 发送KM
 export function sendKm(params) {
     return requst({
-        url: `/sendKm`,
+        url: `/km/send`,
         method: 'POST',
         data: params
     })
@@ -384,5 +384,41 @@ export function getAllParts(params) {
     return requst({
         url: `/supplier/${ params.rfqId }/${ params.supplierId }/getAllParts`,
         method: 'GET'
+    })
+}
+
+// 获取未选择的BDL列表
+export function unselectRfqBdlPage(params) {
+    return requst({
+        url: `/rfqs/unselectRfqBdlPage`,
+        method: 'POST',
+        data: params
+    })
+}
+
+// 添加BDL
+export function addRfqBdl(params) {
+    return requst({
+        url: `/rfqs/addRfqBdl`,
+        method: 'POST',
+        data: params
+    })
+}
+
+// 获取已选择的BDL列表
+export function rfqBdlPage(params) {
+    return requst({
+        url: `/rfqs/rfqBdlPage`,
+        method: 'POST',
+        data: params
+    })
+}
+
+// 删除BDL
+export function deleteRfqBdl(params) {
+    return requst({
+        url: `/rfqs/deleteRfqBdl`,
+        method: 'POST',
+        data: params
     })
 }

@@ -48,7 +48,7 @@ import {
 } from 'rise'
 import {
   iTableList
-} from "@/components"
+} from '@/components'
 import {budgetApplyAmountList, form} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";

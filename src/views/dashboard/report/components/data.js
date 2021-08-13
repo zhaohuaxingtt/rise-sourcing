@@ -1,7 +1,7 @@
 /*
  * @Author: hoajiang
  * @Date: 2021-08-05 10:36:42
- * @LastEditTime: 2021-08-06 16:47:36
+ * @LastEditTime: 2021-08-11 15:30:22
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览配置
  * @FilePath: /front-web/src/views/dashboard/components/data.js
@@ -26,11 +26,11 @@ export const TAB = [
     key: "XUANYUANCAIDAN"
   },
   {
-    value: 1,
+    value: 2,
     name: "报表管理",
     message: 0,
-    url: "/sourcing/dashboard/report",
-    activePath: "dashboard",
+    url: "/sourcing/reportmgmt/details",
+    activePath: "reportmgmt",
     key: "LK_BAOBIAOGUANLI"
   },
 ]
@@ -40,16 +40,16 @@ export const MENU = [
     value: 1,
     name: '状态跟踪报表',
     message: 0,
-    url: '/sourcing/partsign',
-    activePath: 'partsign',
+    url: '/sourcing/reportmgmt/report',
+    activePath: 'reportmgmt/report',
     key: 'LK_ZHUANGTAIGENZHONGBAOBIAO'
   },
   {
-    value: 1,
+    value: 2,
     name: '状态跟踪详情',
     message: 0,
-    url: '/sourcing/dashboard/report',
-    activePath: 'dashboard',
+    url: '/sourcing/reportmgmt/details',
+    activePath: 'reportmgmt/details',
     key: 'LK_ZHUANGTAIGENZHONGXIANGQING'
   },
 ]

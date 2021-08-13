@@ -206,19 +206,15 @@ export default {
                 const { radioType } = this;
                 if(radioType == 1){ // 预设
 
-                    // 批量分派时若勾选了无法分派的需要过滤掉已分派的
-                    const arr = selectItems.filter((item)=>!item.linieDeptNum);
-
-
                     // 判断勾选项是否无预设科室 若没有弹出提示
-                    const refferArr = arr.filter((item)=>!item.refferenceSmtNum);
+                    const refferArr = selectItems.filter((item)=>!item.refferenceSmtNum);
 
                     if(refferArr.length){
                         const str = refferArr.map((item)=>item.partNum).toString();
                         return iMessage.warn(str+this.language('LK_AEKO_LINGJIANWUYUSHEKESHIQINGCHONGXINXUANZE','零件无预设科室，请重新选择!'))
                     }
                     
-                    arr.map((item)=>{
+                    selectItems.map((item)=>{
                         data.push({
                             requirementAekoId,
                             aekoPartId:item.aekoPartId,
@@ -272,12 +268,8 @@ export default {
                 const { radioType } = this;
                 if(radioType == 1){ // 预设
 
-                    // 批量分派时若勾选了无法分派的需要过滤掉已分派的
-                    const arr = selectItems.filter((item)=>!item.isOperate);
-
-
                     // 判断勾选项是否无预设采购员 若没有弹出提示
-                    const refferArr = arr.filter((item)=>!item.refferenceByuerId);
+                    const refferArr = selectItems.filter((item)=>!item.refferenceByuerId);
 
 
                     if(refferArr.length){
@@ -285,7 +277,7 @@ export default {
                         return iMessage.warn(str+this.language('LK_AEKO_LINGJIANWUYUSHECAIGOUYUANQINGCHONGXINXUANZE','零件无预设采购员，请重新选择!'))
                     }
 
-                    arr.map((item)=>{
+                    selectItems.map((item)=>{
                         data.push({
                             requirementAekoId,
                             aekoPartId:item.aekoPartId,

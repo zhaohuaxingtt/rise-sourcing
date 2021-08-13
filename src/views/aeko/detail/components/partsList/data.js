@@ -7,10 +7,10 @@ export const SearchList = [
   {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO'},
   {props:'partNameZh',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG'},
   {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',selectOption:'cartypeCode',showCode:'Aeko',multiple:true,filterable:true},
-  {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNumList',filterable:true,clearable:true,multiple:true,},
+  {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNumList',filterable:true,multiple:true,},
   {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',selectOption:'buyerName',noShowAll:true,filterable:true,clearable:true},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand'},
-  {props:'cartype',label:'车型',type:'select',labelKey:'LK_AEKO_CHEXING',selectOption:'cartype',multiple:true,clearable:true,showCode:'AeA',filterable:true},
+  {props:'cartype',label:'车型',type:'select',labelKey:'LK_AEKO_CHEXING',selectOption:'cartype',multiple:true,showCode:'AeA',filterable:true},
 ]
 
 
@@ -53,5 +53,5 @@ export const linieTableTitle = [
   { props: "carTypeZh", name: "涉及⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true,width:130 },
   { props: "linieDeptName", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
   { props: "buyerName", name: "Linie", key: "LK_AEKO_LINIE", tooltip: true },
-  { props: "aekoPartStatus", name: "内容状态", key: "LK_AEKO_NEIRONGZHUANGTAI", tooltip: true },
+  { props: "aekoPartStatusDesc", name: "内容状态", key: "LK_AEKO_NEIRONGZHUANGTAI", tooltip: true },
 ]

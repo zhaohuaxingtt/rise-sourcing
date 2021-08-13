@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect } from '@/components'
+import { iDialog, iButton, iSelect } from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 

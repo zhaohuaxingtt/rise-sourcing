@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-07-09 15:33:09
+ * @LastEditTime: 2021-08-12 11:12:19
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -74,11 +74,11 @@
 </template>
 <script>
 import { splitPurchTitle } from "../data";
-import { iDialog,iButton,iPagination,iInput,iMessage } from '@/components'
+import { iDialog,iButton,iPagination,iInput,iMessage } from 'rise'
 import {purchaseFactory} from '@/api/partsprocure/editordetail'
 import {pageMixins} from '@/utils/pageMixins'
 import {_getMathNumber} from "@/utils"
-import {changeProcure} from '@/api/partsprocure/home'
+import {splitFactorySave} from '@/api/partsprocure/home'
 import validate from '@/assets/validate/zh_cn'
 export default{
   mixins:[pageMixins],
@@ -149,16 +149,14 @@ export default{
     },
     translateDataForService(){
       return {
-        splitProcureFactoryReq:{
           purchaseProjectId:this.purchaseProjectId,
           splitProcureFactoryList:this.fixedTo(this.selectSplitPurchList)
-        }
       }
     },
     async save(){
       this.btnLoding = true
       if(!await this.validateNumberPersiont()) return
-      changeProcure(this.translateDataForService()).then(res=>{
+      splitFactorySave(this.translateDataForService()).then(res=>{
                 if(res.data){
                   this.btnLoding = false
                   iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))

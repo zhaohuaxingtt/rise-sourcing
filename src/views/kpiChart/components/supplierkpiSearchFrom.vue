@@ -45,7 +45,7 @@
                                     <el-date-picker
                                     v-model="startyear"
                                     type="year"
-                                    @change="startchange"
+                                    @change="startChangeBase"
                                     format="yyyy"
                                     value-format="yyyy"
                                     >
@@ -56,8 +56,7 @@
                                     type="year"
                                     format="yyyy"
                                     value-format="yyyy"
-                                    :picker-options="expireTimeOption"
-                                    @change="endchange"
+                                    @change="endChangeBase"
                                     >
                                     </el-date-picker>
                                     </div>
@@ -67,12 +66,12 @@
                                     <div class="TOCase">
                                     <iInput
                                         :placeholder="$t('partsignLanguage.INPUT_PLACEHOLDER')"
-                                        v-model="formData.spiSupplierDTO.toAmountStart"
+                                        v-model="formData.spiBaseDTO.toAmountStart"
                                     ></iInput>
                                     <span>-</span>
                                     <iInput
                                         :placeholder="$t('partsignLanguage.INPUT_PLACEHOLDER')"
-                                        v-model="formData.spiSupplierDTO.toAmountEnd"
+                                        v-model="formData.spiBaseDTO.toAmountEnd"
                                     ></iInput>
                                     </div>
                                 </el-col>
@@ -286,14 +285,7 @@ export default {
                         }, 1000);
                     }
                 },
-            expireTimeOption:{
-                // disabledDate(date) {
-                //     return (
-                //         date.getTime() = new Date(new Date().getFullYear())
-                //     )
-                // }
-            },
-            supplierSeccoStockOption:[]
+            supplierSeccoStockOption:[],
         }
     },
     created(){
@@ -383,6 +375,13 @@ export default {
             getLine(this.formData).then(res=>{
                 this.$emit("chartData",res.data)
             })
+        },
+        // base 开始日期
+        startChangeBase(e){
+            console.log(e)
+        },
+        endChangeBase(e){
+            console.log(e)
         }
     }
 }

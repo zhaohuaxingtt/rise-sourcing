@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-08-10 15:05:47
+ * @LastEditTime: 2021-08-12 20:51:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\data.js
@@ -46,7 +46,7 @@ export const mtzOptions = [
 ]
 
 export const dosageDialogForm = [
-  { props: "cartypeProject", name: "⻋型项⽬", key: "CHEXINGXIANGMU" },
+  { props: 'cartypeProject', name: "⻋型项⽬", key: "CHEXINGXIANGMU" },
   { props: "factory", name: "工厂", key: "GONGCHANG" },
   { props: "supplierName", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG" },
   { props: "usePortion", name: "沿⽤原零件份额", key: "YANYONGYUANLINGJIANFENE" }

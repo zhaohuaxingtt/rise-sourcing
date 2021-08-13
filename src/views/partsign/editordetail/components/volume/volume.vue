@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination, iMessage } from '@/components'
+import { iCard, iButton, iPagination, iMessage } from 'rise'
 // import volumeDialog from '../versionDialog'
 import tableList from '../tableList'
 import { volumeTableTitle as tableTitle } from '../data'

@@ -34,7 +34,7 @@
 </div>
 </template>
 <script>
-import {icon} from '@/components'
+import {icon} from 'rise'
 import {iconData} from './data'
 export default{
   components:{icon},

@@ -96,6 +96,7 @@ import { previewBaicFrom,coverTableTitleCost } from '../../data'
 import tableList from "../tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import {numberProcessor} from '@/utils';
+import { cloneDeep } from "lodash"
 import {
   getLinieCoverDetail,
   getFsUser,
@@ -171,11 +172,21 @@ export default {
           const { code,data={} } = res;
           if(code == 200){
             const {fsId='',coverCostsWithCarType=[]} = data;
+
+            const costData = cloneDeep(coverCostsWithCarType);
+            costData.map((item)=>{
+              item.investmentIncrease = this.fixNumber(item.investmentIncrease,0);
+              item.otherCost = this.fixNumber(item.otherCost,0);
+              item.materialIncrease = item.materialIncrease || '';
+            })
+            
             this.basicInfo = {
               ...data,
+              coverCostsWithCarType:costData,
               fsName:fsId
             };
-            this.tableData = coverCostsWithCarType;
+
+            this.tableData = costData;
           }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
@@ -209,7 +220,7 @@ export default {
       
       handleNumber(val, row, props) {
         if(props == 'sendCycle'){
-           this.$set(this.basicInfo, props, numberProcessor(val, 0));
+           this.$set(row, props, numberProcessor(val, 0));
         }else{
            this.$set(row, props, numberProcessor(val, 2));
         }
@@ -305,6 +316,18 @@ export default {
             }
           }
           return isValidate;
+      },
+
+      // 费用千分位处理
+      fixNumber(str,precision=2){
+          if(!str) return '';
+          var re=/(?=(?!(\b))(\d{3})+$)/g;
+          var fixstr =  str.replace(re,",");
+          if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
+              var last = fixstr.substr(fixstr.length-3,3);
+              if(last == '.00') fixstr = fixstr.substr(0,fixstr.length-3);
+          }
+          return fixstr;
       },
     }
 }

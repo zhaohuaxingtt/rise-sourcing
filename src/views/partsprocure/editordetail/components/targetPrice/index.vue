@@ -86,9 +86,10 @@
         :page-size="page.pageSize"
         :layout="page.layout"
         :total="page.totalCount" />
-		<div class="line"></div>
+		<!-- 进过与辉哥沟通，当前rw价功能做得很不完善，还不如屏蔽 -->
+		<!-- <div class="line"></div> -->
 		<!-- 申请RW价 -->
-		<div class="header flex-between-center-center">
+		<!-- <div class="header flex-between-center-center">
 			<span class="title">{{ language('LK_SHENQINGRWJIA','申请RW价') }}</span>
 			<div class="control">
 				<iButton @click="targeRw" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLY">{{ language('LK_SHENQING','申请') }}</iButton>
@@ -122,7 +123,7 @@
 			</iFormItem>
 		</iFormGroup>
 		<tablelist :tableData='targeRwData' :tableTitle='rwTitle' :loading='tableLoading'
-			@handleSelectionChange='handleSelectionChange'></tablelist>
+			@handleSelectionChange='handleSelectionChange'></tablelist> -->
 	</iCard>
 </template>
 
@@ -137,7 +138,7 @@
 		iMessage,
 		iRadio,
 		iPagination
-	} from "@/components";
+	} from 'rise';
 	import tablelist from "./components/tablelist";
 	import {
 		rwTitle,
