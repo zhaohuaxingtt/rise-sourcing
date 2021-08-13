@@ -13,9 +13,10 @@
             <el-form-item
             v-show="!item.showCode || (item.showCode && item.showCode == aekoInfo.aekoType)"
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
-            :label="language(item.labelKey,item.label)"  
+            :label="language(item.labelKey,item.label)"
+            v-permission.dynamic="item.permissionKey"
             >
-                <iSelect v-permission="item.permission" v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :clearable="item.clearable" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
+                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :clearable="item.clearable" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
                     <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                         v-for="item in selectOptions[item.selectOption] || []"
@@ -24,7 +25,7 @@
                         :value="item.code">
                     </el-option>
                 </iSelect> 
-                <iInput v-permission="item.permission" :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model="searchParams[item.props]"></iInput> 
+                <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model="searchParams[item.props]"></iInput> 
             </el-form-item>
         </el-form>
     </iSearch>
@@ -40,11 +41,11 @@
             </div>
         </template>
         <!-- 表单区域 -->
-        <div v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_TABLE">
             <tableList
                 class="table"
                 index
                 :lang="true"
+                 v-permissionArr="['AEKO_AEKODETAIL_PARTLIST_TABLE']"
                 :selection="isAekoManager || isCommodityCoordinator"
                 :tableData="tableListData"
                 :tableTitle="tableTitle"
@@ -92,7 +93,6 @@
             :layout="page.layout"
             :total="page.totalCount"
             />
-        </div>
 
       </iCard>
       <!-- 分配科室 -->
