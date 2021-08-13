@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 17:05:28
- * @LastEditTime: 2021-08-13 13:52:41
+ * @LastEditTime: 2021-08-13 14:09:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/dashboard/report/components/rfqList/index.vue
@@ -12,7 +12,7 @@
       <div class="rfq-title">
         <span class="tit" @click="$router.push({path: `/sourcing/partsrfq/editordetail?id=${item.rfqId}`})">{{item.rfqId || ''}}</span>
         <div class="alarm">
-          <span class="margin-right20">{{language('ZHENGTIRENWUJINDU','整体任务进度')}}:
+          <span class="margin-right20">{{language('RENWUJINDU','任务进度')}}:
             <icon symbol style="font-size:14px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+item.wholeTaskProgress].icon"></icon>
             </span>
           <span>{{language('ZHENGCHEJINDUFENGXIAN','整车进度风险')}}: <el-tooltip placement="right" effect="light">
