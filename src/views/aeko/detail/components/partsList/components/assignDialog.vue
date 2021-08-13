@@ -174,7 +174,7 @@ export default {
             if(linieDeptNum.length){
                 linieDeptNum.map((item)=>{
                     item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                    item.value = item.deptNum;
+                    item.value = item.id;
                 })
                 this.commoditySelectOptions = linieDeptNum;
             }else{
@@ -199,12 +199,12 @@ export default {
             const {singleAssign,requirementAekoId,refferenceSmtNum,commoditySelectOptions,selectItems} = this;
             if(singleAssign.length){
                 // 单一分配
-                const depArr = commoditySelectOptions.filter((item)=>item.deptNum ==refferenceSmtNum );
+                const depArr = commoditySelectOptions.filter((item)=>item.id ==refferenceSmtNum );
                 const singleData = {
                     aekoPartId:singleAssign[0].aekoPartId,
                     requirementAekoId,
                     linieDeptNum:refferenceSmtNum,
-                    linieDeptName:depArr.length ? depArr[0].nameZh : '',
+                    linieDeptName:depArr.length ? depArr[0].nameZh : 'id',
                 }
                 data.push(singleData);
             }else{ // 批量分派
@@ -233,7 +233,7 @@ export default {
                     if(!refferenceSmtNum) return this.language('LK_AEKO_QINGXUANZEHOUTIJIAO','请选择后提交');
 
 
-                    const depArr = commoditySelectOptions.filter((item)=>item.deptNum ==refferenceSmtNum );
+                    const depArr = commoditySelectOptions.filter((item)=>item.id ==refferenceSmtNum );
                     selectItems.map((item)=>{
                         data.push({
                             requirementAekoId,
