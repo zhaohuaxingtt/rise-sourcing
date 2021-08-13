@@ -11,7 +11,8 @@ export const TAB = [
         message: 0,
         url: "/aeko/managelist",
         activePath: "/managelist",
-        key: "LK_AEKOGUANLI"
+        key: "LK_AEKOGUANLI",
+        permissionKey:'AEKO_MANAGE',
     },
     {
         value: 2,
@@ -19,12 +20,14 @@ export const TAB = [
         message: 0,
         url: "/aeko/stancelist",
         activePath: "/stancelist",
-        key: "LK_AEKOBIAOTAI"
+        key: "LK_AEKOBIAOTAI",
+        permissionKey:'AEKO_STANCE',
     },
     {
         value: 3,
         name: "AEKO查看",
         message: 0,
-        key: "LK_AEKOCHAKAN"
+        key: "LK_AEKOCHAKAN",
+        permissionKey:'AEKO_CHECK',
     },
 ]

@@ -6,15 +6,15 @@
 
 // 搜索
 export const searchList = [
-  {props:'aekoCode',label:'AEKO号',type:'input',labelKey:'LK_AEKOHAO_MANAGE'},
-  {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO'},
-  {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNumList',noShowAll:true,filterable:true,clearable:true,multiple:true,},
-  {props:'carTypeCodeList',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',selectOption:'carTypeCodeList',filterable:true,noShowAll:true,clearable:true,multiple:true,},
-  {props:'frozenDate',label:'冻结⽇期',type:'datePicker',labelKey:'LK_AEKODONGJIERIQI'},
-  {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand'},
-  {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',multiple:true,noShowAll:true,clearable:true},
-  {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'coverStatusList',multiple:true,noShowAll:true,clearable:true},
-  {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',selectOption:'buyerName',noShowAll:true,filterable:true,clearable:true},
+  {props:'aekoCode',label:'AEKO号',type:'input',labelKey:'LK_AEKOHAO_MANAGE',permissionKey:'AEKO_MANAGELIST_INPUT_AEKOCODE'},
+  {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_MANAGELIST_INPUT_PARTNUM'},
+  {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',permissionKey:'AEKO_MANAGELIST_SELECT_LINIEDEPtNUM',selectOption:'linieDeptNumList',noShowAll:true,filterable:true,clearable:true,multiple:true,},
+  {props:'carTypeCodeList',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',permissionKey:'AEKO_MANAGELIST_SELECT_CARTYPECODE',selectOption:'carTypeCodeList',filterable:true,noShowAll:true,clearable:true,multiple:true,},
+  {props:'frozenDate',label:'冻结⽇期',type:'datePicker',labelKey:'LK_AEKODONGJIERIQI',permissionKey:'AEKO_MANAGELIST_DATEPICKER_FROZENDATE',},
+  {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand',permissionKey:'AEKO_MANAGELIST_SELECT_BRAND'},
+  {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',permissionKey:'AEKO_MANAGELIST_SELECT_AEKOSTATUS',multiple:true,noShowAll:true,clearable:true},
+  {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'coverStatusList',permissionKey:'AEKO_MANAGELIST_SELECT_COVERSTATUS',multiple:true,noShowAll:true,clearable:true},
+  {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',selectOption:'buyerName',permissionKey:'AEKO_MANAGELIST_SELECT_BUYERNAME',noShowAll:true,filterable:true,clearable:true},
 ]
 
 // 表头

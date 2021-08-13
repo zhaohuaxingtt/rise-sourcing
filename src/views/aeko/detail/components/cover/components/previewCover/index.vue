@@ -6,7 +6,10 @@
 <template>
     <iCard :title="language('LK_AEKO_FENGMIANBIAOTAI','封⾯表态')" class="previewCover">
         <iFormGroup row="4" class="basic-form">
-          <template v-for="(item,index) in basicTitle">
+          <template 
+            v-for="(item,index) in basicTitle"
+            v-permission.dynamic="item.permissionKey" 
+          >
             <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  >
                 <iText >{{ item.isObj ? basicInfo[item.props+'Desc'] : basicInfo[item.props]}}</iText>
             </iFormItem>
@@ -19,9 +22,10 @@
         rows="10" 
         resize="none"
         v-model="basicInfo.remark"
+        v-permission="AEKO_DETAIL_TAB_FENGMIAN_TEXT_TIPS"
       />
       <!-- 费用合计table -->
-      <div class="margin-top40">
+      <div class="margin-top40" v-permission="AEKO_DETAIL_TAB_FENGMIAN_TABLE_CARTYPE">
         <tableList
             class="summaryTable"
             :selection="false"
@@ -49,7 +53,7 @@
         <p class="divider"></p>
 
         <!-- 科室linie费用table -->
-        <div>
+        <div v-permission="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE">
             <p class="btn-list margin-bottom20">
                 <iButton disabled>{{language('LK_JIEDONG','解冻')}}</iButton>
             </p>
