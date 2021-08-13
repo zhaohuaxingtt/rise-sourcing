@@ -28,7 +28,7 @@
                 <iInput :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item> -->
-              <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/FSNR/RFQ编号/采购员/供应商SAP号/供应商名称')" style="width: 380px">
+              <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称')" style="width: 400px">
                 <iInput v-on:keyup.enter.native="getTableList" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item>
@@ -261,8 +261,6 @@ export default {
   methods: {
     getYearMonth(date){
       date = (date + '').split(/[ ]+/);
-      // let result
-      // result = date[0]
       return date[0];
     },
     //获取转派评分任务列表
@@ -308,7 +306,6 @@ export default {
           val.createDate = this.getYearMonth(val.createDate) === 'undefined' ? '' : this.getYearMonth(val.createDate)
           val.currentRoundsEndTime = this.getYearMonth(val.currentRoundsEndTime) === 'undefined' ? '' : this.getYearMonth(val.currentRoundsEndTime)
         })
-        console.log(res.data);
         this.tableListData = Array.isArray(res.data) ? res.data : []
         this.page.totalCount = res.total
         this.tableLoading = false;
@@ -352,8 +349,6 @@ export default {
       } else {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU','抱歉，您当前还未选择您需要转派的评分任务！'));
       }
-
-      console.log(this.rfqIds)
       this.scoringDeptVisible = true
       // if (this.selectTableData.length == 0)
       //   return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU'));
@@ -472,10 +467,7 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          // let data = this.getYearMonth(res.data.createDate)
-          // console.log('dataaaaaaaaaa',data);
           this.attachmentTableListData = Array.isArray(res.data) ? res.data : []
-          console.log('resaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',this.attachmentTableListData);
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
