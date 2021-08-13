@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-11 14:24:32
+ * @LastEditTime: 2021-08-13 16:25:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\supplierList.vue
@@ -66,7 +66,8 @@ export default {
         this.$router.push({
           path: '/supplier/supplierDetail',
           query: {
-            supplierId: row.supplierId
+            supplierId: row.supplierId,
+            supplierName: row.nameZh
           }
         })
       },

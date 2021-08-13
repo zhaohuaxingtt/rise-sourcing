@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-07 19:35:17
+ * @LastEditTime: 2021-08-13 16:38:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\components\supplierDetail.vue
@@ -15,7 +15,7 @@
                   <el-form>
                     <el-row>
                       <el-col>
-                        <iSelect v-model="reportData">
+                        <iSelect v-model="reportData" @change="selectChange"> 
                           <el-option v-for="(item, index) in reportList" :key="index" :value="item.id" :label="item.title">{{item.title}}</el-option>
                         </iSelect>
                       </el-col>
@@ -33,7 +33,7 @@
                   style="width: 100%">
                   <el-table-column
                     prop="categoryName"
-                    label="上海汇众汽车制造有限公司"
+                    :label="$route.query.supplierName"
                     align="center"
                     header-align="center"
                     width="300">
@@ -56,19 +56,22 @@
                     prop="explanation"
                     align="center"
                     header-align="center"
-                    label="解释">
+                    label="解释"
+                    show-overflow-tooltip>
                   </el-table-column>
                   <el-table-column
                     prop="target"
                     align="center"
                     header-align="center"
-                    label="目标">
+                    label="目标"
+                    show-overflow-tooltip>
                   </el-table-column>
                   <el-table-column
                     align="center"
                     header-align="center"                  
                     prop="actionPlan"
-                    label="行动计划">
+                    label="行动计划"
+                    show-overflow-tooltip>
                   </el-table-column>
                 </el-table>
                </div>
@@ -175,9 +178,10 @@ export default {
           })
         })
       },
-     
-
-    }
+      selectChange(val) {
+        this.fetchReportDetail()
+      }
+    },
 }
 </script>
 
@@ -197,7 +201,7 @@ export default {
         }
         .rotate{
             transform: rotate(180deg);
-            color: #A0BFFC;
+            color: #E30D0D;
             margin-left: 10px;
         }
         .closed{
