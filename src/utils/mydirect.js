@@ -19,6 +19,10 @@ Vue.directive('permission', {
                 if (store.state.permission.whiteBtnList[binding.expression]) {
                     el.classList.add("is-disabled")
                 }
+            } else if (binding.modifiers.dynamic) {
+                if (!store.state.permission.whiteBtnList[binding.value] && businessPermission(binding.value,router.currentRoute.query)) {
+                    el.parentNode.removeChild(el)
+                }
             } else { //remove
                 // if (!store.state.permission.whiteBtnList[binding.expression] && businessPermission(binding.expression,router.currentRoute.query)) {
                 //     el.parentNode.removeChild(el)
