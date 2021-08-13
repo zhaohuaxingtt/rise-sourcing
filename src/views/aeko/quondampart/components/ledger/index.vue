@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-11 10:53:24
+ * @LastEditTime: 2021-08-13 11:29:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -13,29 +13,29 @@
       icon
       @sure="sure"
       @reset="reset"
-      :resetKey="PARTSIGN_RESETBUTTON"
-      :searchKey="PARTSIGN_CONFIRMBUTTON"
+      :resetKey="AEKO_QUONDAMPARTLEDGER_BUTTON_RESET"
+      :searchKey="AEKO_QUONDAMPARTLEDGER_BUTTON_CONFIRM"
     >
       <el-form>
-        <el-form-item :label="language('LINGJIANHAO', '零件号')">
+        <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_PARTNUM">
           <iInput
             v-model="form.partNum"
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGBIANHAO', '供应商编号')">
+        <el-form-item :label="language('GONGYINGSHANGBIANHAO', '供应商编号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERSAPCODE">
           <iInput
             v-model="form.supplierSapCode"
             :placeholder="language('QINGSHURUGONGYINGSHANGBIANHAO', '请输入供应商编号')"
           />
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')">
+        <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERNAME">
           <iInput
             v-model="form.supplierName"
             :placeholder="language('QINGSHURUGONGYINGSHANGJIANCHENG', '请输入供应商简称')"
           />
         </el-form-item>
-        <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')">
+        <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission="AEKO_QUONDAMPARTLEDGER_SELECT_FACTORYCODE">
           <iSelect
             v-model="form.factoryCode"
             :placeholder="language('QINGXUANZECAIGOUGONGCHANG', '请选择采购工厂')"
@@ -56,13 +56,14 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('ZHIDINGTAIZHANGKUYUANLINGJIAN', '指定台账库原零件')">
       <template #header-control>
-        <iButton @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
-        <iButton @click="handleExport">{{ language("DAOCHU", "导出") }}</iButton>
+        <iButton @click="handleSave" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
+        <iButton @click="handleExport" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT">{{ language("DAOCHU", "导出") }}</iButton>
       </template>
       <div class="body">
         <tableList
           class="table"
           index
+          v-permission="AEKO_QUONDAMPARTLEDGER_TABLE"
           :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
@@ -134,6 +135,8 @@ export default {
       handler(data) {
         if (isEqual(data, ledgerQueryForm)) {
           this.objectAekoPartId = this.$route.query.objectAekoPartId
+        } else {
+          this.objectAekoPartId = ""
         }
       },
       deep: true

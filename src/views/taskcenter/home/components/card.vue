@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { iCard, icon } from '@/components'
+import { iCard, icon } from 'rise'
 import tag from './tag'
 
 export default {

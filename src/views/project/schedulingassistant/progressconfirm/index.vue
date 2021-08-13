@@ -10,10 +10,10 @@
 <template>
   <iPage class="progressConfirm">
     <iTabsList type="card" @tab-click="tabChange" :before-leave="tabLeaveBefore" v-model="currentTab">
-      <el-tab-pane :label="language('CHANPINZU', '产品组')" :name="'productGroup'">
+      <el-tab-pane lazy :label="language('CHANPINZU', '产品组')" :name="'productGroup'">
           <productGroup ref="confirmProductGroup" />
       </el-tab-pane>
-      <el-tab-pane :label="language('LINGJIAN', '零件')" :name="'part'">
+      <el-tab-pane lazy :label="language('LINGJIAN', '零件')" :name="'part'">
           <part ref="confirmPart" />
       </el-tab-pane>
     </iTabsList>

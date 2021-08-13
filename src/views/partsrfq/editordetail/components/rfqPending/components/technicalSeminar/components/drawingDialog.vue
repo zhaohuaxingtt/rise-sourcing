@@ -20,7 +20,7 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iDialog} from '@/components'
+import {iButton, iDialog} from 'rise'
 import {drawingTitle} from './data'
 import {downloadFile, downloadUdFile} from "@/api/file";
 import tablelist from "pages/partsrfq/components/tablelist";

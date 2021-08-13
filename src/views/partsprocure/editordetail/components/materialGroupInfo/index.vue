@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-07-20 19:39:56
+ * @LastEditTime: 2021-08-12 14:17:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -62,21 +62,16 @@
 
 <script>
 import { tableTitle } from './components/data'
-import { iButton, iCard, iPagination, iMessage } from '@/components'
+import { iButton, iCard, iPagination, iMessage } from 'rise'
 import infos from './components/infos'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
-import {
-  getMaterialGroup,
-  getMeterialStuff,
-  putMaterialGroup,
-} from '@/api/partsprocure/editordetail'
-import { changeProcure } from '@/api/partsprocure/home'
+import {getMaterialGroup,getMeterialStuff} from '@/api/partsprocure/editordetail'
+import { batchUpdateStuff } from '@/api/partsprocure/home'
 // import logDialog from "@/views/partsign/editordetail/components/logDialog"
 
 export default {
   components: { iButton, iCard, iPagination, tableList, infos },
-  // logDialog
   mixins: [ pageMixins ],
   props: {
     params: {
@@ -139,27 +134,20 @@ export default {
     },
     // 设置工艺组请求
     confirmMaterialGroup() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU','抱歉，此处必须选择一条工艺组数据'))
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU','抱歉，此处只能选择一条工艺组数据'))
       if (!this.info.id) return iMessage.warn(this.language('LK_QUESHIYOUXIAODEGONGYIZUID','缺失有效的工艺组id'))
       if (!this.params.partNum) return iMessage.warn(this.language('LK_QUESHIYOUXIAODELINGJIANBIANHAO','缺失有效的零件编号'))
       const data = this.multipleSelection[0]
-
-      // console.log('data', data)
-
       this.confirmLoading = true
-      changeProcure({
-        batch: {
+      batchUpdateStuff({
           operator: this.userInfo.id,
-          purchaseProjectIds: [ this.params.purchasePrjectId ],
-          partSrcProjectDTO: {
-            categoryId: data.categoryId,
-            categoryCode: data.categoryCode,
-            categoryName: data.categoryNameZh,
-            stuffCode: data.stuffCode,
-            stuffId: data.id,
-            stuffName: data.materialStuffGroupName
-          }
-        }
+          ids: [ this.params.id ],
+          categoryId: data.categoryId,
+          categoryCode: data.categoryCode,
+          categoryName: data.materialGroupName,
+          stuffCode: data.stuffCode,
+          stuffId: data.id,
+          stuffName: data.materialStuffGroupName
       })
         .then((res) => {
           if (res.code == 200) {
@@ -169,29 +157,9 @@ export default {
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
-
           this.confirmLoading = false
         })
-        .catch(() => this.confirmLoading = false)
-      // putMaterialGroup({
-      //   id: this.info.id,
-      //   stuffCode: data.stuffCode,
-      //   stuffId: data.id,
-      //   updateBy: this.userInfo.id,
-      //   partNums: [this.params.partNum].join('&partNums='),
-      //   partPurchaseProId: this.params
-      // })
-      //   .then((res) => {
-      //     if (res.code == 200) {
-      //       iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-      //       this.confirmLoading = false
-      //       this.getMaterialGroup()
-      //       this.back()
-      //     } else {
-      //       iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-      //     }
-      //   })
-      //   .catch(() => this.confirmLoading = false)
+        .catch((err) => {this.confirmLoading = false;iMessage.error(err.desZh)})
     },
     // 获取零件可选的工艺组数据
     getMeterialStuff() {
@@ -206,7 +174,6 @@ export default {
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
-          
           // this.page.totalCount = res.total
           this.tableLoading = false
         })

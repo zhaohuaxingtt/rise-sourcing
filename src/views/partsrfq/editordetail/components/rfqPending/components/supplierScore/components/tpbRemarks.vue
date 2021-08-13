@@ -22,7 +22,7 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iDialog, iFormGroup, iFormItem, iInput, iMessage} from '@/components'
+import {iButton, iDialog, iFormGroup, iFormItem, iInput, iMessage} from 'rise'
 
 export default {
   components: {

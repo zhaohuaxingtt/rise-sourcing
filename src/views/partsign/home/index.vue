@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-07-08 11:48:28
+ * @LastEditTime: 2021-08-10 15:44:22
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -9,8 +9,8 @@
 <template>
   <iPage class="partsignHome" v-permission="PARTSIGN_INDEXPAGE">
     <!-- <el-tabs v-model="tab" class="tab"> -->
-      <!-- <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-      <!-- <el-tab-pane  name="source"> -->
+      <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
+      <!-- <el-tab-pane lazy  name="source"> -->
         <div>
           <!-- <div class="margin-bottom33">
 
@@ -220,7 +220,7 @@
           <backItems v-model="diologBack" @sure="sureBackmark"></backItems>
         </div>
       <!-- </el-tab-pane> -->
-      <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
+      <!-- <el-tab-pane lazy label="进度监控" name="progress"></el-tab-pane> -->
     <!-- </el-tabs> -->
   </iPage>
 </template>
@@ -234,7 +234,7 @@ import {
   iSearch,
   iInput,
   iSelect,
-} from "@/components";
+} from 'rise';
 import tablelist from "./components/tableList";
 import { tableTitle, form, needTranslate, clickMessage, TAB} from "./components/data";
 import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home";

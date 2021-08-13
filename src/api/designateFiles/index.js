@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-02 14:54:29
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-18 18:22:38
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-11 18:09:53
  * @Description: 附件相关api
  * @FilePath: \front-web\src\api\designateFiles\index.js
  */
@@ -33,7 +33,7 @@ export function updateAffixList(params) {
 // 模糊搜索linie
 export function findBuyer(buyerName) {
   return requstSourcing({
-    url: `/annex/annex-buyer-name`,
+    url: `/accessories/annex/annex-buyer-name`,
     method: 'GET',
     params: {buyerName}
   })

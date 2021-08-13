@@ -72,7 +72,7 @@
   </el-table>
 </template>
 <script>
-import {iInput, iSelect} from '@/components'
+import {iInput, iSelect} from 'rise'
 import {icon} from "rise"
 export default {
   props: {

@@ -86,7 +86,7 @@
 	import {
 		// icon,
 		iInput
-	} from "@/components";
+	} from 'rise';
 	export default {
 		inject:['getbaseInfoData'],
 		components: {

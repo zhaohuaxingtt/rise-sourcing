@@ -50,7 +50,7 @@
   </iDialog>
 </template>
 <script>
-import { iButton, iDialog, iSearch, iSelect, iInput } from "@/components";
+import { iButton, iDialog, iSearch, iSelect, iInput } from 'rise';
 import { confirmTableHead } from "./data";
 import emitter from '@/utils/emitter.js'
 import {

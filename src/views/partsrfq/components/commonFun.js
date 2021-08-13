@@ -1,4 +1,4 @@
-import {iMessage} from "@/components";
+import {iMessage} from 'rise';
 
 export const rfqCommonFunMixins = {
     methods: {

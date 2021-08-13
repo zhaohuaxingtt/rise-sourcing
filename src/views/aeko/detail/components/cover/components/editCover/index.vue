@@ -13,7 +13,11 @@
     </template>
       <!-- 可编辑头 -->
       <iFormGroup row='4'>
-        <iFormItem v-for="(item, index) in basicTitle" :key="index" :required="item.required" :label="language(item.labelKey, item.label)+':'" >
+        <iFormItem 
+          v-for="(item, index) in basicTitle" :key="index" 
+          :required="item.required" :label="language(item.labelKey, item.label)+':'" 
+          v-permission.dynamic="item.editPermissionKey" 
+        >
           <template v-if="item.editable && isEdit">
             <template v-if="item.type === 'input'">
               <!-- 新⾸批送样周期(周数)处理正整数 -->
@@ -39,8 +43,9 @@
         resize="none"
         v-model="basicInfo.remark"
         :disabled="isFrozen"
+        v-permission="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS"
       />
-      <div class="margin-top50">
+      <div class="margin-top50" v-permission="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE_LINE">
         <!-- 表格区域 -->
         <tableList
           index
@@ -96,6 +101,7 @@ import { previewBaicFrom,coverTableTitleCost } from '../../data'
 import tableList from "../tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import {numberProcessor} from '@/utils';
+import { cloneDeep } from "lodash"
 import {
   getLinieCoverDetail,
   getFsUser,
@@ -171,15 +177,21 @@ export default {
           const { code,data={} } = res;
           if(code == 200){
             const {fsId='',coverCostsWithCarType=[]} = data;
-            this.basicInfo = {
-              ...data,
-              fsName:fsId
-            };
-            coverCostsWithCarType.map((item)=>{
+
+            const costData = cloneDeep(coverCostsWithCarType);
+            costData.map((item)=>{
               item.investmentIncrease = this.fixNumber(item.investmentIncrease,0);
               item.otherCost = this.fixNumber(item.otherCost,0);
+              item.materialIncrease = item.materialIncrease || '';
             })
-            this.tableData = coverCostsWithCarType;
+            
+            this.basicInfo = {
+              ...data,
+              coverCostsWithCarType:costData,
+              fsName:fsId
+            };
+
+            this.tableData = costData;
           }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
@@ -213,7 +225,7 @@ export default {
       
       handleNumber(val, row, props) {
         if(props == 'sendCycle'){
-           this.$set(this.basicInfo, props, numberProcessor(val, 0));
+           this.$set(row, props, numberProcessor(val, 0));
         }else{
            this.$set(row, props, numberProcessor(val, 2));
         }
@@ -313,7 +325,7 @@ export default {
 
       // 费用千分位处理
       fixNumber(str,precision=2){
-          if(!str) return null;
+          if(!str) return '';
           var re=/(?=(?!(\b))(\d{3})+$)/g;
           var fixstr =  str.replace(re,",");
           if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
