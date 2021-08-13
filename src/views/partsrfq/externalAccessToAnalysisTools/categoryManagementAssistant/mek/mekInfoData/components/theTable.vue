@@ -40,8 +40,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <addPartDialog v-model="addPartDialog" />
-    <changeLogDialog v-model="changeLogDialog" />
+
     <el-table v-loading="tableLoading" @selection-change="handleSelectionChange" :data="tableListData" style="width: 100%">
       <el-table-column type="selection" width="55">
       </el-table-column>
@@ -98,17 +97,13 @@
                 <el-option :value="item.carTypeInfo" :label="item.carTypeInfo" v-for="(item,index) of formGoup.carTypeInfoList" :key="index"></el-option>
               </iSelect>
             </div>
-            <div>
-              <el-popover trigger="hover" placement="top-start">
-                <div class="tip-box">
-                  <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
-                  <div class="tip-content">Trendline</div>
-                  <div class="tip-content">Comfortline</div>
-                  <div class="tip-title">Highline </div>
-                </div>
-                <div slot="reference" class="car-info">{{scope.row.transmission}}</div>
-              </el-popover>
-            </div>
+            <el-popover trigger="hover" placement="top-start">
+              <div class="tip-box">
+                <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
+                <div v-for="(item,index) in scope.row.configurationList" :key="index" :class="item.isHighlight?'highlight':'black'">{{item.configuration}}</div>
+              </div>
+              <div slot="reference">{{scope.row.transmission}}</div>
+            </el-popover>
           </div>
         </template>
       </el-table-column>
@@ -149,6 +144,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <addPartDialog v-model="addPartDialog" />
+    <!-- <changeLogDialog v-model="changeLogDialog" /> -->
+    <iLog :show.sync="changeLogDialog" :bizId="bizId"  />
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page='page.currPage' :total="page.totalCount" />
   </div>
 </template>
@@ -156,7 +154,7 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { iButton, icon, iSelect, iPagination } from "rise";
+import { iButton, icon, iSelect, iPagination, iLog } from "rise";
 import addPartDialog from "./addPartDialog.vue";
 import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
@@ -168,10 +166,11 @@ import changeLogDialog from "./changeLogDialog";
 export default {
   // import引入的组件需要注入到对象中才能使用
   mixins: [pageMixins, resultMessageMixin],
-  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, changeLogDialog },
+  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, changeLogDialog, iLog },
   data() {
     // 这里存放数据
     return {
+      bizId: '',
       addPartDialog: false,
       changeLogDialog: false,
       form: {
@@ -248,6 +247,8 @@ export default {
         this.tableLoading = true
         const pms = {
           ...this.form,
+          mekId: this.$route.query.SchemeId,
+          motorIds: this.$route.query.vwModelCodes,
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
         }
@@ -328,7 +329,7 @@ export default {
   font-size: 14px;
   color: #000;
 }
-.tip-content {
+.highlight {
   font-size: 14px;
   color: #e83638;
 }

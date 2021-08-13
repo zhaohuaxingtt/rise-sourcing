@@ -7,7 +7,6 @@
 -->
 <template>
   <iDialog :title="language('CHANGELOG','Change Log')" :visible.sync="value" width="95%" @close="clearDiolog">
-
     <el-form label-width="60px" label-position="top">
       <el-row type="flex" align='bottom' justify="space-between">
         <el-col :span="3">
@@ -27,7 +26,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="3">
-          <el-form-item :label="language('ZENGSHANLINGJIANHAO','曾删零件号')">
+          <el-form-item :label="language('ZENGSHANLINGJIANHAO','增删零件号')">
             <iInput :placeholder="$t('LK_QINGSHURU')+language('ZENGSHANLINGJIANHAO','曾删零件号')" v-model="form.rfqId"></iInput>
           </el-form-item>
         </el-col>

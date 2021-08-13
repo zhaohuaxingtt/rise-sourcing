@@ -20,8 +20,8 @@
         </iSelect>
       </el-form-item>
       <el-form-item :label="language('QINGXUANZHEMUBIAOCHEXING','请选择目标车型')">
-        <iSelect filterable :placeholder="language('QINGSHURUMUBIAOCHEXINGGONGCHANGXINGXI','请输入目标车型/工厂信息')" v-model="form.carType">
-          <el-option v-for="(item,index) in formGoup.carTypeList" :key="index" :label="item.modelNameZh	" :value="item.vwModelCode"></el-option>
+        <iSelect filterable :placeholder="language('QINGSHURUMUBIAOCHEXINGGONGCHANGXINGXI','请输入目标车型/工厂信息')" v-model="form.targetMotor">
+          <el-option v-for="(item,index) in formGoup.carTypeList" :key="index" :label="item.modelNameZh	" :value="item.id"></el-option>
         </iSelect>
       </el-form-item>
     </el-form>
@@ -45,7 +45,7 @@ export default {
     return {
       form: {
         materialGroupCode: '',
-        carType: ""
+        targetMotor: ""
       },
       categoryLoading: false,
       carTypeLoading: false,
@@ -66,6 +66,7 @@ export default {
         materialGroupCode: '',
         materialGroupId: '',
         materialGroupName: '',
+        targetMotor: this.form.targetMotor
       }
       this.formGoup.materialGroupList.forEach(item => {
         if (item.categoryCode === this.form.materialGroupCode) {
