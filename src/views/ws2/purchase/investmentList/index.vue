@@ -156,7 +156,7 @@
           </div>
         </template>
       </iTableList>
-      <div style="color: #999999;font-size: 14px;text-align: right;margin: 10px 0;">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
+      <div class="unitStyle">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
       <iPagination
           v-update
           @size-change="handleSizeChange($event, conditionConfirmTskList)"
