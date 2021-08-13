@@ -46,15 +46,23 @@
         >
             <!-- 定点申请单号 -->
             <template #nominateAppId="scope">
-                <a class="trigger" href="javascript:;" @click="goToDesignate(scope.row)">
-                    <span class="link" >{{ scope.row.nominateAppId }}</span>
-                </a>
+                <span class="flexRow">
+                    <span class="openLinkText cursor " @click="goToDesignate(scope.row)"> {{ scope.row.nominateAppId }}</span>
+                        <span  v-if="scope.row.nominateAppId" class="icon-gray  cursor "  @click="goToDesignate(scope.row)">
+                        <icon symbol class="show" name="icontiaozhuananniu" />
+                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+                    </span>
+                </span>  
             </template>
             <!-- 定点信编号 -->
             <template #letterNum="scope">
-                <a class="trigger" href="javascript:;" @click="goToDetail(scope.row)">
-                    <span class="link" >{{ scope.row.letterNum }}</span>
-                </a>
+                <span class="flexRow">
+                    <span class="openLinkText cursor " @click="goToDetail(scope.row)"> {{  scope.row.letterNum }}</span>
+                        <span  v-if=" scope.row.letterNum" class="icon-gray  cursor "  @click="goToDetail(scope.row)">
+                        <icon symbol class="show" name="icontiaozhuananniu" />
+                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+                    </span>
+                </span>  
             </template>
             <!-- RFQ编号 -->
             <!-- 后端未处理 直接返回的零件列表 自己取第一个 -->
@@ -98,6 +106,7 @@ import {
     iButton,
     iMessage,
     iCard,
+    icon
 } from 'rise';
 import {
     letterListSearch,
@@ -131,6 +140,7 @@ export default {
         turnSendDialog,
         closeLetterDialog,
         iCard,
+        icon
     },
     data(){
         return{
@@ -171,6 +181,10 @@ export default {
         this.getList();
     },
     methods:{
+         getYearMonth(date){
+             date = (date + '').split(/[ ]+/);
+            return date[0];
+            },
         // 获取列表
         async getList(){
             this.loading = true;
@@ -187,6 +201,10 @@ export default {
             }
             await getLetterList({...searchParams,...data}).then((res)=>{
                 this.loading = false;
+                res.data.records.forEach(val=> {
+                    val.nominateDate = this.getYearMonth(val.nominateDate) === 'undefined' ? '' : this.getYearMonth(val.nominateDate)
+                })
+                console.log('res.data',res.data);
                 const {code,data={}} = res;
                 if(code==200){
                    const {records=[],total} = data;
@@ -454,6 +472,32 @@ export default {
             background: #fff;
             .btn-list{
                 text-align: right;
+            }
+        }
+        .openLinkText{
+            color:$color-blue;
+        }
+        .icon-gray{
+            cursor: pointer;
+            .active{
+                display: none;
+            }
+            .show{
+                display: block;
+            }
+        }
+        .flexRow{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .icon-gray:hover{
+            cursor: pointer;
+            .show{
+                display: none;
+            }
+            .active{
+                display: block;
             }
         }
     }
