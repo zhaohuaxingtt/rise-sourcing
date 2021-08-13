@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-06 16:27:41
- * @LastEditTime: 2021-08-10 15:13:18
+ * @LastEditTime: 2021-08-12 14:00:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\costAnalysis\index.js
@@ -21,7 +21,7 @@ export function getDefaultCostStructure(params) {
 
 //获取分析报告详情
 export function getCostStructureAnalysis() {
-
+  
 }
 
 //获取当前登录用户对应的材料组数据
@@ -51,6 +51,24 @@ export function listNomiData(params) {
   })
 }
 
+// 校验名称
+export function getCostStructureAnalysisByName(params) {
+  return request({
+    url: '/costStructure/getCostStructureAnalysisByName',
+    method: 'POST',
+    data: params
+  })
+}
+
+//保存
+export function fetchSave(params) {
+  return request({
+    url: '/costStructure/save',
+    method: 'POST',
+    data: params
+  })
+}
+
 //分页查询
 export function getAnalysisList(params) {
   return request({
@@ -60,13 +78,29 @@ export function getAnalysisList(params) {
   })
 }
 
-//保存
-export function fetchSave() {
-  
-}
-
 //删除
-export function fetchDel() {
-
+export function fetchDel(params) {
+  return request({
+    url: '/costStructure/delete',
+    method: 'POST',
+    data: params
+  })
 }
 
+// 修改
+export function fetchModify(params) {
+  return request({
+    url: '/costStructure/modify',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 置顶
+export function fetchStick(params) {
+  return request({
+    url: '/costStructure/top',
+    method: 'POST',
+    data: params
+  })
+}

@@ -13,7 +13,7 @@ import {permissionTitle} from '@/utils'
   export const tableTitle = [
   // {props:'tpPartID',name:'信息单流水号',key: 'LK_XINXIDANLIUSHUIHAO',tooltip:true ,width:100},
   {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO',tooltip:false,width:130},
-  {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG',tooltip:true,width:170},
+  {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG',tooltip:true,width:180},
   {props:'partNameDe',name:'零件名（德）',key: 'LK_LINGJIANMINGDE',tooltip:true,width:160},
   {props:'projectCarType',name:'车型项目',key: 'LK_CHEXINGXIANGMU',tooltip:true,width:160},
   {props:'buyerName',name:'询价采购员',key: 'LK_CAIGOUYUANNEW',tooltip:true,width:90},

@@ -51,7 +51,7 @@ export default {
     -webkit-box-orient: vertical;
     word-wrap: break-word; //中文换行
     word-break: break-all; //英文换行
-    height: 40px;
+    height: 42px;
     font-size: 14px;
     line-height: 16px;
     color: #8C98AC;
