@@ -6,7 +6,7 @@
 
 <template>
     <iTabsList v-model=defaultTab @tab-click="handleClick">
-        <el-tab-pane v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
+        <el-tab-pane lazy v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
     </iTabsList>
 </template>
 

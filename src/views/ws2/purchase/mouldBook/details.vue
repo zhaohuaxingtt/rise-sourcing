@@ -217,7 +217,7 @@
                 <div v-for="(item, index) in scope.row.partsShareNum.split(',')" :key="index">{{ item }}</div>
               </div>
               <div slot="reference">
-                {{ scope.row.partsShareNum.split(',')[0] }}
+                {{ scope.row.partsShareNum.split(',')[0] }}<span v-if="scope.row.partsShareNum.split(',').length > 1">...</span>
               </div>
             </Popover>
           </div>

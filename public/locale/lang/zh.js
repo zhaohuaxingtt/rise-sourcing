@@ -376,7 +376,6 @@
         'LK_CAIGOUTIAOKUAN': '采购条款', //采购条款
         'LK_CAIGOUXIANGMUJIANLI': '零件采购项目', //采购项目建立
         'LK_CAIGOUXIANGMUXINXI': '采购项目信息', //采购项目信息
-        'LK_CAIGOUYUAN': '前期采购员', //采购员
         'LK_CAIGOUYUANGONGHAO': '采购员工号', //采购员工号
         'LK_CANKAOBAOZHUANG': '参考包装', //参考包装
         'LK_CANKAOBAOZHUANGDANJIAYUAN': '参考包装单价（元）', //参考包装单价（元）

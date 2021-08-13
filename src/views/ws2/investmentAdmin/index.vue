@@ -24,9 +24,9 @@
 <script>
 import {
   icon
-} from "@/components";
+} from 'rise';
 import {iPage, iMessage, iDialog, iButton, iNavMvp} from "rise";
-import { iNavWS2 } from "@/components";
+import { iNavWS2 } from '@/components';
 import store from '@/store';
 export default {
   components: {

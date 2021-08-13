@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iMessage } from '@/components'
+import { iPage, iCard, iPagination, iButton, iMessage } from 'rise'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import enquiryDialog from '@/views/partsign/editordetail/components/enquiryDialog'
 import { getAttachmentVersion, getAttachment } from '@/api/partsign/editordetail'

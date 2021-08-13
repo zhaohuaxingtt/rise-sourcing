@@ -238,7 +238,7 @@ export default {
               query: {
                 item: JSON.stringify({ 
                   ...res.data.manuallyCreatePartProjectVOS[0], 
-                  purchasePrjectId: res.data.manuallyCreatePartProjectVOS[0].purchaseProjectId
+                  purchaseProjectId: res.data.manuallyCreatePartProjectVOS[0].purchaseProjectId
                 })
               }
             })

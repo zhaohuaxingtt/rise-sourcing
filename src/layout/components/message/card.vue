@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { iCard, icon } from '@/components'
+import { iCard, icon } from 'rise'
 import mainContent from './mainContent'
 
 export default {

@@ -33,7 +33,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {targetBudgeTableTitle} from "pages/ws2/dataBase/components/data";
 import {
   iTableList
-} from "@/components"
+} from '@/components'
 import {
   partsPackageBudgetDetail
 } from '@/api/ws2/commonSourcing'

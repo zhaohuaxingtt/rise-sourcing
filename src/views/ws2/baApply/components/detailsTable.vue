@@ -62,7 +62,7 @@ import ApplyPopup from "./applyPopup";
 import store from '@/store';
 import {
   iTableList
-} from "@/components";
+} from '@/components';
 
 export default {
   props: {

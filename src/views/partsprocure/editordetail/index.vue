@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-04 16:43:11
+ * @LastEditTime: 2021-08-12 23:08:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -30,25 +30,21 @@
 			<span class="font18 font-weight">{{language("LK_LINGJIANCAIGOUXIANGMU",'零件采购项目')}}</span>
 			<div class="floatright">
 				<!-- 供应商创建定点申请单 -->
-				<createNomiApplication></createNomiApplication>
+				<createNomiappBtn v-permission='PARTSPROCURE_EDITORDETAIL_CREATEDDSQD'></createNomiappBtn>
 				<!-------------------------------------------------------------------------------->
 				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 				<!---出现此按钮。------------------------------------------------------------------->
 				<iButton v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
 				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
 					v-if="detailData.status == '16'">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
-				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">
-					{{ language("LK_SHENGCHENGFS_GSNR",'生成FS/GS/SP NO.') }}
-				</iButton>
-				<iButton @click="openDiologBack" v-permission="PARTSPROCURE_EDITORDETAIL_CANCELITEMS">
-					{{ language("LK_QUXIAOLINGJIANCAIGOUXIANGMU",'取消零件采购项目') }}
-				</iButton>
-				<iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
+				<creatFsGsNr :projectItems="[detailData]" @refresh="getDatailFn" v-permission="PARTSPROCURE_GENERATEFSBUTTON"></creatFsGsNr>
+				<cancelProject :backItems='[detailData]'  @refresh="getDatailFn" v-permission="PARTSPROCURE_CANCELPROCUREMENTITEMS"></cancelProject>
+				<!-- <iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
 					{{ language("LK_CHAIFENCAIGOUGONGCHANG",'拆分采购工厂') }}
-				</iButton>
+				</iButton> -->
 				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT"
 					v-if="detailData.status != '16'">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
-				<iButton @click="saveFn" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ language("LK_BAOCUN",'保存') }}
+				<iButton :loading='saveLoading' @click="saveFn" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ language("LK_BAOCUN",'保存') }}
 				</iButton>
 				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">{{ language("LK_FANHUI",'返回') }}</iButton>
 				<logButton class="margin-left20" @click="log" v-permission="PARTSPROCURE_EDITORDETAIL_LOG" />
@@ -61,7 +57,7 @@
 		<!------------------------------------------------------------------------>
 		<!--                  基本信息区域                                       --->
 		<!------------------------------------------------------------------------>
-		<iCard class="card" :title="language('LK_JICHUXINXI','基础信息')" collapse>
+		<iCard class="card" :title="language('LK_JICHUXINXI','基础信息')" collapse v-loading='detailLoading'>
 			<iFormGroup row="1" inline :rules="rules">
 				<div class="row">
 					<div class="col">
@@ -92,7 +88,7 @@
 						</iFormItem>
 						<!--来源为新件信息单的零件采购项目，不可修改车型项目。前端车型项目下拉框应该置为不可修改的状态 --->
 						<iFormItem :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test">
-							<iSelect :disabled='carTypeCanselect()' v-model="detailData.cartypeProjectZh" v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH">
+							<iSelect :disabled='carTypeCanselect()' v-model="detailData.carTypeProjectZh" v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
 								</el-option>
@@ -131,7 +127,7 @@
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->
 						<iFormItem v-if='partProjTypes.JINLINGJIANHAOGENGGAI == detailData.partProjectType' :label="language('YUANLINGJIANHAO', '原FS/GS号') + ':'">
-							<iInput search> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{selectOldParts.show=true}"></i></iInput>	
+							<iInput class="removeInputDisabelColor" disabled search v-model="selectOldParts.selectData.partNum"> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{selectOldParts.show=true}"></i></iInput>	
 						</iFormItem>
 					</div>
 					<div class="col">
@@ -206,7 +202,7 @@
 						</iFormItem>
 						<iFormItem label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieUserId" v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
+							<iSelect v-model="detailData.linieId" v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.LINIE"
 									:key="item.name"></el-option>
 							</iSelect>
@@ -274,7 +270,7 @@
 						</iFormItem>
 						<iFormItem :label="language('partsprocure.PARTSPROCUREPARTSTATUSNAME','零件采购项目状态') + ':'" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTSTATUS">
-								{{ detailData.statusName }}
+								{{ detailData.statusDesc }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="BMG：" name="test">
@@ -295,41 +291,39 @@
 		</iCard>
 		<iTabsList  class="margin-top20" type='card' v-if='infoItem'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
-			<el-tab-pane :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == '15'">
+			<el-tab-pane lazy :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == '15'">
 				<designateInfo :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane :label="language('LK_CAILIAOZUXINXI','材料组信息')"
+			<el-tab-pane lazy :label="language('LK_CAILIAOZUXINXI','材料组信息')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFORMATION">
 				<materialGroupInfo :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane :label="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')"
+			<el-tab-pane lazy :label="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN">
 				<outputPlan ref="outputPlan" :params="infoItem" @updateStartYear="updateStartYear" />
 				<outputRecord v-permission="PARTSPROCURE_EDITORDETAIL_LINGJIANCHANLIANGJILU" ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
 				<volume ref="volume" class="margin-top20" :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane :label="language('LK_TUZHIHETPDANXIANGQING','图纸和信息单详情')"
+			<el-tab-pane lazy :label="language('LK_TUZHIHETPDANXIANGQING','图纸和信息单详情')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSANDTPDETAILSPAGE">
 				<drawing :params="infoItem" />
 				<sheet class="margin-top20" :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane :label="language('LK_WULIUYAOQIU','物流要求')" v-permission="PARTSPROCURE_EDITORDETAIL_LOGISTICSREQUIREMENTS">
+			<el-tab-pane lazy :label="language('LK_WULIUYAOQIU','物流要求')" v-permission="PARTSPROCURE_EDITORDETAIL_LOGISTICSREQUIREMENTS">
 				<logistics :infoItem="infoItem"></logistics>
 			</el-tab-pane>
-			<el-tab-pane :label="language('LK_SHENQINGMUBIAOJIA','申请目标价')"
+			<el-tab-pane lazy :label="language('LK_SHENQINGMUBIAOJIA','申请目标价')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
-				<targePrice :purchaseProjectId="purchasePrjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="partProjectType"></targePrice>
+				<targePrice :purchaseProjectId="purchaseProjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="partProjectType"></targePrice>
 			</el-tab-pane>
-			<el-tab-pane :label="language('LK_BEIZHUXINXI','备注信息')" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
-				<remarks :detailData="detailData"></remarks>
+			<el-tab-pane lazy :label="language('LK_BEIZHUXINXI','备注信息')" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
+				<remarks></remarks>
 			</el-tab-pane>
 		</iTabsList>
-		<!-- 取消零件采购 -->
-		<backItems v-model="diologBack" @sure="cancel" :title="language('LK_QUXIAOLINGJIANCAIGOUXIANGMU','取消零件采购项目')"></backItems>
 		<!-- 结束项目 -->
 		<backItems v-model="diologClose" @sure="close" :title="language('LK_JIESHUXIANGMU','结束项目')"></backItems>
 		<!--  -->
-		<splitFactory v-if='splitPurch.splitPurchBoolean' ref='purchaseFactory' :splitPurchBoolean="splitPurch" :purchaseProjectId="purchasePrjectId" :firstId='firstId' :update="updateTabs">
+		<splitFactory v-if='splitPurch.splitPurchBoolean' ref='purchaseFactory' :splitPurchBoolean="splitPurch" :purchaseProjectId="purchaseProjectId" :firstId='firstId' :update="updateTabs">
 		</splitFactory>
 		<!---------------------------------------------------------------->
 		<!----------------------------现供供应商维护模块--------------------->
@@ -354,7 +348,7 @@
 	import backItems from "@/views/partsign/home/components/backItems";
 	import logButton from "@/components/logButton";
 	import currentSupplier from './components/currentSupplier'
-	import {getTabelData,changeProcure,getProcureGroup} from "@/api/partsprocure/home";
+	import {getProjectDetail,closeProcure,updateProcure,startProcure} from "@/api/partsprocure/home";
 	import {dictkey,checkFactory} from "@/api/partsprocure/editordetail";
 	import {detailData,partsCommonSourcing } from "./components/data";
 	import splitFactory from "./components/splitFactory";
@@ -363,9 +357,9 @@
 	import {partProjTypes} from '@/config'
 	import {filterProjectList} from '@/utils'
 	import selectOldpartsNumber from './components/selectOldpartsNumber'
-	import createNomiApplication from './components/createNomiappBtn'
+	import {cancelProject,creatFsGsNr,createNomiappBtn} from '@/components'
 	export default {
-		components: {createNomiApplication,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon},
+		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon},
 		provide:function(){
 			return {detailData:this.getDetailData}
 		},
@@ -410,28 +404,28 @@
 				detailData: detailData, //顶部详情数据
 				targetprice: {}, //申请目标价数据
 				fromGroup: [], //上方筛选列表
-				diologBack: false, //取消零件采购
 				diologClose: false, //结束项目
 				splitPurch: {
 					splitPurchBoolean: false,
 				}, //拆分采购工厂
-				purchasePrjectId: "",
-				createNomiApplicationLoading: false,
+				purchaseProjectId: "",
 				curentSupplierDialog:{show:false},
 				fsnrGsnrNum: '',
 				partProjectType: '',
 				selectOldParts:{
 					show:false,
 					selectData:[]
-				}
+				},
+				saveLoading:false,
+				detailLoading:false
 			};
 		},
 		created() {
 			this.infoItem = JSON.parse(this.$route.query.item);
-			this.purchasePrjectId = this.infoItem.purchasePrjectId;
+			this.purchaseProjectId = this.infoItem.id;
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 			this.partProjectType = this.infoItem.partProjectType;
-			this.getDatail();
+			this.getDatailFn();
 			this.getProcureGroup();
 			this.getDicts()
 		},
@@ -480,7 +474,7 @@
 			},
 			checkFactory(){
 				const parmars = {
-					id:this.detailData.purchasePrjectId,
+					id:this.detailData.id,
 					factoryId:this.detailData.procureFactory
 				}
 				checkFactory(parmars).then(res=>{
@@ -508,16 +502,14 @@
 			},
 			//---------------------------------------------------
 			// 获取详情数据
-			getDatail() {
-				let data = {
-					"detailBaseReq.purchaseProjectId": this.purchasePrjectId,
-				};
-				getTabelData(data).then((res) => {
-					this.detailData = res.data.detailData;
-					this.checkFactoryString = res.data.detailData.procureFactory
+			getDatailFn() {
+				this.detailLoading = true
+				getProjectDetail(this.purchaseProjectId).then((res) => {
+					this.detailLoading = false
+					this.detailData = res.data;
+					this.checkFactoryString = res.data.procureFactory
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
-
 					}
 				});
 			},
@@ -542,15 +534,13 @@
 			// 启动项目
 			start() {
 				let start = {
-					operator: "112",
-					purchaseProjectIds: [this.infoItem.purchasePrjectId],
+					remark: '',
+					ids: [this.infoItem.id],
 				};
-				changeProcure({
-					start,
-				}).then((res) => {
+				startProcure(start).then((res) => {
 					if (res.data) {
 						iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-						this.getDatail();
+						this.getDatailFn();
 					} else {
 						iMessage.error(res.desZh);
 					}
@@ -563,20 +553,32 @@
 			// 结束项目
 			close(backmark) {
 				let close = {
-					closeRemark: backmark,
-					purchaseProjectIds: [this.infoItem.purchasePrjectId],
+					remark: backmark,
+					ids: [this.infoItem.id],
 				};
-				changeProcure({
-					close,
-				}).then((res) => {
+				closeProcure(close).then((res) => {
 					this.diologClose = false;
 					if (res.data) {
-						this.getDatail();
+						this.getDatailFn();
 						iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
 					} else {
 						iMessage.error(res.desZh);
 					}
 				});
+			},
+			/**
+				* @description: 限制保存和提交的零件类型和是否commonsourcing是否匹配
+				* @param {*}
+				* @return {*}
+				*/
+			fsProjectTypeAnIscommonSroucing(callBack){
+				if((!this.detailData.isCommonSourcing) && (this.detailData.partProjectType == partProjTypes.FSCOMMONSOURCING || this.detailData.partProjectType == partProjTypes.GSCOMMONSOURCING)){
+					iMessageBox(this.language('SPIRNT11COMMONSS','当前零件采购项目类型与commonSourcing为[否]不统一，是否继续？')).then(res=>{
+						callBack()
+					})
+				}else{
+					callBack()
+				}
 			},
 			saveFn(){
 				this.fsProjectTypeAnIscommonSroucing(this.save)
@@ -585,6 +587,7 @@
 			},
 			//修改详情。
 			save(val) {
+				this.saveLoading = true
 				let detailData = {};
 				for (let i in this.detailData) {
 					if (
@@ -602,82 +605,29 @@
 				detailData['cfController'] = this.detailData.cfController
 				const cfController = this.fromGroup.CF_CONTROL.find(items=>items.id == this.detailData.cfController)
 				detailData['cfControllerZh'] = cfController ? cfController.name : ""
-				detailData['linieUserId'] = this.detailData.linieUserId
-				const linie = this.fromGroup.LINIE.find(items=>items.id == this.detailData.linieUserId)
+				detailData['linieId'] = this.detailData.linieId
+				const linie = this.fromGroup.LINIE.find(items=>items.id == this.detailData.linieId)
 				detailData['linieName'] = linie ? linie.name : ""
-				detailData['cartypeProjectNum'] = detailData.cartypeProjectZh?detailData.cartypeProjectZh:''
+				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
 				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
 				return new Promise((resolve, reject) => {
-					changeProcure({
-						detailData,
-					}).then((res) => {
+					updateProcure(detailData).then((res) => {
+						this.saveLoading = false
 						if (res.data) {
-							if(res.data.procureFactoryIds.length <= 1 ){
 								iMessage.success(this.language('LK_YIBAOCUN','已保存'));
-								this.getDatail();
+								this.getDatailFn();
 								//刷新零件产量逻辑。1.如果当前零件是gs零件 则sop时间用户是可以自己选择的。一旦选择过后零件产量里面的开始时间。后端得重新默认一个
 								//所以需要刷新一下零件产量页签
 								this.updateTabs()
-							}else{
-								iMessage.success(this.language('LK_YIBAOCUN','已保存'));
-								this.getDatail();
-								//刷新零件产量逻辑。1.如果当前零件是gs零件 则sop时间用户是可以自己选择的。一旦选择过后零件产量里面的开始时间。后端得重新默认一个
-								//所以需要刷新一下零件产量页签
-								this.updateTabs()
-								// iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
-								// 	//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
-								// 	this.firstId = this.detailData.procureFactory
-								// 	this.splitPurchFn()
-								// })
-							}
-
 							resolve(res)
 						} else {
 							iMessage.error(res.desZh);
 							reject(res)
 						}
+					}).catch(err=>{
+						this.saveLoading = false
 					});
 				})
-			},
-			// 生成fs号
-			creatFs() {
-				this.fsProjectTypeAnIscommonSroucing(this.sendRequsetToCreateFS)
-			},
-			sendRequsetToCreateFS(){
-				let fs = { purchaseProjectIds: [this.infoItem.purchasePrjectId]};
-				changeProcure({fs}).then((res) => {
-					if (res.data) {
-						this.getDatail();
-					} else {
-						iMessage.error(res.desZh);
-					}
-				});
-			},
-			//取消零件采购输入框
-			openDiologBack() {
-				this.diologBack = true;
-			},
-			// 取消零件采购
-			cancel(backmark) {
-				let cancel = {
-					cancelRemark: backmark,
-					purchaseProjectIds: [this.infoItem.purchasePrjectId],
-				};
-				changeProcure({
-						cancel,
-					})
-					.then((res) => {
-						if (res.data) {
-							iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-							this.getDatail();
-						} else {
-							iMessage.error(res.desZh);
-						}
-						this.diologBack = false;
-					})
-					.catch(() => {
-						this.diologBack = false;
-					});
 			},
 			// 返回
 			back() {
@@ -685,7 +635,7 @@
 			}, // 查看日志
 			log() {
 				window.open(
-					`/#/log?recordId=${this.detailData.purchasePrjectId}`,
+					`/#/log?recordId=${this.detailData.id}`,
 					"_blank"
 				);
 			},
@@ -717,20 +667,6 @@
 				this.$refs.outputPlan.updateOutput(data)
 			},
 			/**
-				* @description: 限制保存和提交的零件类型和是否commonsourcing是否匹配
-				* @param {*}
-				* @return {*}
-				*/
-			fsProjectTypeAnIscommonSroucing(callBack){
-				if((!this.detailData.isCommonSourcing) && (this.detailData.partProjectType == partProjTypes.FSCOMMONSOURCING || this.detailData.partProjectType == partProjTypes.GSCOMMONSOURCING)){
-					iMessageBox(this.language('SPIRNT11COMMONSS','当前零件采购项目类型与commonSourcing为[否]不统一，是否继续？')).then(res=>{
-						callBack()
-					})
-				}else{
-					callBack()
-				}
-			},
-			/**
 			* @description: 零件项目类型 db一次性采购、一次性采购与是否DB件联动
 			* @param {*}
 			* @return {*}
@@ -751,6 +687,18 @@
 }
 </script>
 <style lang="scss" scoped>
+	::v-deep.removeInputDisabelColor{
+		.el-input__inner{
+			background-color: white!important;
+			cursor: pointer;
+			.el-input__suffix{
+				cursor: pointer!important;
+			}
+			.el-input__icon{
+				cursor: pointer!important;
+			}
+		}
+	}
 	.el-icon-search{
 		cursor: pointer;
 	}

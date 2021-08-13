@@ -270,7 +270,7 @@
 		iFormGroup,
 		iFormItem,
 		iText
-	} from "@/components";
+	} from 'rise';
 	import icard from "./components/title";
 	import {
 		tabelTile

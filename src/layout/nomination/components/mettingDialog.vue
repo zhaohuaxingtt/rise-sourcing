@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton,iRadio } from '@/components'
+import { iPagination, iDialog, iMessage, iButton,iRadio } from 'rise'
 import { mettingTableTitle as tableTitle, meetingTypes, meetingResult as meetingResultArray } from './data'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'

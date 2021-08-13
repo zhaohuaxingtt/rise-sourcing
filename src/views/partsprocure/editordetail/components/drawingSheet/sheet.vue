@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { iCard, iFormGroup, iFormItem, iText } from '@/components'
+import { iCard, iFormGroup, iFormItem, iText } from 'rise'
 import { items } from './data'
 import { cloneDeep } from 'lodash'
 import filters from '@/utils/filters'

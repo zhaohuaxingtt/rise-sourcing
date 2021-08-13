@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { iCard, iPagination } from "@/components";
+import { iCard, iPagination } from 'rise';
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { pageMixins } from "@/utils/pageMixins";
 import { volumeTableTitle as tableTitle } from "./data";

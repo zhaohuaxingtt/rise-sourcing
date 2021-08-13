@@ -19,12 +19,12 @@ export const tableTitle = [{
   name: '申请单号',
   key: 'nominationLanguage_ShenQingDanHao',
   tooltip: true,
-  width:80
+  width:70
 },
 {
   props: 'nominateName',
   name: '申请单名',
-  width: 110,
+  width: 250,
   key: 'nominationLanguage_ShenQingDanMing',
   tooltip: false
 },
@@ -32,27 +32,29 @@ export const tableTitle = [{
   props: 'carType',
   name: 'PROJECT',
   key: 'PROJECT',
-  tooltip: true
+  tooltip: true,
+  width:130
 },
 {
   props: 'nominateProcessType',
   name: '类型',
   key: 'nominationLanguage_LeiXing',
   tooltip: true,
-  width:100
+  width:80
 },
 {
 	props: 'applicationStatus',
 	name: '状态',
 	key: 'LK_ZHUANGTAI',
-	tooltip:false
+	tooltip:false,
+  width:80
 },
 {
 	props: 'freezeDate',
 	name: '冻结日期',
 	key: 'nominationLanguage_DongJieRiQi',
 	tooltip: true,
-  width:120
+  width:100
 },
 {
   props: 'partProjType',

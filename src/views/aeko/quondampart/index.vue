@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 20:00:13
- * @LastEditTime: 2021-08-09 16:55:55
+ * @LastEditTime: 2021-08-12 16:05:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\index.vue
@@ -41,9 +41,9 @@ export default {
   },
   methods: {
     handleBack() {
-      if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+      if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
         try {
-          const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+          const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
 
           this.$router.replace({
             path: "/aeko/aekodetail",

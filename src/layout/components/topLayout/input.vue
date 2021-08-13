@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { iInput, icon } from '@/components';
+import { iInput, icon } from 'rise';
 
 export default {
   components: {

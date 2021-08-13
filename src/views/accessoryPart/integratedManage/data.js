@@ -46,7 +46,7 @@ export const searchList = [
   {value: 'spnrNum', label: 'SP号', type: 'input', key: 'SPHAO',},
   {value: 'sparePartCode', label: '编号', type: 'input', key: 'BIANHAO',},
   {value: 'carType', label: '配件车型', type: 'select', key: 'PEIJIANCHEXING', selectOption: 'carTypeOptions'},
-  {value: 'carProject', label: '配件车型项目', type: 'select', key: 'PEIJIANCHEXINGXIANGMU', selectOption: 'carTypeProjectOptions', width: 150},
+  {value: 'carProject', label: '配件车型项目', type: 'select', key: 'PEIJIANCHEXINGXIANGMU', selectOption: 'cartypeProjectOptions', width: 150},
   {value: 'state', label: '配件状态', type: 'select', key: 'PEIJIANZHUANGTAI', selectOption: 'accessoryTypeOption'},
   {value: 'respDeptName', label: 'LINIE科室', type: 'input', key: 'LINIEKESHI',},
   {value: 'respLinieName', label: 'LINIE', type: 'input', key: 'LINIE',},

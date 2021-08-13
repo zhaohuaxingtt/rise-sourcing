@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton, icon } from '@/components'
+import { iPagination, iDialog, iMessage, icon } from 'rise'
 import { sorttableTitle as tableTitle, mokeTableListData } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
@@ -62,7 +62,7 @@ import {
 } from '@/api/designate/decisiondata/drawing'
 
 export default {
-  components: { tableList, iPagination, iDialog, iButton, icon },
+  components: { tableList, iPagination, iDialog, icon },
   mixins: [ pageMixins, filters ],
   props: {
     ...iDialog.props,

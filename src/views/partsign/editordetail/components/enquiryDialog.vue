@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton } from '@/components'
+import { iPagination, iDialog, iMessage, iButton } from 'rise'
 import tableList from './tableList'
 import { enquiryTableTitle as tableTitle } from './data'
 import { getAttachment } from '@/api/partsign/editordetail'

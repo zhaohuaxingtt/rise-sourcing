@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { iPage, icon, iSearch, iInput } from '@/components'
+import { iPage, icon, iSearch, iInput } from 'rise'
 import card from './components/card'
 import tabs from './components/tabs'
 import tabPane from './components/tabPane'

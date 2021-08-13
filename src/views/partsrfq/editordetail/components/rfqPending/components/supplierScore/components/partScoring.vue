@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import {iCard, iPagination, iPage, icon, iButton} from "@/components";
+import {iCard, iPagination, iPage, icon, iButton} from 'rise';
 import tablelist from './supplierScoreTableList'
 import {partScroingTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";

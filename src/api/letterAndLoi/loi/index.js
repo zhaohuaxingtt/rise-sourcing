@@ -147,9 +147,8 @@ export function getloiList(data) {
 
   export function getFileDownload(params) {
     const {hostId,fileType} = params;
-    console.log(params);
     return requestDownload({
-        url: `/fileDownload/${hostId}/${fileType}`,
+        url: `/file-histories/download/${hostId}/${fileType}`,
         method: "GET",
     })
   }

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-11 10:08:47
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-12 21:04:10
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
@@ -140,14 +140,14 @@ export default {
     handleSure() {
       this.tableData = this.tableDataTemp.filter(item => {
         let result = true
-        if (this.searchParams.carProject) {
+        if (this.searchParams.carProject && result === true) {
           result = item.id === this.searchParams.carProject
         }
-        if (this.searchParams.buyerName) {
+        if (this.searchParams.buyerName && result === true) {
           result = item.projectPurchaser.includes(this.searchParams.buyerName)
         }
-        if (this.searchParams.sopDate) {
-          result = moment(item.sop).isBefore(moment(this.searchParams.sopDate[1])) && moment(item.sop).isAfter(moment(this.searchParams.sopDate[0]))
+        if (this.searchParams.sopDate && result === true) {
+          result = moment(item.sopDate).isBefore(moment(this.searchParams.sopDate[1]).add(1, 'days')) && moment(item.sopDate).isAfter(moment(this.searchParams.sopDate[0]).subtract(1, 'days'))
         }
         return result
       })
@@ -191,11 +191,11 @@ export default {
     getNodeList(node) {
       if(node) {
         const nodeInYearList = this.progressList.reduce((accu, curr, index) => {
-          if (curr.label !== 'PD') {
-            const week = Number(node[curr.value].split('KW')[1])
+          if (curr.label !== 'PD' && node[curr.date] && node[curr.date] !== '') {
+            const week = Number(node[curr.value]?.split('KW')[1])
             return [...accu, {
               ...curr,
-              year: Number(node[curr.value].split('-')[0]),
+              year: Number(node[curr.value]?.split('-')[0]),
               week: week,
               season: week < 14 ? 1 : week < 27 ? 2 : week < 39 ? 3 : 4,  
               fullDate: node[curr.date],
@@ -227,6 +227,7 @@ export default {
               nodeList: nodeList,
             }
           })
+          console.log(res.data, list)
           this.tableData = cloneDeep(list)
           this.tableDataTemp = cloneDeep(list)
           this.carProjectOptions = (res.data || []).map(item => {
