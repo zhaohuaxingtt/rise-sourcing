@@ -122,8 +122,8 @@ module.exports = {
         // target: 'http://10.160.141.116:10085',
         changeOrigin: true,
         pathRewrite: {
-          '^/projectApi': ''
-        }
+          '^/projectApi': '',
+        },
       },
       '/approvalApi': {
         target: 'http://10.122.17.38:8012',
@@ -364,7 +364,7 @@ module.exports = {
       },
       '/aonApi': {
         // target: 'http://10.160.138.166:8036',
-        target: 'http://10.160.138.47:8036',
+        target: 'http://10.160.137.188:8036',
         // target: 'http://192.168.50.230:8036',
         changeOrigin: true,
         pathRewrite: {
@@ -393,12 +393,13 @@ module.exports = {
           '^/baseInfo': '',
         },
       },
-      '/bizlog':{//cf
-        target:'http://10.122.18.166:8013/bizlog',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/bizlog':''
-        }
+      '/bizlog': {
+        //cf
+        target: 'http://10.122.18.166:8013/bizlog',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/bizlog': '',
+        },
       },
       //kpi杜玲聪的代理
       '/kpiInfo': {
@@ -423,7 +424,7 @@ module.exports = {
           '^/supplierSpiApi': '',
         },
       },
-      '/lier':{
+      '/lier': {
         target: 'http://10.160.142.130:8036',
         changeOrigin: true,
         pathRewrite: {
@@ -434,8 +435,8 @@ module.exports = {
         target: 'http://10.122.17.38:8028',
         changeOrigin: true,
         pathRewrite: {
-          "^/priceledgerApi": ""
-        }
+          '^/priceledgerApi': '',
+        },
       },
     },
   },
