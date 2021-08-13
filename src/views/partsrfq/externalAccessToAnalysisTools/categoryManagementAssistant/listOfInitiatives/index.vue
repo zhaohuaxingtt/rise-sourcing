@@ -173,16 +173,17 @@ export default {
         };
         const res = await getList(req);
         this.treeData = res.data;
-        const obj = {};
+        const selectObj = {};
         this.treeDataSelect = res.data.map(item => {
           item.children.map(itemChildren => {
-            obj[itemChildren.name] = [];
+            selectObj[itemChildren.name] = [];
           });
         });
         const formData = {};
-        this.getFormData({treeData: res.data, formData});
+        this.getFormData({treeData: this.treeData, formData});
         this.form = formData;
-        this.treeDataSelect = obj;
+        this.treeDataSelect = selectObj;
+        this.getLastCheckData({treeData: this.treeData, selectObj});
         this.pageLoading = false;
       } catch {
         this.treeData = {};
@@ -198,6 +199,29 @@ export default {
         } else {
           this.getFormData({treeData: item.children, formData});
         }
+      });
+    },
+    // 递归勾选上次操作
+    getLastCheckData({treeData, selectObj}) {
+      const level1Array = [];
+      treeData.map(item => {
+        if (item.children) {
+          item.children.map(itemChildren => {
+            level1Array.push(itemChildren);
+          });
+        }
+      });
+      Object.keys(selectObj).map(item => {
+        level1Array.map(level1Item => {
+          if (level1Item.name === item) {
+            level1Item.children.map(level2Item => {
+              level2Item.isEdit && this.treeDataSelect[item].push(level2Item.name);
+              level2Item.children && level2Item.children.map(level3Item => {
+                level3Item.isEdit && this.treeDataSelect[item].push(level3Item.name);
+              });
+            });
+          }
+        });
       });
     },
     setName(item) {
