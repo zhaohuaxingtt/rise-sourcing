@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-08-09 15:49:14
+ * @LastEditTime: 2021-08-12 16:43:34
  * @LastEditors: Please set LastEditors
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
@@ -43,9 +43,6 @@ export default{
       return moment().format('YYYY')
     }
   },
-  watch:{
-    'timeList':function(){this.topPaddingBottomPadding()}
-  },
   data(){
     return {
       iconList_all_times,
@@ -54,15 +51,6 @@ export default{
     }
   },
   methods:{
-    /**
-     * @description: 根据每周最大值。拿到上下的最大间距
-     * @param {*}
-     * @return {*}
-     */
-    topPaddingBottomPadding(){
-      this.paddingBottom = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>d%2==0).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
-      this.paddingTop = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>!(d%2==0)).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
-    }
   }
 }
 </script>

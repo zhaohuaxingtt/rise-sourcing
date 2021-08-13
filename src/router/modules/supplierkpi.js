@@ -36,10 +36,6 @@ export default [
             path: "/supplier/supplierKpiTreeTable",
             name: "supplierKpiTreeTable",
             component: () => import("@/views/kpiChart/supplierKpiTreeTable"),
-        },{
-            path: "/supplier/svw",
-            name: "svw",
-            component: () => import("@/views/kpiChart/svw"),
         }]
         
     }

@@ -1,7 +1,7 @@
 /*
  * @Author: 舒杰
  * @Date: 2021-08-12 10:33:56
- * @LastEditTime: 2021-08-12 17:51:12
+ * @LastEditTime: 2021-08-13 10:25:07
  * @LastEditors: 舒杰
  * @Description: 历史定点记录
  * @FilePath: \front-sourcing\src\api\categoryManagementAssistant\internalDemandAnalysis\historyPoint.js
@@ -37,9 +37,9 @@ export function page(params) {
 }
 
 // 定点历史记录查询参数接口
-export function nomiHistoryParamInite(params) {
+export function nomiHistoryParamInit(params) {
    return request({
-      url: '/nomiHistory/nomiHistoryParamInite',
+      url: '/nomiHistory/nomiHistoryParamInit',
       method: 'POST',
       data: params
    });

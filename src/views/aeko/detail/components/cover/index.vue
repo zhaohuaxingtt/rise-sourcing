@@ -5,7 +5,7 @@
 -->
 <template>
     <div>
-        <editCover :aekoInfo="aekoInfo" v-if="isLinie" @getBbasicInfo="getBbasicInfo"/>
+        <editCover :aekoInfo="aekoInfo" v-if="isLinie || isCommodityCoordinator" @getBbasicInfo="getBbasicInfo"/>
         <previewCover v-else/>
     </div>
 </template>
@@ -26,12 +26,16 @@ export default {
         }
     },
     computed: {
-        // eslint-disable-next-line no-undef
-        ...Vuex.mapGetters([
-            "isAekoManager", // Aeko管理员
-            "isCommodityCoordinator", // 科室协调员
-            "isLinie", // 专业采购员
-        ]),
+        //eslint-disable-next-line no-undef
+        ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+            permission: state => state.permission
+        }),
+    },
+    created(){
+        this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"] // aeko管理员
+        this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"] // 科室协调员
+        this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"] // linie
     },
     methods:{
         getBbasicInfo(){

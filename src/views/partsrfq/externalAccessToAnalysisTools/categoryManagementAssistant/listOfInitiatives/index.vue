@@ -1,6 +1,6 @@
 <template>
   <iPage v-loading="pageLoading">
-    <headerNav>
+    <headerNav ref="headerNav">
       <template #extralButton>
         <template v-if="!editStatus">
           <iButton @click="handleEdit">{{ language('PLGLZS.BIANJI', '编辑') }}</iButton>
@@ -12,7 +12,7 @@
         <iButton @click="handleExport" :loading="exportButtonLoading">{{ language('PLGLZS.DAOCHU', '导出') }}</iButton>
       </template>
     </headerNav>
-    <div id="container">
+    <div id="container" @click="jump">
       <el-row :gutter="20">
         <el-col :span="8" v-for="item of treeData" :key="item.id">
           <div class="header-title"> {{ setName(item) }}</div>
@@ -43,9 +43,9 @@
                   />
                   <span class="level2Text">{{ setName(level2Children) }}</span>
                 </div>
-                <theRemark :children="level2Children" :editStatus="editStatus" :exportStatus="exportStatus"/>
+                <theRemark :children="level2Children" :editStatus="editStatus" :exportStatus="exportStatus"  v-if="!editStatus"/>
                 <iInput
-                    v-if="editStatus && (level2Children.name === treeDataSelect[level1Children.name])"
+                    v-if="editStatus && ( treeDataSelect[level1Children.name].includes(level2Children.name))"
                     v-model="form[level2Children.id]"
                     type="textarea"
                     :rows="2"
@@ -71,9 +71,9 @@
                       />
                       <span>{{ setName(level3Children) }}</span>
                     </div>
-                    <theRemark :children="level3Children" :editStatus="editStatus" :exportStatus="exportStatus"/>
+                    <theRemark :children="level3Children" :editStatus="editStatus" :exportStatus="exportStatus"  v-if="!editStatus"/>
                     <iInput
-                        v-if="editStatus && (level3Children.name === treeDataSelect[level1Children.name])"
+                        v-if="editStatus && (treeDataSelect[level1Children.name].includes(level3Children.name))"
                         v-model="form[level3Children.id]"
                         type="textarea"
                         :rows="2"
@@ -119,6 +119,7 @@ export default {
       pageLoading: false,
       treeData: {},
       treeDataSelect: {},
+      treeDataSelectId: [],
       editStatus: true,
       form: {},
       maxlength: 500,
@@ -149,6 +150,7 @@ export default {
           const item = {
             actionInfoId: key,
             context: value,
+            effectFlag: this.treeDataSelectId.includes(Number(key)) ? 1 : 0,
           };
           selectList.push(item);
         }
@@ -168,25 +170,28 @@ export default {
         this.pageLoading = true;
         this.treeData = {};
         this.treeDataSelect = {};
+        this.treeDataSelectId = []
         const req = {
           categoryCode: this.categoryCode,
         };
         const res = await getList(req);
         this.treeData = res.data;
-        const obj = {};
+        const selectObj = {};
         this.treeDataSelect = res.data.map(item => {
           item.children.map(itemChildren => {
-            obj[itemChildren.name] = '';
+            selectObj[itemChildren.name] = [];
           });
         });
         const formData = {};
-        this.getFormData({treeData: res.data, formData});
+        this.getFormData({treeData: this.treeData, formData});
         this.form = formData;
-        this.treeDataSelect = obj;
+        this.treeDataSelect = selectObj;
+        this.getLastCheckData({treeData: this.treeData, selectObj});
         this.pageLoading = false;
       } catch {
         this.treeData = {};
         this.treeDataSelect = {};
+        this.treeDataSelectId = []
         this.pageLoading = false;
       }
     },
@@ -200,11 +205,56 @@ export default {
         }
       });
     },
+    // 递归勾选上次操作
+    getLastCheckData({treeData, selectObj}) {
+      const level1Array = [];
+      treeData.map(item => {
+        if (item.children) {
+          item.children.map(itemChildren => {
+            level1Array.push(itemChildren);
+          });
+        }
+      });
+      Object.keys(selectObj).map(item => {
+        level1Array.map(level1Item => {
+          if (level1Item.name === item) {
+            level1Item.children.map(level2Item => {
+              level2Item.effectFlag === 1 && this.treeDataSelect[item].push(level2Item.name);
+              level2Item.effectFlag === 1 && this.treeDataSelectId.push(level2Item.id);
+              level2Item.children && level2Item.children.map(level3Item => {
+                level3Item.effectFlag === 1 && this.treeDataSelect[item].push(level3Item.name);
+                level3Item.effectFlag === 1 && this.treeDataSelectId.push(level3Item.id);
+              });
+            });
+          }
+        });
+      });
+    },
+    getCheckStatusFormId({treeData}) {
+      const idsArray = [];
+      const level1Array = [];
+      treeData.map(item => {
+        if (item.children) {
+          item.children.map(itemChildren => {
+            level1Array.push(itemChildren);
+          });
+        }
+      });
+
+    },
     setName(item) {
       return this.$i18n.locale === 'zh' ? item.name : item.nameEn;
     },
     handleSelect({props, value}) {
-      this.treeDataSelect[props.name] = value.name;
+      if (this.treeDataSelect[props.name].includes(value.name)) {
+        const index = this.treeDataSelect[props.name].indexOf(value.name);
+        this.treeDataSelect[props.name].splice(index, 1);
+        const idIndex = this.treeDataSelectId.indexOf(value.id);
+        this.treeDataSelectId.splice(idIndex, 1);
+      } else {
+        this.treeDataSelect[props.name].push(value.name);
+        this.treeDataSelectId.push(value.id);
+      }
     },
     notHaveChildren(item) {
       return item.children === null;
@@ -226,6 +276,11 @@ export default {
         idEle: 'container',
         pdfName: 'overview',
       });
+    },
+    jump() {
+      if (!this.$store.state.rfq.categoryCode) {
+        this.$refs.headerNav.openCatecory();
+      }
     },
   },
   watch: {

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 20:16:45
- * @LastEditors: zbin
+ * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\store\module\rfq.js
  */
@@ -12,7 +12,9 @@ const state = {
   SchemeId: window.sessionStorage.getItem('SchemeId') || '',
   materialGroup: window.sessionStorage.getItem('materialGroup') || '',//材料组
   spareParts: window.sessionStorage.getItem('spareParts') || '',//零件号
-  categoryCode:window.sessionStorage.getItem('categoryCode') || '',//材料组code
+  categoryCode: window.sessionStorage.getItem('categoryCode') || '',//材料组code
+  categoryName:window.sessionStorage.getItem('categoryName') || '',//材料组name
+  
 }
 const mutations = {
   SET_PENDING_PARTS_LIST(state, data) {
@@ -41,6 +43,11 @@ const mutations = {
     state.categoryCode = data
     sessionStorage.setItem('categoryCode', data)
   },
+  // 品类管理助手-材料组name
+  SET_CATEGORY_NAME(state, data) {
+    state.categoryName = data
+    sessionStorage.setItem('categoryName', data)
+  },
 }
 
 const actions = {
@@ -65,6 +72,10 @@ const actions = {
   // 品类管理助手-材料组code
   setCategoryCode({ commit }, data) {
     commit('SET_CATEGORY_CODE', data)
+  },
+  // 品类管理助手-材料组name
+  setCategoryName({ commit }, data) {
+    commit('SET_CATEGORY_NAME', data)
   },
 }
 

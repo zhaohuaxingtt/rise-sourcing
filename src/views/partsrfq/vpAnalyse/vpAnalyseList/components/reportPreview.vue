@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 17:51:32
- * @LastEditTime: 2021-07-22 20:13:57
+ * @LastEditTime: 2021-08-13 15:07:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\reportPreview.vue

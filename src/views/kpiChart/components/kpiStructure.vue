@@ -181,10 +181,14 @@ export default {
             id:this.temId,
             name:this.childTemplateName,
             list:[...this.formDataLevel2]}).then(res=>{
-            //  this.$router.go(0)
+            if(res.code=="200" && res.result){
                 this.$message("操作成功")
+            }else{
+                this.$message.error(res.desZh)
+            }
+                
             }).catch(error=>{
-               this.$message.error('指标权重设置有误，请重新设置');
+               this.$message.error(res.desZh);
             })
             this.$emit("saveVersion")
       },

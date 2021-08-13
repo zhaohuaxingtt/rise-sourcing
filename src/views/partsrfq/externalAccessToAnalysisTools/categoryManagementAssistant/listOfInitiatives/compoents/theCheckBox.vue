@@ -2,7 +2,7 @@
   <div
       v-if="notHaveChildren(currentChildren) && editStatus"
       class="checkBoxStyle"
-      :class="{'checkBoxStyleActive': currentChildren.name === treeDataSelect[categoryChildren.name]}"
+      :class="{'checkBoxStyleActive':  treeDataSelect[categoryChildren.name].includes(currentChildren.name)}"
       @click="handleSelect({props:categoryChildren, value:currentChildren})"
   >
     <div class="pitchOn"></div>
@@ -15,25 +15,25 @@ export default {
     treeDataSelect: {
       type: Object,
       default: () => {
-        return {}
-      }
+        return {};
+      },
     },
     currentChildren: {
       type: Object,
       default: () => {
-        return {}
-      }
+        return {};
+      },
     },
     categoryChildren: {
       type: Object,
       default: () => {
-        return {}
-      }
+        return {};
+      },
     },
     editStatus: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     notHaveChildren(item) {
@@ -42,11 +42,11 @@ export default {
     handleSelect({props, value}) {
       const res = {
         props,
-        value
-      }
-      this.$emit('handleSelect', res)
+        value,
+      };
+      this.$emit('handleSelect', res);
     },
-  }
+  },
 };
 </script>
 
