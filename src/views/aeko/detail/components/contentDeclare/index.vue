@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-12 20:57:12
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-13 12:56:44
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
+ * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
 <template>
   <div class="contentDeclare">
@@ -12,23 +12,23 @@
       class="margin-top25"
       @sure="sure"
       @reset="reset"
-      :resetKey="PARTSIGN_RESETBUTTON"
-      :searchKey="PARTSIGN_CONFIRMBUTTON"
+      :resetKey="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RESET"
+      :searchKey="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_CONFIRM"
     >
       <el-form>
-        <el-form-item :label="language('LINGJIANHAO', '零件号')">
+        <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_PARTNUM">
           <iInput
             v-model="form.partNum"
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGBIANHAO', '供应商编号')">
+        <el-form-item :label="language('GONGYINGSHANGBIANHAO', '供应商编号')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERSAPCODE">
           <iInput
             v-model="form.supplierSapCode"
             :placeholder="language('QINGSHURUGONGYINGSHANGBIANHAO', '请输入供应商编号')"
           />
         </el-form-item>
-        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
+        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_CARTYPEPROJECTCODE">
           <iSelect
             multiple
             collapse-tags
@@ -51,7 +51,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('NEIRONGZHUANGTAI', '内容状态')">
+        <el-form-item :label="language('NEIRONGZHUANGTAI', '内容状态')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_STATUS">
           <iSelect
             multiple
             collapse-tags
@@ -74,7 +74,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('MTZXIANGGUAN', 'MTZ相关')">
+        <el-form-item :label="language('MTZXIANGGUAN', 'MTZ相关')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_ISMTZ">
           <iSelect
             filterable
             v-model="form.isMtz"
@@ -92,7 +92,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')">
+        <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_PROCUREFACTORY">
           <iSelect
             filterable
             v-model="form.procureFactory"
@@ -110,13 +110,13 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')">
+        <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERNAMEZH">
           <iInput
             v-model="form.supplierNameZh"
             :placeholder="language('QINGSHURUGONGYINGSHANGJIANCHENG', '请输入供应商简称')"
           />
         </el-form-item>
-        <el-form-item :label="language('ZHIDINGTOUZICHEXINGXIANGMU', '指定投资⻋型项⽬')">
+        <el-form-item :label="language('ZHIDINGTOUZICHEXINGXIANGMU', '指定投资⻋型项⽬')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_INVESTCARTYPEPRO">
           <iSelect
             filterable
             v-model="form.investCarTypePro"
@@ -138,20 +138,21 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
       <template v-slot:header-control>
-        <iButton :loading="declareToggleLoading" @click="handleDeclareToggle">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
-        <iButton :loading="declareResetLoading" @click="handleDeclareReset">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
-        <iButton disabled>{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
-        <iButton disabled>{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
-        <iButton @click="handleExport">{{ language("DAOCHU", "导出") }}</iButton>
-        <iButton disabled>{{ language("DAORU", "导⼊") }}</iButton>
-        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
-        <iButton disabled>{{ language("CHEHUI", "撤回") }}</iButton>
+        <iButton :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
+        <iButton :loading="declareResetLoading" @click="handleDeclareReset" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
+        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
+        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
+        <iButton @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">{{ language("DAOCHU", "导出") }}</iButton>
+        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT">{{ language("DAORU", "导⼊") }}</iButton>
+        <iButton :loading="submitLoading" @click="handleSubmit" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT">{{ language("TIJIAO", "提交") }}</iButton>
+        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL">{{ language("CHEHUI", "撤回") }}</iButton>
       </template>
       <div class="body">
         <tableList
           class="table"
           index
           fixed
+          v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_TABLE"
           :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"

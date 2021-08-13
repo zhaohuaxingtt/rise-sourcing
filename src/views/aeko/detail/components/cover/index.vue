@@ -26,12 +26,16 @@ export default {
         }
     },
     computed: {
-        // eslint-disable-next-line no-undef
-        ...Vuex.mapGetters([
-            "isAekoManager", // Aeko管理员
-            "isCommodityCoordinator", // 科室协调员
-            "isLinie", // 专业采购员
-        ]),
+        //eslint-disable-next-line no-undef
+        ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+            permission: state => state.permission
+        }),
+    },
+    created(){
+        this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
+        this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
+        this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
     },
     methods:{
         getBbasicInfo(){

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-11 17:26:47
+ * @LastEditTime: 2021-08-13 12:50:48
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -330,6 +330,7 @@ export default {
         const canSendRows = selectRows.filter(item => !(validScheduleRowsRes.data || []).some(rItem => rItem.productGroupId === item.productGroupId))
         const fsOptions = await this.getFsUserList(canSendRows)
         const projectPurchaser = await this.getBuyer()
+        const nextThreeWorkDay = await this.getNextThreeWorkDay()
         this.fsTableList = canSendRows.map(item => {
           const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
             return {
@@ -346,12 +347,12 @@ export default {
             scheFirstTryOtsWeek: item.keyFirstTryOtsWeek,
             productGroupDe: item.productGroupNameDe,
             productGroupZh: item.productGroupNameZh,
-            confirmDateDeadline: this.getNextThreeWorkDay(),
+            confirmDateDeadline: nextThreeWorkDay,
             projectPurchaser: projectPurchaser?.nameZh,
             projectPurchaserId: projectPurchaser?.id,
-            selectOption: this.selectOptions.fsOptions,
-            fs: options && options[0] ? options[0].value : '',
-            fsId: options && options[0] ? options[0].label : ''
+            selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
+            fs: options && options[0] ? options[0].label : '',
+            fsId: options && options[0] ? options[0].value : ''
           }
         })
         // console.log(this.fsTableList)

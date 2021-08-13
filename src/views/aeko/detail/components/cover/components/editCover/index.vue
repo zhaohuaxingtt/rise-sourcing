@@ -13,7 +13,11 @@
     </template>
       <!-- 可编辑头 -->
       <iFormGroup row='4'>
-        <iFormItem v-for="(item, index) in basicTitle" :key="index" :required="item.required" :label="language(item.labelKey, item.label)+':'" >
+        <iFormItem 
+          v-for="(item, index) in basicTitle" :key="index" 
+          :required="item.required" :label="language(item.labelKey, item.label)+':'" 
+          v-permission.dynamic="item.editPermissionKey" 
+        >
           <template v-if="item.editable && isEdit">
             <template v-if="item.type === 'input'">
               <!-- 新⾸批送样周期(周数)处理正整数 -->
@@ -39,8 +43,9 @@
         resize="none"
         v-model="basicInfo.remark"
         :disabled="isFrozen"
+        v-permission="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS"
       />
-      <div class="margin-top50">
+      <div class="margin-top50" v-permission="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE_LINE">
         <!-- 表格区域 -->
         <tableList
           index
