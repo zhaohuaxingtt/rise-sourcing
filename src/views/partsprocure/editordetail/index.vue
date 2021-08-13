@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-13 15:01:33
+ * @LastEditTime: 2021-08-13 16:11:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -610,6 +610,7 @@
 				detailData['linieName'] = linie ? linie.name : ""
 				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
 				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
+				detailData['oldProjectRelations'] = [{...this.translateDataForService(this.selectOldParts.selectData),...{purchasingProjectId:this.detailData.id}}]
 				return new Promise((resolve, reject) => {
 					updateProcure(detailData).then((res) => {
 						this.saveLoading = false
@@ -628,6 +629,13 @@
 						this.saveLoading = false
 					});
 				})
+			},
+			translateDataForService(data){
+				const newMap = {}
+				Object.keys(data).forEach(e=>{
+					newMap['old'+(e.charAt(0).toUpperCase() + e.slice(1))] = data[e]
+				})
+				return newMap
 			},
 			// 返回
 			back() {

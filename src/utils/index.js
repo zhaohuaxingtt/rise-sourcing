@@ -1,9 +1,9 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-13 12:55:06
+ * @LastEditTime: 2021-08-13 16:30:40
  * @LastEditTime: 2021-07-21 17:57:58
- * @LastEditors: Luoshuang
+ * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \front-web\src\utils\index.js
  */
@@ -288,6 +288,7 @@ export function deleteThousands (number) {
 import {businessKey} from '@/config/businessBlackKey'
 export function businessPermission(currentPermissinKey,currentProjectParmars){
   try {
+    if(!currentProjectParmars.businessKey) return true
     const businessKeyQuery = currentProjectParmars.businessKey;
     if(businessKey[businessKeyQuery].find(i=>i == currentPermissinKey)) return true;
   } catch (error) {
