@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:14:21
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 18:25:03
+ * @LastEditTime: 2021-08-13 14:21:51
  * @Description: 节点视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
 -->
@@ -49,16 +49,14 @@
         </div>
       </div>
     </div>
-    <fsConfirm :dialogVisible="fsConfirmDialogVisible" @changeVisible="changeFsConfirmVisible" />
   </div>
 </template>
 
 <script>
 import { iButton, icon, iText, iMessage } from 'rise'
-import fsConfirm from '../fsconfirm'
 import { getProductGroupNodeInfoList, downloadNodeView } from '@/api/project'
 export default {
-  components: { iButton, fsConfirm, icon, iText },
+  components: { iButton, icon, iText },
   props: {
     cartypeProId: {type:String}
   },
@@ -105,12 +103,6 @@ export default {
       }).finally(() => {
         this.loading = false
       })
-    },
-    handleSendFs() {
-      this.changeFsConfirmVisible(true)
-    },
-    changeFsConfirmVisible(visible) {
-      this.fsConfirmDialogVisible = visible 
     },
     handleCheckAllChange(val) {
       this.products = this.products.map(item => {
