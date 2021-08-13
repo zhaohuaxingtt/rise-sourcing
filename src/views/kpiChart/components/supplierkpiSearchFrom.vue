@@ -32,8 +32,9 @@
                                     <div style="margin-bottom:10px;margin-top:10px;">地区</div>
                                     <div class="TOCaseArea">
                                         <el-cascader 
+                                        v-model="baseAreaVmodel"
                                         :props="props"
-                                        @change="handleChangeArea($event)"
+                                        @change="handleBaseChangeArea($event)"
                                         :clearable="true"
                                         collapse-tags ></el-cascader>
                                     </div>
@@ -65,12 +66,12 @@
                                     <div style="margin-bottom:10px;margin-top:10px;">TO量级（元）</div>
                                     <div class="TOCase">
                                     <iInput
-                                        :placeholder="$t('partsignLanguage.INPUT_PLACEHOLDER')"
+                                        placeholder="请输入"
                                         v-model="formData.spiBaseDTO.toAmountStart"
                                     ></iInput>
                                     <span>-</span>
                                     <iInput
-                                        :placeholder="$t('partsignLanguage.INPUT_PLACEHOLDER')"
+                                        placeholder="请输入"
                                         v-model="formData.spiBaseDTO.toAmountEnd"
                                     ></iInput>
                                     </div>
@@ -105,14 +106,33 @@
                                 </el-col>
                            
                                 <el-col :span="6">
-                                    <div style="margin-bottom:10px;margin-top:10px;">地区</div>
-                                    <div class="TOCaseArea">
+                                    <!-- <div style="margin-bottom:10px;margin-top:10px;">地区</div> -->
+                                    <!-- <div class="TOCaseArea">
                                         <el-cascader 
+                                        v-model="baseSupplierVmodel"
                                         :props="props"
-                                        @change="handleChangeArea($event)"
+                                        @change="handleSupplierChangeArea($event)"
                                         :clearable="true"
                                         collapse-tags ></el-cascader>
-                                    </div>
+                                    </div> -->
+                                    <iFormItem
+                                    label="地区"
+                                    class="SearchOption"
+                                    prop="userNum"
+                                    >
+                                    <iSelect 
+                                    v-model="formData.spiSupplierDTO.cityCodeList" 
+                                    :placeholder="$t('partsignLanguage.QingXuanZe')"
+                                    @change="handlechangeSeccoStock('supplier',$event)"
+                                     multiple
+                                    collapse-tags>
+                                        <el-option 
+                                        v-for="(x,index) in supplierSeccoStockOption"
+                                         :value='x.existShareId' 
+                                         :label='x.existShareName'
+                                         :key="index"></el-option>
+                                    </iSelect>
+                                    </iFormItem>
                                 </el-col>
                                 <el-col :span="6">
                                     <iFormItem
@@ -184,19 +204,19 @@
                                     <div style="margin-bottom:10px;margin-top:10px;">TO量级（元）</div>
                                     <div class="TOCase">
                                     <iInput
-                                        :placeholder="$t('partsignLanguage.INPUT_PLACEHOLDER')"
+                                        placeholder="请输入"
                                         v-model="formData.spiSupplierDTO.toAmountStart"
                                     ></iInput>
                                     <span>-</span>
                                     <iInput
-                                        :placeholder="$t('partsignLanguage.INPUT_PLACEHOLDER')"
+                                        placeholder="请输入"
                                         v-model="formData.spiSupplierDTO.toAmountEnd"
                                     ></iInput>
                                     </div>
                                 </el-col>
                                 <el-col :span="12">
                                     <div style="margin-top:35px;float: right;">
-                                    <iButton>重置</iButton>
+                                    <iButton @click="handleRest">重置</iButton>
                                     <iButton @click="handleOk">确认</iButton></div>
                                 </el-col>
                             </el-row>
@@ -225,9 +245,11 @@ export default {
     },
     data(){
         return {
+           baseAreaVmodel:[],
            partyOrganId:[],
            formData:{
                spiBaseDTO:{
+                   cityCodeList:[],
                    yearList:[],
                    existShareIdList:[]
                },
@@ -246,6 +268,7 @@ export default {
             props: {
                 lazy: true,
                 multiple: true,
+                checkStrictly:true,
                 lazyLoad (node, resolve) {
                     const { level } = node;
                     setTimeout(() => {
@@ -282,7 +305,7 @@ export default {
                                 resolve(city)
                             })
                         }
-                        }, 1000);
+                        }, 200);
                     }
                 },
             supplierSeccoStockOption:[],
@@ -313,9 +336,31 @@ export default {
                 }
             })
         },
-         //城市
-        handleChangeArea(e){
-            console.log(e)
+         //基数地区
+        handleBaseChangeArea(e,b){
+            
+            if(e.length<6){
+                this.baseAreaVmodel=e
+            }else{
+                this.baseAreaVmodel=e.slice(0,5)
+                this.$message({
+                message: '最多选择5条数据',
+                type: 'warning'
+                });
+            }
+            if(this.baseAreaVmodel.length>0){
+                this.formData.spiBaseDTO.cityCodeList=[]
+                this.baseAreaVmodel.forEach(x=>{
+                    this.formData.spiBaseDTO.cityCodeList.push(x[2])
+                })
+                this.formData.spiBaseDTO.cityCodeList=this.formData.spiBaseDTO.cityCodeList.map(String)
+            }
+            //this.baseSupplierVmodel=JSON.parse(JSON.stringify(this.baseAreaVmodel))
+            console.log(this.baseAreaVmodel,this.formData.spiBaseDTO.cityCodeList)
+        },
+        //供应商地区
+        handleSupplierChangeArea(){
+             //this.baseSupplierVmodel
         },
         // 科股
         getRelationship(){
@@ -375,6 +420,22 @@ export default {
             getLine(this.formData).then(res=>{
                 this.$emit("chartData",res.data)
             })
+        },
+        handleRest(){
+            this.formData={
+               spiBaseDTO:{
+                   cityCodeList:[],
+                   yearList:[],
+                   existShareIdList:[]
+               },
+               spiSupplierDTO:{
+                   yearList:[],
+                   existShareIdList:[]
+               }
+           }
+           this.startyear=null
+           this.endyear=null
+           this.baseAreaVmodel=[]
         },
         // base 开始日期
         startChangeBase(e){
