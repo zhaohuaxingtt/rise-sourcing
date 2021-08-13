@@ -48,7 +48,7 @@
                 :accept="'.xlsx,.xls'"
             />
           </span>
-          <iButton v-permission="AEKO_MANAGELIST_BUTTON_SHANCHUAEKO" @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
+          <iButton v-permission="AEKO_MANAGELIST_BUTTON_SHANCHUAEKO" :loading="btnLoading.deleteItem" @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
           <iButton v-permission="AEKO_MANAGELIST_BUTTON_CHEXIAOAEKO" @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
           
           <span v-permission="AEKO_MANAGELIST_BUTTON_DAORUFUJIAN" class=" margin-left10 margin-right10">
@@ -206,6 +206,7 @@ export default {
         btnLoading:{
           uploadFiles:false,
           importAeko:false,
+          deleteItem:false,
           
         },
         importAeko:importAeko,
@@ -515,9 +516,10 @@ export default {
             cancelButtonText: this.language('nominationLanguage.No','否'),
           }
           ).then(()=>{
-            console.log('是',this.language('LK_CAOZUOCHENGGONG','操作成功'))
+            this.btnLoading.deleteItem = true;
             const requirementAekoIds = (selectItems.map((item)=>item.requirementAekoId)).join();
             deleteAeko({requirementAekoIds}).then((res)=>{
+              this.btnLoading.deleteItem = false;
               if(res.code ==200){
                 iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                 this.getList();
@@ -526,7 +528,7 @@ export default {
               }
             })
           }).catch(()=>{
-            console.log('否')
+            this.btnLoading.deleteItem = false;
           })
       },
       
