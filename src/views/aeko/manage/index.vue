@@ -212,9 +212,33 @@ export default {
         itemFileData:{},
       }
     },
+    computed: {
+        //eslint-disable-next-line no-undef
+        ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+            permission: state => state.permission
+        }),
+    },
     created(){
       this.getList();
       this.getSearchList();
+      
+      this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
+      this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
+      this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+
+      const {navList,$route} = this;
+      const { name } = $route;
+      if(this.isAekoManager){
+        this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_STANCE');
+      }else{
+        this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_MANAGE');
+        if(name == 'aekoManageList'){
+           this.$router.push({
+              path:'/aeko/stancelist'
+          });
+        }
+      }
     },
     methods:{
       // 重置
