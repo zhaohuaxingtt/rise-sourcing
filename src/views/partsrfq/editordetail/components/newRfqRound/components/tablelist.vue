@@ -41,7 +41,7 @@
   </el-table>
 </template>
 <script>
-import {iSelect} from '@/components'
+import {iSelect} from 'rise'
 
 export default {
   props: {

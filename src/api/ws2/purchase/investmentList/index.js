@@ -85,4 +85,13 @@ export function verifyLine(parmars) {
     })
 }
 
+//发送供应商
+export function verifyIsSelfOrders(data) {
+    return VUE_APP_BMAPPROVE({
+        url: '/verifyIsSelfOrders',
+        method: 'POST',
+        data: data
+    })
+}
+
 

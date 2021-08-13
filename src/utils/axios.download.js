@@ -7,7 +7,7 @@
  *               IE通过msSaveBlob来下载。
  * @FilePath: \front-web\src\utils\axios.download.js
  */
-import { iMessage } from '@/components';
+import { iMessage } from 'rise';
 import {getToken,removeToken,setToken,setRefreshToken} from '@/utils'
 import store from '@/store'
 const fileType = {

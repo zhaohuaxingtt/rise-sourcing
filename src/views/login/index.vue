@@ -23,7 +23,7 @@
     </div>
 </template>
 <script>
-import {iMessage} from '@/components'
+import {iMessage} from 'rise'
 import {login} from '@/api/usercenter'
 import {setToken} from '@/utils'
 export default{

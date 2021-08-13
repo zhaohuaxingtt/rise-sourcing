@@ -1,13 +1,13 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-05 16:57:30
+ * @LastEditTime: 2021-08-11 10:00:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
 -->
 <template>
-<div v-permission='PARTSPROCURE_EDITORDETAIL_CREATEDDSQD' class="inline margin-right10">
+<div class="inline margin-right10">
   <iButton @click="handleCreateNomiApplication">{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
   <iDialog title="自动定点进度追踪" :visible.sync="messageShow">
     <ul class="ulContent">
@@ -32,8 +32,14 @@
 <script>
 import {iButton,iDialog} from 'rise'
 import soket from '@/utils/socket'
+import {autonomi} from '@/api/partsprocure/editordetail'
+import store from "@/store";
 export default{
   components:{iButton,iDialog},
+  props:{datalist:{
+    type:Array,
+    default:()=>[]
+  }},
   data(){
     return {
       soket:'',
@@ -52,9 +58,21 @@ export default{
       if(this.soket) this.soket.close()
     },
     showWebsoket(){
-       this.soket = soket({baseUrl:process.env.VUE_APP_WEB_SOCKET,url:''}).then(res=>{
+       this.soket = new soket({baseUrl:'ws://10.160.140.210:18025',url:`/sourcing/websocket/${store.state.permission.userInfo.userName}`}).then(res=>{
          this.messageDataList = res.data
+       }).catch(err=>{
+         console.warn(err)
        })
+    },
+    autonomiFn(){
+      autonomi(this.translatePropsForServers(this.datalist)).then(res=>{}).catch(err=>{
+
+      })
+    },
+    translatePropsForServers(parmars){
+      if(!Array.isArray(parmars)) return console.error('parmars datalist must be a array')
+
+      return {autoKeyDTOS:parmars}
     }
   }
 }

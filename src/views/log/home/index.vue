@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { iPage, icon, iCard, iButton, iPagination, iMessage } from '@/components'
+import { iPage, icon, iCard, iButton, iPagination, iMessage } from 'rise'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { tableTitle } from './components/data'
 import { pageMixins } from '@/utils/pageMixins'

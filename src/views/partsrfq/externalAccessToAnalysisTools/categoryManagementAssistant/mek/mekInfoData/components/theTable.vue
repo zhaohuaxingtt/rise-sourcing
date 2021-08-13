@@ -270,7 +270,7 @@ export default {
         pageSize: this.page.totalCount,
       })
       let excelList = res.data
-      excelList.map((item, index) => {
+      excelList.map((item) => {
         item.partNumber1 = item.partNumber + item.partName
         item.materialGroup1 = item.materialGroup + item.stuffGroup
         item.motorNameMotorProject = item.motorName + item.motorProject
@@ -280,6 +280,10 @@ export default {
         item.priceInfo = item.sopDate + item.sopPrice + '      ' + item.data + item.price
         item.supplierInfo = item.supplierCode + item.supplierName
         return item.isHidden1 = item.isHidden
+      })
+      excelList.unshift({
+        carInfo: this.language('PEIZHIXINGXI', '配置信息') + '        ' + 'EBR',
+        priceInfo: this.language('SOPXINGXI', 'SOP信息') + '         ' + this.language('DANGQIANJIAGE', '当前价格')
       })
       excelExport(excelList, this.tableTitle)
     },

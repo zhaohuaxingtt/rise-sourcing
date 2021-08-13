@@ -115,7 +115,7 @@ export default {
       dictkey().then((res) => {
         if (res.data) {
           this.fromGroup = res.data;
-          this.selectOptions.carTypeProjectOptions = res.data.CAR_TYPE_PRO.map(item => {
+          this.selectOptions.cartypeProjectOptions = res.data.CAR_TYPE_PRO.map(item => {
             return {
               ...item,
               value: item.code,

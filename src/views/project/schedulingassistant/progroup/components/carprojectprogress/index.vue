@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 22:46:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 14:10:53
+ * @LastEditTime: 2021-08-12 19:20:59
  * @Description: 车型项目详情
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\carprojectprogress\index.vue
 -->
@@ -123,7 +123,7 @@ export default {
   padding-top: 40px;
   padding-bottom: 20px;
   &-detail {
-    width: 200px;
+    min-width: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;

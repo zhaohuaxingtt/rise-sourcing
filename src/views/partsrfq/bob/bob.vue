@@ -2,7 +2,7 @@
  * @Author: xuxin
  * @Date: 2021-06-16 10:41:04
  * @Description: BOB主页面
- * @FilePath: \front-web\src\views\bob\bob.vue
+ * @FilePath: \front-web\src\views\partsrfq\bob\bob.vue
 -->
 <template>
   <div class="bob-main">

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { icon } from "@/components";
+import { icon } from 'rise';
 
 export default {
   components: { icon },

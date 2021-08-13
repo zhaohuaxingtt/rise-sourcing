@@ -16,7 +16,7 @@
       </iDialog>
 </template>
 <script>
-import {iInput,iButton,iMessage,iDialog} from '@/components' 
+import {iInput,iButton,iMessage,iDialog} from 'rise' 
 export default{
   components:{iInput,iButton,iDialog},
   props:{
