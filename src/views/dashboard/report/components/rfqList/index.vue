@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 17:05:28
- * @LastEditTime: 2021-08-10 14:30:00
+ * @LastEditTime: 2021-08-13 14:09:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/dashboard/report/components/rfqList/index.vue
@@ -10,9 +10,9 @@
   <div class="rfq-list">
     <div class="rfq-list-item" v-for="(item, index) in data" :key="index">
       <div class="rfq-title">
-        <span class="tit">{{item.rfqId || ''}}</span>
+        <span class="tit" @click="$router.push({path: `/sourcing/partsrfq/editordetail?id=${item.rfqId}`})">{{item.rfqId || ''}}</span>
         <div class="alarm">
-          <span class="margin-right20">{{language('ZHENGTIRENWUJINDU','整体任务进度')}}:
+          <span class="margin-right20">{{language('RENWUJINDU','任务进度')}}:
             <icon symbol style="font-size:14px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+item.wholeTaskProgress].icon"></icon>
             </span>
           <span>{{language('ZHENGCHEJINDUFENGXIAN','整车进度风险')}}: <el-tooltip placement="right" effect="light">
@@ -39,6 +39,9 @@
         </div>
       </div>
     </div>
+    <div class="data-null" v-if="!(data && data.length)">
+      {{$t('LK_ZANWUSHUJU')}}
+    </div>
   </div>
 </template>
 
@@ -53,6 +56,12 @@ import timeLine from './components/timeline'
 import _ from 'lodash'
 
 export default {
+  props: {
+    dataList: {
+      type: Array,
+      default: () => ([])
+    }
+  },
   components: {
     iInput,
     icon,
@@ -67,23 +76,38 @@ export default {
       mark: ''
     }
   },
-  created() {
-    this.init()
+  watch: {
+    dataList(data) {
+      this.init(data)
+    }
   },
+  // created() {
+  //   this.init(this.data)
+  // },
   methods: {
-    init() {
-      const mokeData = require('./components/moke.json')
-      mokeData.map(o => {
+    init(dataList = []) {
+      const data = _.cloneDeep(dataList)
+      // data = require('./components/moke.json')
+      if (!dataList.length) {
+        this.data = []
+        return
+      }
+      data.map(o => {
         const processList = o.rfqTimeAxisProgressVOList || []
         const timeListData = _.cloneDeep(timeList)
         timeListData.map(item => {
           // 校验是否有delay
           const processStepItem = processList.find(p => p.progressTypeDesc === item.name) || ''
           if (processStepItem) {
-            item.active = true
+            // 计划完成周
+            processStepItem.planPeriod && (item.week = processStepItem.planPeriod)
+            // 更新预置数据
+            // 非未超期未完成
+            item.active = processStepItem.taskStatus !== 5
             item.doneYear = processStepItem.doneYear || ''
-            item.doneWeek = processStepItem.doneWeek || ''
-            item.delay = (processStepItem.doneWeek > item.week)
+            item.doneWeek = processStepItem.donePeriod || ''
+            // 超期未完成
+            item.delay = (processStepItem.taskStatus === 3)
             return item
           }
           
@@ -91,8 +115,8 @@ export default {
         o.timeListdata = timeListData
         return o
       })
-      console.log('mokeData', mokeData)
-      this.data = mokeData
+      console.log('mokeData', data)
+      this.data = data
     },
   }
 
@@ -100,6 +124,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .rfq-list {
+  box-sizing: border-box;
+  padding: 1.875rem 2.5rem;
+  height: 820px;
+  overflow-x: hidden;
+  overflow-y: scroll;
   .rfq-title {
     width: 100%;
     display: flex;
@@ -108,6 +137,8 @@ export default {
       text-decoration: underline;
       font-size: 20px;
       color: #2c2c2c;
+      display: inline-block;
+      cursor: pointer;
     }
   }
   .rfq-body {
@@ -148,5 +179,11 @@ export default {
       border-bottom: 0px;
     }
   }
+}
+.data-null {
+  min-height: 300px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 </style>

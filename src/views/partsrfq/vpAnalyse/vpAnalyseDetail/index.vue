@@ -400,7 +400,6 @@ export default {
     },
     // 保存自定义零件
     saveCustomPart() {
-      console.log('visible', this.customDialog.visible);
       this.$set(this.customDialog, 'visible', false);
       this.getDataInfo();
     },

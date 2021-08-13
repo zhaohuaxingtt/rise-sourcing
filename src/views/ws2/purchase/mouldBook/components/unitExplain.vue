@@ -14,7 +14,7 @@ export default {
 
 <style lang="scss" scoped>
 .btns-txt{
-  font-size: 12px;
+  font-size: 14px;
   color: #8c98ac;
 
   span{

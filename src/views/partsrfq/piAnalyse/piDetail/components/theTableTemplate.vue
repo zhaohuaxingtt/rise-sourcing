@@ -114,6 +114,7 @@
           <div class="systemMatchBox">
             <template v-if="isTableEdit">
               <iSelect v-model="scope.row.q"
+                       @visible-change="(boolean)=>handleGetFirstList(boolean,scope.row)"
                        @change="(value)=>handleSelectChange({props:items.props,value, time:scope.row.time})"
                        style="width: 120px;margin-right: 10px;"
               >
@@ -182,6 +183,7 @@
 import {iInput, iSelect, icon} from 'rise';
 import {getColor, rawMaterialColor} from './data';
 import iconTips from '../../../../../components/ws3/iconTips';
+import {getSelectMateria} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   props: {
@@ -247,6 +249,19 @@ export default {
     rowStyle({row, column}) {
       if (row.a === 2) {
         return 'rowStyle';
+      }
+    },
+    // 材料下拉
+    async getSelectMateria(req = {}) {
+      const res = await getSelectMateria(req);
+    },
+    handleGetFirstList(boolean, row) {
+      if (boolean) {
+        switch (row.dataType) {
+          case '1':
+            this.getSelectMateria();
+            break;
+        }
       }
     },
   },

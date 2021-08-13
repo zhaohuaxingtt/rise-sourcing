@@ -39,7 +39,7 @@
         @handleSelectionChange="handleSelectionChange"
         @handleHide="handleHide"
     />
-    <el-divider class="margin-top20 margin-bottom20"  v-if="tableStatus === 'edit'"/>
+    <el-divider class="margin-top20 margin-bottom20" v-if="tableStatus === 'edit'"/>
     <!--隐藏表格-->
     <theTableTemplate
         v-if="tableStatus === 'edit'"
@@ -202,8 +202,10 @@ export default {
         this.hideTableData = [];
         //this.copyDataInfo = _.cloneDeep(this.dataInfo);
         this.copyDataInfo = [
-          {'a': 1, 'b': 2, 'c': 1, 'q': 1, 'w': 212312323, 'e': 3, isShow: true},
-          {'a': 2, 'b': 2, 'c': 1, 'q': 112, 'w': 2, 'e': 3, isShow: true}];
+          {'a': '材料', 'b': 2, 'c': 1, 'q': 1, 'w': 212312323, 'e': 3, isShow: true, dataType: '1', id: 1},
+          {'a': '人力', 'b': 2, 'c': 1, 'q': 112, 'w': 2, 'e': 3, isShow: true, dataType: '2', id: 2},
+          {'a': '汇率', 'b': 2, 'c': 1, 'q': 112, 'w': 2, 'e': 3, isShow: true, dataType: '3', id: 3},
+        ];
         this.copyDataInfo.map((item, index) => {
           if (!item.id) {
             item.time = new Date().getTime() + index;
@@ -278,7 +280,7 @@ export default {
   font-size: 22px;
 }
 
-.timeRange{
+.timeRange {
   font-size: 16px;
   font-weight: bold;
   color: #000000;

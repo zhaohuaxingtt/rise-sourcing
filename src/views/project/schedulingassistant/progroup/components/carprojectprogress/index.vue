@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 22:46:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-12 19:20:59
+ * @LastEditTime: 2021-08-13 14:26:47
  * @Description: 车型项目详情
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\carprojectprogress\index.vue
 -->
@@ -82,6 +82,12 @@ export default {
     }
   },
   methods: {
+    /**
+     * @Description: 获取节点列表
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     async getProgressList(val) {
       if (!val) {
         return

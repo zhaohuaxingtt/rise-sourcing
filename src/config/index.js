@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-08-10 17:56:14
+ * @LastEditTime: 2021-08-13 11:06:27
  * @LastEditors: Please set LastEditors
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js
@@ -79,14 +79,3 @@ export const user = {
   //扩产能管理员
   BKMROLETAGID:'KCNGLY'
 }
-// 测试用区分权限的用户id
-export const permissionUserIdMap = {
-  AEKO_MANAGER: new Set([4]), // Aeko管理员
-  COMMODITY_COORDINATOR: new Set([12]), // Aeko科室协调员
-  LINIE: new Set([ 14, 34 ]) // 专业采购员
-}
-
-// 4 马家骏 WS1SUPTEST01
-// 12 穆增志 ETEST01
-// 14 吕金起 MSTEST
-// 34 孙途观 WS2TEST002

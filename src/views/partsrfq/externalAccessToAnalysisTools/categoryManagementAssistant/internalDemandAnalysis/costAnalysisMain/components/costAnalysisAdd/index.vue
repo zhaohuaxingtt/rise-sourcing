@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-08-10 17:35:43
+ * @LastEditTime: 2021-08-13 14:43:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -183,7 +183,9 @@ export default {
       this.$router.push({
         path: this.costAnalysisMainUrl,
         query: {
-          fsNumList: this.tableListData.map(item => item.fsNum)
+          ...this.searchForm,
+          schemeId: this.$route.query.schemeId || null,
+          fsNumList: this.tableListData.map(item => item.fsNum),
         }
       })
     },
@@ -193,7 +195,12 @@ export default {
     },
     // 点击提交手工输入弹窗数据
     handleSubmitDialog(data) {
-      this.$router.push(this.costAnalysisInputUrl)
+      this.$router.push({
+        path: this.costAnalysisInputUrl,
+        query: {
+          operateLog: JSON.stringify(data)
+        }
+      })
     }
   }
 }

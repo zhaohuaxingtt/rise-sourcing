@@ -15,7 +15,7 @@
                   <i-select
                     :placeholder="language('QINGXUANZE','请选择')"
                     v-model="formData.scoreDeptId">
-                    <el-option value="">全部</el-option>
+                    <el-option value="">所有</el-option>
                     <el-option
                       v-for="item in organizationMenu"
                       :key="item.existShareId"
@@ -30,7 +30,7 @@
                   <i-select
                     :placeholder="language('QINGXUANZE','请选择')"
                     v-model="formData.categoryCode">
-                    <el-option value="">全部</el-option>
+                    <el-option value="">所有</el-option>
                     <el-option
                       v-for="item in categoryList"
                       :key="item.categoryId"

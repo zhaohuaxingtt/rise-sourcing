@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-08-12 21:56:23
+ * @LastEditTime: 2021-08-13 15:35:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisTable.vue
@@ -388,8 +388,6 @@ export default {
     //点击报告名称，打开报告预览弹窗
     clickReport (row) {
       this.reportTitle = row.reportName
-      if (row.downloadUrl) this.reportUrl = row.downloadUrl
-      this.reportVisible = true
       this.reportKey = Math.random()
       if (row.downloadUrl) this.reportUrl = row.downloadUrl
       this.reportVisible = true

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 16:38:55
- * @LastEditTime: 2021-08-10 17:22:12
+ * @LastEditTime: 2021-08-13 15:12:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysis\index.vue
@@ -42,9 +42,11 @@
       <div class="mainContent">
         <div class="tableOptionBox">
           <p class="tableTitle">分析库列表</p>
-          <iButton @click="clickDel">{{language('SHANCHU', '删除')}}</iButton>
-          <iButton @click="clickAdd">{{language('XINZENG', '新增')}}</iButton>
-          <iButton @click="clickEdit">{{language('BIANJI', '编辑')}}</iButton>
+          <iButton v-if="!editMode" @click="clickDel">{{language('SHANCHU', '删除')}}</iButton>
+          <iButton v-if="!editMode" @click="clickAdd">{{language('XINZENG', '新增')}}</iButton>
+          <iButton v-if="!editMode" @click="clickEdit">{{language('BIANJI', '编辑')}}</iButton>
+          <iButton v-if="editMode" @click="clickSave">{{language('BAOCUN', '保存')}}</iButton>
+          <iButton v-if="editMode" @click="clickEdit">{{language('QUXIAO', '取消')}}</iButton>
         </div>
         <tableList
           ref="multipleTable"
@@ -52,15 +54,25 @@
           :tableTitle="tableTitle"
           :tableLoading="loading"
           :index="true"
-          openPageProps="analysis">
+          @handleSelectionChange="handleSelectionChange">
+          <template #schemeName="scope">
+            <div>
+              <div v-if="!editMode" class="openPage" @click="handleClickAnalysis(scope.row)">
+                {{scope.row.schemeName}}
+              </div>
+              <div v-if="editMode">
+                <iInput class="nameInput" v-model="scope.row.schemeName"></iInput>
+              </div>
+            </div>
+          </template>
           <template #option="scope">
-            <div class="openPage" @click="clickStick(scope.row)">
-              {{scope.row.option}}
+            <div class="openPage" @click="clickPreview(scope.row)">
+              预览
             </div>
           </template>
           <template #sort="scope">
             <div class="stickIcon" @click="clickStick(scope.row)">
-              <icon v-if="scope.row.isStick"
+              <icon v-if="scope.row.isTop"
                     style="{font-size:24px}"
                     symbol
                     name="iconliebiaoyizhiding"></icon>
@@ -83,24 +95,42 @@
           :total="page.totalCount"/>
       </div>
     </iCard>
+    <!-- 手工输入弹窗 -->
+    <handleInput
+    :key="modalParam.key"
+    :data="operateLog"
+    v-model="modalParam.visible"
+    @handleCloseDialog="handleCancel"
+    @handleSubmitDialog="handleSubmitDialog"
+    />
+    <!-- 预览报告 -->
+    <reportPreview :key="reportParams.key"
+                :visible="reportParams.visible"
+                :reportUrl="reportParams.url"
+                :title="reportParams.title"
+                @handleCloseReport="handleCloseReport" />
   </div>
 </template>
 
 <script>
-import {iCard, iButton, iInput, iSelect, iPagination, icon} from 'rise'
+import {iCard, iButton, iInput, iSelect, iPagination, icon, iMessageBox} from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import {pageMixins} from '@/utils/pageMixins';
-import { getAnalysisList, getMaterialGroupByUserIds } from '@/api/partsrfq/costAnalysis/index'
 import { iMessage } from '@/components';
+import handleInput from '../costAnalysisAdd/components/handleInput'
+import reportPreview from '@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview.vue'
+import { getAnalysisList, getMaterialGroupByUserIds, fetchModify, fetchStick, fetchDel } from '@/api/partsrfq/costAnalysis/index'
 export default {
   name: 'CostAnalysis',
   mixins: [pageMixins],
-  components: {iCard, iButton, iInput, iSelect, iPagination, tableList, icon},
+  components: {iCard, iButton, iInput, iSelect, iPagination, icon, iMessageBox, tableList, handleInput, reportPreview},
   data () {
     return {
       costAnalysisMainUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain',
       costAnalysisAddUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisAdd',
+      costAnalysisInputUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisHandleInput',
+      editMode: false,
       searchForm: {},
       labelPosition: 'top',
       tableTitle,
@@ -110,7 +140,21 @@ export default {
       fileTypeList: [
         {label: '系统筛选', val: 1},
         {label: '人工输入', val: 2},
-      ]
+      ],
+      backUpData: [],
+      modalParam: {
+        key: 0,
+        visible: false
+      },
+      schemeId: null,
+      operateLog: null,
+      selection: [],
+      reportParams: {
+        key: null,
+        url: null,
+        title: null,
+        visible: null
+      }
     }
   },
   created() {
@@ -122,9 +166,9 @@ export default {
     // 初始化测试数据
     initTestData() {
       this.tableListData = [
-        {id: 1, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isStick: true},
-        {id: 2, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isStick: false},
-        {id: 3, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isStick: false},
+        {id: 1, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isTop: true},
+        {id: 2, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isTop: false},
+        {id: 3, analysis: '材料组编号-名称-YYYY/MM/DD', materialGroup: '编号-名称', createBy: 'Name', createDate: 'YYYY-MM-DD', option: '预览', lastUpdateDate: 'YYYY-MM-DD', isTop: false},
       ]
       this.loading = false
     },
@@ -182,11 +226,23 @@ export default {
     },
     // 点击置顶
     clickStick(val) {
-      
+      const params = {
+        id: val.id,
+        isTop: !val.isTop
+      }
+      fetchStick(params).then(res => {
+        if(res && res.code == 200) {
+          iMessage.success(res.desZh)
+          this.page.currPage = 1
+          this.page.pageSize = 10
+          this.getTableData()
+        } else iMessage.error(res.desZh)
+      })
     },
     // 点击返回
     clickBack() {
-      this.$router.push(this.costAnalysisMainUrl)
+      // this.$router.push(this.costAnalysisMainUrl)
+      this.$router.go(-1)
     },
     // 点击新增
     clickAdd() {
@@ -194,17 +250,119 @@ export default {
     },
     // 点击编辑
     clickEdit() {
-
+      if(!this.editMode) 
+        this.backUpData = window._.cloneDeep(this.tableListData)
+      else 
+        this.tableListData = window._.cloneDeep(this.backUpData)
+      this.editMode = !this.editMode
     },
     // 点击删除
     clickDel() {
-
+      if(this.selection && this.selection.length == 0) {
+        iMessage.error(this.language('QINGXUANZEYAOSHANCHUDESHUJU', '请选择要删除的数据'))
+        return 
+      }
+      const params = {
+        idList: this.selection.map(item => item.id)
+      }
+      fetchDel(params).then(res => {
+        if(res && res.code == 200) {
+          iMessage.success(res.desZh)
+          this.getTableData()
+        }
+        else iMessage.error(res.desZh)
+      })
+    },
+    // 点击保存
+    clickSave() {
+      const params = {
+        modifyList: this.tableListData
+      }
+      fetchModify(params).then(res => {
+        if(res && res.code == 200) {
+          this.editMode = false
+          this.getTableData()
+          if(res.data && res.data.length > 0) {
+            let msg = "数据名称发生重复，系统将<br/>"
+            res.data.map(item => {
+              msg += "原数据："+ item.oldName + "   自动变更为：" + item.newName + "<br/>"
+            })
+            this.$message({
+              dangerouslyUseHTMLString: true,
+              message: msg,
+              duration: 5000
+            })
+          }
+          else iMessage.success(res.desZh)
+        } else iMessage.error(res.desZh)
+      })
+    },
+    // 点击方案名称
+    handleClickAnalysis(val) {
+      if(val.fileType == '1') {
+        // 跳转系统
+        this.$router.push({
+          path: this.costAnalysisAddUrl,
+          query: {
+            schemeId: val
+          }
+        })
+      } else {
+        // 打开手工
+        this.operateLog = val.operateLog
+        this.schemeId = val.id
+        this.modalParam = {
+          ...this.modalParam,
+          key: Math.random(),
+          visible: true
+        }
+      }
+    },
+    // 点击预览
+    clickPreview(val) {
+      if(val && val.reportUrl) {
+        this.reportParams = {
+          ...this.reportParams,
+          key: Math.random,
+          url: val.reportUrl,
+          title: val.schemeName,
+          visible: true
+        }
+      } else {
+        iMessage.error(this.language('CIFANGANMEIYOUBAOGAO', '此方案没有生成报告'))
+      }
+    },
+    //点击关闭报告预览弹窗
+    handleCloseReport () {
+      this.reportParams.visible = false
+    },
+    // 取消手工输入弹窗
+    handleCancel() {
+      this.$set(this.modalParam, 'visible', false)
+    },
+    // 点击提交手工输入弹窗数据
+    handleSubmitDialog(data) {
+      this.$router.push({
+        path: this.costAnalysisInputUrl,
+        query: {
+          schemeId: this.schemeId,
+          operateLog: JSON.stringify(data)
+        }
+      })
+    },
+    // 选中数据发生改变
+    handleSelectionChange(val) {
+      this.selection = val
     }
   }
 }
 </script>
 
 <style lang='scss' scoped>
+::v-deep .el-table .el-table__row .el-input .el-input__inner {
+  text-align: center !important;
+}
+
 .headBox {
   position: relative;
   justify-content: space-between;

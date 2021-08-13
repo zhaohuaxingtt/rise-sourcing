@@ -1,15 +1,20 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-09 09:46:57
+ * @LastEditTime: 2021-08-13 16:25:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\supplierList.vue
 -->
 <template>
   <div>
+    
       <iPage>
         <publicHeaderMenu></publicHeaderMenu>
+        <div class="tab">
+          <div class="current radius-left">生产供应商</div>
+          <div class="radius-right">一般供应商</div>
+        </div>
           <iCard>
                <div class="imgkpi-head">
                <el-form :model="formData">
@@ -18,12 +23,13 @@
                 </el-form-item>
                </el-form>
                <div>
-                   <iButton>{{language('QUEREN','确认')}}</iButton>
-                   <iButton>{{language('CHONGZHI','重置')}}</iButton>
+                   <iButton @click="clickSure">{{language('QUEREN','确认')}}</iButton>
+                   <iButton @click="clickReset">{{language('CHONGZHI','重置')}}</iButton>
                </div>
                </div>
            </iCard>
            <iCard style="margin-top:20px">
+              <div class="supplier-table-tittle">重点追踪供应商名单</div>
                <iTableCustom
                :data="tabledata"
                :columns="setCloum"
@@ -63,11 +69,11 @@ export default {
     },
     methods:{
       handleGoDetail(row){
-        console.log('supplierId', row.supplierId);
         this.$router.push({
           path: '/supplier/supplierDetail',
           query: {
-            supplierId: row.supplierId
+            supplierId: row.supplierId,
+            supplierName: row.nameZh
           }
         })
       },
@@ -87,6 +93,18 @@ export default {
         this.tabledata.forEach((item, index) => {
           item['index'] = index + 1
         })
+      },
+      // 点击确定
+      clickSure() {
+        this.getTableData()
+      },
+      // 点击重置
+      clickReset() {
+        this.formData = {
+          ...this.formData,
+          supplierName: null,
+        }
+        this.getTableData()
       }
     }
 }
@@ -96,5 +114,38 @@ export default {
     .imgkpi-head{
         display: flex;
         justify-content: space-between;
+    }
+    .tab{
+      width: 240px;
+      display: flex;
+      justify-content: flex-start;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+      
+      div{
+        width: 120px;
+        height: 35px;
+        color: #000;
+        text-align: center;
+        line-height: 35px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .radius-left{
+        border-radius: 10px 0 0 10px;
+      }
+      .radius-right{
+        border-radius: 0 10px 10px 0;
+      }
+      .current{
+        background-color: #fff!important;
+        color: #1660F1!important;
+      }
+    }
+    .supplier-table-tittle{
+      font-size: 18px;
+      color: #000;
+      font-weight: bold;
+      margin-bottom: 20px;
     }
 </style>

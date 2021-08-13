@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-09 10:41:52
+ * @LastEditTime: 2021-08-13 17:03:28
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
- * @FilePath: \rise\src\utils\mydirect.js
+ * @FilePath: \front-web\src\utils\mydirect.js
  */
 
 import Vue from 'vue';
@@ -18,6 +18,10 @@ Vue.directive('permission', {
             if (binding.modifiers.disabled) {
                 if (store.state.permission.whiteBtnList[binding.expression]) {
                     el.classList.add("is-disabled")
+                }
+            } else if (binding.modifiers.dynamic) {
+                if (!store.state.permission.whiteBtnList[binding.value] && businessPermission(binding.value,router.currentRoute.query)) {
+                    el.parentNode.removeChild(el)
                 }
             } else { //remove
                 if (!store.state.permission.whiteBtnList[binding.expression] && businessPermission(binding.expression,router.currentRoute.query)) {
