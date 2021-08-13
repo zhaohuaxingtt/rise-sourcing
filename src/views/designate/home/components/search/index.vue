@@ -76,7 +76,7 @@
         </iSelect>
       </el-form-item>
         <!-- FSNR/GSNR -->
-      <el-form-item label="FSNR/GSNR">
+      <el-form-item label="零件采购项目号/GSNR">
         <iInput
           v-model="form.fsnrGsnrNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
