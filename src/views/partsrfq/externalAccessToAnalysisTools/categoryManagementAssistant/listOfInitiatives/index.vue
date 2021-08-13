@@ -119,7 +119,7 @@ export default {
       pageLoading: false,
       treeData: {},
       treeDataSelect: {},
-      editStatus: false,
+      editStatus: true,
       form: {},
       maxlength: 500,
       categoryCode: this.$store.state.rfq.categoryCode,
