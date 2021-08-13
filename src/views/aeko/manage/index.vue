@@ -19,7 +19,7 @@
               :label="language(item.labelKey,item.label)"
               v-permission.dynamic="item.permissionKey"
               >
-                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
+                  <iSelect class="multipleSelect" collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="item in selectOptions[item.selectOption] || []"
@@ -29,7 +29,7 @@
                     </el-option>  
                   </iSelect> 
                   <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
-                  <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]"></iInput> 
+                  <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
               </el-form-item>
           </el-form>
       </iSearch>
@@ -48,7 +48,7 @@
                 :accept="'.xlsx,.xls'"
             />
           </span>
-          <iButton v-permission="AEKO_MANAGELIST_BUTTON_SHANCHUAEKO" @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
+          <iButton v-permission="AEKO_MANAGELIST_BUTTON_SHANCHUAEKO" :loading="btnLoading.deleteItem" @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
           <iButton v-permission="AEKO_MANAGELIST_BUTTON_CHEXIAOAEKO" @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
           
           <span v-permission="AEKO_MANAGELIST_BUTTON_DAORUFUJIAN" class=" margin-left10 margin-right10">
@@ -137,7 +137,7 @@ import {
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
-import { TAB } from '../data';
+import { TAB,filterRole } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
@@ -175,7 +175,6 @@ export default {
       revokeDialog,
       filesListDialog,
       Upload,
-      // iSelectCustom,
     },
     data(){
       return{
@@ -206,15 +205,35 @@ export default {
         btnLoading:{
           uploadFiles:false,
           importAeko:false,
+          deleteItem:false,
           
         },
         importAeko:importAeko,
         itemFileData:{},
       }
     },
+    computed: {
+        //eslint-disable-next-line no-undef
+        ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+            permission: state => state.permission
+        }),
+    },
     created(){
       this.getList();
       this.getSearchList();
+      
+      this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
+      this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
+      this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+
+      const { isAekoManager,isCommodityCoordinator,isLinie } = this;
+      const role = {
+        isAekoManager,
+        isCommodityCoordinator,
+        isLinie,
+      };
+      this.navList = filterRole(role);
     },
     methods:{
       // 重置
@@ -321,7 +340,7 @@ export default {
           if(code ==200 ){
             data.map((item)=>{
               item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-              item.code = item.deptNum;
+              item.code = item.id;
             })
             this.selectOptions.linieDeptNumList = data;
           }else{
@@ -491,9 +510,10 @@ export default {
             cancelButtonText: this.language('nominationLanguage.No','否'),
           }
           ).then(()=>{
-            console.log('是',this.language('LK_CAOZUOCHENGGONG','操作成功'))
+            this.btnLoading.deleteItem = true;
             const requirementAekoIds = (selectItems.map((item)=>item.requirementAekoId)).join();
             deleteAeko({requirementAekoIds}).then((res)=>{
+              this.btnLoading.deleteItem = false;
               if(res.code ==200){
                 iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                 this.getList();
@@ -502,7 +522,7 @@ export default {
               }
             })
           }).catch(()=>{
-            console.log('否')
+            this.btnLoading.deleteItem = false;
           })
       },
       
@@ -572,7 +592,7 @@ export default {
     }
     ::v-deep .el-select__tags-text{
       display: inline-block;
-      max-width: 90px;
+      max-width: 70px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

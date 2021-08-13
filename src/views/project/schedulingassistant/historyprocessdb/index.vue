@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 17:17:42
+ * @LastEditTime: 2021-08-13 14:32:42
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
@@ -82,6 +82,12 @@ export default {
         return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
     },
+    /**
+     * @Description: 获取所有产品组
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getProductGroupAll() {
       getProductGroupAll().then(res => {
         if (res?.result) {
@@ -98,6 +104,13 @@ export default {
         }
       })
     },
+    /**
+     * @Description: 查看维度修改
+     * @Author: Luoshuang
+     * @param {*} val
+     * @param {*} props
+     * @return {*}
+     */    
     handleChange(val, props) {
       if (props === 'level'){
         this.searchParams = {
@@ -106,6 +119,12 @@ export default {
         }
       }
     },
+    /**
+     * @Description: 获取车型项目下拉
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getCarProjectOptions() {
       getCarTypePro({isSop:true}).then(res => {
         if (res?.result) {
@@ -140,12 +159,24 @@ export default {
         }
       })
     },
+    /**
+     * @Description: 确认
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleSure() {
       this.$nextTick(() => {
         this.$refs.historyDBProductGroup && this.$refs.historyDBProductGroup.handleNomalSearch()
         this.$refs.historyDBpart && this.$refs.historyDBpart.handleNomalSearch(false)
       })
     },
+    /**
+     * @Description: 重置
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleReset() {
       this.searchParams = {
         level: this.searchParams.level,

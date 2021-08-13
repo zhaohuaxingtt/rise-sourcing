@@ -25,7 +25,7 @@
                         :value="item.code">
                     </el-option>
                 </iSelect> 
-                <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model="searchParams[item.props]"></iInput> 
+                <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model.trim="searchParams[item.props]"></iInput> 
             </el-form-item>
         </el-form>
     </iSearch>
@@ -34,7 +34,7 @@
         <template v-slot:header-control>
             <div>
                 <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
-                <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN" v-if="isCommodityCoordinator" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
+                <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
                 <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
                 <iButton  v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
                 <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
@@ -45,7 +45,7 @@
                 class="table"
                 index
                 :lang="true"
-                 v-permissionArr="['AEKO_AEKODETAIL_PARTLIST_TABLE']"
+                 v-permissionArr="['AEKO_AEKODETAIL_PARTLIST_TABLE','AEKO_DETAIL_TAB_LINGJIANQINGDAN_TABLE']"
                 :selection="isAekoManager || isCommodityCoordinator"
                 :tableData="tableListData"
                 :tableTitle="tableTitle"
@@ -348,7 +348,7 @@ export default {
                 if(code ==200 ){
                     data.map((item)=>{
                         item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                        item.code = item.deptNum;
+                        item.code = item.id;
                     })
                     this.selectOptions.linieDeptNumList = data;
                 }else{
@@ -440,7 +440,7 @@ export default {
                         }else{ // 采购员分派 
                             const arr = selectItems.filter((item)=>item.isOperate);
                             if(arr.length){
-                                const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGYIFENPAICAIGOUYUANQINGQUERENSHIFOUCHONGXINFENPAI','行已分派采购员，请确认是否重新分派');
+                                const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGLINGJIANYIBIAOTAILINIEWUFAXIUGAI','行零件已表态,linie无法修改');
                                 return iMessage.warn(tips);
                             }else{
                                 this.assignVisible = true;

@@ -252,6 +252,7 @@ export function filterProjectList(oldProjectList,currentProjectType){
 import {businessKey} from '@/config/businessBlackKey'
 export function businessPermission(currentPermissinKey,currentProjectParmars){
   try {
+    if(!currentProjectParmars.businessKey) return true
     const businessKeyQuery = currentProjectParmars.businessKey;
     if(businessKey[businessKeyQuery].find(i=>i == currentPermissinKey)) return true;
   } catch (error) {

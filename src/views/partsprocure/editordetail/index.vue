@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-12 23:08:37
+ * @LastEditTime: 2021-08-13 16:11:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -127,7 +127,7 @@
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->
 						<iFormItem v-if='partProjTypes.JINLINGJIANHAOGENGGAI == detailData.partProjectType' :label="language('YUANLINGJIANHAO', '原FS/GS号') + ':'">
-							<iInput class="removeInputDisabelColor" disabled search v-model="selectOldParts.selectData.partNum"> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{selectOldParts.show=true}"></i></iInput>	
+							<iInput class="removeInputDisabelColor" disabled search v-model="detailData.oldFsnrGsnrNum"> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{selectOldParts.show=true}"></i></iInput>	
 						</iFormItem>
 					</div>
 					<div class="col">
@@ -610,6 +610,7 @@
 				detailData['linieName'] = linie ? linie.name : ""
 				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
 				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
+				detailData['oldProjectRelations'] = [{...this.translateDataForService(this.selectOldParts.selectData),...{purchasingProjectId:this.detailData.id}}]
 				return new Promise((resolve, reject) => {
 					updateProcure(detailData).then((res) => {
 						this.saveLoading = false
@@ -628,6 +629,13 @@
 						this.saveLoading = false
 					});
 				})
+			},
+			translateDataForService(data){
+				const newMap = {}
+				Object.keys(data).forEach(e=>{
+					newMap['old'+(e.charAt(0).toUpperCase() + e.slice(1))] = data[e]
+				})
+				return newMap
 			},
 			// 返回
 			back() {

@@ -116,7 +116,7 @@ import {
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
-import { TAB } from '../data';
+import { TAB,filterRole } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import filesListDialog from '../manage/components/filesListDialog'
 import {
@@ -170,9 +170,31 @@ export default {
         itemFileData:{},
       }
     },
+    computed: {
+        //eslint-disable-next-line no-undef
+        ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+            permission: state => state.permission
+        }),
+    },
     created(){
       this.getList();
       this.getSearchList();
+      
+      
+      this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
+      this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
+      this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+
+      const { isAekoManager,isCommodityCoordinator,isLinie } = this;
+      const role = {
+        isAekoManager,
+        isCommodityCoordinator,
+        isLinie,
+      };
+      this.navList = filterRole(role);
+
+
     },
     methods:{
       // 重置
