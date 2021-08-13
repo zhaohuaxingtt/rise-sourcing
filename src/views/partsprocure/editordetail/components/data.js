@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:50
- * @LastEditTime: 2021-08-12 11:28:00
+ * @LastEditTime: 2021-08-13 15:01:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\data.js
@@ -51,6 +51,7 @@ export const detailData = {
 	mouldCostUserId: "", // 模具成本分析员Id
 	mouldCostUserName: "", // 模具成本分析员名称
 	isDB: 0,// 是否DB件
+	oldFsnrGsnrNum:'' //老零件号
 }
 // 采购项目拆分表头
 export const splitPurchTitle = [

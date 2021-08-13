@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-02 20:05:09
- * @LastEditTime: 2021-08-06 17:50:11
+ * @LastEditTime: 2021-08-13 14:11:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\selectOldpartsNumber\index.vue
@@ -68,7 +68,7 @@ export default{
     },
     getPageData(){
       this.loading = true
-      let {partNum,carTypeProjectNum,procureFactory} = this.detailData()
+      let {partNum,carTypeProjectNum,procureFactory} = this.detailData() || {}
       getPageData({...{carTypeProject:carTypeProjectNum,partNum:partNum,procureFactory:procureFactory},...{current:this.page.currPage,size:this.page.pageSize}}).then(res=>{
          this.tableData = res.data
          this.page.currPage = res.pageNum
