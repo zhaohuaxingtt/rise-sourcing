@@ -13,7 +13,8 @@
             <el-form-item
             v-show="!item.showCode || (item.showCode && item.showCode == aekoInfo.aekoType)"
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
-            :label="language(item.labelKey,item.label)"  
+            :label="language(item.labelKey,item.label)"
+            v-permission.dynamic="item.permissionKey"
             >
                 <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :clearable="item.clearable" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
                     <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
@@ -31,66 +32,67 @@
       <iCard :title="language('LK_AEKO_PARTSLIST','零件清单')" class="margin-top20">
         <!-- 按钮区域 -->
         <template v-slot:header-control>
-            <div v-if="isAekoManager || isCommodityCoordinator">
-                <iButton v-if="isAekoManager" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
-                <iButton v-if="isCommodityCoordinator" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
-                <iButton >{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
-                <iButton :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
-                <iButton @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
+            <div>
+                <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
+                <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
+                <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
+                <iButton  v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
+                <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
             </div>
         </template>
         <!-- 表单区域 -->
-        <tableList
-            class="table"
-            index
-            :lang="true"
-            :selection="isAekoManager || isCommodityCoordinator"
-            :tableData="tableListData"
-            :tableTitle="tableTitle"
-            :tableLoading="loading"
-            @handleSelectionChange="handleSelectionChange"
-        >
-        <!-- 科室 -->
-        <!-- 实际分配科室有就显示实际科室，否则就显示预设科室  表示科室是预设的 -->
-        <template #linieDeptName="scoped">
-            <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptName || scoped.row.refferenceSmt}}</span>
-        </template>
-        <!-- linie -->
-        <template #buyerName="scoped">
-            <span :class="!scoped.row.buyerId ? 'isPreset' : '' ">
-                <!-- {{scoped.row.buyerName || scoped.row.refferenceByuerName}} -->
-                {{isShowLine(scoped.row)}}
-            </span>
-        </template>
-        <!-- 操作 -->
-        <template #operate="scoped">
-            <span v-if="!scoped.row.linieDeptNum && isAekoManager" class="link-underline" @click="assign(scoped.row,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
-            <!-- 1.未分配过 2.分配过 分配人未操作过 【buyerId表示已有分配人,oldPartNumPreset不为空标识操作过】-->
-            <!-- v-if="(!scoped.row.buyerId || ( scoped.row.buyerId && !oldPartNumPreset)) && isCommodityCoordinator"  -->
-            <span 
-                v-if="isCommodityCoordinator && !scoped.row.isOperate" 
-                class="link-underline" 
-                @click="assign(scoped.row,'linie')"
+            <tableList
+                class="table"
+                index
+                :lang="true"
+                 v-permissionArr="['AEKO_AEKODETAIL_PARTLIST_TABLE','AEKO_DETAIL_TAB_LINGJIANQINGDAN_TABLE']"
+                :selection="isAekoManager || isCommodityCoordinator"
+                :tableData="tableListData"
+                :tableTitle="tableTitle"
+                :tableLoading="loading"
+                @handleSelectionChange="handleSelectionChange"
             >
-                {{language('LK_AEKO_FENPAICAIGOUYUAN_LINE','分派采购员')}}
-            </span>
-        </template>
+            <!-- 科室 -->
+            <!-- 实际分配科室有就显示实际科室，否则就显示预设科室  表示科室是预设的 -->
+            <template #linieDeptName="scoped">
+                <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptName || scoped.row.refferenceSmt}}</span>
+            </template>
+            <!-- linie -->
+            <template #buyerName="scoped">
+                <span :class="!scoped.row.buyerId ? 'isPreset' : '' ">
+                    <!-- {{scoped.row.buyerName || scoped.row.refferenceByuerName}} -->
+                    {{isShowLine(scoped.row)}}
+                </span>
+            </template>
+            <!-- 操作 -->
+            <template #operate="scoped">
+                <span v-if="!scoped.row.linieDeptNum && isAekoManager" class="link-underline" @click="assign(scoped.row,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
+                <!-- 1.未分配过 2.分配过 分配人未操作过 【buyerId表示已有分配人,oldPartNumPreset不为空标识操作过】-->
+                <!-- v-if="(!scoped.row.buyerId || ( scoped.row.buyerId && !oldPartNumPreset)) && isCommodityCoordinator"  -->
+                <span 
+                    v-if="isCommodityCoordinator && !scoped.row.isOperate" 
+                    class="link-underline" 
+                    @click="assign(scoped.row,'linie')"
+                >
+                    {{language('LK_AEKO_FENPAICAIGOUYUAN_LINE','分派采购员')}}
+                </span>
+            </template>
 
-        </tableList>
-        <!-- 提示 -->
-        <p class="table-tips">N：Neu 新增； U：Ungueltig 取消； F：Freigabe 供应商认可，沿⽤； A：Aenderung 修改； I：Information 信息； M：Montagetext 安装信息</p>
-        <!-- 分页 -->
-        <iPagination
-          v-update
-          @size-change="handleSizeChange($event, init)"
-          @current-change="handleCurrentChange($event, init)"
-          background
-          :current-page="page.currPage"
-          :page-sizes="page.pageSizes"
-          :page-size="page.pageSize"
-          :layout="page.layout"
-          :total="page.totalCount"
-        />
+            </tableList>
+            <!-- 提示 -->
+            <p class="table-tips">N：Neu 新增； U：Ungueltig 取消； F：Freigabe 供应商认可，沿⽤； A：Aenderung 修改； I：Information 信息； M：Montagetext 安装信息</p>
+            <!-- 分页 -->
+            <iPagination
+            v-update
+            @size-change="handleSizeChange($event, init)"
+            @current-change="handleCurrentChange($event, init)"
+            background
+            :current-page="page.currPage"
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :total="page.totalCount"
+            />
 
       </iCard>
       <!-- 分配科室 -->
@@ -147,13 +149,8 @@ export default {
         //eslint-disable-next-line no-undef
         ...Vuex.mapState({
             userInfo: state => state.permission.userInfo,
+            permission: state => state.permission
         }),
-        // eslint-disable-next-line no-undef
-        ...Vuex.mapGetters([
-            "isAekoManager", // Aeko管理员
-            "isCommodityCoordinator", // 科室协调员
-            "isLinie", // 专业采购员
-        ]),
     },
     props:{
         aekoInfo:{
@@ -163,6 +160,10 @@ export default {
     },
    
     created() {
+        this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
+        this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
+        this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+
         this.getSearchList();
 
         if (this.isLinie) {
@@ -209,6 +210,9 @@ export default {
                 deleteParts:false,
             },
             departBackVisible:false,
+            isAekoManager: false,
+            isCommodityCoordinator: false,
+            isLinie: false
         }
     },
     methods:{
@@ -344,7 +348,7 @@ export default {
                 if(code ==200 ){
                     data.map((item)=>{
                         item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                        item.code = item.deptNum;
+                        item.code = item.id;
                     })
                     this.selectOptions.linieDeptNumList = data;
                 }else{
@@ -436,7 +440,7 @@ export default {
                         }else{ // 采购员分派 
                             const arr = selectItems.filter((item)=>item.isOperate);
                             if(arr.length){
-                                const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGYIFENPAICAIGOUYUANQINGQUERENSHIFOUCHONGXINFENPAI','行已分派采购员，请确认是否重新分派');
+                                const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGLINGJIANYIBIAOTAILINIEWUFAXIUGAI','行零件已表态,linie无法修改');
                                 return iMessage.warn(tips);
                             }else{
                                 this.assignVisible = true;

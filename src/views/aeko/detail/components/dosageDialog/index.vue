@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-08-12 20:54:34
+ * @LastEditTime: 2021-08-13 02:54:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -16,12 +16,12 @@
     <template #title>
       <p class="title">{{ language("ZHUANGCHELVMEICHEYONGLIANG", "装⻋率/每⻋⽤量") }}</p>
       <div class="control" id="control">
-        <iButton :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
+        <iButton :loading="saveLoading" @click="handleSave" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
       </div>
     </template>
     <div class="body" v-loading="loading">
       <iFormGroup class="form" :row="4" inline>
-        <iFormItem class="item" v-for="(item, $index) in form" :key="$index" :label="`${ language(item.key, item.name) }`">
+        <iFormItem class="item" v-for="(item, $index) in form" :key="$index" :label="`${ language(item.key, item.name) }`" v-permission.dynamic="item.permissionKey">
           <div v-if="item.props === 'cartypeProject'">
             <iSelect
               v-if="aekoInfo.aekoType == 'AeA'"
@@ -49,6 +49,7 @@
         lang
         class="table margin-top30"
         height="80%"
+        v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TABLE"
         :selection="false"
         :tableData="Array.isArray(dosage.aekoProjectCarDosageList) ? dosage.aekoProjectCarDosageList : []"
         :tableTitle="tableTitle">

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 16:16:30
- * @LastEditTime: 2021-08-10 13:36:42
+ * @LastEditTime: 2021-08-12 16:56:27
  * @LastEditors: Please set LastEditors
  * @Description: 材料组定点时率及平均定点周期
  * @FilePath: /front-web/src/views/designate/home/components/headerNav/components/nomiCharts.vue
@@ -16,6 +16,7 @@
         <span class="updateTime">
           {{language('LINGJIANJITONGJISHUJUJIEZHI','以零件级统计，数据截止至')}}:
           {{freshDate}}
+          ({{language('TONGJIANWEI1NIANNEI','统计范围：1年内')}})
         </span>
       </div>
     </div>
