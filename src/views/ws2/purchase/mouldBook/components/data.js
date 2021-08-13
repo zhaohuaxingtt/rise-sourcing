@@ -139,14 +139,14 @@ export const detailsTableHead = [
     props: 'assetTypeNum',
     name: '资产分类编号',
     key: 'LK_ZICHANFENLEIBIANHAO',
-    width: 100,
+    width: 200,
     tooltip: false
   },
   {
     props: 'partsTotalName',
     name: '零件总成名称',
     key: 'LK_LINGJIANZONGCHENMINGCHEN',
-    width: 100,
+    width: 200,
     tooltip: false
   },
   {
