@@ -2,13 +2,16 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 17:24:02
+ * @LastEditTime: 2021-08-13 14:43:45
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
 
 <template>
   <iCard class="margin-top20">
+    <!---------------------------------------------------------------------->
+    <!----------                  经验常值                   ---------------->
+    <!---------------------------------------------------------------------->
     <template>
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('JINGYANCHANGZHI', '经验常值')}}</span>
@@ -24,18 +27,24 @@
       <tableList class="regularTable" indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular">
       </tableList> 
     </template>
+    <!---------------------------------------------------------------------->
+    <!----------                  拟合进度                   ---------------->
+    <!---------------------------------------------------------------------->
     <template v-if="isShowProgress">
       <div class="margin-bottom20 clearFloat margin-top30 padding-top30 borderTop">
         <span class="font18 font-weight">{{language('NIHEJINDU', '拟合进度')}}</span>
       </div>
-      <tableList class="fitTable" v-update indexKey :tableTitle="partTableTitle" :tableData="fitTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
+      <tableList class="fitTable" indexKey :tableTitle="partTableTitle" :tableData="fitTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
       </tableList> 
     </template>
+    <!---------------------------------------------------------------------->
+    <!----------                  匹配零件号历史进度             ------------->
+    <!---------------------------------------------------------------------->
     <template>
       <div class="margin-bottom20 clearFloat margin-top30 padding-top30 borderTop">
         <span class="font18 font-weight">{{language('PIPEILINGJIANHAOLISHIJINDU', '匹配零件号历史进度')}}</span>
       </div>
-      <tableList v-update indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangePart">
+      <tableList indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangePart">
       </tableList> 
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
@@ -145,15 +154,39 @@ export default {
     this.init()
   },
   methods: {
+    /**
+     * @Description: 经验常值列表选择
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     handleSelectionChangeRegular(val) {
       this.selectRowRegular = val
     },
+    /**
+     * @Description: 拟合进度列表选择
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     handleSelectionChangeFit(val) {
       this.selectRowFit = val
     },
+    /**
+     * @Description: 匹配零件列表选择
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     handleSelectionChangePart(val) {
       this.selectRowPart = val
     },
+    /**
+     * @Description: 根据车型项目id获取车型项目名称
+     * @Author: Luoshuang
+     * @param {*} id
+     * @return {*}
+     */    
     getCartypeName(id) {
       const cartype = this.carProjectOptions.find(item => item.value === id)
       if (cartype) {
@@ -161,6 +194,12 @@ export default {
       }
       return ''
     },
+    /**
+     * @Description: 导出
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async handleExport() {
       if (this.selectRowRegular.length < 1 && this.selectRowFit.length < 1 && this.selectRowPart.length < 1) {
         iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
@@ -207,6 +246,12 @@ export default {
       }
       
     },
+    /**
+     * @Description: 获取拟合/匹配零件列表数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getTableList() {
       if (this.isShowProgress) {
         this.getFitting()
@@ -214,6 +259,12 @@ export default {
         this.getCondition()
       }
     },
+    /**
+     * @Description: 普通查询
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleNomalSearch() {
       this.page.currPage = 1
       // if (this.searchParams.productGroup) {
@@ -221,9 +272,21 @@ export default {
       // }
       this.getCondition()
     },
+    /**
+     * @Description: 拟合进度弹窗状态修改
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
     changeLogic(visible) {
       this.logicVisible = visible
     },
+    /**
+     * @Description: 使用拟合进度
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleUseLogic() {
       this.changeLogic(false)
       this.$refs.logic.changeSaveLoading(false)
@@ -231,6 +294,12 @@ export default {
       this.getFitting()
       this.getExperience(this.logicData.productGroup)
     },
+    /**
+     * @Description: 初始化页面
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     init() {
       if (this.$route.query.cartypeProId) {
         this.logicData = {
@@ -331,6 +400,12 @@ export default {
         this.partTableLoading = false
       })
     },
+    /**
+     * @Description: 配置显示字段弹窗修改
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
     changeShowItem(visible) {
       this.showItemVisible = visible
       if (!visible) {
@@ -341,6 +416,12 @@ export default {
         }
       }
     },
+    /**
+     * @Description: 获取字典下拉
+     * @Author: Luoshuang
+     * @param {*} keys
+     * @return {*}
+     */    
     selectDictByKeys(keys) {
       selectDictByKeyss(keys).then(res => {
         if (res?.result) {
@@ -350,6 +431,12 @@ export default {
         }
       })
     },
+    /**
+     * @Description: 拟合进度弹窗状态修改
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     showProgress() {
       this.logicData = {
         cartypeProId: this.logicData.cartypeProId || this.$route.query.cartypeProId || '',

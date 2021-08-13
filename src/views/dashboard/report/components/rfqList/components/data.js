@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-08-09 15:48:17
+ * @LastEditTime: 2021-08-13 10:40:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -41,8 +41,8 @@ export const timeList = [
   },
   {
     week:8,
-    key: 'SHOUCIPRECSCTIJIAOLIUZHUAN',
-    name:'首次Pre-CSC/提交流转',
+    key: 'TIJIAOPRECSCTIJIAOLIUZHUAN',
+    name:'提交Pre-CSC/提交流转',
     long: true
   },
   {
@@ -58,10 +58,16 @@ export const iconList_car = { //汽车图标
   'a2':{
     icon:'iconbaojiafenxi-zhengchejindu-cheng' //橙色
   },
+  'a6':{
+    icon:'icondingdianguanlijiedian-jinhangzhong' //蓝色
+  },
   'a3':{
     icon:'iconbaojiafenxi-zhengchejindu-hong' //红色
   },
   'a1':{
+    icon:'icondingdianguanlijiedian-jinhangzhong' //黄色浅黄
+  },
+  'a4':{
     icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
   },
   'a0':{
@@ -85,6 +91,9 @@ export const iconList_all_times = { //整体任务进度以及每格进度
     icon:'iconbaojiapingfengenzong-jiedian-cheng' //橙色
   },
   'a5': {
+    icon: 'iconzhuanxiangfenxigongju-landian' //蓝色
+  },
+  'a6': {
     icon: 'iconzhuanxiangfenxigongju-landian' //蓝色
   }
 }

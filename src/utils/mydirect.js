@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-09 10:41:52
+ * @LastEditTime: 2021-08-13 10:48:00
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \rise\src\utils\mydirect.js
@@ -19,6 +19,10 @@ Vue.directive('permission', {
                 if (store.state.permission.whiteBtnList[binding.expression]) {
                     el.classList.add("is-disabled")
                 }
+            } else if (binding.modifiers.dynamic) {
+                if (!store.state.permission.whiteBtnList[binding.value] && businessPermission(binding.value,router.currentRoute.query)) {
+                    el.parentNode.removeChild(el)
+                }
             } else { //remove
                 // if (!store.state.permission.whiteBtnList[binding.expression] && businessPermission(binding.expression,router.currentRoute.query)) {
                 //     el.parentNode.removeChild(el)
@@ -30,6 +34,19 @@ Vue.directive('permission', {
             }
         }
     })
+Vue.directive('permissionArr', {
+    inserted: function(el, binding) {  // dist
+        if (binding.modifiers.disabled) {
+            if (binding.value.some(item => store.state.permission.whiteBtnList[item])) {
+                el.classList.add("is-disabled")
+            }
+        } else { //remov
+            if (!(binding.value.some(item => store.state.permission.whiteBtnList[item]))) {
+                el.parentNode.removeChild(el)
+            }
+        }
+    }
+})
     //切换I8n动态更新element值
     // eslint-disable-next-line no-undef
 Vue.directive('update', {

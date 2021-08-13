@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 23:35:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 14:56:03
+ * @LastEditTime: 2021-08-13 14:05:20
  * @Description: 选择车型项目弹窗
  * @FilePath: \front-web\src\views\project\overview\components\selectcarpro\index.vue
 -->
@@ -75,16 +75,40 @@ export default {
     this.getCarProjectOptions()
   },
   methods: {
+    /**
+     * @Description: 列表选中项改变
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     handleSelectionChange(val) {
       this.selectTableList = val
     },
+    /**
+     * @Description: 重置操作-重置筛选条件和列表
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleReset() {
       this.carProject = ''
       this.getSelectCarPro()
     },
+    /**
+     * @Description: 确定操作-根据筛选条件筛选列表
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleSure() {
       this.getSelectCarPro(this.carProject)
     },
+    /**
+     * @Description: 保存操作
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleSave() {
       this.tableLoading = true
       const tableList = this.tableData.map(item => {
