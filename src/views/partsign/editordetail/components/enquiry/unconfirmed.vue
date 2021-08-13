@@ -42,8 +42,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination, iMessage } from '@/components'
-import { icon} from 'rise'
+import { iCard, iButton, iPagination, iMessage,icon } from 'rise'
 import tableList from '../tableList'
 import { enquiryUnconfirmedTableTitle as tableTitle } from '../data'
 import backItems from '@/views/partsign/home/components/backItems'

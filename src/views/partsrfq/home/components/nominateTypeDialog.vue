@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { iDialog, iSelect, iFormGroup, iFormItem, iButton, iMessage } from "@/components"
+import { iDialog, iSelect, iFormGroup, iFormItem, iButton, iMessage } from 'rise'
 import { getNominateType } from "@/api/designate"
 
 export default {

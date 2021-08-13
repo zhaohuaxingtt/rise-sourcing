@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { iDrawer, iMessage } from '@/components'
+import { iDrawer, iMessage } from 'rise'
 import card from './card'
 import { queryByPage, readById, batchReadById } from '@/api/layout/topLayout'
 import { messageTypeMap } from '../data'

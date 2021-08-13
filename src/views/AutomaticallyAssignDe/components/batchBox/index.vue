@@ -21,7 +21,7 @@
       </iDialog>
 </template>
 <script>
-import {iSelect,iButton,iMessage,iDialog} from '@/components'
+import {iSelect,iButton,iMessage,iDialog} from 'rise'
 import {purchaseUsers} from '@/api/usercenter'
 import store from '@/store'
 export default{

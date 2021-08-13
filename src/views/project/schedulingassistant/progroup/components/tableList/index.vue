@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 16:13:36
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-30 16:32:36
+ * @LastEditTime: 2021-08-13 12:46:19
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\tableList\index.vue
 -->
@@ -44,7 +44,7 @@
               :key="index"
             ></el-option>
           </iSelect>
-          <iDatePicker v-else-if="items.type === 'date'" v-model="scope.row[items.props]" />
+          <iDatePicker value-format="yyyy-MM-dd" v-else-if="items.type === 'date'" v-model="scope.row[items.props]" />
         </template>
       </el-table-column>
       <!-------------------------正常列--------------------------->

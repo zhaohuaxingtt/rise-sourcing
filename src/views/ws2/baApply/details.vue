@@ -35,7 +35,7 @@ import DetailsSearch from "./components/detailsSearch";
 import DetailsTable from "./components/detailsTable";
 import { findBaPartsList } from "@/api/ws2/baApply";
 import { pageMixins } from "@/utils/pageMixins";
-import { iNavWS2 } from "@/components";
+import { iNavWS2 } from '@/components';
 import { detailsForm } from "./components/data";
 import store from '@/store';
 import UnitExplain from "./components/unitExplain";

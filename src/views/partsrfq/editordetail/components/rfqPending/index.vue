@@ -6,7 +6,7 @@
  -->
 <template>
   <iTabsList type="card" @tab-click="handleTabClick"  class="margin-top20">
-    <el-tab-pane :label="language(item.key,item.label)" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
+    <el-tab-pane lazy :label="language(item.key,item.label)" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
       <component :is="item.component" v-if="activityTabIndex === item.index"/>
     </el-tab-pane>
   </iTabsList>

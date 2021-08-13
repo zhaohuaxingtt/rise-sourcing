@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 17:45:44
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:04:55
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-10 15:23:15
  * @Description: 零件采购项目-定点信息
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\index.vue
 -->
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination, iMessage } from 'rise'
+import { iCard, iButton, iMessage } from 'rise'
 import { tableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
@@ -57,7 +57,7 @@ import rsEEditionDialog from './components/rsEEdition'
 import { findNominateInfo } from "@/api/partsprocure/editordetail"
 export default {
   mixins: [pageMixins],
-  components: { tableList, iCard, iButton, iPagination, rsPaperDialog, selDialog, rsEEditionDialog },
+  components: { tableList, iCard, iButton, rsPaperDialog, selDialog, rsEEditionDialog },
   data() {
     return {
       tableTitle: tableTitle,
@@ -88,9 +88,8 @@ export default {
      * @return {*}
      */    
     getTableInfo() {
-      this.tableLoading = true
-      // this.params.fsnrGsnrNum 
-      findNominateInfo('FS06-10002').then(res => {
+      this.tableLoading = true 
+      findNominateInfo(this.params.fsnrGsnrNum).then(res => {
         if (res?.result) {
           this.tableData = [res.data]
           this.nominateAppId = res.data.nominateAppId || ''

@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination, iMessage, icon} from '@/components'
+import { iCard, iButton, iPagination, iMessage, icon} from 'rise'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { tableTitle } from './data'

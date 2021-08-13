@@ -6,7 +6,10 @@
 <template>
     <iCard :title="language('LK_AEKO_FENGMIANBIAOTAI','封⾯表态')" class="previewCover">
         <iFormGroup row="4" class="basic-form">
-          <template v-for="(item,index) in basicTitle">
+          <template 
+            v-for="(item,index) in basicTitle"
+            v-permission.dynamic="item.permissionKey" 
+          >
             <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  >
                 <iText >{{ item.isObj ? basicInfo[item.props+'Desc'] : basicInfo[item.props]}}</iText>
             </iFormItem>
@@ -19,9 +22,10 @@
         rows="10" 
         resize="none"
         v-model="basicInfo.remark"
+        v-permission="AEKO_DETAIL_TAB_FENGMIAN_TEXT_TIPS"
       />
       <!-- 费用合计table -->
-      <div class="margin-top40">
+      <div class="margin-top40" v-permission="AEKO_DETAIL_TAB_FENGMIAN_TABLE_CARTYPE">
         <tableList
             class="summaryTable"
             :selection="false"
@@ -33,13 +37,23 @@
             :tableTitle="tableTitleCost"
             :tableLoading="tableLoading.cost"
         >
+            <template #materialIncrease="scope">
+                {{fixNumber(scope.row.materialIncrease,2) || ''}}
+            </template>
+            <template #investmentIncrease="scope">
+                {{fixNumber(scope.row.investmentIncrease,0) || ''}}
+            </template>
+            <template #otherCost="scope">
+                {{fixNumber(scope.row.otherCost,0) || ''}}
+            </template>
+
       </tableList>
         <p class="summaryTable-tips margin-top20">Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder Invest≥10,000,000 RMB</p>
       </div>
         <p class="divider"></p>
 
         <!-- 科室linie费用table -->
-        <div>
+        <div v-permission="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE">
             <p class="btn-list margin-bottom20">
                 <iButton disabled>{{language('LK_JIEDONG','解冻')}}</iButton>
             </p>
@@ -51,6 +65,15 @@
                 :tableLoading="tableLoading.depart"
                 @handleSelectionChange="handleSelectionChange"
             >
+                <template #materialIncrease="scope">
+                    {{fixNumber(scope.row.materialIncrease,2) || ''}}
+                </template>
+                <template #investmentIncrease="scope">
+                    {{fixNumber(scope.row.investmentIncrease,0) || ''}}
+                </template>
+                <template #otherCost="scope">
+                    {{fixNumber(scope.row.otherCost,0) || ''}}
+                </template>
             </tableList>
             <!-- 分页 -->
             <iPagination
@@ -181,29 +204,28 @@ export default {
 
                 const keyArr = ['investmentIncrease', 'materialIncrease', 'otherCost'];
                 if(keyArr.includes(column.property)){
-                    if(column.property == 'investmentIncrease') sums[index] = basicInfo.investmentIncreaseTotal || '';
-                    else if(column.property == 'materialIncrease') sums[index] = basicInfo.materialIncreaseTotal || '';
-                    else if(column.property == 'otherCost') sums[index] = basicInfo.otherCostTotal || '';
+                    if(column.property == 'investmentIncrease') sums[index] = this.fixNumber(basicInfo.investmentIncreaseTotal,0) || '';
+                    else if(column.property == 'materialIncrease') sums[index] = this.fixNumber(basicInfo.materialIncreaseTotal)  || '';
+                    else if(column.property == 'otherCost') sums[index] = this.fixNumber(basicInfo.otherCostTotal,0)  || '';
                     else sums[index] = ''
-                    // const values = data.map(item => Number(item[column.property]) );
-                    // if (!values.every(value => isNaN(value))) {
-                    //     sums[index] = values.reduce((prev, curr) => {
-                    //         const value = Number(curr);
-                    //         if (!isNaN(value)) {
-                    //             return prev + curr;
-                    //         } else {
-                    //             return prev;
-                    //         }
-                    //     }, 0);
-                    //     sums[index] = this.getTousandNum(sums[index].toFixed(2));
-                    // } else {
-                    //     sums[index] = '';
-                    // }
                 }else{
                     sums[index] = '';
                 }
             })
             return sums;
+        },
+
+        // 费用千分位处理
+        fixNumber(str,precision=2){
+            if(!str) return null;
+            var re=/(?=(?!(\b))(\d{3})+$)/g;
+            var fixstr = (str || 0).toString().split(".");
+            fixstr[0] =  fixstr[0].replace(re,",");
+            if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
+                if( fixstr[1] && fixstr[1] == '00') return fixstr[0];
+            }
+            
+            return fixstr.join('.');
         },
     }
 }

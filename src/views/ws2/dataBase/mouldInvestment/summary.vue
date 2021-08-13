@@ -85,7 +85,7 @@ import {
 } from "@/api/ws2/dataBase";
 import {
   iTableList
-} from "@/components"
+} from '@/components'
 import {form, summaryData} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";

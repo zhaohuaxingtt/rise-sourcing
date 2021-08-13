@@ -61,7 +61,7 @@
 </template>
 <script>
 import pInput from "./input.vue";
-import { icon } from "@/components";
+import { icon } from 'rise';
 import drawer from "../message/drawer";
 import notify from "../message/notify";
 import filters from "@/utils/filters";

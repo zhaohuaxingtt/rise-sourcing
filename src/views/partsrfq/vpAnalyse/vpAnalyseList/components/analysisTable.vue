@@ -17,7 +17,7 @@
       @selection-change="handleSelectionChange">
       <el-table-column
         type="selection"
-        width="55">
+        width="40">
       </el-table-column>
       <el-table-column
         label="#"
@@ -142,7 +142,7 @@
 <script>
 import {icon, iPagination, iInput, iSelect} from 'rise'
 import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/partsrfq/vpAnalysis/vpAnalysisList'
-import {iMessage} from '@/components';
+import {iMessage} from 'rise';
 import {pageMixins} from '@/utils/pageMixins';
 import reportPreview from './reportPreview'
 // import '@/assets/style/global/element-ui.scss'

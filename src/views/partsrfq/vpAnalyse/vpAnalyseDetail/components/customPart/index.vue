@@ -71,7 +71,7 @@
 
 <script>
 import {iDialog, iButton, icon, iSelect} from 'rise'
-import {iMessage} from '@/components';
+import {iMessage} from 'rise';
 import tableList from '@/components/ws3/commonTable';
 import {tableTitle} from './components/data';
 import {getCustomPartDataList, fetchSaveCustomPart, getCustomPartListByPartId} from '@/api/partsrfq/vpAnalysis/vpCustomPart'

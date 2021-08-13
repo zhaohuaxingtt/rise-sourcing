@@ -35,7 +35,7 @@ export function getRfqInfo(params) {
 // 获取km零件清单
 export function getKmPartList(params) {
 	return requst({
-		url: `/KmPartList/${params.rfqId}/${params.pageSize}/${params.currPage}`,
+		url: `/km/page/parts/${params.rfqId}/${params.pageSize}/${params.currPage}`,
 		method: 'GET'
 	})
 }
@@ -43,7 +43,7 @@ export function getKmPartList(params) {
 // 保存km零件清单中的PCA和TIA分析结果
 export function savePcaAndTia(params) {
 	return requst({
-		url: '/savePcaAndTia',
+		url: '/km/pca-tia/save',
 		method: 'POST',
 		data: params
 	})
@@ -52,7 +52,7 @@ export function savePcaAndTia(params) {
 //  获取CBD列表
 export function getKmCbdList(params) {
 	return requst({
-		url: `/km-cbd-list/${params.rfqId}/${params.pageSize}/${params.pageNo}`,
+		url: `/km/page/cbds/${params.rfqId}/${params.pageSize}/${params.pageNo}`,
 		method: 'GET'
 	})
 }
@@ -61,7 +61,7 @@ export function getKmCbdList(params) {
 //   报告清单---上传
 export function uploadDaring(data) {
 	return requst({
-		url: `/upload-file`,
+		url: `/file-histories/upload-file`,
 		method: "POST",
 		data
 	})

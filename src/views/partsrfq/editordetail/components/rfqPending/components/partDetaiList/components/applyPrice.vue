@@ -55,7 +55,7 @@
 		iButton,
 		iMessage,
 		iPagination
-	} from "@/components";
+	} from 'rise';
 	import tablelist from '@/views/partsprocure/editordetail/components/targetPrice/components/tablelist'
 	import {
 		targeTitle,
@@ -125,7 +125,7 @@
 				this.saveLoading = true
 				const params = {
 					...this.targetprice.cfTargetPriceDetail,
-					purchasingProjectId: this.handleSelectArr[0].purchasePrjectId
+					purchasingProjectId: this.handleSelectArr[0].purchaseProjectId
 				}
 				applyCFTarget(params).then((res) => {
 					if (res?.result) {

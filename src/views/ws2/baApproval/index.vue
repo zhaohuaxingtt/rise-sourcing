@@ -263,7 +263,7 @@ import UnitExplain from "./components/unitExplain";
 import {
   icon,
   iTableList
-} from "@/components";
+} from '@/components';
 import {
   iMessage,
   iButton,

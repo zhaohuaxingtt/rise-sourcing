@@ -13,14 +13,19 @@
     <!-- 搜索区域 -->
       <iSearch @sure="getList" @reset="reset">
           <el-form>
-              <el-form-item v-for="(item,index) in SearchList" :key="'SearchList_aeko'+index" :label="language(item.labelKey,item.label)">
+              <el-form-item 
+              v-for="(item,index) in SearchList" 
+              :key="'SearchList_aeko'+index" 
+              :label="language(item.labelKey,item.label)"
+              v-permission.dynamic="item.permissionKey"
+              >
                   <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="item in selectOptions[item.selectOption] || []"
-                      :key="item.value"
+                      :key="item.code"
                       :label="item.name"
-                      :value="item.value">
+                      :value="item.code">
                     </el-option>  
                   </iSelect> 
                   <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
@@ -30,62 +35,64 @@
       </iSearch>
       <iCard class="contain margin-top20" :title="language('LK_AEKOBIAOTAI','AEKO表态')">
       <!-- 表单区域 -->
-      <tableList
-        class="table"
-        index
-        :lang="true"
-        :tableData="tableListData"
-        :tableTitle="tableTitle"
-        :tableLoading="loading"
-        @handleSelectionChange="handleSelectionChange"
-      >
-      <!-- AEKO号  -->
-      <template #aekoCode="scope">
-        <div class="table-item-aeko">
-          <icon  v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
-          <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}}</span>
-          <a v-if="scope.row.fileCount && scope.row.fileCount> 0"  @click="checkFiles(scope.row)" class="file-icon"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
-        </div> 
-      </template>
+      <div v-permission="AEKO_STANCELIST_TABLE">
+        <tableList
+          class="table"
+          index
+          :lang="true"
+          :tableData="tableListData"
+          :tableTitle="tableTitle"
+          :tableLoading="loading"
+          @handleSelectionChange="handleSelectionChange"
+        >
+        <!-- AEKO号  -->
+        <template #aekoCode="scope">
+          <div class="table-item-aeko">
+            <icon  v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
+            <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}}</span>
+            <a v-if="scope.row.fileCount && scope.row.fileCount> 0"  @click="checkFiles(scope.row)" class="file-icon"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+          </div> 
+        </template>
 
-      <!-- 日志 -->
-      <template #log="scope">
-        <span class="link" @click="checkLog(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
-      </template>
+        <!-- 日志 -->
+        <template #log="scope">
+          <span class="link" @click="checkLog(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+        </template>
 
-      <!-- 描述 -->
-      <template #describe="scope">
-        <span class="link" @click="checkDescribe(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
-      </template>
+        <!-- 描述 -->
+        <template #describe="scope">
+          <span class="link" @click="checkDescribe(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+        </template>
 
-      <!-- AEKO状态 -->
-      <template #aekoStatus="scoped">
-        <span>{{scoped.row.aekoStatus && scoped.row.aekoStatus.desc}}</span>
-      </template>
+        <!-- AEKO状态 -->
+        <template #aekoStatus="scoped">
+          <span>{{scoped.row.aekoStatus && scoped.row.aekoStatus.desc}}</span>
+        </template>
 
-      <!-- 封面状态 -->
-      <template #coverStatus="scoped">
-        <span>{{scoped.row.coverStatus && scoped.row.coverStatus.desc}}</span>
-      </template>
+        <!-- 封面状态 -->
+        <template #coverStatus="scoped">
+          <span>{{scoped.row.coverStatus && scoped.row.coverStatus.desc}}</span>
+        </template>
 
-       <!-- 审批单 -->
-       <template #approval="scoped">
-           <span class="link">{{language('LK_AEKO_CHAKAN','查看')}}</span>
-       </template>
+        <!-- 审批单 -->
+        <template #approval="scoped">
+            <span class="link">{{language('LK_AEKO_CHAKAN','查看')}}</span>
+        </template>
 
-      </tableList>
-      <!-- 分页 -->
-        <iPagination
-          v-update
-          @size-change="handleSizeChange($event, getList)"
-          @current-change="handleCurrentChange($event, getList)"
-          background
-          :current-page="page.currPage"
-          :page-sizes="page.pageSizes"
-          :page-size="page.pageSize"
-          :layout="page.layout"
-          :total="page.totalCount"
-        />
+        </tableList>
+        <!-- 分页 -->
+          <iPagination
+            v-update
+            @size-change="handleSizeChange($event, getList)"
+            @current-change="handleCurrentChange($event, getList)"
+            background
+            :current-page="page.currPage"
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :total="page.totalCount"
+          />
+        </div>
       </iCard>
 
       <!-- 附件列表查看 -->
@@ -163,9 +170,34 @@ export default {
         itemFileData:{},
       }
     },
+    computed: {
+        //eslint-disable-next-line no-undef
+        ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+            permission: state => state.permission
+        }),
+    },
     created(){
       this.getList();
       this.getSearchList();
+      
+      
+      this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
+      this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
+      this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+
+      const {navList,$route} = this;
+      const { name } = $route;
+      if(this.isAekoManager){
+        this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_STANCE');
+        if(name == 'aekoStanceList'){
+           this.$router.push({
+              path:'/aeko/managelist'
+          });
+        }
+      }else{
+        this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_MANAGE');
+      }
     },
     methods:{
       // 重置
@@ -256,7 +288,6 @@ export default {
           if(code ==200 && data){
             data.map((item)=>{
               item.name = item.desc;
-              item.value = item.code;
             });
             this.selectOptions.aekoStatusList = data;
           }else{
@@ -269,7 +300,6 @@ export default {
           if(code ==200 && data){
             data.map((item)=>{
               item.name = item.desc;
-              item.value = item.code;
             });
             this.selectOptions.coverStatusList = data;
           }else{

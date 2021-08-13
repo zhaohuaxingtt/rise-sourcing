@@ -41,9 +41,9 @@
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton, icon } from '@/components'
+import { iPagination, iDialog, iMessage, iButton } from 'rise'
 import tableList from "@/views/designate/supplier/components/tableList";
-import { partTitle as tableTitle, mokeSingleSupplierData } from './data'
+import { partTitle as tableTitle } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 // 获取零件列表
