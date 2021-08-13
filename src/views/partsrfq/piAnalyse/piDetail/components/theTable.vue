@@ -38,6 +38,8 @@
         :isTableEdit="tableStatus"
         @handleSelectionChange="handleSelectionChange"
         @handleHide="handleHide"
+        @handleGetSelectList="handleGetSelectList"
+        :selectOptionsObject="selectOptionsObject"
     />
     <el-divider class="margin-top20 margin-bottom20" v-if="tableStatus === 'edit'"/>
     <!--隐藏表格-->
@@ -58,7 +60,7 @@
 
 <script>
 import {iButton, iMessage, iMessageBox} from 'rise';
-import {tableTitle, tableEditTitle} from './data';
+import {tableTitle, tableEditTitle, FIRSTSELECT, SECONDSELECT} from './data';
 import {numberProcessor, toFixedNumber, toThousands, deleteThousands} from '@/utils';
 import theTableTemplate from './theTableTemplate';
 import _ from 'lodash';
@@ -103,6 +105,9 @@ export default {
       tableStatus: '',
       recordTableData: [],
       recordHideTableData: [],
+      selectOptionsObject: {},
+      FIRSTSELECT,
+      SECONDSELECT,
     };
   },
   created() {
@@ -216,6 +221,9 @@ export default {
             this.hideTableData.push(item);
           }
         });
+        this.copyDataInfo.map(item => {
+          this.selectOptionsObject[item.id] = {};
+        });
       } catch {
         this.tableListData = [];
         this.hideTableData = [];
@@ -246,6 +254,20 @@ export default {
       }
       row.isShow = true;
       this.tableListData.push(row);
+    },
+    handleGetSelectList({props, row, selectList}) {
+      const copyObj = _.cloneDeep(this.selectOptionsObject);
+      this.tableListData.map(item => {
+        if (item.id === row.id) {
+          if (props === '') {
+            copyObj[row.id][FIRSTSELECT] = selectList;
+          } else if (props === FIRSTSELECT) {
+            copyObj[row.id][SECONDSELECT] = selectList;
+          }
+
+        }
+      });
+      this.selectOptionsObject = copyObj;
     },
   },
   watch: {
