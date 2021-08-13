@@ -19,7 +19,7 @@
               :label="language(item.labelKey,item.label)"
               v-permission.dynamic="item.permissionKey"
               >
-                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
+                  <iSelect class="multipleSelect" collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="item in selectOptions[item.selectOption] || []"
@@ -345,7 +345,7 @@ export default {
           if(code ==200 ){
             data.map((item)=>{
               item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-              item.code = item.deptNum;
+              item.code = item.id;
             })
             this.selectOptions.linieDeptNumList = data;
           }else{
@@ -596,7 +596,7 @@ export default {
     }
     ::v-deep .el-select__tags-text{
       display: inline-block;
-      max-width: 90px;
+      max-width: 70px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

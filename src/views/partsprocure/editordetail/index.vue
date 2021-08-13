@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-12 23:08:37
+ * @LastEditTime: 2021-08-13 15:01:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -127,7 +127,7 @@
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->
 						<iFormItem v-if='partProjTypes.JINLINGJIANHAOGENGGAI == detailData.partProjectType' :label="language('YUANLINGJIANHAO', '原FS/GS号') + ':'">
-							<iInput class="removeInputDisabelColor" disabled search v-model="selectOldParts.selectData.partNum"> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{selectOldParts.show=true}"></i></iInput>	
+							<iInput class="removeInputDisabelColor" disabled search v-model="detailData.oldFsnrGsnrNum"> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{selectOldParts.show=true}"></i></iInput>	
 						</iFormItem>
 					</div>
 					<div class="col">
