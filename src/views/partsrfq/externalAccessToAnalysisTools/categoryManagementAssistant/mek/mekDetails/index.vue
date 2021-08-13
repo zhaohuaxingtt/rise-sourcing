@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-10 17:28:05
+ * @LastEditTime: 2021-08-12 17:34:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -11,7 +11,7 @@
     <div id="content">
       <div class="navBox flex-between-center">
         <div class="title font-weight flex">
-          <label for="">{{ language("切换材料组", "QIEHUANCAILIAOZU") }}:</label>
+          <label for="">{{ language("QIEHUANCAILIAOZU","切换材料组") }}:</label>
           <iSelect v-model="chartType"
                    @change="changeBy"
                    placeholder="材料组编号_名称">
@@ -41,92 +41,97 @@
       </div>
       <div class=" bodyBox clearFloat">
         <div class="cardBox"
-             style="width:15%">
+             style="width:18%">
           <iCard>
-            <el-form label-position="top"
-                     :model="form"
-                     style="height: 504px">
-              <el-row class="margin-bottom20">
-                <!--对标车型-->
-                <el-form-item :label="$t('对标车型')">
-                  <el-select v-model="carType"
-                             @change="changeBy"
-                             multiple>
-                    <el-option value="1"
-                               :label="$t('车型1')"> </el-option>
-                    <el-option value="2"
-                               :label="$t('车型2')"></el-option>
-                    <el-option value="3"
-                               :label="$t('车型3')"></el-option>
-                    <el-option value="4"
-                               :label="$t('车型4')"></el-option>
-                    <el-option value="5"
-                               :label="$t('车型5')"></el-option>
-                    <el-option value="6"
-                               :label="$t('车型6')"></el-option>
-                    <el-option value="7"
-                               :label="$t('车型7')"></el-option>
-                    <el-option value="8"
-                               :label="$t('车型8')"></el-option>
-                  </el-select>
-                </el-form-item>
-                <!--类型选择-->
-                <el-form-item :label="$t('类型选择')">
-                  <el-select v-model="type"
-                             @change="changeBy">
-                    <el-option value="1"
-                               :label="$t('按车型配置')"> </el-option>
-                    <el-option value="2"
-                               :label="$t('按发动机')"></el-option>
-                    <el-option value="3"
-                               :label="$t('按变速箱')"></el-option>
-                    <el-option value="4"
-                               :label="$t('按电池容量')"></el-option>
-                    <el-option value="5"
-                               :label="$t('按计算车型')"></el-option>
-                  </el-select>
-                </el-form-item>
-                <!--零件六位号-->
-                <el-form-item :label="$t('零件六位号')">
-                  <el-select v-model="partNumber"
-                             @change="changeBy"
-                             multiple>
-                    <el-option value="1"
-                               :label="$t('857705')"> </el-option>
-                    <el-option value="2"
-                               :label="$t('857706')"></el-option>
-                    <el-option value="3"
-                               :label="$t('857707')"></el-option>
-                    <el-option value="4"
-                               :label="$t('857708')"></el-option>
-                    <el-option value="5"
-                               :label="$t('857709')"></el-option>
-                    <el-option value="6"
-                               :label="$t('857710')"></el-option>
-                    <el-option value="7"
-                               :label="$t('857711')"></el-option>
-                    <el-option value="8"
-                               :label="$t('857712')"></el-option>
-                    <el-option value="9"
-                               :label="$t('857713')"></el-option>
-                    <el-option value="10"
-                               :label="$t('857714')"></el-option>
-                    <el-option value="11"
-                               :label="$t('857715')"></el-option>
-                    <el-option value="12"
-                               :label="$t('857715')"></el-option>
-                    <el-option value="13"
-                               :label="$t('857715')"></el-option>
-                    <el-option value="14"
-                               :label="$t('857715')"></el-option>
-                    <el-option value="15"
-                               :label="$t('857715')"></el-option>
-                    <el-option value="16"
-                               :label="$t('857715')"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-row>
-            </el-form>
+            <div class=" searchForm">
+              <el-form label-position="top"
+                       :model="form"
+                       style="height:486px"
+                       label-width="200px">
+                <el-row class="margin-bottom20">
+                  <!--对标车型-->
+                  <el-form-item :label="$t('对标车型')"
+                                label-width="180px">
+                    <el-select v-model="carType"
+                               @change="changeBy"
+                               multiple>
+                      <el-option value="1"
+                                 :label="$t('车型1')"> </el-option>
+                      <el-option value="2"
+                                 :label="$t('车型2')"></el-option>
+                      <el-option value="3"
+                                 :label="$t('车型3')"></el-option>
+                      <el-option value="4"
+                                 :label="$t('车型4')"></el-option>
+                      <el-option value="5"
+                                 :label="$t('车型5')"></el-option>
+                      <el-option value="6"
+                                 :label="$t('车型6')"></el-option>
+                      <el-option value="7"
+                                 :label="$t('车型7')"></el-option>
+                      <el-option value="8"
+                                 :label="$t('车型8')"></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <!--类型选择-->
+                  <el-form-item :label="$t('类型选择')">
+                    <el-select v-model="type"
+                               @change="changeBy">
+                      <el-option value="1"
+                                 :label="$t('按车型配置')"> </el-option>
+                      <el-option value="2"
+                                 :label="$t('按发动机')"></el-option>
+                      <el-option value="3"
+                                 :label="$t('按变速箱')"></el-option>
+                      <el-option value="4"
+                                 :label="$t('按电池容量')"></el-option>
+                      <el-option value="5"
+                                 :label="$t('按计算车型')"></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <!--零件六位号-->
+                  <el-form-item :label="$t('零件六位号')">
+                    <el-select v-model="partNumber"
+                               @change="changeBy"
+                               multiple>
+                      <el-option value="1"
+                                 :label="$t('857705')"> </el-option>
+                      <el-option value="2"
+                                 :label="$t('857706')"></el-option>
+                      <el-option value="3"
+                                 :label="$t('857707')"></el-option>
+                      <el-option value="4"
+                                 :label="$t('857708')"></el-option>
+                      <el-option value="5"
+                                 :label="$t('857709')"></el-option>
+                      <el-option value="6"
+                                 :label="$t('857710')"></el-option>
+                      <el-option value="7"
+                                 :label="$t('857711')"></el-option>
+                      <el-option value="8"
+                                 :label="$t('857712')"></el-option>
+                      <el-option value="9"
+                                 :label="$t('857713')"></el-option>
+                      <el-option value="10"
+                                 :label="$t('857714')"></el-option>
+                      <el-option value="11"
+                                 :label="$t('857715')"></el-option>
+                      <el-option value="12"
+                                 :label="$t('857715')"></el-option>
+                      <el-option value="13"
+                                 :label="$t('857715')"></el-option>
+                      <el-option value="14"
+                                 :label="$t('857715')"></el-option>
+                      <el-option value="15"
+                                 :label="$t('857715')"></el-option>
+                      <el-option value="16"
+                                 :label="$t('857715')"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-row>
+              </el-form>
+            </div>
+
             <div class="end">
               <iButton type="primary"
                        style="width:100px;height:35px"
@@ -138,7 +143,7 @@
           </iCard>
         </div>
         <div class="cardBox"
-             style="width:85%">
+             style="width:82%">
           <iCard class="margin-left20">
             <div class="chartBox1">
               <div class="line"></div>
@@ -147,7 +152,6 @@
               <div class="line3"></div>
               <div class="line4"></div>
               <div class="chartBox">
-
                 <div class="flex chartItem">
                   <div class="operation1">
                     <el-select v-model="targetNumber"
@@ -163,12 +167,23 @@
                       <el-option value="4"
                                  :label="$t('车型4')"></el-option>
                     </el-select>
-                    <span class="margin-bottom15 ">Best Ball</span>
-                    <span class="yield">22,000</span>
+                    <span class="margin-bottom15 "
+                          style="min-height:14px">{{firstBarData.motorName}}</span>
+                    <span class="yield"
+                          style="line-height:12px">{{firstBarData.output}}</span>
                   </div>
-                  <datasetBar1 ref="datasetBar1"></datasetBar1>
+                  <datasetBar1 ref="datasetBar1"
+                               :typeSelection="type"
+                               :firstBarData="firstBarData.detail"
+                               :maxWidth="maxWidth"></datasetBar1>
+                  <div class="xAxis"
+                       v-if="type==='5'">
+                    <span @click=" computeModal">MIX</span>
+                  </div>
                 </div>
-                <div class="flex chartItem">
+                <div class="flex chartItem"
+                     v-for="item in barData"
+                     :key="item.motorId">
                   <div class="operation">
                     <icon symbol
                           name="iconbob-shanchu"
@@ -177,19 +192,20 @@
                     <el-popover placement="bottom"
                                 width="80"
                                 trigger="click"
-                                visible-arrow>
+                                visible-arrow
+                                class="margin-bottom15">
                       <el-checkbox-group v-model="checkList"
                                          class="checkList">
-                        <el-checkbox label="1">配置1</el-checkbox>
-                        <el-checkbox label="2">配置2</el-checkbox>
-                        <el-checkbox label="3">配置3</el-checkbox>
+                        <el-checkbox v-for="(i,index) in item.detail"
+                                     :key="index"
+                                     :label="i.value">{{i.title}}</el-checkbox>
                       </el-checkbox-group>
-                      <div style="line-height:28px"
-                           class="margin-bottom15"
-                           slot="reference">车型1</div>
+                      <div style="line-height:25px"
+                           slot="reference">{{item.motorName}}</div>
                     </el-popover>
-                    <span class="margin-bottom15">Best Ball</span>
-                    <span class="yield margin-bottom15">22,000</span>
+                    <span class="margin-bottom15"
+                          style="line-height:16px">{{item.factory}}</span>
+                    <span class="yield margin-bottom15">{{item.output}}</span>
                     <div>
                       <el-select v-model="priceType"
                                  @change="changeBy"
@@ -212,10 +228,10 @@
                     </div>
 
                   </div>
-                  <datasetBar ref="datasetBar"
-                              :notY="true"></datasetBar>
+                  <datasetBar :barData="item.detail"
+                              :maxWidth="maxWidth"></datasetBar>
                 </div>
-                <div class="flex chartItem">
+                <!-- <div class="flex chartItem">
                   <div class="operation">
                     <icon symbol
                           name="iconbob-shanchu"
@@ -325,7 +341,7 @@
                   </div>
                   <datasetBar ref="datasetBar"
                               :notY="true"></datasetBar>
-                </div>
+                </div> -->
               </div>
             </div>
             <!-- <report :dialogVisible="true"></report> -->
@@ -375,6 +391,8 @@
                    @click="save">确 定</iButton>
         </span>
       </iDialog>
+      <modalDialog :modalVisible="modalVisible"
+                   @input="closeModalDialog"></modalDialog>
     </div>
   </iPage>
 </template>
@@ -384,7 +402,8 @@ import { iPage, iButton, iSelect, icon, iCard, iDialog, iInput } from "rise";
 import datasetBar from "../components/datasetBar";
 import datasetBar1 from "../components/datasetBar1";
 import tableList from "../components/tableList";
-import { getMekTable } from '@/api/categoryManagementAssistant/mek'
+import modalDialog from "../components/modalDialog";
+import { getMekTable, getHistogram } from '@/api/categoryManagementAssistant/mek'
 export default {
   name: "mekDetails",
   components: {
@@ -397,7 +416,8 @@ export default {
     datasetBar1,
     tableList,
     iDialog,
-    iInput
+    iInput,
+    modalDialog
   },
   data () {
     return {
@@ -419,6 +439,8 @@ export default {
       gridData: {},
       //保存弹窗
       dialogVisible: false,
+      //计算车型开关
+      modalVisible: false,
       //保存在分析库
       analysisSave: false,
       //分析库名称
@@ -428,10 +450,15 @@ export default {
       //报告名称
       reportName: "",
       editFlag: false,
-      checkList: []
+      checkList: [],
+      //第一个柱状图
+      firstBarData: {},
+      //柱状图最大宽度
+      maxWidth: null
     };
   },
   async created () {
+    await this.getHistogram()
     await this.getMekTable()
   },
   mounted () {
@@ -453,6 +480,14 @@ export default {
     saveDialog () {
       this.dialogVisible = true
     },
+    //计算车型弹窗
+    computeModal () {
+      this.modalVisible = true
+    },
+    closeModalDialog (val) {
+      this.modalVisible = val
+    },
+    //获取表格
     getMekTable () {
       getMekTable({
         "comparedType": "mekConfig",
@@ -464,6 +499,46 @@ export default {
       }).then(res => {
         this.gridData = res
         console.log(this.gridData)
+      })
+    },
+    getHistogram () {
+      getHistogram({
+        "comparedType": "mekConfig",
+        "info": [
+          {
+            "motorId": 50044101,
+            "priceType": "latestPrice"
+          },
+          {
+            "motorId": 50048103,
+            "priceType": "latestPrice"
+          },
+          {
+            "motorId": 2000000166,
+            "priceType": "latestPrice"
+          },
+          {
+            "motorId": 2000000084,
+            "priceType": "latestPrice"
+          },
+          {
+            "motorId": 2000000164,
+            "priceType": "latestPrice"
+          }
+        ],
+        "categoryId": 600029,
+        "schemeId": 3
+      }).then(res => {
+        let data = res.data
+        let maxWidthList = []
+        data.forEach(item => {
+          maxWidthList.push(item.detail.length)
+        })
+        this.maxWidth = _.max(maxWidthList)
+        this.firstBarData = data[0]
+        data.shift()
+        this.barData = data
+        console.log(this.barData, "barData")
       })
     },
     changeBy () {
@@ -493,6 +568,14 @@ export default {
     justify-content: space-between;
   }
 }
+.searchForm {
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-bottom: 20px;
+  &::-webkit-scrollbar {
+    margin-left: 10px !important;
+  }
+}
 .cardBox {
   float: left;
 }
@@ -500,7 +583,8 @@ export default {
   margin-top: 20px;
 }
 .chartItem {
-  flex: 1;
+  position: relative;
+  // flex: 1;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
@@ -512,14 +596,14 @@ export default {
 .operation {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: -100px;
 }
 .operation1 {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: -45px;
 }
@@ -551,7 +635,8 @@ export default {
 }
 .chartBox {
   display: flex;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 .chartBox1 {
   width: 100%;
@@ -561,7 +646,7 @@ export default {
 .line {
   position: absolute;
   left: 60px;
-  bottom: 140px;
+  bottom: 14%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -569,7 +654,7 @@ export default {
 .line1 {
   position: absolute;
   left: 60px;
-  bottom: 200px;
+  bottom: 24%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -577,7 +662,7 @@ export default {
 .line2 {
   position: absolute;
   left: 60px;
-  bottom: 260px;
+  bottom: 34%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -585,7 +670,7 @@ export default {
 .line3 {
   position: absolute;
   left: 60px;
-  bottom: 320px;
+  bottom: 44%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -593,7 +678,7 @@ export default {
 .line4 {
   position: absolute;
   left: 60px;
-  bottom: 380px;
+  bottom: 54%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -602,9 +687,24 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.xAxis {
+  position: absolute;
+  bottom: 8%;
+  font-size: 12px;
+  color: "#3C4F74";
+  font-family: "Arial";
+}
+::v-deep .el-select {
+  width: 100%;
+  .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {
+    right: 60px !important;
+  }
+}
+::v-deep .el-select__tags {
+  flex-direction: column;
+  justify-content: flex-start;
+  left: -20%;
+}
 </style>
 <style lang="scss">
-.el-scrollbar__wrap {
-  overflow-x: hidden;
-}
 </style>

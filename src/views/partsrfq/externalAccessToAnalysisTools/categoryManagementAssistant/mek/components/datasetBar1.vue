@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-10 19:11:04
+ * @LastEditTime: 2021-08-12 17:36:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -17,20 +17,78 @@ export default {
   data () {
     return {
       myChart: null,
+      barData: [],
+      barxAxis: []
     };
   },
-  props: {},
+  props: {
+    typeSelection: {
+      type: String,
+      default: "",
+    },
+    firstBarData: {
+      type: Array,
+      default: () => {
+        return []
+      },
+    },
+    maxWidth: {
+      type: Number
+    }
+  },
+  watch: {
+    typeSelection (val) {
+      if (val === '5') {
+        this.$nextTick(() => {
+          this.initCharts();
+        });
+      } else {
+        this.typeSelection = ""
+        this.$nextTick(() => {
+          this.initCharts();
+        });
+      }
+    },
+    firstBarData: {
+      handler (val) {
+        if (val) {
+          val.forEach((item, index) => {
+            const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
+            const itemData = {
+              value: item.value,
+              label: {
+                show: true,
+                position: 'top',
+                color: "#000"
+              },
+              itemStyle: {
+                color: colorList[index]
+              }
+            }
+            const str = item.title + "\n\n" + item.ebr
+            this.barData.push(itemData)
+            this.barxAxis.push(str)
+          })
+          this.$nextTick(() => {
+            this.initCharts();
+          });
+        }
+      },
+    }
+  },
   mounted () {
-    this.$nextTick(() => {
-      this.initCharts();
-    });
+    // this.$nextTick(() => {
+    //   this.initCharts();
+    // });
   },
   methods: {
     initCharts () {
+      this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+      console.log(this.$refs.chart.style.width)
+      this.$refs.chart.style.minWidth = '100%';
       this.myChart = echarts().init(this.$refs.chart);
-      this.$refs.chart.style.width = 6 * 60 + 'px';
-      const str = "MIX" + "\n\n 5%"
-      const option = {
+
+      this.option = {
         title: {
           show: true,
           subtext: "产量",
@@ -39,20 +97,28 @@ export default {
         },
         xAxis: [
           {
+            show: this.typeSelection === '5' ? false : true,
             type: "category",
             axisTick: { show: false },
-            data: [{
-              value: str
-            }, "配置1", "配置2"],
+            // data: [{
+            //   value: str
+            // }, "配置1", "配置2"],
+            axisLabel: {
+              color: "#3C4F74",
+              fontSize: 12,
+              fontFamily: "Arial"
+            },
+            data: this.barxAxis,
             axisLine: {
               show: false
             },
-            offset: 6
+            offset: 6,
+            triggerEvent: true
           },
         ],
         grid: {
-          left: 40,
-          right: "-5%",
+          left: 20,
+          right: 0,
           bottom: "15%",
           top: "30%",
         },
@@ -74,7 +140,7 @@ export default {
           axisTick: {
             show: false,
           },
-          offset: 5,
+          offset: 0,
           splitNumber: 4,
           nameLocation: "start",
         },
@@ -85,59 +151,55 @@ export default {
             emphasis: {
               focus: "series",
             },
-            // barCategoryGap: '50%',
+            barCategoryGap: '50%',
             // barMinWidth: 30,
             // // barMaxWidth: 30,
-            barWidth: 30,
+            // barWidth: 30,
             itemStyle: {
               barBorderRadius: [5, 5, 0, 0],
             },
-            data: [{
-              value: 400,
-              label: {
-                show: true,
-                position: 'top',
-                color: "#000"
-              },
-              itemStyle: {
-                color: "#A1D0FF"
-              }
-            },
-            {
-              value: 450,
-              label: {
-                show: true,
-                position: 'top',
-                color: "#000"
-              },
-              itemStyle: {
-                color: "#92B8FF"
-              }
-            },
-            {
-              value: 500,
-              label: {
-                show: true,
-                position: 'top',
-                color: "#000"
-              },
-              itemStyle: {
-                color: "#5993FF"
-              }
-            }],
+            data: this.barData
+            // data: [{
+            //   value: 400,
+            //   label: {
+            //     show: true,
+            //     position: 'top',
+            //     color: "#000"
+            //   },
+            //   itemStyle: {
+            //     color: "#A1D0FF"
+            //   }
+            // },
+            // {
+            //   value: 450,
+            //   label: {
+            //     show: true,
+            //     position: 'top',
+            //     color: "#000"
+            //   },
+            //   itemStyle: {
+            //     color: "#92B8FF"
+            //   }
+            // },
+            // {
+            //   value: 500,
+            //   label: {
+            //     show: true,
+            //     position: 'top',
+            //     color: "#000"
+            //   },
+            //   itemStyle: {
+            //     color: "#5993FF"
+            //   }
+            // }],
           },
         ],
       };
       this.myChart.clear();
       this.myChart.resize();
-      this.myChart.setOption(option);
-      this.myChart.on('click', 'xAxis.category', function (params) {
-        alert("点击了x轴标签：" + params.value);
-      });
-      this.myChart.on("click", (params) => {
-        console.log(params)
-      })
-
+      this.myChart.setOption(this.option);
+      // this.myChart.on('click', function (params) {
+      // });
     },
   },
 };
