@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-08-10 15:44:22
+ * @LastEditTime: 2021-08-13 15:18:57
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -242,9 +242,8 @@ import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
 import local from "@/utils/localstorage";
-import { iMessageBox } from "../../../components";
 import filters from "@/utils/filters";
-import { iNavMvp } from "rise";
+import { iNavMvp,iMessageBox } from "rise";
 import { cloneDeep } from "lodash"
 
 // eslint-disable-next-line no-undef
