@@ -15,7 +15,7 @@
         </template>
         <iInput
             type="textarea"
-            :placeholder="language('LK_WEITIANXIECHEXIAOYUANYIN','未填写撤销原因，无法保存')"
+            :placeholder="language('LK_QINGSHURUCHEXIAOYUANYIN','请输⼊撤销原因')"
             rows="10" 
             resize="none"
             v-model="cancelReason"
@@ -68,7 +68,7 @@ export default {
                 cancelReason,
                 requirementAekoId:selectItems[0].requirementAekoId,
             };
-            if(!cancelReason) return iMessage.warn(this.language('LK_QINGSHURUCHEXIAOYUANYIN','请输⼊撤销原因'));
+            if(!cancelReason) return iMessage.warn(this.language('LK_WEITIANXIECHEXIAOYUANYIN','未填写撤销原因，无法保存'));
             this.isLoading = true;
             await purchasingCancel(data).then((res)=>{
                 this.isLoading = false;

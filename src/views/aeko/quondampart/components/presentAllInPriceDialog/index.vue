@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 13:59:01
- * @LastEditTime: 2021-08-10 13:38:24
+ * @LastEditTime: 2021-08-11 15:01:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\presentAllInPriceDialog\index.vue
@@ -95,7 +95,7 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          this.multipleSelection = []
+          this.selectRow = {}
           this.tableListData = Array.isArray(res.data) ? res.data : []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

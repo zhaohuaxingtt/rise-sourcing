@@ -2,8 +2,6 @@
   <iPage v-loading="pageLoading">
     <headerNav>
       <template #extralButton>
-        <iButton>{{ language('PLGLZS.CAILIAOZU', '材料组') }}</iButton>
-        <iButton>{{ language('PLGLZS.BAOGAOQINGDAN', '报告清单') }}</iButton>
         <template v-if="!editStatus">
           <iButton @click="handleEdit">{{ language('PLGLZS.BIANJI', '编辑') }}</iButton>
         </template>
@@ -47,7 +45,7 @@
                 </div>
                 <theRemark :children="level2Children" :editStatus="editStatus" :exportStatus="exportStatus"/>
                 <iInput
-                    v-if="editStatus && (level2Children.name === treeDataSelect[level1Children.name])"
+                    v-if="editStatus && ( treeDataSelect[level1Children.name].includes(level2Children.name))"
                     v-model="form[level2Children.id]"
                     type="textarea"
                     :rows="2"
@@ -75,7 +73,7 @@
                     </div>
                     <theRemark :children="level3Children" :editStatus="editStatus" :exportStatus="exportStatus"/>
                     <iInput
-                        v-if="editStatus && (level3Children.name === treeDataSelect[level1Children.name])"
+                        v-if="editStatus && (treeDataSelect[level1Children.name].includes(level3Children.name))"
                         v-model="form[level3Children.id]"
                         type="textarea"
                         :rows="2"
@@ -121,7 +119,7 @@ export default {
       pageLoading: false,
       treeData: {},
       treeDataSelect: {},
-      editStatus: false,
+      editStatus: true,
       form: {},
       maxlength: 500,
       categoryCode: this.$store.state.rfq.categoryCode,
@@ -172,20 +170,20 @@ export default {
         this.treeDataSelect = {};
         const req = {
           categoryCode: this.categoryCode,
-          quadrant: 'LEVERAGE',
         };
         const res = await getList(req);
         this.treeData = res.data;
-        const obj = {};
+        const selectObj = {};
         this.treeDataSelect = res.data.map(item => {
           item.children.map(itemChildren => {
-            obj[itemChildren.name] = '';
+            selectObj[itemChildren.name] = [];
           });
         });
         const formData = {};
-        this.getFormData({treeData: res.data, formData});
+        this.getFormData({treeData: this.treeData, formData});
         this.form = formData;
-        this.treeDataSelect = obj;
+        this.treeDataSelect = selectObj;
+        this.getLastCheckData({treeData: this.treeData, selectObj});
         this.pageLoading = false;
       } catch {
         this.treeData = {};
@@ -203,11 +201,34 @@ export default {
         }
       });
     },
+    // 递归勾选上次操作
+    getLastCheckData({treeData, selectObj}) {
+      const level1Array = [];
+      treeData.map(item => {
+        if (item.children) {
+          item.children.map(itemChildren => {
+            level1Array.push(itemChildren);
+          });
+        }
+      });
+      Object.keys(selectObj).map(item => {
+        level1Array.map(level1Item => {
+          if (level1Item.name === item) {
+            level1Item.children.map(level2Item => {
+              level2Item.isEdit && this.treeDataSelect[item].push(level2Item.name);
+              level2Item.children && level2Item.children.map(level3Item => {
+                level3Item.isEdit && this.treeDataSelect[item].push(level3Item.name);
+              });
+            });
+          }
+        });
+      });
+    },
     setName(item) {
       return this.$i18n.locale === 'zh' ? item.name : item.nameEn;
     },
     handleSelect({props, value}) {
-      this.treeDataSelect[props.name] = value.name;
+      this.treeDataSelect[props.name].push(value.name);
     },
     notHaveChildren(item) {
       return item.children === null;
@@ -229,6 +250,12 @@ export default {
         idEle: 'container',
         pdfName: 'overview',
       });
+    },
+  },
+  watch: {
+    '$store.state.rfq.categoryCode'() {
+      this.categoryCode = this.$store.state.rfq.categoryCode;
+      this.getList();
     },
   },
 };

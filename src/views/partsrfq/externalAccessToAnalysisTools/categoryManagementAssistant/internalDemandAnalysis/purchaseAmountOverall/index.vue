@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-07-30 17:31:22
- * @LastEditors: zbin
+ * @LastEditors: 舒杰
  * @Descripttion: your project
 -->
 <template>
@@ -44,6 +44,7 @@ import { downloadPdfMixins } from '@/utils/pdf';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import { getPurchaseAmountPbi } from "@/api/partsrfq/purchaseAmountOverall/index.js";
 import { dictByCode } from "./components/data.js";
+import { getCategoryAnalysis } from "@/api/categoryManagementAssistant/categoryManagementAssistant/index.js";
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: { iCard, iSelect, iPage, iButton, iDatePicker },
@@ -83,17 +84,6 @@ export default {
         filterType: pbi.models.FilterType.BasicFilter,
         requireSingleSelection: true
       },
-      filter_page: {
-        $schema: "http://powerbi.com/product/schema#basic",
-        target: {
-          table: "2_tovlo_overview",
-          column: "category_id"
-        },
-        operator: "In",
-        values: [],//this.page
-        filterType: pbi.models.FilterType.BasicFilter,
-        requireSingleSelection: true
-      },
       form: {
         year: '2022',
         page: ''
@@ -118,53 +108,26 @@ export default {
   methods: {
     handle() {
       this.filter_year.values = [parseInt(this.form.year)]
-      this.report.setPage(this.form.page);
+      if (!!this.form.page) {
+        this.report.setPage(this.form.page);
+      }
       let filterAll = [this.filter_year]
-      var filter_category = {
-        $schema: "http://powerbi.com/product/schema#basic",
-        target: {
-          table: "2_tovlo_overview",
-          column: "category_id"
-        },
-        operator: "In",
-        values: ['a'],//this.year
-        filterType: pbi.models.FilterType.BasicFilter,
-        requireSingleSelection: true
+      if (!!this.$store.state.rfq.categoryCode) {
+        filterAll.push(this.filter_category)
       }
-      var filter_year = {
-        $schema: "http://powerbi.com/product/schema#basic",
-        target: {
-          table: "DimYear",
-          column: "YearNo"
-        },
-        operator: "In",
-        values: [parseInt(this.form.year)],//this.year
-        filterType: pbi.models.FilterType.BasicFilter,
-        requireSingleSelection: true
-      }
-      var basicFilter1 = {
-        $schema: "http://powerbi.com/product/schema#basic",
-        target: {
-          table: "2_tovlo_overview",
-          column: "category_id"
-        },
-        operator: "In",
-        //values: ["Plant","China","England","Russia"],
-        values: ['a'],
-        filterType: pbi.models.FilterType.BasicFilter
-      };
-      // if (!!this.$store.state.rfq.categoryCode) {
-
-      // }
-      console.log(filterAll);
-
-      this.report.setFilters([filter_year, basicFilter1]);
-      // this.renderBi()
+      this.report.setFilters(filterAll);
     },
     async dictByCode() {
       const res = await dictByCode('CATEGORY_MANAGEMENT_LIST')
-      console.log(res);
       this.formGoup.pageList = res
+      const pms = {
+        categoryCode: this.$store.state.rfq.categoryCode,
+        schemeType: 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT'
+      }
+      if (!!pms.categoryCode) {
+        const res1 = await getCategoryAnalysis(pms)
+        this.form.page = res1
+      }
     },
     async handleSave() {
       this.saveButtonLoading = true;
@@ -205,23 +168,19 @@ export default {
       }
     },
     init() {
-      // this.permissions = pbi.models.Permissions.All
       this.config = {
         type: 'report',
         tokenType: pbi.models.TokenType.Embed,
         accessToken: this.url.accessToken,
         embedUrl: this.url.embedUrl,
-        pageName: "",// 中文ReportSectione9fe87a027d2550c28a9 英文 ReportSection616eb7861df2ef50a3cd
-        // id: 'f6bfd646-b718-44dc-a378-b73e6b528204',
-        // visualName: '47eb6c0240defd498d4b',
-        // permissions: permissions,
+        pageName: "",
         settings: {
           panes: {
             filters: {
-              visible: true
+              visible: false
             },
             pageNavigation: {
-              visible: true
+              visible: false
             }
           }
         }
@@ -231,6 +190,7 @@ export default {
     },
     // 初始化页面
     renderBi() {
+      console.log(this.config)
       this.report = this.powerbi.embed(this.reportContainer, this.config);
       this.filter_year.values = parseInt(this.form.year)
       let report = this.report
@@ -253,7 +213,7 @@ export default {
           column: "category_id"
         },
         operator: "In",
-        values: ['a'],//this.year
+        values: [String(this.$store.state.rfq.categoryCode)],//this.year
         filterType: pbi.models.FilterType.BasicFilter,
         requireSingleSelection: true
       }

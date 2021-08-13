@@ -1,6 +1,7 @@
 <template>
   <iPage>
-      <publicHeaderMenu></publicHeaderMenu>
+      <publicHeaderMenu />
+      <!-- <router-view></router-view> -->
   </iPage>
 </template>
 

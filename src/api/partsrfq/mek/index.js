@@ -49,3 +49,35 @@ export function mekInfoList(parmars) {
     data: parmars
   })
 }
+//列表--添加
+export function add(parmars) {
+  return requst({
+    url: `/mekScheme/add`,
+    method: 'POST',
+    data: parmars
+  })
+}
+//列表--info 修改 ||  删除
+export function infoUpdate(parmars) {
+  return requst({
+    url: `/mekMaterial/update`,
+    method: 'POST',
+    data: parmars
+  })
+}
+//车型配置信息
+export function getCarTypeMessage(parmars) {
+  return requst({
+    url: `/mekMaterial/getCarTypeMessage`,
+    method: 'POST',
+    data: parmars
+  })
+}
+//零件列表
+export function partNumList(parmars) {
+  return requst({
+    url: `/common/partNumList`,
+    method: 'POST',
+    data: parmars
+  })
+}

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-06-16 18:23:59
+ * @LastEditTime: 2021-08-11 18:41:51
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料api
  * @FilePath: \front-web\src\api\designate\index.js
@@ -28,7 +28,7 @@ export function getdDecisiondataDaringListAll(params) {
 // 获取决策资料 - 上传图纸
 export function uploadDaring(data) {
   return requst({
-      url: `/upload-files`,
+      url: `/file-histories/upload-files`,
       method: "POST",
       data
   })
@@ -46,8 +46,8 @@ export function batchDeleteDaring(data) {
 // 获取决策资料 - 更新排序
 export function updateDaringSort(data) {
   return requst({
-      url: `/update-sort/${data.fileId}/${data.isUp}`,
-      method: "POST",
+      url: `/file-histories/update-sort/${data.fileId}/${data.isUp}`,
+      method: "PATCH",
       data
   })
 }

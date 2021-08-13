@@ -250,7 +250,7 @@ export default {
         current: this.page.currPage,
         size: this.page.pageSize,
         linieId: this.linieName,
-        moldInvestmentStatus: this.moldInvestmentStatus.join(),
+        moldInvestmentStatus: this.moldInvestmentStatus,
         behalfPartsNum: this.partsNum,
         tmCartypeProId: this.carTypeProject,
       }).then((res) => {

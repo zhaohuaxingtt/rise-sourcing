@@ -96,6 +96,7 @@ import { previewBaicFrom,coverTableTitleCost } from '../../data'
 import tableList from "../tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import {numberProcessor} from '@/utils';
+import { cloneDeep } from "lodash"
 import {
   getLinieCoverDetail,
   getFsUser,
@@ -171,11 +172,21 @@ export default {
           const { code,data={} } = res;
           if(code == 200){
             const {fsId='',coverCostsWithCarType=[]} = data;
+
+            const costData = cloneDeep(coverCostsWithCarType);
+            costData.map((item)=>{
+              item.investmentIncrease = this.fixNumber(item.investmentIncrease,0);
+              item.otherCost = this.fixNumber(item.otherCost,0);
+              item.materialIncrease = item.materialIncrease || '';
+            })
+            
             this.basicInfo = {
               ...data,
+              coverCostsWithCarType:costData,
               fsName:fsId
             };
-            this.tableData = coverCostsWithCarType;
+
+            this.tableData = costData;
           }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
@@ -209,7 +220,7 @@ export default {
       
       handleNumber(val, row, props) {
         if(props == 'sendCycle'){
-           this.$set(this.basicInfo, props, numberProcessor(val, 0));
+           this.$set(row, props, numberProcessor(val, 0));
         }else{
            this.$set(row, props, numberProcessor(val, 2));
         }
@@ -232,6 +243,11 @@ export default {
         }
         this.btnLoading = true;
         if(type == 'submit'){ // 提交
+          const validate =  this.validateData(data);
+          if(!validate) {
+            this.btnLoading = false;
+            return;
+          }
           await coverSubmit(data).then((res)=>{
               this.btnLoading = false;
               const {code} = res;
@@ -261,6 +277,57 @@ export default {
             this.btnLoading = false;
           })
         }
+      },
+
+      // 提交时校验一下
+      validateData(data){
+        const { basicTitle } = this;
+        let isValidate = true;
+        for(let i=0;i<basicTitle.length;i++){
+          const basic = basicTitle[i];
+          if(basic['required']){
+              if((!data[basic['props']] && basic['type']=='input') || (data[basic['props']]==='' && basic['type']=='select')){
+                const tips = this.language(basicTitle[i]['labelKey'],basicTitle[i]['label'])+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
+                iMessage.warn(tips);
+                isValidate = false;
+                break;
+              }
+          }
+        }
+        
+          // 备注
+          if(isValidate && !data.remark){
+            const tips = this.language('LK_BEIZHU','备注')+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
+            iMessage.warn(tips);
+            isValidate = false;
+          }
+
+          // 表格内输入框
+          if(isValidate){
+            const {coverCostsWithCarType} = data;
+            for(let i=0;i<coverCostsWithCarType.length;i++){
+              const cost = coverCostsWithCarType[i] || {};
+              if(!cost['investmentIncrease'] || !cost['materialIncrease'] ||!cost['otherCost']){
+                const tips = this.language('LK_AEKO_BIAODANNEIFEIYONG','表单内费用') + this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
+                iMessage.warn(tips);
+                isValidate = false;
+                break;
+              }
+            }
+          }
+          return isValidate;
+      },
+
+      // 费用千分位处理
+      fixNumber(str,precision=2){
+          if(!str) return '';
+          var re=/(?=(?!(\b))(\d{3})+$)/g;
+          var fixstr =  str.replace(re,",");
+          if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
+              var last = fixstr.substr(fixstr.length-3,3);
+              if(last == '.00') fixstr = fixstr.substr(0,fixstr.length-3);
+          }
+          return fixstr;
       },
     }
 }

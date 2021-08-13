@@ -6,7 +6,7 @@
 <template>
     <iPage class="importFiles">
         <!-- <el-tabs v-model="tab" class="tab"> -->
-            <!-- <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
+            <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
                  <div class="topMenu">
                     <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
                     <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />

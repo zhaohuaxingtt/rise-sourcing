@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-06 08:52:14
- * @LastEditTime: 2021-08-10 13:51:49
+ * @LastEditTime: 2021-08-11 16:37:52
  * @LastEditors: Please set LastEditors
  * @Description: 流转状态跟踪饼状图模拟数据
  * @FilePath: /front-web/src/views/dashboard/components/pieChartsData.js
@@ -64,6 +64,7 @@ export function generateOptions(data) {
             {
                 name: '流转状态跟踪',
                 type: 'pie',
+                minAngle: 5,
                 zlevel: 2,
                 top: '-20%',
                 radius: ['43%', '60%'],
@@ -107,5 +108,6 @@ export function generateOptions(data) {
             }
         ]
     };
+    console.log('pieoption', option)
     return option
 }

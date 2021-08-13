@@ -56,7 +56,7 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_LINIE', 'Linie') }}</span>
+                <span>Linie</span>
               </div>
               <div class="disabled">{{ baseInfo.linieName }}</div>
             </div>
@@ -90,7 +90,7 @@
                 <span>
                   {{ language('LK_TOUZIQINGDANZHUANGTAI', '投资清单状态') }}
                      <Popover
-                          v-if="baseInfo.linieConfirmSupplier === '1'"
+                          v-if="Number(baseInfo.linieConfirmSupplier) === 1"
                           class="popover"
                           placement="bottom-start"
                           :content="baseInfo.linieName + '在' + baseInfo.taskDealDate + '代确认'"
@@ -119,6 +119,7 @@
                 v-model="craftType"
                 filterable
                 clearable
+                @change="findMoldViewList"
                 class="select"
             >
               <el-option
@@ -137,6 +138,7 @@
                 v-model="assetTypeNum"
                 filterable
                 clearable
+                @change="findMoldViewList"
                 class="select"
             >
               <el-option
@@ -183,6 +185,21 @@
         </template>
         <template #picture="scope">
           <div class="table-link" @click="openPhotoList(scope.row.picture)">查看</div>
+        </template>
+        <template #partsShareNum="scope">
+          <div v-if="scope.row.partsShareNum">
+            <Popover
+                placement="bottom"
+                trigger="hover">
+              <div>
+                <div v-for="(item, index) in scope.row.partsShareNum.split(',')" :key="index">{{ item }}</div>
+              </div>
+              <div slot="reference">
+                {{ scope.row.partsShareNum.split(',')[0] }}<span v-if="scope.row.partsShareNum && scope.row.partsShareNum.includes(',')">...</span>
+              </div>
+            </Popover>
+          </div>
+          <div v-else>{{ scope.row.partsShareNum }}</div>
         </template>
       </iTableList>
       <div style="color: #999999;font-size: 14px;text-align: right;margin: 10px 0;">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>

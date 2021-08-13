@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       card1Param: {
-        url: '/svwInfo',
+        url: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis/svw',
         data: {},
       },
       card2Param: {

@@ -8,8 +8,8 @@
 export const searchList = [
   {props:'aekoCode',label:'AEKO号',type:'input',labelKey:'LK_AEKOHAO_MANAGE'},
   {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO'},
-  {props:'linieDeptNum',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNum',noShowAll:true,filterable:true,clearable:true},
-  {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',selectOption:'cartypeCode',filterable:true,noShowAll:true,clearable:true},
+  {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNumList',noShowAll:true,filterable:true,clearable:true,multiple:true,},
+  {props:'carTypeCodeList',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',selectOption:'carTypeCodeList',filterable:true,noShowAll:true,clearable:true,multiple:true,},
   {props:'frozenDate',label:'冻结⽇期',type:'datePicker',labelKey:'LK_AEKODONGJIERIQI'},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand'},
   {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',multiple:true,noShowAll:true,clearable:true},

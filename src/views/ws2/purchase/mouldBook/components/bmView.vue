@@ -35,6 +35,7 @@
 
           <el-form-item :label="language('LK_CHEXINXIANGMU', '车型项目')">
             <iSelect
+                class="multipleSelect"
                 :placeholder="language('LK_QINGXUANZHE', '请选择')"
                 v-model="form['tmCartypeProId']"
                 filterable
@@ -53,7 +54,7 @@
           </el-form-item>
 
           <el-form-item :label="language('LK_GONGYINGSHANG', '供应商')">
-            <iInput clearable :placeholder="language('LK_QINGSHURUGONGYINGSHANG', '请输入(11025-上海汇众)')" v-model="form['designatedSupplierId']" ></iInput>
+            <iInput clearable :placeholder="language('LK_QINGSHURUGONGYINGSHANGHUOBIANHAO', '请输入(11025或上海汇众)')" v-model="form['designatedSupplierId']" ></iInput>
             <!-- <iSelect
                 class="multipleSelect"
                 :placeholder="language('LK_QINGXUANZHE', '请选择')"
@@ -111,11 +112,14 @@
 
           <el-form-item :label="language('LK_MUJUTOUZIQINGDANZHUANGTAI', '模具投资清单状态')">
             <iSelect
+                class="multipleSelect"
                 :placeholder="language('LK_QINGXUANZHE', '请选择')"
                 v-model="form['moldInvestmentStatus']"
                 filterable
                 ref="carTypeProjectRef"
                 clearable
+                collapse-tags
+                multiple
             >
               <el-option
                   :value="item.bmStatus"
@@ -328,17 +332,11 @@ export default {
     },
 
     openBMDetail(row){ //  跳转详情
-      // isPermission().then(res => {
-      //   if(res.data){
-      //     let {href} = this.$router.resolve({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
-      //     window.open(href, '_blank');
-      //   }else{
-      //     iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN', '对不起，您所在得岗位没有该材料组权限'));
-      //   }
-      // })
+
+      // let {href} = this.$router.resolve({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
+      // window.open(href, '_blank');
 
       if(row.isPremission){
-        // this.$router.push({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
 
         let {href} = this.$router.resolve({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
         window.open(href, '_blank');
@@ -357,7 +355,7 @@ export default {
 <style lang="scss" scoped>
 .multipleSelect{
   ::v-deep .el-tag{
-    max-width: calc(100% - 65px);
+    max-width: calc(100% - 85px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

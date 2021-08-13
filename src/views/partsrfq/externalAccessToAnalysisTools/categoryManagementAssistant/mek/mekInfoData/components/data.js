@@ -6,22 +6,21 @@
  * @Descripttion: your project
  */
 export const tableTitle = [
-  { props: 'name', name: '零件', key: 'LINGJIAN' },
-  { props: 'toolType', name: '材料组', key: 'CAILIAOZU' },
-  { props: 'materialGroup', name: '车型信息', key: 'CHEXINGXINGXI' },
-  { props: 'partsNo', name: '品牌/平台', key: 'PINGPAIPINGTAI' },
-  { props: 'rfq', name: '级别类型', key: 'JIBIELEIXING' },
-  { props: 'wire', name: '', key: '' },
+  { props: 'partNumber1', name: '零件', key: 'LINGJIAN' },
+  { props: 'materialGroup1', name: '材料组', key: 'CAILIAOZU' },
+  { props: 'motorNameMotorProject', name: '车型信息', key: 'CHEXINGXINGXI' },
+  { props: 'brandPlatform', name: '品牌/平台', key: 'PINGPAIPINGTAI' },
+  { props: 'positionType', name: '级别/类型', key: 'JIBIELEIXING' },
   { props: 'carInfo', name: '车型信息', key: 'CHEXINGXINGXI' },
-  { props: 'wire', name: '', key: '' },
-  { props: 'rfq', name: '价格信息', key: 'JIAGEXINGXI' },
-  { props: 'tip', name: '供应商信息', key: 'YGONGYINGSHANGXINGXI' },
-  { props: 'isShow', name: '显示/隐藏', key: 'XIANSHIYINGCHANG' },
+  { props: 'priceInfo', name: '价格信息', key: 'JIAGEXINGXI' },
+  { props: 'supplierInfo', name: '供应商信息', key: 'YGONGYINGSHANGXINGXI' },
+  { props: 'isHidden1', name: '显示/隐藏', key: 'XIANSHIYINGCHANG' },
 ]
 export const addPartTableTitle = [
-  { props: 'name', name: '零件号', key: 'LINGJIANHAO' },
-  { props: 'toolType', name: '零件名称', key: 'LINGJIANMINGCHEN' },
-  { props: 'materialGroup', name: 'RFQ号', key: 'RFQHAO' },
+  { props: 'partNum', name: '零件号', key: 'LINGJIANHAO' },
+  { props: 'fsNum	', name: 'FS号', key: 'FSHAO' },
+  { props: 'partNameZh', name: '零件名称', key: 'LINGJIANMINGCHEN' },
+  { props: 'rfqId', name: 'RFQ号', key: 'RFQHAO' },
 ]
 export const changeLogTableTitle = [
   { props: 'name', name: '操作类型', key: 'CAOZUOLEIXING' },

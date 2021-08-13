@@ -68,14 +68,7 @@ export const tabRouterList = [
       url: '/supplier/supplierList',
       activePath: '/supplier/supplierList',
       key: '年度回顾&绩效追踪 ',
-    },
-    {
-      value: 4,
-      name: '举措清单',
-      //url: '/sourcing/categoryManagementAssistant/listOfInitiatives',
-      //activePath: '/sourcing/categoryManagementAssistant/listOfInitiatives',
-      key: '举措清单',
-    },
+    }
   ];
 
   // export const categoryManagementAssistantList = [

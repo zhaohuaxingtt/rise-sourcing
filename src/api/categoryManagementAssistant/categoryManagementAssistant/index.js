@@ -35,3 +35,11 @@ export function getReportList(params) {
     data: params
   });
 }
+//获取内部需求分析操作记录 最近方案信息
+export function getCategoryAnalysis(params) {
+  return request({
+    url: `/categoryAnalysis/getCategoryAnalysis`,
+    method: 'POST',
+    data: params
+  });
+}

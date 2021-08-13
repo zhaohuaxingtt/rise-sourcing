@@ -11,7 +11,7 @@
       {{language('MEKJCSJK','MEK基础数据库')}}
     </div>
     <div class="flex-between-center-center">
-      <iButton>{{language('FANHUI','返回')}}</iButton>
+      <iButton @click="handleBack">{{language('FANHUI','返回')}}</iButton>
       <slot class="margin-left20" name="extralButton"></slot>
       <logButton class="logButton" />
       <icon class="margin-left20" name="icondatabaseweixuanzhong" symbol></icon>
@@ -39,7 +39,9 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-
+    handleBack() {
+      this.$router.go(-1)
+    }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {

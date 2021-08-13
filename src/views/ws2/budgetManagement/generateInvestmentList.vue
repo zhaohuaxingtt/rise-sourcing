@@ -179,7 +179,7 @@ import {
 } from "rise";
 import {
   iTableList
-} from "@/components"
+} from '@/components'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
 import {budgetManagementData, form} from "./components/data";

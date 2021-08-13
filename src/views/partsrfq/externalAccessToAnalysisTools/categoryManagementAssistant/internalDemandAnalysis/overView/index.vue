@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-12 17:03:54
+ * @LastEditTime: 2021-08-13 15:35:39
  * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
@@ -17,7 +17,6 @@
       </el-col>
    </el-row>
 </template>
-
 <script>
 import {iCard} from 'rise'
 import { iMessage } from '@/components';
@@ -76,7 +75,8 @@ export default {
            },{
               name:"定点历史记录",
               key:"DINGDIANLISHIJILU",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis10.png")
+              image:require("@/assets/images/partRfq/internalDemandAnalysis10.png"),
+              url:'/sourcing/categoryManagementAssistant/internalDemandAnalysis/historyPoint'
            }
         ],
         // 成本组成-手工输入
@@ -85,6 +85,7 @@ export default {
   },
   methods: {
     onJump(item){
+       if(this.$store.state.rfq.categoryCode){
       switch (item.key) {
         // 成本结构
         case 'CHENGBENZUCHENG':
@@ -115,6 +116,9 @@ export default {
               query: item.params || null
             })
           break  
+      }
+      }else{
+         this.$parent.$children[0].openCatecory()
       }
      
     },

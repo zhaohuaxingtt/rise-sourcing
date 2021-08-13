@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-08-05 19:50:39
+ * @LastEditTime: 2021-08-12 15:48:26
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
@@ -35,35 +35,48 @@ export default {
    components:{iCard,iButton},
    data () {
       return {
+          config :{
+            type: 'report',
+            tokenType: pbi.models.TokenType.Embed,
+            accessToken: '',
+            embedUrl: '',
+            pageName:"",
+            settings: {
+               panes: {
+                  filters: {
+                     visible: false
+                  },
+                  pageNavigation: {
+                     visible: false
+                  }
+               }
+            }
+         },
          filter : {
             $schema: "http://powerbi.com/product/schema#basic",
             target: {
-               table: "app_supplier_fin_analysis_sum_nt_daily",
-               column: "subject_name"
+               table: "Fact_01_Supplier_SPI",
+               column: "supplier_id"
             },
             operator: "In",
-            values: [],//[this.name],// values
+            values: [],//
             filterType: null,
             requireSingleSelection: true
          },
          report:null,
-         name:"",
          url: {
             accessToken: "", //验证token
             embedUrl: "", //报告信息内嵌地址
             tokenExpiry: ""//token过期时间
          },
-         values:[],
-         reportContainer:null
+         reportContainer:null,
+         categoryCode:""
       }
    },
    created () {
-      if (this.$route.query.name) {
-         this.name = this.$route.query.name;
-      }
+      this.categoryCode=this.$store.state.rfq.categoryCode
    },
    mounted () {
-      this.filter={...this.filter,filterType:pbi.models.FilterType.BasicFilter},
 		this.getPowerBiUrl()
    },
    watch:{
@@ -86,27 +99,9 @@ export default {
       },
       // 初始化配置
       init(){
-         // this.permissions = pbi.models.Permissions.All
-         this.config = {
-            type: 'report',
-            tokenType: pbi.models.TokenType.Embed,
-            accessToken: this.url.accessToken,
-            embedUrl: this.url.embedUrl,
-            pageName:"ReportSectione9fe87a027d2550c28a9",// 中文ReportSectione9fe87a027d2550c28a9 英文 ReportSection616eb7861df2ef50a3cd
-            // id: 'f6bfd646-b718-44dc-a378-b73e6b528204',
-            // visualName: '47eb6c0240defd498d4b',
-            // permissions: permissions,
-            settings: {
-               panes: {
-                  filters: {
-                     visible: false
-                  },
-                  pageNavigation: {
-                     visible: false
-                  }
-               }
-            }
-         };
+         this.config.embedUrl=this.url.embedUrl
+         this.config.accessToken=this.url.accessToken
+         this.filter.values=[this.categoryCode]
          this.reportContainer = document.getElementById('powerBi');
          this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       },
@@ -115,17 +110,8 @@ export default {
          // Report.off removes a given event handler if it exists.
          report.off("loaded");
          // Report.on will add an event handler which prints to Log window.
-         const name = this.name
          const newfilter = window._.cloneDeep(this.filter);
-         newfilter.values=[name]
-         this.values=[name]
-         console.log(newfilter);
          report.on("loaded", ()=> {
-            console.log("Loaded");
-            // if(name==""){
-               // newfilter.values=[]
-            // report.updateFilters(pbi.models.FiltersOperations.Add, [newfilter]);
-            // }
             report.setFilters([newfilter])
          });
          // Report.off removes a given event handler if it exists.

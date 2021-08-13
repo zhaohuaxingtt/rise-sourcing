@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-03 15:59:56
- * @LastEditTime: 2021-07-19 18:49:40
+ * @LastEditTime: 2021-08-11 18:27:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\costanalysismanage\costanalysis\index.js
@@ -14,7 +14,7 @@ const quotationRequst = download(process.env.VUE_APP_QUOTATION)
 // 获取KM的RFQ列表
 export function getKmFileHistory(params) {
   return requst({
-    url: `/km-file-history/${ params.hostId }/${ params.type }/${ params.pageSize }/${ params.currPage }`,
+    url: `/km/file-histories/${ params.hostId }/${ params.type }/${ params.pageSize }/${ params.currPage }`,
     method: 'GET'
   })
 }
@@ -22,7 +22,7 @@ export function getKmFileHistory(params) {
 // 关联附件
 export function uploadFiles(params) {
   return requst({
-    url: '/km/upload-files',
+    url: '/file-histories/upload-file',
     method: 'POST',
     data: params
   })

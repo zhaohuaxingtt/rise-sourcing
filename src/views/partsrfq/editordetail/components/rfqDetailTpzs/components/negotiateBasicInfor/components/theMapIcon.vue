@@ -41,8 +41,6 @@ export default {
       handler(data) {
         this.tableData = this.tableData.concat(data.offerDataList)
         this.tableData = this.tableData.concat(data.purchaseDataList)
-
-        console.log(this.tableData);
       }
     }
   },

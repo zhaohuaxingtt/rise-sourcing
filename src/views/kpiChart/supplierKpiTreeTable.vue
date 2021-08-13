@@ -19,7 +19,7 @@
                         </el-form>
                     </div>
                     <div>
-                        <a type="file" id="file" style="display:none"></a>
+                        <input type="file" id="file" @change="upfileChange($event)" style="display:none;" />
                         <iButton @click="handleupLoad">{{language("SHANGCHUAN","上传")}}</iButton>
                         <iButton @click="handleDownload">{{language("XIAZAI","下载")}}</iButton>
                     </div>
@@ -32,7 +32,7 @@
                             <td><div>#</div></td>
                             <td><div>供应商名称</div></td>
                             <td><div>总体KPI</div></td>
-                            <template v-for="(x,index) in allData[0].list">
+                            <template v-for="(x,index) in tittleData">
                             <td
                             :key="index"
                             :colspan="x.isShowChildren?computedOneClonNum(x):'1'"><div>{{x.name}}
@@ -43,7 +43,7 @@
                         <!-- 二级表头 -->
                         <tr class="theadBgcolor thead2">
                             <td colspan="3"></td>
-                            <template v-for="(t,tindex) in allData[0].list">
+                            <template v-for="(t,tindex) in tittleData">
                                 <td :key="tindex+'cell2'"><div></div></td>
                                 <template v-for="(lev2,index) in t.children">
                                 <td 
@@ -61,7 +61,7 @@
                         <!-- 三级表头 -->
                         <tr class="theadBgcolor thead3">
                             <td colspan="3"></td>
-                            <template v-for="one in allData[0].list">
+                            <template v-for="one in tittleData">
                                 <template v-for="(two,tindex) in one.children">
                                     <template v-for="(three,index) in two.children">
                                         <template v-if="index==0 && tindex==0 && isLastData()">
@@ -82,9 +82,9 @@
                         </tr>
                         <!-- 数据列表 -->
                         <tr v-for="(x,index) in allData" :key="index">
-                            <!-- <td>{{(index+1)+(page.currPage-1)*pageSize}}</td> -->
                             <td><div>
-                                <el-checkbox v-model="x.checked" :label="x.checked" @change="changeStatus(x)">{{index+1}}</el-checkbox>
+                                <!-- <el-checkbox v-model="x.checked" :label="x.checked" @change="changeStatus(x)"></el-checkbox> -->
+                                {{(index+1)+(ipagnation.pageNo-1)*ipagnation.pageSize}}
                             </div></td>
                             <td><div>{{x.nameZh}}</div></td>
                             <td><div>{{x.all}}</div></td>
@@ -111,7 +111,7 @@
                   @size-change="handleSizeChange($event)"
                   @current-change="handleCurrentChange($event)"
                   background
-                  :current-page="page.currPage"
+                  :current-page="ipagnation.pageNo"
                   :page-sizes="page.pageSizes"
                   :page-size="page.pageSize"
                   :layout="page.layout"
@@ -119,6 +119,25 @@
                 >
                 </iPagination>
            </iCard>
+           <div v-if="isShowDialog">
+               <div class="lay"></div>
+               <div class="upload dialog-box">
+                   <div class="lay-head">
+                       <div>上传</div>
+                       <div class="el-icon-circle-close" @click="isShowDialog=fasle"></div>
+                   </div>
+                   <div>请选择对应打分模型的版本号</div>
+                   <div style="margin:10px 0 26px 0;" >
+                       <iSelect v-model="uploadVersion" @change="changeSelectVer()">
+                           <el-option v-for="(x,index) in dropDownOptions"
+                            :key="index" 
+                            :label="x.value" 
+                            :value="x.key"></el-option>
+                       </iSelect>
+                   </div>
+                   <div class="dialog-button"><iButton @click="handleSure">{{language("QUEREN","确认")}}</iButton></div>
+               </div>
+           </div>
       </iPage>
   </div>
 </template>
@@ -126,7 +145,7 @@
 <script>
 import {iButton,iPage,iCard,iInput,iSelect,iPagination} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
-import { kpiDetail,slelectkpiList,dowbloadAPI } from '@/api/kpiChart'
+import { kpiDetail,slelectkpiList,dowbloadAPI,templateDetail,uploadTemplate } from '@/api/kpiChart'
 import publicHeaderMenu from './commonHeardNav/headerNav'
 export default {
     mixins: [pageMixins],
@@ -145,6 +164,7 @@ export default {
             formData:{
                 deptId:''
             },
+            tittleData:[],
             allData:[{
                 list:[]
             }],
@@ -152,27 +172,39 @@ export default {
             selectOptions:[],
             selectValue:"",
             dropDownOptions:[],
-            checked:false
+            checked:false,
+            isShowDialog:false,
+            uploadVersion:'',
+            file:null,
+            ipagnation:{
+                pageNo:1,
+                pageSize:10
+            }
         }
     },
     created(){
         //let userCode = this.$store.state.permission.userInfo.deptDTO.deptNum
-         this.getSelectKpiList({deptCode:'MQ'})
+         this.getSelectKpiList({deptCode:this.$store.state.permission.userInfo.deptDTO.deptNum})
       
     },
     mounted(){
-       this.getDetail("1")
+        
     },
     methods:{
         getSelectKpiList(params){
             slelectkpiList(params).then(res=>{
                 this.dropDownOptions=res.data
+                if(this.dropDownOptions.length>0){
+                    this.getTittleDetail(this.dropDownOptions[this.dropDownOptions.length-1].key)
+                    this.selectValue=this.dropDownOptions[this.dropDownOptions.length-1].value
+                }
             })
         },
+        // 获取表格数据
         getDetail(templateId){
-            kpiDetail({pageNo: 1,
-            pageSize: 100,
-            templateId: templateId}).then(res=>{
+            kpiDetail({
+            templateId: templateId,
+            ...this.ipagnation}).then(res=>{
                 if(res.code=="200"){
                     this.allData=JSON.parse(JSON.stringify(res.data))
                     this.allData.forEach(x=>{
@@ -185,6 +217,9 @@ export default {
                             })
                         })
                     })
+                    this.page.totalCount = res.total
+                    this.ipagnation.pageNo = res.pageNum
+                    this.ipagnation.pageSize = res.pageSize
                     console.log(this.allData)
                 }
             })
@@ -237,18 +272,51 @@ export default {
             
         },
         handleChange(){
+            this.getTittleDetail(this.selectValue)
             this.getDetail(this.selectValue)
         },
         handleupLoad(){
-           
+           this.isShowDialog=true
+        },
+        changeSelectVer(){
+            let link = document.querySelector("#file")
+            link.click()
+        },
+        upfileChange(e){
+           this.file = e.target.files[0]
+        },
+        handleSure(){
+            if(this.uploadVersion){
+                let formdata = new FormData()
+                formdata.append('file',this.file)
+                formdata.append('templateId',this.uploadVersion)
+                uploadTemplate(formdata).then(res=>{
+                    if(res.code=="200"){
+                        this.isShowDialog=false
+                    }
+                })
+            //    let  formData = new FormData()
+            //     formData.append('file', fileInput.files[0])
+            }else{
+                this.$message({
+                message: '请选择版本',
+                type: 'warning'
+                })
+            }
         },
         handleDownload(){
-            dowbloadAPI({templateId:"1"}).then(res=>{
+            let name =""
+            this.dropDownOptions.forEach(x=>{
+                if(x.key==this.selectValue){
+                    name =x.value
+                }
+            })
+            dowbloadAPI({templateId:this.selectValue}).then(res=>{
                let URL = window.URL || window.webkitURL;
                 let objectUrl = URL.createObjectURL(res);
                 let a = document.createElement('a');
                 a.href = objectUrl; 
-                a.download = "kpi.xls"; 
+                a.download = `${name}.xls`; 
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
@@ -259,7 +327,7 @@ export default {
         },
         isLastData(){
             let count = 0
-            this.allData[0].list.forEach(x=>{
+            this.tittleData.forEach(x=>{
                 if(x.isShowChildren){
                     count+=1
                 }
@@ -269,7 +337,35 @@ export default {
             }else{
                 return true
             }
-        }
+        },
+        // 获取表头
+        getTittleDetail(x){
+            templateDetail({pageNo: 1,
+            pageSize: 100,
+            templateId: x}).then(res=>{
+                if(res.code=="200"){
+                    this.tittleData=JSON.parse(JSON.stringify(res.data))
+                    this.tittleData.forEach(x=>{
+                        x.isShowChildren=true
+                        x.children.forEach(z=>{
+                            z.isShowChildren=true
+                            z.children.forEach(k=>{k.isShowChildren=true})
+                        })
+                    })
+                }
+            })
+
+        },
+        // //改变page操作
+        handleSizeChange(event) {
+        this.ipagnation.pageSize = event
+        this.getDetail(this.selectValue)
+        },
+        handleCurrentChange(event) {
+            console.log(event)
+            this.ipagnation.pageNo = event
+            this.getDetail(this.selectValue)
+        },
     }
 }
 </script>
@@ -302,7 +398,8 @@ export default {
 
     .table{
         width:100%;
-        overflow-x: auto;
+        height: calc(100vh - 340px);
+        overflow: auto;
         table{
             margin-top: 20px;
             position: relative;
@@ -396,5 +493,42 @@ export default {
         border-left: 1px dashed #1660F1;
         height: 40px;
         left: 75px;
+    }
+    .lay{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #5D5D5D;
+        opacity: 0.2;
+        z-index: 1;
+    }
+    .upload{
+        width: 390px;
+        background: #FFFFFF;
+        border-radius: 10px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        z-index: 999;
+    }
+    .lay-head{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        .el-icon-circle-close{
+            font-size: 24px;
+            color: #A0BFFC;
+            cursor: pointer;
+        }
+    }
+    .dialog-box{
+        padding: 30px;
+    }
+    .dialog-button{
+        display: flex;
+        justify-content: flex-end;
     }
 </style>

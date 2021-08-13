@@ -43,7 +43,7 @@ export const searchList = [
   {value: 'spnrNum', label: 'SP号', type: 'input', key: 'SPHAO',},
   {value: 'sparePartCode', label: '编号', type: 'input', key: 'BIANHAO',},
   {value: 'carType', label: '配件车型', type: 'select', key: 'PEIJIANCHEXING',selectOption: 'cartTypeOptions'},
-  {value: 'carProject', label: '配件车型项目', type: 'select', key: 'PEIJIANCHEXINGXIANGMU',selectOption: 'carTypeProjectOptions'},
+  {value: 'carProject', label: '配件车型项目', type: 'select', key: 'PEIJIANCHEXINGXIANGMU',selectOption: 'cartypeProjectOptions'},
   {value: 'state', label: '配件状态', type: 'select', key: 'PEIJIANZHUANGTAI', selectOption: 'accessoryTypeOption'},
   {value: 'csfUserDept', label: '是否有询价科室', type: 'select', key: 'SHIFOUYOUXUNJIAKESHI', selectOption: 'yesOrNoOption'},
   {value: 'csfUserId', label: '是否有询价采购员', type: 'select', key: 'SHIFOUYOUXUNJIACAIGOUYUAN', selectOption: 'yesOrNoOption'},

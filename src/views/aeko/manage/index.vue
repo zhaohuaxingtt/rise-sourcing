@@ -179,15 +179,15 @@ export default {
           brand:'',
           aekoStatusList:[],
           coverStatusList:[],
-          cartypeCode:'',
-          linieDeptNum:'',
+          carTypeCodeList:[],
+          linieDeptNumList:[],
         },
         selectOptions:{
           'brand':[],
           'aekoStatusList':[],
           'coverStatusList':[],
-          'linieDeptNum':[],
-          'cartypeCode':[],
+          'linieDeptNumList':[],
+          'carTypeCodeList':[],
           'buyerName':[],
         },
         tableListData:[],
@@ -216,8 +216,8 @@ export default {
           brand:'',
           aekoStatusList:[],
           coverStatusList:[],
-          cartypeCode:'',
-          linieDeptNum:'',
+          carTypeCodeList:[],
+          linieDeptNumList:[],
         };
         this.getList();
       },
@@ -235,7 +235,7 @@ export default {
         const {frozenDate=[]} = searchParams;
         const data = {
             current:page.currPage,
-            size:page.pageSize
+            size:page.pageSize,
         };
         if(frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
@@ -302,7 +302,7 @@ export default {
             data.map((item)=>{
               item.desc = item.name;
             })
-            this.selectOptions.cartypeCode = data;
+            this.selectOptions.carTypeCodeList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -316,7 +316,7 @@ export default {
               item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
               item.code = item.deptNum;
             })
-            this.selectOptions.linieDeptNum = data;
+            this.selectOptions.linieDeptNumList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -372,10 +372,11 @@ export default {
       },
 
       // 判断是否勾选项
-      async isSelectItem(type=false){
+      async isSelectItem(type=false,tips=null){
           const {selectItems} = this;
+          tips = tips || this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据');
           if(!selectItems.length){
-              iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+              iMessage.warn(tips);
               return false;
           }else{
               if(type){
@@ -394,9 +395,14 @@ export default {
         // 一次只能撤销一个AEKO
         const {selectItems} = this;
         if(selectItems.length > 1) return iMessage.warn(this.language('LK_AEKO_YICIZHINENGCHEXIAOYIGEAEKO','一次只能撤销一个AEKO，请修改！'));
-        console.log(isNext,'isNext');
+        // 选中的aeko非处于”已导入”或”已分配”状态  不能进行撤销操作
+        const {aekoStatus=''} = selectItems[0];
+        if(aekoStatus != 'IMPORTED' && aekoStatus !='ASSIGNED'){
+          return iMessage.warn(this.language('LK_AEKO_DANGQIANAEKOBUNENGJINXINGCAOZUO','当前aeko不能进行撤销操作'));
+        }
         this.changeVisible('revokeVisible',true);
       },
+      
 
       // 查看附件列表
       async checkFiles(row){
@@ -419,6 +425,7 @@ export default {
             cancelButtonText: this.language('nominationLanguage.No','否'),
           }
           ).then(()=>{
+            this.$refs['aekoUpload'].$refs['uploadRef'].$refs['upload-inner'].handleClick()
             console.log('是')
           }).catch(()=>{
             console.log('否')
@@ -501,6 +508,7 @@ export default {
           if(code!=200){
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }else{
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getList();
           }
         }).catch((e)=>{
@@ -515,7 +523,8 @@ export default {
       
       // 导出
       async exportAeko(){
-        const isNext  = await this.isSelectItem(true);
+        const tips = this.language('LK_AEKO_QINGXUANZEYAODAOCHUDEHANGXIANGMU','请选择要导出的行项目');
+        const isNext  = await this.isSelectItem(true,tips);
         const {selectItems} = this;
         if(!isNext) return;
         const aekoIdList = selectItems.map((item)=>item.requirementAekoId);

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 11:49:10
- * @LastEditTime: 2021-07-07 16:15:51
+ * @LastEditTime: 2021-08-10 15:18:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\logDialog\index.vue
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { iPagination, iDialog } from '@/components'
+import { iPagination, iDialog } from 'rise'
 import tableList from './tableList'
 import { logTableTitle as tableTitle } from './data'
 import { pageMixins } from '@/utils/pageMixins'

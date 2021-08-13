@@ -6,7 +6,7 @@
 <template>
   <iPage class="letterAndLoi">
     <!-- <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
+      <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
         <div class="margin-bottom33">
             <iNavMvp right routerPage lev="2" :list="navList" @message="clickMessage" />
         </div>
@@ -35,7 +35,7 @@
     <div class="headerNav-sub margin-top30">
       <iTabsList type="card" v-model="cardType">
       <template v-for="(item,index) in tabData">
-        <el-tab-pane  :key="'tabData_'+index" :label="language(item.label,item.name)" :name="item.key"></el-tab-pane>
+        <el-tab-pane lazy  :key="'tabData_'+index" :label="language(item.label,item.name)" :name="item.key"></el-tab-pane>
       </template>
       </iTabsList>
     </div>
@@ -77,7 +77,7 @@ export default {
     data(){
       return{
         tab:'source',
-        cardType:'letter',
+        cardType:this.$route.query.cardType || 'letter',
         tabData:letterAndLoiType,
         list: TAB,
       }

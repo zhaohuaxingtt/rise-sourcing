@@ -1,5 +1,5 @@
 <template>
-  <iPage>
+  <iPage class="purchase-mouldBook-page">
     <div class="head">
       <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：{{bmSerial}}</div>
       <div class="edition">
@@ -66,7 +66,7 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_LINIE', 'Linie') }}</span>
+                <span>{{ $t('LK_XINDELINIE') }}</span>
               </div>
               <div class="disabled">{{detailsData.linieName}}</div>
             </div>
@@ -95,7 +95,9 @@
               <div class="txt">
                 <span>{{ language('LK_DINGDANHAO', '订单号') }}</span>
               </div>
-              <div @click="jumpDetails()" class="disabled table-link">{{detailsData.orderNum}}</div>
+              <div class="disabled">
+                <span @click="jumpDetails()" class="table-link">{{detailsData.orderNum}}</span>
+              </div>
             </div>
             <div class="item">
               <div class="txt">
@@ -107,7 +109,9 @@
               <div class="txt">
                 <span>{{ language('LK_RUZHANGDANHAO', '入账单号') }}</span>
               </div>
-              <div class="disabled">{{detailsData.enterAccountNum}}</div>
+              <div class="disabled">
+                <span @click="jumpDetailsNum()" class="table-link">{{detailsData.enterAccountNum}}</span>
+              </div>
             </div>
           </div>
 
@@ -204,9 +208,26 @@
           <div>{{getTousandNum(NumFormat(scope.row.assetTotal))}}</div>
         </template>
 
+        <template #partsShareNum="scope">
+          <div v-if="scope.row.partsShareNum">
+            <Popover
+                placement="bottom"
+                trigger="hover">
+              <div>
+                <div v-for="(item, index) in scope.row.partsShareNum.split(',')" :key="index">{{ item }}</div>
+              </div>
+              <div slot="reference">
+                {{ scope.row.partsShareNum.split(',')[0] }}<span v-if="scope.row.partsShareNum.split(',').length > 1">...</span>
+              </div>
+            </Popover>
+          </div>
+          <div v-else>{{ scope.row.partsShareNum }}</div>
+        </template>
+
         <!-- 照片 -->
-        <template #img="scope">
-          <div class="table-link" @click="openPhoto(scope.row)">查看</div>
+        <template #picture="scope">
+          <div v-if="scope.row.picture" class="table-link" @click="openPhotoList(scope.row.picture.split(','))">查看</div>
+          <div v-else></div>
         </template>
       </iTableList>
       
@@ -225,7 +246,7 @@
       >
         <!-- BM单流⽔号 -->
         <template #data1="scope">
-          <div class="table-link">{{scope.row.data1}}</div>
+          <div class="table-link" @click="jumpchangeDetail(scope.row)">{{scope.row.data1}}</div>
         </template>
       </iTableList>
     </iCard>
@@ -253,6 +274,7 @@ import {
   getOrderNumPermission
 } from "@/api/ws2/purchase/mouldBook";
 import { getTousandNum, NumFormat } from "@/utils/tool";
+import {Switch, Popover} from "element-ui"
 
 export default {
   components: {
@@ -263,7 +285,8 @@ export default {
     iTableList,
     iButton,
     UnitExplain,
-    PhotoList
+    PhotoList,
+    Popover
   },
 
   data(){
@@ -307,15 +330,26 @@ export default {
 
   methods: {
 
+    //  变更单列表跳转
+    jumpchangeDetail(){
+      iMessage.warn('功能开发中...');
+    },
+
+    //  入账单号
+    jumpDetailsNum(){
+      iMessage.warn('功能开发中...');
+    },
+
     //  点击订单详情
     jumpDetails(){
-      getOrderNumPermission().then(res => {
-        if(res.data){
-          //  ...
-        }else{
-          iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限'));
-        }
-      })
+      iMessage.warn('功能开发中...');
+      // getOrderNumPermission().then(res => {
+      //   if(res.data){
+      //     //  ...
+      //   }else{
+      //     iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限'));
+      //   }
+      // })
     },
 
     selectTable(){
@@ -372,11 +406,9 @@ export default {
     },
 
     //  照片
-    openPhoto(scope){
-      if(scope.picture){
-        this.imgList = scope.picture.split(',');
-        this.visible = true;
-      }
+    openPhotoList(imgList){
+      this.visible = true;
+      this.imgList = imgList;
     },
 
     changeSerch(type){
@@ -394,133 +426,139 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-link{
-  color: #1763F7;
-  cursor: pointer;
-  text-decoration: underline;
-}
-.changeList{
-  margin-top: 20px;
-
-  .title{
-    color: #020918;
-    font-weight: bold;
-    margin-bottom: 20px;
+.purchase-mouldBook-page{
+  .table-tooltip{
+    max-width: 200px !important;
   }
-}
-.UnitExplain{
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-.table{
-  margin-top: 20px;
+  .table-link{
+    color: #1763F7;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .changeList{
+    margin-top: 20px;
 
-  .table-top{
+    .title{
+      color: #020918;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  }
+  .UnitExplain{
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  .table{
+    margin-top: 20px;
 
-    .top-l{
+    .table-top{
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
 
-      .item{
+      .top-l{
         display: flex;
         align-items: center;
-        margin-right: 40px;
 
-        .select{
-          width: 220px;
-          margin-left: 20px;
+        .item{
+          display: flex;
+          align-items: center;
+          margin-right: 40px;
+
+          .select{
+            width: 220px;
+            margin-left: 20px;
+          }
+        }
+      }
+
+      
+    }
+  }
+
+  .head-serch{
+    .content{
+      .c-line{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        .disabled1{
+          background-color: #fff !important;
+        }
+        
+        .disabled{
+          width: 250px;
+          height: 35px;
+          background: #F8F8FA;
+          border-radius: 4px;
+          text-align: center;
+          overflow: hidden;/*超出部分隐藏*/
+          white-space: nowrap;/*不换行*/
+          text-overflow:ellipsis;/*超出部分文字以...显示*/
+        }
+
+        .item{
+          display: flex;
+          flex: 0 1 auto;
+          line-height: 35px;
+        }
+
+        .txt{
+          font-size: 16px;
+          color: #4B4B4C;
+          width: 116px;
         }
       }
     }
 
-    
-  }
-}
-
-.head-serch{
-  .content{
-    .c-line{
+    .top-box{
       display: flex;
       justify-content: space-between;
-      margin-bottom: 20px;
+      align-items: center;
+      margin-bottom: 10px;
 
-      .disabled1{
-        background-color: #fff !important;
-      }
-      
-      .disabled{
-        width: 250px;
-        height: 35px;
-        background: #F8F8FA;
-        border-radius: 4px;
-        text-align: center;
-        overflow: hidden;/*超出部分隐藏*/
-        white-space: nowrap;/*不换行*/
-        text-overflow:ellipsis;/*超出部分文字以...显示*/
+      .icon{
+        width: 25px;
+        height: 14px;
+        cursor: pointer;
       }
 
-      .item{
-        display: flex;
-        flex: 0 1 auto;
-        line-height: 35px;
-      }
-
-      .txt{
-        font-size: 16px;
-        color: #4B4B4C;
-        width: 116px;
+      .title{
+        color: #131523;
+        font-size: 18px;
+        font-weight: bold;
       }
     }
+    
   }
-
-  .top-box{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-
-    .icon{
-      width: 25px;
-      height: 14px;
-      cursor: pointer;
-    }
-
-    .title{
-      color: #131523;
-      font-size: 18px;
-      font-weight: bold;
-    }
-  }
-  
-}
-.head{
-  display: flex;
-  align-content: center;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 25px;
-
-  .title{
-    font-size: 20px;
-    font-weight: bold;
-    margin-right: 30px;
-  }
-
-  .edition{
+  .head{
     display: flex;
     align-content: center;
     align-items: center;
+    width: 100%;
+    margin-bottom: 25px;
 
-    .txt{
-      width: 68px;
-      color: #0D2451;
-      font-size: 14px;
+    .title{
+      font-size: 20px;
+      font-weight: bold;
+      margin-right: 30px;
+    }
+
+    .edition{
+      display: flex;
+      align-content: center;
+      align-items: center;
+
+      .txt{
+        width: 68px;
+        color: #0D2451;
+        font-size: 14px;
+      }
     }
   }
 }
+
 </style>

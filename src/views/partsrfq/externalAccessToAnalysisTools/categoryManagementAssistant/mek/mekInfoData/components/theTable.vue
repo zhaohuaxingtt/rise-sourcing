@@ -7,7 +7,41 @@
 -->
 <template>
   <div>
-    <el-table :data="tableListData" style="width: 100%">
+    <el-form label-position="left" label-width="50">
+      <el-row type="flex" justify="space-between" align="middle">
+        <el-col :span="5">
+          <el-form-item :label="language('CAILIAOZU','材料组')">
+            <iSelect @change="getTableList" :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
+              <el-option :value="item.categoryCode" :label="item.categoryName" v-for="item of formGoup.materialGroupList" :key="item.categoryCode"></el-option>
+            </iSelect>
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item :label="language('CHEXING','车型')">
+            <iSelect @change="getTableList" :placeholder="language('QXZCX','请选择车型')" v-model="form.motorId">
+              <el-option :value="item.vwModelCode" :label="item.modelNameZh" v-for="item of formGoup.carTypeList" :key="item.vwModelCode"></el-option>
+            </iSelect>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item>
+            <div v-if="isEdit">
+              <iButton @click="edit">{{language('BIANJI','编辑')}}</iButton>
+              <iButton @click="handleAdd">{{language('TIANJIA','添加')}}</iButton>
+              <iButton @click="handleDelete">{{language('SHANCHU','删除')}}</iButton>
+              <iButton @click="handleExport">{{language('DAOCHU','导出')}}</iButton>
+              <iButton @click="handleLog">{{language('Change Log','Change Log')}}</iButton>
+            </div>
+            <div v-else>
+              <iButton @click="edit">{{language('QUXIAO','取消')}}</iButton>
+              <iButton @click="handleSave">{{language('BAOCUN','保存')}}</iButton>
+            </div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+
+    <el-table v-loading="tableLoading" @selection-change="handleSelectionChange" :data="tableListData" style="width: 100%">
       <el-table-column type="selection" width="55">
       </el-table-column>
       <el-table-column type="index" :index="indexMethod" label="#" width="55"> </el-table-column>
@@ -41,54 +75,35 @@
           <div>{{scope.row.type}}</div>
         </template>
       </el-table-column>
-      <el-table-column width="350" :label="language('CHEXINGXINGXI','车型信息')">
+      <el-table-column width="300" :label="language('CHEXINGXINGXI','车型信息')">
         <template slot="header">
           <div>{{language('CHEXINGXINGXI','车型信息')}}</div>
           <div class="flex-between-center-center margin-top10">
-            <div>{{language('DONGLI','动力')}}</div>
+            <div>{{language('PEIZHIXINGXI','配置信息')}}</div>
             <icon name="iconMEK-xuxian" symbol />
-            <div>{{language('CHUANDONG','传动')}}</div>
-            <icon name="iconMEK-xuxian" symbol />
-            <div>{{language('PEIZHI','配置')}}</div>
-          </div>
-        </template>
-        <template slot-scope="scope">
-          <div v-if="isEdit" class="flex-between-center-center">
-            <div class="car-info">{{scope.row.engine}}</div>
-            <div class="car-info"></div>
-            <div class="car-info">{{scope.row.transmission}}</div>
-            <div class="car-info"></div>
-            <div class="car-info">
-              <span>{{scope.row.configuration}}</span>
-              <el-popover trigger="hover" placement="top-start">
-                <div class="tip-box">
-                  <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
-                  <div class="tip-content">Trendline</div>
-                  <div class="tip-content">Comfortline</div>
-                  <div class="tip-title">Highline </div>
-                </div>
-                <icon slot="reference" symbol name="iconxinxitishi" class="font-size16 marin-left5" />
+            <div class="flex-between-center-center">
+              <span>{{language('CHUANDONG','EBR')}}</span>
+              <el-popover trigger="hover" placement="top-start" :content="language('SBXTZBFBSCXFCGLGLJSZCX','鼠标悬停在百分比上出现浮窗，高亮出该零件所在车型')">
+                <icon slot="reference" symbol name="iconxinxitishi" class="font-size16 margin-left5" />
               </el-popover>
             </div>
           </div>
-          <div v-else class="flex-between-center-center">
-            <div class="car-info">
-              <iSelect @change="$emit('getTableList',form)" :placeholder="language('QINGXUANZHE','请选择')" v-model="scope.row.engine">
-                <el-option :value="item.code" :label="item.name" v-for="item of formGoup.materialGroupList" :key="item.code"></el-option>
+        </template>
+        <template slot-scope="scope">
+          <div class="flex-between-center-center">
+            <div v-if="isEdit">{{scope.row.carTypeInfo}}</div>
+            <div v-else>
+              <iSelect @focus="getCarTypeMessage(scope.row.motorSvwCode)" :placeholder="language('QINGXUANZHE','请选择')" v-model="scope.row.carTypeInfo">
+                <el-option :value="item.carTypeInfo" :label="item.carTypeInfo" v-for="(item,index) of formGoup.carTypeInfoList" :key="index"></el-option>
               </iSelect>
             </div>
-            <div class="car-info"></div>
-            <div class="car-info">
-              <iSelect @change="$emit('getTableList',form)" :placeholder="language('QINGXUANZHE','请选择')" v-model="scope.row.transmission">
-                <el-option :value="item.code" :label="item.name" v-for="item of formGoup.materialGroupList" :key="item.code"></el-option>
-              </iSelect>
-            </div>
-            <div class="car-info"></div>
-            <div class="car-info">
-              <iSelect @change="$emit('getTableList',form)" :placeholder="language('QINGXUANZHE','请选择')" v-model="scope.row.configuration">
-                <el-option :value="item.code" :label="item.name" v-for="item of formGoup.materialGroupList" :key="item.code"></el-option>
-              </iSelect>
-            </div>
+            <el-popover trigger="hover" placement="top-start">
+              <div class="tip-box">
+                <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
+                <div v-for="(item,index) in scope.row.configurationList" :key="index" :class="item.isHighlight?'highlight':'black'">{{item.configuration}}</div>
+              </div>
+              <div slot="reference">{{scope.row.transmission}}</div>
+            </el-popover>
           </div>
         </template>
       </el-table-column>
@@ -123,15 +138,15 @@
       </el-table-column>
       <el-table-column :label="language('XIANSHIYINGCHANG','显示/隐藏')" prop="isHidden">
         <template slot-scope="scope">
-          <div v-if="scope.row.isHidden" @click="handle(scope.row)">
-            <icon name="iconxianshi" symbol />
-          </div>
-          <div v-else>
-            <icon name="iconyincang" symbol />
+          <div class="cursor" @click="handleIsHidden(scope.row)">
+            <icon :name="scope.row.isHidden?'iconxianshi':'iconyincang'" symbol />
           </div>
         </template>
       </el-table-column>
     </el-table>
+    <addPartDialog v-model="addPartDialog" />
+    <!-- <changeLogDialog v-model="changeLogDialog" /> -->
+    <iLog :show.sync="changeLogDialog" :bizId="bizId"  />
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page='page.currPage' :total="page.totalCount" />
   </div>
 </template>
@@ -139,36 +154,36 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { iButton, icon, iSelect, iPagination } from "rise";
+import { iButton, icon, iSelect, iPagination, iLog } from "rise";
 import addPartDialog from "./addPartDialog.vue";
 import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 import { tableTitle } from "./data.js";
-import { mekInfoList } from "@/api/partsrfq/mek/index.js";
-import theRemarkVue from '../../../listOfInitiatives/compoents/theRemark.vue';
+import { mekInfoList, infoUpdate, getCarTypeMessage, categoryList, carTypeList } from "@/api/partsrfq/mek/index.js";
+import { excelExport } from "@/utils/filedowLoad";
+import changeLogDialog from "./changeLogDialog";
 export default {
   // import引入的组件需要注入到对象中才能使用
   mixins: [pageMixins, resultMessageMixin],
-  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog },
+  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, changeLogDialog, iLog },
   data() {
     // 这里存放数据
     return {
-      tableListData: [
-        {
-          rfq: '256',
-          isShow: true,
-          carInfo: '9999',
-          wire: true,
-        },
-        {
-          rfq: '256',
-          isShow: true,
-          carInfo: '9999',
-          tip: true,
-          wire: false
-        },
-      ],
+      bizId: '',
+      addPartDialog: false,
+      changeLogDialog: false,
+      form: {
+        materialGroupCode: '',
+        motorId: ""
+      },
+      formGoup: {
+        materialGroupList: [],
+        carTypeList: [],
+        carTypeInfoList: []
+      },
+      selectTableData: [],
+      tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
       isEdit: true
@@ -180,32 +195,123 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-    edit(par) {
-      console.log(par);
-      this.isEdit = par
+    // 添加
+    handleAdd() {
+      this.addPartDialog = true
     },
-    handle(item) {
+    handleLog() {
+      this.changeLogDialog = true
+    },
+    // 获取材料组
+    async categoryList() {
+      try {
+        const res = await categoryList({})
+        this.formGoup.materialGroupList = res.data
+      } catch (error) {
+        this.formGoup.materialGroupList = []
+      }
+    },
+    // 获取车型
+    async handleCarType() {
+      const res = await carTypeList({})
+      this.formGoup.carTypeList = res.data
+    },
+    // 编辑
+    edit() {
+      this.isEdit = !this.isEdit
+    },
+    // 是否隐藏
+    handleIsHidden(item) {
       console.log(item);
+      let pms = item
+      pms.effectFlag = 1
+      pms.isHidden = !pms.isHidden
+      this.publicUpdate([pms])
     },
-    async getTableList(par) {
+    // 公共--编辑||删除
+    async publicUpdate(pms) {
+      const res = await infoUpdate(pms)
+      this.resultMessage(res, () => {
+        this.getTableList()
+      })
+    },
+    // 获取车型信息集合
+    async getCarTypeMessage(val) {
+      const res = await getCarTypeMessage({ motorSvwCode: val })
+      res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
+      this.formGoup.carTypeInfoList = res.data
+    },
+    // 获取列表集合
+    async getTableList() {
       try {
         this.tableLoading = true
         const pms = {
-          ...par,
+          ...this.form,
+          mekId: this.$route.query.SchemeId,
+          motorIds: this.$route.query.vwModelCodes,
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
         }
         const res = await mekInfoList(pms)
+        res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
+        this.page.currPage = res.pageNum
+        this.page.pageSize = res.pageSize
+        this.page.totalCount = res.total
         this.tableListData = res.data
         this.tableLoading = false
       } catch (error) {
         this.tableListData = []
         this.tableLoading = false
       }
-    }
+    },
+    // 导出
+    async handleExport() {
+      const res = await mekInfoList({
+        pageNo: 1,
+        pageSize: this.page.totalCount,
+      })
+      let excelList = res.data
+      excelList.map((item) => {
+        item.partNumber1 = item.partNumber + item.partName
+        item.materialGroup1 = item.materialGroup + item.stuffGroup
+        item.motorNameMotorProject = item.motorName + item.motorProject
+        item.brandPlatform = item.brand + item.platform
+        item.positionType = item.position + item.type
+        item.carInfo = item.carTypeInfo + '      ' + item.ebr
+        item.priceInfo = item.sopDate + item.sopPrice + '      ' + item.data + item.price
+        item.supplierInfo = item.supplierCode + item.supplierName
+        return item.isHidden1 = item.isHidden
+      })
+      excelList.unshift({
+        carInfo: this.language('PEIZHIXINGXI', '配置信息') + '        ' + 'EBR',
+        priceInfo: this.language('SOPXINGXI', 'SOP信息') + '         ' + this.language('DANGQIANJIAGE', '当前价格')
+      })
+      excelExport(excelList, this.tableTitle)
+    },
+    // 保存
+    async handleSave() {
+      let pms = this.tableListData
+      pms.map(item => item.effectFlag = 1)
+      const res = await infoUpdate(pms)
+      this.resultMessage(res, () => {
+        this.getTableList()
+        this.isEdit = true
+      })
+    },
+    handleSelectionChange(val) {
+      this.selectTableData = val
+    },
+    // 删除
+    async handleDelete() {
+      let pms = this.selectTableData
+      pms.map(item => item.effectFlag = 0)
+      this.publicUpdate(pms)
+    },
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
+    this.categoryList()
+    this.handleCarType()
     this.getTableList()
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
@@ -223,7 +329,7 @@ export default {
   font-size: 14px;
   color: #000;
 }
-.tip-content {
+.highlight {
   font-size: 14px;
   color: #e83638;
 }
@@ -252,5 +358,12 @@ export default {
 }
 .car-info {
   width: 70px;
+}
+.el-form-item {
+  display: flex;
+}
+::v-deep .el-col-12 .el-form-item {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

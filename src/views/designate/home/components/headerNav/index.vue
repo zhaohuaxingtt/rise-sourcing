@@ -26,7 +26,7 @@
   </div>
   <div class="headerNav-sub margin-top30">
     <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
-      <el-tab-pane v-for="(item,index) in heaederSubMenu" :key="index" :label="item.name" :name="item.key"></el-tab-pane>
+      <el-tab-pane lazy v-for="(item,index) in heaederSubMenu" :key="index" :label="item.name" :name="item.key"></el-tab-pane>
     </iTabsList>
   </div>
 </div>

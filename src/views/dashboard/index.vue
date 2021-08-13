@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-10 16:12:32
+ * @LastEditTime: 2021-08-11 17:41:09
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -20,7 +20,7 @@
               <span>{{language('LK_LINGJIANQIANSHOU','零件签收')}}</span>
             </div>
             <div class="dashboard-card-content">
-              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong>{{basicData.partSigningNum || 0}}</strong></dd></dl>
+              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong class="cursor" @click="toLink('/sourcing/partsign')">{{basicData.partSigningNum || 0}}</strong></dd></dl>
             </div>
           </iCard>
         </el-col>
@@ -35,14 +35,14 @@
               <dl>
                 <dt>{{language('WEICHUANGJIANCAIGOUXIANGMU','未创建采购项目')}}</dt>
                 <dd>
-                <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
+                <strong class="note cursor" @click="toLink('/sourcing/partsprocure?projectStatus=10')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
                 /{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItemSum || 0}}
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('WEIJIARURFQ','未加入RFQ')}}</dt>
                 <dd>
-                  <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
+                  <strong class="note cursor" @click="toLink('/sourcing/partsprocure?projectStatus=11')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
                   /{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfqSum || 0}}
                 </dd>
               </dl>
@@ -125,13 +125,13 @@
               <dl>
                 <dt>{{language('LK_DAIQUERENDINGDIANXIN','待确认定点信')}}</dt>
                 <dd>
-                  <strong>{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLetterNum || 0}}</strong>
+                  <strong class="cursor" @click="toLink('/sourcing/partsletter?status=CSF_HANDLING')">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLetterNum || 0}}</strong>
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('LK_DAIQUERENLOI','待确认LOI')}}</dt>
                 <dd>
-                  <strong>{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLoiNum || 0}}</strong>
+                  <strong class="cursor" @click="toLink('/sourcing/partsletter?loiStatus=LINIE_CONFIRING&cardType=LOI')">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLoiNum || 0}}</strong>
                 </dd>
               </dl>
             </div>
@@ -144,10 +144,10 @@
       <el-row :gutter="10">
         <!-- 材料组定点时率及平均定点周期 -->
         <el-col :span="16">
-          <nomicharts :data="materialGroupData" />
+          <nomicharts :data="materialGroupData" v-loading="loading" />
         </el-col>
         <el-col :span="8">
-          <pieCharts :data="circulationData" />
+          <pieCharts :data="circulationData" v-loading="loading" />
         </el-col>
       </el-row>
     </div>
@@ -175,24 +175,31 @@ export default {
       // 基本卡片统计信息
       basicData: {},
       materialGroupData: {},
-      circulationData: {}
+      circulationData: {},
+      loading: false
     }
   },
   created() {
     this.init()
   },
   methods: {
+    toLink(path) {
+      if (!path) return
+      const routeData = this.$router.resolve({path})
+      window.open(routeData.href, '_blank')
+    },
     async init() {
+      this.loading = true
       try {
-        // const res = await sourcingOverview({})
-        const res = require('./components/moke.json')
+        const res = await sourcingOverview()
+        // const res = require('./components/moke.json')
         if (res.code === '200') {
           // 卡片统计信息区
           this.basicData = res.data.sourcingOverviewDTO || {}
           // 材料组定点及时率及平均定点周期
           const materialGroupOverviewDTO = res.data.materialGroupOverviewDTO || []
           this.materialGroupData = {
-            freqData: materialGroupOverviewDTO.map(o => o.avgPeriod) || [],
+            freqData: materialGroupOverviewDTO.map(o => o.avgPeriod || 0) || [],
             nomiData: materialGroupOverviewDTO.map(o => o.timeRatePercent) || [],
             fugroup: materialGroupOverviewDTO.map(o => o.materialGroupName) || [],
           }
@@ -203,8 +210,10 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+        this.loading = false
       } catch (e) {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        this.loading = false
+        e && (iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn))
       }
     }
   }
@@ -212,6 +221,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.cursor {
+  cursor: pointer;
+}
 .dashboard-card {
   padding: 10px 0;
   ::v-deep.card {
@@ -307,9 +319,6 @@ export default {
           }
         }
       }
-    }
-    .dashboard-charts {
-      
     }
   }
 }

@@ -1,23 +1,24 @@
 <template>
-  <iDialog 
-    :title="language('LK_ZHAOPIANCHAKAN', '照片查看')" 
-    :visible.sync="visible" 
-    @close='clearDiolog' width="50%" top="5vh" z-index="1000" class="iDialog"
-    :destroy-on-close="true"
-  >
-    <!-- <div slot="title">
-      <div class="iDialog-head">
-        <div>{{$t('LK_APPLYBANUMBER')}}</div>
-        <iButton @click="confirm" :loading="buttonLoading">{{$t('LK_QUEREN')}}</iButton>
+  <div v-if="visible">
+    <iDialog 
+      :title="language('LK_ZHAOPIANCHAKAN', '照片查看')" 
+      :visible.sync="visible" 
+      @close='clearDiolog' width="50%" top="5vh" z-index="1000" class="iDialog"
+      :destroy-on-close="true"
+    >
+      <div class="content">
+        <div class="card-div">
+          <icon v-show="imgList.length > 1" @click.native="turnPages('-')" symbol name="iconzhaopianchakanzuo" class="card-icon"></icon>
+        </div>
+        <img class="img" :src="imgList[index]" alt="">
+        <div class="card-div">
+          <icon v-show="imgList.length > 1" @click.native="turnPages('+')" symbol name="iconzhaopianchakanyou" class="card-icon"></icon>
+        </div>
       </div>
-    </div> -->
-    <div class="content">
-      <icon @click.native="turnPages('-')" symbol name="iconzhaopianchakanzuo" class="card-icon"></icon>
-      <img class="img" :src="imgList[index]" alt="">
-      <icon @click.native="turnPages('+')" symbol name="iconzhaopianchakanyou" class="card-icon"></icon>
-    </div>
 
-  </iDialog>
+    </iDialog>
+  </div>
+  
 </template>
 
 <script>
@@ -33,6 +34,12 @@ export default {
   props: {
     visible: {type: Boolean, default: false},
     imgList: {type: Array, default: () => []},
+  },
+
+  watch: {
+    imgList(){
+      this.index = 0;
+    }
   },
 
   components: {
@@ -83,11 +90,17 @@ export default {
       max-height: 90%;
     }
 
-    .card-icon{
+    .card-div{
       width: 38px;
-      height: 38px;
-      cursor: pointer;
+
+      .card-icon{
+        width: 38px;
+        height: 38px;
+        cursor: pointer;
+      }
     }
+
+    
   }
 
   ::v-deep .el-dialog__header{

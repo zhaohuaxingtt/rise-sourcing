@@ -1,13 +1,13 @@
 <template>
 	<div class="remark">
-		<iCard>
+		<iCard v-loading='diologChangeItems'>
 			<div class="list flex-between-center margin-bottom75">
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_XUNJIACAIGOUYUANBEIZHU','询价采购员备注') }}</span>
 					</p>
-					<iInput  type="textarea" rows="8" resize="none" v-model="detailData.csfMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER"></iInput>
+					<iInput  type="textarea" rows="8" resize="none" v-model="vmdetailData.csfMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER"></iInput>
 						<!-- partsprocure.PARTSPROCURETRANSFER -->
 				</div>
 				<div>
@@ -15,14 +15,14 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_LINIEBEIZHU','Linie备注') }}</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.linieMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES"></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="vmdetailData.linieMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES"></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_CS_1BEIZHU','CS*1备注') }}</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.cs1Memo"  v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_CS1REMARKS"></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="vmdetailData.cs1Memo"  v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_CS1REMARKS"></iInput>
 				</div>
 				<!-- 保存 -->
 				<span class="save">
@@ -61,19 +61,15 @@
 
 <script>
 	import {
-		getTabelData,
-		changeProcure
+		updateProcure
 	} from "@/api/partsprocure/home";
-	import {
-		detailData
-	} from "../data";
 	import {
 		iCard,
 		icon,
 		iInput,
 		iButton,
 		iMessage
-	} from "@/components";
+	} from 'rise';
 
 	export default {
 		components: {
@@ -83,32 +79,23 @@
 			iButton,
 		},
 		data() {
-			return {};
+			return {
+				vmdetailData:{},
+				diologChangeItems:false
+			};
 		},
-		props: {
-			detailData: {
-				type: Object,
-				default: () => {
-					return detailData;
-				},
-			},
+		inject:['detailData'],
+		created() {
+			this.vmdetailData = this.detailData()
 		},
-		created() {},
 		methods: {
 			//修改详情里面备注。
 			save(val) {
-				let detailData = {
-					csfMemo: this.detailData.csfMemo,
-					csfMeetMemo: this.detailData.csfMeetMemo,
-					purchasePrjectId: this.detailData.purchasePrjectId,
-				};
-				changeProcure({
-						detailData
-					})
+				this.diologChangeItems = true
+				updateProcure({...this.detailData(),...{csfMemo: this.vmdetailData.csfMemo,csfMeetMemo: this.vmdetailData.csfMeetMemo}})
 					.then((res) => {
 						if (res.data) {
 							iMessage.success(this.language('LK_XIUGAICHENGGONG','修改成功'))
-							this.getDatail();
 						} else {
 							iMessage.error(res.desZh);
 						}

@@ -8,7 +8,7 @@
 <template>
   <iCard :title="$t('TPZS.PLGYSZL')" :defalutCollVal="$route.path==='/sourcing/partsrfq/assistant'?false:true" collapse>
     <div class="center">
-      <iButton v-if="$route.path==='/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'">{{language("FANHUI","返回")}}</iButton>
+      <iButton @click="handleBack" v-if="$route.path==='/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'">{{language("FANHUI","返回")}}</iButton>
       <supplierCard :supplierDataList="supplierDataList" class="card-right" />
       <map1 :mapListData="mapListData" />
       <theMapIcon :mapListData="mapListData" />
@@ -36,9 +36,18 @@ export default {
   mounted() {
   },
   methods: {
+    handleBack() {
+      this.$router.go(-1)
+    },
     async getMapList() {
       const pms = {
-        rfqId: this.$route.query.id
+        rfqId: '',
+        categoryCode: ''
+      }
+      if (this.$route.path === '/sourcing/partsrfq/assistant') {
+        pms.rfqId = this.$route.query.id
+      } else {
+        pms.categoryCode = this.$store.state.rfq.categoryCode
       }
       const res = await overviewBatchSupplierMap(pms)
       this.mapListData = res.data

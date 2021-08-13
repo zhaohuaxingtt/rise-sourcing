@@ -7,7 +7,7 @@
 <template>
   <div class="aeko-partsList">
     <!-- 搜索区域 -->
-    <iSearch @sure="sure" @reset="reset">
+    <iSearch @sure="sure" @reset="reset" class="search-form">
         <el-form>
             <!-- AEKO类型为AeA显示车型，为aeko/mp显示车型项目 -->
             <el-form-item
@@ -15,7 +15,7 @@
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
             :label="language(item.labelKey,item.label)"  
             >
-                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
+                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :clearable="item.clearable" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
                     <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                         v-for="item in selectOptions[item.selectOption] || []"
@@ -57,7 +57,10 @@
         </template>
         <!-- linie -->
         <template #buyerName="scoped">
-            <span :class="!scoped.row.buyerId ? 'isPreset' : '' ">{{scoped.row.buyerName || scoped.row.refferenceByuerName}}</span>
+            <span :class="!scoped.row.buyerId ? 'isPreset' : '' ">
+                <!-- {{scoped.row.buyerName || scoped.row.refferenceByuerName}} -->
+                {{isShowLine(scoped.row)}}
+            </span>
         </template>
         <!-- 操作 -->
         <template #operate="scoped">
@@ -79,8 +82,8 @@
         <!-- 分页 -->
         <iPagination
           v-update
-          @size-change="handleSizeChange($event, getList)"
-          @current-change="handleCurrentChange($event, getList)"
+          @size-change="handleSizeChange($event, init)"
+          @current-change="handleCurrentChange($event, init)"
           background
           :current-page="page.currPage"
           :page-sizes="page.pageSizes"
@@ -91,7 +94,7 @@
 
       </iCard>
       <!-- 分配科室 -->
-      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNum" :buyerName="selectOptions.buyerName"/>
+      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNumList" :buyerName="selectOptions.buyerName"/>
       <!-- 退回原因 -->
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
   </div>
@@ -185,15 +188,15 @@ export default {
             SearchList:[],
             searchParams:{
                 brand:'',
-                cartypeCode:[],
-                cartype:'',
-                linieDeptNum:'',
+                cartypeCode:[''],
+                cartype:[''],
+                linieDeptNumList:[''],
             },
             selectOptions:{
                 cartypeCode:[],
                 buyerName:[],
                 cartype:[],
-                linieDeptNum:[],
+                linieDeptNumList:[],
             },
             selectItems:[],
             loading:false,
@@ -228,8 +231,10 @@ export default {
                 this.searchParams.buyerName = this.userInfo.nameZh
             } else {
                 this.searchParams = {
-                    brand:'',
-                    cartypeCode:[],
+                     brand:'',
+                    cartypeCode:[''],
+                    cartype:[''],
+                    linieDeptNumList:[''],
                 };
             }
 
@@ -249,28 +254,41 @@ export default {
             const {query} = this.$route;
             const { requirementAekoId ='',} = query;
             const { page,searchParams,aekoInfo={} } = this;
-            console.log(searchParams,'searchParams');
-            let cartypeCode=[];
+            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName} = searchParams;
+            let carTypeCodeList=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
-                if(aekoInfo.aekoType.code == 'AeA'){  // 车型
-                    cartypeCode = searchParams.cartype ? [searchParams.cartype] : [];
-                }else if(aekoInfo.aekoType.code == 'aeko/mp'){ // 车型项目
-                    cartypeCode = searchParams.cartypeCode;
+                if(aekoInfo.aekoType == 'AeA'){  // 车型
+                    carTypeCodeList = searchParams.cartype;
+                }else if(aekoInfo.aekoType == 'Aeko'){ // 车型项目
+                    carTypeCodeList = searchParams.cartypeCode;
                 }
+            }
+
+            // 多选为全部时单独处理
+            if(carTypeCodeList.length == 1 && carTypeCodeList[0] === ''){
+                carTypeCodeList=[];
             }
             
             const data = {
                 requirementAekoId, 
                 current:page.currPage,
                 size:page.pageSize,
-                cartypeCode,
+                carTypeCodeList,
+                brand,
+                partNum,
+                partNameZh,
+                buyerName,
+                linieDeptNumList:(linieDeptNumList.length == 1 && searchParams.linieDeptNumList[0] === '') ? [] : linieDeptNumList,
             }
-            getPartPage({...searchParams,...data}).then((res)=>{
+            getPartPage(data).then((res)=>{
                 this.loading = false;
                 const {code,data} = res;
                 if(code == 200){
                     const { records=[],total } = data;
+                    records.map((item,index)=>{
+                        item.lineIndex = index+1;
+                    })
                     this.tableListData =  records;
                     this.page.totalCount = total;
                 }else{
@@ -328,7 +346,7 @@ export default {
                         item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
                         item.code = item.deptNum;
                     })
-                    this.selectOptions.linieDeptNum = data;
+                    this.selectOptions.linieDeptNumList = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -391,28 +409,63 @@ export default {
         assign(row=null, type){
             console.log(row);
             const {selectItems} = this;
-            // 判断是否是单一分派
 
             this.assignType = type
 
+            console.log(selectItems,'selectItemsselectItemsselectItems');
+
+            // 判断是否是单一分派
             if(row){
                 this.singleAssign = [row];
                 this.assignVisible = true;
             }else{
                 if(!selectItems.length){
-                    iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+                    return iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
                 }else{
-                    // 判断勾选项是否包含无预设科室的
-                    const arr = selectItems.filter((item)=>item.linieDeptNum);
-                    if(arr.length){
-                        const str = arr.map((item)=>item.partNum).toString();
-                        return iMessage.warn(str+this.language('LK_AEKO_LINGJIANWUYUSHEKESHIQINGCHONGXINXUANZE','零件无预设科室，请重新选择!'))
-                    }
                     // 判断是否是单一分派
                     if(selectItems.length == 1){
+                        // 判断所选项是否已分派
+                        if(type == 'commodity'){  // 科室分派
+                            const arr = selectItems.filter((item)=>item.linieDeptNum);
+                            if(arr.length){
+                                const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGYIFENPAIKESHIWUFAJINXINGCHONGXINFENPAI','行已分派科室，无法进行重新分派')
+                                return iMessage.warn(tips);
+                            }else{
+                                this.assignVisible = true;
+                            }
+                        }else{ // 采购员分派 
+                            const arr = selectItems.filter((item)=>item.isOperate);
+                            if(arr.length){
+                                const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGYIFENPAICAIGOUYUANQINGQUERENSHIFOUCHONGXINFENPAI','行已分派采购员，请确认是否重新分派');
+                                return iMessage.warn(tips);
+                            }else{
+                                this.assignVisible = true;
+                            } 
+                        }
                         this.singleAssign = selectItems;
+                    }else{ // 批量分派
+                        if(type == 'commodity'){  // 科室分派
+                            const arr = selectItems.filter((item)=>item.linieDeptNum);
+                            if(arr.length){
+                                const arrIndex = arr.map((item)=>item.lineIndex);
+                                const tips = arrIndex.toString() + this.language('LK_AEKO_HANGYIFENPAIKESHIWUFAJINXINGCHONGXINFENPAI','行已分派科室，无法进行重新分派');
+                                iMessage.warn(tips);
+                            }else{
+                                this.assignVisible = true;
+                            }
+                        }else{ // 采购员分派
+                            const arr = selectItems.filter((item)=>item.isOperate);
+                            if(arr.length){
+                                const arrIndex = arr.map((item)=>item.lineIndex);
+                                const tips = arrIndex.toString() + this.language('LK_AEKO_HANGYIFENPAICAIGOUYUANQINGQUERENSHIFOUCHONGXINFENPAI','行已分派采购员，请确认是否重新分派');
+                                iMessage.warn(tips);
+                            }else{
+                                this.assignVisible = true;
+                            }
+                        }
+
                     }
-                    this.assignVisible = true;
+                    
                 }
             }
         },
@@ -435,7 +488,11 @@ export default {
             })
             .then(res => {
                 if (res.code == 200) {
-                    this.tableListData = Array.isArray(res.data) ? res.data : []
+                    const records =  Array.isArray(res.data) ? res.data : [];
+                    records.map((item,index)=>{
+                        item.lineIndex = index+1;
+                    })
+                    this.tableListData = records;
                     this.page.totalCount = res.total || 0
                 } else {
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -478,12 +535,36 @@ export default {
             const isNext  = await this.isSelectItem(true);
             if(isNext) this.changeVisible('departBackVisible',true);
         },
+
+        // 是否展示linie
+        isShowLine(row){
+            const {buyerName,refferenceByuerName,refferenceSmtNum,linieDeptNum} = row;
+            // 若已分派采购员就直接展示
+            if(buyerName){
+                return buyerName
+            }else{
+                // 若没有分派采购员 已分派科室与实际分派科室不一致时不展示linie
+            if(linieDeptNum && (linieDeptNum != refferenceSmtNum)){
+                return ''
+            }else{
+                return refferenceByuerName
+            }
+            }
+            
+            
+        },
     }
 }
 </script>
 
 <style lang="scss" scoped>
     .aeko-partsList{
+        .search-form{
+            ::v-deep .el-date-editor .el-range__close-icon{
+                display: block;
+                width: 10px;
+            }
+        }
         .table-tips{
             color: #747F9D;
             margin-top: 10px;

@@ -6,23 +6,16 @@
  * @Descripttion: 总览
 -->
 <template>
-  <div>
-    <div class="scroll flex">
-      <div class="flex margin-right50" v-for="(item,index) in tableData" :key="index">
-        <div :style="'background:'+color[index]" class="circle margin-right4"></div>
-        <div>{{item.name}}</div>
-      </div>
-    </div>
-    <div class="chartmap" ref="chart"></div>
-  </div>
+  <div ref="charMap" id="container" class="amap-wrapper" />
 </template>
 
 <script>
-import world from "./china.json";
-import echarts from '@/utils/echarts'
+import lg from "@/assets/images/N-tire-grayness.png";
+import highlight from "@/assets/images/N-tire-highlight.png";
 import { iCard, icon, iLabel } from "rise";
 import svwImg from "@/assets/images/svw.png";
-import {cloneDeep} from "lodash";
+import { cloneDeep } from "lodash";
+
 export default {
   components: { iCard, icon, iLabel },
   props: {
@@ -33,16 +26,26 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      lg: lg,
+      highlight: highlight,
+      svwImg: svwImg,
+      svwData: [],
+      color: ['#B9DDFA', '#8BC7F7', '#46B3F3', '#009FEF', '#008CEE', '#0078ED', '#0050EB', '#0641C8', '#0B31A5', '#46647C', '#235A7A', '#005078'],
+      tableData: []
+    }
+  },
   watch: {
     '$i18n.locale'(newValue) {
       this.handleMap();
     },
     mapListData: {
       handler(objects) {
-        const data=cloneDeep(objects)
+        const data = cloneDeep(objects)
         console.log(data);
         var sum = 0
-        
+
         this.svwData = data.purchaseDataList
         this.tableData = data.offerDataList
         this.tableData.forEach(item => {
@@ -56,18 +59,11 @@ export default {
         this.svwData.map(item => {
           return item.value = [item.lon, item.lat]
         })
-        if (this.$refs.chart && this.tableData.length && this.svwData) {
+        if (this.$refs.charMap && (this.tableData.length || this.svwData)) {
           this.handleMap()
         }
       },
       deep: true,
-    }
-  },
-  data() {
-    return {
-      svwData: [],
-      color: ['#B9DDFA', '#8BC7F7', '#46B3F3', '#009FEF', '#008CEE', '#0078ED', '#0050EB', '#0641C8', '#0B31A5', '#46647C', '#235A7A', '#005078'],
-      tableData: []
     }
   },
   created() {
@@ -77,221 +73,259 @@ export default {
   },
   methods: {
     handleMap() {
-      this.$nextTick(() => {
-        const myChart = echarts().init(this.$refs.chart);
-        echarts().registerMap('world', world);
+      console.log('creat map');
+      var map = new AMap.Map('container', {
+        WebGLParams: {
+          preserveDrawingBuffer: true
+        },
+        resizeEnable: true, //是否监控地图容器尺寸变化
+        zoom: 4, //初始地图级别
+        center: [121, 31], //初始地图中心点
+        showIndoorMap: false, //关闭室内地图
+        roam: false,
+        zoomEnable: false,
+        dragEnable: false,
+        mapStyle: 'amap://styles/macaron'
+      });
 
-        myChart.setOption({
-          tooltip: {
-            trigger: 'item',
-            backgroundColor: '#fff',
-            borderColor: '#EEF1F7',
-            borderWidth: 1,
-
-            formatter: (params) => {
-              console.log(params);
-              let tooltip = ''
-              let carTypeList = ''
-              params.data.carTypeProjectList.forEach((item, index) => {
-                carTypeList += params.data.carTypeProjectList.length-1 > index ? item + ' | ' : item
-              })
-              console.log(carTypeList);
-              if (params.data.title === 'OFFER') {
-                tooltip = `<div class='tooltip'>
-                          <div class='flex'>
-                            <div class="img"></div><div class='title'>${params.data.name}</div>
-                          </div>
-                          <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
-                          <div class='value'>${carTypeList}</div>
-                          <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
-                          <div class='value'>${params.data.factoryAddress}</div>
-                          <div class='label'>${this.$t('TPZS.ZXSE')}</div>
-                          <div class='value'>${params.data.toAmount}</div>
-                      </div>`
-              } else {
-                tooltip = `<div class='tooltip'>
-                              <div class='flex'>
-                                <div class="img-svw"></div><div class='title'>${params.data.name}</div>
-                              </div>
-                              <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
-                              <div class='value'>${carTypeList}</div>
-                              <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
-                              <div class='value'>${params.data.factoryAddress}</div>
-                          </div>`
-              }
-              return tooltip
-            },
-          },
-          toolbox: {
-            show: false,
-            orient: 'vertical',
-            left: 'right',
-            top: 'center',
-            feature: {
-              dataView: { readOnly: false },
-              restore: {},
-              saveAsImage: {}
-            }
-          },
-          geo: {
-            map: 'world',       // 与引用进来的地图js名字一致
-            // roam: false,        // 禁止缩放平移
-            // center: [104.114129, 37.550339],//当前视角的中心点
-            zoom: 1, //当前视角的缩放比例
-            roam: false, //是否开启平游或缩放
-            scaleLimit: { //滚轮缩放的极限控制
-              min: 1,
-              max: 100
-            },
-            label: {
-              normal: {         // 默认的文本标签显示样式
-                show: false,
-              },
-              emphasis: {
-                show: false
-              }
-            },
-            itemStyle: {        // 每个区域的样式 
-              opacity: 0.6,
-              normal: {
-                borderColor: '#fff',//区域边框颜色
-                areaColor: '#eef4fd'
-              },
-              emphasis: {
-                show: false,
-                areaColor: '#E6E9F4'
-              },
-            },
-          },
-          series: [
-
-            {
-              name: '',
-              type: 'scatter',
-              coordinateSystem: 'geo',       // 表示使用的坐标系为地理坐标系
-              zlevel: 3,
-              label: {
-                normal: {                  // 默认的文本标签显示样式
-                  color: '#eef4fd',
-                  show: true,
-                  position: 'top',      // 标签显示的位置
-                  formatter: '{b}'      // 标签内容格式器
-                },
-
-              },
-              itemStyle: {
-                normal: {
-                  color: (e) => {
-                    return this.color[e.dataIndex]
-                  },
-                  borderColor: '#aac3f5',
-                  borderWidth: (e) => {
-                    console.log(e);
-                  },
-                },
-                emphasis: {
-                  borderColor: '#a5ddd6',
-                  borderWidth: 5,
-                  color: "#05BB8B",//移入后的颜色
-                }
-              },
-              data: this.tableData
-            },
-            // svw
-            {
-              name: '',
-              type: 'scatter',
-              coordinateSystem: 'geo',       // 表示使用的坐标系为地理坐标系
-              zlevel: 3,
-              showAllSymbol: true,
-              symbolKeepAspect: true,
-              symbolSize: 15,
-              label: {
-                show: true,
-                position: ['0%', '10%'],      // 标签显示的位置
-                formatter: () => {
-                  return '{x|}'
-                },      // 标签内容格式器
-                rich: {
-                  x: {
-                    backgroundColor: {
-                      image: svwImg
-                    },
-                    height: 25,
-                  }
-                }
-              },
-              itemStyle: {
-                show: true,
-                color: '#eef4fd',
-              },
-              data: this.svwData
-              // data: [{value:[30.67,104.07 ]}]
-            },
-          ]
+      // var lineArr = [
+      //   ['75', '38'],
+      //   ['117', '24']
+      // ];
+      // var polyline = new AMap.Polyline({
+      //   path: lineArr,            // 设置线覆盖物路径
+      //   strokeColor: '#3366FF',   // 线颜色
+      //   strokeOpacity: 1,         // 线透明度
+      //   strokeWeight: 2,          // 线宽
+      //   strokeStyle: 'solid',     // 线样式
+      //   strokeDasharray: [10, 5], // 补充线样式
+      //   geodesic: true            // 绘制大地线
+      // });
+      // polyline.setMap(map);
+      // console.log(this.markerList);
+      // 圆点
+      this.tableData.map((item, index) => {
+        let carTypeList = ''
+        item.carTypeProjectList.forEach((val, index) => {
+          carTypeList += item.carTypeProjectList.length - 1 > index ? val + ' | ' : val
+        })
+        var circleMarker = new AMap.CircleMarker({
+          center: [item.lon, item.lat],
+          radius: item.symbolSize,//3D视图下，CircleMarker半径不要超过64px
+          strokeColor: this.color[index],
+          strokeWeight: 2,
+          strokeOpacity: 0.5,
+          fillColor: this.color[index],
+          fillOpacity: 0.5,
+          zIndex: 10,
+          bubble: true,
+          cursor: 'pointer',
+          clickable: true,
+          data: item
+        })
+        circleMarker.setMap(map)
+        let clickIcon = new AMap.Icon({
+          image: this.highlight,
+          size: new AMap.Size(135, 40), //图标大小
+          imageSize: new AMap.Size(135, 40)
         });
+        // 点
+        let marker = new AMap.Marker({
+          position: new AMap.LngLat(item.lon, item.lat),
+          icon: clickIcon,
+          clickable: true,
+          anchor: "center",
+          offset: new AMap.Pixel(-17, 0) //设置偏移量
+        });
+        marker.setMap(map)
+        marker.hide()
+        circleMarker.on('mouseover', (e) => {
+          console.log('off');
+          marker.show()
+          var text = new AMap.Text({
+            text: `<div class='tooltip'>
+                      <div class='flex'>
+                        <div class="img"></div><div class='title'>${item.name}</div>
+                      </div>
+                      <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
+                      <div class='value'>${carTypeList}</div>
+                      <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
+                      <div class='value'>${item.factoryAddress}</div>
+                      <div class='label'>${this.$t('TPZS.ZXSE')}</div>
+                      <div class='value'>${item.toAmount}</div>
+                  </div>`,
+            anchor: 'center', // 设置文本标记锚点
+            draggable: false,
+            cursor: 'pointer',
+            position: [item.lon, item.lat],
+            offset: new AMap.Pixel(0, -155) //设置偏移量
+          });
+          text.setMap(map);
+        })
+
+        circleMarker.on('mouseout', () => {
+          marker.hide()
+          var obj = document.getElementsByClassName('amap-overlay-text-container')[0]
+          obj.remove()
+        })
       })
+      // svw图标
+      this.svwData.map(item => {
+        let carTypeList = ''
+        item.carTypeProjectList.forEach((val, index) => {
+          carTypeList += item.carTypeProjectList.length - 1 > index ? val + ' | ' : val
+        })
+        // 图标
+        var svwImg = new AMap.Icon({
+          size: new AMap.Size(40, 40),
+          imageSize: new AMap.Size(20, 20),
+          image: this.svwImg,
+          anchor: 'center',
+        });
+        let clickIcon = new AMap.Icon({
+          image: this.highlight,
+          size: new AMap.Size(135, 40), //图标大小
+          imageSize: new AMap.Size(135, 40)
+        });
+        // 点
+        let marker = new AMap.Marker({
+          position: new AMap.LngLat(item.lon, item.lat),
+          icon: svwImg,
+          clickable: true,
+          anchor: "center"
+        });
+        marker.setMap(map)
+        marker.on('mouseover', (e) => {
+          console.log('purchase');
+          // e.target.setIcon(clickIcon);
+          marker.setLabel({
+            offset: new AMap.Pixel(0, -24),  //设置文本标注偏移量
+            content: `<div class='tooltip'>
+                        <div class='flex'>
+                          <div class="img-svw"></div><div class='title'>${item.name}</div>
+                        </div>
+                        <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
+                        <div class='value'>${carTypeList}</div>
+                        <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
+                        <div class='value'>${item.factoryAddress}</div>
+                      </div>`, //设置文本标注内容
+            direction: 'top' //设置文本标注方位
+          });
+        })
+        marker.on('mouseout', (e) => {
+          marker.setLabel({
+            offset: new AMap.Pixel(0, 0),  //设置文本标注偏移量
+            content: '', //设置文本标注内容
+            direction: 'top' //设置文本标注方位
+          });
+        })
+      })
+      // var path = [//每个弧线段有两种描述方式
+      //   ['75', '38'],
+      //   ['117', '24']
+      // ];
+      // var bezierCurve = new AMap.BezierCurve({
+      //   path: path,
+      //   isOutline: true,
+      //   outlineColor: '#ffeeff',
+      //   borderWeight: 3,
+      //   strokeColor: "#3366FF",
+      //   strokeOpacity: 1,
+      //   strokeWeight: 6,
+      //   // 线样式还支持 'dashed'
+      //   strokeStyle: "solid",
+      //   // strokeStyle是dashed时有效
+      //   strokeDasharray: [10, 10],
+      //   lineJoin: 'round',
+      //   lineCap: 'round',
+      //   zIndex: 50,
+      // })
+      // bezierCurve.setMap(map)
     },
   }
 }
 </script>
 
-<style>
-.chartmap {
-  width: 100rem;
+<style lang='scss' scoped>
+::v-deep.amap-wrapper {
+  width: 100%;
   height: 60rem;
 }
-
-.title {
-  margin-left: 5px;
-  color: #7e84a3;
-  font-size: 20px;
+::v-deep .amap-logo {
+  display: none !important;
 }
-.img {
-  width: 33px;
-  height: 25px;
-  background: url("~@/assets/images/zl.png") center center no-repeat;
-  background-size: 33px auto;
+::v-deep .amap-copyright {
+  display: none !important;
 }
-.img-svw {
-  width: 33px;
-  height: 35px;
-  background: url("~@/assets/images/svw.png") center center no-repeat;
-  background-size: 33px auto;
-}
-.label {
-  color: #7e84a3;
-  font-size: 20px;
-  text-align: left;
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-.value {
-  color: #131523;
-  font-size: 16px;
-  text-align: left;
-}
-.tooltip {
+::v-deep .tooltip {
+  position: relative;
   padding: 30px;
-  /* width: 40rem; */
+  background-color: #fff;
+  width: 20rem;
+  .flex {
+    align-items: center;
+    .title {
+      margin-left: 5px;
+      color: #7e84a3;
+      font-size: 20px;
+    }
+    .img {
+      width: 33px;
+      height: 25px;
+      background: url("~@/assets/images/zl.png") center center no-repeat;
+      background-size: 33px auto;
+    }
+    .img-svw {
+      width: 33px;
+      height: 35px;
+      background: url("~@/assets/images/svw.png") center center no-repeat;
+      background-size: 33px auto;
+    }
+  }
+  .label {
+    color: #7e84a3;
+    font-size: 20px;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+  .value {
+    color: #131523;
+    font-size: 16px;
+    text-align: left;
+  }
 }
-.circle {
-  width: 14px;
-  height: 14px;
-  border-radius: 10px;
-  border: 1px solid;
+::v-deep .amap-overlay-text-container:before {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 20px solid #fff;
+}
+::v-deep .amap-marker-label {
   border: none;
 }
-.scroll {
-  overflow-x: auto;
-  overflow-y: hidden;
-  width: 60%;
-  height: 40px;
-  color: #0d2451;
-  font-size: 16px;
-  white-space: nowrap;
+::v-deep .amap-marker-label:before {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 20px solid #fff;
 }
-.flex {
-  align-items: center;
+::v-deep .amap-overlay-text-container:before,
+.amap-overlay-text-container:after {
+  content: " ";
+  height: 56px;
+  top: 99%;
+  position: absolute;
+  width: 0px;
+}
+::v-deep .amap-marker-label::before,
+.amap-marker-label::after {
+  content: " ";
+  height: 56px;
+  top: 99%;
+  position: absolute;
+  width: 0px;
 }
 </style>

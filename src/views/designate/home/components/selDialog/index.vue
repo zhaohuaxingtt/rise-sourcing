@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton } from '@/components'
+import { iPagination, iDialog, iMessage, iButton } from 'rise'
 import { seltTableTitle as tableTitle } from '../data'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'

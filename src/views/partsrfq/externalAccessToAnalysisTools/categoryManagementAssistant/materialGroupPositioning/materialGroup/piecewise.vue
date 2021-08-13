@@ -1,27 +1,44 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-09 16:45:32
- * @LastEditTime: 2021-08-09 20:14:24
+ * @LastEditTime: 2021-08-10 19:37:37
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\piecewise.vue
 -->
 <template>
-   <div ref="chart" style="height:800px" ></div>
+   <div ref="chart" style="height:600px" ></div>
 </template>
 <script>
 import echarts from '@/utils/echarts';
+import {findMaterialGroupQuadrant} from "@/api/categoryManagementAssistant/marketData/materialGroup";
 
 export default {
    data () {
       return {
-        
+        mateData:[],//当前账号下的材料组数据
+        categoryCode:""
       }
+   },
+   created () {
+      this.categoryCode=this.$store.state.rfq.categoryCode
+     this.findMaterialGroupQuadrant() 
    },
    mounted () {
       this.init() 
    },
    methods: {
+      findMaterialGroupQuadrant(){
+         let data={
+            materialGroupCode:this.categoryCode,
+            userId:this.$store.state.permission.userInfo.id
+         }
+         findMaterialGroupQuadrant(data).then(res=>{
+            if (res.data) {
+               this.mateData=res.data
+            }
+         })
+      },
       // 初始化
       init(){
          const myChart = echarts().init(this.$refs.chart);
@@ -171,10 +188,10 @@ export default {
                               position: 'inside',
                               color: 'rgba(0, 0, 0, .1)',
                               fontSize: 22,
-                              backgroundColor:{
-                                 image:require("@/assets/images/partRfq/internalDemandAnalysis01.png"),
-                                 width:402
-                              }
+                              // backgroundColor:{
+                              //    image:require("@/assets/images/partRfq/internalDemandAnalysis01.png"),
+                              //    width:402
+                              // }
                         }
                      }, {
                         yAxis: 40 // y轴开始位置

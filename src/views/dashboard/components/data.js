@@ -1,7 +1,7 @@
 /*
  * @Author: hoajiang
  * @Date: 2021-08-05 10:36:42
- * @LastEditTime: 2021-08-05 10:42:27
+ * @LastEditTime: 2021-08-11 11:01:21
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览配置
  * @FilePath: /front-web/src/views/dashboard/components/data.js
@@ -24,5 +24,13 @@ export const TAB = [
     url: "/sourcing/partsign",
     activePath: "sourcing",
     key: "XUANYUANCAIDAN"
+  },
+  {
+    value: 1,
+    name: "报表管理",
+    message: 0,
+    url: "/sourcing/reportmgmt/report",
+    activePath: "reportmgmt",
+    key: "LK_BAOBIAOGUANLI"
   },
 ]

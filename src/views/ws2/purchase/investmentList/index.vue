@@ -104,7 +104,7 @@
         <div>
           <iButton @click="handleHandover">{{ language('LK_ZHUANPAI', '转派') }}</iButton>
           <iButton @click="sendSupplier">{{ language('LK_FASONGGONGYIUNGSHANGQUEREN', '发送供应商确认') }}</iButton>
-          <iButton @click="transferBtn">{{ language('LK_FAQIBIANGENG', '发起变更') }}</iButton>
+          <iButton @click="handVerifyLineShow" v-loading="handVerifyLineShowLoading">{{ language('LK_FAQIBIANGENG', '发起变更') }}</iButton>
         </div>
       </div>
       <!--      570-->
@@ -125,7 +125,7 @@
             }}</div>
         </template>
         <template #moldInvestmentAmount="scope">
-          <div v-if="Number(isShowMoldInvestmentAmount) === 1">{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
+          <div v-if="Number(scope.row.isShowMoldInvestmentAmount) === 1">{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
           <div v-else>-</div>
         </template>
         <template #moldInvestmentStatus="scope">
@@ -170,6 +170,7 @@
       />
     </iCard>
     <handover v-model="handoverShow" :handoverParams="handoverParams" @handoverClose="conditionConfirmTskList"></handover>
+<!--    <verifyLine v-model="verifyLineShow" :handoverParams="handoverParams" @handoverClose="conditionConfirmTskList"></verifyLine>-->
   </div>
 </template>
 
@@ -178,13 +179,16 @@ import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage, icon} f
 import {iTableList} from "@/components";
 import {investmentListTitle} from "../components/data"
 import handover from "../components/handover"
+// import verifyLine from "../components/verifyLine"
 import {
   getDepartmentsCombo,
   carCombo,
   moldInvestmentStatusCombo,
   conditionConfirmTskList,
   sendSupplier,
+  verifyIsSelfOrders,
   liniePullDownByDept,
+  verifyLine,
 } from "@/api/ws2/purchase/investmentList";
 import {pageMixins} from "@/utils/pageMixins";
 import {Switch, Popover} from "element-ui"
@@ -209,6 +213,7 @@ export default {
     handover,
     Popover,
     icon,
+    // verifyLine,
   },
   data() {
     return {
@@ -216,6 +221,8 @@ export default {
       tableLoading: false,
       onleySelf: true,
       handoverShow: false,
+      verifyLineShow: false,
+      handVerifyLineShowLoading: false,
       tableTitle: investmentListTitle,
       tableListData: [],
       department: [],
@@ -356,7 +363,35 @@ export default {
           id: row.id
         }
       })
-      window.open(url.href, '_blank');
+      if(Number(row.isShowMoldInvestmentAmount) === 1){
+        window.open(url.href, '_blank');
+      } else {
+        verifyLine({linie: row.linieId}).then((res) => {
+          if(res){
+            window.open(url.href, '_blank');
+          } else {
+            iMessage.warn(this.$t('LK_DUIBUQIMEIYOUQUANXIAN'));
+          }
+          // this.handoverSelfLoading = false
+        }).catch(() => {
+          iMessage.warn(this.$t('LK_DUIBUQIMEIYOUQUANXIAN'));
+          // this.handoverSelfLoading = false
+        });
+      }
+    },
+    handVerifyLineShow(row){
+      if(!this.multipleSelection || this.multipleSelection.length === 0){
+        iMessage.warn(this.language('LK_BAAPPLYTISP1', '请先勾选'))
+        return
+      }
+      this.handVerifyLineShowLoading = true
+      verifyIsSelfOrders(this.multipleSelection.map(item => item.id)).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        iMessage.warn(result)
+        this.handVerifyLineShowLoading = false
+      }).catch(() => {
+        this.handVerifyLineShowLoading = false
+      });
     },
     sure(){
       this.page.currPage = 1

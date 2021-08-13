@@ -182,7 +182,7 @@ import {
 } from "@/api/ws2/budgetApproval";
 import {
   iTableList
-} from "@/components"
+} from '@/components'
 import {form, budgetApprovalData} from "./components/data";
 import RFQ from './components/RFQ'
 import budgetApplyAmount from './components/budgetApplyAmount'
