@@ -230,7 +230,7 @@ export default {
                 }else{ // 手动分派
 
                     // 判断是否已选择
-                    if(!refferenceSmtNum) return this.language('LK_AEKO_QINGXUANZEHOUTIJIAO','请选择后提交');
+                    if(!refferenceSmtNum) return iMessage.warn(this.language('LK_AEKO_QINGXUANZEHOUTIJIAO','请选择后提交'));
 
 
                     const depArr = commoditySelectOptions.filter((item)=>item.id ==refferenceSmtNum );
