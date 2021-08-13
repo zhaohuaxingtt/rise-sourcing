@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-09 09:46:57
+ * @LastEditTime: 2021-08-11 14:24:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\supplierList.vue
@@ -18,8 +18,8 @@
                 </el-form-item>
                </el-form>
                <div>
-                   <iButton>{{language('QUEREN','确认')}}</iButton>
-                   <iButton>{{language('CHONGZHI','重置')}}</iButton>
+                   <iButton @click="clickSure">{{language('QUEREN','确认')}}</iButton>
+                   <iButton @click="clickReset">{{language('CHONGZHI','重置')}}</iButton>
                </div>
                </div>
            </iCard>
@@ -63,7 +63,6 @@ export default {
     },
     methods:{
       handleGoDetail(row){
-        console.log('supplierId', row.supplierId);
         this.$router.push({
           path: '/supplier/supplierDetail',
           query: {
@@ -87,6 +86,18 @@ export default {
         this.tabledata.forEach((item, index) => {
           item['index'] = index + 1
         })
+      },
+      // 点击确定
+      clickSure() {
+        this.getTableData()
+      },
+      // 点击重置
+      clickReset() {
+        this.formData = {
+          ...this.formData,
+          supplierName: null,
+        }
+        this.getTableData()
       }
     }
 }

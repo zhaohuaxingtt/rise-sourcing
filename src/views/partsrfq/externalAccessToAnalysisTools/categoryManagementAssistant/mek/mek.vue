@@ -213,24 +213,11 @@ export default {
           path: "/sourcing/mek/mekDetails",
           query: {
             materialGroupCode: pms.materialGroupCode,
-            SchemeId: res.data,
+            chemeId: res.data,
           },
         })
       })
     },
-    //表格序号函数
-    // indexMethod (e) {
-    //   const rows = [];
-    //   this.tableListData.forEach((r) => {
-    //     rows.push(r.number);
-    //     if (r.reportList && r.reportList !== null) {
-    //       r.reportList.forEach((c) => {
-    //         rows.push(c.number);
-    //       });
-    //     }
-    //   });
-    //   return rows[e];
-    // },
     //初始化测试数据
     async initData() {
       try {
@@ -261,7 +248,6 @@ export default {
         rfqName: ""
       }
       this.initSearchData();
-      // this.getTableList();
     },
     //检索事件
     handleSearch() {
@@ -288,18 +274,6 @@ export default {
         })
       }
     },
-    //递归处理树结构数据的序号
-    // handleTableNumber (data, suffix, prefix) {
-    //   data.forEach((item) => {
-    //     const number = prefix ? prefix + "." + suffix : suffix;
-    //     item["number"] = number;
-    //     if (item.reportList && item.reportList.length > 0) {
-    //       item["children"] = item.reportList;
-    //       this.handleTableNumber(item.reportList, 1, number);
-    //     }
-    //     suffix++;
-    //   });
-    // },
     // 点击编辑按钮
     editBob() {
       this.backUpData = window._.cloneDeep(this.tableListData);
@@ -327,11 +301,15 @@ export default {
         iMessage.error(this.$t('TPZS.QXZXYCZDSJ'));
         return;
       }
-      fetchDel(this.selection).then((res) => {
+      let pms = this.selection
+      pms.map(item => {
+        item.isDelete = true
+      })
+      update(pms).then((res) => {
         if (res.code == 200) {
           iMessage.success(res.desZh);
+          this.initData();
         } else iMessage.error(res.desZh);
-        // this.getTableList();
       });
     },
     //编辑时，改变默认项事件
@@ -347,9 +325,10 @@ export default {
       const params = this.tableListData;
       update(params).then((res) => {
         if (res) {
-          if (res.code == 200) iMessage.success(res.desZh);
-          else iMessage.error(res.desZh);
-          // this.getTableList();
+          if (res.code == 200) {
+            iMessage.success(res.desZh);
+            this.initData();
+          } else iMessage.error(res.desZh);
         }
       });
     },

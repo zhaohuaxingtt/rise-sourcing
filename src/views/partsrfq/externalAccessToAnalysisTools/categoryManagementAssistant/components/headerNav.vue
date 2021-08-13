@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-12 09:58:51
- * @LastEditTime: 2021-08-12 11:14:46
+ * @LastEditTime: 2021-08-13 15:12:30
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\headerNav.vue
@@ -23,7 +23,6 @@
         <slot name="extralButton"></slot>
       </div>
       <logButton class="logButton"/>
-
       <!--      报告清单-->
       <reportInventory v-model="reportInventoryDialog"/>
       <categoryGroup v-model="openCatecoryDialog"></categoryGroup>
@@ -55,7 +54,11 @@ export default {
   },
   methods: {
     openReportInventoryDialog() {
-      this.reportInventoryDialog = true;
+      if(this.$store.state.rfq.categoryCode){
+        this.reportInventoryDialog = true;
+      }else{
+        this.openCatecoryDialog=true
+      }
     },
     openCatecory(){
       this.openCatecoryDialog=true
