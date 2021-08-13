@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-13 11:08:47
+ * @LastEditTime: 2021-08-13 11:44:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -98,7 +98,7 @@ export default {
   computed: {
     //eslint-disable-next-line no-undef
     ...Vuex.mapState({
-      permission: state => state.permission.permission
+      permission: state => state.permission
     }),
   },
   data() {
