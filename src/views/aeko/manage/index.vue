@@ -229,7 +229,7 @@ export default {
 
       const {navList,$route} = this;
       const { name } = $route;
-      if(this.isAekoManager){
+      if(this.isAekoManager || this.isCommodityCoordinator){
         this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_STANCE');
       }else{
         this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_MANAGE');
