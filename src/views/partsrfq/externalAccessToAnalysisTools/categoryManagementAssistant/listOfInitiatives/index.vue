@@ -228,7 +228,12 @@ export default {
       return this.$i18n.locale === 'zh' ? item.name : item.nameEn;
     },
     handleSelect({props, value}) {
-      this.treeDataSelect[props.name].push(value.name);
+      if (this.treeDataSelect[props.name].includes(value.name)) {
+        const index = this.treeDataSelect[props.name].indexOf(value.name);
+        this.treeDataSelect[props.name].splice(index, 1);
+      } else {
+        this.treeDataSelect[props.name].push(value.name);
+      }
     },
     notHaveChildren(item) {
       return item.children === null;
