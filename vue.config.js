@@ -122,8 +122,8 @@ module.exports = {
         // target: 'http://10.160.141.116:10085',
         changeOrigin: true,
         pathRewrite: {
-          '^/projectApi': ''
-        }
+          '^/projectApi': '',
+        },
       },
       '/approvalApi': {
         target: 'http://10.122.17.38:8012',
@@ -142,7 +142,7 @@ module.exports = {
       },
       '/quotationApiDL': {
         // target: 'http://10.160.138.38:8788',
-        target: 'http://10.122.17.38:8021',
+        target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/quotationApiDL': '',
@@ -159,7 +159,7 @@ module.exports = {
       },
       '/supplierApiWdl': {
         //   供应商
-        target: 'http://10.122.17.38:8021',
+        target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/supplierApiWdl': '',
@@ -167,7 +167,7 @@ module.exports = {
       },
       '/supplierApiXW': {
         //   供应商
-        target: 'http://10.122.17.38:8021',
+        target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/supplierApiXW': '',
@@ -232,7 +232,7 @@ module.exports = {
         },
       },
       '/nego': {
-        target: 'http://10.122.17.38:8035',
+        target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/nego': '/nego',
@@ -251,7 +251,7 @@ module.exports = {
       '/partProcureApi': {
         //赵文鹏服务地址
         target: 'http://10.122.17.38:8025',
-        //target: 'http://10.160.136.148:18025',
+        //target: 'http://10.160.137.254:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/partProcureApi': '',
@@ -290,8 +290,8 @@ module.exports = {
       },
       '/dictionaryApi': {
         // 数据字典api地址
-        // target: 'http://10.122.18.166:8011',
         target: 'http://10.122.17.38:8011',
+        //target: 'http://10.122.17.38:8011',
         changeOrigin: true,
         pathRewrite: {
           '^/dictionaryApi': '',
@@ -346,7 +346,7 @@ module.exports = {
       '/quotationApi': {
         // 供应商报价
         // target: 'http://10.160.136.42:8021',
-        target: 'http://10.122.17.38:8021/',
+        target: 'http://10.122.17.38:8025/',
         // target: 'http://10.160.136.83:8021', // 智博
         // target: 'http://10.160.138.206:8093', // 顾晓炜
         // target: 'http://10.122.17.38:8093', // 高攀弘
@@ -363,7 +363,8 @@ module.exports = {
         },
       },
       '/aonApi': {
-        // target: 'http://10.122.17.38:8036',
+        // target: 'http://10.160.138.166:8036',
+        //target: 'http://10.160.137.188:8036',
         target: 'http://10.122.18.166:8036',
         // target: 'http://192.168.50.230:8036',
         changeOrigin: true,
@@ -393,12 +394,13 @@ module.exports = {
           '^/baseInfo': '',
         },
       },
-      '/bizlog':{//cf
-        target:'http://10.122.18.166:8013/bizlog',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/bizlog':''
-        }
+      '/bizlog': {
+        //cf
+        target: 'http://10.122.18.166:8013/bizlog',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/bizlog': '',
+        },
       },
       //kpi杜玲聪的代理
       '/kpiInfo': {
@@ -423,7 +425,7 @@ module.exports = {
           '^/supplierSpiApi': '',
         },
       },
-      '/lier':{
+      '/lier': {
         target: 'http://10.160.142.130:8036',
         changeOrigin: true,
         pathRewrite: {
@@ -434,8 +436,8 @@ module.exports = {
         target: 'http://10.122.17.38:8028',
         changeOrigin: true,
         pathRewrite: {
-          "^/priceledgerApi": ""
-        }
+          '^/priceledgerApi': '',
+        },
       },
     },
   },

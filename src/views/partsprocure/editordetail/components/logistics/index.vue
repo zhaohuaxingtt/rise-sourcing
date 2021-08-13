@@ -180,7 +180,7 @@
 		iFormGroup,
 		iFormItem,
 		iText
-	} from "@/components";
+	} from 'rise';
 	import {
 		getRfqDataList
 	} from "@/api/partsrfq/home";

@@ -19,7 +19,7 @@
     </div>
     <infos class="margin-top30" :rfqInfo="rfqInfo" />
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
-      <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name">
+      <el-tab-pane lazy v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name">
         <component :ref="tab.name" :is="component" :rfqId="rfqId" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :disabled="disabled" @updateRfq="updateRfq" />
       </el-tab-pane>
     </iTabsList>

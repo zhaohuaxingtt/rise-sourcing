@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-05-28 20:07:52
+ * @LastEditTime: 2021-08-11 18:42:48
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料api - attach
  * @FilePath: \front-web\src\api\designate\index.js
@@ -28,7 +28,7 @@ export function getdDecisiondataListAll(params) {
 // 获取决策资料 - 上传文件
 export function uploadfile(data) {
   return requst({
-      url: `/upload-file`,
+      url: `/file-histories/upload-file`,
       method: "POST",
       data
   })
@@ -37,8 +37,8 @@ export function uploadfile(data) {
 // 获取决策资料 - 批量删除图纸
 export function batchDeletefile(data) {
   return requst({
-      url: `/file-history`,
-      method: "POST",
+      url: `/file-histories/delete-files`,
+      method: "DELETE",
       data
   })
 }
@@ -46,8 +46,8 @@ export function batchDeletefile(data) {
 // 获取决策资料 - 更新排序
 export function updateSort(data) {
   return requst({
-      url: `/update-sort/${data.fileId}/${data.isUp}`,
-      method: "POST",
+      url: `/file-histories/update-sort/${data.fileId}/${data.isUp}`,
+      method: "PATCH",
       data
   })
 }

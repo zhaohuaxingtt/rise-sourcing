@@ -10,7 +10,7 @@
 <template>
   <iPage class="signForParts" >
     <!-- <el-tabs v-model="tab" class="tab"> -->
-      <!-- <el-tab-pane :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
+      <!-- <el-tab-pane lazy :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
         <div>
           <div class="topMenu">
             <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
@@ -80,7 +80,7 @@
           <backDialog ref="backEPS" :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBackEPS" />
         </div>
       <!-- </el-tab-pane> -->
-      <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
+      <!-- <el-tab-pane lazy label="进度监控" name="progress"></el-tab-pane> -->
     <!-- </el-tabs> -->
   </iPage>
 </template>
@@ -129,7 +129,7 @@ export default {
       tab: "source",
       selectOptions: {
         yesOrNoOption: [{value: '1', label: this.language('YES','是')},{value: '0', label: this.language('NO','否')}],
-        carTypeProjectOptions: [],
+        cartypeProjectOptions: [],
         cartTypeOptions: []
       },
       selectDeptId: '',
@@ -159,7 +159,7 @@ export default {
       dictkey().then((res) => {
         if (res.data) {
           this.fromGroup = res.data;
-          this.selectOptions.carTypeProjectOptions = res.data.CAR_TYPE_PRO.map(item => {
+          this.selectOptions.cartypeProjectOptions = res.data.CAR_TYPE_PRO.map(item => {
             return {
               ...item,
               value: item.code,
@@ -221,7 +221,7 @@ export default {
      */    
     async getCarTypeOptions() {
       const res = await findBySearches('01')
-      this.selectOptions.carTypeProjectOptions = res.data
+      this.selectOptions.cartypeProjectOptions = res.data
     },
     /**
      * @Description: 退回EPS

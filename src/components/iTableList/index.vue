@@ -1,8 +1,8 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-08-05 15:23:32
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-11 16:10:57
+ * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \front-web\src\components\iTableList\index.vue
 -->
@@ -21,64 +21,63 @@
                  v-for="(item, index) in tableTitle"
                  :key="index"></el-option>
     </iSelect>
-    <el-table
-      tooltip-effect="light"
-      :height="height"
-      :data="tableData"
-      v-loading="tableLoading"
-      @selection-change="handleSelectionChange"
-      :empty-text="$t('LK_ZANWUSHUJU')"
-      ref="moviesTable"
-      :class="radio && 'radio'"
-      :show-summary="showSummary"
-      :summary-method="getSummaries"
-      :row-class-name="tableRowClassName"
-      @cell-mouse-leave="cellMouseLeave" 
-      @cell-mouse-enter="cellMouseEnter"
-      @select="handleSelect" 
-      @select-all="handleSelectAll" 
-      :cell-style="borderLeft" 
-    >
-      <el-table-column
-        v-if="selection"
-        type="selection"
-        :width="selectionWidth"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-          v-if="typeIndex"
-          type="index"
-          align="center"
-          label="序号"
-          width="50">
+    <el-table tooltip-effect="light"
+              :height="height"
+              :data="tableData"
+              v-loading="tableLoading"
+              @selection-change="handleSelectionChange"
+              :empty-text="$t('LK_ZANWUSHUJU')"
+              ref="moviesTable"
+              :class="radio && 'radio'"
+              :show-summary="showSummary"
+              :summary-method="getSummaries"
+              :row-class-name="tableRowClassName"
+              @cell-mouse-leave="cellMouseLeave"
+              @cell-mouse-enter="cellMouseEnter"
+              @select="handleSelect"
+              @select-all="handleSelectAll"
+              :cell-style="borderLeft">
+      <el-table-column v-if="selection"
+                       type="selection"
+                       :width="selectionWidth"
+                       align="center"></el-table-column>
+      <el-table-column v-if="typeIndex"
+                       type="index"
+                       align="center"
+                       label="序号"
+                       width="50">
       </el-table-column>
       <template v-for="(items, index) in tableTitle">
-        <el-table-column
-          :key="index"
-          align="center"
-          :show-overflow-tooltip="items.tooltip"
-          v-if="items.props == activeItems"
-          :prop="items.props"
-          :label="$t(items.key)"
-          :min-width="items.minWidth"
-          :width="items.width"
-        >
+        <el-table-column :key="index"
+                         align="center"
+                         :show-overflow-tooltip="items.tooltip"
+                         v-if="items.props == activeItems"
+                         :prop="items.props"
+                         :label="items.key?language(items.key,items.name):items.name"
+                         :min-width="items.minWidth"
+                         :width="items.width">
           <template slot-scope="row">
             <span class="flexRow">
-              <span class="openLinkText cursor " @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
-              <span v-if="row.row[activeItems]" class="icon-gray  cursor "  @click="openPage(row.row)">
-                <icon symbol class="show" name="icontiaozhuananniu" />
-                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+              <span class="openLinkText cursor "
+                    @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
+              <span v-if="row.row[activeItems]"
+                    class="icon-gray  cursor "
+                    @click="openPage(row.row)">
+                <icon symbol
+                      class="show"
+                      name="icontiaozhuananniu" />
+                <icon symbol
+                      class="active"
+                      name="icontiaozhuanxuanzhongzhuangtai" />
               </span>
             </span>
-          </template
-          >
+          </template>
         </el-table-column>
         <el-table-column :key="index"
                          align="center"
                          :show-overflow-tooltip="items.tooltip"
                          v-else-if="items.props == 'tpInfoType'"
-                         :label="items.name"
+                         :label="items.key?language(items.key,items.name):items.name"
                          :prop="items.props"
                          :min-width="items.minWidth"
                          :width="items.width">
@@ -92,7 +91,7 @@
                          align="center"
                          :show-overflow-tooltip="items.tooltip"
                          v-else
-                         :label="items.name"
+                         :label="items.key?language(items.key,items.name):items.name"
                          :prop="items.props"
                          :min-width="items.minWidth"
                          :width="items.width">
@@ -177,7 +176,7 @@ export default {
   mounted () {
 
     this.multipleSelection = JSON.parse(localStorage.getItem('checkList'))
-    if(this.multipleSelection){
+    if (this.multipleSelection) {
       this.$nextTick(() => {
         this.multipleSelection.forEach(i => {
           console.log(this.$refs.moviesTable)
@@ -239,22 +238,22 @@ export default {
     cellMouseEnter (row) {
       this.$emit("cellMouseEnter", row);
     },
-    handleSelect(selection,row){
+    handleSelect (selection, row) {
       const selectdBorder = row.selectedBorder
-      this.$set(row,'selectedBorder',!selectdBorder)
+      this.$set(row, 'selectedBorder', !selectdBorder)
     },
-    handleSelectAll(selection){  
+    handleSelectAll (selection) {
       const flag = selection.length
-      for(let i= 0  ; i<flag;i++){
-        this.$set(selection[i],'selectedBorder',!!flag)
+      for (let i = 0; i < flag; i++) {
+        this.$set(selection[i], 'selectedBorder', !!flag)
       }
-      !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+      !flag ? this.tableData.forEach(i => { i.selectedBorder = !i.selectedBorder }) : ''
     },
-    borderLeft({row, column, rowIndex, columnIndex}){
-      if(columnIndex === 0 && row.selectedBorder === true){
-         return "border-left:2px solid #1660F1;"
+    borderLeft ({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0 && row.selectedBorder === true) {
+        return "border-left:2px solid #1660F1;"
       }
-      else{
+      else {
         return ""
       }
     }
@@ -283,26 +282,26 @@ export default {
   ::v-deep thead .el-table-column--selection .cell {
     display: none;
   }
-  .icon-gray{
+  .icon-gray {
     cursor: pointer;
-    .active{
+    .active {
       display: none;
     }
-    .show{
+    .show {
       display: block;
     }
   }
-  .flexRow{
+  .flexRow {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .icon-gray:hover{
+  .icon-gray:hover {
     cursor: pointer;
-    .show{
+    .show {
       display: none;
     }
-    .active{
+    .active {
       display: block;
     }
   }

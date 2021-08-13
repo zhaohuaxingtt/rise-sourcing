@@ -361,9 +361,9 @@ export default {
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID，还没有
               stuffName: item.stuffName, // 工艺组name，还没有
-              purchasePrjectId: item.purchasingProjectId,
+              purchaseProjectId: item.purchasingProjectId,
               partNameZh: item.partNameZh,
-              partPrejectType: partProjTypes.FUJIAN,
+              partProjectType: partProjTypes.FUJIAN,
             }
           }),
           userId: this.$store.state.permission.userInfo.id

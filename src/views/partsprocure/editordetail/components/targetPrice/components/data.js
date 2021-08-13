@@ -71,7 +71,7 @@ export const targetPriceDetail = {
 		applyReason: "",
 		applyMemo: "",
 	},
-	purchasePrjectId: "", //采购项目ID
+	purchaseProjectId: "", //采购项目ID
 	rwApplication: {
 		applyDate: "", //申请时间
 		applyNum: "", //RW价申请编号

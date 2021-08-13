@@ -19,7 +19,7 @@
   </el-upload>
 </template>
 <script>
-import {iButton} from '@/components'
+import {iButton} from 'rise'
 import {uploadFile, uploadUdFile} from "@/api/file/upload";
 
 export default {

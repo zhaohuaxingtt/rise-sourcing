@@ -43,7 +43,7 @@
   </iDialog>
 </template>
 <script>
-import { iButton, iMessage, iDialog } from "@/components";
+import { iButton, iMessage, iDialog } from 'rise';
 import tablelist from "pages/partsrfq/components/tablelist";
 import { assignmentOfScroingTasksTableTitle } from "pages/partsrfq/home/components/data";
 import { editRfqData } from "@/api/partsrfq/home";

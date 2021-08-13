@@ -179,10 +179,9 @@
 
 <script>
 import {
-  icon,
   iTableList
-} from "@/components";
-import {iDialog, iMessage, iInput, iButton, iCard} from "rise";
+} from '@/components';
+import {iDialog, iMessage, iInput, iButton, iCard,icon} from "rise";
 import HeadTool from "../components/headTool";
 import echarts from "@/utils/echarts";
 import Popup from "./components/popup";

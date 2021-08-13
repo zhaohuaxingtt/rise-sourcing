@@ -11,7 +11,6 @@ import Vue from 'vue';
 import store from '../store'
 import router from '@/router'
 import {businessPermission} from '@/utils'
-console.log(router)
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {

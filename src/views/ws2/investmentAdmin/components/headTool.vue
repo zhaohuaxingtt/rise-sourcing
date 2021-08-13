@@ -40,7 +40,7 @@
 import {
   icon,
   iTableList
-} from "@/components";
+} from 'rise';
 import {
   iSearch,
   iMessage,

@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination, iMessage } from '@/components'
+import { iCard, iButton, iPagination, iMessage } from 'rise'
 import tablelist from '@/views/partsign/home/components/tableList'
-import { getOutputPlan } from '@/api/partsprocure/editordetail'
+import { getOutputPlanMarks } from '@/api/partsprocure/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import { outputRecordTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
@@ -58,23 +58,20 @@ export default {
   methods: {
     getData() {
       this.loading = true
-
-      getOutputPlan({
-        'partRecordPageReqDTO.current': this.page.currPage,
-        'partRecordPageReqDTO.purchaseProjectId': this.params.purchasePrjectId,
-        'partRecordPageReqDTO.size': this.page.pageSize,
-        'partRecordPageReqDTO.year': this.startYear
+      getOutputPlanMarks({
+        'purchaseProjectId': this.params.id,
+        'year': this.startYear
       }).
         then(res => {
-          if (res.data && res.data.partRecordResPageDTO) {
-            if (Array.isArray(res.data.partRecordResPageDTO.data) && res.data.partRecordResPageDTO.data[0] && Array.isArray(res.data.partRecordResPageDTO.data[0].outputPlanList)) {
+          if (res.data) {
+            if (Array.isArray(res.data) && res.data && Array.isArray(res.data[0].outputPlanList)) {
               this.tableTitle = cloneDeep(tableTitle)
               
-              res.data.partRecordResPageDTO.data[0].outputPlanList.forEach((planData, index) => {
+              res.data[0].outputPlanList.forEach((planData, index) => {
                 this.tableTitle.splice(index, 0, { props: planData.year, name: planData.year, key: planData.year })
               })
 
-              this.tableListData = res.data.partRecordResPageDTO.data.map(item => {
+              this.tableListData = res.data.map(item => {
                 const result = {
                   totalOutput: item.totalOutput,
                   versionNum: item.versionNum,
@@ -93,7 +90,7 @@ export default {
               })
             }
 
-            this.page.totalCount = res.data.partRecordResPageDTO.total || 0
+            this.page.totalCount = res.data.total || 0
           }
 
           this.loading = false
@@ -118,7 +115,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.outputRecord {}
-</style>

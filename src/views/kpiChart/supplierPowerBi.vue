@@ -170,10 +170,6 @@ export default {
                     };
                 },
             handleOk(){
-                //  getPowerBiSupplier({keyWord:this.supplierName}).then(res=>{
-                //     this.supplierId=res.data[0].supplierId
-                    
-                // })
                 this.supplierId=this.supplierId.toString()
                 this.renderBi()
             },
