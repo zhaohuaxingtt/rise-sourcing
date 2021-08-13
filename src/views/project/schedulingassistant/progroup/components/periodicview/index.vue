@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-13 12:50:48
+ * @LastEditTime: 2021-08-13 15:29:22
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -69,6 +69,9 @@
         </div>
       </div>
     </div>
+    <!---------------------------------------------------------------------->
+    <!----------                  fs确认弹窗                   ---------------->
+    <!---------------------------------------------------------------------->
     <fsConfirm ref="fsConfirm" @handleConfirm="handleFSConfirm" :cartypeProId="cartypeProId" :tableList="fsTableList" :dialogVisible="fsConfirmDialogVisible" @changeVisible="changeFsConfirmVisible" />
   </div>
 </template>
@@ -115,14 +118,6 @@ export default {
   created() {
     this.getFSOPtions()
   },
-  // mounted() {
-  //   this.interval = setInterval(() => {
-  //     this.autoSave()
-  //   },60000)
-  // },
-  // beforeDestroy() {
-  //   clearInterval(this.interval)
-  // },
   methods: {
     /**
      * @Description: 获取fs下拉选项
@@ -270,8 +265,6 @@ export default {
       } catch(error) {
         this.loading = false
       }
-      // const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {cartypeProId:this.cartypeProId,productGroup:pro.productGroupNameZh}})
-      // window.open(router.href,'_blank')
     },
     /**
      * @Description: 根据选中的行获取每一行的fs下拉列表
@@ -329,7 +322,6 @@ export default {
         }
         const canSendRows = selectRows.filter(item => !(validScheduleRowsRes.data || []).some(rItem => rItem.productGroupId === item.productGroupId))
         const fsOptions = await this.getFsUserList(canSendRows)
-        const projectPurchaser = await this.getBuyer()
         const nextThreeWorkDay = await this.getNextThreeWorkDay()
         this.fsTableList = canSendRows.map(item => {
           const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
@@ -348,14 +340,13 @@ export default {
             productGroupDe: item.productGroupNameDe,
             productGroupZh: item.productGroupNameZh,
             confirmDateDeadline: nextThreeWorkDay,
-            projectPurchaser: projectPurchaser?.nameZh,
-            projectPurchaserId: projectPurchaser?.id,
+            projectPurchaser: this.$store.state.permission.userInfo.nameZh,
+            projectPurchaserId: this.$store.state.permission.userInfo.id,
             selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
             fs: options && options[0] ? options[0].label : '',
             fsId: options && options[0] ? options[0].value : ''
           }
         })
-        // console.log(this.fsTableList)
         this.loading = false
         this.changeFsConfirmVisible(true)
       } catch(error) {
