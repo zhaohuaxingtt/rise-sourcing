@@ -101,7 +101,26 @@ export default {
     };
   },
   methods: {
-    handleBack() {},
+    handleBack() {
+      if (this.$store.state.rfq.entryStatus === 1) {
+        this.$router.push({
+          path: '/sourcing/partsrfq/assistant',
+          query: {
+            id: this.$store.state.rfq.rfqId,
+            round: this.$route.query.round,
+            pageType: 'PI',
+            activityTabIndex: 'two',
+          },
+        });
+      } else {
+        this.$router.push({
+          path: '/sourcing/partsrfq/externalNegotiationAssistant',
+          query: {
+            pageType: 'PI',
+          },
+        });
+      }
+    },
     handlePreview() {
       this.previewDialog = true
     },
