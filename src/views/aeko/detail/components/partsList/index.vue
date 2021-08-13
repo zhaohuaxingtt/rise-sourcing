@@ -13,7 +13,8 @@
             <el-form-item
             v-show="!item.showCode || (item.showCode && item.showCode == aekoInfo.aekoType)"
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
-            :label="language(item.labelKey,item.label)"  
+            :label="language(item.labelKey,item.label)"
+            v-permission.dynamic="item.permissionKey"
             >
                 <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :clearable="item.clearable" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
                     <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
@@ -43,6 +44,8 @@
         <tableList
             class="table"
             index
+            v-permissionArr="['AEKO_AEKODETAIL_PARTLIST_TABLE']"
+            AEKO_AEKODETAIL_PARTLIST_TABLE
             :lang="true"
             :selection="isAekoManager || isCommodityCoordinator"
             :tableData="tableListData"

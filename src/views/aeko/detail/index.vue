@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-12 16:08:35
+ * @LastEditTime: 2021-08-13 02:43:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -19,7 +19,7 @@
     <iCard :title="language('LK_JICHUXINXI','基础信息')">
       <iFormGroup row="4" class="basic-form" label-width="100px">
           <template v-for="(item,index) in basicTitle">
-            <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  >
+            <iFormItem v-permission.dynamic="item.permissionKey" :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  >
               <iText v-if="item.isObj">{{aekoInfo[item.props] && aekoInfo[item.props]['desc']}}</iText>
               <iText v-else >{{aekoInfo[item.props] || '-'}}</iText>
             </iFormItem>
@@ -28,7 +28,7 @@
     </iCard>
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
       <!-- language(tab.key, tab.label) -->
-      <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="tab.label" :name="tab.name">
+      <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="tab.label" :name="tab.name" v-permission.dynamic="tab.permissionKey">
         <template v-if="currentTab==tab.name">
           <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :aekoInfo="aekoInfo" @getBbasicInfo="getBbasicInfo"/>
         </template>
@@ -104,17 +104,17 @@ export default {
       aekoInfo: {},
       currentTab: "partsList",
       basicTitle:[
-        {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'aekoStatusDesc',},
-        {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'sourseDesc'},
-        {label:'创建⽇期',labelKey:'LK_AEKOCHUANGJIANRIQI',props:'createDate'},
-        {label:'截⽌⽇期',labelKey:'LK_AEKOJIEZHIRIQI',props:'deadLine'},
+        {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'aekoStatusDesc',permissionKey: "AEKO_AEKODETAIL_TEXT_STATUS"},
+        {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'sourseDesc',permissionKey: "AEKO_AEKODETAIL_TEXT_SOURCE"},
+        {label:'创建⽇期',labelKey:'LK_AEKOCHUANGJIANRIQI',props:'createDate',permissionKey: "AEKO_AEKODETAIL_TEXT_CREATE_DATE"},
+        {label:'截⽌⽇期',labelKey:'LK_AEKOJIEZHIRIQI',props:'deadLine',permissionKey: "AEKO_AEKODETAIL_TEXT_DUE_DATE"},
       ],
       tabs: [
-        { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", components: ["partsList"] },
-        { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", components: [ "contentDeclare" ] },
-        { label: "封⾯表态", name: "cover", key: "FENGMIANBIAOTAI", components: ['cover'] },
-        { label: "审批附件", name: "attachment", key: "SHENPIFUJIAN", components: ['attachment'] },
-        { label: "审批记录", name: "record", key: "SHENPIFUJIAN", components: ['record'] }
+        { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", permissionKey: "AEKO_AEKODETAIL_TAB_PART_LIST", components: ["partsList"] },
+        { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", permissionKey: "AEKO_AEKODETAIL_TAB_CONTENT_DECLARE", components: [ "contentDeclare" ] },
+        { label: "封⾯表态", name: "cover", key: "FENGMIANBIAOTAI", permissionKey: "AEKO_AEKODETAIL_TAB_COVER_DECLARE", components: ['cover'] },
+        { label: "审批附件", name: "attachment", key: "SHENPIFUJIAN", permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_ATTACHMENT", components: ['attachment'] },
+        { label: "审批记录", name: "record", key: "SHENPIFUJIAN", permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_RECORD", components: ['record'] }
       ],
     }
   },
