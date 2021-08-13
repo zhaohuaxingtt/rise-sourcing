@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-09 15:30:30
+ * @LastEditTime: 2021-08-13 11:16:35
  * @LastEditors: 舒杰
  * @Description: 技术路线
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\technology\index.vue
@@ -9,7 +9,7 @@
 <template>
 	<iCard :title='language("JISHULUXIAN","技术路线")' class="margin-top20">
 		<template slot="header-control">
-			<iButton>{{ language("XIAZAI", "下载") }}</iButton>
+			<iButton @click="down">{{ language("XIAZAI", "下载") }}</iButton>
 			<el-upload
 				class="upload"
 				:show-file-list="false"
@@ -72,9 +72,11 @@
 				tableLoading:false,
 				selectData:[],
 				uploadButtonLoading:false,
+				categoryCode:""
 			}
 		},
 		created() {
+			this.categoryCode=this.$store.state.rfq.categoryCode
 			this.getTableList()
 		},
 		methods:{
@@ -144,7 +146,7 @@
 				}
 				let fileName=[]
 				this.selectData.map(item=>{
-					fileName.push(item.downloadName)
+					fileName.push(item.fileName)
 				})
 				const req = {
 					applicationName: 'rise',

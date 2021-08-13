@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-12 17:55:30
+ * @LastEditTime: 2021-08-13 10:40:47
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
@@ -39,7 +39,7 @@
 	import resultMessageMixin from '@/utils/resultMessageMixin';
 	import { excelExport } from '@/utils/filedowLoad';
 	import { selectDictByKeys } from "@/api/dictionary";
-	import {nomiSupplier,nomiSave,nomiHistoryParamInite} from "@/api/categoryManagementAssistant/internalDemandAnalysis/historyPoint.js"
+	import {nomiSupplier,nomiSave,nomiHistoryParamInit} from "@/api/categoryManagementAssistant/internalDemandAnalysis/historyPoint.js"
 	import {downloadPdfMixins} from '@/utils/pdf';
 	export default{
 		mixins: [resultMessageMixin,downloadPdfMixins],
@@ -58,14 +58,14 @@
 					categoryCode:"",
 					latestYear:"",
 					supplierId:"",
-				}
+				},
 			}
 		},
 		created() {
 			this.searchCriteria.categoryCode=this.$store.state.rfq.categoryCode
 			this.getDict()
 			this.getNomiSupplier()
-			this.getNomiHistoryParamInite()
+			this.getNomiHistoryParamInit()
 		},
 		methods:{
 			// 返回
@@ -129,11 +129,14 @@
 				})
 			},
 			// 查询参数
-			getNomiHistoryParamInite(){
-				nomiHistoryParamInite({categoryCode:this.searchCriteria.categoryCode}).then(res=>{
-
-				})
-			}
+			// getNomiHistoryParamInit(){
+			// 	nomiHistoryParamInit({categoryCode:this.searchCriteria.categoryCode}).then(res=>{
+			// 		if(res.data){
+			// 			this.id=res.data.id
+			// 			this.searchCriteria.categoryCode
+			// 		}
+			// 	})
+			// }
 		}
 	}
 </script>

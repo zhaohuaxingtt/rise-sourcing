@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-04 17:54:56
+ * @LastEditTime: 2021-08-13 15:14:57
  * @LastEditors: 舒杰
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\overView\index.vue
@@ -42,7 +42,11 @@ export default {
   },
   methods: {
     onJump(url){
-      this.$router.push(url)
+      if(this.$store.state.rfq.categoryCode){
+         this.$router.push(url)
+      }else{
+         this.$parent.$children[0].openCatecory()
+      }
     }
   }
 };
