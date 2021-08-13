@@ -4,7 +4,7 @@
       <iSearch
           class="margin-bottom20 giSearch"
           style="margin-top: 20px"
-          @sure="() => getTableData()"
+          @sure="sure"
           @reset="reset"
           :icon="false"
           :resetKey="PARTSPROCURE_RESET"
@@ -240,6 +240,11 @@ export default {
 
   methods: {
 
+    sure(){
+      this.page.currPage = 1;
+      this.getTableData();
+    },
+
     openPhotoList(imgList){
       this.visible = true;
       this.imgList = imgList;
@@ -258,9 +263,9 @@ export default {
 
         if(res.data){
           this.tableList = res.data;
-          this.page.currPage = ~~res.pageNum;
-          this.page.pageSize = ~~res.pageSize;
-          this.page.totalCount = ~~res.total;
+          this.page.currPage = res.pageNum;
+          this.page.pageSize = res.pageSize;
+          this.page.totalCount = res.total;
         }else{
           iMessage.error(result);
         }
