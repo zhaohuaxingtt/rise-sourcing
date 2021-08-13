@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-13 14:20:22
+ * @LastEditTime: 2021-08-13 15:29:22
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -322,7 +322,6 @@ export default {
         }
         const canSendRows = selectRows.filter(item => !(validScheduleRowsRes.data || []).some(rItem => rItem.productGroupId === item.productGroupId))
         const fsOptions = await this.getFsUserList(canSendRows)
-        const projectPurchaser = await this.getBuyer()
         const nextThreeWorkDay = await this.getNextThreeWorkDay()
         this.fsTableList = canSendRows.map(item => {
           const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
@@ -341,8 +340,8 @@ export default {
             productGroupDe: item.productGroupNameDe,
             productGroupZh: item.productGroupNameZh,
             confirmDateDeadline: nextThreeWorkDay,
-            projectPurchaser: projectPurchaser?.nameZh,
-            projectPurchaserId: projectPurchaser?.id,
+            projectPurchaser: this.$store.state.permission.userInfo.nameZh,
+            projectPurchaserId: this.$store.state.permission.userInfo.id,
             selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
             fs: options && options[0] ? options[0].label : '',
             fsId: options && options[0] ? options[0].value : ''

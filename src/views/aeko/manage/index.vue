@@ -48,7 +48,7 @@
                 :accept="'.xlsx,.xls'"
             />
           </span>
-          <iButton v-permission="AEKO_MANAGELIST_BUTTON_SHANCHUAEKO" @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
+          <iButton v-permission="AEKO_MANAGELIST_BUTTON_SHANCHUAEKO" :loading="btnLoading.deleteItem" @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
           <iButton v-permission="AEKO_MANAGELIST_BUTTON_CHEXIAOAEKO" @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
           
           <span v-permission="AEKO_MANAGELIST_BUTTON_DAORUFUJIAN" class=" margin-left10 margin-right10">
@@ -137,7 +137,7 @@ import {
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
-import { TAB } from '../data';
+import { TAB,filterRole } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
@@ -175,7 +175,6 @@ export default {
       revokeDialog,
       filesListDialog,
       Upload,
-      // iSelectCustom,
     },
     data(){
       return{
@@ -206,6 +205,7 @@ export default {
         btnLoading:{
           uploadFiles:false,
           importAeko:false,
+          deleteItem:false,
           
         },
         importAeko:importAeko,
@@ -227,18 +227,13 @@ export default {
       this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
       this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
 
-      const {navList,$route} = this;
-      const { name } = $route;
-      if(this.isAekoManager || this.isCommodityCoordinator){
-        this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_STANCE');
-      }else{
-        this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_MANAGE');
-        if(name == 'aekoManageList'){
-           this.$router.push({
-              path:'/aeko/stancelist'
-          });
-        }
-      }
+      const { isAekoManager,isCommodityCoordinator,isLinie } = this;
+      const role = {
+        isAekoManager,
+        isCommodityCoordinator,
+        isLinie,
+      };
+      this.navList = filterRole(role);
     },
     methods:{
       // 重置
@@ -515,9 +510,10 @@ export default {
             cancelButtonText: this.language('nominationLanguage.No','否'),
           }
           ).then(()=>{
-            console.log('是',this.language('LK_CAOZUOCHENGGONG','操作成功'))
+            this.btnLoading.deleteItem = true;
             const requirementAekoIds = (selectItems.map((item)=>item.requirementAekoId)).join();
             deleteAeko({requirementAekoIds}).then((res)=>{
+              this.btnLoading.deleteItem = false;
               if(res.code ==200){
                 iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                 this.getList();
@@ -526,7 +522,7 @@ export default {
               }
             })
           }).catch(()=>{
-            console.log('否')
+            this.btnLoading.deleteItem = false;
           })
       },
       
