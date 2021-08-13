@@ -37,7 +37,6 @@
 import {iButton,iPage,iCard,iInput,iSelect,iTableCustom} from 'rise'
 import {setCloum} from './components/data'
 import supplierDetail from './components/supplierDetail'
-import iDialog from '@/components/iDialog/index'
 import { iMessage } from '@/components';
 import { getFocusSupplierList } from '@/api/partsrfq/spi/index.js'
 import publicHeaderMenu from './commonHeardNav/headerNav'
@@ -50,7 +49,6 @@ export default {
         iSelect,
         iTableCustom,
         supplierDetail,
-        iDialog,
         publicHeaderMenu
     },
     data(){
