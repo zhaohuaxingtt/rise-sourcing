@@ -25,6 +25,10 @@ export function generateOptions(params) {
         const freqData = []
         // 平均定点周期标记
         const xAxisTopData = []
+        // dataZoom 缩放百分比
+        const displayNum = 10
+        const endPercent = freq.length > displayNum ? (displayNum/freq.length*100) : 100
+
         freq.forEach(d => {
             freqData.push({
                 value: d,
@@ -97,13 +101,13 @@ export function generateOptions(params) {
                     show: false,
                     realtime: true,
                     start: 0,
-                    end: 50
+                    end: endPercent
                 },
                 {
                     type: 'inside',
                     realtime: false,
                     start: 0,
-                    end: 50,
+                    end: endPercent,
                     zoomLock: true
                 }
             ],
