@@ -77,6 +77,7 @@ export default {
         part: '',
         province: '',
         supplierName: '',
+        provinceZh: ""
       },
       formGoup: {
         materialGroupList: [],
@@ -98,6 +99,12 @@ export default {
   // 方法集合
   methods: {
     getMapList() {
+      this.form.province && this.formGoup.provinceList.forEach(item => {
+        if (item.cityId === this.form.province) {
+          this.form.provinceZh = item.cityNameCn
+          return
+        }
+      })
       this.$emit('getMapList', this.form)
     },
     // 获取材料组数据||地区数据
