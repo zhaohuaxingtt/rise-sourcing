@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-13 16:11:14
+ * @LastEditTime: 2021-08-13 17:29:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -394,6 +394,11 @@
 				return choseState
 			}
 		},
+		watch:{
+			'selectOldParts.selectData':function(res){
+				this.detailData.oldFsnrGsnrNum = res.fsnrGsnrNum
+			}
+		},
 		data() {
 			return {
 				// 零件项目类型
@@ -632,7 +637,7 @@
 			},
 			translateDataForService(data){
 				const newMap = {}
-				Object.keys(data).forEach(e=>{
+				Object.keys(JSON.parse(JSON.stringify(data))).forEach(e=>{
 					newMap['old'+(e.charAt(0).toUpperCase() + e.slice(1))] = data[e]
 				})
 				return newMap
