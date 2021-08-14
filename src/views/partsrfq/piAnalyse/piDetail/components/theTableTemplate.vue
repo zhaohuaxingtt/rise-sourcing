@@ -282,10 +282,14 @@ export default {
           if (props === this.FIRSTSELECT) {
             req.classType = event.classType;
           } else if (props === this.SECONDSELECT) {
+            req.classType = event.classType;
             req.specs = event.specs;
           }
           break;
         case this.classType['manpower']:
+          if (props === this.FIRSTSELECT) {
+            req.profession = event.profession;
+          }
           break;
         case this.classType['exchangeRate']:
           if (props === this.FIRSTSELECT) {
@@ -293,6 +297,7 @@ export default {
           }
           break;
       }
+      this.$emit('handleSelectReset', {props, row});
       await this.handleGetSelectList({props, boolean: true, row, req});
     },
     indexMethod(index) {
@@ -345,19 +350,32 @@ export default {
       }
       this.$emit('handleGetSelectList', {props, row, selectList});
     },
-    //
+    // 获取select Label
     getSelectLabel({props, row, itemData}) {
       switch (row.dataType) {
         case this.classType['rawMaterial']:
-          return itemData.name;
+          if (props === this.FIRSTSELECT) {
+            return itemData.classType;
+          } else if (props === this.SECONDSELECT) {
+            return itemData.specs;
+          } else if (props === this.THIRDSELECT) {
+            return itemData.area;
+          }
+          break;
         case this.classType['manpower']:
-          return '';
+          if (props === this.FIRSTSELECT) {
+            return itemData.profession;
+          } else if (props === this.SECONDSELECT) {
+            return itemData.area;
+          }
+          break;
         case this.classType['exchangeRate']:
           if (props === this.FIRSTSELECT) {
             return itemData.countryOrigin;
           } else if (props === this.SECONDSELECT) {
             return itemData.currency;
           }
+          break;
       }
     },
   },

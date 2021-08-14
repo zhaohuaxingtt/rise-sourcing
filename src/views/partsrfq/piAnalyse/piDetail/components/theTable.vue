@@ -40,6 +40,7 @@
         @handleHide="handleHide"
         @handleGetSelectList="handleGetSelectList"
         :selectOptionsObject="selectOptionsObject"
+        @handleSelectReset="handleSelectReset"
     />
     <el-divider class="margin-top20 margin-bottom20" v-if="tableStatus === 'edit'"/>
     <!--隐藏表格-->
@@ -108,6 +109,7 @@ export default {
       selectOptionsObject: {},
       FIRSTSELECT,
       SECONDSELECT,
+      THIRDSELECT,
     };
   },
   created() {
@@ -270,6 +272,17 @@ export default {
         }
       });
       this.selectOptionsObject = copyObj;
+    },
+    handleSelectReset({props, row}) {
+      const id = row.id || row.time;
+      if (id) {
+        if (props === this.FIRSTSELECT) {
+          this.selectOptionsObject[id][this.SECONDSELECT] = [];
+          this.selectOptionsObject[id][this.THIRDSELECT] = [];
+        } else if (props === this.SECONDSELECT) {
+          this.selectOptionsObject[id][this.THIRDSELECT] = [];
+        }
+      }
     },
   },
   watch: {
