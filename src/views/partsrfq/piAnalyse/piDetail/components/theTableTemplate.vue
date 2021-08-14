@@ -121,7 +121,7 @@
             <template v-if="isTableEdit">
               <iSelect v-model="scope.row.q"
                        @visible-change="(boolean)=>handleGetSelectList({props: '',boolean,row: scope.row})"
-                       @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row, time:scope.row.time})"
+                       @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row})"
                        style="width: 120px;margin-right: 10px;"
                        value-key="id"
               >
@@ -141,7 +141,7 @@
                 </template>
               </iSelect>
               <iSelect v-model="scope.row.w"
-                       @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row, time:scope.row.time})"
+                       @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row})"
                        style="width: 120px;margin-right: 10px;"
                        value-key="id"
               >
@@ -163,7 +163,7 @@
               <iSelect
                   v-if="scope.row.dataType === classType['rawMaterial']"
                   v-model="scope.row.e"
-                  @change="handleSelectChange({props:THIRDSELECT , event: $event, row:scope.row, time:scope.row.time})"
+                  @change="handleSelectChange({props:THIRDSELECT , event: $event, row:scope.row})"
                   style="width: 120px;margin-right: 10px;"
                   value-key="id"
               >
@@ -172,14 +172,14 @@
                       v-for="item of selectOptionsObject[scope.row.time][THIRDSELECT]"
                       :key='item.id'
                       :value='item'
-                      :label="item.name"/>
+                      :label="getSelectLabel({props: THIRDSELECT, row:scope.row, itemData: item})"/>
                 </template>
                 <template v-else>
                   <el-option
                       v-for="item of selectOptionsObject[scope.row.id][THIRDSELECT]"
                       :key='item.id'
                       :value='item'
-                      :label="item.name"/>
+                      :label="getSelectLabel({props: THIRDSELECT, row:scope.row, itemData: item})"/>
                 </template>
               </iSelect>
               <div v-else style="width: 120px;margin-right: 10px;"/>
@@ -190,7 +190,7 @@
               <div class="systemMatchText">{{ scope.row.e }}</div>
             </template>
             <div class="systemMatchText" style="width: auto;">
-              <span>数据来源: XXXXXXXX</span>
+              <span>数据来源: {{scope.row.dataSource}}</span>
               <iconTips
                   iconName="iconzhongyaoxinxitishi"
                   :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成\n'+'对应的指数变动百分比，可手动补充系统匹配\n'+'模块信息。')"
@@ -275,7 +275,7 @@ export default {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val);
     },
-    async handleSelectChange({props, event, row, time}) {
+    async handleSelectChange({props, event, row}) {
       let req = {};
       switch (row.dataType) {
         case this.classType['rawMaterial']:
@@ -352,6 +352,7 @@ export default {
     },
     // 获取select Label
     getSelectLabel({props, row, itemData}) {
+      console.log(111);
       switch (row.dataType) {
         case this.classType['rawMaterial']:
           if (props === this.FIRSTSELECT) {
@@ -379,7 +380,7 @@ export default {
       }
     },
     handleNewRowClassTypeSelectChange({event, row}) {
-      row.dataType = event
+      row.dataType = event;
       this.handleGetSelectList({props: '', boolean: true, row});
     },
   },
