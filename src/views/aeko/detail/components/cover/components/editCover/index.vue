@@ -227,7 +227,7 @@ export default {
         if(props == 'sendCycle'){
            this.$set(row, props, numberProcessor(val, 0));
         }else{
-           this.$set(row, props, numberProcessor(val, 2));
+           this.$set(row, props, numberProcessor(val, 2,true));
         }
        
       },
