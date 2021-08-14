@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-08-14 16:49:59
+ * @LastEditTime: 2021-08-14 19:24:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -230,12 +230,13 @@ export default {
               query: {
                 item: JSON.stringify({ 
                   ...res.data[0]
-                })
+                }),
+                businessKey:res.data[0].partProjectType
               }
             })
           } else {
             this.$router.push({
-              path: `/sourcing/partsprocure/batchmiantain?${ serialize(res.data.map(item => ({ ids: item.id })), Array) }`
+              path: `/sourcing/partsprocure/batchmiantain?${ serialize(res.data.map(item => ({ ids: item.id })), Array) }&businessKey=${res.data[0].partProjectType}`
             })
           }
         } else {
