@@ -10,7 +10,7 @@ const sourcingDL = axios(process.env.VUE_APP_SOURCING_WDL)
 const quotation = axios(process.env.VUE_APP_QUOTATION)
 //自动定点-创建接口
 export function autonomi(params) {
-	return requstPartsProcure({
+	return sourcing({
 		url: '/auto-nomi/change/auto',
 		method: 'POST',
 		data: params
@@ -185,11 +185,10 @@ export function getParts(params) {
     	data: params
 	})
 }
-
-// 创建采购项目
+// 手工创建采购项目
 export function createParts(params){
   return sourcing({
-    url: "/part-src-prjs",
+    url: "/purchasing-project-parts/manual",
     method: "POST",
     data: params
   })
