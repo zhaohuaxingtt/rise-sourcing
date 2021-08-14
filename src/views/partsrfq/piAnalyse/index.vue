@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-08-07 16:20:00
+ * @LastEditTime: 2021-08-14 10:10:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -289,6 +289,7 @@ import {
 import { pageMixins } from "@/utils/pageMixins";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
 import addScheme from './components/add'
+import { getAnalysisList, fetchAnalysisStick, fetchAnalysisSave, fetchAnalysisDel} from '@/api/partsrfq/piAnalysis/index'
 export default {
   mixins: [pageMixins],
   components: {
@@ -645,7 +646,7 @@ export default {
         const params = {
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
-          createName: this.form.owner ? this.form.owner : null,
+          createByName: this.form.owner ? this.form.owner : null,
           materialGroup: this.form.group ? this.form.group : null,
           spareParts: this.form.num ? this.form.num : null,
         };

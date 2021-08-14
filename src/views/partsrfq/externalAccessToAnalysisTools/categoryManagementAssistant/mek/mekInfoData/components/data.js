@@ -17,10 +17,10 @@ export const tableTitle = [
   { props: 'isHidden1', name: '显示/隐藏', key: 'XIANSHIYINGCHANG' },
 ]
 export const addPartTableTitle = [
-  { props: 'name', name: '零件号', key: 'LINGJIANHAO' },
-  { props: 'name', name: 'FS号', key: 'FSHAO' },
-  { props: 'toolType', name: '零件名称', key: 'LINGJIANMINGCHEN' },
-  { props: 'materialGroup', name: 'RFQ号', key: 'RFQHAO' },
+  { props: 'partNum', name: '零件号', key: 'LINGJIANHAO' },
+  { props: 'fsNum	', name: 'FS号', key: 'FSHAO' },
+  { props: 'partNameZh', name: '零件名称', key: 'LINGJIANMINGCHEN' },
+  { props: 'rfqId', name: 'RFQ号', key: 'RFQHAO' },
 ]
 export const changeLogTableTitle = [
   { props: 'name', name: '操作类型', key: 'CAOZUOLEIXING' },

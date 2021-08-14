@@ -38,8 +38,10 @@
         :isTableEdit="tableStatus"
         @handleSelectionChange="handleSelectionChange"
         @handleHide="handleHide"
+        @handleGetSelectList="handleGetSelectList"
+        :selectOptionsObject="selectOptionsObject"
     />
-    <el-divider class="margin-top20 margin-bottom20"  v-if="tableStatus === 'edit'"/>
+    <el-divider class="margin-top20 margin-bottom20" v-if="tableStatus === 'edit'"/>
     <!--隐藏表格-->
     <theTableTemplate
         v-if="tableStatus === 'edit'"
@@ -58,7 +60,7 @@
 
 <script>
 import {iButton, iMessage, iMessageBox} from 'rise';
-import {tableTitle, tableEditTitle} from './data';
+import {tableTitle, tableEditTitle, FIRSTSELECT, SECONDSELECT, THIRDSELECT} from './data';
 import {numberProcessor, toFixedNumber, toThousands, deleteThousands} from '@/utils';
 import theTableTemplate from './theTableTemplate';
 import _ from 'lodash';
@@ -103,6 +105,9 @@ export default {
       tableStatus: '',
       recordTableData: [],
       recordHideTableData: [],
+      selectOptionsObject: {},
+      FIRSTSELECT,
+      SECONDSELECT,
     };
   },
   created() {
@@ -137,6 +142,7 @@ export default {
         isShow: true,
         newRow: true,
       });
+      this.selectOptionsObject[time] = {};
     },
     handleDelete() {
       if (this.selectTableData.length === 0 && this.hideSelectTableData.length === 0) {
@@ -202,8 +208,10 @@ export default {
         this.hideTableData = [];
         //this.copyDataInfo = _.cloneDeep(this.dataInfo);
         this.copyDataInfo = [
-          {'a': 1, 'b': 2, 'c': 1, 'q': 1, 'w': 212312323, 'e': 3, isShow: true},
-          {'a': 2, 'b': 2, 'c': 1, 'q': 112, 'w': 2, 'e': 3, isShow: true}];
+          {'a': '材料', 'b': 2, 'c': 1, 'q': 1, 'w': 212312323, 'e': 3, isShow: true, dataType: '1', id: 1},
+          {'a': '人力', 'b': 2, 'c': 1, 'q': 112, 'w': 2, 'e': 3, isShow: true, dataType: '2', id: 2},
+          {'a': '汇率', 'b': 2, 'c': 1, 'q': 112, 'w': 2, 'e': 3, isShow: true, dataType: '3', id: 3},
+        ];
         this.copyDataInfo.map((item, index) => {
           if (!item.id) {
             item.time = new Date().getTime() + index;
@@ -213,6 +221,9 @@ export default {
           } else {
             this.hideTableData.push(item);
           }
+        });
+        this.copyDataInfo.map(item => {
+          this.selectOptionsObject[item.id] = {};
         });
       } catch {
         this.tableListData = [];
@@ -244,6 +255,21 @@ export default {
       }
       row.isShow = true;
       this.tableListData.push(row);
+    },
+    handleGetSelectList({props, row, selectList}) {
+      const copyObj = _.cloneDeep(this.selectOptionsObject);
+      this.tableListData.map(item => {
+        if (item.id === row.id) {
+          if (props === '') {
+            copyObj[row.id][FIRSTSELECT] = selectList;
+          } else if (props === FIRSTSELECT) {
+            copyObj[row.id][SECONDSELECT] = selectList;
+          } else if (props === SECONDSELECT) {
+            copyObj[row.id][THIRDSELECT] = selectList;
+          }
+        }
+      });
+      this.selectOptionsObject = copyObj;
     },
   },
   watch: {
@@ -278,7 +304,7 @@ export default {
   font-size: 22px;
 }
 
-.timeRange{
+.timeRange {
   font-size: 16px;
   font-weight: bold;
   color: #000000;

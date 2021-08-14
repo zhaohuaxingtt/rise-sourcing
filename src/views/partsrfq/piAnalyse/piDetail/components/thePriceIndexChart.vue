@@ -199,6 +199,15 @@ export default {
             name: '汇率合成波动比例',
             data: [120, 132, 101, 134, 90, 230, 210],
           }),
+     /*     this.setLineData({
+            lineType: 'solid',
+            lineColor: '#C62928',
+            name: '汇率合成波动比例',
+            data: [
+              {value: 120, rate: 20, time: '2013-03'},
+              {value: 130, rate: 10, time: '2013-04'},
+            ],
+          }),*/
           this.setLineData({
             lineType: 'dashed',
             lineColor: '#C62928',

@@ -116,7 +116,7 @@ import {
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
-import { TAB } from '../data';
+import { TAB,filterRole } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import filesListDialog from '../manage/components/filesListDialog'
 import {
@@ -186,18 +186,27 @@ export default {
       this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
       this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
 
-      const {navList,$route} = this;
-      const { name } = $route;
-      if(this.isAekoManager || this.isCommodityCoordinator){
-        this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_STANCE');
-        if(name == 'aekoStanceList'){
-           this.$router.push({
-              path:'/aeko/managelist'
-          });
-        }
-      }else{
-        this.navList = navList.filter((item)=>item.permissionKey != 'AEKO_MANAGE');
+      const { isAekoManager,isCommodityCoordinator,isLinie,$route } = this;
+      const role = {
+        isAekoManager,
+        isCommodityCoordinator,
+        isLinie,
+      };
+
+      
+      const filterList = filterRole(role);
+      this.navList = filterList;
+
+      // 判断当前url是否在可显示列表内 若无则显示列表第一个清单
+      const {path} = $route;
+      const filterPath = filterList.filter((item)=>item.url == path);
+      if(!filterPath.length){
+        this.$router.push({
+          path:filterList[0].url,
+        })
       }
+
+
     },
     methods:{
       // 重置

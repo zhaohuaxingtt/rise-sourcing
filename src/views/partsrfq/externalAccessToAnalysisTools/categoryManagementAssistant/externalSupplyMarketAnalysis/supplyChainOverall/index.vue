@@ -8,7 +8,7 @@
 <template>
   <div id="allContainer" class="content">
     <theSearch :ntierQueryConditionDTO="ntierQueryConditionDTO" @handleSave="handleSave" @getMapList="getMapList" class="search" />
-    <theCard :object="object" class="card-right" />
+    <theCard :provinceZh="provinceZh" :object="object" class="card-right" />
     <chartMap ref="chartMap" :mapListData="mapListData" />
   </div>
 </template>
@@ -32,6 +32,7 @@ export default {
     return {
       saveButtonLoading: false,
       object: {},
+      provinceZh: '',
       ntierQueryConditionDTO: {}
     }
   },
@@ -42,7 +43,6 @@ export default {
   // 方法集合
   methods: {
     async handleSave(params) {
-      // this.$refs.chartMap.handleSave(params)
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: 'allContainer',
@@ -60,12 +60,12 @@ export default {
       this.resultMessage(res, () => {
         this.saveButtonLoading = false;
       });
-
     },
     async getMapList(par) {
       const pms = {
         ...par
       }
+      this.provinceZh = pms.provinceZh
       const res = await nTierCard(pms)
       this.object = res.data
       this.ntierQueryConditionDTO = res.data.ntierQueryConditionDTO

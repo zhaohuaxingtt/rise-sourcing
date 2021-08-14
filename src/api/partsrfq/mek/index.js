@@ -57,11 +57,19 @@ export function add(parmars) {
     data: parmars
   })
 }
-//列表--info 修改 ||  删除
+//列表--info 修改 
 export function infoUpdate(parmars) {
   return requst({
     url: `/mekMaterial/update`,
     method: 'POST',
+    data: parmars
+  })
+}
+//列表--info  删除
+export function infoDelete(parmars) {
+  return requst({
+    url: `/mekMaterial/delete`,
+    method: 'DELETE',
     data: parmars
   })
 }

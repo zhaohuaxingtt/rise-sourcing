@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-13 16:30:40
+ * @LastEditTime: 2021-08-14 14:19:27
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -145,19 +145,37 @@ export function serialize(data, type = Object) {
 }
 
 // 数字限制输入
-export const numberProcessor = function(val, precision = 4) {
-  let result = ''
+export const numberProcessor = function(val, precision = 4, negative) {
+  let result = ""
   if (+precision > 0) {
-    result = (val + '')
-      .replace(/[^\d.]/g, '')
-      .replace(/^\.*/g, '')
-      .replace('.', '$#$')
-      .replace(/\./g, '')
-      .replace('$#$', '.')
-      .replace(/^0+([0-9].*)/, '$1')
-      .replace(new RegExp(`^(.+\\.\\d{0,${precision}})\\d*$`), '$1')
+    if (negative) {
+      result = (val + "").replace(/[^\d.-]/g, "")
+        .replace(/(?<=(-|[^-]+))-/, "")
+        .replace(/^(-?)\.*/g, "$1")
+        .replace(".", "$#$")
+        .replace(/\./g, "")
+        .replace("$#$", ".")
+        .replace(/^(-?)0+([0-9].*)/, "$1$2")
+        .replace(new RegExp(`^(.+\\.\\d{0,${ precision }})\\d*$`), "$1")
+    } else {
+      result = (val + "").replace(/[^\d.]/g, "")
+        .replace(/^\.*/g, "")
+        .replace(".", "$#$")
+        .replace(/\./g, "")
+        .replace("$#$", ".")
+        .replace(/^0+([0-9].*)/, "$1")
+        .replace(new RegExp(`^(.+\\.\\d{0,${ precision }})\\d*$`), "$1")
+    }
+    
   } else {
-    result = (val + '').replace(/\D/g, '').replace(/^0+([0-9])/, '$1')
+    if (negative) {
+      result = (val + "").replace(/[^\d-]/g, "")
+        .replace(/(?<=(-|[^-]+))-/, "")
+        .replace(/^(-?)0+([0-9])/, "$1$2")
+    } else {
+      result = (val + "").replace(/\D/g, "")
+        .replace(/^0+([0-9])/, "$1")
+    }
   }
   return result
 }

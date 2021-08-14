@@ -9,6 +9,22 @@
 export const CURRENTTIME = 'currentTime';
 export const AVERAGE = 'average';
 
+export const FIRSTSELECT = 'firstSelect';
+export const SECONDSELECT = 'secondSelect';
+export const THIRDSELECT = 'thirdSelect';
+
+export const classTypeSelect = [
+  {value: '1', name: '原材料'},
+  {value: '2', name: '人工'},
+  {value: '3', name: '汇率'},
+];
+
+export const classType = {
+  rawMaterial: '1',
+  manpower: '2',
+  exchangeRate: '3',
+};
+
 export const baseInfo = [
   {name: 'FS号', key: 'PI.FSHAO', props: 'a'},
   {name: '供应商', key: 'PI.GONGYINGSHANG', props: 'b'},
@@ -91,7 +107,6 @@ export function getColor({colorArray}) {
   return colorArray[Math.floor(Math.random() * colorArray.length)];
 }
 
-
 export const customTableTitle = [
   {props: 'fsNo', name: 'FS号', key: 'FSHAO'},
   {props: 'partNo', name: '零件号', key: 'LINGJIANHAO'},
@@ -102,4 +117,4 @@ export const customTableTitle = [
   {props: 'sopDate', name: 'SOP时间', key: 'SOPSHIJIAN'},
   {props: 'isShow', name: '显示/隐藏', key: 'XIANSHIYINCANG'},
   {props: 'sort', name: '排序', key: 'PAIXU'},
-]
+];

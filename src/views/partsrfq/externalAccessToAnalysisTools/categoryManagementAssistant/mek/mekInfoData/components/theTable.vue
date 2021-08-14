@@ -40,8 +40,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <addPartDialog v-model="addPartDialog" />
-    <changeLogDialog v-model="changeLogDialog" />
+
     <el-table v-loading="tableLoading" @selection-change="handleSelectionChange" :data="tableListData" style="width: 100%">
       <el-table-column type="selection" width="55">
       </el-table-column>
@@ -94,21 +93,17 @@
           <div class="flex-between-center-center">
             <div v-if="isEdit">{{scope.row.carTypeInfo}}</div>
             <div v-else>
-              <iSelect @focus="getCarTypeMessage(scope.row.motorSvwCode)" :placeholder="language('QINGXUANZHE','请选择')" v-model="scope.row.carTypeInfo">
+              <iSelect :loading="carTypeInfoLoading" @focus="getCarTypeMessage(scope.row.motorSvwCode)" :placeholder="language('QINGXUANZHE','请选择')" v-model="scope.row.carTypeInfo">
                 <el-option :value="item.carTypeInfo" :label="item.carTypeInfo" v-for="(item,index) of formGoup.carTypeInfoList" :key="index"></el-option>
               </iSelect>
             </div>
-            <div>
-              <el-popover trigger="hover" placement="top-start">
-                <div class="tip-box">
-                  <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
-                  <div class="tip-content">Trendline</div>
-                  <div class="tip-content">Comfortline</div>
-                  <div class="tip-title">Highline </div>
-                </div>
-                <div slot="reference" class="car-info">{{scope.row.transmission}}</div>
-              </el-popover>
-            </div>
+            <el-popover trigger="hover" placement="top-start">
+              <div class="tip-box">
+                <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
+                <div v-for="(item,index) in scope.row.configurationList" :key="index" :class="item.isHighlight?'highlight':'black'">{{item.configuration}}</div>
+              </div>
+              <div slot="reference">{{scope.row.transmission}}</div>
+            </el-popover>
           </div>
         </template>
       </el-table-column>
@@ -149,6 +144,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <addPartDialog v-model="addPartDialog" />
+    <!-- <changeLogDialog v-model="changeLogDialog" /> -->
+    <iLog :show.sync="changeLogDialog" :bizId="bizId"  />
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page='page.currPage' :total="page.totalCount" />
   </div>
 </template>
@@ -156,22 +154,23 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { iButton, icon, iSelect, iPagination } from "rise";
+import { iButton, icon, iSelect, iPagination, iLog, iMessage } from "rise";
 import addPartDialog from "./addPartDialog.vue";
 import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 import { tableTitle } from "./data.js";
-import { mekInfoList, infoUpdate, getCarTypeMessage, categoryList, carTypeList } from "@/api/partsrfq/mek/index.js";
+import { mekInfoList, infoUpdate, getCarTypeMessage, categoryList, carTypeList, infoDelete } from "@/api/partsrfq/mek/index.js";
 import { excelExport } from "@/utils/filedowLoad";
 import changeLogDialog from "./changeLogDialog";
 export default {
   // import引入的组件需要注入到对象中才能使用
   mixins: [pageMixins, resultMessageMixin],
-  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, changeLogDialog },
+  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, changeLogDialog, iLog },
   data() {
     // 这里存放数据
     return {
+      bizId: 'MEK0000001',
       addPartDialog: false,
       changeLogDialog: false,
       form: {
@@ -187,6 +186,7 @@ export default {
       tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
+      carTypeInfoLoading: false,
       isEdit: true
     }
   },
@@ -222,25 +222,24 @@ export default {
       this.isEdit = !this.isEdit
     },
     // 是否隐藏
-    handleIsHidden(item) {
+    async handleIsHidden(item) {
       console.log(item);
       let pms = item
       pms.effectFlag = 1
       pms.isHidden = !pms.isHidden
-      this.publicUpdate([pms])
-    },
-    // 公共--编辑||删除
-    async publicUpdate(pms) {
-      const res = await infoUpdate(pms)
+      const res = await infoUpdate([pms])
       this.resultMessage(res, () => {
         this.getTableList()
       })
     },
     // 获取车型信息集合
     async getCarTypeMessage(val) {
+      this.formGoup.carTypeInfoList = []
+      this.carTypeInfoLoading = true
       const res = await getCarTypeMessage({ motorSvwCode: val })
       res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
       this.formGoup.carTypeInfoList = res.data
+      this.carTypeInfoLoading = false
     },
     // 获取列表集合
     async getTableList() {
@@ -248,6 +247,8 @@ export default {
         this.tableLoading = true
         const pms = {
           ...this.form,
+          mekId: this.$route.query.SchemeId,
+          motorIds: this.$route.query.vwModelCodes,
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
         }
@@ -290,7 +291,13 @@ export default {
     // 保存
     async handleSave() {
       let pms = this.tableListData
-      pms.map(item => item.effectFlag = 1)
+      pms.map(item => {
+        let strs = item.carTypeInfo.split("+");
+        item.engine = strs[0]
+        item.transmission = strs[1]
+        item.position = strs[2]
+        return item.effectFlag = 1
+      })
       const res = await infoUpdate(pms)
       this.resultMessage(res, () => {
         this.getTableList()
@@ -302,9 +309,18 @@ export default {
     },
     // 删除
     async handleDelete() {
-      let pms = this.selectTableData
-      pms.map(item => item.effectFlag = 0)
-      this.publicUpdate(pms)
+      if (!this.selectTableData.length) {
+        iMessage.warm(this.language('QXZYTSJSC', '请选择一条数据删除'))
+        return
+      }
+      let ids = []
+      this.selectTableData.forEach(item => {
+        ids.push(item.id)
+      })
+      const res = await infoDelete(ids)
+      this.resultMessage(res, () => {
+        this.getTableList()
+      })
     },
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
@@ -328,7 +344,7 @@ export default {
   font-size: 14px;
   color: #000;
 }
-.tip-content {
+.highlight {
   font-size: 14px;
   color: #e83638;
 }
