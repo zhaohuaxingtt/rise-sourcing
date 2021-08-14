@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-13 16:38:32
+ * @LastEditTime: 2021-08-14 10:31:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\components\supplierDetail.vue
@@ -147,6 +147,7 @@ export default {
         }
         getReportDetail(params).then(res => {
           if(res && res.code == 200) {
+            this.columns = []
             for(const key in res.data.titleMap) {
               this.columns.push({
                 name: key,
@@ -201,8 +202,9 @@ export default {
         }
         .rotate{
             transform: rotate(180deg);
-            color: #E30D0D;
+            color: #A0BFFC;
             margin-left: 10px;
+            font-size: 16px;
         }
         .closed{
             font-size: 24px;
@@ -213,5 +215,9 @@ export default {
 
     .tableBox {
       margin-top: 20px;
+      .rotate{
+        color: #E30D0D;
+        font-size: 16px;
+      }
     }
 </style>
