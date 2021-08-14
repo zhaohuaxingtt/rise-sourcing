@@ -1,23 +1,23 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-05 19:54:20
+ * @LastEditTime: 2021-08-14 15:45:17
  * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
 -->
 <template>
-   <iCard class="margin-top20">
+   <iCard class="margin-top20" id="carPrice">
       <template slot="header">
          <div class="flex-between-center title">
-            <div class="flex">
+            <div class="flex-align-center">
                <span>{{language("CHEXINGJIAGEDUIBI","车型价格对比")}}</span>
-               <el-tooltip content="Top center" placement="top" effect="light">
-                  <span class="mark">beizhu 大撒大撒但顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶水水水水水水水水水水水水水水</span>
+               <el-tooltip :content="mark" placement="top" effect="light" :disabled="!mark">
+                  <span class="mark">{{mark}}</span>
                </el-tooltip>
             </div>
             <div class="flex">
-               <iButton @click="save">{{ language("BEIZHU", "备注") }}</iButton>
+               <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
                <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
                <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
             </div>
@@ -26,69 +26,136 @@
       <div class="flex-between-center">
          <div class="flex search">
             <div>
-               <span>对标车型</span>
-               <iSelect>
-                  <el-option>
-                     dadsa
-                  </el-option>
+               <span>{{ language("DUIBIAOCHEXING", "对标车型") }}</span>
+               <iSelect class="select" v-model="filterCarValue">
+                   <el-option :value="item.id" :label="item.description" v-for="(item,index) in carType" :key="index"></el-option>
                </iSelect>
             </div>
             <div>
-               <span>车型配置</span>
-               <iSelect>
-                  <el-option>
-                     dadsa
-                  </el-option>
+               <span>{{ language("CHEXINGPEIZHI", "车型配置") }}</span>
+               <iSelect class="select" v-model="config.pageName">
+                   <el-option :value="item.code" :label="item.name" v-for="(item,index) in dictData.CATEGORY_MANAGEMENT_CAR_TYPE" :key="index"></el-option>
                </iSelect>
             </div>
             <div>
-               <span>年月范围</span>
-               <iDatePicker value-format="yyyy-MM-dd" type="daterange" start-placeholder="开始日期" end-placeholder="结束日期"/>
+               <span>{{ language("NIANFENFANWEI", "年月范围") }}</span>
+               <iDatePicker v-model="selectDate" value-format="yyyy-MM" type="daterange" :start-placeholder="language('KAISHIRIQI','开始日期')" :end-placeholder="language('JIESHURIQI','结束日期')"
+               :picker-options="pickerOptions"/>
             </div>
          </div>
-         <div>
-            <iButton @click="back">{{ language("QUEREN", "确认") }}</iButton>
-            <iButton @click="back">{{ language("CHONGZHI", "重置") }}</iButton>
+         <div class="flex-align-center">
+            <iButton @click="renderBi">{{ language("QUEREN", "确认") }}</iButton>
+            <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
          </div>
       </div>
       <!-- powerBi -->
       <div id="powerBi"></div>
+      <!-- 备注 -->
+      <marks @sure="saveMark" v-model="markShow" ref="marks"></marks>
    </iCard>
 </template>
 <script>
 import {iCard,iButton,iSelect,iDatePicker} from "rise";
-import {getCmCarTypePricePbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/carPrice";
+import {getCmCarTypePricePbi,carTypeByCategoryCode} from "@/api/categoryManagementAssistant/internalDemandAnalysis/carPrice";
 import * as pbi from 'powerbi-client';
+import marks from "../batchSupplier/marks";
+import {getCategoryAnalysis,categoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
+import {downloadPdfMixins} from '@/utils/pdf';
+import { selectDictByKeys } from "@/api/dictionary";
 export default {
-   components:{iCard,iButton,iSelect,iDatePicker},
+   mixins: [downloadPdfMixins],
+   components:{iCard,iButton,iSelect,iDatePicker,marks},
    data () {
       return {
+         config :{
+            type: 'report',
+            tokenType: pbi.models.TokenType.Embed,
+            accessToken: '',
+            embedUrl: '',
+            pageName:"ReportSection4f9dbc506e2efb5aa384",
+            settings: {
+               panes: {
+                  filters: {
+                     visible: false
+                  },
+                  pageNavigation: {
+                     visible: false
+                  }
+               }
+            }
+         },
          filter : {
             $schema: "http://powerbi.com/product/schema#basic",
             target: {
-               table: "app_supplier_fin_analysis_sum_nt_daily",
-               column: "subject_name"
+               table: "DM_fact",
+               column: "category_id"
             },
             operator: "In",
-            values: [],//[this.name],// values
+            values: [],//
+            filterType: null,
+            requireSingleSelection: true
+         },
+         // 车型
+         filter_car : {
+            $schema: "http://powerbi.com/product/schema#basic",
+            target: {
+               table: "DM_CT",
+               column: "car_type_id"
+            },
+            operator: "In",
+            values: [],//
+            filterType: null,
+            requireSingleSelection: true
+         },
+         // 时间
+         filter_time_start : {
+            $schema: "http://powerbi.com/product/schema#basic",
+            target: {
+               table: "11_DM_BeginDate",
+               column: "YearMonthNo"
+            },
+            operator: "In",
+            values: [],//
+            filterType: null,
+            requireSingleSelection: true
+         },
+         filter_time_end : {
+            $schema: "http://powerbi.com/product/schema#basic",
+            target: {
+               table: "12_DM_EndDate",
+               column: "YearMonthNo"
+            },
+            operator: "In",
+            values: [],//
             filterType: null,
             requireSingleSelection: true
          },
          report:null,
-         name:"",
          url: {
             accessToken: "", //验证token
             embedUrl: "", //报告信息内嵌地址
             tokenExpiry: ""//token过期时间
          },
-         values:[],
-         reportContainer:null
+         reportContainer:null,
+         categoryCode:"",
+         mark:"",
+         markShow:false,
+         carType:[],//车型项目
+         dictData:{
+            CATEGORY_MANAGEMENT_CAR_TYPE:[]
+         },
+         selectDate:"",//选择的时间
+         filterCarValue:"",//对标车型
+         pickerOptions: {
+            disabledDate(time) {
+               let currentYear = new Date().getFullYear()
+               return time.getFullYear() < currentYear;
+            }
+         },
       }
    },
    created () {
-      if (this.$route.query.name) {
-         this.name = this.$route.query.name;
-      }
+      this.categoryCode=this.$store.state.rfq.categoryCode
    },
    mounted () {
       this.filter={...this.filter,filterType:pbi.models.FilterType.BasicFilter},
@@ -102,59 +169,101 @@ export default {
       }}
    },
    methods: {
+      // 获取近期操作数据
+      getCategoryAnalysis(){
+         let params={
+            categoryCode:this.categoryCode,
+            schemeType:"CATEGORY_MANAGEMENT_CAR_TYPE"
+         }
+         getCategoryAnalysis(params).then(res=>{
+            if(res.data){
+               this.mark=res.data.operateLog
+            }
+         })
+
+      },
+      // 保存备注
+      saveMark(mark){
+         this.mark=mark
+         this.markShow=false
+      },
+      // 保存
+      async save(){
+         const resFile = await this.getDownloadFileAndExportPdf({
+            domId: 'carPrice',
+            pdfName: 'carPrice',
+         });
+         let params={
+            categoryCode:this.categoryCode,
+            fileType:"PDF",
+            operateLog:this.mark,
+            schemeType:"CATEGORY_MANAGEMENT_CAR_TYPE",
+            reportFileName: resFile.downloadName,
+            reportName: resFile.downloadName,
+            schemeName:"",
+            reportUrl: resFile.downloadUrl
+         }
+         categoryAnalysis(params).then(res=>{
+            
+         })
+      },
+      // 打开备注弹窗
+      openMark(){
+         this.markShow=true
+         this.$refs.marks.getMarkdefalut(this.mark)
+      },
       // 获取财报iframeurl
       getPowerBiUrl() {
             getCmCarTypePricePbi().then(res => {
             if (res.data) {
                this.url = res.data
-               this.init()
-               this.renderBi()
+               this.carTypeByCategoryCode()
             }
          })
       },
+      // 数据字典
+      getDict() {
+         selectDictByKeys([{ keys: "CATEGORY_MANAGEMENT_CAR_TYPE" }]).then(res=>{
+            this.dictData=res.data
+            this.init()
+            this.renderBi()
+         })
+      },
+      // 获取车型数据
+      carTypeByCategoryCode(){
+         let params={
+            categoryCode:this.categoryCode
+         }
+         carTypeByCategoryCode(params).then(res=>{
+            this.carType=res.data
+            this.getDict()
+         })
+      },
+      // 重置
+      reset(){
+         this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
+         this.renderBi()
+      },
       // 初始化配置
       init(){
-         // this.permissions = pbi.models.Permissions.All
-         this.config = {
-            type: 'report',
-            tokenType: pbi.models.TokenType.Embed,
-            accessToken: this.url.accessToken,
-            embedUrl: this.url.embedUrl,
-            pageName:"ReportSectione9fe87a027d2550c28a9",// 中文ReportSectione9fe87a027d2550c28a9 英文 ReportSection616eb7861df2ef50a3cd
-            // id: 'f6bfd646-b718-44dc-a378-b73e6b528204',
-            // visualName: '47eb6c0240defd498d4b',
-            // permissions: permissions,
-            settings: {
-               panes: {
-                  filters: {
-                     visible: false
-                  },
-                  pageNavigation: {
-                     visible: false
-                  }
-               }
-            }
-         };
+         this.config.embedUrl=this.url.embedUrl
+         this.config.accessToken=this.url.accessToken
+         this.filter.values=[this.categoryCode]
+         // this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_CAR_TYPE[0].code
          this.reportContainer = document.getElementById('powerBi');
          this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       },
       renderBi() {
+         console.log(this.selectDate,this.filter_time_start,this.filter_time_end)
+         this.filter_car.values=[this.filterCarValue]
+         this.filter_time_start.values=[this.selectDate[0]]
+         this.filter_time_end.values=[this.selectDate[1]]
          var report = this.powerbi.embed(this.reportContainer, this.config);
          // Report.off removes a given event handler if it exists.
          report.off("loaded");
          // Report.on will add an event handler which prints to Log window.
-         const name = this.name
-         const newfilter = window._.cloneDeep(this.filter);
-         newfilter.values=[name]
-         this.values=[name]
-         console.log(newfilter);
          report.on("loaded", ()=> {
-            console.log("Loaded");
-            // if(name==""){
-               // newfilter.values=[]
-            // report.updateFilters(pbi.models.FiltersOperations.Add, [newfilter]);
-            // }
-            report.setFilters([newfilter])
+            report.setFilters([this.filter,this.filter_time_start,this.filter_time_end])
          });
          // Report.off removes a given event handler if it exists.
          report.off("rendered");
@@ -179,10 +288,6 @@ export default {
          });
          this.report=report
       },
-      // 保存
-      save(){
-
-      },
       // 返回
       back(){
          this.$router.go(-1)
@@ -204,7 +309,7 @@ export default {
 }
 .search{
    >div{
-      width:200px;
+      width:220px;
       margin-right: 30px;
       >span{
          display: block;
