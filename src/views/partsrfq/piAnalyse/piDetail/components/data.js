@@ -9,9 +9,21 @@
 export const CURRENTTIME = 'currentTime';
 export const AVERAGE = 'average';
 
-export const FIRSTSELECT = 'firstSelect'
-export const SECONDSELECT = 'secondSelect'
-export const THIRDSELECT = 'thirdSelect'
+export const FIRSTSELECT = 'firstSelect';
+export const SECONDSELECT = 'secondSelect';
+export const THIRDSELECT = 'thirdSelect';
+
+export const classTypeSelect = [
+  {value: '1', name: '原材料'},
+  {value: '2', name: '人工'},
+  {value: '3', name: '汇率'},
+];
+
+export const classType = {
+  rawMaterial: '1',
+  manpower: '2',
+  exchangeRate: '3',
+};
 
 export const baseInfo = [
   {name: 'FS号', key: 'PI.FSHAO', props: 'a'},
@@ -21,10 +33,10 @@ export const baseInfo = [
 ];
 
 export const tableTitle = [
-  {name: '类别', key: 'PI.LEIBIE', props: 'a'},
-  {name: '价格影响系数%', key: 'PI.JIAGEYINGXIANGXISHU', props: 'b'},
-  {name: '价格变动比率%', key: 'PI.JIAGEBIANDONGBILV', props: 'c'},
-  {name: 'CBD', key: '', props: 'd'},
+  {name: '类别', key: 'PI.LEIBIE', props: 'classType'},
+  {name: '价格影响系数%', key: 'PI.JIAGEYINGXIANGXISHU', props: 'costProportion'},
+  {name: '价格变动比率%', key: 'PI.JIAGEBIANDONGBILV', props: 'priceChange'},
+  {name: 'CBD', key: '', props: 'attributeValue'},
   {
     name: '系统匹配信息',
     key: 'PI.XITONGPIPEIXINXI',
@@ -34,16 +46,7 @@ export const tableTitle = [
 ];
 
 export const tableEditTitle = [
-  {name: '类别', key: 'PI.LEIBIE', props: 'a'},
-  {name: '价格影响系数%', key: 'PI.JIAGEYINGXIANGXISHU', props: 'b'},
-  {name: '价格变动比率%', key: 'PI.JIAGEBIANDONGBILV', props: 'c'},
-  {name: 'CBD', key: '', props: 'd'},
-  {
-    name: '系统匹配信息',
-    key: 'PI.XITONGPIPEIXINXI',
-    props: 'systemMatch',
-    width: 550,
-  },
+    ...tableTitle,
   {name: '显示/隐藏', key: 'PI.XIANSHIYINGCANG', props: 'isShow'},
 ];
 
@@ -95,7 +98,6 @@ export function getColor({colorArray}) {
   return colorArray[Math.floor(Math.random() * colorArray.length)];
 }
 
-
 export const customTableTitle = [
   {props: 'fsNo', name: 'FS号', key: 'FSHAO'},
   {props: 'partNo', name: '零件号', key: 'LINGJIANHAO'},
@@ -106,4 +108,4 @@ export const customTableTitle = [
   {props: 'sopDate', name: 'SOP时间', key: 'SOPSHIJIAN'},
   {props: 'isShow', name: '显示/隐藏', key: 'XIANSHIYINCANG'},
   {props: 'sort', name: '排序', key: 'PAIXU'},
-]
+];

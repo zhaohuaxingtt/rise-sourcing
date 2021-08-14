@@ -1,23 +1,23 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-08-12 15:48:26
+ * @LastEditTime: 2021-08-14 13:34:31
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
 -->
 <template>
-   <iCard class="margin-top20">
+   <iCard class="margin-top20" id="batchSupplier">
       <template slot="header">
          <div class="flex-between-center title">
-            <div class="flex">
+            <div class="flex-align-center">
                <span>{{language("PLGYSGL","批量供应商概览")}}</span>
-               <el-tooltip content="Top center" placement="top" effect="light">
-                  <span class="mark">beizhu 大撒大撒但顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶水水水水水水水水水水水水水水</span>
+               <el-tooltip :content="mark" placement="top" effect="light" :disabled="!mark">
+                  <span class="mark">{{mark}}</span>
                </el-tooltip>
             </div>
             <div class="flex">
-               <iButton @click="save">{{ language("BEIZHU", "备注") }}</iButton>
+               <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
                <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
                <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
             </div>
@@ -25,17 +25,23 @@
 		</template>
       <!-- powerBi -->
       <div id="powerBi"></div>
+      <!-- 备注 -->
+      <marks @sure="saveMark" v-model="markShow" ref="marks"></marks>
    </iCard>
 </template>
 <script>
 import {iCard,iButton} from "rise";
 import {getCmSupplierPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/batchSupplier";
 import * as pbi from 'powerbi-client';
+import {getCategoryAnalysis,categoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
+import marks from "./marks";
+import {downloadPdfMixins} from '@/utils/pdf';
 export default {
-   components:{iCard,iButton},
+   mixins: [downloadPdfMixins],
+   components:{iCard,iButton,marks},
    data () {
       return {
-          config :{
+         config :{
             type: 'report',
             tokenType: pbi.models.TokenType.Embed,
             accessToken: '',
@@ -70,11 +76,14 @@ export default {
             tokenExpiry: ""//token过期时间
          },
          reportContainer:null,
-         categoryCode:""
+         categoryCode:"",
+         mark:"",
+         markShow:false
       }
    },
    created () {
       this.categoryCode=this.$store.state.rfq.categoryCode
+      this.getCategoryAnalysis()
    },
    mounted () {
 		this.getPowerBiUrl()
@@ -87,6 +96,48 @@ export default {
       }}
    },
    methods: {
+      // 获取近期操作数据
+      getCategoryAnalysis(){
+         let params={
+            categoryCode:this.categoryCode,
+            schemeType:"CATEGORY_MANAGEMENT_PURCHASE_AMOUNT"
+         }
+         getCategoryAnalysis(params).then(res=>{
+            if(res.data){
+               this.mark=res.data.operateLog
+            }
+         })
+      },
+      // 保存备注
+      saveMark(mark){
+         this.mark=mark
+         this.markShow=false
+      },
+      // 保存
+      async save(){
+         const resFile = await this.getDownloadFileAndExportPdf({
+            domId: 'batchSupplier',
+            pdfName: 'batchSupplier',
+         });
+         let params={
+            categoryCode:this.categoryCode,
+            fileType:"PDF",
+            operateLog:this.mark,
+            schemeType:"CATEGORY_MANAGEMENT_PURCHASE_AMOUNT",
+            reportFileName: resFile.downloadName,
+            reportName: resFile.downloadName,
+            schemeName:"",
+            reportUrl: resFile.downloadUrl
+         }
+         categoryAnalysis(params).then(res=>{
+            
+         })
+      },
+      // 打开保存弹窗
+      openMark(){
+         this.markShow=true
+         this.$refs.marks.getMarkdefalut(this.mark)
+      },
       // 获取财报iframeurl
       getPowerBiUrl() {
             getCmSupplierPbi().then(res => {
@@ -137,10 +188,6 @@ export default {
          });
          this.report=report
       },
-      // 保存
-      save(){
-
-      },
       // 返回
       back(){
          this.$router.go(-1)
@@ -156,7 +203,7 @@ export default {
       opacity: 0.42;
       margin-left: 32px;
       font-weight: normal;
-      width: 590px;
+      max-width: 590px;
       @include text_;
    }
 }

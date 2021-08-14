@@ -1,16 +1,17 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-13 16:02:51
+ * @LastEditTime: 2021-08-14 11:23:58
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\index.vue
 -->
 <template>
-	<iCard :title='language("CAILIAOZUDINGWEI","材料组定位")' class="margin-top20">
+	<iCard :title='language("CAILIAOZUDINGWEI","材料组定位")' class="margin-top20" id="materialGroup">
 		<template slot="header-control">
-			<iButton>{{ language("BIANJI", "编辑") }}</iButton>
-			<iButton @click="deleted">{{ language("BAOCUN", "保存") }}</iButton>
+			<iButton @click="edit" v-if="isEdit">{{ language("BIANJI", "编辑") }}</iButton>
+			<iButton @click="edit" v-else>{{ language("QUXIAO", "取消") }}</iButton>
+			<iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
 			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 		</template>
 		<!-- 材料组定位/材料组占比情况 -->
@@ -55,7 +56,7 @@
 				<el-tooltip :content="item.problemName" placement="top" effect="light">
 					<p class="problemTitle">{{item.problemName}}</p>
             </el-tooltip>
-				<iInput type="textarea" rows="2" resize="none" v-model="item.suggestContent"></iInput>
+				<iInput :disabled="isEdit" type="textarea" rows="2" resize="none" v-model="item.suggestContent"></iInput>
 			</div>
 		</div>
 	</iCard>
@@ -65,10 +66,12 @@
 	import {iCard,iPagination,iButton,iMessage,iMessageBox,icon,iInput} from 'rise';
 	import tableList from '@/views/partsrfq/externalAccessToAnalysisTools/components/tableList.vue';
 	import {tableTitle} from './data';
-	import {materialGroupPosition} from "@/api/categoryManagementAssistant/marketData/materialGroup";
+	import {materialGroupPosition,saveMaterialGroupScheme} from "@/api/categoryManagementAssistant/marketData/materialGroup";
 	import ring from "./ring";
 	import piecewise from "./piecewise";
+	import {downloadPdfMixins} from '@/utils/pdf';
 	export default{
+		mixins:[downloadPdfMixins],
 		components:{
 			iCard,tableList,iButton,icon,iInput,ring,piecewise
 		},
@@ -85,8 +88,10 @@
 				tableListData:[],
 				tableTitle,
 				tableLoading:false,
+				isEdit:true,
 				selectData:[],
 				categoryCode:"",
+				categoryName:"",
 				materialGroup:{
 					kpiDistribution:{
 						importantFeaturesMoneys:[],
@@ -103,11 +108,13 @@
 			}
 		},
 		created() {
-			// this.categoryCode=this.$store.state.rfq.categoryCode
-			
+			this.categoryCode=this.$store.state.rfq.categoryCode
+			this.categoryName=this.$store.state.rfq.categoryName
+
 		},
 		mounted () {
 			this.categoryCode="051"
+			this.categoryName="cesj"
 			this.getMaterialGroup()
 		},
 		methods:{
@@ -127,10 +134,33 @@
 					}
 				})
 			},
+			// 保存
+			async save(){
+				const resFile = await this.getDownloadFileAndExportPdf({
+					domId: 'materialGroup',
+					pdfName: 'materialGroup',
+				});
+				let params={
+					materialGroupCode:this.categoryCode,
+					materialGroupName:this.categoryName,
+					// reportFileName: resFile.downloadName,
+					// reportName: resFile.downloadName,
+					// schemeName:"",
+					reportUrl: resFile.downloadUrl,
+					problemAndSuggestionList:this.materialGroup.problemAndSuggestionList
+				}
+				saveMaterialGroupScheme(params).then(res=>{
+					
+				})
+			},
 			// 返回
 			back(){
 				this.$router.go(-1)
-			}
+			},
+			// 编辑
+			edit(){
+				this.isEdit=!this.isEdit
+			},
 		}
 	}
 </script>

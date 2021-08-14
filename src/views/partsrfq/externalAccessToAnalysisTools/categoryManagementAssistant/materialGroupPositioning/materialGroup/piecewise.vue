@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-09 16:45:32
- * @LastEditTime: 2021-08-13 18:34:58
+ * @LastEditTime: 2021-08-14 10:37:38
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\piecewise.vue
@@ -55,12 +55,19 @@ export default {
             return {
                value:[parseInt(item.riskScore),parseInt(item.moneyScore)],
                materialGroupName:item.materialGroupName,
-               materialGroupCode:item.materialGroupCode 
+               materialGroupCode:item.materialGroupCode,
             }
          }) 
-         console.log(marksData)
-         let centerMarkX=parseInt(data.currentPoint.riskScore)
-         let centerMarkY=parseInt(data.currentPoint.moneyScore)
+         // 当前点
+         let currentCategory={
+            value:[parseInt(data.currentPoint.riskScore),parseInt(data.currentPoint.moneyScore)],
+            materialGroupName:data.currentPoint.materialGroupName,
+            materialGroupCode:data.currentPoint.materialGroupCode,
+            symbolSize:20
+         }
+         marksData.push(currentCategory)
+         let centerMarkX=parseInt(data.centerPoint.riskScore)
+         let centerMarkY=parseInt(data.centerPoint.moneyScore)
          // 中心线
          let centerLine = [
             {
@@ -100,7 +107,7 @@ export default {
                      return [
                         `材料组名称:${data.materialGroupName}`,
                         `材料组编号: ${data.materialGroupCode}`,
-                        `材料组分数:`,`${value[0]},${value[1]} `
+                        `材料组分数:${value[0]},${value[1]} `
                            ].join("</br>")
                }
             },
@@ -166,14 +173,15 @@ export default {
                      formatter: '{b}'
                },
                itemStyle: {
-                     shadowBlur: 2,
-                     shadowColor: 'rgba(120, 36, 50, 0.5)',
-                     shadowOffsetY: 1,
+                  color:"rgba(65, 165, 245, 0.5)"
+                     // shadowBlur: 2,
+                     // shadowColor: 'rgba(120, 36, 50, 0.5)',
+                     // shadowOffsetY: 1,
                      // color: function (e) {
                      //    let randomColor = 'rgba(' + Math.floor(Math.random() * 240) + ',' + Math.floor(Math.random() * 240) + ',' + Math.floor(Math.random() * 240) + ',' + '.8' + ')'
                      //    return randomColor.substring()
                      // }
-                     color:"rgba(65, 165, 245, 0.5)"
+                     
                },
                // 各象限区域
                markArea: {

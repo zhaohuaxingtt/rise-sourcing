@@ -1,7 +1,7 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-06-25 14:48:29
+ * @LastEditTime: 2021-08-14 14:08:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
@@ -119,9 +119,7 @@ export default {
     // 获取列表
     getPartsBySupplier() {
       if (!this.parts.length) return
-
       this.loading = true
-
       getPartsBySupplier({
         current: this.page.currPage,
         size: this.page.pageSize,
