@@ -227,13 +227,24 @@ export default {
       this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
       this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
 
-      const { isAekoManager,isCommodityCoordinator,isLinie } = this;
+      const { isAekoManager,isCommodityCoordinator,isLinie,$route } = this;
       const role = {
         isAekoManager,
         isCommodityCoordinator,
         isLinie,
       };
-      this.navList = filterRole(role);
+
+      const filterList = filterRole(role);
+      this.navList = filterList;
+
+      // 判断当前url是否在可显示列表内 若无则显示列表第一个清单
+      const {path} = $route;
+      const filterPath = filterList.filter((item)=>item.url == path);
+      if(!filterPath.length){
+        this.$router.push({
+          path:filterList[0].url,
+        })
+      }
     },
     methods:{
       // 重置
