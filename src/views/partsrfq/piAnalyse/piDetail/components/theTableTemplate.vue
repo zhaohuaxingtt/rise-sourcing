@@ -32,7 +32,7 @@
     <template v-for="(items,index) in tableTitle">
       <!--类别-->
       <el-table-column
-          v-if="items.props === 'a'"
+          v-if="items.props === 'classType'"
           :width="items.width"
           :show-overflow-tooltip='items.tooltip'
           :key="index"
@@ -57,7 +57,7 @@
       </el-table-column>
       <!--价格影响系数%-->
       <el-table-column
-          v-if="items.props === 'b'"
+          v-if="items.props === 'costProportion'"
           :width="items.width"
           :show-overflow-tooltip='items.tooltip'
           :key="index"
@@ -76,7 +76,7 @@
       </el-table-column>
       <!--价格变动比率%-->
       <el-table-column
-          v-if="items.props === 'c'"
+          v-if="items.props === 'priceChange'"
           :width="items.width"
           :show-overflow-tooltip='items.tooltip'
           :key="index"
@@ -87,13 +87,13 @@
       >
         <template slot-scope="scope">
           <div class="rateOfChange" :style="{'backgroundColor': getColor({colorArray: rawMaterialColor})}">
-            {{ scope.row.c }}
+            {{ scope.row[items.props] }}
           </div>
         </template>
       </el-table-column>
       <!--CBD-->
       <el-table-column
-          v-if="items.props === 'd'"
+          v-if="items.props === 'attributeValue'"
           :width="items.width"
           :show-overflow-tooltip='items.tooltip'
           :key="index"
@@ -119,11 +119,12 @@
         <template slot-scope="scope">
           <div class="systemMatchBox">
             <template v-if="isTableEdit">
-              <iSelect v-model="scope.row.q"
-                       @visible-change="(boolean)=>handleGetSelectList({props: '',boolean,row: scope.row})"
-                       @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row})"
-                       style="width: 120px;margin-right: 10px;"
-                       value-key="id"
+              <iSelect
+                  v-model="scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})]"
+                  @visible-change="(boolean)=>handleGetSelectList({props: '',boolean,row: scope.row})"
+                  @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row})"
+                  style="width: 120px;margin-right: 10px;"
+                  value-key="id"
               >
                 <template v-if="scope.row.newRow">
                   <el-option
@@ -140,10 +141,11 @@
                       :label="getSelectLabel({props: FIRSTSELECT, row:scope.row, itemData: item})"/>
                 </template>
               </iSelect>
-              <iSelect v-model="scope.row.w"
-                       @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row})"
-                       style="width: 120px;margin-right: 10px;"
-                       value-key="id"
+              <iSelect
+                  v-model="scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})]"
+                  @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row})"
+                  style="width: 120px;margin-right: 10px;"
+                  value-key="id"
               >
                 <template v-if="scope.row.newRow">
                   <el-option
@@ -162,7 +164,7 @@
               </iSelect>
               <iSelect
                   v-if="scope.row.dataType === classType['rawMaterial']"
-                  v-model="scope.row.e"
+                  v-model="scope.row[getMatchProps({props: THIRDSELECT, row: scope.row})]"
                   @change="handleSelectChange({props:THIRDSELECT , event: $event, row:scope.row})"
                   style="width: 120px;margin-right: 10px;"
                   value-key="id"
@@ -185,12 +187,12 @@
               <div v-else style="width: 120px;margin-right: 10px;"/>
             </template>
             <template v-else>
-              <div class="systemMatchText">{{ scope.row.q }}</div>
-              <div class="systemMatchText">{{ scope.row.w }}</div>
-              <div class="systemMatchText">{{ scope.row.e }}</div>
+              <div class="systemMatchText">{{ scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})] }}</div>
+              <div class="systemMatchText">{{ scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})] }}</div>
+              <div class="systemMatchText">{{ scope.row[getMatchProps({props: THIRDSELECT, row: scope.row})] }}</div>
             </template>
             <div class="systemMatchText" style="width: auto;">
-              <span>数据来源: {{scope.row.dataSource}}</span>
+              <span>数据来源: {{ scope.row.dataSource }}</span>
               <iconTips
                   iconName="iconzhongyaoxinxitishi"
                   :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成\n'+'对应的指数变动百分比，可手动补充系统匹配\n'+'模块信息。')"
@@ -352,7 +354,6 @@ export default {
     },
     // 获取select Label
     getSelectLabel({props, row, itemData}) {
-      console.log(111);
       switch (row.dataType) {
         case this.classType['rawMaterial']:
           if (props === this.FIRSTSELECT) {
@@ -382,6 +383,34 @@ export default {
     handleNewRowClassTypeSelectChange({event, row}) {
       row.dataType = event;
       this.handleGetSelectList({props: '', boolean: true, row});
+    },
+    // 获取匹配props
+    getMatchProps({props, row}) {
+      switch (row.dataType) {
+        case this.classType['rawMaterial']:
+          if (props === this.FIRSTSELECT) {
+            return 'partType';
+          } else if (props === this.SECONDSELECT) {
+            return 'partNumber';
+          } else if (props === this.THIRDSELECT) {
+            return 'partRegion';
+          }
+          break;
+        case this.classType['manpower']:
+          if (props === this.FIRSTSELECT) {
+            return 'work';
+          } else if (props === this.SECONDSELECT) {
+            return 'workProvince';
+          }
+          break;
+        case this.classType['exchangeRate']:
+          if (props === this.FIRSTSELECT) {
+            return 'productionCountry';
+          } else if (props === this.SECONDSELECT) {
+            return 'currency';
+          }
+          break;
+      }
     },
   },
 };

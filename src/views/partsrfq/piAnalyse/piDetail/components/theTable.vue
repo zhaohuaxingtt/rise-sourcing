@@ -202,6 +202,7 @@ export default {
       this.tableStatus = '';
     },
     handleFinish() {
+      console.log(this.tableListData);
       this.$emit('handlePriceTableFinish');
     },
     getTableList() {
@@ -210,9 +211,9 @@ export default {
         this.hideTableData = [];
         //this.copyDataInfo = _.cloneDeep(this.dataInfo);
         this.copyDataInfo = [
-          {'a': '材料', 'b': 2, 'c': 1, 'q': 1, 'w': 212312323, 'e': 3, isShow: true, dataType: '1', id: 1},
-          {'a': '人力', 'b': 2, 'c': 1, 'q': 112, 'w': 2, 'e': 3, isShow: true, dataType: '2', id: 2},
-          {'a': '汇率', 'b': 2, 'c': 1, 'q': 112, 'w': 2, 'e': 3, isShow: true, dataType: '3', id: 3},
+          {'classType': '材料', 'costProportion': 2, 'priceChange': 1, 'partType': 1, 'w': 212312323, 'e': 3, isShow: true, dataType: '1', id: 1},
+          {'classType': '人力', 'costProportion': 2, 'priceChange': 1, 'work': 2, 'w': 2, 'e': 3, isShow: true, dataType: '2', id: 2},
+          {'classType': '汇率', 'costProportion': 2, 'priceChange': 1, 'productionCountry': 3, 'w': 2, 'e': 3, isShow: true, dataType: '3', id: 3},
         ];
         this.copyDataInfo.map((item, index) => {
           if (!item.id) {
