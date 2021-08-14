@@ -54,6 +54,7 @@ import partsList from "./components/partsList"
 import cover from "./components/cover"
 import attachment from "./components/attachment"
 import record from "./components/record"
+import { permissionArray } from "@/utils"
 
 import {
   getAekoDetail,
@@ -92,6 +93,10 @@ export default {
         console.error(e)
       }
     }
+
+    this.tabs = permissionArray("permissionKey", this.tabs)
+
+    console.log(this.tabs)
 
     this.getBbasicInfo();
   },
