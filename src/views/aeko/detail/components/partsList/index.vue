@@ -25,7 +25,7 @@
                         :value="item.code">
                     </el-option>
                 </iSelect> 
-                <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model="searchParams[item.props]"></iInput> 
+                <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model.trim="searchParams[item.props]"></iInput> 
             </el-form-item>
         </el-form>
     </iSearch>
@@ -112,7 +112,7 @@ import {
     iPagination,
     iMessage,
 } from 'rise';
-import { SearchList, linieSearchList , tableTitle, linieQueryForm, linieTableTitle } from './data';
+import { SearchList, linieSearchList , tableTitle, linieQueryForm, linieTableTitle,commodityTableTitle } from './data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
@@ -174,7 +174,7 @@ export default {
             this.searchParams.buyerName = this.userInfo.nameZh
         } else if (this.isCommodityCoordinator) {
             this.SearchList = SearchList
-            this.tableTitle = tableTitle;
+            this.tableTitle = commodityTableTitle;
         } else if (this.isAekoManager) {
             this.SearchList = SearchList
             this.tableTitle = tableTitle;

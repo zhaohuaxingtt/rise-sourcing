@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-07-23 17:48:53
+ * @LastEditTime: 2021-08-14 16:49:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -220,31 +220,22 @@ export default {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
       this.createPartsLoading = true
 
-      createParts({
-        manuallyCreatePartProjectDTOList: this.multipleSelection.map(item => ({
-          partNum: item.partNum,
-          isBKM: this.isBKM
-          // partProjectType: item.partType
-        }))
-      })
+      createParts(this.multipleSelection.map(item => item.partNum))
       .then(res => {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-
-          if (res.data.manuallyCreatePartProjectVOS.length == 1) {
-            console.log(JSON.stringify(res.data.manuallyCreatePartProjectVOS[0]))
+          if (res.data.length == 1) {
             this.$router.push({
               path: "/sourcing/partsprocure/editordetail",
               query: {
                 item: JSON.stringify({ 
-                  ...res.data.manuallyCreatePartProjectVOS[0], 
-                  purchaseProjectId: res.data.manuallyCreatePartProjectVOS[0].purchaseProjectId
+                  ...res.data[0]
                 })
               }
             })
           } else {
             this.$router.push({
-              path: `/sourcing/partsprocure/batchmiantain?${ serialize(res.data.manuallyCreatePartProjectVOS.map(item => ({ ids: item.purchaseProjectId })), Array) }`
+              path: `/sourcing/partsprocure/batchmiantain?${ serialize(res.data.map(item => ({ ids: item.id })), Array) }`
             })
           }
         } else {

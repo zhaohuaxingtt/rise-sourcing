@@ -52,10 +52,15 @@ export default {
     value: { type: Boolean },
   },
   created() {
-    this.getTableList()
+  },
+  watch: {
+    value: {
+      handler(val) {
+        val && this.getTableList()
+      }
+    }
   },
   methods: {
-
     handleSelectionChange(val, index) {
       switch (index) {
         case 0:
