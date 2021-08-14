@@ -32,7 +32,7 @@
     <template v-for="(items,index) in tableTitle">
       <!--类别-->
       <el-table-column
-          v-if="items.props === 'a'"
+          v-if="items.props === 'classType'"
           :width="items.width"
           :show-overflow-tooltip='items.tooltip'
           :key="index"
@@ -41,17 +41,23 @@
           :prop="items.props"
           :fixed="items.fixed">
         <template slot-scope="scope">
-          <iInput
+          <iSelect
               v-if="scope.row.newRow"
               v-model="scope.row[items.props]"
-              :maxlength="50"
-          />
+              @change="handleNewRowClassTypeSelectChange({event: $event, row:scope.row})"
+          >
+            <el-option
+                v-for="item of classTypeSelect"
+                :key='item.value'
+                :value='item.value'
+                :label="item.name"/>
+          </iSelect>
           <span v-else>{{ scope.row[items.props] }}</span>
         </template>
       </el-table-column>
       <!--价格影响系数%-->
       <el-table-column
-          v-if="items.props === 'b'"
+          v-if="items.props === 'costProportion'"
           :width="items.width"
           :show-overflow-tooltip='items.tooltip'
           :key="index"
@@ -70,7 +76,7 @@
       </el-table-column>
       <!--价格变动比率%-->
       <el-table-column
-          v-if="items.props === 'c'"
+          v-if="items.props === 'priceChange'"
           :width="items.width"
           :show-overflow-tooltip='items.tooltip'
           :key="index"
@@ -81,13 +87,13 @@
       >
         <template slot-scope="scope">
           <div class="rateOfChange" :style="{'backgroundColor': getColor({colorArray: rawMaterialColor})}">
-            {{ scope.row.c }}
+            {{ scope.row[items.props] }}
           </div>
         </template>
       </el-table-column>
       <!--CBD-->
       <el-table-column
-          v-if="items.props === 'd'"
+          v-if="items.props === 'attributeValue'"
           :width="items.width"
           :show-overflow-tooltip='items.tooltip'
           :key="index"
@@ -113,40 +119,80 @@
         <template slot-scope="scope">
           <div class="systemMatchBox">
             <template v-if="isTableEdit">
-              <iSelect v-model="scope.row.q"
-                       @visible-change="(boolean)=>handleGetFirstList(boolean,scope.row)"
-                       @change="(value)=>handleSelectChange({props:items.props,value, time:scope.row.time})"
-                       style="width: 120px;margin-right: 10px;"
+              <iSelect
+                  v-model="scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})]"
+                  @visible-change="(boolean)=>handleGetSelectList({props: '',boolean,row: scope.row})"
+                  @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row})"
+                  style="width: 120px;margin-right: 10px;"
+                  value-key="id"
               >
-                <el-option
-                    :key='1'
-                    :value='1'
-                    :label="1"/>
-                <el-option
-                    :key='2'
-                    :value='2'
-                    :label="2"/>
+                <template v-if="scope.row.newRow">
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.time][FIRSTSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="getSelectLabel({props: FIRSTSELECT, row:scope.row, itemData: item})"/>
+                </template>
+                <template v-else>
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.id][FIRSTSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="getSelectLabel({props: FIRSTSELECT, row:scope.row, itemData: item})"/>
+                </template>
               </iSelect>
-              <iSelect v-model="scope.row.w"
-                       @change="(value)=>handleSelectChange({props:items.props,value, time:scope.row.time})"
-                       style="width: 120px;margin-right: 10px;"
+              <iSelect
+                  v-model="scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})]"
+                  @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row})"
+                  style="width: 120px;margin-right: 10px;"
+                  value-key="id"
               >
-                {{ scope.row.d }}
+                <template v-if="scope.row.newRow">
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.time][SECONDSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="getSelectLabel({props: SECONDSELECT, row:scope.row, itemData: item})"/>
+                </template>
+                <template v-else>
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.id][SECONDSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="getSelectLabel({props: SECONDSELECT, row:scope.row, itemData: item})"/>
+                </template>
               </iSelect>
-              <iSelect v-model="scope.row.e"
-                       @change="(value)=>handleSelectChange({props:items.props,value, time:scope.row.time})"
-                       style="width: 120px;margin-right: 10px;"
+              <iSelect
+                  v-if="scope.row.dataType === classType['rawMaterial']"
+                  v-model="scope.row[getMatchProps({props: THIRDSELECT, row: scope.row})]"
+                  @change="handleSelectChange({props:THIRDSELECT , event: $event, row:scope.row})"
+                  style="width: 120px;margin-right: 10px;"
+                  value-key="id"
               >
-                {{ scope.row.d }}
+                <template v-if="scope.row.newRow">
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.time][THIRDSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="getSelectLabel({props: THIRDSELECT, row:scope.row, itemData: item})"/>
+                </template>
+                <template v-else>
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.id][THIRDSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="getSelectLabel({props: THIRDSELECT, row:scope.row, itemData: item})"/>
+                </template>
               </iSelect>
+              <div v-else style="width: 120px;margin-right: 10px;"/>
             </template>
             <template v-else>
-              <div class="systemMatchText">{{ scope.row.q }}</div>
-              <div class="systemMatchText">{{ scope.row.w }}</div>
-              <div class="systemMatchText">{{ scope.row.e }}</div>
+              <div class="systemMatchText">{{ scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})] }}</div>
+              <div class="systemMatchText">{{ scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})] }}</div>
+              <div class="systemMatchText">{{ scope.row[getMatchProps({props: THIRDSELECT, row: scope.row})] }}</div>
             </template>
             <div class="systemMatchText" style="width: auto;">
-              <span>数据来源: XXXXXXXX</span>
+              <span>数据来源: {{ scope.row.dataSource }}</span>
               <iconTips
                   iconName="iconzhongyaoxinxitishi"
                   :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成\n'+'对应的指数变动百分比，可手动补充系统匹配\n'+'模块信息。')"
@@ -181,9 +227,14 @@
 </template>
 <script>
 import {iInput, iSelect, icon} from 'rise';
-import {getColor, rawMaterialColor} from './data';
+import {getColor, rawMaterialColor, FIRSTSELECT, SECONDSELECT, THIRDSELECT, classTypeSelect, classType} from './data';
 import iconTips from '../../../../../components/ws3/iconTips';
-import {getSelectMateria} from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import {
+  getSelectMateria,
+  getSelectManpower,
+  getSelectCountry,
+  getSelectExchange,
+} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   props: {
@@ -198,6 +249,12 @@ export default {
     rowKey: {type: String, default: 'id'},
     isShowTable: {type: Boolean, default: true},
     isTableEdit: {type: String, default: ''},
+    selectOptionsObject: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   components: {
     iInput,
@@ -208,6 +265,11 @@ export default {
   data() {
     return {
       rawMaterialColor,
+      FIRSTSELECT,
+      SECONDSELECT,
+      THIRDSELECT,
+      classTypeSelect,
+      classType,
     };
   },
   methods: {
@@ -215,13 +277,30 @@ export default {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val);
     },
-    handleSelectChange({props, value, time}) {
-      const res = {
-        props,
-        value,
-        time,
-      };
-      this.$emit('handleSelectChange', res);
+    async handleSelectChange({props, event, row}) {
+      let req = {};
+      switch (row.dataType) {
+        case this.classType['rawMaterial']:
+          if (props === this.FIRSTSELECT) {
+            req.classType = event.classType;
+          } else if (props === this.SECONDSELECT) {
+            req.classType = event.classType;
+            req.specs = event.specs;
+          }
+          break;
+        case this.classType['manpower']:
+          if (props === this.FIRSTSELECT) {
+            req.profession = event.profession;
+          }
+          break;
+        case this.classType['exchangeRate']:
+          if (props === this.FIRSTSELECT) {
+            req.currency = event.currency;
+          }
+          break;
+      }
+      this.$emit('handleSelectReset', {props, row});
+      await this.handleGetSelectList({props, boolean: true, row, req});
     },
     indexMethod(index) {
       return index + 1 + this.customIndex;
@@ -246,22 +325,91 @@ export default {
           return 'border-left: 3px solid white';
       }
     },
-    rowStyle({row, column}) {
-      if (row.a === 2) {
+    rowStyle({row}) {
+      if (row.dataType === this.classType['exchangeRate']) {
         return 'rowStyle';
       }
     },
-    // 材料下拉
-    async getSelectMateria(req = {}) {
-      const res = await getSelectMateria(req);
-    },
-    handleGetFirstList(boolean, row) {
+    // 获取下拉
+    async handleGetSelectList({props, boolean, row, req = {}}) {
+      let selectList = '';
       if (boolean) {
         switch (row.dataType) {
-          case '1':
-            this.getSelectMateria();
+          case this.classType['rawMaterial']:
+            selectList = (await getSelectMateria(req)).data;
+            break;
+          case this.classType['manpower']:
+            selectList = (await getSelectManpower(req)).data;
+            break;
+          case this.classType['exchangeRate']:
+            if (props === '') {
+              selectList = (await getSelectCountry(req)).data;
+            } else if (props === this.FIRSTSELECT) {
+              selectList = (await getSelectExchange(req)).data;
+            }
             break;
         }
+      }
+      this.$emit('handleGetSelectList', {props, row, selectList});
+    },
+    // 获取select Label
+    getSelectLabel({props, row, itemData}) {
+      switch (row.dataType) {
+        case this.classType['rawMaterial']:
+          if (props === this.FIRSTSELECT) {
+            return itemData.classType;
+          } else if (props === this.SECONDSELECT) {
+            return itemData.specs;
+          } else if (props === this.THIRDSELECT) {
+            return itemData.area;
+          }
+          break;
+        case this.classType['manpower']:
+          if (props === this.FIRSTSELECT) {
+            return itemData.profession;
+          } else if (props === this.SECONDSELECT) {
+            return itemData.area;
+          }
+          break;
+        case this.classType['exchangeRate']:
+          if (props === this.FIRSTSELECT) {
+            return itemData.countryOrigin;
+          } else if (props === this.SECONDSELECT) {
+            return itemData.currency;
+          }
+          break;
+      }
+    },
+    handleNewRowClassTypeSelectChange({event, row}) {
+      row.dataType = event;
+      this.handleGetSelectList({props: '', boolean: true, row});
+    },
+    // 获取匹配props
+    getMatchProps({props, row}) {
+      switch (row.dataType) {
+        case this.classType['rawMaterial']:
+          if (props === this.FIRSTSELECT) {
+            return 'partType';
+          } else if (props === this.SECONDSELECT) {
+            return 'partNumber';
+          } else if (props === this.THIRDSELECT) {
+            return 'partRegion';
+          }
+          break;
+        case this.classType['manpower']:
+          if (props === this.FIRSTSELECT) {
+            return 'work';
+          } else if (props === this.SECONDSELECT) {
+            return 'workProvince';
+          }
+          break;
+        case this.classType['exchangeRate']:
+          if (props === this.FIRSTSELECT) {
+            return 'productionCountry';
+          } else if (props === this.SECONDSELECT) {
+            return 'currency';
+          }
+          break;
       }
     },
   },
