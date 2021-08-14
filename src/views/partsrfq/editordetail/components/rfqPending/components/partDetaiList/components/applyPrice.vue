@@ -125,7 +125,7 @@
 				this.saveLoading = true
 				const params = {
 					...this.targetprice.cfTargetPriceDetail,
-					purchasingProjectId: this.handleSelectArr[0].purchaseProjectId
+					purchasingProjectId: this.handleSelectArr[0].id
 				}
 				applyCFTarget(params).then((res) => {
 					if (res?.result) {
