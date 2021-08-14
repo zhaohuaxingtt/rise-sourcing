@@ -67,6 +67,15 @@ export default {
     mounted(){
       // this.getDetail("1")
     },
+    watch:{
+      dropDownOptions(){
+        if(this.dropDownOptions.length>0){
+          let leg = this.dropDownOptions.length-1
+          this.selectValue=this.dropDownOptions[leg].key
+          this.handleChange()
+        }
+      }
+    },
     methods:{
       saveVersion(){
         this.getSelectKpiList({deptCode:this.$store.state.permission.userInfo.deptDTO.deptNum})
