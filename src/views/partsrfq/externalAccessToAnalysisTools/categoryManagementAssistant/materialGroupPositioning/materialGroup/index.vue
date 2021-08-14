@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-10 20:04:16
+ * @LastEditTime: 2021-08-13 16:02:51
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\index.vue
@@ -19,7 +19,7 @@
 				<icon symbol name="iconcailiaozudingwei" class="font30"></icon>
 				<span>{{ language("CAILIAOZUDINGWEI", "材料组定位") }}</span>
 			</div>
-			<piecewise></piecewise>
+			<piecewise :materialGroupPosition="materialGroup.materialGroupPosition"></piecewise>
 		</div>
 		<!-- 业务影响度特征分布情况 供应复杂度特征分布 -->
 		<el-row gutter="50" class="margin-top35">
@@ -92,13 +92,22 @@
 						importantFeaturesMoneys:[],
 						importantFeaturesRisk:[]
 					},
+					materialGroupPosition:{
+						centerPoint:{},
+						currentPoint:{},
+						otherPointList:[]
+					},
 					problemAndSuggestionList:[],
 					materialGroupProportionList:[]
 				}
 			}
 		},
 		created() {
-			this.categoryCode=this.$store.state.rfq.categoryCode
+			// this.categoryCode=this.$store.state.rfq.categoryCode
+			
+		},
+		mounted () {
+			this.categoryCode="051"
 			this.getMaterialGroup()
 		},
 		methods:{

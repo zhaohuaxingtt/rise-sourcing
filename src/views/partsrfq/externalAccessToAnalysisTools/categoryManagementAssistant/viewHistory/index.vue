@@ -92,8 +92,16 @@ export default {
     },
   },
   created() {
-    this.getMaterialGroupByUserIds()
-    this.getTableList()
+  },
+  watch: {
+    value: {
+      handler(val) {
+        if (val) {
+          this.getMaterialGroupByUserIds()
+          this.getTableList()
+        }
+      }
+    }
   },
   methods: {
     handleSelectionChange(val) {
