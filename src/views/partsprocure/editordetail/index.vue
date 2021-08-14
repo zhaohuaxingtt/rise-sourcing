@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-13 17:29:54
+ * @LastEditTime: 2021-08-14 16:15:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -30,7 +30,7 @@
 			<span class="font18 font-weight">{{language("LK_LINGJIANCAIGOUXIANGMU",'零件采购项目')}}</span>
 			<div class="floatright">
 				<!-- 供应商创建定点申请单 -->
-				<createNomiappBtn v-permission='PARTSPROCURE_EDITORDETAIL_CREATEDDSQD'></createNomiappBtn>
+				<createNomiappBtn v-permission='PARTSPROCURE_EDITORDETAIL_CREATEDDSQD' :datalist='[detailData]'></createNomiappBtn>
 				<!-------------------------------------------------------------------------------->
 				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 				<!---出现此按钮。------------------------------------------------------------------->
