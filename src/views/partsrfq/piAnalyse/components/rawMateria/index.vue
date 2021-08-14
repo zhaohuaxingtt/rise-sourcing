@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-08-07 16:54:08
+ * @LastEditTime: 2021-08-14 18:27:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -52,22 +52,37 @@
           <p :class="getPriceChangeClass(scope.row.priceChange)">{{scope.row.priceChange}}</p>
         </template>
       </tableList>
+      <iPagination
+        v-update
+        @size-change="handleSizeChange($event, getTableList)"
+        @current-change="handleCurrentChange($event, getTableList)"
+        background
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :current-page="page.currPage"
+        :total="page.totalCount"
+      />
     </div>
     <detail :key="detailParam.key" v-model="detailParam.visible"/>
   </div>
 </template>
 
 <script>
-import { iButton, iInput, iSearch, iDatePicker } from 'rise'
+import { iButton, iInput, iSearch, iDatePicker, iPagination } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import detail from './components/detail'
+import { pageMixins } from "@/utils/pageMixins";
+import { getRawMateriaList } from '@/api/partsrfq/piAnalysis/index'
 export default {
+  mixins: [pageMixins],
   components: {
     iButton,
     iInput,
     iSearch,
     iDatePicker,
+    iPagination,
     tableList,
     detail
   },
@@ -85,6 +100,7 @@ export default {
   },
   created() {
     this.initTestData()
+    // this.getTableList()
   },
   methods: {
     // 初始化测试数据
@@ -98,6 +114,15 @@ export default {
       ]
       this.loading = false
     },
+    // 获取表格数据
+    getTableList() {
+      const params = {
+        
+      }
+      getRawMateriaList().then(res => {
+        
+      })
+    },
     // 得到价格变动比率样式名
     getPriceChangeClass(val) {
       const num = val.split('%')[0]
@@ -106,12 +131,10 @@ export default {
     },
     // 点击返回
     clickBack() {
-      const entryStatus = this.$store.state.rfq.entryStatus
-      
+      this.$route.go(-1)
     },
     // 点击查看
     clickPreview(val) {
-      console.log('clickPreview', val);
       this.$set(this.detailParam, 'key', Math.random())
       this.$set(this.detailParam, 'visible', true)
     },

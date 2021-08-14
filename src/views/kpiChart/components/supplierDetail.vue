@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-14 10:31:49
+ * @LastEditTime: 2021-08-14 19:27:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\components\supplierDetail.vue
@@ -100,6 +100,12 @@ export default {
         reasonData: []
       }
     },
+    props: {
+      supplierType: {
+        type: String,
+        default: null
+      },
+    },
     created () {
       this.fetchReason()
       this.fetchInfo().then(_ => {
@@ -143,7 +149,7 @@ export default {
         const params = {
           id: this.reportData,
           supplierId: this.supplierId,
-          supplierType: 'pp'
+          supplierType: this.supplierType
         }
         getReportDetail(params).then(res => {
           if(res && res.code == 200) {
