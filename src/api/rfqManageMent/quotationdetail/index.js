@@ -2,7 +2,7 @@
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-16 16:36:54
+ * @LastEditTime: 2021-08-14 17:58:42
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -63,7 +63,7 @@ export function getSupplierInfo(params) {
 // 获取供应商场地
 export function getSupplierPartLocation(params) {
   return requst({
-    url: `/supplier-part-location?supplierId=${supplierId()}`,
+    url: `/quotation/supplier-part-location?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -72,7 +72,7 @@ export function getSupplierPartLocation(params) {
 // 保存供应商场地
 export function saveSupplierPartAddLocation(params) {
   return requst({
-    url: `/supplier-part-addLocation?supplierId=${supplierId()}`,
+    url: `/quotation/supplier-part-addLocation?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -81,7 +81,7 @@ export function saveSupplierPartAddLocation(params) {
 // 获取生产能力
 export function getSupplierPlantCaps(params) {
   return requst({
-    url: `/supplier-plant-caps?supplierId=${supplierId()}`,
+    url: `/quotation/supplier-plant-caps?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -90,7 +90,7 @@ export function getSupplierPlantCaps(params) {
 // 保存生产能力
 export function saveSupplierPlantCap(params) {
   return requst({
-    url: `/supplier-plant-cap?supplierId=${supplierId()}`,
+    url: `/quotation/supplier-plant-cap?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -211,7 +211,7 @@ export function partsQuotations(rfqId,lv,supplierId) {
 // 获取关联零件列表
 export function getMouldPartList(params) {
   return requstdl({
-    url: `/mould-parts-list?supplierId=${supplierId()}`,
+    url: `/quotation/mould-parts-list?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -237,7 +237,7 @@ export function postCostSummary(params) {
 // 保存关联零件列表
 export function saveMouldPartList(params) {
   return requstdl({
-    url: `/mould-parts?supplierId=${supplierId()}`,
+    url: `/quotation/mould-parts?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
