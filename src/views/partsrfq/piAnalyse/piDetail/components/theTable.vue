@@ -61,7 +61,7 @@
 
 <script>
 import {iButton, iMessage, iMessageBox} from 'rise';
-import {tableTitle, tableEditTitle, FIRSTSELECT, SECONDSELECT, THIRDSELECT} from './data';
+import {tableTitle, tableEditTitle, FIRSTSELECT, SECONDSELECT, THIRDSELECT, classType} from './data';
 import {numberProcessor, toFixedNumber, toThousands, deleteThousands} from '@/utils';
 import theTableTemplate from './theTableTemplate';
 import _ from 'lodash';
@@ -110,6 +110,7 @@ export default {
       FIRSTSELECT,
       SECONDSELECT,
       THIRDSELECT,
+      classType,
     };
   },
   created() {
@@ -202,8 +203,49 @@ export default {
       this.tableStatus = '';
     },
     handleFinish() {
-      console.log(this.tableListData);
+      const res = this.handleSystemMatchData();
+      console.log(res);
       this.$emit('handlePriceTableFinish');
+    },
+    handleSystemMatchData() {
+      const newList = _.cloneDeep(this.tableListData);
+      newList.map(item => {
+        const copyItem = _.cloneDeep(item);
+        if (item.dataType === classType['rawMaterial']) {
+          if (item.partType) {
+            item.partType = copyItem.partType.classType;
+            item.matchId = copyItem.partType.id;
+          }
+          if (item.partNumber) {
+            item.partNumber = copyItem.partNumber.specs;
+            item.matchId = copyItem.partNumber.id;
+          }
+          if (item.partRegion) {
+            item.partRegion = copyItem.partRegion.area;
+            item.matchId = copyItem.partRegion.id;
+          }
+        } else if (item.dataType === classType['manpower']) {
+          if (item.work) {
+            item.work = copyItem.work.profession;
+            item.matchId = copyItem.work.id;
+          }
+          if (item.workProvince) {
+            item.workProvince = copyItem.workProvince.area;
+            item.matchId = copyItem.workProvince.id;
+          }
+        } else if (item.dataType === classType['exchangeRate']) {
+          if (item.productionCountry) {
+            item.productionCountry = copyItem.productionCountry.countryOrigin;
+            item.matchId = copyItem.productionCountry.id;
+          }
+          if (item.currency) {
+            item.currency = copyItem.currency.currency;
+            item.matchId = copyItem.currency.id;
+          }
+        }
+        return item;
+      });
+      return newList;
     },
     getTableList() {
       try {
@@ -211,9 +253,39 @@ export default {
         this.hideTableData = [];
         //this.copyDataInfo = _.cloneDeep(this.dataInfo);
         this.copyDataInfo = [
-          {'classType': '材料', 'costProportion': 2, 'priceChange': 1, 'partType': 1, 'w': 212312323, 'e': 3, isShow: true, dataType: '1', id: 1},
-          {'classType': '人力', 'costProportion': 2, 'priceChange': 1, 'work': 2, 'w': 2, 'e': 3, isShow: true, dataType: '2', id: 2},
-          {'classType': '汇率', 'costProportion': 2, 'priceChange': 1, 'productionCountry': 3, 'w': 2, 'e': 3, isShow: true, dataType: '3', id: 3},
+          {
+            'classType': '材料',
+            'costProportion': 2,
+            'priceChange': 1,
+            'partType': 1,
+            'w': 212312323,
+            'e': 3,
+            isShow: true,
+            dataType: '1',
+            id: 1,
+          },
+          {
+            'classType': '人力',
+            'costProportion': 2,
+            'priceChange': 1,
+            'work': 2,
+            'w': 2,
+            'e': 3,
+            isShow: true,
+            dataType: '2',
+            id: 2,
+          },
+          {
+            'classType': '汇率',
+            'costProportion': 2,
+            'priceChange': 1,
+            'productionCountry': 3,
+            'w': 2,
+            'e': 3,
+            isShow: true,
+            dataType: '3',
+            id: 3,
+          },
         ];
         this.copyDataInfo.map((item, index) => {
           if (!item.id) {
