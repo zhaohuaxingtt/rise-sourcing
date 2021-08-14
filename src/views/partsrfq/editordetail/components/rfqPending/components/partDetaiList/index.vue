@@ -57,9 +57,9 @@ import {
   form
 } from "@/views/partsprocure/home/components/data";
 import {
-  getPartSrcPrjs,
   deleteRfqPart
 } from '@/api/partsrfq/editordetail';
+import { getTabelData} from "@/api/partsprocure/home";
 import {
   addRfq,
   // editRfqData
@@ -178,17 +178,16 @@ export default {
     getTableList() {
       if (this.rfqId) {
         this.confirmTableLoading = true
-        this.parmarsHasRfq['search.size'] = this.page.pageSize
-        this.parmarsHasRfq['search.current'] = this.page.currPage
-        this.parmarsHasRfq['search.rfqId'] = this.rfqId
-        this.parmarsHasRfq['search.projectStatus'] = ''
-        getPartSrcPrjs(this.parmarsHasRfq).then(res => {
+        this.parmarsHasRfq['size'] = this.page.pageSize
+        this.parmarsHasRfq['current'] = this.page.currPage
+        this.parmarsHasRfq['rfqId'] = this.rfqId
+        getTabelData(this.parmarsHasRfq).then(res => {
           this.confirmTableLoading = false
-          this.page.currPage = res.data.pageData.pageNum
-          this.page.pageSize = res.data.pageData.pageSize
-          this.page.totalCount = res.data.pageData.total
-          this.tableListData = res.data.pageData.data
-          this.$store.dispatch('setPendingPartsList', this.tableListData)
+          this.page.currPage = res.pageNum
+          this.page.pageSize = res.pageSize
+          this.page.totalCount = res.total
+          this.tableListData = res.data
+          this.$store.dispatch('setPendingPartsList', this.tableListData.map(r=>{return {...r,...{purchaseProjectId:r.id}}}))
         }).catch(() => this.confirmTableLoading = false)
       }
     },
@@ -235,7 +234,6 @@ export default {
     // 发送KM
     sendKM() {
       if (!this.handleSelectArr.length) return iMessage.warn(this.language("LK_QINGXUANZEZHISHAOYITIAOSHUJU",'请选择至少一条数据'))
-
       this.kmDialogVisible = true
     }
   },

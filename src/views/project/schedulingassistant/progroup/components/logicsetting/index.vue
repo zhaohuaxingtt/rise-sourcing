@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 10:57:15
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 17:23:49
+ * @LastEditTime: 2021-08-14 15:49:07
  * @Description: 算法配置弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\logicsetting\index.vue
 -->
@@ -35,8 +35,7 @@
 </template>
 
 <script>
-import { iDialog, iButton, iInput, iFormGroup, iFormItem, iSelect } from 'rise'
-import { iMessage } from '../../../../../../components'
+import { iDialog, iButton, iInput, iFormGroup, iFormItem, iSelect, iMessage } from 'rise'
 export default {
   components: { iDialog, iButton, iInput, iFormGroup, iFormItem, iSelect },
   props: {

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-13 14:14:31
+ * @LastEditTime: 2021-08-14 10:18:55
  * @Description: 产品组排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
@@ -313,7 +313,7 @@ export default {
       this.chooseData = val
       const params = {
         cartypeProId: this.carProject,
-        projectGroupsSelectList: this.chooseDataList.filter(item => val.includes(item.key))
+        projectGroupsSelectList: val.map(item => this.chooseDataList.find(findItem => findItem.key === item))
       }
       const res = await saveProductSelectList(params)
       if (res?.result) {
