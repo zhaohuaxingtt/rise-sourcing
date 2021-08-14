@@ -41,11 +41,17 @@
           :prop="items.props"
           :fixed="items.fixed">
         <template slot-scope="scope">
-          <iInput
+          <iSelect
               v-if="scope.row.newRow"
               v-model="scope.row[items.props]"
-              :maxlength="50"
-          />
+              @change="handleSelectChange({event: $event, time:scope.row.time})"
+          >
+            <el-option
+                v-for="item of classTypeSelect"
+                :key='item.value'
+                :value='item.value'
+                :label="item.name"/>
+          </iSelect>
           <span v-else>{{ scope.row[items.props] }}</span>
         </template>
       </el-table-column>
@@ -119,29 +125,64 @@
                        style="width: 120px;margin-right: 10px;"
                        value-key="id"
               >
-                <el-option
-                    v-for="item of selectOptionsObject[scope.row.id][FIRSTSELECT]"
-                    :key='item.id'
-                    :value='item'
-                    :label="item.name"/>
+                <template v-if="scope.row.newRow">
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.time][FIRSTSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="getSelectLabel({props: FIRSTSELECT, row:scope.row, itemData: item})"/>
+                </template>
+                <template v-else>
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.id][FIRSTSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="getSelectLabel({props: FIRSTSELECT, row:scope.row, itemData: item})"/>
+                </template>
               </iSelect>
               <iSelect v-model="scope.row.w"
                        @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row, time:scope.row.time})"
                        style="width: 120px;margin-right: 10px;"
                        value-key="id"
               >
-                <el-option
-                    v-for="item of selectOptionsObject[scope.row.id][SECONDSELECT]"
-                    :key='item.id'
-                    :value='item'
-                    :label="item.name"/>
+                <template v-if="scope.row.newRow">
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.time][SECONDSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="getSelectLabel({props: SECONDSELECT, row:scope.row, itemData: item})"/>
+                </template>
+                <template v-else>
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.id][SECONDSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="getSelectLabel({props: SECONDSELECT, row:scope.row, itemData: item})"/>
+                </template>
               </iSelect>
-              <iSelect v-model="scope.row.e"
-                       @change="(value)=>handleSelectChange({props:items.props,value, time:scope.row.time})"
-                       style="width: 120px;margin-right: 10px;"
+              <iSelect
+                  v-if="scope.row.dataType === classType['rawMaterial']"
+                  v-model="scope.row.e"
+                  @change="handleSelectChange({props:THIRDSELECT , event: $event, row:scope.row, time:scope.row.time})"
+                  style="width: 120px;margin-right: 10px;"
+                  value-key="id"
               >
-                {{ scope.row.d }}
+                <template v-if="scope.row.newRow">
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.time][THIRDSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="item.name"/>
+                </template>
+                <template v-else>
+                  <el-option
+                      v-for="item of selectOptionsObject[scope.row.id][THIRDSELECT]"
+                      :key='item.id'
+                      :value='item'
+                      :label="item.name"/>
+                </template>
               </iSelect>
+              <div v-else style="width: 120px;margin-right: 10px;"/>
             </template>
             <template v-else>
               <div class="systemMatchText">{{ scope.row.q }}</div>
@@ -184,9 +225,14 @@
 </template>
 <script>
 import {iInput, iSelect, icon} from 'rise';
-import {getColor, rawMaterialColor, FIRSTSELECT, SECONDSELECT, THIRDSELECT} from './data';
+import {getColor, rawMaterialColor, FIRSTSELECT, SECONDSELECT, THIRDSELECT, classTypeSelect, classType} from './data';
 import iconTips from '../../../../../components/ws3/iconTips';
-import {getSelectMateria} from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import {
+  getSelectMateria,
+  getSelectManpower,
+  getSelectCountry,
+  getSelectExchange,
+} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   props: {
@@ -220,6 +266,8 @@ export default {
       FIRSTSELECT,
       SECONDSELECT,
       THIRDSELECT,
+      classTypeSelect,
+      classType,
     };
   },
   methods: {
@@ -228,12 +276,24 @@ export default {
       this.$emit('handleSelectionChange', val);
     },
     async handleSelectChange({props, event, row, time}) {
-      if (props === this.FIRSTSELECT) {
-        const req = {
-          classType: event.classType,
-        };
-        await this.handleGetSelectList({props, boolean: true, row, req});
+      let req = {};
+      switch (row.dataType) {
+        case this.classType['rawMaterial']:
+          if (props === this.FIRSTSELECT) {
+            req.classType = event.classType;
+          } else if (props === this.SECONDSELECT) {
+            req.specs = event.specs;
+          }
+          break;
+        case this.classType['manpower']:
+          break;
+        case this.classType['exchangeRate']:
+          if (props === this.FIRSTSELECT) {
+            req.currency = event.currency;
+          }
+          break;
       }
+      await this.handleGetSelectList({props, boolean: true, row, req});
     },
     indexMethod(index) {
       return index + 1 + this.customIndex;
@@ -258,26 +318,47 @@ export default {
           return 'border-left: 3px solid white';
       }
     },
-    rowStyle({row, column}) {
-      if (row.a === 2) {
+    rowStyle({row}) {
+      if (row.dataType === this.classType['exchangeRate']) {
         return 'rowStyle';
       }
     },
-    // 材料下拉
-    async getSelectMateria(req = {}) {
-      const res = await getSelectMateria(req);
-      return res.data;
-    },
+    // 获取下拉
     async handleGetSelectList({props, boolean, row, req = {}}) {
       let selectList = '';
       if (boolean) {
         switch (row.dataType) {
-          case '1':
-            selectList = await this.getSelectMateria(req);
+          case this.classType['rawMaterial']:
+            selectList = (await getSelectMateria(req)).data;
+            break;
+          case this.classType['manpower']:
+            selectList = (await getSelectManpower(req)).data;
+            break;
+          case this.classType['exchangeRate']:
+            if (props === '') {
+              selectList = (await getSelectCountry(req)).data;
+            } else if (props === this.FIRSTSELECT) {
+              selectList = (await getSelectExchange(req)).data;
+            }
             break;
         }
       }
       this.$emit('handleGetSelectList', {props, row, selectList});
+    },
+    //
+    getSelectLabel({props, row, itemData}) {
+      switch (row.dataType) {
+        case this.classType['rawMaterial']:
+          return itemData.name;
+        case this.classType['manpower']:
+          return '';
+        case this.classType['exchangeRate']:
+          if (props === this.FIRSTSELECT) {
+            return itemData.countryOrigin;
+          } else if (props === this.SECONDSELECT) {
+            return itemData.currency;
+          }
+      }
     },
   },
 };

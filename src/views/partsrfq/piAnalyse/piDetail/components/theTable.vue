@@ -60,7 +60,7 @@
 
 <script>
 import {iButton, iMessage, iMessageBox} from 'rise';
-import {tableTitle, tableEditTitle, FIRSTSELECT, SECONDSELECT} from './data';
+import {tableTitle, tableEditTitle, FIRSTSELECT, SECONDSELECT, THIRDSELECT} from './data';
 import {numberProcessor, toFixedNumber, toThousands, deleteThousands} from '@/utils';
 import theTableTemplate from './theTableTemplate';
 import _ from 'lodash';
@@ -142,6 +142,7 @@ export default {
         isShow: true,
         newRow: true,
       });
+      this.selectOptionsObject[time] = {};
     },
     handleDelete() {
       if (this.selectTableData.length === 0 && this.hideSelectTableData.length === 0) {
@@ -263,8 +264,9 @@ export default {
             copyObj[row.id][FIRSTSELECT] = selectList;
           } else if (props === FIRSTSELECT) {
             copyObj[row.id][SECONDSELECT] = selectList;
+          } else if (props === SECONDSELECT) {
+            copyObj[row.id][THIRDSELECT] = selectList;
           }
-
         }
       });
       this.selectOptionsObject = copyObj;
