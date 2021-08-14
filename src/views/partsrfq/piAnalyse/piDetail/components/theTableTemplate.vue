@@ -44,7 +44,7 @@
           <iSelect
               v-if="scope.row.newRow"
               v-model="scope.row[items.props]"
-              @change="handleSelectChange({event: $event, time:scope.row.time})"
+              @change="handleNewRowClassTypeSelectChange({event: $event, row:scope.row})"
           >
             <el-option
                 v-for="item of classTypeSelect"
@@ -377,6 +377,10 @@ export default {
           }
           break;
       }
+    },
+    handleNewRowClassTypeSelectChange({event, row}) {
+      row.dataType = event
+      this.handleGetSelectList({props: '', boolean: true, row});
     },
   },
 };

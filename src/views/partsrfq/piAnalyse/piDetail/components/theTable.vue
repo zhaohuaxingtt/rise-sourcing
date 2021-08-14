@@ -260,14 +260,15 @@ export default {
     },
     handleGetSelectList({props, row, selectList}) {
       const copyObj = _.cloneDeep(this.selectOptionsObject);
+      const id = row.id || row.time;
       this.tableListData.map(item => {
-        if (item.id === row.id) {
+        if ([item.id, row.time].includes(id)) {
           if (props === '') {
-            copyObj[row.id][FIRSTSELECT] = selectList;
+            copyObj[id][FIRSTSELECT] = selectList;
           } else if (props === FIRSTSELECT) {
-            copyObj[row.id][SECONDSELECT] = selectList;
+            copyObj[id][SECONDSELECT] = selectList;
           } else if (props === SECONDSELECT) {
-            copyObj[row.id][THIRDSELECT] = selectList;
+            copyObj[id][THIRDSELECT] = selectList;
           }
         }
       });
