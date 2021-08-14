@@ -1,7 +1,7 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-14 16:10:16
+ * @LastEditTime: 2021-08-14 19:39:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
@@ -49,7 +49,6 @@ export default{
   },
   methods:{
     handleCreateNomiApplication(){
-      this.messageShow = true
       this.messageDataList = []
       this.closeWebSoket()
       this.autonomiFn()
@@ -66,14 +65,19 @@ export default{
     },
     autonomiFn(){
       autonomi(this.translatePropsForServers(this.datalist)).then(res=>{
-        this.showWebsoket()
+        if(res.result){
+           this.messageShow = true
+           this.showWebsoket()
+        }else{
+           iMessage.warn(res.desZh)
+        }
       }).catch(err=>{
         iMessage.error(err.desZh)
       })
     },
     translatePropsForServers(parmars){
       if(!Array.isArray(parmars)) return console.error('parmars datalist must be a array')
-      return {autoKeyDTOS:parmars.map(r=>{return {partNum:r.partNum,oldFsnrGsnrNum:r.oldFsnrGsnrNum,oldPurchasingProjectId:r.oldPurchasingProjectId,purchasingProjectId:r.purchasingProjectId,userId:store.state.permission.userInfo.id}})}
+      return {autoKeyDTOS:parmars.map(r=>{return {partNum:r.partNum,oldFsnrGsnrNum:r.oldFsnrGsnrNum,oldPurchasingProjectId:r.oldPurchasingProjectId,purchasingProjectId:r.id,userId:store.state.permission.userInfo.id}})}
     }
   }
 }
