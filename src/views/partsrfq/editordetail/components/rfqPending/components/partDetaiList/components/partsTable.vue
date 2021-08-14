@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-07-27 14:46:00
+ * @LastEditTime: 2021-08-14 13:21:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
@@ -46,9 +46,7 @@ import tableList from "@/views/partsign/home/components/tableList";
 import {
   pageMixins
 } from "@/utils/pageMixins";
-import {
-  getPartSrcPrjs,
-} from '@/api/partsrfq/editordetail';
+import { getTabelData} from "@/api/partsprocure/home";
 import {partProjTypes} from '@/config'
 
 export default {
@@ -80,15 +78,15 @@ export default {
     getTableList() {
       if (this.rfqId) {
         this.tableLoading = true
-        this.parmarsNotHasRfq['search.size'] = this.page.pageSize
-        this.parmarsNotHasRfq['search.current'] = this.page.currPage
-        this.parmarsNotHasRfq['search.projectStatus'] = '11'
-        getPartSrcPrjs(this.parmarsNotHasRfq).then(res => {
+        this.parmarsNotHasRfq['size'] = this.page.pageSize
+        this.parmarsNotHasRfq['current'] = this.page.currPage
+        this.parmarsNotHasRfq['status'] = '11'
+        getTabelData(this.parmarsNotHasRfq).then(res => {
           this.tableLoading = false
-          this.page.currPage = res.data.pageData.pageNum
-          this.page.pageSize = res.data.pageData.pageSize
-          this.page.totalCount = res.data.pageData.total
-          this.tableListData = res.data.pageData.data || []
+          this.page.currPage = res.pageNum
+          this.page.pageSize = res.pageSize
+          this.page.totalCount = res.total
+          this.tableListData = res.data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) || []
         }).catch(() => this.tableLoading = false)
       }
     },

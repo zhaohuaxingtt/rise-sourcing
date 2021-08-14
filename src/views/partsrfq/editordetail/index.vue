@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-07-23 12:32:31
+ * @LastEditTime: 2021-08-14 13:21:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -158,7 +158,7 @@ import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {navList} from './components/data'
 import nominateTypeDialog from "@/views/partsrfq/home/components/nominateTypeDialog"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
-import { getPartSrcPrjs } from '@/api/partsrfq/editordetail';
+import { getTabelData} from "@/api/partsprocure/home";
 import { pageMixins } from "@/utils/pageMixins";
 import { tableTitle,form } from "@/views/partsprocure/home/components/data";
 export default {
@@ -222,12 +222,11 @@ export default {
     getTableList() {
       if (this.$route.query.id) {
         this.confirmTableLoading = true
-        this.parmarsHasRfq['search.size'] = this.page.pageSize
-        this.parmarsHasRfq['search.current'] = this.page.currPage
-        this.parmarsHasRfq['search.rfqId'] = this.$route.query.id
-        this.parmarsHasRfq['search.projectStatus'] = ''
-        getPartSrcPrjs(this.parmarsHasRfq).then(res => {
-          this.$store.dispatch('setPendingPartsList', res.data.pageData.data)
+        this.parmarsHasRfq['size'] = this.pageSize
+        this.parmarsHasRfq['current'] = this.currPage
+        this.parmarsHasRfq['rfqId'] = this.$route.query.id
+        getTabelData(this.parmarsHasRfq).then(res => {
+          this.$store.dispatch('setPendingPartsList', res.data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}))
         }).catch(() => this.confirmTableLoading = false)
       }
     },
