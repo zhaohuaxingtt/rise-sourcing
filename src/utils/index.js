@@ -332,3 +332,12 @@ export function translateBackToWhite(currentKeyBusinessKey,whiteList,blackList,a
     }
   })
 }
+
+/**
+ * Array 类型数据权限过滤
+ * @param {*} permissionKey
+ * @param {*} list
+ */
+export function permissionArray(permissionKey, list) {
+  return list.filter(item => store.state.permission.whiteBtnList[item[permissionKey]])
+}
