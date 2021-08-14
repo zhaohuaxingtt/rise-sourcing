@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-08-13 15:35:52
+ * @LastEditTime: 2021-08-14 17:08:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisTable.vue
@@ -97,7 +97,6 @@
                        width="80">
         <template slot-scope="scope">
           <div v-if="!editMode">
-            <!-- {{scope.row.isDefault === '是' || scope.row.isDefault === '否' ? scope.row.isDefault : null}} -->
             {{ defaultStatus(scope.row, scope.row.isDefault) }}
           </div>
           <div v-else-if="editMode && scope.row.type == $t('TPZS.SCHEME_TYPE') && scope.row.isDefault != '空' && scope.row.isDefault">
@@ -547,9 +546,4 @@ export default {
     cursor: pointer;
   }
 }
-
-
-
-
-
 </style>
