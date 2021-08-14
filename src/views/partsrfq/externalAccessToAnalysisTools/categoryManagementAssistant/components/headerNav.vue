@@ -18,8 +18,10 @@
             routerPage
             class="margin-right20"
         />
-        <iButton @click="openCatecory">{{ language('PLGLZS.CAILIAOZU', '材料组') }}</iButton>
-        <iButton @click="openReportInventoryDialog">{{ language('PLGLZS.BAOGAOQINGDAN', '报告清单') }}</iButton>
+        <template v-if="showCommonButton">
+          <iButton @click="openCatecory">{{ language('PLGLZS.CAILIAOZU', '材料组') }}</iButton>
+          <iButton @click="openReportInventoryDialog">{{ language('PLGLZS.BAOGAOQINGDAN', '报告清单') }}</iButton>
+        </template>
         <slot name="extralButton"></slot>
       </div>
       <logButton class="logButton"/>
@@ -35,7 +37,8 @@ import {iNavMvp, iButton} from 'rise';
 import {tabRouterList, categoryManagementAssistantList} from '../../data';
 import reportInventory from '../reportInventory';
 import logButton from '@/components/logButton';
-import categoryGroup from "./categoryGroup"
+import categoryGroup from './categoryGroup';
+
 export default {
   components: {
     iNavMvp,
@@ -44,25 +47,31 @@ export default {
     categoryGroup,
     logButton,
   },
+  props: {
+    showCommonButton: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       tabRouterList,
       categoryManagementAssistantList,
       reportInventoryDialog: false,
-      openCatecoryDialog:false
+      openCatecoryDialog: false,
     };
   },
   methods: {
     openReportInventoryDialog() {
-      if(this.$store.state.rfq.categoryCode){
+      if (this.$store.state.rfq.categoryCode) {
         this.reportInventoryDialog = true;
-      }else{
-        this.openCatecoryDialog=true
+      } else {
+        this.openCatecoryDialog = true;
       }
     },
-    openCatecory(){
-      this.openCatecoryDialog=true
-    }
+    openCatecory() {
+      this.openCatecoryDialog = true;
+    },
   },
 };
 </script>
