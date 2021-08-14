@@ -9,6 +9,10 @@
 export const CURRENTTIME = 'currentTime';
 export const AVERAGE = 'average';
 
+export const FIRSTSELECT = 'firstSelect'
+export const SECONDSELECT = 'secondSelect'
+export const THIRDSELECT = 'thirdSelect'
+
 export const baseInfo = [
   {name: 'FS号', key: 'PI.FSHAO', props: 'a'},
   {name: '供应商', key: 'PI.GONGYINGSHANG', props: 'b'},

@@ -8,8 +8,13 @@
 -->
 <template>
   <div>
+    
       <iPage>
         <publicHeaderMenu></publicHeaderMenu>
+        <div class="tab">
+          <div class="current radius-left">生产供应商</div>
+          <div class="radius-right">一般供应商</div>
+        </div>
           <iCard>
                <div class="imgkpi-head">
                <el-form :model="formData">
@@ -24,6 +29,7 @@
                </div>
            </iCard>
            <iCard style="margin-top:20px">
+              <div class="supplier-table-tittle">重点追踪供应商名单</div>
                <iTableCustom
                :data="tabledata"
                :columns="setCloum"
@@ -108,5 +114,38 @@ export default {
     .imgkpi-head{
         display: flex;
         justify-content: space-between;
+    }
+    .tab{
+      width: 240px;
+      display: flex;
+      justify-content: flex-start;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+      
+      div{
+        width: 120px;
+        height: 35px;
+        color: #000;
+        text-align: center;
+        line-height: 35px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .radius-left{
+        border-radius: 10px 0 0 10px;
+      }
+      .radius-right{
+        border-radius: 0 10px 10px 0;
+      }
+      .current{
+        background-color: #fff!important;
+        color: #1660F1!important;
+      }
+    }
+    .supplier-table-tittle{
+      font-size: 18px;
+      color: #000;
+      font-weight: bold;
+      margin-bottom: 20px;
     }
 </style>

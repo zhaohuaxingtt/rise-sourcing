@@ -114,23 +114,27 @@
           <div class="systemMatchBox">
             <template v-if="isTableEdit">
               <iSelect v-model="scope.row.q"
-                       @change="(value)=>handleSelectChange({props:items.props,value, time:scope.row.time})"
+                       @visible-change="(boolean)=>handleGetSelectList({props: '',boolean,row: scope.row})"
+                       @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row, time:scope.row.time})"
                        style="width: 120px;margin-right: 10px;"
+                       value-key="id"
               >
                 <el-option
-                    :key='1'
-                    :value='1'
-                    :label="1"/>
-                <el-option
-                    :key='2'
-                    :value='2'
-                    :label="2"/>
+                    v-for="item of selectOptionsObject[scope.row.id][FIRSTSELECT]"
+                    :key='item.id'
+                    :value='item'
+                    :label="item.name"/>
               </iSelect>
               <iSelect v-model="scope.row.w"
-                       @change="(value)=>handleSelectChange({props:items.props,value, time:scope.row.time})"
+                       @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row, time:scope.row.time})"
                        style="width: 120px;margin-right: 10px;"
+                       value-key="id"
               >
-                {{ scope.row.d }}
+                <el-option
+                    v-for="item of selectOptionsObject[scope.row.id][SECONDSELECT]"
+                    :key='item.id'
+                    :value='item'
+                    :label="item.name"/>
               </iSelect>
               <iSelect v-model="scope.row.e"
                        @change="(value)=>handleSelectChange({props:items.props,value, time:scope.row.time})"
@@ -180,8 +184,9 @@
 </template>
 <script>
 import {iInput, iSelect, icon} from 'rise';
-import {getColor, rawMaterialColor} from './data';
+import {getColor, rawMaterialColor, FIRSTSELECT, SECONDSELECT, THIRDSELECT} from './data';
 import iconTips from '../../../../../components/ws3/iconTips';
+import {getSelectMateria} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   props: {
@@ -196,6 +201,12 @@ export default {
     rowKey: {type: String, default: 'id'},
     isShowTable: {type: Boolean, default: true},
     isTableEdit: {type: String, default: ''},
+    selectOptionsObject: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   components: {
     iInput,
@@ -206,6 +217,9 @@ export default {
   data() {
     return {
       rawMaterialColor,
+      FIRSTSELECT,
+      SECONDSELECT,
+      THIRDSELECT,
     };
   },
   methods: {
@@ -213,13 +227,13 @@ export default {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val);
     },
-    handleSelectChange({props, value, time}) {
-      const res = {
-        props,
-        value,
-        time,
-      };
-      this.$emit('handleSelectChange', res);
+    async handleSelectChange({props, event, row, time}) {
+      if (props === this.FIRSTSELECT) {
+        const req = {
+          classType: event.classType,
+        };
+        await this.handleGetSelectList({props, boolean: true, row, req});
+      }
     },
     indexMethod(index) {
       return index + 1 + this.customIndex;
@@ -248,6 +262,22 @@ export default {
       if (row.a === 2) {
         return 'rowStyle';
       }
+    },
+    // 材料下拉
+    async getSelectMateria(req = {}) {
+      const res = await getSelectMateria(req);
+      return res.data;
+    },
+    async handleGetSelectList({props, boolean, row, req = {}}) {
+      let selectList = '';
+      if (boolean) {
+        switch (row.dataType) {
+          case '1':
+            selectList = await this.getSelectMateria(req);
+            break;
+        }
+      }
+      this.$emit('handleGetSelectList', {props, row, selectList});
     },
   },
 };

@@ -43,7 +43,8 @@
                   />
                   <span class="level2Text">{{ setName(level2Children) }}</span>
                 </div>
-                <theRemark :children="level2Children" :editStatus="editStatus" :exportStatus="exportStatus"  v-if="!editStatus"/>
+                <theRemark :children="level2Children" :editStatus="editStatus" :exportStatus="exportStatus"
+                           v-if="!editStatus"/>
                 <iInput
                     v-if="editStatus && ( treeDataSelect[level1Children.name].includes(level2Children.name))"
                     v-model="form[level2Children.id]"
@@ -71,7 +72,8 @@
                       />
                       <span>{{ setName(level3Children) }}</span>
                     </div>
-                    <theRemark :children="level3Children" :editStatus="editStatus" :exportStatus="exportStatus"  v-if="!editStatus"/>
+                    <theRemark :children="level3Children" :editStatus="editStatus" :exportStatus="exportStatus"
+                               v-if="!editStatus"/>
                     <iInput
                         v-if="editStatus && (treeDataSelect[level1Children.name].includes(level3Children.name))"
                         v-model="form[level3Children.id]"
@@ -170,7 +172,7 @@ export default {
         this.pageLoading = true;
         this.treeData = {};
         this.treeDataSelect = {};
-        this.treeDataSelectId = []
+        this.treeDataSelectId = [];
         const req = {
           categoryCode: this.categoryCode,
         };
@@ -191,7 +193,7 @@ export default {
       } catch {
         this.treeData = {};
         this.treeDataSelect = {};
-        this.treeDataSelectId = []
+        this.treeDataSelectId = [];
         this.pageLoading = false;
       }
     },
@@ -262,6 +264,9 @@ export default {
     handleExport() {
       this.exportButtonLoading = true;
       this.exportStatus = true;
+      this.copyEditStatus = this.editStatus;
+      this.editStatus = false;
+      delete this.$refs['headerNav'];
       Object.keys(this.$refs).map(item => {
         this.$refs[item][0].handleShowHide(true);
       });
@@ -269,6 +274,7 @@ export default {
         this.downloadFile();
         this.exportButtonLoading = false;
         this.exportStatus = false;
+        this.editStatus = this.copyEditStatus;
       }, 1000);
     },
     downloadFile() {
