@@ -151,15 +151,18 @@ export default {
     },
     methods:{
         addCell(){
+            if(this.formDataLevel2.length==5) return this.$message({type:'error',message:'每层最多5个分支'})
             this.formDataLevel2.push({id:'',name:"",
                 weight:"",children:[]})
         },
         handleAdd(index,idx3,str){
             if(str==="2"){
+                if(this.formDataLevel2[index].children.length==5) return this.$message({type:'error',message:'每层最多5个分支'})
                  this.formDataLevel2[index].children.push({
                 id:'',name:"",
                 weight:"",children:[]})
             }else if(str==="3"){
+                if(this.formDataLevel2[index].children[idx3].children.length==5) return this.$message({type:'error',message:'每层最多5个分支'})
                 this.formDataLevel2[index].children[idx3].children.push({
                 id:'',name:"",
                 weight:"",children:[]})
@@ -176,6 +179,60 @@ export default {
             }
         },
         save(){
+            // 校验
+            console.log(this.formDataLevel2)
+            let lv1Weight=0
+            let lv2Weight=0
+            let lv3Weight=0
+            let nameIsNull = true
+            this.formDataLevel2.forEach(x=>{
+                if(!x.name)(nameIsNull =false)
+                lv1Weight+=Math.floor(x.weight * 100) / 100
+                if(x.children.length>0){
+                    x.children.forEach(y=>{
+                        if(!y.name)(nameIsNull =false)
+                        lv2Weight+=Math.floor(y.weight * 100) / 100
+                        if(x.children.length>0){
+                            x.children.forEach(z=>{
+                                if(!z.name)(nameIsNull =false)
+                                lv3Weight+=Math.floor(z.weight * 100) / 100
+                            })
+                            
+                        }else{
+                            lv3Weight+=Math.floor(100 * 100) / 100
+                        }
+                    })
+                    
+                }else{
+                    lv2Weight+=Math.floor(100 * 100) / 100
+                    lv3Weight+=Math.floor(100 * 100) / 100
+                }
+            })
+            if(lv1Weight!==100.00){
+                return this.$message({
+                    type:'error',
+                    message:'指标1的比重错误'
+                })
+            }
+            if(lv2Weight!==100.00){
+                return this.$message({
+                    type:'error',
+                    message:'指标2的比重错误'
+                })
+            }
+            if(lv3Weight!==100.00){
+                return this.$message({
+                    type:'error',
+                    message:'指标3的比重错误'
+                })
+            }
+            if(!nameIsNull){
+                return this.$message({
+                    type:'error',
+                    message:'名称不能为空'
+                })
+            }
+            // 保存执行
             saveTemplateDetail({
             deptCode:this.$store.state.permission.userInfo.deptDTO.deptNum,
             id:this.temId,
@@ -247,7 +304,7 @@ export default {
         .tab1{
             width: calc(25% - 4px);
             position: relative;
-             z-index: 9999;
+             z-index: 1;
             .head{
                 line-height: 60px;
                 text-align: center;

@@ -68,11 +68,13 @@
                                     <iInput
                                         placeholder="请输入"
                                         v-model="formData.spiBaseDTO.toAmountStart"
+                                        @input="formData.spiSupplierDTO.toAmountStart=formData.spiBaseDTO.toAmountStart,supplierStart=formData.spiBaseDTO.toAmountStart"
                                     ></iInput>
                                     <span>-</span>
                                     <iInput
                                         placeholder="请输入"
                                         v-model="formData.spiBaseDTO.toAmountEnd"
+                                         @input="formData.spiSupplierDTO.toAmountEnd=formData.spiBaseDTO.toAmountEnd,supplierEnd=formData.spiBaseDTO.toAmountEnd"
                                     ></iInput>
                                     </div>
                                 </el-col>
@@ -205,12 +207,14 @@
                                     <div class="TOCase">
                                     <iInput
                                         placeholder="请输入"
-                                        v-model="formData.spiSupplierDTO.toAmountStart"
+                                        v-model="supplierStart"
+                                        @change="handleToStart"
                                     ></iInput>
                                     <span>-</span>
                                     <iInput
                                         placeholder="请输入"
-                                        v-model="formData.spiSupplierDTO.toAmountEnd"
+                                        v-model="supplierEnd"
+                                        @change="handleToEnd"
                                     ></iInput>
                                     </div>
                                 </el-col>
@@ -245,6 +249,8 @@ export default {
     },
     data(){
         return {
+            supplierStart:'',
+            supplierEnd:'',
            baseAreaVmodel:[],
            partyOrganId:[],
            formData:{
@@ -443,6 +449,27 @@ export default {
         },
         endChangeBase(e){
             console.log(e)
+        },
+        // 供应商to量级
+        handleToStart(x){
+            if(x<this.formData.spiBaseDTO.toAmountStart){
+                this.$message({
+                    type:'warning',
+                    message:'不能小于基数开始金额'
+                })
+                this.formData.spiSupplierDTO.toAmountStart=this.formData.spiBaseDTO.toAmountStart
+                this.supplierStart=this.formData.spiBaseDTO.toAmountStart
+            }
+        },
+        handleToEnd(x){
+            if(x>this.formData.spiBaseDTO.toAmountEnd){
+                this.$message({
+                    type:'warning',
+                    message:'不能大于基数结束金额'
+                })
+                this.formData.spiSupplierDTO.toAmountEnd=this.formData.spiBaseDTO.toAmountEnd
+                this.supplierEnd=this.formData.spiBaseDTO.toAmountEnd
+            }
         }
     }
 }

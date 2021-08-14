@@ -134,8 +134,7 @@ export default {
       
   },
   mounted() {
- 
-    
+          
   },
   methods: {
     //获取表格数据（包含表头和表格数据）

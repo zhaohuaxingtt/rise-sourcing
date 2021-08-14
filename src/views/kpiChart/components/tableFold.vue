@@ -44,6 +44,7 @@ export default {
       this.tableData = window._.cloneDeep(this.tableDataBefore)
     },
     mounted(){
+        this.handleFold()
     },
     methods:{
         handleFold(){
