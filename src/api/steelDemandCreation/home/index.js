@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-30 14:53:52
- * @LastEditTime: 2021-08-14 15:11:34
+ * @LastEditTime: 2021-08-14 17:31:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\steelDemandCreation\home\index.js
@@ -24,7 +24,7 @@ export function steeldemandcreation(parmars) {
 }
 export function downloadExcelBatch() {
     return downLoad({
-        url: '/steelDemand/downloadExcelBatch',
+        url: '/steelDemand/downloadExcelSteelBatch',
         method: 'GET'
     })
 }
