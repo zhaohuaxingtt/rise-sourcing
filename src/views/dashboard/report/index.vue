@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-06 15:21:13
- * @LastEditTime: 2021-08-13 13:52:18
+ * @LastEditTime: 2021-08-15 12:59:39
  * @LastEditors: Please set LastEditors
  * @Description: 状态跟踪详情
  * @FilePath: /front-web/src/views/dashboard/report/index.vue
@@ -108,6 +108,7 @@ export default {
         size: this.size
       })
       try {
+        // const res = require('./moke.json')
         const res = await rfqTimeOverview(params)
         if (res.code === '200') {
           this.rfqInProgress = res.data.rfqInProgress || 0
