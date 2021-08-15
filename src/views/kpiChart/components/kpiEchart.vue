@@ -15,7 +15,6 @@ export default {
     data(){
         return {
             value:"供应商数量",
-            
             option : {
                 color: ['#1763F7'],
                 tooltip: {
@@ -28,11 +27,7 @@ export default {
                         color:'#000'
                     },
                     formatter:function(params){
-                        const str = `<div style="padding:10px">
-                            <div>该分数断下供应商数量:<span style="color:#1763F7">${params.value}家</span></div>
-                            <div>${params.seriesName}:${params.name}分</div>
-                        </div>`
-                        return str
+                        return 
                     },
                     axisPointer:{//直线指示器
                         type:'none'
@@ -41,17 +36,11 @@ export default {
                 },
                 legend: {
                     data:[{
-                        name:'上海汇众汽车有限公司',
+                        name:'',
                         icon:'circle',
                         textStyle: {
                             color: '#1763F7'
                         }
-                    },{
-                        name:'大陆汽车电子有限公司',
-                        icon:'circle',
-                        textStyle: {
-                            color: '#1763F7'
-                        }   
                     }],
                 },
                 grid: {
@@ -79,7 +68,7 @@ export default {
                         axisLabel:{
                             interval:1
                         }, 
-                        data: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100']
+                        data: ['5', '15', '25', '35', '45', '55', '65', '75', '85', '95']
                    
                 },
                 yAxis: {
@@ -99,7 +88,7 @@ export default {
                         emphasis: {
                             focus: 'series'
                         },
-                        data: [1,2,3,4,5,6,7,8,9,1],
+                        data: [],
                         markLine: {
                             lineStyle: {
                                 type:'solid',
@@ -109,8 +98,8 @@ export default {
                             silent: true, // 鼠标悬停事件, true悬停不会出现实线
                             symbol: 'none', // 去掉箭头
                             data: [[
-                                { coord: ['50', 0] }, // [x第几个（从0开始），y轴起始点 ]
-                                { coord: ['50', 10] } // [x第几个（从0开始），y轴起始点 ]
+                                { coord: ['45', 0] }, // [x第几个（从0开始），y轴起始点 ]
+                                { coord: ['45', 10] } // [x第几个（从0开始），y轴起始点 ]
                             ]]
                         },
                         markPoint:{
@@ -118,17 +107,23 @@ export default {
                         }
                     }
                 ]
-            }
+            },
         }
     },
     mounted(){
         this.option={...this.options}
         this.initCharts();
-        console.log(this.option)
     },
     watch:{
         option:{
             handler(curVal,oldVal){
+                this.option.legend.data=this.options.legend.data
+                // 更新供应商名称
+                this.options.legend.data.forEach((x,index)=>{
+                    this.option.legend.data[index].name=x.name
+                    this.option.series[0].name=x.name
+                })
+
                 this.option.tooltip.formatter=function(params){
                         const str = `<div style="padding:10px">
                             <div>该分数断下供应商数量:<span style="color:#1763F7">${params.value}家</span></div>
