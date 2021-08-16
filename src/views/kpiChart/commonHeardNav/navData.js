@@ -14,14 +14,14 @@ export const tabRouterList = [
       value: 1,
       name: '供应商360',
       //url: '/supplier/index',
-      //activePath: '/supplier/index',
+      //activePath: '',
       key: '供应商360',
     },
     {
       value: 2,
       name: '供应商绩效',
-      url: '/supplier/kpi',
-      activePath: '/supplier/kpi',
+      url: '/supplier/kpiIndex',
+      activePath: '/supplier/kpiIndex',
       key: '供应商绩效',
     },
     {
@@ -51,8 +51,8 @@ export const tabRouterList = [
     {
       value: 1,
       name: '总览',
-      url: '/supplier/kpi',
-      activePath: '/supplier/kpi',
+      url: '/supplier/kpiIndex',
+      activePath: '/supplier/kpiIndex',
       key: '总览',
     },
     {

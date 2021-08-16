@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 16:41:49
- * @LastEditTime: 2021-08-16 15:48:47
+ * @LastEditTime: 2021-08-16 16:27:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\components\detail.vue
@@ -29,8 +29,8 @@
             </iSelect>
           </el-form-item>
           <el-form-item class="searchButton">
-            <el-button @click="handleSubmitSearch">{{language('QR', '确认')}}</el-button>
-            <el-button @click="handleSearchReset">{{language('CZ', '重置')}}</el-button>
+            <iButton @click="handleSubmitSearch">{{language('QR', '确认')}}</iButton>
+            <iButton @click="handleSearchReset">{{language('CZ', '重置')}}</iButton>
           </el-form-item>
         </el-form>
       </div>
@@ -49,8 +49,8 @@
         </tableList>
         <iPagination
         v-update
-        @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
+        @size-change="handleSizeChange($event, getTableData)"
+        @current-change="handleCurrentChange($event, getTableData)"
         background
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import {iDialog, iSelect, iInput, iMessage, iPagination} from 'rise'
+import {iDialog, iSelect, iInput, iMessage, iPagination, iButton} from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import {detailTableTitle} from './data'
 import { pageMixins } from "@/utils/pageMixins";
@@ -86,6 +86,7 @@ export default {
     iSelect,
     iInput,
     iPagination,
+    iButton,
     tableList
   },
   data () {
@@ -98,7 +99,7 @@ export default {
   },
   created() {
     this.initTestData()
-    this.getTableList()
+    this.getTableData()
   },
   methods: {
     // 初始化测试数据
@@ -112,25 +113,51 @@ export default {
       this.loading = false
     },
     // 获取表格数据
-    getTableList() {
-      this.loading = true
-      const params = {
-        pratName: this.materiaName || null,
-        carTypeName: this.searchForm.cartTypeProject || null,
-        isEop: this.searchForm.isEop || null,
-        materialGroupName: this.searchForm.materialGroup || null,
-        partsNo: this.searchForm.partNo || null,
-        rfqNo: this.searchForm.rfqNo || null,
-        pageNo: this.page.currPage,
-        pageSize: this.page.pageSize,
-      }
-      getRawMateriaDetail(params).then(res => {
-        if(res && res.code == 200) {
-          this.page.totalCount = res.total
-          this.tableListData = res.data
-          this.loading = false
-        } else iMessage.error(res.desZh)
+    getTableData() {
+      return new Promise(resolve => {
+        this.loading = true
+        const params = {
+          pratName: this.materiaName || null,
+          carTypeName: this.searchForm.cartTypeProject || null,
+          isEop: this.searchForm.isEop || null,
+          materialGroupName: this.searchForm.materialGroup || null,
+          partsNo: this.searchForm.partNo || null,
+          rfqNo: this.searchForm.rfqNo || null,
+          pageNo: this.page.currPage,
+          pageSize: this.page.pageSize,
+        }
+        getRawMateriaDetail(params).then(res => {
+          if(res && res.code == 200) {
+            this.page.totalCount = res.total
+            this.tableListData = res.data
+            this.loading = false
+            resolve(res.data)
+          } else iMessage.error(res.desZh)
+        })
       })
+    },
+    // 点击确定
+    handleSubmitSearch() {
+      this.page.currPage = 1
+      this.page.pageSize = 10
+      this.getTableData().then(res => {
+        if (!res || res.length == 0) {
+          iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
+        }
+      })
+    },
+    // 点击重置
+    handleSearchReset() {
+      this.page.currPage = 1
+      this.page.pageSize = 10
+      this.initSearchData()
+      this.getTableData()
+    },
+    // 初始化检索条件
+    initSearchData() {
+      for(const key in this.searchForm) {
+        this.searchForm[key] = null
+      }
     }
   }
 }
@@ -138,19 +165,13 @@ export default {
 
 <style lang='scss' scoped>
 .optionBox {
+  ::v-deep .demo-form-inline {
+    display: flex;
+  }
   .searchButton {
+    width: 250px;
+    text-align: right;
     margin-top: 50px;
-    float: right;
-    z-index: 100;
-    button {
-      width: 100px;
-      height: 35px;
-      border: none;
-      background-color: #EEF2FB;
-      font-weight: bold;
-      color: #1660F1;
-      font-size: 16px;
-    }
   }
 }
 .contentBox {

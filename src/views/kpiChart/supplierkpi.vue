@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="spi-page">
         <iPage>
             <publicHeaderMenu></publicHeaderMenu>
             <div class="head">
@@ -251,6 +251,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .spi-page{
+        height: 100vh;
+        width: 100%;
+        overflow: auto;
+    }
     .head{
         width: 100%;
         height: 414px;

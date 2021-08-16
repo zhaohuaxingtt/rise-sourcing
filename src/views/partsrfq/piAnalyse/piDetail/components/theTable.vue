@@ -59,6 +59,9 @@
         :isTableEdit="tableStatus"
         @handleSelectionChange="handleHideSelectionChange"
         @handleShow="handleShow"
+        @handleGetSelectList="handleGetSelectList"
+        :selectOptionsObject="selectOptionsObject"
+        @handleSelectReset="handleSelectReset"
     />
   </div>
 </template>
@@ -275,21 +278,17 @@ export default {
           return [];
         }
         copyTableList.map((item, index) => {
+          const time = new Date().getTime() + index;
           if (!item.id) {
-            item.time = new Date().getTime() + index;
+            item.time = time;
+            this.selectOptionsObject[time] = {};
+          } else {
+            this.selectOptionsObject[item.id] = {};
           }
           if (item.isShow) {
             this.tableListData.push(item);
           } else {
             this.hideTableData.push(item);
-          }
-        });
-        copyTableList.map(item => {
-          if (item.id) {
-            this.selectOptionsObject[item.id] = {};
-          } else {
-            const time = new Date().getTime();
-            this.selectOptionsObject[time] = {};
           }
         });
       } catch {

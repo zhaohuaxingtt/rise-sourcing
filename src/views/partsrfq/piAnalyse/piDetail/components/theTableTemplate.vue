@@ -120,6 +120,7 @@
         <template slot-scope="scope">
           <div class="systemMatchBox">
             <template v-if="isTableEdit">
+              <!--第一个下拉框-->
               <iSelect
                   v-model="scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})]"
                   @visible-change="(boolean)=>handleGetSelectList({props: '',boolean,row: scope.row})"
@@ -143,6 +144,7 @@
                       :label="getSelectLabel({props: FIRSTSELECT, row:scope.row, itemData: item})"/>
                 </template>
               </iSelect>
+              <!--第二个下拉框-->
               <iSelect
                   v-model="scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})]"
                   @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row})"
@@ -165,6 +167,7 @@
                       :label="getSelectLabel({props: SECONDSELECT, row:scope.row, itemData: item})"/>
                 </template>
               </iSelect>
+              <!--第三个下拉框-->
               <iSelect
                   v-if="scope.row.dataType === classType['rawMaterial']"
                   v-model="scope.row[getMatchProps({props: THIRDSELECT, row: scope.row})]"
@@ -299,7 +302,7 @@ export default {
       THIRDSELECT,
       classTypeSelect,
       classType,
-      selectLoading: false
+      selectLoading: false,
     };
   },
   methods: {
@@ -330,9 +333,9 @@ export default {
           break;
       }
       this.$emit('handleSelectReset', {props, row});
-      this.selectLoading = true
+      this.selectLoading = true;
       await this.handleGetSelectList({props, boolean: true, row, req});
-      this.selectLoading = false
+      this.selectLoading = false;
     },
     indexMethod(index) {
       return index + 1 + this.customIndex;
@@ -364,7 +367,7 @@ export default {
     },
     // 获取下拉
     async handleGetSelectList({props, boolean, row, req = {}}) {
-      this.selectLoading = true
+      this.selectLoading = true;
       let selectList = '';
       if (boolean) {
         switch (row.dataType) {
@@ -383,7 +386,7 @@ export default {
             break;
         }
       }
-      this.selectLoading = false
+      this.selectLoading = false;
       this.$emit('handleGetSelectList', {props, row, selectList});
     },
     // 获取select Label
