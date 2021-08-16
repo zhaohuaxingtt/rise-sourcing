@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-08-10 16:04:43
+ * @LastEditTime: 2021-08-16 17:32:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -80,6 +80,7 @@
  
 <script>
 import EditableCell from "./editCell";
+import { saveMekTable, deleteMekTable } from '@/api/categoryManagementAssistant/mek'
 export default {
   name: "App",
   components: {
@@ -95,6 +96,12 @@ export default {
     editFlag: {
       type: Boolean,
       default: false
+    },
+    addRowList: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   watch: {
@@ -115,6 +122,7 @@ export default {
             }
           })
         }
+        this.$emit('editData', this.gridData1);
       }
     },
     gridData: {
@@ -133,8 +141,39 @@ export default {
               }
             }
           });
-          console.log(this.gridData1)
+
         }
+      }
+    },
+    addRowList: {
+      handler (val) {
+        val.editMode = true
+        // this.tableData = [val, ...this.tableData]
+        this.$set(this.gridData1, this.gridData1.length, val);
+        // this.gridData1 = [...this.tableData]
+        console.log(this.gridData1)
+        this.$emit('addData', this.gridData1);
+      }
+    },
+    save (val) {
+      if (val) {
+        saveMekTable({
+          "comparedType": "string",
+          "detail": [
+            {
+              "detail": [
+                {
+                  "id": 0,
+                  "motorTypeId": 0,
+                  "remark": "string"
+                }
+              ],
+              "type": "string",
+              "typeId": 0
+            }
+          ],
+          "schemeId": 0
+        })
       }
     }
   },

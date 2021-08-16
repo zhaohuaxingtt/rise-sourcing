@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-16 14:08:32
+ * @LastEditTime: 2021-08-16 17:37:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -74,38 +74,10 @@
                     <el-select v-model="partNumber"
                                @change="changeBy"
                                multiple>
-                      <el-option value="1"
-                                 :label="$t('857705')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('857706')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('857707')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('857708')"></el-option>
-                      <el-option value="5"
-                                 :label="$t('857709')"></el-option>
-                      <el-option value="6"
-                                 :label="$t('857710')"></el-option>
-                      <el-option value="7"
-                                 :label="$t('857711')"></el-option>
-                      <el-option value="8"
-                                 :label="$t('857712')"></el-option>
-                      <el-option value="9"
-                                 :label="$t('857713')"></el-option>
-                      <el-option value="10"
-                                 :label="$t('857714')"></el-option>
-                      <el-option value="11"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="12"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="13"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="14"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="15"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="16"
-                                 :label="$t('857715')"></el-option>
+                      <el-option v-for="item in recursiveRetrieveList"
+                                 :key="item.partId"
+                                 :value="item.partSixNumber"
+                                 :label="item.partNumber"> </el-option>
                     </el-select>
                   </el-form-item>
                 </el-row>
@@ -216,7 +188,7 @@
         <template v-slot:header>
           <div class="titleBox">
             <div v-if="!editFlag">
-              <iButton>新增</iButton>
+              <iButton @click="addRow">新增</iButton>
               <iButton>删除</iButton>
               <iButton @click="edit">编辑</iButton>
             </div>
@@ -227,7 +199,10 @@
           </div>
         </template>
         <tableList :gridData="gridData"
-                   :editFlag="editFlag"></tableList>
+                   :editFlag="editFlag"
+                   :addRowList="addRowList"
+                   @editData="editData"
+                   @addData="addData"></tableList>
       </iCard>
       <iDialog title="保存"
                :visible.sync="dialogVisible"
@@ -288,8 +263,6 @@ export default {
     return {
       //类型选择
       type: "",
-      //六位车型零件号
-      partNumber: "",
       //价格类型
       priceType: "",
       //时间选择
@@ -335,7 +308,11 @@ export default {
       //mek类型list
       mekTypeList: [],
       //"mek价格类型"list
-      mekpriceTypeList: []
+      mekpriceTypeList: [],
+      //六位车型零件号
+      recursiveRetrieveList: [],
+      //新增行
+      addRowList: {},
 
     };
   },
@@ -372,6 +349,8 @@ export default {
         categoryId: '600029',
         motorIds: this.ComparedMotor,
         schemeId: this.chemeId
+      }).then(res => {
+        this.recursiveRetrieveList = res.data
       })
       // getComparedMotor({
       // }).then(res => {
@@ -420,6 +399,7 @@ export default {
     },
     save () {
       this.editFlag = false
+      this.save = true
     },
     cancel () {
       this.editFlag = false
@@ -431,7 +411,15 @@ export default {
     saveDialog () {
       this.dialogVisible = true
     },
+    addRow () {
+      this.addRowList = {}
+      this.gridData.title.forEach(item => {
+        this.addRowList[item.label] = ""
+        this.addRowList['id#' + item.label.split("#")[1]] = ""
+      })
+      console.log(this.addRowList)
 
+    },
 
     //计算车型弹窗
     computeModal () {
