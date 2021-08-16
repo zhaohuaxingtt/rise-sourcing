@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 09:50:33
+ * @LastEditTime: 2021-08-16 10:08:04
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -34,7 +34,7 @@
       <div class="margin-bottom20 clearFloat margin-top30 padding-top30 borderTop">
         <span class="font18 font-weight">{{language('NIHEJINDU', '拟合进度')}}</span>
       </div>
-      <tableList class="fitTable" indexKey :tableTitle="partTableTitle" :tableData="fitTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
+      <tableList class="fitTable" indexKey :showPot="true" :tableTitle="partTableTitle" :tableData="fitTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
       </tableList> 
     </template>
     <!---------------------------------------------------------------------->
