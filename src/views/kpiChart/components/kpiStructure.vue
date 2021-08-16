@@ -187,15 +187,15 @@ export default {
             let nameIsNull = true
             this.formDataLevel2.forEach(x=>{
                 if(!x.name)(nameIsNull =false)
-                lv1Weight+=Math.floor(x.weight * 100) / 100
+                lv1Weight+=Number(x.weight)
                 if(x.children.length>0){
                     x.children.forEach(y=>{
                         if(!y.name)(nameIsNull =false)
-                        lv2Weight+=Math.floor(y.weight * 100) / 100
-                        if(x.children.length>0){
-                            x.children.forEach(z=>{
+                        lv2Weight+=Number(y.weight)
+                        if(y.children.length>0){
+                            y.children.forEach(z=>{
                                 if(!z.name)(nameIsNull =false)
-                                lv3Weight+=Math.floor(z.weight * 100) / 100
+                                lv3Weight+=Number(z.weight)
                             })
                             
                         }else{
@@ -208,24 +208,34 @@ export default {
                     lv3Weight+=Math.floor(100 * 100) / 100
                 }
             })
-            if(lv1Weight!==100.00){
+            if(lv1Weight!==100){
                 return this.$message({
                     type:'error',
                     message:'指标1的比重错误'
                 })
             }
-            if(lv2Weight!==100.00){
-                return this.$message({
-                    type:'error',
-                    message:'指标2的比重错误'
-                })
+            if(lv2Weight!==100){
+                if(lv2Weight/this.formDataLevel2.length!==100){
+                    return this.$message({
+                        type:'error',
+                        message:'指标2的比重错误'
+                    })
+                }
             }
-            if(lv3Weight!==100.00){
-                return this.$message({
-                    type:'error',
-                    message:'指标3的比重错误'
+            if(lv3Weight!==100){
+                let num = 0
+                this.formDataLevel2.forEach(x=>{
+                    num+=x.children.length
                 })
+                console.log(num,lv3Weight,this.formDataLevel2)
+                if(lv3Weight/num!==100){
+                    return this.$message({
+                        type:'error',
+                        message:'指标3的比重错误'
+                    })
+                }
             }
+
             if(!nameIsNull){
                 return this.$message({
                     type:'error',

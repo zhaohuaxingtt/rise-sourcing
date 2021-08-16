@@ -42,3 +42,12 @@ export function getSelectExchange(params) {
     data: params,
   });
 }
+
+//方案详情
+export function getAnalysisSchemeDetails(params) {
+  return request({
+    url: '/piAnalysisScheme/analysisSchemeDetails',
+    method: 'POST',
+    data: params,
+  });
+}

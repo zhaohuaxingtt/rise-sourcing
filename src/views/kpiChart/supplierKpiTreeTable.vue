@@ -186,7 +186,6 @@ export default {
     created(){
         //let userCode = this.$store.state.permission.userInfo.deptDTO.deptNum
          this.getSelectKpiList({deptCode:this.$store.state.permission.userInfo.deptDTO.deptNum})
-      
     },
     mounted(){
         
@@ -196,7 +195,8 @@ export default {
             slelectkpiList(params).then(res=>{
                 this.dropDownOptions=res.data
                 if(this.dropDownOptions.length>0){
-                    this.getTittleDetail(this.dropDownOptions[this.dropDownOptions.length-1].key)
+                    this.getTittleDetail(this.dropDownOptions[this.dropDownOptions.length-1].key)//初始化表头
+                    this.getDetail(this.dropDownOptions[this.dropDownOptions.length-1].key)//初始化最新版本数据
                     this.selectValue=this.dropDownOptions[this.dropDownOptions.length-1].value
                 }
             })

@@ -9,7 +9,7 @@
 <template>
   <div>
     <iPage>
-      <!-- <publicHeaderMenu></publicHeaderMenu> -->
+      <publicHeaderMenu></publicHeaderMenu>
       <iTabs style='margin-left:20px;' v-model="tabVal" @tab-click="changeTab" >
           <el-tab-pane name="pp" label="生产供应商">
           </el-tab-pane>
