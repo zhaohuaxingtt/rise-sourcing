@@ -63,7 +63,7 @@ export default {
             },
             labelLine: {
               show: false,
-              length: 4,
+              length: 10,
               length2: 4,
             },
             data: this.seriesArray,

@@ -5,7 +5,7 @@
       @close="clearDiolog"
   >
     <div id="content">
-      <div class="title">{{ language('PI.PIINDEXBAOGAO', 'Price Index报告') }}- 零件号</div>
+      <div class="title">{{ language('PI.PIINDEXBAOGAO', 'Price Index报告') }}-{{dataInfo.partsId}}</div>
       <theBaseInfo class="margin-top20" :dataInfo="dataInfo"/>
       <el-divider class="margin-top20 margin-bottom20"/>
       <theTable :isPreview="true" :dataInfo="dataInfo" :currentTab="currentTab"/>

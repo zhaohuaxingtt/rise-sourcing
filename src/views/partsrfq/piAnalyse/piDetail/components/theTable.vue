@@ -45,6 +45,7 @@
         @handleGetSelectList="handleGetSelectList"
         :selectOptionsObject="selectOptionsObject"
         @handleSelectReset="handleSelectReset"
+        :selection="!isPreview"
     />
     <el-divider class="margin-top20 margin-bottom20" v-if="tableStatus === 'edit'"/>
     <!--隐藏表格-->
@@ -62,6 +63,7 @@
         @handleGetSelectList="handleGetSelectList"
         :selectOptionsObject="selectOptionsObject"
         @handleSelectReset="handleSelectReset"
+        :selection="!isPreview"
     />
   </div>
 </template>
