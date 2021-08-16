@@ -29,6 +29,7 @@
                     :clearable="item.clearable" 
                     v-model="searchParams[item.props]" 
                     :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
+                    reserve-keyword
                     @change="handleMultipleChange($event, item.props,item.multiple)"
                     :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
                     >
@@ -178,6 +179,7 @@ import {
   synAekoFromTCM,
   synAekoAttachmentFromTCM,
 } from '@/api/aeko/manage'
+import { debounce } from "lodash"
 export default {
     name:'aekoManageList',
     mixins: [pageMixins],
@@ -204,6 +206,7 @@ export default {
         selectItems:[],
         searchParams:{
           brand:'',
+          buyerName:'',
           aekoStatusList:[],
           coverStatusList:[],
           carTypeCodeList:[],
@@ -240,6 +243,7 @@ export default {
         },
         importAeko:importAeko,
         itemFileData:{},
+        debouncer: null
       }
     },
     computed: {
@@ -401,6 +405,7 @@ export default {
             data.map((item)=>{
               item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
               item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+              item.lowerCaseLabel =  typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
             })
             this.selectOptions.buyerName = data;
             this.selectOptionsCopy.buyerName = data;
@@ -609,26 +614,38 @@ export default {
 
       // 模糊搜索处理
       dataFilter(val,props){
+        console.log(val,props);
+        if (this.debouncer && typeof this.debouncer.cancel === "function") this.debouncer.cancel();
+
+        if(props == 'buyerName'){
+          this.searchParams.buyerName = val;
+        }
+        
+
         // 去除前后空格
         const trimVal = val.trim();
         const { selectOptionsCopy={}} = this;
         if(trimVal){
+          this.debouncer = debounce(() => {
             // 人名要特殊处理 --- 可搜索英文去除大小写
-          if(props == 'buyerName'){
-            const list = selectOptionsCopy[props].filter((item) => {
-              if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
-                return true
-              }
-            })
-            this.selectOptions[props] = list;
-          }else{
-            const list = selectOptionsCopy[props].filter((item) => {
-              if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
-                  return true;
-              } 
-            })
-             this.selectOptions[props] = list;
-          }
+            if(props == 'buyerName'){
+              const list = selectOptionsCopy[props].filter((item) => {
+                if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                  return true
+                }
+              })
+              this.selectOptions[props] = list;
+            }else{
+              const list = selectOptionsCopy[props].filter((item) => {
+                if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
+                    return true;
+                } 
+              })
+              this.selectOptions[props] = list;
+            }
+          },400);
+        this.debouncer()
+            
         }else{
           this.selectOptions[props] = selectOptionsCopy[props];
         }
@@ -643,6 +660,9 @@ export default {
               const {selectOptionsCopy={}} = this;
               this.$set(this.selectOptions,key,selectOptionsCopy[key]);
             }else{
+              console.log('2222');
+              this.$set(this.searchParams,key,value);
+              console.log(this.searchParams)
               return;
             }
           }
