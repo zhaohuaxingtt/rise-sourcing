@@ -609,7 +609,6 @@ export default {
 
       // 模糊搜索处理
       dataFilter(val,props){
-        console.log(val,'valvalval');
         // 去除前后空格
         const trimVal = val.trim();
         const { selectOptionsCopy={}} = this;
@@ -637,13 +636,15 @@ export default {
 
       // 多选处理
       handleMultipleChange(value, key,multiple) {
+        console.log(value,key);
           // 单选不处理
-          if(!multiple) return;
-
-          if (!value[value.length - 1]) {
-              this.$set(this.searchParams, key, [""])
-          } else {
-              this.$set(this.searchParams, key, this.searchParams[key].filter(item => item || item === 0))
+          if(!multiple) {
+            if(!value){
+              const {selectOptionsCopy={}} = this;
+              this.$set(this.selectOptions,key,selectOptionsCopy[key]);
+            }else{
+              return;
+            }
           }
       },
 
