@@ -29,12 +29,13 @@
                     :clearable="item.clearable" 
                     v-model="searchParams[item.props]" 
                     :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
+                    @change="handleMultipleChange($event, item.props,item.multiple)"
                     :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
                     >
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="(item,index) in selectOptions[item.selectOption] || []"
-                      :key="index"
+                      :key="item.selectOption+'_'+index"
                       :label="item.desc"
                       :value="item.code"
                       >
@@ -76,6 +77,12 @@
             <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission="AEKO_MANAGELIST_BUTTON_DAOCHU" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
+
+          <!-- 暂时添加的按钮 -->
+          <template v-if="isAekoManager">
+            <iButton :loading="btnLoading.tcm" @click="getTCM">TCM AEKO同步</iButton>
+            <iButton :loading="btnLoading.tcmFiles" @click="getTCMFiles">TCM AEKO附件同步</iButton>
+          </template>
       </template>
       <!-- 表单区域 -->
       <div v-permission="AEKO_MANAGELIST_TABLE">
@@ -168,6 +175,8 @@ import {
   downloadAeko,
   searchCommodity,
   searchLinie,
+  synAekoFromTCM,
+  synAekoAttachmentFromTCM,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
@@ -226,7 +235,8 @@ export default {
           uploadFiles:false,
           importAeko:false,
           deleteItem:false,
-          
+          tcmFiles:false,
+          tcm:false,
         },
         importAeko:importAeko,
         itemFileData:{},
@@ -622,7 +632,48 @@ export default {
         }else{
           this.selectOptions[props] = selectOptionsCopy[props];
         }
-      }
+      },
+
+      // 多选处理
+      handleMultipleChange(value, key,multiple) {
+        console.log(value,key);
+          // 单选不处理
+          if(!multiple) {
+            if(!value){
+              const {selectOptionsCopy={}} = this;
+              this.$set(this.selectOptions,key,selectOptionsCopy[key]);
+            }else{
+              return;
+            }
+          }
+      },
+
+
+      // TCM AEKO同步 
+      async getTCM(){
+        this.btnLoading.tcm = true;
+        await synAekoFromTCM().then((res)=>{
+          this.btnLoading.tcm = false;
+          if(res.code == 200) {
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          }
+        }).catch((err)=>{
+          this.btnLoading.tcm = false;
+        })
+      },
+
+       // TCM AEKO附件同步
+       async getTCMFiles(){
+        this.btnLoading.tcmFiles = true;
+        await synAekoAttachmentFromTCM().then((res)=>{
+          this.btnLoading.tcmFiles = false;
+          if(res.code == 200) {
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          }
+        }).catch((err)=>{
+          this.btnLoading.tcmFiles = false;
+        })
+       },
     }
 }
 </script>

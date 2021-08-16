@@ -67,7 +67,7 @@
             <!-- 科室 -->
             <!-- 实际分配科室有就显示实际科室，否则就显示预设科室  表示科室是预设的 -->
             <template #linieDeptName="scoped">
-                <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptName || scoped.row.refferenceSmt}}</span>
+                <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptNum || scoped.row.refferenceSmtNum}}</span>
             </template>
             <!-- linie -->
             <template #buyerName="scoped">
@@ -108,7 +108,7 @@
 
       </iCard>
       <!-- 分配科室 -->
-      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNumList" :buyerName="selectOptions.buyerName"/>
+      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNumList" :buyerName="selectOptions.buyerName" :userInfo="userInfo"/>
       <!-- 退回原因 -->
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
   </div>
@@ -349,8 +349,10 @@ export default {
                 }
             })
 
-            // LINIE
-            searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+            // LINIE  只能看见本科是的LINIE
+            const {deptDTO={}} = this.userInfo;
+            const deptId = deptDTO.id;
+            searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
                 const {code,data} = res;
                 if(code ==200 ){
                     data.map((item)=>{
@@ -532,7 +534,14 @@ export default {
         // 多选处理
         handleMultipleChange(value, key,multiple) {
             // 单选不处理
-            if(!multiple) return;
+            if(!multiple) {
+                if(!value){
+                    const {selectOptionsCopy={}} = this;
+                    this.$set(this.selectOptions,key,selectOptionsCopy[key]);
+                }else{
+                    return;
+                }
+            }
 
             if (!value[value.length - 1]) {
                 this.$set(this.searchParams, key, [""])
