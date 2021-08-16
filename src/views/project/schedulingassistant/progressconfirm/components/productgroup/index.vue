@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:54:35
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-09 11:28:11
+ * @LastEditTime: 2021-08-16 16:01:00
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\index.vue
 -->
@@ -93,7 +93,7 @@ export default {
         confirmStatus: 'TO_BE_CONFIRMED'
       },
       selectOptions: {},
-      tableTitle,
+      // tableTitle,
       tableData: [],
       tableLoading: false,
       backDialogVisible: false,
@@ -108,7 +108,14 @@ export default {
   computed: {
     isFS() {
       return this.$route.path.includes('proconfirm')
-    }
+    },
+    tableTitle() {
+      if (this.isFS) {
+        return tableTitle.filter(item => item.key !== 'QUERENSHIJIAN')
+      } else {
+        return tableTitle
+      }
+    },
   },
   created() {
     this.initSearchParams()
