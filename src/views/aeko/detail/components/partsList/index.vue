@@ -534,7 +534,14 @@ export default {
         // 多选处理
         handleMultipleChange(value, key,multiple) {
             // 单选不处理
-            if(!multiple) return;
+            if(!multiple) {
+                if(!value){
+                    const {selectOptionsCopy={}} = this;
+                    this.$set(this.selectOptions,key,selectOptionsCopy[key]);
+                }else{
+                    return;
+                }
+            }
 
             if (!value[value.length - 1]) {
                 this.$set(this.searchParams, key, [""])
