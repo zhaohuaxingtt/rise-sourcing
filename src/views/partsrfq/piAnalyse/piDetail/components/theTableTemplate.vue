@@ -67,6 +67,7 @@
           :fixed="items.fixed">
         <template slot-scope="scope">
           <iInput
+              @input="handleNumber($event,scope.row, 'costProportion')"
               v-if="isTableEdit"
               v-model="scope.row[items.props]"
               :maxlength="50"
@@ -125,6 +126,7 @@
                   @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row})"
                   style="width: 120px;margin-right: 10px;"
                   value-key="id"
+                  :loading="selectLoading"
               >
                 <template v-if="scope.row.newRow">
                   <el-option
@@ -146,6 +148,7 @@
                   @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row})"
                   style="width: 120px;margin-right: 10px;"
                   value-key="id"
+                  :loading="selectLoading"
               >
                 <template v-if="scope.row.newRow">
                   <el-option
@@ -168,6 +171,7 @@
                   @change="handleSelectChange({props:THIRDSELECT , event: $event, row:scope.row})"
                   style="width: 120px;margin-right: 10px;"
                   value-key="id"
+                  :loading="selectLoading"
               >
                 <template v-if="scope.row.newRow">
                   <el-option
@@ -187,12 +191,36 @@
               <div v-else style="width: 120px;margin-right: 10px;"/>
             </template>
             <template v-else>
-              <div class="systemMatchText">{{ scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})] }}</div>
-              <div class="systemMatchText">{{ scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})] }}</div>
-              <div class="systemMatchText">{{ scope.row[getMatchProps({props: THIRDSELECT, row: scope.row})] }}</div>
+              <el-popover
+                  placement="top-start"
+                  width="200"
+                  trigger="hover"
+                  :content="getMatchTextLabel({props: FIRSTSELECT, row: scope.row })">
+                <div class="systemMatchText" slot="reference">
+                  <span>{{ getMatchTextLabel({props: FIRSTSELECT, row: scope.row}) }}</span>
+                </div>
+              </el-popover>
+              <el-popover
+                  placement="top-start"
+                  width="200"
+                  trigger="hover"
+                  :content="getMatchTextLabel({props: SECONDSELECT, row: scope.row })">
+                <div class="systemMatchText" slot="reference">
+                  <span>{{ getMatchTextLabel({props: SECONDSELECT, row: scope.row}) }}</span>
+                </div>
+              </el-popover>
+              <el-popover
+                  placement="top-start"
+                  width="200"
+                  trigger="hover"
+                  :content="getMatchTextLabel({props: THIRDSELECT, row: scope.row })">
+                <div class="systemMatchText" slot="reference">
+                  <span>{{ getMatchTextLabel({props: THIRDSELECT, row: scope.row}) }}</span>
+                </div>
+              </el-popover>
             </template>
             <div class="systemMatchText" style="width: auto;">
-              <span>数据来源: {{ scope.row.dataSource }}</span>
+              <span>{{ language('PI.SHUJULAIYUAN', '数据来源') }}: {{ scope.row.dataSource }}</span>
               <iconTips
                   iconName="iconzhongyaoxinxitishi"
                   :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成\n'+'对应的指数变动百分比，可手动补充系统匹配\n'+'模块信息。')"
@@ -235,6 +263,7 @@ import {
   getSelectCountry,
   getSelectExchange,
 } from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import {numberProcessor} from '@/utils';
 
 export default {
   props: {
@@ -270,6 +299,7 @@ export default {
       THIRDSELECT,
       classTypeSelect,
       classType,
+      selectLoading: false
     };
   },
   methods: {
@@ -300,7 +330,9 @@ export default {
           break;
       }
       this.$emit('handleSelectReset', {props, row});
+      this.selectLoading = true
       await this.handleGetSelectList({props, boolean: true, row, req});
+      this.selectLoading = false
     },
     indexMethod(index) {
       return index + 1 + this.customIndex;
@@ -332,6 +364,7 @@ export default {
     },
     // 获取下拉
     async handleGetSelectList({props, boolean, row, req = {}}) {
+      this.selectLoading = true
       let selectList = '';
       if (boolean) {
         switch (row.dataType) {
@@ -350,6 +383,7 @@ export default {
             break;
         }
       }
+      this.selectLoading = false
       this.$emit('handleGetSelectList', {props, row, selectList});
     },
     // 获取select Label
@@ -412,6 +446,38 @@ export default {
           break;
       }
     },
+    // 系统匹配展示LABEL
+    getMatchTextLabel({props, row}) {
+      const value = row[this.getMatchProps({props, row})] ? `（${row[this.getMatchProps({props, row})]}）` : '（）';
+      switch (row.dataType) {
+        case this.classType['rawMaterial']:
+          if (props === this.FIRSTSELECT) {
+            return this.language('PI.LEIBIE', '类别') + value;
+          } else if (props === this.SECONDSELECT) {
+            return this.language('PI.GUIGEPAIHAO', '规格/牌号') + value;
+          } else if (props === this.THIRDSELECT) {
+            return this.language('PI.SHENGSHI', '省市') + value;
+          }
+          break;
+        case this.classType['manpower']:
+          if (props === this.FIRSTSELECT) {
+            return this.language('PI.GONGZHONG', '工种') + value;
+          } else if (props === this.SECONDSELECT) {
+            return this.language('PI.SHENGSHI', '省市') + value;
+          }
+          break;
+        case this.classType['exchangeRate']:
+          if (props === this.FIRSTSELECT) {
+            return this.language('PI.GUOJIA', '国家') + value;
+          } else if (props === this.SECONDSELECT) {
+            return this.language('PI.HUILVDANWEI', '汇率单位') + value;
+          }
+          break;
+      }
+    },
+    handleNumber(val, row, props) {
+      this.$set(row, props, numberProcessor(val, 2));
+    },
   },
 };
 </script>
@@ -440,12 +506,21 @@ export default {
   }
 
   .systemMatchText {
-    width: 120px;
+    overflow: hidden;
+
     display: flex;
     align-items: center;
     font-size: 14px;
     color: #000000;
     white-space: nowrap;
+    text-overflow: ellipsis;
+
+    & span {
+      width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   .whiteBorder {

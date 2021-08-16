@@ -29,6 +29,7 @@
         class="margin-bottom20"
         @handleItemClick="handleTabsClick"
         @handleTimeChange="handleTimeChange"
+        :currentTab="currentTab"
     />
 
     <!--表格-->
@@ -51,6 +52,7 @@
     <!--预览-->
     <previewDialog
         v-model="previewDialog"
+        :dataInfo="dataInfo"
     />
   </iPage>
 </template>
