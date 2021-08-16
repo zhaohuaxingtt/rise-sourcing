@@ -33,6 +33,7 @@
             multiple
             collapse-tags
             filterable
+            reserve-keyword
             size="mini"
             class="multipleSelect"
             v-model="form.cartypeProjectCode"
@@ -59,6 +60,7 @@
             multiple
             collapse-tags
             filterable
+            reserve-keyword
             size="mini"
             class="multipleSelect"
             v-model="form.status"
@@ -82,6 +84,7 @@
         <el-form-item :label="language('MTZXIANGGUAN', 'MTZ相关')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_ISMTZ">
           <iSelect
             filterable
+            reserve-keyword
             v-model="form.isMtz"
             :placeholder="language('QINGXUANZEMTZXIANGGUAN', '请选择MTZ相关')"
             :filter-method="$event => selectFilter($event, 'isMtz')"
@@ -102,6 +105,7 @@
         <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_PROCUREFACTORY">
           <iSelect
             filterable
+            reserve-keyword
             v-model="form.procureFactory"
             :placeholder="language('QINGXUANZECAIGOUGONGCHANG', '请选择采购工厂')"
             :filter-method="$event => selectFilter($event, 'procureFactory')"
@@ -568,12 +572,12 @@ export default {
       switch(key) {
         case "cartypeProjectCode":
           if (!visible) {
-            this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
-          } else {
-            this.cartypeProjectCurrentPage = 1
+            this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache
             this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsCache, 20)
-            this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
           }
+
+          this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
+          this.cartypeProjectCurrentPage = 1
         break
         case "status":
           if (!visible) {
@@ -587,7 +591,7 @@ export default {
         break
         case "procureFactory":
           if (!visible) {
-            this.procureFactoryOptiopns = procureFactoryOptiopnsCache
+            this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache
           }
         break
         default:
