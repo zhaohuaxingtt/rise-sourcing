@@ -587,7 +587,7 @@ export default {
         break
         case "procureFactory":
           if (!visible) {
-            this.procureFactoryOptiopns = procureFactoryOptiopnsCache
+            this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache
           }
         break
         default:
