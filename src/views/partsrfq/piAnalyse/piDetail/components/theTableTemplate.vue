@@ -187,12 +187,42 @@
               <div v-else style="width: 120px;margin-right: 10px;"/>
             </template>
             <template v-else>
-              <div class="systemMatchText">{{ scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})] }}</div>
-              <div class="systemMatchText">{{ scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})] }}</div>
-              <div class="systemMatchText">{{ scope.row[getMatchProps({props: THIRDSELECT, row: scope.row})] }}</div>
+              <el-popover
+                  placement="top-start"
+                  width="200"
+                  trigger="hover"
+                  :content="getMatchTextLabel({props: FIRSTSELECT, row: scope.row })">
+                <div class="systemMatchText" slot="reference">
+                    <span>
+                      {{ getMatchTextLabel({props: FIRSTSELECT, row: scope.row}) }}
+                    </span>
+                </div>
+              </el-popover>
+              <el-popover
+                  placement="top-start"
+                  width="200"
+                  trigger="hover"
+                  :content="getMatchTextLabel({props: SECONDSELECT, row: scope.row })">
+                <div class="systemMatchText" slot="reference">
+                  <span>
+                    {{ getMatchTextLabel({props: SECONDSELECT, row: scope.row}) }}
+                  </span>
+                </div>
+              </el-popover>
+              <el-popover
+                  placement="top-start"
+                  width="200"
+                  trigger="hover"
+                  :content="getMatchTextLabel({props: THIRDSELECT, row: scope.row })">
+                <div class="systemMatchText" slot="reference">
+               <span>
+                  {{ getMatchTextLabel({props: THIRDSELECT, row: scope.row}) }}
+               </span>
+                </div>
+              </el-popover>
             </template>
             <div class="systemMatchText" style="width: auto;">
-              <span>数据来源: {{ scope.row.dataSource }}</span>
+              <span>{{ language('PI.SHUJULAIYUAN', '数据来源') }}: {{ scope.row.dataSource }}</span>
               <iconTips
                   iconName="iconzhongyaoxinxitishi"
                   :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成\n'+'对应的指数变动百分比，可手动补充系统匹配\n'+'模块信息。')"
@@ -412,6 +442,35 @@ export default {
           break;
       }
     },
+    // 系统匹配展示LABEL
+    getMatchTextLabel({props, row}) {
+      const value = row[this.getMatchProps({props, row})] ? `（${row[this.getMatchProps({props, row})]}）` : '（）';
+      switch (row.dataType) {
+        case this.classType['rawMaterial']:
+          if (props === this.FIRSTSELECT) {
+            return this.language('PI.LEIBIE', '类别') + value;
+          } else if (props === this.SECONDSELECT) {
+            return this.language('PI.GUIGEPAIHAO', '规格/牌号') + value;
+          } else if (props === this.THIRDSELECT) {
+            return this.language('PI.SHENGSHI', '省市') + value;
+          }
+          break;
+        case this.classType['manpower']:
+          if (props === this.FIRSTSELECT) {
+            return this.language('PI.GONGZHONG', '工种') + value;
+          } else if (props === this.SECONDSELECT) {
+            return this.language('PI.SHENGSHI', '省市') + value;
+          }
+          break;
+        case this.classType['exchangeRate']:
+          if (props === this.FIRSTSELECT) {
+            return this.language('PI.GUOJIA', '国家') + value;
+          } else if (props === this.SECONDSELECT) {
+            return this.language('PI.HUILVDANWEI', '汇率单位') + value;
+          }
+          break;
+      }
+    },
   },
 };
 </script>
@@ -440,12 +499,21 @@ export default {
   }
 
   .systemMatchText {
-    width: 120px;
+    overflow: hidden;
+
     display: flex;
     align-items: center;
     font-size: 14px;
     color: #000000;
     white-space: nowrap;
+    text-overflow: ellipsis;
+
+    & span {
+      width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   .whiteBorder {
