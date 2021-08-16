@@ -188,9 +188,17 @@ export default [
             path: '/purchase/investmentList',
             name: 'investmentList',
             meta: {
-              title: '模具投资清单'
+              title: '模具投资清单-确认任务'
             },
             component: () => import (`@/views/ws2/purchase/investmentList`),
+          },
+          {
+            path: '/purchase/changeTask',
+            name: 'changeTask',
+            meta: {
+              title: '模具投资清单-变更任务'
+            },
+            component: () => import (`@/views/ws2/purchase/changeTask`),
           },
           {
             path: '/purchase/mouldBook',
@@ -218,7 +226,14 @@ export default [
         },
         component: () => import (`@/views/ws2/purchase/investmentList/bmInfo`),
       },
-
+      {
+        path: '/purchase/changeTask/bmInfo',
+        name: 'bmInfo',
+        meta: {
+          title: '模具投资清单-BM详情页'
+        },
+        component: () => import (`@/views/ws2/purchase/changeTask/bmInfo`),
+      },
       {
         path: '/purchaseSupplier',
         name: 'purchaseSupplier',

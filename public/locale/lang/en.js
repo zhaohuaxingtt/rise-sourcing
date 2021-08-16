@@ -989,6 +989,7 @@
         'LK_ZICHANDANJIA': '资产单价',   //  资产单价
         'LK_FASONGGONGYIUNGSHANGQUEREN': '发送供应商确认',   //  资产单
         'LK_FAQIBIANGENG': '发起变更',   //  资产单
+        'LK_XINZENGBIANGENG': '新增变更',   //  新增变更
         'LK_ZHUANPAIZIJI': '转派自己',   //  转派自己
         'LK_BIANGENDANHAO': '变更单号', //  变更单号
         'LK_BIANGENHOUBANBEN': '变更后版本',    //  变更后版本

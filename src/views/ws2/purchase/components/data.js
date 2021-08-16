@@ -8,7 +8,7 @@ export const tabtitle = [
 ]
 export const navList = [
     {value: 1, message: 0, name: "确认任务", activePath: '/purchase/investmentList', url: '/purchase/investmentList', key: "确认任务"},
-    {value: 2, message: 0, name: "变更任务", activePath: '/404', url: '/404', key: "变更任务"},
+    {value: 2, message: 0, name: "变更任务", activePath: '/purchase/changeTask', url: '/purchase/changeTask', key: "变更任务"},
 ]
 export const investmentListTitle = [
     {
@@ -44,6 +44,103 @@ export const investmentListTitle = [
         props: 'moldInvestmentAmount',
         name: '模具投资金额',
         key: '模具投资金额',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'behalfPartsNum',
+        name: '代表零件号',
+        key: '代表零件号',
+        width: 180,
+        tooltip: false
+    },
+    {
+        props: 'partsPurchaseTypeName',
+        name: '零件采购项目类型',
+        key: '零件采购项目类型',
+        width: 220,
+        tooltip: false
+    },
+    {
+        props: 'nomiApplyNum',
+        name: '定点申请单号',
+        key: '定点申请单号',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'linieName',
+        name: 'Linie',
+        key: 'Linie',
+        width: 100,
+        tooltip: false
+    },
+    {
+        props: 'moldInvestmentStatus',
+        name: '模具投资清单状态',
+        key: '模具投资清单状态',
+        width: 220,
+        tooltip: false
+    },
+]
+
+export const changeTaskTitle = [
+    {
+        props: 'bmSerial',
+        name: '变更单号',
+        key: '变更单号',
+        width: 180,
+        isMoney: true,
+        tooltip: false
+    },
+    {
+        props: 'bmSerial',
+        name: 'BM单流水号',
+        key: 'BM单流水号',
+        width: 180,
+        isMoney: true,
+        tooltip: false
+    },
+    {
+        props: 'bmSerial',
+        name: 'BM单号',
+        key: 'BM单号',
+        width: 180,
+        isMoney: true,
+        tooltip: false
+    },
+    {
+        props: 'akeoType',
+        name: 'BM单类型',
+        key: 'BM单类型',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'tmCartypeProName',
+        name: '车型项目',
+        key: '车型项目',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'supplierShortNameZh',
+        name: '供应商',
+        key: '供应商',
+        width: 250,
+        tooltip: false
+    },
+    {
+        props: 'moldInvestmentAmount',
+        name: '模具投资金额',
+        key: '模具投资金额',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'moldInvestmentAmount',
+        name: '变更后金额',
+        key: '变更后金额',
         width: 200,
         tooltip: false
     },
