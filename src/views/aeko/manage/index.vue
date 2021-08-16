@@ -76,6 +76,12 @@
             <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission="AEKO_MANAGELIST_BUTTON_DAOCHU" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
+
+          <!-- 暂时添加的按钮 -->
+          <template v-if="isAekoManager">
+            <iButton :loading="btnLoading.tcm" @click="getTCM">TCM AEKO同步</iButton>
+            <iButton :loading="btnLoading.tcmFiles" @click="getTCMFiles">TCM AEKO附件同步</iButton>
+          </template>
       </template>
       <!-- 表单区域 -->
       <div v-permission="AEKO_MANAGELIST_TABLE">
@@ -168,6 +174,8 @@ import {
   downloadAeko,
   searchCommodity,
   searchLinie,
+  synAekoFromTCM,
+  synAekoAttachmentFromTCM,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
@@ -226,7 +234,8 @@ export default {
           uploadFiles:false,
           importAeko:false,
           deleteItem:false,
-          
+          tcmFiles:false,
+          tcm:false,
         },
         importAeko:importAeko,
         itemFileData:{},
@@ -622,7 +631,33 @@ export default {
         }else{
           this.selectOptions[props] = selectOptionsCopy[props];
         }
-      }
+      },
+
+      // TCM AEKO同步 
+      async getTCM(){
+        this.btnLoading.tcm = true;
+        await synAekoFromTCM().then((res)=>{
+          this.btnLoading.tcm = false;
+          if(res.code == 200) {
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          }
+        }).catch((err)=>{
+          this.btnLoading.tcm = false;
+        })
+      },
+
+       // TCM AEKO附件同步
+       async getTCMFiles(){
+        this.btnLoading.tcmFiles = true;
+        await synAekoAttachmentFromTCM().then((res)=>{
+          this.btnLoading.tcmFiles = false;
+          if(res.code == 200) {
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          }
+        }).catch((err)=>{
+          this.btnLoading.tcmFiles = false;
+        })
+       },
     }
 }
 </script>
