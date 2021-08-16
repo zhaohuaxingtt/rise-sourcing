@@ -1,7 +1,7 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-16 17:44:46
+ * @LastEditTime: 2021-08-16 18:04:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
@@ -79,7 +79,7 @@ export default{
           iMessage.success(res.desZh)
           this.messageShow = false
           this.loading = false
-          this.openNomiPage()
+          this.openNomiPage(res.data)
           this.closeWebSoket()
         }else{
            this.messageShow = false
