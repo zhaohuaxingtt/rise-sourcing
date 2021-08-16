@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-08-16 16:29:21
+ * @LastEditTime: 2021-08-16 17:12:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -148,7 +148,25 @@ export default {
     },
     // 点击返回
     clickBack() {
-      this.$route.go(-1)
+      // this.$router.go(-1)
+      if (this.$store.state.rfq.entryStatus === 1) {
+          this.$router.push({
+            path: '/sourcing/partsrfq/assistant',
+            query: {
+              id: this.$store.state.rfq.rfqId,
+              round: this.$route.query.round,
+              pageType: 'PI',
+              activityTabIndex: 'two',
+            },
+          });
+        } else {
+          this.$router.push({
+            path: '/sourcing/partsrfq/externalNegotiationAssistant',
+            query: {
+              pageType: 'PI',
+            },
+          });
+        }
     },
     // 点击查看
     clickPreview(val) {
