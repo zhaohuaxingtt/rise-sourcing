@@ -55,6 +55,14 @@
         :dataInfo="dataInfo"
         :currentTab="currentTab"
     />
+
+    <!--    保存弹框-->
+    <saveDialog
+        ref="saveDialog"
+        v-model="saveDialog"
+        @handleSaveDialog="handleSaveDialog"
+        :dataInfo="dataInfo"
+    />
   </iPage>
 </template>
 
@@ -68,6 +76,7 @@ import customPart from './components/customPart';
 import thePartsCostChart from './components/thePartsCostChart';
 import thePriceIndexChart from './components/thePriceIndexChart';
 import previewDialog from './components/previewDialog';
+import saveDialog from './components/saveDialog';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import {CURRENTTIME, AVERAGE} from './components/data';
 import {
@@ -88,6 +97,7 @@ export default {
     previewDialog,
     theTabs,
     theTable,
+    saveDialog,
   },
   data() {
     return {
@@ -168,7 +178,7 @@ export default {
     // 点击零件
     handlePartItemClick({item, index}) {
       this.partItemCurrent = index;
-      this.currentTabData.partsId = item.partsId
+      this.currentTabData.partsId = item.partsId;
     },
     // 点击标签
     handleTabsClick(val) {
@@ -188,7 +198,7 @@ export default {
         };
         const res = await getAnalysisSchemeDetails(req);
         this.dataInfo = res.data;
-        this.currentTabData.partsId = res.data.partsId
+        this.currentTabData.partsId = res.data.partsId;
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
@@ -197,6 +207,8 @@ export default {
         this.pageLoading = false;
       }
     },
+    // 处理保存弹窗
+    handleSaveDialog(reqParams) {}
   },
 };
 </script>
