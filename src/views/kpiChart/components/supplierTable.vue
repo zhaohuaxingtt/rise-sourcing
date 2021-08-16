@@ -38,6 +38,8 @@ export default {
                 })
             }
             this.$emit("returnScoreID",this.idList)
+            this.$emit('returnSupplierName',x)
+            
         }
     }
 }
