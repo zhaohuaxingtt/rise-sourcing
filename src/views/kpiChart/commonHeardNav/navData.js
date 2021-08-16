@@ -13,8 +13,8 @@ export const tabRouterList = [
     {
       value: 1,
       name: '供应商360',
-      url: '/supplier/index',
-      activePath: '',
+      //url: '/supplier/index',
+      //activePath: '/supplier/index',
       key: '供应商360',
     },
     {
@@ -35,14 +35,14 @@ export const tabRouterList = [
         value: 4,
         name: '黑名单',
         // url: '/supplier/kpi',
-        activePath: '/supplier/kpi',
+        //activePath: '/supplier/kpi',
         key: '黑名单',
       },
       {
         value: 2,
         name: 'N级供应链',
         //url: '/supplier/kpi',
-        activePath: '/supplier/kpi',
+        //activePath: '/supplier/kpi',
         key: 'N级供应链',
       },
   ];
