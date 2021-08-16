@@ -6,9 +6,9 @@
   >
     <div id="content">
       <div class="title">{{ language('PI.PIINDEXBAOGAO', 'Price Index报告') }}- 零件号</div>
-      <theBaseInfo class="margin-top20"/>
+      <theBaseInfo class="margin-top20" :dataInfo="dataInfo"/>
       <el-divider class="margin-top20 margin-bottom20"/>
-      <theTable :isPreview="true"/>
+      <theTable :isPreview="true" :dataInfo="dataInfo"/>
       <el-divider class="margin-top20 margin-bottom20"/>
       <div class="chartBox">
         <!--      Price Index价格分析-->

@@ -67,6 +67,7 @@
           :fixed="items.fixed">
         <template slot-scope="scope">
           <iInput
+              @input="handleNumber($event,scope.row, 'costProportion')"
               v-if="isTableEdit"
               v-model="scope.row[items.props]"
               :maxlength="50"
@@ -125,6 +126,7 @@
                   @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row})"
                   style="width: 120px;margin-right: 10px;"
                   value-key="id"
+                  :loading="selectLoading"
               >
                 <template v-if="scope.row.newRow">
                   <el-option
@@ -146,6 +148,7 @@
                   @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row})"
                   style="width: 120px;margin-right: 10px;"
                   value-key="id"
+                  :loading="selectLoading"
               >
                 <template v-if="scope.row.newRow">
                   <el-option
@@ -168,6 +171,7 @@
                   @change="handleSelectChange({props:THIRDSELECT , event: $event, row:scope.row})"
                   style="width: 120px;margin-right: 10px;"
                   value-key="id"
+                  :loading="selectLoading"
               >
                 <template v-if="scope.row.newRow">
                   <el-option
@@ -193,9 +197,7 @@
                   trigger="hover"
                   :content="getMatchTextLabel({props: FIRSTSELECT, row: scope.row })">
                 <div class="systemMatchText" slot="reference">
-                    <span>
-                      {{ getMatchTextLabel({props: FIRSTSELECT, row: scope.row}) }}
-                    </span>
+                  <span>{{ getMatchTextLabel({props: FIRSTSELECT, row: scope.row}) }}</span>
                 </div>
               </el-popover>
               <el-popover
@@ -204,9 +206,7 @@
                   trigger="hover"
                   :content="getMatchTextLabel({props: SECONDSELECT, row: scope.row })">
                 <div class="systemMatchText" slot="reference">
-                  <span>
-                    {{ getMatchTextLabel({props: SECONDSELECT, row: scope.row}) }}
-                  </span>
+                  <span>{{ getMatchTextLabel({props: SECONDSELECT, row: scope.row}) }}</span>
                 </div>
               </el-popover>
               <el-popover
@@ -215,9 +215,7 @@
                   trigger="hover"
                   :content="getMatchTextLabel({props: THIRDSELECT, row: scope.row })">
                 <div class="systemMatchText" slot="reference">
-               <span>
-                  {{ getMatchTextLabel({props: THIRDSELECT, row: scope.row}) }}
-               </span>
+                  <span>{{ getMatchTextLabel({props: THIRDSELECT, row: scope.row}) }}</span>
                 </div>
               </el-popover>
             </template>
@@ -265,6 +263,7 @@ import {
   getSelectCountry,
   getSelectExchange,
 } from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import {numberProcessor} from '@/utils';
 
 export default {
   props: {
@@ -300,6 +299,7 @@ export default {
       THIRDSELECT,
       classTypeSelect,
       classType,
+      selectLoading: false
     };
   },
   methods: {
@@ -330,7 +330,9 @@ export default {
           break;
       }
       this.$emit('handleSelectReset', {props, row});
+      this.selectLoading = true
       await this.handleGetSelectList({props, boolean: true, row, req});
+      this.selectLoading = false
     },
     indexMethod(index) {
       return index + 1 + this.customIndex;
@@ -362,6 +364,7 @@ export default {
     },
     // 获取下拉
     async handleGetSelectList({props, boolean, row, req = {}}) {
+      this.selectLoading = true
       let selectList = '';
       if (boolean) {
         switch (row.dataType) {
@@ -380,6 +383,7 @@ export default {
             break;
         }
       }
+      this.selectLoading = false
       this.$emit('handleGetSelectList', {props, row, selectList});
     },
     // 获取select Label
@@ -470,6 +474,9 @@ export default {
           }
           break;
       }
+    },
+    handleNumber(val, row, props) {
+      this.$set(row, props, numberProcessor(val, 2));
     },
   },
 };
