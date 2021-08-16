@@ -32,7 +32,7 @@
     <template v-for="(items,index) in tableTitle">
       <!--类别-->
       <el-table-column
-          v-if="items.props === 'partNameZh'"
+          v-if="items.props === 'partName'"
           :width="items.width"
           :show-overflow-tooltip='items.tooltip'
           :key="index"
