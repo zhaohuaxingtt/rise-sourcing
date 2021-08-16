@@ -73,7 +73,14 @@ export default {
     this.categoryName = this.$store.state.rfq.categoryName
     this.getmarketOverview()
   },
-
+  watch: {
+    '$store.state.rfq.categoryCode': {
+      handler (val) {
+        this.categoryCode = val
+        this.getmarketOverview()
+      }
+    }
+  },
   methods: {
     getmarketOverview () {
       marketOverview({ categoryCode: this.categoryCode }).then(res => {
@@ -108,6 +115,7 @@ export default {
                 marketOverviewSaveDTOList: this.MarketOverviewDTO
               }).then(res => {
                 iMessage.success("保存成功");
+                this.getmarketOverview()
               })
             });
           } catch {
@@ -120,7 +128,7 @@ export default {
     changeViewObj (val, index) {
       console.log(val, index)
     },
-    
+
   }
 }
 </script>
