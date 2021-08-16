@@ -6,6 +6,20 @@
         <div class="score">{{MarketOverviewObj.supplierName}} <span>{{MarketOverviewObj.otherCagrRate}}</span><img :src="upImg"
                alt=""></div>
         <div>单位: 百万元</div>
+        <!-- <div class="legend">
+          <ul >
+            <li class="flex">
+              <i class="circle"
+                 :style="color('SVW')"></i>
+              <span style="vertical-align: baseline">SVW</span>
+            </li>
+            <li class="flex">
+              <i class="circle"
+                 :style="color('其他')"></i>
+              <span style="vertical-align: baseline">其他</span>
+            </li>
+          </ul>
+        </div> -->
       </div>
       <div style="height:360px"
            ref="chart"></div>
@@ -48,7 +62,8 @@
             <div>{{index+1}}</div>
           </div>
           <div class="name">
-            <span v-if="isEdite">{{x.customerName}}</span>
+            <span class="nameText"
+                  v-if="isEdite">{{x.customerName}}</span>
             <iInput v-else
                     v-model="x.customerName" />
           </div>
@@ -305,6 +320,17 @@ export default {
   created () {
 
   },
+  computed: {
+    color () {
+      return function (item) {
+        if (item === 'SVW') {
+          return 'background: #C6DEFF'
+        } else if (item === '其他') {
+          return 'background: #9BBEFF'
+        }
+      }
+    }
+  },
   mounted () {
     let date = new Date()
     this.option.xAxis[0].data[0] = date.getFullYear() - 3
@@ -424,6 +450,11 @@ export default {
         display: flex;
         justify-content: space-between;
     }
+    .nameText{
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+    }
     .charts{
         width: 100%;
         display: flex;
@@ -519,4 +550,26 @@ export default {
             width: calc(33%.33 - 49px);
         }
     }
+    .legend {
+  font-family: "Arial";
+  font-size: 16px;
+  color: #0d2451;
+  ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    li {
+      padding-right: 20px;
+    }
+  }
+}
+
+.circle {
+  display: inline-block;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  vertical-align: baseline;
+  margin-right: 10px;
+}
 </style>
