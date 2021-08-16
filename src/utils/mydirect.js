@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-13 16:43:51
+ * @LastEditTime: 2021-08-16 14:57:25
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \rise\src\utils\mydirect.js
@@ -258,3 +258,13 @@ function removeStyle(evt) {
     let reg = new RegExp(selectDisableStyle, 'g')
     target.setAttribute('style', style)
 }
+
+Vue.directive("lazySelect", {
+    bind(el, binding) {
+        const dom = el.querySelector(".el-select-dropdown__wrap")
+
+        dom.addEventListener("scroll", function() {
+          if ((this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
+        });
+    }
+})
