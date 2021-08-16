@@ -86,7 +86,7 @@
           :fixed="items.fixed"
       >
         <template slot-scope="scope">
-          <div class="rateOfChange" :style="{'backgroundColor': getColor({colorArray: rawMaterialColor})}">
+          <div class="rateOfChange" :style="{'backgroundColor': scope.row.color}">
             {{ scope.row[items.props] }}
           </div>
         </template>

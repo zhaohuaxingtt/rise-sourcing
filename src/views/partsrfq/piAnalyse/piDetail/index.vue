@@ -21,7 +21,7 @@
     <customPart :key="customParams.key" v-model="customParams.visible"/>
     <!--信息-->
     <iCard class="margin-bottom20">
-      <theBaseInfo/>
+      <theBaseInfo :dataInfo="dataInfo"/>
     </iCard>
 
     <!--类型标签-->
@@ -33,7 +33,7 @@
 
     <!--表格-->
     <iCard tabCard class="margin-bottom20">
-      <theTable/>
+      <theTable :dataInfo="dataInfo"/>
     </iCard>
 
     <!--图形-->
@@ -61,12 +61,15 @@ import thePartsList from './components/thePartsList';
 import theBaseInfo from './components/theBaseInfo';
 import theTabs from './components/theTabs';
 import theTable from './components/theTable';
-import customPart from './components/customPart'
+import customPart from './components/customPart';
 import thePartsCostChart from './components/thePartsCostChart';
 import thePriceIndexChart from './components/thePriceIndexChart';
 import previewDialog from './components/previewDialog';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import {CURRENTTIME, AVERAGE} from './components/data';
+import {
+  getAnalysisSchemeDetails,
+} from '../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   mixins: [resultMessageMixin],
@@ -87,18 +90,24 @@ export default {
     return {
       pageLoading: false,
       saveDialog: false,
-      partList: [
-        {partsId: 1},
-        {partsId: 2},
-      ],
+      partList: [],
       partItemCurrent: 0,
-      currentTab: CURRENTTIME,
       previewDialog: false,
       customParams: {
         key: 0,
-        visible: false
-      }
+        visible: false,
+      },
+      currentTab: CURRENTTIME,
+      currentTabData: {
+        analysisSchemeId: 109,
+        partsId: '',
+        batchNumber: ''
+      },
+      dataInfo: {},
     };
+  },
+  created() {
+    this.getDataInfo();
   },
   methods: {
     handleBack() {
@@ -122,15 +131,15 @@ export default {
       }
     },
     handlePreview() {
-      this.previewDialog = true
+      this.previewDialog = true;
     },
     // 打开自定义零件
     handleOpenCustomDialog() {
       this.customParams = {
         ...this.customParams,
         key: Math.random(),
-        visible: true
-      }
+        visible: true,
+      };
     },
     // 关闭零件
     handlePartItemClose({event, item}) {
@@ -165,6 +174,23 @@ export default {
     handleTimeChange(time) {
       console.log(111);
       console.log(time);
+    },
+    // 获取信息
+    async getDataInfo() {
+      try {
+        this.pageLoading = true
+        const req = {
+          analysisSchemeId: this.currentTabData.analysisSchemeId,
+        };
+        const res = await getAnalysisSchemeDetails(req);
+        this.dataInfo = res.data
+        this.partList = res.data.partsList.filter(item => {
+          return item.isShow;
+        });
+        this.pageLoading = false
+      } catch {
+        this.pageLoading = false
+      }
     },
   },
 };

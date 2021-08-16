@@ -2,8 +2,12 @@
   <div>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
-        <span class="margin-right30">{{ language('PI.DANGQIANJIAGE', '当前价格') }}：</span>
-        <span>{{ language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响') }}：</span>
+        <span class="margin-right30">{{
+            language('PI.DANGQIANJIAGE', '当前价格')
+          }}：{{ dataInfo.piPartCostTotalVO.nowPriceRatio }}</span>
+        <span>{{
+            language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响')
+          }}：{{ dataInfo.piPartCostTotalVO.totalPriceRatio }}</span>
       </span>
       <div class="floatright">
         <template v-if="isPreview">
@@ -251,43 +255,10 @@ export default {
       try {
         this.tableListData = [];
         this.hideTableData = [];
-        //this.copyDataInfo = _.cloneDeep(this.dataInfo);
-        this.copyDataInfo = [
-          {
-            'classType': '材料',
-            'costProportion': 2,
-            'priceChange': 1,
-            'partType': 1,
-            'w': 212312323,
-            'e': 3,
-            isShow: true,
-            dataType: '1',
-            id: 1,
-          },
-          {
-            'classType': '人力',
-            'costProportion': 2,
-            'priceChange': 1,
-            'work': 2,
-            'w': 2,
-            'e': 3,
-            isShow: true,
-            dataType: '2',
-            id: 2,
-          },
-          {
-            'classType': '汇率',
-            'costProportion': 2,
-            'priceChange': 1,
-            'productionCountry': 3,
-            'w': 2,
-            'e': 3,
-            isShow: true,
-            dataType: '3',
-            id: 3,
-          },
-        ];
-        this.copyDataInfo.map((item, index) => {
+        const copyDataInfo = _.cloneDeep(this.dataInfo);
+        const copyTableList = copyDataInfo && copyDataInfo.piPartCostTotalVO &&
+            copyDataInfo.piPartCostTotalVO.piPartCostVOS;
+        copyTableList.map((item, index) => {
           if (!item.id) {
             item.time = new Date().getTime() + index;
           }
@@ -297,7 +268,7 @@ export default {
             this.hideTableData.push(item);
           }
         });
-        this.copyDataInfo.map(item => {
+        copyTableList.map(item => {
           this.selectOptionsObject[item.id] = {};
         });
       } catch {
