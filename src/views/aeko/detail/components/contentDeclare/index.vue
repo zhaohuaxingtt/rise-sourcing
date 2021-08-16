@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-13 10:38:11
+ * @LastEditTime: 2021-08-16 18:00:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -33,11 +33,15 @@
             multiple
             collapse-tags
             filterable
+            reserve-keyword
             size="mini"
             class="multipleSelect"
             v-model="form.cartypeProjectCode"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
+            :filter-method="$event => selectFilter($event, 'cartypeProjectCode')"
+            v-lazy-select="cartypeProjectLazy"
             @change="handleChangeByAll($event, 'cartypeProjectCode')"
+            @visible-change="selectVisibleChange($event, 'cartypeProjectCode')"
           >
             <el-option
               value=""
@@ -46,8 +50,8 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in carTypeProjectOptions"
-              :key="item.key"
+              v-for="(item, $index) in carTypeProjectOptions"
+              :key="$index"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -56,11 +60,14 @@
             multiple
             collapse-tags
             filterable
+            reserve-keyword
             size="mini"
             class="multipleSelect"
             v-model="form.status"
             :placeholder="language('QINGXUANZENEIRONGZHUANGTAI', '请选择内容状态')"
+            :filter-method="$event => selectFilter($event, 'status')"
             @change="handleChangeByAll($event, 'status')"
+            @visible-change="selectVisibleChange($event, 'status')"
           >
             <el-option
               value=""
@@ -77,8 +84,11 @@
         <el-form-item :label="language('MTZXIANGGUAN', 'MTZ相关')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_ISMTZ">
           <iSelect
             filterable
+            reserve-keyword
             v-model="form.isMtz"
             :placeholder="language('QINGXUANZEMTZXIANGGUAN', '请选择MTZ相关')"
+            :filter-method="$event => selectFilter($event, 'isMtz')"
+            @visible-change="selectVisibleChange($event, 'isMtz')"
           >
             <el-option
               value=""
@@ -95,8 +105,11 @@
         <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_PROCUREFACTORY">
           <iSelect
             filterable
+            reserve-keyword
             v-model="form.procureFactory"
             :placeholder="language('QINGXUANZECAIGOUGONGCHANG', '请选择采购工厂')"
+            :filter-method="$event => selectFilter($event, 'procureFactory')"
+            @visible-change="selectVisibleChange($event, 'procureFactory')"
           >
             <el-option
               value=""
@@ -221,7 +234,7 @@ import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoCont
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
-import { cloneDeep } from "lodash"
+import { cloneDeep, chunk, debounce } from "lodash"
 
 const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
@@ -238,9 +251,15 @@ export default {
     return {
       form: cloneDeep(contentDeclareQueryForm),
       carTypeProjectOptions: [],
+      carTypeProjectOptionsCache: [],
+      carTypeProjectOptionsCacheChunks: [],
+      carTypeProjectOptionsFilterCache: [],
+      cartypeProjectCurrentPage: 1,
       contentStatusOptions: [],
+      contentStatusOptionsCache: [],
       mtzOptions,
       procureFactoryOptiopns: [],
+      procureFactoryOptiopnsCache: [],
       options: [],
       loading: false,
       tableTitle,
@@ -250,7 +269,8 @@ export default {
       declareResetLoading: false,
       currentRow: {},
       dosageDialogVisible: false,
-      submitLoading: false
+      submitLoading: false,
+      debouncer: null
     };
   },
   created() {
@@ -275,14 +295,19 @@ export default {
       searchCartypeProject()
       .then(res => {
         if (res.code == 200) {
-          this.carTypeProjectOptions = 
+          this.carTypeProjectOptionsCache = 
             Array.isArray(res.data) ?
             res.data.map(item => ({
               key: item.code,
               label: item.name,
-              value: item.code
+              value: item.code,
+              lowerCaseLabel: typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })) :
             []
+
+          this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache
+          this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsCache, 20)
+          this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -292,19 +317,23 @@ export default {
       getDictByCode("CONTENT_STATUS")
       .then(res => {
         if (res.code == 200) {
-          this.contentStatusOptions = 
+          this.contentStatusOptionsCache = 
             Array.isArray(res.data) && res.data[0] && Array.isArray(res.data[0].subDictResultVo) ?
             res.data[0].subDictResultVo.map(item => ({
               key: item.code,
               label: item.name,
-              value: item.code
+              value: item.code,
+              lowerCaseLabel: typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })) :
             []
-          this.contentStatusOptions.unshift({
+          this.contentStatusOptionsCache.unshift({
             key: "EMPTY",
             label: "(空)",
-            value: "EMPTY"
+            value: "EMPTY",
+            lowerCaseLabel: "(空)"
           })
+
+          this.contentStatusOptions = this.contentStatusOptionsCache
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -315,14 +344,17 @@ export default {
       procureFactorySelectVo()
       .then(res => {
         if (res.code == 200) {
-          this.procureFactoryOptiopns = 
+          this.procureFactoryOptiopnsCache = 
             Array.isArray(res.data) ?
             res.data.map(item => ({
               key: item.code,
               label: item.name,
-              value: item.code
+              value: item.code,
+              lowerCaseLabel: typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })) :
             []
+
+          this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -338,9 +370,12 @@ export default {
     },
     init() {
       this.loading = true
+
+      const form = {}
+      Object.keys(this.form).forEach(key => form[key] = typeof this.form[key] === "string" ? this.form[key].trim() : this.form[key])
       
       getAekoLiniePartInfo({
-        ...this.form,
+        ...form,
         requirementAekoId: this.aekoInfo.requirementAekoId,
         cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
@@ -487,6 +522,86 @@ export default {
         this.submitLoading = false
       })
       .catch(() => this.submitLoading = false)
+    },
+    selectFilter(value, key) {
+      if (this.debouncer && typeof this.debouncer.cancel === "function") this.debouncer.cancel()
+      
+      this.debouncer = debounce(() => {
+        let _value = typeof value === "string" ? value.trim().toLowerCase() : _value
+
+        switch(key) {
+          case "cartypeProjectCode":
+            if (_value) {
+              this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache.filter(item => item.lowerCaseLabel.includes(_value))
+              this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsFilterCache, 20)
+            } else {
+              this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache
+              this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsCache, 20)
+            }
+
+            this.cartypeProjectCurrentPage = 1
+            this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
+            break
+          case "status":
+            if (_value) {
+              this.contentStatusOptions = this.contentStatusOptionsCache.filter(item => item.lowerCaseLabel.includes(_value))
+            } else {
+              this.contentStatusOptions = this.contentStatusOptionsCache
+            }
+            break
+          case "isMtz":
+            if (_value) {
+              this.mtzOptions = mtzOptions.filter(item => item.label.includes(_value))
+            } else {
+              this.mtzOptions = mtzOptions
+            }
+            break
+          case "procureFactory":
+            if (_value) {
+              this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache.filter(item => item.lowerCaseLabel.includes(_value))
+            } else {
+              this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache
+            }
+            break
+          default:
+        }
+      }, 400)
+      this.debouncer()
+    },
+    selectVisibleChange(visible, key) {
+      switch(key) {
+        case "cartypeProjectCode":
+          if (!visible) {
+            this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache
+            this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsCache, 20)
+          }
+
+          this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
+          this.cartypeProjectCurrentPage = 1
+        break
+        case "status":
+          if (!visible) {
+            this.contentStatusOptions = this.contentStatusOptionsCache
+          }
+        break
+        case "isMtz":
+          if (!visible) {
+            this.mtzOptions = mtzOptions
+          }
+        break
+        case "procureFactory":
+          if (!visible) {
+            this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache
+          }
+        break
+        default:
+      }
+    },
+    cartypeProjectLazy() {
+      if (this.carTypeProjectOptions.length < this.carTypeProjectOptionsFilterCache.length) {
+        this.cartypeProjectCurrentPage += 1
+        this.carTypeProjectOptions = this.carTypeProjectOptions.concat(this.carTypeProjectOptionsCacheChunks[this.cartypeProjectCurrentPage - 1])
+      }
     }
   },
 };
