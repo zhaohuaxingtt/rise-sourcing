@@ -10,7 +10,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="handSearch" :carTypeList="carTypeList" ref="searchForm" />
+    <search @search="handSearch" ref="searchForm" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -166,7 +166,6 @@ import tablelist from "@/views/designate/supplier/components/tableList";
 import selDialog from '../components/selDialog'
 import {
   nominateConfirm,
-  getCarTypePro,
 } from '@/api/designate/nomination'
 import { 
   getSelList,
@@ -204,7 +203,6 @@ export default {
       tableTitle: tableTitle,
       selectTableData: [],
       startLoding: false,
-      carTypeList: [],
       // SEL单据确认状态
       selNominateId: '',
       selStatus: false,
@@ -228,8 +226,6 @@ export default {
   },
   mounted() {
     this.getFetchData()
-    // 获取车型项目
-    this.getCarTypePro()
   },
   methods: {
     handSearch() {
@@ -274,14 +270,6 @@ export default {
         }
       })
       window.open(routeData.href, '_blank')
-    },
-    // 获取车型项目
-    getCarTypePro() {
-      getCarTypePro().then(res => {
-        if (res.code === '200') {
-          this.carTypeList = (res.data && res.data.data) || []
-        }
-      })
     },
     // 获取rs列表
     async getFetchData(params) {
