@@ -15,7 +15,7 @@
                   <i-select
                     :placeholder="language('QINGXUANZE','请选择')"
                     v-model="formData.scoreDeptId">
-                    <el-option value="">所有</el-option>
+                    <el-option value="" label="所有"></el-option>
                     <el-option
                       v-for="item in organizationMenu"
                       :key="item.existShareId"
@@ -30,7 +30,7 @@
                   <i-select
                     :placeholder="language('QINGXUANZE','请选择')"
                     v-model="formData.categoryCode">
-                    <el-option value="">所有</el-option>
+                    <el-option value="" label="所有"></el-option>
                     <el-option
                       v-for="item in categoryList"
                       :key="item.categoryId"
@@ -134,8 +134,7 @@ export default {
       
   },
   mounted() {
- 
-    
+          
   },
   methods: {
     //获取表格数据（包含表头和表格数据）

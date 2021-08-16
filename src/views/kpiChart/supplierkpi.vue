@@ -16,7 +16,10 @@
                         <div class="fontbold">供应商筛选结果</div>
                         <iButton @click="getScore">{{$t('LK_QUEREN')}}</iButton>
                     </div>
-                    <supplierTable :tabledata="tabledata" @returnScoreID="returnData"></supplierTable>
+                    <supplierTable 
+                    :tabledata="tabledata" 
+                    @returnScoreID="returnData"
+                    @returnSupplierName="getSupplierName"></supplierTable>
                 </div>
             </div>
             <div class="foot">
@@ -67,13 +70,13 @@ export default {
                     textStyle: {
                         color:'#000'
                     },
-                    formatter:function(params){
-                        const str = `<div style="padding:10px">
-                            <div>该分数断下供应商数量:<span style="color:#1763F7">${params.value}家</span></div>
-                            <div>${params.seriesName}:${params.name}分</div>
-                        </div>`
-                        return str
-                    },
+                    // formatter:function(params){
+                    //     const str = `<div style="padding:10px">
+                    //         <div>该分数断下供应商数量:<span style="color:#1763F7">${params.value}家</span></div>
+                    //         <div>${params.seriesName}:${params.name}分</div>
+                    //     </div>`
+                    //     return str
+                    // },
                     axisPointer:{//直线指示器
                         type:'none'
                     },
@@ -81,17 +84,11 @@ export default {
                 },
                 legend: {
                     data:[{
-                        name:'上海汇众汽车有限公司',
+                        name:'',
                         icon:'circle',
                         textStyle: {
                             color: '#1763F7'
                         }
-                    },{
-                        name:'大陆汽车电子有限公司',
-                        icon:'circle',
-                        textStyle: {
-                            color: '#1763F7'
-                        }   
                     }],
                 },
                 grid: {
@@ -164,7 +161,8 @@ export default {
             cost:{},
             sustainable:{},
             delivery:{},
-            idList:[]
+            idList:[],
+            supplierObj:[]
         }
     },
     created(){
@@ -181,7 +179,7 @@ export default {
         },
         watchData(x){
             this.tabledata= x.supplierList
-
+            // 折线图点
             x.totalSupplierList.forEach(z=>{this.totalScore.series[0].data.push({value:z,symbol:'none'})})
             x.oneMaps.PP01000.oneSupplierList.forEach(z=>{this.quality.series[0].data.push({value:z,symbol:'none'})})
             x.oneMaps.PP02000.oneSupplierList.forEach(z=>{this.cost.series[0].data.push({value:z,symbol:'none'})})
@@ -189,18 +187,33 @@ export default {
             x.oneMaps.PP04000.oneSupplierList.forEach(z=>{this.sustainable.series[0].data.push({value:z,symbol:'none'})})
             
         },
+        // 勾选供应商id
         returnData(x){
             this.idList=x
         },
         getScore(){
+            // 根据供应商查询分数
              spiTotalScore({idList:this.idList}).then(res=>{
-               this.changeTotalX(res.data)
-               this.changeOneListX(res.data)
+               this.changeTotalX(res.data)//总分
+               this.changeOneListX(res.data)//其余曲线图
+            })
+            // 供应商名字
+            this.supplierObj.forEach((y,index)=>{
+                this.totalScore.legend.data[index].name=y.nameZh
+                this.quality.legend.data[index].name=y.nameZh
+                this.cost.legend.data[index].name=y.nameZh
+                this.delivery.legend.data[index].name=y.nameZh
+                this.sustainable.legend.data[index].name=y.nameZh
             })
         },
+        getSupplierName(x){
+            if(x.length>0){
+                this.supplierObj=x
+            }
+        },
+        // 总分
         changeTotalX(x){
             if(x.totalList.length>0){
-                console.log(this.totalScore.series[0].data)
                  x.totalList.forEach(score => {
                      if(score.totalScore>9){
                          this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].symbol='emptyCircle'
@@ -212,6 +225,7 @@ export default {
                  
             }
         },
+        // 其余折线图
         changeOneListX(x){
             if(x.oneList.length>0){
                  x.oneList.forEach(score => {
