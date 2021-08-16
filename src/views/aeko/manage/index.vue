@@ -29,12 +29,13 @@
                     :clearable="item.clearable" 
                     v-model="searchParams[item.props]" 
                     :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
+                    @change="handleMultipleChange($event, item.props,item.multiple)"
                     :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
                     >
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="(item,index) in selectOptions[item.selectOption] || []"
-                      :key="index"
+                      :key="item.selectOption+'_'+index"
                       :label="item.desc"
                       :value="item.code"
                       >
@@ -608,6 +609,7 @@ export default {
 
       // 模糊搜索处理
       dataFilter(val,props){
+        console.log(val,'valvalval');
         // 去除前后空格
         const trimVal = val.trim();
         const { selectOptionsCopy={}} = this;
@@ -632,6 +634,19 @@ export default {
           this.selectOptions[props] = selectOptionsCopy[props];
         }
       },
+
+      // 多选处理
+      handleMultipleChange(value, key,multiple) {
+          // 单选不处理
+          if(!multiple) return;
+
+          if (!value[value.length - 1]) {
+              this.$set(this.searchParams, key, [""])
+          } else {
+              this.$set(this.searchParams, key, this.searchParams[key].filter(item => item || item === 0))
+          }
+      },
+
 
       // TCM AEKO同步 
       async getTCM(){
