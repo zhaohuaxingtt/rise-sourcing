@@ -349,8 +349,11 @@ export default {
                 }
             })
 
-            // LINIE
-            searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+            // LINIE  只能看见本科是的LINIE
+            const {deptDTO={}} = this.userInfo;
+            console.log(deptDTO,'deptDTOdeptDTO');
+            const deptId = deptDTO.id;
+            searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
                 const {code,data} = res;
                 if(code ==200 ){
                     data.map((item)=>{
