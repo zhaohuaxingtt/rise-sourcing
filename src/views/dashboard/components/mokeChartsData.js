@@ -90,7 +90,7 @@ export function generateOptions(params) {
                             ${maker0} ${params[0].seriesName}:${params[0].value}%
                         <p>
                         <p style="padding-left: 5px;">
-                            ${maker1} ${params[0].seriesName}:${params[1].value}
+                            ${maker1} ${params[1].seriesName}:${params[1].value}
                         <p>
                     </div>`
                 }
