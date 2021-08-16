@@ -12,7 +12,14 @@ export default [
   {
     path: "/sourcing/dashboard",
     name: "dashboard",
-    component: () => import ("@/views/dashboard/index")
+    component: () => import ("@/layout/default"),
+    children: [
+      {
+        path: "/sourcing/dashboard",
+        name: "reportmgmt-report",
+        component: () => import ("@/views/dashboard/index")
+      },
+    ]
   },
   // 状态跟踪详情报表
   {
