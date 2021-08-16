@@ -32,7 +32,7 @@
     <template v-for="(items,index) in tableTitle">
       <!--类别-->
       <el-table-column
-          v-if="items.props === 'classType'"
+          v-if="items.props === 'partNameZh'"
           :width="items.width"
           :show-overflow-tooltip='items.tooltip'
           :key="index"
@@ -135,7 +135,7 @@
                 </template>
                 <template v-else>
                   <el-option
-                      v-for="item of selectOptionsObject[scope.row.id][FIRSTSELECT]"
+                      v-for="item of selectOptionsObject[scope.row.id || scope.row.time][FIRSTSELECT]"
                       :key='item.id'
                       :value='item'
                       :label="getSelectLabel({props: FIRSTSELECT, row:scope.row, itemData: item})"/>
@@ -156,7 +156,7 @@
                 </template>
                 <template v-else>
                   <el-option
-                      v-for="item of selectOptionsObject[scope.row.id][SECONDSELECT]"
+                      v-for="item of selectOptionsObject[scope.row.id || scope.row.time][SECONDSELECT]"
                       :key='item.id'
                       :value='item'
                       :label="getSelectLabel({props: SECONDSELECT, row:scope.row, itemData: item})"/>
@@ -178,7 +178,7 @@
                 </template>
                 <template v-else>
                   <el-option
-                      v-for="item of selectOptionsObject[scope.row.id][THIRDSELECT]"
+                      v-for="item of selectOptionsObject[scope.row.id || scope.row.time][THIRDSELECT]"
                       :key='item.id'
                       :value='item'
                       :label="getSelectLabel({props: THIRDSELECT, row:scope.row, itemData: item})"/>

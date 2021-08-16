@@ -33,7 +33,7 @@
 
     <!--表格-->
     <iCard tabCard class="margin-bottom20">
-      <theTable :dataInfo="dataInfo"/>
+      <theTable :dataInfo="dataInfo" :currentTab="currentTab"/>
     </iCard>
 
     <!--图形-->
