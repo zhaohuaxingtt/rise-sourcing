@@ -11,14 +11,14 @@ import {permissionTitle} from '@/utils'
 // 暂时注释掉表头权限
 // export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
   export const tableTitle = [
-  {props:'tpPartID',name:'信息单流水号',key: 'LK_XINXIDANLIUSHUIHAO',tooltip:false ,width:100},
+  // {props:'tpPartID',name:'信息单流水号',key: 'LK_XINXIDANLIUSHUIHAO',tooltip:true ,width:100},
   {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO',tooltip:false,width:130},
-  {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG',tooltip:true,width:140},
+  {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG',tooltip:true,width:180},
   {props:'partNameDe',name:'零件名（德）',key: 'LK_LINGJIANMINGDE',tooltip:true,width:160},
   {props:'projectCarType',name:'车型项目',key: 'LK_CHEXINGXIANGMU',tooltip:true,width:160},
-  {props:'buyerName',name:'前期采购员',key: 'LK_CAIGOUYUAN',tooltip:true,width:140},
+  {props:'buyerName',name:'询价采购员',key: 'LK_CAIGOUYUANNEW',tooltip:true,width:90},
   {props:'tpDeptNum',name:'设计科室',key: 'LK_SHEJIKESHI',tooltip:true,width:100},
-  {props:'tpPrincepalName',name:'工程师',key: 'LK_GONGCHENGSHI',tooltip:true,width:120},
+  {props:'tpPrincepalName',name:'工程师',key: 'LK_GONGCHENGSHI',tooltip:true,width:90},
   {props:'tpInfoType',name:'信息单类型',key: 'LK_XINXIDANLEIXING',tooltip:true,width:20},
   {props:'status',name:'信息单状态',key: 'LK_XINXIDANZHUANGTAI',tooltip:true,width:80},
   {props:'attachmentStatus',name:'询价资料状态',key: 'LK_XUNJIAZILIAOZHUANGTAI',tooltip:true,minWidth:100},

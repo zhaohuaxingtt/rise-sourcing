@@ -23,7 +23,7 @@
 import { iCard, iButton, } from "rise";
 import * as pbi from 'powerbi-client';
 import remarkDialog from "./remarkDialog.vue";
-import { getRfqToRemark, getRfqSupplierAndCategory, powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import { getRfqToRemark, pageRfqPartPurPro, powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 
 export default {
   components: { iCard, iButton, remarkDialog },
@@ -75,24 +75,20 @@ export default {
       const pms = {
         rfqId: this.$route.query.id
       }
-      const res1 = await getRfqSupplierAndCategory(pms.rfqId)
+      const res1 = await pageRfqPartPurPro(pms.rfqId)
       const res = await powerBiUrl()
-      var rfqCategoryList = []
-      var rfqSupplierList = []
-      if (res.data && res1.result) {
+      let partNumList = []
+      if (res.data && res1.data) {
         this.url = res.data
-        res1.data.rfqCategoryList.forEach(item => {
-          rfqCategoryList.push(item.categoryId)
+        res1.data.forEach(item => {
+          partNumList.push(item.partNum)
         })
-        res1.data.rfqSupplierList.forEach(item => {
-          rfqSupplierList.push(item.supplierId)
-        })
-        this.renderBi(rfqCategoryList, rfqSupplierList)
+        this.renderBi(partNumList)
       }
 
     },
     // 初始化页面
-    renderBi(rfqCategoryList, rfqSupplierList) {
+    renderBi(partNumList) {
       var config = {
         type: 'report',
         tokenType: pbi.models.TokenType.Embed,
@@ -101,10 +97,10 @@ export default {
         settings: {
           panes: {
             filters: {
-              visible: false
+              visible: true
             },
             pageNavigation: {
-              visible: false
+              visible: true
             }
           }
         }
@@ -116,33 +112,21 @@ export default {
       report.off("loaded");
       // Report.on will add an event handler which prints to Log window.
       report.on("loaded", function() {
-        // 供应商集合：
-        var filter_suppliers = {
+        // 零件集合：
+        var partNumListFilter = {
           $schema: "http://powerbi.com/product/schema#basic",
           target: {
-            table: "sup",
-            column: "Supplier_ID"
+            table: "par",
+            column: "par_num"
           },
           operator: "In",
-          values: rfqSupplierList,
-          filterType: pbi.models.FilterType.BasicFilter,
-          requireSingleSelection: true
-        };
-        // 材料组集合：
-        var filter_stuffs = {
-          $schema: "http://powerbi.com/product/schema#basic",
-          target: {
-            table: "stu",
-            column: "Stuff_ID"
-          },
-          operator: "In",
-          values: rfqCategoryList,
+          values: partNumList,
           filterType: pbi.models.FilterType.BasicFilter,
           requireSingleSelection: true
         };
         try {
           //设置过滤条件	
-          report.setFilters([filter_suppliers, filter_stuffs]);
+          report.setFilters([partNumListFilter]);
           //report.updateFilters(models.FiltersOperations.Add, [filter_suppliers]);
           console.log("Report filter was added.");
         }

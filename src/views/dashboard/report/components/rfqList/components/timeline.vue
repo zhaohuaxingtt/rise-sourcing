@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-08-09 15:49:14
+ * @LastEditTime: 2021-08-15 12:03:31
  * @LastEditors: Please set LastEditors
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
@@ -11,7 +11,7 @@
     <div v-for='(items,index) in timeList' :key='index' class="lineitems">
       <p class="itemsa">
         <span v-if="items.active && items.doneWeek">
-          {{items.doneYear}}KW{{items.doneWeek}}
+          {{items.doneWeek}}
         </span>
         <!-- <span v-else style="display:inline-block;height:13px;"></span> -->
       </p>
@@ -19,7 +19,7 @@
       <template>
         <p class="itemsc" :class="{delay:items.delay, active:items.active,}">
           <span class="tit"><icon symbol :name='iconList_all_times["a"+(items.active ? (items.delay ? 4 : 5) : 0)].icon' class="margin-right5"></icon>{{language(items.key,items.name)}}</span>
-          <span>{{year}}KW{{items.week}}</span>
+          <span>{{items.planWeek}}</span>
         </p>
       </template>
     </div>
@@ -43,9 +43,6 @@ export default{
       return moment().format('YYYY')
     }
   },
-  watch:{
-    'timeList':function(){this.topPaddingBottomPadding()}
-  },
   data(){
     return {
       iconList_all_times,
@@ -54,15 +51,6 @@ export default{
     }
   },
   methods:{
-    /**
-     * @description: 根据每周最大值。拿到上下的最大间距
-     * @param {*}
-     * @return {*}
-     */
-    topPaddingBottomPadding(){
-      this.paddingBottom = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>d%2==0).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
-      this.paddingTop = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>!(d%2==0)).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
-    }
   }
 }
 </script>

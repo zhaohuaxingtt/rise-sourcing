@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:50
- * @LastEditTime: 2021-07-14 20:32:10
+ * @LastEditTime: 2021-08-13 16:02:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\data.js
@@ -12,12 +12,13 @@ export const detailData = {
 	bmg: "", //Boolean
 	buyerName: "", //询价采购员（即前期采购员）
 	cartypeCategory: "", //车型大类
-	cartypeProjectNum: "", //	车型项目编号
-	cartypeProjectZh: "", //	 车型项目
+	carTypeProjectNum: "", //	车型项目编号
+	carTypeProjectZh: "", //	 车型项目
 	categoryCode: "", //	 材料组编号
 	cfController: "", //	integer($int64) CF控制员
 	isCommonSourcing: "", //	
 	cs1MeetMemo: "", //	 cs1上会备注
+	linieId:'', //linie ID
 	cs1Memo: "", //	 cs*1备注
 	csfMeetMemo: "", //	 csf上会备注
 	csfMemo: "", //	 csf备注
@@ -37,7 +38,7 @@ export const detailData = {
 	payTerms: "", //	付款条款
 	procureFactory: "", //采购工厂
 	purchaseNum: "", // 采购条数
-	purchasePrjectId: "", //	采购项目ID
+	purchaseProjectId: "", //	采购项目ID
 	purchasingRequirementId: "", //采购申请ID
 	quickSavings: "", //	string
 	rfqId: "", //RFQid
@@ -50,6 +51,7 @@ export const detailData = {
 	mouldCostUserId: "", // 模具成本分析员Id
 	mouldCostUserName: "", // 模具成本分析员名称
 	isDB: 0,// 是否DB件
+	oldFsnrGsnrNum:'' //老零件号
 }
 // 采购项目拆分表头
 export const splitPurchTitle = [

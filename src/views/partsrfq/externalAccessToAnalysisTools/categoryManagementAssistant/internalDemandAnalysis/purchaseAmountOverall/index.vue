@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-07-30 17:31:22
- * @LastEditors: zbin
+ * @LastEditors: 舒杰
  * @Descripttion: your project
 -->
 <template>
@@ -190,6 +190,7 @@ export default {
     },
     // 初始化页面
     renderBi() {
+      console.log(this.config)
       this.report = this.powerbi.embed(this.reportContainer, this.config);
       this.filter_year.values = parseInt(this.form.year)
       let report = this.report

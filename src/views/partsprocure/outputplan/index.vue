@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-12 10:12:39
- * @LastEditTime: 2021-07-09 15:41:29
+ * @LastEditTime: 2021-08-11 15:59:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\outputplan\index.vue
@@ -25,10 +25,10 @@
 </template>
 
 <script>
-import { iPage, iButton, icon } from '@/components'
-import outputPlan from './components/outputPlan'
-import outputRecord from './components/outputRecord'
-import volume from './components/volume'
+import { iPage, iButton, icon } from 'rise'
+import outputPlan from '@/views/partsprocure/editordetail/components/outputPlan/outputPlan'
+import outputRecord from '@/views/partsprocure/editordetail/components/outputPlan/outputRecord'
+import volume from '@/views/partsprocure/editordetail/components/outputPlan/volume'
 import logButton from '@/components/logButton'
 
 export default {
@@ -57,8 +57,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.outputPlan {
-}
-</style>

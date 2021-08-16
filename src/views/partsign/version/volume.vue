@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination } from '@/components'
+import { iPage, iCard, iPagination } from 'rise'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import volumeDialog from '@/views/partsign/editordetail/components/volumeDialog'
 import { getPerCarDosageVersion } from '@/api/partsign/editordetail'

@@ -1,9 +1,9 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-05 18:09:26
+ * @LastEditTime: 2021-08-13 18:40:44
  * @LastEditTime: 2021-07-21 17:57:58
- * @LastEditors: Luoshuang
+ * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \front-web\src\utils\index.js
  */
@@ -145,19 +145,37 @@ export function serialize(data, type = Object) {
 }
 
 // 数字限制输入
-export const numberProcessor = function(val, precision = 4) {
-  let result = ''
+export const numberProcessor = function(val, precision = 4, negative) {
+  let result = ""
   if (+precision > 0) {
-    result = (val + '')
-      .replace(/[^\d.]/g, '')
-      .replace(/^\.*/g, '')
-      .replace('.', '$#$')
-      .replace(/\./g, '')
-      .replace('$#$', '.')
-      .replace(/^0+([0-9].*)/, '$1')
-      .replace(new RegExp(`^(.+\\.\\d{0,${precision}})\\d*$`), '$1')
+    if (negative) {
+      result = (val + "").replace(/[^\d.-]/g, "")
+        .replace(/(?<=(-|[^-]+))-/, "")
+        .replace(/^(-?)\.*/g, "$1")
+        .replace(".", "$#$")
+        .replace(/\./g, "")
+        .replace("$#$", ".")
+        .replace(/^(-?)0+([0-9].*)/, "$1$2")
+        .replace(new RegExp(`^(.+\\.\\d{0,${ precision }})\\d*$`), "$1")
+    } else {
+      result = (val + "").replace(/[^\d.]/g, "")
+        .replace(/^\.*/g, "")
+        .replace(".", "$#$")
+        .replace(/\./g, "")
+        .replace("$#$", ".")
+        .replace(/^0+([0-9].*)/, "$1")
+        .replace(new RegExp(`^(.+\\.\\d{0,${ precision }})\\d*$`), "$1")
+    }
+    
   } else {
-    result = (val + '').replace(/\D/g, '').replace(/^0+([0-9])/, '$1')
+    if (negative) {
+      result = (val + "").replace(/[^\d-]/g, "")
+        .replace(/(?<=(-|[^-]+))-/, "")
+        .replace(/^(-?)0+([0-9])/, "$1$2")
+    } else {
+      result = (val + "").replace(/\D/g, "")
+        .replace(/^0+([0-9])/, "$1")
+    }
   }
   return result
 }
@@ -288,6 +306,7 @@ export function deleteThousands (number) {
 import {businessKey} from '@/config/businessBlackKey'
 export function businessPermission(currentPermissinKey,currentProjectParmars){
   try {
+    if(!currentProjectParmars.businessKey) return true
     const businessKeyQuery = currentProjectParmars.businessKey;
     if(businessKey[businessKeyQuery].find(i=>i == currentPermissinKey)) return true;
   } catch (error) {
@@ -312,4 +331,13 @@ export function translateBackToWhite(currentKeyBusinessKey,whiteList,blackList,a
       config[allBusinessKey[i]] = [...(config[allBusinessKey[i]] || []),...whiteList]
     }
   })
+}
+
+/**
+ * Array 类型数据权限过滤
+ * @param {*} permissionKey
+ * @param {*} list
+ */
+export function permissionArray(permissionKey, list) {
+  return list.filter(item => store.state.permission.whiteBtnList[item[permissionKey]])
 }

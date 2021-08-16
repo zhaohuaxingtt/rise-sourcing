@@ -51,11 +51,11 @@ export const letterListTitle=[
   { props: "parts", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true },
   { props: "supplierNum", name: "供应商号", key: "nominationSupplier.GongYingShangHao", tooltip: true },
   { props: "supplierSapNum", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true },
-  { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG", tooltip: true },
+  { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG", tooltip: true, width:160},
   { props: "statusDesc", name: "定点信状态", key: "LK_DINGDIANXINZHUANGTAI", tooltip: true },
   { props: "supplierResult", name: "供应商反馈", key: "LK_GONGYINGSHANGFANKUI", tooltip: true },
-  { props: "csfCssName", name: "询价采购员", key: "costanalysismanage.XunJiaCaiGouYuan", tooltip: true },
-  { props: "linieName", name: "LINIE", key: "LK_LINIE", tooltip: true },
+  { props: "csfCssName", name: "询价采购员", key: "costanalysismanage.XunJiaCaiGouYuan", tooltip: true, width:80},
+  { props: "linieName", name: "LINIE", key: "LK_LINIE", tooltip: true, width:70},
   { props: "isSignAgreement", name: "是否签署协议", key: "LK_SHIFOUQIANSHUXIEYI", tooltip: true },
   { props: "nominateDate", name: "定点⽇期", key: "LK_DINGDIANRIQI", tooltip: true },
 ]
@@ -63,7 +63,7 @@ export const letterListTitle=[
 export const loiListTitle = [
   { props: "nominateAppId", name: "定点申请单号", key: "LK_DINGDIANXINDANHAO", tooltip: false,width:100 },
   { props: "loiNum", name: "LOI编号", key: "LK_LOIBIANHAO", tooltip: false,width:140 },
-  { props: "rfqId", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true },
+  { props: "rfqId", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true,width:90 },
   { props: "supplierId", name: "供应商号", key: "nominationSupplier.GongYingShangHao", tooltip: true },
   { props: "sapNum", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true },
   { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG", tooltip: true },
@@ -71,7 +71,7 @@ export const loiListTitle = [
   { props: "supplierResult", name: "供应商反馈", key: "LK_GONGYINGSHANGFANKUI", tooltip: true },
   { props: "csfName", name: "询价采购员", key: "costanalysismanage.XunJiaCaiGouYuan", tooltip: true },
   { props: "lineName", name: "LINIE", key: "LK_LINIE", tooltip: true },
-  { props: "remark", name: "备注", key: "LK_BEIZHU", tooltip: true },
+  { props: "remark", name: "备注", key: "LK_BEIZHU", tooltip: true ,width:180},
 ]
 
 

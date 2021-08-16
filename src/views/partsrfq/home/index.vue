@@ -9,7 +9,7 @@
 <template>
   <iPage class="partsrfqHome" v-permission="PARTSRFQ_INDEXPAGE">
     <!-- <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
+      <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div class="topMenu">
           <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
           <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
@@ -28,8 +28,8 @@
                 <iInput :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item> -->
-              <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/FSNR/RFQ编号/采购员/供应商SAP号/供应商名称')" style="width: 380px">
-                <iInput :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
+              <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称')" style="width: 400px">
+                <iInput v-on:keyup.enter.native="getTableList" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item>
               <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')">
@@ -162,7 +162,7 @@
           <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
         </div>
       <!-- </el-tab-pane> -->
-      <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
+      <!-- <el-tab-pane lazy label="进度监控" name="progress"></el-tab-pane> -->
     <!-- </el-tabs> -->
   </iPage>
 
@@ -187,6 +187,7 @@ import { downloadFile, downloadUdFile } from "@/api/file"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
 import { clickMessage, TAB} from "@/views/partsign/home/components/data"
+import { log } from 'util';
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -251,7 +252,6 @@ export default {
     this.getCarTypeOptions()
     this.getPartTypeOptions()
     this.getRfqStatusOptions()
-
     this.updateNavList
   },
   computed: {
@@ -259,6 +259,10 @@ export default {
     ...mapActions(["updateNavList"])
   },
   methods: {
+    getYearMonth(date){
+      date = (date + '').split(/[ ]+/);
+      return date[0];
+    },
     //获取转派评分任务列表
     getAllScoringDepartmentInfo(){
       return new Promise((r)=>{
@@ -297,6 +301,11 @@ export default {
         // this.page.currPage = res.data.getRfqInfoVO.pageNum
         // this.page.pageSize = res.data.getRfqInfoVO.pageSize
         // this.page.totalCount = res.data.getRfqInfoVO.total
+       
+       res.data.forEach(val=> {
+          val.createDate = this.getYearMonth(val.createDate) === 'undefined' ? '' : this.getYearMonth(val.createDate)
+          val.currentRoundsEndTime = this.getYearMonth(val.currentRoundsEndTime) === 'undefined' ? '' : this.getYearMonth(val.currentRoundsEndTime)
+        })
         this.tableListData = Array.isArray(res.data) ? res.data : []
         this.page.totalCount = res.total
         this.tableLoading = false;
@@ -340,8 +349,6 @@ export default {
       } else {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU','抱歉，您当前还未选择您需要转派的评分任务！'));
       }
-
-      console.log(this.rfqIds)
       this.scoringDeptVisible = true
       // if (this.selectTableData.length == 0)
       //   return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU'));

@@ -284,7 +284,7 @@ export default {
       window.open(router.href,'_blank')
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify({...row,purchasePrjectId:row.purchasingProjectId}) }})
+      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify({...row,purchaseProjectId:row.purchasingProjectId}) }})
       window.open(router.href,'_blank')
     },
     /**

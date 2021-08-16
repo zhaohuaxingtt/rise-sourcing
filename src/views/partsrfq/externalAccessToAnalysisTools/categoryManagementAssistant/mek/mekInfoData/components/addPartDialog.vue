@@ -6,27 +6,26 @@
  * @Descripttion: your project
 -->
 <template>
-  <iDialog :visible.sync="value" width="60%" @close="clearDiolog">
-    <div slot="title" class="title">
-      {{language('TIANJIALINGJIAN','添加零件')}}
-      <el-popover :content="language('CFXGJJZCDDZTLJ','此分析工具仅支持定点状态零件')" trigger="hover" placement="top-start">
-        <icon slot="reference" symbol name="iconxinxitishi" class="font-size16 marin-left5" />
-      </el-popover>
-    </div>
+  <iDialog :title="language('TIANJIALINGJIAN','添加零件')" :visible.sync="value" width="60%" @close="clearDiolog">
     <el-form label-width="60px" label-position="top">
       <el-row type="flex" align='bottom' justify="space-between">
-        <el-col :span="7">
+        <el-col :span="5">
           <el-form-item :label="language('LINGJIANHAO','零件号')">
-            <iInput :placeholder="$t('LK_QINGXUANZE')" v-model="form.materialGroupCode">
+            <iInput :placeholder="$t('LK_QINGXUANZE')" v-model="form.partNum">
             </iInput>
           </el-form-item>
         </el-col>
-        <el-col :span="7">
-          <el-form-item :label="language('RFQHAO','RFQ号')">
-            <iInput :disabled='!!$route.query.rfqId' :placeholder="$t('LK_QINGSHURU')" v-model="form.rfqId"></iInput>
+        <el-col :span="5">
+          <el-form-item :label="language('RSHAO','FS号')">
+            <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.fsNum"></iInput>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="5">
+          <el-form-item :label="language('RFQHAO','RFQ号')">
+            <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.rfq"></iInput>
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
           <el-form-item>
             <iButton @click="getTableList">{{$t('LK_QUEREN')}}</iButton>
             <iButton @click="handleSearchReset">{{$t('LK_ZHONGZHI')}}</iButton>
@@ -46,6 +45,8 @@
 import { iInput, iButton, iDialog, icon } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addPartTableTitle } from "./data.js";
+import { partNumList } from "@/api/partsrfq/mek/index.js";
+
 export default {
   components: {
     iInput, iButton, iDialog, icon, tableList
@@ -73,11 +74,9 @@ export default {
       tableTitle: addPartTableTitle,
       tableLoading: false,
       form: {
-        materialGroup: '',
-        materialGroupCode: '',
-        rfqId: '',
-        fsId: '',
-        partsId: '',
+        fsNum: '',
+        partNum: '',
+        rfq: this.$store.state.rfqId || '',
       },
       formGoup: {
         materialGroupList: [],
@@ -87,32 +86,37 @@ export default {
   },
   created() {
     this.getDictByCode()
+    this.getTableList()
   },
   methods: {
     clearDiolog() {
       this.$emit('input', false);
     },
     async getDictByCode() {
-     
+
     },
     handleSearchReset() {
       this.form = {
-        materialGroup: '',
-        rfqId: '',
-        fsId: '',
-        partsId: '',
-        materialGroupCode: ''
+        fsNum: '',
+        partNum: '',
+        rfq: '',
       }
       this.getTableList()
     },
-    getTableList() {
-      this.form.materialGroupCode && this.formGoup.materialGroupList.forEach((item) => {
-        if (item.code === this.form.materialGroupCode) {
-          this.form.materialGroup = item.name
-          return
+    async getTableList() {
+      try {
+        this.tableLoading = true
+        const pms = {
+          ...this.form,
+          categoryCode: this.$route.query.categoryCode || '',
+          vwModelCodes: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || []
         }
-      })
-      this.$emit('getTableList', this.form)
+        const res = await partNumList(pms)
+        this.tableListData = res.data
+        this.tableLoading = false
+      } catch (error) {
+        this.tableLoading = false
+      }
     },
   }
 }
@@ -121,10 +125,6 @@ export default {
 <style lang="scss" scoped>
 ::v-deep .el-form-item__content {
   width: 220px;
-}
-::v-deep .el-col-8 .el-form-item {
-  display: flex;
-  justify-content: flex-end;
 }
 .title {
   font-size: 18px;

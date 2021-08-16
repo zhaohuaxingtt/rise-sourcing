@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-07-08 11:48:28
+ * @LastEditTime: 2021-08-13 15:18:57
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -9,8 +9,8 @@
 <template>
   <iPage class="partsignHome" v-permission="PARTSIGN_INDEXPAGE">
     <!-- <el-tabs v-model="tab" class="tab"> -->
-      <!-- <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-      <!-- <el-tab-pane  name="source"> -->
+      <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
+      <!-- <el-tab-pane lazy  name="source"> -->
         <div>
           <!-- <div class="margin-bottom33">
 
@@ -113,13 +113,13 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_XINXIDANLIUSHUIHAO','信息单流水号')">
+              <!-- <el-form-item :label="language('LK_XINXIDANLIUSHUIHAO','信息单流水号')">
                 <iInput
                   v-model="form.tpId"
                   :placeholder="language('LK_QINGTIANXIEXINXIDANLIUSHUIHAO','请填写信息单流水号')"
                   v-permission="PARTSIGN_PARTINFOID"
                 ></iInput>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item :label="language('LK_XUNJIAZILIAOZHUANGTAI','询价资料状态')">
                 <iSelect
                   v-model="form.attachmentStatus"
@@ -220,7 +220,7 @@
           <backItems v-model="diologBack" @sure="sureBackmark"></backItems>
         </div>
       <!-- </el-tab-pane> -->
-      <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
+      <!-- <el-tab-pane lazy label="进度监控" name="progress"></el-tab-pane> -->
     <!-- </el-tabs> -->
   </iPage>
 </template>
@@ -234,7 +234,7 @@ import {
   iSearch,
   iInput,
   iSelect,
-} from "@/components";
+} from 'rise';
 import tablelist from "./components/tableList";
 import { tableTitle, form, needTranslate, clickMessage, TAB} from "./components/data";
 import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home";
@@ -242,9 +242,8 @@ import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
 import local from "@/utils/localstorage";
-import { iMessageBox } from "../../../components";
 import filters from "@/utils/filters";
-import { iNavMvp } from "rise";
+import { iNavMvp,iMessageBox } from "rise";
 import { cloneDeep } from "lodash"
 
 // eslint-disable-next-line no-undef

@@ -70,6 +70,7 @@ export default {
           right: 40,
           left: 40,
           bottom: 20,
+          containLabel: true
         },
       };
       chart.setOption(option, true);

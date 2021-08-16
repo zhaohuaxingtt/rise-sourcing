@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-03 10:39:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-09 16:50:06
+ * @LastEditTime: 2021-08-16 10:05:27
  * @Description: 配置显示字段弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\showItem\index.vue
 -->
@@ -73,7 +73,7 @@ export default {
       this.saveLoading = true
       const params = {
         type: this.type,
-        fieldList: this.list.filter(item => item.disabled || item.isSelect).map(item => item.key)
+        fieldList: this.list.filter(item => item.isSelect).map(item => item.key)
       }
       updateFields(params).then(res => {
         if (res?.result) {

@@ -2,13 +2,16 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 18:38:53
- * @Description: 
+ * @LastEditTime: 2021-08-14 10:18:55
+ * @Description: 产品组排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
 
 <template>
   <iPage class="projectGroup">
+    <!---------------------------------------------------------------------->
+    <!----------                  车型项目部分                   ---------------->
+    <!---------------------------------------------------------------------->
     <iCard class="projectCard">
       <div class="margin-bottom20 clearFloat">
         <div class="titleSearch">
@@ -28,6 +31,9 @@
         <carProject v-else :carProjectId="carProject" @changeSopStatus="changeSopStatus" />
       </div>
     </iCard>
+    <!---------------------------------------------------------------------->
+    <!----------                  产品组区域                  ---------------->
+    <!---------------------------------------------------------------------->
     <iCard class="margin-top20 projectCard">
       <div class="margin-bottom20 clearFloat">
         <div class="titleSearch">
@@ -38,17 +44,24 @@
           </div>
         </div>
         <div class="floatright">
-          <!--------------------应用默认配置按钮----------------------------------->
+          <!--------------------算法配置按钮----------------------------------->
           <iButton @click="openLogicSetting" :disabled="isSop || isNodeView">{{language('SUANFAPEIZHI','算法配置')}}</iButton>
         </div>
       </div>
       <div class="projectCard-content">
+        
         <proGroupEmpty v-if="!proGroup" />
         <periodicView ref="periodicView" v-else-if="!isNodeView" @changeNodeView="changeNodeView(true)" :cartypeProId="carProject" :carProjectName="carProjectName" :isSop="isSop" />
         <nodeView ref="nodeView" v-else @changeNodeView="changeNodeView(false)" :cartypeProId="carProject" />
       </div>
     </iCard>
+    <!---------------------------------------------------------------------->
+    <!----------                  算法配置弹窗                  ---------------->
+    <!---------------------------------------------------------------------->
     <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="productLogicList" :logicData="logicData" :selectOptions="selectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
+    <!---------------------------------------------------------------------->
+    <!----------                  选择产品组弹窗                  ---------------->
+    <!---------------------------------------------------------------------->
     <chooseProGroupDialog ref="chooseProGroup" :dialogVisible="chooseVisible" @handleConfirm="handleChooseProGroup" :allData="chooseDataList" :selectValue="chooseData" @changeVisible="changeChooseProGroup" />
   </iPage>
 </template>
@@ -97,12 +110,24 @@ export default {
     }
   },
   methods: {
+    /**
+     * @Description: 获取选择的产品组列表，若有则渲染更新产品组部分内容
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async initProductList() {
       await this.getProductList()
       this.$nextTick(() => {
         this.initView()
       })
     },
+    /**
+     * @Description: 获取用户最后一次操作的车型项目
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async getLastOperateCarType() {
       const res = await getLastOperateCarType()
       if (res?.result) {
@@ -116,6 +141,12 @@ export default {
         }
       }
     },
+    /**
+     * @Description: 车型项目选择改变
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     async handleCarProjectChange(val) {
       this.carProjectName = this.carProjectOptions.find(item => item.value === val).label
       if(val){
@@ -125,9 +156,21 @@ export default {
         })
       }
     },
+    /**
+     * @Description: 是否sop状态修改
+     * @Author: Luoshuang
+     * @param {*} isSop
+     * @return {*}
+     */    
     changeSopStatus(isSop) {
       this.isSop = isSop
     },
+    /**
+     * @Description: 获取车型项目下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getCarProjectOptinos() {
       getSelectCarType().then(res => {
         if (res?.result) {
@@ -143,6 +186,12 @@ export default {
         }
       })
     },
+    /**
+     * @Description: 获取字典下拉
+     * @Author: Luoshuang
+     * @param {*} keys
+     * @return {*}
+     */    
     selectDictByKeys(keys) {
       selectDictByKeyss(keys).then(res => {
         if (res?.result) {
@@ -152,6 +201,12 @@ export default {
         }
       })
     },
+    /**
+     * @Description: 打开算法配置弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     openLogicSetting() {
       if (!this.carProject) {
         iMessage.error(this.language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目'))
@@ -167,9 +222,21 @@ export default {
       })
       this.logicVisible = true
     },
+    /**
+     * @Description: 算法配置弹窗状态修改
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
     changeLogic(visible) {
       this.logicVisible = visible
     },
+    /**
+     * @Description: 应用算法配置
+     * @Author: Luoshuang
+     * @param {*} data
+     * @return {*}
+     */    
     handleUseLogic(data) {
       updateCarConfig({...this.logicData,type:1,cartypeProId:this.carProject}).then(res => {
         if (res?.result) {
@@ -186,6 +253,12 @@ export default {
       })
       
     },
+    /**
+     * @Description: 获取产品组列表
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async getProductList() {
       const res = await getProductSelectList(this.carProject)
       if (res?.result) {
@@ -204,6 +277,12 @@ export default {
         iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
       }
     },
+    /**
+     * @Description: 打开选择产品组弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     openChooseProGroup() {
       if (!this.carProject) {
         iMessage.error(this.language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目'))
@@ -215,14 +294,26 @@ export default {
       this.chooseVisible = true
       this.getProductList()
     },
+    /**
+     * @Description: 选择产品组弹窗状态确认
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
     changeChooseProGroup(visible) {
       this.chooseVisible = visible
     },
+    /**
+     * @Description: 选择产品组，即产品组弹窗中的确认按钮对应操作
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     async handleChooseProGroup(val) {
       this.chooseData = val
       const params = {
         cartypeProId: this.carProject,
-        projectGroupsSelectList: this.chooseDataList.filter(item => val.includes(item.key))
+        projectGroupsSelectList: val.map(item => this.chooseDataList.find(findItem => findItem.key === item))
       }
       const res = await saveProductSelectList(params)
       if (res?.result) {
@@ -237,12 +328,24 @@ export default {
       }
       this.$refs.chooseProGroup.changeSaveLoading(false)
     },
+    /**
+     * @Description: 切换节点/周期视图
+     * @Author: Luoshuang
+     * @param {*} isNodeView
+     * @return {*}
+     */    
     changeNodeView(isNodeView) {
       this.isNodeView = isNodeView
       this.$nextTick(() => {
         this.initView()
       })
     },
+    /**
+     * @Description: 渲染节点/周期视图
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     initView() {
       if (this.isNodeView) {
         this.$refs.nodeView && this.$refs.nodeView.init()

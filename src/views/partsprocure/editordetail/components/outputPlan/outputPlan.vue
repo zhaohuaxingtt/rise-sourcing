@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iSelect, iInput, iMessage } from '@/components'
+import { iCard, iButton, iSelect, iInput, iMessage } from 'rise'
 import { getOutputPlan, updateOutputPlan } from '@/api/partsprocure/editordetail'
 import { outputPlanTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
@@ -74,8 +74,8 @@ export default {
     getData() {
       this.loading = true
       getOutputPlan({
-        'partOutputPlanReqDTO.purchaseProjectId': this.params.purchasePrjectId,
-        'partOutputPlanReqDTO.year': this.startYear || undefined
+        'purchaseProjectId': this.params.id,
+        'year': this.startYear || undefined
       })
         .then((res) => {
           this.tableTitle = cloneDeep(tableTitle)
@@ -83,9 +83,9 @@ export default {
             { pc: '产量（PC）', info: {} }
           ]
 
-          if (res.data && res.data.partRecordsResDTO) {
-            if (Array.isArray(res.data.partRecordsResDTO.outputPlanList)) {
-              res.data.partRecordsResDTO.outputPlanList.forEach((planData, index) => {
+          if (res.data) {
+            if (Array.isArray(res.data.outputPlanList)) {
+              res.data.outputPlanList.forEach((planData, index) => {
                 if (index === 0) {
                   this.startYear = planData.year
                   this.$emit('updateStartYear', this.startYear)
@@ -103,10 +103,10 @@ export default {
               }
               this.$refs.table.doLayout()
 
-              this.tableListData[0].totalOutput = res.data.partRecordsResDTO.totalOutput
-              this.tableListData[0].versionNum = res.data.partRecordsResDTO.versionNum
-              this.tableListData[0].outputPlanList = res.data.partRecordsResDTO.outputPlanList
-              this.tableListData[0].info.partNumpartNum = res.data.partRecordsResDTO.partNum
+              this.tableListData[0].totalOutput = res.data.totalOutput
+              this.tableListData[0].versionNum = res.data.versionNum
+              this.tableListData[0].outputPlanList = res.data.outputPlanList
+              this.tableListData[0].info.partNumpartNum = res.data.partNum
               // this.tableListData[0].info.id = res.data.partRecordsResDTO.id
               // this.tableListData[0].info.output = res.data.partRecordsResDTO.output
               // this.tableListData[0].info.purchaseProjectId = res.data.partRecordsResDTO.purchaseProjectId
@@ -128,12 +128,8 @@ export default {
     handleSave() {
       this.saveLoading = true
       updateOutputPlan({
-        partOutputPlanInsertFacadeDTOS: {
           partOutputPlanInsertList: this.tableListData[0].outputPlanList,
-          purchasingProjectId: this.params.purchasePrjectId,
-        }
-      })
-        .then(res => {
+          purchasingProjectId: this.params.id}).then(res => {
           if (res.code == 200) {
             iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
             this.getData()

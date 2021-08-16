@@ -1,14 +1,14 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-12 11:08:42
+ * @LastEditTime: 2021-08-13 15:09:21
  * @LastEditors: 舒杰
  * @Description: 内部需求分析
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\index.vue
 -->
 <template>
   <iPage>
-    <headerNav>
+    <headerNav ref="headerNav">
       <div slot="extralButton">
         <iButton @click="handleView">{{ language("CHAKANLISHI", "查看历史") }}</iButton>
       </div>
@@ -37,40 +37,14 @@ export default {
       viewHistory: false
     }
   },
-  created() {
-    if (!this.$store.state.rfq.categoryCode) {
-      this.value = true
-    }
-  },
   methods: {
     handleView() {
-      this.viewHistory = true
+      if(this.$store.state.rfq.categoryCode){
+       this.viewHistory = true
+      }else{
+        this.$refs.headerNav.openCatecory()
+      }
     },
-    querySearchAsync(queryString, cb) {
-      pageRfqBaseInfo({ keyword: queryString }).then(res => {
-        if (res.data) {
-          let result = []
-          res.data.map(item => {
-            if (item.categoryCode) {
-              result.push({ value: item.categoryName, categoryCode: item.categoryCode })
-            }
-          })
-          cb(result)
-        }
-      })
-    },
-    // 确认
-    confirm() {
-      this.$store.dispatch('setCategoryCode', this.categoryCode)
-      this.value = false
-    },
-    // 重新定位材料组
-    openCategoryCode() {
-      this.value = true
-    },
-    handleSelect(item) {
-      this.categoryCode = item.categoryCode
-    }
   }
 };
 </script>

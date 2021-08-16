@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-08-09 15:48:17
+ * @LastEditTime: 2021-08-15 11:43:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -12,44 +12,84 @@ export const timeList = [
     week:1,
     name:'第一轮询价',
     key: 'DIYILUNXUNJIA',
+    query: {
+      taskStatus: 'quotationStatus',
+      doneWeek: 'quotationFinishTime',
+      planWeek: 'quotationPlanTime'
+    },
     active:true
   },
   {
     week:3,
     key: 'LK_ZHUANTANPANS',
-    name:'转谈判'
+    name:'转谈判',
+    query: {
+      taskStatus: 'negoStatus',
+      doneWeek: 'negoFinishTime',
+      planWeek: 'negoPlanTime'
+    },
   },
   {
     week:3,
     key: 'EPPINGFEN',
-    name: 'EP评分'
+    name: 'EP评分',
+    query: {
+      taskStatus: 'epScoreStatus',
+      doneWeek: 'epScoreFinishTime',
+      planWeek: 'epScorePlanTime'
+    },
   },
   {
     week:3,
     key: 'MQPINGFEN',
-    name: 'MQ评分'
+    name: 'MQ评分',
+    query: {
+      taskStatus: 'mqScoreStatus',
+      doneWeek: 'mqScoreFinishTime',
+      planWeek: 'mqScorePlanTime'
+    },
   },
   {
     week:3,
     key: 'LK_CAIWUMUBIAOJIA',
-    name: '财务目标价'
+    name: '财务目标价',
+    query: {
+      taskStatus: 'financeStatus',
+      doneWeek: 'financeFinishTime',
+      planWeek: 'financePlanTime'
+    },
   },
   {
     week:6,
     key: 'LK_BNKSHENGHE',
-    name:'BNK审核'
+    name:'BNK审核',
+    query: {
+      taskStatus: 'bnkStatus',
+      doneWeek: 'bnkFinishTime',
+      planWeek: 'bnkPlanTime'
+    },
   },
   {
     week:8,
-    key: 'SHOUCIPRECSCTIJIAOLIUZHUAN',
-    name:'首次Pre-CSC/提交流转',
-    long: true
+    key: 'TIJIAOPRECSCTIJIAOLIUZHUAN',
+    name:'提交Pre-CSC/提交流转',
+    long: true,
+    query: {
+      taskStatus: 'preCscStatus',
+      doneWeek: 'preCscFinishTime',
+      planWeek: 'preCscPlanTime'
+    },
   },
   {
     week:12,
     key: 'CSCTONGGUOLIUZHUANWANCHENG',
     name:'CSC通过/流转完成',
-    long: true
+    long: true,
+    query: {
+      taskStatus: 'cscStatus',
+      doneWeek: 'cscFinishTime',
+      planWeek: 'cscPlanTime'
+    },
   }
 ]
 
@@ -58,10 +98,16 @@ export const iconList_car = { //汽车图标
   'a2':{
     icon:'iconbaojiafenxi-zhengchejindu-cheng' //橙色
   },
+  'a6':{
+    icon:'icondingdianguanlijiedian-jinhangzhong' //蓝色
+  },
   'a3':{
     icon:'iconbaojiafenxi-zhengchejindu-hong' //红色
   },
   'a1':{
+    icon:'icondingdianguanlijiedian-jinhangzhong' //黄色浅黄
+  },
+  'a4':{
     icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
   },
   'a0':{
@@ -85,6 +131,9 @@ export const iconList_all_times = { //整体任务进度以及每格进度
     icon:'iconbaojiapingfengenzong-jiedian-cheng' //橙色
   },
   'a5': {
+    icon: 'iconzhuanxiangfenxigongju-landian' //蓝色
+  },
+  'a6': {
     icon: 'iconzhuanxiangfenxigongju-landian' //蓝色
   }
 }

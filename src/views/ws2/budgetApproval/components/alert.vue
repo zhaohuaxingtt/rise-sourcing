@@ -56,7 +56,7 @@ import {
 } from 'rise'
 import {
   iTableList
-} from "@/components"
+} from '@/components'
 import {alertList, form} from "../components/data";
 import {alert, ratify} from "@/api/ws2/budgetApproval";
 import {getTousandNum} from "@/utils/tool";

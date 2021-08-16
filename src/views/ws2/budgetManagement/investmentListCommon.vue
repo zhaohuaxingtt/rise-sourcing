@@ -175,7 +175,7 @@ import {
 } from "rise";
 import {
   iTableList
-} from "@/components"
+} from '@/components'
 import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";

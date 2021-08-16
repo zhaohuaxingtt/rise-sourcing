@@ -179,7 +179,8 @@ export default {
             ipagnation:{
                 pageNo:1,
                 pageSize:10
-            }
+            },
+            isDownload:false
         }
     },
     created(){
@@ -206,6 +207,7 @@ export default {
             templateId: templateId,
             ...this.ipagnation}).then(res=>{
                 if(res.code=="200"){
+                    if(res.data.length<1) return this.$message({type:'warning',message:'当前无KPI数据，请上传打分数'})
                     this.allData=JSON.parse(JSON.stringify(res.data))
                     this.allData.forEach(x=>{
                         x.checked=false
@@ -277,50 +279,66 @@ export default {
         },
         handleupLoad(){
            this.isShowDialog=true
+           this.uploadVersion=""
+           this.isDownload=false
         },
-        changeSelectVer(){
-            let link = document.querySelector("#file")
-            link.click()
+         handleDownload(){
+            this.uploadVersion=""
+            this.isShowDialog=true
+            this.isDownload=true
+        },
+        changeSelectVer(e){
+            if(this.isDownload){//下载
+                console.log(e)
+            }else{//上传
+                let link = document.querySelector("#file")
+                link.click()
+            }
+            
         },
         upfileChange(e){
            this.file = e.target.files[0]
         },
         handleSure(){
-            if(this.uploadVersion){
-                let formdata = new FormData()
-                formdata.append('file',this.file)
-                formdata.append('templateId',this.uploadVersion)
-                uploadTemplate(formdata).then(res=>{
-                    if(res.code=="200"){
-                        this.isShowDialog=false
+            if(this.isDownload){//下载
+                if(!this.uploadVersion) return this.$message({type:'warning',message:'请选择版本'})
+                let name =""
+                this.dropDownOptions.forEach(x=>{
+                    if(x.key==this.uploadVersion){
+                        name =x.value
                     }
                 })
-            //    let  formData = new FormData()
-            //     formData.append('file', fileInput.files[0])
-            }else{
-                this.$message({
-                message: '请选择版本',
-                type: 'warning'
+                dowbloadAPI({templateId:this.uploadVersion}).then(res=>{
+                let URL = window.URL || window.webkitURL;
+                    let objectUrl = URL.createObjectURL(res);
+                    let a = document.createElement('a');
+                    a.href = objectUrl; 
+                    a.download = `${name}.xls`; 
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    this.isShowDialog=false
                 })
-            }
-        },
-        handleDownload(){
-            let name =""
-            this.dropDownOptions.forEach(x=>{
-                if(x.key==this.selectValue){
-                    name =x.value
+            }else{//上传
+                if(this.uploadVersion){
+                    let formdata = new FormData()
+                    formdata.append('file',this.file)
+                    formdata.append('templateId',this.uploadVersion)
+                    uploadTemplate(formdata).then(res=>{
+                        if(res.code=="200"){
+                            this.$message('上传成功')
+                            this.isShowDialog=false
+                        }
+                    })
+                //    let  formData = new FormData()
+                //     formData.append('file', fileInput.files[0])
+                }else{
+                    this.$message({
+                    message: '请选择版本',
+                    type: 'warning'
+                    })
                 }
-            })
-            dowbloadAPI({templateId:this.selectValue}).then(res=>{
-               let URL = window.URL || window.webkitURL;
-                let objectUrl = URL.createObjectURL(res);
-                let a = document.createElement('a');
-                a.href = objectUrl; 
-                a.download = `${name}.xls`; 
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-            })
+            }
         },
         changeStatus(x){
            x.checked=!x.checked

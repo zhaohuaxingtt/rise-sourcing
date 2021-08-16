@@ -113,7 +113,7 @@
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount" />
 
       <reportPreview :visible="reportVisible" :reportUrl="reportUrl" :title="reportTitle" :key="reportKey" @handleCloseReport="handleCloseReport" />
-      <addDialog v-model="addDialog" />
+      <addDialog @add="add" v-model="addDialog" />
     </iCard>
   </div>
 </template>
@@ -129,12 +129,13 @@ import {
   icon,
   iMessage,
 } from "rise";
-import { getList, update } from "@/api/partsrfq/mek/index.js";
+import { getList, update, add } from "@/api/partsrfq/mek/index.js";
 import { pageMixins } from "@/utils/pageMixins";
+import resultMessageMixin from "@/utils/resultMessageMixin";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
 import addDialog from "./components/addDialog.vue";
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, resultMessageMixin],
   components: {
     iCard,
     iInput,
@@ -197,20 +198,26 @@ export default {
     },
   },
   methods: {
-
-    //表格序号函数
-    // indexMethod (e) {
-    //   const rows = [];
-    //   this.tableListData.forEach((r) => {
-    //     rows.push(r.number);
-    //     if (r.reportList && r.reportList !== null) {
-    //       r.reportList.forEach((c) => {
-    //         rows.push(c.number);
-    //       });
-    //     }
-    //   });
-    //   return rows[e];
-    // },
+    async add(params) {
+      let pms = {}
+      if (this.$store.state.rfq.entryStatus) {
+        pms.rfq = this.$store.state.rfq.rfqId
+      } else {
+        pms = {
+          ...params
+        }
+      }
+      const res = await add(pms)
+      this.resultMessage(res, () => {
+        this.$router.push({
+          path: "/sourcing/mek/mekDetails",
+          query: {
+            materialGroupCode: pms.materialGroupCode,
+            chemeId: res.data,
+          },
+        })
+      })
+    },
     //初始化测试数据
     async initData() {
       try {
@@ -241,7 +248,6 @@ export default {
         rfqName: ""
       }
       this.initSearchData();
-      // this.getTableList();
     },
     //检索事件
     handleSearch() {
@@ -268,18 +274,6 @@ export default {
         })
       }
     },
-    //递归处理树结构数据的序号
-    // handleTableNumber (data, suffix, prefix) {
-    //   data.forEach((item) => {
-    //     const number = prefix ? prefix + "." + suffix : suffix;
-    //     item["number"] = number;
-    //     if (item.reportList && item.reportList.length > 0) {
-    //       item["children"] = item.reportList;
-    //       this.handleTableNumber(item.reportList, 1, number);
-    //     }
-    //     suffix++;
-    //   });
-    // },
     // 点击编辑按钮
     editBob() {
       this.backUpData = window._.cloneDeep(this.tableListData);
@@ -295,7 +289,11 @@ export default {
     },
     // 点击新建按钮
     handleAdd() {
-      this.addDialog = true
+      if (this.$store.state.rfq.entryStatus) {
+        this.add()
+      } else {
+        this.addDialog = true
+      }
     },
     // 点击删除按钮
     deleteBob() {
@@ -303,11 +301,15 @@ export default {
         iMessage.error(this.$t('TPZS.QXZXYCZDSJ'));
         return;
       }
-      fetchDel(this.selection).then((res) => {
+      let pms = this.selection
+      pms.map(item => {
+        item.isDelete = true
+      })
+      update(pms).then((res) => {
         if (res.code == 200) {
           iMessage.success(res.desZh);
+          this.initData();
         } else iMessage.error(res.desZh);
-        // this.getTableList();
       });
     },
     //编辑时，改变默认项事件
@@ -323,9 +325,10 @@ export default {
       const params = this.tableListData;
       update(params).then((res) => {
         if (res) {
-          if (res.code == 200) iMessage.success(res.desZh);
-          else iMessage.error(res.desZh);
-          // this.getTableList();
+          if (res.code == 200) {
+            iMessage.success(res.desZh);
+            this.initData();
+          } else iMessage.error(res.desZh);
         }
       });
     },
@@ -509,7 +512,7 @@ export default {
     cursor: pointer;
   }
 }
-::v-deep .el-table .cell{
+::v-deep .el-table .cell {
   text-align: center;
 }
 </style>

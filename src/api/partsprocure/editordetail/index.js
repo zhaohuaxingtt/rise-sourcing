@@ -8,6 +8,14 @@ const requstPartsProcure = axios(process.env.VUE_APP_PARTSPROCURE)
 const sourcing = axios(process.env.VUE_APP_PART_PROCURE)
 const sourcingDL = axios(process.env.VUE_APP_SOURCING_WDL)
 const quotation = axios(process.env.VUE_APP_QUOTATION)
+//自动定点-创建接口
+export function autonomi(params) {
+	return sourcing({
+		url: '/auto-nomi/change/auto',
+		method: 'POST',
+		data: params
+	})
+}
 // 采购项目-获取材料组信息
 export function getMaterialGroup(params) {
 	return requstPartsProcure({
@@ -105,16 +113,22 @@ const requstPartProcure = axios(process.env.VUE_APP_PART_PROCURE)
 // 获取产量计划
 export function getOutputPlan(params) {
 	return requstPartProcure({
-		url: '/part-src-prjs',
-		method: 'GET',
-		params: params
+		url: '/part-output/output-plan',
+		method: 'POST',
+		data: params
 	})
 }
-
+export function getOutputPlanMarks(params) {
+	return requstPartProcure({
+		url: '/part-output/output-record',
+		method: 'POST',
+		data: params
+	})
+}
 // 更新产量计划
 export function updateOutputPlan(params) {
 	return requstPartProcure({
-		url: '/part-src-prjs',
+		url: '/part-output/update',
 		method: 'POST',
 		data: params
 	})
@@ -157,7 +171,7 @@ export function dictkey(params) {
 // 检测当前值是不是在范围里面。
 export function checkFactory(params) {
 	return sourcing({
-		url: '/part-src-prjs/is-exist-cartype-project-factory',
+		url: '/purchasing-project-parts/is-exist-cartype-project-factory',
 		method: 'POST',
 		data: params
 	})
@@ -171,11 +185,10 @@ export function getParts(params) {
     	data: params
 	})
 }
-
-// 创建采购项目
+// 手工创建采购项目
 export function createParts(params){
   return sourcing({
-    url: "/part-src-prjs",
+    url: "/purchasing-project-parts/manual",
     method: "POST",
     data: params
   })
@@ -184,12 +197,18 @@ export function createParts(params){
 export function getPageData(params){
   return sourcing({
     url: "/nominate/fs-record/list",
-    method: "GET",
-    params: params
+    method: "POST",
+    data: params
   })
 }
 //批量修改零件采购项目特殊零件仅零件号变更
-
+export function getDataListBatchList(data){
+	return sourcing({
+		url:'/purchasing-project-parts/list',
+		method:'POST',
+		data:data
+	})
+}
 // 获取定点信息
 export function findNominateInfo(fsNum) {
 	return sourcingDL({

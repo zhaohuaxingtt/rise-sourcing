@@ -118,7 +118,7 @@
         </el-form-item>
         <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
           <iSelect
-            v-model="form.carTypeProject"
+            v-model="form.cartypeProject"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
           >
             <el-option
@@ -128,7 +128,7 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in carTypeProjectOptions"
+              v-for="item in cartypeProjectOptions"
               :key="item.key"
             ></el-option>
           </iSelect>
@@ -210,7 +210,7 @@ export default {
       buyerLoading: false,
       buyerOptions: [],
       carTypeOptions: [],
-      carTypeProjectOptions: [],
+      cartypeProjectOptions: [],
       form: cloneDeep(queryForm),
       loading: false,
       tableTitle,
@@ -320,7 +320,7 @@ export default {
       findBySearches("01")
       .then(res => {
         if (res.code == 200) {
-          this.carTypeProjectOptions = 
+          this.cartypeProjectOptions = 
             Array.isArray(res.data) ?
             res.data.map(item => ({
               key: item.code,

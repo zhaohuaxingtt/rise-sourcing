@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import {iCard, iPagination, iButton, iMessage} from "@/components";
+import {iCard, iPagination, iButton, iMessage} from 'rise';
 import tablelist from './supplierScoreTableList'
 import {supplierScoreTitle,templateScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";

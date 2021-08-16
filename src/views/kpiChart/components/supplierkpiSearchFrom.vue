@@ -32,8 +32,10 @@
                                     <div style="margin-bottom:10px;margin-top:10px;">地区</div>
                                     <div class="TOCaseArea">
                                         <el-cascader 
+                                        v-model="baseAreaVmodel"
                                         :props="props"
-                                        @change="handleChangeArea($event)"
+                                        @change="handleBaseChangeArea($event)"
+                                        ref="myCascader"
                                         :clearable="true"
                                         collapse-tags ></el-cascader>
                                     </div>
@@ -43,21 +45,20 @@
                                     <div style="margin-bottom:10px;margin-top:10px;">起止年份</div>
                                     <div class="TOCase">
                                     <el-date-picker
-                                    v-model="startyear"
+                                    v-model="baseStartYear"
                                     type="year"
-                                    @change="startchange"
+                                    @change="startChangeBase"
                                     format="yyyy"
                                     value-format="yyyy"
                                     >
                                     </el-date-picker>
                                     <span>-</span>
                                     <el-date-picker
-                                    v-model="endyear"
+                                    v-model="baseEndYear"
                                     type="year"
                                     format="yyyy"
                                     value-format="yyyy"
-                                    :picker-options="expireTimeOption"
-                                    @change="endchange"
+                                    @change="endChangeBase"
                                     >
                                     </el-date-picker>
                                     </div>
@@ -66,13 +67,15 @@
                                     <div style="margin-bottom:10px;margin-top:10px;">TO量级（元）</div>
                                     <div class="TOCase">
                                     <iInput
-                                        :placeholder="$t('partsignLanguage.INPUT_PLACEHOLDER')"
-                                        v-model="formData.spiSupplierDTO.toAmountStart"
+                                        placeholder="请输入"
+                                        v-model="formData.spiBaseDTO.toAmountStart"
+                                        @input="formData.spiSupplierDTO.toAmountStart=formData.spiBaseDTO.toAmountStart,supplierStart=formData.spiBaseDTO.toAmountStart"
                                     ></iInput>
                                     <span>-</span>
                                     <iInput
-                                        :placeholder="$t('partsignLanguage.INPUT_PLACEHOLDER')"
-                                        v-model="formData.spiSupplierDTO.toAmountEnd"
+                                        placeholder="请输入"
+                                        v-model="formData.spiBaseDTO.toAmountEnd"
+                                         @input="formData.spiSupplierDTO.toAmountEnd=formData.spiBaseDTO.toAmountEnd,supplierEnd=formData.spiBaseDTO.toAmountEnd"
                                     ></iInput>
                                     </div>
                                 </el-col>
@@ -106,14 +109,24 @@
                                 </el-col>
                            
                                 <el-col :span="6">
-                                    <div style="margin-bottom:10px;margin-top:10px;">地区</div>
-                                    <div class="TOCaseArea">
-                                        <el-cascader 
-                                        :props="props"
-                                        @change="handleChangeArea($event)"
-                                        :clearable="true"
-                                        collapse-tags ></el-cascader>
-                                    </div>
+                                    <iFormItem
+                                    label="地区"
+                                    class="SearchOption"
+                                    prop="userNum"
+                                    >
+                                    <iSelect 
+                                    v-model="formData.spiSupplierDTO.cityCodeList" 
+                                    :placeholder="$t('partsignLanguage.QingXuanZe')"
+                                    @change="handlechangeSeccoStock('supplier',$event)"
+                                    multiple
+                                    collapse-tags>
+                                        <el-option 
+                                        v-for="(x,index) in supplierSeccoStockOption"
+                                         :value='x.value' 
+                                         :label='x.label'
+                                         :key="index"></el-option>
+                                    </iSelect>
+                                    </iFormItem>
                                 </el-col>
                                 <el-col :span="6">
                                     <iFormItem
@@ -163,19 +176,19 @@
                                     <div style="margin-bottom:10px;margin-top:10px;">起止年份</div>
                                     <div class="TOCase">
                                     <el-date-picker
-                                    v-model="startyear"
+                                    v-model="supplierStartYear"
                                     type="year"
-                                    @change="startchange"
+                                    @change="startChangeSupplier"
                                     format="yyyy"
                                     value-format="yyyy"
                                     >
                                     </el-date-picker>
                                     <span>-</span>
                                     <el-date-picker
-                                    v-model="endyear"
+                                    v-model="supplierEndYear"
                                     type="year"
                                     format="yyyy"
-                                    @change="endchange"
+                                    @change="endChangeSupplier"
                                     value-format="yyyy"
                                     >
                                     </el-date-picker>
@@ -185,19 +198,21 @@
                                     <div style="margin-bottom:10px;margin-top:10px;">TO量级（元）</div>
                                     <div class="TOCase">
                                     <iInput
-                                        :placeholder="$t('partsignLanguage.INPUT_PLACEHOLDER')"
-                                        v-model="formData.spiSupplierDTO.toAmountStart"
+                                        placeholder="请输入"
+                                        v-model="supplierStart"
+                                        @change="handleToStart"
                                     ></iInput>
                                     <span>-</span>
                                     <iInput
-                                        :placeholder="$t('partsignLanguage.INPUT_PLACEHOLDER')"
-                                        v-model="formData.spiSupplierDTO.toAmountEnd"
+                                        placeholder="请输入"
+                                        v-model="supplierEnd"
+                                        @change="handleToEnd"
                                     ></iInput>
                                     </div>
                                 </el-col>
                                 <el-col :span="12">
                                     <div style="margin-top:35px;float: right;">
-                                    <iButton>重置</iButton>
+                                    <iButton @click="handleRest">重置</iButton>
                                     <iButton @click="handleOk">确认</iButton></div>
                                 </el-col>
                             </el-row>
@@ -226,9 +241,17 @@ export default {
     },
     data(){
         return {
+            supplierEndYear:null,
+            supplierStartYear:null,
+            baseStartYear:null,
+            baseEndYear:null,
+            supplierStart:'',
+            supplierEnd:'',
+           baseAreaVmodel:[],
            partyOrganId:[],
            formData:{
                spiBaseDTO:{
+                   cityCodeList:[],
                    yearList:[],
                    existShareIdList:[]
                },
@@ -244,6 +267,104 @@ export default {
             startyear:null,
             endyear:null,
             getCityid:"-1",
+            option : {
+                color: ['#1763F7'],
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor:'#fff',
+                    lineStyle:{
+                        color:'#000'
+                    },
+                    textStyle: {
+                        color:'#000'
+                    },
+                    // formatter:function(params){
+                    //     const str = `<div style="padding:10px">
+                    //         <div>该分数断下供应商数量:<span style="color:#1763F7">${params.value}家</span></div>
+                    //         <div>${params.seriesName}:${params.name}分</div>
+                    //     </div>`
+                    //     return str
+                    // },
+                    axisPointer:{//直线指示器
+                        type:'none'
+                    },
+                    extraCssText: 'box-shadow: 0px 3px 10px rgba(27, 29, 33, 0.16);'
+                },
+                legend: {
+                    data:[{
+                        name:'',
+                        icon:'circle',
+                        textStyle: {
+                            color: '#1763F7'
+                        }
+                    }],
+                },
+                grid: {
+                    top: 50,
+                    bottom: 20,
+                    left:0,
+                    right:0,
+                    tooltip:{
+                        axisPointer:{
+                            shadowStyle:{
+                                color:'red'
+                            } 
+                        }
+                    }
+                },
+                xAxis: {
+                        type: 'category',
+                        splitLine:{
+                            show:false//不显示网格线
+                        },
+                        axisTick: {
+                            show:false
+                        },
+                        splitNumber:10,
+                        axisLabel:{
+                            interval:1
+                        }, 
+                        data: ['5', '15', '25', '35', '45', '55', '65', '75', '85', '95']
+                   
+                },
+                yAxis: {
+                    show:false,
+                    type:'value',
+                    name:'该分数段下供应商数量：',
+                    min: 0,
+                    max: 10,
+                },
+                series: [
+                    {
+                        name: '上海汇众汽车有限公司',
+                        //symbol: "none",//显示隐藏曲线上的点
+                        symbolSize:10,
+                        type: 'line',
+                        smooth: true,
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [],
+                        markLine: {
+                            lineStyle: {
+                                type:'solid',
+                                width: 1,
+                                color: '#707070',
+                            },
+                            silent: true, // 鼠标悬停事件, true悬停不会出现实线
+                            symbol: 'none', // 去掉箭头
+                            data: [[
+                                { coord: ['45', 0] }, // [x第几个（从0开始），y轴起始点 ]
+                                { coord: ['45', 10] } // [x第几个（从0开始），y轴起始点 ]
+                            ]]
+                        },
+                        markPoint:{
+                             symbol:"circle"
+                        }
+                    }
+                ]
+            },
+            supplierSeccoStockOption:[],
             props: {
                 lazy: true,
                 multiple: true,
@@ -251,8 +372,8 @@ export default {
                     const { level } = node;
                     setTimeout(() => {
                         if(level==0){
-                            getCityInfo({parentCityId:"-1"}).then(res=>{
-                                const country = res.data.map(val=>({
+                        getCityInfo({parentCityId:"-1"}).then(res=>{
+                        const country = res.data.map(val=>({
                                     value: val.cityId,
                                     label: val.cityNameCn,
                                     leaf: level >= 2
@@ -261,7 +382,6 @@ export default {
                             })
                         }
                         if(level==1){
-                            console.log(level)
                             getCityInfo({parentCityId:node.value}).then(res=>{
                                 const province = res.data.map(val=>({
                                     value: val.cityId,
@@ -272,28 +392,18 @@ export default {
                             })
                         }
                         if(level==2){
-                           getCityInfo({parentCityId:node.value}).then(res=>{
-                               console.log(res)
+                            getCityInfo({parentCityId:node.value}).then(res=>{
                                 const city = res.data.map(val=>({
                                     value: val.cityId,
                                     label: val.cityNameCn,
                                     leaf: level >= 2
-
                                 }))
                                 resolve(city)
                             })
                         }
-                        }, 1000);
-                    }
-                },
-            expireTimeOption:{
-                // disabledDate(date) {
-                //     return (
-                //         date.getTime() = new Date(new Date().getFullYear())
-                //     )
-                // }
-            },
-            supplierSeccoStockOption:[]
+                    })
+                }
+            }
         }
     },
     created(){
@@ -321,9 +431,43 @@ export default {
                 }
             })
         },
-         //城市
-        handleChangeArea(e){
-            console.log(e)
+         //基数地区
+        handleBaseChangeArea(e,b){
+            // 地区数量校验
+            // if(e.length<6){
+            //     this.baseAreaVmodel=e
+            // }else{
+            //     this.baseAreaVmodel=e.slice(0,5)
+            //     this.$message({
+            //     message: '最多选择5条数据',
+            //     type: 'warning'
+            //     });
+            // }
+            // if(this.baseAreaVmodel.length>0){
+            //     this.formData.spiBaseDTO.cityCodeList=[]
+            //     this.baseAreaVmodel.forEach(x=>{
+            //         this.formData.spiBaseDTO.cityCodeList.push(x[2])
+            //     })
+            //     this.formData.spiBaseDTO.cityCodeList=this.formData.spiBaseDTO.cityCodeList.map(String)
+            // }
+            this.formData.spiBaseDTO.cityCodeList=[]
+            this.supplierSeccoStockOption=[]
+           if(this.$refs["myCascader"].getCheckedNodes().length>0){
+               this.$refs["myCascader"].getCheckedNodes().forEach(x=>{
+                   if(x.level==3){
+                       this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
+                       this.supplierSeccoStockOption.push({...x,value:x.value.toString()})
+                   }
+                   
+               })
+           }else{
+               this.supplierSeccoStockOption=[]
+               this.formData.spiBaseDTO.cityCodeList=[]
+           }
+        },
+        //供应商地区
+        handleSupplierChangeArea(){
+             //this.baseSupplierVmodel
         },
         // 科股
         getRelationship(){
@@ -383,6 +527,122 @@ export default {
             getLine(this.formData).then(res=>{
                 this.$emit("chartData",res.data)
             })
+        },
+        handleRest(){
+            this.formData={
+               spiBaseDTO:{
+                   cityCodeList:[],
+                   yearList:[],
+                   existShareIdList:[]
+               },
+               spiSupplierDTO:{
+                   yearList:[],
+                   existShareIdList:[]
+               }
+           }
+           this.startyear=null
+           this.endyear=null
+           this.baseAreaVmodel=[]
+        },
+        // base 开始日期
+        startChangeBase(e){
+            this.baseEndYear=null
+            this.formData.spiBaseDTO.yearList=[]
+            this.supplierStartYear=null
+            const date = new Date().getFullYear()
+            if(e>date || e<date-10){
+                this.$message({
+                    type:'warning',
+                    message:'请选择近十年的时间'
+                })
+                this.baseStartYear=null
+            }else{
+                this.supplierStartYear=this.baseStartYear
+            }
+            
+        },
+        endChangeBase(e){
+             // 未先选择开始时间
+            if( this.baseStartYear==null || !this.baseStartYear){
+                this.$message({
+                    type:'warning',
+                    message:'请选择开始时间'
+                })
+                this.baseEndYear=null
+            }else{
+                const date = new Date().getFullYear()
+                if(e>date || e<date-10){
+                    this.$message({
+                        type:'warning',
+                        message:'请选择近十年的时间'
+                    })
+                    this.baseEndYear=null
+                }else{
+                    this.supplierEndYear=this.baseEndYear
+                    // 基数时间取值
+                    let leg = this.baseEndYear - this.baseStartYear
+                    this.formData.spiBaseDTO.yearList=[]
+                    for (let i = 1; i < leg+1; i++) {
+                        this.formData.spiBaseDTO.yearList.push((parseInt(this.baseStartYear)+i).toString())
+                    }
+                    // 供应商赋值
+                    this.formData.spiSupplierDTO.yearList=JSON.parse(JSON.stringify(this.formData.spiBaseDTO.yearList))
+                    
+                }
+            }
+        },
+        // supplier 开始日期
+        startChangeSupplier(e){
+            this.supplierEndYear=null
+            this.formData.spiSupplierDTO.yearList=[]
+            const date = new Date().getFullYear()
+            if(e<this.baseStartYear || e>this.baseEndYear){
+                this.$message({
+                    type:'warning',
+                    message:'请选择基数范围内的时间'
+                })
+                this.supplierStartYear=this.baseStartYear
+            }
+            
+        },
+        endChangeSupplier(e){
+            const date = new Date().getFullYear()
+            if(e<this.baseStartYear || e>this.baseEndYear){
+                this.$message({
+                    type:'warning',
+                    message:'请选择基数范围内的时间'
+                })
+                this.supplierEndYear=this.baseEndYear
+            }else{
+                // 供应商时间取值
+                let leg = this.supplierEndYear - this.supplierStartYear
+                this.formData.spiSupplierDTO.yearList=[]
+                for (let i = 1; i < leg+1; i++) {
+                    this.formData.spiSupplierDTO.yearList.push((parseInt(this.supplierStartYear)+i).toString())
+                }
+                console.log(this.formData.spiSupplierDTO.yearList)
+            }
+        },
+        // 供应商to量级
+        handleToStart(x){
+            if(x<this.formData.spiBaseDTO.toAmountStart){
+                this.$message({
+                    type:'warning',
+                    message:'不能小于基数开始金额'
+                })
+                this.formData.spiSupplierDTO.toAmountStart=this.formData.spiBaseDTO.toAmountStart
+                this.supplierStart=this.formData.spiBaseDTO.toAmountStart
+            }
+        },
+        handleToEnd(x){
+            if(x>this.formData.spiBaseDTO.toAmountEnd){
+                this.$message({
+                    type:'warning',
+                    message:'不能大于基数结束金额'
+                })
+                this.formData.spiSupplierDTO.toAmountEnd=this.formData.spiBaseDTO.toAmountEnd
+                this.supplierEnd=this.formData.spiBaseDTO.toAmountEnd
+            }
         }
     }
 }

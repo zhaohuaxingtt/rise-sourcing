@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:37:22
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 11:20:49
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-09 11:58:16
  * @Description: 定点信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\designateInfo.vue
 -->
@@ -59,7 +59,6 @@ import { getNomiRecords } from "@/api/financialTargetPrice/index"
 import { getDictByCode } from '@/api/dictionary'
 import { dictkey } from "@/api/partsprocure/editordetail"
 import { getCartypeDict} from "@/api/partsrfq/home"
-import { cloneDeep } from 'lodash'
 export default {
   mixins: [pageMixins],
   components: {iCard,iPagination,iButton,tableList,iInput,iSelect,iSearch,iDatePicker},

@@ -1,23 +1,23 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-08-11 16:14:48
+ * @LastEditTime: 2021-08-14 13:34:31
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
 -->
 <template>
-   <iCard class="margin-top20">
+   <iCard class="margin-top20" id="batchSupplier">
       <template slot="header">
          <div class="flex-between-center title">
-            <div class="flex">
+            <div class="flex-align-center">
                <span>{{language("PLGYSGL","批量供应商概览")}}</span>
-               <el-tooltip content="Top center" placement="top" effect="light">
-                  <span class="mark">beizhu 大撒大撒但顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶水水水水水水水水水水水水水水</span>
+               <el-tooltip :content="mark" placement="top" effect="light" :disabled="!mark">
+                  <span class="mark">{{mark}}</span>
                </el-tooltip>
             </div>
             <div class="flex">
-               <iButton @click="save">{{ language("BEIZHU", "备注") }}</iButton>
+               <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
                <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
                <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
             </div>
@@ -25,16 +25,39 @@
 		</template>
       <!-- powerBi -->
       <div id="powerBi"></div>
+      <!-- 备注 -->
+      <marks @sure="saveMark" v-model="markShow" ref="marks"></marks>
    </iCard>
 </template>
 <script>
 import {iCard,iButton} from "rise";
 import {getCmSupplierPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/batchSupplier";
 import * as pbi from 'powerbi-client';
+import {getCategoryAnalysis,categoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
+import marks from "./marks";
+import {downloadPdfMixins} from '@/utils/pdf';
 export default {
-   components:{iCard,iButton},
+   mixins: [downloadPdfMixins],
+   components:{iCard,iButton,marks},
    data () {
       return {
+         config :{
+            type: 'report',
+            tokenType: pbi.models.TokenType.Embed,
+            accessToken: '',
+            embedUrl: '',
+            pageName:"",
+            settings: {
+               panes: {
+                  filters: {
+                     visible: false
+                  },
+                  pageNavigation: {
+                     visible: false
+                  }
+               }
+            }
+         },
          filter : {
             $schema: "http://powerbi.com/product/schema#basic",
             target: {
@@ -42,27 +65,27 @@ export default {
                column: "supplier_id"
             },
             operator: "In",
-            values: [],//[this.name],// values
+            values: [],//
             filterType: null,
             requireSingleSelection: true
          },
          report:null,
-         name:"",
          url: {
             accessToken: "", //验证token
             embedUrl: "", //报告信息内嵌地址
             tokenExpiry: ""//token过期时间
          },
-         values:[],
-         reportContainer:null
+         reportContainer:null,
+         categoryCode:"",
+         mark:"",
+         markShow:false
       }
    },
    created () {
-      
+      this.categoryCode=this.$store.state.rfq.categoryCode
+      this.getCategoryAnalysis()
    },
    mounted () {
-      this.filter.values=this.$store.state.rfq.categoryCode
-      this.filter.filterType=pbi.models.FilterType.BasicFilter,
 		this.getPowerBiUrl()
    },
    watch:{
@@ -73,6 +96,48 @@ export default {
       }}
    },
    methods: {
+      // 获取近期操作数据
+      getCategoryAnalysis(){
+         let params={
+            categoryCode:this.categoryCode,
+            schemeType:"CATEGORY_MANAGEMENT_PURCHASE_AMOUNT"
+         }
+         getCategoryAnalysis(params).then(res=>{
+            if(res.data){
+               this.mark=res.data.operateLog
+            }
+         })
+      },
+      // 保存备注
+      saveMark(mark){
+         this.mark=mark
+         this.markShow=false
+      },
+      // 保存
+      async save(){
+         const resFile = await this.getDownloadFileAndExportPdf({
+            domId: 'batchSupplier',
+            pdfName: 'batchSupplier',
+         });
+         let params={
+            categoryCode:this.categoryCode,
+            fileType:"PDF",
+            operateLog:this.mark,
+            schemeType:"CATEGORY_MANAGEMENT_PURCHASE_AMOUNT",
+            reportFileName: resFile.downloadName,
+            reportName: resFile.downloadName,
+            schemeName:"",
+            reportUrl: resFile.downloadUrl
+         }
+         categoryAnalysis(params).then(res=>{
+            
+         })
+      },
+      // 打开保存弹窗
+      openMark(){
+         this.markShow=true
+         this.$refs.marks.getMarkdefalut(this.mark)
+      },
       // 获取财报iframeurl
       getPowerBiUrl() {
             getCmSupplierPbi().then(res => {
@@ -85,27 +150,9 @@ export default {
       },
       // 初始化配置
       init(){
-         // this.permissions = pbi.models.Permissions.All
-         this.config = {
-            type: 'report',
-            tokenType: pbi.models.TokenType.Embed,
-            accessToken: this.url.accessToken,
-            embedUrl: this.url.embedUrl,
-            pageName:"ReportSectione9fe87a027d2550c28a9",// 中文ReportSectione9fe87a027d2550c28a9 英文 ReportSection616eb7861df2ef50a3cd
-            // id: 'f6bfd646-b718-44dc-a378-b73e6b528204',
-            // visualName: '47eb6c0240defd498d4b',
-            // permissions: permissions,
-            settings: {
-               panes: {
-                  filters: {
-                     visible: false
-                  },
-                  pageNavigation: {
-                     visible: false
-                  }
-               }
-            }
-         };
+         this.config.embedUrl=this.url.embedUrl
+         this.config.accessToken=this.url.accessToken
+         this.filter.values=[this.categoryCode]
          this.reportContainer = document.getElementById('powerBi');
          this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       },
@@ -114,18 +161,8 @@ export default {
          // Report.off removes a given event handler if it exists.
          report.off("loaded");
          // Report.on will add an event handler which prints to Log window.
-         // const name = this.name
          const newfilter = window._.cloneDeep(this.filter);
-         console.log(newfilter)
-         // newfilter.values=[name]
-         // this.values=[name]
-         // console.log(newfilter);
          report.on("loaded", ()=> {
-            console.log("Loaded");
-            // if(name==""){
-               // newfilter.values=[]
-            // report.updateFilters(pbi.models.FiltersOperations.Add, [newfilter]);
-            // }
             report.setFilters([newfilter])
          });
          // Report.off removes a given event handler if it exists.
@@ -151,10 +188,6 @@ export default {
          });
          this.report=report
       },
-      // 保存
-      save(){
-
-      },
       // 返回
       back(){
          this.$router.go(-1)
@@ -170,7 +203,7 @@ export default {
       opacity: 0.42;
       margin-left: 32px;
       font-weight: normal;
-      width: 590px;
+      max-width: 590px;
       @include text_;
    }
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-09 16:45:32
- * @LastEditTime: 2021-08-10 19:37:37
+ * @LastEditTime: 2021-08-14 10:37:38
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\piecewise.vue
@@ -11,7 +11,7 @@
 </template>
 <script>
 import echarts from '@/utils/echarts';
-import {findMaterialGroupQuadrant} from "@/api/categoryManagementAssistant/marketData/materialGroup";
+// import {findMaterialGroupQuadrant} from "@/api/categoryManagementAssistant/marketData/materialGroup";
 
 export default {
    data () {
@@ -20,91 +20,73 @@ export default {
         categoryCode:""
       }
    },
-   created () {
-      this.categoryCode=this.$store.state.rfq.categoryCode
-     this.findMaterialGroupQuadrant() 
+   props: {
+      materialGroupPosition:{
+         type:Object,
+         default:()=>{}
+      }
    },
-   mounted () {
-      this.init() 
+   watch: {
+      materialGroupPosition(newVal){
+         console.log(newVal)
+         this.init()
+      }
    },
    methods: {
-      findMaterialGroupQuadrant(){
-         let data={
-            materialGroupCode:this.categoryCode,
-            userId:this.$store.state.permission.userInfo.id
-         }
-         findMaterialGroupQuadrant(data).then(res=>{
-            if (res.data) {
-               this.mateData=res.data
-            }
-         })
-      },
+      // findMaterialGroupQuadrant(){
+      //    let data={
+      //       materialGroupCode:this.categoryCode,
+      //       userId:this.$store.state.permission.userInfo.id
+      //    }
+      //    findMaterialGroupQuadrant(data).then(res=>{
+      //       if (res.data) {
+      //          this.mateData=res.data
+      //       }
+      //    })
+      // },
       // 初始化
       init(){
          const myChart = echarts().init(this.$refs.chart);
+         let data=window._.clone(this.materialGroupPosition)
          
          // 散点数据
-      let marksData = [
-         {
-            name: '点1',
-            value: [10, 20],
-         },
-         {
-            name: '点2',
-            value: [15, 22],
-         },
-         {
-            name: '点3',
-            value: [34, 51],
-         },
-         {
-            name: '点4',
-            value: [25, 64],
-         },
-         {
-            name: '点5',
-            value: [42, 20],
-         },
-         {
-            name: '点6',
-            value: [32, 15],
-         },
-         {
-            name: '点7',
-            value: [68, 34],
-         },
-         {
-            name: '点8',
-            value: [25, 65],
-         },
-         {
-            name: '点9',
-            value: [45, 56],
-         },
-         {
-            name: '点10',
-            value: [35, 47],
+         let marksData=[]
+         marksData=data.otherPointList.map(item=>{
+            return {
+               value:[parseInt(item.riskScore),parseInt(item.moneyScore)],
+               materialGroupName:item.materialGroupName,
+               materialGroupCode:item.materialGroupCode,
+            }
+         }) 
+         // 当前点
+         let currentCategory={
+            value:[parseInt(data.currentPoint.riskScore),parseInt(data.currentPoint.moneyScore)],
+            materialGroupName:data.currentPoint.materialGroupName,
+            materialGroupCode:data.currentPoint.materialGroupCode,
+            symbolSize:20
          }
-      ]
-      // 中心线
-      let centerLine = [
-         {
-            name: 'y', xAxis: 40
-         },
-         {
-            name: 'x', yAxis: 40
-         }
-      ]
-      // 中心点
-      let centerMark = [
-         {
-            value: '中心点', coord: [40, 40]
-         }    
-      ]
+         marksData.push(currentCategory)
+         let centerMarkX=parseInt(data.centerPoint.riskScore)
+         let centerMarkY=parseInt(data.centerPoint.moneyScore)
+         // 中心线
+         let centerLine = [
+            {
+               name: 'y', xAxis: centerMarkX
+            },
+            {
+               name: 'x', yAxis: centerMarkY
+            }
+         ]
+         // 中心点
+         let centerMark = [
+            {
+               value: '', coord: [centerMarkX,centerMarkY] 
+            }    
+         ]
 
-      let option = {
-         tooltip: {
-            axisPointer: {
+         let option = {
+            tooltip: {
+               axisPointer: {
                   show: true,
                   type: 'cross',
                   lineStyle: {
@@ -114,167 +96,196 @@ export default {
                   label: {
                      backgroundColor: '#555'
                   }
-            }
-         },
-         grid: {
-            left: 50,
-            right: 50,
-            bottom: '4%',
-            top: '6%',
-            containLabel: true
-         },
-         xAxis: {
-            scale: true,
-            axisLine: {
+               },
+               formatter:params => {
+                     // console.log(params)
+                     const {
+                        data,
+                        value
+                     } = params;
+
+                     return [
+                        `材料组名称:${data.materialGroupName}`,
+                        `材料组编号: ${data.materialGroupCode}`,
+                        `材料组分数:${value[0]},${value[1]} `
+                           ].join("</br>")
+               }
+            },
+            grid: {
+               left: 50,
+               right: 50,
+               bottom: '4%',
+               top: '6%',
+               containLabel: true
+            },
+            xAxis: {
+               scale: true,
+               splitNumber : 1,
+               name:"供应复杂度",
+               nameLocation:'center',
+               nameTextStyle:{
+                  color:"#333333",
+                  fontSize:16
+               },
+               axisLine: {
+                     lineStyle: {
+                        color: '#ACB8CF',
+                     }
+               },
+               // axisLabel: {
+               //       color: '#666'
+               // },
+               splitLine: {
+                     lineStyle: {
+                        color: '#eee'
+                     }
+               }
+            },
+            yAxis: {
+               scale: true,
+               splitNumber : 1,
+               name:"业务影响度",
+               nameLocation:'center',
+               nameTextStyle:{
+                  color:"#333333",
+                  fontSize:16
+               },
+               axisLine: {
                   lineStyle: {
-                     color: '#ddd'
+                     color: '#ACB8CF',
                   }
-            },
-            axisLabel: {
-                  color: '#666'
-            },
-            splitLine: {
+               },
+               // axisLabel: {
+               //       color: '#666'
+               // },
+               splitLine: {
                   lineStyle: {
                      color: '#eee'
                   }
-            }
-         },
-         yAxis: {
-            scale: true,
-            axisLine: {
-                  lineStyle: {
-                     color: '#ddd'
-                  }
+               }
             },
-            axisLabel: {
-                  color: '#666'
-            },
-            splitLine: {
-                  lineStyle: {
-                     color: '#eee'
-                  }
-            }
-         },
-         series: [{
-            type: 'scatter',
-            data: marksData,
-            label: {
-                  show: true,
-                  position: 'bottom',
-                  formatter: '{b}'
-            },
-            itemStyle: {
-                  shadowBlur: 2,
-                  shadowColor: 'rgba(120, 36, 50, 0.5)',
-                  shadowOffsetY: 1,
-                  color: function (e) {
-                     let randomColor = 'rgba(' + Math.floor(Math.random() * 240) + ',' + Math.floor(Math.random() * 240) + ',' + Math.floor(Math.random() * 240) + ',' + '.8' + ')'
-                     return randomColor.substring()
-                  }
-            },
-            // 各象限区域
-            markArea: {
-                  silent: true,
-                  data: [
-                     // 第一象限
-                     [{
-                        name: '战略型',
-                        xAxis: 40, // x 轴开始位置
-                        yAxis: 70, // y 轴结束位置(直接取最大值)
-                        itemStyle: {
-                              color: 'rgba(56, 180, 139, .1)'
-                        },
-                        label: {
-                              position: 'inside',
-                              color: 'rgba(0, 0, 0, .1)',
-                              fontSize: 22,
-                              // backgroundColor:{
-                              //    image:require("@/assets/images/partRfq/internalDemandAnalysis01.png"),
-                              //    width:402
-                              // }
-                        }
-                     }, {
-                        yAxis: 40 // y轴开始位置
-                     }],
-                     // 第二象限
-                     [{
-                        name: '竞争型',
-                        yAxis: 70, // y 轴结束位置(直接取最大值)
-                        itemStyle: {
-                              color: 'rgba(68, 97, 123, .1)'
-                        },
-                        label: {
-                              position: 'inside',
-                              color: 'rgba(0, 0, 0, .1)',
-                              fontSize: 22
-                        }
-                     }, {
-                        xAxis: 40, // x 轴结束位置
-                        yAxis: 40 // y轴开始位置
-                     }],
-                     // 第三象限
-                     [{
-                        name: '普通型',
-                        yAxis: 40, // y 轴结束位置
-                        itemStyle: {
-                              color: 'rgba(191, 120, 58, .1)'
-                        },
-                        label: {
-                              position: 'inside',
-                              color: 'rgba(0, 0, 0, .1)',
-                              fontSize: 22
-                        }
-                     }, {
-                        xAxis: 40, // x 轴结束位置
-                        yAxis: 10 // y轴开始位置
-                     }],
-                     // 第四象限
-                     [{
-                        name: '限制型',
-                        xAxis: 40, // x 轴开始位置
-                        yAxis: 40, // y 轴结束位置
-                        itemStyle: {
-                              color: 'rgba(116, 83, 153, .1)'
-                        },
-                        label: {
-                              position: 'inside',
-                              color: 'rgba(0, 0, 0, .1)',
-                              fontSize: 22
-                        }
-                     }, {
-                        yAxis: 10 // y轴开始位置
-                     }]
-                  ]
-            },
-            // 中心点交集象限轴
-            markLine: {
-                  silent: true, // 是否不响应鼠标事件
-                  precision: 2, // 精度
-                  lineStyle: {
-                     type: 'solid',
-                     color: '#00aca6'
-                  },
-                  label: {
-                     color: '#00aca6',
-                     position: 'end',
+            series: [{
+               type: 'scatter',
+               data: marksData,
+               label: {
+                     show: true,
+                     position: 'bottom',
                      formatter: '{b}'
-                  },
-                  data: centerLine
-            },
-            // 中心点
-            markPoint: {
-                  symbol: 'roundRect',
-                  symbolSize: 15,
-                  itemStyle: {
-                     color: 'rgba(234, 85, 6, .8)'
-                  },
-                  label: {
-                     position: 'top'
-                  },
-                  data: centerMark
-            }
-         }]
-      }
+               },
+               itemStyle: {
+                  color:"rgba(65, 165, 245, 0.5)"
+                     // shadowBlur: 2,
+                     // shadowColor: 'rgba(120, 36, 50, 0.5)',
+                     // shadowOffsetY: 1,
+                     // color: function (e) {
+                     //    let randomColor = 'rgba(' + Math.floor(Math.random() * 240) + ',' + Math.floor(Math.random() * 240) + ',' + Math.floor(Math.random() * 240) + ',' + '.8' + ')'
+                     //    return randomColor.substring()
+                     // }
+                     
+               },
+               // 各象限区域
+               markArea: {
+                     silent: true,
+                     data: [
+                        // 第一象限
+                        [{
+                           name: '战略型',
+                           xAxis: centerMarkX, // x 轴开始位置
+                           yAxis: centerMarkY, // y 轴结束位置(直接取最大值)
+                           itemStyle: {
+                                 color: '#FFFFFF'
+                           },
+                           label: {
+                                 position: 'inside',
+                                 color: '#A5BCE8',
+                                 fontSize: 22,
+                                 // backgroundColor:{
+                                 //    image:require("@/assets/images/partRfq/internalDemandAnalysis01.png"),
+                                 //    width:402
+                                 // }
+                           }
+                        }, {
+                           yAxis: 1000 // y轴开始位置
+                        }],
+                        // 第二象限
+                        [{
+                           name: '竞争型',
+                           yAxis: 1000, // y 轴结束位置(直接取最大值)
+                           itemStyle: {
+                                 color: '#FFFFFF'
+                           },
+                           label: {
+                                 position: 'inside',
+                                 color: '#A5BCE8',
+                                 fontSize: 22
+                           }
+                        }, {
+                           xAxis: centerMarkX, // x 轴结束位置
+                           yAxis: centerMarkY // y轴开始位置
+                        }],
+                        // 第三象限
+                        [{
+                           name: '普通型',
+                           yAxis: centerMarkY, // y 轴结束位置
+                           itemStyle: {
+                                 color: '#FFFFFF'
+                           },
+                           label: {
+                                 position: 'inside',
+                                 color: '#A5BCE8',
+                                 fontSize: 22
+                           }
+                        }, {
+                           xAxis: centerMarkX, // x 轴结束位置
+                           yAxis: 0 // y轴开始位置
+                        }],
+                        // 第四象限
+                        [{
+                           name: '限制型',
+                           xAxis: centerMarkX, // x 轴开始位置
+                           yAxis: centerMarkY, // y 轴结束位置
+                           itemStyle: {
+                                 color: '#FFFFFF'
+                           },
+                           label: {
+                                 position: 'inside',
+                                 color: '#A5BCE8',
+                                 fontSize: 22
+                           }
+                        }, {
+                           yAxis: 0 // y轴开始位置
+                        }]
+                     ]
+               },
+               // 中心点交集象限轴
+               markLine: {
+                     silent: true, // 是否不响应鼠标事件
+                     precision: 2, // 精度
+                     lineStyle: {
+                        type: 'dashed',
+                        color: '#ACB8CF'
+                     },
+                     label: {
+                        color: '#00aca6',
+                        position: 'end',
+                     },
+                     data: centerLine
+               },
+               // 中心点
+               // markPoint: {
+               //       show:false,
+               //       symbol: 'circle',
+               //       symbolSize: 0,
+               //       itemStyle: {
+               //          color: 'rgba(234, 85, 6, .8)'
+               //       },
+               //       label: {
+               //          position: 'top'
+               //       },
+               //       data: centerMark
+               // }
+            }]
+         }
          myChart.setOption(option);
       }
    }

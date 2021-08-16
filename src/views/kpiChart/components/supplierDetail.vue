@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-07 19:35:17
+ * @LastEditTime: 2021-08-14 19:27:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\components\supplierDetail.vue
@@ -15,7 +15,7 @@
                   <el-form>
                     <el-row>
                       <el-col>
-                        <iSelect v-model="reportData">
+                        <iSelect v-model="reportData" @change="selectChange"> 
                           <el-option v-for="(item, index) in reportList" :key="index" :value="item.id" :label="item.title">{{item.title}}</el-option>
                         </iSelect>
                       </el-col>
@@ -33,7 +33,7 @@
                   style="width: 100%">
                   <el-table-column
                     prop="categoryName"
-                    label="上海汇众汽车制造有限公司"
+                    :label="$route.query.supplierName"
                     align="center"
                     header-align="center"
                     width="300">
@@ -56,19 +56,22 @@
                     prop="explanation"
                     align="center"
                     header-align="center"
-                    label="解释">
+                    label="解释"
+                    show-overflow-tooltip>
                   </el-table-column>
                   <el-table-column
                     prop="target"
                     align="center"
                     header-align="center"
-                    label="目标">
+                    label="目标"
+                    show-overflow-tooltip>
                   </el-table-column>
                   <el-table-column
                     align="center"
                     header-align="center"                  
                     prop="actionPlan"
-                    label="行动计划">
+                    label="行动计划"
+                    show-overflow-tooltip>
                   </el-table-column>
                 </el-table>
                </div>
@@ -96,6 +99,12 @@ export default {
         columns: [],
         reasonData: []
       }
+    },
+    props: {
+      supplierType: {
+        type: String,
+        default: null
+      },
     },
     created () {
       this.fetchReason()
@@ -140,10 +149,11 @@ export default {
         const params = {
           id: this.reportData,
           supplierId: this.supplierId,
-          supplierType: 'pp'
+          supplierType: this.supplierType
         }
         getReportDetail(params).then(res => {
           if(res && res.code == 200) {
+            this.columns = []
             for(const key in res.data.titleMap) {
               this.columns.push({
                 name: key,
@@ -175,9 +185,10 @@ export default {
           })
         })
       },
-     
-
-    }
+      selectChange(val) {
+        this.fetchReportDetail()
+      }
+    },
 }
 </script>
 
@@ -199,6 +210,7 @@ export default {
             transform: rotate(180deg);
             color: #A0BFFC;
             margin-left: 10px;
+            font-size: 16px;
         }
         .closed{
             font-size: 24px;
@@ -209,5 +221,9 @@ export default {
 
     .tableBox {
       margin-top: 20px;
+      .rotate{
+        color: #E30D0D;
+        font-size: 16px;
+      }
     }
 </style>

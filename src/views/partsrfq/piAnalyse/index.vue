@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-08-07 16:20:00
+ * @LastEditTime: 2021-08-14 17:26:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -47,7 +47,7 @@
       class="margin-top20"
     >
       <template v-slot:header-control>
-        <div v-if="!edit">
+        <div v-if="!editMode">
           <iButton @click="clickRawMaterial">{{
             language("YUANCAILIAOJIAGEZONGLAN", "原材料价格总览")
           }}</iButton>
@@ -98,42 +98,42 @@
           <template slot-scope="scope">
             <div class="openPage">
               <el-row :gutter="20">
-                <el-col :span="20" style="textalgin: center">
-                  <el-tooltip
-                    v-if="!edit"
-                    :content="scope.row.name"
-                    placement="top"
-                    effect="light"
-                  >
-                    <p
-                      v-if="!edit"
-                      class="ellipsis"
-                      @click="clickName(scope.row)"
-                    >
-                      {{ scope.row.name }}
-                    </p>
-                  </el-tooltip>
-                  <iInput
-                    v-else
-                    class="nameInput"
-                    v-model="scope.row.name"
-                  ></iInput>
+                <el-col :span="20">
+                  <span v-if="!editMode"
+                        style="textAlgin: center">
+                    <el-tooltip :content="scope.row.analysisSchemeName"
+                                placement="top"
+                                effect="light">
+                      <span class="ellipsis"
+                        v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
+                        @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
+                    </el-tooltip>
+                    <el-tooltip :content="scope.row.reportName"
+                                placement="top"
+                                effect="light">
+                      <span class="ellipsis"
+                        v-if="scope.row.type == $t('TPZS.REPORT_TYPE')"
+                        @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
+                    </el-tooltip>
+                  </span>
+                  <span v-else>
+                    <iInput class="nameInput"
+                            v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
+                            v-model="scope.row.analysisSchemeName"></iInput>
+                    <iInput class="nameInput"
+                            v-if="scope.row.type == $t('TPZS.REPORT_TYPE')"
+                            v-model="scope.row.reportName"></iInput>
+                  </span>
                 </el-col>
                 <el-col :span="4">
-                  <span v-if="scope.row.fileType == $t('TPZS.SCHEME_TYPE')">
+                  <span v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')">
                     <span class="number">
-                      <p>{{ scope.row.reportList.length }}</p>
+                      {{scope.row.reportCount}}
                     </span>
-                    <icon
-                      class="numberIcon"
-                      style="
-                         {
-                          font-size: 24px;
-                        }
-                      "
-                      symbol
-                      name="iconwenjianshuliangbeijing"
-                    ></icon>
+                    <icon class="numberIcon"
+                          style="{font-size:24px}"
+                          symbol
+                          name="iconwenjianshuliangbeijing"></icon>
                   </span>
                 </el-col>
               </el-row>
@@ -142,14 +142,14 @@
         </el-table-column>
         <el-table-column
           :label="$t('LK_CAILIAOZU')"
-          prop="materialGroup"
+          prop="materialGroupName"
           align="center"
           header-align="center"
         >
         </el-table-column>
         <el-table-column
           :label="$t('RFQ')"
-          prop="rfqNo"
+          prop="rfqName"
           width="100"
           align="center"
           header-align="center"
@@ -162,41 +162,30 @@
           width="80"
         >
           <template slot-scope="scope">
-            <div v-if="!edit">
-              {{ defaultStatus(scope.row, scope.row.isDefault) }}
-            </div>
-            <div
-              v-else-if="
-                edit &&
-                scope.row.fileType == $t('TPZS.SCHEME_TYPE') &&
-                scope.row.isDefault != '空' &&
-                scope.row.isDefault
-              "
-            >
-              <iSelect
-                :value="defaultStatus(scope.row, scope.row.isDefault)"
-                @change="changeDefault($event, scope.row)"
-              >
-                <el-option
-                  :value="item.value"
-                  :label="item.label"
-                  v-for="(item, index) in defaultData"
-                  :key="index"
-                ></el-option>
-              </iSelect>
-            </div>
+          <div v-if="!editMode">
+            {{ defaultStatus(scope.row, scope.row.isDefault) }}
+          </div>
+          <div v-else-if="editMode && scope.row.type == $t('TPZS.SCHEME_TYPE') && scope.row.isDefault != '空' && scope.row.isDefault">
+            <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)"
+                     @change="changeDefault($event, scope.row)">
+              <el-option :value="item.value"
+                         :label="item.label"
+                         v-for="(item, index) in defaultData"
+                         :key="index"></el-option>
+            </iSelect>
+          </div>
           </template>
         </el-table-column>
         <el-table-column
           :label="$t('TPZS.WJLX')"
-          prop="fileType"
+          prop="type"
           align="center"
           header-align="center"
         >
         </el-table-column>
         <el-table-column
           :label="$t('TPZS.CJR')"
-          prop="createNameZh"
+          prop="createByName"
           align="center"
           header-align="center"
         >
@@ -219,25 +208,17 @@
         </el-table-column>
         <el-table-column width="50" align="center" header-align="center">
           <template slot-scope="scope">
-            <div @click="handleStick(scope.row)" class="stickIcon">
-              <icon
-                v-if="
-                  scope.row.fileType === $t('TPZS.SCHEME_TYPE') &&
-                  scope.row.isTop
-                "
-                name="iconliebiaoyizhiding"
-                class="iconliebiaoyizhiding"
-                symbol
-              />
-              <icon
-                v-else-if="
-                  scope.row.fileType === $t('TPZS.SCHEME_TYPE') &&
-                  !scope.row.isTop
-                "
-                name="iconliebiaoweizhiding"
-                class="iconliebiaoweizhiding"
-                symbol
-              />
+            <div class="stickIcon" v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
+               @click="handleStick(scope.row)">
+              <icon v-if="scope.row.isTop && scope.row.isTop == 1"
+                    style="{font-size:24px}"
+                    symbol
+                    name="iconliebiaoyizhiding"></icon>
+              <icon v-else
+                    style="{font-size:24px}"
+                    symbol
+                    name="iconliebiaoweizhiding"
+                    @click="handleStick(scope.row)"></icon>
             </div>
           </template>
         </el-table-column>
@@ -280,15 +261,10 @@ import {
   icon,
   iMessage,
 } from "rise";
-import {
-  getBobAnalysisDataList,
-  fetchStaick,
-  fetchEdit,
-  fetchDel,
-} from "@/api/partsrfq/bob/analysisList";
 import { pageMixins } from "@/utils/pageMixins";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
 import addScheme from './components/add'
+import { getAnalysisList, fetchAnalysisStick, fetchAnalysisSave, fetchAnalysisDel} from '@/api/partsrfq/piAnalysis/index'
 export default {
   mixins: [pageMixins],
   components: {
@@ -305,7 +281,7 @@ export default {
   data() {
     return {
       form: {}, //检索条件
-      edit: false, //编辑模式
+      editMode: false, //编辑模式
       tableListData: [], //表格数据
       backUpData: [], //备份数据
       selection: [],  //选中数据
@@ -335,18 +311,15 @@ export default {
     this.getTableList();
   },
   computed: {
-    defaultStatus() {
+    defaultStatus () {
       return function (val, status) {
         let flag = status === "是" || status === "否" ? status : null;
-        if (
-          this.currentDefaultObj &&
-          this.currentDefaultObj.isDefault == "是"
-        ) {
-          if (val.id == this.currentDefaultObj.id) flag = "是";
+        if (this.currentDefaultObj && this.currentDefaultObj.isDefault == "是") {
+          if (val.number == this.currentDefaultObj.number) flag = "是";
           else if (!flag) flag = null;
           else flag = "否";
         }
-        return val.fileType == this.$t("TPZS.SCHEME_TYPE") ? flag : null;
+        return val.type == this.$t('TPZS.SCHEME_TYPE') ? flag : null;
       };
     },
   },
@@ -377,250 +350,7 @@ export default {
     },
     //初始化测试数据
     initData() {
-      this.tableListData = [
-        {
-          id: 243,
-          name: "667_5K0959659-气囊传感器-FRONTSENSOR",
-          materialGroup: "安全电器件",
-          materialGroupCode: "030",
-          rfqNo: "667",
-          isTop: true,
-          isDefault: "否",
-          path: null,
-          createBy: 1,
-          createUserName: "admin",
-          createNameZh: "超级管理员",
-          createNameEn: "admin",
-          createNameDe: null,
-          createDate: "2021-07-28",
-          updateDate: "2021-08-05",
-          topDate: "2021-08-04",
-          fileType: "方案",
-          reportList: [
-            {
-              id: 26,
-              name: "test11627549500570.pdf",
-              materialGroup: null,
-              materialGroupCode: null,
-              rfqNo: null,
-              isTop: null,
-              isDefault: null,
-              path: "https://dev-rise.obs.cloud.csvw.com:443/rise%2Ftest11627549500570.pdf",
-              createBy: 1,
-              createUserName: null,
-              createNameZh: "超级管理员",
-              createNameEn: "admin",
-              createNameDe: null,
-              createDate: "2021-07-29",
-              updateDate: "2021-08-05",
-              topDate: null,
-              fileType: "报告",
-              reportList: null,
-            },
-            {
-              id: 27,
-              name: "test1627549751859.pdf",
-              materialGroup: null,
-              materialGroupCode: null,
-              rfqNo: null,
-              isTop: null,
-              isDefault: null,
-              path: "https://dev-rise.obs.cloud.csvw.com:443/rise%2Ftest1627549751859.pdf",
-              createBy: 1,
-              createUserName: null,
-              createNameZh: "超级管理员",
-              createNameEn: "admin",
-              createNameDe: null,
-              createDate: "2021-07-29",
-              updateDate: "2021-08-05",
-              topDate: null,
-              fileType: "报告",
-              reportList: null,
-            },
-          ],
-        },
-        {
-          id: 232,
-          name: "667_5K0959659-气囊传感器-FRONTSENSOR",
-          materialGroup: "安全电器件",
-          materialGroupCode: "030",
-          rfqNo: "667",
-          isTop: true,
-          isDefault: "否",
-          path: null,
-          createBy: 1,
-          createUserName: "admin",
-          createNameZh: "超级管理员",
-          createNameEn: "admin",
-          createNameDe: null,
-          createDate: "2021-07-28",
-          updateDate: "2021-08-05",
-          topDate: "2021-08-04",
-          fileType: "方案",
-          reportList: [],
-        },
-        {
-          id: 286,
-          name: "667_5K0959659-气囊传感器-FRONTSENSOR",
-          materialGroup: "安全电器件",
-          materialGroupCode: "030",
-          rfqNo: "667",
-          isTop: false,
-          isDefault: "否",
-          path: null,
-          createBy: 34,
-          createUserName: "WS2TEST002",
-          createNameZh: "孙途观",
-          createNameEn: "Sun Tuguan",
-          createNameDe: null,
-          createDate: "2021-08-04",
-          updateDate: "2021-08-05",
-          topDate: null,
-          fileType: "方案",
-          reportList: [],
-        },
-        {
-          id: 282,
-          name: "755_6Q5945097BD-车窗密封条24421-FENSTERSCHACHTABD11",
-          materialGroup: "橡胶件 ab Mgr. 600",
-          materialGroupCode: "117",
-          rfqNo: "755",
-          isTop: false,
-          isDefault: "否",
-          path: null,
-          createBy: 42,
-          createUserName: "WS1ETEST01",
-          createNameZh: "刘发",
-          createNameEn: null,
-          createNameDe: null,
-          createDate: "2021-08-04",
-          updateDate: "2021-08-04",
-          topDate: null,
-          fileType: "方案",
-          reportList: [],
-        },
-        {
-          id: 281,
-          name: "754_6Q5945097BD-车窗密封条24421-FENSTERSCHACHTABD11",
-          materialGroup: "橡胶件 ab Mgr. 600",
-          materialGroupCode: "117",
-          rfqNo: "754",
-          isTop: false,
-          isDefault: "否",
-          path: null,
-          createBy: 1,
-          createUserName: "admin",
-          createNameZh: "超级管理员",
-          createNameEn: "admin",
-          createNameDe: null,
-          createDate: "2021-08-04",
-          updateDate: "2021-08-04",
-          topDate: null,
-          fileType: "方案",
-          reportList: [],
-        },
-        {
-          id: 277,
-          name: "754_6Q5945097BD-车窗密封条24421-FENSTERSCHACHTABD11",
-          materialGroup: "橡胶件 ab Mgr. 600",
-          materialGroupCode: "117",
-          rfqNo: "754",
-          isTop: false,
-          isDefault: "是",
-          path: null,
-          createBy: 42,
-          createUserName: "WS1ETEST01",
-          createNameZh: "刘发",
-          createNameEn: null,
-          createNameDe: null,
-          createDate: "2021-08-04",
-          updateDate: "2021-08-04",
-          topDate: null,
-          fileType: "方案",
-          reportList: [],
-        },
-        {
-          id: 273,
-          name: "505_ENT959655-气囊控制器-AIRBAG ECU",
-          materialGroup: "安全电器件",
-          materialGroupCode: "030",
-          rfqNo: "505",
-          isTop: false,
-          isDefault: "否",
-          path: null,
-          createBy: 1,
-          createUserName: "admin",
-          createNameZh: "超级管理员",
-          createNameEn: "admin",
-          createNameDe: null,
-          createDate: "2021-08-03",
-          updateDate: "2021-08-03",
-          topDate: null,
-          fileType: "方案",
-          reportList: [],
-        },
-        {
-          id: 269,
-          name: "yuleTest",
-          materialGroup: "安全电器件",
-          materialGroupCode: "030",
-          rfqNo: null,
-          isTop: false,
-          isDefault: null,
-          path: null,
-          createBy: 11,
-          createUserName: "admin",
-          createNameZh: "超级管理员",
-          createNameEn: "admin",
-          createNameDe: null,
-          createDate: "2021-08-02",
-          updateDate: "2021-08-02",
-          topDate: null,
-          fileType: "方案",
-          reportList: [],
-        },
-        {
-          id: 262,
-          name: "667_5K0959659-气囊传感器-FRONTSENSOR",
-          materialGroup: "安全电器件",
-          materialGroupCode: "030",
-          rfqNo: "667",
-          isTop: false,
-          isDefault: "否",
-          path: null,
-          createBy: 1,
-          createUserName: "admin",
-          createNameZh: "超级管理员",
-          createNameEn: "admin",
-          createNameDe: null,
-          createDate: "2021-07-30",
-          updateDate: "2021-08-05",
-          topDate: null,
-          fileType: "方案",
-          reportList: [],
-        },
-        {
-          id: 261,
-          name: "667_5K0959659-气囊传感器-FRONTSENSOR",
-          materialGroup: "安全电器件",
-          materialGroupCode: "030",
-          rfqNo: "667",
-          isTop: false,
-          isDefault: "否",
-          path: null,
-          createBy: 1,
-          createUserName: "admin",
-          createNameZh: "超级管理员",
-          createNameEn: "admin",
-          createNameDe: null,
-          createDate: "2021-07-29",
-          updateDate: "2021-08-05",
-          topDate: null,
-          fileType: "方案",
-          reportList: [],
-        },
-      ];
-      this.tableListData = JSON.parse(this.tableListData);
+      
     },
     //重置查询事件
     handleSearchReset() {
@@ -645,20 +375,12 @@ export default {
         const params = {
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
-          createName: this.form.owner ? this.form.owner : null,
-          materialGroup: this.form.group ? this.form.group : null,
-          spareParts: this.form.num ? this.form.num : null,
+          createByName: this.form.owner || null,
+          materialGroupName: this.form.group || null,
+          partsNo: this.form.num || null,
+          rfqNo:  this.form.rfq || null
         };
-        const status = this.$store.state.rfq.entryStatus;
-        const rfq = this.form.rfq ? this.form.rfq : null;
-        if (status == 0) {
-          //外部进入
-          params["rfqName"] = rfq;
-        } else if (status == 1) {
-          //内部进入
-          params["rfqNo"] = rfq;
-        }
-        getBobAnalysisDataList(params).then((res) => {
+        getAnalysisList(params).then((res) => {
           if (res && res.code == 200) {
             this.page.totalCount = res.total;
             this.tableListData = res.data;
@@ -708,15 +430,17 @@ export default {
     // 点击编辑按钮
     clickEdit() {
       this.backUpData = window._.cloneDeep(this.tableListData);
-      this.edit = !this.edit;
+      this.editMode = !this.editMode;
     },
     //取消保存編輯狀態下的數據
     cancelEdit() {
       this.backUpData.map((item, index) => {
-        this.$set(this.tableListData[index], "name", item.name);
-        this.$set(this.tableListData[index], "isDefault", item.isDefault);
-      });
-      this.edit = !this.edit;
+        if (item.type == this.$t('TPZS.SCHEME_TYPE'))
+          this.$set(this.tableListData[index], 'analysisSchemeName', item.analysisSchemeName)
+        else
+          this.$set(this.tableListData[index], 'reportName', item.reportName)
+      })
+      this.editMode = !this.editMode;
     },
     // 点击新建按钮
     clickAdd() {
@@ -732,7 +456,15 @@ export default {
         iMessage.error(this.$t("TPZS.QXZXYCZDSJ"));
         return;
       }
-      fetchDel(this.selection).then((res) => {
+      const params = {
+        ids: [],
+        reportIds: []
+      }
+      this.selection.map(item => {
+        if(item.type == this.$t('TPZS.SCHEME_TYPE')) params.ids.push(item.id)
+        else params.reportIds.push(item.id)
+      })
+      fetchAnalysisDel(params).then((res) => {
         if (res.code == 200) {
           iMessage.success(res.desZh);
         } else iMessage.error(res.desZh);
@@ -748,9 +480,9 @@ export default {
     },
     //保存编辑
     saveEdit() {
-      this.edit = false;
+      this.editMode = false;
       const params = this.tableListData;
-      fetchEdit(params).then((res) => {
+      fetchAnalysisSave(params).then((res) => {
         if (res) {
           if (res.code == 200) iMessage.success(res.desZh);
           else iMessage.error(res.desZh);
@@ -821,9 +553,7 @@ export default {
     },
     // 点击置顶按钮
     handleStick(val) {
-      const params = window._.cloneDeep(val);
-      params.isTop = !val.isTop;
-      fetchStaick(params).then((res) => {
+      fetchAnalysisStick(val).then((res) => {
         if (res) {
           if (res.code == 200) {
             val.isTop = !val.isTop;
@@ -833,22 +563,24 @@ export default {
         }
       });
     },
-    // 点击名称,触发跳转事件
-    clickName(val) {
-      if (val.fileType == this.$t("TPZS.SCHEME_TYPE")) {
-        this.$router.push({
-          path: "/sourcing/partsrfq/bobNew",
-          query: {
-            chemeId: val.id,
-            rfqId: val.rfqNo || "",
-          },
-        });
-      } else if (val.fileType == this.$t("TPZS.REPORT_TYPE")) {
-        this.reportTitle = val.name;
-        this.reportVisible = true;
-        this.reportKey = Math.random();
-        if (val.path) this.reportUrl = val.path;
-      }
+    //点击方案名称，跳转总单价页面
+    clickScheme (row) {
+      const schemeUrl = '/sourcing/partsrfq/vpAnalyseDetail'
+      this.$router.push({
+        path: schemeUrl,
+        query: {
+          type: 'edit',
+          schemeId: row.id,
+          round: this.round
+        }
+      })
+    },
+    //点击报告名称，打开报告预览弹窗
+    clickReport (row) {
+      this.reportTitle = row.reportName
+      this.reportKey = Math.random()
+      if (row.downloadUrl) this.reportUrl = row.downloadUrl
+      this.reportVisible = true
     },
     //点击关闭报告预览弹窗
     handleCloseReport() {
@@ -856,7 +588,7 @@ export default {
     },
     //给方案数据设置斑马纹样式名
     rowStyle({ row }) {
-      return row.fileType == this.$t("TPZS.SCHEME_TYPE") && row.number % 2 == 0
+      return row.type == this.$t("TPZS.SCHEME_TYPE") && row.number % 2 == 0
         ? "scheme"
         : "report";
     },

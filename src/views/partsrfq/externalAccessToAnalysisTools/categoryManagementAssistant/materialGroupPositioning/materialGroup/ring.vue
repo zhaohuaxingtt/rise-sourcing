@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-06 16:59:08
- * @LastEditTime: 2021-08-10 19:24:28
+ * @LastEditTime: 2021-08-13 16:03:22
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\ring.vue
@@ -30,7 +30,6 @@ export default {
    methods: {
       // 初始化
       init(){
-         console.log(this.ringData)
          let seriesData=this.ringData.map(item=>{
             return {value:item.num,name:item.classAiTypeName}
          })

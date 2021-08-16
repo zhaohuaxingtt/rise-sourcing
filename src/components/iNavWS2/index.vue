@@ -73,7 +73,7 @@ import {
 import { Popover } from "element-ui";
 import logButton from "pages/ws2/budgetManagement/components/logButton";
 import {budgetManagement3rd} from "pages/ws2/budgetManagement/components/data";
-import {iNavMvp} from "@/components";
+import {iNavMvp} from 'rise';
 import store from '@/store';
 import {cloneDeep} from 'lodash'
 

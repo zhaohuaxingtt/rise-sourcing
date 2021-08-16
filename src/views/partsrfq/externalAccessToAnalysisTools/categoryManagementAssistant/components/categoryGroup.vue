@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-12 11:19:06
+ * @LastEditTime: 2021-08-13 15:28:34
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\categoryGroup.vue
@@ -58,7 +58,8 @@ export default {
     },
     // 确认
     confirm() {
-      this.$store.dispatch('setCategoryCode', '051')
+      this.$store.dispatch('setCategoryCode', this.categoryCode)
+      this.$store.dispatch('setCategoryName', this.categoryName)
       this.value = false
     },
     // 重新定位材料组

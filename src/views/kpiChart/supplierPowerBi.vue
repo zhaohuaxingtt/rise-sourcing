@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click.stop="onBlur()">
       <iPage>
           <publicHeaderMenu></publicHeaderMenu>
           <iCard>
@@ -8,25 +8,19 @@
                 <el-form-item
                   class="SearchOption"
                 >
-                <!-- <iInput 
-                suffix-icon="el-icon-search"
-                v-model="supplierName"
-                ></iInput> -->
-                <el-select
-                    v-model="supplierId"
-                    filterable
-                    remote
-                    reserve-keyword
-                    placeholder="请输入关键词"
-                    :remote-method="remoteMethod"
-                    :loading="loading">
-                    <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
+                <div class="select-name-sap">
+                <iInput 
+                v-model="supplierName" 
+                @input="remoteMethod" 
+                placeholder="查询供应商名称,SAP号" 
+                suffix-icon="el-icon-search"/>
+                <div class="options" v-show="isShowOptions">
+                    <p 
+                    @click="handleSelectOption(x)" 
+                    v-for="(x,index) in options" 
+                    :key="index">{{x.label}}</p>
+                </div>
+                </div>
                 </el-form-item>
                </el-form>
                <div>
@@ -79,7 +73,8 @@ export default {
             supplierId:null,
             name:null,
             values:[],
-            options:[]
+            options:[],
+            isShowOptions:false
         }
     },
     mounted(){
@@ -170,42 +165,46 @@ export default {
                     };
                 },
             handleOk(){
-                //  getPowerBiSupplier({keyWord:this.supplierName}).then(res=>{
-                //     this.supplierId=res.data[0].supplierId
-                    
-                // })
-                this.supplierId=this.supplierId.toString()
-                this.renderBi()
+                if(this.supplierId){
+                    this.supplierId=this.supplierId.toString()
+                    this.renderBi()
+                }
             },
             handleRest(){
                 this.supplierName=""
                 this.supplierId=null
-                this.renderBi()
             },
-            remoteMethod(query) {
-                if (query !== '') {
-                this.loading = true;
-                setTimeout(() => {
-                    getPowerBiSupplier({keyWord:query}).then(res=>{
-                        console.log(res)
-                        if(res.data.length>0){
-                            this.options = res.data.map(z=>({
-                                label:z.nameZh,
-                                value:z.supplierId
-                            }))
-                            this.loading = false;
-                            this.options = this.options.filter(item => {
-                            return item.label.toLowerCase()
-                                .indexOf(query.toLowerCase()) > -1;
-                            })
-                        }
-                    })
-                }, 200);
-                } else {
-                    this.options = [];
-                }
+            remoteMethod(){
+                this.searchOptions()
+            },
+            handleSelectOption(x){
+                this.supplierId=x.value
+                this.supplierName=x.label
+                this.isShowOptions=false
+            },
+            onBlur(){
+               this.isShowOptions=false 
+            },
+            onFocus(){
+                this.isShowOptions=true
+            },
+            searchOptions(){
+                getPowerBiSupplier({keyWord:this.supplierName}).then(res=>{
+                    if(res.data.length>0){
+                        this.isShowOptions=true
+                        this.options = res.data.map(z=>({
+                            label:z.nameZh,
+                            value:z.supplierId,
+                            sapCode:z.sapCode
+                        }))
+                        this.loading = false;
+                        this.options = this.options.filter(item => {
+                        return item.label.toLowerCase()
+                        })
+                    }
+                })
             }
-
+            
     }
 }
 </script>
@@ -222,4 +221,46 @@ export default {
         height: calc(100vh - 294px);
         overflow-y: auto;
     }
+    .select-name-sap{
+        position: relative;
+        input{
+            width: 282px;
+            height: 35px;
+            background: #FFFFFF;
+            box-shadow: 0px 0px 3px rgba(0, 38, 98, 0.15);
+            border-radius: 4px;
+            border: 1px solid #ACB8CF;
+            font-size: 14px;
+            padding-left: 10px;
+        }
+        .options{
+            left: 0;
+            top: 40px;
+            position: absolute;
+            min-width: 238px;
+            height: 300px;
+            background-color: #fff;
+            border-radius: 4px;
+            z-index: 999;
+            border: 1px solid #E0E6ED;
+            padding: 10px 0;
+            border-radius: 5px;
+            overflow-x: auto;
+            overflow-y: auto;
+            p{
+                width: 100%;
+                height: 34px;
+                padding: 0 30px;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+            }
+            p:hover{
+                background-color: #F5F7FA;
+                cursor: pointer;
+            }
+        }
+        
+    }
+
 </style>

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {iCard, iFormGroup, iFormItem, iInput, iDatePicker} from '@/components'
+import {iCard, iFormGroup, iFormItem, iInput, iDatePicker} from 'rise'
 
 export default {
   components: {
