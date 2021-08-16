@@ -67,7 +67,7 @@
             <!-- 科室 -->
             <!-- 实际分配科室有就显示实际科室，否则就显示预设科室  表示科室是预设的 -->
             <template #linieDeptName="scoped">
-                <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptName || scoped.row.refferenceSmt}}</span>
+                <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptNum || scoped.row.refferenceSmtNum}}</span>
             </template>
             <!-- linie -->
             <template #buyerName="scoped">
