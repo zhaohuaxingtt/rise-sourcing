@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-08-14 13:21:50
+ * @LastEditTime: 2021-08-16 10:47:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -222,8 +222,8 @@ export default {
     getTableList() {
       if (this.$route.query.id) {
         this.confirmTableLoading = true
-        this.parmarsHasRfq['size'] = this.pageSize
-        this.parmarsHasRfq['current'] = this.currPage
+        this.parmarsHasRfq['size'] = this.pageSize || 10
+        this.parmarsHasRfq['current'] = this.currPage || 1
         this.parmarsHasRfq['rfqId'] = this.$route.query.id
         getTabelData(this.parmarsHasRfq).then(res => {
           this.$store.dispatch('setPendingPartsList', res.data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}))

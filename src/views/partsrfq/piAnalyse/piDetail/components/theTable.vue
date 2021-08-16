@@ -2,8 +2,12 @@
   <div>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
-        <span class="margin-right30">{{ language('PI.DANGQIANJIAGE', '当前价格') }}：</span>
-        <span>{{ language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响') }}：</span>
+        <span class="margin-right30">{{
+            language('PI.DANGQIANJIAGE', '当前价格')
+          }}：{{ nowPriceRatio }}</span>
+        <span>{{
+            language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响')
+          }}：{{ totalPriceRatio }}</span>
       </span>
       <div class="floatright">
         <template v-if="isPreview">
@@ -65,6 +69,7 @@ import {tableTitle, tableEditTitle, FIRSTSELECT, SECONDSELECT, THIRDSELECT, clas
 import {numberProcessor, toFixedNumber, toThousands, deleteThousands} from '@/utils';
 import theTableTemplate from './theTableTemplate';
 import _ from 'lodash';
+import {CURRENTTIME, AVERAGE} from './data';
 
 export default {
   components: {
@@ -90,6 +95,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    currentTab: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     pageType() {
@@ -111,6 +120,10 @@ export default {
       SECONDSELECT,
       THIRDSELECT,
       classType,
+      nowPriceRatio: '',
+      totalPriceRatio: '',
+      CURRENTTIME,
+      AVERAGE,
     };
   },
   created() {
@@ -251,43 +264,16 @@ export default {
       try {
         this.tableListData = [];
         this.hideTableData = [];
-        //this.copyDataInfo = _.cloneDeep(this.dataInfo);
-        this.copyDataInfo = [
-          {
-            'classType': '材料',
-            'costProportion': 2,
-            'priceChange': 1,
-            'partType': 1,
-            'w': 212312323,
-            'e': 3,
-            isShow: true,
-            dataType: '1',
-            id: 1,
-          },
-          {
-            'classType': '人力',
-            'costProportion': 2,
-            'priceChange': 1,
-            'work': 2,
-            'w': 2,
-            'e': 3,
-            isShow: true,
-            dataType: '2',
-            id: 2,
-          },
-          {
-            'classType': '汇率',
-            'costProportion': 2,
-            'priceChange': 1,
-            'productionCountry': 3,
-            'w': 2,
-            'e': 3,
-            isShow: true,
-            dataType: '3',
-            id: 3,
-          },
-        ];
-        this.copyDataInfo.map((item, index) => {
+        const copyDataInfo = _.cloneDeep(this.dataInfo);
+        let copyTableList = [];
+        if (this.currentTab === this.CURRENTTIME) {
+          this.nowPriceRatio = copyDataInfo.currentPartCostTotalVO.nowPriceRatio;
+          this.totalPriceRatio = copyDataInfo.currentPartCostTotalVO.totalPriceRatio;
+          copyTableList = copyDataInfo && copyDataInfo.currentPartCostTotalVO && copyDataInfo.currentPartCostTotalVO.piPartCostVOS;
+        } else if (this.currentTab === this.AVERAGE) {
+          return [];
+        }
+        copyTableList.map((item, index) => {
           if (!item.id) {
             item.time = new Date().getTime() + index;
           }
@@ -297,8 +283,13 @@ export default {
             this.hideTableData.push(item);
           }
         });
-        this.copyDataInfo.map(item => {
-          this.selectOptionsObject[item.id] = {};
+        copyTableList.map(item => {
+          if(item.id) {
+            this.selectOptionsObject[item.id] = {};
+          } else {
+            const time = new Date().getTime();
+            this.selectOptionsObject[time] = {};
+          }
         });
       } catch {
         this.tableListData = [];

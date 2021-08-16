@@ -90,10 +90,6 @@
                   )
             }}</div>
         </template>
-        <template #moldInvestmentAmount="scope">
-          <div v-if="Number(isShowMoldInvestmentAmount) === 1">{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
-          <div v-else>-</div>
-        </template>
         <template #moldInvestmentStatus="scope">
           <div v-if="scope.row.moldInvestmentStatus !== '6'">{{
               scope.row.moldInvestmentStatus === '1' ?  '已定点待确认' :
