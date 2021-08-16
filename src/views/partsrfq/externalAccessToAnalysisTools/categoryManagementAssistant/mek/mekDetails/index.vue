@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-16 11:15:58
+ * @LastEditTime: 2021-08-16 11:22:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -267,7 +267,7 @@ import datasetBar from "../components/datasetBar";
 import datasetBar1 from "../components/datasetBar1";
 import tableList from "../components/tableList";
 import modalDialog from "../components/modalDialog";
-import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, } from '@/api/categoryManagementAssistant/mek'
+import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, saveMekTable, deleteMekTable, getSchemeInfo } from '@/api/categoryManagementAssistant/mek'
 import { getDictByCode } from '@/api/dictionary'
 export default {
   name: "mekDetails",
@@ -351,6 +351,11 @@ export default {
       this.rfqId = this.$store.state.rfq.rfqId
       this.entryStatus = this.$store.state.rfq.entryStatus
       this.chemeId = this.$route.query.chemeId
+      getSchemeInfo({
+        schemeId: this.chemeId
+      }).then(res => {
+        
+      })
       //材料组
       category({}).then((res) => {
         this.categoryList = res.data
