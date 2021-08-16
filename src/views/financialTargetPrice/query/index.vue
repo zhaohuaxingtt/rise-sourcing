@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 11:16:13
+ * @LastEditTime: 2021-08-16 14:58:04
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -150,7 +150,7 @@ export default {
             setOptions: res.data?.map(item => {
               return {
                 code: item.id,
-                name: item.shortName
+                name: item.nameZh
               }
             })
           }

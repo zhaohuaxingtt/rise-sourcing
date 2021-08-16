@@ -16,11 +16,23 @@
             :label="language(item.labelKey,item.label)"
             v-permission.dynamic="item.permissionKey"
             >
-                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :clearable="item.clearable" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
+                <iSelect 
+                    v-if="item.type === 'select'" 
+                    class="multipleSelect" 
+                    collapse-tags 
+                    :disabled="item.disabled" 
+                    :multiple="item.multiple" 
+                    :clearable="item.clearable" 
+                    :filterable="item.filterable"  
+                    v-model="searchParams[item.props]" 
+                    :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  
+                    @change="handleMultipleChange($event, item.props,item.multiple)"
+                    :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+                >
                     <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
-                        v-for="item in selectOptions[item.selectOption] || []"
-                        :key="item.code"
+                        v-for="(item,index) in selectOptions[item.selectOption] || []"
+                        :key="index"
                         :label="item.desc"
                         :value="item.code">
                     </el-option>
@@ -199,6 +211,12 @@ export default {
                 cartype:[],
                 linieDeptNumList:[],
             },
+            selectOptionsCopy:{
+                cartypeCode:[],
+                buyerName:[],
+                cartype:[],
+                linieDeptNumList:[],
+            },
             selectItems:[],
             loading:false,
             tableListData:[ ],
@@ -312,6 +330,7 @@ export default {
                         item.desc = item.name;
                     })
                     this.selectOptions.cartypeCode = data;
+                    this.selectOptionsCopy.cartypeCode = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -324,6 +343,7 @@ export default {
                         item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
                     })
                     this.selectOptions.brand = data;
+                    this.selectOptionsCopy.brand = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -338,6 +358,7 @@ export default {
                         item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
                     })
                     this.selectOptions.buyerName = data;
+                    this.selectOptionsCopy.buyerName = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -351,6 +372,7 @@ export default {
                         item.code = item.id;
                     })
                     this.selectOptions.linieDeptNumList = data;
+                    this.selectOptionsCopy.linieDeptNumList = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -365,6 +387,7 @@ export default {
                 item.code = item.name;
                 })
                 this.selectOptions.cartype = data.filter((item)=>item.name) || [];
+                this.selectOptionsCopy.cartype = data.filter((item)=>item.name) || [];
             }else{
                 iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }
@@ -557,6 +580,34 @@ export default {
             
             
         },
+
+
+      // 模糊搜索处理
+      dataFilter(val,props){
+        // 去除前后空格
+        const trimVal = val.trim();
+        const { selectOptionsCopy={}} = this;
+        if(trimVal){
+            // 人名要特殊处理 --- 可搜索英文去除大小写
+          if(props == 'buyerName'){
+            const list = selectOptionsCopy[props].filter((item) => {
+              if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                return true
+              }
+            })
+            this.selectOptions[props] = list;
+          }else{
+            const list = selectOptionsCopy[props].filter((item) => {
+              if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
+                  return true;
+              } 
+            })
+             this.selectOptions[props] = list;
+          }
+        }else{
+          this.selectOptions[props] = selectOptionsCopy[props];
+        }
+      }
     }
 }
 </script>
