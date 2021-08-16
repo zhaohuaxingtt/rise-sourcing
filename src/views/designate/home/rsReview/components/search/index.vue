@@ -48,7 +48,7 @@
           <el-option
             :value="items.code"
             :label="items.value"
-            v-for="(items, index) in ($attrs && $attrs.carTypeList) || []"
+            v-for="(items, index) in ( selectOptions && selectOptions.CAR_TYPE_PRO) || []"
             :key="index"
             style="max-width: 190px"
           ></el-option>
@@ -266,6 +266,7 @@ import {
   priceConsistentStatus 
 } from '@/views/designate/home/components/options'
 import { getDictByCode } from '@/api/dictionary'
+import {selectDictByKeyss} from '@/api/dictionary'
 import {
   iSearch,
   iInput,
@@ -323,6 +324,13 @@ export default {
       this.getDictionary('dept', 'score_dept')
       // 获取单一原因数据字典
       this.getDictionary('reason', 'SINGLE_SOURCING_REASON')
+      // 获取车型项目
+      selectDictByKeyss([
+        "CAR_TYPE_PRO",
+      ]).then((res) => {
+        const optionList = (res.data && res.data['CAR_TYPE_PRO']) || []
+        this.$set(this.selectOptions, 'CAR_TYPE_PRO', optionList)
+      });
     },
     // 获取数据字典
     getDictionary(optionName, optionType, key = {value: 'code', label: 'name'}) {

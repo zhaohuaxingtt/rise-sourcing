@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-14 10:18:55
+ * @LastEditTime: 2021-08-16 14:22:22
  * @Description: 产品组排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
 
 <template>
-  <iPage class="projectGroup">
+  <iPage class="projectGroup" v-permission="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING">
     <!---------------------------------------------------------------------->
     <!----------                  车型项目部分                   ---------------->
     <!---------------------------------------------------------------------->

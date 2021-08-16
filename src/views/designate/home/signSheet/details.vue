@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-07-22 17:55:44
+ * @LastEditTime: 2021-08-16 13:55:20
  * @LastEditors: Please set LastEditors
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
@@ -197,7 +197,7 @@ export default {
     this.form.signId = id
     this.form.signCode = signCode
     this.form.status = status
-    this.form.description = decodeURIComponent(desc || '')
+    this.form.description = decodeURIComponent(desc === 'undefined' ? '' : desc)
     this.getSignSheetDetails()
     this.getChooseData()
   },

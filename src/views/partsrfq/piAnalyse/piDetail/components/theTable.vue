@@ -4,10 +4,10 @@
       <span class="font18 font-weight">
         <span class="margin-right30">{{
             language('PI.DANGQIANJIAGE', '当前价格')
-          }}：{{ dataInfo.piPartCostTotalVO.nowPriceRatio }}</span>
+          }}：{{ nowPriceRatio }}</span>
         <span>{{
             language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响')
-          }}：{{ dataInfo.piPartCostTotalVO.totalPriceRatio }}</span>
+          }}：{{ totalPriceRatio }}</span>
       </span>
       <div class="floatright">
         <template v-if="isPreview">
@@ -69,6 +69,7 @@ import {tableTitle, tableEditTitle, FIRSTSELECT, SECONDSELECT, THIRDSELECT, clas
 import {numberProcessor, toFixedNumber, toThousands, deleteThousands} from '@/utils';
 import theTableTemplate from './theTableTemplate';
 import _ from 'lodash';
+import {CURRENTTIME, AVERAGE} from './data';
 
 export default {
   components: {
@@ -94,6 +95,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    currentTab: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     pageType() {
@@ -115,6 +120,10 @@ export default {
       SECONDSELECT,
       THIRDSELECT,
       classType,
+      nowPriceRatio: '',
+      totalPriceRatio: '',
+      CURRENTTIME,
+      AVERAGE,
     };
   },
   created() {
@@ -256,8 +265,14 @@ export default {
         this.tableListData = [];
         this.hideTableData = [];
         const copyDataInfo = _.cloneDeep(this.dataInfo);
-        const copyTableList = copyDataInfo && copyDataInfo.piPartCostTotalVO &&
-            copyDataInfo.piPartCostTotalVO.piPartCostVOS;
+        let copyTableList = [];
+        if (this.currentTab === this.CURRENTTIME) {
+          this.nowPriceRatio = copyDataInfo.currentPartCostTotalVO.nowPriceRatio;
+          this.totalPriceRatio = copyDataInfo.currentPartCostTotalVO.totalPriceRatio;
+          copyTableList = copyDataInfo && copyDataInfo.currentPartCostTotalVO && copyDataInfo.currentPartCostTotalVO.piPartCostVOS;
+        } else if (this.currentTab === this.AVERAGE) {
+          return [];
+        }
         copyTableList.map((item, index) => {
           if (!item.id) {
             item.time = new Date().getTime() + index;
@@ -269,7 +284,12 @@ export default {
           }
         });
         copyTableList.map(item => {
-          this.selectOptionsObject[item.id] = {};
+          if(item.id) {
+            this.selectOptionsObject[item.id] = {};
+          } else {
+            const time = new Date().getTime();
+            this.selectOptionsObject[time] = {};
+          }
         });
       } catch {
         this.tableListData = [];
