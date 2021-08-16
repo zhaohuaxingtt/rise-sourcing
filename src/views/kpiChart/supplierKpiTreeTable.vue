@@ -207,6 +207,7 @@ export default {
             templateId: templateId,
             ...this.ipagnation}).then(res=>{
                 if(res.code=="200"){
+                    if(res.data.length<1) return this.$message({type:'warning',message:'当前无KPI数据，请上传打分数'})
                     this.allData=JSON.parse(JSON.stringify(res.data))
                     this.allData.forEach(x=>{
                         x.checked=false
