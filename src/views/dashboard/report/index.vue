@@ -17,7 +17,7 @@
           <search @search="search" ref="search" />
         </el-col>
         <el-col :span="8">
-          <iCard class="report-countrfq">
+          <iCard class="report-countrfq" :style="`height:${sarchWindowHeight}px`">
             <ul>
               <li><div><strong>{{rfqInProgress}}</strong><p class="margin-top10">{{language('JINXINGZHONGDERFQ','进行中的RFQ')}}</p></div></li>
               <li><div><strong class="note">{{rfqDelay}}</strong><p class="margin-top10">{{language('YANWUDERFQ','延误的RFQ')}}</p></div></li>
@@ -71,13 +71,17 @@ export default {
       size: 10,
       total: 0,
       rfqInProgress: 0,
-      rfqDelay: 0
+      rfqDelay: 0,
+      // 搜索框高度
+      sarchWindowHeight: 131
     }
   },
   mounted() {
     this.data = []
     this.init()
     this.scrolLithener()
+    const searchDom = document.querySelector('.dashboard-card')
+    this.sarchWindowHeight = searchDom.offsetHeight || 131
   },
   methods: {
     handleSizeChange(size){
@@ -152,7 +156,7 @@ export default {
 <style lang="scss" scoped>
 .report-countrfq {
   background: #fff;
-  height: 131PX;
+  height: 100%;
   overflow: hidden;
   position: relative;
   &:after {
