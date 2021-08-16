@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-08-14 17:26:59
+ * @LastEditTime: 2021-08-16 14:24:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -259,8 +259,9 @@ import {
   iPagination,
   iSelect,
   icon,
-  iMessage,
+  iMessage
 } from "rise";
+// import { iMessage } from '@/components';
 import { pageMixins } from "@/utils/pageMixins";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
 import addScheme from './components/add'
@@ -275,6 +276,7 @@ export default {
     iPagination,
     iSelect,
     icon,
+    iMessage,
     reportPreview,
     addScheme
   },
@@ -481,13 +483,15 @@ export default {
     //保存编辑
     saveEdit() {
       this.editMode = false;
-      const params = this.tableListData;
+      const params = {
+        piEditDTOList: this.tableListData
+      }
       fetchAnalysisSave(params).then((res) => {
-        if (res) {
-          if (res.code == 200) iMessage.success(res.desZh);
-          else iMessage.error(res.desZh);
+        if (res && res.code == 200) {
+          iMessage.success(res.desZh);
           this.getTableList();
-        }
+        } else iMessage.error(res.desZh);
+        
       });
     },
     // 选中项发生改变
