@@ -27,6 +27,19 @@ export const tableTitle = [
     { props: "withdrawReason", name: "退回原因", key: "LK_TUIHUIYUANYIN", tooltip: true },
 ]
 
+export const commodityTableTitle = [
+  { props: "partNum", name: "零件号 ", key: "LK_LINGJIANHAO", tooltip: true },
+  { props: "partNameZh", name: "零件名称", key: "LK_LINGJIANMINGCHENG", tooltip: true },
+  { props: "changeType", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
+  { props: "prNumber", name: "PR号", key: "LK_AEKOPRHAO", tooltip: true },
+  { props: "brand", name: "品牌", key: "LK_AEKOPINGPAI", tooltip: true },
+  { props: "cartypeZh", name: "涉及⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true,width:130 },
+  { props: "linieDeptName", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
+  { props: "buyerName", name: "Linie", key: "LK_AEKO_LINIE", tooltip: true },
+  { props: "operate", name: "操作", key: "LK_CAOZUO" },
+  { props: "aekoPartStatusDesc", name: "表态状态", key: "LK_AEK0_BIAOTAIZHUANGTAI", tooltip: true },
+]
+
 export const linieSearchList = [
   {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey: "AEKO_AEKODETAIL_PARTLIST_INPUT_PARTNUM"},
   {props:'partNameZh',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG',permissionKey: "AEKO_AEKODETAIL_PARTLIST_INPUT_PARTNAMEZH"},

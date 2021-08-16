@@ -328,7 +328,7 @@ export function cancelKm(params) {
 // 撤回发送KM
 export function negoScoreReport(reqId) {
     return quotation({
-        url: `/nego-score-report/${reqId}`,
+        url: `/nego-assistant/nego-score-report/${reqId}`,
         method: 'GET'
     })
 }
@@ -349,7 +349,7 @@ export function updateBatchSupplierProducePlace(params) {
 // 撤回发送KM
 export function hasShowDelegate(params) {
     return quotation({
-        url: `/hasShowDelegate/${params.rfqId}/${params.round}/${params.supplierId}`,
+        url: `/quotation/hasShowDelegate/${params.rfqId}/${params.round}/${params.supplierId}`,
         method: 'GET'
     })
 }

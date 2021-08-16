@@ -1,7 +1,7 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-11 10:00:01
+ * @LastEditTime: 2021-08-14 19:39:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
@@ -30,7 +30,7 @@
 </div>
 </template>
 <script>
-import {iButton,iDialog} from 'rise'
+import {iButton,iDialog,iMessage} from 'rise'
 import soket from '@/utils/socket'
 import {autonomi} from '@/api/partsprocure/editordetail'
 import store from "@/store";
@@ -42,37 +42,42 @@ export default{
   }},
   data(){
     return {
-      soket:'',
+      soket: null,
       messageDataList:[],
       messageShow:false
     }
   },
   methods:{
     handleCreateNomiApplication(){
-      this.messageShow = true
       this.messageDataList = []
       this.closeWebSoket()
-      this.showWebsoket()
+      this.autonomiFn()
     },
     closeWebSoket(){
       if(this.soket) this.soket.close()
     },
     showWebsoket(){
-       this.soket = new soket({baseUrl:'ws://10.160.140.210:18025',url:`/sourcing/websocket/${store.state.permission.userInfo.userName}`}).then(res=>{
+       this.soket = new soket({baseUrl:process.env.VUE_APP_WS1_SOKETEURL,url:`/sourcing/websocket/${store.state.permission.userInfo.id}`}).then(res=>{
          this.messageDataList = res.data
        }).catch(err=>{
          console.warn(err)
        })
     },
     autonomiFn(){
-      autonomi(this.translatePropsForServers(this.datalist)).then(res=>{}).catch(err=>{
-
+      autonomi(this.translatePropsForServers(this.datalist)).then(res=>{
+        if(res.result){
+           this.messageShow = true
+           this.showWebsoket()
+        }else{
+           iMessage.warn(res.desZh)
+        }
+      }).catch(err=>{
+        iMessage.error(err.desZh)
       })
     },
     translatePropsForServers(parmars){
       if(!Array.isArray(parmars)) return console.error('parmars datalist must be a array')
-
-      return {autoKeyDTOS:parmars}
+      return {autoKeyDTOS:parmars.map(r=>{return {partNum:r.partNum,oldFsnrGsnrNum:r.oldFsnrGsnrNum,oldPurchasingProjectId:r.oldPurchasingProjectId,purchasingProjectId:r.id,userId:store.state.permission.userInfo.id}})}
     }
   }
 }

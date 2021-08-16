@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-13 17:27:07
- * @LastEditTime: 2021-08-14 09:55:12
+ * @LastEditTime: 2021-08-14 17:23:07
  * @LastEditors: Please set LastEditors
  * @Description: PI分析库相关接口
  * @FilePath: \front-web\src\api\partsrfq\piAnalysis\index.js
@@ -42,6 +42,15 @@ export function fetchAnalysisDel(params) {
   return request({
     url: '/piAnalysisScheme/updatePi',
     method: 'PUT',
+    data: params,
+  });
+}
+
+// 原材料价格总览列表页
+export function getRawMateriaList(params) {
+  return request({
+    url: '/piAnalysisScheme/selectByPage',
+    method: 'POST',
     data: params,
   });
 }
