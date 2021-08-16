@@ -168,6 +168,7 @@ export default {
     // 点击零件
     handlePartItemClick({item, index}) {
       this.partItemCurrent = index;
+      this.currentTabData.partsId = item.partsId
     },
     // 点击标签
     handleTabsClick(val) {
@@ -187,6 +188,7 @@ export default {
         };
         const res = await getAnalysisSchemeDetails(req);
         this.dataInfo = res.data;
+        this.currentTabData.partsId = res.data.partsId
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
