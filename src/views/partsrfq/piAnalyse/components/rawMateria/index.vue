@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-08-14 18:27:08
+ * @LastEditTime: 2021-08-16 15:45:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -20,19 +20,19 @@
             <el-form-item :label="language('YUANCAILIAOLEIBIEBIANHAO', '原材料/类别/编号')">
               <iInput
                 :placeholder="language('QINGSHURU', '请输入')"
-                v-model="searchForm.materia"
+                v-model="searchForm.keyWords"
               ></iInput>
             </el-form-item>
             <!--地区-->
             <el-form-item :label="language('DIQU', '地区')">
               <iInput
                 :placeholder="language('QINGSHURU', '请输入')"
-                v-model="searchForm.area"
+                v-model="searchForm.areaName"
               ></iInput>
             </el-form-item>
             <!--RFQ号-->
             <el-form-item :label="language('QISHINIANYUE', '起始年月')">
-              <iDatePicker v-moudel='searchForm.date'  type="daterange"></iDatePicker>
+              <iDatePicker v-moudel='searchForm.date' valueFormat="yyyy-MM"  type="daterange"></iDatePicker>
             </el-form-item>
           </el-row>
         </el-form>
@@ -64,12 +64,12 @@
         :total="page.totalCount"
       />
     </div>
-    <detail :key="detailParam.key" v-model="detailParam.visible"/>
+    <detail :key="detailParam.key" :materiaName="name" v-model="detailParam.visible"/>
   </div>
 </template>
 
 <script>
-import { iButton, iInput, iSearch, iDatePicker, iPagination } from 'rise'
+import { iButton, iInput, iSearch, iDatePicker, iPagination, iMessage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import detail from './components/detail'
@@ -83,6 +83,7 @@ export default {
     iSearch,
     iDatePicker,
     iPagination,
+    iMessage,
     tableList,
     detail
   },
@@ -95,12 +96,13 @@ export default {
       detailParam: {
         visible: false,
         key: 0
-      }
+      },
+      name: null,
     }
   },
   created() {
-    this.initTestData()
-    // this.getTableList()
+    // this.initTestData()
+    this.getTableList()
   },
   methods: {
     // 初始化测试数据
@@ -117,10 +119,22 @@ export default {
     // 获取表格数据
     getTableList() {
       const params = {
-        
+        begTime: this.searchForm.date ? this.searchForm.date[0] : null,
+        endTime: this.searchForm.date ? this.searchForm.date[1] : null,
+        keyWords: this.searchForm.keyWords || null,
+        areaName: this.searchForm.areaName || null,
+        pageNo: this.page.currPage,
+        pageSize: this.page.pageSize,
       }
-      getRawMateriaList().then(res => {
-        
+      getRawMateriaList(params).then(res => {
+        if(res && res.code == 200) {
+          this.page.totalCount = res.total
+          this.tableListData = res.data
+          this.loading = false
+          this.tableListData.map(item => {
+            item['associatedPart'] = '查看'
+          })
+        } else iMessage.error(res.desZh)
       })
     },
     // 得到价格变动比率样式名
@@ -137,6 +151,7 @@ export default {
     clickPreview(val) {
       this.$set(this.detailParam, 'key', Math.random())
       this.$set(this.detailParam, 'visible', true)
+      this.name = val.name
     },
     // 点击确认
     handleSearch() {
