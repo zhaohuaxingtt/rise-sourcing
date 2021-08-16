@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-16 11:22:54
+ * @LastEditTime: 2021-08-16 14:08:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -342,7 +342,7 @@ export default {
   async created () {
     await this.init()
     // this.getHistogram()
-    // this.getMekTable()
+    this.getMekTable()
   },
   mounted () {
   },
@@ -354,7 +354,7 @@ export default {
       getSchemeInfo({
         schemeId: this.chemeId
       }).then(res => {
-        
+
       })
       //材料组
       category({}).then((res) => {
@@ -445,10 +445,10 @@ export default {
       getMekTable({
         "comparedType": "mekConfig",
         "motorIds": [
-          50001002, 50001003, 50001004
+          50048103, 2000000166, 50001004
         ],
-        "schemeId": 2,
-        "targetMotorId": 50001001
+        "schemeId": 3,
+        "targetMotorId": 50044101
       }).then(res => {
         this.gridData = res
         console.log(this.gridData)
@@ -457,27 +457,31 @@ export default {
     getHistogram () {
       getHistogram({
         "comparedType": "mekConfig",
-        "info": [
-          {
-            "motorId": 50044101,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 50048103,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 2000000166,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 2000000084,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 2000000164,
-            "priceType": "latestPrice"
-          }
+        "info": [{
+          "motorId": 50044101,
+          "priceType": "latestPrice",
+          "isTargetMotor": true
+        },
+        {
+          "motorId": 50048103,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        },
+        {
+          "motorId": 2000000166,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        },
+        {
+          "motorId": 2000000084,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        },
+        {
+          "motorId": 2000000164,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        }
         ],
         "categoryId": 600029,
         "schemeId": 3
