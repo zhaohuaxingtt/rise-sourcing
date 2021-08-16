@@ -24,7 +24,7 @@ export const coverTableTitleCost=[
 
 
 export const coverTableTitleDepart=[
-    { props: "linieDeptName", name: "科室", key: "LK_KESHI", tooltip: true },
+    { props: "linieDeptNum", name: "科室", key: "LK_KESHI", tooltip: true },
     { props: "linieName", name: "Linie", key: "LK_LINIE", tooltip: true },
     { props: "materialIncrease", name: "增加材料成本(RMB/⻋)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true },
     { props: "investmentIncrease", name: "增加投资费⽤(不含税)", key: "LK_AEKO_ZENGJIATOUZIFEIYONG", tooltip: true },

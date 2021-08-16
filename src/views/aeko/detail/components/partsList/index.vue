@@ -67,7 +67,7 @@
             <!-- 科室 -->
             <!-- 实际分配科室有就显示实际科室，否则就显示预设科室  表示科室是预设的 -->
             <template #linieDeptName="scoped">
-                <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptName || scoped.row.refferenceSmt}}</span>
+                <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptNum || scoped.row.refferenceSmtNum}}</span>
             </template>
             <!-- linie -->
             <template #buyerName="scoped">
@@ -349,8 +349,11 @@ export default {
                 }
             })
 
-            // LINIE
-            searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+            // LINIE  只能看见本科是的LINIE
+            const {deptDTO={}} = this.userInfo;
+            console.log(deptDTO,'deptDTOdeptDTO');
+            const deptId = deptDTO.id;
+            searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
                 const {code,data} = res;
                 if(code ==200 ){
                     data.map((item)=>{

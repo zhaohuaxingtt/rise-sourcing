@@ -206,8 +206,9 @@ export default {
                 const singleData = {
                     aekoPartId:singleAssign[0].aekoPartId,
                     requirementAekoId,
-                    linieDeptNum:refferenceSmtNum,
-                    linieDeptName:depArr.length ? depArr[0].nameZh : 'id',
+                    linieDeptId:refferenceSmtNum,
+                    linieDeptName:depArr.length ? depArr[0].nameZh : '',
+                    linieDeptNum:depArr.length ? depArr[0].deptNum : '',
                 }
                 data.push(singleData);
             }else{ // 批量分派
@@ -228,6 +229,7 @@ export default {
                             aekoPartId:item.aekoPartId,
                             linieDeptName:item.refferenceSmt,
                             linieDeptNum:item.refferenceSmtNum,
+                            linieDeptId:item.refferenceSmtId,
                         })
                     })
                 }else{ // 手动分派
@@ -242,7 +244,8 @@ export default {
                             requirementAekoId,
                             aekoPartId:item.aekoPartId,
                             linieDeptName:depArr.length ? depArr[0].nameZh : '',
-                            linieDeptNum:refferenceSmtNum,
+                            linieDeptNum:depArr.length ? depArr[0].deptNum : '',
+                            linieDeptId:refferenceSmtNum,
                         })
                     })
                 }
@@ -252,6 +255,7 @@ export default {
                 this.isLoading = false;
                 const { code } = res;
                 if(code == 200){
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                     this.clearDialog();
                     this.$emit('getList');
                 }else{
@@ -321,6 +325,7 @@ export default {
                 this.isLoading = false;
                 const { code } = res;
                 if(code == 200){
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                     this.clearDialog();
                     this.$emit('getList');
                 }else{
