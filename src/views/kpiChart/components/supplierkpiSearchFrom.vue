@@ -35,6 +35,7 @@
                                         v-model="baseAreaVmodel"
                                         :props="props"
                                         @change="handleBaseChangeArea($event)"
+                                        ref="myCascader"
                                         :clearable="true"
                                         collapse-tags ></el-cascader>
                                     </div>
@@ -108,15 +109,6 @@
                                 </el-col>
                            
                                 <el-col :span="6">
-                                    <!-- <div style="margin-bottom:10px;margin-top:10px;">地区</div> -->
-                                    <!-- <div class="TOCaseArea">
-                                        <el-cascader 
-                                        v-model="baseSupplierVmodel"
-                                        :props="props"
-                                        @change="handleSupplierChangeArea($event)"
-                                        :clearable="true"
-                                        collapse-tags ></el-cascader>
-                                    </div> -->
                                     <iFormItem
                                     label="地区"
                                     class="SearchOption"
@@ -126,12 +118,12 @@
                                     v-model="formData.spiSupplierDTO.cityCodeList" 
                                     :placeholder="$t('partsignLanguage.QingXuanZe')"
                                     @change="handlechangeSeccoStock('supplier',$event)"
-                                     multiple
+                                    multiple
                                     collapse-tags>
                                         <el-option 
                                         v-for="(x,index) in supplierSeccoStockOption"
-                                         :value='x.existShareId' 
-                                         :label='x.existShareName'
+                                         :value='x.value' 
+                                         :label='x.label'
                                          :key="index"></el-option>
                                     </iSelect>
                                     </iFormItem>
@@ -373,6 +365,45 @@ export default {
                 ]
             },
             supplierSeccoStockOption:[],
+            props: {
+                lazy: true,
+                multiple: true,
+                lazyLoad (node, resolve) {
+                    const { level } = node;
+                    setTimeout(() => {
+                        if(level==0){
+                        getCityInfo({parentCityId:"-1"}).then(res=>{
+                        const country = res.data.map(val=>({
+                                    value: val.cityId,
+                                    label: val.cityNameCn,
+                                    leaf: level >= 2
+                                }))
+                                resolve(country)
+                            })
+                        }
+                        if(level==1){
+                            getCityInfo({parentCityId:node.value}).then(res=>{
+                                const province = res.data.map(val=>({
+                                    value: val.cityId,
+                                    label: val.cityNameCn,
+                                    leaf: level >= 2
+                                }))
+                                resolve(province)
+                            })
+                        }
+                        if(level==2){
+                            getCityInfo({parentCityId:node.value}).then(res=>{
+                                const city = res.data.map(val=>({
+                                    value: val.cityId,
+                                    label: val.cityNameCn,
+                                    leaf: level >= 2
+                                }))
+                                resolve(city)
+                            })
+                        }
+                    })
+                }
+            }
         }
     },
     created(){
@@ -402,25 +433,37 @@ export default {
         },
          //基数地区
         handleBaseChangeArea(e,b){
-            
-            if(e.length<6){
-                this.baseAreaVmodel=e
-            }else{
-                this.baseAreaVmodel=e.slice(0,5)
-                this.$message({
-                message: '最多选择5条数据',
-                type: 'warning'
-                });
-            }
-            if(this.baseAreaVmodel.length>0){
-                this.formData.spiBaseDTO.cityCodeList=[]
-                this.baseAreaVmodel.forEach(x=>{
-                    this.formData.spiBaseDTO.cityCodeList.push(x[2])
-                })
-                this.formData.spiBaseDTO.cityCodeList=this.formData.spiBaseDTO.cityCodeList.map(String)
-            }
-            //this.baseSupplierVmodel=JSON.parse(JSON.stringify(this.baseAreaVmodel))
-            console.log(this.baseAreaVmodel,this.formData.spiBaseDTO.cityCodeList)
+            // 地区数量校验
+            // if(e.length<6){
+            //     this.baseAreaVmodel=e
+            // }else{
+            //     this.baseAreaVmodel=e.slice(0,5)
+            //     this.$message({
+            //     message: '最多选择5条数据',
+            //     type: 'warning'
+            //     });
+            // }
+            // if(this.baseAreaVmodel.length>0){
+            //     this.formData.spiBaseDTO.cityCodeList=[]
+            //     this.baseAreaVmodel.forEach(x=>{
+            //         this.formData.spiBaseDTO.cityCodeList.push(x[2])
+            //     })
+            //     this.formData.spiBaseDTO.cityCodeList=this.formData.spiBaseDTO.cityCodeList.map(String)
+            // }
+            this.formData.spiBaseDTO.cityCodeList=[]
+            this.supplierSeccoStockOption=[]
+           if(this.$refs["myCascader"].getCheckedNodes().length>0){
+               this.$refs["myCascader"].getCheckedNodes().forEach(x=>{
+                   if(x.level==3){
+                       this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
+                       this.supplierSeccoStockOption.push({...x,value:x.value.toString()})
+                   }
+                   
+               })
+           }else{
+               this.supplierSeccoStockOption=[]
+               this.formData.spiBaseDTO.cityCodeList=[]
+           }
         },
         //供应商地区
         handleSupplierChangeArea(){

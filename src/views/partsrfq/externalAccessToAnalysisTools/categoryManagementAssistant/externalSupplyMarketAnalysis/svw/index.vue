@@ -4,7 +4,7 @@
       <iCard>
 
         <div class="head">
-          <div class="left">供应商市场总览
+          <div class="left">SVW供应商市场总览
             <span>
               {{categoryCode}}
             </span>
@@ -13,7 +13,10 @@
           </div>
           <div class="right">
             <iButton @click="edite=!edite">{{edite?'编辑':'取消'}}</iButton>
-            <iButton @click="saveMarket">{{edite?'返回':'保存'}}</iButton>
+            <iButton @click="$router.go(-1)"
+                     v-show="edite">返回</iButton>
+            <iButton @click="saveMarket"
+                     v-show="!edite">保存</iButton>
           </div>
         </div>
         <!-- tittle -->
@@ -73,7 +76,7 @@ export default {
 
   methods: {
     getmarketOverview () {
-      marketOverview({ categoryCode: "9999" }).then(res => {
+      marketOverview({ categoryCode: this.categoryCode }).then(res => {
         console.log(res)
         this.SchemeId = res.data.id
         this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
@@ -96,7 +99,7 @@ export default {
               businessId: Math.ceil(Math.random() * 100000),
               multifile: blob
             }).then(res => {
-              const data= res.data[0]
+              const data = res.data[0]
               saveMarketOverview({
                 categoryCode: this.categoryCode,
                 id: this.SchemeId,
@@ -116,7 +119,8 @@ export default {
     },
     changeViewObj (val, index) {
       console.log(val, index)
-    }
+    },
+    
   }
 }
 </script>

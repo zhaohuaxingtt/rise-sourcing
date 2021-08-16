@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-16 09:57:16
+ * @LastEditTime: 2021-08-16 11:15:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -267,7 +267,7 @@ import datasetBar from "../components/datasetBar";
 import datasetBar1 from "../components/datasetBar1";
 import tableList from "../components/tableList";
 import modalDialog from "../components/modalDialog";
-import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve } from '@/api/categoryManagementAssistant/mek'
+import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, } from '@/api/categoryManagementAssistant/mek'
 import { getDictByCode } from '@/api/dictionary'
 export default {
   name: "mekDetails",
