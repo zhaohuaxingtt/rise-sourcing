@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-06 15:34:45
- * @LastEditTime: 2021-08-12 19:37:46
+ * @LastEditTime: 2021-08-16 09:35:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\categoryManagementAssistant\mek\index.js
@@ -35,9 +35,17 @@ export function category(params) {
   })
 }
 //基于材料组获取对标车型信息
-export function getMotor(params) {
+export function getComparedMotor(params) {
   return request({
-    url: '/mekScheme/getMotor',
+    url: '/mekScheme/getComparedMotor',
+    method: 'POST',
+    data: params,
+  })
+}
+//获取目标车型/内部进入时，基于rfq获取目标车型；外部进入时，基于材料组获取目标车型
+export function getTargetMotor(params) {
+  return request({
+    url: '/mekScheme/getTargetMotor',
     method: 'POST',
     data: params,
   })
