@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-13 14:43:45
+ * @LastEditTime: 2021-08-16 09:50:33
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -467,8 +467,9 @@ export default {
 }
 .regularTable {
   ::v-deep .el-table__body-wrapper{
-    min-height: 200px;
-    // max-height: 200px;
+    min-height: 120px;
+    max-height: 120px;
+    overflow-x: hidden;
   }
   &::before {
     height: 0;
