@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:35:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 10:46:39
+ * @LastEditTime: 2021-08-16 11:21:19
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\data.js
  */
@@ -38,7 +38,7 @@ export const regularTableTitle = [
 export const partTableTitle = [
   {props:'productGroupCode',name:'产品组编号', key: "CHANPINZUBIANHAO", tooltip: true, isSelect: true, disabled: true, minWidth: 120},
   {props:'productGroupZh',name:'产品组中文名称', key: "CHANPINZUZHONGWENMINGCHENG", tooltip: true, isSelect: true, disabled: true, minWidth: 120},
-  {props:'productGroupDe',name:'产品组德文名称', key: "CHANPINZUDEWENMINGCHENG", tooltip: true, isSelect: true, disabled: true, checkminWidth: '54%', minWidth: 120},
+  {props:'productGroupDe',name:'产品组德文名称', key: "CHANPINZUDEWENMINGCHENG", tooltip: true, isSelect: true, disabled: true, checkWidth: '54%', minWidth: 120},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, isSelect: true, disabled: true, minWidth: 120},
   {props:'partNameZh',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true, isSelect: true, minWidth: 120},
   {props:'partNameDe',name:'零件德文名称', key: "LINGJIANDEWENMINGCHENG", tooltip: true, isSelect: true, minWidth: 120},
@@ -47,10 +47,10 @@ export const partTableTitle = [
   {props:'modelNameZh',name:'车型', key: "CHEXING", tooltip: true, isSelect: true, minWidth: 120},
   {props:'prjTmTeileclubProjNameZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, isSelect: true, disabled: true, minWidth: 120},
   {props:'startProduceSop',name:'车型项目SOP年份', key: "CHEXINGXIANGMUSOPNIANFEN", tooltip: true, isSelect: true, minWidth: 120},
-  {props:'fsnrGsnrNum',name:'FS号', key: "FSHAO", tooltip: true, isSelect: true, checkminWidth: '36%', minWidth: 100},
+  {props:'fsnrGsnrNum',name:'FS号', key: "FSHAO", tooltip: true, isSelect: true, checkWidth: '36%', minWidth: 100},
   {props:'fsdocIst',name:'零件释放时间', key: "LINGJIANSHIFANGSHIJIAN", tooltip: true, isSelect: true, minWidth: 120},
   {props:'fsdocDelay',name:'释放是否延误', key: "SHIFANGSHIFOUYANWU", tooltip: true, isSelect: true, minWidth: 120},
-  {props:'fsdocReason',name:'释放延误原因', key: "SHIFANGYANWUYUANYIN", tooltip: true, isSelect: true, checkminWidth: '54%', minWidth: 120},
+  {props:'fsdocReason',name:'释放延误原因', key: "SHIFANGYANWUYUANYIN", tooltip: true, isSelect: true, checkWidth: '54%', minWidth: 120},
   {props:'cscSoll1',name:'定点soll1', key: "DINGDIANSOLL1", tooltip: true, isSelect: true, minWidth: 120},
   {props:'cscSoll2',name:'定点soll2', key: "DINGDIANSOLL2", tooltip: true, isSelect: true, minWidth: 120},
   {props:'cscIst',name:'定点ist', key: "DINGDIANIST", tooltip: true, isSelect: true, minWidth: 120},
