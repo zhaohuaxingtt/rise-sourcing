@@ -11,7 +11,7 @@
       </span>
       <div class="floatright">
         <template v-if="isPreview">
-          <span class="text timeRange">{{ language('PI.SHIJIANDAN', '时间段') }}：2020/09 - 2021/03</span>
+          <span class="text timeRange" v-if="currentTab === AVERAGE">{{ language('PI.SHIJIANDAN', '时间段') }}：2020/09 - 2021/03</span>
         </template>
         <template v-else>
           <template v-if="tableStatus === 'edit'">
