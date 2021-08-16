@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 17:05:28
- * @LastEditTime: 2021-08-13 14:09:05
+ * @LastEditTime: 2021-08-15 13:06:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/dashboard/report/components/rfqList/index.vue
@@ -26,7 +26,7 @@
       </div>
       <div class="rfq-body">
         <div class="timeLine">
-          <timeLine :timeList='item.timeListdata || timeListdata' />
+          <timeLine :timeList='item.timeListData || timeListdata' />
         </div>
         <div class="comments">
           <iInput 
@@ -34,7 +34,8 @@
             :rows="3"
             resize="none"
             :placeholder="language('LK_QINGSHURUBEIZHU','请输入备注')"
-            v-model="mark">
+            @change="updateOverviewRemark(item)"
+            v-model="item.remark">
           </iInput>
         </div>
       </div>
@@ -46,13 +47,14 @@
 </template>
 
 <script>
-import {iInput,icon} from 'rise'
+import {iInput,icon,iMessage} from 'rise'
 import {
   timeList,
   iconList_car,
   iconList_all_times
 } from './components/data'
 import timeLine from './components/timeline'
+import {overviewRemark} from '@/api/dashboard'
 import _ from 'lodash'
 
 export default {
@@ -93,31 +95,50 @@ export default {
         return
       }
       data.map(o => {
-        const processList = o.rfqTimeAxisProgressVOList || []
+        const rfqTimeAxisProgressVOList = []
         const timeListData = _.cloneDeep(timeList)
-        timeListData.map(item => {
-          // 校验是否有delay
-          const processStepItem = processList.find(p => p.progressTypeDesc === item.name) || ''
-          if (processStepItem) {
-            // 计划完成周
-            processStepItem.planPeriod && (item.week = processStepItem.planPeriod)
-            // 更新预置数据
-            // 非未超期未完成
-            item.active = processStepItem.taskStatus !== 5
-            item.doneYear = processStepItem.doneYear || ''
-            item.doneWeek = processStepItem.donePeriod || ''
-            // 超期未完成
-            item.delay = (processStepItem.taskStatus === 3)
-            return item
+        timeListData.forEach(item => {
+          // 初始化节点
+          let params = {
+            progressTypeDesc: item.name,
+            key: item.key,
+            name: item.name,
+            long: item.long
           }
-          
+          // 获取节点状态信息
+          Object.keys(item.query).forEach(key => {
+            const targetKey = item.query[key]
+            const targetValue = o[targetKey] || ''
+            params[key] = targetValue
+          })
+          params = Object.assign(params, {
+            // 任务是否正常完成（非没开始的任务）
+            active: params.taskStatus !== 5,
+            // 超期未完成
+            delay: params.taskStatus === 3
+          })
+          rfqTimeAxisProgressVOList.push(params)
         })
-        o.timeListdata = timeListData
+        o.timeListData = rfqTimeAxisProgressVOList
         return o
       })
       console.log('mokeData', data)
       this.data = data
     },
+    // 更新备注
+    updateOverviewRemark: _.debounce(async function(item) {
+      try {
+        const res = await overviewRemark({
+          rfqId: item.rfqId,
+          remark: item.remark
+        })
+        if (res.code !== '200') {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch(e) {
+        e && (iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn))
+      }
+    }, 500)
   }
 
 }

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 13:43:34
+ * @LastEditTime: 2021-08-16 10:12:30
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -21,7 +21,7 @@
           <iButton @click="handleExport" :loading="downloadLoading">{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
-      <tableList indexKey :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
+      <tableList indexKey :showPot="true" :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
       </tableList> 
     </template>
     <template>

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-24 15:55:46
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-09 10:52:41
+ * @LastEditTime: 2021-08-16 11:12:30
  * @Description: 财务目标价相关Api
  * @FilePath: \front-web\src\api\financialTargetPrice\index.js
  */
@@ -172,5 +172,13 @@ export function savePriceDetail(params) {
     url: '/cf-target-price-applies/savePriceDetail',
     method: 'POST',
     data: params
+  })
+}
+
+// 获取set属性下拉
+export function getSetOptions() {
+  return requst({
+    url: '/cf-target-price-applies/set-kz/list',
+    method: 'GET'
   })
 }

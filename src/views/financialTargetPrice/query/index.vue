@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-09 19:27:02
+ * @LastEditTime: 2021-08-16 14:58:04
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -93,7 +93,7 @@ import approvalRecordDialog from '../maintenance/components/approvalRecord'
 import assignDialog from './components/assign'
 import { dictkey } from "@/api/partsprocure/editordetail"
 import { getCartypeDict} from "@/api/partsrfq/home"
-import { appoint, getTargetPriceList, getPartStatus, getCFList } from '@/api/financialTargetPrice/index'
+import { appoint, getTargetPriceList, getPartStatus, getCFList, getSetOptions } from '@/api/financialTargetPrice/index'
 import { excelExport } from "@/utils/filedowLoad"
 import { omit } from 'lodash'
 import { getDictByCode } from '@/api/dictionary'
@@ -133,6 +133,7 @@ export default {
     }
   },
   created() {
+    this.getSetOptions()
     this.getDicts()
     this.getProcureGroup()
     this.getCartypeDict()
@@ -141,6 +142,21 @@ export default {
     this.getTableList()
   },
   methods: {
+    getSetOptions() {
+      getSetOptions().then(res => {
+        if (res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            setOptions: res.data?.map(item => {
+              return {
+                code: item.id,
+                name: item.nameZh
+              }
+            })
+          }
+        }
+      })
+    },
     handleSelectionChange(val) {
       this.selectItems = val
     },

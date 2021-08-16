@@ -1,14 +1,14 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-12 21:04:10
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-16 14:13:11
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
 
 <template>
-  <iPage class="projectoverview">
+  <iPage class="projectoverview" v-permission="PROJECTMGT_OVERVIEW">
     <projectTop />
     <!---------------------------------------------------------------------->
     <!----------                  筛选部分                   ---------------->

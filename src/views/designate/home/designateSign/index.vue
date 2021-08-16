@@ -8,7 +8,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="getFetchData" :carTypeList="carTypeList" ref="search" />
+    <search @search="getFetchData" ref="search" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -96,9 +96,6 @@ import { tableTitle } from './components/data'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
 import {
-  getCarTypePro,
-} from '@/api/designate/nomination'
-import {
   getNomiNotSelectedPage
 } from '@/api/designate/nomination/signsheet'
 // 前端配置文件里面的定点类型
@@ -147,8 +144,6 @@ export default {
   mounted() {
     const params = this.$refs.search.form || {}
     this.getFetchData(params)
-    // 获取车型项目
-    this.getCarTypePro()
   },
   methods: {
     // 查看详情
@@ -192,14 +187,6 @@ export default {
     // 多选
     handleSelectionChange(data) {
       this.selectTableData = data
-    },
-    // 获取车型项目
-    getCarTypePro() {
-      getCarTypePro().then(res => {
-        if (res.code === '200') {
-          this.carTypeList = (res.data && res.data.data) || []
-        }
-      })
     },
     handleChoose() {
       this.$emit('choose', this.selectTableData)
