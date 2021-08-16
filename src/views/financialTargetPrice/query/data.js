@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 11:16:06
+ * @LastEditTime: 2021-08-16 14:56:14
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\query\data.js
  */
@@ -24,11 +24,11 @@ export const tableTitle = [
   {props:'applyDateEnd',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120},
   {props:'responseDate',name:'返回日期', key: "LK_FANHUIRIQI", tooltip: true, width: 120},
   {props:'expTargetpri',name:'期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true},
-  {props:'approveStatus',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
+  {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
   {props:'xiugai',name:'修改记录', key: "XIUGAIJILU", tooltip: true, width: 120},
   {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true, width: 120},
   {props:'setKz',name:'SET属性', key: "SETSHUXING", tooltip: true, width: 120},
-  {props:'isAssign',name:'指派状态', key: "ZHIPAIZHUANGTAI", tooltip: true},
+  {props:'isAssignDesc',name:'指派状态', key: "ZHIPAIZHUANGTAI", tooltip: true},
 ]
 
 export const tableMockData = [
@@ -54,5 +54,5 @@ export const searchList = [
   {value: 'setKz', label: 'SET属性', type: 'select', i18n_label: 'SETSHUXING', selectOption: 'setOptions'},
   {value: 'approveStats', label: '审批状态', type: 'select', i18n_label: 'SHENPIZHUANGTAI',selectOption: 'CF_APPROVE_STATUS'},
   {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO'},
-  {value: 'assignStats', label: '指派状态', type: 'select', i18n_label: 'ZHIPAIZHUANGTAI',selectOption: 'CF_ASSIGN_START'}
+  {value: 'isAssignDesc', label: '指派状态', type: 'select', i18n_label: 'ZHIPAIZHUANGTAI',selectOption: 'CF_ASSIGN_START'}
 ]

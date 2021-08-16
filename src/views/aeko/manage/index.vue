@@ -10,6 +10,7 @@
     <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
 
     <div class="margin-top20">
+
     <!-- 搜索区域 -->
       <iSearch @sure="getList" @reset="reset">
           <el-form>
@@ -19,13 +20,24 @@
               :label="language(item.labelKey,item.label)"
               v-permission.dynamic="item.permissionKey"
               >
-                  <iSelect class="multipleSelect" collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
+                  <iSelect 
+                    class="multipleSelect" 
+                    collapse-tags 
+                    v-if="item.type === 'select'" 
+                    :multiple="item.multiple" 
+                    :filterable="item.filterable" 
+                    :clearable="item.clearable" 
+                    v-model="searchParams[item.props]" 
+                    :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
+                    :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+                    >
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
-                      v-for="item in selectOptions[item.selectOption] || []"
-                      :key="item.code"
+                      v-for="(item,index) in selectOptions[item.selectOption] || []"
+                      :key="index"
                       :label="item.desc"
-                      :value="item.code">
+                      :value="item.code"
+                      >
                     </el-option>  
                   </iSelect> 
                   <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
@@ -196,6 +208,14 @@ export default {
           'carTypeCodeList':[],
           'buyerName':[],
         },
+        selectOptionsCopy:{
+          'buyerName':[],
+          'brand':[],
+          'aekoStatusList':[],
+          'coverStatusList':[],
+          'linieDeptNumList':[],
+          'carTypeCodeList':[],
+        },
         tableListData:[],
         tableTitle:tableTitle,
         loading:false,
@@ -306,6 +326,7 @@ export default {
           const {code,data=[]} = res;
           if(code ==200 && data){
             this.selectOptions.aekoStatusList = data;
+            this.selectOptionsCopy.aekoStatusList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -318,6 +339,7 @@ export default {
               item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
             })
             this.selectOptions.brand = data;
+            this.selectOptionsCopy.brand = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -327,6 +349,7 @@ export default {
           const {code,data=[]} = res;
           if(code ==200 && data){
             this.selectOptions.coverStatusList = data;
+            this.selectOptionsCopy.coverStatusList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -340,6 +363,7 @@ export default {
               item.desc = item.name;
             })
             this.selectOptions.carTypeCodeList = data;
+            this.selectOptionsCopy.carTypeCodeList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -354,6 +378,7 @@ export default {
               item.code = item.id;
             })
             this.selectOptions.linieDeptNumList = data;
+            this.selectOptionsCopy.linieDeptNumList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -368,6 +393,7 @@ export default {
               item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
             })
             this.selectOptions.buyerName = data;
+            this.selectOptionsCopy.buyerName = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -570,6 +596,33 @@ export default {
 
         })
       },
+
+      // 模糊搜索处理
+      dataFilter(val,props){
+        // 去除前后空格
+        const trimVal = val.trim();
+        const { selectOptionsCopy={}} = this;
+        if(trimVal){
+            // 人名要特殊处理 --- 可搜索英文去除大小写
+          if(props == 'buyerName'){
+            const list = selectOptionsCopy[props].filter((item) => {
+              if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                return true
+              }
+            })
+            this.selectOptions[props] = list;
+          }else{
+            const list = selectOptionsCopy[props].filter((item) => {
+              if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
+                  return true;
+              } 
+            })
+             this.selectOptions[props] = list;
+          }
+        }else{
+          this.selectOptions[props] = selectOptionsCopy[props];
+        }
+      }
     }
 }
 </script>
