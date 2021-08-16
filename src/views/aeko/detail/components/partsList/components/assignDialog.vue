@@ -107,6 +107,10 @@ export default {
         buyerName:{
             type:Array,
             default:()=>[],
+        },
+        userInfo:{
+            type:Object,
+            default:()=>{},
         }
     },
     computed: {
@@ -156,16 +160,15 @@ export default {
            }else{  // 分派采购员
                 if(this.singleAssign.length){
                         this.refferenceSmtNum = this.singleAssign[0].refferenceByuerId;
-                        this.deptId = this.singleAssign[0].linieDeptNum;
+                        // this.deptId = this.singleAssign[0].linieDeptId;
                 }else{
                     // 批量分派
-                    // 需判断一下预设科室是否相同
+                    // 需判断一下预设采购员是否相同
                     const { selectItems } = this;
                     const arr = selectItems.map((item)=>item.refferenceByuerId);
                     const filterArr = Array.from(new Set(arr));
                     if(filterArr.length ==1){ // 批量处理的预设科室一致
                             this.refferenceSmtNum = filterArr[0];
-                            this.deptId = filterArr[0].linieDeptNum;
                     }
                 }
            }
@@ -338,8 +341,18 @@ export default {
 
         // 获取linie列表
         async getLinieList(){
-            const {deptId} = this;
-            searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
+            const { buyerName=[],userInfo={} } = this;
+            if(buyerName.length){
+                 buyerName.map((item)=>{
+                    item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                    item.value = item.id;
+                })
+                this.linieSelectOptions = buyerName;
+
+            }else{
+                const {deptDTO={}} = userInfo;
+                const deptId = deptDTO.id;
+                searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
                 const {code,data} = res;
                 if(code ==200 ){
                     data.map((item)=>{
@@ -351,6 +364,8 @@ export default {
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
             })
+            }
+            
             
         },
     }
