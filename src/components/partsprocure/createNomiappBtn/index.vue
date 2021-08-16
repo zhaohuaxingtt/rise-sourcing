@@ -1,14 +1,14 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-14 19:39:07
+ * @LastEditTime: 2021-08-16 17:44:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
 -->
 <template>
 <div class="inline margin-right10">
-  <iButton @click="handleCreateNomiApplication">{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
+  <iButton @click="handleCreateNomiApplication" :loading='loading'>{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
   <iDialog title="自动定点进度追踪" :visible.sync="messageShow">
     <ul class="ulContent">
       <li>
@@ -44,17 +44,27 @@ export default{
     return {
       soket: null,
       messageDataList:[],
-      messageShow:false
+      messageShow:false,
+      loading:false
     }
   },
   methods:{
     handleCreateNomiApplication(){
+      this.loading = true
       this.messageDataList = []
       this.closeWebSoket()
+      this.showWebsoket()
       this.autonomiFn()
+      setTimeout(() => {
+        if(this.loading) this.messageShow = true
+      }, 2000);
     },
     closeWebSoket(){
-      if(this.soket) this.soket.close()
+      try {
+        this.soket.close()
+      } catch (error) {
+        // not error code
+      }
     },
     showWebsoket(){
        this.soket = new soket({baseUrl:process.env.VUE_APP_WS1_SOKETEURL,url:`/sourcing/websocket/${store.state.permission.userInfo.id}`}).then(res=>{
@@ -66,18 +76,37 @@ export default{
     autonomiFn(){
       autonomi(this.translatePropsForServers(this.datalist)).then(res=>{
         if(res.result){
-           this.messageShow = true
-           this.showWebsoket()
+          iMessage.success(res.desZh)
+          this.messageShow = false
+          this.loading = false
+          this.openNomiPage()
+          this.closeWebSoket()
         }else{
+           this.messageShow = false
            iMessage.warn(res.desZh)
+           this.loading = false
+           this.closeWebSoket()
         }
       }).catch(err=>{
+        this.loading = false
+        this.messageShow = false
         iMessage.error(err.desZh)
+        this.closeWebSoket()
       })
     },
     translatePropsForServers(parmars){
       if(!Array.isArray(parmars)) return console.error('parmars datalist must be a array')
       return {autoKeyDTOS:parmars.map(r=>{return {partNum:r.partNum,oldFsnrGsnrNum:r.oldFsnrGsnrNum,oldPurchasingProjectId:r.oldPurchasingProjectId,purchasingProjectId:r.id,userId:store.state.permission.userInfo.id}})}
+    },
+    openNomiPage(items){
+      this.$router.push({
+        url:'/designate/decisiondata/title',
+        query:{
+          desinateId:items.nominateId,
+          designateType:items.nominateProcessType,
+          partProjType:items.partProjectType
+        }
+      })
     }
   }
 }

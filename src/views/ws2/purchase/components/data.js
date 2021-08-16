@@ -8,7 +8,7 @@ export const tabtitle = [
 ]
 export const navList = [
     {value: 1, message: 0, name: "确认任务", activePath: '/purchase/investmentList', url: '/purchase/investmentList', key: "确认任务"},
-    {value: 2, message: 0, name: "变更任务", activePath: '/404', url: '/404', key: "变更任务"},
+    {value: 2, message: 0, name: "变更任务", activePath: '/purchase/changeTask', url: '/purchase/changeTask', key: "变更任务"},
 ]
 export const investmentListTitle = [
     {

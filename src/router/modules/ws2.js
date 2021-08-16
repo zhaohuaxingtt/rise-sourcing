@@ -193,6 +193,14 @@ export default [
             component: () => import (`@/views/ws2/purchase/investmentList`),
           },
           {
+            path: '/purchase/changeTask',
+            name: 'changeTask',
+            meta: {
+              title: '模具投资清单'
+            },
+            component: () => import (`@/views/ws2/investmentReport`),
+          },
+          {
             path: '/purchase/mouldBook',
             name: 'mouldBook',
             meta: {

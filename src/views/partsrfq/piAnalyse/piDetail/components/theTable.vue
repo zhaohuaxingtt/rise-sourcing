@@ -4,14 +4,14 @@
       <span class="font18 font-weight">
         <span class="margin-right30">{{
             language('PI.DANGQIANJIAGE', '当前价格')
-          }}：{{ dataInfo.piPartCostTotalVO.nowPriceRatio }}</span>
+          }}：{{ nowPriceRatio }}</span>
         <span>{{
             language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响')
-          }}：{{ dataInfo.piPartCostTotalVO.totalPriceRatio }}</span>
+          }}：{{ totalPriceRatio }}</span>
       </span>
       <div class="floatright">
         <template v-if="isPreview">
-          <span class="text timeRange">{{ language('PI.SHIJIANDAN', '时间段') }}：2020/09 - 2021/03</span>
+          <span class="text timeRange" v-if="currentTab === AVERAGE">{{ language('PI.SHIJIANDAN', '时间段') }}：2020/09 - 2021/03</span>
         </template>
         <template v-else>
           <template v-if="tableStatus === 'edit'">
@@ -45,6 +45,7 @@
         @handleGetSelectList="handleGetSelectList"
         :selectOptionsObject="selectOptionsObject"
         @handleSelectReset="handleSelectReset"
+        :selection="!isPreview"
     />
     <el-divider class="margin-top20 margin-bottom20" v-if="tableStatus === 'edit'"/>
     <!--隐藏表格-->
@@ -59,6 +60,10 @@
         :isTableEdit="tableStatus"
         @handleSelectionChange="handleHideSelectionChange"
         @handleShow="handleShow"
+        @handleGetSelectList="handleGetSelectList"
+        :selectOptionsObject="selectOptionsObject"
+        @handleSelectReset="handleSelectReset"
+        :selection="!isPreview"
     />
   </div>
 </template>
@@ -69,6 +74,7 @@ import {tableTitle, tableEditTitle, FIRSTSELECT, SECONDSELECT, THIRDSELECT, clas
 import {numberProcessor, toFixedNumber, toThousands, deleteThousands} from '@/utils';
 import theTableTemplate from './theTableTemplate';
 import _ from 'lodash';
+import {CURRENTTIME, AVERAGE} from './data';
 
 export default {
   components: {
@@ -94,6 +100,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    currentTab: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     pageType() {
@@ -115,6 +125,10 @@ export default {
       SECONDSELECT,
       THIRDSELECT,
       classType,
+      nowPriceRatio: '',
+      totalPriceRatio: '',
+      CURRENTTIME,
+      AVERAGE,
     };
   },
   created() {
@@ -256,20 +270,28 @@ export default {
         this.tableListData = [];
         this.hideTableData = [];
         const copyDataInfo = _.cloneDeep(this.dataInfo);
-        const copyTableList = copyDataInfo && copyDataInfo.piPartCostTotalVO &&
-            copyDataInfo.piPartCostTotalVO.piPartCostVOS;
+        let copyTableList = [];
+        if (this.currentTab === this.CURRENTTIME) {
+          this.nowPriceRatio = copyDataInfo.currentPartCostTotalVO.nowPriceRatio;
+          this.totalPriceRatio = copyDataInfo.currentPartCostTotalVO.totalPriceRatio;
+          copyTableList = copyDataInfo && copyDataInfo.currentPartCostTotalVO &&
+              copyDataInfo.currentPartCostTotalVO.piPartCostVOS;
+        } else if (this.currentTab === this.AVERAGE) {
+          return [];
+        }
         copyTableList.map((item, index) => {
+          const time = new Date().getTime() + index;
           if (!item.id) {
-            item.time = new Date().getTime() + index;
+            item.time = time;
+            this.selectOptionsObject[time] = {};
+          } else {
+            this.selectOptionsObject[item.id] = {};
           }
           if (item.isShow) {
             this.tableListData.push(item);
           } else {
             this.hideTableData.push(item);
           }
-        });
-        copyTableList.map(item => {
-          this.selectOptionsObject[item.id] = {};
         });
       } catch {
         this.tableListData = [];
@@ -324,10 +346,30 @@ export default {
         if (props === this.FIRSTSELECT) {
           this.selectOptionsObject[id][this.SECONDSELECT] = [];
           this.selectOptionsObject[id][this.THIRDSELECT] = [];
+          if (row.dataType === classType['rawMaterial']) {
+            this.handleSelectValueRest({id, valueArray: ['partNumber', 'partRegion']});
+          } else if (row.dataType === classType['manpower']) {
+            this.handleSelectValueRest({id, valueArray: ['workProvince']});
+          } else if (row.dataType === classType['exchangeRate']) {
+            this.handleSelectValueRest({id, valueArray: ['currency']});
+          }
         } else if (props === this.SECONDSELECT) {
           this.selectOptionsObject[id][this.THIRDSELECT] = [];
+          if (row.dataType === classType['rawMaterial']) {
+            this.handleSelectValueRest({id, valueArray: ['partRegion']});
+          }
         }
       }
+    },
+    handleSelectValueRest({id, valueArray}) {
+      this.tableListData.map(item => {
+        if ([item.id, item.time].includes(id)) {
+          valueArray.map(valueItem => {
+            item[valueItem] = '';
+          });
+        }
+        return item;
+      });
     },
   },
   watch: {

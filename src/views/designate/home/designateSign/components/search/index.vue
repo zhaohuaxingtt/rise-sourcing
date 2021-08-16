@@ -49,7 +49,7 @@
           <el-option
             :value="items.code"
             :label="items.value"
-            v-for="(items, index) in ($attrs && $attrs.carTypeList) || []"
+            v-for="(items, index) in (formOptions && formOptions.CAR_TYPE_PRO) || []"
             :key="index"
             style="max-width: 190px"
           ></el-option>
@@ -127,7 +127,7 @@
         </iSelect>
       </el-form-item>
       <!-- SEL单据确认状态 -->
-      <el-form-item :label="language('SELDANJUQUERENZHUANGTAI','SEL单据确认状态')" style="clear: left">
+      <el-form-item :label="language('SELDANJUQUERENZHUANGTAI','SEL单据确认状态')">
         <iSelect
           v-model="form.selStatus"
           :placeholder="language('LK_QINGXUANZE','请选择')"
@@ -172,6 +172,7 @@ import {
   signSheetselStatus,
   priceConsistentStatus 
 } from '@/views/designate/home/components/options'
+import {selectDictByKeyss} from '@/api/dictionary'
 
 import {
   iSearch,
@@ -187,7 +188,9 @@ export default {
       ptocessType: applyType,
       applicationStatus,
       selStatus: signSheetselStatus,
-      priceConsistentStatus
+      priceConsistentStatus,
+      // 下拉
+      formOptions: {}
     }
   },
   components: {
@@ -197,6 +200,8 @@ export default {
     iDatePicker
   },
   mounted() {
+    // 获取车型项目
+    this.getOptions()
   },
   methods: {
     sure() {
@@ -205,7 +210,15 @@ export default {
     reset() {
       this.form = {}
       this.$emit('search', {})
-    }
+    },
+    getOptions() {
+      let types = [
+        "CAR_TYPE_PRO",
+      ];
+      selectDictByKeyss(types).then((res) => {
+        this.formOptions = res.data;
+      });
+    },
   },
   // watch: {
   //   form: {

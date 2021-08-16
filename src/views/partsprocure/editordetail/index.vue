@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-14 16:15:06
+ * @LastEditTime: 2021-08-16 16:52:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -608,10 +608,10 @@
 				}
 				const factoryItems = this.fromGroup.PURCHASE_FACTORY.find(items=>items.code == this.detailData.procureFactory)
 				detailData['cfController'] = this.detailData.cfController
-				const cfController = this.fromGroup.CF_CONTROL.find(items=>items.id == this.detailData.cfController)
+				const cfController = this.fromGroup.CF_CONTROL.find(items=>items.code == this.detailData.cfController)
 				detailData['cfControllerZh'] = cfController ? cfController.name : ""
 				detailData['linieId'] = this.detailData.linieId
-				const linie = this.fromGroup.LINIE.find(items=>items.id == this.detailData.linieId)
+				const linie = this.fromGroup.LINIE.find(items=>items.code == this.detailData.linieId)
 				detailData['linieName'] = linie ? linie.name : ""
 				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
 				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''

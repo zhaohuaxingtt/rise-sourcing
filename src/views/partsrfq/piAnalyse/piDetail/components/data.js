@@ -33,7 +33,7 @@ export const baseInfo = [
 ];
 
 export const tableTitle = [
-  {name: '类别', key: 'PI.LEIBIE', props: 'classType'},
+  {name: '类别', key: 'PI.LEIBIE', props: 'partName'},
   {name: '价格影响系数%', key: 'PI.JIAGEYINGXIANGXISHU', props: 'costProportion'},
   {name: '价格变动比率%', key: 'PI.JIAGEBIANDONGBILV', props: 'priceChange'},
   {name: 'CBD', key: '', props: 'attributeValue'},

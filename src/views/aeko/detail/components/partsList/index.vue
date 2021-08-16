@@ -16,11 +16,23 @@
             :label="language(item.labelKey,item.label)"
             v-permission.dynamic="item.permissionKey"
             >
-                <iSelect v-if="item.type === 'select'" class="multipleSelect" collapse-tags :disabled="item.disabled" :multiple="item.multiple" :clearable="item.clearable" :filterable="item.filterable"  v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  @change="handleMultipleChange($event, item.props,item.multiple)">
+                <iSelect 
+                    v-if="item.type === 'select'" 
+                    class="multipleSelect" 
+                    collapse-tags 
+                    :disabled="item.disabled" 
+                    :multiple="item.multiple" 
+                    :clearable="item.clearable" 
+                    :filterable="item.filterable"  
+                    v-model="searchParams[item.props]" 
+                    :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  
+                    @change="handleMultipleChange($event, item.props,item.multiple)"
+                    :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+                >
                     <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
-                        v-for="item in selectOptions[item.selectOption] || []"
-                        :key="item.code"
+                        v-for="(item,index) in selectOptions[item.selectOption] || []"
+                        :key="index"
                         :label="item.desc"
                         :value="item.code">
                     </el-option>
@@ -55,7 +67,7 @@
             <!-- 科室 -->
             <!-- 实际分配科室有就显示实际科室，否则就显示预设科室  表示科室是预设的 -->
             <template #linieDeptName="scoped">
-                <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptName || scoped.row.refferenceSmt}}</span>
+                <span :class="!scoped.row.linieDeptNum ? 'isPreset' : '' ">{{scoped.row.linieDeptNum || scoped.row.refferenceSmtNum}}</span>
             </template>
             <!-- linie -->
             <template #buyerName="scoped">
@@ -96,7 +108,7 @@
 
       </iCard>
       <!-- 分配科室 -->
-      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNumList" :buyerName="selectOptions.buyerName"/>
+      <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNumList" :buyerName="selectOptions.buyerName" :userInfo="userInfo"/>
       <!-- 退回原因 -->
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
   </div>
@@ -194,6 +206,12 @@ export default {
                 linieDeptNumList:[''],
             },
             selectOptions:{
+                cartypeCode:[],
+                buyerName:[],
+                cartype:[],
+                linieDeptNumList:[],
+            },
+            selectOptionsCopy:{
                 cartypeCode:[],
                 buyerName:[],
                 cartype:[],
@@ -312,6 +330,7 @@ export default {
                         item.desc = item.name;
                     })
                     this.selectOptions.cartypeCode = data;
+                    this.selectOptionsCopy.cartypeCode = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -324,13 +343,16 @@ export default {
                         item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
                     })
                     this.selectOptions.brand = data;
+                    this.selectOptionsCopy.brand = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
             })
 
-            // LINIE
-            searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+            // LINIE  只能看见本科是的LINIE
+            const {deptDTO={}} = this.userInfo;
+            const deptId = deptDTO.id;
+            searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
                 const {code,data} = res;
                 if(code ==200 ){
                     data.map((item)=>{
@@ -338,6 +360,7 @@ export default {
                         item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
                     })
                     this.selectOptions.buyerName = data;
+                    this.selectOptionsCopy.buyerName = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -351,6 +374,7 @@ export default {
                         item.code = item.id;
                     })
                     this.selectOptions.linieDeptNumList = data;
+                    this.selectOptionsCopy.linieDeptNumList = data;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -365,6 +389,7 @@ export default {
                 item.code = item.name;
                 })
                 this.selectOptions.cartype = data.filter((item)=>item.name) || [];
+                this.selectOptionsCopy.cartype = data.filter((item)=>item.name) || [];
             }else{
                 iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }
@@ -509,7 +534,14 @@ export default {
         // 多选处理
         handleMultipleChange(value, key,multiple) {
             // 单选不处理
-            if(!multiple) return;
+            if(!multiple) {
+                if(!value){
+                    const {selectOptionsCopy={}} = this;
+                    this.$set(this.selectOptions,key,selectOptionsCopy[key]);
+                }else{
+                    return;
+                }
+            }
 
             if (!value[value.length - 1]) {
                 this.$set(this.searchParams, key, [""])
@@ -557,6 +589,34 @@ export default {
             
             
         },
+
+
+      // 模糊搜索处理
+      dataFilter(val,props){
+        // 去除前后空格
+        const trimVal = val.trim();
+        const { selectOptionsCopy={}} = this;
+        if(trimVal){
+            // 人名要特殊处理 --- 可搜索英文去除大小写
+          if(props == 'buyerName'){
+            const list = selectOptionsCopy[props].filter((item) => {
+              if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                return true
+              }
+            })
+            this.selectOptions[props] = list;
+          }else{
+            const list = selectOptionsCopy[props].filter((item) => {
+              if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
+                  return true;
+              } 
+            })
+             this.selectOptions[props] = list;
+          }
+        }else{
+          this.selectOptions[props] = selectOptionsCopy[props];
+        }
+      }
     }
 }
 </script>

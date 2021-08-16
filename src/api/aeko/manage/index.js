@@ -169,3 +169,21 @@ export function deleteFiles(data) {
 }
 
 
+// 从TCM同步aeko 附件
+export function synAekoAttachmentFromTCM(params) {
+  return requst({
+      url: '/aeko/synAekoAttachmentFromTCM',
+      method: 'GET',
+      params,
+  })
+}
+
+
+// 从TCM同步aeko
+export function synAekoFromTCM(params) {
+  return requst({
+      url: '/aeko/synAekoFromTCM',
+      method: 'GET',
+      params,
+  })
+}

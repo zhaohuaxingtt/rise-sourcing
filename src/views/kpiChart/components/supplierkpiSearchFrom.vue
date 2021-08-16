@@ -542,6 +542,12 @@ export default {
            }
            this.startyear=null
            this.endyear=null
+           this.supplierStart=null
+           this.supplierEnd=null
+           this.supplierEndYear=null
+           this.supplierStartYear=null
+           this.baseStartYear=null
+           this.baseEndYear=null
            this.baseAreaVmodel=[]
         },
         // base 开始日期
@@ -578,6 +584,16 @@ export default {
                     })
                     this.baseEndYear=null
                 }else{
+                    // 近五年校验
+                    console.log(e,Number(this.baseStartYear)+5)
+                    if(e>Number(this.baseStartYear)+5){
+                        this.$message({
+                                type:'warning',
+                                message:'请选择近5年的时间'
+                            })
+                            this.baseEndYear=null
+                        return
+                    }else{
                     this.supplierEndYear=this.baseEndYear
                     // 基数时间取值
                     let leg = this.baseEndYear - this.baseStartYear
@@ -587,7 +603,7 @@ export default {
                     }
                     // 供应商赋值
                     this.formData.spiSupplierDTO.yearList=JSON.parse(JSON.stringify(this.formData.spiBaseDTO.yearList))
-                    
+                    }
                 }
             }
         },

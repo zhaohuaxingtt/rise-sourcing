@@ -10,6 +10,7 @@
     <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
 
     <div class="margin-top20">
+
     <!-- 搜索区域 -->
       <iSearch @sure="getList" @reset="reset">
           <el-form>
@@ -19,13 +20,25 @@
               :label="language(item.labelKey,item.label)"
               v-permission.dynamic="item.permissionKey"
               >
-                  <iSelect class="multipleSelect" collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
+                  <iSelect 
+                    class="multipleSelect" 
+                    collapse-tags 
+                    v-if="item.type === 'select'" 
+                    :multiple="item.multiple" 
+                    :filterable="item.filterable" 
+                    :clearable="item.clearable" 
+                    v-model="searchParams[item.props]" 
+                    :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
+                    @change="handleMultipleChange($event, item.props,item.multiple)"
+                    :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+                    >
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
-                      v-for="item in selectOptions[item.selectOption] || []"
-                      :key="item.code"
+                      v-for="(item,index) in selectOptions[item.selectOption] || []"
+                      :key="item.selectOption+'_'+index"
                       :label="item.desc"
-                      :value="item.code">
+                      :value="item.code"
+                      >
                     </el-option>  
                   </iSelect> 
                   <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
@@ -64,6 +77,12 @@
             <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission="AEKO_MANAGELIST_BUTTON_DAOCHU" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
+
+          <!-- 暂时添加的按钮 -->
+          <template v-if="isAekoManager">
+            <iButton :loading="btnLoading.tcm" @click="getTCM">TCM AEKO同步</iButton>
+            <iButton :loading="btnLoading.tcmFiles" @click="getTCMFiles">TCM AEKO附件同步</iButton>
+          </template>
       </template>
       <!-- 表单区域 -->
       <div v-permission="AEKO_MANAGELIST_TABLE">
@@ -156,6 +175,8 @@ import {
   downloadAeko,
   searchCommodity,
   searchLinie,
+  synAekoFromTCM,
+  synAekoAttachmentFromTCM,
 } from '@/api/aeko/manage'
 export default {
     name:'aekoManageList',
@@ -196,6 +217,14 @@ export default {
           'carTypeCodeList':[],
           'buyerName':[],
         },
+        selectOptionsCopy:{
+          'buyerName':[],
+          'brand':[],
+          'aekoStatusList':[],
+          'coverStatusList':[],
+          'linieDeptNumList':[],
+          'carTypeCodeList':[],
+        },
         tableListData:[],
         tableTitle:tableTitle,
         loading:false,
@@ -206,7 +235,8 @@ export default {
           uploadFiles:false,
           importAeko:false,
           deleteItem:false,
-          
+          tcmFiles:false,
+          tcm:false,
         },
         importAeko:importAeko,
         itemFileData:{},
@@ -306,6 +336,7 @@ export default {
           const {code,data=[]} = res;
           if(code ==200 && data){
             this.selectOptions.aekoStatusList = data;
+            this.selectOptionsCopy.aekoStatusList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -318,6 +349,7 @@ export default {
               item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
             })
             this.selectOptions.brand = data;
+            this.selectOptionsCopy.brand = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -327,6 +359,7 @@ export default {
           const {code,data=[]} = res;
           if(code ==200 && data){
             this.selectOptions.coverStatusList = data;
+            this.selectOptionsCopy.coverStatusList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -340,6 +373,7 @@ export default {
               item.desc = item.name;
             })
             this.selectOptions.carTypeCodeList = data;
+            this.selectOptionsCopy.carTypeCodeList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -354,6 +388,7 @@ export default {
               item.code = item.id;
             })
             this.selectOptions.linieDeptNumList = data;
+            this.selectOptionsCopy.linieDeptNumList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -368,6 +403,7 @@ export default {
               item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
             })
             this.selectOptions.buyerName = data;
+            this.selectOptionsCopy.buyerName = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -570,6 +606,74 @@ export default {
 
         })
       },
+
+      // 模糊搜索处理
+      dataFilter(val,props){
+        // 去除前后空格
+        const trimVal = val.trim();
+        const { selectOptionsCopy={}} = this;
+        if(trimVal){
+            // 人名要特殊处理 --- 可搜索英文去除大小写
+          if(props == 'buyerName'){
+            const list = selectOptionsCopy[props].filter((item) => {
+              if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                return true
+              }
+            })
+            this.selectOptions[props] = list;
+          }else{
+            const list = selectOptionsCopy[props].filter((item) => {
+              if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
+                  return true;
+              } 
+            })
+             this.selectOptions[props] = list;
+          }
+        }else{
+          this.selectOptions[props] = selectOptionsCopy[props];
+        }
+      },
+
+      // 多选处理
+      handleMultipleChange(value, key,multiple) {
+        console.log(value,key);
+          // 单选不处理
+          if(!multiple) {
+            if(!value){
+              const {selectOptionsCopy={}} = this;
+              this.$set(this.selectOptions,key,selectOptionsCopy[key]);
+            }else{
+              return;
+            }
+          }
+      },
+
+
+      // TCM AEKO同步 
+      async getTCM(){
+        this.btnLoading.tcm = true;
+        await synAekoFromTCM().then((res)=>{
+          this.btnLoading.tcm = false;
+          if(res.code == 200) {
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          }
+        }).catch((err)=>{
+          this.btnLoading.tcm = false;
+        })
+      },
+
+       // TCM AEKO附件同步
+       async getTCMFiles(){
+        this.btnLoading.tcmFiles = true;
+        await synAekoAttachmentFromTCM().then((res)=>{
+          this.btnLoading.tcmFiles = false;
+          if(res.code == 200) {
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          }
+        }).catch((err)=>{
+          this.btnLoading.tcmFiles = false;
+        })
+       },
     }
 }
 </script>

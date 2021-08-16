@@ -29,11 +29,12 @@
         class="margin-bottom20"
         @handleItemClick="handleTabsClick"
         @handleTimeChange="handleTimeChange"
+        :currentTab="currentTab"
     />
 
     <!--表格-->
     <iCard tabCard class="margin-bottom20">
-      <theTable :dataInfo="dataInfo"/>
+      <theTable :dataInfo="dataInfo" :currentTab="currentTab"/>
     </iCard>
 
     <!--图形-->
@@ -44,13 +45,15 @@
       </iCard>
       <!--      零件成本构成-->
       <iCard class="pieBox">
-        <thePartsCostChart/>
+        <thePartsCostChart :dataInfo="dataInfo"/>
       </iCard>
     </div>
 
     <!--预览-->
     <previewDialog
         v-model="previewDialog"
+        :dataInfo="dataInfo"
+        :currentTab="currentTab"
     />
   </iPage>
 </template>
@@ -101,7 +104,7 @@ export default {
       currentTabData: {
         analysisSchemeId: 109,
         partsId: '',
-        batchNumber: ''
+        batchNumber: '',
       },
       dataInfo: {},
     };
@@ -165,6 +168,7 @@ export default {
     // 点击零件
     handlePartItemClick({item, index}) {
       this.partItemCurrent = index;
+      this.currentTabData.partsId = item.partsId
     },
     // 点击标签
     handleTabsClick(val) {
@@ -178,18 +182,19 @@ export default {
     // 获取信息
     async getDataInfo() {
       try {
-        this.pageLoading = true
+        this.pageLoading = true;
         const req = {
           analysisSchemeId: this.currentTabData.analysisSchemeId,
         };
         const res = await getAnalysisSchemeDetails(req);
-        this.dataInfo = res.data
+        this.dataInfo = res.data;
+        this.currentTabData.partsId = res.data.partsId
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        this.pageLoading = false
+        this.pageLoading = false;
       } catch {
-        this.pageLoading = false
+        this.pageLoading = false;
       }
     },
   },

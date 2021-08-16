@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:26:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-02 14:32:28
+ * @LastEditTime: 2021-08-16 14:46:33
  * @Description: 进度确认汇总
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\index.vue
 -->
 
 <template>
-  <iPage class="progressConfirm">
+  <iPage class="progressConfirm" v-permission.dynamic="permissionKey">
     <iTabsList type="card" @tab-click="tabChange" :before-leave="tabLeaveBefore" v-model="currentTab">
       <el-tab-pane lazy :label="language('CHANPINZU', '产品组')" :name="'productGroup'">
           <productGroup ref="confirmProductGroup" />
@@ -34,6 +34,11 @@ export default {
   methods: {
     tabChange() {},
     tabLeaveBefore() {}
+  },
+  computed: {
+    permissionKey() {
+      return this.$route.path.includes('proconfirm') ? 'PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM' : 'PROJECTMGT_SCHEDULINGASSISTANT_PROGRESSCONFIRMSUMMARY'
+    }
   }
 }
 </script>

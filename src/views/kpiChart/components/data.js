@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-04 20:49:10
- * @LastEditTime: 2021-08-13 17:22:22
+ * @LastEditTime: 2021-08-16 15:50:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\components\data.js
@@ -30,15 +30,15 @@ export const tabSetting = [
       label: 'KPI(MQ)',
     },
     {
-      prop: "tl",
+      prop: "tp",
       label: 'KPI(EP)',
     },
     {
-      prop: "tp",
+      prop: "tl",
       label: 'KPI(PL)',
     },
     {
-      prop: "kpi",
+      prop: "sa",
       label: 'KPI(SA)',
     },
   ]

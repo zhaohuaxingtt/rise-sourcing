@@ -118,8 +118,11 @@ export default {
           trigger: 'axis',
         },
         legend: {
-          data: ['svw', '其他']
+          data: ['svw', '其它'],
+          right: 0,
+          icon: "circle"
         },
+        color: ['#0059FF', '#B4CBF7'],
         grid: {
           left: '25%',
           right: -10
@@ -318,7 +321,8 @@ export default {
     }
   },
   created () {
-
+    // this.initCharts()
+    // this.initturnover()
   },
   computed: {
     color () {
@@ -336,8 +340,7 @@ export default {
     this.option.xAxis[0].data[0] = date.getFullYear() - 3
     this.option.xAxis[0].data[1] = date.getFullYear() - 2
     this.option.xAxis[0].data[2] = date.getFullYear() - 1
-    this.initCharts()
-    this.initturnover()
+
   },
   watch: {
     edite (val) {
@@ -367,53 +370,63 @@ export default {
       handler (curVal, oldVal) {
         let date = new Date().getFullYear();
         // 柱状图
-        if (this.MarketOverviewObj.supplierFinanceDTOList.length < 1) return
-        this.MarketOverviewObj.supplierFinanceDTOList.forEach(x => {
-          if (x.year == date - 3) {
-            this.option.series[0].data[0].label.normal.formatter = x.svwRate + '%'
-            this.option.series[0].data[0].value = x.svwAmount
-            this.option.series[1].data[0].value = x.otherRate
-            this.option.series[1].data[0].label.normal.formatter = x.otherRate + '%'
-          }
-          if (x.year == date - 2) {
-            this.option.series[0].data[1].label.normal.formatter = x.svwRate + '%'
-            this.option.series[0].data[1].value = x.svwAmount
-            this.option.series[1].data[1].value = x.otherRate
-            this.option.series[1].data[1].label.normal.formatter = x.otherRate + '%'
-          }
-          if (x.year == date - 1) {
-            this.option.series[0].data[2].label.normal.formatter = x.svwRate + '%'
-            this.option.series[0].data[2].value = x.svwAmount
-            this.option.series[1].data[2].value = x.otherRate
-            this.option.series[1].data[2].label.normal.formatter = x.otherRate + '%'
+        if (this.MarketOverviewObj.supplierFinanceDTOList.length > 0) {
+          this.MarketOverviewObj.supplierFinanceDTOList.forEach(x => {
+            if (x.year == date - 3) {
+              this.option.series[0].data[0].label.normal.formatter = x.svwRate + '%'
+              this.option.series[0].data[0].value = x.svwAmount
+              this.option.series[1].data[0].value = x.otherRate
+              this.option.series[1].data[0].label.normal.formatter = x.otherRate + '%'
+            }
+            if (x.year == date - 2) {
+              this.option.series[0].data[1].label.normal.formatter = x.svwRate + '%'
+              this.option.series[0].data[1].value = x.svwAmount
+              this.option.series[1].data[1].value = x.otherRate
+              this.option.series[1].data[1].label.normal.formatter = x.otherRate + '%'
+            }
+            if (x.year == date - 1) {
+              this.option.series[0].data[2].label.normal.formatter = x.svwRate + '%'
+              this.option.series[0].data[2].value = x.svwAmount
+              this.option.series[1].data[2].value = x.otherRate
+              this.option.series[1].data[2].label.normal.formatter = x.otherRate + '%'
 
-          }
-        });
+            }
+          });
+        } else {
+          this.option.series[0].data[0] = []
+          this.option.series[1].data[0] = []
+        }
         // 饼图
         if (this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
-
-          let seriesObj = {
-            value: 1048,
-            name: '材料组A',
-            itemStyle: {
-              color: "#0058FF"
-            },
-            label: {
-              normal: {
-                show: true,
-                formatter: '{d}%'
+          let data = []
+          this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.forEach((x, index) => {
+            let seriesObj = {
+              value: 1048,
+              name: '材料组A',
+              itemStyle: {
+                color: "#0058FF"
+              },
+              label: {
+                normal: {
+                  show: true,
+                  formatter: '{d}%'
+                }
               }
             }
-          }
-          let data = []
-          this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.forEach(x => {
+            let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
             seriesObj.value = x.postAmount
             seriesObj.name = x.categoryNameZh
+            seriesObj.itemStyle.color = colorList[index]
             seriesObj.label.normal.formatter = x.rate + '%'
             data.push(seriesObj)
           })
           this.turnover.series[0].data = data
         }
+        this.$nextTick(() => {
+          this.initCharts()
+          this.initturnover()
+        });
+
       },
       immediate: true,
       deep: true
@@ -431,12 +444,14 @@ export default {
       const myChart = echarts().init(this.$refs.chart);
       // 绘制图表
       const option = this.option
+
       myChart.setOption(option);
     },
     initturnover () {
       const myChart = echarts().init(this.$refs.turnover);
       // 绘制图表
       const option = this.turnover
+
       myChart.setOption(option);
     }
 
