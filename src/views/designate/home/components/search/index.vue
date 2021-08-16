@@ -122,7 +122,7 @@
           <el-option
             :value="items.code"
             :label="items.value"
-            v-for="(items, index) in ($attrs && $attrs.carTypeList) || []"
+            v-for="(items, index) in (fromGroup && fromGroup.CAR_TYPE_PRO) || []"
             :key="index"
             style="max-width: 190px"
           ></el-option>
@@ -193,6 +193,7 @@ import {
   nomiApplicationStatus,
   nomiApplicationObject
 } from '@/views/designate/home/components/options'
+import {selectDictByKeyss} from '@/api/dictionary'
 import { form } from '../data'
 import {
   iSearch,
@@ -204,6 +205,7 @@ export default {
   data() {
     return {
       form,
+      fromGroup: {},
       ptocessType: applyType,
       nomiApplicationStatus,
       priceConsistentStatus,
@@ -217,6 +219,7 @@ export default {
   },
   mounted() {
     this.form = {}
+    this.getOptions()
   },
   beforeDestroy() {
     this.form = {}
@@ -232,7 +235,15 @@ export default {
     onNomiProcessTypeChange(type) {
       const types = nomiApplicationObject[type] || []
       this.applicationStatus = this.nomiApplicationStatus.filter(o => types.includes(o.id))
-    }
+    },
+    getOptions() {
+      let types = [
+        "CAR_TYPE_PRO",
+      ];
+      selectDictByKeyss(types).then((res) => {
+        this.fromGroup = res.data;
+      });
+    },
   },
   // watch: {
   //   form: {

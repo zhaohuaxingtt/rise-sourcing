@@ -10,7 +10,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="handSearch" :carTypeList="carTypeList" ref="searchForm" />
+    <search @search="handSearch" ref="searchForm" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -181,7 +181,6 @@ import {
   nominateRreeze,
   nominateUnRreeze,
   nominateConfirm,
-  getCarTypePro,
   rsFrozen,
   rsUnFrozen,
   consistenceCheck,
@@ -231,8 +230,6 @@ export default {
   },
   mounted() {
     this.getFetchData()
-    // 获取车型项目
-    this.getCarTypePro()
   },
   methods: {
     // 新建零件定点申请
@@ -260,14 +257,6 @@ export default {
           }
         })
         window.open(routeData.href, '_blank')
-      })
-    },
-    // 获取车型项目
-    getCarTypePro() {
-      getCarTypePro().then(res => {
-        if (res.code === '200') {
-          this.carTypeList = (res.data && res.data.data) || []
-        }
       })
     },
     handSearch(data) {
