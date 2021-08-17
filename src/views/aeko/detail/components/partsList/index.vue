@@ -11,32 +11,44 @@
         <el-form>
             <!-- AEKO类型为AeA显示车型，为aeko/mp显示车型项目 -->
             <el-form-item
-            v-show="!item.showCode || (item.showCode && item.showCode == aekoInfo.aekoType)"
+            v-show="!item.showCode || (item.showCode && (item.showCode).includes(aekoInfo.aekoType))"
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
             :label="language(item.labelKey,item.label)"
             v-permission.dynamic="item.permissionKey"
             >
-                <iSelect 
-                    v-if="item.type === 'select'" 
-                    class="multipleSelect" 
-                    collapse-tags 
-                    :disabled="item.disabled" 
-                    :multiple="item.multiple" 
-                    :clearable="item.clearable" 
-                    :filterable="item.filterable"  
-                    v-model="searchParams[item.props]" 
-                    :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  
-                    @change="handleMultipleChange($event, item.props,item.multiple)"
-                    :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
-                >
-                    <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
-                    <el-option
-                        v-for="(item,index) in selectOptions[item.selectOption] || []"
-                        :key="index"
-                        :label="item.desc"
-                        :value="item.code">
-                    </el-option>
-                </iSelect> 
+                <template v-if="item.type === 'select'" >
+                     <aeko-select 
+                        class="multipleSelect" 
+                        v-if="item.isNewSelect"
+                        :searchParams="searchParams" 
+                        :ParamKey="item.props" 
+                        :allOptionsData="selectOptions[item.selectOption]" 
+                        :multiple="item.multiple"
+                        :clearable="item.clearable" 
+                    />
+                    <iSelect 
+                        v-else
+                        class="multipleSelect" 
+                        collapse-tags 
+                        :disabled="item.disabled" 
+                        :multiple="item.multiple" 
+                        :clearable="item.clearable" 
+                        :filterable="item.filterable"  
+                        v-model="searchParams[item.props]" 
+                        :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  
+                        @change="handleMultipleChange($event, item.props,item.multiple)"
+                        :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+                    >
+                        <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
+                        <el-option
+                            v-for="(item,index) in selectOptions[item.selectOption] || []"
+                            :key="index"
+                            :label="item.desc"
+                            :value="item.code">
+                        </el-option>
+                    </iSelect> 
+                </template>
+                
                 <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model.trim="searchParams[item.props]"></iInput> 
             </el-form-item>
         </el-form>
@@ -131,6 +143,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
 import departBackDialog from './components/departBackDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
+import aekoSelect from '../../../components/aekoSelect'
 import {
     getPartPage,
     deletePart,
@@ -157,6 +170,7 @@ export default {
         iPagination,
         assignDialog,
         departBackDialog,
+        aekoSelect,
     },
     computed: {
         //eslint-disable-next-line no-undef
@@ -286,7 +300,7 @@ export default {
             if(aekoInfo && aekoInfo.aekoType ){
                 if(aekoInfo.aekoType == 'AeA'){  // 车型
                     carTypeCodeList = searchParams.cartype;
-                }else if(aekoInfo.aekoType == 'Aeko'){ // 车型项目
+                }else if(['Aeko','MP'].includes(aekoInfo.aekoType)){ // 车型项目
                     carTypeCodeList = searchParams.cartypeCode;
                 }
             }
@@ -332,6 +346,7 @@ export default {
                 if(code ==200 ){
                     data.map((item)=>{
                         item.desc = item.name;
+                        item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
                     })
                     this.selectOptions.cartypeCode = data;
                     this.selectOptionsCopy.cartypeCode = data;
@@ -389,7 +404,8 @@ export default {
             const {code,data} = res;
             if(code ==200){
                 data.map((item)=>{
-                item.desc = item.name;
+                    item.desc = item.name;
+                    item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
                 })
                 this.selectOptions.cartype = data.filter((item)=>item.name) || [];
                 this.selectOptionsCopy.cartype = data.filter((item)=>item.name) || [];
@@ -653,7 +669,7 @@ export default {
 
                 .el-select__tags-text {
                     display: inline-block;
-                    max-width: 80px;
+                    max-width: 70px;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
