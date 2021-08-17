@@ -1,13 +1,13 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-16 21:24:40
+ * @LastEditTime: 2021-08-17 17:48:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
 -->
 <template>
-<div class="inline margin-right10">
+<div class="inline margin-right10" v-permission='PARTSPROCURE_EDITORDETAIL_CREATEDDSQD'>
   <iButton @click="handleCreateNomiApplication" :loading='loading'>{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
   <iDialog title="自动定点进度追踪" :visible.sync="messageShow">
     <ul class="ulContent">

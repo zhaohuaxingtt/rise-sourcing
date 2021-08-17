@@ -53,9 +53,9 @@
 		<iFormGroup row="2" icon inline>
 			<iFormItem :label="language('LK_SHENQINGLEIXING','申请类型')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
-					<iRadio label="LC" size="small" border>LC</iRadio>
-					<iRadio label="SKD" size="small" border>SKD</iRadio>
-					<iRadio label="CKD LANDED" size="small" border>CKD LANDED</iRadio>
+					<el-radio label="LC" size="small">LC</el-radio>
+					<el-radio label="SKD" size="small">SKD</el-radio>
+					<el-radio label="CKD LANDED" size="small">CKD LANDED</el-radio>
 				</el-radio-group>
 				<!-- <span class="start">*</span> -->
 			</iFormItem>
