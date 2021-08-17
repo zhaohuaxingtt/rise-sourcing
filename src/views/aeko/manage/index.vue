@@ -20,10 +20,19 @@
               :label="language(item.labelKey,item.label)"
               v-permission.dynamic="item.permissionKey"
               >
-                  <iSelect 
+              <template  v-if="item.type === 'select'" >
+                  <aeko-select 
+                    v-if="item.isNewSelect"
+                    :searchParams="searchParams" 
+                    :ParamKey="item.props" 
+                    :allOptionsData="selectOptions[item.selectOption]" 
+                    :multiple="item.multiple"
+                    :clearable="item.clearable" 
+                  />
+                  <iSelect
+                    v-else
                     class="multipleSelect" 
                     collapse-tags 
-                    v-if="item.type === 'select'" 
                     :multiple="item.multiple" 
                     :filterable="item.filterable" 
                     :clearable="item.clearable" 
@@ -44,8 +53,9 @@
                       >
                     </el-option>  
                   </iSelect> 
-                  <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
-                  <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
+                </template>
+                <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
               </el-form-item>
           </el-form>
       </iSearch>
@@ -165,6 +175,7 @@ import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
 import {user as configUser } from '@/config'
+import aekoSelect from '../components/aekoSelect'
 import {
   getManageList,
   searchAekoStatus,
@@ -181,7 +192,7 @@ import {
   synAekoFromTCM,
   synAekoAttachmentFromTCM,
 } from '@/api/aeko/manage'
-import { debounce,chunk } from "lodash"
+import { debounce,chunk } from "lodash";
 export default {
     name:'aekoManageList',
     mixins: [pageMixins],
@@ -200,6 +211,7 @@ export default {
       revokeDialog,
       filesListDialog,
       Upload,
+      aekoSelect
     },
     data(){
       return{
@@ -211,7 +223,7 @@ export default {
           buyerName:'',
           aekoStatusList:[],
           coverStatusList:[],
-          carTypeCodeList:[],
+          carTypeCodeList:[''],
           linieDeptNumList:[],
         },
         selectOptions:{
@@ -290,9 +302,10 @@ export default {
       reset(){
         this.searchParams = {
           brand:'',
+          buyerName:'',
           aekoStatusList:[],
           coverStatusList:[],
-          carTypeCodeList:[],
+          carTypeCodeList:[''],
           linieDeptNumList:[],
         };
         this.getList();
@@ -306,12 +319,13 @@ export default {
       async getList(){
         this.loading = true;
         const {searchParams,page} = this;
-        const {partNum} = searchParams;
+        const {partNum,carTypeCodeList} = searchParams;
         // 若有冻结起止时间将其拆分成两个字段
         const {frozenDate=[]} = searchParams;
         const data = {
             current:page.currPage,
             size:page.pageSize,
+            carTypeCodeList:carTypeCodeList.length && carTypeCodeList[0]=='' ? [] : carTypeCodeList,
         };
         if(frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
@@ -383,9 +397,10 @@ export default {
               item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })
             this.selectOptionsCopy.carTypeCodeList = data;
-            this.carTypeProjectOptionsFilterCache= data;
-            this.carTypeProjectOptionsCacheChunks = chunk(data, 20);
-            this.selectOptions.carTypeCodeList = this.carTypeProjectOptionsCacheChunks[0] || [];
+            this.selectOptions.carTypeCodeList = data;
+            // this.carTypeProjectOptionsFilterCache= data;
+            // this.carTypeProjectOptionsCacheChunks = chunk(data, 20);
+            // this.selectOptions.carTypeCodeList = this.carTypeProjectOptionsCacheChunks[0] || [];
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
