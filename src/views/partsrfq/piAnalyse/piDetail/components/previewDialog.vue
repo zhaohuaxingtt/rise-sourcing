@@ -39,8 +39,10 @@ import theTable from './theTable';
 import thePriceIndexChart from './thePriceIndexChart';
 import thePartsCostChart from './thePartsCostChart';
 import {CURRENTTIME, AVERAGE} from './data';
+import {downloadPdfMixins} from '@/utils/pdf';
 
 export default {
+  mixins: [downloadPdfMixins],
   props: {
     dataInfo: {
       type: Object,
@@ -76,6 +78,13 @@ export default {
   methods: {
     clearDiolog() {
       this.$emit('input', false);
+    },
+    getDownloadFile({callBack}) {
+      return this.getDownloadFileAndExportPdf({
+        domId: 'content',
+        pdfName: 'Overview',
+        callBack,
+      });
     },
   },
 };

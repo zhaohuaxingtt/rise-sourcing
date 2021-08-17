@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-08-16 17:32:53
+ * @LastEditTime: 2021-08-17 17:33:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -35,9 +35,9 @@
                        :label="item.motorTypeName"
                        :prop="item.label"
                        min-width="180">
-        <editable-cell :show-input="row.editMode"
-                       slot-scope="{row}"
-                       v-model="row.name">
+        <editable-cell slot-scope="{row}"
+                       :show-input="row.editMode"
+                       v-model="row[item.label]">
           <span slot="content">{{row[item.label]}}</span>
         </editable-cell>
       </el-table-column>
@@ -128,6 +128,7 @@ export default {
     gridData: {
       handler (newVal) {
         if (newVal) {
+          console.log(newVal)
           this.tableData = [this.gridData.config, ...this.gridData.data]
           this.gridData1 = this.tableData.map((row, index) => {
             if (index === 0) {
@@ -141,45 +142,16 @@ export default {
               }
             }
           });
-
         }
-      }
-    },
-    addRowList: {
-      handler (val) {
-        val.editMode = true
-        // this.tableData = [val, ...this.tableData]
-        this.$set(this.gridData1, this.gridData1.length, val);
-        // this.gridData1 = [...this.tableData]
-        console.log(this.gridData1)
-        this.$emit('addData', this.gridData1);
-      }
-    },
-    save (val) {
-      if (val) {
-        saveMekTable({
-          "comparedType": "string",
-          "detail": [
-            {
-              "detail": [
-                {
-                  "id": 0,
-                  "motorTypeId": 0,
-                  "remark": "string"
-                }
-              ],
-              "type": "string",
-              "typeId": 0
-            }
-          ],
-          "schemeId": 0
-        })
-      }
+      },
+      deep: true,
+      immediate: true
     }
   },
   data () {
     return {
-      tableData: []
+      tableData: [],
+      gridData1: []
     };
   },
   methods: {

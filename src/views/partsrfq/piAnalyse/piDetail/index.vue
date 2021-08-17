@@ -65,6 +65,7 @@
 
     <!--预览-->
     <previewDialog
+        ref="previewDialog"
         v-model="previewDialog"
         :dataInfo="dataInfo"
         :averageTableInfo="averageTableInfo"
@@ -96,8 +97,9 @@ import resultMessageMixin from '@/utils/resultMessageMixin';
 import {CURRENTTIME, AVERAGE} from './components/data';
 import {
   getAnalysisSchemeDetails,
+  getAveragePartCostPrice,
+  deleteParts,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
-import {getAveragePartCostPrice} from '../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   mixins: [resultMessageMixin],
@@ -184,17 +186,22 @@ export default {
           this.$t('LK_WENXINTISHI'),
           {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
       ).then(async () => {
-        /*const req = {
+        const req = {
           id: item.id,
         };
-        const res = await deletePartsCustomerList(req);
+        const res = await deleteParts(req);
         if (res.result) {
           this.partItemCurrent = 0;
-          this.currentBatchNumber = this.partList[0].batchNumber;
-          this.currentPartsId = this.partList[0].partsId;
-          this.getDataInfo();
+          const partListItem = this.partList[0];
+          this.currentTabData = {
+            analysisSchemeId: partListItem.analysisSchemeId,
+            partsId: partListItem.partsId,
+            batchNumber: partListItem.batchNumber,
+            supplierId: partListItem.supplierId,
+          };
+          await this.getDataInfo();
         }
-        this.resultMessage(res);*/
+        this.resultMessage(res);
       });
     },
     // 点击零件
@@ -247,6 +254,7 @@ export default {
         this.tableLoading = false;
       }
     },
+    // 获取平均 表格数据
     async getAverageTable({extraParams} = {}) {
       try {
         this.tableLoading = true;
@@ -270,6 +278,21 @@ export default {
     },
     // 处理保存弹窗
     handleSaveDialog(reqParams) {},
+    async handleSaveAsReport(callback) {
+      this.previewDialog = true;
+      setTimeout(async () => {
+        const res = await this.$refs.previewDialog.getDownloadFile({
+          callBack: () => {
+            this.previewDialog = false;
+          },
+        });
+        const downloadName = res.downloadName;
+        const downloadUrl = res.downloadUrl;
+        if (callback) {
+          callback(downloadName, downloadUrl);
+        }
+      }, 1000);
+    },
   },
 };
 </script>

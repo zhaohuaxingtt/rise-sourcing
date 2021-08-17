@@ -60,3 +60,11 @@ export function getAveragePartCostPrice(params) {
     data: params,
   });
 }
+
+//price Index方案详情删除零件
+export function deleteParts(params) {
+  return request({
+    url: `/piAnalysisScheme/deleteParts?id=${params.id}`,
+    method: 'GET',
+  });
+}
