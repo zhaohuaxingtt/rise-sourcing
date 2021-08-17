@@ -11,14 +11,14 @@
  */
 export const tabRouterList = [
     {
-      value: 1,
+      value: 2,
       name: '供应商360',
       //url: '/supplier/index',
       //activePath: '',
       key: '供应商360',
     },
     {
-      value: 2,
+      value: 1,
       name: '供应商绩效',
       url: '/supplier/kpiIndex',
       activePath: '/supplier/kpiIndex',
@@ -71,20 +71,20 @@ export const tabRouterList = [
     }
   ];
 
-  // export const categoryManagementAssistantList = [
-  //   {
-  //     value: 1,
-  //     name: '总览',
-  //     url: '/supplier/supplierKpiTreeTable',
-  //     activePath: '/supplier/supplierKpiTreeTable',
-  //     key: '总览',
-  //   },
-  //   {
-  //     value: 2,
-  //     name: '维护',
-  //     url: '/supplier/imgKpi',
-  //     activePath: '/supplier/imgKpi',
-  //     key: '维护',
-  //   }
-  // ];
+  export const categoryManagementAssistantListkpi = [
+    {
+      value: 1,
+      name: '总览',
+      url: '/supplier/supplierKpiTreeTable',
+      activePath: '/supplier/supplierKpiTreeTable',
+      key: '总览',
+    },
+    {
+      value: 2,
+      name: '维护',
+      url: '/supplier/imgKpi',
+      activePath: '/supplier/imgKpi',
+      key: '维护',
+    }
+  ];
   

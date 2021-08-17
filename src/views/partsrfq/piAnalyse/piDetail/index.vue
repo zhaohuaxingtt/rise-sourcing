@@ -30,11 +30,25 @@
         @handleItemClick="handleTabsClick"
         @handleTimeChange="handleTimeChange"
         :currentTab="currentTab"
+        :timeRange="timeRange"
     />
 
     <!--表格-->
     <iCard tabCard class="margin-bottom20">
-      <theTable :dataInfo="dataInfo" :currentTab="currentTab"/>
+      <theTable
+          v-show="currentTab === CURRENTTIME"
+          ref="theCurrentTable"
+          :dataInfo="dataInfo"
+          :currentTab="currentTab"
+          :tableLoading="tableLoading"
+      />
+      <theTable
+          v-show="currentTab === AVERAGE"
+          ref="theAverageTable"
+          :averageTableInfo="averageTableInfo"
+          :currentTab="currentTab"
+          :tableLoading="tableLoading"
+      />
     </iCard>
 
     <!--图形-->
@@ -82,6 +96,7 @@ import {CURRENTTIME, AVERAGE} from './components/data';
 import {
   getAnalysisSchemeDetails,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
+import {getAveragePartCostPrice} from '../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   mixins: [resultMessageMixin],
@@ -115,8 +130,14 @@ export default {
         analysisSchemeId: 109,
         partsId: '',
         batchNumber: '',
+        supplierId: '',
       },
       dataInfo: {},
+      averageTableInfo: {},
+      CURRENTTIME,
+      AVERAGE,
+      tableLoading: false,
+      timeRange: null,
     };
   },
   created() {
@@ -183,6 +204,9 @@ export default {
     // 点击标签
     handleTabsClick(val) {
       this.currentTab = val;
+      if (this.currentTab === AVERAGE) {
+        this.getAverageTable();
+      }
     },
     // 时间改变
     handleTimeChange(time) {
@@ -193,22 +217,47 @@ export default {
     async getDataInfo() {
       try {
         this.pageLoading = true;
+        this.tableLoading = true;
         const req = {
-          analysisSchemeId: this.currentTabData.analysisSchemeId,
+          ...this.currentTabData,
         };
         const res = await getAnalysisSchemeDetails(req);
         this.dataInfo = res.data;
         this.currentTabData.partsId = res.data.partsId;
+        this.currentTabData.batchNumber = res.data.batchNumber;
+        this.currentTabData.supplierId = res.data.supplierId;
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
         this.pageLoading = false;
+        this.tableLoading = false;
       } catch {
         this.pageLoading = false;
+        this.tableLoading = false;
+      }
+    },
+    async getAverageTable() {
+      try {
+        this.tableLoading = true;
+        this.averageTableInfo = {};
+        const req = {
+          ...this.currentTabData,
+        };
+        const res = await getAveragePartCostPrice(req);
+        this.averageTableInfo = res.data;
+        if (res.data.sopTime && res.data.currentTime) {
+          this.timeRange = [res.data.sopTime, res.data.currentTime];
+        } else {
+          this.timeRange = null;
+        }
+        this.tableLoading = false;
+      } catch {
+        this.averageTableInfo = {};
+        this.tableLoading = false;
       }
     },
     // 处理保存弹窗
-    handleSaveDialog(reqParams) {}
+    handleSaveDialog(reqParams) {},
   },
 };
 </script>
