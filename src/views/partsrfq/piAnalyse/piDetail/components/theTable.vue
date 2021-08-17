@@ -236,12 +236,15 @@ export default {
       this.tableStatus = '';
     },
     handleFinish() {
-      const res = this.handleSystemMatchData();
-      console.log(res);
+      const resTableData = this.handleSystemMatchData({tableListData: this.tableListData});
+      const hideTableData = this.handleSystemMatchData({tableListData: this.hideTableData});
+      console.log(111);
+      console.log(resTableData);
+      console.log(hideTableData);
       this.$emit('handlePriceTableFinish');
     },
-    handleSystemMatchData() {
-      const newList = _.cloneDeep(this.tableListData);
+    handleSystemMatchData({tableListData}) {
+      const newList = _.cloneDeep(tableListData);
       newList.map(item => {
         const copyItem = _.cloneDeep(item);
         if (item.dataType === classType['rawMaterial']) {
