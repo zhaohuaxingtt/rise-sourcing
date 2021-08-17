@@ -1,7 +1,27 @@
 <template>
-    <div>
+    <div class="spi-page">
         <iPage>
-            <publicHeaderMenu></publicHeaderMenu>
+            <div class="navBox clearfix">
+            <el-tabs v-model="activeName" @tab-click="handleleftClick" class="leftNav">
+                <el-tab-pane 
+                v-for="x in tabRouterList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <div>
+            <el-tabs v-model="activeRightName" @tab-click="handlerightClick" class="rightNav">
+                <el-tab-pane 
+                v-for="x in categoryManagementAssistantList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <logButton class="logButton"/>
+            </div>
+        </div>
             <div class="head">
                 <div class="head-left">
                     <div>
@@ -40,7 +60,9 @@ import {iButton,iPage,iCard} from 'rise'
 import supplierkpiSearchFrom from './components/supplierkpiSearchFrom'
 import {spiTotalScore} from '@/api/kpiChart'
 import publicHeaderMenu from './commonHeardNav/headerNav'
-
+import {iNavMvp } from 'rise'
+import { tabRouterList, categoryManagementAssistantList } from './commonHeardNav/navData'
+import logButton from '@/components/logButton'
 export default {
     components:{
         publicHeaderMenu,
@@ -49,10 +71,18 @@ export default {
         iButton,
         iPage,
         iCard,
-        supplierkpiSearchFrom
+        supplierkpiSearchFrom,
+        categoryManagementAssistantList,
+        tabRouterList,
+        iNavMvp,
+        logButton
     },
     data(){
         return {
+        activeName:'/supplier/kpiIndex',
+        activeRightName:'/supplier/kpiIndex',
+        tabRouterList:tabRouterList,
+        categoryManagementAssistantList:categoryManagementAssistantList,
             value:"供应商数量",
             tabledata:[{
                 supplierName:'aaa'
@@ -174,6 +204,13 @@ export default {
 
     },
     methods:{
+        handleleftClick(tab,event){
+            this.$router.push(tab.name)
+        },
+        handlerightClick(tab){
+            this.activeName='/supplier/kpiIndex'
+             this.$router.push(tab.name)
+        },
         initOptions:{
 
         },
@@ -251,6 +288,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .spi-page{
+        height: 100vh;
+        width: 100%;
+        overflow: auto;
+    }
     .head{
         width: 100%;
         height: 414px;
@@ -306,4 +348,48 @@ export default {
             }
         }
     }
+    ::v-deep.navBox {
+  position: relative;
+  // border-bottom: 1px solid #E3E3E3;
+  margin-bottom: 20px;
+  .logButton .icon + span{vertical-align: top;}
+  div{font-size: 20px;}
+  .el-tabs__nav-wrap::after{
+    width: 0;
+  }
+  .el-tabs__item{
+    line-height: 24px;
+  }
+  .el-tabs__item.is-active{
+    font-weight: Bold;
+  }
+  .leftNav{
+      float: left;
+  }
+  .rightNav {
+    float: right;
+    margin-right: 110px;
+    .el-tabs__active-bar {
+        background-color: transparent !important;
+    }
+  }
+
+  .logButton {
+    position: absolute;
+    top: 5px;
+    right: 0;
+  }
+}
+.clearfix:after{
+  content: "020"; 
+  display: block; 
+  height: 0; 
+  clear: both; 
+  visibility: hidden;  
+  }
+
+.clearfix {
+  /* 触发 hasLayout */ 
+  zoom: 1; 
+  }
 </style>

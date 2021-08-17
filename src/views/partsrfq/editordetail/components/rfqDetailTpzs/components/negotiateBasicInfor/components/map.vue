@@ -74,6 +74,7 @@ export default {
   methods: {
     handleMap() {
       console.log('creat map');
+      // 初始化地图
       var map = new AMap.Map('container', {
         WebGLParams: {
           preserveDrawingBuffer: true
@@ -87,22 +88,6 @@ export default {
         dragEnable: false,
         mapStyle: 'amap://styles/macaron'
       });
-
-      // var lineArr = [
-      //   ['75', '38'],
-      //   ['117', '24']
-      // ];
-      // var polyline = new AMap.Polyline({
-      //   path: lineArr,            // 设置线覆盖物路径
-      //   strokeColor: '#3366FF',   // 线颜色
-      //   strokeOpacity: 1,         // 线透明度
-      //   strokeWeight: 2,          // 线宽
-      //   strokeStyle: 'solid',     // 线样式
-      //   strokeDasharray: [10, 5], // 补充线样式
-      //   geodesic: true            // 绘制大地线
-      // });
-      // polyline.setMap(map);
-      // console.log(this.markerList);
       // 圆点
       this.tableData.map((item, index) => {
         let carTypeList = ''
@@ -139,11 +124,16 @@ export default {
         });
         marker.setMap(map)
         marker.hide()
-        circleMarker.on('mouseover', (e) => {
-          console.log('off');
+        circleMarker.on('mouseover', () => {
           marker.show()
-          var text = new AMap.Text({
-            text: `<div class='tooltip'>
+          handleTooltip.open(map, [item.lon, item.lat])
+        })
+        circleMarker.on('mouseout', () => {
+          map.clearInfoWindow()
+          marker.hide()
+        })
+        var handleTooltip = new AMap.InfoWindow({
+          content: `<div class='tips'>
                       <div class='flex'>
                         <div class="img"></div><div class='title'>${item.name}</div>
                       </div>
@@ -154,20 +144,8 @@ export default {
                       <div class='label'>${this.$t('TPZS.ZXSE')}</div>
                       <div class='value'>${item.toAmount}</div>
                   </div>`,
-            anchor: 'center', // 设置文本标记锚点
-            draggable: false,
-            cursor: 'pointer',
-            position: [item.lon, item.lat],
-            offset: new AMap.Pixel(0, -155) //设置偏移量
-          });
-          text.setMap(map);
-        })
-
-        circleMarker.on('mouseout', () => {
-          marker.hide()
-          var obj = document.getElementsByClassName('amap-overlay-text-container')[0]
-          obj.remove()
-        })
+          offset: new AMap.Pixel(-0, -15)
+        });
       })
       // svw图标
       this.svwData.map(item => {
@@ -195,12 +173,15 @@ export default {
           anchor: "center"
         });
         marker.setMap(map)
-        marker.on('mouseover', (e) => {
+        marker.on('mouseover', () => {
+          handleTooltip.open(map, [item.lon, item.lat])
           console.log('purchase');
-          // e.target.setIcon(clickIcon);
-          marker.setLabel({
-            offset: new AMap.Pixel(0, -24),  //设置文本标注偏移量
-            content: `<div class='tooltip'>
+        })
+        marker.on('mouseout', () => {
+          map.clearInfoWindow()
+        })
+        var handleTooltip = new AMap.InfoWindow({
+          content: `<div class='tips'>
                         <div class='flex'>
                           <div class="img-svw"></div><div class='title'>${item.name}</div>
                         </div>
@@ -208,39 +189,10 @@ export default {
                         <div class='value'>${carTypeList}</div>
                         <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
                         <div class='value'>${item.factoryAddress}</div>
-                      </div>`, //设置文本标注内容
-            direction: 'top' //设置文本标注方位
-          });
-        })
-        marker.on('mouseout', (e) => {
-          marker.setLabel({
-            offset: new AMap.Pixel(0, 0),  //设置文本标注偏移量
-            content: '', //设置文本标注内容
-            direction: 'top' //设置文本标注方位
-          });
-        })
+                      </div>`,
+          offset: new AMap.Pixel(7, -15)
+        });
       })
-      // var path = [//每个弧线段有两种描述方式
-      //   ['75', '38'],
-      //   ['117', '24']
-      // ];
-      // var bezierCurve = new AMap.BezierCurve({
-      //   path: path,
-      //   isOutline: true,
-      //   outlineColor: '#ffeeff',
-      //   borderWeight: 3,
-      //   strokeColor: "#3366FF",
-      //   strokeOpacity: 1,
-      //   strokeWeight: 6,
-      //   // 线样式还支持 'dashed'
-      //   strokeStyle: "solid",
-      //   // strokeStyle是dashed时有效
-      //   strokeDasharray: [10, 10],
-      //   lineJoin: 'round',
-      //   lineCap: 'round',
-      //   zIndex: 50,
-      // })
-      // bezierCurve.setMap(map)
     },
   }
 }
@@ -257,9 +209,7 @@ export default {
 ::v-deep .amap-copyright {
   display: none !important;
 }
-::v-deep .tooltip {
-  position: relative;
-  padding: 30px;
+::v-deep .tips {
   background-color: #fff;
   width: 20rem;
   .flex {
@@ -294,38 +244,5 @@ export default {
     font-size: 16px;
     text-align: left;
   }
-}
-::v-deep .amap-overlay-text-container:before {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 20px solid #fff;
-}
-::v-deep .amap-marker-label {
-  border: none;
-}
-::v-deep .amap-marker-label:before {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 20px solid #fff;
-}
-::v-deep .amap-overlay-text-container:before,
-.amap-overlay-text-container:after {
-  content: " ";
-  height: 56px;
-  top: 99%;
-  position: absolute;
-  width: 0px;
-}
-::v-deep .amap-marker-label::before,
-.amap-marker-label::after {
-  content: " ";
-  height: 56px;
-  top: 99%;
-  position: absolute;
-  width: 0px;
 }
 </style>

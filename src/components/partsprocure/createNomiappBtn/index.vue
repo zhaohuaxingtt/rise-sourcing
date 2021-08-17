@@ -1,29 +1,22 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-14 19:39:07
+ * @LastEditTime: 2021-08-16 21:24:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
 -->
 <template>
 <div class="inline margin-right10">
-  <iButton @click="handleCreateNomiApplication">{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
+  <iButton @click="handleCreateNomiApplication" :loading='loading'>{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
   <iDialog title="自动定点进度追踪" :visible.sync="messageShow">
     <ul class="ulContent">
-      <li>
+      <li v-for="(items,index) in messageDataList" :key="index">
         <div>
-          <span class="name">FS21-000232</span>
-          <el-progress :percentage="50"></el-progress>
+          <span class="name">{{items.titleName}}</span>
+          <el-progress :percentage="items.step/6"></el-progress>
         </div>
-        <div>1:正在为您创建定点申请</div>
-      </li>
-      <li>
-        <div>
-          <span class="name">FS21-000232</span>
-          <el-progress :percentage="99"></el-progress>
-        </div>
-        <div>5:正在为您打包中</div>
+        <div>{{items.step}}:{{items.message}}</div>
       </li>
     </ul>
   </iDialog>
@@ -44,21 +37,35 @@ export default{
     return {
       soket: null,
       messageDataList:[],
-      messageShow:false
+      messageShow:false,
+      loading:false
     }
   },
   methods:{
     handleCreateNomiApplication(){
+      this.loading = true
       this.messageDataList = []
       this.closeWebSoket()
+      this.showWebsoket()
       this.autonomiFn()
+      setTimeout(() => {
+        if(this.loading) this.messageShow = true
+      }, 2000);
     },
     closeWebSoket(){
-      if(this.soket) this.soket.close()
+      try {
+        this.soket.close()
+      } catch (error) {
+        // not error code
+      }
     },
     showWebsoket(){
        this.soket = new soket({baseUrl:process.env.VUE_APP_WS1_SOKETEURL,url:`/sourcing/websocket/${store.state.permission.userInfo.id}`}).then(res=>{
-         this.messageDataList = res.data
+         if(this.messageDataList.find(i=>i.titleId == res.data.titleId)){
+           this.messageDataList.splice(this.messageDataList.findIndex(i=>i == res.data.titleId),1,res.data)
+         }else{
+           this.messageDataList.push(res.data)
+         }
        }).catch(err=>{
          console.warn(err)
        })
@@ -66,18 +73,38 @@ export default{
     autonomiFn(){
       autonomi(this.translatePropsForServers(this.datalist)).then(res=>{
         if(res.result){
-           this.messageShow = true
-           this.showWebsoket()
+          iMessage.success(res.desZh)
+          this.messageShow = false
+          this.loading = false
+          this.openNomiPage(res.data)
+          this.closeWebSoket()
         }else{
+           this.messageShow = false
            iMessage.warn(res.desZh)
+           this.loading = false
+           this.closeWebSoket()
         }
       }).catch(err=>{
+        this.loading = false
+        this.messageShow = false
         iMessage.error(err.desZh)
+        this.closeWebSoket()
       })
     },
     translatePropsForServers(parmars){
       if(!Array.isArray(parmars)) return console.error('parmars datalist must be a array')
       return {autoKeyDTOS:parmars.map(r=>{return {partNum:r.partNum,oldFsnrGsnrNum:r.oldFsnrGsnrNum,oldPurchasingProjectId:r.oldPurchasingProjectId,purchasingProjectId:r.id,userId:store.state.permission.userInfo.id}})}
+    },
+    openNomiPage(items){
+      const routeData = this.$router.resolve({
+        path:'/designate/decisiondata/title',
+        query:{
+          desinateId:items.nominateId,
+          designateType:items.nominateProcessType,
+          partProjType:items.partProjectType
+        }
+      })
+      window.open(routeData.href, '_blank')
     }
   }
 }

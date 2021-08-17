@@ -17,6 +17,7 @@
           class="select-control"
           autocomplete='new-password'
           v-model="form.carTypes"
+          v-permission="REPORTMGMT_STATUSREPORT_CARTYPE"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterCarType"
           @visible-change="resetOption(...arguments, 'CAR_TYPE_BUYER')"
@@ -40,6 +41,7 @@
       <el-form-item :label="language('nominationLanguage_LingJianHao', '零件号')">
         <iInput
           v-model="form.partNum"
+          v-permission="REPORTMGMT_STATUSREPORT_PARTNUM"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -48,6 +50,7 @@
       <el-form-item :label="language('nominationLanguage.RFQBianHao','RFQ编号')">
         <iInput
           v-model="form.rfqId"
+          v-permission="REPORTMGMT_STATUSREPORT_RFQID"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -57,6 +60,7 @@
         <iSelect
           class="select-control"
           v-model="form.order"
+          v-permission="REPORTMGMT_STATUSREPORT_SORT"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterSort"
           @visible-change="resetOption(...arguments, 'SORT')"
@@ -64,7 +68,7 @@
           clearable
         >
           <el-option
-            value=""
+            value="DEFAULT"
             :label="language('all','全部') | capitalizeFilter"
           ></el-option>
           <el-option
@@ -80,6 +84,7 @@
         <iSelect
           class="select-control"
           v-model="form.categoryGroup"
+          v-permission="REPORTMGMT_STATUSREPORT_MATERIAL"
           multiple
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterMaterial"
@@ -104,6 +109,7 @@
         <iSelect
           class="select-control"
           v-model="form.buyer"
+          v-permission="REPORTMGMT_STATUSREPORT_BUYERL"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterBuyer"
           @visible-change="resetOption(...arguments, 'BUYER_BY_USER')"
@@ -150,7 +156,7 @@ export default {
         buyer: '',
         carTypes: [],
         categoryGroup: [],
-        order: '',
+        order: 'DEFAULT',
         partNum: '',
         rfqId: '',
       },
@@ -169,11 +175,6 @@ export default {
             name: '按整车进度风险',
             key: 'ANZHENGCHEFENGXIAN'
           },
-          {
-            code: 'DEFAULT',
-            name: '默认',
-            key: 'MOREN'
-          }
         ],
         MATERIAL_GROUP_BUYER: [],
         CAR_TYPE_BUYER: [],

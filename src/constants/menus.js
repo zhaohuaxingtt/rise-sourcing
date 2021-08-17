@@ -165,7 +165,7 @@ const menuApplication = [
 const sprint12 = [
   {
     title: '供应商绩效',
-    url: '/supplier/kpi'
+    url: '/supplier/kpiIndex'
   },
 ]
 export default [

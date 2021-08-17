@@ -1,7 +1,27 @@
 <template>
   <div>
       <iPage>
-        <publicHeaderMenu></publicHeaderMenu>
+        <div class="navBox clearfix">
+            <el-tabs v-model="activeName" @tab-click="handleleftClick" class="leftNav">
+                <el-tab-pane 
+                v-for="x in tabRouterList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <div>
+            <el-tabs v-model="activeRightName" @tab-click="handlerightClick" class="rightNav">
+                <el-tab-pane 
+                v-for="x in categoryManagementAssistantList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <logButton class="logButton"/>
+            </div>
+        </div>
            <iCard>
                <div class="imgkpi-head">
                <el-form>
@@ -39,6 +59,9 @@ import {iButton,iPage,iCard,iInput,iSelect} from 'rise'
 import kpiStructure from './components/kpiStructure'
 import publicHeaderMenu from './commonHeardNav/headerNav'
 import { kpiDetail,slelectkpiList,dowbloadAPI,templateDetail } from '@/api/kpiChart'
+import {iNavMvp } from 'rise'
+import { tabRouterList, categoryManagementAssistantListkpi } from './commonHeardNav/navData'
+import logButton from '@/components/logButton'
 export default {
     components:{
         iButton,
@@ -47,10 +70,18 @@ export default {
         iCard,
         iInput,
         iSelect,
-        publicHeaderMenu
+        publicHeaderMenu,
+         categoryManagementAssistantListkpi,
+        tabRouterList,
+        iNavMvp,
+        logButton
     },
     data(){
         return {
+      activeName:'/supplier/kpiList',
+      activeRightName:'/supplier/imgKpi',
+      tabRouterList:tabRouterList,
+        categoryManagementAssistantList:categoryManagementAssistantListkpi,
             formData:{
                 deptId:''
             },
@@ -77,6 +108,13 @@ export default {
       }
     },
     methods:{
+      handleleftClick(tab,event){
+            this.$router.push(tab.name)
+        },
+        handlerightClick(tab){
+            //this.activeName='/supplier/kpiList'
+             this.$router.push(tab.name)
+        },
       saveVersion(){
         this.getSelectKpiList({deptCode:this.$store.state.permission.userInfo.deptDTO.deptNum})
       },
@@ -122,4 +160,48 @@ export default {
         display: flex;
         justify-content: space-between;
     }
+    ::v-deep.navBox {
+  position: relative;
+  // border-bottom: 1px solid #E3E3E3;
+  .logButton .icon + span{vertical-align: top;}
+  margin-bottom: 20px;
+  div{font-size: 20px;}
+  .el-tabs__nav-wrap::after{
+    width: 0;
+  }
+  .el-tabs__item{
+    line-height: 24px;
+  }
+  .el-tabs__item.is-active{
+    font-weight: Bold;
+  }
+  .leftNav{
+      float: left;
+  }
+  .rightNav {
+    float: right;
+    margin-right: 110px;
+    .el-tabs__active-bar {
+        background-color: transparent !important;
+    }
+  }
+
+  .logButton {
+    position: absolute;
+    top: 5px;
+    right: 0;
+  }
+}
+.clearfix:after{
+  content: "020"; 
+  display: block; 
+  height: 0; 
+  clear: both; 
+  visibility: hidden;  
+  }
+
+.clearfix {
+  /* 触发 hasLayout */ 
+  zoom: 1; 
+  }
 </style>

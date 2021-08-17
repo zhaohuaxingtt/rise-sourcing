@@ -10,10 +10,10 @@
         {{ language(item.key, item.title) }}
       </div>
     </div>
-    <div class="timeBox">
+    <div class="timeBox" v-if="currentTab !== CURRENTTIME">
       <span class="text">{{ language('PI.SHIJIANDAN', '时间段') }}</span>
       <el-date-picker
-          v-model='monthRange'
+          v-model='timeRange'
           value-format='yyyy-MM'
           type="monthrange"
           style="width: 200px"
@@ -38,17 +38,28 @@ export default {
         ];
       },
     },
+    currentTab: {
+      type: String,
+      default: '',
+    },
+    timeRange: {
+      type: Array,
+      default: () => {
+        return null;
+      },
+    },
   },
   data() {
     return {
       current: 1,
-      monthRange: null,
+      CURRENTTIME,
+      AVERAGE,
     };
   },
   methods: {
     handleItemClick(index, flag) {
       this.current = index;
-      this.$emit('handleClick', flag);
+      this.$emit('handleItemClick', flag);
     },
     handleTimeChange(time) {
       this.$emit('handleTimeChange', time);

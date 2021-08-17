@@ -424,6 +424,11 @@ export default {
       this.tableLoading = true;
       this.form.size = this.page.pageSize;
       this.form.current = this.page.currPage;
+      // 获取预置的参数
+      const acceptKeys = ['status']
+      Object.keys(this.$route.query).forEach(key => {
+          acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, this.$route.query[key]))
+      })
       getTabelData(this.form)
         .then((res) => {
           this.tableLoading = false;

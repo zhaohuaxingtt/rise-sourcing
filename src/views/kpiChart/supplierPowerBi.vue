@@ -1,7 +1,27 @@
 <template>
   <div @click.stop="onBlur()">
       <iPage>
-          <publicHeaderMenu></publicHeaderMenu>
+        <div class="navBox clearfix">
+            <el-tabs v-model="activeName" @tab-click="handleleftClick" class="leftNav">
+                <el-tab-pane 
+                v-for="x in tabRouterList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <div>
+            <el-tabs v-model="activeRightName" @tab-click="handlerightClick" class="rightNav">
+                <el-tab-pane 
+                v-for="x in categoryManagementAssistantList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <logButton class="logButton"/>
+            </div>
+        </div>
           <iCard>
                <div class="imgkpi-head">
                <el-form>
@@ -35,6 +55,9 @@
 </template>
 
 <script>
+import {iNavMvp } from 'rise'
+import { tabRouterList, categoryManagementAssistantList } from './commonHeardNav/navData'
+import logButton from '@/components/logButton'
 import {iButton,iPage,iCard,iInput,iSelect,iTableCustom} from 'rise'
 import * as pbi from 'powerbi-client';
 import { getPowerBiKpi,getPowerBiSupplier } from '@/api/kpiChart'
@@ -46,10 +69,18 @@ export default {
         iCard,
         iInput,
         iSelect,
-        publicHeaderMenu
+        publicHeaderMenu,
+        categoryManagementAssistantList,
+        tabRouterList,
+        iNavMvp,
+        logButton
     },
     data(){
         return {
+            activeName:'/supplier/kpiIndex',
+            activeRightName:'/supplier/supplierPowerBi',
+            tabRouterList:tabRouterList,
+            categoryManagementAssistantList:categoryManagementAssistantList,
             filter : {
                 $schema: "http://powerbi.com/product/schema#basic",
                 target: {
@@ -85,6 +116,13 @@ export default {
         })
     },
     methods:{
+        handleleftClick(tab,event){
+            this.$router.push(tab.name)
+        },
+        handlerightClick(tab){
+            this.activeName='/supplier/kpiIndex'
+             this.$router.push(tab.name)
+        },
         // 初始化配置
 			init(){
 				this.permissions = pbi.models.Permissions.All
@@ -96,6 +134,16 @@ export default {
 					workspaceid:'876776a9-f959-442e-a011-b4bade0dd862',
                     reportid:'437fd85e-323d-48b6-aedd-de8d63ce6f37',
                     pageName:'ReportSection680575c9e561c8d8bd83',
+                    settings: {
+							panes: {
+								filters: {
+									visible: false
+								},
+								pageNavigation: {
+									visible: false
+								}
+							}
+						}
 				};
 				this.reportContainer = document.getElementById('powerBi');
 				this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
@@ -262,5 +310,48 @@ export default {
         }
         
     }
+::v-deep.navBox {
+  position: relative;
+  // border-bottom: 1px solid #E3E3E3;
+ .logButton .icon + span{vertical-align: top;}
+  margin-bottom: 20px;
+  div{font-size: 20px;}
+  .el-tabs__nav-wrap::after{
+    width: 0;
+  }
+  .el-tabs__item{
+    line-height: 24px;
+  }
+  .el-tabs__item.is-active{
+    font-weight: Bold;
+  }
+  .leftNav{
+      float: left;
+  }
+  .rightNav {
+    float: right;
+    margin-right: 110px;
+    .el-tabs__active-bar {
+        background-color: transparent !important;
+    }
+  }
 
+  .logButton {
+    position: absolute;
+    top: 5px;
+    right: 0;
+  }
+}
+.clearfix:after{
+  content: "020"; 
+  display: block; 
+  height: 0; 
+  clear: both; 
+  visibility: hidden;  
+  }
+
+.clearfix {
+  /* 触发 hasLayout */ 
+  zoom: 1; 
+  }
 </style>

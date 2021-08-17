@@ -212,7 +212,6 @@ export default {
         this.$router.push({
           path: "/sourcing/mek/mekDetails",
           query: {
-            materialGroupCode: pms.materialGroupCode,
             chemeId: res.data,
           },
         })
