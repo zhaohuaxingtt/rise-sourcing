@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-17 18:12:31
+ * @LastEditTime: 2021-08-17 21:18:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -110,7 +110,7 @@
 							</iSelect>
 						</iFormItem>
 						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB)" :label="language('LK_HUOBI','货币') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('LK_HUOBI','货币') + ':'" name="test">
 							<iSelect v-model="detailData.currencyCode" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
@@ -118,7 +118,7 @@
 							</iSelect>
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
 							<iSelect v-model="detailData.payClause" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
@@ -179,7 +179,7 @@
 							</iSelect>
 						</iFormItem> -->
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
 							<iSelect v-model="detailData.purchaseClause" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PURCHASE" :key="index">

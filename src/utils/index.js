@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-17 18:18:12
+ * @LastEditTime: 2021-08-17 21:17:30
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -252,7 +252,7 @@ export function filterProjectList(oldProjectList,currentProjectType){
 import {businessKey} from '@/config/businessBlackKey'
 export function businessPermission(currentPermissinKey,currentProjectParmars){
   try {
-    if(!currentProjectParmars.businessKey) return false
+    if(!currentProjectParmars.businessKey) return true
     const businessKeyQuery = currentProjectParmars.businessKey;
     if(businessKey[businessKeyQuery].find(i=>i == currentPermissinKey)) return true;
   } catch (error) {

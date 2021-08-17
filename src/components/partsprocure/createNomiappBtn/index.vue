@@ -1,7 +1,7 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-17 17:48:25
+ * @LastEditTime: 2021-08-17 20:55:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
@@ -61,11 +61,14 @@ export default{
     },
     showWebsoket(){
        this.soket = new soket({baseUrl:process.env.VUE_APP_WS1_SOKETEURL,url:`/sourcing/websocket/${store.state.permission.userInfo.id}`}).then(res=>{
-         if(this.messageDataList.find(i=>i.titleId == res.data.titleId)){
-           this.messageDataList.splice(this.messageDataList.findIndex(i=>i == res.data.titleId),1,res.data)
-         }else{
-           this.messageDataList.push(res.data)
-         }
+        if(res){
+          const jsonData = JSON.parse(res.data)
+          if(this.messageDataList.find(i=>i.titleId == jsonData.titleId)){
+            this.messageDataList.splice(this.messageDataList.findIndex(i=>i == jsonData.titleId),1,jsonData)
+          }else{
+            this.messageDataList.push(jsonData)
+          }
+          }
        }).catch(err=>{
          console.warn(err)
        })
@@ -80,8 +83,8 @@ export default{
           this.closeWebSoket()
         }else{
            this.messageShow = false
-           iMessage.warn(res.desZh)
            this.loading = false
+           iMessage.warn(res.desZh)
            this.closeWebSoket()
         }
       }).catch(err=>{
