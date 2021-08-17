@@ -136,7 +136,6 @@
 		iButton,
 		iInput,
 		iMessage,
-		iRadio,
 		iPagination
 	} from 'rise';
 	import tablelist from "./components/tablelist";
@@ -164,7 +163,6 @@ import { cloneDeep } from 'lodash'
 			iButton,
 			iInput,
 			tablelist,
-			iRadio,
 			iPagination
 		},
 		mixins: [ pageMixins ],
@@ -260,7 +258,7 @@ import { cloneDeep } from 'lodash'
 					// 	this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
 					// 	this.tableListData=JSON.parse(JSON.stringify([price.cfTargetPriceDetail]))  
 					// }
-					if (price.rwApplication) {
+					if (price?.rwApplication) {
 						this.targetprice.rwApplication=price.rwApplication
 						this.targeRwData=JSON.parse(JSON.stringify([price.rwApplication]))
 					}
