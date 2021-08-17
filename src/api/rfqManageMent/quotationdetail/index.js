@@ -1,8 +1,8 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 10:54:14
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-17 15:00:03
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -15,6 +15,7 @@ const requstxw = axios(process.env.VUE_APP_SUPPLIER_WDL)
 const requstFile = axiosFile(process.env.VUE_APP_QUOTATION)
 const requstPart = axios(process.env.VUE_APP_SUPPLIER_RFQLIST)
 const requstdl = axios(process.env.VUE_APP_QUOTATION_DL)
+const requstRfq = axios(process.env.VUE_APP_RFQ)
 // eslint-disable-next-line no-undef
 // 获取零件基础信息
 export function getPartsQuotations(params) {
@@ -178,8 +179,8 @@ export function getPackageTransport({quotationId}) {
 }
 // 获取cbd
 export function findFiles(parmars) {
-  return requstxw({
-    url: `/file/fileHistory?supplierId=${supplierId()}`,
+  return requstRfq({
+    url: `file-histories/cbdFindHistoryFiles?supplierId=${supplierId()}`,
     method: 'POST',
     data: parmars
   })
