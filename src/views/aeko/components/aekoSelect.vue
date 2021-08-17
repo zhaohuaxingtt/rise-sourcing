@@ -108,7 +108,7 @@ export default {
              let _value = typeof value === "string" ? value.trim().toLowerCase() : _value;
              console.log(_value,'_value_value_value');
             if (_value) {
-              this.optionsFilterCache = this.OptionsCache.filter(item => item[searchKey].includes(_value));
+              this.optionsFilterCache = this.OptionsCache.filter(item => item[searchKey] && item[searchKey].includes(_value));
               this.optionsCacheChunks = chunk(this.optionsFilterCache, 20);
             } else {
               this.optionsFilterCache = this.OptionsCache;
