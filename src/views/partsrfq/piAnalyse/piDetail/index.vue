@@ -130,6 +130,7 @@ export default {
         analysisSchemeId: 109,
         partsId: '',
         batchNumber: '',
+        supplierId: '',
       },
       dataInfo: {},
       averageTableInfo: {},
@@ -218,11 +219,13 @@ export default {
         this.pageLoading = true;
         this.tableLoading = true;
         const req = {
-          analysisSchemeId: this.currentTabData.analysisSchemeId,
+          ...this.currentTabData,
         };
         const res = await getAnalysisSchemeDetails(req);
         this.dataInfo = res.data;
         this.currentTabData.partsId = res.data.partsId;
+        this.currentTabData.batchNumber = res.data.batchNumber;
+        this.currentTabData.supplierId = res.data.supplierId;
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
