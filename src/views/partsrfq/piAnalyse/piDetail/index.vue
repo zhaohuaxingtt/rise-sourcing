@@ -82,6 +82,7 @@ import {CURRENTTIME, AVERAGE} from './components/data';
 import {
   getAnalysisSchemeDetails,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
+import {getAveragePartCostPrice} from '../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   mixins: [resultMessageMixin],
@@ -183,6 +184,11 @@ export default {
     // 点击标签
     handleTabsClick(val) {
       this.currentTab = val;
+      console.log(11);
+      console.log(val);
+      if (this.currentTab === AVERAGE) {
+        this.getAverageTable();
+      }
     },
     // 时间改变
     handleTimeChange(time) {
@@ -207,8 +213,14 @@ export default {
         this.pageLoading = false;
       }
     },
+    async getAverageTable() {
+      const req = {
+        ...this.currentTabData,
+      };
+      const res = await getAveragePartCostPrice(req);
+    },
     // 处理保存弹窗
-    handleSaveDialog(reqParams) {}
+    handleSaveDialog(reqParams) {},
   },
 };
 </script>

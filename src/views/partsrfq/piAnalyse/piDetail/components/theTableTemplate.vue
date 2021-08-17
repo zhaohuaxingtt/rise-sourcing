@@ -258,7 +258,7 @@
 </template>
 <script>
 import {iInput, iSelect, icon} from 'rise';
-import {getColor, rawMaterialColor, FIRSTSELECT, SECONDSELECT, THIRDSELECT, classTypeSelect, classType} from './data';
+import {getColor, rawMaterialColor, FIRSTSELECT, SECONDSELECT, THIRDSELECT, classTypeSelect, classType, FIRSTEXCHANGERATE} from './data';
 import iconTips from '../../../../../components/ws3/iconTips';
 import {
   getSelectMateria,
@@ -361,7 +361,7 @@ export default {
       }
     },
     rowStyle({row}) {
-      if (row.dataType === this.classType['exchangeRate']) {
+      if (row[FIRSTEXCHANGERATE]) {
         return 'rowStyle';
       }
     },

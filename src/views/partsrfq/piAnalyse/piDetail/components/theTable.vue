@@ -4,10 +4,10 @@
       <span class="font18 font-weight">
         <span class="margin-right30">{{
             language('PI.DANGQIANJIAGE', '当前价格')
-          }}：{{ nowPriceRatio }}</span>
+          }}：{{ nowPriceRatio }}%</span>
         <span>{{
             language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响')
-          }}：{{ totalPriceRatio }}</span>
+          }}：{{ totalPriceRatio }}%</span>
       </span>
       <div class="floatright">
         <template v-if="isPreview">
@@ -70,11 +70,20 @@
 
 <script>
 import {iButton, iMessage, iMessageBox} from 'rise';
-import {tableTitle, tableEditTitle, FIRSTSELECT, SECONDSELECT, THIRDSELECT, classType} from './data';
+import {
+  tableTitle,
+  tableEditTitle,
+  FIRSTSELECT,
+  SECONDSELECT,
+  THIRDSELECT,
+  classType,
+  CURRENTTIME,
+  AVERAGE,
+  FIRSTEXCHANGERATE,
+} from './data';
 import {numberProcessor, toFixedNumber, toThousands, deleteThousands} from '@/utils';
 import theTableTemplate from './theTableTemplate';
 import _ from 'lodash';
-import {CURRENTTIME, AVERAGE} from './data';
 
 export default {
   components: {
@@ -265,11 +274,11 @@ export default {
       });
       return newList;
     },
-    getTableList() {
+    async getTableList() {
       try {
         this.tableListData = [];
         this.hideTableData = [];
-        const copyDataInfo = _.cloneDeep(this.dataInfo);
+        let copyDataInfo = _.cloneDeep(this.dataInfo);
         let copyTableList = [];
         if (this.currentTab === this.CURRENTTIME) {
           this.nowPriceRatio = copyDataInfo.currentPartCostTotalVO.nowPriceRatio;
@@ -279,8 +288,13 @@ export default {
         } else if (this.currentTab === this.AVERAGE) {
           return [];
         }
+        let exchangeRateIndex = 0;
         copyTableList.map((item, index) => {
           const time = new Date().getTime() + index;
+          if (item.dataType === classType['exchangeRate']) {
+            exchangeRateIndex === 0 && (item[FIRSTEXCHANGERATE] = true);
+            exchangeRateIndex++;
+          }
           if (!item.id) {
             item.time = time;
             this.selectOptionsObject[time] = {};
