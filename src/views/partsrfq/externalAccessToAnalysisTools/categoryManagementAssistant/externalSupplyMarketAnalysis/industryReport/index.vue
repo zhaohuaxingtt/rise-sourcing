@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-09 20:21:47
+ * @LastEditTime: 2021-08-16 10:34:18
  * @LastEditors: 舒杰
  * @Description: 行业报告
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\index.vue
@@ -85,6 +85,12 @@
 		created() {
 			this.categoryCode=this.$store.state.rfq.categoryCode
 			this.getTableList()
+		},
+		watch: {
+			'$store.state.rfq.categoryCode'(newVal){
+				this.categoryCode=this.$store.state.rfq.categoryCode
+				this.getTableList()
+			}
 		},
 		methods:{
 			handleSelectionChange(list){

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-12 17:34:26
+ * @LastEditTime: 2021-08-16 17:37:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -12,16 +12,13 @@
       <div class="navBox flex-between-center">
         <div class="title font-weight flex">
           <label for="">{{ language("QIEHUANCAILIAOZU","切换材料组") }}:</label>
-          <iSelect v-model="chartType"
-                   @change="changeBy"
-                   placeholder="材料组编号_名称">
-            <el-option value="supplier"
-                       :label="$t('按供应商比较')">
+          <iSelect @change="changeCategory"
+                   v-model="categoryCode">
+            <el-option v-for="item in categoryList"
+                       :key="item.categoryId"
+                       :value="item.categoryCode"
+                       :label="item.categoryName">
             </el-option>
-            <el-option value="turn"
-                       :label="$t('按轮次比较')"></el-option>
-            <el-option value="spareParts"
-                       :label="$t('按零件号比较')"></el-option>
           </iSelect>
         </div>
         <div class="flex">
@@ -52,41 +49,24 @@
                   <!--对标车型-->
                   <el-form-item :label="$t('对标车型')"
                                 label-width="180px">
-                    <el-select v-model="carType"
+                    <el-select v-model="ComparedMotor"
                                @change="changeBy"
                                multiple>
-                      <el-option value="1"
-                                 :label="$t('车型1')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('车型2')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('车型3')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('车型4')"></el-option>
-                      <el-option value="5"
-                                 :label="$t('车型5')"></el-option>
-                      <el-option value="6"
-                                 :label="$t('车型6')"></el-option>
-                      <el-option value="7"
-                                 :label="$t('车型7')"></el-option>
-                      <el-option value="8"
-                                 :label="$t('车型8')"></el-option>
+                      <el-option v-for="item in ComparedMotorList"
+                                 :key="item.motorId"
+                                 :value="item.motorCode"
+                                 :label="item.motorName"> </el-option>
                     </el-select>
                   </el-form-item>
                   <!--类型选择-->
                   <el-form-item :label="$t('类型选择')">
                     <el-select v-model="type"
                                @change="changeBy">
-                      <el-option value="1"
-                                 :label="$t('按车型配置')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('按发动机')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('按变速箱')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('按电池容量')"></el-option>
-                      <el-option value="5"
-                                 :label="$t('按计算车型')"></el-option>
+                      <el-option v-for="item in mekTypeList"
+                                 :key="item.id"
+                                 :value="item.code"
+                                 :label="item.name"> </el-option>
+
                     </el-select>
                   </el-form-item>
                   <!--零件六位号-->
@@ -94,38 +74,10 @@
                     <el-select v-model="partNumber"
                                @change="changeBy"
                                multiple>
-                      <el-option value="1"
-                                 :label="$t('857705')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('857706')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('857707')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('857708')"></el-option>
-                      <el-option value="5"
-                                 :label="$t('857709')"></el-option>
-                      <el-option value="6"
-                                 :label="$t('857710')"></el-option>
-                      <el-option value="7"
-                                 :label="$t('857711')"></el-option>
-                      <el-option value="8"
-                                 :label="$t('857712')"></el-option>
-                      <el-option value="9"
-                                 :label="$t('857713')"></el-option>
-                      <el-option value="10"
-                                 :label="$t('857714')"></el-option>
-                      <el-option value="11"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="12"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="13"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="14"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="15"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="16"
-                                 :label="$t('857715')"></el-option>
+                      <el-option v-for="item in recursiveRetrieveList"
+                                 :key="item.partId"
+                                 :value="item.partSixNumber"
+                                 :label="item.partNumber"> </el-option>
                     </el-select>
                   </el-form-item>
                 </el-row>
@@ -154,18 +106,14 @@
               <div class="chartBox">
                 <div class="flex chartItem">
                   <div class="operation1">
-                    <el-select v-model="targetNumber"
-                               @change="changeBy"
+                    <el-select v-model="targetMotor"
+                               @change="changeTargetMotor"
                                style="width:150px"
                                class="margin-bottom15 margin-top40">
-                      <el-option value="1"
-                                 :label="$t('车型1')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('车型2')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('车型3')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('车型4')"></el-option>
+                      <el-option v-for="item in TargetMotorList"
+                                 :key="item.motorId"
+                                 :value="item.motorCode"
+                                 :label="item.motorName"> </el-option>
                     </el-select>
                     <span class="margin-bottom15 "
                           style="min-height:14px">{{firstBarData.motorName}}</span>
@@ -211,12 +159,10 @@
                                  @change="changeBy"
                                  style="width:150px;z-index:1000"
                                  v-if="flag1">
-                        <el-option value="1"
-                                   :label="$t('SOP价格')"> </el-option>
-                        <el-option value="2"
-                                   :label="$t('选择时间')"></el-option>
-                        <el-option value="3"
-                                   :label="$t('价格类型')"></el-option>
+                        <el-option v-for="i in mekpriceTypeList"
+                                   :key="i.id"
+                                   :value="i.code"
+                                   :label="i.name"> </el-option>
                       </el-select>
                       <el-date-picker v-model="date"
                                       type="date"
@@ -231,117 +177,7 @@
                   <datasetBar :barData="item.detail"
                               :maxWidth="maxWidth"></datasetBar>
                 </div>
-                <!-- <div class="flex chartItem">
-                  <div class="operation">
-                    <icon symbol
-                          name="iconbob-shanchu"
-                          class="margin-bottom15 "
-                          style="width:20px;height:20px"></icon>
-                    <el-select v-model="carType"
-                               @change="changeBy"
-                               style="width:150px"
-                               class="margin-bottom15">
-                      <el-option value="1"
-                                 :label="$t('车型1')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('车型2')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('车型3')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('车型4')"></el-option>
-                    </el-select>
-                    <span class="margin-bottom15 ">Best Ball</span>
-                    <span class="yield margin-bottom15">22,000</span>
-                    <el-select v-model="carType"
-                               @change="changeBy"
-                               style="width:150px">
-                      <el-option value="1"
-                                 :label="$t('车型1')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('车型2')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('车型3')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('车型4')"></el-option>
-                    </el-select>
-                  </div>
-                  <datasetBar ref="datasetBar"
-                              :notY="true"></datasetBar>
-                </div>
-                <div class="flex chartItem">
-                  <div class="operation">
-                    <icon symbol
-                          name="iconbob-shanchu"
-                          class="margin-bottom15 "
-                          style="width:20px;height:20px"></icon>
-                    <el-select v-model="carType"
-                               @change="changeBy"
-                               style="width:150px"
-                               class="margin-bottom10">
-                      <el-option value="1"
-                                 :label="$t('车型1')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('车型2')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('车型3')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('车型4')"></el-option>
-                    </el-select>
-                    <span class="margin-bottom15 ">Best Ball</span>
-                    <span class="yield margin-bottom15">22,000</span>
-                    <el-select v-model="carType"
-                               @change="changeBy"
-                               style="width:150px">
-                      <el-option value="1"
-                                 :label="$t('车型1')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('车型2')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('车型3')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('车型4')"></el-option>
-                    </el-select>
-                  </div>
-                  <datasetBar ref="datasetBar"
-                              :notY="true"></datasetBar>
-                </div>
-                <div class="flex chartItem">
-                  <div class="operation">
-                    <icon symbol
-                          name="iconbob-shanchu"
-                          class="margin-bottom15 "
-                          style="width:20px;height:20px"></icon>
-                    <el-select v-model="carType"
-                               @change="changeBy"
-                               style="width:150px"
-                               class="margin-bottom10">
-                      <el-option value="1"
-                                 :label="$t('车型1')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('车型2')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('车型3')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('车型4')"></el-option>
-                    </el-select>
-                    <span class="margin-bottom15 ">Best Ball</span>
-                    <span class="yield margin-bottom15">22,000</span>
-                    <el-select v-model="carType"
-                               @change="changeBy"
-                               style="width:150px">
-                      <el-option value="1"
-                                 :label="$t('车型1')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('车型2')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('车型3')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('车型4')"></el-option>
-                    </el-select>
-                  </div>
-                  <datasetBar ref="datasetBar"
-                              :notY="true"></datasetBar>
-                </div> -->
+
               </div>
             </div>
             <!-- <report :dialogVisible="true"></report> -->
@@ -352,7 +188,7 @@
         <template v-slot:header>
           <div class="titleBox">
             <div v-if="!editFlag">
-              <iButton>新增</iButton>
+              <iButton @click="addRow">新增</iButton>
               <iButton>删除</iButton>
               <iButton @click="edit">编辑</iButton>
             </div>
@@ -363,7 +199,10 @@
           </div>
         </template>
         <tableList :gridData="gridData"
-                   :editFlag="editFlag"></tableList>
+                   :editFlag="editFlag"
+                   :addRowList="addRowList"
+                   @editData="editData"
+                   @addData="addData"></tableList>
       </iCard>
       <iDialog title="保存"
                :visible.sync="dialogVisible"
@@ -403,7 +242,8 @@ import datasetBar from "../components/datasetBar";
 import datasetBar1 from "../components/datasetBar1";
 import tableList from "../components/tableList";
 import modalDialog from "../components/modalDialog";
-import { getMekTable, getHistogram } from '@/api/categoryManagementAssistant/mek'
+import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, saveMekTable, deleteMekTable, getSchemeInfo } from '@/api/categoryManagementAssistant/mek'
+import { getDictByCode } from '@/api/dictionary'
 export default {
   name: "mekDetails",
   components: {
@@ -423,12 +263,6 @@ export default {
     return {
       //类型选择
       type: "",
-      //对标车型
-      carType: "",
-      //六位车型零件号
-      partNumber: "",
-      //目标车型
-      targetNumber: "",
       //价格类型
       priceType: "",
       //时间选择
@@ -454,21 +288,118 @@ export default {
       //第一个柱状图
       firstBarData: {},
       //柱状图最大宽度
-      maxWidth: null
+      maxWidth: null,
+      //材料组
+      categoryList: [],
+      //0:外部，1：内部
+      entryStatus: "",
+      //rfqId
+      rfqId: "",
+      //材料组
+      categoryCode: "",
+      //目标车型list
+      TargetMotorList: [],
+      //目标车型
+      targetMotor: "",
+      //对标车型list
+      ComparedMotorList: [],
+      //对标车型
+      ComparedMotor: "",
+      //mek类型list
+      mekTypeList: [],
+      //"mek价格类型"list
+      mekpriceTypeList: [],
+      //六位车型零件号
+      recursiveRetrieveList: [],
+      //新增行
+      addRowList: {},
+
     };
   },
   async created () {
-    await this.getHistogram()
-    await this.getMekTable()
+    await this.init()
+    // this.getHistogram()
+    this.getMekTable()
   },
   mounted () {
   },
   methods: {
+    init () {
+      this.rfqId = this.$store.state.rfq.rfqId
+      this.entryStatus = this.$store.state.rfq.entryStatus
+      this.chemeId = this.$route.query.chemeId
+      getSchemeInfo({
+        schemeId: this.chemeId
+      }).then(res => {
+
+      })
+      //材料组
+      category({}).then((res) => {
+        this.categoryList = res.data
+      })
+      getDictByCode('mekType').then(res => {
+        this.mekTypeList = res.data[0].subDictResultVo
+        console.log(res, "mekType")
+      })
+      getDictByCode('mekpriceType').then(res => {
+        this.mekpriceTypeList = res.data[0].subDictResultVo
+        console.log(res, "mekpriceType")
+      })
+      recursiveRetrieve({
+        categoryId: '600029',
+        motorIds: this.ComparedMotor,
+        schemeId: this.chemeId
+      }).then(res => {
+        this.recursiveRetrieveList = res.data
+      })
+      // getComparedMotor({
+      // }).then(res => {
+
+      // })
+    },
+    //选择材料组
+    changeCategory (val) {
+      let params = {}
+      if (this.entryStatus == 1) {
+        params = {
+          // categoryId: val,
+          categoryId: '600029',
+          isBindingRfq: true,
+          req: this.rfqId
+        }
+      } else {
+        params = {
+          // categoryId: val,
+          categoryId: '600029',
+          isBindingRfq: false,
+        }
+      }
+      getTargetMotor(params).then(res => {
+        this.TargetMotorList = res.data
+      })
+      // if (this.priceType === '2') {
+      //   this.flag1 = false
+      // }
+    },
+    //选择目标车型
+    changeTargetMotor (val) {
+      let params = {}
+      params = {
+        categoryId: '600029',
+        // categoryId: this.categoryCode,
+        // targetMotorId: val
+        targetMotorId: '50044101'
+      }
+      getComparedMotor(params).then(res => {
+        this.ComparedMotorList = res.data
+      })
+    },
     edit () {
       this.editFlag = true
     },
     save () {
       this.editFlag = false
+      this.save = true
     },
     cancel () {
       this.editFlag = false
@@ -480,6 +411,16 @@ export default {
     saveDialog () {
       this.dialogVisible = true
     },
+    addRow () {
+      this.addRowList = {}
+      this.gridData.title.forEach(item => {
+        this.addRowList[item.label] = ""
+        this.addRowList['id#' + item.label.split("#")[1]] = ""
+      })
+      console.log(this.addRowList)
+
+    },
+
     //计算车型弹窗
     computeModal () {
       this.modalVisible = true
@@ -492,10 +433,10 @@ export default {
       getMekTable({
         "comparedType": "mekConfig",
         "motorIds": [
-          50001002, 50001003, 50001004
+          50048103, 2000000166, 50001004
         ],
-        "schemeId": 2,
-        "targetMotorId": 50001001
+        "schemeId": 3,
+        "targetMotorId": 50044101
       }).then(res => {
         this.gridData = res
         console.log(this.gridData)
@@ -504,27 +445,31 @@ export default {
     getHistogram () {
       getHistogram({
         "comparedType": "mekConfig",
-        "info": [
-          {
-            "motorId": 50044101,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 50048103,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 2000000166,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 2000000084,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 2000000164,
-            "priceType": "latestPrice"
-          }
+        "info": [{
+          "motorId": 50044101,
+          "priceType": "latestPrice",
+          "isTargetMotor": true
+        },
+        {
+          "motorId": 50048103,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        },
+        {
+          "motorId": 2000000166,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        },
+        {
+          "motorId": 2000000084,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        },
+        {
+          "motorId": 2000000164,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        }
         ],
         "categoryId": 600029,
         "schemeId": 3
@@ -541,11 +486,7 @@ export default {
         console.log(this.barData, "barData")
       })
     },
-    changeBy () {
-      if (this.priceType === '2') {
-        this.flag1 = false
-      }
-    }
+
 
   },
 };

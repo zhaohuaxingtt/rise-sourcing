@@ -1,41 +1,42 @@
 export default [
-    {
-        path: "/supplier/index",
+    {   
+        path: "/supplier",
         name: "index",
         component: () => import ("@/layout/default"),
-        redirect: "/supplier/kpi",
+        redirect:"kpiIndex",
         children:[{
-            path: "/supplier/index",
+            path: "index",
             name: "index",
             component: () => import("@/views/kpiChart/index"),
         },{
-            path: "/supplier/kpi",
-            name: "supplierkpi",
+            path: "kpiIndex",
+            name: "kpiIndex",
             component: () => import("@/views/kpiChart/supplierkpi"),
+            children:[]
         },{
-            path: "/supplier/kpiList",
-            name: "kpiList",
-            component: () => import("@/views/kpiChart/kpiList"),
-        },{
-            path: "/supplier/imgKpi",
-            name: "imgKpi",
-            component: () => import("@/views/kpiChart/imgKpi"),
-        },{
-            path: "/supplier/supplierList",
-            name: "supplierList",
-            component: () => import("@/views/kpiChart/supplierList"),
-        },{
-            path: "/supplier/supplierDetail",
+            path: "supplierDetail",
             name: "supplierDetail",
             component: () => import("@/views/kpiChart/components/supplierDetail"),
         },{
-            path: "/supplier/supplierPowerBi",
+            path: "kpiList",
+            name: "kpiList",
+            component: () => import("@/views/kpiChart/kpiList"),
+        },{
+            path: "supplierKpiTreeTable",
+            name: "supplierKpiTreeTable",
+            component: () => import("@/views/kpiChart/supplierKpiTreeTable"),
+        },{
+            path: "imgKpi",
+            name: "imgKpi",
+            component: () => import("@/views/kpiChart/imgKpi"),
+        },{
+            path: "supplierPowerBi",
             name: "supplierPowerBi",
             component: () => import("@/views/kpiChart/supplierPowerBi"),
         },{
-            path: "/supplier/supplierKpiTreeTable",
-            name: "supplierKpiTreeTable",
-            component: () => import("@/views/kpiChart/supplierKpiTreeTable"),
+            path: "supplierList",
+            name: "supplierList",
+            component: () => import("@/views/kpiChart/supplierList"),
         }]
         
     }

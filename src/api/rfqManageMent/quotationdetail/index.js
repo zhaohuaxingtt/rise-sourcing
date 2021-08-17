@@ -1,8 +1,8 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-14 17:58:42
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-16 10:54:14
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -312,11 +312,10 @@ export function saveComments(data) {
 }
 
 // 获取附件列表
-export function getFileHistory(data) {
+export function getFileHistory({quotationId,fileType,current,size,sortColumn=null,isAsc=false}) {
   return requst({
-    url: `/file/fileHistory?supplierId=${supplierId()}`,
-    method: 'POST',
-    data,
+    url: `/file-histories/page/${quotationId}/${sortColumn}/${isAsc}/${fileType}/${current}/${size}?supplierId=${supplierId()}`,
+    method: 'GET',
   })
 }
 

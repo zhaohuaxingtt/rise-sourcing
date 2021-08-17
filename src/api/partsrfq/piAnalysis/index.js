@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-13 17:27:07
- * @LastEditTime: 2021-08-14 17:23:07
+ * @LastEditTime: 2021-08-16 17:56:49
  * @LastEditors: Please set LastEditors
  * @Description: PI分析库相关接口
  * @FilePath: \front-web\src\api\partsrfq\piAnalysis\index.js
@@ -32,7 +32,7 @@ export function fetchAnalysisStick(params) {
 export function fetchAnalysisSave(params) {
   return request({
     url: '/piAnalysisScheme/updatePi',
-    method: 'PUT',
+    method: 'POST',
     data: params,
   });
 }
@@ -45,12 +45,28 @@ export function fetchAnalysisDel(params) {
     data: params,
   });
 }
-
 // 原材料价格总览列表页
 export function getRawMateriaList(params) {
+  return request({
+    url: '/cmMdRawMaterialEntity/page',
+    method: 'POST',
+    data: params,
+  });
+}
+// 原材料价格总览-原材料名称
+export function getRawMateriaDetail(params) {
   return request({
     url: '/piAnalysisScheme/selectByPage',
     method: 'POST',
     data: params,
   });
 }
+// 新增方案时或者全量零件信息
+export function getAllAddPart(params) {
+  return request({
+    url: '/piAnalysisScheme/getPartsList',
+    method: 'POST',
+    data: params,
+  });
+}
+// 提交零件数据生成新的方案

@@ -26,14 +26,14 @@ export const classType = {
 };
 
 export const baseInfo = [
-  {name: 'FS号', key: 'PI.FSHAO', props: 'a'},
-  {name: '供应商', key: 'PI.GONGYINGSHANG', props: 'b'},
-  {name: '车型项目', key: 'PI.CHEXINGXIANGMU', props: 'c'},
-  {name: '工厂', key: 'PI.GONGCHANG', props: 'd'},
+  {name: 'FS号', key: 'PI.FSHAO', props: 'fsNum'},
+  {name: '供应商', key: 'PI.GONGYINGSHANG', props: 'supplierName'},
+  {name: '车型项目', key: 'PI.CHEXINGXIANGMU', props: 'carTypeProj'},
+  {name: '工厂', key: 'PI.GONGCHANG', props: 'procureFactory'},
 ];
 
 export const tableTitle = [
-  {name: '类别', key: 'PI.LEIBIE', props: 'classType'},
+  {name: '类别', key: 'PI.LEIBIE', props: 'partName'},
   {name: '价格影响系数%', key: 'PI.JIAGEYINGXIANGXISHU', props: 'costProportion'},
   {name: '价格变动比率%', key: 'PI.JIAGEBIANDONGBILV', props: 'priceChange'},
   {name: 'CBD', key: '', props: 'attributeValue'},

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-14 19:41:05
+ * @LastEditTime: 2021-08-16 10:39:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\supplierList.vue
@@ -9,11 +9,11 @@
 <template>
   <div>
     <iPage>
-      <!-- <publicHeaderMenu></publicHeaderMenu> -->
+      <publicHeaderMenu></publicHeaderMenu>
       <iTabs style='margin-left:20px;' v-model="tabVal" @tab-click="changeTab" >
-          <el-tab-pane name="pp" label="生产供应商">
+          <el-tab-pane name="PP" label="生产供应商">
           </el-tab-pane>
-          <el-tab-pane name="gp" label="一般供应商">
+          <el-tab-pane name="GP" label="一般供应商">
           </el-tab-pane>
         </iTabs>
       <!-- <div class="tab">
@@ -68,7 +68,7 @@ export default {
         formData:{},
         setCloum:setCloum,
         tabledata:[],
-        tabVal: 'pp',
+        tabVal: 'PP',
       }
     },
     created () {

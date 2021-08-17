@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 17:14:17
+ * @LastEditTime: 2021-08-16 09:59:59
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\components\data.js
  */
@@ -51,7 +51,7 @@ export const MENU = [
     key: 'MUBIAOJIASHENPI'
   },
   {
-    value: 7,
+    value: 3,
     name: '目标价查询',
     message: 0,
     url: '/financialtargetprice/query',

@@ -21,7 +21,7 @@
     <customPart :key="customParams.key" v-model="customParams.visible"/>
     <!--信息-->
     <iCard class="margin-bottom20">
-      <theBaseInfo/>
+      <theBaseInfo :dataInfo="dataInfo"/>
     </iCard>
 
     <!--类型标签-->
@@ -29,11 +29,12 @@
         class="margin-bottom20"
         @handleItemClick="handleTabsClick"
         @handleTimeChange="handleTimeChange"
+        :currentTab="currentTab"
     />
 
     <!--表格-->
     <iCard tabCard class="margin-bottom20">
-      <theTable/>
+      <theTable :dataInfo="dataInfo" :currentTab="currentTab"/>
     </iCard>
 
     <!--图形-->
@@ -44,13 +45,23 @@
       </iCard>
       <!--      零件成本构成-->
       <iCard class="pieBox">
-        <thePartsCostChart/>
+        <thePartsCostChart :dataInfo="dataInfo"/>
       </iCard>
     </div>
 
     <!--预览-->
     <previewDialog
         v-model="previewDialog"
+        :dataInfo="dataInfo"
+        :currentTab="currentTab"
+    />
+
+    <!--    保存弹框-->
+    <saveDialog
+        ref="saveDialog"
+        v-model="saveDialog"
+        @handleSaveDialog="handleSaveDialog"
+        :dataInfo="dataInfo"
     />
   </iPage>
 </template>
@@ -61,12 +72,16 @@ import thePartsList from './components/thePartsList';
 import theBaseInfo from './components/theBaseInfo';
 import theTabs from './components/theTabs';
 import theTable from './components/theTable';
-import customPart from './components/customPart'
+import customPart from './components/customPart';
 import thePartsCostChart from './components/thePartsCostChart';
 import thePriceIndexChart from './components/thePriceIndexChart';
 import previewDialog from './components/previewDialog';
+import saveDialog from './components/saveDialog';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import {CURRENTTIME, AVERAGE} from './components/data';
+import {
+  getAnalysisSchemeDetails,
+} from '../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   mixins: [resultMessageMixin],
@@ -82,23 +97,30 @@ export default {
     previewDialog,
     theTabs,
     theTable,
+    saveDialog,
   },
   data() {
     return {
       pageLoading: false,
       saveDialog: false,
-      partList: [
-        {partsId: 1},
-        {partsId: 2},
-      ],
+      partList: [],
       partItemCurrent: 0,
-      currentTab: CURRENTTIME,
       previewDialog: false,
       customParams: {
         key: 0,
-        visible: false
-      }
+        visible: false,
+      },
+      currentTab: CURRENTTIME,
+      currentTabData: {
+        analysisSchemeId: 109,
+        partsId: '',
+        batchNumber: '',
+      },
+      dataInfo: {},
     };
+  },
+  created() {
+    this.getDataInfo();
   },
   methods: {
     handleBack() {
@@ -122,15 +144,15 @@ export default {
       }
     },
     handlePreview() {
-      this.previewDialog = true
+      this.previewDialog = true;
     },
     // 打开自定义零件
     handleOpenCustomDialog() {
       this.customParams = {
         ...this.customParams,
         key: Math.random(),
-        visible: true
-      }
+        visible: true,
+      };
     },
     // 关闭零件
     handlePartItemClose({event, item}) {
@@ -156,6 +178,7 @@ export default {
     // 点击零件
     handlePartItemClick({item, index}) {
       this.partItemCurrent = index;
+      this.currentTabData.partsId = item.partsId;
     },
     // 点击标签
     handleTabsClick(val) {
@@ -166,6 +189,26 @@ export default {
       console.log(111);
       console.log(time);
     },
+    // 获取信息
+    async getDataInfo() {
+      try {
+        this.pageLoading = true;
+        const req = {
+          analysisSchemeId: this.currentTabData.analysisSchemeId,
+        };
+        const res = await getAnalysisSchemeDetails(req);
+        this.dataInfo = res.data;
+        this.currentTabData.partsId = res.data.partsId;
+        this.partList = res.data.partsList.filter(item => {
+          return item.isShow;
+        });
+        this.pageLoading = false;
+      } catch {
+        this.pageLoading = false;
+      }
+    },
+    // 处理保存弹窗
+    handleSaveDialog(reqParams) {}
   },
 };
 </script>

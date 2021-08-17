@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-11 10:06:21
+ * @LastEditTime: 2021-08-16 17:47:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -52,9 +52,10 @@
 </template>
 
 <script>
-import { iDialog, iInput, iButton } from 'rise'
+import { iDialog, iInput, iButton, iMessage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addTableTitle } from './data'
+import { getAnalysisList } from '@/api/partsrfq/piAnalysis/index'
 export default {
   components: {
     iDialog,

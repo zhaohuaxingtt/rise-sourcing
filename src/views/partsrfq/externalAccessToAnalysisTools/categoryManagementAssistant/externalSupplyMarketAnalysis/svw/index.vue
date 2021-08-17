@@ -4,10 +4,19 @@
       <iCard>
 
         <div class="head">
-          <div class="left">供应商市场总览<span>材料组编号-材料组名称</span></div>
+          <div class="left">SVW供应商市场总览
+            <span>
+              {{categoryCode}}
+            </span>
+            <span>-</span>
+            <span>{{categoryName}}</span>
+          </div>
           <div class="right">
             <iButton @click="edite=!edite">{{edite?'编辑':'取消'}}</iButton>
-            <iButton @click="saveMarket">{{edite?'返回':'保存'}}</iButton>
+            <iButton @click="$router.go(-1)"
+                     v-show="edite">返回</iButton>
+            <iButton @click="saveMarket"
+                     v-show="!edite">保存</iButton>
           </div>
         </div>
         <!-- tittle -->
@@ -17,7 +26,6 @@
           <div class="turnover">
             <div class="module2-left"><img class="imgStatus"
                    :src="svwImg" />营业额占比</div>
-            <div>当前材料组占比: 11.00%</div>
           </div>
           <div class="module3"><img class="imgStatus"
                  :src="userImg" />供应商主要客户</div>
@@ -37,7 +45,7 @@
 import { iButton, iPage, iCard, iInput, iSelect, iMessage } from 'rise'
 import { marketOverview, saveMarketOverview } from '@/api/partsrfq/svw/index.js'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
-import { uploadFile } from "@/api/file/upload";
+import { uploadUdFile } from "@/api/file/upload";
 import list from './components/list'
 export default {
   data () {
@@ -48,7 +56,8 @@ export default {
       userImg: require('./img/user.png'),
       MarketOverviewDTO: [],
       SchemeId: "",
-      categoryCode: ""
+      categoryCode: "",
+      categoryName: ""
     }
   },
   components: {
@@ -60,11 +69,21 @@ export default {
     list
   },
   created () {
+    this.categoryCode = this.$store.state.rfq.categoryCode
+    this.categoryName = this.$store.state.rfq.categoryName
     this.getmarketOverview()
+  },
+  watch: {
+    '$store.state.rfq.categoryCode': {
+      handler (val) {
+        this.categoryCode = val
+        this.getmarketOverview()
+      }
+    }
   },
   methods: {
     getmarketOverview () {
-      marketOverview({ categoryCode: '9999' }).then(res => {
+      marketOverview({ categoryCode: this.categoryCode }).then(res => {
         console.log(res)
         this.SchemeId = res.data.id
         this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
@@ -75,32 +94,41 @@ export default {
       this.categoryCode = this.$store.state.rfq.categoryCode
       downloadPDF({
         idEle: "content",
-        pdfName: "1111",
+        pdfName: "2222222",
         callback: async (pdf, pdfName) => {
           try {
             const time = new Date().getTime();
             const filename = pdfName + time + ".pdf";
             const pdfFile = pdf.output("datauristring");
             const blob = dataURLtoFile(pdfFile, filename);
-            const formData = new FormData();
-            formData.append("multipartFile", blob);
-            formData.append("applicationName", "rise");
-            const res = await uploadFile(formData);
-            console.log(res)
-            // iMessage.success("保存成功");
+            uploadUdFile({
+              applicationName: 'sourcing',
+              businessId: Math.ceil(Math.random() * 100000),
+              multifile: blob
+            }).then(res => {
+              const data = res.data[0]
+              saveMarketOverview({
+                categoryCode: this.categoryCode,
+                id: this.SchemeId,
+                reportUrl: data.path.split('/')[1],
+                reportFileName: data.name,
+                marketOverviewSaveDTOList: this.MarketOverviewDTO
+              }).then(res => {
+                iMessage.success("保存成功");
+                this.getmarketOverview()
+              })
+            });
           } catch {
-            iMessage.err("保存失败");
+            iMessage.error("保存失败");
           }
         },
       });
-      // saveMarketOverview({
-      //   categoryCode: this.categoryCode,
-      //   id: this.SchemeId
-      // })
+
     },
     changeViewObj (val, index) {
       console.log(val, index)
-    }
+    },
+
   }
 }
 </script>
@@ -136,7 +164,6 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-right:30px;
             // div{
             //     width: 50%;
             // }
@@ -149,6 +176,11 @@ export default {
          display: flex;
         justify-content: flex-start;
         align-items: center;
+    }
+    .module2-right{
+        display: flex;
+        justify-content: flex-end;
+     
     }
     .imgStatus{
             width:40px;
