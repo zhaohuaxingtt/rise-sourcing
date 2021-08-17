@@ -223,7 +223,13 @@
               </el-popover>
             </template>
             <div class="systemMatchText" style="width: auto;">
-              <span>{{ language('PI.SHUJULAIYUAN', '数据来源') }}: {{ scope.row.dataSource }}</span>
+              <el-popover
+                  placement="top-start"
+                  width="200"
+                  trigger="hover"
+                  :content="language('PI.SHUJULAIYUAN', '数据来源') + '：' + scope.row.partSource">
+                <span slot="reference">{{ language('PI.SHUJULAIYUAN', '数据来源') }}: {{ scope.row.partSource }}</span>
+              </el-popover>
               <iconTips
                   iconName="iconzhongyaoxinxitishi"
                   :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成\n'+'对应的指数变动百分比，可手动补充系统匹配\n'+'模块信息。')"
@@ -258,7 +264,16 @@
 </template>
 <script>
 import {iInput, iSelect, icon} from 'rise';
-import {getColor, rawMaterialColor, FIRSTSELECT, SECONDSELECT, THIRDSELECT, classTypeSelect, classType, FIRSTEXCHANGERATE} from './data';
+import {
+  getColor,
+  rawMaterialColor,
+  FIRSTSELECT,
+  SECONDSELECT,
+  THIRDSELECT,
+  classTypeSelect,
+  classType,
+  FIRSTEXCHANGERATE,
+} from './data';
 import iconTips from '../../../../../components/ws3/iconTips';
 import {
   getSelectMateria,

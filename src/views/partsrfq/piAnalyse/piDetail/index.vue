@@ -30,6 +30,7 @@
         @handleItemClick="handleTabsClick"
         @handleTimeChange="handleTimeChange"
         :currentTab="currentTab"
+        :timeRange="timeRange"
     />
 
     <!--表格-->
@@ -135,6 +136,7 @@ export default {
       CURRENTTIME,
       AVERAGE,
       tableLoading: false,
+      timeRange: null,
     };
   },
   created() {
@@ -240,6 +242,11 @@ export default {
         };
         const res = await getAveragePartCostPrice(req);
         this.averageTableInfo = res.data;
+        if (res.data.sopTime && res.data.currentTime) {
+          this.timeRange = [res.data.sopTime, res.data.currentTime];
+        } else {
+          this.timeRange = null;
+        }
         this.tableLoading = false;
       } catch {
         this.averageTableInfo = {};
