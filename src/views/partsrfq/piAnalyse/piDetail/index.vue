@@ -65,6 +65,7 @@
 
     <!--预览-->
     <previewDialog
+        ref="previewDialog"
         v-model="previewDialog"
         :dataInfo="dataInfo"
         :averageTableInfo="averageTableInfo"
@@ -247,6 +248,7 @@ export default {
         this.tableLoading = false;
       }
     },
+    // 获取平均 表格数据
     async getAverageTable({extraParams} = {}) {
       try {
         this.tableLoading = true;
@@ -270,6 +272,21 @@ export default {
     },
     // 处理保存弹窗
     handleSaveDialog(reqParams) {},
+    async handleSaveAsReport(callback) {
+      this.previewDialog = true;
+      setTimeout(async () => {
+        const res = await this.$refs.previewDialog.getDownloadFile({
+          callBack: () => {
+            this.previewDialog = false;
+          },
+        });
+        const downloadName = res.downloadName;
+        const downloadUrl = res.downloadUrl;
+        if (callback) {
+          callback(downloadName, downloadUrl);
+        }
+      }, 1000);
+    },
   },
 };
 </script>
