@@ -51,3 +51,20 @@ export function getAnalysisSchemeDetails(params) {
     data: params,
   });
 }
+
+//平均零件价格成本明细
+export function getAveragePartCostPrice(params) {
+  return request({
+    url: '/piAnalysisScheme/avgPartCostPrice',
+    method: 'POST',
+    data: params,
+  });
+}
+
+//price Index方案详情删除零件
+export function deleteParts(params) {
+  return request({
+    url: `/piAnalysisScheme/deleteParts?id=${params.id}`,
+    method: 'GET',
+  });
+}

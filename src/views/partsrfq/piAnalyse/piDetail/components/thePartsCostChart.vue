@@ -36,7 +36,7 @@ export default {
       const option = {
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)',
+          formatter: '{b}: {c} ({d}%)',
         },
         legend: {
           left: 10,
@@ -48,14 +48,14 @@ export default {
         },
         series: [
           {
-            name: '访问来源',
+            name: '',
             type: 'pie',
             radius: ['40%', '55%'],
             center: ['50%', '45%'],
             avoidLabelOverlap: false,
             label: {
               show: true,
-              formatter: '{b}\n({d}%)',
+              formatter: '{b}:{d}%',
             },
             itemStyle: {
               borderWidth: 1,

@@ -386,7 +386,6 @@ export default {
             if(code ==200){
                 data.map((item)=>{
                 item.desc = item.name;
-                item.code = item.name;
                 })
                 this.selectOptions.cartype = data.filter((item)=>item.name) || [];
                 this.selectOptionsCopy.cartype = data.filter((item)=>item.name) || [];

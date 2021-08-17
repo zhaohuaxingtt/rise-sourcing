@@ -284,7 +284,7 @@ export default {
             this.$emit("saveVersion")
       },
       deleteTemplate(){
-          this.$confirm('此操作将永久删除该模板, 是否继续?', '提示', {
+          this.$confirm('请确认是否删除？', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -297,10 +297,10 @@ export default {
             this.$router.go(0)
           })
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
+        //   this.$message({
+        //     type: 'info',
+        //     message: '已取消删除'
+        //   });          
         });
           
       },

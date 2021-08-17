@@ -1,7 +1,27 @@
 <template>
     <div class="spi-page">
         <iPage>
-            <publicHeaderMenu></publicHeaderMenu>
+            <div class="navBox clearfix">
+            <el-tabs v-model="activeName" @tab-click="handleleftClick" class="leftNav">
+                <el-tab-pane 
+                v-for="x in tabRouterList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <div>
+            <el-tabs v-model="activeRightName" @tab-click="handlerightClick" class="rightNav">
+                <el-tab-pane 
+                v-for="x in categoryManagementAssistantList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <logButton class="logButton"/>
+            </div>
+        </div>
             <div class="head">
                 <div class="head-left">
                     <div>
@@ -23,11 +43,11 @@
                 </div>
             </div>
             <div class="foot">
-                <div class="kpichart"><div class="tittle">总分</div><kpiEchart :options="totalScore"></kpiEchart></div>
-                <div class="kpichart"><div class="tittle">服务质量</div><kpiEchart :options="quality"></kpiEchart></div>
-                <div class="kpichart"><div class="tittle">成本竞争力</div><kpiEchart :options="cost"></kpiEchart></div>
-                <div class="kpichart"><div class="tittle">交付</div><kpiEchart :options="delivery"></kpiEchart></div>
-                <div class="kpichart"><div class="tittle">可持续发展</div><kpiEchart :options="sustainable"></kpiEchart></div>
+                <div class="kpichart"><div class="tittle">总分</div><kpiEchart :supplierNameArray="supplierNameArray" :options="totalScore"></kpiEchart></div>
+                <div class="kpichart"><div class="tittle">服务质量</div><kpiEchart :supplierNameArray="supplierNameArray" :options="quality"></kpiEchart></div>
+                <div class="kpichart"><div class="tittle">成本竞争力</div><kpiEchart :supplierNameArray="supplierNameArray" :options="cost"></kpiEchart></div>
+                <div class="kpichart"><div class="tittle">交付</div><kpiEchart :supplierNameArray="supplierNameArray" :options="delivery"></kpiEchart></div>
+                <!-- <div class="kpichart"><div class="tittle">可持续发展</div><kpiEchart :supplierNameArray="supplierNameArray" :options="sustainable"></kpiEchart></div> -->
             </div>
         </iPage>
     </div>
@@ -40,7 +60,9 @@ import {iButton,iPage,iCard} from 'rise'
 import supplierkpiSearchFrom from './components/supplierkpiSearchFrom'
 import {spiTotalScore} from '@/api/kpiChart'
 import publicHeaderMenu from './commonHeardNav/headerNav'
-
+import {iNavMvp } from 'rise'
+import { tabRouterList, categoryManagementAssistantList } from './commonHeardNav/navData'
+import logButton from '@/components/logButton'
 export default {
     components:{
         publicHeaderMenu,
@@ -49,10 +71,18 @@ export default {
         iButton,
         iPage,
         iCard,
-        supplierkpiSearchFrom
+        supplierkpiSearchFrom,
+        categoryManagementAssistantList,
+        tabRouterList,
+        iNavMvp,
+        logButton
     },
     data(){
         return {
+        activeName:'/supplier/kpiIndex',
+        activeRightName:'/supplier/kpiIndex',
+        tabRouterList:tabRouterList,
+        categoryManagementAssistantList:categoryManagementAssistantList,
             value:"供应商数量",
             tabledata:[{
                 supplierName:'aaa'
@@ -92,7 +122,7 @@ export default {
                     }],
                 },
                 grid: {
-                    top: 50,
+                    top: 20,
                     bottom: 20,
                     left:0,
                     right:0,
@@ -162,7 +192,8 @@ export default {
             sustainable:{},
             delivery:{},
             idList:[],
-            supplierObj:[]
+            supplierObj:[],
+            supplierNameArray:[]
         }
     },
     created(){
@@ -174,6 +205,13 @@ export default {
 
     },
     methods:{
+        handleleftClick(tab,event){
+            this.$router.push(tab.name)
+        },
+        handlerightClick(tab){
+            this.activeName='/supplier/kpiIndex'
+             this.$router.push(tab.name)
+        },
         initOptions:{
 
         },
@@ -181,30 +219,41 @@ export default {
             this.tabledata= x.supplierList
             // 折线图点
             x.totalSupplierList.forEach(z=>{this.totalScore.series[0].data.push({value:z,symbol:'none'})})
-            x.oneMaps.PP01000.oneSupplierList.forEach(z=>{this.quality.series[0].data.push({value:z,symbol:'none'})})
-            x.oneMaps.PP02000.oneSupplierList.forEach(z=>{this.cost.series[0].data.push({value:z,symbol:'none'})})
-            x.oneMaps.PP03000.oneSupplierList.forEach(z=>{this.delivery.series[0].data.push({value:z,symbol:'none'})})
-            x.oneMaps.PP04000.oneSupplierList.forEach(z=>{this.sustainable.series[0].data.push({value:z,symbol:'none'})})
-            
+            x.oneMaps.PP01000.oneSupplierList.forEach(z=>{
+                this.quality.series[0].data.push({value:z,symbol:'none'})
+                this.cost.series[0].data.push({value:z,symbol:'none'})
+                this.delivery.series[0].data.push({value:z,symbol:'none'})
+                this.sustainable.series[0].data.push({value:z,symbol:'none'})
+            })
         },
         // 勾选供应商id
         returnData(x){
             this.idList=x
         },
         getScore(){
+            if(this.supplierObj.length>10) return this.$message({type:'warning',message:"最多选择10家供应商"})
             // 根据供应商查询分数
              spiTotalScore({idList:this.idList}).then(res=>{
                this.changeTotalX(res.data)//总分
                this.changeOneListX(res.data)//其余曲线图
             })
             // 供应商名字
-            this.supplierObj.forEach((y,index)=>{
-                this.totalScore.legend.data[index].name=y.nameZh
-                this.quality.legend.data[index].name=y.nameZh
-                this.cost.legend.data[index].name=y.nameZh
-                this.delivery.legend.data[index].name=y.nameZh
-                this.sustainable.legend.data[index].name=y.nameZh
+            this.supplierNameArray=[]
+            this.supplierObj.forEach(y=>{
+                this.supplierNameArray.push({
+                        name:y.nameZh,
+                        icon:'circle',
+                        textStyle: {
+                            color: '#1763F7'
+                        }
+                    })
             })
+            // this.totalScore.legend.data=this.supplierNameArray
+            // this.quality.legend.data=this.supplierNameArray
+            // this.cost.legend.data=this.supplierNameArray
+            // this.delivery.legend.data=this.supplierNameArray
+            // this.sustainable.legend.data=this.supplierNameArray
+            console.log(this.totalScore.legend.data)
         },
         getSupplierName(x){
             if(x.length>0){
@@ -229,20 +278,21 @@ export default {
         changeOneListX(x){
             if(x.oneList.length>0){
                  x.oneList.forEach(score => {
-                     if(score.levelOneCode=="PP01000" || score.levelOneCode=="PP01000"){
+                     if(score.levelOneCode=="PP01000" || score.levelOneCode=="GP01000"){
                          this.quality.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                        //  console.log(Math.floor((score.score)/10))
                      }
-                    if(score.levelOneCode=="PP02000" || score.levelOneCode=="PP02000"){
+                    if(score.levelOneCode=="PP02000" || score.levelOneCode=="GP02000"){
                         this.cost.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
                      }
-                     if(score.levelOneCode=="PP03000" || score.levelOneCode=="PP03000"){
+                     if(score.levelOneCode=="PP03000" || score.levelOneCode=="GP03000"){
                          this.delivery.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
                      }
-                     if(score.levelOneCode=="PP04000" || score.levelOneCode=="PP04000"){
+                     if(score.levelOneCode=="PP04000" || score.levelOneCode=="GP04000"){
                          this.sustainable.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
                      }
                  });   
-                 
+               
             }
         },
       
@@ -252,7 +302,7 @@ export default {
 
 <style lang="scss" scoped>
     .spi-page{
-        height: 100vh;
+        height: calc(100vh - 90px);
         width: 100%;
         overflow: auto;
     }
@@ -311,4 +361,48 @@ export default {
             }
         }
     }
+    ::v-deep.navBox {
+  position: relative;
+  // border-bottom: 1px solid #E3E3E3;
+  margin-bottom: 20px;
+  .logButton .icon + span{vertical-align: top;}
+  div{font-size: 20px;}
+  .el-tabs__nav-wrap::after{
+    width: 0;
+  }
+  .el-tabs__item{
+    line-height: 24px;
+  }
+  .el-tabs__item.is-active{
+    font-weight: Bold;
+  }
+  .leftNav{
+      float: left;
+  }
+  .rightNav {
+    float: right;
+    margin-right: 110px;
+    .el-tabs__active-bar {
+        background-color: transparent !important;
+    }
+  }
+
+  .logButton {
+    position: absolute;
+    top: 5px;
+    right: 0;
+  }
+}
+.clearfix:after{
+  content: "020"; 
+  display: block; 
+  height: 0; 
+  clear: both; 
+  visibility: hidden;  
+  }
+
+.clearfix {
+  /* 触发 hasLayout */ 
+  zoom: 1; 
+  }
 </style>

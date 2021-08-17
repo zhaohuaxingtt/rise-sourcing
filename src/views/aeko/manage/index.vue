@@ -20,10 +20,19 @@
               :label="language(item.labelKey,item.label)"
               v-permission.dynamic="item.permissionKey"
               >
-                  <iSelect 
+              <template  v-if="item.type === 'select'" >
+                  <aeko-select 
+                    v-if="item.isNewSelect"
+                    :searchParams="searchParams" 
+                    :ParamKey="item.props" 
+                    :allOptionsData="selectOptions[item.selectOption]" 
+                    :multiple="item.multiple"
+                    :clearable="item.clearable" 
+                  />
+                  <iSelect
+                    v-else
                     class="multipleSelect" 
                     collapse-tags 
-                    v-if="item.type === 'select'" 
                     :multiple="item.multiple" 
                     :filterable="item.filterable" 
                     :clearable="item.clearable" 
@@ -42,8 +51,9 @@
                       >
                     </el-option>  
                   </iSelect> 
-                  <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
-                  <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
+                </template>
+                <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
               </el-form-item>
           </el-form>
       </iSearch>
@@ -163,6 +173,7 @@ import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
 import {user as configUser } from '@/config'
+import aekoSelect from '../components/aekoSelect'
 import {
   getManageList,
   searchAekoStatus,
@@ -179,7 +190,7 @@ import {
   synAekoFromTCM,
   synAekoAttachmentFromTCM,
 } from '@/api/aeko/manage'
-import { debounce } from "lodash"
+import { debounce,chunk } from "lodash";
 export default {
     name:'aekoManageList',
     mixins: [pageMixins],
@@ -198,6 +209,7 @@ export default {
       revokeDialog,
       filesListDialog,
       Upload,
+      aekoSelect
     },
     data(){
       return{
@@ -209,7 +221,7 @@ export default {
           buyerName:'',
           aekoStatusList:[],
           coverStatusList:[],
-          carTypeCodeList:[],
+          carTypeCodeList:[''],
           linieDeptNumList:[],
         },
         selectOptions:{
@@ -221,12 +233,12 @@ export default {
           'buyerName':[],
         },
         selectOptionsCopy:{
-          'buyerName':[],
           'brand':[],
           'aekoStatusList':[],
           'coverStatusList':[],
           'linieDeptNumList':[],
           'carTypeCodeList':[],
+          'buyerName':[],
         },
         tableListData:[],
         tableTitle:tableTitle,
@@ -285,9 +297,10 @@ export default {
       reset(){
         this.searchParams = {
           brand:'',
+          buyerName:'',
           aekoStatusList:[],
           coverStatusList:[],
-          carTypeCodeList:[],
+          carTypeCodeList:[''],
           linieDeptNumList:[],
         };
         this.getList();
@@ -301,12 +314,13 @@ export default {
       async getList(){
         this.loading = true;
         const {searchParams,page} = this;
-        const {partNum} = searchParams;
+        const {partNum,carTypeCodeList} = searchParams;
         // 若有冻结起止时间将其拆分成两个字段
         const {frozenDate=[]} = searchParams;
         const data = {
             current:page.currPage,
             size:page.pageSize,
+            carTypeCodeList:carTypeCodeList.length && carTypeCodeList[0]=='' ? [] : carTypeCodeList,
         };
         if(frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
@@ -375,6 +389,7 @@ export default {
           if(code ==200 ){
             data.map((item)=>{
               item.desc = item.name;
+              item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })
             this.selectOptions.carTypeCodeList = data;
             this.selectOptionsCopy.carTypeCodeList = data;
@@ -516,7 +531,6 @@ export default {
       // 导入附件
       async fileSuccess(data){
         this.btnLoading.uploadFiles = true;
-        console.log(data,'data');
         const fileData = data.data;
         const { name ,path,size,id} = fileData;
         const { selectItems } =this;
@@ -614,55 +628,51 @@ export default {
 
       // 模糊搜索处理
       dataFilter(val,props){
-        console.log(val,props);
         if (this.debouncer && typeof this.debouncer.cancel === "function") this.debouncer.cancel();
 
         if(props == 'buyerName'){
           this.searchParams.buyerName = val;
         }
         
-
         // 去除前后空格
         const trimVal = val.trim();
         const { selectOptionsCopy={}} = this;
-        if(trimVal){
           this.debouncer = debounce(() => {
+            if(trimVal){
             // 人名要特殊处理 --- 可搜索英文去除大小写
-            if(props == 'buyerName'){
-              const list = selectOptionsCopy[props].filter((item) => {
-                if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
-                  return true
-                }
-              })
-              this.selectOptions[props] = list;
-            }else{
-              const list = selectOptionsCopy[props].filter((item) => {
+              if(props == 'buyerName'){
+                const list = selectOptionsCopy[props].filter((item) => {
+                  if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                    return true
+                  }
+                })
+                this.selectOptions[props] = list;
+              }else{
+                const list = selectOptionsCopy[props].filter((item) => {
                 if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
-                    return true;
-                } 
-              })
-              this.selectOptions[props] = list;
+                      return true;
+                  } 
+                })
+                this.selectOptions[props] = list;
+                
+              }
+            }else{
+              this.selectOptions[props] = selectOptionsCopy[props];
             }
+            
           },400);
         this.debouncer()
-            
-        }else{
-          this.selectOptions[props] = selectOptionsCopy[props];
-        }
       },
 
       // 多选处理
       handleMultipleChange(value, key,multiple) {
-        console.log(value,key);
           // 单选不处理
           if(!multiple) {
             if(!value){
               const {selectOptionsCopy={}} = this;
               this.$set(this.selectOptions,key,selectOptionsCopy[key]);
             }else{
-              console.log('2222');
               this.$set(this.searchParams,key,value);
-              console.log(this.searchParams)
               return;
             }
           }
