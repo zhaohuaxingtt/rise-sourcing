@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-16 17:47:30
+ * @LastEditTime: 2021-08-17 17:04:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -52,10 +52,11 @@
 </template>
 
 <script>
-import { iDialog, iInput, iButton, iMessage } from 'rise'
+import { iDialog, iInput, iButton } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addTableTitle } from './data'
-import { getAnalysisList } from '@/api/partsrfq/piAnalysis/index'
+import { iMessage } from '@/components';
+import { getAllAddPart } from '@/api/partsrfq/piAnalysis/index'
 export default {
   components: {
     iDialog,
@@ -77,11 +78,12 @@ export default {
       targetTableData: [],
       selectMainData: [],
       selectTargetData: [],
-      loading: true,
+      loading: false,
     }
   },
   created() {
-    this.initTestData()
+    // this.initTestData()
+    this.getTableData()
   },
   methods: {
     // 初始化测试数据
@@ -93,6 +95,21 @@ export default {
         {id: 4, fsNo: '21-15555', partNo: '20D 023 306 11A', rfq: '123231231-名称', supplierName: '上海AA汽车', factory: 'OD', cardTypeProject: 'SOP (Lavida A)', sopDate: '2021/09至2021/03'},
       ]
       this.loading = false
+    },
+    // 获取主表格数据
+    getTableData() {
+      this.loading = true
+      const params = {
+        userId: 52,
+        partsId: this.searchForm.partsId || null,
+        rfqId: this.searchForm.rfqId || null
+      }
+      getAllAddPart(params).then(res => {
+        if(res && res.code == 200) {
+          this.mainTableData = res.data
+          this.loading = false
+        } else iMessage.error(res.desZh)
+      })
     },
     // 选中目标表格数据
     handleSelectTarget(val) {
@@ -112,7 +129,6 @@ export default {
       })
       this.$nextTick(() => {
         this.renderTargetTable()
-
       })
     },
     // 默认选中target表格数据

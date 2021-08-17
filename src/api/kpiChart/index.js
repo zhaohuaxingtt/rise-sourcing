@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-07 10:24:35
- * @LastEditTime: 2021-08-09 13:48:58
+ * @LastEditTime: 2021-08-17 16:32:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\kpiChart\index.js
@@ -108,6 +108,24 @@ export function getTableData(data) {
     params: data
   })
 }
+// 折叠列表——获取材料组
+export function getCategoryData(data) {
+  return requst({
+    url: '/web/kpi/totalScore/template/category',
+    method: 'GET',
+    params: data
+  })
+}
+// 折叠列表——获取部门
+export function getDeptData(data) {
+  return requst({
+    url: '/web/kpi/totalScore/template/dept',
+    method: 'GET',
+    params: data
+  })
+}
+
+
 // 查询模板kpi
 export function templateDetail(params) {
   return requst({

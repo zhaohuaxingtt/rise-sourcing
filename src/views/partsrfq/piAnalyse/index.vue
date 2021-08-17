@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-08-16 17:07:46
+ * @LastEditTime: 2021-08-17 09:47:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -259,8 +259,8 @@ import {
   iPagination,
   iSelect,
   icon,
-  iMessage
 } from "rise";
+import { iMessage } from '@/components';
 import { pageMixins } from "@/utils/pageMixins";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
 import addScheme from './components/add'
@@ -275,7 +275,6 @@ export default {
     iPagination,
     iSelect,
     icon,
-    iMessage,
     reportPreview,
     addScheme
   },
