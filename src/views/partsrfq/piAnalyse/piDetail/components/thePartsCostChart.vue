@@ -55,7 +55,7 @@ export default {
             avoidLabelOverlap: false,
             label: {
               show: true,
-              formatter: '{b}\n({d}%)',
+              formatter: '{b}:{d}%',
             },
             itemStyle: {
               borderWidth: 1,
