@@ -67,6 +67,7 @@
     <previewDialog
         v-model="previewDialog"
         :dataInfo="dataInfo"
+        :averageTableInfo="averageTableInfo"
         :currentTab="currentTab"
     />
 
@@ -199,7 +200,14 @@ export default {
     // 点击零件
     handlePartItemClick({item, index}) {
       this.partItemCurrent = index;
-      this.currentTabData.partsId = item.partsId;
+      this.currentTabData = {
+        analysisSchemeId: item.analysisSchemeId,
+        partsId: item.partsId,
+        batchNumber: item.batchNumber,
+        supplierId: item.supplierId,
+      };
+      this.currentTab = CURRENTTIME;
+      this.getDataInfo();
     },
     // 点击标签
     handleTabsClick(val) {
@@ -210,8 +218,11 @@ export default {
     },
     // 时间改变
     handleTimeChange(time) {
-      console.log(111);
-      console.log(time);
+      const extraParams = {
+        beginTime: time[0],
+        endTime: time[1],
+      };
+      this.getAverageTable({extraParams});
     },
     // 获取信息
     async getDataInfo() {
@@ -236,17 +247,18 @@ export default {
         this.tableLoading = false;
       }
     },
-    async getAverageTable() {
+    async getAverageTable({extraParams} = {}) {
       try {
         this.tableLoading = true;
         this.averageTableInfo = {};
         const req = {
           ...this.currentTabData,
+          ...extraParams,
         };
         const res = await getAveragePartCostPrice(req);
         this.averageTableInfo = res.data;
-        if (res.data.sopTime && res.data.currentTime) {
-          this.timeRange = [res.data.sopTime, res.data.currentTime];
+        if (res.data.beginTime && res.data.endTime) {
+          this.timeRange = [res.data.beginTime, res.data.endTime];
         } else {
           this.timeRange = null;
         }
