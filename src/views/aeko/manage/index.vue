@@ -190,7 +190,7 @@ import {
   synAekoFromTCM,
   synAekoAttachmentFromTCM,
 } from '@/api/aeko/manage'
-import { debounce,chunk } from "lodash";
+import { debounce } from "lodash";
 export default {
     name:'aekoManageList',
     mixins: [pageMixins],
@@ -480,11 +480,26 @@ export default {
               }
           }
       },
+
+      // 判断下勾选项是否包含撤销的数据
+      isCancledItem(){
+         const {selectItems=[]} = this; 
+         // 当前aeko已撤销，不能进行操作
+         const tips = this.language('LK_AEKO_GOUXUANXIANGBAOHANYICHEXIAOAEKOWUFACAOZUO','勾选项包含已撤销AEKO,不能进行操作');
+         const filterItem = selectItems.filter((item)=>item.aekoStatus == 'CANCELED');
+         if(filterItem.length){
+           iMessage.warn(tips);
+              return false;
+         }else{
+           return true;
+         }
+      },
       
       // 撤销
      async revoke(){
         const isNext  = await this.isSelectItem(true);
         if(!isNext) return;
+        if(!this.isCancledItem()) return;
         // 一次只能撤销一个AEKO
         const {selectItems} = this;
         if(selectItems.length > 1) return iMessage.warn(this.language('LK_AEKO_YICIZHINENGCHEXIAOYIGEAEKO','一次只能撤销一个AEKO，请修改！'));
@@ -507,12 +522,13 @@ export default {
       async importFiles(){
         const isNext  = await this.isSelectItem(true);
         if(!isNext) return;
+        if(!this.isCancledItem()) return;
         // 多选多个AEKO后弹出提示
         const {selectItems} = this;
         if(selectItems.length > 1){
           await this.$confirm(
           this.language('LK_TIPS_IMPORFILES_AEKO','你选择的附件将被引⽤到多个AEKO中，请确认是否继续上传？'),
-          this.language('LK_SHANCHUAEKO','删除AEKO'),
+          this.language('LK_DAORUFUJIAN','导⼊附件'),
           {
             confirmButtonText: this.language('nominationLanguage.Yes','是'),
             cancelButtonText: this.language('nominationLanguage.No','否'),
@@ -568,6 +584,7 @@ export default {
         const isNext  = await this.isSelectItem(true);
         const {selectItems} = this;
         if(!isNext) return;
+        if(!this.isCancledItem()) return;
         await this.$confirm(
           this.language('LK_QINGQUERENSHIFOUSHANCHUAEKO','请确认是否删除该AEKO？'),
           this.language('LK_SHANCHUAEKO','删除AEKO'),

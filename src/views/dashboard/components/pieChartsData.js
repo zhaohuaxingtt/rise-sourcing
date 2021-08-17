@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-06 08:52:14
- * @LastEditTime: 2021-08-13 23:10:02
+ * @LastEditTime: 2021-08-17 14:10:26
  * @LastEditors: Please set LastEditors
  * @Description: 流转状态跟踪饼状图模拟数据
  * @FilePath: /front-web/src/views/dashboard/components/pieChartsData.js
@@ -31,7 +31,7 @@ export function generateOptions(data) {
                 minAngle: 5,
                 zlevel: 2,
                 selectedMode: 'single',
-                selectedOffset: '4',
+                selectedOffset: '3',
                 top: '-20%',
                 radius: ['44%', '55%'],
                 avoidLabelOverlap: true,
@@ -57,17 +57,14 @@ export function generateOptions(data) {
                         selected: true,
                         name: '流转超4周',
                         itemStyle: {
-                            color: '#fab738',
-                            borderColor: '#fab738',
-                            borderWidth: 5
+                            color: '#fab738'
                         }
                     },
                     {
                         value: (data && data.gtWeekNum) || 0, 
                         name: '流转4周内',
                         itemStyle: {
-                            color: '#6192f0',
-                            borderWidth: 2
+                            color: '#6192f0'
                         }
                     }
                 

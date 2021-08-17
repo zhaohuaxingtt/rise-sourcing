@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 16:16:30
- * @LastEditTime: 2021-08-11 15:58:43
+ * @LastEditTime: 2021-08-17 16:40:24
  * @LastEditors: Please set LastEditors
  * @Description: 材料组定点时率及平均定点周期
  * @FilePath: /front-web/src/views/designate/home/components/headerNav/components/nomiCharts.vue
@@ -79,6 +79,12 @@ export default {
       let option = generateOptions(params)
       vm.clear()
       vm.setOption(option);
+      // 设置高亮
+      // vm.dispatchAction({
+      //   type: "highlight",
+      //   seriesIndex: 0,
+      //   dataIndex: 0
+      // })
     }
   }
 }
