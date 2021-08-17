@@ -151,14 +151,14 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
       <template v-slot:header-control>
-        <iButton :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
-        <iButton :loading="declareResetLoading" @click="handleDeclareReset" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
-        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
-        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
-        <iButton @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">{{ language("DAOCHU", "导出") }}</iButton>
-        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT">{{ language("DAORU", "导⼊") }}</iButton>
-        <iButton :loading="submitLoading" @click="handleSubmit" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT">{{ language("TIJIAO", "提交") }}</iButton>
-        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL">{{ language("CHEHUI", "撤回") }}</iButton>
+        <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
+        <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
+        <iButton v-if="!disabled" @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">{{ language("DAOCHU", "导出") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT">{{ language("DAORU", "导⼊") }}</iButton>
+        <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT">{{ language("TIJIAO", "提交") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL">{{ language("CHEHUI", "撤回") }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -173,7 +173,7 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <template #oldPartNumPreset="scope">
-            <iInput v-if="scope.row.status === 'EMPTY'" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
+            <iInput v-if="scope.row.status === 'EMPTY' && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
@@ -192,6 +192,7 @@
           <template #investCarTypePro="scope">
             <iSelect
               v-model="scope.row.investCarTypePro"
+              :disabled="disabled"
               :placeholder="language('QINGXUANZE', '请选择')"
             >
               <el-option
@@ -245,6 +246,11 @@ export default {
     aekoInfo: {
       type: Object,
       default: () => ({})
+    }
+  },
+  computed: {
+    disabled() {
+      return this.aekoInfo.aekoStatus == "CANCELED"
     }
   },
   data() {
