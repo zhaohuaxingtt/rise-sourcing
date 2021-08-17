@@ -450,6 +450,7 @@ export default {
             //     })
             //     this.formData.spiBaseDTO.cityCodeList=this.formData.spiBaseDTO.cityCodeList.map(String)
             // }
+            console.log(this.$refs["myCascader"].getCheckedNodes())
             this.formData.spiBaseDTO.cityCodeList=[]
             this.supplierSeccoStockOption=[]
            if(this.$refs["myCascader"].getCheckedNodes().length>0){
