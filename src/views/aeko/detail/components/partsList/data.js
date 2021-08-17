@@ -37,7 +37,7 @@ export const commodityTableTitle = [
   { props: "linieDeptName", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
   { props: "buyerName", name: "Linie", key: "LK_AEKO_LINIE", tooltip: true },
   { props: "operate", name: "操作", key: "LK_CAOZUO" },
-  { props: "aekoPartStatusDesc", name: "表态状态", key: "LK_AEK0_BIAOTAIZHUANGTAI", tooltip: true },
+  { props: "aekoPartStatusDesc", name: "内容状态", key: "LK_AEKO_NEIRONGZHUANGTAI", tooltip: true },
 ]
 
 export const linieSearchList = [
