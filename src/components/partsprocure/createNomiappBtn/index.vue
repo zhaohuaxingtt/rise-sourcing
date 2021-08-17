@@ -1,7 +1,7 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-16 17:44:46
+ * @LastEditTime: 2021-08-16 21:24:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
@@ -11,19 +11,12 @@
   <iButton @click="handleCreateNomiApplication" :loading='loading'>{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
   <iDialog title="自动定点进度追踪" :visible.sync="messageShow">
     <ul class="ulContent">
-      <li>
+      <li v-for="(items,index) in messageDataList" :key="index">
         <div>
-          <span class="name">FS21-000232</span>
-          <el-progress :percentage="50"></el-progress>
+          <span class="name">{{items.titleName}}</span>
+          <el-progress :percentage="items.step/6"></el-progress>
         </div>
-        <div>1:正在为您创建定点申请</div>
-      </li>
-      <li>
-        <div>
-          <span class="name">FS21-000232</span>
-          <el-progress :percentage="99"></el-progress>
-        </div>
-        <div>5:正在为您打包中</div>
+        <div>{{items.step}}:{{items.message}}</div>
       </li>
     </ul>
   </iDialog>
@@ -68,7 +61,11 @@ export default{
     },
     showWebsoket(){
        this.soket = new soket({baseUrl:process.env.VUE_APP_WS1_SOKETEURL,url:`/sourcing/websocket/${store.state.permission.userInfo.id}`}).then(res=>{
-         this.messageDataList = res.data
+         if(this.messageDataList.find(i=>i.titleId == res.data.titleId)){
+           this.messageDataList.splice(this.messageDataList.findIndex(i=>i == res.data.titleId),1,res.data)
+         }else{
+           this.messageDataList.push(res.data)
+         }
        }).catch(err=>{
          console.warn(err)
        })
@@ -79,7 +76,7 @@ export default{
           iMessage.success(res.desZh)
           this.messageShow = false
           this.loading = false
-          this.openNomiPage()
+          this.openNomiPage(res.data)
           this.closeWebSoket()
         }else{
            this.messageShow = false
@@ -99,14 +96,15 @@ export default{
       return {autoKeyDTOS:parmars.map(r=>{return {partNum:r.partNum,oldFsnrGsnrNum:r.oldFsnrGsnrNum,oldPurchasingProjectId:r.oldPurchasingProjectId,purchasingProjectId:r.id,userId:store.state.permission.userInfo.id}})}
     },
     openNomiPage(items){
-      this.$router.push({
-        url:'/designate/decisiondata/title',
+      const routeData = this.$router.resolve({
+        path:'/designate/decisiondata/title',
         query:{
           desinateId:items.nominateId,
           designateType:items.nominateProcessType,
           partProjType:items.partProjectType
         }
       })
+      window.open(routeData.href, '_blank')
     }
   }
 }

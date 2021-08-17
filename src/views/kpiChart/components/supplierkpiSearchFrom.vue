@@ -193,31 +193,252 @@ import { iButton, iPage, iCard, iFormItem, iInput, iSelect, iDatePicker,iSelectC
 import { getMaterialGroupByUserIds, spiTotalScore, getRelationship, getStuffByCategory, getLine, getTO } from '@/api/kpiChart'
 import { getCityInfo } from "@/api/partsrfq/supplyChainOverall";
 export default {
-  components: {
-    iButton,
-    iPage,
-    iCard,
-    iFormItem,
-    iInput,
-    iSelect,
-    iDatePicker,
-    iInput
-  },
-  data () {
-    return {
-      supplierEndYear: null,
-      supplierStartYear: null,
-      baseStartYear: null,
-      baseEndYear: null,
-      supplierStart: '',
-      supplierEnd: '',
-      baseAreaVmodel: [],
-      partyOrganId: [],
-      formData: {
-        spiBaseDTO: {
-          cityCodeList: [],
-          yearList: [],
-          existShareIdList: []
+    components:{
+        iButton,
+        iPage,
+        iCard,
+        iFormItem,
+        iInput,
+        iSelect,
+        iDatePicker,
+        iInput
+    },
+    data(){
+        return {
+            supplierEndYear:null,
+            supplierStartYear:null,
+            baseStartYear:null,
+            baseEndYear:null,
+            supplierStart:'',
+            supplierEnd:'',
+           baseAreaVmodel:[],
+           partyOrganId:[],
+           formData:{
+               spiBaseDTO:{
+                   cityCodeList:[],
+                   yearList:[],
+                   existShareIdList:[]
+               },
+               spiSupplierDTO:{
+                   yearList:[],
+                   existShareIdList:[]
+               }
+           },
+           material:[],
+            Relationship:[],
+            exisList:[],
+            StuffByCategory:[],
+            startyear:null,
+            endyear:null,
+            getCityid:"-1",
+            option : {
+                color: ['#1763F7'],
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor:'#fff',
+                    lineStyle:{
+                        color:'#000'
+                    },
+                    textStyle: {
+                        color:'#000'
+                    },
+                    // formatter:function(params){
+                    //     const str = `<div style="padding:10px">
+                    //         <div>该分数断下供应商数量:<span style="color:#1763F7">${params.value}家</span></div>
+                    //         <div>${params.seriesName}:${params.name}分</div>
+                    //     </div>`
+                    //     return str
+                    // },
+                    axisPointer:{//直线指示器
+                        type:'none'
+                    },
+                    extraCssText: 'box-shadow: 0px 3px 10px rgba(27, 29, 33, 0.16);'
+                },
+                legend: {
+                    data:[{
+                        name:'',
+                        icon:'circle',
+                        textStyle: {
+                            color: '#1763F7'
+                        }
+                    }],
+                },
+                grid: {
+                    top: 50,
+                    bottom: 20,
+                    left:0,
+                    right:0,
+                    tooltip:{
+                        axisPointer:{
+                            shadowStyle:{
+                                color:'red'
+                            } 
+                        }
+                    }
+                },
+                xAxis: {
+                        type: 'category',
+                        splitLine:{
+                            show:false//不显示网格线
+                        },
+                        axisTick: {
+                            show:false
+                        },
+                        splitNumber:10,
+                        axisLabel:{
+                            interval:1
+                        }, 
+                        data: ['5', '15', '25', '35', '45', '55', '65', '75', '85', '95']
+                   
+                },
+                yAxis: {
+                    show:false,
+                    type:'value',
+                    name:'该分数段下供应商数量：',
+                    min: 0,
+                    max: 10,
+                },
+                series: [
+                    {
+                        name: '上海汇众汽车有限公司',
+                        //symbol: "none",//显示隐藏曲线上的点
+                        symbolSize:10,
+                        type: 'line',
+                        smooth: true,
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [],
+                        markLine: {
+                            lineStyle: {
+                                type:'solid',
+                                width: 1,
+                                color: '#707070',
+                            },
+                            silent: true, // 鼠标悬停事件, true悬停不会出现实线
+                            symbol: 'none', // 去掉箭头
+                            data: [[
+                                { coord: ['45', 0] }, // [x第几个（从0开始），y轴起始点 ]
+                                { coord: ['45', 10] } // [x第几个（从0开始），y轴起始点 ]
+                            ]]
+                        },
+                        markPoint:{
+                             symbol:"circle"
+                        }
+                    }
+                ]
+            },
+            supplierSeccoStockOption:[],
+            props: {
+                lazy: true,
+                multiple: true,
+                lazyLoad (node, resolve) {
+                    const { level } = node;
+                    setTimeout(() => {
+                        if(level==0){
+                        getCityInfo({parentCityId:"-1"}).then(res=>{
+                        const country = res.data.map(val=>({
+                                    value: val.cityId,
+                                    label: val.cityNameCn,
+                                    leaf: level >= 2
+                                }))
+                                resolve(country)
+                            })
+                        }
+                        if(level==1){
+                            getCityInfo({parentCityId:node.value}).then(res=>{
+                                const province = res.data.map(val=>({
+                                    value: val.cityId,
+                                    label: val.cityNameCn,
+                                    leaf: level >= 2
+                                }))
+                                resolve(province)
+                            })
+                        }
+                        if(level==2){
+                            getCityInfo({parentCityId:node.value}).then(res=>{
+                                const city = res.data.map(val=>({
+                                    value: val.cityId,
+                                    label: val.cityNameCn,
+                                    leaf: level >= 2
+                                }))
+                                resolve(city)
+                            })
+                        }
+                    })
+                }
+            }
+        }
+    },
+    created(){
+        // 初始化国家
+        getCityInfo({parentCityId:this.getCityid}).then(res=>{
+            console.log(res)
+            this.areaOptions=res.data.map(x=>{
+                return {...x,
+                label:x.cityNameCn,
+                value:x.cityId,
+                children:[]}})
+        })
+    },
+    mounted(){
+       this.getMaterialGroupByUserIds()
+       this.getRelationship()
+       this.getStuffByCategory()
+    },
+    methods:{
+        // 查询材料组
+        getMaterialGroupByUserIds(){
+            getMaterialGroupByUserIds({}).then(res=>{
+                if(res.code==="200"){
+                        this.material=res.data
+                }
+            })
+        },
+         //基数地区
+        handleBaseChangeArea(e,b){
+            // 地区数量校验
+            // if(e.length<6){
+            //     this.baseAreaVmodel=e
+            // }else{
+            //     this.baseAreaVmodel=e.slice(0,5)
+            //     this.$message({
+            //     message: '最多选择5条数据',
+            //     type: 'warning'
+            //     });
+            // }
+            // if(this.baseAreaVmodel.length>0){
+            //     this.formData.spiBaseDTO.cityCodeList=[]
+            //     this.baseAreaVmodel.forEach(x=>{
+            //         this.formData.spiBaseDTO.cityCodeList.push(x[2])
+            //     })
+            //     this.formData.spiBaseDTO.cityCodeList=this.formData.spiBaseDTO.cityCodeList.map(String)
+            // }
+            console.log(this.$refs["myCascader"].getCheckedNodes())
+            this.formData.spiBaseDTO.cityCodeList=[]
+            this.supplierSeccoStockOption=[]
+           if(this.$refs["myCascader"].getCheckedNodes().length>0){
+               this.$refs["myCascader"].getCheckedNodes().forEach(x=>{
+                   if(x.level==3){
+                       this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
+                       this.supplierSeccoStockOption.push({...x,value:x.value.toString()})
+                   }
+                   
+               })
+           }else{
+               this.supplierSeccoStockOption=[]
+               this.formData.spiBaseDTO.cityCodeList=[]
+           }
+        },
+        //供应商地区
+        handleSupplierChangeArea(){
+             //this.baseSupplierVmodel
+        },
+        // 科股
+        getRelationship(){
+            getRelationship({}).then(res=>{
+                this.Relationship=res.data
+            })
         },
         spiSupplierDTO: {
           yearList: [],

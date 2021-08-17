@@ -2,7 +2,17 @@
   <div>
     <div class="navBox">
       <iNavMvp :list="tabRouterList" class="margin-bottom20" routerPage :lev="1"/>
-      <div class="rightNav">
+      <div class="rightNav" v-if="!isShowKpiMenu">
+        <iNavMvp
+            :list="categoryManagementAssistantList"
+            :lev='2'
+            right
+            routerPage
+            class="margin-right20"
+        />
+        <slot name="extralButton" ></slot>
+      </div>
+      <div class="rightNav" v-if="isShowKpiMenu">
         <iNavMvp
             :list="categoryManagementAssistantList"
             :lev='2'
@@ -30,7 +40,8 @@ export default {
   data () {
     return {
       tabRouterList,
-      categoryManagementAssistantList
+      categoryManagementAssistantList,
+      isShowKpiMenu:true
     }
   }
 }
