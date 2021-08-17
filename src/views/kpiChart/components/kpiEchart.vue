@@ -1,5 +1,6 @@
 <template>
     <div class="box">
+        <div class="supplier-itemList" v-for="(x,index) in supplierNameArray" :key="index"><i class="point"></i>{{x.name}}</div>
         <div style="height:360px" ref="chart"></div>
     </div>
 </template>
@@ -10,6 +11,10 @@ export default {
     props:{
         options:{
             type:Object
+        },
+        supplierNameArray:{
+            type:Array,
+            default:()=>[]
         }
     },
     data(){
@@ -108,6 +113,7 @@ export default {
                     }
                 ]
             },
+            seriesObj:{}
         }
     },
     mounted(){
@@ -117,17 +123,12 @@ export default {
     watch:{
         option:{
             handler(curVal,oldVal){
-                this.option.legend.data=this.options.legend.data
-                // 更新供应商名称
-                this.options.legend.data.forEach((x,index)=>{
-                    this.option.legend.data[index].name=x.name
-                    this.option.series[0].name=x.name
-                })
-
+                this.seriesObj=this.options.series[0]
                 this.option.tooltip.formatter=function(params){
+                    console.log(params)
                         const str = `<div style="padding:10px">
                             <div>该分数断下供应商数量:<span style="color:#1763F7">${params.value}家</span></div>
-                            <div>${params.seriesName}:${params.name}分</div>
+                            <div>${params.data.name}:${params.name}分</div>
                         </div>`
                         return str
                     }
@@ -135,6 +136,13 @@ export default {
             },
             immediate: true,
             deep: true
+        },
+        supplierNameArray(){
+            // this.option.series=[]
+            // this.supplierNameArray.forEach((x,index)=>{
+            //     this.option.series.push({...this.seriesObj,name:x.name})
+            // })
+            // this.initCharts()
         }
     },
     methods:{
@@ -151,6 +159,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.supplier-itemList{
+    padding-left: 10px;
+}
+    .point{
+        height: 12px;
+        width: 12px;
+        background-color: #1763F7;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 10px;
+    }
 </style>
 

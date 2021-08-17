@@ -479,14 +479,14 @@ export default {
     //科股监听
     handlechangeSeccoStock (str, val) {
       if (str == "base" && val.length > 0) {
+        this.formData.spiSupplierDTO.existShareIdList=this.formData.spiBaseDTO.existShareIdList
         this.supplierSeccoStockOption = []
         val.forEach(x => {
           let fdx = this.Relationship.filter(y => { return y.existShareId == x })
           this.supplierSeccoStockOption = this.supplierSeccoStockOption.concat(fdx)
         })
       }
-      if (str == "base" && val.length == 0) {
-        debu
+      if (str == "supplier" && val.length == 0) {
         this.supplierSeccoStockOption = []
       }
     },

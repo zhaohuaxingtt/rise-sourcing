@@ -14,7 +14,8 @@
       <span class="text">{{ language('PI.SHIJIANDAN', '时间段') }}</span>
       <el-date-picker
           v-model='timeRange'
-          value-format='yyyy-MM'
+          value-format='yyyy/MM'
+          format="yyyy/MM"
           type="monthrange"
           style="width: 200px"
           @change="handleTimeChange"
