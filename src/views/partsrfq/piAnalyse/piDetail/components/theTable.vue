@@ -113,6 +113,12 @@ export default {
       type: String,
       default: '',
     },
+    averageTableInfo: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   computed: {
     pageType() {
@@ -278,15 +284,19 @@ export default {
       try {
         this.tableListData = [];
         this.hideTableData = [];
-        let copyDataInfo = _.cloneDeep(this.dataInfo);
+        let copyDataInfo = {};
         let copyTableList = [];
         if (this.currentTab === this.CURRENTTIME) {
+          copyDataInfo = _.cloneDeep(this.dataInfo);
           this.nowPriceRatio = copyDataInfo.currentPartCostTotalVO.nowPriceRatio;
           this.totalPriceRatio = copyDataInfo.currentPartCostTotalVO.totalPriceRatio;
           copyTableList = copyDataInfo && copyDataInfo.currentPartCostTotalVO &&
               copyDataInfo.currentPartCostTotalVO.piPartCostVOS;
         } else if (this.currentTab === this.AVERAGE) {
-          return [];
+          copyDataInfo = _.cloneDeep(this.averageTableInfo);
+          this.nowPriceRatio = copyDataInfo.nowPriceRatio;
+          this.totalPriceRatio = copyDataInfo.totalPriceRatio;
+          copyTableList = copyDataInfo && copyDataInfo.piPartCostVOS;
         }
         let exchangeRateIndex = 0;
         copyTableList.map((item, index) => {
@@ -400,6 +410,15 @@ export default {
         this.getTableList();
       },
     },
+    averageTableInfo: {
+      deep: true,
+      handler() {
+        this.getTableList();
+      },
+    },
+    // currentTab() {
+    //   this.getTableList();
+    // },
   },
 };
 </script>

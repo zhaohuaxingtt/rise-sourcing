@@ -34,7 +34,20 @@
 
     <!--表格-->
     <iCard tabCard class="margin-bottom20">
-      <theTable :dataInfo="dataInfo" :currentTab="currentTab"/>
+      <theTable
+          v-show="currentTab === CURRENTTIME"
+          ref="theCurrentTable"
+          :dataInfo="dataInfo"
+          :currentTab="currentTab"
+          :tableLoading="tableLoading"
+      />
+      <theTable
+          v-show="currentTab === AVERAGE"
+          ref="theAverageTable"
+          :averageTableInfo="averageTableInfo"
+          :currentTab="currentTab"
+          :tableLoading="tableLoading"
+      />
     </iCard>
 
     <!--图形-->
@@ -118,6 +131,10 @@ export default {
         batchNumber: '',
       },
       dataInfo: {},
+      averageTableInfo: {},
+      CURRENTTIME,
+      AVERAGE,
+      tableLoading: false,
     };
   },
   created() {
@@ -184,8 +201,6 @@ export default {
     // 点击标签
     handleTabsClick(val) {
       this.currentTab = val;
-      console.log(11);
-      console.log(val);
       if (this.currentTab === AVERAGE) {
         this.getAverageTable();
       }
@@ -199,6 +214,7 @@ export default {
     async getDataInfo() {
       try {
         this.pageLoading = true;
+        this.tableLoading = true;
         const req = {
           analysisSchemeId: this.currentTabData.analysisSchemeId,
         };
@@ -209,15 +225,26 @@ export default {
           return item.isShow;
         });
         this.pageLoading = false;
+        this.tableLoading = false;
       } catch {
         this.pageLoading = false;
+        this.tableLoading = false;
       }
     },
     async getAverageTable() {
-      const req = {
-        ...this.currentTabData,
-      };
-      const res = await getAveragePartCostPrice(req);
+      try {
+        this.tableLoading = true;
+        this.averageTableInfo = {};
+        const req = {
+          ...this.currentTabData,
+        };
+        const res = await getAveragePartCostPrice(req);
+        this.averageTableInfo = res.data;
+        this.tableLoading = false;
+      } catch {
+        this.averageTableInfo = {};
+        this.tableLoading = false;
+      }
     },
     // 处理保存弹窗
     handleSaveDialog(reqParams) {},
