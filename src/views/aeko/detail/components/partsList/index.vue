@@ -45,11 +45,11 @@
         <!-- 按钮区域 -->
         <template v-slot:header-control>
             <div>
-                <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
-                <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
-                <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
-                <iButton  v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
-                <iButton v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
+                <iButton :disabled="btnDisabled" v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
+                <iButton :disabled="btnDisabled" v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
+                <iButton :disabled="btnDisabled" v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
+                <iButton :disabled="btnDisabled" v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
+                <iButton :disabled="btnDisabled" v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
             </div>
         </template>
         <!-- 表单区域 -->
@@ -72,15 +72,16 @@
             <!-- linie -->
             <template #buyerName="scoped">
                 <span :class="!scoped.row.buyerId ? 'isPreset' : '' ">
-                    <!-- {{scoped.row.buyerName || scoped.row.refferenceByuerName}} -->
                     {{isShowLine(scoped.row)}}
                 </span>
             </template>
             <!-- 操作 -->
             <template #operate="scoped">
-                <span v-if="!scoped.row.linieDeptNum && isAekoManager" class="link-underline" @click="assign(scoped.row,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
-                <!-- 1.未分配过 2.分配过 分配人未操作过 【buyerId表示已有分配人,oldPartNumPreset不为空标识操作过】-->
-                <!-- v-if="(!scoped.row.buyerId || ( scoped.row.buyerId && !oldPartNumPreset)) && isCommodityCoordinator"  -->
+                <span v-if="!scoped.row.linieDeptNum && isAekoManager" class="link-underline">
+                    <span v-if="btnDisabled" class="disabled">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
+                    <span v-else @click="assign(scoped.row,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
+                </span>
+               
                 <span 
                     v-if="isCommodityCoordinator && !scoped.row.isOperate" 
                     class="link-underline" 
@@ -163,6 +164,9 @@ export default {
             userInfo: state => state.permission.userInfo,
             permission: state => state.permission
         }),
+        btnDisabled(){ // 已撤销的AEKO不允许操作
+            return this.aekoInfo.aekoStatus == 'CANCELED'
+        }
     },
     props:{
         aekoInfo:{
@@ -661,6 +665,11 @@ export default {
             }
             ::v-deep .el-input__inner{
                 height: 35px !important;
+            }
+        }
+        .link-underline{
+            .disabled{
+                color: #acb8cf;
             }
         }
     }
