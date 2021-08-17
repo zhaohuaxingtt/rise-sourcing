@@ -20,28 +20,40 @@
               :label="language(item.labelKey,item.label)"
               v-permission.dynamic="item.permissionKey"
               >
-                  <iSelect 
+              <template  v-if="item.type === 'select'" >
+                  <aeko-select 
+                    v-if="item.isNewSelect"
+                    :searchParams="searchParams" 
+                    :ParamKey="item.props" 
+                    :allOptionsData="selectOptions[item.selectOption]" 
+                    :multiple="item.multiple"
+                    :clearable="item.clearable" 
+                  />
+                  <iSelect
+                    v-else
                     class="multipleSelect" 
                     collapse-tags 
-                    v-if="item.type === 'select'" 
                     :multiple="item.multiple" 
                     :filterable="item.filterable" 
                     :clearable="item.clearable" 
                     v-model="searchParams[item.props]" 
                     :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
+                    reserve-keyword
+                    @change="handleMultipleChange($event, item.props,item.multiple)"
                     :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
                     >
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
                       v-for="(item,index) in selectOptions[item.selectOption] || []"
-                      :key="index"
+                      :key="item.selectOption+'_'+index"
                       :label="item.desc"
                       :value="item.code"
                       >
                     </el-option>  
                   </iSelect> 
-                  <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
-                  <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
+                </template>
+                <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
               </el-form-item>
           </el-form>
       </iSearch>
@@ -76,6 +88,12 @@
             <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission="AEKO_MANAGELIST_BUTTON_DAOCHU" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
+
+          <!-- 暂时添加的按钮 -->
+          <template v-if="isAekoManager">
+            <iButton :loading="btnLoading.tcm" @click="getTCM">TCM AEKO同步</iButton>
+            <iButton :loading="btnLoading.tcmFiles" @click="getTCMFiles">TCM AEKO附件同步</iButton>
+          </template>
       </template>
       <!-- 表单区域 -->
       <div v-permission="AEKO_MANAGELIST_TABLE">
@@ -155,6 +173,7 @@ import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
 import {user as configUser } from '@/config'
+import aekoSelect from '../components/aekoSelect'
 import {
   getManageList,
   searchAekoStatus,
@@ -168,7 +187,10 @@ import {
   downloadAeko,
   searchCommodity,
   searchLinie,
+  synAekoFromTCM,
+  synAekoAttachmentFromTCM,
 } from '@/api/aeko/manage'
+import { debounce,chunk } from "lodash";
 export default {
     name:'aekoManageList',
     mixins: [pageMixins],
@@ -187,6 +209,7 @@ export default {
       revokeDialog,
       filesListDialog,
       Upload,
+      aekoSelect
     },
     data(){
       return{
@@ -195,9 +218,10 @@ export default {
         selectItems:[],
         searchParams:{
           brand:'',
+          buyerName:'',
           aekoStatusList:[],
           coverStatusList:[],
-          carTypeCodeList:[],
+          carTypeCodeList:[''],
           linieDeptNumList:[],
         },
         selectOptions:{
@@ -209,12 +233,12 @@ export default {
           'buyerName':[],
         },
         selectOptionsCopy:{
-          'buyerName':[],
           'brand':[],
           'aekoStatusList':[],
           'coverStatusList':[],
           'linieDeptNumList':[],
           'carTypeCodeList':[],
+          'buyerName':[],
         },
         tableListData:[],
         tableTitle:tableTitle,
@@ -226,10 +250,12 @@ export default {
           uploadFiles:false,
           importAeko:false,
           deleteItem:false,
-          
+          tcmFiles:false,
+          tcm:false,
         },
         importAeko:importAeko,
         itemFileData:{},
+        debouncer: null
       }
     },
     computed: {
@@ -271,9 +297,10 @@ export default {
       reset(){
         this.searchParams = {
           brand:'',
+          buyerName:'',
           aekoStatusList:[],
           coverStatusList:[],
-          carTypeCodeList:[],
+          carTypeCodeList:[''],
           linieDeptNumList:[],
         };
         this.getList();
@@ -287,12 +314,13 @@ export default {
       async getList(){
         this.loading = true;
         const {searchParams,page} = this;
-        const {partNum} = searchParams;
+        const {partNum,carTypeCodeList} = searchParams;
         // 若有冻结起止时间将其拆分成两个字段
         const {frozenDate=[]} = searchParams;
         const data = {
             current:page.currPage,
             size:page.pageSize,
+            carTypeCodeList:carTypeCodeList.length && carTypeCodeList[0]=='' ? [] : carTypeCodeList,
         };
         if(frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
@@ -361,6 +389,7 @@ export default {
           if(code ==200 ){
             data.map((item)=>{
               item.desc = item.name;
+              item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })
             this.selectOptions.carTypeCodeList = data;
             this.selectOptionsCopy.carTypeCodeList = data;
@@ -391,6 +420,7 @@ export default {
             data.map((item)=>{
               item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
               item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+              item.lowerCaseLabel =  typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
             })
             this.selectOptions.buyerName = data;
             this.selectOptionsCopy.buyerName = data;
@@ -501,7 +531,6 @@ export default {
       // 导入附件
       async fileSuccess(data){
         this.btnLoading.uploadFiles = true;
-        console.log(data,'data');
         const fileData = data.data;
         const { name ,path,size,id} = fileData;
         const { selectItems } =this;
@@ -599,30 +628,82 @@ export default {
 
       // 模糊搜索处理
       dataFilter(val,props){
+        if (this.debouncer && typeof this.debouncer.cancel === "function") this.debouncer.cancel();
+
+        if(props == 'buyerName'){
+          this.searchParams.buyerName = val;
+        }
+        
         // 去除前后空格
         const trimVal = val.trim();
         const { selectOptionsCopy={}} = this;
-        if(trimVal){
+          this.debouncer = debounce(() => {
+            if(trimVal){
             // 人名要特殊处理 --- 可搜索英文去除大小写
-          if(props == 'buyerName'){
-            const list = selectOptionsCopy[props].filter((item) => {
-              if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
-                return true
+              if(props == 'buyerName'){
+                const list = selectOptionsCopy[props].filter((item) => {
+                  if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                    return true
+                  }
+                })
+                this.selectOptions[props] = list;
+              }else{
+                const list = selectOptionsCopy[props].filter((item) => {
+                if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
+                      return true;
+                  } 
+                })
+                this.selectOptions[props] = list;
+                
               }
-            })
-            this.selectOptions[props] = list;
-          }else{
-            const list = selectOptionsCopy[props].filter((item) => {
-              if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
-                  return true;
-              } 
-            })
-             this.selectOptions[props] = list;
+            }else{
+              this.selectOptions[props] = selectOptionsCopy[props];
+            }
+            
+          },400);
+        this.debouncer()
+      },
+
+      // 多选处理
+      handleMultipleChange(value, key,multiple) {
+          // 单选不处理
+          if(!multiple) {
+            if(!value){
+              const {selectOptionsCopy={}} = this;
+              this.$set(this.selectOptions,key,selectOptionsCopy[key]);
+            }else{
+              this.$set(this.searchParams,key,value);
+              return;
+            }
           }
-        }else{
-          this.selectOptions[props] = selectOptionsCopy[props];
-        }
-      }
+      },
+
+
+      // TCM AEKO同步 
+      async getTCM(){
+        this.btnLoading.tcm = true;
+        await synAekoFromTCM().then((res)=>{
+          this.btnLoading.tcm = false;
+          if(res.code == 200) {
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          }
+        }).catch((err)=>{
+          this.btnLoading.tcm = false;
+        })
+      },
+
+       // TCM AEKO附件同步
+       async getTCMFiles(){
+        this.btnLoading.tcmFiles = true;
+        await synAekoAttachmentFromTCM().then((res)=>{
+          this.btnLoading.tcmFiles = false;
+          if(res.code == 200) {
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          }
+        }).catch((err)=>{
+          this.btnLoading.tcmFiles = false;
+        })
+       },
     }
 }
 </script>

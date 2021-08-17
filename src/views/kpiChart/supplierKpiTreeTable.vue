@@ -1,7 +1,27 @@
 <template>
   <div>
       <iPage>
-          <publicHeaderMenu></publicHeaderMenu>
+          <div class="navBox clearfix">
+            <el-tabs v-model="activeName" @tab-click="handleleftClick" class="leftNav">
+                <el-tab-pane 
+                v-for="x in tabRouterList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <div>
+            <el-tabs v-model="activeRightName" @tab-click="handlerightClick" class="rightNav">
+                <el-tab-pane 
+                v-for="x in categoryManagementAssistantList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <logButton class="logButton"/>
+            </div>
+        </div>
            <iCard style="margin-top:20px">
                <div class="top">
                    <div class="searchOptions">
@@ -147,6 +167,9 @@ import {iButton,iPage,iCard,iInput,iSelect,iPagination} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import { kpiDetail,slelectkpiList,dowbloadAPI,templateDetail,uploadTemplate } from '@/api/kpiChart'
 import publicHeaderMenu from './commonHeardNav/headerNav'
+import {iNavMvp } from 'rise'
+import { tabRouterList, categoryManagementAssistantListkpi } from './commonHeardNav/navData'
+import logButton from '@/components/logButton'
 export default {
     mixins: [pageMixins],
     components:{
@@ -157,10 +180,18 @@ export default {
         iSelect,
         iPagination,
         slelectkpiList,
-        publicHeaderMenu
+        publicHeaderMenu,
+        categoryManagementAssistantListkpi,
+        tabRouterList,
+        iNavMvp,
+        logButton
     },
     data(){
         return {
+      activeName:'/supplier/kpiList',
+      activeRightName:'/supplier/supplierKpiTreeTable',
+      tabRouterList:tabRouterList,
+        categoryManagementAssistantList:categoryManagementAssistantListkpi,
             formData:{
                 deptId:''
             },
@@ -191,6 +222,13 @@ export default {
         
     },
     methods:{
+        handleleftClick(tab,event){
+            this.$router.push(tab.name)
+        },
+        handlerightClick(tab){
+            //this.activeName='/supplier/kpiList'
+             this.$router.push(tab.name)
+        },
         getSelectKpiList(params){
             slelectkpiList(params).then(res=>{
                 this.dropDownOptions=res.data
@@ -207,7 +245,10 @@ export default {
             templateId: templateId,
             ...this.ipagnation}).then(res=>{
                 if(res.code=="200"){
-                    if(res.data.length<1) return this.$message({type:'warning',message:'当前无KPI数据，请上传打分数'})
+                    if(res.data.length<1){
+                        this.allData=[]
+                        return this.$message({type:'warning',message:'当前无KPI数据，请上传打分数'})
+                    } 
                     this.allData=JSON.parse(JSON.stringify(res.data))
                     this.allData.forEach(x=>{
                         x.checked=false
@@ -222,7 +263,6 @@ export default {
                     this.page.totalCount = res.total
                     this.ipagnation.pageNo = res.pageNum
                     this.ipagnation.pageSize = res.pageSize
-                    console.log(this.allData)
                 }
             })
         },
@@ -549,4 +589,49 @@ export default {
         display: flex;
         justify-content: flex-end;
     }
+::v-deep.navBox {
+  position: relative;
+  // border-bottom: 1px solid #E3E3E3;
+  margin-bottom: 20px;
+  .logButton .icon + span{vertical-align: top;}
+  div{font-size: 20px;}
+  .el-tabs__nav-wrap::after{
+    width: 0;
+  }
+  .el-tabs__item{
+    line-height: 24px;
+  }
+  .el-tabs__item.is-active{
+    font-weight: Bold;
+  }
+  .leftNav{
+      float: left;
+  }
+  .rightNav {
+    float: right;
+    margin-right: 110px;
+    .el-tabs__active-bar {
+        background-color: transparent !important;
+    }
+  }
+
+  .logButton {
+    position: absolute;
+    top: 5px;
+    right: 0;
+  }
+}
+.clearfix:after{
+  content: "020"; 
+  display: block; 
+  height: 0; 
+  clear: both; 
+  visibility: hidden;  
+  }
+
+.clearfix {
+  /* 触发 hasLayout */ 
+  zoom: 1; 
+  }
+
 </style>

@@ -258,3 +258,13 @@ function removeStyle(evt) {
     let reg = new RegExp(selectDisableStyle, 'g')
     target.setAttribute('style', style)
 }
+
+Vue.directive("lazySelect", {
+    bind(el, binding) {
+        const dom = el.querySelector(".el-select-dropdown__wrap")
+
+        dom.addEventListener("scroll", function() {
+          if ((this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
+        });
+    }
+})

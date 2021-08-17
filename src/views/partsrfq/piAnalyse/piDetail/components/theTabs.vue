@@ -13,8 +13,9 @@
     <div class="timeBox" v-if="currentTab !== CURRENTTIME">
       <span class="text">{{ language('PI.SHIJIANDAN', '时间段') }}</span>
       <el-date-picker
-          v-model='monthRange'
-          value-format='yyyy-MM'
+          v-model='timeRange'
+          value-format='yyyy/MM'
+          format="yyyy/MM"
           type="monthrange"
           style="width: 200px"
           @change="handleTimeChange"
@@ -42,11 +43,16 @@ export default {
       type: String,
       default: '',
     },
+    timeRange: {
+      type: Array,
+      default: () => {
+        return null;
+      },
+    },
   },
   data() {
     return {
       current: 1,
-      monthRange: null,
       CURRENTTIME,
       AVERAGE,
     };
