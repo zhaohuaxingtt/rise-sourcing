@@ -100,10 +100,16 @@ export default {
             supplierId
           })
           this.tableListData = Array.isArray(res.data) ? res.data : []
-          this.tableTitle = cloneDeep(partScroingTitle)
-          if (this.tableListData[0]) {
-            this.tableTitle[this.tableTitle.length - 1].name = this.tableListData[0].rateTag
+          let tableTitle = cloneDeep(partScroingTitle)
+
+          if (this.$route.query.rfqType === "AFFIX") {
+            tableTitle = tableTitle.filter(item => item.props !== "externaFee" && item.props !== "addFee" && item.props !== "confirmCycle")
           }
+
+          this.tableTitle = tableTitle
+          // if (this.tableListData[0]) {
+          //   this.tableTitle[this.tableTitle.length - 1].name = this.tableListData[0].rateTag
+          // }
           // const req = {
           //   supplierId,
           //   rfqId,
