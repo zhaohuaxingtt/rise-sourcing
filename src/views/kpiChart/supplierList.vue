@@ -9,7 +9,27 @@
 <template>
   <div>
     <iPage>
-      <publicHeaderMenu></publicHeaderMenu>
+      <div class="navBox clearfix">
+            <el-tabs v-model="activeName" @tab-click="handleleftClick" class="leftNav">
+                <el-tab-pane 
+                v-for="x in tabRouterList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <div>
+            <el-tabs v-model="activeRightName" @tab-click="handlerightClick" class="rightNav">
+                <el-tab-pane 
+                v-for="x in categoryManagementAssistantList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <logButton class="logButton"/>
+            </div>
+        </div>
       <iTabs style='margin-left:20px;' v-model="tabVal" @tab-click="changeTab" >
           <el-tab-pane name="PP" label="生产供应商">
           </el-tab-pane>
@@ -45,6 +65,9 @@
 </template>
 
 <script>
+import {iNavMvp } from 'rise'
+import { tabRouterList, categoryManagementAssistantList } from './commonHeardNav/navData'
+import logButton from '@/components/logButton'
 import {iButton, iPage, iCard, iInput, iSelect, iTableCustom, iTabs} from 'rise'
 import {setCloum} from './components/data'
 import supplierDetail from './components/supplierDetail'
@@ -61,10 +84,18 @@ export default {
         iTableCustom,
         iTabs,
         supplierDetail,
-        publicHeaderMenu
+        publicHeaderMenu,
+        categoryManagementAssistantList,
+        tabRouterList,
+        iNavMvp,
+        logButton
     },
     data(){
       return {
+        activeName:'/supplier/kpiIndex',
+        activeRightName:'/supplier/supplierList',
+        tabRouterList:tabRouterList,
+        categoryManagementAssistantList:categoryManagementAssistantList,
         formData:{},
         setCloum:setCloum,
         tabledata:[],
@@ -75,6 +106,13 @@ export default {
       this.getTableData()
     },
     methods:{
+      handleleftClick(tab,event){
+            this.$router.push(tab.name)
+        },
+        handlerightClick(tab){
+            this.activeName='/supplier/kpiIndex'
+             this.$router.push(tab.name)
+        },
       handleGoDetail(row){
         this.$router.push({
           path: '/supplier/supplierDetail',
@@ -160,4 +198,48 @@ export default {
       font-weight: bold;
       margin-bottom: 20px;
     }
+    ::v-deep.navBox {
+  .logButton .icon + span{vertical-align: top;}
+  position: relative;
+  // border-bottom: 1px solid #E3E3E3;
+  margin-bottom: 20px;
+  div{font-size: 20px;}
+  .el-tabs__nav-wrap::after{
+    width: 0;
+  }
+  .el-tabs__item{
+    line-height: 24px;
+  }
+  .el-tabs__item.is-active{
+    font-weight: Bold;
+  }
+  .leftNav{
+      float: left;
+  }
+  .rightNav {
+    float: right;
+    margin-right: 110px;
+    .el-tabs__active-bar {
+        background-color: transparent !important;
+    }
+  }
+
+  .logButton {
+    position: absolute;
+    top: 5px;
+    right: 0;
+  }
+}
+.clearfix:after{
+  content: "020"; 
+  display: block; 
+  height: 0; 
+  clear: both; 
+  visibility: hidden;  
+  }
+
+.clearfix {
+  /* 触发 hasLayout */ 
+  zoom: 1; 
+  }
 </style>
