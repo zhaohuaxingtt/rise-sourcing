@@ -263,7 +263,7 @@ export default {
                  x.totalList.forEach(score => {
                      if(score.totalScore>9){
                          this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].symbol='emptyCircle'
-                         this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].c=Math.floor((score.score)/10)*10+5
+                         this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].c=Math.floor((score.totalScore)/10)*10+5
                          this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].sArray=[]
                          this.tabledata.forEach(s=>{
                             if(s.supplierId==score.supplierId){
