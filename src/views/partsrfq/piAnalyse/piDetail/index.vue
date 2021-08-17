@@ -199,7 +199,7 @@ export default {
             batchNumber: partListItem.batchNumber,
             supplierId: partListItem.supplierId,
           };
-          this.getDataInfo();
+          await this.getDataInfo();
         }
         this.resultMessage(res);
       });
