@@ -17,7 +17,7 @@ export const SearchList = [
 export const tableTitle = [
     { props: "partNum", name: "零件号 ", key: "LK_LINGJIANHAO", tooltip: true },
     { props: "partNameZh", name: "零件名称", key: "LK_LINGJIANMINGCHENG", tooltip: true },
-    { props: "changeTypeDesc", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
+    { props: "changeType", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
     { props: "prNumber", name: "PR号", key: "LK_AEKOPRHAO", tooltip: true },
     { props: "brand", name: "品牌", key: "LK_AEKOPINGPAI", tooltip: true },
     { props: "cartypeZh", name: "涉及⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true,width:130 },
