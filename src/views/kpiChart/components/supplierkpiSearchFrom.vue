@@ -519,7 +519,7 @@ export default {
         })
       }
       if (str == "supplier" && val.length == 0) {
-        this.supplierSeccoStockOption = []
+        this.formData.spiSupplierDTO.existShareIdList=[]
       }
     },
     handleOk () {
