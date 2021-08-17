@@ -528,6 +528,7 @@ export default {
       })
     },
     handleRest () {
+
       this.formData = {
         spiBaseDTO: {
           cityCodeList: [],
@@ -548,6 +549,7 @@ export default {
       this.baseStartYear = null
       this.baseEndYear = null
       this.baseAreaVmodel = []
+      this.$emit("reset")
     },
     // base 开始日期
     startChangeBase (e) {
