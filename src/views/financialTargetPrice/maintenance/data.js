@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 15:00:52
+ * @LastEditTime: 2021-08-17 10:40:52
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
@@ -86,6 +86,6 @@ export const approvalTableTitle = [
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
   {props:'valid',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
   {props:'approveName',name:'审批人', key: "SHENPIREN", tooltip: true, width: 120},
-  {props:'approveType',name:'审批类型', key: "SHENPILEIXING", tooltip: true},
+  {props:'approveTypeDesc',name:'审批类型', key: "SHENPILEIXING", tooltip: true},
   {props:'approveDate',name:'审批日期', key: "SHENPIRIQI", tooltip: true, width: 120},
 ]
