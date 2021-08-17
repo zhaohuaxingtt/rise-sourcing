@@ -40,8 +40,8 @@
                     </div>
                     <div>
                         <input type="file" id="file" @change="upfileChange($event)" style="display:none;" />
-                        <iButton @click="handleupLoad">{{language("SHANGCHUAN","上传")}}</iButton>
-                        <iButton @click="handleDownload">{{language("XIAZAI","下载")}}</iButton>
+                        <iButton @click="handleupLoad">上传</iButton>
+                        <iButton @click="handleDownload">下载</iButton>
                     </div>
                </div>
                 <!-- 自定义列表 -->
@@ -155,7 +155,7 @@
                             :value="x.key"></el-option>
                        </iSelect>
                    </div>
-                   <div class="dialog-button"><iButton @click="handleSure">{{language("QUEREN","确认")}}</iButton></div>
+                   <div class="dialog-button"><iButton @click="handleSure">确认</iButton></div>
                </div>
            </div>
       </iPage>
@@ -230,7 +230,7 @@ export default {
              this.$router.push(tab.name)
         },
         getSelectKpiList(params){
-            slelectkpiList(params).then(res=>{
+            slelectkpiList({...params,orderByUpload:true}).then(res=>{
                 this.dropDownOptions=res.data
                 if(this.dropDownOptions.length>0){
                     this.getTittleDetail(this.dropDownOptions[this.dropDownOptions.length-1].key)//初始化表头
@@ -368,6 +368,7 @@ export default {
                         if(res.code=="200"){
                             this.$message('上传成功')
                             this.isShowDialog=false
+                            this.getSelectKpiList({deptCode:this.$store.state.permission.userInfo.deptDTO.deptNum})
                         }
                     })
                 //    let  formData = new FormData()

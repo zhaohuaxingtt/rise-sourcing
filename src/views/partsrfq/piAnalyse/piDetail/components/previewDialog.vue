@@ -5,10 +5,22 @@
       @close="clearDiolog"
   >
     <div id="content">
-      <div class="title">{{ language('PI.PIINDEXBAOGAO', 'Price Index报告') }}-{{dataInfo.partsId}}</div>
+      <div class="title">{{ language('PI.PIINDEXBAOGAO', 'Price Index报告') }}-{{ dataInfo.partsId }}</div>
       <theBaseInfo class="margin-top20" :dataInfo="dataInfo"/>
       <el-divider class="margin-top20 margin-bottom20"/>
-      <theTable :isPreview="true" :dataInfo="dataInfo" :currentTab="currentTab"/>
+      <!--表格-->
+      <theTable
+          v-show="currentTab === CURRENTTIME"
+          :isPreview="true"
+          :dataInfo="dataInfo"
+          :currentTab="currentTab"
+      />
+      <theTable
+          v-show="currentTab === AVERAGE"
+          :isPreview="true"
+          :averageTableInfo="averageTableInfo"
+          :currentTab="currentTab"
+      />
       <el-divider class="margin-top20 margin-bottom20"/>
       <div class="chartBox">
         <!--      Price Index价格分析-->
@@ -26,10 +38,19 @@ import theBaseInfo from './theBaseInfo';
 import theTable from './theTable';
 import thePriceIndexChart from './thePriceIndexChart';
 import thePartsCostChart from './thePartsCostChart';
+import {CURRENTTIME, AVERAGE} from './data';
+import {downloadPdfMixins} from '@/utils/pdf';
 
 export default {
+  mixins: [downloadPdfMixins],
   props: {
     dataInfo: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+    averageTableInfo: {
       type: Object,
       default: () => {
         return {};
@@ -38,8 +59,8 @@ export default {
     value: {type: Boolean},
     currentTab: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   components: {
     iDialog,
@@ -49,11 +70,21 @@ export default {
     thePartsCostChart,
   },
   data() {
-    return {};
+    return {
+      CURRENTTIME,
+      AVERAGE,
+    };
   },
   methods: {
     clearDiolog() {
       this.$emit('input', false);
+    },
+    getDownloadFile({callBack}) {
+      return this.getDownloadFileAndExportPdf({
+        domId: 'content',
+        pdfName: 'Overview',
+        callBack,
+      });
     },
   },
 };
