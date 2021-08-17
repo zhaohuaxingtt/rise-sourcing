@@ -32,6 +32,8 @@
                     reserve-keyword
                     @change="handleMultipleChange($event, item.props,item.multiple)"
                     :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+                    v-lazy-select="()=>{cartypeProjectLazy(item.selectOption)}"
+                    @visible-change="selectVisibleChange($event, item.selectOption)"
                     >
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
@@ -179,7 +181,7 @@ import {
   synAekoFromTCM,
   synAekoAttachmentFromTCM,
 } from '@/api/aeko/manage'
-import { debounce } from "lodash"
+import { debounce,chunk } from "lodash"
 export default {
     name:'aekoManageList',
     mixins: [pageMixins],
@@ -228,6 +230,9 @@ export default {
           'linieDeptNumList':[],
           'carTypeCodeList':[],
         },
+        carTypeProjectOptionsCacheChunks: [],
+        carTypeProjectOptionsFilterCache: [],
+        cartypeProjectCurrentPage: 1,
         tableListData:[],
         tableTitle:tableTitle,
         loading:false,
@@ -375,9 +380,12 @@ export default {
           if(code ==200 ){
             data.map((item)=>{
               item.desc = item.name;
+              item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })
-            this.selectOptions.carTypeCodeList = data;
             this.selectOptionsCopy.carTypeCodeList = data;
+            this.carTypeProjectOptionsFilterCache= data;
+            this.carTypeProjectOptionsCacheChunks = chunk(data, 20);
+            this.selectOptions.carTypeCodeList = this.carTypeProjectOptionsCacheChunks[0] || [];
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -516,7 +524,6 @@ export default {
       // 导入附件
       async fileSuccess(data){
         this.btnLoading.uploadFiles = true;
-        console.log(data,'data');
         const fileData = data.data;
         const { name ,path,size,id} = fileData;
         const { selectItems } =this;
@@ -614,7 +621,6 @@ export default {
 
       // 模糊搜索处理
       dataFilter(val,props){
-        console.log(val,props);
         if (this.debouncer && typeof this.debouncer.cancel === "function") this.debouncer.cancel();
 
         if(props == 'buyerName'){
@@ -625,44 +631,56 @@ export default {
         // 去除前后空格
         const trimVal = val.trim();
         const { selectOptionsCopy={}} = this;
-        if(trimVal){
           this.debouncer = debounce(() => {
+            if(trimVal){
             // 人名要特殊处理 --- 可搜索英文去除大小写
-            if(props == 'buyerName'){
-              const list = selectOptionsCopy[props].filter((item) => {
-                if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
-                  return true
-                }
-              })
-              this.selectOptions[props] = list;
-            }else{
-              const list = selectOptionsCopy[props].filter((item) => {
+              if(props == 'buyerName'){
+                const list = selectOptionsCopy[props].filter((item) => {
+                  if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                    return true
+                  }
+                })
+                this.selectOptions[props] = list;
+              }else if(props == 'carTypeCodeList'){ // 车型项目单独处理
+                this.carTypeProjectOptionsFilterCache = selectOptionsCopy[props].filter(item => item.lowerCaseLabel.includes(trimVal));
+                this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsFilterCache, 20);
+
+                 this.cartypeProjectCurrentPage = 1
+                 this.selectOptions[props] = this.carTypeProjectOptionsCacheChunks[0] || []
+              }else{
+                const list = selectOptionsCopy[props].filter((item) => {
                 if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
-                    return true;
-                } 
-              })
-              this.selectOptions[props] = list;
+                      return true;
+                  } 
+                })
+                this.selectOptions[props] = list;
+                
+              }
+            }else{
+              // 车型项目单独处理
+              if(props == 'carTypeCodeList'){
+                this.carTypeProjectOptionsFilterCache = selectOptionsCopy[props];
+                this.carTypeProjectOptionsCacheChunks = chunk(selectOptionsCopy[props], 20);
+                this.cartypeProjectCurrentPage = 1
+                this.selectOptions[props] = this.carTypeProjectOptionsCacheChunks[0] || []
+              }else{
+                this.selectOptions[props] = selectOptionsCopy[props];
+              }
             }
+            
           },400);
         this.debouncer()
-            
-        }else{
-          this.selectOptions[props] = selectOptionsCopy[props];
-        }
       },
 
       // 多选处理
       handleMultipleChange(value, key,multiple) {
-        console.log(value,key);
           // 单选不处理
           if(!multiple) {
             if(!value){
               const {selectOptionsCopy={}} = this;
               this.$set(this.selectOptions,key,selectOptionsCopy[key]);
             }else{
-              console.log('2222');
               this.$set(this.searchParams,key,value);
-              console.log(this.searchParams)
               return;
             }
           }
@@ -694,6 +712,31 @@ export default {
           this.btnLoading.tcmFiles = false;
         })
        },
+
+       
+      cartypeProjectLazy(key) {
+        if(key == 'carTypeCodeList'){
+          const { selectOptionsCopy,selectOptions } = this;
+          if ((selectOptions.carTypeCodeList).length < (selectOptionsCopy.carTypeCodeList).length) {
+            this.cartypeProjectCurrentPage += 1
+            this.selectOptions.carTypeCodeList = (selectOptions.carTypeCodeList).concat(this.carTypeProjectOptionsCacheChunks[this.cartypeProjectCurrentPage - 1])
+          }
+        }
+        
+      },
+
+      selectVisibleChange(visible, key) {
+        if(key == 'carTypeCodeList'){
+          if (!visible) {
+            const {selectOptionsCopy={}} = this;
+            const {carTypeCodeList=[]} = selectOptionsCopy;
+            this.carTypeProjectOptionsFilterCache = this.selectOptions.carTypeCodeList;
+            this.carTypeProjectOptionsCacheChunks = chunk(carTypeCodeList, 20)
+          }
+          this.selectOptions.carTypeCodeList = this.carTypeProjectOptionsCacheChunks[0] || []
+          this.cartypeProjectCurrentPage = 1
+        }
+      }
     }
 }
 </script>
