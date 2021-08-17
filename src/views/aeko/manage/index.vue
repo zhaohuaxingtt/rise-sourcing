@@ -190,7 +190,7 @@ import {
   synAekoFromTCM,
   synAekoAttachmentFromTCM,
 } from '@/api/aeko/manage'
-import { debounce,chunk } from "lodash";
+import { debounce } from "lodash";
 export default {
     name:'aekoManageList',
     mixins: [pageMixins],
