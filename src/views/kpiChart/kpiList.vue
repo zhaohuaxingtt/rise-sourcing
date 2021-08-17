@@ -253,7 +253,7 @@ export default {
     // 重置数据
     reset() {
       for (const key in this.formData) {
-        this.formData[key] = ''
+        this.formData[key] = null
       }
       this.page.currPage = 1
       this.getTableData()
