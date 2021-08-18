@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-08-12 17:30:02
+ * @LastEditTime: 2021-08-17 20:24:08
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -18,15 +18,16 @@
       }}</span>
       <div class="floatright">
         <!-- 供应商创建定点申请单 -->
-				<createNomiappBtn v-permission='PARTSPROCURE_EDITORDETAIL_CREATEDDSQD'></createNomiappBtn>
-        <iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">{{
-          language("LK_FANHUI",'返回')
-        }}</iButton>
+				<createNomiappBtn :datalist='selectTableData'></createNomiappBtn>
+        <iButton @click="save('partSrcProjec')" :loading='saveButchLoading' v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRMJLJH"
+          >{{ language("LK_QUERENJINGLINGJHAOJLJHBG",'保存') }}
+        </iButton>
         <!-- 	<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">
 					{{ $t("LK_SHENGCHENGFSHAO") }}
 				</iButton> -->
-        <creatFsGsNr :projectItems="selectTableData" keys='purchaseProjectId' @refresh="getTableListFn" v-permission="PARTSPROCURE_GENERATEFSBUTTON" ></creatFsGsNr>
+        <creatFsGsNr :projectItems="selectTableData" keys='purchaseProjectId' @refresh="getTableListFn"></creatFsGsNr>
         <!-- <startProject :startItems='selectTableData' keys='purchaseProjectId' v-permission="PARTSPROCURE_BATCHMIANTAIN_STARTINQUIRY"></startProject> -->
+        <iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">{{language("LK_FANHUI",'返回')}}</iButton>
       </div>
     </div>
     <iSearch
@@ -212,7 +213,7 @@
     <!---------------------------------------------------------------------->
     <!----------------------------仅零件变更--------------------------------->
     <!---------------------------------------------------------------------->
-    <onlyPartsChange v-permission='PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE' @handleSelectionChange="handleSelectionChange"></onlyPartsChange>
+    <onlyPartsChange ref='onlyPartsChange' v-permission='PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE' @handleSelectionChange="handleSelectionChange"></onlyPartsChange>
   </iPage>
 </template>
 <script>
@@ -221,8 +222,10 @@ import outputPlan from "./components/outputPlan";
 import {batchUpdateStuff,updateProcureButch } from "@/api/partsprocure/home";
 import onlyPartsChange from './components/onlyPartsChange'
 import {getStuffByCategory,dictkey} from "@/api/partsprocure/editordetail";
-import {creatFsGsNr,startProject,createNomiappBtn} from '@/components'
+import {creatFsGsNr,createNomiappBtn} from '@/components'
+import {translateDataForService} from '../editordetail/components/data'
 import {filterProjectList} from '@/utils'
+import {partProjTypes} from '@/config'
 export default {
   components: {
     iPage,
@@ -232,8 +235,7 @@ export default {
     outputPlan,
     creatFsGsNr,
     createNomiappBtn,
-    onlyPartsChange,
-    startProject
+    onlyPartsChange
   },
   data() {
     return {
@@ -241,23 +243,23 @@ export default {
       category: [], //材料组数据
       stuffArr: [], //工艺组数据
       batch: {
-        carTypeProjectNum: "", //车型项目编号–同上关联
-        carTypeProjectZh: "", //车型项目
-        categoryCode: "", //材料组
-        categoryName: "", //材料名称
-        cfController: "", //CF控制员
-        linieDept: "", //LINIE部门
-        linieName: "", //采购人名称
-        linieNum: "", //采购员编号–同上关联
-        partType: "", //零件类型
-        procureFactory: "", //采购工厂
-        stuffCode: "", //工艺组code
-        stuffId: "", //工艺组id
-        stuffName: "", //工艺组名称
-        type: "", //零件采购项目类型
+        carTypeProjectNum: null, //车型项目编号–同上关联
+        carTypeProjectZh: null, //车型项目
+        categoryCode: null, //材料组
+        categoryName: null, //材料名称
+        cfController: null, //CF控制员
+        linieDept: null, //LINIE部门
+        linieName: null, //采购人名称
+        linieNum: null, //采购员编号–同上关联
+        partType: null, //零件类型
+        procureFactory: null, //采购工厂
+        stuffCode: null, //工艺组code
+        stuffId: null, //工艺组id
+        stuffName: null, //工艺组名称
+        type:this.$route.query.businessKey, //零件采购项目类型
         unit: "PC", //单位
         purchaseProjectIds: [], //采购项目id
-        categoryId: '', // 材料组id
+        categoryId: null, // 材料组id
       },
       stuff: {},
       categoryObj: {},
@@ -318,14 +320,19 @@ export default {
     },
     handleSelectionChange(e) {
       this.selectTableData = e;
-      this.batch.purchaseProjectIds = this.selectTableData.map(item => item.purchaseProjectId)
+      if(partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey){
+        this.batch.purchaseProjectIds = this.selectTableData.map(item => item.id)
+      }else{
+        this.batch.purchaseProjectIds = this.selectTableData.map(item => item.purchaseProjectId)
+      }
+      this.oldProjectRelations = e.map(r=>{return {...translateDataForService(r.oldFsnrGsnrNum),...{purchasingProjectId:r.id}}})
     },
     // 修改采购项目详情和
     save(type) {
+      if (this.batch.purchaseProjectIds.length == 0) return iMessage.warn(this.language("LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU",'请选择需要修改的零件采购项目'));
       if (type === "partSrcProjec") {
         this.updateProcureButch()
       } else {
-        if (this.batch.purchaseProjectIds.length == 0) return iMessage.warn(this.language("LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU",'请选择需要修改的零件采购项目'));
         this.updateStuff()
       }
     },
@@ -390,13 +397,16 @@ export default {
           partProjectType: this.batch.type,
           partType: this.batch.partType,
           procureFactory: this.batch.procureFactory,
-          procureFactoryName: factoryItems ? factoryItems.name : '',
+          procureFactoryName: factoryItems ? factoryItems.name : null,
           unit: this.batch.unit
         }
-        const ids = this.$refs.outputPlan.tableListData.map(item => item.purchaseProjectId)
-      updateProcureButch({updateInfo,ids}).then(res=>{
+        updateInfo['oldProjectRelations'] = this.oldProjectRelations
+        const ids = this.batch.purchaseProjectIds
+      updateProcureButch({updateInfo:updateInfo,ids:ids}).then(res=>{
         iMessage.success(this.language("LK_XIUGAICHENGGONG",'修改成功'));
-        this.$refs.outputPlan.getData()
+        if(partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey){this.$refs.onlyPartsChange.getDataList()}else{
+          this.$refs.outputPlan.getData()
+        }
         this.saveButchLoading = false
       }).catch(err=>{
         this.saveButchLoading = false

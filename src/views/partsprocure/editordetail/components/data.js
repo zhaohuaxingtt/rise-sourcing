@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:50
- * @LastEditTime: 2021-08-13 16:02:42
+ * @LastEditTime: 2021-08-17 17:18:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\data.js
@@ -79,3 +79,10 @@ export const partsCommonSourcing = [
 	}
 ]
 
+export function translateDataForService(data){
+	const newMap = {}
+	Object.keys(JSON.parse(JSON.stringify(data))).forEach(e=>{
+		newMap['old'+(e.charAt(0).toUpperCase() + e.slice(1))] = data[e]
+	})
+	return newMap
+}

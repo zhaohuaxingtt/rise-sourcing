@@ -1,12 +1,16 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 14:21:50
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-17 15:15:12
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\data.js
  */
-
+export const fileTableTitle = [
+  {props: 'fileName', name: '文件名', key: 'WENJIANMING'},
+  {props: 'uploadDate', name: '上传日期', key: 'SHANGCHUANRIQI'},
+  {props: 'uploadBy', name: '上传人', key: 'SHANGCHUANREN'},
+]
 export const nomalDetailTitle = [
   {props: 'partName', name: '零件名称', enName: 'Part Name'},
   {props: 'partNo', name: '零件号', enName: 'Part-No'},

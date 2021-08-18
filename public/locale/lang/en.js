@@ -571,7 +571,6 @@
         'LK_SEBIAOHAO': 'Color code',//色标号
         'LK_SHANCHU': 'Delete',//删除
         'LK_SHANCHUGONGYINGSHANG': 'Delete Supplier',//删除供应商
-        'LK_SHANGCHUANFUJIAN': 'Upload attachments',//上传附件
         'LK_SHANGCHUANREN': 'Uploader',//上传人
         'LK_SHANGCHUANRIQI': 'Upload date',//上传日期
         'LK_SHANGQIDAZHONGYUANQU': 'Room 303, Shanghai Volkswagen Park',//上汽⼤众园区303室!
