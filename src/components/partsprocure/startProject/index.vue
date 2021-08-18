@@ -62,7 +62,11 @@ export default{
       if (!(await this.validateStart())) return;
       this.startLoding = true;
       insertRfq({
-        rfqPartDTOList: this.startItems,
+        rfqPartDTOList: this.startItems.map(item => ({
+          ...item,
+          purchaseProjectId: item.id,
+          // id: undefined
+        })),
       })
         .then((res) => {
           this.startLoding = false;
