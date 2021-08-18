@@ -254,6 +254,7 @@ export default {
             desinateId: row.id, 
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
             partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',
+            applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
           }
         })
         window.open(routeData.href, '_blank')

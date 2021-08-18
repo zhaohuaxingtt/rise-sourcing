@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 14:25:20
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-17 16:30:21
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -59,18 +59,28 @@
         </div>
       </div>
     </iCard>
+    <iCard :title="language('JINGLINGJIANAOCARD','上传仅零件号变更单')" class="margin-top20" v-if="$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI">
+        <div class="text-align-right margin-bottom10">
+          <Upload hideTip @on-success='upLoadsucess' class="margin-right10"></Upload>
+          <iButton @click='downloadFile'>下载</iButton>
+          <iButton @click='deleteFile' >删除</iButton>
+        </div> 
+        <tableList :tableTitle="fileTableTitle" @handleSelectionChange="(r)=>fileTableSelect=r" :tableData="fileTableData"></tableList>
+    </iCard>
   </div>
 </template>
 
 <script>
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage } from 'rise'
-import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle } from './data'
+import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle,fileTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
-import {partProjTypes} from '@/config'
-
+import {uploadFiles} from '@/api/costanalysismanage/costanalysis'
+import {partProjTypes,fileType} from '@/config'
+import Upload from '@/components/Upload'
+import {getFile,downloadUdFile,deleteFiles} from '@/api/file'
 export default {
-  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText },
+  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText ,Upload},
   props: {
     isPreview: {type:Boolean, default:false},
     nominateId: {type:String},
@@ -80,6 +90,9 @@ export default {
     return {
       // 零件项目类型
       partProjTypes,
+      fileTableTitle,
+      fileTableData:[],
+      fileTableSelect:[],
       titleData:[
         {label:'零件关系',value:'配件', props: 'partProjectType'},
         {label:'询价采购员',value:'胡伟', props: 'fsBuyer'},
@@ -130,6 +143,45 @@ export default {
     }
   },
   methods: {
+    downloadFile(){
+      downloadUdFile(this.fileTableSelect.map(r=>r.uploadId))
+    },
+    deleteFile(){
+      deleteFiles(this.fileTableSelect.map(r=>r.id))
+      this.getFileList()
+    },
+    /**
+     * @description: 绑定仅零件号变更的文件和当前定点申请单的关系
+     * @param {*} res
+     * @return {*}
+     */
+    upLoadsucess(res){
+      const sendMap = {
+        hostId: res.data.hostId || this.$store.getters.nomiAppId || '',
+        filePath:res.data.path,
+        uploadId:res.data.id,
+        fileSize:res.file.size,
+        fileName:res.file.name,
+        fileCode:'0',
+        source:'0',
+        fileType:fileType.JINGLINGHAOBIANG
+      }
+      uploadFiles(sendMap).then(res=>{
+        if(res.result){
+          this.getFileList()
+          iMessage.success('上传成功！')
+        }
+      }).catch(err=>{
+        iMessage.error(err.desZh)
+      })
+    },
+    getFileList(){
+      getFile({hostId:this.$store.getters.nomiAppId,fileType:fileType.JINGLINGHAOBIANG}).then(r=>{
+        this.fileTableData = r.data
+      }).catch(err=>{
+        iMessage.error(err.desZh)
+      })
+    },
     // 单独处理下年降或年降计划
     resetLtcData(row=[],type){
       // 年降开始时间
@@ -199,6 +251,7 @@ export default {
     init() {
       this.getTopList()
       this.getRemark()
+      this.getFileList()
     },
     /**
      * @Description: 获取表格初始数据

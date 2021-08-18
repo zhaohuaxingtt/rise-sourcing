@@ -64,6 +64,7 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          :selection="false"
           @handleSelectionChange="handleSelectionChange"
         >
         <!-- AEKO号  -->
