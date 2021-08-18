@@ -1,13 +1,13 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-16 21:24:40
+ * @LastEditTime: 2021-08-17 20:55:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
 -->
 <template>
-<div class="inline margin-right10">
+<div class="inline margin-right10" v-permission='PARTSPROCURE_EDITORDETAIL_CREATEDDSQD'>
   <iButton @click="handleCreateNomiApplication" :loading='loading'>{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
   <iDialog title="自动定点进度追踪" :visible.sync="messageShow">
     <ul class="ulContent">
@@ -61,11 +61,14 @@ export default{
     },
     showWebsoket(){
        this.soket = new soket({baseUrl:process.env.VUE_APP_WS1_SOKETEURL,url:`/sourcing/websocket/${store.state.permission.userInfo.id}`}).then(res=>{
-         if(this.messageDataList.find(i=>i.titleId == res.data.titleId)){
-           this.messageDataList.splice(this.messageDataList.findIndex(i=>i == res.data.titleId),1,res.data)
-         }else{
-           this.messageDataList.push(res.data)
-         }
+        if(res){
+          const jsonData = JSON.parse(res.data)
+          if(this.messageDataList.find(i=>i.titleId == jsonData.titleId)){
+            this.messageDataList.splice(this.messageDataList.findIndex(i=>i == jsonData.titleId),1,jsonData)
+          }else{
+            this.messageDataList.push(jsonData)
+          }
+          }
        }).catch(err=>{
          console.warn(err)
        })
@@ -80,8 +83,8 @@ export default{
           this.closeWebSoket()
         }else{
            this.messageShow = false
-           iMessage.warn(res.desZh)
            this.loading = false
+           iMessage.warn(res.desZh)
            this.closeWebSoket()
         }
       }).catch(err=>{

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-07-23 15:27:46
+ * @LastEditTime: 2021-08-18 10:24:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\home\components\data.js
@@ -25,19 +25,19 @@ import {permissionTitle} from '@/utils'
   {props:'partDosageStatus',name:'每车用量状态',key: 'LK_MEICHEYONGLIANGZHUANGTAI',tooltip:true,minWidth:100}
 ]
 export const needTranslate = [
-  {name:'tpInfoType',key:'tp_info_type'}
+  {name:'tpInfoType',key:'tp_info_type',option: 'TP_INFO_TYPE'}
 ]
 //form
 export const form = {
   tpPrincepalName:'',
-  attachmentStatus:'0',//询价资料状态.默认查询 解决bug
+  attachmentStatus:'',//询价资料状态.默认查询 解决bug
   dept:'',//设计科室
   tpId:'',//信息单流水号
-  partDosageStatus:'0', //每次用量状态，默认查询 解决bug
+  partDosageStatus:'', //每次用量状态，默认查询 解决bug
   partNameZh:"",//零件中文名称
   partNum:'',//零件号
   projectCarType:'',//车型项目
-  status:'1',//信息单状态，默认查询 解决bug
+  status:'NOT_SIGN',//信息单状态，默认查询 解决bug
   tpInfoType:'',//信息单分类
   userId:store.state.permission.userInfo?.id
 }

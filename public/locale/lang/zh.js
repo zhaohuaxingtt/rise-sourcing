@@ -603,7 +603,6 @@
         'LK_SEBIAOHAO': '色标号', //色标号
         'LK_SHANCHU': '删除', //删除
         'LK_SHANCHUGONGYINGSHANG': '删除供应商', //删除供应商
-        'LK_SHANGCHUANFUJIAN': '上传附件', //上传附件
         'LK_SHANGCHUANREN': '上传人', //上传人
         'LK_SHANGCHUANRIQI': '上传日期', //上传日期
         'LK_SHANGQIDAZHONGYUANQU': '上汽⼤众园区303室', //上汽⼤众园区303室!
