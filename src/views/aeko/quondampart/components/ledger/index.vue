@@ -190,6 +190,11 @@ export default {
       .catch(() => {})
     },
     getAekoOriginPartInfo() {
+      // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
+      if(this.form.partNum && this.form.partNum.trim().length < 9){
+        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+      }
+
       this.loading = true
 
       getAekoOriginPartInfo({
