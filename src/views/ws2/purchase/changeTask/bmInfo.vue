@@ -2,7 +2,7 @@
   <iPage v-permission="PURCHASE_MOULDINVESTMENTBUYER_DETAILS">
     <div class="head">
       <div style="display: flex;">
-        <div class="title">{{language('LK_BMDANLIUSHUIHAO', 'BM单流水号')}}：{{ query.bmSerial }}</div>
+        <div class="title">{{language('LK_MUJUTOUZIQINGDANBIANGENGXIANGQING', '模具投资清单变更详情')}}：{{ query.bmSerial }}</div>
         <div class="edition">
           <div class="txt">{{language('LK_BANBENHAO', '版本号')}}：{{ baseInfo.versions ? baseInfo.versions[0].versionName : '' }}</div>
         </div>
@@ -32,15 +32,15 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_TOUZIQINGDANLAIYUAN', '投资清单来源') }}</span>
+                <span>{{ language('LK_BMDANHAO', 'BM单号') }}</span>
               </div>
               <div class="disabled">{{ baseInfo.investmentSourceName }}</div>
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_LAIYUANBIANHAO', '来源编号') }}</span>
+                <span>{{ language('LK_WBSBIANHAO', 'WBS编号') }}</span>
               </div>
-              <div class="disabled">{{ baseInfo.investmentSourceNum }}</div>
+              <div class="disabled">{{ baseInfo.wbsCode }}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -49,12 +49,6 @@
               <div class="disabled">{{ baseInfo.isHilName }}</div>
             </div>
 
-            <div class="item">
-              <div class="txt">
-                <span>{{ language('LK_GONGYINGSHANG', '供应商') }}</span>
-              </div>
-              <div class="disabled">{{ baseInfo.designatedSupplierName }}</div>
-            </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_KESHI', '科室') }}</span>
@@ -69,46 +63,90 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_XIANGMUCAIGOUYUAN', '项目采购员') }}</span>
+                <span>{{ language('LK_GONGYINGSHANG', '供应商') }}</span>
+              </div>
+              <div class="disabled">{{ baseInfo.linieName }}</div>
+            </div>
+            <div class="item">
+              <div class="txt">
+                <span>{{ language('LK_CHEXINGXIANGMU', '车型项目') }}</span>
               </div>
               <div class="disabled">{{ baseInfo.projectPurchaser }}</div>
             </div>
 
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_WBSBIANHAO', 'WBS编号') }}</span>
+                <span>{{ language('LK_TOUZIZONGJINE', '投资总金额') }}</span>
               </div>
               <div class="disabled">{{ baseInfo.wbsCode }}</div>
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_CHEXINGXIANGMU', '车型项目') }}</span>
+                <span>{{ language('LK_BIANGENGHOUJINE', '变更后金额') }}</span>
               </div>
               <div class="disabled">{{ baseInfo.tmCartypeProName	 }}</div>
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_TOUZIZONGJINE', '投资总金额') }}</span>
+                <span>{{ language('LK_DINGDANHAO', '订单号') }}</span>
               </div>
               <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
             </div>
             <div class="item">
               <div class="txt">
-                <span>
-                  {{ language('LK_TOUZIQINGDANZHUANGTAI', '投资清单状态') }}
-                     <Popover
-                          v-if="Number(baseInfo.linieConfirmSupplier) === 1"
-                          class="popover"
-                          placement="bottom-start"
-                          :content="baseInfo.linieName + '在' + baseInfo.taskDealDate + '代确认'"
-                          trigger="hover">
-                        <div slot="reference">
-                          <icon symbol name="iconxinxitishi"></icon>
-                        </div>
-                    </Popover>
-                </span>
+                <span>{{ language('LK_SAPDINGDANHAO', 'SAP订单号') }}</span>
               </div>
-              <div class="disabled">{{ baseInfo.moldInvestmentStatusName }}</div>
+              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
+            </div>
+
+            <div class="item">
+              <div class="txt">
+                <span>{{ language('LK_TOUZIQINGDANLAIYUAN', '投资清单来源') }}</span>
+              </div>
+              <div class="disabled">{{ baseInfo.wbsCode }}</div>
+            </div>
+            <div class="item">
+              <div class="txt">
+                <span>{{ language('LK_LAIYUANBIANHAO', '来源编号') }}</span>
+              </div>
+              <div class="disabled">{{ baseInfo.tmCartypeProName	 }}</div>
+            </div>
+            <div class="item">
+              <div class="txt">
+                <span>{{ language('LK_BIANGENGLEIXING', '变更类型') }}</span>
+              </div>
+              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
+            </div>
+            <div class="item">
+              <div class="txt">
+                <span>{{ language('LK_BIANGENGDANZHUANGTAI', '变更单状态') }}</span>
+              </div>
+              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
+            </div>
+
+            <div class="item">
+              <div class="txt">
+                <span>{{ language('LK_RUZHANGDANHAO', '入账单号') }}</span>
+              </div>
+              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
+            </div>
+            <div class="item">
+              <div class="txt">
+                <span>{{ language('LK_RUZHANGRIQI', '入账日期') }}</span>
+              </div>
+              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
+            </div>
+            <div class="item">
+              <div class="txt">
+                <span></span>
+              </div>
+              <div class="disabled disabled1"></div>
+            </div>
+            <div class="item">
+              <div class="txt">
+                <span></span>
+              </div>
+              <div class="disabled disabled1"></div>
             </div>
           </div>
         </div>
@@ -159,18 +197,20 @@
         </div>
 
         <div class="top-r">
-          <iButton @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
           <iButton
               v-loading="bmBuberLoading"
-              v-if="baseInfo.moldInvestmentStatus === '2' || baseInfo.moldInvestmentStatus === '3'"
               @click="bmBuberConfirmBefore">
-            {{ language('LK_CAIGOUYUANQUEREN', '采购员确认') }}
+            {{ language('LK_BIANJI', '编辑') }}
           </iButton>
           <iButton
               v-loading="sendSupplierLoading"
-              v-if="baseInfo.moldInvestmentStatus === '1' || baseInfo.moldInvestmentStatus === '6'"
               @click="sendSupplier">
-            {{ language('LK_FASONGGONGYIUNGSHANGQUEREN', '发送供应商确认') }}
+            {{ language('LK_CHAKANBIANGENGDAN', '查看变更单') }}
+          </iButton>
+          <iButton
+              v-loading="sendSupplierLoading"
+              @click="sendSupplier">
+            {{ language('LK_TIJIAOSHENPI', '提交审批') }}
           </iButton>
         </div>
 
@@ -216,6 +256,35 @@
 <!--        <UnitExplain />-->
 <!--      </div>-->
     </iCard>
+
+    <iCard class="enclosure-block">
+      <div class="head">
+        <div class="title">{{ language('LK_BIANGENGSHENPIFUJIAN', '变更审批附件') }}</div>
+        <div class="btns">
+          <iButton
+              v-loading="bmBuberLoading"
+              @click="bmBuberConfirmBefore">
+            {{ language('LK_SHANCHU', '删除') }}
+          </iButton>
+          <iButton
+              v-loading="bmBuberLoading"
+              @click="bmBuberConfirmBefore">
+            {{ language('LK_SHANGCHUANWENJIAN', '上传文件') }}
+          </iButton>
+        </div>
+      </div>
+
+      <iTableList
+          :tableData="enclosureTableListData"
+          :tableTitle="enclosureTableTitle"
+          :tableLoading="tableLoading"
+          :selection="true"
+          :typeIndex="true"
+      >
+      </iTableList>
+      
+    </iCard>
+
     <confirm v-model="confirmShow" @sure="bmBuberConfirm"></confirm>
     <photoList :imgList="imgList" :visible="photoListShow" @changeLayer="() => photoListShow = false"></photoList>
   </iPage>
@@ -234,7 +303,7 @@ import {
   iCard,
   icon
 } from "rise";
-import {bmInfoTitle} from "../components/data"
+import {bmInfoTitle , enclosureTableTitle} from "../components/data"
 import confirm from "../components/confirm"
 import photoList from "../components/photoList"
 import { Popover } from "element-ui"
@@ -290,7 +359,9 @@ export default {
       baseInfo: {},
       assetTypeNum: '',
       craftType: '',
-      getTousandNum: getTousandNum
+      getTousandNum: getTousandNum,
+      enclosureTableTitle,
+      enclosureTableListData: [],
     }
   },
   created() {
@@ -425,6 +496,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.enclosure-block{
+  margin-top: 20px;
+
+  .head{
+    display: flex;
+    justify-content: space-between;
+
+    .title{
+      color: #020918;
+      font-weight: bold;
+    }
+  }
+
+  
+}
+
 .table-link{
   color: #1663F6;
   text-decoration: underline;

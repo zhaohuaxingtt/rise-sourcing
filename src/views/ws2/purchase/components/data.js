@@ -186,13 +186,26 @@ export const bmInfoTitle = [
         props: 'moldId',
         name: '模具ID',
         key: '模具ID',
-        width: 200,
+        tooltip: false
+    },
+    {
+        props: '1',
+        name: '固资编号',
+        key: '固资编号',
+        width: 150,
         tooltip: false
     },
     {
         props: 'assetName',
         name: '固资名称',
         key: '固资名称',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: '2',
+        name: '模具制造商',
+        key: '模具制造商',
         width: 200,
         tooltip: false
     },
@@ -268,24 +281,31 @@ export const bmInfoTitle = [
     },
     {
         props: 'assetPrice',
-        name: '资产单价',
-        key: '资产单价',
-        width: 200,
-        tooltip: false
-    },
-    {
-        props: 'assetTotal',
-        name: '资产总额',
-        key: '资产总额',
-        width: 200,
-        tooltip: false
-    },
-    {
-        props: 'picture',
-        name: '照片',
-        key: '照片',
+        name: '资产单',
+        key: '资产单',
         width: 200,
         tooltip: false
     },
 
+]
+
+export const enclosureTableTitle = [
+    {
+        props: '1',
+        name: '文件名称',
+        key: '文件名称',
+        tooltip: false
+    },
+    {
+        props: '2',
+        name: '上传日期',
+        key: '上传日期',
+        tooltip: false
+    },
+    {
+        props: '3',
+        name: '上传人',
+        key: '上传人',
+        tooltip: false
+    },
 ]
