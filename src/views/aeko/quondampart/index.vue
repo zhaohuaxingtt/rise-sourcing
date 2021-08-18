@@ -66,7 +66,10 @@ export default {
         })
       }
     }
-  }
+  },
+  beforeDestroy() {
+    if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) sessionStorage.removeItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)
+  },
 }
 </script>
 
