@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-17 17:28:15
+ * @LastEditTime: 2021-08-18 16:44:01
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -36,14 +36,14 @@
                 <dt>{{language('WEICHUANGJIANCAIGOUXIANGMU','未创建采购项目')}}</dt>
                 <dd>
                 <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
-                /<span class="cursor"  @click="toLink('/sourcing/partsprocure?status=10')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItemSum || 0}}</span>
+                /<span class="cursor"  @click="toLink(unCrePartsprocureURL)">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItemSum || 0}}</span>
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('WEIJIARURFQ','未加入RFQ')}}</dt>
                 <dd>
                   <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
-                  /<span class="cursor" @click="toLink('/sourcing/partsprocure?status=11')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfqSum || 0}}</span>
+                  /<span class="cursor" @click="toLink(unJoinRFQURL)">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfqSum || 0}}</span>
                 </dd>
               </dl>
             </div>
@@ -212,7 +212,26 @@ export default {
       // 前期采购员 && 专业采购员
       if (this.isZYCG && this.isQQCG) status = 'CSF_HANDLING'
       return `/sourcing/partsletter?cardType=LOI&loiStatus=${status}`
+    },
+    // 未创建采购项目链接
+    unCrePartsprocureURL() {
+      let paramTxt = ''
+      // 前期采购员
+      if (this.isQQCG) paramTxt += `buyerName=${this.userInfo.nameZh}`
+      // 专业采购员
+      if (this.isZYCG) paramTxt += `linieName=${this.userInfo.nameZh}`
+      return `/sourcing/partsprocure?status=10&${paramTxt}`
+    },
+    // 未创建采购项目链接
+    unJoinRFQURL() {
+      let paramTxt = ''
+      // 前期采购员
+      if (this.isQQCG) paramTxt += `buyerName=${this.userInfo.nameZh}`
+      // 专业采购员
+      if (this.isZYCG) paramTxt += `linieName=${this.userInfo.nameZh}`
+      return `/sourcing/partsprocure?status=11&${paramTxt}`
     }
+
   },
   data() {
     return {
