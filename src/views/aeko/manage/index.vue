@@ -104,6 +104,7 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          :selection="isAekoManager"
           @handleSelectionChange="handleSelectionChange"
         >
         <!-- AEKO号 -->
