@@ -51,7 +51,7 @@
         height="80%"
         v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TABLE"
         :selection="false"
-        :tableData="Array.isArray(dosage.aekoProjectCarDosageList) ? dosage.aekoProjectCarDosageList : [{}]"
+        :tableData="Array.isArray(dosage.aekoProjectCarDosageList) ? dosage.aekoProjectCarDosageList : []"
         :tableTitle="tableTitle">
         <template #perCarDosage="scope">
           <iInput class="perCarDosage" v-model="scope.row.perCarDosage" :disabled="disabled" @input="handleInputByPerCarDosage($event, scope.row)"></iInput>
