@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-06-30 16:51:56
- * @LastEditTime: 2021-07-20 17:41:23
+ * @LastEditTime: 2021-08-18 17:56:55
  * @LastEditors: Please set LastEditors
  * @Description: 提交定点申请，如果是上会类型，上会弹窗
  * @FilePath: /front-web/src/views/designate/home/components/mettingDialog/index.vue
@@ -19,21 +19,21 @@
       <el-form>
       <el-form-item :label="`${language('XUANZEHUIYILEIBIE','选择会议类别')}:`">
           <el-radio-group v-model="meetingType">
-					<iRadio
+					<el-radio
             v-for="(item, index) in meetingTypes"
             :key="index"
             :label="item.id"
             size="small"
-            border>{{language(item.key, item.name)}}</iRadio>
+            >{{language(item.key, item.name)}}</el-radio>
 				</el-radio-group>
         <el-form-item :label="`${language('XUANZEHUIYIJIEGUO','选择会议结果')}:`">
           <el-radio-group v-model="meetingResult">
-					<iRadio
+					<el-radio
             v-for="(item, index) in meetingResultArray"
             :key="index"
             :label="item.id"
             size="small"
-            border>{{language(item.key, item.name)}}</iRadio>
+            >{{language(item.key, item.name)}}</el-radio>
 				</el-radio-group>
       </el-form-item>
       </el-form-item>
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton,iRadio } from 'rise'
+import { iPagination, iDialog, iMessage, iButton } from 'rise'
 import { mettingTableTitle as tableTitle, meetingTypes, meetingResult as meetingResultArray } from './data'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
@@ -84,7 +84,7 @@ import {
 } from '@/api/designate'
 
 export default {
-  components: { tableList, iPagination, iDialog, iButton, iRadio },
+  components: { tableList, iPagination, iDialog, iButton },
   mixins: [ pageMixins, filters ],
   props: {
     ...iDialog.props,
