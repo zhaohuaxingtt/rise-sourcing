@@ -106,7 +106,7 @@
         </el-switch>
         <div>
           <iButton @click="handleHandover">{{ language('LK_ZHUANPAI', '转派') }}</iButton>
-          <iButton @click="handVerifyLineShow" v-loading="handVerifyLineShowLoading">{{ language('LK_XINZENGBIANGENG', '新增变更') }}</iButton>
+          <iButton @click="newChangeShow = true" v-loading="handVerifyLineShowLoading">{{ language('LK_XINZENGBIANGENG', '新增变更') }}</iButton>
         </div>
       </div>
       <!--      570-->
@@ -172,6 +172,7 @@
       />
     </iCard>
     <handover v-model="handoverShow" :handoverParams="handoverParams" @handoverClose="conditionConfirmTskList"></handover>
+    <newChange v-model="newChangeShow"></newChange>
 <!--    <verifyLine v-model="verifyLineShow" :handoverParams="handoverParams" @handoverClose="conditionConfirmTskList"></verifyLine>-->
   </div>
 </template>
@@ -181,6 +182,7 @@ import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage, icon} f
 import {iTableList} from "@/components";
 import {changeTaskTitle} from "../components/data"
 import handover from "../components/handover"
+import newChange from "../components/newChange"
 // import verifyLine from "../components/verifyLine"
 import {
   getDepartmentsCombo,
@@ -213,6 +215,7 @@ export default {
     iButton,
     iInput,
     handover,
+    newChange,
     Popover,
     icon,
     // verifyLine,
@@ -223,6 +226,7 @@ export default {
       tableLoading: false,
       onleySelf: true,
       handoverShow: false,
+      newChangeShow: false,
       verifyLineShow: false,
       handVerifyLineShowLoading: false,
       tableTitle: changeTaskTitle,

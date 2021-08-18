@@ -1016,6 +1016,8 @@
         'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
         'LK_BMDANLIUSHUIHAO': 'BM单流水号',   //  BM单流⽔号LK_BMDANLIUSHUIHAO
         'LK_BMDANHAO': 'BM单号',    //  BM单号
+        'LK_SAPDINGDANHAO': 'SAP订单号',    //  BM单号
+        'LK_RUZHANGDANHAO': '入账单号',    //  BM单号
         'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
         'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
         'LK_BMDANJINE':  'BM单金额', //  BM单金额
@@ -1131,6 +1133,7 @@
         'LK_ZHAOPIAN': '照片',  //  照片
         'LK_GUZIMINGCHEN': '固资名称',  //  固资名称
         'LK_DUIBUQIMEIYOUQUANXIAN': '对不起，您所在得岗位没有该材料组权限', //  对不起，您所在得岗位没有该材料组权限
+        'LK_XUANZEBMXINZENGBIANGENG': '选择BM新增单变更', //  选择BM新增单变更
 
         // 定点管理
         'nominationLanguage': {

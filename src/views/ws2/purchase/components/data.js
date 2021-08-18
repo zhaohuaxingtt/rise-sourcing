@@ -289,3 +289,83 @@ export const bmInfoTitle = [
     },
 
 ]
+
+export const newChangeTitle = [
+    {
+        props: 'moldId',
+        name: 'BM单流水号',
+        key: 'BM单流水号',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'assetName',
+        name: 'BM单号',
+        key: 'BM单号',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'craftType',
+        name: '车型项目',
+        key: '车型项目',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'moldType',
+        name: '代表零件号',
+        key: '代表零件号',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'assetTypeNum',
+        name: '零件采购项目类型',
+        key: '零件采购项目类型',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'partsTotalName',
+        name: '供应商',
+        key: '供应商',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'partsTotalNum',
+        name: '模具投资金额',
+        key: '模具投资金额',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'partsShareNum',
+        name: '模具投资清单状态',
+        key: '模具投资清单状态',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'fsNum',
+        name: '业务处理状态',
+        key: '业务处理状态',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'partsName',
+        name: '科室',
+        key: '科室',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'partsNum',
+        name: 'Linie',
+        key: 'Linie',
+        width: 200,
+        tooltip: false
+    },
+]
