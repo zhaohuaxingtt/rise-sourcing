@@ -146,7 +146,12 @@ export default {
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
     this.oldPartNumPreset = this.$route.query.oldPartNumPreset
-    this.judgeRight()
+    if (this.oldPartNumPreset) {
+      this.judgeRight()
+    } else {
+      this.procureFactorySelectVo()
+      this.getAekoOriginPartInfo()
+    }
   },
   methods: {
     judgeRight() {
