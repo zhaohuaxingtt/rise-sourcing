@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-07-23 10:42:43
+ * @LastEditTime: 2021-08-17 18:09:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -165,6 +165,15 @@ export function tabPageLayoutsReset(nominateId) {
 export function rsAttachExport(data) {
   return requst({
       url: "/rs/downCapacityExpRs",
+      method: "POST",
+      data,
+  })
+}
+
+// 更新定点申请类型
+export function updateNominate(data) {
+  return requst({
+      url: "/nominate-apps/updateNominate",
       method: "POST",
       data,
   })

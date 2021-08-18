@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-02 15:35:55
- * @LastEditTime: 2021-08-05 17:06:51
+ * @LastEditTime: 2021-08-17 18:21:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\config\businessKey.js
@@ -13,7 +13,8 @@ export const businessKey = {}
 translateBackToWhite(
   partProjTypes.JINLINGJIANHAOGENGGAI,
     ['PARTSPROCURE_EDITORDETAIL_CREATEDDSQD', //采购项目详情-生成定点申请
-    'PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE' //仅零件号变更-零件采购项目记录-批量修改界面
+    'PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE', //仅零件号变更-零件采购项目记录-批量修改界面
+    'PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRMJLJH',//仅零件号变更-顶部保存按钮。
     ],
     [ 'PARTSPROCURE_EDITORDETAIL_STARTUP', //采购项目详情-启动项目
       'PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR',//采购项目详情-生成fs
@@ -25,7 +26,8 @@ translateBackToWhite(
       'PARTSPROCURE_BATCHMIANTAIN_OUTPUTLINE',//批量维护-参量计划
       'PARTSPROCURE_BATCHMIANTAIN_CHEXINXIANGMU', //批量维护车型项目
       'PARTSPROCURE_EDITORDETAIL_LINGJIANCHANLIANGJILU', //采购项目详情-零件产量记录
-      'PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_SAVE' //采购项目详情-产量计划详情-保存按钮
+      'PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_SAVE', //采购项目详情-产量计划详情-保存按钮
+      'PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRM' //零件采购项目批量修改-详细信息保存
     ],
     partProjTypes,businessKey
 )

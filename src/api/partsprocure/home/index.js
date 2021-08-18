@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 11:07:22
- * @LastEditTime: 2021-08-12 14:25:04
+ * @LastEditTime: 2021-08-17 17:10:08
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目创建模块API
  * @FilePath: \rise\src\api\partsprocure\home\index.js
@@ -57,7 +57,7 @@ export function updateProcure(data){
 //单个更新保存零件采购项目
 export function updateProcureButch(data){
   return requst({
-    url:'/purchasing-project-parts/update',
+    url:'/purchasing-project-parts/batch-update',
     method:'PATCH',
     data:data
   })

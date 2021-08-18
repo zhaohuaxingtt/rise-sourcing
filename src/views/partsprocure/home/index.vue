@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-08-12 18:02:20
+ * @LastEditTime: 2021-08-17 21:15:43
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -463,7 +463,14 @@ export default {
           )
         );
       }
-      if(this.validateProject()) return false
+      if(!this.selectTableData.every(i=>i.partProjectType == this.selectTableData[0].partProjectType)){
+        return iMessage.warn(
+          this.language(
+            "BAOQIANNINXUANZHEDELINGJIANCAIGXIANGMUZHONGB",
+            '抱歉，您当前选择的零件采购项目类型不相同，不能一起批量维护！'
+          )
+        );
+      }
       this.$router.push({
         path: "/sourcing/partsprocure/batchmiantain",
         query: {
@@ -476,26 +483,7 @@ export default {
       this.$router.push({ path: "/sourcing/createparts/home" })
     },
     // 通过待办数跳转
-    clickMessage,
-    /**
-     * @description: 验证零件采购项目中是否包含特殊零件采购项目类型。 
-     * @param {*}
-     * @return {*}
-     */
-    validateProject(){
-      let tsParts = null
-      let partsProjectCodeString = this.selectTableData.map(i=>i.partProjectType)
-      validateProjectConfig.forEach(items=>{
-        if(partsProjectCodeString.includes(items.key)){
-          tsParts = items
-        }
-      })
-      if(tsParts && !this.selectTableData.every(items=>items.partProjectType == tsParts.key)){
-        iMessage.warn(tsParts.message)
-        return true
-      }
-      return false
-    }
+    clickMessage
 
   }
 };

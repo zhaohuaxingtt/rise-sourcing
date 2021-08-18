@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-08-13 11:06:27
+ * @LastEditTime: 2021-08-17 15:09:06
  * @LastEditors: Please set LastEditors
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js
@@ -78,4 +78,9 @@ export const user = {
   LINLIE:4,
   //扩产能管理员
   BKMROLETAGID:'KCNGLY'
+}
+
+//上传文件的hostId
+export const fileType = {
+  JINGLINGHAOBIANG:'125' //仅零件号变更文件类型
 }
