@@ -13,10 +13,10 @@
         <span class="tit" @click="$router.push({path: `/sourcing/partsrfq/editordetail?id=${item.rfqId}`})">{{item.rfqId || ''}}</span>
         <div class="alarm">
           <span class="margin-right20">{{language('RENWUJINDU','任务进度')}}:
-            <icon symbol style="font-size:14px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+item.wholeTaskProgress].icon"></icon>
+            <icon symbol style="font-size:14px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+(item.wholeTaskProgress||6)].icon"></icon>
             </span>
           <span>{{language('ZHENGCHEJINDUFENGXIAN','整车进度风险')}}: <el-tooltip placement="right" effect="light">
-            <icon symbol style="font-size:20px;position:relative;top:2px;" :name="iconList_car['a'+item.wholeProgressRisk].icon"></icon>
+            <icon symbol style="font-size:20px;position:relative;top:2px;" :name="iconList_car['a'+(item.wholeProgressRisk||6)].icon"></icon>
               <!-- <template slot='content'>
                 <dalyWeeks :daliyTime='daliyTime'></dalyWeeks>
               </template> -->
