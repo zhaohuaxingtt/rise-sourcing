@@ -98,7 +98,7 @@
                     <el-cascader v-model="areaVmodel"
                                  :options="areaOptions"
                                  :props="propscopy"
-                                 @change="handleBaseChange($event)"
+                                 @change="handleBaseChange"
                                  ref="myCascader1"
                                  :clearable="true"
                                  collapse-tags></el-cascader>
@@ -413,6 +413,7 @@ export default {
     },
     //基数地区
     handleBaseChangeArea (e, b) {
+      console.log('111')
       // 地区数量校验
       // if(e.length<6){
       //     this.baseAreaVmodel=e
@@ -442,7 +443,6 @@ export default {
           } else if (x.level == 2) {
             this.areaOptions[0].children.push(x)
             this.areaOptions[0].children = [...new Set(this.areaOptions[0].children)]
-
           }
         })
         console.log(this.areaOptions)
@@ -452,9 +452,9 @@ export default {
       }
     },
     handleBaseChange () {
+      console.log('111')
       if (this.$refs["myCascader1"].getCheckedNodes().length > 0) {
         this.$refs["myCascader1"].getCheckedNodes().forEach(x => {
-
           if (x.level == 3) {
             this.formData.spiSupplierDTO.cityCodeList.push(x.value.toString())
           }
