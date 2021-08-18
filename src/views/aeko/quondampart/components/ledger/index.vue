@@ -264,9 +264,9 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
-          if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+          if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
             try {
-              const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+              const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
 
               this.$router.replace({
                 path: "/aeko/aekodetail",
