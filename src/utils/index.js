@@ -341,3 +341,44 @@ export function translateBackToWhite(currentKeyBusinessKey,whiteList,blackList,a
 export function permissionArray(permissionKey, list) {
   return list.filter(item => store.state.permission.whiteBtnList[item[permissionKey]])
 }
+
+// 树转数组
+export function treeToArray(tree, childrenKey, res) {
+  res = res || []
+  for (let i = 0; i < tree.length; i++) {
+    const item = {}
+    for (const key in tree[i]) {
+      if (Object.hasOwnProperty.call(tree[i], key)) {
+        const element = tree[i][key]
+        if (childrenKey !== key) {
+          item[key] = element
+        }
+      }
+    }
+    res.push(item)
+
+    if (tree[i][childrenKey]) {
+      treeToArray(tree[i][childrenKey], childrenKey, res)
+    }
+  }
+  return res
+}
+
+// 数组转tree
+
+export function arrayToTree(list, idKey, parentKey, childrenKey) {
+  let obj = {}
+  for (let i = 0; i < list.length; i++) {
+    obj[list[i][idKey]] = list[i]
+  }
+  const result = []
+  list.forEach(node => {
+    if (!obj[node[parentKey]]) {
+      result.push(node)
+      return
+    }
+    obj[node[parentKey]][childrenKey] = obj[node[parentKey]][childrenKey] || []
+    obj[node[parentKey]][childrenKey].push(node)
+  })
+  return result
+}
