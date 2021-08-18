@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-21 13:58:51
+ * @LastEditTime: 2021-08-18 10:42:02
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -26,7 +26,7 @@ export function getAccessoryOneInfoList(params) {
 // 获取配件管理列表数据
 export function getAccessoryManageList(params) {
   return requst({
-    url: '/tp-records/accessoryInfo/getAccessoryManageList/',
+    url: '/tp-records/accessoryInfo/getAccessoryManageList',
     method: "POST",
     data: params
   })
