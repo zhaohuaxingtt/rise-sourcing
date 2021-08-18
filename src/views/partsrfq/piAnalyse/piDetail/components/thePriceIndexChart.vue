@@ -80,6 +80,7 @@ import {iSelect} from 'rise';
 import iconTips from '../../../../../components/ws3/iconTips';
 import echarts from '@/utils/echarts';
 import {getPiIndexWaveSelectList} from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import {CURRENTTIME} from './data';
 
 export default {
   components: {
@@ -107,6 +108,10 @@ export default {
         return {};
       },
     },
+    currentTab: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -129,11 +134,11 @@ export default {
     this.buildChart();
   },
   methods: {
-    handleTimeGranularityChange(val) {
-      console.log(val);
+    handleTimeGranularityChange() {
+      this.getChartData();
     },
     handlePriceLatitudeChange(val) {
-      console.log(val);
+      this.getChartData();
     },
     initEcharts() {
       const chart = echarts().init(this.$refs.theChart);
@@ -297,6 +302,24 @@ export default {
       } catch {
         this.priceLatitudeOptions = [];
       }
+    },
+    async getChartData() {
+      const req = {
+        analysisSchemeId: this.currentTabData.analysisSchemeId,
+        particleSize: this.form.particleSize,
+        type: this.currentTab === CURRENTTIME ? '1' : '2',
+        dimension: [],
+      };
+      if (this.form.dimension.length) {
+        req.dimension = this.form.dimension.map(item => {
+          return {
+            id1: item[0],
+            id2: item[1],
+          };
+        });
+      }
+      console.log(111);
+      console.log(req);
     },
   },
   watch: {
