@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-18 16:44:01
+ * @LastEditTime: 2021-08-18 17:39:43
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -217,19 +217,19 @@ export default {
     unCrePartsprocureURL() {
       let paramTxt = ''
       // 前期采购员
-      if (this.isQQCG) paramTxt += `buyerName=${this.userInfo.nameZh}`
+      if (this.isQQCG) paramTxt += `&buyerName=${this.userInfo.nameZh}`
       // 专业采购员
-      if (this.isZYCG) paramTxt += `linieName=${this.userInfo.nameZh}`
-      return `/sourcing/partsprocure?status=10&${paramTxt}`
+      if (this.isZYCG) paramTxt += `&linieName=${this.userInfo.nameZh}`
+      return `/sourcing/partsprocure?status=10${paramTxt}`
     },
     // 未创建采购项目链接
     unJoinRFQURL() {
       let paramTxt = ''
       // 前期采购员
-      if (this.isQQCG) paramTxt += `buyerName=${this.userInfo.nameZh}`
+      if (this.isQQCG) paramTxt += `&buyerName=${this.userInfo.nameZh}`
       // 专业采购员
-      if (this.isZYCG) paramTxt += `linieName=${this.userInfo.nameZh}`
-      return `/sourcing/partsprocure?status=11&${paramTxt}`
+      if (this.isZYCG) paramTxt += `&linieName=${this.userInfo.nameZh}`
+      return `/sourcing/partsprocure?status=11${paramTxt}`
     }
 
   },
