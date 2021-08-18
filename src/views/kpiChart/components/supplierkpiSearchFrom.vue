@@ -97,7 +97,7 @@
                              prop="userNum">
                     <el-cascader v-model="areaVmodel"
                                  :options="areaOptions"
-                                 :props="propscopy"
+                                 :props="{multiple:true}"
                                  @change="handleBaseChange"
                                  ref="myCascader1"
                                  :clearable="true"
@@ -228,6 +228,7 @@ export default {
           existShareIdList: []
         },
         spiSupplierDTO: {
+          cityCodeList: [],
           yearList: [],
           existShareIdList: []
         }
@@ -436,6 +437,7 @@ export default {
       if (this.$refs["myCascader"].getCheckedNodes().length > 0) {
         // this.options = this.$refs["myCascader"].getCheckedNodes()
         console.log(this.$refs["myCascader"].getCheckedNodes())
+        let checkList = this.$refs["myCascader"].getCheckedNodes()
         this.$refs["myCascader"].getCheckedNodes().forEach(x => {
           if (x.level == 3) {
             this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
@@ -443,6 +445,7 @@ export default {
           } else if (x.level == 2) {
             this.areaOptions[0].children.push(x)
             this.areaOptions[0].children = [...new Set(this.areaOptions[0].children)]
+            // this.handelOption(this.areaOptions)
           }
         })
         console.log(this.areaOptions)
@@ -451,6 +454,21 @@ export default {
         this.formData.spiBaseDTO.cityCodeList = []
       }
     },
+
+    handelOption (options) {
+      if (options && options.length > 0) {
+        options.forEach((item, index) => {
+          if (item.children && item.children.length == 0) {
+            delete item.children;
+          } else {
+            this.handelOption(item.children);
+          }
+        });
+      }
+
+    },
+
+
     handleBaseChange () {
       console.log('111')
       if (this.$refs["myCascader1"].getCheckedNodes().length > 0) {
@@ -511,7 +529,7 @@ export default {
     //科股监听
     handlechangeSeccoStock (str, val) {
       if (str == "base" && val.length > 0) {
-        this.formData.spiSupplierDTO.existShareIdList=this.formData.spiBaseDTO.existShareIdList
+        this.formData.spiSupplierDTO.existShareIdList = this.formData.spiBaseDTO.existShareIdList
         this.supplierSeccoStockOption = []
         val.forEach(x => {
           let fdx = this.Relationship.filter(y => { return y.existShareId == x })
@@ -519,7 +537,7 @@ export default {
         })
       }
       if (str == "supplier" && val.length == 0) {
-        this.formData.spiSupplierDTO.existShareIdList=[]
+        this.formData.spiSupplierDTO.existShareIdList = []
       }
     },
     handleOk () {

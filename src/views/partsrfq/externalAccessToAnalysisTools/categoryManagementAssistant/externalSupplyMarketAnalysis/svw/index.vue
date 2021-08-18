@@ -36,7 +36,6 @@
               :MarketOverviewObj=x
               :index="index+1"
               :edite="edite"></list>
-
       </iCard>
     </div>
   </iPage>
