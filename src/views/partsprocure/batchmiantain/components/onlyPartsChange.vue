@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-04 13:54:47
- * @LastEditTime: 2021-08-17 20:36:32
+ * @LastEditTime: 2021-08-18 15:38:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\onlyPartsChange.vue
@@ -51,7 +51,7 @@ export default{
      */
     getDataList(){
       this.loading = true 
-      const dataIds = this.$route.query.ids
+      const dataIds = Array.isArray(this.$route.query.ids)?this.$route.query.ids:[this.$route.query.ids];
       getDataListBatchList({ids:dataIds}).then(res=>{  
         this.tableData = res.data.map(r=>{return {...r,...{selectOldParts:{show:false}}}})
         this.loading = false

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-08-12 14:28:09
+ * @LastEditTime: 2021-08-18 15:07:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\outputPlan.vue
@@ -33,7 +33,7 @@
 			}
 		},
 		created() {
-			this.purchaseProjectIds = this.$route.query.ids;
+			this.purchaseProjectIds = Array.isArray(this.$route.query.ids)?this.$route.query.ids:[this.$route.query.ids];
 			this.getData()
 		},
 		methods: {
@@ -64,7 +64,7 @@
 				this.$router.push({
 					path:"/sourcing/partsprocure/outputplan",
 					query:{
-						purchaseProjectId:item.purchaseProjectId,
+						id:item.purchaseProjectId,
 						purchasingRequirementId:item.purchasingRequirementId,
 						partNum:item.partNum,
 						purchasingRequirementObjectId:item.purchasingRequirementObjectId

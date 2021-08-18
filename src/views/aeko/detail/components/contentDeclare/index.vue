@@ -173,7 +173,7 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <template #oldPartNumPreset="scope">
-            <iInput v-if="scope.row.status === 'EMPTY' && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
+            <iInput v-if="scope.row.status === 'EMPTY' && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
@@ -608,6 +608,9 @@ export default {
         this.cartypeProjectCurrentPage += 1
         this.carTypeProjectOptions = this.carTypeProjectOptions.concat(this.carTypeProjectOptionsCacheChunks[this.cartypeProjectCurrentPage - 1])
       }
+    },
+    isDeclareBlackListPart(part) {
+      return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
     }
   },
 };
