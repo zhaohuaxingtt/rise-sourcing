@@ -144,8 +144,6 @@ export default {
           trigger: 'axis',
           backgroundColor: 'rgba(255, 255, 255, 0.8)',
           formatter: (obj) => {
-            console.log(111);
-            console.log(obj);
             const titleDiv = `<div class="tooltipText">${obj[0].axisValueLabel}</div>`;
             const contentDiv = [];
             obj.map(item => {
@@ -293,6 +291,9 @@ export default {
         });
       }
       try {
+        this.seriesArray = [];
+        this.xLabelData = [];
+        this.resChartData = [];
         this.chartLoading = true;
         const res = await getPiIndexPartCostWave(req);
         this.resChartData = res.data;
