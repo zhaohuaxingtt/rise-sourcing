@@ -68,7 +68,7 @@
           clearable
         >
           <el-option
-            value=""
+            value="DEFAULT"
             :label="language('all','全部') | capitalizeFilter"
           ></el-option>
           <el-option
@@ -156,7 +156,7 @@ export default {
         buyer: '',
         carTypes: [],
         categoryGroup: [],
-        order: '',
+        order: 'DEFAULT',
         partNum: '',
         rfqId: '',
       },
@@ -175,11 +175,6 @@ export default {
             name: '按整车进度风险',
             key: 'ANZHENGCHEFENGXIAN'
           },
-          {
-            code: 'DEFAULT',
-            name: '默认',
-            key: 'MOREN'
-          }
         ],
         MATERIAL_GROUP_BUYER: [],
         CAR_TYPE_BUYER: [],

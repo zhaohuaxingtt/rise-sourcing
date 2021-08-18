@@ -170,6 +170,7 @@
       />
     </iCard>
     <handover v-model="handoverShow" :handoverParams="handoverParams" @handoverClose="conditionConfirmTskList"></handover>
+    <InitiateChange v-model="InitiateChangeShow" :content="InitiateChangeContent"></InitiateChange>
 <!--    <verifyLine v-model="verifyLineShow" :handoverParams="handoverParams" @handoverClose="conditionConfirmTskList"></verifyLine>-->
   </div>
 </template>
@@ -179,6 +180,7 @@ import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage, icon} f
 import {iTableList} from "@/components";
 import {investmentListTitle} from "../components/data"
 import handover from "../components/handover"
+import InitiateChange from "../components/InitiateChange"
 // import verifyLine from "../components/verifyLine"
 import {
   getDepartmentsCombo,
@@ -211,6 +213,7 @@ export default {
     iButton,
     iInput,
     handover,
+    InitiateChange,
     Popover,
     icon,
     // verifyLine,
@@ -221,6 +224,7 @@ export default {
       tableLoading: false,
       onleySelf: true,
       handoverShow: false,
+      InitiateChangeShow: false,
       verifyLineShow: false,
       handVerifyLineShowLoading: false,
       tableTitle: investmentListTitle,
@@ -237,6 +241,7 @@ export default {
       bmSerial: '',
       partsNum: '',
       supplier: '',
+      InitiateChangeContent: '',
       linieName: [],
       handoverParams: {
         bmid: [],
@@ -279,8 +284,9 @@ export default {
         }
         if (res[2].data) {
           this.moldInvestmentStatusList = res[2].data;
-          this.moldInvestmentStatus = this.moldInvestmentStatusList.filter(a => a.code !== '7').map(b => b.code)
-
+          if(this.moldInvestmentStatus.length === 0){
+            this.moldInvestmentStatus = this.moldInvestmentStatusList.filter(a => a.code !== '7').map(b => b.code)
+          }
         } else {
           iMessage.error(result2);
         }
@@ -387,7 +393,12 @@ export default {
       this.handVerifyLineShowLoading = true
       verifyIsSelfOrders(this.multipleSelection.map(item => item.id)).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        iMessage.warn(result)
+        if(res.result){
+          this.InitiateChangeContent = result
+          this.InitiateChangeShow = true
+        } else {
+          iMessage.warn(result)
+        }
         this.handVerifyLineShowLoading = false
       }).catch(() => {
         this.handVerifyLineShowLoading = false
