@@ -85,6 +85,7 @@
 <script>
 import echarts from '@/utils/echarts'
 import { iInput, iSelect, iMessage } from 'rise'
+import { validateProjectConfig } from '../../../../../../partsprocure/home/components/data'
 export default {
   components: {
     iInput,
@@ -359,23 +360,36 @@ export default {
 
   },
   watch: {
+    year1 (val) {
+      if (this.interestsStatus === "otherAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = val
+      } else if (this.interestsStatus === "svwAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = val
+      } else if (this.interestsStatus === "profit") {
+        this.MarketOverviewObj.supplierFinanceDTOList[0].profit = val
+      }
+    },
+    year2 (val) {
+      if (this.interestsStatus === "otherAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = val
+      } else if (this.interestsStatus === "svwAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = val
+      } else if (this.interestsStatus === "profit") {
+        this.MarketOverviewObj.supplierFinanceDTOList[1].profit = val
+      }
+    },
+    year3 (val) {
+      if (this.interestsStatus === "otherAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = val
+      } else if (this.interestsStatus === "svwAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = val
+      } else if (this.interestsStatus === "profit") {
+        this.MarketOverviewObj.supplierFinanceDTOList[2].profit = val
+      }
+    },
     edite (val) {
-      console.log(val)
       this.isEdite = val
       if (!val) {
-        if (this.interestsStatus === "otherAmount") {
-          this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = this.year1
-          this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = this.year2
-          this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = this.year3
-        } else if (this.interestsStatus === "svwAmount") {
-          this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = this.year1
-          this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = this.year2
-          this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = this.year3
-        } else if (this.interestsStatus === "profit") {
-          this.MarketOverviewObj.supplierFinanceDTOList[0].profit = this.year1
-          this.MarketOverviewObj.supplierFinanceDTOList[1].profit = this.year2
-          this.MarketOverviewObj.supplierFinanceDTOList[2].profit = this.year3
-        }
         if (!this.MarketOverviewObj.mainCustomerDTOList) {
           this.MarketOverviewObj.mainCustomerDTOList = []
           for (let i = 0; i < 5; i++) {
@@ -385,7 +399,6 @@ export default {
             }
             this.MarketOverviewObj.mainCustomerDTOList.push(obj)
           }
-          console.log(this.MarketOverviewObj.mainCustomerDTOList)
         } else {
           if (this.MarketOverviewObj.mainCustomerDTOList.length === 0) {
             for (let i = 0; i < 5; i++) {
@@ -408,8 +421,6 @@ export default {
         }
       } else {
         this.MarketOverviewObj.mainCustomerDTOList = this.MarketOverviewObj.mainCustomerDTOList.filter(item => item.customerName || item.totalSalesPro)
-
-        console.log(this.MarketOverviewObj.mainCustomerDTOList)
       }
 
     },
@@ -421,22 +432,21 @@ export default {
           this.MarketOverviewObj.supplierFinanceDTOList.forEach(x => {
             if (x.year == date - 3) {
               this.option.series[0].data[0].label.normal.formatter = x.otherRate + '%'
-              this.option.series[0].data[0].value = (x.otherRate / 1000000).toFixed(2)
+              this.option.series[0].data[0].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].label.normal.formatter = x.svwRate + '%'
             }
             if (x.year == date - 2) {
               this.option.series[0].data[1].label.normal.formatter = x.otherRate + '%'
-              this.option.series[0].data[1].value = (x.otherRate / 1000000).toFixed(2)
+              this.option.series[0].data[1].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].label.normal.formatter = x.svwRate + '%'
             }
             if (x.year == date - 1) {
               this.option.series[0].data[2].label.normal.formatter = x.otherRate + '%'
-              this.option.series[0].data[2].value = (x.otherRate / 1000000).toFixed(2)
+              this.option.series[0].data[2].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].label.normal.formatter = x.svwRate + '%'
-
             }
           });
         } else {
@@ -480,12 +490,14 @@ export default {
           this.turnover.legend.data = legend
         }
         let total = new Number()
-        val.mainCustomerDTOList.forEach(item => {
-          total += Number(item.totalSalesPro)
-        })
-        if (total > 100) {
-          iMessage.error('超过100%')
-          return
+        if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
+          val.mainCustomerDTOList.forEach(item => {
+            total += Number(item.totalSalesPro)
+          })
+          if (total > 100) {
+            iMessage.error('超过100%')
+            return
+          }
         }
         this.$nextTick(() => {
           this.initCharts()
