@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-18 10:47:05
+ * @LastEditTime: 2021-08-18 10:50:29
  * @LastEditors: zbin
  * @Description: 内部需求分析
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\index.vue
@@ -19,7 +19,6 @@
 <script>
 import { iPage, iButton } from 'rise';
 import headerNav from '../components/headerNav';
-import { pageRfqBaseInfo } from "@/api/partsrfq/specialAnalysisTool/specialAnalysisTool";
 import viewHistory from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/viewHistory/index.vue';
 export default {
   components: {
