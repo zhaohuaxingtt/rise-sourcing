@@ -10,7 +10,7 @@
             <div class="flex flex-between-center-center">
                 <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></span>
                 <span class="select-text margin-left10">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
-                <iSelect v-model="designateType" @change="onDesignateTypeChange" :disabled="disableNominationType">
+                <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType">
                     <el-option
                     :value="item.id"
                     :label="language(item.key,item.name)"
@@ -92,9 +92,11 @@ import {
     checkNomiMeetingSubmit1,
     checkNomiMeetingSubmit2,
     checkNomiMeetingSubmit3,
+    updateNominate,
     rsAttachExport
 } from '@/api/designate'
 import { applyStep } from './data'
+
 export default {
     name:'designateStep',
     components:{
@@ -116,8 +118,8 @@ export default {
         // 判断当前路由是否是决策资料相关路由 是则显示预览按钮
         const { path,query,name } = this.$route;
         // const {desinateId =''} = query;
-        // 禁用定点类型逻辑：只有新增定点管理和处于designateRfqdetail页面才支持修改定点类型，其他页面禁止编辑
-        const nominationTypeDisable = Boolean(query.desinateId) || name !== 'designateRfqdetail'
+        // 禁用定点类型逻辑：存在定点id且处于草稿状态允许编辑，其他的不允许
+        const nominationTypeDisable = !(name === 'designateRfqdetail' || (query.desinateId && query.applicationStatus === 'NEW'))
         this.isDecision = path.indexOf('/designate/decisiondata/')>-1;
         this.desinateId = query.desinateId
         this.designateType = query.designateType
@@ -165,6 +167,41 @@ export default {
         }
     },
     methods:{
+        async updateNominate(data) {
+            if (this.desinateId) {
+                this.$confirm(this.language('NINGQUEDINGYAOGENGGAIDINGDIANSHENQING','您确定要更改定点申请类型吗？')).then(confirmInfo => {
+                    if (confirmInfo !== 'confirm') return
+                    const params = {
+                        meetingType: data,
+                        nominateAppId:  this.desinateId
+                    }
+                    updateNominate(params).then((res)=>{
+                        if (res.code === '200') {
+                            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                            setTimeout(() => {
+                                // 刷新页面参数
+                                const query = this.$router.history.current.query
+                                const path = this.$router.history.current.path
+                                const newQuery = JSON.parse(JSON.stringify(query))
+                                newQuery.designateType = this.designateType
+                                newQuery._t = Date.now()
+                                this.$router.push({path, query: newQuery})
+                            }, 500)
+                        } else {
+                            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                        }
+                    }).catch(e => {
+                        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                    })
+                }).catch(e => {
+                    if (this.desinateId) {
+                        this.desinateId = this.$route.query.desinateId
+                    }
+                })
+            }
+            this.onDesignateTypeChange(data)
+            
+        },
         // 临时跳转到决策资料，不更新当前步骤
         gotoNomiAttach() {
             this.$router.push({path: '/designate/decisiondata/title', query: Object.assign(this.$route.query, {desinateId:this.$route.query.desinateId, route: 'temp'})})
@@ -228,6 +265,7 @@ export default {
             // 缓存/更新定点申请类型
             this.designateType = data
             this.$store.dispatch('setNominationType', data)
+
         },
 
         // 跳转
