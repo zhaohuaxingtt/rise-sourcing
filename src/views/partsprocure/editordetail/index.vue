@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-18 13:49:16
+ * @LastEditTime: 2021-08-18 13:52:02
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -512,7 +512,7 @@
 				getProjectDetail(this.purchaseProjectId).then((res) => {
 					this.detailLoading = false
 					this.detailData = res.data;
-					this.fsnrGsnrNum = res.data.fsnrGsnrNum || this.fsnrGsnrNum
+					this.fsnrGsnrNum = res.data.fsnrGsnrNum
 					this.checkFactoryString = res.data.procureFactory
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
