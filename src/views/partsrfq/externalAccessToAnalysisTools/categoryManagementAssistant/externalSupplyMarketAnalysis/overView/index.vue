@@ -1,8 +1,8 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 19:45:03
- * @LastEditTime: 2021-08-10 09:42:18
- * @LastEditors: zbin
+ * @LastEditTime: 2021-08-17 17:09:51
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\overView\index.vue
 -->
@@ -81,10 +81,14 @@ export default {
   },
   methods: {
     clickCard(params) {
-      this.$router.push({
-        path: params.url,
-        query: params.data,
-      });
+      if(this.$store.state.rfq.categoryCode){
+        this.$router.push({
+          path: params.url,
+          query: params.data,
+        });
+      } else {
+        this.$parent.$children[0].openCatecory()
+      }
     },
   },
 };

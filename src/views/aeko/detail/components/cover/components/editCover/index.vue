@@ -129,11 +129,12 @@ export default {
       }
     },
     computed:{
-      // adeko状态已冻结时 禁用操作按钮
+      // adeko状态已冻结或者已撤销 禁用操作按钮
       isFrozen(){
         const { aekoInfo={} } = this;
-        return aekoInfo.aekoStatus == 'FROZEN';
-      }
+        return aekoInfo.aekoStatus == 'FROZEN' || aekoInfo.aekoStatus == 'CANCELED';
+      },
+      
     },
     data(){
       return{

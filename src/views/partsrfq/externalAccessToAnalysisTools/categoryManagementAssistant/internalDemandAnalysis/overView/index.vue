@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-16 14:52:07
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-08-17 17:13:39
+ * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
@@ -86,42 +86,41 @@ export default {
   },
   methods: {
     onJump(item){
-       if(this.$store.state.rfq.categoryCode){
-      switch (item.key) {
-        // 成本结构
-        case 'CHENGBENZUCHENG':
-          this.getCostData().then(res => {
-            if(res.analysisType == "1") {
-              //跳转系统
-              this.$router.push({
-                path: item.url,
-                query: {
-                  schemeId: res.id || null
-                }
-              })
-            } else {
-              //跳转手工
-              this.$router.push({
-                path: this.costAnalysisInputUrl,
-                query: {
-                  schemeId: res.id || null,
-                  operateLog: res.operateLog || null
-                }
-              })
-            }
-          })
-          break;
-        default:
-           this.$router.push({
+      if(this.$store.state.rfq.categoryCode){
+        switch (item.key) {
+          // 成本结构
+          case 'CHENGBENZUCHENG':
+            this.getCostData().then(res => {
+              if(res.analysisType == "1") {
+                //跳转系统
+                this.$router.push({
+                  path: item.url,
+                  query: {
+                    schemeId: res.id || null
+                  }
+                })
+              } else {
+                //跳转手工
+                this.$router.push({
+                  path: this.costAnalysisInputUrl,
+                  query: {
+                    schemeId: res.id || null,
+                    operateLog: res.operateLog || null
+                  }
+                })
+              }
+            })
+            break;
+          default:
+            this.$router.push({
               path: item.url,
               query: item.params || null
             })
           break  
-      }
+        }
       }else{
          this.$parent.$children[0].openCatecory()
       }
-     
     },
     // 获取成本结构数据，用于判断跳转系统/手工页面
     getCostData() {

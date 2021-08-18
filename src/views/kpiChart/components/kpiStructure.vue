@@ -180,7 +180,7 @@ export default {
         },
         save(){
             // 校验
-            console.log(this.formDataLevel2)
+            
             let lv1Weight=0
             let lv2Weight=0
             let lv3Weight=0
@@ -274,6 +274,7 @@ export default {
             list:[...this.formDataLevel2]}).then(res=>{
             if(res.code=="200" && res.result){
                 this.$message("操作成功")
+                 this.$emit("saveVersion")
             }else{
                 this.$message.error(res.desZh)
             }
@@ -281,7 +282,6 @@ export default {
             }).catch(error=>{
                this.$message.error(res.desZh);
             })
-            this.$emit("saveVersion")
       },
       deleteTemplate(){
           this.$confirm('请确认是否删除？', {

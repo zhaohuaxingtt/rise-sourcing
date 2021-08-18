@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-16 15:34:01
+ * @LastEditTime: 2021-08-17 17:28:15
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -35,15 +35,15 @@
               <dl>
                 <dt>{{language('WEICHUANGJIANCAIGOUXIANGMU','未创建采购项目')}}</dt>
                 <dd>
-                <strong class="note cursor" @click="toLink('/sourcing/partsprocure?status=10')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
-                /{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItemSum || 0}}
+                <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
+                /<span class="cursor"  @click="toLink('/sourcing/partsprocure?status=10')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItemSum || 0}}</span>
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('WEIJIARURFQ','未加入RFQ')}}</dt>
                 <dd>
-                  <strong class="note cursor" @click="toLink('/sourcing/partsprocure?status=11')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
-                  /{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfqSum || 0}}
+                  <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
+                  /<span class="cursor" @click="toLink('/sourcing/partsprocure?status=11')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfqSum || 0}}</span>
                 </dd>
               </dl>
             </div>
@@ -266,6 +266,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .cursor {
+  display: inline-block;
   cursor: pointer;
 }
 .dashboard-card {
