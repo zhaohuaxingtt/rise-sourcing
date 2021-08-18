@@ -21,10 +21,16 @@
             <el-cascader
                 v-model="form.priceLatitude"
                 :options="priceLatitudeOptions"
-                :props="{ multiple: true }"
+                :props="{
+                  multiple: true,
+                  value: 'id',
+                  label: 'name',
+                  children: 'children'
+                }"
                 @change="handlePriceLatitudeChange"
                 collapse-tags
-                clearable></el-cascader>
+                clearable
+            />
           </div>
           <div class="select-item margin-left30">
             <div class="label">{{ language('PI.SHIJIANKELIDU', '时间颗粒度') }}</div>
@@ -73,6 +79,7 @@
 import {iSelect} from 'rise';
 import iconTips from '../../../../../components/ws3/iconTips';
 import echarts from '@/utils/echarts';
+import {getPiIndexWaveSelectList} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   components: {
@@ -94,30 +101,20 @@ export default {
       type: Boolean,
       default: false,
     },
+    currentTabData: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   data() {
     return {
-      priceLatitudeOptions: [
-        {
-          value: 1,
-          label: '东南',
-          children: [
-            {
-              value: 2,
-              label: '上海',
-            }, {
-              value: 7,
-              label: '江苏',
-            }, {
-              value: 12,
-              label: '浙江',
-            }],
-        },
-      ],
+      priceLatitudeOptions: [],
       timeGranularityOptions: [
-        {name: '年', value: '年'},
-        {name: '季度', value: '季度'},
-        {name: '月', value: '月'},
+        {name: '年', value: '1'},
+        {name: '月', value: '2'},
+        {name: '日', value: '3'},
       ],
       form: {
         priceLatitude: [],
@@ -128,6 +125,7 @@ export default {
     };
   },
   mounted() {
+    this.getPiIndexWaveSelectList();
     this.buildChart();
   },
   methods: {
@@ -199,15 +197,15 @@ export default {
             name: '汇率合成波动比例',
             data: [120, 132, 101, 134, 90, 230, 210],
           }),
-     /*     this.setLineData({
-            lineType: 'solid',
-            lineColor: '#C62928',
-            name: '汇率合成波动比例',
-            data: [
-              {value: 120, rate: 20, time: '2013-03'},
-              {value: 130, rate: 10, time: '2013-04'},
-            ],
-          }),*/
+          /*     this.setLineData({
+                 lineType: 'solid',
+                 lineColor: '#C62928',
+                 name: '汇率合成波动比例',
+                 data: [
+                   {value: 120, rate: 20, time: '2013-03'},
+                   {value: 130, rate: 10, time: '2013-04'},
+                 ],
+               }),*/
           this.setLineData({
             lineType: 'dashed',
             lineColor: '#C62928',
@@ -290,6 +288,15 @@ export default {
         obj.data = this.setNormalLineLastDataMark(data);
       }
       return obj;
+    },
+    async getPiIndexWaveSelectList() {
+      try {
+        this.priceLatitudeOptions = [];
+        const res = await getPiIndexWaveSelectList(this.currentTabData);
+        this.priceLatitudeOptions = res.data;
+      } catch {
+        this.priceLatitudeOptions = [];
+      }
     },
   },
   watch: {

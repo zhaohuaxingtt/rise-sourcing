@@ -68,3 +68,12 @@ export function deleteParts(params) {
     method: 'GET',
   });
 }
+
+//price Index价格分析曲线选择框
+export function getPiIndexWaveSelectList(params) {
+  return request({
+    url: '/piAnalysisScheme/piIndexWaveSelectList',
+    method: 'POST',
+    data: params,
+  });
+}
