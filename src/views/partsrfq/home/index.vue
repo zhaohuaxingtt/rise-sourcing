@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-07-22 14:46:52
+ * @LastEditTime: 2021-08-18 14:49:51
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -303,8 +303,10 @@ export default {
         // this.page.totalCount = res.data.getRfqInfoVO.total
        
        res.data.forEach(val=> {
-          val.createDate = this.getYearMonth(val.createDate) === 'undefined' ? '' : this.getYearMonth(val.createDate)
-          val.currentRoundsEndTime = this.getYearMonth(val.currentRoundsEndTime) === 'undefined' ? '' : this.getYearMonth(val.currentRoundsEndTime)
+          // eslint-disable-next-line no-undef
+          val.createDate = val.createDate?moment(val.createDate).format('YYYY-MM-DD'):''
+          // eslint-disable-next-line no-undef
+          val.currentRoundsEndTime = val.currentRoundsEndTime?moment(val.currentRoundsEndTime).format('YYYY-MM-DD'):''
         })
         this.tableListData = Array.isArray(res.data) ? res.data : []
         this.page.totalCount = res.total
