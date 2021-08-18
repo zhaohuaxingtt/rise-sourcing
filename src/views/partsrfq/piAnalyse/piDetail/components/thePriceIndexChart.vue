@@ -49,26 +49,26 @@
     <div class="chartBox">
       <div class="theChart" ref="theChart" :style="{'height': chartHeight}"/>
       <div class="legendBox">
-        <div class="legendItem">
-          <div class="shape rect"></div>
-          <div class="text">汇率合成波动比例</div>
-        </div>
-        <div class="legendItem">
-          <div class="shape">
-            <div class="doubleBox"></div>
-            <div class="doubleBox"></div>
-          </div>
-          <div class="text">汇率合成波动均线</div>
-        </div>
-        <div class="legendItem">
-          <div class="shape">
-            <div class="dotBox"></div>
-            <div class="dotBox"></div>
-            <div class="dotBox"></div>
-            <div class="dotBox"></div>
-            <div class="dotBox"></div>
-          </div>
-          <div class="text">汇率1波动比例</div>
+        <div class="legendItem" v-for="(item,index) of resChartData" :key="index">
+          <template v-if="item.waveType === 'compositeWaveRatio'">
+            <div class="shape" :style="{'background': item.color}"></div>
+          </template>
+          <template v-else-if="item.waveType === 'compositeWaveAvg'">
+            <div class="shape">
+              <div class="doubleBox" :style="{'background': item.color}"></div>
+              <div class="doubleBox" :style="{'background': item.color}"></div>
+            </div>
+          </template>
+          <template v-else-if="item.waveType === 'waveRatio'">
+            <div class="shape">
+              <div class="dotBox" :style="{'background': item.color}"></div>
+              <div class="dotBox" :style="{'background': item.color}"></div>
+              <div class="dotBox" :style="{'background': item.color}"></div>
+              <div class="dotBox" :style="{'background': item.color}"></div>
+              <div class="dotBox" :style="{'background': item.color}"></div>
+            </div>
+          </template>
+          <div class="text">{{ item.waveTypeName }}</div>
         </div>
       </div>
     </div>
@@ -81,6 +81,7 @@ import iconTips from '../../../../../components/ws3/iconTips';
 import echarts from '@/utils/echarts';
 import {getPiIndexWaveSelectList} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 import {CURRENTTIME} from './data';
+import {getPiIndexPartCostWave} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   components: {
@@ -118,19 +119,21 @@ export default {
       priceLatitudeOptions: [],
       timeGranularityOptions: [
         {name: '年', value: '1'},
-        {name: '月', value: '2'},
-        {name: '日', value: '3'},
+        {name: '季度', value: '2'},
+        {name: '月', value: '3'},
       ],
       form: {
         dimension: [],
         particleSize: '',
       },
       seriesArray: [],
-      legendData: [],
+      xLabelData: [],
+      resChartData: [],
     };
   },
   mounted() {
     this.getPiIndexWaveSelectList();
+    this.getChartData();
     this.buildChart();
   },
   methods: {
@@ -147,7 +150,9 @@ export default {
           trigger: 'axis',
           backgroundColor: 'rgba(255, 255, 255, 0.8)',
           formatter: (obj) => {
-            const titleDiv = `<div class="tooltipText">${obj[0].name}</div>`;
+            console.log(111);
+            console.log(obj);
+            const titleDiv = `<div class="tooltipText">${obj[0].axisValueLabel}</div>`;
             const contentDiv = [];
             obj.map(item => {
               const itemDiv = `<div>
@@ -155,7 +160,7 @@ export default {
               <span class="tooltipText">幅度</span>
               <span class="tooltipText">${item.value}，</span>
               <span class="tooltipText">值</span>
-              <span class="tooltipText">${item.value}</span>
+              <span class="tooltipText">${item.name}</span>
               </div>`;
               contentDiv.push(itemDiv);
             });
@@ -177,7 +182,7 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+          data: this.xLabelData,
           axisTick: {
             show: false,
           },
@@ -195,50 +200,20 @@ export default {
             show: false,
           },
         },
-        series: [
-          this.setLineData({
-            lineType: 'solid',
-            lineColor: '#C62928',
-            name: '汇率合成波动比例',
-            data: [120, 132, 101, 134, 90, 230, 210],
-          }),
-          /*     this.setLineData({
-                 lineType: 'solid',
-                 lineColor: '#C62928',
-                 name: '汇率合成波动比例',
-                 data: [
-                   {value: 120, rate: 20, time: '2013-03'},
-                   {value: 130, rate: 10, time: '2013-04'},
-                 ],
-               }),*/
-          this.setLineData({
-            lineType: 'dashed',
-            lineColor: '#C62928',
-            name: '汇率合成波动均线',
-            data: [150, 150, 150, 150, 150, 150, 150],
-          }),
-          this.setLineData({
-            lineType: 'dotted',
-            lineColor: '#C62928',
-            name: '汇率1波动比例',
-            data: [150, 232, 201, 154, 190, 330, 410],
-          }),
-        ],
+        series: this.seriesArray,
       };
       chart.setOption(option, true);
     },
-    assembleData() {
-
-    },
-    buildChart() {
-      this.assembleData();
-      this.initEcharts();
+    async buildChart() {
+      await this.getChartData();
+      await this.initEcharts();
     },
     setNormalLineLastDataMark(data) {
       const lastIndex = data.length - 1;
       const resData = data.map(item => {
         return {
-          value: item,
+          value: item.value,
+          name: item.name,
         };
       });
       resData[lastIndex]['label'] = {
@@ -256,7 +231,8 @@ export default {
       const lastIndex = data.length - 1;
       const resData = data.map(item => {
         return {
-          value: item,
+          value: item.value,
+          name: item.name,
         };
       });
       resData[lastIndex]['label'] = {
@@ -318,8 +294,39 @@ export default {
           };
         });
       }
-      console.log(111);
-      console.log(req);
+      const res = await getPiIndexPartCostWave(req);
+      this.resChartData = res.data;
+      if (res.data.length) {
+        this.seriesArray = res.data.map(item => {
+          const data = item.dataValuesList.map(itemData => {
+            return {
+              value: itemData.rate,
+              name: itemData.value,
+            };
+          });
+          return this.setLineData({
+            lineType: this.getLineType(item.waveType),
+            lineColor: item.color,
+            name: item.waveTypeName,
+            data,
+          });
+        });
+        this.xLabelData = res.data[0].dataValuesList.map(item => {
+          return item.time;
+        });
+        console.log(1111);
+        console.log(this.seriesArray);
+      }
+    },
+    getLineType(type) {
+      switch (type) {
+        case 'compositeWaveAvg':
+          return 'dashed';
+        case 'compositeWaveRatio':
+          return 'solid';
+        case 'waveRatio':
+          return 'dotted';
+      }
     },
   },
   watch: {
@@ -398,19 +405,13 @@ export default {
             width: 9px;
             height: 3px;
             margin-right: 2px;
-            background: #C62928;
           }
 
           .dotBox {
             width: 3px;
             height: 3px;
             margin-right: 1.25px;
-            background: #C62928;
           }
-        }
-
-        .rect {
-          background: #C62928;
         }
 
         .text {
