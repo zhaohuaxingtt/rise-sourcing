@@ -45,7 +45,7 @@
       <theTable
           v-show="currentTab === AVERAGE"
           ref="theAverageTable"
-          :averageTableInfo="averageTableInfo"
+          :averageData="averageData"
           :currentTab="currentTab"
           :tableLoading="tableLoading"
       />
@@ -62,7 +62,10 @@
       </iCard>
       <!--      零件成本构成-->
       <iCard class="pieBox">
-        <thePartsCostChart :dataInfo="dataInfo"/>
+        <thePartsCostChart
+            :dataInfo="dataInfo"
+            :pieLoading="pieLoading"
+        />
       </iCard>
     </div>
 
@@ -71,7 +74,7 @@
         ref="previewDialog"
         v-model="previewDialog"
         :dataInfo="dataInfo"
-        :averageTableInfo="averageTableInfo"
+        :averageData="averageData"
         :currentTab="currentTab"
     />
 
@@ -139,11 +142,12 @@ export default {
         supplierId: '',
       },
       dataInfo: {},
-      averageTableInfo: {},
+      averageData: {},
       CURRENTTIME,
       AVERAGE,
       tableLoading: false,
       timeRange: null,
+      pieLoading: false,
     };
   },
   created() {
@@ -223,7 +227,7 @@ export default {
     handleTabsClick(val) {
       this.currentTab = val;
       if (this.currentTab === AVERAGE) {
-        this.getAverageTable();
+        this.getAverageData();
       }
     },
     // 时间改变
@@ -232,13 +236,12 @@ export default {
         beginTime: time[0],
         endTime: time[1],
       };
-      this.getAverageTable({extraParams});
+      this.getAverageData({extraParams});
     },
     // 获取信息
     async getDataInfo() {
       try {
-        this.pageLoading = true;
-        this.tableLoading = true;
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: true});
         const req = {
           ...this.currentTabData,
         };
@@ -250,33 +253,31 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        this.pageLoading = false;
-        this.tableLoading = false;
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       } catch {
-        this.pageLoading = false;
-        this.tableLoading = false;
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       }
     },
-    // 获取平均 表格数据
-    async getAverageTable({extraParams} = {}) {
+    // 获取平均数据
+    async getAverageData({extraParams} = {}) {
       try {
-        this.tableLoading = true;
-        this.averageTableInfo = {};
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: true});
+        this.averageData = {};
         const req = {
           ...this.currentTabData,
           ...extraParams,
         };
         const res = await getAveragePartCostPrice(req);
-        this.averageTableInfo = res.data;
+        this.averageData = res.data;
         if (res.data.beginTime && res.data.endTime) {
           this.timeRange = [res.data.beginTime, res.data.endTime];
         } else {
           this.timeRange = null;
         }
-        this.tableLoading = false;
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
       } catch {
-        this.averageTableInfo = {};
-        this.tableLoading = false;
+        this.averageData = {};
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
       }
     },
     // 处理保存弹窗
@@ -295,6 +296,11 @@ export default {
           callback(downloadName, downloadUrl);
         }
       }, 1000);
+    },
+    setLoading({propsArray, boolean}) {
+      propsArray.map(item => {
+        this[item] = boolean;
+      });
     },
   },
 };

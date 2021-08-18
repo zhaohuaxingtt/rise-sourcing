@@ -77,3 +77,12 @@ export function getPiIndexWaveSelectList(params) {
     data: params,
   });
 }
+
+//price Index价格分析曲线
+export function getPiIndexPartCostWave(params) {
+  return request({
+    url: '/piAnalysisScheme/piIndexPartCostWave',
+    method: 'POST',
+    data: params,
+  });
+}

@@ -1,16 +1,16 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-08-14 13:26:29
+ * @LastEditTime: 2021-08-18 17:33:47
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\marks.vue
 -->
 <template>
-      <iDialog :title="language('BEIZHU','备注')" :visible.sync="value" width="400px" @close='clearDiolog' top="40vh">
+      <iDialog :title="language('BEIZHU','备注')" :visible.sync="value" width="600px" @close='clearDiolog' top="40vh">
         <div class="changeContent">
-          <span class="fontSize14">{{ language('QSRBZ','请输入备注') }}：</span>
-          <iInput v-model='inquiryBuyer'></iInput>
+          <!-- <span class="fontSize14">{{ language('QSRBZ','请输入备注') }}：</span> -->
+          <iInput v-model='inquiryBuyer' type="textarea" rows="8"></iInput>
         </div>
         <span slot="footer" class="dialog-footer">
           <iButton @click="$emit('input',false)">{{language('LK_QUXIAO','取 消')}}</iButton>
