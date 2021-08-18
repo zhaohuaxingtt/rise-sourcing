@@ -94,6 +94,7 @@ export default {
       this.edite = true
       this.savereport = false
       this.categoryCode = this.$store.state.rfq.categoryCode
+      console.log(this.MarketOverviewDTO)
       downloadPDF({
         idEle: "content",
         pdfName: "2222222",

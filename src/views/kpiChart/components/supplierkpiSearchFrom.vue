@@ -385,7 +385,7 @@ export default {
   },
   created () {
     // 初始化国家
-    getCityInfo({ parentCityId: this.getCityid }).then(res => {
+    getCityInfo({  }).then(res => {
       this.areaOptions = res.data.map(x => {
         return {
           ...x,
@@ -438,16 +438,18 @@ export default {
         // this.options = this.$refs["myCascader"].getCheckedNodes()
         console.log(this.$refs["myCascader"].getCheckedNodes())
         let checkList = this.$refs["myCascader"].getCheckedNodes()
+        console.log("operation start")
         this.$refs["myCascader"].getCheckedNodes().forEach(x => {
           if (x.level == 3) {
             this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
             this.supplierSeccoStockOption.push({ ...x, value: x.value.toString() })
           } else if (x.level == 2) {
-            this.areaOptions[0].children.push(x)
+            this.areaOptions[0].children.push(_.cloneDeep(x))
             this.areaOptions[0].children = [...new Set(this.areaOptions[0].children)]
-            // this.handelOption(this.areaOptions)
+            this.handelOption(this.areaOptions)
           }
         })
+        console.log("operation end")
         console.log(this.areaOptions)
       } else {
         this.supplierSeccoStockOption = []
