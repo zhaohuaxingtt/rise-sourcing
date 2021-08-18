@@ -184,7 +184,6 @@ export default {
                                 const path = this.$router.history.current.path
                                 const newQuery = JSON.parse(JSON.stringify(query))
                                 newQuery.designateType = this.designateType
-                                newQuery._t = Date.now()
                                 this.$router.push({path, query: newQuery})
                             }, 500)
                         } else {
