@@ -95,7 +95,14 @@
                   <iFormItem label="地区"
                              class="SearchOption"
                              prop="userNum">
-                    <iSelect v-model="formData.spiSupplierDTO.cityCodeList"
+                    <el-cascader v-model="areaVmodel"
+                                 :options="areaOptions"
+                                 :props="propscopy"
+                                 @change="handleBaseChange"
+                                 ref="myCascader1"
+                                 :clearable="true"
+                                 collapse-tags></el-cascader>
+                    <!-- <iSelect v-model="formData.spiSupplierDTO.cityCodeList"
                              :placeholder="$t('partsignLanguage.QingXuanZe')"
                              @change="handlechangeSeccoStock('supplier',$event)"
                              multiple
@@ -104,7 +111,7 @@
                                  :value='x.value'
                                  :label='x.label'
                                  :key="index"></el-option>
-                    </iSelect>
+                    </iSelect> -->
                   </iFormItem>
                 </el-col>
                 <el-col :span="6">
@@ -212,6 +219,7 @@ export default {
       supplierStart: '',
       supplierEnd: '',
       baseAreaVmodel: [],
+      areaVmodel: [],
       partyOrganId: [],
       formData: {
         spiBaseDTO: {
@@ -224,6 +232,7 @@ export default {
           existShareIdList: []
         }
       },
+      areaOptions: [],
       material: [],
       Relationship: [],
       exisList: [],
@@ -329,6 +338,9 @@ export default {
         ]
       },
       supplierSeccoStockOption: [],
+      propscopy: {
+        multiple: true,
+      },
       props: {
         lazy: true,
         multiple: true,
@@ -373,7 +385,6 @@ export default {
   created () {
     // 初始化国家
     getCityInfo({ parentCityId: this.getCityid }).then(res => {
-      console.log(res)
       this.areaOptions = res.data.map(x => {
         return {
           ...x,
@@ -382,7 +393,9 @@ export default {
           children: []
         }
       })
+      console.log(this.areaOptions)
     })
+
   },
   mounted () {
     this.getMaterialGroupByUserIds()
@@ -400,6 +413,7 @@ export default {
     },
     //基数地区
     handleBaseChangeArea (e, b) {
+      console.log('111')
       // 地区数量校验
       // if(e.length<6){
       //     this.baseAreaVmodel=e
@@ -420,17 +434,35 @@ export default {
       this.formData.spiBaseDTO.cityCodeList = []
       this.supplierSeccoStockOption = []
       if (this.$refs["myCascader"].getCheckedNodes().length > 0) {
+        // this.options = this.$refs["myCascader"].getCheckedNodes()
+        console.log(this.$refs["myCascader"].getCheckedNodes())
         this.$refs["myCascader"].getCheckedNodes().forEach(x => {
           if (x.level == 3) {
             this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
             this.supplierSeccoStockOption.push({ ...x, value: x.value.toString() })
+          } else if (x.level == 2) {
+            this.areaOptions[0].children.push(x)
+            this.areaOptions[0].children = [...new Set(this.areaOptions[0].children)]
           }
-
         })
+        console.log(this.areaOptions)
       } else {
         this.supplierSeccoStockOption = []
         this.formData.spiBaseDTO.cityCodeList = []
       }
+    },
+    handleBaseChange () {
+      console.log('111')
+      if (this.$refs["myCascader1"].getCheckedNodes().length > 0) {
+        this.$refs["myCascader1"].getCheckedNodes().forEach(x => {
+          if (x.level == 3) {
+            this.formData.spiSupplierDTO.cityCodeList.push(x.value.toString())
+          }
+        })
+      } else {
+        this.formData.spiSupplierDTO.cityCodeList = []
+      }
+      console.log(this.formData.spiSupplierDTO.cityCodeList, "2222")
     },
     //供应商地区
     handleSupplierChangeArea () {
@@ -479,15 +511,15 @@ export default {
     //科股监听
     handlechangeSeccoStock (str, val) {
       if (str == "base" && val.length > 0) {
+        this.formData.spiSupplierDTO.existShareIdList=this.formData.spiBaseDTO.existShareIdList
         this.supplierSeccoStockOption = []
         val.forEach(x => {
           let fdx = this.Relationship.filter(y => { return y.existShareId == x })
           this.supplierSeccoStockOption = this.supplierSeccoStockOption.concat(fdx)
         })
       }
-      if (str == "base" && val.length == 0) {
-        debu
-        this.supplierSeccoStockOption = []
+      if (str == "supplier" && val.length == 0) {
+        this.formData.spiSupplierDTO.existShareIdList=[]
       }
     },
     handleOk () {
@@ -496,6 +528,7 @@ export default {
       })
     },
     handleRest () {
+
       this.formData = {
         spiBaseDTO: {
           cityCodeList: [],
@@ -516,6 +549,7 @@ export default {
       this.baseStartYear = null
       this.baseEndYear = null
       this.baseAreaVmodel = []
+      this.$emit("reset")
     },
     // base 开始日期
     startChangeBase (e) {

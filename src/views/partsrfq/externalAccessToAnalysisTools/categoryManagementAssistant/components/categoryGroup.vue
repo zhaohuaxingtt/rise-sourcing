@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-13 15:28:34
+ * @LastEditTime: 2021-08-18 10:19:11
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\categoryGroup.vue
@@ -38,9 +38,7 @@ export default {
     }
   },
   created() {
-    if (!this.$store.state.rfq.categoryCode) {
-      this.value = true
-    }
+    
   },
   methods: {
     querySearchAsync(queryString, cb) {

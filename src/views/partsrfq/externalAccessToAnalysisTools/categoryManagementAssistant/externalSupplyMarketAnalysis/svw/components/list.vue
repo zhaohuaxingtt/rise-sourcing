@@ -347,6 +347,7 @@ export default {
     }
   },
   mounted () {
+    this.categoryName = this.$store.state.rfq.categoryName
     let date = new Date()
     this.option.xAxis[0].data[0] = date.getFullYear() - 3
     this.option.xAxis[0].data[1] = date.getFullYear() - 2
@@ -423,9 +424,12 @@ export default {
                   show: true,
                   formatter: '{d}%'
                 }
-              }
+              } 
             }
             let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
+            if (x.categoryNameZh == this.categoryName) {
+              seriesObj.selected=true
+            }
             seriesObj.value = x.postAmount
             seriesObj.name = x.categoryNameZh
             seriesObj.itemStyle.color = colorList[index]
