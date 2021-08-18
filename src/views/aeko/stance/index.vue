@@ -19,11 +19,21 @@
               :label="language(item.labelKey,item.label)"
               v-permission.dynamic="item.permissionKey"
               >
-                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
+                  <iSelect 
+                    collapse-tags 
+                    v-if="item.type === 'select'" 
+                    :multiple="item.multiple" 
+                    :filterable="item.filterable" 
+                    :clearable="item.clearable" 
+                    v-model="searchParams[item.props]" 
+                    :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
+                    @change="handleMultipleChange($event, item.props,item.multiple)"
+                    :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+                  >
                     <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                     <el-option
-                      v-for="item in selectOptions[item.selectOption] || []"
-                      :key="item.code"
+                      v-for="(item,index) in selectOptions[item.selectOption] || []"
+                      :key="item.selectOption+'_'+index"
                       :label="item.name"
                       :value="item.code">
                     </el-option>  
@@ -160,6 +170,12 @@ export default {
           coverStatusList:[],
           cartypeCodeList:[],
         },
+        selectOptionsCopy:{
+          cartypeProjectCodeList:[],
+          aekoStatusList:[],
+          coverStatusList:[],
+          cartypeCodeList:[],
+        },
         tableListData:[],
         tableTitle:tableTitle,
         loading:false,
@@ -274,6 +290,7 @@ export default {
               item.desc = item.name;
             })
             this.selectOptions.cartypeProjectCodeList = data || [];
+            this.selectOptionsCopy.cartypeProjectCodeList = data || [];
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -287,6 +304,7 @@ export default {
               item.desc = item.name;
             })
             this.selectOptions.cartypeCodeList = data.filter((item)=>item.name) || [];
+            this.selectOptionsCopy.cartypeCodeList = data.filter((item)=>item.name) || [];
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -299,6 +317,7 @@ export default {
               item.name = item.desc;
             });
             this.selectOptions.aekoStatusList = data;
+            this.selectOptionsCopy.aekoStatusList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -311,6 +330,7 @@ export default {
               item.name = item.desc;
             });
             this.selectOptions.coverStatusList = data;
+            this.selectOptionsCopy.coverStatusList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -371,6 +391,37 @@ export default {
       async checkFiles(row){
         this.itemFileData = row;
         this.changeVisible('filesVisible',true);
+      },
+
+            // 模糊搜索处理
+      dataFilter(val,props){
+        // 去除前后空格
+        const trimVal = val.trim();
+        const { selectOptionsCopy={}} = this;
+        if(trimVal){
+          const list = selectOptionsCopy[props].filter((item) => {
+            if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
+                return true;
+            } 
+          })
+            this.selectOptions[props] = list;
+        }else{
+          this.selectOptions[props] = selectOptionsCopy[props];
+        }
+      },
+
+      // 多选处理
+      handleMultipleChange(value, key,multiple) {
+        console.log(value,key);
+          // 单选不处理
+          if(!multiple) {
+            if(!value){
+              const {selectOptionsCopy={}} = this;
+              this.$set(this.selectOptions,key,selectOptionsCopy[key]);
+            }else{
+              return;
+            }
+          }
       },
 
     }

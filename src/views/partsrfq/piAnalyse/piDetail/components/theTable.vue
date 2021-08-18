@@ -11,7 +11,7 @@
       </span>
       <div class="floatright">
         <template v-if="isPreview">
-          <span class="text timeRange">{{ language('PI.SHIJIANDAN', '时间段') }}：2020/09 - 2021/03</span>
+          <span class="text timeRange" v-if="currentTab === AVERAGE">{{ language('PI.SHIJIANDAN', '时间段') }}：2020/09 - 2021/03</span>
         </template>
         <template v-else>
           <template v-if="tableStatus === 'edit'">
@@ -45,6 +45,7 @@
         @handleGetSelectList="handleGetSelectList"
         :selectOptionsObject="selectOptionsObject"
         @handleSelectReset="handleSelectReset"
+        :selection="!isPreview"
     />
     <el-divider class="margin-top20 margin-bottom20" v-if="tableStatus === 'edit'"/>
     <!--隐藏表格-->
@@ -59,6 +60,10 @@
         :isTableEdit="tableStatus"
         @handleSelectionChange="handleHideSelectionChange"
         @handleShow="handleShow"
+        @handleGetSelectList="handleGetSelectList"
+        :selectOptionsObject="selectOptionsObject"
+        @handleSelectReset="handleSelectReset"
+        :selection="!isPreview"
     />
   </div>
 </template>
@@ -269,26 +274,23 @@ export default {
         if (this.currentTab === this.CURRENTTIME) {
           this.nowPriceRatio = copyDataInfo.currentPartCostTotalVO.nowPriceRatio;
           this.totalPriceRatio = copyDataInfo.currentPartCostTotalVO.totalPriceRatio;
-          copyTableList = copyDataInfo && copyDataInfo.currentPartCostTotalVO && copyDataInfo.currentPartCostTotalVO.piPartCostVOS;
+          copyTableList = copyDataInfo && copyDataInfo.currentPartCostTotalVO &&
+              copyDataInfo.currentPartCostTotalVO.piPartCostVOS;
         } else if (this.currentTab === this.AVERAGE) {
           return [];
         }
         copyTableList.map((item, index) => {
+          const time = new Date().getTime() + index;
           if (!item.id) {
-            item.time = new Date().getTime() + index;
+            item.time = time;
+            this.selectOptionsObject[time] = {};
+          } else {
+            this.selectOptionsObject[item.id] = {};
           }
           if (item.isShow) {
             this.tableListData.push(item);
           } else {
             this.hideTableData.push(item);
-          }
-        });
-        copyTableList.map(item => {
-          if(item.id) {
-            this.selectOptionsObject[item.id] = {};
-          } else {
-            const time = new Date().getTime();
-            this.selectOptionsObject[time] = {};
           }
         });
       } catch {
@@ -344,10 +346,30 @@ export default {
         if (props === this.FIRSTSELECT) {
           this.selectOptionsObject[id][this.SECONDSELECT] = [];
           this.selectOptionsObject[id][this.THIRDSELECT] = [];
+          if (row.dataType === classType['rawMaterial']) {
+            this.handleSelectValueRest({id, valueArray: ['partNumber', 'partRegion']});
+          } else if (row.dataType === classType['manpower']) {
+            this.handleSelectValueRest({id, valueArray: ['workProvince']});
+          } else if (row.dataType === classType['exchangeRate']) {
+            this.handleSelectValueRest({id, valueArray: ['currency']});
+          }
         } else if (props === this.SECONDSELECT) {
           this.selectOptionsObject[id][this.THIRDSELECT] = [];
+          if (row.dataType === classType['rawMaterial']) {
+            this.handleSelectValueRest({id, valueArray: ['partRegion']});
+          }
         }
       }
+    },
+    handleSelectValueRest({id, valueArray}) {
+      this.tableListData.map(item => {
+        if ([item.id, item.time].includes(id)) {
+          valueArray.map(valueItem => {
+            item[valueItem] = '';
+          });
+        }
+        return item;
+      });
     },
   },
   watch: {

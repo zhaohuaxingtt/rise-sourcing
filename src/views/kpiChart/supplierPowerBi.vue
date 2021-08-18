@@ -96,6 +96,16 @@ export default {
 					workspaceid:'876776a9-f959-442e-a011-b4bade0dd862',
                     reportid:'437fd85e-323d-48b6-aedd-de8d63ce6f37',
                     pageName:'ReportSection680575c9e561c8d8bd83',
+                    settings: {
+							panes: {
+								filters: {
+									visible: false
+								},
+								pageNavigation: {
+									visible: false
+								}
+							}
+						}
 				};
 				this.reportContainer = document.getElementById('powerBi');
 				this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);

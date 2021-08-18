@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-13 15:35:39
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-16 14:52:07
+ * @LastEditors: 舒杰
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
@@ -56,7 +56,8 @@ export default {
            },{
               name:"SOP进度轴",
               key:"SOPJINDUZHOU",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis06.png")
+              image:require("@/assets/images/partRfq/internalDemandAnalysis06.png"),
+              url:"/sourcing/categoryManagementAssistant/internalDemandAnalysis/sop"
            },{
               name:"成本组成",
               key:"CHENGBENZUCHENG",

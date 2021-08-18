@@ -47,6 +47,12 @@ export default [{
           component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/batchSupplier'),
         },
         {
+          path: 'sop',
+          name: 'sop',
+          meta: { title: "SOP进度轴" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/sop'),
+        },
+        {
           path: 'carPrice',
           name: 'carPrice',
           meta: { title: "车型价格对比" },

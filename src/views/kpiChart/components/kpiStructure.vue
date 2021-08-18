@@ -186,15 +186,15 @@ export default {
             let lv3Weight=0
             let nameIsNull = true
             this.formDataLevel2.forEach(x=>{
-                if(!x.name)(nameIsNull =false)
+                if(!x.name || !x.weight)(nameIsNull =false)
                 lv1Weight+=Number(x.weight)
                 if(x.children.length>0){
                     x.children.forEach(y=>{
-                        if(!y.name)(nameIsNull =false)
+                        if(!y.name || !y.weight)(nameIsNull =false)
                         lv2Weight+=Number(y.weight)
                         if(y.children.length>0){
                             y.children.forEach(z=>{
-                                if(!z.name)(nameIsNull =false)
+                                if(!z.name || !z.weight)(nameIsNull =false)
                                 lv3Weight+=Number(z.weight)
                             })
                             
@@ -225,7 +225,12 @@ export default {
             if(lv3Weight!==100){
                 let num = 0
                 this.formDataLevel2.forEach(x=>{
-                    num+=x.children.length
+                    if(x.children.length<1){
+                         num+=1
+                    }else{
+                        num+=x.children.length
+                    }
+                    
                 })
                 console.log(num,lv3Weight,this.formDataLevel2)
                 if(lv3Weight/num!==100){
@@ -239,9 +244,28 @@ export default {
             if(!nameIsNull){
                 return this.$message({
                     type:'error',
-                    message:'名称不能为空'
+                    message:'名称和比重不能为空'
                 })
             }
+            // 比重非空校验
+            // let isNullWeight = true
+            // this.formDataLevel2.filter(x=>{
+            //     if(!x.weight){
+            //         isNullWeight = false
+            //     }
+            //     return x.children.filter(y=>{
+            //         if(!y.weight){
+            //             isNullWeight = false
+            //         }
+            //         return y.children.filter(z=>{
+            //             if(!z.weight){
+            //                 isNullWeight = false
+            //             }
+            //             return 
+            //         })
+            //     })
+            // })
+            
             // 保存执行
             saveTemplateDetail({
             deptCode:this.$store.state.permission.userInfo.deptDTO.deptNum,

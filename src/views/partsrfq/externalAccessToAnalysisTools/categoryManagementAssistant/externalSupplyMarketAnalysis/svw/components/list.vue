@@ -398,8 +398,6 @@ export default {
         }
         // 饼图
         if (this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
-
-
           let data = []
           this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.forEach((x, index) => {
             let seriesObj = {
