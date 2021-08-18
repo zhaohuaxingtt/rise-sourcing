@@ -2,7 +2,7 @@
   <iCard id="allContainer" class="margin-top30">
     <div class="margin-bottom20 clearFloat">
       <span class="font22 font-weight">{{ language('PLGLZS.SHICHANGSHUJU', '市场数据') }}</span>
-      <div class="floatright">
+      <div class="floatright" v-if="!isExporting">
         <iButton @click="handleSearch">{{ language('LK_QUEREN', '确认') }}</iButton>
         <iButton @click="handleSave" :loading="saveButtonLoading">{{ language('LK_BAOCUN', '保存') }}</iButton>
         <iButton @click="handleBack">{{ language('LK_FANHUI', '返回') }}</iButton>
@@ -78,6 +78,7 @@ export default {
       saveButtonLoading: false,
       categoryCode: this.$store.state.rfq.categoryCode,
       copySearchProps: {},
+      isExporting: false,
     };
   },
   async created() {
@@ -274,33 +275,39 @@ export default {
     // 处理保存
     async handleSave() {
       this.saveButtonLoading = true;
-      const resFile = await this.getDownloadFileAndExportPdf({
-        domId: 'allContainer',
-        pdfName: 'market data',
+      this.isExporting = true;
+      this.$nextTick(async () => {
+        const resFile = await this.getDownloadFileAndExportPdf({
+          domId: 'allContainer',
+          pdfName: 'market data',
+          callBack: () => {
+            this.isExporting = false;
+          },
+        });
+        const req = {
+          categoryCode: this.categoryCode,
+          reportFileName: resFile.downloadName,
+          reportName: resFile.downloadName,
+          reportUrl: resFile.downloadUrl,
+        };
+        let res = '';
+        switch (this.current) {
+          case RAWMATERIAL:
+            req.rawMaterialGroupDataDTO = this.getSearchForm();
+            res = await saveRawMaterialScheme(req);
+            break;
+          case LABOUR:
+            req.labourGroupDataDTO = this.getSearchForm();
+            res = await saveLabourScheme(req);
+            break;
+          case ENERGY:
+            req.energyGroupDataDTO = this.getSearchForm();
+            res = await saveEnergyScheme(req);
+            break;
+        }
+        this.resultMessage(res);
+        this.saveButtonLoading = false;
       });
-      const req = {
-        categoryCode: this.categoryCode,
-        reportFileName: resFile.downloadName,
-        reportName: resFile.downloadName,
-        reportUrl: resFile.downloadUrl,
-      };
-      let res = '';
-      switch (this.current) {
-        case RAWMATERIAL:
-          req.rawMaterialGroupDataDTO = this.getSearchForm();
-          res = await saveRawMaterialScheme(req);
-          break;
-        case LABOUR:
-          req.labourGroupDataDTO = this.getSearchForm();
-          res = await saveLabourScheme(req);
-          break;
-        case ENERGY:
-          req.energyGroupDataDTO = this.getSearchForm();
-          res = await saveEnergyScheme(req);
-          break;
-      }
-      this.resultMessage(res);
-      this.saveButtonLoading = false;
     },
     // 获取最近搜索参数
     async getRecentSearchData() {

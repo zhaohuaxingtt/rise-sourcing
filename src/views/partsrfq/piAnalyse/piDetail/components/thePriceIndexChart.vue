@@ -19,7 +19,7 @@
           <div class="select-item">
             <div class="label">{{ language('PI.JIAGEWEIDU', '价格维度') }}</div>
             <el-cascader
-                v-model="form.priceLatitude"
+                v-model="form.dimension"
                 :options="priceLatitudeOptions"
                 :props="{
                   multiple: true,
@@ -34,7 +34,7 @@
           </div>
           <div class="select-item margin-left30">
             <div class="label">{{ language('PI.SHIJIANKELIDU', '时间颗粒度') }}</div>
-            <iSelect v-model="form.timeGranularity" @change="handleTimeGranularityChange">
+            <iSelect v-model="form.particleSize" @change="handleTimeGranularityChange">
               <el-option
                   v-for="item of timeGranularityOptions"
                   :key="item.name"
@@ -117,8 +117,8 @@ export default {
         {name: '日', value: '3'},
       ],
       form: {
-        priceLatitude: [],
-        timeGranularity: '',
+        dimension: [],
+        particleSize: '',
       },
       seriesArray: [],
       legendData: [],
