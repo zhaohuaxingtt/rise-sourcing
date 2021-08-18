@@ -193,7 +193,7 @@ export default {
       this.getAekoCarDosageByCarTypeProjectCode(value)
     },
     handleInputByUsePortion(value) {
-      this.$set(this.dosage, "oldPartShare", numberProcessor(value, 2))
+      this.$set(this.dosage, "usePortion", numberProcessor(value, 2))
     },
     handleInputByPerCarDosage(value, row) {
       this.$set(row, "perCarDosage", numberProcessor(value, 2))

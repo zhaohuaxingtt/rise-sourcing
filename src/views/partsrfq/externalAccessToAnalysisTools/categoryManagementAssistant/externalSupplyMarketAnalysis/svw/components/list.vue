@@ -3,7 +3,10 @@
     <div class="width3-1">
       <h3>Top{{index}}</h3>
       <div class="flex">
-        <div class="score">{{MarketOverviewObj.supplierName}} <span>{{MarketOverviewObj.svwCagrRate }}</span><img :src="upImg"
+        <div class="score">{{MarketOverviewObj.supplierName}} <span>{{MarketOverviewObj.svwCagrRate +'%'}}</span><img v-if="MarketOverviewObj.svwCagrRate>=0"
+               :src="upImg"
+               alt=""><img v-else
+               :src="downImg"
                alt=""></div>
         <div>单位: 百万元</div>
         <!-- <div class="legend">
@@ -81,7 +84,8 @@
 
 <script>
 import echarts from '@/utils/echarts'
-import { iInput, iSelect } from 'rise'
+import { iInput, iSelect, iMessage } from 'rise'
+import { validateProjectConfig } from '../../../../../../partsprocure/home/components/data'
 export default {
   components: {
     iInput,
@@ -114,6 +118,7 @@ export default {
       }],
       bgimg: require('../img/list.png'),
       upImg: require('../img/up.png'),
+      downImg: require('../img/down.png'),
       option: {
         tooltip: {
           trigger: 'axis',
@@ -347,7 +352,7 @@ export default {
     }
   },
   mounted () {
-    this.categoryName = this.$store.state.rfq.categoryName
+    this.categoryCode = this.$store.state.rfq.categoryCode
     let date = new Date()
     this.option.xAxis[0].data[0] = date.getFullYear() - 3
     this.option.xAxis[0].data[1] = date.getFullYear() - 2
@@ -355,53 +360,93 @@ export default {
 
   },
   watch: {
+    year1 (val) {
+      if (this.interestsStatus === "otherAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = val
+      } else if (this.interestsStatus === "svwAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = val
+      } else if (this.interestsStatus === "profit") {
+        this.MarketOverviewObj.supplierFinanceDTOList[0].profit = val
+      }
+    },
+    year2 (val) {
+      if (this.interestsStatus === "otherAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = val
+      } else if (this.interestsStatus === "svwAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = val
+      } else if (this.interestsStatus === "profit") {
+        this.MarketOverviewObj.supplierFinanceDTOList[1].profit = val
+      }
+    },
+    year3 (val) {
+      if (this.interestsStatus === "otherAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = val
+      } else if (this.interestsStatus === "svwAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = val
+      } else if (this.interestsStatus === "profit") {
+        this.MarketOverviewObj.supplierFinanceDTOList[2].profit = val
+      }
+    },
     edite (val) {
       this.isEdite = val
-      if (val) {
-        if (this.interestsStatus === "otherAmount") {
-          this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = this.year1
-          this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = this.year2
-          this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = this.year3
-        } else if (this.interestsStatus === "svwAmount") {
-          this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = this.year1
-          this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = this.year2
-          this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = this.year3
-        } else if (this.interestsStatus === "profit") {
-          this.MarketOverviewObj.supplierFinanceDTOList[0].profit = this.year1
-          this.MarketOverviewObj.supplierFinanceDTOList[1].profit = this.year2
-          this.MarketOverviewObj.supplierFinanceDTOList[2].profit = this.year3
+      if (!val) {
+        if (!this.MarketOverviewObj.mainCustomerDTOList) {
+          this.MarketOverviewObj.mainCustomerDTOList = []
+          for (let i = 0; i < 5; i++) {
+            let obj = {
+              customerName: "",
+              totalSalesPro: ""
+            }
+            this.MarketOverviewObj.mainCustomerDTOList.push(obj)
+          }
+        } else {
+          if (this.MarketOverviewObj.mainCustomerDTOList.length === 0) {
+            for (let i = 0; i < 5; i++) {
+              let obj = {
+                customerName: "",
+                totalSalesPro: ""
+              }
+              this.MarketOverviewObj.mainCustomerDTOList.push(obj)
+            }
+          } else {
+            let arrLength = this.MarketOverviewObj.mainCustomerDTOList.length
+            for (let i = 0; i < 5 - arrLength; i++) {
+              let obj = {
+                customerName: "",
+                totalSalesPro: ""
+              }
+              this.MarketOverviewObj.mainCustomerDTOList.push(obj)
+            }
+          }
         }
+      } else {
+        this.MarketOverviewObj.mainCustomerDTOList = this.MarketOverviewObj.mainCustomerDTOList.filter(item => item.customerName || item.totalSalesPro)
       }
-      // if (val) {
-      //   this.isEdite = val
-      // }else{
 
-      // }
     },
     MarketOverviewObj: {
-      handler (curVal, oldVal) {
+      handler (val) {
         let date = new Date().getFullYear();
         // 柱状图
         if (this.MarketOverviewObj.supplierFinanceDTOList.length > 0) {
           this.MarketOverviewObj.supplierFinanceDTOList.forEach(x => {
             if (x.year == date - 3) {
               this.option.series[0].data[0].label.normal.formatter = x.otherRate + '%'
-              this.option.series[0].data[0].value = x.otherRate
-              this.option.series[1].data[0].value = x.svwAmount
+              this.option.series[0].data[0].value = (x.otherAmount / 1000000).toFixed(2)
+              this.option.series[1].data[0].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].label.normal.formatter = x.svwRate + '%'
             }
             if (x.year == date - 2) {
               this.option.series[0].data[1].label.normal.formatter = x.otherRate + '%'
-              this.option.series[0].data[1].value = x.otherRate
-              this.option.series[1].data[1].value = x.svwAmount
+              this.option.series[0].data[1].value = (x.otherAmount / 1000000).toFixed(2)
+              this.option.series[1].data[1].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].label.normal.formatter = x.svwRate + '%'
             }
             if (x.year == date - 1) {
               this.option.series[0].data[2].label.normal.formatter = x.otherRate + '%'
-              this.option.series[0].data[2].value = x.otherRate
-              this.option.series[1].data[2].value = x.svwAmount
+              this.option.series[0].data[2].value = (x.otherAmount / 1000000).toFixed(2)
+              this.option.series[1].data[2].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].label.normal.formatter = x.svwRate + '%'
-
             }
           });
         } else {
@@ -424,11 +469,15 @@ export default {
                   show: true,
                   formatter: '{d}%'
                 }
-              } 
+              }
             }
             let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
-            if (x.categoryNameZh == this.categoryName) {
-              seriesObj.selected=true
+            if (x.sapStuffCode == this.categoryCode) {
+              seriesObj.selected = true
+            } else {
+              if (x.sapStuffCode === "other") {
+                seriesObj.selected = true
+              }
             }
             seriesObj.value = x.postAmount
             seriesObj.name = x.categoryNameZh
@@ -439,19 +488,16 @@ export default {
           })
           this.turnover.series[0].data = data
           this.turnover.legend.data = legend
-          console.log(this.turnover)
         }
-        if (!this.MarketOverviewObj.mainCustomerDTOList) {
-          let obj = {
-            customerName: "",
-            totalSalesPro: ""
+        let total = new Number()
+        if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
+          val.mainCustomerDTOList.forEach(item => {
+            total += Number(item.totalSalesPro)
+          })
+          if (total > 100) {
+            iMessage.error('超过100%')
+            return
           }
-          this.MarketOverviewObj.mainCustomerDTOList = []
-          for (let i = 0; i < 5; i++) {
-            this.MarketOverviewObj.mainCustomerDTOList.push(obj)
-          }
-          // this.MarketOverviewObj.mainCustomerDTOList = [{
-          // }]
         }
         this.$nextTick(() => {
           this.initCharts()
@@ -484,11 +530,11 @@ export default {
       const option = this.turnover
 
       myChart.setOption(option);
-      myChart.dispatchAction({
-        type: 'showTip',
-        seriesIndex: 0,
-        dataIndex: 0
-      });
+      // myChart.dispatchAction({
+      //   type: 'showTip',
+      //   seriesIndex: 0,
+      //   dataIndex: 0
+      // });
     }
 
   }

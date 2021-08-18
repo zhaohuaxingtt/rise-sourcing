@@ -64,6 +64,7 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          :selection="false"
           @handleSelectionChange="handleSelectionChange"
         >
         <!-- AEKO号  -->
@@ -455,12 +456,14 @@ export default {
         display: block;
         width: 10px;
     }
-    .table-item-aeko{
+   .table-item-aeko{
       position: relative;
-      padding-left: 28px;
       .link{
         display: block;
-        width: calc( 100% - 28px);
+        padding-left: 30px;
+        padding-right: 8px;
+        margin-right: 8px;
+        box-sizing: border-box;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

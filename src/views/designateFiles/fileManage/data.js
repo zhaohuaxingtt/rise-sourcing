@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 11:23:36
+ * @LastEditTime: 2021-08-18 11:02:21
  * @Description: 
  * @FilePath: \front-web\src\views\designateFiles\fileManage\data.js
  */
@@ -17,7 +17,7 @@ export const tableTitle = [
   {props:'csfUser',name:'CSF', key: "CSF", tooltip: true, minWidth: 100},
   {props:'csfuserDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, minWidth: 120},
   {props:'csfUser',name:'LINIE', key: "LINIE", tooltip: true, minWidth: 100},
-  {props:'status',name:'状态', key: "ZHUANGTAI", tooltip: true, minWidth: 140},
+  {props:'statusDesc',name:'状态', key: "ZHUANGTAI", tooltip: true, minWidth: 140},
   {props:'partNameCh',name:'附件零件名称', key: "FUJIANLINGJIANMINGCHENG", tooltip: true, minWidth: 140},
   {props:'carType',name:'使用车型', key: "SHIYONGCHEXING", tooltip: true, minWidth: 120},
   {props:'carQty',name:'每车用量', key: "MEICHEYONGLIANG", tooltip: true},
