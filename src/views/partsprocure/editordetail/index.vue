@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-17 21:18:17
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-18 13:49:16
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -512,6 +512,7 @@
 				getProjectDetail(this.purchaseProjectId).then((res) => {
 					this.detailLoading = false
 					this.detailData = res.data;
+					this.fsnrGsnrNum = res.data.fsnrGsnrNum || this.fsnrGsnrNum
 					this.checkFactoryString = res.data.procureFactory
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
