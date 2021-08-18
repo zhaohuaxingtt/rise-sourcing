@@ -18,7 +18,7 @@
       <theTable
           v-show="currentTab === AVERAGE"
           :isPreview="true"
-          :averageTableInfo="averageTableInfo"
+          :averageData="averageData"
           :currentTab="currentTab"
       />
       <el-divider class="margin-top20 margin-bottom20"/>
@@ -50,7 +50,7 @@ export default {
         return {};
       },
     },
-    averageTableInfo: {
+    averageData: {
       type: Object,
       default: () => {
         return {};

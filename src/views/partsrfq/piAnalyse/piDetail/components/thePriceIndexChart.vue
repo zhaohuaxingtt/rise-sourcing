@@ -1,5 +1,5 @@
 <template>
-  <div class="the-price-chart">
+  <div class="the-price-chart" v-loading="chartLoading">
     <div class="header-box">
       <div class="title">
         {{ language('PI.PIJIAGEFENXI', 'Price Index价格分析') }}
@@ -93,12 +93,6 @@ export default {
       type: String,
       default: '350px',
     },
-    chartData: {
-      type: Object,
-      default: () => {
-        return {};
-      },
-    },
     isPreview: {
       type: Boolean,
       default: false,
@@ -129,19 +123,19 @@ export default {
       seriesArray: [],
       xLabelData: [],
       resChartData: [],
+      chartLoading: false,
     };
   },
   mounted() {
     this.getPiIndexWaveSelectList();
-    this.getChartData();
     this.buildChart();
   },
   methods: {
     handleTimeGranularityChange() {
-      this.getChartData();
+      this.buildChart();
     },
     handlePriceLatitudeChange(val) {
-      this.getChartData();
+      this.buildChart();
     },
     initEcharts() {
       const chart = echarts().init(this.$refs.theChart);
@@ -273,7 +267,11 @@ export default {
     async getPiIndexWaveSelectList() {
       try {
         this.priceLatitudeOptions = [];
-        const res = await getPiIndexWaveSelectList(this.currentTabData);
+        const req = {
+          ...this.currentTabData,
+          type: this.currentTab === CURRENTTIME ? '1' : '2',
+        };
+        const res = await getPiIndexWaveSelectList(req);
         this.priceLatitudeOptions = res.data;
       } catch {
         this.priceLatitudeOptions = [];
@@ -294,28 +292,32 @@ export default {
           };
         });
       }
-      const res = await getPiIndexPartCostWave(req);
-      this.resChartData = res.data;
-      if (res.data.length) {
-        this.seriesArray = res.data.map(item => {
-          const data = item.dataValuesList.map(itemData => {
-            return {
-              value: itemData.rate,
-              name: itemData.value,
-            };
+      try {
+        this.chartLoading = true;
+        const res = await getPiIndexPartCostWave(req);
+        this.resChartData = res.data;
+        if (res.data.length) {
+          this.seriesArray = res.data.map(item => {
+            const data = item.dataValuesList.map(itemData => {
+              return {
+                value: itemData.rate,
+                name: itemData.value,
+              };
+            });
+            return this.setLineData({
+              lineType: this.getLineType(item.waveType),
+              lineColor: item.color,
+              name: item.waveTypeName,
+              data,
+            });
           });
-          return this.setLineData({
-            lineType: this.getLineType(item.waveType),
-            lineColor: item.color,
-            name: item.waveTypeName,
-            data,
+          this.xLabelData = res.data[0].dataValuesList.map(item => {
+            return item.time;
           });
-        });
-        this.xLabelData = res.data[0].dataValuesList.map(item => {
-          return item.time;
-        });
-        console.log(1111);
-        console.log(this.seriesArray);
+        }
+        this.chartLoading = false;
+      } catch {
+        this.chartLoading = false;
       }
     },
     getLineType(type) {
@@ -330,11 +332,9 @@ export default {
     },
   },
   watch: {
-    chartData: {
-      deep: true,
-      handler() {
-        this.buildChart();
-      },
+    currentTab() {
+      this.getPiIndexWaveSelectList();
+      this.buildChart();
     },
   },
 };
