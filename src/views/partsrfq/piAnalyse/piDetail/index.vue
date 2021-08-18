@@ -55,7 +55,7 @@
     <div class="chartBox">
       <!--      Price Index价格分析-->
       <iCard class="lineBox">
-        <thePriceIndexChart/>
+        <thePriceIndexChart :currentTabData="currentTabData"/>
       </iCard>
       <!--      零件成本构成-->
       <iCard class="pieBox">

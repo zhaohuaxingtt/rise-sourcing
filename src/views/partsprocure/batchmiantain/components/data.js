@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-08-06 18:41:10
+ * @LastEditTime: 2021-08-17 20:12:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\data.js
@@ -29,9 +29,9 @@ export const tableTitleOnlyPartsChange = [
   { props: 'modelNameZh', name: '车型', key: 'LK_CHEXING' },
   { props: 'carTypeProjectZh', name: '车型项目', key: 'LK_CHEXINGXIANGMU' },
   { props: 'partNum', name: 'LINIE部门', key: 'LK_LINEBUMEN' },
-  { props: 'partProjectTypeName', name: '零件类型', key: 'LK_LINGJIANLEIX' },
+  { props: 'partProjectTypeDesc', name: '零件项目类型', key: 'LK_LINGJIANLEIX' },
   { props: 'procureFactoryName', name: '采购工厂', key: 'LK_CAIGOUGONGCHANG' },
   { props: 'linieName', name: 'LINIE', key: 'LK_LINE' },
-  { props: 'cfControllerZh', name: 'CF控制员', key: 'LK_CFKONGZHIYUAN' },
-  { props: 'oldFsnrGsnrNum', name: '原FS号', key: 'LK_YUANFSHAO' }
+  { props: 'cfControllerName', name: 'CF控制员', key: 'LK_CFKONGZHIYUAN' },
+  { props: 'oldFsnrGsnrNum', name: '原FS号', key: 'LK_YUANFSHAO',width:'150'}
 ]
