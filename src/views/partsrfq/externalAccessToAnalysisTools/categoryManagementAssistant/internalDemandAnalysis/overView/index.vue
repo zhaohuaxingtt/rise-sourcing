@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-17 17:13:39
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-18 17:19:36
+ * @LastEditors: 舒杰
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
@@ -69,8 +69,8 @@ export default {
               image:require("@/assets/images/partRfq/internalDemandAnalysis08.png"),
               url:"/sourcing/categoryManagementAssistant/internalDemandAnalysis/technology"
            },{
-              name:"批量供应商概览",
-              key:"PLGYJZL",
+              name:"批量供应商总览",
+              key:"PLGYSZL",
               image:require("@/assets/images/partRfq/internalDemandAnalysis09.png"),
               url:'/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'
            },{
