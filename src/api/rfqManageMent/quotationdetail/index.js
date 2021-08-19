@@ -306,7 +306,7 @@ export function saveComments(data) {
 // 获取附件列表
 export function getFileHistory({quotationId,fileType,current,size,sortColumn=null,isAsc=false}) {
   return requst({
-    url: `/file-histories/page/${quotationId}/${sortColumn}/${isAsc}/${fileType}/${current}/${size}?supplierId=${supplierId()}`,
+    url: `/file-histories/page/${quotationId}/${sortColumn}/${isAsc}/${fileType}/${current}/${size}`,
     method: 'GET',
   })
 }
@@ -314,7 +314,7 @@ export function getFileHistory({quotationId,fileType,current,size,sortColumn=nul
 // 关联附件
 export function uploadFileList(data) {
   return requst({
-    url: `/file/uploadFileList?supplierId=${supplierId()}`,
+    url: `/file-histories/upload-files`,
     method: 'POST',
     data,
   })
@@ -323,8 +323,8 @@ export function uploadFileList(data) {
 // 删除附件
 export function deleteFiles(data) {
   return requst({
-    url: `/file/deleteFiles?supplierId=${supplierId()}`,
-    method: 'POST',
+    url: `/file-histories/delete-files`,
+    method: 'DELETE',
     data,
   })
 }
