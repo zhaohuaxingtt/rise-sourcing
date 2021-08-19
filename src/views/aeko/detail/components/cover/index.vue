@@ -5,7 +5,7 @@
 -->
 <template>
     <div>
-        <editCover :aekoInfo="aekoInfo" v-if="isLinie || isCommodityCoordinator" @getBbasicInfo="getBbasicInfo"/>
+        <editCover :aekoInfo="aekoInfo" v-if="isLinie" @getBbasicInfo="getBbasicInfo"/>
         <previewCover v-else/>
     </div>
 </template>
@@ -36,6 +36,9 @@ export default {
         this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"] // aeko管理员
         this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"] // 科室协调员
         this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"] // linie
+
+        console.log(this.isCommodityCoordinator,'isCommodityCoordinator');
+        console.log(this.isLinie,'isLinie');
     },
     methods:{
         getBbasicInfo(){
