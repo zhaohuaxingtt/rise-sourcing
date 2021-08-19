@@ -38,8 +38,8 @@
             </iSelect>
             <iText v-else>{{ dosage.cartypeProjectZh }}</iText>
           </div>
-          <iText v-if="item.props === 'factory' || item.props === 'supplierName'">{{ dosage[item.props] }}</iText>
-          <iInput class="percentInput" v-else-if="item.props === 'usePortion'" v-model="dosage[item.props]" :disabled="disabled" @input="handleInputByUsePortion">
+          <iText v-if="item.props === 'factoryName' || item.props === 'supplierName'">{{ dosage[item.props] }}</iText>
+          <iInput class="percentInput" v-else-if="item.props === 'usePortion'" v-model="dosage[item.props]" :disabled="disabled" @input="handleInputByUsePortion" @blur="handleBlurByUsePortion">
             <template slot="append">%</template>
           </iInput>
         </iFormItem>
@@ -54,7 +54,7 @@
         :tableData="Array.isArray(dosage.aekoProjectCarDosageList) ? dosage.aekoProjectCarDosageList : []"
         :tableTitle="tableTitle">
         <template #perCarDosage="scope">
-          <iInput class="perCarDosage" v-model="scope.row.perCarDosage" :disabled="disabled" @input="handleInputByPerCarDosage($event, scope.row)"></iInput>
+          <iInput class="perCarDosage" v-model="scope.row.perCarDosage" :disabled="disabled" @input="handleInputByPerCarDosage($event, scope.row)" @blur="handleBlurByPerCarDosage(scope.row.perCarDosage, scope.row)"></iInput>
         </template>
       </tableList>
       <i class="dashes"></i>
@@ -195,8 +195,18 @@ export default {
     handleInputByUsePortion(value) {
       this.$set(this.dosage, "usePortion", numberProcessor(value, 2))
     },
+    handleBlurByUsePortion() {
+      if (this.dosage.usePortion) {
+        this.$set(this.dosage, "usePortion", math.bignumber(this.dosage.usePortion).toFixed(2))
+      }
+    },
     handleInputByPerCarDosage(value, row) {
       this.$set(row, "perCarDosage", numberProcessor(value, 2))
+    },
+    handleBlurByPerCarDosage(value, row) {
+      if (value) {
+        this.$set(row, "perCarDosage", math.bignumber(value).toFixed(2))
+      }
     },
     // 保存
     handleSave() {

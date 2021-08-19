@@ -202,7 +202,7 @@ export default {
             this.SearchList = linieSearchList
             this.tableTitle = linieTableTitle
             this.searchParams = cloneDeep(linieQueryForm)
-            this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameZh
+            this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
             this.searchParams.buyerName = this.userInfo.nameZh
         } else if (this.isCommodityCoordinator) {
             this.SearchList = SearchList
@@ -269,7 +269,7 @@ export default {
 
             if (this.isLinie) {
                 this.searchParams = cloneDeep(linieQueryForm)
-                this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameZh
+                this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
                 this.searchParams.buyerName = this.userInfo.nameZh
             } else {
                 this.searchParams = {
