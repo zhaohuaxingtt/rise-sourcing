@@ -152,10 +152,8 @@ export default {
       }
     },
     sendTaskForRating() {
-      if (!this.selectTableData.length) return
-      
+      if (!this.selectTableData.length) return iMessage.warn(this.language('NINHAIWEIXUANZEGONGS','您当前还未选择供应商！'))
       this.pushLoading = true
-
       sendTaskForRating(this.selectTableData)
       .then(res => {
         if (res.code == 200) {

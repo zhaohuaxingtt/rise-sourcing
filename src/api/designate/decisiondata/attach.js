@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-08-11 18:42:48
+ * @LastEditTime: 2021-08-19 12:54:49
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料api - attach
  * @FilePath: \front-web\src\api\designate\index.js

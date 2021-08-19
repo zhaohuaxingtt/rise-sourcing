@@ -221,7 +221,7 @@ export function findNominateInfo(fsNum) {
 // fileType： 103：纸质RS单,  ， 105：SEL分摊单
 export function getNominateFileInfo({nomiAppId, sortColumn, isAsc, fileType, pageNo, pageSize }) {
 	return sourcingDL({
-		url: `/file-history/${nomiAppId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
+		url: `/file-histories/page/${nomiAppId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
 		method: 'GET'
 	})
 }

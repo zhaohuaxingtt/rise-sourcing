@@ -144,7 +144,7 @@ export function getFilesList(params) {
     pageSize=10,
   } = params;
   return requst({
-    url: `/file-history/file-history/${hostId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
+    url: `/file-histories/page/${hostId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
     method: 'GET',
     params,
   })
