@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-17 15:39:45
+ * @LastEditTime: 2021-08-18 11:00:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -43,11 +43,10 @@
 </template>
 
 <script>
-import {iCard, iButton} from 'rise'
+import {iCard, iButton, iMessage} from 'rise'
 import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/char'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data';
-import { iMessage } from '@/components';
 import { downloadPdfMixins } from '@/utils/pdf';
 import { getTotalCbdData, listNomiData, getCostStructureAnalysisByName, fetchSave} from '@/api/partsrfq/costAnalysis/index.js'
 import saveModal from './components/save'

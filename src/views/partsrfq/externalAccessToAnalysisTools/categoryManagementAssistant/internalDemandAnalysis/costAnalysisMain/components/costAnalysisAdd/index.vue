@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-08-17 15:39:00
+ * @LastEditTime: 2021-08-19 11:07:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -16,7 +16,7 @@
     />
     <iCard>
       <div slot="header" class="headBox">
-        <p class="headTitle">{{ language('CHENGBENJIEGOUFENXIKU', '分析名称') }}</p>
+        <p class="headTitle">{{ language('FENXIMINGCHENG', '分析名称') }}</p>
         <span class="buttonBox">
           <iButton @click="clickHandleInput">{{ language('SHOUGONGSHURU', '手工输入') }}</iButton>
           <iButton @click="clickBack">{{ language('FANHUIFENXIKU', '返回分析库') }}</iButton>
@@ -27,8 +27,14 @@
           <el-form-item style="width: 220px; marginRight: 53px;" :label="language('DINGDIANRIQI', '定点日期')">
             <iDatePicker v-model="searchForm['date']" valueFormat="yyyy-MM-dd" type="daterange"></iDatePicker>
           </el-form-item>
-          <el-form-item style="width: 220px; marginRight: 53px;" :label="language('ZUIJINNCIDINGDIANSHU', '最近n次定点数（n≤50）')">
-            <iInput v-positive="'num'" v-model="searchForm['nomiNum']" :placeholder="language('QINGSHURU', '请输入')"></iInput>
+          <el-form-item style="width: 220px; marginRight: 53px;">
+            <span slot="label">
+              {{language('ZUIJINNCIDINGDIANSHU', '最近n次定点数（n≤50）')}}
+              <el-tooltip :content="language('ZUIDASHAIXUANFANWEI', '最大筛选范围：50次')" placement="top" effect="light">
+                <i class="el-icon-warning-outline rotate"></i>
+              </el-tooltip>
+            </span>
+            <iInput v-positive="'num'" v-model="searchForm['nomiNum']" :placeholder="language('QINGSHURU', '请输入')" @change="handleNomiNumChange($event)"></iInput>
           </el-form-item>
           <el-form-item style="width: 220px; marginRight: 53px;" :label="language('LIUWEIHAO', '六位号')">
             <iInput v-positive="'num'" v-model="searchForm['sixNum']" :placeholder="language('QINGSHURU', '请输入')"></iInput>
@@ -69,12 +75,11 @@
 </template>
 
 <script>
-import {iCard, iButton, iInput, iPagination, iDatePicker} from 'rise'
+import {iCard, iButton, iInput, iPagination, iDatePicker, iMessage} from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import {pageMixins} from '@/utils/pageMixins';
 import handleInput from './components/handleInput'
-import { iMessage } from '@/components';
 import { listNomiData } from '@/api/partsrfq/costAnalysis/index.js'
 export default {
   name: 'CostAnalysis',
@@ -132,6 +137,7 @@ export default {
         listNomiData(params).then(res => {
           if(res && res.code == 200) {
             this.tableListData = res.data
+            this.page.totalCount = res.total
             this.loading = false
             resolve(res.data)
           } else iMessage.error(res.desZh)
@@ -202,6 +208,11 @@ export default {
           operateLog: JSON.stringify(data)
         }
       })
+    },
+    // 输入六位号发生变更
+    handleNomiNumChange(e) {
+      if(e > 50) this.$set(this.searchForm, 'nomiNum', 50)
+      if(e == 0) this.$set(this.searchForm, 'nomiNum', 1)
     }
   }
 }
@@ -271,6 +282,13 @@ export default {
     font-size: 14px;
     cursor: pointer;
   }
+}
+
+.rotate{
+    transform: rotate(180deg);
+    color: #A0BFFC;
+    margin-left: 10px;
+    font-size: 16px;
 }
 </style>
 

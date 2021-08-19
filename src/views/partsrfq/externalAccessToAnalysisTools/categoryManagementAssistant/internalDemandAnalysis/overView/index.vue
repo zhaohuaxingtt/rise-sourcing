@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-17 17:13:39
+ * @LastEditTime: 2021-08-18 11:01:10
  * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
@@ -18,8 +18,7 @@
    </el-row>
 </template>
 <script>
-import {iCard} from 'rise'
-import { iMessage } from '@/components';
+import {iCard, iMessage} from 'rise'
 import { getDefaultCostStructure } from '@/api/partsrfq/costAnalysis/index.js'
 export default {
   components: {
