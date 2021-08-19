@@ -342,12 +342,14 @@ export default {
       current: null,
       isCover: true,
       label: "",
+      groupId: "",
       formUpdata: {}
     };
   },
   created () {
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
+    this.groupId = this.$route.query.groupId
     if (this.newBuild) {
       if (this.entryStatus === 1) {
         this.inside = true
@@ -372,7 +374,6 @@ export default {
       this.analysisSchemeId = this.$route.query.chemeId
       this.getChartData()
     }
-    console.log(document.body.clientHeight)
   },
   watch: {
     analysisName: {
@@ -404,15 +405,6 @@ export default {
     // window.addEventListener('scroll', this.handleScroll, true)
   },
   methods: {
-    // handleScroll () {
-    //   let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop // 滚动条偏移量
-    //   let offsetTop = this.$el.querySelector('.el-table__header-wrapper').scrollTop;  // 要滚动到顶部吸附的元素的偏移量
-    //   this.isFixed = scrollTop > offsetTop + 100 ? true : false;  // 如果滚动到了预定位置，this.isFixed就为true，否则为false
-    //   console.dir(this.$el.querySelector('.el-table__header-wrapper'), offsetTop)
-    //   if (offsetTop > offsetTop + 100) {
-    //     document.querySelector('.el-table__header-wrapper').style.position = "fixed"
-    //   }
-    // },
     getOptions () {
       part({
         analysisSchemeId: this.analysisSchemeId,
@@ -565,6 +557,7 @@ export default {
           partNumber: val[0].partNum,
           rfqId: val[0].rfqId,
           supplierId: val[0].supplierId,
+          groupId: this.groupId
         }).then((res) => {
           if (res.code == 200) {
             loading.close()
@@ -596,7 +589,7 @@ export default {
             supplierId: value.supplierId,
           })
         })
-        initOut({ list: arr }).then(res => {
+        initOut({ list: arr, groupId: this.groupId }).then(res => {
           if (res.code === '200') {
             loading.close()
             this.$message.success(res.desZh);
@@ -699,6 +692,7 @@ export default {
       }
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
+        groupId: this.groupId
       }).then((res) => {
         const allData = res.data || [];
         this.chartData = allData.bobLevelOneVOList.filter(
