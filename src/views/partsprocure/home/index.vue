@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-08-18 16:41:13
+ * @LastEditTime: 2021-08-19 12:28:28
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -305,7 +305,7 @@ export default {
       tableTitle: tableTitle,
       selectTableData: [],
       diologChangeItems: false,
-      form: form,
+      form: JSON.parse(JSON.stringify(form)),
       fromGroup: [],
       diologBack: false, //退回
       tab: "source",
