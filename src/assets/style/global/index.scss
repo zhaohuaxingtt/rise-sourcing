@@ -495,4 +495,30 @@ a{
   font-size: 14px;
   text-align: right;
   margin: 10px 0;
+
+// 表格链接样式
+.flexRow-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .openLinkText {
+    color: $color-blue;
+  }
+  .icon-gray{
+    cursor: pointer;
+    &:hover {
+      .show{
+        display: none;
+      }
+      .active{
+        display: block;
+      }
+    }
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
 }

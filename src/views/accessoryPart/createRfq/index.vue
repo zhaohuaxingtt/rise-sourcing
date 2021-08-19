@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-20 19:53:04
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-19 09:59:28
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -424,8 +424,11 @@ export default {
       getPartBySP(params).then(res => {
         if (res?.result) {
           this.tableData = res.data
-          this.detailData.rfqName = res.data[0] ? res.data[0].partNum + (res.data[0].partNameZh && ('-'+res.data[0].partNameZh)) + (res.data[0].partNameDe && ('-'+res.data[0].partNameDe)) : ''
-          this.stuffId = res.data[0].stuffId
+          this.detailData = {
+            ...this.detailData,
+            rfqName:res.data[0] ? res.data[0].partNum + (res.data[0].partNameZh && ('-'+res.data[0].partNameZh)) + (res.data[0].partNameDe && ('-'+res.data[0].partNameDe)) : ''
+          }
+          this.stuffId = res.data[0]?.stuffId || ''
         } else {
           this.tableData = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
