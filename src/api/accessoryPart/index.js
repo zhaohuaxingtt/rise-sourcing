@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-18 10:42:02
+ * @LastEditTime: 2021-08-19 09:49:15
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -138,7 +138,7 @@ export function insertRfq(params) {
 // 根据sp号查询零件信息
 export function getPartBySP(params) {
   return requstSourcing({
-    url: '/part-src-prjs/findAccessoryAffixProjects',
+    url: '/purchasing-project-parts/findAccessoryAffixProjects',
     method: 'POST',
     data: params
   })
