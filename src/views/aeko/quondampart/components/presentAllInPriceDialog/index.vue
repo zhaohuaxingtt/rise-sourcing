@@ -101,7 +101,10 @@ export default {
           this.tableListData = Array.isArray(res.data) ? res.data : []
 
           if (this.tableListData.length > 0) {
-            this.$nextTick(() => this.$refs.table.$refs.table.toggleRowSelection(this.tableListData[0], true))
+            this.$nextTick(() => {
+              this.$refs.table.$refs.table.toggleRowSelection(this.tableListData[0], true)
+              this.selectRow = this.tableListData[0]
+            })
           }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
