@@ -148,7 +148,7 @@ export default {
       currentTabData: {
         analysisSchemeId: this.$route.query.schemeId,
         partsId: '',
-        batchNumber: '',
+        batchNumber: this.$route.query.batchNumber,
         supplierId: '',
       },
       dataInfo: {},
