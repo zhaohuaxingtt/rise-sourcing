@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-18 19:44:51
+ * @LastEditTime: 2021-08-19 18:06:50
  * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
@@ -27,12 +27,12 @@
          <div class="flex search">
             <div>
                <span>{{ language("DUIBIAOCHEXING", "对标车型") }}</span>
-               <iSelect class="select" v-model="filterCarValue">
-                   <el-option :value="item.id" :label="item.description" v-for="(item,index) in carType" :key="index"></el-option>
+               <iSelect class="select" v-model="filterCarValue" multiple collapse-tags multiple-limit="5">
+                   <el-option :value="item.modelNameZh" :label="item.description" v-for="(item,index) in carType" :key="index"></el-option>
                </iSelect>
             </div>
             <div>
-               <span>{{ language("CHEXINGPEIZHI", "显示类型") }}</span>
+               <span>{{ language("XIANSHILEIXING", "显示类型") }}</span>
                <iSelect class="select" v-model="config.pageName">
                    <el-option :value="item.code" :label="item.name" v-for="(item,index) in dictData.CATEGORY_MANAGEMENT_CAR_TYPE" :key="index"></el-option>
                </iSelect>
@@ -76,10 +76,10 @@ export default {
             settings: {
                panes: {
                   filters: {
-                     visible: false
+                     visible: true
                   },
                   pageNavigation: {
-                     visible: false
+                     visible: true
                   }
                }
             }
@@ -95,12 +95,12 @@ export default {
             filterType: pbi.models.FilterType.BasicFilter,
             requireSingleSelection: true
          },
-         // 车型
+         // 对标车型
          filter_car : {
             $schema: "http://powerbi.com/product/schema#basic",
             target: {
-               table: "DM_CT",
-               column: "car_type_id"
+               table: "DM_fact",
+               column: "model_name_zh"
             },
             operator: "In",
             values: [],//
@@ -112,7 +112,7 @@ export default {
             $schema: "http://powerbi.com/product/schema#basic",
             target: {
                table: "11_DM_BeginDate",
-               column: "YearMonthNo"
+               column: "YearMonth"
             },
             operator: "In",
             values: [],//
@@ -123,7 +123,7 @@ export default {
             $schema: "http://powerbi.com/product/schema#basic",
             target: {
                table: "12_DM_EndDate",
-               column: "YearMonthNo"
+               column: "YearMonth"
             },
             operator: "In",
             values: [],//
@@ -145,7 +145,7 @@ export default {
             CATEGORY_MANAGEMENT_CAR_TYPE:[]
          },
          selectDate:[],//选择的时间
-         filterCarValue:"",//对标车型
+         filterCarValue:[],//对标车型
          pickerOptions: {
             disabledDate(time) {
                let currentYear = new Date().getFullYear()
@@ -244,7 +244,7 @@ export default {
       // 重置
       reset(){
          this.selectDate=[]
-         this.filterCarValue=""
+         this.filterCarValue=[]
          this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
          this.renderBi()
       },
@@ -257,17 +257,21 @@ export default {
          this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       },
       renderBi() {
-         console.log(this.selectDate,this.filter_time_start,this.filter_time_end)
          this.filter.values=[this.categoryCode]
-         this.filter_car.values=[this.filterCarValue]
-         this.filter_time_start.values=[this.selectDate[0]]
-         this.filter_time_end.values=[this.selectDate[1]]
+         this.filter_car.values=this.filterCarValue
+         if(this.selectDate.length){
+            this.filter_time_start.values=[this.selectDate[0]]
+            this.filter_time_end.values=[this.selectDate[1]]
+         } 
          var report = this.powerbi.embed(this.reportContainer, this.config);
+
+         console.log( this.filter,this.filter_car,this.filter_time_start)
+
          // Report.off removes a given event handler if it exists.
          report.off("loaded");
          // Report.on will add an event handler which prints to Log window.
          report.on("loaded", ()=> {
-            report.setFilters([this.filter,this.filter_time_start,this.filter_time_end])
+            report.setFilters([this.filter,this.filter_car,this.filter_time_start,this.filter_time_end])
          });
          // Report.off removes a given event handler if it exists.
          report.off("rendered");

@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-18 17:45:07
+ * @LastEditTime: 2021-08-19 18:06:58
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\categoryGroup.vue
@@ -40,6 +40,7 @@ export default {
       category:{
         categoryName: "",//材料组名称
         categoryCode: "",//材料组编号
+        categoryId:"",//材料组ID
       },
       group:[]
     }
@@ -70,7 +71,7 @@ export default {
     // 确认
     confirm() {
       if(!this.category.categoryCode){
-        iMessage.warn(this.language('QXZCLZ','请选择材料组'))
+        iMessage.error(this.language('QXZCLZ','请选择材料组'))
         return
       }
       this.$store.dispatch('setCategoryCode', this.category.categoryCode)

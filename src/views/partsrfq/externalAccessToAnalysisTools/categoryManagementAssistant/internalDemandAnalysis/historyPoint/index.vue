@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-13 10:40:47
+ * @LastEditTime: 2021-08-19 15:11:23
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
@@ -65,7 +65,12 @@
 			this.searchCriteria.categoryCode=this.$store.state.rfq.categoryCode
 			this.getDict()
 			this.getNomiSupplier()
-			this.getNomiHistoryParamInit()
+		},
+		watch: {
+			"$store.state.rfq.categoryCode"(){
+				this.searchCriteria.categoryCode=this.$store.state.rfq.categoryCode
+				this.getNomiSupplier()
+			}
 		},
 		methods:{
 			// 返回
