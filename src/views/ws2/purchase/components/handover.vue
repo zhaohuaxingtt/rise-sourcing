@@ -157,9 +157,9 @@ export default {
   watch: {
     value(val){
       if(val){
-        this.liniePullDownByDept()
         this.deptId = ''
         this.linieID = ''
+        this.liniePullDownByDept()
       }
     }
   }
