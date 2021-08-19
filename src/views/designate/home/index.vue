@@ -86,9 +86,9 @@
       
       <!-- 定点单号 -->
       <template #nominateName="scope">
-         <span class="flexRow">
+         <span class="flexRow-link">
             <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.nominateName }}</span>
-            <span class="icon-gray  cursor "  @click="viewNominationDetail(scope.row)">
+            <span class="icon-gray cursor "  @click="viewNominationDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
             </span>
@@ -494,28 +494,5 @@ export default {
 .selStatus-link {
   font-size: 12px;
   text-decoration: underline;
-}
-.icon-gray{
-  cursor: pointer;
-  .active{
-    display: none;
-  }
-  .show{
-    display: block;
-  }
-}
-.flexRow{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.icon-gray:hover{
-  cursor: pointer;
-  .show{
-    display: none;
-  }
-  .active{
-    display: block;
-  }
 }
 </style>

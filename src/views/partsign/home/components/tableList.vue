@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-29 09:42:24
+ * @LastEditTime: 2021-08-19 11:14:15
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \front-web\src\views\partsign\home\components\tableList.vue
@@ -20,11 +20,6 @@
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
             </span>
           </span>  
-        </template>
-      </el-table-column>
-      <el-table-column :key="index" align='center' :show-overflow-tooltip='items.tooltip'  v-else-if='items.props == "tpInfoType"' :label="items.key ? language(items.key,items.name) : items.name" :prop="items.props">
-        <template slot-scope="scope">
-          <span>{{translateData('tp_info_type',scope.row[items.props])}}</span>
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key,items.name) : items.name" :prop="items.props">
