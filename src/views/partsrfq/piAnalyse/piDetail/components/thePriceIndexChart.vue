@@ -143,13 +143,14 @@ export default {
   },
   mounted() {
     !this.isPreview && this.getPiIndexWaveSelectList();
-    this.buildChart();
+    this.isPreview && this.buildChart();
   },
   methods: {
     handleTimeGranularityChange() {
       const copyValue = _.cloneDeep(this.piIndexChartParams);
       copyValue.particleSize = this.form.particleSize;
       this.$store.dispatch('setPiIndexChartParams', copyValue);
+      this.buildChart()
     },
     handlePriceLatitudeChange() {
       const copyValue = _.cloneDeep(this.piIndexChartParams);
@@ -163,6 +164,7 @@ export default {
       }
       copyValue.dimensionHandle = this.form.dimensionHandle;
       this.$store.dispatch('setPiIndexChartParams', copyValue);
+      this.buildChart()
     },
     initEcharts() {
       const chart = echarts().init(this.$refs.theChart);
@@ -309,7 +311,7 @@ export default {
         particleSize: this.piIndexChartParams.particleSize,
         dimension: this.piIndexChartParams.dimensionHandle,
         beginTime: this.piIndexChartParams.beginTime,
-        endTime: this.piIndexChartParams.endTime
+        endTime: this.piIndexChartParams.endTime,
       };
       try {
         this.seriesArray = [];
@@ -354,15 +356,7 @@ export default {
   watch: {
     currentTab() {
       this.getPiIndexWaveSelectList();
-      this.buildChart();
-    },
-    piIndexChartParams: {
-      handler() {
-        console.log(2222);
-        this.buildChart();
-      },
-      deep: true,
-    },
+    }
   },
 };
 </script>
