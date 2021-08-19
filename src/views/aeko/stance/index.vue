@@ -144,8 +144,6 @@ import filesListDialog from '../manage/components/filesListDialog'
 import {
   getLiniePage,
 } from '@/api/aeko/stance'
-// import { getCarTypePro } from '@/api/designate/nomination'
-// import { getCartypeDict } from '@/api/partsrfq/home'
 import {
   searchAekoStatus,
   searchCoverStatus,
@@ -392,22 +390,6 @@ export default {
       changeVisible(type,visible){
           this[type] = visible;
       },
-
-      // 判断是否勾选项
-      async isSelectItem(type=false){
-          const {selectItems} = this;
-          if(!selectItems.length){
-              iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
-              return false;
-          }else{
-              if(type){
-                  return true;
-              }else{
-                const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
-                return confirmInfo == 'confirm';
-              }
-          }
-      },
       
       // 查看附件列表
       async checkFiles(row){
@@ -415,7 +397,7 @@ export default {
         this.changeVisible('filesVisible',true);
       },
 
-            // 模糊搜索处理
+      // 模糊搜索处理
       dataFilter(val,props){
         // 去除前后空格
         const trimVal = val.trim();
@@ -434,7 +416,6 @@ export default {
 
       // 多选处理
       handleMultipleChange(value, key,multiple) {
-        console.log(value,key);
           // 单选不处理
           if(!multiple) {
             if(!value){
@@ -456,12 +437,14 @@ export default {
         display: block;
         width: 10px;
     }
-    .table-item-aeko{
+   .table-item-aeko{
       position: relative;
-      padding-left: 28px;
       .link{
         display: block;
-        width: calc( 100% - 28px);
+        padding-left: 30px;
+        padding-right: 8px;
+        margin-right: 8px;
+        box-sizing: border-box;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

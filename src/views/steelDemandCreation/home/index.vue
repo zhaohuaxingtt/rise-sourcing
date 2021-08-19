@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-29 17:02:51
- * @LastEditTime: 2021-08-19 12:26:30
+ * @LastEditTime: 2021-08-19 12:28:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steeldemandcreation\index.vue
@@ -42,6 +42,15 @@
         <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
           {{row[currentProps].desc}}
         </template>
+        <template #nominateId="scope">
+          <span class="flexRow-link">
+            <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.nominateId }}</span>
+            <span class="icon-gray  cursor "  @click="viewNominationDetail(scope.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+            </span>
+          </span> 
+        </template>
       </tablePart>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -61,7 +70,7 @@
   </iPage>
 </template>
 <script>
-import {iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,iMessage} from 'rise'
+import {iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,iMessage,icon} from 'rise'
 import {searchForm,form,tableTitle} from './components/data'
 import {steeldemandcreation,downloadExcelBatch,printTransferOrderBatch,printTransferOrderOne} from '@/api/steelDemandCreation/home'
 import {pageMixins} from "@/utils/pageMixins";
@@ -74,7 +83,7 @@ import {getToken} from '@/utils'
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 export default{
   mixins:[pageMixins],
-  components:{iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,tablePart},
+  components:{iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,tablePart,icon},
     created(){
       this.initSelectOptions()
       this.steeldemandcreation()
@@ -87,7 +96,7 @@ export default{
         printLoadingOne:false,
         baseUrl:process.env.VUE_APP_SUPPLIER_RFQLIST,
         searchForm:[],
-        form:form,
+        form:JSON.parse(JSON.stringify(form)),
         tableTitle:tableTitle,
         tabelLoading:false,
         tabelList:[],
@@ -100,6 +109,29 @@ export default{
       ...mapActions(["updateNavList"])
     },
     methods:{
+      /**
+       * @description: 查看定点详情
+       * @param {*}
+       * @return {*}
+       */
+      viewNominationDetail(row) {
+        // 缓存nominateProcessType
+        // this.$store.dispatch('setNominationType', row.nominateProcessType)
+        // 禁用nominateProcessType编辑
+        this.$store.dispatch('setNominationTypeDisable', true)
+        this.$nextTick(() => {
+          const routeData = this.$router.resolve({
+            path: '/designate/rfqdetail',
+            query: {
+              desinateId: row.nominateId, 
+              designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
+              partProjType: (row.partProjectType && row.partProjectType.code) || row.partProjectType || '',
+              applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
+            }
+          })
+          window.open(routeData.href, '_blank')
+        })
+      },
       /**
        * @description: 获取钢材列表数据。
        * @param {*}

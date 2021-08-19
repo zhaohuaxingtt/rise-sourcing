@@ -173,12 +173,12 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <template #oldPartNumPreset="scope">
-            <iInput v-if="scope.row.status === 'EMPTY' && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
+            <iInput v-if="scope.row.status === 'EMPTY' && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly>
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
             </iInput>
-            <iInput v-else v-model="scope.row.oldPartNumPreset" disabled readonly></iInput>
+            <iInput v-else v-model="scope.row.oldPartNumPreset" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" readonly></iInput>
           </template>
           <template #dosage="scope">
             <span class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -424,15 +424,19 @@ export default {
     },
     view() {},
     oldPartNumPresetSelect(row) {
-      if (!row.oldPartNumPreset) return
+      // if (!row.oldPartNumPreset) return
+
+      const query = {
+        requirementAekoId: this.aekoInfo.requirementAekoId,
+        objectAekoPartId: row.objectAekoPartId,
+        oldPartNumPreset: typeof row.oldPartNumPreset === "string" && row.oldPartNumPreset.trim()
+      }
+
+      if (!query.oldPartNumPreset) delete query.oldPartNumPreset
 
       this.$router.push({
         path: "/aeko/quondampart/ledger",
-        query: {
-          requirementAekoId: this.aekoInfo.requirementAekoId,
-          objectAekoPartId: row.objectAekoPartId,
-          oldPartNumPreset: row.oldPartNumPreset.trim()
-        }
+        query
       })
     
       sessionStorage.setItem(`aekoConatentDeclareParams_${ this.aekoInfo.requirementAekoId }`, JSON.stringify({
@@ -608,6 +612,10 @@ export default {
         this.cartypeProjectCurrentPage += 1
         this.carTypeProjectOptions = this.carTypeProjectOptions.concat(this.carTypeProjectOptionsCacheChunks[this.cartypeProjectCurrentPage - 1])
       }
+    },
+    isDeclareBlackListPart(part) {
+      // return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
+      return false // 取消黑名单限制
     }
   },
 };

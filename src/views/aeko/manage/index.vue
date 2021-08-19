@@ -490,7 +490,7 @@ export default {
          const filterItem = selectItems.filter((item)=>item.aekoStatus == 'CANCELED');
          if(filterItem.length){
            iMessage.warn(tips);
-              return false;
+            return false;
          }else{
            return true;
          }
@@ -734,10 +734,12 @@ export default {
     }
     .table-item-aeko{
       position: relative;
-      padding-left: 28px;
       .link{
         display: block;
-        width: calc( 100% - 28px);
+        padding-left: 30px;
+        padding-right: 8px;
+        margin-right: 8px;
+        box-sizing: border-box;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

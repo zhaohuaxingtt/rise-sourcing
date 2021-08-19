@@ -146,7 +146,12 @@ export default {
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
     this.oldPartNumPreset = this.$route.query.oldPartNumPreset
-    this.judgeRight()
+    if (this.oldPartNumPreset) {
+      this.judgeRight()
+    } else {
+      this.procureFactorySelectVo()
+      this.getAekoOriginPartInfo()
+    }
   },
   methods: {
     judgeRight() {
@@ -190,6 +195,11 @@ export default {
       .catch(() => {})
     },
     getAekoOriginPartInfo() {
+      // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
+      if(this.form.partNum && this.form.partNum.trim().length < 9){
+        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+      }
+
       this.loading = true
 
       getAekoOriginPartInfo({
@@ -254,9 +264,9 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
-          if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+          if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
             try {
-              const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+              const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
 
               this.$router.replace({
                 path: "/aeko/aekodetail",

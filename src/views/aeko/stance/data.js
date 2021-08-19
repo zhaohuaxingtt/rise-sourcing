@@ -19,7 +19,7 @@ export const searchList = [
   
   // 表头
   export const tableTitle = [
-      { props: "aekoCode", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true },
+      { props: "aekoCode", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true,width:140, },
       { props: "log", name: "⽇志", key: "LK_RIZHI", tooltip: true },
       { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true },
       { props: "cartypeCode", name: "车型项目", key: "LK_AEKOCHEXINGXIANGMU", tooltip: true },
