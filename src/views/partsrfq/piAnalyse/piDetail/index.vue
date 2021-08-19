@@ -248,10 +248,10 @@ export default {
         this.showPiChart = true;
         if (this.currentTab === AVERAGE) {
           await this.getAverageData();
-          await this.$refs.thePriceIndexChart.getChartData();
+          await this.$refs.thePriceIndexChart.buildChart();
         } else {
           await this.getDataInfo();
-          await this.$refs.thePriceIndexChart.getChartData();
+          await this.$refs.thePriceIndexChart.buildChart();
         }
       });
     },
@@ -262,7 +262,7 @@ export default {
         endTime: time[1],
       };
       await this.getAverageData({extraParams});
-      await this.$refs.thePriceIndexChart.getChartData();
+      await this.$refs.thePriceIndexChart.buildChart();
     },
     // 获取信息
     async getDataInfo() {
