@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 16:38:55
- * @LastEditTime: 2021-08-19 10:38:33
+ * @LastEditTime: 2021-08-19 16:14:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysis\index.vue
@@ -310,7 +310,8 @@ export default {
         this.$router.push({
           path: this.costAnalysisAddUrl,
           query: {
-            schemeId: val
+            schemeId: val.id,
+            operateLog: val.operateLog || null
           }
         })
       } else {

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-18 14:21:48
+ * @LastEditTime: 2021-08-19 14:52:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -40,7 +40,8 @@
           :tableTitle="addTableTitle"
           :tableLoading="loading"
           :index="true"
-           @handleSelectionChange="handleSelectMainTable">
+          :height="300"
+          @handleSelectionChange="handleSelectMainTable">
         </tableList>
       </div>
       <div class="flooterBox">
