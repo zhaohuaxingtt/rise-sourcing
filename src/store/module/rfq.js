@@ -13,7 +13,9 @@ const state = {
   materialGroup: window.sessionStorage.getItem('materialGroup') || '',//材料组
   spareParts: window.sessionStorage.getItem('spareParts') || '',//零件号
   categoryCode: window.sessionStorage.getItem('categoryCode') || '',//材料组code
-  categoryName:window.sessionStorage.getItem('categoryName') || '',//材料组name
+  categoryName: window.sessionStorage.getItem('categoryName') || '',//材料组name
+  // categoryId:window.sessionStorage.getItem('categoryId') || '',//材料组name
+  
   
 }
 const mutations = {
@@ -48,6 +50,11 @@ const mutations = {
     state.categoryName = data
     sessionStorage.setItem('categoryName', data)
   },
+  // // 品类管理助手-材料组ID
+  // SET_CATEGORY_ID(state, data) {
+  //   state.categoryId = data
+  //   sessionStorage.setItem('categoryId', data)
+  // },
 }
 
 const actions = {
@@ -77,6 +84,10 @@ const actions = {
   setCategoryName({ commit }, data) {
     commit('SET_CATEGORY_NAME', data)
   },
+  // // 品类管理助手-材料组Id
+  // setCategoryId({ commit }, data) {
+  //   commit('SET_CATEGORY_ID', data)
+  // },
 }
 
 export default {
