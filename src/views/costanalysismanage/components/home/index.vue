@@ -66,12 +66,7 @@
               value=""
               :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
-            <el-option
-              :value="item.value"
-              :label="item.label"
-              v-for="item in carTypeOptions"
-              :key="item.key"
-            ></el-option>
+            <el-option v-for="item in carTypeOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
           </iSelect>
         </el-form-item>
         <el-form-item label="PCA">
@@ -196,7 +191,6 @@ import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
 import { getSelectOptions, getKmRfqList, updateRfq, getCommodityOptions, getLinieOptionsByCommodity } from "@/api/costanalysismanage/home"
 import { selectDictByKeys } from "@/api/dictionary"
-import { getCarTypePro } from "@/api/designate/nomination"
 import { cloneDeep } from "lodash"
 import axios from "axios"
 
@@ -240,7 +234,6 @@ export default {
     }
   },
   created() {
-    this.getCarTypePro()
     this.getDict()
     this.getCommodityOptions()
     this.getKmRfqList()
@@ -256,29 +249,12 @@ export default {
     }
   },
   methods: {
-    getCarTypePro() {
-      getCarTypePro()
-      .then(res => {
-        if (res.code == 200) {
-          this.carTypeOptions = 
-            Array.isArray(res.data.data) ?
-            res.data.data.map(item => ({
-              key: item.code,
-              label: item.name,
-              value: item.code
-            })) :
-            []
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      })
-      .catch(() => {})
-    },
     getDict() {
       selectDictByKeys(
         [
           { keys: "HEAVY_ITEM" },
-          { keys: "RFQ_STATE" }
+          { keys: "RFQ_STATE" },
+          { keys: "CAR_TYPE_PRO" }
         ]
       )
       .then(res => {
@@ -297,6 +273,16 @@ export default {
                 break
               case "RFQ_STATE":
                 this.rfqStatusOptions = res.data["RFQ_STATE"].map(item => ({
+                  ...item,
+                  key: item.code,
+                  value: item.code,
+                  zh: item.name,
+                  en: item.nameEn,
+                  de: item.nameDe
+                }))
+                break
+              case "CAR_TYPE_PRO":
+                this.carTypeOptions = res.data["CAR_TYPE_PRO"].map(item => ({
                   ...item,
                   key: item.code,
                   value: item.code,
