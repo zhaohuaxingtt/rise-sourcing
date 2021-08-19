@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-18 13:52:02
+ * @LastEditTime: 2021-08-19 11:16:28
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -278,6 +278,24 @@
 								{{ fillterss(detailData.bmg) }}
 							</iText>
 						</iFormItem>
+						<!---------------钢材批量采购及钢材一次性采购显示字段---------------------------------------------->
+						<template v-if="[partProjTypes.GANGCAIYICIXINGCAIGOU, partProjTypes.GANGCAIPILIANGCAIGOU].includes(detailData.partProjectType)">
+							<iFormItem  :label="language('ZUIZHONGYONGHU','最终用户') + ':'" name="test">
+								<iText v-permission="">
+									{{ detailData.endUser }}
+								</iText>
+							</iFormItem>
+							<iFormItem :label="language('CAILIAOGONGYINGSHANG','材料供应商') + ':'" name="test">
+								<iText v-permission="">
+									{{ detailData.materialSupplierName }}
+								</iText>
+							</iFormItem>
+							<iFormItem :label="language('YOUXIAOQISHIQI','有效起始期') + ':'" name="test">
+								<iText v-permission="">
+									{{ detailData.startDate }}
+								</iText>
+							</iFormItem>
+						</template>
 						<!-- <iFormItem :label="language('LK_HUOBI','货币') + ':'" name="test"
 							v-show="detailData.partProjectType == '46'">
 							<iSelect v-model="detailData.currencyId" v-permission="PARTSPROCURE_EDITORDETAIL_CURRENCY">
