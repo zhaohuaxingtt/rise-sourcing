@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-08-11 18:42:48
+ * @LastEditTime: 2021-08-19 15:11:39
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料api - attach
  * @FilePath: \front-web\src\api\designate\index.js
@@ -13,14 +13,15 @@ const requst = axios(process.env.VUE_APP_RFQ)
 // 获取决策资料 - 文件列表
 export function getdDecisiondataList(params) {
   return requst({
-      url: `/file-history/${params.nomiAppId}/${params.sortColumn}/${params.isAsc}/${params.fileType}/${params.pageNo}/${params.pageSize}`,
+      url: `/file-histories/page/${params.nomiAppId}/${params.sortColumn}/${params.isAsc}/${params.fileType}/${params.pageNo}/${params.pageSize}`,
       method: "GET"
   })
 }
 
+// 获取文件列表-不分页
 export function getdDecisiondataListAll(params) {
   return requst({
-      url: `/file-history/${params.nomiAppId}/${params.sortColumn}/${params.isAsc}/${params.fileType}`,
+      url: `/file-histories/file-history/${params.nomiAppId}/${params.sortColumn}/${params.isAsc}/${params.fileType}`,
       method: "GET"
   })
 }
