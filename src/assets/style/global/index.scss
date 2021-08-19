@@ -490,3 +490,30 @@ a{
 .el-message.el-message--warning {
   z-index: 3000 !important;
 }
+
+// 表格链接样式
+.flexRow-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .openLinkText {
+    color: $color-blue;
+  }
+  .icon-gray{
+    cursor: pointer;
+    &:hover {
+      .show{
+        display: none;
+      }
+      .active{
+        display: block;
+      }
+    }
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+}
