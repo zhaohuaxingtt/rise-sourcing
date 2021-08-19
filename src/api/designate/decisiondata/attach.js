@@ -13,14 +13,14 @@ const requst = axios(process.env.VUE_APP_RFQ)
 // 获取决策资料 - 文件列表
 export function getdDecisiondataList(params) {
   return requst({
-      url: `/file-history/${params.nomiAppId}/${params.sortColumn}/${params.isAsc}/${params.fileType}/${params.pageNo}/${params.pageSize}`,
+      url: `/file-histories/page/${params.nomiAppId}/${params.sortColumn}/${params.isAsc}/${params.fileType}/${params.pageNo}/${params.pageSize}`,
       method: "GET"
   })
 }
 
 export function getdDecisiondataListAll(params) {
   return requst({
-      url: `/file-history/${params.nomiAppId}/${params.sortColumn}/${params.isAsc}/${params.fileType}`,
+      url: `/file-histories/file-history/${params.nomiAppId}/${params.sortColumn}/${params.isAsc}/${params.fileType}`,
       method: "GET"
   })
 }
