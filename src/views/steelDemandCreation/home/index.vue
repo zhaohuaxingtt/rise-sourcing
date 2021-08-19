@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-29 17:02:51
- * @LastEditTime: 2021-08-19 12:28:56
+ * @LastEditTime: 2021-08-19 14:58:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steeldemandcreation\index.vue
@@ -33,8 +33,8 @@
     <iCard>
       <div class="textalign-right">
         <iButton @click="downloadTemplate">{{language('XIAZAIPILIANGMOBAN','下载批量模板')}}</iButton>
-        <el-upload class="uploadfile" :before-upload='()=>{uploadLoadingOne=true}' :on-success="(r)=>Message(r.desZh,1,'uploadLoadingOne')" :on-error="(r)=>Message(r.desZh || r.message,2,'uploadLoadingOne')" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelOne`" :show-file-list='false'><iButton :loading="uploadLoadingOne">{{language('SHANGCHUANWENJIANYICIX','上传文件（一次性）')}}</iButton></el-upload>
-        <el-upload :before-upload='()=>{uploadLoadingAll=true}' :on-success="(r)=>Message(r.desZh,1,'uploadLoadingAll')" :on-error="(r)=>Message(r.desZh || r.message,2,'uploadLoadingAll')" class="uploadfile" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelBatch`" :show-file-list='false'><iButton :loading='uploadLoadingAll'>{{language('SHANGCHUANWENJJIANPILIANG','上传文件（批量）')}}</iButton></el-upload>
+        <el-upload class="uploadfile" :before-upload='()=>{uploadLoadingOne=true}' :on-success="(r)=>Message(r,1,'uploadLoadingOne')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingOne')" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelOne`" :show-file-list='false'><iButton :loading="uploadLoadingOne">{{language('SHANGCHUANWENJIANYICIX','上传文件（一次性）')}}</iButton></el-upload>
+        <el-upload :before-upload='()=>{uploadLoadingAll=true}' :on-success="(r)=>Message(r,1,'uploadLoadingAll')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingAll')" class="uploadfile" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelBatch`" :show-file-list='false'><iButton :loading='uploadLoadingAll'>{{language('SHANGCHUANWENJJIANPILIANG','上传文件（批量）')}}</iButton></el-upload>
         <iButton @click="print(1)" :loading='printLoadingOne'>{{language('DAYINGDINGDANLIUZHUANDAN','打印定点流转单(一次性)')}}</iButton>
         <iButton @click="print(2)" :loading='printLoadingAll'>{{language('DAYINGDINGDANLIUZDPILIANG','打印定点流转单（批量）')}}</iButton>
       </div>
@@ -190,13 +190,11 @@ export default{
         return getToken()
       },
       Message(message,messageType,loadingType){
-        console.log(message,messageType,loadingType)
         this[loadingType] = false
-        if(messageType == 1){
-          iMessage.success(message || '操作成功') 
-          this.steeldemandcreation()
+        if(message.result){
+          iMessage.success(message.desZh)
         }else{
-          iMessage.error(message || '操作失败') 
+          iMessage.error(message.desZh)
         }
       },
       /**
