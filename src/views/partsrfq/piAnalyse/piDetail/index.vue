@@ -238,6 +238,8 @@ export default {
       this.$store.dispatch('setPiIndexChartParams', {
         dimensionHandle: [],
         particleSize: '3',
+        beginTime: '',
+        endTime: ''
       });
       this.currentTab = val;
       if (this.currentTab === AVERAGE) {
@@ -271,10 +273,7 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        const copyPiIndexChartParams = _.cloneDeep(this.piIndexChartParams);
-        copyPiIndexChartParams.beginTime = res.data.currentPartCostTotalVO.beginTime;
-        copyPiIndexChartParams.endTime = res.data.currentPartCostTotalVO.endTime;
-        this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
+        this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       } catch {
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
@@ -293,6 +292,7 @@ export default {
         this.averageData = res.data;
         if (res.data.beginTime && res.data.endTime) {
           this.timeRange = [res.data.beginTime, res.data.endTime];
+          this.setPiIndexTimeParams(res.data)
         } else {
           this.timeRange = null;
         }
@@ -323,6 +323,12 @@ export default {
       propsArray.map(item => {
         this[item] = boolean;
       });
+    },
+    setPiIndexTimeParams(data) {
+      const copyPiIndexChartParams = _.cloneDeep(this.piIndexChartParams);
+      copyPiIndexChartParams.beginTime = data.beginTime;
+      copyPiIndexChartParams.endTime = data.endTime;
+      this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
     },
   },
 };
