@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-07-19 11:10:00
+ * @LastEditTime: 2021-08-19 16:30:32
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -160,7 +160,8 @@ export default{
       quotations(this.getQuery()).then(res=>{
         this.refreshLoading = false
         if(res.data && res.data){
-          this.updateEchars(translateGetLunci(res.data,this.$t('LK_LUNCI'))) 
+          const rfqPartQuotationListVOList = res.data.rfqPartQuotationListVOList || []
+          this.updateEchars(translateGetLunci(rfqPartQuotationListVOList,this.$t('LK_LUNCI'))) 
         }
       }).catch(err=>{
         this.refreshLoading = false
