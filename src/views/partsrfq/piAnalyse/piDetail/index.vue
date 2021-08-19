@@ -108,6 +108,8 @@ import {
   getAveragePartCostPrice,
   deleteParts,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
+import _ from 'lodash';
+import {mapState} from 'vuex';
 
 export default {
   mixins: [resultMessageMixin],
@@ -125,6 +127,11 @@ export default {
     theTable,
     saveDialog,
   },
+  computed: {
+    ...mapState({
+      piIndexChartParams: (state) => state.rfq.piIndexChartParams,
+    }),
+  },
   data() {
     return {
       pageLoading: false,
@@ -138,7 +145,7 @@ export default {
       },
       currentTab: CURRENTTIME,
       currentTabData: {
-        analysisSchemeId: 109,
+        analysisSchemeId: this.$route.query.schemeId,
         partsId: '',
         batchNumber: '',
         supplierId: '',
@@ -230,7 +237,7 @@ export default {
     handleTabsClick(val) {
       this.$store.dispatch('setPiIndexChartParams', {
         dimensionHandle: [],
-        particleSize: '3'
+        particleSize: '3',
       });
       this.currentTab = val;
       if (this.currentTab === AVERAGE) {
@@ -264,6 +271,10 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
+        const copyPiIndexChartParams = _.cloneDeep(this.piIndexChartParams);
+        copyPiIndexChartParams.beginTime = res.data.currentPartCostTotalVO.beginTime;
+        copyPiIndexChartParams.endTime = res.data.currentPartCostTotalVO.endTime;
+        this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       } catch {
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});

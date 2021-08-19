@@ -16,7 +16,9 @@ const state = {
   categoryName:window.sessionStorage.getItem('categoryName') || '',//材料组name
   piIndexChartParams: {
     dimensionHandle: [],
-    particleSize: '3'
+    particleSize: '3',
+    beginTime: '',
+    endTime: ''
   }
 }
 const mutations = {

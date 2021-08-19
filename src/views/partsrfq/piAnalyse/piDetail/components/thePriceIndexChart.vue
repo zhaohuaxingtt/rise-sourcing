@@ -308,6 +308,8 @@ export default {
         type: this.currentTab === CURRENTTIME ? '1' : '2',
         particleSize: this.piIndexChartParams.particleSize,
         dimension: this.piIndexChartParams.dimensionHandle,
+        beginTime: this.piIndexChartParams.beginTime,
+        endTime: this.piIndexChartParams.endTime
       };
       try {
         this.seriesArray = [];
@@ -356,6 +358,7 @@ export default {
     },
     piIndexChartParams: {
       handler() {
+        console.log(2222);
         this.buildChart();
       },
       deep: true,
