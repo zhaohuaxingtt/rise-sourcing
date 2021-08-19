@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-16 17:37:08
+ * @LastEditTime: 2021-08-17 17:34:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -193,7 +193,7 @@
               <iButton @click="edit">编辑</iButton>
             </div>
             <div v-else>
-              <iButton @click="save">保存</iButton>
+              <iButton @click="saveTable">保存</iButton>
               <iButton @click="cancel">取消</iButton>
             </div>
           </div>
@@ -313,6 +313,10 @@ export default {
       recursiveRetrieveList: [],
       //新增行
       addRowList: {},
+      //编辑时的数据
+      editDataList: [],
+      //新增时的数据
+      addDataList: []
 
     };
   },
@@ -397,9 +401,32 @@ export default {
     edit () {
       this.editFlag = true
     },
-    save () {
+    saveTable () {
       this.editFlag = false
-      this.save = true
+      let params = {
+        "comparedType": "string",
+        "detail": [],
+        "schemeId": 0
+      }
+      this.addDataList.splice(0, 1);
+      this.addDataList.forEach(item => {
+        let obj = {
+          "detail": [],
+          "type": item['label#-1'],
+          "typeId": item.textTypeId
+        }
+        this.gridData.title.forEach(i => {
+          let obj1 = {
+            "id": item[i.label],
+            "motorTypeId": item['id#-1'],
+            "remark": item[i.label]
+          }
+          obj.detail.push(obj1)
+        })
+        params.detail.push(obj)
+      })
+      console.log(params)
+      saveMekTable(params).then(res => { })
     },
     cancel () {
       this.editFlag = false
@@ -417,10 +444,16 @@ export default {
         this.addRowList[item.label] = ""
         this.addRowList['id#' + item.label.split("#")[1]] = ""
       })
-      console.log(this.addRowList)
-
+      this.gridData.data.push(this.addRowList)
     },
-
+    //编辑数据
+    editData (val) {
+      this.editDataList = val
+    },
+    //新增数据
+    addData (val) {
+      this.addDataList = val
+    },
     //计算车型弹窗
     computeModal () {
       this.modalVisible = true

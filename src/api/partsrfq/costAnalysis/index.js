@@ -1,10 +1,10 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-06 16:27:41
- * @LastEditTime: 2021-08-12 14:00:49
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-18 17:10:53
+ * @LastEditors: 舒杰
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\api\partsrfq\costAnalysis\index.js
+ * @FilePath: \front-sourcing\src\api\partsrfq\costAnalysis\index.js
  */
 import axios from '@/utils/axios'
 

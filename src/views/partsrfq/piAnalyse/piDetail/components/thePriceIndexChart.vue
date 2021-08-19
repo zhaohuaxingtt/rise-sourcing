@@ -1,5 +1,5 @@
 <template>
-  <div class="the-price-chart">
+  <div class="the-price-chart" v-loading="chartLoading">
     <div class="header-box">
       <div class="title">
         {{ language('PI.PIJIAGEFENXI', 'Price Index价格分析') }}
@@ -19,16 +19,22 @@
           <div class="select-item">
             <div class="label">{{ language('PI.JIAGEWEIDU', '价格维度') }}</div>
             <el-cascader
-                v-model="form.priceLatitude"
+                v-model="form.dimension"
                 :options="priceLatitudeOptions"
-                :props="{ multiple: true }"
+                :props="{
+                  multiple: true,
+                  value: 'id',
+                  label: 'name',
+                  children: 'children'
+                }"
                 @change="handlePriceLatitudeChange"
                 collapse-tags
-                clearable></el-cascader>
+                clearable
+            />
           </div>
           <div class="select-item margin-left30">
             <div class="label">{{ language('PI.SHIJIANKELIDU', '时间颗粒度') }}</div>
-            <iSelect v-model="form.timeGranularity" @change="handleTimeGranularityChange">
+            <iSelect v-model="form.particleSize" @change="handleTimeGranularityChange">
               <el-option
                   v-for="item of timeGranularityOptions"
                   :key="item.name"
@@ -43,26 +49,26 @@
     <div class="chartBox">
       <div class="theChart" ref="theChart" :style="{'height': chartHeight}"/>
       <div class="legendBox">
-        <div class="legendItem">
-          <div class="shape rect"></div>
-          <div class="text">汇率合成波动比例</div>
-        </div>
-        <div class="legendItem">
-          <div class="shape">
-            <div class="doubleBox"></div>
-            <div class="doubleBox"></div>
-          </div>
-          <div class="text">汇率合成波动均线</div>
-        </div>
-        <div class="legendItem">
-          <div class="shape">
-            <div class="dotBox"></div>
-            <div class="dotBox"></div>
-            <div class="dotBox"></div>
-            <div class="dotBox"></div>
-            <div class="dotBox"></div>
-          </div>
-          <div class="text">汇率1波动比例</div>
+        <div class="legendItem" v-for="(item,index) of resChartData" :key="index">
+          <template v-if="item.waveType === 'compositeWaveRatio'">
+            <div class="shape" :style="{'background': item.color}"></div>
+          </template>
+          <template v-else-if="item.waveType === 'compositeWaveAvg'">
+            <div class="shape">
+              <div class="doubleBox" :style="{'background': item.color}"></div>
+              <div class="doubleBox" :style="{'background': item.color}"></div>
+            </div>
+          </template>
+          <template v-else-if="item.waveType === 'waveRatio'">
+            <div class="shape">
+              <div class="dotBox" :style="{'background': item.color}"></div>
+              <div class="dotBox" :style="{'background': item.color}"></div>
+              <div class="dotBox" :style="{'background': item.color}"></div>
+              <div class="dotBox" :style="{'background': item.color}"></div>
+              <div class="dotBox" :style="{'background': item.color}"></div>
+            </div>
+          </template>
+          <div class="text">{{ item.waveTypeName }}</div>
         </div>
       </div>
     </div>
@@ -73,6 +79,9 @@
 import {iSelect} from 'rise';
 import iconTips from '../../../../../components/ws3/iconTips';
 import echarts from '@/utils/echarts';
+import {getPiIndexWaveSelectList} from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import {CURRENTTIME} from './data';
+import {getPiIndexPartCostWave} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   components: {
@@ -84,58 +93,49 @@ export default {
       type: String,
       default: '350px',
     },
-    chartData: {
+    isPreview: {
+      type: Boolean,
+      default: false,
+    },
+    currentTabData: {
       type: Object,
       default: () => {
         return {};
       },
     },
-    isPreview: {
-      type: Boolean,
-      default: false,
+    currentTab: {
+      type: String,
+      default: '',
     },
   },
   data() {
     return {
-      priceLatitudeOptions: [
-        {
-          value: 1,
-          label: '东南',
-          children: [
-            {
-              value: 2,
-              label: '上海',
-            }, {
-              value: 7,
-              label: '江苏',
-            }, {
-              value: 12,
-              label: '浙江',
-            }],
-        },
-      ],
+      priceLatitudeOptions: [],
       timeGranularityOptions: [
-        {name: '年', value: '年'},
-        {name: '季度', value: '季度'},
-        {name: '月', value: '月'},
+        {name: '年', value: '1'},
+        {name: '季度', value: '2'},
+        {name: '月', value: '3'},
       ],
       form: {
-        priceLatitude: [],
-        timeGranularity: '',
+        dimension: [],
+        particleSize: '',
       },
       seriesArray: [],
-      legendData: [],
+      xLabelData: [],
+      resChartData: [],
+      chartLoading: false,
     };
   },
   mounted() {
+    this.getPiIndexWaveSelectList();
     this.buildChart();
   },
   methods: {
-    handleTimeGranularityChange(val) {
-      console.log(val);
+    handleTimeGranularityChange() {
+      this.buildChart();
     },
     handlePriceLatitudeChange(val) {
-      console.log(val);
+      this.buildChart();
     },
     initEcharts() {
       const chart = echarts().init(this.$refs.theChart);
@@ -144,7 +144,7 @@ export default {
           trigger: 'axis',
           backgroundColor: 'rgba(255, 255, 255, 0.8)',
           formatter: (obj) => {
-            const titleDiv = `<div class="tooltipText">${obj[0].name}</div>`;
+            const titleDiv = `<div class="tooltipText">${obj[0].axisValueLabel}</div>`;
             const contentDiv = [];
             obj.map(item => {
               const itemDiv = `<div>
@@ -152,7 +152,7 @@ export default {
               <span class="tooltipText">幅度</span>
               <span class="tooltipText">${item.value}，</span>
               <span class="tooltipText">值</span>
-              <span class="tooltipText">${item.value}</span>
+              <span class="tooltipText">${item.name}</span>
               </div>`;
               contentDiv.push(itemDiv);
             });
@@ -174,7 +174,7 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+          data: this.xLabelData,
           axisTick: {
             show: false,
           },
@@ -192,50 +192,20 @@ export default {
             show: false,
           },
         },
-        series: [
-          this.setLineData({
-            lineType: 'solid',
-            lineColor: '#C62928',
-            name: '汇率合成波动比例',
-            data: [120, 132, 101, 134, 90, 230, 210],
-          }),
-     /*     this.setLineData({
-            lineType: 'solid',
-            lineColor: '#C62928',
-            name: '汇率合成波动比例',
-            data: [
-              {value: 120, rate: 20, time: '2013-03'},
-              {value: 130, rate: 10, time: '2013-04'},
-            ],
-          }),*/
-          this.setLineData({
-            lineType: 'dashed',
-            lineColor: '#C62928',
-            name: '汇率合成波动均线',
-            data: [150, 150, 150, 150, 150, 150, 150],
-          }),
-          this.setLineData({
-            lineType: 'dotted',
-            lineColor: '#C62928',
-            name: '汇率1波动比例',
-            data: [150, 232, 201, 154, 190, 330, 410],
-          }),
-        ],
+        series: this.seriesArray,
       };
       chart.setOption(option, true);
     },
-    assembleData() {
-
-    },
-    buildChart() {
-      this.assembleData();
-      this.initEcharts();
+    async buildChart() {
+      await this.getChartData();
+      await this.initEcharts();
     },
     setNormalLineLastDataMark(data) {
       const lastIndex = data.length - 1;
       const resData = data.map(item => {
         return {
-          value: item,
+          value: item.value,
+          name: item.name,
         };
       });
       resData[lastIndex]['label'] = {
@@ -253,7 +223,8 @@ export default {
       const lastIndex = data.length - 1;
       const resData = data.map(item => {
         return {
-          value: item,
+          value: item.value,
+          name: item.name,
         };
       });
       resData[lastIndex]['label'] = {
@@ -291,13 +262,80 @@ export default {
       }
       return obj;
     },
+    async getPiIndexWaveSelectList() {
+      try {
+        this.priceLatitudeOptions = [];
+        const req = {
+          ...this.currentTabData,
+          type: this.currentTab === CURRENTTIME ? '1' : '2',
+        };
+        const res = await getPiIndexWaveSelectList(req);
+        this.priceLatitudeOptions = res.data;
+      } catch {
+        this.priceLatitudeOptions = [];
+      }
+    },
+    async getChartData() {
+      const req = {
+        analysisSchemeId: this.currentTabData.analysisSchemeId,
+        particleSize: this.form.particleSize,
+        type: this.currentTab === CURRENTTIME ? '1' : '2',
+        dimension: [],
+      };
+      if (this.form.dimension.length) {
+        req.dimension = this.form.dimension.map(item => {
+          return {
+            id1: item[0],
+            id2: item[1],
+          };
+        });
+      }
+      try {
+        this.seriesArray = [];
+        this.xLabelData = [];
+        this.resChartData = [];
+        this.chartLoading = true;
+        const res = await getPiIndexPartCostWave(req);
+        this.resChartData = res.data;
+        if (res.data.length) {
+          this.seriesArray = res.data.map(item => {
+            const data = item.dataValuesList.map(itemData => {
+              return {
+                value: itemData.rate,
+                name: itemData.value,
+              };
+            });
+            return this.setLineData({
+              lineType: this.getLineType(item.waveType),
+              lineColor: item.color,
+              name: item.waveTypeName,
+              data,
+            });
+          });
+          this.xLabelData = res.data[0].dataValuesList.map(item => {
+            return item.time;
+          });
+        }
+        this.chartLoading = false;
+      } catch {
+        this.chartLoading = false;
+      }
+    },
+    getLineType(type) {
+      switch (type) {
+        case 'compositeWaveAvg':
+          return 'dashed';
+        case 'compositeWaveRatio':
+          return 'solid';
+        case 'waveRatio':
+          return 'dotted';
+      }
+    },
   },
   watch: {
-    chartData: {
-      deep: true,
-      handler() {
-        this.buildChart();
-      },
+    currentTab() {
+      this.getPiIndexWaveSelectList();
+      this.buildChart();
     },
   },
 };
@@ -368,19 +406,13 @@ export default {
             width: 9px;
             height: 3px;
             margin-right: 2px;
-            background: #C62928;
           }
 
           .dotBox {
             width: 3px;
             height: 3px;
             margin-right: 1.25px;
-            background: #C62928;
           }
-        }
-
-        .rect {
-          background: #C62928;
         }
 
         .text {

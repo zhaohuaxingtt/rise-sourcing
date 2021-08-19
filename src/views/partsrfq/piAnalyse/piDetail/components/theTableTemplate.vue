@@ -228,7 +228,14 @@
                   width="200"
                   trigger="hover"
                   :content="language('PI.SHUJULAIYUAN', '数据来源') + '：' + scope.row.partSource">
-                <span slot="reference">{{ language('PI.SHUJULAIYUAN', '数据来源') }}: {{ scope.row.partSource }}</span>
+                <span slot="reference">
+                  <template v-if="isTableEdit">
+                      {{ language('PI.SHUJULAIYUAN', '数据来源') }}: {{ scope.row.partSource }}
+                  </template>
+                  <template v-else>
+                     {{ language('PI.SHUJULAIYUAN', '数据来源') }}（{{ scope.row.partSource }}）
+                  </template>
+                </span>
               </el-popover>
               <iconTips
                   iconName="iconzhongyaoxinxitishi"

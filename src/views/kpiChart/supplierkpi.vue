@@ -27,6 +27,7 @@
                     <div>
                         <supplierkpiSearchFrom
                         @chartData="watchData"
+                        @reset="resetData"
                         ></supplierkpiSearchFrom>
                     </div>
                     <div></div>
@@ -43,11 +44,11 @@
                 </div>
             </div>
             <div class="foot">
-                <div class="kpichart"><div class="tittle">总分</div><kpiEchart :options="totalScore"></kpiEchart></div>
-                <div class="kpichart"><div class="tittle">服务质量</div><kpiEchart :options="quality"></kpiEchart></div>
-                <div class="kpichart"><div class="tittle">成本竞争力</div><kpiEchart :options="cost"></kpiEchart></div>
-                <div class="kpichart"><div class="tittle">交付</div><kpiEchart :options="delivery"></kpiEchart></div>
-                <div class="kpichart"><div class="tittle">可持续发展</div><kpiEchart :options="sustainable"></kpiEchart></div>
+                <div class="kpichart"><div class="tittle">总分</div><kpiEchart :supplierNameArray="supplierNameArray" :options="totalScore"></kpiEchart></div>
+                <div class="kpichart"><div class="tittle">服务质量</div><kpiEchart :supplierNameArray="supplierNameArray" :options="quality"></kpiEchart></div>
+                <div class="kpichart"><div class="tittle">成本竞争力</div><kpiEchart :supplierNameArray="supplierNameArray" :options="cost"></kpiEchart></div>
+                <div class="kpichart"><div class="tittle">交付</div><kpiEchart :supplierNameArray="supplierNameArray" :options="delivery"></kpiEchart></div>
+                <!-- <div class="kpichart"><div class="tittle">可持续发展</div><kpiEchart :supplierNameArray="supplierNameArray" :options="sustainable"></kpiEchart></div> -->
             </div>
         </iPage>
     </div>
@@ -122,7 +123,7 @@ export default {
                     }],
                 },
                 grid: {
-                    top: 50,
+                    top: 20,
                     bottom: 20,
                     left:0,
                     right:0,
@@ -158,7 +159,7 @@ export default {
                 },
                 series: [
                     {
-                        name: '上海汇众汽车有限公司',
+                        //name: '上海汇众汽车有限公司',
                         //symbol: "none",//显示隐藏曲线上的点
                         symbolSize:10,
                         type: 'line',
@@ -192,7 +193,8 @@ export default {
             sustainable:{},
             delivery:{},
             idList:[],
-            supplierObj:[]
+            supplierObj:[],
+            supplierNameArray:[]
         }
     },
     created(){
@@ -216,32 +218,39 @@ export default {
         },
         watchData(x){
             this.tabledata= x.supplierList
+            console.log(x)
             // 折线图点
-            x.totalSupplierList.forEach(z=>{this.totalScore.series[0].data.push({value:z,symbol:'none'})})
-            x.oneMaps.PP01000.oneSupplierList.forEach(z=>{this.quality.series[0].data.push({value:z,symbol:'none'})})
-            x.oneMaps.PP02000.oneSupplierList.forEach(z=>{this.cost.series[0].data.push({value:z,symbol:'none'})})
-            x.oneMaps.PP03000.oneSupplierList.forEach(z=>{this.delivery.series[0].data.push({value:z,symbol:'none'})})
-            x.oneMaps.PP04000.oneSupplierList.forEach(z=>{this.sustainable.series[0].data.push({value:z,symbol:'none'})})
-            
+            x.totalSupplierList.forEach(z=>{this.totalScore.series[0].data.push({value:z,symbol:'none',name:""})})
+            x.oneMaps.PP01000.oneSupplierList.forEach(z=>{
+                this.quality.series[0].data.push({value:z,symbol:'none',name:""})
+                this.cost.series[0].data.push({value:z,symbol:'none',name:""})
+                this.delivery.series[0].data.push({value:z,symbol:'none',name:""})
+                this.sustainable.series[0].data.push({value:z,symbol:'none',name:""})
+            })
         },
         // 勾选供应商id
         returnData(x){
             this.idList=x
         },
         getScore(){
+            if(this.supplierObj.length>10) return this.$message({type:'warning',message:"最多选择10家供应商"})
             // 根据供应商查询分数
              spiTotalScore({idList:this.idList}).then(res=>{
                this.changeTotalX(res.data)//总分
                this.changeOneListX(res.data)//其余曲线图
             })
             // 供应商名字
-            this.supplierObj.forEach((y,index)=>{
-                this.totalScore.legend.data[index].name=y.nameZh
-                this.quality.legend.data[index].name=y.nameZh
-                this.cost.legend.data[index].name=y.nameZh
-                this.delivery.legend.data[index].name=y.nameZh
-                this.sustainable.legend.data[index].name=y.nameZh
-            })
+            this.supplierNameArray=[]
+            // this.supplierObj.forEach(y=>{
+            //     this.supplierNameArray.push({
+            //             name:y.nameZh,
+            //             icon:'circle',
+            //             textStyle: {
+            //                 color: '#1763F7'
+            //             }
+            //         })
+            // })
+            
         },
         getSupplierName(x){
             if(x.length>0){
@@ -254,6 +263,13 @@ export default {
                  x.totalList.forEach(score => {
                      if(score.totalScore>9){
                          this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].symbol='emptyCircle'
+                         this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].c=Math.floor((score.totalScore)/10)*10+5
+                         this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].sArray=[]
+                         this.tabledata.forEach(s=>{
+                            if(s.supplierId==score.supplierId){
+                                this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].sArray.push(s.nameZh)
+                            }
+                        })
                      }else{
                          this.totalScore.series[0].data[0].symbol='emptyCircle'
                      }
@@ -264,32 +280,64 @@ export default {
         },
         // 其余折线图
         changeOneListX(x){
+            console.log(x.oneList,this.tabledata)
             if(x.oneList.length>0){
                  x.oneList.forEach(score => {
-                     if(score.levelOneCode=="PP01000" || score.levelOneCode=="PP01000"){
-                         this.quality.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                     if(score.levelOneCode=="PP01000" || score.levelOneCode=="GP01000"){
+                        console.log(score)
+                        this.quality.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                        this.quality.series[0].data[Math.floor((score.score)/10)].c=Math.floor((score.score)/10)*10+5
+                        this.quality.series[0].data[Math.floor((score.score)/10)].sArray=[]
+                        this.tabledata.forEach(s=>{
+                            if(s.supplierId==score.supplierId){
+                                this.quality.series[0].data[Math.floor((score.score)/10)].sArray.push(s.nameZh)
+                            }
+                        })
                      }
-                    if(score.levelOneCode=="PP02000" || score.levelOneCode=="PP02000"){
+                    if(score.levelOneCode=="PP02000" || score.levelOneCode=="GP02000"){
                         this.cost.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                        this.cost.series[0].data[Math.floor((score.score)/10)].c=Math.floor((score.score)/10)*10+5
+                        this.cost.series[0].data[Math.floor((score.score)/10)].sArray=[]
+                        this.tabledata.forEach(s=>{
+                            if(s.supplierId==score.supplierId){
+                                this.cost.series[0].data[Math.floor((score.score)/10)].sArray.push(s.nameZh)
+                                
+                            }
+                        })
                      }
-                     if(score.levelOneCode=="PP03000" || score.levelOneCode=="PP03000"){
+                     if(score.levelOneCode=="PP03000" || score.levelOneCode=="GP03000"){
                          this.delivery.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                         this.delivery.series[0].data[Math.floor((score.score)/10)].c=Math.floor((score.score)/10)*10+5
+                         this.delivery.series[0].data[Math.floor((score.score)/10)].sArray=[]
+                         this.tabledata.forEach(s=>{
+                            if(s.supplierId==score.supplierId ){
+                                this.delivery.series[0].data[Math.floor((score.score)/10)].sArray.push(s.nameZh)
+                            }
+                        })
                      }
-                     if(score.levelOneCode=="PP04000" || score.levelOneCode=="PP04000"){
-                         this.sustainable.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
-                     }
-                 });   
-                 
+                    //  if(s.supplierId==score.supplierId || score.levelOneCode=="GP04000"){
+                    //      this.sustainable.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                    //      this.sustainable.series[0].data[Math.floor((score.score)/10)].c=Math.floor((score.score)/10)*10+5
+                    //      this.tabledata.forEach(s=>{
+                    //         if(s.levelOneCode=="PP04000" && Math.floor((s.score)/10)==Math.floor((score.score)/10)){
+                    //             this.sustainable.series[0].data[Math.floor((score.score)/10)].name+=s.nameZh
+                    //         }
+                    //     })
+                    //  }
+                 }); 
             }
         },
-      
+        resetData(){
+            this.tabledata=[]//清空供应商列表
+            this.$router.go(0)
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
     .spi-page{
-        height: 100vh;
+        height: calc(100vh - 90px);
         width: 100%;
         overflow: auto;
     }

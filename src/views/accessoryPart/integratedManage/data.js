@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-21 17:33:55
+ * @LastEditTime: 2021-08-18 10:46:09
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\data.js
  */
@@ -22,12 +22,12 @@ export const tableTitle = [
   {props:'csfuserName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, width: 100},
   {props:'deliveryWarehouse',name:'送货仓库', key: "SONGHUOCANGKU", tooltip: true},
   {props:'brand',name:'品牌', key: "PINPAI", tooltip: true},
-  {props:'state',name:'配件状态', key: "PEIJIANZHUANGTAI", tooltip: true, width: 120},
-  {props:'accessoryStatus',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true, width: 120},
+  {props:'stateDesc',name:'配件状态', key: "PEIJIANZHUANGTAI", tooltip: true, width: 120},
+  {props:'accessoryStatusDesc',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true, width: 120},
   {props:'signDate',name:'需求签收日期', key: "XUQIUQIANSHOURIQI", tooltip: true, width: 120},
   {props:'carType',name:'配件车型', key: "PEIJIANCHEXING", tooltip: true, width: 120},
   {props:'carProject',name:'配件车型项目', key: "PEIJIANCHEXINGXIANGMU", tooltip: true, width: 140},
-  {props:'idState',name:'ID状态', key: "IDZHUANGTAI", tooltip: true},
+  {props:'idStateDesc',name:'ID状态', key: "IDZHUANGTAI", tooltip: true},
   {props:'priceType',name:'价格类型', key: "JIAGELEIXING", tooltip: true},
   {props:'tcUnitName',name:'单位', key: "DANWEI", tooltip: true},
   {props:'sendDate',name:'需求发送日期', key: "XUQIUFASONGRIQI", tooltip: true, width: 120},

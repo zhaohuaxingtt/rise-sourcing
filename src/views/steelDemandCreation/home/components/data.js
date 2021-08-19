@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-30 13:56:01
- * @LastEditTime: 2021-08-14 15:13:20
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-19 10:04:56
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steelDemandCreation\home\components\data.js
  */
@@ -46,7 +46,7 @@ export function searchForm({MEETING_TYPE=[],NOMINATE_APP_PROCESS_TYPE=[],NOMINAT
       i18nKey:'DAYINGZHUANGTAI',
       permissionKey:'SOURCING_DAYINGZHUANGTAI',
       type:'select',
-      List:[{name:'全部',code:''},{name:'是',code:'1'},{name:'否',code:'0'}],
+      List:[{name:'全部',code:''},{name:'已打印',code:'1'},{name:'未打印',code:'0'}],
       moduleKey:'printStatus'
     },
     {

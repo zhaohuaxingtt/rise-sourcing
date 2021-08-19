@@ -45,7 +45,7 @@
       <theTable
           v-show="currentTab === AVERAGE"
           ref="theAverageTable"
-          :averageTableInfo="averageTableInfo"
+          :averageData="averageData"
           :currentTab="currentTab"
           :tableLoading="tableLoading"
       />
@@ -55,18 +55,26 @@
     <div class="chartBox">
       <!--      Price Index价格分析-->
       <iCard class="lineBox">
-        <thePriceIndexChart/>
+        <thePriceIndexChart
+            :currentTabData="currentTabData"
+            :currentTab="currentTab"
+        />
       </iCard>
       <!--      零件成本构成-->
       <iCard class="pieBox">
-        <thePartsCostChart :dataInfo="dataInfo"/>
+        <thePartsCostChart
+            :dataInfo="dataInfo"
+            :pieLoading="pieLoading"
+        />
       </iCard>
     </div>
 
     <!--预览-->
     <previewDialog
+        ref="previewDialog"
         v-model="previewDialog"
         :dataInfo="dataInfo"
+        :averageData="averageData"
         :currentTab="currentTab"
     />
 
@@ -95,8 +103,9 @@ import resultMessageMixin from '@/utils/resultMessageMixin';
 import {CURRENTTIME, AVERAGE} from './components/data';
 import {
   getAnalysisSchemeDetails,
+  getAveragePartCostPrice,
+  deleteParts,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
-import {getAveragePartCostPrice} from '../../../../api/partsrfq/piAnalysis/piDetail';
 
 export default {
   mixins: [resultMessageMixin],
@@ -133,11 +142,12 @@ export default {
         supplierId: '',
       },
       dataInfo: {},
-      averageTableInfo: {},
+      averageData: {},
       CURRENTTIME,
       AVERAGE,
       tableLoading: false,
       timeRange: null,
+      pieLoading: false,
     };
   },
   created() {
@@ -183,41 +193,55 @@ export default {
           this.$t('LK_WENXINTISHI'),
           {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
       ).then(async () => {
-        /*const req = {
+        const req = {
           id: item.id,
         };
-        const res = await deletePartsCustomerList(req);
+        const res = await deleteParts(req);
         if (res.result) {
           this.partItemCurrent = 0;
-          this.currentBatchNumber = this.partList[0].batchNumber;
-          this.currentPartsId = this.partList[0].partsId;
-          this.getDataInfo();
+          const partListItem = this.partList[0];
+          this.currentTabData = {
+            analysisSchemeId: partListItem.analysisSchemeId,
+            partsId: partListItem.partsId,
+            batchNumber: partListItem.batchNumber,
+            supplierId: partListItem.supplierId,
+          };
+          await this.getDataInfo();
         }
-        this.resultMessage(res);*/
+        this.resultMessage(res);
       });
     },
     // 点击零件
     handlePartItemClick({item, index}) {
       this.partItemCurrent = index;
-      this.currentTabData.partsId = item.partsId;
+      this.currentTabData = {
+        analysisSchemeId: item.analysisSchemeId,
+        partsId: item.partsId,
+        batchNumber: item.batchNumber,
+        supplierId: item.supplierId,
+      };
+      this.currentTab = CURRENTTIME;
+      this.getDataInfo();
     },
     // 点击标签
     handleTabsClick(val) {
       this.currentTab = val;
       if (this.currentTab === AVERAGE) {
-        this.getAverageTable();
+        this.getAverageData();
       }
     },
     // 时间改变
     handleTimeChange(time) {
-      console.log(111);
-      console.log(time);
+      const extraParams = {
+        beginTime: time[0],
+        endTime: time[1],
+      };
+      this.getAverageData({extraParams});
     },
     // 获取信息
     async getDataInfo() {
       try {
-        this.pageLoading = true;
-        this.tableLoading = true;
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: true});
         const req = {
           ...this.currentTabData,
         };
@@ -229,35 +253,55 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        this.pageLoading = false;
-        this.tableLoading = false;
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       } catch {
-        this.pageLoading = false;
-        this.tableLoading = false;
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       }
     },
-    async getAverageTable() {
+    // 获取平均数据
+    async getAverageData({extraParams} = {}) {
       try {
-        this.tableLoading = true;
-        this.averageTableInfo = {};
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: true});
+        this.averageData = {};
         const req = {
           ...this.currentTabData,
+          ...extraParams,
         };
         const res = await getAveragePartCostPrice(req);
-        this.averageTableInfo = res.data;
-        if (res.data.sopTime && res.data.currentTime) {
-          this.timeRange = [res.data.sopTime, res.data.currentTime];
+        this.averageData = res.data;
+        if (res.data.beginTime && res.data.endTime) {
+          this.timeRange = [res.data.beginTime, res.data.endTime];
         } else {
           this.timeRange = null;
         }
-        this.tableLoading = false;
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
       } catch {
-        this.averageTableInfo = {};
-        this.tableLoading = false;
+        this.averageData = {};
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
       }
     },
     // 处理保存弹窗
     handleSaveDialog(reqParams) {},
+    async handleSaveAsReport(callback) {
+      this.previewDialog = true;
+      setTimeout(async () => {
+        const res = await this.$refs.previewDialog.getDownloadFile({
+          callBack: () => {
+            this.previewDialog = false;
+          },
+        });
+        const downloadName = res.downloadName;
+        const downloadUrl = res.downloadUrl;
+        if (callback) {
+          callback(downloadName, downloadUrl);
+        }
+      }, 1000);
+    },
+    setLoading({propsArray, boolean}) {
+      propsArray.map(item => {
+        this[item] = boolean;
+      });
+    },
   },
 };
 </script>

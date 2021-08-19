@@ -60,3 +60,29 @@ export function getAveragePartCostPrice(params) {
     data: params,
   });
 }
+
+//price Index方案详情删除零件
+export function deleteParts(params) {
+  return request({
+    url: `/piAnalysisScheme/deleteParts?id=${params.id}`,
+    method: 'GET',
+  });
+}
+
+//price Index价格分析曲线选择框
+export function getPiIndexWaveSelectList(params) {
+  return request({
+    url: '/piAnalysisScheme/piIndexWaveSelectList',
+    method: 'POST',
+    data: params,
+  });
+}
+
+//price Index价格分析曲线
+export function getPiIndexPartCostWave(params) {
+  return request({
+    url: '/piAnalysisScheme/piIndexPartCostWave',
+    method: 'POST',
+    data: params,
+  });
+}

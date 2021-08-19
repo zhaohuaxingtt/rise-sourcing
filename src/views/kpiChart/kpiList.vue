@@ -116,7 +116,7 @@ import tableFold from './components/tableFold'
 import { pageMixins } from '@/utils/pageMixins'
 import { tabSetting } from './components/data'
 import { iMessage } from '@/components';
-import { getTableData, getMaterialGroupByUserIds, getRelationship } from '@/api/kpiChart/index.js'
+import { getTableData, getCategoryData, getDeptData } from '@/api/kpiChart/index.js'
 import publicHeaderMenu from './commonHeardNav/headerNav'
 import {iNavMvp } from 'rise'
 import { tabRouterList, categoryManagementAssistantListkpi } from './commonHeardNav/navData'
@@ -160,8 +160,8 @@ export default {
   },
   created() {
     this.getTableData()
-    this.getMaterialGroupByUserIds()
-    this.getRelationship()
+    this.getCategoryData()
+    this.getDeptData()
       
   },
   mounted() {
@@ -226,8 +226,8 @@ export default {
       this.tableListData = values
     },
     // 获取材料组数据
-    getMaterialGroupByUserIds() {
-      getMaterialGroupByUserIds({}).then(res => {
+    getCategoryData() {
+      getCategoryData({}).then(res => {
         if(res && res.code == 200) {
           this.categoryList = res.data
         } else {
@@ -236,8 +236,8 @@ export default {
       })
     },
     // 获取科股（部门）数据
-    getRelationship() {
-      getRelationship({}).then(res => {
+    getDeptData() {
+      getDeptData({}).then(res => {
         if(res && res.code == 200) {
           this.organizationMenu = res.data
         } else {
@@ -253,7 +253,7 @@ export default {
     // 重置数据
     reset() {
       for (const key in this.formData) {
-        this.formData[key] = ''
+        this.formData[key] = null
       }
       this.page.currPage = 1
       this.getTableData()

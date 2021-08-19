@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="pieLoading">
     <div class="title">{{ language('PI.LINGJIANCHENGBENGOUCHENG', '零件成本构成') }}</div>
     <div class="theChart" ref="theChart" :style="{'height': chartHeight}"/>
   </div>
@@ -20,6 +20,10 @@ export default {
         return {};
       },
     },
+    pieLoading: {
+      type: Boolean,
+      default: false
+    }
   },
   mounted() {
     this.buildChart();
@@ -55,7 +59,7 @@ export default {
             avoidLabelOverlap: false,
             label: {
               show: true,
-              formatter: '{b}\n({d}%)',
+              formatter: '{b}:{d}%',
             },
             itemStyle: {
               borderWidth: 1,

@@ -104,6 +104,7 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          :selection="isAekoManager"
           @handleSelectionChange="handleSelectionChange"
         >
         <!-- AEKO号 -->
@@ -190,7 +191,7 @@ import {
   synAekoFromTCM,
   synAekoAttachmentFromTCM,
 } from '@/api/aeko/manage'
-import { debounce,chunk } from "lodash";
+import { debounce } from "lodash";
 export default {
     name:'aekoManageList',
     mixins: [pageMixins],
@@ -489,7 +490,7 @@ export default {
          const filterItem = selectItems.filter((item)=>item.aekoStatus == 'CANCELED');
          if(filterItem.length){
            iMessage.warn(tips);
-              return false;
+            return false;
          }else{
            return true;
          }
@@ -733,10 +734,12 @@ export default {
     }
     .table-item-aeko{
       position: relative;
-      padding-left: 28px;
       .link{
         display: block;
-        width: calc( 100% - 28px);
+        padding-left: 30px;
+        padding-right: 8px;
+        margin-right: 8px;
+        box-sizing: border-box;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

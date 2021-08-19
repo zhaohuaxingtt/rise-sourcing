@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-12 09:58:51
- * @LastEditTime: 2021-08-13 15:12:30
+ * @LastEditTime: 2021-08-18 10:33:23
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\headerNav.vue
@@ -60,6 +60,12 @@ export default {
       reportInventoryDialog: false,
       openCatecoryDialog: false,
     };
+  },
+  mounted () {
+    console.log(this.$store.state.rfq.categoryCode)
+    if (!this.$store.state.rfq.categoryCode) {
+      this.openCatecory()
+    }
   },
   methods: {
     openReportInventoryDialog() {
