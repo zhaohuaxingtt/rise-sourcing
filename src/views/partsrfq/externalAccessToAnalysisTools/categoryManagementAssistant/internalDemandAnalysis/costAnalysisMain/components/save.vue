@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-11 15:37:03
- * @LastEditTime: 2021-08-11 16:57:35
+ * @LastEditTime: 2021-08-18 17:29:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\components\save.vue
@@ -41,7 +41,16 @@ export default {
     },
   },
   created() {
-
+    const code = this.$store.state.rfq.categoryCode
+    const name = this.$store.state.rfq.categoryName
+    const newDate = new Date();
+    const year = newDate.getFullYear()
+    let month = newDate.getMonth() + 1
+    let date = newDate.getDate()
+    console.log('month_length', month.toString().length);
+    month = month.toString().length == 1 ? '0' + month : month
+    date = date.toString().length == 1 ? '0' + date : date
+    if(code && name) this.schemeName = code + '-' + name + '-' + (year + '/' + month + '/' + date)
   },
   methods: {
     clickSure() {

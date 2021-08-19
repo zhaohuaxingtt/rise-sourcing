@@ -97,7 +97,7 @@ export default {
       console.log(this.MarketOverviewDTO)
       downloadPDF({
         idEle: "content",
-        pdfName: "2222222",
+        pdfName: "SVW供应商市场总览" + this.categoryCode + '-' + this.categoryName,
         callback: async (pdf, pdfName) => {
           try {
             const time = new Date().getTime();

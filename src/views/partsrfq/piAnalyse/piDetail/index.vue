@@ -56,8 +56,9 @@
       <!--      Price Index价格分析-->
       <iCard class="lineBox">
         <thePriceIndexChart
-            :currentTabData="currentTabData"
+            v-if="showPiChart"
             :currentTab="currentTab"
+            :currentTabData="currentTabData"
         />
       </iCard>
       <!--      零件成本构成-->
@@ -76,6 +77,7 @@
         :dataInfo="dataInfo"
         :averageData="averageData"
         :currentTab="currentTab"
+        :currentTabData="currentTabData"
     />
 
     <!--    保存弹框-->
@@ -106,6 +108,8 @@ import {
   getAveragePartCostPrice,
   deleteParts,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
+import _ from 'lodash';
+import {mapState} from 'vuex';
 
 export default {
   mixins: [resultMessageMixin],
@@ -123,6 +127,11 @@ export default {
     theTable,
     saveDialog,
   },
+  computed: {
+    ...mapState({
+      piIndexChartParams: (state) => state.rfq.piIndexChartParams,
+    }),
+  },
   data() {
     return {
       pageLoading: false,
@@ -136,7 +145,7 @@ export default {
       },
       currentTab: CURRENTTIME,
       currentTabData: {
-        analysisSchemeId: 109,
+        analysisSchemeId: this.$route.query.schemeId,
         partsId: '',
         batchNumber: '',
         supplierId: '',
@@ -148,6 +157,7 @@ export default {
       tableLoading: false,
       timeRange: null,
       pieLoading: false,
+      showPiChart: true,
     };
   },
   created() {
@@ -225,10 +235,20 @@ export default {
     },
     // 点击标签
     handleTabsClick(val) {
+      this.$store.dispatch('setPiIndexChartParams', {
+        dimensionHandle: [],
+        particleSize: '3',
+        beginTime: '',
+        endTime: ''
+      });
       this.currentTab = val;
       if (this.currentTab === AVERAGE) {
         this.getAverageData();
       }
+      this.showPiChart = false;
+      this.$nextTick(() => {
+        this.showPiChart = true;
+      });
     },
     // 时间改变
     handleTimeChange(time) {
@@ -253,6 +273,7 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
+        this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       } catch {
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
@@ -271,6 +292,7 @@ export default {
         this.averageData = res.data;
         if (res.data.beginTime && res.data.endTime) {
           this.timeRange = [res.data.beginTime, res.data.endTime];
+          this.setPiIndexTimeParams(res.data)
         } else {
           this.timeRange = null;
         }
@@ -301,6 +323,12 @@ export default {
       propsArray.map(item => {
         this[item] = boolean;
       });
+    },
+    setPiIndexTimeParams(data) {
+      const copyPiIndexChartParams = _.cloneDeep(this.piIndexChartParams);
+      copyPiIndexChartParams.beginTime = data.beginTime;
+      copyPiIndexChartParams.endTime = data.endTime;
+      this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
     },
   },
 };
