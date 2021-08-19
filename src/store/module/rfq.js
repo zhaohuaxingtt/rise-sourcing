@@ -14,7 +14,10 @@ const state = {
   spareParts: window.sessionStorage.getItem('spareParts') || '',//零件号
   categoryCode: window.sessionStorage.getItem('categoryCode') || '',//材料组code
   categoryName:window.sessionStorage.getItem('categoryName') || '',//材料组name
-  piIndexChartParams: {}
+  piIndexChartParams: {
+    dimensionHandle: [],
+    particleSize: '3'
+  }
 }
 const mutations = {
   SET_PENDING_PARTS_LIST(state, data) {

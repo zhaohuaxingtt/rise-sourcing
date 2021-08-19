@@ -228,7 +228,10 @@ export default {
     },
     // 点击标签
     handleTabsClick(val) {
-      this.$store.dispatch('setPiIndexChartParams', {});
+      this.$store.dispatch('setPiIndexChartParams', {
+        dimensionHandle: [],
+        particleSize: '3'
+      });
       this.currentTab = val;
       if (this.currentTab === AVERAGE) {
         this.getAverageData();

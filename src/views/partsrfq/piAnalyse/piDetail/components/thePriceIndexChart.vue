@@ -84,8 +84,8 @@ import echarts from '@/utils/echarts';
 import {getPiIndexWaveSelectList} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 import {CURRENTTIME} from './data';
 import {getPiIndexPartCostWave} from '../../../../../api/partsrfq/piAnalysis/piDetail';
-import _ from 'lodash'
-import {mapState} from 'vuex'
+import _ from 'lodash';
+import {mapState} from 'vuex';
 
 export default {
   components: {
@@ -133,7 +133,7 @@ export default {
       form: {
         dimension: [],
         dimensionHandle: [],
-        particleSize: '',
+        particleSize: this.$store.state.rfq.piIndexChartParams.particleSize,
       },
       seriesArray: [],
       xLabelData: [],
@@ -142,17 +142,17 @@ export default {
     };
   },
   mounted() {
-    this.getPiIndexWaveSelectList();
+    !this.isPreview && this.getPiIndexWaveSelectList();
     this.buildChart();
   },
   methods: {
     handleTimeGranularityChange() {
-      const copyValue = _.cloneDeep(this.piIndexChartParams)
-      copyValue.particleSize = this.form.particleSize
-      this.$store.dispatch('setPiIndexChartParams', copyValue)
+      const copyValue = _.cloneDeep(this.piIndexChartParams);
+      copyValue.particleSize = this.form.particleSize;
+      this.$store.dispatch('setPiIndexChartParams', copyValue);
     },
     handlePriceLatitudeChange() {
-      const copyValue = _.cloneDeep(this.piIndexChartParams)
+      const copyValue = _.cloneDeep(this.piIndexChartParams);
       if (this.form.dimension.length) {
         this.form.dimensionHandle = this.form.dimension.map(item => {
           return {
@@ -161,8 +161,8 @@ export default {
           };
         });
       }
-      copyValue.dimensionHandle = this.form.dimensionHandle
-      this.$store.dispatch('setPiIndexChartParams', copyValue)
+      copyValue.dimensionHandle = this.form.dimensionHandle;
+      this.$store.dispatch('setPiIndexChartParams', copyValue);
     },
     initEcharts() {
       const chart = echarts().init(this.$refs.theChart);
@@ -305,9 +305,9 @@ export default {
     async getChartData() {
       const req = {
         analysisSchemeId: this.currentTabData.analysisSchemeId,
-        particleSize: this.piIndexChartParams.particleSize ? this.piIndexChartParams.particleSize : '' ,
         type: this.currentTab === CURRENTTIME ? '1' : '2',
-        dimension: this.piIndexChartParams.dimensionHandle ? this.piIndexChartParams.dimensionHandle : [],
+        particleSize: this.piIndexChartParams.particleSize,
+        dimension: this.piIndexChartParams.dimensionHandle,
       };
       try {
         this.seriesArray = [];
