@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-08-18 11:29:46
+ * @LastEditTime: 2021-08-19 11:14:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\home\components\data.js
@@ -16,10 +16,10 @@ import {permissionTitle} from '@/utils'
   {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG',tooltip:true,width:180},
   {props:'partNameDe',name:'零件名（德）',key: 'LK_LINGJIANMINGDE',tooltip:true,width:160},
   {props:'projectCarType',name:'车型项目',key: 'LK_CHEXINGXIANGMU',tooltip:true,width:160},
-  {props:'buyerName',name:'询价采购员',key: 'LK_CAIGOUYUANNEW',tooltip:true,width:90},
+  {props:'stuffName',name:'询价采购员',key: 'LK_CAIGOUYUANNEW',tooltip:true,width:90},
   {props:'tpDeptNum',name:'设计科室',key: 'LK_SHEJIKESHI',tooltip:true,width:100},
   {props:'tpPrincepalName',name:'工程师',key: 'LK_GONGCHENGSHI',tooltip:true,width:90},
-  {props:'tpInfoType',name:'信息单类型',key: 'LK_XINXIDANLEIXING',tooltip:true,width:20},
+  {props:'tpInfoType',name:'信息单类型',key: 'LK_XINXIDANLEIXING',tooltip:true,width:120},
   {props:'status',name:'信息单状态',key: 'LK_XINXIDANZHUANGTAI',tooltip:true,width:80},
   {props:'attachmentStatus',name:'询价资料状态',key: 'LK_XUNJIAZILIAOZHUANGTAI',tooltip:true,minWidth:100},
   {props:'partDosageStatus',name:'每车用量状态',key: 'LK_MEICHEYONGLIANGZHUANGTAI',tooltip:true,minWidth:100}
