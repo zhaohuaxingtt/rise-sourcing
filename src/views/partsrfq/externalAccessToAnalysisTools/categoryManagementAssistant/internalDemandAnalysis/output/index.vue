@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-12 16:25:36
+ * @LastEditTime: 2021-08-18 19:44:57
  * @LastEditors: 舒杰
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
@@ -102,6 +102,16 @@ export default {
    },
    mounted () {
 		this.getPowerBiUrl()
+   },
+   watch:{
+      '$i18n.locale':{
+         handler(newValue){
+         this.renderBi()
+      }},
+      '$store.state.rfq.categoryCode'(newVal){
+         this.categoryCode=this.$store.state.rfq.categoryCode
+         this.renderBi()
+      }
    },
    methods: {
       // 保存

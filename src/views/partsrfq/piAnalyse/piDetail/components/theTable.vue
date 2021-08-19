@@ -113,7 +113,7 @@ export default {
       type: String,
       default: '',
     },
-    averageTableInfo: {
+    averageData: {
       type: Object,
       default: () => {
         return {};
@@ -296,7 +296,7 @@ export default {
           copyTableList = copyDataInfo && copyDataInfo.currentPartCostTotalVO &&
               copyDataInfo.currentPartCostTotalVO.piPartCostVOS;
         } else if (this.currentTab === this.AVERAGE) {
-          copyDataInfo = _.cloneDeep(this.averageTableInfo);
+          copyDataInfo = _.cloneDeep(this.averageData);
           this.nowPriceRatio = copyDataInfo.nowPriceRatio;
           this.totalPriceRatio = copyDataInfo.totalPriceRatio;
           copyTableList = copyDataInfo && copyDataInfo.piPartCostVOS;
@@ -413,7 +413,7 @@ export default {
         this.getTableList();
       },
     },
-    averageTableInfo: {
+    averageData: {
       deep: true,
       handler() {
         this.getTableList();
