@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-19 09:59:28
+ * @LastEditTime: 2021-08-19 12:53:14
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iPagination, iMessage } from 'rise'
+import { iPage, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iMessage } from 'rise'
 import topComponents from '../../designate/designatedetail/components/topComponents'
 import { basicInfo, tableTitle, fileTableTitle } from './data'
 import { pageMixins } from "@/utils/pageMixins"
@@ -98,7 +98,7 @@ import { uniq } from 'lodash'
 import {partProjTypes} from '@/config'
 export default {
   mixins: [pageMixins],
-  components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iPagination, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
+  components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
   props: {
     partType: {type: String, default: '1'} // 零件类型：1：配件   2：附件
   },
@@ -140,9 +140,11 @@ export default {
       this.ids = this.$route.query.ids
       this.getList()
     }
-    if (this.$route.query.linie && this.$route.query.linieDept) {
+    if (this.$route.query.linie) {
       this.detailData.linie = this.$route.query.linieName
       this.linie = this.$route.query.linieName
+    }
+    if (this.$route.query.linieDept) {
       this.detailData.linieDept = this.$route.query.linieDeptName
       this.linieDept = this.$route.query.linieDeptName
     }
@@ -159,14 +161,10 @@ export default {
       this.stuffId = this.tableData[0]?.stuffId
     },
     handleDeptChange(type, val) {
-      // console.log(type, val)
-      // this.detailData[type] = val
-      // console.log(this.detailData)
-      // this.$nextTick(() => {
-      //   this.detailData[type] = val
-      // })
       this.detailData[type] = val
       if (type === 'linieDept') {
+        this.$set(this.detailData,'linie','')
+        this.linie = ''
         this.getUserOptions()
       }
     },
@@ -192,7 +190,10 @@ export default {
      * @return {*}
      */    
     getUserOptions() {
-      this.detailData.linie = ''
+      // this.detailData = {
+      //   ...this.detailData,
+      //   linie: ''
+      // }
       getUserList({deptId:this.detailData.linieDept,tag:'4'}).then(res => {
         if (res?.result) {
           this.fromGroup = {...this.fromGroup, LINIE: res.data?.map(item => {return {value:item.id, label:item.nameZh}})}
