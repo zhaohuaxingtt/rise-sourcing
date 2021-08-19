@@ -614,7 +614,8 @@ export default {
       }
     },
     isDeclareBlackListPart(part) {
-      return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
+      // return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
+      return false // 取消黑名单限制
     }
   },
 };

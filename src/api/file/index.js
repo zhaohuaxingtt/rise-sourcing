@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-08-17 16:29:34
+ * @LastEditTime: 2021-08-19 12:55:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\file\index.js
@@ -38,7 +38,7 @@ export function getFile(params) {
 export function getFiles(params) {
     let {fileType,hostId,isAsc=true,sortColumn='uploadDate',page,currPage} = params
     return sourcing({
-        url: `/file-histories/file-history/${hostId}/${sortColumn}/${isAsc}/${fileType}/${page}/${currPage}`,
+        url: `/file-histories/page/${hostId}/${sortColumn}/${isAsc}/${fileType}/${page}/${currPage}`,
         method: 'get'
     })
 }

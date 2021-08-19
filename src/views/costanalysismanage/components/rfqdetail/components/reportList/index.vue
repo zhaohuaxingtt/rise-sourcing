@@ -259,7 +259,7 @@ export default {
                 const confirmInfo = await this.$confirm( this.language('deleteSure','您确定要执行删除操作吗？'))
                 if (confirmInfo !== 'confirm') return;
                 const idList = selectItems.map((item)=>item.id);
-                await batchDeleteDaring({idList}).then((res)=>{
+                await batchDeleteDaring(idList).then((res)=>{
                     const {code} = res;
                     if(code == 200 ){
                         iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
