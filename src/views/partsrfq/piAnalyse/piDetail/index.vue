@@ -41,6 +41,7 @@
           :dataInfo="dataInfo"
           :currentTab="currentTab"
           :tableLoading="tableLoading"
+          @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
       />
       <theTable
           v-show="currentTab === AVERAGE"
@@ -48,6 +49,7 @@
           :averageData="averageData"
           :currentTab="currentTab"
           :tableLoading="tableLoading"
+          @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
       />
     </iCard>
 
@@ -108,6 +110,7 @@ import {
   getAnalysisSchemeDetails,
   getAveragePartCostPrice,
   deleteParts,
+  saveAnalysisScheme,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
 import _ from 'lodash';
 import {mapState} from 'vuex';
@@ -309,7 +312,30 @@ export default {
       }
     },
     // 处理保存弹窗
-    handleSaveDialog(reqParams) {},
+    async handleSaveDialog(reqParams) {
+      try {
+        this.pageLoading = true;
+        const currentData = this.$refs.theCurrentTable.handleAllSaveData();
+        const averageData = this.$refs.theAverageTable.handleAllSaveData();
+        const req = {
+          ...this.currentTabData,
+        };
+        req.currentPartsCostList = currentData.tableList;
+        req.currentPrice = currentData.nowPriceRatio;
+        req.currentCompositePrice = currentData.totalPriceRatio;
+        req.avgPartsCostList = averageData.tableList;
+        req.avgPrice = averageData.nowPriceRatio;
+        req.avgCompositePrice = averageData.totalPriceRatio;
+        req.beginTime = averageData.beginTime;
+        req.endTime = averageData.endTime;
+        req.analysisSchemeName = reqParams.analysisName;
+        const res = await saveAnalysisScheme(req);
+        this.resultMessage(res);
+        this.pageLoading = false;
+      } catch {
+        this.pageLoading = false;
+      }
+    },
     async handleSaveAsReport(callback) {
       this.previewDialog = true;
       setTimeout(async () => {
@@ -335,6 +361,30 @@ export default {
       copyPiIndexChartParams.beginTime = data.beginTime;
       copyPiIndexChartParams.endTime = data.endTime;
       this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
+    },
+    async handlePriceTableFinish(value, tab) {
+      try {
+        this.tableLoading = true;
+        const req = {
+          ...this.currentTabData,
+        };
+        if (tab === CURRENTTIME) {
+          req.currentPartsCostList = value.tableList;
+          req.currentPrice = value.nowPriceRatio;
+          req.currentCompositePrice = value.totalPriceRatio;
+        } else if (tab === AVERAGE) {
+          req.avgPartsCostList = value.tableList;
+          req.avgPrice = value.nowPriceRatio;
+          req.avgCompositePrice = value.totalPriceRatio;
+          req.beginTime = value.beginTime;
+          req.endTime = value.endTime;
+        }
+        const res = await saveAnalysisScheme(req);
+        this.tableLoading = false;
+        this.resultMessage(res);
+      } catch {
+        this.tableLoading = false;
+      }
     },
   },
 };
