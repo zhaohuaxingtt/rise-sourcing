@@ -56,6 +56,7 @@
       <!--      Price Index价格分析-->
       <iCard class="lineBox">
         <thePriceIndexChart
+            v-if="showPiChart"
             :currentTab="currentTab"
             :currentTabData="currentTabData"
         />
@@ -149,6 +150,7 @@ export default {
       tableLoading: false,
       timeRange: null,
       pieLoading: false,
+      showPiChart: true,
     };
   },
   created() {
@@ -226,10 +228,15 @@ export default {
     },
     // 点击标签
     handleTabsClick(val) {
+      this.$store.dispatch('setPiIndexChartParams', {});
       this.currentTab = val;
       if (this.currentTab === AVERAGE) {
         this.getAverageData();
       }
+      this.showPiChart = false;
+      this.$nextTick(() => {
+        this.showPiChart = true;
+      });
     },
     // 时间改变
     handleTimeChange(time) {

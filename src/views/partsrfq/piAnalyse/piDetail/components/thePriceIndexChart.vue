@@ -15,7 +15,7 @@
         <template v-if="isPreview">
           <span class="text">{{
               language('PI.SHIJIANKELIDU', '时间颗粒度')
-            }}：{{ timeGranularity[form.particleSize] }}</span>
+            }}：{{ timeGranularity[$store.state.rfq.piIndexChartParams.particleSize] }}</span>
         </template>
         <template v-else>
           <div class="select-item">
@@ -84,6 +84,8 @@ import echarts from '@/utils/echarts';
 import {getPiIndexWaveSelectList} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 import {CURRENTTIME} from './data';
 import {getPiIndexPartCostWave} from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import _ from 'lodash'
+import {mapState} from 'vuex'
 
 export default {
   components: {
@@ -110,6 +112,11 @@ export default {
       default: '',
     },
   },
+  computed: {
+    ...mapState({
+      piIndexChartParams: (state) => state.rfq.piIndexChartParams,
+    }),
+  },
   data() {
     return {
       priceLatitudeOptions: [],
@@ -125,6 +132,7 @@ export default {
       },
       form: {
         dimension: [],
+        dimensionHandle: [],
         particleSize: '',
       },
       seriesArray: [],
@@ -139,10 +147,22 @@ export default {
   },
   methods: {
     handleTimeGranularityChange() {
-      this.buildChart();
+      const copyValue = _.cloneDeep(this.piIndexChartParams)
+      copyValue.particleSize = this.form.particleSize
+      this.$store.dispatch('setPiIndexChartParams', copyValue)
     },
-    handlePriceLatitudeChange(val) {
-      this.buildChart();
+    handlePriceLatitudeChange() {
+      const copyValue = _.cloneDeep(this.piIndexChartParams)
+      if (this.form.dimension.length) {
+        this.form.dimensionHandle = this.form.dimension.map(item => {
+          return {
+            id1: item[0],
+            id2: item[1],
+          };
+        });
+      }
+      copyValue.dimensionHandle = this.form.dimensionHandle
+      this.$store.dispatch('setPiIndexChartParams', copyValue)
     },
     initEcharts() {
       const chart = echarts().init(this.$refs.theChart);
@@ -285,18 +305,10 @@ export default {
     async getChartData() {
       const req = {
         analysisSchemeId: this.currentTabData.analysisSchemeId,
-        particleSize: this.form.particleSize,
+        particleSize: this.piIndexChartParams.particleSize ? this.piIndexChartParams.particleSize : '' ,
         type: this.currentTab === CURRENTTIME ? '1' : '2',
-        dimension: [],
+        dimension: this.piIndexChartParams.dimensionHandle ? this.piIndexChartParams.dimensionHandle : [],
       };
-      if (this.form.dimension.length) {
-        req.dimension = this.form.dimension.map(item => {
-          return {
-            id1: item[0],
-            id2: item[1],
-          };
-        });
-      }
       try {
         this.seriesArray = [];
         this.xLabelData = [];
@@ -341,6 +353,12 @@ export default {
     currentTab() {
       this.getPiIndexWaveSelectList();
       this.buildChart();
+    },
+    piIndexChartParams: {
+      handler() {
+        this.buildChart();
+      },
+      deep: true,
     },
   },
 };
