@@ -3,7 +3,7 @@
     <div class="width3-1">
       <h3>Top{{index}}</h3>
       <div class="flex">
-        <div class="score">{{MarketOverviewObj.supplierName}} <span>{{MarketOverviewObj.otherCagrRate}}</span><img :src="upImg"
+        <div class="score">{{MarketOverviewObj.supplierName}} <span>{{MarketOverviewObj.svwCagrRate }}</span><img :src="upImg"
                alt=""></div>
         <div>单位: 百万元</div>
         <!-- <div class="legend">
@@ -26,7 +26,8 @@
       <div class="interests">
         <iSelect v-model="interestsStatus"
                  :disabled="isEdite"
-                 @change="handleChange">
+                 @change="handleChange"
+                 style="flex:1.5">
           <el-option v-for="(x,index) in iSelectOption"
                      :value="x.value"
                      :label="x.name"
@@ -44,7 +45,7 @@
       </div>
     </div>
     <div class="width3-1">
-      <div style="height:360px"
+      <div style="height:420px"
            ref="turnover"></div>
     </div>
     <div class="width3-1">
@@ -69,7 +70,7 @@
           </div>
         </div>
         <div class="border last">
-          <span v-if="isEdite">{{x.totalSalesPro}}</span>
+          <span v-if="isEdite">{{x.totalSalesPro+'%'}}</span>
           <iInput v-else
                   v-model="x.totalSalesPro" />
         </div>
@@ -152,12 +153,60 @@ export default {
         },
         series: [
           {
+            name: '其它',
+            itemStyle: {
+              color: "#B4CBF7"
+            },
+            stack: "check",
+            type: 'bar',
+            label: {
+              position: 'inside'
+            },
+            data: [{
+              value: 20,
+              itemStyle: {
+                borderRadius: [25, 25, 0, 0]
+              },
+              label: {
+                normal: {
+                  show: true,
+                  formatter: ''
+                }
+              }
+            }, {
+              value: 50,
+              itemStyle: {
+                borderRadius: [25, 25, 0, 0]
+              },
+              label: {
+                normal: {
+                  show: true,
+                  formatter: ''
+                }
+              }
+            }, {
+              value: 47,
+              itemStyle: {
+                borderRadius: [25, 25, 0, 0]
+              },
+              label: {
+                normal: {
+                  show: true,
+                  formatter: ''
+                }
+              }
+            }]
+          },
+          {
             name: 'svw',
             itemStyle: {
               color: "#0059FF"
             },
             stack: "check",
             type: 'bar',
+            label: {
+              position: 'insideTop'
+            },
             data: [{
               value: 20,
               itemStyle: {
@@ -194,48 +243,7 @@ export default {
               }
             }]
           },
-          {
-            name: '其它',
-            itemStyle: {
-              color: "#B4CBF7"
-            },
-            stack: "check",
-            type: 'bar',
-            data: [{
-              value: 20,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0]
-              },
-              label: {
-                normal: {
-                  show: true,
-                  formatter: ''
-                }
-              }
-            }, {
-              value: 50,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0]
-              },
-              label: {
-                normal: {
-                  show: true,
-                  formatter: ''
-                }
-              }
-            }, {
-              value: 47,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0]
-              },
-              label: {
-                normal: {
-                  show: true,
-                  formatter: ''
-                }
-              }
-            }]
-          }
+
         ]
       },
       turnover: {
@@ -243,8 +251,11 @@ export default {
           trigger: 'item'
         },
         legend: {
-          orient: 'vertical',
-          bottom: 'bottom',
+          padding: [10, 40],
+          bottom: '0',
+        },
+        grid: {
+          bottom: "20%"
         },
         series: [
           {
@@ -373,34 +384,33 @@ export default {
         if (this.MarketOverviewObj.supplierFinanceDTOList.length > 0) {
           this.MarketOverviewObj.supplierFinanceDTOList.forEach(x => {
             if (x.year == date - 3) {
-              this.option.series[0].data[0].label.normal.formatter = x.svwRate + '%'
-              this.option.series[0].data[0].value = x.svwAmount
-              this.option.series[1].data[0].value = x.otherRate
-              this.option.series[1].data[0].label.normal.formatter = x.otherRate + '%'
+              this.option.series[0].data[0].label.normal.formatter = x.otherRate + '%'
+              this.option.series[0].data[0].value = x.otherRate
+              this.option.series[1].data[0].value = x.svwAmount
+              this.option.series[1].data[0].label.normal.formatter = x.svwRate + '%'
             }
             if (x.year == date - 2) {
-              this.option.series[0].data[1].label.normal.formatter = x.svwRate + '%'
-              this.option.series[0].data[1].value = x.svwAmount
-              this.option.series[1].data[1].value = x.otherRate
-              this.option.series[1].data[1].label.normal.formatter = x.otherRate + '%'
+              this.option.series[0].data[1].label.normal.formatter = x.otherRate + '%'
+              this.option.series[0].data[1].value = x.otherRate
+              this.option.series[1].data[1].value = x.svwAmount
+              this.option.series[1].data[1].label.normal.formatter = x.svwRate + '%'
             }
             if (x.year == date - 1) {
-              this.option.series[0].data[2].label.normal.formatter = x.svwRate + '%'
-              this.option.series[0].data[2].value = x.svwAmount
-              this.option.series[1].data[2].value = x.otherRate
-              this.option.series[1].data[2].label.normal.formatter = x.otherRate + '%'
+              this.option.series[0].data[2].label.normal.formatter = x.otherRate + '%'
+              this.option.series[0].data[2].value = x.otherRate
+              this.option.series[1].data[2].value = x.svwAmount
+              this.option.series[1].data[2].label.normal.formatter = x.svwRate + '%'
 
             }
           });
         } else {
-          this.option.series[0].data[0] = []
-          this.option.series[1].data[0] = []
+          this.option.series[0].data = []
+          this.option.series[1].data = []
         }
         // 饼图
         if (this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
-
-
           let data = []
+          let legend = []
           this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.forEach((x, index) => {
             let seriesObj = {
               value: 1048,
@@ -421,8 +431,23 @@ export default {
             seriesObj.itemStyle.color = colorList[index]
             seriesObj.label.normal.formatter = x.rate + '%'
             data.push(seriesObj)
+            legend.push(x.categoryNameZh)
           })
           this.turnover.series[0].data = data
+          this.turnover.legend.data = legend
+          console.log(this.turnover)
+        }
+        if (!this.MarketOverviewObj.mainCustomerDTOList) {
+          let obj = {
+            customerName: "",
+            totalSalesPro: ""
+          }
+          this.MarketOverviewObj.mainCustomerDTOList = []
+          for (let i = 0; i < 5; i++) {
+            this.MarketOverviewObj.mainCustomerDTOList.push(obj)
+          }
+          // this.MarketOverviewObj.mainCustomerDTOList = [{
+          // }]
         }
         this.$nextTick(() => {
           this.initCharts()
@@ -446,8 +471,8 @@ export default {
       const myChart = echarts().init(this.$refs.chart);
       // 绘制图表
       const option = this.option
-
       myChart.setOption(option);
+
     },
     initturnover () {
       const myChart = echarts().init(this.$refs.turnover);
@@ -455,6 +480,11 @@ export default {
       const option = this.turnover
 
       myChart.setOption(option);
+      myChart.dispatchAction({
+        type: 'showTip',
+        seriesIndex: 0,
+        dataIndex: 0
+      });
     }
 
   }
@@ -463,111 +493,113 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .flex{
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+.nameText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.charts {
+  width: 100%;
+  display: flex;
+  border: 1px solid #acb8cf;
+  border-radius: 10px;
+  padding: 20px 30px;
+  margin-bottom: 20px;
+  .width3-1 {
+    // width: calc(33.33% - 94px);
+    display: flex;
+    flex: 1;
+    margin-left: 20px;
+    flex-direction: column;
+    .bg {
+      div {
+        background-color: rgba(22, 96, 241, 0.1);
+        font-size: 16px;
+        color: #000;
+        border-radius: 5px 5px 0px 0px;
+      }
+      div:first-child {
+        padding-left: 58px;
+      }
+    }
+    .thead {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      div {
+        height: 40px;
+        line-height: 40px;
+      }
+      .last {
+        width: 27%;
+        text-align: center;
+      }
+      .border {
+        border: 1px solid #f1f1f5;
+        border-radius: 5px;
+      }
+      .first {
         display: flex;
-        justify-content: space-between;
-    }
-    .nameText{
-      overflow: hidden;
-      text-overflow:ellipsis;
-      white-space: nowrap;
-    }
-    .charts{
-        width: 100%;
-        display: flex;
-        border:1px solid #ACB8CF;
-        border-radius: 10px;
-        padding: 20px 30px;
-        margin-bottom: 20px;
-        .width3-1{
-            // width: calc(33.33% - 94px);
-            display: flex;
-            flex: 1;
-            margin-left: 20px;
-            flex-direction: column;
-            .bg{
-                div{
-                    background-color: rgba(22,96,241,0.1);
-                    font-size: 16px;
-                    color: #000;
-                    border-radius: 5px 5px 0px 0px;
-                }
-                div:first-child{
-                    padding-left: 58px;
-                }
-            }
-            .thead{
-                 display: flex;
-                 justify-content: space-between;
-                 margin-bottom: 12px;
-                div{
-                    height: 40px;
-                   line-height: 40px;
-                }
-                .last{
-                    width: 27%;
-                    text-align: center;
-                }
-                .border{
-                    border: 1px solid #F1F1F5;
-                    border-radius: 5px;
-                }
-                .first{
-                    display: flex;
-                    justify-content: flex-start;
-                    width: calc(73% - 10px);
-                }
-                .name{
-                    width: calc(100% - 50px);
-                    padding-left: 10px;
-                }
-                .index{
-                    width: 50px;
-                    text-align: center;
-                    border-right: 1px solid #F1F1F5;
-                    position: relative;
-                    img{
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%,-50%);
-                        z-index: 2;
-                    }
-                    div{
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%,-50%);
-                        z-index: 3;
-                    }
-                }
-            }
+        justify-content: flex-start;
+        width: calc(73% - 10px);
+      }
+      .name {
+        width: calc(100% - 50px);
+        padding-left: 10px;
+      }
+      .index {
+        width: 50px;
+        text-align: center;
+        border-right: 1px solid #f1f1f5;
+        position: relative;
+        img {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 2;
         }
-    }
-    h3{
-        margin-bottom: 15px;
-    }
-    .score{
-        span{
-            color: #1660F1;
-            font-size: 14px;
-            margin-left: 15px;
-            display: inline-block;
+        div {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 3;
         }
-        img{
-                display: inline-block;
-                margin-left: 10px;
-            }
+      }
     }
-    .interests{
-        display: flex;
-        justify-content: center;
-        .ml-49{
-            margin-left: 40px;
-            width: calc(33%.33 - 49px);
-        }
-    }
-    .legend {
+  }
+}
+h3 {
+  margin-bottom: 15px;
+}
+.score {
+  span {
+    color: #1660f1;
+    font-size: 14px;
+    margin-left: 15px;
+    display: inline-block;
+  }
+  img {
+    display: inline-block;
+    margin-left: 10px;
+  }
+}
+.interests {
+  display: flex;
+  // justify-content: center;
+  .ml-49 {
+    flex: 1;
+    // margin-left: 40px;
+    padding: 0 20px;
+    width: calc(33%.33 - 49px);
+  }
+}
+.legend {
   font-family: "Arial";
   font-size: 16px;
   color: #0d2451;

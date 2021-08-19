@@ -8,12 +8,12 @@
 -->
 <template>
   <iPage class="dashboard">
-    <headerNav />
+    <headerNav v-permission="DASHBOARD_PARTSIGN" />
     <!-- 功能卡片 -->
     <div class="dashboard-card">
       <el-row :gutter="10">
         <!-- 零件签收 -->
-        <el-col :span="4">
+        <el-col :span="4" v-permission="DASHBOARD_PARTSIGN">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -25,7 +25,7 @@
           </iCard>
         </el-col>
         <!-- 采购项目建立 -->
-        <el-col :span="4">
+        <el-col :span="4" v-permission="DASHBOARD_PARTSPROCURE">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -50,7 +50,7 @@
           </iCard>
         </el-col>
         <!-- RFQ管理 -->
-        <el-col :span="8">
+        <el-col :span="8" v-permission="DASHBOARD_RFQMGMT">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -99,7 +99,7 @@
           </iCard>
         </el-col>
         <!-- 定点管理 -->
-        <el-col :span="4">
+        <el-col :span="4" v-permission="DASHBOARD_NOMINATEMGMT">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -115,7 +115,7 @@
           </iCard>
         </el-col>
         <!-- 定点信/LOI -->
-        <el-col :span="4">
+        <el-col :span="4" v-permission="DASHBOARD_NOMILETTERANDLOI">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -142,10 +142,10 @@
     <div class="dashboard-charts">
       <el-row :gutter="10">
         <!-- 材料组定点时率及平均定点周期 -->
-        <el-col :span="16">
+        <el-col :span="16" v-permission="DASHBOARD_MATERIALANDNOMIRATE">
           <nomicharts :data="materialGroupData" v-loading="loading" />
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" v-permission="DASHBOARD_CIRCULATIONOVERVIEW">
           <pieCharts :data="circulationData" v-loading="loading" />
         </el-col>
       </el-row>

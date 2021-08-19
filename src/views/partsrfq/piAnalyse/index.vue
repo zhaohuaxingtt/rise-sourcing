@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-08-16 14:24:45
+ * @LastEditTime: 2021-08-16 17:07:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -261,7 +261,6 @@ import {
   icon,
   iMessage
 } from "rise";
-// import { iMessage } from '@/components';
 import { pageMixins } from "@/utils/pageMixins";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
 import addScheme from './components/add'
@@ -427,7 +426,13 @@ export default {
     },
     // 点击原材料按钮
     clickRawMaterial() {
-      this.$router.push(this.rawMaterialUrl)
+      this.$router.push({
+        path: this.rawMaterialUrl,
+        query: {
+          round: this.$route.query.round,
+          id: this.$store.state.rfq.rfqId,
+        }  
+      })
     },
     // 点击编辑按钮
     clickEdit() {

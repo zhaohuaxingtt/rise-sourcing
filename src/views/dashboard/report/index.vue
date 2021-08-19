@@ -19,15 +19,15 @@
         <el-col :span="8">
           <iCard class="report-countrfq" :style="`height:${sarchWindowHeight}px`">
             <ul>
-              <li><div><strong>{{rfqInProgress}}</strong><p class="margin-top10">{{language('JINXINGZHONGDERFQ','进行中的RFQ')}}</p></div></li>
-              <li><div><strong class="note">{{rfqDelay}}</strong><p class="margin-top10">{{language('YANWUDERFQ','延误的RFQ')}}</p></div></li>
+              <li v-permission="REPORTMGMT_STATUSREPORT_PROCESSINGRFQ"><div><strong>{{rfqInProgress}}</strong><p class="margin-top10">{{language('JINXINGZHONGDERFQ','进行中的RFQ')}}</p></div></li>
+              <li v-permission="REPORTMGMT_STATUSREPORT_DELAYRFQ"><div><strong class="note">{{rfqDelay}}</strong><p class="margin-top10">{{language('YANWUDERFQ','延误的RFQ')}}</p></div></li>
             </ul>
           </iCard>
         </el-col>
       </el-row>
     </div>
     <div class="margin-top10">
-      <iCard class="report-rfqList" v-loading="loading">
+      <iCard class="report-rfqList" v-loading="loading" v-permission="REPORTMGMT_STATUSREPORT_TABLE">
         <rfqList :dataList="data" />
         <!-- <iPagination
           v-update

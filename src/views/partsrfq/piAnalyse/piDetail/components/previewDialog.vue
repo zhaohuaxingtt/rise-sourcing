@@ -5,16 +5,16 @@
       @close="clearDiolog"
   >
     <div id="content">
-      <div class="title">{{ language('PI.PIINDEXBAOGAO', 'Price Index报告') }}- 零件号</div>
-      <theBaseInfo class="margin-top20"/>
+      <div class="title">{{ language('PI.PIINDEXBAOGAO', 'Price Index报告') }}-{{dataInfo.partsId}}</div>
+      <theBaseInfo class="margin-top20" :dataInfo="dataInfo"/>
       <el-divider class="margin-top20 margin-bottom20"/>
-      <theTable :isPreview="true"/>
+      <theTable :isPreview="true" :dataInfo="dataInfo" :currentTab="currentTab"/>
       <el-divider class="margin-top20 margin-bottom20"/>
       <div class="chartBox">
         <!--      Price Index价格分析-->
         <thePriceIndexChart class="lineBox" :isPreview="true"/>
         <!--      零件成本构成-->
-        <thePartsCostChart class="pieBox"/>
+        <thePartsCostChart class="pieBox" :dataInfo="dataInfo"/>
       </div>
     </div>
   </iDialog>
@@ -36,6 +36,10 @@ export default {
       },
     },
     value: {type: Boolean},
+    currentTab: {
+      type: String,
+      default: ''
+    }
   },
   components: {
     iDialog,

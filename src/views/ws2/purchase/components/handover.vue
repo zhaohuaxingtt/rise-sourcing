@@ -147,7 +147,6 @@ export default {
         if (Number(res.code) === 0) {
           this.linieID = res.data.linieID
           this.deptId = res.data.deptId
-          iMessage.success(result);
         } else {
           iMessage.error(result);
         }

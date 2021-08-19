@@ -11,7 +11,8 @@
             <span>-</span>
             <span>{{categoryName}}</span>
           </div>
-          <div class="right">
+          <div class="right"
+               v-show="savereport">
             <iButton @click="edite=!edite">{{edite?'编辑':'取消'}}</iButton>
             <iButton @click="$router.go(-1)"
                      v-show="edite">返回</iButton>
@@ -57,7 +58,8 @@ export default {
       MarketOverviewDTO: [],
       SchemeId: "",
       categoryCode: "",
-      categoryName: ""
+      categoryName: "",
+      savereport: true
     }
   },
   components: {
@@ -73,7 +75,14 @@ export default {
     this.categoryName = this.$store.state.rfq.categoryName
     this.getmarketOverview()
   },
-
+  watch: {
+    '$store.state.rfq.categoryCode': {
+      handler (val) {
+        this.categoryCode = val
+        this.getmarketOverview()
+      }
+    }
+  },
   methods: {
     getmarketOverview () {
       marketOverview({ categoryCode: this.categoryCode }).then(res => {
@@ -84,6 +93,7 @@ export default {
     },
     saveMarket () {
       this.edite = true
+      this.savereport = false
       this.categoryCode = this.$store.state.rfq.categoryCode
       downloadPDF({
         idEle: "content",
@@ -100,14 +110,18 @@ export default {
               multifile: blob
             }).then(res => {
               const data = res.data[0]
+              let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
+              let arr2 = data.path.split(arr[0])
               saveMarketOverview({
                 categoryCode: this.categoryCode,
                 id: this.SchemeId,
-                reportUrl: data.path.split('/')[1],
+                reportUrl: arr2[1],
                 reportFileName: data.name,
                 marketOverviewSaveDTOList: this.MarketOverviewDTO
               }).then(res => {
                 iMessage.success("保存成功");
+                this.getmarketOverview()
+                this.savereport = true
               })
             });
           } catch {
@@ -120,64 +134,65 @@ export default {
     changeViewObj (val, index) {
       console.log(val, index)
     },
-    
+
   }
 }
 </script>
 
 <style lang="scss" scoped>
-    .head{
-        display: flex;
-        justify-content: space-between;
-        .left{
-            font-size: 22px;
-            font-weight: bold;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            span{
-                margin-left: 20px;
-                display: inline-block;
-                font-size: 16px;
-                opacity: 0.42;
-            }
-        }
+.head {
+  display: flex;
+  justify-content: space-between;
+  .left {
+    font-size: 22px;
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    span {
+      margin-left: 20px;
+      display: inline-block;
+      font-size: 16px;
+      opacity: 0.42;
     }
-    .moudle-tittle{
-        width: 100%;
-        display: flex;
-        align-items: center;
-        margin-top: 36px;
-        margin-bottom: 17px;
-        div{
-           flex: 1;
-        }
-        .turnover{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            // div{
-            //     width: 50%;
-            // }
-        }
-        .module1{
-          margin-right: 40px;
-        }
-    }
-    .module1,.module2-left,.module3{
-         display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    .module2-right{
-        display: flex;
-        justify-content: flex-end;
-     
-    }
-    .imgStatus{
-            width:40px;
-            height:40px;
-            margin-right: 10px;
-            display: inline-block;
-        }
+  }
+}
+.moudle-tittle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: 36px;
+  margin-bottom: 17px;
+  div {
+    flex: 1;
+  }
+  .turnover {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // div{
+    //     width: 50%;
+    // }
+  }
+  .module1 {
+    margin-right: 40px;
+  }
+}
+.module1,
+.module2-left,
+.module3 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.module2-right {
+  display: flex;
+  justify-content: flex-end;
+}
+.imgStatus {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  display: inline-block;
+}
 </style>

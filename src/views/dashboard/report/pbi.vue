@@ -1,5 +1,5 @@
 <template>
-	<iPage class="page-content">
+	<iPage class="page-content" v-permission="REPORTMGMT_STATUSREPORT_PAGE">
 		<headerNav />
 		<iCard id='powerBiReport'>
 			

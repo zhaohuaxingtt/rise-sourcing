@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-13 17:27:07
- * @LastEditTime: 2021-08-16 11:19:09
+ * @LastEditTime: 2021-08-16 17:56:49
  * @LastEditors: Please set LastEditors
  * @Description: PI分析库相关接口
  * @FilePath: \front-web\src\api\partsrfq\piAnalysis\index.js
@@ -61,3 +61,12 @@ export function getRawMateriaDetail(params) {
     data: params,
   });
 }
+// 新增方案时或者全量零件信息
+export function getAllAddPart(params) {
+  return request({
+    url: '/piAnalysisScheme/getPartsList',
+    method: 'POST',
+    data: params,
+  });
+}
+// 提交零件数据生成新的方案

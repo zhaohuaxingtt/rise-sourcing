@@ -51,3 +51,12 @@ export function getAnalysisSchemeDetails(params) {
     data: params,
   });
 }
+
+//平均零件价格成本明细
+export function getAveragePartCostPrice(params) {
+  return request({
+    url: '/piAnalysisScheme/avgPartCostPrice',
+    method: 'POST',
+    data: params,
+  });
+}
