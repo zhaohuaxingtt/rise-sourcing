@@ -111,10 +111,10 @@ import {
   getAveragePartCostPrice,
   deleteParts,
   saveAnalysisScheme,
+  checkName,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
 import _ from 'lodash';
 import {mapState} from 'vuex';
-import {checkName} from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 
 export default {
   mixins: [resultMessageMixin],
