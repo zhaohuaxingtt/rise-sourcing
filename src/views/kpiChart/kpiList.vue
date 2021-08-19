@@ -110,12 +110,12 @@ import {
   iPage,
   iCard,
   iButton,
-  iPagination
+  iPagination,
+  iMessage
 } from 'rise'
 import tableFold from './components/tableFold'
 import { pageMixins } from '@/utils/pageMixins'
 import { tabSetting } from './components/data'
-import { iMessage } from '@/components';
 import { getTableData, getCategoryData, getDeptData } from '@/api/kpiChart/index.js'
 import publicHeaderMenu from './commonHeardNav/headerNav'
 import {iNavMvp } from 'rise'

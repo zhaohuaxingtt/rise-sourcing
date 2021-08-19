@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-11 10:05:22
+ * @LastEditTime: 2021-08-19 14:41:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -63,16 +63,17 @@
       </div>
       <div class="flooterBox">
         <iButton :disabled="!selectMainData || selectMainData.length == 0" @click="clickAdd">{{language('TIANJIA', '添加')}}</iButton>
-        <iButton @clicl="clickSave">{{language('BAOCUN', '保存')}}</iButton>
+        <iButton @click="clickSave">{{language('BAOCUN', '保存')}}</iButton>
       </div>
     </iDialog>
   </div>
 </template>
 
 <script>
-import { iDialog, iInput, iButton, icon } from 'rise'
+import { iDialog, iInput, iButton, icon, iMessage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { customTableTitle } from './data'
+import { getAllAddPart, getCustomParts, editCustomParts } from '@/api/partsrfq/piAnalysis/index'
 export default {
   components: {
     iDialog,
@@ -86,6 +87,10 @@ export default {
       type: Boolean,
       default: false
     },
+    batchNumber: {
+      type: String,
+      default: null
+    }
   },
   data () {
     return {
@@ -95,11 +100,13 @@ export default {
       targetTableData: [],
       selectMainData: [],
       selectTargetData: [],
-      loading: true,
+      loading: false,
     }
   },
   created() {
-    this.initTestData()
+    // this.initTestData()
+    this.getCustomPartData()
+    
   },
   methods: {
     // 初始化测试数据
@@ -111,6 +118,51 @@ export default {
         {id: 4, fsNo: '21-15555', partNo: '20D 023 306 11A', rfq: '123231231-名称', supplierName: '上海AA汽车', factory: 'OD', cardTypeProject: 'SOP (Lavida A)', sopDate: '2021/09至2021/03'},
       ]
       this.loading = false
+    },
+    // 获取全量零件数据
+    getAllPartData() {
+      this.loading = true
+      const params = {
+        userId: 52,
+        partsId: this.searchForm.partsId || null,
+        rfqId: this.searchForm.rfqId || null
+      }
+      getAllAddPart(params).then(res => {
+        if(res && res.code == 200) {
+          this.selectTargetData.map(targetObj => {
+            const index = res.data.findIndex(item => item.id = targetObj.id)
+            res.data.splice(index, index + 1)
+            this.mainTableData = res.data
+          })
+          this.loading = false
+        } else iMessage.error(res.desZh)
+      })
+    },
+    // 获取已有零件数据
+    getCustomPartData() {
+      this.loading = true
+      const params = {
+        batchNumber: this.batchNumber || null
+      }
+      getCustomParts(params).then(res => {
+        if(res && res.code == 200) {
+          this.targetTableData = res.data
+          this.selectTargetData = res.data
+          this.loading = false
+          this.getAllPartData()
+        } else iMessage.error(res.desZh)
+      })
+    },
+    // 点击确定检索
+    handleSubmitSearch() {
+      this.getAllPartData()
+    },
+    // 点击重置检索
+    handleSearchReset() {
+      for(const key in this.searchForm) {
+        this.searchForm[key] = null
+      }
+      this.getAllPartData()
     },
     // 点击添加按钮
     clickAdd() {
@@ -131,6 +183,15 @@ export default {
     },
     // 点击保存
     clickSave() {
+      if(this.selectTargetData && this.selectTargetData.length == 0) {
+        iMessage.error(this.language('QINGXUANZHONGSHUJU','请选中数据'))
+        return
+      }
+      editCustomParts(this.selectTargetData).then(res => {
+        if(res && res.code == 200) {
+          this.$emit()
+        } else iMessage.error(res.desZh)
+      })
     },
     // 获取当前最大排序号
     getCrrentMax(index) {

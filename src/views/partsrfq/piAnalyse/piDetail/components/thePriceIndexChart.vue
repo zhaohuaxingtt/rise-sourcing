@@ -13,7 +13,9 @@
       </div>
       <div class="select-box">
         <template v-if="isPreview">
-          <span class="text">{{ language('PI.SHIJIANKELIDU', '时间颗粒度') }}：xx</span>
+          <span class="text">{{
+              language('PI.SHIJIANKELIDU', '时间颗粒度')
+            }}：{{ timeGranularity[$store.state.rfq.piIndexChartParams.particleSize] }}</span>
         </template>
         <template v-else>
           <div class="select-item">
@@ -34,7 +36,7 @@
           </div>
           <div class="select-item margin-left30">
             <div class="label">{{ language('PI.SHIJIANKELIDU', '时间颗粒度') }}</div>
-            <iSelect v-model="form.particleSize" @change="handleTimeGranularityChange">
+            <iSelect v-model="form.particleSize" @change="handleTimeGranularityChange" clearable>
               <el-option
                   v-for="item of timeGranularityOptions"
                   :key="item.name"
@@ -79,9 +81,10 @@
 import {iSelect} from 'rise';
 import iconTips from '../../../../../components/ws3/iconTips';
 import echarts from '@/utils/echarts';
-import {getPiIndexWaveSelectList} from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import {getPiIndexWaveSelectList, getPiIndexPartCostWave} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 import {CURRENTTIME} from './data';
-import {getPiIndexPartCostWave} from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import _ from 'lodash';
+import {mapState} from 'vuex';
 
 export default {
   components: {
@@ -97,6 +100,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    previewDialog: {
+      type: Boolean,
+      default: false,
+    },
     currentTabData: {
       type: Object,
       default: () => {
@@ -108,6 +115,12 @@ export default {
       default: '',
     },
   },
+  computed: {
+    ...mapState({
+      piIndexChartParams: (state) => state.rfq.piIndexChartParams,
+      piIndexChartData: (state) => state.rfq.piIndexChartData,
+    }),
+  },
   data() {
     return {
       priceLatitudeOptions: [],
@@ -116,9 +129,15 @@ export default {
         {name: '季度', value: '2'},
         {name: '月', value: '3'},
       ],
+      timeGranularity: {
+        '1': '年',
+        '2': '季度',
+        '3': '月',
+      },
       form: {
         dimension: [],
-        particleSize: '',
+        dimensionHandle: [],
+        particleSize: this.$store.state.rfq.piIndexChartParams.particleSize,
       },
       seriesArray: [],
       xLabelData: [],
@@ -127,14 +146,28 @@ export default {
     };
   },
   mounted() {
-    this.getPiIndexWaveSelectList();
-    this.buildChart();
+    !this.isPreview && this.getPiIndexWaveSelectList();
+    this.isPreview && this.previewChartData()
   },
   methods: {
     handleTimeGranularityChange() {
+      const copyValue = _.cloneDeep(this.piIndexChartParams);
+      copyValue.particleSize = this.form.particleSize;
+      this.$store.dispatch('setPiIndexChartParams', copyValue);
       this.buildChart();
     },
-    handlePriceLatitudeChange(val) {
+    handlePriceLatitudeChange() {
+      const copyValue = _.cloneDeep(this.piIndexChartParams);
+      if (this.form.dimension.length) {
+        this.form.dimensionHandle = this.form.dimension.map(item => {
+          return {
+            id1: item[0],
+            id2: item[1],
+          };
+        });
+      }
+      copyValue.dimensionHandle = this.form.dimensionHandle;
+      this.$store.dispatch('setPiIndexChartParams', copyValue);
       this.buildChart();
     },
     initEcharts() {
@@ -149,9 +182,9 @@ export default {
             obj.map(item => {
               const itemDiv = `<div>
               <span class="tooltipText">${item.seriesName}：</span>
-              <span class="tooltipText">幅度</span>
-              <span class="tooltipText">${item.value}，</span>
-              <span class="tooltipText">值</span>
+              <span class="tooltipText">${this.language('PIDETAIL.FUDU', '幅度')}</span>
+              <span class="tooltipText">${item.value}%，</span>
+              <span class="tooltipText">${this.language('PIDETAIL.ZHI', '值')}</span>
               <span class="tooltipText">${item.name}</span>
               </div>`;
               contentDiv.push(itemDiv);
@@ -166,7 +199,7 @@ export default {
         },
         grid: {
           top: 30,
-          left: '3%',
+          left: 40,
           right: 60,
           bottom: '3%',
           containLabel: true,
@@ -278,18 +311,12 @@ export default {
     async getChartData() {
       const req = {
         analysisSchemeId: this.currentTabData.analysisSchemeId,
-        particleSize: this.form.particleSize,
         type: this.currentTab === CURRENTTIME ? '1' : '2',
-        dimension: [],
+        particleSize: this.piIndexChartParams.particleSize,
+        dimension: this.piIndexChartParams.dimensionHandle,
+        beginTime: this.piIndexChartParams.beginTime,
+        endTime: this.piIndexChartParams.endTime,
       };
-      if (this.form.dimension.length) {
-        req.dimension = this.form.dimension.map(item => {
-          return {
-            id1: item[0],
-            id2: item[1],
-          };
-        });
-      }
       try {
         this.seriesArray = [];
         this.xLabelData = [];
@@ -312,12 +339,12 @@ export default {
               data,
             });
           });
-          this.xLabelData = res.data[0].dataValuesList.map(item => {
-            return item.time;
-          });
+          this.xLabelData = res.data[0].timeList;
+          this.setStorePiChartData();
         }
         this.chartLoading = false;
       } catch {
+        this.setStorePiChartData();
         this.chartLoading = false;
       }
     },
@@ -331,11 +358,28 @@ export default {
           return 'dotted';
       }
     },
+    setStorePiChartData() {
+      const copyValue = _.cloneDeep(this.piIndexChartData);
+      copyValue.seriesArray = this.seriesArray;
+      copyValue.xLabelData = this.xLabelData;
+      copyValue.resChartData = this.resChartData;
+      this.$store.dispatch('setPiIndexChartData', copyValue);
+    },
+    previewChartData() {
+      this.seriesArray = this.piIndexChartData.seriesArray;
+      this.xLabelData = this.piIndexChartData.xLabelData;
+      this.resChartData = this.piIndexChartData.resChartData;
+      this.initEcharts();
+    },
   },
   watch: {
     currentTab() {
       this.getPiIndexWaveSelectList();
-      this.buildChart();
+    },
+    previewDialog(val) {
+      if (this.isPreview) {
+        this.previewChartData();
+      }
     },
   },
 };

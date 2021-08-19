@@ -169,9 +169,9 @@
                          align="center"
                          header-align="center">
         </el-table-column>
-        <el-table-column  width="50"
-                          align="center"
-                          header-align="center">
+        <el-table-column width="50"
+                         align="center"
+                         header-align="center">
           <template slot-scope="scope">
             <div @click="handleStick(scope.row)"
                  class="stickIcon">
@@ -223,6 +223,7 @@ import {
   fetchEdit,
   fetchDel,
   initIn,
+  generateGroupId
 } from "@/api/partsrfq/bob/analysisList";
 import { pageMixins } from "@/utils/pageMixins";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
@@ -253,6 +254,7 @@ export default {
       reportUrl: null,
       reportTitle: null,
       reportKey: 0,
+      groupId: "",
       defaultData: [
         { value: "是", label: this.$t("nominationLanguage.Yes") },
         { value: "否", label: this.$t("nominationLanguage.No") },
@@ -266,6 +268,9 @@ export default {
   },
   mounted () {
     this.getTableList();
+    generateGroupId().then(res => {
+      this.groupId = res.data
+    })
   },
   computed: {
     defaultStatus () {
@@ -451,6 +456,7 @@ export default {
       if (this.entryStatus === 1) {
         initIn({
           rfqId: this.form.rfq,
+          groupId: this.groupId
         }).then((res) => {
           // this.$store.dispatch('setSchemeId', res.data);
           if (res.code === '200') {
@@ -459,6 +465,7 @@ export default {
               query: {
                 chemeId: res.data,
                 newBuild: true,
+                groupId: this.groupId
               },
             })
             loading.close()
@@ -475,6 +482,7 @@ export default {
           path: "/sourcing/partsrfq/bobNew",
           query: {
             newBuild: true,
+            groupId: this.groupId
           },
         });
         loading.close();
@@ -588,7 +596,8 @@ export default {
           path: "/sourcing/partsrfq/bobNew",
           query: {
             chemeId: val.id,
-            rfqId: val.rfqNo || ''
+            rfqId: val.rfqNo || '',
+            groupId: this.groupId
           },
         });
       } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {
@@ -603,7 +612,7 @@ export default {
       this.reportVisible = false
     },
     //给方案数据设置斑马纹样式名
-    rowStyle({row}) { 
+    rowStyle ({ row }) {
       return row.fileType == this.$t('TPZS.SCHEME_TYPE') && row.number % 2 == 0 ? 'scheme' : 'report'
     }
   },
@@ -633,7 +642,7 @@ export default {
   width: 96%;
 }
 
-::v-deep .el-table .scheme{
+::v-deep .el-table .scheme {
   background-color: #e0eafd;
 }
 ::v-deep .el-table .report {

@@ -234,6 +234,7 @@ export default {
         }
       },
       areaOptions: [],
+      checkList: [],
       material: [],
       Relationship: [],
       exisList: [],
@@ -385,7 +386,7 @@ export default {
   },
   created () {
     // 初始化国家
-    getCityInfo({  }).then(res => {
+    getCityInfo({ parentCityId: this.getCityid }).then(res => {
       this.areaOptions = res.data.map(x => {
         return {
           ...x,
@@ -402,6 +403,56 @@ export default {
     this.getMaterialGroupByUserIds()
     this.getRelationship()
     this.getStuffByCategory()
+  },
+  watch: {
+    'checkList': {
+      handler (val) {
+        this.areaOptions[0].children = []
+        let secondIndex = -1
+        val.forEach((x, index) => {
+          if (x.level == 3) {
+            this.areaOptions[0].children.forEach((value, index, array) => {
+              if (value.uid == x.parent.uid) {
+                secondIndex = index
+                return false;
+              }
+            })
+            if (secondIndex < 0) {
+              let tempSecond = _.cloneDeep(x.parent)
+              tempSecond.children = [];
+              this.areaOptions[0].children.push(tempSecond)
+              secondIndex = this.areaOptions[0].children.length - 1
+            }
+            let tempThird = _.cloneDeep(x)
+            tempThird.parent = this.areaOptions[0].children[secondIndex]
+            this.areaOptions[0].children[secondIndex].children.push(tempThird)
+            secondIndex = -1
+
+
+            // this.areaOptions[0].children.push(_.cloneDeep(x.parent))
+            // this.areaOptions[0].children[index].children.push(x) 
+            this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
+            this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
+            this.supplierSeccoStockOption.push({ ...x, value: x.value.toString() })
+          } else if (x.level == 2) {
+            this.areaOptions[0].children.push(_.cloneDeep(x))
+            this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
+            console.log(this.areaOptions[0].children)
+            // this.areaOptions[0].children = [...new Set(this.areaOptions[0].children)]
+          }
+        })
+        this.areaOptions[0].children.forEach((second, index, array) => {
+
+          second.children.filter((value, index, array) => {
+
+          })
+        })
+        val.forEach((x, index) => {
+        })
+        this.handelOption(this.areaOptions)
+      },
+      deep: true
+    }
   },
   methods: {
     // 查询材料组
@@ -437,20 +488,22 @@ export default {
       if (this.$refs["myCascader"].getCheckedNodes().length > 0) {
         // this.options = this.$refs["myCascader"].getCheckedNodes()
         console.log(this.$refs["myCascader"].getCheckedNodes())
-        let checkList = this.$refs["myCascader"].getCheckedNodes()
-        console.log("operation start")
+        this.checkList = this.$refs["myCascader"].getCheckedNodes()
         this.$refs["myCascader"].getCheckedNodes().forEach(x => {
           if (x.level == 3) {
+            this.areaOptions[0].children.push(_.cloneDeep(x.parent))
+            // this.areaOptions[0].children.children.push(_.cloneDeep(x))
+            this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
             this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
             this.supplierSeccoStockOption.push({ ...x, value: x.value.toString() })
           } else if (x.level == 2) {
             this.areaOptions[0].children.push(_.cloneDeep(x))
-            this.areaOptions[0].children = [...new Set(this.areaOptions[0].children)]
-            this.handelOption(this.areaOptions)
+            this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
+            console.log(this.areaOptions[0].children)
+            // this.areaOptions[0].children = [...new Set(this.areaOptions[0].children)]
           }
         })
-        console.log("operation end")
-        console.log(this.areaOptions)
+        this.handelOption(this.areaOptions)
       } else {
         this.supplierSeccoStockOption = []
         this.formData.spiBaseDTO.cityCodeList = []
@@ -467,8 +520,13 @@ export default {
           }
         });
       }
-
     },
+
+    unique (arr1) {
+      const res = new Map();
+      return arr1.filter((a) => !res.has(a.value) && res.set(a.value, 1))
+    },
+
 
 
     handleBaseChange () {

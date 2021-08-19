@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-17 15:39:45
+ * @LastEditTime: 2021-08-19 16:12:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -43,11 +43,10 @@
 </template>
 
 <script>
-import {iCard, iButton} from 'rise'
+import {iCard, iButton, iMessage} from 'rise'
 import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/char'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data';
-import { iMessage } from '@/components';
 import { downloadPdfMixins } from '@/utils/pdf';
 import { getTotalCbdData, listNomiData, getCostStructureAnalysisByName, fetchSave} from '@/api/partsrfq/costAnalysis/index.js'
 import saveModal from './components/save'
@@ -99,7 +98,6 @@ export default {
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode,
         fsList: this.$route.query.fsNumList || [],
-        partNumList: this.$route.query.partNumList || [],
       }
       listNomiData(params).then(res => {
         if(res && res.code == 200) {
@@ -155,7 +153,8 @@ export default {
       this.$router.push({
         path: this.costAnalysisAddUrl,
         query: {
-          schemeId: this.oldSchemeId
+          schemeId: this.oldSchemeId,
+          operateLog: this.$route.query.operateLog || null
         }
       })
     },

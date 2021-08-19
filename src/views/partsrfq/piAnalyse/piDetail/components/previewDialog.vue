@@ -24,7 +24,11 @@
       <el-divider class="margin-top20 margin-bottom20"/>
       <div class="chartBox">
         <!--      Price Index价格分析-->
-        <thePriceIndexChart class="lineBox" :isPreview="true"/>
+        <thePriceIndexChart
+            class="lineBox"
+            :isPreview="true"
+            :previewDialog="value"
+        />
         <!--      零件成本构成-->
         <thePartsCostChart class="pieBox" :dataInfo="dataInfo"/>
       </div>
@@ -60,6 +64,12 @@ export default {
     currentTab: {
       type: String,
       default: '',
+    },
+    currentTabData: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
   },
   components: {

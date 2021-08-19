@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-08-17 09:47:19
+ * @LastEditTime: 2021-08-19 14:42:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -70,8 +70,6 @@
         :row-class-name="rowStyle"
         :tree-props="{ children: 'children' }"
         @selection-change="handleSelectionChange"
-        @select="rowSelect"
-        @select-all="selectAll"
       >
         <el-table-column
           align="center"
@@ -259,8 +257,8 @@ import {
   iPagination,
   iSelect,
   icon,
+  iMessage
 } from "rise";
-import { iMessage } from '@/components';
 import { pageMixins } from "@/utils/pageMixins";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
 import addScheme from './components/add'
@@ -501,63 +499,6 @@ export default {
     // 选中项发生改变
     handleSelectionChange(val) {
       this.selection = val;
-    },
-    rowSelect(selection, row) {
-      if (row.fileList) {
-        //只对有子节点的行响应
-        if (!row.isChecked) {
-          //由行数据中的元素isChecked判断当前是否被选中
-          row.fileList.map((item) => {
-            //遍历所有子节点
-            this.$refs.dataTable.toggleRowSelection(item, true); //切换该子节点选中状态
-            /*
-            方法名                    说明                                      参数
-                                 用于多选表格，切换某一行的选中状态，         row, selected
-            toggleRowSelection   如果使用了第二个参数，则是设置这一行
-                                 选中与否（selected 为 true 则选中）
-             */
-            item.isChecked = true;
-          });
-          row.isChecked = true; //当前行isChecked标志元素切换为false
-        } else {
-          row.fileList.map((item) => {
-            this.$refs.dataTable.toggleRowSelection(item, false);
-            item.isChecked = false;
-          });
-          row.isChecked = false;
-        }
-        // console.log(this.multipleSelection, row);
-      }
-    },
-    selectAll(selection) {
-      // selection 是选中的数据集合
-      this.$refs.dataTable.data.map((items) => {
-        //使用$ref获取注册的子组件信息，用data获取所有行，并用map函数遍历行
-        if (items.fileList) {
-          if (!items.isChecked) {
-            //若遍历出来的行未选中
-            this.$refs.dataTable.toggleRowSelection(items, true); //行变为选中状态
-            items.isChecked = true; //更新标志参数
-            items.fileList.map((item) => {
-              //遍历子节点并改变状态与标志参数
-              this.$refs.dataTable.toggleRowSelection(item, true);
-              item.isChecked = true;
-            });
-          } else {
-            //选中状态同理
-            this.$refs.dataTable.toggleRowSelection(items, false);
-            items.isChecked = false;
-            items.fileList.map((item) => {
-              this.$refs.dataTable.toggleRowSelection(item, false);
-              item.isChecked = false;
-            });
-          }
-        } else {
-          if (!items.isChecked) items.isChecked = true;
-          else items.isChecked = false;
-        }
-      });
-      // console.log(this.orgs)
     },
     // 点击置顶按钮
     handleStick(val) {

@@ -41,6 +41,7 @@
           :dataInfo="dataInfo"
           :currentTab="currentTab"
           :tableLoading="tableLoading"
+          @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
       />
       <theTable
           v-show="currentTab === AVERAGE"
@@ -48,6 +49,7 @@
           :averageData="averageData"
           :currentTab="currentTab"
           :tableLoading="tableLoading"
+          @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
       />
     </iCard>
 
@@ -56,8 +58,10 @@
       <!--      Price Index价格分析-->
       <iCard class="lineBox">
         <thePriceIndexChart
-            :currentTabData="currentTabData"
+            v-if="showPiChart"
+            ref="thePriceIndexChart"
             :currentTab="currentTab"
+            :currentTabData="currentTabData"
         />
       </iCard>
       <!--      零件成本构成-->
@@ -76,6 +80,7 @@
         :dataInfo="dataInfo"
         :averageData="averageData"
         :currentTab="currentTab"
+        :currentTabData="currentTabData"
     />
 
     <!--    保存弹框-->
@@ -105,7 +110,10 @@ import {
   getAnalysisSchemeDetails,
   getAveragePartCostPrice,
   deleteParts,
+  saveAnalysisScheme,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
+import _ from 'lodash';
+import {mapState} from 'vuex';
 
 export default {
   mixins: [resultMessageMixin],
@@ -123,6 +131,11 @@ export default {
     theTable,
     saveDialog,
   },
+  computed: {
+    ...mapState({
+      piIndexChartParams: (state) => state.rfq.piIndexChartParams,
+    }),
+  },
   data() {
     return {
       pageLoading: false,
@@ -136,9 +149,9 @@ export default {
       },
       currentTab: CURRENTTIME,
       currentTabData: {
-        analysisSchemeId: 109,
+        analysisSchemeId: this.$route.query.schemeId,
         partsId: '',
-        batchNumber: '',
+        batchNumber: this.$route.query.batchNumber,
         supplierId: '',
       },
       dataInfo: {},
@@ -148,6 +161,7 @@ export default {
       tableLoading: false,
       timeRange: null,
       pieLoading: false,
+      showPiChart: true,
     };
   },
   created() {
@@ -225,18 +239,32 @@ export default {
     },
     // 点击标签
     handleTabsClick(val) {
+      this.$store.dispatch('setPiIndexChartParams', {
+        dimensionHandle: [],
+        particleSize: '3',
+        beginTime: '',
+        endTime: '',
+      });
       this.currentTab = val;
-      if (this.currentTab === AVERAGE) {
-        this.getAverageData();
-      }
+      this.showPiChart = false;
+      this.$nextTick(async () => {
+        this.showPiChart = true;
+        if (this.currentTab === AVERAGE) {
+          await this.getAverageData();
+          await this.$refs.thePriceIndexChart.buildChart();
+        } else {
+          await this.getDataInfo();
+        }
+      });
     },
     // 时间改变
-    handleTimeChange(time) {
+    async handleTimeChange(time) {
       const extraParams = {
         beginTime: time[0],
         endTime: time[1],
       };
-      this.getAverageData({extraParams});
+      await this.getAverageData({extraParams});
+      await this.$refs.thePriceIndexChart.buildChart();
     },
     // 获取信息
     async getDataInfo() {
@@ -253,6 +281,8 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
+        this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
+        await this.$refs.thePriceIndexChart.buildChart();
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       } catch {
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
@@ -271,6 +301,7 @@ export default {
         this.averageData = res.data;
         if (res.data.beginTime && res.data.endTime) {
           this.timeRange = [res.data.beginTime, res.data.endTime];
+          this.setPiIndexTimeParams(res.data);
         } else {
           this.timeRange = null;
         }
@@ -281,7 +312,50 @@ export default {
       }
     },
     // 处理保存弹窗
-    handleSaveDialog(reqParams) {},
+    async handleSaveDialog(reqParams) {
+      try {
+        this.pageLoading = true;
+        const req = this.handleAllSaveReq(reqParams);
+        if (reqParams.reportSave) {
+          await this.handleSaveAsReport(async (downloadName, downloadUrl) => {
+            req.downloadName = downloadName;
+            req.downloadUrl = downloadUrl;
+            await this.saveAnalysisScheme(req);
+            this.saveDialog = false;
+          });
+        } else {
+          await this.saveAnalysisScheme(req);
+          this.saveDialog = false;
+        }
+        this.pageLoading = false;
+      } catch {
+        this.pageLoading = false;
+      }
+    },
+    handleAllSaveReq(reqParams) {
+      const req = {
+        ...this.currentTabData,
+      };
+      const currentData = this.$refs.theCurrentTable.handleAllSaveData();
+      const averageData = this.$refs.theAverageTable.handleAllSaveData();
+      if (reqParams.analysisSave && reqParams.reportSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+        req.reportName = reqParams.reportName;
+      } else if (reqParams.analysisSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+      } else if (reqParams.reportSave) {
+        req.reportName = reqParams.reportName;
+      }
+      req.currentPartsCostList = currentData.tableList;
+      req.currentPrice = currentData.nowPriceRatio;
+      req.currentCompositePrice = currentData.totalPriceRatio;
+      req.avgPartsCostList = averageData.tableList;
+      req.avgPrice = averageData.nowPriceRatio;
+      req.avgCompositePrice = averageData.totalPriceRatio;
+      req.beginTime = averageData.beginTime;
+      req.endTime = averageData.endTime;
+      return req;
+    },
     async handleSaveAsReport(callback) {
       this.previewDialog = true;
       setTimeout(async () => {
@@ -301,6 +375,36 @@ export default {
       propsArray.map(item => {
         this[item] = boolean;
       });
+    },
+    setPiIndexTimeParams(data) {
+      const copyPiIndexChartParams = _.cloneDeep(this.piIndexChartParams);
+      copyPiIndexChartParams.beginTime = data.beginTime;
+      copyPiIndexChartParams.endTime = data.endTime;
+      this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
+    },
+    async handlePriceTableFinish(value, tab) {
+      try {
+        this.tableLoading = true;
+        const req = {
+          ...this.currentTabData,
+        };
+        if (tab === CURRENTTIME) {
+          req.currentPartsCostList = value.tableList;
+          req.currentPrice = value.nowPriceRatio;
+          req.currentCompositePrice = value.totalPriceRatio;
+        } else if (tab === AVERAGE) {
+          req.avgPartsCostList = value.tableList;
+          req.avgPrice = value.nowPriceRatio;
+          req.avgCompositePrice = value.totalPriceRatio;
+          req.beginTime = value.beginTime;
+          req.endTime = value.endTime;
+        }
+        const res = await saveAnalysisScheme(req);
+        this.tableLoading = false;
+        this.resultMessage(res);
+      } catch {
+        this.tableLoading = false;
+      }
     },
   },
 };

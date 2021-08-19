@@ -18,12 +18,12 @@ export function getdDecisiondataDaringList(params) {
   })
 }
 
-export function getdDecisiondataDaringListAll(params) {
-  return requst({
-      url: `/file-history/${params.nomiAppId}/${params.sortColumn}/${params.isAsc}/${params.fileType}`,
-      method: "GET"
-  })
-}
+// export function getdDecisiondataDaringListAll(params) {
+//   return requst({
+//       url: `/file-history/${params.nomiAppId}/${params.sortColumn}/${params.isAsc}/${params.fileType}`,
+//       method: "GET"
+//   })
+// }
 
 // 获取决策资料 - 上传图纸
 export function uploadDaring(data) {
@@ -37,7 +37,7 @@ export function uploadDaring(data) {
 // 获取决策资料 - 批量删除图纸
 export function batchDeleteDaring(data) {
   return requst({
-      url: `/file-history`,
+      url: `/file-histories/delete-files`,
       method: "POST",
       data
   })

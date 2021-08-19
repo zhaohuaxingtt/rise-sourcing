@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-08-17 09:49:32
+ * @LastEditTime: 2021-08-18 11:01:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -69,12 +69,11 @@
 </template>
 
 <script>
-import { iButton, iInput, iSearch, iDatePicker, iPagination } from 'rise'
+import { iButton, iInput, iSearch, iDatePicker, iPagination, iMessage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import detail from './components/detail'
 import { pageMixins } from "@/utils/pageMixins";
-import { iMessage } from '@/components';
 import { getRawMateriaList } from '@/api/partsrfq/piAnalysis/index'
 export default {
   mixins: [pageMixins],

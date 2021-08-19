@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-08-04 19:49:48
+ * @LastEditTime: 2021-08-19 11:12:28
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -163,10 +163,12 @@ export default {
   },
   created () {
     this.SchemeId = this.$attrs.analysisSchemeId
+    this.groupId = this.$route.query.groupId
     this.chargeRetrieve({
       isDefault: true,
       viewType: 'all',
-      schemaId: this.SchemeId
+      schemaId: this.SchemeId,
+      groupId: this.groupId
     });
     this.getRfqToRemark();
     // if (this.$store.state.rfq.entryStatus === 1) {
@@ -369,7 +371,8 @@ export default {
           this.chargeRetrieve({
             isDefault: true,
             viewType: 'all',
-            schemaId: this.SchemeId
+            schemaId: this.SchemeId,
+            groupId: this.groupId
           });
         })
       }).catch(() => {
@@ -378,7 +381,8 @@ export default {
         this.chargeRetrieve({
           isDefault: true,
           viewType: 'all',
-          schemaId: this.SchemeId
+          schemaId: this.SchemeId,
+          groupId: this.groupId
         });
       });
 
@@ -450,13 +454,15 @@ export default {
           this.$refs.ungroupedTable.chargeRetrieve({
             isDefault: true,
             viewType: this.activeName,
-            schemaId: this.SchemeId
+            schemaId: this.SchemeId,
+            groupId: this.groupId
           })
         });
         this.$refs.groupedTable.chargeRetrieve({
           isDefault: true,
           schemaId: this.SchemeId,
-          viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped'
+          viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped',
+          groupId: this.groupId
         })
         this.visible1 = false;
       })
@@ -472,12 +478,14 @@ export default {
         this.$refs.groupedTable.chargeRetrieve({
           isDefault: true,
           viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : "maGrouped",
-          schemaId: this.SchemeId
+          schemaId: this.SchemeId,
+          groupId: this.groupId
         })
         this.$refs.ungroupedTable.chargeRetrieve({
           isDefault: true,
           viewType: this.activeName,
-          schemaId: this.SchemeId
+          schemaId: this.SchemeId,
+          groupId: this.groupId
         })
       })
     },
@@ -503,7 +511,8 @@ export default {
       this.chargeRetrieve({
         isDefault: true,
         viewType: 'all',
-        schemaId: this.SchemeId
+        schemaId: this.SchemeId,
+        groupId: this.groupId
       });
     },
     down () {

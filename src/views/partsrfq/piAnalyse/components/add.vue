@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-17 17:04:24
+ * @LastEditTime: 2021-08-19 14:52:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -40,23 +40,23 @@
           :tableTitle="addTableTitle"
           :tableLoading="loading"
           :index="true"
-           @handleSelectionChange="handleSelectMainTable">
+          :height="300"
+          @handleSelectionChange="handleSelectMainTable">
         </tableList>
       </div>
       <div class="flooterBox">
         <iButton @click="clickAdd">{{language('TIANJIA', '添加')}}</iButton>
-        <iButton @clicl="clickAnalysis">{{language('JINRUFENXI', '进入分析')}}</iButton>
+        <iButton @click="clickAnalysis">{{language('JINRUFENXI', '进入分析')}}</iButton>
       </div>
     </iDialog>
   </div>
 </template>
 
 <script>
-import { iDialog, iInput, iButton } from 'rise'
+import { iDialog, iInput, iButton, iMessage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addTableTitle } from './data'
-import { iMessage } from '@/components';
-import { getAllAddPart } from '@/api/partsrfq/piAnalysis/index'
+import { getAllAddPart, savePartsInfo } from '@/api/partsrfq/piAnalysis/index'
 export default {
   components: {
     iDialog,
@@ -139,8 +139,32 @@ export default {
     },
     // 点击进入分析
     clickAnalysis() {
-      
+      if(this.selectTargetData && this.selectTargetData.length == 0) {
+        iMessage.error(this.language('QINGXUANZHONGSHUJU','请选中数据'))
+        return
+      }
+      savePartsInfo(this.selectTargetData).then(res => {
+        if(res && res.code == 200) {
+          this.$router.push({
+            path: '/sourcing/partsrfq/piAnalyseDetail',
+            query: {
+              batchNumber: res.data
+            }
+          })
+        } else iMessage.error(res.desZh)
+      })
     },
+    // 点击确定检索
+    handleSubmitSearch() {
+      this.getTableData()
+    },
+    // 点击重置检索
+    handleSearchReset() {
+      for(const key in this.searchForm) {
+        this.searchForm[key] = null
+      }
+      this.getTableData()
+    }
   }
 }
 </script>
