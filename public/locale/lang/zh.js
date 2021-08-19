@@ -1134,6 +1134,10 @@
         'LK_GUZIMINGCHEN': '固资名称',  //  固资名称
         'LK_DUIBUQIMEIYOUQUANXIAN': '对不起，您所在得岗位没有该材料组权限', //  对不起，您所在得岗位没有该材料组权限
         'LK_XUANZEBMXINZENGBIANGENG': '选择BM新增单变更', //  选择BM新增单变更
+        'LK_CHAKANBIANGENGDAN': '查看变更单', //  查看变更单
+        'LK_TIJIAOSHENPI': '提交审批', //  提交审批
+        'LK_MUJUTOUZIQINGDANBIANGENGXIANGQING': '模具投资清单变更详情', //  模具投资清单变更详情
+        'LK_BIANGENGSHENPIFUJIAN': '变更审批附件', //  变更审批附件
 
         // 定点管理
         'nominationLanguage': {

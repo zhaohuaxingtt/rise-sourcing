@@ -303,7 +303,7 @@ import {
   iCard,
   icon
 } from "rise";
-import {bmInfoTitle , enclosureTableTitle} from "../components/data"
+import {changeTaskBmInfoTitle , enclosureTableTitle} from "../components/data"
 import confirm from "../components/confirm"
 import photoList from "../components/photoList"
 import { Popover } from "element-ui"
@@ -338,7 +338,7 @@ export default {
       versionList: [],  //  版本列表
       technologyTypeList: [], //  工艺类型
       assetsTypeList: [], //  资产分类编号
-      tableTitle: bmInfoTitle,
+      tableTitle: changeTaskBmInfoTitle,
       tableListData: [],
       assetTypesList: [],
       craftTypesList: [],
