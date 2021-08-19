@@ -251,7 +251,6 @@ export default {
           await this.$refs.thePriceIndexChart.buildChart();
         } else {
           await this.getDataInfo();
-          await this.$refs.thePriceIndexChart.buildChart();
         }
       });
     },
@@ -280,6 +279,7 @@ export default {
           return item.isShow;
         });
         this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
+        await this.$refs.thePriceIndexChart.buildChart();
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       } catch {
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});

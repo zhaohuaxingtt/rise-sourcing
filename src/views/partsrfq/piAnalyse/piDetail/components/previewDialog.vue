@@ -27,8 +27,7 @@
         <thePriceIndexChart
             class="lineBox"
             :isPreview="true"
-            :currentTabData="currentTabData"
-            :currentTab="currentTab"
+            :previewDialog="value"
         />
         <!--      零件成本构成-->
         <thePartsCostChart class="pieBox" :dataInfo="dataInfo"/>

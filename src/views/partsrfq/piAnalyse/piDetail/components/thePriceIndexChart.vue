@@ -81,9 +81,8 @@
 import {iSelect} from 'rise';
 import iconTips from '../../../../../components/ws3/iconTips';
 import echarts from '@/utils/echarts';
-import {getPiIndexWaveSelectList} from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import {getPiIndexWaveSelectList, getPiIndexPartCostWave} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 import {CURRENTTIME} from './data';
-import {getPiIndexPartCostWave} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 import _ from 'lodash';
 import {mapState} from 'vuex';
 
@@ -101,6 +100,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    previewDialog: {
+      type: Boolean,
+      default: false,
+    },
     currentTabData: {
       type: Object,
       default: () => {
@@ -115,6 +118,7 @@ export default {
   computed: {
     ...mapState({
       piIndexChartParams: (state) => state.rfq.piIndexChartParams,
+      piIndexChartData: (state) => state.rfq.piIndexChartData,
     }),
   },
   data() {
@@ -143,14 +147,14 @@ export default {
   },
   mounted() {
     !this.isPreview && this.getPiIndexWaveSelectList();
-    this.isPreview && this.buildChart();
+    this.isPreview && this.previewChartData()
   },
   methods: {
     handleTimeGranularityChange() {
       const copyValue = _.cloneDeep(this.piIndexChartParams);
       copyValue.particleSize = this.form.particleSize;
       this.$store.dispatch('setPiIndexChartParams', copyValue);
-      this.buildChart()
+      this.buildChart();
     },
     handlePriceLatitudeChange() {
       const copyValue = _.cloneDeep(this.piIndexChartParams);
@@ -164,7 +168,7 @@ export default {
       }
       copyValue.dimensionHandle = this.form.dimensionHandle;
       this.$store.dispatch('setPiIndexChartParams', copyValue);
-      this.buildChart()
+      this.buildChart();
     },
     initEcharts() {
       const chart = echarts().init(this.$refs.theChart);
@@ -336,9 +340,11 @@ export default {
             });
           });
           this.xLabelData = res.data[0].timeList;
+          this.setStorePiChartData();
         }
         this.chartLoading = false;
       } catch {
+        this.setStorePiChartData();
         this.chartLoading = false;
       }
     },
@@ -352,11 +358,29 @@ export default {
           return 'dotted';
       }
     },
+    setStorePiChartData() {
+      const copyValue = _.cloneDeep(this.piIndexChartData);
+      copyValue.seriesArray = this.seriesArray;
+      copyValue.xLabelData = this.xLabelData;
+      copyValue.resChartData = this.resChartData;
+      this.$store.dispatch('setPiIndexChartData', copyValue);
+    },
+    previewChartData() {
+      this.seriesArray = this.piIndexChartData.seriesArray;
+      this.xLabelData = this.piIndexChartData.xLabelData;
+      this.resChartData = this.piIndexChartData.resChartData;
+      this.initEcharts();
+    },
   },
   watch: {
     currentTab() {
       this.getPiIndexWaveSelectList();
-    }
+    },
+    previewDialog(val) {
+      if (this.isPreview) {
+        this.previewChartData();
+      }
+    },
   },
 };
 </script>
