@@ -181,7 +181,6 @@ export default {
         this.parmarsHasRfq['size'] = this.page.pageSize
         this.parmarsHasRfq['current'] = this.page.currPage
         this.parmarsHasRfq['rfqId'] = this.rfqId
-        this.parmarsHasRfq['status'] = '12'
         getTabelData(this.parmarsHasRfq).then(res => {
           this.confirmTableLoading = false
           this.page.currPage = res.pageNum
