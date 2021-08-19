@@ -315,26 +315,46 @@ export default {
     async handleSaveDialog(reqParams) {
       try {
         this.pageLoading = true;
-        const currentData = this.$refs.theCurrentTable.handleAllSaveData();
-        const averageData = this.$refs.theAverageTable.handleAllSaveData();
-        const req = {
-          ...this.currentTabData,
-        };
-        req.currentPartsCostList = currentData.tableList;
-        req.currentPrice = currentData.nowPriceRatio;
-        req.currentCompositePrice = currentData.totalPriceRatio;
-        req.avgPartsCostList = averageData.tableList;
-        req.avgPrice = averageData.nowPriceRatio;
-        req.avgCompositePrice = averageData.totalPriceRatio;
-        req.beginTime = averageData.beginTime;
-        req.endTime = averageData.endTime;
-        req.analysisSchemeName = reqParams.analysisName;
-        const res = await saveAnalysisScheme(req);
-        this.resultMessage(res);
+        const req = this.handleAllSaveReq(reqParams);
+        if (reqParams.reportSave) {
+          await this.handleSaveAsReport(async (downloadName, downloadUrl) => {
+            req.downloadName = downloadName;
+            req.downloadUrl = downloadUrl;
+            await this.saveAnalysisScheme(req);
+            this.saveDialog = false;
+          });
+        } else {
+          await this.saveAnalysisScheme(req);
+          this.saveDialog = false;
+        }
         this.pageLoading = false;
       } catch {
         this.pageLoading = false;
       }
+    },
+    handleAllSaveReq(reqParams) {
+      const req = {
+        ...this.currentTabData,
+      };
+      const currentData = this.$refs.theCurrentTable.handleAllSaveData();
+      const averageData = this.$refs.theAverageTable.handleAllSaveData();
+      if (reqParams.analysisSave && reqParams.reportSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+        req.reportName = reqParams.reportName;
+      } else if (reqParams.analysisSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+      } else if (reqParams.reportSave) {
+        req.reportName = reqParams.reportName;
+      }
+      req.currentPartsCostList = currentData.tableList;
+      req.currentPrice = currentData.nowPriceRatio;
+      req.currentCompositePrice = currentData.totalPriceRatio;
+      req.avgPartsCostList = averageData.tableList;
+      req.avgPrice = averageData.nowPriceRatio;
+      req.avgCompositePrice = averageData.totalPriceRatio;
+      req.beginTime = averageData.beginTime;
+      req.endTime = averageData.endTime;
+      return req;
     },
     async handleSaveAsReport(callback) {
       this.previewDialog = true;
