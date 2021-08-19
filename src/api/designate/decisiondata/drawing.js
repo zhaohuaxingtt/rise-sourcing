@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-08-19 12:55:05
+ * @LastEditTime: 2021-08-19 15:01:59
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料api
  * @FilePath: \front-web\src\api\designate\index.js
@@ -37,7 +37,7 @@ export function uploadDaring(data) {
 // 获取决策资料 - 批量删除图纸
 export function batchDeleteDaring(data) {
   return requst({
-      url: `/file-history`,
+      url: `/file-histories/delete-files`,
       method: "POST",
       data
   })
