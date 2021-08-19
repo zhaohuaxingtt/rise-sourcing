@@ -57,6 +57,7 @@
       <iCard class="lineBox">
         <thePriceIndexChart
             v-if="showPiChart"
+            ref="thePriceIndexChart"
             :currentTab="currentTab"
             :currentTabData="currentTabData"
         />
@@ -147,7 +148,7 @@ export default {
       currentTabData: {
         analysisSchemeId: this.$route.query.schemeId,
         partsId: '',
-        batchNumber: '',
+        batchNumber: this.$route.query.batchNumber,
         supplierId: '',
       },
       dataInfo: {},
@@ -239,24 +240,28 @@ export default {
         dimensionHandle: [],
         particleSize: '3',
         beginTime: '',
-        endTime: ''
+        endTime: '',
       });
       this.currentTab = val;
-      if (this.currentTab === AVERAGE) {
-        this.getAverageData();
-      }
       this.showPiChart = false;
-      this.$nextTick(() => {
+      this.$nextTick(async () => {
         this.showPiChart = true;
+        if (this.currentTab === AVERAGE) {
+          await this.getAverageData();
+          await this.$refs.thePriceIndexChart.buildChart();
+        } else {
+          await this.getDataInfo();
+        }
       });
     },
     // 时间改变
-    handleTimeChange(time) {
+    async handleTimeChange(time) {
       const extraParams = {
         beginTime: time[0],
         endTime: time[1],
       };
-      this.getAverageData({extraParams});
+      await this.getAverageData({extraParams});
+      await this.$refs.thePriceIndexChart.buildChart();
     },
     // 获取信息
     async getDataInfo() {
@@ -274,6 +279,7 @@ export default {
           return item.isShow;
         });
         this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
+        await this.$refs.thePriceIndexChart.buildChart();
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       } catch {
         this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
@@ -292,7 +298,7 @@ export default {
         this.averageData = res.data;
         if (res.data.beginTime && res.data.endTime) {
           this.timeRange = [res.data.beginTime, res.data.endTime];
-          this.setPiIndexTimeParams(res.data)
+          this.setPiIndexTimeParams(res.data);
         } else {
           this.timeRange = null;
         }

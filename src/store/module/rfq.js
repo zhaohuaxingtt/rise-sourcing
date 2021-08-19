@@ -19,6 +19,11 @@ const state = {
     particleSize: '3',
     beginTime: '',
     endTime: ''
+  },
+  piIndexChartData: {
+    seriesArray: [],
+    xLabelData: [],
+    resChartData: []
   }
 }
 const mutations = {
@@ -55,6 +60,9 @@ const mutations = {
   },
   SET_PI_INDEX_CHART_PARAMS(state, data) {
     state.piIndexChartParams = data
+  },
+  SET_PI_CHART_DATA(state, data) {
+    state.piIndexChartData = data
   }
 }
 
@@ -87,6 +95,9 @@ const actions = {
   },
   setPiIndexChartParams({ commit }, data) {
     commit('SET_PI_INDEX_CHART_PARAMS', data)
+  },
+  setPiIndexChartData({ commit }, data) {
+    commit('SET_PI_CHART_DATA', data)
   },
 }
 

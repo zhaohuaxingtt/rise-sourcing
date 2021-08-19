@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-22 13:41:55
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-19 11:27:59
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -90,8 +90,8 @@ export const nomalTableTitle = [
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 55},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 85},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 60},
-  {props:'supplierName',name:'厂商', enName: 'Code', key: "", minWidth: 45},
-  {props:'supplierId',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
+  {props:'supplierSapCode',name:'厂商', enName: 'Code', key: "", minWidth: 45},
+  {props:'supplierName',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
   {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
   {props:'rw',name:'欧价', enName: 'RW', key: "", minWidth: 35},
