@@ -101,12 +101,12 @@ export function nominateConfirm(data) {
 }
 
 // 获取车型项目
-export function getCarTypePro(data) {
-  return requst({
-    url: '/part-src-prjs/car-type-pro',
-    method: "GET"
-  })
-}
+// export function getCarTypePro(data) {
+//   return requst({
+//     url: '/part-src-prjs/car-type-pro',
+//     method: "GET"
+//   })
+// }
 
 // 提交一致性校验
 export function consistenceCheck(data) {
