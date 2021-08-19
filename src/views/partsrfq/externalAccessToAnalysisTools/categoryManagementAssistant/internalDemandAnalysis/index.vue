@@ -1,17 +1,15 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-13 15:09:21
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-08-18 10:50:29
+ * @LastEditors: zbin
  * @Description: 内部需求分析
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\index.vue
 -->
 <template>
   <iPage>
     <headerNav ref="headerNav">
-      <div slot="extralButton">
-        <iButton @click="handleView">{{ language("CHAKANLISHI", "查看历史") }}</iButton>
-      </div>
+      <iButton slot="extralButton" @click="handleView">{{ language("CHAKANLISHI", "查看历史") }}</iButton>
     </headerNav>
     <router-view></router-view>
     <viewHistory v-model="viewHistory" />
@@ -21,7 +19,6 @@
 <script>
 import { iPage, iButton } from 'rise';
 import headerNav from '../components/headerNav';
-import { pageRfqBaseInfo } from "@/api/partsrfq/specialAnalysisTool/specialAnalysisTool";
 import viewHistory from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/viewHistory/index.vue';
 export default {
   components: {
@@ -39,9 +36,9 @@ export default {
   },
   methods: {
     handleView() {
-      if(this.$store.state.rfq.categoryCode){
-       this.viewHistory = true
-      }else{
+      if (this.$store.state.rfq.categoryCode) {
+        this.viewHistory = true
+      } else {
         this.$refs.headerNav.openCatecory()
       }
     },

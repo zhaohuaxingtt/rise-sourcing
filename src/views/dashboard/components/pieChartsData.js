@@ -1,12 +1,16 @@
 /*
  * @Author: your name
  * @Date: 2021-08-06 08:52:14
- * @LastEditTime: 2021-08-13 23:10:02
+ * @LastEditTime: 2021-08-19 09:51:05
  * @LastEditors: Please set LastEditors
  * @Description: 流转状态跟踪饼状图模拟数据
  * @FilePath: /front-web/src/views/dashboard/components/pieChartsData.js
  */
 export function generateOptions(data) {
+    // 超过4周
+    const over4weeks = (data && data.leWeekNum) || 0
+    const within4weeks = (data && data.gtWeekNum) || 0
+    const isNull = (over4weeks === 0 && within4weeks=== 0)
     const option = {
         tooltip: {
             trigger: 'item',
@@ -18,7 +22,7 @@ export function generateOptions(data) {
                         ${params.marker}
                     <span class="item-name">${params.name}</span><br>
                     <p style="padding-left: 17px;">
-                        <b>${params.value}(${params.percent}%)<b>
+                        <b>${isNull ? 0 : params.value}(${isNull ? 0 : params.percent}%)<b>
                     <p>
                 </div>`
             }
@@ -31,7 +35,7 @@ export function generateOptions(data) {
                 minAngle: 5,
                 zlevel: 2,
                 selectedMode: 'single',
-                selectedOffset: '4',
+                selectedOffset: '3',
                 top: '-20%',
                 radius: ['44%', '55%'],
                 avoidLabelOverlap: true,
@@ -53,21 +57,18 @@ export function generateOptions(data) {
                 },
                 data: [
                     {
-                        value: (data && data.leWeekNum) || 0, 
+                        value: isNull ? 1 : over4weeks, 
                         selected: true,
                         name: '流转超4周',
                         itemStyle: {
-                            color: '#fab738',
-                            borderColor: '#fab738',
-                            borderWidth: 5
+                            color: isNull ? '#ddd' : '#fab738'
                         }
                     },
                     {
-                        value: (data && data.gtWeekNum) || 0, 
+                        value: within4weeks, 
                         name: '流转4周内',
                         itemStyle: {
-                            color: '#6192f0',
-                            borderWidth: 2
+                            color: '#6192f0'
                         }
                     }
                 

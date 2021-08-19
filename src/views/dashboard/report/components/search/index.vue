@@ -26,10 +26,6 @@
           clearable
         >
           <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
-          <el-option
             :value="items.code"
             :label="items.name"
             v-for="(items, index) in (options.CAR_TYPE_BUYER || [])"
@@ -68,10 +64,6 @@
           clearable
         >
           <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
-          <el-option
             :value="items.code"
             :label="language(items.key,items.name)"
             v-for="(items, index) in (options.SORT || [])"
@@ -93,10 +85,6 @@
           clearable
         >
           <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
-          <el-option
             :value="items.code"
             :label="items.name"
             v-for="(items, index) in (options.MATERIAL_GROUP_BUYER || [])"
@@ -116,10 +104,6 @@
           filterable
           clearable
         >
-          <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
           <el-option
             :value="items.code"
             :label="items.name"
@@ -156,7 +140,7 @@ export default {
         buyer: '',
         carTypes: [],
         categoryGroup: [],
-        order: '',
+        order: 'DEFAULT',
         partNum: '',
         rfqId: '',
       },
@@ -165,6 +149,11 @@ export default {
       // options
       options: {
         SORT: [
+          {
+            code: 'DEFAULT',
+            name: '默认',
+            key: 'MOREN'
+          },
           {
             code: 'TASK_STATUS',
             name: '按任务状态',
@@ -175,11 +164,6 @@ export default {
             name: '按整车进度风险',
             key: 'ANZHENGCHEFENGXIAN'
           },
-          {
-            code: 'DEFAULT',
-            name: '默认',
-            key: 'MOREN'
-          }
         ],
         MATERIAL_GROUP_BUYER: [],
         CAR_TYPE_BUYER: [],

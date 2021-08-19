@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-06-28 10:46:03
- * @LastEditTime: 2021-07-27 11:56:01
+ * @LastEditTime: 2021-08-19 10:59:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\bob\analysisList\index.js
@@ -77,8 +77,6 @@ export function add(parmars) {
   })
 }
 
-
-
 // 查询零件号列表
 export function part({ data, analysisSchemeId }) {
   return request({
@@ -118,5 +116,13 @@ export function down(params) {
     url: `/bobRoundDetail/down`,
     method: 'POST',
     params,
+  })
+}
+// 生成新的操作批次组ID
+export function generateGroupId() {
+  return request({
+    url: '/bobAnalysisScheme/generateGroupId',
+    method: 'GET',
+    // data: parmars,
   })
 }

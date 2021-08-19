@@ -6,18 +6,18 @@
 export const SearchList = [
   {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_PARTNUM'},
   {props:'partNameZh',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_PARTNAME'},
-  {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_CARTYPECODE',selectOption:'cartypeCode',showCode:'Aeko',multiple:true,filterable:true},
+  {props:'cartypeCode',label:'⻋型项⽬',isNewSelect:true,type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_CARTYPECODE',selectOption:'cartypeCode',showCode:['Aeko','MP'],multiple:true,filterable:true},
   {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNumList',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_LINIEDEP',filterable:true,multiple:true,},
   {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_BUYERNAME',selectOption:'buyerName',noShowAll:true,filterable:true,clearable:true},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_BRAND',selectOption:'brand'},
-  {props:'cartype',label:'车型',type:'select',labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_CARTYPE',selectOption:'cartype',multiple:true,showCode:'AeA',filterable:true},
+  {props:'cartype',label:'车型',isNewSelect:true,type:'select',labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_CARTYPE',selectOption:'cartype',multiple:true,showCode:['AeA'],filterable:true},
 ]
 
 
 export const tableTitle = [
     { props: "partNum", name: "零件号 ", key: "LK_LINGJIANHAO", tooltip: true },
     { props: "partNameZh", name: "零件名称", key: "LK_LINGJIANMINGCHENG", tooltip: true },
-    { props: "changeTypeDesc", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
+    { props: "changeType", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
     { props: "prNumber", name: "PR号", key: "LK_AEKOPRHAO", tooltip: true },
     { props: "brand", name: "品牌", key: "LK_AEKOPINGPAI", tooltip: true },
     { props: "cartypeZh", name: "涉及⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true,width:130 },
@@ -37,7 +37,7 @@ export const commodityTableTitle = [
   { props: "linieDeptName", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
   { props: "buyerName", name: "Linie", key: "LK_AEKO_LINIE", tooltip: true },
   { props: "operate", name: "操作", key: "LK_CAOZUO" },
-  { props: "aekoPartStatusDesc", name: "表态状态", key: "LK_AEK0_BIAOTAIZHUANGTAI", tooltip: true },
+  { props: "aekoPartStatusDesc", name: "内容状态", key: "LK_AEKO_NEIRONGZHUANGTAI", tooltip: true },
 ]
 
 export const linieSearchList = [

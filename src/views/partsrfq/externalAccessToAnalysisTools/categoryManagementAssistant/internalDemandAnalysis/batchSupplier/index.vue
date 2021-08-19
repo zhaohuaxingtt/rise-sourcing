@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-08-14 13:34:31
+ * @LastEditTime: 2021-08-18 19:43:15
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
@@ -61,8 +61,8 @@ export default {
          filter : {
             $schema: "http://powerbi.com/product/schema#basic",
             target: {
-               table: "Fact_01_Supplier_SPI",
-               column: "supplier_id"
+               table: "Table_Par&Stu",
+               column: "Stuff_ID"
             },
             operator: "In",
             values: [],//
@@ -93,7 +93,11 @@ export default {
          handler(newValue){
          this.config.pageName=newValue=='zh'?'ReportSectione9fe87a027d2550c28a9':'ReportSection616eb7861df2ef50a3cd'
          this.renderBi()
-      }}
+      }},
+      '$store.state.rfq.categoryCode'(newVal){
+         this.categoryCode=this.$store.state.rfq.categoryCode
+         this.renderBi()
+      }
    },
    methods: {
       // 获取近期操作数据
@@ -152,11 +156,11 @@ export default {
       init(){
          this.config.embedUrl=this.url.embedUrl
          this.config.accessToken=this.url.accessToken
-         this.filter.values=[this.categoryCode]
          this.reportContainer = document.getElementById('powerBi');
          this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       },
       renderBi() {
+         this.filter.values=[this.categoryCode]
          var report = this.powerbi.embed(this.reportContainer, this.config);
          // Report.off removes a given event handler if it exists.
          report.off("loaded");

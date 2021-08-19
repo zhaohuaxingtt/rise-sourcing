@@ -18,13 +18,18 @@
       <theTable
           v-show="currentTab === AVERAGE"
           :isPreview="true"
-          :averageTableInfo="averageTableInfo"
+          :averageData="averageData"
           :currentTab="currentTab"
       />
       <el-divider class="margin-top20 margin-bottom20"/>
       <div class="chartBox">
         <!--      Price Index价格分析-->
-        <thePriceIndexChart class="lineBox" :isPreview="true"/>
+        <thePriceIndexChart
+            class="lineBox"
+            :isPreview="true"
+            :currentTabData="currentTabData"
+            :currentTab="currentTab"
+        />
         <!--      零件成本构成-->
         <thePartsCostChart class="pieBox" :dataInfo="dataInfo"/>
       </div>
@@ -50,7 +55,7 @@ export default {
         return {};
       },
     },
-    averageTableInfo: {
+    averageData: {
       type: Object,
       default: () => {
         return {};
@@ -60,6 +65,12 @@ export default {
     currentTab: {
       type: String,
       default: '',
+    },
+    currentTabData: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
   },
   components: {

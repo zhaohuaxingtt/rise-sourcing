@@ -27,6 +27,7 @@
                     <div>
                         <supplierkpiSearchFrom
                         @chartData="watchData"
+                        @reset="resetData"
                         ></supplierkpiSearchFrom>
                     </div>
                     <div></div>
@@ -217,6 +218,7 @@ export default {
         },
         watchData(x){
             this.tabledata= x.supplierList
+            console.log(x)
             // 折线图点
             x.totalSupplierList.forEach(z=>{this.totalScore.series[0].data.push({value:z,symbol:'none',name:""})})
             x.oneMaps.PP01000.oneSupplierList.forEach(z=>{
@@ -239,20 +241,16 @@ export default {
             })
             // 供应商名字
             this.supplierNameArray=[]
-            this.supplierObj.forEach(y=>{
-                this.supplierNameArray.push({
-                        name:y.nameZh,
-                        icon:'circle',
-                        textStyle: {
-                            color: '#1763F7'
-                        }
-                    })
-            })
-            // this.totalScore.legend.data=this.supplierNameArray
-            // this.quality.legend.data=this.supplierNameArray
-            // this.cost.legend.data=this.supplierNameArray
-            // this.delivery.legend.data=this.supplierNameArray
-            // this.sustainable.legend.data=this.supplierNameArray
+            // this.supplierObj.forEach(y=>{
+            //     this.supplierNameArray.push({
+            //             name:y.nameZh,
+            //             icon:'circle',
+            //             textStyle: {
+            //                 color: '#1763F7'
+            //             }
+            //         })
+            // })
+            
         },
         getSupplierName(x){
             if(x.length>0){
@@ -265,9 +263,11 @@ export default {
                  x.totalList.forEach(score => {
                      if(score.totalScore>9){
                          this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].symbol='emptyCircle'
+                         this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].c=Math.floor((score.totalScore)/10)*10+5
+                         this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].sArray=[]
                          this.tabledata.forEach(s=>{
-                            if(s.supplierId==score.supplierId && Math.floor((s.score)/10)==Math.floor((score.totalScore)/10)){
-                                this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].name+=s.nameZh
+                            if(s.supplierId==score.supplierId){
+                                this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].sArray.push(s.nameZh)
                             }
                         })
                      }else{
@@ -284,40 +284,53 @@ export default {
             if(x.oneList.length>0){
                  x.oneList.forEach(score => {
                      if(score.levelOneCode=="PP01000" || score.levelOneCode=="GP01000"){
+                        console.log(score)
                         this.quality.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                        this.quality.series[0].data[Math.floor((score.score)/10)].c=Math.floor((score.score)/10)*10+5
+                        this.quality.series[0].data[Math.floor((score.score)/10)].sArray=[]
                         this.tabledata.forEach(s=>{
-                            if(s.levelOneCode=="PP01000" && Math.floor((s.score)/10)==Math.floor((score.score)/10)){
-                                this.quality.series[0].data[Math.floor((score.score)/10)].name+=s.nameZh
+                            if(s.supplierId==score.supplierId){
+                                this.quality.series[0].data[Math.floor((score.score)/10)].sArray.push(s.nameZh)
                             }
                         })
                      }
                     if(score.levelOneCode=="PP02000" || score.levelOneCode=="GP02000"){
                         this.cost.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                        this.cost.series[0].data[Math.floor((score.score)/10)].c=Math.floor((score.score)/10)*10+5
+                        this.cost.series[0].data[Math.floor((score.score)/10)].sArray=[]
                         this.tabledata.forEach(s=>{
-                            if(s.levelOneCode=="PP02000" && Math.floor((s.score)/10)==Math.floor((score.score)/10)){
-                                this.cost.series[0].data[Math.floor((score.score)/10)].name+=s.nameZh
+                            if(s.supplierId==score.supplierId){
+                                this.cost.series[0].data[Math.floor((score.score)/10)].sArray.push(s.nameZh)
+                                
                             }
                         })
                      }
                      if(score.levelOneCode=="PP03000" || score.levelOneCode=="GP03000"){
                          this.delivery.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                         this.delivery.series[0].data[Math.floor((score.score)/10)].c=Math.floor((score.score)/10)*10+5
+                         this.delivery.series[0].data[Math.floor((score.score)/10)].sArray=[]
                          this.tabledata.forEach(s=>{
-                            if(s.levelOneCode=="PP03000" && Math.floor((s.score)/10)==Math.floor((score.score)/10)){
-                                this.delivery.series[0].data[Math.floor((score.score)/10)].name+=s.nameZh
+                            if(s.supplierId==score.supplierId ){
+                                this.delivery.series[0].data[Math.floor((score.score)/10)].sArray.push(s.nameZh)
                             }
                         })
                      }
-                     if(score.levelOneCode=="PP04000" || score.levelOneCode=="GP04000"){
-                         this.sustainable.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
-                         this.tabledata.forEach(s=>{
-                            if(s.levelOneCode=="PP04000" && Math.floor((s.score)/10)==Math.floor((score.score)/10)){
-                                this.sustainable.series[0].data[Math.floor((score.score)/10)].name+=s.nameZh
-                            }
-                        })
-                     }
+                    //  if(s.supplierId==score.supplierId || score.levelOneCode=="GP04000"){
+                    //      this.sustainable.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
+                    //      this.sustainable.series[0].data[Math.floor((score.score)/10)].c=Math.floor((score.score)/10)*10+5
+                    //      this.tabledata.forEach(s=>{
+                    //         if(s.levelOneCode=="PP04000" && Math.floor((s.score)/10)==Math.floor((score.score)/10)){
+                    //             this.sustainable.series[0].data[Math.floor((score.score)/10)].name+=s.nameZh
+                    //         }
+                    //     })
+                    //  }
                  }); 
             }
         },
+        resetData(){
+            this.tabledata=[]//清空供应商列表
+            this.$router.go(0)
+        }
     }
 }
 </script>

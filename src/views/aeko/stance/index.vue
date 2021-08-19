@@ -18,26 +18,37 @@
               :key="'SearchList_aeko'+index" 
               :label="language(item.labelKey,item.label)"
               v-permission.dynamic="item.permissionKey"
-              >
-                  <iSelect 
-                    collapse-tags 
-                    v-if="item.type === 'select'" 
-                    :multiple="item.multiple" 
-                    :filterable="item.filterable" 
+              >   
+                <template v-if="item.type === 'select'" >
+                  <aeko-select 
+                    v-if="item.isNewSelect"
+                    :searchParams="searchParams" 
+                    :ParamKey="item.props" 
+                    :allOptionsData="selectOptions[item.selectOption]" 
+                    :multiple="item.multiple"
                     :clearable="item.clearable" 
-                    v-model="searchParams[item.props]" 
-                    :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
-                    @change="handleMultipleChange($event, item.props,item.multiple)"
-                    :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
-                  >
-                    <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
-                    <el-option
-                      v-for="(item,index) in selectOptions[item.selectOption] || []"
-                      :key="item.selectOption+'_'+index"
-                      :label="item.name"
-                      :value="item.code">
-                    </el-option>  
-                  </iSelect> 
+                  />
+                  <iSelect
+                      v-else
+                      collapse-tags
+                      :multiple="item.multiple" 
+                      :filterable="item.filterable" 
+                      :clearable="item.clearable" 
+                      v-model="searchParams[item.props]" 
+                      :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
+                      @change="handleMultipleChange($event, item.props,item.multiple)"
+                      :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+                    >
+                      <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
+                      <el-option
+                        v-for="(item,index) in selectOptions[item.selectOption] || []"
+                        :key="item.selectOption+'_'+index"
+                        :label="item.name"
+                        :value="item.code">
+                      </el-option>  
+                  </iSelect>
+                </template>
+                   
                   <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                   <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]"></iInput> 
               </el-form-item>
@@ -53,6 +64,7 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          :selection="false"
           @handleSelectionChange="handleSelectionChange"
         >
         <!-- AEKO号  -->
@@ -140,6 +152,7 @@ import {
   searchCartypeProject,
   getSearchCartype,
 } from '@/api/aeko/manage'
+import aekoSelect from '../components/aekoSelect'
 export default {
     name:'aekoStanceList',
     mixins: [pageMixins],
@@ -155,6 +168,7 @@ export default {
       iPagination,
       icon,
       filesListDialog,
+      aekoSelect,
     },
     data(){
       return{
@@ -163,6 +177,8 @@ export default {
         selectItems:[],
         searchParams:{
           coverStatusList:['TOBE_STATED'],
+          cartypeProjectCodeList:[''],
+          cartypeCodeList:[''],
         },
         selectOptions:{
           cartypeProjectCodeList:[],
@@ -215,7 +231,7 @@ export default {
 
       // 判断当前url是否在可显示列表内 若无则显示列表第一个清单
       const {path} = $route;
-      const filterPath = filterList.filter((item)=>item.url == path);
+      const filterPath = filterList.filter((item)=>item.url && item.url == path);
       if(!filterPath.length){
         this.$router.push({
           path:filterList[0].url,
@@ -228,7 +244,9 @@ export default {
       // 重置
       reset(){
         this.searchParams = {
-          coverStatusList:['TOBE_STATED']
+          coverStatusList:['TOBE_STATED'],
+          cartypeProjectCodeList:[''],
+          cartypeCodeList:[''],
         };
         this.getList();
       },
@@ -241,12 +259,14 @@ export default {
       async getList(){
         this.loading = true;
         const {searchParams,page} = this;
-        const { partNum } = searchParams;
+        const { partNum,cartypeProjectCodeList,cartypeCodeList } = searchParams;
         // 若有截至或者分派起止时间将其拆分成两个字段
         const {linieAssignTime=[],deadLine=[]} = searchParams;
         const data = {
             current:page.currPage,
-            size:page.pageSize
+            size:page.pageSize,
+            cartypeCodeList:cartypeCodeList.length && cartypeCodeList[0]=='' ? [] : cartypeCodeList,
+            cartypeProjectCodeList:cartypeProjectCodeList.length && cartypeProjectCodeList[0]=='' ? [] : cartypeProjectCodeList,
         };
         // 分派日期
         if(linieAssignTime.length){
@@ -288,6 +308,7 @@ export default {
           if(code ==200){
             data.map((item)=>{
               item.desc = item.name;
+              item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })
             this.selectOptions.cartypeProjectCodeList = data || [];
             this.selectOptionsCopy.cartypeProjectCodeList = data || [];
@@ -302,6 +323,7 @@ export default {
           if(code ==200){
             data.map((item)=>{
               item.desc = item.name;
+              item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })
             this.selectOptions.cartypeCodeList = data.filter((item)=>item.name) || [];
             this.selectOptionsCopy.cartypeCodeList = data.filter((item)=>item.name) || [];
@@ -434,12 +456,14 @@ export default {
         display: block;
         width: 10px;
     }
-    .table-item-aeko{
+   .table-item-aeko{
       position: relative;
-      padding-left: 28px;
       .link{
         display: block;
-        width: calc( 100% - 28px);
+        padding-left: 30px;
+        padding-right: 8px;
+        margin-right: 8px;
+        box-sizing: border-box;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

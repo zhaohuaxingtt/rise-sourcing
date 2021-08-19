@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-08-13 15:18:57
+ * @LastEditTime: 2021-08-18 10:32:24
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -70,9 +70,9 @@
                     :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
-                    :value="items.key"
-                    :label="items.value"
-                    v-for="(items, index) in getGroupList('project_car_type')"
+                    :value="items.code"
+                    :label="items.name"
+                    v-for="(items, index) in fromGroup['CAR_TYPE_PRO'] || []"
                     :key="index"
                   ></el-option>
                 </iSelect>
@@ -88,9 +88,9 @@
                     :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
-                    :value="items.key"
-                    :label="items.value"
-                    v-for="(items, index) in getGroupList('tp_info_type')"
+                    :value="items.code"
+                    :label="items.name"
+                    v-for="(items, index) in fromGroup['TP_INFO_TYPE'] || []"
                     :key="index"
                   ></el-option>
                 </iSelect>
@@ -106,9 +106,9 @@
                     :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
-                    :value="items.key"
-                    :label="items.value"
-                    v-for="(items, index) in getGroupList('status')"
+                    :value="items.code"
+                    :label="items.name"
+                    v-for="(items, index) in fromGroup['TP_INFO_STATUS'] || []"
                     :key="index"
                   ></el-option>
                 </iSelect>
@@ -131,9 +131,9 @@
                     :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
-                    :value="items.key"
-                    :label="items.value"
-                    v-for="(items, index) in getGroupList('attachment_status')"
+                    :value="items.code"
+                    :label="items.name"
+                    v-for="(items, index) in fromGroup['TP_ATTACHEMENT_STATUS'] || []"
                     :key="index"
                   ></el-option>
                 </iSelect>
@@ -149,9 +149,9 @@
                     :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
-                    :value="items.key"
-                    :label="items.value"
-                    v-for="(items, index) in getGroupList('part_dosage_status')"
+                    :value="items.code"
+                    :label="items.name"
+                    v-for="(items, index) in fromGroup['TP_CAR_DOSAGE_STATUS'] || []"
                     :key="index"
                   ></el-option>
                 </iSelect>
@@ -245,6 +245,7 @@ import local from "@/utils/localstorage";
 import filters from "@/utils/filters";
 import { iNavMvp,iMessageBox } from "rise";
 import { cloneDeep } from "lodash"
+import {selectDictByKeyss} from '@/api/dictionary'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -276,7 +277,7 @@ export default {
       inquiryBuyer: "",
       inquiryBuyerList: [],
       form: cloneDeep(form),
-      fromGroup: [],
+      fromGroup: {},
       tab: "source",
       needTranslate: needTranslate,
       list:TAB,
@@ -286,8 +287,8 @@ export default {
     Object.keys(this.$route.query).forEach(key => {
       this.$set(this.form, key, this.$route.query[key])
     })
-
-    this.getPageGroup();
+    
+    this.getSelectOptions();
     this.getTableList();
     this.updateNavList
   },
@@ -306,10 +307,9 @@ export default {
       this.needTranslate.forEach((element) => {
         if (v[element.name]) {
           try {
-            const result = this.getGroupList(element.key).find(
-              (i) => i.key == v[element.name]
-            );
-            v[element.name] = result ? result.value : "";
+            const options = element.option ? (this.fromGroup[element.option] || []) : []
+            const result = options.find((i) => i.code == v[element.name]);
+            v[element.name] = result ? result.name : "";
           } catch (error) {
             v[element.name] = "";
           }
@@ -365,12 +365,17 @@ export default {
       }
       this.getTableList();
     },
-    getGroupList(key) {
-      if (this.fromGroup.length > 0) {
-        let obj = this.fromGroup.find((items) => items.name == key);
-        if (!obj) return [];
-        return obj.infoList;
-      }
+    getSelectOptions() {
+      const types = [
+        "CAR_TYPE_PRO",
+        "TP_INFO_STATUS",
+        "TP_INFO_TYPE",
+        "TP_ATTACHEMENT_STATUS",
+        "TP_CAR_DOSAGE_STATUS"
+      ];
+      selectDictByKeyss(types).then((res) => {
+        this.fromGroup = res.data;
+      });
     },
     openPage(val) {
       local.set(

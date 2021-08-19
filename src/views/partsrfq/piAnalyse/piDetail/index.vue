@@ -45,7 +45,7 @@
       <theTable
           v-show="currentTab === AVERAGE"
           ref="theAverageTable"
-          :averageTableInfo="averageTableInfo"
+          :averageData="averageData"
           :currentTab="currentTab"
           :tableLoading="tableLoading"
       />
@@ -55,11 +55,18 @@
     <div class="chartBox">
       <!--      Price Index价格分析-->
       <iCard class="lineBox">
-        <thePriceIndexChart/>
+        <thePriceIndexChart
+            v-if="showPiChart"
+            :currentTab="currentTab"
+            :currentTabData="currentTabData"
+        />
       </iCard>
       <!--      零件成本构成-->
       <iCard class="pieBox">
-        <thePartsCostChart :dataInfo="dataInfo"/>
+        <thePartsCostChart
+            :dataInfo="dataInfo"
+            :pieLoading="pieLoading"
+        />
       </iCard>
     </div>
 
@@ -68,8 +75,9 @@
         ref="previewDialog"
         v-model="previewDialog"
         :dataInfo="dataInfo"
-        :averageTableInfo="averageTableInfo"
+        :averageData="averageData"
         :currentTab="currentTab"
+        :currentTabData="currentTabData"
     />
 
     <!--    保存弹框-->
@@ -100,6 +108,8 @@ import {
   getAveragePartCostPrice,
   deleteParts,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
+import _ from 'lodash';
+import {mapState} from 'vuex';
 
 export default {
   mixins: [resultMessageMixin],
@@ -117,6 +127,11 @@ export default {
     theTable,
     saveDialog,
   },
+  computed: {
+    ...mapState({
+      piIndexChartParams: (state) => state.rfq.piIndexChartParams,
+    }),
+  },
   data() {
     return {
       pageLoading: false,
@@ -130,17 +145,19 @@ export default {
       },
       currentTab: CURRENTTIME,
       currentTabData: {
-        analysisSchemeId: 109,
+        analysisSchemeId: this.$route.query.schemeId,
         partsId: '',
         batchNumber: '',
         supplierId: '',
       },
       dataInfo: {},
-      averageTableInfo: {},
+      averageData: {},
       CURRENTTIME,
       AVERAGE,
       tableLoading: false,
       timeRange: null,
+      pieLoading: false,
+      showPiChart: true,
     };
   },
   created() {
@@ -218,10 +235,20 @@ export default {
     },
     // 点击标签
     handleTabsClick(val) {
+      this.$store.dispatch('setPiIndexChartParams', {
+        dimensionHandle: [],
+        particleSize: '3',
+        beginTime: '',
+        endTime: ''
+      });
       this.currentTab = val;
       if (this.currentTab === AVERAGE) {
-        this.getAverageTable();
+        this.getAverageData();
       }
+      this.showPiChart = false;
+      this.$nextTick(() => {
+        this.showPiChart = true;
+      });
     },
     // 时间改变
     handleTimeChange(time) {
@@ -229,13 +256,12 @@ export default {
         beginTime: time[0],
         endTime: time[1],
       };
-      this.getAverageTable({extraParams});
+      this.getAverageData({extraParams});
     },
     // 获取信息
     async getDataInfo() {
       try {
-        this.pageLoading = true;
-        this.tableLoading = true;
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: true});
         const req = {
           ...this.currentTabData,
         };
@@ -247,33 +273,33 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        this.pageLoading = false;
-        this.tableLoading = false;
+        this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       } catch {
-        this.pageLoading = false;
-        this.tableLoading = false;
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       }
     },
-    // 获取平均 表格数据
-    async getAverageTable({extraParams} = {}) {
+    // 获取平均数据
+    async getAverageData({extraParams} = {}) {
       try {
-        this.tableLoading = true;
-        this.averageTableInfo = {};
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: true});
+        this.averageData = {};
         const req = {
           ...this.currentTabData,
           ...extraParams,
         };
         const res = await getAveragePartCostPrice(req);
-        this.averageTableInfo = res.data;
+        this.averageData = res.data;
         if (res.data.beginTime && res.data.endTime) {
           this.timeRange = [res.data.beginTime, res.data.endTime];
+          this.setPiIndexTimeParams(res.data)
         } else {
           this.timeRange = null;
         }
-        this.tableLoading = false;
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
       } catch {
-        this.averageTableInfo = {};
-        this.tableLoading = false;
+        this.averageData = {};
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
       }
     },
     // 处理保存弹窗
@@ -292,6 +318,17 @@ export default {
           callback(downloadName, downloadUrl);
         }
       }, 1000);
+    },
+    setLoading({propsArray, boolean}) {
+      propsArray.map(item => {
+        this[item] = boolean;
+      });
+    },
+    setPiIndexTimeParams(data) {
+      const copyPiIndexChartParams = _.cloneDeep(this.piIndexChartParams);
+      copyPiIndexChartParams.beginTime = data.beginTime;
+      copyPiIndexChartParams.endTime = data.endTime;
+      this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="pieLoading">
     <div class="title">{{ language('PI.LINGJIANCHENGBENGOUCHENG', '零件成本构成') }}</div>
     <div class="theChart" ref="theChart" :style="{'height': chartHeight}"/>
   </div>
@@ -20,6 +20,10 @@ export default {
         return {};
       },
     },
+    pieLoading: {
+      type: Boolean,
+      default: false
+    }
   },
   mounted() {
     this.buildChart();
@@ -63,7 +67,7 @@ export default {
             },
             labelLine: {
               show: false,
-              length: 10,
+              length: 4,
               length2: 4,
             },
             data: this.seriesArray,
