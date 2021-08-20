@@ -112,7 +112,7 @@
           
           <div class="table-item-aeko">
             <icon v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
-            <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </span>
+            <span class="link" ><a @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </a></span>
             <a v-if="scope.row.fileCount && scope.row.fileCount > 0" class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
           </div>
           
@@ -567,7 +567,7 @@ export default {
             hostId:item.requirementAekoId
           })
         })
-        await uploadFiles({fileHistoryDTOS:params}).then((res)=>{
+        await uploadFiles(params).then((res)=>{
           this.btnLoading.uploadFiles = false;
           if(res.code ==200){
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
@@ -743,6 +743,10 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        cursor: auto;
+        a{
+          cursor: pointer;
+        }
       }
       .top-icon{
         position: absolute;

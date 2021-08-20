@@ -18,8 +18,8 @@
     v-bind="props"
     ref="uploadRef"
   >
-		<iButton :loading="uploading">{{language('LK_DIANJISHANGCHUAN','上传附件')}}</iButton>
-		<div v-if="!hideTip" slot="tip" class="el-upload__tip">{{language('LK_ZHINENGSHANGCHUANWENJIAN','只能上传文件')}}</div>
+		<iButton :loading="uploading">{{buttonText || language('SHANGCHUANFUJIJAN',"上传附件")}}</iButton>
+		<div v-if="!hideTip" slot="tip" class="el-upload__tip">{{errorTipsText || language('LK_ZHINENGSHANGCHUANWENJIAN','只能上传文件')}}</div>
   </el-upload>
 </template>
 <script>
@@ -27,7 +27,8 @@ import {iButton} from 'rise'
 import {uploadUdFile as uploadFile} from "@/api/file/upload";
 export default {
   props: {
-    buttonText: {type: String, default: ''},
+    buttonText: String,
+    errorTipsText: String,
     uploadButtonLoading: {type: Boolean, default: false},
     hideTip: {type: Boolean, default: false},
     accept: {type: String, default: '.xlsx,.pdf,.docx'},
