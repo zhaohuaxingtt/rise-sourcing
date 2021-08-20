@@ -1,19 +1,21 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-19 16:26:03
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-20 11:21:43
+ * @LastEditors: 舒杰
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
 <template>
    <el-row gutter="20">
       <el-col :span="8" v-for="(item,index) in list" :key="index">
-         <iCard class="icard" :title='language(item.key,item.name)'>
-            <div @click="onJump(item)" class="img">
-               <img :src="item.image">
-            </div>     
-         </iCard> 
+         <div @click="onJump(item)" class="cursor">
+            <iCard class="icard" :title='language(item.key,item.name)'>
+               <div class="img">
+                  <img :src="item.image">
+               </div>     
+             </iCard> 
+         </div>
       </el-col>
    </el-row>
 </template>

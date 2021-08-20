@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-20 10:56:47
+ * @LastEditTime: 2021-08-20 15:10:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -103,7 +103,7 @@ export default {
       const params = {
         userId: 52,
         partsId: this.searchForm.partNo || null,
-        rfqId: this.searchForm.rfqId || null
+        rfqId: this.searchForm.rfq || null
       }
       getAllAddPart(params).then(res => {
         if(res && res.code == 200) {

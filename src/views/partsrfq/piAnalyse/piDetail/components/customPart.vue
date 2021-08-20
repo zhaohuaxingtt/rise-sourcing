@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-20 11:16:25
+ * @LastEditTime: 2021-08-20 15:16:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -152,6 +152,7 @@ export default {
           this.selectTargetData = res.data
           this.loading = false
           this.getAllPartData()
+          console.log('refs', this.$refs);
           this.$nextTick(_ => {
             this.selectTargetData.map(item => {
               this.$refs.targetTable.$refs.dataTable.toggleRowSelection(item, true)

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-08-19 11:14:15
+ * @LastEditTime: 2021-08-20 13:56:26
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \front-web\src\views\partsign\home\components\tableList.vue
@@ -84,6 +84,9 @@ export default{
         this.$set(selection[i],'selectedBorder',!!flag)
       }
       !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+    },
+    defaultSelectAll(){
+      this.$refs.moviesTable.toggleAllSelection()
     },
     borderLeft({row, column, rowIndex, columnIndex}){
       if(columnIndex === 0 && row.selectedBorder === true){
