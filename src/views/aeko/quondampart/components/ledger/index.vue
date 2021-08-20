@@ -140,21 +140,7 @@ export default {
         if (isEqual(data, ledgerQueryForm)) {
           this.objectAekoPartId = this.$route.query.objectAekoPartId
         } else {
-          if (this.factoryDisabled) {
-            if (
-              Object.keys(data).every(key => {
-                if (key === "factoryCode") {
-                  return true
-                } else {
-                  return !data[key]
-                }
-              })
-            ) {
-              this.objectAekoPartId = this.$route.query.objectAekoPartId
-            } else {
-              this.objectAekoPartId = ""
-            }
-          }
+          this.objectAekoPartId = ""
         }
       },
       deep: true
@@ -170,7 +156,7 @@ export default {
       this.judgeRight()
     } else {
       this.procureFactorySelectVo()
-      this.getAekoOriginPartInfo()
+      // this.getAekoOriginPartInfo()
     }
   },
   methods: {
@@ -183,12 +169,12 @@ export default {
           if (res.data.factoryCode) {
             this.factoryDisabled = true
             this.factoryName = res.data.factoryName
-            this.form.factoryCode = res.data.factoryCode
           } else {
             this.factoryDisabled = false
             this.factoryName = ""
-            this.form.factoryCode = ""
           }
+
+          this.form.factoryCode = ""
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -266,35 +252,14 @@ export default {
       if (isEqual(this.form, ledgerQueryForm)) {
         this.objectAekoPartId = this.$route.query.objectAekoPartId
       } else {
-        if (this.factoryDisabled) {
-          if (
-            Object.keys(this.form).every(key => {
-              if (key === "factoryCode") {
-                return true
-              } else {
-                return !this.form[key]
-              }
-            })
-          ) {
-            this.objectAekoPartId = this.$route.query.objectAekoPartId
-          } else {
-            this.objectAekoPartId = ""
-          }
-        }
+        this.objectAekoPartId = ""
       }
       
       this.getAekoOriginPartInfo()
     },
     reset() {
       this.page.currPage = 1
-      if (this.factoryDisabled) {
-        this.form = {
-          ...cloneDeep(ledgerQueryForm),
-          factoryCode: this.form.factoryCode
-        }
-      } else {
-        this.form = cloneDeep(ledgerQueryForm)
-      }
+      this.form = cloneDeep(ledgerQueryForm)
       this.objectAekoPartId = this.$route.query.objectAekoPartId
       this.getAekoOriginPartInfo()
     },

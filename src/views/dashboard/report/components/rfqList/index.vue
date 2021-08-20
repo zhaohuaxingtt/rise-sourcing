@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 17:05:28
- * @LastEditTime: 2021-08-20 10:17:19
+ * @LastEditTime: 2021-08-20 13:55:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/dashboard/report/components/rfqList/index.vue
@@ -16,7 +16,7 @@
             <icon symbol style="font-size:14px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+(item.wholeTaskProgress||6)].icon"></icon>
             </span>
           <span>{{language('ZHENGCHEJINDUFENGXIAN','整车进度风险')}}: <el-tooltip placement="right" effect="light">
-            <icon symbol style="font-size:20px;position:relative;top:2px;" :name="iconList_car['a'+(item.wholeProgressRisk||6)].icon"></icon>
+            <icon symbol style="font-size:20px;position:relative;top:2px;" :name="iconList_car['a'+(item.wholeProgressRisk||1)].icon"></icon>
               <!-- <template slot='content'>
                 <dalyWeeks :daliyTime='daliyTime'></dalyWeeks>
               </template> -->
