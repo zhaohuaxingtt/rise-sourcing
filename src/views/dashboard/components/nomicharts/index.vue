@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 16:16:30
- * @LastEditTime: 2021-08-12 16:56:27
+ * @LastEditTime: 2021-08-20 10:43:37
  * @LastEditors: Please set LastEditors
  * @Description: 材料组定点时率及平均定点周期
  * @FilePath: /front-web/src/views/designate/home/components/headerNav/components/nomiCharts.vue
@@ -10,7 +10,7 @@
   <iCard class="nomicharts">
     <div class="margin-bottom20 clearFloat">
       <div class="nomicharts-title">
-        <span class="font18 font-weight">
+        <span class="font20 font-weight">
           {{ language('CAILIAOZUDINGDIANJISHILVDINGDIANZHOUQI','材料组定点及时率及平均定点周期') }}
         </span>
         <span class="updateTime">
@@ -72,6 +72,9 @@ export default {
 .nomicharts {
   width: 100%;
   min-height: 500px;
+  ::v-deep.cardBody {
+    padding: 20px 15px;
+  }
 }
 #charts0 {
   width: 100%;
@@ -81,7 +84,9 @@ export default {
   display: flex;
   justify-content: space-between;
   .updateTime {
-    color: #bdbdbd;
+    color: #5f6879;
+    font-size: 12px;
+    opacity: 0.67;
   }
 }
 </style>

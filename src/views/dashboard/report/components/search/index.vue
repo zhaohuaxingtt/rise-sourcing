@@ -93,7 +93,7 @@
         </iSelect>
       </el-form-item>
       <!-- 采购员 -->
-      <el-form-item :label="language('LK_CAIGOUYUAN','采购员')">
+      <el-form-item :label="language('CAIGOUYUAN','采购员')">
         <iSelect
           class="select-control"
           v-model="form.buyer"
