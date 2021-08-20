@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-16 14:51:40
- * @LastEditTime: 2021-08-19 15:12:09
+ * @LastEditTime: 2021-08-20 16:42:10
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\sop\index.vue
@@ -35,8 +35,11 @@ import {iCard,iButton,iMessage,iSelect} from "rise";
 import { cloneDeep } from 'lodash';
 import moment from 'moment';
 import tableList from './overviewTable'
-import {sopList,carTypeProList} from "@/api/categoryManagementAssistant/internalDemandAnalysis/sop";
+import {sopList,carTypeProList,sopPipeLineSave} from "@/api/categoryManagementAssistant/internalDemandAnalysis/sop";
+import {downloadPdfMixins} from '@/utils/pdf';
+
 export default ({
+    mixins:[downloadPdfMixins],
    components:{iCard,iButton,tableList,iSelect},
    data () {
       const currentYear = moment().year()
@@ -87,6 +90,24 @@ export default ({
 			}
 		},
    methods: {
+     // 保存
+      async save(){
+         const resFile = await this.getDownloadFileAndExportPdf({
+            domId: 'sop',
+            pdfName: 'sop',
+         });
+         let params={
+            categoryCode:this.categoryCode,
+            fileType:"PDF",
+            reportFileName: resFile.downloadName,
+            reportName: resFile.downloadName,
+            schemeName:"",
+            reportUrl: resFile.downloadUrl
+         }
+         sopPipeLineSave(params).then(res=>{
+            
+         })
+      },
     // 重置
     reset(){
       this.carTypeId=""

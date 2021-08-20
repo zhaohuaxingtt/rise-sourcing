@@ -463,7 +463,7 @@ export default {
     },
     //基数地区
     handleBaseChangeArea (e, b) {
-      console.log('111')
+
       // 地区数量校验
       // if(e.length<6){
       //     this.baseAreaVmodel=e

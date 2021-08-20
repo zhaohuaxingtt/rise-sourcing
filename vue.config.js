@@ -290,8 +290,8 @@ module.exports = {
       },
       '/dictionaryApi': {
         // 数据字典api地址
-        target: 'http://10.122.17.38:8011',
-        //target: 'http://10.122.17.38:8011',
+        // target: 'http://10.122.17.38:8011',
+        target: 'http://10.122.18.166:8011',
         changeOrigin: true,
         pathRewrite: {
           '^/dictionaryApi': '',
