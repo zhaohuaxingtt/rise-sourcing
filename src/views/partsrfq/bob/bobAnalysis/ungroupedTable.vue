@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-08-12 21:53:38
+ * @LastEditTime: 2021-08-19 16:41:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -203,12 +203,14 @@ export default {
     } else {
       this.SchemeId = this.$attrs.analysisSchemeId;
     }
+    this.groupId = this.$route.query.groupId
     setTimeout(() => {
       this.$nextTick(() => {
         this.chargeRetrieve({
           isDefault: true,
           viewType: this.activeName,
-          schemaId: this.SchemeId
+          schemaId: this.SchemeId,
+          groupId: this.groupId
         });
         // this.open();
       });
@@ -226,7 +228,8 @@ export default {
         this.chargeRetrieve({
           isDefault: true,
           viewType: val,
-          schemaId: this.SchemeId
+          schemaId: this.SchemeId,
+          groupId: this.groupId
         });
         // this.$EventBus.$emit("activeName", val);
       },

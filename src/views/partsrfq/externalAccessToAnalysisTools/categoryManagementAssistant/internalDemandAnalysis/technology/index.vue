@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-19 15:12:39
+ * @LastEditTime: 2021-08-19 19:04:06
  * @LastEditors: 舒杰
  * @Description: 技术路线
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\technology\index.vue
@@ -90,7 +90,7 @@
 			getTableList(){
 				this.tableLoading=true
 				let data={
-					categoryCode:"",
+					categoryCode:this.categoryCode,
 					pageNo:this.page.currPage,
 					pageSize:this.page.pageSize
 				}

@@ -80,6 +80,12 @@ export default {
         this.categoryCode = val
         this.getmarketOverview()
       }
+    },
+    '$store.state.rfq.categoryName': {
+      handler (val) {
+        this.categoryName = val
+        // this.getmarketOverview()
+      }
     }
   },
   methods: {

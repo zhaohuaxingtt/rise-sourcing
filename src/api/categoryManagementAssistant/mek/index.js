@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-06 15:34:45
- * @LastEditTime: 2021-08-16 11:19:44
+ * @LastEditTime: 2021-08-19 19:02:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\categoryManagementAssistant\mek\index.js
@@ -21,7 +21,7 @@ export function getMekTable(params) {
 //市场数据原材料下拉列表
 export function saveMekTable(params) {
   return request({
-    url: '/web/aon/mekRemark/save',
+    url: '/mekRemark/save',
     method: 'POST',
     data: params,
   })
@@ -29,7 +29,7 @@ export function saveMekTable(params) {
 //市场数据原材料下拉列表
 export function deleteMekTable(params) {
   return request({
-    url: '/web/aon/mekRemark/delete',
+    url: '/mekRemark/delete',
     method: 'POST',
     data: params,
   })
@@ -78,7 +78,7 @@ export function getSchemeInfo(params) {
 //根据车型信息获取对应的零件六位号
 export function recursiveRetrieve(params) {
   return request({
-    url: '/web/aon/mekScheme/recursiveRetrieve',
+    url: '/mekScheme/recursiveRetrieve',
     method: 'POST',
     data: params,
   })

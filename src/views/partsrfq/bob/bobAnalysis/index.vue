@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-08-19 11:12:28
+ * @LastEditTime: 2021-08-19 17:39:54
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -164,12 +164,12 @@ export default {
   created () {
     this.SchemeId = this.$attrs.analysisSchemeId
     this.groupId = this.$route.query.groupId
-    this.chargeRetrieve({
-      isDefault: true,
-      viewType: 'all',
-      schemaId: this.SchemeId,
-      groupId: this.groupId
-    });
+    // this.chargeRetrieve({
+    //   isDefault: true,
+    //   viewType: 'all',
+    //   schemaId: this.SchemeId,
+    //   groupId: this.groupId
+    // });
     this.getRfqToRemark();
     // if (this.$store.state.rfq.entryStatus === 1) {
     //   this.SchemeId = this.$route.query.rfqId
