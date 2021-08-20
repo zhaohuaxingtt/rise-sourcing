@@ -156,7 +156,7 @@ export default {
       this.judgeRight()
     } else {
       this.procureFactorySelectVo()
-      this.getAekoOriginPartInfo()
+      // this.getAekoOriginPartInfo()
     }
   },
   methods: {
