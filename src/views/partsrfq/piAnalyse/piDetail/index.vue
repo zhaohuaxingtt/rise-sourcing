@@ -169,6 +169,7 @@ export default {
     this.getDataInfo();
   },
   methods: {
+    // 返回
     handleBack() {
       if (this.$store.state.rfq.entryStatus === 1) {
         this.$router.push({
@@ -189,6 +190,7 @@ export default {
         });
       }
     },
+    // 预览
     handlePreview() {
       this.previewDialog = true;
     },
@@ -260,7 +262,6 @@ export default {
         this.showPiChart = true;
         if (this.currentTab === AVERAGE) {
           await this.getAverageData();
-          await this.$refs.thePriceIndexChart.buildChart();
         } else {
           await this.getDataInfo();
         }
@@ -273,12 +274,11 @@ export default {
         endTime: time[1],
       };
       await this.getAverageData({extraParams});
-      await this.$refs.thePriceIndexChart.buildChart();
     },
     // 获取信息
-    async getDataInfo() {
+    async getDataInfo({propsArrayLoading = ['pageLoading', 'tableLoading', 'pieLoading']} = {}) {
       try {
-        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: true});
+        this.setLoading({propsArray: propsArrayLoading, boolean: true});
         const req = {
           ...this.currentTabData,
         };
@@ -292,9 +292,9 @@ export default {
         });
         this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
         await this.$refs.thePriceIndexChart.buildChart();
-        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
+        this.setLoading({propsArray: propsArrayLoading, boolean: false});
       } catch {
-        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
+        this.setLoading({propsArray: propsArrayLoading, boolean: false});
       }
     },
     // 获取平均数据
@@ -315,6 +315,7 @@ export default {
           this.timeRange = null;
         }
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
+        await this.$refs.thePriceIndexChart.buildChart();
       } catch {
         this.averageData = {};
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
@@ -338,6 +339,7 @@ export default {
         await this.handleSaveProcess(reqParams);
       }
     },
+    // 处理保存请求
     async handleSaveProcess(reqParams, isCover = false) {
       try {
         this.pageLoading = true;
@@ -347,11 +349,11 @@ export default {
           await this.handleSaveAsReport(async (downloadName, downloadUrl) => {
             req.downloadName = downloadName;
             req.downloadUrl = downloadUrl;
-            await this.saveAnalysisScheme(req);
+            await saveAnalysisScheme(req);
             this.saveDialog = false;
           });
         } else {
-          await this.saveAnalysisScheme(req);
+          await saveAnalysisScheme(req);
           this.saveDialog = false;
         }
         this.pageLoading = false;
@@ -359,6 +361,7 @@ export default {
         this.pageLoading = false;
       }
     },
+    // 处理整页保存参数
     handleAllSaveReq(reqParams) {
       const req = {
         ...this.currentTabData,
@@ -383,6 +386,7 @@ export default {
       req.endTime = averageData.endTime;
       return req;
     },
+    // 处理保存报告并导出 获取导出后的参数
     async handleSaveAsReport(callback) {
       this.previewDialog = true;
       setTimeout(async () => {
@@ -398,17 +402,20 @@ export default {
         }
       }, 1000);
     },
+    // 处理loading
     setLoading({propsArray, boolean}) {
       propsArray.map(item => {
         this[item] = boolean;
       });
     },
+    // 设置piIndex图 时间参数
     setPiIndexTimeParams(data) {
       const copyPiIndexChartParams = _.cloneDeep(this.piIndexChartParams);
       copyPiIndexChartParams.beginTime = data.beginTime;
       copyPiIndexChartParams.endTime = data.endTime;
       this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
     },
+    //处理单独表格保存
     async handlePriceTableFinish(value, tab) {
       try {
         this.tableLoading = true;
@@ -427,12 +434,19 @@ export default {
           req.endTime = value.endTime;
         }
         const res = await saveAnalysisScheme(req);
-        this.tableLoading = false;
         this.resultMessage(res);
+        if (res.result) {
+          if (tab === CURRENTTIME) {
+            await this.getDataInfo({propsArrayLoading: ['tableLoading', 'pieLoading']});
+          } else if (tab === AVERAGE) {
+            await this.getAverageData();
+          }
+        }
       } catch {
         this.tableLoading = false;
       }
     },
+    // 检查名字是否重复
     async checkName(reqParams) {
       let isRepeat = false;
       const req = {};
