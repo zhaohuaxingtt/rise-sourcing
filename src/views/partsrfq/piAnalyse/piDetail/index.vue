@@ -169,6 +169,7 @@ export default {
     this.getDataInfo();
   },
   methods: {
+    // 返回
     handleBack() {
       if (this.$store.state.rfq.entryStatus === 1) {
         this.$router.push({
@@ -189,6 +190,7 @@ export default {
         });
       }
     },
+    // 预览
     handlePreview() {
       this.previewDialog = true;
     },
@@ -330,6 +332,7 @@ export default {
         await this.handleSaveProcess(reqParams);
       }
     },
+    // 处理保存请求
     async handleSaveProcess(reqParams, isCover = false) {
       try {
         this.pageLoading = true;
@@ -351,6 +354,7 @@ export default {
         this.pageLoading = false;
       }
     },
+    // 处理整页保存参数
     handleAllSaveReq(reqParams) {
       const req = {
         ...this.currentTabData,
@@ -375,6 +379,7 @@ export default {
       req.endTime = averageData.endTime;
       return req;
     },
+    // 处理保存报告并导出 获取导出后的参数
     async handleSaveAsReport(callback) {
       this.previewDialog = true;
       setTimeout(async () => {
@@ -390,17 +395,20 @@ export default {
         }
       }, 1000);
     },
+    // 处理loading
     setLoading({propsArray, boolean}) {
       propsArray.map(item => {
         this[item] = boolean;
       });
     },
+    // 设置piIndex图 时间参数
     setPiIndexTimeParams(data) {
       const copyPiIndexChartParams = _.cloneDeep(this.piIndexChartParams);
       copyPiIndexChartParams.beginTime = data.beginTime;
       copyPiIndexChartParams.endTime = data.endTime;
       this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
     },
+    //处理单独表格保存
     async handlePriceTableFinish(value, tab) {
       try {
         this.tableLoading = true;
@@ -425,6 +433,7 @@ export default {
         this.tableLoading = false;
       }
     },
+    // 检查名字是否重复
     async checkName(reqParams) {
       let isRepeat = false;
       const req = {};
