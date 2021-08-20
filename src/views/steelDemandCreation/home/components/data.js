@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-30 13:56:01
- * @LastEditTime: 2021-08-19 10:04:56
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-19 14:47:04
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steelDemandCreation\home\components\data.js
  */
@@ -135,6 +135,7 @@ export const form = {
 export const tableTitle = [
   { props: 'nominateId', name: '申请单号', key: 'SHENGQINGDANHAO', tooltip: true },
   { props: 'nominateName', name: '申请单名', key: 'SHENGQINGDANMING', tooltip: true },
+  { props:  'cartypeProjectZh',name:'PROJECT',key:'GANGCAIPROJECT',tooltip:true},
   { props: 'nominateProcessTypeDesc', name: '类型', key: 'LEIX', tooltip: true  },
   { props: 'applicationStatusDesc', name: '状态', key: 'ZHUANGTAI', tooltip: true },
   { props: 'partProjectTypeDesc', name: '项目类型', key: 'XIANGMULEIX', tooltip: true },

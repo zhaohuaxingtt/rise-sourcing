@@ -100,10 +100,8 @@ export default {
       this.$emit('conversionSave', this.conversionVal)
     },
     changeDept(val){
-      if(val){
-        this.linieID = ''
-        this.liniePullDownByDept()
-      }
+      this.linieID = ''
+      this.liniePullDownByDept()
     },
     liniePullDownByDept(){
       this.dialogLoading = true
@@ -159,6 +157,8 @@ export default {
   watch: {
     value(val){
       if(val){
+        this.deptId = ''
+        this.linieID = ''
         this.liniePullDownByDept()
       }
     }

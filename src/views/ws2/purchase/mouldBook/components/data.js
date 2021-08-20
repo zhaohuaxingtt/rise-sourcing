@@ -21,6 +21,7 @@ export const mouldForm = {
   partsNum: '', //  零件号
   supplier: '',  //  供应商
   tmCartypeProId: [],  //  车型项目
+  moldType: '', //  工模具种类
 }
 
 //  BM单视图table

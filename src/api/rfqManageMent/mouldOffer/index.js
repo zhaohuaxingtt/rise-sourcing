@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-21 16:39:36
- * @LastEditTime: 2021-08-14 17:59:10
+ * @LastEditTime: 2021-08-19 16:14:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\api\rfqManageMent\mouldOffer\index.js
@@ -17,7 +17,7 @@ const downLoad = downLoadAxons(process.env.VUE_APP_SUPPLIER_ECHARTS)
  */
  export function quotations(params) {
   return requst({
-      url: '/quotation/part-quotation',
+      url: '/part-quotation',
       method: 'POST',
       data: params
   })

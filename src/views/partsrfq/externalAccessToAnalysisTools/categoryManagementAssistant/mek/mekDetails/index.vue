@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-17 17:34:30
+ * @LastEditTime: 2021-08-19 19:04:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -404,12 +404,12 @@ export default {
     saveTable () {
       this.editFlag = false
       let params = {
-        "comparedType": "string",
+        "comparedType": "mekConfig",
         "detail": [],
         "schemeId": 0
       }
-      this.addDataList.splice(0, 1);
-      this.addDataList.forEach(item => {
+      this.editDataList.splice(0, 1);
+      this.editDataList.forEach(item => {
         let obj = {
           "detail": [],
           "type": item['label#-1'],
@@ -417,8 +417,8 @@ export default {
         }
         this.gridData.title.forEach(i => {
           let obj1 = {
-            "id": item[i.label],
-            "motorTypeId": item['id#-1'],
+            "id": item['id#' + i.label.split('#')[1]],
+            "motorTypeId": i.label.split('#')[1],
             "remark": item[i.label]
           }
           obj.detail.push(obj1)
@@ -426,7 +426,9 @@ export default {
         params.detail.push(obj)
       })
       console.log(params)
-      saveMekTable(params).then(res => { })
+      saveMekTable(params).then(res => {
+        this.getMekTable()
+      })
     },
     cancel () {
       this.editFlag = false
