@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-13 15:35:39
+ * @LastEditTime: 2021-08-19 16:26:03
  * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
@@ -18,8 +18,7 @@
    </el-row>
 </template>
 <script>
-import {iCard} from 'rise'
-import { iMessage } from '@/components';
+import {iCard, iMessage} from 'rise'
 import { getDefaultCostStructure } from '@/api/partsrfq/costAnalysis/index.js'
 export default {
   components: {
@@ -56,7 +55,8 @@ export default {
            },{
               name:"SOP进度轴",
               key:"SOPJINDUZHOU",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis06.png")
+              image:require("@/assets/images/partRfq/internalDemandAnalysis06.png"),
+              url:"/sourcing/categoryManagementAssistant/internalDemandAnalysis/sop"
            },{
               name:"成本组成",
               key:"CHENGBENZUCHENG",
@@ -68,8 +68,8 @@ export default {
               image:require("@/assets/images/partRfq/internalDemandAnalysis08.png"),
               url:"/sourcing/categoryManagementAssistant/internalDemandAnalysis/technology"
            },{
-              name:"批量供应商概览",
-              key:"PLGYJZL",
+              name:"批量供应商总览",
+              key:"PLGYSZL",
               image:require("@/assets/images/partRfq/internalDemandAnalysis09.png"),
               url:'/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'
            },{
@@ -85,42 +85,43 @@ export default {
   },
   methods: {
     onJump(item){
-       if(this.$store.state.rfq.categoryCode){
-      switch (item.key) {
-        // 成本结构
-        case 'CHENGBENZUCHENG':
-          this.getCostData().then(res => {
-            if(res.analysisType == "1") {
-              //跳转系统
-              this.$router.push({
-                path: item.url,
-                query: {
-                  schemeId: res.id || null
-                }
-              })
-            } else {
-              //跳转手工
-              this.$router.push({
-                path: this.costAnalysisInputUrl,
-                query: {
-                  schemeId: res.id || null,
-                  operateLog: res.operateLog || null
-                }
-              })
-            }
-          })
-          break;
-        default:
-           this.$router.push({
+      if(this.$store.state.rfq.categoryCode){
+        switch (item.key) {
+          // 成本结构
+          case 'CHENGBENZUCHENG':
+            this.getCostData().then(res => {
+              if(res.analysisType == "1") {
+                console.log('res', res);
+                //跳转系统
+                this.$router.push({
+                  path: item.url,
+                  query: {
+                    schemeId: res.id || null,
+                    operateLog: res.operateLog || null
+                  }
+                })
+              } else {
+                //跳转手工
+                this.$router.push({
+                  path: this.costAnalysisInputUrl,
+                  query: {
+                    schemeId: res.id || null,
+                    operateLog: res.operateLog || null
+                  }
+                })
+              }
+            })
+            break;
+          default:
+            this.$router.push({
               path: item.url,
               query: item.params || null
             })
           break  
-      }
+        }
       }else{
          this.$parent.$children[0].openCatecory()
       }
-     
     },
     // 获取成本结构数据，用于判断跳转系统/手工页面
     getCostData() {

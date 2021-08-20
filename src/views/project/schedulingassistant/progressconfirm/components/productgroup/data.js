@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 11:09:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 16:06:57
+ * @LastEditTime: 2021-08-16 16:50:50
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\data.js
  */
@@ -26,5 +26,6 @@ export const tableTitle = [
   {props:'fs',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
   {props:'confirmDateDeadline',name:'确认截止日期', key: "QUERENJIEZHIRIQI", tooltip: true},
   {props:'confirmStatus',name:'确认状态', key: "QUERENZHUANGTAI", tooltip: true},
+  {props:'confirmDate',name:'确认时间',key:'QUERENSHIJIAN',tooltip: true},
   {props:'remark',name:'备注', key: "BEIZHU", tooltip: true},
 ]

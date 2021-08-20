@@ -63,6 +63,7 @@ import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import scoringDeptDialog from './scoringDeptDialog'
 import axios from 'axios'
+import { cloneDeep } from "lodash"
 
 export default {
   components: {
@@ -99,7 +100,7 @@ export default {
     this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
     this.getTableList();
   },
-  inject: ['getBaseInfo'],
+  inject: ['getBaseInfo', 'getbaseInfoData'],
   methods: {
     async getTableList() {
       const id = this.$route.query.id
@@ -131,6 +132,19 @@ export default {
 
             return ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress })
           })
+          
+          const baseInfo = this.getbaseInfoData()
+          if (baseInfo.rfqType === "AFFIX") {
+            const tableTitle = cloneDeep(this.tableTitle)
+            
+            tableTitle.forEach(item => {
+              if (Array.isArray(item.list) && item.list.length > 0) {
+                item.list = item.list.filter(item => item.props === "rate" || item.props === "memo")
+              }
+            })
+
+            this.tableTitle = tableTitle
+          }
         } catch {
           this.tableLoading = false;
           this.supplierProducePlaces = []
@@ -138,10 +152,8 @@ export default {
       }
     },
     sendTaskForRating() {
-      if (!this.selectTableData.length) return
-      
+      if (!this.selectTableData.length) return iMessage.warn(this.language('NINHAIWEIXUANZEGONGS','您当前还未选择供应商！'))
       this.pushLoading = true
-
       sendTaskForRating(this.selectTableData)
       .then(res => {
         if (res.code == 200) {
@@ -187,7 +199,9 @@ export default {
     openActionPropsPage(row) {
       const rfqId = this.$route.query.id
       const supplierId = row.id
+
       const params = serialize({
+        rfqType: this.getbaseInfoData().rfqType,
         rfqId,
         supplierId
       })

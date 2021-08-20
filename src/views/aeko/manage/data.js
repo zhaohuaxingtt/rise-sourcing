@@ -9,7 +9,7 @@ export const searchList = [
   {props:'aekoCode',label:'AEKO号',type:'input',labelKey:'LK_AEKOHAO_MANAGE',permissionKey:'AEKO_MANAGELIST_INPUT_AEKOCODE'},
   {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_MANAGELIST_INPUT_PARTNUM'},
   {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',permissionKey:'AEKO_MANAGELIST_SELECT_LINIEDEPtNUM',selectOption:'linieDeptNumList',noShowAll:true,filterable:true,clearable:true,multiple:true,},
-  {props:'carTypeCodeList',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',permissionKey:'AEKO_MANAGELIST_SELECT_CARTYPECODE',selectOption:'carTypeCodeList',filterable:true,noShowAll:true,clearable:true,multiple:true,},
+  {props:'carTypeCodeList',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',isNewSelect:true,permissionKey:'AEKO_MANAGELIST_SELECT_CARTYPECODE',selectOption:'carTypeCodeList',filterable:true,noShowAll:true,clearable:true,multiple:true,},
   {props:'frozenDate',label:'冻结⽇期',type:'datePicker',labelKey:'LK_AEKODONGJIERIQI',permissionKey:'AEKO_MANAGELIST_DATEPICKER_FROZENDATE',},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand',permissionKey:'AEKO_MANAGELIST_SELECT_BRAND'},
   {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',permissionKey:'AEKO_MANAGELIST_SELECT_AEKOSTATUS',multiple:true,noShowAll:true,clearable:true},
@@ -19,7 +19,7 @@ export const searchList = [
 
 // 表头
 export const tableTitle = [
-    { props: "aekoCode", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true },
+    { props: "aekoCode", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true,width:140 },
     { props: "log", name: "⽇志", key: "LK_RIZHI", tooltip: true },
     { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true },
     { props: "aekoStatusDesc", name: "AEKO状态", key: "LK_AEKOZHUANGTAI", tooltip: true },

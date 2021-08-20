@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="pieLoading">
     <div class="title">{{ language('PI.LINGJIANCHENGBENGOUCHENG', '零件成本构成') }}</div>
     <div class="theChart" ref="theChart" :style="{'height': chartHeight}"/>
   </div>
@@ -14,12 +14,16 @@ export default {
       type: String,
       default: '500px',
     },
-    chartData: {
+    dataInfo: {
       type: Object,
       default: () => {
         return {};
       },
     },
+    pieLoading: {
+      type: Boolean,
+      default: false
+    }
   },
   mounted() {
     this.buildChart();
@@ -36,7 +40,7 @@ export default {
       const option = {
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)',
+          formatter: '{b}: {c} ({d}%)',
         },
         legend: {
           left: 10,
@@ -48,14 +52,14 @@ export default {
         },
         series: [
           {
-            name: '访问来源',
+            name: '',
             type: 'pie',
             radius: ['40%', '55%'],
             center: ['50%', '45%'],
             avoidLabelOverlap: false,
             label: {
               show: true,
-              formatter: '{b}\n({d}%)',
+              formatter: '{b}:{d}%',
             },
             itemStyle: {
               borderWidth: 1,
@@ -63,8 +67,8 @@ export default {
             },
             labelLine: {
               show: false,
-              length: 2,
-              length2: 3,
+              length: 4,
+              length2: 4,
             },
             data: this.seriesArray,
           },
@@ -73,17 +77,22 @@ export default {
       chart.setOption(option, true);
     },
     assembleData() {
-      const data = [
-        {value: 335, name: '直接访问'},
-        {value: 310, name: '邮件营销'},
-        {value: 234, name: '联盟广告'},
-        {value: 135, name: '视频广告'},
-        {value: 1548, name: '搜索引擎'},
-      ];
-      this.seriesArray = data;
-      this.legendData = data.map(item => {
-        return item.name;
-      });
+      const resData = this.dataInfo && this.dataInfo.pieScaleList;
+      if (Array.isArray(resData)) {
+        const data = resData.map(item => {
+          return {
+            name: item.costName,
+            value: item.costProportion,
+            itemStyle: {
+              color: item.color
+            }
+          };
+        });
+        this.seriesArray = data;
+        this.legendData = data.map(item => {
+          return item.name;
+        });
+      }
     },
     buildChart() {
       this.assembleData();
@@ -91,7 +100,7 @@ export default {
     },
   },
   watch: {
-    chartData: {
+    dataInfo: {
       deep: true,
       handler() {
         this.buildChart();

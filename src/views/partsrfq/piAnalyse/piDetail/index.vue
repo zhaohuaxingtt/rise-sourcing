@@ -29,28 +29,66 @@
         class="margin-bottom20"
         @handleItemClick="handleTabsClick"
         @handleTimeChange="handleTimeChange"
+        :currentTab="currentTab"
+        :timeRange="timeRange"
     />
 
     <!--表格-->
     <iCard tabCard class="margin-bottom20">
-      <theTable :dataInfo="dataInfo"/>
+      <theTable
+          v-show="currentTab === CURRENTTIME"
+          ref="theCurrentTable"
+          :dataInfo="dataInfo"
+          :currentTab="currentTab"
+          :tableLoading="tableLoading"
+          @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
+      />
+      <theTable
+          v-show="currentTab === AVERAGE"
+          ref="theAverageTable"
+          :averageData="averageData"
+          :currentTab="currentTab"
+          :tableLoading="tableLoading"
+          @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
+      />
     </iCard>
 
     <!--图形-->
     <div class="chartBox">
       <!--      Price Index价格分析-->
       <iCard class="lineBox">
-        <thePriceIndexChart/>
+        <thePriceIndexChart
+            v-if="showPiChart"
+            ref="thePriceIndexChart"
+            :currentTab="currentTab"
+            :currentTabData="currentTabData"
+        />
       </iCard>
       <!--      零件成本构成-->
       <iCard class="pieBox">
-        <thePartsCostChart/>
+        <thePartsCostChart
+            :dataInfo="dataInfo"
+            :pieLoading="pieLoading"
+        />
       </iCard>
     </div>
 
     <!--预览-->
     <previewDialog
+        ref="previewDialog"
         v-model="previewDialog"
+        :dataInfo="dataInfo"
+        :averageData="averageData"
+        :currentTab="currentTab"
+        :currentTabData="currentTabData"
+    />
+
+    <!--    保存弹框-->
+    <saveDialog
+        ref="saveDialog"
+        v-model="saveDialog"
+        @handleSaveDialog="handleSaveDialog"
+        :dataInfo="dataInfo"
     />
   </iPage>
 </template>
@@ -65,11 +103,18 @@ import customPart from './components/customPart';
 import thePartsCostChart from './components/thePartsCostChart';
 import thePriceIndexChart from './components/thePriceIndexChart';
 import previewDialog from './components/previewDialog';
+import saveDialog from './components/saveDialog';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import {CURRENTTIME, AVERAGE} from './components/data';
 import {
   getAnalysisSchemeDetails,
+  getAveragePartCostPrice,
+  deleteParts,
+  saveAnalysisScheme,
+  checkName,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
+import _ from 'lodash';
+import {mapState} from 'vuex';
 
 export default {
   mixins: [resultMessageMixin],
@@ -85,6 +130,12 @@ export default {
     previewDialog,
     theTabs,
     theTable,
+    saveDialog,
+  },
+  computed: {
+    ...mapState({
+      piIndexChartParams: (state) => state.rfq.piIndexChartParams,
+    }),
   },
   data() {
     return {
@@ -99,11 +150,19 @@ export default {
       },
       currentTab: CURRENTTIME,
       currentTabData: {
-        analysisSchemeId: 109,
+        analysisSchemeId: this.$route.query.schemeId,
         partsId: '',
-        batchNumber: ''
+        batchNumber: this.$route.query.batchNumber,
+        supplierId: '',
       },
       dataInfo: {},
+      averageData: {},
+      CURRENTTIME,
+      AVERAGE,
+      tableLoading: false,
+      timeRange: null,
+      pieLoading: false,
+      showPiChart: true,
     };
   },
   created() {
@@ -149,48 +208,239 @@ export default {
           this.$t('LK_WENXINTISHI'),
           {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
       ).then(async () => {
-        /*const req = {
+        const req = {
           id: item.id,
         };
-        const res = await deletePartsCustomerList(req);
+        const res = await deleteParts(req);
         if (res.result) {
           this.partItemCurrent = 0;
-          this.currentBatchNumber = this.partList[0].batchNumber;
-          this.currentPartsId = this.partList[0].partsId;
-          this.getDataInfo();
+          const partListItem = this.partList[0];
+          this.currentTabData = {
+            analysisSchemeId: partListItem.analysisSchemeId,
+            partsId: partListItem.partsId,
+            batchNumber: partListItem.batchNumber,
+            supplierId: partListItem.supplierId,
+          };
+          await this.getDataInfo();
         }
-        this.resultMessage(res);*/
+        this.resultMessage(res);
       });
     },
     // 点击零件
     handlePartItemClick({item, index}) {
       this.partItemCurrent = index;
+      this.currentTabData = {
+        analysisSchemeId: item.analysisSchemeId,
+        partsId: item.partsId,
+        batchNumber: item.batchNumber,
+        supplierId: item.supplierId,
+      };
+      this.currentTab = CURRENTTIME;
+      this.getDataInfo();
     },
     // 点击标签
     handleTabsClick(val) {
+      this.$store.dispatch('setPiIndexChartParams', {
+        dimensionHandle: [],
+        particleSize: '3',
+        beginTime: '',
+        endTime: '',
+      });
       this.currentTab = val;
+      this.showPiChart = false;
+      this.$nextTick(async () => {
+        this.showPiChart = true;
+        if (this.currentTab === AVERAGE) {
+          await this.getAverageData();
+          await this.$refs.thePriceIndexChart.buildChart();
+        } else {
+          await this.getDataInfo();
+        }
+      });
     },
     // 时间改变
-    handleTimeChange(time) {
-      console.log(111);
-      console.log(time);
+    async handleTimeChange(time) {
+      const extraParams = {
+        beginTime: time[0],
+        endTime: time[1],
+      };
+      await this.getAverageData({extraParams});
+      await this.$refs.thePriceIndexChart.buildChart();
     },
     // 获取信息
     async getDataInfo() {
       try {
-        this.pageLoading = true
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: true});
         const req = {
-          analysisSchemeId: this.currentTabData.analysisSchemeId,
+          ...this.currentTabData,
         };
         const res = await getAnalysisSchemeDetails(req);
-        this.dataInfo = res.data
+        this.dataInfo = res.data;
+        this.currentTabData.partsId = res.data.partsId;
+        this.currentTabData.batchNumber = res.data.batchNumber;
+        this.currentTabData.supplierId = res.data.supplierId;
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        this.pageLoading = false
+        this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
+        await this.$refs.thePriceIndexChart.buildChart();
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       } catch {
-        this.pageLoading = false
+        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
       }
+    },
+    // 获取平均数据
+    async getAverageData({extraParams} = {}) {
+      try {
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: true});
+        this.averageData = {};
+        const req = {
+          ...this.currentTabData,
+          ...extraParams,
+        };
+        const res = await getAveragePartCostPrice(req);
+        this.averageData = res.data;
+        if (res.data.beginTime && res.data.endTime) {
+          this.timeRange = [res.data.beginTime, res.data.endTime];
+          this.setPiIndexTimeParams(res.data);
+        } else {
+          this.timeRange = null;
+        }
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
+      } catch {
+        this.averageData = {};
+        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
+      }
+    },
+    // 处理保存弹窗
+    async handleSaveDialog(reqParams) {
+      const resCheckName = await this.checkName(reqParams);
+      if (resCheckName) {
+        this.saveDialog = false;
+        iMessageBox(
+            this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
+            this.$t('LK_WENXINTISHI'),
+            {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+        ).then(async () => {
+          await this.handleSaveProcess(reqParams, true);
+        }).catch(async () => {
+          this.saveDialog = true;
+        });
+      } else {
+        await this.handleSaveProcess(reqParams);
+      }
+    },
+    async handleSaveProcess(reqParams, isCover = false) {
+      try {
+        this.pageLoading = true;
+        const req = this.handleAllSaveReq(reqParams);
+        req.isCover = isCover;
+        if (reqParams.reportSave) {
+          await this.handleSaveAsReport(async (downloadName, downloadUrl) => {
+            req.downloadName = downloadName;
+            req.downloadUrl = downloadUrl;
+            await this.saveAnalysisScheme(req);
+            this.saveDialog = false;
+          });
+        } else {
+          await this.saveAnalysisScheme(req);
+          this.saveDialog = false;
+        }
+        this.pageLoading = false;
+      } catch {
+        this.pageLoading = false;
+      }
+    },
+    handleAllSaveReq(reqParams) {
+      const req = {
+        ...this.currentTabData,
+      };
+      const currentData = this.$refs.theCurrentTable.handleAllSaveData();
+      const averageData = this.$refs.theAverageTable.handleAllSaveData();
+      if (reqParams.analysisSave && reqParams.reportSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+        req.reportName = reqParams.reportName;
+      } else if (reqParams.analysisSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+      } else if (reqParams.reportSave) {
+        req.reportName = reqParams.reportName;
+      }
+      req.currentPartsCostList = currentData.tableList;
+      req.currentPrice = currentData.nowPriceRatio;
+      req.currentCompositePrice = currentData.totalPriceRatio;
+      req.avgPartsCostList = averageData.tableList;
+      req.avgPrice = averageData.nowPriceRatio;
+      req.avgCompositePrice = averageData.totalPriceRatio;
+      req.beginTime = averageData.beginTime;
+      req.endTime = averageData.endTime;
+      return req;
+    },
+    async handleSaveAsReport(callback) {
+      this.previewDialog = true;
+      setTimeout(async () => {
+        const res = await this.$refs.previewDialog.getDownloadFile({
+          callBack: () => {
+            this.previewDialog = false;
+          },
+        });
+        const downloadName = res.downloadName;
+        const downloadUrl = res.downloadUrl;
+        if (callback) {
+          callback(downloadName, downloadUrl);
+        }
+      }, 1000);
+    },
+    setLoading({propsArray, boolean}) {
+      propsArray.map(item => {
+        this[item] = boolean;
+      });
+    },
+    setPiIndexTimeParams(data) {
+      const copyPiIndexChartParams = _.cloneDeep(this.piIndexChartParams);
+      copyPiIndexChartParams.beginTime = data.beginTime;
+      copyPiIndexChartParams.endTime = data.endTime;
+      this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
+    },
+    async handlePriceTableFinish(value, tab) {
+      try {
+        this.tableLoading = true;
+        const req = {
+          ...this.currentTabData,
+        };
+        if (tab === CURRENTTIME) {
+          req.currentPartsCostList = value.tableList;
+          req.currentPrice = value.nowPriceRatio;
+          req.currentCompositePrice = value.totalPriceRatio;
+        } else if (tab === AVERAGE) {
+          req.avgPartsCostList = value.tableList;
+          req.avgPrice = value.nowPriceRatio;
+          req.avgCompositePrice = value.totalPriceRatio;
+          req.beginTime = value.beginTime;
+          req.endTime = value.endTime;
+        }
+        const res = await saveAnalysisScheme(req);
+        this.tableLoading = false;
+        this.resultMessage(res);
+      } catch {
+        this.tableLoading = false;
+      }
+    },
+    async checkName(reqParams) {
+      let isRepeat = false;
+      const req = {};
+      if (reqParams.analysisSave && reqParams.reportSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+        req.reportName = reqParams.reportName;
+      } else if (reqParams.analysisSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+      } else if (reqParams.reportSave) {
+        req.reportName = reqParams.reportName;
+      }
+      const res = await checkName(req);
+      if (res.data) {
+        isRepeat = true;
+      }
+      return isRepeat;
     },
   },
 };

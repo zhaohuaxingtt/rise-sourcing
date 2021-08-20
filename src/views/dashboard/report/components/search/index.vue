@@ -17,6 +17,7 @@
           class="select-control"
           autocomplete='new-password'
           v-model="form.carTypes"
+          v-permission="REPORTMGMT_STATUSREPORT_CARTYPE"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterCarType"
           @visible-change="resetOption(...arguments, 'CAR_TYPE_BUYER')"
@@ -24,10 +25,6 @@
           filterable
           clearable
         >
-          <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
           <el-option
             :value="items.code"
             :label="items.name"
@@ -40,6 +37,7 @@
       <el-form-item :label="language('nominationLanguage_LingJianHao', '零件号')">
         <iInput
           v-model="form.partNum"
+          v-permission="REPORTMGMT_STATUSREPORT_PARTNUM"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -48,6 +46,7 @@
       <el-form-item :label="language('nominationLanguage.RFQBianHao','RFQ编号')">
         <iInput
           v-model="form.rfqId"
+          v-permission="REPORTMGMT_STATUSREPORT_RFQID"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -57,16 +56,13 @@
         <iSelect
           class="select-control"
           v-model="form.order"
+          v-permission="REPORTMGMT_STATUSREPORT_SORT"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterSort"
           @visible-change="resetOption(...arguments, 'SORT')"
           filterable
           clearable
         >
-          <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
           <el-option
             :value="items.code"
             :label="language(items.key,items.name)"
@@ -80,6 +76,7 @@
         <iSelect
           class="select-control"
           v-model="form.categoryGroup"
+          v-permission="REPORTMGMT_STATUSREPORT_MATERIAL"
           multiple
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterMaterial"
@@ -87,10 +84,6 @@
           filterable
           clearable
         >
-          <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
           <el-option
             :value="items.code"
             :label="items.name"
@@ -104,16 +97,13 @@
         <iSelect
           class="select-control"
           v-model="form.buyer"
+          v-permission="REPORTMGMT_STATUSREPORT_BUYERL"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterBuyer"
           @visible-change="resetOption(...arguments, 'BUYER_BY_USER')"
           filterable
           clearable
         >
-          <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
           <el-option
             :value="items.code"
             :label="items.name"
@@ -150,7 +140,7 @@ export default {
         buyer: '',
         carTypes: [],
         categoryGroup: [],
-        order: '',
+        order: 'DEFAULT',
         partNum: '',
         rfqId: '',
       },
@@ -159,6 +149,11 @@ export default {
       // options
       options: {
         SORT: [
+          {
+            code: 'DEFAULT',
+            name: '默认',
+            key: 'MOREN'
+          },
           {
             code: 'TASK_STATUS',
             name: '按任务状态',
@@ -169,11 +164,6 @@ export default {
             name: '按整车进度风险',
             key: 'ANZHENGCHEFENGXIAN'
           },
-          {
-            code: 'DEFAULT',
-            name: '默认',
-            key: 'MOREN'
-          }
         ],
         MATERIAL_GROUP_BUYER: [],
         CAR_TYPE_BUYER: [],
@@ -254,6 +244,8 @@ export default {
       }
     },
     filterOption(data, optionKey) {
+      // 去除空格
+      data = String(data).trim()
       const startWords = String(data).spell().toLocaleUpperCase().split('')[0]
       const options = _.cloneDeep(this.optionsOrigin[optionKey]) || []
       const filtedOption = options.filter(o => String(o.name).indexOf(data) > -1 || o.cnChar === startWords)

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 16:38:55
- * @LastEditTime: 2021-08-13 15:12:52
+ * @LastEditTime: 2021-08-19 16:14:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysis\index.vue
@@ -113,18 +113,17 @@
 </template>
 
 <script>
-import {iCard, iButton, iInput, iSelect, iPagination, icon, iMessageBox} from 'rise'
+import {iCard, iButton, iInput, iSelect, iPagination, icon, iMessage, iMessageBox} from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import {pageMixins} from '@/utils/pageMixins';
-import { iMessage } from '@/components';
 import handleInput from '../costAnalysisAdd/components/handleInput'
 import reportPreview from '@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview.vue'
 import { getAnalysisList, getMaterialGroupByUserIds, fetchModify, fetchStick, fetchDel } from '@/api/partsrfq/costAnalysis/index'
 export default {
   name: 'CostAnalysis',
   mixins: [pageMixins],
-  components: {iCard, iButton, iInput, iSelect, iPagination, icon, iMessageBox, tableList, handleInput, reportPreview},
+  components: {iCard, iButton, iInput, iSelect, iPagination, icon, tableList, handleInput, reportPreview},
   data () {
     return {
       costAnalysisMainUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain',
@@ -212,6 +211,7 @@ export default {
       this.page.currPage = 1
       this.page.pageSize = 10
       this.getTableData().then(res => {
+        console.log('res', res);
         if (!res || res.length == 0) {
           iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
         }
@@ -262,16 +262,22 @@ export default {
         iMessage.error(this.language('QINGXUANZEYAOSHANCHUDESHUJU', '请选择要删除的数据'))
         return 
       }
-      const params = {
-        idList: this.selection.map(item => item.id)
-      }
-      fetchDel(params).then(res => {
-        if(res && res.code == 200) {
-          iMessage.success(res.desZh)
-          this.getTableData()
+      iMessageBox(
+          this.$t('LK_SHIFOUQUERENSHANCHU'),
+          this.$t('LK_WENXINTISHI'),
+          {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+      ).then(async () => {
+        const params = {
+          idList: this.selection.map(item => item.id)
         }
-        else iMessage.error(res.desZh)
-      })
+        fetchDel(params).then(res => {
+          if(res && res.code == 200) {
+            iMessage.success(res.desZh)
+            this.getTableData()
+          }
+          else iMessage.error(res.desZh)
+        })
+      });
     },
     // 点击保存
     clickSave() {
@@ -304,7 +310,8 @@ export default {
         this.$router.push({
           path: this.costAnalysisAddUrl,
           query: {
-            schemeId: val
+            schemeId: val.id,
+            operateLog: val.operateLog || null
           }
         })
       } else {

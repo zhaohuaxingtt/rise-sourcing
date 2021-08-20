@@ -10,7 +10,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="handSearch" :carTypeList="carTypeList" ref="searchForm" />
+    <search @search="handSearch" ref="searchForm" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -86,9 +86,9 @@
       
       <!-- 定点单号 -->
       <template #nominateName="scope">
-         <span class="flexRow">
+         <span class="flexRow-link">
             <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.nominateName }}</span>
-            <span class="icon-gray  cursor "  @click="viewNominationDetail(scope.row)">
+            <span class="icon-gray cursor "  @click="viewNominationDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
             </span>
@@ -181,7 +181,6 @@ import {
   nominateRreeze,
   nominateUnRreeze,
   nominateConfirm,
-  getCarTypePro,
   rsFrozen,
   rsUnFrozen,
   consistenceCheck,
@@ -231,8 +230,6 @@ export default {
   },
   mounted() {
     this.getFetchData()
-    // 获取车型项目
-    this.getCarTypePro()
   },
   methods: {
     // 新建零件定点申请
@@ -257,17 +254,10 @@ export default {
             desinateId: row.id, 
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
             partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',
+            applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
           }
         })
         window.open(routeData.href, '_blank')
-      })
-    },
-    // 获取车型项目
-    getCarTypePro() {
-      getCarTypePro().then(res => {
-        if (res.code === '200') {
-          this.carTypeList = (res.data && res.data.data) || []
-        }
       })
     },
     handSearch(data) {
@@ -504,28 +494,5 @@ export default {
 .selStatus-link {
   font-size: 12px;
   text-decoration: underline;
-}
-.icon-gray{
-  cursor: pointer;
-  .active{
-    display: none;
-  }
-  .show{
-    display: block;
-  }
-}
-.flexRow{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.icon-gray:hover{
-  cursor: pointer;
-  .show{
-    display: none;
-  }
-  .active{
-    display: block;
-  }
 }
 </style>

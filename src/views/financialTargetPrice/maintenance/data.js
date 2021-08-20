@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-27 09:29:53
+ * @LastEditTime: 2021-08-17 10:40:52
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
@@ -20,7 +20,7 @@ export const tableTitle = [
   {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 120},
   {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, editable: true, type: 'input'},
   {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true, editable: true, type: 'input'},
-  {props:'approveStatus',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true},
+  {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true},
   {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
   {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 100},
   {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120},
@@ -70,7 +70,7 @@ export const modifyTableTitle = [
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
   {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 100},
   {props:'valid',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
-  {props:'approveStatus',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
+  {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
   {props:'modifer',name:'修改人', key: "XIUGAIREN", tooltip: true},
   {props:'modifyDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true, width: 120},
 ]
@@ -86,6 +86,6 @@ export const approvalTableTitle = [
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
   {props:'valid',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
   {props:'approveName',name:'审批人', key: "SHENPIREN", tooltip: true, width: 120},
-  {props:'approveType',name:'审批类型', key: "SHENPILEIXING", tooltip: true},
+  {props:'approveTypeDesc',name:'审批类型', key: "SHENPILEIXING", tooltip: true},
   {props:'approveDate',name:'审批日期', key: "SHENPIRIQI", tooltip: true, width: 120},
 ]

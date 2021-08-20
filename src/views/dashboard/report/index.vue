@@ -19,15 +19,15 @@
         <el-col :span="8">
           <iCard class="report-countrfq" :style="`height:${sarchWindowHeight}px`">
             <ul>
-              <li><div><strong>{{rfqInProgress}}</strong><p class="margin-top10">{{language('JINXINGZHONGDERFQ','进行中的RFQ')}}</p></div></li>
-              <li><div><strong class="note">{{rfqDelay}}</strong><p class="margin-top10">{{language('YANWUDERFQ','延误的RFQ')}}</p></div></li>
+              <li v-permission="REPORTMGMT_STATUSREPORT_PROCESSINGRFQ"><div><strong>{{rfqInProgress}}</strong><p class="margin-top10">{{language('JINXINGZHONGDERFQ','进行中的RFQ')}}</p></div></li>
+              <li v-permission="REPORTMGMT_STATUSREPORT_DELAYRFQ"><div><strong class="note">{{rfqDelay}}</strong><p class="margin-top10">{{language('YANWUDERFQ','延误的RFQ')}}</p></div></li>
             </ul>
           </iCard>
         </el-col>
       </el-row>
     </div>
     <div class="margin-top10">
-      <iCard class="report-rfqList" v-loading="loading">
+      <iCard class="report-rfqList" v-loading="loading" v-permission="REPORTMGMT_STATUSREPORT_TABLE">
         <rfqList :dataList="data" />
         <!-- <iPagination
           v-update
@@ -70,6 +70,7 @@ export default {
       current: 1,
       size: 10,
       total: 0,
+      pages: 0,
       rfqInProgress: 0,
       rfqDelay: 0,
       // 搜索框高度
@@ -121,6 +122,7 @@ export default {
           this.data = this.data.concat(data)
           // this.$refs.search.init(data)
           this.total = res.data.pagers && res.data.pagers.total || 0
+          this.pages = res.data.pagers && res.data.pagers.pages || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -141,7 +143,7 @@ export default {
           const scrollHeight = el.scrollHeight;
           if ((offsetHeight + scrollTop) - scrollHeight >= -1) {
             // 翻页
-            if (!this.dataLoading) {
+            if (this.current < this.pages && !this.dataLoading) {
               this.current = this.current + 1
               console.log('翻页', this.current)
               this.init()

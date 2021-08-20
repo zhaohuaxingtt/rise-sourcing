@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-08-10 16:04:43
+ * @LastEditTime: 2021-08-19 19:25:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -35,9 +35,9 @@
                        :label="item.motorTypeName"
                        :prop="item.label"
                        min-width="180">
-        <editable-cell :show-input="row.editMode"
-                       slot-scope="{row}"
-                       v-model="row.name">
+        <editable-cell slot-scope="{row}"
+                       :show-input="row.editMode"
+                       v-model="row[item.label]">
           <span slot="content">{{row[item.label]}}</span>
         </editable-cell>
       </el-table-column>
@@ -80,6 +80,7 @@
  
 <script>
 import EditableCell from "./editCell";
+import { saveMekTable, deleteMekTable } from '@/api/categoryManagementAssistant/mek'
 export default {
   name: "App",
   components: {
@@ -95,6 +96,12 @@ export default {
     editFlag: {
       type: Boolean,
       default: false
+    },
+    addRowList: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   watch: {
@@ -115,11 +122,13 @@ export default {
             }
           })
         }
+        this.$emit('editData', this.gridData1);
       }
     },
     gridData: {
       handler (newVal) {
         if (newVal) {
+          console.log(newVal.config, newVal.data)
           this.tableData = [this.gridData.config, ...this.gridData.data]
           this.gridData1 = this.tableData.map((row, index) => {
             if (index === 0) {
@@ -133,14 +142,15 @@ export default {
               }
             }
           });
-          console.log(this.gridData1)
         }
-      }
+      },
+      deep: true,
     }
   },
   data () {
     return {
-      tableData: []
+      tableData: [],
+      gridData1: []
     };
   },
   methods: {

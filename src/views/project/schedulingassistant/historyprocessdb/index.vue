@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-13 14:32:42
+ * @LastEditTime: 2021-08-19 18:52:17
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
 
 <template>
-  <div class="historyProcessDB">
+  <iPage class="historyProcessDB" v-permission="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB">
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
         <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
@@ -31,18 +31,18 @@
     </iSearch>
     <productGroup ref="historyDBProductGroup" v-if="searchParams.level === '1'" :searchParams="searchParams" :carProjectOptions="selectOptions.carProjectOptionsALL" :productGroupOptions="selectOptions.productGroupOptions" />
     <part ref="historyDBpart" v-else :searchParams="searchParams" :carProjectOptions="selectOptions.carProjectOptionsALL" :productGroupOptions="selectOptions.productGroupOptions" />
-  </div>
+  </iPage>
 </template>
 
 <script>
-import { iSearch, iSelect, iInput, iButton, iMessage } from 'rise'
+import { iSearch, iSelect, iInput, iButton, iMessage, iPage } from 'rise'
 import { searchListPro, searchListPart } from './data'
 import { cloneDeep } from 'lodash' 
 import productGroup from './components/productGroup'
 import part from './components/part'
 import { getCarTypePro, getProductGroupAll } from '@/api/project'
 export default {
-  components: { iSearch, iSelect, iInput, iButton, productGroup, part },
+  components: { iSearch, iSelect, iInput, iButton, productGroup, part, iPage },
   data() {
     return {
       searchParams: {
@@ -115,7 +115,8 @@ export default {
       if (props === 'level'){
         this.searchParams = {
           level: val,
-          productGroup: ''
+          productGroup: '',
+          categoryName: ''
         }
       }
     },
@@ -198,5 +199,11 @@ export default {
       @include input_inner;
     }
   }
+}
+.historyProcessDB {
+  padding: 0;
+  padding-top: 10px;
+  height: auto;
+  overflow: auto;
 }
 </style>

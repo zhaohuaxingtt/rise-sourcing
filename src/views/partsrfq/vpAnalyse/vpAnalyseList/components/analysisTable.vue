@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-08-14 17:08:47
+ * @LastEditTime: 2021-08-18 11:02:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisTable.vue
@@ -172,9 +172,8 @@
 </template>
 
 <script>
-import { icon, iPagination, iInput, iSelect } from 'rise'
+import { icon, iPagination, iInput, iSelect, iMessage } from 'rise'
 import { getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel } from '@/api/partsrfq/vpAnalysis/vpAnalysisList'
-import { iMessage } from '@/components';
 import { pageMixins } from '@/utils/pageMixins';
 import reportPreview from './reportPreview'
 

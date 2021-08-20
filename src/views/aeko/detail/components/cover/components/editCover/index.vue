@@ -5,7 +5,7 @@
 -->
 <template>
   <iCard class="aeko-editCover">
-    <template v-if="!isFrozen" v-slot:header-control>
+    <template v-if="!disabled" v-slot:header-control>
       <iButton  :loading="btnLoading" @click="save()">{{language('LK_BAOCUN','保存')}}</iButton>
       <iButton  :loading="btnLoading" v-if="basicInfo.aekoCoverId" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
       <iButton  :loading="btnLoading">{{language('LK_AEKO_CHEHUI','撤回')}}</iButton>
@@ -21,10 +21,10 @@
           <template v-if="item.editable && isEdit">
             <template v-if="item.type === 'input'">
               <!-- 新⾸批送样周期(周数)处理正整数 -->
-              <iInput  v-if="item.props == 'sendCycle'" :disabled="isFrozen"  @input="handleNumber($event,basicInfo,'sendCycle')" v-model="basicInfo[item.props]"  />
-              <iInput v-else :disabled="isFrozen" v-model="basicInfo[item.props]"  />
+              <iInput  v-if="item.props == 'sendCycle'" :disabled="disabled"  @input="handleNumber($event,basicInfo,'sendCycle')" v-model="basicInfo[item.props]"  />
+              <iInput v-else :disabled="disabled" v-model="basicInfo[item.props]"  />
             </template>
-            <iSelect v-else-if="item.type === 'select'" v-model="basicInfo[item.props]" :disabled="isFrozen" >
+            <iSelect v-else-if="item.type === 'select'" v-model="basicInfo[item.props]" :disabled="disabled" >
               <el-option
                 :value="item.value"
                 :label="item.label"
@@ -42,7 +42,7 @@
         rows="10" 
         resize="none"
         v-model="basicInfo.remark"
-        :disabled="isFrozen"
+        :disabled="disabled"
         v-permission="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS"
       />
       <div class="margin-top50" v-permission="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE_LINE">
@@ -58,7 +58,7 @@
         >
         <!-- 增加材料成本(RMB/⻋) -->
         <template #materialIncrease="scope">
-          <iInput :disabled="isFrozen" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
+          <iInput :disabled="disabled" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
           <!-- <el-tooltip placement="top" effect="light">
             <div slot="content">
               <p class="font-weight margin-bottom5" style="text-align:center">100=5*1*1*2+5*1*1*2 +10*2*2*2</p>
@@ -72,11 +72,11 @@
         </template>
         <!-- 增加投资费⽤(不含税) -->
         <template #investmentIncrease="scope">
-          <iInput :disabled="isFrozen" v-model="scope.row['investmentIncrease']" @input="handleNumber($event,scope.row,'investmentIncrease')" style="width:100px" />
+          <iInput :disabled="disabled" v-model="scope.row['investmentIncrease']" @input="handleNumber($event,scope.row,'investmentIncrease')" style="width:100px" />
         </template>
         <!-- 其他费⽤(不含税) -->
         <template #otherCost="scope">
-          <iInput :disabled="isFrozen" v-model="scope.row['otherCost']" @input="handleNumber($event,scope.row,'otherCost')" style="width:100px"/>
+          <iInput :disabled="disabled" v-model="scope.row['otherCost']" @input="handleNumber($event,scope.row,'otherCost')" style="width:100px"/>
         </template>
         </tableList>
         <p class="bottom-tips margin-top20">Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder Invest≥10,000,000 RMB</p>
@@ -129,11 +129,12 @@ export default {
       }
     },
     computed:{
-      // adeko状态已冻结时 禁用操作按钮
-      isFrozen(){
+      // adeko状态已冻结或者已撤销 禁用操作按钮
+      disabled(){
         const { aekoInfo={} } = this;
-        return aekoInfo.aekoStatus == 'FROZEN';
-      }
+        return aekoInfo.aekoStatus == 'FROZEN' || aekoInfo.aekoStatus == 'CANCELED';
+      },
+      
     },
     data(){
       return{

@@ -16,7 +16,7 @@
     <template #title>
       <p class="title">{{ language("ZHUANGCHELVMEICHEYONGLIANG", "装⻋率/每⻋⽤量") }}</p>
       <div class="control" id="control">
-        <iButton :loading="saveLoading" @click="handleSave" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
+        <iButton v-if="!disabled" :loading="saveLoading" @click="handleSave" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
       </div>
     </template>
     <div class="body" v-loading="loading">
@@ -24,7 +24,7 @@
         <iFormItem class="item" v-for="(item, $index) in form" :key="$index" :label="`${ language(item.key, item.name) }`" v-permission.dynamic="item.permissionKey">
           <div v-if="item.props === 'cartypeProject'">
             <iSelect
-              v-if="aekoInfo.aekoType == 'AeA'"
+              v-if="aekoInfo.aekoType == 'AeA' && !disabled"
               v-model="dosage.cartypeProjectCode"
               :placeholder="language('QINGXUANZE', '请选择')"
               @change="handleChangeByCarTypeProject"
@@ -38,8 +38,8 @@
             </iSelect>
             <iText v-else>{{ dosage.cartypeProjectZh }}</iText>
           </div>
-          <iText v-if="item.props === 'factory' || item.props === 'supplierName'">{{ dosage[item.props] }}</iText>
-          <iInput class="percentInput" v-else-if="item.props === 'usePortion'" v-model="dosage[item.props]" @input="handleInputByUsePortion">
+          <iText v-if="item.props === 'factoryName' || item.props === 'supplierName'">{{ dosage[item.props] }}</iText>
+          <iInput class="percentInput" v-else-if="item.props === 'usePortion'" v-model="dosage[item.props]" :disabled="disabled" @input="handleInputByUsePortion" @blur="handleBlurByUsePortion">
             <template slot="append">%</template>
           </iInput>
         </iFormItem>
@@ -54,7 +54,7 @@
         :tableData="Array.isArray(dosage.aekoProjectCarDosageList) ? dosage.aekoProjectCarDosageList : []"
         :tableTitle="tableTitle">
         <template #perCarDosage="scope">
-          <iInput class="perCarDosage" v-model="scope.row.perCarDosage" @input="handleInputByPerCarDosage($event, scope.row)"></iInput>
+          <iInput class="perCarDosage" v-model="scope.row.perCarDosage" :disabled="disabled" @input="handleInputByPerCarDosage($event, scope.row)" @blur="handleBlurByPerCarDosage(scope.row.perCarDosage, scope.row)"></iInput>
         </template>
       </tableList>
       <i class="dashes"></i>
@@ -115,6 +115,9 @@ export default {
       set(value) {
         this.$emit("update:visible", value)
       }
+    },
+    disabled() {
+      return this.aekoInfo.aekoStatus == "CANCELED"
     }
   },
   data() {
@@ -190,10 +193,20 @@ export default {
       this.getAekoCarDosageByCarTypeProjectCode(value)
     },
     handleInputByUsePortion(value) {
-      this.$set(this.dosage, "oldPartShare", numberProcessor(value, 2))
+      this.$set(this.dosage, "usePortion", numberProcessor(value, 2))
+    },
+    handleBlurByUsePortion() {
+      if (this.dosage.usePortion) {
+        this.$set(this.dosage, "usePortion", math.bignumber(this.dosage.usePortion).toFixed(2))
+      }
     },
     handleInputByPerCarDosage(value, row) {
       this.$set(row, "perCarDosage", numberProcessor(value, 2))
+    },
+    handleBlurByPerCarDosage(value, row) {
+      if (value) {
+        this.$set(row, "perCarDosage", math.bignumber(value).toFixed(2))
+      }
     },
     // 保存
     handleSave() {

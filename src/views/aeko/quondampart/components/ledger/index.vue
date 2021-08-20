@@ -37,6 +37,7 @@
         </el-form-item>
         <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission="AEKO_QUONDAMPARTLEDGER_SELECT_FACTORYCODE">
           <iSelect
+            v-if="!factoryDisabled"
             v-model="form.factoryCode"
             :placeholder="language('QINGXUANZECAIGOUGONGCHANG', '请选择采购工厂')"
           >
@@ -51,6 +52,7 @@
               :key="item.key"
             ></el-option>
           </iSelect>
+          <iInput v-else readonly :value="factoryName"></iInput>
         </el-form-item>
       </el-form>
     </iSearch>
@@ -102,7 +104,7 @@ import presentAllInPriceDialog from "../presentAllInPriceDialog"
 import { ledgerQueryForm, ledgerTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
-import { getAekoOriginPartInfo, saveAekoOriginPart, judgeRight } from "@/api/aeko/detail"
+import { getAekoOriginPartInfo, saveAekoOriginPart, judgeRight, getAekoOriginFactory } from "@/api/aeko/detail"
 import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, isEqual } from "lodash"
 
@@ -128,6 +130,8 @@ export default {
       multipleSelection: [],
       visible: false,
       currentRow: {},
+      factoryDisabled: false,
+      factoryName: ""
     }
   },
   watch: {
@@ -136,19 +140,61 @@ export default {
         if (isEqual(data, ledgerQueryForm)) {
           this.objectAekoPartId = this.$route.query.objectAekoPartId
         } else {
-          this.objectAekoPartId = ""
+          if (this.factoryDisabled) {
+            if (
+              Object.keys(data).every(key => {
+                if (key === "factoryCode") {
+                  return true
+                } else {
+                  return !data[key]
+                }
+              })
+            ) {
+              this.objectAekoPartId = this.$route.query.objectAekoPartId
+            } else {
+              this.objectAekoPartId = ""
+            }
+          }
         }
       },
       deep: true
     }
   },
-  created() {
+  async created() {
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
     this.oldPartNumPreset = this.$route.query.oldPartNumPreset
-    this.judgeRight()
+    await this.getAekoOriginFactory()
+
+    if (this.oldPartNumPreset) {
+      this.judgeRight()
+    } else {
+      this.procureFactorySelectVo()
+      this.getAekoOriginPartInfo()
+    }
   },
   methods: {
+    getAekoOriginFactory() {
+      return getAekoOriginFactory({
+        objectAekoPartId: this.objectAekoPartId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          if (res.data.factoryCode) {
+            this.factoryDisabled = true
+            this.factoryName = res.data.factoryName
+            this.form.factoryCode = res.data.factoryCode
+          } else {
+            this.factoryDisabled = false
+            this.factoryName = ""
+            this.form.factoryCode = ""
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
     judgeRight() {
       judgeRight([
         {
@@ -190,6 +236,11 @@ export default {
       .catch(() => {})
     },
     getAekoOriginPartInfo() {
+      // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
+      if(this.form.partNum && this.form.partNum.trim().length < 9){
+        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+      }
+
       this.loading = true
 
       getAekoOriginPartInfo({
@@ -215,14 +266,35 @@ export default {
       if (isEqual(this.form, ledgerQueryForm)) {
         this.objectAekoPartId = this.$route.query.objectAekoPartId
       } else {
-        this.objectAekoPartId = ""
+        if (this.factoryDisabled) {
+          if (
+            Object.keys(this.form).every(key => {
+              if (key === "factoryCode") {
+                return true
+              } else {
+                return !this.form[key]
+              }
+            })
+          ) {
+            this.objectAekoPartId = this.$route.query.objectAekoPartId
+          } else {
+            this.objectAekoPartId = ""
+          }
+        }
       }
       
       this.getAekoOriginPartInfo()
     },
     reset() {
       this.page.currPage = 1
-      this.form = cloneDeep(ledgerQueryForm)
+      if (this.factoryDisabled) {
+        this.form = {
+          ...cloneDeep(ledgerQueryForm),
+          factoryCode: this.form.factoryCode
+        }
+      } else {
+        this.form = cloneDeep(ledgerQueryForm)
+      }
       this.objectAekoPartId = this.$route.query.objectAekoPartId
       this.getAekoOriginPartInfo()
     },
@@ -254,9 +326,9 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
-          if (sessionStorage.getItem("aekoConatentDeclareParams")) {
+          if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
             try {
-              const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem("aekoConatentDeclareParams"))
+              const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
 
               this.$router.replace({
                 path: "/aeko/aekodetail",

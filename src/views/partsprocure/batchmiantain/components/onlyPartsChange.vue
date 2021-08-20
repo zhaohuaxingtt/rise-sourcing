@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-04 13:54:47
- * @LastEditTime: 2021-08-12 15:56:03
+ * @LastEditTime: 2021-08-18 15:38:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\onlyPartsChange.vue
@@ -10,9 +10,9 @@
   <iCard>
     <iTalbeList :tableLoading='loading' @handleSelectionChange='handleSelectionChange' :tableTitle='tableTitleOnlyPartsChange' :tableData='tableData'>
       <template #oldFsnrGsnrNum='{row}'>
-        <iInput class="removeInputDisabelColor" disabled search :value="(typeof row.oldFsnrGsnrNum == 'string')?row.oldFsnrGsnrNum:row.oldFsnrGsnrNum.fsnrGsnrNum"> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{selectOldParts.show=true;detailData=row}"></i></iInput>	
+        <iInput class="removeInputDisabelColor" disabled search :value="(typeof row.oldFsnrGsnrNum == 'string' || row.oldFsnrGsnrNum == null)?row.oldFsnrGsnrNum:row.oldFsnrGsnrNum.fsnrGsnrNum"> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{row.selectOldParts.show=true;detailData=row}"></i></iInput>	
         <!-----------------------选择原fs号--------------------------------->
-        <selectOldpartsNumber :diolog='selectOldParts' v-model="row.oldFsnrGsnrNum"></selectOldpartsNumber>
+        <selectOldpartsNumber :diolog='row.selectOldParts' v-model="row.oldFsnrGsnrNum"></selectOldpartsNumber>
       </template>
     </iTalbeList>
   </iCard> 
@@ -29,9 +29,6 @@ export default{
     tableTitleOnlyPartsChange:tableTitleOnlyPartsChange,
     tableData:[],
     loading:false,
-    selectOldParts:{
-      show:false
-    },
     detailData:{}
   }},
   created(){
@@ -54,9 +51,9 @@ export default{
      */
     getDataList(){
       this.loading = true 
-      const dataIds = this.$route.query.ids
+      const dataIds = Array.isArray(this.$route.query.ids)?this.$route.query.ids:[this.$route.query.ids];
       getDataListBatchList({ids:dataIds}).then(res=>{  
-        this.tableData = res.data
+        this.tableData = res.data.map(r=>{return {...r,...{selectOldParts:{show:false}}}})
         this.loading = false
       }).catch(err=>{
         this.loading = false

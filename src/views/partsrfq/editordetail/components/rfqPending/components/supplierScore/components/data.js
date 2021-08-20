@@ -57,16 +57,16 @@ export const partScroingTitle = [
     {props: 'carProjectType', name: '车型项目', key: 'LK_CHEXINGXIANGMU'},
     {props: 'relatedModels', name: '相关车型', key: 'LK_XIANGGUANCHEXING'},
     {props: 'rateDepartNum', name: '评分部门编号', key: 'PINGFENBUMENBIANHAO'},
-    {
-        name: 'TPB',
-        list: [
+    // {
+    //     name: 'TPB',
+    //     list: [
             {props: 'grade', name: '评分', key: 'LK_PINGFEN'},
             {props: 'externaFee', name: '外部开发费（元）', key: 'LK_WAIBUKAIFAFEIYUAN'},
             {props: 'addFee', name: '增加的认可费（元）', key: 'LK_ZENGJIADERENKEFEIYUAN'},
             {props: 'confirmCycle', name: '认可周期（周）', key: 'LK_RENKEZHOUQIZHOU'},
             {props: 'memo', name: '备注', key: 'LK_BEIZHU'},
-        ]
-    }
+    //     ]
+    // }
 ]
 
 export const scoringDeptTitle = [

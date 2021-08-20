@@ -18,7 +18,7 @@ export function getFileHistory(params) {
 		pageSize,
 	} = params;
 	return requst({
-		url: `/file-history/${nomiAppId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
+		url: `/file-histories/page/${nomiAppId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
 		method: "GET",
 		// params,
 	})

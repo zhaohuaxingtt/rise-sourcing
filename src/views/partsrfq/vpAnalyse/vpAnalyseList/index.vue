@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-08-12 10:22:42
+ * @LastEditTime: 2021-08-18 11:02:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -29,8 +29,7 @@
 </template>
 
 <script>
-import {iCard, iButton} from 'rise'
-import {iMessage} from '@/components';
+import {iCard, iButton, iMessage} from 'rise'
 import analysisSearch from './components/analysisSearch'
 import analysisTable from './components/analysisTable'
 export default {

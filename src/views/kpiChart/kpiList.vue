@@ -1,7 +1,27 @@
 <template>
   <div>
     <iPage class="template">
-      <publicHeaderMenu></publicHeaderMenu>
+      <div class="navBox clearfix">
+            <el-tabs v-model="activeName" @tab-click="handleleftClick" class="leftNav">
+                <el-tab-pane 
+                v-for="x in tabRouterList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <div>
+            <el-tabs @tab-click="handlerightClick" class="rightNav">
+                <el-tab-pane 
+                v-for="x in categoryManagementAssistantList"
+                :label="x.name" 
+                :name="x.url"
+                :key="x.value"
+                ></el-tab-pane>
+            </el-tabs>
+            <logButton class="logButton"/>
+            </div>
+        </div>
       <div class="Main">
         <!-- 搜索条件 -->
         <div class="SearchMenu">
@@ -90,14 +110,18 @@ import {
   iPage,
   iCard,
   iButton,
-  iPagination
+  iPagination,
+  iMessage
 } from 'rise'
 import tableFold from './components/tableFold'
 import { pageMixins } from '@/utils/pageMixins'
 import { tabSetting } from './components/data'
-import { iMessage } from '@/components';
-import { getTableData, getMaterialGroupByUserIds, getRelationship } from '@/api/kpiChart/index.js'
+import { getTableData, getCategoryData, getDeptData } from '@/api/kpiChart/index.js'
 import publicHeaderMenu from './commonHeardNav/headerNav'
+import {iNavMvp } from 'rise'
+import { tabRouterList, categoryManagementAssistantListkpi } from './commonHeardNav/navData'
+import logButton from '@/components/logButton'
+
 // import {
 //   deleteUsers,
 //   getPageListByParams,
@@ -113,11 +137,18 @@ export default {
     iButton,
     iPagination,
     tableFold,
-    publicHeaderMenu
+    publicHeaderMenu,
+    categoryManagementAssistantListkpi,
+        tabRouterList,
+        iNavMvp,
+        logButton
   },
   mixins: [pageMixins],
   data() {
     return {
+      activeName:'/supplier/kpiList',
+      tabRouterList:tabRouterList,
+        categoryManagementAssistantList:categoryManagementAssistantListkpi,
       tableListData: [],
       tabSetting:_.cloneDeep(tabSetting),
       formData: {},
@@ -129,14 +160,21 @@ export default {
   },
   created() {
     this.getTableData()
-    this.getMaterialGroupByUserIds()
-    this.getRelationship()
+    this.getCategoryData()
+    this.getDeptData()
       
   },
   mounted() {
-          
+          console.log(this.$store)
   },
   methods: {
+    handleleftClick(tab,event){
+            this.$router.push(tab.name)
+        },
+        handlerightClick(tab){
+            this.activeName='/supplier/kpiList'
+             this.$router.push(tab.name)
+        },
     //获取表格数据（包含表头和表格数据）
     getTableData() {
       this.isRender = false
@@ -188,8 +226,8 @@ export default {
       this.tableListData = values
     },
     // 获取材料组数据
-    getMaterialGroupByUserIds() {
-      getMaterialGroupByUserIds({}).then(res => {
+    getCategoryData() {
+      getCategoryData({}).then(res => {
         if(res && res.code == 200) {
           this.categoryList = res.data
         } else {
@@ -198,8 +236,8 @@ export default {
       })
     },
     // 获取科股（部门）数据
-    getRelationship() {
-      getRelationship({}).then(res => {
+    getDeptData() {
+      getDeptData({}).then(res => {
         if(res && res.code == 200) {
           this.organizationMenu = res.data
         } else {
@@ -215,7 +253,7 @@ export default {
     // 重置数据
     reset() {
       for (const key in this.formData) {
-        this.formData[key] = ''
+        this.formData[key] = null
       }
       this.page.currPage = 1
       this.getTableData()
@@ -255,4 +293,50 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
+::v-deep.navBox {
+  position: relative;
+  // border-bottom: 1px solid #E3E3E3;
+  .logButton .icon + span{vertical-align: top;}
+  margin-bottom: 20px;
+  div{font-size: 20px;}
+  .el-tabs__nav-wrap::after{
+    width: 0;
+  }
+  .el-tabs__item{
+    line-height: 24px;
+  }
+  .el-tabs__item.is-active{
+    font-weight: Bold;
+  }
+  .leftNav{
+      float: left;
+  }
+  .rightNav {
+    float: right;
+    margin-right: 110px;
+    .el-tabs__active-bar {
+        background-color: transparent !important;
+    }
+  }
+
+  .logButton {
+    position: absolute;
+    top: 5px;
+    right: 0;
+  }
+}
+.clearfix:after{
+  content: "020"; 
+  display: block; 
+  height: 0; 
+  clear: both; 
+  visibility: hidden;  
+  }
+
+.clearfix {
+  /* 触发 hasLayout */ 
+  zoom: 1; 
+  }
+
+
 </style>

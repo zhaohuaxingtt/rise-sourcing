@@ -144,7 +144,7 @@ export function getFilesList(params) {
     pageSize=10,
   } = params;
   return requst({
-    url: `/file-history/file-history/${hostId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
+    url: `/file-histories/page/${hostId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
     method: 'GET',
     params,
   })
@@ -169,3 +169,21 @@ export function deleteFiles(data) {
 }
 
 
+// 从TCM同步aeko 附件
+export function synAekoAttachmentFromTCM(params) {
+  return requst({
+      url: '/aeko/synAekoAttachmentFromTCM',
+      method: 'GET',
+      params,
+  })
+}
+
+
+// 从TCM同步aeko
+export function synAekoFromTCM(params) {
+  return requst({
+      url: '/aeko/synAekoFromTCM',
+      method: 'GET',
+      params,
+  })
+}

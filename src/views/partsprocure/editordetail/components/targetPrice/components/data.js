@@ -20,7 +20,7 @@ export const targeTitle = [{
 	key:'LK_CFFUZEREN'
 },
 {
-	props: 'applyCategory',
+	props: 'applyCategoryDesc',
 	name: '申请类别',
 	key:'LK_SHENQINGLEIBIE'
 },
@@ -30,7 +30,7 @@ export const targeTitle = [{
 	key:'LK_QIWANGMUBIAOJIA'
 },
 {
-	props: 'applyStatus',
+	props: 'applyStatusDesc',
 	name: '申请状态',
 	key:'LK_SHENQINGZHUANGTAI'
 },

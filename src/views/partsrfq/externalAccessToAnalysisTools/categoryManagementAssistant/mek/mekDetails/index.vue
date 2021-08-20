@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-16 11:22:54
+ * @LastEditTime: 2021-08-19 19:04:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -74,38 +74,10 @@
                     <el-select v-model="partNumber"
                                @change="changeBy"
                                multiple>
-                      <el-option value="1"
-                                 :label="$t('857705')"> </el-option>
-                      <el-option value="2"
-                                 :label="$t('857706')"></el-option>
-                      <el-option value="3"
-                                 :label="$t('857707')"></el-option>
-                      <el-option value="4"
-                                 :label="$t('857708')"></el-option>
-                      <el-option value="5"
-                                 :label="$t('857709')"></el-option>
-                      <el-option value="6"
-                                 :label="$t('857710')"></el-option>
-                      <el-option value="7"
-                                 :label="$t('857711')"></el-option>
-                      <el-option value="8"
-                                 :label="$t('857712')"></el-option>
-                      <el-option value="9"
-                                 :label="$t('857713')"></el-option>
-                      <el-option value="10"
-                                 :label="$t('857714')"></el-option>
-                      <el-option value="11"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="12"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="13"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="14"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="15"
-                                 :label="$t('857715')"></el-option>
-                      <el-option value="16"
-                                 :label="$t('857715')"></el-option>
+                      <el-option v-for="item in recursiveRetrieveList"
+                                 :key="item.partId"
+                                 :value="item.partSixNumber"
+                                 :label="item.partNumber"> </el-option>
                     </el-select>
                   </el-form-item>
                 </el-row>
@@ -216,18 +188,21 @@
         <template v-slot:header>
           <div class="titleBox">
             <div v-if="!editFlag">
-              <iButton>新增</iButton>
+              <iButton @click="addRow">新增</iButton>
               <iButton>删除</iButton>
               <iButton @click="edit">编辑</iButton>
             </div>
             <div v-else>
-              <iButton @click="save">保存</iButton>
+              <iButton @click="saveTable">保存</iButton>
               <iButton @click="cancel">取消</iButton>
             </div>
           </div>
         </template>
         <tableList :gridData="gridData"
-                   :editFlag="editFlag"></tableList>
+                   :editFlag="editFlag"
+                   :addRowList="addRowList"
+                   @editData="editData"
+                   @addData="addData"></tableList>
       </iCard>
       <iDialog title="保存"
                :visible.sync="dialogVisible"
@@ -288,8 +263,6 @@ export default {
     return {
       //类型选择
       type: "",
-      //六位车型零件号
-      partNumber: "",
       //价格类型
       priceType: "",
       //时间选择
@@ -335,14 +308,22 @@ export default {
       //mek类型list
       mekTypeList: [],
       //"mek价格类型"list
-      mekpriceTypeList: []
+      mekpriceTypeList: [],
+      //六位车型零件号
+      recursiveRetrieveList: [],
+      //新增行
+      addRowList: {},
+      //编辑时的数据
+      editDataList: [],
+      //新增时的数据
+      addDataList: []
 
     };
   },
   async created () {
     await this.init()
     // this.getHistogram()
-    // this.getMekTable()
+    this.getMekTable()
   },
   mounted () {
   },
@@ -354,7 +335,7 @@ export default {
       getSchemeInfo({
         schemeId: this.chemeId
       }).then(res => {
-        
+
       })
       //材料组
       category({}).then((res) => {
@@ -372,6 +353,8 @@ export default {
         categoryId: '600029',
         motorIds: this.ComparedMotor,
         schemeId: this.chemeId
+      }).then(res => {
+        this.recursiveRetrieveList = res.data
       })
       // getComparedMotor({
       // }).then(res => {
@@ -418,8 +401,34 @@ export default {
     edit () {
       this.editFlag = true
     },
-    save () {
+    saveTable () {
       this.editFlag = false
+      let params = {
+        "comparedType": "mekConfig",
+        "detail": [],
+        "schemeId": 0
+      }
+      this.editDataList.splice(0, 1);
+      this.editDataList.forEach(item => {
+        let obj = {
+          "detail": [],
+          "type": item['label#-1'],
+          "typeId": item.textTypeId
+        }
+        this.gridData.title.forEach(i => {
+          let obj1 = {
+            "id": item['id#' + i.label.split('#')[1]],
+            "motorTypeId": i.label.split('#')[1],
+            "remark": item[i.label]
+          }
+          obj.detail.push(obj1)
+        })
+        params.detail.push(obj)
+      })
+      console.log(params)
+      saveMekTable(params).then(res => {
+        this.getMekTable()
+      })
     },
     cancel () {
       this.editFlag = false
@@ -431,8 +440,22 @@ export default {
     saveDialog () {
       this.dialogVisible = true
     },
-
-
+    addRow () {
+      this.addRowList = {}
+      this.gridData.title.forEach(item => {
+        this.addRowList[item.label] = ""
+        this.addRowList['id#' + item.label.split("#")[1]] = ""
+      })
+      this.gridData.data.push(this.addRowList)
+    },
+    //编辑数据
+    editData (val) {
+      this.editDataList = val
+    },
+    //新增数据
+    addData (val) {
+      this.addDataList = val
+    },
     //计算车型弹窗
     computeModal () {
       this.modalVisible = true
@@ -445,10 +468,10 @@ export default {
       getMekTable({
         "comparedType": "mekConfig",
         "motorIds": [
-          50001002, 50001003, 50001004
+          50048103, 2000000166, 50001004
         ],
-        "schemeId": 2,
-        "targetMotorId": 50001001
+        "schemeId": 3,
+        "targetMotorId": 50044101
       }).then(res => {
         this.gridData = res
         console.log(this.gridData)
@@ -457,27 +480,31 @@ export default {
     getHistogram () {
       getHistogram({
         "comparedType": "mekConfig",
-        "info": [
-          {
-            "motorId": 50044101,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 50048103,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 2000000166,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 2000000084,
-            "priceType": "latestPrice"
-          },
-          {
-            "motorId": 2000000164,
-            "priceType": "latestPrice"
-          }
+        "info": [{
+          "motorId": 50044101,
+          "priceType": "latestPrice",
+          "isTargetMotor": true
+        },
+        {
+          "motorId": 50048103,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        },
+        {
+          "motorId": 2000000166,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        },
+        {
+          "motorId": 2000000084,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        },
+        {
+          "motorId": 2000000164,
+          "priceType": "latestPrice",
+          "isTargetMotor": false
+        }
         ],
         "categoryId": 600029,
         "schemeId": 3

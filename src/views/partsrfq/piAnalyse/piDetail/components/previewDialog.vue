@@ -5,16 +5,32 @@
       @close="clearDiolog"
   >
     <div id="content">
-      <div class="title">{{ language('PI.PIINDEXBAOGAO', 'Price Index报告') }}- 零件号</div>
-      <theBaseInfo class="margin-top20"/>
+      <div class="title">{{ language('PI.PIINDEXBAOGAO', 'Price Index报告') }}-{{ dataInfo.partsId }}</div>
+      <theBaseInfo class="margin-top20" :dataInfo="dataInfo"/>
       <el-divider class="margin-top20 margin-bottom20"/>
-      <theTable :isPreview="true"/>
+      <!--表格-->
+      <theTable
+          v-show="currentTab === CURRENTTIME"
+          :isPreview="true"
+          :dataInfo="dataInfo"
+          :currentTab="currentTab"
+      />
+      <theTable
+          v-show="currentTab === AVERAGE"
+          :isPreview="true"
+          :averageData="averageData"
+          :currentTab="currentTab"
+      />
       <el-divider class="margin-top20 margin-bottom20"/>
       <div class="chartBox">
         <!--      Price Index价格分析-->
-        <thePriceIndexChart class="lineBox" :isPreview="true"/>
+        <thePriceIndexChart
+            class="lineBox"
+            :isPreview="true"
+            :previewDialog="value"
+        />
         <!--      零件成本构成-->
-        <thePartsCostChart class="pieBox"/>
+        <thePartsCostChart class="pieBox" :dataInfo="dataInfo"/>
       </div>
     </div>
   </iDialog>
@@ -26,8 +42,11 @@ import theBaseInfo from './theBaseInfo';
 import theTable from './theTable';
 import thePriceIndexChart from './thePriceIndexChart';
 import thePartsCostChart from './thePartsCostChart';
+import {CURRENTTIME, AVERAGE} from './data';
+import {downloadPdfMixins} from '@/utils/pdf';
 
 export default {
+  mixins: [downloadPdfMixins],
   props: {
     dataInfo: {
       type: Object,
@@ -35,7 +54,23 @@ export default {
         return {};
       },
     },
+    averageData: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
     value: {type: Boolean},
+    currentTab: {
+      type: String,
+      default: '',
+    },
+    currentTabData: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   components: {
     iDialog,
@@ -45,11 +80,21 @@ export default {
     thePartsCostChart,
   },
   data() {
-    return {};
+    return {
+      CURRENTTIME,
+      AVERAGE,
+    };
   },
   methods: {
     clearDiolog() {
       this.$emit('input', false);
+    },
+    getDownloadFile({callBack}) {
+      return this.getDownloadFileAndExportPdf({
+        domId: 'content',
+        pdfName: 'Overview',
+        callBack,
+      });
     },
   },
 };

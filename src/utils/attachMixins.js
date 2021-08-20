@@ -144,7 +144,7 @@ export const attachMixins = {
       }
       
       try {
-        const res = await batchDeletefile({idList})
+        const res = await batchDeletefile(idList)
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           callback && typeof callback === 'function' && (callback())

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-12 16:44:10
+ * @LastEditTime: 2021-08-19 19:19:11
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -27,14 +27,51 @@
           </div>
           <div class="baiscInfo-bottom">
             <ol clasdivs="baiscInfo-bottom-column">
-              <li><div>{{dataItem.carPlatformCode}}</div></li>
-              <li><div>{{dataItem.brandName}}</div></li>
-              <li><div>{{dataItem.carTypeLevel}} class</div></li>
+              <li>
+                <div>
+                  <el-tooltip :content='dataItem.carPlatformCode' effect='light'>
+                    <span class="overText">{{dataItem.carPlatformCode}}</span>
+                  </el-tooltip>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <el-tooltip :content='dataItem.brandName' effect='light'>
+                    <span class="overText">{{dataItem.brandName}}</span>
+                  </el-tooltip>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <el-tooltip :content='dataItem.carTypeLevel + " class"' effect='light'>
+                    <span class="overText">{{dataItem.carTypeLevel}} class</span>
+                  </el-tooltip>
+                </div>
+              </li>
             </ol>
             <ol class="baiscInfo-bottom-column">
-              <li><div>{{dataItem.factoryName}}</div></li>
-              <li><div>SOP:{{dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk}}</div></li>
-              <li><div>KPE:{{dataItem.kpe}}<icon symbol name="iconbianji"  class="margin-left10 cursor"></icon></div></li>
+              <li>
+                <div>
+                  <el-tooltip :content='dataItem.factoryName' effect='light'>
+                    <span class="overText">{{dataItem.factoryName}}</span>
+                  </el-tooltip>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <el-tooltip :content='"SOP:"+dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk' effect='light'>
+                    <span class="overText">SOP:{{dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk}}</span>
+                  </el-tooltip>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <el-tooltip :content='"KPE:"+dataItem.kpe' effect='light'>
+                    <span class="overText" style="width:auto;">KPE:{{dataItem.kpe}}</span>
+                  </el-tooltip>
+                  <icon symbol name="iconbianji"  class="margin-left10 cursor"></icon>
+                </div>
+              </li>
             </ol>
           </div>
         </div>
@@ -461,6 +498,15 @@ export default {
     justify-content: center;
     position: absolute;
     color: #707070;
+  }
+  .overText{
+    overflow: hidden;
+    width: 100%;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 15px;
+    line-height: 100%;
   }
 }
 </style>

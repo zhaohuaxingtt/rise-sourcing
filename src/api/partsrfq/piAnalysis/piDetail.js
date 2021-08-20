@@ -51,3 +51,56 @@ export function getAnalysisSchemeDetails(params) {
     data: params,
   });
 }
+
+//平均零件价格成本明细
+export function getAveragePartCostPrice(params) {
+  return request({
+    url: '/piAnalysisScheme/avgPartCostPrice',
+    method: 'POST',
+    data: params,
+  });
+}
+
+//price Index方案详情删除零件
+export function deleteParts(params) {
+  return request({
+    url: `/piAnalysisScheme/deleteParts?id=${params.id}`,
+    method: 'GET',
+  });
+}
+
+//price Index价格分析曲线选择框
+export function getPiIndexWaveSelectList(params) {
+  return request({
+    url: '/piAnalysisScheme/piIndexWaveSelectList',
+    method: 'POST',
+    data: params,
+  });
+}
+
+//price Index价格分析曲线
+export function getPiIndexPartCostWave(params) {
+  return request({
+    url: '/piAnalysisScheme/piIndexPartCostWave',
+    method: 'POST',
+    data: params,
+  });
+}
+
+//保存分析方案
+export function saveAnalysisScheme(params) {
+  return request({
+    url: '/piAnalysisScheme/saveAnalysisScheme',
+    method: 'POST',
+    data: params,
+  });
+}
+
+//判断方案名称是否已存在
+export function checkName(params) {
+  return request({
+    url: '/vpAnalysisScheme/checkName',
+    method: 'POST',
+    data: params
+  })
+}

@@ -12,6 +12,7 @@ export const AVERAGE = 'average';
 export const FIRSTSELECT = 'firstSelect';
 export const SECONDSELECT = 'secondSelect';
 export const THIRDSELECT = 'thirdSelect';
+export const FIRSTEXCHANGERATE = 'firstExchangeRate';
 
 export const classTypeSelect = [
   {value: '1', name: '原材料'},
@@ -33,7 +34,7 @@ export const baseInfo = [
 ];
 
 export const tableTitle = [
-  {name: '类别', key: 'PI.LEIBIE', props: 'classType'},
+  {name: '类别', key: 'PI.LEIBIE', props: 'partName'},
   {name: '价格影响系数%', key: 'PI.JIAGEYINGXIANGXISHU', props: 'costProportion'},
   {name: '价格变动比率%', key: 'PI.JIAGEBIANDONGBILV', props: 'priceChange'},
   {name: 'CBD', key: '', props: 'attributeValue'},

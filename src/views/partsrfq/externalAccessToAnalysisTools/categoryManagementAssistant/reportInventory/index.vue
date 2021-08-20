@@ -15,7 +15,7 @@
     </div>
     <div class="content">
       <div class="table" v-for="(value, index) in tableList" :key="index">
-        <el-table v-loading="tableLoading" :ref="'multipleTable'+index" :data="value.dimensions" @selection-change="handleSelectionChange($event,index)">
+        <el-table v-loading="tableLoading" :ref="'multipleTable'" :data="value.dimensions" @selection-change="handleSelectionChange($event,index)">
           <el-table-column type="selection" width="55"> </el-table-column>
           <el-table-column type="index" :index="indexMethod" label="#" width="55"> </el-table-column>
           <el-table-column prop="name" :label="value.name">
@@ -108,10 +108,14 @@ export default {
     handleAll() {
       console.log(this.$refs);
       console.log(this.$refs.multipleTable);
-      this.$refs.multipleTable0[0].toggleAllSelection()
-      this.$refs.multipleTable1[0].toggleAllSelection()
-      this.$refs.multipleTable2[0].toggleAllSelection()
-      this.$refs.multipleTable3[0].toggleAllSelection()
+      this.$refs.multipleTable[0].clearSelection()
+      this.$refs.multipleTable[1].clearSelection()
+      this.$refs.multipleTable[2].clearSelection()
+      this.$refs.multipleTable[3].clearSelection()
+      this.$refs.multipleTable[0].toggleAllSelection()
+      this.$refs.multipleTable[1].toggleAllSelection()
+      this.$refs.multipleTable[2].toggleAllSelection()
+      this.$refs.multipleTable[3].toggleAllSelection()
     },
     async getTableList() {
       try {

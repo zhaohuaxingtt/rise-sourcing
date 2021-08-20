@@ -22,6 +22,7 @@
     <div class="body">
       <tableList
         index
+        ref="table"
         height="100%"
         class="table"
         lang
@@ -98,6 +99,13 @@ export default {
         if (res.code == 200) {
           this.selectRow = {}
           this.tableListData = Array.isArray(res.data) ? res.data : []
+
+          if (this.tableListData.length > 0) {
+            this.$nextTick(() => {
+              this.$refs.table.$refs.table.toggleRowSelection(this.tableListData[0], true)
+              this.selectRow = this.tableListData[0]
+            })
+          }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

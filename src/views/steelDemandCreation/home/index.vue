@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-29 17:02:51
- * @LastEditTime: 2021-08-14 17:34:35
+ * @LastEditTime: 2021-08-19 14:58:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steeldemandcreation\index.vue
@@ -17,7 +17,7 @@
         <template v-for='(items,index) in searchForm'>
           <el-form-item :label='language(items.i18nKey,items.i18nName)' :key="index">
             <template v-if='items.type == "input"'>
-              <iInput v-model="form[items.moduleKey]" :placeholder='language("QINGITANXIE","请填写")'></iInput>
+              <iInput v-model="form[items.moduleKey]" :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
             </template>
             <template v-else>
               <iSelect v-model="form[items.moduleKey]" :placeholder='language("QINGXUANZE","请选择")'>
@@ -33,14 +33,23 @@
     <iCard>
       <div class="textalign-right">
         <iButton @click="downloadTemplate">{{language('XIAZAIPILIANGMOBAN','下载批量模板')}}</iButton>
-        <el-upload class="uploadfile" :before-upload='()=>{uploadLoadingOne=true}' :on-success="(r)=>Message(r.desZh,1,'uploadLoadingOne')" :on-error="(r)=>Message(r.desZh || r.message,2,'uploadLoadingOne')" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelOne`" :show-file-list='false'><iButton :loading="uploadLoadingOne">{{language('SHANGCHUANWENJIANYICIX','上传文件（一次性）')}}</iButton></el-upload>
-        <el-upload :before-upload='()=>{uploadLoadingAll=true}' :on-success="(r)=>Message(r.desZh,1,'uploadLoadingAll')" :on-error="(r)=>Message(r.desZh || r.message,2,'uploadLoadingAll')" class="uploadfile" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelBatch`" :show-file-list='false'><iButton :loading='uploadLoadingAll'>{{language('SHANGCHUANWENJJIANPILIANG','上传文件批量')}}</iButton></el-upload>
+        <el-upload class="uploadfile" :before-upload='()=>{uploadLoadingOne=true}' :on-success="(r)=>Message(r,1,'uploadLoadingOne')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingOne')" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelOne`" :show-file-list='false'><iButton :loading="uploadLoadingOne">{{language('SHANGCHUANWENJIANYICIX','上传文件（一次性）')}}</iButton></el-upload>
+        <el-upload :before-upload='()=>{uploadLoadingAll=true}' :on-success="(r)=>Message(r,1,'uploadLoadingAll')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingAll')" class="uploadfile" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelBatch`" :show-file-list='false'><iButton :loading='uploadLoadingAll'>{{language('SHANGCHUANWENJJIANPILIANG','上传文件（批量）')}}</iButton></el-upload>
         <iButton @click="print(1)" :loading='printLoadingOne'>{{language('DAYINGDINGDANLIUZHUANDAN','打印定点流转单(一次性)')}}</iButton>
         <iButton @click="print(2)" :loading='printLoadingAll'>{{language('DAYINGDINGDANLIUZDPILIANG','打印定点流转单（批量）')}}</iButton>
       </div>
       <tablePart radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading'>
         <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
           {{row[currentProps].desc}}
+        </template>
+        <template #nominateId="scope">
+          <span class="flexRow-link">
+            <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.nominateId }}</span>
+            <span class="icon-gray  cursor "  @click="viewNominationDetail(scope.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+            </span>
+          </span> 
         </template>
       </tablePart>
       <!------------------------------------------------------------------------>
@@ -61,7 +70,7 @@
   </iPage>
 </template>
 <script>
-import {iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,iMessage} from 'rise'
+import {iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,iMessage,icon} from 'rise'
 import {searchForm,form,tableTitle} from './components/data'
 import {steeldemandcreation,downloadExcelBatch,printTransferOrderBatch,printTransferOrderOne} from '@/api/steelDemandCreation/home'
 import {pageMixins} from "@/utils/pageMixins";
@@ -74,7 +83,7 @@ import {getToken} from '@/utils'
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 export default{
   mixins:[pageMixins],
-  components:{iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,tablePart},
+  components:{iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,tablePart,icon},
     created(){
       this.initSelectOptions()
       this.steeldemandcreation()
@@ -87,7 +96,7 @@ export default{
         printLoadingOne:false,
         baseUrl:process.env.VUE_APP_SUPPLIER_RFQLIST,
         searchForm:[],
-        form:form,
+        form:JSON.parse(JSON.stringify(form)),
         tableTitle:tableTitle,
         tabelLoading:false,
         tabelList:[],
@@ -100,6 +109,29 @@ export default{
       ...mapActions(["updateNavList"])
     },
     methods:{
+      /**
+       * @description: 查看定点详情
+       * @param {*}
+       * @return {*}
+       */
+      viewNominationDetail(row) {
+        // 缓存nominateProcessType
+        // this.$store.dispatch('setNominationType', row.nominateProcessType)
+        // 禁用nominateProcessType编辑
+        this.$store.dispatch('setNominationTypeDisable', true)
+        this.$nextTick(() => {
+          const routeData = this.$router.resolve({
+            path: '/designate/rfqdetail',
+            query: {
+              desinateId: row.nominateId, 
+              designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
+              partProjType: (row.partProjectType && row.partProjectType.code) || row.partProjectType || '',
+              applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
+            }
+          })
+          window.open(routeData.href, '_blank')
+        })
+      },
       /**
        * @description: 获取钢材列表数据。
        * @param {*}
@@ -158,13 +190,11 @@ export default{
         return getToken()
       },
       Message(message,messageType,loadingType){
-        console.log(message,messageType,loadingType)
         this[loadingType] = false
-        if(messageType == 1){
-          iMessage.success(message || '操作成功') 
-          this.steeldemandcreation()
+        if(message.result){
+          iMessage.success(message.desZh)
         }else{
-          iMessage.error(message || '操作失败') 
+          iMessage.error(message.desZh)
         }
       },
       /**

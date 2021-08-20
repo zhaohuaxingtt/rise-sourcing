@@ -53,9 +53,9 @@
 		<iFormGroup row="2" icon inline>
 			<iFormItem :label="language('LK_SHENQINGLEIXING','申请类型')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
-					<iRadio label="LC" size="small" border>LC</iRadio>
-					<iRadio label="SKD" size="small" border>SKD</iRadio>
-					<iRadio label="CKD LANDED" size="small" border>CKD LANDED</iRadio>
+					<el-radio label="LC" size="small">LC</el-radio>
+					<el-radio label="SKD" size="small">SKD</el-radio>
+					<el-radio label="CKD LANDED" size="small">CKD LANDED</el-radio>
 				</el-radio-group>
 				<!-- <span class="start">*</span> -->
 			</iFormItem>
@@ -136,7 +136,6 @@
 		iButton,
 		iInput,
 		iMessage,
-		iRadio,
 		iPagination
 	} from 'rise';
 	import tablelist from "./components/tablelist";
@@ -164,7 +163,6 @@ import { cloneDeep } from 'lodash'
 			iButton,
 			iInput,
 			tablelist,
-			iRadio,
 			iPagination
 		},
 		mixins: [ pageMixins ],
@@ -260,7 +258,7 @@ import { cloneDeep } from 'lodash'
 					// 	this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
 					// 	this.tableListData=JSON.parse(JSON.stringify([price.cfTargetPriceDetail]))  
 					// }
-					if (price.rwApplication) {
+					if (price?.rwApplication) {
 						this.targetprice.rwApplication=price.rwApplication
 						this.targeRwData=JSON.parse(JSON.stringify([price.rwApplication]))
 					}

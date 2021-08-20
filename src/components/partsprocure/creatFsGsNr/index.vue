@@ -1,5 +1,5 @@
 <template>
-	<div class="fs margin-left10 margin-right10">
+	<div class="fs margin-left10 margin-right10" v-permission='PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR'>
 		<iButton  @click="validateFs()" :loading='partNumberLoading'>
 			{{ language('partsprocure.PARTSPROCUREGENERATEFSGSNR','生成零件采购项目号') }}
 		</iButton>
@@ -56,6 +56,7 @@
 				generateFs(fs).then((res) => {
 					this.partNumberLoading = false
 					if (res.data) {
+						this.$emit('refresh')
 						// 多条组合RFQ
 						let tip=""
 						if (res.data.canJoinProjectList) {
@@ -67,13 +68,10 @@
 								insertRfq({ rfqPartDTOList: res.data.canJoinProjectList.map(r=>{return {...r,...{purchaseProjectId:r.id}}})}).then((res) => {
 									if (res.data && res.data.rfqId) {
 										iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-										this.$emit('refresh')
 									} else {
 										iMessage.warn(res.desZh);
 									}
 								})
-							}).catch(()=>{
-								this.$emit('refresh')
 							})	
 						}else if(res.data.canJoinRfqList){
 							// 单条插入RFQ
@@ -81,12 +79,9 @@
 								this.visible=true
 								this.tableListData=res.data.canJoinRfqList
 								this.rfqPartDTOList = res.data.projectList.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) 
-							}).catch(()=>{
-								this.$emit('refresh')
 							})
 						}else{
 							iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-							this.$emit('refresh')
 						}
 					} else {
 						iMessage.error(res.desZh)

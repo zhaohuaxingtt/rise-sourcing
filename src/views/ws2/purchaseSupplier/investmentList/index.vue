@@ -197,6 +197,10 @@ export default {
     }
   },
   created() {
+    let status = this.$route.query.status
+    if(status){
+      this.moldInvestmentStatus = status.split(',')
+    }
     this.getAllSelect()
     this.conditionConfirmTskList()
   },
@@ -226,6 +230,9 @@ export default {
         }
         if (res[2].data) {
           this.moldInvestmentStatusList = res[2].data.filter(item => item.code !== '1')
+          if(this.moldInvestmentStatus.length === 0){
+            this.moldInvestmentStatus = ['2']
+          }
         } else {
           iMessage.error(result2);
         }

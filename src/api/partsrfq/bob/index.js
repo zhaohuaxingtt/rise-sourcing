@@ -133,3 +133,4 @@ export function renameComponentGroup(parmars) {
     data: parmars,
   })
 }
+

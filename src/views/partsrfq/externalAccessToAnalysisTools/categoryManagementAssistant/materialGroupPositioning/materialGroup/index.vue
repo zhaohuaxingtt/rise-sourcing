@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-16 09:35:18
+ * @LastEditTime: 2021-08-19 14:55:08
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\index.vue
@@ -110,10 +110,16 @@
 		created() {
 			this.categoryCode=this.$store.state.rfq.categoryCode
 			this.categoryName=this.$store.state.rfq.categoryName
-
 		},
 		mounted () {
 			this.getMaterialGroup()
+		},
+		watch: {
+			"$store.state.rfq.categoryCode"(){
+				this.categoryCode=this.$store.state.rfq.categoryCode
+				this.categoryName=this.$store.state.rfq.categoryName
+				this.getMaterialGroup()
+			}
 		},
 		methods:{
 			handleSelectionChange(list){
@@ -134,6 +140,7 @@
 			},
 			// 保存
 			async save(){
+				this.isEdit=true
 				const resFile = await this.getDownloadFileAndExportPdf({
 					domId: 'materialGroup',
 					pdfName: 'materialGroup',

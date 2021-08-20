@@ -3,7 +3,10 @@
     <div class="width3-1">
       <h3>Top{{index}}</h3>
       <div class="flex">
-        <div class="score">{{MarketOverviewObj.supplierName}} <span>{{MarketOverviewObj.otherCagrRate}}</span><img :src="upImg"
+        <div class="score">{{MarketOverviewObj.supplierName}} <span>{{MarketOverviewObj.svwCagrRate +'%'}}</span><img v-if="MarketOverviewObj.svwCagrRate>=0"
+               :src="upImg"
+               alt=""><img v-else
+               :src="downImg"
                alt=""></div>
         <div>单位: 百万元</div>
         <!-- <div class="legend">
@@ -26,7 +29,8 @@
       <div class="interests">
         <iSelect v-model="interestsStatus"
                  :disabled="isEdite"
-                 @change="handleChange">
+                 @change="handleChange"
+                 style="flex:1.5">
           <el-option v-for="(x,index) in iSelectOption"
                      :value="x.value"
                      :label="x.name"
@@ -44,7 +48,7 @@
       </div>
     </div>
     <div class="width3-1">
-      <div style="height:360px"
+      <div style="height:420px"
            ref="turnover"></div>
     </div>
     <div class="width3-1">
@@ -69,7 +73,7 @@
           </div>
         </div>
         <div class="border last">
-          <span v-if="isEdite">{{x.totalSalesPro}}</span>
+          <span v-if="isEdite">{{x.totalSalesPro+'%'}}</span>
           <iInput v-else
                   v-model="x.totalSalesPro" />
         </div>
@@ -80,7 +84,8 @@
 
 <script>
 import echarts from '@/utils/echarts'
-import { iInput, iSelect } from 'rise'
+import { iInput, iSelect, iMessage } from 'rise'
+import { validateProjectConfig } from '../../../../../../partsprocure/home/components/data'
 export default {
   components: {
     iInput,
@@ -113,13 +118,17 @@ export default {
       }],
       bgimg: require('../img/list.png'),
       upImg: require('../img/up.png'),
+      downImg: require('../img/down.png'),
       option: {
         tooltip: {
           trigger: 'axis',
         },
         legend: {
-          data: ['svw', '其他']
+          data: ['svw', '其它'],
+          right: 0,
+          icon: "circle"
         },
+        color: ['#0059FF', '#B4CBF7'],
         grid: {
           left: '25%',
           right: -10
@@ -149,12 +158,60 @@ export default {
         },
         series: [
           {
+            name: '其它',
+            itemStyle: {
+              color: "#B4CBF7"
+            },
+            stack: "check",
+            type: 'bar',
+            label: {
+              position: 'inside'
+            },
+            data: [{
+              value: 20,
+              itemStyle: {
+                borderRadius: [25, 25, 0, 0]
+              },
+              label: {
+                normal: {
+                  show: true,
+                  formatter: ''
+                }
+              }
+            }, {
+              value: 50,
+              itemStyle: {
+                borderRadius: [25, 25, 0, 0]
+              },
+              label: {
+                normal: {
+                  show: true,
+                  formatter: ''
+                }
+              }
+            }, {
+              value: 47,
+              itemStyle: {
+                borderRadius: [25, 25, 0, 0]
+              },
+              label: {
+                normal: {
+                  show: true,
+                  formatter: ''
+                }
+              }
+            }]
+          },
+          {
             name: 'svw',
             itemStyle: {
               color: "#0059FF"
             },
             stack: "check",
             type: 'bar',
+            label: {
+              position: 'insideTop'
+            },
             data: [{
               value: 20,
               itemStyle: {
@@ -191,48 +248,7 @@ export default {
               }
             }]
           },
-          {
-            name: '其它',
-            itemStyle: {
-              color: "#B4CBF7"
-            },
-            stack: "check",
-            type: 'bar',
-            data: [{
-              value: 20,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0]
-              },
-              label: {
-                normal: {
-                  show: true,
-                  formatter: ''
-                }
-              }
-            }, {
-              value: 50,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0]
-              },
-              label: {
-                normal: {
-                  show: true,
-                  formatter: ''
-                }
-              }
-            }, {
-              value: 47,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0]
-              },
-              label: {
-                normal: {
-                  show: true,
-                  formatter: ''
-                }
-              }
-            }]
-          }
+
         ]
       },
       turnover: {
@@ -240,8 +256,11 @@ export default {
           trigger: 'item'
         },
         legend: {
-          orient: 'vertical',
-          bottom: 'bottom',
+          padding: [10, 40],
+          bottom: '0',
+        },
+        grid: {
+          bottom: "20%"
         },
         series: [
           {
@@ -318,7 +337,8 @@ export default {
     }
   },
   created () {
-
+    // this.initCharts()
+    // this.initturnover()
   },
   computed: {
     color () {
@@ -332,99 +352,183 @@ export default {
     }
   },
   mounted () {
+    // this.categoryCode = this.$store.state.rfq.categoryCode
     let date = new Date()
     this.option.xAxis[0].data[0] = date.getFullYear() - 3
     this.option.xAxis[0].data[1] = date.getFullYear() - 2
     this.option.xAxis[0].data[2] = date.getFullYear() - 1
-    this.initCharts()
-    this.initturnover()
+
   },
   watch: {
+    year1 (val) {
+      if (this.interestsStatus === "otherAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = val
+      } else if (this.interestsStatus === "svwAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = val
+      } else if (this.interestsStatus === "profit") {
+        this.MarketOverviewObj.supplierFinanceDTOList[0].profit = val
+      }
+    },
+    year2 (val) {
+      if (this.interestsStatus === "otherAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = val
+      } else if (this.interestsStatus === "svwAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = val
+      } else if (this.interestsStatus === "profit") {
+        this.MarketOverviewObj.supplierFinanceDTOList[1].profit = val
+      }
+    },
+    year3 (val) {
+      if (this.interestsStatus === "otherAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = val
+      } else if (this.interestsStatus === "svwAmount") {
+        this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = val
+      } else if (this.interestsStatus === "profit") {
+        this.MarketOverviewObj.supplierFinanceDTOList[2].profit = val
+      }
+    },
     edite (val) {
       this.isEdite = val
-      if (val) {
-        if (this.interestsStatus === "otherAmount") {
-          this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = this.year1
-          this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = this.year2
-          this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = this.year3
-        } else if (this.interestsStatus === "svwAmount") {
-          this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = this.year1
-          this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = this.year2
-          this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = this.year3
-        } else if (this.interestsStatus === "profit") {
-          this.MarketOverviewObj.supplierFinanceDTOList[0].profit = this.year1
-          this.MarketOverviewObj.supplierFinanceDTOList[1].profit = this.year2
-          this.MarketOverviewObj.supplierFinanceDTOList[2].profit = this.year3
-        }
-      }
-      // if (val) {
-      //   this.isEdite = val
-      // }else{
-
-      // }
-    },
-    MarketOverviewObj: {
-      handler (curVal, oldVal) {
-        let date = new Date().getFullYear();
-        // 柱状图
-        if (this.MarketOverviewObj.supplierFinanceDTOList.length < 1) return
-        this.MarketOverviewObj.supplierFinanceDTOList.forEach(x => {
-          if (x.year == date - 3) {
-            this.option.series[0].data[0].label.normal.formatter = x.svwRate + '%'
-            this.option.series[0].data[0].value = x.svwAmount
-            this.option.series[1].data[0].value = x.otherRate
-            this.option.series[1].data[0].label.normal.formatter = x.otherRate + '%'
+      if (!val) {
+        if (!this.MarketOverviewObj.mainCustomerDTOList) {
+          this.MarketOverviewObj.mainCustomerDTOList = []
+          for (let i = 0; i < 5; i++) {
+            let obj = {
+              customerName: "",
+              totalSalesPro: ""
+            }
+            this.MarketOverviewObj.mainCustomerDTOList.push(obj)
           }
-          if (x.year == date - 2) {
-            this.option.series[0].data[1].label.normal.formatter = x.svwRate + '%'
-            this.option.series[0].data[1].value = x.svwAmount
-            this.option.series[1].data[1].value = x.otherRate
-            this.option.series[1].data[1].label.normal.formatter = x.otherRate + '%'
-          }
-          if (x.year == date - 1) {
-            this.option.series[0].data[2].label.normal.formatter = x.svwRate + '%'
-            this.option.series[0].data[2].value = x.svwAmount
-            this.option.series[1].data[2].value = x.otherRate
-            this.option.series[1].data[2].label.normal.formatter = x.otherRate + '%'
-
-          }
-        });
-        // 饼图
-        if (this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
-
-          let seriesObj = {
-            value: 1048,
-            name: '材料组A',
-            itemStyle: {
-              color: "#0058FF"
-            },
-            label: {
-              normal: {
-                show: true,
-                formatter: '{d}%'
+        } else {
+          if (this.MarketOverviewObj.mainCustomerDTOList.length === 0) {
+            for (let i = 0; i < 5; i++) {
+              let obj = {
+                customerName: "",
+                totalSalesPro: ""
               }
+              this.MarketOverviewObj.mainCustomerDTOList.push(obj)
+            }
+          } else {
+            let arrLength = this.MarketOverviewObj.mainCustomerDTOList.length
+            for (let i = 0; i < 5 - arrLength; i++) {
+              let obj = {
+                customerName: "",
+                totalSalesPro: ""
+              }
+              this.MarketOverviewObj.mainCustomerDTOList.push(obj)
             }
           }
+        }
+      } else {
+        this.MarketOverviewObj.mainCustomerDTOList = this.MarketOverviewObj.mainCustomerDTOList.filter(item => item.customerName || item.totalSalesPro)
+      }
+
+    },
+    MarketOverviewObj: {
+      handler (val) {
+        let date = new Date().getFullYear();
+        // 柱状图
+        if (this.MarketOverviewObj.supplierFinanceDTOList.length > 0) {
+          this.MarketOverviewObj.supplierFinanceDTOList.forEach(x => {
+            if (x.year == date - 3) {
+              this.option.series[0].data[0].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
+              this.option.series[0].data[0].value = (x.otherAmount / 1000000).toFixed(2)
+              this.option.series[1].data[0].value = (x.svwAmount / 1000000).toFixed(2)
+              this.option.series[1].data[0].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+            }
+            if (x.year == date - 2) {
+              this.option.series[0].data[1].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
+              this.option.series[0].data[1].value = (x.otherAmount / 1000000).toFixed(2)
+              this.option.series[1].data[1].value = (x.svwAmount / 1000000).toFixed(2)
+              this.option.series[1].data[1].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+            }
+            if (x.year == date - 1) {
+              this.option.series[0].data[2].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
+              this.option.series[0].data[2].value = (x.otherAmount / 1000000).toFixed(2)
+              this.option.series[1].data[2].value = (x.svwAmount / 1000000).toFixed(2)
+              this.option.series[1].data[2].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+            }
+          });
+        } else {
+          this.option.series[0].data = []
+          this.option.series[1].data = []
+        }
+        // 饼图
+        if (this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
           let data = []
-          this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.forEach(x => {
+          let legend = []
+          this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.forEach((x, index) => {
+            let seriesObj = {
+              value: 1048,
+              name: '材料组A',
+              itemStyle: {
+                color: "#0058FF"
+              },
+              label: {
+                normal: {
+                  show: true,
+                  formatter: '{d}%'
+                }
+              }
+            }
+            let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
+            if (x.sapStuffCode == this.categoryCode) {
+              seriesObj.selected = true
+            } else {
+              if (x.sapStuffCode === "other") {
+                seriesObj.selected = true
+              }
+            }
             seriesObj.value = x.postAmount
             seriesObj.name = x.categoryNameZh
+            seriesObj.itemStyle.color = colorList[index]
             seriesObj.label.normal.formatter = x.rate + '%'
             data.push(seriesObj)
+            legend.push(x.categoryNameZh)
           })
           this.turnover.series[0].data = data
+          this.turnover.legend.data = legend
         }
+        let total = new Number()
+        if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
+          val.mainCustomerDTOList.forEach(item => {
+            total += Number(item.totalSalesPro)
+          })
+          if (total > 100) {
+            iMessage.error('超过100%')
+            return
+          }
+        }
+        this.$nextTick(() => {
+          this.initCharts()
+          this.initturnover()
+        });
+
       },
       immediate: true,
       deep: true
     },
     handleChange (val) {
+      this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[0].profit = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[1].profit = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[2].profit = ''
       // if (val === 'otherAmount') {
       //   this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = this.year1
       //   this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = this.year2
       //   this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = this.year3
       // }else if
-    }
+    },
+    '$store.state.rfq.categoryCode': {
+      handler (val) {
+        this.categoryCode = val
+      }
+    },
   },
   methods: {
     initCharts () {
@@ -432,12 +536,19 @@ export default {
       // 绘制图表
       const option = this.option
       myChart.setOption(option);
+
     },
     initturnover () {
       const myChart = echarts().init(this.$refs.turnover);
       // 绘制图表
       const option = this.turnover
+
       myChart.setOption(option);
+      // myChart.dispatchAction({
+      //   type: 'showTip',
+      //   seriesIndex: 0,
+      //   dataIndex: 0
+      // });
     }
 
   }
@@ -446,111 +557,113 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .flex{
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+.nameText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.charts {
+  width: 100%;
+  display: flex;
+  border: 1px solid #acb8cf;
+  border-radius: 10px;
+  padding: 20px 30px;
+  margin-bottom: 20px;
+  .width3-1 {
+    // width: calc(33.33% - 94px);
+    display: flex;
+    flex: 1;
+    margin-left: 20px;
+    flex-direction: column;
+    .bg {
+      div {
+        background-color: rgba(22, 96, 241, 0.1);
+        font-size: 16px;
+        color: #000;
+        border-radius: 5px 5px 0px 0px;
+      }
+      div:first-child {
+        padding-left: 58px;
+      }
+    }
+    .thead {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      div {
+        height: 40px;
+        line-height: 40px;
+      }
+      .last {
+        width: 27%;
+        text-align: center;
+      }
+      .border {
+        border: 1px solid #f1f1f5;
+        border-radius: 5px;
+      }
+      .first {
         display: flex;
-        justify-content: space-between;
-    }
-    .nameText{
-      overflow: hidden;
-      text-overflow:ellipsis;
-      white-space: nowrap;
-    }
-    .charts{
-        width: 100%;
-        display: flex;
-        border:1px solid #ACB8CF;
-        border-radius: 10px;
-        padding: 20px 30px;
-        margin-bottom: 20px;
-        .width3-1{
-            // width: calc(33.33% - 94px);
-            display: flex;
-            flex: 1;
-            margin-left: 20px;
-            flex-direction: column;
-            .bg{
-                div{
-                    background-color: rgba(22,96,241,0.1);
-                    font-size: 16px;
-                    color: #000;
-                    border-radius: 5px 5px 0px 0px;
-                }
-                div:first-child{
-                    padding-left: 58px;
-                }
-            }
-            .thead{
-                 display: flex;
-                 justify-content: space-between;
-                 margin-bottom: 12px;
-                div{
-                    height: 40px;
-                   line-height: 40px;
-                }
-                .last{
-                    width: 27%;
-                    text-align: center;
-                }
-                .border{
-                    border: 1px solid #F1F1F5;
-                    border-radius: 5px;
-                }
-                .first{
-                    display: flex;
-                    justify-content: flex-start;
-                    width: calc(73% - 10px);
-                }
-                .name{
-                    width: calc(100% - 50px);
-                    padding-left: 10px;
-                }
-                .index{
-                    width: 50px;
-                    text-align: center;
-                    border-right: 1px solid #F1F1F5;
-                    position: relative;
-                    img{
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%,-50%);
-                        z-index: 2;
-                    }
-                    div{
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%,-50%);
-                        z-index: 3;
-                    }
-                }
-            }
+        justify-content: flex-start;
+        width: calc(73% - 10px);
+      }
+      .name {
+        width: calc(100% - 50px);
+        padding-left: 10px;
+      }
+      .index {
+        width: 50px;
+        text-align: center;
+        border-right: 1px solid #f1f1f5;
+        position: relative;
+        img {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 2;
         }
-    }
-    h3{
-        margin-bottom: 15px;
-    }
-    .score{
-        span{
-            color: #1660F1;
-            font-size: 14px;
-            margin-left: 15px;
-            display: inline-block;
+        div {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 3;
         }
-        img{
-                display: inline-block;
-                margin-left: 10px;
-            }
+      }
     }
-    .interests{
-        display: flex;
-        justify-content: center;
-        .ml-49{
-            margin-left: 40px;
-            width: calc(33%.33 - 49px);
-        }
-    }
-    .legend {
+  }
+}
+h3 {
+  margin-bottom: 15px;
+}
+.score {
+  span {
+    color: #1660f1;
+    font-size: 14px;
+    margin-left: 15px;
+    display: inline-block;
+  }
+  img {
+    display: inline-block;
+    margin-left: 10px;
+  }
+}
+.interests {
+  display: flex;
+  // justify-content: center;
+  .ml-49 {
+    flex: 1;
+    // margin-left: 40px;
+    padding: 0 20px;
+    width: calc(33%.33 - 49px);
+  }
+}
+.legend {
   font-family: "Arial";
   font-size: 16px;
   color: #0d2451;

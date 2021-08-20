@@ -342,18 +342,20 @@ export default {
       current: null,
       isCover: true,
       label: "",
+      groupId: "",
       formUpdata: {}
     };
   },
-  created () {
+  async created () {
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
+    this.groupId = this.$route.query.groupId
     if (this.newBuild) {
       if (this.entryStatus === 1) {
         this.inside = true
         this.rfq = this.$store.state.rfq.rfqId
         this.analysisSchemeId = this.$route.query.chemeId
-        this.getChartData()
+        await this.getChartData()
       } else if (this.entryStatus === 0) {
         this.findPart()
       }
@@ -370,9 +372,8 @@ export default {
         }
       }
       this.analysisSchemeId = this.$route.query.chemeId
-      this.getChartData()
+      await this.getChartData()
     }
-    console.log(document.body.clientHeight)
   },
   watch: {
     analysisName: {
@@ -404,15 +405,6 @@ export default {
     // window.addEventListener('scroll', this.handleScroll, true)
   },
   methods: {
-    // handleScroll () {
-    //   let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop // 滚动条偏移量
-    //   let offsetTop = this.$el.querySelector('.el-table__header-wrapper').scrollTop;  // 要滚动到顶部吸附的元素的偏移量
-    //   this.isFixed = scrollTop > offsetTop + 100 ? true : false;  // 如果滚动到了预定位置，this.isFixed就为true，否则为false
-    //   console.dir(this.$el.querySelector('.el-table__header-wrapper'), offsetTop)
-    //   if (offsetTop > offsetTop + 100) {
-    //     document.querySelector('.el-table__header-wrapper').style.position = "fixed"
-    //   }
-    // },
     getOptions () {
       part({
         analysisSchemeId: this.analysisSchemeId,
@@ -502,7 +494,8 @@ export default {
       this.$refs.bobAnalysis.chargeRetrieve({
         isDefault: true,
         viewType: 'all',
-        schemaId: this.analysisSchemeId
+        schemaId: this.analysisSchemeId,
+        groupId: this.groupId
       })
     },
     goToBob () {
@@ -565,6 +558,7 @@ export default {
           partNumber: val[0].partNum,
           rfqId: val[0].rfqId,
           supplierId: val[0].supplierId,
+          groupId: this.groupId
         }).then((res) => {
           if (res.code == 200) {
             loading.close()
@@ -573,7 +567,8 @@ export default {
             this.$refs.bobAnalysis.chargeRetrieve({
               viewType: 'all',
               isDefault: true,
-              schemaId: this.analysisSchemeId
+              schemaId: this.analysisSchemeId,
+              groupId: this.groupId
             })
             this.closeDialog()
           } else {
@@ -596,7 +591,7 @@ export default {
             supplierId: value.supplierId,
           })
         })
-        initOut({ list: arr }).then(res => {
+        initOut({ list: arr, groupId: this.groupId }).then(res => {
           if (res.code === '200') {
             loading.close()
             this.$message.success(res.desZh);
@@ -606,7 +601,8 @@ export default {
             this.$refs.bobAnalysis.chargeRetrieve({
               viewType: 'all',
               isDefault: true,
-              schemaId: this.analysisSchemeId
+              schemaId: this.analysisSchemeId,
+              groupId: this.groupId
             })
             // this.querySupplierTurnPartList()
             this.getChartData()
@@ -645,7 +641,8 @@ export default {
           supplier: this.form.supplier.join(","),
           turn: this.form.turn.join(","),
           isDefault: false,
-          viewType: 'all'
+          viewType: 'all',
+          groupId: this.groupId
         }
       } else {
         params = {
@@ -659,7 +656,8 @@ export default {
           analysisDimension: this.chartType,
           combination: this.form.combination.join(","),
           isDefault: false,
-          viewType: 'all'
+          viewType: 'all',
+          groupId: this.groupId
         }
       }
       getBobLevelOne(params).then((res) => {
@@ -699,6 +697,7 @@ export default {
       }
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
+        groupId: this.groupId
       }).then((res) => {
         const allData = res.data || [];
         this.chartData = allData.bobLevelOneVOList.filter(
@@ -751,7 +750,12 @@ export default {
             // remark: this.$refs.bobAnalysis.remark
           };
         }
-
+        this.$refs.bobAnalysis.chargeRetrieve({
+          viewType: 'all',
+          isDefault: true,
+          schemaId: this.analysisSchemeId,
+          groupId: this.groupId
+        })
       });
     },
     delOut () {
@@ -763,7 +767,8 @@ export default {
           this.$refs.bobAnalysis.chargeRetrieve({
             viewType: 'all',
             isDefault: true,
-            schemaId: this.analysisSchemeId
+            schemaId: this.analysisSchemeId,
+            groupId: this.groupId
           })
           this.getChartData();
         } else {

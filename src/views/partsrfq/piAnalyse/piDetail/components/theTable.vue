@@ -4,14 +4,16 @@
       <span class="font18 font-weight">
         <span class="margin-right30">{{
             language('PI.DANGQIANJIAGE', '当前价格')
-          }}：{{ dataInfo.piPartCostTotalVO.nowPriceRatio }}</span>
+          }}：{{ nowPriceRatio }}%</span>
         <span>{{
             language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响')
-          }}：{{ dataInfo.piPartCostTotalVO.totalPriceRatio }}</span>
+          }}：{{ totalPriceRatio }}%</span>
       </span>
       <div class="floatright">
         <template v-if="isPreview">
-          <span class="text timeRange">{{ language('PI.SHIJIANDAN', '时间段') }}：2020/09 - 2021/03</span>
+          <span class="text timeRange" v-if="currentTab === AVERAGE">{{
+              language('PI.SHIJIANDAN', '时间段')
+            }}：{{ beginTime }} - {{ endTime }}</span>
         </template>
         <template v-else>
           <template v-if="tableStatus === 'edit'">
@@ -42,9 +44,10 @@
         :isTableEdit="tableStatus"
         @handleSelectionChange="handleSelectionChange"
         @handleHide="handleHide"
-        @handleGetSelectList="handleGetSelectList"
+        @handleGetSelectList="({...params})=>handleGetSelectList({...params,tableListData: tableListData})"
         :selectOptionsObject="selectOptionsObject"
-        @handleSelectReset="handleSelectReset"
+        @handleSelectReset="({...params})=>handleSelectReset({...params,tableListData: tableListData})"
+        :selection="!isPreview"
     />
     <el-divider class="margin-top20 margin-bottom20" v-if="tableStatus === 'edit'"/>
     <!--隐藏表格-->
@@ -59,13 +62,27 @@
         :isTableEdit="tableStatus"
         @handleSelectionChange="handleHideSelectionChange"
         @handleShow="handleShow"
+        @handleGetSelectList="({...params})=>handleGetSelectList({...params,tableListData: hideTableData})"
+        :selectOptionsObject="selectOptionsObject"
+        @handleSelectReset="({...params})=>handleSelectReset({...params,tableListData: hideTableData})"
+        :selection="!isPreview"
     />
   </div>
 </template>
 
 <script>
 import {iButton, iMessage, iMessageBox} from 'rise';
-import {tableTitle, tableEditTitle, FIRSTSELECT, SECONDSELECT, THIRDSELECT, classType} from './data';
+import {
+  tableTitle,
+  tableEditTitle,
+  FIRSTSELECT,
+  SECONDSELECT,
+  THIRDSELECT,
+  classType,
+  CURRENTTIME,
+  AVERAGE,
+  FIRSTEXCHANGERATE,
+} from './data';
 import {numberProcessor, toFixedNumber, toThousands, deleteThousands} from '@/utils';
 import theTableTemplate from './theTableTemplate';
 import _ from 'lodash';
@@ -94,6 +111,16 @@ export default {
       type: Boolean,
       default: false,
     },
+    currentTab: {
+      type: String,
+      default: '',
+    },
+    averageData: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   computed: {
     pageType() {
@@ -115,6 +142,12 @@ export default {
       SECONDSELECT,
       THIRDSELECT,
       classType,
+      nowPriceRatio: '',
+      totalPriceRatio: '',
+      CURRENTTIME,
+      AVERAGE,
+      beginTime: '',
+      endTime: '',
     };
   },
   created() {
@@ -207,12 +240,22 @@ export default {
       this.tableStatus = '';
     },
     handleFinish() {
-      const res = this.handleSystemMatchData();
-      console.log(res);
-      this.$emit('handlePriceTableFinish');
+      this.$emit('handlePriceTableFinish', this.handleAllSaveData());
     },
-    handleSystemMatchData() {
-      const newList = _.cloneDeep(this.tableListData);
+    handleAllSaveData() {
+      const resTableData = this.handleSystemMatchData({tableListData: this.tableListData});
+      const hideTableData = this.handleSystemMatchData({tableListData: this.hideTableData});
+      const tableList = resTableData.concat(hideTableData);
+      return {
+        tableList,
+        nowPriceRatio: this.nowPriceRatio,
+        totalPriceRatio: this.totalPriceRatio,
+        beginTime: this.beginTime,
+        endTime: this.endTime,
+      };
+    },
+    handleSystemMatchData({tableListData}) {
+      const newList = _.cloneDeep(tableListData);
       newList.map(item => {
         const copyItem = _.cloneDeep(item);
         if (item.dataType === classType['rawMaterial']) {
@@ -251,25 +294,45 @@ export default {
       });
       return newList;
     },
-    getTableList() {
+    async getTableList() {
       try {
         this.tableListData = [];
         this.hideTableData = [];
-        const copyDataInfo = _.cloneDeep(this.dataInfo);
-        const copyTableList = copyDataInfo && copyDataInfo.piPartCostTotalVO &&
-            copyDataInfo.piPartCostTotalVO.piPartCostVOS;
+        let copyDataInfo = {};
+        let copyTableList = [];
+        if (this.currentTab === this.CURRENTTIME) {
+          copyDataInfo = _.cloneDeep(this.dataInfo);
+          this.nowPriceRatio = copyDataInfo.currentPartCostTotalVO.nowPriceRatio;
+          this.totalPriceRatio = copyDataInfo.currentPartCostTotalVO.totalPriceRatio;
+          this.beginTime = copyDataInfo.currentPartCostTotalVO.beginTime;
+          this.endTime = copyDataInfo.currentPartCostTotalVO.endTime;
+          copyTableList = copyDataInfo?.currentPartCostTotalVO?.piPartCostVOS;
+        } else if (this.currentTab === this.AVERAGE) {
+          copyDataInfo = _.cloneDeep(this.averageData);
+          this.nowPriceRatio = copyDataInfo.nowPriceRatio;
+          this.totalPriceRatio = copyDataInfo.totalPriceRatio;
+          this.beginTime = copyDataInfo.beginTime;
+          this.endTime = copyDataInfo.endTime;
+          copyTableList = copyDataInfo && copyDataInfo.piPartCostVOS;
+        }
+        let exchangeRateIndex = 0;
         copyTableList.map((item, index) => {
+          const time = new Date().getTime() + index;
+          if (item.dataType === classType['exchangeRate']) {
+            exchangeRateIndex === 0 && (item[FIRSTEXCHANGERATE] = true);
+            exchangeRateIndex++;
+          }
           if (!item.id) {
-            item.time = new Date().getTime() + index;
+            item.time = time;
+            this.selectOptionsObject[time] = {};
+          } else {
+            this.selectOptionsObject[item.id] = {};
           }
           if (item.isShow) {
             this.tableListData.push(item);
           } else {
             this.hideTableData.push(item);
           }
-        });
-        copyTableList.map(item => {
-          this.selectOptionsObject[item.id] = {};
         });
       } catch {
         this.tableListData = [];
@@ -302,10 +365,10 @@ export default {
       row.isShow = true;
       this.tableListData.push(row);
     },
-    handleGetSelectList({props, row, selectList}) {
+    handleGetSelectList({props, row, selectList, tableListData}) {
       const copyObj = _.cloneDeep(this.selectOptionsObject);
       const id = row.id || row.time;
-      this.tableListData.map(item => {
+      tableListData.map(item => {
         if ([item.id, row.time].includes(id)) {
           if (props === '') {
             copyObj[id][FIRSTSELECT] = selectList;
@@ -318,16 +381,36 @@ export default {
       });
       this.selectOptionsObject = copyObj;
     },
-    handleSelectReset({props, row}) {
+    handleSelectReset({props, row, tableListData}) {
       const id = row.id || row.time;
       if (id) {
         if (props === this.FIRSTSELECT) {
           this.selectOptionsObject[id][this.SECONDSELECT] = [];
           this.selectOptionsObject[id][this.THIRDSELECT] = [];
+          if (row.dataType === classType['rawMaterial']) {
+            this.handleSelectValueRest({id, valueArray: ['partNumber', 'partRegion'], tableListData});
+          } else if (row.dataType === classType['manpower']) {
+            this.handleSelectValueRest({id, valueArray: ['workProvince'], tableListData});
+          } else if (row.dataType === classType['exchangeRate']) {
+            this.handleSelectValueRest({id, valueArray: ['currency'], tableListData});
+          }
         } else if (props === this.SECONDSELECT) {
           this.selectOptionsObject[id][this.THIRDSELECT] = [];
+          if (row.dataType === classType['rawMaterial']) {
+            this.handleSelectValueRest({id, valueArray: ['partRegion'], tableListData});
+          }
         }
       }
+    },
+    handleSelectValueRest({id, valueArray, tableListData}) {
+      tableListData.map(item => {
+        if ([item.id, item.time].includes(id)) {
+          valueArray.map(valueItem => {
+            item[valueItem] = '';
+          });
+        }
+        return item;
+      });
     },
   },
   watch: {
@@ -339,6 +422,12 @@ export default {
       }
     },
     dataInfo: {
+      deep: true,
+      handler() {
+        this.getTableList();
+      },
+    },
+    averageData: {
       deep: true,
       handler() {
         this.getTableList();

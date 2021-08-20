@@ -33,11 +33,15 @@
             multiple
             collapse-tags
             filterable
+            reserve-keyword
             size="mini"
             class="multipleSelect"
             v-model="form.cartypeProjectCode"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
+            :filter-method="$event => selectFilter($event, 'cartypeProjectCode')"
+            v-lazy-select="cartypeProjectLazy"
             @change="handleChangeByAll($event, 'cartypeProjectCode')"
+            @visible-change="selectVisibleChange($event, 'cartypeProjectCode')"
           >
             <el-option
               value=""
@@ -46,8 +50,8 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in carTypeProjectOptions"
-              :key="item.key"
+              v-for="(item, $index) in carTypeProjectOptions"
+              :key="$index"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -56,11 +60,14 @@
             multiple
             collapse-tags
             filterable
+            reserve-keyword
             size="mini"
             class="multipleSelect"
             v-model="form.status"
             :placeholder="language('QINGXUANZENEIRONGZHUANGTAI', '请选择内容状态')"
+            :filter-method="$event => selectFilter($event, 'status')"
             @change="handleChangeByAll($event, 'status')"
+            @visible-change="selectVisibleChange($event, 'status')"
           >
             <el-option
               value=""
@@ -77,8 +84,11 @@
         <el-form-item :label="language('MTZXIANGGUAN', 'MTZ相关')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_ISMTZ">
           <iSelect
             filterable
+            reserve-keyword
             v-model="form.isMtz"
             :placeholder="language('QINGXUANZEMTZXIANGGUAN', '请选择MTZ相关')"
+            :filter-method="$event => selectFilter($event, 'isMtz')"
+            @visible-change="selectVisibleChange($event, 'isMtz')"
           >
             <el-option
               value=""
@@ -95,8 +105,11 @@
         <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_PROCUREFACTORY">
           <iSelect
             filterable
+            reserve-keyword
             v-model="form.procureFactory"
             :placeholder="language('QINGXUANZECAIGOUGONGCHANG', '请选择采购工厂')"
+            :filter-method="$event => selectFilter($event, 'procureFactory')"
+            @visible-change="selectVisibleChange($event, 'procureFactory')"
           >
             <el-option
               value=""
@@ -138,14 +151,14 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
       <template v-slot:header-control>
-        <iButton :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
-        <iButton :loading="declareResetLoading" @click="handleDeclareReset" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
-        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
-        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
-        <iButton @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">{{ language("DAOCHU", "导出") }}</iButton>
-        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT">{{ language("DAORU", "导⼊") }}</iButton>
-        <iButton :loading="submitLoading" @click="handleSubmit" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT">{{ language("TIJIAO", "提交") }}</iButton>
-        <iButton disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL">{{ language("CHEHUI", "撤回") }}</iButton>
+        <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
+        <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
+        <iButton v-if="!disabled" @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">{{ language("DAOCHU", "导出") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT">{{ language("DAORU", "导⼊") }}</iButton>
+        <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT">{{ language("TIJIAO", "提交") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL">{{ language("CHEHUI", "撤回") }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -160,12 +173,12 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <template #oldPartNumPreset="scope">
-            <iInput v-if="scope.row.status === 'EMPTY'" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !!scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset">
+            <iInput v-if="scope.row.status === 'EMPTY' && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly>
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
             </iInput>
-            <iInput v-else v-model="scope.row.oldPartNumPreset" disabled readonly></iInput>
+            <iInput v-else v-model="scope.row.oldPartNumPreset" class="inputClass" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" readonly></iInput>
           </template>
           <template #dosage="scope">
             <span class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -179,6 +192,7 @@
           <template #investCarTypePro="scope">
             <iSelect
               v-model="scope.row.investCarTypePro"
+              :disabled="disabled"
               :placeholder="language('QINGXUANZE', '请选择')"
             >
               <el-option
@@ -221,7 +235,7 @@ import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoCont
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
-import { cloneDeep } from "lodash"
+import { cloneDeep, chunk, debounce } from "lodash"
 
 const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
@@ -234,13 +248,24 @@ export default {
       default: () => ({})
     }
   },
+  computed: {
+    disabled() {
+      return this.aekoInfo.aekoStatus == "CANCELED"
+    }
+  },
   data() {
     return {
       form: cloneDeep(contentDeclareQueryForm),
       carTypeProjectOptions: [],
+      carTypeProjectOptionsCache: [],
+      carTypeProjectOptionsCacheChunks: [],
+      carTypeProjectOptionsFilterCache: [],
+      cartypeProjectCurrentPage: 1,
       contentStatusOptions: [],
+      contentStatusOptionsCache: [],
       mtzOptions,
       procureFactoryOptiopns: [],
+      procureFactoryOptiopnsCache: [],
       options: [],
       loading: false,
       tableTitle,
@@ -250,7 +275,8 @@ export default {
       declareResetLoading: false,
       currentRow: {},
       dosageDialogVisible: false,
-      submitLoading: false
+      submitLoading: false,
+      debouncer: null
     };
   },
   created() {
@@ -275,14 +301,19 @@ export default {
       searchCartypeProject()
       .then(res => {
         if (res.code == 200) {
-          this.carTypeProjectOptions = 
+          this.carTypeProjectOptionsCache = 
             Array.isArray(res.data) ?
             res.data.map(item => ({
               key: item.code,
               label: item.name,
-              value: item.code
+              value: item.code,
+              lowerCaseLabel: typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })) :
             []
+
+          this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache
+          this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsCache, 20)
+          this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -292,19 +323,23 @@ export default {
       getDictByCode("CONTENT_STATUS")
       .then(res => {
         if (res.code == 200) {
-          this.contentStatusOptions = 
+          this.contentStatusOptionsCache = 
             Array.isArray(res.data) && res.data[0] && Array.isArray(res.data[0].subDictResultVo) ?
             res.data[0].subDictResultVo.map(item => ({
               key: item.code,
               label: item.name,
-              value: item.code
+              value: item.code,
+              lowerCaseLabel: typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })) :
             []
-          this.contentStatusOptions.unshift({
+          this.contentStatusOptionsCache.unshift({
             key: "EMPTY",
             label: "(空)",
-            value: "EMPTY"
+            value: "EMPTY",
+            lowerCaseLabel: "(空)"
           })
+
+          this.contentStatusOptions = this.contentStatusOptionsCache
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -315,14 +350,17 @@ export default {
       procureFactorySelectVo()
       .then(res => {
         if (res.code == 200) {
-          this.procureFactoryOptiopns = 
+          this.procureFactoryOptiopnsCache = 
             Array.isArray(res.data) ?
             res.data.map(item => ({
               key: item.code,
               label: item.name,
-              value: item.code
+              value: item.code,
+              lowerCaseLabel: typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })) :
             []
+
+          this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -338,9 +376,12 @@ export default {
     },
     init() {
       this.loading = true
+
+      const form = {}
+      Object.keys(this.form).forEach(key => form[key] = typeof this.form[key] === "string" ? this.form[key].trim() : this.form[key])
       
       getAekoLiniePartInfo({
-        ...this.form,
+        ...form,
         requirementAekoId: this.aekoInfo.requirementAekoId,
         cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
@@ -383,15 +424,19 @@ export default {
     },
     view() {},
     oldPartNumPresetSelect(row) {
-      if (!row.oldPartNumPreset) return
+      // if (!row.oldPartNumPreset) return
+
+      const query = {
+        requirementAekoId: this.aekoInfo.requirementAekoId,
+        objectAekoPartId: row.objectAekoPartId,
+        oldPartNumPreset: typeof row.oldPartNumPreset === "string" && row.oldPartNumPreset.trim()
+      }
+
+      if (!query.oldPartNumPreset) delete query.oldPartNumPreset
 
       this.$router.push({
         path: "/aeko/quondampart/ledger",
-        query: {
-          requirementAekoId: this.aekoInfo.requirementAekoId,
-          objectAekoPartId: row.objectAekoPartId,
-          oldPartNumPreset: row.oldPartNumPreset.trim()
-        }
+        query
       })
     
       sessionStorage.setItem(`aekoConatentDeclareParams_${ this.aekoInfo.requirementAekoId }`, JSON.stringify({
@@ -487,6 +532,90 @@ export default {
         this.submitLoading = false
       })
       .catch(() => this.submitLoading = false)
+    },
+    selectFilter(value, key) {
+      if (this.debouncer && typeof this.debouncer.cancel === "function") this.debouncer.cancel()
+      
+      this.debouncer = debounce(() => {
+        let _value = typeof value === "string" ? value.trim().toLowerCase() : _value
+
+        switch(key) {
+          case "cartypeProjectCode":
+            if (_value) {
+              this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache.filter(item => item.lowerCaseLabel.includes(_value))
+              this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsFilterCache, 20)
+            } else {
+              this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache
+              this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsCache, 20)
+            }
+
+            this.cartypeProjectCurrentPage = 1
+            this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
+            break
+          case "status":
+            if (_value) {
+              this.contentStatusOptions = this.contentStatusOptionsCache.filter(item => item.lowerCaseLabel.includes(_value))
+            } else {
+              this.contentStatusOptions = this.contentStatusOptionsCache
+            }
+            break
+          case "isMtz":
+            if (_value) {
+              this.mtzOptions = mtzOptions.filter(item => item.label.includes(_value))
+            } else {
+              this.mtzOptions = mtzOptions
+            }
+            break
+          case "procureFactory":
+            if (_value) {
+              this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache.filter(item => item.lowerCaseLabel.includes(_value))
+            } else {
+              this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache
+            }
+            break
+          default:
+        }
+      }, 400)
+      this.debouncer()
+    },
+    selectVisibleChange(visible, key) {
+      switch(key) {
+        case "cartypeProjectCode":
+          if (!visible) {
+            this.carTypeProjectOptionsFilterCache = this.carTypeProjectOptionsCache
+            this.carTypeProjectOptionsCacheChunks = chunk(this.carTypeProjectOptionsCache, 20)
+          }
+
+          this.carTypeProjectOptions = this.carTypeProjectOptionsCacheChunks[0] || []
+          this.cartypeProjectCurrentPage = 1
+        break
+        case "status":
+          if (!visible) {
+            this.contentStatusOptions = this.contentStatusOptionsCache
+          }
+        break
+        case "isMtz":
+          if (!visible) {
+            this.mtzOptions = mtzOptions
+          }
+        break
+        case "procureFactory":
+          if (!visible) {
+            this.procureFactoryOptiopns = this.procureFactoryOptiopnsCache
+          }
+        break
+        default:
+      }
+    },
+    cartypeProjectLazy() {
+      if (this.carTypeProjectOptions.length < this.carTypeProjectOptionsFilterCache.length) {
+        this.cartypeProjectCurrentPage += 1
+        this.carTypeProjectOptions = this.carTypeProjectOptions.concat(this.carTypeProjectOptionsCacheChunks[this.cartypeProjectCurrentPage - 1])
+      }
+    },
+    isDeclareBlackListPart(part) {
+      // return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
+      return false // 取消黑名单限制
     }
   },
 };
@@ -544,6 +673,12 @@ export default {
   .oldPartNumPreset {
     ::v-deep input {
       color: #c7c7c7;
+    }
+  }
+
+  .inputClass {
+    ::v-deep input {
+      color: #000;
     }
   }
 

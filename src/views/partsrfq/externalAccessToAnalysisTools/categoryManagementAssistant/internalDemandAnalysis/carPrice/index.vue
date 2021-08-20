@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-14 15:45:17
+ * @LastEditTime: 2021-08-19 18:06:50
  * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
@@ -27,19 +27,19 @@
          <div class="flex search">
             <div>
                <span>{{ language("DUIBIAOCHEXING", "对标车型") }}</span>
-               <iSelect class="select" v-model="filterCarValue">
-                   <el-option :value="item.id" :label="item.description" v-for="(item,index) in carType" :key="index"></el-option>
+               <iSelect class="select" v-model="filterCarValue" multiple collapse-tags multiple-limit="5">
+                   <el-option :value="item.modelNameZh" :label="item.description" v-for="(item,index) in carType" :key="index"></el-option>
                </iSelect>
             </div>
             <div>
-               <span>{{ language("CHEXINGPEIZHI", "车型配置") }}</span>
+               <span>{{ language("XIANSHILEIXING", "显示类型") }}</span>
                <iSelect class="select" v-model="config.pageName">
                    <el-option :value="item.code" :label="item.name" v-for="(item,index) in dictData.CATEGORY_MANAGEMENT_CAR_TYPE" :key="index"></el-option>
                </iSelect>
             </div>
             <div>
                <span>{{ language("NIANFENFANWEI", "年月范围") }}</span>
-               <iDatePicker v-model="selectDate" value-format="yyyy-MM" type="daterange" :start-placeholder="language('KAISHIRIQI','开始日期')" :end-placeholder="language('JIESHURIQI','结束日期')"
+               <iDatePicker v-model="selectDate" value-format="yyyy-MM" type="monthrange" :start-placeholder="language('KAISHIRIQI','开始日期')" :end-placeholder="language('JIESHURIQI','结束日期')"
                :picker-options="pickerOptions"/>
             </div>
          </div>
@@ -72,14 +72,14 @@ export default {
             tokenType: pbi.models.TokenType.Embed,
             accessToken: '',
             embedUrl: '',
-            pageName:"ReportSection4f9dbc506e2efb5aa384",
+            pageName:"",
             settings: {
                panes: {
                   filters: {
-                     visible: false
+                     visible: true
                   },
                   pageNavigation: {
-                     visible: false
+                     visible: true
                   }
                }
             }
@@ -92,19 +92,19 @@ export default {
             },
             operator: "In",
             values: [],//
-            filterType: null,
+            filterType: pbi.models.FilterType.BasicFilter,
             requireSingleSelection: true
          },
-         // 车型
+         // 对标车型
          filter_car : {
             $schema: "http://powerbi.com/product/schema#basic",
             target: {
-               table: "DM_CT",
-               column: "car_type_id"
+               table: "DM_fact",
+               column: "model_name_zh"
             },
             operator: "In",
             values: [],//
-            filterType: null,
+            filterType: pbi.models.FilterType.BasicFilter,
             requireSingleSelection: true
          },
          // 时间
@@ -112,22 +112,22 @@ export default {
             $schema: "http://powerbi.com/product/schema#basic",
             target: {
                table: "11_DM_BeginDate",
-               column: "YearMonthNo"
+               column: "YearMonth"
             },
             operator: "In",
             values: [],//
-            filterType: null,
+            filterType: pbi.models.FilterType.BasicFilter,
             requireSingleSelection: true
          },
          filter_time_end : {
             $schema: "http://powerbi.com/product/schema#basic",
             target: {
                table: "12_DM_EndDate",
-               column: "YearMonthNo"
+               column: "YearMonth"
             },
             operator: "In",
             values: [],//
-            filterType: null,
+            filterType: pbi.models.FilterType.BasicFilter,
             requireSingleSelection: true
          },
          report:null,
@@ -144,12 +144,12 @@ export default {
          dictData:{
             CATEGORY_MANAGEMENT_CAR_TYPE:[]
          },
-         selectDate:"",//选择的时间
-         filterCarValue:"",//对标车型
+         selectDate:[],//选择的时间
+         filterCarValue:[],//对标车型
          pickerOptions: {
             disabledDate(time) {
                let currentYear = new Date().getFullYear()
-               return time.getFullYear() < currentYear;
+               return time.getFullYear() > currentYear;
             }
          },
       }
@@ -157,16 +157,22 @@ export default {
    created () {
       this.categoryCode=this.$store.state.rfq.categoryCode
    },
-   mounted () {
-      this.filter={...this.filter,filterType:pbi.models.FilterType.BasicFilter},
-		this.getPowerBiUrl()
+   async mounted () {
+		await this.getPowerBiUrl()
+      this.carTypeByCategoryCode()
+      this.getDict()
+      this.init()
+      this.renderBi()
    },
    watch:{
       '$i18n.locale':{
          handler(newValue){
-         this.config.pageName=newValue=='zh'?'ReportSectione9fe87a027d2550c28a9':'ReportSection616eb7861df2ef50a3cd'
          this.renderBi()
-      }}
+      }},
+      '$store.state.rfq.categoryCode'(newVal){
+         this.categoryCode=this.$store.state.rfq.categoryCode
+         this.renderBi()
+      }
    },
    methods: {
       // 获取近期操作数据
@@ -213,11 +219,10 @@ export default {
          this.$refs.marks.getMarkdefalut(this.mark)
       },
       // 获取财报iframeurl
-      getPowerBiUrl() {
-            getCmCarTypePricePbi().then(res => {
+      async getPowerBiUrl() {
+            await getCmCarTypePricePbi().then(res => {
             if (res.data) {
                this.url = res.data
-               this.carTypeByCategoryCode()
             }
          })
       },
@@ -225,8 +230,6 @@ export default {
       getDict() {
          selectDictByKeys([{ keys: "CATEGORY_MANAGEMENT_CAR_TYPE" }]).then(res=>{
             this.dictData=res.data
-            this.init()
-            this.renderBi()
          })
       },
       // 获取车型数据
@@ -236,11 +239,12 @@ export default {
          }
          carTypeByCategoryCode(params).then(res=>{
             this.carType=res.data
-            this.getDict()
          })
       },
       // 重置
       reset(){
+         this.selectDate=[]
+         this.filterCarValue=[]
          this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
          this.renderBi()
       },
@@ -248,22 +252,26 @@ export default {
       init(){
          this.config.embedUrl=this.url.embedUrl
          this.config.accessToken=this.url.accessToken
-         this.filter.values=[this.categoryCode]
          // this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_CAR_TYPE[0].code
          this.reportContainer = document.getElementById('powerBi');
          this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       },
       renderBi() {
-         console.log(this.selectDate,this.filter_time_start,this.filter_time_end)
-         this.filter_car.values=[this.filterCarValue]
-         this.filter_time_start.values=[this.selectDate[0]]
-         this.filter_time_end.values=[this.selectDate[1]]
+         this.filter.values=[this.categoryCode]
+         this.filter_car.values=this.filterCarValue
+         if(this.selectDate.length){
+            this.filter_time_start.values=[this.selectDate[0]]
+            this.filter_time_end.values=[this.selectDate[1]]
+         } 
          var report = this.powerbi.embed(this.reportContainer, this.config);
+
+         console.log( this.filter,this.filter_car,this.filter_time_start)
+
          // Report.off removes a given event handler if it exists.
          report.off("loaded");
          // Report.on will add an event handler which prints to Log window.
          report.on("loaded", ()=> {
-            report.setFilters([this.filter,this.filter_time_start,this.filter_time_end])
+            report.setFilters([this.filter,this.filter_car,this.filter_time_start,this.filter_time_end])
          });
          // Report.off removes a given event handler if it exists.
          report.off("rendered");

@@ -18,16 +18,37 @@
               :key="'SearchList_aeko'+index" 
               :label="language(item.labelKey,item.label)"
               v-permission.dynamic="item.permissionKey"
-              >
-                  <iSelect collapse-tags  v-update v-if="item.type === 'select'" :multiple="item.multiple" :filterable="item.filterable" :clearable="item.clearable" v-model="searchParams[item.props]" :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')">
-                    <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
-                    <el-option
-                      v-for="item in selectOptions[item.selectOption] || []"
-                      :key="item.code"
-                      :label="item.name"
-                      :value="item.code">
-                    </el-option>  
-                  </iSelect> 
+              >   
+                <template v-if="item.type === 'select'" >
+                  <aeko-select 
+                    v-if="item.isNewSelect"
+                    :searchParams="searchParams" 
+                    :ParamKey="item.props" 
+                    :allOptionsData="selectOptions[item.selectOption]" 
+                    :multiple="item.multiple"
+                    :clearable="item.clearable" 
+                  />
+                  <iSelect
+                      v-else
+                      collapse-tags
+                      :multiple="item.multiple" 
+                      :filterable="item.filterable" 
+                      :clearable="item.clearable" 
+                      v-model="searchParams[item.props]" 
+                      :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
+                      @change="handleMultipleChange($event, item.props,item.multiple)"
+                      :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+                    >
+                      <el-option v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
+                      <el-option
+                        v-for="(item,index) in selectOptions[item.selectOption] || []"
+                        :key="item.selectOption+'_'+index"
+                        :label="item.name"
+                        :value="item.code">
+                      </el-option>  
+                  </iSelect>
+                </template>
+                   
                   <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                   <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]"></iInput> 
               </el-form-item>
@@ -43,6 +64,7 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          :selection="false"
           @handleSelectionChange="handleSelectionChange"
         >
         <!-- AEKO号  -->
@@ -122,14 +144,13 @@ import filesListDialog from '../manage/components/filesListDialog'
 import {
   getLiniePage,
 } from '@/api/aeko/stance'
-// import { getCarTypePro } from '@/api/designate/nomination'
-// import { getCartypeDict } from '@/api/partsrfq/home'
 import {
   searchAekoStatus,
   searchCoverStatus,
   searchCartypeProject,
   getSearchCartype,
 } from '@/api/aeko/manage'
+import aekoSelect from '../components/aekoSelect'
 export default {
     name:'aekoStanceList',
     mixins: [pageMixins],
@@ -145,6 +166,7 @@ export default {
       iPagination,
       icon,
       filesListDialog,
+      aekoSelect,
     },
     data(){
       return{
@@ -153,8 +175,16 @@ export default {
         selectItems:[],
         searchParams:{
           coverStatusList:['TOBE_STATED'],
+          cartypeProjectCodeList:[''],
+          cartypeCodeList:[''],
         },
         selectOptions:{
+          cartypeProjectCodeList:[],
+          aekoStatusList:[],
+          coverStatusList:[],
+          cartypeCodeList:[],
+        },
+        selectOptionsCopy:{
           cartypeProjectCodeList:[],
           aekoStatusList:[],
           coverStatusList:[],
@@ -199,7 +229,7 @@ export default {
 
       // 判断当前url是否在可显示列表内 若无则显示列表第一个清单
       const {path} = $route;
-      const filterPath = filterList.filter((item)=>item.url == path);
+      const filterPath = filterList.filter((item)=>item.url && item.url == path);
       if(!filterPath.length){
         this.$router.push({
           path:filterList[0].url,
@@ -212,7 +242,9 @@ export default {
       // 重置
       reset(){
         this.searchParams = {
-          coverStatusList:['TOBE_STATED']
+          coverStatusList:['TOBE_STATED'],
+          cartypeProjectCodeList:[''],
+          cartypeCodeList:[''],
         };
         this.getList();
       },
@@ -225,12 +257,14 @@ export default {
       async getList(){
         this.loading = true;
         const {searchParams,page} = this;
-        const { partNum } = searchParams;
+        const { partNum,cartypeProjectCodeList,cartypeCodeList } = searchParams;
         // 若有截至或者分派起止时间将其拆分成两个字段
         const {linieAssignTime=[],deadLine=[]} = searchParams;
         const data = {
             current:page.currPage,
-            size:page.pageSize
+            size:page.pageSize,
+            cartypeCodeList:cartypeCodeList.length && cartypeCodeList[0]=='' ? [] : cartypeCodeList,
+            cartypeProjectCodeList:cartypeProjectCodeList.length && cartypeProjectCodeList[0]=='' ? [] : cartypeProjectCodeList,
         };
         // 分派日期
         if(linieAssignTime.length){
@@ -272,8 +306,10 @@ export default {
           if(code ==200){
             data.map((item)=>{
               item.desc = item.name;
+              item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })
             this.selectOptions.cartypeProjectCodeList = data || [];
+            this.selectOptionsCopy.cartypeProjectCodeList = data || [];
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -285,8 +321,10 @@ export default {
           if(code ==200){
             data.map((item)=>{
               item.desc = item.name;
+              item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
             })
             this.selectOptions.cartypeCodeList = data.filter((item)=>item.name) || [];
+            this.selectOptionsCopy.cartypeCodeList = data.filter((item)=>item.name) || [];
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -299,6 +337,7 @@ export default {
               item.name = item.desc;
             });
             this.selectOptions.aekoStatusList = data;
+            this.selectOptionsCopy.aekoStatusList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -311,6 +350,7 @@ export default {
               item.name = item.desc;
             });
             this.selectOptions.coverStatusList = data;
+            this.selectOptionsCopy.coverStatusList = data;
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -350,27 +390,41 @@ export default {
       changeVisible(type,visible){
           this[type] = visible;
       },
-
-      // 判断是否勾选项
-      async isSelectItem(type=false){
-          const {selectItems} = this;
-          if(!selectItems.length){
-              iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
-              return false;
-          }else{
-              if(type){
-                  return true;
-              }else{
-                const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
-                return confirmInfo == 'confirm';
-              }
-          }
-      },
       
       // 查看附件列表
       async checkFiles(row){
         this.itemFileData = row;
         this.changeVisible('filesVisible',true);
+      },
+
+      // 模糊搜索处理
+      dataFilter(val,props){
+        // 去除前后空格
+        const trimVal = val.trim();
+        const { selectOptionsCopy={}} = this;
+        if(trimVal){
+          const list = selectOptionsCopy[props].filter((item) => {
+            if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
+                return true;
+            } 
+          })
+            this.selectOptions[props] = list;
+        }else{
+          this.selectOptions[props] = selectOptionsCopy[props];
+        }
+      },
+
+      // 多选处理
+      handleMultipleChange(value, key,multiple) {
+          // 单选不处理
+          if(!multiple) {
+            if(!value){
+              const {selectOptionsCopy={}} = this;
+              this.$set(this.selectOptions,key,selectOptionsCopy[key]);
+            }else{
+              return;
+            }
+          }
       },
 
     }
@@ -383,12 +437,14 @@ export default {
         display: block;
         width: 10px;
     }
-    .table-item-aeko{
+   .table-item-aeko{
       position: relative;
-      padding-left: 28px;
       .link{
         display: block;
-        width: calc( 100% - 28px);
+        padding-left: 30px;
+        padding-right: 8px;
+        margin-right: 8px;
+        box-sizing: border-box;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

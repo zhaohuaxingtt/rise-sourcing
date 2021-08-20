@@ -1,8 +1,8 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 10:54:14
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-19 14:58:02
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -15,6 +15,7 @@ const requstxw = axios(process.env.VUE_APP_SUPPLIER_WDL)
 const requstFile = axiosFile(process.env.VUE_APP_QUOTATION)
 const requstPart = axios(process.env.VUE_APP_SUPPLIER_RFQLIST)
 const requstdl = axios(process.env.VUE_APP_QUOTATION_DL)
+const requstRfq = axios(process.env.VUE_APP_RFQ)
 // eslint-disable-next-line no-undef
 // 获取零件基础信息
 export function getPartsQuotations(params) {
@@ -176,15 +177,6 @@ export function getPackageTransport({quotationId}) {
     method: 'GET'
   })
 }
-// 获取cbd
-export function findFiles(parmars) {
-  return requstxw({
-    url: `/file/fileHistory?supplierId=${supplierId()}`,
-    method: 'POST',
-    data: parmars
-  })
-}
-
 //下载成本汇总模板
 export function downPartCbdLoadFile(parmars) {
   return requstFile({
@@ -314,7 +306,7 @@ export function saveComments(data) {
 // 获取附件列表
 export function getFileHistory({quotationId,fileType,current,size,sortColumn=null,isAsc=false}) {
   return requst({
-    url: `/file-histories/page/${quotationId}/${sortColumn}/${isAsc}/${fileType}/${current}/${size}?supplierId=${supplierId()}`,
+    url: `/file-histories/page/${quotationId}/${sortColumn}/${isAsc}/${fileType}/${current}/${size}`,
     method: 'GET',
   })
 }
@@ -322,7 +314,7 @@ export function getFileHistory({quotationId,fileType,current,size,sortColumn=nul
 // 关联附件
 export function uploadFileList(data) {
   return requst({
-    url: `/file/uploadFileList?supplierId=${supplierId()}`,
+    url: `/file-histories/upload-files`,
     method: 'POST',
     data,
   })
@@ -331,8 +323,8 @@ export function uploadFileList(data) {
 // 删除附件
 export function deleteFiles(data) {
   return requst({
-    url: `/file/deleteFiles?supplierId=${supplierId()}`,
-    method: 'POST',
+    url: `/file-histories/delete-files`,
+    method: 'DELETE',
     data,
   })
 }
@@ -392,7 +384,7 @@ export function updateCostSummaryDB(params) {
 // 获取供应商token
 export function getSupplierToken(params) {
   return requst({
-    url:`/supplier/${ params.supplierId }`,
+    url:`/supplier/getSupplierProducePlace/${ params.supplierId }`,
     method: 'GET',
   })
 }

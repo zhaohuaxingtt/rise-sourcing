@@ -1,19 +1,19 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-11 17:41:09
+ * @LastEditTime: 2021-08-18 17:39:43
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
 -->
 <template>
   <iPage class="dashboard">
-    <headerNav />
+    <headerNav v-permission="DASHBOARD_PARTSIGN" />
     <!-- 功能卡片 -->
     <div class="dashboard-card">
       <el-row :gutter="10">
         <!-- 零件签收 -->
-        <el-col :span="4">
+        <el-col :span="4" v-permission="DASHBOARD_PARTSIGN">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -25,7 +25,7 @@
           </iCard>
         </el-col>
         <!-- 采购项目建立 -->
-        <el-col :span="4">
+        <el-col :span="4" v-permission="DASHBOARD_PARTSPROCURE">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -35,22 +35,22 @@
               <dl>
                 <dt>{{language('WEICHUANGJIANCAIGOUXIANGMU','未创建采购项目')}}</dt>
                 <dd>
-                <strong class="note cursor" @click="toLink('/sourcing/partsprocure?projectStatus=10')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
-                /{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItemSum || 0}}
+                <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
+                /<span class="cursor"  @click="toLink(unCrePartsprocureURL)">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItemSum || 0}}</span>
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('WEIJIARURFQ','未加入RFQ')}}</dt>
                 <dd>
-                  <strong class="note cursor" @click="toLink('/sourcing/partsprocure?projectStatus=11')">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
-                  /{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfqSum || 0}}
+                  <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
+                  /<span class="cursor" @click="toLink(unJoinRFQURL)">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfqSum || 0}}</span>
                 </dd>
               </dl>
             </div>
           </iCard>
         </el-col>
         <!-- RFQ管理 -->
-        <el-col :span="8">
+        <el-col :span="8" v-permission="DASHBOARD_RFQMGMT">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -99,7 +99,7 @@
           </iCard>
         </el-col>
         <!-- 定点管理 -->
-        <el-col :span="4">
+        <el-col :span="4" v-permission="DASHBOARD_NOMINATEMGMT">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -115,7 +115,7 @@
           </iCard>
         </el-col>
         <!-- 定点信/LOI -->
-        <el-col :span="4">
+        <el-col :span="4" v-permission="DASHBOARD_NOMILETTERANDLOI">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -125,28 +125,27 @@
               <dl>
                 <dt>{{language('LK_DAIQUERENDINGDIANXIN','待确认定点信')}}</dt>
                 <dd>
-                  <strong class="cursor" @click="toLink('/sourcing/partsletter?status=CSF_HANDLING')">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLetterNum || 0}}</strong>
+                  <strong class="cursor" @click="toLink(letterURL)">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLetterNum || 0}}</strong>
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('LK_DAIQUERENLOI','待确认LOI')}}</dt>
                 <dd>
-                  <strong class="cursor" @click="toLink('/sourcing/partsletter?loiStatus=LINIE_CONFIRING&cardType=LOI')">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLoiNum || 0}}</strong>
+                  <strong class="cursor" @click="toLink(loiURL)">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLoiNum || 0}}</strong>
                 </dd>
               </dl>
             </div>
           </iCard>
         </el-col>
       </el-row>
-      
     </div>
     <div class="dashboard-charts">
       <el-row :gutter="10">
         <!-- 材料组定点时率及平均定点周期 -->
-        <el-col :span="16">
+        <el-col :span="16" v-permission="DASHBOARD_MATERIALANDNOMIRATE">
           <nomicharts :data="materialGroupData" v-loading="loading" />
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" v-permission="DASHBOARD_CIRCULATIONOVERVIEW">
           <pieCharts :data="circulationData" v-loading="loading" />
         </el-col>
       </el-row>
@@ -155,11 +154,14 @@
 </template>
 
 <script>
+import Vuex from 'vuex'
 import headerNav from './components/headerNav'
 import nomicharts from './components/nomicharts'
 import pieCharts from './components/pieCharts'
 import {sourcingOverview} from '@/api/dashboard'
+import {qianqicaigou, zhuanyecaigou} from '@/config/dashboard'
 import {iPage, iCard, icon, iMessage} from 'rise'
+import _ from 'lodash'
 
 export default {
   components: {
@@ -169,6 +171,67 @@ export default {
     headerNav,
     nomicharts,
     pieCharts
+  },
+  computed: {
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    }),
+    roleList() {
+      // 获取用户角色列表
+      let roleList = (this.userInfo && this.userInfo.positionList) || []
+      roleList = roleList.map(o => o.roleDTOList || [])
+      roleList = Array.from(new Set(roleList.flat(Infinity)))
+      return roleList.map(o => o.code) || []
+    },
+    // 是否是前期采购员
+    isQQCG() {
+      const qqArray = _.intersection(this.roleList,qianqicaigou)
+      return Boolean(qqArray.length)
+    },
+    // 是否是专业采购员
+    isZYCG() {
+      const zyArray = _.intersection(this.roleList,zhuanyecaigou)
+      return Boolean(zyArray.length)
+    },
+    // 前期采购员待确认定点信链接
+    letterURL() {
+      // 前期采购员
+      let status = 'CSF_HANDLING'
+      // 专业采购员
+      if (this.isZYCG) status = 'LINIE_CONFIRING'
+      // 前期采购员 && 专业采购员
+      if (this.isZYCG && this.isQQCG) status = 'CSF_HANDLING'
+      return `/sourcing/partsletter?status=${status}`
+    },
+    // 前期采购员待确认定点信链接
+    loiURL() {
+      // 前期采购员
+      let status = 'CSF_HANDLING'
+      // 专业采购员
+      if (this.isZYCG) status = 'LINIE_CONFIRING'
+      // 前期采购员 && 专业采购员
+      if (this.isZYCG && this.isQQCG) status = 'CSF_HANDLING'
+      return `/sourcing/partsletter?cardType=LOI&loiStatus=${status}`
+    },
+    // 未创建采购项目链接
+    unCrePartsprocureURL() {
+      let paramTxt = ''
+      // 前期采购员
+      if (this.isQQCG) paramTxt += `&buyerName=${this.userInfo.nameZh}`
+      // 专业采购员
+      if (this.isZYCG) paramTxt += `&linieName=${this.userInfo.nameZh}`
+      return `/sourcing/partsprocure?status=10${paramTxt}`
+    },
+    // 未创建采购项目链接
+    unJoinRFQURL() {
+      let paramTxt = ''
+      // 前期采购员
+      if (this.isQQCG) paramTxt += `&buyerName=${this.userInfo.nameZh}`
+      // 专业采购员
+      if (this.isZYCG) paramTxt += `&linieName=${this.userInfo.nameZh}`
+      return `/sourcing/partsprocure?status=11${paramTxt}`
+    }
+
   },
   data() {
     return {
@@ -222,6 +285,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .cursor {
+  display: inline-block;
   cursor: pointer;
 }
 .dashboard-card {
