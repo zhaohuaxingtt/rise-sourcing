@@ -100,6 +100,10 @@
             </iSelect>
           </el-form-item>
 
+          <el-form-item :label="language('LK_GONGMUJUZHONGLEI', '工模具种类')">
+            <iInput clearable :placeholder="language('LK_QINGSHURU', '请输入')" v-model.trim="form['moldType']" ></iInput>
+          </el-form-item>
+
         </el-form>
       </iSearch>
 

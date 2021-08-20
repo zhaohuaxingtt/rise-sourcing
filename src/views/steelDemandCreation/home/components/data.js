@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-30 13:56:01
- * @LastEditTime: 2021-08-14 15:13:20
+ * @LastEditTime: 2021-08-19 14:47:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steelDemandCreation\home\components\data.js
@@ -46,7 +46,7 @@ export function searchForm({MEETING_TYPE=[],NOMINATE_APP_PROCESS_TYPE=[],NOMINAT
       i18nKey:'DAYINGZHUANGTAI',
       permissionKey:'SOURCING_DAYINGZHUANGTAI',
       type:'select',
-      List:[{name:'全部',code:''},{name:'是',code:'1'},{name:'否',code:'0'}],
+      List:[{name:'全部',code:''},{name:'已打印',code:'1'},{name:'未打印',code:'0'}],
       moduleKey:'printStatus'
     },
     {
@@ -135,6 +135,7 @@ export const form = {
 export const tableTitle = [
   { props: 'nominateId', name: '申请单号', key: 'SHENGQINGDANHAO', tooltip: true },
   { props: 'nominateName', name: '申请单名', key: 'SHENGQINGDANMING', tooltip: true },
+  { props:  'cartypeProjectZh',name:'PROJECT',key:'GANGCAIPROJECT',tooltip:true},
   { props: 'nominateProcessTypeDesc', name: '类型', key: 'LEIX', tooltip: true  },
   { props: 'applicationStatusDesc', name: '状态', key: 'ZHUANGTAI', tooltip: true },
   { props: 'partProjectTypeDesc', name: '项目类型', key: 'XIANGMULEIX', tooltip: true },

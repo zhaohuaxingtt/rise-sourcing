@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-23 16:36:33
- * @LastEditTime: 2021-08-10 22:52:11
+ * @LastEditTime: 2021-08-18 11:03:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\components\main.vue
@@ -49,8 +49,7 @@
 </template>
 
 <script>
-import {iButton, icon} from 'rise'
-import {iMessage} from '@/components';
+import {iButton, icon, iMessage} from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import {tableTitle} from './data';
 import {getCustomPartDataList, fetchSaveCustomPart} from '@/api/partsrfq/vpAnalysis/vpCustomPart'

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-16 10:39:46
+ * @LastEditTime: 2021-08-18 10:59:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\supplierList.vue
@@ -66,12 +66,11 @@
 
 <script>
 import {iNavMvp } from 'rise'
-import { tabRouterList, categoryManagementAssistantList } from './commonHeardNav/navData'
+import { tabRouterList, categoryManagementAssistantList, iMessage } from './commonHeardNav/navData'
 import logButton from '@/components/logButton'
 import {iButton, iPage, iCard, iInput, iSelect, iTableCustom, iTabs} from 'rise'
 import {setCloum} from './components/data'
 import supplierDetail from './components/supplierDetail'
-import { iMessage } from '@/components';
 import { getFocusSupplierList } from '@/api/partsrfq/spi/index.js'
 import publicHeaderMenu from './commonHeardNav/headerNav'
 export default {

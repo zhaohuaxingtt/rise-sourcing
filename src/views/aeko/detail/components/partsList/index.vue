@@ -202,7 +202,7 @@ export default {
             this.SearchList = linieSearchList
             this.tableTitle = linieTableTitle
             this.searchParams = cloneDeep(linieQueryForm)
-            this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameZh
+            this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
             this.searchParams.buyerName = this.userInfo.nameZh
         } else if (this.isCommodityCoordinator) {
             this.SearchList = SearchList
@@ -269,7 +269,7 @@ export default {
 
             if (this.isLinie) {
                 this.searchParams = cloneDeep(linieQueryForm)
-                this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameZh
+                this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
                 this.searchParams.buyerName = this.userInfo.nameZh
             } else {
                 this.searchParams = {
@@ -307,21 +307,17 @@ export default {
                 }
             }
 
-            // 多选为全部时单独处理
-            if(carTypeCodeList.length == 1 && carTypeCodeList[0] === ''){
-                carTypeCodeList=[];
-            }
             
             const data = {
                 requirementAekoId, 
                 current:page.currPage,
                 size:page.pageSize,
-                carTypeCodeList,
                 brand,
                 partNum,
                 partNameZh,
                 buyerName,
-                linieDeptNumList:(linieDeptNumList.length == 1 && searchParams.linieDeptNumList[0] === '') ? [] : linieDeptNumList,
+                carTypeCodeList:(carTypeCodeList.length == 1 && carTypeCodeList[0] === '') ? [] : carTypeCodeList,
+                linieDeptNumList:(linieDeptNumList.length == 1 && linieDeptNumList[0] === '') ? [] : linieDeptNumList,
             }
             getPartPage(data).then((res)=>{
                 this.loading = false;
@@ -370,7 +366,7 @@ export default {
                 }
             })
 
-            // LINIE  只能看见本科是的LINIE
+            // LINIE  只能看见本科室的LINIE
             const {deptDTO={}} = this.userInfo;
             const deptId = deptDTO.id;
             searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
@@ -462,13 +458,11 @@ export default {
 
             this.assignType = type
 
-            console.log(selectItems,'selectItemsselectItemsselectItems');
-
             // 判断是否是单一分派
             if(row){
                 this.singleAssign = [row];
                 this.assignVisible = true;
-            }else{
+            }else{ // 批量分派
                 if(!selectItems.length){
                     return iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
                 }else{
@@ -601,11 +595,7 @@ export default {
                 return buyerName
             }else{
                 // 若没有分派采购员 已分派科室与实际分派科室不一致时不展示linie
-            if(linieDeptNum && (linieDeptNum != refferenceSmtNum)){
-                return ''
-            }else{
-                return refferenceByuerName
-            }
+                return (linieDeptNum && (linieDeptNum != refferenceSmtNum)) ? '' : refferenceByuerName;
             }
             
             

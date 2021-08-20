@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-16 14:51:40
- * @LastEditTime: 2021-08-16 20:01:58
+ * @LastEditTime: 2021-08-19 15:12:09
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\sop\index.vue
@@ -79,6 +79,13 @@ export default ({
       this.getOverviewList()
       this.carTypeProList()
   },
+  watch: {
+			"$store.state.rfq.categoryCode"(){
+				this.categoryCode=this.$store.state.rfq.categoryCode
+       this.getOverviewList()
+        this.carTypeProList()
+			}
+		},
    methods: {
     // 重置
     reset(){

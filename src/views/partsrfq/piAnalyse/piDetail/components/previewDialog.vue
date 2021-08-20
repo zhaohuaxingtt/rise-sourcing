@@ -27,8 +27,7 @@
         <thePriceIndexChart
             class="lineBox"
             :isPreview="true"
-            :currentTabData="currentTabData"
-            :currentTab="currentTab"
+            :previewDialog="value"
         />
         <!--      零件成本构成-->
         <thePartsCostChart class="pieBox" :dataInfo="dataInfo"/>
@@ -103,6 +102,7 @@ export default {
 
 <style scoped lang="scss">
 #content {
+  padding: 20px;
   .title {
     font-size: 22px;
     font-weight: bold;

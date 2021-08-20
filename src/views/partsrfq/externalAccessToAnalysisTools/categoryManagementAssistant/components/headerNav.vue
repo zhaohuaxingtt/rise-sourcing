@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-12 09:58:51
- * @LastEditTime: 2021-08-18 10:33:23
+ * @LastEditTime: 2021-08-19 13:48:05
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\headerNav.vue
@@ -62,7 +62,6 @@ export default {
     };
   },
   mounted () {
-    console.log(this.$store.state.rfq.categoryCode)
     if (!this.$store.state.rfq.categoryCode) {
       this.openCatecory()
     }
