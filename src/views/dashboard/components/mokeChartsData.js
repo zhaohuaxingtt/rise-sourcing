@@ -69,7 +69,7 @@ export function generateOptions(params) {
                 left: '40',
                 right: '40',
                 bottom: '0',
-                top: '10%',
+                top: '15%',
                 containLabel: true
             },
             tooltip: {
@@ -147,7 +147,7 @@ export function generateOptions(params) {
                     splitLine: {
                         show: false
                     },
-                    offset: 10,
+                    offset: 30,
                     data: xAxisTopData
                 },
             ],
