@@ -1,16 +1,16 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-04 13:54:47
- * @LastEditTime: 2021-08-18 15:38:29
+ * @LastEditTime: 2021-08-20 13:57:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\onlyPartsChange.vue
 -->
 <template>
   <iCard>
-    <iTalbeList :tableLoading='loading' @handleSelectionChange='handleSelectionChange' :tableTitle='tableTitleOnlyPartsChange' :tableData='tableData'>
+    <iTalbeList ref='tabel' :tableLoading='loading' @handleSelectionChange='handleSelectionChange' :tableTitle='tableTitleOnlyPartsChange' :tableData='tableData'>
       <template #oldFsnrGsnrNum='{row}'>
-        <iInput class="removeInputDisabelColor" disabled search :value="(typeof row.oldFsnrGsnrNum == 'string' || row.oldFsnrGsnrNum == null)?row.oldFsnrGsnrNum:row.oldFsnrGsnrNum.fsnrGsnrNum"> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{row.selectOldParts.show=true;detailData=row}"></i></iInput>	
+        <iInput class="removeInputDisabelColor" disabled search :value="(typeof row.oldFsnrGsnrNum == 'string' || row.oldFsnrGsnrNum == null)?row.oldFsnrGsnrNum:row.oldFsnrGsnrNum.fsnrGsnrNum"> <i class="el-icon-search el-input__icon cursor" slot="suffix" @click="openDiologOldParts(row)"></i></iInput>	
         <!-----------------------选择原fs号--------------------------------->
         <selectOldpartsNumber :diolog='row.selectOldParts' v-model="row.oldFsnrGsnrNum"></selectOldpartsNumber>
       </template>
@@ -18,7 +18,7 @@
   </iCard> 
 </template>
 <script>
-import {iCard,iInput} from 'rise'
+import {iCard,iInput,iMessage} from 'rise'
 import iTalbeList from '@/views/partsign/home/components/tableList'
 import {tableTitleOnlyPartsChange} from './data'
 import {getDataListBatchList} from '@/api/partsprocure/editordetail'
@@ -38,6 +38,11 @@ export default{
       return {detailData:this.getDetailData}
   },
   methods:{
+    openDiologOldParts(row){
+				if(row.procureFactory == '') return iMessage.warn(this.language('NINDANGQIANWEIXUANZE','您当前还未选择采购工厂，请选择后重试！'))
+				row.selectOldParts.show = true
+        this.detailData = row
+		},
     getDetailData(){
       return this.detailData
     },
@@ -54,6 +59,9 @@ export default{
       const dataIds = Array.isArray(this.$route.query.ids)?this.$route.query.ids:[this.$route.query.ids];
       getDataListBatchList({ids:dataIds}).then(res=>{  
         this.tableData = res.data.map(r=>{return {...r,...{selectOldParts:{show:false}}}})
+        this.$nextTick(()=>{
+					this.$refs.tabel.defaultSelectAll()
+				})
         this.loading = false
       }).catch(err=>{
         this.loading = false

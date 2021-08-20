@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-19 11:16:28
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-20 13:16:41
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -127,7 +127,7 @@
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->
 						<iFormItem v-if='partProjTypes.JINLINGJIANHAOGENGGAI == detailData.partProjectType' :label="language('YUANLINGJIANHAO', '原FS/GS号') + ':'">
-							<iInput class="removeInputDisabelColor" disabled search v-model="detailData.oldFsnrGsnrNum"> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{selectOldParts.show=true}"></i></iInput>	
+							<iInput class="removeInputDisabelColor" disabled search v-model="detailData.oldFsnrGsnrNum"> <i class="el-icon-search el-input__icon cursor" slot="suffix" @click="openDiologOldParts"></i></iInput>	
 						</iFormItem>
 					</div>
 					<div class="col">
@@ -453,6 +453,10 @@
 			this.getDicts()
 		},
 		methods: {
+			openDiologOldParts(){
+				if(this.detailData.procureFactory == '') return  iMessage.warn(this.language('NINDANGQIANWEIXUANZE','您当前还未选择采购工厂，请选择后重试！'))
+				this.selectOldParts.show = true
+			},
 			filterProjectList(a,b){
 				return filterProjectList(a,b)
 			},
