@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-18 17:39:43
+ * @LastEditTime: 2021-08-20 10:27:59
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -310,6 +310,7 @@ export default {
       span {
         color: #000000;
         font-weight: 600;
+        font-size: 20px;
         display: inline-block;
         vertical-align: middle;
       }
