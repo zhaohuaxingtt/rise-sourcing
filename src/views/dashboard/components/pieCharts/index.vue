@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 16:16:30
- * @LastEditTime: 2021-08-17 16:40:24
+ * @LastEditTime: 2021-08-20 11:03:32
  * @LastEditors: Please set LastEditors
  * @Description: 材料组定点时率及平均定点周期
  * @FilePath: /front-web/src/views/designate/home/components/headerNav/components/nomiCharts.vue
@@ -10,7 +10,7 @@
   <iCard class="picharts">
     <div class="margin-bottom20 clearFloat">
       <div class="picharts-title">
-        <span class="font18 font-weight">
+        <span class="font20 font-weight">
           {{ language('LIUZHUANZHUANGTAIGENZHONG','流转状态跟踪') }}
         </span>
         <span class="updateTime">
@@ -93,6 +93,9 @@ export default {
 .picharts {
   width: 100%;
   min-height: 500px;
+  ::v-deep.cardBody {
+    padding: 20px 15px;
+  }
 }
 #charts1 {
   width: 100%;
@@ -102,7 +105,9 @@ export default {
   display: flex;
   justify-content: space-between;
   .updateTime {
-    color: #bdbdbd;
+    color: #5f6879;
+    font-size: 12px;
+    opacity: 0.67;
   }
 }
 .picharts-content {
@@ -123,12 +128,12 @@ export default {
         height: 100%;
         &:first-child {
           .legend-value strong {
-            border-bottom: 2px solid #6192f0;
+            border-bottom: 4px solid #6192f0;
           }
         }
         &:last-child {
           .legend-value strong {
-            border-bottom: 2px solid #fab738;
+            border-bottom: 4px solid #fab738;
           }
         }
         p {
@@ -141,8 +146,8 @@ export default {
             strong {
               display: inline-block;
               width: 60px;
-              line-height: 30px;
-              font-size: 18px;
+              line-height: 45px;
+              font-size: 32px;
               border-bottom: 2px solid #6192f0;
               margin: 10px 0;
               font-weight: bold;
