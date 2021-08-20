@@ -5,9 +5,9 @@
   "scripts": {
     "start:win:dev": "vue-cli-service serve --mode dev",
     "start:win:sit": "vue-cli-service serve --mode sit",
-    "build:win:dev": "npm install rise@1.2.4 && vue-cli-service build --mode dev",
-    "build:win:sit": "npm install rise@1.2.4 && vue-cli-service build --mode sit",
-    "build:win:vmsit": "npm install rise@1.2.4 && NODE_ENV=production && vue-cli-service build --mode dev",
+    "build:win:dev": "npm install rise@latest && vue-cli-service build --mode dev",
+    "build:win:sit": "npm install rise@latest && vue-cli-service build --mode sit",
+    "build:win:vmsit": "npm install rise@latest && NODE_ENV=production && vue-cli-service build --mode dev",
     "build:win:uat": "vue-cli-service build --mode uat",
     "build:win:prod": "vue-cli-service build --mode prod",
     "lint": "vue-cli-service lint",

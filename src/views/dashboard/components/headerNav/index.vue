@@ -52,7 +52,9 @@ export default {
   }
 }
 .freshDate {
-  color: #8e94a0;
+  color: #5f6879;
+  font-size: 12px;
+  opacity: 0.67;
 }
 .pull-right{
   float: right;

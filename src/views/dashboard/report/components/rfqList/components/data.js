@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-08-15 11:43:44
+ * @LastEditTime: 2021-08-20 13:56:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -105,7 +105,7 @@ export const iconList_car = { //汽车图标
     icon:'iconbaojiafenxi-zhengchejindu-hong' //红色
   },
   'a1':{
-    icon:'icondingdianguanlijiedian-jinhangzhong' //黄色浅黄
+    icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
   },
   'a4':{
     icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
