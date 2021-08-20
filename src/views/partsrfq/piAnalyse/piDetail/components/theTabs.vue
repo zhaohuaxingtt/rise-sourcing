@@ -59,6 +59,12 @@ export default {
   },
   methods: {
     handleItemClick(index, flag) {
+      if (
+          this.$parent.$parent.$refs.theAverageTable.tableStatus === 'edit' ||
+          this.$parent.$parent.$refs.theCurrentTable.tableStatus === 'edit'
+      ) {
+        return false;
+      }
       this.current = index;
       this.$emit('handleItemClick', flag);
     },

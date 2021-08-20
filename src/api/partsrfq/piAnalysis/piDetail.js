@@ -99,7 +99,7 @@ export function saveAnalysisScheme(params) {
 //判断方案名称是否已存在
 export function checkName(params) {
   return request({
-    url: '/vpAnalysisScheme/checkName',
+    url: '/piAnalysisScheme/checkAnalysisSchemeNameIsExists',
     method: 'POST',
     data: params
   })
