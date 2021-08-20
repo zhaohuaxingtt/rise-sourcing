@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-08-04 20:22:33
+ * @LastEditTime: 2021-08-19 16:38:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -87,6 +87,7 @@ import {
   chargeRetrieve,
   renameComponentGroup
 } from "@/api/partsrfq/bob";
+
 import { filterEmptyChildren } from '@/utils'
 import { iMessage } from 'rise';
 export default {
@@ -128,13 +129,15 @@ export default {
           this.chargeRetrieve({
             isDefault: true,
             viewType: 'rawGrouped',
-            schemaId: this.SchemeId
+            schemaId: this.SchemeId,
+            groupId: this.groupId
           })
         } else {
           this.chargeRetrieve({
             isDefault: true,
             viewType: 'maGrouped',
-            schemaId: this.SchemeId
+            schemaId: this.SchemeId,
+            groupId: this.groupId
           })
         }
       },
@@ -161,11 +164,13 @@ export default {
     } else {
       this.SchemeId = this.$attrs.analysisSchemeId;
     }
+    this.groupId = this.$route.query.groupId
     this.$nextTick(() => {
       this.chargeRetrieve({
         isDefault: true,
         viewType: 'rawGrouped',
-        schemaId: this.SchemeId
+        schemaId: this.SchemeId,
+        groupId: this.groupId
       });
     });
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-19 14:52:35
+ * @LastEditTime: 2021-08-20 10:56:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -36,11 +36,11 @@
       <el-divider style="marginTop: 20px;"></el-divider>
       <div class="mainTableBox">
         <tableList
+          :rowKey="null"
           :tableData="mainTableData"
           :tableTitle="addTableTitle"
           :tableLoading="loading"
           :index="true"
-          :height="300"
           @handleSelectionChange="handleSelectMainTable">
         </tableList>
       </div>
@@ -83,6 +83,7 @@ export default {
   },
   created() {
     // this.initTestData()
+    this.$set(this.searchForm, 'rfq', this.$store.state.rfq.rfqId || null)
     this.getTableData()
   },
   methods: {
@@ -101,7 +102,7 @@ export default {
       this.loading = true
       const params = {
         userId: 52,
-        partsId: this.searchForm.partsId || null,
+        partsId: this.searchForm.partNo || null,
         rfqId: this.searchForm.rfqId || null
       }
       getAllAddPart(params).then(res => {
@@ -127,6 +128,7 @@ export default {
         const index = this.mainTableData.findIndex(mainItem => mainItem == item)
         this.mainTableData.splice(index, index + 1)
       })
+      this.selectMainData = []
       this.$nextTick(() => {
         this.renderTargetTable()
       })
@@ -163,6 +165,7 @@ export default {
       for(const key in this.searchForm) {
         this.searchForm[key] = null
       }
+      this.$set(this.searchForm, 'rfq', this.$store.state.rfq.rfqId || null)
       this.getTableData()
     }
   }
@@ -209,6 +212,9 @@ export default {
     ::v-deep .el-table .el-table__body-wrapper {
       min-height: auto;
     }
+  }
+  .mainTableBox {
+    padding-bottom: 80px;
   }
   .flooterBox {
     position: absolute;

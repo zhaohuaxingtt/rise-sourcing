@@ -346,7 +346,7 @@ export default {
       formUpdata: {}
     };
   },
-  created () {
+  async created () {
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
     this.groupId = this.$route.query.groupId
@@ -355,7 +355,7 @@ export default {
         this.inside = true
         this.rfq = this.$store.state.rfq.rfqId
         this.analysisSchemeId = this.$route.query.chemeId
-        this.getChartData()
+        await this.getChartData()
       } else if (this.entryStatus === 0) {
         this.findPart()
       }
@@ -372,7 +372,7 @@ export default {
         }
       }
       this.analysisSchemeId = this.$route.query.chemeId
-      this.getChartData()
+      await this.getChartData()
     }
   },
   watch: {
@@ -494,7 +494,8 @@ export default {
       this.$refs.bobAnalysis.chargeRetrieve({
         isDefault: true,
         viewType: 'all',
-        schemaId: this.analysisSchemeId
+        schemaId: this.analysisSchemeId,
+        groupId: this.groupId
       })
     },
     goToBob () {
@@ -566,7 +567,8 @@ export default {
             this.$refs.bobAnalysis.chargeRetrieve({
               viewType: 'all',
               isDefault: true,
-              schemaId: this.analysisSchemeId
+              schemaId: this.analysisSchemeId,
+              groupId: this.groupId
             })
             this.closeDialog()
           } else {
@@ -599,7 +601,8 @@ export default {
             this.$refs.bobAnalysis.chargeRetrieve({
               viewType: 'all',
               isDefault: true,
-              schemaId: this.analysisSchemeId
+              schemaId: this.analysisSchemeId,
+              groupId: this.groupId
             })
             // this.querySupplierTurnPartList()
             this.getChartData()
@@ -638,7 +641,8 @@ export default {
           supplier: this.form.supplier.join(","),
           turn: this.form.turn.join(","),
           isDefault: false,
-          viewType: 'all'
+          viewType: 'all',
+          groupId: this.groupId
         }
       } else {
         params = {
@@ -652,7 +656,8 @@ export default {
           analysisDimension: this.chartType,
           combination: this.form.combination.join(","),
           isDefault: false,
-          viewType: 'all'
+          viewType: 'all',
+          groupId: this.groupId
         }
       }
       getBobLevelOne(params).then((res) => {
@@ -745,7 +750,12 @@ export default {
             // remark: this.$refs.bobAnalysis.remark
           };
         }
-
+        this.$refs.bobAnalysis.chargeRetrieve({
+          viewType: 'all',
+          isDefault: true,
+          schemaId: this.analysisSchemeId,
+          groupId: this.groupId
+        })
       });
     },
     delOut () {
@@ -757,7 +767,8 @@ export default {
           this.$refs.bobAnalysis.chargeRetrieve({
             viewType: 'all',
             isDefault: true,
-            schemaId: this.analysisSchemeId
+            schemaId: this.analysisSchemeId,
+            groupId: this.groupId
           })
           this.getChartData();
         } else {

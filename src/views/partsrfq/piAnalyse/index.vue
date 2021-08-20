@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-08-19 14:42:38
+ * @LastEditTime: 2021-08-20 14:15:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -65,7 +65,7 @@
         ref="multipleTable"
         :data="tableListData"
         style="width: 100%; margin-bottom: 20px"
-        row-key="id"
+        row-key="number"
         :max-height="450"
         :row-class-name="rowStyle"
         :tree-props="{ children: 'children' }"
@@ -147,7 +147,7 @@
         </el-table-column>
         <el-table-column
           :label="$t('RFQ')"
-          prop="rfqName"
+          prop="rfqId"
           width="100"
           align="center"
           header-align="center"
@@ -338,8 +338,8 @@ export default {
       const rows = [];
       this.tableListData.forEach((r) => {
         rows.push(r.number);
-        if (r.reportList && r.reportList !== null) {
-          r.reportList.forEach((c) => {
+        if (r.piReportVOList && r.piReportVOList !== null) {
+          r.piReportVOList.forEach((c) => {
             rows.push(c.number);
           });
         }
@@ -383,6 +383,7 @@ export default {
             this.page.totalCount = res.total;
             this.tableListData = res.data;
             this.handleTableNumber(this.tableListData, 1, null);
+            console.log('tableListData', this.tableListData);
             this.updateTableData();
             resolve(res);
           }
@@ -414,9 +415,9 @@ export default {
       data.forEach((item) => {
         const number = prefix ? prefix + "." + suffix : suffix;
         item["number"] = number;
-        if (item.reportList && item.reportList.length > 0) {
-          item["children"] = item.reportList;
-          this.handleTableNumber(item.reportList, 1, number);
+        if (item.piReportVOList && item.piReportVOList.length > 0) {
+          item["children"] = item.piReportVOList;
+          this.handleTableNumber(item.piReportVOList, 1, number);
         }
         suffix++;
       });
@@ -514,11 +515,11 @@ export default {
     },
     //点击方案名称，跳转总单价页面
     clickScheme (row) {
-      const schemeUrl = '/sourcing/partsrfq/vpAnalyseDetail'
+      const schemeUrl = '/sourcing/partsrfq/piAnalyseDetail'
       this.$router.push({
         path: schemeUrl,
         query: {
-          type: 'edit',
+          // type: 'edit',
           schemeId: row.id,
           round: this.round
         }

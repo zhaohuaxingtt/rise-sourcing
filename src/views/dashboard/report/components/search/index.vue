@@ -93,7 +93,7 @@
         </iSelect>
       </el-form-item>
       <!-- 采购员 -->
-      <el-form-item :label="language('LK_CAIGOUYUAN','采购员')">
+      <el-form-item :label="language('CAIGOUYUAN','采购员')">
         <iSelect
           class="select-control"
           v-model="form.buyer"
@@ -244,6 +244,8 @@ export default {
       }
     },
     filterOption(data, optionKey) {
+      // 去除空格
+      data = String(data).trim()
       const startWords = String(data).spell().toLocaleUpperCase().split('')[0]
       const options = _.cloneDeep(this.optionsOrigin[optionKey]) || []
       const filtedOption = options.filter(o => String(o.name).indexOf(data) > -1 || o.cnChar === startWords)

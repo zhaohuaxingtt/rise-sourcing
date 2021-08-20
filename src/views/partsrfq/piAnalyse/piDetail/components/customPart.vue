@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-19 14:41:01
+ * @LastEditTime: 2021-08-20 11:16:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -30,6 +30,7 @@
           :tableTitle="customTableTitle"
           :tableLoading="loading"
           :index="true"
+          :height="500"
           @rowSelect="handleSelectTarget">
           <template #isShow="scope">
             <div @click="changeStatus(scope.row)" class="statusBox">
@@ -54,6 +55,7 @@
       <el-divider style="marginTop: 20px;"></el-divider>
       <div class="mainTableBox">
         <tableList
+          :rowKey="null"
           :tableData="mainTableData"
           :tableTitle="customTableTitle"
           :tableLoading="loading"
@@ -150,6 +152,11 @@ export default {
           this.selectTargetData = res.data
           this.loading = false
           this.getAllPartData()
+          this.$nextTick(_ => {
+            this.selectTargetData.map(item => {
+              this.$refs.targetTable.$refs.dataTable.toggleRowSelection(item, true)
+            })
+          })
         } else iMessage.error(res.desZh)
       })
     },
@@ -175,10 +182,6 @@ export default {
       })
       this.targetTableData = this.targetTableData.concat(this.selectMainData)
       this.selectTargetData = this.selectTargetData.concat(this.selectMainData)
-      // this.selectMainData.forEach(item => {
-      //   const index = this.mainTableData.findIndex(mainItem => mainItem == item)
-      //   this.mainTableData.splice(index, index + 1)
-      // })
       this.renderTargetTable()
     },
     // 点击保存
@@ -189,7 +192,7 @@ export default {
       }
       editCustomParts(this.selectTargetData).then(res => {
         if(res && res.code == 200) {
-          this.$emit()
+          this.$emit('handleCloseCustom', res.data)
         } else iMessage.error(res.desZh)
       })
     },
@@ -333,6 +336,10 @@ export default {
         cursor: pointer;
       }
     }
+  }
+  
+  .mainTableBox {
+    padding-bottom: 80px;
   }
   .flooterBox {
     position: absolute;

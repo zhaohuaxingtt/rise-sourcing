@@ -1,14 +1,14 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 16:41:49
- * @LastEditTime: 2021-08-18 11:01:58
+ * @LastEditTime: 2021-08-20 14:47:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\components\detail.vue
 -->
 <template>
   <div>
-    <iDialog :title="language('YUANCAILIAOXIANGQING', '原材料价格总览-原材料名称')" :visible.sync="value" width="80%">
+    <iDialog :title="language('YUANCAILIAOXIANGQING-', '原材料价格总览-') + materiaName" :visible.sync="value" width="80%">
       <div class="optionBox">
         <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
           <el-form-item style="marginRight:68px" :label="language('LINGJIANHAO', '零件号')">
@@ -140,6 +140,14 @@ export default {
     handleSubmitSearch() {
       this.page.currPage = 1
       this.page.pageSize = 10
+      let flag = false
+      for(const key in this.searchForm) {
+        if(this.searchForm[key]) flag = true
+      }
+      if(!flag) {
+        iMessage.error(this.language('SEARCHCHECKOUT', '请至少输入一项搜索框进行搜索'))
+        return
+      }
       this.getTableData().then(res => {
         if (!res || res.length == 0) {
           iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));

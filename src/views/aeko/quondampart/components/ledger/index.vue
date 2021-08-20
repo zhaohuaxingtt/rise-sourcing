@@ -37,6 +37,7 @@
         </el-form-item>
         <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission="AEKO_QUONDAMPARTLEDGER_SELECT_FACTORYCODE">
           <iSelect
+            v-if="!factoryDisabled"
             v-model="form.factoryCode"
             :placeholder="language('QINGXUANZECAIGOUGONGCHANG', '请选择采购工厂')"
           >
@@ -51,6 +52,7 @@
               :key="item.key"
             ></el-option>
           </iSelect>
+          <iInput v-else readonly :value="factoryName"></iInput>
         </el-form-item>
       </el-form>
     </iSearch>
@@ -102,7 +104,7 @@ import presentAllInPriceDialog from "../presentAllInPriceDialog"
 import { ledgerQueryForm, ledgerTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
-import { getAekoOriginPartInfo, saveAekoOriginPart, judgeRight } from "@/api/aeko/detail"
+import { getAekoOriginPartInfo, saveAekoOriginPart, judgeRight, getAekoOriginFactory } from "@/api/aeko/detail"
 import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, isEqual } from "lodash"
 
@@ -128,6 +130,8 @@ export default {
       multipleSelection: [],
       visible: false,
       currentRow: {},
+      factoryDisabled: false,
+      factoryName: ""
     }
   },
   watch: {
@@ -142,18 +146,41 @@ export default {
       deep: true
     }
   },
-  created() {
+  async created() {
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
     this.oldPartNumPreset = this.$route.query.oldPartNumPreset
+    await this.getAekoOriginFactory()
+
     if (this.oldPartNumPreset) {
       this.judgeRight()
     } else {
       this.procureFactorySelectVo()
-      this.getAekoOriginPartInfo()
+      // this.getAekoOriginPartInfo()
     }
   },
   methods: {
+    getAekoOriginFactory() {
+      return getAekoOriginFactory({
+        objectAekoPartId: this.objectAekoPartId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          if (res.data.factoryCode) {
+            this.factoryDisabled = true
+            this.factoryName = res.data.factoryName
+          } else {
+            this.factoryDisabled = false
+            this.factoryName = ""
+          }
+
+          this.form.factoryCode = ""
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
     judgeRight() {
       judgeRight([
         {

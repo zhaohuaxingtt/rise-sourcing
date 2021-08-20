@@ -241,15 +241,15 @@ export default {
             })
             // 供应商名字
             this.supplierNameArray=[]
-            // this.supplierObj.forEach(y=>{
-            //     this.supplierNameArray.push({
-            //             name:y.nameZh,
-            //             icon:'circle',
-            //             textStyle: {
-            //                 color: '#1763F7'
-            //             }
-            //         })
-            // })
+            this.supplierObj.forEach(y=>{
+                this.supplierNameArray.push({
+                        name:y.nameZh,
+                        icon:'circle',
+                        textStyle: {
+                            color: '#1763F7'
+                        }
+                    })
+            })
             
         },
         getSupplierName(x){

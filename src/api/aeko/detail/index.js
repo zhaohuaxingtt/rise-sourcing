@@ -141,3 +141,11 @@ export function getAekoDetail(params) {
     params,
   })
 }
+
+// 获取aeko采购工厂下拉框
+export function getAekoOriginFactory(params) {
+  return requst({
+    url: `/aeko/aeko-origin-factory/${ params.objectAekoPartId }`,
+    method: 'GET'
+  })
+}

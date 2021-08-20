@@ -88,7 +88,7 @@ export function searchLinie(params) {
 // 导入附件
 export function uploadFiles(data) {
   return requst({
-    url: '/file-history/upload-files',
+    url: '/file-histories/upload-files',
     method: 'POST',
     data,
   })
@@ -144,7 +144,7 @@ export function getFilesList(params) {
     pageSize=10,
   } = params;
   return requst({
-    url: `/file-history/file-history/${hostId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
+    url: `/file-histories/page/${hostId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
     method: 'GET',
     params,
   })
@@ -162,8 +162,8 @@ export function downloadAeko(data) {
 // 删除附件
 export function deleteFiles(data) {
   return requst({
-      url: '/file-history/delete',
-      method: 'POST',
+      url: '/file-histories/delete-files',
+      method: 'DELETE',
       data,
   })
 }

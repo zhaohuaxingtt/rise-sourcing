@@ -15,8 +15,18 @@ const state = {
   categoryCode: window.sessionStorage.getItem('categoryCode') || '',//材料组code
   categoryName: window.sessionStorage.getItem('categoryName') || '',//材料组name
   // categoryId:window.sessionStorage.getItem('categoryId') || '',//材料组name
-  
-  
+  piIndexChartParams: {
+    dimensionHandle: [],
+    particleSize: '3',
+    beginTime: '',
+    endTime: ''
+  },
+  piIndexChartData: {
+    seriesArray: [],
+    xLabelData: [],
+    resChartData: []
+  }
+
 }
 const mutations = {
   SET_PENDING_PARTS_LIST(state, data) {
@@ -55,6 +65,13 @@ const mutations = {
   //   state.categoryId = data
   //   sessionStorage.setItem('categoryId', data)
   // },
+  // PI数据处理
+  SET_PI_INDEX_CHART_PARAMS(state, data) {
+    state.piIndexChartParams = data
+  },
+  SET_PI_CHART_DATA(state, data) {
+    state.piIndexChartData = data
+  }
 }
 
 const actions = {
@@ -88,6 +105,13 @@ const actions = {
   // setCategoryId({ commit }, data) {
   //   commit('SET_CATEGORY_ID', data)
   // },
+  // PI数据处理
+  setPiIndexChartParams({ commit }, data) {
+    commit('SET_PI_INDEX_CHART_PARAMS', data)
+  },
+  setPiIndexChartData({ commit }, data) {
+    commit('SET_PI_CHART_DATA', data)
+  },
 }
 
 export default {
