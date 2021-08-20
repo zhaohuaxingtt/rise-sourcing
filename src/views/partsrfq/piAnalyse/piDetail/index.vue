@@ -268,9 +268,9 @@ export default {
       await this.getAverageData({extraParams});
     },
     // 获取信息
-    async getDataInfo() {
+    async getDataInfo({propsArrayLoading = ['pageLoading', 'tableLoading', 'pieLoading']} = {}) {
       try {
-        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: true});
+        this.setLoading({propsArray: propsArrayLoading, boolean: true});
         const req = {
           ...this.currentTabData,
         };
@@ -284,9 +284,9 @@ export default {
         });
         this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
         await this.$refs.thePriceIndexChart.buildChart();
-        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
+        this.setLoading({propsArray: propsArrayLoading, boolean: false});
       } catch {
-        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
+        this.setLoading({propsArray: propsArrayLoading, boolean: false});
       }
     },
     // 获取平均数据
@@ -429,7 +429,7 @@ export default {
         this.resultMessage(res);
         if (res.result) {
           if (tab === CURRENTTIME) {
-            await this.getDataInfo();
+            await this.getDataInfo({propsArrayLoading: ['tableLoading', 'pieLoading']});
           } else if (tab === AVERAGE) {
             await this.getAverageData();
           }
