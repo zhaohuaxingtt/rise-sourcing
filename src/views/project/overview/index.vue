@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 14:13:11
+ * @LastEditTime: 2021-08-20 15:45:31
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
@@ -190,7 +190,7 @@ export default {
      */    
     getNodeList(node) {
       if(node) {
-        const nodeInYearList = this.progressList.reduce((accu, curr, index) => {
+        const sortNodeInYearList = this.progressList.reduce((accu, curr, index) => {
           if (curr.label !== 'PD' && node[curr.date] && node[curr.date] !== '') {
             const week = Number(node[curr.value]?.split('KW')[1])
             return [...accu, {
@@ -199,12 +199,18 @@ export default {
               week: week,
               season: week < 14 ? 1 : week < 27 ? 2 : week < 39 ? 3 : 4,  
               fullDate: node[curr.date],
-              status: this.getStatus(node[curr.date], accu[accu.length - 1] ? accu[accu.length - 1].fullDate : null)
+              left: (moment(node[curr.date]).month() % 3) * 13.3
             }]
           } else {
             return accu
           }
-        },[])
+        },[]).sort((a,b)=>a.year - b.year,(a,b)=>a.week - b.week)
+        const nodeInYearList = sortNodeInYearList.map((item, index) => {
+          return {
+            ...item,
+            status: this.getStatus(item.fullDate, sortNodeInYearList[index - 1]?.fullDate)
+          }
+        })
         return nodeInYearList
       }
       return []
@@ -227,7 +233,6 @@ export default {
               nodeList: nodeList,
             }
           })
-          console.log(res.data, list)
           this.tableData = cloneDeep(list)
           this.tableDataTemp = cloneDeep(list)
           this.carProjectOptions = (res.data || []).map(item => {
