@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-08-19 14:42:38
+ * @LastEditTime: 2021-08-19 18:27:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -514,11 +514,11 @@ export default {
     },
     //点击方案名称，跳转总单价页面
     clickScheme (row) {
-      const schemeUrl = '/sourcing/partsrfq/vpAnalyseDetail'
+      const schemeUrl = '/sourcing/partsrfq/piAnalyseDetail'
       this.$router.push({
         path: schemeUrl,
         query: {
-          type: 'edit',
+          // type: 'edit',
           schemeId: row.id,
           round: this.round
         }

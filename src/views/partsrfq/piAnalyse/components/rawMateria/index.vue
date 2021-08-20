@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-08-18 11:01:51
+ * @LastEditTime: 2021-08-19 18:03:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -46,6 +46,7 @@
         :index="true"
         :openPageGetRowData="true"
         openPageProps="associatedPart"
+        :height="500"
         @openPage="clickPreview"
       >
         <template #priceChange="scope">

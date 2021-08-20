@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-19 14:52:35
+ * @LastEditTime: 2021-08-19 18:51:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -40,7 +40,6 @@
           :tableTitle="addTableTitle"
           :tableLoading="loading"
           :index="true"
-          :height="300"
           @handleSelectionChange="handleSelectMainTable">
         </tableList>
       </div>
@@ -83,6 +82,7 @@ export default {
   },
   created() {
     // this.initTestData()
+    this.$set(this.searchForm, 'rfq', this.$store.state.rfq.rfqId || null)
     this.getTableData()
   },
   methods: {
@@ -101,7 +101,7 @@ export default {
       this.loading = true
       const params = {
         userId: 52,
-        partsId: this.searchForm.partsId || null,
+        partsId: this.searchForm.partNo || null,
         rfqId: this.searchForm.rfqId || null
       }
       getAllAddPart(params).then(res => {
@@ -121,6 +121,7 @@ export default {
     },
     // 点击添加按钮
     clickAdd() {
+      console.log('selectMainData', this.selectMainData);
       this.targetTableData = this.targetTableData.concat(this.selectMainData)
       this.selectTargetData = this.selectTargetData.concat(this.selectMainData)
       this.selectMainData.forEach(item => {
@@ -163,6 +164,7 @@ export default {
       for(const key in this.searchForm) {
         this.searchForm[key] = null
       }
+      this.$set(this.searchForm, 'rfq', this.$store.state.rfq.rfqId || null)
       this.getTableData()
     }
   }
@@ -209,6 +211,9 @@ export default {
     ::v-deep .el-table .el-table__body-wrapper {
       min-height: auto;
     }
+  }
+  .mainTableBox {
+    padding-bottom: 80px;
   }
   .flooterBox {
     position: absolute;
