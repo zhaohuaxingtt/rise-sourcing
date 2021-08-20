@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-20 10:17:15
+ * @LastEditTime: 2021-08-20 10:56:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -127,7 +127,6 @@ export default {
       this.selectMainData.forEach(item => {
         const index = this.mainTableData.findIndex(mainItem => mainItem == item)
         this.mainTableData.splice(index, index + 1)
-        this.selectMainData.splice(index, index + 1)
       })
       this.selectMainData = []
       this.$nextTick(() => {

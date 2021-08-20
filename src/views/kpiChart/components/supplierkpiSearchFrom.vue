@@ -427,12 +427,11 @@ export default {
             tempThird.parent = this.areaOptions[0].children[secondIndex]
             this.areaOptions[0].children[secondIndex].children.push(tempThird)
             secondIndex = -1
-
-
             // this.areaOptions[0].children.push(_.cloneDeep(x.parent))
             // this.areaOptions[0].children[index].children.push(x) 
             this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
             this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
+            this.formData.spiSupplierDTO.cityCodeList.push(x.value.toString())
             this.supplierSeccoStockOption.push({ ...x, value: x.value.toString() })
           } else if (x.level == 2) {
             this.areaOptions[0].children.push(_.cloneDeep(x))
@@ -442,10 +441,9 @@ export default {
           }
         })
         this.areaOptions[0].children.forEach((second, index, array) => {
-
-          second.children.filter((value, index, array) => {
-
-          })
+          // second.children.filter((value, index, array) => {
+          second.children = this.unique(second.children)
+          // })
         })
         val.forEach((x, index) => {
         })
@@ -489,21 +487,22 @@ export default {
         // this.options = this.$refs["myCascader"].getCheckedNodes()
         console.log(this.$refs["myCascader"].getCheckedNodes())
         this.checkList = this.$refs["myCascader"].getCheckedNodes()
-        this.$refs["myCascader"].getCheckedNodes().forEach(x => {
-          if (x.level == 3) {
-            this.areaOptions[0].children.push(_.cloneDeep(x.parent))
-            // this.areaOptions[0].children.children.push(_.cloneDeep(x))
-            this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
-            this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
-            this.supplierSeccoStockOption.push({ ...x, value: x.value.toString() })
-          } else if (x.level == 2) {
-            this.areaOptions[0].children.push(_.cloneDeep(x))
-            this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
-            console.log(this.areaOptions[0].children)
-            // this.areaOptions[0].children = [...new Set(this.areaOptions[0].children)]
-          }
-        })
-        this.handelOption(this.areaOptions)
+        // this.$refs["myCascader"].getCheckedNodes().forEach(x => {
+        //   if (x.level == 3) {
+        //     this.areaOptions[0].children.push(_.cloneDeep(x.parent))
+        //     // this.areaOptions[0].children.children.push(_.cloneDeep(x))
+        //     this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
+        //     this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
+        //     this.formData.spiSupplierDTO.cityCodeList.push(x.value.toString())
+        //     this.supplierSeccoStockOption.push({ ...x, value: x.value.toString() })
+        //   } else if (x.level == 2) {
+        //     this.areaOptions[0].children.push(_.cloneDeep(x))
+        //     this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
+        //     console.log(this.areaOptions[0].children)
+        //     // this.areaOptions[0].children = [...new Set(this.areaOptions[0].children)]
+        //   }
+        // })
+        // this.handelOption(this.areaOptions)
       } else {
         this.supplierSeccoStockOption = []
         this.formData.spiBaseDTO.cityCodeList = []
@@ -532,6 +531,7 @@ export default {
     handleBaseChange () {
       console.log('111')
       if (this.$refs["myCascader1"].getCheckedNodes().length > 0) {
+        this.formData.spiSupplierDTO.cityCodeList = []
         this.$refs["myCascader1"].getCheckedNodes().forEach(x => {
           if (x.level == 3) {
             this.formData.spiSupplierDTO.cityCodeList.push(x.value.toString())
@@ -627,6 +627,7 @@ export default {
       this.baseStartYear = null
       this.baseEndYear = null
       this.baseAreaVmodel = []
+      this.areaVmodel = []
       this.$emit("reset")
     },
     // base 开始日期

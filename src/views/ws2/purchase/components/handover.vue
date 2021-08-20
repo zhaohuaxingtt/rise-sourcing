@@ -143,9 +143,9 @@ export default {
       assignOneself().then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          this.linieID = res.data.linieID
-          this.liniePullDownByDept()
           this.deptId = res.data.deptId
+          this.liniePullDownByDept()
+          this.linieID = res.data.linieID
         } else {
           iMessage.error(result);
         }

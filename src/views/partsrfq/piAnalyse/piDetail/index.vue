@@ -18,7 +18,7 @@
         @handlePartItemClick="handlePartItemClick"
     />
     <!-- 自定义零件弹窗 -->
-    <customPart :key="customParams.key" v-model="customParams.visible"/>
+    <customPart :key="customParams.key" v-model="customParams.visible" @handleCloseCustom="handleCloseCustom"/>
     <!--信息-->
     <iCard class="margin-bottom20">
       <theBaseInfo :dataInfo="dataInfo"/>
@@ -202,6 +202,14 @@ export default {
         visible: true,
       };
     },
+    // 关闭自定义零件
+    handleCloseCustom(val) {
+      this.customParams = {
+        ...this.customParams,
+        visible: false
+      };
+      
+    },
     // 关闭零件
     handlePartItemClose({event, item}) {
       event.stopPropagation();
@@ -254,7 +262,6 @@ export default {
         this.showPiChart = true;
         if (this.currentTab === AVERAGE) {
           await this.getAverageData();
-          await this.$refs.thePriceIndexChart.buildChart();
         } else {
           await this.getDataInfo();
         }
@@ -267,12 +274,11 @@ export default {
         endTime: time[1],
       };
       await this.getAverageData({extraParams});
-      await this.$refs.thePriceIndexChart.buildChart();
     },
     // 获取信息
-    async getDataInfo() {
+    async getDataInfo({propsArrayLoading = ['pageLoading', 'tableLoading', 'pieLoading']} = {}) {
       try {
-        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: true});
+        this.setLoading({propsArray: propsArrayLoading, boolean: true});
         const req = {
           ...this.currentTabData,
         };
@@ -286,9 +292,9 @@ export default {
         });
         this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
         await this.$refs.thePriceIndexChart.buildChart();
-        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
+        this.setLoading({propsArray: propsArrayLoading, boolean: false});
       } catch {
-        this.setLoading({propsArray: ['pageLoading', 'tableLoading', 'pieLoading'], boolean: false});
+        this.setLoading({propsArray: propsArrayLoading, boolean: false});
       }
     },
     // 获取平均数据
@@ -309,6 +315,7 @@ export default {
           this.timeRange = null;
         }
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
+        await this.$refs.thePriceIndexChart.buildChart();
       } catch {
         this.averageData = {};
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
@@ -427,8 +434,14 @@ export default {
           req.endTime = value.endTime;
         }
         const res = await saveAnalysisScheme(req);
-        this.tableLoading = false;
         this.resultMessage(res);
+        if (res.result) {
+          if (tab === CURRENTTIME) {
+            await this.getDataInfo({propsArrayLoading: ['tableLoading', 'pieLoading']});
+          } else if (tab === AVERAGE) {
+            await this.getAverageData();
+          }
+        }
       } catch {
         this.tableLoading = false;
       }

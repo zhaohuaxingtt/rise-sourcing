@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-19 19:04:20
+ * @LastEditTime: 2021-08-20 11:21:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -126,7 +126,7 @@
                                :maxWidth="maxWidth"></datasetBar1>
                   <div class="xAxis"
                        v-if="type==='5'">
-                    <span @click=" computeModal">MIX</span>
+                    <span @click="computeModal">MIX</span>
                   </div>
                 </div>
                 <div class="flex chartItem"
@@ -333,9 +333,11 @@ export default {
       this.entryStatus = this.$store.state.rfq.entryStatus
       this.chemeId = this.$route.query.chemeId
       getSchemeInfo({
-        schemeId: this.chemeId
+        // schemeId: this.chemeId
+        schemeId: 3
       }).then(res => {
-
+        let data = res.data
+        this.categoryCode = data.categoryCode
       })
       //材料组
       category({}).then((res) => {
