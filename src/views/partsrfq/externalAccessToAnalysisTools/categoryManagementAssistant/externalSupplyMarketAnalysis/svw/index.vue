@@ -2,7 +2,6 @@
   <iPage>
     <div id="content">
       <iCard>
-
         <div class="head">
           <div class="left">SVW供应商市场总览
             <span>
@@ -100,41 +99,43 @@ export default {
       this.edite = true
       this.savereport = false
       this.categoryCode = this.$store.state.rfq.categoryCode
-      console.log(this.MarketOverviewDTO)
-      downloadPDF({
-        idEle: "content",
-        pdfName: "SVW供应商市场总览" + this.categoryCode + '-' + this.categoryName,
-        callback: async (pdf, pdfName) => {
-          try {
-            const time = new Date().getTime();
-            const filename = pdfName + time + ".pdf";
-            const pdfFile = pdf.output("datauristring");
-            const blob = dataURLtoFile(pdfFile, filename);
-            uploadUdFile({
-              applicationName: 'sourcing',
-              businessId: Math.ceil(Math.random() * 100000),
-              multifile: blob
-            }).then(res => {
-              const data = res.data[0]
-              let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
-              let arr2 = data.path.split(arr[0])
-              saveMarketOverview({
-                categoryCode: this.categoryCode,
-                id: this.SchemeId,
-                reportUrl: arr2[1],
-                reportFileName: data.name,
-                marketOverviewSaveDTOList: this.MarketOverviewDTO
+      setTimeout(() => {
+        downloadPDF({
+          idEle: "content",
+          pdfName: "SVW供应商市场总览" + this.categoryCode + '-' + this.categoryName,
+          callback: async (pdf, pdfName) => {
+            try {
+              const time = new Date().getTime();
+              const filename = pdfName + time + ".pdf";
+              const pdfFile = pdf.output("datauristring");
+              const blob = dataURLtoFile(pdfFile, filename);
+              uploadUdFile({
+                applicationName: 'sourcing',
+                businessId: Math.ceil(Math.random() * 100000),
+                multifile: blob
               }).then(res => {
-                iMessage.success("保存成功");
-                this.getmarketOverview()
-                this.savereport = true
-              })
-            });
-          } catch {
-            iMessage.error("保存失败");
-          }
-        },
-      });
+                const data = res.data[0]
+                let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
+                let arr2 = data.path.split(arr[0])
+                saveMarketOverview({
+                  categoryCode: this.categoryCode,
+                  id: this.SchemeId,
+                  reportUrl: arr2[1],
+                  reportFileName: data.name,
+                  marketOverviewSaveDTOList: this.MarketOverviewDTO
+                }).then(res => {
+                  iMessage.success("保存成功");
+                  this.getmarketOverview()
+                  this.savereport = true
+                })
+              });
+            } catch {
+              iMessage.error("保存失败");
+            }
+          },
+        });
+      }, 3000)
+
 
     },
     changeViewObj (val, index) {
