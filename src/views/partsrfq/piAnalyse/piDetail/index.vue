@@ -206,9 +206,9 @@ export default {
     handleCloseCustom(val) {
       this.customParams = {
         ...this.customParams,
-        visible: false
+        visible: false,
       };
-      
+
     },
     // 关闭零件
     handlePartItemClose({event, item}) {
@@ -263,7 +263,7 @@ export default {
         if (this.currentTab === AVERAGE) {
           await this.getAverageData();
         } else {
-          await this.getDataInfo();
+          await this.getDataInfo({propsArrayLoading: ['tableLoading', 'pieLoading']});
         }
       });
     },
