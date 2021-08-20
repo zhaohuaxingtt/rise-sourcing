@@ -1,13 +1,13 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-19 13:47:50
+ * @LastEditTime: 2021-08-20 16:36:10
  * @LastEditors: 舒杰
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
 -->
 <template>
-   <iCard :title='language("CHANLIANGZONGLAN","产量总览")' class="margin-top20">
+   <iCard :title='language("CHANLIANGZONGLAN","产量总览")' class="margin-top20" id="output">
       <template slot="header-control">
 			<iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
 			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
@@ -33,7 +33,10 @@ import {iCard,iButton,iSelect,iDatePicker} from "rise";
 import {getCmOutputPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/output";
 import * as pbi from 'powerbi-client';
 import { selectDictByKeys } from "@/api/dictionary";
+import {downloadPdfMixins} from '@/utils/pdf';
+import {categoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
 export default {
+   mixins: [downloadPdfMixins],
    components:{iCard,iButton,iSelect,iDatePicker},
    data () {
       return {
@@ -115,8 +118,23 @@ export default {
    },
    methods: {
       // 保存
-      save(){
-
+      async save(){
+         const resFile = await this.getDownloadFileAndExportPdf({
+            domId: 'output',
+            pdfName: 'output',
+         });
+         let params={
+            categoryCode:this.categoryCode,
+            fileType:"PDF",
+            schemeType:"CATEGORY_MANAGEMENT_OUTPUT_OVERVIEW",
+            reportFileName: resFile.downloadName,
+            reportName: resFile.downloadName,
+            schemeName:"",
+            reportUrl: resFile.downloadUrl
+         }
+         categoryAnalysis(params).then(res=>{
+            
+         })
       },
       // 切换类型
       confirmFilter(){
