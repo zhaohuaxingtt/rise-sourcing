@@ -567,7 +567,7 @@ export default {
             hostId:item.requirementAekoId
           })
         })
-        await uploadFiles({fileHistoryDTOS:params}).then((res)=>{
+        await uploadFiles(params).then((res)=>{
           this.btnLoading.uploadFiles = false;
           if(res.code ==200){
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));

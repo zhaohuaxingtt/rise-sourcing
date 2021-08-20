@@ -143,7 +143,7 @@ export default {
                 const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
                 if (confirmInfo !== 'confirm') return;
                 const attachmentIds = selectItems.map((item)=>item.id);
-                deleteFiles({fileIds:attachmentIds}).then((res)=>{
+                deleteFiles(attachmentIds).then((res)=>{
                     if(res.code == 200){
                         iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                         this.getList();
