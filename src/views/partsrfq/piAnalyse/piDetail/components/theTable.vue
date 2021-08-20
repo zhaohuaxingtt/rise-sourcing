@@ -11,7 +11,9 @@
       </span>
       <div class="floatright">
         <template v-if="isPreview">
-          <span class="text timeRange" v-if="currentTab === AVERAGE">{{ language('PI.SHIJIANDAN', '时间段') }}：2020/09 - 2021/03</span>
+          <span class="text timeRange" v-if="currentTab === AVERAGE">{{
+              language('PI.SHIJIANDAN', '时间段')
+            }}：{{ beginTime }} - {{ endTime }}</span>
         </template>
         <template v-else>
           <template v-if="tableStatus === 'edit'">
@@ -144,6 +146,8 @@ export default {
       totalPriceRatio: '',
       CURRENTTIME,
       AVERAGE,
+      beginTime: '',
+      endTime: '',
     };
   },
   created() {
@@ -236,12 +240,19 @@ export default {
       this.tableStatus = '';
     },
     handleFinish() {
+      this.$emit('handlePriceTableFinish', this.handleAllSaveData());
+    },
+    handleAllSaveData() {
       const resTableData = this.handleSystemMatchData({tableListData: this.tableListData});
       const hideTableData = this.handleSystemMatchData({tableListData: this.hideTableData});
-      console.log(111);
-      console.log(resTableData);
-      console.log(hideTableData);
-      this.$emit('handlePriceTableFinish');
+      const tableList = resTableData.concat(hideTableData);
+      return {
+        tableList,
+        nowPriceRatio: this.nowPriceRatio,
+        totalPriceRatio: this.totalPriceRatio,
+        beginTime: this.beginTime,
+        endTime: this.endTime,
+      };
     },
     handleSystemMatchData({tableListData}) {
       const newList = _.cloneDeep(tableListData);
@@ -293,12 +304,15 @@ export default {
           copyDataInfo = _.cloneDeep(this.dataInfo);
           this.nowPriceRatio = copyDataInfo.currentPartCostTotalVO.nowPriceRatio;
           this.totalPriceRatio = copyDataInfo.currentPartCostTotalVO.totalPriceRatio;
-          copyTableList = copyDataInfo && copyDataInfo.currentPartCostTotalVO &&
-              copyDataInfo.currentPartCostTotalVO.piPartCostVOS;
+          this.beginTime = copyDataInfo.currentPartCostTotalVO.beginTime;
+          this.endTime = copyDataInfo.currentPartCostTotalVO.endTime;
+          copyTableList = copyDataInfo?.currentPartCostTotalVO?.piPartCostVOS;
         } else if (this.currentTab === this.AVERAGE) {
           copyDataInfo = _.cloneDeep(this.averageData);
           this.nowPriceRatio = copyDataInfo.nowPriceRatio;
           this.totalPriceRatio = copyDataInfo.totalPriceRatio;
+          this.beginTime = copyDataInfo.beginTime;
+          this.endTime = copyDataInfo.endTime;
           copyTableList = copyDataInfo && copyDataInfo.piPartCostVOS;
         }
         let exchangeRateIndex = 0;
@@ -419,9 +433,6 @@ export default {
         this.getTableList();
       },
     },
-    // currentTab() {
-    //   this.getTableList();
-    // },
   },
 };
 </script>

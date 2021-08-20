@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-18 11:00:24
+ * @LastEditTime: 2021-08-19 16:12:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -98,7 +98,6 @@ export default {
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode,
         fsList: this.$route.query.fsNumList || [],
-        partNumList: this.$route.query.partNumList || [],
       }
       listNomiData(params).then(res => {
         if(res && res.code == 200) {
@@ -154,7 +153,8 @@ export default {
       this.$router.push({
         path: this.costAnalysisAddUrl,
         query: {
-          schemeId: this.oldSchemeId
+          schemeId: this.oldSchemeId,
+          operateLog: this.$route.query.operateLog || null
         }
       })
     },

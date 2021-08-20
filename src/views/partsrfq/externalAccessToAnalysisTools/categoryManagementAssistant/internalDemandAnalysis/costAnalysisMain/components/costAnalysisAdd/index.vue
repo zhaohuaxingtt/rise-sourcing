@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-08-19 11:07:04
+ * @LastEditTime: 2021-08-19 17:03:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -140,9 +140,22 @@ export default {
             this.page.totalCount = res.total
             this.loading = false
             resolve(res.data)
+            this.$nextTick(_ => {
+              this.handleDefaultSelect()
+            })
           } else iMessage.error(res.desZh)
         })
       })
+    },
+    // 处理默认选中
+    handleDefaultSelect() {
+      const operateLog = JSON.parse(this.$route.query.operateLog) || null
+      if(operateLog) {
+        const fsList = operateLog.fsList
+        this.tableListData.map(item => {
+          if(fsList.indexOf(item.fsNum) > -1) this.$refs.multipleTable.$refs.dataTable.toggleRowSelection(item, true)
+        })
+      }
     },
     // 表格选中事件
     handleSelectionChange(val) {
@@ -192,7 +205,6 @@ export default {
           ...this.searchForm,
           schemeId: this.$route.query.schemeId || null,
           fsNumList: this.tableListData.map(item => item.fsNum),
-          partNumList: this.tableListData.map(item => item.partNameZh),
         }
       })
     },

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-18 14:49:42
+ * @LastEditTime: 2021-08-19 14:41:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -63,7 +63,7 @@
       </div>
       <div class="flooterBox">
         <iButton :disabled="!selectMainData || selectMainData.length == 0" @click="clickAdd">{{language('TIANJIA', '添加')}}</iButton>
-        <iButton @clicl="clickSave">{{language('BAOCUN', '保存')}}</iButton>
+        <iButton @click="clickSave">{{language('BAOCUN', '保存')}}</iButton>
       </div>
     </iDialog>
   </div>
@@ -183,6 +183,15 @@ export default {
     },
     // 点击保存
     clickSave() {
+      if(this.selectTargetData && this.selectTargetData.length == 0) {
+        iMessage.error(this.language('QINGXUANZHONGSHUJU','请选中数据'))
+        return
+      }
+      editCustomParts(this.selectTargetData).then(res => {
+        if(res && res.code == 200) {
+          this.$emit()
+        } else iMessage.error(res.desZh)
+      })
     },
     // 获取当前最大排序号
     getCrrentMax(index) {
