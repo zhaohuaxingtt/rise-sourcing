@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 15:59:20
- * @LastEditTime: 2021-08-13 14:44:32
+ * @LastEditTime: 2021-08-18 11:01:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalyHandleInput.vue
@@ -62,8 +62,7 @@
 </template>
 
 <script>
-import {iCard, iButton, iInput} from 'rise'
-import { iMessage } from '@/components';
+import {iCard, iButton, iInput, iMessage} from 'rise'
 import { downloadPdfMixins } from '@/utils/pdf';
 import handleInput from '../costAnalysisAdd/components/handleInput'
 import saveModal from '../save'

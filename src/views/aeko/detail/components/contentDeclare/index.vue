@@ -178,7 +178,7 @@
                 <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
             </iInput>
-            <iInput v-else v-model="scope.row.oldPartNumPreset" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" readonly></iInput>
+            <iInput v-else v-model="scope.row.oldPartNumPreset" class="inputClass" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" readonly></iInput>
           </template>
           <template #dosage="scope">
             <span class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -614,7 +614,8 @@ export default {
       }
     },
     isDeclareBlackListPart(part) {
-      return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
+      // return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
+      return false // 取消黑名单限制
     }
   },
 };
@@ -672,6 +673,12 @@ export default {
   .oldPartNumPreset {
     ::v-deep input {
       color: #c7c7c7;
+    }
+  }
+
+  .inputClass {
+    ::v-deep input {
+      color: #000;
     }
   }
 

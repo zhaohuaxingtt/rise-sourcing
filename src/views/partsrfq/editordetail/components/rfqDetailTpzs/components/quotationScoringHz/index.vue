@@ -299,6 +299,8 @@ export default{
      * @return {*}
      */
     negoAnalysisSummaryRound(){
+      //兼容定点管理界面，无法拿到rfqID，定点管理这个接口也不需要请求。
+      if(!this.$route.query.id) return
       negoAnalysisSummaryRound(this.$route.query.id).then(res=>{
         if(res.code == 200 && res.data){
           this.rundList = res.data

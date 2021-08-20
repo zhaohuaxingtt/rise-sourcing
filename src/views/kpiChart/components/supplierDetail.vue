@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-06 14:46:27
- * @LastEditTime: 2021-08-16 10:33:29
+ * @LastEditTime: 2021-08-19 10:02:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\kpiChart\components\supplierDetail.vue
@@ -81,9 +81,8 @@
 </template>
 
 <script>
-import {iPage,iCard,iSelect} from 'rise'
+import {iPage,iCard,iSelect,iMessage} from 'rise'
 import { getReason, getInfo, getReportDetail } from '@/api/partsrfq/spi/index.js'
-import { iMessage } from '@/components';
 export default {
     components:{
         iPage,

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 14:26:45
+ * @LastEditTime: 2021-08-19 18:52:17
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
@@ -115,7 +115,8 @@ export default {
       if (props === 'level'){
         this.searchParams = {
           level: val,
-          productGroup: ''
+          productGroup: '',
+          categoryName: ''
         }
       }
     },

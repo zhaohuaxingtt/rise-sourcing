@@ -52,56 +52,18 @@
                             <td><div>#</div></td>
                             <td><div>供应商名称</div></td>
                             <td><div>总体KPI</div></td>
-                            <template v-for="(x,index) in tittleData">
-                            <td
-                            :key="index"
-                            :colspan="x.isShowChildren?computedOneClonNum(x):'1'"><div>{{x.name}}
-                                <i v-if="x.children.length>0" class="el-icon-minus" @click="handleFoldCell('1',index)"></i></div>
+                            <td v-for="(x,index) in theadData" :key="index">
+                                {{x.label}}
+                                <template v-if="x.lev==1&&x.isShow">(</template><!-- 开始括号 -->
+                                <i 
+                                v-if="x.lev!=3" 
+                                :class="x.isShow?'el-icon-minus':'el-icon-plus'" 
+                                @click="handleFoldCell(index,x.lev,x.id)"></i>
+                                <template>{{isLastData(x,index)}}</template><!-- 结束括号 -->
                             </td>
-                            </template>
-                        </tr>
-                        <!-- 二级表头 -->
-                        <tr class="theadBgcolor thead2">
-                            <td colspan="3"></td>
-                            <template v-for="(t,tindex) in tittleData">
-                                <td :key="tindex+'cell2'"><div></div></td>
-                                <template v-for="(lev2,index) in t.children">
-                                <td 
-                                v-if="lev2.isShowChildren"
-                                :key="index+'lev2'"
-                                :class="index<t.children.length-1?'lev1dashed':'halfWidth leftline'"
-                                :colspan="lev2.children.length+1">
-                                <div>{{lev2.name}}
-                                 <i v-if="lev2.children.length>0" class="el-icon-minus" @click="handleFoldCell('2',tindex,index,)"></i>
-                                </div>
-                                </td>
-                                </template>
-                            </template>
-                        </tr>
-                        <!-- 三级表头 -->
-                        <tr class="theadBgcolor thead3">
-                            <td colspan="3"></td>
-                            <template v-for="one in tittleData">
-                                <template v-for="(two,tindex) in one.children">
-                                    <template v-for="(three,index) in two.children">
-                                        <template v-if="index==0 && tindex==0 && isLastData()">
-                                        <td :key="index+'c3-1'"><div></div></td>
-                                        <td :key="index+'c3-2'"><div></div></td>
-                                        </template>
-                                        <td :key="index+'c3-2'" v-if="index==0 && tindex!=0"><div></div></td>
-                                        <td  
-                                        v-if="three.isShowChildren"
-                                        :key="index" 
-                                        :class="index<two.children.length-1?'lev1dashed':'halfWidth leftline'">
-                                            <div>{{three.name}}</div>
-                                        </td>
-                                    </template>
-                                    
-                                </template>
-                            </template>
                         </tr>
                         <!-- 数据列表 -->
-                        <tr v-for="(x,index) in allData" :key="index">
+                        <tr v-for="(x,index) in tbodyData" :key="index">
                             <td><div>
                                 <!-- <el-checkbox v-model="x.checked" :label="x.checked" @change="changeStatus(x)"></el-checkbox> -->
                                 {{(index+1)+(ipagnation.pageNo-1)*ipagnation.pageSize}}
@@ -110,11 +72,13 @@
                             <td><div>{{x.all}}</div></td>
                             <template v-for="(lv1,index1) in x.list">
                                  <td :key="index1+'l1'"><div>{{lv1.score}}</div></td>
-                                 <template v-if="lv1.isShowChildren"><!-- 隐藏一级 -->
+                                 <template v-if="lv1.isShowChildren"><!-- 隐藏1级 -->
                                     <template v-for="(lv2,index2) in lv1.children">
                                         <td :key="index2+'l2'"><div>{{lv2.score}}</div></td>
-                                        <template v-for="(lv3,index3) in lv2.children">
-                                        <td :key="index3+'l3'"><div>{{lv3.score}}</div></td>
+                                        <template v-if="lv2.isShowChildren"><!-- 隐藏2级 -->
+                                            <template v-for="(lv3,index3) in lv2.children">
+                                            <td :key="index3+'l3'"><div>{{lv3.score}}</div></td>
+                                            </template>
                                         </template>
                                     </template>
                                 </template>
@@ -211,7 +175,10 @@ export default {
                 pageNo:1,
                 pageSize:10
             },
-            isDownload:false
+            isDownload:false,
+            theadData:[],
+            tbodyData:[],
+            berforTheadData:[]
         }
     },
     created(){
@@ -220,6 +187,15 @@ export default {
     },
     mounted(){
         
+    },
+    watch:{
+        tbodyData:{
+            handler(curVal,oldVal){
+               console.log(curVal,oldVal)
+            },
+            immediate: true,
+            deep: true
+        }
     },
     methods:{
         handleleftClick(tab,event){
@@ -250,13 +226,13 @@ export default {
                         return this.$message({type:'warning',message:'当前无KPI数据，请上传打分数'})
                     } 
                     this.allData=JSON.parse(JSON.stringify(res.data))
-                    this.allData.forEach(x=>{
-                        x.checked=false
+
+                    this.tbodyData=JSON.parse(JSON.stringify(res.data))
+                    this.tbodyData.forEach(x=>{
                         x.list.forEach(y=>{
-                            y.isShowChildren=true
+                            y.isShowChildren=false
                             y.children.forEach(z=>{
-                                z.isShowChildren=true
-                                z.children.forEach(k=>{k.isShowChildren=true})
+                                z.isShowChildren=false
                             })
                         })
                     })
@@ -266,52 +242,71 @@ export default {
                 }
             })
         },
-        handleFoldCell(x,index,index2){
-           return
-            if(x=='1'){         
-                this.allData.forEach(y=>{
-                    y.list[index].isShowChildren=!y.list[index].isShowChildren
-                    y.list[index].children.forEach(z=>{
-                        z.isShowChildren=!z.isShowChildren
-                        z.children.forEach(k=>{k.isShowChildren=!k.isShowChildren})
-                    })
-                })
-            }
-            if(x=='2'){
-                this.allData.forEach(y=>{
-                    y.list[index].isShowChildren[index2]=!y.list[index].isShowChildren[index2]
-                })
-            }
-            this.allData.splice(0,0)
-            
-        },
-        // 计算一级合并单元格数量
-        computedOneClonNum(data){
-            let count = 0
-            let allCount = 0
-            if(data.children.length>0){
-                count = data.children.length
-                count +=1
-                data.children.forEach((x,index) => {
-                    if(index==0){
-                      allCount+=x.children.length   
-                      allCount+=2  
-                    }else{
-                        allCount+=x.children.length   
-                      allCount+=1 
+        handleFoldCell(index,lev,id){
+            console.log(index,lev,id)
+            console.log(this.theadData[index].isShow)
+            // 隐藏表头
+            let tittlebox = []
+            if(this.theadData[index].isShow){//1级折叠
+                this.theadData.forEach(x=>{
+                    if(lev==1){
+                        if(x.parentID==id || x.grandpaID==id){
+                           
+                        }else{
+                            tittlebox.push(x)
+                        }
+                    }else if(lev==2){
+                        if(x.parentID==id){
+                            
+                        }else{
+                            tittlebox.push(x)
+                        }
                     }
-                     
-                });
-
-                if(count>allCount){
-                    return count
-                }else{
-                    return allCount
-                }
-            }else{
-                return 1
+                })
+                this.theadData=[...tittlebox]
+                // 折叠一级时候一二级ishow=false
+               this.theadData[index].isShow=!this.theadData[index].isShow
+            }else{//展开
+                let joinData = []
+                this.berforTheadData.forEach((x,lev1Index)=>{
+                    if(lev==1){//一级
+                        if(x.parentID==id){
+                           this.theadData.splice(index+1,0,{...x,isShow:false})
+                        }
+                    }
+                    if(lev==2){
+                        if(x.parentID==id ){
+                            this.theadData.splice(index+1,0,x)
+                        }
+                    }
+                })
+               this.theadData[index].isShow=!this.theadData[index].isShow
             }
-            
+               this.allData.forEach((x,index)=>{
+                   x.list.forEach((y,lev1Index)=>{//隐藏1级数据
+                       if(lev==1 && y.id==id){
+                           if(this.tbodyData[index].list[lev1Index].isShowChildren){
+                              this.tbodyData[index].list[lev1Index].isShowChildren=false
+                           }else{
+                              this.tbodyData[index].list[lev1Index].isShowChildren=true
+                           }
+                           y.children.forEach((z,lev2index)=>{//点击一级 隐藏二级三级
+                                this.tbodyData[index].list[lev1Index].children[lev2index].isShowChildren=false
+                           })
+                       }
+                       if(y.children.length>0){
+                            y.children.forEach((z,lev2index)=>{//隐藏2级数据
+                                if(lev==2 && z.id==id){
+                                        if(this.tbodyData[index].list[lev1Index].children[lev2index].isShowChildren){
+                                            this.tbodyData[index].list[lev1Index].children[lev2index].isShowChildren=false
+                                        }else{
+                                            this.tbodyData[index].list[lev1Index].children[lev2index].isShowChildren=true
+                                        }
+                                }
+                            })
+                       }
+                   })
+               })
         },
         handleChange(){
             this.getTittleDetail(this.selectValue)
@@ -384,19 +379,19 @@ export default {
         changeStatus(x){
            x.checked=!x.checked
         },
-        isLastData(){
-            let count = 0
-            this.tittleData.forEach(x=>{
-                if(x.isShowChildren){
-                    count+=1
-                }
-            })
-            if(count>1){
-                return true
-            }else{
-                return true
-            }
-        },
+        // isLastData(){
+        //     let count = 0
+        //     this.tittleData.forEach(x=>{
+        //         if(x.isShowChildren){
+        //             count+=1
+        //         }
+        //     })
+        //     if(count>1){
+        //         return true
+        //     }else{
+        //         return true
+        //     }
+        // },
         // 获取表头
         getTittleDetail(x){
             templateDetail({pageNo: 1,
@@ -411,9 +406,64 @@ export default {
                             z.children.forEach(k=>{k.isShowChildren=true})
                         })
                     })
+                    
+                    this.jointTittle()
+                    
+                    //默认折叠
+                    let showLev1= []
+                    this.theadData.map(z=>{
+                        if(z.lev==1){
+                            showLev1.push(z)
+                        }
+                    })
+                    this.theadData=[...showLev1]
+                   
+                    // this.tbodyData.forEach(score=>{
+                    //     score.list.forEach
+                    //     score.isShowChildren=false
+                    // })
                 }
             })
 
+        },
+        // 拼接一级表头
+        jointTittle(){
+            this.theadData=[]
+             // 拼接表头字段
+            this.tittleData.forEach(x=>{
+                this.theadData.push({//一级
+                    prop: x.id,
+                    label: x.name,
+                    id:x.id,
+                    lev:1,
+                    isShow:false,
+                })
+                if(x.children.length>0){//二级
+                    x.children.forEach(y=>{
+                        this.theadData.push({
+                            prop: y.id,
+                            label: y.name,
+                            id:y.id,
+                            parentID:x.id,
+                            lev:2,
+                            isShow:false,
+                        })
+                        if(y.children.length>0){//三级
+                            y.children.forEach(z=>{
+                                this.theadData.push({
+                                    prop: z.id,
+                                    label: z.name,
+                                    id:z.id,
+                                    lev:3,
+                                    parentID:y.id,
+                                    grandpaID:x.id
+                                })
+                            })
+                        }
+                    })
+                }
+            })
+            this.berforTheadData=[...this.theadData]
         },
         // //改变page操作
         handleSizeChange(event) {
@@ -425,6 +475,22 @@ export default {
             this.ipagnation.pageNo = event
             this.getDetail(this.selectValue)
         },
+        isLastData(x,index){
+            if(x.lev!=1){
+                 if(index<this.theadData.length){
+                     console.log(index)
+                    if(this.theadData[index].lev==1 || index+1 == this.theadData.length || this.theadData[index+1].lev==1){
+                        return '）'
+                    }else{
+                        return ''
+                    }
+                 }
+                 if(index==this.theadData.length-1){
+                     return '）'
+                 }
+                
+            }
+        }
     }
 }
 </script>
@@ -512,7 +578,7 @@ export default {
                 cursor: pointer;
                 border-radius: 4px;
             }
-            .el-icon-minus{
+            .el-icon-minus,.el-icon-plus{
                 color: #fff;
                 background: #1763F7;
                 cursor: pointer;

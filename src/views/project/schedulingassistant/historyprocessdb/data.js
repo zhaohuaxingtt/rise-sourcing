@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:35:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 11:21:19
+ * @LastEditTime: 2021-08-19 18:50:42
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\data.js
  */
@@ -12,7 +12,7 @@ export const searchListPro = [
   {value: 'cartypeProId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'select', filterable: true, selectOption: 'carProjectOptions'},
   {value: 'productGroup', name: '产品组', key: 'LK_CHANPINZU', type: 'inputFilter', placeholder: '输入产品组搜索', placeholderKey: 'SHURUCHANPINZUSOUSUO'},
   {value: 'partNum', name: '零件号', key: 'LINGJIANHAO', type: 'input', placeholder: '输入零件号搜索', placeholderKey: 'SHURULINGJIANHAOSOUSUO'},
-  {value: 'categoryName', name: '材料组', key: 'CAILIAOZU', type: 'input', placeholder: '输入材料组搜索', placeholderKey: 'SHURUCAILIAOZUSOUSUO' },
+  // {value: 'categoryName', name: '材料组', key: 'CAILIAOZU', type: 'input', placeholder: '输入材料组搜索', placeholderKey: 'SHURUCAILIAOZUSOUSUO' },
 ]
 
 export const searchListPart = [
@@ -59,7 +59,7 @@ export const partTableTitle = [
   {props:'bfSoll1',name:'BF soll1', key: "BFSOLL1", tooltip: true, isSelect: true, minWidth: 120},
   {props:'bfSoll2',name:'BF soll2', key: "BFSOLL2", tooltip: true, isSelect: true, minWidth: 120},
   {props:'bfIst',name:'BF ist', key: "BFIST", tooltip: true, isSelect: true, minWidth: 120},
-  {props:'bfReason',name:'BF延误原因', key: "BFYANWUYUANYIN", tooltip: true, isSelect: true, minWidth: 120},
+  {props:'bfReason',name:'BF延误原因', key: "BFYANWUYUANYIN", tooltip: true, isSelect: true, minWidth: 120, checkWidth: '36%'},
   {props:'isttryoutSoll1',name:'1st tryout soll1', key: "1STTRYOUTSOLL1", tooltip: true, isSelect: true, minWidth: 120},
   {props:'isttryoutSoll2',name:'1st tryout soll2', key: "1STTRYOUTSOLL2", tooltip: true, isSelect: true, minWidth: 120},
   {props:'isttryoutIst',name:'1st tryout ist', key: "1STTRYOUTIST", tooltip: true, isSelect: true, minWidth: 120},

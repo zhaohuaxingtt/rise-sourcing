@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-07-22 17:53:41
+ * @LastEditTime: 2021-08-19 10:54:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -115,7 +115,8 @@ export default {
       selectTableData: [],
       roundType: '',
       roundTypeOptions: [],
-      startTime: '',
+      // eslint-disable-next-line no-undef
+      startTime: moment().format('YYYY-MM-DD'),
       endTime: '',
       tableTitle,
       tableTitle2,
