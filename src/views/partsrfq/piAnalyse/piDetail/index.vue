@@ -339,11 +339,11 @@ export default {
           await this.handleSaveAsReport(async (downloadName, downloadUrl) => {
             req.downloadName = downloadName;
             req.downloadUrl = downloadUrl;
-            await this.saveAnalysisScheme(req);
+            await saveAnalysisScheme(req);
             this.saveDialog = false;
           });
         } else {
-          await this.saveAnalysisScheme(req);
+          await saveAnalysisScheme(req);
           this.saveDialog = false;
         }
         this.pageLoading = false;
