@@ -18,7 +18,7 @@
         @handlePartItemClick="handlePartItemClick"
     />
     <!-- 自定义零件弹窗 -->
-    <customPart :key="customParams.key" v-model="customParams.visible"/>
+    <customPart :key="customParams.key" v-model="customParams.visible" @handleCloseCustom="handleCloseCustom"/>
     <!--信息-->
     <iCard class="margin-bottom20">
       <theBaseInfo :dataInfo="dataInfo"/>
@@ -199,6 +199,14 @@ export default {
         key: Math.random(),
         visible: true,
       };
+    },
+    // 关闭自定义零件
+    handleCloseCustom(val) {
+      this.customParams = {
+        ...this.customParams,
+        visible: false
+      };
+      
     },
     // 关闭零件
     handlePartItemClose({event, item}) {
