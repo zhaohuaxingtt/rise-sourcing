@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-08-19 18:03:06
+ * @LastEditTime: 2021-08-20 13:54:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -49,8 +49,8 @@
         :height="500"
         @openPage="clickPreview"
       >
-        <template #priceChange="scope">
-          <p :class="getPriceChangeClass(scope.row.priceChange)">{{scope.row.priceChange}}</p>
+        <template #ratio="scope">
+          <p :class="getPriceChangeClass(scope.row.ratio)">{{scope.row.ratio >= 0 ? '+' + scope.row.ratio : scope.row.ratio}} %</p>
         </template>
       </tableList>
       <iPagination
@@ -142,8 +142,9 @@ export default {
     },
     // 得到价格变动比率样式名
     getPriceChangeClass(val) {
-      const num = val.split('%')[0]
-      if(num >= 0) return 'positive'
+      // const num = val.split('%')[0]
+      // if(num >= 0) return 'positive'
+      if(Number(val) >=0 ) return 'positive'
       else return 'minus'
     },
     // 点击返回

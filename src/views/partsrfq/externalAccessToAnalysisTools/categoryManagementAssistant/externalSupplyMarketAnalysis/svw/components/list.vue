@@ -422,7 +422,6 @@ export default {
       } else {
         this.MarketOverviewObj.mainCustomerDTOList = this.MarketOverviewObj.mainCustomerDTOList.filter(item => item.customerName || item.totalSalesPro)
       }
-
     },
     MarketOverviewObj: {
       handler (val) {
