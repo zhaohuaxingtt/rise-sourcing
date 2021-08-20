@@ -74,7 +74,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item label="Linie">
+        <el-form-item :label="language('LK_BIANGENGDANZHUANGTAI', '变更单状态')">
           <iSelect
               class="multipleSelect"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
@@ -94,6 +94,24 @@
         </el-form-item>
         <el-form-item :label="language('LK_BMDANHAO', 'BM单号')">
           <iInput v-model="bmSerial" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
+        </el-form-item>
+        <el-form-item label="变更单状态">
+          <iSelect
+              class="multipleSelect"
+              :placeholder="language('LK_QINGXUANZHE', '请选择')"
+              filterable
+              clearable
+              collapse-tags
+              multiple
+              v-model="linieName"
+          >
+            <el-option
+                :value="item.linieID"
+                :label="item.linieName"
+                v-for="(item, index) in linieList"
+                :key="index"
+            ></el-option>
+          </iSelect>
         </el-form-item>
       </el-form>
     </iSearch>

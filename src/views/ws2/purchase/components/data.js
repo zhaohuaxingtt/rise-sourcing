@@ -174,6 +174,13 @@ export const changeTaskTitle = [
     },
     {
         props: 'moldInvestmentStatus',
+        name: '变更单状态',
+        key: '变更单状态',
+        width: 220,
+        tooltip: false
+    },
+    {
+        props: 'moldInvestmentStatus',
         name: '模具投资清单状态',
         key: '模具投资清单状态',
         width: 220,

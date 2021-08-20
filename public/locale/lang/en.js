@@ -1007,6 +1007,7 @@
         'LK_TIJIAOSHENPI': '提交审批', //  提交审批
         'LK_MUJUTOUZIQINGDANBIANGENGXIANGQING': '模具投资清单变更详情', //  模具投资清单变更详情
         'LK_BIANGENGSHENPIFUJIAN': '变更审批附件', //  变更审批附件
+        'LK_BIANGENGDANZHUANGTAI': '变更单状态', //  变更单状态
 
         // 定点管理
         'nominationLanguage': {
