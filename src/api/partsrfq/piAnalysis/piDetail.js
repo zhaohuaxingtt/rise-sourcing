@@ -86,3 +86,21 @@ export function getPiIndexPartCostWave(params) {
     data: params,
   });
 }
+
+//保存分析方案
+export function saveAnalysisScheme(params) {
+  return request({
+    url: '/piAnalysisScheme/saveAnalysisScheme',
+    method: 'POST',
+    data: params,
+  });
+}
+
+//判断方案名称是否已存在
+export function checkName(params) {
+  return request({
+    url: '/vpAnalysisScheme/checkName',
+    method: 'POST',
+    data: params
+  })
+}

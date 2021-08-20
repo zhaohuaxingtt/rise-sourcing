@@ -41,6 +41,7 @@
           :dataInfo="dataInfo"
           :currentTab="currentTab"
           :tableLoading="tableLoading"
+          @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
       />
       <theTable
           v-show="currentTab === AVERAGE"
@@ -48,6 +49,7 @@
           :averageData="averageData"
           :currentTab="currentTab"
           :tableLoading="tableLoading"
+          @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
       />
     </iCard>
 
@@ -108,6 +110,8 @@ import {
   getAnalysisSchemeDetails,
   getAveragePartCostPrice,
   deleteParts,
+  saveAnalysisScheme,
+  checkName,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
 import _ from 'lodash';
 import {mapState} from 'vuex';
@@ -309,7 +313,68 @@ export default {
       }
     },
     // 处理保存弹窗
-    handleSaveDialog(reqParams) {},
+    async handleSaveDialog(reqParams) {
+      const resCheckName = await this.checkName(reqParams);
+      if (resCheckName) {
+        this.saveDialog = false;
+        iMessageBox(
+            this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
+            this.$t('LK_WENXINTISHI'),
+            {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+        ).then(async () => {
+          await this.handleSaveProcess(reqParams, true);
+        }).catch(async () => {
+          this.saveDialog = true;
+        });
+      } else {
+        await this.handleSaveProcess(reqParams);
+      }
+    },
+    async handleSaveProcess(reqParams, isCover = false) {
+      try {
+        this.pageLoading = true;
+        const req = this.handleAllSaveReq(reqParams);
+        req.isCover = isCover;
+        if (reqParams.reportSave) {
+          await this.handleSaveAsReport(async (downloadName, downloadUrl) => {
+            req.downloadName = downloadName;
+            req.downloadUrl = downloadUrl;
+            await this.saveAnalysisScheme(req);
+            this.saveDialog = false;
+          });
+        } else {
+          await this.saveAnalysisScheme(req);
+          this.saveDialog = false;
+        }
+        this.pageLoading = false;
+      } catch {
+        this.pageLoading = false;
+      }
+    },
+    handleAllSaveReq(reqParams) {
+      const req = {
+        ...this.currentTabData,
+      };
+      const currentData = this.$refs.theCurrentTable.handleAllSaveData();
+      const averageData = this.$refs.theAverageTable.handleAllSaveData();
+      if (reqParams.analysisSave && reqParams.reportSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+        req.reportName = reqParams.reportName;
+      } else if (reqParams.analysisSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+      } else if (reqParams.reportSave) {
+        req.reportName = reqParams.reportName;
+      }
+      req.currentPartsCostList = currentData.tableList;
+      req.currentPrice = currentData.nowPriceRatio;
+      req.currentCompositePrice = currentData.totalPriceRatio;
+      req.avgPartsCostList = averageData.tableList;
+      req.avgPrice = averageData.nowPriceRatio;
+      req.avgCompositePrice = averageData.totalPriceRatio;
+      req.beginTime = averageData.beginTime;
+      req.endTime = averageData.endTime;
+      return req;
+    },
     async handleSaveAsReport(callback) {
       this.previewDialog = true;
       setTimeout(async () => {
@@ -335,6 +400,47 @@ export default {
       copyPiIndexChartParams.beginTime = data.beginTime;
       copyPiIndexChartParams.endTime = data.endTime;
       this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
+    },
+    async handlePriceTableFinish(value, tab) {
+      try {
+        this.tableLoading = true;
+        const req = {
+          ...this.currentTabData,
+        };
+        if (tab === CURRENTTIME) {
+          req.currentPartsCostList = value.tableList;
+          req.currentPrice = value.nowPriceRatio;
+          req.currentCompositePrice = value.totalPriceRatio;
+        } else if (tab === AVERAGE) {
+          req.avgPartsCostList = value.tableList;
+          req.avgPrice = value.nowPriceRatio;
+          req.avgCompositePrice = value.totalPriceRatio;
+          req.beginTime = value.beginTime;
+          req.endTime = value.endTime;
+        }
+        const res = await saveAnalysisScheme(req);
+        this.tableLoading = false;
+        this.resultMessage(res);
+      } catch {
+        this.tableLoading = false;
+      }
+    },
+    async checkName(reqParams) {
+      let isRepeat = false;
+      const req = {};
+      if (reqParams.analysisSave && reqParams.reportSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+        req.reportName = reqParams.reportName;
+      } else if (reqParams.analysisSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+      } else if (reqParams.reportSave) {
+        req.reportName = reqParams.reportName;
+      }
+      const res = await checkName(req);
+      if (res.data) {
+        isRepeat = true;
+      }
+      return isRepeat;
     },
   },
 };
