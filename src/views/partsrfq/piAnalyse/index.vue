@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-08-20 14:15:32
+ * @LastEditTime: 2021-08-20 15:37:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -503,10 +503,10 @@ export default {
     },
     // 点击置顶按钮
     handleStick(val) {
-      fetchAnalysisStick(val).then((res) => {
+      fetchAnalysisStick({id: val.id}).then((res) => {
         if (res) {
           if (res.code == 200) {
-            val.isTop = !val.isTop;
+            // val.isTop = !val.isTop;
             iMessage.success(res.desZh);
             this.getTableList();
           } else iMessage.error(res.desZh);

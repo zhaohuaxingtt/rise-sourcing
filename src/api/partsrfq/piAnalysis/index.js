@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-13 17:27:07
- * @LastEditTime: 2021-08-18 14:16:33
+ * @LastEditTime: 2021-08-20 15:56:47
  * @LastEditors: Please set LastEditors
  * @Description: PI分析库相关接口
  * @FilePath: \front-web\src\api\partsrfq\piAnalysis\index.js
@@ -40,8 +40,8 @@ export function fetchAnalysisSave(params) {
 // 删除方案
 export function fetchAnalysisDel(params) {
   return request({
-    url: '/piAnalysisScheme/updatePi',
-    method: 'PUT',
+    url: '/piAnalysisScheme/removePiScheme',
+    method: 'POST',
     data: params,
   });
 }
