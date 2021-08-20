@@ -43,6 +43,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { presentAllInPriceDialogTableTitle as tableTitle } from "../data"
 import filters from "@/utils/filters"
 import { getAekoOriginPartAPrice } from "@/api/aeko/detail"
+import { orderBy } from "lodash"
 
 export default {
   components: { iDialog, iButton, tableList },
@@ -99,6 +100,12 @@ export default {
         if (res.code == 200) {
           this.selectRow = {}
           this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.tableListData.forEach(item => {
+            item.startDateTimestamp = +moment(item.startDate)
+            item.endDateTimestamp = +moment(item.endDate)
+          })
+          
+          this.tableListData = orderBy(this.tableListData, ["startDate", "endDate"], ["desc", "desc"])
 
           if (this.tableListData.length > 0) {
             this.$nextTick(() => {
