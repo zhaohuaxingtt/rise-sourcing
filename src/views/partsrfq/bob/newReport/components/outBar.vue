@@ -165,12 +165,13 @@ export default {
           axisPointer: {            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
           },
-          formatter (params) {
+          formatter: (params) => {
             let result = ''
             let domHtml = ''
-            params.forEach(value => {
-              domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + value.color + '"></span>'
-              result += domHtml + value.seriesName + ":" + this.doNumber(value.value) + '<br/>'
+            params.forEach(item => {
+              console.log(item.value, "value")
+              domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + item.color + '"></span>'
+              result += domHtml + item.seriesName + ":" + this.doNumber(item.value) + '<br/>'
             })
             return result
           },
@@ -283,7 +284,7 @@ export default {
             }
             tempArr[v].push(row[this.legendKeys[v]])
             const sum = this.sumBy(this.take(this.legendArray, i + 1), (k) => {
-              return row[this.legendKeys[k]]
+              return Number(row[this.legendKeys[k]])
             })
             // console.log(sum)
             dataList1[v].push(sum)

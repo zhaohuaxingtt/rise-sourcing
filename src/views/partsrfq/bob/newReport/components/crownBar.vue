@@ -45,11 +45,11 @@ export default {
       labelArray1: [],
       legendKeys: {
         "原材料/散件": "rawMaterialSummary",
-        制造费: "manufacturingCostSummary",
-        报废成本: "discardCostsSummary",
-        管理费: "administrationCostsSummary",
-        其他费用: "otherCostsSummary",
-        利润: "profit",
+        '制造费': "manufacturingCostSummary",
+        '报废成本': "discardCostsSummary",
+        '管理费': "administrationCostsSummary",
+        '其他费用': "otherCostsSummary",
+        '利润': "profit",
       },
       legendArray: [
         "原材料/散件",
@@ -344,7 +344,7 @@ export default {
             }
             tempArr[v].push(row[this.legendKeys[v]]);
             const sum = this.sumBy(this.take(this.legendArray, i + 1), (k) => {
-              return row[this.legendKeys[k]];
+              return Number(row[this.legendKeys[k]]);
             });
             // console.log(sum)
             dataList1[v].push(sum);
@@ -353,7 +353,7 @@ export default {
         const minList = [];
         this.legendArray.forEach((row, i) => {
           const dataList0 = this.cloneDeep(tempArr[row]);
-          const min = this.min(tempArr[row]);
+          const min = Number(this.min(tempArr[row]))
           let data = min;
           if (this.type === "Best of Average") {
             // data = this.doNumber((this.sum(tempArr[row]) / tempArr[row].length))

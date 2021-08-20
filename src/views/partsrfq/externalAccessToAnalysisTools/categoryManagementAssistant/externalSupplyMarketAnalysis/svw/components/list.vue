@@ -352,7 +352,7 @@ export default {
     }
   },
   mounted () {
-    this.categoryCode = this.$store.state.rfq.categoryCode
+    // this.categoryCode = this.$store.state.rfq.categoryCode
     let date = new Date()
     this.option.xAxis[0].data[0] = date.getFullYear() - 3
     this.option.xAxis[0].data[1] = date.getFullYear() - 2
@@ -434,19 +434,19 @@ export default {
               this.option.series[0].data[0].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
               this.option.series[0].data[0].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].value = (x.svwAmount / 1000000).toFixed(2)
-              this.option.series[1].data[0].label.normal.formatter = !x.svwRate ? '0' : !x.svwRate + '%'
+              this.option.series[1].data[0].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
             }
             if (x.year == date - 2) {
               this.option.series[0].data[1].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
               this.option.series[0].data[1].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].value = (x.svwAmount / 1000000).toFixed(2)
-              this.option.series[1].data[1].label.normal.formatter = !x.svwRate ? '0' : !x.svwRate + '%'
+              this.option.series[1].data[1].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
             }
             if (x.year == date - 1) {
               this.option.series[0].data[2].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
               this.option.series[0].data[2].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].value = (x.svwAmount / 1000000).toFixed(2)
-              this.option.series[1].data[2].label.normal.formatter = !x.svwRate ? '0' : !x.svwRate + '%'
+              this.option.series[1].data[2].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
             }
           });
         } else {
@@ -523,7 +523,12 @@ export default {
       //   this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = this.year2
       //   this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = this.year3
       // }else if
-    }
+    },
+    '$store.state.rfq.categoryCode': {
+      handler (val) {
+        this.categoryCode = val
+      }
+    },
   },
   methods: {
     initCharts () {
