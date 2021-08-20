@@ -254,7 +254,6 @@ export default {
         this.showPiChart = true;
         if (this.currentTab === AVERAGE) {
           await this.getAverageData();
-          await this.$refs.thePriceIndexChart.buildChart();
         } else {
           await this.getDataInfo();
         }
@@ -267,7 +266,6 @@ export default {
         endTime: time[1],
       };
       await this.getAverageData({extraParams});
-      await this.$refs.thePriceIndexChart.buildChart();
     },
     // 获取信息
     async getDataInfo() {
@@ -309,6 +307,7 @@ export default {
           this.timeRange = null;
         }
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
+        await this.$refs.thePriceIndexChart.buildChart();
       } catch {
         this.averageData = {};
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
@@ -427,8 +426,14 @@ export default {
           req.endTime = value.endTime;
         }
         const res = await saveAnalysisScheme(req);
-        this.tableLoading = false;
         this.resultMessage(res);
+        if (res.result) {
+          if (tab === CURRENTTIME) {
+            await this.getDataInfo();
+          } else if (tab === AVERAGE) {
+            await this.getAverageData();
+          }
+        }
       } catch {
         this.tableLoading = false;
       }

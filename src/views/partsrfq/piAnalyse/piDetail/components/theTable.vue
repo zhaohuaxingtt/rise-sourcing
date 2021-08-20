@@ -240,6 +240,7 @@ export default {
       this.tableStatus = '';
     },
     handleFinish() {
+      this.tableStatus = '';
       this.$emit('handlePriceTableFinish', this.handleAllSaveData());
     },
     handleAllSaveData() {
