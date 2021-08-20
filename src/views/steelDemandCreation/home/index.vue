@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-29 17:02:51
- * @LastEditTime: 2021-08-19 14:58:15
+ * @LastEditTime: 2021-08-20 15:23:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steeldemandcreation\index.vue
@@ -17,7 +17,8 @@
         <template v-for='(items,index) in searchForm'>
           <el-form-item :label='language(items.i18nKey,items.i18nName)' :key="index">
             <template v-if='items.type == "input"'>
-              <iInput v-model="form[items.moduleKey]" :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
+              <iInput v-model="form[items.moduleKey]" type='number' v-if='items.moduleKey == "nominateId"' :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
+              <iInput v-model="form[items.moduleKey]" v-else :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
             </template>
             <template v-else>
               <iSelect v-model="form[items.moduleKey]" :placeholder='language("QINGXUANZE","请选择")'>

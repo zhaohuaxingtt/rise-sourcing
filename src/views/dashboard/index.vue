@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-20 10:27:59
+ * @LastEditTime: 2021-08-20 14:39:23
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -195,41 +195,33 @@ export default {
     },
     // 前期采购员待确认定点信链接
     letterURL() {
+      let status = ''
       // 前期采购员
-      let status = 'CSF_HANDLING'
+      if (this.isQQCG) status = 'CSF_HANDLING'
       // 专业采购员
       if (this.isZYCG) status = 'LINIE_CONFIRING'
       // 前期采购员 && 专业采购员
       if (this.isZYCG && this.isQQCG) status = 'CSF_HANDLING'
-      return `/sourcing/partsletter?status=${status}`
+      return `/sourcing/partsletter?status=${status}${this.userRoleParams(['csfCssName'])}`
     },
     // 前期采购员待确认定点信链接
     loiURL() {
+      let status = ''
       // 前期采购员
-      let status = 'CSF_HANDLING'
+      if (this.isQQCG) status = 'CSF_HANDLING'
       // 专业采购员
       if (this.isZYCG) status = 'LINIE_CONFIRING'
       // 前期采购员 && 专业采购员
       if (this.isZYCG && this.isQQCG) status = 'CSF_HANDLING'
-      return `/sourcing/partsletter?cardType=LOI&loiStatus=${status}`
+      return `/sourcing/partsletter?cardType=LOI&loiStatus=${status}${this.userRoleParams(['csfName'])}`
     },
     // 未创建采购项目链接
     unCrePartsprocureURL() {
-      let paramTxt = ''
-      // 前期采购员
-      if (this.isQQCG) paramTxt += `&buyerName=${this.userInfo.nameZh}`
-      // 专业采购员
-      if (this.isZYCG) paramTxt += `&linieName=${this.userInfo.nameZh}`
-      return `/sourcing/partsprocure?status=10${paramTxt}`
+      return `/sourcing/partsprocure?status=10${this.userRoleParams()}`
     },
     // 未创建采购项目链接
     unJoinRFQURL() {
-      let paramTxt = ''
-      // 前期采购员
-      if (this.isQQCG) paramTxt += `&buyerName=${this.userInfo.nameZh}`
-      // 专业采购员
-      if (this.isZYCG) paramTxt += `&linieName=${this.userInfo.nameZh}`
-      return `/sourcing/partsprocure?status=11${paramTxt}`
+      return `/sourcing/partsprocure?status=11${this.userRoleParams()}`
     }
 
   },
@@ -246,6 +238,19 @@ export default {
     this.init()
   },
   methods: {
+    // 专业采购员和前期采购员要传的参数
+    userRoleParams(args = []) {
+      let paramTxt = ''
+      const argsName = ['buyerName','linieName',]
+      if (args && args.length) {
+        args.forEach((item, index) => {
+          argsName[index] = item
+        })
+      }
+      if (this.isQQCG) paramTxt += `&${argsName[0]}=${this.userInfo.nameZh}`
+      if (this.isZYCG) paramTxt += `&${argsName[1]}=${this.userInfo.nameZh}`
+      return paramTxt
+    },
     toLink(path) {
       if (!path) return
       const routeData = this.$router.resolve({path})
