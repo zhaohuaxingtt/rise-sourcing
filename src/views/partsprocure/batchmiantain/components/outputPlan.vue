@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-08-18 15:07:13
+ * @LastEditTime: 2021-08-20 13:56:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\outputPlan.vue
@@ -9,7 +9,7 @@
 <template>
 	<iCard class="outputPlan" :title="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')" tabCard>
 		<div class="body">
-			<tablelist class="table" index :tableData="tableListData" :tableTitle="tableTitle"
+			<tablelist ref='tabel' class="table" index :tableData="tableListData" :tableTitle="tableTitle"
 				:tableLoading="loading" @handleSelectionChange="handleSelectionChange" activeItems="partNum" @openPage="openPage"/>
 		</div>
 	</iCard>
@@ -34,6 +34,8 @@
 		},
 		created() {
 			this.purchaseProjectIds = Array.isArray(this.$route.query.ids)?this.$route.query.ids:[this.$route.query.ids];
+		},
+		mounted(){
 			this.getData()
 		},
 		methods: {
@@ -53,6 +55,9 @@
 							}
 						})
 						this.tableListData = arr;
+						this.$nextTick(()=>{
+							this.$refs.tabel.defaultSelectAll()
+						})
 						this.$emit('updateCategoryGroup', Object.keys(categoryMap).map(key => ({ categoryId: key, categoryCode: categoryMap[key].categoryCode, categoryName: categoryMap[key].categoryName })))
 					}
 				})

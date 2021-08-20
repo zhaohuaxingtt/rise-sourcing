@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-08-17 20:24:08
+ * @LastEditTime: 2021-08-20 14:08:30
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -341,7 +341,9 @@ export default {
       for (let i in this.batch) {
         if (i == "purchaseProjectIds") {
           this.batch[i] = [];
-        } else {
+        } else if(i == 'type'){
+          break
+        }  else {
           this.batch[i] = "";
         }
       }
@@ -350,7 +352,7 @@ export default {
     },
     // 重置stuff数据
     resetStuff() {
-      // this.categoryObj = {};
+      this.categoryObj = {};
       this.stuff = {};
       this.stuffArr = [];
     },

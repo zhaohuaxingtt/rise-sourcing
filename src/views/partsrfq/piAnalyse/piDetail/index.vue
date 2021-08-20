@@ -206,9 +206,9 @@ export default {
     handleCloseCustom(val) {
       this.customParams = {
         ...this.customParams,
-        visible: false
+        visible: false,
       };
-      
+
     },
     // 关闭零件
     handlePartItemClose({event, item}) {
@@ -263,7 +263,7 @@ export default {
         if (this.currentTab === AVERAGE) {
           await this.getAverageData();
         } else {
-          await this.getDataInfo();
+          await this.getDataInfo({propsArrayLoading: ['tableLoading', 'pieLoading']});
         }
       });
     },
@@ -349,11 +349,17 @@ export default {
           await this.handleSaveAsReport(async (downloadName, downloadUrl) => {
             req.downloadName = downloadName;
             req.downloadUrl = downloadUrl;
-            await saveAnalysisScheme(req);
+            const res = await saveAnalysisScheme(req);
+            if (res.result) {
+              await this.setTableEditStatus(false);
+            }
             this.saveDialog = false;
           });
         } else {
-          await saveAnalysisScheme(req);
+          const res = await saveAnalysisScheme(req);
+          if (res.result) {
+            await this.setTableEditStatus(false);
+          }
           this.saveDialog = false;
         }
         this.pageLoading = false;
@@ -463,6 +469,11 @@ export default {
         isRepeat = true;
       }
       return isRepeat;
+    },
+    // 设置表格编辑状态
+    setTableEditStatus(boolean) {
+      this.$refs.theAverageTable.tableStatus = boolean;
+      this.$refs.theCurrentTable.tableStatus = boolean;
     },
   },
 };
