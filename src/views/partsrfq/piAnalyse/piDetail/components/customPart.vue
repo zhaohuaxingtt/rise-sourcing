@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-19 14:41:01
+ * @LastEditTime: 2021-08-19 17:22:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -333,6 +333,10 @@ export default {
         cursor: pointer;
       }
     }
+  }
+  
+  .mainTableBox {
+    padding-bottom: 80px;
   }
   .flooterBox {
     position: absolute;
