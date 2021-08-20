@@ -75,7 +75,7 @@ export default {
       const pms = {
         rfqId: this.$route.query.id
       }
-      const res1 = await pageRfqPartPurPro(pms.rfqId)
+      const res1 = await pageRfqPartPurPro(pms)
       const res = await powerBiUrl()
       let partNumList = []
       if (res.data && res1.data) {
