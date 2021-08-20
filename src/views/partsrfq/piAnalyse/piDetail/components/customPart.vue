@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-19 17:22:27
+ * @LastEditTime: 2021-08-20 10:17:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -54,6 +54,7 @@
       <el-divider style="marginTop: 20px;"></el-divider>
       <div class="mainTableBox">
         <tableList
+          :rowKey="null"
           :tableData="mainTableData"
           :tableTitle="customTableTitle"
           :tableLoading="loading"

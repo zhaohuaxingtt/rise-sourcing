@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-19 18:51:35
+ * @LastEditTime: 2021-08-20 10:17:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -36,6 +36,7 @@
       <el-divider style="marginTop: 20px;"></el-divider>
       <div class="mainTableBox">
         <tableList
+          :rowKey="null"
           :tableData="mainTableData"
           :tableTitle="addTableTitle"
           :tableLoading="loading"
@@ -121,13 +122,14 @@ export default {
     },
     // 点击添加按钮
     clickAdd() {
-      console.log('selectMainData', this.selectMainData);
       this.targetTableData = this.targetTableData.concat(this.selectMainData)
       this.selectTargetData = this.selectTargetData.concat(this.selectMainData)
       this.selectMainData.forEach(item => {
         const index = this.mainTableData.findIndex(mainItem => mainItem == item)
         this.mainTableData.splice(index, index + 1)
+        this.selectMainData.splice(index, index + 1)
       })
+      this.selectMainData = []
       this.$nextTick(() => {
         this.renderTargetTable()
       })
