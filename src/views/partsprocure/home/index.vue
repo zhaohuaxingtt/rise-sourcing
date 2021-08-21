@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-08-19 12:28:28
+ * @LastEditTime: 2021-08-21 18:07:20
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -23,7 +23,7 @@
           <!------------------------------------------------------------------------>
           <iSearch
             class="margin-bottom20"
-            @sure="getTableListFn()"
+            @sure="()=>{page.currPage = 1;getTableListFn()}"
             @reset="reset"
             :resetKey="PARTSPROCURE_RESET"
             :searchKey="PARTSPROCURE_CONFIRM"
@@ -471,6 +471,7 @@ export default {
           )
         );
       }
+      if(this.selectTableData.find(i=>i.status == 14)) return iMessage.warn(this.language('LINGJIANCAIGXMYDJ','选择的零件采购项目中存在零件已冻结状态，无法为您批量维护！'))
       this.$router.push({
         path: "/sourcing/partsprocure/batchmiantain",
         query: {

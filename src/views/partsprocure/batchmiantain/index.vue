@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-08-21 16:10:27
+ * @LastEditTime: 2021-08-21 17:05:23
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -201,19 +201,21 @@
       </template>
     </iSearch>
     <!---------------------------------------------------------------------->
+    <!----------------------------仅零件变更--------------------------------->
+    <!---------------------------------------------------------------------->
+    <onlyPartsChange v-if='partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey' ref='onlyPartsChange' v-permission='PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE' @handleSelectionChange="handleSelectionChange"></onlyPartsChange>
+    <!---------------------------------------------------------------------->
     <!----------------------------非仅零件变更-------------------------------->
     <!---------------------------------------------------------------------->
     <outputPlan
+      v-else
       v-permission='PARTSPROCURE_BATCHMIANTAIN_OUTPUTLINE'
       ref="outputPlan"
       class="margin-bottom20"
       @handleSelectionChange="handleSelectionChange"
       @updateCategoryGroup="updateCategoryGroup"
     />
-    <!---------------------------------------------------------------------->
-    <!----------------------------仅零件变更--------------------------------->
-    <!---------------------------------------------------------------------->
-    <onlyPartsChange ref='onlyPartsChange' v-permission='PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE' @handleSelectionChange="handleSelectionChange"></onlyPartsChange>
+  
   </iPage>
 </template>
 <script>
@@ -239,6 +241,7 @@ export default {
   },
   data() {
     return {
+      partProjTypes,
       fromGroup: [],
       category: [], //材料组数据
       stuffArr: [], //工艺组数据
@@ -395,7 +398,7 @@ export default {
           cfController: this.batch.cfController,
           linieDept: this.batch.linieDept,
           linieName: this.linie.name, 
-          linieUserId: this.linie.id,
+          linieUserId: this.linie.code,
           partProjectType: this.batch.type,
           partType: this.batch.partType,
           procureFactory: this.batch.procureFactory,

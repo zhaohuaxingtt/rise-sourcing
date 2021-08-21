@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-08-12 14:17:27
+ * @LastEditTime: 2021-08-21 17:20:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -116,7 +116,6 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.info = res.data || {}
-            console.log(this.info)
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
