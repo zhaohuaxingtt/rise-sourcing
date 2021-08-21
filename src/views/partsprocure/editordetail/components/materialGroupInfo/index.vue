@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-08-21 17:20:20
+ * @LastEditTime: 2021-08-21 18:10:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -107,6 +107,7 @@ export default {
     this.getMaterialGroup()
   },
   methods: {
+    
     // 获取材料组数据
     getMaterialGroup() {
       // 签收的时候默认会设置一个采购项目为这个零件号。移除提示问题
