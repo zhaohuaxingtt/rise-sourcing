@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-02 20:05:09
- * @LastEditTime: 2021-08-16 16:25:58
+ * @LastEditTime: 2021-08-21 16:26:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\selectOldpartsNumber\index.vue
@@ -61,6 +61,7 @@ export default{
     selectFn(){
       if(this.selectTableData.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJU','抱歉，您还未选择定点记录！'))
       this.$emit('input',this.selectTableData[0])
+      this.$emit('vmodelHander',this.selectTableData[0])
       this.diolog.show = false
     },
     handleSelectionChange(res){
