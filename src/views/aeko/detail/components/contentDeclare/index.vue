@@ -474,10 +474,12 @@ export default {
       .catch(() => this.declareToggleLoading = false)
     },
     // 表态重置
-    handleDeclareReset() {
+    async handleDeclareReset() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHONGZHIBIAOTAIDELINGJIAN", "请选择需要重置表态的零件"))
 
       if (!this.multipleSelection.every(item => item.status === "TOBE_STATED" || item.status === "QUOTING" || item.status === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI", "请选择内容状态为待表态、报价中、已报价的零件进行重置"))
+
+      await this.$confirm(this.language('DECLARERESETTIPS','该行表态内容会被重置，请确认'))
 
       this.declareResetLoading = true
 
