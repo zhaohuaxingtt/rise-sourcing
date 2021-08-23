@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-20 14:39:23
+ * @LastEditTime: 2021-08-23 15:17:06
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -267,9 +267,9 @@ export default {
           // 材料组定点及时率及平均定点周期
           const materialGroupOverviewDTO = res.data.materialGroupOverviewDTO || []
           this.materialGroupData = {
-            freqData: materialGroupOverviewDTO.map(o => o.avgPeriod || 0) || [],
+            freqData: materialGroupOverviewDTO.map(o => o.avgPeriodPercent || 0) || [],
             nomiData: materialGroupOverviewDTO.map(o => o.timeRatePercent) || [],
-            fugroup: materialGroupOverviewDTO.map(o => o.materialGroupName) || [],
+            fugroup: materialGroupOverviewDTO.map(o => `${o.materialGroupName} ${o.materialCode}`) || [],
           }
           // 流转状态跟踪
           const circulationData = res.data.circulationOverviewDTO || {}
