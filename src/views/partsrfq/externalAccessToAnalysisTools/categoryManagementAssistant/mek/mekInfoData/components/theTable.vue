@@ -41,7 +41,7 @@
       </el-row>
     </el-form>
 
-    <el-table v-loading="tableLoading" @selection-change="handleSelectionChange" :data="tableListData" style="width: 100%">
+    <el-table class="elTable" v-loading="tableLoading" @selection-change="handleSelectionChange" :data="tableListData" style="width: 100%">
       <el-table-column type="selection" width="55">
       </el-table-column>
       <el-table-column type="index" :index="indexMethod" label="#" width="55"> </el-table-column>
@@ -348,19 +348,19 @@ export default {
   font-size: 14px;
   color: #e83638;
 }
-::v-deep th > .cell {
+::v-deep .elTable th > .cell {
   height: 4rem;
   text-align: center;
 }
-::v-deep td > .cell {
+::v-deep .elTable td > .cell {
   text-align: center;
 }
-::v-deep th:nth-child(8) {
+::v-deep .elTable th:nth-child(8) {
   .cell {
     text-align: left;
   }
 }
-::v-deep th:nth-child(9) {
+::v-deep .elTable th:nth-child(9) {
   .cell {
     text-align: left;
   }

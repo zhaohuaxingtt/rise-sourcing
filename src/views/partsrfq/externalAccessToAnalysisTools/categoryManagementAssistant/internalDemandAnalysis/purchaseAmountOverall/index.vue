@@ -2,14 +2,14 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-07-30 17:31:22
- * @LastEditors: 舒杰
+ * @LastEditors: zbin
  * @Descripttion: your project
 -->
 <template>
   <iCard id="allContainer" class="content">
     <div class="title flex-between-center-center margin-bottom30">
       <div>
-        <div class="text">采购金额总览</div>
+        <div class="text">{{language('CAIGOUJINGEZONGLAN','采购金额总览')}}</div>
         <el-row class="margin-top35" style="width:430px" :gutter="15">
           <el-col :span="12">
             <iDatePicker :placeholder="language('QINGXUANZHEMNIANFENG','请选择年份')" value-format="yyyy" type="year" v-model="form.year" :picker-options="pickerOptions" />
@@ -25,7 +25,7 @@
         <iButton @click="handleSave" :loading="saveButtonLoading">{{$t('LK_BAOCUN')}}</iButton>
         <iButton @click="handleBack">{{$t('LK_FANHUI')}}</iButton>
         <div class="margin-top30">
-          <iButton @click="handle">{{$t('LK_QUEREN')}}</iButton>
+          <iButton @click="handleConfirm">{{$t('LK_QUEREN')}}</iButton>
           <iButton @click="handleSearchReset">{{$t('LK_CHONGZHI')}}</iButton>
         </div>
       </div>
@@ -38,13 +38,13 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { iCard, iSelect, iPage, iButton, iDatePicker } from "rise";
+import { iCard, iSelect, iPage, iButton, iDatePicker, iMessage } from "rise";
 import * as pbi from 'powerbi-client';
 import { downloadPdfMixins } from '@/utils/pdf';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import { getPurchaseAmountPbi } from "@/api/partsrfq/purchaseAmountOverall/index.js";
 import { dictByCode } from "./components/data.js";
-import { getCategoryAnalysis } from "@/api/categoryManagementAssistant/categoryManagementAssistant/index.js";
+import { getCategoryAnalysis, categoryAnalysis } from "@/api/categoryManagementAssistant/internalDemandAnalysis";
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: { iCard, iSelect, iPage, iButton, iDatePicker },
@@ -85,8 +85,9 @@ export default {
         requireSingleSelection: true
       },
       form: {
-        year: '2022',
-        page: ''
+        year: '',
+        page: '',
+        categoryCode:this.$store.state.rfq.categoryCode
       },
       formGoup: {
         yearList: [],
@@ -95,7 +96,7 @@ export default {
       pickerOptions: {
         disabledDate(time) {
           let currentYear = new Date().getFullYear()
-          return time.getFullYear() !== currentYear && time.getFullYear() !== currentYear + 1 && time.getFullYear() !== currentYear + 2;
+          return time.getFullYear() !== currentYear && time.getFullYear() !== currentYear - 1 && time.getFullYear() !== currentYear - 2;
         }
       },
     }
@@ -106,27 +107,31 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-    handle() {
-      this.filter_year.values = [parseInt(this.form.year)]
-      if (!!this.form.page) {
-        this.report.setPage(this.form.page);
+    handleConfirm() {
+      if (this.form.year) {
+        this.filter_year.values = [parseInt(this.form.year)]
+        if (!!this.form.page) {
+          this.report.setPage(this.form.page);
+        }
+        let filterAll = [this.filter_year]
+        if (!!this.form.categoryCode) {
+          filterAll.push(this.filter_category)
+        }
+        this.report.setFilters(filterAll);
+      } else {
+        iMessage.warn(this.language('NIANFENGBIXUAN', '年份必选'))
       }
-      let filterAll = [this.filter_year]
-      if (!!this.$store.state.rfq.categoryCode) {
-        filterAll.push(this.filter_category)
-      }
-      this.report.setFilters(filterAll);
     },
     async dictByCode() {
       const res = await dictByCode('CATEGORY_MANAGEMENT_LIST')
       this.formGoup.pageList = res
       const pms = {
-        categoryCode: this.$store.state.rfq.categoryCode,
+        categoryCode: this.form.categoryCode,
         schemeType: 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT'
       }
       if (!!pms.categoryCode) {
         const res1 = await getCategoryAnalysis(pms)
-        this.form.page = res1
+        this.form.categoryCode = res1.data.categoryCode
       }
     },
     async handleSave() {
@@ -135,27 +140,16 @@ export default {
         domId: 'allContainer',
         pdfName: 'purchaseAmountOverall',
       });
-      const req = {
+      let params = {
         categoryCode: this.categoryCode,
+        fileType: "PDF",
+        schemeType: "CATEGORY_MANAGEMENT_PURCHASE_AMOUNT",
         reportFileName: resFile.downloadName,
         reportName: resFile.downloadName,
-        reportUrl: resFile.downloadUrl,
-      };
-      let res = '';
-      switch (this.current) {
-        case RAWMATERIAL:
-          req.rawMaterialGroupDataDTO = this.getSearchForm();
-          res = await saveRawMaterialScheme(req);
-          break;
-        case LABOUR:
-          req.labourGroupDataDTO = this.getSearchForm();
-          res = await saveLabourScheme(req);
-          break;
-        case ENERGY:
-          req.energyGroupDataDTO = this.getSearchForm();
-          res = await saveEnergyScheme(req);
-          break;
+        schemeName: "",
+        reportUrl: resFile.downloadUrl
       }
+      const res = await categoryAnalysis(params)
       this.resultMessage(res);
       this.saveButtonLoading = false;
     },
@@ -205,7 +199,6 @@ export default {
         filterType: pbi.models.FilterType.BasicFilter,
         requireSingleSelection: true
       }
-      console.log(this.$store.state.rfq.categoryCode);
       var filter_category = {
         $schema: "http://powerbi.com/product/schema#basic",
         target: {
@@ -213,7 +206,7 @@ export default {
           column: "category_id"
         },
         operator: "In",
-        values: [String(this.$store.state.rfq.categoryCode)],//this.year
+        values: [String(this.form.categoryCode)],//this.year
         filterType: pbi.models.FilterType.BasicFilter,
         requireSingleSelection: true
       }
@@ -222,7 +215,7 @@ export default {
       // Report.on will add an event handler which prints to Log window.
       // this.config.pageName = this.form.page
       let filterAll = [filter_year]
-      if (!!this.$store.state.rfq.categoryCode) {
+      if (!!this.form.categoryCode) {
         filterAll.push(filter_category)
       }
       report.on("loaded", function() {
