@@ -12,8 +12,8 @@ export const searchList = [
   {props:'carTypeCodeList',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',isNewSelect:true,permissionKey:'AEKO_MANAGELIST_SELECT_CARTYPECODE',selectOption:'carTypeCodeList',filterable:true,noShowAll:true,clearable:true,multiple:true,},
   {props:'frozenDate',label:'冻结⽇期',type:'datePicker',labelKey:'LK_AEKODONGJIERIQI',permissionKey:'AEKO_MANAGELIST_DATEPICKER_FROZENDATE',},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand',permissionKey:'AEKO_MANAGELIST_SELECT_BRAND'},
-  {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',permissionKey:'AEKO_MANAGELIST_SELECT_AEKOSTATUS',multiple:true,noShowAll:true,clearable:true},
-  {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'coverStatusList',permissionKey:'AEKO_MANAGELIST_SELECT_COVERSTATUS',multiple:true,noShowAll:true,clearable:true},
+  {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',permissionKey:'AEKO_MANAGELIST_SELECT_AEKOSTATUS',multiple:true,clearable:true},
+  {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'coverStatusList',permissionKey:'AEKO_MANAGELIST_SELECT_COVERSTATUS',multiple:true,clearable:true},
   {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',selectOption:'buyerName',permissionKey:'AEKO_MANAGELIST_SELECT_BUYERNAME',noShowAll:true,filterable:true,clearable:true},
 ]
 
