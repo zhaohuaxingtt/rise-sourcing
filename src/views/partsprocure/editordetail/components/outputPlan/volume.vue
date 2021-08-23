@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     async getData() {
-      if (this.parmas.partProjectSource == 2) return // 手工创建的采购项目不调用该接口
+      if (this.params.partProjectSource == 2) return // 手工创建的采购项目不调用该接口
 
       this.loading = true;
 
