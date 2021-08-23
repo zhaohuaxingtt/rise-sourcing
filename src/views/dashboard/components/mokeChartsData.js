@@ -1,4 +1,3 @@
-import _ from 'lodash'
 // 主要的几种颜色
 const colors = ['#6192f0', '#00bf87', '#a5aab4'];
 const rich = {
@@ -32,8 +31,12 @@ export function generateOptions(params) {
         // 刻度分割分数
         const splitNumber = 10
         // 右边平均定点周期y轴刻度最大值
-        let max2 = _.max(freq.map(o => Number(o)))
-        max2 = max2 ? Math.floor(max2/100)*splitNumber : 0
+        let max2Number = window._.max(freq.map(o => Number(o)))
+        max2Number = max2Number ? Math.floor(max2Number/100) : 0
+        // 求平均定点周期y刻度权重值，根据最大值取取最大值相近的10的倍数
+        const splitWeight = max2Number > 10 ? Math.floor(max2Number/10) : 0
+        // 生成平均定点周期y刻度最大值
+        const max2 = (splitWeight + 1) * 10
 
         freq.forEach(d => {
             freqData.push({
