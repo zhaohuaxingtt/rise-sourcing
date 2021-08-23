@@ -1,7 +1,7 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-21 18:00:29
+ * @LastEditTime: 2021-08-23 14:37:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
@@ -43,6 +43,7 @@ export default{
   },
   methods:{
     handleCreateNomiApplication(){
+      if(this.datalist.find(items=> items.oldFsnrGsnrNum === null)) return iMessage.warn(this.language('NINGHAIWEIGUANLYUANLJ','您还未关联原零件，请关联后重试！'))
       if(this.datalist.find(items=>typeof items.oldFsnrGsnrNum === "object")) return iMessage.warn(this.language('QINGXIANBAOCDANGQIAN','请先保存当前修改后再试！'))
       this.loading = true
       this.messageDataList = []

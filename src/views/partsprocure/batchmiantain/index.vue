@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-08-21 17:05:23
+ * @LastEditTime: 2021-08-23 14:17:09
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -203,7 +203,7 @@
     <!---------------------------------------------------------------------->
     <!----------------------------仅零件变更--------------------------------->
     <!---------------------------------------------------------------------->
-    <onlyPartsChange v-if='partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey' ref='onlyPartsChange' v-permission='PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE' @handleSelectionChange="handleSelectionChange"></onlyPartsChange>
+    <onlyPartsChange @updateCategoryGroup="updateCategoryGroup" v-if='partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey' ref='onlyPartsChange' v-permission='PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE' @handleSelectionChange="handleSelectionChange"></onlyPartsChange>
     <!---------------------------------------------------------------------->
     <!----------------------------非仅零件变更-------------------------------->
     <!---------------------------------------------------------------------->
