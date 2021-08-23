@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:12:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 15:09:24
+ * @LastEditTime: 2021-08-23 17:14:10
  * @Description: 项目管理-排程助手
  * @FilePath: \front-web\src\views\project\schedulingassistant\index.vue
 -->
@@ -17,7 +17,6 @@
 <script>
 import { iPage } from "rise"
 import { MENU, MENUFS } from './data'
-import { cloneDeep } from "lodash"
 import projectTop from '../components/projectHeader'
 import { TAB } from '../components/data'
 
@@ -30,15 +29,18 @@ export default {
   computed: {
     subNavList() {
       if (this.$route.path.includes('proconfirm')) {
-        return cloneDeep(MENUFS)
+        // eslint-disable-next-line no-undef
+        return _.cloneDeep(MENUFS)
       }
-      return cloneDeep(MENU)
+      // eslint-disable-next-line no-undef
+      return _.cloneDeep(MENU)
     },
     navList() {
       if (this.$route.path.includes('proconfirm')) {
         return TAB.filter(item => item.value === 2)
       }
-      return cloneDeep(TAB)
+      // eslint-disable-next-line no-undef
+      return _.cloneDeep(TAB)
     }
   }
 }

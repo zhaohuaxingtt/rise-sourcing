@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-19 18:52:17
+ * @LastEditTime: 2021-08-23 17:16:25
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
@@ -37,7 +37,6 @@
 <script>
 import { iSearch, iSelect, iInput, iButton, iMessage, iPage } from 'rise'
 import { searchListPro, searchListPart } from './data'
-import { cloneDeep } from 'lodash' 
 import productGroup from './components/productGroup'
 import part from './components/part'
 import { getCarTypePro, getProductGroupAll } from '@/api/project'
@@ -58,7 +57,8 @@ export default {
   },
   computed: {
     searchList() {
-      return this.searchParams.level === '1' ? cloneDeep(searchListPro) : cloneDeep(searchListPart)
+      // eslint-disable-next-line no-undef
+      return this.searchParams.level === '1' ? _.cloneDeep(searchListPro) : _.cloneDeep(searchListPart)
     }
   },
   created() {
