@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-17 15:15:12
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-23 16:30:47
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\data.js
  */
@@ -44,81 +44,81 @@ export const nomalDetailTitleBlue = [
 
 // 生产
 export const nomalTableTitle = [
-  {props:'fsnrGsnrNum',name:'FS No.', key: "", minWidth: 60},
-  {props:'partNo',name:'Part No.', key: "", minWidth: 60},
+  {props:'fsnrGsnrNum',name:'FS No.', key: "", minWidth: 120},
+  {props:'partNo',name:'Part No.', key: "", minWidth: 100},
   {props:'partNo',name:'Old Part No.', key: "", minWidth: 100}, // oldPartNo => partNo
-  {props:'oldAPrice',name:'Old A Price', key: "", minWidth: 60},
-  {props:'partName',name:'Part Name', key: "", minWidth: 85},
+  {props:'oldAPrice',name:'Old A Price', key: "", minWidth: 100},
+  {props:'partName',name:'Part Name', key: "", minWidth: 100},
   {props:'unit',name:'Unit', key: "", minWidth: 80},
   {props:'tpDep',name:'TP Dep.',  key: "", minWidth: 80},
   {props:'zp',name:'ZP',  key: "", minWidth: 80},
-  {props:'project',name:'Project',  key: "", minWidth: 80},
-  {props:'supplierNo',name:'Supplier No.', key: "", minWidth: 80},
-  {props:'supplierName',name:'Supplier Name',  key: "", minWidth: 90},
+  {props:'project',name:'Project',  key: "", minWidth: 120},
+  {props:'supplierNo',name:'Supplier No.', key: "", minWidth: 120},
+  {props:'supplierName',name:'Supplier Name',  key: "", minWidth: 120},
   {props:'prodLocation',name:'Location',  key: "", minWidth: 95},
   {props:'cfTargetAPrice',name:'CF A Price', key: "", minWidth: 95},
   {props:'cfTargetBPrice',name:'CF B Price', key: "", minWidth: 95},
   {props:'rw',name:'RW', key: "", minWidth: 80},
-  {props:'partProjectType',name:'Type', key: "", minWidth: 45},
+  {props:'partProjectType',name:'Type', key: "", minWidth: 100},
   {props:'aprice',name:'A Price', key: "", minWidth: 90},
   {props:'bprice',name:'B Price', key: "", minWidth: 90},
   {props:'packPrice',name:'Packing', key: "", minWidth: 80},
-  {props:'transportPrice',name:'Transportation', key: "", minWidth: 80},
-  {props:'operatePrice',name:'Operation', key: "", minWidth: 65},
+  {props:'transportPrice',name:'Transportation', key: "", minWidth: 120},
+  {props:'operatePrice',name:'Operation', key: "", minWidth: 100},
   {props:'investFee',name:'Invest(no tax)', key: "", minWidth: 120},
   {props:'share',name:'Share(%)', key: "", minWidth: 90},
   {props:'ltc',name:'LTC', key: "", minWidth: 120},
   {props:'beginYearReduce',name:'LTC Date', key: "", minWidth: 120},
-  {props:'demand',name:'Annual Demand(K)', key: "", minWidth: 80},
-  {props:'output',name:'Annual Capa.(K)', key: "", minWidth: 65},
-  {props:'turnover',name:'Purchase Price', key: "", minWidth: 80},
-  {props:'g',name:'Notes', key: "", minWidth: 65},
+  {props:'demand',name:'Annual Demand(K)', key: "", minWidth: 120},
+  {props:'output',name:'Annual Capa.(K)', key: "", minWidth: 120},
+  {props:'turnover',name:'Purchase Price', key: "", minWidth: 120},
+  {props:'g',name:'Notes', key: "", minWidth: 100},
 ]
 
 // 附件列表
 export const accessoryTableTitle = [
-  {props:'fsnrGsnrNum',name:'SP No.', key: "", minWidth: 60},
+  {props:'fsnrGsnrNum',name:'SP No.', key: "", minWidth: 120},
   // {props:'supplierNo',name:'Series Part No.', key: "", minWidth: 60},
-  {props:'partNum',name:'Accessory Part No.', key: "", minWidth: 100},
-  {props:'partName',name:'Accessory Part Name', key: "", minWidth: 60},
+  {props:'partNum',name:'Accessory Part No.', key: "", minWidth: 120},
+  {props:'partName',name:'Accessory Part Name', key: "", minWidth: 120},
   {props:'carLine',name:'Carline', key: "", minWidth: 85},
   {props:'supplierSapCode',name:'Code', key: "", minWidth: 80},
   {props:'supplierName',name:'Supplier',  key: "", minWidth: 80},
-  {props:'prodLocation',name:'Prod.Location',  key: "", minWidth: 80},
+  {props:'prodLocation',name:'Prod.Location',  key: "", minWidth: 100},
   {props:'demand',name:'Demand(K)',  key: "", minWidth: 80},
   {props:'bprice',name:'B Price', key: "", minWidth: 80},
   {props:'cfTargetBPrice',name:'CF B Price',  key: "", minWidth: 90},
   {props:'originalPrice',name:'Old B Price',  key: "", minWidth: 95},
   {props:'marketRetailPrice',name:'Sales Price', key: "", minWidth: 95},
   // {props:'f',name:'Series B Price', key: "", minWidth: 95},
-  {props:'quotationSopDate',name:'Price Start Date', key: "", minWidth: 80},
+  {props:'quotationSopDate',name:'Price Start Date', key: "", minWidth: 120},
   {props:'turnover',name:'Turnover(K)', key: "", minWidth: 45},
   {props:'share',name:'Share(%)', key: "", minWidth: 90},
   {props:'ltc',name:'LTC', key: "", minWidth: 120},
-  {props:'beginYearReduce',name:'Start Time of LTC', key: "", minWidth: 80},
+  {props:'beginYearReduce',name:'Start Time of LTC', key: "", minWidth: 120},
   {props:'g',name:'Remark', key: "", minWidth: 65}
 ]
 
 // 配件列表
 export const sparePartTableTitle = [
-  {props:'supplier',name:'SP No.', key: "", minWidth: 60},
-  {props:'assemblyPartNum',name:'Series Part No.', key: "", minWidth: 60},
+  {props:'supplier',name:'SP No.', key: "", minWidth: 100},
+  {props:'assemblyPartNum',name:'Series Part No.', key: "", minWidth: 120},
   {props:'partNum',name:'Spare Part No.', key: "", minWidth: 100},
-  {props:'partName',name:'Spare Part Name', key: "", minWidth: 60},
+  {props:'partName',name:'Spare Part Name', key: "", minWidth: 120},
   {props:'carLine',name:'Carline', key: "", minWidth: 85},
-  {props:'supplierSapCode',name:'Code', key: "", minWidth: 80},
-  {props:'supplierName',name:'Supplier',  key: "", minWidth: 80},
-  {props:'prodLocation',name:'Prod.Location',  key: "", minWidth: 80},
+  {props:'supplierSapCode',name:'Code', key: "", minWidth: 120},
+  {props:'supplierName',name:'Supplier',  key: "", minWidth: 120},
+  {props:'prodLocation',name:'Prod.Location',  key: "", minWidth: 120},
   {props:'demand',name:'Demand(K)', key: "", minWidth: 80},
   {props:'bprice',name:'B Price',  key: "", minWidth: 90},
-  {props:'cfTargetBPrice',name:'CF B Price',  key: "", minWidth: 95},
-  {props:'originalPrice',name:'Old Price', key: "", minWidth: 95},
-  {props:'assemblyBprice',name:'Series Price', key: "", minWidth: 95},
-  {props:'quotationSopDate',name:'Price Start Date', key: "", minWidth: 80},
+  {props:'cfTargetBPrice',name:'CF B Price',  key: "", minWidth: 120},
+  {props:'originalPrice',name:'Old Price', key: "", minWidth: 120},
+  {props:'assemblyBprice',name:'Series Price', key: "", minWidth: 120},
+  {props:'quotationSopDate',name:'Price Start Date', key: "", minWidth: 120},
   {props:'turnover',name:'Turnover(K)', key: "", minWidth: 45},
   {props:'share',name:'Share(%)', key: "", minWidth: 90},
   {props:'ltc',name:'LTC', key: "", minWidth: 120},
-  {props:'beginYearReduce',name:'Start Time of LTC', key: "", minWidth: 80},
+  {props:'beginYearReduce',name:'Start Time of LTC', key: "", minWidth: 120},
   {props:'g',name:'Remark', key: "", minWidth: 80},
 ]
 

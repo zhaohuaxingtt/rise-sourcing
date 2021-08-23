@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-03 10:39:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 10:05:27
+ * @LastEditTime: 2021-08-23 17:17:46
  * @Description: 配置显示字段弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\showItem\index.vue
 -->
@@ -41,7 +41,6 @@
 <script>
 import { iDialog, iButton, iMessage } from 'rise'
 import { updateFields } from '@/api/project'
-import { cloneDeep } from 'lodash'
 export default {
   components: { iDialog, iButton },
   props: {
@@ -54,7 +53,8 @@ export default {
   watch:{
     checkList: {
       handler() {
-        this.list = cloneDeep(this.checkList)
+        // eslint-disable-next-line no-undef
+        this.list = _.cloneDeep(this.checkList)
       },
       deep: true
     }
@@ -65,7 +65,8 @@ export default {
       buyer: '',
       fsOptions: {},
       selectData: [],
-      list: cloneDeep(this.checkList)
+      // eslint-disable-next-line no-undef
+      list: _.cloneDeep(this.checkList)
     }
   },
   methods: {

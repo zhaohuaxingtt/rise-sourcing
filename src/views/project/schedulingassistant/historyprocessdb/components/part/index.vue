@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 10:12:30
+ * @LastEditTime: 2021-08-23 17:18:55
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -58,7 +58,6 @@ import { pageMixins } from "@/utils/pageMixins"
 import logicSettingDialog from '@/views/project/schedulingassistant/progroup/components/logicsetting'
 import { selectDictByKeyss } from '@/api/dictionary'
 import showItemDialog from '../showItem'
-import { cloneDeep } from 'lodash'
 import { getCondition, getFitting, downloadHistoryProgressFile } from '@/api/project'
 export default {
   mixins: [pageMixins],
@@ -139,7 +138,8 @@ export default {
       return partTableTitle.filter(item => !this.productColumns.includes(item.key) && (this.selectColumn.includes(item.key)))
     },
     checkList() {
-      return cloneDeep(partTableTitle).reduce((accu, item) => {
+      // eslint-disable-next-line no-undef
+      return _.cloneDeep(partTableTitle).reduce((accu, item) => {
         if (this.productColumns.includes(item.key)) {
           return accu
         }
