@@ -179,7 +179,7 @@ export default {
             const { linieDeptNum=[] } = this;
             if(linieDeptNum.length){
                 linieDeptNum.map((item)=>{
-                    item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                    item.label = item.deptNum;
                     item.value = item.id;
                 })
                 this.commoditySelectOptions = linieDeptNum;
@@ -188,7 +188,7 @@ export default {
                     const {code,data} = res;
                     if(code ==200 ){
                         data.map((item)=>{
-                        item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.label = item.deptNum;
                         item.value = item.deptNum;
                         })
                         this.commoditySelectOptions = data;
