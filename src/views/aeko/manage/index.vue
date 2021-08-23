@@ -220,8 +220,8 @@ export default {
         searchParams:{
           brand:'',
           buyerName:'',
-          aekoStatusList:[],
-          coverStatusList:[],
+          aekoStatusList:[''],
+          coverStatusList:[''],
           carTypeCodeList:[''],
           linieDeptNumList:[''],
         },
@@ -299,8 +299,8 @@ export default {
         this.searchParams = {
           brand:'',
           buyerName:'',
-          aekoStatusList:[],
-          coverStatusList:[],
+          aekoStatusList:[''],
+          coverStatusList:[''],
           carTypeCodeList:[''],
           linieDeptNumList:[''],
         };
@@ -315,7 +315,7 @@ export default {
       async getList(){
         this.loading = true;
         const {searchParams,page} = this;
-        const {partNum,carTypeCodeList,linieDeptNumList} = searchParams;
+        const {partNum,carTypeCodeList,linieDeptNumList,aekoStatusList,coverStatusList} = searchParams;
         // 若有冻结起止时间将其拆分成两个字段
         const {frozenDate=[]} = searchParams;
         const data = {
@@ -323,6 +323,8 @@ export default {
             size:page.pageSize,
             carTypeCodeList:carTypeCodeList.length && carTypeCodeList[0]=='' ? [] : carTypeCodeList,
             linieDeptNumList:linieDeptNumList.length && linieDeptNumList[0]=='' ? [] : linieDeptNumList,
+            aekoStatusList:aekoStatusList.length && aekoStatusList[0]=='' ? [] : aekoStatusList,
+            coverStatusList:coverStatusList.length && coverStatusList[0]=='' ? [] : coverStatusList,
         };
         if(frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
