@@ -404,7 +404,7 @@ export default {
           const {code,data} = res;
           if(code ==200 ){
             data.map((item)=>{
-              item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+              item.desc = item.deptNum;
               item.code = item.id;
             })
             this.selectOptions.linieDeptNumList = data;
