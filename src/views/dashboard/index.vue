@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-23 13:41:46
+ * @LastEditTime: 2021-08-23 15:17:06
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -269,7 +269,7 @@ export default {
           this.materialGroupData = {
             freqData: materialGroupOverviewDTO.map(o => o.avgPeriodPercent || 0) || [],
             nomiData: materialGroupOverviewDTO.map(o => o.timeRatePercent) || [],
-            fugroup: materialGroupOverviewDTO.map(o => o.materialGroupName) || [],
+            fugroup: materialGroupOverviewDTO.map(o => `${o.materialGroupName} ${o.materialCode}`) || [],
           }
           // 流转状态跟踪
           const circulationData = res.data.circulationOverviewDTO || {}
