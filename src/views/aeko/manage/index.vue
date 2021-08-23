@@ -223,7 +223,7 @@ export default {
           aekoStatusList:[],
           coverStatusList:[],
           carTypeCodeList:[''],
-          linieDeptNumList:[],
+          linieDeptNumList:[''],
         },
         selectOptions:{
           'brand':[],
@@ -302,7 +302,7 @@ export default {
           aekoStatusList:[],
           coverStatusList:[],
           carTypeCodeList:[''],
-          linieDeptNumList:[],
+          linieDeptNumList:[''],
         };
         this.getList();
       },
@@ -315,13 +315,14 @@ export default {
       async getList(){
         this.loading = true;
         const {searchParams,page} = this;
-        const {partNum,carTypeCodeList} = searchParams;
+        const {partNum,carTypeCodeList,linieDeptNumList} = searchParams;
         // 若有冻结起止时间将其拆分成两个字段
         const {frozenDate=[]} = searchParams;
         const data = {
             current:page.currPage,
             size:page.pageSize,
             carTypeCodeList:carTypeCodeList.length && carTypeCodeList[0]=='' ? [] : carTypeCodeList,
+            linieDeptNumList:linieDeptNumList.length && linieDeptNumList[0]=='' ? [] : linieDeptNumList,
         };
         if(frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
@@ -404,7 +405,7 @@ export default {
           const {code,data} = res;
           if(code ==200 ){
             data.map((item)=>{
-              item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+              item.desc = item.deptNum;
               item.code = item.id;
             })
             this.selectOptions.linieDeptNumList = data;
@@ -684,6 +685,7 @@ export default {
 
       // 多选处理
       handleMultipleChange(value, key,multiple) {
+            console.log(value, key,multiple,'value, key,multiple');
           // 单选不处理
           if(!multiple) {
             if(!value){
@@ -693,6 +695,12 @@ export default {
               this.$set(this.searchParams,key,value);
               return;
             }
+          }
+
+          if (!value[value.length - 1]) {
+              this.$set(this.searchParams, key, [""])
+          } else {
+              this.$set(this.searchParams, key, this.searchParams[key].filter(item => item || item === 0))
           }
       },
 
