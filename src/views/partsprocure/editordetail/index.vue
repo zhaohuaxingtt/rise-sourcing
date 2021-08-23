@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-20 13:16:41
+ * @LastEditTime: 2021-08-21 17:24:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -314,7 +314,7 @@
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_CAILIAOZUXINXI','材料组信息')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFORMATION">
-				<materialGroupInfo :params="infoItem" />
+				<materialGroupInfo ref='materialGroupInfo' :params="infoItem" />
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN">
@@ -539,6 +539,7 @@
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
 					}
+					this.$refs.materialGroupInfo.getMaterialGroup()
 				});
 			},
 			getProcureGroup() {
