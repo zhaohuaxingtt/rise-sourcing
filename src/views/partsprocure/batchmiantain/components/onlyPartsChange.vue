@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-04 13:54:47
- * @LastEditTime: 2021-08-21 16:34:28
+ * @LastEditTime: 2021-08-23 14:30:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\onlyPartsChange.vue
@@ -67,6 +67,7 @@ export default{
       const dataIds = Array.isArray(this.$route.query.ids)?this.$route.query.ids:[this.$route.query.ids];
       getDataListBatchList({ids:dataIds}).then(res=>{  
         this.tableData = res.data.map(r=>{return {...r,...{selectOldParts:{show:false}}}})
+        this.$emit('updateCategoryGroup', new Set(this.tableData.map(r=> {return {categoryId:r.categoryId,categoryCode:r.categoryCode,categoryName:r.categoryName}})))
         this.$nextTick(()=>{
 					this.$refs.tabel.defaultSelectAll()
 				})

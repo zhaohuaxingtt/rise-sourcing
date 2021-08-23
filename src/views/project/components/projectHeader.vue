@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-10 17:07:17
+ * @LastEditTime: 2021-08-23 17:12:56
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -21,7 +21,6 @@
 <script>
 import { iNavMvp, icon } from "rise"
 import { TAB } from "./data"
-import { cloneDeep } from "lodash"
 import logButton from "@/components/logButton"
 
 export default {
@@ -31,7 +30,8 @@ export default {
     icon
   },
   props: {
-    navList: {type:Array, default: cloneDeep(TAB)},
+    // eslint-disable-next-line no-undef
+    navList: {type:Array, default: _.cloneDeep(TAB)},
     subNavList: {type:Array}
   },
   computed: {

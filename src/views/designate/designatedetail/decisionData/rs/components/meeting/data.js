@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-19 11:27:59
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-23 16:33:27
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -157,7 +157,7 @@ export const gsTableTitle = [
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 55},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 85},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 60},
-  {props:'suppliersNow',name:'现供供应商', enName: 'Current Supplier', key: "", minWidth: 60},
+  {props:'suppliersNow',name:'现供供应商', enName: 'Current Supplier', key: "", minWidth: 80},
   {props:'supplierName',name:'厂商', enName: 'Code', key: "", minWidth: 45},
   {props:'supplierId',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
@@ -172,7 +172,7 @@ export const gsTableTitle = [
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
   {props:'addFee',name:'认可费', enName: 'Release Cost', key: "", minWidth: 65},
-  {props:'savingFee',name:'估算节约值', enName: 'Estimaled Savings', key: "", minWidth: 65},
+  {props:'savingFee',name:'估算节约值', enName: 'Estimaled Savings', key: "", minWidth: 80},
   {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
 
@@ -198,7 +198,7 @@ export const dbTableTitle = [
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
   {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
   {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
-  {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
+  {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 100},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
   {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
