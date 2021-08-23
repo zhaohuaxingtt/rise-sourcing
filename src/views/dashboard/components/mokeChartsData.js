@@ -1,3 +1,4 @@
+import _ from 'lodash'
 // 主要的几种颜色
 const colors = ['#6192f0', '#00bf87', '#a5aab4'];
 const rich = {
@@ -28,15 +29,17 @@ export function generateOptions(params) {
         // dataZoom 缩放百分比
         const displayNum = 10
         const endPercent = freq.length > displayNum ? (displayNum/freq.length*100) : 100
+        let max2 = _.max(freq.map(o => Number(o)))
+        max2 = max2 ? (max2/100) : 0
 
         freq.forEach(d => {
             freqData.push({
-                value: d,
+                value: d/100,
                 symbol:`image://${symbolImg}`,
                 symbolSize:10,
             })
             xAxisTopData.push({
-                value: d,
+                value: d/100,
                 textStyle: {
                     backgroundColor: '#e5f8f3',
                     color: colors[1],
@@ -163,6 +166,7 @@ export function generateOptions(params) {
                         align: 'center'
                     },
                     min: 0,
+                    max: 100,
                     position: 'left',
                     axisLine: {
                         show: false
@@ -187,7 +191,7 @@ export function generateOptions(params) {
                         align: 'center'
                     },
                     min: 0,
-                    max: 38,
+                    max: max2,
                     position: 'right',
                     axisLine: {
                         show: false
