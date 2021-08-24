@@ -1,14 +1,19 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-12 17:36:07
+ * @LastEditTime: 2021-08-24 10:00:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
 -->
 <template>
-  <div style="height: 440px;width:100%"
-       ref="chart"></div>
+  <div>
+    <div style="height: 440px;width:100%"
+         ref="chart"></div>
+    <div>
+
+    </div>
+  </div>
 </template>
 
 <script>
@@ -52,6 +57,8 @@ export default {
     firstBarData: {
       handler (val) {
         if (val) {
+          this.barDataItem = []
+          this.barxAxis = []
           val.forEach((item, index) => {
             const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
             const itemData = {
@@ -84,7 +91,6 @@ export default {
   methods: {
     initCharts () {
       this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
-      console.log(this.$refs.chart.style.width)
       this.$refs.chart.style.minWidth = '100%';
       this.myChart = echarts().init(this.$refs.chart);
 
@@ -198,8 +204,9 @@ export default {
       this.myChart.clear();
       this.myChart.resize();
       this.myChart.setOption(this.option);
-      // this.myChart.on('click', function (params) {
-      // });
+      this.myChart.on('click', function (params) {
+
+      });
     },
   },
 };

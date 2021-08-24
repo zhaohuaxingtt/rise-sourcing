@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-08-12 17:28:41
+ * @LastEditTime: 2021-08-24 10:30:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -36,6 +36,8 @@ export default {
     barData: {
       handler (val) {
         if (val) {
+          this.barDataItem = []
+          this.barxAxis = []
           val.forEach((item, index) => {
             const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
             const itemData = {
@@ -62,14 +64,12 @@ export default {
     },
   },
   mounted () {
-    console.log(this.barData)
     // this.$nextTick(() => {
     //   this.initCharts();
     // });
   },
   methods: {
     initCharts () {
-      console.log(this.$refs.chart);
       this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
       this.$refs.chart.style.minWidth = '100%';
       this.myChart = echarts().init(this.$refs.chart);
@@ -122,7 +122,7 @@ export default {
             },
             itemStyle: {
               formatter: (val) => {
-                console.log(val)
+
               },
               barBorderRadius: [5, 5, 0, 0],
 
@@ -135,6 +135,7 @@ export default {
           }
         ],
       };
+      this.myChart.clear()
       this.myChart.resize();
       this.myChart.setOption(option);
     },
