@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-05 16:04:52
+ * @LastEditTime: 2021-08-24 15:34:31
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\data.js
  */
@@ -13,7 +13,7 @@ export const historyTableTitle = [
   {props:'lcTcCurrencyId',name:'LC货币类型', key: "LCHUOBILEIXING", tooltip: true, width: 120},
   {props:'skdTcCurrencyId',name:'SKD货币类型', key: "SKDHUOBILEIXING", tooltip: true, width: 100},
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
-  {props:'approveStatus',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
+  {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
   {props:'modifer',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 120},
   {props:'modifyDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true},
   {props:'lcExchangeRate',name:'LC汇率', key: "LCHUILV", tooltip: true},
@@ -26,7 +26,7 @@ export const historyTableTitle = [
   {props:'ckdDuty',name:'CKD Duty(%)', key: "CKDDUTY", tooltip: true, width: 120},
   {props:'ckdExwork',name:'CKD Ex-work', key: "CKDEXWORK", tooltip: true, width: 120},
   {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 120},
-  {props:'valid',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
+  {props:'validDesc',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
 ]
 
 export const detailList = [
