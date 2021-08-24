@@ -430,7 +430,7 @@ export default {
           if (props === this.FIRSTSELECT) {
             return itemData.profession;
           } else if (props === this.SECONDSELECT) {
-            return itemData.area;
+            return itemData.city;
           }
           break;
         case this.classType['exchangeRate']:
