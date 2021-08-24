@@ -89,3 +89,11 @@ export function partNumList(parmars) {
     data: parmars
   })
 }
+//info---add
+export function infoAdd(parmars) {
+  return requst({
+    url: `/mekMaterial/add`,
+    method: 'POST',
+    data: parmars
+  })
+}

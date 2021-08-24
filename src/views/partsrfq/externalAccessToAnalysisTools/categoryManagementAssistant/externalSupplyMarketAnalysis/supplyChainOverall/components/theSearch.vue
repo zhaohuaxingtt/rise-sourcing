@@ -8,52 +8,38 @@
 <template>
   <div class='title'>
     <div class="flex-between-center-center">
-      <div class="text margin-bottom20">{{ language('GYLGLNJGYLGL','供应链概览（N级供应链管理）')}}</div>
+      <div class="text margin-bottom20">{{ language('GYLGL','N级供应链管理')}}</div>
       <div>
         <iButton @click="$emit('handleSave',form)">{{language('BAOCUN','保存')}}</iButton>
         <iButton @click="handleBack">{{language('FANHUI','返回')}}</iButton>
       </div>
     </div>
-    <el-form label-width="50px" label-position="left">
-      <el-row type="flex" align='bottom' justify="space-between	">
-        <el-col :span="3">
-          <el-form-item :label="language('CHEXING','车型:')">
-            <iInput :placeholder="language('CHEXING','车型')" v-model="form.carType">
-            </iInput>
-          </el-form-item>
-        </el-col>
-        <el-col :span="3">
-          <el-form-item :label="language('DIQU','地区:')">
-            <iSelect :placeholder="language('DIQU','地区')" v-model="form.province">
-              <el-option :value="item.cityId" :label="item.cityNameCn" v-for="item of formGoup.provinceList" :key="item.cityId"></el-option>
-            </iSelect>
-          </el-form-item>
-        </el-col>
-        <el-col :span="3">
-          <el-form-item :label="language('CAILIAOZU','材料组:')">
-            <iSelect :placeholder="language('CAILIAOZU','材料组')" v-model="form.categoryCode">
-              <el-option :value="item.categoryCode" :label="item.categoryName" v-for="item of formGoup.materialGroupList" :key="item.categoryCode"></el-option>
-            </iSelect>
-          </el-form-item>
-        </el-col>
-        <el-col :span="3">
-          <el-form-item :label="language('GONGYINGSHANG','供应商:')">
-            <iInput :placeholder="language('GONGYINGSHANG','供应商')" v-model="form.supplierName"></iInput>
-          </el-form-item>
-        </el-col>
-        <el-col :span="3">
-          <el-form-item :label="language('LINGJIAN','零件:')">
-            <iInput :placeholder="language('LINGJIAN','零件')" v-model="form.part"></iInput>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item>
-            <iButton @click="getMapList">{{language('QUEDING','确定')}}</iButton>
-            <iButton @click="handleSearchReset">{{language('CHONGZHI','重置')}}</iButton>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
+    <el-row type="flex" align='bottom' justify="space-between	">
+      <el-col :span="3">
+        <iInput :placeholder="language('CHEXING','车型')" v-model="form.carType">
+        </iInput>
+      </el-col>
+      <el-col :span="3">
+        <iSelect :placeholder="language('DIQU','地区')" v-model="form.province">
+          <el-option :value="item.cityId" :label="item.cityNameCn" v-for="item of formGoup.provinceList" :key="item.cityId"></el-option>
+        </iSelect>
+      </el-col>
+      <el-col :span="3">
+        <iSelect :placeholder="language('CAILIAOZU','材料组')" v-model="form.categoryCode">
+          <el-option :value="item.categoryCode" :label="item.categoryName" v-for="item of formGoup.materialGroupList" :key="item.categoryCode"></el-option>
+        </iSelect>
+      </el-col>
+      <el-col :span="3">
+        <iInput :placeholder="language('GONGYINGSHANG','供应商')" v-model="form.supplierName"></iInput>
+      </el-col>
+      <el-col :span="3">
+        <iInput :placeholder="language('LINGJIAN','零件')" v-model="form.part"></iInput>
+      </el-col>
+      <el-col :span="5">
+        <iButton @click="getMapList">{{language('QUEDING','确定')}}</iButton>
+        <iButton @click="handleSearchReset">{{language('CHONGZHI','重置')}}</iButton>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -148,7 +134,7 @@ export default {
     font-weight: Bold;
   }
 }
-::v-deep .el-col-6 .el-form-item {
+::v-deep .el-col-5 {
   display: flex;
   justify-content: flex-end;
 }

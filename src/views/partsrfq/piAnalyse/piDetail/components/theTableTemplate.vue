@@ -240,6 +240,7 @@
                 </span>
               </el-popover>
               <iconTips
+                  v-if="!scope.row.isMatch"
                   iconName="iconzhongyaoxinxitishi"
                   :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成\n'+'对应的指数变动百分比，可手动补充系统匹配\n'+'模块信息。')"
                   class="margin-left6"
