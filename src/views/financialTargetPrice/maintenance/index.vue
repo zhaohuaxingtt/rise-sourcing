@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 14:02:46
+ * @LastEditTime: 2021-08-24 15:23:02
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -284,7 +284,7 @@ export default {
       window.open(router.href,'_blank')
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify({...row,id:row.purchasingProjectId}) }})
+      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify({...row,id:row.purchasingProjectId,purchasingRequirementObjectId:row.purchasingRequirementId}) }})
       window.open(router.href,'_blank')
     },
     /**
