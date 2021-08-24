@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 22:46:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 11:29:21
+ * @LastEditTime: 2021-08-24 11:33:27
  * @Description: 车型项目详情
  * @FilePath: \front-web\src\views\project\components\carprojectprogress\index.vue
 -->
@@ -58,6 +58,12 @@ export default {
     changeSopStatus(isSop) {
       this.$emit('changeSopStatus', isSop)
     },
+    /**
+     * @Description: 车型项目选择改变时，返回车型项目id和名称
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
     handleCarProjectChange(val) {
       this.$emit('handleCarProjectChange', val, this.carProjectOptions.find(item => item.value === val).label)
     },
