@@ -28,15 +28,24 @@ export function generateOptions(params) {
         // dataZoom 缩放百分比
         const displayNum = 10
         const endPercent = freq.length > displayNum ? (displayNum/freq.length*100) : 100
+        // 刻度分割分数
+        const splitNumber = 10
+        // 右边平均定点周期y轴刻度最大值
+        let max2Number = window._.max(freq.map(o => Number(o)))
+        max2Number = max2Number ? Math.floor(max2Number/100) : 0
+        // 求平均定点周期y刻度权重值，根据最大值取取最大值相近的10的倍数
+        const splitWeight = max2Number > 10 ? Math.floor(max2Number/10) : 0
+        // 生成平均定点周期y刻度最大值
+        const max2 = (splitWeight + 1) * 10
 
         freq.forEach(d => {
             freqData.push({
-                value: d,
+                value: Number(d/100).toFixed(2),
                 symbol:`image://${symbolImg}`,
                 symbolSize:10,
             })
             xAxisTopData.push({
-                value: d,
+                value: Number(d/100).toFixed(2),
                 textStyle: {
                     backgroundColor: '#e5f8f3',
                     color: colors[1],
@@ -163,12 +172,17 @@ export function generateOptions(params) {
                         align: 'center'
                     },
                     min: 0,
+                    max: 100,
+                    splitNumber: splitNumber,
                     position: 'left',
                     axisLine: {
                         show: false
                     },
                     splitLine: {
-                        show: false,
+                        show: true,
+                        lineStyle: {
+                            type: 'dashed'
+                        }
                     },
                     axisTick: {show: false,},
                     axisLabel: {
@@ -187,17 +201,15 @@ export function generateOptions(params) {
                         align: 'center'
                     },
                     min: 0,
-                    max: 38,
+                    max: max2,
+                    splitNumber: splitNumber,
                     position: 'right',
                     axisLine: {
                         show: false
                     },
                     axisTick: {show: false,},
                     splitLine: {
-                        show: true,
-                        lineStyle: {
-                            type: 'dashed'
-                        }
+                        show: false
                     },
                     axisLabel: {
                         color: '#abacb2',
@@ -211,6 +223,7 @@ export function generateOptions(params) {
                     data: nomiData,
                     type: 'bar',
                     barWidth: 15,
+                    yAxisIndex: 0,
                     label: {
                         show: true,
                         position: 'top',
@@ -231,6 +244,7 @@ export function generateOptions(params) {
                 {
                     name: '平均定点周期',
                     type: 'line',
+                    yAxisIndex: 1,
                     data: freqData,
                     lineStyle: {
                         color: colors[1]

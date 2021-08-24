@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 14:22:22
+ * @LastEditTime: 2021-08-24 11:07:33
  * @Description: 产品组排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
@@ -12,25 +12,7 @@
     <!---------------------------------------------------------------------->
     <!----------                  车型项目部分                   ---------------->
     <!---------------------------------------------------------------------->
-    <iCard class="projectCard">
-      <div class="margin-bottom20 clearFloat">
-        <div class="titleSearch">
-          <span class="margin-right20 titleSearch-label">{{language('CHEXINGXIANGMU','车型项目')}}</span>
-          <iSelect filterable v-model="carProject" @change="handleCarProjectChange" :disabled="isNodeView">
-            <el-option
-              v-for="item in carProjectOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </iSelect>
-        </div>
-      </div>
-      <div class="projectCard-content">
-        <carEmpty v-if="!carProject" />
-        <carProject v-else :carProjectId="carProject" @changeSopStatus="changeSopStatus" />
-      </div>
-    </iCard>
+    <carProject :carProjectId="carProject" :disabled="isNodeView" @changeSopStatus="changeSopStatus" @handleCarProjectChange="handleCarProjectChange" />
     <!---------------------------------------------------------------------->
     <!----------                  产品组区域                  ---------------->
     <!---------------------------------------------------------------------->
@@ -67,19 +49,18 @@
 </template>
 
 <script>
-import { iPage, iCard, iSelect, iButton, icon, iMessage } from 'rise'
-import carProject from './components/carprojectprogress'
+import { iPage, iCard, iButton, icon, iMessage } from 'rise'
+import carProject from '@/views/project/components/carprojectprogress'
 import logicSettingDialog from './components/logicsetting'
 import { productLogicList } from './data'
 import chooseProGroupDialog from './components/progroupchoose'
 import periodicView from './components/periodicview'
 import nodeView from './components/nodeview'
-import carEmpty from './components/empty/carEmpty'
-import proGroupEmpty from './components/empty/proGroupEmpty'
+import proGroupEmpty from '@/views/project/components/empty/proGroupEmpty'
 import { selectDictByKeyss } from '@/api/dictionary'
-import { getSelectCarType, getLastOperateCarType, getProductSelectList, getCarConfig, updateCarConfig, saveProductSelectList } from '@/api/project'
+import { getLastOperateCarType, getProductSelectList, getCarConfig, updateCarConfig, saveProductSelectList } from '@/api/project'
 export default {
-  components: { iPage, iCard, iSelect, iButton, carProject, logicSettingDialog, chooseProGroupDialog, icon, periodicView, nodeView, carEmpty, proGroupEmpty },
+  components: { iPage, iCard, iButton, carProject, logicSettingDialog, chooseProGroupDialog, icon, periodicView, nodeView, proGroupEmpty },
   data() {
     return {
       logicVisible: false,
@@ -93,14 +74,12 @@ export default {
       isNodeView: false,
       carProject: '',
       carProjectName: '',
-      carProjectOptions: [],
       isSop: false
     }
   },
   created() {
     const keys = 'CATEGORY_CONFIG_OPTIONS,CALCULATE_CONFIG_OPTIONS,VALUE_CONFIG_OPTIONS,YEAR_CONFIG_OPTIONS,CAR_TYPE_CONFIG_OPTIONS'
     this.selectDictByKeys(keys)
-    this.getCarProjectOptinos()
     if (this.$route.query.carProject) {
       this.carProject = this.$route.query.carProject
       this.carProjectName = this.$route.query.cartypeProjectZh
@@ -147,9 +126,10 @@ export default {
      * @param {*} val
      * @return {*}
      */    
-    async handleCarProjectChange(val) {
-      this.carProjectName = this.carProjectOptions.find(item => item.value === val).label
-      if(val){
+    async handleCarProjectChange(carProjectId, carProjectName) {
+      this.carProject = carProjectId
+      this.carProjectName = carProjectName
+      if(carProjectId){
         await this.getProductList()
         this.$nextTick(() => {
           this.initView()
@@ -164,27 +144,6 @@ export default {
      */    
     changeSopStatus(isSop) {
       this.isSop = isSop
-    },
-    /**
-     * @Description: 获取车型项目下拉框
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    getCarProjectOptinos() {
-      getSelectCarType().then(res => {
-        if (res?.result) {
-          this.carProjectOptions = res.data.map(item => {
-            return {
-              ...item,
-              value: item.id,
-              label: item.cartypeProjectZh
-            }
-          })
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
     },
     /**
      * @Description: 获取字典下拉
