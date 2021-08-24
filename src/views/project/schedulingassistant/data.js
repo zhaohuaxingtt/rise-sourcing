@@ -47,6 +47,14 @@ export const MENU = [
     url: '/projectscheassistant/historyprocessdb',
     activePath: 'historyprocessdb',
     key: 'LISHIJINDUSHUJUKU'
+  },
+  {
+    value: 6,
+    name: '默认排程算法配置',
+    message: 0,
+    url: '/projectscheassistant/defaultAlgorithmConfig',
+    activePath: 'defaultAlgorithmConfig',
+    key: 'MORENSUANFAPEIZHI'
   }
 ]
 
