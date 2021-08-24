@@ -1008,6 +1008,7 @@
         'LK_MUJUTOUZIQINGDANBIANGENGXIANGQING': '模具投资清单变更详情', //  模具投资清单变更详情
         'LK_BIANGENGSHENPIFUJIAN': '变更审批附件', //  变更审批附件
         'LK_BIANGENGDANZHUANGTAI': '变更单状态', //  变更单状态
+        'LK_CHUYUBIANGENGLIUCHENGZHONG':'处于变更流程中，不可重复发起变更', // 新增定点信
 
         // 定点管理
         'nominationLanguage': {

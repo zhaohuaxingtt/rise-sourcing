@@ -250,9 +250,17 @@ export default [
             path: '/purchaseSupplier/investmentList',
             name: 'investmentList',
             meta: {
-              title: '模具投资清单'
+              title: '模具投资清单-确认任务'
             },
             component: () => import (`@/views/ws2/purchaseSupplier/investmentList`),
+          },
+          {
+            path: '/purchaseSupplier/changeTask',
+            name: 'changeTask',
+            meta: {
+              title: '模具投资清单-变更任务'
+            },
+            component: () => import (`@/views/ws2/purchaseSupplier/changeTask`),
           },
           {
             path: '/purchaseSupplier/mouldBook',

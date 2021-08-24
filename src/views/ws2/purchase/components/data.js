@@ -86,10 +86,10 @@ export const investmentListTitle = [
 
 export const changeTaskTitle = [
     {
-        props: 'bmSerial',
+        props: 'changeNum',
         name: '变更单号',
         key: '变更单号',
-        width: 180,
+        width: 150,
         isMoney: true,
         tooltip: false
     },
@@ -97,12 +97,12 @@ export const changeTaskTitle = [
         props: 'bmSerial',
         name: 'BM单流水号',
         key: 'BM单流水号',
-        width: 180,
+        width: 250,
         isMoney: true,
         tooltip: false
     },
     {
-        props: 'bmSerial',
+        props: 'bmNum',
         name: 'BM单号',
         key: 'BM单号',
         width: 180,
@@ -120,7 +120,7 @@ export const changeTaskTitle = [
         props: 'tmCartypeProName',
         name: '车型项目',
         key: '车型项目',
-        width: 150,
+        width: 220,
         tooltip: false
     },
     {
@@ -138,21 +138,21 @@ export const changeTaskTitle = [
         tooltip: false
     },
     {
-        props: 'moldInvestmentAmount',
+        props: 'newMoldInvestmentAmount',
         name: '变更后金额',
         key: '变更后金额',
         width: 200,
         tooltip: false
     },
     {
-        props: 'behalfPartsNum',
+        props: 'behalfPartsName',
         name: '代表零件号',
         key: '代表零件号',
         width: 180,
         tooltip: false
     },
     {
-        props: 'partsPurchaseTypeName',
+        props: 'partsPurchaseType',
         name: '零件采购项目类型',
         key: '零件采购项目类型',
         width: 220,
@@ -173,14 +173,14 @@ export const changeTaskTitle = [
         tooltip: false
     },
     {
-        props: 'moldInvestmentStatus',
+        props: 'changeStatusName',
         name: '变更单状态',
         key: '变更单状态',
         width: 220,
         tooltip: false
     },
     {
-        props: 'moldInvestmentStatus',
+        props: 'moldInvestmentStatusName',
         name: '模具投资清单状态',
         key: '模具投资清单状态',
         width: 220,
@@ -427,80 +427,80 @@ export const enclosureTableTitle = [
 
 export const newChangeTitle = [
     {
-        props: 'moldId',
+        props: 'bmSerial',
         name: 'BM单流水号',
         key: 'BM单流水号',
-        width: 200,
+        width: 250,
         tooltip: false
     },
     {
-        props: 'assetName',
+        props: 'bmNum',
         name: 'BM单号',
         key: 'BM单号',
-        width: 200,
+        width: 150,
         tooltip: false
     },
     {
-        props: 'craftType',
+        props: 'tmCartypeProName',
         name: '车型项目',
         key: '车型项目',
         width: 200,
         tooltip: false
     },
     {
-        props: 'moldType',
+        props: 'behalfPartsName',
         name: '代表零件号',
         key: '代表零件号',
-        width: 200,
+        width: 150,
         tooltip: false
     },
     {
-        props: 'assetTypeNum',
+        props: 'partsPurchaseType',
         name: '零件采购项目类型',
         key: '零件采购项目类型',
         width: 200,
         tooltip: false
     },
     {
-        props: 'partsTotalName',
+        props: 'supplierShortNameZh',
         name: '供应商',
         key: '供应商',
-        width: 200,
+        width: 150,
         tooltip: false
     },
     {
-        props: 'partsTotalNum',
+        props: 'moldInvestmentAmount',
         name: '模具投资金额',
         key: '模具投资金额',
         width: 200,
         tooltip: false
     },
     {
-        props: 'partsShareNum',
+        props: 'moldInvestmentStatusName',
         name: '模具投资清单状态',
         key: '模具投资清单状态',
-        width: 200,
+        width: 180,
         tooltip: false
     },
     {
-        props: 'fsNum',
+        props: 'businessStatusName',
         name: '业务处理状态',
         key: '业务处理状态',
         width: 200,
         tooltip: false
     },
     {
-        props: 'partsName',
+        props: 'deptName',
         name: '科室',
         key: '科室',
-        width: 200,
+        width: 150,
         tooltip: false
     },
     {
-        props: 'partsNum',
+        props: 'linieName',
         name: 'Linie',
         key: 'Linie',
-        width: 200,
+        width: 150,
         tooltip: false
     },
 ]

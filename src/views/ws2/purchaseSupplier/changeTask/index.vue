@@ -1,5 +1,5 @@
 <template>
-  <div v-permission="PURCHASE_MOULDINVESTMENTBUYER_LIST">
+  <div>
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
@@ -13,30 +13,6 @@
       <el-form>
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
           <iInput v-model.trim="behalfPartsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
-        </el-form-item>
-        <el-form-item :label="language('TPZS.GONGYINGSHANG', '供应商')">
-          <iInput v-model="designatedSupplierId" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
-        </el-form-item>
-        <el-form-item :label="language('LK_BMDANLIUSHUIHAO', 'BM单流水号')">
-          <iInput v-model="bmSerial" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
-        </el-form-item>
-        <el-form-item :label="language('LK_MUJUTOUZIQINGDANZHUANGTAI', '模具投资清单状态')">
-          <iSelect
-              class="multipleSelect"
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              filterable
-              clearable
-              collapse-tags
-              multiple
-              v-model="moldInvestmentStatus"
-          >
-            <el-option
-                :value="item.bmStatus"
-                :label="item.bmStatusName"
-                v-for="(item, index) in moldInvestmentStatusList"
-                :key="index"
-            ></el-option>
-          </iSelect>
         </el-form-item>
         <el-form-item :label="language('LK_CHEXINGXIANGMU', '车型项目')">
           <iSelect
@@ -52,24 +28,6 @@
                 :value="item.tmCartypeProId"
                 :label="item.tmCartypeProNam"
                 v-for="(item, index) in carTypeProjectList"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-        <el-form-item :label="language('LK_KESHI', '科室')">
-          <iSelect
-              class="multipleSelect"
-              :placeholder="language('LK_QINGXUANZHE', '请选择')"
-              filterable
-              clearable
-              collapse-tags
-              multiple
-              v-model="deptId"
-          >
-            <el-option
-                :value="item.deptId"
-                :label="item.deptName"
-                v-for="(item, index) in departmentsList"
                 :key="index"
             ></el-option>
           </iSelect>
@@ -92,8 +50,23 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_BMDANHAO', 'BM单号')">
-          <iInput v-model="bmNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
+        <el-form-item :label="language('LK_MUJUTOUZIQINGDANZHUANGTAI', '模具投资清单状态')">
+          <iSelect
+              class="multipleSelect"
+              :placeholder="language('LK_QINGXUANZHE', '请选择')"
+              filterable
+              clearable
+              collapse-tags
+              multiple
+              v-model="moldInvestmentStatus"
+          >
+            <el-option
+                :value="item.bmStatus"
+                :label="item.bmStatusName"
+                v-for="(item, index) in moldInvestmentStatusList"
+                :key="index"
+            ></el-option>
+          </iSelect>
         </el-form-item>
         <el-form-item label="变更单状态">
           <iSelect
@@ -116,17 +89,6 @@
       </el-form>
     </iSearch>
     <iCard v-loading="tableLoading">
-      <div class="icardHeader">
-        <el-switch
-            v-model="onleySelf"
-            @change="sure"
-            inactive-text="仅看自己">
-        </el-switch>
-        <div>
-          <iButton @click="handleHandover">{{ language('LK_ZHUANPAI', '转派') }}</iButton>
-          <iButton @click="newChangeShow = true" v-loading="handVerifyLineShowLoading">{{ language('LK_XINZENGBIANGENG', '新增变更') }}</iButton>
-        </div>
-      </div>
       <!--      570-->
       <iTableList
           :tableData="tableListData"
@@ -173,27 +135,22 @@
 </template>
 
 <script>
-import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage} from 'rise';
+import {iCard, iSearch, iSelect, iPagination, iInput, iMessage} from 'rise';
 import {iTableList} from "@/components";
 import {changeTaskTitle} from "../components/data"
 import handover from "../components/handover"
 import newChange from "../components/newChange"
 import {
-
-  verifyIsSelfOrders,
   verifyLine,
-} from "@/api/ws2/purchase/investmentList";
+} from "@/api/ws2/purchaseSupplier/investmentList";
 import {pageMixins} from "@/utils/pageMixins";
-import {Switch, Popover} from "element-ui"
 import {
   bmChangeMoldInvestmentListStatusPullDown,
   bmChangeCarTypePullDown,
-  bmChangeDeptPullDown,
   bmChangeLiniePullDownByDept,
   bmChangeStatusPullDown,
   findBmChangePageList
-} from "@/api/ws2/purchase/changeTask";
-import {cloneDeep} from "lodash";
+} from "@/api/ws2/purchaseSupplier/changeTask";
 import {getTousandNum} from "@/utils/tool";
 
 export default {
@@ -204,17 +161,14 @@ export default {
     iSelect,
     iTableList,
     iPagination,
-    iButton,
     iInput,
     handover,
     newChange,
-    // verifyLine,
   },
   data() {
     return {
       loadingiSearch: false,
       tableLoading: false,
-      onleySelf: true,
       handoverShow: false,
       newChangeShow: false,
       verifyLineShow: false,
@@ -228,14 +182,11 @@ export default {
       moldInvestmentStatus: [],
       changeStatuId: [],
       tmCartypeProId: [],
-      deptId: [],
       linieId: [],
       moldInvestmentStatusList: [],
       multipleSelection: [],
       behalfPartsNum: '',
-      designatedSupplierId: '',
       bmSerial: '',
-      bmNum: '',
       linieName: [],
       handoverParams: {
         bmid: [],
@@ -260,12 +211,11 @@ export default {
     },
     getAllSelect() {
       this.loadingiSearch = true
-      Promise.all([bmChangeMoldInvestmentListStatusPullDown(), bmChangeCarTypePullDown(), bmChangeDeptPullDown(), bmChangeLiniePullDownByDept(), bmChangeStatusPullDown()]).then((res) => {
+      Promise.all([bmChangeMoldInvestmentListStatusPullDown(), bmChangeCarTypePullDown(), bmChangeLiniePullDownByDept(), bmChangeStatusPullDown()]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
         const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn
-        const result4 = this.$i18n.locale === 'zh' ? res[4].desZh : res[4].desEn
         if (Number(res[0].code) === 0) {
           this.moldInvestmentStatusList = res[0].data;
           // this.moldInvestmentStatus = this.moldInvestmentStatusList.filter(a => a.bmStatus !== '7').map(b => b.bmStatus)
@@ -281,25 +231,14 @@ export default {
           iMessage.error(result1);
         }
         if (res[2].data) {
-          this.departmentsList = res[2].data;
-          this.handoverParams.departmentsList = cloneDeep(this.departmentsList).map(item => {
-            return {
-              deptId: item.deptId,
-              commodity: item.deptName
-            }
-          })
+          this.linieList = res[2].data;
         } else {
           iMessage.error(result2);
         }
         if (res[3].data) {
-          this.linieList = res[3].data;
+          this.ChangeStatusPullDown = res[3].data;
         } else {
           iMessage.error(result3);
-        }
-        if (res[4].data) {
-          this.ChangeStatusPullDown = res[4].data;
-        } else {
-          iMessage.error(result4);
         }
         this.conditionConfirmTskList()
         this.loadingiSearch = false
@@ -314,13 +253,9 @@ export default {
         current: this.page.currPage,
         size: this.page.pageSize,
         behalfPartsNum: this.behalfPartsNum,
-        designatedSupplierId: this.designatedSupplierId,
-        bmSerial: this.bmSerial,
-        moldInvestmentStatus: this.moldInvestmentStatus,
         tmCartypeProId: this.tmCartypeProId,
-        deptId: this.deptId,
         linieId: this.linieId,
-        bmNum: this.bmNum,
+        moldInvestmentStatus: this.moldInvestmentStatus,
         changeStatuId: this.changeStatuId,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
@@ -369,33 +304,15 @@ export default {
         });
       }
     },
-    handVerifyLineShow(row){
-      if(!this.multipleSelection || this.multipleSelection.length === 0){
-        iMessage.warn(this.language('LK_BAAPPLYTISP1', '请先勾选'))
-        return
-      }
-      this.handVerifyLineShowLoading = true
-      verifyIsSelfOrders(this.multipleSelection.map(item => item.id)).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        iMessage.warn(result)
-        this.handVerifyLineShowLoading = false
-      }).catch(() => {
-        this.handVerifyLineShowLoading = false
-      });
-    },
     sure(){
       this.page.currPage = 1
       this.conditionConfirmTskList()
     },
     reset() {
       this.behalfPartsNum = ''
-      this.designatedSupplierId = ''
-      this.bmSerial = ''
-      this.moldInvestmentStatus = []
       this.tmCartypeProId = []
-      this.deptId = []
       this.linieId = []
-      this.bmNum = ''
+      this.moldInvestmentStatus = []
       this.changeStatuId = []
       this.conditionConfirmTskList()
     }

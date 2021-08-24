@@ -4,11 +4,11 @@
 import {permissionTitle} from '@/utils'
 
 export const tabtitle = [
-    {value: 1, message: 0, name: "模具投资清单", activePath: '/purchase/investmentList', url: '/purchase/investmentList', key: "模具投资清单"},
+    {value: 1, message: 0, name: "模具投资清单", activePath: '/purchaseSupplier/investmentList', url: '/purchaseSupplier/investmentList', key: "模具投资清单"},
 ]
 export const navList = [
-    {value: 1, message: 0, name: "确认任务", activePath: '/purchase/investmentList', url: '/purchase/investmentList', key: "确认任务"},
-    {value: 2, message: 0, name: "变更任务", activePath: '/404', url: '/404', key: "变更任务"},
+    {value: 1, message: 0, name: "确认任务", activePath: '/purchaseSupplier/investmentList', url: '/purchaseSupplier/investmentList', key: "确认任务"},
+    {value: 2, message: 0, name: "变更任务", activePath: '/purchaseSupplier/changeTask', url: '/purchaseSupplier/changeTask', key: "变更任务"},
 ]
 export const investmentListTitle = [
     {
@@ -67,6 +67,100 @@ export const investmentListTitle = [
     },
     {
         props: 'moldInvestmentStatus',
+        name: '模具投资清单状态',
+        key: '模具投资清单状态',
+        width: 220,
+        tooltip: false
+    },
+]
+
+export const changeTaskTitle = [
+    {
+        props: 'changeNum',
+        name: '变更单号',
+        key: '变更单号',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'bmSerial',
+        name: 'BM单流水号',
+        key: 'BM单流水号',
+        width: 250,
+        tooltip: false
+    },
+    {
+        props: 'bmNum',
+        name: 'BM单号',
+        key: 'BM单号',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'akeoType',
+        name: 'BM单类型',
+        key: 'BM单类型',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'tmCartypeProName',
+        name: '车型项目',
+        key: '车型项目',
+        width: 250,
+        tooltip: false
+    },
+    {
+        props: 'moldInvestmentAmount',
+        name: '模具投资金额',
+        key: '模具投资金额',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'newMoldInvestmentAmount',
+        name: '变更后金额',
+        key: '变更后金额',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'behalfPartsName',
+        name: '代表零件号',
+        key: '代表零件号',
+        width: 180,
+        tooltip: false
+    },
+    {
+        props: 'taskAcceptDate',
+        name: '任务接收日期',
+        key: '任务接收日期',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'taskDealDate',
+        name: '任务处理日期',
+        key: '任务处理日期',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'linieName',
+        name: 'Linie',
+        key: 'Linie',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'changeStatusName',
+        name: '变更单状态',
+        key: '变更单状态',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'moldInvestmentStatusName',
         name: '模具投资清单状态',
         key: '模具投资清单状态',
         width: 220,
@@ -182,3 +276,4 @@ export const bmInfoTitle = [
     },
 
 ]
+
