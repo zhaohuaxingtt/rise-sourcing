@@ -153,9 +153,7 @@ export default {
                 yAxis: {
                     show:false,
                     type:'value',
-                    name:'该分数段下供应商数量：',
-                    min: 0,
-                    max: 10,
+                    name:'该分数段下供应商数量：'
                 },
                 series: [
                     {
