@@ -208,6 +208,14 @@ export default [
             },
             component: () => import (`@/views/ws2/purchase/mouldBook`),
           },
+          {
+            path: '/purchase/modelOrderList',
+            name: 'modelorder',
+            meta: {
+              title: '模具采购订单'
+            },
+            component: () => import (`@/views/ws2/modelorder`),
+          },
         ]
       },
       {
