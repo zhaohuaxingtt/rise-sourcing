@@ -125,7 +125,7 @@
               <!--第一个下拉框-->
               <iSelect
                   v-model="scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})]"
-                  @visible-change="(boolean)=>handleGetSelectList({props: '',boolean,row: scope.row})"
+                  @focus="handleGetSelectList({props: '',row: scope.row})"
                   @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row})"
                   style="width: 120px;margin-right: 10px;"
                   value-key="id"
@@ -359,7 +359,7 @@ export default {
       }
       this.$emit('handleSelectReset', {props, row});
       this.selectLoading = true;
-      await this.handleGetSelectList({props, boolean: true, row, req});
+      await this.handleGetSelectList({props, row, req});
       this.selectLoading = false;
     },
     indexMethod(index) {
@@ -391,25 +391,23 @@ export default {
       }
     },
     // 获取下拉
-    async handleGetSelectList({props, boolean, row, req = {}}) {
+    async handleGetSelectList({props, row, req = {}}) {
       this.selectLoading = true;
       let selectList = '';
-      if (boolean) {
-        switch (row.dataType) {
-          case this.classType['rawMaterial']:
-            selectList = (await getSelectMateria(req)).data;
-            break;
-          case this.classType['manpower']:
-            selectList = (await getSelectManpower(req)).data;
-            break;
-          case this.classType['exchangeRate']:
-            if (props === '') {
-              selectList = (await getSelectCountry(req)).data;
-            } else if (props === this.FIRSTSELECT) {
-              selectList = (await getSelectExchange(req)).data;
-            }
-            break;
-        }
+      switch (row.dataType) {
+        case this.classType['rawMaterial']:
+          selectList = (await getSelectMateria(req)).data;
+          break;
+        case this.classType['manpower']:
+          selectList = (await getSelectManpower(req)).data;
+          break;
+        case this.classType['exchangeRate']:
+          if (props === '') {
+            selectList = (await getSelectCountry(req)).data;
+          } else if (props === this.FIRSTSELECT) {
+            selectList = (await getSelectExchange(req)).data;
+          }
+          break;
       }
       this.selectLoading = false;
       this.$emit('handleGetSelectList', {props, row, selectList});
@@ -444,7 +442,7 @@ export default {
     },
     handleNewRowClassTypeSelectChange({event, row}) {
       row.dataType = event;
-      this.handleGetSelectList({props: '', boolean: true, row});
+      this.handleGetSelectList({props: '', row});
     },
     // 获取匹配props
     getMatchProps({props, row}) {
