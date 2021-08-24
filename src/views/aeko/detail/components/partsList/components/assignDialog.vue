@@ -179,7 +179,7 @@ export default {
             const { linieDeptNum=[] } = this;
             if(linieDeptNum.length){
                 linieDeptNum.map((item)=>{
-                    item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                    item.label = item.deptNum;
                     item.value = item.id;
                 })
                 this.commoditySelectOptions = linieDeptNum;
@@ -188,7 +188,7 @@ export default {
                     const {code,data} = res;
                     if(code ==200 ){
                         data.map((item)=>{
-                        item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.label = item.deptNum;
                         item.value = item.deptNum;
                         })
                         this.commoditySelectOptions = data;
@@ -197,6 +197,7 @@ export default {
                     }
                 })
             }
+
         },
 
         // 分派科室
@@ -353,18 +354,23 @@ export default {
                 const {deptDTO={}} = userInfo;
                 const deptId = deptDTO.id;
                 searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
-                const {code,data} = res;
-                if(code ==200 ){
-                    data.map((item)=>{
-                    item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                    item.value = item.id;
-                    })
-                    this.linieSelectOptions = data;
-                }else{
-                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-                }
-            })
+                    const {code,data} = res;
+                    if(code ==200 ){
+                        data.map((item)=>{
+                        item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                        item.value = item.id;
+                        })
+                        this.linieSelectOptions = data;
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
             }
+
+            // 判断一下预设采购员 如果可选列表内无预设采购员选项则不显示预设
+            const { linieSelectOptions=[],refferenceSmtNum='' } = this;
+            const reffLen = linieSelectOptions.filter((item)=>item.value == refferenceSmtNum);
+            if(!reffLen.length) this.refferenceSmtNum = '';
             
             
         },
