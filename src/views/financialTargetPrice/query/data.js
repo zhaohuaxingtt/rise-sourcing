@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 15:36:30
+ * @LastEditTime: 2021-08-24 15:39:31
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\query\data.js
  */
@@ -54,5 +54,5 @@ export const searchList = [
   {value: 'setKz', label: 'SET属性', type: 'select', i18n_label: 'SETSHUXING', selectOption: 'setOptions'},
   {value: 'approveStats', label: '审批状态', type: 'select', i18n_label: 'SHENPIZHUANGTAI',selectOption: 'CF_APPROVE_STATUS'},
   {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO'},
-  {value: 'isAssign', label: '指派状态', type: 'select', i18n_label: 'ZHIPAIZHUANGTAI',selectOption: 'CF_ASSIGN_START'}
+  {value: 'assignStats', label: '指派状态', type: 'select', i18n_label: 'ZHIPAIZHUANGTAI',selectOption: 'CF_ASSIGN_START'}
 ]
