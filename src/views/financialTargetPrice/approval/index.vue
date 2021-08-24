@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-09 14:25:12
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-24 14:07:53
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\index.vue
 -->
@@ -218,7 +218,7 @@ export default {
       });
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
+      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify({...row,id:row.purchasingProjectId}) }})
       window.open(router.href,'_blank')
     },
     openApprovalDetailDialog(row){

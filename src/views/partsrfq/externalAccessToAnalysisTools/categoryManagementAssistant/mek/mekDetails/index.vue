@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-24 15:28:49
+ * @LastEditTime: 2021-08-24 15:29:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -25,7 +25,8 @@
           <!--预览-->
           <iButton class="margin-left30">{{ $t("MEK分析库") }}</iButton>
           <!--保存-->
-          <iButton class="margin-left30">{{ $t("MEK基础数据库") }}</iButton>
+          <iButton @click="handleMEKInfo"
+                   class="margin-left30">{{ $t("MEK基础数据库") }}</iButton>
           <!--BoB分析库-->
           <iButton class="margin-left30">{{ $t("预览") }}</iButton>
           <!--查找零件-->
@@ -679,6 +680,10 @@ export default {
         }
       })
     },
+    handleMEKInfo () {
+      this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: '', vwModelCodes: '', chemeId: '' } })
+    }
+
   },
 };
 </script>
