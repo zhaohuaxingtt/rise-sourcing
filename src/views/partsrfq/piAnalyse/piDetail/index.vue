@@ -287,6 +287,7 @@ export default {
         this.currentTabData.partsId = res.data.partsId;
         this.currentTabData.batchNumber = res.data.batchNumber;
         this.currentTabData.supplierId = res.data.supplierId;
+        this.currentTabData.analysisSchemeId = res.data.analysisSchemeId;
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
