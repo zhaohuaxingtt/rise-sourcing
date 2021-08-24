@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-17 10:40:52
+ * @LastEditTime: 2021-08-24 15:35:31
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
@@ -69,7 +69,7 @@ export const modifyTableTitle = [
   {props:'ckdExwork',name:'CKD Ex-work', key: "CKDEXWORK", tooltip: true, width: 100},
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
   {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 100},
-  {props:'valid',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
+  {props:'validDesc',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
   {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
   {props:'modifer',name:'修改人', key: "XIUGAIREN", tooltip: true},
   {props:'modifyDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true, width: 120},
@@ -84,7 +84,7 @@ export const approvalTableTitle = [
   {props:'ckdDuty',name:'CKD Duty(%)', key: "CKDDUTY", tooltip: true, width: 120},
   {props:'ckdExwork',name:'CKD Ex-work', key: "CKDEXWORK", tooltip: true, width: 100},
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
-  {props:'valid',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
+  {props:'validDesc',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
   {props:'approveName',name:'审批人', key: "SHENPIREN", tooltip: true, width: 120},
   {props:'approveTypeDesc',name:'审批类型', key: "SHENPILEIXING", tooltip: true},
   {props:'approveDate',name:'审批日期', key: "SHENPIRIQI", tooltip: true, width: 120},
