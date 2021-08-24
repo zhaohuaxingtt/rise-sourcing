@@ -1,16 +1,16 @@
 <!--
  * @Author: Luoshuang
- * @Date: 2021-07-27 22:46:03
+ * @Date: 2021-08-24 10:24:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-13 14:26:47
+ * @LastEditTime: 2021-08-24 10:38:23
  * @Description: 车型项目详情
- * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\carprojectprogress\index.vue
+ * @FilePath: \front-web\src\views\project\components\carprojectprogress\components\progress.vue
 -->
 
 <template>
   <div class="carProject" v-loading="loading">
     <div class="carProject-detail">
-      <img src="../../../../../../assets/images/car.png" />
+      <img src="../../../../../assets/images/car.png" />
       <span class="carProject-detail-title">{{carProjectInfo.cartypeProCode}}</span>
       <div class="carProject-detail-info">
         <span>{{carProjectInfo.factory}}</span>
