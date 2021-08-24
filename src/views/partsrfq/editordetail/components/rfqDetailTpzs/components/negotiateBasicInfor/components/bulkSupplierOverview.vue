@@ -97,10 +97,10 @@ export default {
         settings: {
           panes: {
             filters: {
-              visible: true
+              visible: false
             },
             pageNavigation: {
-              visible: true
+              visible: false
             }
           }
         }
@@ -116,8 +116,8 @@ export default {
         var partNumListFilter = {
           $schema: "http://powerbi.com/product/schema#basic",
           target: {
-            table: "par",
-            column: "par_num"
+            table: "Table_Par&Stu",
+            column: "part_num"
           },
           operator: "In",
           values: partNumList,
