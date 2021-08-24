@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-23 16:33:27
+ * @LastEditTime: 2021-08-24 10:12:20
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -114,8 +114,8 @@ export const sparePartTableTitle = [
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 55},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 85},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 60},
-  {props:'supplierName',name:'厂商', enName: 'Code', key: "", minWidth: 45},
-  {props:'supplierId',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
+  {props:'supplierSapCode',name:'厂商', enName: 'Code', key: "", minWidth: 45},
+  {props:'supplierName',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
   {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
   {props:'bcfTargetPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
@@ -135,8 +135,8 @@ export const accessoryTableTitle = [
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 55},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 85},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 60},
-  {props:'supplierName',name:'厂商', enName: 'Code', key: "", minWidth: 45},
-  {props:'supplierId',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
+  {props:'supplierSapCode',name:'厂商', enName: 'Code', key: "", minWidth: 45},
+  {props:'supplierName',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
   {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
   {props:'bcfTargetPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
@@ -158,8 +158,8 @@ export const gsTableTitle = [
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 85},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 60},
   {props:'suppliersNow',name:'现供供应商', enName: 'Current Supplier', key: "", minWidth: 80},
-  {props:'supplierName',name:'厂商', enName: 'Code', key: "", minWidth: 45},
-  {props:'supplierId',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
+  {props:'supplierSapCode',name:'厂商', enName: 'Code', key: "", minWidth: 45},
+  {props:'supplierName',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
   {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
   {props:'carLine',name:'车型', enName: 'Carline', key: "", minWidth: 35},
@@ -184,8 +184,8 @@ export const dbTableTitle = [
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 55},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 85},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 60},
-  {props:'supplierName',name:'厂商', enName: 'Code', key: "", minWidth: 45},
-  {props:'supplierId',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
+  {props:'supplierSapCode',name:'厂商', enName: 'Code', key: "", minWidth: 45},
+  {props:'supplierName',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
   {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
   {props:'rw',name:'欧价', enName: 'RW', key: "", minWidth: 35},
