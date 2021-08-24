@@ -210,7 +210,7 @@ export default {
     },
     // 保存
     handleSave() {
-      if (+this.dosage.oldPartShare > 100) return iMessage.warn(this.language("YANYONGYUANLINGJIANFENEBUNENGDAYUBAIFENZHIBAI", "沿⽤原零件份额不能大于100%"))
+      if (+this.dosage.usePortion > 100) return iMessage.warn(this.language("YANYONGYUANLINGJIANFENEBUNENGDAYUBAIFENZHIBAI", "沿⽤原零件份额不能大于100%"))
 
       this.saveLoading = true
 
