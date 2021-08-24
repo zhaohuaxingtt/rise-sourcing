@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-17 16:30:21
+ * @LastEditTime: 2021-08-23 16:44:25
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -144,9 +144,11 @@ export default {
   },
   methods: {
     downloadFile(){
+      if(this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN',"您当前还未选择列表文件，请选择后重试！"))
       downloadUdFile(this.fileTableSelect.map(r=>r.uploadId))
     },
     deleteFile(){
+      if(this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN',"您当前还未选择列表文件，请选择后重试！"))
       deleteFiles(this.fileTableSelect.map(r=>r.id))
       this.getFileList()
     },

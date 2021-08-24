@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-07-22 20:29:55
+ * @LastEditTime: 2021-08-24 15:42:48
  * @LastEditors: Please set LastEditors
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
@@ -19,14 +19,16 @@
       <template v-if='items.oneWeekList && items.oneWeekList.length<=1'>
         <p class="itemsc" :style='{top:`${(index%2==0?"":"-")}40px`,left:(items.doneDay-1) * 10 + "px"}' v-if='items.progressTypeDesc'>
           <span><icon symbol :name='iconList_all_times["a"+items.taskStatus].icon' class="margin-right5"></icon>{{items.progressTypeDesc}}</span>
-          <span>{{items.doneYear}}CW{{items.week}}</span>
+          <span v-if='items.planYear'>{{items.planYear}}CW{{items.planPeriod}}</span>
+          <span v-if='items.doneYear'>{{items.doneYear}}CW{{items.donePeriod}}</span>
         </p>
       </template>
       <template v-else>
         <template v-for="(itemss,indexs) in items.oneWeekList">
           <p class="itemsc" :style='{top:`${(index%2==0?"":"-")+40*(indexs+1)}px`,left:(itemss.doneDay-1) * 10 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
             <span><icon symbol :name='iconList_all_times["a"+itemss.taskStatus].icon' class="margin-right5"></icon>{{itemss.progressTypeDesc}}</span>
-            <span>{{itemss.doneYear}}CW{{itemss.donePeriod}}</span>
+            <span v-if='itemss.planYear'>{{itemss.planYear}}CW{{itemss.planPeriod}}</span>
+            <span v-if='itemss.doneYear'>{{itemss.doneYear}}CW{{itemss.donePeriod}}</span>
           </p>
         </template>
       </template>
@@ -61,8 +63,13 @@ export default{
      * @return {*}
      */
     topPaddingBottomPadding(){
-      this.paddingBottom = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>d%2==0).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
-      this.paddingTop = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>!(d%2==0)).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
+     try {
+        this.paddingBottom = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>d%2==0).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
+        this.paddingTop = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>!(d%2==0)).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
+     } catch (error) {
+       this.paddingBottom = '40px';
+       this.paddingTop = '0px';
+     }
     }
   }
 }

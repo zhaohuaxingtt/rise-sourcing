@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-08-13 12:56:21
+ * @LastEditTime: 2021-08-24 18:14:31
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -27,7 +27,7 @@ export const contentDeclareTableTitle = [
   { props: "oldPartNumPreset", name: "原零件号", key: "YUANLINGJIANHAO", tooltip: true, width: 140 },
   { props: "oldPartNamePreset", name: "原零件名称", key: "YUANLINGJIANMINGCHENG", tooltip: true },
   { props: "factoryName", name: "采购⼯⼚", key: "CAIGOUGONGCHANG", tooltip: true },
-  { props: "supplierSapCode", name: "供应商编号", key: "GONGYINGSHANGBIAOHAO", tooltip: true },
+  { props: "supplierSapCode", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true,width:100 },
   { props: "supplierNameZh", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true },
   { props: "bpriceChange", name: "B价变动(含分摊)", key: "BJIABIANDONGHANFENTAN", tooltip: true, width: 110 },
   { props: "mouldPriceChange", name: "模具投资变动", key: "MUJUTOUZIBIANDONG", tooltip: true, width: 100 },
@@ -36,8 +36,8 @@ export const contentDeclareTableTitle = [
   { props: "priceAxis", name: "价格轴", key: "JIAGEZHOU", tooltip: true },
   { props: "investCarTypePro", name: "指定投资⻋型项⽬", key: "ZHIDINGTOUZICHEXINGXIANGMU", tooltip: true, width: 150 },
   { props: "isMtz", name: "MTZ变更", key: "MTZBIANGENG", tooltip: true },
-  { props: "oldBnkStatus", name: "原BNK状态", key: "YUANBNKZHUANGTAI", tooltip: true },
-  { props: "newBnkStatus", name: "新BNK状态", key: "XINBNKZHUANGTAI", tooltip: true }
+  { props: "oldBnkStatus", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true },
+  { props: "newBnkStatus", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true }
 ]
 
 export const mtzOptions = [
