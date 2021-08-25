@@ -26,17 +26,23 @@
       <template v-else-if="item.type === 'input'">
         <iInput v-model="form[item.props]" :placeholder="item.placeholder"/>
       </template>
+      <template v-else-if="item.type === 'selectCustom'">
+        <iSelectCustom
+            :data="item.options"
+        />
+      </template>
     </div>
   </div>
 </template>
 
 <script>
-import {iSelect, iInput} from 'rise';
+import {iSelect, iInput, iSelectCustom} from 'rise';
 
 export default {
   components: {
     iSelect,
     iInput,
+    iSelectCustom
   },
   props: {
     list: {
