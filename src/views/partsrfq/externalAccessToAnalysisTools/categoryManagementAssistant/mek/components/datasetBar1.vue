@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-24 10:00:56
+ * @LastEditTime: 2021-08-25 10:23:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -23,13 +23,14 @@ export default {
     return {
       myChart: null,
       barData: [],
-      barxAxis: []
+      barxAxis: [],
+      option: {}
     };
   },
   props: {
     typeSelection: {
-      type: String,
-      default: "",
+      type: Boolean,
+      default: false,
     },
     firstBarData: {
       type: Array,
@@ -42,18 +43,13 @@ export default {
     }
   },
   watch: {
-    typeSelection (val) {
-      if (val === '5') {
-        this.$nextTick(() => {
-          this.initCharts();
-        });
-      } else {
-        this.typeSelection = ""
-        this.$nextTick(() => {
-          this.initCharts();
-        });
-      }
-    },
+    // typeSelection (val) {
+    //   if (val) {
+    //     this.$nextTick(() => {
+    //       this.initCharts();
+    //     });
+    //   }
+    // },
     firstBarData: {
       handler (val) {
         if (val) {
@@ -93,7 +89,6 @@ export default {
       this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
       this.$refs.chart.style.minWidth = '100%';
       this.myChart = echarts().init(this.$refs.chart);
-
       this.option = {
         title: {
           show: true,
@@ -103,7 +98,7 @@ export default {
         },
         xAxis: [
           {
-            show: this.typeSelection === '5' ? false : true,
+            show: !this.typeSelection || false,
             type: "category",
             axisTick: { show: false },
             // data: [{
@@ -204,8 +199,8 @@ export default {
       this.myChart.clear();
       this.myChart.resize();
       this.myChart.setOption(this.option);
-      this.myChart.on('click', function (params) {
-
+      this.myChart.on('click', (params) => {
+        this.$emit('detailDialog', true, params);
       });
     },
   },

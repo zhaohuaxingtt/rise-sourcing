@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-08-24 10:30:49
+ * @LastEditTime: 2021-08-25 16:00:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -18,12 +18,17 @@ export default {
     return {
       myChart: null,
       barDataItem: [],
-      barxAxis: []
+      barxAxis: [],
+      option: {}
     };
   },
   props: {
     maxWidth: {
       type: Number
+    },
+    typeSelection: {
+      type: Boolean,
+      default: false,
     },
     barData: {
       type: Array,
@@ -33,12 +38,20 @@ export default {
     },
   },
   watch: {
+    // typeSelection (val) {
+    //   if (val) {
+    //     this.$nextTick(() => {
+    //       this.initCharts();
+    //     });
+    //   }
+    // },
     barData: {
       handler (val) {
+        console.log(val)
         if (val) {
           this.barDataItem = []
           this.barxAxis = []
-          val.forEach((item, index) => {
+          val.detail.forEach((item, index) => {
             const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
             const itemData = {
               value: item.value,
@@ -73,10 +86,10 @@ export default {
       this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
       this.$refs.chart.style.minWidth = '100%';
       this.myChart = echarts().init(this.$refs.chart);
-      const option = {
+      this.option = {
         xAxis: [
           {
-            show: true,
+            show: !this.typeSelection || false,
             type: "category",
             axisTick: { show: false },
             axisLabel: {
@@ -137,7 +150,21 @@ export default {
       };
       this.myChart.clear()
       this.myChart.resize();
-      this.myChart.setOption(option);
+      this.myChart.setOption(this.option);
+      this.myChart.on('click', (params) => {
+        let data = {}
+        this.barData.detail.forEach(item => {
+          if (item.value === params.value) {
+            data.engine = item.engine
+            data.transmission = item.transmission
+            data.position = item.position
+            data.vwCode = this.barData.motorCode
+            data.motorId = this.barData.motorId
+            data.priceType = this.barData.priceType
+          }
+        })
+        this.$emit('detailDialog', true, data);
+      });
     },
   },
 };

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-06 15:34:45
- * @LastEditTime: 2021-08-19 19:02:48
+ * @LastEditTime: 2021-08-24 18:02:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\categoryManagementAssistant\mek\index.js
@@ -79,6 +79,14 @@ export function getSchemeInfo(params) {
 export function recursiveRetrieve(params) {
   return request({
     url: '/mekScheme/recursiveRetrieve',
+    method: 'POST',
+    data: params,
+  })
+}
+//查询计算车型
+export function queryCal(params) {
+  return request({
+    url: '/mekScheme/queryCal',
     method: 'POST',
     data: params,
   })
