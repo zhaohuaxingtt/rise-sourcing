@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 12:00:48
- * @LastEditTime: 2021-08-23 16:10:03
+ * @LastEditTime: 2021-08-24 15:33:15
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\router\modules\costanalysismanage.js
@@ -13,7 +13,7 @@ export default [
     children: [
       {
         path: "/costanalysismanage",
-        name: "sourcing",
+        name: "costanalysismanage",
         component: () => import("@/views/costanalysismanage"),
         redirect: "costanalysismanage/home",
         children: [
@@ -42,7 +42,6 @@ export default [
                 meta: { title: "人工成本数据维护" },
                 component: () => import("@/views/costanalysismanage/components/datamaintenance/components/costDataMaintenance"),
               },
-              
             ]
           }
         ]
