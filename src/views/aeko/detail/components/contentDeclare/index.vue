@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-16 18:00:04
+ * @LastEditTime: 2021-08-25 14:39:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -155,7 +155,14 @@
         <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
         <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
         <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
-        <iButton v-if="!disabled" @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">{{ language("DAOCHU", "导出") }}</iButton>
+        <iButton v-if="!disabled" @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">
+          {{ language("DAOCHU", "导出") }}
+          <el-tooltip 
+            :content="`${language('LK_AEKO_NEIRONGBIAOTAIDAOCHUTISHI','勾选零件行项目-->导出->批量维护原零件信息-->导入')}`"
+            placement="top">
+            <i class="el-icon-warning-outline font18 tipsIcon"></i>
+          </el-tooltip>
+        </iButton>
         <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT">{{ language("DAORU", "导⼊") }}</iButton>
         <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT">{{ language("TIJIAO", "提交") }}</iButton>
         <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL">{{ language("CHEHUI", "撤回") }}</iButton>
@@ -237,7 +244,8 @@ import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, chunk, debounce } from "lodash"
 
-const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
+// const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
+
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog },
@@ -504,6 +512,30 @@ export default {
     // 导出
     handleExport() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAODAOCHUDEYUANLINGJIAN", "请选择需要导出的原零件"))
+      let printTableTitle = tableTitle.filter(item => item.isExport);
+      let oldPartIndex = 0;
+      
+      
+      printTableTitle.map((item,index)=>{
+        // 原零件号(系统预设)
+        if(item.props == 'oldPartNumPreset'){
+          item.name = '原零件号(系统预设)';
+          oldPartIndex= index;
+        }
+      })
+
+      // 原零件号 需用户自己填写
+        printTableTitle.splice(oldPartIndex+1,0,{
+          props:'oldPart',
+          name:'原零件号'
+        })
+        
+        // 零件行项目ID 
+        printTableTitle.unshift(({
+          props:'objectAekoPartId',
+          name:'零件行项目ID'
+        }))
+
       excelExport(this.multipleSelection, printTableTitle)
     },
     // 提交
@@ -699,6 +731,9 @@ export default {
         height: 100% !important;
       }
     }
+  }
+  .tipsIcon{
+    transform: rotate(180deg);
   }
 }
 </style>
