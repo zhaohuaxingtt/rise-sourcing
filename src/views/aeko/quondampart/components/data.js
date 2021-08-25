@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-27 10:49:28
- * @LastEditTime: 2021-08-10 13:39:47
+ * @LastEditTime: 2021-08-24 15:23:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\data.js
@@ -51,4 +51,20 @@ export const presentAllInPriceDialogTableTitle = [
   { props: "measureUnit", name: "计量单位", key: "JILIANGDANWEI", tooltip: true },
   { props: "appFormCode", name: "申请单号", key: "SHENQINGDANHAO", tooltip: true },
   { props: "linieName", name: "Linie", key: "LINIE", tooltip: true },
+]
+
+
+export const aekoPartTableTitle=[
+  { props: "a", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true },
+  { props: "b", name: "零件号", key: "LINGJIANHAO", tooltip: true },
+  { props: "c", name: "零件名称", key: "LINGJIANMINGCHENG", tooltip: true },
+  { props: "d", name: "原零件号", key: "YUANLINGJIANHAO", tooltip: true },
+  { props: "d", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true },
+  { props: "e", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true },
+  { props: "f", name: "采购⼯⼚", key: "CAIGOUGONGCHANG", tooltip: true },
+  { props: "g", name: "表态A价", key: "LK_BIAOTAIAJIA", tooltip: true },
+  { props: "h", name: "份额", key: "LK_AEKO_FENE", tooltip: true },
+  { props: "i", name: "货币", key: "LK_AEKO_HUOBI", tooltip: true },
+  { props: "j", name: "Linie", key: "LINIE", tooltip: true },
+  { props: "k", name: "定点时间", key: "LK_AEKO_DINGDIANSHIJIAN", tooltip: true },
 ]

@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-08-18 19:43:15
+ * @LastEditTime: 2021-08-25 16:23:03
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
@@ -191,6 +191,7 @@ export default {
             }
          });
          this.report=report
+         document.getElementsByTagName('iframe')[0].style.border = 'none'
       },
       // 返回
       back(){

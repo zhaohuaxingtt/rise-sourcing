@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 11:30:43
- * @LastEditTime: 2021-06-25 14:06:24
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-23 16:00:55
+ * @LastEditors: 舒杰
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\costanalysismanage\components\data.js
+ * @FilePath: \front-sourcing\src\views\costanalysismanage\components\data.js
  */
 export const navList = [
   {
@@ -17,8 +17,9 @@ export const navList = [
   {
     value: 2,
     name: "数据维护",
-    url: "/costanalysismanage/datamaintenance",
-    activePath: "/costanalysismanage/datamaintenance",
+    url: "/costanalysismanage/datamaintenance/costMaintenance",
+    activePath: "/costanalysismanage/datamaintenance/costMaintenance",
     key: "SHUJUWEIHU"
   }
 ]
+

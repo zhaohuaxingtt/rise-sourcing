@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-20 15:45:31
+ * @LastEditTime: 2021-08-23 17:10:40
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
@@ -65,7 +65,6 @@ import moment from 'moment'
 import tableList from './components/overviewTable'
 import selectCarProDialog from './components/selectcarpro'
 import { getOverview, getAllProPurchaser } from '@/api/project'
-import { cloneDeep } from 'lodash'
 export default {
   components: { iPage, projectTop, iCard, iSearch, iButton, iDatePicker, iSelect, tableList, selectCarProDialog },
   data() {
@@ -233,8 +232,10 @@ export default {
               nodeList: nodeList,
             }
           })
-          this.tableData = cloneDeep(list)
-          this.tableDataTemp = cloneDeep(list)
+          // eslint-disable-next-line no-undef
+          this.tableData = _.cloneDeep(list)
+          // eslint-disable-next-line no-undef
+          this.tableDataTemp = _.cloneDeep(list)
           this.carProjectOptions = (res.data || []).map(item => {
             return {
               ...item,

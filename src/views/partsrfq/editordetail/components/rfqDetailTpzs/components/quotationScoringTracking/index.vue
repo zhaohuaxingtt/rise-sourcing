@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-07-21 14:53:50
+ * @LastEditTime: 2021-08-24 18:15:08
  * @LastEditors: Luoshuang
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -75,12 +75,13 @@ export default{
      */
     getYear(yearQuerys){
       let number = 0
+      let y = yearQuerys.donePeriod || yearQuerys.planPeriod
       // eslint-disable-next-line no-undef
       const year = new moment().format('YYYY')
       if(year < yearQuerys.doneYear){
-        number = 52 + yearQuerys.donePeriod
+        number = 52 + y
       }else {
-        number = yearQuerys.donePeriod < 24? (24-yearQuerys.donePeriod) + yearQuerys.donePeriod : yearQuerys.donePeriod + (52 - yearQuerys.donePeriod) 
+        number = y < 24? (24-y) + y : y + (52 - y) 
       }
       return number
     },
@@ -126,8 +127,8 @@ export default{
         // eslint-disable-next-line no-debugger
         const copeList = []
         const startWeek = this.getTypeWeek(list)
-        for(let i = list[0].donePeriod;i<=(list[list.length -1].donePeriod<=24?24:this.getYear(list[list.length -1]));i++){
-          const matchItems = list.find(item=>item.donePeriod == i)
+        for(let i = (list[0].donePeriod || list[0].planPeriod);i<=((list[list.length -1].donePeriod || list[list.length -1].planPeriod)<=24?24:this.getYear(list[list.length -1]));i++){
+          const matchItems = list.find(item=>(item.donePeriod || item.planPeriod) == i)
           copeList.push(
             {
               week:i>52?52-i:i,
@@ -136,10 +137,11 @@ export default{
               taskStatus:matchItems?matchItems.taskStatus:'default',
               doneYear:matchItems?matchItems['doneYear']:'',
               doneDay:matchItems?matchItems['doneDay']:'1',
-              oneWeekList:list.filter(items=>items.donePeriod == i)
+              oneWeekList:list.filter(items=>((items.donePeriod || items.planPeriod) == i)) || []
             }
           )
         }
+        console.log(copeList)
         return copeList
       } catch (error) {
          const copeList = []

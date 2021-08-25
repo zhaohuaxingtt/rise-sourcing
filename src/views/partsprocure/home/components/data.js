@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-08-12 20:12:24
+ * @LastEditTime: 2021-08-23 16:22:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -50,13 +50,13 @@ export const tableTitle = [{
 		tooltip: true,
 		width:60
 	},
-	{
-		props: 'cfControllerZh',
-		name: 'CF',
-		key: 'partsprocure.CF',
-		tooltip: true,
-		width:60
-	},
+	// {
+	// 	props: 'cfControllerZh',
+	// 	name: 'CF',
+	// 	key: 'partsprocure.CF',
+	// 	tooltip: true,
+	// 	width:60
+	// },
 	{
 		props: 'procureFactoryName',
 		name: '采购工厂',

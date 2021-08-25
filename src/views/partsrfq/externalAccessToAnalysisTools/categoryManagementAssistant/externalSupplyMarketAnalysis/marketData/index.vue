@@ -30,7 +30,6 @@ import theChart from './components/theChart';
 import {
   rawMaterialSearch,
   manpowerSearch,
-  energySearch,
   RAWMATERIAL,
   LABOUR,
   ENERGY,
@@ -108,7 +107,7 @@ export default {
           await this.getChartGroupData({type: LABOUR});
           break;
         case ENERGY:
-          this.searchProps = energySearch;
+          this.searchProps = rawMaterialSearch;
           await this.getSearchProps({type: ENERGY});
           await this.getChartGroupData({type: ENERGY});
           break;
@@ -243,7 +242,7 @@ export default {
           case ENERGY:
             res = await getEnergyGroupData(form);
             if (res.result) {
-              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'productNameList'});
+              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeList'});
             }
             break;
         }
