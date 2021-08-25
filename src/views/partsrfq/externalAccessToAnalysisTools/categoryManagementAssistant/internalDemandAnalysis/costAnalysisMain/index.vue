@@ -216,7 +216,6 @@ export default {
     // 创建pdf并保存数据
     createPdfAndSave() {
       this.createPdf().then(pdf => {
-        console.log('pdf', pdf);
         if(!pdf) {
           iMessage.error(this.language('CHUANGJIANPDFSHIBAI', '创建PDF失败'))
           return
