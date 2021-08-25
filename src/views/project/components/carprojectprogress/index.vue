@@ -98,6 +98,9 @@ export default {
     margin-top: 20px;
     border-top: 1px dashed #BBC4D6;;
   }
+  .titleSearch-label {
+    width: auto !important;
+  }
   .titleSearch {
     display: flex;
     align-items: center;
