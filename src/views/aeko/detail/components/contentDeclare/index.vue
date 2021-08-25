@@ -435,7 +435,7 @@ export default {
       if (!query.oldPartNumPreset) delete query.oldPartNumPreset
 
       this.$router.push({
-        path: "/aeko/quondampart/ledger",
+        path: "/aeko/quondampart",
         query
       })
     
