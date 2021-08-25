@@ -165,7 +165,7 @@ export default {
       });
 
       this.report = report
-
+      document.getElementsByTagName('iframe')[0].style.border = 'none'
     },
   }
 }
