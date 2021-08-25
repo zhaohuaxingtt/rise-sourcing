@@ -281,6 +281,14 @@ export default [
         },
         component: () => import (`@/views/ws2/purchaseSupplier/investmentList/bmInfo`),
       },
+      /************** 模具采购订单详情 **************************/
+      {
+        path: '/ws2/order/modeler/details/ModelOrderDetailsPage/:option/:id', //工序委外订单详情
+        name: 'OutsourcingOrderDetails',
+        props: true,
+        component: () =>
+            import (`@/views/ws2/modelorder/Details/ModelOrderDetailsPage`)
+      },
     ]
   }
 ]

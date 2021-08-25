@@ -67,3 +67,19 @@ export function getSapUserPageList(data){
         data:data
     })
 }
+//查询特殊身份部门信息（多个）,查linie时tagId传4
+export function getDeptListByTag(parmars){
+    return requst({
+        url:'/api/dept/getDeptListByTag',
+        method:"GET",
+        params:parmars,
+    })
+}
+//根据用户身份查询用户列表（可添加部门筛选）,查linie时tagId传4
+export function getUserListByTag(parmars){
+    return requst({
+        url:'/api/getUserListByTag',
+        method:"GET",
+        params:parmars,
+    })
+}
