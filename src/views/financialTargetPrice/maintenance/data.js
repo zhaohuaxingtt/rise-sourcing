@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-17 10:40:52
+ * @LastEditTime: 2021-08-24 17:50:16
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
@@ -48,7 +48,7 @@ export const searchList = [
   {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: 'LINGJIANZHUANGTAI', selectOption: 'PART_STATUS'},
   {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO'},
   {value: 'procureFactoryId', label: '采购工厂', type: 'select', i18n_label: 'CAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY'},
-  {value: 'applyType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption: 'CF_APPLY_TYPE'},
+  {value: 'cfPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption: 'CF_PRICE_TYPE'},
   {value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: 'SHENQINGRIQIQIZHI',},
   {value: 'responseDate', label: '返回日期起止', type: 'dateRange', i18n_label: 'FANHUIRIQIQIZHI',}
 ]
@@ -69,7 +69,7 @@ export const modifyTableTitle = [
   {props:'ckdExwork',name:'CKD Ex-work', key: "CKDEXWORK", tooltip: true, width: 100},
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
   {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 100},
-  {props:'valid',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
+  {props:'validDesc',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
   {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
   {props:'modifer',name:'修改人', key: "XIUGAIREN", tooltip: true},
   {props:'modifyDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true, width: 120},
@@ -84,7 +84,7 @@ export const approvalTableTitle = [
   {props:'ckdDuty',name:'CKD Duty(%)', key: "CKDDUTY", tooltip: true, width: 120},
   {props:'ckdExwork',name:'CKD Ex-work', key: "CKDEXWORK", tooltip: true, width: 100},
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
-  {props:'valid',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
+  {props:'validDesc',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
   {props:'approveName',name:'审批人', key: "SHENPIREN", tooltip: true, width: 120},
   {props:'approveTypeDesc',name:'审批类型', key: "SHENPILEIXING", tooltip: true},
   {props:'approveDate',name:'审批日期', key: "SHENPIRIQI", tooltip: true, width: 120},

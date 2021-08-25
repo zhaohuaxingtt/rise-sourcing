@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-13 12:57:57
+ * @LastEditTime: 2021-08-24 18:14:47
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -58,7 +58,7 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('ZHIDINGTAIZHANGKUYUANLINGJIAN', '指定台账库原零件')">
       <template #header-control>
-        <iButton @click="handleSave" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
+        <!-- <iButton @click="handleSave" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton> -->
         <iButton @click="handleExport" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT">{{ language("DAOCHU", "导出") }}</iButton>
       </template>
       <div class="body">

@@ -77,6 +77,14 @@ export default [
               title: "项目管理-排程助手-进度确认",
             },
             component: () => import("@/views/project/schedulingassistant/progressconfirm")
+          },
+          {
+            path: 'defaultAlgorithmConfig',
+            name: "defaultAlgorithmConfig",
+            meta: {
+              title: "项目管理-排程助手-默认算法配置",
+            },
+            component: () => import("@/views/project/schedulingassistant/defaultAlgorithmConfig")
           }
         ]
       },
@@ -87,6 +95,25 @@ export default [
           title: "项目管理-项目进度监控",
         },
         component: () => import("@/views/project/progressmonitoring"),
+        redirect: "/projectprogressmonitoring/home",
+        children: [
+          {
+            path: "home",
+            name: "progressmonitoring-monitoring",
+            meta: {
+              title: "项目管理-项目进度监控",
+            },
+            component: () => import("@/views/project/progressmonitoring/home"),
+          },
+          {
+            path: "riskAndAlarmConfig",
+            name: "progressmonitoring-riskAndAlarmConfig",
+            meta: {
+              title: "项目管理-项目进度监控-风险预警配置",
+            },
+            component: () => import("@/views/project/progressmonitoring/riskAndAlarmConfig/index"),
+          }
+        ]
       },
       {
         path: "/projectprogressreport",
