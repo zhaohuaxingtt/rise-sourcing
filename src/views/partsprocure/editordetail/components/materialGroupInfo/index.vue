@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-08-21 18:10:13
+ * @LastEditTime: 2021-08-25 16:39:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -28,7 +28,7 @@
         v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_BACK"
         >{{ language("LK_FANHUI",'返回') }}</iButton
       >
-      <iButton @click="jumpBdl">{{ language('LK_CHAZHAOGONGYIZUGONGYINGSHANG','查找工艺组供应商') }}</iButton>
+      <iButton v-permission="PARTSPROCURE_EDITORDETAIL_CHAZHAOGONGYIZUGONGYINGSHANG" @click="jumpBdl">{{ language('LK_CHAZHAOGONGYIZUGONGYINGSHANG','查找工艺组供应商') }}</iButton>
     </template>
     <div class="body">
       <infos :data="info" />
