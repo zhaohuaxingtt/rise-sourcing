@@ -40,6 +40,7 @@ export default {
   },
   props: {
     value: { type: Boolean },
+    materialGroup: { type: String, default: '' }
   },
   data() {
     return {
@@ -55,7 +56,13 @@ export default {
       },
     }
   },
-
+  watch: {
+    materialGroup: {
+      handler(val) {
+        this.form.materialGroup = val
+      }
+    }
+  },
   created() {
     this.categoryList()
   },

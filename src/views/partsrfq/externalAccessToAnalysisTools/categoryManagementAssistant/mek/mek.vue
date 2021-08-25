@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="bob-main">
-    <iSearch @reset="handleSearchReset" @sure="handleSearch" :icon="false">
+    <iSearch @reset="handleSearchReset" @sure="initData" :icon="false">
       <el-form label-position="top">
         <el-row class="margin-bottom20">
           <!--材料组-->
@@ -55,7 +55,7 @@
                     }}
                     </p>
                   </el-tooltip>
-                  <iInput v-else class="nameInput" v-model="scope.row.name"></iInput>
+                  <iInput v-else class="nameInput" maxlength="50" v-model="scope.row.name"></iInput>
                 </el-col>
                 <el-col :span="4">
                   <span v-if="scope.row.fileType == $t('TPZS.SCHEME_TYPE')">
@@ -79,7 +79,7 @@
         <el-table-column :label="$t('TPZS.MRX')" align="center" header-align="center" width="80">
           <template slot-scope="scope">
             <div v-if="!edit">
-              {{ defaultStatus(scope.row, scope.row.isDefault) }}
+              {{scope.row.isDefault==='1'?language('SHI','是'):scope.row.isDefault==='0'?language('FOU','否'):''}}
             </div>
             <div v-else-if="
                 edit &&
@@ -87,7 +87,7 @@
                 scope.row.isDefault != '空' &&
                 scope.row.isDefault
               ">
-              <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)" @change="changeDefault($event, scope.row)">
+              <iSelect v-model="scope.row.isDefault">
                 <el-option :value="item.value" :label="item.label" v-for="(item, index) in defaultData" :key="index"></el-option>
               </iSelect>
             </div>
@@ -95,7 +95,7 @@
         </el-table-column>
         <el-table-column :label="$t('TPZS.WJLX')" prop="fileType" align="center" header-align="center">
         </el-table-column>
-        <el-table-column :label="$t('TPZS.CJR')" prop="createNameZh" align="center" header-align="center">
+        <el-table-column :label="$t('TPZS.CJR')" prop="createUserName" align="center" header-align="center">
         </el-table-column>
         <el-table-column :label="$t('LK_CHUANGJIANRIQI')" prop="createDate" show-overflow-tooltip align="center" header-align="center">
         </el-table-column>
@@ -113,7 +113,7 @@
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount" />
 
       <reportPreview :visible="reportVisible" :reportUrl="reportUrl" :title="reportTitle" :key="reportKey" @handleCloseReport="handleCloseReport" />
-      <addDialog @add="add" v-model="addDialog" />
+      <addDialog :materialGroup="form.materialGroup" @add="add" v-model="addDialog" />
     </iCard>
   </div>
 </template>
@@ -155,8 +155,7 @@ export default {
         materialGroup: this.$store.state.rfq.materialGroup || '',
         createName: "",
         spareParts: this.$store.state.rfq.spareParts || "",
-        rfqNo: '',
-        rfqName: this.$store.state.rfq.rfqId || ""
+        rfqNo: this.$store.state.rfq.rfqId || "",
       },
       rfqID: "220",
       edit: false,
@@ -170,8 +169,8 @@ export default {
       reportTitle: null,
       reportKey: 0,
       defaultData: [
-        { value: "是", label: this.$t("nominationLanguage.Yes") },
-        { value: "否", label: this.$t("nominationLanguage.No") },
+        { value: "1", label: this.$t("nominationLanguage.Yes") },
+        { value: "0", label: this.$t("nominationLanguage.No") },
       ],
       currentDefaultObj: null, //当前编辑对象
       updatedDefault: false //是否已更新默认项
@@ -182,20 +181,6 @@ export default {
   },
   mounted() {
     // this.getTableList();
-  },
-  computed: {
-    defaultStatus() {
-      return function(val, status) {
-        let flag = status === "是" || status === "否" ? status : null;
-        if (this.currentDefaultObj && this.currentDefaultObj.isDefault == "是") {
-          if (val.id == this.currentDefaultObj.id)
-            flag = "是";
-          else if (!flag) flag = null;
-          else flag = "否";
-        }
-        return val.fileType == this.$t('TPZS.SCHEME_TYPE') ? flag : null;
-      };
-    },
   },
   methods: {
     async add(params) {
@@ -227,9 +212,15 @@ export default {
           pageSize: this.page.pageSize
         }
         const res = await getList(pms)
+        if (!res.total) {
+          iMessage.error(this.language('BQWFCXDJGSRCWHBCZQQRHCXSR', '抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入'))
+        }
         this.tableListData = res.data
         this.tableLoading = false
-
+        this.page.currPage = res.pageNum
+        this.page.pageSize = res.pageSize
+        this.page.totalCount = res.total
+        this.handleTableNumber(this.tableListData, 1, null)
       } catch {
         this.tableListData = []
         this.tableLoading = false
@@ -244,20 +235,9 @@ export default {
         createName: "",
         spareParts: "",
         rfqNo: '',
-        rfqName: ""
       }
-      this.initSearchData();
+      this.initData();
     },
-    //检索事件
-    handleSearch() {
-      this.initData()
-      // this.getTableList().then((res) => {
-      //   if (!res.data || res.data.length == 0) {
-      //     iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
-      //   }
-      // });
-    },
-
     //更新表格数据
     updateTableData() {
       if (this.updatedDefault) {
@@ -294,6 +274,31 @@ export default {
         this.addDialog = true
       }
     },
+    // 获取下标
+    indexMethod(e) {
+      const rows = [];
+      this.tableListData.forEach((r) => {
+        rows.push(r.number);
+        if (r.reportList && r.reportList !== null) {
+          r.reportList.forEach((c) => {
+            rows.push(c.number);
+          });
+        }
+      });
+      return rows[e];
+    },
+    //递归处理树结构数据的序号
+    handleTableNumber(data, suffix, prefix) {
+      data.forEach((item) => {
+        const number = prefix ? prefix + "." + suffix : suffix;
+        item["number"] = number;
+        if (item.reportList && item.reportList.length > 0) {
+          item["children"] = item.reportList;
+          this.handleTableNumber(item.reportList, 1, number);
+        }
+        suffix++;
+      });
+    },
     // 点击删除按钮
     deleteBob() {
       if (!this.selection || this.selection.length == 0) {
@@ -310,13 +315,6 @@ export default {
           this.initData();
         } else iMessage.error(res.desZh);
       });
-    },
-    //编辑时，改变默认项事件
-    changeDefault(val, row) {
-      this.$set(row, "isDefault", val);
-      this.$set(this, "currentDefaultObj", row);
-      if (val == '是') this.updatedDefault = true
-      this.updateTableData()
     },
     //保存编辑
     saveEdit() {
