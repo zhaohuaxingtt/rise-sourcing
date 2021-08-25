@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-08-19 17:03:13
+ * @LastEditTime: 2021-08-25 18:26:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -204,7 +204,7 @@ export default {
         query: {
           ...this.searchForm,
           schemeId: this.$route.query.schemeId || null,
-          fsNumList: this.tableListData.map(item => item.fsNum),
+          fsNumList: this.selection.map(item => item.fsNum),
         }
       })
     },

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-12 12:32:39
+ * @LastEditTime: 2021-08-24 18:00:53
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -131,7 +131,7 @@ export default {
         partStatus: '',
         carTypeName: '',
         procureFactoryId: '',
-        applyType: ''
+        cfPriceType: ''
       },
       isEdit: false,
       tableLoading: false,
@@ -203,7 +203,7 @@ export default {
         partStatus: '',
         carTypeName: '',
         procureFactoryId: '',
-        applyType: ''
+        cfPriceType: ''
       }
     },
     getCF() {
@@ -232,8 +232,8 @@ export default {
       })
     },
     getDicts() {
-      // 申请类型
-      this.getDict('CF_APPLY_TYPE')
+      // 财务目标价分类
+      this.getDict('CF_PRICE_TYPE')
       //申请状态CF_APPLY_STATUS
       this.getDict('CF_APPLY_STATUS')
     },
@@ -284,7 +284,7 @@ export default {
       window.open(router.href,'_blank')
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify({...row,purchaseProjectId:row.purchasingProjectId}) }})
+      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify({...row,id:row.purchasingProjectId,purchasingRequirementObjectId:row.purchasingRequirementId}) }})
       window.open(router.href,'_blank')
     },
     /**

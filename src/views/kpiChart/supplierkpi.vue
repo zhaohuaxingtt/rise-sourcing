@@ -153,9 +153,7 @@ export default {
                 yAxis: {
                     show:false,
                     type:'value',
-                    name:'该分数段下供应商数量：',
-                    min: 0,
-                    max: 10,
+                    name:'该分数段下供应商数量：'
                 },
                 series: [
                     {
@@ -176,10 +174,10 @@ export default {
                             },
                             silent: true, // 鼠标悬停事件, true悬停不会出现实线
                             symbol: 'none', // 去掉箭头
-                            data: [[
-                                { coord: ['45', 0] }, // [x第几个（从0开始），y轴起始点 ]
-                                { coord: ['45', 10] } // [x第几个（从0开始），y轴起始点 ]
-                            ]]
+                            // data: [[
+                            //     { coord: ['45', 0] }, // [x第几个（从0开始），y轴起始点 ]
+                            //     { coord: ['45', 10] } // [x第几个（从0开始），y轴起始点 ]
+                            // ]]
                         },
                         markPoint:{
                              symbol:"circle"
@@ -218,14 +216,13 @@ export default {
         },
         watchData(x){
             this.tabledata= x.supplierList
-            console.log(x)
             // 折线图点
-            x.totalSupplierList.forEach(z=>{this.totalScore.series[0].data.push({value:z,symbol:'none',name:""})})
+            x.totalSupplierList.forEach(z=>{this.totalScore.series[0].data.push({value:z,symbol:'none',name:"",sArray:[]})})
             x.oneMaps.PP01000.oneSupplierList.forEach(z=>{
-                this.quality.series[0].data.push({value:z,symbol:'none',name:""})
-                this.cost.series[0].data.push({value:z,symbol:'none',name:""})
-                this.delivery.series[0].data.push({value:z,symbol:'none',name:""})
-                this.sustainable.series[0].data.push({value:z,symbol:'none',name:""})
+                this.quality.series[0].data.push({value:z,symbol:'none',name:"",sArray:[]})
+                this.cost.series[0].data.push({value:z,symbol:'none',name:"",sArray:[]})
+                this.delivery.series[0].data.push({value:z,symbol:'none',name:"",sArray:[]})
+                this.sustainable.series[0].data.push({value:z,symbol:'none',name:"",sArray:[]})
             })
         },
         // 勾选供应商id
@@ -260,14 +257,14 @@ export default {
         // 总分
         changeTotalX(x){
             if(x.totalList.length>0){
+                this.totalScore.series[0].data.forEach(x=>{x.sArray=[]})
                  x.totalList.forEach(score => {
                      if(score.totalScore>9){
                          this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].symbol='emptyCircle'
                          this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].c=Math.floor((score.totalScore)/10)*10+5
-                         this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].sArray=[]
                          this.tabledata.forEach(s=>{
                             if(s.supplierId==score.supplierId){
-                                this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].sArray.push(s.nameZh)
+                                this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].sArray.push({name:s.nameZh,realScore:score.totalScore})
                             }
                         })
                      }else{
@@ -280,38 +277,38 @@ export default {
         },
         // 其余折线图
         changeOneListX(x){
-            console.log(x.oneList,this.tabledata)
             if(x.oneList.length>0){
+                for (let i = 0; i < 10; i++) {
+                    this.quality.series[0].data[i].sArray=[]
+                    this.cost.series[0].data[i].sArray=[]
+                    this.delivery.series[0].data[i].sArray=[]     
+                }
                  x.oneList.forEach(score => {
                      if(score.levelOneCode=="PP01000" || score.levelOneCode=="GP01000"){
-                        console.log(score)
                         this.quality.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
                         this.quality.series[0].data[Math.floor((score.score)/10)].c=Math.floor((score.score)/10)*10+5
-                        this.quality.series[0].data[Math.floor((score.score)/10)].sArray=[]
                         this.tabledata.forEach(s=>{
                             if(s.supplierId==score.supplierId){
-                                this.quality.series[0].data[Math.floor((score.score)/10)].sArray.push(s.nameZh)
+                                this.quality.series[0].data[Math.floor((score.score)/10)].sArray.push({name:s.nameZh,realScore:score.score})
                             }
                         })
                      }
                     if(score.levelOneCode=="PP02000" || score.levelOneCode=="GP02000"){
                         this.cost.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
                         this.cost.series[0].data[Math.floor((score.score)/10)].c=Math.floor((score.score)/10)*10+5
-                        this.cost.series[0].data[Math.floor((score.score)/10)].sArray=[]
+                        
                         this.tabledata.forEach(s=>{
                             if(s.supplierId==score.supplierId){
-                                this.cost.series[0].data[Math.floor((score.score)/10)].sArray.push(s.nameZh)
-                                
+                                this.cost.series[0].data[Math.floor((score.score)/10)].sArray.push({name:s.nameZh,realScore:score.score})
                             }
                         })
                      }
                      if(score.levelOneCode=="PP03000" || score.levelOneCode=="GP03000"){
                          this.delivery.series[0].data[Math.floor((score.score)/10)].symbol='emptyCircle'
                          this.delivery.series[0].data[Math.floor((score.score)/10)].c=Math.floor((score.score)/10)*10+5
-                         this.delivery.series[0].data[Math.floor((score.score)/10)].sArray=[]
                          this.tabledata.forEach(s=>{
-                            if(s.supplierId==score.supplierId ){
-                                this.delivery.series[0].data[Math.floor((score.score)/10)].sArray.push(s.nameZh)
+                            if(s.supplierId==score.supplierId){
+                                this.delivery.series[0].data[Math.floor((score.score)/10)].sArray.push({name:s.nameZh,realScore:score.score})
                             }
                         })
                      }
@@ -325,6 +322,7 @@ export default {
                     //     })
                     //  }
                  }); 
+                 console.log(this.quality)
             }
         },
         resetData(){

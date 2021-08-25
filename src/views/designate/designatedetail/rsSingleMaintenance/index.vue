@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-07 08:13:54
+ * @LastEditTime: 2021-08-24 13:52:18
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -267,6 +267,8 @@ export default {
           fsnrGsnrNum: item.fsnrGsnrNum,
           nominateDetailId: item.nominateDetailId,
           nominateRecordId: item.nominateRecordId,
+          nominateAppId: item.nominateAppId,
+          partProjType: item.partProjectType,
           quotationId: item.quotationId,
           aPrice: item.aprice,
           bPrice: item.bprice,

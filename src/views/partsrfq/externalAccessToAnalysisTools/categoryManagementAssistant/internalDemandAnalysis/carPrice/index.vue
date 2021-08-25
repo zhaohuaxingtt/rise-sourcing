@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-20 10:06:04
+ * @LastEditTime: 2021-08-25 16:33:18
  * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
@@ -303,6 +303,7 @@ export default {
             }
          });
          this.report=report
+         document.getElementsByTagName('iframe')[0].style.border = 'none'
       },
       // 返回
       back(){

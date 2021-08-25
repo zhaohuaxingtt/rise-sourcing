@@ -18,7 +18,8 @@
         @handlePartItemClick="handlePartItemClick"
     />
     <!-- 自定义零件弹窗 -->
-    <customPart v-if="customParams.visible" :key="customParams.key" v-model="customParams.visible" @handleCloseCustom="handleCloseCustom"/>
+    <customPart v-if="customParams.visible" :key="customParams.key" v-model="customParams.visible"
+                @handleCloseCustom="handleCloseCustom"/>
     <!--信息-->
     <iCard class="margin-bottom20">
       <theBaseInfo :dataInfo="dataInfo"/>
@@ -208,7 +209,7 @@ export default {
         ...this.customParams,
         visible: false,
       };
-      this.getDataInfo()
+      this.getDataInfo();
     },
     // 关闭零件
     handlePartItemClose({event, item}) {
@@ -287,6 +288,7 @@ export default {
         this.currentTabData.partsId = res.data.partsId;
         this.currentTabData.batchNumber = res.data.batchNumber;
         this.currentTabData.supplierId = res.data.supplierId;
+        this.currentTabData.analysisSchemeId = res.data.analysisSchemeId;
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
@@ -352,6 +354,8 @@ export default {
             const res = await saveAnalysisScheme(req);
             if (res.result) {
               await this.setTableEditStatus(false);
+            } else {
+              this.handleTableSaveError();
             }
             this.saveDialog = false;
           });
@@ -359,6 +363,8 @@ export default {
           const res = await saveAnalysisScheme(req);
           if (res.result) {
             await this.setTableEditStatus(false);
+          } else {
+            this.handleTableSaveError();
           }
           this.saveDialog = false;
         }
@@ -447,6 +453,8 @@ export default {
           } else if (tab === AVERAGE) {
             await this.getAverageData();
           }
+        } else {
+          this.handleTableSaveError();
         }
       } catch {
         this.tableLoading = false;
@@ -474,6 +482,13 @@ export default {
     setTableEditStatus(boolean) {
       this.$refs.theAverageTable.tableStatus = boolean;
       this.$refs.theCurrentTable.tableStatus = boolean;
+    },
+    handleTableSaveError() {
+      if (this.currentTab === CURRENTTIME && this.$refs.theCurrentTable.tableStatus === 'edit') {
+        this.setTableEditStatus(true);
+      } else if (this.currentTab === AVERAGE && this.$refs.theAverageTable.tableStatus === 'edit') {
+        this.setTableEditStatus(true);
+      }
     },
   },
 };
