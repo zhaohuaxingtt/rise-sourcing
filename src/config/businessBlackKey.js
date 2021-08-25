@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-02 15:35:55
- * @LastEditTime: 2021-08-25 16:43:58
+ * @LastEditTime: 2021-08-25 16:49:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\config\businessKey.js
@@ -62,6 +62,10 @@ translateBackToWhite(
     'PARTSPROCURE_EDITORDETAIL_SETPROCESSGROUP', // TAB-材料组信息-按钮-设置工艺组 show:false
     'PARTSPROCURE_EDITORDETAIL_CHAZHAOGONGYIZUGONGYINGSHANG', // TAB-材料组信息-按钮-查找工艺组供应商 show:false
     'PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE', // TAB-备注-按钮-保存 show:false
+
+    'PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN', // TAB-零件产量计划 show:false
+    'PARTSPROCURE_EDITORDETAIL_DRAWINGSANDTPDETAILSPAGE', // TAB-图纸和信息单详情 show:false
+    'PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE', // TAB-申请目标价 show:false
     
     'PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER', // TAB-备注-询价采购员备注 show:true disabled:true
     'PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES', // TAB-备注-Linie备注 show:true disabled:true
