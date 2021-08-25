@@ -257,7 +257,7 @@ export default {
         // 总分
         changeTotalX(x){
             if(x.totalList.length>0){
-                //this.totalScore.series[0].data.forEach(x=>{x.sArray=[]})
+                this.totalScore.series[0].data.forEach(x=>{x.sArray=[]})
                  x.totalList.forEach(score => {
                      if(score.totalScore>9){
                          this.totalScore.series[0].data[Math.floor((score.totalScore)/10)].symbol='emptyCircle'
