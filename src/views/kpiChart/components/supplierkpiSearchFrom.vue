@@ -125,7 +125,7 @@
                              :multiple-limit="5"
                              :placeholder="$t('partsignLanguage.QingXuanZe')">
                       <el-option v-for="(x,index) in material"
-                                 :value='x.categoryId'
+                                 :value='x.categoryCode'
                                  :key="index"
                                  :label='x.categoryName'></el-option>
                     </iSelect>
@@ -402,7 +402,6 @@ export default {
   mounted () {
     this.getMaterialGroupByUserIds()
     this.getRelationship()
-    this.getStuffByCategory()
   },
   watch: {
     'checkList': {
@@ -553,8 +552,8 @@ export default {
       })
     },
     // 工艺组
-    getStuffByCategory () {
-      getStuffByCategory({}).then(res => {
+    getStuffByCategory (data) {
+      getStuffByCategory({categoryCodes:data}).then(res => {
         this.StuffByCategory = res.data
       })
     },
@@ -738,6 +737,12 @@ export default {
         })
         this.formData.spiSupplierDTO.toAmountEnd = this.formData.spiBaseDTO.toAmountEnd
         this.supplierEnd = this.formData.spiBaseDTO.toAmountEnd
+      }
+    },
+    // 监听材料组工改变艺组
+    materialValue(e){
+      if(this.formData.spiSupplierDTO.categoryCodeList.length>0){
+        this.getStuffByCategory(this.formData.spiSupplierDTO.categoryCodeList)
       }
     }
   }
