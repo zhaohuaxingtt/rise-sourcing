@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 15:39:31
+ * @LastEditTime: 2021-08-24 17:52:26
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\query\data.js
  */
@@ -49,7 +49,7 @@ export const searchList = [
   {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: 'LINGJIANZHUANGTAI', selectOption: 'PART_STATUS'},
   {value: 'procureFactoryId', label: '采购工厂', type: 'select', i18n_label: 'CAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY'},
   {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE'},
-  {value: 'lcPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption: 'CF_APPLY_TYPE'},
+  {value: 'cfPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption: 'CF_PRICE_TYPE'},
   {value: 'partProjectType', label: '零件项目类型', type: 'select', i18n_label: 'LINGJIANXIANGMULEIXING',selectOption:'PART_PROJECT_TYPE'},
   {value: 'setKz', label: 'SET属性', type: 'select', i18n_label: 'SETSHUXING', selectOption: 'setOptions'},
   {value: 'approveStats', label: '审批状态', type: 'select', i18n_label: 'SHENPIZHUANGTAI',selectOption: 'CF_APPROVE_STATUS'},

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-13 11:29:17
+ * @LastEditTime: 2021-08-25 10:42:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -58,7 +58,7 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('ZHIDINGTAIZHANGKUYUANLINGJIAN', '指定台账库原零件')">
       <template #header-control>
-        <iButton @click="handleSave" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
+        <!-- <iButton @click="handleSave" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton> -->
         <iButton @click="handleExport" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT">{{ language("DAOCHU", "导出") }}</iButton>
       </template>
       <div class="body">
@@ -93,6 +93,10 @@
           :total="page.totalCount" />
       </div>
     </iCard>
+
+    <!-- 指定AEKO库原零件 -->
+    <aekoList v-if="aekoShow" />
+    
     <presentAllInPriceDialog :visible.sync="visible" :apriceId="currentRow.apriceId" @confirm="confirmAPrice" />
   </div>
 </template>
@@ -108,8 +112,13 @@ import { getAekoOriginPartInfo, saveAekoOriginPart, judgeRight, getAekoOriginFac
 import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, isEqual } from "lodash"
 
+
+import aekoList from '../aeko'
+
 export default {
-  components: { iSearch, iInput, iSelect, iCard, iButton, iPagination, tableList, icon, presentAllInPriceDialog },
+  components: { iSearch, iInput, iSelect, iCard, iButton, iPagination, tableList, icon, presentAllInPriceDialog,
+  aekoList,
+   },
   mixins: [ pageMixins ],
   computed: {
     // eslint-disable-next-line no-undef
@@ -131,7 +140,8 @@ export default {
       visible: false,
       currentRow: {},
       factoryDisabled: false,
-      factoryName: ""
+      factoryName: "",
+      aekoShow:false,
     }
   },
   watch: {

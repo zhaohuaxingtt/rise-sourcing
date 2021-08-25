@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 20:00:13
- * @LastEditTime: 2021-08-12 16:05:31
+ * @LastEditTime: 2021-08-25 10:42:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\index.vue
@@ -11,7 +11,8 @@
     <div class="header">
       <div class="title">{{ language("ZHIDINGYUANLINGJIAN", "指定原零件") }}</div>
       <div class="control">
-        <iNavMvp class="nav margin-right20" :lev="2" :list="navList" lang routerPage routerParam />
+        <!-- <iNavMvp class="nav margin-right20" :lev="2" :list="navList" lang routerPage routerParam /> -->
+        <iButton @click="save" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("LK_BAOCUN", "保存") }}</iButton>
         <iButton @click="handleBack">{{ language("FANHUI", "返回") }}</iButton>
         <div class="control">
           <logButton class="margin-left20" />
@@ -22,7 +23,8 @@
       </div>
     </div>
     <div class="margin-top30">
-      <router-view></router-view>
+      <ledger ref='ledger'/>
+      <!-- <router-view></router-view> -->
     </div>
   </iPage>
 </template>
@@ -31,12 +33,17 @@
 import { iPage, iNavMvp, iButton, icon } from "rise"
 import logButton from "@/components/logButton"
 import { navList } from "./components/data"
+import ledger from './components/ledger'
 
 export default {
-  components: { iPage, iNavMvp, logButton, iButton, icon },
+  components: { iPage, 
+    // iNavMvp,
+   logButton, iButton, icon,
+   ledger,
+    },
   data() {
     return {
-      navList
+      navList,
     }
   },
   methods: {
@@ -65,7 +72,12 @@ export default {
           query: {}
         })
       }
-    }
+    },
+    
+    // 保存
+    save(){
+      this.$refs.ledger.handleSave();
+    },
   },
   beforeDestroy() {
     if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) sessionStorage.removeItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)
