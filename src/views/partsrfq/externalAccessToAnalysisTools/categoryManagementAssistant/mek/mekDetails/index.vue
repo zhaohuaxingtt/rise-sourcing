@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-25 16:17:25
+ * @LastEditTime: 2021-08-25 16:41:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -350,53 +350,54 @@ export default {
   },
   async created () {
     await this.init()
-    // let params = {
-    //   comparedType: this.comparedType,
-    //   info: [{
-    //     motorId: this.targetMotor,
-    //     priceType: 'sopPrice',
-    //     isTargetMotor: true
-    //   }],
-    //   categoryId: this.categoryId,
-    //   schemeId: this.chemeId
-    // }
-    // this.ComparedMotor.forEach(item => {
-    //   params.info.push({
-    //     motorId: item,
-    //     priceType: 'sopPrice',
-    //     isTargetMotor: false
-    //   })
-    // })
     let params = {
-      "comparedType": "mekConfig",
-      "info": [{
-        "motorId": 50044101,
-        "priceType": "latestPrice",
-        "isTargetMotor": true
-      },
-      {
-        "motorId": 50048103,
-        "priceType": "latestPrice",
-        "isTargetMotor": false
-      },
-      {
-        "motorId": 2000000166,
-        "priceType": "latestPrice",
-        "isTargetMotor": false
-      },
-      {
-        "motorId": 2000000084,
-        "priceType": "latestPrice",
-        "isTargetMotor": false
-      },
-      {
-        "motorId": 2000000164,
-        "priceType": "latestPrice",
-        "isTargetMotor": false
+      comparedType: this.comparedType,
+      info: [{
+        motorId: this.targetMotor,
+        priceType: 'sopPrice',
+        isTargetMotor: true
       }],
-      "categoryId": 600029,
-      "schemeId": 3
+      categoryId: this.categoryId,
+      schemeId: this.chemeId,
+      categoryCode: this.categoryCode
     }
+    this.ComparedMotor.forEach(item => {
+      params.info.push({
+        motorId: item,
+        priceType: 'sopPrice',
+        isTargetMotor: false
+      })
+    })
+    // let params = {
+    //   "comparedType": "mekConfig",
+    //   "info": [{
+    //     "motorId": 50044101,
+    //     "priceType": "latestPrice",
+    //     "isTargetMotor": true
+    //   },
+    //   {
+    //     "motorId": 50048103,
+    //     "priceType": "latestPrice",
+    //     "isTargetMotor": false
+    //   },
+    //   {
+    //     "motorId": 2000000166,
+    //     "priceType": "latestPrice",
+    //     "isTargetMotor": false
+    //   },
+    //   {
+    //     "motorId": 2000000084,
+    //     "priceType": "latestPrice",
+    //     "isTargetMotor": false
+    //   },
+    //   {
+    //     "motorId": 2000000164,
+    //     "priceType": "latestPrice",
+    //     "isTargetMotor": false
+    //   }],
+    //   "categoryId": 600029,
+    //   "schemeId": 3
+    // }
     this.getHistogram(params)
     this.getMekTable()
   },
@@ -466,18 +467,19 @@ export default {
 
       })
       getComparedMotor({
-        // categoryId: this.categoryId,
-        categoryId: '3',
+        categoryId: this.categoryId,
+        // categoryId: '3',
         isTarget: true,
         targetMotorId: this.targetMotor
       }).then(res => {
         this.ComparedMotorList = res.data
       })
       let params1 = {
-        categoryId: '600029',
+        categoryId: this.categoryId,
+        // categoryId: '600029',
         motorIds: this.ComparedMotor,
-        // schemeId: this.chemeId
-        schemeId: '3'
+        schemeId: this.chemeId
+        // schemeId: '3'
       }
       recursiveRetrieve(params1).then(res => {
         if (res.code === '200') {
@@ -525,15 +527,15 @@ export default {
       let params = {}
       if (this.entryStatus == 1) {
         params = {
-          // categoryId: val,
-          categoryId: '600029',
+          categoryId: val,
+          // categoryId: '600029',
           isBindingRfq: true,
           req: this.rfqId
         }
       } else {
         params = {
-          // categoryId: val,
-          categoryId: '600029',
+          categoryId: val,
+          // categoryId: '600029',
           isBindingRfq: false,
         }
       }
@@ -544,24 +546,25 @@ export default {
       //   this.flag1 = false
       // }
     },
-    changeComparedMotor (val) {
-      let params = {
-        categoryId: '600029',
-        motorIds: this.ComparedMotor,
-        schemeId: this.chemeId
-      }
-      recursiveRetrieve(params).then(res => {
-        this.recursiveRetrieveList = res.data
-      })
-    },
+    // changeComparedMotor (val) {
+    //   let params = {
+    //     // categoryId: '600029',
+    //     categoryId: '600029',
+    //     motorIds: this.ComparedMotor,
+    //     schemeId: this.chemeId
+    //   }
+    //   recursiveRetrieve(params).then(res => {
+    //     this.recursiveRetrieveList = res.data
+    //   })
+    // },
     //选择目标车型
     changeTargetMotor (val) {
       let params = {}
       params = {
-        categoryId: '600029',
-        // categoryId: this.categoryCode,
-        // targetMotorId: val
-        targetMotorId: '50044101'
+        // categoryId: '600029',
+        categoryId: this.categoryCode,
+        targetMotorId: val
+        // targetMotorId: '50044101'
       }
       getComparedMotor(params).then(res => {
         this.ComparedMotorList = res.data
@@ -664,14 +667,21 @@ export default {
     },
     //获取表格
     getMekTable () {
-      getMekTable({
-        "comparedType": "mekConfig",
-        "motorIds": [
-          50048103, 2000000166, 50001004
-        ],
-        "schemeId": 3,
-        "targetMotorId": 50044101
-      }).then(res => {
+      // let params={
+      //   "comparedType": "mekConfig",
+      //   "motorIds": [
+      //     50048103, 2000000166, 50001004
+      //   ],
+      //   "schemeId": 3,
+      //   "targetMotorId": 50044101
+      // }
+      let params = {
+        "comparedType": this.comparedType,
+        "motorIds": this.ComparedMotor,
+        "schemeId": this.chemeId,
+        "targetMotorId": this.targetMotorId
+      }
+      getMekTable(params).then(res => {
         this.gridData = res
       })
     },
