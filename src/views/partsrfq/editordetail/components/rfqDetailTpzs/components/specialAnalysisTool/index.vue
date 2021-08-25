@@ -52,6 +52,9 @@ export default {
           case 'Volume Pricing':
             this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'edit', chemeId: param.reportId, round: this.$route.query.round } })
             break;
+          case 'MEK':
+            this.$router.push({ path: '/sourcing/mek/mekDetails', query: { chemeId: param.reportId, round: this.$route.query.round } })
+            break;
           default:
             break;
         }

@@ -18,8 +18,9 @@
         <el-date-picker
             v-model='form[item.props]'
             value-format='yyyy-MM'
+            range-separator="~"
             type="monthrange"
-            style="width: 150px"
+            style="width: 200px"
         ></el-date-picker>
       </template>
       <template v-else-if="item.type === 'input'">
