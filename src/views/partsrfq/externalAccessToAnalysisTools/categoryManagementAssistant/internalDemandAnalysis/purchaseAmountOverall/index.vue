@@ -30,6 +30,7 @@
         </div>
       </div>
     </div>
+    <!-- <iframe  src=""></iframe> -->
     <div style="height:60rem" id='powerBi'>
     </div>
   </iCard>
@@ -184,7 +185,6 @@ export default {
     },
     // 初始化页面
     renderBi() {
-      console.log(this.config)
       this.report = this.powerbi.embed(this.reportContainer, this.config);
       this.filter_year.values = parseInt(this.form.year)
       let report = this.report
@@ -224,8 +224,6 @@ export default {
         report.setFilters(filterAll);
 
         //report.updateFilters(models.FiltersOperations.Add, [filter_suppliers]);
-        console.log("Report filter was added.");
-        console.log("Loaded");
       });
 
       // Report.off removes a given event handler if it exists.
@@ -233,22 +231,18 @@ export default {
 
       // Report.on will add an event handler which prints to Log window.
       report.on("rendered", function() {
-        console.log("Rendered");
       });
       report.off("filtersApplied")
 
       report.on("filtersApplied", function() {
-        console.log("filtersApplied");
       });
 
       report.on("error", function(event) {
-        console.log(event.detail);
         report.off("error");
       });
 
       report.off("saved");
       report.on("saved", function(event) {
-        console.log(event.detail);
         if (event.detail.saveAs) {
           console.log(
             'In order to interact with the new report, create a new token and load the new report'
@@ -256,7 +250,7 @@ export default {
         }
       });
       this.report = report
-
+      document.getElementsByTagName('iframe')[0].style.border = 'none'
     },
     // 返回
     handleBack() {

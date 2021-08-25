@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-24 15:29:55
+ * @LastEditTime: 2021-08-25 16:17:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -62,13 +62,11 @@
                   </el-form-item>
                   <!--类型选择-->
                   <el-form-item :label="$t('类型选择')">
-                    <el-select v-model="type"
-                               @change="changeBy">
+                    <el-select v-model="comparedType">
                       <el-option v-for="item in mekTypeList"
                                  :key="item.id"
                                  :value="item.code"
                                  :label="item.name"> </el-option>
-
                     </el-select>
                   </el-form-item>
                   <!--零件六位号-->
@@ -124,11 +122,12 @@
                           style="line-height:12px">{{firstBarData.output}}</span>
                   </div>
                   <datasetBar1 ref="datasetBar1"
-                               :typeSelection="type"
+                               :typeSelection="mekMotorTypeFlag"
                                :firstBarData="firstBarData.detail"
-                               :maxWidth="maxWidth"></datasetBar1>
+                               :maxWidth="maxWidth"
+                               @detailDialog="detailDialog"></datasetBar1>
                   <div class="xAxis"
-                       v-if="type==='5'">
+                       v-if="comparedType==='mekMotorType'">
                     <span @click="computeModal">MIX</span>
                   </div>
                 </div>
@@ -145,7 +144,7 @@
                                 trigger="click"
                                 visible-arrow
                                 class="margin-bottom15">
-                      <el-checkbox-group v-model="item.detail.title"
+                      <el-checkbox-group v-model="item.checkList"
                                          class="checkList"
                                          @change="changeCheckList">
                         <el-checkbox v-for="(i,index) in item.detail"
@@ -176,10 +175,18 @@
                                       v-if="priceType==='2'">
                       </el-date-picker>
                     </div>
-
                   </div>
-                  <datasetBar :barData="item.detail"
-                              :maxWidth="maxWidth"></datasetBar>
+                  <datasetBar :barData="item"
+                              :maxWidth="maxWidth"
+                              :typeSelection="mekMotorTypeFlag"
+                              @detailDialog="detailDialog"></datasetBar>
+                  <div class="xAxis"
+                       v-if="comparedType==='mekMotorType'">
+                    <div v-for="i in item.detail"
+                         :key="i.value">
+                      <span @click="computeModal(i)">{{i.title}}</span>
+                    </div>
+                  </div>
                 </div>
 
               </div>
@@ -236,16 +243,19 @@
       </iDialog>
       <modalDialog :modalVisible="modalVisible"
                    @input="closeModalDialog"></modalDialog>
+      <detailDialog :detailVisible="detailVisible"
+                    @input="closeModalDialog"></detailDialog>
     </div>
   </iPage>
 </template>
 
 <script>
-import { iPage, iButton, iSelect, icon, iCard, iDialog, iInput } from "rise";
+import { iPage, iButton, iSelect, icon, iCard, iDialog, iInput, iMessage } from "rise";
 import datasetBar from "../components/datasetBar";
 import datasetBar1 from "../components/datasetBar1";
 import tableList from "../components/tableList";
 import modalDialog from "../components/modalDialog";
+import detailDialog from "../components/detailDialog";
 import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, saveMekTable, deleteMekTable, getSchemeInfo } from '@/api/categoryManagementAssistant/mek'
 import { getDictByCode } from '@/api/dictionary'
 export default {
@@ -261,7 +271,8 @@ export default {
     tableList,
     iDialog,
     iInput,
-    modalDialog
+    modalDialog,
+    detailDialog
   },
   data () {
     return {
@@ -278,6 +289,8 @@ export default {
       dialogVisible: false,
       //计算车型开关
       modalVisible: false,
+      //查询EBR详情
+      detailVisible: false,
       //保存在分析库
       analysisSave: false,
       //分析库名称
@@ -329,29 +342,61 @@ export default {
       //编辑时的数据
       editDataList: [],
       //新增时的数据
-      addDataList: []
+      addDataList: [],
+      //计算车型开关
+      mekMotorTypeFlag: false
 
     };
   },
   async created () {
     await this.init()
+    // let params = {
+    //   comparedType: this.comparedType,
+    //   info: [{
+    //     motorId: this.targetMotor,
+    //     priceType: 'sopPrice',
+    //     isTargetMotor: true
+    //   }],
+    //   categoryId: this.categoryId,
+    //   schemeId: this.chemeId
+    // }
+    // this.ComparedMotor.forEach(item => {
+    //   params.info.push({
+    //     motorId: item,
+    //     priceType: 'sopPrice',
+    //     isTargetMotor: false
+    //   })
+    // })
     let params = {
-      comparedType: this.comparedType,
-      info: [{
-        motorId: this.targetMotor,
-        priceType: 'sopPrice',
-        isTargetMotor: true
+      "comparedType": "mekConfig",
+      "info": [{
+        "motorId": 50044101,
+        "priceType": "latestPrice",
+        "isTargetMotor": true
+      },
+      {
+        "motorId": 50048103,
+        "priceType": "latestPrice",
+        "isTargetMotor": false
+      },
+      {
+        "motorId": 2000000166,
+        "priceType": "latestPrice",
+        "isTargetMotor": false
+      },
+      {
+        "motorId": 2000000084,
+        "priceType": "latestPrice",
+        "isTargetMotor": false
+      },
+      {
+        "motorId": 2000000164,
+        "priceType": "latestPrice",
+        "isTargetMotor": false
       }],
-      categoryId: this.categoryId,
-      schemeId: this.chemeId
+      "categoryId": 600029,
+      "schemeId": 3
     }
-    this.ComparedMotor.forEach(item => {
-      params.info.push({
-        motorId: item,
-        priceType: 'sopPrice',
-        isTargetMotor: false
-      })
-    })
     this.getHistogram(params)
     this.getMekTable()
   },
@@ -362,33 +407,33 @@ export default {
       this.rfqId = this.$store.state.rfq.rfqId
       this.entryStatus = this.$store.state.rfq.entryStatus
       this.chemeId = this.$route.query.chemeId
-      await getSchemeInfo({
-        // schemeId: this.chemeId
-        schemeId: 3
-      }).then(res => {
-        let data = res.data
-        this.categoryCode = data.categoryCode
-        this.categoryId = data.categoryId
-        this.categoryName = data.categoryName
-        this.exceptPart = data.exceptPart
-        this.targetMotor = data.targetMotor
-        this.comparedType = data.comparedType
-        if (data.firstComparedMotor) {
-          this.ComparedMotor.push(data.firstComparedMotor)
-        }
-        if (data.secondComparedMotor) {
-          this.ComparedMotor.push(data.secondComparedMotor)
-        }
-        if (data.thirdComparedMotor) {
-          this.ComparedMotor.push(data.thirdComparedMotor)
-        }
-        if (data.forthComparedMotor) {
-          this.ComparedMotor.push(data.forthComparedMotor)
-        }
-        if (data.fifthComparedMotor) {
-          this.ComparedMotor.push(data.fifthComparedMotor)
-        }
-      })
+      // await getSchemeInfo({
+      //   // schemeId: this.chemeId
+      //   schemeId: 3
+      // }).then(res => {
+      //   let data = res.data
+      //   this.categoryCode = data.categoryCode
+      //   this.categoryId = data.categoryId
+      //   this.categoryName = data.categoryName
+      //   this.exceptPart = data.exceptPart
+      //   this.targetMotor = data.targetMotor
+      //   this.comparedType = data.comparedType
+      //   if (data.firstComparedMotor) {
+      //     this.ComparedMotor.push(data.firstComparedMotor)
+      //   }
+      //   if (data.secondComparedMotor) {
+      //     this.ComparedMotor.push(data.secondComparedMotor)
+      //   }
+      //   if (data.thirdComparedMotor) {
+      //     this.ComparedMotor.push(data.thirdComparedMotor)
+      //   }
+      //   if (data.forthComparedMotor) {
+      //     this.ComparedMotor.push(data.forthComparedMotor)
+      //   }
+      //   if (data.fifthComparedMotor) {
+      //     this.ComparedMotor.push(data.fifthComparedMotor)
+      //   }
+      // })
       //材料组
       category({}).then((res) => {
         this.categoryList = res.data
@@ -451,6 +496,11 @@ export default {
     },
     //查询  
     searchChartData () {
+      if (this.comparedType === "mekMotorType") {
+        this.mekMotorTypeFlag = true
+      } else {
+        this.mekMotorTypeFlag = false
+      }
       let params = {
         comparedType: this.comparedType,
         info: [{
@@ -520,6 +570,7 @@ export default {
     edit () {
       this.editFlag = true
     },
+    //表格保存
     saveTable () {
       this.editFlag = false
       let params = {
@@ -548,8 +599,13 @@ export default {
         this.getMekTable()
       })
     },
+    //
+    detailDialog (flag, val) {
+      this.detailVisible = flag
+      console.log(flag, val)
+    },
     changeCheckList (val) {
-      console.log(val, "changeCheckList")
+      console.log(this.barData)
     },
     cancel () {
       this.editFlag = false
@@ -584,6 +640,7 @@ export default {
     closeModalDialog (val) {
       this.modalVisible = val
     },
+    //价格类型
     changPriceType () {
       let params = {
         comparedType: this.comparedType,
@@ -636,36 +693,7 @@ export default {
       //     isTargetMotor: false
       //   })
       // })
-      getHistogram({
-        "comparedType": "mekConfig",
-        "info": [{
-          "motorId": 50044101,
-          "priceType": "latestPrice",
-          "isTargetMotor": true
-        },
-        {
-          "motorId": 50048103,
-          "priceType": "latestPrice",
-          "isTargetMotor": false
-        },
-        {
-          "motorId": 2000000166,
-          "priceType": "latestPrice",
-          "isTargetMotor": false
-        },
-        {
-          "motorId": 2000000084,
-          "priceType": "latestPrice",
-          "isTargetMotor": false
-        },
-        {
-          "motorId": 2000000164,
-          "priceType": "latestPrice",
-          "isTargetMotor": false
-        }],
-        "categoryId": 600029,
-        "schemeId": 3
-      }).then(res => {
+      getHistogram(params).then(res => {
         let data = res.data
         let maxWidthList = []
         if (data) {
@@ -676,7 +704,18 @@ export default {
           this.firstBarData = data[0]
           data.shift()
           this.barData = data
+          this.barData.forEach(item => {
+            item.checkList = []
+          })
+          this.barData.forEach(item => {
+            item.detail.forEach(i => {
+              item.checkList.push(i.value)
+              // item.checkList = [...item.checkList]
+            })
+          })
           console.log(this.barData, "barData")
+        } else {
+          iMessage.error(res.desZh)
         }
       })
     },

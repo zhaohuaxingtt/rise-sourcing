@@ -164,6 +164,7 @@ export default {
             },
             stack: "check",
             type: 'bar',
+            z: 20,
             label: {
               position: 'inside'
             },
@@ -209,6 +210,7 @@ export default {
             },
             stack: "check",
             type: 'bar',
+            z: 20,
             label: {
               position: 'insideTop'
             },
@@ -426,6 +428,32 @@ export default {
     MarketOverviewObj: {
       handler (val) {
         let date = new Date().getFullYear();
+        this.option.series.push({
+          name: "sum",
+          type: "bar",
+          stack: "check",
+          z: 1,
+          label: {
+            show: true,
+            position: "top",
+            color: "#fff",
+            fontSize: 12,
+            align: "center",
+            fontFamily: "Arial",
+            formatter: (params) => {
+              console.log(params, 2222)
+              let data = this.MarketOverviewObj.supplierFinanceDTOList
+              let index = params.dataIndex
+              let sum = ((Number(data[index].otherAmount) + Number(data[index].svwAmount)) / 1000000).toFixed(2)
+              return sum
+            },
+          },
+          labelLine: {
+            show: false,
+          },
+          barWidth: 50,
+          data: this.MarketOverviewObj.supplierFinanceDTOList.map(i => 0),
+        })
         // 柱状图
         if (this.MarketOverviewObj.supplierFinanceDTOList.length > 0) {
           this.MarketOverviewObj.supplierFinanceDTOList.forEach(x => {
@@ -434,20 +462,24 @@ export default {
               this.option.series[0].data[0].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+
             }
             if (x.year == date - 2) {
               this.option.series[0].data[1].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
               this.option.series[0].data[1].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+
             }
             if (x.year == date - 1) {
               this.option.series[0].data[2].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
               this.option.series[0].data[2].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+
             }
           });
+          console.log(this.option.series)
         } else {
           this.option.series[0].data = []
           this.option.series[1].data = []
@@ -488,6 +520,7 @@ export default {
           this.turnover.series[0].data = data
           this.turnover.legend.data = legend
         }
+
         let total = new Number()
         if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
           val.mainCustomerDTOList.forEach(item => {
