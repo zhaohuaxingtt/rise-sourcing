@@ -87,7 +87,7 @@ export default {
       form: {
         year: '',
         page: '',
-        categoryCode:this.$store.state.rfq.categoryCode
+        categoryCode: this.$store.state.rfq.categoryCode
       },
       formGoup: {
         yearList: [],
@@ -129,8 +129,8 @@ export default {
         categoryCode: this.form.categoryCode,
         schemeType: 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT'
       }
-      if (!!pms.categoryCode) {
-        const res1 = await getCategoryAnalysis(pms)
+      const res1 = await getCategoryAnalysis(pms)
+      if (res1.data.categoryCode) {
         this.form.categoryCode = res1.data.categoryCode
       }
     },
@@ -141,7 +141,7 @@ export default {
         pdfName: 'purchaseAmountOverall',
       });
       let params = {
-        categoryCode: this.categoryCode,
+        categoryCode: this.form.categoryCode,
         fileType: "PDF",
         schemeType: "CATEGORY_MANAGEMENT_PURCHASE_AMOUNT",
         reportFileName: resFile.downloadName,
