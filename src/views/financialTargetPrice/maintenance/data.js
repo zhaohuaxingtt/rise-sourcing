@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 15:35:31
+ * @LastEditTime: 2021-08-25 09:55:41
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
@@ -18,8 +18,8 @@ export const tableTitle = [
   {props:'caozuo',name:'操作', key: "LK_CAOZUO", tooltip: true},
   {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 120},
   {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 120},
-  {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, editable: true, type: 'input'},
-  {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true, editable: true, type: 'input'},
+  {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, editable: true, type: 'input', isNumber: true},
+  {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true, editable: true, type: 'input', isNumber: true},
   {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true},
   {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
   {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 100},
@@ -48,7 +48,7 @@ export const searchList = [
   {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: 'LINGJIANZHUANGTAI', selectOption: 'PART_STATUS'},
   {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO'},
   {value: 'procureFactoryId', label: '采购工厂', type: 'select', i18n_label: 'CAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY'},
-  {value: 'applyType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption: 'CF_APPLY_TYPE'},
+  {value: 'cfPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption: 'CF_PRICE_TYPE'},
   {value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: 'SHENQINGRIQIQIZHI',},
   {value: 'responseDate', label: '返回日期起止', type: 'dateRange', i18n_label: 'FANHUIRIQIQIZHI',}
 ]
