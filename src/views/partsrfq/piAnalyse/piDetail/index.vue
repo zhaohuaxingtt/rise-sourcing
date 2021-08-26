@@ -63,6 +63,7 @@
             ref="thePriceIndexChart"
             :currentTab="currentTab"
             :currentTabData="currentTabData"
+            :priceLatitudeOptions="priceLatitudeOptions"
         />
       </iCard>
       <!--      零件成本构成-->
@@ -113,6 +114,7 @@ import {
   deleteParts,
   saveAnalysisScheme,
   checkName,
+  getPiIndexWaveSelectList,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
 import _ from 'lodash';
 import {mapState} from 'vuex';
@@ -164,6 +166,7 @@ export default {
       timeRange: null,
       pieLoading: false,
       showPiChart: true,
+      priceLatitudeOptions: [],
     };
   },
   created() {
@@ -293,7 +296,7 @@ export default {
           return item.isShow;
         });
         this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
-        await this.$refs.thePriceIndexChart.buildChart();
+        await Promise.all([this.getPiIndexWaveSelectList(), this.$refs.thePriceIndexChart.buildChart()]);
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
       } catch {
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
@@ -317,7 +320,7 @@ export default {
           this.timeRange = null;
         }
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
-        await this.$refs.thePriceIndexChart.buildChart();
+        await Promise.all([this.getPiIndexWaveSelectList(), this.$refs.thePriceIndexChart.buildChart()]);
       } catch {
         this.averageData = {};
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
@@ -488,6 +491,20 @@ export default {
         this.setTableEditStatus(true);
       } else if (this.currentTab === AVERAGE && this.$refs.theAverageTable.tableStatus === 'edit') {
         this.setTableEditStatus(true);
+      }
+    },
+    // 曲线纬度下拉
+    async getPiIndexWaveSelectList() {
+      try {
+        this.priceLatitudeOptions = [];
+        const req = {
+          ...this.currentTabData,
+          type: this.currentTab === CURRENTTIME ? '1' : '2',
+        };
+        const res = await getPiIndexWaveSelectList(req);
+        this.priceLatitudeOptions = res.data;
+      } catch {
+        this.priceLatitudeOptions = [];
       }
     },
   },

@@ -132,7 +132,7 @@ export default {
       }
       const res1 = await getCategoryAnalysis(pms)
       if (res1.data.categoryCode) {
-        this.form.categoryCode = res1.data.categoryCode
+        this.form = JSON.parse(res1.data.operateLog)
       }
     },
     async handleSave() {
@@ -143,6 +143,7 @@ export default {
       });
       let params = {
         categoryCode: this.form.categoryCode,
+        operateLog: JSON.stringify(this.form),
         fileType: "PDF",
         schemeType: "CATEGORY_MANAGEMENT_PURCHASE_AMOUNT",
         reportFileName: resFile.downloadName,
