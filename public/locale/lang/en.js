@@ -1183,6 +1183,31 @@
             'LK_FASONGSAP': 'Send SAP', //发送SAP
             'LK_ZHUANYECAIGOUYUAN': 'Linie', //专业采购员
             'LK_BUMEN': 'Dept', //部⻔
+            'LK_SAPBIANHAO': 'SAP no', // SAP编号
+            'LK_QIWANGGONGYINGSHANG': 'Expected suppliers', // 期望供应商
+            'LK_CAIGOUSHENQINGLEIXING': 'PR type', // 采购申请类型
+            'LK_YUPILIANGCAIGOUSHENQING': 'Pre-series PR', // 预批量采购申请
+            'LK_BIAOZHUNCAIGOUSHENQING': 'Standard PR', // 标准采购申请
+            'LK_GONGXUWEIWAI': '工序委外',
+            'LK_MOJUCAIGOUSHENQING':'模具采购申请',//模具采购申请
+            'LK_RISEBIANHAO': 'RiSE No', // RiSE编号
+            'LK_XUQIUGENZONGHAO': 'Demand tracking no', // 需求跟踪号
+            'LK_XIANGCI': 'Item', //项次
+            'LK_LINGJIANMINGCENG': 'Part Name', //零件名称
+            'LK_SHENQINGSHIJIAN': 'Create time', // 生成时间
+            'LK_WULIAOZU': 'Material Group(SAP)', //物料组
+            'LK_WBSYUANSU': 'WBS element', // WBS元素
+            'LK_LAIYUANRISEBIANHAO': 'Source PR Rise Num',
+            'LK_LAIYUANXIANGCI': 'Source PR Item',
+            'LK_RISEXIEYIHAO': 'RISE PO', //RISE协议号
+            'LK_SAPXIEYIHAO': 'SAP PO', //SAP协议号
+            'LK_GUOZHANGQIZHIRIQI': 'Posting Period', //过账起止日期
+            'LK_ZHI': 'To', //至
+            'LK_LEIXING': 'Type', //类型
+            'LK_WULIAOPINGZHENG': 'Material Voucher', //物料凭证
+            'LK_XIANGMU': 'Project', //项目
+            'LK_GUOZHANGRIQI': 'Posting Date', //过账日期
+            'LK_JINE': 'Amount', //金额
 
         }
     }

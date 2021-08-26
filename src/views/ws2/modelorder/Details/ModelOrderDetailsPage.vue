@@ -33,7 +33,14 @@
         <i-button v-if='versionUpgradeShow' @click='versionUpgrade'>{{ $t('MODEL-ORDER.LK_BANBENSHNGJI') }}</i-button>
       </div>
     </div>
-    <ModelOrderDetailsTopComponents :order-details="orderDetails" :id="id" :option="option" :is-edit="isEdit"/>
+    <ModelOrderDetailsTopComponents ref="orderDetailsTopComponentsRef" :order-details="orderDetails" :id="id" :option="option" :is-edit="isEdit"/>
+
+    <ModelOrderDetailsBottomComponents v-if='bottomIsShow'
+                                       ref='orderDetailsBottomComponentRef' :id='id'
+                                       :isEdit='isEdit' :order-details='orderDetails'
+                                       :containPurchaseGroup='containPurchaseGroup' />
+    <iLog :show.sync='logDialogVisible' :bizId='id == -1 ? 0 : orderDetails.contractCode' />
+
   </i-page>
 </template>
 
@@ -42,10 +49,17 @@ import {iButton, iPage, iLog} from 'rise'
 import LogButton from "../../budgetManagement/components/logButton";
 import LedgerIconComponent from "./components/LedgerIconComponent";
 import ModelOrderDetailsTopComponents from "./components/ModelOrderDetailsTopComponents";
+import ModelOrderDetailsBottomComponents from "./components/ModelOrderDetailsBottomComponents";
+import {queryPurchaseGroup,findCurrentUserAllGroup,
+  createPurchaseOrder,getPurchaseOrderDetails,
+  queryPurchasingGroup,updatePurchaseOrderById,
+  savaPurchaseOrderItem,purchaseOrderSubmission,
+  versionUpgradeByOrder,} from "@/api/ws2/modelOrder";
 
 export default {
   name: "ModelOrderDetailsPage",
   components: {
+    ModelOrderDetailsBottomComponents,
     ModelOrderDetailsTopComponents,
     LedgerIconComponent,
     LogButton,
@@ -110,6 +124,8 @@ export default {
       selectItem: 'MODEL_ORDER',
       btnMenuShow: false,
       isEdit: false, //编辑状态控制
+      logDialogVisible:false,
+      fullscreenLoading:false,
       orderDetails: {
         departmentCode: this.$store.state.permission.userInfo.deptDTO.deptNum,//部门code
         nameZh: this.$store.state.permission.userInfo.deptDTO.nameZh,//部门名字
@@ -124,37 +140,192 @@ export default {
         companyCode: '',//公司代码
         procureOrganization: '1000',//采购组织
         orderDate: new Date().toLocaleDateString().replace(/\//g, '-'),
-        contractType: 'NB',
+        contractType: 'ZF',
         isSteel: 0,//是否钢材合同 1-是 0-否
         procureGroup: '',
-        type: 'DB'//订单类型45，43/steel钢材/db
+        type: '42'//订单类型45，43/steel钢材/db
       },
+      purchaseGroupsByAll: [],//系统所有采购组
+      purchaseGroups: [],//用户拥有的采购组
+
     }
   },
-  methods: {
-    lookLog() {
+  created() {
 
-    },
+  },
+  methods: {
     onItemSelfunction(val) {
 
     },
-    nextStep() {
+    lookLog() {
+      this.logDialogVisible = true
+    },
+    //获取采购订单详情 通过id
+    queryOrderDetails() {
+      if (this.id == -1) {
+        return
+      }
+      let data = { orderId: this.id }
+      getPurchaseOrderDetails(data).then((res) => {
+        if (res.code == 200) {
+          this.orderDetails = res.data
+          this.queryOrderPurchasingGroup()
+        }
+      })
+    },
+    queryOrderPurchasingGroup() {
+      queryPurchasingGroup(this.orderDetails.procureGroup.toUpperCase()).then(res => {
+        if (res.code == 200) {
+          this.btnMenuShow = res.data
+        }
+      })
+    },
 
+    //查询所有采购组
+    queryAllPurchaseGroup() {
+      queryPurchaseGroup().then(res => {
+        if (res.code == 200) {
+          this.purchaseGroupsByAll = res.data
+        }
+      })
+    },
+    //查询用户所拥有的采购组
+    getPurchaseGroup() {
+      findCurrentUserAllGroup().then(res => {
+        if (res.code == 200) {
+          this.purchaseGroups = res.data
+        }
+      })
+    },
+    nextStep() {
+      let valid = this.$refs.orderDetailsTopComponentsRef.getOrderDetailsValidate() //获取表单校验数据
+      if (valid) {
+        //检测表单是否校验通过
+        let val = this.$refs.orderDetailsTopComponentsRef.getOrderDetailsVal() //获取表单数据
+        let flag1 = this.purchaseGroupsByAll.some((purchaseGroup) => {
+          return purchaseGroup.purchaseGroupCode == val.procureGroup.toUpperCase()
+        })
+        if (!flag1) {
+          return this.$message.error('采购组主数据不存在')
+        }
+        let flag = this.purchaseGroups.some((value) => {
+          return value == val.procureGroup.toUpperCase()
+        })
+        if (!flag) {
+          return this.$message.error('您所在的岗位无此采购组权限')
+        }
+        createPurchaseOrder(val).then((res) => {
+          //调用创建接口
+          if (res.code == 200) {
+            this.$message.success(res.desZh)
+            this.id = res.data
+            this.option = 1
+            this.isEdit = true
+            this.$router.replace({
+              path: `/ws2/order/modeler/details/ModelOrderDetailsPage/1/${res.data}`,
+              query: { isEdit: this.isEdit }
+            })
+            this.id = res.data
+            this.queryOrderDetails()
+          } else {
+            this.$message.error(res.desZh)
+          }
+        })
+      }
     },
     clearForm() {
+      this.$refs.orderDetailsTopComponentsRef.restOrderForm()
 
     },
-    saveOrder() {
+   async saveOrder() {
+      let val = this.$refs.orderDetailsTopComponentsRef.getOrderDetailsVal() //获取表单数据
+      let flag1 = this.purchaseGroupsByAll.some((purchaseGroup) => {
+        return purchaseGroup.purchaseGroupCode == val.procureGroup.toUpperCase()
+      })
+      if (!flag1) {
+        return this.$message.error('采购组主数据不存在')
+      }
+      let flag = this.purchaseGroups.some((value) => {
+        return value == val.procureGroup.toUpperCase()
+      })
+      if (!flag) {
+        return this.$message.error('您所在的岗位无此采购组权限')
+      }
+      this.fullscreenLoading = true
+      let params = {
+        orderId: this.id,
+        procureGroup: this.orderDetails.procureGroup,
+        remark: this.orderDetails.remark
+      }
+      let res = await updatePurchaseOrderById(params)
+     if (res.code == 200) {
+       if (res.data != this.orderDetails.id) {
+         this.fullscreenLoading = false
+         this.isEdit = false
+         this.id = res.data
+         this.$router.replace({
+           path: `/ws2/order/modeler/details/ModelOrderDetailsPage/1/${res.data}`
+         })
+         this.queryOrderDetails()
+       }else{
+         let itemDatas = this.$refs.orderDetailsBottomComponentRef.getOrderItemData()
+         let data = {
+           orderId: this.orderDetails.id,
+           purchaseOrderEntityItemDtos: itemDatas
+         }
+         let res1 = await savaPurchaseOrderItem(data)
+         if (res1.code == 200) {
+           this.fullscreenLoading = false
+           this.isEdit = false
+           this.$refs.orderDetailsBottomComponentRef.queryOrderItemList()
+           if (this.$route.query.isEdit) {
+             this.option = 1
+             this.isEdit = false
+             this.$route.query.isEdit = false
+             this.$router.replace({
+               path: `/ws2/order/modeler/details/ModelOrderDetailsPage/1/${this.orderDetails.id}`
+             })
+             this.queryOrderDetails()
+           }
+         }else{
+           this.fullscreenLoading = false
+           this.$message.error(res1.desZh)
+         }
+       }
+     }else{
+       this.fullscreenLoading = false
+       this.$message.error(res.desZh)
+     }
 
     },
     editOrder() {
-
+      this.isEdit = true
     },
     submitOrder() {
-
+      this.fullscreenLoading = true
+      purchaseOrderSubmission(this.orderDetails.id).then((res) => {
+        this.fullscreenLoading = false
+        if (res.code == 200) {
+          this.$message.success(res.desZh)
+          this.queryOrderDetails()
+        } else {
+          this.$message.error(res.desZh)
+        }
+      })
     },
     versionUpgrade() {
-
+      versionUpgradeByOrder(this.orderDetails.id).then((res) => {
+        if (res.code == 200) {
+          this.$message.success(res.desZh)
+          this.$router.replace({
+            path: `/ws2/order/dbOrder/details/DbOrderDetails/1/${res.data}`
+          })
+          this.id = res.data
+          this.queryOrderDetails()
+        } else {
+          this.$message.error(res.desZh)
+        }
+      })
     }
   }
 }

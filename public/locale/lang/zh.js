@@ -1498,7 +1498,31 @@
             'LK_FASONGSAP': '发送SAP', //发送SAP
             'LK_ZHUANYECAIGOUYUAN': '专业采购员', //专业采购员
             'LK_BUMEN': '部⻔', //部⻔
-
+            'LK_SAPBIANHAO': ' SAP编号', // SAP编号
+            'LK_QIWANGGONGYINGSHANG': '期望供应商', // 期望供应商
+            'LK_CAIGOUSHENQINGLEIXING': '采购申请类型', // 采购申请类型
+            'LK_YUPILIANGCAIGOUSHENQING': '预批量采购申请', // 预批量采购申请
+            'LK_BIAOZHUNCAIGOUSHENQING': '标准采购申请', // 标准采购申请
+            'LK_GONGXUWEIWAI': '工序委外',
+            'LK_MOJUCAIGOUSHENQING':'模具采购申请',//模具采购申请
+            'LK_RISEBIANHAO': 'RiSE编号', // RiSE编号
+            'LK_XUQIUGENZONGHAO': '需求跟踪号', // 需求跟踪号
+            'LK_XIANGCI': '项次', //项次
+            'LK_LINGJIANMINGCENG': '零件名称', //零件名称
+            'LK_SHENQINGSHIJIAN': '生成时间', // 生成时间
+            'LK_WULIAOZU': '物料组', //物料组
+            'LK_WBSYUANSU': 'WBS元素', // WBS元素
+            'LK_LAIYUANRISEBIANHAO': '来源RiSE编号',
+            'LK_LAIYUANXIANGCI': '来源项次',
+            'LK_RISEXIEYIHAO': 'RiSE协议号', //RISE协议号
+            'LK_SAPXIEYIHAO': 'SAP协议号', //SAP协议号
+            'LK_GUOZHANGQIZHIRIQI': '过账起止日期', //过账起止日期
+            'LK_ZHI': '至', //至
+            'LK_LEIXING': '类型', //类型
+            'LK_WULIAOPINGZHENG': '物料凭证', //物料凭证
+            'LK_XIANGMU': '项目', //项目
+            'LK_GUOZHANGRIQI': '过账日期', //过账日期
+            'LK_JINE': '金额', //金额
 
         },
     }

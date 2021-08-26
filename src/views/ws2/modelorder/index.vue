@@ -32,7 +32,8 @@
         </div>
 
       </div>
-      <order-home-table-components ref="orderHomeTableComponentsRef" :columns="columns" :order-data="orderData" :extra-data="extraData"
+      <order-home-table-components ref="orderHomeTableComponentsRef" :columns="columns" :order-data="orderData"
+                                   :extra-data="extraData"
                                    @handleSelectionChange='handleSelectionChange'
                                    @open-page='openPage'/>
       <!--分页区-->
@@ -42,9 +43,10 @@
                     :layout='page.layout' :total='page.totalCount'/>
 
       <TransferBuyerDialog v-model='transferBuyerDialogisDisplay' @sure='confirmTransfer'
-                           :title="$t('partsprocure.PARTSPROCURETRANSFER')" :subtitle="$t('MODEL-ORDER.LK_ZHUANYECAIGOUYUAN')"
+                           :title="$t('partsprocure.PARTSPROCURETRANSFER')"
+                           :subtitle="$t('MODEL-ORDER.LK_ZHUANYECAIGOUYUAN')"
                            :subtitle1="$t('MODEL-ORDER.LK_BUMEN')" :deptDTO='$store.state.permission.userInfo.deptDTO'
-                           @sureByMySelf='sureByMySelf' />
+                           @sureByMySelf='sureByMySelf'/>
     </i-card>
   </div>
 </template>
@@ -59,7 +61,14 @@ import {pageMixins} from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 import {purchaseFactory} from "@/api/partsprocure/editordetail";
 import {getDictByCode} from "@/api/dictionary";
-import {getPurchaseOrder,findCurrentUserAllGroup,delPurchaseOrder,exportPurchaseOrderByPage,purchaseOrderSubmission,purchaseOrderTransfer} from "@/api/ws2/modelOrder";
+import {
+  getPurchaseOrder,
+  findCurrentUserAllGroup,
+  delPurchaseOrder,
+  exportPurchaseOrderByPage,
+  purchaseOrderSubmission,
+  purchaseOrderTransfer
+} from "@/api/ws2/modelOrder";
 import TransferBuyerDialog from "./components/TransferBuyerDialog";
 
 export default {
@@ -76,9 +85,9 @@ export default {
   },
   data() {
     return {
-      transferBuyerDialogisDisplay:false,
+      transferBuyerDialogisDisplay: false,
       orderQueryForm: {
-        contractType: 'NB',//订单类型
+        contractType: 'ZF',//订单类型
         isOnlyMyself: true,
         buyerName: '',//采购员名称
         contractCode: '',//CSC订单编号
@@ -92,7 +101,7 @@ export default {
         state: 'draft',//订单状态draft - 草稿 formal -正式 history - 历史
         supplierSapCode: '',//供应商SAP编号
         // type: '45'//类型（55/54/spare/db/steel/45/43/42/47/411）
-        typeList: ['DB']
+        typeList: ['42']
       },
       columns: MODEL_ORDER_HOME_TABCOLUMNS,
       orderData: [],
@@ -100,8 +109,8 @@ export default {
       purchasingFactoryList: [],//采购工厂
       sapSendStatusList: [],//SAP发送状态
       orderStatusList: [],//订单状态
-      selectedOrderData:[],//选中数据
-      currentUserPurchasingGroups:[],//用户所拥有的所有采购组
+      selectedOrderData: [],//选中数据
+      currentUserPurchasingGroups: [],//用户所拥有的所有采购组
       isExpandAll: false,
     }
   },
@@ -245,7 +254,7 @@ export default {
       }
       this.transferBuyerDialogisDisplay = true
     },
-    confirmTransfer(val){
+    confirmTransfer(val) {
       let transfer = {
         newBuyerId: val.id,
         orderId: this.selectedOrderData.find((i) => i.id).id
@@ -259,7 +268,7 @@ export default {
         }
       })
     },
-    sureByMySelf(){
+    sureByMySelf() {
       let userInfo = this.$store.state.permission.userInfo
       this.confirmTransfer(userInfo)
     },
@@ -285,7 +294,7 @@ export default {
     reimbursementApplication() {
 
     },
-    sendOrderSAP(){
+    sendOrderSAP() {
       if (this.selectedOrderData.length <= 0) {
         return this.$message.warning(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU'))
       }

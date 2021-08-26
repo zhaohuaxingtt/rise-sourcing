@@ -4,6 +4,7 @@ import SapSendStatusCompomemts from "../components/SapSendStatusCompomemts";
 import LinkPurchaseOrderComponent from "../Details/components/LinkPurchaseOrderComponent";
 import CustomRenderPriceComponents from "../Details/components/CustomRenderPriceComponents";
 import ReceiptLocationComponents from "../Details/components/ReceiptLocationComponents";
+import CustomDescriptionComponents from "../Details/components/CustomDescriptionComponents";
 
 export const MODEL_ORDER_HOME_TABCOLUMNS = [
     {
@@ -133,17 +134,17 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
         align: 'center',
     },
     {
-        prop: 'orderDate',
-        label: '订单日期',
-        i18n: 'MODEL-ORDER.LK_DINGDANRIQI',
+        prop: 'objectReqId',
+        label: '入账单编号',
+        //i18n: 'MODEL-ORDER.LK_DINGDANRIQI',
         tooltip: false,
         headerAlign: 'center',
         align: 'center',
     },
     {
-        prop: 'orderDate',
-        label: '订单日期',
-        i18n: 'MODEL-ORDER.LK_DINGDANRIQI',
+        prop: ' expenseReqId',
+        label: '报销申请',
+        //i18n: 'MODEL-ORDER.LK_DINGDANRIQI',
         tooltip: false,
         headerAlign: 'center',
         align: 'center',
@@ -176,6 +177,9 @@ export const MODEL_ORDER_DETAILS_ITEMSCOLUMNS = [
         tooltip: false,
         headerAlign: 'center',
         align: 'center',
+        customRender:(h, scope, column, extraData)=>{
+          return <CustomDescriptionComponents row={scope.row} isEdit={extraData.isEdit} />
+        }
     },
     {
         prop: 'partNameZh',
@@ -271,4 +275,176 @@ export const MODEL_ORDER_DETAILS_ITEMSCOLUMNS = [
         align: 'center',
         width: 150,
     },
+]
+
+export  const MODEL_PURCHASEREQUISITIONCOLUMNS=[
+    {
+        type: 'selection',
+        width: 50
+    },
+    {
+        prop: 'riseCode',
+        label: 'RISE编号',
+        i18n: 'MODEL-ORDER.LK_RISEBIANHAO',
+        tooltip: true,
+        headerAlign: 'center',
+        align: 'center',
+        width: 150
+    },
+    {
+        prop: 'sapCode',
+        label: 'SAP编号',
+        i18n: 'MODEL-ORDER.LK_SAPBIANHAO',
+        tooltip: true,
+        headerAlign: 'center',
+        align: 'center',
+        width: 150
+    },
+    {
+        prop: 'sapItem',
+        label: '项次',
+        i18n: 'MODEL-ORDER.LK_XIANGCI',
+        tooltip: false,
+        headerAlign: 'center',
+        align: 'center'
+    },
+
+    {
+        prop: 'partNum',
+        label: '零件号',
+        i18n: 'LK_LINGJIANHAO',
+        tooltip: true,
+        headerAlign: 'center',
+        align: 'center',
+        width: 150
+    },
+    {
+        prop: 'partNameZh',
+        label: '零件名称',
+        i18n: 'MODEL-ORDER.LK_LINGJIANMINGCENG',
+        tooltip: true,
+        headerAlign: 'center',
+        align: 'center',
+        width: 100
+    },
+    {
+        prop: 'supplierNameZh',
+        label: '期望供应商',
+        i18n: 'MODEL-ORDER.LK_QIWANGGONGYINGSHANG',
+        tooltip: true,
+        headerAlign: 'center',
+        align: 'center',
+        width: 100,
+        customRender: (h, scope, column, extraData) => {
+            return (<span>{scope.row['supplierSapCode']}-{scope.row['supplierNameZh']}</span>)
+        }
+    },
+    {
+        prop: 'quantity',
+        label: '数量',
+        i18n: 'LK_SHULIANG',
+        tooltip: false,
+        headerAlign: 'center',
+        align: 'center'
+    },
+    {
+        prop: 'unitCode',
+        label: '计量单位',
+        i18n: 'LK_JILIANGDANWEI',
+        tooltip: false,
+        headerAlign: 'center',
+        align: 'center'
+    },
+    {
+        prop: 'type',
+        label: '采购申请类型',
+        i18n: 'MODEL-ORDER.LK_CAIGOUSHENQINGLEIXING',
+        tooltip: false,
+        headerAlign: 'center',
+        align: 'center',
+        width: 150,
+        customRender: (h, scope, column, extraData) => {
+            let purchaseRequisitionTypes = extraData.purchaseRequisitionTypes
+            if (purchaseRequisitionTypes != null && purchaseRequisitionTypes.length > 0 && purchaseRequisitionTypes != undefined) {
+                let purchaseRequisitionType = purchaseRequisitionTypes.find((i) => i.code == scope.row['type'])
+                if (null != purchaseRequisitionType && purchaseRequisitionType != undefined) {
+                    return (<span>{purchaseRequisitionType.name}</span>)
+                }
+            }
+            return (<span>{scope.row['type']}</span>)
+        }
+    },
+    {
+        prop: 'procureGroup',
+        label: '采购组',
+        i18n: 'LK_CAIGOUZU',
+        tooltip: false,
+        headerAlign: 'center',
+        align: 'center'
+    },
+    {
+        prop: 'procureGroup',
+        label: '采购工厂',
+        i18n: 'nominationSupplier.CaiGouGongChang',
+        tooltip: false,
+        headerAlign: 'center',
+        align: 'center'
+    },
+    {
+        prop: 'status',
+        label: '状态',
+        i18n: 'LK_ZHUANGTAI',
+        tooltip: false,
+        headerAlign: 'center',
+        align: 'center',
+        customRender: (h, scope, column, extraData) => {
+            let orderStates = extraData.orderStates
+            if (null != orderStates && orderStates.length > 0 && orderStates != undefined) {
+                let orderState = orderStates.find((i) => i.code == scope.row['status'])
+                if (orderState != null && orderState != undefined) {
+                    return (<span>{orderState.name}</span>)
+                }
+            }
+            return (<span>{scope.row['status']}</span>)
+        }
+    },
+    {
+        prop: 'deliveryDate',
+        label: '交货日期',
+        i18n: 'LK_JIAOHUORIQI',
+        tooltip: false,
+        headerAlign: 'center',
+        align: 'center',
+        width: 90
+    },
+
+    {
+        prop: 'applyBy',
+        label: '申请人',
+        i18n: 'LK_SHENQINGREN',
+        tooltip: false,
+        headerAlign: 'center',
+        align: 'center'
+    },
+    {
+        prop: 'createDate',
+        label: '生成时间',
+        i18n: 'MODEL-ORDER.LK_SHENQINGSHIJIAN',
+        tooltip: false,
+        headerAlign: 'center',
+        align: 'center',
+        width: 90
+
+    },
+    {
+        prop: 'createDate',
+        label: 'RISE订单号',
+        i18n: 'MODEL-ORDER.LK_RISEDINGDANHAO',
+        tooltip: false,
+        headerAlign: 'center',
+        align: 'center',
+        width: 90
+
+    }
+
 ]

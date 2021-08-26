@@ -448,6 +448,15 @@ module.exports = {
           '^/changepriceApi': ''
         }
       },
+      '/supplierApplication': {
+        // 蒋林明供应商接口
+        target: 'http://10.122.18.166:8010',
+        changeOrigin: true,
+        logLevel: 'debug',
+        pathRewrite: {
+          '^/supplierApplication': ''
+        }
+      },
     },
 
   },

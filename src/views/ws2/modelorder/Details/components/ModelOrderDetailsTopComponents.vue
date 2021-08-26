@@ -153,6 +153,7 @@ import {
   iDatePicker,
   iSelect
 } from 'rise'
+import {getSupplierInfoQuery} from "@/api/ws2/modelOrder";
 export default {
   name: "ModelOrderDetailsTopComponents",
   components:{
@@ -215,8 +216,86 @@ export default {
   },
   data(){
     return {
-      purchasingGroupEditerState:false,
+      purchasingGroupEditerState: false,
+      orderDetailsRules: {
+        supplierInfo: [{ required: true, message: '请输入供应商编码', trigger: 'blur' }],
+        procureGroup: [{ required: true, message: '请输入采购组', trigger: 'blur' }],
+        procureFactory: [{ required: true, message: '请选择采购工厂', trigger: 'change' }],
+        orderDate: [{ required: true, message: '请选择日期', trigger: 'change' }]
+      }
     }
+  },
+  watch:{
+    isEdit(val,oldVal){
+      this.purchasingGroupEditerStateFunction()
+    },
+    containPurchaseGroup(val){
+      this.purchasingGroupEditerStateFunction()
+    }
+  },
+  methods:{
+    //计算采购组编辑状态属性值
+    purchasingGroupEditerStateFunction() {
+      if (this.option == 0) {//创建模式 可编辑
+        this.purchasingGroupEditerState = true
+      } else {
+        if (this.containPurchaseGroup) {
+          if (this.orderDetails.state == 'draft') {//草稿状态可更改
+            this.purchasingGroupEditerState = this.isEdit
+          } else if (this.orderDetails.state == 'formal' && this.orderDetails.procureGroup.startsWith('PZ')) {
+            this.purchasingGroupEditerState = this.isEdit
+          } else {
+            this.purchasingGroupEditerState = false
+          }
+        } else {
+          this.purchasingGroupEditerState = false
+        }
+      }
+    },
+
+    //查询供应商
+    querySupplierInfoAsync(queryString) {
+      if (queryString == null || queryString == '' || queryString == undefined) {
+        return
+      }
+      getSupplierInfoQuery({
+        sapCode: queryString,
+        supplierType: 'PP'
+      }).then((res) => {
+        if (res.code != 200 || res.data == null) {
+          return this.$message.error('供应商主数据不存在')
+        } else {
+          this.orderDetails.supplierInfo = `${res?.data?.sapCode}-${res?.data?.nameZh}`
+          this.orderDetails.supplierShortNameZh = res?.data?.shortNameZh
+          this.orderDetails.supplierSapCode = res?.data?.sapCode
+          this.orderDetails.tmSupplierId = res?.data?.supplierId
+        }
+      })
+    },
+    //选择采购工厂 回调
+    factorySelectChanged(val) {
+      let factory = this.purchasingFactoryList.find(function(item) {
+        return item.procureFactory === val
+      })
+      this.orderDetails.companyCode = factory.companyCode
+      this.orderDetails.tmFactoryId = factory.id
+    },
+    //重置表单
+    restOrderForm() {
+      this.$refs.orderDetailsRef.resetFields()
+    },
+    //获取表单验证结果
+    getOrderDetailsValidate() {
+      let isValidate = ''
+      this.$refs.orderDetailsRef.validate((val) => {
+        isValidate = val
+      })
+      return isValidate
+    },
+    //获取子组件的值
+    getOrderDetailsVal() {
+      return this.orderDetails
+    },
   }
 }
 </script>
