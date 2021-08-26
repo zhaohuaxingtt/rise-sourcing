@@ -20,7 +20,12 @@
             </iSelect>
           </el-form-item>
           <el-form-item label="年份：">
-            <iDatePicker :placeholder="language('QINGXUANZHEMNIANFENG','请选择年份')" value-format="yyyy" type="year" v-model="form.years" :picker-options="pickerOptions" />
+            <br>
+            <div style="width:17rem" class="flex-between-center-center">
+              <iDatePicker v-model="form.startYear" format="yyyy" value-format="yyyy" type="year" :placeholder="language('KAISHINIANFENG','开始年份')" clearable :picker-options="pickerStartAuditYear" />
+              -
+              <iDatePicker v-model="form.endYear" format="yyyy" value-format="yyyy" type="year" :placeholder="language('JIESHUNIANFENG','结束年份')" clearable :picker-options="pickerEndAuditYear" />
+            </div>
           </el-form-item>
         </el-form>
         <div class="operation">
@@ -70,11 +75,24 @@ export default {
       },
       form: {
         categoryCode: '',
-        years: ''
+        startYear: '',
+        endYear: ''
       },
       formGoup: {
         categoryList: []
-      }
+      },
+      pickerStartAuditYear: {
+        disabledDate: time => {
+          if (this.form.endYear) {
+            return time.getFullYear() > this.form.endYear
+          }
+        }
+      },
+      pickerEndAuditYear: {
+        disabledDate: time => {
+          return time.getFullYear() < this.form.startYear
+        }
+      },
     };
   },
   components: {
