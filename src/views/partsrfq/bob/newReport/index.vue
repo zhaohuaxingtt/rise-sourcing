@@ -632,7 +632,8 @@ export default {
           spareParts: this.form.spareParts.join(","),
           supplier: this.form.supplier.join(","),
           turn: this.form.turn.join(","),
-          defaultBobOptions: this.bobType
+          defaultBobOptions: this.bobType,
+          groupId: this.groupId
         }
         tableParams = {
           schemaId: this.analysisSchemeId,
@@ -642,14 +643,15 @@ export default {
           turn: this.form.turn.join(","),
           isDefault: false,
           viewType: 'all',
-          groupId: this.groupId
+
         }
       } else {
         params = {
           analysisSchemeId: this.$store.state.rfq.SchemeId,
           analysisDimension: this.chartType,
           combination: this.form.combination.join(","),
-          defaultBobOptions: this.bobType
+          defaultBobOptions: this.bobType,
+          groupId: this.groupId
         }
         tableParams = {
           schemaId: this.analysisSchemeId,
@@ -657,7 +659,7 @@ export default {
           combination: this.form.combination.join(","),
           isDefault: false,
           viewType: 'all',
-          groupId: this.groupId
+
         }
       }
       getBobLevelOne(params).then((res) => {

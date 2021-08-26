@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-08-25 16:00:50
+ * @LastEditTime: 2021-08-25 17:41:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -31,9 +31,9 @@ export default {
       default: false,
     },
     barData: {
-      type: Array,
+      type: Object,
       default: () => {
-        return []
+        return {}
       },
     },
   },
