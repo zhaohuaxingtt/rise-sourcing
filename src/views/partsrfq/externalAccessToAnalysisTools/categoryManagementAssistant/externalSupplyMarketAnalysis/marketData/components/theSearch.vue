@@ -104,4 +104,7 @@ export default {
     }
   }
 }
+::v-deep .el-range-separator {
+  line-height: 1.5rem;
+}
 </style>
