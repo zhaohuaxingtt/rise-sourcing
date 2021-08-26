@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 17:50:16
+ * @LastEditTime: 2021-08-25 09:55:41
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
@@ -18,8 +18,8 @@ export const tableTitle = [
   {props:'caozuo',name:'操作', key: "LK_CAOZUO", tooltip: true},
   {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 120},
   {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 120},
-  {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, editable: true, type: 'input'},
-  {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true, editable: true, type: 'input'},
+  {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, editable: true, type: 'input', isNumber: true},
+  {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true, editable: true, type: 'input', isNumber: true},
   {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true},
   {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
   {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 100},

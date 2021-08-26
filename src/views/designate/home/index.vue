@@ -102,10 +102,6 @@
       <template #applicationStatus="scope">
         <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || ''}}</span>
       </template>
-      <!-- 项目类型 -->
-      <template #partProjType="scope">
-        <span>{{(scope.row.partProjType && scope.row.partProjType.desc) || ''}}</span>
-      </template>
       <!-- 会议状态 -->
       <template #meetingStatus="scope">
         <span>{{(scope.row.meetingStatus && scope.row.meetingStatus.desc) || ''}}</span>
@@ -120,12 +116,6 @@
       <template #isPriceConsistent="scope">
         <span>{{[null, undefined].includes(scope.row.isPriceConsistent) ? '' : (scope.row.isPriceConsistent ? '通过' : '不通过')}}</span>
       </template>
-      <!-- RS状态 -->
-      <template #rsStatus="scope">
-        <div>
-          <span>{{scope.row.rsStatus && scope.row.rsStatus.desc || scope.row.rsStatus}}</span>
-        </div>
-      </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
@@ -133,10 +123,10 @@
             href="javascript:;" 
             class="selStatus-link" 
             @click="confirmSelSheet(scope.row)" 
-            v-if="scope.row.selStatus && scope.row.selStatus.code === 'UNCONFIRMED'">
-          {{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}
+            v-if="scope.row.selStatus === 'UNCONFIRMED'">
+          {{scope.row.selStatusDesc}}
         </a>
-          <span v-else>{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</span>
+          <span v-else>{{scope.row.selStatusDesc}}</span>
         </div>
       </template>
 

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-18 13:33:01
+ * @LastEditTime: 2021-08-26 09:55:11
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -303,7 +303,7 @@ export function deleteThousands (number) {
  * @param {*} currentProjectParmars   当前的业务ID
  * @return {*} Boolean
  ********************************************************************************************************************************************/
-import {businessKey} from '@/config/businessBlackKey'
+import {businessKey} from '@/config/businesskey'
 export function businessPermission(currentPermissinKey,currentProjectParmars){
   try {
     if(!currentProjectParmars.businessKey) return true

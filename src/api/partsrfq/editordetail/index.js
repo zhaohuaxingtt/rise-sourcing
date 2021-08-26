@@ -422,3 +422,11 @@ export function deleteRfqBdl(params) {
         data: params
     })
 }
+
+// 引用询价轮次报价
+export function quoteInquiryPrice(params) {
+    return requst({
+        url: `/part/quoteInquiryPrice/${ params.rfqId }`,
+        method: 'GET',
+    })
+}
