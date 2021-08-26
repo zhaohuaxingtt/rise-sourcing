@@ -4,7 +4,7 @@
  * @Description: 
 -->
 <template>
-  <div>
+  <div class="developmentFee">
     <mouldAndDevelopmentCost @save="save" :isAeko="true"/>
   </div>
 </template>
@@ -25,4 +25,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .developmentFee{
+    .header{
+      width: 100%;
+    }
+  }
 </style>
