@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-25 19:51:36
+ * @LastEditTime: 2021-08-26 15:44:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -104,7 +104,8 @@
               <div class="line3"></div>
               <div class="line4"></div>
               <div class="chartBox">
-                <div class="flex chartItem">
+                <div class="flex chartItem"
+                     :style="{width:chartItemWidth}">
                   <div class="operation1">
                     <el-select v-model="targetMotor"
                                @change="changeTargetMotor"
@@ -132,6 +133,7 @@
                   </div>
                 </div>
                 <div class="flex chartItem"
+                     :style="{width:chartItemWidth}"
                      v-for="item in barData"
                      :key="item.motorId">
                   <div class="operation">
@@ -344,7 +346,8 @@ export default {
       //新增时的数据
       addDataList: [],
       //计算车型开关
-      mekMotorTypeFlag: false
+      mekMotorTypeFlag: false,
+      chartItemWidth: ""
 
     };
   },
@@ -368,37 +371,15 @@ export default {
         isTargetMotor: false
       })
     })
-    // let params = {
-    //   "comparedType": "mekConfig",
-    //   "info": [{
-    //     "motorId": 50044101,
-    //     "priceType": "latestPrice",
-    //     "isTargetMotor": true
-    //   },
-    //   {
-    //     "motorId": 50048103,
-    //     "priceType": "latestPrice",
-    //     "isTargetMotor": false
-    //   },
-    //   {
-    //     "motorId": 2000000166,
-    //     "priceType": "latestPrice",
-    //     "isTargetMotor": false
-    //   },
-    //   {
-    //     "motorId": 2000000084,
-    //     "priceType": "latestPrice",
-    //     "isTargetMotor": false
-    //   },
-    //   {
-    //     "motorId": 2000000164,
-    //     "priceType": "latestPrice",
-    //     "isTargetMotor": false
-    //   }],
-    //   "categoryId": 600029,
-    //   "schemeId": 3
-    // }
-    this.getHistogram(params)
+    if (this.entryStatus === 1) {
+      params.isBindingRfq = true
+      params.rfq = this.rfqId
+    } else {
+      params.isBindingRfq = false
+    }
+    if (this.categoryId && this.chemeId && this.categoryCode) {
+      this.getHistogram(params)
+    }
     this.getMekTable()
   },
   mounted () {
@@ -511,6 +492,7 @@ export default {
           isTargetMotor: true
         }],
         categoryId: this.categoryId,
+        categoryCode: this.categoryCode,
         schemeId: this.chemeId
       }
       this.ComparedMotor.forEach(item => {
@@ -520,7 +502,14 @@ export default {
           isTargetMotor: false
         })
       })
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true
+        params.rfq = this.rfqId
+      } else {
+        params.isBindingRfq = false
+      }
       this.getHistogram(params)
+      this.getMekTable()
     },
     //选择材料组
     changeCategory (val) {
@@ -672,23 +661,17 @@ export default {
     },
     //获取表格
     getMekTable () {
-      // let params={
-      //   "comparedType": "mekConfig",
-      //   "motorIds": [
-      //     50048103, 2000000166, 50001004
-      //   ],
-      //   "schemeId": 3,
-      //   "targetMotorId": 50044101
-      // }
       let params = {
         "comparedType": this.comparedType,
         "motorIds": this.ComparedMotor,
         "schemeId": this.chemeId,
-        "targetMotorId": this.targetMotorId
+        "targetMotorId": this.targetMotor
       }
-      getMekTable(params).then(res => {
-        this.gridData = res
-      })
+      if (this.comparedType && this.ComparedMotor && this.chemeId && this.targetMotor) {
+        getMekTable(params).then(res => {
+          this.gridData = res
+        })
+      }
     },
     getHistogram (params) {
       // let params = {
@@ -716,6 +699,7 @@ export default {
             maxWidthList.push(item.detail.length)
           })
           this.maxWidth = _.max(maxWidthList)
+          this.chartItemWidth = this.maxWidth * 120 + 'px'
           this.firstBarData = data[0]
           data.shift()
           this.barData = data
@@ -837,7 +821,7 @@ export default {
 .line {
   position: absolute;
   left: 60px;
-  bottom: 14%;
+  bottom: 12%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -845,7 +829,7 @@ export default {
 .line1 {
   position: absolute;
   left: 60px;
-  bottom: 24%;
+  bottom: 22%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -853,7 +837,7 @@ export default {
 .line2 {
   position: absolute;
   left: 60px;
-  bottom: 34%;
+  bottom: 32%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -861,7 +845,7 @@ export default {
 .line3 {
   position: absolute;
   left: 60px;
-  bottom: 44%;
+  bottom: 42%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
