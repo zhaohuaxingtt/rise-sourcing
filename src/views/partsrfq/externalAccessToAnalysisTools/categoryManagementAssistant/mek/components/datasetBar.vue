@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-08-26 11:05:58
+ * @LastEditTime: 2021-08-26 15:31:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -83,12 +83,8 @@ export default {
   },
   methods: {
     initCharts () {
-
-      if (this.maxWidth === 0) {
-        this.maxWidth = 1
-      }
       this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
-      console.log(this.$refs.chart.style.width, 'number')
+      // console.log(this.$refs.chart.style.width, 'number')
       this.$refs.chart.style.minWidth = '100%';
       this.myChart = echarts().init(this.$refs.chart);
       this.option = {
@@ -145,10 +141,10 @@ export default {
               barBorderRadius: [5, 5, 0, 0],
 
             },
-            barCategoryGap: '50%',
+            // barCategoryGap: '50%',
             // barMinWidth: 30,
             // barMinWidth: 30,
-            // barWidth: 30,
+            barWidth: 30,
             data: this.barDataItem
           }
         ],
