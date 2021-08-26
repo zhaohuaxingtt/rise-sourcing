@@ -1,13 +1,11 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 19:03:24
- * @LastEditTime: 2021-08-25 19:04:37
- * @LastEditors: your name
+ * @LastEditTime: 2021-08-26 10:34:41
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\config\businesskey\moudules\aeko.js
  */
-import {partProjTypes} from '@/config/index'
-const routerKey = partProjTypes.AEKOLINGJIANXIN
 const blackKey = ['PARTSPROCURE_EDITORDETAIL_STARTUP', // 按钮-启动项目 show:false 
                   'PARTSPROCURE_EDITORDETAIL_ENDPROJECT', // 按钮-结束项目 show:false
                   'PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR', // 按钮-生成零件采购项目号 show:false
@@ -45,6 +43,5 @@ const blackKey = ['PARTSPROCURE_EDITORDETAIL_STARTUP', // 按钮-启动项目 sh
 const whiteKey = []
 module.exports = {
   blackKey,
-  whiteKey,
-  routerKey
+  whiteKey
 }
