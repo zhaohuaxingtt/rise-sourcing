@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-26 16:30:54
+ * @LastEditTime: 2021-08-26 16:45:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -23,10 +23,10 @@
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGBIANHAO', '供应商编号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERSAPCODE">
+        <el-form-item :label="language('LK_GONGYINGSHANGSAPHAO', '供应商SAP号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERSAPCODE">
           <iInput
             v-model="form.supplierSapCode"
-            :placeholder="language('QINGSHURUGONGYINGSHANGBIANHAO', '请输入供应商编号')"
+            :placeholder="language('LK_QINGSHURUGONGYINGSHANGSAPHAO', '请输入供应商SAP号')"
           />
         </el-form-item>
         <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERNAME">
