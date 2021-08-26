@@ -53,6 +53,11 @@ export default [
         path: "describe",
         name: "aekoDescribe",
         component: () => import("@/views/aeko/describe"),
+      },
+      {
+        path: "quotationdetail",
+        name: "aekoQuotationDetail",
+        component: () => import("@/views/aeko/quotationdetail"),
       }
     ]
   }

@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-22 15:48:34
+ * @LastEditTime: 2021-08-25 16:28:44
  * @LastEditors: Please set LastEditors
  * @Description: sel上会复核
  *
@@ -35,14 +35,14 @@ export const tableTitle = [{
   width:200
 },
 {
-	props: 'applicationStatus',
+	props: 'applicationStatusDesc',
 	name: '状态',
 	key: 'LK_ZHUANGTAI',
 	tooltip:true,
   width:120
 },
 {
-  props: 'partProjType',
+  props: 'partProjTypeDesc',
   name: '零件项目类型',
   key: 'LINGJIANXIANGMULEIXING',
   width: 150,
@@ -69,7 +69,7 @@ export const tableTitle = [{
   width:120
 },
 {
-  props: 'rsStatus',
+  props: 'rsStatusDesc',
   name: 'RS单状态',
   key: 'nominationLanguage_RSZhuangTai',
   tooltip: true
@@ -109,7 +109,7 @@ export const tableTitle = [{
 	tooltip:true
 },
 {
-  props: 'signStatus',
+  props: 'signStatusDesc',
   name: '签字单状态',
   width: 150,
   key: 'nominationLanguage.QianZiDanZhuangTai',

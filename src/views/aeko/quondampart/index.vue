@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 20:00:13
- * @LastEditTime: 2021-08-24 17:16:43
+ * @LastEditTime: 2021-08-25 10:42:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\index.vue
@@ -24,7 +24,6 @@
     </div>
     <div class="margin-top30">
       <ledger ref='ledger'/>
-      <aeko v-if="aekoShow"/>
       <!-- <router-view></router-view> -->
     </div>
   </iPage>
@@ -35,19 +34,16 @@ import { iPage, iNavMvp, iButton, icon } from "rise"
 import logButton from "@/components/logButton"
 import { navList } from "./components/data"
 import ledger from './components/ledger'
-import aeko from './components/aeko'
 
 export default {
   components: { iPage, 
     // iNavMvp,
    logButton, iButton, icon,
    ledger,
-   aeko,
     },
   data() {
     return {
       navList,
-      aekoShow:false,
     }
   },
   methods: {

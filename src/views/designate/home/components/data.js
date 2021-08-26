@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-22 15:47:04
+ * @LastEditTime: 2021-08-25 16:34:59
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -57,7 +57,7 @@ export const tableTitle = [{
   width:100
 },
 {
-  props: 'partProjType',
+  props: 'partProjTypeDesc',
   name: '项目类型',
   key: 'nominationLanguage_XingMuLeiXing',
   tooltip: true
@@ -89,7 +89,7 @@ export const tableTitle = [{
   width:100
 },
 {
-  props: 'rsStatus',
+  props: 'rsStatusDesc',
   name: 'RS单状态',
   key: 'nominationLanguage_RSZhuangTai',
   tooltip: true
