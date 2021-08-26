@@ -59,7 +59,7 @@ export default {
   watch: {
     materialGroup: {
       handler(val) {
-        this.form.materialGroup = val
+        this.form.materialGroupCode = val
       }
     }
   },
