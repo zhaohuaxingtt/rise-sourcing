@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-26 10:26:36
+ * @LastEditTime: 2021-08-26 10:39:39
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -249,8 +249,7 @@ export function filterProjectList(oldProjectList,currentProjectType){
  * @param {*} currentProjectParmars   当前的业务ID
  * @return {*} Boolean
  ********************************************************************************************************************************************/
-// import {businessKey} from '@/config/businesskey'
-const businessKey = {}
+import {businessKey} from '@/config/businesskey'
 export function businessPermission(currentPermissinKey,currentProjectParmars){
   try {
     if(!currentProjectParmars.businessKey) return true
