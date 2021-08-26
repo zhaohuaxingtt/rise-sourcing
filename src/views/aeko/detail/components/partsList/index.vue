@@ -196,6 +196,22 @@ export default {
         this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
         this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
 
+        // 判断下多角色情况 若多角色时就判断url的跳转来源
+        const {query} = this.$route;
+        const {from=''} = query;
+        const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
+        if(roleArr.length > 1){
+            if(from == 'manage'){
+                this.isLinie = false;
+            }else if(from == 'stance'){
+                this.isAekoManager = false;
+                this.isCommodityCoordinator = false;
+            }
+        }
+        
+        
+
+
         this.getSearchList();
 
         if (this.isLinie) {
