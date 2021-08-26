@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-25 10:23:01
+ * @LastEditTime: 2021-08-26 11:01:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -86,6 +86,9 @@ export default {
   },
   methods: {
     initCharts () {
+      if (this.maxWidth === 0) {
+        this.maxWidth = 1
+      }
       this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
       this.$refs.chart.style.minWidth = '100%';
       this.myChart = echarts().init(this.$refs.chart);

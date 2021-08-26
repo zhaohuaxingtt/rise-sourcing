@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-25 19:51:36
+ * @LastEditTime: 2021-08-26 10:58:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -368,6 +368,12 @@ export default {
         isTargetMotor: false
       })
     })
+    if (this.entryStatus === 1) {
+      params.isBindingRfq = true
+      params.rfq = this.rfqId
+    } else {
+      params.isBindingRfq = false
+    }
     // let params = {
     //   "comparedType": "mekConfig",
     //   "info": [{
@@ -511,6 +517,7 @@ export default {
           isTargetMotor: true
         }],
         categoryId: this.categoryId,
+        categoryCode: this.categoryCode,
         schemeId: this.chemeId
       }
       this.ComparedMotor.forEach(item => {
@@ -520,6 +527,12 @@ export default {
           isTargetMotor: false
         })
       })
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true
+        params.rfq = this.rfqId
+      } else {
+        params.isBindingRfq = false
+      }
       this.getHistogram(params)
     },
     //选择材料组
