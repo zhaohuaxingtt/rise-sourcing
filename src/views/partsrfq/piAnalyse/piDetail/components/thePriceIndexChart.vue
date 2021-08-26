@@ -81,7 +81,7 @@
 import {iSelect} from 'rise';
 import iconTips from '../../../../../components/ws3/iconTips';
 import echarts from '@/utils/echarts';
-import {getPiIndexWaveSelectList, getPiIndexPartCostWave} from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import {getPiIndexPartCostWave} from '../../../../../api/partsrfq/piAnalysis/piDetail';
 import {CURRENTTIME} from './data';
 import _ from 'lodash';
 import {mapState} from 'vuex';
@@ -114,6 +114,12 @@ export default {
       type: String,
       default: '',
     },
+    priceLatitudeOptions: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
   },
   computed: {
     ...mapState({
@@ -123,7 +129,6 @@ export default {
   },
   data() {
     return {
-      priceLatitudeOptions: [],
       timeGranularityOptions: [
         {name: '年', value: '1'},
         {name: '季度', value: '2'},
@@ -146,8 +151,7 @@ export default {
     };
   },
   mounted() {
-    !this.isPreview && this.getPiIndexWaveSelectList();
-    this.isPreview && this.previewChartData()
+    this.isPreview && this.previewChartData();
   },
   methods: {
     handleTimeGranularityChange() {
@@ -200,7 +204,7 @@ export default {
         grid: {
           top: 30,
           left: 40,
-          right: 60,
+          right: 70,
           bottom: '3%',
           containLabel: true,
         },
@@ -295,19 +299,6 @@ export default {
       }
       return obj;
     },
-    async getPiIndexWaveSelectList() {
-      try {
-        this.priceLatitudeOptions = [];
-        const req = {
-          ...this.currentTabData,
-          type: this.currentTab === CURRENTTIME ? '1' : '2',
-        };
-        const res = await getPiIndexWaveSelectList(req);
-        this.priceLatitudeOptions = res.data;
-      } catch {
-        this.priceLatitudeOptions = [];
-      }
-    },
     async getChartData() {
       const req = {
         analysisSchemeId: this.currentTabData.analysisSchemeId,
@@ -373,9 +364,6 @@ export default {
     },
   },
   watch: {
-    currentTab() {
-      this.getPiIndexWaveSelectList();
-    },
     previewDialog(val) {
       if (this.isPreview) {
         this.previewChartData();
@@ -434,6 +422,8 @@ export default {
     .legendBox {
       width: 200px;
       margin-top: 30px;
+      max-height: 450px;
+      overflow-y: scroll;
 
       .legendItem {
         display: flex;
