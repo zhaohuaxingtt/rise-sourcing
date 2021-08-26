@@ -304,7 +304,7 @@ export const changeTaskBmInfoTitle = [
         tooltip: false
     },
     {
-        props: '1',
+        props: 'assetNum',
         name: '固资编号',
         key: '固资编号',
         width: 150,
@@ -318,7 +318,7 @@ export const changeTaskBmInfoTitle = [
         tooltip: false
     },
     {
-        props: '2',
+        props: 'moldManufacturer',
         name: '模具制造商',
         key: '模具制造商',
         width: 200,
@@ -396,8 +396,8 @@ export const changeTaskBmInfoTitle = [
     },
     {
         props: 'assetPrice',
-        name: '资产单',
-        key: '资产单',
+        name: '资产单价',
+        key: '资产单价',
         width: 200,
         tooltip: false
     },
@@ -419,6 +419,27 @@ export const enclosureTableTitle = [
     },
     {
         props: '3',
+        name: '上传人',
+        key: '上传人',
+        tooltip: false
+    },
+]
+
+export const changeTaskInfoTableTitle = [
+    {
+        props: 'attachmentName',
+        name: '文件名称',
+        key: '文件名称',
+        tooltip: false
+    },
+    {
+        props: 'createDate',
+        name: '上传日期',
+        key: '上传日期',
+        tooltip: false
+    },
+    {
+        props: 'createByName',
         name: '上传人',
         key: '上传人',
         tooltip: false

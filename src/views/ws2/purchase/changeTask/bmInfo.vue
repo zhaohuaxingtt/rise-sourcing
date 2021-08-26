@@ -2,10 +2,7 @@
   <iPage v-permission="PURCHASE_MOULDINVESTMENTBUYER_DETAILS">
     <div class="head">
       <div style="display: flex;">
-        <div class="title">{{language('LK_MUJUTOUZIQINGDANBIANGENGXIANGQING', '模具投资清单变更详情')}}：{{ query.bmSerial }}</div>
-        <div class="edition">
-          <div class="txt">{{language('LK_BANBENHAO', '版本号')}}：{{ baseInfo.versions ? baseInfo.versions[0].versionName : '' }}</div>
-        </div>
+        <div class="title">{{language('LK_MUJUTOUZIQINGDANBIANGENGXIANGQING', '模具投资清单变更详情')}}：{{ query.changeNum }}</div>
       </div>
       <div class="logButton" @click="iLogShow = true">
         <icon symbol name="iconrizhiwuzi" class="icon"/>
@@ -34,7 +31,7 @@
               <div class="txt">
                 <span>{{ language('LK_BMDANHAO', 'BM单号') }}</span>
               </div>
-              <div class="disabled">{{ baseInfo.investmentSourceName }}</div>
+              <div class="disabled">{{ baseInfo.bmNum }}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -65,76 +62,84 @@
               <div class="txt">
                 <span>{{ language('LK_GONGYINGSHANG', '供应商') }}</span>
               </div>
-              <div class="disabled">{{ baseInfo.linieName }}</div>
+              <div class="disabled">{{ baseInfo.designatedSupplierName }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_CHEXINGXIANGMU', '车型项目') }}</span>
               </div>
-              <div class="disabled">{{ baseInfo.projectPurchaser }}</div>
+              <div class="disabled">{{ baseInfo.tmCartypeProName }}</div>
             </div>
 
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_TOUZIZONGJINE', '投资总金额') }}</span>
               </div>
-              <div class="disabled">{{ baseInfo.wbsCode }}</div>
+              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_BIANGENGHOUJINE', '变更后金额') }}</span>
               </div>
-              <div class="disabled">{{ baseInfo.tmCartypeProName	 }}</div>
+              <div class="disabled">{{ getTousandNum(Number(baseInfo.afterChangeAmount).toFixed(2)) }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_DINGDANHAO', '订单号') }}</span>
               </div>
-              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
+              <div class="disabled">{{ baseInfo.orderNum }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_SAPDINGDANHAO', 'SAP订单号') }}</span>
               </div>
-              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
+              <div class="disabled">{{ baseInfo.sapOrder }}</div>
             </div>
 
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_TOUZIQINGDANLAIYUAN', '投资清单来源') }}</span>
               </div>
-              <div class="disabled">{{ baseInfo.wbsCode }}</div>
+              <div class="disabled">{{ baseInfo.investmentSourceName }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_LAIYUANBIANHAO', '来源编号') }}</span>
               </div>
-              <div class="disabled">{{ baseInfo.tmCartypeProName	 }}</div>
+              <div class="disabled">{{ baseInfo.investmentSourceNum	 }}</div>
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_BIANGENGLEIXING', '变更类型') }}</span>
+                <span>{{ language('LK_BIANGENLEIXING', '变更类型') }}</span>
               </div>
-              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
+            <div class="disabled">{{  Number(baseInfo.changeType) === 1 ? 'CBD变更' :
+                                     (Number(baseInfo.changeType) === 2 ? 'Aeko减值' :
+                                     (Number(baseInfo.changeType) === 3 ? 'Aeko-模具无变化' :
+                                     (Number(baseInfo.changeType) === 4 ? 'BM单零件号变化' : '')))  }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_BIANGENGDANZHUANGTAI', '变更单状态') }}</span>
               </div>
-              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
+              <div class="disabled">{{ Number(baseInfo.changeStatus) === 1 ? '草稿' :
+                                      (Number(baseInfo.changeStatus) === 2 ? '审批中' :
+                                      (Number(baseInfo.changeStatus) === 3 ? '已批准' :
+                                      (Number(baseInfo.changeStatus) === 4 ? '已拒绝' :
+                                      (Number(baseInfo.changeStatus) === 5 ? '已驳回' :
+                                      (Number(baseInfo.changeStatus) === 6 ? '自动失效' : '' ))))) }}</div>
             </div>
 
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_RUZHANGDANHAO', '入账单号') }}</span>
               </div>
-              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
+              <div class="disabled">{{ baseInfo.enterAccountNum }}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_RUZHANGRIQI', '入账日期') }}</span>
               </div>
-              <div class="disabled">{{ getTousandNum(Number(baseInfo.investmentTotalAmount).toFixed(2)) }}</div>
+              <div class="disabled">{{ baseInfo.enterAccountDate }}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -263,7 +268,7 @@
         <div class="btns">
           <iButton
               v-loading="bmBuberLoading"
-              @click="bmBuberConfirmBefore">
+              @click="removeAttachment">
             {{ language('LK_SHANCHU', '删除') }}
           </iButton>
           <iButton
@@ -276,11 +281,15 @@
 
       <iTableList
           :tableData="enclosureTableListData"
-          :tableTitle="enclosureTableTitle"
+          :tableTitle="changeTaskInfoTableTitle"
           :tableLoading="tableLoading"
           :selection="true"
           :typeIndex="true"
+          @handleSelectionChange="handleSelectionChange"
       >
+        <template #attachmentName="scope">
+          <div class="table-link">{{ scope.row.attachmentName }}</div>
+        </template>
       </iTableList>
       
     </iCard>
@@ -303,18 +312,20 @@ import {
   iCard,
   icon
 } from "rise";
-import {changeTaskBmInfoTitle , enclosureTableTitle} from "../components/data"
+import {changeTaskBmInfoTitle , changeTaskInfoTableTitle} from "../components/data"
 import confirm from "../components/confirm"
 import photoList from "../components/photoList"
 import { Popover } from "element-ui"
 import {
-  moldHeaderByBmSerial,
-  findMoldViewList,
+  basicsInfo,
+  mouldList,
   bmMoldExport,
   assetTypes,
   craftTypes,
+  attachment,
+  removeAttachment,
   bmBuberConfirm,
-} from "@/api/ws2/purchase/investmentList/bmInfo";
+} from "@/api/ws2/purchase/changeTask/bmInfo";
 import {getTousandNum} from "@/utils/tool";
 import {sendSupplier} from "@/api/ws2/purchase/investmentList";
 
@@ -353,25 +364,29 @@ export default {
       sendSupplierLoading: false,
       iLogShow: false,
       query: {
-        bmSerial: '',
-        id: '',
+        bmId: '',
+        bmChangeId: '',
+        changeNum: '',
       },
       baseInfo: {},
       assetTypeNum: '',
       craftType: '',
       getTousandNum: getTousandNum,
-      enclosureTableTitle,
+      changeTaskInfoTableTitle,
       enclosureTableListData: [],
     }
   },
   created() {
-    this.query.bmSerial = this.$route.query.bmSerial
-    this.query.id = this.$route.query.id
+    this.query = this.$route.query
     this.getAllSelect()
     this.moldHeaderByBmSerial()
     this.findMoldViewList()
+    this.attachment()
   },
   methods: {
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
     bmBuberConfirmBefore(){
       if(this.baseInfo.moldInvestmentStatus === '2'){
         this.confirmShow = true
@@ -432,8 +447,8 @@ export default {
     },
     moldHeaderByBmSerial(){
       this.baseInfoLoading = true
-      moldHeaderByBmSerial({
-        bmSerial: this.query.bmSerial
+      basicsInfo({
+        changeNum : this.query.changeNum
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
@@ -447,11 +462,48 @@ export default {
       });
     },
 
+    attachment(){
+      this.baseInfoLoading = true
+      attachment({
+        bmChangeId  : this.query.bmChangeId
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.enclosureTableListData = res.data
+        } else {
+          iMessage.error(result);
+        }
+        this.baseInfoLoading = false
+      }).catch(() => {
+        this.baseInfoLoading = false
+      });
+    },
+
+    removeAttachment(){
+      if(!this.multipleSelection || this.multipleSelection.length === 0){
+        iMessage.warn(this.language('LK_BAAPPLYTISP1', '请先勾选'))
+        return
+      }
+      this.baseInfoLoading = true
+      removeAttachment(this.multipleSelection.map(item => ({attachmentId: item.attachmentId, bmChangeId: item.bmChangeId}))).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          iMessage.success(result);
+          this.attachment()
+        } else {
+          iMessage.error(result);
+        }
+        this.baseInfoLoading = false
+      }).catch(() => {
+        this.baseInfoLoading = false
+      });
+    },
+
     findMoldViewList(){
       this.tableLoading = true
-      findMoldViewList({
+      mouldList({
         assetTypeNum: this.assetTypeNum,
-        bmId: this.query.id,
+        bmId: this.query.bmId,
         craftType: this.craftType,
         veriosn: '',
       }).then((res) => {

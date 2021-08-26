@@ -349,11 +349,14 @@ export default {
       let url = this.$router.resolve({
         path: '/purchase/changeTask/bmInfo',
         query: {
-          bmSerial: row.bmSerial,
-          id: row.id
+          bmId: row.bmId,
+          bmChangeId: row.id,
+          changeNum: row.changeNum,
         }
       })
-      if(Number(row.isShowMoldInvestmentAmount) === 1){
+      window.open(url.href, '_blank');
+
+      if(Number(row.isPremission)){
         window.open(url.href, '_blank');
       } else {
         verifyLine({linie: row.linieId}).then((res) => {

@@ -18,9 +18,12 @@
   </iDialog>
 </template>
 <script>
-import {iDialog, iSearch, iInput, iButton, icon} from 'rise'
+import {iDialog, iSearch, iInput, iButton, icon, iMessage} from 'rise'
 import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
+import {
+  addBmChangeList
+} from "@/api/ws2/purchase/changeTask";
 
 export default {
   mixins: [pageMixins],
@@ -32,10 +35,12 @@ export default {
     title: {type: String, default: '提示'},
     value: {type: Boolean},
     content: {type: String, default: ''},
+    bmParams: {type: Array, default: () => []},
   },
   data() {
     return {
-      conversionVal: ''
+      conversionVal: '',
+      saveLoading: false,
     }
   },
   mounted() {
@@ -45,8 +50,25 @@ export default {
       this.$emit('input', false)
     },
     save() {
-      this.$emit('input', false)
-      this.$emit('sure')
+      this.saveLoading = true
+      addBmChangeList(this.bmParams).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          if(res.data.isPermission){
+            this.$emit('input', false)
+            this.$emit('InitiateChangeClose')
+            iMessage.success(result)
+          } else {
+            iMessage.error(res.data.bmSerial.join(',') + this.language('LK_CHUYUBIANGENGLIUCHENGZHONG', '处于变更流程中，不可重复发起变更'))
+          }
+        } else {
+          // this.findBmNewChangePageList()
+          iMessage.error(result)
+        }
+        this.saveLoading = false
+      }).catch(err => {
+        this.saveLoading = false
+      })
     },
   },
   watch: {}
