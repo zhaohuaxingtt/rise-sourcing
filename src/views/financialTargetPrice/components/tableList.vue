@@ -1,14 +1,14 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 14:42:20
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-12 18:08:15
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-25 10:44:48
  * @Description: 财务目标价公用表格
  * @FilePath: \front-web\src\views\financialTargetPrice\components\tableList.vue
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
-    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="56" align='center' :selectable="row => !isEdit"></el-table-column>
     <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
@@ -26,7 +26,7 @@
           <span v-if="items.required" style="color:red;">*</span>
         </template>
         <template slot-scope="scope">
-          <iInput v-if="isEdit && selectedItems.some(item => item.applyId === scope.row.applyId) && items.type === 'input'" v-model="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)"></iInput>
+          <iInput v-if="isEdit && selectedItems.some(item => item.applyId === scope.row.applyId) && items.type === 'input'" :value="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)"></iInput>
           <iSelect v-else-if="isEdit  && selectedItems.some(item => item.applyId === scope.row.applyId) && items.type === 'select'" v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)">
             <el-option
               :value="item.value"
@@ -65,10 +65,10 @@
   </el-table>
 </template>
 <script>
-import {icon,iSelect,iInput, iDatePicker} from 'rise'
+import {iSelect,iInput} from 'rise'
 import {_getMathNumber} from '@/utils'
 export default{
-  components:{icon,iSelect,iInput, iDatePicker},
+  components:{iSelect,iInput},
   props:{
     tableData:{type:Array},
     tableTitle:{type:Array},
@@ -102,11 +102,12 @@ export default{
       return row.fileList?.map(item => item.fileName).join('\n')
     },
     changeValue(val, row, item) {
-      if (item.isPC) {
-        this.$emit('tableValueChange', val, row, item)
-        console.log(val, row, item)
+      if (item.isNumber) {
+        if (/^\d*\.?\d*$/.test(val)) {
+          this.$set(row, item.props, val)
+        }
       } else {
-        row[item.isChange] = row[item.props+'Temp'] != (val === null ? '' : val)
+        this.$set(row, item.props, val)
       }
     },
     getValue(row, item) {
@@ -118,10 +119,10 @@ export default{
         return row[item.props]
       }
     },
-    toggleSelection(rows) {
+    toggleSelection(rows, isSelect) {
       if (rows) {
         rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
+          this.$refs.multipleTable.toggleRowSelection(row, isSelect);
         });
       } else {
         this.$refs.multipleTable.clearSelection();

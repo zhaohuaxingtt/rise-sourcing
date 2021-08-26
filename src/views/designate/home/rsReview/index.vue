@@ -90,10 +90,6 @@
             </span>
           </span> 
       </template>
-      <!-- 状态 -->
-      <template #applicationStatus="scope">
-        <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || scope.row.applicationStatus}}</span>
-      </template>
       <!-- rs状态 -->
       <template #rsStatus="scope">
         <div>
@@ -121,20 +117,12 @@
       <template #signId="scope">
         <a href="javascript:;" class="selStatus-link" @click="$router.push({path: '/sourcing/partsnomination/signSheet/details', query: {id: scope.row.signId}})">{{scope.row.signId}}</a>
       </template>
-      <!-- 签字单零件项目类型 -->
-      <template #partProjType="scope">
-        <span>{{scope.row.partProjType && scope.row.partProjType.name || scope.row.partProjType || ''}}</span>
-      </template>
-      <!-- 签字单状态 -->
-      <template #signStatus="scope">
-        <span>{{scope.row.signStatus && scope.row.signStatus.name || scope.row.signStatus || ''}}</span>
-      </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
-          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-if="scope.row.selStatus && scope.row.selStatus.code === 'CONFIRMED'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
-          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-else-if="scope.row.selStatus && scope.row.selStatus.code === 'UNCONFIRMED'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
-          <span v-else>{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</span>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-if="scope.row.selStatus === 'CONFIRMED'">{{scope.row.selStatusDesc}}</a>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-else-if="scope.row.selStatus === 'UNCONFIRMED'">{{scope.row.selStatusDesc}}</a>
+          <span v-else>{{scope.row.selStatusDesc}}</span>
         </div>
       </template>
       

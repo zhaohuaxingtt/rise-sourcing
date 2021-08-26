@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 18:00:53
+ * @LastEditTime: 2021-08-25 10:49:34
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -59,6 +59,7 @@
         </div>
       </div>
       <tableList 
+        ref="tableList"
         :activeItems='"partNum"' 
         :isEdit="isEdit" 
         selection 
@@ -238,11 +239,16 @@ export default {
       this.getDict('CF_APPLY_STATUS')
     },
     handleSelectionChange(val) {
-      this.selectItems = val
+      if (!this.isEdit) {
+        this.selectItems = val
+      } else {
+        // this.$refs.tableList.toggleSelection(val.filter(item => item.props !== val.props), false)
+        // this.$refs.tableList.toggleSelection(this.selectItems)
+      }
     },
     fileError(err) {
       this.uploadLoading = false;
-      console.log(err.message)
+      // console.log(err.message)
       const errRes = JSON.parse(err.message)
       this.uploadLoading=false;iMessage.error(this.$i18n.locale === 'zh' ? errRes?.desZh : errRes?.desEn || '上传失败')
     },
@@ -352,6 +358,7 @@ export default {
      */    
     getTableList() {
       this.tableLoading = true
+      this.isEdit = false
       const params = omit({
         ...this.searchParams,
         searchType: '0',

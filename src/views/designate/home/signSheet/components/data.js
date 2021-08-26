@@ -1,7 +1,7 @@
 /*
  * @Author: Haojiang
  * @Date: 2021-06-28 09:26:28
- * @LastEditTime: 2021-07-21 16:17:48
+ * @LastEditTime: 2021-08-25 16:46:55
  * @LastEditors: Please set LastEditors
  * @Description: 签字单
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/data.js
@@ -30,13 +30,13 @@ export const tableTitle = [
     tooltip: false
   },
   {
-    props: 'partTermType',
+    props: 'projectType',
     name: '零件项目类型',
     key: 'LK_LINGJIANXIANGMULEIXING',
     tooltip: false
   },
   {
-    props: 'buyerName',
+    props: 'csf',
     name: 'CSF',
     key: 'CSF',
     tooltip: false
@@ -48,7 +48,7 @@ export const tableTitle = [
     tooltip: false
   },
   {
-    props: 'submitDate',
+    props: 'createDate',
     name: '生成时间',
     key: 'TIJIAORIQI',
     tooltip: false
@@ -60,7 +60,7 @@ export const tableTitle = [
     tooltip: false
   },
   {
-    props: 'status',
+    props: 'statusDesc',
     name: '签字单状态',
     width: 150,
     key: 'QIANZIDANZHUANGTAI',

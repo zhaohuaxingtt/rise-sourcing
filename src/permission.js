@@ -1,14 +1,14 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-03-27 13:44:33
+ * @LastEditTime: 2021-08-25 18:27:13
  * @LastEditors: Please set LastEditors
  * @Description: 项目中登录时候获取整个项目的权限以及token.
  * @FilePath: \rise\src\permission.js
  */
 import router from "./router";
 import store from "@/store";
-import { getToken,removeToken } from "@/utils";
+import { getToken,removeToken } from "@/utils"; 
 // eslint-disable-next-line no-unused-vars
 const whiteList = ["/login",'/ui'];
 router.beforeEach((to, from, next) => {

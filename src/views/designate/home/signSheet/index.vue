@@ -42,10 +42,6 @@
           {{scope.row.id}}
         </a>
       </template>
-      <!-- 签字单状态 -->
-      <template #status="scope">
-        <span>{{scope.row.status && scope.row.status.name || scope.row.status}}</span>
-      </template>
       <!-- 提交日期 -->
       <template #submitDate="scope">
         <span>{{scope.row.submitDate | dateFilter("YYYY-MM-DD")}}</span>
