@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-25 16:41:04
+ * @LastEditTime: 2021-08-25 19:51:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -56,7 +56,7 @@
                                multiple>
                       <el-option v-for="item in ComparedMotorList"
                                  :key="item.motorId"
-                                 :value="item.motorCode"
+                                 :value="item.motorId"
                                  :label="item.motorName"> </el-option>
                     </el-select>
                   </el-form-item>
@@ -113,7 +113,7 @@
                                placeholder="请选择目标车型">
                       <el-option v-for="item in TargetMotorList"
                                  :key="item.motorId"
-                                 :value="item.motorCode"
+                                 :value="item.motorId"
                                  :label="item.motorName"> </el-option>
                     </el-select>
                     <span class="margin-bottom15 "
@@ -408,33 +408,33 @@ export default {
       this.rfqId = this.$store.state.rfq.rfqId
       this.entryStatus = this.$store.state.rfq.entryStatus
       this.chemeId = this.$route.query.chemeId
-      // await getSchemeInfo({
-      //   // schemeId: this.chemeId
-      //   schemeId: 3
-      // }).then(res => {
-      //   let data = res.data
-      //   this.categoryCode = data.categoryCode
-      //   this.categoryId = data.categoryId
-      //   this.categoryName = data.categoryName
-      //   this.exceptPart = data.exceptPart
-      //   this.targetMotor = data.targetMotor
-      //   this.comparedType = data.comparedType
-      //   if (data.firstComparedMotor) {
-      //     this.ComparedMotor.push(data.firstComparedMotor)
-      //   }
-      //   if (data.secondComparedMotor) {
-      //     this.ComparedMotor.push(data.secondComparedMotor)
-      //   }
-      //   if (data.thirdComparedMotor) {
-      //     this.ComparedMotor.push(data.thirdComparedMotor)
-      //   }
-      //   if (data.forthComparedMotor) {
-      //     this.ComparedMotor.push(data.forthComparedMotor)
-      //   }
-      //   if (data.fifthComparedMotor) {
-      //     this.ComparedMotor.push(data.fifthComparedMotor)
-      //   }
-      // })
+      await getSchemeInfo({
+        schemeId: this.chemeId
+        // schemeId: 
+      }).then(res => {
+        let data = res.data
+        this.categoryCode = data.categoryCode
+        this.categoryId = data.categoryId
+        this.categoryName = data.categoryName
+        this.exceptPart = data.exceptPart
+        this.targetMotor = data.targetMotor
+        this.comparedType = data.comparedType
+        if (data.firstComparedMotor) {
+          this.ComparedMotor.push(data.firstComparedMotor)
+        }
+        if (data.secondComparedMotor) {
+          this.ComparedMotor.push(data.secondComparedMotor)
+        }
+        if (data.thirdComparedMotor) {
+          this.ComparedMotor.push(data.thirdComparedMotor)
+        }
+        if (data.forthComparedMotor) {
+          this.ComparedMotor.push(data.forthComparedMotor)
+        }
+        if (data.fifthComparedMotor) {
+          this.ComparedMotor.push(data.fifthComparedMotor)
+        }
+      })
       //材料组
       category({}).then((res) => {
         this.categoryList = res.data
@@ -524,17 +524,22 @@ export default {
     },
     //选择材料组
     changeCategory (val) {
+      let obj = {}
+      obj = this.categoryList.find(item => {
+        return item.categoryCode === val
+      })
+      this.categoryId = obj.categoryId
       let params = {}
       if (this.entryStatus == 1) {
         params = {
-          categoryId: val,
+          categoryId: this.categoryId,
           // categoryId: '600029',
           isBindingRfq: true,
           req: this.rfqId
         }
       } else {
         params = {
-          categoryId: val,
+          categoryId: this.categoryId,
           // categoryId: '600029',
           isBindingRfq: false,
         }
@@ -546,23 +551,23 @@ export default {
       //   this.flag1 = false
       // }
     },
-    // changeComparedMotor (val) {
-    //   let params = {
-    //     // categoryId: '600029',
-    //     categoryId: '600029',
-    //     motorIds: this.ComparedMotor,
-    //     schemeId: this.chemeId
-    //   }
-    //   recursiveRetrieve(params).then(res => {
-    //     this.recursiveRetrieveList = res.data
-    //   })
-    // },
+    changeComparedMotor (val) {
+      let params = {
+        // categoryId: '600029',
+        categoryId: this.categoryId,
+        motorIds: this.ComparedMotor,
+        schemeId: this.chemeId
+      }
+      recursiveRetrieve(params).then(res => {
+        this.recursiveRetrieveList = res.data
+      })
+    },
     //选择目标车型
     changeTargetMotor (val) {
       let params = {}
       params = {
         // categoryId: '600029',
-        categoryId: this.categoryCode,
+        categoryId: this.categoryId,
         targetMotorId: val
         // targetMotorId: '50044101'
       }
