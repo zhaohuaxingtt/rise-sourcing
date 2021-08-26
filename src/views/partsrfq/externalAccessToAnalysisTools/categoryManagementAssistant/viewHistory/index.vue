@@ -14,7 +14,7 @@
       <div class="queryForm">
         <el-form class="queryForm">
           <el-form-item label="材料组：">
-            <iSelect v-model="form.categoryCode" placeholder="请选择">
+            <iSelect v-model="form.categoryCode" filterable placeholder="请选择">
               <el-option v-for="item in formGoup.categoryList" :key="item.categoryCode" :label="item.categoryName" :value="item.categoryCode">
               </el-option>
             </iSelect>

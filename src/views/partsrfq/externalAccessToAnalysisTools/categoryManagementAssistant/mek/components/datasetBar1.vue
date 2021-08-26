@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-25 10:23:01
+ * @LastEditTime: 2021-08-26 15:31:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -152,10 +152,10 @@ export default {
             emphasis: {
               focus: "series",
             },
-            barCategoryGap: '50%',
+            // barCategoryGap: '50%',
             // barMinWidth: 30,
             // // barMaxWidth: 30,
-            // barWidth: 30,
+            barWidth: 30,
             itemStyle: {
               barBorderRadius: [5, 5, 0, 0],
             },
