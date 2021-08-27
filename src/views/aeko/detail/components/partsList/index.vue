@@ -55,7 +55,7 @@
     </iSearch>
       <iCard :title="language('LK_AEKO_PARTSLIST','零件清单')" class="margin-top20">
         <!-- 按钮区域 -->
-        <template v-slot:header-control>
+        <template v-slot:header-control v-if="!isLinie">
             <div>
                 <iButton :disabled="btnDisabled" v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
