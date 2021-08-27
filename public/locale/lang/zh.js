@@ -1015,8 +1015,6 @@
         'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
         'LK_BMDANLIUSHUIHAO': 'BM单流水号',   //  BM单流⽔号LK_BMDANLIUSHUIHAO
         'LK_BMDANHAO': 'BM单号',    //  BM单号
-        'LK_SAPDINGDANHAO': 'SAP订单号',    //  BM单号
-        'LK_RUZHANGDANHAO': '入账单号',    //  BM单号
         'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
         'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
         'LK_BMDANJINE':  'BM单金额', //  BM单金额
@@ -1120,7 +1118,6 @@
         'LK_ZICHANDANJIA': '资产单价',   //  资产单价
         'LK_FASONGGONGYIUNGSHANGQUEREN': '发送供应商确认',   //  发送供应商确认
         'LK_FAQIBIANGENG': '发起变更',   //  发起变更
-        'LK_XINZENGBIANGENG': '新增变更',   //  新增变更
         'LK_ZHUANPAIZIJI': '转派自己',   //  转派自己
         'LK_BIANGENDANHAO': '变更单号', //  变更单号
         'LK_BIANGENHOUBANBEN': '变更后版本',    //  变更后版本
@@ -1132,14 +1129,6 @@
         'LK_ZHAOPIAN': '照片',  //  照片
         'LK_GUZIMINGCHEN': '固资名称',  //  固资名称
         'LK_DUIBUQIMEIYOUQUANXIAN': '对不起，您所在得岗位没有该材料组权限', //  对不起，您所在得岗位没有该材料组权限
-        'LK_XUANZEBMXINZENGBIANGENG': '选择BM新增单变更', //  选择BM新增单变更
-        'LK_CHAKANBIANGENGDAN': '查看变更单', //  查看变更单
-        'LK_TIJIAOSHENPI': '提交审批', //  提交审批
-        'LK_MUJUTOUZIQINGDANBIANGENGXIANGQING': '模具投资清单变更详情', //  模具投资清单变更详情
-        'LK_BIANGENGSHENPIFUJIAN': '变更审批附件', //  变更审批附件
-        'LK_BIANGENGDANZHUANGTAI': '变更单状态', //  变更单状态
-        'LK_CHUYUBIANGENGLIUCHENGZHONG':'处于变更流程中，不可重复发起变更', // 新增定点信
-        'LK_BIANGENGHOUJINE':'变更后金额', // 变更后金额
 
         // 定点管理
         'nominationLanguage': {

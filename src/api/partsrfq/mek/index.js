@@ -41,7 +41,7 @@ export function update(parmars) {
     data: parmars
   })
 }
-//MEKinfo--列表
+//列表--保存
 export function mekInfoList(parmars) {
   return requst({
     url: `/mekMaterial/page`,
