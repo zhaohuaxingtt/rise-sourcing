@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-16 10:34:18
+ * @LastEditTime: 2021-08-26 17:00:31
  * @LastEditors: 舒杰
  * @Description: 行业报告
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\index.vue
@@ -35,6 +35,10 @@
 			:tableLoading="tableLoading"
 			index
 			@handleSelectionChange="handleSelectionChange">
+			<template #reportName="scope">
+				<iInput v-model="scope.row.reportName" v-if="isEdit"></iInput>	
+				<span v-else>{{scope.row.reportName}}</span>
+			</template>
 			<template #onlineWeb="scope">
 				<iInput v-model="scope.row.onlineWeb" v-if="isEdit"></iInput>	
 				<span class="openPage" @click="openPdf(scope.row.onlineWeb)" v-else>{{scope.row.onlineWeb}}</span>
@@ -79,7 +83,8 @@
 				tableLoading:false,
 				selectData:[],
 				isEdit:false,// 是否编辑
-				categoryCode:""
+				categoryCode:"",
+				cloneTableListData:[]
 			}
 		},
 		created() {
@@ -114,11 +119,13 @@
 			},
 			// 编辑
 			edit(){
+				this.cloneTableListData=window._.cloneDeep(this.tableListData)
 				this.isEdit=true
 			},
 			// 取消编辑
 			unEdit(){
 				this.isEdit=false
+				this.tableListData=this.cloneTableListData
 			},
 			openPdf(url){
 				window.open(url)
@@ -131,7 +138,7 @@
 				}
 				let fileName=[]
 				this.selectData.map(item=>{
-					fileName.push(item.reportName)
+					fileName.push(item.downName)
 				})
 				const req = {
 					applicationName: 'rise',
@@ -141,15 +148,11 @@
 			},
 			//上传
 			async myUpload(content) {
-				const loading = this.$loading({
-					lock: true,
-				});
 				const formData = new FormData();
 				formData.append('file', content.file);
 				formData.append('categoryCode', this.categoryCode);
 				formData.append('userId ', this.$store.state.permission.userInfo.id);
 				const res = await uploadReport(formData);
-				loading.close()
 				this.resultMessage(res,()=>{
 					this.getTableList()
 				})

@@ -12,10 +12,10 @@
     >
       <el-form>
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput v-model.trim="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
+          <iInput v-model.trim="behalfPartsNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
         </el-form-item>
         <el-form-item :label="language('TPZS.GONGYINGSHANG', '供应商')">
-          <iInput v-model="supplier" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
+          <iInput v-model="designatedSupplierId" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
         </el-form-item>
         <el-form-item :label="language('LK_BMDANLIUSHUIHAO', 'BM单流水号')">
           <iInput v-model="bmSerial" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
@@ -31,8 +31,8 @@
               v-model="moldInvestmentStatus"
           >
             <el-option
-                :value="item.code"
-                :label="item.zhMsg"
+                :value="item.bmStatus"
+                :label="item.bmStatusName"
                 v-for="(item, index) in moldInvestmentStatusList"
                 :key="index"
             ></el-option>
@@ -46,11 +46,11 @@
               clearable
               collapse-tags
               multiple
-              v-model="carTypeProject"
+              v-model="tmCartypeProId"
           >
             <el-option
-                :value="item.id"
-                :label="item.carTypeProjectName"
+                :value="item.tmCartypeProId"
+                :label="item.tmCartypeProNam"
                 v-for="(item, index) in carTypeProjectList"
                 :key="index"
             ></el-option>
@@ -64,11 +64,11 @@
               clearable
               collapse-tags
               multiple
-              v-model="department"
+              v-model="deptId"
           >
             <el-option
                 :value="item.deptId"
-                :label="item.commodity"
+                :label="item.deptName"
                 v-for="(item, index) in departmentsList"
                 :key="index"
             ></el-option>
@@ -82,12 +82,33 @@
               clearable
               collapse-tags
               multiple
-              v-model="linieName"
+              v-model="linieId"
           >
             <el-option
                 :value="item.linieID"
                 :label="item.linieName"
                 v-for="(item, index) in linieList"
+                :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
+        <el-form-item :label="language('LK_BMDANHAO', 'BM单号')">
+          <iInput v-model="bmNum" :placeholder="language('LK_QINGSHURU', '请输入')" clearable></iInput>
+        </el-form-item>
+        <el-form-item label="变更单状态">
+          <iSelect
+              class="multipleSelect"
+              :placeholder="language('LK_QINGXUANZHE', '请选择')"
+              filterable
+              clearable
+              collapse-tags
+              multiple
+              v-model="changeStatuId"
+          >
+            <el-option
+                :value="item.changeStatusId"
+                :label="item.changeStatus"
+                v-for="(item, index) in ChangeStatusPullDown"
                 :key="index"
             ></el-option>
           </iSelect>
@@ -103,8 +124,7 @@
         </el-switch>
         <div>
           <iButton @click="handleHandover">{{ language('LK_ZHUANPAI', '转派') }}</iButton>
-          <iButton @click="sendSupplier">{{ language('LK_FASONGGONGYIUNGSHANGQUEREN', '发送供应商确认') }}</iButton>
-          <iButton @click="handVerifyLineShow" v-loading="handVerifyLineShowLoading">{{ language('LK_FAQIBIANGENG', '发起变更') }}</iButton>
+          <iButton @click="newChangeShow = true" v-loading="handVerifyLineShowLoading">{{ language('LK_XINZENGBIANGENG', '新增变更') }}</iButton>
         </div>
       </div>
       <!--      570-->
@@ -113,8 +133,8 @@
           :tableTitle="tableTitle"
           @handleSelectionChange="handleSelectionChange"
       >
-        <template #bmSerial="scope">
-          <div class="table-link" @click="toBmInfo(scope.row)">{{scope.row.bmSerial}}</div>
+        <template #changeNum="scope">
+          <div class="table-link" @click="toBmInfo(scope.row)">{{scope.row.changeNum}}</div>
         </template>
         <template #akeoType="scope">
           <div>{{
@@ -125,35 +145,12 @@
             }}</div>
         </template>
         <template #moldInvestmentAmount="scope">
-          <div v-if="Number(scope.row.isShowMoldInvestmentAmount) === 1">{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
+          <div v-if="scope.row.isPremission">{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
           <div v-else>-</div>
         </template>
-        <template #moldInvestmentStatus="scope">
-          <div v-if="scope.row.moldInvestmentStatus !== '6'">{{
-              scope.row.moldInvestmentStatus === '1' ?  '已定点待确认' :
-                  (scope.row.moldInvestmentStatus === '2' ? '待供应商确认' :
-                      (scope.row.moldInvestmentStatus === '3' ? '待采购员确认' :
-                          (scope.row.moldInvestmentStatus === '4' ? '变更中' :
-                              (scope.row.moldInvestmentStatus === '5' ? '供应商已变更待采购员确认' :
-                                  (scope.row.moldInvestmentStatus === '7' ? '模具投资清单已确认' : ''
-                                  )
-                              )
-                          )
-                      )
-                  )
-            }}</div>
-          <div v-else class="redStyle">
-            <Popover
-                class="popover"
-                placement="bottom-start"
-                :content="language('LK_TUIHUIYUANYIN', '退回原因') + ':' + scope.row.backReason"
-                trigger="hover">
-              <div slot="reference">
-                <span>供应商已退回</span>
-                <icon symbol name="iconzhongyaoxinxitishi"></icon>
-              </div>
-            </Popover>
-          </div>
+        <template #newMoldInvestmentAmount="scope">
+          <div v-if="scope.row.isPremission">{{getTousandNum(Number(scope.row.newMoldInvestmentAmount).toFixed(2))}}</div>
+          <div v-else>-</div>
         </template>
       </iTableList>
       <div class="unitStyle">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
@@ -169,36 +166,33 @@
           :total="page.totalCount"
       />
     </iCard>
-    <handover v-model="handoverShow" :handoverParams="handoverParams" @handoverClose="conditionConfirmTskList"></handover>
-    <InitiateChange v-model="InitiateChangeShow" :content="InitiateChangeContent" :bmParams="bmParams" @InitiateChangeClose="conditionConfirmTskList"></InitiateChange>
+    <handover v-model="handoverShow" :handoverParams="handoverParams" @handoverClose="conditionConfirmTskList" :isChangeTask="true"></handover>
+    <newChange v-model="newChangeShow"></newChange>
 <!--    <verifyLine v-model="verifyLineShow" :handoverParams="handoverParams" @handoverClose="conditionConfirmTskList"></verifyLine>-->
   </div>
 </template>
 
 <script>
-import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage, icon} from 'rise';
+import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage} from 'rise';
 import {iTableList} from "@/components";
-import {investmentListTitle} from "../components/data"
+import {changeTaskTitle} from "../components/data"
 import handover from "../components/handover"
-import InitiateChange from "../components/InitiateChange"
-// import verifyLine from "../components/verifyLine"
+import newChange from "../components/newChange"
 import {
-  getDepartmentsCombo,
-  carCombo,
-  moldInvestmentStatusCombo,
-  conditionConfirmTskList,
-  sendSupplier,
+
   verifyIsSelfOrders,
-  liniePullDownByDept,
   verifyLine,
 } from "@/api/ws2/purchase/investmentList";
 import {pageMixins} from "@/utils/pageMixins";
 import {Switch, Popover} from "element-ui"
 import {
-  getModelProtitesPullDown,
-  proDeptPullDown
-} from "@/api/ws2/budgetManagement/investmentList";
-import {getCartypePulldown, saveCustomCart} from "@/api/ws2/budgetManagement/edit";
+  bmChangeMoldInvestmentListStatusPullDown,
+  bmChangeCarTypePullDown,
+  bmChangeDeptPullDown,
+  bmChangeLiniePullDownByDept,
+  bmChangeStatusPullDown,
+  findBmChangePageList
+} from "@/api/ws2/purchase/changeTask";
 import {cloneDeep} from "lodash";
 import {getTousandNum} from "@/utils/tool";
 
@@ -213,9 +207,7 @@ export default {
     iButton,
     iInput,
     handover,
-    InitiateChange,
-    Popover,
-    icon,
+    newChange,
     // verifyLine,
   },
   data() {
@@ -224,25 +216,26 @@ export default {
       tableLoading: false,
       onleySelf: true,
       handoverShow: false,
-      InitiateChangeShow: false,
+      newChangeShow: false,
       verifyLineShow: false,
       handVerifyLineShowLoading: false,
-      tableTitle: investmentListTitle,
+      tableTitle: changeTaskTitle,
       tableListData: [],
-      department: [],
       departmentsList: [],
-      linieID: [],
       linieList: [],
-      carTypeProject: [],
+      ChangeStatusPullDown: [],
       carTypeProjectList: [],
       moldInvestmentStatus: [],
+      changeStatuId: [],
+      tmCartypeProId: [],
+      deptId: [],
+      linieId: [],
       moldInvestmentStatusList: [],
       multipleSelection: [],
+      behalfPartsNum: '',
+      designatedSupplierId: '',
       bmSerial: '',
-      partsNum: '',
-      supplier: '',
-      InitiateChangeContent: '',
-      bmParams: [],
+      bmNum: '',
       linieName: [],
       handoverParams: {
         bmid: [],
@@ -262,19 +255,23 @@ export default {
   methods: {
     handleSelectionChange(list) {
       this.multipleSelection = list
-      this.handoverParams.bmid = list.map(item => item.id)
+      this.handoverParams.bmid = list.map(item => item.bmId)
       this.handoverParams.moldInvestmentStatus = list.map(item => item.moldInvestmentStatus)
     },
     getAllSelect() {
       this.loadingiSearch = true
-      Promise.all([getDepartmentsCombo(), carCombo(), moldInvestmentStatusCombo(), liniePullDownByDept()]).then((res) => {
+      Promise.all([bmChangeMoldInvestmentListStatusPullDown(), bmChangeCarTypePullDown(), bmChangeDeptPullDown(), bmChangeLiniePullDownByDept(), bmChangeStatusPullDown()]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
         const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn
+        const result4 = this.$i18n.locale === 'zh' ? res[4].desZh : res[4].desEn
         if (Number(res[0].code) === 0) {
-          this.departmentsList = res[0].data
-          this.handoverParams.departmentsList = this.departmentsList
+          this.moldInvestmentStatusList = res[0].data;
+          // this.moldInvestmentStatus = this.moldInvestmentStatusList.filter(a => a.bmStatus !== '7').map(b => b.bmStatus)
+          //
+          // this.departmentsList = res[0].data
+          // this.handoverParams.departmentsList = this.departmentsList
         } else {
           iMessage.error(result0);
         }
@@ -284,10 +281,13 @@ export default {
           iMessage.error(result1);
         }
         if (res[2].data) {
-          this.moldInvestmentStatusList = res[2].data;
-          if(this.moldInvestmentStatus.length === 0){
-            this.moldInvestmentStatus = this.moldInvestmentStatusList.filter(a => a.code !== '7').map(b => b.code)
-          }
+          this.departmentsList = res[2].data;
+          this.handoverParams.departmentsList = cloneDeep(this.departmentsList).map(item => {
+            return {
+              deptId: item.deptId,
+              commodity: item.deptName
+            }
+          })
         } else {
           iMessage.error(result2);
         }
@@ -295,6 +295,11 @@ export default {
           this.linieList = res[3].data;
         } else {
           iMessage.error(result3);
+        }
+        if (res[4].data) {
+          this.ChangeStatusPullDown = res[4].data;
+        } else {
+          iMessage.error(result4);
         }
         this.conditionConfirmTskList()
         this.loadingiSearch = false
@@ -305,17 +310,18 @@ export default {
     },
     conditionConfirmTskList(){
       this.tableLoading = true
-      conditionConfirmTskList({
+      findBmChangePageList({
         current: this.page.currPage,
         size: this.page.pageSize,
+        behalfPartsNum: this.behalfPartsNum,
+        designatedSupplierId: this.designatedSupplierId,
         bmSerial: this.bmSerial,
-        deptId: this.department.join(),
-        isOneself: this.onleySelf ? 1 : 2,
-        linieName: this.linieName.join(),
-        moldInvestmentStatus: this.moldInvestmentStatus.join(),
-        partsNum: this.partsNum,
-        supplierFuzzyName: this.supplier,
-        tmCartypeProId: this.carTypeProject.join(),
+        moldInvestmentStatus: this.moldInvestmentStatus,
+        tmCartypeProId: this.tmCartypeProId,
+        deptId: this.deptId,
+        linieId: this.linieId,
+        bmNum: this.bmNum,
+        changeStatuId: this.changeStatuId,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
@@ -338,39 +344,17 @@ export default {
       }
       this.handoverShow = true
     },
-    sendSupplier(){
-      if(!this.multipleSelection || this.multipleSelection.length === 0){
-        iMessage.warn(this.language('LK_BAAPPLYTISP1', '请先勾选'))
-        return
-      }
-      this.handoverSelfLoading = true
-      sendSupplier(this.multipleSelection.map(item => {
-        return {
-          bmid: item.id,
-        }
-      })).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          this.conditionConfirmTskList()
-          iMessage.success(result);
-        } else {
-          iMessage.error(result);
-        }
-        this.handoverSelfLoading = false
-      }).catch(() => {
-        this.handoverSelfLoading = false
-      });
-    },
     toBmInfo(row){
       //  如当前用户没有查看“模具投资金额”的权限，点击流水号后提示“对不起，您所在的岗位没有该材料组权限”
       let url = this.$router.resolve({
-        path: '/purchase/investmentList/bmInfo',
+        path: '/purchase/changeTask/bmInfo',
         query: {
-          bmSerial: row.bmSerial,
-          id: row.id
+          bmId: row.bmId,
+          bmChangeId: row.id,
+          changeNum: row.changeNum,
         }
       })
-      if(Number(row.isShowMoldInvestmentAmount) === 1){
+      if(Number(row.isPremission)){
         window.open(url.href, '_blank');
       } else {
         verifyLine({linie: row.linieId}).then((res) => {
@@ -394,13 +378,7 @@ export default {
       this.handVerifyLineShowLoading = true
       verifyIsSelfOrders(this.multipleSelection.map(item => item.id)).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if(res.result){
-          this.InitiateChangeContent = result
-          this.bmParams = this.multipleSelection.map(item => ({id: item.id, isPremission: Number(item.isShowMoldInvestmentAmount) === 1 ? true : false}))
-          this.InitiateChangeShow = true
-        } else {
-          iMessage.warn(result)
-        }
+        iMessage.warn(result)
         this.handVerifyLineShowLoading = false
       }).catch(() => {
         this.handVerifyLineShowLoading = false
@@ -411,13 +389,15 @@ export default {
       this.conditionConfirmTskList()
     },
     reset() {
-      this.partsNum = ''
-      this.supplier = ''
+      this.behalfPartsNum = ''
+      this.designatedSupplierId = ''
       this.bmSerial = ''
       this.moldInvestmentStatus = []
-      this.carTypeProject = []
-      this.department = []
-      this.linieName = []
+      this.tmCartypeProId = []
+      this.deptId = []
+      this.linieId = []
+      this.bmNum = ''
+      this.changeStatuId = []
       this.conditionConfirmTskList()
     }
   }

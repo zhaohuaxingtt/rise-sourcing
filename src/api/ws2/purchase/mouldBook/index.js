@@ -55,6 +55,23 @@ export function getOrderNumPermission(parmars) {
   })
 }
 
+// 获取版本下拉框
+export function versionCombo(parmars) {
+  return VUE_APP_BMVIEW({
+      url: '/versionCombo',
+      method: 'GET',
+      params: parmars
+  })
+}
+
+// 获取某bm流水号的变更记录列表
+export function bmChangeOrderList(bmSerial, data) {
+  return VUE_APP_BMVIEW({
+      url: '/bmChangeOrderList/' + bmSerial,
+      method: 'POST',
+  })
+}
+
 // 工艺类型集合
 export function craftTypes(parmars) {
   return VUE_APP_BMMOLD({

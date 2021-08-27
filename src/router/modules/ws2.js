@@ -188,7 +188,7 @@ export default [
             path: '/purchase/investmentList',
             name: 'investmentList',
             meta: {
-              title: '模具投资清单'
+              title: '模具投资清单-确认任务'
             },
             component: () => import (`@/views/ws2/purchase/investmentList`),
           },
@@ -196,9 +196,9 @@ export default [
             path: '/purchase/changeTask',
             name: 'changeTask',
             meta: {
-              title: '模具投资清单'
+              title: '模具投资清单-变更任务'
             },
-            component: () => import (`@/views/ws2/investmentReport`),
+            component: () => import (`@/views/ws2/purchase/changeTask`),
           },
           {
             path: '/purchase/mouldBook',
@@ -226,7 +226,14 @@ export default [
         },
         component: () => import (`@/views/ws2/purchase/investmentList/bmInfo`),
       },
-
+      {
+        path: '/purchase/changeTask/bmInfo',
+        name: 'bmInfo',
+        meta: {
+          title: '模具投资清单-BM详情页'
+        },
+        component: () => import (`@/views/ws2/purchase/changeTask/bmInfo`),
+      },
       {
         path: '/purchaseSupplier',
         name: 'purchaseSupplier',
@@ -243,10 +250,19 @@ export default [
             path: '/purchaseSupplier/investmentList',
             name: 'investmentList',
             meta: {
-              title: '模具投资清单'
+              title: '模具投资清单-确认任务'
             },
             component: () => import (`@/views/ws2/purchaseSupplier/investmentList`),
           },
+          {
+            path: '/purchaseSupplier/changeTask',
+            name: 'changeTask',
+            meta: {
+              title: '模具投资清单-变更任务'
+            },
+            component: () => import (`@/views/ws2/purchaseSupplier/changeTask`),
+          },
+
           {
             path: '/purchaseSupplier/mouldBook',
             name: 'mouldBook',
@@ -272,6 +288,14 @@ export default [
           title: '模具投资清单-BM详情页'
         },
         component: () => import (`@/views/ws2/purchaseSupplier/investmentList/bmInfo`),
+      },
+      {
+        path: '/purchaseSupplier/changeTask/bmInfo',
+        name: 'bmInfo',
+        meta: {
+          title: '模具投资清单-变更任务-详情页'
+        },
+        component: () => import (`@/views/ws2/purchaseSupplier/changeTask/bmInfo`),
       },
     ]
   }
