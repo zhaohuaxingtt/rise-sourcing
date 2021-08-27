@@ -247,8 +247,8 @@ export default {
         this.tableLoading = true
         const pms = {
           ...this.form,
-          mekId: this.$route.query.SchemeId,
-          motorIds: this.$route.query.vwModelCodes,
+          mekId: this.$route.query.chemeId,
+          motorIds: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || [],
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
         }
