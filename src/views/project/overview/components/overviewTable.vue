@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-20 15:45:59
+ * @LastEditTime: 2021-08-25 10:58:42
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -195,13 +195,19 @@ export default {
   },
   methods: {
     /**
-     * @Description: 跳转排程
+     * @Description: 跳转排程 
+     * hasPartSchedule 是否有零件排程 1-是 0-否，如果有零件排程则跳转到零件排程页面，反之跳到产品组排程页面
      * @Author: Luoshuang
      * @param {*} row
      * @return {*}
      */    
     openAssistant(row) {
-      const router =  this.$router.resolve({path: '/projectscheassistant/progroupscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      let router = ''
+      if (row.hasPartSchedule == 1) {
+        router =  this.$router.resolve({path: '/projectscheassistant/partscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      } else {
+        router =  this.$router.resolve({path: '/projectscheassistant/progroupscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      }
       window.open(router.href,'_blank')
     },
     /**
