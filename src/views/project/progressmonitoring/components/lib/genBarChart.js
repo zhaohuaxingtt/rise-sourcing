@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-08-25 14:53:59
+ * @LastEditTime: 2021-08-27 15:18:04
  * @LastEditors: Please set LastEditors
  * @Description: 风险图的配置文件
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/components/barChart.js
@@ -89,7 +89,7 @@ export function generateOptions(params = {}, type = 1) {
     const assistLineData = []
     seaiesItem.forEach((item, index) => {
         const NumAll = params.value4 || 0
-        let value = params[item.key] || ''
+        let value = params[item.key] || '0'
         let assistValue = 0
         let assistLineValue = value
         // 辅助数据
@@ -196,7 +196,10 @@ export function generateOptions(params = {}, type = 1) {
                 stack: '总量',
                 label: {
                     show: true,
-                    position: 'insideRight'
+                    position: 'insideRight',
+                    formatter: (params) => {
+                        return params.value === '0' ? '' : params.value
+                    }
                 },
                 data: seaiesData
             },

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 16:55:21
- * @LastEditTime: 2021-08-25 16:04:02
+ * @LastEditTime: 2021-08-27 15:37:09
  * @LastEditors: Please set LastEditors
  * @Description: 项目状态图表
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/projectStateChart.vue
@@ -10,15 +10,15 @@
   <div class="projectStateChart" :class="{'disabled': disabled}">
     <div class="tit">{{(data && data.title )|| ''}}</div>
     <div class="projectStateChart-container">
-      <div class="subtit" v-show="!disabled">项目风险</div>
+      <div class="subtit" v-show="!disabled">{{language('XIANGMUFENGXIAN', '项目风险')}}</div>
       <div v-show="!disabled" :id="id" class="projectStateChart-charts"></div>
-      <div class="process" v-show="!disabled && !(data && data.value6)">
-        <div class="subtit">任务进度</div>
+      <div class="process" v-show="!disabled && !isEMOTSComplished">
+        <div class="subtit">{{language('RENWUJINDU', '任务进度')}}</div>
         <ul>
-          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-lv" class="icon" /><span>30</span></li>
-          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-huang" class="icon" /><span>20</span></li>
-          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-hong" class="icon" /><span>10</span></li>
-          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-hei" class="icon" /><span>3</span></li>
+          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-lv" class="icon" /><span>{{data && data.taskProgressNormal || 0}}</span></li>
+          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-huang" class="icon" /><span>{{data && data.taskProgressDelay || 0}}</span></li>
+          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-hong" class="icon" /><span>{{data && data.taskProgressRisk || 0}}</span></li>
+          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-hei" class="icon" /><span>{{data && data.taskSeriousDelay || 0}}</span></li>
         </ul>
       </div>
       
@@ -49,6 +49,11 @@ export default {
       default: false
     }
   },
+  computed: {
+    isEMOTSComplished() {
+      return this.data.isEMOTSComplished
+    }
+  },
   data() {
     return {
     }
@@ -71,7 +76,7 @@ export default {
   methods: {
     init(params) {
       if (this.disabled || !params) return
-      const options = generateOptions(params, params.value6 ? 2 : 1)
+      const options = generateOptions(params, params.isEMOTSComplished ? 2 : 1)
       console.log('-mokeData-', options, this.id)
       const vm = echarts().init(document.getElementById(this.id));
       vm.clear()
