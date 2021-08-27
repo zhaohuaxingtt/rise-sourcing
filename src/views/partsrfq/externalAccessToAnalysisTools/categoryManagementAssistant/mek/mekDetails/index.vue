@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-26 15:44:54
+ * @LastEditTime: 2021-08-27 14:32:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -128,8 +128,23 @@
                                :maxWidth="maxWidth"
                                @detailDialog="detailDialog"></datasetBar1>
                   <div class="xAxis"
-                       v-if="comparedType==='mekMotorType'">
-                    <span @click="computeModal">MIX</span>
+                       v-if="mekMotorTypeFlag">
+                    <div v-for="i in firstBarData.detail"
+                         :key="i.value"
+                         style="text-align:center">
+                      <div style="margin-bottom:10px">
+                        <span @click="computeModal(firstBarData)">{{i.title}}</span>
+                        <el-tooltip class="item"
+                                    effect="dark"
+                                    :content="firstBarData.tips"
+                                    placement="top-end">
+                          <icon name="iconzengjiacailiaochengben_lan"
+                                symbol
+                                style="width:14px;height:14px;margin-left:10px"></icon>
+                        </el-tooltip>
+                      </div>
+                      <span @click="computeModal(firstBarData)">{{i.ebr}}</span>
+                    </div>
                   </div>
                 </div>
                 <div class="flex chartItem"
@@ -183,10 +198,22 @@
                               :typeSelection="mekMotorTypeFlag"
                               @detailDialog="detailDialog"></datasetBar>
                   <div class="xAxis"
-                       v-if="comparedType==='mekMotorType'">
+                       v-if="mekMotorTypeFlag">
                     <div v-for="i in item.detail"
-                         :key="i.value">
-                      <span @click="computeModal(i)">{{i.title}}</span>
+                         :key="i.value"
+                         style="text-align:center">
+                      <div style="margin-bottom:10px">
+                        <span @click="computeModal(item)">{{i.title}}</span>
+                        <el-tooltip class="item"
+                                    effect="dark"
+                                    :content="item.tips"
+                                    placement="top-end">
+                          <icon name="iconzengjiacailiaochengben_lan"
+                                symbol
+                                style="width:14px;height:14px;margin-left:10px"></icon>
+                        </el-tooltip>
+                      </div>
+                      <span @click="computeModal(item)">{{i.ebr}}</span>
                     </div>
                   </div>
                 </div>
@@ -197,26 +224,12 @@
           </iCard>
         </div>
       </div>
-      <iCard class="tableList">
-        <template v-slot:header>
-          <div class="titleBox">
-            <div v-if="!editFlag">
-              <iButton @click="addRow">新增</iButton>
-              <iButton>删除</iButton>
-              <iButton @click="edit">编辑</iButton>
-            </div>
-            <div v-else>
-              <iButton @click="saveTable">保存</iButton>
-              <iButton @click="cancel">取消</iButton>
-            </div>
-          </div>
-        </template>
-        <tableList :gridData="gridData"
-                   :editFlag="editFlag"
-                   :addRowList="addRowList"
-                   @editData="editData"
-                   @addData="addData"></tableList>
-      </iCard>
+      <tableList :gridData="gridData"
+                 :editFlag="editFlag"
+                 :addRowList="addRowList"
+                 @editData="editData"
+                 @addData="addData"></tableList>
+
       <iDialog title="保存"
                :visible.sync="dialogVisible"
                width="20%"
@@ -244,9 +257,11 @@
         </span>
       </iDialog>
       <modalDialog :modalVisible="modalVisible"
-                   @input="closeModalDialog"></modalDialog>
+                   @input="closeModalDialog"
+                   :computeModalData="computeModalData"></modalDialog>
       <detailDialog :detailVisible="detailVisible"
-                    @input="closeModalDialog"></detailDialog>
+                    :detailsData="detailsData"
+                    @input="closeModalDialog1"></detailDialog>
     </div>
   </iPage>
 </template>
@@ -258,7 +273,7 @@ import datasetBar1 from "../components/datasetBar1";
 import tableList from "../components/tableList";
 import modalDialog from "../components/modalDialog";
 import detailDialog from "../components/detailDialog";
-import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, saveMekTable, deleteMekTable, getSchemeInfo } from '@/api/categoryManagementAssistant/mek'
+import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, saveMekTable, deleteMekTable, getSchemeInfo, queryPartEbr, queryCal } from '@/api/categoryManagementAssistant/mek'
 import { getDictByCode } from '@/api/dictionary'
 export default {
   name: "mekDetails",
@@ -347,7 +362,11 @@ export default {
       addDataList: [],
       //计算车型开关
       mekMotorTypeFlag: false,
-      chartItemWidth: ""
+      chartItemWidth: "",
+      //点击柱状图mek详情
+      detailsData: [],
+      //查询计算车型List
+      computeModalData: []
 
     };
   },
@@ -391,7 +410,6 @@ export default {
       this.chemeId = this.$route.query.chemeId
       await getSchemeInfo({
         schemeId: this.chemeId
-        // schemeId: 
       }).then(res => {
         let data = res.data
         this.categoryCode = data.categoryCode
@@ -423,14 +441,12 @@ export default {
       let params = {}
       if (this.entryStatus == 1) {
         params = {
-          // categoryId: val,
           categoryId: this.categoryId,
           isBindingRfq: true,
           req: this.rfqId
         }
       } else {
         params = {
-          // categoryId: val,
           categoryId: this.categoryId,
           isBindingRfq: false,
         }
@@ -449,7 +465,6 @@ export default {
       })
       getComparedMotor({
         categoryId: this.categoryId,
-        // categoryId: '3',
         isTarget: true,
         targetMotorId: this.targetMotor
       }).then(res => {
@@ -457,10 +472,8 @@ export default {
       })
       let params1 = {
         categoryId: this.categoryId,
-        // categoryId: '600029',
         motorIds: this.ComparedMotor,
         schemeId: this.chemeId
-        // schemeId: '3'
       }
       recursiveRetrieve(params1).then(res => {
         if (res.code === '200') {
@@ -472,18 +485,9 @@ export default {
           this.partNumber = _.difference(partNumber, this.exceptPart)
         }
       })
-      // getComparedMotor({
-      // }).then(res => {
-
-      // })
     },
     //查询  
     searchChartData () {
-      if (this.comparedType === "mekMotorType") {
-        this.mekMotorTypeFlag = true
-      } else {
-        this.mekMotorTypeFlag = false
-      }
       let params = {
         comparedType: this.comparedType,
         info: [{
@@ -522,27 +526,22 @@ export default {
       if (this.entryStatus == 1) {
         params = {
           categoryId: this.categoryId,
-          // categoryId: '600029',
           isBindingRfq: true,
           req: this.rfqId
         }
       } else {
         params = {
           categoryId: this.categoryId,
-          // categoryId: '600029',
+
           isBindingRfq: false,
         }
       }
       getTargetMotor(params).then(res => {
         this.TargetMotorList = res.data
       })
-      // if (this.priceType === '2') {
-      //   this.flag1 = false
-      // }
     },
     changeComparedMotor (val) {
       let params = {
-        // categoryId: '600029',
         categoryId: this.categoryId,
         motorIds: this.ComparedMotor,
         schemeId: this.chemeId
@@ -555,58 +554,34 @@ export default {
     changeTargetMotor (val) {
       let params = {}
       params = {
-        // categoryId: '600029',
         categoryId: this.categoryId,
         targetMotorId: val
-        // targetMotorId: '50044101'
       }
       getComparedMotor(params).then(res => {
         this.ComparedMotorList = res.data
       })
     },
-    edit () {
-      this.editFlag = true
-    },
-    //表格保存
-    saveTable () {
-      this.editFlag = false
-      let params = {
-        "comparedType": "mekConfig",
-        "detail": [],
-        "schemeId": 0
-      }
-      this.editDataList.splice(0, 1);
-      this.editDataList.forEach(item => {
-        let obj = {
-          "detail": [],
-          "type": item['label#-1'],
-          "typeId": item.textTypeId
-        }
-        this.gridData.title.forEach(i => {
-          let obj1 = {
-            "id": item['id#' + i.label.split('#')[1]],
-            "motorTypeId": i.label.split('#')[1],
-            "remark": item[i.label]
-          }
-          obj.detail.push(obj1)
-        })
-        params.detail.push(obj)
-      })
-      saveMekTable(params).then(res => {
-        this.getMekTable()
-      })
-    },
+
+
     //
     detailDialog (flag, val) {
       this.detailVisible = flag
+      let params = {
+        comparedType: this.comparedType,
+        schemeId: this.chemeId,
+        ...val
+      }
+      queryPartEbr(params).then(res => {
+        if (res.code === '200') {
+          this.detailsData = res.data
+        }
+      })
       console.log(flag, val)
     },
     changeCheckList (val) {
       console.log(this.barData)
     },
-    cancel () {
-      this.editFlag = false
-    },
+
     changeDate () {
       this.flag1 = true
       this.priceType = ""
@@ -614,14 +589,7 @@ export default {
     saveDialog () {
       this.dialogVisible = true
     },
-    addRow () {
-      this.addRowList = {}
-      this.gridData.title.forEach(item => {
-        this.addRowList[item.label] = ""
-        this.addRowList['id#' + item.label.split("#")[1]] = ""
-      })
-      this.gridData.data.push(this.addRowList)
-    },
+
     //编辑数据
     editData (val) {
       this.editDataList = val
@@ -631,11 +599,27 @@ export default {
       this.addDataList = val
     },
     //计算车型弹窗
-    computeModal () {
+    computeModal (val) {
       this.modalVisible = true
+      let params = {
+        engine: val.detail[0].engine,
+        motorId: val.motorId,
+        position: val.detail[0].position,
+        schemeId: this.chemeId,
+        transmission: val.detail[0].engine
+      }
+      queryCal(params).then(res => {
+        if (res.code === '200') {
+          this.computeModalData = res.data
+        }
+
+      })
     },
     closeModalDialog (val) {
       this.modalVisible = val
+    },
+    closeModalDialog1 (val) {
+      this.detailVisible = val
     },
     //价格类型
     changPriceType () {
@@ -674,23 +658,6 @@ export default {
       }
     },
     getHistogram (params) {
-      // let params = {
-      //   comparedType: this.comparedType,
-      //   info: [{
-      //     motorId: this.targetMotor,
-      //     priceType: 'sopPrice',
-      //     isTargetMotor: true
-      //   }],
-      //   categoryId: this.categoryId,
-      //   schemeId: this.chemeId
-      // }
-      // this.comparedType.forEach(item => {
-      //   params.info.push({
-      //     motorId: item,
-      //     priceType: 'sopPrice',
-      //     isTargetMotor: false
-      //   })
-      // })
       getHistogram(params).then(res => {
         let data = res.data
         let maxWidthList = []
@@ -699,7 +666,12 @@ export default {
             maxWidthList.push(item.detail.length)
           })
           this.maxWidth = _.max(maxWidthList)
-          this.chartItemWidth = this.maxWidth * 120 + 'px'
+          if (this.maxWidth === 1 || this.maxWidth === 0) {
+            this.chartItemWidth = '240px'
+          } else {
+            this.chartItemWidth = this.maxWidth * 120 + 'px'
+          }
+
           this.firstBarData = data[0]
           data.shift()
           this.barData = data
@@ -712,14 +684,19 @@ export default {
               // item.checkList = [...item.checkList]
             })
           })
-          console.log(this.barData, "barData")
+          if (this.comparedType === "mekMotorType") {
+            this.mekMotorTypeFlag = true
+          } else {
+            this.mekMotorTypeFlag = false
+          }
         } else {
           iMessage.error(res.desZh)
         }
       })
     },
     handleMEKInfo () {
-      this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: '', vwModelCodes: '', chemeId: '' } })
+      let vwModelCodes = [...this.ComparedMotor, this.targetMotor].toString()
+      this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: this.categoryCode, vwModelCodes, chemeId: this.chemeId } })
     }
 
   },
@@ -791,11 +768,7 @@ export default {
     width: 210px;
   }
 }
-.titleBox {
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-}
+
 .icon {
   width: 45px;
   height: 45px;
@@ -820,7 +793,7 @@ export default {
 }
 .line {
   position: absolute;
-  left: 60px;
+  left: 40px;
   bottom: 12%;
   height: 2px;
   width: 100%;
@@ -828,7 +801,7 @@ export default {
 }
 .line1 {
   position: absolute;
-  left: 60px;
+  left: 40px;
   bottom: 22%;
   height: 2px;
   width: 100%;
@@ -836,7 +809,7 @@ export default {
 }
 .line2 {
   position: absolute;
-  left: 60px;
+  left: 40px;
   bottom: 32%;
   height: 2px;
   width: 100%;
@@ -844,7 +817,7 @@ export default {
 }
 .line3 {
   position: absolute;
-  left: 60px;
+  left: 40px;
   bottom: 42%;
   height: 2px;
   width: 100%;
@@ -852,7 +825,7 @@ export default {
 }
 .line4 {
   position: absolute;
-  left: 60px;
+  left: 40px;
   bottom: 54%;
   height: 2px;
   width: 100%;
@@ -864,11 +837,12 @@ export default {
 }
 .xAxis {
   position: absolute;
-  bottom: 8%;
+  bottom: 3%;
   font-size: 12px;
   color: "#3C4F74";
   font-family: "Arial";
 }
+
 ::v-deep .el-select {
   width: 100%;
   .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-06 15:34:45
- * @LastEditTime: 2021-08-24 18:02:50
+ * @LastEditTime: 2021-08-26 16:51:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\categoryManagementAssistant\mek\index.js
@@ -87,6 +87,14 @@ export function recursiveRetrieve(params) {
 export function queryCal(params) {
   return request({
     url: '/mekScheme/queryCal',
+    method: 'POST',
+    data: params,
+  })
+}
+//点击单根柱状图，查询零件EBR信息
+export function queryPartEbr(params) {
+  return request({
+    url: '/mekScheme/queryPartEbr',
     method: 'POST',
     data: params,
   })
