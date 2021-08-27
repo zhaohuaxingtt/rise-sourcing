@@ -12,7 +12,7 @@
         :routerPage="true"
         :list="navList"
         class="iNavMvp"
-        v-if="($route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1) || $route.path.indexOf('investmentAdmin') > -1 || $route.path.indexOf('purchase/investmentList') > -1 || $route.path.indexOf('purchase/changeTask') > -1 || $route.path.indexOf('purchaseSupplier/investmentList') > -1 || $route.path.indexOf('purchaseSupplier/changeTask') > -1"
+        v-if="($route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1) || $route.path.indexOf('investmentAdmin') > -1 || $route.path.indexOf('purchase/changeTask') > -1 || $route.path.indexOf('purchase/investmentList') > -1 || $route.path.indexOf('purchaseSupplier/investmentList') > -1"
     ></iNavMvp>
     <iButton
         v-if="$route.path.indexOf('budgetManagement/generateInvestmentList') > -1"
