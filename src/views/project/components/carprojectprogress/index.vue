@@ -83,7 +83,7 @@ export default {
           this.carProjectOptions = res.data.map(item => {
             return {
               ...item,
-              value: item.id,
+              value: String(item.id),
               label: item.cartypeProjectZh
             }
           })

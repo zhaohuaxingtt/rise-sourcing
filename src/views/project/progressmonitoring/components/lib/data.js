@@ -1,11 +1,32 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 14:06:11
- * @LastEditTime: 2021-08-25 16:06:05
+ * @LastEditTime: 2021-08-27 15:15:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/components/data.js
  */
+export const pendingChartData = [
+  {
+    id: 'chart101',
+    title: "待确认",
+    value1: 50,
+    value2: 10,
+    value3: 40,
+    value4: 100,
+    disabled: true
+  },
+  {
+    id: 'chart102',
+    title: "待释放",
+    value1: 55,
+    value2: 5,
+    value3: 40,
+    value4: 100,
+    disabled: true
+  },
+]
+// moke数据
 export const chartData = [
   {
     id: 'chart1',
