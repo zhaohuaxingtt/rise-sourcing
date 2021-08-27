@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 22:46:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-25 15:49:08
+ * @LastEditTime: 2021-08-27 14:25:11
  * @Description: 车型项目详情
  * @FilePath: \front-web\src\views\project\components\carprojectprogress\index.vue
 -->
@@ -39,7 +39,7 @@ export default {
   props: {
     carProjectId: {type:String},
     disabled: {type:Boolean, default:false},
-    collapse: {type:Boolean, default:false}
+    collapse: {type:Boolean, default:true}
   },
   data() {
     return {
