@@ -236,7 +236,7 @@ export default {
     async getCarTypeMessage(val) {
       this.formGoup.carTypeInfoList = []
       this.carTypeInfoLoading = true
-      const res = await getCarTypeMessage({ motorSvwCode: val })
+      const res = await getCarTypeMessage({ motorS: val })
       res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
       this.formGoup.carTypeInfoList = res.data
       this.carTypeInfoLoading = false
@@ -247,8 +247,8 @@ export default {
         this.tableLoading = true
         const pms = {
           ...this.form,
-          mekId: this.$route.query.SchemeId,
-          motorIds: this.$route.query.vwModelCodes,
+          mekId: this.$route.query.chemeId,
+          motorIds: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || [],
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
         }
@@ -259,7 +259,7 @@ export default {
         this.page.totalCount = res.total
         this.tableListData = res.data
         this.tableLoading = false
-      } catch (error) {
+      } catch {
         this.tableListData = []
         this.tableLoading = false
       }
