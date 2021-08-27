@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-11 14:17:10
- * @LastEditTime: 2021-08-11 16:16:00
+ * @LastEditTime: 2021-08-26 20:03:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\modalDialog.vue
@@ -14,7 +14,7 @@
          class="title">
       {{language('XUANZEJISUANCHEXING','选择计算车型')}}
     </div>
-    <iTableList :tableData="confirmTableData"
+    <iTableList :tableData="tableData"
                 :tableTitle="confirmTableHead"
                 class="table-footerStyle"
                 radio
@@ -22,7 +22,7 @@
     </iTableList>
     <div slot="footer"
          class="dialog-footer">
-      <iButton @click="handleSearchReset">{{language('QUEDING','确定')}}</iButton>
+      <iButton @click="handleSearchSure">{{language('QUEDING','确定')}}</iButton>
     </div>
   </iDialog>
 </template>
@@ -36,15 +36,34 @@ export default {
     iButton, iDialog,
     iTableList
   },
-  props: {
-    modalVisible: { type: Boolean },
-  },
   data () {
     return {
-      confirmTableHead
+      tableData: [],
+      confirmTableHead,
+      selectData: []
     }
   },
-
+  props: {
+    modalVisible: { type: Boolean },
+    computeModalData: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    }
+  },
+  watch: {
+    computeModalData: {
+      handler (val) {
+        if (val) {
+          val.forEach((value, index) => {
+            value.index = index + 1
+          })
+          this.tableData = [...val]
+        }
+      },
+    }
+  },
   created () {
     console.log(this.confirmTableHead, "confirmTableHead")
   },
@@ -52,8 +71,11 @@ export default {
     clearDiolog () {
       this.$emit('input', false);
     },
-    handleSelectionChange () {
-
+    handleSelectionChange (val) {
+      this.selectData = val
+    },
+    handleSearchSure () {
+      this.$emit('selectData', this.selectData);
     }
   }
 }
