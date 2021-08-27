@@ -1,14 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 19:03:24
- * @LastEditTime: 2021-08-25 19:04:37
- * @LastEditors: your name
+ * @LastEditTime: 2021-08-27 11:20:38
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\config\businesskey\moudules\aeko.js
  */
-import {partProjTypes} from '@/config/index'
-const routerKey = partProjTypes.AEKOLINGJIANXIN
-const blackKey = ['PARTSPROCURE_EDITORDETAIL_STARTUP', // 按钮-启动项目 show:false 
+const blackKey = [
+                  // 零件采购项目详情页
+                  'PARTSPROCURE_EDITORDETAIL_STARTUP', // 按钮-启动项目 show:false 
                   'PARTSPROCURE_EDITORDETAIL_ENDPROJECT', // 按钮-结束项目 show:false
                   'PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR', // 按钮-生成零件采购项目号 show:false
                   'PARTSPROCURE_EDITORDETAIL_CANCELITEMS', // 按钮-取消零件采购项目 show:false
@@ -41,10 +41,35 @@ const blackKey = ['PARTSPROCURE_EDITORDETAIL_STARTUP', // 按钮-启动项目 sh
                   'PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY', // 基础信息--采购工厂 show:true disabled:true
                   'PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT', // 基础信息 LINIE部门 show:true disabled:true
                   'PARTSPROCURE_EDITORDETAIL_LINE', // 基础信息 LINIE show:true disabled:true
+
+
+                  // RFQ详情页
+                  'PARTSRFQ_EDITORDETAIL_NEWRFQROUND', // 按钮-新建RFQ轮次 show:false
+                  'PARTSRFQ_EDITORDETAIL_SENDINQUIRY', // 按钮-发出询价 show:false
+                  'PARTSRFQ_EDITORDETAIL_ENDQUOTATION', // 按钮-结束本轮询价 show:false
+                  'PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION', // 按钮-转谈判 show:false
+                  'PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION', // 按钮创建定点申请 show:false
+                  'PARTSRFQ_EDITORDETAIL_EP', // 基础信息-技术评分人 show:false
+                  'PARTSRFQ_EDITORDETAIL_CF', // // 基础信息-财务控制员 show:false
+                  'PARTSRFQ_EDITORDETAIL_MQ', // // 基础信息-质量评分人 show:false
+                  'PARTSRFQ_EDITORDETAIL_CURRENTROUND', // // 基础信息-当前轮次 show:false
+                  'PARTSRFQ_EDITORDETAIL_ROUNDTYPE', // // 基础信息-轮次类型 show:false
+                  'PARTSRFQ_EDITORDETAIL_PL', // // 基础信息-物流审核人 show:false
+                  'PARTSRFQ_EDITORDETAIL_SAVE', // // 基础信息-编辑或保存按钮 show:false
+                  'PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE', // TAB-供应商评分 SHOW:false
+                  'PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE', // TAB-模具预算申请 SHOW:false
+                  'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE', // TAB-技术交底会 SHOW:false
+                  'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE', // 零件清单TAB-按钮-删除 show:false
+                  'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_SENDKM', // 零件清单TAB-按钮-发送KM show:false
+                  'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE', // 零件清单TAB-按钮-新申请财务目标价 show:false
+                  'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE', // 零件清单TAB-按钮-再申请财务目标价 show:false
+                  'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD', // 零件清单TAB-按钮-添加 show:false
+                  'PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL', // BDLTAB-按钮-添加 show:false
+                  'PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER', // BDLTAB-按钮-删除供应商 show:false
+                  'PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM', // BDLTAB-按钮-添加自定义评分项 show:false
                  ]
 const whiteKey = []
 module.exports = {
   blackKey,
-  whiteKey,
-  routerKey
+  whiteKey
 }

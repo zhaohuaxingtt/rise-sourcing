@@ -1,13 +1,11 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 16:17:37
- * @LastEditTime: 2021-08-25 19:00:05
+ * @LastEditTime: 2021-08-26 10:32:26
  * @LastEditors: Please set LastEditors
  * @Description: 仅零件号变更业务权限key控制。
  * @FilePath: \front-web\src\config\businesskey\moudules\onlyPartsChange.js
  */
-import {partProjTypes} from '@/config/index'
-const routerKey = partProjTypes.JINLINGJIANHAOGENGGAI
 const blackKey = [ 'PARTSPROCURE_EDITORDETAIL_STARTUP', //采购项目详情-启动项目
                    'PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR',//采购项目详情-生成fs
                    'PARTSPROCURE_EDITORDETAIL_CANCELITEMS', //采购项目详情-取消零件采购项目
@@ -27,6 +25,5 @@ const whiteKey = ['PARTSPROCURE_EDITORDETAIL_CREATEDDSQD', //采购项目详情-
                  ]
 module.exports = {
   blackKey,
-  whiteKey,
-  routerKey
+  whiteKey
 }

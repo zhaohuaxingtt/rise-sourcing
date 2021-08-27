@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 10:47:59
- * @LastEditTime: 2021-08-24 14:19:36
+ * @LastEditTime: 2021-08-26 09:44:50
  * @LastEditors: Please set LastEditors
  * @Description: 默认算法配置
  * @FilePath: /front-web/src/views/project/schedulingassistant/defaultAlgorithmConfig/index.vue
@@ -29,6 +29,7 @@
                   :key="item.code"
                 ></el-option>
               </iSelect>
+              <iDicoptions v-else-if="item.type === 'dictionary'" v-model="form[item.value]" :optionKey="item.dictionaryOption" />
               <el-autocomplete v-else-if="item.type === 'inputFilter'" :fetch-suggestions="querySearch" v-model="form[item.value]" />
             </iFormItem>
           </iFormGroup>
@@ -58,6 +59,7 @@
                   :key="item.code"
                 ></el-option>
               </iSelect>
+              <iDicoptions v-else-if="item.type === 'dictionary'" v-model="form[item.value]" :optionKey="item.dictionaryOption" />
               <el-autocomplete v-else-if="item.type === 'inputFilter'" :fetch-suggestions="querySearch" v-model="form[item.value]" />
             </iFormItem>
           </iFormGroup>
@@ -71,10 +73,11 @@
 <script>
 import { iCard,iButton, iInput, iFormGroup, iFormItem, iSelect, iMessage } from 'rise'
 import { selectDictByKeyss } from '@/api/dictionary'
-import {productLogicList,partLogicList} from '../progroup/data'
+import {productLogicList,partLogicList} from './components/data'
+import iDicoptions from 'rise/web/components/iDicoptions'
 
 export default {
-  components: { iCard, iButton, iInput, iFormGroup, iFormItem, iSelect },
+  components: { iCard, iButton, iInput, iFormGroup, iFormItem, iSelect, iDicoptions },
   data() {
     return {
       form: {},
