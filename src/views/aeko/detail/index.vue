@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-13 12:56:03
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-27 10:27:42
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
 -->
@@ -80,6 +80,20 @@ export default {
     this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
     this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
     this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+
+    // 判断下多角色情况 若多角色时就判断url的跳转来源
+    const {query} = this.$route;
+    const {from=''} = query;
+    const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
+    if(roleArr.length > 1){
+        if(from == 'manage'){
+            this.isLinie = false;
+            this.tabs = this.tabs.filter((item)=>item.key != 'NEIRONGBIAOTAI');
+        }else if(from == 'stance'){
+            this.isAekoManager = false;
+            this.isCommodityCoordinator = false;
+        }
+    }
 
     this.aekoInfo = {
       requirementAekoId: this.$route.query.requirementAekoId
