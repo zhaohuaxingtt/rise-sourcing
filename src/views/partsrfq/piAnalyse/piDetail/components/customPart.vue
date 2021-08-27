@@ -1,14 +1,14 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-23 18:16:54
+ * @LastEditTime: 2021-08-27 14:17:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
 -->
 <template>
   <div class="contentBox">
-    <iDialog :title="language('ZIDINGYI', '自定义')" :visible.sync="value" width="80%">
+    <iDialog :title="language('ZIDINGYI', '自定义')" :visible.sync="value" width="80%" @close="handleClose">
       <div class="optionBox">
         <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
           <el-form-item style="marginRight:68px" :label="language('LINGJIANHAO', '零件号')">
@@ -89,7 +89,7 @@ export default {
       type: Boolean,
       default: false
     },
-    batchNumber: {
+    branchNumber: {
       type: String,
       default: null
     }
@@ -103,7 +103,7 @@ export default {
       selectMainData: [],
       selectTargetData: [],
       loading: false,
-      branchNumber: this.$route.query.batchNumber || null
+      // branchNumber: this.$route.query.branchNumber || null
     }
   },
   created() {
@@ -145,7 +145,7 @@ export default {
     getCustomPartData() {
       this.loading = true
       const params = {
-        batchNumber: this.batchNumber || null
+        branchNumber: this.branchNumber || null
       }
       getCustomParts(params).then(res => {
         if(res && res.code == 200) {
@@ -193,11 +193,11 @@ export default {
       }
       const params = {
         partsList: this.selectTargetData,
-        batchNumber: this.batchNumber
+        branchNumber: this.branchNumber
       }
       editCustomParts(params).then(res => {
         if(res && res.code == 200) {
-          this.$emit('handleCloseCustom', res.data)
+          this.$emit('handleSaveCustom')
         } else iMessage.error(res.desZh)
       })
     },
@@ -280,6 +280,10 @@ export default {
       const index2 = index1 + 1
       this.targetTableData.splice(index2,1,...this.targetTableData.splice(index1, 1 , this.targetTableData[index2]))
     },
+    // 点击关闭
+    handleClose() {
+      this.$emit('handleCloseCustom')
+    }
   }
 }
 </script>
