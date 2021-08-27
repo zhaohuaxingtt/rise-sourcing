@@ -1,14 +1,14 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-08-24 18:15:08
+ * @LastEditTime: 2021-08-27 15:17:30
  * @LastEditors: Luoshuang
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
 -->
 <template>
   <div class="timeline">
-      <div class="topline">
+      <div class="topline" v-permission="RFQ_DETAIL_TIPS_BAOJIAFENXI_RENWUJINDU">
         <span class="margin-right20">整体任务进度: 
           <!-- <el-tooltip placement="right" effect="light">
           <icon symbol style="font-size:20px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+allJdu].icon"></icon>
@@ -26,7 +26,7 @@
           </el-tooltip>
         </span>
       </div>
-      <timeline :timeList='timeListdata'></timeline>
+      <timeline  v-permission="RFQ_DETAIL_TIPS_BAOJIAFENXI_RENWUJINDU" :timeList='timeListdata'></timeline>
       <tabelData :tableTile='tableTile' :tableData='tableDatas'></tabelData>
   </div>
 </template>
