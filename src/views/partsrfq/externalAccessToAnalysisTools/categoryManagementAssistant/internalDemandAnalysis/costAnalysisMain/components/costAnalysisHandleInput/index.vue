@@ -57,21 +57,19 @@
     @handleSubmitDialog="handleSubmitDialog"
     />
     <saveModal :key="saveModalParams.key" v-model="saveModalParams.visible" @checkSchemeName="checkSchemeName"/>
-    <coverConfirm :key="coverConfirmParams.key" v-model="coverConfirmParams.visible" @handleCover="handleCover" @handleCancelCover="handleCancelCover"/>
   </div>
 </template>
 
 <script>
-import {iCard, iButton, iInput, iMessage} from 'rise'
+import {iCard, iButton, iInput, iMessage, iMessageBox} from 'rise'
 import { downloadPdfMixins } from '@/utils/pdf';
 import handleInput from '../costAnalysisAdd/components/handleInput'
 import saveModal from '../save'
-import coverConfirm from '../coverConfirm'
 import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/char'
 import { getCostStructureAnalysisByName, fetchSave } from '@/api/partsrfq/costAnalysis/index.js'
 export default {
   name: 'CostAnalysisHandleInput',
-  components: {iCard, iButton, iInput, handleInput, costChar, saveModal, coverConfirm},
+  components: {iCard, iButton, iInput, handleInput, costChar, saveModal, iMessageBox},
   mixins: [downloadPdfMixins],
   data () {
     return {
@@ -90,10 +88,6 @@ export default {
         visible: false
       },  
       saveModalParams: {
-        key: 0,
-        visible: false
-      },
-      coverConfirmParams: {
         key: 0,
         visible: false
       },
@@ -175,29 +169,23 @@ export default {
     checkSchemeName(schemeName) {
       this.schemeName = schemeName
       this.targetSchemeId = null
-      getCostStructureAnalysisByName({name: schemeName}).then(res => {
+      this.$nextTick(_ => {
         this.$set(this.saveModalParams, 'visible', false)
+      })
+      getCostStructureAnalysisByName({name: schemeName}).then(res => {
         if(res && res.code == 200) {
           if(res.data) {
             //名称校验重复
             this.targetSchemeId = res.data.id
-            this.$set(this.coverConfirmParams, 'key', Math.random())
-            this.$set(this.coverConfirmParams, 'visible', true)
+            iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(_ => {
+              this.createPdfAndSave()
+            })
           } else {
             //名称校验不重复
             this.createPdfAndSave()
           }
         } else iMessage.error(res.desZh)
       })
-    },
-    // 覆盖
-    handleCover() {
-      this.coverConfirmParams.visible = false
-      this.createPdfAndSave()
-    },
-    // 取消覆盖
-    handleCancelCover() {
-      this.coverConfirmParams.visible = false
     },
     // 创建pdf并保存数据
     createPdfAndSave() {
