@@ -90,6 +90,7 @@ import {MODEL_PURCHASEREQUISITIONCOLUMNS} from "../config/data";
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 import {purchaseFactory} from "@/api/partsprocure/editordetail";
+import {findNormalPrByPage} from "../../../../api/ws2/modelOrder";
 export default {
   mixins: [pageMixins, filters],
   name: "ModelByPurchaseRequisitionDialog",
@@ -110,8 +111,26 @@ export default {
   },
   data() {
     return {
-      purchaseRequisitionQueryForm: {},
-      purchaseRequisitionColumns:MODEL_PURCHASEREQUISITIONCOLUMNS,
+      purchaseRequisitionQueryForm: {
+        applyBy: '',//申请人
+        currentPage: 1,//当前页
+        deptName: '',//科室名称
+        pageSize: 10,//每页查询多少条
+        partNameZh: '',//零件名称(中文)
+        partNumStr: '',//零件号
+        procureFactory: this.orderDetails.procureFactory,//采购工厂编码
+        procureGroup: '',//采购组编码
+        requestTraceNo: '',//需求跟踪号
+        riseCode: '',//RiSE PR 编号
+        sapCode: '',//SAP 编号
+        status: 1,//状态
+        subType: '',// 采购申请子类型 "43:EM采购申请,45:标准采购申请,411:工序委外要货",
+        supplierNameZh: '',//期望供应商中文名称
+        supplierSapCode: this.orderDetails.supplierSapCode,//期望供应商code
+        type: '',// 采购申请类型 "SPR:标准采购申请,MPR:模具采购申请,GPR:工序委外"
+        //notRelationOrder:2,//2 表示已关联订单的状态
+        partNum: ''//零件号
+      },      purchaseRequisitionColumns:MODEL_PURCHASEREQUISITIONCOLUMNS,
       purchaseOrderTableData:[],//表格列表数据
       selectPurchaseOrderTableData: [],//选种的数据
       purchasingFactoryList: [],//采购工厂
@@ -171,11 +190,20 @@ export default {
     },
     //查询列表
     queryPurchaseRequisition(){
-
+      this.purchaseRequisitionQueryForm.pageSize = this.page.pageSize
+      this.purchaseRequisitionQueryForm.currentPage = this.page.currPage
+      findNormalPrByPage(this.purchaseRequisitionQueryForm).then(res => {
+        if (res.code == 200) {
+          this.purchaseOrderTableData = res.data.records
+          this.page.totalCount = res.data.total
+        }
+      })
     },
     //查询采购申请
     btnQueryPurchaseRequisition() {
-
+      this.purchaseRequisitionQueryForm.pageSize = 10
+      this.purchaseRequisitionQueryForm.currentPage = 1
+      this.queryPurchaseRequisition()
     },
     //重置表单
     resetQueryForm() {

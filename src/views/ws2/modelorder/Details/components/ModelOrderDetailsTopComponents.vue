@@ -203,7 +203,7 @@ export default {
     //订单类型
     orderType: function() {
 
-      return 'DB订单'
+      return '模具订单'
     },
     procureGroupComputed: {
       get: function() {
@@ -225,6 +225,9 @@ export default {
       }
     }
   },
+  created() {
+    this.purchasingGroupEditerStateFunction()
+  },
   watch:{
     isEdit(val,oldVal){
       this.purchasingGroupEditerStateFunction()
@@ -236,6 +239,7 @@ export default {
   methods:{
     //计算采购组编辑状态属性值
     purchasingGroupEditerStateFunction() {
+      console.log(this.option)
       if (this.option == 0) {//创建模式 可编辑
         this.purchasingGroupEditerState = true
       } else {

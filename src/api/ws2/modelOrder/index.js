@@ -241,3 +241,12 @@ export function exportGrIrDetailData(params) {
         params: params
     })
 }
+
+// 采购申请列表分页查询接口
+export function findNormalPrByPage(data) {
+    return pushOrder({
+        url: '/pr/normalPr/findByPage',
+        method: 'POST',
+        data: data
+    })
+}

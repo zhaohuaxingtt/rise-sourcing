@@ -33,13 +33,17 @@
         <i-button v-if='versionUpgradeShow' @click='versionUpgrade'>{{ $t('MODEL-ORDER.LK_BANBENSHNGJI') }}</i-button>
       </div>
     </div>
-    <ModelOrderDetailsTopComponents ref="orderDetailsTopComponentsRef" :order-details="orderDetails" :id="id" :option="option" :is-edit="isEdit"/>
+    <ModelOrderDetailsTopComponents ref="orderDetailsTopComponentsRef" :is-edit='isEdit' :option='option' :id='id'
+                                    :order-details='orderDetails'
+                                    :purchasing-factory-list='purchasingFactoryList'
+                                    :order-status-list='orderStatusList'
+                                    :contain-purchase-group='containPurchaseGroup'/>
 
     <ModelOrderDetailsBottomComponents v-if='bottomIsShow'
                                        ref='orderDetailsBottomComponentRef' :id='id'
                                        :isEdit='isEdit' :order-details='orderDetails'
-                                       :containPurchaseGroup='containPurchaseGroup' />
-    <iLog :show.sync='logDialogVisible' :bizId='id == -1 ? 0 : orderDetails.contractCode' />
+                                       :containPurchaseGroup='containPurchaseGroup'/>
+    <iLog :show.sync='logDialogVisible' :bizId='id == -1 ? 0 : orderDetails.contractCode'/>
 
   </i-page>
 </template>
@@ -50,11 +54,15 @@ import LogButton from "../../budgetManagement/components/logButton";
 import LedgerIconComponent from "./components/LedgerIconComponent";
 import ModelOrderDetailsTopComponents from "./components/ModelOrderDetailsTopComponents";
 import ModelOrderDetailsBottomComponents from "./components/ModelOrderDetailsBottomComponents";
-import {queryPurchaseGroup,findCurrentUserAllGroup,
-  createPurchaseOrder,getPurchaseOrderDetails,
-  queryPurchasingGroup,updatePurchaseOrderById,
-  savaPurchaseOrderItem,purchaseOrderSubmission,
-  versionUpgradeByOrder,} from "@/api/ws2/modelOrder";
+import {
+  queryPurchaseGroup, findCurrentUserAllGroup,
+  createPurchaseOrder, getPurchaseOrderDetails,
+  queryPurchasingGroup, updatePurchaseOrderById,
+  savaPurchaseOrderItem, purchaseOrderSubmission,
+  versionUpgradeByOrder,
+} from "@/api/ws2/modelOrder";
+import {purchaseFactory} from "@/api/partsprocure/editordetail";
+import {getDictByCode} from "@/api/dictionary";
 
 export default {
   name: "ModelOrderDetailsPage",
@@ -124,8 +132,8 @@ export default {
       selectItem: 'MODEL_ORDER',
       btnMenuShow: false,
       isEdit: false, //编辑状态控制
-      logDialogVisible:false,
-      fullscreenLoading:false,
+      logDialogVisible: false,
+      fullscreenLoading: false,
       orderDetails: {
         departmentCode: this.$store.state.permission.userInfo.deptDTO.deptNum,//部门code
         nameZh: this.$store.state.permission.userInfo.deptDTO.nameZh,//部门名字
@@ -147,11 +155,16 @@ export default {
       },
       purchaseGroupsByAll: [],//系统所有采购组
       purchaseGroups: [],//用户拥有的采购组
-
+      purchasingFactoryList: [],//采购工厂
+      orderStatusList: [],//订单状态
     }
   },
   created() {
-
+    this.queryPurchasingFactory()
+    this.queryOrderStateList()
+    this.queryOrderDetails()
+    this.getPurchaseGroup()
+    this.queryAllPurchaseGroup()
   },
   methods: {
     onItemSelfunction(val) {
@@ -160,12 +173,30 @@ export default {
     lookLog() {
       this.logDialogVisible = true
     },
+    //获取采购工厂
+    queryPurchasingFactory() {
+      purchaseFactory({isSparePart: false})
+          .then((res) => {
+            if (res?.data && res.code == 200) {
+              this.purchasingFactoryList = res.data
+            }
+          })
+    },
+    // 获取订单状态
+    queryOrderStateList() {
+      getDictByCode('CONTRACT_STATUS')
+          .then((res) => {
+            if (res.code == 200) {
+              this.orderStatusList = res?.data[0]?.subDictResultVo
+            }
+          })
+    },
     //获取采购订单详情 通过id
     queryOrderDetails() {
       if (this.id == -1) {
         return
       }
-      let data = { orderId: this.id }
+      let data = {orderId: this.id}
       getPurchaseOrderDetails(data).then((res) => {
         if (res.code == 200) {
           this.orderDetails = res.data
@@ -223,7 +254,7 @@ export default {
             this.isEdit = true
             this.$router.replace({
               path: `/ws2/order/modeler/details/ModelOrderDetailsPage/1/${res.data}`,
-              query: { isEdit: this.isEdit }
+              query: {isEdit: this.isEdit}
             })
             this.id = res.data
             this.queryOrderDetails()
@@ -237,7 +268,7 @@ export default {
       this.$refs.orderDetailsTopComponentsRef.restOrderForm()
 
     },
-   async saveOrder() {
+    async saveOrder() {
       let val = this.$refs.orderDetailsTopComponentsRef.getOrderDetailsVal() //获取表单数据
       let flag1 = this.purchaseGroupsByAll.some((purchaseGroup) => {
         return purchaseGroup.purchaseGroupCode == val.procureGroup.toUpperCase()
@@ -258,44 +289,44 @@ export default {
         remark: this.orderDetails.remark
       }
       let res = await updatePurchaseOrderById(params)
-     if (res.code == 200) {
-       if (res.data != this.orderDetails.id) {
-         this.fullscreenLoading = false
-         this.isEdit = false
-         this.id = res.data
-         this.$router.replace({
-           path: `/ws2/order/modeler/details/ModelOrderDetailsPage/1/${res.data}`
-         })
-         this.queryOrderDetails()
-       }else{
-         let itemDatas = this.$refs.orderDetailsBottomComponentRef.getOrderItemData()
-         let data = {
-           orderId: this.orderDetails.id,
-           purchaseOrderEntityItemDtos: itemDatas
-         }
-         let res1 = await savaPurchaseOrderItem(data)
-         if (res1.code == 200) {
-           this.fullscreenLoading = false
-           this.isEdit = false
-           this.$refs.orderDetailsBottomComponentRef.queryOrderItemList()
-           if (this.$route.query.isEdit) {
-             this.option = 1
-             this.isEdit = false
-             this.$route.query.isEdit = false
-             this.$router.replace({
-               path: `/ws2/order/modeler/details/ModelOrderDetailsPage/1/${this.orderDetails.id}`
-             })
-             this.queryOrderDetails()
-           }
-         }else{
-           this.fullscreenLoading = false
-           this.$message.error(res1.desZh)
-         }
-       }
-     }else{
-       this.fullscreenLoading = false
-       this.$message.error(res.desZh)
-     }
+      if (res.code == 200) {
+        if (res.data != this.orderDetails.id) {
+          this.fullscreenLoading = false
+          this.isEdit = false
+          this.id = res.data
+          this.$router.replace({
+            path: `/ws2/order/modeler/details/ModelOrderDetailsPage/1/${res.data}`
+          })
+          this.queryOrderDetails()
+        } else {
+          let itemDatas = this.$refs.orderDetailsBottomComponentRef.getOrderItemData()
+          let data = {
+            orderId: this.orderDetails.id,
+            purchaseOrderEntityItemDtos: itemDatas
+          }
+          let res1 = await savaPurchaseOrderItem(data)
+          if (res1.code == 200) {
+            this.fullscreenLoading = false
+            this.isEdit = false
+            this.$refs.orderDetailsBottomComponentRef.queryOrderItemList()
+            if (this.$route.query.isEdit) {
+              this.option = 1
+              this.isEdit = false
+              this.$route.query.isEdit = false
+              this.$router.replace({
+                path: `/ws2/order/modeler/details/ModelOrderDetailsPage/1/${this.orderDetails.id}`
+              })
+              this.queryOrderDetails()
+            }
+          } else {
+            this.fullscreenLoading = false
+            this.$message.error(res1.desZh)
+          }
+        }
+      } else {
+        this.fullscreenLoading = false
+        this.$message.error(res.desZh)
+      }
 
     },
     editOrder() {
