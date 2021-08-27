@@ -1,6 +1,6 @@
 export const rawMaterialSearch = [
   {
-    type: 'select',
+    type: 'selectCustom',
     multiple: true,
     props: 'classTypeList',
     options: [],
@@ -10,7 +10,7 @@ export const rawMaterialSearch = [
     placeholder: '请选择类别',
   },
   {
-    type: 'select',
+    type: 'selectCustom',
     multiple: true,
     props: 'specsList',
     options: [],
@@ -20,7 +20,7 @@ export const rawMaterialSearch = [
     placeholder: '请选择牌号',
   },
   {
-    type: 'select',
+    type: 'selectCustom',
     multiple: true,
     props: 'areaList',
     options: [],
@@ -46,7 +46,7 @@ export const rawMaterialSearch = [
 
 export const manpowerSearch = [
   {
-    type: 'select',
+    type: 'selectCustom',
     multiple: true,
     props: 'professionList',
     options: [],
