@@ -363,6 +363,7 @@ export default {
         const routeData = this.$router.resolve({
           path: '/aeko/aekodetail',
           query: {
+            from:'stance',
             requirementAekoId,
           },
         })

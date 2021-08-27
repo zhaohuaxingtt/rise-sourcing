@@ -237,7 +237,7 @@
 				</iFormGroup>
 					<iFormGroup :row="1" inline icon>
 							<iFormItem :label="$t('LK_LINGJIANHAO')+':'">
-								<iInput></iInput>
+								<iInput v-permission.disabled.auto="DANGQIANKEY|当前模块的名字"></iInput>
 							</iFormItem>
 							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
 								<iInput></iInput>
