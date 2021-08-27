@@ -1,29 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-08-24 14:53:57
- * @LastEditTime: 2021-08-26 15:18:17
+ * @LastEditTime: 2021-08-27 09:54:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/project/progressmonitoring/data.js
  */
 
 export const MENU = [
-  {
-    value: 1,
-    name: '概览',
-    message: 0,
-    url: '/projectprogressmonitoring/home',
-    activePath: 'home',
-    key: 'LK_GAILAN'
-  },
-  {
-    value: 2,
-    name: '风险预警配置',
-    message: 0,
-    url: '/projectprogressmonitoring/riskAndAlarmConfig',
-    activePath: 'riskAndAlarmConfig',
-    key: 'FENGXIANYUJINGPEIZHI'
-  }
 ]
 
 export const riskAndAlarmTitle = [
