@@ -4,6 +4,8 @@ import axiosFile from '@/utils/axios.download'
 const VUE_APP_BMCHANGE = axios(process.env.VUE_APP_BMCHANGE)
 const VUE_APP_BMAPPROVE = axios(process.env.VUE_APP_BMAPPROVE)
 const BMMOLDFile = axiosFile(process.env.VUE_APP_BMMOLD)
+const common = axios(process.env.VUE_APP_BASE_UPLOAD_API);
+
 //变更单详情-基础信息【专业采购员】
 export function basicsInfo(parmars) {
     return VUE_APP_BMCHANGE({
@@ -54,6 +56,24 @@ export function removeAttachment(data) {
     return VUE_APP_BMCHANGE({
         url: '/removeAttachment',
         method: 'POST',
+        data: data
+    })
+}
+
+// 公共上传
+export function upLoadFileByIds(data) {
+    return common({
+        url: '/udMutilfiles',
+        method: "POST",
+        data: data
+    })
+}
+
+// 后端上传
+export function attachmentUpload(data) {
+    return VUE_APP_BMCHANGE({
+        url: '/attachmentUpload',
+        method: "POST",
         data: data
     })
 }

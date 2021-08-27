@@ -224,7 +224,6 @@
       <iTableList
           :tableData="tableListData"
           :tableTitle="tableTitle"
-          :tableLoading="tableLoading"
           :selection="false"
           :typeIndex="true"
       >
@@ -262,7 +261,7 @@
 <!--      </div>-->
     </iCard>
 
-    <iCard class="enclosure-block">
+    <iCard class="enclosure-block" v-loading="tableLoading2">
       <div class="head">
         <div class="title">{{ language('LK_BIANGENGSHENPIFUJIAN', '变更审批附件') }}</div>
         <div class="btns">
@@ -271,18 +270,25 @@
               @click="removeAttachment">
             {{ language('LK_SHANCHU', '删除') }}
           </iButton>
-          <iButton
-              v-loading="bmBuberLoading"
-              @click="bmBuberConfirmBefore">
-            {{ language('LK_SHANGCHUANWENJIAN', '上传文件') }}
-          </iButton>
+          <Upload
+              class="upload"
+              action="/fileud/udMutilfiles"
+              :show-file-list="false"
+              :data="{ applicationName: 'rise' }"
+              name="multipartFile"
+              with-credentials
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              :http-request="myUpload"
+              accept=".jpg,.jpeg,.gif,.png,.bmp,.xlsx,.xls,.pdf,.doc,.docx,.ppt,.pptx">
+            <iButton :loading="uploadButtonLoading">{{ language('LK_SHANGCHUANWENJIAN', '上传文件') }}</iButton>
+          </Upload>
         </div>
       </div>
 
       <iTableList
           :tableData="enclosureTableListData"
           :tableTitle="changeTaskInfoTableTitle"
-          :tableLoading="tableLoading"
           :selection="true"
           :typeIndex="true"
           @handleSelectionChange="handleSelectionChange"
@@ -312,6 +318,9 @@ import {
   iCard,
   icon
 } from "rise";
+import {
+  Upload
+} from "element-ui";
 import {changeTaskBmInfoTitle , changeTaskInfoTableTitle} from "../components/data"
 import confirm from "../components/confirm"
 import photoList from "../components/photoList"
@@ -325,6 +334,8 @@ import {
   attachment,
   removeAttachment,
   bmBuberConfirm,
+  upLoadFileByIds,
+  attachmentUpload
 } from "@/api/ws2/purchase/changeTask/bmInfo";
 import {getTousandNum} from "@/utils/tool";
 import {sendSupplier} from "@/api/ws2/purchase/investmentList";
@@ -341,6 +352,7 @@ export default {
     confirm,
     photoList,
     iLog,
+    Upload,
   },
 
   data(){
@@ -360,9 +372,11 @@ export default {
       detailsTableLoading: false,
       baseInfoLoading: false,
       tableLoading: false,
+      tableLoading2: false,
       bmBuberLoading: false,
       sendSupplierLoading: false,
       iLogShow: false,
+      uploadButtonLoading: false,
       query: {
         bmId: '',
         bmChangeId: '',
@@ -384,6 +398,39 @@ export default {
     this.attachment()
   },
   methods: {
+    beforeAvatarUpload() {},
+    handleAvatarSuccess() {},
+    async myUpload(content) {
+      this.uploadButtonLoading = true
+      const formData = new FormData()
+      formData.append('applicationName', 'rise-dev')
+      formData.append('businessId', this.query.bmChangeId)
+      formData.append('currentUserId', this.$store.state.permission.userInfo.id)
+      formData.append('multifile', content.file)
+      formData.append('type', '1')
+      const res = await upLoadFileByIds(formData)
+      if(res){
+        attachmentUpload(res.map(item => ({
+          attachmentId: item.id,
+          attachmentName: item.name,
+          attachmentUrl: item.path,
+          bmChangeId: this.query.bmChangeId
+        }))).then((data) => {
+          const result = this.$i18n.locale === 'zh' ? data.desZh : data.desEn
+          if (Number(data.code) === 0) {
+            this.attachment()
+            iMessage.success(result);
+          } else {
+            iMessage.error(result);
+          }
+          this.uploadButtonLoading = false
+        }).catch(() => {
+          this.uploadButtonLoading = false
+        });
+      } else {
+        this.uploadButtonLoading = false
+      }
+    },
     handleSelectionChange(list) {
       this.multipleSelection = list
     },
@@ -463,7 +510,7 @@ export default {
     },
 
     attachment(){
-      this.baseInfoLoading = true
+      this.tableLoading2 = true
       attachment({
         bmChangeId  : this.query.bmChangeId
       }).then((res) => {
@@ -473,9 +520,9 @@ export default {
         } else {
           iMessage.error(result);
         }
-        this.baseInfoLoading = false
+        this.tableLoading2 = false
       }).catch(() => {
-        this.baseInfoLoading = false
+        this.tableLoading2 = false
       });
     },
 
@@ -550,7 +597,10 @@ export default {
 <style lang="scss" scoped>
 .enclosure-block{
   margin-top: 20px;
-
+  .upload{
+    margin-left: 10px;
+    display: inline-block;
+  }
   .head{
     display: flex;
     justify-content: space-between;

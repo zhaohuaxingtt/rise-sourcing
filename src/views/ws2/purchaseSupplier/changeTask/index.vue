@@ -142,7 +142,7 @@ import handover from "../components/handover"
 import newChange from "../components/newChange"
 import {
   verifyLine,
-} from "@/api/ws2/purchaseSupplier/investmentList";
+} from "@/api/ws2/purchase/investmentList";
 import {pageMixins} from "@/utils/pageMixins";
 import {
   bmChangeMoldInvestmentListStatusPullDown,
@@ -282,13 +282,16 @@ export default {
     toBmInfo(row){
       //  如当前用户没有查看“模具投资金额”的权限，点击流水号后提示“对不起，您所在的岗位没有该材料组权限”
       let url = this.$router.resolve({
-        path: '/purchase/changeTask/bmInfo',
+        path: '/purchaseSupplier/changeTask/bmInfo',
         query: {
-          bmSerial: row.bmSerial,
-          id: row.id
+          bmId: row.bmId,
+          bmChangeId: row.id,
+          changeNum: row.changeNum,
         }
       })
-      if(Number(row.isShowMoldInvestmentAmount) === 1){
+      window.open(url.href, '_blank');
+
+      if(row.isPremission){
         window.open(url.href, '_blank');
       } else {
         verifyLine({linie: row.linieId}).then((res) => {

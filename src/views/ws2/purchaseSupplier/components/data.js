@@ -277,3 +277,110 @@ export const bmInfoTitle = [
 
 ]
 
+export const changeTaskBmInfoTitle = [
+    {
+        props: 'moldId',
+        name: '模具ID',
+        key: '模具ID',
+        tooltip: false
+    },
+    {
+        props: 'assetNum',
+        name: '固资编号',
+        key: '固资编号',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'assetName',
+        name: '固资名称',
+        key: '固资名称',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'moldManufacturer',
+        name: '模具制造商',
+        key: '模具制造商',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'craftType',
+        name: '工艺类型',
+        key: '工艺类型',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'moldType',
+        name: '工模具种类',
+        key: '工模具种类',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'assetTypeNum',
+        name: '资产分类编号',
+        key: '资产分类编号',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'partsTotalName',
+        name: '零件总成名称',
+        key: '零件总成名称',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'partsTotalNum',
+        name: '总成零件号',
+        key: '总成零件号',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'partsShareNum',
+        name: '共享零件号',
+        key: '共享零件号',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'fsNum',
+        name: 'FS号',
+        key: 'FS号',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'partsName',
+        name: '零部件名称',
+        key: '零部件名称',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'partsNum',
+        name: '零件号',
+        key: '零件号',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'count',
+        name: '数量',
+        key: '数量',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'assetPrice',
+        name: '资产单价',
+        key: '资产单价',
+        width: 200,
+        tooltip: false
+    },
+
+]

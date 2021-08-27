@@ -262,6 +262,7 @@ export default [
             },
             component: () => import (`@/views/ws2/purchaseSupplier/changeTask`),
           },
+
           {
             path: '/purchaseSupplier/mouldBook',
             name: 'mouldBook',
@@ -287,6 +288,14 @@ export default [
           title: '模具投资清单-BM详情页'
         },
         component: () => import (`@/views/ws2/purchaseSupplier/investmentList/bmInfo`),
+      },
+      {
+        path: '/purchaseSupplier/changeTask/bmInfo',
+        name: 'bmInfo',
+        meta: {
+          title: '模具投资清单-变更任务-详情页'
+        },
+        component: () => import (`@/views/ws2/purchaseSupplier/changeTask/bmInfo`),
       },
     ]
   }

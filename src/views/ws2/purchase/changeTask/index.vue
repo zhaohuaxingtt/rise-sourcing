@@ -354,8 +354,6 @@ export default {
           changeNum: row.changeNum,
         }
       })
-      window.open(url.href, '_blank');
-
       if(Number(row.isPremission)){
         window.open(url.href, '_blank');
       } else {
