@@ -18,7 +18,7 @@
         @handlePartItemClick="handlePartItemClick"
     />
     <!-- 自定义零件弹窗 -->
-    <customPart v-if="customParams.visible" :key="customParams.key" :branchNumber="currentTabData.batchNumber" v-model="customParams.visible"
+    <customPart v-if="customParams.visible" :key="customParams.key" :batchNumber="currentTabData.batchNumber" v-model="customParams.visible"
                 @handleCloseCustom="handleCloseCustom" @handleSaveCustom="handleSaveCustom"/>
     <!--信息-->
     <iCard class="margin-bottom20">

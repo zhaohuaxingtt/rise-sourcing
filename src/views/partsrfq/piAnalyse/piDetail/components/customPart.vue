@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-27 14:17:44
+ * @LastEditTime: 2021-08-27 14:36:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -89,7 +89,7 @@ export default {
       type: Boolean,
       default: false
     },
-    branchNumber: {
+    batchNumber: {
       type: String,
       default: null
     }
@@ -103,7 +103,7 @@ export default {
       selectMainData: [],
       selectTargetData: [],
       loading: false,
-      // branchNumber: this.$route.query.branchNumber || null
+      // batchNumber: this.$route.query.batchNumber || null
     }
   },
   created() {
@@ -145,7 +145,7 @@ export default {
     getCustomPartData() {
       this.loading = true
       const params = {
-        branchNumber: this.branchNumber || null
+        batchNumber: this.batchNumber || null
       }
       getCustomParts(params).then(res => {
         if(res && res.code == 200) {
@@ -193,7 +193,7 @@ export default {
       }
       const params = {
         partsList: this.selectTargetData,
-        branchNumber: this.branchNumber
+        batchNumber: this.batchNumber
       }
       editCustomParts(params).then(res => {
         if(res && res.code == 200) {
