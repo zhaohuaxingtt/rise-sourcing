@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-25 16:06:28
- * @LastEditTime: 2021-08-25 16:18:01
+ * @LastEditTime: 2021-08-26 17:14:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\detailDialog.vue
@@ -14,15 +14,11 @@
          class="title">
       {{language('XUANZEJISUANCHEXING','选择计算车型')}}
     </div>
-    <iTableList :tableData="confirmTableData"
+    <iTableList :tableData="detailsData"
                 :tableTitle="confirmTableHead"
-                class="table-footerStyle"
-                @handleSelectionChange="handleSelectionChange">
+                :selection="false"
+                class="table-footerStyle">
     </iTableList>
-    <div slot="footer"
-         class="dialog-footer">
-      <iButton @click="handleSearchReset">{{language('QUEDING','确定')}}</iButton>
-    </div>
   </iDialog>
 </template>
 
@@ -37,6 +33,12 @@ export default {
   },
   props: {
     detailVisible: { type: Boolean },
+    detailsData: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    }
   },
   data () {
     return {

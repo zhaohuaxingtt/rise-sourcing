@@ -216,31 +216,31 @@ export const detailsTableHead = [
 
 export const detailsBottomTableHead = [
   {
-    props: 'data1',
+    props: 'changeNum',
     name: '变更单号',
     key: 'LK_BIANGENDANHAO',
     tooltip: false
   },
   {
-    props: 'data2',
+    props: 'version',
     name: '变更后版本',
     key: 'LK_BIANGENHOUBANBEN',
     tooltip: false
   },
   {
-    props: 'data3',
+    props: 'changeType',
     name: '变更类型',
     key: 'LK_BIANGENLEIXING',
     tooltip: false
   },
   {
-    props: 'data4',
+    props: 'createByName',
     name: '发起人',
     key: 'LK_FAQIREN',
     tooltip: false
   },
   {
-    props: 'data5',
+    props: 'createDate',
     name: '变更日期',
     key: 'LK_BIANGENRIQI',
     tooltip: false

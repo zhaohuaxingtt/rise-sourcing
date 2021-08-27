@@ -170,7 +170,7 @@
       />
     </iCard>
     <handover v-model="handoverShow" :handoverParams="handoverParams" @handoverClose="conditionConfirmTskList"></handover>
-    <InitiateChange v-model="InitiateChangeShow" :content="InitiateChangeContent"></InitiateChange>
+    <InitiateChange v-model="InitiateChangeShow" :content="InitiateChangeContent" :bmParams="bmParams" @InitiateChangeClose="conditionConfirmTskList"></InitiateChange>
 <!--    <verifyLine v-model="verifyLineShow" :handoverParams="handoverParams" @handoverClose="conditionConfirmTskList"></verifyLine>-->
   </div>
 </template>
@@ -242,6 +242,7 @@ export default {
       partsNum: '',
       supplier: '',
       InitiateChangeContent: '',
+      bmParams: [],
       linieName: [],
       handoverParams: {
         bmid: [],
@@ -395,6 +396,7 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if(res.result){
           this.InitiateChangeContent = result
+          this.bmParams = this.multipleSelection.map(item => ({id: item.id, isPremission: Number(item.isShowMoldInvestmentAmount) === 1 ? true : false}))
           this.InitiateChangeShow = true
         } else {
           iMessage.warn(result)
