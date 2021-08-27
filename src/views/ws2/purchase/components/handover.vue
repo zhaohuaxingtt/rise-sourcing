@@ -49,14 +49,18 @@
   </iDialog>
 </template>
 <script>
-import {iDialog, iSearch, iSelect, iInput, iButton, icon, iMessage} from 'rise'
-import {Popover} from "element-ui"
+import {iDialog, iSelect, iButton, iMessage} from 'rise'
 import {pageMixins} from "@/utils/pageMixins";
 import {
   liniePullDownByDept,
   assign,
   assignOneself,
 } from "@/api/ws2/purchase/investmentList";
+import {
+  bmChangeLiniePullDownByDept,
+  bmChangeAssignOneself,
+  bmChangeAssign,
+} from "@/api/ws2/purchase/changeTask";
 
 export default {
   mixins: [pageMixins],
@@ -68,6 +72,7 @@ export default {
   props: {
     title: {type: String, default: 'LK_ZHUANPAI'},
     value: {type: Boolean},
+    isChangeTask: {type: Boolean, default: false},
     handoverParams: {
       type: Object,
       default: () => ({
@@ -105,7 +110,11 @@ export default {
     },
     liniePullDownByDept(){
       this.dialogLoading = true
-      liniePullDownByDept({deptId: this.deptId}).then((res) => {
+      let req = liniePullDownByDept
+      if(this.isChangeTask){
+        req = bmChangeLiniePullDownByDept
+      }
+      req({deptId: this.deptId}).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.linieList = res.data
@@ -119,7 +128,11 @@ export default {
     },
     assign(){
       this.saveLoading = true
-      assign({
+      let req = assign
+      if(this.isChangeTask){
+        req = bmChangeAssign
+      }
+      req({
         bmid: this.handoverParams.bmid,
         deptId: this.deptId,
         linieID: this.linieID,
@@ -140,7 +153,11 @@ export default {
     },
     assignOneself(){
       this.handoverSelfLoading = true
-      assignOneself().then((res) => {
+      let req = assignOneself
+      if(this.isChangeTask){
+        req = bmChangeAssignOneself
+      }
+      req().then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.deptId = res.data.deptId

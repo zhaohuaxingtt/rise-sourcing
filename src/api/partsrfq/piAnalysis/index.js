@@ -64,7 +64,7 @@ export function getRawMateriaDetail(params) {
   });
 }
 
-// 新增方案时获取全量零件信息
+// 新增方案时或者全量零件信息
 export function getAllAddPart(params) {
   return request({
     url: '/piAnalysisScheme/getPartsList',

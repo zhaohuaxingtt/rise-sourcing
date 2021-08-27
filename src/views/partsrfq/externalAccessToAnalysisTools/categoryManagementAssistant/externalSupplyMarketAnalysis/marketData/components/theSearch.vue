@@ -30,7 +30,6 @@
       <template v-else-if="item.type === 'selectCustom'">
         <iSelectCustom
             v-if="showSelectCustom"
-            ref="theSelectCustom"
             v-model="form[item.props]"
             :data="item.options"
             :multiple="true"
