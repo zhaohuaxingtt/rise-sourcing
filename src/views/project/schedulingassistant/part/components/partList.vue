@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 15:09:56
+ * @LastEditTime: 2021-08-27 15:19:21
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -322,7 +322,7 @@ export default {
             fs: options && options[0] ? options[0].label : '',
             fsId: options && options[0] ? options[0].value : '',
             delayWeek: item.expectImpactWeek || 10,
-            isBmg: item.bmgFlag || true,
+            isBmg: item.bmgFlag || '否',
             scheNomiTimeKw: item.nomiTimeKw,
             scheKickoffTimeKw: item.kickoffTimeKw,
             scheFirstTryoutTimeKw: item.firstTryoutTimeKw,
