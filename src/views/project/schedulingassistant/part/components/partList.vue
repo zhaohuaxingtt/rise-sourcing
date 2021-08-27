@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 12:44:40
+ * @LastEditTime: 2021-08-27 15:09:56
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -50,13 +50,13 @@
               <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
               <!--------------------------节点发生时间-已发生的不可编辑------------------------------------>
               <template v-if="index == nodeList.length - 1">
-                <iText v-if="pro[item.status] == 1 && isLarger(pro[item.kw], pro[item.kw2])" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
+                <iText v-if="pro[item.status] == 1 && pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
                 <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw2]}}</iText>
                 <el-cascader
-                  v-else-if="isLarger(pro[item.kw], pro[item.kw2])"
+                  v-else-if="pro.emIsLarger"
                   :class="`productItem-bottom-stepBetween-input margin-top20 ` "
                   :value="pro[item.kw].split('-KW')"
-                  :options="getOptions(pro, item.kw, index)"
+                  :options="yearWeekOptions(pro, item.kw, index)"
                   @change="handleChange($event, pro, item.kw, index)"
                   separator="-KW"
                 ></el-cascader>
@@ -64,7 +64,7 @@
                   v-else
                   :class="`productItem-bottom-stepBetween-input margin-top20 ` "
                   :value="pro[item.kw2].split('-KW')"
-                  :options="getOptions(pro, item.kw2, index)"
+                  :options="yearWeekOptions(pro, item.kw2, index)"
                   @change="handleChange($event, pro, item.kw2, index)"
                   separator="-KW"
                 ></el-cascader>
@@ -75,7 +75,7 @@
                   v-else
                   :class="`productItem-bottom-stepBetween-input margin-top20 ` "
                   :value="pro[item.kw].split('-KW')"
-                  :options="getOptions(pro, item.kw, index)"
+                  :options="yearWeekOptions(pro, item.kw, index)"
                   @change="handleChange($event, pro, item.kw, index)"
                   separator="-KW"
                 ></el-cascader>
@@ -84,7 +84,7 @@
               <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom5`">
                 <!--------------------------节点时长-不可编辑------------------------------------>
                 <template v-if="index == nodeList.length - 2">
-                  <iText v-if="isLarger(pro[nodeList[index + 1].kw], pro[nodeList[index + 1].kw2])" :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText>
+                  <iText v-if="pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText>
                   <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint2]}}W</iText>
                 </template>
                 <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText>
@@ -101,7 +101,7 @@
 
 <script>
 import { iButton, icon, iText, iMessage } from 'rise'
-import { getPartSchedule, partProgressConfirm, updatePartSchedule, getAllFS, getFsUserList, getPartGroupConfig, updatePartGroupConfig, validSchedule } from '@/api/project'
+import { getPartSchedule, getFsUserListPart, partProgressConfirm, updatePartSchedule, getAllFS, getFsUserList, getPartGroupConfig, updatePartGroupConfig, validSchedule } from '@/api/project'
 import logicSettingBtn from '@/views/project/components/logicSettingBtn'
 import moment from 'moment'
 import { partLogicList } from '../data'
@@ -151,6 +151,48 @@ export default {
   created() {
     this.getFSOPtions()
   },
+  computed: {
+    yearWeekOptions() {
+      return () => this.option
+      // return (item, props, index) => {
+      //   // eslint-disable-next-line no-undef
+      //   const selectOption = _.cloneDeep(this.option)
+      //   let beforeYear = null, beforeWeek = null, afterYear = null, afterWeek = null
+      //   if (this.nodeList[index - 1]) {
+      //     const beforeNode = item[this.nodeList[index - 1].kw]
+      //     beforeYear = beforeNode.split('-KW')[0]
+      //     beforeWeek = beforeNode.split('-KW')[1]
+      //   }
+      //   if (this.nodeList[index + 1]) {
+      //     const afterNode = props === 'otsTimeKw' ? item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw]
+      //     afterYear = afterNode.split('-KW')[0]
+      //     afterWeek = afterNode.split('-KW')[1]
+      //   }
+      //   for(var i = 0; i < selectOption.length; i++) {
+      //     if ((beforeYear && selectOption[i].value < beforeYear) || (afterYear && selectOption[i].value > afterYear)) {
+      //       // this.$set(selectOption[i],'disabled',true)
+      //       selectOption[i].disabled = true
+      //     } else {
+      //       // this.$set(selectOption[i],'disabled',false)
+      //       selectOption[i].disabled = false
+      //       for(var j = 0; j < selectOption[i].children.length; j++) {
+      //         if (beforeYear && beforeWeek && selectOption[i].value == beforeYear && selectOption[i].children[j].value <= beforeWeek) {
+      //           // this.$set(selectOption[i].children[j],'disabled',true)
+      //           selectOption[i].children[j].disabled = true
+      //         } else if (afterYear && afterWeek && selectOption[i].value == afterYear && selectOption[i].children[j].value >= afterWeek) {
+      //           // this.$set(selectOption[i].children[j],'disabled',true)
+      //           selectOption[i].children[j].disabled = true
+      //         } else {
+      //           // this.$set(selectOption[i].children[j],'disabled',false)
+      //           selectOption[i].children[j].disabled = false
+      //         }
+      //       }
+      //     }
+      //   }
+      //   return selectOption
+      // }
+    }
+  },
   methods: {
     async gotoDBhistory(part) {
       this.loading = true
@@ -159,7 +201,7 @@ export default {
         this.loading = false
         if (res?.result) {
           // console.log(this.cartypeProId)
-          const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId, sixPartCode:part.partNum.slice(3,9), level: '2'}})
+          const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId, sixPartCode:part.partNum.slice(3,9), level: '2', categoryType: res.data.category}})
           window.open(router.href,'_blank')
         } else {
           iMessage.warn('HUOQUSUANFAPEIZHISHIBAI','获取算法配置失败')
@@ -169,7 +211,8 @@ export default {
       }
     },
     handleSendFsConfirm(selectRow) {
-      partProgressConfirm(selectRow).then(res => {
+      // eslint-disable-next-line no-undef
+      partProgressConfirm(selectRow.map(item => _.omit(item, 'selectOption'))).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.changeFsConfirmVisible(false)
@@ -205,16 +248,7 @@ export default {
       })
     },
     autoSave() {
-      this.saveloading = true
-      updatePartSchedule(this.parts).then(res => {
-        if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.saveloading = false
-      })
+      this.handleSave(false)
     },
     /**
      * @Description: 根据选中的行获取每一行的fs下拉列表
@@ -223,14 +257,13 @@ export default {
      * @return {*}
      */    
     async getFsUserList(tableList) {
-      return null
-      // const res = await getFsUserList(tableList.map(item => item.productGroupId))
-      //   if (res?.result) {
-      //     return res.data
-      //   } else {
-      //     iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-      //     return null
-      //   }
+      const res = await getFsUserListPart({partNums: tableList.map(item => item.partNum).join(',')})
+        if (res?.result) {
+          return res.data
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          return null
+        }
     },
     /**
      * @Description: 获取三个工作日后的日期
@@ -253,14 +286,14 @@ export default {
       try {
         this.loading = true
         // 筛选出待定点和待kickoff的数据
-        const selectRows = this.parts.filter(item => {
+        const selectRows = this.partsTemp.filter(item => {
           const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget]
-          return !targetList.every(item => item == 1)
+          return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3) && (item.partPeriod == 2 || item.partPeriod == 3)
         })
-        // if (selectRows.length < 1) {
-        //   iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件'))
-        //   throw(false)
-        // }
+        if (selectRows.length < 1) {
+          iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件'))
+          throw(false)
+        }
         // 获取询价采购员下拉数据
         const fsOptions = await this.getFsUserList(selectRows)
         // 获取三个工作日之后的日期
@@ -268,16 +301,18 @@ export default {
         const tableListNomi = []
         const tableListKickoff = []
         selectRows.forEach((item) => {
-          const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
+          const options = fsOptions ? fsOptions[item.partNum]?.map(item => {
             return {
               ...item,
               value: item.userId,
               label: item.userName
             }
           }) : []
+          const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget]
           const tableItem = {
-            ...item,
-            cartypeProject: this.carProjectName,
+            // ...item,
+            carTypeProId: this.cartypeProId,
+            carTypeProject: this.carProjectName,
             partNum: item.partNum,
             partName: item.partNameZh,
             confirmDateDeadline: nextThreeWorkDay,
@@ -286,15 +321,26 @@ export default {
             selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
             fs: options && options[0] ? options[0].label : '',
             fsId: options && options[0] ? options[0].value : '',
-            delayWeek: item.expectImpactWeek,
-            isBmg: item.bmgFlag,
+            delayWeek: item.expectImpactWeek || 10,
+            isBmg: item.bmgFlag || true,
             scheNomiTimeKw: item.nomiTimeKw,
             scheKickoffTimeKw: item.kickoffTimeKw,
             scheFirstTryoutTimeKw: item.firstTryoutTimeKw,
             scheOtsTimeKw: item.otsTimeKw,
-            scheEmTimeKw: item.emTimeKw
+            scheEmTimeKw: item.emTimeKw,
+            riskLevel: targetList.every(item => item == 1) ? 1 : targetList.some(item => item == 3) ? 3 : 2,
+            confirmStatus: item.fsConfirmStatus,
+            partPeriod: item.partPeriod
+          }
+          if (item.partPeriod == 2) {
+            tableListNomi.push(tableItem)
+          }
+          if (item.partPeriod == 3) {
+            tableListKickoff.push(tableItem)
           }
         })
+        this.tableListNomi = tableListNomi
+        this.tableListKickoff = tableListKickoff
         this.loading = false
         this.changeFsConfirmVisible(true)
       } catch(e) {
@@ -350,40 +396,10 @@ export default {
         }
         return weeks
       }
-      return week2 - week1
-    },
-    getOptions(item, props, index) {
-      // const index = this.nodeList.findIndex(item => item.kw === props || item.kw2 === props)
-      // eslint-disable-next-line no-undef
-      const selectOption = _.cloneDeep(this.option)
-      let beforeYear = null, beforeWeek = null, afterYear = null, afterWeek = null
-      if (this.nodeList[index - 1]) {
-        const beforeNode = item[this.nodeList[index - 1].kw]
-        beforeYear = beforeNode.split('-KW')[0]
-        beforeWeek = beforeNode.split('-KW')[1]
+      if (year1 === year2) {
+        return week2 - week1
       }
-      if (this.nodeList[index + 1]) {
-        const afterNode = props === 'otsTimeKw' ? item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw]
-        afterYear = afterNode.split('-KW')[0]
-        afterWeek = afterNode.split('-KW')[1]
-      }
-      for(var i = 0; i < selectOption.length; i++) {
-        if ((beforeYear && selectOption[i].value < beforeYear) || (afterYear && selectOption[i].value > afterYear)) {
-          this.$set(selectOption[i],'disabled',true)
-        } else {
-          this.$set(selectOption[i],'disabled',false)
-          for(var j = 0; j < selectOption[i].children.length; j++) {
-            if (beforeYear && beforeWeek && selectOption[i].value == beforeYear && selectOption[i].children[j].value <= beforeWeek) {
-              this.$set(selectOption[i].children[j],'disabled',true)
-            } else if (afterYear && afterWeek && selectOption[i].value == afterYear && selectOption[i].children[j].value >= afterWeek) {
-              this.$set(selectOption[i].children[j],'disabled',true)
-            } else {
-              this.$set(selectOption[i].children[j],'disabled',false)
-            }
-          }
-        }
-      }
-      return selectOption
+      return -this.getWeekBetween(time2, time1)
     },
     handleChange(val, item, props, index) {
       console.log(val, item, props)
@@ -396,12 +412,15 @@ export default {
         this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val.join('-KW'), props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw]))
       }
     },
-    handleSave() {
+    handleSave(refresh = true) {
       this.saveloading = true
-      updatePartSchedule(this.parts).then(res => {
+      updatePartSchedule(this.partsTemp.map(item => {
+        const findItem = this.parts.find(pItem => pItem.partNum === item.partNum)
+        return findItem ? findItem : item
+      })).then(res => {
         if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.getPartList(this.cartypeProId)
+          refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          refresh && this.getPartList(this.cartypeProId)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -529,10 +548,16 @@ export default {
       this.loading = true
       getPartSchedule(cartypeProId).then(res => {
         if (res?.result) {
+          const partList = (res.data || []).map(item => {
+            return {
+              ...item,
+              emIsLarger: this.isLarger(item.emTimeKw, item.otsTimeKw)
+            }
+          })
           // eslint-disable-next-line no-undef
-          this.parts = _.cloneDeep(res.data || [])
+          this.parts = _.cloneDeep(partList)
           // eslint-disable-next-line no-undef
-          this.partsTemp = _.cloneDeep(res.data || [])
+          this.partsTemp = _.cloneDeep(partList)
         } else {
           this.parts = []
           this.partsTemp = []

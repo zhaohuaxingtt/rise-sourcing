@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 19:03:24
- * @LastEditTime: 2021-08-27 11:20:38
+ * @LastEditTime: 2021-08-27 14:52:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\config\businesskey\moudules\aeko.js
@@ -67,6 +67,21 @@ const blackKey = [
                   'PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL', // BDLTAB-按钮-添加 show:false
                   'PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER', // BDLTAB-按钮-删除供应商 show:false
                   'PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM', // BDLTAB-按钮-添加自定义评分项 show:false
+
+
+                  // RFQ-谈判助手
+                  'RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN', // tab-报价分析汇总-零件 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGMOJU', // tab-报报价分析汇总-模具 show:false
+                  'RFQ_DETAIL_TIPS_YEWUFENPEIMONI', // tab-业务分配模拟 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAFENXI_RENWUJINDU', // tab报价分析-报价分析与评分跟踪--整体任务进度&整车进度风险 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAQUSHI_JIAGEWEIDU_SELECT', // tab报价分析-报价趋势-价格维度-下拉框 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAQUSHI_GONGYINGSHANG_SELECT', // tab报价分析-报价趋势-供应商-下拉框 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAQUSHI_LINGJIAN_SELECT', // tab报价分析-报价趋势-零件-下拉框 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAQUSHI_FSHAO_SELECT', // tab报价分析-报价趋势-FS号-下拉框 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAQUSHI_DANGQIANLUNCI_SELECT', // tab报价分析-报价趋势-当前轮次-下拉框 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAQUSHI_CHAXUN_BUTTON', // tab报价分析-报价趋势-查询-按钮 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAQUSHI_CHONGZHI_BUTTON', // tab报价分析-报价趋势-重置-按钮 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAQUSHI_DAOCHU_BUTTON', // tab报价分析-报价趋势-导出-按钮 show:false
                  ]
 const whiteKey = []
 module.exports = {

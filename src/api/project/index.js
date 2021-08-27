@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 11:11:59
+ * @LastEditTime: 2021-08-27 14:10:12
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -326,5 +326,13 @@ export function partProgressConfirm(params) {
     url: '/progress-confirm/part',
     method: 'POST',
     data: params
+  })
+}
+
+export function getFsUserListPart(params) {
+  return requst({
+    url: '/progress-confirm/user/part',
+    method: 'GET',
+    params
   })
 }
