@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-08-25 14:14:48
+ * @LastEditTime: 2021-08-27 10:39:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\data.js
@@ -36,8 +36,8 @@ export const contentDeclareTableTitle = [
   { props: "priceAxis", name: "价格轴", key: "JIAGEZHOU", tooltip: true },
   { props: "investCarTypePro", name: "指定投资⻋型项⽬", key: "ZHIDINGTOUZICHEXINGXIANGMU", tooltip: true, width: 150 },
   { props: "isMtz", name: "MTZ变更", key: "MTZBIANGENG", tooltip: true },
-  { props: "oldBnkStatus", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true },
-  { props: "newBnkStatus", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true }
+  { props: "originBnkTranWayDesc", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true },
+  { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true }
 ]
 
 export const mtzOptions = [
