@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-08-12 14:17:27
+ * @LastEditTime: 2021-08-25 16:39:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -28,7 +28,7 @@
         v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_BACK"
         >{{ language("LK_FANHUI",'返回') }}</iButton
       >
-      <iButton @click="jumpBdl">{{ language('LK_CHAZHAOGONGYIZUGONGYINGSHANG','查找工艺组供应商') }}</iButton>
+      <iButton v-permission="PARTSPROCURE_EDITORDETAIL_CHAZHAOGONGYIZUGONGYINGSHANG" @click="jumpBdl">{{ language('LK_CHAZHAOGONGYIZUGONGYINGSHANG','查找工艺组供应商') }}</iButton>
     </template>
     <div class="body">
       <infos :data="info" />
@@ -107,6 +107,7 @@ export default {
     this.getMaterialGroup()
   },
   methods: {
+    
     // 获取材料组数据
     getMaterialGroup() {
       // 签收的时候默认会设置一个采购项目为这个零件号。移除提示问题
@@ -116,7 +117,6 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.info = res.data || {}
-            console.log(this.info)
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-08-19 19:25:16
+ * @LastEditTime: 2021-08-24 10:31:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -107,7 +107,7 @@ export default {
   watch: {
     editFlag: {
       handler (newVal) {
-        console.log(newVal)
+
         if (newVal) {
           this.gridData1.forEach((item, index) => {
             if (index !== 0) {
@@ -128,7 +128,7 @@ export default {
     gridData: {
       handler (newVal) {
         if (newVal) {
-          console.log(newVal.config, newVal.data)
+         
           this.tableData = [this.gridData.config, ...this.gridData.data]
           this.gridData1 = this.tableData.map((row, index) => {
             if (index === 0) {

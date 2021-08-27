@@ -102,6 +102,7 @@ export default {
 
 <style scoped lang="scss">
 #content {
+  padding: 20px;
   .title {
     font-size: 22px;
     font-weight: bold;

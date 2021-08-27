@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-13 12:57:57
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-26 16:45:35
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -23,10 +23,10 @@
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGBIANHAO', '供应商编号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERSAPCODE">
+        <el-form-item :label="language('LK_GONGYINGSHANGSAPHAO', '供应商SAP号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERSAPCODE">
           <iInput
             v-model="form.supplierSapCode"
-            :placeholder="language('QINGSHURUGONGYINGSHANGBIANHAO', '请输入供应商编号')"
+            :placeholder="language('LK_QINGSHURUGONGYINGSHANGSAPHAO', '请输入供应商SAP号')"
           />
         </el-form-item>
         <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERNAME">
@@ -58,8 +58,14 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('ZHIDINGTAIZHANGKUYUANLINGJIAN', '指定台账库原零件')">
       <template #header-control>
-        <iButton @click="handleSave" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
-        <iButton @click="handleExport" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT">{{ language("DAOCHU", "导出") }}</iButton>
+        <!-- <iButton @click="handleSave" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton> -->
+        <iButton 
+          @click="handleExport" 
+          v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT"
+          :disabled="aekomultipleSelection.length > 0 "
+        >
+        {{ language("DAOCHU", "导出") }}
+        </iButton>
       </template>
       <div class="body">
         <tableList
@@ -71,6 +77,7 @@
           :tableTitle="tableTitle"
           :tableLoading="loading"
           @handleSelectionChange="handleSelectionChange"
+          :selectable="selectInit"
         >
           <template #aprice="scope">
             <iInput class="aPriceSelect" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.aprice" readonly @click.native="aPriceSelect(scope.row)">
@@ -93,6 +100,10 @@
           :total="page.totalCount" />
       </div>
     </iCard>
+
+    <!-- 指定AEKO库原零件 -->
+    <aekoList v-if="aekoShow" :tableData="aekoTableData" :ledgerSelection="multipleSelection" @getAekoList="getAekoList" @changeAekoSelection="changeAekoSelection"/>
+    
     <presentAllInPriceDialog :visible.sync="visible" :apriceId="currentRow.apriceId" @confirm="confirmAPrice" />
   </div>
 </template>
@@ -108,8 +119,13 @@ import { getAekoOriginPartInfo, saveAekoOriginPart, judgeRight, getAekoOriginFac
 import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, isEqual } from "lodash"
 
+
+import aekoList from '../aeko'
+
 export default {
-  components: { iSearch, iInput, iSelect, iCard, iButton, iPagination, tableList, icon, presentAllInPriceDialog },
+  components: { iSearch, iInput, iSelect, iCard, iButton, iPagination, tableList, icon, presentAllInPriceDialog,
+  aekoList,
+   },
   mixins: [ pageMixins ],
   computed: {
     // eslint-disable-next-line no-undef
@@ -131,7 +147,10 @@ export default {
       visible: false,
       currentRow: {},
       factoryDisabled: false,
-      factoryName: ""
+      factoryName: "",
+      aekoShow:false,
+      aekoTableData:[],
+      aekomultipleSelection:[],
     }
   },
   watch: {
@@ -140,21 +159,7 @@ export default {
         if (isEqual(data, ledgerQueryForm)) {
           this.objectAekoPartId = this.$route.query.objectAekoPartId
         } else {
-          if (this.factoryDisabled) {
-            if (
-              Object.keys(data).every(key => {
-                if (key === "factoryCode") {
-                  return true
-                } else {
-                  return !data[key]
-                }
-              })
-            ) {
-              this.objectAekoPartId = this.$route.query.objectAekoPartId
-            } else {
-              this.objectAekoPartId = ""
-            }
-          }
+          this.objectAekoPartId = ""
         }
       },
       deep: true
@@ -170,7 +175,7 @@ export default {
       this.judgeRight()
     } else {
       this.procureFactorySelectVo()
-      this.getAekoOriginPartInfo()
+      // this.getAekoOriginPartInfo()
     }
   },
   methods: {
@@ -183,12 +188,12 @@ export default {
           if (res.data.factoryCode) {
             this.factoryDisabled = true
             this.factoryName = res.data.factoryName
-            this.form.factoryCode = res.data.factoryCode
           } else {
             this.factoryDisabled = false
             this.factoryName = ""
-            this.form.factoryCode = ""
           }
+
+          this.form.factoryCode = ""
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -261,45 +266,33 @@ export default {
       })
       .catch(() => this.loading = false)
     },
+
+    // 获取指定AEKO库原零件列表数据
+    getAekoList(data){
+
+    },
     sure() {
       this.page.currPage = 1
       if (isEqual(this.form, ledgerQueryForm)) {
         this.objectAekoPartId = this.$route.query.objectAekoPartId
       } else {
-        if (this.factoryDisabled) {
-          if (
-            Object.keys(this.form).every(key => {
-              if (key === "factoryCode") {
-                return true
-              } else {
-                return !this.form[key]
-              }
-            })
-          ) {
-            this.objectAekoPartId = this.$route.query.objectAekoPartId
-          } else {
-            this.objectAekoPartId = ""
-          }
-        }
+        this.objectAekoPartId = ""
       }
       
       this.getAekoOriginPartInfo()
     },
     reset() {
       this.page.currPage = 1
-      if (this.factoryDisabled) {
-        this.form = {
-          ...cloneDeep(ledgerQueryForm),
-          factoryCode: this.form.factoryCode
-        }
-      } else {
-        this.form = cloneDeep(ledgerQueryForm)
-      }
+      this.form = cloneDeep(ledgerQueryForm)
       this.objectAekoPartId = this.$route.query.objectAekoPartId
       this.getAekoOriginPartInfo()
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
+    },
+    // 勾选aeko列表
+    changeAekoSelection(list){
+      this.aekomultipleSelection = list;
     },
     aPriceSelect(row) {
       this.visible = true
@@ -363,7 +356,17 @@ export default {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAODAOCHUDEYUANLINGJIAN", "请选择需要导出的原零件"))
     
       excelExport(this.multipleSelection, this.tableTitle)
-    }
+    },
+    // 勾选限制
+    selectInit(row){
+      const idArr = this.aekomultipleSelection.map((item)=>item.id);
+      // 判断AEKO零件列表是否已存在相同原零件 若存在 则不勾选
+      if(!idArr.includes(row.id)){
+        return true 
+      }else{
+        return false
+      }
+    },
   }
 }
 </script>

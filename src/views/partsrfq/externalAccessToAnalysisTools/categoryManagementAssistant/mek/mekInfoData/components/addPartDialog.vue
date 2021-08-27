@@ -6,7 +6,7 @@
  * @Descripttion: your project
 -->
 <template>
-  <iDialog :title="language('TIANJIALINGJIAN','添加零件')" :visible.sync="value" width="60%" @close="clearDiolog">
+  <iDialog  :title="language('TIANJIALINGJIAN','添加零件')" :visible.sync="value" width="60%" @close="clearDiolog">
     <el-form label-width="60px" label-position="top">
       <el-row type="flex" align='bottom' justify="space-between">
         <el-col :span="5">
@@ -33,10 +33,10 @@
         </el-col>
       </el-row>
     </el-form>
-    <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleCurrentChange="handleCurrentChange">
+    <tableList height="350px" class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleCurrentChange="handleCurrentChange">
     </tableList>
     <div slot="footer" class="dialog-footer">
-      <iButton @click="handleSearchReset">{{language('TIANJIA','添加')}}</iButton>
+      <iButton @click="handleAdd">{{language('TIANJIA','添加')}}</iButton>
     </div>
   </iDialog>
 </template>
@@ -45,9 +45,11 @@
 import { iInput, iButton, iDialog, icon } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addPartTableTitle } from "./data.js";
-import { partNumList } from "@/api/partsrfq/mek/index.js";
+import { partNumList, infoAdd } from "@/api/partsrfq/mek/index.js";
+import resultMessageMixin from '@/utils/resultMessageMixin.js';
 
 export default {
+  mixins: [resultMessageMixin],
   components: {
     iInput, iButton, iDialog, icon, tableList
   },
@@ -56,21 +58,7 @@ export default {
   },
   data() {
     return {
-      tableListData: [
-        {
-          rfq: '256',
-          isShow: true,
-          carInfo: '9999',
-          wire: true,
-        },
-        {
-          rfq: '256',
-          isShow: true,
-          carInfo: '9999',
-          tip: true,
-          wire: false
-        },
-      ],
+      tableListData: [],
       tableTitle: addPartTableTitle,
       tableLoading: false,
       form: {
@@ -85,15 +73,20 @@ export default {
     }
   },
   created() {
-    this.getDictByCode()
     this.getTableList()
   },
   methods: {
+    async handleAdd() {
+      const pms = {
+
+      }
+      const res = await infoAdd(pms)
+      this.resultMessage(res, () => {
+        this.clearDiolog()
+      })
+    },
     clearDiolog() {
       this.$emit('input', false);
-    },
-    async getDictByCode() {
-
     },
     handleSearchReset() {
       this.form = {
@@ -116,6 +109,7 @@ export default {
         this.tableLoading = false
       } catch (error) {
         this.tableLoading = false
+        this.tableListData = []
       }
     },
   }

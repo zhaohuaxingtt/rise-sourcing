@@ -112,7 +112,7 @@
           
           <div class="table-item-aeko">
             <icon v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
-            <span class="link" @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </span>
+            <span class="link" ><a @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </a></span>
             <a v-if="scope.row.fileCount && scope.row.fileCount > 0" class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
           </div>
           
@@ -220,10 +220,10 @@ export default {
         searchParams:{
           brand:'',
           buyerName:'',
-          aekoStatusList:[],
-          coverStatusList:[],
+          aekoStatusList:[''],
+          coverStatusList:[''],
           carTypeCodeList:[''],
-          linieDeptNumList:[],
+          linieDeptNumList:[''],
         },
         selectOptions:{
           'brand':[],
@@ -299,10 +299,10 @@ export default {
         this.searchParams = {
           brand:'',
           buyerName:'',
-          aekoStatusList:[],
-          coverStatusList:[],
+          aekoStatusList:[''],
+          coverStatusList:[''],
           carTypeCodeList:[''],
-          linieDeptNumList:[],
+          linieDeptNumList:[''],
         };
         this.getList();
       },
@@ -315,13 +315,16 @@ export default {
       async getList(){
         this.loading = true;
         const {searchParams,page} = this;
-        const {partNum,carTypeCodeList} = searchParams;
+        const {partNum,carTypeCodeList,linieDeptNumList,aekoStatusList,coverStatusList} = searchParams;
         // 若有冻结起止时间将其拆分成两个字段
         const {frozenDate=[]} = searchParams;
         const data = {
             current:page.currPage,
             size:page.pageSize,
             carTypeCodeList:carTypeCodeList.length && carTypeCodeList[0]=='' ? [] : carTypeCodeList,
+            linieDeptNumList:linieDeptNumList.length && linieDeptNumList[0]=='' ? [] : linieDeptNumList,
+            aekoStatusList:aekoStatusList.length && aekoStatusList[0]=='' ? [] : aekoStatusList,
+            coverStatusList:coverStatusList.length && coverStatusList[0]=='' ? [] : coverStatusList,
         };
         if(frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
@@ -404,7 +407,7 @@ export default {
           const {code,data} = res;
           if(code ==200 ){
             data.map((item)=>{
-              item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+              item.desc = item.deptNum;
               item.code = item.id;
             })
             this.selectOptions.linieDeptNumList = data;
@@ -437,6 +440,7 @@ export default {
         const routeData = this.$router.resolve({
           path: '/aeko/aekodetail',
           query: {
+            from:'manage',
             requirementAekoId,
           },
         })
@@ -567,7 +571,7 @@ export default {
             hostId:item.requirementAekoId
           })
         })
-        await uploadFiles({fileHistoryDTOS:params}).then((res)=>{
+        await uploadFiles(params).then((res)=>{
           this.btnLoading.uploadFiles = false;
           if(res.code ==200){
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
@@ -684,6 +688,7 @@ export default {
 
       // 多选处理
       handleMultipleChange(value, key,multiple) {
+            console.log(value, key,multiple,'value, key,multiple');
           // 单选不处理
           if(!multiple) {
             if(!value){
@@ -693,6 +698,12 @@ export default {
               this.$set(this.searchParams,key,value);
               return;
             }
+          }
+
+          if (!value[value.length - 1]) {
+              this.$set(this.searchParams, key, [""])
+          } else {
+              this.$set(this.searchParams, key, this.searchParams[key].filter(item => item || item === 0))
           }
       },
 
@@ -743,6 +754,10 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        cursor: auto;
+        a{
+          cursor: pointer;
+        }
       }
       .top-icon{
         position: absolute;

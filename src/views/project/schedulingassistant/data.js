@@ -47,7 +47,7 @@ export const MENU = [
     url: '/projectscheassistant/historyprocessdb',
     activePath: 'historyprocessdb',
     key: 'LISHIJINDUSHUJUKU'
-  }
+  },
 ]
 
 export const MENUFS = [

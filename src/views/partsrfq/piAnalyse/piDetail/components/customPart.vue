@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-20 10:17:07
+ * @LastEditTime: 2021-08-23 18:16:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -30,6 +30,7 @@
           :tableTitle="customTableTitle"
           :tableLoading="loading"
           :index="true"
+          :height="500"
           @rowSelect="handleSelectTarget">
           <template #isShow="scope">
             <div @click="changeStatus(scope.row)" class="statusBox">
@@ -102,6 +103,7 @@ export default {
       selectMainData: [],
       selectTargetData: [],
       loading: false,
+      branchNumber: this.$route.query.batchNumber || null
     }
   },
   created() {
@@ -133,8 +135,8 @@ export default {
           this.selectTargetData.map(targetObj => {
             const index = res.data.findIndex(item => item.id = targetObj.id)
             res.data.splice(index, index + 1)
-            this.mainTableData = res.data
           })
+          this.mainTableData = res.data
           this.loading = false
         } else iMessage.error(res.desZh)
       })
@@ -151,6 +153,11 @@ export default {
           this.selectTargetData = res.data
           this.loading = false
           this.getAllPartData()
+          this.$nextTick(_ => {
+            this.selectTargetData.map(item => {
+              this.$refs.targetTable.$refs.dataTable.toggleRowSelection(item, true)
+            })
+          })
         } else iMessage.error(res.desZh)
       })
     },
@@ -176,10 +183,6 @@ export default {
       })
       this.targetTableData = this.targetTableData.concat(this.selectMainData)
       this.selectTargetData = this.selectTargetData.concat(this.selectMainData)
-      // this.selectMainData.forEach(item => {
-      //   const index = this.mainTableData.findIndex(mainItem => mainItem == item)
-      //   this.mainTableData.splice(index, index + 1)
-      // })
       this.renderTargetTable()
     },
     // 点击保存
@@ -188,9 +191,13 @@ export default {
         iMessage.error(this.language('QINGXUANZHONGSHUJU','请选中数据'))
         return
       }
-      editCustomParts(this.selectTargetData).then(res => {
+      const params = {
+        partsList: this.selectTargetData,
+        batchNumber: this.batchNumber
+      }
+      editCustomParts(params).then(res => {
         if(res && res.code == 200) {
-          this.$emit()
+          this.$emit('handleCloseCustom', res.data)
         } else iMessage.error(res.desZh)
       })
     },
@@ -204,7 +211,6 @@ export default {
     },
     // 选中目标表格事件
     handleSelectTarget(val) {
-      console.log('val', val);
       this.selectTargetData = val
     },
     // 选中主表格数据
@@ -213,7 +219,6 @@ export default {
     },
     // 默认选中target表格数据
     renderTargetTable() {
-      console.log('selectTargetData aaa', this.selectTargetData);
       this.$nextTick(() => {
         this.selectTargetData.forEach(item => {
           this.$refs.targetTable.$refs.dataTable.toggleRowSelection(item, true)

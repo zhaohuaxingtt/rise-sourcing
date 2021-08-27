@@ -88,6 +88,8 @@
       >
         <template slot-scope="scope">
           <div class="rateOfChange" :style="{'backgroundColor': scope.row.color}">
+            <template v-if="Number(scope.row[items.props]) > 0">+</template>
+            <template v-else-if="Number(scope.row[items.props]) < 0">-</template>
             {{ scope.row[items.props] }}
           </div>
         </template>
@@ -123,7 +125,7 @@
               <!--第一个下拉框-->
               <iSelect
                   v-model="scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})]"
-                  @visible-change="(boolean)=>handleGetSelectList({props: '',boolean,row: scope.row})"
+                  @focus="handleGetSelectList({props: '',row: scope.row})"
                   @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row})"
                   style="width: 120px;margin-right: 10px;"
                   value-key="id"
@@ -238,6 +240,7 @@
                 </span>
               </el-popover>
               <iconTips
+                  v-if="!scope.row.isMatch"
                   iconName="iconzhongyaoxinxitishi"
                   :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成\n'+'对应的指数变动百分比，可手动补充系统匹配\n'+'模块信息。')"
                   class="margin-left6"
@@ -356,7 +359,7 @@ export default {
       }
       this.$emit('handleSelectReset', {props, row});
       this.selectLoading = true;
-      await this.handleGetSelectList({props, boolean: true, row, req});
+      await this.handleGetSelectList({props, row, req});
       this.selectLoading = false;
     },
     indexMethod(index) {
@@ -388,25 +391,23 @@ export default {
       }
     },
     // 获取下拉
-    async handleGetSelectList({props, boolean, row, req = {}}) {
+    async handleGetSelectList({props, row, req = {}}) {
       this.selectLoading = true;
       let selectList = '';
-      if (boolean) {
-        switch (row.dataType) {
-          case this.classType['rawMaterial']:
-            selectList = (await getSelectMateria(req)).data;
-            break;
-          case this.classType['manpower']:
-            selectList = (await getSelectManpower(req)).data;
-            break;
-          case this.classType['exchangeRate']:
-            if (props === '') {
-              selectList = (await getSelectCountry(req)).data;
-            } else if (props === this.FIRSTSELECT) {
-              selectList = (await getSelectExchange(req)).data;
-            }
-            break;
-        }
+      switch (row.dataType) {
+        case this.classType['rawMaterial']:
+          selectList = (await getSelectMateria(req)).data;
+          break;
+        case this.classType['manpower']:
+          selectList = (await getSelectManpower(req)).data;
+          break;
+        case this.classType['exchangeRate']:
+          if (props === '') {
+            selectList = (await getSelectCountry(req)).data;
+          } else if (props === this.FIRSTSELECT) {
+            selectList = (await getSelectExchange(req)).data;
+          }
+          break;
       }
       this.selectLoading = false;
       this.$emit('handleGetSelectList', {props, row, selectList});
@@ -427,7 +428,7 @@ export default {
           if (props === this.FIRSTSELECT) {
             return itemData.profession;
           } else if (props === this.SECONDSELECT) {
-            return itemData.area;
+            return itemData.city;
           }
           break;
         case this.classType['exchangeRate']:
@@ -441,7 +442,7 @@ export default {
     },
     handleNewRowClassTypeSelectChange({event, row}) {
       row.dataType = event;
-      this.handleGetSelectList({props: '', boolean: true, row});
+      this.handleGetSelectList({props: '', row});
     },
     // 获取匹配props
     getMatchProps({props, row}) {

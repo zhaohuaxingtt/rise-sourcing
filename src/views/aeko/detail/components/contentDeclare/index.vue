@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-13 12:56:44
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-27 09:42:08
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -155,7 +155,14 @@
         <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
         <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
         <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
-        <iButton v-if="!disabled" @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">{{ language("DAOCHU", "导出") }}</iButton>
+        <iButton v-if="!disabled" @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">
+          {{ language("DAOCHU", "导出") }}
+          <el-tooltip 
+            :content="`${language('LK_AEKO_NEIRONGBIAOTAIDAOCHUTISHI','勾选零件行项目-->导出->批量维护原零件信息-->导入')}`"
+            placement="top">
+            <i class="el-icon-warning-outline font18 tipsIcon"></i>
+          </el-tooltip>
+        </iButton>
         <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT">{{ language("DAORU", "导⼊") }}</iButton>
         <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT">{{ language("TIJIAO", "提交") }}</iButton>
         <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL">{{ language("CHEHUI", "撤回") }}</iButton>
@@ -237,7 +244,8 @@ import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, chunk, debounce } from "lodash"
 
-const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
+// const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
+
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog },
@@ -435,7 +443,7 @@ export default {
       if (!query.oldPartNumPreset) delete query.oldPartNumPreset
 
       this.$router.push({
-        path: "/aeko/quondampart/ledger",
+        path: "/aeko/quondampart",
         query
       })
     
@@ -474,10 +482,12 @@ export default {
       .catch(() => this.declareToggleLoading = false)
     },
     // 表态重置
-    handleDeclareReset() {
+    async handleDeclareReset() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHONGZHIBIAOTAIDELINGJIAN", "请选择需要重置表态的零件"))
 
       if (!this.multipleSelection.every(item => item.status === "TOBE_STATED" || item.status === "QUOTING" || item.status === "QUOTED")) return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI", "请选择内容状态为待表态、报价中、已报价的零件进行重置"))
+
+      await this.$confirm(this.language('DECLARERESETTIPS','该行表态内容会被重置，请确认'))
 
       this.declareResetLoading = true
 
@@ -501,8 +511,60 @@ export default {
     },
     // 导出
     handleExport() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAODAOCHUDEYUANLINGJIAN", "请选择需要导出的原零件"))
-      excelExport(this.multipleSelection, printTableTitle)
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAODAOCHUDEYUANLINGJIANXIANGMU", "请选择需要导出的原零件项目"))
+      let printTableTitle = tableTitle.filter(item => item.isExport);
+      let oldPartIndex = 0;
+      const {multipleSelection=[],aekoInfo={}} = this;
+
+      const selectionList = cloneDeep(multipleSelection);
+
+      
+      selectionList.map((item)=>{
+        // 原零件号加个“请填写”
+        item.oldPart = '请填写';
+        // 供应商SAP号若没有值填充“请填写”
+        if(item.supplierSapCode == ''){
+          item.supplierSapCode = "请填写";
+        }
+      });
+      
+      
+      printTableTitle.map((item,index)=>{
+        // 原零件号(系统预设)
+        if(item.props == 'oldPartNumPreset'){
+          item.name = '原零件号(系统预设)';
+          oldPartIndex= index;
+        }
+
+        // 判断下AEKO类型是Aeko/MP导出列显示列显示车型项目  AeA时导出列显示车型
+        if(item.props == 'cartypeZh'){
+          if(aekoInfo && aekoInfo.aekoType ){
+              if(aekoInfo.aekoType == 'AeA'){  // 车型
+                item.name = '车型'
+              }else if(['Aeko','MP'].includes(aekoInfo.aekoType)){ // 车型项目
+                item.name = '车型项目'
+              }
+          }
+        }
+
+        
+        
+        
+      })
+
+      // 原零件号 需用户自己填写
+        printTableTitle.splice(oldPartIndex+1,0,{
+          props:'oldPart',
+          name:'原零件号'
+        })
+        
+        // 零件行项目ID 
+        printTableTitle.unshift(({
+          props:'objectAekoPartId',
+          name:'零件行项目ID'
+        }))
+
+      excelExport(selectionList, printTableTitle)
     },
     // 提交
     handleSubmit() {
@@ -697,6 +759,9 @@ export default {
         height: 100% !important;
       }
     }
+  }
+  .tipsIcon{
+    transform: rotate(180deg);
   }
 }
 </style>

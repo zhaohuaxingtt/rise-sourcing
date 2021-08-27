@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-19 19:19:11
+ * @LastEditTime: 2021-08-25 10:58:42
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -93,8 +93,33 @@
         <!----------                年份列-节点渲染               ---------------->
         <!---------------------------------------------------------------------->
         <div v-else-if="item.type === 'year'" class="yearCell">
-          <div v-for="indexItem in [1,2,3,4]" :key="indexItem" class="yearCell-item">
-            <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" :class="`node ${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1 && 'small-node'+getNodeList(item.props, indexItem, dataItem.nodeList).length}`">
+          <div v-for="indexItem in [1,2,3,4]" :key="indexItem" class="yearCell-item" :style="`flex-direction:${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1?'column':'row'};justify-content:${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1?'flex-start':'center'}`">
+            <template v-if="getNodeList(item.props, indexItem, dataItem.nodeList).length > 1">
+              <div class="iconBox">
+                <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" class="node small-node1" :style="`left:${nodeItem.left}%;z-index:${nodeItem.left*10}`">
+                  <!-- 已完成 -->
+                  <icon v-if="nodeItem.status == 1" symbol name="icondingdianguanli-yiwancheng"  class="step-icon"></icon> 
+                  <!-- 正在进行中 -->
+                  <icon v-else-if="nodeItem.status == 2" symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
+                  <!-- 未完成 -->
+                  <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
+                  <template v-if="nodeItem.withLine">
+                    <icon v-if="nodeItem.line.lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="short-between-icon"></icon>
+                    <!-- 已完成 -->
+                    <icon v-else-if="nodeItem.line.lineStatus == 1" symbol name="iconchanpinzupaicheng_yiwancheng" class="short-between-icon"></icon>
+                    <!-- 未完成 -->
+                    <icon v-else symbol name="iconchanpinzupaicheng_weijinhang" class="short-between-icon"></icon>
+                  </template>
+                </div>
+              </div>
+              <div class="textBox">
+                <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" class="node small-node1">
+                  <span class="node-title">{{nodeItem.label}}</span>
+                  <span class="node-week">KW{{ nodeItem.week }}</span>
+                </div>
+              </div>
+            </template>
+            <div v-else v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" :class="`node ${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1 && 'small-node'+getNodeList(item.props, indexItem, dataItem.nodeList).length}`">
               <!-- 已完成 -->
               <icon v-if="nodeItem.status == 1" symbol name="icondingdianguanli-yiwancheng"  class="step-icon"></icon> 
               <!-- 正在进行中 -->
@@ -102,7 +127,7 @@
               <!-- 未完成 -->
               <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
               <span class="node-title">{{nodeItem.label}}</span>
-              <span class="node-week">KW{{ nodeItem.week < 10 ? '0'+nodeItem.week : nodeItem.week }}</span>
+              <span class="node-week">KW{{ nodeItem.week }}</span>
               <template v-if="nodeItem.withLine">
                 <icon v-if="nodeItem.line.lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="short-between-icon"></icon>
                 <!-- 已完成 -->
@@ -112,7 +137,8 @@
               </template>
             </div>
             <div v-if="getLineNode(item.props, indexItem, dataItem.nodeList)" class="node nodeLine">
-              <icon v-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="step-between-icon"></icon>
+              <icon v-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 4" symbol name="iconchanpinzupaicheng_xuxian" class="step-between-icon"></icon>
+              <icon v-else-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="step-between-icon"></icon>
               <!-- 已完成 -->
               <icon v-else-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 1" symbol name="iconchanpinzupaicheng_yiwancheng" class="step-between-icon"></icon>
               <!-- 未完成 -->
@@ -169,13 +195,19 @@ export default {
   },
   methods: {
     /**
-     * @Description: 跳转排程
+     * @Description: 跳转排程 
+     * hasPartSchedule 是否有零件排程 1-是 0-否，如果有零件排程则跳转到零件排程页面，反之跳到产品组排程页面
      * @Author: Luoshuang
      * @param {*} row
      * @return {*}
      */    
     openAssistant(row) {
-      const router =  this.$router.resolve({path: '/projectscheassistant/progroupscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      let router = ''
+      if (row.hasPartSchedule == 1) {
+        router =  this.$router.resolve({path: '/projectscheassistant/partscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      } else {
+        router =  this.$router.resolve({path: '/projectscheassistant/progroupscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      }
       window.open(router.href,'_blank')
     },
     /**
@@ -232,6 +264,15 @@ export default {
       }
       return -1
     },
+    getNextLineNodeStatus(year, season, nodeList) {
+      if (year === moment().year() + 3 && season === 4) {
+        return null
+      }
+      if (season === 4) {
+        return this.getLineNode(year + 1, 1, nodeList)
+      }
+      return this.getLineNode(year, season + 1, nodeList)
+    },
     /**
      * @Description: 获取连接线节点
      * @Author: Luoshuang
@@ -264,13 +305,18 @@ export default {
             }
           }
           if (nextStatus === 2) {
+            if (this.getNextLineNodeStatus(year, season, nodeList)) {
+              return {
+                lineStatus: 4
+              }
+            }
             return {
               lineStatus: 2
             }
           }
-          // return {
-          //     lineStatus: 2
-          //   }
+          return {
+            lineStatus: 3
+          }
         }
         return null
       }
@@ -308,7 +354,8 @@ export default {
           withLine: nextSeasonStatus != -1,
           line: {
             lineStatus: item.status === 2 || item.status === 3 ? 3 : nextSeasonStatus
-          }
+          },
+          week: item.week < 10 ? '0'+item.week:item.week
         }
       })
     }
@@ -419,23 +466,27 @@ export default {
           // flex-direction: column;
           align-items: center;
           justify-content: center;
+          position: relative;
           .node {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
+            z-index: 10;
             .step-icon {
               width: 36px;
               height: 36px;
+              background-color: white;
+              border-radius: 50%;
             }
             &-title {
-              font-size: 16px;
+              font-size: 12px;
               font-weight: bold;
               margin-top: 25px;
             }
             &-week {
-              font-size: 14px;
+              font-size: 10px;
               color: rgba(95, 104, 121, 1);
               margin-top: 8px;
             }
@@ -448,9 +499,16 @@ export default {
           }
           @for $i from 1 through 5 {
             .small-node#{$i} {
+              position: absolute;
+              // &:first-child {
+              //   left: 0;
+              // }
+              // &:nth-child(2) {
+              //   right: 0;
+              // }
               .step-icon {
-                width: #{36/$i}px;
-                height: #{36/$i}px;
+                // width: #{36/$i}px;
+                // height: #{36/$i}px;
               }
               .node-title {
                 font-size: 12px;
@@ -459,24 +517,47 @@ export default {
                 font-size: 10px;
               }
               .short-between-icon {
-                width: #{20/$i}px;
-                right: -#{10/$i}px;
-                top: #{10/$i}px;
+                visibility: hidden;
               }
               &:last-child {
                 .short-between-icon {
-                  width: 16px;
-                  right: -12px;
-                  top: 5px;
+                  visibility:initial;
+                  // width: 16px;
+                  // right: -12px;
+                  // top: 5px;
                 }
               }
             }
           }
           .nodeLine {
             width: 100%;
-            margin-bottom: 36px;
+            margin-bottom: 25px;
             .step-between-icon {
               width: 100%;
+            }
+          }
+          .iconBox {
+            height: 44%;
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+          }
+          .textBox {
+            width: 100%;
+            height: 43%;
+            // padding-top: 5px;
+            z-index: 10;
+            display: flex;
+            flex-shrink: 0;
+            .small-node1 {
+              width: 50%;
+              position: unset;
+              .node-title {
+                margin-top: 0;
+              }
+            }
+            .small-node1 + .small-node1 {
+              margin-left: 5px;
             }
           }
         }

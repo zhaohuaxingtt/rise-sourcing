@@ -33,7 +33,7 @@
         </div>            
       </div>
       <div class="btnSearch" v-if='!disabel'>
-        <iButton @click="quote" v-if='quoteShow'>引用报价</iButton>
+        <iButton @click="quote" v-if='quoteShow' :loading="quoteInquiryPriceLoading">引用报价</iButton>
         <iButton @click="group"  v-if='layout == "1" && !abPrice'>组合</iButton>
         <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
         <!-- <iButton>导出</iButton> -->
@@ -61,7 +61,7 @@ import tableList from './components/table'
 import tableListSupplier from './components/tableListSupplier'
 import tablelistGSasRow from './components/tablelistGSasRow'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow} from '@/api/partsrfq/editordetail'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier},
   data(){return {
@@ -99,7 +99,8 @@ export default{
     abPrice:false,
     kmAPrice:'',
     budget:'',
-    kmTooling:''
+    kmTooling:'',
+    quoteInquiryPriceLoading: false,
   }},
   watch:{
     /**
@@ -356,15 +357,33 @@ export default{
       }
       this.groupVisble = !this.groupVisble
     },
-    quote() {
-      this.$confirm('是否引用询价轮次报价?', '引用询价轮次报价', {
-        confirmButtonText: '是',
-        cancelButtonText: '否',
-      })
-      .then(() => {
-        
-      })
-      .catch(() => {});
+    async quote() {
+      await this.$confirm(
+        this.language("SHIFOUYINYONGXUNJIALUNCIBAOJIA", "是否引用询价轮次报价？"), 
+        this.language("YINYONGXUNJIALUNCIBAOJIA", "引用询价轮次报价"), 
+        {
+          confirmButtonText: this.language("SHI", "是"),
+          cancelButtonText: this.language("FOU", "否"),
+        }
+      )
+
+      this.quoteInquiryPriceLoading = true
+      try {
+        const res = await quoteInquiryPrice({
+          rfqId: this.$route.query.id
+        })
+
+        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+        if (res.code == 200) {
+          iMessage.success(message)
+        } else {
+          iMessage.error(message)
+        }
+      } catch (e) {
+        console.log(e)
+      } finally {
+        this.quoteInquiryPriceLoading = false
+      }
     },
     /**
      * @description:获取供应商横轴 

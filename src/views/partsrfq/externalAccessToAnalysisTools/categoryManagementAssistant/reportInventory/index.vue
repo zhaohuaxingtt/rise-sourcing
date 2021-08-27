@@ -15,9 +15,11 @@
     </div>
     <div class="content">
       <div class="table" v-for="(value, index) in tableList" :key="index">
-        <el-table v-loading="tableLoading" :ref="'multipleTable'" :data="value.dimensions" @selection-change="handleSelectionChange($event,index)">
+        <el-table row-key="sort" :tree-props="{children:'childNodes'}" v-loading="tableLoading" :ref="'multipleTable'" :data="value.dimensions" @selection-change="handleSelectionChange($event,index)">
           <el-table-column type="selection" width="55"> </el-table-column>
-          <el-table-column type="index" :index="indexMethod" label="#" width="55"> </el-table-column>
+          <el-table-column type="index" :index="indexMethod" label="#" width="55">
+            <template slot-scope="scope">{{scope.row.sort}}</template>
+          </el-table-column>
           <el-table-column prop="name" :label="value.name">
           </el-table-column>
         </el-table>
@@ -35,7 +37,7 @@ export default {
   mixins: [resultMessageMixin],
   data() {
     return {
-      tableList: {},
+      tableList: [],
       tableLoading: false,
       selectTableData0: [],
       selectTableData1: [],
@@ -166,5 +168,36 @@ export default {
 }
 ::v-deep th > .cell {
   text-align: center;
+}
+//有子节点 且未展开
+::v-deep .el-table .el-icon-arrow-right:before {
+  background: url("~@/assets/images/Icon - Arrow Drop Down.png") no-repeat 0 0;
+  content: "";
+  display: block;
+  width: 10px;
+  height: 4px;
+  font-size: 10px;
+  background-size: 10px;
+}
+//有子节点 且已展开
+::v-deep .el-table .el-table__expand-icon--expanded {
+  .el-icon-arrow-right:before {
+    background: url("~@/assets/images/Icon - Arrow收起.png") no-repeat 0 0;
+    content: "";
+    display: block;
+    width: 10px;
+    height: 4px;
+    font-size: 10px;
+    background-size: 10px;
+    transform: rotate(270deg);
+  }
+}
+::v-deep .el-table__expand-icon {
+  float: right !important;
+}
+
+::v-deep .el-tree .el-tree-node__expand-icon.expanded {
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
 }
 </style>

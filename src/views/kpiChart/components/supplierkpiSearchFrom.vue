@@ -125,7 +125,7 @@
                              :multiple-limit="5"
                              :placeholder="$t('partsignLanguage.QingXuanZe')">
                       <el-option v-for="(x,index) in material"
-                                 :value='x.categoryId'
+                                 :value='x.categoryCode'
                                  :key="index"
                                  :label='x.categoryName'></el-option>
                     </iSelect>
@@ -402,7 +402,6 @@ export default {
   mounted () {
     this.getMaterialGroupByUserIds()
     this.getRelationship()
-    this.getStuffByCategory()
   },
   watch: {
     'checkList': {
@@ -427,12 +426,11 @@ export default {
             tempThird.parent = this.areaOptions[0].children[secondIndex]
             this.areaOptions[0].children[secondIndex].children.push(tempThird)
             secondIndex = -1
-
-
             // this.areaOptions[0].children.push(_.cloneDeep(x.parent))
             // this.areaOptions[0].children[index].children.push(x) 
             this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
             this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
+            this.formData.spiSupplierDTO.cityCodeList.push(x.value.toString())
             this.supplierSeccoStockOption.push({ ...x, value: x.value.toString() })
           } else if (x.level == 2) {
             this.areaOptions[0].children.push(_.cloneDeep(x))
@@ -442,10 +440,9 @@ export default {
           }
         })
         this.areaOptions[0].children.forEach((second, index, array) => {
-
-          second.children.filter((value, index, array) => {
-
-          })
+          // second.children.filter((value, index, array) => {
+          second.children = this.unique(second.children)
+          // })
         })
         val.forEach((x, index) => {
         })
@@ -465,7 +462,7 @@ export default {
     },
     //基数地区
     handleBaseChangeArea (e, b) {
-      console.log('111')
+
       // 地区数量校验
       // if(e.length<6){
       //     this.baseAreaVmodel=e
@@ -489,21 +486,22 @@ export default {
         // this.options = this.$refs["myCascader"].getCheckedNodes()
         console.log(this.$refs["myCascader"].getCheckedNodes())
         this.checkList = this.$refs["myCascader"].getCheckedNodes()
-        this.$refs["myCascader"].getCheckedNodes().forEach(x => {
-          if (x.level == 3) {
-            this.areaOptions[0].children.push(_.cloneDeep(x.parent))
-            // this.areaOptions[0].children.children.push(_.cloneDeep(x))
-            this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
-            this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
-            this.supplierSeccoStockOption.push({ ...x, value: x.value.toString() })
-          } else if (x.level == 2) {
-            this.areaOptions[0].children.push(_.cloneDeep(x))
-            this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
-            console.log(this.areaOptions[0].children)
-            // this.areaOptions[0].children = [...new Set(this.areaOptions[0].children)]
-          }
-        })
-        this.handelOption(this.areaOptions)
+        // this.$refs["myCascader"].getCheckedNodes().forEach(x => {
+        //   if (x.level == 3) {
+        //     this.areaOptions[0].children.push(_.cloneDeep(x.parent))
+        //     // this.areaOptions[0].children.children.push(_.cloneDeep(x))
+        //     this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
+        //     this.formData.spiBaseDTO.cityCodeList.push(x.value.toString())
+        //     this.formData.spiSupplierDTO.cityCodeList.push(x.value.toString())
+        //     this.supplierSeccoStockOption.push({ ...x, value: x.value.toString() })
+        //   } else if (x.level == 2) {
+        //     this.areaOptions[0].children.push(_.cloneDeep(x))
+        //     this.areaOptions[0].children = this.unique(this.areaOptions[0].children)
+        //     console.log(this.areaOptions[0].children)
+        //     // this.areaOptions[0].children = [...new Set(this.areaOptions[0].children)]
+        //   }
+        // })
+        // this.handelOption(this.areaOptions)
       } else {
         this.supplierSeccoStockOption = []
         this.formData.spiBaseDTO.cityCodeList = []
@@ -532,6 +530,7 @@ export default {
     handleBaseChange () {
       console.log('111')
       if (this.$refs["myCascader1"].getCheckedNodes().length > 0) {
+        this.formData.spiSupplierDTO.cityCodeList = []
         this.$refs["myCascader1"].getCheckedNodes().forEach(x => {
           if (x.level == 3) {
             this.formData.spiSupplierDTO.cityCodeList.push(x.value.toString())
@@ -553,8 +552,8 @@ export default {
       })
     },
     // 工艺组
-    getStuffByCategory () {
-      getStuffByCategory({}).then(res => {
+    getStuffByCategory (data) {
+      getStuffByCategory({categoryCodes:data}).then(res => {
         this.StuffByCategory = res.data
       })
     },
@@ -627,6 +626,7 @@ export default {
       this.baseStartYear = null
       this.baseEndYear = null
       this.baseAreaVmodel = []
+      this.areaVmodel = []
       this.$emit("reset")
     },
     // base 开始日期
@@ -737,6 +737,12 @@ export default {
         })
         this.formData.spiSupplierDTO.toAmountEnd = this.formData.spiBaseDTO.toAmountEnd
         this.supplierEnd = this.formData.spiBaseDTO.toAmountEnd
+      }
+    },
+    // 监听材料组工改变艺组
+    materialValue(e){
+      if(this.formData.spiSupplierDTO.categoryCodeList.length>0){
+        this.getStuffByCategory(this.formData.spiSupplierDTO.categoryCodeList)
       }
     }
   }

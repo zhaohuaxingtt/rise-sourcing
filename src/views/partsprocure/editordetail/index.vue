@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-19 11:16:28
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-25 16:22:32
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -61,25 +61,24 @@
 			<iFormGroup row="1" inline :rules="rules">
 				<div class="row">
 					<div class="col">
-						<iFormItem :label="language('LK_LINGJIANHAO','零件号') + ':'" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNUMBER">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_PARTNUMBER" :label="language('LK_LINGJIANHAO','零件号') + ':'" name="test">
+							<iText>
 								{{ detailData.partNum }}
 							</iText>
 						</iFormItem>
-						<iFormItem :label="language('LK_LINGJIANMINGZHONG','零件名（中）') + ':'" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNAMEZH">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_PARTNAMEZH" :label="language('LK_LINGJIANMINGZHONG','零件名（中）') + ':'" name="test">
+							<iText >
 								{{ detailData.partNameZh }}
 							</iText>
 						</iFormItem>
-						<iFormItem :label="language('LK_LINGJIANMINGCHENGDE','零件名称（德）') + ':'" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNUMBERGER">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_PARTNUMBERGER" :label="language('LK_LINGJIANMINGCHENGDE','零件名称（德）') + ':'" name="test">
+							<iText >
 								{{ detailData.partNameDe }}
 							</iText>
 						</iFormItem>
-						<iFormItem :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型') + ':'" name="test">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE" :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型') + ':'" name="test">
 							<iSelect
 								v-model="detailData.partProjectType"
-								v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE"
 								@change="onPartProjectTypeChange">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in filterProjectList(partProjectTypeArray,detailData.partProjectType)" :key="index">
@@ -87,8 +86,8 @@
 							</iSelect>
 						</iFormItem>
 						<!--来源为新件信息单的零件采购项目，不可修改车型项目。前端车型项目下拉框应该置为不可修改的状态 --->
-						<iFormItem :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test">
-							<iSelect :disabled='carTypeCanselect()' v-model="detailData.carTypeProjectZh" v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test">
+							<iSelect :disabled='carTypeCanselect()' v-model="detailData.carTypeProjectZh" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
 								</el-option>
@@ -127,44 +126,44 @@
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->
 						<iFormItem v-if='partProjTypes.JINLINGJIANHAOGENGGAI == detailData.partProjectType' :label="language('YUANLINGJIANHAO', '原FS/GS号') + ':'">
-							<iInput class="removeInputDisabelColor" disabled search v-model="detailData.oldFsnrGsnrNum"> <i class="el-icon-search el-input__icon" slot="suffix" @click="()=>{selectOldParts.show=true}"></i></iInput>	
+							<iInput class="removeInputDisabelColor" disabled search v-model="detailData.oldFsnrGsnrNum"> <i class="el-icon-search el-input__icon cursor" slot="suffix" @click="openDiologOldParts"></i></iInput>	
 						</iFormItem>
 					</div>
 					<div class="col">
-						<iFormItem label="FSNR/GSNR/SPNR：" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_FSNRGSNRSPNR">
+						<iFormItem label="FSNR/GSNR/SPNR：" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_FSNRGSNRSPNR">
+							<iText >
 								{{ detailData.fsnrGsnrNum }}
 							</iText>
 						</iFormItem>
 						
-						<iFormItem :label="language('LK_LINGJIANLEIXING','零件类型') + ':'" name="test">
-							<iSelect v-model="detailData.partType" v-permission="PARTSPROCURE_EDITORDETAIL_PARTTYPE">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_PARTTYPE" :label="language('LK_LINGJIANLEIXING','零件类型') + ':'" name="test">
+							<iSelect v-model="detailData.partType" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PART_TYPE" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="language('LK_DANWEI','价格单位') + ':'" name="test">
-							<iSelect v-model="detailData.unit" v-permission="PARTSPROCURE_EDITORDETAIL_UNIT">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_UNIT" :label="language('LK_DANWEI','价格单位') + ':'" name="test">
+							<iSelect v-model="detailData.unit" >
 								<el-option :value="item.code" :label="item.name" v-for="(item, index) in fromGroup.UNIT"
 									:key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="language('LK_MTZLINGJIAN','MTZ零件') + ':'" name="test">
-							<iSelect v-model="detailData.mtz" v-permission="PARTSPROCURE_EDITORDETAIL_MTZPARTS">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_MTZPARTS" :label="language('LK_MTZLINGJIAN','MTZ零件') + ':'" name="test">
+							<iSelect v-model="detailData.mtz" >
 								<el-option :value="true" label="是"></el-option>
 								<el-option :value="false" label="否"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="Heavy Item List:" name="">
+						<iFormItem v-permission="PARTSPROCURE_BASIC_HEVAYITEMLIST" label="Heavy Item List:" name="">
 							<iText>
 								{{ detailData.heavyItem || "否" }}
 							</iText>
 						</iFormItem>
 						<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
-						<iFormItem :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
 							<iSelect v-model="detailData.procureFactory"
 								@change="checkFactory()"
-								v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY">
+								>
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index">
 								</el-option>
@@ -188,31 +187,31 @@
 						</iFormItem>
 					</div>
 					<div class="col">
-						<iFormItem :label="language('LK_XUNJIACAIGOUYUAN','询价采购员') + ':'" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_INQUIRYBUYER">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_INQUIRYBUYER" :label="language('LK_XUNJIACAIGOUYUAN','询价采购员') + ':'" name="test">
+							<iText >
 								{{ detailData.buyerName }}
 							</iText>
 						</iFormItem>
-						<iFormItem :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
 							<iSelect v-model="detailData.linieDept"
-								v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT">
+								>
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="LINIE：" name="test">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINE" label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieId" v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
+							<iSelect v-model="detailData.linieId" >
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.LINIE"
 									:key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
-							<iSelect v-model="detailData.cfController" v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER" :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
+							<iSelect v-model="detailData.cfController" >
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="language('LINGJIANCHENGBENFENXIYUAN', '零件成本分析员') + ':'" name=''>
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINGJIANCHENGBENFENXIYUAN" :label="language('LINGJIANCHENGBENFENXIYUAN', '零件成本分析员') + ':'" name=''>
 							<!-- <iSelect class="multipleSelect" v-model="detailData.c" multiple collapse-tags>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect> -->
@@ -220,7 +219,7 @@
 								{{ detailData.partCostUserName }}
 							</iText>
 						</iFormItem>
-						<iFormItem :label="language('MUJUCHENGBENFENXIYUAN', '模具成本分析员') + ':'" name=''>
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_MOJUCHENGBENFENXIYUAN"  :label="language('MUJUCHENGBENFENXIYUAN', '模具成本分析员') + ':'" name=''>
 							<!-- <iSelect class="multipleSelect" v-model="detailData.d" multiple collapse-tags>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect> -->
@@ -228,7 +227,7 @@
 								{{ detailData.mouldCostUserName }}
 							</iText>
 						</iFormItem>
-						<iFormItem name="test">
+						<iFormItem name="test" v-permission="PARTSPROCURE_EDITORDETAIL_COMMINSOURCING">
 							<template slot="label">
 								<span>Common Sourcing:</span>
 								<span>
@@ -259,22 +258,22 @@
 								{{ detailData.signDate }}
 							</iText>
 						</iFormItem>
-						<iFormItem :label="language('LK_SOPRIQI','SOP日期') + ':'" name="test">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE" :label="language('LK_SOPRIQI','SOP日期') + ':'" name="test">
 							<!----------------------------------------------------------------------------------------------->
 							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
 							<!----------------------------------------------------------------------------------------------->
 							<iDatePicker v-if='currentSupplierButton' v-model='detailData.sopDate' type="date"></iDatePicker>
-							<iText v-else v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE">
+							<iText v-else >
 								{{ detailData.sopDate }}
 							</iText>
 						</iFormItem>
-						<iFormItem :label="language('partsprocure.PARTSPROCUREPARTSTATUSNAME','零件采购项目状态') + ':'" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTSTATUS">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_PARTSTATUS" :label="language('partsprocure.PARTSPROCUREPARTSTATUSNAME','零件采购项目状态') + ':'" name="test">
+							<iText>
 								{{ detailData.statusDesc }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="BMG：" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_BMG">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_BMG" label="BMG：" name="test">
+							<iText >
 								{{ fillterss(detailData.bmg) }}
 							</iText>
 						</iFormItem>
@@ -314,7 +313,7 @@
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_CAILIAOZUXINXI','材料组信息')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFORMATION">
-				<materialGroupInfo :params="infoItem" />
+				<materialGroupInfo ref='materialGroupInfo' :params="infoItem" />
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN">
@@ -453,6 +452,10 @@
 			this.getDicts()
 		},
 		methods: {
+			openDiologOldParts(){
+				if(this.detailData.procureFactory == '') return  iMessage.warn(this.language('NINDANGQIANWEIXUANZE','您当前还未选择采购工厂，请选择后重试！'))
+				this.selectOldParts.show = true
+			},
 			filterProjectList(a,b){
 				return filterProjectList(a,b)
 			},
@@ -535,6 +538,7 @@
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
 					}
+					this.$refs.materialGroupInfo.getMaterialGroup()
 				});
 			},
 			getProcureGroup() {

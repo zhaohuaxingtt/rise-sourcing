@@ -2,13 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-19 18:52:17
+ * @LastEditTime: 2021-08-27 12:31:06
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
 
 <template>
-  <iPage class="historyProcessDB" v-permission="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB">
+<!------v-permission="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB"------>
+  <iPage class="historyProcessDB" >
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
         <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
@@ -37,7 +38,6 @@
 <script>
 import { iSearch, iSelect, iInput, iButton, iMessage, iPage } from 'rise'
 import { searchListPro, searchListPart } from './data'
-import { cloneDeep } from 'lodash' 
 import productGroup from './components/productGroup'
 import part from './components/part'
 import { getCarTypePro, getProductGroupAll } from '@/api/project'
@@ -58,14 +58,16 @@ export default {
   },
   computed: {
     searchList() {
-      return this.searchParams.level === '1' ? cloneDeep(searchListPro) : cloneDeep(searchListPart)
+      // eslint-disable-next-line no-undef
+      return this.searchParams.level === '1' ? _.cloneDeep(searchListPro) : _.cloneDeep(searchListPart)
     }
   },
   created() {
     this.searchParams = {
-      level: '1',
+      level: this.$route.query.level || '1',
       // productGroup: this.$route.query.productGroup || '',
-      productGroup: ''
+      productGroup: '',
+      sixPartCode: ''
     }
     this.getCarProjectOptions()
     this.getProductGroupAll()

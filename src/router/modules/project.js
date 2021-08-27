@@ -87,6 +87,17 @@ export default [
           title: "项目管理-项目进度监控",
         },
         component: () => import("@/views/project/progressmonitoring"),
+        redirect: "/projectprogressmonitoring/home",
+        children: [
+          {
+            path: "home",
+            name: "progressmonitoring-monitoring",
+            meta: {
+              title: "项目管理-项目进度监控",
+            },
+            component: () => import("@/views/project/progressmonitoring/home"),
+          }
+        ]
       },
       {
         path: "/projectprogressreport",

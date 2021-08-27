@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-19 18:06:50
+ * @LastEditTime: 2021-08-25 16:33:18
  * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
@@ -76,10 +76,10 @@ export default {
             settings: {
                panes: {
                   filters: {
-                     visible: true
+                     visible: false
                   },
                   pageNavigation: {
-                     visible: true
+                     visible: false
                   }
                }
             }
@@ -245,7 +245,7 @@ export default {
       reset(){
          this.selectDate=[]
          this.filterCarValue=[]
-         this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
+         this.config.pageName=""
          this.renderBi()
       },
       // 初始化配置
@@ -257,21 +257,29 @@ export default {
          this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       },
       renderBi() {
+         let filterArr=[]
          this.filter.values=[this.categoryCode]
-         this.filter_car.values=this.filterCarValue
+         filterArr.push(this.filter)
+         // 如果有车型
+         if(this.filterCarValue.length>0){
+            this.filter_car.values=this.filterCarValue
+            filterArr.push(this.filter_car)
+         }
          if(this.selectDate.length){
             this.filter_time_start.values=[this.selectDate[0]]
             this.filter_time_end.values=[this.selectDate[1]]
-         } 
+            filterArr.push(this.filter_time_start)
+            filterArr.push(this.filter_time_end)
+         } else{
+            this.filter_time_start.values=[]
+            this.filter_time_end.values=[]
+         }
          var report = this.powerbi.embed(this.reportContainer, this.config);
-
-         console.log( this.filter,this.filter_car,this.filter_time_start)
-
          // Report.off removes a given event handler if it exists.
          report.off("loaded");
          // Report.on will add an event handler which prints to Log window.
          report.on("loaded", ()=> {
-            report.setFilters([this.filter,this.filter_car,this.filter_time_start,this.filter_time_end])
+            report.setFilters(filterArr)
          });
          // Report.off removes a given event handler if it exists.
          report.off("rendered");
@@ -295,6 +303,7 @@ export default {
             }
          });
          this.report=report
+         document.getElementsByTagName('iframe')[0].style.border = 'none'
       },
       // 返回
       back(){
