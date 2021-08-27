@@ -2,24 +2,37 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-08-05 15:47:10
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
   <div>
-    <el-form label-position="left" label-width="50">
-      <el-row type="flex" justify="space-between" align="middle">
+    <el-form label-position="left"
+             label-width="50">
+      <el-row type="flex"
+              justify="space-between"
+              align="middle">
         <el-col :span="5">
           <el-form-item :label="language('CAILIAOZU','材料组')">
-            <iSelect @change="getTableList" :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
-              <el-option :value="item.categoryCode" :label="item.categoryName" v-for="item of formGoup.materialGroupList" :key="item.categoryCode"></el-option>
+            <iSelect @change="getTableList"
+                     :placeholder="language('QXZCLZ','请选择材料组')"
+                     v-model="form.materialGroupCode">
+              <el-option :value="item.categoryCode"
+                         :label="item.categoryName"
+                         v-for="item of formGoup.materialGroupList"
+                         :key="item.categoryCode"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
         <el-col :span="5">
           <el-form-item :label="language('CHEXING','车型')">
-            <iSelect @change="getTableList" :placeholder="language('QXZCX','请选择车型')" v-model="form.motorId">
-              <el-option :value="item.vwModelCode" :label="item.modelNameZh" v-for="item of formGoup.carTypeList" :key="item.vwModelCode"></el-option>
+            <iSelect @change="getTableList"
+                     :placeholder="language('QXZCX','请选择车型')"
+                     v-model="form.motorId">
+              <el-option :value="item.vwModelCode"
+                         :label="item.modelNameZh"
+                         v-for="item of formGoup.carTypeList"
+                         :key="item.vwModelCode"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
@@ -41,50 +54,70 @@
       </el-row>
     </el-form>
 
-    <el-table class="elTable" v-loading="tableLoading" @selection-change="handleSelectionChange" :data="tableListData" style="width: 100%">
-      <el-table-column type="selection" width="55">
+    <el-table class="elTable"
+              v-loading="tableLoading"
+              @selection-change="handleSelectionChange"
+              :data="tableListData"
+              style="width: 100%">
+      <el-table-column type="selection"
+                       width="55">
       </el-table-column>
-      <el-table-column type="index" :index="indexMethod" label="#" width="55"> </el-table-column>
-      <el-table-column :label="language('LINGJIAN','零件')" prop="date">
+      <el-table-column type="index"
+                       :index="indexMethod"
+                       label="#"
+                       width="55"> </el-table-column>
+      <el-table-column :label="language('LINGJIAN','零件')"
+                       prop="date">
         <template slot-scope="scope">
           <div>{{scope.row.partNumber}}</div>
           <div>{{scope.row.partName}}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('CAILIAOZU','材料组')" prop="materialGroup">
+      <el-table-column :label="language('CAILIAOZU','材料组')"
+                       prop="materialGroup">
         <template slot-scope="scope">
           <div>{{scope.row.materialGroup}}</div>
           <div>{{scope.row.stuffGroup}}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('CHEXINGXINGXI','车型信息')" prop="name">
+      <el-table-column :label="language('CHEXINGXINGXI','车型信息')"
+                       prop="name">
         <template slot-scope="scope">
           <div>{{scope.row.motorName}}</div>
           <div>{{scope.row.motorProject}}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('PINGPAIPINGTAI','品牌/平台')" prop="name">
+      <el-table-column :label="language('PINGPAIPINGTAI','品牌/平台')"
+                       prop="name">
         <template slot-scope="scope">
           <div>{{scope.row.brand}}</div>
           <div>{{scope.row.platform}}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('JIEBIELEIXING','级别/类型')" prop="name">
+      <el-table-column :label="language('JIEBIELEIXING','级别/类型')"
+                       prop="name">
         <template slot-scope="scope">
           <div>{{scope.row.position}}</div>
           <div>{{scope.row.type}}</div>
         </template>
       </el-table-column>
-      <el-table-column width="300" :label="language('CHEXINGXINGXI','车型信息')">
+      <el-table-column width="300"
+                       :label="language('CHEXINGXINGXI','车型信息')">
         <template slot="header">
           <div>{{language('CHEXINGXINGXI','车型信息')}}</div>
           <div class="flex-between-center-center margin-top10">
             <div>{{language('PEIZHIXINGXI','配置信息')}}</div>
-            <icon name="iconMEK-xuxian" symbol />
+            <icon name="iconMEK-xuxian"
+                  symbol />
             <div class="flex-between-center-center">
               <span>{{language('CHUANDONG','EBR')}}</span>
-              <el-popover trigger="hover" placement="top-start" :content="language('SBXTZBFBSCXFCGLGLJSZCX','鼠标悬停在百分比上出现浮窗，高亮出该零件所在车型')">
-                <icon slot="reference" symbol name="iconxinxitishi" class="font-size16 margin-left5" />
+              <el-popover trigger="hover"
+                          placement="top-start"
+                          :content="language('SBXTZBFBSCXFCGLGLJSZCX','鼠标悬停在百分比上出现浮窗，高亮出该零件所在车型')">
+                <icon slot="reference"
+                      symbol
+                      name="iconxinxitishi"
+                      class="font-size16 margin-left5" />
               </el-popover>
             </div>
           </div>
@@ -93,26 +126,38 @@
           <div class="flex-between-center-center">
             <div v-if="isEdit">{{scope.row.carTypeInfo}}</div>
             <div v-else>
-              <iSelect :loading="carTypeInfoLoading" @focus="getCarTypeMessage(scope.row.motorSvwCode)" :placeholder="language('QINGXUANZHE','请选择')" v-model="scope.row.carTypeInfo">
-                <el-option :value="item.carTypeInfo" :label="item.carTypeInfo" v-for="(item,index) of formGoup.carTypeInfoList" :key="index"></el-option>
+              <iSelect :loading="carTypeInfoLoading"
+                       @focus="getCarTypeMessage(scope.row.motorSvwCode)"
+                       :placeholder="language('QINGXUANZHE','请选择')"
+                       v-model="scope.row.carTypeInfo">
+                <el-option :value="item.carTypeInfo"
+                           :label="item.carTypeInfo"
+                           v-for="(item,index) of formGoup.carTypeInfoList"
+                           :key="index"></el-option>
               </iSelect>
             </div>
-            <el-popover trigger="hover" placement="top-start">
+            <el-popover trigger="hover"
+                        placement="top-start">
               <div class="tip-box">
                 <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
-                <div v-for="(item,index) in scope.row.configurationList" :key="index" :class="item.isHighlight?'highlight':'black'">{{item.configuration}}</div>
+                <div v-for="(item,index) in scope.row.configurationList"
+                     :key="index"
+                     :class="item.isHighlight?'highlight':'black'">{{item.configuration}}</div>
               </div>
               <div slot="reference">{{scope.row.transmission}}</div>
             </el-popover>
           </div>
         </template>
       </el-table-column>
-      <el-table-column width="250" :label="language('JIAGEXINGXI','价格信息')" prop="name">
+      <el-table-column width="250"
+                       :label="language('JIAGEXINGXI','价格信息')"
+                       prop="name">
         <template slot="header">
           <div>{{language('JIAGEXINGXI  ','价格信息')}}</div>
           <div class="flex-between-center-center margin-top10">
             <div>{{language('SOPXINGXI','SOP信息')}}</div>
-            <icon name="iconMEK-xuxian" symbol />
+            <icon name="iconMEK-xuxian"
+                  symbol />
             <div>{{language('DANGQIANJIAGE','当前价格')}}</div>
           </div>
         </template>
@@ -130,16 +175,20 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('GONGYINGSHANGXINGXI','供应商信息')" prop="name">
+      <el-table-column :label="language('GONGYINGSHANGXINGXI','供应商信息')"
+                       prop="name">
         <template slot-scope="scope">
           <div>{{scope.row.supplierCode}}</div>
           <div>{{scope.row.supplierName}}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('XIANSHIYINGCHANG','显示/隐藏')" prop="isHidden">
+      <el-table-column :label="language('XIANSHIYINGCHANG','显示/隐藏')"
+                       prop="isHidden">
         <template slot-scope="scope">
-          <div class="cursor" @click="handleIsHidden(scope.row)">
-            <icon :name="scope.row.isHidden?'iconxianshi':'iconyincang'" symbol />
+          <div class="cursor"
+               @click="handleIsHidden(scope.row)">
+            <icon :name="scope.row.isHidden?'iconxianshi':'iconyincang'"
+                  symbol />
           </div>
         </template>
       </el-table-column>
@@ -147,7 +196,15 @@
     <addPartDialog v-model="addPartDialog" />
     <!-- <changeLogDialog v-model="changeLogDialog" /> -->
     <iLog :show.sync="changeLogDialog" :bizId="bizId"  />
-    <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page='page.currPage' :total="page.totalCount" />
+    <iPagination v-update
+                 @size-change="handleSizeChange($event, getTableList)"
+                 @current-change="handleCurrentChange($event, getTableList)"
+                 background
+                 :page-sizes="page.pageSizes"
+                 :page-size="page.pageSize"
+                 :layout="page.layout"
+                 :current-page='page.currPage'
+                 :total="page.totalCount" />
   </div>
 </template>
 
@@ -167,7 +224,7 @@ export default {
   // import引入的组件需要注入到对象中才能使用
   mixins: [pageMixins, resultMessageMixin],
   components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, changeLogDialog, iLog },
-  data() {
+  data () {
     // 这里存放数据
     return {
       bizId: 'MEK0000001',
@@ -197,14 +254,14 @@ export default {
   // 方法集合
   methods: {
     // 添加
-    handleAdd() {
+    handleAdd () {
       this.addPartDialog = true
     },
-    handleLog() {
+    handleLog () {
       this.changeLogDialog = true
     },
     // 获取材料组
-    async categoryList() {
+    async categoryList () {
       try {
         const res = await categoryList({})
         this.formGoup.materialGroupList = res.data
@@ -213,16 +270,16 @@ export default {
       }
     },
     // 获取车型
-    async handleCarType() {
+    async handleCarType () {
       const res = await carTypeList({})
       this.formGoup.carTypeList = res.data
     },
     // 编辑
-    edit() {
+    edit () {
       this.isEdit = !this.isEdit
     },
     // 是否隐藏
-    async handleIsHidden(item) {
+    async handleIsHidden (item) {
       console.log(item);
       let pms = item
       pms.effectFlag = 1
@@ -233,16 +290,16 @@ export default {
       })
     },
     // 获取车型信息集合
-    async getCarTypeMessage(val) {
+    async getCarTypeMessage (val) {
       this.formGoup.carTypeInfoList = []
       this.carTypeInfoLoading = true
-      const res = await getCarTypeMessage({ motorSvwCode: val })
+      const res = await getCarTypeMessage({ motorS: val })
       res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
       this.formGoup.carTypeInfoList = res.data
       this.carTypeInfoLoading = false
     },
     // 获取列表集合
-    async getTableList() {
+    async getTableList () {
       try {
         this.tableLoading = true
         const pms = {
@@ -265,7 +322,7 @@ export default {
       }
     },
     // 导出
-    async handleExport() {
+    async handleExport () {
       const res = await mekInfoList({
         pageNo: 1,
         pageSize: this.page.totalCount,
@@ -289,7 +346,7 @@ export default {
       excelExport(excelList, this.tableTitle)
     },
     // 保存
-    async handleSave() {
+    async handleSave () {
       let pms = this.tableListData
       pms.map(item => {
         let strs = item.carTypeInfo.split("+");
@@ -304,11 +361,11 @@ export default {
         this.isEdit = true
       })
     },
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.selectTableData = val
     },
     // 删除
-    async handleDelete() {
+    async handleDelete () {
       if (!this.selectTableData.length) {
         iMessage.warm(this.language('QXZYTSJSC', '请选择一条数据删除'))
         return
@@ -324,13 +381,13 @@ export default {
     },
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {
+  created () {
     this.categoryList()
     this.handleCarType()
     this.getTableList()
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
+  mounted () {
 
   },
 }

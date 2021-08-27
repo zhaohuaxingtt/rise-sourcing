@@ -36,11 +36,11 @@ export const TAB = [
 ]
 
 export const filterRole = function(role = {}){
-    console.log(role);
     TAB.map((item)=>{
         for(let key  in role){
-            if(role[key]) item.show = item.role.includes(key);
-            
+            if(role[key] && item.role.includes(key)) {
+                item.show = true;
+            } 
         }
     })
     const filterTab = TAB.filter((item)=>item.show);
