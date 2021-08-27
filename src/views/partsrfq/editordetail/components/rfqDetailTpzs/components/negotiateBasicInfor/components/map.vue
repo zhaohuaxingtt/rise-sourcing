@@ -2,13 +2,11 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 16:28:01
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Descripttion: 总览
 -->
 <template>
-  <div ref="charMap"
-       id="container"
-       class="amap-wrapper" />
+  <div ref="charMap" id="container" class="amap-wrapper" />
 </template>
 
 <script>
@@ -28,7 +26,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       lg: lg,
       highlight: highlight,
@@ -39,42 +37,42 @@ export default {
     }
   },
   watch: {
-    '$i18n.locale' (newValue) {
+    '$i18n.locale'(newValue) {
       this.handleMap();
     },
     mapListData: {
-      handler (objects) {
+      handler(objects) {
         const data = cloneDeep(objects)
         console.log(data);
         var sum = 0
 
         this.svwData = data.purchaseDataList
         this.tableData = data.offerDataList
-        this.tableData.forEach(item => {
+        this.tableData && this.tableData.forEach(item => {
           sum = sum + item.toAmount
         })
-        this.tableData.map(item => {
+        this.tableData && this.tableData.map(item => {
           item.symbolSize = item.toAmount / sum * 100 / 5
           item.toAmount = String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'
           return item.value = [item.lon, item.lat]
         })
-        this.svwData.map(item => {
+        this.svwData && this.svwData.map(item => {
           return item.value = [item.lon, item.lat]
         })
-        if (this.$refs.charMap && (this.tableData.length || this.svwData)) {
+        if (this.$refs.charMap && (this.tableData || this.svwData)) {
           this.handleMap()
         }
       },
       deep: true,
     }
   },
-  created () {
+  created() {
   },
-  mounted () {
+  mounted() {
     this.handleMap()
   },
   methods: {
-    handleMap () {
+    handleMap() {
       console.log('creat map');
       // 初始化地图
       var map = new AMap.Map('container', {
@@ -91,7 +89,7 @@ export default {
         mapStyle: 'amap://styles/macaron'
       });
       // 圆点
-      this.tableData.map((item, index) => {
+      this.tableData && this.tableData.map((item, index) => {
         let carTypeList = ''
         item.carTypeProjectList.forEach((val, index) => {
           carTypeList += item.carTypeProjectList.length - 1 > index ? val + ' | ' : val
@@ -150,7 +148,7 @@ export default {
         });
       })
       // svw图标
-      this.svwData.map(item => {
+      this.svwData && this.svwData.map(item => {
         let carTypeList = ''
         item.carTypeProjectList.forEach((val, index) => {
           carTypeList += item.carTypeProjectList.length - 1 > index ? val + ' | ' : val
