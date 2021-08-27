@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-25 10:23:01
+ * @LastEditTime: 2021-08-26 17:42:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -86,7 +86,11 @@ export default {
   },
   methods: {
     initCharts () {
-      this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+      if (this.maxWidth === 1) {
+        this.$refs.chart.style.width = this.maxWidth * 240 + 'px';
+      } else {
+        this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+      }
       this.$refs.chart.style.minWidth = '100%';
       this.myChart = echarts().init(this.$refs.chart);
       this.option = {
@@ -118,7 +122,7 @@ export default {
           },
         ],
         grid: {
-          left: 20,
+          left: 0,
           right: 0,
           bottom: "15%",
           top: "30%",
@@ -141,7 +145,7 @@ export default {
           axisTick: {
             show: false,
           },
-          offset: 0,
+          offset: -15,
           splitNumber: 4,
           nameLocation: "start",
         },
@@ -152,10 +156,10 @@ export default {
             emphasis: {
               focus: "series",
             },
-            barCategoryGap: '50%',
+            // barCategoryGap: '50%',
             // barMinWidth: 30,
             // // barMaxWidth: 30,
-            // barWidth: 30,
+            barWidth: 30,
             itemStyle: {
               barBorderRadius: [5, 5, 0, 0],
             },

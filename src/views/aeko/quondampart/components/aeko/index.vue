@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:18
- * @LastEditTime: 2021-08-24 15:27:02
+ * @LastEditTime: 2021-08-26 16:28:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\aeko\index.vue
@@ -9,18 +9,20 @@
 <template>
   <iCard class="margin-top20" :title="language('ZHIDINGAEKOKUYUANLINGJIAN', '指定AEKO库原零件')">
     <template #header-control>
-       <iButton >{{ language("DAOCHU", "导出") }}</iButton>
+       <iButton :disabled="ledgerSelection.length > 0">{{ language("DAOCHU", "导出") }}</iButton>
     </template>
 
     <div class="body">
       <tableList
+        ref="aekoTable"
         class="table"
         index
         :lang="true"
-        :tableData="tableListData"
+        :tableData="tableData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange"
+        :selectable="selectInit"
         ></tableList>
 
         
@@ -54,21 +56,41 @@ export default {
     iCard,iButton,iPagination,
     tableList,
   },
+  props:{
+    tableData:{
+      type:Array,
+      default:()=>[],
+    },
+    ledgerSelection:{
+      type:Array,
+      default:()=>[],
+    }
+  },
   data(){
     return{
       loading:false,
-      tableListData:[],
       tableTitle:aekoPartTableTitle,
-      multipleSelection: [],
     }
   },
   methods:{
     handleSelectionChange(list) {
-      this.multipleSelection = list
+      this.$emit('changeAekoSelection',list);
+    },
+
+    // 勾选限制
+    selectInit(row){
+      const idArr = this.ledgerSelection.map((item)=>item.id);
+      // 判断台账零件列表是否已存在相同原零件 若存在 则不勾选
+      if(!idArr.includes(row.id)){
+        return true
+      }else{
+        return false
+      }
     },
 
     getList(){
-
+      const data = {};
+      this.$emit('getAekoList',data);
     },
   }
 }

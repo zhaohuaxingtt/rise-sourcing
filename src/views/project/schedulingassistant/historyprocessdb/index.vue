@@ -2,13 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-23 17:16:25
+ * @LastEditTime: 2021-08-27 12:31:06
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
 
 <template>
-  <iPage class="historyProcessDB" v-permission="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB">
+<!------v-permission="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB"------>
+  <iPage class="historyProcessDB" >
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
         <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
@@ -63,9 +64,10 @@ export default {
   },
   created() {
     this.searchParams = {
-      level: '1',
+      level: this.$route.query.level || '1',
       // productGroup: this.$route.query.productGroup || '',
-      productGroup: ''
+      productGroup: '',
+      sixPartCode: ''
     }
     this.getCarProjectOptions()
     this.getProductGroupAll()
