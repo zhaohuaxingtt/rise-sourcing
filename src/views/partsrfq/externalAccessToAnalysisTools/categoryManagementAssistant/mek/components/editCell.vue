@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:16:19
- * @LastEditTime: 2021-08-19 14:56:42
+ * @LastEditTime: 2021-08-27 14:53:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\editcell.vue
@@ -80,6 +80,7 @@ export default {
         return this.value;
       },
       set (val) {
+        console.log(val)
         this.$emit("input", val);
       }
     },

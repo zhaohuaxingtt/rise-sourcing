@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-08-27 14:22:21
+ * @LastEditTime: 2021-08-27 18:27:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -10,10 +10,11 @@
 
   <iCard class="tableList">
     <template v-slot:header>
-      <div class="titleBox">
+      <div class="titleBox"
+           v-if="!preview">
         <div v-if="!editFlag">
           <iButton @click="addRow">新增</iButton>
-          <iButton @delete="del">删除</iButton>
+          <iButton @click="del">删除</iButton>
           <iButton @click="edit">编辑</iButton>
         </div>
         <div v-else>
@@ -67,6 +68,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    preview: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -84,6 +89,9 @@ export default {
           this.gridData1 = [...this.gridData1]
         }
       }
+    },
+    preview (val) {
+      console.log(val,"111111")
     },
     gridData: {
       handler (newVal) {
@@ -110,6 +118,7 @@ export default {
         }
       },
       deep: true,
+      immediate: true
     }
   },
   data () {
@@ -129,7 +138,6 @@ export default {
     //   row.editMode = false;
     // },
     handleSelectionChange (val) {
-      console.log(val)
       this.multipleSelection = val;
     },
     edit () {
@@ -139,7 +147,17 @@ export default {
       this.editFlag = false
     },
     del () {
-
+      let textTypeId = []
+      this.multipleSelection.forEach(item => {
+        textTypeId.push(item.textTypeId)
+      })
+      deleteMekTable({
+        comparedType: this.$parent.$parent.comparedType,
+        schemeId: this.$parent.$parent.chemeId,
+        textTypeId
+      }).then(res => {
+        this.$parent.$parent.getMekTable()
+      })
     },
     //表格保存
     saveTable () {
@@ -171,17 +189,20 @@ export default {
       })
     },
     addRow () {
-      this.addRowList = {}
+      let addRowList = {}
       this.gridData.title.forEach(item => {
-        this.addRowList[item.label] = ""
-        this.addRowList['id#' + item.label.split("#")[1]] = ""
-        this.addRowList.editMode = false
+        addRowList[item.label] = ""
+        addRowList['id#' + item.label.split("#")[1]] = ""
+        addRowList.editMode = false
       })
       if (!this.gridData1) {
-        this.gridData1.push(this.addRowList)
+        this.gridData1.push(addRowList)
+        this.gridData1 = [...this.gridData1]
       } else {
-        this.gridData1.push(this.addRowList)
+        this.gridData1.push(addRowList)
+        this.gridData1 = [...this.gridData1]
       }
+
       console.log(this.gridData1)
     },
   },

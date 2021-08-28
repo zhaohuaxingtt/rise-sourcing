@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-26 17:42:07
+ * @LastEditTime: 2021-08-27 18:13:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -10,9 +10,6 @@
   <div>
     <div style="height: 440px;width:100%"
          ref="chart"></div>
-    <div>
-
-    </div>
   </div>
 </template>
 
@@ -77,6 +74,8 @@ export default {
           });
         }
       },
+      immediate: true,
+      deep:true
     }
   },
   mounted () {
@@ -86,12 +85,13 @@ export default {
   },
   methods: {
     initCharts () {
+      console.log(111)
       if (this.maxWidth === 1) {
-        this.$refs.chart.style.width = this.maxWidth * 240 + 'px';
+        this.$refs.chart.style.width = '240px'
       } else {
         this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
       }
-      this.$refs.chart.style.minWidth = '100%';
+
       this.myChart = echarts().init(this.$refs.chart);
       this.option = {
         title: {

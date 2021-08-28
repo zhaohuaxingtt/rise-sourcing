@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-06 15:34:45
- * @LastEditTime: 2021-08-26 16:51:33
+ * @LastEditTime: 2021-08-27 18:50:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\categoryManagementAssistant\mek\index.js
@@ -95,6 +95,14 @@ export function queryCal(params) {
 export function queryPartEbr(params) {
   return request({
     url: '/mekScheme/queryPartEbr',
+    method: 'POST',
+    data: params,
+  })
+}
+//更新MEK分析方案详情
+export function updateScheme(params) {
+  return request({
+    url: '/mekScheme/updateScheme',
     method: 'POST',
     data: params,
   })

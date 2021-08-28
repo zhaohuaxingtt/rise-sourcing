@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-27 14:32:34
+ * @LastEditTime: 2021-08-28 10:48:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -28,7 +28,8 @@
           <iButton @click="handleMEKInfo"
                    class="margin-left30">{{ $t("MEK基础数据库") }}</iButton>
           <!--BoB分析库-->
-          <iButton class="margin-left30">{{ $t("预览") }}</iButton>
+          <iButton class="margin-left30"
+                   @click="preview">{{ $t("预览") }}</iButton>
           <!--查找零件-->
           <iButton class="margin-left30"
                    @click="saveDialog">{{ $t("保存") }}</iButton>
@@ -72,7 +73,8 @@
                   <!--零件六位号-->
                   <el-form-item :label="$t('零件六位号')">
                     <el-select v-model="partNumber"
-                               multiple>
+                               multiple
+                               @change="changePartNumber">
                       <el-option v-for="item in recursiveRetrieveList"
                                  :key="item.partId"
                                  :value="item.partSixNumber"
@@ -262,6 +264,18 @@
       <detailDialog :detailVisible="detailVisible"
                     :detailsData="detailsData"
                     @input="closeModalDialog1"></detailDialog>
+      <preview v-if="previewFlag"
+               :value="previewFlag"
+               :firstBarData="firstBarData"
+               :chartItemWidth="chartItemWidth"
+               :barData="barData"
+               :gridData="gridData"
+               :partNumber="partNumber"
+               @closeDialog="closeDialog"
+               :maxWidth="maxWidth"
+               :targetMotorName="targetMotorName"
+               :mekpriceType="mekpriceType"
+               :preview="true"></preview>
     </div>
   </iPage>
 </template>
@@ -273,7 +287,8 @@ import datasetBar1 from "../components/datasetBar1";
 import tableList from "../components/tableList";
 import modalDialog from "../components/modalDialog";
 import detailDialog from "../components/detailDialog";
-import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, saveMekTable, deleteMekTable, getSchemeInfo, queryPartEbr, queryCal } from '@/api/categoryManagementAssistant/mek'
+import preview from "../components/preview";
+import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, getSchemeInfo, queryPartEbr, queryCal, updateScheme } from '@/api/categoryManagementAssistant/mek'
 import { getDictByCode } from '@/api/dictionary'
 export default {
   name: "mekDetails",
@@ -289,7 +304,8 @@ export default {
     iDialog,
     iInput,
     modalDialog,
-    detailDialog
+    detailDialog,
+    preview
   },
   data () {
     return {
@@ -345,7 +361,7 @@ export default {
       //比较类型
       comparedType: "",
       //未选中的零件ID
-      exceptPartL: "",
+      exceptPart: "",
       //mek类型list
       mekTypeList: [],
       //"mek价格类型"list
@@ -366,7 +382,11 @@ export default {
       //点击柱状图mek详情
       detailsData: [],
       //查询计算车型List
-      computeModalData: []
+      computeModalData: [],
+      //预览开关
+      previewFlag: false,
+      targetMotorName: "",
+      mekpriceType: ""
 
     };
   },
@@ -483,6 +503,7 @@ export default {
           })
           this.recursiveRetrieveList = res.data
           this.partNumber = _.difference(partNumber, this.exceptPart)
+
         }
       })
     },
@@ -522,6 +543,7 @@ export default {
         return item.categoryCode === val
       })
       this.categoryId = obj.categoryId
+      this.categoryName = obj.categoryName
       let params = {}
       if (this.entryStatus == 1) {
         params = {
@@ -532,7 +554,6 @@ export default {
       } else {
         params = {
           categoryId: this.categoryId,
-
           isBindingRfq: false,
         }
       }
@@ -552,6 +573,12 @@ export default {
     },
     //选择目标车型
     changeTargetMotor (val) {
+      this.TargetMotorList.forEach(item => {
+        if (item.motorId === val) {
+          this.targetMotorName = item.motorName
+        }
+
+      })
       let params = {}
       params = {
         categoryId: this.categoryId,
@@ -589,7 +616,6 @@ export default {
     saveDialog () {
       this.dialogVisible = true
     },
-
     //编辑数据
     editData (val) {
       this.editDataList = val
@@ -621,8 +647,24 @@ export default {
     closeModalDialog1 (val) {
       this.detailVisible = val
     },
+    changePartNumber () {
+      this.exceptPart = []
+      this.recursiveRetrieveList.forEach(item => {
+        this.partNumber.forEach(i => {
+          if (item.partSixNumber === !i) {
+            this.exceptPart.push(i)
+          }
+        })
+      })
+    },
     //价格类型
-    changPriceType () {
+    changPriceType (val) {
+      this.mekpriceTypeList.forEach(item => {
+        if (item.code === val) {
+          this.mekpriceType = item.label
+        }
+
+      })
       let params = {
         comparedType: this.comparedType,
         info: [{
@@ -697,6 +739,43 @@ export default {
     handleMEKInfo () {
       let vwModelCodes = [...this.ComparedMotor, this.targetMotor].toString()
       this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: this.categoryCode, vwModelCodes, chemeId: this.chemeId } })
+    },
+    preview () {
+      this.previewFlag = true
+    },
+    closeDialog (val) {
+      this.previewFlag = val
+    },
+    save () {
+      debugger
+      let params = {
+        categoryCode: this.categoryCode,
+        categoryId: this.categoryId,
+        categoryName: this.categoryName,
+        comparedType: this.comparedType,
+        exceptPart: this.exceptPart,
+        firstComparedConfig: "",
+        secondComparedConfig: "",
+        thirdComparedConfig: "",
+        forthComparedConfig: "",
+        schemeId: this.chemeId,
+        targetMotor: this.targetMotor
+      }
+      if (this.barData[0]) {
+        params.firstComparedMotor = this.barData[0].motorId || ""
+        params.firstComparedPrice = this.barData[0].priceType || ""
+      } else if (this.barData[1]) {
+        params.secondComparedMotor = this.barData[1].motorId || ""
+        params.secondComparedPrice = this.barData[1].priceType || ""
+      } else if (this.barData[2]) {
+        params.thirdComparedMotor = this.barData[2].motorId || ""
+        params.thirdComparedPrice = this.barData[2].priceType || ""
+      } else if (this.barData[3]) {
+        params.forthComparedMotor = this.barData[3].motorId || ""
+        params.forthComparedPrice = this.barData[3].priceType || ""
+      }
+      console.log(params)
+      updateScheme(params).then()
     }
 
   },
