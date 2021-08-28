@@ -7,13 +7,14 @@
         <iSelect
             :placeholder="language('LK_QINGXUANZHE', '请选择')"
             v-model="versionId"
+            @change="detailByBmSerial"
             filterable
             ref="carTypeProjectRef"
             clearable
         >
           <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
+              :value="item.version"
+              :label="item.version"
               v-for="(item, index) in versionList"
               :key="index"
           ></el-option>
@@ -267,11 +268,13 @@ import UnitExplain from "./components/unitExplain";
 import PhotoList from "../components/photoList";
 import {
   detailByBmSerial,
+  bmChangeOrderList,
   findMoldList4Ledger,
   exportsTableList,
   assetTypes,
   craftTypes,
-  getOrderNumPermission
+  getOrderNumPermission,
+  versionCombo
 } from "@/api/ws2/purchase/mouldBook";
 import { getTousandNum, NumFormat } from "@/utils/tool";
 import {Switch, Popover} from "element-ui"
@@ -323,16 +326,28 @@ export default {
 
   created(){
     this.bmSerial = this.$route.query.bmSerial;
-    this.detailByBmSerial();
-    this.findMoldList4Ledger();
+    this.versionCombo();
     this.getDownList();
+    this.bmChangeOrderList();
   },
 
   methods: {
-
+    versionCombo(){
+      versionCombo({bmSerial: this.bmSerial}).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+        if(res.data){
+          this.versionList = res.data;
+          this.versionId = this.versionList[0].version
+          this.detailByBmSerial()
+        }else{
+          iMessage.error(result);
+        }
+      })
+    },
     //  变更单列表跳转
     jumpchangeDetail(){
-      iMessage.warn('功能开发中...');
+      let {href} = this.$router.resolve({path: `/purchase/changeTask`});
+      window.open(href, '_blank');
     },
 
     //  入账单号
@@ -394,11 +409,24 @@ export default {
     },
 
     detailByBmSerial(){
-      detailByBmSerial({bmSerial: this.bmSerial}).then(res => {
+      detailByBmSerial({bmSerial: this.bmSerial, version: this.versionId}).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
         if(res.data){
           this.detailsData = res.data;
+          this.serchTable.bmId = this.detailsData.bmId
+          this.findMoldList4Ledger()
+        }else{
+          iMessage.error(result);
+        }
+      })
+    },
+
+    bmChangeOrderList(){
+      bmChangeOrderList(this.bmSerial).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+        if(res.data){
+          this.detailsBottomTableList = res.data;
         }else{
           iMessage.error(result);
         }
@@ -560,5 +588,9 @@ export default {
     }
   }
 }
-
+.table-link{
+  color: #1763F7;
+  cursor: pointer;
+  text-decoration: underline;
+}
 </style>

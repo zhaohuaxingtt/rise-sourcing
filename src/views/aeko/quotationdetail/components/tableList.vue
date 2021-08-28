@@ -17,7 +17,7 @@
           <!-- :\$index="scope.$index" :row="scope.row" -->
         </template>
         <template #header="scope">
-          <el-popover
+        <el-popover
             placement="top"
             trigger="hover"
             popper-class="tableTitleTip"
@@ -32,7 +32,6 @@
           </el-popover>
         </template>
       </el-table-column>
-      <slot></slot> <!-- 直接传入el-table-column -->
     </template>
   </el-table>
 </template>

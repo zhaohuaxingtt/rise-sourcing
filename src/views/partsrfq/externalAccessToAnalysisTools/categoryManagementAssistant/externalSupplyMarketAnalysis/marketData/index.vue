@@ -11,7 +11,7 @@
     <!--    导航条-->
     <theTabs @handleClick="handleTabsClick"/>
     <!--    搜索栏-->
-    <theSearch :list="searchProps" v-if="showStatus" ref="theSearch"/>
+    <theSearch :list="searchProps" v-if="showStatus" ref="theSearch" @handleSelectSearch="handleSelectSearch"/>
     <div v-loading="chartBoxLoading" style="padding-top: 20px">
       <!--    数据页签栏-->
       <theDataTab :list="dataTabArray" v-if="showStatus" @handleDelete="handleDataTabDelete"/>
@@ -133,13 +133,25 @@ export default {
       this.searchProps = this.searchProps.map(item => {
         switch (item.props) {
           case 'classTypeList':
-            item.options = data.classTypeList;
+            item.options = data.classTypeList.map(item => {
+              return {
+                name: item,
+              };
+            });
             break;
           case 'specsList':
-            item.options = data.specsList;
+            item.options = data.specsList.map(item => {
+              return {
+                name: item,
+              };
+            });
             break;
           case 'professionList':
-            item.options = data.professionList;
+            item.options = data.professionList.map(item => {
+              return {
+                name: item,
+              };
+            });
             break;
           case 'productNameList':
             item.options = data.productNameList;
@@ -154,7 +166,11 @@ export default {
             item.options = data.unitList;
             break;
           case 'areaList':
-            item.options = data.areaList;
+            item.options = data.areaList.map(item => {
+              return {
+                name: item,
+              };
+            });
             break;
           case 'dataSourceList':
             item.options = data.dataSourceList;
@@ -169,6 +185,26 @@ export default {
     // 获取搜索框参数
     getSearchForm() {
       const form = cloneDeep(this.$refs.theSearch.form);
+      if (form.classTypeList && Array.isArray(form.classTypeList)) {
+        form.classTypeList = form.classTypeList.map(item => {
+          return item.name;
+        });
+      }
+      if (form.specsList && Array.isArray(form.specsList)) {
+        form.specsList = form.specsList.map(item => {
+          return item.name;
+        });
+      }
+      if (form.areaList && Array.isArray(form.areaList)) {
+        form.areaList = form.areaList.map(item => {
+          return item.name;
+        });
+      }
+      if (form.professionList && Array.isArray(form.professionList)) {
+        form.professionList = form.professionList.map(item => {
+          return item.name;
+        });
+      }
       if (form.rangeDate && Array.isArray(form.rangeDate)) {
         form['startDate'] = form.rangeDate[0];
         form['endDate'] = form.rangeDate[1];
@@ -254,10 +290,11 @@ export default {
               {confirmButtonText: this.$t('LK_QUEDING'), showCancelButton: false},
           );
         }
-        this.getDataTabArray(res.data);
-        this.chartData = res.data;
-        this.chartBoxLoading = false;
-
+        this.$nextTick(() => {
+          this.getDataTabArray(res.data);
+          this.chartData = res.data;
+          this.chartBoxLoading = false;
+        });
       } catch {
         this.chartData = {};
         this.dataTabArray = [];
@@ -267,9 +304,13 @@ export default {
     setDataTypeDefault({resultList, formProps}) {
       if (Array.isArray(resultList) && resultList.length > 0) {
         this.$refs.theSearch.form[formProps] = resultList.map(item => {
-          return item.dataType;
+          return {name: item.dataType};
         });
       }
+      /* this.$refs.theSearch.showSelectCustom = false;
+       this.$nextTick(() => {
+         this.$refs.theSearch.showSelectCustom = true;
+       });*/
     },
     // 处理保存
     async handleSave() {
@@ -330,6 +371,26 @@ export default {
     setRecentSearchData(data) {
       const copyData = cloneDeep(data);
       if (data) {
+        if (copyData.classTypeList && Array.isArray(copyData.classTypeList)) {
+          copyData.classTypeList = copyData.classTypeList.map(item => {
+            return {name: item};
+          });
+        }
+        if (copyData.specsList && Array.isArray(copyData.specsList)) {
+          copyData.specsList = copyData.specsList.map(item => {
+            return {name: item};
+          });
+        }
+        if (copyData.areaList && Array.isArray(copyData.areaList)) {
+          copyData.areaList = copyData.areaList.map(item => {
+            return {name: item};
+          });
+        }
+        if (copyData.professionList && Array.isArray(copyData.professionList)) {
+          copyData.professionList = copyData.professionList.map(item => {
+            return {name: item};
+          });
+        }
         if (copyData.startDate && copyData.endDate) {
           copyData.rangeDate = [copyData.startDate, copyData.endDate];
           delete copyData.startDate;
@@ -345,6 +406,15 @@ export default {
       this.$router.push({
         path: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis/overView',
       });
+    },
+    handleSelectSearch({value, props}) {
+      let list = [];
+      const copyTwiceSearchProps = window._.cloneDeep(this.copySearchProps);
+      list = copyTwiceSearchProps[props].filter(item => {
+        return item.toLowerCase().indexOf(value.toLowerCase()) > -1;
+      });
+      copyTwiceSearchProps[props] = list;
+      this.setSearchProps(copyTwiceSearchProps);
     },
   },
 };
