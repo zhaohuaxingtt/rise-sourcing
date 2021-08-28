@@ -1,18 +1,14 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:59:13
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 11:31:38
+ * @LastEditors: zbin
+ * @LastEditTime: 2021-08-27 22:18:33
  * @Description: 发送FS确认弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\fsconfirm\index.vue
 -->
 
 <template>
-  <iDialog 
-    :visible.sync="dialogVisible"
-    @close="clearDialog"
-    width="90%"
-  >
+  <iDialog :visible.sync="dialogVisible" @close="clearDialog" width="90%">
     <template slot="title">
       <div class="chosseProGroup">
         <span class="chosseProGroup-title">{{language('CHANGZHOUQICHANPINZUJINDUQUEREN','长周期产品组进度确认')}}</span>
@@ -38,10 +34,10 @@ export default {
   components: { iDialog, iButton, tableList },
   props: {
     dialogVisible: { type: Boolean, default: false },
-    tableListNomi: {type: Array, default: () => []},
-    tableListKickoff: {type: Array, default: () => []},
-    cartypeProId: {type:String},
-    type: {type:String}
+    tableListNomi: { type: Array, default: () => [] },
+    tableListKickoff: { type: Array, default: () => [] },
+    cartypeProId: { type: String },
+    type: { type: String }
   },
   data() {
     return {
@@ -93,7 +89,7 @@ export default {
   &-title {
     font-size: 18px;
     font-weight: 600;
-    color: #000
+    color: #000;
   }
 }
 .tableWrapper {
@@ -106,5 +102,4 @@ export default {
     padding-bottom: 10px;
   }
 }
-
 </style>
