@@ -183,7 +183,7 @@ export default {
     // 跳转零件详情
     jumpPartDetail(row) {
       const route = this.$router.resolve({
-        path: "/supplier/quotationdetail",
+        path: "/sourceinquirypoint/sourcing/supplier/quotationdetail",
         query: { 
           partNum: row.partNum,
           fix: true,

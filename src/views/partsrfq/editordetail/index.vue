@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-08-27 11:10:17
+ * @LastEditTime: 2021-08-30 16:59:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -51,11 +51,10 @@
         <div class="row">
           <div class="col">
             <iFormItem :label="language('LK_RFQBIANHAO','RFQ编号')+':'" name="id">
-              <iText v-permission="PARTSRFQ_EDITORDETAIL_RFQNUMBER">{{ baseInfo.id }}</iText>
+              <iText v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQNUMBER|RFQ编号">{{ baseInfo.id }}</iText>
             </iFormItem>
-            <iFormItem :label="language('LK_RFQMINGCHENG','RFQ名称')+':'" name="rfqName">
-              <iInput v-if="editStatus" v-model="baseInfo.rfqName"
-                      v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
+            <iFormItem v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQNAME|RFQ名称" :label="language('LK_RFQMINGCHENG','RFQ名称')+':'" name="rfqName">
+              <iInput v-if="editStatus" v-model="baseInfo.rfqName"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME">
                 {{ baseInfo.rfqName }}
               </iText>
@@ -345,7 +344,7 @@ export default {
         const res = await addRfq(req)
         this.resultMessage(res)
         this.$router.push({
-          path: `/sourcing/partsrfq/editordetail?id=${res.data.rfqId}`
+          path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${res.data.rfqId}`
         })
         this.getBaseInfo()
         this.tabShowStatus = false

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-21 11:33:22
+ * @LastEditTime: 2021-08-30 12:03:40
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -166,7 +166,7 @@ export default{
     getPorpsNumber(props){return getPorpsNumber(props)},
     optionPage(items,index){
       const router = this.$router.resolve({
-        path:'/supplier/quotationdetail',
+        path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
           rfqId:this.$route.query.id,
           round:this.getbaseInfoData().currentRounds,

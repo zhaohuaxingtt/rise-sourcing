@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-06 15:49:46
- * @LastEditTime: 2021-08-15 11:03:37
+ * @LastEditTime: 2021-08-26 20:28:35
  * @LastEditors: Please set LastEditors
  * @Description: 报表管理
  * @FilePath: /front-web/src/router/modules/reportmanage.js
@@ -10,7 +10,7 @@
 export default [
   // 寻源概览
   {
-    path: "/sourcing/dashboard",
+    path: "/dashboard",
     name: "dashboard",
     component: () => import ("@/layout/default"),
     children: [

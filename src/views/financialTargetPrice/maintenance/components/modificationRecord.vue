@@ -112,7 +112,7 @@ export default {
      * @return {*}
      */    
     openPage() {
-      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: {  }})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/accessorypartdetail', query: {  }})
       window.open(router.href,'_blank')
     },
   }

@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="body margin-top20">
-      <el-table :data="tableListData" @selection-change="selectionChange">
+      <el-table class="table" :data="tableListData" @selection-change="selectionChange">
         <el-table-column :label="language('ZHIZAOCHENGBEN', '制造成本')" align="center">
           <el-table-column type="selection" align="center" width="55"></el-table-column>
           <el-table-column label="#" prop="index" align="center" width="55" ></el-table-column>
