@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-28 11:40:55
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-30 17:51:17
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
 -->
@@ -735,7 +735,7 @@ export default {
       })
     },
     handleMEKInfo () {
-      let vwModelCodes = [...this.ComparedMotor, this.targetMotor].toString()
+      let vwModelCodes = JSON.stringify([...this.ComparedMotor, this.targetMotor])
       this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: this.categoryCode, vwModelCodes, chemeId: this.chemeId } })
     },
     preview () {
