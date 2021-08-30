@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 16:38:55
- * @LastEditTime: 2021-08-19 16:14:34
+ * @LastEditTime: 2021-08-30 17:19:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysis\index.vue
@@ -18,7 +18,7 @@
       <div class="searchBox">
         <el-form :inline="true" :model="searchForm" :label-position="labelPosition" class="demo-form-inline">
           <el-form-item style="marginRight: 53px;" :label="language('CHAILIAOZU', '材料组')">
-            <iSelect v-model="searchForm['categoryCode']" :placeholder="language('QINGXUANZECHAILIAOZU', '请选择材料组')">
+            <iSelect filterable v-model="searchForm['categoryCode']" :placeholder="language('QINGXUANZECHAILIAOZU', '请选择材料组')">
                <el-option value='' label='全部'></el-option>
                <el-option v-for="(item, index) in materialGroupList" :key="index" :value='item.categoryCode' :label='item.categoryName'></el-option>
             </iSelect>
