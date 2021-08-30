@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-26 15:20:37
- * @LastEditors: zbin
- * @LastEditTime: 2021-08-27 22:14:13
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-27 17:28:13
  * @Description: 算法配置按钮
  * @FilePath: \front-web\src\views\project\components\logicSettingBtn\index.vue
 -->
@@ -54,6 +54,9 @@ export default {
         }
       })
     },
+    changeSaveLoading(loading) {
+      this.$refs.logic.changeSaveLoading(loading)
+    }
   }
 }
 </script>

@@ -15,9 +15,10 @@
           </div>
         </div>
       </div>
-      <summary />
       <div v-if="!aPriceChangeMode">
-        <cbdSummary class="margin-top20" topCutLine></cbdSummary>
+        <cbdSummary class="margin-top20" topCutLine />
+        <rawMaterials class="margin-top30" topCutLine />
+        <manufacturingCost class="margin-top30" topCutLine />
       </div>
     </div>
   </iCard>
@@ -26,12 +27,14 @@
 <script>
 import { iCard, iButton, iInput, iText } from "rise"
 import cbdSummary from "./components/cbdSummary"
+import rawMaterials from "./components/rawMaterials"
+import manufacturingCost from "./components/manufacturingCost"
 
 export default {
-  components: { iCard, iButton, iInput, iText, cbdSummary },
+  components: { iCard, iButton, iInput, iText, cbdSummary, rawMaterials, manufacturingCost },
   data() {
     return {
-      aPriceChangeMode: true
+      aPriceChangeMode: false
     }
   }
 }
