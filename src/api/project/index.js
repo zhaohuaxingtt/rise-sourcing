@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-30 23:22:53
+ * @LastEditTime: 2021-08-30 23:24:15
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -68,7 +68,7 @@ export function getOverview() {
 // 获取用户最后一次操作的车型项目 type: 1-产品组  2-零件
 export function getLastOperateCarType(type = 1) {
   return requst({
-    url: '/car-type/userLastOperate/'+type,
+    url: '/car-type/userLastOperate/' + type,
     method: 'GET'
   })
 }
