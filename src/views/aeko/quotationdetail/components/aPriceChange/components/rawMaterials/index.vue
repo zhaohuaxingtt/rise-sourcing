@@ -20,15 +20,15 @@
         <el-table-column :label="language('GONGYINGSHANGMINGCHENG', '供应商名称')" prop="b" align="center" width="92"></el-table-column>
         <el-table-column :label="language('YUANCHANGUO', '原产国')" prop="c" align="center" width="87"></el-table-column>
         <el-table-column :label="language('SHIFOUSVWZHIDINGJIAGESANJIAN', '是否SVW指定价格散件')" prop="d" align="center" width="200"></el-table-column>
-        <el-table-column :label="language('SHULIANGDANWEIUOM', '数量单位 (UoM)')" prop="e" align="center" width="140"></el-table-column>
-        <el-table-column :label="language('DANJIARMBUOM', '单价 (RMB/UoM)')" prop="f" align="center" width="118"></el-table-column>
-        <el-table-column :label="language('SHULIANGINT', '数量 (1..n)')" prop="g" align="center" width="82"></el-table-column>
-        <el-table-column :label="language('ZHIJIEYUANCAILIAOSANJIANCHENGBENRMBPC', '直接原材料/散件成本 (RMB/Pc.)')" prop="h" align="center" width="200"></el-table-column>
+        <el-table-column prop="e" align="center" width="81" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHULIANGDANWEI', '数量单位') }<br/>（UoM）` }})"></el-table-column>
+        <el-table-column prop="f" align="center" width="120" :render-header="h => h('span', { domProps: { innerHTML: `${ language('DANJIARMBUOM', '单价') }(RMB/UoM)` }})"></el-table-column>
+        <el-table-column prop="g" align="center" width="96" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHULIANG', '数量') }(1..n)` }})"></el-table-column>
+        <el-table-column prop="h" align="center" width="140" :render-header="h => h('span', { domProps: { innerHTML: `${ language('ZHIJIEYUANCAILIAOSANJIANCHENGBEN', '直接原材料/散件成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
         <el-table-column :label="language('WULIAOGUANLIFEI', '物料管理费')" align="center">
           <el-table-column label="(%)" prop="i" align="center" width="88"></el-table-column>
           <el-table-column label="(RMB/Pc.)" prop="j" align="center" width="93"></el-table-column>
         </el-table-column>
-        <el-table-column :label="language('YUANCAILIAOSANJIANCHENGBENRMBPC', '原材料/散件成本 (RMB/Pc.)')" prop="k" align="center" width="184"></el-table-column>
+        <el-table-column prop="k" align="center" width="122" :render-header="h => h('span', { domProps: { innerHTML: `${ language('YUANCAILIAOSANJIANCHENGBEN', '原材料/散件成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
       </el-table>
     </div>
   </div>  

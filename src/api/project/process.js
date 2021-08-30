@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-26 11:06:24
- * @LastEditTime: 2021-08-27 14:46:44
+ * @LastEditTime: 2021-08-27 17:29:17
  * @LastEditors: Please set LastEditors
  * @Description: 项目管理-项目进度监控接口
  * @FilePath: /front-web/src/api/project/process.js
@@ -30,9 +30,19 @@ export function saveDelayGradeConfig(data) {
   })
 }
 
+// 项目进程监控数据
 export function getProjectProgressMonitor(params) {
   return requst({
     url: `/project-progress-monitor/carModelStatus/${params.carTypeProjectId}`,
+    method: 'GET',
+    params
+  })
+}
+
+// 上一次查看的车型项目
+export function getLastCarType(params) {
+  return requst({
+    url: `/project-progress-monitor/lastCarType`,
     method: 'GET',
     params
   })

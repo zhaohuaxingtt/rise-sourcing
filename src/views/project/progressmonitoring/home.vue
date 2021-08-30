@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-27 15:45:50
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-08-30 11:07:49
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\index.vue
 -->
@@ -26,7 +26,7 @@
         <div class="floatright">
           <span class="switch">
             TIPS表
-            <el-switch v-model="showTips" width="35"></el-switch>
+            <el-switch v-model="showTips" width="35" disabled></el-switch>
           </span>
           
         </div>
@@ -67,7 +67,7 @@ import carProject from '@/views/project/components/carprojectprogress'
 import carEmpty from '@/views/project/components/empty/carEmpty'
 import projectStateChart from './components/projectStateChart'
 import {pendingChartData} from './components/lib/data'
-import {getProjectProgressMonitor} from '@/api/project/process'
+import {getLastCarType, getProjectProgressMonitor} from '@/api/project/process'
 
 export default {
   components: { iCard, icon, carProject, iFormGroup, iFormItem, iInput, projectStateChart, carEmpty},
@@ -89,9 +89,38 @@ export default {
     this.handleCarProjectChange(carProjectId, cartypeProjectZh)
   },
   methods: {
+    /**
+     * @description: 获取最后一次查看的车型项目
+     * @param {*}
+     * @return {*}
+     */    
+    async getLastCarType() {
+      try {
+        const res = await getLastCarType()
+        if (res.code === '200' && res.data.id) {
+          this.carProject = res.data.id
+          this.carProject && (this.handleCarProjectChange(this.carProject, res.data.cartypeProName))
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        console.log('e',e)
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    },
+    /**
+     * @description: 获取项目进度详情
+     * @param {*} carProjectId 车型项目
+     * @param {*} carProjectName 车型名称
+     * @return {*}
+     */    
     async handleCarProjectChange(carProjectId, carProjectName) {
       this.carProject = String(carProjectId)
-      console.log('carProjectId', carProjectId, carProjectName)
+      if (!this.carProject) {
+        this.getLastCarType()
+        return
+      }
+      // console.log('carProjectId', carProjectId, carProjectName)
       try {
         // const res = require('./moke.json')
         this.loading = true
@@ -131,11 +160,14 @@ export default {
         this.loading = false
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
-      
-
     }
   },
   watch: {
+    /**
+     * @description: 是否显示tips切换按钮
+     * @param {*}
+     * @return {*}
+     */    
     showTips() {
       this.data.map((o, index) => {
         if (index <= 1) {
