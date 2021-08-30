@@ -1,7 +1,7 @@
 /*
  * @Author: hoajiang
  * @Date: 2021-08-05 10:36:42
- * @LastEditTime: 2021-08-13 22:13:31
+ * @LastEditTime: 2021-08-26 20:28:18
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览配置
  * @FilePath: /front-web/src/views/dashboard/components/data.js
@@ -13,7 +13,7 @@ export const TAB = [
     value: 1,
     name: "寻源概览",
     message: 0,
-    url: "/sourcing/dashboard",
+    url: "/sourceinquirypoint/sourcing/dashboard",
     activePath: "dashboard",
     key: "XUANYUANGAILAN"
   },
@@ -21,7 +21,7 @@ export const TAB = [
     value: 2,
     name: "寻源执行",
     message: 0,
-    url: "/sourcing/partsign",
+    url: "/sourceinquirypoint/sourcing/partsign",
     activePath: "sourcing",
     key: "XUANYUANCAIDAN"
   },
@@ -29,7 +29,7 @@ export const TAB = [
     value: 3,
     name: "报表管理",
     message: 0,
-    url: "/sourcing/reportmgmt/report",
+    url: "/sourceinquirypoint/sourcing/reportmgmt/report",
     activePath: "reportmgmt",
     key: "LK_BAOBIAOGUANLI"
   },

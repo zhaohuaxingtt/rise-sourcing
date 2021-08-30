@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-07-23 11:16:30
+ * @LastEditTime: 2021-08-30 11:58:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -175,7 +175,7 @@ export default{
     openUrl(type,items,round,value){
       const datas = this.getQueryDatas(type,items,round,value)
       const router = this.$router.resolve({
-        path:'/supplier/quotationdetail',
+        path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:datas
       })
       window.open(router.href,'_blank')

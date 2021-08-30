@@ -20,7 +20,7 @@
               <span>{{language('LK_LINGJIANQIANSHOU','零件签收')}}</span>
             </div>
             <div class="dashboard-card-content">
-              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong class="cursor" @click="toLink('/sourcing/partsign')">{{basicData.partSigningNum || 0}}</strong></dd></dl>
+              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong class="cursor" @click="toLink('/sourceinquirypoint/sourcing/partsign')">{{basicData.partSigningNum || 0}}</strong></dd></dl>
             </div>
           </iCard>
         </el-col>
@@ -202,7 +202,7 @@ export default {
       if (this.isZYCG) status = 'LINIE_CONFIRING'
       // 前期采购员 && 专业采购员
       if (this.isZYCG && this.isQQCG) status = 'CSF_HANDLING'
-      return `/sourcing/partsletter?status=${status}${this.userRoleParams(['csfCssName'])}`
+      return `/sourceinquirypoint/sourcing/partsletter?status=${status}${this.userRoleParams(['csfCssName'])}`
     },
     // 前期采购员待确认定点信链接
     loiURL() {
@@ -213,7 +213,7 @@ export default {
       if (this.isZYCG) status = 'LINIE_CONFIRING'
       // 前期采购员 && 专业采购员
       if (this.isZYCG && this.isQQCG) status = 'CSF_HANDLING'
-      return `/sourcing/partsletter?cardType=LOI&loiStatus=${status}${this.userRoleParams(['csfName'])}`
+      return `/sourceinquirypoint/sourcing/partsletter?cardType=LOI&loiStatus=${status}${this.userRoleParams(['csfName'])}`
     },
     // 未创建采购项目链接
     unCrePartsprocureURL() {

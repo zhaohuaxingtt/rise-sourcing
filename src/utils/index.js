@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-26 10:41:57
+ * @LastEditTime: 2021-08-30 14:02:44
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -11,7 +11,7 @@ import router from '../router'
 import store from '../store'
 import localStoreage from './localstorage'
 import jsencrypt from 'jsencrypt'
-import {sendKey} from '@/api/usercenter'
+import {sendKey,sendPermissonKey} from '@/api/usercenter'
 import {onlyselfProject,allitemsList,BKMROLETAGID} from '@/config'
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
@@ -181,19 +181,24 @@ Vue.prototype.language = function(languageKey,name){
   return this.$t(languageKey)
 }
 // eslint-disable-next-line no-undef
-router.afterEach(()=>{
+router.afterEach((to,from)=>{
   if(process.env.NODE_ENV == 'dev' && languageList.length !== 0){
-    let languageLists = Array.from(new Set(languageList))
-    sendKey(languageLists).then(res=>{
-      if(res.code == 200){
-        languageList = []
-      }
-    }).catch(err=>{
-      languageList = []
-    })
+    _languageSendToService()
+    _permissionKeySendToService(from)
   }
 })
-
+function _languageSendToService(){
+  let languageLists = Array.from(new Set(languageList))
+  sendKey(languageLists)
+  languageList = []
+}
+function _permissionKeySendToService(router){
+  console.log(`============The permissions automatically collected in the current interface are ${store.state.permission.resourceList.length}============`)
+  console.log(store.state.permission.resourceList)
+  const serviceData = router.matched.map((r,i)=>{ return {'menuName':r.meta.title,'menuUrl':r.path,resourceList:i==router.matched.length-1?store.state.permission.resourceList:[]}})
+  sendPermissonKey(serviceData)
+  store.dispatch('clearResource',[])
+}
 /**********************************************************************************************************************************************
  * @description: 结合业务逻辑和角色，处理权限列表, 过滤逻辑：
  * 1.如果当前的采购项目属于：【仅零件号变更，钢材一次性采购，钢材批量采购，配件，附件，一次性采购，DB一次性采购，工序委外，AEKO零件】 则过滤只有当前另加自己。
