@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 14:10:12
+ * @LastEditTime: 2021-08-30 17:56:03
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -329,10 +329,56 @@ export function partProgressConfirm(params) {
   })
 }
 
+// 获取询价采购员下拉框-零件排程发送FS确认
 export function getFsUserListPart(params) {
   return requst({
     url: '/progress-confirm/user/part',
     method: 'GET',
     params
+  })
+}
+
+// 获取零件排程进度确认列表
+export function getPartScheduleList(params) {
+  return requst({
+    url: '/progress-confirm/part',
+    method: 'GET',
+    params
+  })
+}
+
+// 保存零件排程确认列表
+export function savePartScheduleList(params) {
+  return requst({
+    url: '/progress-confirm/part/save',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 退回零件排程确认列表
+export function returnPartScheduleList(params, remark) {
+  return requst({
+    url: '/progress-confirm/part/return?remark='+remark,
+    method: 'PUT',
+    data: params
+  })
+}
+
+// 确认零件排程确认列表
+export function confirmPartScheduleList(params) {
+  return requst({
+    url: '/progress-confirm/part/confirm',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 转派零件排程确认列表
+export function transferPartScheduleList(params, fsId) {
+  return requst({
+    url: '/progress-confirm/part/transfer?fsId='+fsId,
+    method: 'POST',
+    data: params
   })
 }

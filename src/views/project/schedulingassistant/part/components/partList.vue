@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 17:29:58
+ * @LastEditTime: 2021-08-30 16:25:04
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -68,7 +68,6 @@
                   @change="handleChange($event, pro, item.kw2, index)"
                   separator="-KW"
                 ></el-cascader>
-
               </template>
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
               <el-cascader
