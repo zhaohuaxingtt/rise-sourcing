@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-10 09:51:23
- * @LastEditTime: 2021-08-20 14:11:36
+ * @LastEditTime: 2021-08-30 17:00:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\piDetail\components\data.js
@@ -106,7 +106,7 @@ export const customTableTitle = [
   {props: 'supplierName', name: '供应商名称', key: 'GONGYINGSHANGMINGCHENG'},
   {props: 'procureFactory', name: '工厂', key: 'GONGCHANG'},
   {props: 'carTypeProj', name: '车型项目', key: 'CHEXINGXIANGMU'},
-  {props: 'sopDate', name: 'SOP时间', key: 'SOPSHIJIAN'},
+  {props: 'supplyBeginTime', name: 'SOP时间', key: 'SOPSHIJIAN'},
   {props: 'isShow', name: '显示/隐藏', key: 'XIANSHIYINCANG'},
   {props: 'sort', name: '排序', key: 'PAIXU'},
 ];
