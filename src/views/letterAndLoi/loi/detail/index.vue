@@ -344,7 +344,7 @@ export default {
                 const {code,data} = res;
                 if(code==200){
                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                    this.$router.push({ path:'/sourcing/partsletter/loidetail',query:{id: data}})
+                    this.$router.push({ path:'/sourceinquirypoint/sourcing/partsletter/loidetail',query:{id: data}})
                     this.getDetail(data);
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);

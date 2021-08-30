@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     gotoAccessoryDetail(row) {
-      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { spNum: row.fsnrGsnrNum }})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/accessorypartdetail', query: { spNum: row.fsnrGsnrNum }})
       window.open(router.href,'_blank')
     },
     // 已在RFQ中零件选中数据
@@ -122,7 +122,7 @@ export default {
     // 跳转详情
     openPage(item) {
       const resolve = this.$router.resolve({
-        path: "/sourcing/partsprocure/editordetail",
+        path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
         },

@@ -100,21 +100,3 @@ export const historyLoiListTitle=[
   { props: "uploadDate", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
   { props: "uploadUserName", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
 ]
-
-export const TAB = [
-  {
-    value: 1,
-    name: '寻源执行',
-    message: 0,
-    url: '/sourcing/partsign',
-    activePath: 'partsign',
-    key: 'XUANYUANCAIDAN'
-  },
-  // {
-  //   value: 2,
-  //   label: '进度监控',
-  //   key: Vue.prototype.$t('partsignLanguage.JinDuJianKong'),
-  //   url: '/nomination',
-  //   message: 0
-  // }
-]
