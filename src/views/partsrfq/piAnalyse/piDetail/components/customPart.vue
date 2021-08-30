@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-27 14:36:09
+ * @LastEditTime: 2021-08-30 17:28:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -126,7 +126,6 @@ export default {
     getAllPartData() {
       this.loading = true
       const params = {
-        userId: 52,
         partsId: this.searchForm.partsId || null,
         rfqId: this.searchForm.rfqId || null
       }
