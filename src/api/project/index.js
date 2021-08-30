@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-11 15:14:03
+ * @LastEditTime: 2021-08-27 14:10:12
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -64,10 +64,10 @@ export function getOverview() {
   })
 }
 
-// 获取用户最后一次操作的车型项目
-export function getLastOperateCarType() {
+// 获取用户最后一次操作的车型项目 type: 1-产品组  2-零件
+export function getLastOperateCarType(type = 1) {
   return requst({
-    url: '/car-type/userLastOperate',
+    url: '/car-type/userLastOperate/'+type,
     method: 'GET'
   })
 }
@@ -283,5 +283,56 @@ export function getProductGroupAll(params={}) {
     url: '/productGroupList',
     method: 'POST',
     data: params
+  })
+}
+
+// 获取零件排程
+export function getPartSchedule(cartypeProId) {
+  return requst({
+    url: `/part-schedule/info/${cartypeProId}`,
+    method: 'GET'
+  })
+}
+
+// 保存零件排程
+export function updatePartSchedule(params) {
+  return requst({
+    url: '/part-schedule/info',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 获取零件排程算法
+export function getPartGroupConfig(cartypeProId) {
+  return requst({
+    url: `/part-group-config/carTypePro/${cartypeProId}`,
+    method: 'GET'
+  })
+}
+
+// 更新零件排程算法
+export function updatePartGroupConfig(params) {
+  return requst({
+    url: `/part-group-config/carTypePro`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 发送零件排程确认
+export function partProgressConfirm(params) {
+  return requst({
+    url: '/progress-confirm/part',
+    method: 'POST',
+    data: params
+  })
+}
+
+export function getFsUserListPart(params) {
+  return requst({
+    url: '/progress-confirm/user/part',
+    method: 'GET',
+    params
   })
 }

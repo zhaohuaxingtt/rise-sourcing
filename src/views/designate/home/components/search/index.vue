@@ -109,6 +109,7 @@
       </el-form-item>
       <!-- 车型项目 -->
       <el-form-item :label="language('nominationLanguage_CheXingXiangMu','车型项目')">
+        <!-- <iDicoptions v-model="form.carTypeProj" :optionKey="'CAR_TYPE_PRO'" /> -->
         <iSelect
           v-model="form.carTypeProj"
           :placeholder="language('LK_QINGXUANZE','请选择')"
@@ -195,6 +196,7 @@ import {
 } from '@/views/designate/home/components/options'
 import {selectDictByKeyss} from '@/api/dictionary'
 import { form } from '../data'
+// import iDicoptions from 'rise/web/components/iDicoptions'
 import {
   iSearch,
   iInput,
@@ -215,7 +217,8 @@ export default {
   components: {
     iSearch,
     iInput,
-    iSelect
+    iSelect,
+    // iDicoptions
   },
   mounted() {
     this.form = {}

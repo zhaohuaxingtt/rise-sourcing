@@ -1,5 +1,6 @@
 <template>
-  <iLayout :menus="menus" />
+  <iLayout />
+  <!-- <iLayout :menus="menus" /> -->
 </template>
 
 <script>

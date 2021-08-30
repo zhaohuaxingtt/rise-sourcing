@@ -11,7 +11,7 @@
           language('delete','删除')
         }}
       </iButton>
-      <iButton @click="sendKM">{{ language('FASONGKM', '发送KM') }}</iButton>
+      <iButton @click="sendKM" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_SENDKM">{{ language('FASONGKM', '发送KM') }}</iButton>
       <iButton @click="showApplyPrice" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE">
         {{ language('LK_XINSHENQINGCAIWUMUBIAOJIA','新申请财务目标价') }}
       </iButton>

@@ -20,7 +20,7 @@
             v-for="(item, $index) in moduleOptions"
             :key="$index"
           ></el-option>
-        </iSelect>
+        </iSelect> 
       </div>
       <div class="tip">{{ language("DANWEI", "单位") }}：RMB/Pc.</div>
     </div>
@@ -60,7 +60,9 @@ export default {
       ],
       modules: [],
       tableTitle,
-      tableListData: []
+      tableListData: [
+        { a: "0.00", b: "0.00", c: "0.00", d: "0.00", e: "0.00", f: "0.00", g: "0.00" }
+      ]
     }
   }
 }

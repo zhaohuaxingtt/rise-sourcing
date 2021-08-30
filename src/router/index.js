@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-30 11:34:43
+ * @LastEditTime: 2021-08-30 16:39:54
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -32,7 +32,7 @@ export const staticRouter = [{
     name: "index",
     component: () =>
         import ("@/layout/default"),
-    redirect: "/sourceinquirypoint/sourcing/partsign",
+    redirect: "/sourceinquirypoint",
     children: [
         {
         path: "/index",

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-08-30 14:06:38
+ * @LastEditTime: 2021-08-30 16:38:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\sourcing.js
@@ -14,7 +14,7 @@ export default [
         title:'询源执行'
     },
     component: () => import("@/layout/default-white"),
-    redirect: "partsign",
+    redirect: "/sourceinquirypoint/sourcing/partsign",
     children:[
         // 定点信相关路由
         {

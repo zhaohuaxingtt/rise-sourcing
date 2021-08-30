@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-25 16:06:14
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-08-30 11:07:49
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\index.vue
 -->
@@ -26,22 +26,24 @@
         <div class="floatright">
           <span class="switch">
             TIPS表
-            <el-switch v-model="showTips" width="35"></el-switch>
+            <el-switch v-model="showTips" width="35" disabled></el-switch>
           </span>
           
         </div>
       </div>
       <!-- 图表区 -->
-      <div class="diagram">
-        <el-row gutter="20">
-          <el-col span="3" v-for="(item, index) in chartData" :key="index">
+      <div class="diagram" v-loading="loading">
+        <el-row gutter="20" v-if="carProject">
+          <el-col span="3" v-for="(item, index) in data" :key="index">
             <projectStateChart
               :data="item"
               :id="item.id"
               :disabled="item.disabled" />
           </el-col>
         </el-row>
+        <carEmpty v-else />
       </div>
+
       <div class="countView">
          <iFormGroup row="4" class="form">
             <iFormItem>
@@ -60,31 +62,114 @@
 </template>
 
 <script>
-import {iCard,icon,iFormGroup,iFormItem,iInput } from 'rise'
+import {iCard,icon,iFormGroup,iFormItem,iInput,iMessage } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress'
+import carEmpty from '@/views/project/components/empty/carEmpty'
 import projectStateChart from './components/projectStateChart'
-import {chartData} from './components/lib/data'
+import {pendingChartData} from './components/lib/data'
+import {getLastCarType, getProjectProgressMonitor} from '@/api/project/process'
 
 export default {
-  components: { iCard, icon, carProject, iFormGroup, iFormItem, iInput, projectStateChart,},
+  components: { iCard, icon, carProject, iFormGroup, iFormItem, iInput, projectStateChart, carEmpty},
   data() {
     return {
-      carProject: '',
+      carProject: this.$route.query.carProject,
       showTips: false,
-      updateTime: '2021-08-22 12:22:11',
-      chartData,
-      notInTips: 37,
-      ckdconfirm: 10
+      updateTime: window.moment().format('YYYY-MM-DD HH:mm:ss'),
+      pendingChartData,
+      data: [],
+      notInTips: 0,
+      ckdconfirm: 0,
+      loading: false
     }
   },
+  mounted() {
+    const carProjectId = this.$route.query.carProject || ''
+    const cartypeProjectZh = this.$route.query.cartypeProjectZh || ''
+    this.handleCarProjectChange(carProjectId, cartypeProjectZh)
+  },
   methods: {
-    handleCarProjectChange(carProjectId, carProjectName) {
-      
+    /**
+     * @description: 获取最后一次查看的车型项目
+     * @param {*}
+     * @return {*}
+     */    
+    async getLastCarType() {
+      try {
+        const res = await getLastCarType()
+        if (res.code === '200' && res.data.id) {
+          this.carProject = res.data.id
+          this.carProject && (this.handleCarProjectChange(this.carProject, res.data.cartypeProName))
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        console.log('e',e)
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    },
+    /**
+     * @description: 获取项目进度详情
+     * @param {*} carProjectId 车型项目
+     * @param {*} carProjectName 车型名称
+     * @return {*}
+     */    
+    async handleCarProjectChange(carProjectId, carProjectName) {
+      this.carProject = String(carProjectId)
+      if (!this.carProject) {
+        this.getLastCarType()
+        return
+      }
+      // console.log('carProjectId', carProjectId, carProjectName)
+      try {
+        // const res = require('./moke.json')
+        this.loading = true
+        const res = await getProjectProgressMonitor({
+          carTypeProjectId: carProjectId
+        })
+        if (res.code === '200') {
+          let data = res.data || []
+          data = data.map((o, index) => {
+            o.id = `chart${index}`
+            o.title = o.modelStatusName || ''
+            // 正常
+            o.value1 = o.projectRiskNormal
+            // 风险
+            o.value2 = o.projectRiskRisk
+            // 延误
+            o.value3 = o.projectRiskDelay
+            // 总计
+            o.value4 = o.projectRiskSum
+            if (index === data.length - 1) {
+              o.isEMOTSComplished = true
+              // 超期汇总
+              o.value5 = o.projectRiskDelay
+              // 按期汇总
+              o.value6 = o.projectRiskNormal
+            }
+            return o
+          })
+          this.data = [...pendingChartData, ...data]
+          console.log('this.data', this.data)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.loading = false
+      } catch (e) {
+        console.log('e',e)
+        this.loading = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
     }
   },
   watch: {
+    /**
+     * @description: 是否显示tips切换按钮
+     * @param {*}
+     * @return {*}
+     */    
     showTips() {
-      this.chartData.map((o, index) => {
+      this.data.map((o, index) => {
         if (index <= 1) {
           this.$set(o, 'disabled', !o.disabled)
         }
