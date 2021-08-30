@@ -60,8 +60,8 @@
       <el-form-item label="城市多选"
                     prop="cityMultiple">
         <iSelectCustom :data="multipleData"
-                       label="shortNameDe"
-                       value="key"
+                       label="categoryName"
+                       value="categoryId"
                        :multiple="multiple"
                        @change="handleMultiChange"
                        v-model="ruleForm.cityMultiple"
@@ -75,8 +75,8 @@
         <iSelectCustom :data="singleData"
                        @change="handleSingleChange"
                        v-model="ruleForm.citySingle"
-                       label="shortNameDe"
-                       value="key"
+                       label="categoryName"
+                       value="categoryId"
                        :search-method="handleSingleSearch"
                        :popoverClass="'popover-class'"
                        :inputClass="'input-class'" />
@@ -90,6 +90,7 @@ import iSelectCustom from './index'
 // import { getCityInfo } from '@/api/demo'
 
 import { querySupplierTurnPartList } from "@/api/partsrfq/bob/analysisList";
+import { category } from '@/api/categoryManagementAssistant/mek'
 export default {
   components: { iSelectCustom },
   data () {
@@ -129,7 +130,7 @@ export default {
           updateDate: null
         },
         cityMultiple: [
-         
+
         ]
       },
       citySingle: {
@@ -153,7 +154,7 @@ export default {
         updateDate: null
       },
       cityMultiple: [
-        
+
       ],
       singleData: [],
       multipleData: [],
@@ -175,13 +176,33 @@ export default {
     this.getProvince()
   },
   methods: {
+    // async getProvince () {
+
+    //   // querySupplierTurnPartList({
+    //   //   data: {},
+    //   //   analysisSchemeId: '',
+    //   // }).then((res) => { })
+    //   const result = await querySupplierTurnPartList(this.query)
+    //   if (result?.code === '200' && result?.data) {
+    //     // const data = result.data.sort((a, b) => {
+    //     //   const a_swname = a.cityNameEn?.toLowerCase()
+    //     //   const b_swname = b.cityNameEn?.toLowerCase()
+    //     //   if (a_swname < b_swname) return -1
+    //     //   if (a_swname > b_swname) return 1
+    //     //   return 0
+    //     // })
+    //     this.singleData = result.data
+    //     this.multipleData = result.data
+    //     // console.log(this.multipleData)
+    //   }
+    // },
     async getProvince () {
 
       // querySupplierTurnPartList({
       //   data: {},
       //   analysisSchemeId: '',
       // }).then((res) => { })
-      const result = await querySupplierTurnPartList(this.query)
+      const result = await category(this.query)
       if (result?.code === '200' && result?.data) {
         // const data = result.data.sort((a, b) => {
         //   const a_swname = a.cityNameEn?.toLowerCase()
