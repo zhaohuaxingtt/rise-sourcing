@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-30 23:17:18
+ * @LastEditTime: 2021-08-30 23:22:53
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -72,6 +72,7 @@ export function getLastOperateCarType(type = 1) {
     method: 'GET'
   })
 }
+
 
 // 获取可选择车型列表
 export function getSelectCarType(carTypeProId = '') {
