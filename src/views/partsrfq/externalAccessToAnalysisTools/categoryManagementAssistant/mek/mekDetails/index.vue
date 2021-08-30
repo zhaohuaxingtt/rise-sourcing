@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-28 10:52:49
+ * @LastEditTime: 2021-08-28 11:40:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -588,8 +588,6 @@ export default {
         this.ComparedMotorList = res.data
       })
     },
-
-
     //
     detailDialog (flag, val) {
       this.detailVisible = flag
@@ -747,7 +745,6 @@ export default {
       this.previewFlag = val
     },
     save () {
-      debugger
       let params = {
         categoryCode: this.categoryCode,
         categoryId: this.categoryId,
@@ -774,15 +771,16 @@ export default {
         params.forthComparedMotor = this.barData[3].motorId || ""
         params.forthComparedPrice = this.barData[3].priceType || ""
       }
-      console.log(params)
       updateScheme(params).then()
-      handleMEKInfo() {
-        let vwModelCodes = [...this.ComparedMotor, this.targetMotor]
-        this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: this.categoryCode, vwModelCodes: JSON.stringify(vwModelCodes), chemeId: this.chemeId } })
-      }
+
 
     },
-  };
+    // handleMEKInfo () {
+    //   let vwModelCodes = [...this.ComparedMotor, this.targetMotor]
+    //   this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: this.categoryCode, vwModelCodes: JSON.stringify(vwModelCodes), chemeId: this.chemeId } })
+    // }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

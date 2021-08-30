@@ -53,7 +53,7 @@
                   </el-form-item>
                   <!--供应商-->
                   <el-form-item :label="$t('TPZS.GONGYINGSHANG')">
-                    <el-select multiple
+                    <!-- <el-select multiple
                                clearable
                                value-key
                                :multiple-limit="chartType === 'supplier' ? 5 : 1"
@@ -66,11 +66,21 @@
                         <span style="float: right; color: #8492a6; font-size: 13px"><i class="el-icon-error"></i>
                         </span>
                       </el-option>
-                    </el-select>
+                    </el-select> -->
+                    <custom-select :data="supplierList"
+                                   label="nameZh"
+                                   value="supplierId"
+                                   :multiple="true"
+                                   @change="handleMultiChange"
+                                   v-model="form.supplier"
+                                   :disabled="false"
+                                   :search-method="handleMultiSearch"
+                                   :multiple-limit="chartType === 'supplier' ? 5 : 1"
+                                   :popoverClass="'popover-class'" />
                   </el-form-item>
                   <!--轮次-->
                   <el-form-item :label="$t('轮次')">
-                    <el-select multiple
+                    <!-- <el-select multiple
                                clearable
                                value-key
                                :multiple-limit="chartType === 'turn' ? 5 : 1"
@@ -82,11 +92,31 @@
                                  :key="i.turn"
                                  :value="i.turn"
                                  :label="'第' + i.turn + '轮'"></el-option>
-                    </el-select>
+                    </el-select> -->
+                    <custom-select :data="supplierList"
+                                   label="turn"
+                                   value="turn"
+                                   :multiple="true"
+                                   @change="handleMultiChange"
+                                   v-model="form.turn"
+                                   :disabled="false"
+                                   :search-method="handleMultiSearch"
+                                   :multiple-limit="chartType === 'turn' ? 5 : 1"
+                                   :popoverClass="'popover-class'" />
                   </el-form-item>
                   <!--零件号-->
                   <el-form-item :label="$t('LK_SPAREPARTSNUMBER') + '/' + $t('LK_FSHAO')">
-                    <el-select multiple
+                    <custom-select :data="partList"
+                                   label="spareParts"
+                                   value="fsNo"
+                                   :multiple="true"
+                                   @change="handleMultiChange"
+                                   v-model="form.spareParts"
+                                   :disabled="false"
+                                   :search-method="handleMultiSearch"
+                                   :multiple-limit="chartType === 'spareParts' ? 5 : 1"
+                                   :popoverClass="'popover-class'" />
+                    <!-- <el-select multiple
                                clearable
                                value-key
                                :multiple-limit="chartType === 'spareParts' ? 5 : 1"
@@ -95,7 +125,7 @@
                                  :key="i.fsNo"
                                  :value="i.fsNo"
                                  :label="i.fsNo+'/'+i.spareParts"></el-option>
-                    </el-select>
+                    </el-select> -->
                   </el-form-item>
                 </div>
                 <div v-else>
@@ -290,6 +320,7 @@ import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
 import { getBobLevelOne, removeBobOut, addBobOut } from "@/api/partsrfq/bob";
 import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList } from "@/api/partsrfq/bob/analysisList";
+import customSelect from '@/views/demo'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import { uploadFile } from "@/api/file/upload";
 import preview from "./preview.vue";
@@ -310,6 +341,7 @@ export default {
     preview,
     iDialog,
     iInput,
+    customSelect
   },
   data () {
     return {

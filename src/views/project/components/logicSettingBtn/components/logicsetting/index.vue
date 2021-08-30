@@ -1,26 +1,44 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-28 10:57:15
- * @LastEditors: zbin
- * @LastEditTime: 2021-08-27 22:13:56
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-28 11:27:10
  * @Description: 算法配置弹窗
  * @FilePath: \front-web\src\views\project\components\logicSettingBtn\components\logicsetting\index.vue
 -->
 
 <template>
-  <iDialog :title="language('SUANFAPEIZHI','算法配置')" :visible.sync="dialogVisible" @close="clearDialog">
+  <iDialog :title="language('SUANFAPEIZHI','算法配置')"
+           :visible.sync="dialogVisible"
+           @close="clearDialog">
     <template slot="footer">
-      <iButton @click="handleConfirm" :loading="saveLoading">{{language('YINGYONGPEIZHI','应用配置')}}</iButton>
+      <iButton @click="handleConfirm"
+               :loading="saveLoading">{{language('YINGYONGPEIZHI','应用配置')}}</iButton>
     </template>
-    <iFormGroup row="2" class="targetPriceDetail">
-      <iFormItem v-for="(item, index) in logicList" :key="index">
-        <span v-if="item.label" slot="label">{{language(item.i18n_label, item.label)}}<span style="color:red;" v-if="item.required">*</span>:</span>
-        <iInput v-if="item.type === 'input'" v-model="logicData[item.value]" />
-        <iSelect v-else-if="item.type === 'select'" v-model="logicData[item.value]" :filterable="item.filterable">
-          <el-option :value="item.code" :label="item.name" v-for="(item) in selectOptions[item.selectOption]" :key="item.code"></el-option>
+    <iFormGroup row="2"
+                class="targetPriceDetail">
+      <iFormItem v-for="(item, index) in logicList"
+                 :key="index">
+        <span v-if="item.label"
+              slot="label">{{language(item.i18n_label, item.label)}}<span style="color:red;"
+                v-if="item.required">*</span>:</span>
+        <iInput v-if="item.type === 'input'"
+                v-model="logicData[item.value]" />
+        <iSelect v-else-if="item.type === 'select'"
+                 v-model="logicData[item.value]"
+                 :filterable="item.filterable">
+          <el-option :value="item.code"
+                     :label="item.name"
+                     v-for="(item) in selectOptions[item.selectOption]"
+                     :key="item.code"></el-option>
         </iSelect>
-        <iDicoptions v-else-if="item.type === 'selectDict'" :optionAll="false" :optionKey="item.selectOption" v-model="logicData[item.value]" />
-        <el-autocomplete v-else-if="item.type === 'inputFilter'" :fetch-suggestions="querySearch" v-model="logicData[item.value]" />
+        <iDicoptions v-else-if="item.type === 'selectDict'"
+                     :optionAll="false"
+                     :optionKey="item.selectOption"
+                     v-model="logicData[item.value]" />
+        <el-autocomplete v-else-if="item.type === 'inputFilter'"
+                         :fetch-suggestions="querySearch"
+                         v-model="logicData[item.value]" />
       </iFormItem>
     </iFormGroup>
   </iDialog>
@@ -28,7 +46,7 @@
 
 <script>
 import { iDialog, iButton, iInput, iFormGroup, iFormItem, iSelect, iMessage } from 'rise'
-import iDicoptions from 'rise/web/components/iDicoptions'
+// import iDicoptions from 'rise/web/components/iDicoptions'
 export default {
   components: { iDialog, iButton, iInput, iFormGroup, iFormItem, iSelect, iDicoptions },
   props: {
@@ -38,34 +56,34 @@ export default {
     selectOptions: { type: Object, default: () => { } },
   },
   watch: {
-    dialogVisible(val) {
+    dialogVisible (val) {
       if (val) {
         // this.reasonDescription = ''
       }
     }
   },
-  data() {
+  data () {
     return {
       saveLoading: false
     }
   },
   methods: {
-    querySearch(queryString, cb) {
+    querySearch (queryString, cb) {
       var restaurants = this.selectOptions.productGroupOptions;
       var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
       // 调用 callback 返回建议列表的数据
       cb(results);
     },
-    createFilter(queryString) {
+    createFilter (queryString) {
       return (restaurant = this.selectOptions.productGroupOptions) => {
         return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
     },
-    clearDialog() {
+    clearDialog () {
       this.reasonDescription = ''
       this.$emit('changeVisible', false)
     },
-    handleConfirm() {
+    handleConfirm () {
       for (let i = 0; i < this.logicList.length; i++) {
         if (this.logicList[i].required && !this.logicData[this.logicList[i].value]) {
           iMessage.warn(this.language(this.logicList[i].i18n_label, this.logicList[i].name) + this.language('BUNENGWEIKONG', '不能为空'))
@@ -75,7 +93,7 @@ export default {
       this.saveLoading = true
       this.$emit('handleUse', this.reasonDescription)
     },
-    changeSaveLoading(loading) {
+    changeSaveLoading (loading) {
       this.saveLoading = loading
     }
   }
