@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 13:59:40
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-26 17:03:36
+ * @LastEditTime: 2021-08-27 17:16:11
  * @Description: 零件排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\index.vue
 -->
@@ -21,8 +21,8 @@
         <div class="titleSearch">
           <div v-for="(item, index) in searchList" :key="index" class="titleSearch-item">
             <span class="titleSearch-item-lable">{{language(item.key, item.label)}}</span>
-            <el-autocomplete class="titleSearch-item-content" :fetch-suggestions="item.querySearch" v-if="item.type === 'input'" v-model="searchParams[item.value]" :trigger-on-focus="false" />
-            <iSelect class="titleSearch-item-content" v-else-if="item.type === 'select'" v-model="searchParams[item.value]" >
+            <el-autocomplete :placeholder="language('QINGSHURU', '请输入')" class="titleSearch-item-content" :fetch-suggestions="item.querySearch" v-if="item.type === 'input'" v-model="searchParams[item.value]" :trigger-on-focus="false" />
+            <iSelect :placeholder="language('QINGXUANZE', '请选择')" class="titleSearch-item-content" v-else-if="item.type === 'select'" v-model="searchParams[item.value]" >
               <el-option
                 :value="item.code"
                 :label="item.name"
