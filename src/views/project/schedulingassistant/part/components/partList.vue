@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 15:19:21
+ * @LastEditTime: 2021-08-27 17:29:58
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -15,7 +15,7 @@
         <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>
       </div>
       <div v-if="!isSop">
-        <logicSettingBtn class="margin-right10" @handleUse="updatePartGroupConfig" @click="openLogicDialog" :logicData="logicData" :logicList="partLogicList" @changeVisible="changeLogicVisible" :logicVisible="logicVisible" />
+        <logicSettingBtn ref="logicSettingBtn" class="margin-right10" @handleUse="updatePartGroupConfig" @click="openLogicDialog" :logicData="logicData" :logicList="partLogicList" @changeVisible="changeLogicVisible" :logicVisible="logicVisible" />
         <iButton @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
         <iButton @click="$emit('changeNodeView')">{{language('SHENGCHENGPAICHENGBANBEN', '生成排程版本')}}</iButton>
         <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
@@ -122,7 +122,7 @@ export default {
       logicData: {},
       partLogicList,
       parts: [],
-      partsTemp: [{partNum: 'aadfs'}, {partNum: 'vvds'}],
+      partsTemp: [],
       saveloading: false,
       loading: false,
       checkAll: false,
@@ -216,6 +216,7 @@ export default {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.changeFsConfirmVisible(false)
+          this.getPartList(this.cartypeProId)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -356,10 +357,12 @@ export default {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.changeLogicVisible(false)
-          this.getPartList()
+          this.getPartList(this.cartypeProId)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.$refs.logicSettingBtn.changeSaveLoading(false)
       })
     },
     getPartGroupConfig() {
