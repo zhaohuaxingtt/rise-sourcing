@@ -210,7 +210,7 @@ export default {
         form['endDate'] = form.rangeDate[1];
         delete form.rangeDate;
       }
-      form.dataSourceList = [form.dataSourceList];
+      form.dataSourceList = form.dataSourceList ? [form.dataSourceList] : null;
       return form;
     },
     // 获取数据页签
