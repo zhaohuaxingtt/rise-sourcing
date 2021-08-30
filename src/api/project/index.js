@@ -2,11 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Please set LastEditors
-<<<<<<< HEAD
- * @LastEditTime: 2021-08-30 23:18:28
-=======
  * @LastEditTime: 2021-08-30 23:17:18
->>>>>>> workStream1
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
