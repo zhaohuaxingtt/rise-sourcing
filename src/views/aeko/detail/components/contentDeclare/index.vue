@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-26 17:27:36
+ * @LastEditTime: 2021-08-30 15:06:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -153,7 +153,7 @@
       <template v-slot:header-control>
         <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
         <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
-        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
+        <iButton v-if="!disabled" :loading="declareSendSupplier" @click="sendSupplierPrice"  v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
         <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
         <iButton v-if="!disabled" @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">
           {{ language("DAOCHU", "导出") }}
@@ -238,7 +238,7 @@ import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
@@ -284,7 +284,8 @@ export default {
       currentRow: {},
       dosageDialogVisible: false,
       submitLoading: false,
-      debouncer: null
+      debouncer: null,
+      declareSendSupplier:false,
     };
   },
   created() {
@@ -678,7 +679,27 @@ export default {
     isDeclareBlackListPart(part) {
       // return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
       return false // 取消黑名单限制
-    }
+    },
+    // 发送供应商报价
+    async sendSupplierPrice(){
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("AEKO_QINGXUANZEXUYAOCAOZUODEYUANLINGJIANXIANGMU", "请选择需要操作的原零件项目"))
+      const {multipleSelection=[]} = this;
+      this.declareSendSupplier = true;
+      const data = {
+        requirementAekoId:this.$route.query.requirementAekoId,
+        objectAekoPartId:multipleSelection.map((item)=>item.objectAekoPartId)
+      };
+      await sendSupplier(data).then((res)=>{
+        this.declareSendSupplier = false;
+        if(res.code == 200){
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          this.init();
+        }
+        
+      }).catch((err)=>{
+        this.declareSendSupplier = false;
+      })
+    },
   },
 };
 </script>
