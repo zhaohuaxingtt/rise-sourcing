@@ -196,7 +196,7 @@ import {
 } from '@/views/designate/home/components/options'
 import {selectDictByKeyss} from '@/api/dictionary'
 import { form } from '../data'
-import iDicoptions from 'rise/web/components/iDicoptions'
+// import iDicoptions from 'rise/web/components/iDicoptions'
 import {
   iSearch,
   iInput,
@@ -218,7 +218,7 @@ export default {
     iSearch,
     iInput,
     iSelect,
-    iDicoptions
+    // iDicoptions
   },
   mounted() {
     this.form = {}
