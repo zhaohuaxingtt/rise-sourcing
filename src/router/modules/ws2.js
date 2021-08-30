@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-16 09:54:11
- * @LastEditors: 舒杰
+ * @LastEditors: zbin
  * @Descripttion: your project
  */
 /*
@@ -198,7 +198,7 @@ export default [
             meta: {
               title: '模具投资清单-变更任务'
             },
-            component: () => import (`@/views/ws2/purchase/changeTask`),
+            component: () => import (`@/views/ws2/purchase/changeTask/index.vue`),
           },
           {
             path: '/purchase/mouldBook',
@@ -232,7 +232,7 @@ export default [
         meta: {
           title: '模具投资清单-BM详情页'
         },
-        component: () => import (`@/views/ws2/purchase/changeTask/bmInfo`),
+        component: () => import (`@/views/ws2/purchase/changeTask/bmInfo.vue`),
       },
       {
         path: '/purchaseSupplier',

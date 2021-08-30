@@ -91,3 +91,19 @@ export function queryCal(params) {
     data: params,
   })
 }
+//点击单根柱状图，查询零件EBR信息
+export function queryPartEbr(params) {
+  return request({
+    url: '/mekScheme/queryPartEbr',
+    method: 'POST',
+    data: params,
+  })
+}
+//更新MEK分析方案详情
+export function updateScheme(params) {
+  return request({
+    url: '/mekScheme/updateScheme',
+    method: 'POST',
+    data: params,
+  })
+}
