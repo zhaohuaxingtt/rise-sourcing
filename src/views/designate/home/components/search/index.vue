@@ -218,7 +218,7 @@ export default {
     iSearch,
     iInput,
     iSelect,
-    iDicoptions
+    // iDicoptions
   },
   mounted() {
     this.form = {}
