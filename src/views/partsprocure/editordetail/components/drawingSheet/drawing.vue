@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination, iMessage, icon} from 'rise'
+import { iCard, iButton, iPagination, iMessage, icon, iMessageBox} from 'rise'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { tableTitle } from './data'
@@ -63,7 +63,6 @@ import filters from '@/utils/filters'
 import { downloadFile, downloadUdFile } from "@/api/file";
 import { uploadFile, uploadUdFile } from "@/api/file/upload";
 import { getToken } from "@/utils";
-import { iMessageBox } from '../../../../../components'
 
 export default {
   components: { iCard, iButton, tableList, iPagination, icon},
@@ -124,7 +123,7 @@ export default {
       } else {
         clearTimeout(this.timer)
         iMessage.success(`${ file.name } ${ this.language('LK_SHANGCHUANCHENGGONG','上传成功') }`)
-        this.fileList.push({ tpPartAttachmentId: res.data[0].id, tpPartAttachmentName: res.data[0].name, tpPartAttachmentPath: res.data[0].path, size: file.size })
+        this.fileList.push({ tpPartAttachmentId: res.data[0].id, tpPartAttachmentName: res.data[0].name, tpPartAttachmentPath: res.data[0].path, size: file.size, uploadId: res.data[0].id })
         this.timer = setTimeout(() => {
           this.patchTpInfoByAttachment()
           clearTimeout(this.timer)
@@ -200,7 +199,7 @@ export default {
       //   fileList: row.tpPartAttachmentName
       // })
 
-      downloadUdFile(row.id)
+      downloadUdFile(row.uploadId)
     },
     async handleDownload() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN','请选择需要下载的附件'))
@@ -210,7 +209,7 @@ export default {
       //   applicationName: 'procurereq-service',
       //   fileList: this.multipleSelection.map(item => item.tpPartAttachmentName).join('&fileList=')
       // })
-      await downloadUdFile(this.multipleSelection.map(item => item.id))
+      await downloadUdFile(this.multipleSelection.map(item => item.uploadId))
 
       this.downloadLoading = false
     }
