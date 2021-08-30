@@ -60,9 +60,9 @@
       <!--合同状态-->
       <el-form-item :label="$t('MODEL-ORDER.LK_HETONGZHUANGTAI')" prop='sapSendStatus'>
         <iSelect :placeholder="$t('partsignLanguage.QingXuanZe')"
-                 v-model.trim='orderQueryForm.sapSendStatus'>
+                 v-model.trim='orderQueryForm. contractStatus'>
           <el-option value='' :label="$t('all') | capitalizeFilter"></el-option>
-          <el-option v-for='(item, index) in sapSendStatusList' :key='index' :value='item.code' :label='item.name' />
+          <el-option v-for='(item, index) in contractStatus' :key='index' :value='item.code' :label='item.name' />
         </iSelect>
       </el-form-item>
     </el-form>
@@ -83,7 +83,8 @@ export default {
     orderQueryForm:{ type: Object, require: true,default:null },
     purchasingFactoryList:{type:Array,require: true,default:()=>[]},
     orderStatusList:{type:Array,require:true,default:()=>[]},
-    sapSendStatusList:{type:Array,require:true,default:()=>[]}
+    sapSendStatusList:{type:Array,require:true,default:()=>[]},
+    contractStatus:{type:Array,require:true,default:()=>[]},
   },
   methods:{
     queryOrder() {

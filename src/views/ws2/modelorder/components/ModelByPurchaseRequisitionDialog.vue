@@ -127,10 +127,10 @@ export default {
         subType: '',// 采购申请子类型 "43:EM采购申请,45:标准采购申请,411:工序委外要货",
         supplierNameZh: '',//期望供应商中文名称
         supplierSapCode: this.orderDetails.supplierSapCode,//期望供应商code
-        type: '',// 采购申请类型 "SPR:标准采购申请,MPR:模具采购申请,GPR:工序委外"
+        type: 'MPR',// 采购申请类型 "SPR:标准采购申请,MPR:模具采购申请,GPR:工序委外"
         //notRelationOrder:2,//2 表示已关联订单的状态
-        partNum: ''//零件号
-      },      purchaseRequisitionColumns:MODEL_PURCHASEREQUISITIONCOLUMNS,
+      },
+      purchaseRequisitionColumns:MODEL_PURCHASEREQUISITIONCOLUMNS,
       purchaseOrderTableData:[],//表格列表数据
       selectPurchaseOrderTableData: [],//选种的数据
       purchasingFactoryList: [],//采购工厂
@@ -160,9 +160,12 @@ export default {
     value: function(val) {
       if (val) {
         this.queryPurchaseRequisition()
-        this.queryPurchasingFactory()
       }
     }
+  },
+  created() {
+    this.queryPurchaseRequisition()
+    this.queryPurchasingFactory()
   },
   methods: {
     clearDiolog() {

@@ -159,7 +159,7 @@ export const MODEL_ORDER_DETAILS_ITEMSCOLUMNS = [
     {
         prop: 'item',
         label: '项次',
-        i18n: 'LK_XIANGCI',
+        i18n: 'MODEL-ORDER.LK_XIANGCI',
         tooltip: false,
         emit: 'open-page',
         headerAlign: 'center',
@@ -261,6 +261,7 @@ export const MODEL_ORDER_DETAILS_ITEMSCOLUMNS = [
         align: 'center',
         width: 150,
         customRender: (h, scope, column, extraData) => {
+            console.log(extraData.stockLocations,extraData.isEdit)
             return <ReceiptLocationComponents stockLocations={extraData.stockLocations} row={scope.row}
                                               isEdit={extraData.isEdit}/>
         },

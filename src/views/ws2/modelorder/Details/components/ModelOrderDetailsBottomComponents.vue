@@ -20,12 +20,17 @@
                     @open-page='openPage' @goLedger='goLedger' @open-grIr='openGrIr'></iTableCustom>
     </div>
 
-    <ModelByPurchaseRequisitionDialog v-if="referPurchaseRequisitionisVisible" v-model="referPurchaseRequisitionisVisible" :order-details="orderDetails" @selectPurchaseOrderTableData='selectPurchaseOrderTableData'  />
+    <ModelByPurchaseRequisitionDialog v-if="referPurchaseRequisitionisVisible"
+                                      v-model="referPurchaseRequisitionisVisible" :order-details="orderDetails"
+                                      @selectPurchaseOrderTableData='selectPurchaseOrderTableData'/>
 
     <!--点击项次对话框-->
-    <ModelOrderItemDetailsDialog v-if="purchaseOrderItemDetailsIsVisible" v-model='purchaseOrderItemDetailsIsVisible' :orderItemForm='orderItemForm' :orderDetails='orderDetails' :partTypeList='partTypeList'  @onRefrsh="queryOrderItemList"  />
+    <ModelOrderItemDetailsDialog v-if="purchaseOrderItemDetailsIsVisible" v-model='purchaseOrderItemDetailsIsVisible'
+                                 :orderItemForm='orderItemForm' :orderDetails='orderDetails'
+                                 :partTypeList='partTypeList' @onRefrsh="queryOrderItemList"/>
     <!--GRIR对话框-->
-    <GeneralOrderGRIRDialog v-if="purchaseOrderGrIrSelIsVisible" v-model='purchaseOrderGrIrSelIsVisible' :clickItemData="orderItemForm" :detailInfo="orderDetails"/>
+    <GeneralOrderGRIRDialog v-if="purchaseOrderGrIrSelIsVisible" v-model='purchaseOrderGrIrSelIsVisible'
+                            :clickItemData="orderItemForm" :detailInfo="orderDetails"/>
   </i-card>
 
 </template>
@@ -38,9 +43,11 @@ import {
 } from 'rise'
 import iTableCustom from '@/components/iTableCustom'
 import {MODEL_ORDER_DETAILS_ITEMSCOLUMNS} from "../../config/data";
-import {getPurchaseOrderLineList,inventoryLocation,
-  readByPurchaseOrderPrice,recoveryItemByPurchaseOrder,
-  deleteItemByPurchaseOrder} from "@/api/ws2/modelOrder";
+import {
+  getPurchaseOrderLineList, inventoryLocation,
+  readByPurchaseOrderPrice, recoveryItemByPurchaseOrder,
+  deleteItemByPurchaseOrder
+} from "@/api/ws2/modelOrder";
 import ModelByPurchaseRequisitionDialog from "../../components/ModelByPurchaseRequisitionDialog";
 import {getDictByCode} from "@/api/dictionary";
 import ModelOrderItemDetailsDialog from "../../components/ModelOrderItemDetailsDialog";
@@ -88,11 +95,11 @@ export default {
       orderItemColumns: MODEL_ORDER_DETAILS_ITEMSCOLUMNS,
       orderItemData: [],
       selectOrderItemData: [],//选中数据
-      extraData: {},
+      extraData: {orderDetails: this.orderDetails,  isEdit:this.isEdit,},
       purchaseOrderItemDetailsIsVisible: false,
       referPurchaseRequisitionisVisible: false,
       purchaseOrderGrIrSelIsVisible: false,
-      orderItemForm:{},
+      orderItemForm: {},
       partTypeList: [],//零件类型
 
     }
@@ -105,7 +112,7 @@ export default {
   methods: {
     //查询采购订单
     queryOrderItemList() {
-      let data = { orderId: this.orderDetails.id }
+      let data = {orderId: this.orderDetails.id}
       getPurchaseOrderLineList(data).then(res => {
         if (res.code == 200) {
           this.orderItemData = res.data
@@ -124,7 +131,7 @@ export default {
     },
     //查询库存地点
     queryInventoryLocation() {
-      let data = { procureFactory: this.orderDetails.procureFactory }
+      let data = {procureFactory: this.orderDetails.procureFactory}
       inventoryLocation(data).then(res => {
         this.extraData.stockLocations = res.data
       })
@@ -147,8 +154,8 @@ export default {
             priceUnit: item.currency,//价格单位
             deliveryDate: item.deliveryDate,//交货日期
             inventoryLocation: item.storageLocationCode,//库存地点
-            tmPartInfoId: item.id,//零件id
-            itemSource: '2',//来源
+            tmPartInfoId: item.partId,//零件id
+            itemSource: item.id,//来源
             itemSourceCode: item.riseCode,
             itemSourceItem: item.sapItem.toString(),
             isSparePart: item.isSparePart,
@@ -158,6 +165,7 @@ export default {
         })
         let newList = newArray.filter(item => !this.orderItemData.some(x => x.partNum === item.partNum))//去除重复零件号
         let duplicateCollectionList = newArray.filter(item => this.orderItemData.some(x => x.partNum === item.partNum))
+        console.log(newList)
         if (newList != null && newList.length > 0) {
           this.$message.success('添加成功')
           this.orderItemData.unshift(...newList)
@@ -223,7 +231,7 @@ export default {
     },
     //读取价格
     readPriceOrder() {
-      let params = { orderId: this.orderDetails.id }
+      let params = {orderId: this.orderDetails.id}
       this.fullscreenLoading = true
       readByPurchaseOrderPrice(params).then(res => {
         this.fullscreenLoading = false
@@ -243,8 +251,8 @@ export default {
     },
     //点击项次
     openPage(row) {
-       this.orderItemForm = row
-       this.purchaseOrderItemDetailsIsVisible = true
+      this.orderItemForm = row
+      this.purchaseOrderItemDetailsIsVisible = true
     },
     handleSelectionChange(row) {
       this.selectOrderItemData = row

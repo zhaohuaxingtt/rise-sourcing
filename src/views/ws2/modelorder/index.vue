@@ -4,6 +4,7 @@
                                :purchasing-factory-list="purchasingFactoryList"
                                :sap-send-status-list="sapSendStatusList"
                                :order-status-list="orderStatusList"
+                               :contract-status="contractStatus"
                                :order-query-form="orderQueryForm" @queryOrder="queryOrder"/>
     <i-card>
       <div class='margin-bottom10 clearFloat'>
@@ -101,7 +102,8 @@ export default {
         state: 'draft',//订单状态draft - 草稿 formal -正式 history - 历史
         supplierSapCode: '',//供应商SAP编号
         // type: '45'//类型（55/54/spare/db/steel/45/43/42/47/411）
-        typeList: ['42']
+        typeList: ['42'],
+        contractStatus:'',
       },
       columns: MODEL_ORDER_HOME_TABCOLUMNS,
       orderData: [],
@@ -112,12 +114,14 @@ export default {
       selectedOrderData: [],//选中数据
       currentUserPurchasingGroups: [],//用户所拥有的所有采购组
       isExpandAll: false,
+      contractStatus: [],//合同状态
     }
   },
   created() {
     this.queryPurchasingFactory()
     this.querySAPsendstatus()
     this.queryOrderStateList()
+    this.queryContractStatus()
     this.loadOrder()
   },
   methods: {
@@ -144,6 +148,14 @@ export default {
       getDictByCode('CONTRACT_STATUS').then((res) => {
         if (res.code == 200) {
           this.orderStatusList = res?.data[0]?.subDictResultVo
+        }
+      })
+    },
+    //获取合同状态
+    queryContractStatus() {
+      getDictByCode('contract_cover_status').then((res) => {
+        if (res.code == 200) {
+          this.contractStatus = res?.data[0]?.subDictResultVo
         }
       })
     },

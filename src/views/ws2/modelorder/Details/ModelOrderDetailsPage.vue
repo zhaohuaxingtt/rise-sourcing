@@ -160,6 +160,9 @@ export default {
     }
   },
   created() {
+    if (this.$route.query.isEdit) {
+      this.isEdit = this.$route.query.isEdit
+    }
     this.queryPurchasingFactory()
     this.queryOrderStateList()
     this.queryOrderDetails()
