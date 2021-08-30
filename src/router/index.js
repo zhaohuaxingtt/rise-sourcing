@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-30 16:39:54
+ * @LastEditTime: 2021-08-30 22:52:09
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -332,7 +332,6 @@ export default new VueRouter({
     ...supplierscoreRoutes,
     ...financialtargetpriceRoutes,
     ...financialtargetpriceRoutes,
-    ...steeldemandcreation,
     //谈判助手
     ...negotiationAssistant,
     ...aekoRoutes,
