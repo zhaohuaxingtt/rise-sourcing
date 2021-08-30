@@ -2,17 +2,17 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 11:09:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 16:50:50
+ * @LastEditTime: 2021-08-30 18:14:03
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\data.js
  */
 
 export const searchList = [
-  {value: 'cartypeProId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'select', filterable: true, selectOption: 'carProjectOptions'},
+  {value: 'cartypeProId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'carProjectSelect', filterable: true, selectOption: 'carProjectOptions'},
   {value: 'productGroup', name: '产品组', key: 'CHANPINZU', type: 'input'},
-  {value: 'confirmStatus', name: '确认状态', key: 'QUERENZHUANGTAI', type: 'select', selectOption: 'SCHEDULE_CONFIRM_STATUS'},
-  {value: 'fsId', name: '询价采购员', key: 'XUNJIACAIGOUYUAN', type: 'select', filterable: true, selectOption: 'fsOptions'},
-  {value: 'projectPurchaserId', name: '项目采购员', key: 'XIANGMUCAIGOUYUAN', type: 'select', filterable: true, selectOption: 'purchaseOptions'}
+  {value: 'confirmStatus', name: '确认状态', key: 'QUERENZHUANGTAI', type: 'selectDict', selectOption: 'SCHEDULE_CONFIRM_STATUS'},
+  {value: 'fsId', name: '询价采购员', key: 'XUNJIACAIGOUYUAN', type: 'fsSelect', filterable: true, selectOption: 'fsOptions'},
+  {value: 'projectPurchaserId', name: '项目采购员', key: 'XIANGMUCAIGOUYUAN', type: 'productPurchaserSelect', filterable: true, selectOption: 'purchaseOptions'}
 ]
 
 export const tableTitle = [

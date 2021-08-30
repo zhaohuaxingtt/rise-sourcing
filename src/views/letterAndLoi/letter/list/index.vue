@@ -443,7 +443,7 @@ export default {
         goToDetail(row){
             const { nominateLetterId } = row;
             const routeData = this.$router.resolve({
-            path: '/sourcing/partsletter/letterdetail',
+            path: '/sourceinquirypoint/sourcing/partsletter/letterdetail',
             query: {id:nominateLetterId}
             })
             window.open(routeData.href, '_blank')

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-08-25 18:27:13
+ * @LastEditTime: 2021-08-26 15:34:28
  * @LastEditors: Please set LastEditors
  * @Description: 项目中登录时候获取整个项目的权限以及token.
  * @FilePath: \rise\src\permission.js

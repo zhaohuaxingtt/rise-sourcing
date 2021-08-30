@@ -1,23 +1,16 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-08-18 10:32:24
+ * @LastEditTime: 2021-08-30 15:27:23
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
 -->
 <template>
-  <iPage class="partsignHome" v-permission="PARTSIGN_INDEXPAGE">
-    <!-- <el-tabs v-model="tab" class="tab"> -->
-      <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-      <!-- <el-tab-pane lazy  name="source"> -->
+  <iPage class="partsignHome">
         <div>
-          <!-- <div class="margin-bottom33">
-
-            <iNavMvp @change="change" lang right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div> -->
           <div class="topMenu">
-            <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+            <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
             <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
@@ -31,39 +24,34 @@
             :searchKey="PARTSIGN_CONFIRMBUTTON"
           >
             <el-form>
-              <el-form-item :label="language('partsignLanguage.LingJianHao','零件号')">
+              <el-form-item :label="language('partsignLanguage.LingJianHao','零件号')" v-permission.auto="PARTSIGN_PARTNUM|零件号">
                 <iInput
                   v-model="form.partNum"
                   :placeholder="language('LK_QINGSHURULINGJIANHAO','请输入零件号')"
-                  v-permission="PARTSIGN_PARTNUM"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="language('partsignLanguage.LingJianMingChengZH','零件名称（中）')">
+              <el-form-item :label="language('partsignLanguage.LingJianMingChengZH','零件名称（中）')" v-permission.auto="PARTSIGN_PARTNAMEZH|'零件名（中）'">
                 <iInput
                   v-model="form.partNameZh"
                   :placeholder="language('LK_QINGSHURULINGJIANMING','请输入零件名（中）')"
-                  v-permission="PARTSIGN_PARTNAMEZH"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="language('partsignLanguage.SheJiKeShi','设计科室')">
+              <el-form-item :label="language('partsignLanguage.SheJiKeShi','设计科室')" v-permission.auto="PARTSIGN_DESIGNDEPARTMENT|设计科室">
                 <iInput
                   v-model="form.dept"
                   :placeholder="language('LK_QINGTIANXIESHEJIKESHI','请填写设计科室')"
-                  v-permission="PARTSIGN_DESIGNDEPARTMENT"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="language('LK_GONGCHENGSHI','工程师')">
+              <el-form-item :label="language('LK_GONGCHENGSHI','工程师')" v-permission.auto="PARTSIGN_ENGINEER|工程师">
                 <iInput
                   :placeholder="language('LK_QINGTIANXIEGONGCHENGSHI','请填写工程师')"
                   v-model="form.tpPrincepalName"
-                  v-permission="PARTSIGN_ENGINEER"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')">
+              <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')" v-permission.auto="PARTSIGN_MODELPROJECT|车型项目">
                 <iSelect
                   v-model="form.projectCarType"
                   :placeholder="language('LK_QINGXUANZHECHEXINGXIANGMU','请选择车型项目')"
-                  v-permission="PARTSIGN_MODELPROJECT"
                 >
                   <el-option
                     value=""
@@ -77,11 +65,10 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_XINXIDANFENLEI','信息单分类')">
+              <el-form-item :label="language('LK_XINXIDANFENLEI','信息单分类')" v-permission.auto="PARTSIGN_INFORMATIONCLASSIFICATION|信息单分类">
                 <iSelect
                   v-model="form.tpInfoType"
                   :placeholder="language('LK_QINGXUANZHEXINXIFENLEI','请选择信息分类')"
-                  v-permission="PARTSIGN_INFORMATIONCLASSIFICATION"
                 >
                   <el-option
                     value=""
@@ -95,11 +82,10 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_XINXIDANZHUANGTAI','信息单状态')">
+              <el-form-item :label="language('LK_XINXIDANZHUANGTAI','信息单状态')" v-permission.auto="PARTSIGN_INFORMATIONSTATUS|信息单状态">
                 <iSelect
                   v-model="form.status"
                   :placeholder="language('LK_QINGXUANZHEXINXIDANZHUANGTAI','请选择信息单状态')"
-                  v-permission="PARTSIGN_INFORMATIONSTATUS"
                 >
                   <el-option
                     value=""
@@ -120,11 +106,10 @@
                   v-permission="PARTSIGN_PARTINFOID"
                 ></iInput>
               </el-form-item> -->
-              <el-form-item :label="language('LK_XUNJIAZILIAOZHUANGTAI','询价资料状态')">
+              <el-form-item :label="language('LK_XUNJIAZILIAOZHUANGTAI','询价资料状态')" v-permission.auto="PARTSIGN_INQUIRYSTATUS|询价资料状态">
                 <iSelect
                   v-model="form.attachmentStatus"
                   :placeholder="language('LK_QINGXUANZHEXUNJIAZILIAOZHUANGTAI','请选择询价资料状态')"
-                  v-permission="PARTSIGN_INQUIRYSTATUS"
                 >
                   <el-option
                     value=""
@@ -138,11 +123,10 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_MEICHEYONGLIANGZHUANGTAI','每车用量状态')">
+              <el-form-item :label="language('LK_MEICHEYONGLIANGZHUANGTAI','每车用量状态')"  v-permission.auto="PARTSIGN_USAGEVEHICLE|每车用量状态">
                 <iSelect
                   v-model="form.partDosageStatus"
                   :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','请选择每车用量状态')"
-                  v-permission="PARTSIGN_USAGEVEHICLE"
                 >
                   <el-option
                     value=""
@@ -168,17 +152,17 @@
                 language("LK_XINJIANXINXIDANQIANSHOU",'新件信息单签收')
               }}</span>
               <div class="floatright">
-                <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">{{
+                <iButton @click="save" v-permission.auto="PARTSIGN_SIGNBUTTON|签收">{{
                   language("partsignLanguage.QianShou",'签收')
                 }}</iButton>
                 <iButton
                   @click="openDiologBack"
-                  v-permission="PARTSIGN_BACKBUTTON"
+                  v-permission.auto="PARTSIGN_BACKBUTTON|退回"
                   >{{ language("partsignLanguage.TuiHui",'退回') }}</iButton
                 >
                 <iButton
                   @click="openDiologChangeItems"
-                  v-permission="PARTSIGN_TRANSFERBUTTON"
+                  v-permission.auto="PARTSIGN_TRANSFERBUTTON|转派"
                   >{{ language("partsignLanguage.ZhuanPai",'转派') }}</iButton
                 >
               </div>
@@ -298,7 +282,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["navList"]),
+    ...mapState(["navList","navListLeft"]),
     ...mapActions(["updateNavList"])
   },
   methods: {
@@ -383,7 +367,7 @@ export default {
         JSON.stringify(this.translateDataForDetail(val))
       );
       this.$router.push({
-        path: "/sourcing/partsign/editordetail",
+        path: "/sourceinquirypoint/sourcing/partsign/editordetail",
       });
     },
     //获取上方group信息

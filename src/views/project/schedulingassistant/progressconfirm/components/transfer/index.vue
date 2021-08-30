@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-03 17:50:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 18:02:34
+ * @LastEditTime: 2021-08-30 17:59:47
  * @Description: 转派弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\transfer\index.vue
 -->
@@ -19,26 +19,19 @@
     </template>
     <el-form>
       <el-form-item :label="language('QINGXUANZEZHUANPAIREN','请选择转派人')">
-        <iSelect v-model="fsId">
-          <el-option
-            v-for="item in selectOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>  
-        </iSelect> 
+        <fsSelect v-model="fsId" />
       </el-form-item>
     </el-form>
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iMessage } from 'rise'
+import { iDialog, iButton, iMessage } from 'rise'
+import fsSelect from '@/views/project/components/commonSelect/fsSelect'
 export default {
-  components: { iDialog, iButton, iSelect },
+  components: { iDialog, iButton, fsSelect },
   props: {
-    dialogVisible: { type: Boolean, default: false },
-    selectOptions: { type: Array, default: () => []}    
+    dialogVisible: { type: Boolean, default: false }
   },
   data() {
     return {

@@ -155,7 +155,7 @@ export default {
      * @return {*}
      */    
     openPage(row) {
-      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.rfqId}`})
+      const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.rfqId}`})
       window.open(router.href,'_blank')
     },
   }
