@@ -498,6 +498,9 @@ a{
   align-items: center;
   .openLinkText {
     color: $color-blue;
+    &.underline {
+      text-decoration: underline;
+    }
   }
   .icon-gray{
     cursor: pointer;
