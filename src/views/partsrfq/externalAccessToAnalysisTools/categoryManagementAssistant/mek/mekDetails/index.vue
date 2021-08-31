@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-31 14:31:48
+ * @LastEditTime: 2021-08-31 15:55:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -96,7 +96,7 @@
             </div>
           </iCard>
           <iCard v-show="!reportFlag">
-            <div class=" searchForm"
+            <div class=" searchForm1"
                  style="margin-right:20px">
               <label for=""
                      style="font-weight:600;font-size:14px">六位零件号</label>
@@ -243,6 +243,7 @@
                  :editFlag="editFlag"
                  :addRowList="addRowList"
                  @editData="editData"
+                 :reportFlag="reportFlag"
                  @addData="addData"></tableList>
 
       <iDialog title="保存"
@@ -301,9 +302,10 @@ import tableList from "../components/tableList";
 import modalDialog from "../components/modalDialog";
 import detailDialog from "../components/detailDialog";
 import preview from "../components/preview";
-import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, getSchemeInfo, queryPartEbr, queryCal, updateScheme } from '@/api/categoryManagementAssistant/mek'
+import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, getSchemeInfo, queryPartEbr, queryCal, updateScheme, add } from '@/api/categoryManagementAssistant/mek'
 import { getDictByCode } from '@/api/dictionary'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
+import { uploadFile } from "@/api/file/upload";
 export default {
   name: "mekDetails",
   components: {
@@ -343,7 +345,7 @@ export default {
       //分析库名称
       analysisName: "",
       //保存为报告
-      reportSave: "",
+      reportSave: false,
       //报告名称
       reportName: "",
       editFlag: false,
@@ -758,6 +760,10 @@ export default {
     closeDialog (val) {
       this.previewFlag = val
     },
+    close () {
+      this.dialogVisible = false
+      this.reportFlag = true
+    },
     save () {
       if (this.analysisSave) {
         let params = {
@@ -789,6 +795,7 @@ export default {
         updateScheme(params).then()
       }
       if (this.reportSave) {
+        this.reportFlag = false
         downloadPDF({
           idEle: "content",
           pdfName: this.reportName,
@@ -804,19 +811,19 @@ export default {
               const res = await uploadFile(formData);
               const data = res.data[0];
               const req = {
-                analysisSchemeId: this.analysisSchemeId,
+                mekId: this.chemeId,
                 name: data.fileName,
                 path: data.filePath,
-                remark: that.reportName,
+                remark: this.reportName,
               };
               await add(req);
-              that.dialogVisible = false;
-              that.reportSave = false;
+              this.dialogVisible = false;
+              this.reportSave = false;
               iMessage.success("保存成功");
             } catch {
               iMessage.err("保存失败");
-              that.dialogVisible = false;
-              that.reportSave = false;
+              this.dialogVisible = false;
+              this.reportSave = false;
             }
           },
         });
@@ -857,6 +864,10 @@ export default {
   &::-webkit-scrollbar {
     margin-left: 10px !important;
   }
+}
+.searchForm1 {
+  height: 559px;
+  text-align: center;
 }
 ::v-deep .cardBox {
   float: left;
