@@ -23,7 +23,7 @@
           clearable />
       </el-form-item>
       <!-- 保存时间 -->
-      <el-form-item :label="language('PAICHENGWEIDU','排程维度')">
+      <el-form-item :label="language('BAOCUNSHIJIAN','保存时间')">
         <iDatePicker
           v-model='createDate'
           @change="oncheckDateChange"
@@ -32,7 +32,7 @@
         </iDatePicker>
       </el-form-item>
       <!-- 保存时间 -->
-      <el-form-item :label="language('BAOCUNSHIJIAN','保存时间')">
+      <el-form-item :label="language('PAICHENGWEIDU','排程维度')">
         <iDicoptions :optionKey="'SCHEDULE_VERSION_TYPES'" v-model="form.type" />
       </el-form-item>
     </el-form>
