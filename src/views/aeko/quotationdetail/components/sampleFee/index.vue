@@ -17,35 +17,7 @@
         </div>
       </template>
       <div>
-        <tableList
-          class="table"
-          :lang="true"
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="loading"
-          :selection="false"
-          @handleSelectionChange="handleSelectionChange"
-        >
-          <!-- ⼯装样件单件费⽤ -->
-          <template #b="scope">
-            <iInput class="tableInput" v-model="scope.row['b']" />
-          </template>
-          
-          <!-- 附加⼯装样件模具价格 -->
-          <template #c="scope">
-            <iInput class="tableInput" v-model="scope.row['c']" />
-          </template>
-          
-          <!-- 附加⼯装样件模具寿命 -->
-          <template #d="scope">
-            <iInput class="tableInput" v-model="scope.row['d']" />
-          </template>
-
-          <!-- 备注 -->
-          <template #e="scope">
-            <iInput class="tableInput" v-model="scope.row['e']" />
-          </template>
-        </tableList>
+        <sample ref="sample" :partInfo="partInfo" :isAeko="true"/>
       </div>
   </iCard>
 </template>
@@ -56,35 +28,35 @@ import {
   iButton,
   iInput,
 } from 'rise'
-import {
-  sampleFeeTableTitle as tableTitle,
-} from '../data'
-import tableList from "@/views/partsign/editordetail/components/tableList"
+import sample from 'rise/web/quotationdetail/components/sample'
 
 export default {
   components:{
     iCard,
     iButton,
-    tableList,
-    iInput,
+    sample,
   },
   data(){
     return{
-      tableTitle,
-      tableListData:[
-        {a:'⼯装样件(BS1)',b:'',c:'',d:'',e:''},
-        {a:'⼯装样件(BS2)',b:'',c:'',d:'',e:''},
-        {a:'⼯装样件(BS3)',b:'',c:'',d:'',e:''},
-        {a:'其他样件',b:'',c:'',d:'',e:''},
-      ],
       loading:false,
+       partInfo:{"rfqId":"1089","quotationId":"1430733529429766145","cbdLevel":1},
     }
-  }
+  },
+  mounted(){
+    this.$refs.sample.init();
+  },
+  methods:{
+    // 保存
+    save(){
+      this.$refs.sample.save();
+    }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
   .sampleFee{
+    width: 100%;
     .header {
       width: 100%;
       display: flex;
