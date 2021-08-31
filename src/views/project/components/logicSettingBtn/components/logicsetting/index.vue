@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-28 10:57:15
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-31 15:39:20
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-31 10:29:59
  * @Description: 算法配置弹窗
  * @FilePath: \front-web\src\views\project\components\logicSettingBtn\components\logicsetting\index.vue
 -->
