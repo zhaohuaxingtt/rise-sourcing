@@ -153,7 +153,7 @@
       <template v-slot:header-control>
         <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
         <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
-        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
+        <iButton v-if="!disabled" :loading="declareSendSupplier" @click="sendSupplierPrice"  v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
         <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
         <iButton v-if="!disabled" @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">
           {{ language("DAOCHU", "导出") }}
@@ -191,7 +191,7 @@
             <span class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotation="scope">
-            <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span class="link-underline" @click="jumpQuotation(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #priceAxis="scope">
             <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -238,7 +238,7 @@ import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
@@ -284,7 +284,8 @@ export default {
       currentRow: {},
       dosageDialogVisible: false,
       submitLoading: false,
-      debouncer: null
+      debouncer: null,
+      declareSendSupplier:false,
     };
   },
   created() {
@@ -430,6 +431,14 @@ export default {
       this.currentRow = row
       this.dosageDialogVisible = true
     },
+    jumpQuotation(row) {
+      const route = this.$router.resolve({
+        path: '/aeko/quotationdetail',
+        query: {}
+      })
+
+      window.open(route.href, "_blank")
+    },
     view() {},
     oldPartNumPresetSelect(row) {
       // if (!row.oldPartNumPreset) return
@@ -546,10 +555,6 @@ export default {
               }
           }
         }
-
-        
-        
-        
       })
 
       // 原零件号 需用户自己填写
@@ -678,7 +683,27 @@ export default {
     isDeclareBlackListPart(part) {
       // return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
       return false // 取消黑名单限制
-    }
+    },
+    // 发送供应商报价
+    async sendSupplierPrice(){
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("AEKO_QINGXUANZEXUYAOCAOZUODEYUANLINGJIANXIANGMU", "请选择需要操作的原零件项目"))
+      const {multipleSelection=[]} = this;
+      this.declareSendSupplier = true;
+      const data = {
+        requirementAekoId:this.$route.query.requirementAekoId,
+        objectAekoPartId:multipleSelection.map((item)=>item.objectAekoPartId)
+      };
+      await sendSupplier(data).then((res)=>{
+        this.declareSendSupplier = false;
+        if(res.code == 200){
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          this.init();
+        }
+        
+      }).catch((err)=>{
+        this.declareSendSupplier = false;
+      })
+    },
   },
 };
 </script>

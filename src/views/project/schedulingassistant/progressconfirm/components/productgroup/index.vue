@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:54:35
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 16:01:00
+ * @LastEditTime: 2021-08-30 18:17:40
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\index.vue
 -->
@@ -16,15 +16,15 @@
       </template>
       <el-form>
         <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)">
-          <iSelect v-if="item.type ==='select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
-            <el-option
-              v-for="item in selectOptions[item.selectOption]"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </iSelect>
-          <iInput v-else-if="item.type === 'input'" v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')" />
+          <iInput v-if="item.type === 'input'" v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')" />
+          <!--------------询价采购员下拉----------------------->
+          <fsSelect v-else-if="item.type === 'fsSelect'" v-model="searchParams[item.value]" :filterable="item.filterable" />
+          <!--------------项目采购员下拉----------------------->
+          <productPurchaserSelect v-else-if="item.type === 'productPurchaserSelect'" v-model="searchParams[item.value]" :filterable="item.filterable" />
+          <!--------------车型项目下拉----------------------->
+          <carProjectSelect v-else-if="item.type === 'carProjectSelect'" v-model="searchParams[item.value]" :filterable="item.filterable" />
+          <!--------------字典下拉----------------------->
+          <iDicoptions v-else-if="item.type === 'selectDict'" :optionAll="false" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
         </el-form-item>
       </el-form>
     </iSearch>
@@ -36,13 +36,13 @@
           <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('FASONG','发送')}}</iButton>
           <template v-if="isFS">
             <!--------------------转派按钮----------------------------------->
-            <iButton @click="openTransfer" >{{language('ZHUANPAI','转派')}}</iButton>
+            <transferBtn class="margin-right10" tansferType="1" :tansferData="selectRows" @getTableList="getTableList" ></transferBtn>
             <!--------------------退回按钮----------------------------------->
-            <iButton v-if="withAllBtn" @click="openBack" >{{language('TUIHUI','退回')}}</iButton>
+            <backBtn class="margin-right10" v-if="withAllBtn" backType="1" :backData="selectRows" @getTableList="getTableList" ></backBtn>
             <!--------------------保存按钮----------------------------------->
-            <iButton v-if="withAllBtn" @click="handleSave" >{{language('BAOCUN','保存')}}</iButton>
+            <saveBtn v-if="withAllBtn" saveType="1" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
             <!--------------------确认并发送按钮----------------------------------->
-            <iButton v-if="withAllBtn" @click="handleConfirmAndSend" >{{language('QUERENBINGFASONG','确认并发送')}}</iButton>
+            <confirmBtn v-if="withAllBtn" confirmType="1" :confirmData="selectRows" @getTableList="getTableList" ></confirmBtn>
           </template>
         </div>
       </div>
@@ -67,25 +67,28 @@
         :total="page.totalCount"
       />
     </iCard>
-    <backDialog ref="productGroupBack" :dialogVisible="backDialogVisible" @changeVisible="changeBackVisible" @handleBack="handleBack" />
     <fsConfirmDialog ref="fsConfirm" @handleConfirm="handleFSConfirm" :dialogVisible="fsDialogVisible" @changeVisible="changeFSVisible" :tableList="sendRows" type="1" />
-    <transferDialog ref="productGroupTransfer" :dialogVisible="transferDialogVisible" @changeVisible="changeTransferVisible" @handleTransfer="handleTransfer" :selectOptions="selectOptions.fsOptions" />
   </div>
 </template>
 
 <script>
-import { iSearch, iSelect, iInput, iButton, iCard, iPagination, iMessage } from 'rise'
+import { iSearch, iInput, iButton, iCard, iPagination, iMessage } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import { searchList, tableTitle } from './data'
 import tableList from '@/views/project/schedulingassistant/progroup/components/tableList'
-import backDialog from '../back'
-import { getCarTypePro, getProductGroup, getAllFS, getAllProPurchaser, deliveryProduct, returnSchedule, saveSchedule, confirmSchedule, transferSchedule } from '@/api/project'
-import { getDictByCode } from '@/api/dictionary'
+import { getProductGroup, getAllFS, deliveryProduct } from '@/api/project'
 import fsConfirmDialog from '@/views/project/schedulingassistant/progroup/components/fsconfirm'
-import transferDialog from '../transfer'
+import confirmBtn from '../commonBtn/confirmBtn'
+import saveBtn from '../commonBtn/saveBtn'
+import backBtn from '../commonBtn/backBtn'
+import transferBtn from '../commonBtn/transferBtn'
+import fsSelect from '@/views/project/components/commonSelect/fsSelect'
+import productPurchaserSelect from '@/views/project/components/commonSelect/productPurchaserSelect'
+import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect'
+import iDicoptions from 'rise/web/components/iDicoptions'
 export default {
   mixins: [pageMixins],
-  components: { iSearch, iSelect, iInput, iButton, iCard, tableList, iPagination, backDialog, fsConfirmDialog, transferDialog },
+  components: { iSearch, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, iInput, iButton, iCard, tableList, iPagination, fsConfirmDialog, confirmBtn, saveBtn, backBtn, transferBtn },
   data() {
     return {
       searchList,
@@ -96,10 +99,8 @@ export default {
       // tableTitle,
       tableData: [],
       tableLoading: false,
-      backDialogVisible: false,
       selectRows: [],
       fsDialogVisible: false,
-      transferDialogVisible: false,
       sendRows: [],
       withSend: false,
       withAllBtn: false
@@ -119,88 +120,16 @@ export default {
   },
   created() {
     this.initSearchParams()
-    this.getCarProjectOptions()
-    this.getConfirmStatusOptions()
     this.getFSOPtions()
-    this.getProductPurchaserOptions()
     this.getTableList()
   },
   methods: {
-    handleTransfer(val) {
-      transferSchedule(this.selectRows.map(item => item.id), val).then(res => {
-        if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.changeTransferVisible(false)
-          this.getTableList()
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.$refs.productGroupTransfer.changeLoading(false)
-      })
-    },
-    openTransfer() {
-      if (this.selectRows.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEXUYAOZHUANPAIDESHUJU', '请选择需要转派的数据'))
-        return
-      }
-      this.changeTransferVisible(true)
-    },
-    changeTransferVisible(visible) {
-      this.transferDialogVisible = visible
-    },
-    handleConfirmAndSend() {
-      if (this.selectRows.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEXUYAOQUERENBINGFASONGDESHUJU', '请选择需要确认并发送的数据'))
-        return
-      }
-      this.tableLoading = true
-      confirmSchedule(this.selectRows).then(res => {
-        if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.getTableList()
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.tableLoading = false
-      })
-    },
     initSearchParams() {
       this.searchParams = {
         confirmStatus: 'TO_BE_CONFIRMED',
         cartypeProId: this.$route.query.cartypeProId || '',
         productGroup: this.$route.query.productGroup || ''
       }
-    },
-    handleSave() {
-      if (this.tableData.length < 1) {
-        return
-      }
-      this.tableLoading = true
-      saveSchedule(this.tableData).then(res => {
-        if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.getTableList()
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.tableLoading = false
-      })
-    },
-    handleBack(val) {
-      returnSchedule(this.selectRows.map(item => item.id), val).then(res => {
-        if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.changeBackVisible(false)
-          this.getTableList()
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.$refs.productGroupBack.changeSaveLoading(false)
-      })
     },
     handleFSConfirm(val) {
       deliveryProduct(val).then(res => {
@@ -253,24 +182,6 @@ export default {
         }
       })
     },
-    getProductPurchaserOptions() {
-      getAllProPurchaser().then(res => {
-        if (res?.result) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            purchaseOptions: res.data.map(item => {
-              return {
-                ...item,
-                value: item.id,
-                label: item.nameZh
-              }
-            })
-          }
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
-    },
     handleReset() {
       this.searchParams = {
         confirmStatus: 'TO_BE_CONFIRMED'
@@ -282,54 +193,8 @@ export default {
       this.page.currPage = 1
       this.getTableList()
     },
-    getConfirmStatusOptions() {
-      getDictByCode('SCHEDULE_CONFIRM_STATUS').then(res => {
-        if (res?.result) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            'SCHEDULE_CONFIRM_STATUS': res.data[0]?.subDictResultVo?.map(item => {
-              return {
-                ...item,
-                value: item.code,
-                label: item.name
-              }
-            })
-          }
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
-    },
-    getCarProjectOptions() {
-      getCarTypePro().then(res => {
-        if (res?.result) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            carProjectOptions: res.data.map(item => {
-              return {
-                ...item,
-                value: item.id,
-                label: item.cartypeProName
-              }
-            })
-          }
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
-    },
     handleSelectionChange(val) {
       this.selectRows = val
-    },
-    openBack() {
-      if (this.selectRows.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEXUYAOTUIHUIDESHUJU', '请选择需要退回的数据'))
-        return
-      }
-      this.changeBackVisible(true)
-    },
-    changeBackVisible(visible) {
-      this.backDialogVisible = visible
     },
     getTableList() {
       if (this.searchParams.confirmStatus === 'RETURNED') {

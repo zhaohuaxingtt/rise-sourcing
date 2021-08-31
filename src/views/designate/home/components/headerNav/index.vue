@@ -6,7 +6,7 @@
 <template>
 <div class="headerNav-wraper margin-bottom10">
   <div class="headerNav">
-    <iNavMvp :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+    <iNavMvp :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
     <!-- <div class="ext">
       <div class="pull-right">
         <a href="javascript:;" class="iconMenu">
@@ -32,7 +32,7 @@
 </div>
 </template>
 <script>
-import {TAB, MENU, heaederSubMenu} from './components/data'
+import {MENU, heaederSubMenu} from './components/data'
 import {
   iNavMvp,
   // icon,
@@ -46,8 +46,6 @@ const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 export default {
   data() {
     return {
-      list: TAB,
-      menu: MENU,
       heaederSubMenu,
       tab: ''
     }
@@ -63,7 +61,7 @@ export default {
     this.updateNavList
   },
   computed: {
-    ...mapState(["navList"]),
+    ...mapState(["navList","navListLeft"]),
     ...mapActions(["updateNavList"])
   },
   methods: {

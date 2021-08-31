@@ -282,7 +282,7 @@ export default {
      * @return {*}
      */    
     openRfqPage(row){
-      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.id}`})
+      const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}`})
       window.open(router.href,'_blank')
     },
     /**
@@ -332,7 +332,7 @@ export default {
      * @return {*}
      */    
     openPartsPage(row){
-      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.rfqId}`})
+      const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.rfqId}`})
       window.open(router.href,'_blank')
     },
     /**

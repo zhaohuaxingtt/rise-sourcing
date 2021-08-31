@@ -407,7 +407,7 @@ export default {
         goToDetail(row){
             const { id } = row; 
              const routeData = this.$router.resolve({
-            path: '/sourcing/partsletter/loidetail',
+            path: '/sourceinquirypoint/sourcing/partsletter/loidetail',
             query: {id,}
             })
             window.open(routeData.href, '_blank')

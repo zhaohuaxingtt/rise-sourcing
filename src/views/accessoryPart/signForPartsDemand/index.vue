@@ -401,7 +401,7 @@ export default {
      * @return {*}
      */    
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { spNum: row.spnrNum }})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/accessorypartdetail', query: { spNum: row.spnrNum }})
       window.open(router.href,'_blank')
     },
     /**

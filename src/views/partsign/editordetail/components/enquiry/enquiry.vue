@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-07-07 16:34:14
+ * @LastEditTime: 2021-08-26 20:27:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
@@ -123,7 +123,7 @@ export default {
     jump() {
       // window.open(`/#/sourcing/partsign/enquiryVersion?purchasingRequirementTargetId=${ this.data.purchasingRequirementTargetId }`, '_blank')
       const route = this.$router.resolve({
-        path: "/sourcing/partsign/enquiryVersion",
+        path: "/sourceinquirypoint/sourcing/partsign/enquiryVersion",
         query: {
           purchasingRequirementTargetId: this.data.purchasingRequirementTargetId
         }

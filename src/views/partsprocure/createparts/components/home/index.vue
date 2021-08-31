@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-08-14 19:24:57
+ * @LastEditTime: 2021-08-30 11:19:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -226,7 +226,7 @@ export default {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           if (res.data.length == 1) {
             this.$router.push({
-              path: "/sourcing/partsprocure/editordetail",
+              path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
               query: {
                 item: JSON.stringify({ 
                   ...res.data[0]
@@ -236,7 +236,7 @@ export default {
             })
           } else {
             this.$router.push({
-              path: `/sourcing/partsprocure/batchmiantain?${ serialize(res.data.map(item => ({ ids: item.id })), Array) }&businessKey=${res.data[0].partProjectType}`
+              path: `/sourceinquirypoint/sourcing/partsprocure/batchmiantain?${ serialize(res.data.map(item => ({ ids: item.id })), Array) }&businessKey=${res.data[0].partProjectType}`
             })
           }
         } else {

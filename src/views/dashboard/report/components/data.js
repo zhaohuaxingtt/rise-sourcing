@@ -1,7 +1,7 @@
 /*
  * @Author: hoajiang
  * @Date: 2021-08-05 10:36:42
- * @LastEditTime: 2021-08-13 22:26:10
+ * @LastEditTime: 2021-08-26 20:28:20
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览配置
  * @FilePath: /front-web/src/views/dashboard/components/data.js
@@ -21,7 +21,7 @@ export const TAB = [
     value: 2,
     name: "寻源执行",
     message: 0,
-    url: "/sourcing/partsign",
+    url: "/sourceinquirypoint/sourcing/partsign",
     activePath: "partsign",
     key: "XUANYUANCAIDAN"
   },

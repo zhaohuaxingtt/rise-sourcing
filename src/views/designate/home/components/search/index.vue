@@ -109,7 +109,25 @@
       </el-form-item>
       <!-- 车型项目 -->
       <el-form-item :label="language('nominationLanguage_CheXingXiangMu','车型项目')">
-        <iDicoptions v-model="form.carTypeProj" :optionKey="'CAR_TYPE_PRO'" />
+        <!-- <iDicoptions v-model="form.carTypeProj" :optionKey="'CAR_TYPE_PRO'" /> -->
+        <iSelect
+          v-model="form.carTypeProj"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+          filterable
+          clearable
+        >
+          <el-option
+            value=""
+            :label="language('all','全部') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.code"
+            :label="items.value"
+            v-for="(items, index) in (fromGroup && fromGroup.CAR_TYPE_PRO) || []"
+            :key="index"
+            style="max-width: 190px"
+          ></el-option>
+        </iSelect>
       </el-form-item>
       <!-- 报价一致性校验 -->
       <el-form-item :label="language('nominationLanguage_BaoJiaYiZhiXingJiaoYan','报价一致性校验')">
@@ -200,10 +218,11 @@ export default {
     iSearch,
     iInput,
     iSelect,
-    iDicoptions
+    // iDicoptions
   },
   mounted() {
     this.form = {}
+    this.getOptions()
   },
   beforeDestroy() {
     this.form = {}
@@ -219,6 +238,14 @@ export default {
     onNomiProcessTypeChange(type) {
       const types = nomiApplicationObject[type] || []
       this.applicationStatus = this.nomiApplicationStatus.filter(o => types.includes(o.id))
+    },
+    getOptions() {
+      let types = [
+        "CAR_TYPE_PRO",
+      ];
+      selectDictByKeyss(types).then((res) => {
+        this.fromGroup = res.data;
+      });
     },
   },
   // watch: {
