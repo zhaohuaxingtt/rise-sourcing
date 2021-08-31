@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-31 15:55:25
+ * @LastEditTime: 2021-08-31 17:36:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -64,7 +64,8 @@
                   </el-form-item>
                   <!--类型选择-->
                   <el-form-item :label="$t('类型选择')">
-                    <el-select v-model="comparedType">
+                    <el-select v-model="comparedType"
+                               @change="comparedTypeBy">
                       <el-option v-for="item in mekTypeList"
                                  :key="item.id"
                                  :value="item.code"
@@ -709,8 +710,28 @@ export default {
       }
       if (this.comparedType && this.ComparedMotor && this.chemeId && this.targetMotor) {
         getMekTable(params).then(res => {
-          this.gridData = res
+          let data = _.cloneDeep(res)
+          let mekTypeName = ""
+          this.mekTypeList.forEach(item => {
+            if (item.code === this.comparedType) {
+              mekTypeName = item.name
+            }
+          })
+          data.config['label#-1'] = mekTypeName
+          this.gridData = data
+          console.log(this.gridData)
         })
+      }
+    },
+    comparedTypeBy (val) {
+      let mekTypeName = ""
+      this.mekTypeList.forEach(item => {
+        if (item.code === val) {
+          mekTypeName = item.name
+        }
+      })
+      if (this.gridData) {
+        this.gridData.config['label#-1'] = mekTypeName
       }
     },
     getHistogram (params) {

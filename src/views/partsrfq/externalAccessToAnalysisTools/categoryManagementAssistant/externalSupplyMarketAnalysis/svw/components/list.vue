@@ -106,7 +106,6 @@ export default {
     return {
       isEdite: true,
       interestsStatus: '',
-      MarketOverviewObj1: [],
       iSelectOption: [{
         value: 'profit',
         name: "利润(%）"
@@ -115,7 +114,7 @@ export default {
         name: "svw(元)"
       }, {
         value: 'otherAmount',
-        name: "其他(元)"
+        name: "其它(元)"
       }],
       bgimg: require('../img/list.png'),
       upImg: require('../img/up.png'),
@@ -123,7 +122,28 @@ export default {
       option: {
         tooltip: {
           trigger: 'axis',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          },
+          formatter (params) {
+            let result = ''
+            let domHtml = ''
+            let arr = params.filter((value, index) => {
+              return value.seriesName !== 'sum'
+            })
+            arr = arr.reverse()
+            arr.forEach(value => {
+              domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + value.color + '"></span>'
+              result += domHtml + value.seriesName + ":" + value.value + '<br/>'
+            })
+            return result
+          },
+          textStyle: {
+            fontSize: 12,
+            color: "#e1e1e2"
+          }
         },
+
         legend: {
           data: ['svw', '其他'],
           right: 0,
@@ -428,77 +448,21 @@ export default {
     },
     MarketOverviewObj: {
       handler (val) {
-        this.MarketOverviewObj1 = _.cloneDeep(val)
-        // 饼图
-        if (this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
-          let data = []
-          let legend = []
-          this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.forEach((x, index) => {
-            let seriesObj = {
-              value: 1048,
-              name: '材料组A',
-              itemStyle: {
-                color: "#0058FF"
-              },
-              label: {
-                normal: {
-                  show: true,
-                  formatter: '{d}%'
-                }
-              }
-            }
-            let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
-            if (x.sapStuffCode == this.categoryCode) {
-              seriesObj.selected = true
-            } else if (x.sapStuffCode === "other") {
-              seriesObj.selected = true
-            } else {
-              seriesObj.selected = false
-            }
-            seriesObj.value = x.postAmount
-            seriesObj.name = x.categoryNameZh
-            seriesObj.itemStyle.color = colorList[index]
-            seriesObj.label.normal.formatter = x.rate + '%'
-            data.push(seriesObj)
-            legend.push(x.categoryNameZh)
-          })
-          this.turnover.series[0].data = data
-          this.turnover.legend.data = legend
-        }
-        let total = new Number()
-        if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
-          val.mainCustomerDTOList.forEach(item => {
-            total += Number(item.totalSalesPro)
-          })
-          if (total > 100) {
-            iMessage.error('超过100%')
-            return
-          }
-        }
-        this.$nextTick(() => {
-          // this.initCharts()
-          this.initturnover()
-        });
-      },
-      immediate: true,
-      deep: true
-    },
-    MarketOverviewObj1: {
-      handler (val) {
         let date = new Date().getFullYear();
         this.option.series.push({
           name: "sum",
           type: "bar",
           stack: "check",
-          z: 100,
+          z: 1,
           label: {
             show: true,
-            position: "outside",
-            color: "#000000",
+            position: "top",
+            color: "#fff",
             fontSize: 12,
             align: "center",
             fontFamily: "Arial",
             formatter: (params) => {
+              console.log(params, 2222)
               let data = this.MarketOverviewObj.supplierFinanceDTOList
               let index = params.dataIndex
               let sum = ((Number(data[index].otherAmount) + Number(data[index].svwAmount)) / 1000000).toFixed(2)
@@ -536,15 +500,61 @@ export default {
 
             }
           });
-
+          console.log(this.option.series)
         } else {
           this.option.series[0].data = []
           this.option.series[1].data = []
         }
+        // 饼图
+        if (this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
+          let data = []
+          let legend = []
+          this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.forEach((x, index) => {
+            let seriesObj = {
+              value: 1048,
+              name: '材料组A',
+              itemStyle: {
+                color: "#0058FF"
+              },
+              label: {
+                normal: {
+                  show: true,
+                  formatter: '{d}%'
+                }
+              }
+            }
+            let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
+            if (x.sapStuffCode == this.categoryCode) {
+              seriesObj.selected = true
+            } else {
+              if (x.sapStuffCode === "other") {
+                seriesObj.selected = true
+              }
+            }
+            seriesObj.value = x.postAmount
+            seriesObj.name = x.categoryNameZh
+            seriesObj.itemStyle.color = colorList[index]
+            seriesObj.label.normal.formatter = x.rate + '%'
+            data.push(seriesObj)
+            legend.push(x.categoryNameZh)
+          })
+          this.turnover.series[0].data = data
+          this.turnover.legend.data = legend
+        }
 
+        let total = new Number()
+        if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
+          val.mainCustomerDTOList.forEach(item => {
+            total += Number(item.totalSalesPro)
+          })
+          if (total > 100) {
+            iMessage.error('超过100%')
+            return
+          }
+        }
         this.$nextTick(() => {
           this.initCharts()
-          // this.initturnover()
+          this.initturnover()
         });
 
       },
@@ -578,7 +588,6 @@ export default {
       const myChart = echarts().init(this.$refs.chart);
       // 绘制图表
       const option = this.option
-
       myChart.setOption(option);
 
     },
@@ -586,6 +595,7 @@ export default {
       const myChart = echarts().init(this.$refs.turnover);
       // 绘制图表
       const option = this.turnover
+
       myChart.setOption(option);
       // myChart.dispatchAction({
       //   type: 'showTip',
