@@ -683,9 +683,9 @@ export default {
           spareParts: this.form.spareParts.join(","),
           supplier: this.form.supplier.join(","),
           turn: this.form.turn.join(","),
+          groupId: this.groupId,
           isDefault: false,
           viewType: 'all',
-
         }
       } else {
         params = {
@@ -699,6 +699,7 @@ export default {
           schemaId: this.analysisSchemeId,
           analysisDimension: this.chartType,
           combination: this.form.combination.join(","),
+          groupId: this.groupId,
           isDefault: false,
           viewType: 'all',
 

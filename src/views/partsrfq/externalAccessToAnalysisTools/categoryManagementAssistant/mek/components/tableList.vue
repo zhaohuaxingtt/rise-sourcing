@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-08-31 15:44:50
+ * @LastEditTime: 2021-08-31 17:19:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -93,10 +93,10 @@ export default {
       }
     },
     preview (val) {
-      console.log(val, "111111")
     },
     gridData: {
       handler (newVal) {
+        console.log(newVal,'hahahah')
         if (newVal) {
           if (newVal.data) {
             this.tableData = newVal.data
