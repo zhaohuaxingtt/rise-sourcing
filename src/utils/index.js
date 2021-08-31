@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-31 15:42:53
+ * @LastEditTime: 2021-08-31 18:28:20
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -310,7 +310,7 @@ export function deleteThousands (number) {
 import {businessKey} from '@/config/businesskey'
 export function businessPermission(currentPermissinKey,currentProjectParmars){
   try {
-    if(!currentProjectParmars.businessKey) return true
+    if(!currentProjectParmars.businessKey) return false
     const businessKeyQuery = currentProjectParmars.businessKey;
     if(businessKey[businessKeyQuery].find(i=>i == currentPermissinKey)) return true;
   } catch (error) {

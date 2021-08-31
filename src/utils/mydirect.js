@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-31 17:26:05
+ * @LastEditTime: 2021-08-31 18:28:44
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \front-web\src\utils\mydirect.js
@@ -27,8 +27,12 @@ Vue.directive('permission', {
                 // eslint-disable-next-line no-debugger
                 const splitValue = binding.expression.split('|')
                 if(splitValue.length > 1){store.dispatch('uploadResource',splitValue)}
-                if (!store.state.permission.whiteBtnList[splitValue[0]] && businessPermission(splitValue[0],router.currentRoute.query)) {
+                if (!store.state.permission.whiteBtnList[splitValue[0]]) {
                     el.parentNode.removeChild(el)
+                }else{
+                    if(businessPermission(splitValue[0],router.currentRoute.query)){
+                       el.parentNode.removeChild(el)
+                    }
                 }
             } else { //remove
                 // if (!store.state.permission.whiteBtnList[binding.expression] && businessPermission(binding.expression,router.currentRoute.query)) {
