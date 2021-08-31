@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-08-30 16:38:13
+ * @LastEditTime: 2021-08-31 14:02:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\sourcing.js
@@ -53,18 +53,27 @@ export default [
         {
             path: "supplier/quotationdetail",
             name: "quotationDetail",
+            meta:{
+                title:'代供应商报价详情'
+            },
             component: () =>
                 import ("@/views/supplier/quotationdetail")
         },
         {
             path: "importfiles",
             name: "importFiles",
+            meta:{
+                title:'附件导入'
+            },
             component: () =>
                 import ("@/views/designateFiles/importFiles"),
         },
         {
             path: "importfiles/detaillist",
             name: "filesDetailList",
+            meta:{
+                title:'附件导入详情'
+            },
             component: () =>
                 import ("@/views/designateFiles/importFiles/detail"),
         } ,

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-18 20:15:17
- * @LastEditTime: 2021-08-30 22:42:14
+ * @LastEditTime: 2021-08-31 15:39:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\api\usercenter\index.js
@@ -67,6 +67,10 @@ export function getSapUserPageList(data){
         data:data
     })
 }
-export function sendPermissonKey(parmars){ //待开雄开发...
-
+export function sendPermissonKey(parmars){
+    return requst({
+        url:'/resource/importBatch',
+        method:'POST',
+        data:parmars
+    })
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-08-30 15:27:23
+ * @LastEditTime: 2021-08-31 14:13:40
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -30,7 +30,7 @@
                   :placeholder="language('LK_QINGSHURULINGJIANHAO','请输入零件号')"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="language('partsignLanguage.LingJianMingChengZH','零件名称（中）')" v-permission.auto="PARTSIGN_PARTNAMEZH|'零件名（中）'">
+              <el-form-item :label="language('partsignLanguage.LingJianMingChengZH','零件名称（中）')" v-permission.auto="PARTSIGN_PARTNAMEZH|零件名中">
                 <iInput
                   v-model="form.partNameZh"
                   :placeholder="language('LK_QINGSHURULINGJIANMING','请输入零件名（中）')"
