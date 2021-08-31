@@ -191,7 +191,7 @@
             <span class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotation="scope">
-            <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span class="link-underline" @click="jumpQuotation(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #priceAxis="scope">
             <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -431,6 +431,14 @@ export default {
       this.currentRow = row
       this.dosageDialogVisible = true
     },
+    jumpQuotation(row) {
+      const route = this.$router.resolve({
+        path: '/aeko/quotationdetail',
+        query: {}
+      })
+
+      window.open(route.href, "_blank")
+    },
     view() {},
     oldPartNumPresetSelect(row) {
       // if (!row.oldPartNumPreset) return
@@ -547,10 +555,6 @@ export default {
               }
           }
         }
-
-        
-        
-        
       })
 
       // 原零件号 需用户自己填写
