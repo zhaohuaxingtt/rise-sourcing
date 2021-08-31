@@ -169,6 +169,8 @@ export default {
             id2: item[1],
           };
         });
+      } else {
+        this.form.dimensionHandle = [];
       }
       copyValue.dimensionHandle = this.form.dimensionHandle;
       this.$store.dispatch('setPiIndexChartParams', copyValue);
