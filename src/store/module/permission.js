@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-31 10:42:09
+ * @LastEditTime: 2021-08-31 12:01:14
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -137,7 +137,7 @@ const actions = {
   },
   uploadResource({commit,state},resource){
     const template = JSON.parse(JSON.stringify(state.resourceList))
-    commit('SET_RESOURCE',[...template,...[{name:resource[1],permissionKey:resource[0]}]])
+    commit('SET_RESOURCE',[...template,...[{name:resource[1],permissionKey:resource[0],type:2}]])
   },
   clearResource({commit}){
     commit('SET_RESOURCE',[])
