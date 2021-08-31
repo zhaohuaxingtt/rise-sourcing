@@ -334,7 +334,7 @@ export default {
       if (res?.result) {
         this.saveLoading = false
         iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
+        const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
         window.open(router.href,'_blank')
       } else {
         iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -374,7 +374,7 @@ export default {
       if (res?.result) {
         iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         this.saveLoading = false
-        const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
+        const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
         window.open(router.href,'_blank')
       } else {
         this.saveLoading = false

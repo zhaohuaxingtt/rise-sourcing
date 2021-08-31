@@ -89,7 +89,6 @@
         <template slot-scope="scope">
           <div class="rateOfChange" :style="{'backgroundColor': scope.row.color}">
             <template v-if="Number(scope.row[items.props]) > 0">+</template>
-            <template v-else-if="Number(scope.row[items.props]) < 0">-</template>
             {{ scope.row[items.props] }}
           </div>
         </template>

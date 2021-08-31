@@ -127,7 +127,9 @@ export default {
                 this.option.tooltip.formatter=function(params){
                         const str = `<div style="padding:10px">
                             <div>该分数断下供应商数量:<span style="color:#1763F7">${params.value}家</span></div>
-                            ${params.data.sArray.map(x=>{return `<div>${x}:${params.data.c}分</div>`})}
+                            ${params.data.sArray.map(x=>{
+                               return (`<div>${x.name}:${x.realScore}分</div>`)
+                            }).join('')}
                         </div>`
                         return str
                     }

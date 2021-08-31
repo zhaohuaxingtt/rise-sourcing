@@ -1,18 +1,98 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:18
- * @LastEditTime: 2021-08-06 14:16:57
+ * @LastEditTime: 2021-08-26 16:28:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\aeko\index.vue
 -->
 <template>
-  <p class="content"><span>不在sprint12范围内，敬请期待</span></p>  
+  <iCard class="margin-top20" :title="language('ZHIDINGAEKOKUYUANLINGJIAN', '指定AEKO库原零件')">
+    <template #header-control>
+       <iButton :disabled="ledgerSelection.length > 0">{{ language("DAOCHU", "导出") }}</iButton>
+    </template>
+
+    <div class="body">
+      <tableList
+        ref="aekoTable"
+        class="table"
+        index
+        :lang="true"
+        :tableData="tableData"
+        :tableTitle="tableTitle"
+        :tableLoading="loading"
+        @handleSelectionChange="handleSelectionChange"
+        :selectable="selectInit"
+        ></tableList>
+
+        
+        <iPagination 
+          v-update
+          class="margin-top30"
+          @size-change="handleSizeChange($event, getList)"
+          @current-change="handleCurrentChange($event, getList)"
+          background
+          :current-page="page.currPage"
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :total="page.totalCount" />
+    </div>
+
+  </iCard>
 </template>
 
 <script>
+import{
+  iCard,iButton,iPagination
+} from 'rise';
+import tableList from "@/views/partsign/editordetail/components/tableList"
+import { pageMixins } from "@/utils/pageMixins"
+import { aekoPartTableTitle } from '../data'
 export default {
+  name:'aekoPartList',
+  mixins: [ pageMixins ],
+  components:{
+    iCard,iButton,iPagination,
+    tableList,
+  },
+  props:{
+    tableData:{
+      type:Array,
+      default:()=>[],
+    },
+    ledgerSelection:{
+      type:Array,
+      default:()=>[],
+    }
+  },
+  data(){
+    return{
+      loading:false,
+      tableTitle:aekoPartTableTitle,
+    }
+  },
+  methods:{
+    handleSelectionChange(list) {
+      this.$emit('changeAekoSelection',list);
+    },
 
+    // 勾选限制
+    selectInit(row){
+      const idArr = this.ledgerSelection.map((item)=>item.id);
+      // 判断台账零件列表是否已存在相同原零件 若存在 则不勾选
+      if(!idArr.includes(row.id)){
+        return true
+      }else{
+        return false
+      }
+    },
+
+    getList(){
+      const data = {};
+      this.$emit('getAekoList',data);
+    },
+  }
 }
 </script>
 

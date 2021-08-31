@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 22:46:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 11:33:27
+ * @LastEditTime: 2021-08-27 14:25:11
  * @Description: 车型项目详情
  * @FilePath: \front-web\src\views\project\components\carprojectprogress\index.vue
 -->
 
 <template>
-  <iCard class="projectCard" >
-    <div class="margin-bottom20 clearFloat">
+  <iCard class="projectCard" :collapse="collapse" @handleCollapse="handleCollapse" >
+    <div class="clearFloat" slot="header-control">
       <div class="titleSearch">
         <span class="margin-right20 titleSearch-label">{{language('CHEXINGXIANGMU','车型项目')}}</span>
         <iSelect filterable v-model="carProjectId" @change="handleCarProjectChange" :disabled="disabled">
@@ -22,7 +22,7 @@
         </iSelect>
       </div>
     </div>
-    <div class="projectCard-content">
+    <div class="projectCard-content" >
       <carEmpty v-if="!carProjectId" />
       <carProject v-else :carProjectId="carProjectId" @changeSopStatus="changeSopStatus" />
     </div>
@@ -38,17 +38,21 @@ export default {
   components: { iCard, carEmpty, carProject, iSelect },
   props: {
     carProjectId: {type:String},
-    disabled: {type:Boolean, default:false}
+    disabled: {type:Boolean, default:false},
+    collapse: {type:Boolean, default:true}
   },
   data() {
     return {
-      carProjectOptions: []
+      carProjectOptions: [],
     }
   },
   created() {
     this.getCarProjectOptinos()
   },
   methods: {
+    handleCollapse(collapseValue) {
+      this.$emit('handleCollapse', collapseValue)
+    },
     /**
      * @Description: 是否sop状态修改，外层需要根据车型项目是否已sop做对应调整
      * @Author: Luoshuang
@@ -79,7 +83,7 @@ export default {
           this.carProjectOptions = res.data.map(item => {
             return {
               ...item,
-              value: item.id,
+              value: String(item.id),
               label: item.cartypeProjectZh
             }
           })
@@ -98,6 +102,9 @@ export default {
     margin-top: 20px;
     border-top: 1px dashed #BBC4D6;;
   }
+  .titleSearch-label {
+    width: auto !important;
+  }
   .titleSearch {
     display: flex;
     align-items: center;
@@ -105,11 +112,24 @@ export default {
     &-label {
       display: block;
       width: 60px;
-      font-size: 14px;
+      font-size: 14px !important;
     }
     ::v-deep .el-select {
       width: 240px;
     }
+  }
+  ::v-deep .cardHeader {
+    width: 100%;
+    & > div {
+      &:first-child {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+  ::v-deep .cardBody {
+    margin-top: -15px;
   }
 }
 </style>

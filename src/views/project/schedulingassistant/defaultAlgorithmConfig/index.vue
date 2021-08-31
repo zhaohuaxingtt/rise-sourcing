@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 10:47:59
- * @LastEditTime: 2021-08-24 14:19:36
+ * @LastEditTime: 2021-08-28 11:28:31
  * @LastEditors: Please set LastEditors
  * @Description: 默认算法配置
  * @FilePath: /front-web/src/views/project/schedulingassistant/defaultAlgorithmConfig/index.vue
@@ -17,19 +17,29 @@
           </iButton>
         </div>
         <div class="defaultAlgorithmConfigForm">
-          <iFormGroup row="2" class="form">
-            <iFormItem v-for="(item, index) in productLogicList" :key="index" >
-              <span v-if="item.label" slot="label">{{language(item.i18n_label, item.label)}}<span style="color:red;" v-if="item.required">*</span>:</span>
-              <iInput v-if="item.type === 'input'" v-model="form[item.value]" />
-              <iSelect v-else-if="item.type === 'select'" v-model="form[item.value]" :filterable="item.filterable" >
-                <el-option
-                  :value="item.code"
-                  :label="item.name"
-                  v-for="(item) in selectOptions[item.selectOption]"
-                  :key="item.code"
-                ></el-option>
+          <iFormGroup row="2"
+                      class="form">
+            <iFormItem v-for="(item, index) in productLogicList"
+                       :key="index">
+              <span v-if="item.label"
+                    slot="label">{{language(item.i18n_label, item.label)}}<span style="color:red;"
+                      v-if="item.required">*</span>:</span>
+              <iInput v-if="item.type === 'input'"
+                      v-model="form[item.value]" />
+              <iSelect v-else-if="item.type === 'select'"
+                       v-model="form[item.value]"
+                       :filterable="item.filterable">
+                <el-option :value="item.code"
+                           :label="item.name"
+                           v-for="(item) in selectOptions[item.selectOption]"
+                           :key="item.code"></el-option>
               </iSelect>
-              <el-autocomplete v-else-if="item.type === 'inputFilter'" :fetch-suggestions="querySearch" v-model="form[item.value]" />
+              <iDicoptions v-else-if="item.type === 'dictionary'"
+                           v-model="form[item.value]"
+                           :optionKey="item.dictionaryOption" />
+              <el-autocomplete v-else-if="item.type === 'inputFilter'"
+                               :fetch-suggestions="querySearch"
+                               v-model="form[item.value]" />
             </iFormItem>
           </iFormGroup>
 
@@ -46,19 +56,29 @@
           </iButton>
         </div>
         <div class="defaultAlgorithmConfigForm">
-          <iFormGroup row="2" class="form">
-            <iFormItem v-for="(item, index) in partLogicList" :key="index" >
-              <span v-if="item.label" slot="label">{{language(item.i18n_label, item.label)}}<span style="color:red;" v-if="item.required">*</span>:</span>
-              <iInput v-if="item.type === 'input'" v-model="form[item.value]" />
-              <iSelect v-else-if="item.type === 'select'" v-model="form[item.value]" :filterable="item.filterable" >
-                <el-option
-                  :value="item.code"
-                  :label="item.name"
-                  v-for="(item) in selectOptions[item.selectOption]"
-                  :key="item.code"
-                ></el-option>
+          <iFormGroup row="2"
+                      class="form">
+            <iFormItem v-for="(item, index) in partLogicList"
+                       :key="index">
+              <span v-if="item.label"
+                    slot="label">{{language(item.i18n_label, item.label)}}<span style="color:red;"
+                      v-if="item.required">*</span>:</span>
+              <iInput v-if="item.type === 'input'"
+                      v-model="form[item.value]" />
+              <iSelect v-else-if="item.type === 'select'"
+                       v-model="form[item.value]"
+                       :filterable="item.filterable">
+                <el-option :value="item.code"
+                           :label="item.name"
+                           v-for="(item) in selectOptions[item.selectOption]"
+                           :key="item.code"></el-option>
               </iSelect>
-              <el-autocomplete v-else-if="item.type === 'inputFilter'" :fetch-suggestions="querySearch" v-model="form[item.value]" />
+              <iDicoptions v-else-if="item.type === 'dictionary'"
+                           v-model="form[item.value]"
+                           :optionKey="item.dictionaryOption" />
+              <el-autocomplete v-else-if="item.type === 'inputFilter'"
+                               :fetch-suggestions="querySearch"
+                               v-model="form[item.value]" />
             </iFormItem>
           </iFormGroup>
 
@@ -69,13 +89,14 @@
 </template>
 
 <script>
-import { iCard,iButton, iInput, iFormGroup, iFormItem, iSelect, iMessage } from 'rise'
+import { iCard, iButton, iInput, iFormGroup, iFormItem, iSelect, iMessage } from 'rise'
 import { selectDictByKeyss } from '@/api/dictionary'
-import {productLogicList,partLogicList} from '../progroup/data'
+import { productLogicList, partLogicList } from './components/data'
+// import iDicoptions from 'rise/web/components/iDicoptions'
 
 export default {
-  components: { iCard, iButton, iInput, iFormGroup, iFormItem, iSelect },
-  data() {
+  components: { iCard, iButton, iInput, iFormGroup, iFormItem, iSelect, iDicoptions },
+  data () {
     return {
       form: {},
       selectOptions: {},
@@ -83,32 +104,32 @@ export default {
       partLogicList
     }
   },
-  created() {
+  created () {
     const keys = 'CATEGORY_CONFIG_OPTIONS,CALCULATE_CONFIG_OPTIONS,VALUE_CONFIG_OPTIONS,YEAR_CONFIG_OPTIONS,CAR_TYPE_CONFIG_OPTIONS'
     this.selectDictByKeys(keys)
   },
   methods: {
-    reset() {
+    reset () {
 
     },
-    save() {
+    save () {
 
     },
-    querySearch(queryString, cb) {
+    querySearch (queryString, cb) {
       var restaurants = this.selectOptions.productGroupOptions;
       var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
       // 调用 callback 返回建议列表的数据
       cb(results);
     },
-    createFilter(queryString) {
-      return (restaurant=this.selectOptions.productGroupOptions) => {
+    createFilter (queryString) {
+      return (restaurant = this.selectOptions.productGroupOptions) => {
         return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
     },
-    selectDictByKeys(keys) {
+    selectDictByKeys (keys) {
       selectDictByKeyss(keys).then(res => {
         if (res?.result) {
-          this.selectOptions = {...this.selectOptions,...res.data}
+          this.selectOptions = { ...this.selectOptions, ...res.data }
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -116,7 +137,7 @@ export default {
     }
 
   }
-  
+
 }
 </script>
 <style lang="scss" scoped>

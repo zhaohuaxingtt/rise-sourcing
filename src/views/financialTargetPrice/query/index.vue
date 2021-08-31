@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 14:58:04
+ * @LastEditTime: 2021-08-24 18:00:28
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -114,7 +114,7 @@ export default {
         partStatus: '',
         procureFactoryId: '',
         linieId: '',
-        lcPriceType: '',
+        cfPriceType: '',
         partProjectType: '',
         setKz: '',
         approveStats: '',
@@ -169,7 +169,7 @@ export default {
         partStatus: '',
         procureFactoryId: '',
         linieId: '',
-        lcPriceType: '',
+        cfPriceType: '',
         partProjectType: '',
         setKz: '',
         approveStats: '',
@@ -188,8 +188,8 @@ export default {
       })
     },
     getDicts() {
-      // 申请类型
-      this.getDict('CF_APPLY_TYPE')
+      // 目标价分类
+      this.getDict('CF_PRICE_TYPE')
       //申请状态CF_APPLY_STATUS
       this.getDict('CF_APPLY_STATUS')
       // 审批状态CF_APPROVE_STATUS
@@ -293,7 +293,7 @@ export default {
       });
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
       window.open(router.href,'_blank')
     },
     /**

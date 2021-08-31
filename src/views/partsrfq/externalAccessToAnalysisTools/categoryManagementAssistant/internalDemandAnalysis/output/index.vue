@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-20 16:36:10
+ * @LastEditTime: 2021-08-25 16:33:03
  * @LastEditors: 舒杰
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
@@ -200,6 +200,7 @@ export default {
             }
          });
          this.report=report
+         document.getElementsByTagName('iframe')[0].style.border = 'none'
       },
       // 返回
       back(){

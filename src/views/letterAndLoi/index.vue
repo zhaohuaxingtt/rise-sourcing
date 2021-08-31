@@ -5,30 +5,8 @@
 -->
 <template>
   <iPage class="letterAndLoi">
-    <!-- <el-tabs v-model="tab" class="tab">
-      <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
-        <div class="margin-bottom33">
-            <iNavMvp right routerPage lev="2" :list="navList" @message="clickMessage" />
-        </div>
-      </el-tab-pane>
-    </el-tabs> -->
     <div class="headerNav">
-    <iNavMvp :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
-    <!-- <div class="ext">
-      <div class="pull-right">
-        <a href="javascript:;" class="iconMenu">
-          <icon symbol
-            name="iconrizhi"
-          ></icon>
-        </a>
-        <a href="javascript:;" class="iconDatabase">
-          <icon symbol
-            name="icondatabaseweixuanzhong"
-          ></icon>
-        </a>
-      </div> -->
-<!--       
-    </div> -->
+    <iNavMvp :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
     <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" />
   </div>
     <!-- 类型TAB -->
@@ -52,7 +30,7 @@ import {
   iTabsList,
 } from 'rise';
 import { clickMessage } from "@/views/partsign/home/components/data"
-import { TAB,letterAndLoiType } from './data';
+import { letterAndLoiType } from './data';
 import letterList from './letter/list';
 import loiList from './loi/list';
 
@@ -71,7 +49,7 @@ export default {
       iTabsList,
     },
     computed: {
-      ...mapState(["navList"]),
+      ...mapState(["navList","navListLeft"]),
       ...mapActions(["updateNavList"])
     },
     data(){
@@ -79,7 +57,6 @@ export default {
         tab:'source',
         cardType:this.$route.query.cardType || 'letter',
         tabData:letterAndLoiType,
-        list: TAB,
       }
     },
     created(){

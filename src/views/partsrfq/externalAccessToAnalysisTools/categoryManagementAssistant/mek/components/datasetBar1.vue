@@ -1,14 +1,16 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-12 17:36:07
+ * @LastEditTime: 2021-08-27 18:13:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
 -->
 <template>
-  <div style="height: 440px;width:100%"
-       ref="chart"></div>
+  <div>
+    <div style="height: 440px;width:100%"
+         ref="chart"></div>
+  </div>
 </template>
 
 <script>
@@ -18,13 +20,14 @@ export default {
     return {
       myChart: null,
       barData: [],
-      barxAxis: []
+      barxAxis: [],
+      option: {}
     };
   },
   props: {
     typeSelection: {
-      type: String,
-      default: "",
+      type: Boolean,
+      default: false,
     },
     firstBarData: {
       type: Array,
@@ -37,21 +40,18 @@ export default {
     }
   },
   watch: {
-    typeSelection (val) {
-      if (val === '5') {
-        this.$nextTick(() => {
-          this.initCharts();
-        });
-      } else {
-        this.typeSelection = ""
-        this.$nextTick(() => {
-          this.initCharts();
-        });
-      }
-    },
+    // typeSelection (val) {
+    //   if (val) {
+    //     this.$nextTick(() => {
+    //       this.initCharts();
+    //     });
+    //   }
+    // },
     firstBarData: {
       handler (val) {
         if (val) {
+          this.barDataItem = []
+          this.barxAxis = []
           val.forEach((item, index) => {
             const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
             const itemData = {
@@ -74,6 +74,8 @@ export default {
           });
         }
       },
+      immediate: true,
+      deep:true
     }
   },
   mounted () {
@@ -83,11 +85,14 @@ export default {
   },
   methods: {
     initCharts () {
-      this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
-      console.log(this.$refs.chart.style.width)
-      this.$refs.chart.style.minWidth = '100%';
-      this.myChart = echarts().init(this.$refs.chart);
+      console.log(111)
+      if (this.maxWidth === 1) {
+        this.$refs.chart.style.width = '240px'
+      } else {
+        this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+      }
 
+      this.myChart = echarts().init(this.$refs.chart);
       this.option = {
         title: {
           show: true,
@@ -97,7 +102,7 @@ export default {
         },
         xAxis: [
           {
-            show: this.typeSelection === '5' ? false : true,
+            show: !this.typeSelection || false,
             type: "category",
             axisTick: { show: false },
             // data: [{
@@ -117,7 +122,7 @@ export default {
           },
         ],
         grid: {
-          left: 20,
+          left: 0,
           right: 0,
           bottom: "15%",
           top: "30%",
@@ -140,7 +145,7 @@ export default {
           axisTick: {
             show: false,
           },
-          offset: 0,
+          offset: -15,
           splitNumber: 4,
           nameLocation: "start",
         },
@@ -151,10 +156,10 @@ export default {
             emphasis: {
               focus: "series",
             },
-            barCategoryGap: '50%',
+            // barCategoryGap: '50%',
             // barMinWidth: 30,
             // // barMaxWidth: 30,
-            // barWidth: 30,
+            barWidth: 30,
             itemStyle: {
               barBorderRadius: [5, 5, 0, 0],
             },
@@ -198,8 +203,9 @@ export default {
       this.myChart.clear();
       this.myChart.resize();
       this.myChart.setOption(this.option);
-      // this.myChart.on('click', function (params) {
-      // });
+      this.myChart.on('click', (params) => {
+        this.$emit('detailDialog', true, params);
+      });
     },
   },
 };

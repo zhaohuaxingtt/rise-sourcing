@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-13 11:06:35
+ * @LastEditTime: 2021-08-30 13:41:02
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -64,7 +64,8 @@ const state = {
   //系统登录用户信息。存入store，前台不存储用户的敏感信息。
   roleList:[],
   userInfo:{},
-  whiteBtnList:[]
+  whiteBtnList:[],
+  resourceList:[] //前端上传的resource列表
 };
 const mutations = {
   SET_MENU_LIST(state,data){
@@ -81,6 +82,9 @@ const mutations = {
   },
   SET_WIHTEBTN_LIST(state,data){
     state.whiteBtnList = data
+  },
+  SET_RESOURCE(state,data){
+    state.resourceList = data
   }
 };
 const actions = {
@@ -130,6 +134,13 @@ const actions = {
   loginOut({commit}){
   },
   refreshToken(){
+  },
+  uploadResource({commit,state},resource){
+    const template = JSON.parse(JSON.stringify(state.resourceList))
+    commit('SET_RESOURCE',[...template,...[{name:resource[1],permissionKey:resource[0]}]])
+  },
+  clearResource({commit}){
+    commit('SET_RESOURCE',[])
   }
 };
 const getters = {

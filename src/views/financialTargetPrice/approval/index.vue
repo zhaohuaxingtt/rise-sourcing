@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 15:23:22
+ * @LastEditTime: 2021-08-24 18:27:21
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\index.vue
 -->
@@ -96,7 +96,7 @@ export default {
         cfId: '',
         linieName: '',
         buyerId: '',
-        applyType: ''
+        cfPriceType: ''
       },
       isEdit: false,
       tableLoading: false,
@@ -118,7 +118,7 @@ export default {
         cfId: '',
         linieName: '',
         buyerId: '',
-        applyType: ''
+        cfPriceType: ''
       }
     },
     getDict(type) {
@@ -133,7 +133,7 @@ export default {
     },
     getDicts() {
       // 申请类型
-      this.getDict('CF_APPLY_TYPE')
+      this.getDict('CF_PRICE_TYPE')
     },
     getCF() {
       getCFList().then(res => {
@@ -218,7 +218,7 @@ export default {
       });
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify({...row,id:row.purchasingProjectId,purchasingRequirementObjectId:row.purchasingRequirementId}) }})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { item: JSON.stringify({...row,id:row.purchasingProjectId,purchasingRequirementObjectId:row.purchasingRequirementId}) }})
       window.open(router.href,'_blank')
     },
     openApprovalDetailDialog(row){

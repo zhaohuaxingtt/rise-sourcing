@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-19 16:12:45
+ * @LastEditTime: 2021-08-30 16:57:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -21,7 +21,7 @@
       <div class="mainContent">
         <el-row :gutter="20">
           <el-col :span="10">
-            <costChar left="20%" :width="750" :chartData="pieData"/>
+            <costChar left="20%" :width="700" :chartData="pieData"/>
           </el-col>
           <el-col :span="14">
             <tableList
@@ -37,23 +37,21 @@
         </el-row>
       </div>
       <saveModal :key="saveModalParams.key" v-model="saveModalParams.visible" @checkSchemeName="checkSchemeName"/>
-      <coverConfirm :key="coverConfirmParams.key" v-model="coverConfirmParams.visible" @handleCover="handleCover" @handleCancelCover="handleCancelCover"/>
     </iCard>
   </div>
 </template>
 
 <script>
-import {iCard, iButton, iMessage} from 'rise'
+import {iCard, iButton, iMessage, iMessageBox} from 'rise'
 import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/char'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data';
 import { downloadPdfMixins } from '@/utils/pdf';
 import { getTotalCbdData, listNomiData, getCostStructureAnalysisByName, fetchSave} from '@/api/partsrfq/costAnalysis/index.js'
 import saveModal from './components/save'
-import coverConfirm from './components/coverConfirm'
 export default {
   name: 'CostAnalysisMain',
-  components: {iCard, iButton, costChar, saveModal, coverConfirm, tableList},
+  components: {iCard, iButton, costChar, iMessageBox, saveModal, tableList},
   mixins: [downloadPdfMixins],
   data () {
     return {
@@ -66,10 +64,6 @@ export default {
       selection: [],
       downloadButtonLoading: false,
       saveModalParams: {
-        key: 0,
-        visible: false
-      },
-      coverConfirmParams: {
         key: 0,
         visible: false
       },
@@ -189,14 +183,17 @@ export default {
     checkSchemeName(schemeName) {
       this.schemeName = schemeName
       this.targetSchemeId = null
-      getCostStructureAnalysisByName({name: schemeName}).then(res => {
+      this.$nextTick(_ => {
         this.$set(this.saveModalParams, 'visible', false)
+      })
+      getCostStructureAnalysisByName({name: schemeName}).then(res => {
         if(res && res.code == 200) {
           if(res.data) {
             //名称校验重复
             this.targetSchemeId = res.data.id
-            this.$set(this.coverConfirmParams, 'key', Math.random())
-            this.$set(this.coverConfirmParams, 'visible', true)
+            iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(_ => {
+              this.createPdfAndSave()
+            })
           } else {
             //名称校验不重复
             this.createPdfAndSave()
@@ -204,19 +201,9 @@ export default {
         } else iMessage.error(res.desZh)
       })
     },
-    // 覆盖
-    handleCover() {
-      this.coverConfirmParams.visible = false
-      this.createPdfAndSave()
-    },
-    // 取消覆盖
-    handleCancelCover() {
-      this.coverConfirmParams.visible = false
-    },
     // 创建pdf并保存数据
     createPdfAndSave() {
       this.createPdf().then(pdf => {
-        console.log('pdf', pdf);
         if(!pdf) {
           iMessage.error(this.language('CHUANGJIANPDFSHIBAI', '创建PDF失败'))
           return

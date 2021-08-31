@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2021-07-02 18:40:12
+ * @LastEditTime: 2021-08-30 15:19:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
@@ -11,12 +11,12 @@ import { cloneDeep } from "lodash"
 import axios from "axios"
 
 const state = {
-  navList: [
+  navList: [ //sourcing 4级菜单列表
     {
       value: 1,
       name: "零件签收",
       message: 0,
-      url: "/sourcing/partsign",
+      url: "/sourceinquirypoint/sourcing/partsign",
       activePath: "partsign",
       key: "LK_LINGJIANQIANSHOU"
     },
@@ -24,7 +24,7 @@ const state = {
       value: 2,
       name: "采购项目建立",
       message: 0,
-      url: "/sourcing/partsprocure",
+      url: "/sourceinquirypoint/sourcing/partsprocure",
       activePath: "partsprocure",
       key: "LK_CAIGOUXIANGMUJIANLI"
     },
@@ -32,7 +32,7 @@ const state = {
       value: 3,
       name: "配件签收",
       message: 0,
-      url: "/sourcing/signforpartsdemand",
+      url: "/sourceinquirypoint/sourcing/signforpartsdemand",
       activePath: "signforpartsdemand",
       key: "LK_PEIJIANXUQIUQIANSHOU"
     },
@@ -40,7 +40,7 @@ const state = {
       value: 4,
       name: "配件管理",
       message: 0,
-      url: "/sourcing/integratedmanage",
+      url: "/sourceinquirypoint/sourcing/integratedmanage",
       activePath: "integratedmanage",
       key: "LK_PEIJIANZONGHEGUANLI"
     },
@@ -48,7 +48,7 @@ const state = {
       value: 5,
       name: "附件导入",
       message: 0,
-      url: "/sourcing/importfiles",
+      url: "/sourceinquirypoint/sourcing/importfiles",
       activePath: "importfiles",
       key: "LK_FUJIANXUQIUDAORU"
     },
@@ -56,7 +56,7 @@ const state = {
       value: 6,
       name: "附件管理",
       message: 0,
-      url: "/sourcing/filemanage",
+      url: "/sourceinquirypoint/sourcing/filemanage",
       activePath: "filemanage",
       key: "LK_FUJIANZONGHEGUANLI"
     },
@@ -64,7 +64,7 @@ const state = {
       value: 7,
       name: "RFQ管理",
       message: 0,
-      url: "/sourcing/partsrfq",
+      url: "/sourceinquirypoint/sourcing/partsrfq",
       activePath: "partsrfq",
       key: "LK_RFQGUANLI"
     },
@@ -80,7 +80,7 @@ const state = {
       value: 9,
       name: "钢材创建",
       message: 0,
-      url: "/sourcing/steeldemandcreation",
+      url: "/sourceinquirypoint/sourcing/steeldemandcreation",
       activePath: "steeldemandcreation",
       key: "GANGCAIXUQIUCHUANGJIAN"
     },
@@ -88,27 +88,19 @@ const state = {
       value: 10,
       name: "定点信/LOI",
       message: 0,
-      url: "/sourcing/partsletter",
+      url: "/sourceinquirypoint/sourcing/partsletter",
       activePath: "partsletter",
       key: "LK_DINGDIANXINLOI"
     },
   ],
-  navListLeft:[
+  navListLeft:[ //sourcing 三级菜单列表
     {
       value: 1,
       name: "寻源执行",
       message: 0,
-      url: "/sourcing/partsign",
+      url: "/sourceinquirypoint/sourcing/partsign",
       activePath: "sourcing",
       key: "XUANYUANCAIDAN"
-    },
-    {
-      value: 2,
-      name: '财务目标价管理',
-      key: 'CAIWUMUBIAOJIAGUANLI',
-      url: '/financialtargetprice',
-      activePath: 'financialtargetprice',
-      message: 0
     }
   ]
 }

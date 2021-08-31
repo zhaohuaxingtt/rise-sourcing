@@ -2,13 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-23 17:10:40
+ * @LastEditTime: 2021-08-27 14:23:59
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
 
 <template>
-  <iPage class="projectoverview" v-permission="PROJECTMGT_OVERVIEW">
+<!-------v-permission="PROJECTMGT_OVERVIEW"------------->
+  <iPage class="projectoverview" >
     <projectTop />
     <!---------------------------------------------------------------------->
     <!----------                  筛选部分                   ---------------->

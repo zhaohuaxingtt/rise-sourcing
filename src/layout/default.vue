@@ -7,7 +7,6 @@
  * @FilePath: \front-sourcing\src\layout\default.vue
 -->
 <template>
-
   <!-- <iLayout :menus="menus" /> -->
   <iLayout />
 </template>

@@ -106,6 +106,7 @@ export default {
     return {
       isEdite: true,
       interestsStatus: '',
+      MarketOverviewObj1: [],
       iSelectOption: [{
         value: 'profit',
         name: "利润(%）"
@@ -114,7 +115,7 @@ export default {
         name: "svw(元)"
       }, {
         value: 'otherAmount',
-        name: "其它(元)"
+        name: "其他(元)"
       }],
       bgimg: require('../img/list.png'),
       upImg: require('../img/up.png'),
@@ -124,7 +125,7 @@ export default {
           trigger: 'axis',
         },
         legend: {
-          data: ['svw', '其它'],
+          data: ['svw', '其他'],
           right: 0,
           icon: "circle"
         },
@@ -158,12 +159,13 @@ export default {
         },
         series: [
           {
-            name: '其它',
+            name: '其他',
             itemStyle: {
               color: "#B4CBF7"
             },
             stack: "check",
             type: 'bar',
+            z: 20,
             label: {
               position: 'inside'
             },
@@ -209,6 +211,7 @@ export default {
             },
             stack: "check",
             type: 'bar',
+            z: 20,
             label: {
               position: 'insideTop'
             },
@@ -425,33 +428,7 @@ export default {
     },
     MarketOverviewObj: {
       handler (val) {
-        let date = new Date().getFullYear();
-        // 柱状图
-        if (this.MarketOverviewObj.supplierFinanceDTOList.length > 0) {
-          this.MarketOverviewObj.supplierFinanceDTOList.forEach(x => {
-            if (x.year == date - 3) {
-              this.option.series[0].data[0].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
-              this.option.series[0].data[0].value = (x.otherAmount / 1000000).toFixed(2)
-              this.option.series[1].data[0].value = (x.svwAmount / 1000000).toFixed(2)
-              this.option.series[1].data[0].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
-            }
-            if (x.year == date - 2) {
-              this.option.series[0].data[1].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
-              this.option.series[0].data[1].value = (x.otherAmount / 1000000).toFixed(2)
-              this.option.series[1].data[1].value = (x.svwAmount / 1000000).toFixed(2)
-              this.option.series[1].data[1].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
-            }
-            if (x.year == date - 1) {
-              this.option.series[0].data[2].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
-              this.option.series[0].data[2].value = (x.otherAmount / 1000000).toFixed(2)
-              this.option.series[1].data[2].value = (x.svwAmount / 1000000).toFixed(2)
-              this.option.series[1].data[2].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
-            }
-          });
-        } else {
-          this.option.series[0].data = []
-          this.option.series[1].data = []
-        }
+        this.MarketOverviewObj1 = _.cloneDeep(val)
         // 饼图
         if (this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
           let data = []
@@ -473,10 +450,10 @@ export default {
             let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
             if (x.sapStuffCode == this.categoryCode) {
               seriesObj.selected = true
+            } else if (x.sapStuffCode === "other") {
+              seriesObj.selected = true
             } else {
-              if (x.sapStuffCode === "other") {
-                seriesObj.selected = true
-              }
+              seriesObj.selected = false
             }
             seriesObj.value = x.postAmount
             seriesObj.name = x.categoryNameZh
@@ -499,8 +476,75 @@ export default {
           }
         }
         this.$nextTick(() => {
-          this.initCharts()
+          // this.initCharts()
           this.initturnover()
+        });
+      },
+      immediate: true,
+      deep: true
+    },
+    MarketOverviewObj1: {
+      handler (val) {
+        let date = new Date().getFullYear();
+        this.option.series.push({
+          name: "sum",
+          type: "bar",
+          stack: "check",
+          z: 100,
+          label: {
+            show: true,
+            position: "outside",
+            color: "#000000",
+            fontSize: 12,
+            align: "center",
+            fontFamily: "Arial",
+            formatter: (params) => {
+              let data = this.MarketOverviewObj.supplierFinanceDTOList
+              let index = params.dataIndex
+              let sum = ((Number(data[index].otherAmount) + Number(data[index].svwAmount)) / 1000000).toFixed(2)
+              return sum
+            },
+          },
+          labelLine: {
+            show: false,
+          },
+          barWidth: 50,
+          data: this.MarketOverviewObj.supplierFinanceDTOList.map(i => 0),
+        })
+        // 柱状图
+        if (this.MarketOverviewObj.supplierFinanceDTOList.length > 0) {
+          this.MarketOverviewObj.supplierFinanceDTOList.forEach(x => {
+            if (x.year == date - 3) {
+              this.option.series[0].data[0].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
+              this.option.series[0].data[0].value = (x.otherAmount / 1000000).toFixed(2)
+              this.option.series[1].data[0].value = (x.svwAmount / 1000000).toFixed(2)
+              this.option.series[1].data[0].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+
+            }
+            if (x.year == date - 2) {
+              this.option.series[0].data[1].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
+              this.option.series[0].data[1].value = (x.otherAmount / 1000000).toFixed(2)
+              this.option.series[1].data[1].value = (x.svwAmount / 1000000).toFixed(2)
+              this.option.series[1].data[1].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+
+            }
+            if (x.year == date - 1) {
+              this.option.series[0].data[2].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
+              this.option.series[0].data[2].value = (x.otherAmount / 1000000).toFixed(2)
+              this.option.series[1].data[2].value = (x.svwAmount / 1000000).toFixed(2)
+              this.option.series[1].data[2].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+
+            }
+          });
+
+        } else {
+          this.option.series[0].data = []
+          this.option.series[1].data = []
+        }
+
+        this.$nextTick(() => {
+          this.initCharts()
+          // this.initturnover()
         });
 
       },
@@ -534,6 +578,7 @@ export default {
       const myChart = echarts().init(this.$refs.chart);
       // 绘制图表
       const option = this.option
+
       myChart.setOption(option);
 
     },
@@ -541,7 +586,6 @@ export default {
       const myChart = echarts().init(this.$refs.turnover);
       // 绘制图表
       const option = this.turnover
-
       myChart.setOption(option);
       // myChart.dispatchAction({
       //   type: 'showTip',

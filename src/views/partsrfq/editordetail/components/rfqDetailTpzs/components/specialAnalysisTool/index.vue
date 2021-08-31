@@ -44,6 +44,7 @@ export default {
   },
   methods: {
     entrance(param) {
+      // 默认项
       if (param.isDefault) {
         switch (param.title) {
           case 'BoB(Best of Best)':
@@ -52,10 +53,17 @@ export default {
           case 'Volume Pricing':
             this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'edit', chemeId: param.reportId, round: this.$route.query.round } })
             break;
+          case 'Pricing Index':
+            this.$router.push({ path: '/sourcing/partsrfq/piAnalyseDetail', query: { schemeId: param.reportId, round: this.$route.query.round } })
+            break;
+          case 'MEK':
+            this.$router.push({ path: '/sourcing/mek/mekDetails', query: { chemeId: param.reportId, round: this.$route.query.round } })
+            break;
           default:
             break;
         }
       } else {
+        // 没有默认项
         switch (param.title) {
           case 'BoB(Best of Best)':
             this.$emit('entrance', 'BoB')
@@ -63,7 +71,7 @@ export default {
           case 'Volume Pricing':
             this.$emit('entrance', 'VP')
             break;
-          case 'Pricing Index':
+          case 'Pricing Index':
             this.$emit('entrance', 'PI')
             break;
           case 'MEK':
@@ -83,7 +91,9 @@ export default {
         }
       }
     },
+    // 获取数据
     async getDataList({ rfqId = '', categoryName = '', categoryCode = '', partNum = '', rfqName = '' }) {
+      // 把数据存在store
       if (this.$store.state.rfq.entryStatus === 0) {
         window.sessionStorage.setItem('rfqId', rfqId)
         window.sessionStorage.setItem('materialGroup', categoryName)
@@ -110,9 +120,9 @@ export default {
         this.viewModelDialog = false
         this.cardData = res.data
         this.cardData.push(
-          { title: 'Pricing Index', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
           { title: 'Bid-Link', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' }
         )
+        // 数据处理
         this.cardData.map((item) => {
           if (!item.analysisTotal) {
             item.analysisTotal = ''
@@ -133,8 +143,7 @@ export default {
             case 'Volume Pricing':
               item.imgUrl = VP
               break;
-            // 
-            case 'Pricing Index':
+            case 'Pricing Index':
               item.imgUrl = PI
               break;
             case 'MEK':

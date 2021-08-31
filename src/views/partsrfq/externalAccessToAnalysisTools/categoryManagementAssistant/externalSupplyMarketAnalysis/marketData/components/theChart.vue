@@ -51,6 +51,11 @@ export default {
         },
         yAxis: {
           type: 'value',
+          axisLabel: {
+            formatter: (val) => {
+              return 'CNY ' + val
+            }
+          }
         },
         color: [
           '#1660F1',

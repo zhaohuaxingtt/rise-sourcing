@@ -1,19 +1,18 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-18 13:33:01
+ * @LastEditTime: 2021-08-30 22:42:39
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \front-web\src\utils\index.js
  */
-import router from '../router';
-import store from '../store';
-import localStoreage from './localstorage';
-import jsencrypt from 'jsencrypt';
-import {sendKey} from '@/api/usercenter';
-import {allitemsList, BKMROLETAGID, onlyselfProject} from '@/config';
-
+import router from '../router'
+import store from '../store'
+import localStoreage from './localstorage'
+import jsencrypt from 'jsencrypt'
+import {sendKey,sendPermissonKey} from '@/api/usercenter'
+import {onlyselfProject,allitemsList,BKMROLETAGID} from '@/config'
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
   return Cookies.set(cookieName, cookieData, {
@@ -203,21 +202,24 @@ Vue.prototype.language = function(languageKey, name) {
   return this.$t(languageKey)
 }
 // eslint-disable-next-line no-undef
-router.afterEach(() => {
-  if (process.env.NODE_ENV == 'dev' && languageList.length !== 0) {
-    let languageLists = Array.from(new Set(languageList))
-    sendKey(languageLists)
-      .then((res) => {
-        if (res.code == 200) {
-          languageList = []
-        }
-      })
-      .catch((err) => {
-        languageList = []
-      })
+router.afterEach((to,from)=>{
+  if(process.env.NODE_ENV == 'dev' && languageList.length !== 0){
+    _languageSendToService()
+    _permissionKeySendToService(from)
   }
 })
-
+function _languageSendToService(){
+  let languageLists = Array.from(new Set(languageList))
+  sendKey(languageLists)
+  languageList = []
+}
+function _permissionKeySendToService(router){
+  console.log(`============The permissions automatically collected in the current interface are ${store.state.permission.resourceList.length}============`)
+  console.log(store.state.permission.resourceList)
+  const serviceData = router.matched.map((r,i)=>{ return {'menuName':r.meta.title,'menuUrl':r.path,resourceList:i==router.matched.length-1?store.state.permission.resourceList:[]}})
+  sendPermissonKey(serviceData)
+  store.dispatch('clearResource',[])
+}
 /**********************************************************************************************************************************************
  * @description: 结合业务逻辑和角色，处理权限列表, 过滤逻辑：
  * 1.如果当前的采购项目属于：【仅零件号变更，钢材一次性采购，钢材批量采购，配件，附件，一次性采购，DB一次性采购，工序委外，AEKO零件】 则过滤只有当前另加自己。
@@ -297,13 +299,13 @@ export function deleteThousands (number) {
  * 控件已经定义了唯一key，为了复用当前key所衍生的业务权限判断方法，属于增量修改。
  * 1.当前方法在v-permission中去调用，会结合router中的parmars(businessKey)来协同控制。
  * 2.businessKey代表当前业务的类型，比如仅零件号变更，在config中会存在一份黑名单。此黑名单需要开发结合业务去维护，无法做到自动化。
- * 3.config businessBlackKey.js 中将会维护所有业务存在的黑名单key.
+ * 3.config businessKey/index.js 中将会维护所有业务存在的黑名单key.
  * 4.如果以后业务黑名单由后台接管，提前做出业务key的提取，方便迁移。
  * @param {*} currentPermissinKey     当前控件的permissionKey
  * @param {*} currentProjectParmars   当前的业务ID
  * @return {*} Boolean
  ********************************************************************************************************************************************/
-import {businessKey} from '@/config/businessBlackKey'
+import {businessKey} from '@/config/businesskey'
 export function businessPermission(currentPermissinKey,currentProjectParmars){
   try {
     if(!currentProjectParmars.businessKey) return true

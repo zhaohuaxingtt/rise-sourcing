@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-06-25 16:08:02
+ * @LastEditTime: 2021-08-26 14:29:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -237,7 +237,7 @@
 				</iFormGroup>
 					<iFormGroup :row="1" inline icon>
 							<iFormItem :label="$t('LK_LINGJIANHAO')+':'">
-								<iInput></iInput>
+								<iInput v-permission.auto="DANGQIANKEY|当前模块的名字"></iInput>
 							</iFormItem>
 							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
 								<iInput></iInput>

@@ -51,8 +51,7 @@
                  :class="{
                 disabled:
                   multiple && multipleLimit
-                    ? selectedData.length === multipleLimit ||
-                      selectedData.length > multipleLimit
+                    ? selectedData.length === multipleLimit || selectedData.length > multipleLimit
                     : false
               }">
               {{ item[label] }}
@@ -67,9 +66,7 @@
                 :readonly="true"
                 placeholder="请选择"
                 :title="inputData"
-                ref="selectInput"
-                @focus="handleFocus">
-      </el-input> -->
+                ref="selectInput"></el-input> -->
       <div :class="`${inputClass} custom-select-input custom-width`"
            slot="reference">
 
@@ -92,12 +89,13 @@
         </el-input>
         <div class="inputClass"
              v-if="selectedData&&selectedData.length>=1">
-          <el-tag v-for="(x,index) in inputData"
+          <el-tag v-for="(x) in selectedData"
                   :key="x.key"
                   type="info"
-                  @close="deleteTag($event, x)"
+                  closable
+                  @close="deleteTag( x)"
                   disable-transitions>
-            <p class="el-select__tags-text">{{ x.shortNameDe }}</p>
+            <p class="el-select__tags-text">{{ x[label] }}</p>
             <p class="el-select__tags-text">{{ x.value }}</p>
           </el-tag>
           <!-- <span v-for="(x,index) in inputData"
@@ -109,22 +107,6 @@
         </div>
 
       </div>
-      <!-- <div class="el-select__tags"
-           v-if="multiple"
-           ref="tags"
-           :style="{ 'max-width': inputWidth - 32 + 'px', width: '100%' }">
-        <el-tag v-for="item in selectedData"
-                :key="getValueKey(item)"
-                :closable="!selectDisabled"
-                :size="collapseTagSize"
-                type="info"
-                @close="deleteTag($event, item)"
-                disable-transitions>
-          <span class="el-select__tags-text">{{ item.currentLabel }}</span>
-        </el-tag>
-
-      </div> -->
-
     </el-popover>
   </div>
 </template>
@@ -224,28 +206,26 @@ export default {
           return !codes.includes(od[this.value])
         })
         this.originData = originData
+        console.log(this.originData)
       }
     },
     values: {
       immediate: true,
       handler (newValue) {
-
-        console.log('values', newValue)
-        this.inputData = newValue
-        // newValue instanceof Array
-        //   ? newValue
-        //     .map(d => {
-        //       return d[this.label]
-        //     })
-        //     .join(',')
-        //   : newValue && newValue[this.label]
+        this.inputData =
+          newValue instanceof Array
+            ? newValue
+              .map(d => {
+                return d[this.label]
+              })
+              .join(',')
+            : newValue && newValue[this.label]
       }
     }
   },
   mounted () {
     const values = _.cloneDeep(this.values)
-    this.selectedData =
-      values instanceof Array ? values : values[this.value] ? [values] : []
+    this.selectedData = values instanceof Array ? values : values[this.value] ? [values] : []
     this.selectedData.forEach(item => {
       this.$set(item, 'selected', true)
     })
@@ -266,8 +246,7 @@ export default {
     handleShow () {
       let data = _.cloneDeep(this.data)
       const values = _.cloneDeep(this.values)
-      this.selectedData =
-        values instanceof Array ? values : values[this.value] ? [values] : []
+      this.selectedData = values instanceof Array ? values : values && values[this.value] ? [values] : []
       this.selectedData.forEach(item => {
         this.$set(item, 'selected', true)
       })
@@ -295,17 +274,14 @@ export default {
         .map(d => {
           return d[this.label]
         })
-      //.join(',')
+        .join(',')
       this.$emit('change', this.selectedData)
     },
     handleSelectItem (item) {
-      // console.log(item)
-      // return
       if (
         this.multiple &&
         this.multipleLimit &&
-        (this.selectedData.length === this.multipleLimit ||
-          this.selectedData.length > this.multipleLimit) &&
+        (this.selectedData.length === this.multipleLimit || this.selectedData.length > this.multipleLimit) &&
         !item.selected
       ) {
         return
@@ -339,27 +315,74 @@ export default {
         })
       }
       this.selectedData = _.cloneDeep(selectedData)
-      console.log(this.selectedData, 222)
       this.originData = originData
-
-      this.inputData = this.selectedData.length === 1 ? this.selectedData[0][this.label] : this.selectedData
-      // .map(d => {
-      //   return d[this.label]
-      // })
-      // .join(',')
+      this.inputData =
+        this.selectedData.length === 1
+          ? this.selectedData[0][this.label]
+          : this.selectedData
+            .map(d => {
+              return d[this.label]
+            })
+            .join(',')
       this.$emit('change', this.multiple ? this.selectedData : this.selectedData[0])
       !this.multiple ? this.$refs['selectPopover'].doClose() : ''
     },
-    handleDelete (index) {
-      this.inputData.splice(index, 1)
+    deleteTag (x) {
+      if (
+        this.multiple &&
+        this.multipleLimit &&
+        (this.selectedData.length === this.multipleLimit || this.selectedData.length > this.multipleLimit) &&
+        !x.selected
+      ) {
+        return
+      }
+      const dataCodes = this.data.map(i => {
+        return i[this.value]
+      })
+      let selectedData = _.cloneDeep(this.selectedData)
+      let originData = _.cloneDeep(this.originData)
+      x.selected = !x.selected
+      if (x.selected) {
+        !this.multiple ? (selectedData = []) : ''
+        originData = this.multiple ? originData : _.cloneDeep(this.data)
+        selectedData.push(x)
+        originData = originData.filter(d => {
+          return d[this.value] !== x[this.value]
+        })
+      } else {
+        selectedData = selectedData.filter(d => {
+          return d[this.value] !== x[this.value]
+        })
+
+        const index = dataCodes.indexOf(x[this.value])
+        index !== -1 ? originData.splice(index, 0, x) : ''
+        originData.sort((a, b) => {
+          const a_swname = a[this.sortVal]?.toLowerCase()
+          const b_swname = b[this.sortVal]?.toLowerCase()
+          if (a_swname < b_swname) return -1
+          if (a_swname > b_swname) return 1
+          return 0
+        })
+      }
+      this.selectedData = _.cloneDeep(selectedData)
+      this.originData = originData
+      this.inputData =
+        this.selectedData.length === 1
+          ? this.selectedData[0][this.label]
+          : this.selectedData
+            .map(d => {
+              return d[this.label]
+            })
+            .join(',')
+      this.$emit('change', this.multiple ? this.selectedData : this.selectedData[0])
+      !this.multiple ? this.$refs['selectPopover'].doClose() : ''
     }
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .custom-select-popover {
-  min-width: 300px;
-  width: 100%;
+  width: 300px;
   .list-container {
     height: 600px;
     overflow-x: hidden;
@@ -405,23 +428,14 @@ export default {
     cursor: not-allowed;
   }
 }
-.custom-select-input {
-  min-width: 300px;
-  width: 100%;
-  > input {
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-}
-// .custom-width{
-//   wid
-// }
 .inputClass {
   // border: 1px solid #eee;
   width: 200px;
   background: #fff;
   color: #000;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
   span {
     // display: inline-block;
     // padding: 0 10px;
@@ -436,6 +450,19 @@ export default {
       //   margin-left: 10px;
       // }
     }
+  }
+}
+::v-deep .el-tag .el-icon-close{
+  top:-31px;
+  right:-150px
+}
+</style>
+<style lang="scss">
+.custom-select-input {
+  width: 100%;
+  > input {
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 </style>

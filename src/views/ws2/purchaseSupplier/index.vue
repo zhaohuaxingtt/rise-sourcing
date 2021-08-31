@@ -44,8 +44,6 @@ export default {
   components: {
     iPage,
     iNavWS2,
-    iDialog,
-    iButton,
     iNavMvp
   },
   data() {
