@@ -53,7 +53,7 @@
                   </el-form-item>
                   <!--供应商-->
                   <el-form-item :label="$t('TPZS.GONGYINGSHANG')">
-                    <!-- <el-select multiple
+                    <el-select multiple
                                clearable
                                value-key
                                :multiple-limit="chartType === 'supplier' ? 5 : 1"
@@ -66,8 +66,8 @@
                         <span style="float: right; color: #8492a6; font-size: 13px"><i class="el-icon-error"></i>
                         </span>
                       </el-option>
-                    </el-select> -->
-                    <custom-select :data="supplierList"
+                    </el-select>
+                    <!-- <custom-select :data="supplierList"
                                    label="nameZh"
                                    value="supplierId"
                                    :multiple="true"
@@ -76,11 +76,11 @@
                                    :disabled="false"
                                    :search-method="handleMultiSearch"
                                    :multiple-limit="chartType === 'supplier' ? 5 : 1"
-                                   :popoverClass="'popover-class'" />
+                                   :popoverClass="'popover-class'" /> -->
                   </el-form-item>
                   <!--轮次-->
                   <el-form-item :label="$t('轮次')">
-                    <!-- <el-select multiple
+                    <el-select multiple
                                clearable
                                value-key
                                :multiple-limit="chartType === 'turn' ? 5 : 1"
@@ -92,8 +92,8 @@
                                  :key="i.turn"
                                  :value="i.turn"
                                  :label="'第' + i.turn + '轮'"></el-option>
-                    </el-select> -->
-                    <custom-select :data="supplierList"
+                    </el-select>
+                    <!-- <custom-select :data="supplierList"
                                    label="turn"
                                    value="turn"
                                    :multiple="true"
@@ -102,11 +102,11 @@
                                    :disabled="false"
                                    :search-method="handleMultiSearch"
                                    :multiple-limit="chartType === 'turn' ? 5 : 1"
-                                   :popoverClass="'popover-class'" />
+                                   :popoverClass="'popover-class'" /> -->
                   </el-form-item>
                   <!--零件号-->
                   <el-form-item :label="$t('LK_SPAREPARTSNUMBER') + '/' + $t('LK_FSHAO')">
-                    <custom-select :data="partList"
+                    <!-- <custom-select :data="partList"
                                    label="spareParts"
                                    value="fsNo"
                                    :multiple="true"
@@ -115,8 +115,8 @@
                                    :disabled="false"
                                    :search-method="handleMultiSearch"
                                    :multiple-limit="chartType === 'spareParts' ? 5 : 1"
-                                   :popoverClass="'popover-class'" />
-                    <!-- <el-select multiple
+                                   :popoverClass="'popover-class'" /> -->
+                    <el-select multiple
                                clearable
                                value-key
                                :multiple-limit="chartType === 'spareParts' ? 5 : 1"
@@ -125,7 +125,7 @@
                                  :key="i.fsNo"
                                  :value="i.fsNo"
                                  :label="i.fsNo+'/'+i.spareParts"></el-option>
-                    </el-select> -->
+                    </el-select>
                   </el-form-item>
                 </div>
                 <div v-else>
@@ -139,7 +139,7 @@
                     </iSelect>
                   </el-form-item>
                   <el-form-item :label="$t('FS号-零件号-供应商')">
-                    <el-select multiple
+                    <!-- <el-select multiple
                                clearable
                                value-key
                                :multiple-limit="chartType === 'combination' ? 6 : 1"
@@ -150,10 +150,20 @@
                                  :key="i.key"
                                  :value="i.key"
                                  :label="i.nameZh+''+i.value">
-                        <!-- <p >{{ i.nameZh }}</p>
-                        <p >{{ i.value }}</p> -->
+
                       </el-option>
-                    </el-select>
+                    </el-select> -->
+                    <custom-select :data="options"
+                                   label="nameZh"
+                                   value="key"
+                                   secordLabel="value"
+                                   :multiple="true"
+                                   @change="handleMultiChange"
+                                   v-model="form.combination"
+                                   :disabled="false"
+                                   :search-method="handleMultiSearch"
+                                   :multiple-limit="chartType === 'combination' ? 6 : 1"
+                                   :popoverClass="'popover-class'" />
                   </el-form-item>
                 </div>
 

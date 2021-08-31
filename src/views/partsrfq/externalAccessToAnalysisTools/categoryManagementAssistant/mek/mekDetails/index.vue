@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-30 17:51:17
- * @LastEditors: zbin
+ * @LastEditTime: 2021-08-31 14:31:48
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
 -->
@@ -21,7 +21,8 @@
             </el-option>
           </iSelect>
         </div>
-        <div class="flex">
+        <div class="flex"
+             v-show="reportFlag">
           <!--预览-->
           <iButton class="margin-left30">{{ $t("MEK分析库") }}</iButton>
           <!--保存-->
@@ -41,7 +42,7 @@
       <div class=" bodyBox clearFloat">
         <div class="cardBox"
              style="width:18%">
-          <iCard>
+          <iCard v-show="reportFlag">
             <div class=" searchForm"
                  style="margin-right:-20px">
               <el-form label-position="top"
@@ -92,6 +93,18 @@
               <iButton type="primary"
                        style="width:100px;height:35px"
                        @click="handleSearchReset">{{ $t("LK_ZHONGZHI") }}</iButton>
+            </div>
+          </iCard>
+          <iCard v-show="!reportFlag">
+            <div class=" searchForm"
+                 style="margin-right:20px">
+              <label for=""
+                     style="font-weight:600;font-size:14px">六位零件号</label>
+              <ul style="margin-top:10px">
+                <li style="maring-bottom:10px"
+                    v-for="(item,index) in partNumber"
+                    :key="index">{{item}}</li>
+              </ul>
             </div>
           </iCard>
         </div>
@@ -290,6 +303,7 @@ import detailDialog from "../components/detailDialog";
 import preview from "../components/preview";
 import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, getSchemeInfo, queryPartEbr, queryCal, updateScheme } from '@/api/categoryManagementAssistant/mek'
 import { getDictByCode } from '@/api/dictionary'
+import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 export default {
   name: "mekDetails",
   components: {
@@ -386,8 +400,8 @@ export default {
       //预览开关
       previewFlag: false,
       targetMotorName: "",
-      mekpriceType: ""
-
+      mekpriceType: "",
+      reportFlag: true
     };
   },
   async created () {
@@ -745,33 +759,69 @@ export default {
       this.previewFlag = val
     },
     save () {
-      let params = {
-        categoryCode: this.categoryCode,
-        categoryId: this.categoryId,
-        categoryName: this.categoryName,
-        comparedType: this.comparedType,
-        exceptPart: this.exceptPart,
-        firstComparedConfig: "",
-        secondComparedConfig: "",
-        thirdComparedConfig: "",
-        forthComparedConfig: "",
-        schemeId: this.chemeId,
-        targetMotor: this.targetMotor
+      if (this.analysisSave) {
+        let params = {
+          categoryCode: this.categoryCode,
+          categoryId: this.categoryId,
+          categoryName: this.categoryName,
+          comparedType: this.comparedType,
+          exceptPart: this.exceptPart,
+          firstComparedConfig: "",
+          secondComparedConfig: "",
+          thirdComparedConfig: "",
+          forthComparedConfig: "",
+          schemeId: this.chemeId,
+          targetMotor: this.targetMotor
+        }
+        if (this.barData[0]) {
+          params.firstComparedMotor = this.barData[0].motorId || ""
+          params.firstComparedPrice = this.barData[0].priceType || ""
+        } else if (this.barData[1]) {
+          params.secondComparedMotor = this.barData[1].motorId || ""
+          params.secondComparedPrice = this.barData[1].priceType || ""
+        } else if (this.barData[2]) {
+          params.thirdComparedMotor = this.barData[2].motorId || ""
+          params.thirdComparedPrice = this.barData[2].priceType || ""
+        } else if (this.barData[3]) {
+          params.forthComparedMotor = this.barData[3].motorId || ""
+          params.forthComparedPrice = this.barData[3].priceType || ""
+        }
+        updateScheme(params).then()
       }
-      if (this.barData[0]) {
-        params.firstComparedMotor = this.barData[0].motorId || ""
-        params.firstComparedPrice = this.barData[0].priceType || ""
-      } else if (this.barData[1]) {
-        params.secondComparedMotor = this.barData[1].motorId || ""
-        params.secondComparedPrice = this.barData[1].priceType || ""
-      } else if (this.barData[2]) {
-        params.thirdComparedMotor = this.barData[2].motorId || ""
-        params.thirdComparedPrice = this.barData[2].priceType || ""
-      } else if (this.barData[3]) {
-        params.forthComparedMotor = this.barData[3].motorId || ""
-        params.forthComparedPrice = this.barData[3].priceType || ""
+      if (this.reportSave) {
+        downloadPDF({
+          idEle: "content",
+          pdfName: this.reportName,
+          callback: async (pdf, pdfName) => {
+            try {
+              const time = new Date().getTime();
+              const filename = pdfName + time + ".pdf";
+              const pdfFile = pdf.output("datauristring");
+              const blob = dataURLtoFile(pdfFile, filename);
+              const formData = new FormData();
+              formData.append("multipartFile", blob);
+              formData.append("applicationName", "rise");
+              const res = await uploadFile(formData);
+              const data = res.data[0];
+              const req = {
+                analysisSchemeId: this.analysisSchemeId,
+                name: data.fileName,
+                path: data.filePath,
+                remark: that.reportName,
+              };
+              await add(req);
+              that.dialogVisible = false;
+              that.reportSave = false;
+              iMessage.success("保存成功");
+            } catch {
+              iMessage.err("保存失败");
+              that.dialogVisible = false;
+              that.reportSave = false;
+            }
+          },
+        });
       }
-      updateScheme(params).then()
+
 
 
     },
