@@ -89,13 +89,18 @@ export default {
 
     },
   },
+  watch:{
+    isEdit(val, oldVal) {
+      this.extraData.isEdit = val
+    },
+  },
   data() {
     return {
       fullscreenLoading: false,
       orderItemColumns: MODEL_ORDER_DETAILS_ITEMSCOLUMNS,
       orderItemData: [],
       selectOrderItemData: [],//选中数据
-      extraData: {orderDetails: this.orderDetails,  isEdit:this.isEdit,},
+      extraData: {orderDetails: this.orderDetails, isEdit:this.isEdit,},
       purchaseOrderItemDetailsIsVisible: false,
       referPurchaseRequisitionisVisible: false,
       purchaseOrderGrIrSelIsVisible: false,
@@ -155,7 +160,7 @@ export default {
             deliveryDate: item.deliveryDate,//交货日期
             inventoryLocation: item.storageLocationCode,//库存地点
             tmPartInfoId: item.partId,//零件id
-            itemSource: item.id,//来源
+            itemSource: '2',//来源
             itemSourceCode: item.riseCode,
             itemSourceItem: item.sapItem.toString(),
             isSparePart: item.isSparePart,

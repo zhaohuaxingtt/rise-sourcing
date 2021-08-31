@@ -111,7 +111,7 @@ export default {
     queryDeptListByTag(){
       let parmars={'tagId':4}
       getDeptListByTag(parmars).then((res)=>{
-        if(+res.code===200){
+        if(res.code==200){
           this.deptLists=res.data
         }
       })

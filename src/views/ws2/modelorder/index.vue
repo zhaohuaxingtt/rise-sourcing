@@ -33,6 +33,8 @@
         </div>
 
       </div>
+
+
       <order-home-table-components ref="orderHomeTableComponentsRef" :columns="columns" :order-data="orderData"
                                    :extra-data="extraData"
                                    @handleSelectionChange='handleSelectionChange'
@@ -43,7 +45,8 @@
                     :current-page='page.currPage' :page-sizes='page.pageSizes' :page-size='page.pageSize'
                     :layout='page.layout' :total='page.totalCount'/>
 
-      <TransferBuyerDialog v-model='transferBuyerDialogisDisplay' @sure='confirmTransfer'
+      <TransferBuyerDialog v-if="transferBuyerDialogisDisplay" v-model='transferBuyerDialogisDisplay'
+                           @sure='confirmTransfer'
                            :title="$t('partsprocure.PARTSPROCURETRANSFER')"
                            :subtitle="$t('MODEL-ORDER.LK_ZHUANYECAIGOUYUAN')"
                            :subtitle1="$t('MODEL-ORDER.LK_BUMEN')" :deptDTO='$store.state.permission.userInfo.deptDTO'
@@ -87,6 +90,7 @@ export default {
   data() {
     return {
       transferBuyerDialogisDisplay: false,
+
       orderQueryForm: {
         contractType: 'ZF',//订单类型
         isOnlyMyself: true,
@@ -103,7 +107,7 @@ export default {
         supplierSapCode: '',//供应商SAP编号
         // type: '45'//类型（55/54/spare/db/steel/45/43/42/47/411）
         typeList: ['42'],
-        contractStatus:'',
+        contractStatus: '',
       },
       columns: MODEL_ORDER_HOME_TABCOLUMNS,
       orderData: [],
@@ -122,6 +126,7 @@ export default {
     this.querySAPsendstatus()
     this.queryOrderStateList()
     this.queryContractStatus()
+    this.queryCurrentUserGroup()
     this.loadOrder()
   },
   methods: {
@@ -138,6 +143,8 @@ export default {
       getDictByCode('CONTRACT_SEND_SAP_STATUS').then((res) => {
         if (res.code == 200) {
           this.sapSendStatusList = res?.data[0]?.subDictResultVo
+          this.extraData.sapSendStatusList = this.sapSendStatusList
+
         } else {
           this.$message.error(res?.desZh)
         }
@@ -148,6 +155,7 @@ export default {
       getDictByCode('CONTRACT_STATUS').then((res) => {
         if (res.code == 200) {
           this.orderStatusList = res?.data[0]?.subDictResultVo
+          this.extraData.orderStatusList = this.orderStatusList
         }
       })
     },
@@ -156,19 +164,21 @@ export default {
       getDictByCode('contract_cover_status').then((res) => {
         if (res.code == 200) {
           this.contractStatus = res?.data[0]?.subDictResultVo
+          this.extraData.contractStatus = this.contractStatus
+
         }
       })
     },
     loadOrder() {
       this.orderQueryForm.currentPage = this.page.currPage
       this.orderQueryForm.pageSize = this.page.pageSize
-      getPurchaseOrder(this.orderQueryForm).then((res) => {
+      getPurchaseOrder(this.orderQueryForm).then(res => {
         if (res.code == 200) {
           let localData = res.data?.records
           localData.forEach((item, index) => {
             item.index = index + 1
           })
-          this.orderDate = localData
+          this.orderData = localData
           this.page.totalCount = res.data.total
         } else {
           this.$message.error(res.desZh)
@@ -242,9 +252,9 @@ export default {
             cancelButtonText: this.$t('LK_QUXIAO')
           }
       ).then(() => {
-        this.selectedOrderData = []
         delPurchaseOrder(newDeleteIds).then((res) => {
           if (res.code == 200) {
+            this.selectedOrderData = []
             this.$message.success(res.desZh)
             this.loadOrder()
           } else {

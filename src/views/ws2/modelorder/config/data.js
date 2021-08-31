@@ -5,6 +5,7 @@ import LinkPurchaseOrderComponent from "../Details/components/LinkPurchaseOrderC
 import CustomRenderPriceComponents from "../Details/components/CustomRenderPriceComponents";
 import ReceiptLocationComponents from "../Details/components/ReceiptLocationComponents";
 import CustomDescriptionComponents from "../Details/components/CustomDescriptionComponents";
+import ContractStatusComponents from "../components/ContractStatusComponents";
 
 export const MODEL_ORDER_HOME_TABCOLUMNS = [
     {
@@ -26,7 +27,7 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
         align: 'center',
         emit: 'open-page',
         width: 120,
-        customRender: (h, scope, column) => {
+        customRender: (h, scope) => {
             return <RiseContractCodeComponents row={scope.row}/>
         },
     },
@@ -54,11 +55,12 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
         i18n: 'MODEL-ORDER.LK_DINGDANZHUANGTAI',
         headerAlign: 'center',
         align: 'center',
-        /*   customRender: (h, scope, extraData) => {
-            /!* let orderStatus=this.orderStatusList.find((i) => i.code ==scope.row['state'])
-             return <span>{(orderStatus==null||orderStatus==undefined)?scope.row['state']:orderStatus.name} </span>*!/
+        customRender: (h, scope, column, extraData) => {
+            let orderStatusList = extraData.orderStatusList
+            let orderStatus = orderStatusList.find((i) => i.code == scope.row['state'])
+            return <span>{(orderStatus == null || orderStatus == undefined) ? scope.row['state'] : orderStatus.name} </span>
 
-           },*/
+        },
     },
     {
         prop: 'procureFactory',
@@ -101,7 +103,7 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
 
     },
     {
-        prop: 'sapSendStatus',
+        prop: 'sapSendState',
         label: 'SAP发送状态',
         i18n: 'MODEL-ORDER.LK_SAPFASONGZHUANGTAI',
         tooltip: false,
@@ -120,10 +122,9 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
         headerAlign: 'center',
         align: 'center',
         width: 95,
-        /*customRender: (h, scope) => {
-        contractRemark 描述
-          return <SapSendStatusCompomemts row={scope.row} />
-        }*/
+        customRender: (h, scope, column, extraData) => {
+          return <ContractStatusComponents row={scope.row} contractStatus={extraData.contractStatus} />
+        }
     },
     {
         prop: 'orderDate',
@@ -131,6 +132,7 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
         i18n: 'MODEL-ORDER.LK_DINGDANRIQI',
         tooltip: false,
         headerAlign: 'center',
+        width: 100,
         align: 'center',
     },
     {
@@ -165,9 +167,7 @@ export const MODEL_ORDER_DETAILS_ITEMSCOLUMNS = [
         headerAlign: 'center',
         align: 'center',
         customRender: (h, scope, column, extraData) => {
-            //extraData.partTypeList.find((i) => i.code == scope.row["partType"]).name
             return <LinkPurchaseOrderComponent content={scope.row["item"]} isEdit={extraData.isEdit}/>
-            //return extraData.isEdit?(<span> {scope.row["item"]} </span>):<span className='open-link-text'>{scope.row["item"]}</span>
         },
     },
     {
@@ -177,12 +177,12 @@ export const MODEL_ORDER_DETAILS_ITEMSCOLUMNS = [
         tooltip: false,
         headerAlign: 'center',
         align: 'center',
-        customRender:(h, scope, column, extraData)=>{
-          return <CustomDescriptionComponents row={scope.row} isEdit={extraData.isEdit} />
+        customRender: (h, scope, column, extraData) => {
+            return <CustomDescriptionComponents row={scope.row} isEdit={extraData.isEdit}/>
         }
     },
     {
-        prop: 'partNameZh',
+        prop: 'itemSourceCode',
         label: '模具台账',
         i18n: 'MODEL-ORDER.LI_MOJUTAIZHANG',
         tooltip: false,
@@ -190,9 +190,7 @@ export const MODEL_ORDER_DETAILS_ITEMSCOLUMNS = [
         align: 'center',
         emit: 'go-ledger',
         customRender: (h, scope, column, extraData) => {
-            //extraData.partTypeList.find((i) => i.code == scope.row["partType"]).name
-            return <LinkPurchaseOrderComponent content={scope.row["partNameZh"]} isEdit={extraData.isEdit}/>
-            //return extraData.isEdit?(<span> {scope.row["item"]} </span>):<span className='open-link-text'>{scope.row["item"]}</span>
+            return <LinkPurchaseOrderComponent content={scope.row["itemSourceCode"]} isEdit={extraData.isEdit}/>
         },
     },
     {
@@ -261,7 +259,6 @@ export const MODEL_ORDER_DETAILS_ITEMSCOLUMNS = [
         align: 'center',
         width: 150,
         customRender: (h, scope, column, extraData) => {
-            console.log(extraData.stockLocations,extraData.isEdit)
             return <ReceiptLocationComponents stockLocations={extraData.stockLocations} row={scope.row}
                                               isEdit={extraData.isEdit}/>
         },
@@ -278,7 +275,7 @@ export const MODEL_ORDER_DETAILS_ITEMSCOLUMNS = [
     },
 ]
 
-export  const MODEL_PURCHASEREQUISITIONCOLUMNS=[
+export const MODEL_PURCHASEREQUISITIONCOLUMNS = [
     {
         type: 'selection',
         width: 50

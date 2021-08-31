@@ -248,6 +248,9 @@ export default {
         if (!flag) {
           return this.$message.error('您所在的岗位无此采购组权限')
         }
+        if (val.procureGroup.toUpperCase().startsWith('PZ')) {
+          return this.$message.error('请输入正式采购组')
+        }
         createPurchaseOrder(val).then((res) => {
           //调用创建接口
           if (res.code == 200) {

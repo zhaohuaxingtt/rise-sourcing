@@ -300,8 +300,8 @@ module.exports = {
       },
       '/usercenterApi': {
         // usercenter.../唐开雄
-        // target: 'http://10.122.18.166:8015',
-        target: 'http://10.122.17.38:8015',
+        target: 'http://10.122.18.166:8015',
+        //target: 'http://10.122.17.38:8015',
         // target:'http://10.160.137.165:8015',
         changeOrigin: true,
         pathRewrite: {
@@ -448,9 +448,9 @@ module.exports = {
         }
       },
       '/changepriceApi': {
-        // spring10变价单接口-杨显辉
-        // target: 'http://192.168.50.31:8026/',
-        target: 'http://10.122.18.166:8026',
+        // 采购订单
+        target: 'http://192.168.50.112:8026/',
+        //target: 'http://10.122.18.166:8026',
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {

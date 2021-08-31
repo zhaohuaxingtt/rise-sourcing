@@ -1,47 +1,60 @@
 <template>
   <div class="i-table-custom">
     <el-table
-      v-selection-border
-      tooltip-effect="light"
-      :height="height"
-      :max-height="maxHeight"
-      :data="tableData"
-      v-loading="loading"
-      :row-key="rowKey || 'uniqueId'"
-      highlight-current-row
-      :empty-text="$t('LK_ZANWUSHUJU')"
-      ref="theCustomTable"
-      :row-class-name="getRowClassNameDefault"
-      :row-style="getRowStyle"
-      :cell-class-name="getCellClassName"
-      @selection-change="handleSelectionChange"
-      @select="handleSelect"
-      @select-all="handleSelectAll"
-      @current-change="handleCurrentChange"
-      @cell-click="handleCellClick"
-      :cell-style="borderLeft"
-      fit
+        v-selection-border
+        tooltip-effect="light"
+        :height="height"
+        :max-height="maxHeight"
+        :data="tableData"
+        v-loading="loading"
+        :row-key="rowKey || 'uniqueId'"
+        highlight-current-row
+        :empty-text="$t('LK_ZANWUSHUJU')"
+        ref="theCustomTable"
+        :row-class-name="getRowClassNameDefault"
+        :row-style="getRowStyle"
+        :cell-class-name="getCellClassName"
+        @selection-change="handleSelectionChange"
+        @select="handleSelect"
+        @select-all="handleSelectAll"
+        @current-change="handleCurrentChange"
+        @cell-click="handleCellClick"
+        :cell-style="borderLeft"
+        fit
     >
       <template v-for="(item, index) in columns">
-        <el-table-column :key="index" v-if="['selection', 'index'].includes(item.type)" :type="item.type" :label="item.i18n ? $t(item.i18n) : item.label" :width="item.width || 50" :align="item.align || 'center'" :selectable="handleSelectable" />
-        <el-table-column :key="index" v-else-if="['customSelection'].includes(item.type)" :type="item.type" :label="item.i18n ? $t(item.i18n) : item.label" :width="item.width || 50" :align="item.align || 'center'" :selectable="handleSelectable">
+        <el-table-column :key="index" v-if="['selection', 'index'].includes(item.type)" :type="item.type"
+                         :label="item.i18n ? $t(item.i18n) : item.label" :width="item.width || 50"
+                         :align="item.align || 'center'" :selectable="handleSelectable"/>
+        <el-table-column :key="index" v-else-if="['customSelection'].includes(item.type)" :type="item.type"
+                         :label="item.i18n ? $t(item.i18n) : item.label" :width="item.width || 50"
+                         :align="item.align || 'center'" :selectable="handleSelectable">
           <template slot="header">
-            <el-checkbox v-model="checkedAll" :indeterminate="indeterminateAll" @change="handleCheckedAll" />
+            <el-checkbox v-model="checkedAll" :indeterminate="indeterminateAll" @change="handleCheckedAll"/>
           </template>
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.checked" :indeterminate="scope.row.isIndeterminate" @change="(val) => handleCheckedRow(val, scope.row)"> </el-checkbox>
+            <el-checkbox v-model="scope.row.checked" :indeterminate="scope.row.isIndeterminate"
+                         @change="(val) => handleCheckedRow(val, scope.row)"></el-checkbox>
           </template>
         </el-table-column>
-        <el-table-column :key="index" v-else-if="['fullIndex'].includes(item.type)" :type="item.type" :label="item.i18n ? $t(item.i18n) : item.label" :width="item.width || 50" :align="item.align || 'center'" :selectable="handleSelectable">
+        <el-table-column :key="index" v-else-if="['fullIndex'].includes(item.type)" :type="item.type"
+                         :label="item.i18n ? $t(item.i18n) : item.label" :width="item.width || 50"
+                         :align="item.align || 'center'" :selectable="handleSelectable">
           <template slot-scope="scope">
             {{ getFullIndex(scope.row) }}
           </template>
         </el-table-column>
 
-        <el-table-column v-else :key="index" :type="item.type" :align="item.align || 'center'" :header-align="item.headerAlign" :show-overflow-tooltip="item.tooltip" :prop="item.prop" :label="item.i18n ? $t(item.i18n) : item.label" :width="item.width ? item.width.toString() : ''" :min-width="item.minWidth ? item.minWidth.toString() : ''">
+        <el-table-column v-else :key="index" :type="item.type" :align="item.align || 'center'"
+                         :header-align="item.headerAlign" :show-overflow-tooltip="item.tooltip" :prop="item.prop"
+                         :label="item.i18n ? $t(item.i18n) : item.label"
+                         :width="item.width ? item.width.toString() : ''"
+                         :min-width="item.minWidth ? item.minWidth.toString() : ''">
           <template slot-scope="scope">
             <div @click="handleEmit(item, scope.row)">
-              <i-table-column v-if="item.customRender || item.type === 'expanded'" :scope="scope" :column="item" :custom-render="item.customRender" :extra-data="extraData" :prop="item.prop" :child-num-visible="childNumVisible" />
+              <i-table-column v-if="item.customRender || item.type === 'expanded'" :scope="scope" :column="item"
+                              :custom-render="item.customRender" :extra-data="extraData" :prop="item.prop"
+                              :child-num-visible="childNumVisible"/>
               <span v-else>
                 {{ scope.row[item.prop] }}
               </span>
@@ -54,12 +67,12 @@
 </template>
 
 <script>
-import { iButton, iSelect, iInput, iRadio } from 'rise'
+import {iButton, iSelect, iInput, iRadio} from 'rise'
 import iTableColumn from './iTableColumn'
 
 export default {
   // eslint-disable-next-line vue/no-unused-components
-  components: { iTableColumn, iButton, iSelect, iInput, iRadio },
+  components: {iTableColumn, iButton, iSelect, iInput, iRadio},
   props: {
     data: {
       type: Array,
@@ -73,9 +86,9 @@ export default {
         return []
       },
     },
-    loading: { type: Boolean, default: false },
-    height: { type: Number || String },
-    maxHeight: { type: Number || String },
+    loading: {type: Boolean, default: false},
+    height: {type: Number || String},
+    maxHeight: {type: Number || String},
     extraData: {
       type: Object,
       default: function () {
@@ -141,7 +154,7 @@ export default {
     }
   },
   watch: {
-    data() {
+    data(val) {
       this.getTableData()
     },
   },
@@ -180,7 +193,7 @@ export default {
     getTreeTableData(data, parentKey, res) {
       parentKey = parentKey || ''
       res = res || []
-      const { childrenKey } = this.treeExpand
+      const {childrenKey} = this.treeExpand
       for (let i = 0; i < data.length; i++) {
         const row = data[i]
         const uniqueId = parentKey ? `${parentKey}-${i}` : `${i}`
@@ -303,10 +316,10 @@ export default {
     handleSelect(selection, row) {
       this.$emit('select', selection, row)
     },
-    getRowClassNameDefault({ row, rowIndex }) {
+    getRowClassNameDefault({row, rowIndex}) {
       let rowClass = ''
       if (this.rowClassName) {
-        rowClass = this.rowClassName({ row, rowIndex })
+        rowClass = this.rowClassName({row, rowIndex})
       }
       if (row.uniqueId === null || row.uniqueId === undefined || row.uniqueId.indexOf('-') === -1) {
         return `${rowClass} root-row`
@@ -314,13 +327,13 @@ export default {
 
       return `${rowClass} row-child`
     },
-    getRowStyle({ row }) {
+    getRowStyle({row}) {
       if (!row.visible) {
-        return { display: 'none' }
+        return {display: 'none'}
       }
       return ''
     },
-    getCellClassName({ column }) {
+    getCellClassName({column}) {
       if (column.showOverflowTooltip) {
         return 'cell-ellipsis'
       }
@@ -366,13 +379,13 @@ export default {
       this.checkedAll = checkedData.length === this.tableData.length
       if (this.emitHalfSelection) {
         this.$emit(
-          'handle-selection-change',
-          this.tableData.filter((e) => e.checked)
+            'handle-selection-change',
+            this.tableData.filter((e) => e.checked)
         )
       } else {
         this.$emit(
-          'handle-selection-change',
-          this.tableData.filter((e) => e.checked && !e.isIndeterminate)
+            'handle-selection-change',
+            this.tableData.filter((e) => e.checked && !e.isIndeterminate)
         )
       }
     },
@@ -422,10 +435,12 @@ export default {
       display: none;
     }
   }
+
   .cell-ellipsis {
     .cell.el-tooltip {
       overflow: hidden;
       text-overflow: ellipsis;
+
       > div {
         overflow: hidden;
         text-overflow: ellipsis;
