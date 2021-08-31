@@ -111,10 +111,10 @@ export default {
         name: "利润(%）"
       }, {
         value: 'svwAmount',
-        name: "svw(元)"
+        name: "svw(万元)"
       }, {
         value: 'otherAmount',
-        name: "其它(元)"
+        name: "其它(万元)"
       }],
       bgimg: require('../img/list.png'),
       upImg: require('../img/up.png'),
