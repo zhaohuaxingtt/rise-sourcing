@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-13 15:29:22
+ * @LastEditTime: 2021-08-31 15:52:35
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -209,7 +209,7 @@ export default {
       this.saveloading = true
       saveProductGroupInfoList(this.products).then(res => {
         if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          // iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -324,13 +324,19 @@ export default {
         const fsOptions = await this.getFsUserList(canSendRows)
         const nextThreeWorkDay = await this.getNextThreeWorkDay()
         this.fsTableList = canSendRows.map(item => {
-          const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
-            return {
-              ...item,
-              value: item.userId,
-              label: item.userName
+          const fs = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userName || ''
+          const fsId = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userId || ''
+          const options = fsOptions ? fsOptions[item.productGroupId]?.reduce((accu, item) => {
+            if (item.userId) {
+              return [...accu, {
+                ...item,
+                value: item.userId,
+                label: item.userName
+              }]
+            } else {
+              return accu
             }
-          }) : []
+          },[]) : []
           return {
             ...item,
             cartypeProject: this.carProjectName,
@@ -343,8 +349,8 @@ export default {
             projectPurchaser: this.$store.state.permission.userInfo.nameZh,
             projectPurchaserId: this.$store.state.permission.userInfo.id,
             selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
-            fs: options && options[0] ? options[0].label : '',
-            fsId: options && options[0] ? options[0].value : ''
+            fs: fs,
+            fsId: fsId
           }
         })
         this.loading = false
