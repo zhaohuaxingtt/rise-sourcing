@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-08-31 14:04:51
+ * @LastEditTime: 2021-08-31 15:44:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -11,7 +11,8 @@
   <iCard class="tableList">
     <template v-slot:header>
       <div class="titleBox"
-           v-if="!preview">
+           v-if="!preview"
+           v-show="reportFlag">
         <div v-if="!editFlag">
           <iButton @click="addRow">新增</iButton>
           <iButton @click="del">删除</iButton>
@@ -72,7 +73,8 @@ export default {
     preview: {
       type: Boolean,
       default: false
-    }
+    },
+    reportFlag: Boolean
   },
   watch: {
     editFlag: {
