@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-23 17:18:55
+ * @LastEditTime: 2021-08-31 15:42:20
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -55,7 +55,7 @@ import { iCard, iPagination, iButton, iMessage } from 'rise'
 import { regularTableTitle, partTableTitle, partLogicList } from '../../data'
 import tableList from '@/views/project/schedulingassistant/progroup/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
-import logicSettingDialog from '@/views/project/schedulingassistant/progroup/components/logicsetting'
+import logicSettingDialog from '@/views/project/components/logicSettingBtn/components/logicsetting'
 import { selectDictByKeyss } from '@/api/dictionary'
 import showItemDialog from '../showItem'
 import { getCondition, getFitting, downloadHistoryProgressFile } from '@/api/project'
@@ -121,14 +121,7 @@ export default {
   computed: {
     logicSelectOptions() {
       return {
-        ...this.selectOptions,
-        carProjectOptions: this.carProjectOptions.map(item => {
-          return {
-            ...item,
-            code: item.value,
-            name: item.label
-          }
-        })
+        ...this.selectOptions
       }
     },
     partTableTitle() {
@@ -235,7 +228,7 @@ export default {
       this.getFitting()
     },
     init() {
-      if (this.$route.query.cartypeProId) {
+      if (this.$route.query.cartypeProId && this.$route.query.sixPartCode) {
         this.logicData = {
           ...this.logicData,
           ...this.$route.query
