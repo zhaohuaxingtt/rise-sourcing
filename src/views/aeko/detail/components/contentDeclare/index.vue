@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-27 09:42:08
+ * @LastEditTime: 2021-08-31 17:26:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -237,8 +237,8 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
-import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier } from "@/api/aeko/detail"
+// import { excelExport } from "@/utils/filedowLoad"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
@@ -521,55 +521,58 @@ export default {
     // 导出
     handleExport() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAODAOCHUDEYUANLINGJIANXIANGMU", "请选择需要导出的原零件项目"))
-      let printTableTitle = tableTitle.filter(item => item.isExport);
-      let oldPartIndex = 0;
-      const {multipleSelection=[],aekoInfo={}} = this;
+      const ids = this.multipleSelection.map((item)=>item.objectAekoPartId);
+      console.log(ids,'idsidsids');
+      liniePartExport({ids});
+      // let printTableTitle = tableTitle.filter(item => item.isExport);
+      // let oldPartIndex = 0;
+      // const {multipleSelection=[],aekoInfo={}} = this;
 
-      const selectionList = cloneDeep(multipleSelection);
+      // const selectionList = cloneDeep(multipleSelection);
 
       
-      selectionList.map((item)=>{
-        // 原零件号加个“请填写”
-        item.oldPart = '请填写';
-        // 供应商SAP号若没有值填充“请填写”
-        if(item.supplierSapCode == ''){
-          item.supplierSapCode = "请填写";
-        }
-      });
+      // selectionList.map((item)=>{
+      //   // 原零件号加个“请填写”
+      //   item.oldPart = '请填写';
+      //   // 供应商SAP号若没有值填充“请填写”
+      //   if(item.supplierSapCode == ''){
+      //     item.supplierSapCode = "请填写";
+      //   }
+      // });
       
       
-      printTableTitle.map((item,index)=>{
-        // 原零件号(系统预设)
-        if(item.props == 'oldPartNumPreset'){
-          item.name = '原零件号(系统预设)';
-          oldPartIndex= index;
-        }
+      // printTableTitle.map((item,index)=>{
+      //   // 原零件号(系统预设)
+      //   if(item.props == 'oldPartNumPreset'){
+      //     item.name = '原零件号(系统预设)';
+      //     oldPartIndex= index;
+      //   }
 
-        // 判断下AEKO类型是Aeko/MP导出列显示列显示车型项目  AeA时导出列显示车型
-        if(item.props == 'cartypeZh'){
-          if(aekoInfo && aekoInfo.aekoType ){
-              if(aekoInfo.aekoType == 'AeA'){  // 车型
-                item.name = '车型'
-              }else if(['Aeko','MP'].includes(aekoInfo.aekoType)){ // 车型项目
-                item.name = '车型项目'
-              }
-          }
-        }
-      })
+      //   // 判断下AEKO类型是Aeko/MP导出列显示列显示车型项目  AeA时导出列显示车型
+      //   if(item.props == 'cartypeZh'){
+      //     if(aekoInfo && aekoInfo.aekoType ){
+      //         if(aekoInfo.aekoType == 'AeA'){  // 车型
+      //           item.name = '车型'
+      //         }else if(['Aeko','MP'].includes(aekoInfo.aekoType)){ // 车型项目
+      //           item.name = '车型项目'
+      //         }
+      //     }
+      //   }
+      // })
 
-      // 原零件号 需用户自己填写
-        printTableTitle.splice(oldPartIndex+1,0,{
-          props:'oldPart',
-          name:'原零件号'
-        })
+      // // 原零件号 需用户自己填写
+      //   printTableTitle.splice(oldPartIndex+1,0,{
+      //     props:'oldPart',
+      //     name:'原零件号'
+      //   })
         
-        // 零件行项目ID 
-        printTableTitle.unshift(({
-          props:'objectAekoPartId',
-          name:'零件行项目ID'
-        }))
+      //   // 零件行项目ID 
+      //   printTableTitle.unshift(({
+      //     props:'objectAekoPartId',
+      //     name:'零件行项目ID'
+      //   }))
 
-      excelExport(selectionList, printTableTitle)
+      // excelExport(selectionList, printTableTitle)
     },
     // 提交
     handleSubmit() {
