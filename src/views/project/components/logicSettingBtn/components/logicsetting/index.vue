@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 10:57:15
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 10:25:11
+ * @LastEditTime: 2021-08-31 10:28:13
  * @Description: 算法配置弹窗
  * @FilePath: \front-web\src\views\project\components\logicSettingBtn\components\logicsetting\index.vue
 -->
@@ -38,6 +38,7 @@
 <script>
 import { iDialog, iButton, iInput, iFormGroup, iFormItem, iSelect, iMessage } from 'rise'
 import iDicoptions from 'rise/web/components/iDicoptions'
+
 export default {
   components: { iDialog, iButton, iInput, iFormGroup, iFormItem, iSelect, iDicoptions },
   props: {
