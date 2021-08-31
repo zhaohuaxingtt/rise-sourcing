@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-25 16:22:32
+ * @LastEditTime: 2021-08-31 18:17:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -34,17 +34,17 @@
 				<!-------------------------------------------------------------------------------->
 				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 				<!---出现此按钮。------------------------------------------------------------------->
-				<iButton v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
-				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
+				<iButton v-permission.auto='PARTSPROCURE_EDITORDETAIL_WHXGGYS' v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
+				<iButton @click="start" v-permission.auto="PARTSPROCURE_EDITORDETAIL_STARTUP|启动项目"
 					v-if="detailData.status == '16'">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
 				<creatFsGsNr :projectItems="[detailData]" @refresh="getDatailFn"></creatFsGsNr>
 				<cancelProject :backItems='[detailData]'  @refresh="getDatailFn"></cancelProject>
 				<!-- <iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
 					{{ language("LK_CHAIFENCAIGOUGONGCHANG",'拆分采购工厂') }}
 				</iButton> -->
-				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT"
+				<iButton @click="openDiologClose" v-permission.auto="PARTSPROCURE_EDITORDETAIL_ENDPROJECT|结束项目"
 					v-if="detailData.status != '16'">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
-				<iButton :loading='saveLoading' @click="saveFn" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ language("LK_BAOCUN",'保存') }}
+				<iButton :loading='saveLoading' @click="saveFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE|保存零件采购项目按钮">{{ language("LK_BAOCUN",'保存') }}
 				</iButton>
 				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">{{ language("LK_FANHUI",'返回') }}</iButton>
 				<logButton class="margin-left20" @click="log" v-permission="PARTSPROCURE_EDITORDETAIL_LOG" />
@@ -154,7 +154,7 @@
 								<el-option :value="false" label="否"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem v-permission="PARTSPROCURE_BASIC_HEVAYITEMLIST" label="Heavy Item List:" name="">
+						<iFormItem v-permission.auto="PARTSPROCURE_BASIC_HEVAYITEMLIST|HeavyItemList" label="Heavy Item List:" name="">
 							<iText>
 								{{ detailData.heavyItem || "否" }}
 							</iText>
@@ -206,7 +206,7 @@
 									:key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER" :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
+						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER|CF控制员" :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
 							<iSelect v-model="detailData.cfController" >
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
@@ -219,7 +219,7 @@
 								{{ detailData.partCostUserName }}
 							</iText>
 						</iFormItem>
-						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_MOJUCHENGBENFENXIYUAN"  :label="language('MUJUCHENGBENFENXIYUAN', '模具成本分析员') + ':'" name=''>
+						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_MOJUCHENGBENFENXIYUAN|模具成本分析员"  :label="language('MUJUCHENGBENFENXIYUAN', '模具成本分析员') + ':'" name=''>
 							<!-- <iSelect class="multipleSelect" v-model="detailData.d" multiple collapse-tags>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect> -->
@@ -227,7 +227,7 @@
 								{{ detailData.mouldCostUserName }}
 							</iText>
 						</iFormItem>
-						<iFormItem name="test" v-permission="PARTSPROCURE_EDITORDETAIL_COMMINSOURCING">
+						<iFormItem name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_COMMINSOURCING|CommonSourcing">
 							<template slot="label">
 								<span>Common Sourcing:</span>
 								<span>
@@ -624,7 +624,8 @@
 						i != "cs1Memo" &&
 						i != "csfMeetMemo" &&
 						i != "linieMeetMemo" &&
-						i != "cs1MeetMemo"
+						i != "cs1MeetMemo" &&
+						i !='aekoManagerMemo'
 					) {
 						detailData[i] = this.detailData[i];
 					}

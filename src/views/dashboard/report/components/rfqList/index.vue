@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 17:05:28
- * @LastEditTime: 2021-08-20 14:59:21
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-31 14:33:57
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/dashboard/report/components/rfqList/index.vue
 -->
@@ -10,7 +10,7 @@
   <div class="rfq-list">
     <div class="rfq-list-item" v-for="(item, index) in data" :key="index">
       <div class="rfq-title">
-        <span class="tit" @click="$router.push({path: `/sourcing/partsrfq/assistant?id=${item.rfqId}`})">{{item.rfqId || ''}}</span>
+        <span class="tit" @click="$router.push({path: `/sourceinquirypoint/sourcing/partsrfq/assistant?id=${item.rfqId}`})">{{item.rfqId || ''}}</span>
         <div class="alarm">
           <span class="margin-right20">{{language('RENWUJINDU','任务进度')}}:
             <icon symbol style="font-size:14px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+(item.wholeTaskProgress||6)].icon"></icon>

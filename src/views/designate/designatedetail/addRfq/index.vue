@@ -208,7 +208,7 @@ export default {
       this.selectedRfqs = val
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.id}`})
+      const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}`})
       window.open(router.href,'_blank')
     },
     toTop() {},

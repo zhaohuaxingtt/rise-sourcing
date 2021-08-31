@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-30 10:10:33
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-31 16:40:02
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -15,7 +15,7 @@
         <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>
       </div>
       <div v-if="!isSop">
-        <logicSettingBtn ref="logicSettingBtn" class="margin-right10" @handleUse="updatePartGroupConfig" @click="openLogicDialog" :logicData="logicData" :logicList="partLogicList" @changeVisible="changeLogicVisible" :logicVisible="logicVisible" />
+        <logicSettingBtn ref="logicSettingBtn" class="margin-right10" logicType="2" :carProject="cartypeProId" @handleUse="updatePartGroupConfig" :logicList="partLogicList" />
         <iButton @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
         <iButton @click="$emit('changeNodeView')">{{language('SHENGCHENGPAICHENGBANBEN', '生成排程版本')}}</iButton>
         <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
@@ -52,9 +52,22 @@
               <template v-if="index == nodeList.length - 1">
                 <iText v-if="pro[item.status] == 1 && isLarger(pro[item.kw], pro[item.kw2])" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
                 <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw2]}}</iText>
-                <el-cascader v-else-if="isLarger(pro[item.kw], pro[item.kw2])" :class="`productItem-bottom-stepBetween-input margin-top20 ` " :value="pro[item.kw].split('-KW')" :options="getOptions(pro, item.kw, index)" @change="handleChange($event, pro, item.kw, index)" separator="-KW"></el-cascader>
-                <el-cascader v-else :class="`productItem-bottom-stepBetween-input margin-top20 ` " :value="pro[item.kw2].split('-KW')" :options="getOptions(pro, item.kw2, index)" @change="handleChange($event, pro, item.kw2, index)" separator="-KW"></el-cascader>
-
+                <el-cascader
+                  v-else-if="pro.emIsLarger"
+                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "
+                  :value="pro[item.kw].split('-KW')"
+                  :options="yearWeekOptions(pro, item.kw, index)"
+                  @change="handleChange($event, pro, item.kw, index)"
+                  separator="-KW"
+                ></el-cascader>
+                <el-cascader
+                  v-else
+                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "
+                  :value="pro[item.kw2].split('-KW')"
+                  :options="yearWeekOptions(pro, item.kw2, index)"
+                  @change="handleChange($event, pro, item.kw2, index)"
+                  separator="-KW"
+                ></el-cascader>
               </template>
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
               <el-cascader v-else :class="`productItem-bottom-stepBetween-input margin-top20 ` " :value="pro[item.kw].split('-KW')" :options="getOptions(pro, item.kw, index)" @change="handleChange($event, pro, item.kw, index)" separator="-KW"></el-cascader>
@@ -285,8 +298,12 @@ export default {
       this.getPartGroupConfig()
       this.changeLogicVisible(true)
     },
-    updatePartGroupConfig() {
-      updatePartGroupConfig({ ...this.logicData, cartypeProId: this.cartypeProId }).then(res => {
+    updatePartGroupConfig(logicData) {
+      console.log(logicData)
+      if (!logicData) {
+        return
+      }
+      updatePartGroupConfig({...logicData, cartypeProId: this.cartypeProId}).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.changeLogicVisible(false)

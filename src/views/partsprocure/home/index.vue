@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-08-21 18:07:20
+ * @LastEditTime: 2021-08-31 12:11:52
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -15,7 +15,7 @@
             <iNavMvp @change="change" lang right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div> -->
           <div class="topMenu">
-            <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+            <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
             <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
@@ -33,7 +33,7 @@
                 <iInput
                   :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
                   v-model="form['partNum']"
-                  v-permission="PARTSPROCURE_PARTNUMBER"
+                  v-permission.auto="PARTSPROCURE_PARTNUMBER|零件号"
                 ></iInput>
               </el-form-item>
               <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')">
@@ -275,7 +275,7 @@ import tablelist from "../../partsign/home/components/tableList";
 import { getTabelData,changeProcure} from "@/api/partsprocure/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
-import { clickMessage,TAB } from "@/views/partsign/home/components/data"
+import { clickMessage } from "@/views/partsign/home/components/data"
 import {selectDictByKeyss,procureFactorySelectVo} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
 // eslint-disable-next-line no-undef
@@ -309,7 +309,6 @@ export default {
       fromGroup: [],
       diologBack: false, //退回
       tab: "source",
-      list:TAB,
       zpLoading:false,
       cancelLoading:false
     };
@@ -318,7 +317,7 @@ export default {
     projectIds() {
       return this.getPurchasePrjectId();
     },
-    ...mapState(["navList"]),
+    ...mapState(["navList","navListLeft"]),
     ...mapActions(["updateNavList"])
   },
   created() {
@@ -344,7 +343,7 @@ export default {
     // 跳转详情
     openPage(item) {
       this.$router.push({
-        path: "/sourcing/partsprocure/editordetail",
+        path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
           businessKey:item.partProjectType //新增业务标识。
@@ -473,7 +472,7 @@ export default {
       }
       if(this.selectTableData.find(i=>i.status == 14)) return iMessage.warn(this.language('LINGJIANCAIGXMYDJ','选择的零件采购项目中存在零件已冻结状态，无法为您批量维护！'))
       this.$router.push({
-        path: "/sourcing/partsprocure/batchmiantain",
+        path: "/sourceinquirypoint/sourcing/partsprocure/batchmiantain",
         query: {
           ids: this.getPurchasePrjectId(),
           businessKey:this.selectTableData[0].partProjectType

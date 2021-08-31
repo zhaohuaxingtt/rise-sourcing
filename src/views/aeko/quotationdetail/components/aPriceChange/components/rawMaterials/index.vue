@@ -1,6 +1,7 @@
 <template>
   <div class="rawMaterials">
     <i class="topCutLine" v-if="topCutLine"></i>
+    <!-- <iconFont /> -->
     <div class="header">
       <span class="title">2.1 {{ language("YUANCAILIAOSANJIANCHENGBEN", "原材料/散件成本") }}</span>
       <div class="control">
@@ -10,11 +11,23 @@
       </div>
     </div>
     <div class="body margin-top20">
-      <el-table :data="tableListData" @selection-change="selectionChange">
+      <el-table class="table" :data="tableListData" @selection-change="selectionChange">
         <el-table-column :label="language('YUANCAILIAOSANJIANCHENGBEN', '原材料/散件成本')" align="center">
           <el-table-column type="selection" align="center" width="55"></el-table-column>
           <el-table-column label="#" prop="index" align="center" width="55" ></el-table-column>
-          <el-table-column :label="language('LEIXING', '类型')" prop="type" align="center" width="132" ></el-table-column>
+          <el-table-column :label="language('LEIXING', '类型')" prop="type" align="center" width="132" >
+            <template v-slot="scope">
+              <div class="typeColumn">
+                <iconFont class="iconFont" />
+                <div>
+                  <div v-if="scope.row.source === 'source'">{{ scope.row.type }}</div>
+                  <div v-else>
+                    <iInput class="input-center" v-model="scope.row.type"></iInput>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
         </el-table-column>
         <el-table-column :label="language('YUANCAILIAOSANJIANMIAOSHU', '原材料/散件描述')" prop="a" align="center" width="120"></el-table-column>
         <el-table-column :label="language('GONGYINGSHANGMINGCHENG', '供应商名称')" prop="b" align="center" width="92"></el-table-column>
@@ -35,10 +48,11 @@
 </template>
 
 <script>
-import { iButton } from "rise"
+import { iButton, iInput } from "rise"
+import iconFont from "../iconFont"
 
 export default {
-  components: { iButton },
+  components: { iButton, iInput, iconFont },
   props: {
     topCutLine: {
       type: Boolean,
@@ -47,7 +61,18 @@ export default {
   },
   data() {
     return {
-      tableListData: [],
+      tableListData: [
+        {
+          index: "C1",
+          source: "source",
+          type: "原材料"
+        },
+        {
+          index: "",
+          source: "new",
+          type: "原材料"
+        }
+      ],
       multipleSelection: []
     }
   },
@@ -88,6 +113,29 @@ export default {
     }
 
     .control {}
+  }
+
+  .table {
+    .typeColumn {
+      position: relative;
+
+      ::v-deep .iconFont {
+        width: 30px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(0, -50%);
+
+        svg {
+          vertical-align: middle;
+          float: left;
+        }
+      }
+
+      & > div:not(.iconFont) {
+        padding-left: 30px;
+      }
+    }
   }
 }
 </style>

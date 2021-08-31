@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-28 10:57:15
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-28 11:27:10
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-08-31 16:39:14
  * @Description: 算法配置弹窗
  * @FilePath: \front-web\src\views\project\components\logicSettingBtn\components\logicsetting\index.vue
 -->
@@ -32,13 +32,9 @@
                      v-for="(item) in selectOptions[item.selectOption]"
                      :key="item.code"></el-option>
         </iSelect>
-        <iDicoptions v-else-if="item.type === 'selectDict'"
-                     :optionAll="false"
-                     :optionKey="item.selectOption"
-                     v-model="logicData[item.value]" />
-        <el-autocomplete v-else-if="item.type === 'inputFilter'"
-                         :fetch-suggestions="querySearch"
-                         v-model="logicData[item.value]" />
+        <iDicoptions v-else-if="item.type === 'selectDict'" :optionAll="false" :optionKey="item.selectOption" v-model="logicData[item.value]" />
+        <el-autocomplete v-else-if="item.type === 'inputFilter'" :fetch-suggestions="querySearch" v-model="logicData[item.value]" />
+        <carProjectSelect v-else-if="item.type === 'carProjectSelect'" optionType="1" v-model="logicData[item.value]" />
       </iFormItem>
     </iFormGroup>
   </iDialog>
@@ -46,9 +42,11 @@
 
 <script>
 import { iDialog, iButton, iInput, iFormGroup, iFormItem, iSelect, iMessage } from 'rise'
-// import iDicoptions from 'rise/web/components/iDicoptions'
+import iDicoptions from 'rise/web/components/iDicoptions'
+import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect'
+
 export default {
-  components: { iDialog, iButton, iInput, iFormGroup, iFormItem, iSelect, iDicoptions },
+  components: { iDialog, iButton, iInput, iFormGroup, iFormItem, iSelect, iDicoptions, carProjectSelect },
   props: {
     dialogVisible: { type: Boolean, default: false },
     logicList: { type: Array, default: () => [] },
