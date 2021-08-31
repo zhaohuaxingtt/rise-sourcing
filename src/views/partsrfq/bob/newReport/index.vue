@@ -683,7 +683,7 @@ export default {
           spareParts: this.form.spareParts.join(","),
           supplier: this.form.supplier.join(","),
           turn: this.form.turn.join(","),
-          groupId: this.groupId
+          groupId: this.groupId,
           isDefault: false,
           viewType: 'all',
         }
