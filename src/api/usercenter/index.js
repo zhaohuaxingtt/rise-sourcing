@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-18 20:15:17
- * @LastEditTime: 2021-08-30 15:40:53
+ * @LastEditTime: 2021-08-31 10:46:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\api\usercenter\index.js
@@ -60,5 +60,9 @@ export function sendKey(data){
 }
 
 export function sendPermissonKey(parmars){ //待开雄开发...
-
+    return require({
+        url:'/web/resource/importBatch',
+        method:'POST',
+        data:parmars
+    })
 }
