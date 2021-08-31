@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-08-30 16:59:28
+ * @LastEditTime: 2021-08-31 18:23:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -50,10 +50,10 @@
       <iFormGroup row="1" inline :rules="rules">
         <div class="row">
           <div class="col">
-            <iFormItem :label="language('LK_RFQBIANHAO','RFQ编号')+':'" name="id">
-              <iText v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQNUMBER|RFQ编号">{{ baseInfo.id }}</iText>
+            <iFormItem  v-permission="PARTSRFQ_EDITORDETAIL_RFQNUMBER" :label="language('LK_RFQBIANHAO','RFQ编号')+':'" name="id">
+              <iText>{{ baseInfo.id }}</iText>
             </iFormItem>
-            <iFormItem v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQNAME|RFQ名称" :label="language('LK_RFQMINGCHENG','RFQ名称')+':'" name="rfqName">
+            <iFormItem v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME" :label="language('LK_RFQMINGCHENG','RFQ名称')+':'" name="rfqName">
               <iInput v-if="editStatus" v-model="baseInfo.rfqName"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME">
                 {{ baseInfo.rfqName }}
