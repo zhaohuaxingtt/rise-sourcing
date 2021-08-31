@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 14:23:37
+ * @LastEditTime: 2021-08-31 14:45:28
  * @Description: 产品组排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
@@ -28,7 +28,7 @@
         </div>
         <div class="floatright">
           <!--------------------算法配置按钮----------------------------------->
-          <iButton @click="openLogicSetting" :disabled="isSop || isNodeView">{{language('SUANFAPEIZHI','算法配置')}}</iButton>
+          <logicSettingBtn ref="logic" logicType="1" :carProject="carProject" :disabled="isSop || isNodeView" :logicList="productLogicList" @handleUse="handleUseLogic" />
         </div>
       </div>
       <div class="projectCard-content">
@@ -39,10 +39,6 @@
       </div>
     </iCard>
     <!---------------------------------------------------------------------->
-    <!----------                  算法配置弹窗                  ---------------->
-    <!---------------------------------------------------------------------->
-    <logicSettingDialog ref="logic" :dialogVisible="logicVisible" :logicList="productLogicList" :logicData="logicData" :selectOptions="selectOptions" @handleUse="handleUseLogic" @changeVisible="changeLogic" />
-    <!---------------------------------------------------------------------->
     <!----------                  选择产品组弹窗                  ---------------->
     <!---------------------------------------------------------------------->
     <chooseProGroupDialog ref="chooseProGroup" :dialogVisible="chooseVisible" @handleConfirm="handleChooseProGroup" :allData="chooseDataList" :selectValue="chooseData" @changeVisible="changeChooseProGroup" />
@@ -50,18 +46,17 @@
 </template>
 
 <script>
-import { iPage, iCard, iButton, icon, iMessage } from 'rise'
+import { iPage, iCard, icon, iMessage } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress'
-import logicSettingDialog from './components/logicsetting'
 import { productLogicList } from './data'
 import chooseProGroupDialog from './components/progroupchoose'
 import periodicView from './components/periodicview'
 import nodeView from './components/nodeview'
 import proGroupEmpty from '@/views/project/components/empty/proGroupEmpty'
-import { selectDictByKeyss } from '@/api/dictionary'
-import { getLastOperateCarType, getProductSelectList, getCarConfig, updateCarConfig, saveProductSelectList } from '@/api/project'
+import { getLastOperateCarType, getProductSelectList, updateCarConfig, saveProductSelectList } from '@/api/project'
+import logicSettingBtn from '@/views/project/components/logicSettingBtn'
 export default {
-  components: { iPage, iCard, iButton, carProject, logicSettingDialog, chooseProGroupDialog, icon, periodicView, nodeView, proGroupEmpty },
+  components: { iPage, iCard, carProject, chooseProGroupDialog, icon, periodicView, nodeView, proGroupEmpty, logicSettingBtn },
   data() {
     return {
       logicVisible: false,
@@ -79,8 +74,6 @@ export default {
     }
   },
   created() {
-    const keys = 'CATEGORY_CONFIG_OPTIONS,CALCULATE_CONFIG_OPTIONS,VALUE_CONFIG_OPTIONS,YEAR_CONFIG_OPTIONS,CAR_TYPE_CONFIG_OPTIONS'
-    this.selectDictByKeys(keys)
     if (this.$route.query.carProject) {
       this.carProject = this.$route.query.carProject
       this.carProjectName = this.$route.query.cartypeProjectZh
@@ -147,58 +140,13 @@ export default {
       this.isSop = isSop
     },
     /**
-     * @Description: 获取字典下拉
-     * @Author: Luoshuang
-     * @param {*} keys
-     * @return {*}
-     */    
-    selectDictByKeys(keys) {
-      selectDictByKeyss(keys).then(res => {
-        if (res?.result) {
-          this.selectOptions = {...this.selectOptions,...res.data}
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
-    },
-    /**
-     * @Description: 打开算法配置弹窗
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    openLogicSetting() {
-      if (!this.carProject) {
-        iMessage.error(this.language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目'))
-        return
-      }
-      getCarConfig(this.carProject).then(res => {
-        if (res?.result) {
-          this.logicData = res.data
-        } else {
-          this.logicData = {}
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
-      this.logicVisible = true
-    },
-    /**
-     * @Description: 算法配置弹窗状态修改
-     * @Author: Luoshuang
-     * @param {*} visible
-     * @return {*}
-     */    
-    changeLogic(visible) {
-      this.logicVisible = visible
-    },
-    /**
      * @Description: 应用算法配置
      * @Author: Luoshuang
      * @param {*} data
      * @return {*}
      */    
     handleUseLogic(data) {
-      updateCarConfig({...this.logicData,type:1,cartypeProId:this.carProject}).then(res => {
+      updateCarConfig({...data,type:1,cartypeProId:this.carProject}).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.changeLogic(false)
