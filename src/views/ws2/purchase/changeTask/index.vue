@@ -152,6 +152,10 @@
           <div v-if="scope.row.isPremission">{{getTousandNum(Number(scope.row.newMoldInvestmentAmount).toFixed(2))}}</div>
           <div v-else>-</div>
         </template>
+        <template #supplierShortNameZh="scope">
+          <div v-if="scope.row.supplierShortNameZh">{{ scope.row.supplierCode + '-' + scope.row.supplierShortNameZh}}</div>
+          <div v-else></div>
+        </template>
       </iTableList>
       <div class="unitStyle">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
       <iPagination
@@ -322,6 +326,7 @@ export default {
         linieId: this.linieId,
         bmNum: this.bmNum,
         changeStatuId: this.changeStatuId,
+        isOneSelf: this.onleySelf,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {

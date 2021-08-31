@@ -107,12 +107,10 @@
             }}</div>
         </template>
         <template #moldInvestmentAmount="scope">
-          <div v-if="scope.row.isPremission">{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
-          <div v-else>-</div>
+          <div>{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
         </template>
         <template #newMoldInvestmentAmount="scope">
-          <div v-if="scope.row.isPremission">{{getTousandNum(Number(scope.row.newMoldInvestmentAmount).toFixed(2))}}</div>
-          <div v-else>-</div>
+          <div>{{getTousandNum(Number(scope.row.newMoldInvestmentAmount).toFixed(2))}}</div>
         </template>
       </iTableList>
       <div class="unitStyle">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>

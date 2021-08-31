@@ -1140,8 +1140,10 @@
         'LK_BIANGENGDANZHUANGTAI': '变更单状态', //  变更单状态
         'LK_CHUYUBIANGENGLIUCHENGZHONG':'处于变更流程中，不可重复发起变更', // 新增定点信
         'LK_BIANGENGHOUJINE':'变更后金额', // 变更后金额
+        'LK_YULANBIANGENGDAN':'预览变更单', // 预览变更单
+        'LK_ZHIYOUCAOGAOZHUANGTAICAIYUNXUXIUGAI':'只有草稿状态才允许修改', // 只有草稿状态才允许修改
 
-        // 定点管理
+        // 定点管理撤回
         'nominationLanguage': {
             "DingDianXiangQing": '定点详情', // 定点详情
             'DingDianGuanLi': '定点管理', // 定点管理
