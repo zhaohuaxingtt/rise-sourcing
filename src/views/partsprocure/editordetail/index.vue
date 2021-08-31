@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-31 16:17:18
+ * @LastEditTime: 2021-08-31 17:04:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -35,16 +35,16 @@
 				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 				<!---出现此按钮。------------------------------------------------------------------->
 				<iButton v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
-				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
+				<iButton @click="start" v-permission.auto="PARTSPROCURE_EDITORDETAIL_STARTUP|启动项目"
 					v-if="detailData.status == '16'">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
 				<creatFsGsNr :projectItems="[detailData]" @refresh="getDatailFn"></creatFsGsNr>
 				<cancelProject :backItems='[detailData]'  @refresh="getDatailFn"></cancelProject>
 				<!-- <iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
 					{{ language("LK_CHAIFENCAIGOUGONGCHANG",'拆分采购工厂') }}
 				</iButton> -->
-				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT"
+				<iButton @click="openDiologClose" v-permission.auto="PARTSPROCURE_EDITORDETAIL_ENDPROJECT|结束项目"
 					v-if="detailData.status != '16'">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
-				<iButton :loading='saveLoading' @click="saveFn" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ language("LK_BAOCUN",'保存') }}
+				<iButton :loading='saveLoading' @click="saveFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE|保存零件采购项目按钮">{{ language("LK_BAOCUN",'保存') }}
 				</iButton>
 				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">{{ language("LK_FANHUI",'返回') }}</iButton>
 				<logButton class="margin-left20" @click="log" v-permission="PARTSPROCURE_EDITORDETAIL_LOG" />

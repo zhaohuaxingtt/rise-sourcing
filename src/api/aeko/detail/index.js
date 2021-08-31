@@ -1,16 +1,18 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-08-30 15:36:13
+ * @LastEditTime: 2021-08-31 17:15:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
  */
 import axios from '@/utils/axios'
+import download from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_PARTS)
 const partRequst = axios(process.env.VUE_APP_PARTSPROCURE)
 const priceRequst = axios(process.env.VUE_APP_PRICE_LEDGER)
+const fileRequst = download(process.env.VUE_APP_PARTS)
 
 export function getAekoLiniePartInfo(params) {
   return requst({
@@ -167,5 +169,15 @@ export function sendSupplier(params) {
     url: '/aeko/aeko-content/supplier',
     method: 'POST',
     data: params
+  }) 
+}
+
+
+// 导出内容表态列表数据
+export function liniePartExport(data) {
+  return fileRequst({
+    url: '/aeko/aeko-linie-part/export',
+    method: 'POST',
+    data,
   }) 
 }
