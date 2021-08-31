@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-08-30 15:27:18
+ * @LastEditTime: 2021-08-31 12:11:52
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -33,7 +33,7 @@
                 <iInput
                   :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
                   v-model="form['partNum']"
-                  v-permission="PARTSPROCURE_PARTNUMBER"
+                  v-permission.auto="PARTSPROCURE_PARTNUMBER|零件号"
                 ></iInput>
               </el-form-item>
               <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')">
