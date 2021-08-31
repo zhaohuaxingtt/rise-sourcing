@@ -33,7 +33,7 @@
                @click="handleSelectItem(item)"
                class="selected">
             <div>
-              {{ item[label] }}
+              {{ secordLabel?item[label] +'/'+item[secordLabel]:item[label]}}
             </div>
             <i class="el-icon-check"></i>
           </div>
@@ -54,7 +54,7 @@
                     ? selectedData.length === multipleLimit || selectedData.length > multipleLimit
                     : false
               }">
-              {{ item[label] }}
+              {{ secordLabel?item[label] +'/'+item[secordLabel]:item[label]}}
             </div>
           </div>
         </div>
@@ -93,7 +93,7 @@
                   :key="x.key"
                   type="info"
                   closable
-                  @close="deleteTag( x)"
+                  @close="deleteTag(x)"
                   disable-transitions>
             <p class="el-select__tags-text">{{ x[label] }}</p>
             <p class="el-select__tags-text">{{ x.value }}</p>
@@ -176,7 +176,8 @@ export default {
         return false
       }
     },
-    searchMethod: Function
+    searchMethod: Function,
+    secordLabel: String
   },
   model: {
     prop: 'values',
@@ -384,7 +385,7 @@ export default {
 .custom-select-popover {
   width: 300px;
   .list-container {
-    height: 600px;
+    height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
     font-size: 14px;
@@ -452,9 +453,12 @@ export default {
     }
   }
 }
-::v-deep .el-tag .el-icon-close{
-  top:-31px;
-  right:-150px
+::v-deep .el-tag .el-icon-close {
+  top: -31px;
+  right: -150px;
+}
+::v-deep .el-popover {
+  min-height: 400px !important;
 }
 </style>
 <style lang="scss">

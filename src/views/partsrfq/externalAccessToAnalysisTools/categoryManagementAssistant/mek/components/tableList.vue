@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-08-27 18:27:07
+ * @LastEditTime: 2021-08-31 14:04:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -91,7 +91,7 @@ export default {
       }
     },
     preview (val) {
-      console.log(val,"111111")
+      console.log(val, "111111")
     },
     gridData: {
       handler (newVal) {
@@ -101,6 +101,7 @@ export default {
             this.gridData1 = this.tableData.map((row, index) => {
               return {
                 ...row,
+                index: index + 1,
                 editMode: false
               }
             });
@@ -110,6 +111,7 @@ export default {
             this.gridData1 = this.tableData.map((row, index) => {
               return {
                 ...row,
+                index: index + 1,
                 editMode: false
               }
             });
