@@ -5,20 +5,67 @@
 -->
 <template>
   <div class="developmentFee">
-    <mouldAndDevelopmentCost @save="save" :isAeko="true"/>
+    <developmentCost ref="devcost" :partInfo="partInfo" @save="save" :isAeko="true"/>
   </div>
 </template>
 
 <script>
-import mouldAndDevelopmentCost from 'rise/web/quotationdetail/components/mouldAndDevelopmentCost/components/developmentCost'
+import {
+  iMessage,
+} from 'rise';
+import developmentCost from 'rise/web/quotationdetail/components/mouldAndDevelopmentCost/components/developmentCost';
+import { saveModuleDevFee } from "@/api/rfqManageMent/quotationdetail"
 export default {
   components:{
-    mouldAndDevelopmentCost,
+    developmentCost,
+  },
+  data(){
+    return{
+      partInfo:{"rfqId":"1089","quotationId":"1430733529429766145","cbdLevel":1},
+    }
+  },
+  mounted(){
+    console.log(this,this.$refs,this.$refs.devcost,'this.$refs.devcost')
+    this.$refs.devcost.getDevFee();
   },
   methods:{
     // 保存
     save(value){
       console.log(value,'savesavesave');
+       if (this.$refs.devcost.tableListData.some(item => item.isShared == 1)) {
+        if (!this.$refs.devcost.dataGroup.shareQuantity || this.$refs.devcost.dataGroup.shareQuantity == 0){
+          const tips = this.language('LK_KAIFAFEIYONGCUNZAIFENTANSHUJUQINGTIANXIEDAYU','开发费用存在分摊数据，请填写一个大于0的分摊数量')
+          return iMessage.warn(tips);
+        }
+
+         return new Promise((r,j)=>{
+        saveModuleDevFee({
+          quotationId: this.partInfo.quotationId,
+          devFeeDTOList: this.$refs.devcost.tableListData,
+          devOtherFee: {
+            itemType: 1,
+            shareTotal: this.$refs.devcost.dataGroup.shareDevFee, // 金额
+            shareQuantity: this.$refs.devcost.dataGroup.shareQuantity || "0", // 分摊数量
+            shareAmount: this.$refs.devcost.dataGroup.unitPrice, // 分摊金额 
+            totalPrice: this.$refs.devcost.dataGroup.devFee  // 总投资成本/开发费⽤
+          },
+        })
+        .then(res => {
+          if (res.code == 200) {
+            r()
+            iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            this.$refs.devcost.getDevFee();
+          } else {
+            j()
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        })
+        .catch(() => {
+          j()
+        })
+      })
+          
+      }
     }
   }
 }

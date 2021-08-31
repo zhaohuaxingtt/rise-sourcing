@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-25 16:22:32
+ * @LastEditTime: 2021-08-31 11:22:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -624,7 +624,8 @@
 						i != "cs1Memo" &&
 						i != "csfMeetMemo" &&
 						i != "linieMeetMemo" &&
-						i != "cs1MeetMemo"
+						i != "cs1MeetMemo" &&
+						i !='aekoManagerMemo'
 					) {
 						detailData[i] = this.detailData[i];
 					}

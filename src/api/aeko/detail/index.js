@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-08-30 14:53:49
+ * @LastEditTime: 2021-08-30 15:36:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -64,6 +64,17 @@ export function getAekoOriginPartInfo(params) {
     data: params
   })
 }
+
+
+// 获取指定AEKO库原零件列表
+export function getAekoLibraryInfo(data) {
+  return requst({
+    url: '/aeko/aeko-library/info',
+    method: 'POST',
+    data,
+  })
+}
+
 
 // 获取原零件的历史A价列表
 // export function getAekoOriginPartAPrice(params) {
