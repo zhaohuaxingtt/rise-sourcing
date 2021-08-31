@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 22:46:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 14:25:11
+ * @LastEditTime: 2021-08-31 11:20:04
  * @Description: 车型项目详情
  * @FilePath: \front-web\src\views\project\components\carprojectprogress\index.vue
 -->
@@ -12,14 +12,7 @@
     <div class="clearFloat" slot="header-control">
       <div class="titleSearch">
         <span class="margin-right20 titleSearch-label">{{language('CHEXINGXIANGMU','车型项目')}}</span>
-        <iSelect filterable v-model="carProjectId" @change="handleCarProjectChange" :disabled="disabled">
-          <el-option
-            v-for="item in carProjectOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </iSelect>
+        <carProjectSelect optionType="2" :filterable="true" v-model="carProjectId" @change="handleCarProjectChange" :disabled="disabled" />
       </div>
     </div>
     <div class="projectCard-content" >
@@ -30,12 +23,12 @@
 </template>
 
 <script>
-import { iCard, iMessage, iSelect } from 'rise'
-import { getSelectCarType } from '@/api/project'
+import { iCard } from 'rise'
 import carEmpty from '@/views/project/components/empty/carEmpty'
 import carProject from './components/progress'
+import carProjectSelect from '../commonSelect/carProjectSelect'
 export default {
-  components: { iCard, carEmpty, carProject, iSelect },
+  components: { iCard, carEmpty, carProject, carProjectSelect },
   props: {
     carProjectId: {type:String},
     disabled: {type:Boolean, default:false},
@@ -45,9 +38,6 @@ export default {
     return {
       carProjectOptions: [],
     }
-  },
-  created() {
-    this.getCarProjectOptinos()
   },
   methods: {
     handleCollapse(collapseValue) {
@@ -68,30 +58,9 @@ export default {
      * @param {*} val
      * @return {*}
      */    
-    handleCarProjectChange(val) {
-      this.$emit('handleCarProjectChange', val, this.carProjectOptions.find(item => item.value === val).label)
-    },
-     /**
-     * @Description: 获取车型项目下拉框
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    getCarProjectOptinos() {
-      getSelectCarType().then(res => {
-        if (res?.result) {
-          this.carProjectOptions = res.data.map(item => {
-            return {
-              ...item,
-              value: String(item.id),
-              label: item.cartypeProjectZh
-            }
-          })
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
-    },
+    handleCarProjectChange(val, valLabel) {
+      this.$emit('handleCarProjectChange', val, valLabel)
+    }
   }
 }
 </script>
