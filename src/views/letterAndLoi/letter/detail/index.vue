@@ -14,20 +14,20 @@
             </span>
             <span v-else>
                 <!-- 状态为作废时显示 -->
-                <iButton :loading="btnLoading.add" @click="add" v-if="detailInfo.status=='TOVOID'">{{language('LK_LETTER_XINZENGDINGDIANXIN','新增定点信')}}</iButton>
+                <iButton v-permission.auto="LK_LETTER_DETAIL_XINZENGDINGDIANXIN|新增定点信" :loading="btnLoading.add" @click="add" v-if="detailInfo.status=='TOVOID'">{{language('LK_LETTER_XINZENGDINGDIANXIN','新增定点信')}}</iButton>
                 <!-- 状态为前期确认中时显示编辑按钮 -->
                 <template v-if="detailInfo.status=='CSF_HANDLING'" >
-                    <iButton @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
-                    <iButton :loading="btnLoading.sureSubmit"  @click="sureSubmit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
+                    <iButton v-permission.auto="LK_LETTER_DETAIL_EDIT|编辑"  @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
+                    <iButton v-permission.auto="LK_LETTER_DETAIL_SUBMIT|确认并提交" :loading="btnLoading.sureSubmit"  @click="sureSubmit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
                 </template>
                 <!-- 状态为完成时不显示 -->
                 <template v-if="detailInfo.status!='COMPLETIED'">
-                    <iButton :loading="btnLoading.lineSure"  @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
-                    <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
+                    <iButton v-permission.auto="LK_LETTER_DETAIL_LINIEQUEREN|LINIE确认" :loading="btnLoading.lineSure"  @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
+                    <iButton v-permission.auto="LK_LETTER_DETAIL_LINIETUIHUI|LINIE退回" :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
                 </template>
-                <iButton :loading="btnLoading.complete" v-if="radioType=='NonStandard' && detailInfo.status!='COMPLETIED'" @click="complete">{{language('LK_WANCHENGDINGDIANXIN','完成定点信')}}</iButton>
-                <iButton @click="downloadFiles">{{language('LK_DAOCHUBIAOZHUNDINGDIANXIN','导出标准定点信')}}</iButton>
-                <iButton @click="changeShowHistory">{{language('LK_LISHIDINGDIANXIN','历史定点信')}} </iButton>
+                <iButton v-permission.auto="LK_LETTER_DETAIL_WANCHENGDINGDIANXIN|完成定点信" :loading="btnLoading.complete" v-if="radioType=='NonStandard' && detailInfo.status!='COMPLETIED'" @click="complete">{{language('LK_WANCHENGDINGDIANXIN','完成定点信')}}</iButton>
+                <iButton v-permission.auto="LK_LETTER_DETAIL_DAOCHUBIAOZHUNDINGDIANXIN|导出标准定点信" @click="downloadFiles">{{language('LK_DAOCHUBIAOZHUNDINGDIANXIN','导出标准定点信')}}</iButton>
+                <iButton v-permission.auto="LK_LETTER_DETAIL_LISHIDINGDIANXIN|历史定点信"  @click="changeShowHistory">{{language('LK_LISHIDINGDIANXIN','历史定点信')}} </iButton>
             </span>
             <logButton class="margin-left20" @click="toLogPage"/>
         </div>

@@ -2,7 +2,7 @@
 	<div class="remark">
 		<iCard v-loading='diologChangeItems'>
 			<div class="list flex-between-center margin-bottom75">
-				<div v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER_SHOW">
+				<div v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER_SHOW|询价采购员备注">
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_XUNJIACAIGOUYUANBEIZHU','询价采购员备注') }}</span>
@@ -11,7 +11,7 @@
 						<!-- partsprocure.PARTSPROCURETRANSFER -->
 				</div>
 
-				<div v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_AEKOMANAGER">
+				<div v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_AEKOMANAGER|aeko管理员备注">
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_AEKO_GUANLIYUANBEIZHU','aeko管理员备注') }}</span>

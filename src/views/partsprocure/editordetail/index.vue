@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-31 11:22:51
+ * @LastEditTime: 2021-08-31 16:17:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -154,7 +154,7 @@
 								<el-option :value="false" label="否"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem v-permission="PARTSPROCURE_BASIC_HEVAYITEMLIST" label="Heavy Item List:" name="">
+						<iFormItem v-permission.auto="PARTSPROCURE_BASIC_HEVAYITEMLIST|HeavyItemList" label="Heavy Item List:" name="">
 							<iText>
 								{{ detailData.heavyItem || "否" }}
 							</iText>
@@ -206,7 +206,7 @@
 									:key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER" :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
+						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER|CF控制员" :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
 							<iSelect v-model="detailData.cfController" >
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
@@ -219,7 +219,7 @@
 								{{ detailData.partCostUserName }}
 							</iText>
 						</iFormItem>
-						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_MOJUCHENGBENFENXIYUAN"  :label="language('MUJUCHENGBENFENXIYUAN', '模具成本分析员') + ':'" name=''>
+						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_MOJUCHENGBENFENXIYUAN|模具成本分析员"  :label="language('MUJUCHENGBENFENXIYUAN', '模具成本分析员') + ':'" name=''>
 							<!-- <iSelect class="multipleSelect" v-model="detailData.d" multiple collapse-tags>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect> -->
@@ -227,7 +227,7 @@
 								{{ detailData.mouldCostUserName }}
 							</iText>
 						</iFormItem>
-						<iFormItem name="test" v-permission="PARTSPROCURE_EDITORDETAIL_COMMINSOURCING">
+						<iFormItem name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_COMMINSOURCING|CommonSourcing">
 							<template slot="label">
 								<span>Common Sourcing:</span>
 								<span>
