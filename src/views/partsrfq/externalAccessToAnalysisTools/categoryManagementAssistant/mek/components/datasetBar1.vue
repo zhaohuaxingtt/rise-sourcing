@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-26 15:31:51
+ * @LastEditTime: 2021-08-27 18:13:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -10,9 +10,6 @@
   <div>
     <div style="height: 440px;width:100%"
          ref="chart"></div>
-    <div>
-
-    </div>
   </div>
 </template>
 
@@ -77,6 +74,8 @@ export default {
           });
         }
       },
+      immediate: true,
+      deep:true
     }
   },
   mounted () {
@@ -86,8 +85,13 @@ export default {
   },
   methods: {
     initCharts () {
-      this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
-      this.$refs.chart.style.minWidth = '100%';
+      console.log(111)
+      if (this.maxWidth === 1) {
+        this.$refs.chart.style.width = '240px'
+      } else {
+        this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+      }
+
       this.myChart = echarts().init(this.$refs.chart);
       this.option = {
         title: {
@@ -118,7 +122,7 @@ export default {
           },
         ],
         grid: {
-          left: 20,
+          left: 0,
           right: 0,
           bottom: "15%",
           top: "30%",
@@ -141,7 +145,7 @@ export default {
           axisTick: {
             show: false,
           },
-          offset: 0,
+          offset: -15,
           splitNumber: 4,
           nameLocation: "start",
         },

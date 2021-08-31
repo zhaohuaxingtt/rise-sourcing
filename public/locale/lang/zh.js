@@ -1143,7 +1143,7 @@
         'LK_YULANBIANGENGDAN':'预览变更单', // 预览变更单
         'LK_ZHIYOUCAOGAOZHUANGTAICAIYUNXUXIUGAI':'只有草稿状态才允许修改', // 只有草稿状态才允许修改
 
-        // 定点管理撤回
+        // 定点管理
         'nominationLanguage': {
             "DingDianXiangQing": '定点详情', // 定点详情
             'DingDianGuanLi': '定点管理', // 定点管理

@@ -48,18 +48,18 @@ export default {
 
         this.svwData = data.purchaseDataList
         this.tableData = data.offerDataList
-        this.tableData.forEach(item => {
+        this.tableData && this.tableData.forEach(item => {
           sum = sum + item.toAmount
         })
-        this.tableData.map(item => {
+        this.tableData && this.tableData.map(item => {
           item.symbolSize = item.toAmount / sum * 100 / 5
           item.toAmount = String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'
           return item.value = [item.lon, item.lat]
         })
-        this.svwData.map(item => {
+        this.svwData && this.svwData.map(item => {
           return item.value = [item.lon, item.lat]
         })
-        if (this.$refs.charMap && (this.tableData.length || this.svwData)) {
+        if (this.$refs.charMap && (this.tableData || this.svwData)) {
           this.handleMap()
         }
       },
@@ -89,7 +89,7 @@ export default {
         mapStyle: 'amap://styles/macaron'
       });
       // 圆点
-      this.tableData.map((item, index) => {
+      this.tableData && this.tableData.map((item, index) => {
         let carTypeList = ''
         item.carTypeProjectList.forEach((val, index) => {
           carTypeList += item.carTypeProjectList.length - 1 > index ? val + ' | ' : val
@@ -148,7 +148,7 @@ export default {
         });
       })
       // svw图标
-      this.svwData.map(item => {
+      this.svwData && this.svwData.map(item => {
         let carTypeList = ''
         item.carTypeProjectList.forEach((val, index) => {
           carTypeList += item.carTypeProjectList.length - 1 > index ? val + ' | ' : val

@@ -29,13 +29,14 @@
       </template>
       <template v-else-if="item.type === 'selectCustom'">
         <iSelectCustom
+            v-if="showSelectCustom"
             v-model="form[item.props]"
             :data="item.options"
             :multiple="true"
             label="name"
             sortVal="name"
             value="name"
-            :search-method="handleMultiSearch"
+            :search-method="(value) =>handleSelectSearch(value,item.props)"
         />
       </template>
     </div>
@@ -63,14 +64,16 @@ export default {
   },
   data() {
     return {
-      form: {},
+      form: {
+      },
+      showSelectCustom: true
     };
   },
   methods: {
-    handleMultiSearch() {
-
-    }
-  }
+    handleSelectSearch(value, props) {
+      this.$emit('handleSelectSearch', {value, props});
+    },
+  },
 };
 </script>
 
@@ -104,6 +107,7 @@ export default {
     }
   }
 }
+
 ::v-deep .el-range-separator {
   line-height: 1.5rem;
 }

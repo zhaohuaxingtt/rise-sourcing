@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 13:59:40
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-26 17:03:36
+ * @LastEditTime: 2021-08-31 11:29:44
  * @Description: 零件排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\index.vue
 -->
@@ -21,15 +21,8 @@
         <div class="titleSearch">
           <div v-for="(item, index) in searchList" :key="index" class="titleSearch-item">
             <span class="titleSearch-item-lable">{{language(item.key, item.label)}}</span>
-            <el-autocomplete class="titleSearch-item-content" :fetch-suggestions="item.querySearch" v-if="item.type === 'input'" v-model="searchParams[item.value]" :trigger-on-focus="false" />
-            <iSelect class="titleSearch-item-content" v-else-if="item.type === 'select'" v-model="searchParams[item.value]" >
-              <el-option
-                :value="item.code"
-                :label="item.name"
-                v-for="(item) in delayGradeConfigOption"
-                :key="item.code"
-              ></el-option>
-            </iSelect>
+            <el-autocomplete :placeholder="language('QINGSHURU', '请输入')" class="titleSearch-item-content" :fetch-suggestions="item.querySearch" v-if="item.type === 'input'" v-model="searchParams[item.value]" :trigger-on-focus="false" />
+            <iDicoptions v-else-if="item.type === 'selectDict'" class="titleSearch-item-content" :optionAll="false" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
           </div>
         </div>
         <div>
@@ -37,21 +30,21 @@
           <iButton @click="handleReset">{{language('CHONGZHI','重置')}}</iButton>
         </div>
       </div>
-      <carEmpty v-if="!carProject" :isColumn="true" />
-      <partList v-else ref="partList" :isSop="isSop" :collapseValue="collapseValue" :cartypeProId="carProject" :carProjectName="carProjectName" />
+      <carEmpty v-show="!carProject" :isColumn="true" />
+      <partList v-show="carProject" ref="partList" :isSop="isSop" :collapseValue="collapseValue" :cartypeProId="carProject" :carProjectName="carProjectName" />
     </iCard>
   </iPage>
 </template>
 
 <script>
-import { iPage, iCard, iSelect, iButton } from 'rise'
+import { iPage, iCard, iButton } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress'
 import { getLastOperateCarType } from '@/api/project'
 import partList from './components/partList'
 import carEmpty from '../../components/empty/carEmpty'
-import { getDictByCode } from '@/api/dictionary'
+import iDicoptions from 'rise/web/components/iDicoptions'
 export default {
-  components: { iPage, carProject, iCard, iSelect, iButton, carEmpty, partList },
+  components: { iPage, carProject, iCard, iDicoptions, iButton, carEmpty, partList },
   data() {
     return {
       carProject: '',
@@ -60,7 +53,7 @@ export default {
         {value: 'partNum', label: '零件号', key: 'LINGJIANHAO', type: 'input', querySearch: this.querySearchPartNum},
         {value: 'partNameZh', label: '零件中文名称', key: 'LINGJIANZHONGWENMINGCHENG', type: 'input', querySearch: this.querySearchPartNameZh},
         {value: 'partNameDe', label: '零件德文名称', key: 'LINGJIANDEWENMINGCHENG', type: 'input', querySearch: this.querySearchPartNameDe},
-        {value: 'level', label: '风险等级', key: 'FENGXIANDENGJI', type: 'select'},
+        {value: 'level', label: '风险等级', key: 'FENGXIANDENGJI', type: 'selectDict', selectOption: 'DELAY_GRADE_CONFIG'},
       ],
       searchParams: {},
       isSop: false,
@@ -70,7 +63,6 @@ export default {
   },
   created() {
     this.init()
-    this.getDict()
   },
   methods: {
     querySearchPartNameDe(queryString, cb) {
@@ -119,19 +111,6 @@ export default {
       this.$refs.partList.searchPartList && this.$refs.partList.searchPartList(this.searchParams)
     },
     /**
-     * @Description: 下拉框获取
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    getDict() {
-      getDictByCode('DELAY_GRADE_CONFIG').then(res => {
-      if(res?.result) {
-        this.delayGradeConfigOption = res.data[0].subDictResultVo
-      }
-    })
-    },
-    /**
      * @Description: 车型项目部分是否收起
      * @Author: Luoshuang
      * @param {*} collapseValue
@@ -166,6 +145,7 @@ export default {
     },
     initPartSchedule(carProjectId) {
       if (carProjectId) {
+        this.searchParams = {}
         this.$nextTick(() => {
           this.$refs.partList?.getPartList && this.$refs.partList.getPartList(carProjectId)
         })
@@ -179,6 +159,7 @@ export default {
      * @return {*}
      */    
     handleCarProjectChange(carProjectId, carProjectName) {
+      this.carProject = carProjectId
       this.carProjectName = carProjectName
       this.initPartSchedule(carProjectId)
     },

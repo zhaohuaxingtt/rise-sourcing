@@ -205,7 +205,7 @@ export default {
     //   window.open(`/#/log?recordId=`, '_blank')
     // }
     jump() {
-      this.$router.push({ path: '/sourcing/partsign' })
+      this.$router.push({ path: '/sourceinquirypoint/sourcing/partsign' })
     }
   }
 }

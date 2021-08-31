@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 15:19:21
+ * @LastEditTime: 2021-08-31 16:40:02
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -15,7 +15,7 @@
         <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>
       </div>
       <div v-if="!isSop">
-        <logicSettingBtn class="margin-right10" @handleUse="updatePartGroupConfig" @click="openLogicDialog" :logicData="logicData" :logicList="partLogicList" @changeVisible="changeLogicVisible" :logicVisible="logicVisible" />
+        <logicSettingBtn ref="logicSettingBtn" class="margin-right10" logicType="2" :carProject="cartypeProId" @handleUse="updatePartGroupConfig" :logicList="partLogicList" />
         <iButton @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
         <iButton @click="$emit('changeNodeView')">{{language('SHENGCHENGPAICHENGBANBEN', '生成排程版本')}}</iButton>
         <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
@@ -50,7 +50,7 @@
               <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
               <!--------------------------节点发生时间-已发生的不可编辑------------------------------------>
               <template v-if="index == nodeList.length - 1">
-                <iText v-if="pro[item.status] == 1 && pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
+                <iText v-if="pro[item.status] == 1 && isLarger(pro[item.kw], pro[item.kw2])" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
                 <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw2]}}</iText>
                 <el-cascader
                   v-else-if="pro.emIsLarger"
@@ -68,23 +68,15 @@
                   @change="handleChange($event, pro, item.kw2, index)"
                   separator="-KW"
                 ></el-cascader>
-
               </template>
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
-              <el-cascader
-                  v-else
-                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "
-                  :value="pro[item.kw].split('-KW')"
-                  :options="yearWeekOptions(pro, item.kw, index)"
-                  @change="handleChange($event, pro, item.kw, index)"
-                  separator="-KW"
-                ></el-cascader>
+              <el-cascader v-else :class="`productItem-bottom-stepBetween-input margin-top20 ` " :value="pro[item.kw].split('-KW')" :options="getOptions(pro, item.kw, index)" @change="handleChange($event, pro, item.kw, index)" separator="-KW"></el-cascader>
             </div>
             <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
               <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom5`">
                 <!--------------------------节点时长-不可编辑------------------------------------>
                 <template v-if="index == nodeList.length - 2">
-                  <iText v-if="pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText>
+                  <iText v-if="isLarger(pro[nodeList[index + 1].kw], pro[nodeList[index + 1].kw2])" :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText>
                   <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint2]}}W</iText>
                 </template>
                 <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText>
@@ -101,7 +93,7 @@
 
 <script>
 import { iButton, icon, iText, iMessage } from 'rise'
-import { getPartSchedule, getFsUserListPart, partProgressConfirm, updatePartSchedule, getAllFS, getFsUserList, getPartGroupConfig, updatePartGroupConfig, validSchedule } from '@/api/project'
+import { getPartSchedule, partProgressConfirm, updatePartSchedule, getAllFS, getFsUserList, getPartGroupConfig, updatePartGroupConfig, validSchedule } from '@/api/project'
 import logicSettingBtn from '@/views/project/components/logicSettingBtn'
 import moment from 'moment'
 import { partLogicList } from '../data'
@@ -109,10 +101,10 @@ import fsConfirm from './fsconfirm'
 export default {
   components: { iButton, icon, iText, logicSettingBtn, fsConfirm },
   props: {
-    cartypeProId: {type:String},
-    carProjectName: {type:String},
-    isSop: {type:Boolean, default: false},
-    collapseValue: {type:Boolean, default: false}
+    cartypeProId: { type: String },
+    carProjectName: { type: String },
+    isSop: { type: Boolean, default: false },
+    collapseValue: { type: Boolean, default: false }
   },
   data() {
     return {
@@ -122,23 +114,23 @@ export default {
       logicData: {},
       partLogicList,
       parts: [],
-      partsTemp: [{partNum: 'aadfs'}, {partNum: 'vvds'}],
+      partsTemp: [],
       saveloading: false,
       loading: false,
       checkAll: false,
       isIndeterminate: false,
       checkedParts: [],
       targetList: [
-        {label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget'},
-        {label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget'},
-        {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'}
+        { label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget' },
+        { label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget' },
+        { label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget' }
       ],
       nodeList: [
-        {label: '释放', key: 'SHIFANG', kw: 'releaseTimeKw', keyPoint: 'keyReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus', status: 'releaseStatus'},
-        {label: '定点', key: 'DINGDIAN', kw: 'nomiTimeKw', keyPoint: 'keyNomiToBffWeek', isChange: 'keyNomiToBffStatus', status: 'nomiStatus'},
-        {label: 'BF', kw: 'bfTimeKw', keyPoint: 'keyBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus', status: 'bfStatus'},
-        {label: '1st Tryout', kw: 'firstTryoutTimeKw', keyPoint: 'keyFirstTryEmWeek', keyPoint2: 'keyFirstTryOtsWeek', isChange: 'keyFirstTryEmStatus', status: 'firstTryStatus'},
-        {label: 'EM(OTS)', kw: 'emTimeKw', keyPoint: 'keyFirstTryOtsWeek', kw2: 'otsTimeKw', status: 'emStatus', status2: 'otsStatus' }
+        { label: '释放', key: 'SHIFANG', kw: 'releaseTimeKw', keyPoint: 'keyReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus', status: 'releaseStatus' },
+        { label: '定点', key: 'DINGDIAN', kw: 'nomiTimeKw', keyPoint: 'keyNomiToBffWeek', isChange: 'keyNomiToBffStatus', status: 'nomiStatus' },
+        { label: 'BF', kw: 'bfTimeKw', keyPoint: 'keyBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus', status: 'bfStatus' },
+        { label: '1st Tryout', kw: 'firstTryoutTimeKw', keyPoint: 'keyFirstTryEmWeek', keyPoint2: 'keyFirstTryOtsWeek', isChange: 'keyFirstTryEmStatus', status: 'firstTryStatus' },
+        { label: 'EM(OTS)', kw: 'emTimeKw', keyPoint: 'keyFirstTryOtsWeek', kw2: 'otsTimeKw', status: 'emStatus', status2: 'otsStatus' }
       ],
       logicVisible: false,
       option: [],
@@ -151,71 +143,29 @@ export default {
   created() {
     this.getFSOPtions()
   },
-  computed: {
-    yearWeekOptions() {
-      return () => this.option
-      // return (item, props, index) => {
-      //   // eslint-disable-next-line no-undef
-      //   const selectOption = _.cloneDeep(this.option)
-      //   let beforeYear = null, beforeWeek = null, afterYear = null, afterWeek = null
-      //   if (this.nodeList[index - 1]) {
-      //     const beforeNode = item[this.nodeList[index - 1].kw]
-      //     beforeYear = beforeNode.split('-KW')[0]
-      //     beforeWeek = beforeNode.split('-KW')[1]
-      //   }
-      //   if (this.nodeList[index + 1]) {
-      //     const afterNode = props === 'otsTimeKw' ? item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw]
-      //     afterYear = afterNode.split('-KW')[0]
-      //     afterWeek = afterNode.split('-KW')[1]
-      //   }
-      //   for(var i = 0; i < selectOption.length; i++) {
-      //     if ((beforeYear && selectOption[i].value < beforeYear) || (afterYear && selectOption[i].value > afterYear)) {
-      //       // this.$set(selectOption[i],'disabled',true)
-      //       selectOption[i].disabled = true
-      //     } else {
-      //       // this.$set(selectOption[i],'disabled',false)
-      //       selectOption[i].disabled = false
-      //       for(var j = 0; j < selectOption[i].children.length; j++) {
-      //         if (beforeYear && beforeWeek && selectOption[i].value == beforeYear && selectOption[i].children[j].value <= beforeWeek) {
-      //           // this.$set(selectOption[i].children[j],'disabled',true)
-      //           selectOption[i].children[j].disabled = true
-      //         } else if (afterYear && afterWeek && selectOption[i].value == afterYear && selectOption[i].children[j].value >= afterWeek) {
-      //           // this.$set(selectOption[i].children[j],'disabled',true)
-      //           selectOption[i].children[j].disabled = true
-      //         } else {
-      //           // this.$set(selectOption[i].children[j],'disabled',false)
-      //           selectOption[i].children[j].disabled = false
-      //         }
-      //       }
-      //     }
-      //   }
-      //   return selectOption
-      // }
-    }
-  },
   methods: {
     async gotoDBhistory(part) {
       this.loading = true
-      try{
+      try {
         const res = await getPartGroupConfig(this.cartypeProId)
         this.loading = false
         if (res?.result) {
           // console.log(this.cartypeProId)
-          const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId, sixPartCode:part.partNum.slice(3,9), level: '2', categoryType: res.data.category}})
-          window.open(router.href,'_blank')
+          const router = this.$router.resolve({ path: `/projectscheassistant/historyprocessdb`, query: { ...res.data, cartypeProId: this.cartypeProId, sixPartCode: part.partNum.slice(3, 9), level: '2' } })
+          window.open(router.href, '_blank')
         } else {
-          iMessage.warn('HUOQUSUANFAPEIZHISHIBAI','获取算法配置失败')
+          iMessage.warn('HUOQUSUANFAPEIZHISHIBAI', '获取算法配置失败')
         }
-      } catch(error) {
+      } catch (error) {
         this.loading = false
       }
     },
     handleSendFsConfirm(selectRow) {
-      // eslint-disable-next-line no-undef
-      partProgressConfirm(selectRow.map(item => _.omit(item, 'selectOption'))).then(res => {
+      partProgressConfirm(selectRow).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.changeFsConfirmVisible(false)
+          this.getPartList(this.cartypeProId)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -228,7 +178,7 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     getFSOPtions() {
       getAllFS().then(res => {
         if (res?.result) {
@@ -248,29 +198,39 @@ export default {
       })
     },
     autoSave() {
-      this.handleSave(false)
+      this.saveloading = true
+      updatePartSchedule(this.parts).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.saveloading = false
+      })
     },
     /**
      * @Description: 根据选中的行获取每一行的fs下拉列表
      * @Author: Luoshuang
      * @param {*} tableList
      * @return {*}
-     */    
+     */
     async getFsUserList(tableList) {
-      const res = await getFsUserListPart({partNums: tableList.map(item => item.partNum).join(',')})
-        if (res?.result) {
-          return res.data
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          return null
-        }
+      return null
+      // const res = await getFsUserList(tableList.map(item => item.productGroupId))
+      //   if (res?.result) {
+      //     return res.data
+      //   } else {
+      //     iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      //     return null
+      //   }
     },
     /**
      * @Description: 获取三个工作日后的日期
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
+     */
     getNextThreeWorkDay() {
       if (moment().day() === 2 || moment().day() === 1) {
         return moment().add(3, 'days').format('YYYY-MM-DD')
@@ -286,14 +246,14 @@ export default {
       try {
         this.loading = true
         // 筛选出待定点和待kickoff的数据
-        const selectRows = this.partsTemp.filter(item => {
+        const selectRows = this.parts.filter(item => {
           const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget]
-          return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3) && (item.partPeriod == 2 || item.partPeriod == 3)
+          return !targetList.every(item => item == 1)
         })
-        if (selectRows.length < 1) {
-          iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件'))
-          throw(false)
-        }
+        // if (selectRows.length < 1) {
+        //   iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件'))
+        //   throw(false)
+        // }
         // 获取询价采购员下拉数据
         const fsOptions = await this.getFsUserList(selectRows)
         // 获取三个工作日之后的日期
@@ -301,18 +261,16 @@ export default {
         const tableListNomi = []
         const tableListKickoff = []
         selectRows.forEach((item) => {
-          const options = fsOptions ? fsOptions[item.partNum]?.map(item => {
+          const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
             return {
               ...item,
               value: item.userId,
               label: item.userName
             }
           }) : []
-          const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget]
           const tableItem = {
-            // ...item,
-            carTypeProId: this.cartypeProId,
-            carTypeProject: this.carProjectName,
+            ...item,
+            cartypeProject: this.carProjectName,
             partNum: item.partNum,
             partName: item.partNameZh,
             confirmDateDeadline: nextThreeWorkDay,
@@ -321,29 +279,18 @@ export default {
             selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
             fs: options && options[0] ? options[0].label : '',
             fsId: options && options[0] ? options[0].value : '',
-            delayWeek: item.expectImpactWeek || 10,
-            isBmg: item.bmgFlag || '否',
+            delayWeek: item.expectImpactWeek,
+            isBmg: item.bmgFlag,
             scheNomiTimeKw: item.nomiTimeKw,
             scheKickoffTimeKw: item.kickoffTimeKw,
             scheFirstTryoutTimeKw: item.firstTryoutTimeKw,
             scheOtsTimeKw: item.otsTimeKw,
-            scheEmTimeKw: item.emTimeKw,
-            riskLevel: targetList.every(item => item == 1) ? 1 : targetList.some(item => item == 3) ? 3 : 2,
-            confirmStatus: item.fsConfirmStatus,
-            partPeriod: item.partPeriod
-          }
-          if (item.partPeriod == 2) {
-            tableListNomi.push(tableItem)
-          }
-          if (item.partPeriod == 3) {
-            tableListKickoff.push(tableItem)
+            scheEmTimeKw: item.emTimeKw
           }
         })
-        this.tableListNomi = tableListNomi
-        this.tableListKickoff = tableListKickoff
         this.loading = false
         this.changeFsConfirmVisible(true)
-      } catch(e) {
+      } catch (e) {
         this.loading = false
       }
     },
@@ -351,15 +298,21 @@ export default {
       this.getPartGroupConfig()
       this.changeLogicVisible(true)
     },
-    updatePartGroupConfig() {
-      updatePartGroupConfig({...this.logicData, cartypeProId: this.cartypeProId}).then(res => {
+    updatePartGroupConfig(logicData) {
+      console.log(logicData)
+      if (!logicData) {
+        return
+      }
+      updatePartGroupConfig({...logicData, cartypeProId: this.cartypeProId}).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.changeLogicVisible(false)
-          this.getPartList()
+          this.getPartList(this.cartypeProId)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.$refs.logicSettingBtn.changeSaveLoading(false)
       })
     },
     getPartGroupConfig() {
@@ -374,13 +327,13 @@ export default {
     },
     initOption() {
       const option = []
-      for(var i = 2000; i <= moment().year() + 10; i++) {
-        const countMonth = moment(i+'-01-01').weeksInYear()
+      for (var i = 2000; i <= moment().year() + 10; i++) {
+        const countMonth = moment(i + '-01-01').weeksInYear()
         const children = []
-        for(var j = 1; j <= countMonth; j++) {
-          children.push({value: j<10?'0'+j:j+'',label: j<10?'0'+j:j+''})
+        for (var j = 1; j <= countMonth; j++) {
+          children.push({ value: j < 10 ? '0' + j : j + '', label: j < 10 ? '0' + j : j + '' })
         }
-        option.push({value:i+'',label:i+'',children:children})
+        option.push({ value: i + '', label: i + '', children: children })
       }
       return option
     },
@@ -392,14 +345,44 @@ export default {
       if (year1 < year2) {
         let weeks = 0
         for (var i = year1; i <= year2; i++) {
-          weeks += i === year2 ? week2 : moment(i+'-01-01').weeksInYear() - (i === year1 ? week1 : 0)
+          weeks += i === year2 ? week2 : moment(i + '-01-01').weeksInYear() - (i === year1 ? week1 : 0)
         }
         return weeks
       }
-      if (year1 === year2) {
-        return week2 - week1
+      return week2 - week1
+    },
+    getOptions(item, props, index) {
+      // const index = this.nodeList.findIndex(item => item.kw === props || item.kw2 === props)
+      // eslint-disable-next-line no-undef
+      const selectOption = _.cloneDeep(this.option)
+      let beforeYear = null, beforeWeek = null, afterYear = null, afterWeek = null
+      if (this.nodeList[index - 1]) {
+        const beforeNode = item[this.nodeList[index - 1].kw]
+        beforeYear = beforeNode.split('-KW')[0]
+        beforeWeek = beforeNode.split('-KW')[1]
       }
-      return -this.getWeekBetween(time2, time1)
+      if (this.nodeList[index + 1]) {
+        const afterNode = props === 'otsTimeKw' ? item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw]
+        afterYear = afterNode.split('-KW')[0]
+        afterWeek = afterNode.split('-KW')[1]
+      }
+      for (var i = 0; i < selectOption.length; i++) {
+        if ((beforeYear && selectOption[i].value < beforeYear) || (afterYear && selectOption[i].value > afterYear)) {
+          this.$set(selectOption[i], 'disabled', true)
+        } else {
+          this.$set(selectOption[i], 'disabled', false)
+          for (var j = 0; j < selectOption[i].children.length; j++) {
+            if (beforeYear && beforeWeek && selectOption[i].value == beforeYear && selectOption[i].children[j].value <= beforeWeek) {
+              this.$set(selectOption[i].children[j], 'disabled', true)
+            } else if (afterYear && afterWeek && selectOption[i].value == afterYear && selectOption[i].children[j].value >= afterWeek) {
+              this.$set(selectOption[i].children[j], 'disabled', true)
+            } else {
+              this.$set(selectOption[i].children[j], 'disabled', false)
+            }
+          }
+        }
+      }
+      return selectOption
     },
     handleChange(val, item, props, index) {
       console.log(val, item, props)
@@ -409,18 +392,15 @@ export default {
         this.$set(item, this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val.join('-KW')))
       }
       if (this.nodeList[index + 1]) {
-        this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val.join('-KW'), props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw]))
+        this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val.join('-KW'), props === 'otsTimeKw' ? item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw]))
       }
     },
-    handleSave(refresh = true) {
+    handleSave() {
       this.saveloading = true
-      updatePartSchedule(this.partsTemp.map(item => {
-        const findItem = this.parts.find(pItem => pItem.partNum === item.partNum)
-        return findItem ? findItem : item
-      })).then(res => {
+      updatePartSchedule(this.parts).then(res => {
         if (res?.result) {
-          refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          refresh && this.getPartList(this.cartypeProId)
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.getPartList(this.cartypeProId)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -437,50 +417,50 @@ export default {
      * @Author: Luoshuang
      * @param {*} partNameDe
      * @return {*}
-     */    
+     */
     getFitPartNameDeList(partNameDe) {
       return this.partsTemp.reduce((accu, curr) => {
         if (curr.partNameDe.includes(partNameDe)) {
-          return [...accu, {value:curr.partNameDe}]
+          return [...accu, { value: curr.partNameDe }]
         }
         return [...accu]
-      },[])
+      }, [])
     },
     /**
      * @Description: 根据零件中文名去删选符合的零件
      * @Author: Luoshuang
      * @param {*} partNameZh
      * @return {*}
-     */    
+     */
     getFitPartNameZhList(partNameZh) {
       return this.partsTemp.reduce((accu, curr) => {
         if (curr.partNameZh.includes(partNameZh)) {
-          return [...accu, {value:curr.partNameZh}]
+          return [...accu, { value: curr.partNameZh }]
         }
         return [...accu]
-      },[])
+      }, [])
     },
     /**
      * @Description: 根据零件号去删选符合的零件
      * @Author: Luoshuang
      * @param {*} partNum
      * @return {*}
-     */    
+     */
     getFitPartNumList(partNum) {
       return this.partsTemp.reduce((accu, curr) => {
         if (curr.partNum.includes(partNum)) {
-          return [...accu, {value:curr.partNum}]
+          return [...accu, { value: curr.partNum }]
         }
         return [...accu]
-      },[])
+      }, [])
     },
     /**
      * @Description: 搜索零件列表
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
-    searchPartList({partNum, partNameZh, partNameDe, level}) {
+     */
+    searchPartList({ partNum, partNameZh, partNameDe, level }) {
       this.loading = true
       // eslint-disable-next-line no-undef
       this.parts = this.partsTemp.filter(item => {
@@ -509,14 +489,14 @@ export default {
       setTimeout(() => {
         this.loading = false
       }, 500);
-      
+
     },
     /**
      * @Description: 选中全部零件状态切换
      * @Author: Luoshuang
      * @param {*} val
      * @return {*}
-     */    
+     */
     handleCheckAllChange(val) {
       this.parts = this.parts?.map(item => {
         return {
@@ -532,7 +512,7 @@ export default {
      * @param {*} value
      * @param {*} pro
      * @return {*}
-     */    
+     */
     handleCheckboxChange(value, pro) {
       let checkedCount = this.parts.filter(item => item.isChecked).length;
       this.checkAll = checkedCount === this.parts.length;
@@ -543,21 +523,15 @@ export default {
      * @Author: Luoshuang
      * @param {*} cartypeProId
      * @return {*}
-     */    
+     */
     getPartList(cartypeProId) {
       this.loading = true
       getPartSchedule(cartypeProId).then(res => {
         if (res?.result) {
-          const partList = (res.data || []).map(item => {
-            return {
-              ...item,
-              emIsLarger: this.isLarger(item.emTimeKw, item.otsTimeKw)
-            }
-          })
           // eslint-disable-next-line no-undef
-          this.parts = _.cloneDeep(partList)
+          this.parts = _.cloneDeep(res.data || [])
           // eslint-disable-next-line no-undef
-          this.partsTemp = _.cloneDeep(partList)
+          this.partsTemp = _.cloneDeep(res.data || [])
         } else {
           this.parts = []
           this.partsTemp = []
@@ -573,7 +547,7 @@ export default {
      * @param {*} time1
      * @param {*} time2
      * @return {*}
-     */    
+     */
     isLarger(time1, time2) {
       if (!time1) {
         return false
@@ -731,7 +705,7 @@ export default {
               background-color: rgba(233, 236, 241, 0.75);
             }
             &.markBlue {
-              ::v-deep .el-input__inner{
+              ::v-deep .el-input__inner {
                 color: rgba(23, 99, 247, 1);
                 text-align: center;
                 border-color: rgba(23, 99, 247, 1);
@@ -775,7 +749,7 @@ export default {
   ::v-deep .el-checkbox__label {
     font-size: 18px;
     font-weight: bold;
-    color: #41434A;
+    color: #41434a;
   }
 }
 </style>

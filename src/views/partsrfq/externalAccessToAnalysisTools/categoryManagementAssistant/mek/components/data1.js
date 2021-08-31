@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 16:07:05
- * @LastEditTime: 2021-08-25 16:19:01
+ * @LastEditTime: 2021-08-26 17:08:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\data1.js
@@ -15,19 +15,19 @@ export const confirmTableHead = [
     tooltip: true,
   },
   {
-    props: 'fsNum',
+    props: 'num',
     name: '每车用量',
     key: 'MEICHEYONGLIANG',
     tooltip: false,
   },
   {
-    props: 'cartypeProjectZh',
+    props: 'price',
     name: '价格(A价)',
     key: 'JIAGEAJIA',
     tooltip: false,
   },
   {
-    props: '配置',
+    props: 'ebr',
     name: 'EBR%',
     key: 'EBR%',
     tooltip: false,

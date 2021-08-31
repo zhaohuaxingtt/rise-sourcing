@@ -297,7 +297,7 @@ import {
   upLoadFileByIds,
   attachmentUpload,
   supplierToConfirm
-} from "@/api/ws2/purchaseSupplier/changeTask/bmInfo";
+} from "@/api/ws2/purchaseSupplier/changeTask/bmInfo.js";
 import {getTousandNum} from "@/utils/tool";
 import {sendSupplier} from "@/api/ws2/purchase/investmentList";
 

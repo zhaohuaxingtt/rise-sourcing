@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-08-27 14:45:49
+ * @LastEditTime: 2021-08-31 16:19:56
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -13,25 +13,25 @@
   <iCard :title="language('LK_BAOJIAQS','报价趋势')" class="margin-top20" collapse>
     <div class="margin-bottom20 echarts">
       <el-form inline>
-          <el-form-item label="价格维度" v-permission="RFQ_DETAIL_TIPS_BAOJIAQUSHI_JIAGEWEIDU_SELECT">
+          <el-form-item label="价格维度" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_JIAGEWEIDU_SELECT|价格维度">
             <iSelect style="width:80px;" :placeholder="language('partsprocure.CHOOSE','请选择')" v-model="form.priceLatitude">
               <el-option label="mixPrice" value='1'></el-option>
               <el-option label="To" value='2'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="供应商" v-permission="RFQ_DETAIL_TIPS_BAOJIAQUSHI_GONGYINGSHANG_SELECT">
+          <el-form-item label="供应商" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_GONGYINGSHANG_SELECT|供应商">
             <iSelect :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="supplierSelectlist" @visible-change="removeOther($event,'supplierSelectlist')">
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in supplierlist" :key='index' :label="items.supplierName" :value='items.supplierNum'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('Lk_LINGJIAN','零件')" class="ccc"  v-permission="RFQ_DETAIL_TIPS_BAOJIAQUSHI_LINGJIAN_SELECT">
+          <el-form-item :label="language('Lk_LINGJIAN','零件')" class="ccc"  v-permission.atuo="RFQ_DETAIL_TIPS_BAOJIAQUSHI_LINGJIAN_SELECT | 零件">
             <iSelect :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="partsSelect" @change='changeParts' @visible-change="removeOther($event,'partsSelect')">
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in partList" :key='index' :label="items.name" :value='items.value'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('LK_FSHAO','FS号')" class="ccc" v-permission="RFQ_DETAIL_TIPS_BAOJIAQUSHI_FSHAO_SELECT">
+          <el-form-item :label="language('LK_FSHAO','FS号')" class="ccc" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_FSHAO_SELECT|FS号">
             <iSelect :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="fsSelect" @visible-change="removeOther($event,'fsSelect')">
               <el-option label="All" value="all"></el-option>
               <template v-for="(items,index) in fslist">
@@ -39,16 +39,16 @@
               </template>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('LK_DANGQIANLUNCI','当前轮次')" v-permission="RFQ_DETAIL_TIPS_BAOJIAQUSHI_DANGQIANLUNCI_SELECT">
+          <el-form-item :label="language('LK_DANGQIANLUNCI','当前轮次')" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_DANGQIANLUNCI_SELECT|当前轮次">
             <iSelect style="width:100px;" :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="luncSelect"  @visible-change="removeOther($event,'luncSelect')">
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in RoundList" :key='index' :label="items" :value='items'></el-option>
             </iSelect>
           </el-form-item>
           <span class="floatright">
-            <iButton v-permission="RFQ_DETAIL_TIPS_BAOJIAQUSHI_CHAXUN_BUTTON" @click="refresh" :loading='refreshLoading'>{{language('rfq.RFQINQUIRE','查询')}}</iButton>
-            <iButton @click="reset" v-permission="RFQ_DETAIL_TIPS_BAOJIAQUSHI_CHONGZHI_BUTTON">{{language('rfq.RFQRESET','重置')}}</iButton>
-            <iButton @click="exportExcel" :loading='exportLoading' v-permission="RFQ_DETAIL_TIPS_BAOJIAQUSHI_DAOCHU_BUTTON">{{language('LK_DAOCHU','导出')}}</iButton>
+            <iButton v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_CHAXUN_BUTTON|查询" @click="refresh" :loading='refreshLoading'>{{language('rfq.RFQINQUIRE','查询')}}</iButton>
+            <iButton @click="reset" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_CHONGZHI_BUTTON|重置">{{language('rfq.RFQRESET','重置')}}</iButton>
+            <iButton @click="exportExcel" :loading='exportLoading' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_DAOCHU_BUTTON|导出">{{language('LK_DAOCHU','导出')}}</iButton>
           </span>
       </el-form>
     </div>

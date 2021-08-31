@@ -145,7 +145,6 @@
       </el-table-column>
     </el-table>
     <addPartDialog v-model="addPartDialog" />
-    <!-- <changeLogDialog v-model="changeLogDialog" /> -->
     <iLog :show.sync="changeLogDialog" :bizId="bizId"  />
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page='page.currPage' :total="page.totalCount" />
   </div>
@@ -162,11 +161,10 @@ import resultMessageMixin from '@/utils/resultMessageMixin.js';
 import { tableTitle } from "./data.js";
 import { mekInfoList, infoUpdate, getCarTypeMessage, categoryList, carTypeList, infoDelete } from "@/api/partsrfq/mek/index.js";
 import { excelExport } from "@/utils/filedowLoad";
-import changeLogDialog from "./changeLogDialog";
 export default {
   // import引入的组件需要注入到对象中才能使用
   mixins: [pageMixins, resultMessageMixin],
-  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, changeLogDialog, iLog },
+  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, iLog },
   data() {
     // 这里存放数据
     return {
@@ -236,7 +234,7 @@ export default {
     async getCarTypeMessage(val) {
       this.formGoup.carTypeInfoList = []
       this.carTypeInfoLoading = true
-      const res = await getCarTypeMessage({ motorSvwCode: val })
+      const res = await getCarTypeMessage({ motorS: val })
       res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
       this.formGoup.carTypeInfoList = res.data
       this.carTypeInfoLoading = false
@@ -247,8 +245,8 @@ export default {
         this.tableLoading = true
         const pms = {
           ...this.form,
-          mekId: this.$route.query.SchemeId,
-          motorIds: this.$route.query.vwModelCodes,
+          mekId: this.$route.query.chemeId,
+          motorIds: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || [],
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
         }
@@ -259,7 +257,7 @@ export default {
         this.page.totalCount = res.total
         this.tableListData = res.data
         this.tableLoading = false
-      } catch (error) {
+      } catch {
         this.tableListData = []
         this.tableLoading = false
       }

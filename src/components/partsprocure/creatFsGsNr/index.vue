@@ -1,5 +1,5 @@
 <template>
-	<div class="fs margin-left10 margin-right10" v-permission='PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR'>
+	<div class="fs margin-left10 margin-right10" v-permission.auto='PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR|生成FSNRGSNR按钮'>
 		<iButton  @click="validateFs()" :loading='partNumberLoading'>
 			{{ language('partsprocure.PARTSPROCUREGENERATEFSGSNR','生成零件采购项目号') }}
 		</iButton>

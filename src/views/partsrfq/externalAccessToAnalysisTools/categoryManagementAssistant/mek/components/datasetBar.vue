@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-08-26 15:31:57
+ * @LastEditTime: 2021-08-27 18:13:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -73,7 +73,8 @@ export default {
           });
         }
       },
-      immediate: true
+      immediate: true,
+      deep: true
     },
   },
   mounted () {
@@ -83,9 +84,14 @@ export default {
   },
   methods: {
     initCharts () {
-      this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+      console.log(111)
+      if (this.maxWidth === 1) {
+        this.$refs.chart.style.width = this.maxWidth * 240 + 'px';
+      } else {
+        this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+      }
       // console.log(this.$refs.chart.style.width, 'number')
-      this.$refs.chart.style.minWidth = '100%';
+      // this.$refs.chart.style.minWidth = '100%';
       this.myChart = echarts().init(this.$refs.chart);
       this.option = {
         xAxis: [

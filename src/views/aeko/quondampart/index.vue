@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 20:00:13
- * @LastEditTime: 2021-08-25 10:42:19
+ * @LastEditTime: 2021-08-30 18:01:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\index.vue
@@ -12,7 +12,7 @@
       <div class="title">{{ language("ZHIDINGYUANLINGJIAN", "指定原零件") }}</div>
       <div class="control">
         <!-- <iNavMvp class="nav margin-right20" :lev="2" :list="navList" lang routerPage routerParam /> -->
-        <iButton @click="save" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("LK_BAOCUN", "保存") }}</iButton>
+        <iButton :loading="saveLoading" @click="save" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("LK_BAOCUN", "保存") }}</iButton>
         <iButton @click="handleBack">{{ language("FANHUI", "返回") }}</iButton>
         <div class="control">
           <logButton class="margin-left20" />
@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="margin-top30">
-      <ledger ref='ledger'/>
+      <ledger ref='ledger' @changeStatus="changeStatus"/>
       <!-- <router-view></router-view> -->
     </div>
   </iPage>
@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       navList,
+      saveLoading:false,
     }
   },
   methods: {
@@ -78,6 +79,11 @@ export default {
     save(){
       this.$refs.ledger.handleSave();
     },
+
+    // 改变状态
+    changeStatus(key,value){
+      this[key] = value;
+    }
   },
   beforeDestroy() {
     if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) sessionStorage.removeItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)
