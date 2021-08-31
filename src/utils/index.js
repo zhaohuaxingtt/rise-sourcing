@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-31 13:49:08
+ * @LastEditTime: 2021-08-31 15:32:30
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -185,7 +185,7 @@ router.afterEach((to,from)=>{
   if(process.env.NODE_ENV == 'dev' && languageList.length !== 0){
     _languageSendToService()
   }
-  if(process.env.NODE_ENV == '' && store.state.permission.resourceList.length > 0){
+  if(process.env.NODE_ENV == 'dev' && store.state.permission.resourceList.length > 0){
     _permissionKeySendToService(from)
   }
 })
