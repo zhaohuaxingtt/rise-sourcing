@@ -5,7 +5,7 @@
 * @Description: In User Settings Edit
  -->
 <template>
-  <iPage v-permission.auto="PARTSIGN_EDITORDETAIL_INDEXPAGE|新件信息单首页">
+  <iPage>
     <!-- 零件详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
       <span>{{partDetails.partNum || ''}}</span>
