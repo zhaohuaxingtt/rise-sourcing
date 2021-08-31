@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-08-30 11:07:49
+ * @LastEditTime: 2021-08-31 16:13:57
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\index.vue
 -->
@@ -97,7 +97,7 @@ export default {
     async getLastCarType() {
       try {
         const res = await getLastCarType()
-        if (res.code === '200' && res.data.id) {
+        if (res.code === '200') {
           this.carProject = res.data.id
           this.carProject && (this.handleCarProjectChange(this.carProject, res.data.cartypeProName))
         } else {
