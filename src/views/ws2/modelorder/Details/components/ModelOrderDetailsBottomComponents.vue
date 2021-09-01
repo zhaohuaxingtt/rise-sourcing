@@ -17,7 +17,7 @@
     <div class='table'>
       <iTableCustom ref='orderTable' :row-class-name='tableRowClassName' :columns='orderItemColumns'
                     :data='orderItemData' :extraData='extraData' @handle-selection-change='handleSelectionChange'
-                    @open-page='openPage' @goLedger='goLedger' @open-grIr='openGrIr'></iTableCustom>
+                    @open-page='openPage' @go-ledger='goLedger' @open-grIr='openGrIr'></iTableCustom>
     </div>
 
     <ModelByPurchaseRequisitionDialog v-if="referPurchaseRequisitionisVisible"
@@ -89,7 +89,7 @@ export default {
 
     },
   },
-  watch:{
+  watch: {
     isEdit(val, oldVal) {
       this.extraData.isEdit = val
     },
@@ -100,7 +100,7 @@ export default {
       orderItemColumns: MODEL_ORDER_DETAILS_ITEMSCOLUMNS,
       orderItemData: [],
       selectOrderItemData: [],//选中数据
-      extraData: {orderDetails: this.orderDetails, isEdit:this.isEdit,},
+      extraData: {orderDetails: this.orderDetails, isEdit: this.isEdit,},
       purchaseOrderItemDetailsIsVisible: false,
       referPurchaseRequisitionisVisible: false,
       purchaseOrderGrIrSelIsVisible: false,
@@ -168,9 +168,8 @@ export default {
             price: item.price
           }
         })
-        let newList = newArray.filter(item => !this.orderItemData.some(x => x.partNum === item.partNum))//去除重复零件号
-        let duplicateCollectionList = newArray.filter(item => this.orderItemData.some(x => x.partNum === item.partNum))
-        console.log(newList)
+        let newList = newArray.filter(item => !this.orderItemData.some(x => x.itemSourceCode === item.itemSourceCode))//去除重复零件号
+        let duplicateCollectionList = newArray.filter(item => this.orderItemData.some(x => x.itemSourceCode === item.itemSourceCode))
         if (newList != null && newList.length > 0) {
           this.$message.success('添加成功')
           this.orderItemData.unshift(...newList)
@@ -181,7 +180,7 @@ export default {
         } else {
           if (duplicateCollectionList != null && duplicateCollectionList.length > 0 && duplicateCollectionList != undefined) {
             duplicateCollectionList.forEach((item) => {
-              this.$message.error(`项次[${item.itemSourceItem}]零件[${item.partNum}]的采购申请已经被参照，无法保存`)
+              this.$message.error(`项次[${item.itemSourceItem}]BM[${item.itemSourceCode}]的采购申请已经被参照，无法保存`)
             })
           }
         }
@@ -264,7 +263,10 @@ export default {
     },
     //模具台账
     goLedger(item) {
-
+      let routeData = this.$router.resolve({
+        path: `/purchaseSupplier/mouldBook/details?bmSerial=${item.itemSourceCode}`
+      })
+      window.open(routeData.href, '_blank')
     },
     openGrIr(item) {
       if (this.orderDetails.contractSapCode) {

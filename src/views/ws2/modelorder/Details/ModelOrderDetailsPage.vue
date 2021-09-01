@@ -24,13 +24,13 @@
         <!--清空-->
         <i-button v-if='nextStepShow' @click='clearForm'>{{ $t('MODEL-ORDER.LK_QINGKONG') }}</i-button>
         <!--保存-->
-        <i-button v-if='saveOrderShow' @click='saveOrder'>{{ $t('LK_BAOCUN') }}</i-button>
+        <i-button v-if='saveOrderShow' v-loading.fullscreen.lock='fullscreenLoading' @click='saveOrder'>{{ $t('LK_BAOCUN') }}</i-button>
         <!--编辑-->
         <i-button v-if='editOrderbtnShow' @click='editOrder'>{{ $t('LK_BIANJI') }}</i-button>
         <!--提交订单-->
-        <i-button v-if='submitOrderbtnShow' @click='submitOrder'>{{ $t('LK_TIJIAO') }}</i-button>
+        <i-button v-if='submitOrderbtnShow' v-loading.fullscreen.lock='fullscreenLoading' @click='submitOrder'>{{ $t('LK_TIJIAO') }}</i-button>
         <!--版本升级-->
-        <i-button v-if='versionUpgradeShow' @click='versionUpgrade'>{{ $t('MODEL-ORDER.LK_BANBENSHNGJI') }}</i-button>
+        <i-button v-if='versionUpgradeShow' v-loading.fullscreen.lock='fullscreenLoading' @click='versionUpgrade'>{{ $t('MODEL-ORDER.LK_BANBENSHNGJI') }}</i-button>
       </div>
     </div>
     <ModelOrderDetailsTopComponents ref="orderDetailsTopComponentsRef" :is-edit='isEdit' :option='option' :id='id'
@@ -351,7 +351,9 @@ export default {
       })
     },
     versionUpgrade() {
+      this.fullscreenLoading = true
       versionUpgradeByOrder(this.orderDetails.id).then((res) => {
+        this.fullscreenLoading = false
         if (res.code == 200) {
           this.$message.success(res.desZh)
           this.$router.replace({
