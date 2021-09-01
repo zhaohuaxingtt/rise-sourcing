@@ -64,7 +64,11 @@ export default {
       this.btnLoading = true;
       const {partInfo={}} = this;
       const {quotationId=""} = partInfo;
-      await saveTerminationPrice(quotationId).then((res)=>{
+      const data = {
+        terminationPrice:value,
+        quotationId,
+      }
+      await saveTerminationPrice(data).then((res)=>{
         this.btnLoading = false;
         if(res.code==200){
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))

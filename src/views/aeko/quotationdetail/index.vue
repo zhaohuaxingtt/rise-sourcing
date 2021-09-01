@@ -174,13 +174,19 @@ export default {
         ppSupplierId:supplierId,
         ppSupplierUserId:userInfo.id
       }
-      // token：由后端提供
+      let paramsStr = '';
+      for (var i in data){
+        paramsStr+=`${i}=${data[i]}&`
+      }
 
+      // token：由后端提供
       // partProjId    零件采购项目Id String
       // rfqId           rfqId  String
       await bnkSupplierToken({
-        partProjId:'332',
-        rfqId:'FS21-00156'
+        // partProjId:'332',
+        // rfqId:'FS21-00156'
+        partProjId:aekoPartInfo.partProjId,
+        rfqId,
       }).then((res)=>{
         
       });
