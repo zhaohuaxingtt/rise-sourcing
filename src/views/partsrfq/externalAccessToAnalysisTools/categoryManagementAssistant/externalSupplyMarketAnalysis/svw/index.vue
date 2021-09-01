@@ -30,11 +30,13 @@
           <div class="module3"><img class="imgStatus"
                  :src="userImg" />供应商主要客户</div>
         </div>
-        <list v-for="(x,index) of MarketOverviewDTO"
-              :key="index"
-              :MarketOverviewObj=x
-              :index="index+1"
-              :edite="edite"></list>
+        <div style="overflow:auto">
+          <list v-for="(x,index) of MarketOverviewDTO"
+                :key="index"
+                :MarketOverviewObj=x
+                :index="index+1"
+                :edite="edite"></list>
+        </div>
       </iCard>
     </div>
   </iPage>
