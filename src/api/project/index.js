@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 11:30:22
+ * @LastEditTime: 2021-09-01 17:42:17
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -353,7 +353,7 @@ export function getPartScheduleList(params) {
 export function savePartScheduleList(params) {
   return requst({
     url: '/progress-confirm/part/save',
-    method: 'POST',
+    method: 'PUT',
     data: params
   })
 }
