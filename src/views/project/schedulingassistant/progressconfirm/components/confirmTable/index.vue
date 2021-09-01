@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 10:47:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 14:28:45
+ * @LastEditTime: 2021-09-01 17:49:06
  * @Description: 确认表格-通用
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\confirmTable\index.vue
 -->
@@ -187,12 +187,12 @@ export default {
       if (resetPage) {
         this.resetPageInfo()
       }
-      if (this.searchParams.confirmStatus === 'RETURNED') {
+      if (this.searchParams.confirmStatus === '3') {
         this.withSend = true
       } else {
         this.withSend = false
       }
-      if (this.searchParams.confirmStatus === 'TO_BE_CONFIRMED') {
+      if (this.searchParams.confirmStatus === '2') {
         this.withAllBtn = true
       } else {
         this.withAllBtn = false
