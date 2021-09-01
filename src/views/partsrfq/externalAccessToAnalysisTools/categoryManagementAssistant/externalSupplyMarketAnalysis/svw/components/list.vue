@@ -111,10 +111,10 @@ export default {
         name: "利润(%）"
       }, {
         value: 'svwAmount',
-        name: "svw(百万元)"
+        name: "svw(万元)"
       }, {
         value: 'otherAmount',
-        name: "其它(白万元)"
+        name: "其它(万元)"
       }],
       bgimg: require('../img/list.png'),
       upImg: require('../img/up.png'),
@@ -457,11 +457,12 @@ export default {
           label: {
             show: true,
             position: "top",
-            color: "#000000",
+            color: "#fff",
             fontSize: 12,
             align: "center",
             fontFamily: "Arial",
             formatter: (params) => {
+              console.log(params, 2222)
               let data = this.MarketOverviewObj.supplierFinanceDTOList
               let index = params.dataIndex
               let sum = ((Number(data[index].otherAmount) + Number(data[index].svwAmount)) / 1000000).toFixed(2)
@@ -531,7 +532,7 @@ export default {
             } else {
               seriesObj.selected = false
             }
-            if (x.sapStuffCode === 'other') {
+            if (x.sapStuffCode === "other") {
               otherObj = seriesObj
             }
             seriesObj.value = x.postAmount
@@ -547,7 +548,6 @@ export default {
           this.turnover.series[0].data = data
           this.turnover.legend.data = legend
         }
-
 
         let total = new Number()
         if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
@@ -568,65 +568,27 @@ export default {
       immediate: true,
       deep: true
     },
-    // handleChange (val) {
-    //   this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = ''
-    //   this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = ''
-    //   this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = ''
-    //   this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = ''
-    //   this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = ''
-    //   this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = ''
-    //   this.MarketOverviewObj.supplierFinanceDTOList[0].profit = ''
-    //   this.MarketOverviewObj.supplierFinanceDTOList[1].profit = ''
-    //   this.MarketOverviewObj.supplierFinanceDTOList[2].profit = ''
-    //   // if (val === 'otherAmount') {
-    //   //   this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = this.year1
-    //   //   this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = this.year2
-    //   //   this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = this.year3
-    //   // }else if
-    // },
-
+    handleChange (val) {
+      this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[0].profit = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[1].profit = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[2].profit = ''
+      // if (val === 'otherAmount') {
+      //   this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = this.year1
+      //   this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = this.year2
+      //   this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = this.year3
+      // }else if
+    },
     '$store.state.rfq.categoryCode': {
       handler (val) {
         this.categoryCode = val
-        let data = []
-        let legend = []
-        let check = true
-        let otherObj = {}
-        this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.forEach((x, index) => {
-          let seriesObj = {
-            value: 1048,
-            name: '材料组A',
-            itemStyle: {
-              color: "#0058FF"
-            },
-            label: {
-              normal: {
-                show: true,
-                formatter: '{d}%'
-              }
-            }
-          }
-          let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
-          if (x.sapStuffCode == this.categoryCode) {
-            seriesObj.selected = true
-            check = false
-          } else {
-            seriesObj.selected = false
-          }
-          if (x.sapStuffCode === 'other') {
-            otherObj = seriesObj
-          }
-          seriesObj.value = x.postAmount
-          seriesObj.name = x.categoryNameZh
-          seriesObj.itemStyle.color = colorList[index]
-          seriesObj.label.normal.formatter = x.rate + '%'
-          data.push(seriesObj)
-          legend.push(x.categoryNameZh)
-        })
-        if (check) {
-          otherObj.selected = true
-        }
       },
+      immediate: true
     },
   },
   methods: {
