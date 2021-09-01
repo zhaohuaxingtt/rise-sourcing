@@ -75,9 +75,12 @@ export default {
         { seq: "2.5", key: "QITAFEIYONG", label: "其他费⽤", value: "otherCost" },
         { seq: "2.6", key: "LIRUN", label: "利润", value: "profit" },
       ],
-      modules: [],
+      modules: [""],
       moduleMap: {}
     }
+  },
+  created() {
+    this.handleChangeByModules([""])
   },
   methods: {
     handleChangeByModules(modules) {
