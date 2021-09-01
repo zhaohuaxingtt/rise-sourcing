@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-31 17:49:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 15:07:18
+ * @LastEditTime: 2021-09-01 16:38:55
  * @Description: 发送FS按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\sendFSBtn.vue
 -->
@@ -16,7 +16,7 @@
 
 <script>
 import { iMessage, iButton } from 'rise'
-import { getFsUserListPart } from '@/api/project'
+import { getFsUserListPart, partProgressConfirm } from '@/api/project'
 import fsConfirm from '@/views/project/schedulingassistant/part/components/fsconfirm'
 export default {
   components: { iButton, fsConfirm },
@@ -106,7 +106,21 @@ export default {
       this.tableListNomi = tableListNomi
       this.tableListKickoff = tableListKickoff
       this.changeFsConfirmVisible(true)
-    }
+    },
+    handleSendFsConfirm(selectRow) {
+      // eslint-disable-next-line no-undef
+      partProgressConfirm(selectRow.map(item => _.omit(item, 'selectOption'))).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeFsConfirmVisible(false)
+          this.$emit('getTableList')
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.$refs.fsConfirmPart.changeSaveLoading(false)
+      })
+    },
   }
 }
 </script>
