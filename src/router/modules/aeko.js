@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-09-01 15:10:55
+ * @LastEditTime: 2021-09-01 15:16:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -11,7 +11,7 @@ export default [
     path: "/aeko",
     name: "aeko",
     meta: {
-        title: 'aeko'
+        title: 'AEKO'
     },
     component: () => import("@/layout/default-origin"),
     redirect: "/aeko/managelist",
@@ -21,7 +21,7 @@ export default [
           path: "managelist",
           name: "aekoManageList",
           meta: {
-              title: 'aeko管理'
+              title: 'AEKO管理'
           },
           component: () => import ("@/views/aeko/manage")
       },
@@ -30,7 +30,7 @@ export default [
         path: "stancelist",
         name: "aekoStanceList",
         meta: {
-            title: 'aeko表态'
+            title: 'AEKO表态'
         },
         component: () => import ("@/views/aeko/stance")
     },
@@ -39,7 +39,7 @@ export default [
         path: "aekodetail",
         name: "aekodetail",
         meta: {
-            title: 'aeko详情'
+            title: 'AEKO详情'
         },
         component: () => import("@/views/aeko/detail"),
       },
@@ -47,7 +47,7 @@ export default [
         path: "quondampart",
         name: "quondampart", 
         meta: {
-            title: 'aeko-指定原零件'
+            title: 'AEKO-指定原零件'
         },
         component: () => import("@/views/aeko/quondampart"),
         // redirect: "quondampart/ledger",
@@ -68,7 +68,7 @@ export default [
         path: "describe",
         name: "aekoDescribe",
         meta: {
-            title: 'aeko描述'
+            title: 'AEKO描述'
         },
         component: () => import("@/views/aeko/describe"),
       },
@@ -76,7 +76,7 @@ export default [
         path: "quotationdetail",
         name: "aekoQuotationDetail",
         meta: {
-            title: 'aeko-报价单'
+            title: 'AEKO-报价单'
         },
         component: () => import("@/views/aeko/quotationdetail"),
       }
