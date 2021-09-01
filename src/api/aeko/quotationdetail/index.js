@@ -29,9 +29,10 @@ export function getQuotationInfo(quotationId) {
 }
 
 // 终止费-保存
-export function saveTerminationPrice(quotationId) {
+export function saveTerminationPrice(data) {
   return requst({
-    url: `/part/terminationPrice?supplierId=${supplierId()}&quotationId=${quotationId}`,
+    url: `/part/terminationPrice?supplierId=${supplierId()}&quotationId=${data.quotationId}`,
     method: 'POST',
+    data,
   })
 }
