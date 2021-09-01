@@ -472,12 +472,11 @@ export default {
           label: {
             show: true,
             position: "top",
-            color: "#fff",
+            color: "#000000",
             fontSize: 12,
             align: "center",
             fontFamily: "Arial",
             formatter: (params) => {
-
               let data = this.MarketOverviewObj.supplierFinanceDTOList
               let index = params.dataIndex
               let sum = ((Number(data[index].otherAmount) + Number(data[index].svwAmount)) / 1000000).toFixed(2)

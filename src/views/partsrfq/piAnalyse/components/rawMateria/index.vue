@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-08-20 13:54:35
+ * @LastEditTime: 2021-09-01 14:26:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -65,7 +65,7 @@
         :total="page.totalCount"
       />
     </div>
-    <detail :key="detailParam.key" :materiaName="name" v-model="detailParam.visible"/>
+    <detail :key="detailParam.key" :materiaName="name" v-model="detailParam.visible" @handleCloseModal="handleCloseModal"/>
   </div>
 </template>
 
@@ -149,7 +149,6 @@ export default {
     },
     // 点击返回
     clickBack() {
-      // this.$router.go(-1)
       if (this.$store.state.rfq.entryStatus === 1) {
           this.$router.push({
             path: '/sourcing/partsrfq/assistant',
@@ -197,6 +196,10 @@ export default {
       for(const key in this.searchForm) {
         this.searchForm[key] = null
       }
+    },
+    // 关闭弹窗
+    handleCloseModal() {
+      this.detailParam.visible = false
     }
   }
 }
