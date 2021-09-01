@@ -1,13 +1,13 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-08-30 15:26:57
+ * @LastEditTime: 2021-09-01 14:05:28
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
 -->
 <template>
-  <iPage class="partsrfqHome" v-permission="PARTSRFQ_INDEXPAGE">
+  <iPage class="partsrfqHome">
     <!-- <el-tabs v-model="tab" class="tab">
       <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div class="topMenu">
