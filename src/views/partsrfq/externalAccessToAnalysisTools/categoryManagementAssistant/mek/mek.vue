@@ -186,7 +186,7 @@ export default {
       console.log(row);
       if (row.isDefault === '1') {
         this.tableListData.map(item => {
-          if (row.id !== item.id) {
+          if (row.id !== item.id && row.rfqNo === item.rfqNo) {
             return item.isDefault = '0'
           }
         })
