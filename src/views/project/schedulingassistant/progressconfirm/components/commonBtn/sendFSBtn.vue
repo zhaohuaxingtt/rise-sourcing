@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-08-31 17:49:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 16:38:55
+ * @LastEditTime: 2021-09-01 18:04:26
  * @Description: 发送FS按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\sendFSBtn.vue
 -->
 
 <template>
   <span>
-    <iButton @click="handleOpenSendDialog">{{language('FASONG','发送')}}</iButton>
+    <iButton @click="handleOpenSendDialog" :loading="sendLoading">{{language('FASONG','发送')}}</iButton>
     <fsConfirm ref="fsConfirmPart" :dialogVisible="dialogVisibleFS" @handleConfirm="handleSendFsConfirm" :tableListNomi="tableListNomi" :tableListKickoff="tableListKickoff" @changeVisible="changeFsConfirmVisible" />
   </span>
 </template>
@@ -41,7 +41,8 @@ export default {
       loading: false,
       dialogVisibleFS: false,
       tableListNomi: [],
-      tableListKickoff: []
+      tableListKickoff: [],
+      sendLoading: false
     }
   },
   methods: {
@@ -76,15 +77,21 @@ export default {
       }
     },
     async handleOpenSendDialog() {
+      this.sendLoading = true
       if (this.sendData.length < 1) {
         iMessage.warn(this.language('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据'))
         return
       }
+      const sendData = this.sendData.filter(item => item.riskLevel !== 1)
+      if (sendData.length < 1) {
+        iMessage.warn(this.language('MEIYOUXUYAOFASONGDESHUJU', '没有需要发送的数据'))
+        return
+      }
       // 获取询价采购员下拉数据
-      const fsOptions = await this.getFsUserList(this.sendData)
+      const fsOptions = await this.getFsUserList(sendData)
       const tableListNomi = []
       const tableListKickoff = []
-      this.sendData.forEach((item) => {
+      sendData.forEach((item) => {
         const options = fsOptions ? fsOptions[item.partNum]?.map(item => {
           return {
             ...item,
@@ -94,6 +101,8 @@ export default {
         }) : []
         const tableItem = {
           ...item,
+          carTypeProject: item.cartypeProject,
+          carTypeProId: item.cartypeProId,
           selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions
         }
         if (item.partPeriod == 2) {
@@ -105,6 +114,7 @@ export default {
       })
       this.tableListNomi = tableListNomi
       this.tableListKickoff = tableListKickoff
+      this.sendLoading = false
       this.changeFsConfirmVisible(true)
     },
     handleSendFsConfirm(selectRow) {

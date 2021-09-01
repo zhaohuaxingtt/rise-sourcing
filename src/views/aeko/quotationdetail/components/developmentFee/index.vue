@@ -24,14 +24,12 @@ export default {
       partInfo:{"rfqId":"1089","quotationId":"1430733529429766145","cbdLevel":1},
     }
   },
-  mounted(){
-    console.log(this,this.$refs,this.$refs.devcost,'this.$refs.devcost')
-    this.$refs.devcost.getDevFee();
-  },
   methods:{
+    init(){
+      this.$refs.devcost.getDevFee();
+    },
     // 保存
     save(value){
-      console.log(value,'savesavesave');
        if (this.$refs.devcost.tableListData.some(item => item.isShared == 1)) {
         if (!this.$refs.devcost.dataGroup.shareQuantity || this.$refs.devcost.dataGroup.shareQuantity == 0){
           const tips = this.language('LK_KAIFAFEIYONGCUNZAIFENTANSHUJUQINGTIANXIEDAYU','开发费用存在分摊数据，请填写一个大于0的分摊数量')
