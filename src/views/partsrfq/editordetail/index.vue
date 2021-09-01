@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-08-31 18:23:57
+ * @LastEditTime: 2021-09-01 14:06:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
 -->
 <template>
-  <iPage v-permission="PARTSRFQ_EDITORDETAIL_INDEXPAGE">
+  <iPage>
     <!-- rfq详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">

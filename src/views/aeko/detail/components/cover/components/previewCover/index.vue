@@ -22,10 +22,10 @@
         rows="10" 
         resize="none"
         v-model="basicInfo.remark"
-        v-permission="AEKO_DETAIL_TAB_FENGMIAN_TEXT_TIPS"
+        v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TEXT_TIPS|封面表态备注框_预览"
       />
       <!-- 费用合计table -->
-      <div class="margin-top40" v-permission="AEKO_DETAIL_TAB_FENGMIAN_TABLE_CARTYPE">
+      <div class="margin-top40" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_CARTYPE|封面表态费用表单_预览">
         <tableList
             class="summaryTable"
             :selection="false"
@@ -53,7 +53,7 @@
         <p class="divider"></p>
 
         <!-- 科室linie费用table -->
-        <div v-permission="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE">
+        <div v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE|封面表态LINIE表_预览">
             <p class="btn-list margin-bottom20">
                 <iButton disabled>{{language('LK_JIEDONG','解冻')}}</iButton>
             </p>
