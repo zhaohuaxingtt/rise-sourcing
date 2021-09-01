@@ -57,6 +57,9 @@ export default [
       {
         path: "quotationdetail",
         name: "aekoQuotationDetail",
+        meta: {
+          title: "AEKO报价"
+        },
         component: () => import("@/views/aeko/quotationdetail"),
       }
     ]

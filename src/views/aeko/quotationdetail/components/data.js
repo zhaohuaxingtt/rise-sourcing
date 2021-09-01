@@ -4,14 +4,14 @@
  * @Description: 
  */
 export const infoItems = [
-  { props: "a", key: "LINGJIANHAO", name: "零件号" },
-  { props: "b", key: "YUANLINGJIANHAO", name: "原零件号" },
-  { props: "c", key: "LINGJIANMINGCHENG", name: "零件名称" },
-  { props: "d", key: "GONGYINGSHANGSAPHAO", name: "供应商SAP号" },
-  { props: "e", key: "GONGYINGSHANGJIANCHENG", name: "供应商简称" },
-  { props: "f", key: "CAIGOUGONGCHANG", name: "采购工厂" },
-  { props: "g", key: "BAOJIAZHUANGTAI", name: "报价状态" },
-  { props: "h", key: "DAIBAOJIA", name: "代报价" }
+  { props: "a", key: "LINGJIANHAO", name: "零件号", permissionKey: "AEKO_QUOTATION_DETAIL_TEXT_LINGJIANHAO|零件号" },
+  { props: "b", key: "YUANLINGJIANHAO", name: "原零件号", permissionKey: "AEKO_QUOTATION_DETAIL_TEXT_YUANLINGJIANHAO|原零件号" },
+  { props: "c", key: "LINGJIANMINGCHENG", name: "零件名称", permissionKey: "AEKO_QUOTATION_DETAIL_TEXT_LINGJIANMINGCHENG|零件名称" },
+  { props: "d", key: "GONGYINGSHANGSAPHAO", name: "供应商SAP号", permissionKey: "AEKO_QUOTATION_DETAIL_TEXT_GONGYINGSHANGSAPHAO|供应商SAP号" },
+  { props: "e", key: "GONGYINGSHANGJIANCHENG", name: "供应商简称", permissionKey: "AEKO_QUOTATION_DETAIL_TEXT_GONGYINGSHANGJIANCHENG|供应商简称" },
+  { props: "f", key: "CAIGOUGONGCHANG", name: "采购工厂", permissionKey: "AEKO_QUOTATION_DETAIL_TEXT_CAIGOUGONGCHANG|采购工厂" },
+  { props: "g", key: "BAOJIAZHUANGTAI", name: "报价状态", permissionKey: "AEKO_QUOTATION_DETAIL_TEXT_BAOJIAZHUANGTAI|报价状态" },
+  { props: "h", key: "DAIBAOJIA", name: "代报价", permissionKey: "AEKO_QUOTATION_DETAIL_TEXT_DAIBAOJIA|代报价" }
 ]
 
 export const tableTitle = [

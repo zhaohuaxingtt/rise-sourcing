@@ -14,7 +14,13 @@ import {businessPermission} from '@/utils'
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
-        inserted: function(el, binding,vnode) { 
+        inserted: function(el, binding,vnode) {
+            // dynamic、auto共用时处理
+            if (binding.modifiers.dynamic && binding.modifiers.auto) {
+                binding.modifiers.dynamic = false
+                binding.expression = binding.value
+            }
+
             if (binding.modifiers.disabled) {
                 if (store.state.permission.whiteBtnList[binding.expression]) {
                     el.classList.add("is-disabled")
