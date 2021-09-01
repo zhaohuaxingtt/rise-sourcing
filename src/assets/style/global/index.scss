@@ -526,3 +526,9 @@ a{
     }
   }
 }
+
+.select-center {
+  .el-input input {
+    text-align: center;
+  }
+}
