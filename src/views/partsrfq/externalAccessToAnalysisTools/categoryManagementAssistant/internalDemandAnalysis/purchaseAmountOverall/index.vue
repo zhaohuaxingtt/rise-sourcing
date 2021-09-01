@@ -171,6 +171,25 @@ export default {
         embedUrl: this.url.embedUrl,
         pageName: "",
         settings: {
+          commands: [
+            {
+              spotlight: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+              drill: {
+                displayOption: pbi.models.CommandDisplayOption.Disabled
+              },
+              exportData: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+              seeData: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+              includeExclude: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+            }
+          ],
           panes: {
             filters: {
               visible: false
