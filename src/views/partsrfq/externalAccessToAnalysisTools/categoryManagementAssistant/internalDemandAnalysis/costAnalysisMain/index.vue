@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-26 15:59:18
+ * @LastEditTime: 2021-08-30 16:57:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -51,7 +51,7 @@ import { getTotalCbdData, listNomiData, getCostStructureAnalysisByName, fetchSav
 import saveModal from './components/save'
 export default {
   name: 'CostAnalysisMain',
-  components: {iCard, iButton, costChar, iMessageBox, saveModal, coverConfirm, tableList},
+  components: {iCard, iButton, costChar, iMessageBox, saveModal, tableList},
   mixins: [downloadPdfMixins],
   data () {
     return {

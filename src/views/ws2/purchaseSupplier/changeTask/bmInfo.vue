@@ -122,11 +122,12 @@
                 <span>{{ language('LK_BIANGENGDANZHUANGTAI', '变更单状态') }}</span>
               </div>
               <div class="disabled">{{ Number(baseInfo.changeStatus) === 1 ? '草稿' :
-                  (Number(baseInfo.changeStatus) === 2 ? '审批中' :
-                      (Number(baseInfo.changeStatus) === 3 ? '已批准' :
-                          (Number(baseInfo.changeStatus) === 4 ? '已拒绝' :
-                              (Number(baseInfo.changeStatus) === 5 ? '已驳回' :
-                                  (Number(baseInfo.changeStatus) === 6 ? '自动失效' : '' ))))) }}</div>
+                  (Number(baseInfo.changeStatus) === 2 ? '已拒绝' :
+                      (Number(baseInfo.changeStatus) === 3 ? '待提交' :
+                          (Number(baseInfo.changeStatus) === 4 ? '审批中' :
+                              (Number(baseInfo.changeStatus) === 5 ? '待补充材料' :
+                                  (Number(baseInfo.changeStatus) === 6 ? '已批准' :
+                                      (Number(baseInfo.changeStatus) === 7 ? '自动失效' : '' )))))) }}</div>
             </div>
 
             <div class="item">
@@ -214,6 +215,7 @@
           </iButton>
           <iButton
               v-loading="sureSupplierLoading"
+              v-if="Number(baseInfo.changeStatus) !== 3"
               @click="sureSupplier">
             {{ language('LK_QUEREN', '确认') }}
           </iButton>
@@ -419,6 +421,7 @@ export default {
       supplierToConfirm(this.query.bmId, this.query.bmChangeId).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
+          this.moldHeaderByBmSerial()
           this.findMoldViewList()
           iMessage.success(result);
         } else {

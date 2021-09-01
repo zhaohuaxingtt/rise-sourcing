@@ -30,11 +30,13 @@
           <div class="module3"><img class="imgStatus"
                  :src="userImg" />供应商主要客户</div>
         </div>
-        <list v-for="(x,index) of MarketOverviewDTO"
-              :key="index"
-              :MarketOverviewObj=x
-              :index="index+1"
-              :edite="edite"></list>
+        <div style="overflow:auto">
+          <list v-for="(x,index) of MarketOverviewDTO"
+                :key="index"
+                :MarketOverviewObj=x
+                :index="index+1"
+                :edite="edite"></list>
+        </div>
       </iCard>
     </div>
   </iPage>
@@ -90,9 +92,11 @@ export default {
   methods: {
     getmarketOverview () {
       marketOverview({ categoryCode: this.categoryCode }).then(res => {
-        console.log(res)
-        this.SchemeId = res.data.id
-        this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
+        if (res.data) {
+          this.SchemeId = res.data.id
+          this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
+        }
+
       })
     },
     saveMarket () {

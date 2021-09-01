@@ -3,6 +3,7 @@ import axiosFile from '@/utils/axios.download'
 
 const VUE_APP_BMCONFIRMTASK = axios(process.env.VUE_APP_BMCONFIRMTASK)
 const VUE_APP_BMAPPROVE = axios(process.env.VUE_APP_BMAPPROVE)
+const VUE_APP_BMCHANGE = axios(process.env.VUE_APP_BMCHANGE)
 const INVESTMENTFile = axiosFile(process.env.VUE_APP_INVESTMENT)
 //获取科室下拉信息
 export function getDepartmentsCombo(parmars) {
@@ -89,6 +90,15 @@ export function verifyLine(parmars) {
 export function verifyIsSelfOrders(data) {
     return VUE_APP_BMAPPROVE({
         url: '/verifyIsSelfOrders',
+        method: 'POST',
+        data: data
+    })
+}
+
+//提交审批
+export function submitApproval(bmId, bmChangeId, data) {
+    return VUE_APP_BMCHANGE({
+        url: `/submitApproval/${bmId}/${bmChangeId}`,
         method: 'POST',
         data: data
     })

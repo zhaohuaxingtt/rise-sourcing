@@ -8,7 +8,7 @@
         <!-- <el-tabs v-model="tab" class="tab"> -->
             <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
                  <div class="topMenu">
-                    <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+                    <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
                     <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
                 </div>
                 <!-- 内容区 -->
@@ -86,7 +86,7 @@ import {
   downloadImportFile,
 } from '@/api/designateFiles/importFiles'
 import { iMessage } from 'rise';
-import { clickMessage, TAB} from "@/views/partsign/home/components/data"
+import { clickMessage} from "@/views/partsign/home/components/data"
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -111,8 +111,7 @@ export default {
             tableTitle:tableTitle,
             selectItems:[],
             uploadImportFile:uploadImportFile,
-            tableListData:[],
-            list:TAB
+            tableListData:[]
         }
     },
     created(){
@@ -121,16 +120,16 @@ export default {
       this.updateNavList
     },
     computed: {
-      ...mapState(["navList"]),
+      ...mapState(["navList","navListLeft"]),
       ...mapActions(["updateNavList"])
     },
     methods:{
       // 跳转附件清单页
       goFilesList(id){
-        const router =  this.$router.resolve({path: `/sourcing/importfiles/detaillist?id=${id}`})
+        const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/importfiles/detaillist?id=${id}`})
         window.open(router.href,'_blank');
         // this.$router.push({
-        //   path:'/sourcing/importfiles/detaillist',
+        //   path:'/sourceinquirypoint/sourcing/importfiles/detaillist',
         //   query:{
         //     id,
         //   }

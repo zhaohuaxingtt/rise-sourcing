@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-17 01:24:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-30 15:38:55
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -12,7 +12,7 @@
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div class="topMenu">
-          <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+          <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
           <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
         </div>
         <div>
@@ -118,7 +118,7 @@ import { downloadFile, downloadUdFile } from '@/api/file'
 import { insertRfq } from '@/api/accessoryPart/index'
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
 import { getDictByCode } from '@/api/dictionary'
-import { clickMessage,TAB } from "@/views/partsign/home/components/data"
+import { clickMessage } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
 
 // eslint-disable-next-line no-undef
@@ -152,8 +152,7 @@ export default {
       selectLinie: '',
       selectLinieDept: '',
       loading: false,
-      options: [],
-      list:TAB,
+      options: []
     }
   },
   created() {
@@ -161,7 +160,7 @@ export default {
     this.updateNavList
   },
   computed: {
-    ...mapState(["navList"]),
+    ...mapState(["navList","navListLeft"]),
     ...mapActions(["updateNavList"])
   },
   methods: {
@@ -479,7 +478,7 @@ export default {
      * @return {*}
      */    
     openPage(row) {
-      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.rfqId}`})
+      const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.rfqId}`})
       window.open(router.href,'_blank')
     },
     /**

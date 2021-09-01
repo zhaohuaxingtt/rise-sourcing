@@ -391,7 +391,7 @@ export default {
       }
       console.log('跳转的参数：', query);
       this.$router.push({
-        path: "/sourcing/partsprocure/editordetail",
+        path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(query),
         },

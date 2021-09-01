@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 09:59:59
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-26 20:27:59
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\components\data.js
  */
@@ -12,7 +12,7 @@ export const TAB = [
     value: 1,
     name: '寻源执行',
     key: 'LK_XUNYUANZHIHANG',
-    url: '/sourcing/partsign',
+    url: '/sourceinquirypoint/sourcing/partsign',
     activePath: 'sourcing',
     message: 0
   },

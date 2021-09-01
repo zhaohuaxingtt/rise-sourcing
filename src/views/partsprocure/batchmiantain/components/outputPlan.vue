@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-08-20 13:56:37
+ * @LastEditTime: 2021-08-30 10:55:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\outputPlan.vue
@@ -67,7 +67,7 @@
 			},
 			openPage(item){
 				this.$router.push({
-					path:"/sourcing/partsprocure/outputplan",
+					path:"/sourceinquirypoint/sourcing/partsprocure/outputplan",
 					query:{
 						id:item.purchaseProjectId,
 						purchasingRequirementId:item.purchasingRequirementId,

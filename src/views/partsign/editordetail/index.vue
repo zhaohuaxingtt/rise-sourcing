@@ -5,16 +5,16 @@
 * @Description: In User Settings Edit
  -->
 <template>
-  <iPage v-permission="PARTSIGN_EDITORDETAIL_INDEXPAGE">
+  <iPage>
     <!-- 零件详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
       <span>{{partDetails.partNum || ''}}</span>
       <div class="btnList flex-align-center">
-        <iButton :disabled='tpInfoStuats()' @click="openDiologChangeItems" v-permission='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON'>{{ language('LK_ZHUANPAI','转派') }}</iButton>
-        <iButton :disabled='tpInfoStuats()' @click="save" v-permission="PARTSIGN_EDITORDETAIL_SIGNBUTTON">{{ language('LK_QIANSHOU','签收') }}</iButton>
-        <iButton :disabled='tpInfoStuats()' @click="openDiologBack" v-permission="PARTSIGN_EDITORDETAIL_BACKBUTTON">{{ language('LK_TUIHUI','退回') }}</iButton>
-        <iButton @click="back" v-permission="PARTSIGN_EDITORDETAIL_RETURN">{{ language('LK_FANHUI','返回') }}</iButton>
-        <logButton class="margin-left20" @click="log"  v-permission="PARTSIGN_EDITORDETAIL_LOGBUTTON"/>
+        <iButton :disabled='tpInfoStuats()' @click="openDiologChangeItems" v-permission.auto='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON|转派'>{{ language('LK_ZHUANPAI','转派') }}</iButton>
+        <iButton :disabled='tpInfoStuats()' @click="save" v-permission.auto="PARTSIGN_EDITORDETAIL_SIGNBUTTON|签收">{{ language('LK_QIANSHOU','签收') }}</iButton>
+        <iButton :disabled='tpInfoStuats()' @click="openDiologBack" v-permission.auto="PARTSIGN_EDITORDETAIL_BACKBUTTON|退回">{{ language('LK_TUIHUI','退回') }}</iButton>
+        <iButton @click="back" v-permission.auto="PARTSIGN_EDITORDETAIL_RETURN|返回">{{ language('LK_FANHUI','返回') }}</iButton>
+        <logButton class="margin-left20" @click="log"  v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志"/>
         <span>
           <icon symbol name="icondatabaseweixuanzhong"></icon>
         </span>

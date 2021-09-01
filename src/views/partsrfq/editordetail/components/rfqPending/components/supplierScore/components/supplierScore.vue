@@ -206,7 +206,7 @@ export default {
         supplierId
       })
       this.$router.push({
-        path: `/sourcing/partsrfq/editordetail/partScoring?${params}`
+        path: `/sourceinquirypoint/sourcing/partsrfq/editordetail/partScoring?${params}`
       })
     },
     openMultiHeaderPropsPage(row, key) {

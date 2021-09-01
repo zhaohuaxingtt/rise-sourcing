@@ -27,12 +27,3 @@ export const tableTitle = [
   { props: "j", key: "HUOBI", name: "货币", tooltip: true },
   { props: "k", key: "JILIANGDANWEI", name: "计量单位", tooltip: true }
 ]
-
-// 样件费--表头
-export const sampleFeeTableTitle = [
-  { props: "a", key: "LK_DAMAGES_SAMPLEFEE_YANGJIAN", name: "样件", tooltip: true },
-  { props: "b", key: "LK_DAMAGES_GONGZHUANGYANGJIANDANJIANFEIYONG", name: "⼯装样件单件费⽤", tooltip: true },
-  { props: "c", key: "LK_DAMAGES_FUJIAGONGZHUANGYANGJIANMOJUJIAGE", name: "附加⼯装样件模具价格", tooltip: true },
-  { props: "d", key: "LK_DAMAGES_FUJIAGONGZHUANGYANGJIANMOJUSHOUMING", name: "附加⼯装样件模具寿命", tooltip: true },
-  { props: "e", key: "LK_DAMAGES_REMAKE", name: "备注", tooltip: true },
-]

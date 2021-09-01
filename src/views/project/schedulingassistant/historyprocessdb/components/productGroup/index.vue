@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-23 17:18:25
+ * @LastEditTime: 2021-08-31 15:42:42
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -63,7 +63,7 @@ import { iCard, iPagination, iButton, iMessage } from 'rise'
 import { regularTableTitle, partTableTitle, productLogicList } from '../../data'
 import tableList from '@/views/project/schedulingassistant/progroup/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
-import logicSettingDialog from '@/views/project/schedulingassistant/progroup/components/logicsetting'
+import logicSettingDialog from '@/views/project/components/logicSettingBtn/components/logicsetting'
 import { selectDictByKeyss } from '@/api/dictionary'
 import showItemDialog from '../showItem'
 import { getExperience, getCondition, getFitting, downloadHistoryProgressFile } from '@/api/project'
@@ -122,13 +122,6 @@ export default {
     logicSelectOptions() {
       return {
         ...this.selectOptions,
-        carProjectOptions: this.carProjectOptions.map(item => {
-          return {
-            ...item,
-            code: item.value,
-            name: item.label
-          }
-        }),
         productGroupOptions: this.productGroupOptions
       }
     },
@@ -301,7 +294,7 @@ export default {
      * @return {*}
      */    
     init() {
-      if (this.$route.query.cartypeProId) {
+      if (this.$route.query.cartypeProId && this.$route.query.productGroup) {
         this.logicData = {
           ...this.logicData,
           ...this.$route.query
