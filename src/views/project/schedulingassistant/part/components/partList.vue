@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-31 16:40:02
+ * @LastEditTime: 2021-09-01 10:15:49
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -151,8 +151,8 @@ export default {
         this.loading = false
         if (res?.result) {
           // console.log(this.cartypeProId)
-          const router = this.$router.resolve({ path: `/projectscheassistant/historyprocessdb`, query: { ...res.data, cartypeProId: this.cartypeProId, sixPartCode: part.partNum.slice(3, 9), level: '2' } })
-          window.open(router.href, '_blank')
+          const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId, sixPartCode:part.partNum.slice(3,9), level: '2', categoryType: res.data.category}})
+          window.open(router.href,'_blank')
         } else {
           iMessage.warn('HUOQUSUANFAPEIZHISHIBAI', '获取算法配置失败')
         }
