@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:35:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-19 18:50:42
+ * @LastEditTime: 2021-08-31 15:27:30
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\data.js
  */
@@ -116,21 +116,21 @@ export const partTableTitle = [
 ]
 
 export const productLogicList = [
-  {value: 'cartypeProId', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'carProjectOptions', filterable: true, required: true},
-  {value: 'cartype', label: '车型', type: 'select', i18n_label: 'CHEXING', selectOption: 'CAR_TYPE_CONFIG_OPTIONS'},
+  {value: 'cartypeProId', label: '车型项目', type: 'carProjectSelect', i18n_label: 'CHEXINGXIANGMU', selectOption: 'carProjectOptions', filterable: true, required: true},
+  {value: 'cartype', label: '车型', type: 'selectDict', i18n_label: 'CHEXING', selectOption: 'CAR_TYPE_CONFIG_OPTIONS'},
   {value: 'productGroup', label: '产品组', type: 'inputFilter', i18n_label: 'CHANPINZU', required: true},
-  {value: 'year', label: '年份', type: 'select', i18n_label: 'NIANFEN', selectOption: 'YEAR_CONFIG_OPTIONS'},
+  {value: 'year', label: '年份', type: 'selectDict', i18n_label: 'NIANFEN', selectOption: 'YEAR_CONFIG_OPTIONS'},
   {},
-  {value: 'value', label: '取值处理', type: 'select', i18n_label: 'QUZHICHULI', selectOption: 'VALUE_CONFIG_OPTIONS'},
+  {value: 'value', label: '取值处理', type: 'selectDict', i18n_label: 'QUZHICHULI', selectOption: 'VALUE_CONFIG_OPTIONS'},
 ]
 
 export const partLogicList = [
-  {value: 'cartypeProId', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'carProjectOptions', filterable: true, required: true},
-  {value: 'cartype', label: '车型', type: 'select', i18n_label: 'CHEXING', selectOption: 'CAR_TYPE_CONFIG_OPTIONS'},
+  {value: 'cartypeProId', label: '车型项目', type: 'carProjectSelect', i18n_label: 'CHEXINGXIANGMU', selectOption: 'carProjectOptions', filterable: true, required: true},
+  {value: 'cartype', label: '车型', type: 'selectDict', i18n_label: 'CHEXING', selectOption: 'CAR_TYPE_CONFIG_OPTIONS'},
   {value: 'sixPartCode', label: '六位号', type: 'input', i18n_label: 'LIUWEIHAO', required: true},
-  {value: 'year', label: '年份', type: 'select', i18n_label: 'NIANFEN', selectOption: 'YEAR_CONFIG_OPTIONS'},
+  {value: 'year', label: '年份', type: 'selectDict', i18n_label: 'NIANFEN', selectOption: 'YEAR_CONFIG_OPTIONS'},
   {},
-  {value: 'categoryType', label: '材料组', type: 'select', i18n_label: 'CAILIAOZU', selectOption: 'CATEGORY_CONFIG_OPTIONS'},
+  {value: 'categoryType', label: '材料组', type: 'selectDict', i18n_label: 'CAILIAOZU', selectOption: 'CATEGORY_CONFIG_OPTIONS'},
   {},
-  {value: 'value', label: '取值处理', type: 'select', i18n_label: 'QUZHICHULI', selectOption: 'VALUE_CONFIG_OPTIONS'},
+  {value: 'value', label: '取值处理', type: 'selectDict', i18n_label: 'QUZHICHULI', selectOption: 'VALUE_CONFIG_OPTIONS'},
 ]

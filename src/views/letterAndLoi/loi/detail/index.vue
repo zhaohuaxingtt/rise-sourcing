@@ -13,20 +13,20 @@
                 <iButton @click="changeEditStatus">{{language('LK_QUXIAO','取消')}}</iButton>
             </span>
             <span v-else><!-- 状态为作废时显示 -->
-                <iButton :loading="btnLoading.add" @click="add" v-if="loiStatus=='TOVOID'">{{language('LK_LETTER_XINZENGLOI','新增LOI')}}</iButton>
+                <iButton v-permission.auto="LK_LOI_DETAIL_ADDLOI|新增LOI" :loading="btnLoading.add" @click="add" v-if="loiStatus=='TOVOID'">{{language('LK_LETTER_XINZENGLOI','新增LOI')}}</iButton>
                 <!-- 状态为前期确认中时显示编辑按钮 -->
                 <template  v-if="loiStatus=='CSF_HANDLING'" >
-                    <iButton @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
-                    <iButton :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
+                    <iButton v-permission.auto="LK_LOI_DETAIL_EDIT|编辑" @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
+                    <iButton v-permission.auto="LK_LOI_DETAIL_SUBMIT|确认并提交" :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
                 </template>
                 <!-- 状态为完成时不显示 -->
                 <template>
-                    <iButton :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINE确认')}}</iButton>
-                    <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINE退回')}}</iButton>
+                    <iButton v-permission.auto="LK_LOI_DETAIL_LINIEQUEREN|LINE确认" :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINE确认')}}</iButton>
+                    <iButton v-permission.auto="LK_LOI_DETAIL_LINIETUIHUI|LINE退回" :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINE退回')}}</iButton>
                 </template>
-                <iButton :loading="btnLoading.lineDone" v-if="radioType=='NonStandard'" @click="lineDone">{{language('LK_WANCHENGLOI','完成LOI')}}</iButton>
-                <iButton @click="exportLoi">{{language('LK_DAOCHUBIAOZHUNLOI','导出标准LOI')}}</iButton>
-                <iButton @click="changeShowHistory">{{language('LK_LISHILOI','历史LOI')}} </iButton>
+                <iButton v-permission.auto="LK_LOI_DETAIL_WANCHENGLOI|完成LOI" :loading="btnLoading.lineDone" v-if="radioType=='NonStandard'" @click="lineDone">{{language('LK_WANCHENGLOI','完成LOI')}}</iButton>
+                <iButton v-permission.auto="LK_LOI_DETAIL_DAOCHUBIAOZHUNLOI|导出标准LOI" @click="exportLoi">{{language('LK_DAOCHUBIAOZHUNLOI','导出标准LOI')}}</iButton>
+                <iButton v-permission.auto="LK_LOI_DETAIL_LISHILOI|历史LOI" @click="changeShowHistory">{{language('LK_LISHILOI','历史LOI')}} </iButton>
             </span>
             <logButton class="margin-left20" />
         </div>

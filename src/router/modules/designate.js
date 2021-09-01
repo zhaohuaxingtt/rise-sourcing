@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-23 16:10:47
+ * @LastEditTime: 2021-08-31 14:09:28
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -12,6 +12,9 @@ export default [
   {
     path: "/designate",
     name: "designate",
+    meta: {
+      title: "定点管理",
+    },
     component: () => import ("@/layout/default"),
     redirect: "/designate/rfq",
     children: [

@@ -2,19 +2,22 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:02:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-05 14:44:12
+ * @LastEditTime: 2021-08-31 16:23:56
  * @Description: 
  * @FilePath: \front-web\src\router\modules\project.js
  */
 
 export default [
   {
-    path: "/",
-    component: () => import("@/layout/default"),
-    // redirect: "/project/overview",
+    path: "/projectmgt",
+    component: () => import("@/layout/default-origin"),
+    redirect: "/projectmgt/projectoverview",
+    meta: {
+      title: "项目管理",
+    },
     children: [
       {
-        path: "/projectoverview",
+        path: "projectoverview",
         name: "overview",
         meta: {
           title: "项目管理-概览",
@@ -22,13 +25,13 @@ export default [
         component: () => import("@/views/project/overview"),
       },
       {
-        path: "/projectscheassistant",
+        path: "projectscheassistant",
         name: "schedulingAssistant",
         meta: {
           title: "项目管理-排程助手",
         },
         component: () => import("@/views/project/schedulingassistant"),
-        redirect: "/projectscheassistant/progroupscheduling",
+        redirect: "/projectmgt/projectscheassistant/progroupscheduling",
         children: [
           {
             path: 'progroupscheduling',
@@ -81,13 +84,13 @@ export default [
         ]
       },
       {
-        path: "/projectprogressmonitoring",
+        path: "projectprogressmonitoring",
         name: "projectProgressMonitoring",
         meta: {
           title: "项目管理-项目进度监控",
         },
         component: () => import("@/views/project/progressmonitoring"),
-        redirect: "/projectprogressmonitoring/home",
+        redirect: "/projectmgt/projectprogressmonitoring/home",
         children: [
           {
             path: "home",
@@ -100,7 +103,7 @@ export default [
         ]
       },
       {
-        path: "/projectprogressreport",
+        path: "projectprogressreport",
         name: "projectProgressReport",
         meta: {
           title: "项目管理-项目进度报告",

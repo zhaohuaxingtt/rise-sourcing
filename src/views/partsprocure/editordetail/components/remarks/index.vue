@@ -2,7 +2,7 @@
 	<div class="remark">
 		<iCard v-loading='diologChangeItems'>
 			<div class="list flex-between-center margin-bottom75">
-				<div>
+				<div v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER_SHOW|询价采购员备注">
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_XUNJIACAIGOUYUANBEIZHU','询价采购员备注') }}</span>
@@ -10,6 +10,15 @@
 					<iInput  type="textarea" rows="8" resize="none" v-model="vmdetailData.csfMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER"></iInput>
 						<!-- partsprocure.PARTSPROCURETRANSFER -->
 				</div>
+
+				<div v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_AEKOMANAGER|aeko管理员备注">
+					<p>
+						<icon symbol name="iconbeizhuxinxi"></icon>
+						<span>{{ language('LK_AEKO_GUANLIYUANBEIZHU','aeko管理员备注') }}</span>
+					</p>
+					<iInput type="textarea" rows="8" resize="none" v-model="vmdetailData.aekoManagerMemo" ></iInput>
+				</div>
+
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
@@ -92,7 +101,11 @@
 			//修改详情里面备注。
 			save(val) {
 				this.diologChangeItems = true
-				updateProcure({...this.detailData(),...{csfMemo: this.vmdetailData.csfMemo,csfMeetMemo: this.vmdetailData.csfMeetMemo}})
+				updateProcure({...this.detailData(),...{
+					csfMemo: this.vmdetailData.csfMemo,
+					csfMeetMemo: this.vmdetailData.csfMeetMemo,
+					aekoManagerMemo:this.vmdetailData.aekoManagerMemo
+					}})
 					.then((res) => {
 						if (res.data) {
 							iMessage.success(this.language('LK_XIUGAICHENGGONG','修改成功'))
