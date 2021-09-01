@@ -43,9 +43,9 @@
         resize="none"
         v-model="basicInfo.remark"
         :disabled="disabled"
-        v-permission="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS"
+        v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS|封面表态备注框_编辑"
       />
-      <div class="margin-top50" v-permission="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE_LINE">
+      <div class="margin-top50" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE_LINE|封面表态费用表单_编辑">
         <!-- 表格区域 -->
         <tableList
           index
