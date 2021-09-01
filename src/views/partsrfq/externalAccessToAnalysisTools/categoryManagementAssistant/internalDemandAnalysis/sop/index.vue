@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-16 14:51:40
- * @LastEditTime: 2021-08-20 16:42:10
+ * @LastEditTime: 2021-09-01 12:37:11
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\sop\index.vue
@@ -14,8 +14,8 @@
                <span>{{language("SOPJINDUZHOU","SOP进度轴")}}</span>
             </div>
             <div class="flex">
-              <iSelect class="margin-right15" v-model="carTypeId">
-                   <el-option :value="item.id" :label="item.cartypeProNameZh" v-for="(item,index) in carTypeCodeArr" :key="index"></el-option>
+              <iSelect class="margin-right15" v-model="carType" value-key="id">
+                   <el-option :value="item" :label="item.cartypeProNameZh" v-for="(item,index) in carTypeCodeArr" :key="index"></el-option>
                </iSelect>
                <iButton @click="getOverviewList">{{ language("QUEREN", "确认") }}</iButton>
                <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
@@ -73,7 +73,7 @@ export default ({
          ],
          tableDataTemp: [],
          categoryCode:"",//材料组
-         carTypeId:"",//车型项目id
+         carType:{},//车型项目id
          carTypeCodeArr:[]
       }
    },
@@ -110,7 +110,7 @@ export default ({
       },
     // 重置
     reset(){
-      this.carTypeId=""
+      this.carType={}
       this.getOverviewList()
     },
     //  获取车型项目
@@ -125,15 +125,26 @@ export default ({
       this.tableLoading = true
       let params={
          categoryCode:this.categoryCode,
-         id:this.carTypeId
+         cartypeProCode:this.carType.cartypeProCode,
+         id:this.carType.id
       }
       sopList(params).then(res => {
         if (res?.result) {
           const list = (res.data || []).map(item => {
             const nodeList = this.getNodeList(item.pepTimeNode)
+            let  carTypeProOutput1=[]
+            let  carTypeProOutput2=[]
+            if(item.carTypeProOutputDTOList && item.carTypeProOutputDTOList.length>0){
+              let len=item.carTypeProOutputDTOList.length
+              let split=parseInt(len/2) 
+              carTypeProOutput1=item.carTypeProOutputDTOList.splice(0,split)
+              carTypeProOutput2=item.carTypeProOutputDTOList.splice(split,len)
+            }
             return {
               ...item,
               nodeList: nodeList,
+              carTypeProOutput1,
+              carTypeProOutput2
             }
           })
           this.tableData = cloneDeep(list)
