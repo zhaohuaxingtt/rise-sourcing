@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-01 14:33:42
+ * @LastEditTime: 2021-09-01 16:17:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -190,8 +190,8 @@
           <template #dosage="scope">
             <span class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
-          <template #quotation="scope">
-            <span class="link-underline" @click="jumpQuotation(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+          <template #quotationId="scope">
+            <span v-if="quotationId" class="link-underline" @click="jumpQuotation(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #priceAxis="scope">
             <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -431,11 +431,15 @@ export default {
       this.currentRow = row
       this.dosageDialogVisible = true
     },
-    jumpQuotation(row) {
+    jumpQuotation(row){
+      const { quotationId="" } = row;
+      const {aekoInfo} = this;
+      const {aekoCode=''} = aekoInfo;
       const route = this.$router.resolve({
         path: '/aeko/quotationdetail',
         query: {
-          quotationId: row.quotationId
+          quotationId,
+          aekoCode,
         }
       })
 
