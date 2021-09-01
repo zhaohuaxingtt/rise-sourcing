@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-31 17:36:53
+ * @LastEditTime: 2021-09-01 10:17:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -688,7 +688,14 @@ export default {
           isTargetMotor: true
         }],
         categoryId: this.categoryId,
+        categoryCode: this.categoryCode,
         schemeId: this.chemeId
+      }
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true
+        params.rfq = this.rfqId
+      } else {
+        params.isBindingRfq = false
       }
       this.barData.forEach(item => {
         let obj = {
