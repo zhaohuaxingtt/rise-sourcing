@@ -42,14 +42,14 @@ export default {
        partInfo:{"rfqId":"1089","quotationId":"1430733529429766145","cbdLevel":1},
     }
   },
-  mounted(){
-    this.$refs.sample.init();
-  },
   methods:{
     // 保存
     save(){
       this.$refs.sample.save();
-    }
+    },
+    init(){
+      this.$refs.sample.init();
+    },
   },
 }
 </script>

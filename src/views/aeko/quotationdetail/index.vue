@@ -1,7 +1,7 @@
 <template>
   <iPage class="quotationdetail">
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{ language("AEKOHAO", "AEKO号") }}：{{ "AE19221" }}</span>
+      <span class="font18 font-weight">{{ language("AEKOHAO", "AEKO号") }}：{{ aekoCode }}</span>
       <div class="floatright">
         <iButton>{{ language("TIJIAO", "提交") }}</iButton>
         <logButton class="margin-left20" @click="log" />
@@ -14,7 +14,7 @@
     <iCard class="info" :title="language('JICHUXINXI', '基础信息')">
       <iFormGroup :key="$index" :row="4" inline>
         <iFormItem v-for="item in infoItems" :key="item.props" :label="language(item.key, item.name)">
-          <iText>{{ "Empty" }}</iText>
+          <iText>{{ partInfo[item.props] || '-' }}</iText>
         </iFormItem>
       </iFormGroup>
     </iCard>
@@ -48,7 +48,7 @@
     <iTabsList class="margin-top20" type="card" v-model="currentTab" :before-leave="tabLeaveBefore" @tab-click="tabChange">
       <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name">
         <template v-if="tab.name == currentTab">
-          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" />
+          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :partInfo="partInfo" @getBbasicInfo="getBbasicInfo"/>
         </template>
       </el-tab-pane>
     </iTabsList>
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { iPage, iButton, icon, iCard, iFormGroup, iFormItem, iText, iTabsList } from "rise"
+import { iPage, iButton, icon, iCard, iFormGroup, iFormItem, iText, iTabsList,iMessage } from "rise"
 import logButton from "./components/logButton" // ../../quotationdetail/components/logButton
 import tableList from "./components/tableList" // ../../quotationdetail/components/tableList
 import aPriceChange from "./components/aPriceChange"
@@ -65,7 +65,11 @@ import developmentFee from "./components/developmentFee"
 import damages from "./components/damages"
 import sampleFee from "./components/sampleFee"
 import { infoItems, tableTitle } from "./components/data"
-import { bnkSupplierToken } from '@/api/aeko/quotationdetail'
+import { 
+  bnkSupplierToken,
+  getQuotationInfo,
+ } from '@/api/aeko/quotationdetail'
+
 
 export default {
   components: { iPage, iButton, icon, iCard, iFormGroup, iFormItem, iText, iTabsList, logButton, tableList, aPriceChange, mouldInvestmentChange, developmentFee, damages, sampleFee },
@@ -82,6 +86,8 @@ export default {
         { label: "终⽌费", name: "damages", key: "ZHONGZHIFEI", components: [ "damages" ] },
         { label: "样件费", name: "sampleFee", key: "YANGJIANFEI", components: [ "sampleFee" ] },
       ],
+      aekoCode:'',
+      partInfo:{},
     }
   },
   created(){
@@ -111,8 +117,32 @@ export default {
 
 
     // 获取基础信息
-    getBbasicInfo(){
-
+    async getBbasicInfo(){
+      const {query,path} = this.$route;
+      const { quotationId ='',aekoCode=""} = query;
+      this.aekoCode = aekoCode;
+      await getQuotationInfo(quotationId).then((res)=>{
+        const {code,data={}} = res;
+        if(code == 200){
+          const {aekoPartInfo={},quotationPriceSummaryInfo={},supplierId='50001031'} = data;
+          this.partInfo = {
+            ...aekoPartInfo,
+            quotationId,
+            };
+          this.tableListData=[quotationPriceSummaryInfo];
+          if(supplierId){
+            this.$router.push({
+              path,
+              query:{
+                ...query,
+                supplierId,
+              }
+            })
+          }
+        }else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch((err)=>{});
     },
 
     // 跳转至BNK相关页面
@@ -132,7 +162,7 @@ export default {
         
       });
       // const link = `http://svmwt038/sol-bnk/pages/bnk/quotes/lsp-view.jsf?`;
-      // window.open(link);
+      // window.open(link,'_blank');
     },
   }
 }
