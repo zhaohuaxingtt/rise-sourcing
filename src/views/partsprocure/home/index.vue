@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-08-31 12:11:52
+ * @LastEditTime: 2021-09-01 14:10:38
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -29,25 +29,24 @@
             :searchKey="PARTSPROCURE_CONFIRM"
           >
             <el-form>
-              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')">
+              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"  v-permission.auto="PARTSPROCURE_PARTNUMBER|零件号">
                 <iInput
                   :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
                   v-model="form['partNum']"
-                  v-permission.auto="PARTSPROCURE_PARTNUMBER|零件号"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')">
+              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')" v-permission="PARTSPROCURE_PARTNAMEZH">
                 <iInput
                   :placeholder="
                     language('partsprocure.PLEENTER','请输入') +
                     language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')
                   "
                   v-model="form['partNameZh']"
-                  v-permission="PARTSPROCURE_PARTNAMEZH"
                 ></iInput>
               </el-form-item>
               <el-form-item
                 :label="language('partsprocure.PARTSPROCUREFSNFGSNFSPNR','零件采购项目号')"
+                 v-permission="PARTSPROCURE_FSINPUT"
               >
                 <iInput
                   :placeholder="
@@ -55,7 +54,6 @@
                     language('partsprocure.PARTSPROCUREFSNFGSNFSPNR','零件采购项目号')
                   "
                   v-model="form['fsnrGsnrNum']"
-                  v-permission="PARTSPROCURE_FSINPUT"
                 >
                 </iInput>
               </el-form-item>

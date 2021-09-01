@@ -4,9 +4,9 @@
     <div class="header">
       <span class="title">2.2 {{ language("ZHIZAOCHENGBEN", "制造成本") }}</span>
       <div class="control">
-        <iButton @click="handleAddOldPart">{{ language("TIANJIAYUANLINGJIANCBD", "添加原零件CBD") }}</iButton>
-        <iButton @click="handleAddNewPart">{{ language("TIANJIAXINLINGJIANCBD", "添加新零件CBD") }}</iButton>
-        <iButton @click="handleDelete">{{ language("SHANCHUHANG", "删除行") }}</iButton>
+        <iButton @click="handleAddOldPart" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN_BUTTON_TIANJIAYUANLINGJIANCBD|添加原零件CBD">{{ language("TIANJIAYUANLINGJIANCBD", "添加原零件CBD") }}</iButton>
+        <iButton @click="handleAddNewPart" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN_BUTTON_TIANJIAXINLINGJIANCBD|添加新零件CBD">{{ language("TIANJIAXINLINGJIANCBD", "添加新零件CBD") }}</iButton>
+        <iButton @click="handleDelete" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN_BUTTON_SHANCHUHANG|删除行">{{ language("SHANCHUHANG", "删除行") }}</iButton>
       </div>
     </div>
     <div class="body margin-top20">
