@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-08-27 09:42:08
+ * @LastEditTime: 2021-09-01 14:45:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -16,19 +16,19 @@
       :searchKey="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_CONFIRM"
     >
       <el-form>
-        <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_PARTNUM">
+        <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_PARTNUM|零件号">
           <iInput
             v-model="form.partNum"
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGBIANHAO', '供应商编号')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERSAPCODE">
+        <el-form-item :label="language('GONGYINGSHANGBIANHAO', '供应商编号')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERSAPCODE|供应商编号">
           <iInput
             v-model="form.supplierSapCode"
             :placeholder="language('QINGSHURUGONGYINGSHANGBIANHAO', '请输入供应商编号')"
           />
         </el-form-item>
-        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_CARTYPEPROJECTCODE">
+        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_CARTYPEPROJECTCODE|车型项目">
           <iSelect
             multiple
             collapse-tags
@@ -55,7 +55,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('NEIRONGZHUANGTAI', '内容状态')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_STATUS">
+        <el-form-item :label="language('NEIRONGZHUANGTAI', '内容状态')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_STATUS|内容状态">
           <iSelect
             multiple
             collapse-tags
@@ -81,7 +81,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('MTZXIANGGUAN', 'MTZ相关')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_ISMTZ">
+        <el-form-item :label="language('MTZXIANGGUAN', 'MTZ相关')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_ISMTZ|MTZ相关">
           <iSelect
             filterable
             reserve-keyword
@@ -102,7 +102,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_PROCUREFACTORY">
+        <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_PROCUREFACTORY|采购工厂">
           <iSelect
             filterable
             reserve-keyword
@@ -123,13 +123,13 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERNAMEZH">
+        <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERNAMEZH|供应商简称">
           <iInput
             v-model="form.supplierNameZh"
             :placeholder="language('QINGSHURUGONGYINGSHANGJIANCHENG', '请输入供应商简称')"
           />
         </el-form-item>
-        <el-form-item :label="language('ZHIDINGTOUZICHEXINGXIANGMU', '指定投资⻋型项⽬')" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_INVESTCARTYPEPRO">
+        <el-form-item :label="language('ZHIDINGTOUZICHEXINGXIANGMU', '指定投资⻋型项⽬')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_INVESTCARTYPEPRO|指定投资车型项目">
           <iSelect
             filterable
             v-model="form.investCarTypePro"
@@ -151,11 +151,11 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
       <template v-slot:header-control>
-        <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
-        <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
-        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
-        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
-        <iButton v-if="!disabled" @click="handleExport" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT">
+        <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE|无关相关切换">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
+        <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET|表态重置">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
+        <iButton v-if="!disabled" :loading="declareSendSupplier" @click="sendSupplierPrice"  v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION|发放供应商报价">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO|指定投资车型项目">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
+        <iButton v-if="!disabled" @click="handleExport" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT|导出">
           {{ language("DAOCHU", "导出") }}
           <el-tooltip 
             :content="`${language('LK_AEKO_NEIRONGBIAOTAIDAOCHUTISHI','勾选零件行项目-->导出->批量维护原零件信息-->导入')}`"
@@ -163,16 +163,16 @@
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
         </iButton>
-        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT">{{ language("DAORU", "导⼊") }}</iButton>
-        <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT">{{ language("TIJIAO", "提交") }}</iButton>
-        <iButton v-if="!disabled" disabled v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL">{{ language("CHEHUI", "撤回") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission.atuo="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">{{ language("DAORU", "导⼊") }}</iButton>
+        <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT|提交">{{ language("TIJIAO", "提交") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">{{ language("CHEHUI", "撤回") }}</iButton>
       </template>
       <div class="body">
         <tableList
           class="table"
           index
           fixed
-          v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_TABLE"
+          v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_TABLE|内容表态表单"
           :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
@@ -191,7 +191,7 @@
             <span class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotation="scope">
-            <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span class="link-underline" @click="jumpQuotation(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #priceAxis="scope">
             <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -237,8 +237,8 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
-import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent } from "@/api/aeko/detail"
+// import { excelExport } from "@/utils/filedowLoad"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
@@ -284,7 +284,8 @@ export default {
       currentRow: {},
       dosageDialogVisible: false,
       submitLoading: false,
-      debouncer: null
+      debouncer: null,
+      declareSendSupplier:false,
     };
   },
   created() {
@@ -430,6 +431,14 @@ export default {
       this.currentRow = row
       this.dosageDialogVisible = true
     },
+    jumpQuotation(row) {
+      const route = this.$router.resolve({
+        path: '/aeko/quotationdetail',
+        query: {}
+      })
+
+      window.open(route.href, "_blank")
+    },
     view() {},
     oldPartNumPresetSelect(row) {
       // if (!row.oldPartNumPreset) return
@@ -512,59 +521,58 @@ export default {
     // 导出
     handleExport() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAODAOCHUDEYUANLINGJIANXIANGMU", "请选择需要导出的原零件项目"))
-      let printTableTitle = tableTitle.filter(item => item.isExport);
-      let oldPartIndex = 0;
-      const {multipleSelection=[],aekoInfo={}} = this;
+      const ids = this.multipleSelection.map((item)=>item.objectAekoPartId);
+      console.log(ids,'idsidsids');
+      liniePartExport({ids});
+      // let printTableTitle = tableTitle.filter(item => item.isExport);
+      // let oldPartIndex = 0;
+      // const {multipleSelection=[],aekoInfo={}} = this;
 
-      const selectionList = cloneDeep(multipleSelection);
+      // const selectionList = cloneDeep(multipleSelection);
 
       
-      selectionList.map((item)=>{
-        // 原零件号加个“请填写”
-        item.oldPart = '请填写';
-        // 供应商SAP号若没有值填充“请填写”
-        if(item.supplierSapCode == ''){
-          item.supplierSapCode = "请填写";
-        }
-      });
+      // selectionList.map((item)=>{
+      //   // 原零件号加个“请填写”
+      //   item.oldPart = '请填写';
+      //   // 供应商SAP号若没有值填充“请填写”
+      //   if(item.supplierSapCode == ''){
+      //     item.supplierSapCode = "请填写";
+      //   }
+      // });
       
       
-      printTableTitle.map((item,index)=>{
-        // 原零件号(系统预设)
-        if(item.props == 'oldPartNumPreset'){
-          item.name = '原零件号(系统预设)';
-          oldPartIndex= index;
-        }
+      // printTableTitle.map((item,index)=>{
+      //   // 原零件号(系统预设)
+      //   if(item.props == 'oldPartNumPreset'){
+      //     item.name = '原零件号(系统预设)';
+      //     oldPartIndex= index;
+      //   }
 
-        // 判断下AEKO类型是Aeko/MP导出列显示列显示车型项目  AeA时导出列显示车型
-        if(item.props == 'cartypeZh'){
-          if(aekoInfo && aekoInfo.aekoType ){
-              if(aekoInfo.aekoType == 'AeA'){  // 车型
-                item.name = '车型'
-              }else if(['Aeko','MP'].includes(aekoInfo.aekoType)){ // 车型项目
-                item.name = '车型项目'
-              }
-          }
-        }
+      //   // 判断下AEKO类型是Aeko/MP导出列显示列显示车型项目  AeA时导出列显示车型
+      //   if(item.props == 'cartypeZh'){
+      //     if(aekoInfo && aekoInfo.aekoType ){
+      //         if(aekoInfo.aekoType == 'AeA'){  // 车型
+      //           item.name = '车型'
+      //         }else if(['Aeko','MP'].includes(aekoInfo.aekoType)){ // 车型项目
+      //           item.name = '车型项目'
+      //         }
+      //     }
+      //   }
+      // })
 
+      // // 原零件号 需用户自己填写
+      //   printTableTitle.splice(oldPartIndex+1,0,{
+      //     props:'oldPart',
+      //     name:'原零件号'
+      //   })
         
-        
-        
-      })
+      //   // 零件行项目ID 
+      //   printTableTitle.unshift(({
+      //     props:'objectAekoPartId',
+      //     name:'零件行项目ID'
+      //   }))
 
-      // 原零件号 需用户自己填写
-        printTableTitle.splice(oldPartIndex+1,0,{
-          props:'oldPart',
-          name:'原零件号'
-        })
-        
-        // 零件行项目ID 
-        printTableTitle.unshift(({
-          props:'objectAekoPartId',
-          name:'零件行项目ID'
-        }))
-
-      excelExport(selectionList, printTableTitle)
+      // excelExport(selectionList, printTableTitle)
     },
     // 提交
     handleSubmit() {
@@ -678,7 +686,27 @@ export default {
     isDeclareBlackListPart(part) {
       // return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
       return false // 取消黑名单限制
-    }
+    },
+    // 发送供应商报价
+    async sendSupplierPrice(){
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("AEKO_QINGXUANZEXUYAOCAOZUODEYUANLINGJIANXIANGMU", "请选择需要操作的原零件项目"))
+      const {multipleSelection=[]} = this;
+      this.declareSendSupplier = true;
+      const data = {
+        requirementAekoId:this.$route.query.requirementAekoId,
+        objectAekoPartId:multipleSelection.map((item)=>item.objectAekoPartId)
+      };
+      await sendSupplier(data).then((res)=>{
+        this.declareSendSupplier = false;
+        if(res.code == 200){
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          this.init();
+        }
+        
+      }).catch((err)=>{
+        this.declareSendSupplier = false;
+      })
+    },
   },
 };
 </script>

@@ -1,15 +1,22 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:18
- * @LastEditTime: 2021-08-26 16:28:11
+ * @LastEditTime: 2021-09-01 14:35:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\aeko\index.vue
 -->
 <template>
-  <iCard class="margin-top20" :title="language('ZHIDINGAEKOKUYUANLINGJIAN', '指定AEKO库原零件')">
+  <div>
+    <iCard v-if="tableData.length" class="margin-top20" :title="language('ZHIDINGAEKOKUYUANLINGJIAN', '指定AEKO库原零件')">
     <template #header-control>
-       <iButton :disabled="ledgerSelection.length > 0">{{ language("DAOCHU", "导出") }}</iButton>
+       <iButton  
+        @click="handleExport" 
+        v-permission.auto="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT|导出"
+        :disabled="ledgerSelection.length > 0"
+       >
+       {{ language("DAOCHU", "导出") }}
+       </iButton>
     </template>
 
     <div class="body">
@@ -40,15 +47,19 @@
     </div>
 
   </iCard>
+  </div>
+  
 </template>
 
 <script>
 import{
-  iCard,iButton,iPagination
+  iCard,iButton,iPagination,iMessage
 } from 'rise';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { aekoPartTableTitle } from '../data'
+import { getAekoLibraryInfo } from "@/api/aeko/detail"
+import { excelExport } from "@/utils/filedowLoad"
 export default {
   name:'aekoPartList',
   mixins: [ pageMixins ],
@@ -57,11 +68,19 @@ export default {
     tableList,
   },
   props:{
-    tableData:{
+    ledgerSelection:{
       type:Array,
       default:()=>[],
     },
-    ledgerSelection:{
+    form:{
+      type:Object,
+      default:()=>{},
+    },
+    objectAekoPartId:{
+      type:String,
+      default:'',
+    },
+    aekomultipleSelection:{
       type:Array,
       default:()=>[],
     }
@@ -70,6 +89,7 @@ export default {
     return{
       loading:false,
       tableTitle:aekoPartTableTitle,
+      tableData:[],
     }
   },
   methods:{
@@ -77,20 +97,49 @@ export default {
       this.$emit('changeAekoSelection',list);
     },
 
+    async getList(isRest= false){
+      // 判断是否重置
+      if(isRest){
+        this.page.currPage = 1
+      }
+      
+      this.loading = true;
+      await getAekoLibraryInfo({
+         ...this.form,
+        objectAekoPartId: this.objectAekoPartId,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }).then((res)=>{
+        this.loading = false;
+        if (res.code == 200) {
+          this.tableData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.total || 0
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        
+      }).catch((err)=>{
+        this.loading = false;
+      })
+    },
+
+
     // 勾选限制
     selectInit(row){
-      const idArr = this.ledgerSelection.map((item)=>item.id);
+      const idArr = this.ledgerSelection.map((item)=>item.partNum);
       // 判断台账零件列表是否已存在相同原零件 若存在 则不勾选
-      if(!idArr.includes(row.id)){
+      if(!idArr.includes(row.partNum)){
         return true
       }else{
         return false
       }
     },
-
-    getList(){
-      const data = {};
-      this.$emit('getAekoList',data);
+    
+    // 导出
+    handleExport() {
+      if (!this.aekomultipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAODAOCHUDEYUANLINGJIAN", "请选择需要导出的原零件"))
+    
+      excelExport(this.aekomultipleSelection, this.tableTitle)
     },
   }
 }

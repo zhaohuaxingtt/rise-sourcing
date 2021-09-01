@@ -13,8 +13,13 @@ export function getTousandNum(num){
 }
 
 export function delcommafy(num){//去除千分位中的‘，’
-    num=num.replace(/,/gi,'');
-    return num;
+    num = num + ''
+    if(num.includes(',')){
+        num=num.replace(/,/gi,'');
+        return num;
+    } else {
+        return num
+    }
 }
 
 export function NumFormat(value) {  //  金额显示.00格式

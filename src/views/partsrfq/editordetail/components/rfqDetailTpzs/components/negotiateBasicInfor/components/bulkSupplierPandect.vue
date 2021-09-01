@@ -30,6 +30,11 @@ export default {
       supplierDataList: [],
     }
   },
+  watch: {
+    '$store.state.rfq.categoryName'(data) {
+      this.getMapList()
+    }
+  },
   created() {
     this.getMapList()
   },

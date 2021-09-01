@@ -177,7 +177,7 @@ export default {
      * @return {*}
      */    
     openPage2(row) {
-      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.rfqNum}`})
+      const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.rfqNum}`})
       window.open(router.href,'_blank')
     },
     async init() {
@@ -558,7 +558,7 @@ export default {
      * @return {*}
      */    
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { spNum: row.spnrNum }})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/accessorypartdetail', query: { spNum: row.spnrNum }})
       window.open(router.href,'_blank')
     },
     /**

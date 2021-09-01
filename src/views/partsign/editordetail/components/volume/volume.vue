@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-07-07 16:30:15
+ * @LastEditTime: 2021-08-26 20:27:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
@@ -117,7 +117,7 @@ export default {
       // window.open(`/#/sourcing/partsign/volumeVersion?tpId=${ this.data.tpPartID }`, '_blank')
       // this.$router.push('/partsign/version')
       const route = this.$router.resolve({
-        path: "/sourcing/partsign/volumeVersion",
+        path: "/sourceinquirypoint/sourcing/partsign/volumeVersion",
         query: {
           tpId: this.data.tpPartID
         }

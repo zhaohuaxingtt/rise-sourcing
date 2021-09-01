@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-08-25 16:23:03
+ * @LastEditTime: 2021-09-01 12:45:39
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
@@ -17,6 +17,7 @@
                </el-tooltip>
             </div>
             <div class="flex">
+               <iButton @click="onJump360">{{ language("GONGYINGSHANG360", "供应商360") }}</iButton>
                <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
                <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
                <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
@@ -141,6 +142,10 @@ export default {
       openMark(){
          this.markShow=true
          this.$refs.marks.getMarkdefalut(this.mark)
+      },
+      // 供应商360
+      onJump360(){
+         window.open('http://10.122.17.38/portal/#/supplier/supplierList')
       },
       // 获取财报iframeurl
       getPowerBiUrl() {

@@ -301,6 +301,7 @@ export const changeTaskBmInfoTitle = [
         props: 'moldId',
         name: '模具ID',
         key: '模具ID',
+        width: 250,
         tooltip: false
     },
     {

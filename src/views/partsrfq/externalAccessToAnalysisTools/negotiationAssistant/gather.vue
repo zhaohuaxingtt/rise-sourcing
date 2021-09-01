@@ -44,7 +44,7 @@
                  pageType="BoB" />
     <mekOverview v-else-if="pageType==='MEK'"></mekOverview>
     <piOverView v-else-if="pageType === 'PI'"
-                 pageType="PI"/>
+                pageType="PI" />
     <vpAnalyseList v-else-if="pageType==='VP'" />
   </div>
 </template>
@@ -76,7 +76,7 @@ export default {
     };
   },
   mounted () {
-    if (this.$route.path === '/sourcing/partsrfq/assistant') {
+    if (this.$route.path === '/sourceinquirypoint/sourcing/partsrfq/assistant') {
       this.$store.dispatch('setRfqId', this.$route.query.id)
       this.$store.dispatch('setEntryStatus', 1)
       window.sessionStorage.setItem('entryStatus', 1)

@@ -504,6 +504,9 @@ a{
   align-items: center;
   .openLinkText {
     color: $color-blue;
+    &.underline {
+      text-decoration: underline;
+    }
   }
   .icon-gray{
     cursor: pointer;
@@ -521,5 +524,11 @@ a{
     .show{
       display: block;
     }
+  }
+}
+
+.select-center {
+  .el-input input {
+    text-align: center;
   }
 }

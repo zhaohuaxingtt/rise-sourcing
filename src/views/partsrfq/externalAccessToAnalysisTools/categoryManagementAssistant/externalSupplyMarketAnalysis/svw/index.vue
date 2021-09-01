@@ -1,7 +1,8 @@
 <template>
-  <iPage>
-    <div id="content">
-      <iCard>
+
+  <div id="content">
+    <iCard>
+      <div :class="{isFixed:isFixeds==true}" ref="scroll">
         <div class="head">
           <div class="left">SVW供应商市场总览
             <span>
@@ -30,14 +31,19 @@
           <div class="module3"><img class="imgStatus"
                  :src="userImg" />供应商主要客户</div>
         </div>
+      </div>
+
+      <div style="overflow:auto;height:600px">
         <list v-for="(x,index) of MarketOverviewDTO"
               :key="index"
               :MarketOverviewObj=x
-              :index="index+1"
-              :edite="edite"></list>
-      </iCard>
-    </div>
-  </iPage>
+              :index="index"
+              :edite="edite"
+              @returnObj="getreturnObj"></list>
+      </div>
+    </iCard>
+  </div>
+
 </template>
 
 <script>
@@ -57,7 +63,8 @@ export default {
       SchemeId: "",
       categoryCode: "",
       categoryName: "",
-      savereport: true
+      savereport: true,
+      isFixeds: false
     }
   },
   components: {
@@ -72,6 +79,12 @@ export default {
     this.categoryCode = this.$store.state.rfq.categoryCode
     this.categoryName = this.$store.state.rfq.categoryName
     this.getmarketOverview()
+  },
+  mounted () {
+    this.$nextTick(() => {
+      window.addEventListener('scroll', this.handleScroll, true)
+    });
+
   },
   watch: {
     '$store.state.rfq.categoryCode': {
@@ -88,11 +101,22 @@ export default {
     }
   },
   methods: {
+    handleScroll () {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      console.log(scrollTop)
+      if (scrollTop > 178) {//提前判断要上升多少像素就固定
+        this.isFixeds = true;
+      } else {
+        this.isFixeds = false;
+      }
+    },
     getmarketOverview () {
       marketOverview({ categoryCode: this.categoryCode }).then(res => {
-        console.log(res)
-        this.SchemeId = res.data.id
-        this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
+        if (res.data) {
+          this.SchemeId = res.data.id
+          this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
+        }
+
       })
     },
     saveMarket () {
@@ -137,6 +161,9 @@ export default {
       }, 3000)
 
 
+    },
+    getreturnObj (val, index) {
+      this.MarketOverviewDTO[index] = val
     },
     changeViewObj (val, index) {
       console.log(val, index)
@@ -201,5 +228,12 @@ export default {
   height: 40px;
   margin-right: 10px;
   display: inline-block;
+}
+.isFixed {
+  position: fixed;
+  width: 100%;
+  background-color: #fff;
+  top: 0;
+  z-index: 999;
 }
 </style>

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-26 16:45:35
+ * @LastEditTime: 2021-08-30 17:47:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -56,7 +56,7 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <iCard class="margin-top20" :title="language('ZHIDINGTAIZHANGKUYUANLINGJIAN', '指定台账库原零件')">
+    <iCard class="margin-top20" :title="language('ZHIDINGTAIZHANGKUYUANLINGJIAN', '指定台账库原零件')" v-if="tableListData.length">
       <template #header-control>
         <!-- <iButton @click="handleSave" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton> -->
         <iButton 
@@ -67,7 +67,7 @@
         {{ language("DAOCHU", "导出") }}
         </iButton>
       </template>
-      <div class="body">
+      <div class="body"  >
         <tableList
           class="table"
           index
@@ -102,7 +102,7 @@
     </iCard>
 
     <!-- 指定AEKO库原零件 -->
-    <aekoList v-if="aekoShow" :tableData="aekoTableData" :ledgerSelection="multipleSelection" @getAekoList="getAekoList" @changeAekoSelection="changeAekoSelection"/>
+    <aekoList ref="aekoList" :ledgerSelection="multipleSelection" :form="form" :aekomultipleSelection="aekomultipleSelection" :objectAekoPartId="objectAekoPartId" @changeAekoSelection="changeAekoSelection"/>
     
     <presentAllInPriceDialog :visible.sync="visible" :apriceId="currentRow.apriceId" @confirm="confirmAPrice" />
   </div>
@@ -148,8 +148,6 @@ export default {
       currentRow: {},
       factoryDisabled: false,
       factoryName: "",
-      aekoShow:false,
-      aekoTableData:[],
       aekomultipleSelection:[],
     }
   },
@@ -267,10 +265,6 @@ export default {
       .catch(() => this.loading = false)
     },
 
-    // 获取指定AEKO库原零件列表数据
-    getAekoList(data){
-
-    },
     sure() {
       this.page.currPage = 1
       if (isEqual(this.form, ledgerQueryForm)) {
@@ -279,6 +273,8 @@ export default {
         this.objectAekoPartId = ""
       }
       
+      
+      this.$refs.aekoList.getList('isRest');
       this.getAekoOriginPartInfo()
     },
     reset() {
@@ -306,14 +302,18 @@ export default {
     },
     // 保存
     handleSave() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOBAOCUNDEYUANLINGJIAN", "请选择需要保存的原零件"))
+      if (!this.multipleSelection.length && !this.aekomultipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOBAOCUNDEYUANLINGJIAN", "请选择需要保存的原零件"))
 
-      this.saveLoading = true
-      saveAekoOriginPart({
-        originPartList: this.multipleSelection,
+      this.aekomultipleSelection.map((item)=>{item.aprice = item.newPriceA});
+
+      const data = {
+        partList:this.aekomultipleSelection.concat(this.multipleSelection),
         objectAekoPartId: this.$route.query.objectAekoPartId,
         requirementAekoId: this.requirementAekoId
-      })
+      }
+
+      this.$emit('changeStatus','saveLoading',true);
+      saveAekoOriginPart(data)
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 
@@ -347,9 +347,9 @@ export default {
           iMessage.error(message)
         }
 
-        this.saveLoading = false
+        this.$emit('changeStatus','saveLoading',false);
       })
-      .catch(() => this.saveLoading = false)
+      .catch(() => this.$emit('changeStatus','saveLoading',false))
     },
     // 导出
     handleExport() {
@@ -359,9 +359,9 @@ export default {
     },
     // 勾选限制
     selectInit(row){
-      const idArr = this.aekomultipleSelection.map((item)=>item.id);
+      const idArr = this.aekomultipleSelection.map((item)=>item.partNum);
       // 判断AEKO零件列表是否已存在相同原零件 若存在 则不勾选
-      if(!idArr.includes(row.id)){
+      if(!idArr.includes(row.partNum)){
         return true 
       }else{
         return false

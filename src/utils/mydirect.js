@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-18 13:33:10
+ * @LastEditTime: 2021-09-01 14:45:09
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \front-web\src\utils\mydirect.js
@@ -14,7 +14,7 @@ import {businessPermission} from '@/utils'
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
-        inserted: function(el, binding,vnode) {  // dist
+        inserted: function(el, binding,vnode) { 
             if (binding.modifiers.disabled) {
                 if (store.state.permission.whiteBtnList[binding.expression]) {
                     el.classList.add("is-disabled")
@@ -23,10 +23,25 @@ Vue.directive('permission', {
                 if (!store.state.permission.whiteBtnList[binding.value] && businessPermission(binding.value,router.currentRoute.query)) {
                     el.parentNode.removeChild(el)
                 }
-            } else { //remove
-                if (!store.state.permission.whiteBtnList[binding.expression] && businessPermission(binding.expression,router.currentRoute.query)) {
+            } else if(binding.modifiers.auto){
+                // eslint-disable-next-line no-debugger
+                const splitValue = binding.expression.split('|')
+                if(splitValue.length > 1){store.dispatch('uploadResource',splitValue)}
+                if (!store.state.permission.whiteBtnList[splitValue[0]]) {
                     el.parentNode.removeChild(el)
+                }else{
+                    if(businessPermission(splitValue[0],router.currentRoute.query)){
+                       el.parentNode.removeChild(el)
+                    }
                 }
+            } else { //remove
+                // if (!store.state.permission.whiteBtnList[binding.expression]) {
+                //     el.parentNode.removeChild(el)
+                // }else{
+                //     if(businessPermission(binding.expression,router.currentRoute.query)){
+                //        el.parentNode.removeChild(el)
+                //     }
+                // }
             }
         }
     })
@@ -258,7 +273,6 @@ function removeStyle(evt) {
 Vue.directive("lazySelect", {
     bind(el, binding) {
         const dom = el.querySelector(".el-select-dropdown__wrap")
-
         dom.addEventListener("scroll", function() {
           if ((this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
         });

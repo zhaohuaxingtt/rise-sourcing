@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-27 14:36:09
+ * @LastEditTime: 2021-08-31 18:33:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -126,14 +126,13 @@ export default {
     getAllPartData() {
       this.loading = true
       const params = {
-        userId: 52,
         partsId: this.searchForm.partsId || null,
         rfqId: this.searchForm.rfqId || null
       }
       getAllAddPart(params).then(res => {
         if(res && res.code == 200) {
           this.selectTargetData.map(targetObj => {
-            const index = res.data.findIndex(item => item.id = targetObj.id)
+            const index = res.data.findIndex(item => item.fsId = targetObj.fsId)
             res.data.splice(index, index + 1)
           })
           this.mainTableData = res.data

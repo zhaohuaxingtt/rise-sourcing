@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-28 11:40:55
+ * @LastEditTime: 2021-09-01 10:17:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -21,7 +21,8 @@
             </el-option>
           </iSelect>
         </div>
-        <div class="flex">
+        <div class="flex"
+             v-show="reportFlag">
           <!--预览-->
           <iButton class="margin-left30">{{ $t("MEK分析库") }}</iButton>
           <!--保存-->
@@ -41,7 +42,7 @@
       <div class=" bodyBox clearFloat">
         <div class="cardBox"
              style="width:18%">
-          <iCard>
+          <iCard v-show="reportFlag">
             <div class=" searchForm"
                  style="margin-right:-20px">
               <el-form label-position="top"
@@ -63,7 +64,8 @@
                   </el-form-item>
                   <!--类型选择-->
                   <el-form-item :label="$t('类型选择')">
-                    <el-select v-model="comparedType">
+                    <el-select v-model="comparedType"
+                               @change="comparedTypeBy">
                       <el-option v-for="item in mekTypeList"
                                  :key="item.id"
                                  :value="item.code"
@@ -92,6 +94,18 @@
               <iButton type="primary"
                        style="width:100px;height:35px"
                        @click="handleSearchReset">{{ $t("LK_ZHONGZHI") }}</iButton>
+            </div>
+          </iCard>
+          <iCard v-show="!reportFlag">
+            <div class=" searchForm1"
+                 style="margin-right:20px">
+              <label for=""
+                     style="font-weight:600;font-size:14px">六位零件号</label>
+              <ul style="margin-top:10px">
+                <li style="maring-bottom:10px"
+                    v-for="(item,index) in partNumber"
+                    :key="index">{{item}}</li>
+              </ul>
             </div>
           </iCard>
         </div>
@@ -230,6 +244,7 @@
                  :editFlag="editFlag"
                  :addRowList="addRowList"
                  @editData="editData"
+                 :reportFlag="reportFlag"
                  @addData="addData"></tableList>
 
       <iDialog title="保存"
@@ -288,8 +303,10 @@ import tableList from "../components/tableList";
 import modalDialog from "../components/modalDialog";
 import detailDialog from "../components/detailDialog";
 import preview from "../components/preview";
-import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, getSchemeInfo, queryPartEbr, queryCal, updateScheme } from '@/api/categoryManagementAssistant/mek'
+import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, recursiveRetrieve, getSchemeInfo, queryPartEbr, queryCal, updateScheme, add } from '@/api/categoryManagementAssistant/mek'
 import { getDictByCode } from '@/api/dictionary'
+import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
+import { uploadFile } from "@/api/file/upload";
 export default {
   name: "mekDetails",
   components: {
@@ -329,7 +346,7 @@ export default {
       //分析库名称
       analysisName: "",
       //保存为报告
-      reportSave: "",
+      reportSave: false,
       //报告名称
       reportName: "",
       editFlag: false,
@@ -386,8 +403,8 @@ export default {
       //预览开关
       previewFlag: false,
       targetMotorName: "",
-      mekpriceType: ""
-
+      mekpriceType: "",
+      reportFlag: true
     };
   },
   async created () {
@@ -671,7 +688,14 @@ export default {
           isTargetMotor: true
         }],
         categoryId: this.categoryId,
+        categoryCode: this.categoryCode,
         schemeId: this.chemeId
+      }
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true
+        params.rfq = this.rfqId
+      } else {
+        params.isBindingRfq = false
       }
       this.barData.forEach(item => {
         let obj = {
@@ -693,8 +717,28 @@ export default {
       }
       if (this.comparedType && this.ComparedMotor && this.chemeId && this.targetMotor) {
         getMekTable(params).then(res => {
-          this.gridData = res
+          let data = _.cloneDeep(res)
+          let mekTypeName = ""
+          this.mekTypeList.forEach(item => {
+            if (item.code === this.comparedType) {
+              mekTypeName = item.name
+            }
+          })
+          data.config['label#-1'] = mekTypeName
+          this.gridData = data
+          console.log(this.gridData)
         })
+      }
+    },
+    comparedTypeBy (val) {
+      let mekTypeName = ""
+      this.mekTypeList.forEach(item => {
+        if (item.code === val) {
+          mekTypeName = item.name
+        }
+      })
+      if (this.gridData) {
+        this.gridData.config['label#-1'] = mekTypeName
       }
     },
     getHistogram (params) {
@@ -735,7 +779,7 @@ export default {
       })
     },
     handleMEKInfo () {
-      let vwModelCodes = [...this.ComparedMotor, this.targetMotor].toString()
+      let vwModelCodes = JSON.stringify([...this.ComparedMotor, this.targetMotor])
       this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: this.categoryCode, vwModelCodes, chemeId: this.chemeId } })
     },
     preview () {
@@ -744,34 +788,75 @@ export default {
     closeDialog (val) {
       this.previewFlag = val
     },
+    close () {
+      this.dialogVisible = false
+      this.reportFlag = true
+    },
     save () {
-      let params = {
-        categoryCode: this.categoryCode,
-        categoryId: this.categoryId,
-        categoryName: this.categoryName,
-        comparedType: this.comparedType,
-        exceptPart: this.exceptPart,
-        firstComparedConfig: "",
-        secondComparedConfig: "",
-        thirdComparedConfig: "",
-        forthComparedConfig: "",
-        schemeId: this.chemeId,
-        targetMotor: this.targetMotor
+      if (this.analysisSave) {
+        let params = {
+          categoryCode: this.categoryCode,
+          categoryId: this.categoryId,
+          categoryName: this.categoryName,
+          comparedType: this.comparedType,
+          exceptPart: this.exceptPart,
+          firstComparedConfig: "",
+          secondComparedConfig: "",
+          thirdComparedConfig: "",
+          forthComparedConfig: "",
+          schemeId: this.chemeId,
+          targetMotor: this.targetMotor
+        }
+        if (this.barData[0]) {
+          params.firstComparedMotor = this.barData[0].motorId || ""
+          params.firstComparedPrice = this.barData[0].priceType || ""
+        } else if (this.barData[1]) {
+          params.secondComparedMotor = this.barData[1].motorId || ""
+          params.secondComparedPrice = this.barData[1].priceType || ""
+        } else if (this.barData[2]) {
+          params.thirdComparedMotor = this.barData[2].motorId || ""
+          params.thirdComparedPrice = this.barData[2].priceType || ""
+        } else if (this.barData[3]) {
+          params.forthComparedMotor = this.barData[3].motorId || ""
+          params.forthComparedPrice = this.barData[3].priceType || ""
+        }
+        updateScheme(params).then()
       }
-      if (this.barData[0]) {
-        params.firstComparedMotor = this.barData[0].motorId || ""
-        params.firstComparedPrice = this.barData[0].priceType || ""
-      } else if (this.barData[1]) {
-        params.secondComparedMotor = this.barData[1].motorId || ""
-        params.secondComparedPrice = this.barData[1].priceType || ""
-      } else if (this.barData[2]) {
-        params.thirdComparedMotor = this.barData[2].motorId || ""
-        params.thirdComparedPrice = this.barData[2].priceType || ""
-      } else if (this.barData[3]) {
-        params.forthComparedMotor = this.barData[3].motorId || ""
-        params.forthComparedPrice = this.barData[3].priceType || ""
+      if (this.reportSave) {
+        this.reportFlag = false
+        downloadPDF({
+          idEle: "content",
+          pdfName: this.reportName,
+          callback: async (pdf, pdfName) => {
+            try {
+              const time = new Date().getTime();
+              const filename = pdfName + time + ".pdf";
+              const pdfFile = pdf.output("datauristring");
+              const blob = dataURLtoFile(pdfFile, filename);
+              const formData = new FormData();
+              formData.append("multipartFile", blob);
+              formData.append("applicationName", "rise");
+              const res = await uploadFile(formData);
+              const data = res.data[0];
+              const req = {
+                mekId: this.chemeId,
+                name: data.fileName,
+                path: data.filePath,
+                remark: this.reportName,
+              };
+              await add(req);
+              this.dialogVisible = false;
+              this.reportSave = false;
+              iMessage.success("保存成功");
+            } catch {
+              iMessage.err("保存失败");
+              this.dialogVisible = false;
+              this.reportSave = false;
+            }
+          },
+        });
       }
-      updateScheme(params).then()
+
 
 
     },
@@ -807,6 +892,10 @@ export default {
   &::-webkit-scrollbar {
     margin-left: 10px !important;
   }
+}
+.searchForm1 {
+  height: 559px;
+  text-align: center;
 }
 ::v-deep .cardBox {
   float: left;

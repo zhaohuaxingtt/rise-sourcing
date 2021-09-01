@@ -36,7 +36,8 @@
               <p>{{ language("XINCHENGYUNFANGSHI", "新承运方式") }}：{{ language("CHENGYUN", "承运") }}（{{ language("HUOZHE", "或者") }}{{ language("ZIYUN", "自运")  }}）</p>
             </template>
             <template #reference>
-              {{ scope.row.e }}
+              <!-- 针对供应商报价可跳转 -->
+              <span class="margin-right5" @click="goToBNK">{{ scope.row.e }}</span>
               <icon v-if="scope.row.e !== scope.row.d" symbol name="iconzengjiacailiaochengben_lan" class="font15 rotate180" />
             </template>
           </el-popover>
@@ -46,7 +47,9 @@
 
     <iTabsList class="margin-top20" type="card" v-model="currentTab" :before-leave="tabLeaveBefore" @tab-click="tabChange">
       <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name">
-        <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" />
+        <template v-if="tab.name == currentTab">
+          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" />
+        </template>
       </el-tab-pane>
     </iTabsList>
   </iPage>
@@ -62,6 +65,7 @@ import developmentFee from "./components/developmentFee"
 import damages from "./components/damages"
 import sampleFee from "./components/sampleFee"
 import { infoItems, tableTitle } from "./components/data"
+import { bnkSupplierToken } from '@/api/aeko/quotationdetail'
 
 export default {
   components: { iPage, iButton, icon, iCard, iFormGroup, iFormItem, iText, iTabsList, logButton, tableList, aPriceChange, mouldInvestmentChange, developmentFee, damages, sampleFee },
@@ -80,6 +84,9 @@ export default {
       ],
     }
   },
+  created(){
+    this.getBbasicInfo();
+  },
   methods: {
     // 日志
     log() {},
@@ -94,7 +101,39 @@ export default {
       //   return false
       // }
     },
-    tabChange() {}
+    // 页签切换
+    tabChange() {
+      this.$nextTick(() => {
+        const component = this.$refs[this.currentTab][0]
+        if (typeof component.init === "function") component.init()
+      })
+    },
+
+
+    // 获取基础信息
+    getBbasicInfo(){
+
+    },
+
+    // 跳转至BNK相关页面
+    async goToBNK(){
+      // partProjId：零件采购项目ID
+      // tmRfqId：当前报价单对应的RFQ_ID;
+      // ppSupplierId：供应商id
+      // ppSupplierUserId：当前登录的供应商用户id
+      // token：由后端提供
+
+      // partProjId    零件采购项目Id String
+      // rfqId           rfqId  String
+      await bnkSupplierToken({
+        partProjId:'332',
+        rfqId:'FS21-00156'
+      }).then((res)=>{
+        
+      });
+      // const link = `http://svmwt038/sol-bnk/pages/bnk/quotes/lsp-view.jsf?`;
+      // window.open(link);
+    },
   }
 }
 </script>

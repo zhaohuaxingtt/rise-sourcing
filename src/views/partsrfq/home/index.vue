@@ -1,17 +1,17 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-08-18 14:49:51
+ * @LastEditTime: 2021-09-01 14:05:28
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
 -->
 <template>
-  <iPage class="partsrfqHome" v-permission="PARTSRFQ_INDEXPAGE">
+  <iPage class="partsrfqHome">
     <!-- <el-tabs v-model="tab" class="tab">
       <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div class="topMenu">
-          <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+          <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
           <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
         </div>
         <div>
@@ -242,8 +242,7 @@ export default {
       attachmentTableListData: [], 
       cartTypeOptions: [],
       createDesignateLoading: false,
-      nominateTypeDialogVisible: false,
-      list:TAB
+      nominateTypeDialogVisible: false
     };
   },
   created() {
@@ -255,7 +254,7 @@ export default {
     this.updateNavList
   },
   computed: {
-    ...mapState(["navList"]),
+    ...mapState(["navList","navListLeft"]),
     ...mapActions(["updateNavList"])
   },
   methods: {
@@ -280,7 +279,7 @@ export default {
     //动态获取转派评分任务
     openPage(row) {
       this.$router.push({
-        path: `/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}`
+        path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}`
       })
     },
     //获取表格数据
@@ -321,7 +320,7 @@ export default {
     },
     newRfq() {
       this.$router.push({
-        path: '/sourcing/partsrfq/editordetail'
+        path: '/sourceinquirypoint/sourcing/partsrfq/editordetail'
       })
     },
     async editRfq(updateType) {

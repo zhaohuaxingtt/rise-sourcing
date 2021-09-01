@@ -122,7 +122,7 @@ export default {
     },
     openPage(row) {
       if (row.partPurchaseProType === partProjTypes.PEIJIAN) {
-        const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { spNum: row.rfqPlanId }})
+        const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/accessorypartdetail', query: { spNum: row.rfqPlanId }})
         window.open(router.href,'_blank')
       } else {
         const rfqId = this.$route.query.id;
@@ -146,7 +146,7 @@ export default {
         }
         // const params = serialize(req)
         this.$router.push({
-          path: `/sourcing/partsprocure/editordetail?item=${JSON.stringify(req)}`
+          path: `/sourceinquirypoint/sourcing/partsprocure/editordetail?item=${JSON.stringify(req)}`
         })
       }
     }
