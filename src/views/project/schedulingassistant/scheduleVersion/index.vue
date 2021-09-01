@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:02
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-08-30 15:53:08
+ * @LastEditTime: 2021-09-01 14:50:09
  * @Description: 排程版本查询
  * @FilePath: \front-web\src\views\project\schedulingassistant\scheduleVersion\index.vue
 -->
 
 <template>
-  <div class="scheduleVersion">
+  <div class="scheduleVersion" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION|排程版本查询">
     <search @search="handSearch" ref="searchForm" />
     <iCard class="margin-top20">
       <tableList indexKey :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange">
