@@ -75,6 +75,7 @@ export default {
   components: { iPage, iButton, icon, iCard, iFormGroup, iFormItem, iText, iTabsList, logButton, tableList, aPriceChange, mouldInvestmentChange, developmentFee, damages, sampleFee },
   data() {
     return {
+      quotationId: "",
       infoItems,
       tableTitle,
       tableListData: [{ a: "10", b: "12", e: "100.00" }],
