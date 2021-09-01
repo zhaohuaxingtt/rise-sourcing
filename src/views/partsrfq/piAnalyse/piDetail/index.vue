@@ -157,6 +157,7 @@ export default {
         partsId: '',
         batchNumber: this.$route.query.batchNumber,
         supplierId: '',
+        fsId: ''
       },
       dataInfo: {},
       averageData: {},
@@ -241,6 +242,7 @@ export default {
             partsId: partListItem.partsId,
             batchNumber: partListItem.batchNumber,
             supplierId: partListItem.supplierId,
+            fsId: partListItem.fsId,
           };
           await this.getDataInfo();
         }
@@ -255,6 +257,7 @@ export default {
         partsId: item.partsId,
         batchNumber: item.batchNumber,
         supplierId: item.supplierId,
+        fsId: item.fsId,
       };
       this.currentTab = CURRENTTIME;
       this.getDataInfo();
@@ -299,6 +302,7 @@ export default {
         this.currentTabData.batchNumber = res.data.batchNumber;
         this.currentTabData.supplierId = res.data.supplierId;
         this.currentTabData.analysisSchemeId = res.data.analysisSchemeId;
+        this.currentTabData.fsId = res.data.fsId;
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
