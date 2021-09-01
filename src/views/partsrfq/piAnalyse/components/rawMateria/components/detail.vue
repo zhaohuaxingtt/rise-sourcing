@@ -1,14 +1,14 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 16:41:49
- * @LastEditTime: 2021-08-20 17:31:56
+ * @LastEditTime: 2021-09-01 14:23:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\components\detail.vue
 -->
 <template>
   <div>
-    <iDialog :title="language('YUANCAILIAOXIANGQINGTITLE', '原材料价格总览') + ' - ' + materiaName" :visible.sync="value" width="80%">
+    <iDialog :title="language('YUANCAILIAOXIANGQINGTITLE', '原材料价格总览') + ' - ' + materiaName" :visible.sync="value" width="80%" @close="handleCloseModal">
       <div class="optionBox">
         <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
           <el-form-item style="marginRight:68px" :label="language('LINGJIANHAO', '零件号')">
@@ -166,6 +166,10 @@ export default {
       for(const key in this.searchForm) {
         this.searchForm[key] = null
       }
+    },
+    // 关闭弹窗
+    handleCloseModal() {
+      this.$emit('handleCloseModal')
     }
   }
 }
