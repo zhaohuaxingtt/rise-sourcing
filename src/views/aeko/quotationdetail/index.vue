@@ -48,7 +48,7 @@
     <iTabsList class="margin-top20" type="card" v-model="currentTab" :before-leave="tabLeaveBefore" @tab-click="tabChange">
       <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name" v-permission.dynamic.auto="tab.permissionKey">
         <template v-if="tab.name == currentTab">
-          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" />
+          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :quotationId="quotationId"/>
         </template>
       </el-tab-pane>
     </iTabsList>
@@ -71,6 +71,7 @@ export default {
   components: { iPage, iButton, icon, iCard, iFormGroup, iFormItem, iText, iTabsList, logButton, tableList, aPriceChange, mouldInvestmentChange, developmentFee, damages, sampleFee },
   data() {
     return {
+      quotationId: "",
       infoItems,
       tableTitle,
       tableListData: [{ a: "10", b: "12", e: "100.00" }],
@@ -84,7 +85,9 @@ export default {
       ],
     }
   },
-  created(){
+  created() {
+    this.quotationId = this.$route.query.quotationId
+
     this.getBbasicInfo();
   },
   methods: {

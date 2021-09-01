@@ -434,7 +434,9 @@ export default {
     jumpQuotation(row) {
       const route = this.$router.resolve({
         path: '/aeko/quotationdetail',
-        query: {}
+        query: {
+          quotationId: row.quotationId
+        }
       })
 
       window.open(route.href, "_blank")
