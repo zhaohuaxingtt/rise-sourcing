@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 10:47:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-30 18:06:25
+ * @LastEditTime: 2021-09-01 14:28:45
  * @Description: 确认表格-通用
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\confirmTable\index.vue
 -->
@@ -12,7 +12,8 @@
     <!-- <template slot="header-control"> -->
     <div class="floatright" slot="header-control">
       <!--------------------发送按钮----------------------------------->
-      <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('FASONG','发送')}}</iButton>
+      <!-- <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('FASONG','发送')}}</iButton> -->
+      <sendFSBtn v-if="!isFS && withSend" sendType="2" :sendData="selectRow" @getTableList="getTableList" />
       <template v-if="isFS">
         <!--------------------转派按钮----------------------------------->
         <transferBtn class="margin-right10" tansferType="2" :tansferData="selectRow" @getTableList="getTableList" ></transferBtn>
@@ -24,7 +25,7 @@
         <confirmBtn v-if="withAllBtn" confirmType="2" :confirmData="selectRow" @getTableList="getTableList" ></confirmBtn>
       </template>
     </div>
-    <!-- </template> -->
+    <!-- 表格 -->
     <tableList indexKey :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange">
       <template #scheNomiTimeKw="scope">
         <span v-if="!isFS">{{scope.row.scheNomiTimeKw}}</span>
@@ -82,6 +83,7 @@
         ></el-cascader>
       </template>
     </tableList> 
+    <!-- 分页 -->
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
       :layout="page.layout"
@@ -92,7 +94,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination, iMessage } from 'rise'
+import { iCard, iPagination, iMessage } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/project/schedulingassistant/progroup/components/tableList'
 import { getPartScheduleList } from '@/api/project'
@@ -101,9 +103,10 @@ import confirmBtn from '../commonBtn/confirmBtn'
 import saveBtn from '../commonBtn/saveBtn'
 import backBtn from '../commonBtn/backBtn'
 import transferBtn from '../commonBtn/transferBtn'
+import sendFSBtn from '../commonBtn/sendFSBtn'
 export default {
   mixins: [pageMixins],
-  components: { iCard, iButton, tableList, iPagination, confirmBtn, saveBtn, backBtn, transferBtn },
+  components: { iCard, tableList, iPagination, confirmBtn, saveBtn, backBtn, transferBtn, sendFSBtn },
   props: {
     title: {type:String},
     titleKey: {type:String},

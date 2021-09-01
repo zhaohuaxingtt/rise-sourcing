@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-30 23:24:15
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-01 11:30:22
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -380,6 +380,23 @@ export function confirmPartScheduleList(params) {
 export function transferPartScheduleList(params, fsId) {
   return requst({
     url: '/progress-confirm/part/transfer?fsId='+fsId,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 生成排程版本
+export function addScheduleVersion(params) {
+  return requst({
+    url: '/schedule-version',
+    method: 'POST',
+    data: params
+  })
+}
+
+export function exportPartSchedule(params) {
+  return downloadRequst({
+    url: '/part-schedule/partScheduleFile',
     method: 'POST',
     data: params
   })

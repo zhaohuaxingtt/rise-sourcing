@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-01 10:17:12
+ * @LastEditTime: 2021-09-01 17:27:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -205,7 +205,7 @@
                                       placeholder="选择日期"
                                       @change="changeDate"
                                       style="width:150px;z-index:1000"
-                                      v-if="priceType==='2'">
+                                      v-if="tem.priceType==='2'">
                       </el-date-picker>
                     </div>
                   </div>
@@ -678,7 +678,6 @@ export default {
         if (item.code === val) {
           this.mekpriceType = item.label
         }
-
       })
       let params = {
         comparedType: this.comparedType,
