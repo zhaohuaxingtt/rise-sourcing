@@ -1,25 +1,25 @@
 <template>
-  <iPage class="quotationdetail">
+  <iPage class="quotationdetail" v-permission.auto="AEKO_QUOTATION_DETAIL|报价单">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language("AEKOHAO", "AEKO号") }}：{{ aekoCode }}</span>
       <div class="floatright">
-        <iButton>{{ language("TIJIAO", "提交") }}</iButton>
-        <logButton class="margin-left20" @click="log" />
+        <iButton v-permission.auto="AEKO_QUOTATION_DETAIL_BUTTON_TIJIAO|提交">{{ language("TIJIAO", "提交") }}</iButton>
+        <logButton class="margin-left20" @click="log" v-permission.auto="AEKO_QUOTATION_DETAIL_BUTTON_RIZHI|日志" />
         <span class="margin-left20">
 					<icon symbol name="icondatabaseweixuanzhong" class="font18" />
 				</span>
       </div>
     </div>
 
-    <iCard class="info" :title="language('JICHUXINXI', '基础信息')">
+    <iCard class="info" :title="language('JICHUXINXI', '基础信息')" v-permission.auto="AEKO_QUOTATION_DETAIL_VIEW_JICHUXINXI|基础信息">
       <iFormGroup :key="$index" :row="4" inline>
-        <iFormItem v-for="item in infoItems" :key="item.props" :label="language(item.key, item.name)">
+        <iFormItem v-for="item in infoItems" :key="item.props" :label="language(item.key, item.name)" v-permission.dynamic.auto="item.permissionKey">
           <iText>{{ partInfo[item.props] || '-' }}</iText>
         </iFormItem>
       </iFormGroup>
     </iCard>
 
-    <iCard class="margin-top20">
+    <iCard class="margin-top20" v-permission.auto="AEKO_QUOTATION_DETAIL_VIEW_HUIZONG|报价汇总">
       <tableList
         lang
         class="table"
@@ -46,7 +46,7 @@
     </iCard>
 
     <iTabsList class="margin-top20" type="card" v-model="currentTab" :before-leave="tabLeaveBefore" @tab-click="tabChange">
-      <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name">
+      <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name" v-permission.dynamic.auto="tab.permissionKey">
         <template v-if="tab.name == currentTab">
           <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :partInfo="partInfo" @getBbasicInfo="getBbasicInfo"/>
         </template>
@@ -80,11 +80,11 @@ export default {
       tableListData: [{ a: "10", b: "12", e: "100.00" }],
       currentTab: "aPriceChange",
       tabs: [
-        { label: "A价变动(含分摊)", name: "aPriceChange", key: "AJIABIANDONGHANFENTAN", components: [ "aPriceChange" ] },
-        { label: "模具投资变动", name: "mouldInvestmentChange", key: "MUJUTOUZIBIANDONG", components: [ "mouldInvestmentChange" ] },
-        { label: "开发费", name: "developmentFee", key: "KAIFAFEI", components: [ "developmentFee" ] },
-        { label: "终⽌费", name: "damages", key: "ZHONGZHIFEI", components: [ "damages" ] },
-        { label: "样件费", name: "sampleFee", key: "YANGJIANFEI", components: [ "sampleFee" ] },
+        { label: "A价变动(含分摊)", name: "aPriceChange", key: "AJIABIANDONGHANFENTAN", components: [ "aPriceChange" ], permissionKey: "AEKO_QUOTATION_CBD_TAB_BIANDONGZHICBD|变动值CBD" },
+        { label: "模具投资变动", name: "mouldInvestmentChange", key: "MUJUTOUZIBIANDONG", components: [ "mouldInvestmentChange" ], permissionKey: "AEKO_QUOTATION_CBD_TAB_MUJUTOUZIBIANDONG|模具投资变动" },
+        { label: "开发费", name: "developmentFee", key: "KAIFAFEI", components: [ "developmentFee" ], permissionKey: "AEKO_QUOTATION_CBD_TAB_KAIFAFEI|开发费" },
+        { label: "终⽌费", name: "damages", key: "ZHONGZHIFEI", components: [ "damages" ], permissionKey: "AEKO_QUOTATION_CBD_TAB_ZHONGZHIFEI|终⽌费" },
+        { label: "样件费", name: "sampleFee", key: "YANGJIANFEI", components: [ "sampleFee" ], permissionKey: "AEKO_QUOTATION_CBD_TAB_YANGJIANFEI|样件费" },
       ],
       aekoCode:'',
       partInfo:{},
