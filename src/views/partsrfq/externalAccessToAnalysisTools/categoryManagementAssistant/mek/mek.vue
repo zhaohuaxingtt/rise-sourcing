@@ -87,7 +87,7 @@
                 scope.row.isDefault != '空' &&
                 scope.row.isDefault
               ">
-              <iSelect v-model="scope.row.isDefault">
+              <iSelect @change="handleIsDefault(scope.row)" v-model="scope.row.isDefault">
                 <el-option :value="item.value" :label="item.label" v-for="(item, index) in defaultData" :key="index"></el-option>
               </iSelect>
             </div>
@@ -111,7 +111,6 @@
         </el-table-column>
       </el-table>
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount" />
-
       <reportPreview :visible="reportVisible" :reportUrl="reportUrl" :title="reportTitle" :key="reportKey" @handleCloseReport="handleCloseReport" />
       <addDialog :materialGroup="form.materialGroup" @add="add" v-model="addDialog" />
     </iCard>
@@ -183,11 +182,22 @@ export default {
     // this.getTableList();
   },
   methods: {
+    handleIsDefault(row) {
+      console.log(row);
+      if (row.isDefault === '1') {
+        this.tableListData.map(item => {
+          if (row.id !== item.id) {
+            return item.isDefault = '0'
+          }
+        })
+      }
+    },
     async add(params) {
-      let pms = {}
-      if (this.$store.state.rfq.entryStatus) {
-        pms.rfq = this.$store.state.rfq.rfqId
-      } else {
+      let pms = {
+        rfq: this.$store.state.rfq.rfqId,
+        isBindingRfq: !!this.$store.state.rfq.entryStatus,
+      }
+      if (!this.$store.state.rfq.entryStatus) {
         pms = {
           ...params
         }
