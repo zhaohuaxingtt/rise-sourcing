@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-27 12:31:06
+ * @LastEditTime: 2021-09-01 18:11:08
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
 
 <template>
-<!------v-permission="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB"------>
+<!------v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PAGE|项目管理-排程助手-历史进度数据库"------>
   <iPage class="historyProcessDB" >
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
