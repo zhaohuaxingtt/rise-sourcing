@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-31 17:24:51
+ * @LastEditTime: 2021-09-01 10:15:53
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -257,7 +257,7 @@ export default {
         this.loading = false
         if (res?.result) {
           // console.log(this.cartypeProId)
-          const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId,productGroup:pro.productGroupNameZh}})
+          const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId,productGroup:pro.productGroupNameZh}})
           window.open(router.href,'_blank')
         } else {
           iMessage.warn('HUOQUSUANFAPEIZHISHIBAI','获取算法配置失败')

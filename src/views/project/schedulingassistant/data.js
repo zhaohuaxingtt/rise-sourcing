@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:17:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 10:03:19
+ * @LastEditTime: 2021-09-01 10:15:34
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\data.js
  */
@@ -55,7 +55,7 @@ export const MENUFS = [
     value: 1,
     name: '进度确认',
     message: 0,
-    url: '/projectscheassistant/proconfirm',
+    url: '/projectmgt/projectscheassistant/proconfirm',
     activePath: 'proconfirm',
     key: 'JINDUQUEREN'
   },
