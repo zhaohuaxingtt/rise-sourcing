@@ -2,7 +2,7 @@ import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 
 const VUE_APP_BMCHANGE = axios(process.env.VUE_APP_BMCHANGE)
-const VUE_APP_BMAPPROVE = axios(process.env.VUE_APP_BMAPPROVE)
+const VUE_APP_BMMOLD = axios(process.env.VUE_APP_BMMOLD)
 const BMMOLDFile = axiosFile(process.env.VUE_APP_BMMOLD)
 const common = axios(process.env.VUE_APP_BASE_UPLOAD_API);
 
@@ -42,6 +42,33 @@ export function attachment(parmars) {
     })
 }
 
+//获取模具ID
+export function getMoldId(parmars) {
+    return VUE_APP_BMCHANGE({
+        url: '/getMoldId',
+        method: 'GET',
+        params: parmars
+    })
+}
+
+//总成零件号集合
+export function assemblyParts(parmars) {
+    return VUE_APP_BMMOLD({
+        url: '/assemblyParts',
+        method: 'GET',
+        params: parmars
+    })
+}
+
+//共享零件号集合
+export function shareParts(parmars) {
+    return VUE_APP_BMMOLD({
+        url: '/shareParts',
+        method: 'GET',
+        params: parmars
+    })
+}
+
 //变更单详情-模具列表【专业采购员】
 export function mouldList(data) {
     return VUE_APP_BMCHANGE({
@@ -75,5 +102,23 @@ export function attachmentUpload(data) {
         url: '/attachmentUpload',
         method: "POST",
         data: data
+    })
+}
+
+// 保存模具变更任务
+export function saveChange(data) {
+    return VUE_APP_BMCHANGE({
+        url: '/saveChange',
+        method: "POST",
+        data: data
+    })
+}
+
+// 变更单重置
+export function reset(data) {
+    return VUE_APP_BMCHANGE({
+        url: '/reset',
+        method: "POST",
+        params: data
     })
 }

@@ -92,9 +92,11 @@ export default {
   methods: {
     getmarketOverview () {
       marketOverview({ categoryCode: this.categoryCode }).then(res => {
-        console.log(res)
-        this.SchemeId = res.data.id
-        this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
+        if (res.data) {
+          this.SchemeId = res.data.id
+          this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
+        }
+
       })
     },
     saveMarket () {
