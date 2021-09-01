@@ -37,7 +37,7 @@
             </template>
             <template #reference>
               <!-- 针对供应商报价可跳转 -->
-              <span class="margin-right5" @click="goToBNK">{{ scope.row.e }}</span>
+              <span :class="`margin-right5 ${userInfo &&userInfo.userType&&userInfo.userType == 2 ? 'link-underline' : ''}`" @click="goToBNK">{{ scope.row.e }}</span>
               <icon v-if="scope.row.e !== scope.row.d" symbol name="iconzengjiacailiaochengben_lan" class="font15 rotate180" />
             </template>
           </el-popover>
@@ -48,7 +48,7 @@
     <iTabsList class="margin-top20" type="card" v-model="currentTab" :before-leave="tabLeaveBefore" @tab-click="tabChange">
       <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name" v-permission.dynamic.auto="tab.permissionKey">
         <template v-if="tab.name == currentTab">
-          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :partInfo="partInfo" @getBbasicInfo="getBbasicInfo"/>
+          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :partInfo="partInfo" @getBasicInfo="getBasicInfo"/>
         </template>
       </el-tab-pane>
     </iTabsList>
@@ -88,10 +88,17 @@ export default {
       ],
       aekoCode:'',
       partInfo:{},
+      basicInfo:{},
     }
   },
   created(){
-    this.getBbasicInfo();
+    this.getBasicInfo();
+  },
+  computed: {
+      //eslint-disable-next-line no-undef
+      ...Vuex.mapState({
+          userInfo: state => state.permission.userInfo,
+      }),
   },
   methods: {
     // 日志
@@ -117,19 +124,20 @@ export default {
 
 
     // 获取基础信息
-    async getBbasicInfo(){
+    async getBasicInfo(){
       const {query,path} = this.$route;
       const { quotationId ='',aekoCode=""} = query;
       this.aekoCode = aekoCode;
       await getQuotationInfo(quotationId).then((res)=>{
         const {code,data={}} = res;
         if(code == 200){
-          const {aekoPartInfo={},quotationPriceSummaryInfo={},supplierId='50001031'} = data;
+          const {aekoPartInfo={},quotationPriceSummaryInfo={},supplierId=''} = data;
           this.partInfo = {
             ...aekoPartInfo,
             quotationId,
             };
           this.tableListData=[quotationPriceSummaryInfo];
+          this.BbasicInfo = data;
           if(supplierId){
             this.$router.push({
               path,
@@ -147,10 +155,25 @@ export default {
 
     // 跳转至BNK相关页面
     async goToBNK(){
+      const {userInfo={}} = this;
+      const {userType=null} = userInfo;
+      if(userType==1) return;
+
+      const {basicInfo={}} = this;
+      const {aekoPartInfo={},rfqId,supplierId} = basicInfo;
+
+      
       // partProjId：零件采购项目ID
       // tmRfqId：当前报价单对应的RFQ_ID;
       // ppSupplierId：供应商id
       // ppSupplierUserId：当前登录的供应商用户id
+
+      const data = {
+        partProjId:aekoPartInfo.partProjId,
+        tmRfqId:rfqId,
+        ppSupplierId:supplierId,
+        ppSupplierUserId:userInfo.id
+      }
       // token：由后端提供
 
       // partProjId    零件采购项目Id String
