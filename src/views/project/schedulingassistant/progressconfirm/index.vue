@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:26:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 17:36:49
+ * @LastEditTime: 2021-09-02 10:49:26
  * @Description: 进度确认汇总
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\index.vue
 -->
@@ -35,6 +35,13 @@ export default {
   methods: {
     tabChange() {},
     tabLeaveBefore() {}
+  },
+  created() {
+    if (this.$route.query.type === 'part') {
+      this.currentTab = 'part'
+    } else {
+      this.currentTab = 'productGroup'
+    }
   },
   computed: {
     permissionKey() {

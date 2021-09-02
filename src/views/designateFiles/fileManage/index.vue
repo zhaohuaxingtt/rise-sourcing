@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-30 15:38:55
+ * @LastEditTime: 2021-09-01 17:41:22
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -115,7 +115,7 @@ import backDialog from './components/back'
 import { cloneDeep, uniq } from 'lodash'
 import { getAffixList, updateAffixList, findBuyer, deleteAffix } from '@/api/designateFiles/index'
 import { downloadFile, downloadUdFile } from '@/api/file'
-import { insertRfq } from '@/api/accessoryPart/index'
+import { insertRfqPart as insertRfq } from '@/api/partsrfq/home/index'
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
 import { getDictByCode } from '@/api/dictionary'
 import { clickMessage } from "@/views/partsign/home/components/data"
@@ -314,12 +314,9 @@ export default {
      * @return {*}
      */    
     joinRfq(rfq) {
-      const params = {
-        insertRfqPackage: {
-          rfqId: rfq.id,
-          operationType: '1',
-          rfqPartDTOList: this.selectParts.map(item => {
+      const params = this.selectParts.map(item => {
             return {
+              rfqId: rfq.id,
               buyerName: item.csfUser, // 询价采购员
               linieName: item.csfUser, // linie
               linieUserId: item.csfuserId, // linie
@@ -330,11 +327,9 @@ export default {
               purchaseProjectId: item.purchasingProjectId,
               partNameZh: item.partNameCh,
               partProjectType: partProjTypes.FUJIAN,
+              userId: this.$store.state.permission.userInfo.id
             }
-          }),
-          userId: this.$store.state.permission.userInfo.id
-        }
-      }
+      })
       insertRfq(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -543,7 +538,7 @@ export default {
         return
       }
       this.selectLinieDept = selectLINIEDept[0]
-      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '2', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieName: selectLINIEName[0], linieDept:selectLINIEDept[0], linieDeptName: selectLINIEDeptName[0]}})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/createrfq', query: { type: '2', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieName: selectLINIEName[0], linieDept:selectLINIEDept[0], linieDeptName: selectLINIEDeptName[0]}})
       window.open(router.href,'_blank')
     },
     // 通过待办数跳转
