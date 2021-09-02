@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-23 15:04:48
+ * @LastEditTime: 2021-09-02 09:56:35
  * @Description: 基础信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -175,7 +175,7 @@ export default {
     .row2, .row4 {
       // width: calc((100% - 1*3.75rem) / 2);
       .el-form-item__label {
-        width: 150px
+        // width: 150px
       }
     }
   }

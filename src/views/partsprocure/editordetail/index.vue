@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-08-31 18:17:22
+ * @LastEditTime: 2021-09-02 15:55:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
-	<iPage class="partsprocureEditordetail" v-permission="PARTSPROCURE_EDITORDETAIL_INDEXPAGE">
+	<iPage class="partsprocureEditordetail" v-permission.auto="PARTSPROCURE_EDITORDETAIL_INDEXPAGE|零件采购项目管理详情页">
 		<!-- 零件状态：
 			1：无采购项目编号 
 			2：未加入RFQ
@@ -308,7 +308,7 @@
 		</iCard>
 		<iTabsList  class="margin-top20" type='card' v-if='infoItem'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
-			<el-tab-pane lazy :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == '15'">
+			<el-tab-pane v-permission.auto="PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI|定点信息" lazy :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == '15'">
 				<designateInfo :params="infoItem" />
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_CAILIAOZUXINXI','材料组信息')"

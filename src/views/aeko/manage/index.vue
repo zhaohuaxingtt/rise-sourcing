@@ -18,7 +18,7 @@
               v-for="(item,index) in SearchList" 
               :key="'SearchList_aeko'+index" 
               :label="language(item.labelKey,item.label)"
-              v-permission.dynamic="item.permissionKey"
+              v-permission.dynamic.auto="item.permissionKey"
               >
               <template  v-if="item.type === 'select'" >
                   <aeko-select 
@@ -96,7 +96,7 @@
           </template>
       </template>
       <!-- 表单区域 -->
-      <div v-permission="AEKO_MANAGELIST_TABLE">
+      <div v-permission.auto="AEKO_MANAGELIST_TABLE|AEKO管理TABLE">
         <tableList
           class="table"
           index

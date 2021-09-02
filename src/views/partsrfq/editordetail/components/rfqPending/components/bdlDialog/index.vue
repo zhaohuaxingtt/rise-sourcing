@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-11 14:54:24
- * @LastEditTime: 2021-08-12 18:04:19
+ * @LastEditTime: 2021-09-01 20:01:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\bdlDialog\index.vue
@@ -88,7 +88,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { tableTitle } from "../BDL/data"
 import { pageMixins } from "@/utils/pageMixins"
 import { unselectRfqBdlPage, addRfqBdl } from "@/api/partsrfq/editordetail"
-
+import {updateRfqBdl} from '@/api/partsrfq/home/index'
 export default {
   components: { iDialog, iButton, iInput, icon, iPagination, tableList },
   mixins: [ pageMixins ],
@@ -195,14 +195,12 @@ export default {
       if (!this.multipleSelectionCache.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIANJIADEBDL", "请选择需要添加的BDL"))
 
       this.confirmLoading = true
-      addRfqBdl({
-        updateRfqBdlPackage: {
+      updateRfqBdl({
           rfqId: this.rfqId,
           updateType: "2",
           userId: this.userInfo.id,
           bdlInfoList: this.multipleSelectionCache
-        }
-      })
+        })
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 

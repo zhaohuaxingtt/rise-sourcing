@@ -385,6 +385,39 @@ export function transferPartScheduleList(params, fsId) {
   })
 }
 
+
+
+
+
+// 查询零件任务清单
+export function getPartTaskList(params) {
+  console.log(params)
+  return requst({
+    url: '/part-task/condition',
+    method: 'POST',
+    data:params
+  })
+}
+
+
+// 导出零件任务清单
+export function downLoadPartScheduleFile(params) {
+  return downloadRequst({
+    url: '/part-task/partTaskFile',
+    method: 'POST',
+    data:params
+  })
+}
+
+// 批量更新零件详情
+export function updatePartInfoList(params) {
+  return requst({
+    url: '/part-task/batchUpdate',
+    method: 'PUT',
+    data: params
+  })
+}
+
 // 生成排程版本
 export function addScheduleVersion(params) {
   return requst({
