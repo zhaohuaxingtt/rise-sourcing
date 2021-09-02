@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-09-01 14:12:14
+ * @LastEditTime: 2021-09-02 15:54:58
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \rise\src\utils\mydirect.js
@@ -41,13 +41,13 @@ Vue.directive('permission', {
                     }
                 }
             } else { //remove
-                // if (!store.state.permission.whiteBtnList[binding.expression]) {
-                //     el.parentNode.removeChild(el)
-                // }else{
-                //     if(businessPermission(binding.expression,router.currentRoute.query)){
-                //        el.parentNode.removeChild(el)
-                //     }
-                // }
+                if (!store.state.permission.whiteBtnList[binding.expression]) {
+                    el.parentNode.removeChild(el)
+                }else{
+                    if(businessPermission(binding.expression,router.currentRoute.query)){
+                       el.parentNode.removeChild(el)
+                    }
+                }
             }
         }
     })

@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-08-19 10:54:21
+ * @LastEditTime: 2021-09-02 11:18:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -90,7 +90,7 @@ import { iDatePicker } from "rise"
 import tablelist from './components/tablelist'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, tableTitle2} from "./components/data";
-import {findBySearches, getRfqDataList, addRfq, editRfqData} from "@/api/partsrfq/home";
+import {findBySearches, pageRfqRound, rfqRoundCreated, modification} from "@/api/partsrfq/home";
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
@@ -130,11 +130,11 @@ export default {
   methods: {
     init(){
       const res = this.dataRes;
-      this.tableListData = res.data.rfqRoundBdlVO.rfqBdlVOList;
+      this.tableListData = res.data.rfqBdlVOList;
       this.roundsPhase = this.tableListData[0].roundsPhase
-      this.page.currPage = res.data.rfqRoundBdlVO.pageNum
-      this.page.pageSize = res.data.rfqRoundBdlVO.pageSize
-      this.page.totalCount = res.data.rfqRoundBdlVO.total
+      this.page.currPage = res.data.pageNum
+      this.page.pageSize = res.data.pageSize
+      this.page.totalCount = res.data.total
       this.setTableRowSelected()
       this.initTimeData()
     },
@@ -144,20 +144,18 @@ export default {
       if (id) {
         this.tableLoading = true;
         const req = {
-          otherInfoPackage: {
             findType: '10',
             rfqId: id,
             current: this.page.currPage,
             size: this.page.pageSize,
-          }
         }
         try {
-          const res = await getRfqDataList(req)
-          this.tableListData = res.data.rfqRoundBdlVO.rfqBdlVOList;
+          const res = await pageRfqRound(req)
+          this.tableListData = res.data.rfqBdlVOList;
           this.roundsPhase = this.tableListData[0].roundsPhase
-          this.page.currPage = res.data.rfqRoundBdlVO.pageNum
-          this.page.pageSize = res.data.rfqRoundBdlVO.pageSize
-          this.page.totalCount = res.data.rfqRoundBdlVO.total
+          this.page.currPage = res.data.pageNum
+          this.page.pageSize = res.data.pageSize
+          this.page.totalCount = res.data.total
           this.setTableRowSelected()
           this.tableLoading = false;
           this.initTimeData()
@@ -191,16 +189,14 @@ export default {
       const id = this.$route.query.id
       if (id) {
         const req = {
-          dblRoundDTOPackage: {
             userId: store.state.permission.userInfo.id,
             startTime: this.startTime,
             endTime: this.endTime,
             rfqId: id,
             roundsType: this.roundType,
             bdlInfos: this.selectTableData
-          }
         }
-        const res = await addRfq(req)
+        const res = await rfqRoundCreated(req)
         this.resultMessage(res, () => {
           this.saveStaus = true
         })
@@ -210,14 +206,12 @@ export default {
       const id = this.$route.query.id
       if (id) {
         const req = {
-          dblRoundDTOPackage: {
             userId: store.state.permission.userInfo.id,
             rfqId: id,
             roundsType: this.roundType,
             bdlInfos: this.selectTableData
-          }
         }
-        const res = await addRfq(req)
+        const res = await rfqRoundCreated(req)
         this.resultMessage(res)
         this.$emit('refreshBaseInfo')
       }
@@ -225,13 +219,11 @@ export default {
     async updateRfqStatus(updateType) {
       const query = this.$route.query
       const req = {
-        updateRfqStatusPackage: {
           updateType,
           tmRfqIdList: [query.id],
           userId: store.state.permission.userInfo.id
-        }
       }
-      const res = await editRfqData(req)
+      const res = await modification(req)
       this.resultMessage(res)
       this.$emit('refreshBaseInfo')
     },

@@ -41,7 +41,7 @@ export default {
     iInput,
   },
   props:{
-    partInfo:{
+    basicInfo:{
       type:Object,
       default:()=>{},
     }
@@ -54,7 +54,9 @@ export default {
   },
   methods:{
     init(){
-      const terminationPrice = this.partInfo.terminationPrice;
+      const {basicInfo={}} = this; 
+      const {quotationPriceSummaryInfo={}} = basicInfo;
+      const terminationPrice = quotationPriceSummaryInfo.terminationPrice;
       this.value = terminationPrice ? cloneDeep(terminationPrice)  : '';
     },
     // 保存
@@ -62,8 +64,8 @@ export default {
       const {value} = this;
       if(!value) return iMessage.warn(this.language('LK_AEKO_TAB_DAMAGES_TIPS','请填写后提交'));
       this.btnLoading = true;
-      const {partInfo={}} = this;
-      const {quotationId=""} = partInfo;
+      const {basicInfo={}} = this;
+      const {quotationId=""} = basicInfo;
       const data = {
         terminationPrice:value,
         quotationId,

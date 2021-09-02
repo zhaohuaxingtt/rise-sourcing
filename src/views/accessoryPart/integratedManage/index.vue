@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-22 15:10:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-01 17:35:39
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -112,7 +112,7 @@ import { getAccessoryManageList, sendAccessoryInfo, downloadManageList, downLoad
 import { getDictByCode } from '@/api/dictionary'
 import {findBySearches,getCartypeDict} from "@/api/partsrfq/home";
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
-import { insertRfq } from '@/api/accessoryPart/index'
+import { insertRfqPart } from '@/api/partsrfq/home/index'
 import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
@@ -210,11 +210,7 @@ export default {
      * @return {*}
      */    
     joinRfq(rfq) {
-      const params = {
-        insertRfqPackage: {
-          rfqId: rfq.id,
-          operationType: '1',
-          rfqPartDTOList: this.selectParts.map(item => {
+      const params = this.selectParts.map(item => {
             return {
               buyerName: item.csfUserIdName, // 询价采购员
               linieName: item.respLinieName, // linie
@@ -226,12 +222,11 @@ export default {
               purchaseProjectId: item.purchasingProjectId,
               partNameZh: item.partNameCh,
               partProjectType: partProjTypes.PEIJIAN,
+              rfqId: rfq.id,
+              userId: this.$store.state.permission.userInfo.id
             }
-          }),
-          userId: this.$store.state.permission.userInfo.id
-        }
-      }
-      insertRfq(params).then(res => {
+      })
+      insertRfqPart(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.changeJoinRfqDialogVisible(false)
@@ -657,7 +652,7 @@ export default {
         linieDept: selectLINIE.length === 1 ? selectLINIEDept[0] : null,
         linieDeptName: selectLINIE.length === 1 ? selectLINIEDeptName[0] : null
       }
-      const router =  this.$router.resolve({path: '/sourcing/createrfq', query})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/createrfq', query})
       window.open(router.href,'_blank')
     },
     // 通过待办数跳转

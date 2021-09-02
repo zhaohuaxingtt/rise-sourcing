@@ -64,7 +64,7 @@
               <el-tooltip v-if="scope.row['expressionList'].length > 1" placement="top" effect="light" >
                 <div slot="content">
                   <p class="font-weight margin-bottom5" style="text-align:center">{{scope.row['expressionList'][0] || ''}}</p>
-                  <span class="font16" style="color:#747F9D">{{scope.row['expressionList'][1] || ''}}</span>
+                  <p class="font16" style="color:#747F9D;text-align:center">{{scope.row['expressionList'][1] || ''}}</p>
                 </div>
                 <!-- <icon class="margin-left8" symbol name="iconzengpjiacailiaochengben_lan"></icon> -->
                 <i class="el-icon-warning-outline font18 tipsIcon"></i>
@@ -207,7 +207,6 @@ export default {
               fsName:fsId
             };
 
-            console.log(costData,'costDatacostDatacostData');
             this.tableData = costData;
           }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
