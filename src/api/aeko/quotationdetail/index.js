@@ -19,6 +19,14 @@ export function bnkSupplierToken(params) {
     params,
   })
 }
+
+// 获取CBD调整部分下拉列表
+export function getAekoCarDosage(params) {
+  return requst({
+    url: `/aeko/cbd-select/${ params.quotationId }`,
+    method: 'GET',
+  })
+}
  
 // 获取报价单详情 
 export function getQuotationInfo(quotationId) {
@@ -29,9 +37,10 @@ export function getQuotationInfo(quotationId) {
 }
 
 // 终止费-保存
-export function saveTerminationPrice(quotationId) {
+export function saveTerminationPrice(data) {
   return requst({
-    url: `/part/terminationPrice?supplierId=${supplierId()}&quotationId=${quotationId}`,
+    url: `/part/terminationPrice?supplierId=${supplierId()}&quotationId=${data.quotationId}`,
     method: 'POST',
+    data,
   })
 }

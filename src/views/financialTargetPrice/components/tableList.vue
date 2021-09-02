@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 14:42:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-25 10:44:48
+ * @LastEditTime: 2021-08-30 10:32:48
  * @Description: 财务目标价公用表格
  * @FilePath: \front-web\src\views\financialTargetPrice\components\tableList.vue
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
-    <el-table-column v-if="selection" type='selection' width="56" align='center' :selectable="row => !isEdit"></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="56" align='center' ></el-table-column>
     <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
@@ -26,8 +26,8 @@
           <span v-if="items.required" style="color:red;">*</span>
         </template>
         <template slot-scope="scope">
-          <iInput v-if="isEdit && selectedItems.some(item => item.applyId === scope.row.applyId) && items.type === 'input'" :value="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)"></iInput>
-          <iSelect v-else-if="isEdit  && selectedItems.some(item => item.applyId === scope.row.applyId) && items.type === 'select'" v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)">
+          <iInput v-if="scope.row.isEdit && items.type === 'input'" :value="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)"></iInput>
+          <iSelect v-else-if="scope.row.isEdit && items.type === 'select'" v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)">
             <el-option
               :value="item.value"
               :label="item.label"

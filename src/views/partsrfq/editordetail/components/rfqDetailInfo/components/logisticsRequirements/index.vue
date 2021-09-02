@@ -46,7 +46,7 @@ import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import detailDialog from './components/detail'
-import {getRfqDataList} from "@/api/partsrfq/home";
+import {getRfqDataList,partLogisticByFs,pageByRfqId} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 
 export default {
@@ -83,19 +83,17 @@ export default {
       if (id) {
         this.tableLoading = true;
         const req = {
-          otherInfoPackage: {
             findType: '02',
             rfqId: id,
             current: this.page.currPage,
             size: this.page.pageSize,
-          }
         }
         try {
-          const res = await getRfqDataList(req)
-          this.tableListData = res.data.partLogisticRequirementList.partLogisticRequirementsVOList;
-          this.page.currPage = res.data.partLogisticRequirementList.pageNum
-          this.page.pageSize = res.data.partLogisticRequirementList.pageSize
-          this.page.totalCount = res.data.partLogisticRequirementList.total
+          const res = await pageByRfqId(req)
+          this.tableListData = res.data.partLogisticRequirementsVOList;
+          this.page.currPage = res.data.pageNum
+          this.page.pageSize = res.data.pageSize
+          this.page.totalCount = res.data.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -114,14 +112,12 @@ export default {
       try {
         const id = this.$route.query.id
         const req = {
-          otherInfoPackage: {
             findType: '09',
             rfqId: id,
-            fsGsNum
-          }
+            fsNum:fsGsNum
         }
-        const res = await getRfqDataList(req)
-        this.detailInfo = res.data.partLogisticRequirementVO
+        const res = await partLogisticByFs(req)
+        this.detailInfo = res.data
         this.detailInfo.fsGsNum = fsGsNum
       } catch {
         this.detailInfo = {}

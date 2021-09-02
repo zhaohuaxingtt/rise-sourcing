@@ -62,9 +62,17 @@ import scrapCost from "./components/scrapCost"
 import manageCost from "./components/manageCost"
 import otherCost from "./components/otherCost"
 import profit from "./components/profit"
+import { getAekoCarDosage } from "@/api/aeko/quotationdetail"
 
 export default {
   components: { iCard, iButton, iInput, iText, iSelect, cbdSummary, rawMaterials, manufacturingCost, scrapCost, manageCost, otherCost, profit },
+  props: {
+    quotationId: {
+      type: String,
+      required: true,
+      default: ""
+    }
+  },
   data() {
     return {
       aPriceChangeMode: false,
@@ -81,9 +89,23 @@ export default {
     }
   },
   created() {
+    this.getAekoCarDosage()
     this.handleChangeByModules([""])
   },
   methods: {
+    getAekoCarDosage() {
+      getAekoCarDosage({
+        quotationId: this.quotationId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          console.log(res.data)
+        } else {
+          
+        }
+      })
+      .catch()
+    },
     handleChangeByModules(modules) {
       this.moduleMap = {}
 
