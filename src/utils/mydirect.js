@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-09-02 15:54:58
+ * @LastEditTime: 2021-09-02 17:46:49
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \rise\src\utils\mydirect.js
@@ -33,21 +33,21 @@ Vue.directive('permission', {
                 // eslint-disable-next-line no-debugger
                 const splitValue = binding.expression.split('|')
                 if(splitValue.length > 1){store.dispatch('uploadResource',splitValue)}
-                if (!store.state.permission.whiteBtnList[splitValue[0]]) {
-                    el.parentNode.removeChild(el)
-                }else{
-                    if(businessPermission(splitValue[0],router.currentRoute.query)){
-                       el.parentNode.removeChild(el)
-                    }
-                }
+                // if (!store.state.permission.whiteBtnList[splitValue[0]]) {
+                //     el.parentNode.removeChild(el)
+                // }else{
+                //     if(businessPermission(splitValue[0],router.currentRoute.query)){
+                //        el.parentNode.removeChild(el)
+                //     }
+                // }
             } else { //remove
-                if (!store.state.permission.whiteBtnList[binding.expression]) {
-                    el.parentNode.removeChild(el)
-                }else{
-                    if(businessPermission(binding.expression,router.currentRoute.query)){
-                       el.parentNode.removeChild(el)
-                    }
-                }
+                // if (!store.state.permission.whiteBtnList[binding.expression]) {
+                //     el.parentNode.removeChild(el)
+                // }else{
+                //     if(businessPermission(binding.expression,router.currentRoute.query)){
+                //        el.parentNode.removeChild(el)
+                //     }
+                // }
             }
         }
     })
