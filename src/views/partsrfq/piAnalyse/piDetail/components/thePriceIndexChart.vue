@@ -334,6 +334,10 @@ export default {
           });
           this.xLabelData = res.data[0].timeList;
           this.setStorePiChartData();
+        } else {
+          this.seriesArray = [];
+          this.xLabelData = [];
+          this.resChartData = [];
         }
         this.chartLoading = false;
       } catch {
