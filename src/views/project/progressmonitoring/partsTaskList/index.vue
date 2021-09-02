@@ -27,7 +27,6 @@
         <div class="floatright">
           <!--------------------处理按钮----------------------------------->
           <iButton  @click="handleBatchUpdate" >{{language('PILIANGXIUGAIZHUANGTAI','批量修改状态')}}</iButton>
-          <iButton  @click="handleSend" >{{language('BAOCUN','保存')}}</iButton>
           <iButton  @click="handleExport('1')" >{{language('DAOCHUDEIEPQUERENQINGDAN','导出待EP确认清单')}}</iButton>
           <iButton  @click="handleExport('2')" >{{language('DAOCHUDEIMQQUERENQINGDAN','导出待MQ确认清单')}}</iButton>
 
@@ -63,7 +62,7 @@
 <script>
 import { iSearch, iSelect, iInput, iButton, iCard, iPagination, iMessage,iDialog } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
-import { searchList, tableTitle } from './data'
+import { searchList, tableTitle,partSortStatus } from './data'
 import tableList from '@/views/project/progressmonitoring/partsTaskList/components/tableList'
 import { getCarTypePro, getPartTaskList,downLoadPartScheduleFile,updatePartInfoList, transferSchedule } from '@/api/project'
 import { getDictByCode } from '@/api/dictionary'
@@ -74,6 +73,7 @@ export default {
     return {
       searchList,
       tableTitle,
+      partSortStatus,
       dialogVisible:false,
       searchParams: {
         confirmStatus: 'TO_BE_CONFIRMED'
@@ -113,8 +113,18 @@ export default {
     //列表数据选择零件状态
     handleSelectChange(val, item) {
       let ids= [item.id];
-      let partSort = item.partSort;
-      this.updatePartTask(ids,partSort)
+      let choosePartSort = item.partSort;
+      let rowPartSort = "";
+      this.oldTableData.forEach(data => {
+         if(data.id == item.id){
+           rowPartSort = data.partSort;
+         }
+      })
+      if(!this.handingPartSortStatus(rowPartSort,choosePartSort)){
+        item.partSort = rowPartSort;
+        return;
+      }
+      this.updatePartTask(ids,choosePartSort)
     },
     //更新数据
     updatePartTask(optionIds,optionPartSort) {
@@ -132,9 +142,12 @@ export default {
       })
     },
     handleExport(flag){
-
+      let ids = [];
+      this.selectRows.forEach(d => {
+        ids.push(d.id);
+      })
       const params = {
-        //id:optionIds,
+        id:ids,
         cartypeProId:this.searchParams.cartypeProId,
         partSort:flag,
       }
@@ -146,24 +159,42 @@ export default {
         }
       })
     },
-    handleSend() {
-
-    },
     handleBatchUpdate(){
+
       if(this.selectRows.length ==0){
-        iMessage.error(this.$i18n.locale === 'zh' ? "请选择批量更新数据":"")
+        iMessage.error(this.language('QINGXUANZHEPILIANGGENGXINGSHUJU','请选择批量更新数据'));
         return
       }
 
+      //判断零件分类状态是否一致
+      let partSort = this.selectRows[0].partSort;
+      let compareParSort = false;
+      this.selectRows.forEach(d => {
+        if(d.partSort !=partSort){
+          compareParSort = true;
+          return
+        }
+      })
+      if(compareParSort){
+        iMessage.error(this.language('QINGXUANZHELINGJIANFENGLEI','请选择同类型零件分类数据'))
+        return
+      }
+      this.dialogPartSort = true;
       this.dialogVisible = true;
-
     },
     //弹出框
     dialogSure(){
       if(this.dialogPartSort ==''){
-        iMessage.error(this.$i18n.locale === 'zh' ? "请选择零件分类":"")
+        iMessage.error(this.language('QINGXUANZHELINGJIANFENGLEI','请选择零件分类'))
         return
       }
+      let rowsPartSort = this.selectRows[0].partSort;
+
+      //判断零件状态
+      if(!this.handingPartSortStatus(rowsPartSort,this.dialogPartSort)){
+        return;
+      }
+
       //更新批量数据
       let ids = [];
       this.selectRows.forEach(d => {
@@ -172,6 +203,25 @@ export default {
 
       this.updatePartTask(ids,this.dialogPartSort)
       this.dialogVisible = false;
+    },
+    handingPartSortStatus(rowsPartSort,choosePartSort){
+      //判断选择的列表数据零件分类是否为EP确认
+      if(rowsPartSort === partSortStatus.PART_TASK_NEED_EP_CONFIEMED){
+        //判断弹框选择零件分类是否为等待释放或删除
+        if(choosePartSort !== partSortStatus.PART_TASK_WAIT_RELEASE && choosePartSort !== partSortStatus.PART_TASK_WAIT_DELETE) {
+          iMessage.error(this.language('LINGJIANFENLEIPARTPORTSTATUSEP','零件分类为 【需EP确认】 只能改为 【等待释放】or【等待删除】'))
+          return false;
+        }
+        //【需MQ确认】更改为 【等待删除】or 【正常零件】
+        //判断选择的列表数据零件分类是否为需MQ确认
+      }else if(rowsPartSort === partSortStatus.PART_TASK_NEED_MQ_CONFIEMED){
+        //判断弹框选择零件分类是否为等待删除或正常零件
+        if(choosePartSort !== partSortStatus.PART_TASK_NORMAL_PARTS && choosePartSort !== partSortStatus.PART_TASK_WAIT_DELETE) {
+          iMessage.error(this.language('LINGJIANFENLEIPARTPORTSTATUSMQ','零件分类为 【需MQ确认】 只能改为 【正常零件】or【等待删除】'))
+          return false;
+        }
+      }
+      return true;
     },
     /**
      * @Description: 获取下拉数据
@@ -230,7 +280,6 @@ export default {
     },
 
     handleSelectionChange(val) {
-      console.log(val);
       this.selectRows = val
     },
     getTableList() {
@@ -251,7 +300,7 @@ export default {
       getPartTaskList(params).then(res => {
         if (res?.result) {
           this.tableData = res.data
-          this.oldTableData = res.data;//备份历史数据
+          this.oldTableData = JSON.parse(JSON.stringify( res.data));//备份历史数据
           this.page.pageSize = Number(res.pageSize)
           this.page.totalCount = Number(res.total)
           this.page.currPage = Number(res.pageNum)
