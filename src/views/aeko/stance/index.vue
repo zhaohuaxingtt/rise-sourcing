@@ -17,7 +17,7 @@
               v-for="(item,index) in SearchList" 
               :key="'SearchList_aeko'+index" 
               :label="language(item.labelKey,item.label)"
-              v-permission.dynamic="item.permissionKey"
+              v-permission.dynamic.auto="item.permissionKey"
               >   
                 <template v-if="item.type === 'select'" >
                   <aeko-select 
@@ -56,7 +56,7 @@
       </iSearch>
       <iCard class="contain margin-top20" :title="language('LK_AEKOBIAOTAI','AEKO表态')">
       <!-- 表单区域 -->
-      <div v-permission="AEKO_STANCELIST_TABLE">
+      <div v-permission.auto="AEKO_STANCELIST_TABLE|AEKO表态TABLE">
         <tableList
           class="table"
           index
