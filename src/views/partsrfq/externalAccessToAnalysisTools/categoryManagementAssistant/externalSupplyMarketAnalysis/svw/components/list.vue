@@ -393,7 +393,7 @@ export default {
       } else if (this.interestsStatus === "profit") {
         this.MarketOverviewObj1.supplierFinanceDTOList[0].profit = val
       }
-      this.$emit('returnObj', this.MarketOverviewObj1, this.index);
+      this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
     },
     year2 (val) {
       if (this.interestsStatus === "otherAmount") {
@@ -403,7 +403,7 @@ export default {
       } else if (this.interestsStatus === "profit") {
         this.MarketOverviewObj1.supplierFinanceDTOList[1].profit = val
       }
-      this.$emit('returnObj', this.MarketOverviewObj1, this.index);
+      this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
     },
     year3 (val) {
       if (this.interestsStatus === "otherAmount") {
@@ -413,7 +413,7 @@ export default {
       } else if (this.interestsStatus === "profit") {
         this.MarketOverviewObj1.supplierFinanceDTOList[2].profit = val
       }
-      this.$emit('returnObj', this.MarketOverviewObj1, this.index);
+      this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
     },
     edite (val) {
       this.isEdite = val
@@ -534,7 +534,7 @@ export default {
                   }
                 }
               }
-              let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
+              let colorList = ['#0C47A1', '#1976D1', '#2297F3', '#64B5F6', '#00579B', '#0188D1', '#03A9F4', '50C2F7']
               if (x.sapStuffCode == this.categoryCode) {
                 seriesObj.selected = true
                 check = false
@@ -579,22 +579,7 @@ export default {
       immediate: true,
       deep: true
     },
-    handleChange (val) {
-      this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[0].profit = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[1].profit = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[2].profit = ''
-      // if (val === 'otherAmount') {
-      //   this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = this.year1
-      //   this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = this.year2
-      //   this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = this.year3
-      // }else if
-    },
+
     '$store.state.rfq.categoryCode': {
       handler (val) {
         this.categoryCode = val
@@ -654,6 +639,17 @@ export default {
       const option = this.option
       myChart.setOption(option);
 
+    },
+    handleChange (val) {
+      this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[0].profit = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[1].profit = ''
+      this.MarketOverviewObj.supplierFinanceDTOList[2].profit = ''
     },
     initturnover () {
       const myChart = echarts().init(this.$refs.turnover);
