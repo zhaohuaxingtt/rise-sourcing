@@ -80,7 +80,6 @@ export default {
         }
         try {
           const res = await outputpPageByRfqId(req)
-          console.log(res)
           this.tableListData = res.data;
           if (this.tableListData.length !== 0) {
             const yearTitle = this.tableListData[0].outputPlanList.map(item => {
