@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-01 17:27:55
+ * @LastEditTime: 2021-09-02 15:16:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -39,9 +39,8 @@
                 class="margin-left30 "></icon>
         </div>
       </div>
-      <div class=" bodyBox clearFloat">
-        <div class="cardBox"
-             style="width:18%">
+      <el-row>
+        <el-col :span="4">
           <iCard v-show="reportFlag">
             <div class=" searchForm"
                  style="margin-right:-20px">
@@ -108,11 +107,11 @@
               </ul>
             </div>
           </iCard>
-        </div>
-        <div class="cardBox"
-             style="width:82%">
+
+        </el-col>
+        <el-col :span="20">
           <iCard class="margin-left20"
-                 style="height:619px">
+                 style="height:100%">
             <div class="chartBox1">
               <div class="line"></div>
               <div class="line1"></div>
@@ -149,7 +148,8 @@
                          :key="i.value"
                          style="text-align:center">
                       <div style="margin-bottom:10px">
-                        <span @click="computeModal(firstBarData)">{{i.title}}</span>
+                        <span class="detail"
+                              @click="computeModal(firstBarData)">{{i.title}}</span>
                         <el-tooltip class="item"
                                     effect="dark"
                                     :content="firstBarData.tips"
@@ -194,7 +194,7 @@
                       <el-select v-model="item.priceType"
                                  @change="changPriceType"
                                  style="width:150px;z-index:1000"
-                                 v-if="flag1">
+                                 v-if="item.priceType!=='monthPrice'">
                         <el-option v-for="i in mekpriceTypeList"
                                    :key="i.id"
                                    :value="i.code"
@@ -205,7 +205,7 @@
                                       placeholder="选择日期"
                                       @change="changeDate"
                                       style="width:150px;z-index:1000"
-                                      v-if="tem.priceType==='2'">
+                                      v-if="item.priceType==='monthPrice'">
                       </el-date-picker>
                     </div>
                   </div>
@@ -238,8 +238,10 @@
             </div>
             <!-- <report :dialogVisible="true"></report> -->
           </iCard>
-        </div>
-      </div>
+
+        </el-col>
+      </el-row>
+
       <tableList :gridData="gridData"
                  :editFlag="editFlag"
                  :addRowList="addRowList"
@@ -674,6 +676,9 @@ export default {
     },
     //价格类型
     changPriceType (val) {
+      if (val === '2') {
+        this.flag1 = false
+      }
       this.mekpriceTypeList.forEach(item => {
         if (item.code === val) {
           this.mekpriceType = item.label
@@ -699,7 +704,7 @@ export default {
       this.barData.forEach(item => {
         let obj = {
           motorId: item.motorId,
-          priceType: item.priceType,
+          priceType: val,
           isTargetMotor: false
         }
         params.info.push(obj)
@@ -759,7 +764,8 @@ export default {
           data.shift()
           this.barData = data
           this.barData.forEach(item => {
-            item.checkList = []
+            // item.checkList = []
+            this.$set(this.barData, 'checkList', []);
           })
           this.barData.forEach(item => {
             item.detail.forEach(i => {
@@ -1005,10 +1011,13 @@ export default {
 }
 .xAxis {
   position: absolute;
-  bottom: 3%;
+  bottom: 2%;
   font-size: 12px;
   color: "#3C4F74";
   font-family: "Arial";
+  .detail:hover {
+    text-decoration: underline;
+  }
 }
 
 ::v-deep .el-select {
