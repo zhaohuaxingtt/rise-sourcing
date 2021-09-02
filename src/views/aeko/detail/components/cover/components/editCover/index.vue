@@ -16,7 +16,7 @@
         <iFormItem 
           v-for="(item, index) in basicTitle" :key="index" 
           :required="item.required" :label="language(item.labelKey, item.label)+':'" 
-          v-permission.dynamic="item.editPermissionKey" 
+          v-permission.dynamic.auto="item.editPermissionKey" 
         >
           <template v-if="item.editable && isEdit">
             <template v-if="item.type === 'input'">

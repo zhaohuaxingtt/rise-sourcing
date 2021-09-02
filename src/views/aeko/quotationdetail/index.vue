@@ -42,6 +42,10 @@
             </template>
           </el-popover>
         </template>
+
+        <template #aprice="scope">
+          <span  @click="goToBNK">11111</span>
+        </template>
       </tableList>
     </iCard>
 
@@ -158,7 +162,7 @@ export default {
     async goToBNK(){
       const {userInfo={}} = this;
       const {userType=null} = userInfo;
-      if(userType==1) return;
+      // if(userType==1) return;
 
       const {basicInfo={}} = this;
       const {aekoPartInfo={},rfqId,supplierId} = basicInfo;
@@ -184,8 +188,10 @@ export default {
       // partProjId    零件采购项目Id String
       // rfqId           rfqId  String
       await bnkSupplierToken({
-        partProjId:aekoPartInfo.partProjId,
-        rfqId,
+        // partProjId:aekoPartInfo.partProjId,
+        // rfqId,
+        partProjId:'11',
+        rfqId:'11'
       }).then((res)=>{
         if(res.code == 200){
           const link = `http://svmwt038/sol-bnk/pages/bnk/quotes/lsp-view.jsf?${paramsStr}&token=${res.data}`;

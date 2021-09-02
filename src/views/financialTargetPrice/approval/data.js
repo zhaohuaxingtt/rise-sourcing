@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-25 09:42:43
+ * @LastEditTime: 2021-09-02 16:02:02
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\data.js
  */
@@ -21,7 +21,13 @@ export const tableTitle = [
   {props:'lcBVary',name:'LC_B变化', key: "LCBBIANHUA", tooltip: true, width: 120},
   {props:'skdAVary',name:'SKD_A变化', key: "SKDABIANHUA", tooltip: true, width: 120},
   {props:'skdBVary',name:'SKD_B变化', key: "SKDBBIANHUA", tooltip: true, width: 100},
-  {props:'ckdLanded',name:'CKD Landed', key: "CKDLANDED", tooltip: true, width: 120},
+  {props:'ckdLandedVary',name:'CKD Landed变化', key: "CKDLANDEDBIANHUA", tooltip: true, width: 120},
+  {props:'ckdDutyVary',name:'CKD duty变化', key: "CKDDUTYBIANHUA", tooltip: true, width: 120},
+  {props:'ckdExworkVary',name:'CKD Ex-work变化', key: "CKDEXWORKBIANHUA", tooltip: true, width: 120},
+  {props:'ckdLanded',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120},
+  {props:'ckdLanded',name:'修改日期', key: "XIUGAIRIQI", tooltip: true, width: 120},
+  {props:'xiugai',name:'修改记录', key: "XIUGAIJILU", tooltip: true, width: 120},
+  {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true},
   {props:'shenpipi',name:'', key: "", tooltip: true, width: 120},
 ]
 
@@ -36,7 +42,7 @@ export const searchList = [
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG'},
   {value: 'cfId', label: 'CF', type: 'select', i18n_label: 'CF',selectOption:'CF_USER'},
   {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE'},
-  {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',},
+  // {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',},
   {value: 'cfPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption:'CF_PRICE_TYPE'}
 ]
 
