@@ -18,7 +18,8 @@
         @handlePartItemClick="handlePartItemClick"
     />
     <!-- 自定义零件弹窗 -->
-    <customPart v-if="customParams.visible" :key="customParams.key" :batchNumber="currentTabData.batchNumber" v-model="customParams.visible"
+    <customPart v-if="customParams.visible" :key="customParams.key" :batchNumber="currentTabData.batchNumber"
+                v-model="customParams.visible"
                 @handleCloseCustom="handleCloseCustom" @handleSaveCustom="handleSaveCustom"/>
     <!--信息-->
     <iCard class="margin-bottom20">
@@ -69,7 +70,10 @@
       <!--      零件成本构成-->
       <iCard class="pieBox">
         <thePartsCostChart
+            ref="thePartsCostChart"
+            :currentTab="currentTab"
             :dataInfo="dataInfo"
+            :averageData="averageData"
             :pieLoading="pieLoading"
         />
       </iCard>
@@ -157,7 +161,7 @@ export default {
         partsId: '',
         batchNumber: this.$route.query.batchNumber,
         supplierId: '',
-        fsId: ''
+        fsId: '',
       },
       dataInfo: {},
       averageData: {},
@@ -308,6 +312,7 @@ export default {
         });
         this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
         await Promise.all([this.getPiIndexWaveSelectList(), this.$refs.thePriceIndexChart.buildChart()]);
+        this.$refs.thePartsCostChart.buildChart()
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
       } catch {
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
@@ -331,7 +336,11 @@ export default {
           this.timeRange = null;
         }
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
-        await Promise.all([this.getPiIndexWaveSelectList(), this.$refs.thePriceIndexChart.buildChart()]);
+        await Promise.all([
+          this.getPiIndexWaveSelectList(),
+          this.$refs.thePriceIndexChart.buildChart(),
+        ]);
+        this.$refs.thePartsCostChart.buildChart()
       } catch {
         this.averageData = {};
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});

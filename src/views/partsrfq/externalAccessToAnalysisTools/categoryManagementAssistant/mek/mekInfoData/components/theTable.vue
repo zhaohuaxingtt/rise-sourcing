@@ -11,14 +11,14 @@
       <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="5">
           <el-form-item :label="language('CAILIAOZU','材料组')">
-            <iSelect @change="getTableList" :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
+            <iSelect filterable @change="getTableList" :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
               <el-option :value="item.categoryCode" :label="item.categoryName" v-for="item of formGoup.materialGroupList" :key="item.categoryCode"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
         <el-col :span="5">
           <el-form-item :label="language('CHEXING','车型')">
-            <iSelect @change="getTableList" :placeholder="language('QXZCX','请选择车型')" v-model="form.motorId">
+            <iSelect filterable @change="getTableList" :placeholder="language('QXZCX','请选择车型')" v-model="form.motorId">
               <el-option :value="item.vwModelCode" :label="item.modelNameZh" v-for="item of formGoup.carTypeList" :key="item.vwModelCode"></el-option>
             </iSelect>
           </el-form-item>

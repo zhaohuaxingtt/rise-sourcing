@@ -7,6 +7,7 @@
 
 <script>
 import echarts from '@/utils/echarts';
+import {CURRENTTIME, AVERAGE} from './data';
 
 export default {
   props: {
@@ -22,8 +23,18 @@ export default {
     },
     pieLoading: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    currentTab: {
+      type: String,
+      default: '',
+    },
+    averageData: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   mounted() {
     this.buildChart();
@@ -77,21 +88,29 @@ export default {
       chart.setOption(option, true);
     },
     assembleData() {
-      const resData = this.dataInfo && this.dataInfo.pieScaleList;
+      let resData = '';
+      if (this.currentTab === CURRENTTIME) {
+        resData = this.dataInfo && this.dataInfo.pieScaleList;
+      } else {
+        resData = this.averageData && this.averageData.pieScaleList;
+      }
       if (Array.isArray(resData)) {
         const data = resData.map(item => {
           return {
             name: item.costName,
             value: item.costProportion,
             itemStyle: {
-              color: item.color
-            }
+              color: item.color,
+            },
           };
         });
         this.seriesArray = data;
         this.legendData = data.map(item => {
           return item.name;
         });
+      } else {
+        this.seriesArray = [];
+        this.legendData = [];
       }
     },
     buildChart() {
