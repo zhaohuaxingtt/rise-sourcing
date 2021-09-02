@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-02 15:16:01
+ * @LastEditTime: 2021-09-02 15:33:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -9,7 +9,8 @@
 <template>
   <iPage class="new-MEK">
     <div id="content">
-      <div class="navBox flex-between-center">
+      <div class="navBox flex-between-center"
+           style="margin-bottom:20px">
         <div class="title font-weight flex">
           <label for="">{{ language("QIEHUANCAILIAOZU","切换材料组") }}:</label>
           <iSelect @change="changeCategory"
@@ -41,7 +42,8 @@
       </div>
       <el-row>
         <el-col :span="4">
-          <iCard v-show="reportFlag">
+          <iCard v-show="reportFlag"
+                 style="height:619px">
             <div class=" searchForm"
                  style="margin-right:-20px">
               <el-form label-position="top"
@@ -95,7 +97,8 @@
                        @click="handleSearchReset">{{ $t("LK_ZHONGZHI") }}</iButton>
             </div>
           </iCard>
-          <iCard v-show="!reportFlag">
+          <iCard v-show="!reportFlag"
+                 style="height:619px">
             <div class=" searchForm1"
                  style="margin-right:20px">
               <label for=""
@@ -111,7 +114,7 @@
         </el-col>
         <el-col :span="20">
           <iCard class="margin-left20"
-                 style="height:100%">
+                 style="height:619px">
             <div class="chartBox1">
               <div class="line"></div>
               <div class="line1"></div>
@@ -968,7 +971,7 @@ export default {
 .line {
   position: absolute;
   left: 40px;
-  bottom: 12%;
+  bottom: 9%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -976,7 +979,7 @@ export default {
 .line1 {
   position: absolute;
   left: 40px;
-  bottom: 22%;
+  bottom: 19%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -984,7 +987,7 @@ export default {
 .line2 {
   position: absolute;
   left: 40px;
-  bottom: 32%;
+  bottom: 29%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -992,7 +995,7 @@ export default {
 .line3 {
   position: absolute;
   left: 40px;
-  bottom: 42%;
+  bottom: 39%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -1000,7 +1003,7 @@ export default {
 .line4 {
   position: absolute;
   left: 40px;
-  bottom: 54%;
+  bottom:51%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
