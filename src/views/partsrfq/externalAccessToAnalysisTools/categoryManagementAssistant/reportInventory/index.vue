@@ -1,7 +1,6 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-08 15:16:42
- * 没有优化的bug---@select="select" @select-all="selectAll($event,value.code)"
 -->
 <template>
   <iDialog class="dialog" :visible.sync="value" width="95%" @close="clearDiolog">
@@ -64,39 +63,43 @@ export default {
     }
   },
   methods: {
-    setChildren(children, type) {
+    setChildren(children, type, index) {
       // 编辑多个子层级
       children.map((j) => {
-        this.toggleSelection(j, type)
+        this.toggleSelection(j, type, index)
         if (j.childNodes) {
-          this.setChildren(j.childNodes, type)
+          this.setChildren(j.childNodes, type, index)
         }
       })
     },
     // 选中父节点时，子节点一起选中取消
     select(selection, row) {
-      if (
-        selection.some((el) => {
-          return row.id === el.id
+      this.tableList.forEach((item, index) => {
+        item.dimensions.forEach(val => {
+          // 反向推是哪一个表
+          if (val.id === row.id) {
+            if (
+              selection.some((el) => {
+                return row.id === el.id
+              })
+            ) {
+              if (row.childNodes) {
+                // 解决子组件没有被勾选到
+                this.setChildren(row.childNodes, true, index)
+              }
+            } else {
+              if (row.childNodes) {
+                this.setChildren(row.childNodes, false, index)
+              }
+            }
+          }
         })
-      ) {
-        if (row.childNodes) {
-          // 解决子组件没有被勾选到
-          this.setChildren(row.childNodes, true)
-        }
-      } else {
-        if (row.childNodes) {
-          this.setChildren(row.childNodes, false)
-        }
-      }
+      })
     },
-    toggleSelection(row, select) {
+    toggleSelection(row, select, index) {
       if (row) {
         this.$nextTick(() => {
-          this.$refs.multipleTable[0] && this.$refs.multipleTable[0].toggleRowSelection(row, select)
-          this.$refs.multipleTable[1] && this.$refs.multipleTable[1].toggleRowSelection(row, select)
-          this.$refs.multipleTable[2] && this.$refs.multipleTable[2].toggleRowSelection(row, select)
-          this.$refs.multipleTable[3] && this.$refs.multipleTable[3].toggleRowSelection(row, select)
+          this.$refs.multipleTable[index] && this.$refs.multipleTable[index].toggleRowSelection(row, select)
         })
       }
     },
@@ -118,7 +121,7 @@ export default {
             selection.map((el) => {
               if (el.childNodes) {
                 // 解决子组件没有被勾选到
-                this.setChildren(el.childNodes, true)
+                this.setChildren(el.childNodes, true, index)
               }
             })
           }
@@ -126,7 +129,7 @@ export default {
             this.tableList[index].dimensions.map((el) => {
               if (el.childNodes) {
                 // 解决子组件没有被勾选到
-                this.setChildren(el.childNodes, false)
+                this.setChildren(el.childNodes, false, index)
               }
             })
           }
@@ -175,8 +178,6 @@ export default {
         iMessage.warn(this.language('BQNMYXZSJ', '抱歉，你没有选择数据'))
         return
       }
-      // sortedUniq去重？？97行
-      pms.ids = _.sortedUniq(pms.ids)
       await categoryReportExport(pms)
     },
     handleAll() {
