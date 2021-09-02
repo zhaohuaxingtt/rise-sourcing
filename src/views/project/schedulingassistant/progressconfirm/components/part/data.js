@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 10:57:18
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 16:17:29
+ * @LastEditTime: 2021-09-02 10:51:30
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\part\data.js
  */
@@ -15,7 +15,7 @@ export const tableTitleNomi = [
   {props:'isBmg',name:'是否BMG', key: "SHIFOUBMG", tooltip: true},
   {props:'scheNomiTimeKw',name:'定点soll1', key: "DINGDIANSOLL1", tooltip: true, width: 120},
   {props:'scheKickoffTimeKw',name:'Kickoff soll2', key: "KICKOFFSOLL2", tooltip: true, width: 120},
-  {props:'scheFirstTryoutTimeKw',name:'1st tryout prognose', key: "1STTRYOUTPROGNOSE", tooltip: true, width: 120},
+  {props:'scheFirstTryoutTimeKw',name:'1st tryout prognose', key: "1STTRYOUTPROGNOSE", tooltip: true, width: 140},
   {props:'scheOtsTimeKw',name:'OTS prognose', key: "OTSPROGNOSE", tooltip: true, width: 120},
   {props:'scheEmTimeKw',name:'EM prognose', key: "EMPROGNOSE", tooltip: true, width: 120},
   {props:'delayWeek',name:'预计影响周数', key: "YUJIYINGXIANGZHOUSHU", tooltip: true, width: 120},
@@ -32,7 +32,7 @@ export const tableTitleKickoff = [
   {props:'isBmg',name:'是否BMG', key: "SHIFOUBMG", tooltip: true},
   // {props:'productGroupDe',name:'定点soll1', key: "DINGDIANSOLL1", tooltip: true},
   {props:'scheKickoffTimeKw',name:'Kickoff soll1', key: "KICKOFFSOLL1", tooltip: true, width: 120},
-  {props:'scheFirstTryoutTimeKw',name:'1st tryout prognose', key: "1STTRYOUTPROGNOSE", tooltip: true, width: 120},
+  {props:'scheFirstTryoutTimeKw',name:'1st tryout prognose', key: "1STTRYOUTPROGNOSE", tooltip: true, width: 140},
   {props:'scheOtsTimeKw',name:'OTS prognose', key: "OTSPROGNOSE", tooltip: true, width: 120},
   {props:'scheEmTimeKw',name:'EM prognose', key: "EMPROGNOSE", tooltip: true, width: 120},
   {props:'delayWeek',name:'预计影响周数', key: "YUJIYINGXIANGZHOUSHU", tooltip: true, width: 120},
