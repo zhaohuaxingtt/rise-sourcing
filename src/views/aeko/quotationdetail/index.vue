@@ -48,7 +48,7 @@
     <iTabsList class="margin-top20" type="card" v-model="currentTab" :before-leave="tabLeaveBefore" @tab-click="tabChange">
       <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name" v-permission.dynamic.auto="tab.permissionKey">
         <template v-if="tab.name == currentTab">
-          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :partInfo="partInfo" @getBasicInfo="getBasicInfo"/>
+          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :partInfo="partInfo" :basicInfo="basicInfo" @getBasicInfo="getBasicInfo"/>
         </template>
       </el-tab-pane>
     </iTabsList>
@@ -138,7 +138,7 @@ export default {
             quotationId,
             };
           this.tableListData=[quotationPriceSummaryInfo];
-          this.BbasicInfo = data;
+          this.basicInfo = data;
           if(supplierId){
             this.$router.push({
               path,
@@ -168,6 +168,7 @@ export default {
       // tmRfqId：当前报价单对应的RFQ_ID;
       // ppSupplierId：供应商id
       // ppSupplierUserId：当前登录的供应商用户id
+      // token：由后端提供
 
       const data = {
         partProjId:aekoPartInfo.partProjId,
@@ -180,19 +181,20 @@ export default {
         paramsStr+=`${i}=${data[i]}&`
       }
 
-      // token：由后端提供
       // partProjId    零件采购项目Id String
       // rfqId           rfqId  String
       await bnkSupplierToken({
-        // partProjId:'332',
-        // rfqId:'FS21-00156'
         partProjId:aekoPartInfo.partProjId,
         rfqId,
       }).then((res)=>{
-        
+        if(res.code == 200){
+          const link = `http://svmwt038/sol-bnk/pages/bnk/quotes/lsp-view.jsf?${paramsStr}&token=${res.data}`;
+          window.open(link,'_blank');
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
       });
-      // const link = `http://svmwt038/sol-bnk/pages/bnk/quotes/lsp-view.jsf?`;
-      // window.open(link,'_blank');
+      
     },
   }
 }
