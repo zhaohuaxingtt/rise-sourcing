@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-25 16:33:18
+ * @LastEditTime: 2021-09-01 20:55:21
  * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
@@ -55,7 +55,7 @@
    </iCard>
 </template>
 <script>
-import {iCard,iButton,iSelect,iDatePicker} from "rise";
+import {iCard,iButton,iSelect,iDatePicker,iMessage} from "rise";
 import {getCmCarTypePricePbi,carTypeByCategoryCode} from "@/api/categoryManagementAssistant/internalDemandAnalysis/carPrice";
 import * as pbi from 'powerbi-client';
 import marks from "../batchSupplier/marks";
@@ -210,7 +210,9 @@ export default {
             reportUrl: resFile.downloadUrl
          }
          categoryAnalysis(params).then(res=>{
-            
+            if(res.code=='200'){
+               iMessage.success(this.language('BAOCUNCHENGGONG','保存成功'))
+            }
          })
       },
       // 打开备注弹窗

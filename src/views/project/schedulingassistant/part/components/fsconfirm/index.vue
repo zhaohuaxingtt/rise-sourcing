@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:59:13
- * @LastEditors: zbin
- * @LastEditTime: 2021-08-27 22:18:33
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-01 16:55:24
  * @Description: 发送FS确认弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\fsconfirm\index.vue
 -->
@@ -66,8 +66,13 @@ export default {
       this.$emit('changeVisible', false)
     },
     handleConfirm() {
-      if (this.selectDataNomi.length < 1 && this.selectDataKickoff.length < 1) {
+      const selectData = [...this.selectDataNomi, ...this.selectDataKickoff]
+      if (selectData.length < 1) {
         iMessage.warn(this.language('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据'))
+        return
+      }
+      if (selectData.some(item => !item.fsId)) {
+        iMessage.warn(selectData.filter(item => !item.fsId).map(item => item.partName).join(',') + this.language('XUNJIACAIGOUYUANBUNENGWEIKONG', '询价采购员不能为空'))
         return
       }
       this.saveLoading = true

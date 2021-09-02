@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-31 15:42:20
+ * @LastEditTime: 2021-09-01 12:54:21
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -15,6 +15,8 @@
         <div class="floatright">
           <!--------------------拟合进度按钮----------------------------------->
           <iButton @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
+          <!--------------------回传进度按钮----------------------------------->
+          <iButton @click="rollBackProgress" :loading="rollBackLoading" >{{language('HUICHUANJINDU','回传进度')}}</iButton>
           <!--------------------配置显示字段按钮----------------------------------->
           <iButton @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
           <!--------------------导出按钮----------------------------------->
@@ -115,7 +117,8 @@ export default {
         'LINGJIANHAO',
         'LINGJIANZHONGWENMINGCHENG',
         'LINGJIANDEWENMINGCHENG',
-      ]
+      ],
+      rollBackLoading: false
     }
   },
   computed: {
@@ -149,6 +152,18 @@ export default {
     this.init()
   },
   methods: {
+    rollBackProgress() {
+      if (this.selectRowFit.length + this.selectRowPart.length === 0) {
+        iMessage.warn(this.language('QINGXUANZEXUYAOHUICHUANDESHUJU', '请选择需要回传的数据'))
+        return
+      }
+      if (this.selectRowFit.length + this.selectRowPart.length !== 1) {
+        iMessage.warn(this.language('ZHINENGXUANZEYITIAOSHUJUJINXINGHUICHUAN', '只能选择一条数据进行回传'))
+        return
+      }
+      this.rollBackLoading = true
+      this.rollBackLoading = false
+    },
     handleSelectionChangeFit(val) {
       this.selectRowFit = val
     },

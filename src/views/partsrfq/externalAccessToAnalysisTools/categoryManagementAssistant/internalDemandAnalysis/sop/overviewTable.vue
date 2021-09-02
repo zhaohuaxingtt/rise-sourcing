@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: 舒杰
- * @LastEditTime: 2021-09-01 12:39:07
+ * @LastEditTime: 2021-09-02 09:07:13
  * @Description: 
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\sop\overviewTable.vue
 -->
@@ -90,13 +90,13 @@
           <p>生命周期产量：{{dataItem.output}}</p>
           <p>平均产量：{{dataItem.outputAvg}}</p>
           <p>峰值产量：{{dataItem.outputPeak}}</p>
-          <div class="icon">
+          <!-- <div class="icon">
             <icon symbol name="iconxinxitishi"  class="cursor"/>
             <ol class="carTypeProOutput">
               <li v-for="put in dataItem.carTypeProOutput1" :key="put.years">{{put.years}}：{{put.output}}</li>
               <li v-for="put in dataItem.carTypeProOutput2" :key="put.years">{{put.years}}：{{put.output}}</li>
             </ol>
-          </div>
+          </div> -->
         </div>
         <!---------------------------------------------------------------------->
         <!----------                  常规列                     ---------------->
@@ -483,7 +483,6 @@ export default {
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  padding-right: 10px;
   >p{
     margin-top: 14px;
   }

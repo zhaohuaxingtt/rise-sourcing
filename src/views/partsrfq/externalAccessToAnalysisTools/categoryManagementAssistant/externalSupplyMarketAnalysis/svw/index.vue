@@ -2,7 +2,7 @@
 
   <div id="content">
     <iCard>
-      <div :class="{isFixed:isFixeds==true}" ref="scroll">
+      <div :class="{isFixed:isFixeds==true}">
         <div class="head">
           <div class="left">SVW供应商市场总览
             <span>
@@ -11,8 +11,7 @@
             <span>-</span>
             <span>{{categoryName}}</span>
           </div>
-          <div class="right"
-               v-show="savereport">
+          <div class="right">
             <iButton @click="edite=!edite">{{edite?'编辑':'取消'}}</iButton>
             <iButton @click="$router.go(-1)"
                      v-show="edite">返回</iButton>
@@ -33,15 +32,18 @@
         </div>
       </div>
 
-      <div style="overflow:auto;height:600px">
+      <div style="overflow:auto;height:620px;padding-right:10px">
         <list v-for="(x,index) of MarketOverviewDTO"
               :key="index"
               :MarketOverviewObj=x
-              :index="index"
+              :index="index+1"
               :edite="edite"
               @returnObj="getreturnObj"></list>
       </div>
     </iCard>
+    <saveDialog :dialogVisible="dialogVisible"
+                :MarketOverviewDTO="MarketOverviewDTO"
+                @changeVisible="close"></saveDialog>
   </div>
 
 </template>
@@ -49,9 +51,8 @@
 <script>
 import { iButton, iPage, iCard, iInput, iSelect, iMessage } from 'rise'
 import { marketOverview, saveMarketOverview } from '@/api/partsrfq/svw/index.js'
-import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
-import { uploadUdFile } from "@/api/file/upload";
 import list from './components/list'
+import saveDialog from './components/saveDialog'
 export default {
   data () {
     return {
@@ -59,6 +60,7 @@ export default {
       statueImg: require('./img/img.png'),
       svwImg: require('./img/note.png'),
       userImg: require('./img/user.png'),
+      dialogVisible: false,
       MarketOverviewDTO: [],
       SchemeId: "",
       categoryCode: "",
@@ -73,6 +75,7 @@ export default {
     iCard,
     iInput,
     iSelect,
+    saveDialog,
     list
   },
   created () {
@@ -81,9 +84,6 @@ export default {
     this.getmarketOverview()
   },
   mounted () {
-    this.$nextTick(() => {
-      window.addEventListener('scroll', this.handleScroll, true)
-    });
 
   },
   watch: {
@@ -101,15 +101,6 @@ export default {
     }
   },
   methods: {
-    handleScroll () {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      console.log(scrollTop)
-      if (scrollTop > 178) {//提前判断要上升多少像素就固定
-        this.isFixeds = true;
-      } else {
-        this.isFixeds = false;
-      }
-    },
     getmarketOverview () {
       marketOverview({ categoryCode: this.categoryCode }).then(res => {
         if (res.data) {
@@ -120,54 +111,21 @@ export default {
       })
     },
     saveMarket () {
+      this.dialogVisible = true
       this.edite = true
-      this.savereport = false
-      this.categoryCode = this.$store.state.rfq.categoryCode
-      setTimeout(() => {
-        downloadPDF({
-          idEle: "content",
-          pdfName: "SVW供应商市场总览" + this.categoryCode + '-' + this.categoryName,
-          callback: async (pdf, pdfName) => {
-            try {
-              const time = new Date().getTime();
-              const filename = pdfName + time + ".pdf";
-              const pdfFile = pdf.output("datauristring");
-              const blob = dataURLtoFile(pdfFile, filename);
-              uploadUdFile({
-                applicationName: 'sourcing',
-                businessId: Math.ceil(Math.random() * 100000),
-                multifile: blob
-              }).then(res => {
-                const data = res.data[0]
-                let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
-                let arr2 = data.path.split(arr[0])
-                saveMarketOverview({
-                  categoryCode: this.categoryCode,
-                  id: this.SchemeId,
-                  reportUrl: arr2[1],
-                  reportFileName: data.name,
-                  marketOverviewSaveDTOList: this.MarketOverviewDTO
-                }).then(res => {
-                  iMessage.success("保存成功");
-                  this.getmarketOverview()
-                  this.savereport = true
-                })
-              });
-            } catch {
-              iMessage.error("保存失败");
-            }
-          },
-        });
-      }, 3000)
 
-
+      // this.categoryCode = this.$store.state.rfq.categoryCode
     },
     getreturnObj (val, index) {
       this.MarketOverviewDTO[index] = val
+      console.log(this.MarketOverviewDTO)
     },
     changeViewObj (val, index) {
       console.log(val, index)
     },
+    close (val) {
+      this.dialogVisible = val
+    }
 
   }
 }

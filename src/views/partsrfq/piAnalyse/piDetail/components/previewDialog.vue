@@ -30,7 +30,12 @@
             :previewDialog="value"
         />
         <!--      零件成本构成-->
-        <thePartsCostChart class="pieBox" :dataInfo="dataInfo"/>
+        <thePartsCostChart
+            class="pieBox"
+            :dataInfo="dataInfo"
+            :averageData="averageData"
+            :currentTab="currentTab"
+        />
       </div>
     </div>
   </iDialog>
@@ -103,6 +108,7 @@ export default {
 <style scoped lang="scss">
 #content {
   padding: 20px;
+
   .title {
     font-size: 22px;
     font-weight: bold;

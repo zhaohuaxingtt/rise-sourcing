@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-08-25 16:33:03
+ * @LastEditTime: 2021-09-01 20:54:47
  * @LastEditors: 舒杰
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
@@ -29,7 +29,7 @@
    </iCard>
 </template>
 <script>
-import {iCard,iButton,iSelect,iDatePicker} from "rise";
+import {iCard,iButton,iSelect,iDatePicker,iMessage} from "rise";
 import {getCmOutputPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/output";
 import * as pbi from 'powerbi-client';
 import { selectDictByKeys } from "@/api/dictionary";
@@ -133,7 +133,9 @@ export default {
             reportUrl: resFile.downloadUrl
          }
          categoryAnalysis(params).then(res=>{
-            
+            if(res.code=='200'){
+               iMessage.success(this.language('BAOCUNCHENGGONG','保存成功'))
+            }
          })
       },
       // 切换类型

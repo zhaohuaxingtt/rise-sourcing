@@ -2,12 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 13:59:40
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-31 11:29:44
+ * @LastEditTime: 2021-09-01 16:31:09
  * @Description: 零件排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\index.vue
 -->
 
 <template>
+  <!-------- v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_PAGE|项目管理-排程助手-零件排程页面' ---------->
   <iPage class="schedulePart">
     <!---------------------------------------------------------------------->
     <!----------                  车型项目部分                   ------------>

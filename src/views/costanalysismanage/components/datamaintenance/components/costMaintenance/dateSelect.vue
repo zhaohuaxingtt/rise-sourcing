@@ -1,14 +1,14 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-08-26 16:10:56
+ * @LastEditTime: 2021-09-01 20:45:03
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\costanalysismanage\components\datamaintenance\components\costMaintenance\dateSelect.vue
 -->
 <template>
       <iDialog :title="language('SHANGCHUAN','上传')" :visible.sync="value" width="400px" @close='clearDiolog' top="40vh">
-        <p class="tip margin-bottom10">{{ language("QXZJYSCDRGCBSSNF", "请选择将要上传的人工成本所属年份") }}</p>
+        <p class="tip margin-bottom10">{{ language('QXZJYSCDRGCBSSNF','请选择将要上传的人工成本所属年份') }}</p>
         <iDatePicker  type="year" v-model="date" value-format="yyyy" :picker-options="pickerOptions" ></iDatePicker>
         <span slot="footer" class="dialog-footer">
           <iButton :loading='repeatClick' @click="sureChangeItems">{{language('LK_QUEREN','确认')}}</iButton>

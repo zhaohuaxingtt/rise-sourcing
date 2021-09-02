@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-13 17:27:07
- * @LastEditTime: 2021-08-20 15:56:47
+ * @LastEditTime: 2021-09-02 16:34:21
  * @LastEditors: Please set LastEditors
  * @Description: PI分析库相关接口
  * @FilePath: \front-web\src\api\partsrfq\piAnalysis\index.js
@@ -97,5 +97,22 @@ export function editCustomParts(params) {
     url: '/piParts/updateParts',
     method: 'POST',
     data: params,
+  });
+}
+
+// 原材料价格总览——类型下拉数据
+export function fetchRawMaterialType(params) {
+  return request({
+    url: '/cmMdRawMaterialEntity/rawMaterialClassType',
+    method: 'GET',
+    params: params,
+  });
+}
+// 原材料价格总览——地区下拉数据
+export function fetchRawMaterialArea(params) {
+  return request({
+    url: '/cmMdRawMaterialEntity/rawMaterialArea',
+    method: 'GET',
+    params: params,
   });
 }
