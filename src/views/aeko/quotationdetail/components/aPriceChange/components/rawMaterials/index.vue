@@ -1,13 +1,12 @@
 <template>
   <div class="rawMaterials">
     <i class="topCutLine" v-if="topCutLine"></i>
-    <!-- <iconFont /> -->
     <div class="header">
       <span class="title">2.1 {{ language("YUANCAILIAOSANJIANCHENGBEN", "原材料/散件成本") }}</span>
       <div class="control">
-        <iButton @click="handleAddSourceData">{{ language("TIANJIAYUANLINGJIANCBD", "添加原零件CBD") }}</iButton>
-        <iButton @click="handleAddNewData">{{ language("TIANJIAXINLINGJIANCBD", "添加新零件CBD") }}</iButton>
-        <iButton @click="handleDelete">{{ language("SHANCHUHANG", "删除行") }}</iButton>
+        <iButton @click="handleAddSourceData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIANCHENGBEN_BUTTON_TIANJIAYUANLINGJIANCBD|添加原零件CBD">{{ language("TIANJIAYUANLINGJIANCBD", "添加原零件CBD") }}</iButton>
+        <iButton @click="handleAddNewData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIANCHENGBEN_BUTTON_TIANJIAXINLINGJIANCBD|添加新零件CBD">{{ language("TIANJIAXINLINGJIANCBD", "添加新零件CBD") }}</iButton>
+        <iButton @click="handleDelete" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIANCHENGBEN_BUTTON_SHANCHUHANG|删除行">{{ language("SHANCHUHANG", "删除行") }}</iButton>
       </div>
     </div>
     <div class="body margin-top20">

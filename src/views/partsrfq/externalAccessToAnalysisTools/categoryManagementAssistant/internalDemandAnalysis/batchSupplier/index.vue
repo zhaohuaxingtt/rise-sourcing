@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-09-01 12:45:39
+ * @LastEditTime: 2021-09-01 20:51:24
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
@@ -31,7 +31,7 @@
    </iCard>
 </template>
 <script>
-import {iCard,iButton} from "rise";
+import {iCard,iButton,iMessage} from "rise";
 import {getCmSupplierPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/batchSupplier";
 import * as pbi from 'powerbi-client';
 import {getCategoryAnalysis,categoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
@@ -135,7 +135,9 @@ export default {
             reportUrl: resFile.downloadUrl
          }
          categoryAnalysis(params).then(res=>{
-            
+            if(res.code=='200'){
+               iMessage.success(this.language('BAOCUNCHENGGONG','保存成功'))
+            }
          })
       },
       // 打开保存弹窗

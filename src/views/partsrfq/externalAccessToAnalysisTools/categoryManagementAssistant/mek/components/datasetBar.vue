@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-08-27 18:13:34
+ * @LastEditTime: 2021-09-02 15:32:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
 -->
 <template>
-  <div style="height: 440px;width:100%"
+  <div style="height: 460px;width:100%"
        ref="chart"></div>
 </template>
 
@@ -84,7 +84,6 @@ export default {
   },
   methods: {
     initCharts () {
-      console.log(111)
       if (this.maxWidth === 1) {
         this.$refs.chart.style.width = this.maxWidth * 240 + 'px';
       } else {
@@ -114,7 +113,7 @@ export default {
         grid: {
           left: 0,
           right: 0,
-          bottom: '15%',
+          bottom: '11%',
           top: "30%"
         },
         yAxis: {
