@@ -38,6 +38,7 @@
             value="name"
             :disabled="item.options.length === 0"
             :search-method="(value) =>handleSelectSearch(value,item.props)"
+            @change="(value) =>handleSelectCustomChange(value,item.props)"
         />
       </template>
     </div>
@@ -65,14 +66,16 @@ export default {
   },
   data() {
     return {
-      form: {
-      },
-      showSelectCustom: true
+      form: {},
+      showSelectCustom: true,
     };
   },
   methods: {
     handleSelectSearch(value, props) {
       this.$emit('handleSelectSearch', {value, props});
+    },
+    handleSelectCustomChange(value, props) {
+      this.$emit('handleSelectCustomChange', {value, props});
     },
   },
 };
