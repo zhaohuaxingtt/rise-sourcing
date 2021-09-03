@@ -9,6 +9,8 @@
 import axios from '@/utils/axios'
 
 const requst = axios(process.env.VUE_APP_USER_CENTER)
+const requst1 = axios(process.env.VUE_APP_USER_CENTER_M)
+
 
 export function purchaseUsers(parmars) {
     return requst({
@@ -72,5 +74,22 @@ export function sendPermissonKey(parmars){ //待开雄开发...
         url:'/web/resource/importBatch',
         method:'POST',
         data:parmars
+    })
+}
+
+//查询特殊身份部门信息（多个）,查linie时tagId传4
+export function getDeptListByTag(parmars){
+    return requst1({
+        url:'/api/dept/getDeptListByTag',
+        method:"GET",
+        params:parmars,
+    })
+}
+//根据用户身份查询用户列表（可添加部门筛选）,查linie时tagId传4
+export function getUserListByTag(parmars){
+    return requst1({
+        url:'/api/getUserListByTag',
+        method:"GET",
+        params:parmars,
     })
 }

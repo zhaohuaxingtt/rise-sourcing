@@ -208,6 +208,14 @@ export default [
             },
             component: () => import (`@/views/ws2/purchase/mouldBook`),
           },
+          {
+            path: '/purchase/modelOrderList',
+            name: 'modelorder',
+            meta: {
+              title: '模具采购订单'
+            },
+            component: () => import (`@/views/ws2/modelorder`),
+          },
         ]
       },
       {
@@ -296,6 +304,14 @@ export default [
           title: '模具投资清单-变更任务-详情页'
         },
         component: () => import (`@/views/ws2/purchaseSupplier/changeTask/bmInfo`),
+      },
+      /************** 模具采购订单详情 **************************/
+      {
+        path: '/ws2/order/modeler/details/ModelOrderDetailsPage/:option/:id', //工序委外订单详情
+        name: 'OutsourcingOrderDetails',
+        props: true,
+        component: () =>
+            import (`@/views/ws2/modelorder/Details/ModelOrderDetailsPage`)
       },
     ]
   }
