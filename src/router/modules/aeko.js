@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-09-01 15:16:16
+ * @LastEditTime: 2021-09-03 15:03:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -13,7 +13,7 @@ export default [
     meta: {
         title: 'AEKO'
     },
-    component: () => import("@/layout/default-origin"),
+    component: () => import("@/layout/default"),
     redirect: "/aeko/managelist",
     children: [
       // aeko管理列表页

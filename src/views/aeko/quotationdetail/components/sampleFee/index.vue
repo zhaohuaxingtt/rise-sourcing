@@ -17,7 +17,7 @@
         </div>
       </template>
       <div>
-        <sample ref="sample" :partInfo="partInfo" :isAeko="true"/>
+        <sample ref="sample" :partInfo="basicInfo" :isAeko="true"/>
       </div>
   </iCard>
 </template>
@@ -36,10 +36,15 @@ export default {
     iButton,
     sample,
   },
+  props:{
+    basicInfo:{
+      type:Object,
+      default:()=>{},
+    }
+  },
   data(){
     return{
       loading:false,
-       partInfo:{"rfqId":"1089","quotationId":"1430733529429766145","cbdLevel":1},
     }
   },
   methods:{

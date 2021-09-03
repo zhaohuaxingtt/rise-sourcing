@@ -1,15 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 12:00:48
- * @LastEditTime: 2021-08-24 15:33:15
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-03 15:13:55
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\router\modules\costanalysismanage.js
  */
 export default [
   {
     path: "/",
-    component: () => import("@/layout/default-origin"),
+    component: () => import("@/layout/default"),
     children: [
       {
         path: "/costanalysismanage",
