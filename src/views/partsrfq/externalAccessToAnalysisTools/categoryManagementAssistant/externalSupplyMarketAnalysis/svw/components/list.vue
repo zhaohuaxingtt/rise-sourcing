@@ -105,7 +105,7 @@ export default {
   data () {
     return {
       isEdite: true,
-      interestsStatus: '',
+      interestsStatus: 'profit',
       MarketOverviewObj1: {},
       iSelectOption: [{
         value: 'profit',
@@ -377,43 +377,47 @@ export default {
     }
   },
   mounted () {
-
     let date = new Date()
     this.option.xAxis[0].data[0] = date.getFullYear() - 3
     this.option.xAxis[0].data[1] = date.getFullYear() - 2
     this.option.xAxis[0].data[2] = date.getFullYear() - 1
-
   },
   watch: {
-    year1 (val) {
-      if (this.interestsStatus === "otherAmount") {
-        this.MarketOverviewObj1.supplierFinanceDTOList[0].otherAmount = val * 1000000
-      } else if (this.interestsStatus === "svwAmount") {
-        this.MarketOverviewObj1.supplierFinanceDTOList[0].svwAmount = val * 1000000
-      } else if (this.interestsStatus === "profit") {
-        this.MarketOverviewObj1.supplierFinanceDTOList[0].profit = val
-      }
-      this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
+    year1: {
+      handler (val) {
+        if (this.interestsStatus === "otherAmount") {
+          this.MarketOverviewObj1.supplierFinanceDTOList[0].otherAmount = val * 1000000
+        } else if (this.interestsStatus === "svwAmount") {
+          this.MarketOverviewObj1.supplierFinanceDTOList[0].svwAmount = val * 1000000
+        } else if (this.interestsStatus === "profit") {
+          this.MarketOverviewObj1.supplierFinanceDTOList[0].profit = val
+        }
+        this.$emit('returnObj', this.MarketOverviewObj1, this.index);
+      },
     },
-    year2 (val) {
-      if (this.interestsStatus === "otherAmount") {
-        this.MarketOverviewObj1.supplierFinanceDTOList[1].otherAmount = val * 1000000
-      } else if (this.interestsStatus === "svwAmount") {
-        this.MarketOverviewObj1.supplierFinanceDTOList[1].svwAmount = val * 1000000
-      } else if (this.interestsStatus === "profit") {
-        this.MarketOverviewObj1.supplierFinanceDTOList[1].profit = val
-      }
-      this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
+    year2: {
+      handler (val) {
+        if (this.interestsStatus === "otherAmount") {
+          this.MarketOverviewObj1.supplierFinanceDTOList[1].otherAmount = val * 1000000
+        } else if (this.interestsStatus === "svwAmount") {
+          this.MarketOverviewObj1.supplierFinanceDTOList[1].svwAmount = val * 1000000
+        } else if (this.interestsStatus === "profit") {
+          this.MarketOverviewObj1.supplierFinanceDTOList[1].profit = val
+        }
+        this.$emit('returnObj', this.MarketOverviewObj1, this.index);
+      },
     },
-    year3 (val) {
-      if (this.interestsStatus === "otherAmount") {
-        this.MarketOverviewObj1.supplierFinanceDTOList[2].otherAmount = val * 1000000
-      } else if (this.interestsStatus === "svwAmount") {
-        this.MarketOverviewObj1.supplierFinanceDTOList[2].svwAmount = val * 1000000
-      } else if (this.interestsStatus === "profit") {
-        this.MarketOverviewObj1.supplierFinanceDTOList[2].profit = val
-      }
-      this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
+    year3: {
+      handler (val) {
+        if (this.interestsStatus === "otherAmount") {
+          this.MarketOverviewObj1.supplierFinanceDTOList[2].otherAmount = val * 1000000
+        } else if (this.interestsStatus === "svwAmount") {
+          this.MarketOverviewObj1.supplierFinanceDTOList[2].svwAmount = val * 1000000
+        } else if (this.interestsStatus === "profit") {
+          this.MarketOverviewObj1.supplierFinanceDTOList[2].profit = val
+        }
+        this.$emit('returnObj', this.MarketOverviewObj1, this.index);
+      },
     },
     edite (val) {
       this.isEdite = val
@@ -497,21 +501,39 @@ export default {
               this.option.series[0].data[0].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
-
+              if (this.interestsStatus === "otherAmount") {
+                this.year1 = (x.otherAmount / 1000000).toFixed(2)
+              } else if (this.interestsStatus === "svwAmount") {
+                this.year1 = (x.svwAmount / 1000000).toFixed(2)
+              } else if (this.interestsStatus === "profit") {
+                this.year1 = x.profit
+              }
             }
             if (x.year == date - 2) {
               this.option.series[0].data[1].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
               this.option.series[0].data[1].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
-
+              if (this.interestsStatus === "otherAmount") {
+                this.year2 = (x.otherAmount / 1000000).toFixed(2)
+              } else if (this.interestsStatus === "svwAmount") {
+                this.year2 = (x.svwAmount / 1000000).toFixed(2)
+              } else if (this.interestsStatus === "profit") {
+                this.year2 = x.profit
+              }
             }
             if (x.year == date - 1) {
               this.option.series[0].data[2].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
               this.option.series[0].data[2].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
-
+              if (this.interestsStatus === "otherAmount") {
+                this.year3 = (x.otherAmount / 1000000).toFixed(2)
+              } else if (this.interestsStatus === "svwAmount") {
+                this.year3 = (x.svwAmount / 1000000).toFixed(2)
+              } else if (this.interestsStatus === "profit") {
+                this.year3 = x.profit
+              }
             }
           });
           // 饼图
@@ -534,7 +556,7 @@ export default {
                   }
                 }
               }
-              let colorList = ['#0C47A1', '#1976D1', '#2297F3', '#64B5F6', '#00579B', '#0188D1', '#03A9F4', '50C2F7']
+              let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
               if (x.sapStuffCode == this.categoryCode) {
                 seriesObj.selected = true
                 check = false
@@ -640,16 +662,10 @@ export default {
       myChart.setOption(option);
 
     },
-    handleChange (val) {
-      this.MarketOverviewObj.supplierFinanceDTOList[0].otherAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[1].otherAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[2].otherAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[0].svwAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[1].svwAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[2].svwAmount = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[0].profit = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[1].profit = ''
-      this.MarketOverviewObj.supplierFinanceDTOList[2].profit = ''
+    handleChange () {
+      this.year1 = ""
+      this.year2 = ""
+      this.year3 = ""
     },
     initturnover () {
       const myChart = echarts().init(this.$refs.turnover);
@@ -772,7 +788,8 @@ h3 {
   .ml-49 {
     flex: 1;
     // margin-left: 40px;
-    padding: 0 20px;
+    // padding: 0 20px;
+    margin-left: 20px;
     width: calc(33%.33 - 49px);
   }
 }
