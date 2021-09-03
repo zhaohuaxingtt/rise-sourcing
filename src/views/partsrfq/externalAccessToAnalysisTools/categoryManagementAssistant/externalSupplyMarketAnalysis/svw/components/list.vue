@@ -26,7 +26,8 @@
       </div>
       <div style="height:360px"
            ref="chart"></div>
-      <div class="interests">
+      <div class="interests"
+           v-if="!isEdite">
         <iSelect v-model="interestsStatus"
                  :disabled="isEdite"
                  @change="handleChange"
@@ -45,6 +46,13 @@
         <iInput v-model="year3"
                 class="ml-49"
                 :disabled="isEdite" />
+      </div>
+      <div class="interests"
+           v-else>
+        <div class="interestsName">{{interestsName}}</div>
+        <div class="interestsName">{{interestsStatus==='profit'?year1+'%':year1}}</div>
+        <div class="interestsName">{{interestsStatus==='profit'?year2+'%':year2}}</div>
+        <div class="interestsName">{{interestsStatus==='profit'?year3+'%':year3}}</div>
       </div>
     </div>
     <div class="width3-1">
@@ -106,6 +114,7 @@ export default {
     return {
       isEdite: true,
       interestsStatus: 'profit',
+      interestsName: "",
       MarketOverviewObj1: {},
       iSelectOption: [{
         value: 'profit',
@@ -392,7 +401,7 @@ export default {
         } else if (this.interestsStatus === "profit") {
           this.MarketOverviewObj1.supplierFinanceDTOList[0].profit = val
         }
-        this.$emit('returnObj', this.MarketOverviewObj1, this.index);
+        this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
       },
     },
     year2: {
@@ -404,7 +413,7 @@ export default {
         } else if (this.interestsStatus === "profit") {
           this.MarketOverviewObj1.supplierFinanceDTOList[1].profit = val
         }
-        this.$emit('returnObj', this.MarketOverviewObj1, this.index);
+        this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
       },
     },
     year3: {
@@ -416,7 +425,7 @@ export default {
         } else if (this.interestsStatus === "profit") {
           this.MarketOverviewObj1.supplierFinanceDTOList[2].profit = val
         }
-        this.$emit('returnObj', this.MarketOverviewObj1, this.index);
+        this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
       },
     },
     edite (val) {
@@ -468,6 +477,11 @@ export default {
       handler (val) {
         this.MarketOverviewObj1 = _.cloneDeep(val)
         let date = new Date().getFullYear();
+        this.iSelectOption.forEach(item => {
+          if (item.value === this.interestsStatus) {
+            this.interestsName = item.name
+          }
+        })
         this.option.series.push({
           name: "sum",
           type: "bar",
@@ -662,7 +676,13 @@ export default {
       myChart.setOption(option);
 
     },
-    handleChange () {
+    handleChange (val) {
+      console.log(val)
+      this.iSelectOption.forEach(item => {
+        if (item.value === val) {
+          this.interestsName = item.name
+        }
+      })
       this.year1 = ""
       this.year2 = ""
       this.year3 = ""
@@ -791,6 +811,14 @@ h3 {
     // padding: 0 20px;
     margin-left: 20px;
     width: calc(33%.33 - 49px);
+  }
+  .interestsName {
+    margin-left: 10px;
+    flex: 1;
+    padding: 10px 5px;
+    border-radius: 5px;
+    background-color: #ccc;
+    text-align: center;
   }
 }
 .legend {
