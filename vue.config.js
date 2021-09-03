@@ -450,8 +450,8 @@ module.exports = {
       },
       '/changepriceApi': {
         // 采购订单
-        target: 'http://192.168.50.112:8026/',
-        //target: 'http://10.122.18.166:8026',
+        //target: 'http://192.168.50.112:8026/',
+        target: 'http://10.122.18.166:8026',
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {
