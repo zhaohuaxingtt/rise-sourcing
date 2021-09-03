@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-08-25 18:26:53
+ * @LastEditTime: 2021-09-02 18:44:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -149,7 +149,7 @@ export default {
     },
     // 处理默认选中
     handleDefaultSelect() {
-      const operateLog = JSON.parse(this.$route.query.operateLog) || null
+      const operateLog = this.$route.query.operateLog ? JSON.parse(this.$route.query.operateLog) : null
       if(operateLog) {
         const fsList = operateLog.fsList
         this.tableListData.map(item => {

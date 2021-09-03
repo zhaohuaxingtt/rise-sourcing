@@ -139,7 +139,7 @@ export default {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: 'allContainer',
-        pdfName: 'purchaseAmountOverall',
+        pdfName: this.language('CAIGOUJINGEZONGLAN', '采购金额总览') + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString()+'-',
       });
       let params = {
         categoryCode: this.form.categoryCode,

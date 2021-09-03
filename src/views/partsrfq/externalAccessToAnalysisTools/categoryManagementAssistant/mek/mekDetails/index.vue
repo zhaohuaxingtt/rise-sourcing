@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-02 15:33:45
+ * @LastEditTime: 2021-09-02 17:30:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -125,18 +125,20 @@
                 <div class="flex chartItem"
                      :style="{width:chartItemWidth}">
                   <div class="operation1">
+                    <div style="height:20px"
+                         class="margin-bottom20"></div>
                     <el-select v-model="targetMotor"
                                @change="changeTargetMotor"
                                style="width:150px"
-                               class="margin-bottom15 margin-top40"
+                               class="margin-bottom20"
                                placeholder="请选择目标车型">
                       <el-option v-for="item in TargetMotorList"
                                  :key="item.motorId"
                                  :value="item.motorId"
                                  :label="item.motorName"> </el-option>
                     </el-select>
-                    <span class="margin-bottom15 "
-                          style="min-height:14px">{{firstBarData.motorName}}</span>
+                    <span class="margin-bottom20 "
+                          style="line-height:16px;height:16px">{{firstBarData.motorName}}</span>
                     <span class="yield"
                           style="line-height:12px">{{firstBarData.output}}</span>
                   </div>
@@ -179,7 +181,7 @@
                                 width="80"
                                 trigger="click"
                                 visible-arrow
-                                class="margin-bottom15">
+                                class="margin-bottom20">
                       <el-checkbox-group v-model="item.checkList"
                                          class="checkList"
                                          @change="changeCheckList">
@@ -187,10 +189,10 @@
                                      :key="index"
                                      :label="i.value">{{i.title}}</el-checkbox>
                       </el-checkbox-group>
-                      <div style="line-height:30px"
+                      <div class="motorName"
                            slot="reference">{{item.motorName}}</div>
                     </el-popover>
-                    <span class="margin-bottom15"
+                    <span class="margin-bottom20"
                           style="line-height:16px;height:16px">{{item.factory}}</span>
                     <span class="yield margin-bottom15">{{item.output}}</span>
                     <div>
@@ -744,6 +746,7 @@ export default {
           mekTypeName = item.name
         }
       })
+
       if (this.gridData) {
         this.gridData.config['label#-1'] = mekTypeName
       }
@@ -1003,7 +1006,7 @@ export default {
 .line4 {
   position: absolute;
   left: 40px;
-  bottom:51%;
+  bottom: 51%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -1022,7 +1025,9 @@ export default {
     text-decoration: underline;
   }
 }
-
+.motorName {
+  height: 32px;
+}
 ::v-deep .el-select {
   width: 100%;
   .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {

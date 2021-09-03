@@ -1,8 +1,8 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-06 16:27:41
- * @LastEditTime: 2021-08-18 17:10:53
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-02 16:23:51
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\api\partsrfq\costAnalysis\index.js
  */
@@ -17,11 +17,6 @@ export function getDefaultCostStructure(params) {
     method: 'POST',
     data: params
   })
-}
-
-//获取分析报告详情
-export function getCostStructureAnalysis() {
-  
 }
 
 //获取当前登录用户对应的材料组数据

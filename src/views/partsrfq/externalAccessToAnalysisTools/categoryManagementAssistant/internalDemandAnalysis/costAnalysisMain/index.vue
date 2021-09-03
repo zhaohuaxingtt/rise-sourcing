@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-08-30 16:57:21
+ * @LastEditTime: 2021-09-02 18:36:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -180,13 +180,11 @@ export default {
       })
     },
     // 校验方案名称
-    checkSchemeName(schemeName) {
+    async checkSchemeName(schemeName) {
       this.schemeName = schemeName
       this.targetSchemeId = null
-      this.$nextTick(_ => {
-        this.$set(this.saveModalParams, 'visible', false)
-      })
-      getCostStructureAnalysisByName({name: schemeName}).then(res => {
+      this.$set(this.saveModalParams, 'visible', false)
+      const res= await getCostStructureAnalysisByName({name: schemeName})
         if(res && res.code == 200) {
           if(res.data) {
             //名称校验重复
@@ -199,7 +197,6 @@ export default {
             this.createPdfAndSave()
           }
         } else iMessage.error(res.desZh)
-      })
     },
     // 创建pdf并保存数据
     createPdfAndSave() {
