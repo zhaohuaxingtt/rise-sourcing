@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-08-04 19:25:12
+ * @LastEditTime: 2021-09-02 16:27:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -47,6 +47,7 @@
                     class=" minText">
                 {{ item}}
               </span>
+              <span v-else-if="item=='true'||item=='false'">{{ item=='false'?'否':'是' }}</span>
               <span v-else>{{ item }}</span>
             </span>
           </span>

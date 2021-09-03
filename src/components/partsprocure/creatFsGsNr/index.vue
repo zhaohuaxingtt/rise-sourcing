@@ -17,7 +17,7 @@
 <script>
 	import {iButton,iMessage,iMessageBox,iDialog} from 'rise';
 	import {generateFs} from "@/api/partsprocure/home";
-	import {insertRfq,addRfq} from "@/api/partsrfq/home";
+	import {insertRfq,insertRfqPart as addRfq} from "@/api/partsrfq/home";
 	import tableList from "@/views/partsign/home/components/tableList";
 	import {addRfqTitle} from "./data";
 	import store from "@/store";
@@ -91,15 +91,8 @@
 			// 添加零件到RFQ
 			addRfq(){
 				this.addLoding = true;
-				addRfq({
-					insertRfqPackage: {
-						operationType: '1',
-						userId: store.state.permission.userInfo.id || '',
-						userName: store.state.permission.userInfo.userName,
-						rfqPartDTOList: this.rfqPartDTOList,
-						rfqId: this.handleSelectArr[0].id
-					}
-				}).then((res) => {
+				const sendParmars = this.rfqPartDTOList.map(r=>{return {...r,...{rfqId:this.handleSelectArr[0].id,userId: store.state.permission.userInfo.id || '',	userName: store.state.permission.userInfo.userName,}}})
+				addRfq(sendParmars).then((res) => {
 						this.addLoding = false;
 						if (res.data && res.data.rfqId) {
 							iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))

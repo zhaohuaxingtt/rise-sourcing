@@ -109,7 +109,7 @@ export default {
       // 绘制图表
       const option = {
         title: {
-          text: this.title,
+          // text: this.title,
           subtext: "Unit: CNY/PC",
           textStyle: {
             fontSize: 18,
@@ -169,7 +169,7 @@ export default {
           left: "6%",
           top: '25%',
           right: '0%',
-          bottom: "25%",
+          bottom: "22%",
           // containLabel: true,
         },
         xAxis: [
@@ -354,15 +354,14 @@ export default {
         this.legendArray.forEach((row, i) => {
           const dataList0 = this.cloneDeep(tempArr[row]);
           const min = Number(this.min(tempArr[row]))
+          let sumList = tempArr[row].map(Number)
           let data = min;
           if (this.type === "Best of Average") {
             // data = this.doNumber((this.sum(tempArr[row]) / tempArr[row].length))
-            data = Number(
-              (this.sum(tempArr[row]) / tempArr[row].length)
-            );
+            data = (this.sum(sumList) / tempArr[row].length)
             console.log(data)
           } else if (this.type === "Best of Second") {
-            data = this.bos(tempArr[row]);
+            data = this.bos(sumList);
           }
           minList.push(data);
           if (i === 0) {
@@ -426,7 +425,7 @@ export default {
               fontFamily: "Arial",
               formatter: (params) => {
                 if (
-                  data === params.value &&
+                  data == params.value &&
                   params.name !== this.type &&
                   this.type !== "Best of Average"
                 ) {

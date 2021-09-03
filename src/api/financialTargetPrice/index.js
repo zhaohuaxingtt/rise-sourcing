@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-24 15:55:46
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-16 11:12:30
+ * @LastEditTime: 2021-09-02 10:56:13
  * @Description: 财务目标价相关Api
  * @FilePath: \front-web\src\api\financialTargetPrice\index.js
  */
@@ -180,5 +180,14 @@ export function getSetOptions() {
   return requst({
     url: '/cf-target-price-applies/set-kz/list',
     method: 'GET'
+  })
+}
+
+// 财务目标价批量维护
+export function batchSetPrice(params) {
+  return requst({
+    url: '/cf-target-price-applies/batch-set-price',
+    method: 'POST',
+    data: params
   })
 }
