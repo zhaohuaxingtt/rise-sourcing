@@ -50,3 +50,21 @@ export function assetTypes(parmars) {
         data: ''
     })
 }
+
+// 保存模具变更任务
+export function saveChange(data) {
+    return VUE_APP_BMCHANGE({
+        url: '/supplierSaveChange',
+        method: "POST",
+        data: data
+    })
+}
+
+// 变更单重置
+export function reset(data) {
+    return VUE_APP_BMCHANGE({
+        url: '/supplierReset',
+        method: "POST",
+        params: data
+    })
+}

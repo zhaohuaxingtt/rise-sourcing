@@ -334,8 +334,8 @@ export default {
 
     openBMDetail(row){ //  跳转详情
 
-      // let {href} = this.$router.resolve({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
-      // window.open(href, '_blank');
+      let {href} = this.$router.resolve({path: `/purchase/mouldBook/details`, query: {bmSerial: row.bmSerial, id: row.id }});
+      window.open(href, '_blank');
 
       if(row.isPremission){
 

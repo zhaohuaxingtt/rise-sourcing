@@ -171,3 +171,12 @@ export function bmViewSupplierPullDown(parmars) {
       params: parmars
   })
 }
+
+//bm科室下拉列表
+export function bmChangeOrderList(parmars) {
+  return VUE_APP_BMVIEW({
+      url: '/bmChangeOrderList',
+      method: 'GET',
+      params: parmars
+  })
+}

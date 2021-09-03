@@ -255,6 +255,7 @@ export default {
         linieId: this.linieId,
         moldInvestmentStatus: this.moldInvestmentStatus,
         changeStatuId: this.changeStatuId,
+        isLimits: false,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
@@ -280,7 +281,7 @@ export default {
     toBmInfo(row){
       //  如当前用户没有查看“模具投资金额”的权限，点击流水号后提示“对不起，您所在的岗位没有该材料组权限”
       let url = this.$router.resolve({
-        path: '/purchaseSupplier/changeTask/bmInfo',
+        path: '/purchaseSupplier/investmentList/changeTask/bmInfo',
         query: {
           bmId: row.bmId,
           bmChangeId: row.id,

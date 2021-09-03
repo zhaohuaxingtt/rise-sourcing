@@ -193,7 +193,7 @@ export default [
             component: () => import (`@/views/ws2/purchase/investmentList`),
           },
           {
-            path: '/purchase/changeTask',
+            path: '/purchase/investmentList/changeTask',
             name: 'changeTask',
             meta: {
               title: '模具投资清单-变更任务'
@@ -227,7 +227,7 @@ export default [
         component: () => import (`@/views/ws2/purchase/investmentList/bmInfo`),
       },
       {
-        path: '/purchase/changeTask/bmInfo',
+        path: '/purchase/investmentList/changeTask/bmInfo',
         name: 'bmInfo',
         meta: {
           title: '模具投资清单-BM详情页'
@@ -255,7 +255,7 @@ export default [
             component: () => import (`@/views/ws2/purchaseSupplier/investmentList`),
           },
           {
-            path: '/purchaseSupplier/changeTask',
+            path: '/purchaseSupplier/investmentList/changeTask',
             name: 'changeTask',
             meta: {
               title: '模具投资清单-变更任务'
@@ -290,7 +290,7 @@ export default [
         component: () => import (`@/views/ws2/purchaseSupplier/investmentList/bmInfo`),
       },
       {
-        path: '/purchaseSupplier/changeTask/bmInfo',
+        path: '/purchaseSupplier/investmentList/changeTask/bmInfo',
         name: 'bmInfo',
         meta: {
           title: '模具投资清单-变更任务-详情页'

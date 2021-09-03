@@ -8,7 +8,7 @@ export const tabtitle = [
 ]
 export const navList = [
     {value: 1, message: 0, name: "确认任务", activePath: '/purchaseSupplier/investmentList', url: '/purchaseSupplier/investmentList', key: "确认任务"},
-    {value: 2, message: 0, name: "变更任务", activePath: '/purchaseSupplier/changeTask', url: '/purchaseSupplier/changeTask', key: "变更任务"},
+    {value: 2, message: 0, name: "变更任务", activePath: '/purchaseSupplier/investmentList/changeTask', url: '/purchaseSupplier/investmentList/changeTask', key: "变更任务"},
 ]
 export const investmentListTitle = [
     {
@@ -125,7 +125,7 @@ export const changeTaskTitle = [
         tooltip: false
     },
     {
-        props: 'behalfPartsName',
+        props: 'behalfPartsNum',
         name: '代表零件号',
         key: '代表零件号',
         width: 180,
@@ -282,6 +282,7 @@ export const changeTaskBmInfoTitle = [
         props: 'moldId',
         name: '模具ID',
         key: '模具ID',
+        width: 250,
         tooltip: false
     },
     {
