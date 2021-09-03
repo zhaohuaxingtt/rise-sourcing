@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 12:54:21
+ * @LastEditTime: 2021-09-03 14:24:24
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -23,11 +23,11 @@
           <iButton @click="handleExport" :loading="downloadLoading">{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
-      <tableList indexKey :showPot="true" :tableTitle="partTableTitle" :tableData="partTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
+      <tableList class="fitTable" indexKey :showPot="true" :tableTitle="partTableTitle" :tableData="fitTableData" :tableLoading="partTableLoading" @handleSelectionChange="handleSelectionChangeFit">
       </tableList> 
     </template>
     <template>
-      <div :class="`margin-bottom20 clearFloat ${isShowProgress ? 'margin-top20' : ''}`">
+      <div :class="`margin-bottom20 clearFloat ${isShowProgress ? 'margin-top30 padding-top30 borderTop' : ''}`">
         <span class="font18 font-weight">{{language('PIPEILINGJIANHAOLISHIJINDU', '匹配零件号历史进度')}}</span>
         <div class="floatright" v-if="!isShowProgress">
           <!--------------------拟合进度按钮----------------------------------->
@@ -60,7 +60,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import logicSettingDialog from '@/views/project/components/logicSettingBtn/components/logicsetting'
 import { selectDictByKeyss } from '@/api/dictionary'
 import showItemDialog from '../showItem'
-import { getCondition, getFitting, downloadHistoryProgressFile } from '@/api/project'
+import { getCondition, getFitting, downloadHistoryProgressFile, partSchedulePartFitting } from '@/api/project'
 export default {
   mixins: [pageMixins],
   components: { iCard, tableList, iPagination, iButton, logicSettingDialog, showItemDialog },
@@ -161,7 +161,33 @@ export default {
         iMessage.warn(this.language('ZHINENGXUANZEYITIAOSHUJUJINXINGHUICHUAN', '只能选择一条数据进行回传'))
         return
       }
+      if (this.selectRowPart.length < 1 && this.partTableData.length < 1) {
+        return
+      }
       this.rollBackLoading = true
+      let params = {}
+      if (this.selectRowPart[0]) {
+        params = {
+          ...this.selectRowPart[0]
+        }
+      } else {
+        const selectFit = this.selectRowFit[0]
+        params = {
+          ...this.partTableData[0],
+          fsdocCscWeekly: selectFit.fsdocCscWeekly,
+          cscBfWeekly: selectFit.cscBfWeekly,
+          bf1stWeekly: selectFit.bf1stWeekly,
+          ots1stWeekly: selectFit.ots1stWeekly,
+          em1stWeekly: selectFit.em1stWeekly
+        }
+      }
+      partSchedulePartFitting(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
       this.rollBackLoading = false
     },
     handleSelectionChangeFit(val) {
@@ -231,7 +257,7 @@ export default {
     },
     handleNomalSearch() {
       this.page.currPage = 1
-      this.init()
+      this.getCondition()
     },
     changeLogic(visible) {
       this.logicVisible = visible
@@ -359,7 +385,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.fitTable {
+  ::v-deep .el-table__body-wrapper{
+    min-height: unset;
+  }
+}
 .withBorder {
   border: 2px solid #1763F7;
+}
+.borderTop {
+  border-top: 1px dashed rgba(65, 67, 74, .2);
 }
 </style>

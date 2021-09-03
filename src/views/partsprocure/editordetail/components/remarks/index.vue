@@ -11,13 +11,6 @@
 						<!-- partsprocure.PARTSPROCURETRANSFER -->
 				</div>
 
-				<div v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_AEKOMANAGER|aeko管理员备注">
-					<p>
-						<icon symbol name="iconbeizhuxinxi"></icon>
-						<span>{{ language('LK_AEKO_GUANLIYUANBEIZHU','aeko管理员备注') }}</span>
-					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="vmdetailData.aekoManagerMemo" ></iInput>
-				</div>
 
 				<div>
 					<p>
@@ -26,6 +19,18 @@
 					</p>
 					<iInput type="textarea" rows="8" resize="none" v-model="vmdetailData.linieMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES"></iInput>
 				</div>
+
+
+				
+				<div v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_AEKOMANAGER|aeko管理员备注">
+					<p>
+						<icon symbol name="iconbeizhuxinxi"></icon>
+						<span>{{ language('LK_AEKO_GUANLIYUANBEIZHU','aeko管理员备注') }}</span>
+					</p>
+					<iInput type="textarea" rows="8" resize="none" v-model="vmdetailData.aekoManagerMemo" ></iInput>
+				</div>
+
+				
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
@@ -36,6 +41,12 @@
 				<!-- 保存 -->
 				<span class="save">
 					<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE">{{ language('LK_BAOCUN','保存') }}
+					</iButton>
+				</span>
+
+				<!-- AEKO管理员-保存 -->
+				<span class="save">
+					<iButton @click="save" v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE_AEKO_MANGE|保存-AEKO管理员">{{ language('LK_BAOCUN','保存') }}
 					</iButton>
 				</span>
 			</div>
