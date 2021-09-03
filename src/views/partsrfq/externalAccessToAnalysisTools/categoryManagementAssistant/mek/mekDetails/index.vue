@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-02 17:30:46
+ * @LastEditTime: 2021-09-03 15:46:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -25,7 +25,8 @@
         <div class="flex"
              v-show="reportFlag">
           <!--预览-->
-          <iButton class="margin-left30">{{ $t("MEK分析库") }}</iButton>
+          <iButton class="margin-left30"
+                   @click="handleAnalysis">{{ $t("MEK分析库") }}</iButton>
           <!--保存-->
           <iButton @click="handleMEKInfo"
                    class="margin-left30">{{ $t("MEK基础数据库") }}</iButton>
@@ -802,6 +803,13 @@ export default {
     close () {
       this.dialogVisible = false
       this.reportFlag = true
+    },
+    handleAnalysis () {
+      if (this.entryStatus) {
+        this.$router.push({ path: '/sourceinquirypoint/sourcing/partsrfq/assistant', query: { id: this.rfqId, round: this.$route.query.round, pageType: 'MEK', activityTabIndex: 'two' } })
+      } else {
+        this.$router.push({ path: '/sourcing/partsrfq/externalNegotiationAssistant', query: { pageType: 'MEK' } })
+      }
     },
     save () {
       if (this.analysisSave) {

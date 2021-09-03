@@ -50,7 +50,7 @@ export default {
     },
     handleAnalysis() {
       if (this.$store.state.rfq.entryStatus) {
-        this.$router.push({ path: '/sourcing/partsrfq/assistant', query: { id: this.$store.state.rfq.rfqId, round: this.$route.query.round, pageType: 'VP', activityTabIndex: 'two' } })
+        this.$router.push({ path: '/sourceinquirypoint/sourcing/partsrfq/assistant', query: { id: this.$store.state.rfq.rfqId, round: this.$route.query.round, pageType: 'VP', activityTabIndex: 'two' } })
       } else {
         this.$router.push({ path: '/sourcing/partsrfq/externalNegotiationAssistant', query: { pageType: 'VP' } })
       }
