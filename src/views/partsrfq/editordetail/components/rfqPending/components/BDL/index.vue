@@ -47,6 +47,7 @@ import {iCard, iButton, iInput, icon, iPagination, iMessage, iMessageBox } from 
 import tableList from "./tableList"
 import {tableTitle} from "./data"
 import {updateRfq, rfqBdlPage as getBdlList, deleteRfqBdl} from "@/api/partsrfq/editordetail";
+import {updateRfqBdl} from '@/api/partsrfq/home/index'
 import logDialog from '@/views/partsign/editordetail/components/logDialog'
 import {pageMixins} from '@/utils/pageMixins'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
@@ -285,8 +286,7 @@ export default {
     handleSaveCustom() {
       // if(this.editSelectTableDataCache.length == 0) return iMessage.error(this.$t('LK_NHWXZBDL')) 
       this.saveLoading = true
-      updateRfq({
-        updateRfqBdlPackage: {
+      updateRfqBdl({
           rfqId: this.rfqId,
           updateType: "1",
           userId: this.userInfo.id,
@@ -295,8 +295,7 @@ export default {
             userDefinedGradeField: this.$refs.table.addTitle || undefined,
             userDefinedGrader: item.userDefinedGrader
           }))
-        }
-      })
+        })
         .then(res => {
           if (res.code == 200) {
             this.getTableList()

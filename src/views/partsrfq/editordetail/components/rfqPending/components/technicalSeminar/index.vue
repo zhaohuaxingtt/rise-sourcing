@@ -114,12 +114,8 @@ export default {
       if (id) {
         this.tableLoading = true;
         try {
-          const req = {
-            rfqId: id,
-            userId: store.state.permission.userInfo.id
-          }
-          const res = await getAllRfqParts(req)
-          this.tableListData = res.records;
+          const res = await getAllRfqParts(id)
+          this.tableListData = res.data;
           this.page.currPage = res.current
           this.page.pageSize = res.size
           this.page.totalCount = res.total

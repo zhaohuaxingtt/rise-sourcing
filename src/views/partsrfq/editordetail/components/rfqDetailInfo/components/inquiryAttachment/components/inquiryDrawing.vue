@@ -43,7 +43,7 @@ import {iCard, iButton, iPagination, iMessage} from 'rise';
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {inquiryDrawingTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getRfqDataList} from "@/api/partsrfq/home";
+import {pageInquiryDrawingsByRfqId} from "@/api/partsrfq/home";
 import {downloadFile, downloadUdFile} from "@/api/file";
 
 
@@ -73,19 +73,17 @@ export default {
       if (id) {
         this.tableLoading = true;
         const req = {
-          otherInfoPackage: {
             findType: '12',
             rfqId: id,
             current: this.page.currPage,
             size: this.page.pageSize,
-          }
         }
         try {
-          const res = await getRfqDataList(req)
-          this.tableListData = res.data.inquiryDrawingsVO.inquiryDrawingsVOS;
-          this.page.currPage = res.data.inquiryDrawingsVO.pageNum
-          this.page.pageSize = res.data.inquiryDrawingsVO.pageSize
-          this.page.totalCount = res.data.inquiryDrawingsVO.total
+          const res = await pageInquiryDrawingsByRfqId(req)
+          this.tableListData = res.data;
+          this.page.currPage = res.data.pageNum
+          this.page.pageSize = res.data.pageSize
+          this.page.totalCount = res.data.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;

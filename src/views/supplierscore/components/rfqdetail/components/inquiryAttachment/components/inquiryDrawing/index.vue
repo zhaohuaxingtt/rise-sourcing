@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-28 17:22:08
- * @LastEditTime: 2021-07-02 18:01:42
+ * @LastEditTime: 2021-09-02 12:02:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\inquiryAttachment\components\inquiryDrawing\index.vue
@@ -45,7 +45,7 @@ import { iCard, iButton, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { inquiryDrawingTableTitle as tableTitle } from "../data"
-import { getRfqDataList } from "@/api/partsrfq/home"
+import { getRfqDataList , pageInquiryDrawingsByRfqId} from "@/api/partsrfq/home"
 import { downloadFile, downloadUdFile } from "@/api/file"
 
 export default {
@@ -81,18 +81,16 @@ export default {
     getRfqDataList() {
       this.loading = true
 
-      getRfqDataList({
-        otherInfoPackage: {
+      pageInquiryDrawingsByRfqId({
           findType: "12",
           rfqId: this.rfqId,
           current: this.page.currPage,
           size: this.page.pageSize,
-        }
       })
       .then(res => {
-        if (res.code == 200 && res.data.inquiryDrawingsVO) {
-          this.tableListData = Array.isArray(res.data.inquiryDrawingsVO.inquiryDrawingsVOS) ? res.data.inquiryDrawingsVO.inquiryDrawingsVOS : []
-          this.page.totalCount = res.data.inquiryDrawingsVO.total || 0
+        if (res.code == 200 && res.data) {
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.data.total || 0
         } else {
           this.tableListData = []
           this.page.totalCount = 0

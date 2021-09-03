@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-19 09:49:15
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-01 17:43:02
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -147,7 +147,7 @@ export function getPartBySP(params) {
 // 自动发起询价
 export function autoInquiry(params) {
   return requstSourcing({
-    url: '/rfqs/rfqAutoRound',
+    url: '/rfq-round/rfqAutoRound',
     method: 'PATCH',
     data: params
   })
@@ -156,7 +156,7 @@ export function autoInquiry(params) {
 // 自动发起询价
 export function updateRfq(params) {
   return requstSourcing({
-    url: '/rfqs/updateRfq',
+    url: '/rfq/updateRfqInfo',
     method: 'PATCH',
     data: params
   })
