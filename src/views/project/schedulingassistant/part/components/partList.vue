@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 10:23:56
+ * @LastEditTime: 2021-09-03 11:02:12
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -645,6 +645,8 @@ export default {
           this.parts = _.cloneDeep(partList)
           // eslint-disable-next-line no-undef
           this.partsTemp = _.cloneDeep(partList)
+          this.checkAll = false
+          this.isIndeterminate = false
         } else {
           this.parts = []
           this.partsTemp = []

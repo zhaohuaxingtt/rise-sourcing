@@ -80,7 +80,6 @@ export default {
   components: { iPage, iButton, icon, iCard, iFormGroup, iFormItem, iText, iTabsList, logButton, tableList, aPriceChange, mouldInvestmentChange, developmentFee, damages, sampleFee },
   data() {
     return {
-      quotationId: "",
       infoItems,
       tableTitle,
       tableListData: [{ a: "10", b: "12", e: "100.00" }],
@@ -154,6 +153,11 @@ export default {
               }
             })
           }
+
+          this.$nextTick(() => {
+            const component = this.$refs[this.currentTab][0]
+            if (typeof component.init === "function") component.init()
+          })
         }else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
