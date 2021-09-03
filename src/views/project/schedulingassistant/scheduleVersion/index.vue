@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:02
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-03 10:30:12
+ * @LastEditTime: 2021-09-03 15:00:46
  * @Description: 排程版本查询
  * @FilePath: \front-web\src\views\project\schedulingassistant\scheduleVersion\index.vue
 -->
@@ -88,7 +88,11 @@ export default {
       }).then(res => {
         this.tableLoading = false
         if (res.code === '200') {
-          this.tableData = res.data || []
+          const tableData = res.data || []
+          this.tableData = tableData.map(o => {
+            o.createDate = o.createDate ? window.moment(o.createDate).format('YYYY-MM-DD HH:mm:ss') : ''
+            return o
+          })
           this.page.totalCount = res.total
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
