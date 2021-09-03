@@ -182,10 +182,10 @@ export default [
         children: [
           {
             path: '/purchase',
-            redirect: '/purchase/investmentList',
+            redirect: '/purchase/investmentList/sureTask',
           },
           {
-            path: '/purchase/investmentList',
+            path: '/purchase/investmentList/sureTask',
             name: 'investmentList',
             meta: {
               title: '模具投资清单-确认任务'
@@ -227,7 +227,7 @@ export default [
         component: () => import (`@/views/ws2/purchase/mouldBook/details`),
       },
       {
-        path: '/purchase/investmentList/bmInfo',
+        path: '/purchase/investmentList/sureTask/bmInfo',
         name: 'bmInfo',
         meta: {
           title: '模具投资清单-BM详情页'
@@ -252,10 +252,10 @@ export default [
         children: [
           {
             path: '/purchaseSupplier',
-            redirect: '/purchaseSupplier/investmentList',
+            redirect: '/purchaseSupplier/investmentList/sureTask',
           },
           {
-            path: '/purchaseSupplier/investmentList',
+            path: '/purchaseSupplier/investmentList/sureTask',
             name: 'investmentList',
             meta: {
               title: '模具投资清单-确认任务'
@@ -290,7 +290,7 @@ export default [
         component: () => import (`@/views/ws2/purchaseSupplier/mouldBook/details`),
       },
       {
-        path: '/purchaseSupplier/investmentList/bmInfo',
+        path: '/purchaseSupplier/investmentList/sureTask/bmInfo',
         name: 'bmInfo',
         meta: {
           title: '模具投资清单-BM详情页'
