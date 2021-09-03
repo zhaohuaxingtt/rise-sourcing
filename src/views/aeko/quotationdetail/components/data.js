@@ -23,7 +23,7 @@ export const tableTitle = [
   { props: "f", key: "MUJUTOUZIBIANDONG", name: "模具投资变动", tooltip: true },
   { props: "quotationPriceSummaryInfo", key: "KAIFAFEI", name: "开发费", tooltip: true },
   { props: "terminationPrice", key: "ZHONGZHIFEI", name: "终止费", tooltip: true },
-  { props: "isampleCost", key: "YANGJIANFEI", name: "样件费", tooltip: true },
+  { props: "sampleCost", key: "YANGJIANFEI", name: "样件费", tooltip: true },
   { props: "currency", key: "HUOBI", name: "货币", tooltip: true },
   { props: "measureUnit", key: "JILIANGDANWEI", name: "计量单位", tooltip: true }
 ]

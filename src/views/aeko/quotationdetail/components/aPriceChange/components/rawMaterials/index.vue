@@ -40,7 +40,7 @@
         </el-table-column>
         <el-table-column :label="language('YUANCHANGUO', '原产国')" align="center" width="100">
           <template v-slot="scope">
-            <iSelect v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="select-center" v-model="scope.row.productionCountry" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.productionCountry !== sourceMap[scope.row.sourceId].productionCountry) : false }">
+            <iSelect v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="select-center" filterable v-model="scope.row.productionCountry" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.productionCountry !== sourceMap[scope.row.sourceId].productionCountry) : false }">
               <el-option
                 v-for="item in countryOptions"
                 :key="item.key"
@@ -72,60 +72,56 @@
         </el-table-column>
         <el-table-column align="center" width="120" :render-header="h => h('span', { domProps: { innerHTML: `${ language('DANJIARMBUOM', '单价') }(RMB/UoM)` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.unitPrice" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.unitPrice !== sourceMap[scope.row.sourceId].unitPrice) : false }" @input="handleInputByNumber($event, 'unitPrice', scope.row, 2)"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.unitPrice" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.unitPrice !== sourceMap[scope.row.sourceId].unitPrice) : false }" @input="handleInputByNumber($event, 'unitPrice', scope.row, 2, updateUnitPrice)"></iInput>
             <span v-else>{{ scope.row.unitPrice }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" width="96" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHULIANG', '数量') }(1..n)` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.quantity" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.quantity !== sourceMap[scope.row.sourceId].quantity) : false }" @input="handleInputByNumber($event, 'quantity', scope.row, 0)"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.quantity" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.quantity !== sourceMap[scope.row.sourceId].quantity) : false }" @input="handleInputByNumber($event, 'quantity', scope.row, 0, updateQuantity)"></iInput>
             <span v-else>{{ scope.row.quantity }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" width="140" :render-header="h => h('span', { domProps: { innerHTML: `${ language('ZHIJIEYUANCAILIAOSANJIANCHENGBEN', '直接原材料/散件成本') }<br/>（RMB/Pc.）` }})">
-          <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1" class="input-center" v-model="scope.row.directMaterialCost" @input="handleInputByNumber($event, 'directMaterialCost', scope.row, 2)"></iInput>
-            <span v-else>{{ scope.row.directMaterialCost }}</span>
-          </template>
-        </el-table-column>
+        <el-table-column align="center" width="140" prop="directMaterialCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('ZHIJIEYUANCAILIAOSANJIANCHENGBEN', '直接原材料/散件成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
         <el-table-column :label="language('WULIAOGUANLIFEI', '物料管理费')" align="center">
           <el-table-column label="(%)" align="center" width="88">
             <template v-slot="scope">
-              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.materialManageCostRate" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.materialManageCostRate !== sourceMap[scope.row.sourceId].materialManageCostRate) : false }" @input="handleInputByNumber($event, 'materialManageCostRate', scope.row, 2)"></iInput>
+              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.materialManageCostRate" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.materialManageCostRate !== sourceMap[scope.row.sourceId].materialManageCostRate) : false }" @input="handleInputByNumber($event, 'materialManageCostRate', scope.row, 2, updateMaterialManageCostRate)"></iInput>
               <span v-else>{{ scope.row.materialManageCostRate }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="(RMB/Pc.)" align="center" width="93">
-            <template v-slot="scope">
-              <iInput v-if="scope.row.partCbdType == 1" class="input-center" v-model="scope.row.materialManageCost" @input="handleInputByNumber($event, 'materialManageCost', scope.row, 2)"></iInput>
-              <span v-else>{{ scope.row.materialManageCost }}</span>
-            </template>
-          </el-table-column>
+          <el-table-column label="(RMB/Pc.)" align="center" width="93" prop="materialManageCost"></el-table-column>
         </el-table-column>
-        <el-table-column align="center" width="122" :render-header="h => h('span', { domProps: { innerHTML: `${ language('YUANCAILIAOSANJIANCHENGBEN', '原材料/散件成本') }<br/>（RMB/Pc.）` }})">
-          <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1" class="input-center" v-model="scope.row.materialCost" @input="handleInputByNumber($event, 'materialCost', scope.row, 2)"></iInput>
-            <span v-else>{{ scope.row.materialCost }}</span>
-          </template>
-        </el-table-column>
+        <el-table-column align="center" width="122" prop="materialCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('YUANCAILIAOSANJIANCHENGBEN', '原材料/散件成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
       </el-table>
     </div>
   </div>  
 </template>
 
 <script>
+/* eslint-disable no-undef */
+
 import { iButton, iInput, iSelect, iMessage, iMessageBox } from "rise"
 import iconFont from "../iconFont"
-import { uuidv4 } from "../data"
+import { uuidv4, sourceRowClass } from "../data"
 import { numberProcessor } from "@/utils"
 import { cloneDeep } from "lodash"
 
 export default {
   components: { iButton, iInput, iSelect, iconFont },
+  model: {
+    prop: "tableListData",
+    event: "change"
+  },
   props: {
     topCutLine: {
       type: Boolean,
       default: false
+    },
+    tableListData: {
+      type: Array,
+      required: true,
+      default: () => ([])
     }
   },
   data() {
@@ -138,24 +134,6 @@ export default {
       options: [
         { key: "Y", label: "是", value: "Y" },
         { key: "N", label: "否", value: "N" }
-      ],
-      tableListData: [
-        {
-          id: "c1",
-          partCbdType: 0,
-          partName: "原材料",
-          partNumber: "PA66",
-          supplierName: "ABC",
-          productionCountry: "China",
-          isSvwAssignPriceParts: "Y",
-          quantityUnit: "KG",
-          unitPrice: "47.00",
-          quantity: "3",
-          directMaterialCost: "34.50",
-          materialManageCostRate: "2.00",
-          materialManageCost: "0.69",
-          materialCost: "35.19"
-        }
       ],
       sourceMap: {},
       sourceTableListData: [],
@@ -204,9 +182,7 @@ export default {
     })
   },
   methods: {
-    sourceRowClass({ row }) {
-      return row.partCbdType == 0 || row.partCbdType == 1 ? "sourceRow" : ""
-    },
+    sourceRowClass,
     selectionChange(list) {
       this.multipleSelection = list
     },
@@ -258,7 +234,7 @@ export default {
         }
       }
 
-      this.tableListData = this.tableListData.filter(item => !this.multipleSelection.includes(item))
+      this.$emit("change", this.tableListData.filter(item => !this.multipleSelection.includes(item)))
 
       let flag = false
       this.multipleSelection.forEach(item => {
@@ -275,8 +251,37 @@ export default {
     updateSourceDataIndex() {
       this.sourceTableListData.forEach((item, index) => this.$set(item, "index", `C${ ++index }`))
     },
-    handleInputByNumber(value, key, row, precision) {
+    handleInputByNumber(value, key, row, precision, cb) {
       this.$set(row, key, numberProcessor(value, precision))
+      
+      if (typeof cb === "function") {
+        cb(value, key, row)
+      }
+    },
+    updateUnitPrice(value, key, row) {
+      this.computeDirectMaterialCost(value, key, row)
+    },
+    updateQuantity(value, key, row) {
+      this.computeDirectMaterialCost(value, key, row)
+    },
+    computeDirectMaterialCost(sourceValue, sourceKey, row) {
+      const directMaterialCost = math.evaluate(`${ math.bignumber(row.unitPrice || 0) } * ${ math.bignumber(row.quantity || 0) }`).toFixed(2)
+      this.$set(row, "directMaterialCost", directMaterialCost)
+    
+      this.computeMaterialManageCost(directMaterialCost, "directMaterialCost", row)
+      this.computeMaterialCost(directMaterialCost, "directMaterialCost", row)
+    },
+    updateMaterialManageCostRate(value, key, row) {
+      this.computeMaterialManageCost(value, key, row)
+    },
+    computeMaterialManageCost(sourceValue, sourceKey, row) {
+      const materialManageCost = math.evaluate(`${ math.bignumber(row.directMaterialCost || 0) } * (${ math.bignumber(row.materialManageCostRate || 0) } / 100)`).toFixed(2)
+      this.$set(row, "materialManageCost", materialManageCost)
+
+      this.computeMaterialCost(materialManageCost, "materialManageCost", row)
+    },
+    computeMaterialCost(sourceValue, sourceKey, row) {
+      this.$set(row, "materialCost", math.evaluate(`${ math.bignumber(row.directMaterialCost || 0) } + ${ math.bignumber(row.materialManageCost || 0) }`).toFixed(2))
     }
   }
 }

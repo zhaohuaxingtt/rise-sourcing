@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-09-02 14:15:35
+ * @LastEditTime: 2021-09-03 14:08:15
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -275,6 +275,8 @@ export default {
     },
     //动态获取转派评分任务
     openPage(row) {
+      console.log(row,'row');
+      return;
       this.$router.push({
         path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}`
       })
