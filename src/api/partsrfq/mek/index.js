@@ -97,3 +97,11 @@ export function infoAdd(parmars) {
     data: parmars
   })
 }
+//info--导出获取文件名
+export function getName(parmars) {
+  return requst({
+    url: `/mekScheme/getName?id=${parmars}`,
+    method: 'GET',
+    data: parmars
+  })
+}
