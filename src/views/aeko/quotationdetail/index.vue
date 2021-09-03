@@ -27,26 +27,23 @@
         :selection="false"
         :tableTitle="tableTitle"
         :tableData="tableListData">
-        <template #e="scope">
+        <template #bnkFee="scope">
           <el-popover
             placement="top"
             trigger="hover"
-            :disabled="scope.row.e === scope.row.d">
+            :disabled="scope.row.bnkFee === scope.row.originBnkFee">
             <template>
               <p>{{ language("YUANCHENGYUNFANGSHI", "原承运方式") }}：{{ language("ZIYUN", "自运") }}（{{ language("HUO", "或") }}{{ language("CHENGYUN", "承运")  }}）</p>
               <p>{{ language("XINCHENGYUNFANGSHI", "新承运方式") }}：{{ language("CHENGYUN", "承运") }}（{{ language("HUOZHE", "或者") }}{{ language("ZIYUN", "自运")  }}）</p>
             </template>
             <template #reference>
               <!-- 针对供应商报价可跳转 -->
-              <span :class="`margin-right5 ${userInfo &&userInfo.userType&&userInfo.userType == 2 ? 'link-underline' : ''}`" @click="goToBNK">{{ scope.row.e }}</span>
-              <icon v-if="scope.row.e !== scope.row.d" symbol name="iconzengjiacailiaochengben_lan" class="font15 rotate180" />
+              <span :class="`margin-right5 ${userInfo &&userInfo.userType&&userInfo.userType == 2 ? 'link-underline' : ''}`" @click="goToBNK">{{ scope.row.bnkFee }}</span>
+              <icon v-if="scope.row.bnkFee !== scope.row.originBnkFee" symbol name="iconzengjiacailiaochengben_lan" class="font15 rotate180" />
             </template>
           </el-popover>
         </template>
 
-        <!-- <template #aprice="scope">
-          <span  @click="goToBNK">11111</span>
-        </template> -->
       </tableList>
     </iCard>
 
