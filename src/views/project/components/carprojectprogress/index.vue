@@ -2,20 +2,20 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 22:46:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-31 11:20:04
+ * @LastEditTime: 2021-09-03 09:51:45
  * @Description: 车型项目详情
  * @FilePath: \front-web\src\views\project\components\carprojectprogress\index.vue
 -->
 
 <template>
-  <iCard class="projectCard" :collapse="collapse" @handleCollapse="handleCollapse" >
+  <iCard class="projectProgressCard" :collapse="collapse" @handleCollapse="handleCollapse" >
     <div class="clearFloat" slot="header-control">
       <div class="titleSearch">
         <span class="margin-right20 titleSearch-label">{{language('CHEXINGXIANGMU','车型项目')}}</span>
         <carProjectSelect optionType="2" :filterable="true" v-model="carProjectId" @change="handleCarProjectChange" :disabled="disabled" />
       </div>
     </div>
-    <div class="projectCard-content" >
+    <div class="projectProgressCard-content" >
       <carEmpty v-if="!carProjectId" />
       <carProject v-else :carProjectId="carProjectId" @changeSopStatus="changeSopStatus" />
     </div>
@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.projectCard {
+.projectProgressCard {
   &-content {
     margin-top: 20px;
     border-top: 1px dashed #BBC4D6;;

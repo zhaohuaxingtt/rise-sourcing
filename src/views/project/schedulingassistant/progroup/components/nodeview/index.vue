@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:14:21
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 17:23:13
+ * @LastEditTime: 2021-09-03 10:19:28
  * @Description: 节点视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
 -->
@@ -18,34 +18,36 @@
         <iButton @click="handleDownloadNode" :loading="downloadLoading">{{language('DAOCHU', '导出')}}</iButton>
       </div>
     </div>
-    <div v-for="pro in products" :key="pro.label" class="productItem">
-      <div class="productItem-top">
-        <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">
-          {{pro.productGroupNameZh}}
-        </el-checkbox>
-      </div>
-      <div class="productItem-bottom">
-        <div class="productItem-bottom-text">
-          <div v-for="item in targetList" :key="item.value" class="productItem-top-targetList-item margin-top20">
-            <icon v-if="pro[item.value] == 1" symbol name="iconbaojiapingfengenzong-jiedian-lv" class="productItem-top-targetList-item-icon"></icon>
-            <icon v-else-if="pro[item.value] == 2" symbol name="iconbaojiapingfengenzong-jiedian-huang" class="productItem-top-targetList-item-icon"></icon>
-            <icon v-else-if="pro[item.value] == 3" symbol name="iconbaojiapingfengenzong-jiedian-hong" class="productItem-top-targetList-item-icon"></icon>
-            <span class="productItem-top-targetList-item-label">{{language(item.key, item.label)}}</span>
-          </div>
+    <div class="periodicView-content">
+      <div v-for="pro in products" :key="pro.label" class="productItem">
+        <div class="productItem-top">
+          <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">
+            {{pro.productGroupNameZh}}
+          </el-checkbox>
         </div>
-        <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node">
-          <div class="productItem-bottom-nodeItem">
-            <span class="productItem-bottom-nodeItem-label" v-if="!item.label.includes('1st')">{{item.key ? language(item.key, item.label) : item.label}}</span>
-            <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span>
-            <icon v-if="pro[item.status] === 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon>
-            <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
-            <div class="flex-box margin-top20 " v-for="taItem in targetList" :key="taItem.value" >
-              <iText class="productItem-bottom-stepBetween-input text ">{{pro[item[taItem.props]]}}</iText>
-              <iText v-if="index === nodeList.length - 1" class="productItem-bottom-stepBetween-input text margin-left10">{{pro[item[taItem.props1]]}}</iText>
+        <div class="productItem-bottom">
+          <div class="productItem-bottom-text">
+            <div v-for="item in targetList" :key="item.value" class="productItem-top-targetList-item margin-top20">
+              <icon v-if="pro[item.value] == 1" symbol name="iconbaojiapingfengenzong-jiedian-lv" class="productItem-top-targetList-item-icon"></icon>
+              <icon v-else-if="pro[item.value] == 2" symbol name="iconbaojiapingfengenzong-jiedian-huang" class="productItem-top-targetList-item-icon"></icon>
+              <icon v-else-if="pro[item.value] == 3" symbol name="iconbaojiapingfengenzong-jiedian-hong" class="productItem-top-targetList-item-icon"></icon>
+              <span class="productItem-top-targetList-item-label">{{language(item.key, item.label)}}</span>
             </div>
           </div>
-          <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
-            <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon margin-top45"></icon>
+          <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node">
+            <div class="productItem-bottom-nodeItem">
+              <span class="productItem-bottom-nodeItem-label" v-if="!item.label.includes('1st')">{{item.key ? language(item.key, item.label) : item.label}}</span>
+              <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span>
+              <icon v-if="pro[item.status] === 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon>
+              <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
+              <div class="flex-box margin-top20 " v-for="taItem in targetList" :key="taItem.value" >
+                <iText class="productItem-bottom-stepBetween-input text ">{{pro[item[taItem.props]]}}</iText>
+                <iText v-if="index === nodeList.length - 1" class="productItem-bottom-stepBetween-input text margin-left10">{{pro[item[taItem.props1]]}}</iText>
+              </div>
+            </div>
+            <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
+              <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon margin-top45"></icon>
+            </div>
           </div>
         </div>
       </div>
@@ -126,6 +128,7 @@ export default {
 
 <style lang="scss" scoped>
 .periodicView {
+  height: 100%;
   &-title {
     display: flex;
     justify-content: space-between;
@@ -141,6 +144,10 @@ export default {
         margin-left: 12px;
       }
     }
+  }
+  &-content {
+    height: calc(100% - 60px);
+    overflow: auto;
   }
   .productItem {
     background-color: rgba(205, 212, 226, 0.12);

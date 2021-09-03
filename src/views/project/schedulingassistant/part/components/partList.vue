@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 15:38:18
+ * @LastEditTime: 2021-09-03 10:23:56
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -284,9 +284,13 @@ export default {
       // eslint-disable-next-line no-undef
       partProgressConfirm(selectRow.map(item => _.omit(item, 'selectOption'))).then(res => {
         if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.changeFsConfirmVisible(false)
-          this.getPartList(this.cartypeProId)
+          if (res.data && res.data.length > 1) {
+            iMessage.warn(res.data.map(item => item.partName).join(',')+'不符合发送条件，无法发送')
+          } else {
+            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+            this.changeFsConfirmVisible(false)
+            this.getPartList(this.cartypeProId)
+          }
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
