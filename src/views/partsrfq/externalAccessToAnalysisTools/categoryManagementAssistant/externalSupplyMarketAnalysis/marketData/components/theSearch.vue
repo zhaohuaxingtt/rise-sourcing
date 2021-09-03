@@ -36,6 +36,7 @@
             label="name"
             sortVal="name"
             value="name"
+            :disabled="item.options.length === 0"
             :search-method="(value) =>handleSelectSearch(value,item.props)"
         />
       </template>

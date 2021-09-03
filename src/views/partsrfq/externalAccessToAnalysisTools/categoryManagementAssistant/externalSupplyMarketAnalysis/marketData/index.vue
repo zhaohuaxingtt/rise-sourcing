@@ -153,18 +153,6 @@ export default {
               };
             });
             break;
-          case 'productNameList':
-            item.options = data.productNameList;
-            break;
-          case 'marketNameList':
-            item.options = data.marketNameList;
-            break;
-          case 'priceTypeList':
-            item.options = data.priceTypeList;
-            break;
-          case 'unitList':
-            item.options = data.unitList;
-            break;
           case 'areaList':
             item.options = data.areaList.map(item => {
               return {
