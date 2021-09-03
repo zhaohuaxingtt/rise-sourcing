@@ -14,28 +14,29 @@
     <el-form>
       <!-- 车型项目 -->
       <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')">
+        <!-- v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_CARTYPE|车型项目" -->
         <el-autocomplete
           v-model="form.cartypeProName"
           :fetch-suggestions="querySearch"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           suffix-icon="el-icon-search"
           @select="handleCarTypeSelect"
-           v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_CARTYPE|车型项目"
           clearable />
       </el-form-item>
       <!-- 保存时间 -->
       <el-form-item :label="language('BAOCUNSHIJIAN','保存时间')">
+        <!-- v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_CREATEDATE|保存时间" -->
         <iDatePicker
           v-model='createDate'
           @change="oncheckDateChange"
           type="daterange"
-           v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_CREATEDATE|保存时间"
           clearable>
         </iDatePicker>
       </el-form-item>
       <!-- 保存时间 -->
       <el-form-item :label="language('PAICHENGWEIDU','排程维度')">
-        <iDicoptions :optionKey="'SCHEDULE_VERSION_TYPES'"  v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_PAICHENGWEIDU|排程维度" v-model="form.type" />
+        <!-- v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_PAICHENGWEIDU|排程维度" -->
+        <iDicoptions :optionKey="'SCHEDULE_VERSION_TYPES'" v-model="form.type" />
       </el-form-item>
     </el-form>
   </iSearch>
