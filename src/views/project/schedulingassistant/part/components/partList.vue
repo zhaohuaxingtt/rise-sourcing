@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 16:28:16
+ * @LastEditTime: 2021-09-03 17:35:07
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -322,8 +322,8 @@ export default {
         }
       })
     },
-    autoSave() {
-      this.handleSave(false)
+    async autoSave() {
+      await this.handleSave(false)
     },
     /**
      * @Description: 根据选中的行获取每一行的fs下拉列表
