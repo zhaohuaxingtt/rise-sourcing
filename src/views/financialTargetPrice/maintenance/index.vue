@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-25 10:49:34
+ * @LastEditTime: 2021-09-02 11:00:36
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -111,7 +111,7 @@ import modificationRecordDialog from './components/modificationRecord'
 import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
 import approvalRecordDialog from './components/approvalRecord'
 import { dictkey } from "@/api/partsprocure/editordetail"
-import { getTargetPriceList, exportTargetPriceList, setPrice, getCFList, getPartStatus, importTargetPriceList } from "@/api/financialTargetPrice/index"
+import { getTargetPriceList, exportTargetPriceList, setPrice, getCFList, getPartStatus, importTargetPriceList, batchSetPrice} from "@/api/financialTargetPrice/index"
 import { getDictByCode } from '@/api/dictionary'
 import {omit} from 'lodash'
 import moment from 'moment'
@@ -393,14 +393,26 @@ export default {
      * @return {*}
      */    
     changeEdit(isEdit) {
-      if (this.selectItems.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEYITIAOJILU','请选择一条记录'))
+      if (isEdit) {
+        this.tableData = this.tableData.map(item => {
+          return {
+            ...item,
+            isEdit: !['APPROVED', 'APPROVAL_K2'].includes(item.approveStatus) && item.applyType === 'LC'
+          }
+        })
+      }
+      if (!this.tableData.some(item => item.isEdit)) {
+        iMessage.warn(this.language('MEIYOUKEYIBIANJIDESHUJU','没有可以编辑的数据'))
         return
       }
-      if (this.selectItems.length > 1) {
-        iMessage.warn(this.language('ZHINENGXUANZEYITIAOJILU','只能选择一条记录'))
-        return
-      }
+      // if (this.selectItems.length < 1) {
+      //   iMessage.warn(this.language('QINGXUANZEYITIAOJILU','请选择一条记录'))
+      //   return
+      // }
+      // if (this.selectItems.length > 1) {
+      //   iMessage.warn(this.language('ZHINENGXUANZEYITIAOJILU','只能选择一条记录'))
+      //   return
+      // }
       this.isEdit = isEdit
     },
     async handleExport() {
@@ -421,11 +433,13 @@ export default {
      */    
     handleSave() {
       this.tableLoading = true
-      const params = {
-        ...this.selectItems[0],
-        partPrjCode: this.selectItems[0].fsnrGsnrNum
-      }
-      setPrice(params).then(res => {
+      const params = this.tableData.filter(item => item.isEdit).map(item => {
+        return {
+          ...item,
+          partPrjCode: item.fsnrGsnrNum
+        }
+      })
+      batchSetPrice(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.changeEdit(false)

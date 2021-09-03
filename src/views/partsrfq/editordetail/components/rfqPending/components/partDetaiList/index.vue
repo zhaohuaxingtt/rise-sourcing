@@ -61,8 +61,7 @@ import {
 } from '@/api/partsrfq/editordetail';
 import { getTabelData} from "@/api/partsprocure/home";
 import {
-  addRfq,
-  // editRfqData
+  insertRfqPart as addRfq,
 } from '@/api/partsrfq/home';
 import {
   pageMixins
@@ -150,15 +149,8 @@ export default {
     async start() {
       if (!(await this.validateStart())) return;
       this.addLoding = true;
-      addRfq({
-        insertRfqPackage: {
-          operationType: '1',
-          userId: store.state.permission.userInfo.id || '',
-          userName: store.state.permission.userInfo.userName,
-          rfqPartDTOList: this.waitHandleSelectArr,
-          rfqId: this.rfqId
-        }
-      })
+      const parmars = this.waitHandleSelectArr.map(r=>{return {...r,...{userId: store.state.permission.userInfo.id || '',userName: store.state.permission.userInfo.userName,rfqId: this.rfqId}}})
+      addRfq(parmars)
           .then((res) => {
             this.addLoding = false;
             if (res.data && res.data.rfqId) {
@@ -224,7 +216,6 @@ export default {
             idList
           // }
         }
-        // const res = await editRfqData(req)
         const res = await deleteRfqPart(req)
         this.resultMessage(res)
         this.getTableList()

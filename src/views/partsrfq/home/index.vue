@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-09-01 14:05:28
+ * @LastEditTime: 2021-09-02 14:15:35
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -171,10 +171,9 @@
 import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} from "rise";
 import { iNavMvp, iSearch } from "rise";
 import tablelist from "pages/partsrfq/components/tablelist";
-import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, attachmentTableTitle} from "pages/partsrfq/home/components/data";
-import {getRfqDataList, editRfqData, findBySearches, getRfqList, getCartypeDict} from "@/api/partsrfq/home";
+import {findBySearches, getRfqList, getCartypeDict, modification, ratingTranslate, setRfqTop} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
 import filters from "@/utils/filters";
@@ -186,8 +185,7 @@ import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { downloadFile, downloadUdFile } from "@/api/file"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
-import { clickMessage, TAB} from "@/views/partsign/home/components/data"
-import { log } from 'util';
+import { clickMessage} from "@/views/partsign/home/components/data"
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -204,7 +202,6 @@ export default {
     iInput,
     iSelect,
     icon,
-    // assignmentOfScoringTasks
     scoringDeptDialog,
     nominateTypeDialog
   },
@@ -286,12 +283,10 @@ export default {
     async getTableList() {
       this.tableLoading = true;
       const req = {
-        // rfqMangerInfosPackage: {
           userId: store.state.permission.userInfo.id,
           current: this.page.currPage,
           size: this.page.pageSize,
           ...this.form
-        // }
       }
       try {
         // const res = await getRfqDataList(req)
@@ -331,14 +326,12 @@ export default {
         return item.id
       })
       const req = {
-        updateRfqStatusPackage: {
           updateType,
           tmRfqIdList: idList,
           userId: store.state.permission.userInfo.id
-        }
       }
       this.setOperationButtonLoading(updateType, true)
-      const res = await editRfqData(req)
+      const res = await modification(req)
       this.setOperationButtonLoading(updateType, false)
       this.resultMessage(res)
       this.getTableList()
@@ -368,22 +361,17 @@ export default {
 
       if (!list || !list.length) return
 
-      const req = {
-        ratingInfoPackage: {
-          ratingInfoList: this.list.map(item => ({
+      const req = this.list.map(item => ({
             deptNum: item.rateDepartNum,
             deptType: rateDepartMap[item.rateDepart], 
             graderId: item.raterId,
-            graderName: item.rater
-          })),
-          rfqId: this.rfqIds,
-          userId: store.state.permission.userInfo.id,
-        },
-      };
-
+            graderName: item.rater,
+            rfqId: this.rfqIds,
+            userId: store.state.permission.userInfo.id,
+      }))
       this.$refs.scoringDeptDialog.setSaveLoading(true)
       try {
-        const res = await editRfqData(req);
+        const res = await ratingTranslate(req);
         if (res.code == 200) {
           iMessage.success(this.language('LK_ZHUANPAICHENGGONG','转派成功'))
         } else {
@@ -394,15 +382,13 @@ export default {
       }
     },
     async toTop(row) {
-      const setType = row.recordId > 1 ? '0' : '1'
+      const setType = row.recordId ? '0' : '1'
       const req = {
-        rfqSetTopPackage: {
           setType,
           rfqId: row.id,
           userId: store.state.permission.userInfo.id
-        },
       }
-      const res = await editRfqData(req)
+      const res = await setRfqTop(req)
       this.resultMessage(res)
       this.getTableList()
     },

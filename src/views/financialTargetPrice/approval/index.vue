@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 18:26:45
+ * @LastEditTime: 2021-09-02 15:08:08
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\index.vue
 -->
@@ -70,6 +70,14 @@
     <!--                      审批弹窗                                      --->
     <!------------------------------------------------------------------------>
     <approvalDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" :applyId="applyId" />
+    <!------------------------------------------------------------------------>
+    <!--                  修改记录弹窗                                      --->
+    <!------------------------------------------------------------------------>
+    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" :id="applyId" />
+    <!------------------------------------------------------------------------>
+    <!--                  审批记录弹窗                                      --->
+    <!------------------------------------------------------------------------>
+    <approvalRecordDialog :dialogVisible="approvalRecordDialogVisible" @changeVisible="changeApprovalRecordDialogVisible" :id="applyId" />
   </iPage>
 </template>
 
@@ -84,9 +92,11 @@ import { dictkey } from "@/api/partsprocure/editordetail"
 import { getApprovalTargetPriceList, targetPriceApprove, getCFList } from '@/api/financialTargetPrice/index'  
 import { excelExport } from "@/utils/filedowLoad"
 import { getDictByCode } from '@/api/dictionary'
+import modificationRecordDialog from '@/views/financialTargetPrice/maintenance/components/modificationRecord'
+import approvalRecordDialog from '@/views/financialTargetPrice/maintenance/components/approvalRecord'
 export default {
   mixins: [pageMixins],
-  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,approvalDialog},
+  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,approvalDialog,approvalRecordDialog,modificationRecordDialog},
   data() {
     return {
       tableTitle: tableTitle,
@@ -103,7 +113,9 @@ export default {
       selectOptions: {},
       approvalDialogVisible: false,
       selectedItems: [],
-      applyId: ''
+      applyId: '',
+      updateDialogVisible: false,
+      approvalRecordDialogVisible: false,
     }
   },
   created() {
@@ -113,6 +125,24 @@ export default {
     this.getTableList()
   },
   methods: {
+    /**
+     * @Description: 修改审批记录弹窗状态
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
+    changeApprovalRecordDialogVisible(visible) {
+      this.approvalRecordDialogVisible = visible
+    },
+    /**
+     * @Description: 修改修改记录弹窗状态
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
+    changeUpdateDialogVisible(visible) {
+      this.updateDialogVisible = visible
+    },
     reset() {
       this.searchParams = {
         cfId: '',

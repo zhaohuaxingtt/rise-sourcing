@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-02 16:53:24
- * @LastEditTime: 2021-07-09 15:15:10
+ * @LastEditTime: 2021-09-02 11:09:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\logistics\index.vue
@@ -182,7 +182,7 @@
 		iText
 	} from 'rise';
 	import {
-		getRfqDataList
+		partLogisticByFs
 	} from "@/api/partsrfq/home";
 	export default {
 		components: {
@@ -250,13 +250,11 @@
 					findType: '09',
 					partNum: this.infoItem.partNum,
 					rfqId: this.infoItem.rfqId,
-					fsGsNum: this.infoItem.fsnrGsnrNum,
+					fsNum: this.infoItem.fsnrGsnrNum,
 				}
-				getRfqDataList({
-					otherInfoPackage
-				}).then(res => {
+				partLogisticByFs(otherInfoPackage).then(res => {
 					if (res.data) {
-						this.dataInfo = res.data.partLogisticRequirementVO
+						this.dataInfo = res.data
 					}
 				})
 			}

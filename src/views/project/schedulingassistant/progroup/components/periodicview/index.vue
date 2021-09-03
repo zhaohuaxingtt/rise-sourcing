@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 17:22:53
+ * @LastEditTime: 2021-09-03 11:18:59
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -21,49 +21,51 @@
         <iButton @click="handleDownloadPvPk" :loading="downloadLoading">{{language('DAOCHUFASONGPVPKQINGDAN', '导出发送PV/PK清单')}}</iButton>
       </div>
     </div>
-    <div v-for="pro in products" :key="pro.label" class="productItem">
-      <div class="productItem-top">
-        <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">
-          {{pro.productGroupNameZh}}
-        </el-checkbox>
-        <div class="productItem-top-targetList">
-          <div v-for="item in targetList" :key="item.value" class="productItem-top-targetList-item">
-            <icon v-if="pro[item.value] == 1" symbol name="iconbaojiapingfengenzong-jiedian-lv" class="productItem-top-targetList-item-icon"></icon>
-            <icon v-else-if="pro[item.value] == 2" symbol name="iconbaojiapingfengenzong-jiedian-huang" class="productItem-top-targetList-item-icon"></icon>
-            <icon v-else-if="pro[item.value] == 3" symbol name="iconbaojiapingfengenzong-jiedian-hong" class="productItem-top-targetList-item-icon"></icon>
-            <span class="productItem-top-targetList-item-label">{{language(item.key, item.label)}}</span>
+    <div class="periodicView-content">
+      <div v-for="pro in products" :key="pro.label" class="productItem">
+        <div class="productItem-top">
+          <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">
+            {{pro.productGroupNameZh}}
+          </el-checkbox>
+          <div class="productItem-top-targetList">
+            <div v-for="item in targetList" :key="item.value" class="productItem-top-targetList-item">
+              <icon v-if="pro[item.value] == 1" symbol name="iconbaojiapingfengenzong-jiedian-lv" class="productItem-top-targetList-item-icon"></icon>
+              <icon v-else-if="pro[item.value] == 2" symbol name="iconbaojiapingfengenzong-jiedian-huang" class="productItem-top-targetList-item-icon"></icon>
+              <icon v-else-if="pro[item.value] == 3" symbol name="iconbaojiapingfengenzong-jiedian-hong" class="productItem-top-targetList-item-icon"></icon>
+              <span class="productItem-top-targetList-item-label">{{language(item.key, item.label)}}</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="productItem-bottom">
-        <div class="productItem-bottom-text">
-          <span class="margin-bottom14">{{language('JINGYANCHANGZHI', '经验常值')}}</span>
-          <span>{{language('LISHICANKAOZHI', '历史参考值')}}<icon @click.native="gotoDBhistory(pro)" symbol name="iconlishicankaozhi" class="margin-left8 cursor"></icon></span>
-        </div>
-        <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node">
-          <div class="productItem-bottom-nodeItem">
-            <span class="productItem-bottom-nodeItem-label" v-if="!item.label.includes('1st')">{{item.key ? language(item.key, item.label) : item.label}}</span>
-            <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span>
-            <icon symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
+        <div class="productItem-bottom">
+          <div class="productItem-bottom-text">
+            <span class="margin-bottom14">{{language('JINGYANCHANGZHI', '经验常值')}}</span>
+            <span>{{language('LISHICANKAOZHI', '历史参考值')}}<icon @click.native="gotoDBhistory(pro)" symbol name="iconlishicankaozhi" class="margin-left8 cursor"></icon></span>
           </div>
-          <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
-            <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom18 ${index === nodeList.length - 2 && 'small'}`">
-              <iInput onkeyup="value=value.replace(/[^\d]/g,'')" :class="`productItem-bottom-stepBetween-input ${pro[item.isChange] == 1 ? 'markBlue':''}` " v-model="pro[item.keyPoint]"></iInput>
-              <div v-if="index === nodeList.length - 2" class="flex-box">
-                （<iInput :class="`productItem-bottom-stepBetween-input ${pro[nodeList[nodeList.length - 1].isChange] == 1 ? 'markBlue':''}` " v-model="pro[nodeList[nodeList.length - 1].keyPoint]"></iInput>）
-              </div>
+          <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node">
+            <div class="productItem-bottom-nodeItem">
+              <span class="productItem-bottom-nodeItem-label" v-if="!item.label.includes('1st')">{{item.key ? language(item.key, item.label) : item.label}}</span>
+              <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span>
+              <icon symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
             </div>
-            <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon>
-            <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom14 margin-top30 ${index === nodeList.length - 2 && 'small'}`">
-              <iText :class="`productItem-bottom-stepBetween-input text `">{{pro[item.const]}}</iText>
-              <div v-if="index === nodeList.length - 2" class="flex-box">
-                （<iText class="productItem-bottom-stepBetween-input text">{{pro[nodeList[nodeList.length - 1].const]}}</iText>）
+            <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
+              <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom18 ${index === nodeList.length - 2 && 'small'}`">
+                <iInput onkeyup="value=value.replace(/[^\d]/g,'')" :class="`productItem-bottom-stepBetween-input ${pro[item.isChange] == 1 ? 'markBlue':''}` " v-model="pro[item.keyPoint]"></iInput>
+                <div v-if="index === nodeList.length - 2" class="flex-box">
+                  （<iInput :class="`productItem-bottom-stepBetween-input ${pro[nodeList[nodeList.length - 1].isChange] == 1 ? 'markBlue':''}` " v-model="pro[nodeList[nodeList.length - 1].keyPoint]"></iInput>）
+                </div>
               </div>
-            </div>
-            <div :class="`productItem-bottom-stepBetween-double flex-box ${index === nodeList.length - 2 && 'small'}`">
-              <iText :class="`productItem-bottom-stepBetween-input text ${pro[item.history] && pro[item.const] && (pro[item.history] > pro[item.const]) ? 'markRed' : ''}`">{{pro[item.history]}}</iText>
-              <div v-if="index === nodeList.length - 2" class="flex-box">
-                （<iText :class="`productItem-bottom-stepBetween-input text ${pro[nodeList[nodeList.length - 1].history] && pro[nodeList[nodeList.length - 1].const] && (pro[nodeList[nodeList.length - 1].history] > pro[nodeList[nodeList.length - 1].const]) ? 'markRed' : ''}`">{{pro[nodeList[nodeList.length - 1].history]}}</iText>）
+              <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon>
+              <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom14 margin-top30 ${index === nodeList.length - 2 && 'small'}`">
+                <iText :class="`productItem-bottom-stepBetween-input text `">{{pro[item.const]}}</iText>
+                <div v-if="index === nodeList.length - 2" class="flex-box">
+                  （<iText class="productItem-bottom-stepBetween-input text">{{pro[nodeList[nodeList.length - 1].const]}}</iText>）
+                </div>
+              </div>
+              <div :class="`productItem-bottom-stepBetween-double flex-box ${index === nodeList.length - 2 && 'small'}`">
+                <iText :class="`productItem-bottom-stepBetween-input text ${pro[item.history] && pro[item.const] && (pro[item.history] > pro[item.const]) ? 'markRed' : ''}`">{{pro[item.history]}}</iText>
+                <div v-if="index === nodeList.length - 2" class="flex-box">
+                  （<iText :class="`productItem-bottom-stepBetween-input text ${pro[nodeList[nodeList.length - 1].history] && pro[nodeList[nodeList.length - 1].const] && (pro[nodeList[nodeList.length - 1].history] > pro[nodeList[nodeList.length - 1].const]) ? 'markRed' : ''}`">{{pro[nodeList[nodeList.length - 1].history]}}</iText>）
+                </div>
               </div>
             </div>
           </div>
@@ -417,6 +419,7 @@ export default {
 
 <style lang="scss" scoped>
 .periodicView {
+  height: 100%;
   &-title {
     display: flex;
     justify-content: space-between;
@@ -432,6 +435,10 @@ export default {
         margin-left: 12px;
       }
     }
+  }
+  &-content {
+    height: calc(100% - 80px);
+    overflow: auto;
   }
   .productItem {
     background-color: rgba(205, 212, 226, 0.12);
