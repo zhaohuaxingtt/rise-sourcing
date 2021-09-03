@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-09-02 11:18:22
+ * @LastEditTime: 2021-09-03 12:50:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -151,7 +151,7 @@ export default {
         }
         try {
           const res = await pageRfqRound(req)
-          this.tableListData = res.rfqBdlVOList;
+          this.tableListData = res.data;
           this.roundsPhase = this.tableListData[0].roundsPhase
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
