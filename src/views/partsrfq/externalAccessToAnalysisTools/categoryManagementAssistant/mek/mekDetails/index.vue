@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-08-31 17:36:53
+ * @LastEditTime: 2021-09-02 15:33:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -9,7 +9,8 @@
 <template>
   <iPage class="new-MEK">
     <div id="content">
-      <div class="navBox flex-between-center">
+      <div class="navBox flex-between-center"
+           style="margin-bottom:20px">
         <div class="title font-weight flex">
           <label for="">{{ language("QIEHUANCAILIAOZU","切换材料组") }}:</label>
           <iSelect @change="changeCategory"
@@ -39,10 +40,10 @@
                 class="margin-left30 "></icon>
         </div>
       </div>
-      <div class=" bodyBox clearFloat">
-        <div class="cardBox"
-             style="width:18%">
-          <iCard v-show="reportFlag">
+      <el-row>
+        <el-col :span="4">
+          <iCard v-show="reportFlag"
+                 style="height:619px">
             <div class=" searchForm"
                  style="margin-right:-20px">
               <el-form label-position="top"
@@ -96,7 +97,8 @@
                        @click="handleSearchReset">{{ $t("LK_ZHONGZHI") }}</iButton>
             </div>
           </iCard>
-          <iCard v-show="!reportFlag">
+          <iCard v-show="!reportFlag"
+                 style="height:619px">
             <div class=" searchForm1"
                  style="margin-right:20px">
               <label for=""
@@ -108,9 +110,9 @@
               </ul>
             </div>
           </iCard>
-        </div>
-        <div class="cardBox"
-             style="width:82%">
+
+        </el-col>
+        <el-col :span="20">
           <iCard class="margin-left20"
                  style="height:619px">
             <div class="chartBox1">
@@ -149,7 +151,8 @@
                          :key="i.value"
                          style="text-align:center">
                       <div style="margin-bottom:10px">
-                        <span @click="computeModal(firstBarData)">{{i.title}}</span>
+                        <span class="detail"
+                              @click="computeModal(firstBarData)">{{i.title}}</span>
                         <el-tooltip class="item"
                                     effect="dark"
                                     :content="firstBarData.tips"
@@ -194,7 +197,7 @@
                       <el-select v-model="item.priceType"
                                  @change="changPriceType"
                                  style="width:150px;z-index:1000"
-                                 v-if="flag1">
+                                 v-if="item.priceType!=='monthPrice'">
                         <el-option v-for="i in mekpriceTypeList"
                                    :key="i.id"
                                    :value="i.code"
@@ -205,7 +208,7 @@
                                       placeholder="选择日期"
                                       @change="changeDate"
                                       style="width:150px;z-index:1000"
-                                      v-if="priceType==='2'">
+                                      v-if="item.priceType==='monthPrice'">
                       </el-date-picker>
                     </div>
                   </div>
@@ -238,8 +241,10 @@
             </div>
             <!-- <report :dialogVisible="true"></report> -->
           </iCard>
-        </div>
-      </div>
+
+        </el-col>
+      </el-row>
+
       <tableList :gridData="gridData"
                  :editFlag="editFlag"
                  :addRowList="addRowList"
@@ -674,11 +679,13 @@ export default {
     },
     //价格类型
     changPriceType (val) {
+      if (val === '2') {
+        this.flag1 = false
+      }
       this.mekpriceTypeList.forEach(item => {
         if (item.code === val) {
           this.mekpriceType = item.label
         }
-
       })
       let params = {
         comparedType: this.comparedType,
@@ -688,12 +695,19 @@ export default {
           isTargetMotor: true
         }],
         categoryId: this.categoryId,
+        categoryCode: this.categoryCode,
         schemeId: this.chemeId
+      }
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true
+        params.rfq = this.rfqId
+      } else {
+        params.isBindingRfq = false
       }
       this.barData.forEach(item => {
         let obj = {
           motorId: item.motorId,
-          priceType: item.priceType,
+          priceType: val,
           isTargetMotor: false
         }
         params.info.push(obj)
@@ -753,7 +767,8 @@ export default {
           data.shift()
           this.barData = data
           this.barData.forEach(item => {
-            item.checkList = []
+            // item.checkList = []
+            this.$set(this.barData, 'checkList', []);
           })
           this.barData.forEach(item => {
             item.detail.forEach(i => {
@@ -956,7 +971,7 @@ export default {
 .line {
   position: absolute;
   left: 40px;
-  bottom: 12%;
+  bottom: 9%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -964,7 +979,7 @@ export default {
 .line1 {
   position: absolute;
   left: 40px;
-  bottom: 22%;
+  bottom: 19%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -972,7 +987,7 @@ export default {
 .line2 {
   position: absolute;
   left: 40px;
-  bottom: 32%;
+  bottom: 29%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -980,7 +995,7 @@ export default {
 .line3 {
   position: absolute;
   left: 40px;
-  bottom: 42%;
+  bottom: 39%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -988,7 +1003,7 @@ export default {
 .line4 {
   position: absolute;
   left: 40px;
-  bottom: 54%;
+  bottom:51%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -999,10 +1014,13 @@ export default {
 }
 .xAxis {
   position: absolute;
-  bottom: 3%;
+  bottom: 2%;
   font-size: 12px;
   color: "#3C4F74";
   font-family: "Arial";
+  .detail:hover {
+    text-decoration: underline;
+  }
 }
 
 ::v-deep .el-select {

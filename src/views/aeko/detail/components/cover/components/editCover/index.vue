@@ -16,7 +16,7 @@
         <iFormItem 
           v-for="(item, index) in basicTitle" :key="index" 
           :required="item.required" :label="language(item.labelKey, item.label)+':'" 
-          v-permission.dynamic="item.editPermissionKey" 
+          v-permission.dynamic.auto="item.editPermissionKey" 
         >
           <template v-if="item.editable && isEdit">
             <template v-if="item.type === 'input'">
@@ -43,9 +43,9 @@
         resize="none"
         v-model="basicInfo.remark"
         :disabled="disabled"
-        v-permission="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS"
+        v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS|封面表态备注框_编辑"
       />
-      <div class="margin-top50" v-permission="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE_LINE">
+      <div class="margin-top50" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE_LINE|封面表态费用表单_编辑">
         <!-- 表格区域 -->
         <tableList
           index
@@ -58,16 +58,23 @@
         >
         <!-- 增加材料成本(RMB/⻋) -->
         <template #materialIncrease="scope">
-          <iInput :disabled="disabled" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
-          <!-- <el-tooltip placement="top" effect="light">
-            <div slot="content">
-              <p class="font-weight margin-bottom5" style="text-align:center">100=5*1*1*2+5*1*1*2 +10*2*2*2</p>
-              <span style="color:#747F9D">成本变化=Σ 单个零件变化金额 *装车率*每车用量*供应份额</span>
-            </div>
-            <icon class="margin-left8" symbol name="iconzengjiacailiaochengben_lan"></icon>
-          </el-tooltip>
+          <div class="table-materialIncrease" style="width:120px">
+            <iInput :disabled="disabled" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
+            <span class="icon-tips" v-if="scope.row.isShowTips">
+              <el-tooltip v-if="scope.row['expressionList'].length > 1" placement="top" effect="light" >
+                <div slot="content">
+                  <p class="font-weight margin-bottom5" style="text-align:center">{{scope.row['expressionList'][0] || ''}}</p>
+                  <p class="font16" style="color:#747F9D;text-align:center">{{scope.row['expressionList'][1] || ''}}</p>
+                </div>
+                <!-- <icon class="margin-left8" symbol name="iconzengpjiacailiaochengben_lan"></icon> -->
+                <i class="el-icon-warning-outline font18 tipsIcon"></i>
+              </el-tooltip>
 
-          <icon class="margin-left8" symbol name="iconzengjiacailiaochengben_hui"></icon> -->
+
+               <i v-else class="el-icon-warning-outline font18 tipsIcon grey"></i>
+              <!-- <icon v-else  class="margin-left8" symbol name="iconzengjiacailiaochengben_hui"></icon> -->
+            </span>
+          </div>
             
         </template>
         <!-- 增加投资费⽤(不含税) -->
@@ -94,7 +101,7 @@ import {
   iInput,
   iSelect,
   iText,
-  // icon,
+  icon,
   iMessage,
 } from 'rise';
 import { previewBaicFrom,coverTableTitleCost } from '../../data'
@@ -120,7 +127,7 @@ export default {
       iSelect,
       iText,
       tableList,
-      // icon,
+      icon,
     },
     props:{
       aekoInfo:{
@@ -183,7 +190,15 @@ export default {
             costData.map((item)=>{
               item.investmentIncrease = this.fixNumber(item.investmentIncrease,0);
               item.otherCost = this.fixNumber(item.otherCost,0);
+
+              
+              item.isShowTips = item.materialIncrease == item.calMaterialIncrease;
+              // 提示计算公式的字符串拆分一下
+              item.expressionList = item.expression ? item.expression.split('<br/>') : [];
+
               item.materialIncrease = item.materialIncrease || '';
+
+              
             })
             
             this.basicInfo = {
@@ -349,6 +364,23 @@ export default {
   }
   .bottom-tips{
     color: #8C96A7;
+  }
+  .table-materialIncrease{
+    position: relative;
+    margin: 0 auto;
+    .icon-tips{
+      position: absolute;
+      right: -15px;
+      top: 6px;
+      .tipsIcon{
+         transform: rotate(180deg);
+         color: #1660f1;
+         &.grey{
+           color: grey;
+         }
+      }
+    }
+
   }
   ::v-deep.el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before {
 		content: "*";

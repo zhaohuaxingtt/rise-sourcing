@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-19 17:11:42
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-01 17:40:49
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -89,7 +89,8 @@ import addAccessoryPartDialog from './components/addAccessoryPart'
 import updateFactoryDialog from './components/updateFactory'
 import addFileDialog from './components/addFile'
 import capacityPlanningDialog from './components/capacityPlanning'
-import { getPartBySP, insertRfq, autoInquiry, getDeptList, getUserList, updateRfq } from '@/api/accessoryPart/index'
+import { getPartBySP, autoInquiry, getDeptList, getUserList, updateRfq } from '@/api/accessoryPart/index'
+import {addRfq,insertRfqPart} from '@/api/partsrfq/home/index'
 import { changeProcure } from "@/api/partsprocure/home";
 import {
   dictkey,
@@ -259,12 +260,10 @@ export default {
     updateRfq() {
       this.basicLoading = true
       const params = {
-        updateRfqInfoPackage: {
           rfqId: this.detailData.rfqId,
           rfqName: this.detailData.rfqName,
           rfqDesc: this.detailData.rfqDesc,
           userId: this.$store.state.permission.userInfo.id
-        }
       }
       updateRfq(params).then(res => {
         if (res.result) {
@@ -289,14 +288,11 @@ export default {
       } else {
         this.basicLoading = true
         const params = {
-          insertRfqPackage:{
-            operationType: '2',
             rfqName: this.detailData.rfqName,
             rfqDesc: this.detailData.rfqDesc,
             userId: this.$store.state.permission.userInfo.id
-          }
         }
-        insertRfq(params).then(res => {
+        addRfq(params).then(res => {
           if (res?.result) {
             iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
             this.detailData.rfqId = res.data.rfqId
@@ -349,12 +345,8 @@ export default {
      */    
     async handleAttachmentSave() {
       this.saveLoading = true
-      const params = {
-        insertRfqPackage: {
-          rfqId: this.detailData.rfqId,
-          operationType: '1',
-          rfqPartDTOList: this.tableData.map(item => {
-            return {
+      const params = this.tableData.map(item => {
+        return {
               buyerName: item.buyerName, // 询价采购员
               linieName: item.linieName, // linie
               linieUserId: item.linieUserId, // linie
@@ -365,12 +357,11 @@ export default {
               purchaseProjectId: item.purchasingProjectId,
               partNameZh: item.partNameZh,
               partProjectType: partProjTypes.FUJIAN,
+              rfqId: this.detailData.rfqId,
+              userId: this.$store.state.permission.userInfo.id
             }
-          }),
-          userId: this.$store.state.permission.userInfo.id
-        }
-      }
-      const res = await insertRfq(params)
+      })
+      const res = await insertRfqPart(params)
       if (res?.result) {
         iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         this.saveLoading = false

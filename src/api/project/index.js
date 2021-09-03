@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-30 23:24:15
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-01 17:42:17
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -353,7 +353,7 @@ export function getPartScheduleList(params) {
 export function savePartScheduleList(params) {
   return requst({
     url: '/progress-confirm/part/save',
-    method: 'POST',
+    method: 'PUT',
     data: params
   })
 }
@@ -380,6 +380,56 @@ export function confirmPartScheduleList(params) {
 export function transferPartScheduleList(params, fsId) {
   return requst({
     url: '/progress-confirm/part/transfer?fsId='+fsId,
+    method: 'POST',
+    data: params
+  })
+}
+
+
+
+
+
+// 查询零件任务清单
+export function getPartTaskList(params) {
+  console.log(params)
+  return requst({
+    url: '/part-task/condition',
+    method: 'POST',
+    data:params
+  })
+}
+
+
+// 导出零件任务清单
+export function downLoadPartScheduleFile(params) {
+  return downloadRequst({
+    url: '/part-task/partTaskFile',
+    method: 'POST',
+    data:params
+  })
+}
+
+// 批量更新零件详情
+export function updatePartInfoList(params) {
+  return requst({
+    url: '/part-task/batchUpdate',
+    method: 'PUT',
+    data: params
+  })
+}
+
+// 生成排程版本
+export function addScheduleVersion(params) {
+  return requst({
+    url: '/schedule-version',
+    method: 'POST',
+    data: params
+  })
+}
+
+export function exportPartSchedule(params) {
+  return downloadRequst({
+    url: '/part-schedule/partScheduleFile',
     method: 'POST',
     data: params
   })

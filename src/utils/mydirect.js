@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-31 18:28:44
+ * @LastEditTime: 2021-09-02 18:49:52
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \front-web\src\utils\mydirect.js
@@ -14,7 +14,13 @@ import {businessPermission} from '@/utils'
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
-        inserted: function(el, binding,vnode) { 
+        inserted: function(el, binding,vnode) {
+            // dynamic、auto共用时处理
+            if (binding.modifiers.dynamic && binding.modifiers.auto) {
+                binding.modifiers.dynamic = false
+                binding.expression = binding.value
+            }
+
             if (binding.modifiers.disabled) {
                 if (store.state.permission.whiteBtnList[binding.expression]) {
                     el.classList.add("is-disabled")
@@ -27,16 +33,20 @@ Vue.directive('permission', {
                 // eslint-disable-next-line no-debugger
                 const splitValue = binding.expression.split('|')
                 if(splitValue.length > 1){store.dispatch('uploadResource',splitValue)}
-                if (!store.state.permission.whiteBtnList[splitValue[0]]) {
-                    el.parentNode.removeChild(el)
-                }else{
+                // if (!store.state.permission.whiteBtnList[splitValue[0]]) {
+                //     el.parentNode.removeChild(el)
+                // }else{
                     if(businessPermission(splitValue[0],router.currentRoute.query)){
                        el.parentNode.removeChild(el)
                     }
-                }
+                // }
             } else { //remove
-                // if (!store.state.permission.whiteBtnList[binding.expression] && businessPermission(binding.expression,router.currentRoute.query)) {
+                // if (!store.state.permission.whiteBtnList[binding.expression]) {
                 //     el.parentNode.removeChild(el)
+                // }else{
+                    if(businessPermission(binding.expression,router.currentRoute.query)){
+                       el.parentNode.removeChild(el)
+                    }
                 // }
             }
         }

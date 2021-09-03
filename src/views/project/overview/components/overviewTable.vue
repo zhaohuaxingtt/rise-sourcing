@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-25 10:58:42
+ * @LastEditTime: 2021-09-01 10:15:01
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -204,9 +204,9 @@ export default {
     openAssistant(row) {
       let router = ''
       if (row.hasPartSchedule == 1) {
-        router =  this.$router.resolve({path: '/projectscheassistant/partscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+        router =  this.$router.resolve({path: '/projectmgt/projectscheassistant/partscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
       } else {
-        router =  this.$router.resolve({path: '/projectscheassistant/progroupscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+        router =  this.$router.resolve({path: '/projectmgt/projectscheassistant/progroupscheduling', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
       }
       window.open(router.href,'_blank')
     },
@@ -217,7 +217,7 @@ export default {
      * @return {*}
      */    
     openMonitoring(row) {
-      const router =  this.$router.resolve({path: '/projectprogressmonitoring', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
+      const router =  this.$router.resolve({path: '/projectmgt/projectprogressmonitoring', query: { carProject: row.id, cartypeProjectZh: row.cartypeProjectZh }})
       window.open(router.href,'_blank')
     },
     /**

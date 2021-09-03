@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="developmentFee">
-    <developmentCost ref="devcost" :partInfo="partInfo" @save="save" :isAeko="true"/>
+    <developmentCost ref="devcost" :partInfo="basicInfo" @save="save" :isAeko="true"/>
   </div>
 </template>
 
@@ -19,28 +19,32 @@ export default {
   components:{
     developmentCost,
   },
-  data(){
-    return{
-      partInfo:{"rfqId":"1089","quotationId":"1430733529429766145","cbdLevel":1},
+  props:{
+    basicInfo:{
+      type:Object,
+      default:()=>{},
     }
   },
-  mounted(){
-    console.log(this,this.$refs,this.$refs.devcost,'this.$refs.devcost')
-    this.$refs.devcost.getDevFee();
+  data(){
+    return{
+    }
   },
   methods:{
+    init(){
+      this.$refs.devcost.getDevFee();
+    },
     // 保存
     save(value){
-      console.log(value,'savesavesave');
        if (this.$refs.devcost.tableListData.some(item => item.isShared == 1)) {
         if (!this.$refs.devcost.dataGroup.shareQuantity || this.$refs.devcost.dataGroup.shareQuantity == 0){
           const tips = this.language('LK_KAIFAFEIYONGCUNZAIFENTANSHUJUQINGTIANXIEDAYU','开发费用存在分摊数据，请填写一个大于0的分摊数量')
           return iMessage.warn(tips);
         }
+       }
 
-         return new Promise((r,j)=>{
+      return new Promise((r,j)=>{
         saveModuleDevFee({
-          quotationId: this.partInfo.quotationId,
+          quotationId: this.basicInfo.quotationId,
           devFeeDTOList: this.$refs.devcost.tableListData,
           devOtherFee: {
             itemType: 1,
@@ -54,6 +58,7 @@ export default {
           if (res.code == 200) {
             r()
             iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            this.$emit('getBasicInfo');
             this.$refs.devcost.getDevFee();
           } else {
             j()
@@ -63,9 +68,7 @@ export default {
         .catch(() => {
           j()
         })
-      })
-          
-      }
+      })  
     }
   }
 }

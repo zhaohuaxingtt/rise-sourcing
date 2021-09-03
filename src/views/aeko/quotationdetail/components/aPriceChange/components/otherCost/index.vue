@@ -14,7 +14,7 @@
           :tableData="tableListData" />
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>

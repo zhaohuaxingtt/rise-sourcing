@@ -726,7 +726,7 @@ export default {
             turn: [],
             spareParts: [],
           };
-          this.form.supplier = this.Split(allData.supplier, ",").map(Number);
+          this.form.supplier = this.Split(allData.supplier, ",");
           this.form.turn = this.Split(allData.turn, ",").map(Number);
           this.form.spareParts = this.Split(allData.spareParts, ",");
         }
@@ -767,7 +767,7 @@ export default {
             turn: [],
             spareParts: [],
           };
-          this.form.supplier = this.Split(allData.supplier, ",").map(Number);
+          this.form.supplier = this.Split(allData.supplier, ",");
           this.form.turn = this.Split(allData.turn, ",").map(Number)
           this.form.spareParts = this.Split(allData.spareParts, ",");
           console.log(this.form)

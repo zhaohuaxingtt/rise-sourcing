@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-08-31 12:11:52
+ * @LastEditTime: 2021-09-02 17:05:48
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -29,25 +29,24 @@
             :searchKey="PARTSPROCURE_CONFIRM"
           >
             <el-form>
-              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')">
+              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"  v-permission.auto="PARTSPROCURE_PARTNUMBER|零件号">
                 <iInput
                   :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
                   v-model="form['partNum']"
-                  v-permission.auto="PARTSPROCURE_PARTNUMBER|零件号"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')">
+              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')" v-permission.auto="PARTSPROCURE_PARTNAMEZH|零件名中文">
                 <iInput
                   :placeholder="
                     language('partsprocure.PLEENTER','请输入') +
                     language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')
                   "
                   v-model="form['partNameZh']"
-                  v-permission="PARTSPROCURE_PARTNAMEZH"
                 ></iInput>
               </el-form-item>
               <el-form-item
                 :label="language('partsprocure.PARTSPROCUREFSNFGSNFSPNR','零件采购项目号')"
+                 v-permission.auto="PARTSPROCURE_FSINPUT|零件采购项目号"
               >
                 <iInput
                   :placeholder="
@@ -55,12 +54,12 @@
                     language('partsprocure.PARTSPROCUREFSNFGSNFSPNR','零件采购项目号')
                   "
                   v-model="form['fsnrGsnrNum']"
-                  v-permission="PARTSPROCURE_FSINPUT"
                 >
                 </iInput>
               </el-form-item>
               <el-form-item
                 :label="language('partsprocure.PARTSPROCUREINQUIRYBUYER','询价采购员')"
+                v-permission.auto="PARTSPROCURE_INQUIRYBUYER|询价采购员"
               >
                 <iInput
                   :placeholder="
@@ -68,28 +67,28 @@
                     language('partsprocure.PARTSPROCUREINQUIRYBUYER','询价采购员')
                   "
                   v-model="form['buyerName']"
-                  v-permission="PARTSPROCURE_INQUIRYBUYER"
                 >
                 </iInput>
               </el-form-item>
-              <el-form-item :label="language('partsprocure.PARTSPROCURELINIE','LINIE')">
+              <el-form-item :label="language('partsprocure.PARTSPROCURELINIE','LINIE')"
+              v-permission.atuo="PARTSPROCURE_LINIEINPUT|LINIE"
+              >
                 <iInput
                   :placeholder="
                     language('partsprocure.PLEENTER','请输入') +
                     language('partsprocure.PARTSPROCURELINIE','LINIE')
                   "
                   v-model="form['linieName']"
-                  v-permission="PARTSPROCURE_LINIEINPUT"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTSTATUS','零件状态')">
+              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTSTATUS','零件状态')"
+                  v-permission.auto="PARTSPROCURE_PARTSTATUS|零件状态">
                 <iSelect
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREPARTSTATUS','零件状态')
                   "
                   v-model="form['status']"
-                  v-permission="PARTSPROCURE_PARTSTATUS"
                 >
                   <el-option
                     value=""
@@ -105,6 +104,7 @@
               </el-form-item>
               <el-form-item
                 :label="language('partsprocure.PARTSPROCUREVEHICLECATEGORIES','车型大类')"
+                v-permission.auto="PARTSPROCURE_VEHICLECATEGORIES|车型大类"
               >
                 <iSelect
                   :placeholder="
@@ -112,7 +112,6 @@
                     language('partsprocure.PARTSPROCUREVEHICLECATEGORIES','车型大类')
                   "
                   v-model="form['carTypeCategory']"
-                  v-permission="PARTSPROCURE_VEHICLECATEGORIES"
                 >
                   <el-option
                     value=""
@@ -129,6 +128,7 @@
               </el-form-item>
               <el-form-item
                 :label="language('partsprocure.PARTSPROCUREMODELPROJECT','车型项目')"
+                v-permission.auto="PARTSPROCURE_MODELPROJECT|车型项目"
               >
                 <iSelect
                   :placeholder="
@@ -136,7 +136,6 @@
                     language('partsprocure.PARTSPROCUREMODELPROJECT','车型项目')
                   "
                   v-model="form['carTypeProjectZh']"
-                  v-permission="PARTSPROCURE_MODELPROJECT"
                 >
                   <el-option
                     value=""
@@ -160,7 +159,7 @@
                     language('partsprocure.PARTSPROCUREPARTITEMTYPE','零件项目类型')
                   "
                   v-model="form['partProjectType']"
-                  v-permission="PARTSPROCURE_PARTITEMTYPE"
+                  v-permission.auto="PARTSPROCURE_PARTITEMTYPE|零件项目类型"
                 >
                   <el-option
                     value=""

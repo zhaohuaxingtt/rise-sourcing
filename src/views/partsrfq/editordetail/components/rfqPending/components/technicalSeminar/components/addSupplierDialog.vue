@@ -16,7 +16,7 @@
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
-      <iPagination
+      <!-- <iPagination
           v-update
           @size-change="handleSizeChange($event, getTableList)"
           @current-change="handleCurrentChange($event, getTableList)"
@@ -26,7 +26,7 @@
           :layout="page.layout"
           :current-page='page.currPage'
           :total="page.totalCount"
-      />
+      /> -->
     </div>
     <span slot="footer" class="dialog-footer">
           <iButton @click="$emit('input',false)">{{ language('LK_QUXIAO','取 消') }}</iButton>
@@ -34,14 +34,14 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iMessage, iDialog, iPagination} from 'rise'
+import {iButton, iMessage, iDialog} from 'rise'
 import tablelist from "pages/partsrfq/components/tablelist";
 import {addSupplierTitle} from "./data"
 import {getAllRfqSupplier} from "@/api/partsrfq/editordetail";
 import {pageMixins} from "@/utils/pageMixins";
 
 export default {
-  components: {iButton, iDialog, tablelist, iPagination},
+  components: {iButton, iDialog, tablelist},
   props: {
     title: {type: String, default: 'LK_TIANJIAGONGYINGSHANG'},
     value: {type: Boolean},
@@ -72,14 +72,8 @@ export default {
       if (id) {
         this.tableLoading = true;
         try {
-          const req = {
-            rfqId: id
-          }
-          const res = await getAllRfqSupplier(req)
+          const res = await getAllRfqSupplier(id)
           this.tableListData = res.records;
-          this.page.currPage = res.current
-          this.page.pageSize = res.size
-          this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;

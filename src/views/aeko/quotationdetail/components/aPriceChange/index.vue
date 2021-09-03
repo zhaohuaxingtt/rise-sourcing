@@ -1,14 +1,14 @@
 <template>
-  <iCard class="aPriceChange" :title="language('BIANDONGZHICBD', '变动值CBD')">
+  <iCard class="aPriceChange" v-permission.auto="AEKO_QUOTATION_CBD_TAB_BIANDONGZHICBD|变动值CBD" :title="language('BIANDONGZHICBD', '变动值CBD')">
     <template #header-control>
-      <iButton>{{ language("BAOCUN", "保存") }}</iButton>
-      <iButton>{{ language("XIAZAI", "下载") }}</iButton>
+      <iButton v-permission.auto="AEKO_QUOTATION_CBD_BUTTON_BAOCUN|保存">{{ language("BAOCUN", "保存") }}</iButton>
+      <iButton v-permission.auto="AEKO_QUOTATION_CBD_BUTTON_XIAZAI|下载">{{ language("XIAZAI", "下载") }}</iButton>
     </template>
     <div class="body">
       <div class="aPriceChangeMode">
-        <el-checkbox v-model="aPriceChangeMode">{{ language("SHOUDONGSHURU", "手动输入") }}</el-checkbox>
+        <el-checkbox v-model="aPriceChangeMode" v-permission.auto="AEKO_QUOTATION_CBD_RADIO_SHOUDONGSHURU|手动输入">{{ language("SHOUDONGSHURU", "手动输入") }}</el-checkbox>
         <div>
-          <div class="input">
+          <div class="input" v-permission.auto="AEKO_QUOTATION_CBD_INPUT_AJIABIANDONGHANFENTAN|A价变动_含分摊">
             <span class="label">{{ language("AJIABIANDONGHANFENTAN", "A价变动(含分摊)") }}:</span>
             <iInput v-if="aPriceChangeMode" :value="12" />
             <iText v-else />
@@ -17,7 +17,7 @@
       </div>
       <div v-if="!aPriceChangeMode">
         <i class="topCutLine"></i>
-        <div class="aPriceChangeModule">
+        <div class="aPriceChangeModule" v-permission.auto="AEKO_QUOTATION_CBD_SELECT_CBDXUTIAOZHENGBUFEN|CBD需调整部分">
           <span class="label">{{ language("CBDXUTIAOZHENGBUFEN", "CBD需调整部分") }}:</span>
           <iSelect 
             multiple
@@ -30,22 +30,23 @@
               :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
+              v-for="(item, $index) in moduleOptions"
+              v-permission.dynamic.auto="item.permissionKey"
               :value="item.value"
               :label="`${ item.seq } ${ language(item.key, item.label) }`"
-              v-for="(item, $index) in moduleOptions"
               :key="$index"
             ></el-option>
           </iSelect> 
         </div>
 
-        <cbdSummary class="margin-top20" />
-        <rawMaterials v-if="moduleMap.rawMaterials" class="margin-top30" topCutLine />
-        <manufacturingCost v-if="moduleMap.manufacturingCost" class="margin-top30" topCutLine />
+        <cbdSummary class="margin-top20" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_BIANDONGZHICBDHUIZONG|变动值CBD汇总" />
+        <rawMaterials v-if="moduleMap.rawMaterials" class="margin-top30" topCutLine v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIAN|原材料/散件" />
+        <manufacturingCost v-if="moduleMap.manufacturingCost" class="margin-top30" topCutLine v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN|制造成本" />
         <div class="flexBox">
-          <scrapCost v-if="moduleMap.scrapCost" class="margin-top30" topCutLine />
-          <manageCost v-if="moduleMap.manageCost" class="margin-top30" topCutLine />
-          <otherCost v-if="moduleMap.otherCost" class="margin-top30" topCutLine />
-          <profit v-if="moduleMap.profit" class="margin-top30" topCutLine />
+          <scrapCost v-if="moduleMap.scrapCost" class="margin-top30" topCutLine v-permission.auto="AEKO_QUOTATION_CBD_VIEW_BAOFEICHENGBEN|报废成本" />
+          <manageCost v-if="moduleMap.manageCost" class="margin-top30" topCutLine v-permission.auto="AEKO_QUOTATION_CBD_VIEW_GUANLIFEI|管理费" />
+          <otherCost v-if="moduleMap.otherCost" class="margin-top30" topCutLine v-permission.auto="AEKO_QUOTATION_CBD_VIEW_QITAFEIYONG|其他费用" />
+          <profit v-if="moduleMap.profit" class="margin-top30" topCutLine v-permission.auto="AEKO_QUOTATION_CBD_VIEW_LIRUN|利润" />
         </div>
       </div>
     </div>
@@ -61,25 +62,50 @@ import scrapCost from "./components/scrapCost"
 import manageCost from "./components/manageCost"
 import otherCost from "./components/otherCost"
 import profit from "./components/profit"
+import { getAekoCarDosage } from "@/api/aeko/quotationdetail"
 
 export default {
   components: { iCard, iButton, iInput, iText, iSelect, cbdSummary, rawMaterials, manufacturingCost, scrapCost, manageCost, otherCost, profit },
+  props: {
+    quotationId: {
+      type: String,
+      required: true,
+      default: ""
+    }
+  },
   data() {
     return {
       aPriceChangeMode: false,
       moduleOptions: [
-        { seq: "2.1", key: "YUANCAILIAOSANJIAN", label: "原材料/散件", value: "rawMaterials" },
-        { seq: "2.2", key: "ZHIZAOCHENGBEN", label: "制造成本", value: "manufacturingCost" },
-        { seq: "2.3", key: "BAOFEICHENGBEN", label: "报废成本", value: "scrapCost" },
-        { seq: "2.4", key: "GUANLIFEI", label: "管理费", value: "manageCost" },
-        { seq: "2.5", key: "QITAFEIYONG", label: "其他费⽤", value: "otherCost" },
-        { seq: "2.6", key: "LIRUN", label: "利润", value: "profit" },
+        { seq: "2.1", key: "YUANCAILIAOSANJIAN", label: "原材料/散件", value: "rawMaterials", permissionKey: "AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIAN|原材料/散件" },
+        { seq: "2.2", key: "ZHIZAOCHENGBEN", label: "制造成本", value: "manufacturingCost", permissionKey: "AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN|制造成本" },
+        { seq: "2.3", key: "BAOFEICHENGBEN", label: "报废成本", value: "scrapCost", permissionKey: "AEKO_QUOTATION_CBD_VIEW_BAOFEICHENGBEN|报废成本" },
+        { seq: "2.4", key: "GUANLIFEI", label: "管理费", value: "manageCost", permissionKey: "AEKO_QUOTATION_CBD_VIEW_GUANLIFEI|管理费" },
+        { seq: "2.5", key: "QITAFEIYONG", label: "其他费⽤", value: "otherCost", permissionKey: "AEKO_QUOTATION_CBD_VIEW_QITAFEIYONG|其他费用" },
+        { seq: "2.6", key: "LIRUN", label: "利润", value: "profit", permissionKey: "AEKO_QUOTATION_CBD_VIEW_LIRUN|利润" },
       ],
-      modules: [],
+      modules: [""],
       moduleMap: {}
     }
   },
+  created() {
+    this.getAekoCarDosage()
+    this.handleChangeByModules([""])
+  },
   methods: {
+    getAekoCarDosage() {
+      getAekoCarDosage({
+        quotationId: this.quotationId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          console.log(res.data)
+        } else {
+          
+        }
+      })
+      .catch()
+    },
     handleChangeByModules(modules) {
       this.moduleMap = {}
 

@@ -405,7 +405,6 @@ import {
   liniePullDownByDept,
   exportInvestmentList
 } from "@/api/ws2/budgetManagement/investmentList";
-import {insertRfq} from "@/api/partsrfq/home";
 import echarts from "@/utils/echarts";
 import {cloneDeep} from 'lodash'
 import {getTousandNum, delcommafy} from "@/utils/tool";

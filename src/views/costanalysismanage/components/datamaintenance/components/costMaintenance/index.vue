@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-08-23 20:47:20
+ * @LastEditTime: 2021-09-02 11:25:44
  * @LastEditors: 舒杰
  * @Description: 人工成本维护
  * @FilePath: \front-sourcing\src\views\costanalysismanage\components\datamaintenance\components\costMaintenance\index.vue
@@ -45,8 +45,8 @@
           <template #fileName="scope">
             <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
           </template>
-          <template #uploadDate="scope">
-            <span>{{ scope.row.uploadDate | dateFilter("YYYY-MM-DD") }}</span>
+          <template #createDate="scope">
+            <span>{{ scope.row.createDate | dateFilter("YYYY-MM-DD") }}</span>
           </template>
         </tableList>
         <iPagination 
