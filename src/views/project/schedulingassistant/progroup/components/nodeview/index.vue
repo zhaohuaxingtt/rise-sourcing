@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:14:21
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 10:19:28
+ * @LastEditTime: 2021-09-03 11:20:19
  * @Description: 节点视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
 -->
@@ -146,7 +146,7 @@ export default {
     }
   }
   &-content {
-    height: calc(100% - 60px);
+    height: calc(100% - 80px);
     overflow: auto;
   }
   .productItem {

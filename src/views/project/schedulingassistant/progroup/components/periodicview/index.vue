@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 10:13:12
+ * @LastEditTime: 2021-09-03 11:18:59
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -437,7 +437,7 @@ export default {
     }
   }
   &-content {
-    height: calc(100% - 60px);
+    height: calc(100% - 80px);
     overflow: auto;
   }
   .productItem {
