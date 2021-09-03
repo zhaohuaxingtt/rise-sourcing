@@ -21,31 +21,29 @@
 
     <iCard class="margin-top20" v-permission.auto="AEKO_QUOTATION_DETAIL_VIEW_HUIZONG|报价汇总">
       <tableList
+        :tableLoading="tableLoading"
         lang
         class="table"
         :selection="false"
         :tableTitle="tableTitle"
         :tableData="tableListData">
-        <template #e="scope">
+        <template #bnkFee="scope">
           <el-popover
             placement="top"
             trigger="hover"
-            :disabled="scope.row.e === scope.row.d">
+            :disabled="scope.row.bnkFee === scope.row.originBnkFee">
             <template>
               <p>{{ language("YUANCHENGYUNFANGSHI", "原承运方式") }}：{{ language("ZIYUN", "自运") }}（{{ language("HUO", "或") }}{{ language("CHENGYUN", "承运")  }}）</p>
               <p>{{ language("XINCHENGYUNFANGSHI", "新承运方式") }}：{{ language("CHENGYUN", "承运") }}（{{ language("HUOZHE", "或者") }}{{ language("ZIYUN", "自运")  }}）</p>
             </template>
             <template #reference>
               <!-- 针对供应商报价可跳转 -->
-              <span :class="`margin-right5 ${userInfo &&userInfo.userType&&userInfo.userType == 2 ? 'link-underline' : ''}`" @click="goToBNK">{{ scope.row.e }}</span>
-              <icon v-if="scope.row.e !== scope.row.d" symbol name="iconzengjiacailiaochengben_lan" class="font15 rotate180" />
+              <span :class="`margin-right5 ${userInfo &&userInfo.userType&&userInfo.userType == 2 ? 'link-underline' : ''}`" @click="goToBNK">{{ scope.row.bnkFee }}</span>
+              <icon v-if="scope.row.bnkFee !== scope.row.originBnkFee" symbol name="iconzengjiacailiaochengben_lan" class="font15 rotate180" />
             </template>
           </el-popover>
         </template>
 
-        <template #aprice="scope">
-          <span  @click="goToBNK">11111</span>
-        </template>
       </tableList>
     </iCard>
 
@@ -93,6 +91,7 @@ export default {
       aekoCode:'',
       partInfo:{},
       basicInfo:{},
+      tableLoading:false,
     }
   },
   created(){
@@ -166,7 +165,7 @@ export default {
     async goToBNK(){
       const {userInfo={}} = this;
       const {userType=null} = userInfo;
-      // if(userType==1) return;
+      if(userType==1) return;
 
       const {basicInfo={}} = this;
       const {aekoPartInfo={},rfqId,supplierId} = basicInfo;
@@ -189,20 +188,22 @@ export default {
         paramsStr+=`${i}=${data[i]}&`
       }
 
+      this.tableLoading = true;
       // partProjId    零件采购项目Id String
       // rfqId           rfqId  String
       await bnkSupplierToken({
-        // partProjId:aekoPartInfo.partProjId,
-        // rfqId,
-        partProjId:'11',
-        rfqId:'11'
+        partProjId:aekoPartInfo.partProjId,
+        rfqId,
       }).then((res)=>{
+        this.tableLoading = false;
         if(res.code == 200){
           const link = `http://svmwt038/sol-bnk/pages/bnk/quotes/lsp-view.jsf?${paramsStr}&token=${res.data}`;
           window.open(link,'_blank');
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+      }).catch((err)=>{
+        this.tableLoading = false;
       });
       
     },
