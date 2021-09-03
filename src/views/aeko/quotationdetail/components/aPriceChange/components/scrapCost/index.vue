@@ -48,6 +48,18 @@ export default {
       type: Array,
       required: true,
       default: () => ([])
+    },
+    sumData: {
+      type: Object,
+      required: true,
+      default: () => ({
+        sourceMaterialCostSum: "0",
+        newMaterialCostSum: "0",
+        sourceLaborCostSum: "0",
+        newLaborCostSum: "0",
+        sourceDeviceCostSum: "0",
+        newDeviceCostSum: "0"
+      })
     }
   },
   data() {
