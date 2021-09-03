@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 15:59:20
- * @LastEditTime: 2021-08-18 11:01:01
+ * @LastEditTime: 2021-09-02 19:53:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalyHandleInput.vue
@@ -10,7 +10,7 @@
   <div id="content">
     <iCard style="height: 850px;">
       <div slot="header" class="headBox">
-        <p class="headTitle">{{ language('CHENGBENJIEGOUFENXITUSHOUGONGSHURU', '成本结构分析图-手工输入') }}</p>
+        <p class="headTitle">{{ language('CHENGBENJIEGOUFENXITUSHOUGONG', '成本结构分析图-手工输入') }}</p>
         <span class="buttonBox">
           <iButton @click="clickEdit">{{ language('BIANJI', '编辑') }}</iButton>
           <iButton @click="clickAnalysis">{{ language('FENXIKU', '分析库') }}</iButton>
@@ -27,22 +27,22 @@
             <p class="formTitle">{{language('SHUZHI', '数值')}}</p>
             <el-form ref="form" :model="form" label-position="left" label-width="200px">
               <el-form-item :label="language('YUANCAILIAOSANJIANCHENGBEN', '原材料/散件成本')">
-                <iInput v-model="form.material" disabled></iInput>
+                <iInput class="form-item" v-model="form.material + '%'" disabled></iInput>
               </el-form-item>
               <el-form-item :label="language('ZHIZAOCHENGBEN', '制造成本')">
-                <iInput v-model="form.production" disabled ></iInput>
+                <iInput class="form-item" v-model="form.production + '%'" disabled ></iInput>
               </el-form-item>
               <el-form-item :label="language('BAOFEICHENGBEN', '报废成本')">
-                <iInput v-model="form.scrap" disabled></iInput>
+                <iInput class="form-item" v-model="form.scrap + '%'" disabled></iInput>
               </el-form-item>
               <el-form-item :label="language('GUANLIFEI', '管理费')">
-                <iInput v-model="form.manage" disabled></iInput>
+                <iInput class="form-item" v-model="form.manage + '%'" disabled></iInput>
               </el-form-item>
               <el-form-item :label="language('QITAFEIYONG', '其他费用')">
-                <iInput v-model="form.other" disabled></iInput>
+                <iInput class="form-item" v-model="form.other + '%'" disabled></iInput>
               </el-form-item>
               <el-form-item :label="language('LIRUN', '利润')">
-                <iInput v-model="form.profit" disabled></iInput>
+                <iInput class="form-item" v-model="form.profit + '%'" disabled></iInput>
               </el-form-item>
             </el-form>
           </el-col>
@@ -166,26 +166,23 @@ export default {
       })
     },
     // 校验方案名称
-    checkSchemeName(schemeName) {
+    async checkSchemeName(schemeName) {
       this.schemeName = schemeName
       this.targetSchemeId = null
-      this.$nextTick(_ => {
-        this.$set(this.saveModalParams, 'visible', false)
-      })
-      getCostStructureAnalysisByName({name: schemeName}).then(res => {
-        if(res && res.code == 200) {
-          if(res.data) {
-            //名称校验重复
-            this.targetSchemeId = res.data.id
-            iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(_ => {
-              this.createPdfAndSave()
-            })
-          } else {
-            //名称校验不重复
+      this.$set(this.saveModalParams, 'visible', false)
+      const res = await getCostStructureAnalysisByName({name: schemeName})
+      if(res && res.code == 200) {
+        if(res.data) {
+          //名称校验重复
+          this.targetSchemeId = res.data.id
+          iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(_ => {
             this.createPdfAndSave()
-          }
-        } else iMessage.error(res.desZh)
-      })
+          })
+        } else {
+          //名称校验不重复
+          this.createPdfAndSave()
+        }
+      } else iMessage.error(res.desZh)
     },
     // 创建pdf并保存数据
     createPdfAndSave() {
@@ -256,6 +253,9 @@ export default {
     font-weight: bold;
     font-size: 20px;
     line-height: 100px;
+  }
+  .form-item {
+    width: 80%;
   }
   ::v-deep .el-input .el-input__inner{
     text-align: center;
