@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-08-27 18:13:07
+ * @LastEditTime: 2021-09-02 17:30:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
 -->
 <template>
   <div>
-    <div style="height: 440px;width:100%"
+    <div style="height: 460px;width:100%"
          ref="chart"></div>
   </div>
 </template>
@@ -75,8 +75,9 @@ export default {
         }
       },
       immediate: true,
-      deep:true
-    }
+      deep: true
+    },
+
   },
   mounted () {
     // this.$nextTick(() => {
@@ -98,7 +99,7 @@ export default {
           show: true,
           subtext: "产量",
           left: 0,
-          top: 5,
+          top: 2,
         },
         xAxis: [
           {
@@ -124,7 +125,7 @@ export default {
         grid: {
           left: 0,
           right: 0,
-          bottom: "15%",
+          bottom: "11%",
           top: "30%",
         },
         yAxis: {

@@ -8,7 +8,7 @@
         <iFormGroup row="4" class="basic-form">
           <template 
             v-for="(item,index) in basicTitle"
-            v-permission.dynamic="item.permissionKey" 
+            v-permission.dynamic.auto="item.permissionKey" 
           >
             <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  >
                 <iText >{{ item.isObj ? basicInfo[item.props+'Desc'] : basicInfo[item.props]}}</iText>

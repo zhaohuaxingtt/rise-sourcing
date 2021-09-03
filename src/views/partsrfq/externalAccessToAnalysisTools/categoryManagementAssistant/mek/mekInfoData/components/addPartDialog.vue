@@ -6,7 +6,7 @@
  * @Descripttion: your project
 -->
 <template>
-  <iDialog  :title="language('TIANJIALINGJIAN','添加零件')" :visible.sync="value" width="60%" @close="clearDiolog">
+  <iDialog :title="language('TIANJIALINGJIAN','添加零件')" :visible.sync="value" width="60%" @close="clearDiolog">
     <el-form label-width="60px" label-position="top">
       <el-row type="flex" align='bottom' justify="space-between">
         <el-col :span="5">
@@ -33,7 +33,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <tableList height="350px" class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleCurrentChange="handleCurrentChange">
+    <tableList height="350px" class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange">
     </tableList>
     <div slot="footer" class="dialog-footer">
       <iButton @click="handleAdd">{{language('TIANJIA','添加')}}</iButton>
@@ -61,6 +61,7 @@ export default {
       tableListData: [],
       tableTitle: addPartTableTitle,
       tableLoading: false,
+      selectTableData: [],
       form: {
         fsNum: '',
         partNum: '',
@@ -76,13 +77,18 @@ export default {
     this.getTableList()
   },
   methods: {
+    handleSelectionChange(val) {
+      this.selectTableData = val
+    },
     async handleAdd() {
       const pms = {
-
+        list: this.selectTableData,
+        mekId: this.$route.query.chemeId
       }
       const res = await infoAdd(pms)
       this.resultMessage(res, () => {
         this.clearDiolog()
+        this.$parent.handleAdded()
       })
     },
     clearDiolog() {

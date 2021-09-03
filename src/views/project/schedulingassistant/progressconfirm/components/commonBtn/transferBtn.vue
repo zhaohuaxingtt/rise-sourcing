@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 17:49:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-30 18:02:38
+ * @LastEditTime: 2021-09-03 11:04:01
  * @Description: 转派按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\transferBtn.vue
 -->
@@ -62,7 +62,7 @@ export default {
       if (this.tansferType === '1') {
         this.transferSchedule(val)
       } else {
-        this.transferPartScheduleList()
+        this.transferPartScheduleList(val)
       }
     },
     /**

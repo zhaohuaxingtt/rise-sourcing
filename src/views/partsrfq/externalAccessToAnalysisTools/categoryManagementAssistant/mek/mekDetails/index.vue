@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-01 17:27:55
+ * @LastEditTime: 2021-09-03 15:46:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -9,7 +9,8 @@
 <template>
   <iPage class="new-MEK">
     <div id="content">
-      <div class="navBox flex-between-center">
+      <div class="navBox flex-between-center"
+           style="margin-bottom:20px">
         <div class="title font-weight flex">
           <label for="">{{ language("QIEHUANCAILIAOZU","切换材料组") }}:</label>
           <iSelect @change="changeCategory"
@@ -24,7 +25,8 @@
         <div class="flex"
              v-show="reportFlag">
           <!--预览-->
-          <iButton class="margin-left30">{{ $t("MEK分析库") }}</iButton>
+          <iButton class="margin-left30"
+                   @click="handleAnalysis">{{ $t("MEK分析库") }}</iButton>
           <!--保存-->
           <iButton @click="handleMEKInfo"
                    class="margin-left30">{{ $t("MEK基础数据库") }}</iButton>
@@ -39,10 +41,10 @@
                 class="margin-left30 "></icon>
         </div>
       </div>
-      <div class=" bodyBox clearFloat">
-        <div class="cardBox"
-             style="width:18%">
-          <iCard v-show="reportFlag">
+      <el-row>
+        <el-col :span="4">
+          <iCard v-show="reportFlag"
+                 style="height:619px">
             <div class=" searchForm"
                  style="margin-right:-20px">
               <el-form label-position="top"
@@ -96,7 +98,8 @@
                        @click="handleSearchReset">{{ $t("LK_ZHONGZHI") }}</iButton>
             </div>
           </iCard>
-          <iCard v-show="!reportFlag">
+          <iCard v-show="!reportFlag"
+                 style="height:619px">
             <div class=" searchForm1"
                  style="margin-right:20px">
               <label for=""
@@ -108,9 +111,9 @@
               </ul>
             </div>
           </iCard>
-        </div>
-        <div class="cardBox"
-             style="width:82%">
+
+        </el-col>
+        <el-col :span="20">
           <iCard class="margin-left20"
                  style="height:619px">
             <div class="chartBox1">
@@ -123,18 +126,20 @@
                 <div class="flex chartItem"
                      :style="{width:chartItemWidth}">
                   <div class="operation1">
+                    <div style="height:20px"
+                         class="margin-bottom20"></div>
                     <el-select v-model="targetMotor"
                                @change="changeTargetMotor"
                                style="width:150px"
-                               class="margin-bottom15 margin-top40"
+                               class="margin-bottom20"
                                placeholder="请选择目标车型">
                       <el-option v-for="item in TargetMotorList"
                                  :key="item.motorId"
                                  :value="item.motorId"
                                  :label="item.motorName"> </el-option>
                     </el-select>
-                    <span class="margin-bottom15 "
-                          style="min-height:14px">{{firstBarData.motorName}}</span>
+                    <span class="margin-bottom20 "
+                          style="line-height:16px;height:16px">{{firstBarData.motorName}}</span>
                     <span class="yield"
                           style="line-height:12px">{{firstBarData.output}}</span>
                   </div>
@@ -149,7 +154,8 @@
                          :key="i.value"
                          style="text-align:center">
                       <div style="margin-bottom:10px">
-                        <span @click="computeModal(firstBarData)">{{i.title}}</span>
+                        <span class="detail"
+                              @click="computeModal(firstBarData)">{{i.title}}</span>
                         <el-tooltip class="item"
                                     effect="dark"
                                     :content="firstBarData.tips"
@@ -176,7 +182,7 @@
                                 width="80"
                                 trigger="click"
                                 visible-arrow
-                                class="margin-bottom15">
+                                class="margin-bottom20">
                       <el-checkbox-group v-model="item.checkList"
                                          class="checkList"
                                          @change="changeCheckList">
@@ -184,17 +190,17 @@
                                      :key="index"
                                      :label="i.value">{{i.title}}</el-checkbox>
                       </el-checkbox-group>
-                      <div style="line-height:30px"
+                      <div class="motorName"
                            slot="reference">{{item.motorName}}</div>
                     </el-popover>
-                    <span class="margin-bottom15"
+                    <span class="margin-bottom20"
                           style="line-height:16px;height:16px">{{item.factory}}</span>
                     <span class="yield margin-bottom15">{{item.output}}</span>
                     <div>
                       <el-select v-model="item.priceType"
                                  @change="changPriceType"
                                  style="width:150px;z-index:1000"
-                                 v-if="flag1">
+                                 v-if="item.priceType!=='monthPrice'">
                         <el-option v-for="i in mekpriceTypeList"
                                    :key="i.id"
                                    :value="i.code"
@@ -205,7 +211,7 @@
                                       placeholder="选择日期"
                                       @change="changeDate"
                                       style="width:150px;z-index:1000"
-                                      v-if="tem.priceType==='2'">
+                                      v-if="item.priceType==='monthPrice'">
                       </el-date-picker>
                     </div>
                   </div>
@@ -238,8 +244,10 @@
             </div>
             <!-- <report :dialogVisible="true"></report> -->
           </iCard>
-        </div>
-      </div>
+
+        </el-col>
+      </el-row>
+
       <tableList :gridData="gridData"
                  :editFlag="editFlag"
                  :addRowList="addRowList"
@@ -674,6 +682,9 @@ export default {
     },
     //价格类型
     changPriceType (val) {
+      if (val === '2') {
+        this.flag1 = false
+      }
       this.mekpriceTypeList.forEach(item => {
         if (item.code === val) {
           this.mekpriceType = item.label
@@ -699,7 +710,7 @@ export default {
       this.barData.forEach(item => {
         let obj = {
           motorId: item.motorId,
-          priceType: item.priceType,
+          priceType: val,
           isTargetMotor: false
         }
         params.info.push(obj)
@@ -736,6 +747,7 @@ export default {
           mekTypeName = item.name
         }
       })
+
       if (this.gridData) {
         this.gridData.config['label#-1'] = mekTypeName
       }
@@ -759,7 +771,8 @@ export default {
           data.shift()
           this.barData = data
           this.barData.forEach(item => {
-            item.checkList = []
+            // item.checkList = []
+            this.$set(this.barData, 'checkList', []);
           })
           this.barData.forEach(item => {
             item.detail.forEach(i => {
@@ -790,6 +803,13 @@ export default {
     close () {
       this.dialogVisible = false
       this.reportFlag = true
+    },
+    handleAnalysis () {
+      if (this.entryStatus) {
+        this.$router.push({ path: '/sourceinquirypoint/sourcing/partsrfq/assistant', query: { id: this.rfqId, round: this.$route.query.round, pageType: 'MEK', activityTabIndex: 'two' } })
+      } else {
+        this.$router.push({ path: '/sourcing/partsrfq/externalNegotiationAssistant', query: { pageType: 'MEK' } })
+      }
     },
     save () {
       if (this.analysisSave) {
@@ -962,7 +982,7 @@ export default {
 .line {
   position: absolute;
   left: 40px;
-  bottom: 12%;
+  bottom: 9%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -970,7 +990,7 @@ export default {
 .line1 {
   position: absolute;
   left: 40px;
-  bottom: 22%;
+  bottom: 19%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -978,7 +998,7 @@ export default {
 .line2 {
   position: absolute;
   left: 40px;
-  bottom: 32%;
+  bottom: 29%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -986,7 +1006,7 @@ export default {
 .line3 {
   position: absolute;
   left: 40px;
-  bottom: 42%;
+  bottom: 39%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -994,7 +1014,7 @@ export default {
 .line4 {
   position: absolute;
   left: 40px;
-  bottom: 54%;
+  bottom: 51%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -1005,12 +1025,17 @@ export default {
 }
 .xAxis {
   position: absolute;
-  bottom: 3%;
+  bottom: 2%;
   font-size: 12px;
   color: "#3C4F74";
   font-family: "Arial";
+  .detail:hover {
+    text-decoration: underline;
+  }
 }
-
+.motorName {
+  height: 32px;
+}
 ::v-deep .el-select {
   width: 100%;
   .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {

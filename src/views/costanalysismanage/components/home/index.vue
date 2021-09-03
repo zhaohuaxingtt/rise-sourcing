@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-07-19 16:14:20
+ * @LastEditTime: 2021-09-02 14:15:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -189,7 +189,8 @@ import cbdDialog from './components/cbdStatus'
 import { queryForm, tableTitle } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
-import { getSelectOptions, getKmRfqList, updateRfq, getCommodityOptions, getLinieOptionsByCommodity } from "@/api/costanalysismanage/home"
+import { getSelectOptions, getKmRfqList, getCommodityOptions, getLinieOptionsByCommodity } from "@/api/costanalysismanage/home"
+import {setRfqTop} from '@/api/partsrfq/home/index'
 import { selectDictByKeys } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 import axios from "axios"
@@ -405,14 +406,11 @@ export default {
     updateOrder(row) {
       // this.$set(row, "recordId", row.recordId ? 0 : 1)
       this.loading = true
-
-      updateRfq({
-        rfqSetTopPackage: {
-          setType: row.recordId > 0 ? "0" : "1",
+      setRfqTop({
+          setType: row.recordId ? "0" : "1",
           rfqId: row.id,
           userId: this.userInfo.id
-        },
-      })
+        })
       .then(res => {
         if (res.code == 200) {
           this.getKmRfqList()

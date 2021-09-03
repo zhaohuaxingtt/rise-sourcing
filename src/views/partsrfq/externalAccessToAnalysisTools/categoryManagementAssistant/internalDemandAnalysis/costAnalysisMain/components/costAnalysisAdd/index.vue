@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-08-25 18:26:53
+ * @LastEditTime: 2021-09-03 11:08:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -37,7 +37,7 @@
             <iInput v-positive="'num'" v-model="searchForm['nomiNum']" :placeholder="language('QINGSHURU', '请输入')" @change="handleNomiNumChange($event)"></iInput>
           </el-form-item>
           <el-form-item style="width: 220px; marginRight: 53px;" :label="language('LIUWEIHAO', '六位号')">
-            <iInput v-positive="'num'" v-model="searchForm['sixNum']" :placeholder="language('QINGSHURU', '请输入')"></iInput>
+            <iInput v-alphabet v-model="searchForm['sixNum']" :placeholder="language('QINGSHURU', '请输入')"></iInput>
           </el-form-item>
           <el-form-item class="searchButton">
             <el-button @click="handleSubmitSearch">{{language('QUEREN', '确认')}}</el-button>
@@ -149,7 +149,7 @@ export default {
     },
     // 处理默认选中
     handleDefaultSelect() {
-      const operateLog = JSON.parse(this.$route.query.operateLog) || null
+      const operateLog = this.$route.query.operateLog ? JSON.parse(this.$route.query.operateLog) : null
       if(operateLog) {
         const fsList = operateLog.fsList
         this.tableListData.map(item => {

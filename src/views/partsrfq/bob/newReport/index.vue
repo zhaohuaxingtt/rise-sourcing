@@ -30,11 +30,10 @@
               class="margin-top20">
         <el-col :span="inside?4:5">
           <iCard :collapse="false"
-                 style="height: 560px"
+                 style="height: 620px"
                  v-if="!reportSave">
             <el-form label-position="top"
-                     :model="form"
-                     style="height: 530px">
+                     :model="form">
               <el-row class="margin-bottom20">
                 <div v-if="inside">
                   <!--比较类型-->
@@ -182,19 +181,29 @@
           </iCard>
         </el-col>
         <el-col :span="inside?20:19">
-          <iCard style="height: 560px"
-                 collapse>
-            <div class="legend">
-              <ul>
-                <li v-for="(item,index) in anchorList"
-                    :key="index">
-                  <i class="circle"
-                     :style="color(item)"></i>
-                  <span style="vertical-align: baseline">{{item}}</span>
-                </li>
-              </ul>
+          <iCard style="height: 620px">
+            <div style="width: 100%; height: 30px;display: flex;flex-flow: row nowrap;justify-content: space-between;">
+              <div> <span class="chartTitle">{{chartTitle}}</span>
+                <el-button type="primary"
+                           icon="el-icon-refresh"
+                           size="mini"
+                           circle
+                           @click="refresh">
+                </el-button>
+              </div>
+
+              <div class="legend">
+                <ul>
+                  <li v-for="(item,index) in anchorList"
+                      :key="index">
+                    <i class="circle"
+                       :style="color(item)"></i>
+                    <span style="vertical-align: baseline">{{item}}</span>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <iRow>
+            <el-row>
               <el-col :span="inside ? 18 : 24"
                       style="padding-left:0px">
                 <crown-bar :chartData="chartData"
@@ -242,7 +251,18 @@
                   </div>
                 </div>
               </el-col>
-            </iRow>
+            </el-row>
+            <!-- <div class="legend">
+              <ul>
+                <li v-for="(item,index) in anchorList"
+                    :key="index">
+                  <i class="circle"
+                     :style="color(item)"></i>
+                  <span style="vertical-align: baseline">{{item}}</span>
+                </li>
+              </ul>
+            </div> -->
+
           </iCard>
         </el-col>
       </el-row>
@@ -329,7 +349,7 @@ import CrownBar from "./components/crownBar.vue";
 import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
 import { getBobLevelOne, removeBobOut, addBobOut } from "@/api/partsrfq/bob";
-import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList } from "@/api/partsrfq/bob/analysisList";
+import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList, generateGroupId } from "@/api/partsrfq/bob/analysisList";
 import customSelect from '@/views/demo'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import { uploadFile } from "@/api/file/upload";
@@ -347,7 +367,7 @@ export default {
     bobAnalysis,
     findingParts,
     OutBar,
-    // icon,
+    icon,
     preview,
     iDialog,
     iInput,
@@ -391,7 +411,10 @@ export default {
   async created () {
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
-    this.groupId = this.$route.query.groupId
+    // this.groupId = this.$route.query.groupId
+    generateGroupId().then(res => {
+      this.groupId = res.data
+    })
     if (this.newBuild) {
       if (this.entryStatus === 1) {
         this.inside = true
@@ -659,6 +682,9 @@ export default {
       }
 
     },
+    refresh () {
+      this.searchChartData()
+    },
     async searchChartData () {
       if (this.inside) {
         await this.getOptions();
@@ -726,7 +752,7 @@ export default {
             turn: [],
             spareParts: [],
           };
-          this.form.supplier = this.Split(allData.supplier, ",").map(Number);
+          this.form.supplier = this.Split(allData.supplier, ",");
           this.form.turn = this.Split(allData.turn, ",").map(Number);
           this.form.spareParts = this.Split(allData.spareParts, ",");
         }
@@ -767,7 +793,7 @@ export default {
             turn: [],
             spareParts: [],
           };
-          this.form.supplier = this.Split(allData.supplier, ",").map(Number);
+          this.form.supplier = this.Split(allData.supplier, ",");
           this.form.turn = this.Split(allData.turn, ",").map(Number)
           this.form.spareParts = this.Split(allData.spareParts, ",");
           console.log(this.form)
@@ -927,7 +953,7 @@ export default {
   computed: {
     chartTitle () {
       if (this.chartType === "supplier") {
-        return this.form.spareParts;
+        return this.form.spareParts.toString();
       } else if (this.chartType === "turn") {
         return this.form.supplier + " " + this.form.spareParts;
       } else if (this.chartType === "spareParts") {
@@ -964,7 +990,6 @@ export default {
 .new-bob {
   .end {
     text-align: center;
-    position: relative;
     bottom: 60px;
   }
   .toolTip-div {
@@ -1000,7 +1025,6 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-top: 90px;
       }
     }
   }
@@ -1046,7 +1070,10 @@ export default {
     list-style: url("../../../../assets/images/circle1.png") outside circle;
   }
 }
-
+.refresh {
+  font-size: 20px;
+  color: #409eff;
+}
 ::v-deep .el-form-item {
   margin-bottom: 20px;
   .el-form-item__label {
@@ -1068,10 +1095,17 @@ export default {
 ::v-deep.el-form-item {
   margin-bottom: 20px;
 }
+.chartTitle {
+  font-size: 18px;
+  font-family: "Arial";
+  line-height: 16px;
+  font-weight: "bold";
+  margin-right: 20px;
+}
 .legend {
-  position: absolute;
-  right: 95px;
-  top: 26px;
+  // position: absolute;
+  // right: 95px;
+  // top: 26px;
   font-family: "Arial";
   font-size: 16px;
   color: #0d2451;

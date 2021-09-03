@@ -15,7 +15,7 @@
     </div>
     <div class="content">
       <div class="table" v-for="(value, index) in tableList" :key="index">
-        <el-table row-key="sort" :tree-props="{children:'childNodes'}" v-loading="tableLoading" :ref="'multipleTable'" :data="value.dimensions" @selection-change="handleSelectionChange($event,index)">
+        <el-table @select="select" @select-all="selectAll($event,value.code)" row-key="id" :tree-props="{children:'childNodes'}" v-loading="tableLoading" :ref="'multipleTable'" :data="value.dimensions" @selection-change="handleSelectionChange($event,index)">
           <el-table-column type="selection" width="55"> </el-table-column>
           <el-table-column type="index" :index="indexMethod" label="#" width="55">
             <template slot-scope="scope">{{scope.row.sort}}</template>
@@ -63,6 +63,79 @@ export default {
     }
   },
   methods: {
+    setChildren(children, type, index) {
+      // 编辑多个子层级
+      children.map((j) => {
+        this.toggleSelection(j, type, index)
+        if (j.childNodes) {
+          this.setChildren(j.childNodes, type, index)
+        }
+      })
+    },
+    // 选中父节点时，子节点一起选中取消
+    select(selection, row) {
+      this.tableList.forEach((item, index) => {
+        item.dimensions.forEach(val => {
+          // 反向推是哪一个表
+          if (val.id === row.id) {
+            if (
+              selection.some((el) => {
+                return row.id === el.id
+              })
+            ) {
+              if (row.childNodes) {
+                // 解决子组件没有被勾选到
+                this.setChildren(row.childNodes, true, index)
+              }
+            } else {
+              if (row.childNodes) {
+                this.setChildren(row.childNodes, false, index)
+              }
+            }
+          }
+        })
+      })
+    },
+    toggleSelection(row, select, index) {
+      if (row) {
+        this.$nextTick(() => {
+          this.$refs.multipleTable[index] && this.$refs.multipleTable[index].toggleRowSelection(row, select)
+        })
+      }
+    },
+    // 选择全部
+    selectAll(selection, code) {
+      this.tableList.forEach((item, index) => {
+        if (item.code === code) {
+          // tabledata第一层只要有在selection里面就是全选
+          const isSelect = selection.some((el) => {
+            const tableDataIds = this.tableList[index].dimensions.map((j) => j.id)
+            return tableDataIds.includes(el.id)
+          })
+          // tableDate第一层只要有不在selection里面就是全不选
+          const isCancel = !this.tableList[index].dimensions.every((el) => {
+            const selectIds = selection.map((j) => j.id)
+            return selectIds.includes(el.id)
+          })
+          if (isSelect) {
+            selection.map((el) => {
+              if (el.childNodes) {
+                // 解决子组件没有被勾选到
+                this.setChildren(el.childNodes, true, index)
+              }
+            })
+          }
+          if (isCancel) {
+            this.tableList[index].dimensions.map((el) => {
+              if (el.childNodes) {
+                // 解决子组件没有被勾选到
+                this.setChildren(el.childNodes, false, index)
+              }
+            })
+          }
+        }
+      })
+    },
     handleSelectionChange(val, index) {
       switch (index) {
         case 0:
@@ -108,8 +181,6 @@ export default {
       await categoryReportExport(pms)
     },
     handleAll() {
-      console.log(this.$refs);
-      console.log(this.$refs.multipleTable);
       this.$refs.multipleTable[0].clearSelection()
       this.$refs.multipleTable[1].clearSelection()
       this.$refs.multipleTable[2].clearSelection()
