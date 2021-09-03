@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 19:03:24
- * @LastEditTime: 2021-09-02 16:34:45
+ * @LastEditTime: 2021-09-03 11:15:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\config\businesskey\moudules\aeko.js
@@ -28,19 +28,24 @@ const blackKey = [
                   'PARTSPROCURE_EDITORDETAIL_DRAWINGSANDTPDETAILSPAGE', // TAB-图纸和信息单详情 show:false
                   'PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE', // TAB-申请目标价 show:false
 
+
+
+                  // 'PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER_SHOW', // TAB-备注-询价采购员备注
                   'PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER', // TAB-备注-询价采购员备注 show:true disabled:true
                   'PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES', // TAB-备注-Linie备注 show:true disabled:true
                   'PARTSPROCURE_EDITORDETAIL_REMARKS_CS1REMARKS', // TAB-备注-CS*1备注 show:true disabled:true
 
 
-                  'PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE', // 基础信息-零件项目类型 show:true disabled:true
-                  'PARTSPROCURE_EDITORDETAIL_CARTYPEZH', // 基础信息-车型项目 show:true disabled:true
-                  'PARTSPROCURE_EDITORDETAIL_PARTTYPE', // 基础信息-零件类型 show:true disabled:true
-                  'LK_DANWEI', // 基础信息-单位 show:true disabled:true
-                  'PARTSPROCURE_EDITORDETAIL_MTZPARTS', // 基础信息-MTZ零件 show:true disabled:true
-                  'PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY', // 基础信息--采购工厂 show:true disabled:true
-                  'PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT', // 基础信息 LINIE部门 show:true disabled:true
-                  'PARTSPROCURE_EDITORDETAIL_LINE', // 基础信息 LINIE show:true disabled:true
+                  // 'PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE', // 基础信息-零件项目类型 show:true disabled:true
+                  // 'PARTSPROCURE_EDITORDETAIL_CARTYPEZH', // 基础信息-车型项目 show:true disabled:true
+                  // 'PARTSPROCURE_EDITORDETAIL_PARTTYPE', // 基础信息-零件类型 show:true disabled:true
+                  // 'LK_DANWEI', // 基础信息-单位 show:true disabled:true
+                  // 'PARTSPROCURE_EDITORDETAIL_MTZPARTS', // 基础信息-MTZ零件 show:true disabled:true
+                  // 'PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY', // 基础信息--采购工厂 show:true disabled:true
+                  // 'PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT', // 基础信息 LINIE部门 show:true disabled:true
+                  // 'PARTSPROCURE_EDITORDETAIL_LINE', // 基础信息 LINIE show:true disabled:true
+
+                  'PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI', // TAB-定点信息
 
 
                   // RFQ详情页
@@ -83,7 +88,10 @@ const blackKey = [
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI_CHONGZHI_BUTTON', // tab报价分析-报价趋势-重置-按钮 show:false
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI_DAOCHU_BUTTON', // tab报价分析-报价趋势-导出-按钮 show:false
                  ]
-const whiteKey = []
+const whiteKey = [
+  // 零件采购项目详情页
+  'PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE_AEKO_MANGE' // TAB备注-保存按钮-针对AEKO管理员
+]
 module.exports = {
   blackKey,
   whiteKey

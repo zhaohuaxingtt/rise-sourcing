@@ -21,6 +21,7 @@
 
     <iCard class="margin-top20" v-permission.auto="AEKO_QUOTATION_DETAIL_VIEW_HUIZONG|报价汇总">
       <tableList
+        :tableLoading="tableLoading"
         lang
         class="table"
         :selection="false"
@@ -43,9 +44,9 @@
           </el-popover>
         </template>
 
-        <template #aprice="scope">
+        <!-- <template #aprice="scope">
           <span  @click="goToBNK">11111</span>
-        </template>
+        </template> -->
       </tableList>
     </iCard>
 
@@ -94,6 +95,7 @@ export default {
       aekoCode:'',
       partInfo:{},
       basicInfo:{},
+      tableLoading:false,
     }
   },
   created(){
@@ -162,7 +164,7 @@ export default {
     async goToBNK(){
       const {userInfo={}} = this;
       const {userType=null} = userInfo;
-      // if(userType==1) return;
+      if(userType==1) return;
 
       const {basicInfo={}} = this;
       const {aekoPartInfo={},rfqId,supplierId} = basicInfo;
@@ -185,20 +187,22 @@ export default {
         paramsStr+=`${i}=${data[i]}&`
       }
 
+      this.tableLoading = true;
       // partProjId    零件采购项目Id String
       // rfqId           rfqId  String
       await bnkSupplierToken({
-        // partProjId:aekoPartInfo.partProjId,
-        // rfqId,
-        partProjId:'11',
-        rfqId:'11'
+        partProjId:aekoPartInfo.partProjId,
+        rfqId,
       }).then((res)=>{
+        this.tableLoading = false;
         if(res.code == 200){
           const link = `http://svmwt038/sol-bnk/pages/bnk/quotes/lsp-view.jsf?${paramsStr}&token=${res.data}`;
           window.open(link,'_blank');
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+      }).catch((err)=>{
+        this.tableLoading = false;
       });
       
     },
