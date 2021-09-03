@@ -21,9 +21,9 @@ export function bnkSupplierToken(params) {
 }
 
 // 获取CBD调整部分下拉列表
-export function getAekoCarDosage(params) {
+export function getAekoCarDosage() {
   return requst({
-    url: `/aeko/cbd-select/${ params.quotationId }`,
+    url: `/aeko/cbd-select`,
     method: 'GET',
   })
 }
@@ -32,6 +32,14 @@ export function getAekoCarDosage(params) {
 export function getQuotationInfo(quotationId) {
   return requst({
     url: `/aeko/get/part-info/${quotationId}`,
+    method: 'GET',
+  })
+}
+
+// 获取AEKO报价单汇总数据
+export function getAekoQuotationSummary(params) {
+  return requst({
+    url: `/aeko/get/quotation-summary/${ params.quotationId }`,
     method: 'GET',
   })
 }
