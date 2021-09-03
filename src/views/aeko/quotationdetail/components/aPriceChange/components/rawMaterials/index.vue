@@ -269,6 +269,7 @@ export default {
       this.$set(row, "directMaterialCost", directMaterialCost)
     
       this.computeMaterialManageCost(directMaterialCost, "directMaterialCost", row)
+      this.computeMaterialCost(directMaterialCost, "directMaterialCost", row)
     },
     updateMaterialManageCostRate(value, key, row) {
       this.computeMaterialManageCost(value, key, row)
@@ -276,6 +277,8 @@ export default {
     computeMaterialManageCost(sourceValue, sourceKey, row) {
       const materialManageCost = math.evaluate(`${ math.bignumber(row.directMaterialCost || 0) } * (${ math.bignumber(row.materialManageCostRate || 0) } / 100)`).toFixed(2)
       this.$set(row, "materialManageCost", materialManageCost)
+
+      this.computeMaterialCost(materialManageCost, "materialManageCost", row)
     },
     computeMaterialCost(sourceValue, sourceKey, row) {
       this.$set(row, "materialCost", math.evaluate(`${ math.bignumber(row.directMaterialCost || 0) } + ${ math.bignumber(row.materialManageCost || 0) }`).toFixed(2))

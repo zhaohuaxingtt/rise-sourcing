@@ -249,8 +249,12 @@ export default {
     updateSourceDataIndex() {
       this.sourceTableListData.forEach((item, index) => this.$set(item, "index", `P${ ++index }`))
     },
-    handleInputByNumber(value, key, row, precision) {
+    handleInputByNumber(value, key, row, precision, cb) {
       this.$set(row, key, numberProcessor(value, precision))
+
+      if (typeof cb === "function") {
+        cb(value, key, row)
+      }
     }
   }
 }
