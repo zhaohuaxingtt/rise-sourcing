@@ -51,7 +51,10 @@ export default {
         },
         yAxis: {
           type: 'value',
-          name: this.language('DANWEIYUAN', '（单位：元）')
+          name: this.language('DANWEIYUAN', '（单位：元）'),
+          nameTextStyle: {
+            padding: [0, 0, 0, -30],
+          }
         },
         color: [
           '#1660F1',
