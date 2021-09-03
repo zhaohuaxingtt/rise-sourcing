@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-08-23 15:17:06
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-03 15:33:00
+ * @LastEditors: Hao,Jiang
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
 -->
@@ -159,7 +159,7 @@ import headerNav from './components/headerNav'
 import nomicharts from './components/nomicharts'
 import pieCharts from './components/pieCharts'
 import {sourcingOverview} from '@/api/dashboard'
-import {qianqicaigou, zhuanyecaigou} from '@/config/dashboard'
+import {qianqicaigou, zhuanyecaigou} from '@/config/role'
 import {iPage, iCard, icon, iMessage} from 'rise'
 import _ from 'lodash'
 
