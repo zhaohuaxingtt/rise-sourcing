@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-09-02 15:32:18
+ * @LastEditTime: 2021-09-02 17:30:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -76,7 +76,8 @@ export default {
       },
       immediate: true,
       deep: true
-    }
+    },
+
   },
   mounted () {
     // this.$nextTick(() => {
@@ -98,7 +99,7 @@ export default {
           show: true,
           subtext: "产量",
           left: 0,
-          top: 5,
+          top: 2,
         },
         xAxis: [
           {

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditors: Luoshuang
+ * @LastEditors: Hao,Jiang
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
 -->
@@ -24,7 +24,7 @@
          <quotationScoringEcartsCard v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
          <iCard title="报价趋势" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"4")' collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI|报价趋势"></iCard>
           <!--------------------报价分析汇总-业务分配模拟----------------------------------------->
-         <buMonitor @handleCollapse='handleCollapse($event,"5")' :collapse='true' v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20"></buMonitor>
+         <buMonitor @handleCollapse='handleCollapse($event,"5")' :collapse='true' v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_YEWYFENPEIMONI|业务分配模拟"></buMonitor>
          <iCard title="业务分配模拟" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"5")' collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_YEWUFENPEIMONI|业务分配模拟"></iCard>
       </template>
     </el-tab-pane>

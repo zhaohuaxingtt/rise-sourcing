@@ -21,12 +21,19 @@ import { cbdSummaryTableTitle as tableTitle } from "../data"
 
 export default {
   components: { tableList },
+  model: {
+    prop: "tableListData"
+  },
+  props: {
+    tableListData: {
+      type: Array,
+      required: true,
+      default: () => ([{ material: "0.00", makeCost: "0.00", discardCost: "0.00", manageFee: "0.00", otherFee: "0.00", profit: "0.00", apriceChange: "0.00" }])
+    }
+  },
   data() {
     return {
-      tableTitle,
-      tableListData: [
-        { a: "0.00", b: "0.00", c: "0.00", d: "0.00", e: "0.00", f: "0.00", g: "0.00" }
-      ]
+      tableTitle
     }
   }
 }

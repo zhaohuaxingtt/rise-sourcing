@@ -46,7 +46,7 @@ export default {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: 'allContainer',
-        pdfName: 'purchaseAmountOverall',
+        pdfName: this.language('NJIGONGYINGLIANGUANLI', 'N级供应链管理') + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString() + '-',
       });
       const req = {
         ...params,
