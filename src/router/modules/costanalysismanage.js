@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 12:00:48
- * @LastEditTime: 2021-08-11 18:56:31
+ * @LastEditTime: 2021-09-03 15:04:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\costanalysismanage.js
@@ -9,7 +9,7 @@
 export default [
   {
     path: "/",
-    component: () => import("@/layout/default-origin"),
+    component: () => import("@/layout/default"),
     children: [
       {
         path: "/costanalysismanage",
