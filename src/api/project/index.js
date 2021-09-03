@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 17:42:17
+ * @LastEditTime: 2021-09-03 13:45:28
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -430,6 +430,15 @@ export function addScheduleVersion(params) {
 export function exportPartSchedule(params) {
   return downloadRequst({
     url: '/part-schedule/partScheduleFile',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 零件排程进度回传
+export function partSchedulePartFitting(params) {
+  return requst({
+    url: '/part-schedule/fitting',
     method: 'POST',
     data: params
   })
