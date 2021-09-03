@@ -183,7 +183,13 @@
         <el-col :span="inside?20:19">
           <iCard style="height: 620px">
             <div style="width: 100%; height: 30px;display: flex;flex-flow: row nowrap;justify-content: space-between;">
-              <span class="chartTitle">{{chartTitle}}</span>
+              <div> <span class="chartTitle">{{chartTitle}}</span>
+                <el-button type="primary"
+                           icon="el-icon-refresh"
+                           size="mini"
+                           circle>
+                </el-button>
+              </div>
 
               <div class="legend">
                 <ul>
@@ -360,8 +366,7 @@ export default {
     bobAnalysis,
     findingParts,
     OutBar,
-
-    // icon,
+    icon,
     preview,
     iDialog,
     iInput,
@@ -1058,7 +1063,10 @@ export default {
     list-style: url("../../../../assets/images/circle1.png") outside circle;
   }
 }
-
+.refresh {
+  font-size: 20px;
+  color: #409eff;
+}
 ::v-deep .el-form-item {
   margin-bottom: 20px;
   .el-form-item__label {
@@ -1085,6 +1093,7 @@ export default {
   font-family: "Arial";
   line-height: 16px;
   font-weight: "bold";
+  margin-right: 20px;
 }
 .legend {
   // position: absolute;
