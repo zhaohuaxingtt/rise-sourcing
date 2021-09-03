@@ -187,7 +187,8 @@
                 <el-button type="primary"
                            icon="el-icon-refresh"
                            size="mini"
-                           circle>
+                           circle
+                           @click="refresh">
                 </el-button>
               </div>
 
@@ -348,7 +349,7 @@ import CrownBar from "./components/crownBar.vue";
 import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
 import { getBobLevelOne, removeBobOut, addBobOut } from "@/api/partsrfq/bob";
-import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList } from "@/api/partsrfq/bob/analysisList";
+import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList, generateGroupId } from "@/api/partsrfq/bob/analysisList";
 import customSelect from '@/views/demo'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import { uploadFile } from "@/api/file/upload";
@@ -410,7 +411,10 @@ export default {
   async created () {
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
-    this.groupId = this.$route.query.groupId
+    // this.groupId = this.$route.query.groupId
+    generateGroupId().then(res => {
+      this.groupId = res.data
+    })
     if (this.newBuild) {
       if (this.entryStatus === 1) {
         this.inside = true
@@ -677,6 +681,9 @@ export default {
         })
       }
 
+    },
+    refresh () {
+      this.searchChartData()
     },
     async searchChartData () {
       if (this.inside) {

@@ -50,9 +50,9 @@
       <div class="interests"
            v-else>
         <div class="interestsName">{{interestsName}}</div>
-        <div class="interestsName">{{interestsStatus==='profit'?year1+'%':year1}}</div>
-        <div class="interestsName">{{interestsStatus==='profit'?year2+'%':year2}}</div>
-        <div class="interestsName">{{interestsStatus==='profit'?year3+'%':year3}}</div>
+        <div class="interestsName">{{profit1+'%'}}</div>
+        <div class="interestsName">{{profit2+'%'}}</div>
+        <div class="interestsName">{{profit3+'%'}}</div>
       </div>
     </div>
     <div class="width3-1">
@@ -114,7 +114,10 @@ export default {
     return {
       isEdite: true,
       interestsStatus: 'profit',
-      interestsName: "",
+      interestsName: "利润",
+      profit1: "",
+      profit2: "",
+      profit3: "",
       MarketOverviewObj1: {},
       iSelectOption: [{
         value: 'profit',
@@ -477,11 +480,6 @@ export default {
       handler (val) {
         this.MarketOverviewObj1 = _.cloneDeep(val)
         let date = new Date().getFullYear();
-        this.iSelectOption.forEach(item => {
-          if (item.value === this.interestsStatus) {
-            this.interestsName = item.name
-          }
-        })
         this.option.series.push({
           name: "sum",
           type: "bar",
@@ -515,39 +513,21 @@ export default {
               this.option.series[0].data[0].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
-              if (this.interestsStatus === "otherAmount") {
-                this.year1 = (x.otherAmount / 1000000).toFixed(2)
-              } else if (this.interestsStatus === "svwAmount") {
-                this.year1 = (x.svwAmount / 1000000).toFixed(2)
-              } else if (this.interestsStatus === "profit") {
-                this.year1 = x.profit
-              }
+              this.profit1 = x.profit
             }
             if (x.year == date - 2) {
               this.option.series[0].data[1].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
               this.option.series[0].data[1].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
-              if (this.interestsStatus === "otherAmount") {
-                this.year2 = (x.otherAmount / 1000000).toFixed(2)
-              } else if (this.interestsStatus === "svwAmount") {
-                this.year2 = (x.svwAmount / 1000000).toFixed(2)
-              } else if (this.interestsStatus === "profit") {
-                this.year2 = x.profit
-              }
+              this.profit2 = x.profit
             }
             if (x.year == date - 1) {
               this.option.series[0].data[2].label.normal.formatter = !x.otherRate ? '0' : x.otherRate + '%'
               this.option.series[0].data[2].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
-              if (this.interestsStatus === "otherAmount") {
-                this.year3 = (x.otherAmount / 1000000).toFixed(2)
-              } else if (this.interestsStatus === "svwAmount") {
-                this.year3 = (x.svwAmount / 1000000).toFixed(2)
-              } else if (this.interestsStatus === "profit") {
-                this.year3 = x.profit
-              }
+              this.profit3 = x.profit
             }
           });
           // 饼图
