@@ -18,7 +18,7 @@ export const tableTitle = [
 ]
 export const addPartTableTitle = [
   { props: 'partNum', name: '零件号', key: 'LINGJIANHAO' },
-  { props: 'fsNum	', name: 'FS号', key: 'FSHAO' },
+  { props: 'fsNum', name: 'FS号', key: 'FSHAO' },
   { props: 'partNameZh', name: '零件名称', key: 'LINGJIANMINGCHEN' },
   { props: 'rfqId', name: 'RFQ号', key: 'RFQHAO' },
 ]

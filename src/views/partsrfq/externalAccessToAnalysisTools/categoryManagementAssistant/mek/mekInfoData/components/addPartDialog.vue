@@ -33,7 +33,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <tableList height="350px" class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleCurrentChange="handleCurrentChange">
+    <tableList height="350px" class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange">
     </tableList>
     <div slot="footer" class="dialog-footer">
       <iButton @click="handleAdd">{{language('TIANJIA','添加')}}</iButton>
@@ -77,7 +77,7 @@ export default {
     this.getTableList()
   },
   methods: {
-    handleCurrentChange(val) {
+    handleSelectionChange(val) {
       this.selectTableData = val
     },
     async handleAdd() {
