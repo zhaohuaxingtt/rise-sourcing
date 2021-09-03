@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-31 18:28:20
+ * @LastEditTime: 2021-09-02 18:49:40
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -308,6 +308,7 @@ export function deleteThousands (number) {
  * @return {*} Boolean
  ********************************************************************************************************************************************/
 import {businessKey} from '@/config/businesskey'
+console.log(businessKey)
 export function businessPermission(currentPermissinKey,currentProjectParmars){
   try {
     if(!currentProjectParmars.businessKey) return false

@@ -7,27 +7,27 @@ export default {
   props: {
     scope: {
       type: Object,
-      required: true
+      required: true,
     },
     column: {
-      type: Object
+      type: Object,
     },
     customRender: {
-      type: Function
+      type: Function,
     },
     extraData: {
       type: Object,
       default: function() {
         return {}
-      }
+      },
     },
     prop: {
-      type: String
+      type: String,
     },
     childNumVisible: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   render(h, context) {
     const { props } = context
@@ -37,38 +37,37 @@ export default {
       column,
       extraData,
       prop,
-      childNumVisible
+      childNumVisible,
     } = props
     if (column.type && column.type === 'expanded') {
       const { uniqueId, expanded, childNum, isLeaf } = scope.row
-      const paddingLeft = (uniqueId.split('-').length - 1) * 20
+      const paddingLeft = uniqueId.split('-').length * 20
       const iconClass = expanded
         ? 'arrow-icon el-icon-caret-top'
         : 'arrow-icon el-icon-caret-bottom'
 
       const showChildNum = childNumVisible && childNum > 0
       return (
-        <div
-          class="cursor-pointer row-expand"
+        <span
+          class='cursor-pointer'
           style={{ paddingLeft: paddingLeft + 'px' }}
-          data-id={uniqueId}
         >
-          {showChildNum && <div class="child-nums">{childNum}</div>}
+          {showChildNum && <div class='child-nums'>{childNum}</div>}
           {customRender
             ? customRender(h, scope, column, extraData)
             : scope.row[prop]}
           {!isLeaf && <i class={iconClass}></i>}
-        </div>
+        </span>
       )
     }
     return (
-      <span class="custom-render">
+      <span class='custom-render'>
         {customRender
           ? customRender(h, scope, column, extraData)
           : scope.row[prop]}
       </span>
     )
-  }
+  },
 }
 </script>
 
@@ -92,7 +91,7 @@ export default {
   display: inline-block;
   width: 20px;
   height: 24px;
-  // background: url(~@/assets/images/file-nums-bg.png) center center no-repeat;
+  background: url(~@/assets/images/file-nums-bg.png) center center no-repeat;
   background-size: contain;
   color: #fff;
   text-align: center;

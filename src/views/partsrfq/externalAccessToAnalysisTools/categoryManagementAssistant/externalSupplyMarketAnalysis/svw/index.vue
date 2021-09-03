@@ -1,7 +1,8 @@
 <template>
-  <iPage>
-    <div id="content">
-      <iCard>
+
+  <div id="content">
+    <iCard>
+      <div :class="{isFixed:isFixeds==true}">
         <div class="head">
           <div class="left">SVW供应商市场总览
             <span>
@@ -10,13 +11,14 @@
             <span>-</span>
             <span>{{categoryName}}</span>
           </div>
-          <div class="right"
-               v-show="savereport">
+          <div class="right">
             <iButton @click="edite=!edite">{{edite?'编辑':'取消'}}</iButton>
             <iButton @click="$router.go(-1)"
                      v-show="edite">返回</iButton>
             <iButton @click="saveMarket"
                      v-show="!edite">保存</iButton>
+            <iButton v-show="edite"
+                     @click="edite=!edite">生成报告</iButton>
           </div>
         </div>
         <!-- tittle -->
@@ -30,22 +32,31 @@
           <div class="module3"><img class="imgStatus"
                  :src="userImg" />供应商主要客户</div>
         </div>
+      </div>
+
+      <div style="overflow:auto;height:620px;padding-right:10px">
         <list v-for="(x,index) of MarketOverviewDTO"
               :key="index"
               :MarketOverviewObj=x
               :index="index+1"
-              :edite="edite"></list>
-      </iCard>
-    </div>
-  </iPage>
+              :edite="edite"
+              @returnObj="getreturnObj"></list>
+      </div>
+    </iCard>
+    <!-- <saveDialog :dialogVisible="dialogVisible"
+                :MarketOverviewDTO="MarketOverviewDTO"
+                @changeVisible="close"></saveDialog> -->
+  </div>
+
 </template>
 
 <script>
 import { iButton, iPage, iCard, iInput, iSelect, iMessage } from 'rise'
 import { marketOverview, saveMarketOverview } from '@/api/partsrfq/svw/index.js'
-import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
+import { downloadPDF, dataURLtoFile } from "@/utils/pdf"
 import { uploadUdFile } from "@/api/file/upload";
 import list from './components/list'
+import saveDialog from './components/saveDialog'
 export default {
   data () {
     return {
@@ -53,11 +64,13 @@ export default {
       statueImg: require('./img/img.png'),
       svwImg: require('./img/note.png'),
       userImg: require('./img/user.png'),
+      dialogVisible: false,
       MarketOverviewDTO: [],
       SchemeId: "",
       categoryCode: "",
       categoryName: "",
-      savereport: true
+      savereport: true,
+      isFixeds: false
     }
   },
   components: {
@@ -66,12 +79,16 @@ export default {
     iCard,
     iInput,
     iSelect,
+    saveDialog,
     list
   },
   created () {
     this.categoryCode = this.$store.state.rfq.categoryCode
     this.categoryName = this.$store.state.rfq.categoryName
     this.getmarketOverview()
+  },
+  mounted () {
+
   },
   watch: {
     '$store.state.rfq.categoryCode': {
@@ -90,57 +107,75 @@ export default {
   methods: {
     getmarketOverview () {
       marketOverview({ categoryCode: this.categoryCode }).then(res => {
-        console.log(res)
-        this.SchemeId = res.data.id
-        this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
+        if (res.data) {
+          this.SchemeId = res.data.id
+          this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
+        }
+
       })
     },
     saveMarket () {
+      // this.dialogVisible = true
       this.edite = true
       this.savereport = false
-      this.categoryCode = this.$store.state.rfq.categoryCode
-      setTimeout(() => {
-        downloadPDF({
-          idEle: "content",
-          pdfName: "SVW供应商市场总览" + this.categoryCode + '-' + this.categoryName,
-          callback: async (pdf, pdfName) => {
-            try {
-              const time = new Date().getTime();
-              const filename = pdfName + time + ".pdf";
-              const pdfFile = pdf.output("datauristring");
-              const blob = dataURLtoFile(pdfFile, filename);
-              uploadUdFile({
-                applicationName: 'sourcing',
-                businessId: Math.ceil(Math.random() * 100000),
-                multifile: blob
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+
+      downloadPDF({
+        idEle: "content",
+        pdfName: "SVW供应商市场总览" + this.categoryCode + '-' + this.categoryName,
+        callback: async (pdf, pdfName) => {
+          try {
+            const time = new Date().getTime();
+            const filename = pdfName + time + ".pdf";
+            const pdfFile = pdf.output("datauristring");
+            const blob = dataURLtoFile(pdfFile, filename);
+            uploadUdFile({
+              applicationName: 'sourcing',
+              businessId: Math.ceil(Math.random() * 100000),
+              multifile: blob
+            }).then(res => {
+              const data = res.data[0]
+              let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
+              let arr2 = data.path.split(arr[0])
+              saveMarketOverview({
+                categoryCode: this.categoryCode,
+                id: this.SchemeId,
+                reportUrl: arr2[1],
+                reportFileName: data.name,
+                marketOverviewSaveDTOList: this.MarketOverviewDTO
               }).then(res => {
-                const data = res.data[0]
-                let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
-                let arr2 = data.path.split(arr[0])
-                saveMarketOverview({
-                  categoryCode: this.categoryCode,
-                  id: this.SchemeId,
-                  reportUrl: arr2[1],
-                  reportFileName: data.name,
-                  marketOverviewSaveDTOList: this.MarketOverviewDTO
-                }).then(res => {
-                  iMessage.success("保存成功");
-                  this.getmarketOverview()
-                  this.savereport = true
-                })
-              });
-            } catch {
-              iMessage.error("保存失败");
-            }
-          },
-        });
-      }, 3000)
-
-
+                loading.close();
+                iMessage.success("保存成功");
+                this.getmarketOverview()
+                this.savereport = true
+                this.clearDialog()
+              })
+            });
+          } catch {
+            loading.close();
+            iMessage.error("保存失败");
+            this.clearDialog()
+          }
+        },
+      });
+      // this.categoryCode = this.$store.state.rfq.categoryCode
+    },
+    getreturnObj (val, index) {
+      console.log(val)
+      this.MarketOverviewDTO[index] = val
+      console.log(this.MarketOverviewDTO)
     },
     changeViewObj (val, index) {
       console.log(val, index)
     },
+    close (val) {
+      this.dialogVisible = val
+    }
 
   }
 }
@@ -201,5 +236,12 @@ export default {
   height: 40px;
   margin-right: 10px;
   display: inline-block;
+}
+.isFixed {
+  position: fixed;
+  width: 100%;
+  background-color: #fff;
+  top: 0;
+  z-index: 999;
 }
 </style>

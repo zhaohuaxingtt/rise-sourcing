@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-08-20 13:54:35
+ * @LastEditTime: 2021-09-02 17:18:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -16,8 +16,15 @@
       <iSearch @reset="handleSearchReset" @sure="handleSearch" :icon="false">
         <el-form label-position="top">
           <el-row class="margin-bottom20">
-            <!--原材料-->
-            <el-form-item :label="language('YUANCAILIAOLEIBIEBIANHAO', '原材料/类别/编号')">
+            <!--类别-->
+            <el-form-item :label="language('LEIBIE', '类别')">
+              <iSelect v-model="searchForm.classType">
+                <el-option value="" label="全部"></el-option>
+                <el-option v-for="(item, index) in rawMaterialTypeData" :value="item.id" :label="item.val"></el-option>
+              </iSelect>
+            </el-form-item>
+            <!--原材料/牌号/规格-->
+            <el-form-item :label="language('YUANCAILIAOPAIHAOGUIGE', '原材料/牌号/规格')">
               <iInput
                 :placeholder="language('QINGSHURU', '请输入')"
                 v-model="searchForm.keyWords"
@@ -25,14 +32,14 @@
             </el-form-item>
             <!--地区-->
             <el-form-item :label="language('DIQU', '地区')">
-              <iInput
-                :placeholder="language('QINGSHURU', '请输入')"
-                v-model="searchForm.areaName"
-              ></iInput>
+              <iSelect v-model="searchForm.areaName">
+                <el-option value="" label="全部"></el-option>
+                <el-option v-for="(item, index) in rawMaterialAreaData" :value="item.id" :label="item.val"></el-option>
+              </iSelect>
             </el-form-item>
             <!--RFQ号-->
             <el-form-item :label="language('QISHINIANYUE', '起始年月')">
-              <iDatePicker v-moudel='searchForm.date' valueFormat="yyyy-MM"  type="daterange"></iDatePicker>
+              <iDatePicker v-model='searchForm.beginTime' valueFormat="yyyy-MM"  type="month"></iDatePicker>
             </el-form-item>
           </el-row>
         </el-form>
@@ -50,7 +57,7 @@
         @openPage="clickPreview"
       >
         <template #ratio="scope">
-          <p :class="getPriceChangeClass(scope.row.ratio)">{{scope.row.ratio >= 0 ? '+' + scope.row.ratio : scope.row.ratio}} %</p>
+          <p :class="getPriceChangeClass(scope.row.ratio)">{{scope.row.ratio ? (scope.row.ratio > 0 ? '+' + scope.row.ratio + '%' : scope.row.ratio + '%') : null}} </p>
         </template>
       </tableList>
       <iPagination
@@ -65,17 +72,17 @@
         :total="page.totalCount"
       />
     </div>
-    <detail :key="detailParam.key" :materiaName="name" v-model="detailParam.visible"/>
+    <detail :key="detailParam.key" :materiaName="name" v-model="detailParam.visible" @handleCloseModal="handleCloseModal"/>
   </div>
 </template>
 
 <script>
-import { iButton, iInput, iSearch, iDatePicker, iPagination, iMessage } from 'rise'
+import { iButton, iInput, iSearch, iDatePicker, iPagination, iMessage, iSelect } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import detail from './components/detail'
 import { pageMixins } from "@/utils/pageMixins";
-import { getRawMateriaList } from '@/api/partsrfq/piAnalysis/index'
+import { getRawMateriaList, fetchRawMaterialType, fetchRawMaterialArea } from '@/api/partsrfq/piAnalysis/index'
 export default {
   mixins: [pageMixins],
   components: {
@@ -84,6 +91,7 @@ export default {
     iSearch,
     iDatePicker,
     iPagination,
+    iSelect,
     tableList,
     detail
   },
@@ -98,11 +106,15 @@ export default {
         key: 0
       },
       name: null,
+      rawMaterialTypeData: [],
+      rawMaterialAreaData: []
     }
   },
   created() {
     // this.initTestData()
     this.getTableData()
+    this.getRawMaterialType()
+    this.getRawMaterialArea()
   },
   methods: {
     // 初始化测试数据
@@ -120,10 +132,10 @@ export default {
     getTableData() {
       return new Promise(resolve => {
         const params = {
-          begTime: this.searchForm.date ? this.searchForm.date[0] : null,
-          endTime: this.searchForm.date ? this.searchForm.date[1] : null,
+          beginTime: this.searchForm.beginTime || null,
           keyWords: this.searchForm.keyWords || null,
           areaName: this.searchForm.areaName || null,
+          classType: this.searchForm.classType || null,
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize,
         }
@@ -140,6 +152,20 @@ export default {
         })
       })
     },
+    // 原材料价格总览——类型下拉数据
+    getRawMaterialType() {
+      fetchRawMaterialType().then(res => {
+        if(res && res.code == 200) this.rawMaterialTypeData = res.data
+        else iMessage.error(res.desZh)
+      })
+    },
+    // 原材料价格总览——地区下拉数据
+    getRawMaterialArea() {
+      fetchRawMaterialArea().then(res => {
+        if(res && res.code == 200) this.rawMaterialAreaData = res.data
+        else iMessage.error(res.desZh)
+      })
+    },
     // 得到价格变动比率样式名
     getPriceChangeClass(val) {
       // const num = val.split('%')[0]
@@ -149,7 +175,6 @@ export default {
     },
     // 点击返回
     clickBack() {
-      // this.$router.go(-1)
       if (this.$store.state.rfq.entryStatus === 1) {
           this.$router.push({
             path: '/sourcing/partsrfq/assistant',
@@ -197,7 +222,11 @@ export default {
       for(const key in this.searchForm) {
         this.searchForm[key] = null
       }
-    }
+    },
+    // 关闭弹窗
+    handleCloseModal() {
+      this.detailParam.visible = false
+    },
   }
 }
 </script>

@@ -27,7 +27,7 @@ export const classType = {
 };
 
 export const baseInfo = [
-  {name: 'FS号', key: 'PI.FSHAO', props: 'fsNum'},
+  {name: 'FS号', key: 'PI.FSHAO', props: 'fsId'},
   {name: '供应商', key: 'PI.GONGYINGSHANG', props: 'supplierName'},
   {name: '车型项目', key: 'PI.CHEXINGXIANGMU', props: 'carTypeProj'},
   {name: '工厂', key: 'PI.GONGCHANG', props: 'procureFactory'},

@@ -2,23 +2,23 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-31 14:45:28
+ * @LastEditTime: 2021-09-03 10:13:14
  * @Description: 产品组排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
 
 <template>
-  <!-------------v-permission="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING"------------------------>
-  <iPage class="projectGroup" >
+  <!-------------v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_PAGE|项目管理-排程助手-产品组排程页面'------------------------>
+  <iPage class="projectGroup"  >
     <!---------------------------------------------------------------------->
     <!----------                  车型项目部分                   ---------------->
     <!---------------------------------------------------------------------->
-    <carProject :carProjectId="carProject" :disabled="isNodeView" @changeSopStatus="changeSopStatus" @handleCarProjectChange="handleCarProjectChange" />
+    <carProject :carProjectId="carProject" :disabled="isNodeView" @changeSopStatus="changeSopStatus" @handleCarProjectChange="handleCarProjectChange" @handleCollapse="handleCollapse" />
     <!---------------------------------------------------------------------->
     <!----------                  产品组区域                  ---------------->
     <!---------------------------------------------------------------------->
-    <iCard class="margin-top20 projectCard">
-      <div class="margin-bottom20 clearFloat">
+    <iCard class="margin-top20 projectCard" :class="{withCollapse:!collapseValue}">
+      <div class="margin-bottom20 searchWrapper">
         <div class="titleSearch">
           <span class="margin-right20 titleSearch-label">{{language('CHANPINZU','产品组')}}</span>
           <div :class="`chooseProGroup ${!proGroup ? 'noPro' : ''} ${isSop || isNodeView ? 'disabled' : ''}`" @click="openChooseProGroup">
@@ -34,8 +34,8 @@
       <div class="projectCard-content">
         
         <proGroupEmpty v-if="!proGroup" />
-        <periodicView ref="periodicView" v-else-if="!isNodeView" @changeNodeView="changeNodeView(true)" :cartypeProId="carProject" :carProjectName="carProjectName" :isSop="isSop" />
-        <nodeView ref="nodeView" v-else @changeNodeView="changeNodeView(false)" :cartypeProId="carProject" />
+        <periodicView ref="periodicView" v-else-if="!isNodeView" :collapseValue="collapseValue" @changeNodeView="changeNodeView(true)" :cartypeProId="carProject" :carProjectName="carProjectName" :isSop="isSop" />
+        <nodeView ref="nodeView" v-else :collapseValue="collapseValue" @changeNodeView="changeNodeView(false)" :cartypeProId="carProject" />
       </div>
     </iCard>
     <!---------------------------------------------------------------------->
@@ -70,7 +70,8 @@ export default {
       isNodeView: false,
       carProject: '',
       carProjectName: '',
-      isSop: false
+      isSop: false,
+      collapseValue: true
     }
   },
   created() {
@@ -83,6 +84,15 @@ export default {
     }
   },
   methods: {
+    /**
+     * @Description: 车型项目部分是否收起
+     * @Author: Luoshuang
+     * @param {*} collapseValue
+     * @return {*}
+     */    
+    handleCollapse(collapseValue) {
+      this.collapseValue = collapseValue
+    },
     /**
      * @Description: 获取选择的产品组列表，若有则渲染更新产品组部分内容
      * @Author: Luoshuang
@@ -269,7 +279,7 @@ export default {
 .projectGroup {
   padding: 0;
   padding-top: 10px;
-  height: auto;
+  height: calc(100% - 55px);
   overflow: auto;
   .titleSearch {
     display: flex;
@@ -285,10 +295,23 @@ export default {
     }
   }
   .projectCard {
+    height: calc(100% - 360px);
+    &.withCollapse {
+      height: calc(100% - 120px);
+      overflow: auto;
+    }
+    .searchWrapper {
+      height: 30px;
+    }
     &-content {
       margin-top: 20px;
-      border-top: 1px dashed #BBC4D6;;
+      border-top: 1px dashed #BBC4D6;
+      height: calc(100% - 50px);
+      overflow: hidden;
     }
+  }
+  ::v-deep .card > div:first-child {
+    height: 100%;
   }
   .chooseProGroup {
     width: 240px;

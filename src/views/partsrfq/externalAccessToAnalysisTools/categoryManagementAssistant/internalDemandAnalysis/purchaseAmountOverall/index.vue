@@ -131,7 +131,7 @@ export default {
         schemeType: 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT'
       }
       const res1 = await getCategoryAnalysis(pms)
-      if (res1.data.categoryCode) {
+      if (res1.data.categoryCode && res1.data.operateLog) {
         this.form = JSON.parse(res1.data.operateLog)
       }
     },
@@ -139,7 +139,7 @@ export default {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: 'allContainer',
-        pdfName: 'purchaseAmountOverall',
+        pdfName: this.language('CAIGOUJINGEZONGLAN', '采购金额总览') + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString()+'-',
       });
       let params = {
         categoryCode: this.form.categoryCode,
@@ -150,6 +150,22 @@ export default {
         reportName: resFile.downloadName,
         schemeName: "",
         reportUrl: resFile.downloadUrl
+      }
+      switch (this.form.page) {
+        case 'ReportSection':
+          params.schemeType = 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT_SUPPLIER'
+          break;
+        case 'ReportSection0e9a44775000348abbed':
+          params.schemeType = 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT_CARTYPE'
+          break;
+        case 'ReportSection99057dcf18326c502965':
+          params.schemeType = 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT_PLATFORM'
+          break;
+        case 'ReportSection54602a61cb108b45223a':
+          params.schemeType = 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT_FACTORY'
+          break;
+        default:
+          break;
       }
       const res = await categoryAnalysis(params)
       this.resultMessage(res);
@@ -171,6 +187,25 @@ export default {
         embedUrl: this.url.embedUrl,
         pageName: "",
         settings: {
+          commands: [
+            {
+              spotlight: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+              drill: {
+                displayOption: pbi.models.CommandDisplayOption.Disabled
+              },
+              exportData: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+              seeData: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+              includeExclude: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+            }
+          ],
           panes: {
             filters: {
               visible: false

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: 舒杰
- * @LastEditTime: 2021-08-16 16:18:17
+ * @LastEditTime: 2021-09-02 09:07:13
  * @Description: 
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\sop\overviewTable.vue
 -->
@@ -26,13 +26,13 @@
             <span>{{dataItem.cartypeProjectZh}}</span>
           </div>
           <div class="baiscInfo-bottom">
-            <ol clasdivs="baiscInfo-bottom-column">
+            <!-- <ol clasdivs="baiscInfo-bottom-column">
               <li><div>{{dataItem.carPlatformCode}}</div></li>
               <li><div>{{dataItem.brandName}}</div></li>
               <li><div>{{dataItem.carTypeLevel}} class</div></li>
-            </ol>
+            </ol> -->
             <ol class="baiscInfo-bottom-column">
-              <li><div>{{dataItem.factoryName}}</div></li>
+              <li><div>MQB:{{dataItem.carPlatformCode}}</div></li>
               <li><div>SOP:{{dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk}}</div></li>
               <li><div>KPE:{{dataItem.kpe}}<icon symbol name="iconbianji"  class="margin-left10 cursor"></icon></div></li>
             </ol>
@@ -84,6 +84,19 @@
               <span class="node-week"></span>
             </div>
           </div>
+        </div>
+        <!-- 产量 -->
+        <div class="outPut" v-if="item.props === 'output'">
+          <p>生命周期产量：{{dataItem.output}}</p>
+          <p>平均产量：{{dataItem.outputAvg}}</p>
+          <p>峰值产量：{{dataItem.outputPeak}}</p>
+          <!-- <div class="icon">
+            <icon symbol name="iconxinxitishi"  class="cursor"/>
+            <ol class="carTypeProOutput">
+              <li v-for="put in dataItem.carTypeProOutput1" :key="put.years">{{put.years}}：{{put.output}}</li>
+              <li v-for="put in dataItem.carTypeProOutput2" :key="put.years">{{put.years}}：{{put.output}}</li>
+            </ol>
+          </div> -->
         </div>
         <!---------------------------------------------------------------------->
         <!----------                  常规列                     ---------------->
@@ -290,7 +303,7 @@ export default {
     min-height: 400px;
     &:first-child {
       width: auto;
-      min-width: 264px;
+      min-width: 204px;
     }
     &:nth-child(2),&:nth-child(3),&:nth-child(4),&:nth-child(5) {
       width: auto;
@@ -461,6 +474,40 @@ export default {
     justify-content: center;
     position: absolute;
     color: #707070;
+  }
+}
+.outPut{
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  >p{
+    margin-top: 14px;
+  }
+  .icon{
+    position: absolute;
+    right: -5px;
+    top: 30px;
+    font-size: 14px;
+    .carTypeProOutput{
+      width: 200px;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      left: 110%;
+      top: 50%;
+      background:#ffffff;
+      box-shadow: 0px 3px 10px rgba(27, 29, 33, 0.16);
+      padding:5px;
+      border-radius: 5px;
+      li{
+        margin-right: 5px;
+      }
+    }
   }
 }
 </style>

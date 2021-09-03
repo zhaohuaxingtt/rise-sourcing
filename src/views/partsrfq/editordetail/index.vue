@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-08-31 18:23:57
+ * @LastEditTime: 2021-09-02 15:05:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
 -->
 <template>
-  <iPage v-permission="PARTSRFQ_EDITORDETAIL_INDEXPAGE">
+  <iPage>
     <!-- rfq详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
@@ -151,7 +151,7 @@ import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
 import newRfqRound from './components/newRfqRound'
 import rfqDetailTpzs from './components/rfqDetailTpzs'
-import {getRfqDataList, editRfqData, addRfq} from "@/api/partsrfq/home";
+import {getRfqDataList, addRfq, modification, updateRfqInfo, pageRfqRound, getRfqList} from "@/api/partsrfq/home";
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {navList} from './components/data'
@@ -249,16 +249,14 @@ export default {
       if (query.id) {
         this.baseInfoLoading = true
         const req = {
-          rfqMangerInfosPackage: {
             userId: store.state.permission.userInfo.id,
             rfqId: query.id
-          }
         }
         try {
-          const res = await getRfqDataList(req)
-          const resList = res.data.getRfqInfoVO.rfqVOList
+          const res = await getRfqList(req)
+          const resList = res.data
           if (resList.length > 0) {
-            this.baseInfo = res.data.getRfqInfoVO.rfqVOList[0]
+            this.baseInfo = res.data[0]
           } else {
             this.baseInfo = ''
           }
@@ -291,13 +289,11 @@ export default {
       const query = this.$route.query
       this.rfqloading = true
       const req = {
-        updateRfqStatusPackage: {
           updateType,
           tmRfqIdList: [query.id],
           userId: store.state.permission.userInfo.id
-        }
       }
-      const res = await editRfqData(req)
+      const res = await modification(req)
       this.resultMessage(res)
       this.getBaseInfo()
       this.rfqloading = false
@@ -325,21 +321,16 @@ export default {
       }
       if (query.id) {
         const req = {
-          updateRfqInfoPackage: {
             rfqId: query.id,
             ...params
-          }
         }
-        const res = await editRfqData(req)
+        const res = await updateRfqInfo(req)
         this.resultMessage(res)
         this.getBaseInfo()
       } else {
         const req = {
-          insertRfqPackage: {
             userName: store.state.permission.userInfo.userName,
-            operationType: '2',
             ...params
-          }
         }
         const res = await addRfq(req)
         this.resultMessage(res)
@@ -363,17 +354,15 @@ export default {
       const id = this.$route.query.id
       if (id) {
         const req = {
-          otherInfoPackage: {
             findType: '10',
             rfqId: id,
             current: 1,
             size: 10,
-          }
         }
         try {
-          const res = await getRfqDataList(req)
+          const res = await pageRfqRound(req)
           this.newRfqRoundDialogRes = res;
-          this.newRfqRoundList = res.data.rfqRoundBdlVO.rfqBdlVOList;
+          this.newRfqRoundList = res.data;
         } catch {
           this.newRfqOpenValidateLoading = false
         }

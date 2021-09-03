@@ -2,14 +2,16 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:02
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-08-30 15:53:08
+ * @LastEditTime: 2021-09-03 15:00:46
  * @Description: 排程版本查询
  * @FilePath: \front-web\src\views\project\schedulingassistant\scheduleVersion\index.vue
 -->
 
 <template>
   <div class="scheduleVersion">
+    <!-- v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION|排程版本查询" -->
     <search @search="handSearch" ref="searchForm" />
+    <!-- v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_TABLE|排程版本表格" -->
     <iCard class="margin-top20">
       <tableList indexKey :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange">
         <template #versionName="scope">
@@ -86,7 +88,11 @@ export default {
       }).then(res => {
         this.tableLoading = false
         if (res.code === '200') {
-          this.tableData = res.data || []
+          const tableData = res.data || []
+          this.tableData = tableData.map(o => {
+            o.createDate = o.createDate ? window.moment(o.createDate).format('YYYY-MM-DD HH:mm:ss') : ''
+            return o
+          })
           this.page.totalCount = res.total
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

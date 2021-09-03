@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-23 17:12:56
+ * @LastEditTime: 2021-09-01 10:14:57
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -48,7 +48,7 @@ export default {
       }
     },
     gotoDBhistory() {
-      const router =  this.$router.resolve({path: `/projectscheassistant/historyprocessdb`})
+      const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`})
       window.open(router.href,'_blank')
     }
   }

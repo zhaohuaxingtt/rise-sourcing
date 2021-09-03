@@ -300,8 +300,8 @@ module.exports = {
       },
       '/usercenterApi': {
         // usercenter.../唐开雄
-        // target: 'http://10.122.18.166:8015',
-        target: 'http://10.122.17.38:8015',
+        target: 'http://10.122.18.166:8015',
+        //target: 'http://10.122.17.38:8015',
         // target:'http://10.160.137.165:8015',
         changeOrigin: true,
         pathRewrite: {
@@ -365,9 +365,9 @@ module.exports = {
         },
       },
       '/aonApi': {
-        //  target: 'http://10.122.18.166:8036',
+        target: 'http://10.122.18.166:8036',
         // target: 'http://10.160.136.23:8036',
-        target: 'http://10.122.17.38:8036',
+        // target: 'http://10.122.17.38:8036',
         changeOrigin: true,
         pathRewrite: {
           '^/aonApi': '',
@@ -448,6 +448,26 @@ module.exports = {
           '^/fileud':''
         }
       },
+      '/changepriceApi': {
+        // 采购订单
+        target: 'http://192.168.50.112:8026/',
+        //target: 'http://10.122.18.166:8026',
+        changeOrigin: true,
+        logLevel: 'debug',
+        pathRewrite: {
+          '^/changepriceApi': ''
+        }
+      },
+      '/supplierApplication': {
+        // 蒋林明供应商接口
+        target: 'http://10.122.18.166:8010',
+        changeOrigin: true,
+        logLevel: 'debug',
+        pathRewrite: {
+          '^/supplierApplication': ''
+        }
+      },
     },
+
   },
 }

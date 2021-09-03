@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-31 16:40:02
+ * @LastEditTime: 2021-09-03 11:02:12
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -14,12 +14,26 @@
         <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>
       </div>
-      <div v-if="!isSop">
+      <div v-if="!isSop && parts.length > 0">
         <logicSettingBtn ref="logicSettingBtn" class="margin-right10" logicType="2" :carProject="cartypeProId" @handleUse="updatePartGroupConfig" :logicList="partLogicList" />
         <iButton @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
-        <iButton @click="$emit('changeNodeView')">{{language('SHENGCHENGPAICHENGBANBEN', '生成排程版本')}}</iButton>
+        <iButton :loading="versionLoading" @click="handleSecheduleVersion">{{language('SHENGCHENGPAICHENGBANBEN', '生成排程版本')}}</iButton>
         <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
-        <iButton @click="handleDownloadPvPk" :loading="downloadLoading">{{language('DAOCHUPAICHENGQINGDAN', '导出排程清单')}}</iButton>
+        <el-popover
+          placement="bottom"
+          width="156"
+          trigger="click"
+          @show="changeShowDownloadContent(true)"
+          @hide="changeShowDownloadContent(false)">
+          <div class="partListView-downloadContent">
+            <div class="cursor" v-for="item in downloadTypeList" :key="item.key" @click="handleDownload(item)">{{language(item.key, item.label)}}</div>
+          </div>
+          <iButton class="margin-left10" slot="reference" :loading="downloadLoading">
+            {{language('DAOCHUPAICHENGQINGDAN', '导出排程清单')}}
+            <icon class="margin-left16" v-if="!showDownloadContent" symbol name="icona-Icon-ArrowDropDown"></icon>
+            <icon class="margin-left16" v-else symbol name="icona-Icon-Arrowshouqi"></icon>
+          </iButton>
+        </el-popover>
       </div>
     </div>
     <div class="partListView-content">
@@ -93,7 +107,7 @@
 
 <script>
 import { iButton, icon, iText, iMessage } from 'rise'
-import { getPartSchedule, partProgressConfirm, updatePartSchedule, getAllFS, getFsUserList, getPartGroupConfig, updatePartGroupConfig, validSchedule } from '@/api/project'
+import { getPartSchedule, getFsUserListPart, exportPartSchedule, partProgressConfirm, updatePartSchedule, getAllFS, addScheduleVersion, getPartGroupConfig, updatePartGroupConfig, validSchedule } from '@/api/project'
 import logicSettingBtn from '@/views/project/components/logicSettingBtn'
 import moment from 'moment'
 import { partLogicList } from '../data'
@@ -135,6 +149,14 @@ export default {
       logicVisible: false,
       option: [],
       selectOptions: {},
+      versionLoading: false,
+      showDownloadContent: false,
+      downloadTypeList: [
+        {label: '风险预警零件', key: 'FENGXIANYUJINGLINGJIAN', type: 1},
+        {label: '未释放零件', key: 'WEISHIFANGLINGJIAN', type: 3},
+        {label: '未BF零件', key: 'WEIBFLINGJIAN', type: 2}
+      ],
+      downloadLoading: false
     }
   },
   mounted() {
@@ -144,6 +166,55 @@ export default {
     this.getFSOPtions()
   },
   methods: {
+    async handleDownload(item) {
+      // item.type 导出类型 1-风险预警 2-未BF 3-未释放
+      const partScheduleInfoVOList = this.partsTemp.filter(pItem => {
+        if (item.type == 1) {
+          const targetList = [pItem.pvsTarget, pItem.vffTarget, pItem.zerosTarget]
+          return !targetList.some(item => item == 3) && targetList.some(item => item == 2)
+        }
+        if (item.type == 2) {
+          return pItem.partPeriod == 4
+        }
+        if (item.type == 3) {
+          return pItem.partPeriod == 1
+        }
+      })
+      const params = {
+        cartypeProId: this.cartypeProId,
+        partScheduleInfoVOList: partScheduleInfoVOList,
+        type: item.type
+      }
+      this.downloadLoading = true
+      await exportPartSchedule(params)
+      this.downloadLoading = false
+    },
+    changeShowDownloadContent(isShow) {
+      this.showDownloadContent = isShow
+    },
+    /**
+     * @Description: 生成排程版本
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleSecheduleVersion() {
+      this.versionLoading = true
+      const params = {
+        cartypeProId: this.cartypeProId,
+        source: 4,
+        type: 2
+      }
+      addScheduleVersion(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.versionLoading = false
+      })
+    },
     async gotoDBhistory(part) {
       this.loading = true
       try {
@@ -151,8 +222,8 @@ export default {
         this.loading = false
         if (res?.result) {
           // console.log(this.cartypeProId)
-          const router = this.$router.resolve({ path: `/projectscheassistant/historyprocessdb`, query: { ...res.data, cartypeProId: this.cartypeProId, sixPartCode: part.partNum.slice(3, 9), level: '2' } })
-          window.open(router.href, '_blank')
+          const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId, sixPartCode:part.partNum.slice(3,9), level: '2', categoryType: res.data.category}})
+          window.open(router.href,'_blank')
         } else {
           iMessage.warn('HUOQUSUANFAPEIZHISHIBAI', '获取算法配置失败')
         }
@@ -163,9 +234,13 @@ export default {
     handleSendFsConfirm(selectRow) {
       partProgressConfirm(selectRow).then(res => {
         if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.changeFsConfirmVisible(false)
-          this.getPartList(this.cartypeProId)
+          if (res.data && res.data.length > 1) {
+            iMessage.warn(res.data.map(item => item.partName).join(',')+'不符合发送条件，无法发送')
+          } else {
+            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+            this.changeFsConfirmVisible(false)
+            this.getPartList(this.cartypeProId)
+          }
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -261,13 +336,20 @@ export default {
         const tableListNomi = []
         const tableListKickoff = []
         selectRows.forEach((item) => {
-          const options = fsOptions ? fsOptions[item.productGroupId]?.map(item => {
-            return {
-              ...item,
-              value: item.userId,
-              label: item.userName
+          const fs = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userName || ''
+          const fsId = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userId || ''
+          const options = fsOptions ? fsOptions[item.productGroupId]?.reduce((accu, item) => {
+            if (item.userId) {
+              return [...accu, {
+                ...item,
+                value: item.userId,
+                label: item.userName
+              }]
+            } else {
+              return accu
             }
-          }) : []
+          },[]) : []
+          const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget]
           const tableItem = {
             ...item,
             cartypeProject: this.carProjectName,
@@ -277,10 +359,10 @@ export default {
             projectPurchaser: this.$store.state.permission.userInfo.nameZh,
             projectPurchaserId: this.$store.state.permission.userInfo.id,
             selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
-            fs: options && options[0] ? options[0].label : '',
-            fsId: options && options[0] ? options[0].value : '',
-            delayWeek: item.expectImpactWeek,
-            isBmg: item.bmgFlag,
+            fs,
+            fsId,
+            delayWeek: item.expectImpactWeek || 10,
+            isBmg: item.bmgFlag || '否',
             scheNomiTimeKw: item.nomiTimeKw,
             scheKickoffTimeKw: item.kickoffTimeKw,
             scheFirstTryoutTimeKw: item.firstTryoutTimeKw,
@@ -531,7 +613,9 @@ export default {
           // eslint-disable-next-line no-undef
           this.parts = _.cloneDeep(res.data || [])
           // eslint-disable-next-line no-undef
-          this.partsTemp = _.cloneDeep(res.data || [])
+          this.partsTemp = _.cloneDeep(partList)
+          this.checkAll = false
+          this.isIndeterminate = false
         } else {
           this.parts = []
           this.partsTemp = []
@@ -750,6 +834,20 @@ export default {
     font-size: 18px;
     font-weight: bold;
     color: #41434a;
+  }
+}
+</style>
+
+<style lang="scss">
+.el-popover .partListView-downloadContent {
+  padding: 0 0 8px;
+  div {
+    font-size: 14px;
+    color: #55575A;
+    padding: 10px 20px;
+  }
+  div + div {
+    border-top: 1px solid rgba(112, 112, 112, .1);
   }
 }
 </style>

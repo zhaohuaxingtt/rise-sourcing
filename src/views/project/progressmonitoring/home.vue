@@ -2,19 +2,25 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-08-31 16:13:57
+ * @LastEditTime: 2021-09-03 10:31:33
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\index.vue
 -->
 <template>
   <div class="projectoverview">
+    <!-- v-permission.auto="PROJECTMGT_PROGRESSMONITORING_PAGE|项目进度监控页面" -->
     <!---------------------------------------------------------------------->
     <!----------                  车型项目部分                ---------------->
     <!---------------------------------------------------------------------->
-    <carProject :carProjectId="carProject" @handleCarProjectChange="handleCarProjectChange" />
+    <carProject
+      :carProjectId="carProject"
+      @handleCarProjectChange="handleCarProjectChange"
+     />
+     <!-- v-permission.auto="PROJECTMGT_PROGRESSMONITORING_CARTYPESCARD|车型项目板块" -->
     <!---------------------------------------------------------------------->
     <!----------                  车型状态                   ---------------->
     <!---------------------------------------------------------------------->
+    <!-- v-permission.auto="PROJECTMGT_PROGRESSMONITORING_CARTYPESTATUS|车型状态" -->
     <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ language("CHEXINGZHUANGTAI",'车型状态')}}</span>
@@ -24,6 +30,7 @@
           <span class="time">{{updateTime}}</span>
         </span>
         <div class="floatright">
+          <!-- v-permission.auto="PROJECTMGT_PROGRESSMONITORING_TIPS|TIPS表" -->
           <span class="switch">
             TIPS表
             <el-switch v-model="showTips" width="35" disabled></el-switch>
@@ -32,6 +39,7 @@
         </div>
       </div>
       <!-- 图表区 -->
+      <!-- v-permission.auto="PROJECTMGT_PROGRESSMONITORING_CHART|进度监控图表" -->
       <div class="diagram" v-loading="loading">
         <el-row gutter="20" v-if="carProject">
           <el-col span="3" v-for="(item, index) in data" :key="index">
@@ -43,7 +51,7 @@
         </el-row>
         <carEmpty v-else />
       </div>
-
+      <!-- v-permission.auto="PROJECTMGT_PROGRESSMONITORING_COUNTTIPS|统计信息" -->
       <div class="countView">
          <iFormGroup row="4" class="form">
             <iFormItem>

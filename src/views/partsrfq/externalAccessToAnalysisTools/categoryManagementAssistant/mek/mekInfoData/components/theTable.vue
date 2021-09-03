@@ -11,14 +11,14 @@
       <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="5">
           <el-form-item :label="language('CAILIAOZU','材料组')">
-            <iSelect @change="getTableList" :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
+            <iSelect filterable @change="getTableList" :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
               <el-option :value="item.categoryCode" :label="item.categoryName" v-for="item of formGoup.materialGroupList" :key="item.categoryCode"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
         <el-col :span="5">
           <el-form-item :label="language('CHEXING','车型')">
-            <iSelect @change="getTableList" :placeholder="language('QXZCX','请选择车型')" v-model="form.motorId">
+            <iSelect filterable @change="getTableList" :placeholder="language('QXZCX','请选择车型')" v-model="form.motorId">
               <el-option :value="item.vwModelCode" :label="item.modelNameZh" v-for="item of formGoup.carTypeList" :key="item.vwModelCode"></el-option>
             </iSelect>
           </el-form-item>
@@ -159,7 +159,7 @@ import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 import { tableTitle } from "./data.js";
-import { mekInfoList, infoUpdate, getCarTypeMessage, categoryList, carTypeList, infoDelete } from "@/api/partsrfq/mek/index.js";
+import { getName, mekInfoList, infoUpdate, getCarTypeMessage, categoryList, carTypeList, infoDelete } from "@/api/partsrfq/mek/index.js";
 import { excelExport } from "@/utils/filedowLoad";
 export default {
   // import引入的组件需要注入到对象中才能使用
@@ -234,10 +234,15 @@ export default {
     async getCarTypeMessage(val) {
       this.formGoup.carTypeInfoList = []
       this.carTypeInfoLoading = true
-      const res = await getCarTypeMessage({ motorS: val })
+      const res = await getCarTypeMessage({ motorSvwCode: val })
       res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
       this.formGoup.carTypeInfoList = res.data
       this.carTypeInfoLoading = false
+    },
+    handleAdded() {
+      this.page.currPage = 1
+      this.page.pageSize = 10
+      this.getTableList()
     },
     // 获取列表集合
     async getTableList() {
@@ -264,6 +269,7 @@ export default {
     },
     // 导出
     async handleExport() {
+
       const res = await mekInfoList({
         pageNo: 1,
         pageSize: this.page.totalCount,
@@ -284,7 +290,8 @@ export default {
         carInfo: this.language('PEIZHIXINGXI', '配置信息') + '        ' + 'EBR',
         priceInfo: this.language('SOPXINGXI', 'SOP信息') + '         ' + this.language('DANGQIANJIAGE', '当前价格')
       })
-      excelExport(excelList, this.tableTitle)
+      const fileName = await getName(this.$route.query.chemeId)
+      await excelExport(excelList, this.tableTitle, fileName.data)
     },
     // 保存
     async handleSave() {

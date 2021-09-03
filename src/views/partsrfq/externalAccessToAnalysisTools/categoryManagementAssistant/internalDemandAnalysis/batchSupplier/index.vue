@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-08-25 16:23:03
+ * @LastEditTime: 2021-09-01 20:51:24
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
@@ -17,6 +17,7 @@
                </el-tooltip>
             </div>
             <div class="flex">
+               <iButton @click="onJump360">{{ language("GONGYINGSHANG360", "供应商360") }}</iButton>
                <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
                <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
                <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
@@ -30,7 +31,7 @@
    </iCard>
 </template>
 <script>
-import {iCard,iButton} from "rise";
+import {iCard,iButton,iMessage} from "rise";
 import {getCmSupplierPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/batchSupplier";
 import * as pbi from 'powerbi-client';
 import {getCategoryAnalysis,categoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
@@ -134,13 +135,19 @@ export default {
             reportUrl: resFile.downloadUrl
          }
          categoryAnalysis(params).then(res=>{
-            
+            if(res.code=='200'){
+               iMessage.success(this.language('BAOCUNCHENGGONG','保存成功'))
+            }
          })
       },
       // 打开保存弹窗
       openMark(){
          this.markShow=true
          this.$refs.marks.getMarkdefalut(this.mark)
+      },
+      // 供应商360
+      onJump360(){
+         window.open('http://10.122.17.38/portal/#/supplier/supplierList')
       },
       // 获取财报iframeurl
       getPowerBiUrl() {

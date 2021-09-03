@@ -18,7 +18,7 @@
               v-for="(item,index) in SearchList" 
               :key="'SearchList_aeko'+index" 
               :label="language(item.labelKey,item.label)"
-              v-permission.dynamic="item.permissionKey"
+              v-permission.dynamic.auto="item.permissionKey"
               >
               <template  v-if="item.type === 'select'" >
                   <aeko-select 
@@ -60,10 +60,10 @@
       <iCard class="contain margin-top20" :title="language('LK_AEKOGUANLI','AEKO管理')">
       <!-- 按钮区域 -->
       <template v-slot:header-control>
-          <iButton v-permission="AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO">{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton>
-          <iButton v-permission="AEKO_MANAGELIST_BUTTON_HUIYITONGGUO">{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
-          <iButton v-permission="AEKO_MANAGELIST_BUTTON_XIAZAIMUBAN" @click="downloadTemplate">{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
-          <span v-permission="AEKO_MANAGELIST_BUTTON_DAORUAEKO" class=" margin-left10 margin-right10">
+          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO|逾期BI报表">{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton>
+          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_HUIYITONGGUO|会议通过">{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
+          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_XIAZAIMUBAN|下载模板" @click="downloadTemplate">{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
+          <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUAEKO|导入AEKO" class=" margin-left10 margin-right10">
             <Upload 
                 hideTip
                 :buttonText="language('LK_DAORUAEKO','导⼊AEKO')"
@@ -72,10 +72,10 @@
                 :accept="'.xlsx,.xls'"
             />
           </span>
-          <iButton v-permission="AEKO_MANAGELIST_BUTTON_SHANCHUAEKO" :loading="btnLoading.deleteItem" @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
-          <iButton v-permission="AEKO_MANAGELIST_BUTTON_CHEXIAOAEKO" @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
+          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_SHANCHUAEKO|删除AEKO" :loading="btnLoading.deleteItem" @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
+          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_CHEXIAOAEKO|撤销AEKO" @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
           
-          <span v-permission="AEKO_MANAGELIST_BUTTON_DAORUFUJIAN" class=" margin-left10 margin-right10">
+          <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUFUJIAN|上传文件" class=" margin-left10 margin-right10">
             <Upload 
                 hideTip
                 style="display:none;"
@@ -87,7 +87,7 @@
             />
             <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
-          <iButton v-permission="AEKO_MANAGELIST_BUTTON_DAOCHU" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
+          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
 
           <!-- 暂时添加的按钮 -->
           <template v-if="isAekoManager">
@@ -96,7 +96,7 @@
           </template>
       </template>
       <!-- 表单区域 -->
-      <div v-permission="AEKO_MANAGELIST_TABLE">
+      <div v-permission.auto="AEKO_MANAGELIST_TABLE|AEKO管理TABLE">
         <tableList
           class="table"
           index
@@ -715,6 +715,7 @@ export default {
           this.btnLoading.tcm = false;
           if(res.code == 200) {
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getList();
           }
         }).catch((err)=>{
           this.btnLoading.tcm = false;
@@ -728,6 +729,7 @@ export default {
           this.btnLoading.tcmFiles = false;
           if(res.code == 200) {
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getList();
           }
         }).catch((err)=>{
           this.btnLoading.tcmFiles = false;

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-20 15:10:51
+ * @LastEditTime: 2021-08-30 17:28:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -101,7 +101,6 @@ export default {
     getTableData() {
       this.loading = true
       const params = {
-        userId: 52,
         partsId: this.searchForm.partNo || null,
         rfqId: this.searchForm.rfq || null
       }

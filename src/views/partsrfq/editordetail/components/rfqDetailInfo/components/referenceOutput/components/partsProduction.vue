@@ -43,7 +43,7 @@ import {iCard, iButton, iPagination, iMessage} from 'rise';
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {partsProductionTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getRfqDataList} from "@/api/partsrfq/home";
+import {outputpPageByRfqId} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import {serialize} from '@/utils'
 import {partProjTypes} from '@/config'
@@ -73,16 +73,14 @@ export default {
       if (id) {
         this.tableLoading = true;
         const req = {
-          otherInfoPackage: {
             findType: '05',
             rfqId: id,
             current: this.page.currPage,
             size: this.page.pageSize,
-          }
         }
         try {
-          const res = await getRfqDataList(req)
-          this.tableListData = res.data.partOutputPlanVO.partOutputPlanVOList;
+          const res = await outputpPageByRfqId(req)
+          this.tableListData = res.data;
           if (this.tableListData.length !== 0) {
             const yearTitle = this.tableListData[0].outputPlanList.map(item => {
               return {
@@ -102,9 +100,9 @@ export default {
               return item
             })
           }
-          this.page.currPage = res.data.partOutputPlanVO.pageNum
-          this.page.pageSize = res.data.partOutputPlanVO.pageSize
-          this.page.totalCount = res.data.partOutputPlanVO.total
+          this.page.currPage = res.data.pageNum
+          this.page.pageSize = res.data.pageSize
+          this.page.totalCount = res.data.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;

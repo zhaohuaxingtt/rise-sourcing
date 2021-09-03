@@ -1461,7 +1461,83 @@
         },
         'MEK':{
             'QIEHUANCAILIAOZU':"切换材料组"
-        }
+        },
+        'MODEL-ORDER':{
+            'LK_RISEDINGDANHAO': 'RiSE订单号', // RiSE订单号
+            'LK_SAPDINGDANHAO': 'SAP订单号', // SAP订单号
+            'LK_GONGYINSHANG': '供应商', //供应商
+            'LK_CAIGOUGONGCHANG': '采购工厂', //采购工厂
+            'LK_LINGJIANHAO': '零件号', //零件号
+            'LK_CAIGOUZU': '采购组', //采购组
+            'LK_CAIGOUYUAN': '采购员', //采购员
+            'LK_DINGDANZHUANGTAI': '订单状态',
+            'LK_SAPFASONGZHUANGTAI': 'SAP发送状态', //SAP发送状态
+            'LK_HETONGZHUANGTAI': '合同状态', //合同状态
+            'LK_JINKANZIJI':'仅看自己',//仅看自己
+            'LK_XINJIAN': '新建', //新建
+            'LK_SHANCHU': '删除', //删除
+            'LK_ZHUANPAI': '转派', //转派
+            'LK_CHUANGJIANRUZHANGDAN':'创建入账单',//创建入账单
+            'LK_BAOXIAOSHENQING':'报销申请',//报销申请
+            'LK_DAOCHU': '导出', //导出
+            'LK_QUANBUSHOUQI': '全部收起', //全部收起
+            'LK_QUANBUZHANKAI': '全部展开', //全部展开
+            'LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN': '距离有效起始日期还有{day}天', //距离有效起始日期还有*天
+            'LK_CAIGOUZUCAIGOUYUAN': '采购组-采购员', //采购组-采购员
+            'LK_DINGDANRIQI': '订单日期',
+            'LK_DINGDAN': '订单',
+            'LK_HETONG': '合同', //合同
+            'LK_QINGKONG': '清空', //清空
+            'LK_BANBENSHNGJI': '版本升级', // 版本升级
+            'LK_DINGDANLEIXING': '订单类型',
+            'LK_QINGSHURUGONGYINGSHANGBIANMA': '请输入供应商编码',
+            'LK_QINGSHURUCAIGOUZU': '请输入采购组',
+            'LK_QINGXUANZECAIGOUGONGCHANG': '请选择采购工厂',
+            'LK_SUOSHUBUMEN': '所属部门', //所属部门
+            'LK_BANBEN': '版本', //版本
+            'LK_GONGSHIDAIMA': '公司代码', //公司代码
+            'LK_CAIGOUZUZHI': '采购组织', //采购组织
+            'LK_FUKUANTIAOJIAN': '付款条件', //付款条件
+            'LK_CANZHAOCAIGOUSHENQING': '参照采购申请',
+            'LK_SHANCHUXIANGCI': '删除项次', //删除项次
+            'LK_HUIFUXIANGCI': '恢复项次', //恢复项次
+            'LK_DUQUJIAGE': '读取价格', //读取价格
+            'LK_MIAOSHU': '描述', //描述
+             'LI_MOJUTAIZHANG':'模具台账',//模具台账
+            'LK_JIAGE':'价格',//价格
+            'LK_GR/IR': 'GR/IR', //GR/IR
+            'LK_KUCUNDIDIAN': '库存地点', //库存地点
+            'LK_YUANGUZIBIANHAO':'原固资编号',//原固资编号
+            'LK_FASONGSAP': '发送SAP', //发送SAP
+            'LK_ZHUANYECAIGOUYUAN': '专业采购员', //专业采购员
+            'LK_BUMEN': '部⻔', //部⻔
+            'LK_SAPBIANHAO': ' SAP编号', // SAP编号
+            'LK_QIWANGGONGYINGSHANG': '期望供应商', // 期望供应商
+            'LK_CAIGOUSHENQINGLEIXING': '采购申请类型', // 采购申请类型
+            'LK_YUPILIANGCAIGOUSHENQING': '预批量采购申请', // 预批量采购申请
+            'LK_BIAOZHUNCAIGOUSHENQING': '标准采购申请', // 标准采购申请
+            'LK_GONGXUWEIWAI': '工序委外',
+            'LK_MOJUCAIGOUSHENQING':'模具采购申请',//模具采购申请
+            'LK_RISEBIANHAO': 'RiSE编号', // RiSE编号
+            'LK_XUQIUGENZONGHAO': '需求跟踪号', // 需求跟踪号
+            'LK_XIANGCI': '项次', //项次
+            'LK_LINGJIANMINGCENG': '零件名称', //零件名称
+            'LK_SHENQINGSHIJIAN': '生成时间', // 生成时间
+            'LK_WULIAOZU': '物料组', //物料组
+            'LK_WBSYUANSU': 'WBS元素', // WBS元素
+            'LK_LAIYUANRISEBIANHAO': '来源RiSE编号',
+            'LK_LAIYUANXIANGCI': '来源项次',
+            'LK_RISEXIEYIHAO': 'RiSE协议号', //RISE协议号
+            'LK_SAPXIEYIHAO': 'SAP协议号', //SAP协议号
+            'LK_GUOZHANGQIZHIRIQI': '过账起止日期', //过账起止日期
+            'LK_ZHI': '至', //至
+            'LK_LEIXING': '类型', //类型
+            'LK_WULIAOPINGZHENG': '物料凭证', //物料凭证
+            'LK_XIANGMU': '项目', //项目
+            'LK_GUOZHANGRIQI': '过账日期', //过账日期
+            'LK_JINE': '金额', //金额
+
+        },
     }
     var xmlHttp = ''
     if(window.XMLHttpRequest){

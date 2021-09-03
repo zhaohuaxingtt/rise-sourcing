@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:55:36
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-30 16:06:53
+ * @LastEditTime: 2021-09-01 16:26:06
  * @Description: 零件
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\part\index.vue
 -->
@@ -52,6 +52,7 @@
       partPeriod="3"
       :searchParams="searchParams"
     />
+    <fsConfirm ref="fsConfirmPart" :dialogVisible="dialogVisibleFS" @handleConfirm="handleSendFsConfirm" :tableListNomi="tableListNomi" :tableListKickoff="tableListKickoff" :cartypeProId="cartypeProId" @changeVisible="changeFsConfirmVisible" />
   </div>
 </template>
 
@@ -63,8 +64,9 @@ import fsSelect from '@/views/project/components/commonSelect/fsSelect'
 import productPurchaserSelect from '@/views/project/components/commonSelect/productPurchaserSelect'
 import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect'
 import iDicoptions from 'rise/web/components/iDicoptions'
+import fsConfirm from '@/views/project/schedulingassistant/part/components/fsconfirm'
 export default {
-  components: { confirmTable, iSearch, iInput, iButton, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions },
+  components: { fsConfirm, confirmTable, iSearch, iInput, iButton, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions },
   data() {
     return {
       tableTitleNomi,
@@ -87,7 +89,7 @@ export default {
   methods: {
     initSearchParams() {
       this.searchParams = {
-        confirmStatus: 'TO_BE_CONFIRMED',
+        confirmStatus: '2',
         cartypeProId: this.$route.query.cartypeProId || '',
         partNum: this.$route.query.partNum || '',
         fsId: '',
