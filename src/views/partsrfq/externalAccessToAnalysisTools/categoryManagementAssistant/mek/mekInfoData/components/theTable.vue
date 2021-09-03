@@ -234,7 +234,7 @@ export default {
     async getCarTypeMessage(val) {
       this.formGoup.carTypeInfoList = []
       this.carTypeInfoLoading = true
-      const res = await getCarTypeMessage({ motorS: val })
+      const res = await getCarTypeMessage({ motorSvwCode: val })
       res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
       this.formGoup.carTypeInfoList = res.data
       this.carTypeInfoLoading = false
