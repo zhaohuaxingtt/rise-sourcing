@@ -122,7 +122,15 @@ export default {
       type: Array,
       required: true,
       default: () => ([])
-    }
+    },
+    sourceMaterialCostSum: {
+      type: String || Number,
+      default: "0"
+    },
+    newMaterialCostSum: {
+      type: String || Number,
+      default: "0"
+    },
   },
   data() {
     return {
@@ -269,7 +277,6 @@ export default {
       this.$set(row, "directMaterialCost", directMaterialCost)
     
       this.computeMaterialManageCost(directMaterialCost, "directMaterialCost", row)
-      this.computeMaterialCost(directMaterialCost, "directMaterialCost", row)
     },
     updateMaterialManageCostRate(value, key, row) {
       this.computeMaterialManageCost(value, key, row)
@@ -281,7 +288,35 @@ export default {
       this.computeMaterialCost(materialManageCost, "materialManageCost", row)
     },
     computeMaterialCost(sourceValue, sourceKey, row) {
-      this.$set(row, "materialCost", math.evaluate(`${ math.bignumber(row.directMaterialCost || 0) } + ${ math.bignumber(row.materialManageCost || 0) }`).toFixed(2))
+      const materialCost = math.evaluate(`${ math.bignumber(row.directMaterialCost || 0) } + ${ math.bignumber(row.materialManageCost || 0) }`).toFixed(2)
+      this.$set(row, "materialCost", materialCost)
+    
+      this.computeMaterialCostSum(materialCost, "materialCost", row)
+    },
+    computeMaterialCostSum(sourceValue, sourceKey, row) {
+      const sourceTableListData = []
+      const newTableListData = []
+
+      this.tableListData.forEach(item => {
+        if (item.partCbdType == 0 || item.partCbdType == 1) {
+          sourceTableListData.push(item)
+        }
+
+        if (item.partCbdType == 2) {
+          newTableListData.push(item)
+        }
+      })
+
+      const sourceMaterialCostSum = sourceTableListData.reduce((acc, cur) => {
+        return math.bignumber(math.add(acc, cur.materialCost))
+      }, 0).toFixed(2)
+
+      const newMaterialCostSum = newTableListData.reduce((acc, cur) => {
+        return math.bignumber(math.add(acc, cur.materialCost))
+      }, 0).toFixed(2)
+
+      this.$emit("update:sourceMaterialCostSum", sourceMaterialCostSum)
+      this.$emit("update:newMaterialCostSum", newMaterialCostSum)
     }
   }
 }
