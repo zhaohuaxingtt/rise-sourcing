@@ -11,7 +11,11 @@
           class="table"
           :selection="false"
           :tableTitle="tableTitle"
-          :tableData="tableListData" />
+          :tableData="tableListData">
+          <template #itemTypeNameByLang="scope">
+            <span>{{ typeof scope.row.itemTypeNameByLang === "function" ? scope.row.itemTypeNameByLang() : scope.row.itemTypeName }}</span>
+          </template>
+        </tableList>
       </div>
     </div>
   </div>
@@ -24,16 +28,24 @@ import { otherCostTableTitle as tableTitle } from "../data"
 
 export default {
   components: { iButton, tableList },
+  model: {
+    prop: "tableListData",
+    event: "change"
+  },
   props: {
     topCutLine: {
       type: Boolean,
       default: false
+    },
+    tableListData: {
+      type: Array,
+      required: true,
+      default: () => ([])
     }
   },
   data() {
     return {
-      tableTitle,
-      tableListData: []
+      tableTitle
     }
   },
   methods: {}
