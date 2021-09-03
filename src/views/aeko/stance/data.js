@@ -7,14 +7,14 @@
 
 // 搜索
 export const searchList = [
-    {props:'aekoCode',label:'AEKO号',type:'input',labelKey:'LK_AEKOHAO_MANAGE',permissionKey:'AEKO_STANCELIST_INPUT_AEKOCODE'},
-    {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_STANCELIST_INPUT_PARTNUM'},
-    {props:'cartypeProjectCodeList',label:'⻋型项⽬',type:'select',isNewSelect:true,labelKey:'LK_AEKOCHEXINGXIANGMU',permissionKey:'AEKO_STANCELIST_SELECT_CARTYPECODE',selectOption:'cartypeProjectCodeList',multiple:true,filterable:true,noShowAll:true,clearable:true},
-    {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',permissionKey:'AEKO_STANCELIST_SELECT_AEKOSTATUS',selectOption:'aekoStatusList',multiple:true,clearable:true,noShowAll:true},
-    {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',permissionKey:'AEKO_STANCELIST_SELECT_COVERSTATUS',selectOption:'coverStatusList',multiple:true,clearable:true,noShowAll:true},
-    {props:'cartypeCodeList',label:'车型',type:'select',isNewSelect:true,labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_STANCELIST_SELECT_CARTYPE',selectOption:'cartypeCodeList',multiple:true,filterable:true,clearable:true,noShowAll:true,},
-    {props:'linieAssignTime',label:'分派日期',type:'datePicker',labelKey:'LK_AEKOFENPAIRIQI',permissionKey:'AEKO_STANCELIST_DATEPICKER_ASSIGNTIME'},
-    {props:'deadLine',label:'截至日期',type:'datePicker',labelKey:'LK_AEKOJIEZHIRIQI',permissionKey:'AEKO_STANCELIST_DATEPICKER_DEADLINE'},
+    {props:'aekoCode',label:'AEKO号',type:'input',labelKey:'LK_AEKOHAO_MANAGE',permissionKey:'AEKO_STANCELIST_INPUT_AEKOCODE|AEKO号'},
+    {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_STANCELIST_INPUT_PARTNUM|零件号'},
+    {props:'cartypeProjectCodeList',label:'⻋型项⽬',type:'select',isNewSelect:true,labelKey:'LK_AEKOCHEXINGXIANGMU',permissionKey:'AEKO_STANCELIST_SELECT_CARTYPECODE|⻋型项⽬',selectOption:'cartypeProjectCodeList',multiple:true,filterable:true,noShowAll:true,clearable:true},
+    {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',permissionKey:'AEKO_STANCELIST_SELECT_AEKOSTATUS|AEKO状态',selectOption:'aekoStatusList',multiple:true,clearable:true,noShowAll:true},
+    {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',permissionKey:'AEKO_STANCELIST_SELECT_COVERSTATUS|封面状态',selectOption:'coverStatusList',multiple:true,clearable:true,noShowAll:true},
+    {props:'cartypeCodeList',label:'车型',type:'select',isNewSelect:true,labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_STANCELIST_SELECT_CARTYPE|车型',selectOption:'cartypeCodeList',multiple:true,filterable:true,clearable:true,noShowAll:true,},
+    {props:'linieAssignTime',label:'分派日期',type:'datePicker',labelKey:'LK_AEKOFENPAIRIQI',permissionKey:'AEKO_STANCELIST_DATEPICKER_ASSIGNTIME|分派日期'},
+    {props:'deadLine',label:'截至日期',type:'datePicker',labelKey:'LK_AEKOJIEZHIRIQI',permissionKey:'AEKO_STANCELIST_DATEPICKER_DEADLINE|截至日期'},
   ]
   
   // 表头

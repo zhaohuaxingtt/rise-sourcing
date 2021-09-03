@@ -395,7 +395,7 @@ export function getPartTaskList(params) {
   return requst({
     url: '/part-task/condition',
     method: 'POST',
-    data: params
+    data:params
   })
 }
 
@@ -404,8 +404,8 @@ export function getPartTaskList(params) {
 export function downLoadPartScheduleFile(params) {
   return downloadRequst({
     url: '/part-task/partTaskFile',
-    method: 'GET',
-    params
+    method: 'POST',
+    data:params
   })
 }
 

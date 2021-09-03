@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-05 14:14:49
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 14:19:44
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-02 14:10:45
  * @Description: 加入已有rfq
  * @FilePath: \front-web\src\views\designateFiles\fileManage\components\joinRfq.vue
 -->
@@ -96,7 +96,7 @@ import { iDialog, iButton, iInput, iPagination, iSelect, iMessage, iSearch } fro
 import tablelist from "@/views/partsrfq/components/tablelist";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "@/views/partsrfq/home/components/data";
-import {getRfqDataList, findBySearches, getCartypeDict} from "@/api/partsrfq/home";
+import {getRfqList, findBySearches, getCartypeDict} from "@/api/partsrfq/home";
 export default {
   mixins: [pageMixins],
   components: { iDialog, iButton, iInput, iPagination, tablelist, iSelect, iSearch },
@@ -205,20 +205,18 @@ export default {
     async getTableList() {
       this.tableLoading = true;
       const req = {
-        rfqMangerInfosPackage: {
           userId: this.$store.state.permission.userInfo.id,
           current: this.page.currPage,
           size: this.page.pageSize,
           ...this.form,
           partType: this.partType
-        }
       }
       try {
-        const res = await getRfqDataList(req)
-        this.tableListData = res.data.getRfqInfoVO.rfqVOList;
-        this.page.currPage = res.data.getRfqInfoVO.pageNum
-        this.page.pageSize = res.data.getRfqInfoVO.pageSize
-        this.page.totalCount = res.data.getRfqInfoVO.total
+        const res = await getRfqList(req)
+        this.tableListData = res.data;
+        this.page.currPage = res.data.pageNum
+        this.page.pageSize = res.data.pageSize
+        this.page.totalCount = res.data.total
         this.tableLoading = false;
       } catch {
         this.tableLoading = false;

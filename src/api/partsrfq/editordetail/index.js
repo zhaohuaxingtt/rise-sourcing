@@ -109,20 +109,18 @@ export function getSupplierAllParts(parmars) {
 }
 
 /*技术交底会*/
-export function getAllRfqParts(parmars) {
+export function getAllRfqParts(rfqid) {
     return requst({
-        url: '/technology/getAllRfqParts',
-        method: 'POST',
-        data: parmars
+        url: `/purchasing-project-parts/${rfqid}/list`,
+        method: 'POST'
     })
 }
 
 
 export function getAllRfqSupplier(parmars) {
     return requst({
-        url: '/technology/getAllRfqSupplier',
-        method: 'POST',
-        data: parmars
+        url: `/bdl/listSupplierByRfqId/${parmars}`,
+        method: 'get'
     })
 }
 
@@ -136,7 +134,7 @@ export function addTechnology(parmars) {
 
 export function getPic(parmars) {
     return requst({
-        url: '/technology/getPic',
+        url: '/technology/listPic',
         method: 'POST',
         data: parmars
     })
@@ -165,7 +163,7 @@ export function updateRfq(params) {
 // 询价附件
 export function notifySuppliers(rfqId) {
     return requst({
-        url: `/rfqs/notifySuppliers/${rfqId}`,
+        url: `/rfq-round/notifySuppliers/${rfqId}`,
         method: 'GET',
     })
 }
@@ -349,7 +347,7 @@ export function updateBatchSupplierProducePlace(params) {
 // 撤回发送KM
 export function hasShowDelegate(params) {
     return quotation({
-        url: `/quotation/hasShowDelegate/${params.rfqId}/${params.round}/${params.supplierId}`,
+        url: `/quotation/hasShowDelegate/${params.rfqId}/${params.round}/${params.supplierId || 1}`,
         method: 'GET'
     })
 }
@@ -390,7 +388,7 @@ export function getAllParts(params) {
 // 获取未选择的BDL列表
 export function unselectRfqBdlPage(params) {
     return requst({
-        url: `/rfqs/unselectRfqBdlPage`,
+        url: `/bdl/pageUnSelectRfqBdl`,
         method: 'POST',
         data: params
     })
@@ -399,7 +397,7 @@ export function unselectRfqBdlPage(params) {
 // 添加BDL
 export function addRfqBdl(params) {
     return requst({
-        url: `/rfqs/addRfqBdl`,
+        url: `/bdl/addRfqBdl`,
         method: 'POST',
         data: params
     })
@@ -408,7 +406,7 @@ export function addRfqBdl(params) {
 // 获取已选择的BDL列表
 export function rfqBdlPage(params) {
     return requst({
-        url: `/rfqs/rfqBdlPage`,
+        url: `/bdl/pageRfqBdl`,
         method: 'POST',
         data: params
     })
@@ -417,7 +415,7 @@ export function rfqBdlPage(params) {
 // 删除BDL
 export function deleteRfqBdl(params) {
     return requst({
-        url: `/rfqs/deleteRfqBdl`,
+        url: `/bdl/deleteRfqBdl`,
         method: 'POST',
         data: params
     })

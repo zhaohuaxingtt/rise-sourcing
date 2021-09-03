@@ -127,16 +127,14 @@ export default {
       this.reRenderTable()
     },
     async save() {
-      const req = {
-        updateTimePlanPackage: this.tableListData.map(item => {
+      const req = this.tableListData.map(item => {
           return {
             ...item,
             svwRequeseFirstTestMode: Number(item.svwRequeseFirstTestMode) ? Number(item.svwRequeseFirstTestMode) : 0,
             svwRequestEm: Number(item.svwRequestEm) ? Number(item.svwRequestEm) : 0,
             svwRequestOts: Number(item.svwRequestOts) ? Number(item.svwRequestOts) : 0,
           }
-        })
-      }
+      })
       const res = await saveTimePlanList(req)
       if (res.result) {
         iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
