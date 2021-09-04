@@ -46,26 +46,22 @@
             ref="rawMaterials"
             v-if="moduleMap.material" 
             v-model="rawMaterialsTableData" 
-            :sourceMaterialCostSum.sync="sourceMaterialCostSum" 
-            :newMaterialCostSum.sync="newMaterialCostSum" 
+            :sumData.sync="rawMaterialsSumData"
             v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIAN|原材料/散件" />
-          <!-- <p>sourceMaterialCostSum: {{ sourceMaterialCostSum }}</p>
-          <p>newMaterialCostSum: {{ newMaterialCostSum }}</p> -->
+          <p>sourceMaterialCostSum: {{ sumData.sourceMaterialCostSum }}</p>
+          <p>newMaterialCostSum: {{ sumData.newMaterialCostSum }}</p>
           <manufacturingCost 
             topCutLine 
             class="margin-top30" 
             ref="manufacturingCost"
             v-if="moduleMap.production" 
             v-model="manufacturingCostTableData" 
-            :sourceLaborCostSum.sync="sourceLaborCostSum" 
-            :newLaborCostSum.sync="newLaborCostSum" 
-            :sourceDeviceCostSum.sync="sourceDeviceCostSum"
-            :newDeviceCostSum.sync="newDeviceCostSum"
+            :sumData.sync="manufacturingCostSumData"
             v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN|制造成本" />
-          <!-- <p>sourceLaborCostSum: {{ sourceLaborCostSum }}</p>
-          <p>newLaborCostSum: {{ newLaborCostSum }}</p>
-          <p>sourceDeviceCostSum: {{ sourceDeviceCostSum }}</p>
-          <p>newDeviceCostSum: {{ newDeviceCostSum }}</p> -->
+          <p>sourceLaborCostSum: {{ sumData.sourceLaborCostSum }}</p>
+          <p>sourceDeviceCostSum: {{ sumData.sourceDeviceCostSum }}</p>
+          <p>newLaborCostSum: {{ sumData.newLaborCostSum }}</p>
+          <p>newDeviceCostSum: {{ sumData.newDeviceCostSum }}</p>
           <div class="flexBox">
             <scrapCost v-if="moduleMap.scrap" class="margin-top30" topCutLine v-model="scrapCostTableData" :sumData="sumData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_BAOFEICHENGBEN|报废成本" />
             <manageCost v-if="moduleMap.manage" class="margin-top30" topCutLine v-model="manageTableData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_GUANLIFEI|管理费" />
@@ -111,13 +107,17 @@ export default {
       moduleMap: {},
       cbdSummaryTableData: [{ material: "0.00", makeCost: "0.00", discardCost: "0.00", manageFee: "0.00", otherFee: "0.00", profit: "0.00", apriceChange: "0.00" }],
       rawMaterialsTableData: [],
-      sourceMaterialCostSum: "0",
-      newMaterialCostSum: "0",
+      rawMaterialsSumData: {
+        sourceMaterialCostSum: "0",
+        newMaterialCostSum: "0",
+      },
       manufacturingCostTableData: [],
-      sourceLaborCostSum: "0",
-      newLaborCostSum: "0",
-      sourceDeviceCostSum: "0",
-      newDeviceCostSum: "0",
+      manufacturingCostSumData: {
+        sourceLaborCostSum: "0",
+        sourceDeviceCostSum: "0",
+        newLaborCostSum: "0",
+        newDeviceCostSum: "0"
+      },
       scrapCostTableData: [],
       manageTableData: [],
       otherCostTableData: [],
@@ -127,12 +127,8 @@ export default {
   computed: {
     sumData() {
       return {
-        sourceMaterialCostSum: this.sourceMaterialCostSum,
-        newMaterialCostSum: this.newMaterialCostSum,
-        sourceLaborCostSum: this.sourceLaborCostSum,
-        newLaborCostSum: this.newLaborCostSum,
-        sourceDeviceCostSum: this.sourceDeviceCostSum,
-        newDeviceCostSum: this.newDeviceCostSum
+        ...this.rawMaterialsSumData,
+        ...this.manufacturingCostSumData
       }
     }
   },
@@ -233,47 +229,35 @@ export default {
       }]
     },
     setScrapCostTableData(data = []) {
-      const discardCostMap = {
-        source: {},
-        new: {}
-      }
+      const result = []
 
       if (data.length > 0) {
-        data.forEach(item => {
-          if (item.id && !item.originScrapId) {
-            discardCostMap.source = item
+        result.push(
+          {
+            index: "S1",
+            typeName: "discardCost",
+            typeNameByLang: () => this.language("ZHENGTIBAOFEICHENGBENBIANDONG", "整体报废成本变动"),
+            originRatio: data[0].originRatio ?? "0.00",
+            ratio: data[0].ratio ?? "0.00",
+            changeAmount: data[0].changeAmount ?? "0.00"
           }
-
-          if (item.originScrapId) {
-            discardCostMap.new = item
+        )
+      } else {
+        result.push(
+          {
+            index: "S1",
+            typeName: "discardCost",
+            typeNameByLang: () => this.language("ZHENGTIBAOFEICHENGBENBIANDONG", "整体报废成本变动"),
+            originRatio: "0.00",
+            ratio: "0.00",
+            changeAmount: "0.00"
           }
-        })
+        )
       }
-
-      const result = [
-        {
-          index: "S1",
-          typeName: "discardCost",
-          typeNameByLang: () => this.language("ZHENGTIBAOFEICHENGBENBIANDONG", "整体报废成本变动"),
-          sourceRatio: discardCostMap.source.ratio ?? "0.00",
-          newRatio: discardCostMap.new.ratio ?? "0.00",
-          sourceAmount: discardCostMap.source.amount ?? "0",
-          newAmount: discardCostMap.new.amount ?? "0",
-        }
-      ]
 
       return result
     },
     setManageTableData(data = []) {
-      const rawMaterialManageCostMap = {
-        source: {},
-        new: {}
-      }
-      const makeManageCostMap = {
-        source: {},
-        new: {}
-      }
-
       if (data.length > 0) {
         const map = groupBy(data, "typeName")
         
@@ -296,6 +280,8 @@ export default {
             makeManageCostMap.new = item
           }
         })
+      } else {
+        
       }
 
       const result = [

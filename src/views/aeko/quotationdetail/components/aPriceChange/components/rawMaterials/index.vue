@@ -123,13 +123,12 @@ export default {
       required: true,
       default: () => ([])
     },
-    sourceMaterialCostSum: {
-      type: String || Number,
-      default: "0"
-    },
-    newMaterialCostSum: {
-      type: String || Number,
-      default: "0"
+    sumData: {
+      type: Object,
+      default: () => ({
+        sourceMaterialCostSum: "0",
+        newMaterialCostSum: "0"
+      })
     },
   },
   data() {
@@ -315,8 +314,10 @@ export default {
         return math.bignumber(math.add(acc, cur.materialCost))
       }, 0).toFixed(2)
 
-      this.$emit("update:sourceMaterialCostSum", sourceMaterialCostSum)
-      this.$emit("update:newMaterialCostSum", newMaterialCostSum)
+      this.$emit("update:sumData", {
+        sourceMaterialCostSum,
+        newMaterialCostSum
+      })
     }
   }
 }

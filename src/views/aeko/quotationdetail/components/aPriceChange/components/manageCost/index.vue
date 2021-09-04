@@ -15,11 +15,8 @@
           <template #typeNameByLang="scope">
             <span>{{ typeof scope.row.typeNameByLang === "function" ? scope.row.typeNameByLang() : scope.row.typeName }}</span>
           </template>
-          <template #newRatio="scope">
+          <template #ratio="scope">
             <iInput class="input-center" v-model="scope.row.newRatio" :class="{ changeClass: scope.row.newRatio !== scope.row.sourceRatio }" @input="handleInputByNumber($event, 'newRatio', scope.row, 2)"></iInput>
-          </template>
-          <template #amount="scope">
-            <span>{{ diffCompute(scope.row.sourceAmount, scope.row.newAmount) }}</span>
           </template>
         </tableList>
       </div>
@@ -59,10 +56,6 @@ export default {
     handleInputByNumber(value, key, row, precision) {
       this.$set(row, key, numberProcessor(value, precision))
     },
-    diffCompute(a, b) {
-      // eslint-disable-next-line no-undef
-      return math.subtract(math.bignumber(b), math.bignumber(a)).toFixed(2)
-    }
   }
 }
 </script>

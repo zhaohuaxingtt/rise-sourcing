@@ -91,6 +91,7 @@
         <el-table-column align="center" width="102" prop="deviceCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHEBEICHENGBEN', '设备成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
       </el-table>
     </div>
+    <p>{{ sumData }}</p>
   </div>  
 </template>
 
@@ -119,21 +120,14 @@ export default {
       required: true,
       default: () => ([])
     },
-    sourceLaborCostSum: {
-      type: String || Number,
-      default: "0"
-    },
-    newLaborCostSum: {
-      type: String || Number,
-      default: "0"
-    },
-    sourceDeviceCostSum: {
-      type: String || Number,
-      default: "0"
-    },
-    newDeviceCostSum: {
-      type: String || Number,
-      default: "0"
+    sumData: {
+      type: Object,
+      default: () => ({
+        sourceLaborCostSum: "0",
+        newLaborCostSum: "0",
+        sourceDeviceCostSum: "0",
+        newDeviceCostSum: "0"
+      })
     }
   },
   data() {
@@ -168,7 +162,13 @@ export default {
         "indirectManufacturingAmount",
         "laborCost",
         "deviceCost"
-      ]
+      ],
+      sumDataReal: {
+        sourceLaborCostSum: "0",
+        newLaborCostSum: "0",
+        sourceDeviceCostSum: "0",
+        newDeviceCostSum: "0"
+      },
     }
   },
   created() {
@@ -315,16 +315,17 @@ export default {
         }
       })
 
-      const sourceLaborCostSum = sourceTableListData.reduce((acc, cur) => {
+      this.sumDataReal.sourceLaborCostSum = sourceTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.laborCost))
       }, 0).toFixed(2)
 
-      const newLaborCostSum = newTableListData.reduce((acc, cur) => {
+      this.sumDataReal.newLaborCostSum = newTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.laborCost))
       }, 0).toFixed(2)
 
-      this.$emit("update:sourceLaborCostSum", sourceLaborCostSum)
-      this.$emit("update:newLaborCostSum", newLaborCostSum)
+      this.updateSumData()
+
+      
     },
     computeDeviceCostSum(sourceValue, sourceKey, row) {
       const sourceTableListData = []
@@ -340,16 +341,22 @@ export default {
         }
       })
 
-      const sourceDeviceCostSum = sourceTableListData.reduce((acc, cur) => {
+      this.sumDataReal.sourceDeviceCostSum = sourceTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.deviceCost))
       }, 0).toFixed(2)
 
-      const newDeviceCostSum = newTableListData.reduce((acc, cur) => {
+      this.sumDataReal.newDeviceCostSum = newTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.deviceCost))
       }, 0).toFixed(2)
 
-      this.$emit("update:sourceDeviceCostSum", sourceDeviceCostSum)
-      this.$emit("update:newDeviceCostSum", newDeviceCostSum)
+      this.updateSumData()
+    },
+    updateSumData(data) {
+      const sumData = {}
+      
+      Object.keys(this.sumDataReal).forEach(key => sumData[key] = this.sumDataReal[key])
+
+      this.$emit("update:sumData", sumData)
     }
   }
 }
@@ -406,6 +413,10 @@ export default {
     ::v-deep td {
       border-right: 0;
       border-bottom: 1px solid rgba(112, 112, 112, .1);
+    }
+
+    ::v-deep .sourceRow {
+      background: #f4f8ff;
     }
   }
 
