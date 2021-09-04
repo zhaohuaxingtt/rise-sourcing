@@ -328,6 +328,10 @@ export default {
         }
       } catch {
         this.dataInfo = this.copyDataInfo;
+        this.$refs.theCurrentTable.tableListData =  this.$refs.theCurrentTable.tableListData.map(item => {
+          item.newRow = false
+          return item
+        })
       } finally {
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
       }
