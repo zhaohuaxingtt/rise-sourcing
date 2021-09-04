@@ -178,6 +178,7 @@ export default {
       priceLatitudeOptions: [],
       tableStatus: '',
       averageTableStatus: '',
+      copyDataInfo: {},
     };
   },
   created() {
@@ -308,19 +309,24 @@ export default {
         };
         const res = await getAnalysisSchemeDetails(req);
         this.dataInfo = res.data;
-        this.currentTabData.partsId = res.data.partsId;
-        this.currentTabData.batchNumber = res.data.batchNumber;
-        this.currentTabData.supplierId = res.data.supplierId;
-        this.currentTabData.analysisSchemeId = res.data.analysisSchemeId;
-        this.currentTabData.fsId = res.data.fsId;
-        this.partList = res.data.partsList.filter(item => {
-          return item.isShow;
-        });
-        this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
-        await Promise.all([this.getPiIndexWaveSelectList(), this.$refs.thePriceIndexChart.buildChart()]);
-        this.$refs.thePartsCostChart.buildChart();
-        this.setLoading({propsArray: propsArrayLoading, boolean: false});
-      } catch {
+        if (res.result) {
+          this.copyDataInfo = res.data;
+          this.currentTabData.partsId = res.data.partsId;
+          this.currentTabData.batchNumber = res.data.batchNumber;
+          this.currentTabData.supplierId = res.data.supplierId;
+          this.currentTabData.analysisSchemeId = res.data.analysisSchemeId;
+          this.currentTabData.fsId = res.data.fsId;
+          this.partList = res.data.partsList.filter(item => {
+            return item.isShow;
+          });
+          this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
+          await Promise.all([this.getPiIndexWaveSelectList(), this.$refs.thePriceIndexChart.buildChart()]);
+          this.$refs.thePartsCostChart.buildChart();
+        } else {
+          this.dataInfo = this.copyDataInfo;
+          this.resultMessage(res);
+        }
+      } finally {
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
       }
     },
@@ -341,7 +347,6 @@ export default {
         } else {
           this.timeRange = null;
         }
-        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
         await Promise.all([
           this.getPiIndexWaveSelectList(),
           this.$refs.thePriceIndexChart.buildChart(),
@@ -349,6 +354,7 @@ export default {
         this.$refs.thePartsCostChart.buildChart();
       } catch {
         this.averageData = {};
+      } finally {
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
       }
     },
