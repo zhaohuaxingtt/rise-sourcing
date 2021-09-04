@@ -478,8 +478,8 @@ export default {
         }
         const res = await saveAnalysisScheme(req);
         this.resultMessage(res, () => {
-          this.tableStatus = '';
-          this.averageTableStatus = '';
+          this.handleTableStatus('');
+          this.handleAverageTableStatus('');
         });
         if (res.result) {
           if (tab === CURRENTTIME) {
