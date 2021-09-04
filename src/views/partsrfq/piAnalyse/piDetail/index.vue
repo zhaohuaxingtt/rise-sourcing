@@ -326,6 +326,8 @@ export default {
           this.dataInfo = this.copyDataInfo;
           this.resultMessage(res);
         }
+      } catch {
+        this.dataInfo = this.copyDataInfo;
       } finally {
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
       }
