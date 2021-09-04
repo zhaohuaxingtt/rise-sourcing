@@ -419,6 +419,7 @@ export default {
       req.avgCompositePrice = averageData.totalPriceRatio;
       req.beginTime = averageData.beginTime;
       req.endTime = averageData.endTime;
+      req.operateFlag = 'S2';
       return req;
     },
     // 处理保存报告并导出 获取导出后的参数
@@ -455,6 +456,7 @@ export default {
       try {
         this.tableLoading = true;
         const req = {
+          operateFlag: 'S1',
           ...this.currentTabData,
         };
         if (tab === CURRENTTIME) {
