@@ -397,8 +397,7 @@ export default {
           }
           this.saveDialog = false;
         }
-        this.pageLoading = false;
-      } catch {
+      } finally {
         this.pageLoading = false;
       }
     },
@@ -490,7 +489,7 @@ export default {
         } else {
           this.handleTableSaveError();
         }
-      } catch {
+      } finally {
         this.tableLoading = false;
       }
     },
@@ -514,8 +513,8 @@ export default {
     },
     // 设置表格编辑状态
     setTableEditStatus(boolean) {
-      this.$refs.theAverageTable.tableStatus = boolean;
-      this.$refs.theCurrentTable.tableStatus = boolean;
+      this.handleTableStatus(boolean);
+      this.handleAverageTableStatus(boolean);
     },
     handleTableSaveError() {
       if (this.currentTab === CURRENTTIME && this.$refs.theCurrentTable.tableStatus === 'edit') {
