@@ -121,6 +121,10 @@ export default {
         return {};
       },
     },
+    tableStatus: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     pageType() {
@@ -134,7 +138,6 @@ export default {
       hideTableData: [],
       hideSelectTableData: [],
       tableTitle: tableTitle,
-      tableStatus: '',
       recordTableData: [],
       recordHideTableData: [],
       selectOptionsObject: {},
@@ -163,9 +166,9 @@ export default {
       this.hideSelectTableData = val;
     },
     handleEdit() {
-      this.tableStatus = 'edit';
       this.recordTableData = _.cloneDeep(this.tableListData);
       this.recordHideTableData = _.cloneDeep(this.hideTableData);
+      this.$emit('handleTableStatus', 'edit');
     },
     handleAdd() {
       const time = new Date().getTime();
@@ -237,10 +240,9 @@ export default {
     handleCancel() {
       this.tableListData = this.recordTableData;
       this.hideTableData = this.recordHideTableData;
-      this.tableStatus = '';
+      this.$emit('handleTableStatus', '');
     },
     handleFinish() {
-      this.tableStatus = '';
       this.$emit('handlePriceTableFinish', this.handleAllSaveData());
     },
     handleAllSaveData() {

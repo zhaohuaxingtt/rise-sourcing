@@ -44,6 +44,8 @@
           :currentTab="currentTab"
           :tableLoading="tableLoading"
           @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
+          :tableStatus="tableStatus"
+          @handleTableStatus="handleTableStatus"
       />
       <theTable
           v-show="currentTab === AVERAGE"
@@ -51,7 +53,9 @@
           :averageData="averageData"
           :currentTab="currentTab"
           :tableLoading="tableLoading"
+          :tableStatus="averageTableStatus"
           @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
+          @handleTableStatus="handleAverageTableStatus"
       />
     </iCard>
 
@@ -172,6 +176,8 @@ export default {
       pieLoading: false,
       showPiChart: true,
       priceLatitudeOptions: [],
+      tableStatus: '',
+      averageTableStatus: '',
     };
   },
   created() {
@@ -312,7 +318,7 @@ export default {
         });
         this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
         await Promise.all([this.getPiIndexWaveSelectList(), this.$refs.thePriceIndexChart.buildChart()]);
-        this.$refs.thePartsCostChart.buildChart()
+        this.$refs.thePartsCostChart.buildChart();
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
       } catch {
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
@@ -340,7 +346,7 @@ export default {
           this.getPiIndexWaveSelectList(),
           this.$refs.thePriceIndexChart.buildChart(),
         ]);
-        this.$refs.thePartsCostChart.buildChart()
+        this.$refs.thePartsCostChart.buildChart();
       } catch {
         this.averageData = {};
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
@@ -471,7 +477,10 @@ export default {
           req.endTime = value.endTime;
         }
         const res = await saveAnalysisScheme(req);
-        this.resultMessage(res);
+        this.resultMessage(res, () => {
+          this.tableStatus = '';
+          this.averageTableStatus = '';
+        });
         if (res.result) {
           if (tab === CURRENTTIME) {
             await this.getDataInfo({propsArrayLoading: ['tableLoading', 'pieLoading']});
@@ -528,6 +537,12 @@ export default {
       } catch {
         this.priceLatitudeOptions = [];
       }
+    },
+    handleTableStatus(val) {
+      this.tableStatus = val;
+    },
+    handleAverageTableStatus(val) {
+      this.averageTableStatus = val;
     },
   },
 };
