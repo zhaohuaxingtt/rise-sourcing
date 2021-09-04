@@ -550,7 +550,7 @@ export default {
                   }
                 }
               }
-              let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
+              let colorList = ['#0C47A1', '#1976D1', '#2297F3', '#64B5F6', '#00579B', '#0188D1', '#03A9F4', '50C2F7']
               if (x.sapStuffCode == this.categoryCode) {
                 seriesObj.selected = true
                 check = false

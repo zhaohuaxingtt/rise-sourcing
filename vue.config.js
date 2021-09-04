@@ -321,7 +321,7 @@ module.exports = {
         // target: 'http://10.122.18.166:8022', //	dev
         // target: 'http://10.122.17.38:8022',	//	vmsit
         // target: 'http://192.168.50.160:8022', // 圆圆
-        target: 'http://192.168.50.166:8022',// 立立
+        target: 'http://192.168.50.166:8022', // 立立
         // target: 'http://192.168.50.94:8022',// 永厚
         // target: 'http://140cc4e9da89.ngrok.io',
         changeOrigin: true,
@@ -365,8 +365,8 @@ module.exports = {
         },
       },
       '/aonApi': {
-        target: 'http://10.122.18.166:8036',
-        // target: 'http://10.160.136.23:8036',
+        // target: 'http://10.122.18.166:8036',
+        target: 'http://10.160.136.183:8036',
         // target: 'http://10.122.17.38:8036',
         changeOrigin: true,
         pathRewrite: {
@@ -440,13 +440,12 @@ module.exports = {
           '^/priceledgerApi': '',
         },
       },
-      '/fileud':{
-
-        target:'http://10.122.18.166:8034/fileud',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/fileud':''
-        }
+      '/fileud': {
+        target: 'http://10.122.18.166:8034/fileud',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/fileud': '',
+        },
       },
     },
   },
