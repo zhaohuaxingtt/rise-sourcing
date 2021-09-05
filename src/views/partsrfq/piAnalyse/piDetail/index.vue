@@ -324,10 +324,10 @@ export default {
           this.resultMessage(res);
         }
       } catch {
-        this.$refs.theCurrentTable.tableListData =  this.$refs.theCurrentTable.tableListData.map(item => {
-          item.newRow = false
-          return item
-        })
+        this.$refs.theCurrentTable.tableListData = this.$refs.theCurrentTable.tableListData.map(item => {
+          item.newRow = false;
+          return item;
+        });
       } finally {
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
       }
@@ -391,6 +391,7 @@ export default {
             const res = await saveAnalysisScheme(req);
             if (res.result) {
               await this.setTableEditStatus(false);
+              this.handleAddModelUrlChange()
             } else {
               this.handleTableSaveError();
             }
@@ -400,6 +401,7 @@ export default {
           const res = await saveAnalysisScheme(req);
           if (res.result) {
             await this.setTableEditStatus(false);
+            this.handleAddModelUrlChange()
           } else {
             this.handleTableSaveError();
           }
@@ -487,6 +489,7 @@ export default {
         this.resultMessage(res, () => {
           this.handleTableStatus('');
           this.handleAverageTableStatus('');
+          this.handleAddModelUrlChange()
         });
         if (res.result) {
           if (tab === CURRENTTIME) {
@@ -550,6 +553,16 @@ export default {
     },
     handleAverageTableStatus(val) {
       this.averageTableStatus = val;
+    },
+    handleAddModelUrlChange() {
+      if (this.$route.query.batchNumber) {
+        this.$router.push({
+          path: '/sourcing/partsrfq/piAnalyseDetail',
+          query: {
+            schemeId: this.currentTabData.analysisSchemeId,
+          },
+        });
+      }
     },
   },
 };
