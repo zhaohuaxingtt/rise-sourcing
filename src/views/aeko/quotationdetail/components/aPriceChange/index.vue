@@ -1,7 +1,7 @@
 <template>
   <iCard class="aPriceChange" v-permission.auto="AEKO_QUOTATION_CBD_TAB_BIANDONGZHICBD|变动值CBD" :title="language('BIANDONGZHICBD', '变动值CBD')">
     <template #header-control>
-      <iButton v-permission.auto="AEKO_QUOTATION_CBD_BUTTON_BAOCUN|保存">{{ language("BAOCUN", "保存") }}</iButton>
+      <iButton v-permission.auto="AEKO_QUOTATION_CBD_BUTTON_BAOCUN|保存" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
       <iButton v-permission.auto="AEKO_QUOTATION_CBD_BUTTON_XIAZAI|下载">{{ language("XIAZAI", "下载") }}</iButton>
     </template>
     <div class="body" v-loading="loading">
@@ -10,7 +10,7 @@
         <div>
           <div class="input" v-permission.auto="AEKO_QUOTATION_CBD_INPUT_AJIABIANDONGHANFENTAN|A价变动_含分摊">
             <span class="label">{{ language("AJIABIANDONGHANFENTAN", "A价变动(含分摊)") }}:</span>
-            <iInput v-if="hasManualInput" v-model="apriceChange" />
+            <iInput v-if="hasManualInput" v-model="apriceChange" @input="handleInputByApriceChange" />
             <iText v-else />
           </div>
         </div>
@@ -48,8 +48,6 @@
             v-model="rawMaterialsTableData" 
             :sumData.sync="rawMaterialsSumData"
             v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIAN|原材料/散件" />
-          <p>sourceMaterialCostSum: {{ sumData.sourceMaterialCostSum }}</p>
-          <p>newMaterialCostSum: {{ sumData.newMaterialCostSum }}</p>
           <manufacturingCost 
             topCutLine 
             class="margin-top30" 
@@ -58,15 +56,11 @@
             v-model="manufacturingCostTableData" 
             :sumData.sync="manufacturingCostSumData"
             v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN|制造成本" />
-          <p>sourceLaborCostSum: {{ sumData.sourceLaborCostSum }}</p>
-          <p>sourceDeviceCostSum: {{ sumData.sourceDeviceCostSum }}</p>
-          <p>newLaborCostSum: {{ sumData.newLaborCostSum }}</p>
-          <p>newDeviceCostSum: {{ sumData.newDeviceCostSum }}</p>
           <div class="flexBox">
-            <scrapCost v-if="moduleMap.scrap" class="margin-top30" topCutLine v-model="scrapCostTableData" :sumData="sumData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_BAOFEICHENGBEN|报废成本" />
-            <manageCost v-if="moduleMap.manage" class="margin-top30" topCutLine v-model="manageTableData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_GUANLIFEI|管理费" />
-            <otherCost v-if="Array.isArray(otherCostTableData) && otherCostTableData.length > 0" class="margin-top30" :tableListData="otherCostTableData" topCutLine v-permission.auto="AEKO_QUOTATION_CBD_VIEW_QITAFEIYONG|其他费用" />
-            <profit v-if="moduleMap.profit" class="margin-top30" topCutLine v-model="profitTableData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_LIRUN|利润" />
+            <scrapCost v-if="moduleMap.scrap" class="margin-top30" topCutLine v-model="scrapCostTableData" :sumData="sumData" :discardCost.sync="discardCost" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_BAOFEICHENGBEN|报废成本" />
+            <manageCost v-if="moduleMap.manage" class="margin-top30" topCutLine v-model="manageTableData" :sumData="sumData" :manageFee.sync="manageFee" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_GUANLIFEI|管理费" />
+            <otherCost v-if="Array.isArray(otherCostTableData) && otherCostTableData.length > 0" class="margin-top30" :tableListData="otherCostTableData" topCutLine :otherFee.sync="otherFee" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_QITAFEIYONG|其他费用" />
+            <profit v-if="moduleMap.profit" class="margin-top30" topCutLine v-model="profitTableData" :sumData="sumData" :profit.sync="profit" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_LIRUN|利润" />
           </div>
         </div>
       </div>
@@ -83,8 +77,8 @@ import scrapCost from "./components/scrapCost"
 import manageCost from "./components/manageCost"
 import otherCost from "./components/otherCost"
 import profit from "./components/profit"
-import { getAekoCarDosage, getAekoQuotationSummary } from "@/api/aeko/quotationdetail"
-import { groupBy } from "lodash"
+import { getAekoCarDosage, getAekoQuotationSummary, saveAekoQuotationSummary } from "@/api/aeko/quotationdetail"
+import { numberProcessor } from "@/utils"
 
 export default {
   components: { iCard, iButton, iInput, iText, iSelect, cbdSummary, rawMaterials, manufacturingCost, scrapCost, manageCost, otherCost, profit },
@@ -98,6 +92,7 @@ export default {
   data() {
     return {
       loading: false,
+      form: {},
       hasManualInput: false,
       apriceChange: "",
       moduleOptions: [
@@ -105,32 +100,59 @@ export default {
       ],
       modules: [""],
       moduleMap: {},
-      cbdSummaryTableData: [{ material: "0.00", makeCost: "0.00", discardCost: "0.00", manageFee: "0.00", otherFee: "0.00", profit: "0.00", apriceChange: "0.00" }],
+      // cbdSummaryTableData: [{ material: "0.00", makeCost: "0.00", discardCost: "0.00", manageFee: "0.00", otherFee: "0.00", profit: "0.00", apriceChange: "0.00" }],
       rawMaterialsTableData: [],
       rawMaterialsSumData: {
-        sourceMaterialCostSum: "0",
-        newMaterialCostSum: "0",
+        sourceMaterialCostSum: 0,
+        sourceMaterialCostSumByNotSvwAssignPriceParts: 0,
+        newMaterialCostSum: 0,
+        newMaterialCostSumByNotSvwAssignPriceParts: 0
       },
       manufacturingCostTableData: [],
       manufacturingCostSumData: {
-        sourceLaborCostSum: "0",
-        sourceDeviceCostSum: "0",
-        newLaborCostSum: "0",
-        newDeviceCostSum: "0"
+        sourceLaborCostSum: 0,
+        sourceDeviceCostSum: 0,
+        newLaborCostSum: 0,
+        newDeviceCostSum: 0
       },
       scrapCostTableData: [],
+      discardCost: 0,
       manageTableData: [],
+      manageFee: 0,
       otherCostTableData: [],
-      profitTableData: []
+      otherFee: 0,
+      profitTableData: [],
+      profit: 0
     }
   },
   computed: {
+    cbdSummarySelected() {
+      if (this.modules.length) {
+         if (this.modules[0] === "") {
+          return this.moduleOptions.map(item => item.value).join(",")
+        } else {
+          return this.modules.join(",")
+        } 
+      } else {
+        return ""
+      }
+    },
     sumData() {
       return {
         ...this.rawMaterialsSumData,
         ...this.manufacturingCostSumData
       }
-    }
+    },
+    cbdSummaryTableData() {
+      return [{
+        material: this.rawMaterialsSumData.material || "0.00",
+        makeCost: this.manufacturingCostSumData.makeCost || "0.00",
+        discardCost: this.discardCost || "0.00",
+        manageFee: this.manageFee || "0.00",
+        otherFee: this.otherFee || "0.00",
+        profit: this.profit || "0.00"
+      }]
+    },
   },
   created() {
     this.handleChangeByModules([""])
@@ -179,17 +201,12 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          console.log(res.data)
+          this.form = res.data
           this.setCbdSummaryTableData(res.data)
           this.rawMaterialsTableData = Array.isArray(res.data.rawMaterialList) ? res.data.rawMaterialList : []
           this.manufacturingCostTableData = Array.isArray(res.data.makeCostList) ? res.data.makeCostList : []
           this.scrapCostTableData = this.setScrapCostTableData(Array.isArray(res.data.discardCostList) ? res.data.discardCostList : [])
           this.manageTableData = this.setManageTableData(Array.isArray(res.data.manageFeeList) ? res.data.manageFeeList : [])
-          
-          res.data.otherFeeList = [
-            { itemType: 0 },
-            { itemType: 1 }
-          ]
           
           this.otherCostTableData = this.setOtherCostTableData(Array.isArray(res.data.otherFeeList) ? res.data.otherFeeList : [])
           this.profitTableData = this.setProfitTableData(Array.isArray(res.data.profitList) ? res.data.profitList : [])
@@ -200,6 +217,9 @@ export default {
         this.loading = false
       })
       .catch(() => this.loading = false)
+    },
+    handleInputByApriceChange(value) {
+      this.apriceChange = numberProcessor(value, 2)
     },
     handleChangeByModules(modules) {
       this.moduleMap = {}
@@ -258,59 +278,51 @@ export default {
       return result
     },
     setManageTableData(data = []) {
+      const result = []
+
       if (data.length > 0) {
-        const map = groupBy(data, "typeName")
-        
-        map["rawMaterialManageCost"].forEach(item => {
-          if (item.id && !item.originManageId) {
-            rawMaterialManageCostMap.source = item
+        return data.map(item => {
+          switch(item.typeName) {
+            case "原材料与散件（不含SVW指定散件）管理费":
+              item.index = "O1"
+              item.typeNameByLang = () => this.language("YUANCAILIAOYUSANJIANBUHANSVWZHIDINGSANJIANGUANLIFEI", "原材料与散件(不含SVW指定散件)管理费")
+              break
+            case "制造管理费":
+              item.index = "O2"
+              item.typeNameByLang = () => this.language("ZHIZAOGUANLIFEI", "制造管理费")
+              break
+            default:
           }
 
-          if (item.originManageId) {
-            rawMaterialManageCostMap.new = item
-          }
-        })
-
-        map["makeManageCost"].forEach(item => {
-          if (item.id && !item.originManageId) {
-            makeManageCostMap.source = item
-          }
-
-          if (item.originManageId) {
-            makeManageCostMap.new = item
-          }
+          return item
         })
       } else {
-        
+        result.push(
+          {
+            index: "O1",
+            typeName: "原材料与散件（不含SVW指定散件）管理费",
+            typeNameByLang: () => this.language("YUANCAILIAOYUSANJIANBUHANSVWZHIDINGSANJIANGUANLIFEI", "原材料与散件(不含SVW指定散件)管理费"),
+            originRatio: "0.00",
+            ratio: "0.00",
+            changeAmount: "0.00",
+          },
+          {
+            index: "O2",
+            typeName: "制造管理费",
+            typeNameByLang: () => this.language("ZHIZAOGUANLIFEI", "制造管理费"),
+            originRatio: "0.00",
+            ratio: "0.00",
+            changeAmount: "0.00",
+          }
+        )
       }
-
-      const result = [
-        {
-          index: "O1",
-          typeName: "rawMaterialManageCost",
-          typeNameByLang: () => this.language("YUANCAILIAOYUSANJIANBUHANSVWZHIDINGSANJIANGUANLIFEI", "原材料与散件(不含SVW指定散件)管理费"),
-          sourceRatio: rawMaterialManageCostMap.source.ratio ?? "0.00",
-          newRatio: rawMaterialManageCostMap.new.ratio ?? "0.00",
-          sourceAmount: rawMaterialManageCostMap.source.amount ?? "0",
-          newAmount: rawMaterialManageCostMap.new.amount ?? "0",
-        },
-        {
-          index: "O2",
-          typeName: "makeManageCost",
-          typeNameByLang: () => this.language("ZHIZAOGUANLIFEI", "制造管理费"),
-          sourceRatio: makeManageCostMap.source.ratio ?? "0.00",
-          newRatio: makeManageCostMap.new.ratio ?? "0.00",
-          sourceAmount: makeManageCostMap.source.amount ?? "0",
-          newAmount: makeManageCostMap.new.amount ?? "0",
-        },
-      ]
 
       return result
     },
     setOtherCostTableData(data = []) {
       const result = []
 
-      if (data.length) {
+      if (data.length > 0) {
         data.forEach((item, index) => {
           switch(item.itemType) {
             case 0:
@@ -340,40 +352,52 @@ export default {
         })
       }
 
-      console.log("result", result)
       return result
     },
     setProfitTableData(data = []) {
-      const profitMap = {
-        source: {},
-        new: {}
-      }
+       const result = []
 
       if (data.length > 0) {
-        data.forEach(item => {
-          if (item.id && !item.originProfitId) {
-            profitMap.source = item
+        result.push(
+          {
+            index: "P1",
+            typeName: "profit",
+            typeNameByLang: () => this.language("LIRUNBUHANSVWZHIDINGSANJIAN", "利润(不含SVW指定散件)"),
+            originRatio: data[0].originRatio ?? "0.00",
+            ratio: data[0].ratio ?? "0.00",
+            changeAmount: data[0].changeAmount ?? "0.00"
           }
-
-          if (item.originProfitId) {
-            profitMap.new = item
+        )
+      } else {
+        result.push(
+          {
+            index: "S1",
+            typeName: "profit",
+            typeNameByLang: () => this.language("LIRUNBUHANSVWZHIDINGSANJIAN", "利润(不含SVW指定散件)"),
+            originRatio: "0.00",
+            ratio: "0.00",
+            changeAmount: "0.00"
           }
-        })
+        )
       }
 
-      const result = [
-        {
-          index: "P1",
-          typeName: "profit",
-          typeNameByLang: () => this.language("LIRUNBUHANSVWZHIDINGSANJIAN", "利润(不含SVW指定散件)"),
-          sourceRatio: profitMap.source.ratio ?? "0.00",
-          newRatio: profitMap.new.ratio ?? "0.00",
-          sourceAmount: profitMap.source.amount ?? "0",
-          newAmount: profitMap.new.amount ?? "0",
-        }
-      ]
-
       return result
+    },
+    handleSave() {
+      saveAekoQuotationSummary({
+        ...this.form,
+        hasManualInput: this.hasManualInput,
+        apriceChange: this.hasManualInput ? this.apriceChange : "",
+        cbdSummarySelected: this.hasManualInput ? "" : this.cbdSummarySelected,
+      })
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
     }
   }
 }

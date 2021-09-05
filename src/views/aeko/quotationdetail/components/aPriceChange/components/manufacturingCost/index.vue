@@ -88,10 +88,9 @@
           <el-table-column label="(RMB/Pc.)" align="center" width="93" prop="indirectManufacturingAmount"></el-table-column>
         </el-table-column>
         <el-table-column align="center" width="100" prop="laborCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('RENGONGCHENGBEN', '人工成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
-        <el-table-column align="center" width="102" prop="deviceCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHEBEICHENGBEN', '设备成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
+        <el-table-column align="center" min-width="102" prop="deviceCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHEBEICHENGBEN', '设备成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
       </el-table>
     </div>
-    <p>{{ sumData }}</p>
   </div>  
 </template>
 
@@ -122,12 +121,7 @@ export default {
     },
     sumData: {
       type: Object,
-      default: () => ({
-        sourceLaborCostSum: "0",
-        newLaborCostSum: "0",
-        sourceDeviceCostSum: "0",
-        newDeviceCostSum: "0"
-      })
+      default: () => ({})
     }
   },
   data() {
@@ -164,10 +158,11 @@ export default {
         "deviceCost"
       ],
       sumDataReal: {
-        sourceLaborCostSum: "0",
-        newLaborCostSum: "0",
-        sourceDeviceCostSum: "0",
-        newDeviceCostSum: "0"
+        sourceLaborCostSum: 0,
+        newLaborCostSum: 0,
+        sourceDeviceCostSum: 0,
+        newDeviceCostSum: 0,
+        makeCost: 0
       },
     }
   },
@@ -287,7 +282,10 @@ export default {
       this.computeDeviceCost(value, key, row)
     },
     computeIndirectManufacturingAmount(sourceValue, sourceKey, row) {
-      this.$set(row, "indirectManufacturingAmount", math.evaluate(`(${ math.bignumber(row.deviceRate || 0) } + ${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }) * ${ math.bignumber(row.taktTime || 0) } / 3600 / ${ +row.taktTimeNumber ? math.bignumber(row.taktTimeNumber) : 1 } * (${ math.bignumber(row.indirectManufacturingRate || 0) } / 100)`).toFixed(2))
+      const indirectManufacturingAmount = math.evaluate(`(${ math.bignumber(row.deviceRate || 0) } + ${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }) * ${ math.bignumber(row.taktTime || 0) } / 3600 / ${ +row.taktTimeNumber ? math.bignumber(row.taktTimeNumber) : 1 } * (${ math.bignumber(row.indirectManufacturingRate || 0) } / 100)`).toFixed(2)
+      this.$set(row, "indirectManufacturingAmount", indirectManufacturingAmount)
+    
+      this.computeMakeCost(indirectManufacturingAmount, "indirectManufacturingAmount", row)
     },
     computeLaborCost(sourceValue, sourceKey, row) {
       const laborCost = math.evaluate(`(${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) } * ${ math.bignumber(row.taktTime || 0) }) / 3600 / ${ +row.taktTimeNumber ? math.bignumber(row.taktTimeNumber) : 1 } * (1 + (${ math.bignumber(row.indirectManufacturingRate || 0) } / 100))`).toFixed(2)
@@ -324,8 +322,6 @@ export default {
       }, 0).toFixed(2)
 
       this.updateSumData()
-
-      
     },
     computeDeviceCostSum(sourceValue, sourceKey, row) {
       const sourceTableListData = []
@@ -349,6 +345,25 @@ export default {
         return math.bignumber(math.add(acc, cur.deviceCost))
       }, 0).toFixed(2)
 
+      this.updateSumData()
+    },
+    computeMakeCost(sourceValue, sourceKey, row) {
+      let originIndirectManufacturingAmount = 0
+      let newIndirectManufacturingAmount = 0
+      this.tableListData.forEach(item => {
+        if (item.partCbdType == 0 || item.partCbdType == 1) {
+          originIndirectManufacturingAmount = math.add(originIndirectManufacturingAmount, math.bignumber(item.indirectManufacturingAmount || 0))
+        }
+
+        if (item.partCbdType == 2) {
+          newIndirectManufacturingAmount = math.add(newIndirectManufacturingAmount, math.bignumber(item.indirectManufacturingAmount || 0))
+        }
+      })
+
+      originIndirectManufacturingAmount = originIndirectManufacturingAmount.toFixed(2)
+      newIndirectManufacturingAmount = newIndirectManufacturingAmount.toFixed(2)
+
+      this.sumDataReal.makeCost = math.evaluate(`${ newIndirectManufacturingAmount } - ${ originIndirectManufacturingAmount }`).toFixed(2)
       this.updateSumData()
     },
     updateSumData(data) {
