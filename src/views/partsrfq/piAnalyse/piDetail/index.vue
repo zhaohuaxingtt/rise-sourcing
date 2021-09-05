@@ -178,7 +178,6 @@ export default {
       priceLatitudeOptions: [],
       tableStatus: '',
       averageTableStatus: '',
-      copyDataInfo: {},
     };
   },
   created() {
@@ -310,7 +309,6 @@ export default {
         const res = await getAnalysisSchemeDetails(req);
         this.dataInfo = res.data;
         if (res.result) {
-          this.copyDataInfo = res.data;
           this.currentTabData.partsId = res.data.partsId;
           this.currentTabData.batchNumber = res.data.batchNumber;
           this.currentTabData.supplierId = res.data.supplierId;
@@ -323,11 +321,9 @@ export default {
           await Promise.all([this.getPiIndexWaveSelectList(), this.$refs.thePriceIndexChart.buildChart()]);
           this.$refs.thePartsCostChart.buildChart();
         } else {
-          this.dataInfo = this.copyDataInfo;
           this.resultMessage(res);
         }
       } catch {
-        this.dataInfo = this.copyDataInfo;
         this.$refs.theCurrentTable.tableListData =  this.$refs.theCurrentTable.tableListData.map(item => {
           item.newRow = false
           return item
