@@ -124,7 +124,8 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
         align: 'center',
         width: 95,
         customRender: (h, scope, column, extraData) => {
-          return <ContractStatusComponents row={scope.row} contractStatus={extraData.contractStatus} />
+
+            return <ContractStatusComponents row={scope.row} contractStatus={extraData.contractStatus} />
         }
     },
     {

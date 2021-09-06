@@ -11378,6 +11378,9 @@
       box-shadow: none; }
     .el-radio-button__orig-radio:disabled:checked + .el-radio-button__inner {
       background-color: #F2F6FC; }
+.el-radio-button__orig-radio:disabled:checked+.el-radio-button__inner {
+    background-color: #F2F6FC;
+}
   .el-radio-button:last-child .el-radio-button__inner {
     border-radius: 0 4px 4px 0; }
   .el-radio-button:first-child:last-child .el-radio-button__inner {
@@ -56759,3 +56762,11 @@
 .el-popconfirm__action {
   text-align: right;
   margin: 0; }
+
+
+.el-radio-group {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+    font-size: 0;
+}
