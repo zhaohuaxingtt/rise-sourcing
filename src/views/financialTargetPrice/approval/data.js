@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-02 16:02:02
+ * @LastEditTime: 2021-09-06 16:08:21
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\data.js
  */
@@ -24,8 +24,8 @@ export const tableTitle = [
   {props:'ckdLandedVary',name:'CKD Landed变化', key: "CKDLANDEDBIANHUA", tooltip: true, width: 120},
   {props:'ckdDutyVary',name:'CKD duty变化', key: "CKDDUTYBIANHUA", tooltip: true, width: 120},
   {props:'ckdExworkVary',name:'CKD Ex-work变化', key: "CKDEXWORKBIANHUA", tooltip: true, width: 120},
-  {props:'ckdLanded',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120},
-  {props:'ckdLanded',name:'修改日期', key: "XIUGAIRIQI", tooltip: true, width: 120},
+  {props:'applyDateEnd',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120},
+  {props:'updateDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true, width: 120},
   {props:'xiugai',name:'修改记录', key: "XIUGAIJILU", tooltip: true, width: 120},
   {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true},
   {props:'shenpipi',name:'', key: "", tooltip: true, width: 120},
