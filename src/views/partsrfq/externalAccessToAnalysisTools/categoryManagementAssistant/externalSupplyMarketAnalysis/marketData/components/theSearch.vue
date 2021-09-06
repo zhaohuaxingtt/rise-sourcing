@@ -47,7 +47,7 @@
             collapse-tags
             filterable
             clearable
-            style="width: 220px"
+            style="width: 200px"
         />
       </template>
     </div>

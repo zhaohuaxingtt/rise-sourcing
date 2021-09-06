@@ -96,7 +96,7 @@ export function getEnergyGroupSelectList(params) {
 //市场数据能源数据
 export function getEnergyGroupData(params) {
   return request({
-    url: '/cmMdEnergyEntity/energyGroupData',
+    url: '/cmMdEnergyEntity/energyGroupDataRel',
     method: 'POST',
     data: params,
   });
