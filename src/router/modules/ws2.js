@@ -216,6 +216,14 @@ export default [
             },
             component: () => import (`@/views/ws2/modelorder`),
           },
+          {
+            path: '/purchase/mouldpurchasing', //模具采购申请
+            name: 'mouldpurchasing',
+            meta: {
+                title: '模具采购申请'
+            },
+            component: () => import (`@/views/ws2/mouldpurchasing`)
+          },
         ]
       },
       {
