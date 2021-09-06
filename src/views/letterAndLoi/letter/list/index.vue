@@ -31,7 +31,7 @@
             <iButton v-permission.auto="LK_LETTER_LIST_CHEHUI|撤回" :loading="btnLoading.back" @click="back">{{language('partsprocure.CheHui','撤回')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_ZHUANPAI|转派" @click="turnSend">{{language('partsprocure.PARTSPROCURETRANSFER','转派')}} </iButton> 
             <iButton v-permission.auto="LK_LETTER_LIST_GUANBI|关闭" @click="closeLetter">{{language('LK_GUANBI','关闭')}} </iButton>
-            <iButton v-permission.auto="LK_LETTER_LIST_JIHUO|激活" :loading="btnLoading.activate" @click="activate">{{language('LK_JIHUO','激活')}} </iButton>
+            <iButton v-permission.auto="LK_LETTER_LIST_JIHUO|激活" :loading="btnLoading.activate" @click="activate">{{language('LK_LETTER_JIHUO','激活')}} </iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_DAOCHU|导出" @click="downloadFiles">{{language('LK_DAOCHU','导出')}} </iButton>
         </template>
         <!-- 表单区域 -->

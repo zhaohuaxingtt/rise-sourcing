@@ -2,13 +2,13 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 16:23:12
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: 谈判基本信息
 -->
 <template>
   <div>
     <div class="right-btn">
-      <iButton @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
+      <iButton @click="handleReport" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_BUTTON_BAOGAOQINGDAN|报告清单">{{ $t('TPZS.BGQD') }}</iButton>
     </div>
     <projectOverview />
     <bulkSupplierOverview class="margin-top20" />
