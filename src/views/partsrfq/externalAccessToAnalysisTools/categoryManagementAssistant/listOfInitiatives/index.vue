@@ -231,7 +231,7 @@ export default {
       Object.keys(selectObj).map(item => {
         level1Array.map(level1Item => {
           if (level1Item.name === item) {
-            level1Item.children.map(level2Item => {
+            level1Item.children && level1Item.children.map(level2Item => {
               if (level2Item.effectFlag === 1) {
                 this.treeDataSelect[item].push(level2Item.name);
                 this.treeDataSelectId.push(level2Item.id);
