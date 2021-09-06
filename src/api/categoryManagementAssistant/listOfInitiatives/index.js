@@ -16,6 +16,16 @@ export function getList(params) {
   });
 }
 
+// 查询选中
+export function getListSelected(params) {
+  return request({
+    url: '/actionClassification/listSelected',
+    method: 'POST',
+    data: params,
+  });
+}
+
+
 //编辑
 export function saveInfos(params) {
   return request({

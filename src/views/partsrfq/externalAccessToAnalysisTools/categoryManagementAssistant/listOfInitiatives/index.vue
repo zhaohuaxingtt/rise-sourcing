@@ -99,7 +99,11 @@
 import {iPage, iButton, iInput} from 'rise';
 import headerNav from '../components/headerNav';
 import theCard from './compoents/theCard';
-import {getList, saveInfos} from '../../../../../api/categoryManagementAssistant/listOfInitiatives';
+import {
+  getList,
+  getListSelected,
+  saveInfos,
+} from '../../../../../api/categoryManagementAssistant/listOfInitiatives';
 import theCheckBox from './compoents/theCheckBox';
 import theRemark from './compoents/theRemark';
 import resultMessageMixin from '@/utils/resultMessageMixin';
@@ -136,9 +140,11 @@ export default {
   methods: {
     handleEdit() {
       this.editStatus = true;
+      this.getList();
     },
     handleCancel() {
       this.editStatus = false;
+      this.getList();
     },
     async handleSave() {
       try {
@@ -176,7 +182,12 @@ export default {
         const req = {
           categoryCode: this.categoryCode,
         };
-        const res = await getList(req);
+        let res = '';
+        if (this.editStatus) {
+          res = await getList(req);
+        } else {
+          res = await getListSelected(req);
+        }
         this.treeData = res.data;
         const selectObj = {};
         this.treeDataSelect = res.data.map(item => {
@@ -220,12 +231,16 @@ export default {
       Object.keys(selectObj).map(item => {
         level1Array.map(level1Item => {
           if (level1Item.name === item) {
-            level1Item.children.map(level2Item => {
-              level2Item.effectFlag === 1 && this.treeDataSelect[item].push(level2Item.name);
-              level2Item.effectFlag === 1 && this.treeDataSelectId.push(level2Item.id);
+            level1Item.children && level1Item.children.map(level2Item => {
+              if (level2Item.effectFlag === 1) {
+                this.treeDataSelect[item].push(level2Item.name);
+                this.treeDataSelectId.push(level2Item.id);
+              }
               level2Item.children && level2Item.children.map(level3Item => {
-                level3Item.effectFlag === 1 && this.treeDataSelect[item].push(level3Item.name);
-                level3Item.effectFlag === 1 && this.treeDataSelectId.push(level3Item.id);
+                if (level3Item.effectFlag === 1) {
+                  this.treeDataSelect[item].push(level3Item.name);
+                  this.treeDataSelectId.push(level3Item.id);
+                }
               });
             });
           }
@@ -281,7 +296,7 @@ export default {
       downloadPDF({
         idEle: 'container',
         pdfName: 'overview',
-        exportPdf: true
+        exportPdf: true,
       });
     },
     jump() {
