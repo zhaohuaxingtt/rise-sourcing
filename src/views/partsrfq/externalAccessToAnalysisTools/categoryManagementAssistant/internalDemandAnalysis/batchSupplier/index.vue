@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-09-01 20:51:24
+ * @LastEditTime: 2021-09-06 14:05:47
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
@@ -122,7 +122,7 @@ export default {
       async save(){
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'batchSupplier',
-            pdfName: 'batchSupplier',
+            pdfName: this.language('PLGYSGL', '批量供应商概览') + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString()+'-',
          });
          let params={
             categoryCode:this.categoryCode,
