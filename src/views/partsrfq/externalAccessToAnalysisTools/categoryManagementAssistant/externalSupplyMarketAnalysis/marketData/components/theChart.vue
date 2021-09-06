@@ -38,6 +38,7 @@ export default {
           icon: 'circle',
           left: 30,
           top: 20,
+          type: 'scroll'
         },
         tooltip: {
           trigger: 'axis',

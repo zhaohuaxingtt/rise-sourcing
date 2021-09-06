@@ -281,6 +281,7 @@ export default {
       downloadPDF({
         idEle: 'container',
         pdfName: 'overview',
+        exportPdf: true
       });
     },
     jump() {

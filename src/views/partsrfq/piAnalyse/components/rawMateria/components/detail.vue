@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 16:41:49
- * @LastEditTime: 2021-09-01 14:23:58
+ * @LastEditTime: 2021-09-06 10:58:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\components\detail.vue
@@ -98,8 +98,8 @@ export default {
     }
   },
   created() {
-    this.initTestData()
-    this.getTableData()
+    // this.initTestData()
+    // this.getTableData()
   },
   methods: {
     // 初始化测试数据
