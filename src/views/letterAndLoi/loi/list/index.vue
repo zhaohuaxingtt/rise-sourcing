@@ -30,7 +30,7 @@
             <iButton v-permission.auto="LK_LOI_LIST_LINIETUIHUI|LINIE退回" :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
             <iButton v-permission.auto="LK_LOI_LIST_CHEHUI|撤回" :loading="btnLoading.back" @click="back">{{language('partsprocure.CheHui','撤回')}}</iButton>
             <iButton v-permission.auto="LK_LOI_LIST_GUANBI|关闭"  @click="closeLoi">{{language('LK_GUANBI','关闭')}} </iButton>
-            <iButton v-permission.auto="LK_LOI_LIST_JIHUO|激活" :loading="btnLoading.activate" @click="activate">{{language('LK_JIHUO','激活')}} </iButton>
+            <iButton v-permission.auto="LK_LOI_LIST_JIHUO|激活" :loading="btnLoading.activate" @click="activate">{{language('LK_LETTER_JIHUO','激活')}} </iButton>
             <iButton v-permission.auto="LK_LOI_LIST_EDITREMARK|编辑备注" @click="editRemark">{{language('LK_BIANJIBEIZHU','编辑备注')}} </iButton>
         </template>
         <!-- 表单区域 -->

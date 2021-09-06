@@ -15,11 +15,8 @@
           <template #typeNameByLang="scope">
             <span>{{ typeof scope.row.typeNameByLang === "function" ? scope.row.typeNameByLang() : scope.row.typeName }}</span>
           </template>
-          <template #newRatio="scope">
-            <iInput class="input-center" v-model="scope.row.newRatio" :class="{ changeClass: scope.row.newRatio !== scope.row.sourceRatio }" @input="handleInputByNumber($event, 'newRatio', scope.row, 2)"></iInput>
-          </template>
-          <template #amount="scope">
-            <span>{{ diffCompute(scope.row.sourceAmount, scope.row.newAmount) }}</span>
+          <template #ratio="scope">
+            <iInput class="input-center" v-model="scope.row.ratio" :class="{ changeClass: scope.row.ratio !== scope.row.originRatio }" @input="handleInputByNumber($event, 'ratio', scope.row, 2, computeChangeAmount)"></iInput>
           </template>
         </tableList>
       </div>
@@ -28,6 +25,8 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
+
 import { iButton, iInput } from "rise"
 import tableList from "../../../tableList"
 import { scrapCostTableTitle as tableTitle } from "../data"
@@ -52,14 +51,11 @@ export default {
     sumData: {
       type: Object,
       required: true,
-      default: () => ({
-        sourceMaterialCostSum: "0",
-        newMaterialCostSum: "0",
-        sourceLaborCostSum: "0",
-        newLaborCostSum: "0",
-        sourceDeviceCostSum: "0",
-        newDeviceCostSum: "0"
-      })
+      default: () => ({})
+    },
+    discardCost: {
+      type: String || Number,
+      default: 0
     }
   },
   data() {
@@ -67,13 +63,29 @@ export default {
       tableTitle
     }
   },
+  watch: {
+    sumData: {
+      handler() {
+        this.computeChangeAmount()
+      },
+      deep: true
+    }
+  },
   methods: {
-    handleInputByNumber(value, key, row, precision) {
+    handleInputByNumber(value, key, row, precision, cb) {
       this.$set(row, key, numberProcessor(value, precision))
+
+      if (typeof cb === "function") {
+        cb(value, key, row)
+      }
     },
-    diffCompute(a, b) {
-      // eslint-disable-next-line no-undef
-      return math.subtract(math.bignumber(b), math.bignumber(a)).toFixed(2)
+    computeChangeAmount() {
+      const sourceSum = math.evaluate(`${ this.sumData.sourceMaterialCostSum || 0 } + ${ this.sumData.sourceLaborCostSum || 0 } + ${ this.sumData.sourceDeviceCostSum || 0 }`)
+      const newSum = math.evaluate(`${ this.sumData.newMaterialCostSum || 0 } + ${ this.sumData.newLaborCostSum || 0 } + ${ this.sumData.newDeviceCostSum || 0 }`)
+      const discardCost = math.evaluate(`(${ newSum } / (1 - (${ this.tableListData[0].ratio || 0 } / 100)) - ${ newSum }) - (${ sourceSum } / (1 - (${ this.tableListData[0].originRatio || 0} / 100)) - ${ sourceSum })`).toFixed(2)
+
+      this.$set(this.tableListData[0], "changeAmount", discardCost)
+      this.$emit("update:discardCost", discardCost)
     }
   }
 }

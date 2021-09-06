@@ -53,7 +53,7 @@
         </el-table-column>
         <el-table-column :label="language('SHIFOUSVWZHIDINGJIAGESANJIAN', '是否SVW指定价格散件')" align="center" width="150">
           <template v-slot="scope">
-            <iSelect v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="select-center" v-model="scope.row.isSvwAssignPriceParts" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.isSvwAssignPriceParts !== sourceMap[scope.row.sourceId].isSvwAssignPriceParts) : false }">
+            <iSelect v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="select-center" v-model="scope.row.isSvwAssignPriceParts" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.isSvwAssignPriceParts !== sourceMap[scope.row.sourceId].isSvwAssignPriceParts) : false }" @change="computeMaterialCostSum">
               <el-option
                 v-for="item in options"
                 :key="item.key"
@@ -92,7 +92,7 @@
           </el-table-column>
           <el-table-column label="(RMB/Pc.)" align="center" width="93" prop="materialManageCost"></el-table-column>
         </el-table-column>
-        <el-table-column align="center" width="122" prop="materialCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('YUANCAILIAOSANJIANCHENGBEN', '原材料/散件成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
+        <el-table-column align="center" min-width="122" prop="materialCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('YUANCAILIAOSANJIANCHENGBEN', '原材料/散件成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
       </el-table>
     </div>
   </div>  
@@ -123,13 +123,9 @@ export default {
       required: true,
       default: () => ([])
     },
-    sourceMaterialCostSum: {
-      type: String || Number,
-      default: "0"
-    },
-    newMaterialCostSum: {
-      type: String || Number,
-      default: "0"
+    sumData: {
+      type: Object,
+      default: () => ({})
     },
   },
   data() {
@@ -140,8 +136,8 @@ export default {
         { key: "Germany", label: "Germany", value: "Germany" }
       ],
       options: [
-        { key: "Y", label: "是", value: "Y" },
-        { key: "N", label: "否", value: "N" }
+        { key: "Y", label: "是", value: true },
+        { key: "N", label: "否", value: false }
       ],
       sourceMap: {},
       sourceTableListData: [],
@@ -294,29 +290,42 @@ export default {
       this.computeMaterialCostSum(materialCost, "materialCost", row)
     },
     computeMaterialCostSum(sourceValue, sourceKey, row) {
-      const sourceTableListData = []
-      const newTableListData = []
+      let sourceMaterialCostSum = 0
+      let sourceMaterialCostSumByNotSvwAssignPriceParts = 0
+      let newMaterialCostSum = 0
+      let newMaterialCostSumByNotSvwAssignPriceParts = 0
 
       this.tableListData.forEach(item => {
         if (item.partCbdType == 0 || item.partCbdType == 1) {
-          sourceTableListData.push(item)
+          sourceMaterialCostSum = math.add(sourceMaterialCostSum, math.bignumber(item.materialCost || 0))
+
+          if (!item.isSvwAssignPriceParts) {
+            sourceMaterialCostSumByNotSvwAssignPriceParts = math.add(sourceMaterialCostSumByNotSvwAssignPriceParts, math.bignumber(item.materialCost || 0))
+          }
         }
 
         if (item.partCbdType == 2) {
-          newTableListData.push(item)
+          newMaterialCostSum = math.add(newMaterialCostSum, math.bignumber(item.materialCost || 0))
+
+          if (!item.isSvwAssignPriceParts) {
+            newMaterialCostSumByNotSvwAssignPriceParts = math.add(newMaterialCostSumByNotSvwAssignPriceParts, math.bignumber(item.materialCost || 0))
+          }
         }
       })
 
-      const sourceMaterialCostSum = sourceTableListData.reduce((acc, cur) => {
-        return math.bignumber(math.add(acc, cur.materialCost))
-      }, 0).toFixed(2)
+      const material = math.evaluate(`${ newMaterialCostSum } - ${ sourceMaterialCostSum }`).toFixed(2)
+      sourceMaterialCostSum = sourceMaterialCostSum.toFixed(2)
+      sourceMaterialCostSumByNotSvwAssignPriceParts = sourceMaterialCostSumByNotSvwAssignPriceParts.toFixed(2)
+      newMaterialCostSum = newMaterialCostSum.toFixed(2)
+      newMaterialCostSumByNotSvwAssignPriceParts = newMaterialCostSumByNotSvwAssignPriceParts.toFixed(2)
 
-      const newMaterialCostSum = newTableListData.reduce((acc, cur) => {
-        return math.bignumber(math.add(acc, cur.materialCost))
-      }, 0).toFixed(2)
-
-      this.$emit("update:sourceMaterialCostSum", sourceMaterialCostSum)
-      this.$emit("update:newMaterialCostSum", newMaterialCostSum)
+      this.$emit("update:sumData", {
+        sourceMaterialCostSum,
+        sourceMaterialCostSumByNotSvwAssignPriceParts,
+        newMaterialCostSum,
+        newMaterialCostSumByNotSvwAssignPriceParts,
+        material
+      })
     }
   }
 }

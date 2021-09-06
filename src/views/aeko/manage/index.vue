@@ -368,7 +368,7 @@ export default {
           const {code,data=[]} = res;
           if(code ==200 && data){
              data.map((item)=>{
-              item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
+              item.desc = item.code;
             })
             this.selectOptions.brand = data;
             this.selectOptionsCopy.brand = data;

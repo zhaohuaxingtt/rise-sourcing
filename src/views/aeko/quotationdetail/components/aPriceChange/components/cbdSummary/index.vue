@@ -15,6 +15,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 
 import tableList from "../../../tableList"
 import { cbdSummaryTableTitle as tableTitle } from "../data"
@@ -34,6 +35,14 @@ export default {
   data() {
     return {
       tableTitle
+    }
+  },
+  watch: {
+    tableListData: {
+      handler: list => {
+        this.$set(this.tableListData[0], apriceChange, math.evaluate(`${ material } + ${ makeCost } + ${ discardCost } + ${ manageFee } + ${ otherFee } + ${ profit }`).toFixed(2))
+      }, 
+      deep: true
     }
   }
 }
