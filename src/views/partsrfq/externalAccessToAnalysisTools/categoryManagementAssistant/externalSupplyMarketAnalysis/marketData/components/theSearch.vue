@@ -44,6 +44,7 @@
             v-model="form[item.props]"
             :options="item.options"
             :props="item.cascaderProps"
+            :placeholder="item.placeholder"
             collapse-tags
             filterable
             clearable
@@ -61,7 +62,7 @@ export default {
   components: {
     iSelect,
     iInput,
-    iSelectCustom
+    iSelectCustom,
   },
   props: {
     list: {
@@ -123,5 +124,9 @@ export default {
 
 ::v-deep .el-range-separator {
   line-height: 1.5rem;
+}
+
+::v-deep .el-cascader__search-input {
+  font-size: 12px;
 }
 </style>
