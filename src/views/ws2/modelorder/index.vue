@@ -191,9 +191,10 @@ export default {
       this.orderQueryForm.pageSize = this.page.pageSize
       this.loadOrder()
     },
-    showOnlyMyselfData() {
+    showOnlyMyselfData(val) {
       this.orderQueryForm.currentPage = 1
       this.orderQueryForm.pageSize = this.page.pageSize
+      this.orderQueryForm.isOnlyMyself=val
       this.loadOrder()
     },
     //创建订单
