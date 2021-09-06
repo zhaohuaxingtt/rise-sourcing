@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 16:28:16
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-06 14:34:46
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -222,7 +222,7 @@ export default {
         this.loading = false
         if (res?.result) {
           // console.log(this.cartypeProId)
-          const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId, sixPartCode:part.partNum.slice(3,9), level: '2', categoryType: res.data.category}})
+          const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId, sixPartCode:part.partNum.slice(3,9), level: '2', categoryType: res.data.category, carProjectName:this.carProjectName}})
           window.open(router.href,'_blank')
         } else {
           iMessage.warn('HUOQUSUANFAPEIZHISHIBAI', '获取算法配置失败')
@@ -272,17 +272,8 @@ export default {
         }
       })
     },
-    autoSave() {
-      this.saveloading = true
-      updatePartSchedule(this.parts).then(res => {
-        if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.saveloading = false
-      })
+    async autoSave() {
+      await this.handleSave(false)
     },
     /**
      * @Description: 根据选中的行获取每一行的fs下拉列表

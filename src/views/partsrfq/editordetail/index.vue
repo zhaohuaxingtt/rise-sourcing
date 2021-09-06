@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-09-02 15:05:49
+ * @LastEditTime: 2021-09-03 16:35:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -85,8 +85,8 @@
             <iFormItem :label="language('LK_DANGQIANLUNCI','当前轮次')+':'" name="currentRounds" v-permission="PARTSRFQ_EDITORDETAIL_CURRENTROUND">
               <iText >{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
-            <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')+':'" name="roundsType">
-              <iText v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+            <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')+':'" name="roundsType" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+              <iText >
                 {{ baseInfo.roundsType }}
               </iText>
             </iFormItem>

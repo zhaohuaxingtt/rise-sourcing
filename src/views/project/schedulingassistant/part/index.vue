@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 13:59:40
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 16:31:09
+ * @LastEditTime: 2021-09-06 13:57:00
  * @Description: 零件排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\index.vue
 -->
@@ -136,9 +136,9 @@ export default {
      * @return {*}
      */    
     init() {
-      if (this.$route.query.carProject) { // 概览页跳转到此页面
+      if (this.$route.query.carProject) { // 概览页或取它跳转到此页面
         this.carProject = this.$route.query.carProject
-        this.carProjectName = this.$route.query.cartypeProjectZh
+        this.carProjectName = this.$route.query.cartypeProjectZh || this.$route.query.carProjectName
         this.initPartSchedule(this.carProject)
       } else { // 点击tab进入，获取用户最后一次操作的车型项目
         this.getLastOperateCarType()

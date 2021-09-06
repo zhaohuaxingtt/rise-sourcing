@@ -11,17 +11,17 @@ export const cbdSummaryTableTitle = [
 export const scrapCostTableTitle = [
   { props: "index", name: "#", width: "60" },
   { props: "typeNameByLang", key: "BAOFEICHENGBEN", name: "报废成本", width: "190" },
-  { props: "sourceRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('YUANBAOFEILV', '原报废率') }(%)` }}) }, width: "110" },
-  { props: "newRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('XIANBAOFEILV', '现报废率') }(%)` }}) }, width: "110" },
-  { props: "amount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('BIANDONGJINE', '变动金额') }(RMB/Pc.)` }}) } },
+  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('YUANBAOFEILV', '原报废率') }(%)` }}) }, width: "110" },
+  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('XIANBAOFEILV', '现报废率') }(%)` }}) }, width: "110" },
+  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('BIANDONGJINE', '变动金额') }(RMB/Pc.)` }}) } },
 ]
 
 export const manageCostTableTitle = [
   { props: "index", name: "#", width: "60" },
   { props: "typeNameByLang", key: "GUANLIFEI", name: "管理费", width: "190" },
-  { props: "sourceRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('YUANBILI', '原比例') }(%)` }}) }, width: "110" },
-  { props: "newRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('XIANBILI', '现比例') }(%)` }}) }, width: "110" },
-  { props: "amount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('BIANDONGJINE', '变动金额') }(RMB/Pc.)` }}) } },
+  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('YUANBILI', '原比例') }(%)` }}) }, width: "110" },
+  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('XIANBILI', '现比例') }(%)` }}) }, width: "110" },
+  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('BIANDONGJINE', '变动金额') }(RMB/Pc.)` }}) } },
 ]
 
 export const otherCostTableTitle = [
@@ -35,9 +35,9 @@ export const otherCostTableTitle = [
 export const profitTableTitle = [
   { props: "index", name: "#", width: "60" },
   { props: "typeNameByLang", key: "LIRUN", name: "利润", width: "190" },
-  { props: "sourceRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('YUANBILI', '原比例') }(%)` }}) }, width: "110" },
-  { props: "newRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('XIANBILI', '现比例') }(%)` }}) }, width: "110" },
-  { props: "amount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('BIANDONGJINE', '变动金额') }(RMB/Pc.)` }}) } },
+  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('YUANBILI', '原比例') }(%)` }}) }, width: "110" },
+  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('XIANBILI', '现比例') }(%)` }}) }, width: "110" },
+  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${ this.language('BIANDONGJINE', '变动金额') }(RMB/Pc.)` }}) } },
 ]
 
 export const uuidv4 = function() {
