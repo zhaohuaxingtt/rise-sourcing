@@ -10,17 +10,18 @@ const request = axios(process.env.VUE_APP_AON);
 // --原材料--
 
 //市场数据原材料下拉列表
-export function getRawMaterialGroupSelectList() {
+export function getRawMaterialGroupSelectList(params) {
   return request({
     url: '/cmMdRawMaterialEntity/rawMaterialGroup',
-    method: 'GET',
+    method: 'POST',
+    data: params,
   });
 }
 
 //市场数据原材料数据
 export function getrawMaterialGroupData(params) {
   return request({
-    url: '/cmMdRawMaterialEntity/rawMaterialGroupData',
+    url: '/cmMdRawMaterialEntity/rawMaterialGroupDataRel',
     method: 'POST',
     data: params,
   });
@@ -84,17 +85,18 @@ export function saveLabourScheme(params) {
 // --能源--
 
 //市场数据能源下拉列表
-export function getEnergyGroupSelectList() {
+export function getEnergyGroupSelectList(params) {
   return request({
     url: '/cmMdEnergyEntity/energyGroup',
-    method: 'GET',
+    method: 'POST',
+    data: params,
   });
 }
 
 //市场数据能源数据
 export function getEnergyGroupData(params) {
   return request({
-    url: '/cmMdEnergyEntity/energyGroupData',
+    url: '/cmMdEnergyEntity/energyGroupDataRel',
     method: 'POST',
     data: params,
   });

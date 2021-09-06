@@ -43,8 +43,11 @@ export default {
 <style scoped lang="scss">
 .container {
   display: flex;
+  height: 55px;
+  overflow-x: auto;
 
   .itemBox {
+    margin-top: 10px;
     position: relative;
     display: flex;
     justify-content: center;
@@ -56,6 +59,7 @@ export default {
     margin-right: 20px;
     color: #0D0D0D;
     font-size: 13px;
+    white-space: nowrap;
 
     .deleteBox {
       position: absolute;

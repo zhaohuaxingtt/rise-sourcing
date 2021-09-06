@@ -11,6 +11,7 @@ export function downloadPDF({
   idEle: ele,
   pdfName: pdfName,
   callback: callback,
+  exportPdf: exportPdf
 }) {
   let el = document.getElementById(ele) //通过getElementById获取要导出的内容
   let eleW = el.offsetWidth // 获得该容器的宽
@@ -87,7 +88,9 @@ export function downloadPDF({
     }
     //可动态生成
     pdf = addWaterMark(pdf)
-    // pdf.save(pdfName)
+    if(exportPdf) {
+      pdf.save(pdfName)
+    }
     if (callback) {
       callback(pdf, pdfName)
     }
@@ -113,11 +116,12 @@ export function dataURLtoFile(dataurl, filename) {
 // pdf相关处理
 export const downloadPdfMixins = {
   methods: {
-    getDownloadFileAndExportPdf({ domId, pdfName, callBack }) {
+    getDownloadFileAndExportPdf({ domId, pdfName, callBack, exportPdf }) {
       return new Promise((resolve) => {
         downloadPDF({
           idEle: domId,
           pdfName: pdfName,
+          exportPdf,
           callback: async (pdf, pdfName) => {
             const time = new Date().getTime()
             const filename = pdfName + time + '.pdf'
