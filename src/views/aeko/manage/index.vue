@@ -12,7 +12,7 @@
     <div class="margin-top20">
 
     <!-- 搜索区域 -->
-      <iSearch @sure="getList" @reset="reset">
+      <iSearch @sure="sure" @reset="reset">
           <el-form>
               <el-form-item 
               v-for="(item,index) in SearchList" 
@@ -304,6 +304,12 @@ export default {
           carTypeCodeList:[''],
           linieDeptNumList:[''],
         };
+        this.page.currPage = 1;
+        this.getList();
+      },
+
+      sure(){
+        this.page.currPage = 1;
         this.getList();
       },
 
@@ -368,7 +374,7 @@ export default {
           const {code,data=[]} = res;
           if(code ==200 && data){
              data.map((item)=>{
-              item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
+              item.desc = item.code;
             })
             this.selectOptions.brand = data;
             this.selectOptionsCopy.brand = data;

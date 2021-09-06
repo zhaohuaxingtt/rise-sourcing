@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 17:35:07
+ * @LastEditTime: 2021-09-06 17:48:16
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -54,56 +54,56 @@
         </div>
         <div class="productItem-bottom">
           <div class="productItem-bottom-text">
-            <icon @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon>
+            <icon @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon> 
           </div>
-          <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node">
-            <div class="productItem-bottom-nodeItem">
+          <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node"> 
+            <div class="productItem-bottom-nodeItem"> 
               <span class="productItem-bottom-nodeItem-label" v-if="!item.label.includes('1st')">{{item.key ? language(item.key, item.label) : item.label}}</span>
-              <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span>
-              <icon v-if="pro[item.status] == 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon>
-              <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
+              <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span> 
+              <icon v-if="pro[item.status] == 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon> 
+              <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon> 
               <!--------------------------节点发生时间-已发生的不可编辑------------------------------------>
               <template v-if="index == nodeList.length - 1">
                 <iText v-if="pro[item.status] == 1 && pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
                 <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw2]}}</iText>
                 <el-cascader
-                  v-else-if="pro.emIsLarger"
-                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "
-                  :value="pro[item.kw].split('-KW')"
-                  :options="yearWeekOptions(pro, item.kw, index)"
-                  @change="handleChange($event, pro, item.kw, index)"
-                  separator="-KW"
-                ></el-cascader>
-                <el-cascader
-                  v-else
-                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "
-                  :value="pro[item.kw2].split('-KW')"
-                  :options="yearWeekOptions(pro, item.kw2, index)"
-                  @change="handleChange($event, pro, item.kw2, index)"
-                  separator="-KW"
-                ></el-cascader>
-              </template>
+                  v-else-if="pro.emIsLarger" 
+                  :class="`productItem-bottom-stepBetween-input margin-top20 ` " 
+                  :value="pro[item.kw].split('-KW')" 
+                  :options="yearWeekOptions(pro, item.kw, index)" 
+                  @change="handleChange($event, pro, item.kw, index)" 
+                  separator="-KW" 
+                ></el-cascader> 
+                <el-cascader 
+                  v-else 
+                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "  
+                  :value="pro[item.kw2].split('-KW')" 
+                  :options="yearWeekOptions(pro, item.kw2, index)" 
+                  @change="handleChange($event, pro, item.kw2, index)" 
+                  separator="-KW" 
+                ></el-cascader>  
+              </template>  
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
-              <el-cascader
-                  v-else
-                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "
-                  :value="pro[item.kw].split('-KW')"
-                  :options="yearWeekOptions(pro, item.kw, index)"
+              <el-cascader 
+                  v-else 
+                  :class="`productItem-bottom-stepBetween-input margin-top20 ` " 
+                  :value="pro[item.kw].split('-KW')" 
+                  :options="yearWeekOptions(pro, item.kw, index)" 
                   @change="handleChange($event, pro, item.kw, index)"
                   separator="-KW"
-                ></el-cascader>
+                ></el-cascader> 
             </div>
-            <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
-              <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom5`">
-                <!--------------------------节点时长-不可编辑------------------------------------>
-                <template v-if="index == nodeList.length - 2">
-                  <iText v-if="pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText>
-                  <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint2]}}W</iText>
-                </template>
-                <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText>
-              </div>
+            <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1"> 
+              <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom5`"> 
+                <!--------------------------节点时长-不可编辑------------------------------------> 
+                <template v-if="index == nodeList.length - 2"> 
+                  <iText v-if="pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
+                  <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint2]}}W</iText> 
+                </template> 
+                <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
+              </div> 
               <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon>
-            </div>
+            </div> 
           </div>
         </div>
       </div>
@@ -173,17 +173,17 @@ export default {
     this.getFSOPtions()
   },
   computed: {
-    yearWeekOptions() {
+    yearWeekOptions() { 
       return () => this.option
-      // return (item, props, index) => {
+      // return (item, props, index) => { 
       //   // eslint-disable-next-line no-undef
       //   const selectOption = _.cloneDeep(this.option)
       //   let beforeYear = null, beforeWeek = null, afterYear = null, afterWeek = null
       //   if (this.nodeList[index - 1]) {
       //     const beforeNode = item[this.nodeList[index - 1].kw]
-      //     beforeYear = beforeNode.split('-KW')[0]
+      //     beforeYear = beforeNode.split('-KW')[0] 
       //     beforeWeek = beforeNode.split('-KW')[1]
-      //   }
+      //   } 
       //   if (this.nodeList[index + 1]) {
       //     const afterNode = props === 'otsTimeKw' ? item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw]
       //     afterYear = afterNode.split('-KW')[0]
@@ -215,31 +215,31 @@ export default {
     }
   },
   methods: {
-    async handleDownload(item) {
+    async handleDownload(item) { 
       // item.type 导出类型 1-风险预警 2-未BF 3-未释放
       const partScheduleInfoVOList = this.partsTemp.filter(pItem => {
-        if (item.type == 1) {
+        if (item.type == 1) { 
           const targetList = [pItem.pvsTarget, pItem.vffTarget, pItem.zerosTarget]
           return targetList.some(item => item == 3) || targetList.some(item => item == 2)
-        }
+        } 
         if (item.type == 2) {
-          return pItem.partPeriod == 4
+          return pItem.partPeriod == 4 
+        } 
+        if (item.type == 3) { 
+          return pItem.partPeriod == 1 
         }
-        if (item.type == 3) {
-          return pItem.partPeriod == 1
-        }
-      })
-      const params = {
-        cartypeProId: this.cartypeProId,
+      }) 
+      const params = { 
+        cartypeProId: this.cartypeProId, 
         partScheduleInfoVOList: partScheduleInfoVOList,
-        type: item.type
-      }
-      this.downloadLoading = true
+        type: item.type 
+      } 
+      this.downloadLoading = true 
       await exportPartSchedule(params)
-      this.downloadLoading = false
+      this.downloadLoading = false 
     },
-    changeShowDownloadContent(isShow) {
-      this.showDownloadContent = isShow
+    changeShowDownloadContent(isShow) { 
+      this.showDownloadContent = isShow 
     },
     /**
      * @Description: 生成排程版本
@@ -247,97 +247,97 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    handleSecheduleVersion() {
-      this.versionLoading = true
-      const params = {
+    handleSecheduleVersion() { 
+      this.versionLoading = true 
+      const params = { 
         cartypeProId: this.cartypeProId,
         source: 4,
-        type: 2
+        type: 2 
       }
       addScheduleVersion(params).then(res => {
-        if (res?.result) {
+        if (res?.result) { 
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        } else {
+        } else { 
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
+        } 
       }).finally(() => {
         this.versionLoading = false
       })
     },
-    async gotoDBhistory(part) {
-      this.loading = true
-      try{
-        const res = await getPartGroupConfig(this.cartypeProId)
-        this.loading = false
-        if (res?.result) {
+    async gotoDBhistory(part) { 
+      this.loading = true 
+      try{ 
+        const res = await getPartGroupConfig(this.cartypeProId) 
+        this.loading = false 
+        if (res?.result) {  
           // console.log(this.cartypeProId)
-          const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId, sixPartCode:part.partNum.slice(3,9), level: '2', categoryType: res.data.category}})
-          window.open(router.href,'_blank')
-        } else {
-          iMessage.warn('HUOQUSUANFAPEIZHISHIBAI','获取算法配置失败')
-        }
-      } catch(error) {
-        this.loading = false
-      }
+          const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId, sixPartCode:part.partNum.slice(3,9), level: '2', categoryType: res.data.category, carProjectName:this.carProjectName}}) 
+          window.open(router.href,'_blank') 
+        } else { 
+          iMessage.warn('HUOQUSUANFAPEIZHISHIBAI','获取算法配置失败') 
+        }  
+      } catch(error) { 
+        this.loading = false 
+      } 
     },
-    handleSendFsConfirm(selectRow) {
+    handleSendFsConfirm(selectRow) { 
       // eslint-disable-next-line no-undef
       partProgressConfirm(selectRow.map(item => _.omit(item, 'selectOption'))).then(res => {
-        if (res?.result) {
-          if (res.data && res.data.length > 1) {
+        if (res?.result) { 
+          if (res.data && res.data.length > 1) { 
             iMessage.warn(res.data.map(item => item.partName).join(',')+'不符合发送条件，无法发送')
-          } else {
+          } else { 
             iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
             this.changeFsConfirmVisible(false)
             this.getPartList(this.cartypeProId)
-          }
-        } else {
+          } 
+        } else { 
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
-      }).finally(() => {
+      }).finally(() => { 
         this.$refs.fsConfirmPart.changeSaveLoading(false)
       })
     },
     /**
-     * @Description: 获取fs下拉选项
-     * @Author: Luoshuang
+     * @Description: 获取fs下拉选项 
+     * @Author: Luoshuang 
      * @param {*}
-     * @return {*}
-     */    
-    getFSOPtions() {
-      getAllFS().then(res => {
+     * @return {*} 
+     */     
+    getFSOPtions() { 
+      getAllFS().then(res => { 
         if (res?.result) {
-          this.selectOptions = {
+          this.selectOptions = { 
             ...this.selectOptions,
             fsOptions: res.data.map(item => {
-              return {
-                ...item,
+              return { 
+                ...item, 
                 value: item.id,
-                label: item.nameZh
-              }
+                label: item.nameZh 
+              } 
             })
           }
-        } else {
+        } else { 
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
     },
-    async autoSave() {
-      await this.handleSave(false)
+    async autoSave() { 
+      await this.handleSave(false) 
     },
-    /**
+    /** 
      * @Description: 根据选中的行获取每一行的fs下拉列表
      * @Author: Luoshuang
-     * @param {*} tableList
-     * @return {*}
+     * @param {*} tableList 
+     * @return {*} 
      */    
-    async getFsUserList(tableList) {
+    async getFsUserList(tableList) { 
       const res = await getFsUserListPart({partNums: tableList.map(item => item.partNum).join(',')})
         if (res?.result) {
-          return res.data
+          return res.data  
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          return null
+          return null 
         }
     },
     /**
@@ -346,21 +346,33 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    getNextThreeWorkDay() {
-      if (moment().day() === 2 || moment().day() === 1) {
+    getNextThreeWorkDay() { 
+      if (moment().day() === 2 || moment().day() === 1) { 
         return moment().add(3, 'days').format('YYYY-MM-DD')
-      } else {
-        return moment().add(5, 'days').format('YYYY-MM-DD')
-      }
+      } else { 
+        return moment().add(5, 'days').format('YYYY-MM-DD') 
+      } 
+    /**
+     * @Description: 修改fs弹窗
+     * @Author: Luoshuang 
+     * @param {*} 
+     * @return {*} 
+     */
     },
-    changeFsConfirmVisible(visible) {
-      this.dialogVisibleFS = visible
-    },
-    async handleSendFs() {
-      await this.autoSave()
+    changeFsConfirmVisible(visible) { 
+      this.dialogVisibleFS = visible 
+    }, 
+    /**
+     * @Description: 发送fs
+     * @Author: Luoshuang
+     * @param {*} 
+     * @return {*}
+     */     
+    async handleSendFs() { 
+      await this.autoSave() 
       try {
-        this.loading = true
-        // 筛选出待定点和待kickoff的数据
+        this.loading = true 
+        // 筛选出待定点和待kickoff的数据 
         const selectRows = this.partsTemp.filter(item => {
           const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget]
           return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3) && (item.partPeriod == 2 || item.partPeriod == 3)
@@ -368,14 +380,14 @@ export default {
         if (selectRows.length < 1) {
           iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件'))
           throw(false)
-        }
+        } 
         // 获取询价采购员下拉数据
         const fsOptions = await this.getFsUserList(selectRows)
         // 获取三个工作日之后的日期
         const nextThreeWorkDay = await this.getNextThreeWorkDay()
-        const tableListNomi = []
-        const tableListKickoff = []
-        selectRows.forEach((item) => {
+        const tableListNomi = [] 
+        const tableListKickoff = [] 
+        selectRows.forEach((item) => { 
           const fs = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userName || ''
           const fsId = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userId || ''
           const options = fsOptions ? fsOptions[item.productGroupId]?.reduce((accu, item) => {
@@ -388,10 +400,10 @@ export default {
             } else {
               return accu
             }
-          },[]) : []
+          },[]) : [] 
           const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget]
-          const tableItem = {
-            // ...item,
+          const tableItem = { 
+            // ...item, 
             carTypeProId: this.cartypeProId,
             carTypeProject: this.carProjectName,
             partNum: item.partNum,
@@ -415,106 +427,158 @@ export default {
           }
           if (item.partPeriod == 2) {
             tableListNomi.push(tableItem)
-          }
-          if (item.partPeriod == 3) {
-            tableListKickoff.push(tableItem)
-          }
-        })
-        this.tableListNomi = tableListNomi
-        this.tableListKickoff = tableListKickoff
-        this.loading = false
-        this.changeFsConfirmVisible(true)
-      } catch(e) {
-        this.loading = false
-      }
-    },
-    openLogicDialog() {
-      this.getPartGroupConfig()
-      this.changeLogicVisible(true)
-    },
-    updatePartGroupConfig(logicData) {
-      console.log(logicData)
-      if (!logicData) {
+          } 
+          if (item.partPeriod == 3) { 
+            tableListKickoff.push(tableItem) 
+          } 
+        }) 
+        this.tableListNomi = tableListNomi 
+        this.tableListKickoff = tableListKickoff 
+        this.loading = false 
+        this.changeFsConfirmVisible(true) 
+      } catch(e) { 
+        this.loading = false 
+      } 
+    }, 
+    /**
+     * @Description: 打开算法配置弹窗 
+     * @Author: Luoshuang 
+     * @param {*}
+     * @return {*}
+     */    
+    openLogicDialog() {  
+      this.getPartGroupConfig()  
+      this.changeLogicVisible(true)  
+    },  
+    /**
+     * @Description: 更新零件排程算法配置
+     * @Author: Luoshuang 
+     * @param {*} logicData 
+     * @return {*} 
+     */    
+    updatePartGroupConfig(logicData) {   
+      console.log(logicData)  
+      if (!logicData) {  
         return
-      }
+      } 
       updatePartGroupConfig({...logicData, cartypeProId: this.cartypeProId}).then(res => {
-        if (res?.result) {
+        if (res?.result) { 
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.changeLogicVisible(false)
+          this.changeLogicVisible(false) 
           this.getPartList(this.cartypeProId)
-        } else {
+        } else { 
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
+        } 
+      }).finally(() => { 
         this.$refs.logicSettingBtn.changeSaveLoading(false)
-      })
+      }) 
     },
-    getPartGroupConfig() {
+    /**
+     * @Description: 获取排程算法 
+     * @Author: Luoshuang 
+     * @param {*}
+     * @return {*} 
+     */     
+    getPartGroupConfig() { 
       getPartGroupConfig(this.cartypeProId).then(res => {
-        if (res?.result) {
-          this.logicData = res.data
-        } else {
-          this.logicData = {}
+        if (res?.result) { 
+          this.logicData = res.data 
+        } else { 
+          this.logicData = {} 
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
+        } 
+      }) 
+    }, 
+    /**
+     * @Description: 初始化下拉框
+     * @Author: Luoshuang 
+     * @param {*} 
+     * @return {*} 
+     */    
+    initOption() { 
+      const option = [] 
+      for(var i = 2000; i <= moment().year() + 10; i++) { 
+        const countMonth = moment(i+'-01-01').weeksInYear() 
+        const children = [] 
+        for(var j = 1; j <= countMonth; j++) { 
+          children.push({value: j<10?'0'+j:j+'',label: j<10?'0'+j:j+''}) 
+        } 
+        option.push({value:i+'',label:i+'',children:children}) 
+      } 
+      return option 
     },
-    initOption() {
-      const option = []
-      for(var i = 2000; i <= moment().year() + 10; i++) {
-        const countMonth = moment(i+'-01-01').weeksInYear()
-        const children = []
-        for(var j = 1; j <= countMonth; j++) {
-          children.push({value: j<10?'0'+j:j+'',label: j<10?'0'+j:j+''})
-        }
-        option.push({value:i+'',label:i+'',children:children})
-      }
-      return option
-    },
-    getWeekBetween(time1, time2) {
-      const year1 = Number(time1.split('-KW')[0])
-      const week1 = Number(time1.split('-KW')[1])
-      const year2 = Number(time2.split('-KW')[0])
-      const week2 = Number(time2.split('-KW')[1])
-      if (year1 < year2) {
-        let weeks = 0
-        for (var i = year1; i <= year2; i++) {
+    /**
+     * @Description: 计算两个节点直接的间隔（周） 
+     * @Author: Luoshuang 
+     * @param {*} time1 
+     * @param {*} time2 
+     * @return {*} 
+     */    
+    getWeekBetween(time1, time2) { 
+      const year1 = Number(time1.split('-KW')[0]) 
+      const week1 = Number(time1.split('-KW')[1]) 
+      const year2 = Number(time2.split('-KW')[0]) 
+      const week2 = Number(time2.split('-KW')[1]) 
+      if (year1 < year2) { 
+        let weeks = 0 
+        for (var i = year1; i <= year2; i++) { 
           weeks += i === year2 ? week2 : moment(i+'-01-01').weeksInYear() - (i === year1 ? week1 : 0)
-        }
-        return weeks
-      }
-      if (year1 === year2) {
-        return week2 - week1
-      }
+        } 
+        return weeks 
+      } 
+      if (year1 === year2) { 
+        return week2 - week1 
+      } 
       return -this.getWeekBetween(time2, time1)
-    },
-    handleChange(val, item, props, index) {
-      console.log(val, item, props)
+    }, 
+    /** 
+     * @Description: 下拉框更改 
+     * @Author: Luoshuang
+     * @param {*} val
+     * @param {*} item
+     * @param {*} props
+     * @param {*} index
+     * @return {*}
+     */    
+    handleChange(val, item, props, index) { 
+      console.log(val, item, props) 
       this.$set(item, props, val.join('-KW'))
       // const index = this.nodeList.findIndex(item => item.kw === props || item.kw2 === props)
-      if (this.nodeList[index - 1]) {
+      if (this.nodeList[index - 1]) { 
         this.$set(item, this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val.join('-KW')))
-      }
-      if (this.nodeList[index + 1]) {
+      } 
+      if (this.nodeList[index + 1]) { 
         this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val.join('-KW'), props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw]))
-      }
-    },
-    handleSave(refresh = true) {
-      this.saveloading = true
-      updatePartSchedule(this.partsTemp.map(item => {
-        const findItem = this.parts.find(pItem => pItem.partNum === item.partNum)
-        return findItem ? findItem : item
+      } 
+    }, 
+    /**
+     * @Description: 保存
+     * @Author: Luoshuang
+     * @param {*} refresh
+     * @return {*}
+     */    
+    handleSave(refresh = true) { 
+      this.saveloading = true 
+      updatePartSchedule(this.partsTemp.map(item => { 
+        const findItem = this.parts.find(pItem => pItem.partNum === item.partNum) 
+        return findItem ? findItem : item 
       })).then(res => {
-        if (res?.result) {
-          refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          refresh && this.getPartList(this.cartypeProId)
+        if (res?.result) { 
+          refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+          refresh && this.getPartList(this.cartypeProId) 
         } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.saveloading = false
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+        } 
+      }).finally(() => { 
+        this.saveloading = false 
       })
     },
+    /**
+     * @Description: 算法配置弹窗状态更新 
+     * @Author: Luoshuang 
+     * @param {*} visible 
+     * @return {*} 
+     */    
     changeLogicVisible(visible) {
       console.log(visible)
       this.logicVisible = visible
@@ -631,28 +695,28 @@ export default {
      * @param {*} cartypeProId
      * @return {*}
      */    
-    getPartList(cartypeProId) {
-      this.loading = true
-      getPartSchedule(cartypeProId).then(res => {
-        if (res?.result) {
-          const partList = (res.data || []).map(item => {
-            return {
-              ...item,
-              emIsLarger: this.isLarger(item.emTimeKw, item.otsTimeKw)
+    getPartList(cartypeProId) { 
+      this.loading = true 
+      getPartSchedule(cartypeProId).then(res => { 
+        if (res?.result) { 
+          const partList = (res.data || []).map(item => { 
+            return { 
+              ...item, 
+              emIsLarger: this.isLarger(item.emTimeKw, item.otsTimeKw) 
             }
-          })
-          // eslint-disable-next-line no-undef
-          this.parts = _.cloneDeep(partList)
-          // eslint-disable-next-line no-undef
-          this.partsTemp = _.cloneDeep(partList)
-          this.checkAll = false
-          this.isIndeterminate = false
-        } else {
-          this.parts = []
-          this.partsTemp = []
+          }) 
+          // eslint-disable-next-line no-undef 
+          this.parts = _.cloneDeep(partList) 
+          // eslint-disable-next-line no-undef 
+          this.partsTemp = _.cloneDeep(partList) 
+          this.checkAll = false 
+          this.isIndeterminate = false 
+        } else { 
+          this.parts = [] 
+          this.partsTemp = [] 
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
-      }).finally(() => {
+      }).finally(() => { 
         this.loading = false
       })
     },
@@ -845,40 +909,43 @@ export default {
   .productItem + .productItem {
     margin-top: 20px;
   }
-  ::v-deep .el-checkbox {
-    display: flex;
-    align-items: center;
-  }
-  ::v-deep .el-checkbox__inner {
-    width: 20px;
-    height: 20px;
-    &::after {
-      height: 10px;
-      width: 5px;
-      left: 6px;
+  &-title, &-content {
+    ::v-deep .el-checkbox {
+      display: flex;
+      align-items: center;
     }
-    &::before {
-      top: 8px;
+    ::v-deep .el-checkbox__inner {
+      width: 20px;
+      height: 20px;
+      &::after {
+        height: 10px;
+        width: 5px;
+        left: 6px;
+      }
+      &::before {
+        top: 8px;
+      }
+    }
+    ::v-deep .el-checkbox__label {
+      font-size: 18px;
+      font-weight: bold;
+      color: #41434A;
     }
   }
-  ::v-deep .el-checkbox__label {
-    font-size: 18px;
-    font-weight: bold;
-    color: #41434A;
-  }
+  
 }
 </style>
 
-<style lang="scss">
-.el-popover .partListView-downloadContent {
-  padding: 0 0 8px;
+<style lang="scss"> 
+.el-popover .partListView-downloadContent { 
+  padding: 0 0 8px; 
   div {
-    font-size: 14px;
-    color: #55575A;
-    padding: 10px 20px;
+    font-size: 14px; 
+    color: #55575A; 
+    padding: 10px 20px; 
   }
-  div + div {
+  div + div { 
     border-top: 1px solid rgba(112, 112, 112, .1);
-  }
-}
-</style>
+  } 
+} 
+</style> 
