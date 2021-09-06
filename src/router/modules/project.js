@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:02:20
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-31 16:23:56
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-03 15:05:01
  * @Description: 
  * @FilePath: \front-web\src\router\modules\project.js
  */
@@ -10,7 +10,7 @@
 export default [
   {
     path: "/projectmgt",
-    component: () => import("@/layout/default-origin"),
+    component: () => import("@/layout/default"),
     redirect: "/projectmgt/projectoverview",
     meta: {
       title: "项目管理",

@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-23 10:05:51
+ * @LastEditTime: 2021-09-03 18:51:01
  * @LastEditors: 舒杰
  * @Description: 技术路线
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\technology\index.vue
@@ -29,6 +29,9 @@
 			:tableLoading="tableLoading"
 			index
 			@handleSelectionChange="handleSelectionChange">
+			<template #fileName="scope">
+            <span class="link-underline" @click="openPdf(scope.row.fileUrl)">{{ scope.row.fileName }}</span>
+          </template>
 		</tableList>
 		<iPagination
 			v-update

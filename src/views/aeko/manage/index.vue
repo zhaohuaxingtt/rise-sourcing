@@ -715,6 +715,7 @@ export default {
           this.btnLoading.tcm = false;
           if(res.code == 200) {
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getList();
           }
         }).catch((err)=>{
           this.btnLoading.tcm = false;
@@ -728,6 +729,7 @@ export default {
           this.btnLoading.tcmFiles = false;
           if(res.code == 200) {
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getList();
           }
         }).catch((err)=>{
           this.btnLoading.tcmFiles = false;

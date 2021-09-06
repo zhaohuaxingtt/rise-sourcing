@@ -18,12 +18,12 @@ export const tableTitle = [
   { props: "originalAPrice", key: "YUANAJIA", name: "原A价", tooltip: true },
   { props: "apriceChange", key: "AJIABIANDONGHANFENTAN", name: "A价变动(含分摊)", tooltip: true },
   { props: "aprice", key: "XINAJIA", name: "新A价", tooltip: true },
-  { props: "d", key: "YUANBNKJIA", name: "原BNK价", tooltip: true },
-  { props: "e", key: "XINBNKJIA", name: "新BNK价", tooltip: true },
-  { props: "f", key: "MUJUTOUZIBIANDONG", name: "模具投资变动", tooltip: true },
+  { props: "originBnkFee", key: "YUANBNKJIA", name: "原BNK价", tooltip: true },
+  { props: "bnkFee", key: "XINBNKJIA", name: "新BNK价", tooltip: true },
+  { props: "toolingCost", key: "MUJUTOUZIBIANDONG", name: "模具投资变动", tooltip: true },
   { props: "quotationPriceSummaryInfo", key: "KAIFAFEI", name: "开发费", tooltip: true },
   { props: "terminationPrice", key: "ZHONGZHIFEI", name: "终止费", tooltip: true },
-  { props: "isampleCost", key: "YANGJIANFEI", name: "样件费", tooltip: true },
+  { props: "sampleCost", key: "YANGJIANFEI", name: "样件费", tooltip: true },
   { props: "currency", key: "HUOBI", name: "货币", tooltip: true },
   { props: "measureUnit", key: "JILIANGDANWEI", name: "计量单位", tooltip: true }
 ]

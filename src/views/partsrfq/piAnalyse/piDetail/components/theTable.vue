@@ -121,6 +121,10 @@ export default {
         return {};
       },
     },
+    tableStatus: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     pageType() {
@@ -134,7 +138,6 @@ export default {
       hideTableData: [],
       hideSelectTableData: [],
       tableTitle: tableTitle,
-      tableStatus: '',
       recordTableData: [],
       recordHideTableData: [],
       selectOptionsObject: {},
@@ -163,9 +166,9 @@ export default {
       this.hideSelectTableData = val;
     },
     handleEdit() {
-      this.tableStatus = 'edit';
       this.recordTableData = _.cloneDeep(this.tableListData);
       this.recordHideTableData = _.cloneDeep(this.hideTableData);
+      this.$emit('handleTableStatus', 'edit');
     },
     handleAdd() {
       const time = new Date().getTime();
@@ -237,10 +240,9 @@ export default {
     handleCancel() {
       this.tableListData = this.recordTableData;
       this.hideTableData = this.recordHideTableData;
-      this.tableStatus = '';
+      this.$emit('handleTableStatus', '');
     },
     handleFinish() {
-      this.tableStatus = '';
       this.$emit('handlePriceTableFinish', this.handleAllSaveData());
     },
     handleAllSaveData() {
@@ -261,34 +263,34 @@ export default {
         const copyItem = _.cloneDeep(item);
         if (item.dataType === classType['rawMaterial']) {
           if (item.partType) {
-            item.partType = copyItem.partType.classType;
-            item.matchId = copyItem.partType.id;
+            item.partType = copyItem.partType.classType || copyItem.partType;
+            item.matchId = copyItem.partType.id || copyItem.matchId;
           }
           if (item.partNumber) {
-            item.partNumber = copyItem.partNumber.specs;
-            item.matchId = copyItem.partNumber.id;
+            item.partNumber = copyItem.partNumber.specs || copyItem.partNumber;
+            item.matchId = copyItem.partNumber.id || copyItem.matchId;
           }
           if (item.partRegion) {
-            item.partRegion = copyItem.partRegion.area;
-            item.matchId = copyItem.partRegion.id;
+            item.partRegion = copyItem.partRegion.area || copyItem.partRegion;
+            item.matchId = copyItem.partRegion.id || copyItem.matchId;
           }
         } else if (item.dataType === classType['manpower']) {
           if (item.work) {
-            item.work = copyItem.work.profession;
-            item.matchId = copyItem.work.id;
+            item.work = copyItem.work.profession || copyItem.work;
+            item.matchId = copyItem.work.id || copyItem.matchId;
           }
           if (item.workProvince) {
-            item.workProvince = copyItem.workProvince.area;
-            item.matchId = copyItem.workProvince.id;
+            item.workProvince = copyItem.workProvince.area || copyItem.workProvince;
+            item.matchId = copyItem.workProvince.id || copyItem.matchId;
           }
         } else if (item.dataType === classType['exchangeRate']) {
           if (item.productionCountry) {
-            item.productionCountry = copyItem.productionCountry.countryOrigin;
-            item.matchId = copyItem.productionCountry.id;
+            item.productionCountry = copyItem.productionCountry.countryOrigin || copyItem.productionCountry;
+            item.matchId = copyItem.productionCountry.id || copyItem.matchId;
           }
           if (item.currency) {
-            item.currency = copyItem.currency.currency;
-            item.matchId = copyItem.currency.id;
+            item.currency = copyItem.currency.currency || copyItem.currency;
+            item.matchId = copyItem.currency.id || copyItem.matchId;
           }
         }
         return item;

@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-26 17:00:31
+ * @LastEditTime: 2021-09-03 18:58:00
  * @LastEditors: 舒杰
  * @Description: 行业报告
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\index.vue
@@ -159,6 +159,11 @@
 			},
 			// 保存
 			save(){
+				let reportName=this.tableListData.every(item=>item.reportName!="")
+				if(!reportName){
+					iMessage.warn(this.language('QSRBGMC','请输入报告名称'))
+					return
+				}
 				let data={
 					reportList:this.tableListData
 				}
@@ -166,7 +171,7 @@
 					this.resultMessage(res,()=>{
 						this.isEdit=false
 						this.getTableList()
-				})
+					})
 				})
 			},
 			// 返回

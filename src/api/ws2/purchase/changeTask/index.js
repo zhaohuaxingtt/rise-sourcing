@@ -3,6 +3,7 @@ import axiosFile from '@/utils/axios.download'
 
 const VUE_APP_BMNEWCHANGE = axios(process.env.VUE_APP_BMNEWCHANGE)
 const VUE_APP_BMCHANGE = axios(process.env.VUE_APP_BMCHANGE)
+const VUE_APP_BMCHANGESUMMARY = axios(process.env.VUE_APP_BMCHANGESUMMARY)
 const INVESTMENTFile = axiosFile(process.env.VUE_APP_INVESTMENT)
 //BM新增单变更车型下拉列表
 export function bmNewChangeCarTypePullDown(parmars) {
@@ -128,6 +129,42 @@ export function findBmNewChangePageList(data) {
         url: '/findBmNewChangePageList',
         method: 'POST',
         data: data
+    })
+}
+
+//查看变更单
+export function show(params) {
+    return VUE_APP_BMCHANGESUMMARY({
+        url: '/show',
+        method: 'GET',
+        params: params,
+    })
+}
+
+//预览变更单
+export function preview(data) {
+    return VUE_APP_BMCHANGESUMMARY({
+        url: '/preview',
+        method: 'POST',
+        data: data,
+    })
+}
+
+//供应商查看变更单
+export function supplierShow(params) {
+    return VUE_APP_BMCHANGESUMMARY({
+        url: '/supplier/show',
+        method: 'GET',
+        params: params,
+    })
+}
+
+//供应商预览变更单
+export function supplierPreview(data) {
+    return VUE_APP_BMCHANGESUMMARY({
+        url: '/supplier/preview',
+        method: 'POST',
+        data: data,
     })
 }
 

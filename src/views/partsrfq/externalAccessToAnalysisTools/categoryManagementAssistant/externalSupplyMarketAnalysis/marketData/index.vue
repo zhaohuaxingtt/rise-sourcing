@@ -11,7 +11,13 @@
     <!--    导航条-->
     <theTabs @handleClick="handleTabsClick"/>
     <!--    搜索栏-->
-    <theSearch :list="searchProps" v-if="showStatus" ref="theSearch" @handleSelectSearch="handleSelectSearch"/>
+    <theSearch
+        v-if="showStatus"
+        ref="theSearch"
+        :list="searchProps"
+        @handleSelectSearch="handleSelectSearch"
+        @handleSelectCustomChange="handleSelectCustomChange"
+    />
     <div v-loading="chartBoxLoading" style="padding-top: 20px">
       <!--    数据页签栏-->
       <theDataTab :list="dataTabArray" v-if="showStatus" @handleDelete="handleDataTabDelete"/>
@@ -152,18 +158,6 @@ export default {
                 name: item,
               };
             });
-            break;
-          case 'productNameList':
-            item.options = data.productNameList;
-            break;
-          case 'marketNameList':
-            item.options = data.marketNameList;
-            break;
-          case 'priceTypeList':
-            item.options = data.priceTypeList;
-            break;
-          case 'unitList':
-            item.options = data.unitList;
             break;
           case 'areaList':
             item.options = data.areaList.map(item => {
@@ -307,10 +301,6 @@ export default {
           return {name: item.dataType};
         });
       }
-      /* this.$refs.theSearch.showSelectCustom = false;
-       this.$nextTick(() => {
-         this.$refs.theSearch.showSelectCustom = true;
-       });*/
     },
     // 处理保存
     async handleSave() {
@@ -416,6 +406,11 @@ export default {
       copyTwiceSearchProps[props] = list;
       this.setSearchProps(copyTwiceSearchProps);
     },
+    handleSelectCustomChange({value, props}) {
+      console.log(1);
+      console.log(value);
+      console.log(props);
+    }
   },
 };
 </script>

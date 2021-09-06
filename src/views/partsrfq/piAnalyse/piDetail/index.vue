@@ -44,6 +44,8 @@
           :currentTab="currentTab"
           :tableLoading="tableLoading"
           @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
+          :tableStatus="tableStatus"
+          @handleTableStatus="handleTableStatus"
       />
       <theTable
           v-show="currentTab === AVERAGE"
@@ -51,7 +53,9 @@
           :averageData="averageData"
           :currentTab="currentTab"
           :tableLoading="tableLoading"
+          :tableStatus="averageTableStatus"
           @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
+          @handleTableStatus="handleAverageTableStatus"
       />
     </iCard>
 
@@ -172,6 +176,8 @@ export default {
       pieLoading: false,
       showPiChart: true,
       priceLatitudeOptions: [],
+      tableStatus: '',
+      averageTableStatus: '',
     };
   },
   created() {
@@ -182,7 +188,7 @@ export default {
     handleBack() {
       if (this.$store.state.rfq.entryStatus === 1) {
         this.$router.push({
-          path: '/sourcing/partsrfq/assistant',
+          path: '/sourceinquirypoint/sourcing/partsrfq/assistant',
           query: {
             id: this.$store.state.rfq.rfqId,
             round: this.$route.query.round,
@@ -302,19 +308,27 @@ export default {
         };
         const res = await getAnalysisSchemeDetails(req);
         this.dataInfo = res.data;
-        this.currentTabData.partsId = res.data.partsId;
-        this.currentTabData.batchNumber = res.data.batchNumber;
-        this.currentTabData.supplierId = res.data.supplierId;
-        this.currentTabData.analysisSchemeId = res.data.analysisSchemeId;
-        this.currentTabData.fsId = res.data.fsId;
-        this.partList = res.data.partsList.filter(item => {
-          return item.isShow;
-        });
-        this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
-        await Promise.all([this.getPiIndexWaveSelectList(), this.$refs.thePriceIndexChart.buildChart()]);
-        this.$refs.thePartsCostChart.buildChart()
-        this.setLoading({propsArray: propsArrayLoading, boolean: false});
+        if (res.result) {
+          this.currentTabData.partsId = res.data.partsId;
+          this.currentTabData.batchNumber = res.data.batchNumber;
+          this.currentTabData.supplierId = res.data.supplierId;
+          this.currentTabData.analysisSchemeId = res.data.analysisSchemeId;
+          this.currentTabData.fsId = res.data.fsId;
+          this.partList = res.data.partsList.filter(item => {
+            return item.isShow;
+          });
+          this.setPiIndexTimeParams(res.data.currentPartCostTotalVO);
+          await Promise.all([this.getPiIndexWaveSelectList(), this.$refs.thePriceIndexChart.buildChart()]);
+          this.$refs.thePartsCostChart.buildChart();
+        } else {
+          this.resultMessage(res);
+        }
       } catch {
+        this.$refs.theCurrentTable.tableListData = this.$refs.theCurrentTable.tableListData.map(item => {
+          item.newRow = false;
+          return item;
+        });
+      } finally {
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
       }
     },
@@ -335,14 +349,14 @@ export default {
         } else {
           this.timeRange = null;
         }
-        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
         await Promise.all([
           this.getPiIndexWaveSelectList(),
           this.$refs.thePriceIndexChart.buildChart(),
         ]);
-        this.$refs.thePartsCostChart.buildChart()
+        this.$refs.thePartsCostChart.buildChart();
       } catch {
         this.averageData = {};
+      } finally {
         this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
       }
     },
@@ -377,6 +391,7 @@ export default {
             const res = await saveAnalysisScheme(req);
             if (res.result) {
               await this.setTableEditStatus(false);
+              this.handleAddModelUrlChange()
             } else {
               this.handleTableSaveError();
             }
@@ -386,13 +401,13 @@ export default {
           const res = await saveAnalysisScheme(req);
           if (res.result) {
             await this.setTableEditStatus(false);
+            this.handleAddModelUrlChange()
           } else {
             this.handleTableSaveError();
           }
           this.saveDialog = false;
         }
-        this.pageLoading = false;
-      } catch {
+      } finally {
         this.pageLoading = false;
       }
     },
@@ -419,6 +434,7 @@ export default {
       req.avgCompositePrice = averageData.totalPriceRatio;
       req.beginTime = averageData.beginTime;
       req.endTime = averageData.endTime;
+      req.operateFlag = 'S2';
       return req;
     },
     // 处理保存报告并导出 获取导出后的参数
@@ -455,6 +471,7 @@ export default {
       try {
         this.tableLoading = true;
         const req = {
+          operateFlag: 'S1',
           ...this.currentTabData,
         };
         if (tab === CURRENTTIME) {
@@ -469,7 +486,11 @@ export default {
           req.endTime = value.endTime;
         }
         const res = await saveAnalysisScheme(req);
-        this.resultMessage(res);
+        this.resultMessage(res, () => {
+          this.handleTableStatus('');
+          this.handleAverageTableStatus('');
+          this.handleAddModelUrlChange()
+        });
         if (res.result) {
           if (tab === CURRENTTIME) {
             await this.getDataInfo({propsArrayLoading: ['tableLoading', 'pieLoading']});
@@ -479,7 +500,7 @@ export default {
         } else {
           this.handleTableSaveError();
         }
-      } catch {
+      } finally {
         this.tableLoading = false;
       }
     },
@@ -503,8 +524,8 @@ export default {
     },
     // 设置表格编辑状态
     setTableEditStatus(boolean) {
-      this.$refs.theAverageTable.tableStatus = boolean;
-      this.$refs.theCurrentTable.tableStatus = boolean;
+      this.handleTableStatus(boolean);
+      this.handleAverageTableStatus(boolean);
     },
     handleTableSaveError() {
       if (this.currentTab === CURRENTTIME && this.$refs.theCurrentTable.tableStatus === 'edit') {
@@ -525,6 +546,22 @@ export default {
         this.priceLatitudeOptions = res.data;
       } catch {
         this.priceLatitudeOptions = [];
+      }
+    },
+    handleTableStatus(val) {
+      this.tableStatus = val;
+    },
+    handleAverageTableStatus(val) {
+      this.averageTableStatus = val;
+    },
+    handleAddModelUrlChange() {
+      if (this.$route.query.batchNumber) {
+        this.$router.push({
+          path: '/sourcing/partsrfq/piAnalyseDetail',
+          query: {
+            schemeId: this.currentTabData.analysisSchemeId,
+          },
+        });
       }
     },
   },

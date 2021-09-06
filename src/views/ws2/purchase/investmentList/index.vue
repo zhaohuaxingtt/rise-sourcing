@@ -364,7 +364,7 @@ export default {
     toBmInfo(row){
       //  如当前用户没有查看“模具投资金额”的权限，点击流水号后提示“对不起，您所在的岗位没有该材料组权限”
       let url = this.$router.resolve({
-        path: '/purchase/investmentList/bmInfo',
+        path: '/purchase/investmentList/sureTask/bmInfo',
         query: {
           bmSerial: row.bmSerial,
           id: row.id

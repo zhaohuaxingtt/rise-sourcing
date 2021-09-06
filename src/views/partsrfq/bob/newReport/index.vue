@@ -183,7 +183,14 @@
         <el-col :span="inside?20:19">
           <iCard style="height: 620px">
             <div style="width: 100%; height: 30px;display: flex;flex-flow: row nowrap;justify-content: space-between;">
-              <span class="chartTitle">{{chartTitle}}</span>
+              <div> <span class="chartTitle">{{chartTitle}}</span>
+                <el-button type="primary"
+                           icon="el-icon-refresh"
+                           size="mini"
+                           circle
+                           @click="refresh">
+                </el-button>
+              </div>
 
               <div class="legend">
                 <ul>
@@ -342,7 +349,7 @@ import CrownBar from "./components/crownBar.vue";
 import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
 import { getBobLevelOne, removeBobOut, addBobOut } from "@/api/partsrfq/bob";
-import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList } from "@/api/partsrfq/bob/analysisList";
+import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList, generateGroupId } from "@/api/partsrfq/bob/analysisList";
 import customSelect from '@/views/demo'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import { uploadFile } from "@/api/file/upload";
@@ -360,8 +367,7 @@ export default {
     bobAnalysis,
     findingParts,
     OutBar,
-
-    // icon,
+    icon,
     preview,
     iDialog,
     iInput,
@@ -405,7 +411,10 @@ export default {
   async created () {
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
-    this.groupId = this.$route.query.groupId
+    // this.groupId = this.$route.query.groupId
+    generateGroupId().then(res => {
+      this.groupId = res.data
+    })
     if (this.newBuild) {
       if (this.entryStatus === 1) {
         this.inside = true
@@ -672,6 +681,9 @@ export default {
         })
       }
 
+    },
+    refresh () {
+      this.searchChartData()
     },
     async searchChartData () {
       if (this.inside) {
@@ -1058,7 +1070,10 @@ export default {
     list-style: url("../../../../assets/images/circle1.png") outside circle;
   }
 }
-
+.refresh {
+  font-size: 20px;
+  color: #409eff;
+}
 ::v-deep .el-form-item {
   margin-bottom: 20px;
   .el-form-item__label {
@@ -1085,6 +1100,7 @@ export default {
   font-family: "Arial";
   line-height: 16px;
   font-weight: "bold";
+  margin-right: 20px;
 }
 .legend {
   // position: absolute;
