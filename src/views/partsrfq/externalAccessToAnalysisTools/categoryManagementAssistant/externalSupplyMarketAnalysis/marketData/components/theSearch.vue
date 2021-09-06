@@ -45,6 +45,7 @@
             :options="item.options"
             :props="item.cascaderProps"
             :placeholder="item.placeholder"
+            separator="-"
             collapse-tags
             filterable
             clearable
