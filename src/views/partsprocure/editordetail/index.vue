@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-02 15:55:40
+ * @LastEditTime: 2021-09-03 14:59:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -31,6 +31,8 @@
 			<div class="floatright">
 				<!-- 供应商创建定点申请单 -->
 				<createNomiappBtn :datalist='[detailData]'></createNomiappBtn>
+				<!-------------------零件总成件的自动生成定点申请单--------------------->
+				<createNomiappBtnAccs v-if='createdNomiappAsscShow'></createNomiappBtnAccs>
 				<!-------------------------------------------------------------------------------->
 				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 				<!---出现此按钮。------------------------------------------------------------------->
@@ -371,12 +373,12 @@
 	import splitFactory from "./components/splitFactory";
 	import designateInfo from './components/designateInfo'
 	import { getDictByCode } from '@/api/dictionary'
-	import {partProjTypes} from '@/config'
+	import {partProjTypes,partsType} from '@/config'
 	import {filterProjectList} from '@/utils'
 	import selectOldpartsNumber from './components/selectOldpartsNumber'
-	import {cancelProject,creatFsGsNr,createNomiappBtn} from '@/components'
+	import {cancelProject,creatFsGsNr,createNomiappBtn,createNomiappBtnAccs} from '@/components'
 	export default {
-		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon},
+		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs},
 		provide:function(){
 			return {detailData:this.getDetailData}
 		},
@@ -409,6 +411,14 @@
 					this.detailData.isCommonSourcing = false
 				}
 				return choseState
+			},
+   /**
+    * @description: 零件采购项目总成件的显示逻辑。当【零件类型】为零件总成件的时候，才会显示当前按钮
+    * @param {*}
+    * @return {*}
+    */
+			createdNomiappAsscShow(){
+				return this.detailData.partType == partsType.PARTSACCS
 			}
 		},
 		watch:{

@@ -53,7 +53,7 @@
           :align="item.align || 'center'"
           :selectable="handleSelectable"
         >
-          <template slot="header" slot-scope="scope">
+          <template slot="header">
             <el-checkbox
               v-model="checkedAll"
               :indeterminate="indeterminateAll"
