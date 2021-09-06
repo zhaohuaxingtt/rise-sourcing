@@ -12,7 +12,7 @@
     <div class="margin-top20">
 
     <!-- 搜索区域 -->
-      <iSearch @sure="getList" @reset="reset">
+      <iSearch @sure="sure" @reset="reset">
           <el-form>
               <el-form-item 
               v-for="(item,index) in SearchList" 
@@ -304,6 +304,12 @@ export default {
           carTypeCodeList:[''],
           linieDeptNumList:[''],
         };
+        this.page.currPage = 1;
+        this.getList();
+      },
+
+      sure(){
+        this.page.currPage = 1;
         this.getList();
       },
 
