@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-08-17 15:09:06
+ * @LastEditTime: 2021-09-03 14:57:30
  * @LastEditors: Please set LastEditors
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js
@@ -83,4 +83,11 @@ export const user = {
 //上传文件的hostId
 export const fileType = {
   JINGLINGHAOBIANG:'125' //仅零件号变更文件类型
+}
+
+export const partsType = {
+  PARTSACCS:'A', //总成零件类型
+  NOUMEN:'L', //本体零件
+  GENERAL: 'P', //普通零件，
+  PROCESSANDASSEMBLY:'S' //加工装配费
 }
