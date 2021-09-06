@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 14:24:24
+ * @LastEditTime: 2021-09-06 11:11:23
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -184,6 +184,7 @@ export default {
       partSchedulePartFitting(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.$router.push({path: '/projectmgt/projectscheassistant/partscheduling', query: this.$route.query})
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
