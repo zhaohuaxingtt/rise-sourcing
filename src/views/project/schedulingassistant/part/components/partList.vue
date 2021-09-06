@@ -933,16 +933,16 @@ export default {
 }
 </style>
 
-<style lang="scss">
-.el-popover .partListView-downloadContent {
-  padding: 0 0 8px;
+<style lang="scss"> 
+.el-popover .partListView-downloadContent { 
+  padding: 0 0 8px; 
   div {
-    font-size: 14px;
-    color: #55575A;
-    padding: 10px 20px;
+    font-size: 14px; 
+    color: #55575A; 
+    padding: 10px 20px; 
   }
-  div + div {
+  div + div { 
     border-top: 1px solid rgba(112, 112, 112, .1);
-  }
-}
-</style>
+  } 
+} 
+</style> 
