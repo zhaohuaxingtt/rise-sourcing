@@ -301,10 +301,6 @@ export default {
           return {name: item.dataType};
         });
       }
-      /* this.$refs.theSearch.showSelectCustom = false;
-       this.$nextTick(() => {
-         this.$refs.theSearch.showSelectCustom = true;
-       });*/
     },
     // 处理保存
     async handleSave() {

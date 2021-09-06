@@ -29,14 +29,12 @@
       </template>
       <template v-else-if="item.type === 'selectCustom'">
         <iSelectCustom
-            v-if="showSelectCustom"
             v-model="form[item.props]"
             :data="item.options"
             :multiple="true"
             label="name"
             sortVal="name"
             value="name"
-            :disabled="item.options.length === 0"
             :search-method="(value) =>handleSelectSearch(value,item.props)"
             @change="(value) =>handleSelectCustomChange(value,item.props)"
         />
@@ -52,7 +50,7 @@ export default {
   components: {
     iSelect,
     iInput,
-    iSelectCustom,
+    iSelectCustom
   },
   props: {
     list: {
