@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 15:08:26
+ * @LastEditTime: 2021-09-06 15:15:38
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -687,23 +687,29 @@ export default {
      * @Author: Luoshuang
      * @param {*} cartypeProId
      * @return {*}
-     */
-    getPartList(cartypeProId) {
-      this.loading = true
-      getPartSchedule(cartypeProId).then(res => {
-        if (res?.result) {
-          // eslint-disable-next-line no-undef
-          this.parts = _.cloneDeep(res.data || [])
-          // eslint-disable-next-line no-undef
-          this.partsTemp = _.cloneDeep(partList)
-          this.checkAll = false
-          this.isIndeterminate = false
-        } else {
-          this.parts = []
-          this.partsTemp = []
+     */    
+    getPartList(cartypeProId) { 
+      this.loading = true 
+      getPartSchedule(cartypeProId).then(res => { 
+        if (res?.result) { 
+          const partList = (res.data || []).map(item => { 
+            return { 
+              ...item, 
+              emIsLarger: this.isLarger(item.emTimeKw, item.otsTimeKw) 
+            }
+          }) 
+          // eslint-disable-next-line no-undef 
+          this.parts = _.cloneDeep(partList) 
+          // eslint-disable-next-line no-undef 
+          this.partsTemp = _.cloneDeep(partList) 
+          this.checkAll = false 
+          this.isIndeterminate = false 
+        } else { 
+          this.parts = [] 
+          this.partsTemp = [] 
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
-      }).finally(() => {
+      }).finally(() => { 
         this.loading = false
       })
     },
@@ -920,16 +926,16 @@ export default {
 }
 </style>
 
-<style lang="scss">
-.el-popover .partListView-downloadContent {
-  padding: 0 0 8px;
+<style lang="scss"> 
+.el-popover .partListView-downloadContent { 
+  padding: 0 0 8px; 
   div {
-    font-size: 14px;
-    color: #55575A;
-    padding: 10px 20px;
+    font-size: 14px; 
+    color: #55575A; 
+    padding: 10px 20px; 
   }
-  div + div {
+  div + div { 
     border-top: 1px solid rgba(112, 112, 112, .1);
-  }
-}
-</style>
+  } 
+} 
+</style> 
