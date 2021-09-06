@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-08-30 17:47:03
+ * @LastEditTime: 2021-09-06 16:44:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -246,6 +246,8 @@ export default {
 
       this.loading = true
 
+      this.$refs.aekoList.getList('isRest');
+
       getAekoOriginPartInfo({
         ...this.form,
         objectAekoPartId: this.objectAekoPartId,
@@ -266,6 +268,8 @@ export default {
     },
 
     sure() {
+      // 判断下零件号不能为空
+      if(!this.form.partNum) return iMessage.warn(this.language('LK_AEKO_QUONDAMPART_SEARCH_TIPS','零件号不能为空'))
       this.page.currPage = 1
       if (isEqual(this.form, ledgerQueryForm)) {
         this.objectAekoPartId = this.$route.query.objectAekoPartId
@@ -274,14 +278,13 @@ export default {
       }
       
       
-      this.$refs.aekoList.getList('isRest');
       this.getAekoOriginPartInfo()
     },
     reset() {
       this.page.currPage = 1
       this.form = cloneDeep(ledgerQueryForm)
       this.objectAekoPartId = this.$route.query.objectAekoPartId
-      this.getAekoOriginPartInfo()
+      // this.getAekoOriginPartInfo()
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
