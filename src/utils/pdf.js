@@ -87,7 +87,7 @@ export function downloadPDF({
     }
     //可动态生成
     pdf = addWaterMark(pdf)
-    // pdf.save(pdfName)
+    pdf.save(pdfName)
     if (callback) {
       callback(pdf, pdfName)
     }
