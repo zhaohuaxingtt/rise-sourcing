@@ -64,7 +64,7 @@ export const loiListTitle = [
   { props: "nominateAppId", name: "定点申请单号", key: "LK_DINGDIANXINDANHAO", tooltip: false,width:100 },
   { props: "loiNum", name: "LOI编号", key: "LK_LOIBIANHAO", tooltip: false,width:140 },
   { props: "rfqId", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true,width:90 },
-  { props: "supplierId", name: "供应商号", key: "nominationSupplier.GongYingShangHao", tooltip: true },
+  { props: "svmNum", name: "供应商号", key: "nominationSupplier.GongYingShangHao", tooltip: true },
   { props: "sapNum", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true },
   { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG", tooltip: true },
   { props: "loiStatusDesc", name: "LOI状态", key: "LK_LOIZHUANGTAI", tooltip: true },

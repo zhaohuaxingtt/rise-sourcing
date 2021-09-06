@@ -22,6 +22,8 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
+
 import { iButton } from "rise"
 import tableList from "../../../tableList"
 import { otherCostTableTitle as tableTitle } from "../data"
@@ -41,11 +43,37 @@ export default {
       type: Array,
       required: true,
       default: () => ([])
+    },
+    otherFee: {
+      type: String || Number,
+      default: 0
     }
   },
   data() {
     return {
       tableTitle
+    }
+  },
+  watch: {
+    tableListData: {
+      handler(list) {
+        let develop = null
+        let module = null
+
+        list.forEach(item => {
+          if (item.itemType == 0) {
+            module = item
+          }
+
+          if (item.itemType == 1) {
+            develop = item
+          }
+        })
+
+        const otherFee = math.evaluate(`(${ math.bignumber(develop.shareTotal) || 0 } - ${ math.bignumber(develop.shareAmount) }) + (${ math.bignumber(module.shareTotal) || 0 } - ${ math.bignumber(module.shareAmount) })`).toFixed(2)
+        this.$emit("update:otherFee", otherFee || 0)
+      },
+      deep: true
     }
   },
   methods: {}
