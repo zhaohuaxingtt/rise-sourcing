@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 15:18:14
+ * @LastEditTime: 2021-09-06 16:34:48
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -54,7 +54,7 @@
         </div>
         <div class="productItem-bottom">
           <div class="productItem-bottom-text">
-            <icon @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon>
+            <icon @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon> 
           </div>
           <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node"> 
             <div class="productItem-bottom-nodeItem"> 
@@ -267,15 +267,15 @@ export default {
     async gotoDBhistory(part) { 
       this.loading = true 
       try{ 
-        const res = await getPartGroupConfig(this.cartypeProId)
-        this.loading = false
-        if (res?.result) { 
+        const res = await getPartGroupConfig(this.cartypeProId) 
+        this.loading = false 
+        if (res?.result) {  
           // console.log(this.cartypeProId)
-          const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId, sixPartCode:part.partNum.slice(3,9), level: '2', categoryType: res.data.category, carProjectName:this.carProjectName}})
-          window.open(router.href,'_blank')
-        } else {
-          iMessage.warn('HUOQUSUANFAPEIZHISHIBAI','获取算法配置失败')
-        } 
+          const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`, query: {...res.data,cartypeProId:this.cartypeProId, sixPartCode:part.partNum.slice(3,9), level: '2', categoryType: res.data.category, carProjectName:this.carProjectName}}) 
+          window.open(router.href,'_blank') 
+        } else { 
+          iMessage.warn('HUOQUSUANFAPEIZHISHIBAI','获取算法配置失败') 
+        }  
       } catch(error) { 
         this.loading = false 
       } 
