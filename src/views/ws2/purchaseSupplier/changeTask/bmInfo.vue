@@ -204,34 +204,151 @@
 
         <div class="top-r">
           <iButton
+              v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2 || Number(baseInfo.changeStatus) === 3)"
               v-loading="bmBuberLoading"
-              @click="bmBuberConfirmBefore">
+              @click="handleEdit">
             {{ language('LK_BIANJI', '编辑') }}
           </iButton>
           <iButton
+              v-show="(Number(baseInfo.changeStatus) === 4 || Number(baseInfo.changeStatus) === 5)"
               v-loading="sendSupplierLoading"
               @click="sendSupplier">
+            {{ language('LK_CHEHUI', '撤回') }}
+          </iButton>
+          <iButton
+              v-show="!isEdit"
+              v-loading="sendSupplierLoading"
+              @click="changeOrderShow = true; isCheck = true">
             {{ language('LK_CHAKANBIANGENGDAN', '查看变更单') }}
           </iButton>
           <iButton
-              v-loading="sureSupplierLoading"
-              v-if="Number(baseInfo.changeStatus) !== 3"
-              @click="sureSupplier">
-            {{ language('LK_QUEREN', '确认') }}
+              v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2 || Number(baseInfo.changeStatus) === 3)"
+              v-loading="sendSupplierLoading"
+              @click="sendSupplier">
+            {{ language('LK_TIJIAOSHENPI', '提交审批') }}
+          </iButton>
+
+          <iButton
+              v-show="isEdit"
+              v-loading="bmBuberLoading"
+              @click="isEdit = false">
+            {{ language('LK_TUICHUBIANJI', '退出编辑') }}
+          </iButton>
+          <iButton
+              v-show="isEdit"
+              v-loading="bmBuberLoading"
+              @click="handlePreView">
+            {{ language('LK_YULANBIANGENGDAN', '预览变更单') }}
+          </iButton>
+          <iButton
+              v-show="isEdit"
+              v-loading="handleAddLoading"
+              @click="handleAdd">
+            {{ language('LK_XINZENG', '新增') }}
+          </iButton>
+          <iButton
+              v-show="isEdit"
+              v-loading="bmBuberLoading"
+              @click="handleDelete">
+            {{ language('LK_SHANCHU', '删除') }}
+          </iButton>
+          <iButton
+              v-show="isEdit"
+              v-loading="handleResetLoading"
+              @click="handleReset">
+            {{ language('LK_CHONGZHI', '重置') }}
+          </iButton>
+          <iButton
+              v-show="isEdit"
+              v-loading="handleSaveLoading"
+              @click="handleSave">
+            {{ language('LK_BAOCUN', '保存') }}
           </iButton>
         </div>
-
       </div>
 
       <iTableList
+          class="tableClass"
           :tableData="tableListData"
           :tableTitle="tableTitle"
-          :selection="false"
+          :tableRowClassName="tableRowClassName"
+          @handleSelectionChange="handleSelectionChange2"
+          :selection="isEdit"
           :typeIndex="true"
       >
         <!-- BM单流⽔号 -->
+        <template #craftType="scope">
+          <div v-show="!isEdit">{{scope.row.craftType}}</div>
+          <div v-show="isEdit"><iInput v-model="scope.row.craftType" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+        </template>
+        <template #moldType="scope">
+          <div v-show="!isEdit">{{scope.row.moldType}}</div>
+          <div v-show="isEdit"><iInput v-model="scope.row.moldType" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+        </template>
+        <template #assetTypeNum="scope">
+          <div v-show="!isEdit">{{scope.row.assetTypeNum}}</div>
+          <iSelect
+              v-show="isEdit"
+              :placeholder="language('LK_QINGXUANZHE', '请选择')"
+              v-model="scope.row.assetTypeNumNo"
+              filterable
+              clearable
+              class="select"
+          >
+            <el-option
+                :value="item.value"
+                :label="item.name"
+                v-for="(item, index) in assetTypesList"
+                :key="index"
+            ></el-option>
+          </iSelect>
+        </template>
+        <template #partsTotalNum="scope">
+          <div v-show="!isEdit">{{scope.row.partsTotalNum}}</div>
+          <iSelect
+              v-show="isEdit"
+              :placeholder="language('LK_QINGXUANZHE', '请选择')"
+              v-model="scope.row.partsTotalNum"
+              filterable
+              clearable
+              class="select"
+          >
+            <el-option
+                :value="item.value"
+                :label="item.name"
+                v-for="(item, index) in assemblyPartsList"
+                :key="index"
+            ></el-option>
+          </iSelect>
+        </template>
+        <template #partsName="scope">
+          <div v-show="!isEdit">{{scope.row.partsName}}</div>
+          <div v-show="isEdit"><iInput v-model="scope.row.partsName" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+        </template>
+        <template #partsNum="scope">
+          <div v-show="!isEdit">{{scope.row.partsNum}}</div>
+          <div v-show="isEdit"><iInput v-model="scope.row.partsNum" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+        </template>
+        <template #count="scope">
+          <div v-show="!isEdit">{{scope.row.count}}</div>
+          <div v-show="isEdit"><iInput
+              v-model="scope.row.count"
+              :placeholder="language('LK_QINGSHURU', '请输入')"
+              onkeyup="value=value.replace(/[^0-9]+/g, '')"
+          ></iInput></div>
+        </template>
         <template #assetPrice="scope">
-          <div>{{scope.row.assetPrice ? getTousandNum(Number(scope.row.assetPrice).toFixed(2)) : scope.row.assetPrice}}</div>
+          <div v-show="!isEdit">{{scope.row.assetPrice ? getTousandNum(Number(scope.row.assetPrice).toFixed(2)) : scope.row.assetPrice}}</div>
+          <div v-show="isEdit">
+            <iInput
+                v-model="scope.row.assetPrice"
+                :placeholder="language('LK_QINGSHURU', '请输入')"
+                @focus="focus(scope.row.index)"
+                @blur="blur(scope.row.index)"
+                onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
+            >
+            </iInput>
+          </div>
         </template>
         <template #assetTotal="scope">
           <div>{{scope.row.assetTotal ? getTousandNum(Number(scope.row.assetTotal).toFixed(2)) : scope.row.assetTotal}}</div>
@@ -241,21 +358,41 @@
           <div v-else></div>
         </template>
         <template #partsShareNum="scope">
-          <div v-if="scope.row.partsShareNum">
-            <Popover
-                placement="bottom"
-                trigger="hover">
-              <div>
-                <div v-for="(item, index) in scope.row.partsShareNum.split(',')" :key="index">{{ item }}</div>
-              </div>
-              <div slot="reference">
-                {{ scope.row.partsShareNum.split(',')[0] }}<span v-if="scope.row.partsShareNum && scope.row.partsShareNum.includes(',')">...</span>
-              </div>
-            </Popover>
+          <div v-show="!isEdit">
+            <div v-if="scope.row.partsShareNum">
+              <Popover
+                  placement="bottom"
+                  trigger="hover">
+                <div>
+                  <div v-for="(item, index) in scope.row.partsShareNum.split(',')" :key="index">{{ item }}</div>
+                </div>
+                <div slot="reference">
+                  {{ scope.row.partsShareNum.split(',')[0] }}<span v-if="scope.row.partsShareNum && scope.row.partsShareNum.includes(',')">...</span>
+                </div>
+              </Popover>
+            </div>
+            <div v-else>{{ scope.row.partsShareNum }}</div>
           </div>
-          <div v-else>{{ scope.row.partsShareNum }}</div>
+          <iSelect
+              class="multipleSelect select"
+              v-show="isEdit"
+              :placeholder="language('LK_QINGXUANZHE', '请选择')"
+              v-model="scope.row.partsShareNumNo"
+              filterable
+              clearable
+              collapse-tags
+              multiple
+          >
+            <el-option
+                :value="item.value"
+                :label="item.name"
+                v-for="(item, index) in sharePartsList"
+                :key="index"
+            ></el-option>
+          </iSelect>
         </template>
       </iTableList>
+
       <div class="unitStyle">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
 
       <!--      <div class="UnitExplain">-->
@@ -264,6 +401,7 @@
     </iCard>
 
     <confirm v-model="confirmShow" @sure="bmBuberConfirm"></confirm>
+    <changeOrder v-model="changeOrderShow" @sure="bmBuberConfirm" :changeOederData="changeOederData" :isCheck="isCheck"></changeOrder>
     <photoList :imgList="imgList" :visible="photoListShow" @changeLayer="() => photoListShow = false"></photoList>
   </iPage>
 </template>
@@ -279,10 +417,14 @@ import {
   iButton,
   iSelect,
   iCard,
-  icon
+  icon,
+  iInput
 } from "rise";
-
+import {
+  Upload
+} from "element-ui";
 import {changeTaskBmInfoTitle , changeTaskInfoTableTitle} from "../components/data"
+import changeOrder from "../components/changeOrder"
 import confirm from "../components/confirm"
 import photoList from "../components/photoList"
 import { Popover } from "element-ui"
@@ -296,10 +438,18 @@ import {
   bmBuberConfirm,
   upLoadFileByIds,
   attachmentUpload,
-  supplierToConfirm
+  supplierToConfirm,
+  saveChange,
+  reset,
 } from "@/api/ws2/purchaseSupplier/changeTask/bmInfo.js";
-import {getTousandNum} from "@/utils/tool";
+import {
+  getMoldId,
+  assemblyParts,
+  shareParts,
+} from "@/api/ws2/purchase/changeTask/bmInfo";
+import {delcommafy, getTousandNum} from "@/utils/tool";
 import {sendSupplier} from "@/api/ws2/purchase/investmentList";
+import {cloneDeep} from "lodash";
 
 export default {
   components: {
@@ -313,6 +463,9 @@ export default {
     confirm,
     photoList,
     iLog,
+    Upload,
+    iInput,
+    changeOrder
   },
 
   data(){
@@ -325,9 +478,14 @@ export default {
       tableListData: [],
       assetTypesList: [],
       craftTypesList: [],
+      sharePartsList: [],
+      assemblyPartsList: [],
       imgList: [],
       isOpen: true,
       confirmShow: false,
+      changeOrderShow: false,
+      isCheck: false,
+      changeOederData: {},
       photoListShow: false,
       detailsTableLoading: false,
       baseInfoLoading: false,
@@ -335,9 +493,11 @@ export default {
       tableLoading2: false,
       bmBuberLoading: false,
       sendSupplierLoading: false,
-      sureSupplierLoading: false,
       iLogShow: false,
       uploadButtonLoading: false,
+      handleSaveLoading: false,
+      handleResetLoading: false,
+      handleAddLoading: false,
       query: {
         bmId: '',
         bmChangeId: '',
@@ -347,8 +507,12 @@ export default {
       assetTypeNum: '',
       craftType: '',
       getTousandNum: getTousandNum,
+      delcommafy: delcommafy,
       changeTaskInfoTableTitle,
       enclosureTableListData: [],
+      multipleSelection: [],
+      multipleSelection2: [],
+      isEdit: false,
     }
   },
   created() {
@@ -358,6 +522,163 @@ export default {
     this.findMoldViewList()
   },
   methods: {
+    handleReset(){
+      this.handleResetLoading = true
+      reset({
+        id: this.query.bmChangeId,
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.isEdit = false
+          this.moldHeaderByBmSerial()
+          this.findMoldViewList()
+          this.attachment()
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+        }
+        this.handleResetLoading = false
+      }).catch(() => {
+        this.handleResetLoading = false
+      });
+    },
+    handleEdit(){
+      if(Number(this.baseInfo.changeStatus) === 1){
+        this.isEdit = true
+      } else {
+        iMessage.warn(this.language('LK_ZHIYOUCAOGAOZHUANGTAICAIYUNXUXIUGAI', '只有草稿状态才允许修改'));
+      }
+    },
+    handlePreView(){
+      this.changeOederData = {
+        moldChangeDtos: this.tableListData.map(item => {
+          item.assetPrice = Number(this.delcommafy(item.assetPrice))
+          return item
+        }),
+        id: this.query.bmChangeId,
+        newMoldInvestmentAmount: this.baseInfo.afterChangeAmount,
+        optimistic: this.baseInfo.optimistic,
+      }
+      this.changeOrderShow = true
+      this.isCheck = false
+    },
+    handleAdd(){
+      this.handleAddLoading = true
+      getMoldId({
+        changeId: this.query.bmChangeId,
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          let tableListData = cloneDeep(this.tableListData)
+          tableListData.unshift({
+            moldId: res.data,
+            bmMoldId: null,
+            assetName: null,
+            assetNum: null,
+            assetPrice: 0,
+            assetTotal: null,
+            assetTypeNum: null,
+            bmId: null,
+            carTypeProId: null,
+            carTypeProName: null,
+            categoryCode: null,
+            categoryName: null,
+            changeReason: null,
+            changeType: 1,
+            changeTypeName: null,
+            count: null,
+            craftType: null,
+            fsNum: null,
+            id: null,
+            isPermission: null,
+            moldManufacturer: null,
+            moldType: null,
+            partsName: null,
+            partsNum: null,
+            partsShareNum: null,
+            partsTotalName: null,
+            partsTotalNum: null,
+            picture: null,
+          })
+          tableListData = tableListData.map((item, index) => {
+            item.index = index
+            item.partsShareNumNo = item.partsShareNum ? item.partsShareNum.split(',') : ''
+            item.assetTypeNumNo = item.assetTypeNum ? item.assetTypeNum.split('-')[0] : ''
+            return item
+          })
+          this.tableListData = tableListData
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+        }
+        this.handleAddLoading = false
+      }).catch(() => {
+        this.handleAddLoading = false
+      });
+    },
+    tableRowClassName({row, rowIndex}) {
+      if(Number(row.changeType) === 0){
+        return 'warning-row';
+      }
+      return ''
+    },
+    handleDelete(){
+      if(!this.multipleSelection2 || this.multipleSelection2.length === 0){
+        iMessage.warn(this.language('LK_BAAPPLYTISP1', '请先勾选'))
+        return
+      }
+      let deleteItem = []
+      this.multipleSelection2.map(item => {
+        if(item.bmMoldId === null || item.bmMoldId === 0){
+          console.log(this.tableListData.findIndex(a => a.moldId === item.moldId))
+          this.tableListData.splice(this.tableListData.findIndex(a => a.moldId === item.moldId), 1)
+        } else {
+          deleteItem.push(item.id)
+        }
+      })
+      this.tableListData = this.tableListData.map(a => {
+        if(deleteItem.some(b => b === a.id)){
+          a.changeType = 0
+        }
+        return a
+      })
+      iMessage.success(this.language('LK_SHANCHUCHENGGONG', '删除成功'))
+    },
+    handleSave(){
+      this.handleSaveLoading = true
+      saveChange({
+        moldChangeDtos: this.tableListData.map(item => {
+          item.assetPrice = Number(this.delcommafy(item.assetPrice))
+          return item
+        }),
+        id: this.query.bmChangeId,
+        newMoldInvestmentAmount: this.baseInfo.afterChangeAmount,
+        optimistic: this.baseInfo.optimistic,
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.isEdit = false
+          // this.moldHeaderByBmSerial()
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+        }
+        this.handleSaveLoading = false
+      }).catch(() => {
+        this.handleSaveLoading = false
+      });
+    },
+    focus(index){
+      this.tableListData[index].assetPrice = this.delcommafy(this.tableListData[index].assetPrice)
+    },
+    blur(index){
+      let value = this.tableListData[index].assetPrice
+      value = value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')
+      this.tableListData[index].assetPrice = this.getTousandNum(Number(value).toFixed(2))
+    },
+    handleSelectionChange2(list) {
+      this.multipleSelection2 = list
+    },
     beforeAvatarUpload() {},
     handleAvatarSuccess() {},
     async myUpload(content) {
@@ -449,9 +770,11 @@ export default {
     },
     getAllSelect() {
       this.loadingiSearch = true
-      Promise.all([assetTypes(), craftTypes()]).then((res) => {
+      Promise.all([assetTypes(), craftTypes(), shareParts({bmId: this.query.bmId}), assemblyParts({bmId: this.query.bmId})]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
+        const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
+        const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn
         if (Number(res[0].code) === 0) {
           this.assetTypesList = res[0].data
         } else {
@@ -461,6 +784,16 @@ export default {
           this.craftTypesList = res[1].data;
         } else {
           iMessage.error(result1);
+        }
+        if (res[2].data) {
+          this.sharePartsList = res[2].data;
+        } else {
+          iMessage.error(result2);
+        }
+        if (res[3].data) {
+          this.assemblyPartsList = res[3].data;
+        } else {
+          iMessage.error(result3);
         }
         this.loadingiSearch = false
       }).catch(() => {
@@ -553,6 +886,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tableClass ::v-deep .warning-row {
+  background-color: #e0e5ee;
+}
 .enclosure-block{
   margin-top: 20px;
   .upload{
@@ -716,6 +1052,14 @@ export default {
       font-size: 14px;
       color: #000000;
     }
+  }
+}
+.multipleSelect {
+  ::v-deep .el-tag {
+    max-width: calc(100% - 75px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 </style>

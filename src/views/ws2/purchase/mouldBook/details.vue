@@ -6,16 +6,16 @@
         <div class="txt">{{language('LK_BANBENHAO', '版本号')}}:</div>
         <iSelect
             :placeholder="language('LK_QINGXUANZHE', '请选择')"
-            v-model="versionId"
+            v-model="serchTable.veriosn"
             @change="detailByBmSerial"
             filterable
             ref="carTypeProjectRef"
             clearable
         >
           <el-option
-              :value="item.version"
-              :label="item.version"
-              v-for="(item, index) in versionList"
+              :value="item.versionName"
+              :label="item.versionName"
+              v-for="(item, index) in detailsData.versions"
               :key="index"
           ></el-option>
         </iSelect>
@@ -23,7 +23,7 @@
     </div>
 
     <iCard>
-      <div class="head-serch">
+      <div class="head-serch" v-loading="headLoading">
         <div class="top-box">
           <div class="title">{{language('LK_JICHUXINXI', '基础信息')}}</div>
           <icon @click.native="changeSerch(false)" v-if="isOpen" class="icon" symbol name="iconfilterquyukuaijiantoushouqi"></icon>
@@ -307,6 +307,7 @@ export default {
       detailsTableHead,
       detailsBottomTableHead,
       detailsTableLoading: false,
+      headLoading: false,
       detailsBottomTableLoading: false,
       visible: false,
       imgList: ['https://cdn6-banquan.ituchong.com/weili/l/919767005971611831.webp', 'https://cdn6-banquan.ituchong.com/weili/l/915608610047000641.webp', 'https://cdn9-banquan.ituchong.com/weili/l/903371741418749965.webp'],
@@ -326,24 +327,13 @@ export default {
 
   created(){
     this.bmSerial = this.$route.query.bmSerial;
-    this.versionCombo();
+    // this.versionCombo();
     this.getDownList();
+    this.detailByBmSerial();
     this.bmChangeOrderList();
   },
 
   methods: {
-    versionCombo(){
-      versionCombo({bmSerial: this.bmSerial}).then(res => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-        if(res.data){
-          this.versionList = res.data;
-          this.versionId = this.versionList[0].version
-          this.detailByBmSerial()
-        }else{
-          iMessage.error(result);
-        }
-      })
-    },
     //  变更单列表跳转
     jumpchangeDetail(){
       let {href} = this.$router.resolve({path: `/purchase/changeTask`});
@@ -409,21 +399,26 @@ export default {
     },
 
     detailByBmSerial(){
-      detailByBmSerial({bmSerial: this.bmSerial, version: this.versionId}).then(res => {
+      this.headLoading = true
+      detailByBmSerial({bmSerial: this.bmSerial, version: this.serchTable.veriosn}).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-
         if(res.data){
           this.detailsData = res.data;
-          this.serchTable.bmId = this.detailsData.bmId
+          this.serchTable.bmId = this.detailsData.id
+          if(!this.serchTable.veriosn){
+            this.serchTable.veriosn = this.detailsData.versions.length > 0 ? this.detailsData.versions[0].versionName : ''
+          }
+          this.headLoading = false
           this.findMoldList4Ledger()
         }else{
+          this.headLoading = false
           iMessage.error(result);
         }
       })
     },
 
     bmChangeOrderList(){
-      bmChangeOrderList(this.bmSerial).then(res => {
+      bmChangeOrderList({bmSerial: this.bmSerial}).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
           this.detailsBottomTableList = res.data;

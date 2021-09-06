@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-03 15:46:37
+ * @LastEditTime: 2021-09-04 16:37:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -139,7 +139,7 @@
                                  :label="item.motorName"> </el-option>
                     </el-select>
                     <span class="margin-bottom20 "
-                          style="line-height:16px;height:16px">{{firstBarData.motorName}}</span>
+                          style="line-height:16px;height:16px">best Ball</span>
                     <span class="yield"
                           style="line-height:12px">{{firstBarData.output}}</span>
                   </div>
@@ -379,8 +379,12 @@ export default {
       TargetMotorList: [],
       //目标车型
       targetMotor: "",
+      //目标车型code
+      targetMotorCode: "",
       //对标车型list
       ComparedMotorList: [],
+      //对标车型Code
+      ComparedMotorCode: [],
       //对标车型
       ComparedMotor: "",
       //比较类型
@@ -587,6 +591,11 @@ export default {
       })
     },
     changeComparedMotor (val) {
+      this.ComparedMotorList.forEach(item => {
+        if (item.motorId === val) {
+          this.ComparedMotorCode.push(item.motorCode)
+        }
+      })
       let params = {
         categoryId: this.categoryId,
         motorIds: this.ComparedMotor,
@@ -601,8 +610,8 @@ export default {
       this.TargetMotorList.forEach(item => {
         if (item.motorId === val) {
           this.targetMotorName = item.motorName
+          this.targetMotorCode = item.motorCode
         }
-
       })
       let params = {}
       params = {
@@ -753,6 +762,7 @@ export default {
       }
     },
     getHistogram (params) {
+      params = { "comparedType": "1", "info": [{ "motorId": "1", "priceType": "sopPrice", "isTargetMotor": true }], "categoryId": "1", "categoryCode": "1", schemeId: 111, "isBindingRfq": false }
       getHistogram(params).then(res => {
         let data = res.data
         let maxWidthList = []
@@ -791,7 +801,7 @@ export default {
       })
     },
     handleMEKInfo () {
-      let vwModelCodes = JSON.stringify([...this.ComparedMotor, this.targetMotor])
+      let vwModelCodes = JSON.stringify([...this.ComparedMotorCode, this.targetMotorCode])
       this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: this.categoryCode, vwModelCodes, chemeId: this.chemeId } })
     },
     preview () {

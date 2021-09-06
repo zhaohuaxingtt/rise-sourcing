@@ -38,15 +38,40 @@
             ></el-option>
           </iSelect> 
         </div>
-
         <cbdSummary class="margin-top20" v-model="cbdSummaryTableData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_BIANDONGZHICBDHUIZONG|变动值CBD汇总" />
-        <rawMaterials v-if="moduleMap.material" class="margin-top30" topCutLine v-model="rawMaterialsTableData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIAN|原材料/散件" />
-        <manufacturingCost v-if="moduleMap.production" class="margin-top30" v-model="manufacturingCostTableData" topCutLine v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN|制造成本" />
-        <div class="flexBox">
-          <scrapCost v-if="moduleMap.scrap" class="margin-top30" topCutLine v-model="scrapCostTableData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_BAOFEICHENGBEN|报废成本" />
-          <manageCost v-if="moduleMap.manage" class="margin-top30" topCutLine v-model="manageTableData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_GUANLIFEI|管理费" />
-          <otherCost v-if="Array.isArray(otherCostTableData) && otherCostTableData.length > 0" class="margin-top30" :tableListData="otherCostTableData" topCutLine v-permission.auto="AEKO_QUOTATION_CBD_VIEW_QITAFEIYONG|其他费用" />
-          <profit v-if="moduleMap.profit" class="margin-top30" topCutLine v-model="profitTableData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_LIRUN|利润" />
+        <div v-if="!loading">
+          <rawMaterials 
+            topCutLine 
+            class="margin-top30" 
+            ref="rawMaterials"
+            v-if="moduleMap.material" 
+            v-model="rawMaterialsTableData" 
+            :sourceMaterialCostSum.sync="sourceMaterialCostSum" 
+            :newMaterialCostSum.sync="newMaterialCostSum" 
+            v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIAN|原材料/散件" />
+          <!-- <p>sourceMaterialCostSum: {{ sourceMaterialCostSum }}</p>
+          <p>newMaterialCostSum: {{ newMaterialCostSum }}</p> -->
+          <manufacturingCost 
+            topCutLine 
+            class="margin-top30" 
+            ref="manufacturingCost"
+            v-if="moduleMap.production" 
+            v-model="manufacturingCostTableData" 
+            :sourceLaborCostSum.sync="sourceLaborCostSum" 
+            :newLaborCostSum.sync="newLaborCostSum" 
+            :sourceDeviceCostSum.sync="sourceDeviceCostSum"
+            :newDeviceCostSum.sync="newDeviceCostSum"
+            v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN|制造成本" />
+          <!-- <p>sourceLaborCostSum: {{ sourceLaborCostSum }}</p>
+          <p>newLaborCostSum: {{ newLaborCostSum }}</p>
+          <p>sourceDeviceCostSum: {{ sourceDeviceCostSum }}</p>
+          <p>newDeviceCostSum: {{ newDeviceCostSum }}</p> -->
+          <div class="flexBox">
+            <scrapCost v-if="moduleMap.scrap" class="margin-top30" topCutLine v-model="scrapCostTableData" :sumData="sumData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_BAOFEICHENGBEN|报废成本" />
+            <manageCost v-if="moduleMap.manage" class="margin-top30" topCutLine v-model="manageTableData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_GUANLIFEI|管理费" />
+            <otherCost v-if="Array.isArray(otherCostTableData) && otherCostTableData.length > 0" class="margin-top30" :tableListData="otherCostTableData" topCutLine v-permission.auto="AEKO_QUOTATION_CBD_VIEW_QITAFEIYONG|其他费用" />
+            <profit v-if="moduleMap.profit" class="margin-top30" topCutLine v-model="profitTableData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_LIRUN|利润" />
+          </div>
         </div>
       </div>
     </div>
@@ -86,11 +111,29 @@ export default {
       moduleMap: {},
       cbdSummaryTableData: [{ material: "0.00", makeCost: "0.00", discardCost: "0.00", manageFee: "0.00", otherFee: "0.00", profit: "0.00", apriceChange: "0.00" }],
       rawMaterialsTableData: [],
+      sourceMaterialCostSum: "0",
+      newMaterialCostSum: "0",
       manufacturingCostTableData: [],
+      sourceLaborCostSum: "0",
+      newLaborCostSum: "0",
+      sourceDeviceCostSum: "0",
+      newDeviceCostSum: "0",
       scrapCostTableData: [],
       manageTableData: [],
       otherCostTableData: [],
       profitTableData: []
+    }
+  },
+  computed: {
+    sumData() {
+      return {
+        sourceMaterialCostSum: this.sourceMaterialCostSum,
+        newMaterialCostSum: this.newMaterialCostSum,
+        sourceLaborCostSum: this.sourceLaborCostSum,
+        newLaborCostSum: this.newLaborCostSum,
+        sourceDeviceCostSum: this.sourceDeviceCostSum,
+        newDeviceCostSum: this.newDeviceCostSum
+      }
     }
   },
   created() {

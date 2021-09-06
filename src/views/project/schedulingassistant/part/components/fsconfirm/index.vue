@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:59:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 16:55:24
+ * @LastEditTime: 2021-09-03 16:49:45
  * @Description: 发送FS确认弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\fsconfirm\index.vue
 -->
@@ -15,11 +15,11 @@
         <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton>
       </div>
     </template>
-    <div class="tableWrapper">
+    <div class="tableWrapper" v-if="tableListNomi.length > 0">
       <span class="tableTitle">{{language('DAIDINGDIAN','待定点')}}</span>
       <tableList indexKey :tableTitle="tableTitleNomi" :tableData="tableListNomi" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChangeNomi" @handleSelectChange="handleSelectChange"></tableList>
     </div>
-    <div class="tableWrapper">
+    <div class="tableWrapper" v-if="tableListKickoff.length > 0">
       <span class="tableTitle">{{language('DAIKICKOFF','待Kickoff')}}</span>
       <tableList indexKey :tableTitle="tableTitleKickoff" :tableData="tableListKickoff" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChangeKickoff" @handleSelectChange="handleSelectChange"></tableList>
     </div>
