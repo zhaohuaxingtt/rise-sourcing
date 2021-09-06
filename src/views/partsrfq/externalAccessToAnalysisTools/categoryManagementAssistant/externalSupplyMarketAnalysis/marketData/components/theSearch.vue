@@ -39,6 +39,17 @@
             @change="(value) =>handleSelectCustomChange(value,item.props)"
         />
       </template>
+      <template v-else-if="item.type === 'selectCascader'">
+        <el-cascader
+            v-model="form[item.props]"
+            :options="item.options"
+            :props="item.cascaderProps"
+            collapse-tags
+            filterable
+            clearable
+            style="width: 220px"
+        />
+      </template>
     </div>
   </div>
 </template>
