@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 15:04:32
+ * @LastEditTime: 2021-09-06 15:14:11
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -695,28 +695,28 @@ export default {
      * @param {*} cartypeProId
      * @return {*}
      */    
-    getPartList(cartypeProId) {
-      this.loading = true
-      getPartSchedule(cartypeProId).then(res => {
-        if (res?.result) {
-          const partList = (res.data || []).map(item => {
-            return {
-              ...item,
-              emIsLarger: this.isLarger(item.emTimeKw, item.otsTimeKw)
+    getPartList(cartypeProId) { 
+      this.loading = true 
+      getPartSchedule(cartypeProId).then(res => { 
+        if (res?.result) { 
+          const partList = (res.data || []).map(item => { 
+            return { 
+              ...item, 
+              emIsLarger: this.isLarger(item.emTimeKw, item.otsTimeKw) 
             }
-          })
-          // eslint-disable-next-line no-undef
-          this.parts = _.cloneDeep(partList)
-          // eslint-disable-next-line no-undef
-          this.partsTemp = _.cloneDeep(partList)
-          this.checkAll = false
-          this.isIndeterminate = false
-        } else {
-          this.parts = []
-          this.partsTemp = []
+          }) 
+          // eslint-disable-next-line no-undef 
+          this.parts = _.cloneDeep(partList) 
+          // eslint-disable-next-line no-undef 
+          this.partsTemp = _.cloneDeep(partList) 
+          this.checkAll = false 
+          this.isIndeterminate = false 
+        } else { 
+          this.parts = [] 
+          this.partsTemp = [] 
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
-      }).finally(() => {
+      }).finally(() => { 
         this.loading = false
       })
     },
