@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 11:12:27
+ * @LastEditTime: 2021-09-06 14:42:26
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -352,10 +352,22 @@ export default {
       } else {
         return moment().add(5, 'days').format('YYYY-MM-DD')
       }
+    /**
+     * @Description: 修改fs弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */
     },
     changeFsConfirmVisible(visible) {
       this.dialogVisibleFS = visible
     },
+    /**
+     * @Description: 发送fs
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async handleSendFs() {
       await this.autoSave()
       try {
@@ -428,10 +440,22 @@ export default {
         this.loading = false
       }
     },
+    /**
+     * @Description: 打开算法配置弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     openLogicDialog() {
       this.getPartGroupConfig()
       this.changeLogicVisible(true)
     },
+    /**
+     * @Description: 更新零件排程算法配置
+     * @Author: Luoshuang
+     * @param {*} logicData
+     * @return {*}
+     */    
     updatePartGroupConfig(logicData) {
       console.log(logicData)
       if (!logicData) {
@@ -449,6 +473,12 @@ export default {
         this.$refs.logicSettingBtn.changeSaveLoading(false)
       })
     },
+    /**
+     * @Description: 获取排程算法
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     getPartGroupConfig() {
       getPartGroupConfig(this.cartypeProId).then(res => {
         if (res?.result) {
@@ -459,6 +489,12 @@ export default {
         }
       })
     },
+    /**
+     * @Description: 初始化下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     initOption() {
       const option = []
       for(var i = 2000; i <= moment().year() + 10; i++) {
@@ -471,6 +507,13 @@ export default {
       }
       return option
     },
+    /**
+     * @Description: 计算两个节点直接的间隔（周）
+     * @Author: Luoshuang
+     * @param {*} time1
+     * @param {*} time2
+     * @return {*}
+     */    
     getWeekBetween(time1, time2) {
       const year1 = Number(time1.split('-KW')[0])
       const week1 = Number(time1.split('-KW')[1])
@@ -488,6 +531,15 @@ export default {
       }
       return -this.getWeekBetween(time2, time1)
     },
+    /**
+     * @Description: 下拉框更改
+     * @Author: Luoshuang
+     * @param {*} val
+     * @param {*} item
+     * @param {*} props
+     * @param {*} index
+     * @return {*}
+     */    
     handleChange(val, item, props, index) {
       console.log(val, item, props)
       this.$set(item, props, val.join('-KW'))
@@ -499,6 +551,12 @@ export default {
         this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val.join('-KW'), props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw]))
       }
     },
+    /**
+     * @Description: 保存
+     * @Author: Luoshuang
+     * @param {*} refresh
+     * @return {*}
+     */    
     handleSave(refresh = true) {
       this.saveloading = true
       updatePartSchedule(this.partsTemp.map(item => {
@@ -515,6 +573,12 @@ export default {
         this.saveloading = false
       })
     },
+    /**
+     * @Description: 算法配置弹窗状态更新
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
     changeLogicVisible(visible) {
       console.log(visible)
       this.logicVisible = visible
