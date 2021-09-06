@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 15:14:11
+ * @LastEditTime: 2021-09-06 15:18:14
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -56,54 +56,54 @@
           <div class="productItem-bottom-text">
             <icon @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon>
           </div>
-          <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node">
-            <div class="productItem-bottom-nodeItem">
+          <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node"> 
+            <div class="productItem-bottom-nodeItem"> 
               <span class="productItem-bottom-nodeItem-label" v-if="!item.label.includes('1st')">{{item.key ? language(item.key, item.label) : item.label}}</span>
-              <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span>
-              <icon v-if="pro[item.status] == 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon>
-              <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
+              <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span> 
+              <icon v-if="pro[item.status] == 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon> 
+              <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon> 
               <!--------------------------节点发生时间-已发生的不可编辑------------------------------------>
               <template v-if="index == nodeList.length - 1">
                 <iText v-if="pro[item.status] == 1 && pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
                 <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw2]}}</iText>
                 <el-cascader
-                  v-else-if="pro.emIsLarger"
-                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "
-                  :value="pro[item.kw].split('-KW')"
-                  :options="yearWeekOptions(pro, item.kw, index)"
-                  @change="handleChange($event, pro, item.kw, index)"
-                  separator="-KW"
-                ></el-cascader>
-                <el-cascader
-                  v-else
-                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "
-                  :value="pro[item.kw2].split('-KW')"
-                  :options="yearWeekOptions(pro, item.kw2, index)"
-                  @change="handleChange($event, pro, item.kw2, index)"
-                  separator="-KW"
-                ></el-cascader>
-              </template>
+                  v-else-if="pro.emIsLarger" 
+                  :class="`productItem-bottom-stepBetween-input margin-top20 ` " 
+                  :value="pro[item.kw].split('-KW')" 
+                  :options="yearWeekOptions(pro, item.kw, index)" 
+                  @change="handleChange($event, pro, item.kw, index)" 
+                  separator="-KW" 
+                ></el-cascader> 
+                <el-cascader 
+                  v-else 
+                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "  
+                  :value="pro[item.kw2].split('-KW')" 
+                  :options="yearWeekOptions(pro, item.kw2, index)" 
+                  @change="handleChange($event, pro, item.kw2, index)" 
+                  separator="-KW" 
+                ></el-cascader>  
+              </template>  
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText>
-              <el-cascader
-                  v-else
-                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "
-                  :value="pro[item.kw].split('-KW')"
-                  :options="yearWeekOptions(pro, item.kw, index)"
+              <el-cascader 
+                  v-else 
+                  :class="`productItem-bottom-stepBetween-input margin-top20 ` " 
+                  :value="pro[item.kw].split('-KW')" 
+                  :options="yearWeekOptions(pro, item.kw, index)" 
                   @change="handleChange($event, pro, item.kw, index)"
                   separator="-KW"
-                ></el-cascader>
+                ></el-cascader> 
             </div>
-            <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
-              <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom5`">
-                <!--------------------------节点时长-不可编辑------------------------------------>
-                <template v-if="index == nodeList.length - 2">
-                  <iText v-if="pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText>
-                  <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint2]}}W</iText>
-                </template>
-                <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText>
-              </div>
+            <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1"> 
+              <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom5`"> 
+                <!--------------------------节点时长-不可编辑------------------------------------> 
+                <template v-if="index == nodeList.length - 2"> 
+                  <iText v-if="pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
+                  <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint2]}}W</iText> 
+                </template> 
+                <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
+              </div> 
               <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon>
-            </div>
+            </div> 
           </div>
         </div>
       </div>
