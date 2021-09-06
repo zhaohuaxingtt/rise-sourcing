@@ -97,6 +97,7 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
         tooltip: true,
         headerAlign: 'center',
         align: 'center',
+        width: 100,
         customRender: (h, scope) => {
             return <span> {scope.row['procureGroup']}-{scope.row['buyerName']}</span>
         },
