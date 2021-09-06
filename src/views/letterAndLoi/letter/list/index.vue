@@ -6,7 +6,7 @@
 <template>
   <div class="letterList">
     <!-- 搜索区域 -->
-    <iSearch @sure="getList" @reset="reset">
+    <iSearch @sure="sure" @reset="reset">
         <el-form>
             <el-form-item v-for="(item,index) in letterListSearch" :key="'letterListSearch_'+index" :label="language(item.labelKey,item.label)">
                 <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
@@ -242,7 +242,13 @@ export default {
                 showSelf:'YES',
                 status:'',
             };
+            this.page.currPage = 1;
             this.getList();
+        },
+
+        sure(){
+            this.page.currPage = 1;
+            this.getList(); 
         },
         
         handleSelectionChange(val) {
