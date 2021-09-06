@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-09-03 16:35:05
+ * @LastEditTime: 2021-09-06 14:59:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -124,7 +124,7 @@
     <!--------------------------------------------------------------->
     <!-------------------------RFQ详情信息---------------------------->
     <!--------------------------------------------------------------->    
-    <rfq-detail-info v-if="navActivtyValue === '1' && tabShowStatus"></rfq-detail-info>
+    <rfq-detail-info v-if="navActivtyValue === '1' && tabShowStatus" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_CARD"></rfq-detail-info>
     <!--------------------------------------------------------------->
     <!-------------------------报价助手------------------------------->
     <!--------------------------------------------------------------->

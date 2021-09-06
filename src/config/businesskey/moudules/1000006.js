@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 19:03:24
- * @LastEditTime: 2021-09-06 14:33:41
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-06 15:44:42
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\config\businesskey\moudules\aeko.js
+ * @FilePath: \front-web\src\config\businesskey\moudules\1000006.js
  */
 const blackKey = [
   // 零件采购项目详情页
@@ -49,12 +49,6 @@ const blackKey = [
 
 
                   // RFQ详情页
-                  'PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE', // TAB-供应商评分 show:false
-                  'PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE', // TAB-模具预算申请 show:false
-                  'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE', // TAB-技术交底会 show:false
-
-
-
                   'PARTSRFQ_EDITORDETAIL_NEWRFQROUND', // 按钮-新建RFQ轮次 show:false
                   'PARTSRFQ_EDITORDETAIL_SENDINQUIRY', // 按钮-发出询价 show:false
                   'PARTSRFQ_EDITORDETAIL_ENDQUOTATION', // 按钮-结束本轮询价 show:false
@@ -81,7 +75,7 @@ const blackKey = [
                   'RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN', // tab-报价分析汇总-零件 show:false
                   'RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGMOJU', // tab-报报价分析汇总-模具 show:false
                   'RFQ_DETAIL_TIPS_YEWUFENPEIMONI', // tab-业务分配模拟 show:false
-                  'RFQ_DETAIL_TIPS_BAOJIAFENXI_RENWUJINDU', // tab报价分析-报价分析与评分跟踪--整体任务进度&整车进度风险 show:false
+                  // 'RFQ_DETAIL_TIPS_BAOJIAFENXI_RENWUJINDU', // tab报价分析-报价分析与评分跟踪--整体任务进度&整车进度风险 show:false
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI_JIAGEWEIDU_SELECT', // tab报价分析-报价趋势-价格维度-下拉框 show:false
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI_GONGYINGSHANG_SELECT', // tab报价分析-报价趋势-供应商-下拉框 show:false
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI_LINGJIAN_SELECT', // tab报价分析-报价趋势-零件-下拉框 show:false
@@ -89,7 +83,10 @@ const blackKey = [
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI_DANGQIANLUNCI_SELECT', // tab报价分析-报价趋势-当前轮次-下拉框 show:false
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI_CHAXUN_BUTTON', // tab报价分析-报价趋势-查询-按钮 show:false
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI_CHONGZHI_BUTTON', // tab报价分析-报价趋势-重置-按钮 show:false
-                  'RFQ_DETAIL_TIPS_BAOJIAQUSHI_DAOCHU_BUTTON', // tab报价分析-报价趋势-导出-按钮 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAQUSHI_DAOCHU_BUTTON', // tab报价分析-报价趋势-导出-按钮 show:false\
+
+
+                  'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_CARD', // RFQ-详细信息
                   
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI', //TAB报价分析-报价趋势 show:false
                   'RFQ_DETAIL_TIPS_NEGOTIATEBASIC_BUTTON_BAOGAOQINGDAN', // TAB谈判基本信息-报告清单按钮
