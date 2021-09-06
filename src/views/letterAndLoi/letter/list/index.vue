@@ -6,7 +6,7 @@
 <template>
   <div class="letterList">
     <!-- 搜索区域 -->
-    <iSearch @sure="getList" @reset="reset">
+    <iSearch @sure="sure" @reset="reset">
         <el-form>
             <el-form-item v-for="(item,index) in letterListSearch" :key="'letterListSearch_'+index" :label="language(item.labelKey,item.label)">
                 <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
@@ -31,7 +31,7 @@
             <iButton v-permission.auto="LK_LETTER_LIST_CHEHUI|撤回" :loading="btnLoading.back" @click="back">{{language('partsprocure.CheHui','撤回')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_ZHUANPAI|转派" @click="turnSend">{{language('partsprocure.PARTSPROCURETRANSFER','转派')}} </iButton> 
             <iButton v-permission.auto="LK_LETTER_LIST_GUANBI|关闭" @click="closeLetter">{{language('LK_GUANBI','关闭')}} </iButton>
-            <iButton v-permission.auto="LK_LETTER_LIST_JIHUO|激活" :loading="btnLoading.activate" @click="activate">{{language('LK_JIHUO','激活')}} </iButton>
+            <iButton v-permission.auto="LK_LETTER_LIST_JIHUO|激活" :loading="btnLoading.activate" @click="activate">{{language('LK_LETTER_JIHUO','激活')}} </iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_DAOCHU|导出" @click="downloadFiles">{{language('LK_DAOCHU','导出')}} </iButton>
         </template>
         <!-- 表单区域 -->
@@ -242,7 +242,13 @@ export default {
                 showSelf:'YES',
                 status:'',
             };
+            this.page.currPage = 1;
             this.getList();
+        },
+
+        sure(){
+            this.page.currPage = 1;
+            this.getList(); 
         },
         
         handleSelectionChange(val) {

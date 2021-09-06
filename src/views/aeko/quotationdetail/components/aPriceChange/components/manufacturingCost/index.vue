@@ -88,7 +88,7 @@
           <el-table-column label="(RMB/Pc.)" align="center" width="93" prop="indirectManufacturingAmount"></el-table-column>
         </el-table-column>
         <el-table-column align="center" width="100" prop="laborCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('RENGONGCHENGBEN', '人工成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
-        <el-table-column align="center" width="102" prop="deviceCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHEBEICHENGBEN', '设备成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
+        <el-table-column align="center" min-width="102" prop="deviceCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHEBEICHENGBEN', '设备成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
       </el-table>
     </div>
   </div>  
@@ -119,21 +119,9 @@ export default {
       required: true,
       default: () => ([])
     },
-    sourceLaborCostSum: {
-      type: String || Number,
-      default: "0"
-    },
-    newLaborCostSum: {
-      type: String || Number,
-      default: "0"
-    },
-    sourceDeviceCostSum: {
-      type: String || Number,
-      default: "0"
-    },
-    newDeviceCostSum: {
-      type: String || Number,
-      default: "0"
+    sumData: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
@@ -168,7 +156,14 @@ export default {
         "indirectManufacturingAmount",
         "laborCost",
         "deviceCost"
-      ]
+      ],
+      sumDataReal: {
+        sourceLaborCostSum: 0,
+        newLaborCostSum: 0,
+        sourceDeviceCostSum: 0,
+        newDeviceCostSum: 0,
+        makeCost: 0
+      },
     }
   },
   created() {
@@ -287,7 +282,10 @@ export default {
       this.computeDeviceCost(value, key, row)
     },
     computeIndirectManufacturingAmount(sourceValue, sourceKey, row) {
-      this.$set(row, "indirectManufacturingAmount", math.evaluate(`(${ math.bignumber(row.deviceRate || 0) } + ${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }) * ${ math.bignumber(row.taktTime || 0) } / 3600 / ${ +row.taktTimeNumber ? math.bignumber(row.taktTimeNumber) : 1 } * (${ math.bignumber(row.indirectManufacturingRate || 0) } / 100)`).toFixed(2))
+      const indirectManufacturingAmount = math.evaluate(`(${ math.bignumber(row.deviceRate || 0) } + ${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }) * ${ math.bignumber(row.taktTime || 0) } / 3600 / ${ +row.taktTimeNumber ? math.bignumber(row.taktTimeNumber) : 1 } * (${ math.bignumber(row.indirectManufacturingRate || 0) } / 100)`).toFixed(2)
+      this.$set(row, "indirectManufacturingAmount", indirectManufacturingAmount)
+    
+      this.computeMakeCost(indirectManufacturingAmount, "indirectManufacturingAmount", row)
     },
     computeLaborCost(sourceValue, sourceKey, row) {
       const laborCost = math.evaluate(`(${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) } * ${ math.bignumber(row.taktTime || 0) }) / 3600 / ${ +row.taktTimeNumber ? math.bignumber(row.taktTimeNumber) : 1 } * (1 + (${ math.bignumber(row.indirectManufacturingRate || 0) } / 100))`).toFixed(2)
@@ -315,16 +313,15 @@ export default {
         }
       })
 
-      const sourceLaborCostSum = sourceTableListData.reduce((acc, cur) => {
+      this.sumDataReal.sourceLaborCostSum = sourceTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.laborCost))
       }, 0).toFixed(2)
 
-      const newLaborCostSum = newTableListData.reduce((acc, cur) => {
+      this.sumDataReal.newLaborCostSum = newTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.laborCost))
       }, 0).toFixed(2)
 
-      this.$emit("update:sourceLaborCostSum", sourceLaborCostSum)
-      this.$emit("update:newLaborCostSum", newLaborCostSum)
+      this.updateSumData()
     },
     computeDeviceCostSum(sourceValue, sourceKey, row) {
       const sourceTableListData = []
@@ -340,16 +337,41 @@ export default {
         }
       })
 
-      const sourceDeviceCostSum = sourceTableListData.reduce((acc, cur) => {
+      this.sumDataReal.sourceDeviceCostSum = sourceTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.deviceCost))
       }, 0).toFixed(2)
 
-      const newDeviceCostSum = newTableListData.reduce((acc, cur) => {
+      this.sumDataReal.newDeviceCostSum = newTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.deviceCost))
       }, 0).toFixed(2)
 
-      this.$emit("update:sourceDeviceCostSum", sourceDeviceCostSum)
-      this.$emit("update:newDeviceCostSum", newDeviceCostSum)
+      this.updateSumData()
+    },
+    computeMakeCost(sourceValue, sourceKey, row) {
+      let originIndirectManufacturingAmount = 0
+      let newIndirectManufacturingAmount = 0
+      this.tableListData.forEach(item => {
+        if (item.partCbdType == 0 || item.partCbdType == 1) {
+          originIndirectManufacturingAmount = math.add(originIndirectManufacturingAmount, math.bignumber(item.indirectManufacturingAmount || 0))
+        }
+
+        if (item.partCbdType == 2) {
+          newIndirectManufacturingAmount = math.add(newIndirectManufacturingAmount, math.bignumber(item.indirectManufacturingAmount || 0))
+        }
+      })
+
+      originIndirectManufacturingAmount = originIndirectManufacturingAmount.toFixed(2)
+      newIndirectManufacturingAmount = newIndirectManufacturingAmount.toFixed(2)
+
+      this.sumDataReal.makeCost = math.evaluate(`${ newIndirectManufacturingAmount } - ${ originIndirectManufacturingAmount }`).toFixed(2)
+      this.updateSumData()
+    },
+    updateSumData(data) {
+      const sumData = {}
+      
+      Object.keys(this.sumDataReal).forEach(key => sumData[key] = this.sumDataReal[key])
+
+      this.$emit("update:sumData", sumData)
     }
   }
 }
@@ -406,6 +428,10 @@ export default {
     ::v-deep td {
       border-right: 0;
       border-bottom: 1px solid rgba(112, 112, 112, .1);
+    }
+
+    ::v-deep .sourceRow {
+      background: #f4f8ff;
     }
   }
 

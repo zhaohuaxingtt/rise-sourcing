@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-09-03 15:33:00
+ * @LastEditTime: 2021-09-03 16:54:15
  * @LastEditors: Hao,Jiang
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -159,11 +159,11 @@ import headerNav from './components/headerNav'
 import nomicharts from './components/nomicharts'
 import pieCharts from './components/pieCharts'
 import {sourcingOverview} from '@/api/dashboard'
-import {qianqicaigou, zhuanyecaigou} from '@/config/role'
 import {iPage, iCard, icon, iMessage} from 'rise'
-import _ from 'lodash'
+import {roleMixins} from '@/utils/roleMixins'
 
 export default {
+  mixins: [roleMixins],
   components: {
     iPage,
     iCard,
@@ -173,55 +173,35 @@ export default {
     pieCharts
   },
   computed: {
-    ...Vuex.mapState({
-      userInfo: state => state.permission.userInfo,
-    }),
-    roleList() {
-      // 获取用户角色列表
-      let roleList = (this.userInfo && this.userInfo.positionList) || []
-      roleList = roleList.map(o => o.roleDTOList || [])
-      roleList = Array.from(new Set(roleList.flat(Infinity)))
-      return roleList.map(o => o.code) || []
-    },
-    // 是否是前期采购员
-    isQQCG() {
-      const qqArray = _.intersection(this.roleList,qianqicaigou)
-      return Boolean(qqArray.length)
-    },
-    // 是否是专业采购员
-    isZYCG() {
-      const zyArray = _.intersection(this.roleList,zhuanyecaigou)
-      return Boolean(zyArray.length)
-    },
     // 前期采购员待确认定点信链接
     letterURL() {
       let status = ''
       // 前期采购员
-      if (this.isQQCG) status = 'CSF_HANDLING'
+      if (this.userRole.isQQCG) status = 'CSF_HANDLING'
       // 专业采购员
-      if (this.isZYCG) status = 'LINIE_CONFIRING'
+      if (this.userRole.isZYCG) status = 'LINIE_CONFIRING'
       // 前期采购员 && 专业采购员
-      if (this.isZYCG && this.isQQCG) status = 'CSF_HANDLING'
+      if (this.userRole.isZYCG && this.userRole.isQQCG) status = 'CSF_HANDLING'
       return `/sourceinquirypoint/sourcing/partsletter?status=${status}${this.userRoleParams(['csfCssName'])}`
     },
     // 前期采购员待确认定点信链接
     loiURL() {
       let status = ''
       // 前期采购员
-      if (this.isQQCG) status = 'CSF_HANDLING'
+      if (this.userRole.isQQCG) status = 'CSF_HANDLING'
       // 专业采购员
-      if (this.isZYCG) status = 'LINIE_CONFIRING'
+      if (this.userRole.isZYCG) status = 'LINIE_CONFIRING'
       // 前期采购员 && 专业采购员
-      if (this.isZYCG && this.isQQCG) status = 'CSF_HANDLING'
+      if (this.userRole.isZYCG && this.userRole.isQQCG) status = 'CSF_HANDLING'
       return `/sourceinquirypoint/sourcing/partsletter?cardType=LOI&loiStatus=${status}${this.userRoleParams(['csfName'])}`
     },
     // 未创建采购项目链接
     unCrePartsprocureURL() {
-      return `/sourcing/partsprocure?status=10${this.userRoleParams()}`
+      return `/sourceinquirypoint/sourcing/partsprocure?status=10${this.userRoleParams()}`
     },
     // 未创建采购项目链接
     unJoinRFQURL() {
-      return `/sourcing/partsprocure?status=11${this.userRoleParams()}`
+      return `/sourceinquirypoint/sourcing/partsprocure?status=11${this.userRoleParams()}`
     }
 
   },
@@ -247,8 +227,8 @@ export default {
           argsName[index] = item
         })
       }
-      if (this.isQQCG) paramTxt += `&${argsName[0]}=${this.userInfo.nameZh}`
-      if (this.isZYCG) paramTxt += `&${argsName[1]}=${this.userInfo.nameZh}`
+      if (this.userRole.isQQCG) paramTxt += `&${argsName[0]}=${this.userInfo.nameZh}`
+      if (this.userRole.isZYCG) paramTxt += `&${argsName[1]}=${this.userInfo.nameZh}`
       return paramTxt
     },
     toLink(path) {

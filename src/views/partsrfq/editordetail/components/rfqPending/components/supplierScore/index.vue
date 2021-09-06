@@ -1,5 +1,10 @@
+<!--
+ * @Author: wentliao
+ * @Date: 2021-05-11 16:31:08
+ * @Description: 
+-->
 <template>
-  <div>
+  <div v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE">
     <supplier-score/>
     <supplier-rating-attachment class="margin-top20"/>
   </div>

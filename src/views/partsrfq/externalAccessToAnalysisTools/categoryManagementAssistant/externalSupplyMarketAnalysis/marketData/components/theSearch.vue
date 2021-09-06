@@ -29,16 +29,27 @@
       </template>
       <template v-else-if="item.type === 'selectCustom'">
         <iSelectCustom
-            v-if="showSelectCustom"
             v-model="form[item.props]"
             :data="item.options"
             :multiple="true"
             label="name"
             sortVal="name"
             value="name"
-            :disabled="item.options.length === 0"
             :search-method="(value) =>handleSelectSearch(value,item.props)"
             @change="(value) =>handleSelectCustomChange(value,item.props)"
+        />
+      </template>
+      <template v-else-if="item.type === 'selectCascader'">
+        <el-cascader
+            v-model="form[item.props]"
+            :options="item.options"
+            :props="item.cascaderProps"
+            :placeholder="item.placeholder"
+            separator="-"
+            collapse-tags
+            filterable
+            clearable
+            style="width: 200px"
         />
       </template>
     </div>
@@ -114,5 +125,9 @@ export default {
 
 ::v-deep .el-range-separator {
   line-height: 1.5rem;
+}
+
+::v-deep .el-cascader__search-input {
+  font-size: 12px;
 }
 </style>

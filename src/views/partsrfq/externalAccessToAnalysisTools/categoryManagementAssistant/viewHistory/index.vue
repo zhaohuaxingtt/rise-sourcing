@@ -13,13 +13,13 @@
       </div>
       <div class="queryForm">
         <el-form class="queryForm">
-          <el-form-item label="材料组：">
+          <el-form-item label="材料组">
             <iSelect v-model="form.categoryCode" filterable placeholder="请选择">
               <el-option v-for="item in formGoup.categoryList" :key="item.categoryCode" :label="item.categoryName" :value="item.categoryCode">
               </el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="年份：">
+          <el-form-item label="年份">
             <br>
             <div style="width:17rem" class="flex-between-center-center">
               <iDatePicker v-model="form.startYear" format="yyyy" value-format="yyyy" type="year" :placeholder="language('KAISHINIANFENG','开始年份')" clearable :picker-options="pickerStartAuditYear" />
@@ -41,7 +41,7 @@
           <iButton @click="handleExampleDownload">{{ $t("LK_XIAZAI") }} </iButton>
         </div>
       </div>
-      <tableList class="margin-top20" :openPageProps="'nameZh'" @openPage="openPage" :openPageGetRowData="true" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :index="true" @handleSelectionChange="handleSelectionChange" />
+      <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :index="true" @handleSelectionChange="handleSelectionChange" />
     </div>
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page='page.currPage' :total="page.totalCount" />
     <div slot="footer"></div>

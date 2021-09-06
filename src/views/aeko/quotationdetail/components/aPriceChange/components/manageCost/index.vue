@@ -15,11 +15,8 @@
           <template #typeNameByLang="scope">
             <span>{{ typeof scope.row.typeNameByLang === "function" ? scope.row.typeNameByLang() : scope.row.typeName }}</span>
           </template>
-          <template #newRatio="scope">
-            <iInput class="input-center" v-model="scope.row.newRatio" :class="{ changeClass: scope.row.newRatio !== scope.row.sourceRatio }" @input="handleInputByNumber($event, 'newRatio', scope.row, 2)"></iInput>
-          </template>
-          <template #amount="scope">
-            <span>{{ diffCompute(scope.row.sourceAmount, scope.row.newAmount) }}</span>
+          <template #ratio="scope">
+            <iInput class="input-center" v-model="scope.row.ratio" :class="{ changeClass: scope.row.ratio !== scope.row.originRatio }" @input="handleInputByNumber($event, 'ratio', scope.row, 2, computeChangeAmount)"></iInput>
           </template>
         </tableList>
       </div>
@@ -28,6 +25,8 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
+
 import { iButton, iInput } from "rise"
 import tableList from "../../../tableList"
 import { manageCostTableTitle as tableTitle } from "../data"
@@ -48,6 +47,15 @@ export default {
       type: Array,
       required: true,
       default: () => ([])
+    },
+    sumData: {
+      type: Object,
+      required: true,
+      default: () => ({})
+    },
+    manageFee: {
+      type: String,
+      default: 0
     }
   },
   data() {
@@ -55,13 +63,30 @@ export default {
       tableTitle
     }
   },
+  watch: {
+    sumData: {
+      handler() {
+        this.computeChangeAmount()
+      },
+      deep: true
+    }
+  },
   methods: {
-    handleInputByNumber(value, key, row, precision) {
+    handleInputByNumber(value, key, row, precision, cb) {
       this.$set(row, key, numberProcessor(value, precision))
+
+      if (typeof cb === "function") {
+        cb(value, key, row)
+      }
     },
-    diffCompute(a, b) {
-      // eslint-disable-next-line no-undef
-      return math.subtract(math.bignumber(b), math.bignumber(a)).toFixed(2)
+    computeChangeAmount(sourceValue, sourceKey, row) {
+      const rawMaterialManageChangeAmount = math.evaluate(`(${ math.bignumber(this.sumData.newMaterialCostSumByNotSvwAssignPriceParts || 0) } * (${ math.bignumber(this.tableListData[0].ratio || 0) } / 100)) - (${ math.bignumber(this.sumData.sourceMaterialCostSumByNotSvwAssignPriceParts || 0) } * (${ math.bignumber(this.tableListData[0].originRatio || 0) } / 100))`).toFixed(2)
+      const makeManageChangeAmount = math.evaluate(`((${ math.bignumber(this.tableListData[1].ratio || 0) } / 100) * (${ math.bignumber(this.sumData.newLaborCostSum || 0) } + ${ math.bignumber(this.sumData.newDeviceCostSum || 0) })) - ((${ math.bignumber(this.tableListData[1].originRatio || 0) } / 100) * (${ math.bignumber(this.sumData.sourceLaborCostSum || 0) } + ${ math.bignumber(this.sumData.sourceDeviceCostSum || 0) }))`).toFixed(2)
+      const manageFee = math.evaluate(`${ rawMaterialManageChangeAmount } + ${ makeManageChangeAmount }`).toFixed(2)
+
+      this.$set(this.tableListData[0], "changeAmount", rawMaterialManageChangeAmount)
+      this.$set(this.tableListData[1], "changeAmount", makeManageChangeAmount)
+      this.$emit("update:manageFee", manageFee)
     }
   }
 }

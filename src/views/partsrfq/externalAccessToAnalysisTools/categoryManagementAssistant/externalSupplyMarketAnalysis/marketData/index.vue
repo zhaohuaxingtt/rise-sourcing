@@ -16,7 +16,6 @@
         ref="theSearch"
         :list="searchProps"
         @handleSelectSearch="handleSelectSearch"
-        @handleSelectCustomChange="handleSelectCustomChange"
     />
     <div v-loading="chartBoxLoading" style="padding-top: 20px">
       <!--    数据页签栏-->
@@ -87,12 +86,14 @@ export default {
     };
   },
   async created() {
+    this.setCascaderProps();
     await this.getSearchProps({type: RAWMATERIAL});
     await this.getChartGroupData({type: RAWMATERIAL});
   },
   methods: {
     handleTabsClick(val) {
       this.current = val;
+      this.setCascaderProps();
       this.showStatus = false;
       this.$nextTick(() => {
         this.showStatus = true;
@@ -138,17 +139,11 @@ export default {
     setSearchProps(data) {
       this.searchProps = this.searchProps.map(item => {
         switch (item.props) {
-          case 'classTypeList':
+          case 'classTypeSpecsArea':
             item.options = data.classTypeList.map(item => {
               return {
-                name: item,
-              };
-            });
-            break;
-          case 'specsList':
-            item.options = data.specsList.map(item => {
-              return {
-                name: item,
+                label: item,
+                value: item,
               };
             });
             break;
@@ -166,11 +161,8 @@ export default {
               };
             });
             break;
-          case 'dataSourceList':
+          case 'dataSource':
             item.options = data.dataSourceList;
-            if (data.dataSourceList.length !== 0) {
-              this.$refs.theSearch.form.dataSourceList = data.dataSourceList[0];
-            }
             break;
         }
         return item;
@@ -179,14 +171,13 @@ export default {
     // 获取搜索框参数
     getSearchForm() {
       const form = cloneDeep(this.$refs.theSearch.form);
-      if (form.classTypeList && Array.isArray(form.classTypeList)) {
-        form.classTypeList = form.classTypeList.map(item => {
-          return item.name;
-        });
-      }
-      if (form.specsList && Array.isArray(form.specsList)) {
-        form.specsList = form.specsList.map(item => {
-          return item.name;
+      if (form.classTypeSpecsArea && Array.isArray(form.classTypeSpecsArea)) {
+        form.classTypeSpecsAreaList = form.classTypeSpecsArea.map(item => {
+          return {
+            classType: item?.[0],
+            specs: item?.[1],
+            area: item?.[2],
+          };
         });
       }
       if (form.areaList && Array.isArray(form.areaList)) {
@@ -204,7 +195,6 @@ export default {
         form['endDate'] = form.rangeDate[1];
         delete form.rangeDate;
       }
-      form.dataSourceList = form.dataSourceList ? [form.dataSourceList] : null;
       return form;
     },
     // 获取数据页签
@@ -231,15 +221,16 @@ export default {
     // 通过接口获取搜索下拉
     async getSearchProps({type}) {
       let res = '';
+      let req = {};
       switch (type) {
         case RAWMATERIAL:
-          res = await getRawMaterialGroupSelectList();
+          res = await getRawMaterialGroupSelectList(req);
           break;
         case LABOUR:
           res = await getLabourGroupSelectList();
           break;
         case ENERGY:
-          res = await getEnergyGroupSelectList();
+          res = await getEnergyGroupSelectList(req);
           break;
       }
       const data = res.data;
@@ -260,7 +251,7 @@ export default {
           case RAWMATERIAL:
             res = await getrawMaterialGroupData(form);
             if (res.result) {
-              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeList'});
+              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeSpecsArea'});
             }
             break;
           case LABOUR:
@@ -272,7 +263,7 @@ export default {
           case ENERGY:
             res = await getEnergyGroupData(form);
             if (res.result) {
-              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeList'});
+              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeSpecsArea'});
             }
             break;
         }
@@ -292,19 +283,25 @@ export default {
       } catch {
         this.chartData = {};
         this.dataTabArray = [];
+      } finally {
         this.chartBoxLoading = false;
       }
     },
     setDataTypeDefault({resultList, formProps}) {
-      if (Array.isArray(resultList) && resultList.length > 0) {
-        this.$refs.theSearch.form[formProps] = resultList.map(item => {
-          return {name: item.dataType};
-        });
+      if (this.current === LABOUR) {
+        if (Array.isArray(resultList) && resultList.length > 0) {
+          this.$refs.theSearch.form[formProps] = resultList.map(item => {
+            return {name: item.dataType};
+          });
+        }
+      } else {
+        if (Array.isArray(resultList) && resultList.length > 0) {
+          this.$refs.theSearch.form[formProps] = resultList.map(item => {
+            const dataType = item.dataType.split('-');
+            return [dataType[0], dataType[1], dataType[2]];
+          });
+        }
       }
-      /* this.$refs.theSearch.showSelectCustom = false;
-       this.$nextTick(() => {
-         this.$refs.theSearch.showSelectCustom = true;
-       });*/
     },
     // 处理保存
     async handleSave() {
@@ -314,6 +311,7 @@ export default {
         const resFile = await this.getDownloadFileAndExportPdf({
           domId: 'allContainer',
           pdfName: 'market data',
+          exportPdf: true,
           callBack: () => {
             this.isExporting = false;
           },
@@ -365,14 +363,9 @@ export default {
     setRecentSearchData(data) {
       const copyData = cloneDeep(data);
       if (data) {
-        if (copyData.classTypeList && Array.isArray(copyData.classTypeList)) {
-          copyData.classTypeList = copyData.classTypeList.map(item => {
-            return {name: item};
-          });
-        }
-        if (copyData.specsList && Array.isArray(copyData.specsList)) {
-          copyData.specsList = copyData.specsList.map(item => {
-            return {name: item};
+        if (copyData.classTypeSpecsAreaList && Array.isArray(copyData.classTypeSpecsAreaList)) {
+          copyData.classTypeSpecsArea = copyData.classTypeSpecsAreaList.map(item => {
+            return [item.classType, item.specs, item.area];
           });
         }
         if (copyData.areaList && Array.isArray(copyData.areaList)) {
@@ -389,9 +382,6 @@ export default {
           copyData.rangeDate = [copyData.startDate, copyData.endDate];
           delete copyData.startDate;
           delete copyData.endDate;
-        }
-        if (Array.isArray(copyData.dataSourceList) && copyData.dataSourceList.length > 0) {
-          copyData.dataSourceList = copyData.dataSourceList[0];
         }
         this.$refs.theSearch.form = copyData;
       }
@@ -410,11 +400,69 @@ export default {
       copyTwiceSearchProps[props] = list;
       this.setSearchProps(copyTwiceSearchProps);
     },
-    handleSelectCustomChange({value, props}) {
-      console.log(1);
-      console.log(value);
-      console.log(props);
-    }
+    // 设置级联props
+    setCascaderProps() {
+      const _this = this;
+      switch (this.current) {
+        case RAWMATERIAL:
+          this.searchProps = this.searchProps.map(item => {
+            if (item.props === 'classTypeSpecsArea') {
+              item.cascaderProps = {
+                multiple: true,
+                lazy: true,
+                lazyLoad(node, resolve) {
+                  _this.classTypeSpecsAreaLoad(node, resolve, getRawMaterialGroupSelectList);
+                },
+              };
+            }
+            return item;
+          });
+          break;
+        case ENERGY:
+          this.searchProps = this.searchProps.map(item => {
+            if (item.props === 'classTypeSpecsArea') {
+              item.cascaderProps = {
+                multiple: true,
+                lazy: true,
+                lazyLoad(node, resolve) {
+                  _this.classTypeSpecsAreaLoad(node, resolve, getEnergyGroupSelectList);
+                },
+              };
+            }
+            return item;
+          });
+          break;
+      }
+    },
+    async classTypeSpecsAreaLoad(node, resolve, func) {
+      const {level} = node;
+      if (level === 1) {
+        const req = {
+          classTypeList: [node.value],
+        };
+        const res = await func(req);
+        const nodes = res.data.specsList.map(val => ({
+          value: val,
+          label: val,
+          leaf: level >= 2,
+        }));
+        resolve(nodes);
+      } else if (level === 2) {
+        const req = {
+          classTypeList: [node.parent.value],
+          specsList: [node.value],
+        };
+        const res = await func(req);
+        const nodes = res.data.areaList.map(val => ({
+          value: val,
+          label: val,
+          leaf: level >= 2,
+        }));
+        resolve(nodes);
+      } else {
+        resolve([]);
+      }
+    },
   },
 };
 </script>
@@ -422,3 +470,4 @@ export default {
 <style scoped>
 
 </style>
+

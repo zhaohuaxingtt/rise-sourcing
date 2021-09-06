@@ -178,7 +178,6 @@ export default {
       priceLatitudeOptions: [],
       tableStatus: '',
       averageTableStatus: '',
-      copyDataInfo: {},
     };
   },
   created() {
@@ -189,7 +188,7 @@ export default {
     handleBack() {
       if (this.$store.state.rfq.entryStatus === 1) {
         this.$router.push({
-          path: '/sourcing/partsrfq/assistant',
+          path: '/sourceinquirypoint/sourcing/partsrfq/assistant',
           query: {
             id: this.$store.state.rfq.rfqId,
             round: this.$route.query.round,
@@ -310,7 +309,6 @@ export default {
         const res = await getAnalysisSchemeDetails(req);
         this.dataInfo = res.data;
         if (res.result) {
-          this.copyDataInfo = res.data;
           this.currentTabData.partsId = res.data.partsId;
           this.currentTabData.batchNumber = res.data.batchNumber;
           this.currentTabData.supplierId = res.data.supplierId;
@@ -323,15 +321,13 @@ export default {
           await Promise.all([this.getPiIndexWaveSelectList(), this.$refs.thePriceIndexChart.buildChart()]);
           this.$refs.thePartsCostChart.buildChart();
         } else {
-          this.dataInfo = this.copyDataInfo;
           this.resultMessage(res);
         }
       } catch {
-        this.dataInfo = this.copyDataInfo;
-        this.$refs.theCurrentTable.tableListData =  this.$refs.theCurrentTable.tableListData.map(item => {
-          item.newRow = false
-          return item
-        })
+        this.$refs.theCurrentTable.tableListData = this.$refs.theCurrentTable.tableListData.map(item => {
+          item.newRow = false;
+          return item;
+        });
       } finally {
         this.setLoading({propsArray: propsArrayLoading, boolean: false});
       }
@@ -395,6 +391,7 @@ export default {
             const res = await saveAnalysisScheme(req);
             if (res.result) {
               await this.setTableEditStatus(false);
+              this.handleAddModelUrlChange()
             } else {
               this.handleTableSaveError();
             }
@@ -404,6 +401,7 @@ export default {
           const res = await saveAnalysisScheme(req);
           if (res.result) {
             await this.setTableEditStatus(false);
+            this.handleAddModelUrlChange()
           } else {
             this.handleTableSaveError();
           }
@@ -491,6 +489,7 @@ export default {
         this.resultMessage(res, () => {
           this.handleTableStatus('');
           this.handleAverageTableStatus('');
+          this.handleAddModelUrlChange()
         });
         if (res.result) {
           if (tab === CURRENTTIME) {
@@ -554,6 +553,16 @@ export default {
     },
     handleAverageTableStatus(val) {
       this.averageTableStatus = val;
+    },
+    handleAddModelUrlChange() {
+      if (this.$route.query.batchNumber) {
+        this.$router.push({
+          path: '/sourcing/partsrfq/piAnalyseDetail',
+          query: {
+            schemeId: this.currentTabData.analysisSchemeId,
+          },
+        });
+      }
     },
   },
 };
