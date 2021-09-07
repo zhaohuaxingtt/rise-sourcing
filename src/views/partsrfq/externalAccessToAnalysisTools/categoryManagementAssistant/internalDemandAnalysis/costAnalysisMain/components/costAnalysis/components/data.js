@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-02 18:07:18
- * @LastEditTime: 2021-08-19 14:57:29
+ * @LastEditTime: 2021-09-07 14:52:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysis\components\data.js
@@ -14,5 +14,5 @@ export const tableTitle = [
   {props: 'createLocalDate', name: '创建日期', key: 'CHUANGJIANRIQI'},
   {props: 'option', name: '操作', key: 'CAOZUO'},
   {props: 'updateLocalDate', name: '上次修改日期', key: 'SHANGCIXIUGAIRIQI'},
-  {props: 'sort', name: '', key: 'SORT'},
+  {props: 'sort', name: '', key: ''},
 ]

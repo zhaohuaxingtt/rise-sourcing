@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-12 09:58:51
- * @LastEditTime: 2021-08-19 13:48:05
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-07 16:51:19
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\headerNav.vue
 -->

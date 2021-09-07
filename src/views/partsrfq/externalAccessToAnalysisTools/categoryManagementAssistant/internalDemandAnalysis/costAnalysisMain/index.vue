@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-02 18:36:46
+ * @LastEditTime: 2021-09-07 14:46:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -27,7 +27,8 @@
             <tableList
               :tableData="tableListData"
               :tableTitle="tableTitle"
-              :tableLoading="false"
+              :selection="false"
+              :tableLoading="loading"
               :index="true"
               :max-height="600"
               @handleSelectionChange="handleSelectionChange"
@@ -69,7 +70,8 @@ export default {
       },
       oldSchemeId: this.$route.query.schemeId || null,
       targetSchemeId: null,
-      schemeName: null
+      schemeName: null,
+      loading: true
     }
   },
   created() {
@@ -89,11 +91,13 @@ export default {
     },
     // 获取表格数据
     getTableData() {
+      this.loading = true
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode,
         fsList: this.$route.query.fsNumList || [],
       }
       listNomiData(params).then(res => {
+        this.loading = false
         if(res && res.code == 200) {
           this.tableListData = res.data
           this.getPieData()
