@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-03 14:59:45
+ * @LastEditTime: 2021-09-07 15:34:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -255,8 +255,8 @@
 						</iFormItem>
 					</div>
 					<div class="col">
-						<iFormItem :label="language('LK_QIANSHOURIQI','签收日期') + ':'" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_DATEOFRECEIPT">
+						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_DATEOFRECEIPT" :label="language('LK_QIANSHOURIQI','签收日期') + ':'" name="test">
+							<iText>
 								{{ detailData.signDate }}
 							</iText>
 						</iFormItem>

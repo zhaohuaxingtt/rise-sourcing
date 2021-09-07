@@ -1,7 +1,7 @@
 /*
  * @Author: 舒杰
  * @Date: 2021-08-10 15:52:22
- * @LastEditTime: 2021-08-14 10:40:04
+ * @LastEditTime: 2021-09-06 10:44:51
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\api\categoryManagementAssistant\marketData\materialGroup.js
@@ -15,7 +15,7 @@ const request = axios(process.env.VUE_APP_AON);
 //材料组定位
 export function materialGroupPosition(params) {
    return request({
-     url: '/piAnalysisScheme/materialGroupPosition',
+     url: '/MaterialGroupPositioning/materialGroupPosition',
      method: 'POST',
      data: params,
    });
@@ -24,7 +24,7 @@ export function materialGroupPosition(params) {
 //保存材料组建议和方案pdf
 export function saveMaterialGroupScheme(params) {
    return request({
-     url: '/piAnalysisScheme/saveMaterialGroupScheme',
+     url: '/MaterialGroupPositioning/saveMaterialGroupScheme',
      method: 'POST',
      data: params,
    });

@@ -9,7 +9,7 @@
         <span>{{ $t("LK_RIZHI") }}</span>
       </div>
     </div>
-    <iLog :show.sync="iLogShow" :bizId="query.bmSerial"></iLog>
+    <iLog :show.sync="iLogShow" :bizId="query.changeNum"></iLog>
 
     <iCard v-loading="baseInfoLoading">
       <div class="head-serch">
@@ -211,14 +211,14 @@
           </iButton>
           <iButton
               v-show="(Number(baseInfo.changeStatus) === 4 || Number(baseInfo.changeStatus) === 5)"
-              v-loading="sendSupplierLoading"
-              @click="sendSupplier">
+              v-loading="recallLoading"
+              @click="handleRecall">
             {{ language('LK_CHEHUI', '撤回') }}
           </iButton>
           <iButton
               v-show="!isEdit"
               v-loading="sendSupplierLoading"
-              @click="sendSupplier">
+              @click="changeOrderShow = true; isCheck = true">
             {{ language('LK_CHAKANBIANGENGDAN', '查看变更单') }}
           </iButton>
           <iButton
@@ -237,7 +237,7 @@
           <iButton
               v-show="isEdit"
               v-loading="bmBuberLoading"
-              @click="bmBuberConfirmBefore">
+              @click="handlePreView">
             {{ language('LK_YULANBIANGENGDAN', '预览变更单') }}
           </iButton>
           <iButton
@@ -439,6 +439,7 @@
     </iCard>
 
     <confirm v-model="confirmShow" @sure="bmBuberConfirm"></confirm>
+    <changeOrder v-model="changeOrderShow" @sure="bmBuberConfirm" :changeOederData="changeOederData" :isCheck="isCheck"></changeOrder>
     <photoList :imgList="imgList" :visible="photoListShow" @changeLayer="() => photoListShow = false"></photoList>
   </iPage>
 </template>
@@ -462,6 +463,7 @@ import {
 } from "element-ui";
 import {changeTaskBmInfoTitle , changeTaskInfoTableTitle} from "../components/data"
 import confirm from "../components/confirm"
+import changeOrder from "../components/changeOrder"
 import photoList from "../components/photoList"
 import { Popover } from "element-ui"
 import {
@@ -482,7 +484,7 @@ import {
   shareParts,
 } from "@/api/ws2/purchase/changeTask/bmInfo";
 import {getTousandNum, delcommafy} from "@/utils/tool";
-import {submitApproval} from "@/api/ws2/purchase/investmentList";
+import {submitApproval, recall} from "@/api/ws2/purchase/investmentList";
 import {cloneDeep} from "lodash";
 
 export default {
@@ -498,7 +500,8 @@ export default {
     photoList,
     iLog,
     Upload,
-    iInput
+    iInput,
+    changeOrder
   },
 
   data(){
@@ -516,6 +519,8 @@ export default {
       imgList: [],
       isOpen: true,
       confirmShow: false,
+      changeOrderShow: false,
+      isCheck: false,
       photoListShow: false,
       detailsTableLoading: false,
       baseInfoLoading: false,
@@ -523,7 +528,9 @@ export default {
       tableLoading2: false,
       bmBuberLoading: false,
       sendSupplierLoading: false,
+      recallLoading: false,
       iLogShow: false,
+      changeOederData: {},
       uploadButtonLoading: false,
       handleSaveLoading: false,
       handleResetLoading: false,
@@ -579,6 +586,19 @@ export default {
       } else {
         iMessage.warn(this.language('LK_ZHIYOUCAOGAOZHUANGTAICAIYUNXUXIUGAI', '只有草稿状态才允许修改'));
       }
+    },
+    handlePreView(){
+      this.changeOederData = {
+        moldChangeDtos: this.tableListData.map(item => {
+          item.assetPrice = Number(this.delcommafy(item.assetPrice))
+          return item
+        }),
+        id: this.query.bmChangeId,
+        newMoldInvestmentAmount: this.baseInfo.afterChangeAmount,
+        optimistic: this.baseInfo.optimistic,
+      }
+      this.changeOrderShow = true
+      this.isCheck = false
     },
     handleAdd(){
       this.handleAddLoading = true
@@ -645,16 +665,16 @@ export default {
         iMessage.warn(this.language('LK_BAAPPLYTISP1', '请先勾选'))
         return
       }
-      let deleteItem = [], deleteHard = []
+      let deleteItem = []
       this.multipleSelection2.map(item => {
         if(item.bmMoldId === null || item.bmMoldId === 0){
-          this.tableListData.splice(this.tableListData.findIndex(a => a.moldId === item), 1)
+          this.tableListData.splice(this.tableListData.findIndex(a => a.moldId === item.moldId), 1)
         } else {
-          deleteItem.push(item.moldId)
+          deleteItem.push(item.id)
         }
       })
       this.tableListData = this.tableListData.map(a => {
-        if(deleteItem.some(b => b === a.moldId)){
+        if(deleteItem.some(b => b === a.id)){
           a.changeType = 0
         }
         return a
@@ -663,7 +683,7 @@ export default {
     },
     handleSave(){
       this.handleSaveLoading = true
-      saveChange({
+      let changeOederData = {
         moldChangeDtos: this.tableListData.map(item => {
           item.assetPrice = Number(this.delcommafy(item.assetPrice))
           return item
@@ -671,7 +691,8 @@ export default {
         id: this.query.bmChangeId,
         newMoldInvestmentAmount: this.baseInfo.afterChangeAmount,
         optimistic: this.baseInfo.optimistic,
-      }).then((res) => {
+      }
+      saveChange(changeOederData).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.isEdit = false
@@ -752,6 +773,22 @@ export default {
         this.bmBuberLoading = false
       }).catch(() => {
         this.bmBuberLoading = false
+      });
+    },
+    handleRecall(){
+      this.recallLoading = true
+      recall({bmChangeId: this.query.bmChangeId}).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.moldHeaderByBmSerial()
+          this.findMoldViewList()
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+        }
+        this.recallLoading = false
+      }).catch(() => {
+        this.recallLoading = false
       });
     },
     sendSupplier(){

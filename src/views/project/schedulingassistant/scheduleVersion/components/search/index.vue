@@ -29,6 +29,7 @@
         <iDatePicker
           v-model='createDate'
           @change="oncheckDateChange"
+          value-format="yyyy-MM-dd"
           type="daterange"
           clearable>
         </iDatePicker>
@@ -96,8 +97,8 @@ export default {
      * @return {*}
      */    
     oncheckDateChange(data) {
-      this.form.createDateStart = data && data[0] || ''
-      this.form.createDateEnd = data && data[1] || ''
+      this.form.createDateStart = data && `${data[0]} 00:00:00` || ''
+      this.form.createDateEnd = data && `${data[1]} 23:59:59` || ''
     },
     // 车型项目推荐
     querySearch(queryString, cb) {

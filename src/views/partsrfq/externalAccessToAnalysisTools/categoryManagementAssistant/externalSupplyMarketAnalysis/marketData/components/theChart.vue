@@ -38,6 +38,7 @@ export default {
           icon: 'circle',
           left: 30,
           top: 20,
+          type: 'scroll'
         },
         tooltip: {
           trigger: 'axis',
@@ -51,10 +52,9 @@ export default {
         },
         yAxis: {
           type: 'value',
-          axisLabel: {
-            formatter: (val) => {
-              return 'CNY ' + val
-            }
+          name: this.language('DANWEIYUAN', '（单位：元）'),
+          nameTextStyle: {
+            padding: [0, 0, 0, -20],
           }
         },
         color: [
@@ -71,7 +71,7 @@ export default {
         ],
         series: this.seriesArray,
         grid: {
-          top: 60,
+          top: 70,
           right: 40,
           left: 40,
           bottom: 20,

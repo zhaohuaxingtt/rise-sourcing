@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-09-02 14:15:35
+ * @LastEditTime: 2021-09-03 14:25:42
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -186,6 +186,7 @@ import { downloadFile, downloadUdFile } from "@/api/file"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
 import { clickMessage} from "@/views/partsign/home/components/data"
+import { Row } from 'element-ui';
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -276,7 +277,7 @@ export default {
     //动态获取转派评分任务
     openPage(row) {
       this.$router.push({
-        path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}`
+        path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}&businessKey=${row.partProjectType}`
       })
     },
     //获取表格数据

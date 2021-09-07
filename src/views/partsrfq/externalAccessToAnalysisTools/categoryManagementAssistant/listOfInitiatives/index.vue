@@ -99,14 +99,19 @@
 import {iPage, iButton, iInput} from 'rise';
 import headerNav from '../components/headerNav';
 import theCard from './compoents/theCard';
-import {getList, saveInfos} from '../../../../../api/categoryManagementAssistant/listOfInitiatives';
+import {
+  getList,
+  getListSelected,
+  saveInfos,
+  saveReport,
+} from '../../../../../api/categoryManagementAssistant/listOfInitiatives';
 import theCheckBox from './compoents/theCheckBox';
 import theRemark from './compoents/theRemark';
 import resultMessageMixin from '@/utils/resultMessageMixin';
-import {downloadPDF} from '@/utils/pdf';
+import {downloadPDF, downloadPdfMixins} from '@/utils/pdf';
 
 export default {
-  mixins: [resultMessageMixin],
+  mixins: [resultMessageMixin, downloadPdfMixins],
   components: {
     iPage,
     iButton,
@@ -126,8 +131,10 @@ export default {
       form: {},
       maxlength: 500,
       categoryCode: this.$store.state.rfq.categoryCode,
+      categoryName: this.$store.state.rfq.categoryName,
       exportStatus: false,
       exportButtonLoading: false,
+      saveFlag: false,
     };
   },
   created() {
@@ -136,9 +143,11 @@ export default {
   methods: {
     handleEdit() {
       this.editStatus = true;
+      this.getList();
     },
     handleCancel() {
       this.editStatus = false;
+      this.getList();
     },
     async handleSave() {
       try {
@@ -160,9 +169,9 @@ export default {
         const res = await saveInfos(req);
         this.resultMessage(res, () => {
           this.editStatus = false;
+          this.saveFlag = true;
           this.getList();
         });
-        this.pageLoading = false;
       } catch {
         this.pageLoading = false;
       }
@@ -176,7 +185,12 @@ export default {
         const req = {
           categoryCode: this.categoryCode,
         };
-        const res = await getList(req);
+        let res = '';
+        if (this.editStatus) {
+          res = await getList(req);
+        } else {
+          res = await getListSelected(req);
+        }
         this.treeData = res.data;
         const selectObj = {};
         this.treeDataSelect = res.data.map(item => {
@@ -190,6 +204,7 @@ export default {
         this.treeDataSelect = selectObj;
         this.getLastCheckData({treeData: this.treeData, selectObj});
         this.pageLoading = false;
+        this.handleSaveExport();
       } catch {
         this.treeData = {};
         this.treeDataSelect = {};
@@ -220,12 +235,16 @@ export default {
       Object.keys(selectObj).map(item => {
         level1Array.map(level1Item => {
           if (level1Item.name === item) {
-            level1Item.children.map(level2Item => {
-              level2Item.effectFlag === 1 && this.treeDataSelect[item].push(level2Item.name);
-              level2Item.effectFlag === 1 && this.treeDataSelectId.push(level2Item.id);
+            level1Item.children && level1Item.children.map(level2Item => {
+              if (level2Item.effectFlag === 1) {
+                this.treeDataSelect[item].push(level2Item.name);
+                this.treeDataSelectId.push(level2Item.id);
+              }
               level2Item.children && level2Item.children.map(level3Item => {
-                level3Item.effectFlag === 1 && this.treeDataSelect[item].push(level3Item.name);
-                level3Item.effectFlag === 1 && this.treeDataSelectId.push(level3Item.id);
+                if (level3Item.effectFlag === 1) {
+                  this.treeDataSelect[item].push(level3Item.name);
+                  this.treeDataSelectId.push(level3Item.id);
+                }
               });
             });
           }
@@ -281,6 +300,7 @@ export default {
       downloadPDF({
         idEle: 'container',
         pdfName: 'overview',
+        exportPdf: true,
       });
     },
     jump() {
@@ -288,11 +308,40 @@ export default {
         this.$refs.headerNav.openCatecory();
       }
     },
+    handleSaveExport() {
+      if (this.saveFlag) {
+        this.pageLoading = true;
+        this.$nextTick(async () => {
+          const pdfName = `品类管理助手-${this.categoryName}-${window.moment().format('YYYY-MM-DD')}|`;
+          const resFile = await this.getDownloadFileAndExportPdf({
+            domId: 'container',
+            pdfName: pdfName,
+          });
+          try {
+            const req = {
+              categoryCode: this.categoryCode,
+              categoryName: this.categoryName,
+              reportFileName: resFile.downloadName,
+              reportName: resFile.downloadName.split('|')[0],
+              reportUrl: resFile.downloadUrl,
+              years: window.moment().format('YYYY'),
+            };
+            await saveReport(req);
+          } finally {
+            this.pageLoading = false;
+            this.saveFlag = false;
+          }
+        });
+      }
+    },
   },
   watch: {
     '$store.state.rfq.categoryCode'() {
       this.categoryCode = this.$store.state.rfq.categoryCode;
       this.getList();
+    },
+    '$store.state.rfq.categoryName'() {
+      this.categoryName = this.$store.state.rfq.categoryName;
     },
   },
 };

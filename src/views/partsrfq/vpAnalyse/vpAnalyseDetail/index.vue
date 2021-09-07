@@ -1,6 +1,6 @@
 <!--
  * @Author: moxuan
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Description: VP分析详情
 -->
 <template>
@@ -417,7 +417,7 @@ export default {
       if (type === 'edit') {
         if (this.$store.state.rfq.entryStatus === 1) {
           this.$router.push({
-            path: '/sourcing/partsrfq/assistant',
+            path: '/sourceinquirypoint/sourcing/partsrfq/assistant',
             query: {
               id: this.$store.state.rfq.rfqId,
               round: this.$route.query.round,

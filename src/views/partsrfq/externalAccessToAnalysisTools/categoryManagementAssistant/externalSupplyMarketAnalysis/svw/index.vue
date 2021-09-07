@@ -166,7 +166,7 @@ export default {
       // this.categoryCode = this.$store.state.rfq.categoryCode
     },
     getreturnObj (val, index) {
-      console.log(val)
+      console.log(val,index)
       this.MarketOverviewDTO[index] = val
       console.log(this.MarketOverviewDTO)
     },

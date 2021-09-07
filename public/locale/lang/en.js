@@ -1133,6 +1133,89 @@
             'QUXIAN': ' curve', //曲线
             'ZUIXINDINGDIANDANJIA': 'The latest fixed-point unit price', //最新定点单价
             'MUBIAODANJIA': 'Target unit price', //目标单价,
+        },
+        'MODEL-ORDER':{
+            'LK_RISEDINGDANHAO': 'RiSE PO No', // RiSE订单号
+            'LK_SAPDINGDANHAO': 'SAP PO no', // SAP订单号
+            'LK_GONGYINSHANG': 'Supplier', //供应商
+            'LK_CAIGOUGONGCHANG': 'Plant', //采购⼯⼚
+            'LK_LINGJIANHAO': 'Part No.', //零件号
+            'LK_CAIGOUZU': 'Purch. Group', //采购组
+            'LK_CAIGOUYUAN': 'Linie', //采购员
+            'LK_DINGDANZHUANGTAI': 'PO Status',
+            'LK_SAPFASONGZHUANGTAI': 'SAP Status', //SAP发送状态
+            'LK_HETONGZHUANGTAI': '合同状态', //合同状态
+            'LK_JINKANZIJI': 'My data', //仅看自己
+            'LK_XINJIAN': 'New', //新建
+            'LK_SHANCHU': 'Delete', //删除项次
+            'LK_ZHUANPAI': 'Handover', //转派
+            'LK_CHUANGJIANRUZHANGDAN':'创建入账单',//创建入账单
+            'LK_BAOXIAOSHENQING':'报销申请',//报销申请
+            'LK_DAOCHU': 'Export', //导出
+            'LK_QUANBUSHOUQI': 'Collapse All', //全部收起
+            'LK_QUANBUZHANKAI': 'Collapse All', //全部展开
+            'LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN': '{day} day(s) to valid date\n', //距离有效起始日期还有*天
+            'LK_CAIGOUZUCAIGOUYUAN': 'Purch. Group-Buyer', //采购组-采购员
+            'LK_DINGDANRIQI': 'PO Date',
+            'LK_DINGDAN': '订单',
+            'LK_HETONG': '合同', //合同
+            'LK_QINGKONG': 'Clear All', //清空
+            'LK_BANBENSHNGJI': 'Version update', // 版本升级
+            'LK_DINGDANLEIXING': 'PO Type',
+            'LK_QINGSHURUGONGYINGSHANGBIANMA': 'Please enter supplier code',
+            'LK_QINGSHURUCAIGOUZU': 'Please enter purch.group',
+            'LK_QINGXUANZECAIGOUGONGCHANG': 'Please select plant',
+            'LK_SUOSHUBUMEN': 'Dept', //所属部门
+            'LK_BANBEN': 'Version', //版本
+            'LK_GONGSHIDAIMA': 'Company Code', //公司代码
+            'LK_CAIGOUZUZHI': 'Purch. Orga', //采购组织
+            'LK_FUKUANTIAOJIAN': 'Pay Terms', //付款条件
+            'LK_CANZHAOCAIGOUSHENQING': 'Refer to PR',
+            'LK_SHANCHUXIANGCI': 'Delete', //删除项次
+            'LK_HUIFUXIANGCI': 'Restore', //恢复项次
+            'LK_DUQUJIAGE': 'Read price', //读取价格
+            'LK_MIAOSHU': 'Description', //描述
+            'LI_MOJUTAIZHANG':'模具台账',//模具台账
+            'LK_JIAGE':'price',//价格
+            'LK_GR/IR': 'GR/IR', //GR/IR
+            'LK_KUCUNDIDIAN': 'Inventory Location', //库存地点
+            'LK_YUANGUZIBIANHAO':'原固资编号',//原固资编号
+            'LK_FASONGSAP': 'Send SAP', //发送SAP
+            'LK_ZHUANYECAIGOUYUAN': 'Linie', //专业采购员
+            'LK_BUMEN': 'Dept', //部⻔
+            'LK_SAPBIANHAO': 'SAP no', // SAP编号
+            'LK_QIWANGGONGYINGSHANG': 'Expected suppliers', // 期望供应商
+            'LK_CAIGOUSHENQINGLEIXING': 'PR type', // 采购申请类型
+            'LK_YUPILIANGCAIGOUSHENQING': 'Pre-series PR', // 预批量采购申请
+            'LK_BIAOZHUNCAIGOUSHENQING': 'Standard PR', // 标准采购申请
+            'LK_GONGXUWEIWAI': '工序委外',
+            'LK_MOJUCAIGOUSHENQING':'模具采购申请',//模具采购申请
+            'LK_RISEBIANHAO': 'RiSE No', // RiSE编号
+            'LK_XUQIUGENZONGHAO': 'Demand tracking no', // 需求跟踪号
+            'LK_XIANGCI': 'Item', //项次
+            'LK_LINGJIANMINGCENG': 'Part Name', //零件名称
+            'LK_SHENQINGSHIJIAN': 'Create time', // 生成时间
+            'LK_WULIAOZU': 'Material Group(SAP)', //物料组
+            'LK_WBSYUANSU': 'WBS element', // WBS元素
+            'LK_LAIYUANRISEBIANHAO': 'Source PR Rise Num',
+            'LK_LAIYUANXIANGCI': 'Source PR Item',
+            'LK_RISEXIEYIHAO': 'RISE PO', //RISE协议号
+            'LK_SAPXIEYIHAO': 'SAP PO', //SAP协议号
+            'LK_GUOZHANGQIZHIRIQI': 'Posting Period', //过账起止日期
+            'LK_ZHI': 'To', //至
+            'LK_LEIXING': 'Type', //类型
+            'LK_WULIAOPINGZHENG': 'Material Voucher', //物料凭证
+            'LK_XIANGMU': 'Project', //项目
+            'LK_GUOZHANGRIQI': 'Posting Date', //过账日期
+            'LK_JINE': 'Amount', //金额
+            'LK_SAPDAORU': 'SAP import', // SAP导入
+            'LK_CSCBIANHAO': 'CSC PR no', // CSC编号
+            'LK_XIANGCILAIYUAN': 'Item Source', //项次来源
+            'LK_YICIXINGDINGDIANZHUANGTAI': 'One-time nomi. state', // 一次性定点状态
+            'LK_RIQIFANWEI': 'Period', // 日期范围
+            'LK_KAISHIRIQI': 'Start Date', //开始日期
+            'LK_JIESHURIQI': 'End Date', //结束日期
+
         }
     }
     var xmlHttp = ''

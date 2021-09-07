@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-08-31 17:15:02
+ * @LastEditTime: 2021-09-06 10:47:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -164,11 +164,20 @@ export function getAekoOriginFactory(params) {
 }
 
 // 发送供应商报价
-export function sendSupplier(params) {
+export function sendSupplier(data) {
   return requst({
     url: '/aeko/aeko-content/supplier',
     method: 'POST',
-    data: params
+    data,
+  }) 
+}
+
+// 发送供应商报价之前校验一品多点 
+export function sendSupplierCheck(data) {
+  return requst({
+    url: '/aeko/aeko-content/check',
+    method: 'POST',
+    data,
   }) 
 }
 

@@ -4,11 +4,14 @@
 import {permissionTitle} from '@/utils'
 
 export const tabtitle = [
-    {value: 1, message: 0, name: "模具投资清单", activePath: '/purchase/investmentList', url: '/purchase/investmentList', key: "模具投资清单"},
+    {value: 1, message: 0, name: "模具投资清单", activePath: '/purchase/investmentList/sureTask', url: '/purchase/investmentList/sureTask', key: "模具投资清单"},
+    {value: 2, message: 0, name: "模具采购申请", activePath: '/purchase/mouldpurchasing', url: '/purchase/mouldpurchasing', key: "模具采购申请"},
+    {value: 3, message: 0, name: "模具采购订单", activePath: '/purchase/modelOrderList', url: '/purchase/modelOrderList', key: "模具采购订单"},
+
 ]
 export const navList = [
-    {value: 1, message: 0, name: "确认任务", activePath: '/purchase/investmentList', url: '/purchase/investmentList', key: "确认任务"},
-    {value: 2, message: 0, name: "变更任务", activePath: '/purchase/changeTask', url: '/purchase/changeTask', key: "变更任务"},
+    {value: 1, message: 0, name: "确认任务", activePath: '/purchase/investmentList/sureTask', url: '/purchase/investmentList/sureTask', key: "确认任务"},
+    {value: 2, message: 0, name: "变更任务", activePath: '/purchase/investmentList/changeTask', url: '/purchase/investmentList/changeTask', key: "变更任务"},
 ]
 export const investmentListTitle = [
     {
@@ -145,7 +148,7 @@ export const changeTaskTitle = [
         tooltip: false
     },
     {
-        props: 'behalfPartsName',
+        props: 'behalfPartsNum',
         name: '代表零件号',
         key: '代表零件号',
         width: 180,
@@ -470,7 +473,7 @@ export const newChangeTitle = [
         tooltip: false
     },
     {
-        props: 'behalfPartsName',
+        props: 'behalfPartsNum',
         name: '代表零件号',
         key: '代表零件号',
         width: 150,

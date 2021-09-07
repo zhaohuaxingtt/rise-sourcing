@@ -12,7 +12,7 @@
     <div class="margin-top20">
 
     <!-- 搜索区域 -->
-      <iSearch @sure="getList" @reset="reset">
+      <iSearch @sure="sure" @reset="reset">
           <el-form>
               <el-form-item 
               v-for="(item,index) in SearchList" 
@@ -304,6 +304,12 @@ export default {
           carTypeCodeList:[''],
           linieDeptNumList:[''],
         };
+        this.page.currPage = 1;
+        this.getList();
+      },
+
+      sure(){
+        this.page.currPage = 1;
         this.getList();
       },
 
@@ -368,7 +374,7 @@ export default {
           const {code,data=[]} = res;
           if(code ==200 && data){
              data.map((item)=>{
-              item.desc = this.$i18n.locale === "zh" ? item.name : item.nameEn;
+              item.desc = item.code;
             })
             this.selectOptions.brand = data;
             this.selectOptionsCopy.brand = data;
@@ -715,6 +721,7 @@ export default {
           this.btnLoading.tcm = false;
           if(res.code == 200) {
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getList();
           }
         }).catch((err)=>{
           this.btnLoading.tcm = false;
@@ -728,6 +735,7 @@ export default {
           this.btnLoading.tcmFiles = false;
           if(res.code == 200) {
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getList();
           }
         }).catch((err)=>{
           this.btnLoading.tcmFiles = false;

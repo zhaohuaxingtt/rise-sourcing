@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-01 20:54:47
+ * @LastEditTime: 2021-09-06 14:22:35
  * @LastEditors: 舒杰
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
@@ -121,7 +121,7 @@ export default {
       async save(){
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'output',
-            pdfName: 'output',
+            pdfName: this.language("CHANLIANGZONGLAN","产量总览") + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString()+'-',
          });
          let params={
             categoryCode:this.categoryCode,

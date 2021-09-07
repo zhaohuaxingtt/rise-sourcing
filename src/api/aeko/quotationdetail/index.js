@@ -9,7 +9,9 @@ import router from '../../../router/index'
 const supplierId = ()=> router.currentRoute.query.supplierId?router.currentRoute.query.supplierId:''
 
 import axios from '@/utils/axios'
+import axiosFile from '@/utils/axios.download'
 const requst = axios(process.env.VUE_APP_RFQ)
+const requstFile = axiosFile(process.env.VUE_APP_RFQ)
 
 
 export function bnkSupplierToken(params) {
@@ -50,5 +52,30 @@ export function saveTerminationPrice(data) {
     url: `/part/terminationPrice?supplierId=${supplierId()}&quotationId=${data.quotationId}`,
     method: 'POST',
     data,
+  })
+}
+
+// 保存AEKO 报价单数据
+export function saveAekoQuotationSummary(data) {
+  return requst({
+    url: `/aeko/save/quotation-summary`,
+    method: 'POST',
+    data,
+  })
+}
+
+// 导出AEKO报价
+export function exportQuotation(params) {
+  return requstFile({
+    url: `/aeko/get/exportQuotation/${ params.quotationId }`,
+    method: 'GET'
+  })
+}
+
+// 提交AEKO报价
+export function submitAekoQuotation(params) {
+  return requst({
+    url: `/aeko/submit/quotation/${ params.quotationId }`,
+    method: 'GET'
   })
 }

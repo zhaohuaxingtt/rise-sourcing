@@ -26,7 +26,7 @@
           >
             <el-option
                 :value="item.tmCartypeProId"
-                :label="item.tmCartypeProNam"
+                :label="item.tmCartypeProName"
                 v-for="(item, index) in carTypeProjectList"
                 :key="index"
             ></el-option>
@@ -97,14 +97,6 @@
       >
         <template #changeNum="scope">
           <div class="table-link" @click="toBmInfo(scope.row)">{{scope.row.changeNum}}</div>
-        </template>
-        <template #akeoType="scope">
-          <div>{{
-              scope.row.akeoType === '1' ?  '非Aeko' :
-                  (scope.row.akeoType === '2' ? 'Aeko增值' :
-                          (scope.row.akeoType === '3' ? 'Aeko减值' : '')
-                  )
-            }}</div>
         </template>
         <template #moldInvestmentAmount="scope">
           <div>{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
@@ -255,6 +247,7 @@ export default {
         linieId: this.linieId,
         moldInvestmentStatus: this.moldInvestmentStatus,
         changeStatuId: this.changeStatuId,
+        isLimits: false,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
@@ -280,7 +273,7 @@ export default {
     toBmInfo(row){
       //  如当前用户没有查看“模具投资金额”的权限，点击流水号后提示“对不起，您所在的岗位没有该材料组权限”
       let url = this.$router.resolve({
-        path: '/purchaseSupplier/changeTask/bmInfo',
+        path: '/purchaseSupplier/investmentList/changeTask/bmInfo',
         query: {
           bmId: row.bmId,
           bmChangeId: row.id,

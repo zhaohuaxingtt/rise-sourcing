@@ -1,13 +1,13 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-08-16 13:55:20
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-06 17:53:52
+ * @LastEditors: Hao,Jiang
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
 <template>
-  <iPage class="designateHome">
+  <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSPAGE|签字单详情">
     
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">
@@ -15,13 +15,13 @@
         >
         <div class="floatright">
           <span v-if="mode === 'add'">
-            <iButton @click="handleSave">
+            <iButton @click="handleSave" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE|签字单详情保存">
               {{ language("BAOCUN",'保存') }}
             </iButton>
-            <iButton @click="handleSubmit">
+            <iButton @click="handleSubmit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
               {{ language("LK_TIJIAO",'提交') }}
             </iButton>
-            <iButton @click="handleRemove">
+            <iButton @click="handleRemove" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
               {{ language("YICHU",'移除') }}
             </iButton>
             <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
@@ -45,7 +45,7 @@
                 <iInput
                   v-model="form.signCode"
                   :disabled="true"
-                  :placeholder="language('LK_QINGSHURU','请输入')"
+                  :placeholder="``"
                 ></iInput>
               </el-form-item>
             </el-col>
@@ -53,9 +53,9 @@
               <!-- 状态 -->
               <el-form-item :label="`${language('ZHUANGTAI','状态')}:`">
                 <iInput
-                  v-model="form.status"
+                  v-model="form.statusDesc"
                   :disabled="true"
-                  :placeholder="language('LK_QINGSHURU','请输入')"
+                  :placeholder="``"
                 ></iInput>
               </el-form-item>
             </el-col>
@@ -76,6 +76,7 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
+        v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAIL_CHOSENTABLE|签字单详情已选择表格"
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- 定点单号 -->
@@ -137,7 +138,11 @@
 
       <div class="margin-top20">
         <!-- 引入定点申请综合管理页面 -->
-        <designateSign :mode="'sign'" @choose="handleChoose" :refresh.sync="designateSignRefresh" />
+        <designateSign
+          :mode="'sign'"
+          @choose="handleChoose"
+          v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAIL_UNCHOSENTABLE|签字单详情未选择表格"
+          :refresh.sync="designateSignRefresh" />
       </div>
   </iPage>
 </template>
@@ -172,7 +177,7 @@ export default {
       mode: this.$route.query.mode || '',
       form: {
         signId: '',
-        status: '草稿',
+        statusDesc: '',
         description: ''
       },
       tableTitle,
@@ -197,7 +202,7 @@ export default {
     this.form.signId = id
     this.form.signCode = signCode
     this.form.status = status
-    this.form.description = decodeURIComponent(desc === 'undefined' ? '' : desc)
+    this.form.description = this.form.description && decodeURIComponent(desc) || ''
     this.getSignSheetDetails()
     this.getChooseData()
   },
@@ -221,6 +226,7 @@ export default {
           const status = data.status && data.status.name ? data.status.name : ''
           status && (this.form.status = status)
           data.signCode && (this.form.signCode = data.signCode)
+          data.statusDesc && (this.form.statusDesc = data.statusDesc)
           data.description && (this.form.description = data.description)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -253,10 +259,10 @@ export default {
     },
     // 保存
     async handleSave() {
-      // if (!this.selectTableData.length) {
-      //   iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-      //   return
-      // }
+      if (!this.tableListData.length) {
+        iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN','请选择定点申请单号'))
+        return
+      }
       const confirmInfo = await this.$confirm(this.language('LK_SAVESURE','您确定要执行保存操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.tableListData.map(o => Number(o.id))
@@ -279,10 +285,10 @@ export default {
       }
     },
     async handleSubmit() {
-      // if (!this.selectTableData.length) {
-      //   iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-      //   return
-      // }
+      if (!this.tableListData.length) {
+        iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN','请选择定点申请单号'))
+        return
+      }
       console.log('this.tableListData', this.tableListData)
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return

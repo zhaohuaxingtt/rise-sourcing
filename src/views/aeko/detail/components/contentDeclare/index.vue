@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-01 18:16:17
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-07 10:51:03
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -191,7 +191,7 @@
             <span class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotationId="scope">
-            <span v-if="quotationId" class="link-underline" @click="jumpQuotation(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.quotationId" class="link-underline" @click="jumpQuotation(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #priceAxis="scope">
             <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -238,7 +238,7 @@ import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport } from "@/api/aeko/detail"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
@@ -433,13 +433,10 @@ export default {
     },
     jumpQuotation(row){
       const { quotationId="" } = row;
-      const {aekoInfo} = this;
-      const {aekoCode=''} = aekoInfo;
       const route = this.$router.resolve({
         path: '/aeko/quotationdetail',
         query: {
           quotationId,
-          aekoCode,
         }
       })
 
@@ -693,7 +690,7 @@ export default {
       // return part.changeType === "M" || part.changeType === "I" || part.changeType === "U"
       return false // 取消黑名单限制
     },
-    // 发送供应商报价
+    // 发送供应商报价-先校验一品多点
     async sendSupplierPrice(){
       if (!this.multipleSelection.length) return iMessage.warn(this.language("AEKO_QINGXUANZEXUYAOCAOZUODEYUANLINGJIANXIANGMU", "请选择需要操作的原零件项目"))
       const {multipleSelection=[]} = this;
@@ -702,15 +699,62 @@ export default {
         requirementAekoId:this.$route.query.requirementAekoId,
         objectAekoPartId:multipleSelection.map((item)=>item.objectAekoPartId)
       };
-      await sendSupplier(data).then((res)=>{
-        this.declareSendSupplier = false;
-        if(res.code == 200){
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-          this.init();
+      // 校验一品多点
+      await sendSupplierCheck(data).then((res)=>{
+        const {code } = res;
+        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
+        if(code == 200){
+          // 存在一品多点
+          if(Array.isArray(res.data) && res.data.length > 0){
+            this.$confirm(
+            this.language('LK_TIPS_AKEO_LINGJIANCUNZAIYIPINDUODIAN','当前选中的零件中存在一品多点，是否继续发送报价'),
+            this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
+            {
+                confirmButtonText: this.language('nominationLanguage.Yes','是'),
+                cancelButtonText: this.language('nominationLanguage.No','否'),
+            }
+            ).then(()=>{ // 确认后需要将objectAekoPartId替换成查询返回的list
+              this.sendSupplier({
+                ...data,
+                objectAekoPartId:res.data,
+              });
+            }).catch(()=>{
+              this.sendSupplier(data);
+            })
+          }else{
+            this.sendSupplier(data);
+          }
+          
+        }else{
+          this.declareSendSupplier = false;
+          iMessage.error(message);
         }
-        
-      }).catch((err)=>{
-        this.declareSendSupplier = false;
+      }).catch(()=> this.declareSendSupplier = false)
+      
+    },
+
+    // 发送供应商报价
+    async sendSupplier(data){
+      await sendSupplier(data).then((res)=>{
+            this.declareSendSupplier = false;
+            const SupplierMessage = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
+            if(res.code == 200){
+              // 若data有值的情况下需抛出提示
+              if(Array.isArray(res.data) && res.data.length > 0){
+                this.$alert(res.data.toString(),this.language('LK_WENXINTISHI','温馨提示'), {
+                  confirmButtonText: this.language('LK_QUEDING','确定'),
+                });
+              }else{
+                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                this.init();
+              }
+              
+            }else{
+              iMessage.error(SupplierMessage);
+            }
+            
+          }).catch((err)=>{
+            this.declareSendSupplier = false;
       })
     },
   },
