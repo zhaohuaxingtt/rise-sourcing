@@ -26,7 +26,7 @@
           >
             <el-option
                 :value="item.tmCartypeProId"
-                :label="item.tmCartypeProNam"
+                :label="item.tmCartypeProName"
                 v-for="(item, index) in carTypeProjectList"
                 :key="index"
             ></el-option>
@@ -97,14 +97,6 @@
       >
         <template #changeNum="scope">
           <div class="table-link" @click="toBmInfo(scope.row)">{{scope.row.changeNum}}</div>
-        </template>
-        <template #akeoType="scope">
-          <div>{{
-              scope.row.akeoType === '1' ?  '非Aeko' :
-                  (scope.row.akeoType === '2' ? 'Aeko增值' :
-                          (scope.row.akeoType === '3' ? 'Aeko减值' : '')
-                  )
-            }}</div>
         </template>
         <template #moldInvestmentAmount="scope">
           <div>{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
