@@ -110,7 +110,7 @@ export default {
         this.keyword = partNum
       }
       const pms = {
-        isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,
+        isInsideEnter: this.$store.state.rfq.entryStatus ? true : false,
         rfq: this.$store.state.rfq.rfqId,
         materialGroup: categoryName,
         spareParts: this.$store.state.rfq.spareParts,
