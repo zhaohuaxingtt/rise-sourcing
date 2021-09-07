@@ -4,13 +4,13 @@
     <div class="header">
       <span class="title">2.2 {{ language("ZHIZAOCHENGBEN", "制造成本") }}</span>
       <div class="control">
-        <iButton @click="handleAddSourceData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN_BUTTON_TIANJIAYUANLINGJIANCBD|添加原零件CBD">{{ language("TIANJIAYUANLINGJIANCBD", "添加原零件CBD") }}</iButton>
+        <iButton @click="handleAddOriginData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN_BUTTON_TIANJIAYUANLINGJIANCBD|添加原零件CBD">{{ language("TIANJIAYUANLINGJIANCBD", "添加原零件CBD") }}</iButton>
         <iButton @click="handleAddNewData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN_BUTTON_TIANJIAXINLINGJIANCBD|添加新零件CBD">{{ language("TIANJIAXINLINGJIANCBD", "添加新零件CBD") }}</iButton>
         <iButton @click="handleDelete" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN_BUTTON_SHANCHUHANG|删除行">{{ language("SHANCHUHANG", "删除行") }}</iButton>
       </div>
     </div>
     <div class="body margin-top20">
-      <el-table class="table" ref="table" :data="tableListData" :row-class-name="sourceRowClass" @selection-change="selectionChange">
+      <el-table class="table" ref="table" :data="tableListData" :row-class-name="originRowClass" @selection-change="selectionChange">
         <el-table-column :label="language('ZHIZAOCHENGBEN', '制造成本')" align="center">
           <el-table-column type="selection" align="center" width="55"></el-table-column>
           <el-table-column label="#" prop="index" align="center" width="55" ></el-table-column>
@@ -19,7 +19,7 @@
               <div class="manufacturingMethodColumn">
                 <iconFont v-if="scope.row.partCbdType == 2" class="iconFont" />
                 <div>
-                  <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.manufacturingMethod" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.manufacturingMethod !== sourceMap[scope.row.sourceId].manufacturingMethod) : false }"></iInput>
+                  <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.manufacturingMethod" :class="{ changeClass: originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId] ? (scope.row.manufacturingMethod !== originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId].manufacturingMethod) : false }"></iInput>
                   <div v-else>{{ scope.row.manufacturingMethod }}</div>
                 </div>
               </div>
@@ -28,44 +28,44 @@
         </el-table-column>
         <el-table-column align="center" width="126" :render-header="h => h('span', { domProps: { innerHTML: `${ language('DUIYINGYUANCAILIAOSANJIAN', '对应原材料/散件') }<br/>（Ref.-ID）` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.material" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.material !== sourceMap[scope.row.sourceId].material) : false }"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.material" :class="{ changeClass: originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId] ? (scope.row.material !== originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId].material) : false }"></iInput>
             <span v-else>{{ scope.row.material }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" width="110" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHEBEIMINGCHENGXINGHAO', '设备名称/型号') }<br/>（Ref.-Name）` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.machineName" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.machineName !== sourceMap[scope.row.sourceId].machineName) : false }"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.machineName" :class="{ changeClass: originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId] ? (scope.row.machineName !== originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId].machineName) : false }"></iInput>
             <span v-else>{{ scope.row.machineName }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" width="132" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHANGQIDAZHONGZHUANYONGSHEBEIFEI', '上汽大众专用设备费') }<br/>（RMB）` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.specialDeviceCost" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.specialDeviceCost !== sourceMap[scope.row.sourceId].specialDeviceCost) : false }" @input="handleInputByNumber($event, 'specialDeviceCost', scope.row, 2)"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.specialDeviceCost" :class="{ changeClass: originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId] ? (scope.row.specialDeviceCost !== originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId].specialDeviceCost) : false }" @input="handleInputByNumber($event, 'specialDeviceCost', scope.row, 2)"></iInput>
             <span v-else>{{ scope.row.specialDeviceCost }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" width="74" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHENGCHANJIEPAI', '生产节拍') }<br/>（Sec.）` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.taktTime" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.taktTime !== sourceMap[scope.row.sourceId].taktTime) : false }" @input="handleInputByNumber($event, 'taktTime', scope.row, 2, updateTaktTime)"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.taktTime" :class="{ changeClass: originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId] ? (scope.row.taktTime !== originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId].taktTime) : false }" @input="handleInputByNumber($event, 'taktTime', scope.row, 2, updateTaktTime)"></iInput>
             <span v-else>{{ scope.row.taktTime }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" width="102" :render-header="h => h('span', { domProps: { innerHTML: `${ language('JIANSHUSHENGCHANJIEPAI', '件数/生产节拍') }<br/>（1..n）` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.taktTimeNumber" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.taktTimeNumber !== sourceMap[scope.row.sourceId].taktTimeNumber) : false }" @input="handleInputByNumber($event, 'taktTimeNumber', scope.row, 0, updateTaktTimeNumber)"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.taktTimeNumber" :class="{ changeClass: originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId] ? (scope.row.taktTimeNumber !== originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId].taktTimeNumber) : false }" @input="handleInputByNumber($event, 'taktTimeNumber', scope.row, 0, updateTaktTimeNumber)"></iInput>
             <span v-else>{{ scope.row.taktTimeNumber }}</span>
           </template>
         </el-table-column>
         <el-table-column :label="language('RENGONGCHENGBEN', '人工成本')" align="center">
           <el-table-column align="center" width="104" :render-header="h => h('span', { domProps: { innerHTML: `${ language('ZHIJIERENGONGFEILV', '直接人工费率') }<br/>（RMB/Hour）` }})">
             <template v-slot="scope">
-              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.directLaborRate" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.directLaborRate !== sourceMap[scope.row.sourceId].directLaborRate) : false }" @input="handleInputByNumber($event, 'directLaborRate', scope.row, 2, updateDirectLaborRate)"></iInput>
+              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.directLaborRate" :class="{ changeClass: originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId] ? (scope.row.directLaborRate !== originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId].directLaborRate) : false }" @input="handleInputByNumber($event, 'directLaborRate', scope.row, 2, updateDirectLaborRate)"></iInput>
               <span v-else>{{ scope.row.directLaborRate }}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" width="100" :render-header="h => h('span', { domProps: { innerHTML: `${ language('ZHIJIERENGONGSHULIANG', '直接人工数量') }<br/>（0..n）` }})">
             <template v-slot="scope">
-              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.directLaborQuantity" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.directLaborQuantity !== sourceMap[scope.row.sourceId].directLaborQuantity) : false }" @input="handleInputByNumber($event, 'directLaborQuantity', scope.row, 0, updateDirectLaborQuantity)"></iInput>
+              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.directLaborQuantity" :class="{ changeClass: originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId] ? (scope.row.directLaborQuantity !== originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId].directLaborQuantity) : false }" @input="handleInputByNumber($event, 'directLaborQuantity', scope.row, 0, updateDirectLaborQuantity)"></iInput>
               <span v-else>{{ scope.row.directLaborQuantity }}</span>
             </template>
           </el-table-column>
@@ -73,7 +73,7 @@
         <el-table-column :label="language('SHEBEIFEI', '设备费')" align="center">
           <el-table-column align="center" width="104" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHEBEIFEILV', '设备费率') }<br/>（RMB/Hour）` }})">
             <template v-slot="scope">
-              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.deviceRate" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.deviceRate !== sourceMap[scope.row.sourceId].deviceRate) : false }" @input="handleInputByNumber($event, 'deviceRate', scope.row, 2, updateDeviceRate)"></iInput>
+              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.deviceRate" :class="{ changeClass: originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId] ? (scope.row.deviceRate !== originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId].deviceRate) : false }" @input="handleInputByNumber($event, 'deviceRate', scope.row, 2, updateDeviceRate)"></iInput>
               <span v-else>{{ scope.row.deviceRate }}</span>
             </template>
           </el-table-column>
@@ -81,14 +81,14 @@
         <el-table-column :label="language('JIANJIEZHIZAOCHENGBEN', '间接制造成本')" align="center">
           <el-table-column label="(%)" align="center" width="88">
             <template v-slot="scope">
-              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.indirectManufacturingRate" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.indirectManufacturingRate !== sourceMap[scope.row.sourceId].indirectManufacturingRate) : false }" @input="handleInputByNumber($event, 'indirectManufacturingRate', scope.row, 2, updateIndirectManufacturingRate)"></iInput>
+              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.indirectManufacturingRate" :class="{ changeClass: originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId] ? (scope.row.indirectManufacturingRate !== originMap[scope.row.frontOriginProductionId ? scope.row.frontOriginProductionId : scope.row.originProductionId].indirectManufacturingRate) : false }" @input="handleInputByNumber($event, 'indirectManufacturingRate', scope.row, 2, updateIndirectManufacturingRate)"></iInput>
               <span v-else>{{ scope.row.indirectManufacturingRate }}</span>
             </template>
           </el-table-column>
           <el-table-column label="(RMB/Pc.)" align="center" width="93" prop="indirectManufacturingAmount"></el-table-column>
         </el-table-column>
         <el-table-column align="center" width="100" prop="laborCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('RENGONGCHENGBEN', '人工成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
-        <el-table-column align="center" width="102" prop="deviceCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHEBEICHENGBEN', '设备成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
+        <el-table-column align="center" min-width="102" prop="deviceCost" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHEBEICHENGBEN', '设备成本') }<br/>（RMB/Pc.）` }})"></el-table-column>
       </el-table>
     </div>
   </div>  
@@ -99,7 +99,7 @@
 
 import { iButton, iInput, iMessage, iMessageBox } from "rise"
 import iconFont from "../iconFont"
-import { uuidv4, sourceRowClass } from "../data"
+import { uuidv4, originRowClass } from "../data"
 import { numberProcessor } from "@/utils"
 import { cloneDeep } from "lodash"
 
@@ -114,33 +114,25 @@ export default {
       type: Boolean,
       default: false
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     tableListData: {
       type: Array,
       required: true,
       default: () => ([])
     },
-    sourceLaborCostSum: {
-      type: String || Number,
-      default: "0"
-    },
-    newLaborCostSum: {
-      type: String || Number,
-      default: "0"
-    },
-    sourceDeviceCostSum: {
-      type: String || Number,
-      default: "0"
-    },
-    newDeviceCostSum: {
-      type: String || Number,
-      default: "0"
+    sumData: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
     return {
       tableListData: [],
-      sourceMap: {},
-      sourceTableListData: [],
+      originMap: {},
+      originTableListData: [],
       multipleSelection: [],
       validateNewDataChangeKeys: [
         "manufacturingMethod",
@@ -154,7 +146,7 @@ export default {
         "deviceRate",
         "indirectManufacturingRate"
       ],
-      validateSourceDataChangeKeys: [
+      validateOriginDataChangeKeys: [
         "manufacturingMethod",
         "material",
         "machineName",
@@ -168,14 +160,21 @@ export default {
         "indirectManufacturingAmount",
         "laborCost",
         "deviceCost"
-      ]
+      ],
+      sumDataReal: {
+        originLaborCostSum: 0,
+        newLaborCostSum: 0,
+        originDeviceCostSum: 0,
+        newDeviceCostSum: 0,
+        makeCostChange: 0
+      },
     }
   },
   created() {
     let index = 0
-    this.sourceTableListData = this.tableListData.filter(item => {
+    this.originTableListData = this.tableListData.filter(item => {
       if (item.partCbdType == 0 || item.partCbdType == 1) {
-        this.$set(this.sourceMap, item.id, item)
+        this.$set(this.originMap, item.id, item)
         this.$set(item, "index", `P${ ++index }`)
         return true
       } else 
@@ -183,20 +182,20 @@ export default {
     })
   },
   methods: {
-    sourceRowClass,
+    originRowClass,
     selectionChange(list) {
       this.multipleSelection = list
     },
-    handleAddSourceData() {
+    handleAddOriginData() {
       const data = {
-        id: uuidv4(),
-        index: `P${ this.sourceTableListData.length + 1 }`,
+        frontProductionId: uuidv4(),
+        index: `P${ this.originTableListData.length + 1 }`,
         partCbdType: 1
       }
 
       this.tableListData.push(data)
-      this.sourceTableListData.push(data)
-      this.$set(this.sourceMap, data.id, data)
+      this.originTableListData.push(data)
+      this.$set(this.originMap, data.id, data)
     },
     handleAddNewData() {
       if (!this.multipleSelection.some(item => item.partCbdType == 0 || item.partCbdType == 1)) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOYUANLINGJIANSHUJUZUOWEITIANJIAYANGBAN", "请选择至少一条原零件数据作为添加样板"))
@@ -205,7 +204,7 @@ export default {
         if (item.partCbdType == 0 || item.partCbdType == 1) {
           const data = cloneDeep(item)
           data.id = ""
-          data.sourceId = item.id
+          data.frontOriginProductionId = item.id ? item.id : item.frontProductionId
           data.index = ""
           data.partCbdType = 2
           this.tableListData.splice(this.tableListData.indexOf(item) + 1, 0, data)
@@ -213,25 +212,29 @@ export default {
       })
 
       this.$refs.table.clearSelection()
+
+      this.allCompute()
     },
     async handleDelete() {
       for (let i = 0, item; item = this.multipleSelection[i++]; ) {
         if (item.partCbdType == 0) return iMessage.warn(this.language("WUFASHANCHUYUANYOUYUANLINGJIANHANGXIANGMU", "无法删除原有原零件行项目！"))
       
-        if ((item.partCbdType == 2 && this.validateNewDataChangeKeys.some(key => item[key] !== this.sourceMap[item.sourceId][key])) || (item.partCbdType == 1 && this.validateSourceDataChangeKeys.some(key => item[key] || item[key] === 0))) {
+        const originProductionId = item.frontOriginProductionId ? item.frontOriginProductionId : item.originProductionId
+
+        if ((item.partCbdType == 2 && this.validateNewDataChangeKeys.some(key => item[key] !== this.originMap[originProductionId][key])) || (item.partCbdType == 1 && this.validateOriginDataChangeKeys.some(key => item[key] || item[key] === 0))) {
           await iMessageBox(
             this.language("HASCHANGEDELETE", "已维护的有值，请确认是否删除？"),
             { confirmButtonText: this.language("SHI", "是"), cancelButtonText: this.language("FOU", "否") }
           )
         }
         
-        if (item.partCbdType == 1 && this.tableListData.some(row => item.partCbdType == 2 && row.sourceId === item.id)) {
+        if (item.partCbdType == 1 && this.tableListData.some(row => item.partCbdType == 2 && ((row.originProductionId === item.id || row.originProductionId === item.frontProductionId) || (row.frontOriginProductionId === item.id || row.frontOriginProductionId === row.frontProductionId)))) {
           await iMessageBox(
             this.language("HASNEWDATADELETE", "该原零件行项目对应的所有新零件行项目也将一并删除，请确认是否删除？"),
             { confirmButtonText: this.language("SHI", "是"), cancelButtonText: this.language("FOU", "否") }
           )
 
-          this.multipleSelection = this.multipleSelection.concat(this.tableListData.filter(row => item.partCbdType == 2 && row.sourceId === item.id))
+          this.multipleSelection = this.multipleSelection.concat(this.tableListData.filter(row => item.partCbdType == 2 && ((row.originProductionId === item.id || row.originProductionId === item.frontProductionId) || (row.frontOriginProductionId === item.id || row.frontOriginProductionId === row.frontProductionId))))
         }
       }
 
@@ -240,17 +243,25 @@ export default {
       let flag = false
       this.multipleSelection.forEach(item => {
         if (item.partCbdType == 1) {
-          this.sourceTableListData.splice(this.sourceTableListData.indexOf(this.sourceMap[item.id]), 1)
-          delete this.sourceMap[item.id]
+          if (item.id) {
+            this.originTableListData.splice(this.originTableListData.indexOf(this.originMap[item.id]), 1)
+            delete this.originMap[item.id]
+          } else {
+            this.originTableListData.splice(this.originTableListData.indexOf(this.originMap[item.frontProductionId]), 1)
+            delete this.originMap[item.frontProductionId]
+          }
+          
 
           flag = true
         }
       })
 
-      flag && (this.updateSourceDataIndex())
+      flag && (this.updateOriginDataIndex())
+
+      this.allCompute()
     },
-    updateSourceDataIndex() {
-      this.sourceTableListData.forEach((item, index) => this.$set(item, "index", `P${ ++index }`))
+    updateOriginDataIndex() {
+      this.originTableListData.forEach((item, index) => this.$set(item, "index", `P${ ++index }`))
     },
     handleInputByNumber(value, key, row, precision, cb) {
       this.$set(row, key, numberProcessor(value, precision))
@@ -286,28 +297,31 @@ export default {
       this.computeLaborCost(value, key, row)
       this.computeDeviceCost(value, key, row)
     },
-    computeIndirectManufacturingAmount(sourceValue, sourceKey, row) {
-      this.$set(row, "indirectManufacturingAmount", math.evaluate(`(${ math.bignumber(row.deviceRate || 0) } + ${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }) * ${ math.bignumber(row.taktTime || 0) } / 3600 / ${ +row.taktTimeNumber ? math.bignumber(row.taktTimeNumber) : 1 } * (${ math.bignumber(row.indirectManufacturingRate || 0) } / 100)`).toFixed(2))
+    computeIndirectManufacturingAmount(originValue, originKey, row) {
+      const indirectManufacturingAmount = math.evaluate(`(${ math.bignumber(row.deviceRate || 0) } + ${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) }) * ${ math.bignumber(row.taktTime || 0) } / 3600 / ${ +row.taktTimeNumber ? math.bignumber(row.taktTimeNumber) : 1 } * (${ math.bignumber(row.indirectManufacturingRate || 0) } / 100)`).toFixed(2)
+      this.$set(row, "indirectManufacturingAmount", indirectManufacturingAmount)
+    
+      this.computeMakeCost(indirectManufacturingAmount, "indirectManufacturingAmount", row)
     },
-    computeLaborCost(sourceValue, sourceKey, row) {
+    computeLaborCost(originValue, originKey, row) {
       const laborCost = math.evaluate(`(${ math.bignumber(row.directLaborRate || 0) } * ${ math.bignumber(row.directLaborQuantity || 0) } * ${ math.bignumber(row.taktTime || 0) }) / 3600 / ${ +row.taktTimeNumber ? math.bignumber(row.taktTimeNumber) : 1 } * (1 + (${ math.bignumber(row.indirectManufacturingRate || 0) } / 100))`).toFixed(2)
       this.$set(row, "laborCost", laborCost)
     
       this.computeLaborCostSum(laborCost, "laborCost", row)
     },
-    computeDeviceCost(sourceValue, sourceKey, row) {
+    computeDeviceCost(originValue, originKey, row) {
       const deviceCost = math.evaluate(`(${ math.bignumber(row.deviceRate || 0) } * ${ math.bignumber(row.taktTime || 0) }) / 3600 / ${ +row.taktTimeNumber ? math.bignumber(row.taktTimeNumber) : 1 } * (1 + (${ math.bignumber(row.indirectManufacturingRate || 0) } / 100))`).toFixed(2)
       this.$set(row, "deviceCost", deviceCost)
 
       this.computeDeviceCostSum(deviceCost, "deviceCost", row)
     },
-    computeLaborCostSum(sourceValue, sourceKey, row) {
-      const sourceTableListData = []
+    computeLaborCostSum(originValue, originKey, row) {
+      const originTableListData = []
       const newTableListData = []
 
       this.tableListData.forEach(item => {
         if (item.partCbdType == 0 || item.partCbdType == 1) {
-          sourceTableListData.push(item)
+          originTableListData.push(item)
         }
 
         if (item.partCbdType == 2) {
@@ -315,24 +329,23 @@ export default {
         }
       })
 
-      const sourceLaborCostSum = sourceTableListData.reduce((acc, cur) => {
+      this.sumDataReal.originLaborCostSum = originTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.laborCost))
       }, 0).toFixed(2)
 
-      const newLaborCostSum = newTableListData.reduce((acc, cur) => {
+      this.sumDataReal.newLaborCostSum = newTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.laborCost))
       }, 0).toFixed(2)
 
-      this.$emit("update:sourceLaborCostSum", sourceLaborCostSum)
-      this.$emit("update:newLaborCostSum", newLaborCostSum)
+      this.updateSumData()
     },
-    computeDeviceCostSum(sourceValue, sourceKey, row) {
-      const sourceTableListData = []
+    computeDeviceCostSum(originValue, originKey, row) {
+      const originTableListData = []
       const newTableListData = []
 
       this.tableListData.forEach(item => {
         if (item.partCbdType == 0 || item.partCbdType == 1) {
-          sourceTableListData.push(item)
+          originTableListData.push(item)
         }
 
         if (item.partCbdType == 2) {
@@ -340,16 +353,48 @@ export default {
         }
       })
 
-      const sourceDeviceCostSum = sourceTableListData.reduce((acc, cur) => {
+      this.sumDataReal.originDeviceCostSum = originTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.deviceCost))
       }, 0).toFixed(2)
 
-      const newDeviceCostSum = newTableListData.reduce((acc, cur) => {
+      this.sumDataReal.newDeviceCostSum = newTableListData.reduce((acc, cur) => {
         return math.bignumber(math.add(acc, cur.deviceCost))
       }, 0).toFixed(2)
 
-      this.$emit("update:sourceDeviceCostSum", sourceDeviceCostSum)
-      this.$emit("update:newDeviceCostSum", newDeviceCostSum)
+      this.updateSumData()
+    },
+    computeMakeCost(originValue, originKey, row) {
+      let originIndirectManufacturingAmount = 0
+      let newIndirectManufacturingAmount = 0
+      this.tableListData.forEach(item => {
+        if (item.partCbdType == 0 || item.partCbdType == 1) {
+          originIndirectManufacturingAmount = math.add(originIndirectManufacturingAmount, math.bignumber(item.indirectManufacturingAmount || 0))
+        }
+
+        if (item.partCbdType == 2) {
+          newIndirectManufacturingAmount = math.add(newIndirectManufacturingAmount, math.bignumber(item.indirectManufacturingAmount || 0))
+        }
+      })
+
+      originIndirectManufacturingAmount = originIndirectManufacturingAmount.toFixed(2)
+      newIndirectManufacturingAmount = newIndirectManufacturingAmount.toFixed(2)
+
+      this.sumDataReal.makeCostChange = math.evaluate(`${ newIndirectManufacturingAmount } - ${ originIndirectManufacturingAmount }`).toFixed(2)
+      this.updateSumData()
+    },
+    updateSumData(data) {
+      const sumData = {}
+      
+      Object.keys(this.sumDataReal).forEach(key => sumData[key] = this.sumDataReal[key])
+
+      this.$emit("update:sumData", sumData)
+    },
+    allCompute() {
+      this.tableListData.forEach(item => {
+        this.computeIndirectManufacturingAmount("", "", item)
+        this.computeLaborCost("", "", item)
+        this.computeDeviceCost("", "", item)
+      })
     }
   }
 }
@@ -406,6 +451,10 @@ export default {
     ::v-deep td {
       border-right: 0;
       border-bottom: 1px solid rgba(112, 112, 112, .1);
+    }
+
+    ::v-deep .originRow {
+      background: #f4f8ff;
     }
   }
 

@@ -15,11 +15,13 @@
           <template #typeNameByLang="scope">
             <span>{{ typeof scope.row.typeNameByLang === "function" ? scope.row.typeNameByLang() : scope.row.typeName }}</span>
           </template>
-          <template #newRatio="scope">
-            <iInput class="input-center" v-model="scope.row.newRatio" :class="{ changeClass: scope.row.newRatio !== scope.row.sourceRatio }" @input="handleInputByNumber($event, 'newRatio', scope.row, 2)"></iInput>
+          <template #originRatio="scope">
+            <span v-if="scope.row.originProfitId || disabled">{{ scope.row.originRatio }}</span>
+            <iInput class="input-center" v-else v-model="scope.row.originRatio" @input="handleInputByNumber($event, 'originRatio', scope.row, 2, computeChangeAmount)"></iInput>
           </template>
-          <template #amount="scope">
-            <span>{{ diffCompute(scope.row.sourceAmount, scope.row.newAmount) }}</span>
+          <template #ratio="scope">
+            <span v-if="disabled">{{ scope.row.ratio }}</span>
+            <iInput class="input-center" v-else v-model="scope.row.ratio" :class="{ changeClass: scope.row.ratio !== scope.row.originRatio }" @input="handleInputByNumber($event, 'ratio', scope.row, 2, computeChangeAmount)"></iInput>
           </template>
         </tableList>
       </div>
@@ -28,6 +30,8 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
+
 import { iButton, iInput } from "rise"
 import tableList from "../../../tableList"
 import { profitTableTitle as tableTitle } from "../data"
@@ -48,6 +52,19 @@ export default {
       type: Array,
       required: true,
       default: () => ([])
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    sumData: {
+      type: Object,
+      required: true,
+      default: () => ({})
+    },
+    profitChange: {
+      type: String || Number,
+      default: 0
     }
   },
   data() {
@@ -55,13 +72,27 @@ export default {
       tableTitle
     }
   },
+  watch: {
+    sumData: {
+      handler() {
+        this.computeChangeAmount()
+      },
+      deep: true
+    }
+  },
   methods: {
-    handleInputByNumber(value, key, row, precision) {
+    handleInputByNumber(value, key, row, precision, cb) {
       this.$set(row, key, numberProcessor(value, precision))
+
+      if (typeof cb === "function") {
+        cb(value, key, row)
+      }
     },
-    diffCompute(a, b) {
-      // eslint-disable-next-line no-undef
-      return math.subtract(math.bignumber(b), math.bignumber(a)).toFixed(2)
+    computeChangeAmount() {
+      const profitChange = math.evaluate(`((${ math.bignumber(this.tableListData[0]?.ratio || 0) } / 100) * (${ math.bignumber(this.sumData.newMaterialCostSumByNotSvwAssignPriceParts || 0) } + ${ math.bignumber(this.sumData.newLaborCostSum || 0) } + ${ math.bignumber(this.sumData.newDeviceCostSum || 0) })) - ((${ math.bignumber(this.tableListData[0]?.originRatio || 0) } / 100) * (${ math.bignumber(this.sumData.originMaterialCostSumByNotSvwAssignPriceParts || 0) } + ${ math.bignumber(this.sumData.originLaborCostSum || 0) } + ${ math.bignumber(this.sumData.originDeviceCostSum || 0) }))`).toFixed(2)
+
+      this.$set(this.tableListData[0], "changeAmount", profitChange)
+      this.$emit("update:profitChange", profitChange)
     }
   }
 }

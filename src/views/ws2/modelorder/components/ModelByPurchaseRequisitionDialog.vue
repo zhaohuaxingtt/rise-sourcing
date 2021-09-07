@@ -14,15 +14,15 @@
                    v-model.trim='purchaseRequisitionQueryForm.partNumStr'></i-input>
         </el-form-item>
         <!--期望供应商-->
-        <el-form-item :label="$t('MODEL-ORDER.LK_QIWANGGONGYINGSHANG')">
+        <el-form-item :label="$t('MODEL-ORDER.LK_GONGYINSHANG')">
           <i-text>{{ orderDetails.supplierSapCode }}</i-text>
         </el-form-item>
         <!--采购申请类型-->
         <el-form-item :label="$t('MODEL-ORDER.LK_CAIGOUSHENQINGLEIXING')" prop='subType'>
           <i-select :placeholder="$t('partsignLanguage.QingXuanZe')"
-                    v-model.trim='purchaseRequisitionQueryForm.subType'>
+                    v-model.trim='purchaseRequisitionQueryForm.type' disabled>
             <el-option value='' :label="$t('LK_ALL') | capitalizeFilter"></el-option>
-            <el-option value='42' :label="$t('MODEL-ORDER.LK_MOJUCAIGOUSHENQING')"></el-option>
+            <el-option value='MPR' :label="$t('MODEL-ORDER.LK_MOJUCAIGOUSHENQING')"></el-option>
             <el-option value='43' :label="$t('MODEL-ORDER.LK_YUPILIANGCAIGOUSHENQING')"></el-option>
             <el-option value='45' :label="$t('MODEL-ORDER.LK_BIAOZHUNCAIGOUSHENQING')"></el-option>
             <el-option value='411' :label="$t('MODEL-ORDER.LK_GONGXUWEIWAI')"></el-option>

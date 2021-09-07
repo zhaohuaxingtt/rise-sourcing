@@ -5,7 +5,8 @@ import {permissionTitle} from '@/utils'
 
 export const tabtitle = [
     {value: 1, message: 0, name: "模具投资清单", activePath: '/purchase/investmentList', url: '/purchase/investmentList', key: "模具投资清单"},
-    {value: 2, message: 0, name: "模具采购订单", activePath: '/purchase/modelOrderList', url: '/purchase/modelOrderList', key: "模具采购订单"},
+    {value: 2, message: 0, name: "模具采购申请", activePath: '/purchase/mouldpurchasing', url: '/purchase/mouldpurchasing', key: "模具采购申请"},
+    {value: 3, message: 0, name: "模具采购订单", activePath: '/purchase/modelOrderList', url: '/purchase/modelOrderList', key: "模具采购订单"},
 
 ]
 export const navList = [

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-08-30 11:58:12
+ * @LastEditTime: 2021-09-07 10:43:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -87,6 +87,7 @@
 import {icon} from 'rise'
 import riteDialog from '@/views/designate/designatedetail/decisionData/bdl/partsRating.vue'
 import { getPorpsNumber } from '../../quotationScoringHz/components/data'
+import {onlyselfProject} from '@/config/index'
 export default{
   inject:['getbaseInfoData'],
   components:{icon,riteDialog},
@@ -174,11 +175,28 @@ export default{
      */
     openUrl(type,items,round,value){
       const datas = this.getQueryDatas(type,items,round,value)
-      const router = this.$router.resolve({
-        path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
-        query:datas
-      })
-      window.open(router.href,'_blank')
+
+      const {query} = this.$route;
+      const {businessKey=""} = query;
+      // 若是aeko跳转到akeo的报价单
+      if(businessKey == onlyselfProject.AEKOLINGJIAN){
+        const {round} = datas;
+        const {quotationId =''} = items['round'+round];
+         const route = this.$router.resolve({
+          path: '/aeko/quotationdetail',
+          query: {
+            quotationId,
+          }
+        })
+        window.open(route.href,'_blank')
+
+      }else{
+        const router = this.$router.resolve({
+          path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
+          query:datas
+        })
+        window.open(router.href,'_blank')
+       }
     }
   }
 }

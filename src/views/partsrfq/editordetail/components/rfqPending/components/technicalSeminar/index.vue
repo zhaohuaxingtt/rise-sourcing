@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE">
     <iCard>
       <div class="margin-bottom5 clearFloat">
         <div class="floatright">

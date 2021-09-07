@@ -1536,6 +1536,13 @@
             'LK_XIANGMU': '项目', //项目
             'LK_GUOZHANGRIQI': '过账日期', //过账日期
             'LK_JINE': '金额', //金额
+            'LK_SAPDAORU': 'SAP导入', // SAP导入
+            'LK_CSCBIANHAO': 'CSC编号', // CSC编号
+            'LK_XIANGCILAIYUAN': '项次来源', //项次来源
+            'LK_YICIXINGDINGDIANZHUANGTAI': '一次性定点状态', // 一次性定点状态
+            'LK_RIQIFANWEI': '日期范围', // 日期范围
+            'LK_KAISHIRIQI': '开始⽇期', //开始⽇期
+            'LK_JIESHURIQI': '结束⽇期', //结束⽇期
 
         },
     }

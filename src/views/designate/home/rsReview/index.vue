@@ -4,9 +4,9 @@
  * @Description: 
 -->
 <template>
-  <iPage class="designateHome">
+  <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_PAGE|页面">
     <!-- 头部 -->
-    <headerNav />
+    <headerNav  />
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
@@ -18,30 +18,34 @@
           <!-- 发起复核 -->
           <iButton
             @click="initRsReview"
+            v-permission.auto="SOURCING_NOMINATION_RSREVIEW_FAQIFUHE|发起复核"
           >
             {{ language("FAQIFUHE", '发起复核') }}
           </iButton>
           <!-- 退回 -->
           <iButton
             @click="handleBatchRevoke"
+            v-permission.auto="SOURCING_NOMINATION_RSREVIEW_TUIHUI|退回"
           >
             {{ language("LK_TUIHUI",'退回') }}
           </iButton>
           <!-- 退回至通过状态（复核撤回） -->
           <iButton
             @click="handleBatchRevokeToPass"
+            v-permission.auto="SOURCING_NOMINATION_RSREVIEW_TUIHUIZHITONGGUO|退回至通过状态"
           >
             {{ language("TUIHUIZHITONGGUOZHUANGTAI","退回至通过状态") }}
           </iButton>
           <!-- SEL单据确认 -->
           <iButton
             @click="selConfirm"
+            v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SELDANJUQUEREN|SEL单据确认"
           >
             {{ language("LK_SELDANJUQUEREN","SEL单据确认") }}
           </iButton>
           <!-- 签字单 -->
           <iDropdown class="margin-left10 margin-right10" @command="toPath">
-            <iButton type="default">
+            <iButton type="default" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_QIANZIDAN|签字单">
               {{ language("LK_QIANZIDAN",'签字单') }}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </iButton>
@@ -56,12 +60,14 @@
           <!-- 定点 -->
           <iButton
             @click="confirm"
+            v-permission.auto="SOURCING_NOMINATION_RSREVIEW_DINGDIAN|定点"
           >
             {{ language("nominationLanguage_DINGDIAN", "定点") }}
           </iButton>
           <!-- 导出 -->
           <iButton
             @click="rsexport"
+            v-permission.auto="SOURCING_NOMINATION_RSREVIEW_DAOCHU|导出"
           >
             {{ language("DAOCHU", "导出") }}
           </iButton>
@@ -74,6 +80,7 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         v-loading="tableLoading"
+        v-permission.auto="SOURCING_NOMINATION_RSREVIEW_TABLE|表格"
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- <template #LK_CAOZUO="scope">
@@ -120,8 +127,8 @@
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
-          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-if="scope.row.selStatus === 'CONFIRMED'">{{scope.row.selStatusDesc}}</a>
-          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-else-if="scope.row.selStatus === 'UNCONFIRMED'">{{scope.row.selStatusDesc}}</a>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-if="userRole.isDDGL && scope.row.selStatus === 'CONFIRMED'">{{scope.row.selStatusDesc}}</a>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-else-if="userRole.isDDGL && scope.row.selStatus === 'UNCONFIRMED'">{{scope.row.selStatusDesc}}</a>
           <span v-else>{{scope.row.selStatusDesc}}</span>
         </div>
       </template>
@@ -147,7 +154,7 @@
 
 <script>
 import { tableTitle, signMenu } from './components/data'
-import checklistData from './lib/checklist.json'
+// import checklistData from './lib/checklist.json'
 import headerNav from '@/views/designate/home/components/headerNav'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
@@ -155,6 +162,8 @@ import selDialog from '../components/selDialog'
 import {
   nominateConfirm,
 } from '@/api/designate/nomination'
+import {roleMixins} from '@/utils/roleMixins'
+
 import { 
   getSelList,
   selSheetSubmit,
@@ -183,7 +192,7 @@ import {
 } from "rise";
 
 export default {
-  mixins: [ filters, pageMixins ],
+  mixins: [ filters, pageMixins, roleMixins ],
   data() {
     return {
       tableListData: [],
