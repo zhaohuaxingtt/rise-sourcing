@@ -1,20 +1,20 @@
 <template>
-  <iCard class="designate-drawing">
+  <iCard class="designate-drawing" v-permission.auto="SOURCING_NOMINATION_ATTATCH_DRAWING|决策资料-drawing">
     <div class="margin-bottom25 clearFloat">
       <span class="font18 font-weight">
         {{ language("Drawing",'Drawing') }}</span
       >
       <div class="floatright" v-if="!$store.getters.isPreview">
         <!-- 排序 -->
-        <iButton @click="sortVisibal = true">
+        <iButton @click="sortVisibal = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_DRAWING_SORT|排序">
           {{ language("strategicdoc_PaiXu",'排序') }}
         </iButton>
         <!-- 全部下载 -->
-        <iButton @click="batchDownloadAll">
+        <iButton @click="batchDownloadAll" v-permission.auto="SOURCING_NOMINATION_ATTATCH_DRAWING_DOWNLOADALL|全部下载">
           {{ language("strategicdoc_QuanBuXiaZai",'全部下载') }}
         </iButton>
         <!-- 上传 -->
-        <iButton @click="uploadVisibal = true">
+        <iButton @click="uploadVisibal = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_DRAWING_UPLOAD|上传">
           {{ language("strategicdoc_ShangChuan",'上传') }}
         </iButton>
       </div>
@@ -28,7 +28,7 @@
               class="img-preview"
               :src="item.filePath" />
             <span v-else><i class="el-icon-document"></i>{{item.fileName}}</span>
-            <a class="trigger" href="javascript:;" @click="dowloadSingleFile(item)">
+            <a class="trigger" href="javascript:;" @click="dowloadSingleFile(item)" v-permission.auto="SOURCING_NOMINATION_ATTATCH_DRAWING_DOWNLOADSINGLE|图纸下载">
               <icon class="icon" symbol name="iconicon-xiazai" />
               <span>下载</span></a>
           </div>
