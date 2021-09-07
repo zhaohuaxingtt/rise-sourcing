@@ -269,6 +269,7 @@ module.exports = {
       '/rfqApi': {
         //周德华，rfq模块的api地址
         target: 'http://10.122.17.38:8025',
+        // target: 'http://10.160.143.190:8025',
         // target: 'http://rise-front-web.apps.vmocp-dev.csvw.com', // SIT
         // target: 'http://10.160.137.16:8029',  // 周德华
         // target: 'http://192.168.50.89:8029', // 王洁松
@@ -365,9 +366,9 @@ module.exports = {
         },
       },
       '/aonApi': {
-        target: 'http://10.122.18.166:8036',
+        //  target: 'http://10.122.18.166:8036',
         // target: 'http://10.160.143.174:8036',
-        // target: 'http://10.122.17.38:8036',
+        target: 'http://10.122.17.38:8036',
         changeOrigin: true,
         pathRewrite: {
           '^/aonApi': '',

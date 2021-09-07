@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-08-23 16:22:38
+ * @LastEditTime: 2021-09-07 16:26:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -50,6 +50,14 @@ export const tableTitle = [{
 		tooltip: true,
 		width:60
 	},
+	
+	{
+		props: 'cfControllerName',
+		name: 'CF',
+		key: 'partsprocure.CF',
+		tooltip: true,
+		width:80
+	},
 	// {
 	// 	props: 'cfControllerZh',
 	// 	name: 'CF',
@@ -69,7 +77,7 @@ export const tableTitle = [{
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 		tooltip: true,
-		width:140
+		width:120
 	},
 	{
 		props: 'carTypeCategory',
@@ -90,7 +98,7 @@ export const tableTitle = [{
 		name: '零件状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
 		tooltip: true,
-		width:90
+		width:75
 	},
 	{
 		props: 'buyerName',
@@ -99,20 +107,6 @@ export const tableTitle = [{
 		tooltip: true,
 		width:90
 	},
-	{
-		props: 'linieName',
-		name: 'LINIE',
-		key: 'partsprocure.PARTSPROCURELINIE',
-		tooltip: true,
-		width:90
-	},
-	{
-		props: 'cfControllerName',
-		name: 'CF',
-		key: 'partsprocure.CF',
-		tooltip: true,
-		width:80
-	}
 ]
 
 //零件采购列表入参

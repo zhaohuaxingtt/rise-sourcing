@@ -1,5 +1,5 @@
 <template>
-  <div class="awardingscenario">
+  <div class="awardingscenario" v-permission.auto="SOURCING_NOMINATION_ATTATCH_AWARDSCENARIO|决策资料-awardingscenario">
     <buMonitor
       title="Awarding Scenario"
       :mode="'nomi'"
