@@ -127,6 +127,11 @@
 					...this.targetprice.cfTargetPriceDetail,
 					purchasingProjectId: this.handleSelectArr[0].id
 				}
+				if (!params.applyType) {
+					iMessage.warn(this.language('QINGXUANZEMUBIAOJIALEIXING','请选择目标价类型'))
+					this.saveLoading = false
+					return
+				}
 				applyCFTarget(params).then((res) => {
 					if (res?.result) {
 						iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)

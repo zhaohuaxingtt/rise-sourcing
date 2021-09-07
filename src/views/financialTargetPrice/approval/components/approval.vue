@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 18:12:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 14:04:05
+ * @LastEditTime: 2021-09-07 15:25:58
  * @Description: 审批弹窗
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\components\approval.vue
 -->
@@ -32,7 +32,7 @@
         <iText>{{item.parent && detailData[item.parent] ? detailData[item.parent][item.value] : detailData[item.value]}}</iText>
       </iFormItem>
     </iFormGroup>
-    <div class="refuseReason">
+    <div class="refuseReason padding-bottom30">
       <div class="refuseReason-label">{{language('JUJUEYUANYIN','拒绝原因')}}<span style="color:red;">*</span>:</div>
       <iInput v-model="rejectReason" type="textarea" :rows="4" :palceholder="language('QINGSHURUJUJUEYUANYIN','请输入拒绝原因')"></iInput>
     </div>
@@ -130,10 +130,10 @@ export default {
   }
   ::v-deep .el-dialog {
     margin-top: 30px !important;
-    height: 93%;
+    // height: 93%;
     .el-dialog__body {
-      height: calc(100% - 90px);
-      overflow: auto;
+      // height: calc(100% - 90px);
+      // overflow: auto;
     }
   }
   .approvalDetail {
