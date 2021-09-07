@@ -229,6 +229,10 @@ export default {
           return pItem.partPeriod == 1  
         } 
       }) 
+      if (partScheduleInfoVOList.length < 1) {
+        iMessage.warn(this.language('MEIYOUXUYAODAOCHUDESHUJU','没有需要导出的数据'))
+        return
+      }
       const params = { 
         cartypeProId: this.cartypeProId,  
         partScheduleInfoVOList: partScheduleInfoVOList, 
