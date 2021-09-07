@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 00:41:04
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 11:25:16
+ * @LastEditTime: 2021-09-07 11:30:01
  * @Description: 审批流弹窗
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\approvalFlow.vue
 -->
@@ -20,20 +20,12 @@
 
 <script>
 import { iDialog } from 'rise'
-import { getInstDetail } from '@/api/designate/decisiondata/approval'
 import ProcessVertical from './processVertical'
 export default {
   components: { iDialog, ProcessVertical },
   props: {
     dialogVisible: { type: Boolean, default: false },
     processInstanceId: {type: String}
-  },
-  watch: {
-    dialogVisible(val) {
-      if (val) {
-        // this.getFlow()
-      }
-    }
   },
   data() {
     return {
@@ -44,16 +36,6 @@ export default {
   methods: {
     clearDialog() {
       this.$emit('changeVisible', false)
-    },
-    async getFlow() {
-      if (!this.processInstanceId) {
-        return
-      }
-      const res = await getInstDetail(this.processInstanceId)
-        if(res) {
-          this.panorama = res.data.panorama || []
-          this.detail = res.data
-        }
     }
   }
 }
