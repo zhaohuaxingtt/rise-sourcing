@@ -76,6 +76,7 @@
         </div>
       </div>
       <tablelist
+        class="aotoTableHeight"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -453,6 +454,12 @@ export default {
 <style lang="scss" scoped>
   .openLinkText{
     color:$color-blue;
+  }
+  .aotoTableHeight{
+    ::v-deep .el-table__body-wrapper {
+      min-height: 422px !important;  
+      overflow: auto !important ;
+    }
   }
   .designateSearch {
     margin-top: 20px;
