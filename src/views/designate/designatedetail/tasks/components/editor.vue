@@ -12,17 +12,18 @@
             :hideTip="true"
             :accept="'.jpg,.jpeg,.png,.gif'"
             :buttonText="language('strategicdoc_ShangChuanTuPian','上传图片')"
+            v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_UPLOAD|上传图片"
             @on-success="onUploadsucess"
           />
-          <iButton @click="submit" :loading="submiting">
+          <iButton @click="submit" :loading="submiting" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_REMARKSAVE|保存备注">
             {{ language("LK_BAOCUN",'保存') }}
           </iButton>
-          <iButton @click="multiEditControl = false">
+          <iButton @click="multiEditControl = false" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_REMARKEXITEDIT|结束编辑备注">
             {{ language("strategicdoc_JieSuBianJi",'结束编辑') }}
           </iButton>
         </span>
         <span v-else>
-          <iButton v-if="!$store.getters.isPreview" @click="multiEditControl = true">
+          <iButton v-if="!$store.getters.isPreview" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
             {{ language("LK_BIANJI",'编辑') }}
           </iButton>
         </span>
@@ -34,6 +35,7 @@
         :menus=[]
         :disabled="!multiEditControl"
         v-model="content"
+        v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR|备注编辑框"
         ref="editor"
 
        />
