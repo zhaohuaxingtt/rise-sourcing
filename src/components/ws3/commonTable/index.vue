@@ -9,6 +9,7 @@
   <el-form :model="{tableData}"
            status-icon
            :rules="rules"
+           :class="{ 'formStyle' :ruleLength === 0}"
            ref="commonTableForm">
     <el-table :height="height"
               ref="dataTable"
@@ -204,6 +205,14 @@ export default {
     iSelect,
     icon,
   },
+  computed: {
+    ruleLength() {
+      const ruleList = this.tableTitle.filter(item => {
+        return item.rule;
+      });
+      return ruleList.length;
+    },
+  },
   data () {
     return {
       rules: [],
@@ -343,5 +352,10 @@ export default {
 
 .el-form-item {
   margin-top: 1.375rem;
+}
+
+.formStyle ::v-deep .el-form-item {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 </style>
