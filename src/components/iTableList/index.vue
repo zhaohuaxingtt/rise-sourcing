@@ -1,7 +1,7 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-04-01 20:08:22
+ * @LastEditTime: 2021-09-07 15:59:14
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
@@ -151,7 +151,7 @@ export default {
     typeIndex: { type: Boolean, default: false },
     index: { type: Boolean, default: false },
     indexLabel: { type: String, default: "#" },
-    selectionWidth: { type: String, default: "50" },
+    selectionWidth: { type: String, default: "40" },
     height: { type: Number || String },
     activeItems: { type: String, default: "b" },
     radio: { type: Boolean, default: false }, // 是否单选

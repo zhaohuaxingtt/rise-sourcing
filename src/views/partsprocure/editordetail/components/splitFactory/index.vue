@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-08-12 11:12:19
+ * @LastEditTime: 2021-09-07 15:57:17
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -31,7 +31,7 @@
         >
           <el-table-column
             type="selection"
-            width="50"
+            width="40"
             align="center"
           ></el-table-column>
           <template v-for="(items, index) in splitPurchTitle">
