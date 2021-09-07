@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 19:03:24
- * @LastEditTime: 2021-09-06 16:49:42
+ * @LastEditTime: 2021-09-07 17:42:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\config\businesskey\moudules\aeko.js
@@ -30,7 +30,7 @@ const blackKey = [
 
 
 
-                  // 'PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER_SHOW', // TAB-备注-询价采购员备注
+                  'PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER_SHOW', // TAB-备注-询价采购员备注
                   'PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER', // TAB-备注-询价采购员备注 show:true disabled:true
                   'PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES', // TAB-备注-Linie备注 show:true disabled:true
                   'PARTSPROCURE_EDITORDETAIL_REMARKS_CS1REMARKS', // TAB-备注-CS*1备注 show:true disabled:true
@@ -93,7 +93,8 @@ const blackKey = [
                  ]
 const whiteKey = [
   // 零件采购项目详情页
-  'PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE_AEKO_MANGE' // TAB备注-保存按钮-针对AEKO管理员
+  'PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE_AEKO_MANGE', // TAB备注-保存按钮-针对AEKO管理员
+  'PARTSPROCURE_EDITORDETAIL_REMARKS_AEKOMANAGER',
 ]
 module.exports = {
   blackKey,
