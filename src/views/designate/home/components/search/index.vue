@@ -233,11 +233,15 @@ export default {
     // iDicoptions
   },
   mounted() {
-    this.form = {}
+    this.form = { 
+      showMe:true, // 默认显示自己
+    }
     this.getOptions()
   },
   beforeDestroy() {
-    this.form = {}
+    this.form = {
+      showMe:true, // 默认显示自己
+    }
   },
   methods: {
     sure() {
