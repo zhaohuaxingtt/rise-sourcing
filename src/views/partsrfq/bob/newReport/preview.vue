@@ -196,7 +196,6 @@ export default {
         idEle: "downloadRef",
         pdfName: "BOB Preview",
       });
-
     },
     goToBob () {
       this.$router.push("bob");

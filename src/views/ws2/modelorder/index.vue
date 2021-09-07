@@ -4,7 +4,7 @@
                                :purchasing-factory-list="purchasingFactoryList"
                                :sap-send-status-list="sapSendStatusList"
                                :order-status-list="orderStatusList"
-                               :contract-status="contractStatus"
+                               :contract-status-list="contractStatusList"
                                :order-query-form="orderQueryForm" @queryOrder="queryOrder"/>
     <i-card>
       <div class='margin-bottom10 clearFloat'>
@@ -118,7 +118,7 @@ export default {
       selectedOrderData: [],//选中数据
       currentUserPurchasingGroups: [],//用户所拥有的所有采购组
       isExpandAll: false,
-      contractStatus: [],//合同状态
+      contractStatusList: [],//合同状态
     }
   },
   created() {
@@ -163,7 +163,7 @@ export default {
     queryContractStatus() {
       getDictByCode('contract_cover_status').then((res) => {
         if (res.code == 200) {
-          this.contractStatus = res?.data[0]?.subDictResultVo
+          this.contractStatusList = res?.data[0]?.subDictResultVo
           this.extraData.contractStatus = this.contractStatus
 
         }

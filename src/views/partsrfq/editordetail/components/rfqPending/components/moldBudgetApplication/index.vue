@@ -1,6 +1,6 @@
 <template>
   <div>
-    <iCard>
+    <iCard v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
           <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">{{ language('LK_TIJIAO','提交') }}</iButton>

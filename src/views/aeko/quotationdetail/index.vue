@@ -1,9 +1,9 @@
 <template>
   <iPage class="quotationdetail" v-permission.auto="AEKO_QUOTATION_DETAIL|报价单">
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{ language("AEKOHAO", "AEKO号") }}：{{ aekoCode }}</span>
+      <span class="font18 font-weight">{{ language("AEKOHAO", "AEKO号") }}：{{ basicInfo.aekoCode }}</span>
       <div class="floatright">
-        <iButton v-permission.auto="AEKO_QUOTATION_DETAIL_BUTTON_TIJIAO|提交">{{ language("TIJIAO", "提交") }}</iButton>
+        <iButton v-permission.auto="AEKO_QUOTATION_DETAIL_BUTTON_TIJIAO|提交" :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
         <logButton class="margin-left20" @click="log" v-permission.auto="AEKO_QUOTATION_DETAIL_BUTTON_RIZHI|日志" />
         <span class="margin-left20">
 					<icon symbol name="icondatabaseweixuanzhong" class="font18" />
@@ -27,6 +27,18 @@
         :selection="false"
         :tableTitle="tableTitle"
         :tableData="tableListData">
+        <template #originalAPrice="scope">
+          <el-popover
+            placement="top"
+            trigger="hover">
+            <template>
+              <p style="text-align:center">{{ scope.row.source }}</p>
+            </template>
+            <template #reference>
+              <span>{{ scope.row.originalAPrice }}</span>
+            </template>
+          </el-popover>
+        </template>
         <template #bnkFee="scope">
           <el-popover
             placement="top"
@@ -50,7 +62,7 @@
     <iTabsList class="margin-top20" type="card" v-model="currentTab" :before-leave="tabLeaveBefore" @tab-click="tabChange">
       <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name" v-permission.dynamic.auto="tab.permissionKey">
         <template v-if="tab.name == currentTab">
-          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :partInfo="partInfo" :basicInfo="basicInfo" @getBasicInfo="getBasicInfo"/>
+          <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :partInfo="partInfo" :basicInfo="basicInfo" :disabled="disabled" @getBasicInfo="getBasicInfo"/>
         </template>
       </el-tab-pane>
     </iTabsList>
@@ -70,16 +82,20 @@ import { infoItems, tableTitle } from "./components/data"
 import { 
   bnkSupplierToken,
   getQuotationInfo,
+  submitAekoQuotation,
  } from '@/api/aeko/quotationdetail'
+ import { getStates } from "@/api/rfqManageMent/quotationdetail"
+
 
 
 export default {
   components: { iPage, iButton, icon, iCard, iFormGroup, iFormItem, iText, iTabsList, logButton, tableList, aPriceChange, mouldInvestmentChange, developmentFee, damages, sampleFee },
   data() {
     return {
+      submitLoading: false,
       infoItems,
       tableTitle,
-      tableListData: [{ a: "10", b: "12", e: "100.00" }],
+      tableListData: [],
       currentTab: "aPriceChange",
       tabs: [
         { label: "A价变动(含分摊)", name: "aPriceChange", key: "AJIABIANDONGHANFENTAN", components: [ "aPriceChange" ], permissionKey: "AEKO_QUOTATION_CBD_TAB_BIANDONGZHICBD|变动值CBD" },
@@ -92,6 +108,7 @@ export default {
       partInfo:{},
       basicInfo:{},
       tableLoading:false,
+      disabled: false
     }
   },
   created(){
@@ -102,6 +119,11 @@ export default {
       ...Vuex.mapState({
           userInfo: state => state.permission.userInfo,
       }),
+  },
+  provide() {
+    return {
+      getBasicInfo: this.getBasicInfo
+    }
   },
   methods: {
     // 日志
@@ -131,15 +153,17 @@ export default {
       const {query,path} = this.$route;
       const { quotationId ='',aekoCode=""} = query;
       this.aekoCode = aekoCode;
-      await getQuotationInfo(quotationId).then((res)=>{
+      await getQuotationInfo(quotationId).then(async (res)=>{
         const {code,data={}} = res;
         if(code == 200){
-          const {aekoPartInfo={},quotationPriceSummaryInfo={},supplierId=''} = data;
+          const {aekoPartInfo={},quotationPriceSummaryInfo={},supplierId='',rfqId='',fsnrGsnrNum='',source=''} = data;
           this.partInfo = {
             ...aekoPartInfo,
             quotationId,
+            rfqId,
+            fsNum: fsnrGsnrNum
             };
-          this.tableListData=[quotationPriceSummaryInfo];
+          this.tableListData=[{ ...quotationPriceSummaryInfo, source }];
           this.basicInfo = data;
           if(supplierId){
             this.$router.push({
@@ -151,6 +175,8 @@ export default {
             })
           }
 
+          await this.getStates()
+
           this.$nextTick(() => {
             const component = this.$refs[this.currentTab][0]
             if (typeof component.init === "function") component.init()
@@ -159,6 +185,28 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       }).catch((err)=>{});
+    },
+
+    async getStates() {
+      return getStates({
+        fsNum: this.partInfo.fsNum,
+        quotationId: this.partInfo.quotationId,
+        rfqId: this.partInfo.rfqId,
+      })
+      .then(res => {
+        if (res.code == 200) {
+          let fsStateDisabled = res.data.fsStateCode != "12" && res.data.fsStateCode != "13"
+          let rfqStateDisabled = res.data.rfqStateCode != "01" && res.data.rfqStateCode != "03"
+          let quotationStateDisabled = res.data.quotationStateCode == "0" || res.data.quotationStateCode == "2" || res.data.quotationStateCode == "6"
+          let rfqRoundStateDisabled = res.data.rfqRoundStateCode != "01"
+          let roundDisabled = +this.partInfo.round != +res.data.currentRounds
+          
+          this.disabled = fsStateDisabled || rfqStateDisabled || quotationStateDisabled || rfqRoundStateDisabled || roundDisabled
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
     },
 
     // 跳转至BNK相关页面
@@ -207,6 +255,25 @@ export default {
       });
       
     },
+
+    handleSubmit() {
+      this.submitLoading = true
+
+      submitAekoQuotation({
+        quotationId: this.$route.query.quotationId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          this.getBasicInfo()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.submitLoading = false
+      })
+      .catch(() => this.submitLoading = false)
+    }
   }
 }
 </script>

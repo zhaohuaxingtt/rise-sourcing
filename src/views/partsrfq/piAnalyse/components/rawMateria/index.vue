@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-09-02 17:18:06
+ * @LastEditTime: 2021-09-07 11:10:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -100,7 +100,9 @@ export default {
       tableTitle,
       tableListData: [],
       loading: true,
-      searchForm: {},
+      searchForm: {
+        beginTime: new Date()
+      },
       detailParam: {
         visible: false,
         key: 0

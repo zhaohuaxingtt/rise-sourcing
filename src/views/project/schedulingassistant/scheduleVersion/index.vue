@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:02
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-03 15:00:46
+ * @LastEditTime: 2021-09-06 14:23:35
  * @Description: 排程版本查询
  * @FilePath: \front-web\src\views\project\schedulingassistant\scheduleVersion\index.vue
 -->
@@ -13,6 +13,16 @@
     <search @search="handSearch" ref="searchForm" />
     <!-- v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_TABLE|排程版本表格" -->
     <iCard class="margin-top20">
+      <div class="margin-bottom20 clearFloat">
+        <div class="floatright">
+          <!-- 批量下载排程版本 -->
+          <iButton
+            @click="batchDownload"
+          >
+            {{ language('LK_XIAZAI', '下载') }}
+          </iButton>
+        </div>
+      </div>
       <tableList indexKey :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange">
         <template #versionName="scope">
          <span class="flexRow-link">
@@ -32,19 +42,22 @@
 </template>
 
 <script>
-import {iCard, iPagination, iMessage} from 'rise'
+import {iCard, iPagination, iButton, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
 import tableList from '@/views/project/schedulingassistant/progroup/components/tableList'
 import search from './components/search'
 import {tableTitle} from './components/data'
 import {
-  getScheduleVersion
+  getScheduleVersion,
+  genScheduleVersionFileId
 } from '@/api/project/scheduleVersion'
+// 导入rise附件下载方法
+import {downloadFile} from 'rise/web/components/iFile/lib'
 
 export default {
   mixins: [ filters, pageMixins ],
-  components: { iCard, iPagination, search, tableList },
+  components: { iCard, iPagination, iButton, search, tableList },
   data() {
     return {
       tableTitle,
@@ -104,11 +117,47 @@ export default {
     },
     /**
      * @description: 下载排程版本
-     * @param {*} row
+     * @param {*} row 有fileId号直接下载，没有的话先调接口生成
      * @return {*}
      */    
     download(row) {
-
+      if (!row.fileId){
+        this.genScheduleVersion([{
+            id: row.id,
+            type: row.type
+          }])
+        return
+      }
+      downloadFile(row.id)
+    },
+    batchDownload() {
+      const fileList = this.selectTableData.map(o => {
+        return {
+          id: o.id,
+          type: o.type
+        }
+      })
+      if (!(fileList && fileList.length)) {
+        iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU','请选择至少一条数据'))
+        return
+      }
+      this.genScheduleVersion(fileList)
+    },
+    /**
+     * @description: 生成排程版本文件oss id
+     * @param {*} file 字符串表示单个文件下载
+     * @return {*}
+     */   
+    genScheduleVersion(fileList) {
+      genScheduleVersionFileId(fileList).then(res => {
+        if (res.code === '200') {
+          console.log(res)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
     }
 
   }

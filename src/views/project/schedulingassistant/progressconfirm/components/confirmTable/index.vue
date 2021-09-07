@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 10:47:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 17:49:06
+ * @LastEditTime: 2021-09-03 17:31:00
  * @Description: 确认表格-通用
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\confirmTable\index.vue
 -->
 
 <template>
-  <iCard :title="language(titleKey, title)" :collapse="collapse">
+  <iCard :ref="'comFirmCard'+tableType" :title="language(titleKey, title)" :collapse="collapse" @handleCollapse="handleCollapse">
     <!-- <template slot="header-control"> -->
     <div class="floatright" slot="header-control">
       <!--------------------发送按钮----------------------------------->
@@ -124,7 +124,8 @@ export default {
       withSend: false,
       withAllBtn: false,
       tableData: [],
-      yearWeekOptions: []
+      yearWeekOptions: [],
+      collapseValue: true
     }
   },
   created() {
@@ -143,6 +144,9 @@ export default {
     }
   },
   methods: {
+    handleCollapse(collapseValue) {
+      this.collapseValue = collapseValue
+    },
     handleChange(val, item, props) {
       this.$set(item, props, val.join('-KW'))
     },
@@ -214,6 +218,12 @@ export default {
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
           this.page.currPage = res.pageNum
+          if (this.tableData.length < 1 && this.collapseValue === true) {
+            this.$refs['comFirmCard'+this.tableType].handleCollapse()
+          }
+          if (this.tableData.length > 0 && this.collapseValue === false) {
+            this.$refs['comFirmCard'+this.tableType].handleCollapse()
+          }
         } else {
           this.tableData = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)

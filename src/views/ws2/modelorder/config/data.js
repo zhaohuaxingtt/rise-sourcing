@@ -97,6 +97,7 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
         tooltip: true,
         headerAlign: 'center',
         align: 'center',
+        width: 100,
         customRender: (h, scope) => {
             return <span> {scope.row['procureGroup']}-{scope.row['buyerName']}</span>
         },
@@ -123,7 +124,8 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
         align: 'center',
         width: 95,
         customRender: (h, scope, column, extraData) => {
-          return <ContractStatusComponents row={scope.row} contractStatus={extraData.contractStatus} />
+
+            return <ContractStatusComponents row={scope.row} contractStatus={extraData.contractStatus} />
         }
     },
     {

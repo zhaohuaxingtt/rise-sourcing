@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-09-02 15:05:49
+ * @LastEditTime: 2021-09-06 14:59:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -85,8 +85,8 @@
             <iFormItem :label="language('LK_DANGQIANLUNCI','当前轮次')+':'" name="currentRounds" v-permission="PARTSRFQ_EDITORDETAIL_CURRENTROUND">
               <iText >{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
-            <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')+':'" name="roundsType">
-              <iText v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+            <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')+':'" name="roundsType" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+              <iText >
                 {{ baseInfo.roundsType }}
               </iText>
             </iFormItem>
@@ -124,7 +124,7 @@
     <!--------------------------------------------------------------->
     <!-------------------------RFQ详情信息---------------------------->
     <!--------------------------------------------------------------->    
-    <rfq-detail-info v-if="navActivtyValue === '1' && tabShowStatus"></rfq-detail-info>
+    <rfq-detail-info v-if="navActivtyValue === '1' && tabShowStatus" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_CARD"></rfq-detail-info>
     <!--------------------------------------------------------------->
     <!-------------------------报价助手------------------------------->
     <!--------------------------------------------------------------->

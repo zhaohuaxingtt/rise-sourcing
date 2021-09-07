@@ -38,6 +38,7 @@ export default {
           icon: 'circle',
           left: 30,
           top: 20,
+          type: 'scroll'
         },
         tooltip: {
           trigger: 'axis',
@@ -53,7 +54,7 @@ export default {
           type: 'value',
           name: this.language('DANWEIYUAN', '（单位：元）'),
           nameTextStyle: {
-            padding: [0, 0, 0, -30],
+            padding: [0, 0, 0, -20],
           }
         },
         color: [
