@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 11:11:23
+ * @LastEditTime: 2021-09-07 16:30:32
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -168,7 +168,8 @@ export default {
       let params = {}
       if (this.selectRowPart[0]) {
         params = {
-          ...this.selectRowPart[0]
+          ...this.selectRowPart[0],
+          type: 2 // 历史
         }
       } else {
         const selectFit = this.selectRowFit[0]
@@ -178,7 +179,8 @@ export default {
           cscBfWeekly: selectFit.cscBfWeekly,
           bf1stWeekly: selectFit.bf1stWeekly,
           ots1stWeekly: selectFit.ots1stWeekly,
-          em1stWeekly: selectFit.em1stWeekly
+          em1stWeekly: selectFit.em1stWeekly,
+          type: 1 // 拟合
         }
       }
       partSchedulePartFitting(params).then(res => {
