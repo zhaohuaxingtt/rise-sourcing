@@ -1,7 +1,7 @@
 <template>
   <iPage class="quotationdetail" v-permission.auto="AEKO_QUOTATION_DETAIL|报价单">
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{ language("AEKOHAO", "AEKO号") }}：{{ aekoCode }}</span>
+      <span class="font18 font-weight">{{ language("AEKOHAO", "AEKO号") }}：{{ basicInfo.aekoCode }}</span>
       <div class="floatright">
         <iButton v-permission.auto="AEKO_QUOTATION_DETAIL_BUTTON_TIJIAO|提交" :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
         <logButton class="margin-left20" @click="log" v-permission.auto="AEKO_QUOTATION_DETAIL_BUTTON_RIZHI|日志" />
