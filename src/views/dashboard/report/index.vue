@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-06 15:21:13
- * @LastEditTime: 2021-09-07 16:58:56
+ * @LastEditTime: 2021-09-07 17:17:12
  * @LastEditors: Hao,Jiang
  * @Description: 状态跟踪详情
  * @FilePath: /front-web/src/views/dashboard/report/index.vue
@@ -14,20 +14,20 @@
         <!-- 零件签收 -->
         <el-col :span="16">
           <!-- 列表筛选 -->
-          <search @search="search" ref="search" v-permission.auto="REPORTMGMT_STATUSREPORT_SEARCH|报表管理-搜索" />
+          <search @search="search" ref="search" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_SEARCH|报表管理-搜索" />
         </el-col>
         <el-col :span="8">
           <iCard class="report-countrfq" :style="`height:${sarchWindowHeight}px`">
             <ul>
-              <li v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESSINGRFQ|报表管理-进行中的RFQ"><div><strong>{{rfqInProgress}}</strong><p class="margin-top10">{{language('JINXINGZHONGDERFQ','进行中的RFQ')}}</p></div></li>
-              <li v-permission.auto="REPORTMGMT_STATUSREPORT_DELAYRFQ|报表管理-延误的RFQ"><div><strong class="note">{{rfqDelay}}</strong><p class="margin-top10">{{language('YANWUDERFQ','延误的RFQ')}}</p></div></li>
+              <li v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_PROCESSINGRFQ|报表管理-进行中的RFQ"><div><strong>{{rfqInProgress}}</strong><p class="margin-top10">{{language('JINXINGZHONGDERFQ','进行中的RFQ')}}</p></div></li>
+              <li v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_DELAYRFQ|报表管理-延误的RFQ"><div><strong class="note">{{rfqDelay}}</strong><p class="margin-top10">{{language('YANWUDERFQ','延误的RFQ')}}</p></div></li>
             </ul>
           </iCard>
         </el-col>
       </el-row>
     </div>
     <div class="margin-top10">
-      <iCard class="report-rfqList" v-loading="loading" v-permission.auto="REPORTMGMT_STATUSREPORT_TABLE|报表管理-表格">
+      <iCard class="report-rfqList" v-loading="loading" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_TABLE|报表管理-表格">
         <rfqList :dataList="data" />
         <!-- <iPagination
           v-update
