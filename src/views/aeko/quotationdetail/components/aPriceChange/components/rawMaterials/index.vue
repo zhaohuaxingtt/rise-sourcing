@@ -4,13 +4,13 @@
     <div class="header">
       <span class="title">2.1 {{ language("YUANCAILIAOSANJIANCHENGBEN", "原材料/散件成本") }}</span>
       <div class="control">
-        <iButton @click="handleAddSourceData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIANCHENGBEN_BUTTON_TIANJIAYUANLINGJIANCBD|添加原零件CBD">{{ language("TIANJIAYUANLINGJIANCBD", "添加原零件CBD") }}</iButton>
+        <iButton @click="handleAddOriginData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIANCHENGBEN_BUTTON_TIANJIAYUANLINGJIANCBD|添加原零件CBD">{{ language("TIANJIAYUANLINGJIANCBD", "添加原零件CBD") }}</iButton>
         <iButton @click="handleAddNewData" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIANCHENGBEN_BUTTON_TIANJIAXINLINGJIANCBD|添加新零件CBD">{{ language("TIANJIAXINLINGJIANCBD", "添加新零件CBD") }}</iButton>
         <iButton @click="handleDelete" v-permission.auto="AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIANCHENGBEN_BUTTON_SHANCHUHANG|删除行">{{ language("SHANCHUHANG", "删除行") }}</iButton>
       </div>
     </div>
     <div class="body margin-top20">
-      <el-table class="table" ref="table" :data="tableListData" :row-class-name="sourceRowClass" @selection-change="selectionChange">
+      <el-table class="table" ref="table" :data="tableListData" :row-class-name="originRowClass" @selection-change="selectionChange">
         <el-table-column :label="language('YUANCAILIAOSANJIANCHENGBEN', '原材料/散件成本')" align="center">
           <el-table-column type="selection" align="center" width="55"></el-table-column>
           <el-table-column label="#" prop="index" align="center" width="55" ></el-table-column>
@@ -19,7 +19,7 @@
               <div class="partNameColumn">
                 <iconFont v-if="scope.row.partCbdType == 2" class="iconFont" />
                 <div>
-                  <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.partName" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.partName !== sourceMap[scope.row.sourceId].partName) : false }"></iInput>
+                  <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.partName" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.partName !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].partName) : false }"></iInput>
                   <div v-else>{{ scope.row.partName }}</div>
                 </div>
               </div>
@@ -28,19 +28,19 @@
         </el-table-column>
         <el-table-column :label="language('YUANCAILIAOSANJIANMIAOSHU', '原材料/散件描述')" align="center" width="120">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.partNumber" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.partNumber !== sourceMap[scope.row.sourceId].partNumber) : false }"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.partNumber" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.partNumber !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].partNumber) : false }"></iInput>
             <span v-else>{{ scope.row.partNumber }}</span>
           </template>
         </el-table-column>
         <el-table-column :label="language('GONGYINGSHANGMINGCHENG', '供应商名称')" align="center" width="92">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.supplierName" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.supplierName !== sourceMap[scope.row.sourceId].supplierName) : false }"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.supplierName" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.supplierName !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].supplierName) : false }"></iInput>
             <span v-else>{{ scope.row.supplierName }}</span>
           </template>
         </el-table-column>
         <el-table-column :label="language('YUANCHANGUO', '原产国')" align="center" width="100">
           <template v-slot="scope">
-            <iSelect v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="select-center" filterable v-model="scope.row.productionCountry" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.productionCountry !== sourceMap[scope.row.sourceId].productionCountry) : false }">
+            <iSelect v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="select-center" filterable v-model="scope.row.productionCountry" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.productionCountry !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].productionCountry) : false }">
               <el-option
                 v-for="item in countryOptions"
                 :key="item.key"
@@ -53,7 +53,7 @@
         </el-table-column>
         <el-table-column :label="language('SHIFOUSVWZHIDINGJIAGESANJIAN', '是否SVW指定价格散件')" align="center" width="150">
           <template v-slot="scope">
-            <iSelect v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="select-center" v-model="scope.row.isSvwAssignPriceParts" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.isSvwAssignPriceParts !== sourceMap[scope.row.sourceId].isSvwAssignPriceParts) : false }" @change="computeMaterialCostSum">
+            <iSelect v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="select-center" v-model="scope.row.isSvwAssignPriceParts" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.isSvwAssignPriceParts !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].isSvwAssignPriceParts) : false }" @change="computeMaterialCostSum()">
               <el-option
                 v-for="item in options"
                 :key="item.key"
@@ -66,19 +66,19 @@
         </el-table-column>
         <el-table-column align="center" width="81" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHULIANGDANWEI', '数量单位') }<br/>（UoM）` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.quantityUnit" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.quantityUnit !== sourceMap[scope.row.sourceId].quantityUnit) : false }"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.quantityUnit" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.quantityUnit !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].quantityUnit) : false }"></iInput>
             <span v-else>{{ scope.row.quantityUnit }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" width="120" :render-header="h => h('span', { domProps: { innerHTML: `${ language('DANJIARMBUOM', '单价') }(RMB/UoM)` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.unitPrice" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.unitPrice !== sourceMap[scope.row.sourceId].unitPrice) : false }" @input="handleInputByNumber($event, 'unitPrice', scope.row, 2, updateUnitPrice)"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.unitPrice" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.unitPrice !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].unitPrice) : false }" @input="handleInputByNumber($event, 'unitPrice', scope.row, 2, updateUnitPrice)"></iInput>
             <span v-else>{{ scope.row.unitPrice }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" width="96" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHULIANG', '数量') }(1..n)` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.quantity" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.quantity !== sourceMap[scope.row.sourceId].quantity) : false }" @input="handleInputByNumber($event, 'quantity', scope.row, 0, updateQuantity)"></iInput>
+            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.quantity" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.quantity !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].quantity) : false }" @input="handleInputByNumber($event, 'quantity', scope.row, 0, updateQuantity)"></iInput>
             <span v-else>{{ scope.row.quantity }}</span>
           </template>
         </el-table-column>
@@ -86,7 +86,7 @@
         <el-table-column :label="language('WULIAOGUANLIFEI', '物料管理费')" align="center">
           <el-table-column label="(%)" align="center" width="88">
             <template v-slot="scope">
-              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2" class="input-center" v-model="scope.row.materialManageCostRate" :class="{ changeClass: sourceMap[scope.row.sourceId] ? (scope.row.materialManageCostRate !== sourceMap[scope.row.sourceId].materialManageCostRate) : false }" @input="handleInputByNumber($event, 'materialManageCostRate', scope.row, 2, updateMaterialManageCostRate)"></iInput>
+              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.materialManageCostRate" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.materialManageCostRate !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].materialManageCostRate) : false }" @input="handleInputByNumber($event, 'materialManageCostRate', scope.row, 2, updateMaterialManageCostRate)"></iInput>
               <span v-else>{{ scope.row.materialManageCostRate }}</span>
             </template>
           </el-table-column>
@@ -103,7 +103,7 @@
 
 import { iButton, iInput, iSelect, iMessage, iMessageBox } from "rise"
 import iconFont from "../iconFont"
-import { uuidv4, sourceRowClass } from "../data"
+import { uuidv4, originRowClass } from "../data"
 import { numberProcessor } from "@/utils"
 import { cloneDeep } from "lodash"
 
@@ -115,6 +115,10 @@ export default {
   },
   props: {
     topCutLine: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     },
@@ -139,8 +143,8 @@ export default {
         { key: "Y", label: "是", value: true },
         { key: "N", label: "否", value: false }
       ],
-      sourceMap: {},
-      sourceTableListData: [],
+      originMap: {},
+      originTableListData: [],
       multipleSelection: [],
       validateNewDataChangeKeys: [
         "partName",
@@ -153,7 +157,7 @@ export default {
         "quantity",
         "materialManageCostRate"
       ],
-      validateSourceDataChangeKeys: [
+      validateOriginDataChangeKeys: [
         "partName",
         "partNumber",
         "supplierName",
@@ -176,9 +180,9 @@ export default {
   },
   created() {
     let index = 0
-    this.sourceTableListData = this.tableListData.filter(item => {
+    this.originTableListData = this.tableListData.filter(item => {
       if (item.partCbdType == 0 || item.partCbdType == 1) {
-        this.$set(this.sourceMap, item.id, item)
+        this.$set(this.originMap, item.id, item)
         this.$set(item, "index", `C${ ++index }`)
         return true
       } else 
@@ -186,20 +190,20 @@ export default {
     })
   },
   methods: {
-    sourceRowClass,
+    originRowClass,
     selectionChange(list) {
       this.multipleSelection = list
     },
-    handleAddSourceData() {
+    handleAddOriginData() {
       const data = {
-        id: uuidv4(),
-        index: `C${ this.sourceTableListData.length + 1 }`,
+        frontMaterialId: uuidv4(),
+        index: `C${ this.originTableListData.length + 1 }`,
         partCbdType: 1
       }
 
       this.tableListData.push(data)
-      this.sourceTableListData.push(data)
-      this.$set(this.sourceMap, data.id, data)
+      this.originTableListData.push(data)
+      this.$set(this.originMap, data.frontMaterialId, data)
     },
     handleAddNewData() {
       if (!this.multipleSelection.some(item => item.partCbdType == 0 || item.partCbdType == 1)) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOYUANLINGJIANSHUJUZUOWEITIANJIAYANGBAN", "请选择至少一条原零件数据作为添加样板"))
@@ -208,7 +212,7 @@ export default {
         if (item.partCbdType == 0 || item.partCbdType == 1) {
           const data = cloneDeep(item)
           data.id = ""
-          data.sourceId = item.id
+          data.frontOriginMaterialId = item.id ? item.id : item.frontProductionId
           data.index = ""
           data.partCbdType = 2
           this.tableListData.splice(this.tableListData.indexOf(item) + 1, 0, data)
@@ -216,25 +220,29 @@ export default {
       })
 
       this.$refs.table.clearSelection()
+
+      this.allCompute()
     },
     async handleDelete() {
       for (let i = 0, item; item = this.multipleSelection[i++]; ) {
         if (item.partCbdType == 0) return iMessage.warn(this.language("WUFASHANCHUYUANYOUYUANLINGJIANHANGXIANGMU", "无法删除原有原零件行项目！"))
       
-        if ((item.partCbdType == 2 && this.validateNewDataChangeKeys.some(key => item[key] !== this.sourceMap[item.sourceId][key])) || (item.partCbdType == 1 && this.validateSourceDataChangeKeys.some(key => item[key] || item[key] === 0))) {
+        let originMaterialId = item.frontOriginMaterialId ? item.frontOriginMaterialId : item.originMaterialId
+        
+        if ((item.partCbdType == 2 && this.validateNewDataChangeKeys.some(key => item[key] !== this.originMap[originMaterialId][key])) || (item.partCbdType == 1 && this.validateOriginDataChangeKeys.some(key => item[key] || item[key] === 0))) {
           await iMessageBox(
             this.language("HASCHANGEDELETE", "已维护的有值，请确认是否删除？"),
             { confirmButtonText: this.language("SHI", "是"), cancelButtonText: this.language("FOU", "否") }
           )
         }
         
-        if (item.partCbdType == 1 && this.tableListData.some(row => item.partCbdType == 2 && row.sourceId === item.id)) {
+        if (item.partCbdType == 1 && this.tableListData.some(row => item.partCbdType == 2 && ((row.originMaterialId === item.frontMaterialId || row.originMaterialId === item.id) || (row.frontOriginMaterialId === item.id || row.frontOriginMaterialId === item.frontMaterialId)))) {
           await iMessageBox(
             this.language("HASNEWDATADELETE", "该原零件行项目对应的所有新零件行项目也将一并删除，请确认是否删除？"),
             { confirmButtonText: this.language("SHI", "是"), cancelButtonText: this.language("FOU", "否") }
           )
 
-          this.multipleSelection = this.multipleSelection.concat(this.tableListData.filter(row => item.partCbdType == 2 && row.sourceId === item.id))
+          this.multipleSelection = this.multipleSelection.concat(this.tableListData.filter(row => item.partCbdType == 2 && ((row.originMaterialId === item.frontMaterialId || row.originMaterialId === item.id) || (row.frontOriginMaterialId === item.id || row.frontOriginMaterialId === item.frontMaterialId))))
         }
       }
 
@@ -243,17 +251,24 @@ export default {
       let flag = false
       this.multipleSelection.forEach(item => {
         if (item.partCbdType == 1) {
-          this.sourceTableListData.splice(this.sourceTableListData.indexOf(this.sourceMap[item.id]), 1)
-          delete this.sourceMap[item.id]
+          if (item.id) {
+            this.originTableListData.splice(this.originTableListData.indexOf(this.originMap[item.id]), 1)
+            delete this.originMap[item.id]
+          } else {
+            this.originTableListData.splice(this.originTableListData.indexOf(this.originMap[item.frontMaterialId]), 1)
+            delete this.originMap[item.frontMaterialId]
+          }
 
           flag = true
         }
       })
 
-      flag && (this.updateSourceDataIndex())
+      flag && (this.updateOriginDataIndex())
+
+      this.allCompute()
     },
-    updateSourceDataIndex() {
-      this.sourceTableListData.forEach((item, index) => this.$set(item, "index", `C${ ++index }`))
+    updateOriginDataIndex() {
+      this.originTableListData.forEach((item, index) => this.$set(item, "index", `C${ ++index }`))
     },
     handleInputByNumber(value, key, row, precision, cb) {
       this.$set(row, key, numberProcessor(value, precision))
@@ -268,7 +283,7 @@ export default {
     updateQuantity(value, key, row) {
       this.computeDirectMaterialCost(value, key, row)
     },
-    computeDirectMaterialCost(sourceValue, sourceKey, row) {
+    computeDirectMaterialCost(originValue, originKey, row) {
       const directMaterialCost = math.evaluate(`${ math.bignumber(row.unitPrice || 0) } * ${ math.bignumber(row.quantity || 0) }`).toFixed(2)
       this.$set(row, "directMaterialCost", directMaterialCost)
     
@@ -277,30 +292,30 @@ export default {
     updateMaterialManageCostRate(value, key, row) {
       this.computeMaterialManageCost(value, key, row)
     },
-    computeMaterialManageCost(sourceValue, sourceKey, row) {
+    computeMaterialManageCost(originValue, originKey, row) {
       const materialManageCost = math.evaluate(`${ math.bignumber(row.directMaterialCost || 0) } * (${ math.bignumber(row.materialManageCostRate || 0) } / 100)`).toFixed(2)
       this.$set(row, "materialManageCost", materialManageCost)
 
       this.computeMaterialCost(materialManageCost, "materialManageCost", row)
     },
-    computeMaterialCost(sourceValue, sourceKey, row) {
+    computeMaterialCost(originValue, originKey, row) {
       const materialCost = math.evaluate(`${ math.bignumber(row.directMaterialCost || 0) } + ${ math.bignumber(row.materialManageCost || 0) }`).toFixed(2)
       this.$set(row, "materialCost", materialCost)
     
       this.computeMaterialCostSum(materialCost, "materialCost", row)
     },
-    computeMaterialCostSum(sourceValue, sourceKey, row) {
-      let sourceMaterialCostSum = 0
-      let sourceMaterialCostSumByNotSvwAssignPriceParts = 0
+    computeMaterialCostSum(originValue, originKey, row) {
+      let originMaterialCostSum = 0
+      let originMaterialCostSumByNotSvwAssignPriceParts = 0
       let newMaterialCostSum = 0
       let newMaterialCostSumByNotSvwAssignPriceParts = 0
 
       this.tableListData.forEach(item => {
         if (item.partCbdType == 0 || item.partCbdType == 1) {
-          sourceMaterialCostSum = math.add(sourceMaterialCostSum, math.bignumber(item.materialCost || 0))
+          originMaterialCostSum = math.add(originMaterialCostSum, math.bignumber(item.materialCost || 0))
 
           if (!item.isSvwAssignPriceParts) {
-            sourceMaterialCostSumByNotSvwAssignPriceParts = math.add(sourceMaterialCostSumByNotSvwAssignPriceParts, math.bignumber(item.materialCost || 0))
+            originMaterialCostSumByNotSvwAssignPriceParts = math.add(originMaterialCostSumByNotSvwAssignPriceParts, math.bignumber(item.materialCost || 0))
           }
         }
 
@@ -313,18 +328,25 @@ export default {
         }
       })
 
-      const material = math.evaluate(`${ newMaterialCostSum } - ${ sourceMaterialCostSum }`).toFixed(2)
-      sourceMaterialCostSum = sourceMaterialCostSum.toFixed(2)
-      sourceMaterialCostSumByNotSvwAssignPriceParts = sourceMaterialCostSumByNotSvwAssignPriceParts.toFixed(2)
+      const materialChange = math.evaluate(`${ newMaterialCostSum } - ${ originMaterialCostSum }`).toFixed(2)
+      originMaterialCostSum = originMaterialCostSum.toFixed(2)
+      originMaterialCostSumByNotSvwAssignPriceParts = originMaterialCostSumByNotSvwAssignPriceParts.toFixed(2)
       newMaterialCostSum = newMaterialCostSum.toFixed(2)
       newMaterialCostSumByNotSvwAssignPriceParts = newMaterialCostSumByNotSvwAssignPriceParts.toFixed(2)
 
       this.$emit("update:sumData", {
-        sourceMaterialCostSum,
-        sourceMaterialCostSumByNotSvwAssignPriceParts,
+        originMaterialCostSum,
+        originMaterialCostSumByNotSvwAssignPriceParts,
         newMaterialCostSum,
         newMaterialCostSumByNotSvwAssignPriceParts,
-        material
+        materialChange
+      })
+    },
+    allCompute() {
+      this.tableListData.forEach(item => {
+        this.computeDirectMaterialCost("", "", item)
+        this.computeMaterialManageCost("", "", item)
+        this.computeMaterialCost("", "", item)
       })
     }
   }
@@ -384,7 +406,7 @@ export default {
       border-bottom: 1px solid rgba(112, 112, 112, .1);
     }
 
-    ::v-deep .sourceRow {
+    ::v-deep .originRow {
       background: #f4f8ff;
     }
   }

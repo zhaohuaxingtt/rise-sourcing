@@ -1,8 +1,8 @@
 /*
  * @Author: Haojiang
  * @Date: 2021-06-28 09:26:28
- * @LastEditTime: 2021-08-25 16:46:55
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-07 10:22:29
+ * @LastEditors: Hao,Jiang
  * @Description: 签字单
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/data.js
  */
@@ -97,7 +97,7 @@ export const detailsTableTitle = [
     tooltip: false
   },
   {
-    props: 'carTypeProj',
+    props: 'partProjType',
     name: 'PROJECT',
     key: 'PROJECT',
     tooltip: false
