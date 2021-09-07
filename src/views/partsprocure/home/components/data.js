@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-09-07 18:18:25
+ * @LastEditTime: 2021-09-07 18:34:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -91,7 +91,7 @@ export const tableTitle = [{
 		name: '车型项目',
 		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
 		tooltip: true,
-		width:120
+		minWidth:120
 	},
 	{
 		props: 'statusDesc',
