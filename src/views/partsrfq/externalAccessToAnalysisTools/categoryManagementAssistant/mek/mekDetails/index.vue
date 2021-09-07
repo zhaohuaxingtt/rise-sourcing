@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-04 16:37:20
+ * @LastEditTime: 2021-09-06 11:09:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -14,13 +14,15 @@
         <div class="title font-weight flex">
           <label for="">{{ language("QIEHUANCAILIAOZU","切换材料组") }}:</label>
           <iSelect @change="changeCategory"
-                   v-model="categoryCode">
+                   v-model="categoryCode"
+                   v-if="entryStatus==='1'">
             <el-option v-for="item in categoryList"
                        :key="item.categoryId"
                        :value="item.categoryCode"
                        :label="item.categoryName">
             </el-option>
           </iSelect>
+          <span>{{categoryName}}</span>
         </div>
         <div class="flex"
              v-show="reportFlag">
@@ -174,10 +176,13 @@
                      v-for="item in barData"
                      :key="item.motorId">
                   <div class="operation">
-                    <icon symbol
-                          name="iconbob-shanchu"
-                          class="margin-bottom20 "
-                          style="width:20px;height:20px"></icon>
+                    <div @click="delItem(item)"
+                         style="z-index:1000">
+                      <icon symbol
+                            name="iconbob-shanchu"
+                            class="margin-bottom20 "
+                            style="width:20px;height:20px;"></icon>
+                    </div>
                     <el-popover placement="bottom"
                                 width="80"
                                 trigger="click"
@@ -761,6 +766,35 @@ export default {
         this.gridData.config['label#-1'] = mekTypeName
       }
     },
+    delItem (data) {
+      let params = {
+        comparedType: this.comparedType,
+        info: [{
+          motorId: this.targetMotor,
+          priceType: 'sopPrice',
+          isTargetMotor: true
+        }],
+        categoryId: this.categoryId,
+        categoryCode: this.categoryCode,
+        schemeId: this.chemeId
+      }
+      this.ComparedMotor = this.ComparedMotor.filter(i => i !== data.motorId)
+      this.ComparedMotor.forEach(item => {
+        params.info.push({
+          motorId: item,
+          priceType: data.priceType,
+          isTargetMotor: false
+        })
+      })
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true
+        params.rfq = this.rfqId
+      } else {
+        params.isBindingRfq = false
+      }
+      this.getHistogram(params)
+      this.getMekTable()
+    },
     getHistogram (params) {
       params = { "comparedType": "1", "info": [{ "motorId": "1", "priceType": "sopPrice", "isTargetMotor": true }], "categoryId": "1", "categoryCode": "1", schemeId: 111, "isBindingRfq": false }
       getHistogram(params).then(res => {
@@ -822,6 +856,9 @@ export default {
       }
     },
     save () {
+      this.analysisSave = true
+      this.analysisName = this.categoryCode + '_' + this.categoryName + '_' + this.targetMotorName + "_" + 'MEK' + '_' + window.moment(new Date()).format("yyyy.MM")
+      this.reportName = this.categoryCode + '_' + this.categoryName + '_' + this.targetMotorName + "_" + 'MEK' + '_' + window.moment(new Date()).format("yyyy.MM")
       if (this.analysisSave) {
         let params = {
           categoryCode: this.categoryCode,
@@ -992,7 +1029,7 @@ export default {
 .line {
   position: absolute;
   left: 40px;
-  bottom: 9%;
+  bottom: 13%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -1000,7 +1037,7 @@ export default {
 .line1 {
   position: absolute;
   left: 40px;
-  bottom: 19%;
+  bottom: 23%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -1008,7 +1045,7 @@ export default {
 .line2 {
   position: absolute;
   left: 40px;
-  bottom: 29%;
+  bottom: 33%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -1016,7 +1053,7 @@ export default {
 .line3 {
   position: absolute;
   left: 40px;
-  bottom: 39%;
+  bottom: 43%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -1024,7 +1061,7 @@ export default {
 .line4 {
   position: absolute;
   left: 40px;
-  bottom: 51%;
+  bottom: 55%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;

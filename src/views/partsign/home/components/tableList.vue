@@ -1,14 +1,14 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-08-20 13:56:26
+ * @LastEditTime: 2021-09-06 22:21:53
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \front-web\src\views\partsign\home\components\tableList.vue
 -->
 <template>
   <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" ref="moviesTable" :class="radio && 'radio'" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft">
-    <el-table-column v-if="selection" type='selection' width="40" align='center'></el-table-column>
+    <el-table-column v-if="selection" :selectable='selectable' type='selection' width="40" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key,items.name) : items.name">
@@ -42,11 +42,19 @@ export default{
     indexLabel:{type:String,default:'#'},
     height:{type:Number||String},
     activeItems:{type:String,default:'b'},
-	  radio:{type:Boolean,default:false}// 是否单选
+	  radio:{type:Boolean,default:false},// 是否单选
+    selectable:{type:Function,default:()=> true},
+    borderLeftStatus:{type:Boolean,default:true}
   },
   inject:['vm'],
   components: { icon } ,
   methods:{
+    clearSelection(){
+      this.$refs.moviesTable.clearSelection()
+    },
+    toggleRowSelection(data,b=true){
+      this.$refs.moviesTable.toggleRowSelection(data,b)
+    },
     handleSelectionChange(val){
 		if (this.radio) {
 			if (val.length > 1) {
@@ -75,6 +83,7 @@ export default{
       }
     },
     handleSelect(selection,row){
+      this.$emit('select',{selection,row})
       const selectdBorder = row.selectedBorder
       this.$set(row,'selectedBorder',!selectdBorder)
     },
@@ -89,7 +98,7 @@ export default{
       this.$refs.moviesTable.toggleAllSelection()
     },
     borderLeft({row, column, rowIndex, columnIndex}){
-      if(columnIndex === 0 && row.selectedBorder === true){
+      if(columnIndex === 0 && row.selectedBorder === true && this.borderLeftStatus){
          return "border-left:2px solid #1660F1;"
       }
       else{
@@ -100,6 +109,7 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+ 
   .openLinkText{
     color:$color-blue;
   }

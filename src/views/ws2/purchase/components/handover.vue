@@ -129,6 +129,7 @@ export default {
     assign(){
       this.saveLoading = true
       let req = assign
+
       if(this.isChangeTask){
         req = bmChangeAssign
       }
@@ -137,6 +138,7 @@ export default {
         deptId: this.deptId,
         linieID: this.linieID,
         moldInvestmentStatus: this.handoverParams.moldInvestmentStatus,
+        changeStatus: this.handoverParams.changeStatus,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {

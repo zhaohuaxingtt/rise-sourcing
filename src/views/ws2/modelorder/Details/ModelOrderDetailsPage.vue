@@ -23,14 +23,24 @@
         <i-button v-if='nextStepShow' @click='nextStep'>{{ $t('LK_XIAYIBU') }}</i-button>
         <!--清空-->
         <i-button v-if='nextStepShow' @click='clearForm'>{{ $t('MODEL-ORDER.LK_QINGKONG') }}</i-button>
+
+        <i-button v-if='saveOrderShow' @click='outEditOrder'>{{ $t('LK_TUICHUBIANJI') }}</i-button>
         <!--保存-->
-        <i-button v-if='saveOrderShow' v-loading.fullscreen.lock='fullscreenLoading' @click='saveOrder'>{{ $t('LK_BAOCUN') }}</i-button>
+        <i-button v-if='saveOrderShow' v-loading.fullscreen.lock='fullscreenLoading' @click='saveOrder'>
+          {{ $t('LK_BAOCUN') }}
+        </i-button>
         <!--编辑-->
         <i-button v-if='editOrderbtnShow' @click='editOrder'>{{ $t('LK_BIANJI') }}</i-button>
+
+
         <!--提交订单-->
-        <i-button v-if='submitOrderbtnShow' v-loading.fullscreen.lock='fullscreenLoading' @click='submitOrder'>{{ $t('LK_TIJIAO') }}</i-button>
+        <i-button v-if='submitOrderbtnShow' v-loading.fullscreen.lock='fullscreenLoading' @click='submitOrder'>
+          {{ $t('LK_TIJIAO') }}
+        </i-button>
         <!--版本升级-->
-        <i-button v-if='versionUpgradeShow' v-loading.fullscreen.lock='fullscreenLoading' @click='versionUpgrade'>{{ $t('MODEL-ORDER.LK_BANBENSHNGJI') }}</i-button>
+        <i-button v-if='versionUpgradeShow' v-loading.fullscreen.lock='fullscreenLoading' @click='versionUpgrade'>
+          {{ $t('MODEL-ORDER.LK_BANBENSHNGJI') }}
+        </i-button>
       </div>
     </div>
     <ModelOrderDetailsTopComponents ref="orderDetailsTopComponentsRef" :is-edit='isEdit' :option='option' :id='id'
@@ -157,6 +167,8 @@ export default {
       purchaseGroups: [],//用户拥有的采购组
       purchasingFactoryList: [],//采购工厂
       orderStatusList: [],//订单状态
+      contractStatusList: [],//合同状态
+
     }
   },
   created() {
@@ -168,6 +180,7 @@ export default {
     this.queryOrderDetails()
     this.getPurchaseGroup()
     this.queryAllPurchaseGroup()
+    this.queryContractStatus()
   },
   methods: {
     onItemSelfunction(val) {
@@ -211,6 +224,14 @@ export default {
       queryPurchasingGroup(this.orderDetails.procureGroup.toUpperCase()).then(res => {
         if (res.code == 200) {
           this.btnMenuShow = res.data
+        }
+      })
+    },
+    //获取合同状态
+    queryContractStatus() {
+      getDictByCode('contract_cover_status').then((res) => {
+        if (res.code == 200) {
+          this.contractStatusList = res?.data[0]?.subDictResultVo
         }
       })
     },
@@ -337,6 +358,9 @@ export default {
     },
     editOrder() {
       this.isEdit = true
+    },
+    outEditOrder(){
+      this.isEdit = false
     },
     submitOrder() {
       this.fullscreenLoading = true

@@ -6,7 +6,7 @@
         <el-col :span='6'>
           <!--订单类型-->
           <i-form-item :label="$t('MODEL-ORDER.LK_DINGDANLEIXING')" prop='contractType'>
-            <i-text >{{ orderType }}</i-text>
+            <i-text>{{ orderType }}</i-text>
           </i-form-item>
         </el-col>
         <el-col :span='6'>
@@ -19,11 +19,13 @@
           <!--SAP订单号-->
           <i-form-item :label="$t('MODEL-ORDER.LK_SAPDINGDANHAO')">
             <i-text>{{ orderDetails.contractSapCode }}</i-text>
-
           </i-form-item>
         </el-col>
         <el-col :span='6'>
-
+          <!--合同状态-->
+          <i-form-item :label="$t('MODEL-ORDER.LK_HETONGZHUANGTAI')">
+            <i-text :class="contractStatusStyle">{{ contractStatusVal }}</i-text>
+          </i-form-item>
         </el-col>
       </el-row>
       <!--第二行-->
@@ -35,13 +37,14 @@
             <i-text v-if='generalEditorState'>{{ orderDetails.supplierSapCode }}</i-text>
             <i-input v-else :placeholder="$t('MODEL-ORDER.LK_QINGSHURUGONGYINGSHANGBIANMA')"
                      v-model.trim='orderDetails.supplierInfo'
-                     @blur='querySupplierInfoAsync(orderDetails.supplierInfo)' :disabled='generalEditorState' />
+                     @blur='querySupplierInfoAsync(orderDetails.supplierInfo)' :disabled='generalEditorState'/>
           </i-form-item>
         </el-col>
         <el-col :span='6'>
           <!--采购组-->
           <i-form-item :label="$t('MODEL-ORDER.LK_CAIGOUZU')" prop='procureGroup'>
-            <i-input v-if='purchasingGroupEditerState' :placeholder="$t('MODEL-ORDER.LK_QINGSHURUCAIGOUZU')" v-model.trim='procureGroupComputed'/>
+            <i-input v-if='purchasingGroupEditerState' :placeholder="$t('MODEL-ORDER.LK_QINGSHURUCAIGOUZU')"
+                     v-model.trim='procureGroupComputed'/>
             <i-text v-else>{{ procureGroupComputed }}</i-text>
           </i-form-item>
         </el-col>
@@ -135,7 +138,7 @@
           <i-form-item :label="$t('LK_BEIZHU')">
             <i-text v-if='inputRemarksEditerState'>{{ orderDetails.remark }}</i-text>
             <i-input v-else :placeholder="$t('partsprocure.PLEENTER')" v-model.trim='orderDetails.remark'
-                     :disabled='inputRemarksEditerState' />
+                     :disabled='inputRemarksEditerState'/>
           </i-form-item>
         </el-col>
       </el-row>
@@ -154,9 +157,10 @@ import {
   iSelect
 } from 'rise'
 import {getSupplierInfoQuery} from "@/api/ws2/modelOrder";
+
 export default {
   name: "ModelOrderDetailsTopComponents",
-  components:{
+  components: {
     iCard,
     iFormGroup,
     iFormItem,
@@ -166,28 +170,29 @@ export default {
     iDatePicker
   },
   props: {
-    orderDetails: { type: Object, require: true },
-    id: { type: Number, default: -1 },
-    isEdit: { type: Boolean, default: true },
-    option: { type: Number, default: 0 },
-    purchasingFactoryList: { type: Array, default: () => [] },
-    orderStatusList: { type: Array, default: () => [] },
-    containPurchaseGroup: { type: Boolean, default: false }
+    orderDetails: {type: Object, require: true},
+    id: {type: Number, default: -1},
+    isEdit: {type: Boolean, default: true},
+    option: {type: Number, default: 0},
+    purchasingFactoryList: {type: Array, default: () => []},
+    orderStatusList: {type: Array, default: () => []},
+    containPurchaseGroup: {type: Boolean, default: false},
+    contractStatusList: {type: Array, default: () => []},
   },
-  computed:{
+  computed: {
     //通用状态
-    generalEditorState: function() {
+    generalEditorState: function () {
       return this.option == 1 ? true : false
     },
     //构建订单状态值
-    orderState: function() {
+    orderState: function () {
       if (this.orderStatusList.length <= 0) {
         return ''
       }
       return this.orderStatusList.find((i) => i.code === this.orderDetails.state).name
     },
     //备注编辑状态
-    inputRemarksEditerState: function() {
+    inputRemarksEditerState: function () {
       if (this.option == 0) {//创建模式 可编辑
         return false
       }
@@ -201,42 +206,63 @@ export default {
       return true //历史状态不可编辑
     },
     //订单类型
-    orderType: function() {
+    orderType: function () {
 
       return '模具订单'
     },
     procureGroupComputed: {
-      get: function() {
+      get: function () {
         return this.orderDetails.procureGroup
       },
-      set: function(val) {
+      set: function (val) {
         this.orderDetails.procureGroup = val.toUpperCase()
+      }
+    },
+    contractStatusStyle: function () {
+      if (this.id == -1) {
+        return null
+      } else {
+        return 'red'
+      }
+    },
+    contractStatusVal: function () {
+      if (this.id == -1) {
+        return ""
+      } else {
+        if (this.orderDetails.contractStatus == null || this.orderDetails.contractStatus == '') {
+          return '未创建'
+        } else {
+          if (this.contractStatusList.length <= 0) {
+            return ''
+          }
+          return this.contractStatusList.find((i) => i.code === this.orderDetails.contractStatus).name
+        }
       }
     }
   },
-  data(){
+  data() {
     return {
       purchasingGroupEditerState: false,
       orderDetailsRules: {
-        supplierInfo: [{ required: true, message: '请输入供应商编码', trigger: 'blur' }],
-        procureGroup: [{ required: true, message: '请输入采购组', trigger: 'blur' }],
-        procureFactory: [{ required: true, message: '请选择采购工厂', trigger: 'change' }],
-        orderDate: [{ required: true, message: '请选择日期', trigger: 'change' }]
+        supplierInfo: [{required: true, message: '请输入供应商编码', trigger: 'blur'}],
+        procureGroup: [{required: true, message: '请输入采购组', trigger: 'blur'}],
+        procureFactory: [{required: true, message: '请选择采购工厂', trigger: 'change'}],
+        orderDate: [{required: true, message: '请选择日期', trigger: 'change'}]
       }
     }
   },
   created() {
     this.purchasingGroupEditerStateFunction()
   },
-  watch:{
-    isEdit(val,oldVal){
+  watch: {
+    isEdit(val, oldVal) {
       this.purchasingGroupEditerStateFunction()
     },
-    containPurchaseGroup(val){
+    containPurchaseGroup(val) {
       this.purchasingGroupEditerStateFunction()
     }
   },
-  methods:{
+  methods: {
     //计算采购组编辑状态属性值
     purchasingGroupEditerStateFunction() {
       console.log(this.option)
@@ -278,7 +304,7 @@ export default {
     },
     //选择采购工厂 回调
     factorySelectChanged(val) {
-      let factory = this.purchasingFactoryList.find(function(item) {
+      let factory = this.purchasingFactoryList.find(function (item) {
         return item.procureFactory === val
       })
       this.orderDetails.companyCode = factory.companyCode
@@ -306,4 +332,7 @@ export default {
 
 <style scoped>
 
+.red {
+  color: red;
+}
 </style>

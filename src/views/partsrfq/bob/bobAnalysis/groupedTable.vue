@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-08-19 16:38:43
+ * @LastEditTime: 2021-09-06 21:38:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -98,7 +98,10 @@ export default {
         return [];
       },
     },
-
+    analysisSchemeId: {
+      type: String,
+      default: ""
+    }
     // tableList: {
     //   type: Object,
     //   default: function () {
@@ -162,7 +165,7 @@ export default {
     if (this.newBuild && this.entryStatus === 0) {
       this.SchemeId = this.$store.state.rfq.SchemeId;
     } else {
-      this.SchemeId = this.$attrs.analysisSchemeId;
+      this.SchemeId = this.analysisSchemeId;
     }
     this.groupId = this.$route.query.groupId
     this.$nextTick(() => {

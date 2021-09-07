@@ -199,7 +199,8 @@ export default {
               color: '#3C4F74'
             },
             triggerEvent: true,
-            offset: 6
+            offset: 6,
+            z: 50
           },
           {
             type: "category",
@@ -224,7 +225,8 @@ export default {
               color: '#3C4F74'
             },
             triggerEvent: true,
-            offset: 30
+            offset: 30,
+            z: 50
           },
         ],
         yAxis: [
@@ -261,7 +263,7 @@ export default {
         series: this.dataArray,
       };
       myChart.setOption(option);
-
+      myChart.resize();
       myChart.on("click", function (params) {
         if (params.targetType === "axisLabel" && params.value === that.type) {
           that.$emit("select", params);
@@ -359,7 +361,7 @@ export default {
           if (this.type === "Best of Average") {
             // data = this.doNumber((this.sum(tempArr[row]) / tempArr[row].length))
             data = (this.sum(sumList) / tempArr[row].length)
-            console.log(data)
+
           } else if (this.type === "Best of Second") {
             data = this.bos(sumList);
           }
@@ -386,7 +388,6 @@ export default {
               distance: 15,
               offset: [-2, 0],
               formatter: (params) => {
-                // console.log(params)
                 if (params.name === this.type) {
                   return this.doNumber(data);
                 } else {

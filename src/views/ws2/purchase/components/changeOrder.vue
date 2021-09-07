@@ -51,48 +51,112 @@
               align="center"
               label="固定资产名称（原名称）"
               width="120">
+            <template slot="header">
+              <div>固定资产名称</div>
+              <div>（原名称）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.assetName }}</div>
+              <div v-if="scope.row.assetNameOld">（{{ scope.row.assetNameOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="craftTypeOld"
               width="100"
               align="center"
               label="工艺类型（原类型）">
+            <template slot="header">
+              <div>工艺类型</div>
+              <div>（原类型）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.craftType }}</div>
+              <div v-if="scope.row.craftTypeOld">（{{ scope.row.craftTypeOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="moldTypeOld"
               width="100"
               align="center"
               label="工模具种类（原种类）">
+            <template slot="header">
+              <div>工模具种类</div>
+              <div>（原种类）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.moldType }}</div>
+              <div v-if="scope.row.moldTypeOld">（{{ scope.row.moldTypeOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="assetTypeNumNameOld"
               width="100"
               align="center"
               label="资产分类（原分类）">
+            <template slot="header">
+              <div>资产分类</div>
+              <div>（原分类）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.assetTypeNumName }}</div>
+              <div v-if="scope.row.assetTypeNumNameOld">（{{ scope.row.assetTypeNumNameOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="partsTotalNumOld"
               width="120"
               align="center"
               label="总成零件号（原总成号）">
+            <template slot="header">
+              <div>总成零件号</div>
+              <div>（原总成号）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.partsTotalNum }}</div>
+              <div v-if="scope.row.partsTotalNumOld">（{{ scope.row.partsTotalNumOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="partsTotalNameOld"
               width="120"
               align="center"
               label="总成零件名（原总成名）">
+            <template slot="header">
+              <div>总成零件名</div>
+              <div>（原总成名）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.partsTotalName }}</div>
+              <div v-if="scope.row.partsTotalNameOld">（{{ scope.row.partsTotalNameOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="partsNumOld"
-              width="100"
+              width="120"
               align="center"
               label="零件号（原零件号）">
+            <template slot="header">
+              <div>零件号</div>
+              <div>（原零件号）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.partsNum }}</div>
+              <div v-if="scope.row.partsNumOld">（{{ scope.row.partsNumOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="partsNameOld"
               width="100"
               align="center"
               label="零部件名称（原名称）">
+            <template slot="header">
+              <div>零部件名称</div>
+              <div>（原名称）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.partsName }}</div>
+              <div v-if="scope.row.partsNameOld">（{{ scope.row.partsNameOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="countOld"

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-02 15:08:08
+ * @LastEditTime: 2021-09-07 15:06:14
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\index.vue
 -->
@@ -54,6 +54,8 @@
         @handleSelectionChange="handleSelectionChange" 
         @openPage="openPage"
         @openApprovalDetailDialog="openApprovalDetailDialog"
+        @openApprovalDialog="openApprovalDialog"
+        @openModifyDialog="openUpdateDialog"
       >
       </tableList>
       <!------------------------------------------------------------------------>
@@ -125,6 +127,26 @@ export default {
     this.getTableList()
   },
   methods: {
+    /**
+     * @Description: 修改记录查看
+     * @Author: Luoshuang
+     * @param {*} row
+     * @return {*}
+     */    
+    openUpdateDialog(row){
+      this.applyId = row.applyId || ''
+      this.changeUpdateDialogVisible(true)
+    },
+    /**
+     * @Description: 审批记录查看
+     * @Author: Luoshuang
+     * @param {*} row
+     * @return {*}
+     */    
+    openApprovalDialog(row){
+      this.applyId = row.applyId || ''
+      this.changeApprovalRecordDialogVisible(true)
+    },
     /**
      * @Description: 修改审批记录弹窗状态
      * @Author: Luoshuang
