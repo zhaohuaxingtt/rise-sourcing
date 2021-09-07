@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-09 16:45:32
- * @LastEditTime: 2021-09-06 10:53:57
+ * @LastEditTime: 2021-09-07 16:39:05
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\piecewise.vue
@@ -56,15 +56,16 @@ export default {
                value:[parseInt(item.riskScore),parseInt(item.moneyScore)],
                materialGroupName:item.materialGroupName,
                materialGroupCode:item.materialGroupCode,
+               to:item.money,
             }
          }) 
-          // 当前点
+         // 当前点
          if(data.currentPoint){
             let currentCategory={
                value:[parseInt(data.currentPoint.riskScore),parseInt(data.currentPoint.moneyScore)],
                materialGroupName:data.currentPoint.materialGroupName,
                materialGroupCode:data.currentPoint.materialGroupCode,
-               symbolSize:20
+               // symbolSize:20,
             }
             marksData.push(currentCategory)
          }
@@ -110,7 +111,8 @@ export default {
                      return [
                         `材料组名称:${data.materialGroupName}`,
                         `材料组编号: ${data.materialGroupCode}`,
-                        `材料组分数:${value[0]},${value[1]} `
+                        `材料组分数:${value[0]},${value[1]} `,
+                        `TO:${data.to}`
                            ].join("</br>")
                }
             },
@@ -176,16 +178,15 @@ export default {
                      formatter: '{b}'
                },
                itemStyle: {
-                  color:"rgba(65, 165, 245, 0.5)"
-                     // shadowBlur: 2,
-                     // shadowColor: 'rgba(120, 36, 50, 0.5)',
-                     // shadowOffsetY: 1,
-                     // color: function (e) {
-                     //    let randomColor = 'rgba(' + Math.floor(Math.random() * 240) + ',' + Math.floor(Math.random() * 240) + ',' + Math.floor(Math.random() * 240) + ',' + '.8' + ')'
-                     //    return randomColor.substring()
-                     // }
-                     
+                  color: function (e) {
+                     if(data.currentPoint && e.data.materialGroupCode==data.currentPoint.materialGroupCode){
+                        return 'rgba(58, 208, 160, 1)'
+                     }else{
+                        return 'rgba(65, 165, 245, 0.5)'
+                     }
+                  }
                },
+               
                // 各象限区域
                markArea: {
                      silent: true,
@@ -290,6 +291,9 @@ export default {
             }]
          }
          myChart.setOption(option);
+         myChart.on('click', function (params) {
+            console.log(params);
+         });
       }
    }
 }
