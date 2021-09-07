@@ -148,7 +148,7 @@ export const changeTaskTitle = [
         tooltip: false
     },
     {
-        props: 'behalfPartsName',
+        props: 'behalfPartsNum',
         name: '代表零件号',
         key: '代表零件号',
         width: 180,

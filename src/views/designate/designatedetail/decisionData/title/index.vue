@@ -4,7 +4,7 @@
  * @Description: 决策资料-title
 -->
 <template>
- <div class="decision-data-title">
+ <div class="decision-data-title" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TITLE|决策资料-title">
     <iCard title="Title">
        <div class="decision-data-title-content">
          <iFormGroup row="1">

@@ -172,7 +172,6 @@ export default {
           this.saveFlag = true;
           this.getList();
         });
-        this.pageLoading = false;
       } catch {
         this.pageLoading = false;
       }

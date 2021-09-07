@@ -18,7 +18,7 @@
             <iButton @click="saveMarket"
                      v-show="!edite">保存</iButton>
             <iButton v-show="edite"
-                     @click="edite=!edite">生成报告</iButton>
+                     @click="pdf">生成报告</iButton>
           </div>
         </div>
         <!-- tittle -->
@@ -52,7 +52,7 @@
 
 <script>
 import { iButton, iPage, iCard, iInput, iSelect, iMessage } from 'rise'
-import { marketOverview, saveMarketOverview } from '@/api/partsrfq/svw/index.js'
+import { marketOverview, saveMarketOverview, marketOverviewReport } from '@/api/partsrfq/svw/index.js'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf"
 import { uploadUdFile } from "@/api/file/upload";
 import list from './components/list'
@@ -117,17 +117,34 @@ export default {
     saveMarket () {
       // this.dialogVisible = true
       this.edite = true
-      this.savereport = false
       const loading = this.$loading({
         lock: true,
         text: 'Loading',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       });
+      saveMarketOverview({
+        categoryCode: this.categoryCode,
+        id: this.SchemeId,
+        // reportUrl: arr2[1],
+        // reportFileName: data.name,
+        marketOverviewSaveDTOList: this.MarketOverviewDTO
+      }).then(res => {
+        loading.close();
+        iMessage.success("保存成功");
+        this.getmarketOverview()
+        this.clearDialog()
+      })
 
+      // this.categoryCode = this.$store.state.rfq.categoryCode
+    },
+    pdf () {
+      this.edite = true
+      this.savereport = false
       downloadPDF({
         idEle: "content",
         pdfName: "SVW供应商市场总览" + this.categoryCode + '-' + this.categoryName,
+        exportPdf: true,
         callback: async (pdf, pdfName) => {
           try {
             const time = new Date().getTime();
@@ -142,31 +159,25 @@ export default {
               const data = res.data[0]
               let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
               let arr2 = data.path.split(arr[0])
-              saveMarketOverview({
-                categoryCode: this.categoryCode,
+              marketOverviewReport({
+                "categoryCode": this.categoryCode,
                 id: this.SchemeId,
-                reportUrl: arr2[1],
-                reportFileName: data.name,
-                marketOverviewSaveDTOList: this.MarketOverviewDTO
-              }).then(res => {
-                loading.close();
-                iMessage.success("保存成功");
-                this.getmarketOverview()
-                this.savereport = true
-                this.clearDialog()
+                "reportFileName": data.name,
+                // "reportName": "string",
+                "reportUrl": arr2[1],
+                // "schemeName": "string",
               })
+              this.savereport = true
             });
           } catch {
-            loading.close();
             iMessage.error("保存失败");
             this.clearDialog()
           }
         },
       });
-      // this.categoryCode = this.$store.state.rfq.categoryCode
     },
     getreturnObj (val, index) {
-      console.log(val,index)
+      console.log(val, index)
       this.MarketOverviewDTO[index] = val
       console.log(this.MarketOverviewDTO)
     },

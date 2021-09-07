@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-09-01 14:48:56
+ * @LastEditTime: 2021-09-07 16:09:59
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -28,6 +28,7 @@
                 <iInput
                   v-model="form.partNum"
                   :placeholder="language('LK_QINGSHURULINGJIANHAO','请输入零件号')"
+                  maxlength="14"
                 ></iInput>
               </el-form-item>
               <el-form-item :label="language('partsignLanguage.LingJianMingChengZH','零件名称（中）')" v-permission.auto="PARTSIGN_PARTNAMEZH|零件名中">
@@ -168,6 +169,7 @@
               </div>
             </div>
             <tablelist
+              class="aotoTableHeight"
               :tableData="tableListData"
               :tableTitle="tableTitle"
               :tableLoading="tableLoading"
@@ -492,10 +494,17 @@ export default {
 <style lang="scss" scoped>
 .partsignHome {
   position: relative;
+  .aotoTableHeight{
+    ::v-deep .el-table__body-wrapper {
+      min-height: 422px !important;  
+      overflow: auto !important ;
+    }
+  }
   .topMenu{
     display: flex;
     justify-content: space-between;
   }
+  
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;

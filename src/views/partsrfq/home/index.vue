@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-09-03 14:25:42
+ * @LastEditTime: 2021-09-07 16:32:46
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -110,6 +110,7 @@
                 :index="true"
                 icon-props="recordId"
                 :lang="true"
+                class="aotoTableHeight"
             >
               <template v-slot:icon="scope">
                 <div @click="toTop(scope.data)" class="icon-style">
@@ -133,6 +134,11 @@
                   </tablelist>
                   <icon class="tick icon-style" symbol name="iconbaojiazhuangtailiebiao_yibaojia" slot="reference"/>
                 </el-popover>
+              </template>
+
+              <!-- 已报价&已询价 合并显示 -->
+              <template #suppliers="scope">
+                <span>{{scope.row.quotations}}/{{scope.row.suppliers}}</span>
               </template>
             </tablelist>
             <!------------------------------------------------------------------------>
@@ -530,7 +536,12 @@ export default {
 
 .partsrfqHome {
   position: relative;
-
+  .aotoTableHeight{
+    ::v-deep .el-table__body-wrapper {
+      min-height: 422px !important;  
+      overflow: auto !important ;
+    }
+  }
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;

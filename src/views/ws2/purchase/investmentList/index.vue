@@ -391,20 +391,28 @@ export default {
         iMessage.warn(this.language('LK_BAAPPLYTISP1', '请先勾选'))
         return
       }
-      this.handVerifyLineShowLoading = true
-      verifyIsSelfOrders(this.multipleSelection.map(item => item.id)).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if(res.result){
-          this.InitiateChangeContent = result
-          this.bmParams = this.multipleSelection.map(item => ({id: item.id, isPremission: Number(item.isShowMoldInvestmentAmount) === 1 ? true : false}))
-          this.InitiateChangeShow = true
-        } else {
-          iMessage.warn(result)
-        }
-        this.handVerifyLineShowLoading = false
-      }).catch(() => {
-        this.handVerifyLineShowLoading = false
-      });
+      let premissionArr = this.multipleSelection.filter(item => Number(item.isShowMoldInvestmentAmount) === 2).map(item => item.bmSerial)
+      if(premissionArr.length > 0){
+        // iMessage.warn(`对不起，您没有操作${premissionArr.join(',')}单据的权限`)
+        iMessage.warn(`对不起，您所在的岗位没有该材料组权限`)
+      } else {
+        this.bmParams = this.multipleSelection.map(item => ({id: item.id, isPremission: Number(item.isShowMoldInvestmentAmount) === 1 ? true : false}))
+        this.InitiateChangeShow = true
+      }
+      // this.handVerifyLineShowLoading = true
+      // verifyIsSelfOrders(this.multipleSelection.map(item => item.id)).then((res) => {
+      //   const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+      //   if(res.result){
+      //     this.InitiateChangeContent = result
+      //     this.bmParams = this.multipleSelection.map(item => ({id: item.id, isPremission: Number(item.isShowMoldInvestmentAmount) === 1 ? true : false}))
+      //     this.InitiateChangeShow = true
+      //   } else {
+      //     iMessage.warn(result)
+      //   }
+      //   this.handVerifyLineShowLoading = false
+      // }).catch(() => {
+      //   this.handVerifyLineShowLoading = false
+      // });
     },
     sure(){
       this.page.currPage = 1
