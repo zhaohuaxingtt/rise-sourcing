@@ -1,13 +1,13 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 21:04:49
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-23 10:16:14
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-07 14:44:09
  * @Description: 定点-审批人&审批记录
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\index.vue
 -->
 <template>
-  <iPage class="approvalFlow">
+  <iPage class="approvalFlow" v-permission.auto="SOURCING_NOMINATION_APPROVAL_PAGE|审批人&审批记录">
     <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('LK_SHENPIRENANDSHENPIJILU','审批人&审批记录')}}</span>
@@ -16,11 +16,11 @@
           <!------------------------------------------------------------------------------->
           <div class="floatright"  v-if="!isEdit">
             <!--------------------同步按钮----------------------------------->
-            <span class="cursor tongbu" @click="synchronization" :loading="approvalSyncLoading"><icon symbol class="margin-right8" name='icontongbu' ></icon>{{language('LK_TONGBU','同步')}}</span>
+            <span class="cursor tongbu" @click="synchronization" :loading="approvalSyncLoading" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ASYNC|同步"><icon symbol class="margin-right8" name='icontongbu' ></icon>{{language('LK_TONGBU','同步')}}</span>
             <!--------------------审批流按钮----------------------------------->
-            <iButton @click="openAprroveFlow" >{{language('SHENPILIU','审批流')}}</iButton>
+            <iButton @click="openAprroveFlow" v-permission.auto="SOURCING_NOMINATION_APPROVAL_SHENPILIU|审批流">{{language('SHENPILIU','审批流')}}</iButton>
             <!--------------------编辑按钮----------------------------------->
-            <iButton @click="handleEdit" >{{language('LK_BIANJI','编辑')}}</iButton>
+            <iButton @click="handleEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EDIT|编辑">{{language('LK_BIANJI','编辑')}}</iButton>
             
           </div>
           <!------------------------------------------------------------------------------->
@@ -28,15 +28,15 @@
           <!------------------------------------------------------------------------------->
           <div class="floatright" v-else>
             <!--------------------新增按钮----------------------------------->
-            <iButton @click="handleAdd" >{{language('LK_XINZENG','新增')}}</iButton>
+            <iButton @click="handleAdd" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ADD|新增">{{language('LK_XINZENG','新增')}}</iButton>
             <!--------------------删除按钮----------------------------------->
-            <iButton @click="handleDelete" >{{language('LK_SHANCHU','删除')}}</iButton>
+            <iButton @click="handleDelete" v-permission.auto="SOURCING_NOMINATION_APPROVAL_DELETE|删除">{{language('LK_SHANCHU','删除')}}</iButton>
             <!--------------------恢复按钮----------------------------------->
-            <iButton @click="handleRecover" >{{language('LK_HUIFU','恢复')}}</iButton>
+            <iButton @click="handleRecover" v-permission.auto="SOURCING_NOMINATION_APPROVAL_RECOVER|恢复">{{language('LK_HUIFU','恢复')}}</iButton>
             <!--------------------保存按钮----------------------------------->
-            <iButton @click="handleSave" :loading="saveLoading">{{language('LK_BAOCUN','保存')}}</iButton>
+            <iButton @click="handleSave" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_APPROVAL_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
             <!--------------------取消按钮----------------------------------->
-            <iButton @click="handleCancelEdit" >{{language('LK_JIESHUBIANJI','结束编辑')}}</iButton>
+            <iButton @click="handleCancelEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EXITEDIT|结束编辑">{{language('LK_JIESHUBIANJI','结束编辑')}}</iButton>
           </div>
       </div>
       <tableList 
@@ -51,6 +51,7 @@
         @openDialog="changeDialogVisible(true)" 
         @handleSelectionChange="handleRfqSelectionChange" 
         :deptOptions="deptOptions"
+        v-permission.auto="SOURCING_NOMINATION_APPROVAL_TABLE|表格"
       ></tableList>
     </iCard>
     <approvalFlowDialog :dialogVisible="flowDialogVisible" @changeVisible="changeflowDialogVisible" :processInstanceId="processInstanceId" />

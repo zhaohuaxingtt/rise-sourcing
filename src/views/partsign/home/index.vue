@@ -168,6 +168,7 @@
               </div>
             </div>
             <tablelist
+              class="aotoTableHeight"
               :tableData="tableListData"
               :tableTitle="tableTitle"
               :tableLoading="tableLoading"
@@ -492,10 +493,17 @@ export default {
 <style lang="scss" scoped>
 .partsignHome {
   position: relative;
+  .aotoTableHeight{
+    ::v-deep .el-table__body-wrapper {
+      min-height: 422px !important;  
+      overflow: auto !important ;
+    }
+  }
   .topMenu{
     display: flex;
     justify-content: space-between;
   }
+  
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;

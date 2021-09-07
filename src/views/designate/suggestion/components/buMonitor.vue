@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-22 15:42:09
+ * @LastEditTime: 2021-09-07 14:28:39
  * @Description: 业务分配模拟
 -->
 
@@ -25,32 +25,32 @@
                 
                 <span class="combine" v-if="multiEditControl">
                   <!-- 合并功能 -->
-                <iButton @click="combine" v-if="!hideCombine">
+                <iButton @click="combine" v-if="!hideCombine" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_ZUHE|组合">
                     {{ language("nominationSuggestion_ZuHe",'组合') }}
                   </iButton>
-                  <iButton @click="cancelSummaryGroup" v-if="!hideCombine">
+                  <iButton @click="cancelSummaryGroup" v-if="!hideCombine" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_QUXAIOZUHE|取消组合">
                     {{ language("nominationSuggestion_QuXiaoZuHe",'取消组合') }}
                   </iButton>
                   <!-- 退出编辑 -->
-                  <iButton @click="exit">
+                  <iButton @click="exit" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TUICHUBIANJI|退出编辑">
                     {{ language("TUICHUBIANJI",'退出编辑') }}
                   </iButton>
-                  <iButton @click="submit">
+                  <iButton @click="submit" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_BAOCUN|保存">
                     {{ language("LK_BAOCUN",'保存') }}
                   </iButton>
                 </span>
                 <span class="combine" v-else>
                   <!-- 编辑 -->
-                  <iButton @click="multiEditControl = true">
+                  <iButton @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_BIANJI|编辑">
                     {{ language("LK_BIANJI",'编辑') }}
                   </iButton>
                 </span>
                 <!-- 重置 -->
-                <iButton @click="getFetchData">
+                <iButton @click="getFetchData" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_CHONGZHI|重置">
                   {{ language("nominationSupplier_Reset",'重置') }}
                 </iButton>
                 <!-- 刷新 -->
-                <iButton @click="refresh">
+                <iButton @click="refresh" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_SHAUXIN|刷新">
                   {{ language("nominationSupplier_Refresh",'刷新') }}
                 </iButton>
               </div>
@@ -69,6 +69,7 @@
                 :supplier="supplierList"
                 :batchEdit="multiEditControl"
                 v-loading="tableLoading"
+                v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TABLE|表格"
                 ref="monitorTable" />
             </div>
           </div>
@@ -79,7 +80,9 @@
         <div class="buMonitor-charts">
           <buMonitorCharts
             :supplier="supplierList"
-            :data="chartData" />
+            :data="chartData"
+            v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_CHART|图表"
+          />
         </div>
       </el-col>
     </el-row>

@@ -55,7 +55,7 @@
                   <iButton @click="donwloadList" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+            <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" class="aotoTableHeight"></tableList>
                 <!------------------------------------------------------------------------>
                 <!--                  表格分页                                          --->
                 <!------------------------------------------------------------------------>
@@ -493,6 +493,12 @@ export default {
 <style lang="scss" scoped>
 .signForParts {
   position: relative;
+  .aotoTableHeight{
+    ::v-deep .el-table__body-wrapper {
+      min-height: 422px !important;  
+      overflow: auto !important ;
+    }
+  }
   .topMenu{
     display: flex;
     justify-content: space-between;

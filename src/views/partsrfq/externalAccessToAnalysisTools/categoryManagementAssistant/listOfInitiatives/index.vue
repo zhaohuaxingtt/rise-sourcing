@@ -103,14 +103,15 @@ import {
   getList,
   getListSelected,
   saveInfos,
+  saveReport,
 } from '../../../../../api/categoryManagementAssistant/listOfInitiatives';
 import theCheckBox from './compoents/theCheckBox';
 import theRemark from './compoents/theRemark';
 import resultMessageMixin from '@/utils/resultMessageMixin';
-import {downloadPDF} from '@/utils/pdf';
+import {downloadPDF, downloadPdfMixins} from '@/utils/pdf';
 
 export default {
-  mixins: [resultMessageMixin],
+  mixins: [resultMessageMixin, downloadPdfMixins],
   components: {
     iPage,
     iButton,
@@ -130,8 +131,10 @@ export default {
       form: {},
       maxlength: 500,
       categoryCode: this.$store.state.rfq.categoryCode,
+      categoryName: this.$store.state.rfq.categoryName,
       exportStatus: false,
       exportButtonLoading: false,
+      saveFlag: false,
     };
   },
   created() {
@@ -166,9 +169,9 @@ export default {
         const res = await saveInfos(req);
         this.resultMessage(res, () => {
           this.editStatus = false;
+          this.saveFlag = true;
           this.getList();
         });
-        this.pageLoading = false;
       } catch {
         this.pageLoading = false;
       }
@@ -201,6 +204,7 @@ export default {
         this.treeDataSelect = selectObj;
         this.getLastCheckData({treeData: this.treeData, selectObj});
         this.pageLoading = false;
+        this.handleSaveExport();
       } catch {
         this.treeData = {};
         this.treeDataSelect = {};
@@ -304,11 +308,40 @@ export default {
         this.$refs.headerNav.openCatecory();
       }
     },
+    handleSaveExport() {
+      if (this.saveFlag) {
+        this.pageLoading = true;
+        this.$nextTick(async () => {
+          const pdfName = `品类管理助手-${this.categoryName}-${window.moment().format('YYYY-MM-DD')}|`;
+          const resFile = await this.getDownloadFileAndExportPdf({
+            domId: 'container',
+            pdfName: pdfName,
+          });
+          try {
+            const req = {
+              categoryCode: this.categoryCode,
+              categoryName: this.categoryName,
+              reportFileName: resFile.downloadName,
+              reportName: resFile.downloadName.split('|')[0],
+              reportUrl: resFile.downloadUrl,
+              years: window.moment().format('YYYY'),
+            };
+            await saveReport(req);
+          } finally {
+            this.pageLoading = false;
+            this.saveFlag = false;
+          }
+        });
+      }
+    },
   },
   watch: {
     '$store.state.rfq.categoryCode'() {
       this.categoryCode = this.$store.state.rfq.categoryCode;
       this.getList();
+    },
+    '$store.state.rfq.categoryName'() {
+      this.categoryName = this.$store.state.rfq.categoryName;
     },
   },
 };

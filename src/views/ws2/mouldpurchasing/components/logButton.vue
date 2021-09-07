@@ -1,11 +1,3 @@
-<!--
- * @Author: ldh
- * @Date: 2021-04-21 17:14:24
- * @LastEditors: ldh
- * @LastEditTime: 2021-04-23 14:17:32
- * @Description: In User Settings Edit
- * @FilePath: \front-supplier\src\views\rfqManageMent\quotationdetail\components\logButton.vue
--->
 <template>
   <div class="logButton" @click="$emit('click')">
     <icon symbol name="iconrizhiwuzi" class="icon" />

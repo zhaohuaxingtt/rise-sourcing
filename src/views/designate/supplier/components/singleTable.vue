@@ -6,36 +6,40 @@
         >
         <div class="floatright" v-if="singleEditControl">
           <!-- 批量编辑 -->
-          <iButton @click="handleBatchEdit">
+          <iButton @click="handleBatchEdit" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_BATCHEDIT|批量编辑">
             {{ language("nominationSupplier_BatchEdit",'批量编辑') }}
           </iButton>
           <iButton
             @click="partDialogVisibal = !partDialogVisibal"
+            v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_ADD|单一供应商新增按钮"
           >
             {{ language("LK_XINZENG",'新增') }}
           </iButton>
           <iButton
             @click="submit"
             :loading="submiting"
+            v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_SAVE|单一供应商保存按钮"
           >
             {{ language("LK_BAOCUN",'保存') }}
           </iButton>
           <iButton
             @click="singleEditControl = false"
+            v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_CANCEL|单一供应商取消按钮"
           >
             {{ language("LK_QUXIAO",'取消') }}
           </iButton>
           <iButton
             @click="deleteRow"
+            v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_DELETE|单一供应商删除按钮"
           >
             {{ language("LK_SHANCHU",'删除') }}
           </iButton>
         </div>
         <div class="floatright" v-else>
-          <iButton @click="handlEdit">
+          <iButton @click="handlEdit" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_EDIT|单一供应商编辑按钮">
             {{ language("nominationSupplier_Edit",'编辑') }}
           </iButton>
-          <iButton @click="exportSupplier">
+          <iButton @click="exportSupplier" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_EXPORT|单一供应商导出按钮">
             {{ language("nominationSupplier_Export",'导出') }}
           </iButton>
         </div>
@@ -49,6 +53,7 @@
         @handleSelectionChange="handleSingleSelectionChange"
         @openPage="openPage"
         :activeItems="'partNum'"
+        v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_TABLE|单一供应商表格"
       >
         <template #partNum="scope">
           <a class="link-underline" href="javascript:;">{{scope.row.partNum}}</a>

@@ -6,21 +6,21 @@
       >
       <div class="floatright">
         <span v-if="multiEditControl">
-          <iButton @click="addShow(true)">
+          <iButton @click="addShow(true)" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_MULTI_ADDSHOW|供应商列表加入展示按钮">
             {{ language("nominationSupplier_JiaRuZhanShi",'加入展示') }}
           </iButton>
-          <iButton @click="addShow(false)">
+          <iButton @click="addShow(false)" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_MULTI_REMOVEHIDDEN|供应商列表取消展示按钮">
             {{ language("nominationSupplier_QuXiaoZhanShi",'取消展示') }}
           </iButton>
-          <iButton @click="submit" :loading="submiting">
+          <iButton @click="submit" :loading="submiting" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_MULTI_SAVE|供应商列表保存按钮">
             {{ language("LK_BAOCUN", '保存') }}
           </iButton>
-          <iButton @click="multiEditControl = false">
+          <iButton @click="multiEditControl = false" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_MULTI_CANCEL|供应商列表取消按钮">
             {{ language("LK_QUXIAO",'取消') }}
           </iButton>
         </span>
         <span v-else>
-          <iButton @click="multiEditControl = true">
+          <iButton @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_MULTI_EDIT|供应商列表编辑按钮">
             {{ language("LK_BIANJI",'编辑') }}
           </iButton>
         </span>
@@ -37,6 +37,7 @@
       @handleSelectionChange="handleMutiSelectionChange"
       @openPage="openPage"
       :activeItems="'partNum'"
+      v-permission.auto="SOURCING_NOMINATION_SUPPLIER_MULTI_TABLE|供应商列表表格"
     >
     <template #_index="scope">
       {{((page.currPage - 1)*page.pageSize + scope.$index + 1 )}}
