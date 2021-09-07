@@ -104,4 +104,13 @@ export function submitApproval(bmId, bmChangeId, data) {
     })
 }
 
+//撤回
+export function recall(data) {
+    return VUE_APP_BMCHANGE({
+        url: `/recall`,
+        method: 'POST',
+        data: data
+    })
+}
+
 

@@ -9,7 +9,7 @@
         <span>{{ $t("LK_RIZHI") }}</span>
       </div>
     </div>
-    <iLog :show.sync="iLogShow" :bizId="query.bmSerial"></iLog>
+    <iLog :show.sync="iLogShow" :bizId="query.changeNum"></iLog>
 
     <iCard v-loading="baseInfoLoading">
       <div class="head-serch">
@@ -211,8 +211,8 @@
           </iButton>
           <iButton
               v-show="(Number(baseInfo.changeStatus) === 4 || Number(baseInfo.changeStatus) === 5)"
-              v-loading="sendSupplierLoading"
-              @click="sendSupplier">
+              v-loading="recallLoading"
+              @click="handleRecall">
             {{ language('LK_CHEHUI', '撤回') }}
           </iButton>
           <iButton
@@ -484,7 +484,7 @@ import {
   shareParts,
 } from "@/api/ws2/purchase/changeTask/bmInfo";
 import {getTousandNum, delcommafy} from "@/utils/tool";
-import {submitApproval} from "@/api/ws2/purchase/investmentList";
+import {submitApproval, recall} from "@/api/ws2/purchase/investmentList";
 import {cloneDeep} from "lodash";
 
 export default {
@@ -528,6 +528,7 @@ export default {
       tableLoading2: false,
       bmBuberLoading: false,
       sendSupplierLoading: false,
+      recallLoading: false,
       iLogShow: false,
       changeOederData: {},
       uploadButtonLoading: false,
@@ -772,6 +773,22 @@ export default {
         this.bmBuberLoading = false
       }).catch(() => {
         this.bmBuberLoading = false
+      });
+    },
+    handleRecall(){
+      this.recallLoading = true
+      recall({bmChangeId: this.query.bmChangeId}).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.moldHeaderByBmSerial()
+          this.findMoldViewList()
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+        }
+        this.recallLoading = false
+      }).catch(() => {
+        this.recallLoading = false
       });
     },
     sendSupplier(){
