@@ -19,7 +19,7 @@
               <div class="partNameColumn">
                 <iconFont v-if="scope.row.partCbdType == 2" class="iconFont" />
                 <div>
-                  <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.partName" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.partName !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].partName) : false }"></iInput>
+                  <iInput v-if="(scope.row.partCbdType == 1 || scope.row.partCbdType == 2) && !disabled" class="input-center" v-model="scope.row.partName" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.partName !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].partName) : false }"></iInput>
                   <div v-else>{{ scope.row.partName }}</div>
                 </div>
               </div>
@@ -28,19 +28,19 @@
         </el-table-column>
         <el-table-column :label="language('YUANCAILIAOSANJIANMIAOSHU', '原材料/散件描述')" align="center" width="120">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.partNumber" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.partNumber !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].partNumber) : false }"></iInput>
+            <iInput v-if="(scope.row.partCbdType == 1 || scope.row.partCbdType == 2) && !disabled" class="input-center" v-model="scope.row.partNumber" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.partNumber !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].partNumber) : false }"></iInput>
             <span v-else>{{ scope.row.partNumber }}</span>
           </template>
         </el-table-column>
         <el-table-column :label="language('GONGYINGSHANGMINGCHENG', '供应商名称')" align="center" width="92">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.supplierName" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.supplierName !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].supplierName) : false }"></iInput>
+            <iInput v-if="(scope.row.partCbdType == 1 || scope.row.partCbdType == 2) && !disabled" class="input-center" v-model="scope.row.supplierName" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.supplierName !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].supplierName) : false }"></iInput>
             <span v-else>{{ scope.row.supplierName }}</span>
           </template>
         </el-table-column>
         <el-table-column :label="language('YUANCHANGUO', '原产国')" align="center" width="100">
           <template v-slot="scope">
-            <iSelect v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="select-center" filterable v-model="scope.row.productionCountry" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.productionCountry !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].productionCountry) : false }">
+            <iSelect v-if="(scope.row.partCbdType == 1 || scope.row.partCbdType == 2) && !disabled" class="select-center" filterable v-model="scope.row.productionCountry" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.productionCountry !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].productionCountry) : false }">
               <el-option
                 v-for="item in countryOptions"
                 :key="item.key"
@@ -53,7 +53,7 @@
         </el-table-column>
         <el-table-column :label="language('SHIFOUSVWZHIDINGJIAGESANJIAN', '是否SVW指定价格散件')" align="center" width="150">
           <template v-slot="scope">
-            <iSelect v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="select-center" v-model="scope.row.isSvwAssignPriceParts" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.isSvwAssignPriceParts !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].isSvwAssignPriceParts) : false }" @change="computeMaterialCostSum()">
+            <iSelect v-if="(scope.row.partCbdType == 1 || scope.row.partCbdType == 2) && !disabled" class="select-center" v-model="scope.row.isSvwAssignPriceParts" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.isSvwAssignPriceParts !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].isSvwAssignPriceParts) : false }" @change="computeMaterialCostSum()">
               <el-option
                 v-for="item in options"
                 :key="item.key"
@@ -66,19 +66,19 @@
         </el-table-column>
         <el-table-column align="center" width="81" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHULIANGDANWEI', '数量单位') }<br/>（UoM）` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.quantityUnit" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.quantityUnit !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].quantityUnit) : false }"></iInput>
+            <iInput v-if="(scope.row.partCbdType == 1 || scope.row.partCbdType == 2) && !disabled" class="input-center" v-model="scope.row.quantityUnit" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.quantityUnit !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].quantityUnit) : false }"></iInput>
             <span v-else>{{ scope.row.quantityUnit }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" width="120" :render-header="h => h('span', { domProps: { innerHTML: `${ language('DANJIARMBUOM', '单价') }(RMB/UoM)` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.unitPrice" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.unitPrice !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].unitPrice) : false }" @input="handleInputByNumber($event, 'unitPrice', scope.row, 2, updateUnitPrice)"></iInput>
+            <iInput v-if="(scope.row.partCbdType == 1 || scope.row.partCbdType == 2) && !disabled" class="input-center" v-model="scope.row.unitPrice" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.unitPrice !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].unitPrice) : false }" @input="handleInputByNumber($event, 'unitPrice', scope.row, 2, updateUnitPrice)"></iInput>
             <span v-else>{{ scope.row.unitPrice }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" width="96" :render-header="h => h('span', { domProps: { innerHTML: `${ language('SHULIANG', '数量') }(1..n)` }})">
           <template v-slot="scope">
-            <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.quantity" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.quantity !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].quantity) : false }" @input="handleInputByNumber($event, 'quantity', scope.row, 0, updateQuantity)"></iInput>
+            <iInput v-if="(scope.row.partCbdType == 1 || scope.row.partCbdType == 2) && !disabled" class="input-center" v-model="scope.row.quantity" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.quantity !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].quantity) : false }" @input="handleInputByNumber($event, 'quantity', scope.row, 0, updateQuantity)"></iInput>
             <span v-else>{{ scope.row.quantity }}</span>
           </template>
         </el-table-column>
@@ -86,7 +86,7 @@
         <el-table-column :label="language('WULIAOGUANLIFEI', '物料管理费')" align="center">
           <el-table-column label="(%)" align="center" width="88">
             <template v-slot="scope">
-              <iInput v-if="scope.row.partCbdType == 1 || scope.row.partCbdType == 2 || !disabled" class="input-center" v-model="scope.row.materialManageCostRate" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.materialManageCostRate !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].materialManageCostRate) : false }" @input="handleInputByNumber($event, 'materialManageCostRate', scope.row, 2, updateMaterialManageCostRate)"></iInput>
+              <iInput v-if="(scope.row.partCbdType == 1 || scope.row.partCbdType == 2) && !disabled" class="input-center" v-model="scope.row.materialManageCostRate" :class="{ changeClass: originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId] ? (scope.row.materialManageCostRate !== originMap[scope.row.frontOriginMaterialId ? scope.row.frontOriginMaterialId : scope.row.originMaterialId].materialManageCostRate) : false }" @input="handleInputByNumber($event, 'materialManageCostRate', scope.row, 2, updateMaterialManageCostRate)"></iInput>
               <span v-else>{{ scope.row.materialManageCostRate }}</span>
             </template>
           </el-table-column>
