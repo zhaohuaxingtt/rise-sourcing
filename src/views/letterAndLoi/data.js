@@ -48,10 +48,10 @@ export const loiListSearch = [
 export const letterListTitle=[
   { props: "nominateAppId", name: "定点申请单号", key: "LK_DINGDIANXINDANHAO", tooltip: true},
   { props: "letterNum", name: "定点信编号", key: "LK_DINGDIANXINBIANHAO", tooltip: true,width:120},
-  { props: "parts", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true },
+  { props: "parts", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true,width:90 },
   { props: "supplierNum", name: "供应商号", key: "nominationSupplier.GongYingShangHao", tooltip: true },
   { props: "supplierSapNum", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true },
-  { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG", tooltip: true, width:160},
+  { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG", tooltip: true, width:140},
   { props: "statusDesc", name: "定点信状态", key: "LK_DINGDIANXINZHUANGTAI", tooltip: true },
   { props: "csfCssName", name: "询价采购员", key: "costanalysismanage.XunJiaCaiGouYuan", tooltip: true, width:80},
   { props: "linieName", name: "LINIE", key: "LK_LINIE", tooltip: true, width:70},

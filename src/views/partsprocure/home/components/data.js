@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-09-07 16:26:25
+ * @LastEditTime: 2021-09-07 18:18:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -28,14 +28,14 @@ export const tableTitle = [{
 		name: '零件名（中）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
 		tooltip: true,
-		width:120
+		width:100
 	},
 	{
 		props: 'partNameDe',
 		name: '零件名（德）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
 		tooltip: true,
-		width:140
+		width:100
 	},
 	// {
 	// 	props: 'statusName',
@@ -56,7 +56,7 @@ export const tableTitle = [{
 		name: 'CF',
 		key: 'partsprocure.CF',
 		tooltip: true,
-		width:80
+		width:70
 	},
 	// {
 	// 	props: 'cfControllerZh',
@@ -77,21 +77,21 @@ export const tableTitle = [{
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 		tooltip: true,
-		width:120
+		width:110
 	},
 	{
 		props: 'carTypeCategory',
 		name: '车型大类',
 		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
 		tooltip: true,
-		width:120
+		width:100
 	},
 	{
 		props: 'carTypeProjectZh',
 		name: '车型项目',
 		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
 		tooltip: true,
-		width:130
+		width:120
 	},
 	{
 		props: 'statusDesc',
