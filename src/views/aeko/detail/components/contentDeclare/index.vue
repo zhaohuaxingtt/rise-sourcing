@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-06 13:50:29
+ * @LastEditTime: 2021-09-07 10:51:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -433,13 +433,10 @@ export default {
     },
     jumpQuotation(row){
       const { quotationId="" } = row;
-      const {aekoInfo} = this;
-      const {aekoCode=''} = aekoInfo;
       const route = this.$router.resolve({
         path: '/aeko/quotationdetail',
         query: {
           quotationId,
-          aekoCode,
         }
       })
 
