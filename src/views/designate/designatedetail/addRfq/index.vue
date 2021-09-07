@@ -1,37 +1,37 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-14 14:25:15
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-07 11:19:54
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
 
 <template>
-  <iPage>
+  <iPage v-permission.auto="SOURCING_NOMINATION_ADDRFQPAGE|新增RFQ页面">
     <!------------------------------------------------------------------------>
     <!--                  search 搜索模块                                   --->
     <!------------------------------------------------------------------------>
     <iSearch class="margin-bottom20" icon @reset="handleSearchReset" @sure="getTableList">
       <el-form>
         <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
-          <iInput :placeholder="language('QINGXUANZE','请选择')" v-model="form.fsnrGsnrNum"></iInput>
+          <iInput :placeholder="language('QINGXUANZE','请选择')" v-model="form.fsnrGsnrNum" v-permission.auto="SOURCING_NOMINATION_ADDRFQPAGE_FSNRGSNR|零件号/FSNR/RFQ编号/采购员"></iInput>
         </el-form-item>
         <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
-          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.cartypeProjectZh">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.cartypeProjectZh" v-permission.auto="SOURCING_NOMINATION_ADDRFQPAGE_CARTYPE|车型项目">
             <el-option value="" :label="language('ALL', '全部')"></el-option>
             <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('LINGJIANXIANGMULEIXING','零件项目类型')">
-          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.partProjectType">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.partProjectType" v-permission.auto="SOURCING_NOMINATION_ADDRFQPAGE_PARTPROJECTTYPE|零件项目类型">
             <el-option value="" :label="language('ALL','全部')"></el-option>
             <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
                         :label="items.name"/>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('RFQZHUANGTAI','RFQ状态')">
-          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.currentStatus">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.currentStatus" v-permission.auto="SOURCING_NOMINATION_ADDRFQPAGE_RFQSTATUS|RFQ状态">
             <el-option value="" :label="language('ALL','全部')"></el-option>
             <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                         :label="items.name"/>
@@ -45,13 +45,13 @@
             <!--------------------返回按钮----------------------------------->
             <iButton @click="goBack">{{language('FANHUI','返回')}}</iButton>
             <!--------------------选择按钮----------------------------------->
-            <iButton @click="handleSelect">{{language('XUANZE','选择')}}</iButton>
+            <iButton @click="handleSelect" v-permission.auto="SOURCING_NOMINATION_ADDRFQPAGE_SELECT|选择按钮">{{language('XUANZE','选择')}}</iButton>
           </div>
       </div>
         <!------------------------------------------------------------------------>
         <!--                  表格模块                                          --->
         <!------------------------------------------------------------------------>
-        <tableList :activeItems='"id"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop'>
+        <tableList :activeItems='"id"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' v-permission.auto="SOURCING_NOMINATION_ADDRFQPAGE_TABLE|新增RFQ零件表格">
           <template #kmAnalysis="scope">
             <el-popover
               v-if="scope.row.kmAnalysis"
