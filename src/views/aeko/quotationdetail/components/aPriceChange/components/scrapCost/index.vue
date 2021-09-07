@@ -15,8 +15,14 @@
           <template #typeNameByLang="scope">
             <span>{{ typeof scope.row.typeNameByLang === "function" ? scope.row.typeNameByLang() : scope.row.typeName }}</span>
           </template>
+          <template #originRatio="scope">
+            <span v-if="scope.row.originScrapId || disabled">{{ scope.row.originRatio }}</span>
+            <iInput class="input-center" v-else v-model="scope.row.originRatio" @input="handleInputByNumber($event, 'originRatio', scope.row, 2, computeChangeAmount)"></iInput>
+            <!-- <performanceInput v-model="scope.row.originRatio" /> -->
+          </template>
           <template #ratio="scope">
-            <iInput class="input-center" v-model="scope.row.ratio" :class="{ changeClass: scope.row.ratio !== scope.row.originRatio }" @input="handleInputByNumber($event, 'ratio', scope.row, 2, computeChangeAmount)"></iInput>
+            <span v-if="disabled">{{ scope.row.ratio }}</span>
+            <iInput class="input-center" v-else v-model="scope.row.ratio" :class="{ changeClass: scope.row.ratio !== scope.row.originRatio }" @input="handleInputByNumber($event, 'ratio', scope.row, 2, computeChangeAmount)"></iInput>
           </template>
         </tableList>
       </div>
@@ -31,6 +37,7 @@ import { iButton, iInput } from "rise"
 import tableList from "../../../tableList"
 import { scrapCostTableTitle as tableTitle } from "../data"
 import { numberProcessor } from "@/utils"
+// import performanceInput from "../../../../components/performanceInput"
 
 export default {
   components: { iButton, iInput, tableList },
@@ -48,12 +55,16 @@ export default {
       required: true,
       default: () => ([])
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     sumData: {
       type: Object,
       required: true,
       default: () => ({})
     },
-    discardCost: {
+    discardCostChange: {
       type: String || Number,
       default: 0
     }
@@ -80,12 +91,12 @@ export default {
       }
     },
     computeChangeAmount() {
-      const sourceSum = math.evaluate(`${ this.sumData.sourceMaterialCostSum || 0 } + ${ this.sumData.sourceLaborCostSum || 0 } + ${ this.sumData.sourceDeviceCostSum || 0 }`)
+      const originSum = math.evaluate(`${ this.sumData.originMaterialCostSum || 0 } + ${ this.sumData.originLaborCostSum || 0 } + ${ this.sumData.originDeviceCostSum || 0 }`)
       const newSum = math.evaluate(`${ this.sumData.newMaterialCostSum || 0 } + ${ this.sumData.newLaborCostSum || 0 } + ${ this.sumData.newDeviceCostSum || 0 }`)
-      const discardCost = math.evaluate(`(${ newSum } / (1 - (${ this.tableListData[0].ratio || 0 } / 100)) - ${ newSum }) - (${ sourceSum } / (1 - (${ this.tableListData[0].originRatio || 0} / 100)) - ${ sourceSum })`).toFixed(2)
+      const discardCostChange = math.evaluate(`(${ newSum } / (1 - (${ this.tableListData[0].ratio || 0 } / 100)) - ${ newSum }) - (${ originSum } / (1 - (${ this.tableListData[0].originRatio || 0} / 100)) - ${ originSum })`).toFixed(2)
 
-      this.$set(this.tableListData[0], "changeAmount", discardCost)
-      this.$emit("update:discardCost", discardCost)
+      this.$set(this.tableListData[0], "changeAmount", discardCostChange)
+      this.$emit("update:discardCostChange", discardCostChange)
     }
   }
 }

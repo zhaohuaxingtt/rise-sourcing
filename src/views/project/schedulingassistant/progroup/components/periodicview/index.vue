@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 11:18:59
+ * @LastEditTime: 2021-09-06 17:50:25
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -568,26 +568,29 @@ export default {
   .productItem + .productItem {
     margin-top: 20px;
   }
-  ::v-deep .el-checkbox {
-    display: flex;
-    align-items: center;
-  }
-  ::v-deep .el-checkbox__inner {
-    width: 20px;
-    height: 20px;
-    &::after {
-      height: 10px;
-      width: 5px;
-      left: 6px;
+  &-title, &-content {
+    ::v-deep .el-checkbox {
+      display: flex;
+      align-items: center;
     }
-    &::before {
-      top: 8px;
+    ::v-deep .el-checkbox__inner {
+      width: 20px;
+      height: 20px;
+      &::after {
+        height: 10px;
+        width: 5px;
+        left: 6px;
+      }
+      &::before {
+        top: 8px;
+      }
+    }
+    ::v-deep .el-checkbox__label {
+      font-size: 18px;
+      font-weight: bold;
+      color: #41434A;
     }
   }
-  ::v-deep .el-checkbox__label {
-    font-size: 18px;
-    font-weight: bold;
-    color: #41434A;
-  }
+  
 }
 </style>

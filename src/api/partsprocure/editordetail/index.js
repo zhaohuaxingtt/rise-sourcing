@@ -181,8 +181,8 @@ export function checkFactory(params) {
 export function getParts(params) {
 	return requstPartsProcure({
 		url: "/partInfoPaged",
-    	method: "POST",
-    	data: params
+    method: "POST",
+    data: params
 	})
 }
 // 手工创建采购项目
@@ -257,5 +257,22 @@ export function factoryTranslate(params){
     url: "https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/factoryTranslate",
     method: "get",
     data: params
+  })
+}
+
+//检查当前零件采购项目总成件是否满足定点申请要求
+export function nomiAutoPartsAssemblyCheck({partNum,factoryId,carTypeProjectZh}){
+  return sourcing({
+    url: `/partsAssembly/nomiAutoPartsAssemblyCheck/${partNum}/${factoryId}/${carTypeProjectZh}`,
+    method: "GET"
+  })
+}
+
+//自动创建零件采购项目
+export function nomiAutoPartsAssembly(data){
+  return sourcing({
+    url: `/partsAssembly/nomiAutoPartsAssembly`,
+    method: "POST",
+		data:data
   })
 }

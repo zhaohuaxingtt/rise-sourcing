@@ -4,7 +4,7 @@
  * @Description: 
 -->
 <template>
-  <iPage class="designateHome">
+  <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_PAGE|定点管理页面">
     <!-- 头部 -->
     <headerNav />
     <!-- 筛选框 -->
@@ -18,56 +18,71 @@
           <!-- 新建定点申请 -->
           <iButton
             @click="createNomination"
+            v-permission.auto="SOURCING_NOMINATION_XINJIANLINGJIANDINGDIANSHENQING|新建零件定点申请"
           >
             {{ language('nominationLanguage_XinJianLingJIanDingDianShengQIng', '新建零件定点申请') }}
           </iButton>
 
           <!-- 冻结RS -->
-          <iButton @click="frozeRS(true)">
+          <iButton
+            @click="frozeRS(true)"
+            v-permission.auto="SOURCING_NOMINATION_DONGJIERSDAN|冻结RS单">
             {{language('nominationLanguage_DongJieRS', '冻结RS单')}}
           </iButton>
 
           <!-- 解冻RS -->
-          <iButton @click="frozeRS(false)">
+          <iButton
+            @click="frozeRS(false)"
+            v-permission.auto="SOURCING_NOMINATION_JIEDONGRSDAN|解冻RS单">
             {{language('nominationLanguage_JieDongRS', '解冻RS单')}}
           </iButton>
           
           <!-- 冻结 -->
-          <iButton @click="freeze">
+          <iButton
+            @click="freeze"
+            v-permission.auto="SOURCING_NOMINATION_DONGJIE|冻结">
             {{language('LK_DONGJIE', '冻结')}}
           </iButton>
 
           <!-- 解冻 -->
-          <iButton @click="freeze(false)">
+          <iButton
+            @click="freeze(false)"
+            v-permission.auto="SOURCING_NOMINATION_JIEDONG|解冻">
             {{language('LK_JIEDONG', '解冻')}}
           </iButton>
 
           <!-- 定点 -->
-          <iButton @click="confirm">
+          <iButton
+            @click="confirm"
+            v-permission.auto="SOURCING_NOMINATION_DINGDIAN|定点">
             {{language('nominationLanguage_DINGDIAN', '定点')}}
           </iButton>
 
           <!-- 撤回 -->
           <iButton
             @click="handleBatchRevoke"
+            v-permission.auto="SOURCING_NOMINATION_CHEHUI|撤回"
           >
             {{ language("nominationLanguage_CheHui", '撤回') }}
           </iButton>
           <!-- 批量删除 -->
           <iButton
             @click="handleBatchDelete"
+            v-permission.auto="SOURCING_NOMINATION_SHANCHU|删除"
           >
             {{ language("nominationLanguage_ShanChu", '删除') }}
           </iButton>
           <!-- 会外流转 -->
           <iButton
             @click="mettingTransform"
+            v-permission.auto="SOURCING_NOMINATION_HUIWAILIUZHUAN|会外流转"
           >
             {{ language("HUIWAILIUZHUAN", '会外流转') }}
           </iButton>
           <!-- 提交一致性校验 -->
           <iButton
             @click="consistenceCheck"
+            v-permission.auto="SOURCING_NOMINATION_TIJIAOYIZHIXINGJIAOYAN|提交一致性校验"
           >
             {{ language("nominationLanguage_TiJiaoYiZhiXingJiaoYan", '提交一致性校验') }}
           </iButton>        
@@ -78,6 +93,7 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         :lang="true"
+        v-permission.auto="SOURCING_NOMINATION_NOMINATETABLE|表格"
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- <template #LK_CAOZUO="scope">
@@ -119,11 +135,12 @@
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
+          <!-- CRW1-1574 专业采购员，且SEL单据确认状态为未确认支持上传sel附件 -->
           <a
             href="javascript:;" 
             class="selStatus-link" 
             @click="confirmSelSheet(scope.row)" 
-            v-if="scope.row.selStatus === 'UNCONFIRMED'">
+            v-if="userRole.isZYCG && scope.row.selStatus === 'UNCONFIRMED'">
           {{scope.row.selStatusDesc}}
         </a>
           <span v-else>{{scope.row.selStatusDesc}}</span>
@@ -182,6 +199,7 @@ import selDialog from './components/selDialog'
 
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
+import {roleMixins} from '@/utils/roleMixins'
 
 import {
   iPage,
@@ -193,7 +211,7 @@ import {
 } from "rise";
 
 export default {
-  mixins: [ filters, pageMixins ],
+  mixins: [ filters, pageMixins, roleMixins ],
   data() {
     return {
       tableListData: [],

@@ -75,7 +75,7 @@ const blackKey = [
                   'RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN', // tab-报价分析汇总-零件 show:false
                   'RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGMOJU', // tab-报报价分析汇总-模具 show:false
                   'RFQ_DETAIL_TIPS_YEWUFENPEIMONI', // tab-业务分配模拟 show:false
-                  // 'RFQ_DETAIL_TIPS_BAOJIAFENXI_RENWUJINDU', // tab报价分析-报价分析与评分跟踪--整体任务进度&整车进度风险 show:false
+                  'RFQ_DETAIL_TIPS_BAOJIAFENXI_RENWUJINDU', // tab报价分析-报价分析与评分跟踪--整体任务进度&整车进度风险 show:false
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI_JIAGEWEIDU_SELECT', // tab报价分析-报价趋势-价格维度-下拉框 show:false
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI_GONGYINGSHANG_SELECT', // tab报价分析-报价趋势-供应商-下拉框 show:false
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI_LINGJIAN_SELECT', // tab报价分析-报价趋势-零件-下拉框 show:false
