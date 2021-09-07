@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-08-30 13:48:16
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-08-30 13:52:09
+ * @LastEditTime: 2021-09-06 14:00:55
  * @Description: 
  */
 
@@ -25,5 +25,14 @@ export function gescheduleVersionCarType(params) {
     url: `schedule-version/user`,
     method: 'GET',
     params
+  })
+}
+
+// 生成排程版本文件id
+export function genScheduleVersionFileId(data) {
+  return requst({
+    url: `/schedule-version/upload`,
+    method: 'POST',
+    data
   })
 }

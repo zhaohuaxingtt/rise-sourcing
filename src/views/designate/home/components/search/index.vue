@@ -17,6 +17,7 @@
         <iInput
           v-model="form.partNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          v-permission.auto="SOURCING_NOMINATION_PARTNUM|零件号"
           clearable
         ></iInput>
       </el-form-item>
@@ -25,6 +26,7 @@
         <iInput
           v-model="form.nominateId"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          v-permission.auto="SOURCING_NOMINATION_NOMINATEID|申请单号"
           clearable
         ></iInput>
       </el-form-item>
@@ -33,6 +35,7 @@
         <iInput
           v-model="form.rfqId"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          v-permission.auto="SOURCING_NOMINATION_RFQID|RFQ编号"
           clearable
         ></iInput>
       </el-form-item>
@@ -41,6 +44,7 @@
         <iSelect
           v-model="form.nominateProcessType"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          v-permission.auto="SOURCING_NOMINATION_NOMINATEPROCESSTYPE|流程类型"
           @change="onNomiProcessTypeChange"
           clearable
         >
@@ -61,6 +65,7 @@
         <iSelect
           v-model="form.applicationStatus"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          v-permission.auto="SOURCING_NOMINATION_APPLICATIONSTATUS|申请状态"
           clearable
         >
           <el-option
@@ -80,6 +85,7 @@
         <iInput
           v-model="form.fsnrGsnrNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          v-permission.auto="SOURCING_NOMINATION_FSNRGSNRNUM|零件采购项目号GSNR"
           clearable
         ></iInput>
       </el-form-item>
@@ -88,6 +94,7 @@
         <iInput
           v-model="form.partNameCn"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          v-permission.auto="SOURCING_NOMINATION_PARTNAMECN|零件名"
           clearable
         ></iInput>
       </el-form-item>
@@ -104,6 +111,7 @@
         <iInput
           v-model="form.linieName"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          v-permission.auto="SOURCING_NOMINATION_LINIENAME|LINIE"
           clearable
         ></iInput>
       </el-form-item>
@@ -113,6 +121,7 @@
         <iSelect
           v-model="form.carTypeProj"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          v-permission.auto="SOURCING_NOMINATION_CARTYPEPRO|车型项目"
           filterable
           clearable
         >
@@ -134,6 +143,7 @@
         <iSelect
           v-model="form.isPriceConsistent"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          v-permission.auto="SOURCING_NOMINATION_ISPRICECONSISTENT|报价一致性校验"
           clearable
         >
           <el-option
@@ -153,6 +163,7 @@
         <iSelect
           v-model="form.singleSourcing"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          v-permission.auto="SOURCING_NOMINATION_SINGLESOURCING|是否单一供应商"
           clearable
         >
           <el-option
@@ -170,6 +181,7 @@
         <iSelect
           v-model="form.showMe"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          v-permission.auto="SOURCING_NOMINATION_SHOWME|显示自己"
           clearable
         >
           <el-option

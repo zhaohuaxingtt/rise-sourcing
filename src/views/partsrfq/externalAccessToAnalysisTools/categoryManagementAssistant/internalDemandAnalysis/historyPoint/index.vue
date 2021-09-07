@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-19 15:11:23
+ * @LastEditTime: 2021-09-06 14:13:54
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
@@ -100,7 +100,7 @@
 			async save(){
 				const resFile = await this.getDownloadFileAndExportPdf({
 					domId: 'historyPoint',
-					pdfName: 'historyPoint_PFD',
+					pdfName: this.language("DINGDIANLISHIJILV","定点历史记录") + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString()+'-',
 				});
 				let params={
 					categoryCode:this.searchCriteria.categoryCode,

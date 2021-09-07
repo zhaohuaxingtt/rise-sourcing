@@ -86,7 +86,7 @@ export default {
         requireSingleSelection: true
       },
       form: {
-        year: '',
+        year: String(new Date().getFullYear()),
         page: '',
         categoryCode: this.$store.state.rfq.categoryCode
       },
@@ -126,6 +126,7 @@ export default {
     async dictByCode() {
       const res = await dictByCode('CATEGORY_MANAGEMENT_LIST')
       this.formGoup.pageList = res
+      this.form.page = this.formGoup.pageList[0].code
       const pms = {
         categoryCode: this.form.categoryCode,
         schemeType: 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT'
@@ -139,7 +140,7 @@ export default {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: 'allContainer',
-        pdfName: this.language('CAIGOUJINGEZONGLAN', '采购金额总览') + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString()+'-',
+        pdfName: this.language('CAIGOUJINGEZONGLAN', '采购金额总览') + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString() + '-',
       });
       let params = {
         categoryCode: this.form.categoryCode,

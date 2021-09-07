@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 17:45:44
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-10 15:23:15
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-07 09:24:10
  * @Description: 零件采购项目-定点信息
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\index.vue
 -->
@@ -91,10 +91,12 @@ export default {
       this.tableLoading = true 
       findNominateInfo(this.params.fsnrGsnrNum).then(res => {
         if (res?.result) {
-          this.tableData = [res.data]
-          this.nominateAppId = res.data.nominateAppId || ''
-          this.nominateType = res.data.applicationStatus || ''
-          this.otherPartProjectType = res.data.partProjectType || ''
+          this.tableData = res.data || []
+          if (this.tableData.length) {
+            this.nominateAppId = this.tableData[0].nominateAppId || ''
+            this.nominateType = this.tableData[0].applicationStatus || ''
+            this.otherPartProjectType = this.tableData[0].partProjectType || ''
+          }
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
