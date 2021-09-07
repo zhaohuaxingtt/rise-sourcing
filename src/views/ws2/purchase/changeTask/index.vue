@@ -50,7 +50,7 @@
           >
             <el-option
                 :value="item.tmCartypeProId"
-                :label="item.tmCartypeProNam"
+                :label="item.tmCartypeProName"
                 v-for="(item, index) in carTypeProjectList"
                 :key="index"
             ></el-option>
@@ -135,14 +135,6 @@
       >
         <template #changeNum="scope">
           <div class="table-link" @click="toBmInfo(scope.row)">{{scope.row.changeNum}}</div>
-        </template>
-        <template #akeoType="scope">
-          <div>{{
-              scope.row.akeoType === '1' ?  '非Aeko' :
-                  (scope.row.akeoType === '2' ? 'Aeko增值' :
-                          (scope.row.akeoType === '3' ? 'Aeko减值' : '')
-                  )
-            }}</div>
         </template>
         <template #moldInvestmentAmount="scope">
           <div v-if="scope.row.isPremission">{{getTousandNum(Number(scope.row.moldInvestmentAmount).toFixed(2))}}</div>
@@ -230,7 +222,7 @@ export default {
       ChangeStatusPullDown: [],
       carTypeProjectList: [],
       moldInvestmentStatus: [],
-      changeStatuId: [],
+      changeStatuId: ['1', '2', '3', '5'],
       tmCartypeProId: [],
       deptId: [],
       linieId: [],
@@ -243,7 +235,7 @@ export default {
       linieName: [],
       handoverParams: {
         bmid: [],
-        moldInvestmentStatus: [],
+        changeStatus: [],
         departmentsList: [],
       },
       getTousandNum: getTousandNum
@@ -260,7 +252,7 @@ export default {
     handleSelectionChange(list) {
       this.multipleSelection = list
       this.handoverParams.bmid = list.map(item => item.bmId)
-      this.handoverParams.moldInvestmentStatus = list.map(item => item.moldInvestmentStatus)
+      this.handoverParams.changeStatus = list.map(item => item.changeStatus)
     },
     getAllSelect() {
       this.loadingiSearch = true

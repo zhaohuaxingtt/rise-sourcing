@@ -276,7 +276,8 @@ export default {
             this.findBmNewChangePageList()
             iMessage.success(result)
           } else {
-            iMessage.error(res.data.bmSerial.join(',') + this.language('LK_CHUYUBIANGENGLIUCHENGZHONG', '处于变更流程中，不可重复发起变更'))
+            // iMessage.error(res.data.bmSerial.join(',') + this.language('LK_CHUYUBIANGENGLIUCHENGZHONG', '处于变更流程中，不可重复发起变更'))
+            iMessage.error(result)
           }
         } else {
           // this.findBmNewChangePageList()

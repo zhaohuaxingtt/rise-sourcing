@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="changeContent">
-      {{ content }}
+      请注意，发起变更后不可撤回，请确认是否继续发起变更
     </div>
     <span slot="footer" class="dialog-footer">
       <iButton @click="save" :loading='saveLoading'>{{ $t('LK_QUEREN') }}</iButton>
