@@ -4,13 +4,13 @@
  * @Description: 决策资料-timeLine
 -->
 <template>
-    <div class="decision-data-timeLine">
+    <div class="decision-data-timeLine" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TIMELINE|决策资料-timeline">
         <!-- 按钮区域 -->
         <div class="timeLine-btn-list" v-if="isPreview=='0'">
             <span v-if="isEdit">
-                <iButton :loading="isLoading" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
-                <iButton @click="edit">{{language('LK_QUXIAO','取 消')}}</iButton>
-                <iButton>{{language('LK_ZHANSHI','展示')}}</iButton>
+                <iButton :loading="isLoading" @click="save" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TIMELINE_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
+                <iButton @click="edit" v-permission.auto="SOURCING_NOMINATION_ATTATCH_CANCEL|取消">{{language('LK_QUXIAO','取 消')}}</iButton>
+                <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_SHOW|展示">{{language('LK_ZHANSHI','展示')}}</iButton>
             </span>
             <iButton v-else @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
         </div>

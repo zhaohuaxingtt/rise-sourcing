@@ -1,15 +1,17 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 13:35:30
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-20 16:44:03
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-07 16:22:15
  * @Description: 定点管理-决策资料-RS
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\index.vue
 -->
 
 <template>
-  <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview" :nominateId="nominateId" :projectType="projectType" />
-  <meeting ref="meeting" v-else :isPreview="isPreview" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" />
+  <div v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS|决策资料-rs">
+    <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview" :nominateId="nominateId" :projectType="projectType" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_CIRCULATION|circulation" />
+    <meeting ref="meeting" v-else :isPreview="isPreview" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_METTING|meeting" />
+  </div>
 </template>
 
 <script>
