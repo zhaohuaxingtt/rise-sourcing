@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 16:41:49
- * @LastEditTime: 2021-09-06 10:58:09
+ * @LastEditTime: 2021-09-07 11:02:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\components\detail.vue
@@ -26,6 +26,8 @@
           <el-form-item style="marginRight:68px" :label="language('SHIFOUEOP', '是否EOP')">
             <iSelect v-model="searchForm['isEop']" :placeholder="language('QINGXUANZE','请选择')">
               <el-option value='' label='全部'></el-option>
+              <el-option value='Y' label='是'></el-option>
+              <el-option value='N' label='否'></el-option>
             </iSelect>
           </el-form-item>
           <el-form-item class="searchButton">
@@ -99,7 +101,7 @@ export default {
   },
   created() {
     // this.initTestData()
-    // this.getTableData()
+    this.getTableData()
   },
   methods: {
     // 初始化测试数据
