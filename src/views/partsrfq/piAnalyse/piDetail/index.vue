@@ -391,7 +391,7 @@ export default {
             const res = await saveAnalysisScheme(req);
             if (res.result) {
               await this.setTableEditStatus(false);
-              this.handleAddModelUrlChange()
+              this.handleAddModelUrlChange();
             } else {
               this.handleTableSaveError();
             }
@@ -401,7 +401,7 @@ export default {
           const res = await saveAnalysisScheme(req);
           if (res.result) {
             await this.setTableEditStatus(false);
-            this.handleAddModelUrlChange()
+            this.handleAddModelUrlChange();
           } else {
             this.handleTableSaveError();
           }
@@ -435,6 +435,7 @@ export default {
       req.beginTime = averageData.beginTime;
       req.endTime = averageData.endTime;
       req.operateFlag = 'S2';
+      req.inMode = this.$store.state.rfq.entryStatus;
       return req;
     },
     // 处理保存报告并导出 获取导出后的参数
@@ -472,6 +473,7 @@ export default {
         this.tableLoading = true;
         const req = {
           operateFlag: 'S1',
+          inMode: this.$store.state.rfq.entryStatus,
           ...this.currentTabData,
         };
         if (tab === CURRENTTIME) {
@@ -489,7 +491,7 @@ export default {
         this.resultMessage(res, () => {
           this.handleTableStatus('');
           this.handleAverageTableStatus('');
-          this.handleAddModelUrlChange()
+          this.handleAddModelUrlChange();
         });
         if (res.result) {
           if (tab === CURRENTTIME) {
