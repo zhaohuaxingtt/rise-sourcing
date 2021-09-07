@@ -4,14 +4,14 @@
  * @Description: 决策资料-PartList
 -->
 <template>
- <div class="decision-data-partList">
+ <div class="decision-data-partList" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST|决策资料-PartList">
     <iCard>
        <div class="decision-data-partList-content">
           <h1 class="flex-between-center margin-bottom20 font18">
               <span>Part List</span>
               <div v-if="isPreview!='1'">
-                  <iButton @click="goToRfq">{{language('LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN','跳转至零件清单添加')}}</iButton>
-                  <iButton :loading="saveLoading" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
+                  <iButton @click="goToRfq" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TOPARTLIST|跳转至零件清单添加">{{language('LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN','跳转至零件清单添加')}}</iButton>
+                  <iButton :loading="saveLoading" @click="save" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
               </div>
           </h1>
           <!-- table区域 -->
@@ -19,6 +19,7 @@
            :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
            :data="tableListData"
             v-loading="loading"
+            v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TABLE|表格"
           >
            <template v-for="(item,index) in tableTitle" >
                <el-table-column
