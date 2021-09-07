@@ -4,7 +4,7 @@
  * @Description: 
 -->
 <template>
-  <iPage class="designateHome">
+  <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE|签字单列表">
     <!-- 搜索区 -->
     <search @search="getFetchData" />
     <!-- 表格 -->
@@ -12,16 +12,17 @@
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
           <!-- 新建 -->
-          <iButton @click="createSignSheet">
+          <iButton @click="createSignSheet" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_NEWSIGNSHEET|新建签字单">
             {{language('LK_XINJIANNEW', '新建')}}
           </iButton>
           <!-- 提交 -->
-          <iButton @click="handleBatchSumit">
+          <iButton @click="handleBatchSumit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_SUBMITSIGNSHEET|提交签字单">
             {{language('LK_TIJIAO', '提交')}}
           </iButton>
           <!-- 删除 -->
           <iButton
             @click="handleBatchDelete"
+            v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DELETESIGNSHEET|删除签字单"
           >
             {{ language("SHANCHU", '删除') }}
           </iButton>
@@ -32,6 +33,7 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         :lang="true"
+        v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETABLE|签字单表格"
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- 签字单 -->
