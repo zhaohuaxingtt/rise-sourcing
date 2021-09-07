@@ -17,7 +17,7 @@
           class="select-control"
           autocomplete='new-password'
           v-model="form.carTypes"
-          v-permission="REPORTMGMT_STATUSREPORT_CARTYPE"
+          v-permission.auto="REPORTMGMT_STATUSREPORT_CARTYPE|报表管理-车型项目"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterCarType"
           @visible-change="resetOption(...arguments, 'CAR_TYPE_BUYER')"
@@ -37,7 +37,7 @@
       <el-form-item :label="language('nominationLanguage_LingJianHao', '零件号')">
         <iInput
           v-model="form.partNum"
-          v-permission="REPORTMGMT_STATUSREPORT_PARTNUM"
+          v-permission.auto="REPORTMGMT_STATUSREPORT_PARTNUM|报表管理-零件号"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -46,7 +46,7 @@
       <el-form-item :label="language('nominationLanguage.RFQBianHao','RFQ编号')">
         <iInput
           v-model="form.rfqId"
-          v-permission="REPORTMGMT_STATUSREPORT_RFQID"
+          v-permission.auto="REPORTMGMT_STATUSREPORT_RFQID|报表管理-RFQ编号"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -56,7 +56,7 @@
         <iSelect
           class="select-control"
           v-model="form.order"
-          v-permission="REPORTMGMT_STATUSREPORT_SORT"
+          v-permission.auto="REPORTMGMT_STATUSREPORT_SORT|报表管理-排序"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterSort"
           @visible-change="resetOption(...arguments, 'SORT')"
@@ -76,7 +76,7 @@
         <iSelect
           class="select-control"
           v-model="form.categoryGroup"
-          v-permission="REPORTMGMT_STATUSREPORT_MATERIAL"
+          v-permission.auto="REPORTMGMT_STATUSREPORT_MATERIAL|报表管理-材料组"
           multiple
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterMaterial"
@@ -97,7 +97,7 @@
         <iSelect
           class="select-control"
           v-model="form.buyer"
-          v-permission="REPORTMGMT_STATUSREPORT_BUYERL"
+          v-permission.auto="REPORTMGMT_STATUSREPORT_BUYERL|报表管理-采购员"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterBuyer"
           @visible-change="resetOption(...arguments, 'BUYER_BY_USER')"
