@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-08-19 17:39:54
+ * @LastEditTime: 2021-09-06 20:47:49
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -491,14 +491,16 @@ export default {
     },
     finish () {
       groupedSubmit({
-        schemaId: this.SchemeId
+        schemaId: this.SchemeId,
+        groupId: this.groupId
       }).then((res) => {
         this.finishGroup()
       })
     },
     off () {
       groupedCancel({
-        schemaId: this.SchemeId
+        schemaId: this.SchemeId,
+        groupId: this.groupId
       }).then(res => {
         this.finishGroup()
       })

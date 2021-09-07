@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-09-06 16:44:55
+ * @LastEditTime: 2021-09-07 16:45:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -307,7 +307,12 @@ export default {
     handleSave() {
       if (!this.multipleSelection.length && !this.aekomultipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOBAOCUNDEYUANLINGJIAN", "请选择需要保存的原零件"))
 
-      this.aekomultipleSelection.map((item)=>{item.aprice = item.newPriceA});
+      this.aekomultipleSelection.map((item)=>{
+        item.aprice = item.newPriceA;
+        item.supplierCode = item.supplierSap;
+        item.supplierName = item.supplierNameZh;
+        item.facadeCode = item.procureFactory;
+        });
 
       const data = {
         partList:this.aekomultipleSelection.concat(this.multipleSelection),

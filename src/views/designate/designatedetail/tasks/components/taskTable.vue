@@ -7,17 +7,20 @@
         <div class="floatright" v-if="editControl">
           <iButton
             @click="addRow"
+            v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_ADDTASKSROW|新增TASKS行"
           >
             {{ language("strategicdoc_XinZengHang",'新增行') }}
           </iButton>
           <iButton
             @click="deleteRow"
+            v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_DELETETASKSROW|删除TASKS行"
           >
             {{ language("strategicdoc_ShanChuHang",'删除行') }}
           </iButton>
           <iButton
             @click="save"
             :loading="submiting"
+            v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_SAVETASKS|保存TASKS"
           >
             {{ language("LK_BAOCUN",'保存') }}
           </iButton>
@@ -25,16 +28,17 @@
             v-if="!$store.getters.isPreview"
             @click="handlCancel"
             :loading="startLoding"
+            v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EXITEDIT|结束编辑"
           >
             {{ language("strategicdoc_JieSuBianJi",'结束编辑') }}
           </iButton>
         </div>
         <div class="floatright" v-else>
           <!-- 编辑 -->
-          <iButton v-if="!$store.getters.isPreview" @click="handlEdit">
+          <iButton v-if="!$store.getters.isPreview" @click="handlEdit" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑">
             {{ language("nominationSupplier_Edit",'编辑') }}
           </iButton>
-          <iButton @click="exportTasks" v-if="!$store.getters.isPreview">
+          <iButton @click="exportTasks" v-if="!$store.getters.isPreview" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EXPORT|导出">
             {{ language("nominationSupplier_Export",'导出') }}
           </iButton>
         </div>
@@ -46,6 +50,7 @@
         :tableTitle="tasksTitle"
         :tableLoading="tableLoading"
         :class="{taskTable: true, edit: editControl}"
+        v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_TABLE|表格"
         @handleSelectionChange="handleSingleSelectionChange"
       >
         <template #partNum="scope">
