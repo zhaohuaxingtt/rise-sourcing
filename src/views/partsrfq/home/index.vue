@@ -110,6 +110,7 @@
                 :index="true"
                 icon-props="recordId"
                 :lang="true"
+                class="aotoTableHeight"
             >
               <template v-slot:icon="scope">
                 <div @click="toTop(scope.data)" class="icon-style">
@@ -530,7 +531,12 @@ export default {
 
 .partsrfqHome {
   position: relative;
-
+  .aotoTableHeight{
+    ::v-deep .el-table__body-wrapper {
+      min-height: 422px !important;  
+      overflow: auto !important ;
+    }
+  }
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;

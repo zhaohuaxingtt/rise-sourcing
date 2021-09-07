@@ -1,9 +1,9 @@
 <template>
-  <div class="supplier">
-    <!-- 多供应商 -->
-    <multiTable />
+  <div class="supplier" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_PAGE|供应商&单一供应商">
+    <!-- 供应商列表 -->
+    <multiTable v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SUPPLIERLIST|供应商列表" />
     <!-- 单一供应商 -->
-    <singleTable />
+    <singleTable v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLESUPPLIER|单一供应商" />
   </div>
 </template>
 <script>

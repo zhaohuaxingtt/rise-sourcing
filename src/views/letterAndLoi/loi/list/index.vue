@@ -35,7 +35,7 @@
         </template>
         <!-- 表单区域 -->
         <tableList
-            class="table"
+            class="table aotoTableHeight"
             index
             :lang="true"
             :tableData="tableListData"
@@ -423,6 +423,12 @@ export default {
 <style lang="scss" scoped>
     .openLinkText{
      color:$color-blue;
+    }
+    .aotoTableHeight{
+        ::v-deep .el-table__body-wrapper {
+        min-height: 410px !important;  
+        overflow: auto !important ;
+        }
     }
     .loiList{
         ::v-deep .el-date-editor .el-range__close-icon{

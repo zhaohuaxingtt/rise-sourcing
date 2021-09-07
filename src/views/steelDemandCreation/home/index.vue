@@ -39,7 +39,7 @@
         <iButton @click="print(1)" :loading='printLoadingOne'>{{language('DAYINGDINGDANLIUZHUANDAN','打印定点流转单(一次性)')}}</iButton>
         <iButton @click="print(2)" :loading='printLoadingAll'>{{language('DAYINGDINGDANLIUZDPILIANG','打印定点流转单（批量）')}}</iButton>
       </div>
-      <tablePart radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading'>
+      <tablePart radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading' class="aotoTableHeight">
         <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
           {{row[currentProps].desc}}
         </template>
@@ -234,6 +234,12 @@ export default{
     margin: 10px 10px;
     &:nth-child(2){
       margin-right: 0px;
+    }
+  }
+  .aotoTableHeight{
+    ::v-deep .el-table__body-wrapper {
+      min-height: 410px !important;  
+      overflow: auto !important ;
     }
   }
 </style>

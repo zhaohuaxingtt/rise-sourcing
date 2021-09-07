@@ -89,6 +89,7 @@
         </div>
       </div>
       <tablelist
+        class="aotoTableHeight"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -503,4 +504,10 @@ export default {
   font-size: 12px;
   text-decoration: underline;
 }
+.aotoTableHeight{
+    ::v-deep .el-table__body-wrapper {
+      min-height: 422px !important;  
+      overflow: auto !important ;
+    }
+  }
 </style>

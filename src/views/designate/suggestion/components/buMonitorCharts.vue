@@ -19,6 +19,7 @@
         <iSelect
           popper-class="mapControl"
           v-model="mapControl"
+          v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_FANGANXUANZE|图表方案选择"
           @change="load"
           :multiple="true"
           :placeholder="language('nominationSuggestion_FanAnXuanZhe','方案选择')">
