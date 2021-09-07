@@ -19,7 +19,7 @@
                   </el-option>  
                 </iSelect> 
                 <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
-                <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]"></iInput> 
+                <iInput :maxlength="item.maxlength" :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]"></iInput> 
             </el-form-item>
         </el-form>
     </iSearch>
@@ -37,7 +37,6 @@
         <!-- 表单区域 -->
         <tableList
             class="table aotoTableHeight"
-            index
             :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"
