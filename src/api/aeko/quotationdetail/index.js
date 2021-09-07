@@ -75,7 +75,7 @@ export function exportQuotation(params) {
 // 提交AEKO报价
 export function submitAekoQuotation(params) {
   return requst({
-    url: `/aeko/submit/quotation/${ params.quotationId }`,
+    url: `/aeko/submit/quotation/${ params.quotationId }/${ params.objectAekoId }`,
     method: 'GET'
   })
 }
