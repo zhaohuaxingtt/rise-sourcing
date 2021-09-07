@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-09-03 14:25:42
+ * @LastEditTime: 2021-09-07 16:32:46
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -134,6 +134,11 @@
                   </tablelist>
                   <icon class="tick icon-style" symbol name="iconbaojiazhuangtailiebiao_yibaojia" slot="reference"/>
                 </el-popover>
+              </template>
+
+              <!-- 已报价&已询价 合并显示 -->
+              <template #suppliers="scope">
+                <span>{{scope.row.quotations}}/{{scope.row.suppliers}}</span>
               </template>
             </tablelist>
             <!------------------------------------------------------------------------>
