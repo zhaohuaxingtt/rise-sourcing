@@ -263,6 +263,7 @@ export default {
     },
     //模具台账
     goLedger(item) {
+      if (this.isEdit) return
       let routeData = this.$router.resolve({
         path: `/purchaseSupplier/mouldBook/details?bmSerial=${item.itemSourceCode}`
       })

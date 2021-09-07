@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-08-31 14:09:28
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-07 11:24:51
+ * @LastEditors: Hao,Jiang
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -94,6 +94,9 @@ export default [
         path: "/designate/rfq",
         name: "designate-rfq",
         component: () => import ("@/layout/nomination/layout"),
+        meta: {
+          title: "定点申请单详情",
+        },
         redirect: "/designate/rfqdetail",
         children: [
           // 供应商&单一供应商
