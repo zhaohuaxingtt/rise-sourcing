@@ -75,7 +75,7 @@
                   <iButton @click="handleDelete" >{{language('SHANCHU','删除')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload"></tableList>
+            <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight"></tableList>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
@@ -550,7 +550,12 @@ export default {
 <style lang="scss" scoped>
 .signForParts {
   position: relative;
-
+  .aotoTableHeight{
+    ::v-deep .el-table__body-wrapper {
+      min-height: 410px !important;  
+      overflow: auto !important ;
+    }
+  }
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;

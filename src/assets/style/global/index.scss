@@ -162,10 +162,10 @@ a{
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   font-size: 14px;
-  .el-table__body-wrapper {
-    min-height: 422px;  
-    overflow: auto;
-  }
+  // .el-table__body-wrapper {
+    // min-height: 422px;  
+    // overflow: auto;
+  // }
   .el-table__header{
     background-color: $color-table-header;
     tr{
