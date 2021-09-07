@@ -29,7 +29,7 @@ export default {
     tableListData: {
       type: Array,
       required: true,
-      default: () => ([{ material: "0.00", makeCost: "0.00", discardCost: "0.00", manageFee: "0.00", otherFee: "0.00", profit: "0.00", apriceChange: "0.00" }])
+      default: () => ([{ materialChange: "0.00", makeCostChange: "0.00", discardCostChange: "0.00", manageFeeChange: "0.00", otherFee: "0.00", profitChange: "0.00", apriceChange: "0.00" }])
     }
   },
   data() {
@@ -39,8 +39,8 @@ export default {
   },
   watch: {
     tableListData: {
-      handler: list => {
-        this.$set(this.tableListData[0], apriceChange, math.evaluate(`${ material } + ${ makeCost } + ${ discardCost } + ${ manageFee } + ${ otherFee } + ${ profit }`).toFixed(2))
+      handler(list) {
+        this.$set(list[0], "apriceChange", math.evaluate(`${ list[0].materialChange } + ${ list[0].makeCostChange } + ${ list[0].discardCostChange } + ${ list[0].manageFeeChange } + ${ list[0].otherFee } + ${ list[0].profitChange }`).toFixed(2))
       }, 
       deep: true
     }

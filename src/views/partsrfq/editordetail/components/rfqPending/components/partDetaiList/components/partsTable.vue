@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-08-14 13:21:37
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-07 10:42:47
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
 -->
@@ -76,7 +76,8 @@ export default {
   methods: {
     //获取表格数据
     getTableList() {
-      if (this.rfqId) {
+      const rfqId = this.rfqId || this.$route.query.id
+      if (rfqId) {
         this.tableLoading = true
         this.parmarsNotHasRfq['size'] = this.page.pageSize
         this.parmarsNotHasRfq['current'] = this.page.currPage
