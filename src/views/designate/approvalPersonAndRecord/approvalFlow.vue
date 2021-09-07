@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 00:41:04
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-09 15:51:31
+ * @LastEditTime: 2021-09-07 11:25:16
  * @Description: 审批流弹窗
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\approvalFlow.vue
 -->
@@ -14,54 +14,16 @@
     @close="clearDialog"
     width="678px"
   >
-    <div style="padding-bottom:20px">
-      <el-steps direction="vertical" :active="1" class="flow-step">
-        <el-step v-for="(item,index) in flowData" :key="index" :class="item.step < currentStep ? 'active' : item.step === currentStep ? 'current inActive' : 'inActive'">
-          <template slot="icon">
-            <icon v-if="item.step < currentStep" symbol class="cursor" name='iconshenpiliu-yishenpi'></icon>
-            <icon v-if="item.step === currentStep" symbol class="cursor" name='iconshenpiliu-shenpizhong'></icon>
-            <icon v-if="item.step > currentStep" symbol class="cursor" name='iconshenpiliu-daishenpi'></icon>
-            <!-- <icon symbol class="cursor" name='iconshenpiliu-yishenpi-mourenshenpi'></icon> -->
-          </template>
-          <template slot="title">
-            <div class="flow-title" >
-              <div class="flow-status">{{item.status}}</div>
-              <div class="flow-approval">{{item.approval}}</div>
-              <div class="flow-position">{{item.title}}</div>
-              <div class="flow-time">{{item.approvalTime}}</div>
-            </div>
-          </template>
-          <template slot="description">
-            <div class="margin-bottom30">
-              <div v-for="(nItem, nIndex) in item.approvalList" :key="nIndex">
-                <span>{{nItem.name}}</span>
-                <span style="margin-left:20px">{{nItem.title}}</span>
-              </div>
-            </div>
-            <div v-if="item.status === '以拒绝'" class="margin-bottom30">
-              <div class="refuse"> {{language('LK_JUJUEYUANYIN','拒绝原因')}}：{{item.refuseReason}}</div>
-              <div class="margin-bottom10 margin-top15 clearFloat">
-                <span class="refuse">{{language('LK_JIESHINEIRONG','解释内容')}}</span>
-                <div class="floatright">
-                  <iButton class="flow-btn">{{language('LK_TIJIAO','提交')}}</iButton>
-                  <iButton class="flow-btn">{{language('LK_BAOCUN','保存')}}</iButton>
-                </div>
-              </div>
-              <iInput :placeholder="language('LK_QINGSHURUJIESHINEIRONG','请输入解释内容')" type="textarea" :row="2" resize="none"></iInput>
-            </div>
-          </template>
-        </el-step>
-      </el-steps>
-    </div>
+    <ProcessVertical :instanceId="processInstanceId" class="padding-bottom30" />
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iButton, iInput, icon } from 'rise'
-import { mockData } from './data'
+import { iDialog } from 'rise'
 import { getInstDetail } from '@/api/designate/decisiondata/approval'
+import ProcessVertical from './processVertical'
 export default {
-  components: { iDialog, iButton, iInput, icon },
+  components: { iDialog, ProcessVertical },
   props: {
     dialogVisible: { type: Boolean, default: false },
     processInstanceId: {type: String}
@@ -69,16 +31,14 @@ export default {
   watch: {
     dialogVisible(val) {
       if (val) {
-        this.getFlow()
+        // this.getFlow()
       }
     }
   },
   data() {
     return {
-      backType: '',
-      backReason: '',
-      flowData: mockData,
-      currentStep: 2
+      panorama: [],
+      detail: {}
     }
   },
   methods: {
@@ -91,36 +51,8 @@ export default {
       }
       const res = await getInstDetail(this.processInstanceId)
         if(res) {
-          this.flowData = [
-            ...res.finishedNodeMap.approvalUsers.map((item, index) => {
-              return {
-                step: index,
-                status: '已审批',
-                approval: item.nameZh,
-                title: item.positionList,
-              }
-            }),
-            {
-              step: (res.finishedNodeMap.approvalUsers || []).length,
-              status: '审批中',
-              approvalList: res.currentNode.approvalUserDTOList.map(item => {
-                return {
-                  name: item.nameZh,
-                  title: item.positionList
-                }
-              })
-            },
-            {
-              step: (res.finishedNodeMap.approvalUsers || []).length + 1,
-              status: '未审批',
-              approvalList: res.unfinishedNodeMap.approvalUsers.map(item => {
-                return {
-                  name: item.nameZh,
-                  title: item.positionList
-                }
-              })
-            }
-          ]
+          this.panorama = res.data.panorama || []
+          this.detail = res.data
         }
     }
   }
