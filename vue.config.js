@@ -366,8 +366,8 @@ module.exports = {
       },
       '/aonApi': {
         //  target: 'http://10.122.18.166:8036',
-        // target: 'http://10.160.136.23:8036',
-        target: 'http://10.122.17.38:8036',
+        target: 'http://10.160.143.174:8036',
+        // target: 'http://10.122.17.38:8036',
         changeOrigin: true,
         pathRewrite: {
           '^/aonApi': '',
@@ -454,8 +454,8 @@ module.exports = {
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {
-          '^/changepriceApi': ''
-        }
+          '^/changepriceApi': '',
+        },
       },
       '/supplierApplication': {
         // 蒋林明供应商接口
@@ -463,10 +463,9 @@ module.exports = {
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {
-          '^/supplierApplication': ''
-        }
+          '^/supplierApplication': '',
+        },
       },
     },
-
   },
 }

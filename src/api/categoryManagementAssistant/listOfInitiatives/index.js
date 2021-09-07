@@ -34,3 +34,12 @@ export function saveInfos(params) {
     data: params,
   });
 }
+
+//编辑
+export function saveReport(params) {
+  return request({
+    url: '/actionClassification/saveReport',
+    method: 'POST',
+    data: params,
+  });
+}
