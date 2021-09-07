@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-02 16:27:59
+ * @LastEditTime: 2021-09-06 17:45:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -31,11 +31,12 @@
                        :prop="i.label"
                        :align="i.label=='title'?'left':'center'"
                        :width="i.label=='title'?'230':''"
+                       :min-width="i.label=='title'?'230':''"
                        show-overflow-tooltip
                        :render-header="renderHeader">
         <template slot-scope="scope">
           <span v-if="testing(scope.row[i.label])"
-                class=" scopeBox">
+                class="scopeBox">
             <span v-for="(item,index) in scope.row[i.label]"
                   :key="index"
                   class="flexSpan">
@@ -61,10 +62,8 @@
           </span>
           <span v-else
                 class="flex-center">
-            <span class="flexSpan"
-                  v-if="scope.row[i.label]=='true'||scope.row[i.label]=='false'">{{ scope.row[i.label]=='false'?'否':'是' }}</span>
-            <span class="flexSpan"
-                  v-else>{{ scope.row[i.label] }}</span>
+            <span v-if="scope.row[i.label]=='true'||scope.row[i.label]=='false'">{{ scope.row[i.label]=='false'?'否':'是' }}</span>
+            <span v-else>{{ scope.row[i.label] }}</span>
           </span>
         </template>
       </el-table-column>
@@ -109,7 +108,7 @@ export default {
         }
       };
     },
-    minText (val) {
+    minText () {
       return function (val) {
         let min
         if (val.level === 1 || val.level === 2) {
@@ -118,14 +117,18 @@ export default {
           })
           const dataArr = []
           numOfCols.forEach((colNum) => {
-            dataArr.push(parseFloat(val[colNum]))
+            if (val[colNum] instanceof Array) {
+              dataArr.push(parseFloat(this.min(val[colNum])))
+            } else {
+              dataArr.push(parseFloat(val[colNum]))
+            }
           })
           min = this.min(dataArr)
         }
         return min
       }
     },
-    sendText (val) {
+    sendText () {
       return function (val) {
         let min
         if (val.level === 1 || val.level === 2) {
@@ -134,9 +137,14 @@ export default {
           })
           const dataArr = []
           numOfCols.forEach((colNum) => {
-            dataArr.push(parseFloat(val[colNum]))
+            if (val[colNum] instanceof Array) {
+              dataArr.push(val[colNum])
+            } else {
+              dataArr.push(parseFloat(val[colNum]))
+            }
           })
-          min = this.bos(dataArr)
+          let dataArr1 = _.flatten(dataArr)
+          min = this.bos(dataArr1)
         }
         return min
       }
@@ -290,13 +298,15 @@ export default {
   border: 1px solid blue;
   border-top: none;
 }
-.scopeBox {
-  display: flex;
-  justify-content: space-around;
-  flex-direction: row;
-  flex-wrap: nowrap;
-}
+// .scopeBox {
+//   display: flex;
+//   justify-content: space-around;
+//   flex-direction: row;
+//   flex-wrap: nowrap;
+// }
 .flexSpan {
+  display: inline-block;
+  width: 60px;
   padding: 0 10px;
   overflow: hidden;
   text-overflow: ellipsis;

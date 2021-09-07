@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-05 14:26:43
- * @LastEditTime: 2021-09-02 19:35:20
+ * @LastEditTime: 2021-09-07 10:47:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\components\data.js
@@ -22,7 +22,7 @@ export const detailTableTitle = [
   {props: 'carTypName', name: '车型项目', key: 'CHEXINGXIANGMU'},
   {props: 'sopTime', name: 'SOP时间', key: 'SOPSHIJIAN'},
   {props: 'isEop', name: '是否EOP', key: 'SHIFOUEOP'},
-  {props: 'supplierName', name: '供应商名称', key: 'GONGYINGSHANGMINGCHENG'},
+  {props: 'supplierName', name: '供应商名称', key: 'GONGYINGSHANGMINGCHENG', tooltip: true},
   {props: 'plantName', name: '工厂', key: 'GONGCHANG'},
   {props: 'unitPrice', name: '报价单价', key: 'BAOJIADANJIA'},
 ]

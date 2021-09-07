@@ -412,9 +412,8 @@ export default {
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
     // this.groupId = this.$route.query.groupId
-    generateGroupId().then(res => {
-      this.groupId = res.data
-    })
+    let res = await generateGroupId()
+    this.groupId = res.data
     if (this.newBuild) {
       if (this.entryStatus === 1) {
         this.inside = true
@@ -682,7 +681,9 @@ export default {
       }
 
     },
-    refresh () {
+    async refresh () {
+      // let res = await generateGroupId()
+      // this.groupId = res.data
       this.searchChartData()
     },
     async searchChartData () {
@@ -691,6 +692,8 @@ export default {
       } else {
         await this.querySupplierTurnPartList()
       }
+      let res = await generateGroupId()
+      this.groupId = res.data
       let params = {}
       let tableParams = {}
       if (this.inside) {
@@ -1086,6 +1089,8 @@ export default {
   color: black;
 }
 .cardBody .end {
+  position: absolute;
+  bottom: 20px;
   display: flex;
   justify-content: space-around;
   .el-button {
