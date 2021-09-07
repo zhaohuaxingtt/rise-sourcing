@@ -205,7 +205,6 @@
         <div class="top-r">
           <iButton
               v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2 || Number(baseInfo.changeStatus) === 3)"
-              v-loading="bmBuberLoading"
               @click="handleEdit">
             {{ language('LK_BIANJI', '编辑') }}
           </iButton>
@@ -217,7 +216,6 @@
           </iButton>
           <iButton
               v-show="!isEdit"
-              v-loading="sendSupplierLoading"
               @click="changeOrderShow = true; isCheck = true">
             {{ language('LK_CHAKANBIANGENGDAN', '查看变更单') }}
           </iButton>
@@ -230,13 +228,11 @@
 
           <iButton
               v-show="isEdit"
-              v-loading="bmBuberLoading"
               @click="isEdit = false">
             {{ language('LK_TUICHUBIANJI', '退出编辑') }}
           </iButton>
           <iButton
               v-show="isEdit"
-              v-loading="bmBuberLoading"
               @click="handlePreView">
             {{ language('LK_YULANBIANGENGDAN', '预览变更单') }}
           </iButton>
@@ -248,7 +244,6 @@
           </iButton>
           <iButton
               v-show="isEdit"
-              v-loading="bmBuberLoading"
               @click="handleDelete">
             {{ language('LK_SHANCHU', '删除') }}
           </iButton>
@@ -404,7 +399,7 @@
         <div class="title">{{ language('LK_BIANGENGSHENPIFUJIAN', '变更审批附件') }}</div>
         <div class="btns">
           <iButton
-              v-loading="bmBuberLoading"
+              v-loading="removeAttachmentLoading"
               @click="removeAttachment">
             {{ language('LK_SHANCHU', '删除') }}
           </iButton>
@@ -524,6 +519,7 @@ export default {
       photoListShow: false,
       detailsTableLoading: false,
       baseInfoLoading: false,
+      removeAttachmentLoading: false,
       tableLoading: false,
       tableLoading2: false,
       bmBuberLoading: false,
@@ -874,6 +870,7 @@ export default {
     },
 
     removeAttachment(){
+      this.removeAttachmentLoading = true
       if(!this.multipleSelection || this.multipleSelection.length === 0){
         iMessage.warn(this.language('LK_BAAPPLYTISP1', '请先勾选'))
         return
@@ -887,9 +884,9 @@ export default {
         } else {
           iMessage.error(result);
         }
-        this.baseInfoLoading = false
+        this.removeAttachmentLoading = false
       }).catch(() => {
-        this.baseInfoLoading = false
+        this.removeAttachmentLoading = false
       });
     },
 
