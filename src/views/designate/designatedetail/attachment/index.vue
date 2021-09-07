@@ -1,16 +1,16 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-27 09:42:07
- * @LastEditTime: 2021-04-19 17:15:37
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-07 16:40:13
+ * @LastEditors: Hao,Jiang
  * @Description: 决策资料 - 附件
 -->
 <template>
-  <div class="designate-attachment">
+  <div class="designate-attachment" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT|attachment">
       <!-- 附件列表 -->
-      <attachment />
+      <attachment v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_ATTACHMENT|attachment" />
       <!-- RS Sheet -->
-      <rssheet v-if="showRsSheet" />
+      <rssheet v-if="showRsSheet" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSHEET|rssheet" />
   </div>
 </template>
 <script>
