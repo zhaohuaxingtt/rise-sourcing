@@ -1,10 +1,10 @@
 export const cbdSummaryTableTitle = [
-  { props: "material", seq: "2.1", key: "YUANCAILIAOSANJIANCHENGBENBIANDONG", name: "原材料/散件成本变动" },
-  { props: "makeCost", seq: "2.2", key: "ZHIZAOCHENGBENBIANDONG", name: "制造成本变动" },
-  { props: "discardCost", seq: "2.3", key: "BAOFEICHENGBENBIANDONG", name: "报废成本变动" },
-  { props: "manageFee", seq: "2.4", key: "GUANLIFEIBIANDONG", name: "管理费变动" },
+  { props: "materialChange", seq: "2.1", key: "YUANCAILIAOSANJIANCHENGBENBIANDONG", name: "原材料/散件成本变动" },
+  { props: "makeCostChange", seq: "2.2", key: "ZHIZAOCHENGBENBIANDONG", name: "制造成本变动" }, 
+  { props: "discardCostChange", seq: "2.3", key: "BAOFEICHENGBENBIANDONG", name: "报废成本变动" },
+  { props: "manageFeeChange", seq: "2.4", key: "GUANLIFEIBIANDONG", name: "管理费变动" },
   { props: "otherFee", seq: "2.5", key: "QITAFEIYONG", name: "其他费⽤" },
-  { props: "profit", seq: "2.6", key: "LIRUNBIANDONG", name: "利润变动" },
+  { props: "profitChange", seq: "2.6", key: "LIRUNBIANDONG", name: "利润变动" },
   { props: "apriceChange", key: "AJIABIANDONG", name: "A价变动" },
 ]
 
@@ -47,6 +47,6 @@ export const uuidv4 = function() {
   })
 }
 
-export const sourceRowClass = function ({ row }) {
-  return row.partCbdType == 0 || row.partCbdType == 1 ? "sourceRow" : ""
+export const originRowClass = function ({ row }) {
+  return row.partCbdType == 0 || row.partCbdType == 1 ? "originRow" : ""
 }

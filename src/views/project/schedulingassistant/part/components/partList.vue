@@ -909,20 +909,27 @@ export default {
   .productItem + .productItem {
     margin-top: 20px;
   }
-  ::v-deep .el-checkbox {
-    display: flex;
-    align-items: center;
-  }
-  ::v-deep .el-checkbox__inner {
-    width: 20px;
-    height: 20px;
-    &::after {
-      height: 10px;
-      width: 5px;
-      left: 6px;
+  &-title, &-content {
+    ::v-deep .el-checkbox {
+      display: flex;
+      align-items: center;
     }
-    &::before {
-      top: 8px;
+    ::v-deep .el-checkbox__inner {
+      width: 20px;
+      height: 20px;
+      &::after {
+        height: 10px;
+        width: 5px;
+        left: 6px;
+      }
+      &::before {
+        top: 8px;
+      }
+    }
+    ::v-deep .el-checkbox__label {
+      font-size: 18px;
+      font-weight: bold;
+      color: #41434A;
     }
   }
   ::v-deep .el-checkbox__label {

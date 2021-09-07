@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-27 20:30:44
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:02:43
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-07 09:30:19
  * @Description: 
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\data.js
  */
@@ -11,7 +11,7 @@ export const tableTitle = [
   {props:'supplierCode',name:'厂商号', key: "CHANGSHANGHAO", tooltip: true, width: 120},
   {props:'supplierNameCn',name:'供应商名(中)', key: "GONGYINGSHANGMING_ZH", tooltip: true, width: 120},
   {props:'nominateDate',name:'定点日期', key: "DINGDIANRIQI", tooltip: true, width: 120},
-  {props:'proportion',name:'比例(%)', key: "BILI", tooltip: true, width: 100},
+  {props:'share',name:'比例(%)', key: "BILI", tooltip: true, width: 100},
   {props:'apriceNoModel',name:'A价', key: "AJIA", tooltip: true, width: 120},
   {props:'bpriceNoModel',name:'B价', key: "BJIA", tooltip: true},
   {props:'apriceModel',name:'含模A价', key: "HANMOAJIA", tooltip: true},
@@ -20,7 +20,7 @@ export const tableTitle = [
   {props:'transportPrice',name:'运输费', key: "YUNSHUFEI", tooltip: true, width: 120},
   {props:'operatePrice',name:'操作费', key: "CAOZUOFEI", tooltip: true, width: 120},
   {props:'exchangeRate',name:'汇率', key: "HUILV", tooltip: true},
-  {props:'tcCurrency',name:'货币', key: "HUOBI", tooltip: true},
+  {props:'currency',name:'货币', key: "HUOBI", tooltip: true},
   {props:'moldPrice',name:'模具价格(不含税)', key: "MOJUJIAGE_BUHANSHUI", tooltip: true, width: 100},
   {props:'isMoldApportion',name:'是否模具分摊', key: "SHIFOUMOJUFENTAN", tooltip: true, width: 100},
   {props:'moldApportionQuantity',name:'模具费分摊数量', key: "MOJUFENTANSHULIANG", tooltip: true, width: 100},

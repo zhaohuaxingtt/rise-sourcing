@@ -15,8 +15,13 @@
           <template #typeNameByLang="scope">
             <span>{{ typeof scope.row.typeNameByLang === "function" ? scope.row.typeNameByLang() : scope.row.typeName }}</span>
           </template>
+          <template #originRatio="scope">
+            <span v-if="scope.row.originManageId || disabled">{{ scope.row.originRatio }}</span>
+            <iInput class="input-center" v-else v-model="scope.row.originRatio" @input="handleInputByNumber($event, 'originRatio', scope.row, 2, computeChangeAmount)"></iInput>
+          </template>
           <template #ratio="scope">
-            <iInput class="input-center" v-model="scope.row.ratio" :class="{ changeClass: scope.row.ratio !== scope.row.originRatio }" @input="handleInputByNumber($event, 'ratio', scope.row, 2, computeChangeAmount)"></iInput>
+            <span v-if="disabled">{{ scope.row.ratio }}</span>
+            <iInput class="input-center" v-else v-model="scope.row.ratio" :class="{ changeClass: scope.row.ratio !== scope.row.originRatio }" @input="handleInputByNumber($event, 'ratio', scope.row, 2, computeChangeAmount)"></iInput>
           </template>
         </tableList>
       </div>
@@ -48,12 +53,16 @@ export default {
       required: true,
       default: () => ([])
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     sumData: {
       type: Object,
       required: true,
       default: () => ({})
     },
-    manageFee: {
+    manageFeeChange: {
       type: String,
       default: 0
     }
@@ -79,14 +88,14 @@ export default {
         cb(value, key, row)
       }
     },
-    computeChangeAmount(sourceValue, sourceKey, row) {
-      const rawMaterialManageChangeAmount = math.evaluate(`(${ math.bignumber(this.sumData.newMaterialCostSumByNotSvwAssignPriceParts || 0) } * (${ math.bignumber(this.tableListData[0].ratio || 0) } / 100)) - (${ math.bignumber(this.sumData.sourceMaterialCostSumByNotSvwAssignPriceParts || 0) } * (${ math.bignumber(this.tableListData[0].originRatio || 0) } / 100))`).toFixed(2)
-      const makeManageChangeAmount = math.evaluate(`((${ math.bignumber(this.tableListData[1].ratio || 0) } / 100) * (${ math.bignumber(this.sumData.newLaborCostSum || 0) } + ${ math.bignumber(this.sumData.newDeviceCostSum || 0) })) - ((${ math.bignumber(this.tableListData[1].originRatio || 0) } / 100) * (${ math.bignumber(this.sumData.sourceLaborCostSum || 0) } + ${ math.bignumber(this.sumData.sourceDeviceCostSum || 0) }))`).toFixed(2)
-      const manageFee = math.evaluate(`${ rawMaterialManageChangeAmount } + ${ makeManageChangeAmount }`).toFixed(2)
+    computeChangeAmount() {
+      const rawMaterialManageChangeAmount = math.evaluate(`(${ math.bignumber(this.sumData.newMaterialCostSumByNotSvwAssignPriceParts || 0) } * (${ math.bignumber(this.tableListData[0].ratio || 0) } / 100)) - (${ math.bignumber(this.sumData.originMaterialCostSumByNotSvwAssignPriceParts || 0) } * (${ math.bignumber(this.tableListData[0].originRatio || 0) } / 100))`).toFixed(2)
+      const makeManageChangeAmount = math.evaluate(`((${ math.bignumber(this.tableListData[1].ratio || 0) } / 100) * (${ math.bignumber(this.sumData.newLaborCostSum || 0) } + ${ math.bignumber(this.sumData.newDeviceCostSum || 0) })) - ((${ math.bignumber(this.tableListData[1].originRatio || 0) } / 100) * (${ math.bignumber(this.sumData.originLaborCostSum || 0) } + ${ math.bignumber(this.sumData.originDeviceCostSum || 0) }))`).toFixed(2)
+      const manageFeeChange = math.evaluate(`${ rawMaterialManageChangeAmount } + ${ makeManageChangeAmount }`).toFixed(2)
 
       this.$set(this.tableListData[0], "changeAmount", rawMaterialManageChangeAmount)
       this.$set(this.tableListData[1], "changeAmount", makeManageChangeAmount)
-      this.$emit("update:manageFee", manageFee)
+      this.$emit("update:manageFeeChange", manageFeeChange)
     }
   }
 }
