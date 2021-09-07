@@ -22,7 +22,7 @@
           </i-form-item>
         </el-col>
         <el-col :span='6'>
-          <!--SAP订单号-->
+          <!--合同状态-->
           <i-form-item :label="$t('MODEL-ORDER.LK_HETONGZHUANGTAI')">
             <i-text :class="contractStatusStyle">{{ contractStatusVal }}</i-text>
           </i-form-item>
