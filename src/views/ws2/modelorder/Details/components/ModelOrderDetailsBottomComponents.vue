@@ -271,8 +271,8 @@ export default {
     openGrIr(item) {
       if (this.orderDetails.contractSapCode) {
         this.orderItemForm = item
+        this.purchaseOrderGrIrSelIsVisible = true
       }
-      this.purchaseOrderGrIrSelIsVisible = true
     },
     getOrderItemData() {
       return this.orderItemData
