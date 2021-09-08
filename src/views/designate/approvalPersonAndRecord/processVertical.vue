@@ -1,5 +1,5 @@
 <template>
-  <div class="process-vertical">
+  <div class="process-vertical" v-if="instanceId">
     <div class="loading" v-loading="loading"></div>
     <div
       v-for="(item, index) of panorama"
@@ -72,6 +72,7 @@
       </div>
     </div>
   </div>
+  <div v-else style="text-align:center" class="padding-top20 padding-bottom20">{{language('ZANWUSHUJU','暂无数据')}}</div>
 </template>
 
 <script>
@@ -110,9 +111,8 @@ export default {
   },
   methods: {
     getDetail() {
-      this.loading = true
-
       if (this.instanceId) {
+        this.loading = true
         getInstDetail(this.instanceId)
           .then(res => {
             const { data } = res

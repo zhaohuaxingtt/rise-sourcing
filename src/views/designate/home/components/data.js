@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-08-25 16:34:59
+ * @LastEditTime: 2021-09-07 16:58:50
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -9,6 +9,7 @@
 
 // 筛选参数
 export const form = {
+  showMe:true, // 默认显示自己
 }
 
 

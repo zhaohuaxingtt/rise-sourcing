@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-06 15:49:46
- * @LastEditTime: 2021-09-07 17:10:54
+ * @LastEditTime: 2021-09-08 09:28:52
  * @LastEditors: Hao,Jiang
  * @Description: 报表管理
  * @FilePath: /front-web/src/router/modules/reportmanage.js
@@ -37,21 +37,20 @@ export default [
     redirect: "/sourceinquirypoint/sourcing/reportmgmt/report",
     children: [
       {
-        path: "details",
-        name: "reportmgmt-details",
+        path: "/sourceinquirypoint/sourcing/reportmgmt/report",
+        name: "reportmgmt-report",
         meta: {
           title: "状态跟踪报表",
         },
-        component: () => import ("@/views/dashboard/report")
+        component: () => import ("@/views/dashboard/report/pbi")
       },
-      // 报表详情
       {
-        path: "report",
-        name: "reportmgmt-report",
+        path: "/sourceinquirypoint/sourcing/reportmgmt/details",
+        name: "reportmgmt-details",
         meta: {
           title: "状态跟踪详情",
         },
-        component: () => import ("@/views/dashboard/report/pbi")
+        component: () => import ("@/views/dashboard/report")
       },
     ]
   }
