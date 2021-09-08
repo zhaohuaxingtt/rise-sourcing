@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-09-06 22:22:56
+ * @LastEditTime: 2021-09-08 15:58:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
@@ -100,7 +100,6 @@ export default{
     handleSelectionChange({row,selection}){
       this.ontologyList = selection
       const isSelect = selection.find(rows=>rows.itemKey == row.itemKey)
-      console.log(isSelect)
       if(row.needRow){ //勾选供应商表头
         if(isSelect){
           this.selectGroup(row)
@@ -171,7 +170,7 @@ export default{
       this.loadingbtn = true
       const sendData = {
         isUserPackage:this.isUserPackage,
-        ontologyList:this.ontologyList.filter(r=>!r.needRow || !r.addAssemblyNomi),
+        ontologyList:this.ontologyList.filter(r=>!r.needRow).filter(r=>!r.addAssemblyNomi),
         rate:this.rate,
         purchaseProjectPartId:this.detailData().id
       }
