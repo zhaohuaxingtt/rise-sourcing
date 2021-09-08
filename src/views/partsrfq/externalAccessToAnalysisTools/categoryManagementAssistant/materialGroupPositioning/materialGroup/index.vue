@@ -7,12 +7,16 @@
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\index.vue
 -->
 <template>
-	<iCard :title='language("CAILIAOZUDINGWEI","材料组定位")' class="margin-top20" id="materialGroup">
+	<iCard :title='language("CAILIAOZUDINGWEI","材料组定位")' class="margin-top20" id="materialGroup" v-loading="pageLoading">
 		<template slot="header-control">
-			<iButton @click="edit" v-if="isEdit">{{ language("BIANJI", "编辑") }}</iButton>
-			<iButton @click="edit" v-else>{{ language("QUXIAO", "取消") }}</iButton>
-			<iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
-			<iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+      <template v-if="isEdit">
+        <iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
+      </template>
+      <template v-else>
+        <iButton @click="edit">{{ language("QUXIAO", "取消") }}</iButton>
+        <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
+        <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+      </template>
 			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 		</template>
 		<!-- 材料组定位/材料组占比情况 -->
@@ -90,6 +94,7 @@
 				tableListData:[],
 				tableTitle,
 				tableLoading:false,
+        pageLoading: false,
 				isEdit:true,
 				selectData:[],
 				categoryCode:"",
@@ -145,6 +150,7 @@
 			// 保存
 			async save(){
 				this.isEdit=true
+        this.pageLoading = true
 				const resFile = await this.getDownloadFileAndExportPdf({
 					domId: 'materialGroup',
 					pdfName: 'materialGroup',
@@ -159,8 +165,11 @@
 					problemAndSuggestionList:this.materialGroup.problemAndSuggestionList
 				}
 				saveMaterialGroupScheme(params).then(res=>{
-
-				})
+          this.resultMessage(res)
+          this.pageLoading = false
+				}).catch(()=> {
+          this.pageLoading = false
+        })
 			},
 			// 返回
 			back(){
