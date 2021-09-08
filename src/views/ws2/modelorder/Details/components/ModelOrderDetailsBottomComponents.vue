@@ -46,12 +46,12 @@ import {MODEL_ORDER_DETAILS_ITEMSCOLUMNS} from "../../config/data";
 import {
   getPurchaseOrderLineList, inventoryLocation,
   readByPurchaseOrderPrice, recoveryItemByPurchaseOrder,
-  deleteItemByPurchaseOrder
+  deleteItemByPurchaseOrder,queryModelBmInfo
+
 } from "@/api/ws2/modelOrder";
 import ModelByPurchaseRequisitionDialog from "../../components/ModelByPurchaseRequisitionDialog";
 import {getDictByCode} from "@/api/dictionary";
 import ModelOrderItemDetailsDialog from "../../components/ModelOrderItemDetailsDialog";
-import {queryModelBmInfo} from "../../../../../api/ws2/modelOrder";
 
 export default {
   name: "ModelOrderDetailsBottomComponents",
