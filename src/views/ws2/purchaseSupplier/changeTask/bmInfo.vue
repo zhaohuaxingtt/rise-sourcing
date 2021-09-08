@@ -205,19 +205,17 @@
         <div class="top-r">
           <iButton
               v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2 || Number(baseInfo.changeStatus) === 3)"
-              v-loading="bmBuberLoading"
               @click="handleEdit">
             {{ language('LK_BIANJI', '编辑') }}
           </iButton>
           <iButton
               v-show="(Number(baseInfo.changeStatus) === 4 || Number(baseInfo.changeStatus) === 5)"
-              v-loading="sendSupplierLoading"
-              @click="sendSupplier">
+              v-loading="recallLoading"
+              @click="handleRecall">
             {{ language('LK_CHEHUI', '撤回') }}
           </iButton>
           <iButton
               v-show="!isEdit"
-              v-loading="sendSupplierLoading"
               @click="changeOrderShow = true; isCheck = true">
             {{ language('LK_CHAKANBIANGENGDAN', '查看变更单') }}
           </iButton>
@@ -230,13 +228,11 @@
 
           <iButton
               v-show="isEdit"
-              v-loading="bmBuberLoading"
               @click="isEdit = false">
             {{ language('LK_TUICHUBIANJI', '退出编辑') }}
           </iButton>
           <iButton
               v-show="isEdit"
-              v-loading="bmBuberLoading"
               @click="handlePreView">
             {{ language('LK_YULANBIANGENGDAN', '预览变更单') }}
           </iButton>
@@ -248,7 +244,6 @@
           </iButton>
           <iButton
               v-show="isEdit"
-              v-loading="bmBuberLoading"
               @click="handleDelete">
             {{ language('LK_SHANCHU', '删除') }}
           </iButton>
@@ -346,6 +341,16 @@
                 @focus="focus(scope.row.index)"
                 @blur="blur(scope.row.index)"
                 onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
+            >
+            </iInput>
+          </div>
+        </template>
+        <template #changeReason="scope">
+          <div v-show="!isEdit">{{ scope.row.changeReason }}</div>
+          <div v-show="isEdit">
+            <iInput
+                v-model="scope.row.changeReason"
+                :placeholder="language('LK_QINGSHURU', '请输入')"
             >
             </iInput>
           </div>
@@ -448,7 +453,7 @@ import {
   shareParts,
 } from "@/api/ws2/purchase/changeTask/bmInfo";
 import {delcommafy, getTousandNum} from "@/utils/tool";
-import {sendSupplier} from "@/api/ws2/purchase/investmentList";
+import {recall, sendSupplier} from "@/api/ws2/purchase/investmentList";
 import {cloneDeep} from "lodash";
 
 export default {
@@ -492,6 +497,7 @@ export default {
       tableLoading: false,
       tableLoading2: false,
       bmBuberLoading: false,
+      recallLoading: false,
       sendSupplierLoading: false,
       iLogShow: false,
       uploadButtonLoading: false,
@@ -540,6 +546,22 @@ export default {
         this.handleResetLoading = false
       }).catch(() => {
         this.handleResetLoading = false
+      });
+    },
+    handleRecall(){
+      this.recallLoading = true
+      recall({bmChangeId: this.query.bmChangeId}).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.moldHeaderByBmSerial()
+          this.findMoldViewList()
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+        }
+        this.recallLoading = false
+      }).catch(() => {
+        this.recallLoading = false
       });
     },
     handleEdit(){

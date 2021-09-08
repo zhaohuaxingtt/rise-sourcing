@@ -7,11 +7,16 @@
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\index.vue
 -->
 <template>
-	<iCard :title='language("CAILIAOZUDINGWEI","材料组定位")' class="margin-top20" id="materialGroup">
+	<iCard :title='language("CAILIAOZUDINGWEI","材料组定位")' class="margin-top20" id="materialGroup" v-loading="pageLoading">
 		<template slot="header-control">
-			<iButton @click="edit" v-if="isEdit">{{ language("BIANJI", "编辑") }}</iButton>
-			<iButton @click="edit" v-else>{{ language("QUXIAO", "取消") }}</iButton>
-			<iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+      <template v-if="isEdit">
+        <iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
+      </template>
+      <template v-else>
+        <iButton @click="edit">{{ language("QUXIAO", "取消") }}</iButton>
+        <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
+        <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+      </template>
 			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 		</template>
 		<!-- 材料组定位/材料组占比情况 -->
@@ -20,7 +25,7 @@
 				<icon symbol name="iconcailiaozudingwei" class="font30"></icon>
 				<span>{{ language("CAILIAOZUDINGWEI", "材料组定位") }}</span>
 			</div>
-			<piecewise :materialGroupPosition="materialGroup.materialGroupPosition"></piecewise>
+			<piecewise :materialGroupPosition="materialGroup.materialGroupPosition" @handleChartClick="handleChartClick"></piecewise>
 		</div>
 		<!-- 业务影响度特征分布情况 供应复杂度特征分布 -->
 		<el-row gutter="50" class="margin-top35">
@@ -66,12 +71,13 @@
 	import {iCard,iPagination,iButton,iMessage,iMessageBox,icon,iInput} from 'rise';
 	import tableList from '@/views/partsrfq/externalAccessToAnalysisTools/components/tableList.vue';
 	import {tableTitle} from './data';
-	import {materialGroupPosition,saveMaterialGroupScheme} from "@/api/categoryManagementAssistant/marketData/materialGroup";
+	import {materialGroupPosition,saveMaterialGroupScheme, resettingSuggest} from "@/api/categoryManagementAssistant/marketData/materialGroup";
 	import ring from "./ring";
 	import piecewise from "./piecewise";
 	import {downloadPdfMixins} from '@/utils/pdf';
+  import resultMessageMixin from '@/utils/resultMessageMixin'
 	export default{
-		mixins:[downloadPdfMixins],
+		mixins:[downloadPdfMixins, resultMessageMixin],
 		components:{
 			iCard,tableList,iButton,icon,iInput,ring,piecewise
 		},
@@ -88,6 +94,7 @@
 				tableListData:[],
 				tableTitle,
 				tableLoading:false,
+        pageLoading: false,
 				isEdit:true,
 				selectData:[],
 				categoryCode:"",
@@ -136,11 +143,14 @@
 						this.tableLoading=false
 						this.materialGroup=res.data
 					}
-				})
+				}).catch(()=> {
+          this.tableLoading=false
+        })
 			},
 			// 保存
 			async save(){
 				this.isEdit=true
+        this.pageLoading = true
 				const resFile = await this.getDownloadFileAndExportPdf({
 					domId: 'materialGroup',
 					pdfName: 'materialGroup',
@@ -155,8 +165,11 @@
 					problemAndSuggestionList:this.materialGroup.problemAndSuggestionList
 				}
 				saveMaterialGroupScheme(params).then(res=>{
-					
-				})
+          this.resultMessage(res)
+          this.pageLoading = false
+				}).catch(()=> {
+          this.pageLoading = false
+        })
 			},
 			// 返回
 			back(){
@@ -166,6 +179,24 @@
 			edit(){
 				this.isEdit=!this.isEdit
 			},
+      // 重置
+      async reset() {
+        try {
+          const req = {
+            materialGroupCode:this.categoryCode,
+          }
+          const res = await resettingSuggest(req)
+          this.materialGroup.problemAndSuggestionList = res.data
+          this.resultMessage(res)
+        } finally {
+          this.tableLoading=false
+        }
+      },
+      // 点击echarts图 获取数据
+      handleChartClick(code) {
+        this.categoryCode = code
+        this.getMaterialGroup()
+      }
 		}
 	}
 </script>

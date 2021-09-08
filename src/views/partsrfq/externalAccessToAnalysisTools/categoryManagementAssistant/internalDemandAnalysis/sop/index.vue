@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-16 14:51:40
- * @LastEditTime: 2021-09-01 12:37:11
+ * @LastEditTime: 2021-09-08 16:09:51
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\sop\index.vue
@@ -35,7 +35,7 @@ import {iCard,iButton,iMessage,iSelect} from "rise";
 import { cloneDeep } from 'lodash';
 import moment from 'moment';
 import tableList from './overviewTable'
-import {sopList,carTypeProList,sopPipeLineSave} from "@/api/categoryManagementAssistant/internalDemandAnalysis/sop";
+import {sopList,carTypeProList,sopPipeLineSave,sopParamInit} from "@/api/categoryManagementAssistant/internalDemandAnalysis/sop";
 import {downloadPdfMixins} from '@/utils/pdf';
 
 export default ({
@@ -74,18 +74,23 @@ export default ({
          tableDataTemp: [],
          categoryCode:"",//材料组
          carType:{},//车型项目id
+         id:"",//方案ID
          carTypeCodeArr:[]
       }
    },
-   created() {
+   async created() {
       this.categoryCode=this.$store.state.rfq.categoryCode
+      await this.sopParamInit()
       this.getOverviewList()
       this.carTypeProList()
   },
   watch: {
-			"$store.state.rfq.categoryCode"(){
+		async	"$store.state.rfq.categoryCode"(){
 				this.categoryCode=this.$store.state.rfq.categoryCode
-       this.getOverviewList()
+        this.id=""
+        this.carType={}
+        await this.sopParamInit()
+        this.getOverviewList()
         this.carTypeProList()
 			}
 		},
@@ -94,7 +99,7 @@ export default ({
       async save(){
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'sop',
-            pdfName: 'sop',
+            pdfName: this.language("SOPJINDUZHOU","SOP进度轴") + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD')+'-',
          });
          let params={
             categoryCode:this.categoryCode,
@@ -102,7 +107,9 @@ export default ({
             reportFileName: resFile.downloadName,
             reportName: resFile.downloadName,
             schemeName:"",
-            reportUrl: resFile.downloadUrl
+            reportUrl: resFile.downloadUrl,
+            id:this.id,
+            carTypeProDTO:this.carType
          }
          sopPipeLineSave(params).then(res=>{
             
@@ -112,6 +119,20 @@ export default ({
     reset(){
       this.carType={}
       this.getOverviewList()
+    },
+    // 历史方案
+    async sopParamInit(){
+      let params={
+        categoryCode:this.categoryCode
+      }
+      await sopParamInit(params).then(res=>{
+          if(res.data.id){
+            this.id=res.data.id
+          }
+          if(res.data.carTypeProDTO){
+            this.carType=res.data.carTypeProDTO
+          }
+      })
     },
     //  获取车型项目
     carTypeProList(){

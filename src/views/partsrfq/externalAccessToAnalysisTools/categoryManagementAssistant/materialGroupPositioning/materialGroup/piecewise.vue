@@ -48,7 +48,7 @@ export default {
       init(){
          const myChart = echarts().init(this.$refs.chart);
          let data=window._.clone(this.materialGroupPosition)
-         
+
          // 散点数据
          let marksData=[]
          marksData=data.otherPointList.map(item=>{
@@ -58,7 +58,7 @@ export default {
                materialGroupCode:item.materialGroupCode,
                to:item.money,
             }
-         }) 
+         })
          // 当前点
          if(data.currentPoint){
             let currentCategory={
@@ -69,7 +69,7 @@ export default {
             }
             marksData.push(currentCategory)
          }
-        
+
          let centerMarkX=parseInt(data.centerPoint.riskScore)
          let centerMarkY=parseInt(data.centerPoint.moneyScore)
          // 中心线
@@ -84,8 +84,8 @@ export default {
          // 中心点
          let centerMark = [
             {
-               value: '', coord: [centerMarkX,centerMarkY] 
-            }    
+               value: '', coord: [centerMarkX,centerMarkY]
+            }
          ]
 
          let option = {
@@ -186,7 +186,7 @@ export default {
                      }
                   }
                },
-               
+
                // 各象限区域
                markArea: {
                      silent: true,
@@ -291,8 +291,10 @@ export default {
             }]
          }
          myChart.setOption(option);
+         const _this = this
          myChart.on('click', function (params) {
             console.log(params);
+           _this.$emit('handleChartClick', params.data.materialGroupCode)
          });
       }
    }

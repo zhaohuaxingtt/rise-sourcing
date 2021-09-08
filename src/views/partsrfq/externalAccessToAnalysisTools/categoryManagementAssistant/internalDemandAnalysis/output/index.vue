@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-07 19:46:29
+ * @LastEditTime: 2021-09-08 16:52:18
  * @LastEditors: 舒杰
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
@@ -115,6 +115,8 @@ export default {
       }},
       '$store.state.rfq.categoryCode'(newVal){
          this.categoryCode=this.$store.state.rfq.categoryCode
+         this.selectFilterYear=''
+         this.config.pageName=''
          this.renderBi()
       }
    },
