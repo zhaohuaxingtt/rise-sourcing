@@ -4,64 +4,56 @@
            width="95%"
            @close="closeDialog"
            @opened="open">
-    <iCard :collapse="false"
-           id="downloadRef">
-      <div class="clearfix">
-        <iButton class="margin-left10 "
-                 style="float: right"
-                 @click="handleDownload">{{ $t("LK_XIAZAI") }}</iButton>
-      </div>
-      <el-row :gutter="40">
-        <el-col :span="inside ? 18 : 24">
-          <crown-bar :chartData="chartData"
-                     :title="chartTitle"
-                     :type="bobType"
-                     :by="chartType" />
-        </el-col>
-        <el-col :span="6"
-                v-if="inside">
-          <div class="left-dash1">
-            <out-bar :chartData="chartData1"
-                     :preview="false"></out-bar>
-          </div>
-        </el-col>
-      </el-row>
-      <div style="margin-top:20px;">
-        <span style="font-weight:bold;font-size:14px">
-          {{ $t("费用详情") }}
-        </span>
-      </div>
-      <table1 :tableList="tableList" style="margin-top:20px"></table1>
-      <!-- <table2 :dataList="dataList2"></table2>
+    <div id="content">
+      <iCard :collapse="false"
+             id="downloadRef">
+        <div class="clearfix">
+          <iButton class="margin-left10 "
+                   style="float: right"
+                   @click="handleDownload">生成报告</iButton>
+        </div>
+        <el-row :gutter="40">
+          <el-col :span="inside ? 18 : 24">
+            <crown-bar :chartData="chartData"
+                       :title="chartTitle"
+                       :type="bobType"
+                       :by="chartType" />
+          </el-col>
+          <el-col :span="6"
+                  v-if="inside">
+            <div class="left-dash1">
+              <out-bar :chartData="chartData1"
+                       :preview="false"></out-bar>
+            </div>
+          </el-col>
+        </el-row>
+        <div style="margin-top:20px;">
+          <span style="font-weight:bold;font-size:14px">
+            {{ $t("费用详情") }}
+          </span>
+        </div>
+        <table1 :tableList="tableList"
+                style="margin-top:20px"
+                v-bind="$attr"></table1>
+        <!-- <table2 :dataList="dataList2"></table2>
       <table3 :dataList="dataList3"></table3>
       <table4 :dataList="dataList4"></table4>
       <table5 :dataList="dataList5"></table5>
       <table6 :dataList="dataList6"></table6> -->
-    </iCard>
+      </iCard>
+    </div>
+
   </iDialog>
 </template>
 
 <script>
-import { iPage, iButton, iCard, iSelect, icon, iDialog } from "rise";
+import { iPage, iButton, iCard, iSelect, icon, iDialog, iMessage } from "rise";
 import CrownBar from "./components/crownBar.vue";
-// import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
+import { add } from "@/api/partsrfq/bob/analysisList";
 import { getBobLevelOne, chargeRetrieve } from "@/api/partsrfq/bob";
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
-import {
-  dataList1,
-  dataList2,
-  dataList3,
-  dataList4,
-  dataList5,
-  dataList6,
-  tableList,
-} from "@/views/partsrfq/bob/bobAnalysis/components/data.js";
+import { uploadFile } from "@/api/file/upload";
 import table1 from "../bobAnalysis/components/table1.vue";
-import table2 from "../bobAnalysis/components/table2.vue";
-import table3 from "../bobAnalysis/components/table3.vue";
-import table4 from "../bobAnalysis/components/table4.vue";
-import table5 from "../bobAnalysis/components/table5.vue";
-import table6 from "../bobAnalysis/components/table6.vue";
 import OutBar from "./components/outBar.vue";
 export default {
   components: {
@@ -82,6 +74,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    reportName: {
+      type: String,
+      default: ""
+    }
   },
   data () {
     return {
@@ -91,13 +87,13 @@ export default {
       chartData1: [],
       chartType: "supplier",
       bobType: "Best of Best",
-      tableList,
-      dataList1,
-      dataList2,
-      dataList3,
-      dataList4,
-      dataList5,
-      dataList6,
+      tableList: "",
+      // dataList1,
+      // dataList2,
+      // dataList3,
+      // dataList4,
+      // dataList5,
+      // dataList6,
       form: {
         supplier: [],
         turn: [],
@@ -108,16 +104,17 @@ export default {
       flag: true,
       flag1: false,
       expends: [],
-      reportName: "",
+      // reportName: "",
       id: "",
       chartTitle: "",
+      groupId: ""
     };
   },
   mounted () {
     this.analysisSchemeId = this.$attrs.analysisSchemeId
+    this.groupId = this.$attrs.groupId
     this.chargeRetrieve();
     this.getChartData();
-
     // if (this.inside === 0) {
     //   this.analysisSchemeId = this.$parent.$options.parent.analysisSchemeId
     // }
@@ -173,7 +170,8 @@ export default {
       chargeRetrieve({
         viewType: 'all',
         isDefault: true,
-        schemaId: this.analysisSchemeId
+        schemaId: this.analysisSchemeId,
+        groupId: this.groupId
       })
         .then((res) => {
           this.tableList = res;
@@ -193,9 +191,41 @@ export default {
     sure () { },
     handleDownload () {
       downloadPDF({
-        idEle: "downloadRef",
-        pdfName: "BOB Preview",
+        idEle: "content",
+        pdfName: this.reportName,
+        callback: async (pdf, pdfName) => {
+          try {
+            const time = new Date().getTime();
+            const filename = pdfName + time + ".pdf";
+            const pdfFile = pdf.output("datauristring");
+            const blob = dataURLtoFile(pdfFile, filename);
+            const formData = new FormData();
+            formData.append("multipartFile", blob);
+            formData.append("applicationName", "rise");
+            const res = await uploadFile(formData);
+            const data = res.data[0];
+            const req = {
+              analysisSchemeId: this.analysisSchemeId,
+              name: data.fileName,
+              path: data.filePath,
+              remark: this.reportName,
+            };
+            await add(req);
+            this.dialogVisible = false;
+            this.reportSave = false;
+            iMessage.success("保存成功");
+          } catch {
+            iMessage.err("保存失败");
+            this.dialogVisible = false;
+            this.reportSave = false;
+          }
+        },
       });
+      
+      // downloadPDF({
+      //   idEle: "downloadRef",
+      //   pdfName: "BOB Preview",
+      // });
     },
     goToBob () {
       this.$router.push("bob");
@@ -230,6 +260,7 @@ export default {
         spareParts: this.form.spareParts.join(","),
         supplier: this.form.supplier.join(","),
         turn: this.form.turn.join(","),
+        groupId: this.groupId
       }).then((res) => {
         const allData = res.data || [];
         this.chartData = allData.bobLevelOneVOList.filter(
@@ -245,6 +276,7 @@ export default {
     getChartData () {
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
+        groupId: this.groupId
       }).then((res) => {
         const allData = res.data || [];
         this.chartData = allData.bobLevelOneVOList.filter(

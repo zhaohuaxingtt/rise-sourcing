@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-06 11:09:31
+ * @LastEditTime: 2021-09-07 17:47:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -22,7 +22,7 @@
                        :label="item.categoryName">
             </el-option>
           </iSelect>
-          <span>{{categoryName}}</span>
+          <span v-else>{{categoryName}}</span>
         </div>
         <div class="flex"
              v-show="reportFlag">
@@ -470,76 +470,74 @@ export default {
         this.categoryId = data.categoryId
         this.categoryName = data.categoryName
         this.exceptPart = data.exceptPart
-        this.targetMotor = data.targetMotor
+        this.targetMotor = data.targetMotor.toString()
         this.comparedType = data.comparedType
         if (data.firstComparedMotor) {
-          this.ComparedMotor.push(data.firstComparedMotor)
+          this.ComparedMotor.push(data.firstComparedMotor.toString())
         }
         if (data.secondComparedMotor) {
-          this.ComparedMotor.push(data.secondComparedMotor)
+          this.ComparedMotor.push(data.secondComparedMotor.toString())
         }
         if (data.thirdComparedMotor) {
-          this.ComparedMotor.push(data.thirdComparedMotor)
+          this.ComparedMotor.push(data.thirdComparedMotor.toString())
         }
         if (data.forthComparedMotor) {
-          this.ComparedMotor.push(data.forthComparedMotor)
+          this.ComparedMotor.push(data.forthComparedMotor.toString())
         }
         if (data.fifthComparedMotor) {
-          this.ComparedMotor.push(data.fifthComparedMotor)
+          this.ComparedMotor.push(data.fifthComparedMotor.toString())
         }
-      })
-      //材料组
-      category({}).then((res) => {
-        this.categoryList = res.data
-      })
-      let params = {}
-      if (this.entryStatus == 1) {
-        params = {
+        //材料组
+        category({}).then((res) => {
+          this.categoryList = res.data
+        })
+        let params = {}
+        if (this.entryStatus == 1) {
+          params = {
+            categoryId: this.categoryId,
+            isBindingRfq: true,
+            req: this.rfqId
+          }
+        } else {
+          params = {
+            categoryId: this.categoryId,
+            isBindingRfq: false,
+          }
+        }
+        //目标车型
+        getTargetMotor(params).then(res => {
+          this.TargetMotorList = res.data
+        })
+        getDictByCode('mekType').then(res => {
+          this.mekTypeList = res.data[0].subDictResultVo
+        })
+        getDictByCode('mekpriceType').then(res => {
+          this.mekpriceTypeList = res.data[0].subDictResultVo
+        })
+        getComparedMotor({
           categoryId: this.categoryId,
-          isBindingRfq: true,
-          req: this.rfqId
-        }
-      } else {
-        params = {
+          isTarget: true,
+          targetMotorId: this.targetMotor
+        }).then(res => {
+          this.ComparedMotorList = res.data
+        })
+        let params1 = {
           categoryId: this.categoryId,
-          isBindingRfq: false,
+          motorIds: this.ComparedMotor,
+          schemeId: this.chemeId
         }
-      }
-      //目标车型
-      getTargetMotor(params).then(res => {
-        this.TargetMotorList = res.data
+        recursiveRetrieve(params1).then(res => {
+          if (res.code === '200') {
+            let partNumber = []
+            res.data.forEach(item => {
+              partNumber.push(item.partSixNumber)
+            })
+            this.recursiveRetrieveList = res.data
+            this.partNumber = _.difference(partNumber, this.exceptPart)
+          }
+        })
       })
-      getDictByCode('mekType').then(res => {
-        this.mekTypeList = res.data[0].subDictResultVo
 
-      })
-      getDictByCode('mekpriceType').then(res => {
-        this.mekpriceTypeList = res.data[0].subDictResultVo
-
-      })
-      getComparedMotor({
-        categoryId: this.categoryId,
-        isTarget: true,
-        targetMotorId: this.targetMotor
-      }).then(res => {
-        this.ComparedMotorList = res.data
-      })
-      let params1 = {
-        categoryId: this.categoryId,
-        motorIds: this.ComparedMotor,
-        schemeId: this.chemeId
-      }
-      recursiveRetrieve(params1).then(res => {
-        if (res.code === '200') {
-          let partNumber = []
-          res.data.forEach(item => {
-            partNumber.push(item.partSixNumber)
-          })
-          this.recursiveRetrieveList = res.data
-          this.partNumber = _.difference(partNumber, this.exceptPart)
-
-        }
-      })
     },
     //查询  
     searchChartData () {
@@ -796,7 +794,6 @@ export default {
       this.getMekTable()
     },
     getHistogram (params) {
-      params = { "comparedType": "1", "info": [{ "motorId": "1", "priceType": "sopPrice", "isTargetMotor": true }], "categoryId": "1", "categoryCode": "1", schemeId: 111, "isBindingRfq": false }
       getHistogram(params).then(res => {
         let data = res.data
         let maxWidthList = []
