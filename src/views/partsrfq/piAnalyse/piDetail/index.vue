@@ -166,7 +166,7 @@ export default {
         batchNumber: this.$route.query.batchNumber,
         supplierId: '',
         fsId: '',
-        rfqId: ''
+        rfqId: '',
       },
       dataInfo: {},
       averageData: {},
@@ -249,7 +249,7 @@ export default {
           this.partItemCurrent = 0;
           const partListItem = this.partList[0];
           this.currentTabData = {
-            analysisSchemeId: partListItem.analysisSchemeId,
+            ...this.currentTabData,
             partsId: partListItem.partsId,
             batchNumber: partListItem.batchNumber,
             supplierId: partListItem.supplierId,
@@ -265,7 +265,7 @@ export default {
     handlePartItemClick({item, index}) {
       this.partItemCurrent = index;
       this.currentTabData = {
-        analysisSchemeId: item.analysisSchemeId,
+        ...this.currentTabData,
         partsId: item.partsId,
         batchNumber: item.batchNumber,
         supplierId: item.supplierId,
