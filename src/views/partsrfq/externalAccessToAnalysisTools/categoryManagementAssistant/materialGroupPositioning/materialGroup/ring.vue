@@ -17,7 +17,7 @@ export default {
       }
    },
    mounted () {
-   //   this.init() 
+   //   this.init()
    },
    props: {
       ringData:[]
@@ -34,7 +34,7 @@ export default {
             return {
                value:item.num,
                name:item.classAiTypeName +'：'+ item.num + '（'+parseFloat(item.proportion)*100+'%）'
-            } 
+            }
          })
          const myChart = echarts().init(this.$refs.chart);
          let option = {
@@ -46,6 +46,7 @@ export default {
                orient: 'horizontal',
                left: 'center',
                icon: 'circle',
+               width: 400
             },
             series: [
                {
