@@ -2,21 +2,21 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:23
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 18:11:08
+ * @LastEditTime: 2021-09-07 17:04:40
  * @Description: 历史进度数据库
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\index.vue
 -->
 
 <template>
 <!------v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PAGE|项目管理-排程助手-历史进度数据库"------>
-  <iPage class="historyProcessDB" >
+  <iPage class="historyProcessDB" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PAGE|项目管理-排程助手-历史进度数据库">
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
         <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
         <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
       <el-form>
-        <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)">
+        <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)" v-permission.dynamic.auto="item.permission">
           <iSelect v-if="item.type ==='select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="item.placeholder ? language(item.placeholderKey, item.placeholder) : language('QINGXUANZE', '请选择')" @change="handleChange($event, item.value)">
             <el-option
               v-for="item in selectOptions[item.selectOption]"
@@ -30,8 +30,8 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <productGroup ref="historyDBProductGroup" v-if="searchParams.level === '1'" :searchParams="searchParams" :carProjectOptions="selectOptions.carProjectOptionsALL" :productGroupOptions="selectOptions.productGroupOptions" />
-    <part ref="historyDBpart" v-else :searchParams="searchParams" :carProjectOptions="selectOptions.carProjectOptionsALL" :productGroupOptions="selectOptions.productGroupOptions" />
+    <productGroup ref="historyDBProductGroup" v-if="searchParams.level === '1'" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PRODUCTGROUPPAGE|项目管理-排程助手-历史进度数据库-产品组" :searchParams="searchParams" :carProjectOptions="selectOptions.carProjectOptionsALL" :productGroupOptions="selectOptions.productGroupOptions" />
+    <part ref="historyDBpart" v-else :searchParams="searchParams" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PARTPAGE|项目管理-排程助手-历史进度数据库-零件" :carProjectOptions="selectOptions.carProjectOptionsALL" :productGroupOptions="selectOptions.productGroupOptions" />
   </iPage>
 </template>
 

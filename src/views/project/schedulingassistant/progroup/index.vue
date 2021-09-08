@@ -2,22 +2,22 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 10:13:14
+ * @LastEditTime: 2021-09-07 16:53:34
  * @Description: 产品组排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
 
 <template>
-  <!-------------v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_PAGE|项目管理-排程助手-产品组排程页面'------------------------>
-  <iPage class="projectGroup"  >
+  <!------------------------------------->
+  <iPage class="projectGroup" v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_PAGE|项目管理-排程助手-产品组排程页面' >
     <!---------------------------------------------------------------------->
     <!----------                  车型项目部分                   ---------------->
     <!---------------------------------------------------------------------->
-    <carProject :carProjectId="carProject" :disabled="isNodeView" @changeSopStatus="changeSopStatus" @handleCarProjectChange="handleCarProjectChange" @handleCollapse="handleCollapse" />
+    <carProject :carProjectId="carProject" :disabled="isNodeView" @changeSopStatus="changeSopStatus" @handleCarProjectChange="handleCarProjectChange" @handleCollapse="handleCollapse" v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_CARPROJECTPROGRESS|项目管理-排程助手-产品组排程-车型项目进度' />
     <!---------------------------------------------------------------------->
     <!----------                  产品组区域                  ---------------->
     <!---------------------------------------------------------------------->
-    <iCard class="margin-top20 projectCard" :class="{withCollapse:!collapseValue}">
+    <iCard class="margin-top20 projectCard" :class="{withCollapse:!collapseValue}" v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_PRODUCTGROUPLIST|项目管理-排程助手-产品组排程-产品组列表'>
       <div class="margin-bottom20 searchWrapper">
         <div class="titleSearch">
           <span class="margin-right20 titleSearch-label">{{language('CHANPINZU','产品组')}}</span>
