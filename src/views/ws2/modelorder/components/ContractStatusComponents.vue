@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tooltip class='item' effect='light' placement='bottom'>
+    <el-tooltip class='item' effect='light' placement='bottom' >
       <div slot="content" style="width: 200px">{{ row['contractRemark'] != null ? row['contractRemark'] : '原因不详' }}
       </div>
       <span>
@@ -8,6 +8,7 @@
               {{ myContractStatus }}
       </span>
     </el-tooltip>
+
   </div>
 </template>
 
@@ -22,14 +23,14 @@ export default {
     myContractStatus: function () {
       let myContractStatus = this.row['contractStatus']
       if (myContractStatus != null || myContractStatus != '') {
-        if(null!=this.contractStatus&&this.contractStatus.length>0&&this.contractStatus!=undefined){
+        if (null != this.contractStatus && this.contractStatus.length > 0 && this.contractStatus != undefined) {
           let res = this.contractStatus.find((item) => item.code == this.row['contractStatus'])
-          if (res != null && res != ''&&res!=undefined) {
+          if (res != null && res != '' && res != undefined) {
             return res.name
           }
         }
       }
-      return ''
+      return '未创建'
     }
   }
 }
