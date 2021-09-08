@@ -1,8 +1,8 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-09-08 10:32:23
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-08 20:29:39
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
 -->
@@ -20,7 +20,7 @@
             <el-form-item :label="language('LEIBIE', '类别')">
               <iSelect v-model="searchForm.classType">
                 <el-option value="" label="全部"></el-option>
-                <el-option v-for="(item, index) in rawMaterialTypeData" :value="item.id" :label="item.val"></el-option>
+                <el-option v-for="(item, index) in rawMaterialTypeData" :value="item.id" :label="item.val" :key="index"></el-option>
               </iSelect>
             </el-form-item>
             <!--原材料/牌号/规格-->
@@ -34,7 +34,7 @@
             <el-form-item :label="language('DIQU', '地区')">
               <iSelect v-model="searchForm.areaName">
                 <el-option value="" label="全部"></el-option>
-                <el-option v-for="(item, index) in rawMaterialAreaData" :value="item.id" :label="item.val"></el-option>
+                <el-option v-for="(item, index) in rawMaterialAreaData" :value="item.id" :label="item.val" :key="index"></el-option>
               </iSelect>
             </el-form-item>
             <!--RFQ号-->
@@ -179,7 +179,7 @@ export default {
     clickBack() {
       if (this.$store.state.rfq.entryStatus === 1) {
           this.$router.push({
-            path: '/sourcing/partsrfq/assistant',
+            path: '/sourceinquirypoint/sourcing/partsrfq/assistant',
             query: {
               id: this.$store.state.rfq.rfqId,
               round: this.$route.query.round,
