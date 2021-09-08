@@ -405,7 +405,9 @@ export default {
         } else if (this.interestsStatus === "profit") {
           this.MarketOverviewObj1.supplierFinanceDTOList[0].profit = val
         }
-        this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
+        if (!this.isEdite) {
+          this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
+        }
       },
     },
     year2: {
@@ -417,7 +419,10 @@ export default {
         } else if (this.interestsStatus === "profit") {
           this.MarketOverviewObj1.supplierFinanceDTOList[1].profit = val
         }
-        this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
+        if (!this.isEdite) {
+          this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
+        }
+
       },
     },
     year3: {
@@ -429,11 +434,15 @@ export default {
         } else if (this.interestsStatus === "profit") {
           this.MarketOverviewObj1.supplierFinanceDTOList[2].profit = val
         }
-        this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
+        if (!this.isEdite) {
+          this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
+        }
+
       },
     },
     edite (val) {
       this.isEdite = val
+      console.log(this.isEdite)
       if (!val) {
         if (!this.MarketOverviewObj.mainCustomerDTOList) {
           this.MarketOverviewObj.mainCustomerDTOList = []
@@ -465,6 +474,10 @@ export default {
           }
         }
       } else {
+        this.$nextTick(() => {
+          this.initCharts()
+          this.initturnover()
+        });
         this.MarketOverviewObj.mainCustomerDTOList = this.MarketOverviewObj.mainCustomerDTOList.filter(item => item.customerName || item.totalSalesPro)
       }
     },
