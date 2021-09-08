@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 19:03:24
- * @LastEditTime: 2021-09-07 17:42:59
+ * @LastEditTime: 2021-09-08 10:33:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\config\businesskey\moudules\aeko.js
@@ -90,6 +90,7 @@ const blackKey = [
                   
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI', //TAB报价分析-报价趋势 show:false
                   'RFQ_DETAIL_TIPS_NEGOTIATEBASIC_BUTTON_BAOGAOQINGDAN', // TAB谈判基本信息-报告清单按钮
+                  'RFQ_XIANGXIXINGXI',// shou:false
                  ]
 const whiteKey = [
   // 零件采购项目详情页
