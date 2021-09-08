@@ -1,7 +1,7 @@
 /*
  * @Author: 舒杰
  * @Date: 2021-08-04 20:05:48
- * @LastEditTime: 2021-08-16 15:23:43
+ * @LastEditTime: 2021-09-08 15:05:38
  * @LastEditors: 舒杰
  * @Description: SOP进度轴
  * @FilePath: \front-sourcing\src\api\categoryManagementAssistant\internalDemandAnalysis\sop.js
@@ -33,4 +33,15 @@ export function sopPipeLineSave(params) {
        method: 'POST',
        data:params
      });
- }
+}
+ 
+ //SOP查询参数
+ export function sopParamInit(params) {
+  return request({
+      url: '/sopPipeLine/sopParamInit',
+      method: 'POST',
+      data:params
+    });
+}
+
+

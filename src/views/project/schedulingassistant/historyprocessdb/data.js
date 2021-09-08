@@ -2,25 +2,25 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:35:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-31 15:27:30
+ * @LastEditTime: 2021-09-07 17:01:41
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\data.js
  */
 
 export const searchListPro = [
-  {value: 'level', name: '查看维度', key: 'CHAKANWEIDU', type: 'select', selectOption: 'levelOptions'},
-  {value: 'cartypeProId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'select', filterable: true, selectOption: 'carProjectOptions'},
-  {value: 'productGroup', name: '产品组', key: 'LK_CHANPINZU', type: 'inputFilter', placeholder: '输入产品组搜索', placeholderKey: 'SHURUCHANPINZUSOUSUO'},
-  {value: 'partNum', name: '零件号', key: 'LINGJIANHAO', type: 'input', placeholder: '输入零件号搜索', placeholderKey: 'SHURULINGJIANHAOSOUSUO'},
+  {value: 'level', name: '查看维度', key: 'CHAKANWEIDU', type: 'select', selectOption: 'levelOptions', permission: 'PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_LEVEL|项目管理-排程助手-历史进度数据库-查看维度'},
+  {value: 'cartypeProId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'select', filterable: true, selectOption: 'carProjectOptions', permission: 'PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_CARPROJECT|项目管理-排程助手-历史进度数据库-车型项目'},
+  {value: 'productGroup', name: '产品组', key: 'LK_CHANPINZU', type: 'inputFilter', placeholder: '输入产品组搜索', placeholderKey: 'SHURUCHANPINZUSOUSUO', permission: 'PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PRODUCTGROUP|项目管理-排程助手-历史进度数据库-产品组'},
+  {value: 'partNum', name: '零件号', key: 'LINGJIANHAO', type: 'input', placeholder: '输入零件号搜索', placeholderKey: 'SHURULINGJIANHAOSOUSUO', permission: 'PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PARTNUM|项目管理-排程助手-历史进度数据库-零件号'},
   // {value: 'categoryName', name: '材料组', key: 'CAILIAOZU', type: 'input', placeholder: '输入材料组搜索', placeholderKey: 'SHURUCAILIAOZUSOUSUO' },
 ]
 
 export const searchListPart = [
-  {value: 'level', name: '查看维度', key: 'CHAKANWEIDU', type: 'select', selectOption: 'levelOptions'},
-  {value: 'cartypeProId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'select', filterable: true, selectOption: 'carProjectOptions'},
-  {value: 'sixPartCode', name: '六位号', key: 'LIUWEIHAO', type: 'input', placeholder: '输入六位号搜索', placeholderKey: 'SHURULIUWEIHAOSOUSUO'},
-  {value: 'partNum', name: '零件号', key: 'LINGJIANHAO', type: 'input', placeholder: '输入零件号搜索', placeholderKey: 'SHURULINGJIANHAOSOUSUO'},
-  {value: 'categoryName', name: '材料组', key: 'CAILIAOZU', type: 'input', placeholder: '输入材料组搜索', placeholderKey: 'SHURUCAILIAOZUSOUSUO' },
+  {value: 'level', name: '查看维度', key: 'CHAKANWEIDU', type: 'select', selectOption: 'levelOptions', permission: 'PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_LEVEL|项目管理-排程助手-历史进度数据库-查看维度'},
+  {value: 'cartypeProId', name: '车型项目', key: 'CHEXINGXINAGMU', type: 'select', filterable: true, selectOption: 'carProjectOptions', permission: 'PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_CARPROJECT|项目管理-排程助手-历史进度数据库-车型项目'},
+  {value: 'sixPartCode', name: '六位号', key: 'LIUWEIHAO', type: 'input', placeholder: '输入六位号搜索', placeholderKey: 'SHURULIUWEIHAOSOUSUO', permission: 'PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_SIXCODE|项目管理-排程助手-历史进度数据库-六位号'},
+  {value: 'partNum', name: '零件号', key: 'LINGJIANHAO', type: 'input', placeholder: '输入零件号搜索', placeholderKey: 'SHURULINGJIANHAOSOUSUO', permission: 'PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PARTNUM|项目管理-排程助手-历史进度数据库-零件号'},
+  {value: 'categoryName', name: '材料组', key: 'CAILIAOZU', type: 'input', placeholder: '输入材料组搜索', placeholderKey: 'SHURUCAILIAOZUSOUSUO', permission: 'PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_CATEGORY|项目管理-排程助手-历史进度数据库-材料组' },
 ]
 
 export const regularTableTitle = [

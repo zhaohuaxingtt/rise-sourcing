@@ -7,7 +7,6 @@
     <iPage class="filesDetailList">
         <div>
             <p class="title margin-bottom10">{{language('LK_FUJIANQINGDAN','附件清单')}}：{{importfilesId}}</p>
-            <iCard collapse>
                 <!-- 搜索区域 -->
                 <iSearch @sure="sure" @reset="reset">
                     <el-form>
@@ -25,7 +24,6 @@
                         </el-form-item>
                     </el-form>
                 </iSearch>
-            </iCard>
             <iCard class="margin-top20">
                 <!-- 表格区域 -->
                 <tableList
@@ -137,7 +135,6 @@ export default {
         sure(){
             this.page.currPage = 1;
             this.getList();
-            console.log(this.searchParams);
         },
         // // 重置
         reset(){

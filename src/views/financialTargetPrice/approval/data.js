@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 16:08:21
+ * @LastEditTime: 2021-09-07 17:59:28
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\data.js
  */
@@ -36,14 +36,14 @@ export const tableMockData = [
 ]
 
 export const searchList = [
-  {value: 'rfqId', label: 'RFQ编号', type: 'input', i18n_label: 'RFQBIANHAO',},
-  {value: 'fsNum', label: 'FsNr/GsNr', type: 'input', i18n_label: 'FSNRGSNR',},
-  {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',},
-  {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG'},
-  {value: 'cfId', label: 'CF', type: 'select', i18n_label: 'CF',selectOption:'CF_USER'},
-  {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE'},
+  {value: 'rfqId', label: 'RFQ编号', type: 'input', i18n_label: 'RFQBIANHAO',permission: 'FINANCIALTARGETPRICE_APPROVAL_RFQNUM|财务目标价管理-目标价审批-RFQ编号'},
+  {value: 'fsNum', label: 'FsNr/GsNr', type: 'input', i18n_label: 'FSNRGSNR',permission: 'FINANCIALTARGETPRICE_APPROVAL_FSNUM|财务目标价管理-目标价审批-FSGSNO'},
+  {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',permission: 'FINANCIALTARGETPRICE_APPROVAL_PARTNUM|财务目标价管理-目标价审批-零件号'},
+  {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG',permission: 'FINANCIALTARGETPRICE_APPROVAL_PARTNAME|财务目标价管理-目标价审批-零件名称'},
+  {value: 'cfId', label: 'CF', type: 'select', i18n_label: 'CF',selectOption:'CF_USER',permission: 'FINANCIALTARGETPRICE_APPROVAL_CF|财务目标价管理-目标价审批-CF'},
+  {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE',permission: 'FINANCIALTARGETPRICE_APPROVAL_LINIE|财务目标价管理-目标价审批-LINIE'},
   // {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',},
-  {value: 'cfPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption:'CF_PRICE_TYPE'}
+  {value: 'cfPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption:'CF_PRICE_TYPE',permission: 'FINANCIALTARGETPRICE_APPROVAL_PRICETYPE|财务目标价管理-目标价审批-目标价分类'}
 ]
 
 export const detailList = [

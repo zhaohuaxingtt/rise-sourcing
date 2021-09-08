@@ -11,6 +11,7 @@
 		<template slot="header-control">
 			<iButton @click="edit" v-if="isEdit">{{ language("BIANJI", "编辑") }}</iButton>
 			<iButton @click="edit" v-else>{{ language("QUXIAO", "取消") }}</iButton>
+			<iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
 			<iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
 			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 		</template>
@@ -20,7 +21,7 @@
 				<icon symbol name="iconcailiaozudingwei" class="font30"></icon>
 				<span>{{ language("CAILIAOZUDINGWEI", "材料组定位") }}</span>
 			</div>
-			<piecewise :materialGroupPosition="materialGroup.materialGroupPosition"></piecewise>
+			<piecewise :materialGroupPosition="materialGroup.materialGroupPosition" @handleChartClick="handleChartClick"></piecewise>
 		</div>
 		<!-- 业务影响度特征分布情况 供应复杂度特征分布 -->
 		<el-row gutter="50" class="margin-top35">
@@ -66,7 +67,7 @@
 	import {iCard,iPagination,iButton,iMessage,iMessageBox,icon,iInput} from 'rise';
 	import tableList from '@/views/partsrfq/externalAccessToAnalysisTools/components/tableList.vue';
 	import {tableTitle} from './data';
-	import {materialGroupPosition,saveMaterialGroupScheme} from "@/api/categoryManagementAssistant/marketData/materialGroup";
+	import {materialGroupPosition,saveMaterialGroupScheme, resettingSuggest} from "@/api/categoryManagementAssistant/marketData/materialGroup";
 	import ring from "./ring";
 	import piecewise from "./piecewise";
 	import {downloadPdfMixins} from '@/utils/pdf';
@@ -136,7 +137,9 @@
 						this.tableLoading=false
 						this.materialGroup=res.data
 					}
-				})
+				}).catch(()=> {
+          this.tableLoading=false
+        })
 			},
 			// 保存
 			async save(){
@@ -155,7 +158,7 @@
 					problemAndSuggestionList:this.materialGroup.problemAndSuggestionList
 				}
 				saveMaterialGroupScheme(params).then(res=>{
-					
+
 				})
 			},
 			// 返回
@@ -166,6 +169,23 @@
 			edit(){
 				this.isEdit=!this.isEdit
 			},
+      // 重置
+      async reset() {
+        try {
+          const req = {
+            materialGroupCode:this.categoryCode,
+          }
+          const res = await resettingSuggest(req)
+          this.materialGroup = res.data
+        } finally {
+          this.tableLoading=false
+        }
+      },
+      // 点击echarts图 获取数据
+      handleChartClick(code) {
+        this.categoryCode = code
+        this.getMaterialGroup()
+      }
 		}
 	}
 </script>

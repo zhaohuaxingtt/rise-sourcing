@@ -366,9 +366,9 @@ module.exports = {
         },
       },
       '/aonApi': {
-        //  target: 'http://10.122.18.166:8036',
+         target: 'http://10.122.18.166:8036',
         // target: 'http://10.160.143.174:8036',
-        target: 'http://10.122.17.38:8036',
+        // target: 'http://10.122.17.38:8036',
         changeOrigin: true,
         pathRewrite: {
           '^/aonApi': '',
@@ -450,7 +450,7 @@ module.exports = {
       },
       '/changepriceApi': {
         // 采购订单
-        //target: 'http://192.168.50.112:8026/',
+        //target: 'http://http://10.122.17.38:8026/',
         target: 'http://10.122.18.166:8026',
         changeOrigin: true,
         logLevel: 'debug',

@@ -36,7 +36,6 @@
         <!-- 表单区域 -->
         <tableList
             class="table aotoTableHeight"
-            index
             :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"

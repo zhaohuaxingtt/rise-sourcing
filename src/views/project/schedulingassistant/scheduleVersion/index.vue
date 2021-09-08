@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:02
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-06 14:23:35
+ * @LastEditTime: 2021-09-08 10:29:37
  * @Description: 排程版本查询
  * @FilePath: \front-web\src\views\project\schedulingassistant\scheduleVersion\index.vue
 -->
@@ -10,13 +10,14 @@
 <template>
   <div class="scheduleVersion">
     <!-- v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION|排程版本查询" -->
-    <search @search="handSearch" ref="searchForm" />
+    <search @search="handSearch" ref="searchForm" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION|排程版本查询"/>
     <!-- v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_TABLE|排程版本表格" -->
-    <iCard class="margin-top20">
+    <iCard class="margin-top20" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_TABLE|排程版本表格">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
           <!-- 批量下载排程版本 -->
           <iButton
+            :loading="batchUploading"
             @click="batchDownload"
           >
             {{ language('LK_XIAZAI', '下载') }}
@@ -63,7 +64,8 @@ export default {
       tableTitle,
       tableData: [],
       selectTableData: [],
-      tableLoading: false
+      tableLoading: false,
+      batchUploading: false
     }
   },
   mounted() {
@@ -128,7 +130,7 @@ export default {
           }])
         return
       }
-      downloadFile(row.id)
+      downloadFile(row.fileId)
     },
     batchDownload() {
       const fileList = this.selectTableData.map(o => {
@@ -141,6 +143,7 @@ export default {
         iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU','请选择至少一条数据'))
         return
       }
+      this.batchUploading = true
       this.genScheduleVersion(fileList)
     },
     /**
@@ -148,18 +151,24 @@ export default {
      * @param {*} file 字符串表示单个文件下载
      * @return {*}
      */   
-    genScheduleVersion(fileList) {
-      genScheduleVersionFileId(fileList).then(res => {
+    async genScheduleVersion(fileList) {
+      try {
+        const res = await genScheduleVersionFileId(fileList)
         if (res.code === '200') {
-          console.log(res)
+          const fileList = res.data || []
+          if (fileList.length) {
+            downloadFile(fileList.map(o => o.id))
+          }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-      }).catch(e => {
+        this.batchUploading = false
+      } catch (e) {
+        this.batchUploading = false
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      })
+      }
+      this.batchUploading = false
     }
-
   }
   
 }

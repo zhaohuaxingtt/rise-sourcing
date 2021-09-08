@@ -23,14 +23,34 @@
         fit
     >
       <template v-for="(item, index) in columns">
-        <el-table-column :key="index" v-if="['selection', 'index'].includes(item.type)" :type="item.type"
-                         :label="item.i18n ? $t(item.i18n) : item.label" :width="item.width || 50"
-                         :align="item.align || 'center'" :selectable="handleSelectable"/>
-        <el-table-column :key="index" v-else-if="['customSelection'].includes(item.type)" :type="item.type"
-                         :label="item.i18n ? $t(item.i18n) : item.label" :width="item.width || 50"
-                         :align="item.align || 'center'" :selectable="handleSelectable">
+        <el-table-column
+          :key="index"
+          v-if="['selection', 'index'].includes(item.type)"
+          :reserve-selection="item.reserveSelection || false"
+          :type="item.type"
+          :label="item.i18n ? $t(item.i18n) : item.label"
+          :width="item.width || '50'"
+          :min-width="item.minWidth"
+          :align="item.align || 'center'"
+          :selectable="handleSelectable"
+        />
+        <el-table-column
+          :key="index"
+          v-else-if="['customSelection'].includes(item.type)"
+          reserve-selection
+          :type="item.type"
+          :label="item.i18n ? $t(item.i18n) : item.label"
+          :width="item.width || '50'"
+          :min-width="item.minWidth || '50'"
+          :align="item.align || 'center'"
+          :selectable="handleSelectable"
+        >
           <template slot="header">
-            <el-checkbox v-model="checkedAll" :indeterminate="indeterminateAll" @change="handleCheckedAll"/>
+            <el-checkbox
+              v-model="checkedAll"
+              :indeterminate="indeterminateAll"
+              @change="handleCheckedAll"
+            />
           </template>
           <template slot-scope="scope">
             <el-checkbox v-model="scope.row.checked" :indeterminate="scope.row.isIndeterminate"
