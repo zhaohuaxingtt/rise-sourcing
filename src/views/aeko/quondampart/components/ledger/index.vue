@@ -301,6 +301,8 @@ export default {
     },
     confirmAPrice(row) {
       this.currentRow.aprice = row.price
+      this.currentRow.currency = row.currency
+      this.currentRow.unit = row.priceUnit
       this.currentRow = {}
     },
     // 保存
@@ -312,7 +314,7 @@ export default {
         item.supplierCode = item.supplierSap;
         item.supplierName = item.supplierNameZh;
         item.facadeCode = item.procureFactory;
-        });
+      })
 
       const data = {
         partList:this.aekomultipleSelection.concat(this.multipleSelection),
