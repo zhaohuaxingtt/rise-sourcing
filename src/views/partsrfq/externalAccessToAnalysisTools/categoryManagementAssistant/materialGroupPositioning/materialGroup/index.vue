@@ -71,8 +71,9 @@
 	import ring from "./ring";
 	import piecewise from "./piecewise";
 	import {downloadPdfMixins} from '@/utils/pdf';
+  import resultMessageMixin from '@/utils/resultMessageMixin'
 	export default{
-		mixins:[downloadPdfMixins],
+		mixins:[downloadPdfMixins, resultMessageMixin],
 		components:{
 			iCard,tableList,iButton,icon,iInput,ring,piecewise
 		},
@@ -176,7 +177,8 @@
             materialGroupCode:this.categoryCode,
           }
           const res = await resettingSuggest(req)
-          this.materialGroup = res.data
+          this.materialGroup.problemAndSuggestionList = res.data
+          this.resultMessage(res)
         } finally {
           this.tableLoading=false
         }

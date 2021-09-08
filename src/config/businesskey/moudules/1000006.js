@@ -90,6 +90,7 @@ const blackKey = [
                   
                   'RFQ_DETAIL_TIPS_BAOJIAQUSHI', //TAB报价分析-报价趋势 show:false
                   'RFQ_DETAIL_TIPS_NEGOTIATEBASIC_BUTTON_BAOGAOQINGDAN', // TAB谈判基本信息-报告清单按钮
+                  'RFQ_XIANGXIXINGXI',// shou:false
                  ]
 const whiteKey = [
   // 零件采购项目详情页
