@@ -263,6 +263,7 @@ export default {
     },
     //模具台账
     goLedger(item) {
+      if (this.isEdit) return
       let routeData = this.$router.resolve({
         path: `/purchaseSupplier/mouldBook/details?bmSerial=${item.itemSourceCode}`
       })
@@ -271,8 +272,8 @@ export default {
     openGrIr(item) {
       if (this.orderDetails.contractSapCode) {
         this.orderItemForm = item
+        this.purchaseOrderGrIrSelIsVisible = true
       }
-      this.purchaseOrderGrIrSelIsVisible = true
     },
     getOrderItemData() {
       return this.orderItemData

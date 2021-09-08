@@ -4,7 +4,7 @@
 import {permissionTitle} from '@/utils'
 
 export const tabtitle = [
-    {value: 1, message: 0, name: "模具投资清单", activePath: '/purchaseSupplier/investmentList', url: '/purchaseSupplier/investmentList', key: "模具投资清单"},
+    {value: 1, message: 0, name: "模具投资清单", activePath: '/purchaseSupplier/investmentList/sureTask', url: '/purchaseSupplier/investmentList/sureTask', key: "模具投资清单"},
 ]
 export const navList = [
     {value: 1, message: 0, name: "确认任务", activePath: '/purchaseSupplier/investmentList/sureTask', url: '/purchaseSupplier/investmentList/sureTask', key: "确认任务"},
@@ -380,6 +380,27 @@ export const changeTaskBmInfoTitle = [
         props: 'assetPrice',
         name: '资产单价',
         key: '资产单价',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'assetTotal',
+        name: '资产总额',
+        key: '资产总额',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'changeReason',
+        name: '变更说明',
+        key: '变更说明',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'picture',
+        name: '照片',
+        key: '照片',
         width: 200,
         tooltip: false
     },

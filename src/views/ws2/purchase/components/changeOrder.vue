@@ -5,7 +5,7 @@
 <template>
   <iDialog :title="$t(title)" :visible.sync="value" width="95%" top="5vh" @close='clearDiolog' z-index="1000" class="iDialogAdd">
     <div slot="title" class="title">
-      <iButton class="download" @click="initiateChange">{{ language('LK_XIAZAI', '下载') }}</iButton>
+      <iButton class="download" v-loading="downPdfLoading" @click="downPdf">{{ language('LK_XIAZAI', '下载') }}</iButton>
     </div>
     <div class="changeContent" v-loading="tableLoading">
       <div class="head">
@@ -232,7 +232,8 @@ import {
 
 import {
   show,
-  preview
+  preview,
+  downPdf
 } from "@/api/ws2/purchase/changeTask";
 
 export default {
@@ -250,6 +251,7 @@ export default {
   data() {
     return {
       tableLoading: false,
+      downPdfLoading: false,
       baseInfo: {}
 
     }
@@ -284,9 +286,20 @@ export default {
           this.tableLoading = false
         })
       }
-
     },
-
+    downPdf(){
+      this.downPdfLoading = true
+      downPdf(this.baseInfo).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+        } else {
+          iMessage.error(result)
+        }
+        this.downPdfLoading = false
+      }).catch(err => {
+        this.downPdfLoading = false
+      })
+    },
     clearDiolog() {
       this.$emit('input', false)
     },
