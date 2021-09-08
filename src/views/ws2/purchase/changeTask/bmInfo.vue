@@ -9,7 +9,7 @@
         <span>{{ $t("LK_RIZHI") }}</span>
       </div>
     </div>
-    <iLog :show.sync="iLogShow" :bizId="query.bmSerial"></iLog>
+    <iLog :show.sync="iLogShow" :bizId="query.changeNum"></iLog>
 
     <iCard v-loading="baseInfoLoading">
       <div class="head-serch">
@@ -205,19 +205,17 @@
         <div class="top-r">
           <iButton
               v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2 || Number(baseInfo.changeStatus) === 3)"
-              v-loading="bmBuberLoading"
               @click="handleEdit">
             {{ language('LK_BIANJI', '编辑') }}
           </iButton>
           <iButton
               v-show="(Number(baseInfo.changeStatus) === 4 || Number(baseInfo.changeStatus) === 5)"
-              v-loading="sendSupplierLoading"
-              @click="sendSupplier">
+              v-loading="recallLoading"
+              @click="handleRecall">
             {{ language('LK_CHEHUI', '撤回') }}
           </iButton>
           <iButton
               v-show="!isEdit"
-              v-loading="sendSupplierLoading"
               @click="changeOrderShow = true; isCheck = true">
             {{ language('LK_CHAKANBIANGENGDAN', '查看变更单') }}
           </iButton>
@@ -230,13 +228,11 @@
 
           <iButton
               v-show="isEdit"
-              v-loading="bmBuberLoading"
               @click="isEdit = false">
             {{ language('LK_TUICHUBIANJI', '退出编辑') }}
           </iButton>
           <iButton
               v-show="isEdit"
-              v-loading="bmBuberLoading"
               @click="handlePreView">
             {{ language('LK_YULANBIANGENGDAN', '预览变更单') }}
           </iButton>
@@ -248,7 +244,6 @@
           </iButton>
           <iButton
               v-show="isEdit"
-              v-loading="bmBuberLoading"
               @click="handleDelete">
             {{ language('LK_SHANCHU', '删除') }}
           </iButton>
@@ -350,6 +345,16 @@
             </iInput>
           </div>
         </template>
+        <template #changeReason="scope">
+          <div v-show="!isEdit">{{ scope.row.changeReason }}</div>
+          <div v-show="isEdit">
+            <iInput
+                v-model="scope.row.changeReason"
+                :placeholder="language('LK_QINGSHURU', '请输入')"
+            >
+            </iInput>
+          </div>
+        </template>
         <template #assetTotal="scope">
           <div>{{scope.row.assetTotal ? getTousandNum(Number(scope.row.assetTotal).toFixed(2)) : scope.row.assetTotal}}</div>
         </template>
@@ -404,7 +409,7 @@
         <div class="title">{{ language('LK_BIANGENGSHENPIFUJIAN', '变更审批附件') }}</div>
         <div class="btns">
           <iButton
-              v-loading="bmBuberLoading"
+              v-loading="removeAttachmentLoading"
               @click="removeAttachment">
             {{ language('LK_SHANCHU', '删除') }}
           </iButton>
@@ -484,7 +489,7 @@ import {
   shareParts,
 } from "@/api/ws2/purchase/changeTask/bmInfo";
 import {getTousandNum, delcommafy} from "@/utils/tool";
-import {submitApproval} from "@/api/ws2/purchase/investmentList";
+import {submitApproval, recall} from "@/api/ws2/purchase/investmentList";
 import {cloneDeep} from "lodash";
 
 export default {
@@ -524,10 +529,12 @@ export default {
       photoListShow: false,
       detailsTableLoading: false,
       baseInfoLoading: false,
+      removeAttachmentLoading: false,
       tableLoading: false,
       tableLoading2: false,
       bmBuberLoading: false,
       sendSupplierLoading: false,
+      recallLoading: false,
       iLogShow: false,
       changeOederData: {},
       uploadButtonLoading: false,
@@ -774,6 +781,22 @@ export default {
         this.bmBuberLoading = false
       });
     },
+    handleRecall(){
+      this.recallLoading = true
+      recall({bmChangeId: this.query.bmChangeId}).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.moldHeaderByBmSerial()
+          this.findMoldViewList()
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+        }
+        this.recallLoading = false
+      }).catch(() => {
+        this.recallLoading = false
+      });
+    },
     sendSupplier(){
       this.sendSupplierLoading = true
       submitApproval(this.query.bmId, this.query.bmChangeId).then((res) => {
@@ -857,6 +880,7 @@ export default {
     },
 
     removeAttachment(){
+      this.removeAttachmentLoading = true
       if(!this.multipleSelection || this.multipleSelection.length === 0){
         iMessage.warn(this.language('LK_BAAPPLYTISP1', '请先勾选'))
         return
@@ -870,9 +894,9 @@ export default {
         } else {
           iMessage.error(result);
         }
-        this.baseInfoLoading = false
+        this.removeAttachmentLoading = false
       }).catch(() => {
-        this.baseInfoLoading = false
+        this.removeAttachmentLoading = false
       });
     },
 
@@ -925,7 +949,7 @@ export default {
     openPhotoList(imgList){
       this.photoListShow = true
       this.imgList = imgList
-    }
+    },
   }
 }
 </script>
