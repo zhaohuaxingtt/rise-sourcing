@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-06 10:28:02
+ * @LastEditTime: 2021-09-07 18:06:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -64,7 +64,12 @@ export default {
                 color: colorList[index]
               }
             }
-            const str = item.title + "\n\n" + item.ebr
+            let str = ""
+            if (item.title == 'MIX') {
+              str = item.title + "\n\n"
+            } else {
+              str = item.title + "\n\n" + item.ebr
+            }
             this.barDataItem.push(itemData)
             this.barxAxis.push(str)
           })
