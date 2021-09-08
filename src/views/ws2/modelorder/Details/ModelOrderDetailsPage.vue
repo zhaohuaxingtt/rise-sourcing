@@ -4,93 +4,73 @@
       <span>{{ titleComputed }}</span>
       <div class="btnList flex-align-center">
         <!---日志-->
-        <LogButton class="margin-left10" @click="lookLog" />
-        <LedgerIconComponent />
+        <LogButton class="margin-left10" @click="lookLog"/>
+        <LedgerIconComponent/>
       </div>
     </div>
     <div class="line-top margin-top10"></div>
     <div class="flex-between-center-center margin-top20">
-      <el-radio-group v-model="selectItem" @change="onItemSelfunction">
-        <el-radio-button label="MODEL_ORDER">{{
-          $t("MODEL-ORDER.LK_DINGDAN")
-        }}</el-radio-button>
-        <el-radio-button label="MODEL_CONTRACT" :disabled="!bottomIsShow"
-          >{{ $t("MODEL-ORDER.LK_HETONG") }}
+      <el-radio-group v-model="selectItem" @change="onItemSelFunction">
+        <el-radio-button label="MODEL_ORDER">{{ $t("MODEL-ORDER.LK_DINGDAN") }}</el-radio-button>
+        <el-radio-button label="MODEL_CONTRACT" :disabled="!bottomIsShow">{{
+            $t("MODEL-ORDER.LK_HETONG")
+          }}
         </el-radio-button>
       </el-radio-group>
 
       <div class="btnList flex-align-center">
         <!--下一步-->
-        <i-button v-if="nextStepShow" @click="nextStep">{{
-          $t("LK_XIAYIBU")
-        }}</i-button>
+        <i-button v-if="nextStepShow" @click="nextStep">{{ $t("LK_XIAYIBU") }}</i-button>
         <!--清空-->
-        <i-button v-if="nextStepShow" @click="clearForm">{{
-          $t("MODEL-ORDER.LK_QINGKONG")
-        }}</i-button>
+        <i-button v-if="nextStepShow" @click="clearForm">{{ $t("MODEL-ORDER.LK_QINGKONG") }}</i-button>
 
-        <i-button v-if="saveOrderShow" @click="outEditOrder">{{
-          $t("LK_TUICHUBIANJI")
-        }}</i-button>
+        <i-button v-if="saveOrderShow" @click="outEditOrder">{{ $t("LK_TUICHUBIANJI") }}</i-button>
         <!--保存-->
-        <i-button
-          v-if="saveOrderShow"
-          v-loading.fullscreen.lock="fullscreenLoading"
-          @click="saveOrder"
-        >
+        <i-button v-if="saveOrderShow" v-loading.fullscreen.lock="fullscreenLoading" @click="saveOrder">
           {{ $t("LK_BAOCUN") }}
         </i-button>
         <!--编辑-->
-        <i-button v-if="editOrderbtnShow" @click="editOrder">{{
-          $t("LK_BIANJI")
-        }}</i-button>
+        <i-button v-if="editOrderbtnShow" @click="editOrder">{{ $t("LK_BIANJI") }}</i-button>
 
         <!--提交订单-->
-        <i-button
-          v-if="submitOrderbtnShow"
-          v-loading.fullscreen.lock="fullscreenLoading"
-          @click="submitOrder"
-        >
+        <i-button v-if="submitOrderbtnShow" v-loading.fullscreen.lock="fullscreenLoading" @click="submitOrder">
           {{ $t("LK_TIJIAO") }}
         </i-button>
         <!--版本升级-->
-        <i-button
-          v-if="versionUpgradeShow"
-          v-loading.fullscreen.lock="fullscreenLoading"
-          @click="versionUpgrade"
-        >
+        <i-button v-if="versionUpgradeShow" v-loading.fullscreen.lock="fullscreenLoading" @click="versionUpgrade">
           {{ $t("MODEL-ORDER.LK_BANBENSHNGJI") }}
         </i-button>
       </div>
     </div>
     <ModelOrderDetailsTopComponents
-      ref="orderDetailsTopComponentsRef"
-      :is-edit="isEdit"
-      :option="option"
-      :id="id"
-      :order-details="orderDetails"
-      :purchasing-factory-list="purchasingFactoryList"
-      :order-status-list="orderStatusList"
-      :contain-purchase-group="containPurchaseGroup"
+        v-if="orderShow"
+        ref="orderDetailsTopComponentsRef"
+        :is-edit="isEdit"
+        :option="option"
+        :id="id"
+        :order-details="orderDetails"
+        :purchasing-factory-list="purchasingFactoryList"
+        :order-status-list="orderStatusList"
+        :contain-purchase-group="containPurchaseGroup"
     />
 
     <ModelOrderDetailsBottomComponents
-      v-if="bottomIsShow"
-      ref="orderDetailsBottomComponentRef"
-      :id="id"
-      :isEdit="isEdit"
-      :order-details="orderDetails"
-      :containPurchaseGroup="containPurchaseGroup"
+        v-if="bottomIsShow&&orderShow"
+        ref="orderDetailsBottomComponentRef"
+        :id="id"
+        :isEdit="isEdit"
+        :order-details="orderDetails"
+        :containPurchaseGroup="containPurchaseGroup"
     />
     <iLog
-      :show.sync="logDialogVisible"
-      :bizId="id == -1 ? 0 : orderDetails.contractCode"
+        :show.sync="logDialogVisible"
+        :bizId="id == -1 ? 0 : orderDetails.contractCode"
     />
   </i-page>
 </template>
 
 <script>
-import { iButton, iPage, iLog } from "rise";
+import {iButton, iPage, iLog} from "rise";
 import LogButton from "../../budgetManagement/components/logButton";
 import LedgerIconComponent from "./components/LedgerIconComponent";
 import ModelOrderDetailsTopComponents from "./components/ModelOrderDetailsTopComponents";
@@ -106,8 +86,8 @@ import {
   purchaseOrderSubmission,
   versionUpgradeByOrder,
 } from "@/api/ws2/modelOrder";
-import { purchaseFactory } from "@/api/partsprocure/editordetail";
-import { getDictByCode } from "@/api/dictionary";
+import {purchaseFactory} from "@/api/partsprocure/editordetail";
+import {getDictByCode} from "@/api/dictionary";
 
 export default {
   name: "ModelOrderDetailsPage",
@@ -127,23 +107,22 @@ export default {
       if (this.option == 0 && this.id == -1) {
         return "新建订单";
       } else {
-        if (null == this.orderDetails || this.orderDetails == undefined)
-          return "";
+        if (null == this.orderDetails || this.orderDetails == undefined) return "";
         return (
-          this.$t("MODEL-ORDER.LK_RISEDINGDANHAO") +
-          `:${this.orderDetails.contractCode}`
+            this.$t("MODEL-ORDER.LK_RISEDINGDANHAO") +
+            `:${this.orderDetails.contractCode}`
         );
       }
     },
     //创建模式按钮显示
     nextStepShow: function () {
-      return this.option == 0 && this.id == -1;
+      return this.orderShow && this.option == 0 && this.id == -1;
     },
     //保存按钮显示
     saveOrderShow: function () {
       let val = this.orderDetails.state ?? "draft";
       if (val == "history") return false;
-      return this.containPurchaseGroup && this.isEdit && this.id !== -1;
+      return this.orderShow && this.containPurchaseGroup && this.isEdit && this.id !== -1;
     },
     //编辑  提交按钮显示
     editOrderbtnShow: function () {
@@ -151,16 +130,16 @@ export default {
       if (val == "history") return false;
       if (val == "formal") {
         return (
-          this.containPurchaseGroup &&
-          this.orderDetails.isLatest &&
-          this.isEdit === false &&
-          (this.id != -1 || this.option == 1)
+            this.orderShow && this.containPurchaseGroup &&
+            this.orderDetails.isLatest &&
+            this.isEdit === false &&
+            (this.id != -1 || this.option == 1)
         );
       }
       return (
-        this.containPurchaseGroup &&
-        this.isEdit === false &&
-        (this.id != -1 || this.option == 1)
+          this.orderShow && this.containPurchaseGroup &&
+          this.isEdit === false &&
+          (this.id != -1 || this.option == 1)
       );
     },
     //提交按钮显示
@@ -168,9 +147,9 @@ export default {
       let val = this.orderDetails.state ?? "draft";
       if (val == "history" || val == "formal") return false;
       return (
-        this.containPurchaseGroup &&
-        this.isEdit === false &&
-        (this.id != -1 || this.option == 1)
+          this.orderShow && this.containPurchaseGroup &&
+          this.isEdit === false &&
+          (this.id != -1 || this.option == 1)
       );
     },
     //版本升级按钮显示
@@ -178,9 +157,9 @@ export default {
       let val = this.orderDetails.state ?? "draft";
       if (val == "history") return false;
       if (val == "formal") {
-        return this.orderDetails.isLatest && this.option == 1 && !this.isEdit;
+        return this.orderShow && this.orderDetails.isLatest && this.option == 1 && !this.isEdit;
       }
-      return val == "formal" && this.option == 1 && !this.isEdit;
+      return this.orderShow && val == "formal" && this.option == 1 && !this.isEdit;
     },
     //判断该订单采购组与当前用户所在采购组是否一致
     containPurchaseGroup: function () {
@@ -188,12 +167,19 @@ export default {
     },
     bottomIsShow() {
       return (
-        this.orderDetails != null &&
-        this.orderDetails != undefined &&
-        this.orderDetails.id != null &&
-        this.orderDetails.id != undefined
+          this.orderDetails != null &&
+          this.orderDetails != undefined &&
+          this.orderDetails.id != null &&
+          this.orderDetails.id != undefined
       );
     },
+
+    orderShow: function () {
+      return this.selectItem == 'MODEL_ORDER'
+    },
+    contractShow: function () {
+      return this.selectItem == 'MODEL_CONTRACT'
+    }
   },
   data() {
     return {
@@ -240,13 +226,15 @@ export default {
     this.queryContractStatus();
   },
   methods: {
-    onItemSelfunction(val) {},
+    onItemSelFunction(val) {
+      this.selectItem = val
+    },
     lookLog() {
       this.logDialogVisible = true;
     },
     //获取采购工厂
     queryPurchasingFactory() {
-      purchaseFactory({ isSparePart: false }).then((res) => {
+      purchaseFactory({isSparePart: false}).then((res) => {
         if (res?.data && res.code == 200) {
           this.purchasingFactoryList = res.data;
         }
@@ -265,7 +253,7 @@ export default {
       if (this.id == -1) {
         return;
       }
-      let data = { orderId: this.id };
+      let data = {orderId: this.id};
       getPurchaseOrderDetails(data).then((res) => {
         if (res.code == 200) {
           this.orderDetails = res.data;
@@ -275,11 +263,11 @@ export default {
     },
     queryOrderPurchasingGroup() {
       queryPurchasingGroup(this.orderDetails.procureGroup.toUpperCase()).then(
-        (res) => {
-          if (res.code == 200) {
-            this.btnMenuShow = res.data;
+          (res) => {
+            if (res.code == 200) {
+              this.btnMenuShow = res.data;
+            }
           }
-        }
       );
     },
     //获取合同状态
@@ -309,13 +297,13 @@ export default {
     },
     nextStep() {
       let valid =
-        this.$refs.orderDetailsTopComponentsRef.getOrderDetailsValidate(); //获取表单校验数据
+          this.$refs.orderDetailsTopComponentsRef.getOrderDetailsValidate(); //获取表单校验数据
       if (valid) {
         //检测表单是否校验通过
         let val = this.$refs.orderDetailsTopComponentsRef.getOrderDetailsVal(); //获取表单数据
         let flag1 = this.purchaseGroupsByAll.some((purchaseGroup) => {
           return (
-            purchaseGroup.purchaseGroupCode == val.procureGroup.toUpperCase()
+              purchaseGroup.purchaseGroupCode == val.procureGroup.toUpperCase()
           );
         });
         if (!flag1) {
@@ -339,7 +327,7 @@ export default {
             this.isEdit = true;
             this.$router.replace({
               path: `/ws2/order/modeler/details/ModelOrderDetailsPage/1/${res.data}`,
-              query: { isEdit: this.isEdit },
+              query: {isEdit: this.isEdit},
             });
             this.id = res.data;
             this.queryOrderDetails();
@@ -356,7 +344,7 @@ export default {
       let val = this.$refs.orderDetailsTopComponentsRef.getOrderDetailsVal(); //获取表单数据
       let flag1 = this.purchaseGroupsByAll.some((purchaseGroup) => {
         return (
-          purchaseGroup.purchaseGroupCode == val.procureGroup.toUpperCase()
+            purchaseGroup.purchaseGroupCode == val.procureGroup.toUpperCase()
         );
       });
       if (!flag1) {
@@ -386,7 +374,7 @@ export default {
           this.queryOrderDetails();
         } else {
           let itemDatas =
-            this.$refs.orderDetailsBottomComponentRef.getOrderItemData();
+              this.$refs.orderDetailsBottomComponentRef.getOrderItemData();
           let data = {
             orderId: this.orderDetails.id,
             purchaseOrderEntityItemDtos: itemDatas,
