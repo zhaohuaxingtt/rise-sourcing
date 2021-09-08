@@ -394,7 +394,7 @@ export default {
             req.downloadUrl = downloadUrl;
             const res = await saveAnalysisScheme(req);
             if (res.result) {
-              await this.setTableEditStatus(false);
+              await this.setTableEditStatus('');
               this.handleAddModelUrlChange();
             } else {
               this.handleTableSaveError();
@@ -404,7 +404,7 @@ export default {
         } else {
           const res = await saveAnalysisScheme(req);
           if (res.result) {
-            await this.setTableEditStatus(false);
+            await this.setTableEditStatus('');
             this.handleAddModelUrlChange();
           } else {
             this.handleTableSaveError();
