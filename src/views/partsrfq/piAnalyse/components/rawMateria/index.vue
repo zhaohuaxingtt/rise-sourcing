@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-09-07 11:10:43
+ * @LastEditTime: 2021-09-08 10:32:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -224,6 +224,7 @@ export default {
       for(const key in this.searchForm) {
         this.searchForm[key] = null
       }
+      this.searchForm.beginTime = new Date()
     },
     // 关闭弹窗
     handleCloseModal() {

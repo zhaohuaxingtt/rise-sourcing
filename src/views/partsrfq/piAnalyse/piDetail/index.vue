@@ -166,6 +166,7 @@ export default {
         batchNumber: this.$route.query.batchNumber,
         supplierId: '',
         fsId: '',
+        rfqId: '',
       },
       dataInfo: {},
       averageData: {},
@@ -248,11 +249,12 @@ export default {
           this.partItemCurrent = 0;
           const partListItem = this.partList[0];
           this.currentTabData = {
-            analysisSchemeId: partListItem.analysisSchemeId,
+            ...this.currentTabData,
             partsId: partListItem.partsId,
             batchNumber: partListItem.batchNumber,
             supplierId: partListItem.supplierId,
             fsId: partListItem.fsId,
+            rfqId: partListItem.rfqId,
           };
           await this.getDataInfo();
         }
@@ -263,11 +265,12 @@ export default {
     handlePartItemClick({item, index}) {
       this.partItemCurrent = index;
       this.currentTabData = {
-        analysisSchemeId: item.analysisSchemeId,
+        ...this.currentTabData,
         partsId: item.partsId,
         batchNumber: item.batchNumber,
         supplierId: item.supplierId,
         fsId: item.fsId,
+        rfqId: item.rfqId,
       };
       this.currentTab = CURRENTTIME;
       this.getDataInfo();
@@ -314,6 +317,7 @@ export default {
           this.currentTabData.supplierId = res.data.supplierId;
           this.currentTabData.analysisSchemeId = res.data.analysisSchemeId;
           this.currentTabData.fsId = res.data.fsId;
+          this.currentTabData.rfqId = res.data.rfqId;
           this.partList = res.data.partsList.filter(item => {
             return item.isShow;
           });
@@ -390,7 +394,7 @@ export default {
             req.downloadUrl = downloadUrl;
             const res = await saveAnalysisScheme(req);
             if (res.result) {
-              await this.setTableEditStatus(false);
+              await this.setTableEditStatus('');
               this.handleAddModelUrlChange();
             } else {
               this.handleTableSaveError();
@@ -400,7 +404,7 @@ export default {
         } else {
           const res = await saveAnalysisScheme(req);
           if (res.result) {
-            await this.setTableEditStatus(false);
+            await this.setTableEditStatus('');
             this.handleAddModelUrlChange();
           } else {
             this.handleTableSaveError();
@@ -488,20 +492,19 @@ export default {
           req.endTime = value.endTime;
         }
         const res = await saveAnalysisScheme(req);
-        this.resultMessage(res, () => {
-          this.handleTableStatus('');
-          this.handleAverageTableStatus('');
+        this.resultMessage(res, async () => {
+          this.setTableEditStatus('');
           this.handleAddModelUrlChange();
-        });
-        if (res.result) {
           if (tab === CURRENTTIME) {
             await this.getDataInfo({propsArrayLoading: ['tableLoading', 'pieLoading']});
           } else if (tab === AVERAGE) {
             await this.getAverageData();
           }
-        } else {
-          this.handleTableSaveError();
-        }
+        }, () => {
+          this.setTableEditStatus('edit');
+        });
+      } catch {
+        this.setTableEditStatus('edit');
       } finally {
         this.tableLoading = false;
       }
@@ -531,9 +534,9 @@ export default {
     },
     handleTableSaveError() {
       if (this.currentTab === CURRENTTIME && this.$refs.theCurrentTable.tableStatus === 'edit') {
-        this.setTableEditStatus(true);
+        this.setTableEditStatus('edit');
       } else if (this.currentTab === AVERAGE && this.$refs.theAverageTable.tableStatus === 'edit') {
-        this.setTableEditStatus(true);
+        this.setTableEditStatus('edit');
       }
     },
     // 曲线纬度下拉

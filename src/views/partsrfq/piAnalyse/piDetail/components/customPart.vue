@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-31 18:33:07
+ * @LastEditTime: 2021-09-07 17:43:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -28,7 +28,7 @@
           ref="targetTable"
           :tableData="targetTableData"
           :tableTitle="customTableTitle"
-          :tableLoading="loading"
+          :tableLoading="false"
           :index="true"
           :height="500"
           @rowSelect="handleSelectTarget">
@@ -131,7 +131,7 @@ export default {
       }
       getAllAddPart(params).then(res => {
         if(res && res.code == 200) {
-          this.selectTargetData.map(targetObj => {
+          this.targetTableData.map(targetObj => {
             const index = res.data.findIndex(item => item.fsId = targetObj.fsId)
             res.data.splice(index, index + 1)
           })

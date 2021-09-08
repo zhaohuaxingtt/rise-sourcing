@@ -2,20 +2,20 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 18:00:28
+ * @LastEditTime: 2021-09-08 10:02:22
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
 
 <template>
-  <iPage>
+  <iPage v-permission.auto="FINANCIALTARGETPRICE_QUERY_PAGE|财务目标价管理-目标价查询-页面">
     <headerNav />
     <!----------------------------------------------------------------->
     <!---------------------------搜索区域------------------------------->
     <!----------------------------------------------------------------->
     <iSearch @sure="sure" @reset="reset">
       <el-form>
-        <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.i18n_label, item.label)">
+        <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.i18n_label, item.label)" v-permission.dynamic.auto="item.permission">
           <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
             <el-option value="" :label="language('all','全部')"></el-option>
             <el-option
@@ -33,7 +33,7 @@
     <!----------------------------------------------------------------->
     <!---------------------------表格区域------------------------------->
     <!----------------------------------------------------------------->
-    <iCard class="margin-top20">
+    <iCard class="margin-top20" v-permission.auto="FINANCIALTARGETPRICE_QUERY_TABLE|财务目标价管理-目标价查询-表格">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">

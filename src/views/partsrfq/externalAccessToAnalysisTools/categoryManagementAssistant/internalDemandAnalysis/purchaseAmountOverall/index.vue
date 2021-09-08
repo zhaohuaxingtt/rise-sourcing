@@ -140,7 +140,7 @@ export default {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: 'allContainer',
-        pdfName: this.language('CAIGOUJINGEZONGLAN', '采购金额总览') + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString() + '-',
+        pdfName: this.language('CAIGOUJINGEZONGLAN', '采购金额总览') + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
       });
       let params = {
         categoryCode: this.form.categoryCode,

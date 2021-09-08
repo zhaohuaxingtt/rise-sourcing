@@ -1,19 +1,19 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-09-03 16:54:15
+ * @LastEditTime: 2021-09-07 17:45:45
  * @LastEditors: Hao,Jiang
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
 -->
 <template>
   <iPage class="dashboard">
-    <headerNav v-permission="DASHBOARD_PARTSIGN" />
+    <headerNav v-permission.auto="DASHBOARD_OVERVIEW_PAGE|寻源概览" />
     <!-- 功能卡片 -->
     <div class="dashboard-card">
       <el-row :gutter="10">
         <!-- 零件签收 -->
-        <el-col :span="4" v-permission="DASHBOARD_PARTSIGN">
+        <el-col :span="4" v-permission.auto="DASHBOARD_OVERVIEW_PARTSIGN|寻源概览-零件签收">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -25,7 +25,7 @@
           </iCard>
         </el-col>
         <!-- 采购项目建立 -->
-        <el-col :span="4" v-permission="DASHBOARD_PARTSPROCURE">
+        <el-col :span="4" v-permission.auto="DASHBOARD_OVERVIEW_PARTSPROCURE|寻源概览-采购项目建立">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -50,7 +50,7 @@
           </iCard>
         </el-col>
         <!-- RFQ管理 -->
-        <el-col :span="8" v-permission="DASHBOARD_RFQMGMT">
+        <el-col :span="8" v-permission.auto="DASHBOARD_OVERVIEW_RFQMGMT|寻源概览-RFQ管理">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -99,7 +99,7 @@
           </iCard>
         </el-col>
         <!-- 定点管理 -->
-        <el-col :span="4" v-permission="DASHBOARD_NOMINATEMGMT">
+        <el-col :span="4" v-permission.auto="DASHBOARD_OVERVIEW_NOMINATEMGMT|寻源概览-定点管理">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -115,7 +115,7 @@
           </iCard>
         </el-col>
         <!-- 定点信/LOI -->
-        <el-col :span="4" v-permission="DASHBOARD_NOMILETTERANDLOI">
+        <el-col :span="4" v-permission.auto="DASHBOARD_OVERVIEW_NOMILETTERANDLOI|寻源概览-定点信/LOI">
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
@@ -142,10 +142,10 @@
     <div class="dashboard-charts">
       <el-row :gutter="10">
         <!-- 材料组定点时率及平均定点周期 -->
-        <el-col :span="16" v-permission="DASHBOARD_MATERIALANDNOMIRATE">
+        <el-col :span="16" v-permission.auto="DASHBOARD_OVERVIEW_MATERIALANDNOMIRATE|寻源概览-材料组定点及时率及平均定点周期">
           <nomicharts :data="materialGroupData" v-loading="loading" />
         </el-col>
-        <el-col :span="8" v-permission="DASHBOARD_CIRCULATIONOVERVIEW">
+        <el-col :span="8" v-permission.auto="DASHBOARD_OVERVIEW_CIRCULATIONOVERVIEW|寻源概览-流转状态跟踪">
           <pieCharts :data="circulationData" v-loading="loading" />
         </el-col>
       </el-row>
@@ -154,7 +154,6 @@
 </template>
 
 <script>
-import Vuex from 'vuex'
 import headerNav from './components/headerNav'
 import nomicharts from './components/nomicharts'
 import pieCharts from './components/pieCharts'

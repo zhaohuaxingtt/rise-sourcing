@@ -1,14 +1,14 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-08-30 17:28:37
+ * @LastEditTime: 2021-09-08 14:31:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
 -->
 <template>
   <div class="contentBox">
-    <iDialog :title="language('XINZENGFENXIFANGAN', '新增分析方案')" :visible.sync="value" width="80%">
+    <iDialog :title="language('XINZENGFENXIFANGAN', '新增分析方案')" :visible.sync="value" width="80%" @close="handleClose">
       <div class="optionBox">
         <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
           <el-form-item style="marginRight:68px" :label="language('LINGJIANHAO', '零件号')">
@@ -107,6 +107,10 @@ export default {
       getAllAddPart(params).then(res => {
         if(res && res.code == 200) {
           this.mainTableData = res.data
+          this.selectTargetData.map(targetObj => {
+            const index = res.data.findIndex(item => item.fsId = targetObj.fsId)
+            res.data.splice(index, index + 1)
+          })
           this.loading = false
         } else iMessage.error(res.desZh)
       })
@@ -166,6 +170,10 @@ export default {
       }
       this.$set(this.searchForm, 'rfq', this.$store.state.rfq.rfqId || null)
       this.getTableData()
+    },
+    // 关闭弹窗
+    handleClose() {
+      this.$emit('handleCloseAddModal')
     }
   }
 }
