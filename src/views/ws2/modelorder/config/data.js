@@ -6,6 +6,7 @@ import CustomRenderPriceComponents from "../Details/components/CustomRenderPrice
 import ReceiptLocationComponents from "../Details/components/ReceiptLocationComponents";
 import CustomDescriptionComponents from "../Details/components/CustomDescriptionComponents";
 import ContractStatusComponents from "../components/ContractStatusComponents";
+import RiseOrderNumComponents from "../components/RiseOrderNumComponents";
 
 export const MODEL_ORDER_HOME_TABCOLUMNS = [
     {
@@ -28,7 +29,7 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
         emit: 'open-page',
         width: 150,
         customRender: (h, scope) => {
-            return <RiseContractCodeComponents row={scope.row}/>
+            return <RiseOrderNumComponents row={scope.row}/>
         },
     },
     {
