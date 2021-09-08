@@ -2,14 +2,14 @@
 <template>
   <div class="RiseFlex">
     <div class="tooltipWidth">
-      <el-tooltip v-if="row['daysToToday'] <= 10 && row['state'] == 'draft'" class="item" effect="light" MODEL-ORDER.LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN :content="$t('LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN', { day: row['daysToToday'] })" placement="bottom">
+      <el-tooltip v-if="row['daysToToday'] <= 10 && row['state'] == 'draft'" class="item" effect="light" LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN :content="$t('LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN', { day: row['daysToToday'] })" placement="bottom">
         <span class="g-red" @click="openPage(row)">
           <icon class="el-icon-warning-outline" color="red" />
         </span>
       </el-tooltip>
     </div>
     <span :class="'openLinkText cursor'" @click="openPage(row)"> {{ row['contractCode'] }}</span>
-    <span class="icon-gray" @click="openPage(row)">
+    <span class="icon-gray" @@click="openPage(row)">
       <icon symbol class="show" name="icontiaozhuananniu" />
       <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
     </span>
@@ -33,7 +33,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 .tooltipWidth {
-  width: 20px;
+  width: 16.8px;
   height: 16.8px;
 }
 .RiseFlex {
