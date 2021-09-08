@@ -49,7 +49,7 @@
       </div>
       <div class="interests"
            v-else>
-        <div class="interestsName">{{interestsName}}</div>
+        <div class="interestsName">利润</div>
         <div class="interestsName">{{profit1+'%'}}</div>
         <div class="interestsName">{{profit2+'%'}}</div>
         <div class="interestsName">{{profit3+'%'}}</div>
@@ -295,6 +295,7 @@ export default {
           padding: [10, 40],
           bottom: '0',
         },
+        color: ['#0C47A1', '#1976D1', '#2297F3', '#64B5F6', '#00579B', '#0188D1', '#03A9F4', '#50C2F7'],
         grid: {
           bottom: "20%"
         },
@@ -541,7 +542,7 @@ export default {
                 value: 1048,
                 name: '材料组A',
                 itemStyle: {
-                  color: "#0058FF"
+                  color: ""
                 },
                 label: {
                   normal: {
@@ -550,7 +551,7 @@ export default {
                   }
                 }
               }
-              let colorList = ['#0C47A1', '#1976D1', '#2297F3', '#64B5F6', '#00579B', '#0188D1', '#03A9F4', '50C2F7']
+              let colorList = ['#0C47A1', '#1976D1', '#2297F3', '#64B5F6', '#00579B', '#0188D1', '#03A9F4', '#50C2F7']
               if (x.sapStuffCode == this.categoryCode) {
                 seriesObj.selected = true
                 check = false
@@ -618,7 +619,7 @@ export default {
                 }
               }
             }
-            let colorList = ['#0058FF', '#0094FF', '#6EA0FF', '#97D1FF']
+            let colorList = ['#0C47A1', '#1976D1', '#2297F3', '#64B5F6', '#00579B', '#0188D1', '#03A9F4', '#50C2F7']
             if (x.sapStuffCode == val) {
               seriesObj.selected = true
               check = false
