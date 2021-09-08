@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-03 18:51:01
+ * @LastEditTime: 2021-09-07 11:15:28
  * @LastEditors: 舒杰
  * @Description: 技术路线
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\technology\index.vue
@@ -9,7 +9,7 @@
 <template>
 	<iCard :title='language("JISHULUXIAN","技术路线")' class="margin-top20">
 		<template slot="header-control">
-			<iButton @click="down">{{ language("XIAZAI", "下载") }}</iButton>
+			<iButton @click="down">{{ language("MUBANXIAZAI", "模板下载") }}</iButton>
 			<el-upload
 				class="upload"
 				:show-file-list="false"
@@ -51,7 +51,7 @@
 	import tableList from '@/views/partsrfq/externalAccessToAnalysisTools/components/tableList.vue';
 	import {specialToolsTitle} from './data';
 	import {pageMixins} from '@/utils/pageMixins';
-	import {technologyFile,technologyAdd,technologyDelete} from "@/api/categoryManagementAssistant/internalDemandAnalysis/technology";
+	import {technologyFile,technologyAdd,technologyDelete,template} from "@/api/categoryManagementAssistant/internalDemandAnalysis/technology";
 	import {downloadFile} from '@/api/file';
 	import {uploadFile} from '@/api/file/upload';
 	import resultMessageMixin from '@/utils/resultMessageMixin';
@@ -145,21 +145,24 @@
 					this.getTableList()
 				})
 			},
-			// 文件下载
+			// 模板下载
 			down(){
-				if (this.selectData.length==0) {
-					iMessage.error(this.$t('TPZS.CANNOTSELECT'))
-					return
-				}
-				let fileName=[]
-				this.selectData.map(item=>{
-					fileName.push(item.fileName)
+				template().then(res=>{
+					
 				})
-				const req = {
-					applicationName: 'rise',
-					fileList: [fileName],
-				}
-				downloadFile(req)
+				// if (this.selectData.length==0) {
+				// 	iMessage.error(this.$t('TPZS.CANNOTSELECT'))
+				// 	return
+				// }
+				// let fileName=[]
+				// this.selectData.map(item=>{
+				// 	fileName.push(item.fileName)
+				// })
+				// const req = {
+				// 	applicationName: 'rise',
+				// 	fileList: [fileName],
+				// }
+				// downloadFile(req)
 			},
 			// 返回
 			back(){

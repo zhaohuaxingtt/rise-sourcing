@@ -1,7 +1,7 @@
 /*
  * @Author: 舒杰
  * @Date: 2021-08-12 09:58:50
- * @LastEditTime: 2021-08-14 12:19:40
+ * @LastEditTime: 2021-09-07 17:27:53
  * @LastEditors: 舒杰
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\api\categoryManagementAssistant\internalDemandAnalysis\index.js
@@ -38,3 +38,4 @@ export function getCategoryAnalysis(params) {
      data: params
   });
 }
+

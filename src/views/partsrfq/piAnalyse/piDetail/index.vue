@@ -166,6 +166,7 @@ export default {
         batchNumber: this.$route.query.batchNumber,
         supplierId: '',
         fsId: '',
+        rfqId: ''
       },
       dataInfo: {},
       averageData: {},
@@ -253,6 +254,7 @@ export default {
             batchNumber: partListItem.batchNumber,
             supplierId: partListItem.supplierId,
             fsId: partListItem.fsId,
+            rfqId: partListItem.rfqId,
           };
           await this.getDataInfo();
         }
@@ -268,6 +270,7 @@ export default {
         batchNumber: item.batchNumber,
         supplierId: item.supplierId,
         fsId: item.fsId,
+        rfqId: item.rfqId,
       };
       this.currentTab = CURRENTTIME;
       this.getDataInfo();
@@ -314,6 +317,7 @@ export default {
           this.currentTabData.supplierId = res.data.supplierId;
           this.currentTabData.analysisSchemeId = res.data.analysisSchemeId;
           this.currentTabData.fsId = res.data.fsId;
+          this.currentTabData.rfqId = res.data.rfqId;
           this.partList = res.data.partsList.filter(item => {
             return item.isShow;
           });
@@ -391,7 +395,7 @@ export default {
             const res = await saveAnalysisScheme(req);
             if (res.result) {
               await this.setTableEditStatus(false);
-              this.handleAddModelUrlChange()
+              this.handleAddModelUrlChange();
             } else {
               this.handleTableSaveError();
             }
@@ -401,7 +405,7 @@ export default {
           const res = await saveAnalysisScheme(req);
           if (res.result) {
             await this.setTableEditStatus(false);
-            this.handleAddModelUrlChange()
+            this.handleAddModelUrlChange();
           } else {
             this.handleTableSaveError();
           }
@@ -435,6 +439,7 @@ export default {
       req.beginTime = averageData.beginTime;
       req.endTime = averageData.endTime;
       req.operateFlag = 'S2';
+      req.inMode = this.$store.state.rfq.entryStatus;
       return req;
     },
     // 处理保存报告并导出 获取导出后的参数
@@ -472,6 +477,7 @@ export default {
         this.tableLoading = true;
         const req = {
           operateFlag: 'S1',
+          inMode: this.$store.state.rfq.entryStatus,
           ...this.currentTabData,
         };
         if (tab === CURRENTTIME) {
@@ -489,7 +495,7 @@ export default {
         this.resultMessage(res, () => {
           this.handleTableStatus('');
           this.handleAverageTableStatus('');
-          this.handleAddModelUrlChange()
+          this.handleAddModelUrlChange();
         });
         if (res.result) {
           if (tab === CURRENTTIME) {

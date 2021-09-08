@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 15:59:20
- * @LastEditTime: 2021-09-02 19:53:23
+ * @LastEditTime: 2021-09-07 19:02:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalyHandleInput.vue
@@ -175,7 +175,7 @@ export default {
         if(res.data) {
           //名称校验重复
           this.targetSchemeId = res.data.id
-          iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(_ => {
+          iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ cancelButtonText: this.language('LK_QUXIAO','取 消'), confirmButtonText: this.language('LK_QUEDING','确定') }).then(_ => {
             this.createPdfAndSave()
           })
         } else {
@@ -218,7 +218,7 @@ export default {
         this.downloadButtonLoading = true
         const pdfParam = {
           domId: 'content',
-          pdfName: 'costAnalysis',
+          pdfName: this.schemeName,
         }
         this.getDownloadFileAndExportPdf(pdfParam).then(res => {
           this.downloadButtonLoading = false

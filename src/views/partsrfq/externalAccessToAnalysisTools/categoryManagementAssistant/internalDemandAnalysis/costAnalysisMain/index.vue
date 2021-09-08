@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-02 18:36:46
+ * @LastEditTime: 2021-09-07 19:02:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -27,7 +27,8 @@
             <tableList
               :tableData="tableListData"
               :tableTitle="tableTitle"
-              :tableLoading="false"
+              :selection="false"
+              :tableLoading="loading"
               :index="true"
               :max-height="600"
               @handleSelectionChange="handleSelectionChange"
@@ -69,7 +70,8 @@ export default {
       },
       oldSchemeId: this.$route.query.schemeId || null,
       targetSchemeId: null,
-      schemeName: null
+      schemeName: null,
+      loading: true
     }
   },
   created() {
@@ -89,11 +91,13 @@ export default {
     },
     // 获取表格数据
     getTableData() {
+      this.loading = true
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode,
         fsList: this.$route.query.fsNumList || [],
       }
       listNomiData(params).then(res => {
+        this.loading = false
         if(res && res.code == 200) {
           this.tableListData = res.data
           this.getPieData()
@@ -171,7 +175,7 @@ export default {
         this.downloadButtonLoading = true
         const pdfParam = {
           domId: 'content',
-          pdfName: 'costAnalysis',
+          pdfName: this.schemeName,
         }
         this.getDownloadFileAndExportPdf(pdfParam).then(res => {
           this.downloadButtonLoading = false
@@ -189,7 +193,7 @@ export default {
           if(res.data) {
             //名称校验重复
             this.targetSchemeId = res.data.id
-            iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(_ => {
+            iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ cancelButtonText: this.language('LK_QUXIAO','取 消'), confirmButtonText: this.language('LK_QUEDING','确定') }).then(_ => {
               this.createPdfAndSave()
             })
           } else {

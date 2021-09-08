@@ -1,7 +1,7 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-08-11 16:10:57
+ * @LastEditTime: 2021-09-07 16:50:20
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \front-web\src\components\iTableList\index.vue
@@ -149,7 +149,7 @@ export default {
     typeIndex: { type: Boolean, default: false },
     index: { type: Boolean, default: false },
     indexLabel: { type: String, default: "#" },
-    selectionWidth: { type: String, default: "50" },
+    selectionWidth: { type: String, default: "40" },
     height: { type: Number || String },
     activeItems: { type: String, default: "b" },
     radio: { type: Boolean, default: false }, // 是否单选

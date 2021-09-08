@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-11 15:37:03
- * @LastEditTime: 2021-08-18 17:29:21
+ * @LastEditTime: 2021-09-07 18:57:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\components\save.vue
@@ -47,10 +47,9 @@ export default {
     const year = newDate.getFullYear()
     let month = newDate.getMonth() + 1
     let date = newDate.getDate()
-    console.log('month_length', month.toString().length);
     month = month.toString().length == 1 ? '0' + month : month
     date = date.toString().length == 1 ? '0' + date : date
-    if(code && name) this.schemeName = code + '-' + name + '-' + (year + '/' + month + '/' + date)
+    if(code && name) this.schemeName = '品类管理助手—' + name + '—' + (year + '-' + month + '-' + date)
   },
   methods: {
     clickSure() {

@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-06 16:59:08
- * @LastEditTime: 2021-08-13 16:03:22
+ * @LastEditTime: 2021-09-07 16:53:06
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\ring.vue
@@ -31,7 +31,10 @@ export default {
       // 初始化
       init(){
          let seriesData=this.ringData.map(item=>{
-            return {value:item.num,name:item.classAiTypeName}
+            return {
+               value:item.num,
+               name:item.classAiTypeName +'：'+ item.num + '（'+parseFloat(item.proportion)*100+'%）'
+            } 
          })
          const myChart = echarts().init(this.$refs.chart);
          let option = {
@@ -62,9 +65,12 @@ export default {
                      show: false
                   },
                   data: seriesData,
+                  tooltip:{
+                     formatter:'{b}',
+                  },
                   emphasis: {
                      label: {
-                        show: true,
+                        show: false,
                         fontSize: '30',
                         fontWeight: 'bold'
                      }
