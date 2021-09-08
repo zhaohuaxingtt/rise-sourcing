@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-08 14:29:47
+ * @LastEditTime: 2021-09-08 16:48:22
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
@@ -71,6 +71,10 @@
 		watch: {
 			async "$store.state.rfq.categoryCode" (){
 				this.searchCriteria.categoryCode=this.$store.state.rfq.categoryCode
+				this.searchCriteria.id=""
+				this.searchCriteria.latestYear=""
+				this.searchCriteria.supplierId=""
+				this.searchCriteria.categoryCode=""
 				await this.getNomiHistoryParamInit()
 				this.value==1?this.$refs.pointTable.getTableList():this.$refs.supplierTable.getTableList()
 			}
@@ -91,12 +95,8 @@
 			},
 			// 重置
 			reset(){
-				if(this.value==1){
-					this.searchCriteria.latestYear=""
-				}else{
-					this.searchCriteria.latestYear=""
-					this.searchCriteria.supplierId=""
-				}
+				this.searchCriteria.latestYear=""
+				this.searchCriteria.supplierId=""
 				this.search()
 			},
 			// 保存
@@ -142,10 +142,12 @@
 				})
 			},
 			// 查询参数
-		   async	getNomiHistoryParamInit(){
+		   async getNomiHistoryParamInit(){
 				await nomiHistoryParamInit({categoryCode:this.searchCriteria.categoryCode}).then(res=>{
-					if(res.data){
+					if(res.data.id){
 						this.searchCriteria.id=res.data.id
+					}
+					if(res.data.nomiQueryDTO){
 						this.searchCriteria.latestYear=res.data.nomiQueryDTO.latestYear
 						this.searchCriteria.supplierId=res.data.nomiQueryDTO.supplierId
 					}

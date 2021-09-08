@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-16 14:51:40
- * @LastEditTime: 2021-09-08 15:17:24
+ * @LastEditTime: 2021-09-08 16:09:51
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\sop\index.vue
@@ -87,6 +87,8 @@ export default ({
   watch: {
 		async	"$store.state.rfq.categoryCode"(){
 				this.categoryCode=this.$store.state.rfq.categoryCode
+        this.id=""
+        this.carType={}
         await this.sopParamInit()
         this.getOverviewList()
         this.carTypeProList()
@@ -126,6 +128,8 @@ export default ({
       await sopParamInit(params).then(res=>{
           if(res.data.id){
             this.id=res.data.id
+          }
+          if(res.data.carTypeProDTO){
             this.carType=res.data.carTypeProDTO
           }
       })
