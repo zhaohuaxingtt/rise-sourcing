@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-08 10:56:48
+ * @LastEditTime: 2021-09-08 16:53:11
  * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
@@ -172,6 +172,10 @@ export default {
       }},
       '$store.state.rfq.categoryCode'(newVal){
          this.categoryCode=this.$store.state.rfq.categoryCode
+         this.mark=''
+         this.selectDate=[]
+         this.filterCarValue=[]
+         this.config.pageName=""
          this.renderBi()
       }
    },

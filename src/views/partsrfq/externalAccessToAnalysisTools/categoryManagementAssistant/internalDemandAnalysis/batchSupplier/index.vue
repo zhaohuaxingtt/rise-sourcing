@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-09-08 10:11:21
+ * @LastEditTime: 2021-09-08 16:51:21
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
@@ -97,6 +97,7 @@ export default {
       }},
       '$store.state.rfq.categoryCode'(newVal){
          this.categoryCode=this.$store.state.rfq.categoryCode
+         this.mark=''
          this.renderBi()
       }
    },
