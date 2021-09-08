@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-02 10:00:24
- * @LastEditTime: 2021-09-02 11:20:08
+ * @LastEditTime: 2021-09-08 10:12:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\svw\components\saveDialog.vue
@@ -24,7 +24,7 @@
             </div>
             <div class="right">
               <iButton @click="save"
-                       v-show="savereport">立即保存</iButton>
+                       v-show="savereport">生成报告</iButton>
             </div>
           </div>
 
@@ -105,6 +105,7 @@ export default {
       downloadPDF({
         idEle: "content",
         pdfName: "SVW供应商市场总览" + this.categoryCode + '-' + this.categoryName,
+        exportPdf: true,
         callback: async (pdf, pdfName) => {
           try {
             const time = new Date().getTime();
@@ -116,22 +117,11 @@ export default {
               businessId: Math.ceil(Math.random() * 100000),
               multifile: blob
             }).then(res => {
+              this.savereport = true
               const data = res.data[0]
               let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
               let arr2 = data.path.split(arr[0])
-              saveMarketOverview({
-                categoryCode: this.categoryCode,
-                id: this.SchemeId,
-                reportUrl: arr2[1],
-                reportFileName: data.name,
-                marketOverviewSaveDTOList: this.MarketOverviewDTO
-              }).then(res => {
-                loading.close();
-                iMessage.success("保存成功");
-                this.getmarketOverview()
-                this.savereport = true
-                this.clearDialog()
-              })
+              loading.close();
             });
           } catch {
             loading.close();

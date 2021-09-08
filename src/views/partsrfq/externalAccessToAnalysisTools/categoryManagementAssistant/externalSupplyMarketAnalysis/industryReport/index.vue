@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-03 18:58:00
+ * @LastEditTime: 2021-09-07 18:03:47
  * @LastEditors: 舒杰
  * @Description: 行业报告
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\index.vue

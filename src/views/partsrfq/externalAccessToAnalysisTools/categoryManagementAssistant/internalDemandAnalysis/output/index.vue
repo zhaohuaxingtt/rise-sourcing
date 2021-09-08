@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-06 14:22:35
+ * @LastEditTime: 2021-09-07 19:46:29
  * @LastEditors: 舒杰
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
@@ -35,6 +35,8 @@ import * as pbi from 'powerbi-client';
 import { selectDictByKeys } from "@/api/dictionary";
 import {downloadPdfMixins} from '@/utils/pdf';
 import {categoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
+import {getCategoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
+
 export default {
    mixins: [downloadPdfMixins],
    components:{iCard,iButton,iSelect,iDatePicker},
@@ -121,16 +123,35 @@ export default {
       async save(){
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'output',
-            pdfName: this.language("CHANLIANGZONGLAN","产量总览") + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString()+'-',
+            pdfName: this.language("CHANLIANGZONGLAN","产量总览") + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD') +'-',
          });
+         console.log(this.config.pageName)
+         let schemeType=""
+         switch (this.config.pageName) {
+            case "ReportSection54602a61cb108b45223a":
+               schemeType="CATEGORY_MANAGEMENT_OUTPUT_OVERVIEW_FACTORY"
+               break;
+            case "ReportSection99057dcf18326c502965":
+               schemeType="CATEGORY_MANAGEMENT_OUTPUT_OVERVIEW_PLATFORM"
+               break;
+            case "ReportSection0e9a44775000348abbed":
+               schemeType="CATEGORY_MANAGEMENT_OUTPUT_OVERVIEW_CARTYPE"
+               break;
+            case "ReportSection":
+               schemeType="CATEGORY_MANAGEMENT_OUTPUT_OVERVIEW_SUPPLIER"
+               break;
+         }
          let params={
             categoryCode:this.categoryCode,
             fileType:"PDF",
-            schemeType:"CATEGORY_MANAGEMENT_OUTPUT_OVERVIEW",
+            schemeType:schemeType,
             reportFileName: resFile.downloadName,
             reportName: resFile.downloadName,
             schemeName:"",
-            reportUrl: resFile.downloadUrl
+            reportUrl: resFile.downloadUrl,
+            operateLog:JSON.stringify({
+               selectFilterYear:this.selectFilterYear,
+               pageName:this.config.pageName}) 
          }
          categoryAnalysis(params).then(res=>{
             if(res.code=='200'){
@@ -161,22 +182,37 @@ export default {
             getCmOutputPbi().then(res => {
             if (res.data) {
                this.url = res.data
-               this.getDict()
+               this.getCategoryAnalysis()
             }
+         })
+      },
+      // 获取历史筛选条件
+      getCategoryAnalysis(){
+         let parasm={
+            categoryCode:this.categoryCode,
+            schemeType:"CATEGORY_MANAGEMENT_OUTPUT_OVERVIEW"
+         }
+         getCategoryAnalysis(parasm).then(res=>{
+            let operateLog=JSON.parse(res.data.operateLog)
+            if(operateLog){
+               this.selectFilterYear=operateLog.selectFilterYear
+               this.config.pageName=operateLog.pageName
+            }
+            this.getDict()
          })
       },
       // 初始化配置
       init(){
          this.config.embedUrl=this.url.embedUrl
          this.config.accessToken=this.url.accessToken
-         this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
-         this.selectFilterYear= String(new Date().getFullYear()) 
+         // this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
+         // this.selectFilterYear= String(new Date().getFullYear()) 
          this.reportContainer = document.getElementById('powerBi');
          this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       },
       renderBi() {
          this.filter.values=[this.categoryCode]
-         this.filterYear.values=[parseInt(this.selectFilterYear)]
+         this.filterYear.values=this.selectFilterYear?[parseInt(this.selectFilterYear)]:[this.selectFilterYear]
          var report = this.powerbi.embed(this.reportContainer, this.config);
          report.off("loaded");
          report.on("loaded", ()=> {

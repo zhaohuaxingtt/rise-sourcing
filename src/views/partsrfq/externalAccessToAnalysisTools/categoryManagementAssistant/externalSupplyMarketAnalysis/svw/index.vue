@@ -1,6 +1,6 @@
 <template>
 
-  <div id="content">
+  <div >
     <iCard>
       <div :class="{isFixed:isFixeds==true}">
         <div class="head">
@@ -43,9 +43,9 @@
               @returnObj="getreturnObj"></list>
       </div>
     </iCard>
-    <!-- <saveDialog :dialogVisible="dialogVisible"
+    <saveDialog :dialogVisible="dialogVisible"
                 :MarketOverviewDTO="MarketOverviewDTO"
-                @changeVisible="close"></saveDialog> -->
+                @changeVisible="close"></saveDialog>
   </div>
 
 </template>
@@ -115,7 +115,7 @@ export default {
       })
     },
     saveMarket () {
-      // this.dialogVisible = true
+
       this.edite = true
       const loading = this.$loading({
         lock: true,
@@ -139,42 +139,43 @@ export default {
       // this.categoryCode = this.$store.state.rfq.categoryCode
     },
     pdf () {
+      this.dialogVisible = true
       this.edite = true
-      this.savereport = false
-      downloadPDF({
-        idEle: "content",
-        pdfName: "SVW供应商市场总览" + this.categoryCode + '-' + this.categoryName,
-        exportPdf: true,
-        callback: async (pdf, pdfName) => {
-          try {
-            const time = new Date().getTime();
-            const filename = pdfName + time + ".pdf";
-            const pdfFile = pdf.output("datauristring");
-            const blob = dataURLtoFile(pdfFile, filename);
-            uploadUdFile({
-              applicationName: 'sourcing',
-              businessId: Math.ceil(Math.random() * 100000),
-              multifile: blob
-            }).then(res => {
-              const data = res.data[0]
-              let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
-              let arr2 = data.path.split(arr[0])
-              marketOverviewReport({
-                "categoryCode": this.categoryCode,
-                id: this.SchemeId,
-                "reportFileName": data.name,
-                // "reportName": "string",
-                "reportUrl": arr2[1],
-                // "schemeName": "string",
-              })
-              this.savereport = true
-            });
-          } catch {
-            iMessage.error("保存失败");
-            this.clearDialog()
-          }
-        },
-      });
+      // this.savereport = false
+      // downloadPDF({
+      //   idEle: "content",
+      //   pdfName: "SVW供应商市场总览" + this.categoryCode + '-' + this.categoryName,
+      //   exportPdf: true,
+      //   callback: async (pdf, pdfName) => {
+      //     try {
+      //       const time = new Date().getTime();
+      //       const filename = pdfName + time + ".pdf";
+      //       const pdfFile = pdf.output("datauristring");
+      //       const blob = dataURLtoFile(pdfFile, filename);
+      //       uploadUdFile({
+      //         applicationName: 'sourcing',
+      //         businessId: Math.ceil(Math.random() * 100000),
+      //         multifile: blob
+      //       }).then(res => {
+      //         const data = res.data[0]
+      //         let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
+      //         let arr2 = data.path.split(arr[0])
+      //         marketOverviewReport({
+      //           "categoryCode": this.categoryCode,
+      //           id: this.SchemeId,
+      //           "reportFileName": data.name,
+      //           // "reportName": "string",
+      //           "reportUrl": arr2[1],
+      //           // "schemeName": "string",
+      //         })
+      //         this.savereport = true
+      //       });
+      //     } catch {
+      //       iMessage.error("保存失败");
+      //       this.clearDialog()
+      //     }
+      //   },
+      // });
     },
     getreturnObj (val, index) {
       console.log(val, index)

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-07 16:28:13
+ * @LastEditTime: 2021-09-07 19:54:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -16,7 +16,6 @@
               v-loading="loading"
               stripe
               border
-              height="600px"
               :max-height="maxHeight"
               :cell-style="cellsytle"
               :row-style="rowStyle"
@@ -100,6 +99,10 @@ export default {
     bobType: {
       type: String,
       default: ""
+    },
+    heightFlag: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

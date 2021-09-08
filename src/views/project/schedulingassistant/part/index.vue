@@ -2,22 +2,22 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 13:59:40
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 13:57:00
+ * @LastEditTime: 2021-09-07 16:55:30
  * @Description: 零件排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\index.vue
 -->
 
 <template>
   <!-------- v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_PAGE|项目管理-排程助手-零件排程页面' ---------->
-  <iPage class="schedulePart">
+  <iPage class="schedulePart" v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_PAGE|项目管理-排程助手-零件排程页面'>
     <!---------------------------------------------------------------------->
     <!----------                  车型项目部分                   ------------>
     <!---------------------------------------------------------------------->
-    <carProject :carProjectId="carProject" @handleCarProjectChange="handleCarProjectChange" :collapse="true" @changeSopStatus="changeSopStatus" @handleCollapse="handleCollapse" />
+    <carProject :carProjectId="carProject" @handleCarProjectChange="handleCarProjectChange" :collapse="true" @changeSopStatus="changeSopStatus" @handleCollapse="handleCollapse" v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_CARPROJECTPROGRESS|项目管理-排程助手-零件排程页面-车型项目进度' />
     <!---------------------------------------------------------------------->
     <!----------                  零件区域                   ---------------->
     <!---------------------------------------------------------------------->
-    <iCard class="margin-top20 partCard" :class="{withCollapse:!collapseValue}">
+    <iCard class="margin-top20 partCard" :class="{withCollapse:!collapseValue}" v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_PARTLIST|项目管理-排程助手-零件排程-零件列表'>
       <div class="margin-bottom20 searchWrapper">
         <div class="titleSearch">
           <div v-for="(item, index) in searchList" :key="index" class="titleSearch-item">
