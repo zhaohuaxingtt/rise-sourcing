@@ -2,20 +2,20 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-02 11:00:36
+ * @LastEditTime: 2021-09-07 17:54:38
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
 
 <template>
-  <iPage>
+  <iPage v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_PAGE|财务目标价管理-目标价维护-页面">
     <headerNav />
     <!----------------------------------------------------------------->
     <!---------------------------搜索区域------------------------------->
     <!----------------------------------------------------------------->
     <iSearch @sure="sure" @reset="reset">
       <el-form>
-        <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.i18n_label, item.label)">
+        <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.i18n_label, item.label)" v-permission.dynamic.auto="item.permission">
           <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
             <el-option value="" :label="language('ALL','全部')"></el-option>
             <el-option
@@ -33,18 +33,18 @@
     <!----------------------------------------------------------------->
     <!---------------------------表格区域------------------------------->
     <!----------------------------------------------------------------->
-    <iCard class="margin-top20">
+    <iCard class="margin-top20" v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_TABLE|财务目标价管理-目标价维护-表格">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------保存按钮----------------------------------->
-          <iButton v-if="!isEdit" @click="changeEdit(true)">{{language('BIANJI','编辑')}}</iButton>
+          <iButton v-if="!isEdit" @click="changeEdit(true)" v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_TABLEEDIT|财务目标价管理-目标价维护-表格编辑">{{language('BIANJI','编辑')}}</iButton>
           <!--------------------保存按钮----------------------------------->
           <iButton v-if="isEdit" @click="handleSave" :loading="signLoading">{{language('BAOCUN','保存')}}</iButton>
           <!--------------------取消按钮----------------------------------->
           <iButton v-if="isEdit" @click="handleCancel" >{{language('QUXIAO','取消')}}</iButton>
           <!--------------------导出批量维护按钮----------------------------------->
-          <iButton @click="handleExport" :loading="exportLoading" >{{language('DAOCHUPILIANGWEIHU','导出批量维护')}}</iButton>
+          <iButton @click="handleExport" :loading="exportLoading" v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_TABLEEXPORT|财务目标价管理-目标价维护-表格导出批量维护">{{language('DAOCHUPILIANGWEIHU','导出批量维护')}}</iButton>
           <!--------------------导入批量维护按钮----------------------------------->
           <el-upload
             class=" margin-left10 margin-right10"
@@ -53,6 +53,7 @@
             :http-request="upload"
             :show-file-list='false'
             :before-upload="beforeUpload"
+            v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_TABLEIMPORT|财务目标价管理-目标价维护-表格导入批量维护"
           >
             <iButton :loading='uploadLoading'>{{language('DAORUPILIANGWEIHU','导入批量维护')}}</iButton>
           </el-upload>

@@ -1,7 +1,7 @@
 /*
  * @Author: 舒杰
  * @Date: 2021-08-04 20:05:48
- * @LastEditTime: 2021-08-05 15:45:12
+ * @LastEditTime: 2021-09-07 11:14:51
  * @LastEditors: 舒杰
  * @Description: 技术路线
  * @FilePath: \front-sourcing\src\api\categoryManagementAssistant\internalDemandAnalysis\technology.js
@@ -34,3 +34,13 @@ export function technologyDelete(params) {
       data:params
     });
 }
+
+// 模板路径
+export function template(params) {
+  return request({
+      url: '/technologyFile/template',
+      method: 'POST',
+      data:params
+    });
+}
+

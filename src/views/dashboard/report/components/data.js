@@ -1,8 +1,8 @@
 /*
  * @Author: hoajiang
  * @Date: 2021-08-05 10:36:42
- * @LastEditTime: 2021-08-26 20:28:20
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-07 17:56:22
+ * @LastEditors: Hao,Jiang
  * @Description: 寻源概览配置
  * @FilePath: /front-web/src/views/dashboard/components/data.js
  */
@@ -29,7 +29,7 @@ export const TAB = [
     value: 3,
     name: "报表管理",
     message: 0,
-    url: "/sourcing/reportmgmt/details",
+    url: "/sourceinquirypoint/sourcing/reportmgmt/details",
     activePath: "reportmgmt",
     key: "LK_BAOBIAOGUANLI"
   },
@@ -40,7 +40,7 @@ export const MENU = [
     value: 1,
     name: '状态跟踪报表',
     message: 0,
-    url: '/sourcing/reportmgmt/report',
+    url: '/sourceinquirypoint/sourcing/reportmgmt/report',
     activePath: 'reportmgmt/report',
     key: 'LK_ZHUANGTAIGENZHONGBAOBIAO'
   },
@@ -48,7 +48,7 @@ export const MENU = [
     value: 2,
     name: '状态跟踪详情',
     message: 0,
-    url: '/sourcing/reportmgmt/details',
+    url: '/sourceinquirypoint/sourcing/reportmgmt/details',
     activePath: 'reportmgmt/details',
     key: 'LK_ZHUANGTAIGENZHONGXIANGQING'
   },
