@@ -1,14 +1,14 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-01 17:41:22
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-08 10:56:28
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
 
 <template>
-  <iPage class="signForParts" >
+  <iPage class="signForParts" v-permission.auto="ACCESSORY_MANAGEMENT_PAGE|附件-附件管理-页面">
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div class="topMenu">
@@ -24,7 +24,7 @@
           <!----------------------------------------------------------------->
           <iSearch @sure="sure" @reset="reset">
             <el-form>
-              <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)">
+              <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
                 <iSelect v-if="item.type === 'select'" :filterable="item.filterable" v-model="searchParams[item.value]">
                   <el-option value="" :label="language('ALL','全部')"></el-option>
                   <el-option
@@ -59,20 +59,20 @@
           <!----------------------------------------------------------------->
           <!---------------------------表格区域------------------------------->
           <!----------------------------------------------------------------->
-          <iCard class="margin-top20">
+          <iCard class="margin-top20" v-permission.auto="ACCESSORY_MANAGEMENT_TABLE|附件-附件管理-表格">
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('FUJIANZONGHECHAXUN','附件综合查询')}}</span>
                 <div class="floatright">
                   <!--------------------分配LINIE/CSS----------------------------------->
-                  <iButton @click="handleSendLinie" >{{language('FENPEILINIECSS','分配LINIE/CSS')}}</iButton>
+                  <iButton @click="handleSendLinie" v-permission.auto="ACCESSORY_MANAGEMENT_SENDLINIE|附件-附件管理-分配LINIE/CSS">{{language('FENPEILINIECSS','分配LINIE/CSS')}}</iButton>
                   <!--------------------退回按钮----------------------------------->
-                  <iButton @click="changebackDialogVisible(true)" >{{language('TUIHUI','退回')}}</iButton>
+                  <iButton @click="changebackDialogVisible(true)" v-permission.auto="ACCESSORY_MANAGEMENT_BACK|附件-附件管理-退回">{{language('TUIHUI','退回')}}</iButton>
                   <!--------------------创建RFQ----------------------------------->
-                  <iButton @click="handleCreateRFQ">{{language('CHUANGJIANRFQ','创建RFQ')}}</iButton>
+                  <iButton @click="handleCreateRFQ" v-permission.auto="ACCESSORY_MANAGEMENT_CREATRFQ|附件-附件管理-创建RFQ">{{language('CHUANGJIANRFQ','创建RFQ')}}</iButton>
                   <!--------------------加入已有RFQ----------------------------------->
-                  <iButton @click="handleJoinRFQ">{{language('JIARUYIYOURFQ','加入已有RFQ')}}</iButton>
+                  <iButton @click="handleJoinRFQ" v-permission.auto="ACCESSORY_MANAGEMENT_JOINRFQ|附件-附件管理-加入已有RFQ">{{language('JIARUYIYOURFQ','加入已有RFQ')}}</iButton>
                   <!--------------------删除按钮----------------------------------->
-                  <iButton @click="handleDelete" >{{language('SHANCHU','删除')}}</iButton>
+                  <iButton @click="handleDelete" v-permission.auto="ACCESSORY_MANAGEMENT_DELETE|附件-附件管理-删除">{{language('SHANCHU','删除')}}</iButton>
                 </div>
             </div>
             <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight"></tableList>

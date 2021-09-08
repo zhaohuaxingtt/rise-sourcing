@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-18 11:02:21
+ * @LastEditTime: 2021-09-08 10:56:04
  * @Description: 
  * @FilePath: \front-web\src\views\designateFiles\fileManage\data.js
  */
@@ -46,22 +46,22 @@ export const tableMockData = [
 ]
 
 export const searchList = [
-  {value: 'partNum', label: '附件零件号', type: 'input', key: 'FUJIANLINGJIANHAO',},
-  {value: 'partNameCh', label: '附件零件名称', type: 'input', key: 'FUJIANLINGJIANMINGCHENG',},
-  {value: 'carType', label: '使用车型', type: 'input', key: 'SHIYONGCHEXING',},
-  {value: 'timeToMarket', label: '附件上市时间', type: 'date', key: 'FUJIANSHANGSHISHIJIAN',},
-  {value: 'dept', label: '科室', type: 'input', key: 'KESHI'},
-  {value: 'linieId', label: 'LINIE', type: 'select', filterable: true, key: 'LINIE', selectOption: 'linieOptions'},
-  {value: 'code', label: '编号', type: 'input', key: 'BIANHAO',},
-  {value: 'partStatus', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: 'partStatusOption'},
-  {value: 'item', label: '配件序号', type: 'input', key: 'PEIJIANXUHAO',},
+  {value: 'partNum', label: '附件零件号', type: 'input', key: 'FUJIANLINGJIANHAO',permission: 'ACCESSORY_MANAGEMENT_PARTNUM|附件-附件管理-附件零件号'},
+  {value: 'partNameCh', label: '附件零件名称', type: 'input', key: 'FUJIANLINGJIANMINGCHENG',permission: 'ACCESSORY_MANAGEMENT_PARTNAME|附件-附件管理-附件零件名称'},
+  {value: 'carType', label: '使用车型', type: 'input', key: 'SHIYONGCHEXING',permission: 'ACCESSORY_MANAGEMENT_CARTYPE|附件-附件管理-使用车型'},
+  {value: 'timeToMarket', label: '附件上市时间', type: 'date', key: 'FUJIANSHANGSHISHIJIAN',permission: 'ACCESSORY_MANAGEMENT_TIMETOMARKET|附件-附件管理-附件上市时间'},
+  {value: 'dept', label: '科室', type: 'input', key: 'KESHI',permission: 'ACCESSORY_MANAGEMENT_DEPT|附件-附件管理-科室'},
+  {value: 'linieId', label: 'LINIE', type: 'select', filterable: true, key: 'LINIE', selectOption: 'linieOptions',permission: 'ACCESSORY_MANAGEMENT_LINIE|附件-附件管理-LINIE'},
+  {value: 'code', label: '编号', type: 'input', key: 'BIANHAO',permission: 'ACCESSORY_MANAGEMENT_CODE|附件-附件管理-编号'},
+  {value: 'partStatus', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: 'partStatusOption',permission: 'ACCESSORY_MANAGEMENT_PARTSTATS|附件-附件管理-零件状态'},
+  {value: 'item', label: '配件序号', type: 'input', key: 'PEIJIANXUHAO',permission: 'ACCESSORY_MANAGEMENT_ITEMXUHAO|附件-附件管理-序号'},
   // {value: 'isEop', label: '是否EOP', type: 'select', key: '', selectOption: []},
   // {value: 'assemblyPartNum', label: '批量供货总成号', type: 'input', key: '',},
-  {value: 'status', label: '状态', type: 'select', key: 'ZHUANGTAI', selectOption: 'statusOption'},
+  {value: 'status', label: '状态', type: 'select', key: 'ZHUANGTAI', selectOption: 'statusOption',permission: 'ACCESSORY_MANAGEMENT_STATS|附件-附件管理-状态'},
   // {value: 'procureGroup', label: '参考采购组', type: 'input'},
-  {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', key: 'GONGYINGSHANGSAPHAO',},
-  {value: 'spNum', label: 'SP号', type: 'input', key: 'SPHAO'},
-  {value: 'isShow', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'yesOrNoOption'},
+  {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', key: 'GONGYINGSHANGSAPHAO',permission: 'ACCESSORY_MANAGEMENT_SUPPLIERSAPCODE|附件-附件管理-供应商SAP号'},
+  {value: 'spNum', label: 'SP号', type: 'input', key: 'SPHAO',permission: 'ACCESSORY_MANAGEMENT_SPNUM|附件-附件管理-SP号'},
+  {value: 'isShow', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'yesOrNoOption',permission: 'ACCESSORY_MANAGEMENT_ISME|附件-附件管理-是否自己'},
 ]
 
 export const fileSearchList = [

@@ -1,10 +1,16 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-08-27 15:18:04
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-08 13:57:08
+ * @LastEditors: Hao,Jiang
  * @Description: 风险图的配置文件
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/components/barChart.js
+ */
+/**
+ * @description: 
+ * @param {*} params
+ * @param {*} type 图形类型1，普通类型 2.统计汇总类型
+ * @return {*}
  */
 export function generateOptions(params = {}, type = 1) {
     const colors = ['#4382FA', '#E30D0D','#FFCA53','#00BF87']
@@ -97,7 +103,7 @@ export function generateOptions(params = {}, type = 1) {
             if (value <= NumAll) {
                 // assistValue = NumAll - value
                 if (index === 1) {
-                    assistValue = NumAll - value - (params.value3 || 0)
+                    assistValue = NumAll - value - (type === 1 ? params.value3 : 0)
                 }
                 if (index === 2) {
                     assistValue = NumAll - value
