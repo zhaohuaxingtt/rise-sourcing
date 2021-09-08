@@ -345,6 +345,16 @@
             </iInput>
           </div>
         </template>
+        <template #changeReason="scope">
+          <div v-show="!isEdit">{{ scope.row.changeReason }}</div>
+          <div v-show="isEdit">
+            <iInput
+                v-model="scope.row.changeReason"
+                :placeholder="language('LK_QINGSHURU', '请输入')"
+            >
+            </iInput>
+          </div>
+        </template>
         <template #assetTotal="scope">
           <div>{{scope.row.assetTotal ? getTousandNum(Number(scope.row.assetTotal).toFixed(2)) : scope.row.assetTotal}}</div>
         </template>
@@ -939,7 +949,7 @@ export default {
     openPhotoList(imgList){
       this.photoListShow = true
       this.imgList = imgList
-    }
+    },
   }
 }
 </script>

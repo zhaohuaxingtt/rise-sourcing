@@ -350,6 +350,7 @@ export default {
         this.deptId = []
         this.linieId = [this.$store.state.permission.userInfo.id + '']
         this.moldInvestmentStatuses = []
+        this.page.currPage = 1
         this.findBmNewChangePageList()
       }
     }

@@ -405,7 +405,27 @@ export const changeTaskBmInfoTitle = [
         width: 200,
         tooltip: false
     },
-
+    {
+        props: 'assetTotal',
+        name: '资产总额',
+        key: '资产总额',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'changeReason',
+        name: '变更说明',
+        key: '变更说明',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'picture',
+        name: '照片',
+        key: '照片',
+        width: 200,
+        tooltip: false
+    },
 ]
 
 export const enclosureTableTitle = [
