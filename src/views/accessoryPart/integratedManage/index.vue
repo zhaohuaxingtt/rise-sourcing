@@ -1,14 +1,14 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-01 17:35:39
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-08 11:17:32
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
 
 <template>
-  <iPage class="signForParts" >
+  <iPage class="signForParts" v-permission.auto="APREPART_MANAGFMENT_PAGE|配件-配件管理-页面">
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div>
@@ -21,7 +21,7 @@
           <!----------------------------------------------------------------->
           <iSearch @sure="sure" @reset="reset">
             <el-form>
-              <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)">
+              <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
                 <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.value]">
                   <el-option value="" :label="language('ALL','全部')"></el-option>
                   <el-option
@@ -38,26 +38,26 @@
           <!----------------------------------------------------------------->
           <!---------------------------表格区域------------------------------->
           <!----------------------------------------------------------------->
-          <iCard class="margin-top20">
+          <iCard class="margin-top20" v-permission.auto="APREPART_MANAGFMENT_TABLE|配件-配件管理-表格">
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANZONGHECHAXUN','配件综合查询')}}</span>
                 <div class="floatright">
                   <!--------------------分配询价科室按钮----------------------------------->
-                  <iButton @click="openInquiryDialog" >{{language('FENPEIXUNJIAKESHI','分配询价科室')}}</iButton>
+                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_MANAGFMENT_SENDDEPT|配件-配件管理-分配询价科室">{{language('FENPEIXUNJIAKESHI','分配询价科室')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
-                  <iButton @click="openBuyerDialog" >{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
+                  <iButton @click="openBuyerDialog" v-permission.auto="APREPART_MANAGFMENT_SENDBUYPER|配件-配件管理-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
                   <!--------------------退回按钮----------------------------------->
-                  <iButton @click="changebackDialogVisible(true)" >{{language('TUIHUI','退回')}}</iButton>
+                  <iButton @click="changebackDialogVisible(true)" v-permission.auto="APREPART_MANAGFMENT_BACK|配件-配件管理-退回">{{language('TUIHUI','退回')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
-                  <iButton @click="changebackEpsDialogVisible(true)" >{{language('TUIHUIEPS','退回EPS')}}</iButton>
+                  <iButton @click="changebackEpsDialogVisible(true)" v-permission.auto="APREPART_MANAGFMENT_BACKEPS|配件-配件管理-退回EPS">{{language('TUIHUIEPS','退回EPS')}}</iButton>
                   <!--------------------创建RFQ----------------------------------->
-                  <iButton @click="handleCreateRFQ">{{language('CHUANGJIANRFQ','创建RFQ')}}</iButton>
+                  <iButton @click="handleCreateRFQ" v-permission.auto="APREPART_MANAGFMENT_CREATERFQ|配件-配件管理-创建RFQ">{{language('CHUANGJIANRFQ','创建RFQ')}}</iButton>
                   <!--------------------加入已有RFQ----------------------------------->
-                  <iButton @click="handleJoinRFQ">{{language('JIARUYIYOURFQ','加入已有RFQ')}}</iButton>
+                  <iButton @click="handleJoinRFQ" v-permission.auto="APREPART_MANAGFMENT_JOINRFQ|配件-配件管理-加入已有RFQ">{{language('JIARUYIYOURFQ','加入已有RFQ')}}</iButton>
                   <!--------------------下载报表----------------------------------->
-                  <iButton @click="downloadAll" :loading="downloadAllLoading">{{language('XIAZAIBAOBIAO','下载报表')}}</iButton>
+                  <iButton @click="downloadAll" :loading="downloadAllLoading" v-permission.auto="APREPART_MANAGFMENT_DWONLOAD|配件-配件管理-下载报表">{{language('XIAZAIBAOBIAO','下载报表')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
-                  <iButton @click="donwloadList" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
+                  <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_MANAGFMENT_EXPORT|配件-配件管理-导出">{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
             <tableList :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2" class="aotoTableHeight"></tableList>

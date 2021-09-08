@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-21 15:00:55
- * @Description: 
+ * @LastEditTime: 2021-09-08 11:06:55
+ * @Description: 配件签收
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
 
 <template>
-  <iPage class="signForParts" >
+  <iPage class="signForParts" v-permission.auto="APREPART_SIGN_PAGE|配件-配件签收-页面">
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
         <div>
@@ -21,7 +21,7 @@
           <!----------------------------------------------------------------->
           <iSearch @sure="sure" @reset="reset">
             <el-form>
-              <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)">
+              <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
                 <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
                   <el-option value="" :label="language('ALL','全部')"></el-option>
                   <el-option
@@ -39,20 +39,20 @@
           <!----------------------------------------------------------------->
           <!---------------------------表格区域------------------------------->
           <!----------------------------------------------------------------->
-          <iCard class="margin-top20">
+          <iCard class="margin-top20" v-permission.auto="APREPART_SIGN_TABLE|配件-配件签收-表格">
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANXUQIUQIANSHOU','配件需求签收')}}</span>
                 <div class="floatright">
                   <!--------------------签收按钮----------------------------------->
-                  <iButton @click="signAccessory" :loading="signLoading">{{language('QIANSHOU','签收')}}</iButton>
+                  <iButton @click="signAccessory" :loading="signLoading" v-permission.auto="APREPART_SIGN_SIGN|配件-配件签收-签收">{{language('QIANSHOU','签收')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
-                  <iButton @click="changebackDialogVisible(true)" >{{language('TUIHUIEPS','退回EPS')}}</iButton>
+                  <iButton @click="changebackDialogVisible(true)" v-permission.auto="APREPART_SIGN_BACKEPS|配件-配件签收-退回EPS">{{language('TUIHUIEPS','退回EPS')}}</iButton>
                   <!--------------------分配询价科室按钮----------------------------------->
-                  <iButton @click="openInquiryDialog" >{{language('FENPEIXUNJIAKESHI','分配询价科室')}}</iButton>
+                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDDEPT|配件-配件签收-分配询价科室">{{language('FENPEIXUNJIAKESHI','分配询价科室')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
-                  <iButton @click="openBuyerDialog" >{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
+                  <iButton @click="openBuyerDialog" v-permission.auto="APREPART_SIGN_SENDBUYER|配件-配件签收-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
-                  <iButton @click="donwloadList" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
+                  <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_SIGN_EXPORT|配件-配件签收-导出">{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
             <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" class="aotoTableHeight"></tableList>
