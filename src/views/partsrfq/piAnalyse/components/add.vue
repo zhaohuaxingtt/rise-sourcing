@@ -107,6 +107,10 @@ export default {
       getAllAddPart(params).then(res => {
         if(res && res.code == 200) {
           this.mainTableData = res.data
+          this.selectTargetData.map(targetObj => {
+            const index = res.data.findIndex(item => item.fsId = targetObj.fsId)
+            res.data.splice(index, index + 1)
+          })
           this.loading = false
         } else iMessage.error(res.desZh)
       })
