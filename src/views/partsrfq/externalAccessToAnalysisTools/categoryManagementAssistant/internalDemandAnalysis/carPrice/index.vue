@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-06 14:12:18
+ * @LastEditTime: 2021-09-08 10:56:48
  * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
@@ -159,6 +159,7 @@ export default {
    },
    async mounted () {
 		await this.getPowerBiUrl()
+      await this.getCategoryAnalysis()
       this.carTypeByCategoryCode()
       this.getDict()
       this.init()
@@ -176,14 +177,20 @@ export default {
    },
    methods: {
       // 获取近期操作数据
-      getCategoryAnalysis(){
+      async getCategoryAnalysis(){
          let params={
             categoryCode:this.categoryCode,
             schemeType:"CATEGORY_MANAGEMENT_CAR_TYPE"
          }
-         getCategoryAnalysis(params).then(res=>{
+         await getCategoryAnalysis(params).then(res=>{
             if(res.data){
-               this.mark=res.data.operateLog
+               let operateLog=JSON.parse(res.data.operateLog)
+               if(operateLog){
+                  this.filterCarValue=operateLog.filterCarValue
+                  this.config.pageName=operateLog.pageName
+                  this.selectDate=operateLog.selectDate
+                  this.mark=operateLog.mark
+               }
             }
          })
 
@@ -197,17 +204,21 @@ export default {
       async save(){
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'carPrice',
-            pdfName: this.language("CHEXINGJIAGEDUIBI","车型价格对比") + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString()+'-',
+            pdfName: this.language("CHEXINGJIAGEDUIBI","车型价格对比") + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD')+'-',
          });
          let params={
             categoryCode:this.categoryCode,
             fileType:"PDF",
-            operateLog:this.mark,
             schemeType:"CATEGORY_MANAGEMENT_CAR_TYPE",
             reportFileName: resFile.downloadName,
             reportName: resFile.downloadName,
             schemeName:"",
-            reportUrl: resFile.downloadUrl
+            reportUrl: resFile.downloadUrl,
+            operateLog:JSON.stringify({
+               mark:this.mark,
+               selectDate:this.selectDate,
+               filterCarValue:this.filterCarValue,
+               pageName:this.config.pageName}),
          }
          categoryAnalysis(params).then(res=>{
             if(res.code=='200'){
