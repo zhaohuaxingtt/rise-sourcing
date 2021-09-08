@@ -26,7 +26,7 @@ export const MODEL_ORDER_HOME_TABCOLUMNS = [
         headerAlign: 'center',
         align: 'center',
         emit: 'open-page',
-        width: 120,
+        width: 150,
         customRender: (h, scope) => {
             return <RiseContractCodeComponents row={scope.row}/>
         },
