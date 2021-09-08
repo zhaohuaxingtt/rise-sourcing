@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:02
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-06 14:23:35
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-07 17:16:12
  * @Description: 排程版本查询
  * @FilePath: \front-web\src\views\project\schedulingassistant\scheduleVersion\index.vue
 -->
@@ -10,9 +10,9 @@
 <template>
   <div class="scheduleVersion">
     <!-- v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION|排程版本查询" -->
-    <search @search="handSearch" ref="searchForm" />
+    <search @search="handSearch" ref="searchForm" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION|排程版本查询"/>
     <!-- v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_TABLE|排程版本表格" -->
-    <iCard class="margin-top20">
+    <iCard class="margin-top20" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_TABLE|排程版本表格">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
           <!-- 批量下载排程版本 -->
