@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-18 10:46:09
+ * @LastEditTime: 2021-09-08 11:16:59
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\data.js
  */
@@ -38,25 +38,25 @@ export const tableMockData = [
 ]
 
 export const searchList = [
-  {value: 'partNum', label: '配件零件号', type: 'input', key: 'PEIJIANLINGJIANHAO',},
-  {value: 'partNameCh', label: '配件零件中文名', type: 'input', key: 'PEIJIANLINGJIANZHONGWENMING',},
-  {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', key: 'GONGYINGSHANGSAPHAO',},
-  {value: 'supplierNameZh', label: '供应商中文名', type: 'input', key: 'GONGYINGSHANGZHONGWENMING',},
-  {value: 'assemblyPartNum', label: '批量供货总成号', type: 'input', key: 'PILIANGGONGHUOZONGCHENGHAO',},
-  {value: 'spnrNum', label: 'SP号', type: 'input', key: 'SPHAO',},
-  {value: 'sparePartCode', label: '编号', type: 'input', key: 'BIANHAO',},
-  {value: 'carType', label: '配件车型', type: 'select', key: 'PEIJIANCHEXING', selectOption: 'carTypeOptions'},
-  {value: 'carProject', label: '配件车型项目', type: 'select', key: 'PEIJIANCHEXINGXIANGMU', selectOption: 'cartypeProjectOptions', width: 150},
-  {value: 'state', label: '配件状态', type: 'select', key: 'PEIJIANZHUANGTAI', selectOption: 'accessoryTypeOption'},
-  {value: 'respDeptName', label: 'LINIE科室', type: 'input', key: 'LINIEKESHI',},
-  {value: 'respLinieName', label: 'LINIE', type: 'input', key: 'LINIE',},
-  {value: 'csfuserDeptName', label: '询价科室', type: 'input',key: 'XUNJIAKESHI'},
-  {value: 'csfuserName', label: '询价采购员', type: 'input', key: 'XUNJIACAIGOUYUAN',},
-  {value: 'accessoryStatus', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: 'partStateOption'},
+  {value: 'partNum', label: '配件零件号', type: 'input', key: 'PEIJIANLINGJIANHAO', permission: 'APREPART_MANAGFMENT_PARTNUM|配件-配件管理-配件零件号'},
+  {value: 'partNameCh', label: '配件零件中文名', type: 'input', key: 'PEIJIANLINGJIANZHONGWENMING', permission: 'APREPART_MANAGFMENT_PARTNAMECH|配件-配件管理-配件零件中文名'},
+  {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', key: 'GONGYINGSHANGSAPHAO', permission: 'APREPART_MANAGFMENT_SUPPLIERSAPCODE|配件-配件管理-供应商SAP号'},
+  {value: 'supplierNameZh', label: '供应商中文名', type: 'input', key: 'GONGYINGSHANGZHONGWENMING', permission: 'APREPART_MANAGFMENT_SUPPLIERNAMEZH|配件-配件管理-供应商中文名'},
+  {value: 'assemblyPartNum', label: '批量供货总成号', type: 'input', key: 'PILIANGGONGHUOZONGCHENGHAO', permission: 'APREPART_MANAGFMENT_ASSEMBLYPARTNUM|配件-配件管理-批量供货总成号'},
+  {value: 'spnrNum', label: 'SP号', type: 'input', key: 'SPHAO', permission: 'APREPART_MANAGFMENT_SPNUM|配件-配件管理-SP号'},
+  {value: 'sparePartCode', label: '编号', type: 'input', key: 'BIANHAO', permission: 'APREPART_MANAGFMENT_CODE|配件-配件管理-编号'},
+  {value: 'carType', label: '配件车型', type: 'select', key: 'PEIJIANCHEXING', selectOption: 'carTypeOptions', permission: 'APREPART_MANAGFMENT_CARTYPE|配件-配件管理-配件车型'},
+  {value: 'carProject', label: '配件车型项目', type: 'select', key: 'PEIJIANCHEXINGXIANGMU', selectOption: 'cartypeProjectOptions', width: 150, permission: 'APREPART_MANAGFMENT_CARPROJECT|配件-配件管理-配件车型项目'},
+  {value: 'state', label: '配件状态', type: 'select', key: 'PEIJIANZHUANGTAI', selectOption: 'accessoryTypeOption', permission: 'APREPART_MANAGFMENT_STATE|配件-配件管理-配件状态'},
+  {value: 'respDeptName', label: 'LINIE科室', type: 'input', key: 'LINIEKESHI', permission: 'APREPART_MANAGFMENT_LINIEDEPT|配件-配件管理-LINIE科室'},
+  {value: 'respLinieName', label: 'LINIE', type: 'input', key: 'LINIE', permission: 'APREPART_MANAGFMENT_LINIE|配件-配件管理-LINIE'},
+  {value: 'csfuserDeptName', label: '询价科室', type: 'input',key: 'XUNJIAKESHI', permission: 'APREPART_MANAGFMENT_CSFDEPTNAME|配件-配件管理-询价科室'},
+  {value: 'csfuserName', label: '询价采购员', type: 'input', key: 'XUNJIACAIGOUYUAN', permission: 'APREPART_MANAGFMENT_CSFUSERNAME|配件-配件管理-询价采购员'},
+  {value: 'accessoryStatus', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: 'partStateOption', permission: 'APREPART_MANAGFMENT_PARTSTATS|配件-配件管理-零件状态'},
   // {value: 'partState', label: '合同状态', type: 'select', key: 'HETONGZHUANGTAI', selectOption: 'contactStateOption'},
   // {value: 'cfTargetPrice', label: '是否有财务目标价', type: 'select', key: 'SHIFOUYOUCAIWUMUBIAOJIA', selectOption: 'yesOrNoOption'},
   // {value: 'nomiType', label: '定点状态', type: 'select', key: 'DINGDIANZHUANGTAI', selectOption: 'nominateStateOption'},
-  {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: 'accessoryIdStateOption'}
+  {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: 'accessoryIdStateOption', permission: 'APREPART_MANAGFMENT_IDSTATS|配件-配件管理-ID状态'}
 ]
 export const TAB = [
   {
