@@ -7,7 +7,7 @@
       class="item"
       effect="light"
       LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN
-      :content="$t('LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN',{day:row['daysToToday']})"
+      :content="$t('MODEL-ORDER.LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN',{day:row['daysToToday']})"
       placement="bottom">
             <span class="g-red" @click="openPage(row)">
               <icon class="el-icon-warning-outline" color="red"/>
