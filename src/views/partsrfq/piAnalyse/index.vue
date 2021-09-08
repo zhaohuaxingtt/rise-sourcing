@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-09-07 18:49:23
+ * @LastEditTime: 2021-09-08 14:32:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -243,6 +243,7 @@
       <addScheme
         :key="addPiParams.key"
         v-model="addPiParams.visible"
+        @handleCloseAddModal="handleCloseAddModal"
       />
     </iCard>
   </div>
@@ -506,7 +507,6 @@ export default {
       fetchAnalysisStick({id: val.id}).then((res) => {
         if (res) {
           if (res.code == 200) {
-            // val.isTop = !val.isTop;
             iMessage.success(res.desZh);
             this.getTableList();
           } else iMessage.error(res.desZh);
@@ -519,7 +519,6 @@ export default {
       this.$router.push({
         path: schemeUrl,
         query: {
-          // type: 'edit',
           schemeId: row.analysisSchemeId,
           round: this.round
         }
@@ -542,6 +541,10 @@ export default {
         ? "scheme"
         : "report";
     },
+    // 关闭新增分析方案弹窗
+    handleCloseAddModal() {
+      this.addPiParams.visible = false
+    }
   },
 };
 </script>
