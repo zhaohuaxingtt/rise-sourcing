@@ -4,7 +4,7 @@
  * @Description: 特殊定点-配附件--附件需求导入列表
 -->
 <template>
-    <iPage class="importFiles">
+    <iPage class="importFiles" v-permission.auto="ACCESSORY_IMPORT_PAGE|附件-附件导入-页面">
         <!-- <el-tabs v-model="tab" class="tab"> -->
             <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
                  <div class="topMenu">
@@ -12,11 +12,12 @@
                     <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
                 </div>
                 <!-- 内容区 -->
-                <iCard>
+                <iCard v-permission.auto="ACCESSORY_IMPORT_TABLE|附件-附件导入-表格">
                   <div class="margin-bottom20 clearFloat">
                     <div class="floatright">
                       <span class="margin-right10">
                           <Upload 
+                              v-permission.auto="ACCESSORY_IMPORT_IMPORTBTN|附件-附件导入-导入按钮"
                               hideTip
                               :buttonText="language('LK_DAORU','导入')"
                               accept=" .xls,.xlsx"
@@ -25,7 +26,7 @@
                               @on-success="onDraingUploadsucess"
                           />
                       </span>
-                      <iButton  @click="downloadTemplate" > {{language('LK_FUJIANMUBANXIAZAI','附件模板下载')}} </iButton>
+                      <iButton  @click="downloadTemplate" v-permission.auto="ACCESSORY_IMPORT_DOWNLOADTEMPLATE|附件-附件导入-附件模板下载" > {{language('LK_FUJIANMUBANXIAZAI','附件模板下载')}} </iButton>
                     </div>
                   </div>
                   <!-- 表格区域 -->
