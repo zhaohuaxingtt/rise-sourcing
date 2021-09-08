@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-25 09:55:41
+ * @LastEditTime: 2021-09-07 17:52:05
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
@@ -36,21 +36,21 @@ export const tableMockData = [
 ]
 
 export const searchList = [
-  {value: 'rfqId', label: 'RFQ编号', type: 'input', i18n_label: 'RFQBIANHAO',},
-  {value: 'fsNum', label: 'FS/GS/SP No.', type: 'input', i18n_label: 'FSGSSPNO',},
-  {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',},
-  {value: 'cfId', label: 'CF', type: 'select', i18n_label: 'CF',selectOption:'CF_USER'},
-  {value: 'applyStats', label: '申请状态', type: 'select', i18n_label: 'SHENQINGZHUANGTAI',selectOption:'CF_APPLY_STATUS'},
-  {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG',},
-  {value: 'partProjectType', label: '零件项目类型', type: 'select', i18n_label: 'LINGJIANXIANGMULEIXING',selectOption:'PART_PROJECT_TYPE'},
-  {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',selectOption: ''},
-  {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE'},
-  {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: 'LINGJIANZHUANGTAI', selectOption: 'PART_STATUS'},
-  {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO'},
-  {value: 'procureFactoryId', label: '采购工厂', type: 'select', i18n_label: 'CAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY'},
-  {value: 'cfPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption: 'CF_PRICE_TYPE'},
-  {value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: 'SHENQINGRIQIQIZHI',},
-  {value: 'responseDate', label: '返回日期起止', type: 'dateRange', i18n_label: 'FANHUIRIQIQIZHI',}
+  {value: 'rfqId', label: 'RFQ编号', type: 'input', i18n_label: 'RFQBIANHAO', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_RFQNUM|财务目标价管理-目标价维护-RFQ编号'},
+  {value: 'fsNum', label: 'FS/GS/SP No.', type: 'input', i18n_label: 'FSGSSPNO', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_FSNUM|财务目标价管理-目标价维护-FSGSSPNO'},
+  {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_PARTNUM|财务目标价管理-目标价维护-零件号'},
+  {value: 'cfId', label: 'CF', type: 'select', i18n_label: 'CF',selectOption:'CF_USER', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_CF|财务目标价管理-目标价维护-CF'},
+  {value: 'applyStats', label: '申请状态', type: 'select', i18n_label: 'SHENQINGZHUANGTAI',selectOption:'CF_APPLY_STATUS', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_APPLYSTATUS|财务目标价管理-目标价维护-申请状态'},
+  {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_PARTNAME|财务目标价管理-目标价维护-零件名称'},
+  {value: 'partProjectType', label: '零件项目类型', type: 'select', i18n_label: 'LINGJIANXIANGMULEIXING',selectOption:'PART_PROJECT_TYPE', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_PARTPROJECTTYPE|财务目标价管理-目标价维护-零件项目类型'},
+  {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',selectOption: '', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_BUYER|财务目标价管理-目标价维护-询价采购员'},
+  {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_LINIE|财务目标价管理-目标价维护-LINIE'},
+  {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: 'LINGJIANZHUANGTAI', selectOption: 'PART_STATUS', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_PARTSTATUS|财务目标价管理-目标价维护-零件状态'},
+  {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_CARPROJECT|财务目标价管理-目标价维护-车型项目'},
+  {value: 'procureFactoryId', label: '采购工厂', type: 'select', i18n_label: 'CAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_PROFACTORY|财务目标价管理-目标价维护-采购工厂'},
+  {value: 'cfPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption: 'CF_PRICE_TYPE', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_PRICETYPE|财务目标价管理-目标价维护-目标价分类'},
+  {value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: 'SHENQINGRIQIQIZHI', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_APPLYDATE|财务目标价管理-目标价维护-申请日期起止'},
+  {value: 'responseDate', label: '返回日期起止', type: 'dateRange', i18n_label: 'FANHUIRIQIQIZHI', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_RESPONSEDATE|财务目标价管理-目标价维护-返回日期起止'}
 ]
 
 export const modifyTableTitle = [
