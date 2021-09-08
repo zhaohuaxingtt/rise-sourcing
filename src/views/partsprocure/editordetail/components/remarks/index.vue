@@ -101,12 +101,13 @@
 		data() {
 			return {
 				vmdetailData:{},
-				diologChangeItems:false
+				diologChangeItems:false,
+				isAeko:false,
 			};
 		},
 		inject:['detailData'],
 		created() {
-			this.vmdetailData = this.detailData()
+			this.vmdetailData = this.detailData();
 		},
 		methods: {
 			//修改详情里面备注。
