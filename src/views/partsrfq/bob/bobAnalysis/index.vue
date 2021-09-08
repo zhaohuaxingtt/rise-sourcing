@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-09-06 20:47:49
+ * @LastEditTime: 2021-09-07 20:52:53
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -23,7 +23,7 @@
             </div>
 
           </div>
-          <div v-show="checkFLag&&!$attrs.reportSave">
+          <div v-show="checkFLag">
             <iButton v-show="flag"
                      @click="open">全部展开</iButton>
             <iButton v-show="flag1"
@@ -162,7 +162,8 @@ export default {
     };
   },
   created () {
-    this.SchemeId = this.$attrs.analysisSchemeId
+    this.SchemeId = this.analysisSchemeId
+
     this.groupId = this.$route.query.groupId
     // this.chargeRetrieve({
     //   isDefault: true,
@@ -194,6 +195,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    analysisSchemeId: {
+      type: String,
+      default: ""
     }
   },
   watch: {

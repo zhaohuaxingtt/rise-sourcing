@@ -1,8 +1,7 @@
 <template>
   <iPage class="new-bob">
     <div id="content">
-      <div class="navBox flex-between-center"
-           v-if="!reportSave">
+      <div class="navBox flex-between-center">
         <span class="title font-weight">BOB{{ $t("TPZS.FENXI")
           }}<span v-if="inside">-RFQ {{ rfq }}</span></span>
         <div class="flex-align-center">
@@ -30,8 +29,7 @@
               class="margin-top20">
         <el-col :span="inside?4:5">
           <iCard :collapse="false"
-                 style="height: 620px"
-                 v-if="!reportSave">
+                 style="height: 620px">
             <el-form label-position="top"
                      :model="form">
               <el-row class="margin-bottom20">
@@ -269,8 +267,7 @@
       <el-row :gutter="20"
               class="margin-top20">
         <el-col :span="inside?4:5">
-          <iCard :collapse="false"
-                 v-if="!reportSave">
+          <iCard :collapse="false">
             <ul class="anchorList flex">
               <li v-for="(i,index) in anchorList"
                   :key="index"
@@ -288,6 +285,7 @@
                        :reportSave="reportSave"
                        :label="label"
                        :bobType="bobType"
+                       :heightFlag="true"
                        :formUpdata="formUpdata"></bobAnalysis>
         </el-col>
       </el-row>
@@ -304,6 +302,9 @@
              :supplierList="supplierList"
              :partList="partList"
              :analysisSchemeId="analysisSchemeId"
+             :groupId="groupId"
+             :reportName="reportName"
+             :heightFlag="false"
              @closeDialog="closePreView"></preview>
     <iDialog title="保存"
              :visible.sync="dialogVisible"
@@ -352,7 +353,7 @@ import { getBobLevelOne, removeBobOut, addBobOut } from "@/api/partsrfq/bob";
 import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList, generateGroupId } from "@/api/partsrfq/bob/analysisList";
 import customSelect from '@/views/demo'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
-import { uploadFile } from "@/api/file/upload";
+
 import preview from "./preview.vue";
 import OutBar from "./components/outBar.vue";
 
@@ -436,6 +437,7 @@ export default {
         }
       }
       this.analysisSchemeId = this.$route.query.chemeId
+      console.log(this.analysisSchemeId, 2222)
       await this.getChartData()
     }
   },
@@ -905,37 +907,38 @@ export default {
         }
       }
       if (this.reportSave) {
-        downloadPDF({
-          idEle: "content",
-          pdfName: that.reportName,
-          callback: async (pdf, pdfName) => {
-            try {
-              const time = new Date().getTime();
-              const filename = pdfName + time + ".pdf";
-              const pdfFile = pdf.output("datauristring");
-              const blob = dataURLtoFile(pdfFile, filename);
-              const formData = new FormData();
-              formData.append("multipartFile", blob);
-              formData.append("applicationName", "rise");
-              const res = await uploadFile(formData);
-              const data = res.data[0];
-              const req = {
-                analysisSchemeId: this.analysisSchemeId,
-                name: data.fileName,
-                path: data.filePath,
-                remark: that.reportName,
-              };
-              await add(req);
-              that.dialogVisible = false;
-              that.reportSave = false;
-              iMessage.success("保存成功");
-            } catch {
-              iMessage.err("保存失败");
-              that.dialogVisible = false;
-              that.reportSave = false;
-            }
-          },
-        });
+        this.pre = true
+        // downloadPDF({
+        //   idEle: "content",
+        //   pdfName: that.reportName,
+        //   callback: async (pdf, pdfName) => {
+        //     try {
+        //       const time = new Date().getTime();
+        //       const filename = pdfName + time + ".pdf";
+        //       const pdfFile = pdf.output("datauristring");
+        //       const blob = dataURLtoFile(pdfFile, filename);
+        //       const formData = new FormData();
+        //       formData.append("multipartFile", blob);
+        //       formData.append("applicationName", "rise");
+        //       const res = await uploadFile(formData);
+        //       const data = res.data[0];
+        //       const req = {
+        //         analysisSchemeId: this.analysisSchemeId,
+        //         name: data.fileName,
+        //         path: data.filePath,
+        //         remark: that.reportName,
+        //       };
+        //       await add(req);
+        //       that.dialogVisible = false;
+        //       that.reportSave = false;
+        //       iMessage.success("保存成功");
+        //     } catch {
+        //       iMessage.err("保存失败");
+        //       that.dialogVisible = false;
+        //       that.reportSave = false;
+        //     }
+        //   },
+        // });
       }
     },
     doActive (i, index) {
