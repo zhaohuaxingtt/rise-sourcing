@@ -1,11 +1,11 @@
 <template>
-  <i-page class="orderClassBox">
+  <i-page class="orderClassBox" v-permission="MOLD_PURCHASE_ORDER_DETAILS_PAGE">
     <div class="pageTitle flex-between-center-center margin-botttom20">
       <span>{{ titleComputed }}</span>
       <div class="btnList flex-align-center">
         <!---日志-->
-        <LogButton class="margin-left10" @click="lookLog"/>
-        <LedgerIconComponent/>
+        <LogButton v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_LOOK_LOG" class="margin-left10" @click="lookLog"/>
+        <LedgerIconComponent v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_GOLEDGER"/>
       </div>
     </div>
     <div class="line-top margin-top10"></div>
@@ -20,29 +20,30 @@
 
       <div class="btnList flex-align-center">
         <!--下一步-->
-        <i-button v-if="nextStepShow" @click="nextStep">{{ $t("LK_XIAYIBU") }}</i-button>
+        <i-button v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_NEXT" v-if="nextStepShow" @click="nextStep">{{ $t("LK_XIAYIBU") }}</i-button>
         <!--清空-->
-        <i-button v-if="nextStepShow" @click="clearForm">{{ $t("MODEL-ORDER.LK_QINGKONG") }}</i-button>
+        <i-button v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_CLEARN" v-if="nextStepShow" @click="clearForm">{{ $t("MODEL-ORDER.LK_QINGKONG") }}</i-button>
 
-        <i-button v-if="saveOrderShow" @click="outEditOrder">{{ $t("LK_TUICHUBIANJI") }}</i-button>
+        <i-button v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_EDIT" v-if="saveOrderShow" @click="outEditOrder">{{ $t("LK_TUICHUBIANJI") }}</i-button>
         <!--保存-->
-        <i-button v-if="saveOrderShow" v-loading.fullscreen.lock="fullscreenLoading" @click="saveOrder">
+        <i-button v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_SAVE" v-if="saveOrderShow" v-loading.fullscreen.lock="fullscreenLoading" @click="saveOrder">
           {{ $t("LK_BAOCUN") }}
         </i-button>
         <!--编辑-->
-        <i-button v-if="editOrderbtnShow" @click="editOrder">{{ $t("LK_BIANJI") }}</i-button>
+        <i-button v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_EDIT" v-if="editOrderbtnShow" @click="editOrder">{{ $t("LK_BIANJI") }}</i-button>
 
         <!--提交订单-->
-        <i-button v-if="submitOrderbtnShow" v-loading.fullscreen.lock="fullscreenLoading" @click="submitOrder">
+        <i-button v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_SUBMIT" v-if="submitOrderbtnShow" v-loading.fullscreen.lock="fullscreenLoading" @click="submitOrder">
           {{ $t("LK_TIJIAO") }}
         </i-button>
         <!--版本升级-->
-        <i-button v-if="versionUpgradeShow" v-loading.fullscreen.lock="fullscreenLoading" @click="versionUpgrade">
+        <i-button v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_VERSION_UPGRADE" v-if="versionUpgradeShow" v-loading.fullscreen.lock="fullscreenLoading" @click="versionUpgrade">
           {{ $t("MODEL-ORDER.LK_BANBENSHNGJI") }}
         </i-button>
       </div>
     </div>
     <ModelOrderDetailsTopComponents
+        v-permission="MOLD_PURCHASE_ORDER_DETAILS_TOP_PAGE"
         v-if="orderShow"
         ref="orderDetailsTopComponentsRef"
         :is-edit="isEdit"
@@ -59,6 +60,7 @@
         ref="orderDetailsBottomComponentRef"
         :id="id"
         :isEdit="isEdit"
+        v-permission="MOLD_PURCHASE_ORDER_DETAILS_ITEM_DISPLAY_AREA"
         :order-details="orderDetails"
         :containPurchaseGroup="containPurchaseGroup"
     />
