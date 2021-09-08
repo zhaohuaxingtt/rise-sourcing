@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-08 11:06:55
+ * @LastEditTime: 2021-09-08 15:29:22
  * @Description: 配件签收
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -13,7 +13,7 @@
       <!-- <el-tab-pane lazy :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
         <div>
           <div class="topMenu">
-            <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+            <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
             <iNavMvp class="margin-bottom30" @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!----------------------------------------------------------------->
@@ -143,7 +143,7 @@ export default {
     this.updateNavList
   },
   computed: {
-    ...mapState(["navList"]),
+    ...mapState(["navList","navListLeft"]),
     ...mapActions(["updateNavList"])
   },
   methods: {

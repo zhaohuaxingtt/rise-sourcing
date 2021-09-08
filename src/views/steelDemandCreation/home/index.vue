@@ -1,18 +1,18 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-29 17:02:51
- * @LastEditTime: 2021-08-20 15:23:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-08 14:38:16
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steeldemandcreation\index.vue
 -->
 <template>
   <iPage>
-    <div class="topMenu">
+    <div class="topMenu" v-permission.auto="SOURCING_STEELDEMANCREATION_PAGE|钢材管理">
       <iNavMvp class="margin-bottom30" lang @change="change" :list='navListLeft' routerPage lev="1" @message="clickMessage" />
       <iNavMvp class="margin-bottom30" lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
     </div>
-    <iSearch class="margin-bottom20" @sure="steeldemandcreation()" @reset='reset()'>
+    <iSearch class="margin-bottom20" @sure="steeldemandcreation()" @reset='reset()' v-permission.auto="SOURCING_STEELDEMANCREATION_SEARCH|搜索">
       <el-form>
         <template v-for='(items,index) in searchForm'>
           <el-form-item :label='language(items.i18nKey,items.i18nName)' :key="index">
@@ -33,13 +33,13 @@
     </iSearch>
     <iCard>
       <div class="textalign-right">
-        <iButton @click="downloadTemplate">{{language('XIAZAIPILIANGMOBAN','下载批量模板')}}</iButton>
-        <el-upload class="uploadfile" :before-upload='()=>{uploadLoadingOne=true}' :on-success="(r)=>Message(r,1,'uploadLoadingOne')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingOne')" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelOne`" :show-file-list='false'><iButton :loading="uploadLoadingOne">{{language('SHANGCHUANWENJIANYICIX','上传文件（一次性）')}}</iButton></el-upload>
-        <el-upload :before-upload='()=>{uploadLoadingAll=true}' :on-success="(r)=>Message(r,1,'uploadLoadingAll')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingAll')" class="uploadfile" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelBatch`" :show-file-list='false'><iButton :loading='uploadLoadingAll'>{{language('SHANGCHUANWENJJIANPILIANG','上传文件（批量）')}}</iButton></el-upload>
-        <iButton @click="print(1)" :loading='printLoadingOne'>{{language('DAYINGDINGDANLIUZHUANDAN','打印定点流转单(一次性)')}}</iButton>
-        <iButton @click="print(2)" :loading='printLoadingAll'>{{language('DAYINGDINGDANLIUZDPILIANG','打印定点流转单（批量）')}}</iButton>
+        <iButton @click="downloadTemplate" v-permission.auto="SOURCING_STEELDEMANCREATION_BATCHDOWNLOADTEMPLATE|下载批量模板">{{language('XIAZAIPILIANGMOBAN','下载批量模板')}}</iButton>
+        <el-upload class="uploadfile" :before-upload='()=>{uploadLoadingOne=true}' :on-success="(r)=>Message(r,1,'uploadLoadingOne')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingOne')" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelOne`" :show-file-list='false'><iButton :loading="uploadLoadingOne" v-permission.auto="SOURCING_STEELDEMANCREATION_UPLOADFILEONCE|上传文件一次性">{{language('SHANGCHUANWENJIANYICIX','上传文件（一次性）')}}</iButton></el-upload>
+        <el-upload :before-upload='()=>{uploadLoadingAll=true}' :on-success="(r)=>Message(r,1,'uploadLoadingAll')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingAll')" class="uploadfile" :headers="{'token':getToken()}" :action="`${baseUrl}steelDemand/uploadExcelSteelBatch`" :show-file-list='false'><iButton :loading='uploadLoadingAll' v-permission.auto="SOURCING_STEELDEMANCREATION_UPLOADFILEBATCH|上传文件批量">{{language('SHANGCHUANWENJJIANPILIANG','上传文件（批量）')}}</iButton></el-upload>
+        <iButton @click="print(1)" :loading='printLoadingOne' v-permission.auto="SOURCING_STEELDEMANCREATION_PRINTONCE|打印定点流转单一次性">{{language('DAYINGDINGDANLIUZHUANDAN','打印定点流转单(一次性)')}}</iButton>
+        <iButton @click="print(2)" :loading='printLoadingAll' v-permission.auto="SOURCING_STEELDEMANCREATION_PRINTBATCH|打印定点流转单批量">{{language('DAYINGDINGDANLIUZDPILIANG','打印定点流转单（批量）')}}</iButton>
       </div>
-      <tablePart radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading' class="aotoTableHeight">
+      <tablePart radio @handleSelectionChange="(row)=>selectRow=row" :tableData='tabelList' :tableTitle='tableTitle' v-loading='tabelLoading' class="aotoTableHeight" v-permission.auto="SOURCING_STEELDEMANCREATION_TABLE|表格">
         <template #[currentProps]="{row:row}" v-for='currentProps in decArrayList'>
           {{row[currentProps].desc}}
         </template>

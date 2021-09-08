@@ -185,13 +185,13 @@ export default {
         if (res.code == 200) {
           if (res.data.factoryCode) {
             this.factoryDisabled = true
+            this.form.factoryCode = res.data.factoryCode
             this.factoryName = res.data.factoryName
           } else {
             this.factoryDisabled = false
+            this.form.factoryCode = ""
             this.factoryName = ""
           }
-
-          this.form.factoryCode = ""
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -282,7 +282,7 @@ export default {
     },
     reset() {
       this.page.currPage = 1
-      this.form = cloneDeep(ledgerQueryForm)
+      this.form = cloneDeep({ ledgerQueryForm, factoryCode: this.factoryDisabled ? this.form.factoryCode : ""})
       this.objectAekoPartId = this.$route.query.objectAekoPartId
       // this.getAekoOriginPartInfo()
     },
@@ -301,6 +301,8 @@ export default {
     },
     confirmAPrice(row) {
       this.currentRow.aprice = row.price
+      this.currentRow.currency = row.currency
+      this.currentRow.unit = row.priceUnit
       this.currentRow = {}
     },
     // 保存
@@ -312,7 +314,7 @@ export default {
         item.supplierCode = item.supplierSap;
         item.supplierName = item.supplierNameZh;
         item.facadeCode = item.procureFactory;
-        });
+      })
 
       const data = {
         partList:this.aekomultipleSelection.concat(this.multipleSelection),

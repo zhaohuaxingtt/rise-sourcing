@@ -15,6 +15,8 @@ import {businessPermission} from '@/utils'
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
         inserted: function(el, binding,vnode) {
+            //如果是个变量则使用变量，否则当做字符串处理
+            const value = binding.value?binding.value:binding.expression
             // dynamic、auto共用时处理
             if (binding.modifiers.dynamic && binding.modifiers.auto) {
                 binding.modifiers.dynamic = false
@@ -22,16 +24,16 @@ Vue.directive('permission', {
             }
 
             if (binding.modifiers.disabled) {
-                if (store.state.permission.whiteBtnList[binding.expression]) {
+                if (store.state.permission.whiteBtnList[value]) {
                     el.classList.add("is-disabled")
                 }
             } else if (binding.modifiers.dynamic) {
-                if (!store.state.permission.whiteBtnList[binding.value] && businessPermission(binding.value,router.currentRoute.query)) {
+                if (!store.state.permission.whiteBtnList[value] && businessPermission(value,router.currentRoute.query)) {
                     el.parentNode.removeChild(el)
                 }
             } else if(binding.modifiers.auto){
                 // eslint-disable-next-line no-debugger
-                const splitValue = binding.expression.split('|')
+                const splitValue = value.split('|')
                 if(splitValue.length > 1){store.dispatch('uploadResource',splitValue)}
                 // if (!store.state.permission.whiteBtnList[splitValue[0]]) {
                 //     el.parentNode.removeChild(el)
@@ -44,7 +46,7 @@ Vue.directive('permission', {
                 // if (!store.state.permission.whiteBtnList[binding.expression]) {
                 //     el.parentNode.removeChild(el)
                 // }else{
-                    if(businessPermission(binding.expression,router.currentRoute.query)){
+                    if(businessPermission(value,router.currentRoute.query)){
                        el.parentNode.removeChild(el)
                     }
                 // }
