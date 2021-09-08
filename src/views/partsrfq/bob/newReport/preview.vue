@@ -10,6 +10,7 @@
         <div class="clearfix">
           <iButton class="margin-left10 "
                    style="float: right"
+                   v-show="reportSave"
                    @click="handleDownload">生成报告</iButton>
         </div>
         <el-row :gutter="40">
@@ -52,7 +53,7 @@ import CrownBar from "./components/crownBar.vue";
 import { add } from "@/api/partsrfq/bob/analysisList";
 import { getBobLevelOne, chargeRetrieve } from "@/api/partsrfq/bob";
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
-import { uploadFile } from "@/api/file/upload";
+import { uploadUdFile } from "@/api/file/upload";
 import table1 from "../bobAnalysis/components/table1.vue";
 import OutBar from "./components/outBar.vue";
 export default {
@@ -88,6 +89,7 @@ export default {
       chartType: "supplier",
       bobType: "Best of Best",
       tableList: "",
+      reportSave: true,
       // dataList1,
       // dataList2,
       // dataList3,
@@ -190,42 +192,50 @@ export default {
     },
     sure () { },
     handleDownload () {
+      this.reportSave = false
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
       downloadPDF({
         idEle: "content",
-        pdfName: this.reportName,
+        pdfName: this.reportName.replaceAll(/\./g, '_'),
+        exportPdf: true,
         callback: async (pdf, pdfName) => {
           try {
-            const time = new Date().getTime();
-            const filename = pdfName + time + ".pdf";
+            const filename = pdfName.replaceAll(/\./g, '_') + ".pdf";
             const pdfFile = pdf.output("datauristring");
             const blob = dataURLtoFile(pdfFile, filename);
-            const formData = new FormData();
-            formData.append("multipartFile", blob);
-            formData.append("applicationName", "rise");
-            const res = await uploadFile(formData);
-            const data = res.data[0];
-            const req = {
-              analysisSchemeId: this.analysisSchemeId,
-              name: data.fileName,
-              path: data.filePath,
-              remark: this.reportName,
-            };
-            await add(req);
-            this.dialogVisible = false;
-            this.reportSave = false;
-            iMessage.success("保存成功");
+            uploadUdFile({
+              applicationName: 'sourcing',
+              businessId: Math.ceil(Math.random() * 100000),
+              multifile: blob
+            }).then(res => {
+              this.savereport = true
+              const data = res.data[0]
+              let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
+              let arr2 = data.path.split(arr[0])
+              loading.close();
+              const req = {
+                analysisSchemeId: this.analysisSchemeId,
+                name: data.name,
+                path: arr2[1],
+                remark: this.reportName.replaceAll(/\./g, '_'),
+              };
+              add(req);
+              this.closeDialog()
+              this.reportSave = true;
+              iMessage.success("生成成功");
+            });
           } catch {
-            iMessage.err("保存失败");
-            this.dialogVisible = false;
-            this.reportSave = false;
+            iMessage.err("生成失败");
+            this.closeDialog()
+            this.reportSave = true;
           }
         },
       });
-      
-      // downloadPDF({
-      //   idEle: "downloadRef",
-      //   pdfName: "BOB Preview",
-      // });
     },
     goToBob () {
       this.$router.push("bob");
@@ -234,7 +244,6 @@ export default {
       this.showSelectDiv = false;
     },
     showSelect (e) {
-
       const position = e.event.target.position;
       this.showSelectDiv = true;
       this.$refs.toolTipDiv.style.left = position[0] + 210 + "px";

@@ -111,11 +111,9 @@ export default {
           this.SchemeId = res.data.id
           this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
         }
-
       })
     },
     saveMarket () {
-
       this.edite = true
       const loading = this.$loading({
         lock: true,

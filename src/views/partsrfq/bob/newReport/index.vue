@@ -1,6 +1,6 @@
 <template>
   <iPage class="new-bob">
-    <div id="content">
+    <div>
       <div class="navBox flex-between-center">
         <span class="title font-weight">BOB{{ $t("TPZS.FENXI")
           }}<span v-if="inside">-RFQ {{ rfq }}</span></span>
@@ -353,7 +353,6 @@ import { getBobLevelOne, removeBobOut, addBobOut } from "@/api/partsrfq/bob";
 import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList, generateGroupId } from "@/api/partsrfq/bob/analysisList";
 import customSelect from '@/views/demo'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
-
 import preview from "./preview.vue";
 import OutBar from "./components/outBar.vue";
 
@@ -412,6 +411,7 @@ export default {
   async created () {
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
+    this.analysisSchemeId = this.$route.query.chemeId
     // this.groupId = this.$route.query.groupId
     let res = await generateGroupId()
     this.groupId = res.data
@@ -437,7 +437,6 @@ export default {
         }
       }
       this.analysisSchemeId = this.$route.query.chemeId
-      console.log(this.analysisSchemeId, 2222)
       await this.getChartData()
     }
   },
@@ -575,7 +574,7 @@ export default {
     },
     showSelect (e) {
       const position = e.event.target.position;
-      console.log(position)
+
       this.showSelectDiv = true;
       this.$refs.toolTipDiv.style.left = position[0] + -40 + "px";
       this.$refs.toolTipDiv.style.top = position[1] + 15 + "px";
@@ -678,7 +677,6 @@ export default {
             this.$message.error(res.desZh);
             this.closeDialog()
           }
-
         })
       }
 
@@ -801,7 +799,7 @@ export default {
           this.form.supplier = this.Split(allData.supplier, ",");
           this.form.turn = this.Split(allData.turn, ",").map(Number)
           this.form.spareParts = this.Split(allData.spareParts, ",");
-          console.log(this.form)
+
         }
         if (this.inside) {
           this.formUpdata = {

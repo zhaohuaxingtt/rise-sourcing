@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-07 19:54:30
+ * @LastEditTime: 2021-09-08 15:01:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -81,7 +81,6 @@ export default {
         return [];
       },
     },
-
     tableList: {
       type: Object,
       default: function () {
@@ -157,7 +156,6 @@ export default {
     duration () {
       return function (i) {
         let result = this.getTreeExpandKeys(this.tableList.element, i.label)
-        console.log(result)
         return result
       }
     }
@@ -278,7 +276,7 @@ export default {
       if (expanded.length > 0) {
         this.$emit("expand-change", row, expanded);
       }
-      // console.log(row, expanded)
+
     },
   },
 };
