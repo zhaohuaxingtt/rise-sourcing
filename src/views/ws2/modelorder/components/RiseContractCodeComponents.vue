@@ -33,7 +33,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 .tooltipWidth {
-  width: 16.8px;
+  width: 20px;
   height: 16.8px;
 }
 .RiseFlex {
