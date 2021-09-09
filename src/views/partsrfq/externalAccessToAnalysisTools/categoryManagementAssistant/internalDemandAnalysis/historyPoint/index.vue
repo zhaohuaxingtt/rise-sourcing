@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-08 16:48:22
+ * @LastEditTime: 2021-09-09 19:17:12
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
@@ -119,7 +119,7 @@
 					// schemeName:"",
 				}
 				nomiSave(params).then(res=>{
-					
+					this.resultMessage(res)
 				})
 			},
 			//导出
