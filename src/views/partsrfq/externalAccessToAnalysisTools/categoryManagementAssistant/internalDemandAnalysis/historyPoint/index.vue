@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-06 14:13:54
+ * @LastEditTime: 2021-09-08 16:48:22
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
@@ -58,18 +58,25 @@
 					categoryCode:"",
 					latestYear:"",
 					supplierId:"",
+					id:""
 				},
 			}
 		},
-		created() {
+		async created() {
 			this.searchCriteria.categoryCode=this.$store.state.rfq.categoryCode
+			await this.getNomiHistoryParamInit()
 			this.getDict()
 			this.getNomiSupplier()
 		},
 		watch: {
-			"$store.state.rfq.categoryCode"(){
+			async "$store.state.rfq.categoryCode" (){
 				this.searchCriteria.categoryCode=this.$store.state.rfq.categoryCode
-				this.getNomiSupplier()
+				this.searchCriteria.id=""
+				this.searchCriteria.latestYear=""
+				this.searchCriteria.supplierId=""
+				this.searchCriteria.categoryCode=""
+				await this.getNomiHistoryParamInit()
+				this.value==1?this.$refs.pointTable.getTableList():this.$refs.supplierTable.getTableList()
 			}
 		},
 		methods:{
@@ -88,26 +95,27 @@
 			},
 			// 重置
 			reset(){
-				if(this.value==1){
-					this.searchCriteria.latestYear=""
-				}else{
-					this.searchCriteria.latestYear=""
-					this.searchCriteria.supplierId=""
-				}
+				this.searchCriteria.latestYear=""
+				this.searchCriteria.supplierId=""
 				this.search()
 			},
 			// 保存
 			async save(){
 				const resFile = await this.getDownloadFileAndExportPdf({
 					domId: 'historyPoint',
-					pdfName: this.language("DINGDIANLISHIJILV","定点历史记录") + '-' + this.$store.state.rfq.categoryName + '-' + new Date().toLocaleDateString()+'-',
+					pdfName: this.language("DINGDIANLISHIJILV","定点历史记录") + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD')+'-',
 				});
 				let params={
 					categoryCode:this.searchCriteria.categoryCode,
-					id:"",
+					id:this.searchCriteria.id,
 					reportFileName: resFile.downloadName,
 					reportName: resFile.downloadName,
 					reportUrl: resFile.downloadUrl,
+					nomiQueryDTO:{
+						categoryCode:this.searchCriteria.categoryCode,
+						latestYear:this.searchCriteria.latestYear,
+						supplierId:this.searchCriteria.supplierId
+					}
 					// schemeName:"",
 				}
 				nomiSave(params).then(res=>{
@@ -134,14 +142,17 @@
 				})
 			},
 			// 查询参数
-			// getNomiHistoryParamInit(){
-			// 	nomiHistoryParamInit({categoryCode:this.searchCriteria.categoryCode}).then(res=>{
-			// 		if(res.data){
-			// 			this.id=res.data.id
-			// 			this.searchCriteria.categoryCode
-			// 		}
-			// 	})
-			// }
+		   async getNomiHistoryParamInit(){
+				await nomiHistoryParamInit({categoryCode:this.searchCriteria.categoryCode}).then(res=>{
+					if(res.data.id){
+						this.searchCriteria.id=res.data.id
+					}
+					if(res.data.nomiQueryDTO){
+						this.searchCriteria.latestYear=res.data.nomiQueryDTO.latestYear
+						this.searchCriteria.supplierId=res.data.nomiQueryDTO.supplierId
+					}
+				})
+			}
 		}
 	}
 </script>

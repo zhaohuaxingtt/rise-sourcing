@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-08-19 16:41:22
+ * @LastEditTime: 2021-09-08 15:11:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -48,13 +48,15 @@
                            :label="i.title"
                            :prop="i.label"
                            :align="i.label == 'title' ? 'left' : 'center'"
-                           :width="i.label == 'title' ? '200' : ''">
+                           :width="i.label == 'title' ? '200' : ''"
+                           show-overflow-tooltip>
             <template v-if="i.child">
               <el-table-column v-for="item in i.child"
                                :key="item.index"
                                :label="item.title"
                                :prop="item.label"
-                               align="center">
+                               align="center"
+                               show-overflow-tooltip>
                 <template slot="header"
                           slot-scope="scope">
                   <el-checkbox @change="check=>select(check,scope.column)"></el-checkbox>
@@ -114,13 +116,15 @@
                            :label="i.title"
                            :prop="i.label"
                            :align="i.label == 'title' ? 'left' : 'center'"
-                           :width="i.label == 'title' ? '200' : ''">
+                           :width="i.label == 'title' ? '200' : ''"
+                           show-overflow-tooltip>
             <template v-if="i.child">
               <el-table-column v-for="item in i.child"
                                :key="item.index"
                                :label="item.title"
                                :prop="item.label"
-                               align="center">
+                               align="center"
+                               show-overflow-tooltip>
                 <template slot="header"
                           slot-scope="scope">
                   <el-checkbox @change="check=>select(check,scope.column)"></el-checkbox>
@@ -178,6 +182,10 @@ export default {
         return [];
       },
     },
+    SchemeId: {
+      type: String,
+      default: ""
+    }
     // tableList: {
     //   type: Object,
     //   default: function () {
@@ -200,9 +208,10 @@ export default {
     this.entryStatus = this.$store.state.rfq.entryStatus
     if (this.newBuild && this.entryStatus === 0) {
       this.SchemeId = this.$store.state.rfq.SchemeId;
-    } else {
-      this.SchemeId = this.$attrs.analysisSchemeId;
     }
+    //  else {
+    //   this.SchemeId = this.$attr.analysisSchemeId;
+    // }
     this.groupId = this.$route.query.groupId
     setTimeout(() => {
       this.$nextTick(() => {
@@ -260,7 +269,7 @@ export default {
       flattenDeep: window._.flattenDeep,
       result: [],
       check: false,
-      SchemeId: ""
+      // SchemeId: ""
     };
   },
   methods: {
