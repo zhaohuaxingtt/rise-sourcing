@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-08-05 14:26:43
- * @LastEditTime: 2021-09-07 10:47:53
+ * @LastEditTime: 2021-09-09 10:08:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\components\data.js
@@ -12,6 +12,7 @@ export const tableTitle = [
   {props: 'specs', name: '牌号/规格', key: 'PAIHAOGUIGE'},
   {props: 'area', name: '地区', key: 'DIQU'},
   {props: 'ratio', name: '价格变动比率', key: 'JIAGEBIANDONGBILV'},
+  {props: 'priceAmplitude', name: '振幅', key: 'ZHENGFU'},
   {props: 'associatedPart', name: '关联零件', key: 'GUANLIANLINGJIAN'},
 ]
 

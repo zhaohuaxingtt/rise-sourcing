@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-09-08 10:32:23
+ * @LastEditTime: 2021-09-09 09:59:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -101,7 +101,7 @@ export default {
       tableListData: [],
       loading: true,
       searchForm: {
-        beginTime: new Date()
+        beginTime: null
       },
       detailParam: {
         visible: false,
@@ -117,8 +117,18 @@ export default {
     this.getTableData()
     this.getRawMaterialType()
     this.getRawMaterialArea()
+    const date = new Date()
+    this.initDate()
+    console.log('date', date);
   },
   methods: {
+    // 初始化时间
+    initDate() {
+      const date = new Date()
+      const year = date.getFullYear()
+      const month = date.getMonth() + 1
+      this.searchForm.beginTime = (year - 1) + '-' +(month < 10 ? '0' + month : month)
+    },
     // 初始化测试数据
     initTestData() {
       this.tableListData = [
@@ -224,7 +234,7 @@ export default {
       for(const key in this.searchForm) {
         this.searchForm[key] = null
       }
-      this.searchForm.beginTime = new Date()
+      this.initDate()
     },
     // 关闭弹窗
     handleCloseModal() {
