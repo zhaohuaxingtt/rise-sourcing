@@ -7,6 +7,9 @@
     <div class="dialog-Header" slot="title">
       <div class="font18 font-weight">
         {{ language("BAOGAOQINGDAN", "报告清单") }}
+        <el-popover trigger="hover" placement="top-start" :content="language('QTQBCFXJGZZCCJXCZ','请提前保存分析结果，再在此处进行导出操作')">
+          <icon slot="reference" name="iconxinxitishi" tip="" symbol></icon>
+        </el-popover>
       </div>
       <div class="operation">
         <iButton @click="handleAll">{{ $t("全选") }} </iButton>
@@ -29,7 +32,7 @@
 </template>
 
 <script>
-import { iDialog, iButton, iMessage } from "rise";
+import { iDialog, iButton, iMessage, icon } from "rise";
 import { categoryReportExport, categoryReport } from "@/api/categoryManagementAssistant/categoryManagementAssistant/index.js";
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 
@@ -48,7 +51,8 @@ export default {
   components: {
     iDialog,
     iButton,
-    iMessage
+    iMessage,
+    icon
   },
   props: {
     value: { type: Boolean },

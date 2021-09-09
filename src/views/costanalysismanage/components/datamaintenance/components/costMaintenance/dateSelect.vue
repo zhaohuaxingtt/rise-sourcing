@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-09-01 20:45:03
+ * @LastEditTime: 2021-09-09 17:47:44
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\costanalysismanage\components\datamaintenance\components\costMaintenance\dateSelect.vue
@@ -27,9 +27,9 @@ export default{
         date:"",
         pickerOptions: {
          disabledDate(time) {
-            let currentYear = new Date().getFullYear()
-            return time.getFullYear() !== currentYear && time.getFullYear() !== currentYear - 1 && time.getFullYear() !== currentYear - 2;
-         }
+               let currentYear = new Date().getTime()
+               return time.getTime() > currentYear;
+            }
       },
     }
   },

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-09-07 17:43:31
+ * @LastEditTime: 2021-09-09 17:00:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -132,8 +132,8 @@ export default {
       getAllAddPart(params).then(res => {
         if(res && res.code == 200) {
           this.targetTableData.map(targetObj => {
-            const index = res.data.findIndex(item => item.fsId = targetObj.fsId)
-            res.data.splice(index, index + 1)
+            const index = res.data.findIndex(item => item.fsId == targetObj.fsId)
+            res.data.splice(index, 1)
           })
           this.mainTableData = res.data
           this.loading = false
@@ -178,7 +178,7 @@ export default {
         const maxSort = this.getCrrentMax(index)
         item['sort'] = maxSort + 1
         const i = this.mainTableData.findIndex(mainItem => mainItem == item)
-        this.mainTableData.splice(i, i + 1)
+        this.mainTableData.splice(i, 1)
       })
       this.targetTableData = this.targetTableData.concat(this.selectMainData)
       this.selectTargetData = this.selectTargetData.concat(this.selectMainData)
