@@ -221,9 +221,9 @@
           </iButton>
           <iButton
               v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2 || Number(baseInfo.changeStatus) === 3)"
-              v-loading="sendSupplierLoading"
-              @click="sendSupplier">
-            {{ language('LK_TIJIAOSHENPI', '提交审批') }}
+              v-loading="sureSupplierLoading"
+              @click="sureSupplier">
+            {{ language('LK_QUEREN', '确认') }}
           </iButton>
 
           <iButton
@@ -453,7 +453,7 @@ import {
   shareParts,
 } from "@/api/ws2/purchase/changeTask/bmInfo";
 import {delcommafy, getTousandNum} from "@/utils/tool";
-import {recall, sendSupplier} from "@/api/ws2/purchase/investmentList";
+import {recall} from "@/api/ws2/purchase/investmentList";
 import {cloneDeep} from "lodash";
 
 export default {
@@ -498,6 +498,7 @@ export default {
       tableLoading2: false,
       bmBuberLoading: false,
       recallLoading: false,
+      sureSupplierLoading: false,
       sendSupplierLoading: false,
       iLogShow: false,
       uploadButtonLoading: false,
@@ -565,11 +566,7 @@ export default {
       });
     },
     handleEdit(){
-      if(Number(this.baseInfo.changeStatus) === 1){
-        this.isEdit = true
-      } else {
-        iMessage.warn(this.language('LK_ZHIYOUCAOGAOZHUANGTAICAIYUNXUXIUGAI', '只有草稿状态才允许修改'));
-      }
+      this.isEdit = true
     },
     handlePreView(){
       this.changeOederData = {
@@ -773,21 +770,6 @@ export default {
         this.sureSupplierLoading = false
       }).catch(() => {
         this.sureSupplierLoading = false
-      });
-    },
-    sendSupplier(){
-      this.sendSupplierLoading = true
-      sendSupplier([{bmid: this.query.id}]).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          this.moldHeaderByBmSerial()
-          iMessage.success(result);
-        } else {
-          iMessage.error(result);
-        }
-        this.sendSupplierLoading = false
-      }).catch(() => {
-        this.sendSupplierLoading = false
       });
     },
     getAllSelect() {
