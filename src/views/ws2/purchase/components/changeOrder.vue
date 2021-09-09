@@ -24,7 +24,7 @@
             <span>变更类型：{{ baseInfo.changeTypeName }}</span>
             <span>原总价：{{ baseInfo.oldAmount }}</span>
             <span>资产总价：{{ baseInfo.newAmount }}</span>
-            <span>总价变化：{{ baseInfo.ldiffAmount }}</span>
+            <span>总价变化：{{ baseInfo.diffAmount }}</span>
           </div>
         </div>
       </div>
@@ -194,7 +194,7 @@
               label="总价变化">
           </el-table-column>
           <el-table-column
-              prop="address"
+              prop="changeTypeName"
               align="center"
               label="变更类型">
           </el-table-column>

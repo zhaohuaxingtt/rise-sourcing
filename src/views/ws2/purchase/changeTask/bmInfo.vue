@@ -274,11 +274,11 @@
         <!-- BM单流⽔号 -->
         <template #craftType="scope">
           <div v-show="!isEdit">{{scope.row.craftType}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.craftType" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.craftType" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #moldType="scope">
           <div v-show="!isEdit">{{scope.row.moldType}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.moldType" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.moldType" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #assetTypeNum="scope">
           <div v-show="!isEdit">{{scope.row.assetTypeNum}}</div>
@@ -286,6 +286,7 @@
               v-show="isEdit"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               v-model="scope.row.assetTypeNumNo"
+              @change="scope.row.isEdit = true"
               filterable
               clearable
               class="select"
@@ -304,13 +305,14 @@
               v-show="isEdit"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               v-model="scope.row.partsTotalNum"
+              @change="changePartsTotalNum(scope.row)"
               filterable
               clearable
               class="select"
           >
             <el-option
                 :value="item.value"
-                :label="item.name"
+                :label="item.value"
                 v-for="(item, index) in assemblyPartsList"
                 :key="index"
             ></el-option>
@@ -318,17 +320,19 @@
         </template>
         <template #partsName="scope">
           <div v-show="!isEdit">{{scope.row.partsName}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.partsName" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.partsName" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #partsNum="scope">
           <div v-show="!isEdit">{{scope.row.partsNum}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.partsNum" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.partsNum" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #count="scope">
           <div v-show="!isEdit">{{scope.row.count}}</div>
-          <div v-show="isEdit"><iInput
+          <div v-show="isEdit">
+            <iInput
               v-model="scope.row.count"
               :placeholder="language('LK_QINGSHURU', '请输入')"
+              @blur="changeAssetTotal(scope.row.index)"
               onkeyup="value=value.replace(/[^0-9]+/g, '')"
           ></iInput></div>
         </template>
@@ -338,6 +342,7 @@
             <iInput
                 v-model="scope.row.assetPrice"
                 :placeholder="language('LK_QINGSHURU', '请输入')"
+                @input="scope.row.isEdit = true"
                 @focus="focus(scope.row.index)"
                 @blur="blur(scope.row.index)"
                 onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
@@ -350,6 +355,7 @@
           <div v-show="isEdit">
             <iInput
                 v-model="scope.row.changeReason"
+                @input="scope.row.isEdit = true"
                 :placeholder="language('LK_QINGSHURU', '请输入')"
             >
             </iInput>
@@ -381,6 +387,7 @@
           <iSelect
               class="multipleSelect select"
               v-show="isEdit"
+              @change="scope.row.isEdit = true"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               v-model="scope.row.partsShareNumNo"
               filterable
@@ -437,7 +444,7 @@
           @handleSelectionChange="handleSelectionChange"
       >
         <template #attachmentName="scope">
-          <div class="table-link">{{ scope.row.attachmentName }}</div>
+          <div class="table-link" @click="downLoadFile(scope)">{{ scope.row.attachmentName }}</div>
         </template>
       </iTableList>
       
@@ -556,6 +563,7 @@ export default {
       multipleSelection: [],
       multipleSelection2: [],
       isEdit: false,
+      countTemp: 0,
     }
   },
   created() {
@@ -566,6 +574,30 @@ export default {
     this.attachment()
   },
   methods: {
+    focus(index){
+      this.tableListData[index].assetPrice = this.delcommafy(this.tableListData[index].assetPrice)
+    },
+    blur(index){
+      let value = this.tableListData[index].assetPrice
+      value = value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')
+      this.tableListData[index].assetPrice = this.getTousandNum(Number(value).toFixed(2))
+      this.tableListData[index].assetTotal = this.tableListData[index].count * value
+      this.baseInfo.afterChangeAmount = this.tableListData.map(item => item.assetTotal).reduce((a, b) => a + b)
+    },
+    changeAssetTotal(index, isMoney){
+      this.countTemp = parseInt(String(this.tableListData[index].count))
+      this.tableListData[index].assetTotal = this.countTemp * this.delcommafy(this.tableListData[index].assetPrice)
+      this.tableListData[index].isEdit = true
+      this.baseInfo.afterChangeAmount = this.tableListData.map(item => item.assetTotal).reduce((a, b) => a + b)
+    },
+    changePartsTotalNum(row){
+      let item = this.assemblyPartsList.find(item => row.partsTotalNum === item.value)
+      this.tableListData[row.index].partsTotalName = item ? item.name : ''
+      this.tableListData[row.index].isEdit  = true
+    },
+    downLoadFile(scope){
+      window.open(scope.row.attachmentUrl)
+    },
     handleReset(){
       this.handleResetLoading = true
       reset({
@@ -587,11 +619,7 @@ export default {
       });
     },
     handleEdit(){
-      if(Number(this.baseInfo.changeStatus) === 1){
-        this.isEdit = true
-      } else {
-        iMessage.warn(this.language('LK_ZHIYOUCAOGAOZHUANGTAICAIYUNXUXIUGAI', '只有草稿状态才允许修改'));
-      }
+      this.isEdit = true
     },
     handlePreView(){
       this.changeOederData = {
@@ -643,6 +671,7 @@ export default {
             partsTotalName: null,
             partsTotalNum: null,
             picture: null,
+            isEdit: true
           })
           tableListData = tableListData.map((item, index) => {
             item.index = index
@@ -682,6 +711,7 @@ export default {
       this.tableListData = this.tableListData.map(a => {
         if(deleteItem.some(b => b === a.id)){
           a.changeType = 0
+          a.isEdit = true
         }
         return a
       })
@@ -711,14 +741,6 @@ export default {
       }).catch(() => {
         this.handleSaveLoading = false
       });
-    },
-    focus(index){
-      this.tableListData[index].assetPrice = this.delcommafy(this.tableListData[index].assetPrice)
-    },
-    blur(index){
-      let value = this.tableListData[index].assetPrice
-      value = value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')
-      this.tableListData[index].assetPrice = this.getTousandNum(Number(value).toFixed(2))
     },
     beforeAvatarUpload() {},
     handleAvatarSuccess() {},

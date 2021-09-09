@@ -43,9 +43,9 @@ export function assetTypes(parmars) {
 }
 
 //供应商变更确认
-    export function supplierToConfirm(bmChangeId, bmId) {
+    export function supplierToConfirm(bmId, bmChangeId) {
     return VUE_APP_BMCHANGE({
-        url: `/supplierToConfirm/${bmChangeId}/${bmId}`,
+        url: `/supplierToConfirm/${bmId}/${bmChangeId}`,
         method: 'POST',
         data: ''
     })
