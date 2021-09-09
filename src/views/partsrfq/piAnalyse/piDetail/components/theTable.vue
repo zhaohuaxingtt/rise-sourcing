@@ -79,6 +79,7 @@ import {
   SECONDSELECT,
   THIRDSELECT,
   classType,
+  classTypeSelect,
   CURRENTTIME,
   AVERAGE,
   FIRSTEXCHANGERATE,
@@ -184,6 +185,8 @@ export default {
         time,
         isShow: true,
         newRow: true,
+        partName: classTypeSelect[0].name,
+        dataType: classTypeSelect[0].value,
       });
       this.selectOptionsObject[time] = {};
     },
