@@ -2,53 +2,56 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 16:46:41
+ * @LastEditTime: 2021-09-08 15:45:51
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
 
 <template>
-<!-------v-permission.auto='PROJECTMGT_OVERVIEW_PAGE|项目管理-概览页面'------------>
-  <iPage class="projectoverview" v-permission.auto='PROJECTMGT_OVERVIEW_PAGE|项目管理-概览页面'>
-    <projectTop />
-    <!---------------------------------------------------------------------->
-    <!----------                  筛选部分                   ---------------->
-    <!---------------------------------------------------------------------->
-    <iSearch :icon="true" class="margin-top30">
-      <template slot="button">
-        <iButton @click="openSelectCar" v-permission.auto='PROJECTMGT_OVERVIEW_SELECTVISIBLECARPROJECT|项目管理-概览-选择显示车型项目'>{{language('XUANZEXIANSHICHEXINGXIANGMU', '选择显示车型项目')}}</iButton>
-        <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
-        <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
-      </template>
-      <el-form>
-        <el-form-item :label="language('CHEXINGXIANGMU','车型项目')" v-permission.auto='PROJECTMGT_OVERVIEW_CARPROJECT|项目管理-概览-车型项目'>
-          <iSelect filterable v-model="searchParams.carProject">
-            <el-option
-              v-for="item in carProjectOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </iSelect>
-        </el-form-item>
-        <el-form-item :label="language('SOPSHIJIAN','SOP时间')" v-permission.auto='PROJECTMGT_OVERVIEW_SOPDATE|项目管理-概览-SOP时间'>
-          <iDatePicker v-model="searchParams.sopDate" type="daterange"></iDatePicker>
-        </el-form-item>
-        <el-form-item :label="language('XIANGMUCAIGOUYUAN','项目采购员')" v-permission.auto='PROJECTMGT_OVERVIEW_PROJECTPURCHASER|项目管理-概览-项目采购员'>
-          <productPurchaserSelect filterable v-model="searchParams.buyerName" />
-        </el-form-item>
-      </el-form>
-    </iSearch>
-    <!---------------------------------------------------------------------->
-    <!----------                 表格                        ---------------->
-    <!---------------------------------------------------------------------->
-    <iCard class="margin-top20" v-permission.auto='PROJECTMGT_OVERVIEW_CARPROJECTTALBE|项目管理-概览-表格'>
-      <tableList :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" ></tableList>
-    </iCard>
-    <!---------------------------------------------------------------------->
-    <!----------                  配置显示车型项目弹窗        ---------------->
-    <!---------------------------------------------------------------------->
-    <selectCarProDialog :dialogVisible="selectCarVisible" @changeVisible="changeSelectCarVisible" />
+  <iPage class="projectoverview">
+      <projectTop />
+  <!-------v-permission.auto='PROJECTMGT_OVERVIEW_PAGE|项目管理-概览页面'------------>
+    <iPage class="projectoverview-home" v-permission.auto='PROJECTMGT_OVERVIEW_PAGE|项目管理-概览页面'>
+      
+      <!---------------------------------------------------------------------->
+      <!----------                  筛选部分                   ---------------->
+      <!---------------------------------------------------------------------->
+      <iSearch :icon="true" >
+        <template slot="button">
+          <iButton @click="openSelectCar" v-permission.auto='PROJECTMGT_OVERVIEW_SELECTVISIBLECARPROJECT|项目管理-概览-选择显示车型项目'>{{language('XUANZEXIANSHICHEXINGXIANGMU', '选择显示车型项目')}}</iButton>
+          <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
+          <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
+        </template>
+        <el-form>
+          <el-form-item :label="language('CHEXINGXIANGMU','车型项目')" v-permission.auto='PROJECTMGT_OVERVIEW_CARPROJECT|项目管理-概览-车型项目'>
+            <iSelect filterable v-model="searchParams.carProject">
+              <el-option
+                v-for="item in carProjectOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </iSelect>
+          </el-form-item>
+          <el-form-item :label="language('SOPSHIJIAN','SOP时间')" v-permission.auto='PROJECTMGT_OVERVIEW_SOPDATE|项目管理-概览-SOP时间'>
+            <iDatePicker v-model="searchParams.sopDate" type="daterange"></iDatePicker>
+          </el-form-item>
+          <el-form-item :label="language('XIANGMUCAIGOUYUAN','项目采购员')" v-permission.auto='PROJECTMGT_OVERVIEW_PROJECTPURCHASER|项目管理-概览-项目采购员'>
+            <productPurchaserSelect filterable v-model="searchParams.buyerName" />
+          </el-form-item>
+        </el-form>
+      </iSearch>
+      <!---------------------------------------------------------------------->
+      <!----------                 表格                        ---------------->
+      <!---------------------------------------------------------------------->
+      <iCard class="margin-top20" v-permission.auto='PROJECTMGT_OVERVIEW_CARPROJECTTALBE|项目管理-概览-表格'>
+        <tableList :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" ></tableList>
+      </iCard>
+      <!---------------------------------------------------------------------->
+      <!----------                  配置显示车型项目弹窗        ---------------->
+      <!---------------------------------------------------------------------->
+      <selectCarProDialog :dialogVisible="selectCarVisible" @changeVisible="changeSelectCarVisible" />
+    </iPage>
   </iPage>
 </template>
 
@@ -250,5 +253,11 @@ export default {
 
 <style lang="scss" scoped>
 .projectoverview {
+  &-home {
+    padding: 0;
+    padding-top: 10px;
+    height: calc(100% - 55px);
+    overflow: auto;
+  }
 }
 </style>

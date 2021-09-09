@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div v-permission="MOLD_PURCHASE_ORDER_HOME_PAGE">
     <ModelOrderSeachComponents
+        v-permission="MOLD_PURCHASE_ORDER_HOME_SEARCH"
       class="margin-bottom20 margin-top20"
       :purchasing-factory-list="purchasingFactoryList"
       :sap-send-status-list="sapSendStatusList"
@@ -12,41 +13,42 @@
     <i-card>
       <div class="margin-bottom10 clearFloat">
         <show-me-components
+            v-permission="MOLD_PURCHASE_ORDER_HOME_BTN_JUST_LOOK_YOURSELF"
           :is-only-myself="orderQueryForm.isOnlyMyself"
           @showOnlyMyselfData="showOnlyMyselfData"
         />
         <!--右侧按钮区-->
         <div class="floatright">
           <!--新建采购订单-->
-          <i-button @click="createOrder">{{
+          <i-button @click="createOrder" v-permission="MOLD_PURCHASE_ORDER_HOME_BTN_CREATE">{{
             $t("MODEL-ORDER.LK_XINJIAN")
           }}</i-button>
           <!--删除采购订单-->
-          <i-button @click="deleteOrder">{{
+          <i-button @click="deleteOrder" v-permission="MOLD_PURCHASE_ORDER_HOME_BTN_DELETE">{{
             $t("MODEL-ORDER.LK_SHANCHU")
           }}</i-button>
           <!--转派-->
-          <i-button @click="transferOrder">{{
+          <i-button @click="transferOrder" v-permission="MOLD_PURCHASE_ORDER_HOME_BTN_TRANSFER">{{
             $t("MODEL-ORDER.LK_ZHUANPAI")
           }}</i-button>
           <!--创建入账单-->
-          <i-button @click="createIncomingBill">{{
+          <i-button @click="createIncomingBill" v-permission="MOLD_PURCHASE_ORDER_CREATE_INCOMING_BILL">{{
             $t("MODEL-ORDER.LK_CHUANGJIANRUZHANGDAN")
           }}</i-button>
           <!--报销申请-->
-          <i-button @click="reimbursementApplication">{{
+          <i-button @click="reimbursementApplication" v-permission="MOLD_PURCHASE_ORDER_REIMBURSEMENT_APPLICATION">{{
             $t("MODEL-ORDER.LK_BAOXIAOSHENQING")
           }}</i-button>
           <!--导出-->
-          <i-button @click="exportOrderData">{{
+          <i-button @click="exportOrderData" v-permission="MOLD_PURCHASE_ORDER_HOME_BTN_EXPORT">{{
             $t("MODEL-ORDER.LK_DAOCHU")
           }}</i-button>
           <!--发送SAP-->
-          <i-button @click="sendOrderSAP">{{
+          <i-button @click="sendOrderSAP" v-permission="MOLD_PURCHASE_ORDER_HOME_BTN_SENDSAP">{{
             $t("MODEL-ORDER.LK_FASONGSAP")
           }}</i-button>
           <!--全部展开或收起-->
-          <i-button @click="toggleRowExpansion">
+          <i-button @click="toggleRowExpansion" v-permission="MOLD_PURCHASE_ORDER_HOME_BTN_EXPAND_ALL_OR_COLLAPSE">
             {{
               isExpandAll
                 ? $t("MODEL-ORDER.LK_QUANBUSHOUQI")
@@ -57,6 +59,7 @@
       </div>
 
       <order-home-table-components
+          v-permission="MOLD_PURCHASE_ORDER_HOME_DATA_SHOW_AREA"
         ref="orderHomeTableComponentsRef"
         :columns="columns"
         :order-data="orderData"
@@ -67,6 +70,7 @@
       <!--分页区-->
       <i-pagination
         v-update
+        v-permission="MOLD_PURCHASE_ORDER_HOME_DATA_SHOW_AREA"
         @size-change="handleSizeChange($event, loadOrder)"
         @current-change="handleCurrentChange($event, loadOrder)"
         background

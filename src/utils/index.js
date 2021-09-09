@@ -308,7 +308,6 @@ export function deleteThousands (number) {
  * @return {*} Boolean
  ********************************************************************************************************************************************/
 import {businessKey} from '@/config/businesskey'
-console.log(businessKey)
 export function businessPermission(currentPermissinKey,currentProjectParmars){
   try {
     if(!currentProjectParmars.businessKey) return false
