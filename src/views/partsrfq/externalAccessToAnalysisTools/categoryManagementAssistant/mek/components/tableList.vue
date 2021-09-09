@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-09-04 15:28:01
+ * @LastEditTime: 2021-09-09 10:29:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -195,18 +195,17 @@ export default {
     addRow () {
       let addRowList = {}
       this.gridData.title.forEach(item => {
-        addRowList[item.label] = ""
+        if (item.label === 'label#-1') {
+          addRowList[item.label] = "自定义" + (this.gridData1.length + 1)
+        } else {
+          addRowList[item.label] = ""
+        }
         addRowList['id#' + item.label.split("#")[1]] = ""
         addRowList.editMode = false
+        addRowList['index'] = this.gridData1.length + 1
       })
-      if (!this.gridData1) {
-        this.gridData1.push(addRowList)
-        this.gridData1 = [...this.gridData1]
-      } else {
-        this.gridData1.push(addRowList)
-        this.gridData1 = [...this.gridData1]
-      }
-
+      this.gridData1.push(addRowList)
+      this.gridData1 = [...this.gridData1]
       console.log(this.gridData1)
     },
   },

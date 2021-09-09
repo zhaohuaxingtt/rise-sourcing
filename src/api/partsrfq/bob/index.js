@@ -61,6 +61,14 @@ export function addComponentToGroup(parmars) {
     data: parmars,
   })
 }
+//合并
+export function merge(parmars) {
+  return requst({
+    url: '/bobRoundDetail/merge',
+    method: 'POST',
+    data: parmars,
+  })
+}
 
 //添加至分组
 export function removeComponentFromGroup(parmars) {
@@ -133,4 +141,3 @@ export function renameComponentGroup(parmars) {
     data: parmars,
   })
 }
-
