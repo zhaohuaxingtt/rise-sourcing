@@ -79,6 +79,7 @@ import {
   SECONDSELECT,
   THIRDSELECT,
   classType,
+  classTypeSelect,
   CURRENTTIME,
   AVERAGE,
   FIRSTEXCHANGERATE,
@@ -184,6 +185,8 @@ export default {
         time,
         isShow: true,
         newRow: true,
+        partName: classTypeSelect[0].name,
+        dataType: classTypeSelect[0].value,
       });
       this.selectOptionsObject[time] = {};
     },
@@ -424,21 +427,21 @@ export default {
           this.selectOptionsObject[id][this.SECONDSELECT] = [];
           this.selectOptionsObject[id][this.THIRDSELECT] = [];
           if (row.dataType === classType['rawMaterial']) {
-            this.handleSelectValueRest({id, valueArray: ['partNumber', 'partRegion'], tableListData});
+            this.handleSelectValueReset({id, valueArray: ['partNumber', 'partRegion'], tableListData});
           } else if (row.dataType === classType['manpower']) {
-            this.handleSelectValueRest({id, valueArray: ['workProvince'], tableListData});
+            this.handleSelectValueReset({id, valueArray: ['workProvince'], tableListData});
           } else if (row.dataType === classType['exchangeRate']) {
-            this.handleSelectValueRest({id, valueArray: ['currency'], tableListData});
+            this.handleSelectValueReset({id, valueArray: ['currency'], tableListData});
           }
         } else if (props === this.SECONDSELECT) {
           this.selectOptionsObject[id][this.THIRDSELECT] = [];
           if (row.dataType === classType['rawMaterial']) {
-            this.handleSelectValueRest({id, valueArray: ['partRegion'], tableListData});
+            this.handleSelectValueReset({id, valueArray: ['partRegion'], tableListData});
           }
         }
       }
     },
-    handleSelectValueRest({id, valueArray, tableListData}) {
+    handleSelectValueReset({id, valueArray, tableListData}) {
       tableListData.map(item => {
         if ([item.id, item.time].includes(id)) {
           valueArray.map(valueItem => {

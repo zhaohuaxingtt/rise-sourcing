@@ -228,13 +228,13 @@
                   placement="top-start"
                   width="200"
                   trigger="hover"
-                  :content="language('PI.SHUJULAIYUAN', '数据来源') + '：' + scope.row.partSource">
+                  :content="language('PI.SHUJULAIYUAN', '数据来源') + '：' + scope.row.partSource ? scope.row.partSource : ''">
                 <span slot="reference">
                   <template v-if="isTableEdit">
-                      {{ language('PI.SHUJULAIYUAN', '数据来源') }}: {{ scope.row.partSource }}
+                      {{ language('PI.SHUJULAIYUAN', '数据来源') }}: {{ scope.row.partSource ? scope.row.partSource : '' }}
                   </template>
                   <template v-else>
-                     {{ language('PI.SHUJULAIYUAN', '数据来源') }}（{{ scope.row.partSource }}）
+                     {{ language('PI.SHUJULAIYUAN', '数据来源') }}（{{ scope.row.partSource ? scope.row.partSource : '' }}）
                   </template>
                 </span>
               </el-popover>

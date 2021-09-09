@@ -100,11 +100,7 @@
                       <p>{{ scope.row.reportList.length }}</p>
                     </span>
                     <icon class="numberIcon"
-                          style="
-                         {
-                          font-size: 24px;
-                        }
-                      "
+                          style="{font-size: 24px;}"
                           symbol
                           name="iconwenjianshuliangbeijing"></icon>
                   </span>
@@ -591,6 +587,7 @@ export default {
     },
     // 点击名称,触发跳转事件
     clickName (val) {
+      console.log(val) 
       if (val.fileType == this.$t('TPZS.SCHEME_TYPE')) {
         this.$router.push({
           path: "/sourcing/partsrfq/bobNew",

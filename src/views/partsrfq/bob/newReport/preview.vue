@@ -215,13 +215,13 @@ export default {
             }).then(res => {
               this.savereport = true
               const data = res.data[0]
-              let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
-              let arr2 = data.path.split(arr[0])
+              // let arr = data.path.match(/^(?:[^\/]|\/\/)*/)
+              // let arr2 = data.path.split(arr[0])
               loading.close();
               const req = {
                 analysisSchemeId: this.analysisSchemeId,
                 name: data.name,
-                path: arr2[1],
+                path: data.path,
                 remark: this.reportName.replaceAll(/\./g, '_'),
               };
               add(req);

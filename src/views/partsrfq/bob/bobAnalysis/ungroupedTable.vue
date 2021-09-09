@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-08 15:11:11
+ * @LastEditTime: 2021-09-08 19:37:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -17,6 +17,7 @@
         </div>
         <div>
           <iButton @click="groupBy">分组至</iButton>
+          <iButton @click="merge">合并</iButton>
         </div>
       </div>
     </template>
@@ -438,6 +439,9 @@ export default {
     groupBy () {
       this.$emit("groupBy", true, this.result, this.activeName);
     },
+    merge () {
+      this.$emit("merge", true, this.result, this.activeName);
+    }
   },
 };
 </script>

@@ -87,8 +87,7 @@
                   ref="selectInput"
                   @focus="handleFocus">
         </el-input>
-        <div class="inputClass"
-             v-if="selectedData&&selectedData.length>=1">
+        <div class="inputClass">
           <el-tag v-for="(x) in selectedData"
                   :key="x.key"
                   type="info"
@@ -213,6 +212,7 @@ export default {
     values: {
       immediate: true,
       handler (newValue) {
+        console.log(newValue)
         this.inputData =
           newValue instanceof Array
             ? newValue
@@ -221,6 +221,7 @@ export default {
               })
               .join(',')
             : newValue && newValue[this.label]
+        this.selectedData = newValue instanceof Array ? newValue : newValue[this.value] ? [newValue] : []
       }
     }
   },
@@ -248,6 +249,7 @@ export default {
       let data = _.cloneDeep(this.data)
       const values = _.cloneDeep(this.values)
       this.selectedData = values instanceof Array ? values : values && values[this.value] ? [values] : []
+      console.log(this.selectedData)
       this.selectedData.forEach(item => {
         this.$set(item, 'selected', true)
       })
@@ -279,6 +281,7 @@ export default {
       this.$emit('change', this.selectedData)
     },
     handleSelectItem (item) {
+      debugger
       if (
         this.multiple &&
         this.multipleLimit &&
@@ -304,7 +307,6 @@ export default {
         selectedData = selectedData.filter(d => {
           return d[this.value] !== item[this.value]
         })
-
         const index = dataCodes.indexOf(item[this.value])
         index !== -1 ? originData.splice(index, 0, item) : ''
         originData.sort((a, b) => {
@@ -329,6 +331,7 @@ export default {
       !this.multiple ? this.$refs['selectPopover'].doClose() : ''
     },
     deleteTag (x) {
+      debugger
       if (
         this.multiple &&
         this.multipleLimit &&
@@ -342,39 +345,28 @@ export default {
       })
       let selectedData = _.cloneDeep(this.selectedData)
       let originData = _.cloneDeep(this.originData)
-      x.selected = !x.selected
-      if (x.selected) {
-        !this.multiple ? (selectedData = []) : ''
-        originData = this.multiple ? originData : _.cloneDeep(this.data)
-        selectedData.push(x)
-        originData = originData.filter(d => {
-          return d[this.value] !== x[this.value]
-        })
-      } else {
-        selectedData = selectedData.filter(d => {
-          return d[this.value] !== x[this.value]
-        })
-
-        const index = dataCodes.indexOf(x[this.value])
-        index !== -1 ? originData.splice(index, 0, x) : ''
-        originData.sort((a, b) => {
-          const a_swname = a[this.sortVal]?.toLowerCase()
-          const b_swname = b[this.sortVal]?.toLowerCase()
-          if (a_swname < b_swname) return -1
-          if (a_swname > b_swname) return 1
-          return 0
-        })
-      }
+      // x.selected = !x.selected
+      !this.multiple ? (selectedData = []) : ''
+      originData = this.multiple ? originData : _.cloneDeep(this.data)
+      selectedData.push(x)
+      originData = originData.filter(d => {
+        return d[this.value] !== x[this.value]
+      })
+      selectedData = selectedData.filter(d => {
+        return d[this.value] !== x[this.value]
+      })
+      const index = dataCodes.indexOf(x[this.value])
+      index !== -1 ? originData.splice(index, 0, x) : ''
       this.selectedData = _.cloneDeep(selectedData)
       this.originData = originData
-      this.inputData =
-        this.selectedData.length === 1
-          ? this.selectedData[0][this.label]
-          : this.selectedData
-            .map(d => {
-              return d[this.label]
-            })
-            .join(',')
+      // this.inputData =
+      //   this.selectedData.length === 1
+      //     ? this.selectedData[0][this.label]
+      //     : this.selectedData
+      //       .map(d => {
+      //         return d[this.label]
+      //       })
+      //       .join(',')
       this.$emit('change', this.multiple ? this.selectedData : this.selectedData[0])
       !this.multiple ? this.$refs['selectPopover'].doClose() : ''
     }
@@ -431,7 +423,7 @@ export default {
 }
 .inputClass {
   // border: 1px solid #eee;
-  width: 200px;
+  width: 280px;
   background: #fff;
   color: #000;
   border-radius: 5px;
@@ -454,8 +446,12 @@ export default {
   }
 }
 ::v-deep .el-tag .el-icon-close {
-  top: -31px;
-  right: -150px;
+  top: -44px;
+  right: -232px;
+}
+::v-deep .el-tag {
+  width: 264px;
+  height: 64px;
 }
 ::v-deep .el-popover {
   min-height: 400px !important;
