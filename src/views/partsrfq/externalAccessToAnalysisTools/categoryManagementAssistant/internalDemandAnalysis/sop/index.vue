@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-16 14:51:40
- * @LastEditTime: 2021-09-08 16:09:51
+ * @LastEditTime: 2021-09-09 19:20:15
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\sop\index.vue
@@ -37,9 +37,9 @@ import moment from 'moment';
 import tableList from './overviewTable'
 import {sopList,carTypeProList,sopPipeLineSave,sopParamInit} from "@/api/categoryManagementAssistant/internalDemandAnalysis/sop";
 import {downloadPdfMixins} from '@/utils/pdf';
-
+import resultMessageMixin from '@/utils/resultMessageMixin.js';
 export default ({
-    mixins:[downloadPdfMixins],
+    mixins:[downloadPdfMixins,resultMessageMixin],
    components:{iCard,iButton,tableList,iSelect},
    data () {
       const currentYear = moment().year()
@@ -112,7 +112,7 @@ export default ({
             carTypeProDTO:this.carType
          }
          sopPipeLineSave(params).then(res=>{
-            
+            this.resultMessage(res)
          })
       },
     // 重置
