@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-09-08 10:32:23
+ * @LastEditTime: 2021-09-09 10:11:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -20,7 +20,7 @@
             <el-form-item :label="language('LEIBIE', '类别')">
               <iSelect v-model="searchForm.classType">
                 <el-option value="" label="全部"></el-option>
-                <el-option v-for="(item, index) in rawMaterialTypeData" :value="item.id" :label="item.val"></el-option>
+                <el-option v-for="(item, index) in rawMaterialTypeData" :value="item.id" :label="item.val" :key="index"></el-option>
               </iSelect>
             </el-form-item>
             <!--原材料/牌号/规格-->
@@ -34,7 +34,7 @@
             <el-form-item :label="language('DIQU', '地区')">
               <iSelect v-model="searchForm.areaName">
                 <el-option value="" label="全部"></el-option>
-                <el-option v-for="(item, index) in rawMaterialAreaData" :value="item.id" :label="item.val"></el-option>
+                <el-option v-for="(item, index) in rawMaterialAreaData" :value="item.id" :label="item.val" :key="index"></el-option>
               </iSelect>
             </el-form-item>
             <!--RFQ号-->
@@ -101,7 +101,7 @@ export default {
       tableListData: [],
       loading: true,
       searchForm: {
-        beginTime: new Date()
+        beginTime: null
       },
       detailParam: {
         visible: false,
@@ -117,8 +117,18 @@ export default {
     this.getTableData()
     this.getRawMaterialType()
     this.getRawMaterialArea()
+    const date = new Date()
+    this.initDate()
+    console.log('date', date);
   },
   methods: {
+    // 初始化时间
+    initDate() {
+      const date = new Date()
+      const year = date.getFullYear()
+      const month = date.getMonth() + 1
+      this.searchForm.beginTime = (year - 1) + '-' +(month < 10 ? '0' + month : month)
+    },
     // 初始化测试数据
     initTestData() {
       this.tableListData = [
@@ -179,7 +189,7 @@ export default {
     clickBack() {
       if (this.$store.state.rfq.entryStatus === 1) {
           this.$router.push({
-            path: '/sourcing/partsrfq/assistant',
+            path: '/sourceinquirypoint/sourcing/partsrfq/assistant',
             query: {
               id: this.$store.state.rfq.rfqId,
               round: this.$route.query.round,
@@ -224,7 +234,7 @@ export default {
       for(const key in this.searchForm) {
         this.searchForm[key] = null
       }
-      this.searchForm.beginTime = new Date()
+      this.initDate()
     },
     // 关闭弹窗
     handleCloseModal() {

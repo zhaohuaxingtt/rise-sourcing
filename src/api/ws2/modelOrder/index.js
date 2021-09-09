@@ -6,6 +6,8 @@ const pushOrderRequestExcel = axiosFile(process.env.VUE_APP_BASE_WS2_CHANGEPRICE
 const requestSupplierService = axios(process.env.VUE_APP_BASE_WS2_SUPPLIERINFO_API)
 const requstPartResource = axios(process.env.VUE_APP_DIC)
 
+const bmReq = axios(process.env.VUE_APP_BMAPPROVE)
+
 /**
  * 查询采购订单数据
  */
@@ -250,3 +252,15 @@ export function findNormalPrByPage(data) {
         data: data
     })
 }
+
+//获取模具BM号
+// 采购申请列表分页查询接口
+export function queryModelBmInfo( bmNum ) {
+    let params={"bmNum":bmNum}
+    return bmReq({
+        url: '/getBmByBmNum',
+        method: 'GET',
+        params: params
+    })
+}
+

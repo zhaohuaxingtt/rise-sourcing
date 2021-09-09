@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-09-07 20:52:53
+ * @LastEditTime: 2021-09-08 15:02:21
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -49,6 +49,7 @@
                     :tableList="groupList"
                     v-if="!totalTable"
                     :activeName="activeName"
+                    :SchemeId="SchemeId"
                     @removeList="removeList"
                     @groupBy="groupBtn"
                     v-bind="$attrs"></groupedTable>
@@ -82,6 +83,7 @@
     <ungroupedTable ref="ungroupedTable"
                     class="margin-top10"
                     :tableList="ungroupList"
+                    :SchemeId="SchemeId"
                     @activeName="acitiveName"
                     v-if="groupby"
                     @groupBy="groupBtn"
@@ -162,28 +164,8 @@ export default {
     };
   },
   created () {
-    this.SchemeId = this.analysisSchemeId
-
     this.groupId = this.$route.query.groupId
-    // this.chargeRetrieve({
-    //   isDefault: true,
-    //   viewType: 'all',
-    //   schemaId: this.SchemeId,
-    //   groupId: this.groupId
-    // });
     this.getRfqToRemark();
-    // if (this.$store.state.rfq.entryStatus === 1) {
-    //   this.SchemeId = this.$route.query.rfqId
-    //   this.chargeRetrieve("all");
-    // } else {
-    //   if (this.$route.query.rfqId) {
-    //     this.SchemeId = this.$route.query.rfqId
-    //     this.chargeRetrieve("all");
-    //   } else {
-    //     this.SchemeId = this.$store.state.rfq.SchemeId;
-    //   }
-    // }
-    // this.getRfqToRemark();
   },
   props: {
     label: {
@@ -222,27 +204,14 @@ export default {
     }
   },
   mounted () {
+    this.SchemeId = this.analysisSchemeId
+    console.log(this.SchemeId)
     this.$EventBus.$on("activeName", res => {
       this.activeName = res
     })
-    window.addEventListener("scroll", this.handleScroll, true);
+
   },
   methods: {
-    handleScroll () {
-      let scrolltop = document.documentElement.scrollTop || document.body.scrollTop;
-      scrolltop > 30 ? (this.gotop = true) : (this.gotop = false);
-    },
-    toTop () {
-      let top = document.documentElement.scrollTop || document.body.scrollTop;
-      // 实现滚动效果 
-      const timeTop = setInterval(() => {
-        this.$refs.ungroupedTable.$el.scrollTop = this.$refs.ungroupedTable.$el.offsetTop
-        // document.body.scrollTop = this.$refs.ungroupedTable.$el.offsetTop
-        if (top <= 0) {
-          clearInterval(timeTop);
-        }
-      }, 10);
-    },
     getRfqToRemark () {
       getRfqToRemark({
         rfqCode: this.rfqCode,
@@ -292,9 +261,7 @@ export default {
       }
       return recursive(array)
     },
-    // allExpends () {
-    //   this.recursion
-    // },
+
     recursion (data) {
       if (!data) {
         // return; 中断执行
@@ -307,16 +274,6 @@ export default {
         }
       })
     },
-    // open () {
-    //   this.flag = false;
-    //   this.flag1 = true;
-    //   this.recursion(this.tableList.element)
-    // },
-    // close () {
-    //   this.flag = true;
-    //   this.flag1 = false;
-    //   this.$set(this.expedsArr, []);
-    // },
     open () {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
       if (this.tableList.element.length != 0 && els.length != 0) {
@@ -396,10 +353,6 @@ export default {
     sure (val, flag) {
       this.visible = flag;
       this.remark = val;
-      // modifyRfqToRemark({
-      //   remark: this.remark,
-      //   rfqCode: this.rfqCode,
-      // }).then(() => iMessage.success("备注成功"));
     },
     // 递归获取checked属性方法
     getTreeExpandKeys (obj) {

@@ -6,7 +6,7 @@
  * @Descripttion: 总览
 -->
 <template>
-  <iCard :title="$t('TPZS.PLGYSZL')" :defalutCollVal="$route.path==='/sourcing/partsrfq/assistant'?false:true" collapse>
+  <iCard :title="$t('TPZS.PLGYSZL')" :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true" collapse>
     <div class="center">
       <iButton @click="handleBack" v-if="$route.path==='/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'">{{language("FANHUI","返回")}}</iButton>
       <supplierCard :supplierDataList="supplierDataList" class="card-right" />
@@ -49,7 +49,7 @@ export default {
         rfqId: '',
         categoryCode: ''
       }
-      if (this.$route.path === '/sourcing/partsrfq/assistant') {
+      if (this.$route.path === '/sourceinquirypoint/sourcing/partsrfq/assistant') {
         pms.rfqId = this.$route.query.id
       } else {
         pms.categoryCode = this.$store.state.rfq.categoryCode

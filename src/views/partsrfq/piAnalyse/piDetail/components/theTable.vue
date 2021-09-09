@@ -79,11 +79,12 @@ import {
   SECONDSELECT,
   THIRDSELECT,
   classType,
+  classTypeSelect,
   CURRENTTIME,
   AVERAGE,
   FIRSTEXCHANGERATE,
 } from './data';
-import {numberProcessor, toFixedNumber, toThousands, deleteThousands} from '@/utils';
+import {toFixedNumber, toThousands} from '@/utils';
 import theTableTemplate from './theTableTemplate';
 import _ from 'lodash';
 
@@ -184,6 +185,8 @@ export default {
         time,
         isShow: true,
         newRow: true,
+        partName: classTypeSelect[0].name,
+        dataType: classTypeSelect[0].value,
       });
       this.selectOptionsObject[time] = {};
     },
@@ -243,19 +246,52 @@ export default {
       this.$emit('handleTableStatus', '');
     },
     handleFinish() {
+      // this.handleAllSaveData();
       this.$emit('handlePriceTableFinish', this.handleAllSaveData());
     },
     handleAllSaveData() {
       const resTableData = this.handleSystemMatchData({tableListData: this.tableListData});
       const hideTableData = this.handleSystemMatchData({tableListData: this.hideTableData});
-      const tableList = resTableData.concat(hideTableData);
-      return {
-        tableList,
-        nowPriceRatio: this.nowPriceRatio,
-        totalPriceRatio: this.totalPriceRatio,
-        beginTime: this.beginTime,
-        endTime: this.endTime,
-      };
+      const resTableValidate = this.validateFinish(resTableData);
+      const hideTableValidate = this.validateFinish(hideTableData, true);
+      if (resTableValidate && hideTableValidate) {
+        const tableList = resTableData.concat(hideTableData);
+        return {
+          tableList,
+          nowPriceRatio: this.nowPriceRatio,
+          totalPriceRatio: this.totalPriceRatio,
+          beginTime: this.beginTime,
+          endTime: this.endTime,
+        };
+      }
+    },
+    validateFinish(resTableData, isHideTable = false) {
+      let validateStatus = true;
+      resTableData.some((item, index) => {
+        const newIndex = !isHideTable ? (index + 1) : this.tableListData.length + index + 1;
+        switch (item.dataType) {
+          case classType.rawMaterial:
+            if (!item.partType || !item.partNumber || !item.partRegion) {
+              validateStatus = false;
+              iMessage.warn(`#${newIndex}：${this.language('PIBIAOGEJIANYAN', '请完成系统匹配信息的选择。')}`);
+            }
+            break;
+          case classType.manpower:
+            if (!item.work || !item.workProvince) {
+              validateStatus = false;
+              iMessage.warn(`#${newIndex}：${this.language('PIBIAOGEJIANYAN', '请完成系统匹配信息的选择。')}`);
+            }
+            break;
+          case classType.exchangeRate:
+            if (!item.productionCountry || !item.currency) {
+              validateStatus = false;
+              iMessage.warn(`#${newIndex}：${this.language('PIBIAOGEJIANYAN', '请完成系统匹配信息的选择。')}`);
+            }
+            break;
+        }
+        return !validateStatus;
+      });
+      return validateStatus;
     },
     handleSystemMatchData({tableListData}) {
       const newList = _.cloneDeep(tableListData);
