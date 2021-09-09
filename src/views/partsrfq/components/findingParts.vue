@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-08-31 15:13:07
+ * @LastEditTime: 2021-09-09 16:52:49
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -52,6 +52,7 @@
       <tableList :tableData="confirmTableData"
                  :tableTitle="confirmTableHead"
                  class="table-footerStyle"
+                 v-loading="loading"
                  :radio="status===1?true:false"
                  @handleSelectionChange="handleSelectionChange">
       </tableList>
@@ -102,7 +103,8 @@ export default {
         size: 1000
       },
       status: 0,
-      colData: {}
+      colData: {},
+      loading: false
     };
   },
   created () {
@@ -113,6 +115,7 @@ export default {
   },
   methods: {
     async pagePart () {
+      this.loading = true
       let res = await category({});
       this.optionList = res.data
       if (this.status === 1) {
@@ -125,12 +128,15 @@ export default {
             this.confirmTableData.forEach((value, index) => {
               value.index = index + 1;
             });
+            this.loading = false
             if (!res.data) {
               iMessage.error('抱歉，无法查询到结果（输入错误或者不存在），请确认后重新输入。')
             }
           }
         })
-        .catch((e) => { });
+        .catch((e) => {
+          this.loading = false
+        });
     },
 
     clearDiolog () {

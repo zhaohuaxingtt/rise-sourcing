@@ -2,8 +2,8 @@
   <iPage class="new-bob">
     <div>
       <div class="navBox flex-between-center">
-        <span class="title font-weight">BOB{{ $t("TPZS.FENXI")
-          }}<span v-if="inside">-RFQ {{ rfq }}</span></span>
+        <span class="title font-weight">BOB{{ $t("TPZS.FENXI")}}
+          <span v-if="inside">-RFQ {{ rfq }}</span></span>
         <div class="flex-align-center">
           <!--预览-->
           <iButton class="margin-left30"
@@ -150,6 +150,7 @@
 
                       </el-option>
                     </el-select> -->
+
                     <custom-select :data="options"
                                    label="nameZh"
                                    value="key"
@@ -719,17 +720,21 @@ export default {
           viewType: 'all',
         }
       } else {
+        let selectedList = []
+        this.form.combination.map(item => {
+          selectedList.push(item.key)
+        })
         params = {
           analysisSchemeId: this.$store.state.rfq.SchemeId,
           analysisDimension: this.chartType,
-          combination: this.form.combination.join(","),
+          combination: selectedList.join(','),
           defaultBobOptions: this.bobType,
           groupId: this.groupId
         }
         tableParams = {
           schemaId: this.analysisSchemeId,
           analysisDimension: this.chartType,
-          combination: this.form.combination.join(","),
+          combination: selectedList.join(','),
           groupId: this.groupId,
           isDefault: false,
           viewType: 'all',
@@ -747,6 +752,7 @@ export default {
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
         if (this.chartType === 'combination') {
+          this.form.combination = []
           let combinationData = this.Split(allData.combination, ",");
           this.options.forEach(item => {
             combinationData.forEach(i => {
@@ -792,6 +798,7 @@ export default {
         this.$refs.bobAnalysis.remark = allData.remark
         this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
         if (this.chartType === 'combination') {
+          this.form.combination = []
           let combinationData = this.Split(allData.combination, ",");
           this.options.forEach(item => {
             combinationData.forEach(i => {
@@ -800,7 +807,7 @@ export default {
               }
             })
           })
-          console.log(this.form.combination)
+          console.log('', this.form.combination)
         } else {
           this.form = {
             supplier: [],
@@ -865,6 +872,9 @@ export default {
         id: this.chartData1[0].id,
       });
       this.findPart();
+    },
+    handleMultiChange (val) {
+      console.log(val)
     },
     saveDialog () {
       this.dialogVisible = true;
@@ -969,9 +979,9 @@ export default {
       if (this.chartType === "supplier") {
         return this.form.spareParts.toString();
       } else if (this.chartType === "turn") {
-        return this.form.supplier + " " + this.form.spareParts;
+        return this.form.supplier.toString() + "/" + this.form.spareParts.toString();
       } else if (this.chartType === "spareParts") {
-        return this.form.supplier;
+        return this.form.supplier.toString();
       } else if (this.chartType === 'combination') {
         return '';
       } else {
