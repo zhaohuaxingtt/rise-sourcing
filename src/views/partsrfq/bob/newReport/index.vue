@@ -385,6 +385,7 @@ export default {
         supplier: [],
         turn: [],
         spareParts: [],
+        combination: []
       },
       showSelectDiv: false,
       analysisSchemeId: "",
@@ -490,21 +491,21 @@ export default {
         analysisSchemeId: this.analysisSchemeId,
       }).then((res) => {
         this.options = res.data
-        this.$nextTick(() => {
-          let html = ""
-          this.options.forEach((value, index) => {
-            html +=
-              `<div class="el-tag el-tag--info el-tag--large el-tag--light" style="display:flex;justify-content: center;align-items: center;">
-            <div >
-             <p class="el-select__tags-text">${value.nameZh}</p>
-             <p class="el-select__tags-text">${value.value}</p>
-            </div> 
-             <i class="el-tag__close el-icon-close" style="z-index:1000" @click="closeTag"></i>
-           </div>`
-          })
-          this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`
+        // this.$nextTick(() => {
+        //   let html = ""
+        //   this.options.forEach((value, index) => {
+        //     html +=
+        //       `<div class="el-tag el-tag--info el-tag--large el-tag--light" style="display:flex;justify-content: center;align-items: center;">
+        //     <div >
+        //      <p class="el-select__tags-text">${value.nameZh}</p>
+        //      <p class="el-select__tags-text">${value.value}</p>
+        //     </div> 
+        //      <i class="el-tag__close el-icon-close" style="z-index:1000" @click="closeTag"></i>
+        //    </div>`
+        //   })
+        //   this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`
 
-        });
+        // });
       })
     },
     selectChange (e) {
@@ -599,6 +600,7 @@ export default {
       this.getChartData();
     },
     add (val) {
+      console.log(val)
       if (val.constructor === Object) {
         iMessage.error('请选择数据')
         return
@@ -745,10 +747,14 @@ export default {
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
         if (this.chartType === 'combination') {
-          this.form = {
-            combination: []
-          }
-          this.form.combination = this.Split(allData.combination, ",");
+          let combinationData = this.Split(allData.combination, ",");
+          this.options.forEach(item => {
+            combinationData.forEach(i => {
+              if (item.key === i) {
+                this.form.combination.push(item)
+              }
+            })
+          })
         } else {
           this.form = {
             supplier: [],
@@ -786,10 +792,15 @@ export default {
         this.$refs.bobAnalysis.remark = allData.remark
         this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
         if (this.chartType === 'combination') {
-          this.form = {
-            combination: []
-          }
-          this.form.combination = this.Split(allData.combination, ",");
+          let combinationData = this.Split(allData.combination, ",");
+          this.options.forEach(item => {
+            combinationData.forEach(i => {
+              if (item.key === i) {
+                this.form.combination.push(item)
+              }
+            })
+          })
+          console.log(this.form.combination)
         } else {
           this.form = {
             supplier: [],
@@ -799,7 +810,6 @@ export default {
           this.form.supplier = this.Split(allData.supplier, ",");
           this.form.turn = this.Split(allData.turn, ",").map(Number)
           this.form.spareParts = this.Split(allData.spareParts, ",");
-
         }
         if (this.inside) {
           this.formUpdata = {
