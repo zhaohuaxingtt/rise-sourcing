@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 14:27:49
+ * @LastEditTime: 2021-09-09 10:23:27
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -40,6 +40,13 @@
       <div v-for="pro in parts" :key="pro.label" class="productItem"> 
         <div class="productItem-top"> 
           <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
+            <el-popover
+              v-if="pro.zp && pro.zp === 'ZP5'"
+              :content="language('ZP5LINGJIANZHENGXUPAICHENGCONGDINGIDIANJIEDIANKAISHI','ZP5零件，正序排程从定点节点开始')"
+              placement="top-start"
+              trigger="hover">
+              <span slot="reference" >*</span>
+            </el-popover>
             {{`${pro.partNum} ${pro.partNameZh} ${pro.partNameDe}`}} 
           </el-checkbox> 
           <div class="productItem-top-targetList"> 
