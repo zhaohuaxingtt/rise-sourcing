@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-09-08 14:31:13
+ * @LastEditTime: 2021-09-09 16:59:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -28,7 +28,7 @@
           ref="targetTable"
           :tableData="targetTableData"
           :tableTitle="addTableTitle"
-          :tableLoading="loading"
+          :tableLoading="false"
           :index="true"
           @rowSelect="handleSelectTarget">
         </tableList>
@@ -106,11 +106,11 @@ export default {
       }
       getAllAddPart(params).then(res => {
         if(res && res.code == 200) {
-          this.mainTableData = res.data
-          this.selectTargetData.map(targetObj => {
-            const index = res.data.findIndex(item => item.fsId = targetObj.fsId)
-            res.data.splice(index, index + 1)
+          this.targetTableData.map(targetObj => {
+            const index = res.data.findIndex(item => item.fsId == targetObj.fsId)
+            res.data.splice(index, 1)
           })
+          this.mainTableData = res.data
           this.loading = false
         } else iMessage.error(res.desZh)
       })
@@ -125,11 +125,13 @@ export default {
     },
     // 点击添加按钮
     clickAdd() {
+      console.log('selectMainData', this.selectMainData);
       this.targetTableData = this.targetTableData.concat(this.selectMainData)
       this.selectTargetData = this.selectTargetData.concat(this.selectMainData)
       this.selectMainData.forEach(item => {
-        const index = this.mainTableData.findIndex(mainItem => mainItem == item)
-        this.mainTableData.splice(index, index + 1)
+        const index = this.mainTableData.findIndex(mainItem => mainItem.fsId == item.fsId)
+        console.log('index', index);
+        this.mainTableData.splice(index, 1)
       })
       this.selectMainData = []
       this.$nextTick(() => {
