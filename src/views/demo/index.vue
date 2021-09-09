@@ -194,20 +194,24 @@ export default {
     }
   },
   watch: {
-    data (newValue) {
-      this.loading = !(newValue instanceof Array)
-      let originData = _.cloneDeep(newValue)
-      this.originData = originData
-      if (this.selectedData.length) {
-        const codes = this.selectedData.map(sd => {
-          return sd[this.value]
-        })
-        originData = originData.filter(od => {
-          return !codes.includes(od[this.value])
-        })
+    data: {
+      handler (newValue) {
+        this.loading = !(newValue instanceof Array)
+        let originData = _.cloneDeep(newValue)
         this.originData = originData
-        console.log(this.originData)
-      }
+        if (this.selectedData.length) {
+          const codes = this.selectedData.map(sd => {
+            return sd[this.value].toString()
+          })
+          originData = originData.filter(od => {
+            return !codes.includes(od[this.value].toString())
+          })
+          this.originData = originData
+          console.log(this.originData,"666")
+          console.log(codes,"666")
+        }
+      },
+      immediate: true
     },
     values: {
       immediate: true,
@@ -255,12 +259,13 @@ export default {
       })
       if (this.selectedData.length) {
         const codes = this.selectedData.map(sd => {
-          return sd[this.value]
+          return sd[this.value].toString()
         })
         data = data.filter(od => {
-          return !codes.includes(od[this.value])
+          return !codes.includes(od[this.value].toString())
         })
         this.originData = _.cloneDeep(data)
+
       }
       this.$nextTick(() => {
         this.$refs['searchInput']?.focus()
@@ -281,7 +286,6 @@ export default {
       this.$emit('change', this.selectedData)
     },
     handleSelectItem (item) {
-      debugger
       if (
         this.multiple &&
         this.multipleLimit &&
@@ -331,7 +335,6 @@ export default {
       !this.multiple ? this.$refs['selectPopover'].doClose() : ''
     },
     deleteTag (x) {
-      debugger
       if (
         this.multiple &&
         this.multipleLimit &&

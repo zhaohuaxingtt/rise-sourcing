@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-08 19:50:20
+ * @LastEditTime: 2021-09-09 20:12:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -171,6 +171,9 @@ export default {
       },
       immediate: true
     },
+    tableList (val) {
+      console.log(val)
+    }
   },
   mounted () {
     // window.addEventListener('scroll', this.handleScroll, true)
@@ -188,15 +191,26 @@ export default {
       if (i == 'title') { return "227px" }
       let datalength = 0
       data.forEach(item => {
-        let obj = item.child[0][i]
-        let len = obj instanceof Array ? obj.length : 1
+        let obj, len
+        if (item.child.length !== 0) {
+          obj = item.child[0][i]
+        } else {
+          obj = 1
+        }
+        len = obj instanceof Array ? obj.length : 1
         datalength = len > datalength ? len : datalength
       })
-      return datalength * 120 + 'px'
+      return datalength * 140 + 'px'
     },
     renderHeader (h, { column }) {
       let header = column.label.split('<br/>');
-      return [h('p', [
+      return [h('p', {
+        style: {
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap'
+        },
+      }, [
         h('p', {}, header[0]),
         h('span', {}, header[1])
       ])];
@@ -302,6 +316,10 @@ export default {
 }
 ::v-deep.el-table__empty-text {
   transform: scaleY(-1);
+}
+::v-deep .el-table th.gutter {
+  display: table-cell !important;
+  background: #ffffff !important; //因为我改了我的默认表格背景颜色，所以要跟着改
 }
 </style>
 <style lang="scss">
