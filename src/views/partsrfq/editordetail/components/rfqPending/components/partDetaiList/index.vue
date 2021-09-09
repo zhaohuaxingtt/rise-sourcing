@@ -124,6 +124,7 @@ export default {
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
+          businessKey:item.partProjectType //新增业务标识。
         },
       });
       window.open(resolve.href,'_blank')
