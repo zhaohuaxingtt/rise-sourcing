@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-09 16:45:32
- * @LastEditTime: 2021-09-09 17:02:17
+ * @LastEditTime: 2021-09-09 20:05:55
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\piecewise.vue
@@ -56,10 +56,26 @@ export default {
                value:[parseInt(item.riskScore),parseInt(item.moneyScore)],
                materialGroupName:item.materialGroupName,
                materialGroupCode:item.materialGroupCode,
-               symbolSize:item.money,
+               // symbolSize:item.money,
                to:item.money,
             }
          })
+
+         
+            // let currentCategory2={
+            //    value:[55,55],
+            //    materialGroupName:'22222',
+            //    materialGroupCode:'222222',
+            //    symbolSize:100,
+            // }
+            // marksData.push(currentCategory2)
+            // let currentCategory1={
+            //    value:[55,55],
+            //    materialGroupName:'11111',
+            //    materialGroupCode:'1111',
+            //    symbolSize:50,
+            // }
+            // marksData.push(currentCategory1)
          // 当前点
          if(data.currentPoint){
             let currentCategory={
@@ -70,7 +86,7 @@ export default {
             }
             marksData.push(currentCategory)
          }
-
+         console.log(marksData)
          let centerMarkX=parseInt(data.centerPoint.riskScore)
          let centerMarkY=parseInt(data.centerPoint.moneyScore)
          // 中心线
