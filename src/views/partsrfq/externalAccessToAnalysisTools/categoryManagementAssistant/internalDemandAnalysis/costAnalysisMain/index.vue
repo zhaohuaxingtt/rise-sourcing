@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-07 19:02:13
+ * @LastEditTime: 2021-09-09 10:58:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -184,23 +184,26 @@ export default {
       })
     },
     // 校验方案名称
-    async checkSchemeName(schemeName) {
+    checkSchemeName(schemeName) {
       this.schemeName = schemeName
       this.targetSchemeId = null
       this.$set(this.saveModalParams, 'visible', false)
-      const res= await getCostStructureAnalysisByName({name: schemeName})
-        if(res && res.code == 200) {
-          if(res.data) {
-            //名称校验重复
-            this.targetSchemeId = res.data.id
-            iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ cancelButtonText: this.language('LK_QUXIAO','取 消'), confirmButtonText: this.language('LK_QUEDING','确定') }).then(_ => {
+      setTimeout(() => {
+        getCostStructureAnalysisByName({name: schemeName}).then(res => {
+          if(res && res.code == 200) {
+            if(res.data) {
+              //名称校验重复
+              this.targetSchemeId = res.data.id
+              iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ cancelButtonText: this.language('LK_QUXIAO','取 消'), confirmButtonText: this.language('LK_QUEDING','确定') }).then(_ => {
+                this.createPdfAndSave()
+              })
+            } else {
+              //名称校验不重复
               this.createPdfAndSave()
-            })
-          } else {
-            //名称校验不重复
-            this.createPdfAndSave()
-          }
-        } else iMessage.error(res.desZh)
+            }
+          } else iMessage.error(res.desZh)
+        })
+      }, 500);
     },
     // 创建pdf并保存数据
     createPdfAndSave() {
