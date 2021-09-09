@@ -1,16 +1,16 @@
 <template>
   <i-card class='margin-top20 margin-bottom20'>
     <div class='floatright margin-bottom20'>
-      <iButton v-if='editBtnGroupShow' @click='referPurchaseRequisitionClick'>
+      <iButton v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_REFERTO" v-if='editBtnGroupShow' @click='referPurchaseRequisitionClick'>
         {{ $t('MODEL-ORDER.LK_CANZHAOCAIGOUSHENQING') }}
       </iButton>
-      <iButton v-if='editBtnGroupShow' @click='deleteOrderItems' v-loading.fullscreen.lock='fullscreenLoading'>
+      <iButton v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_DEL_ITEM" v-if='editBtnGroupShow' @click='deleteOrderItems' v-loading.fullscreen.lock='fullscreenLoading'>
         {{ $t('MODEL-ORDER.LK_SHANCHUXIANGCI') }}
       </iButton>
-      <iButton v-if='editBtnGroupShow' @click='recoveryItemByPagePurchaseOrder'
+      <iButton v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_RECOVERY_ITEM" v-if='editBtnGroupShow' @click='recoveryItemByPagePurchaseOrder'
                v-loading.fullscreen.lock='fullscreenLoading'>{{ $t('MODEL-ORDER.LK_HUIFUXIANGCI') }}
       </iButton>
-      <iButton v-if='priceSelGroupShow' @click='readPriceOrder' v-loading.fullscreen.lock='fullscreenLoading'>
+      <iButton v-permission="MOLD_PURCHASE_ORDER_DETAILS_BTN_READPRICE" v-if='priceSelGroupShow' @click='readPriceOrder' v-loading.fullscreen.lock='fullscreenLoading'>
         {{ $t('MODEL-ORDER.LK_DUQUJIAGE') }}
       </iButton>
     </div>
@@ -46,7 +46,8 @@ import {MODEL_ORDER_DETAILS_ITEMSCOLUMNS} from "../../config/data";
 import {
   getPurchaseOrderLineList, inventoryLocation,
   readByPurchaseOrderPrice, recoveryItemByPurchaseOrder,
-  deleteItemByPurchaseOrder
+  deleteItemByPurchaseOrder,queryModelBmInfo
+
 } from "@/api/ws2/modelOrder";
 import ModelByPurchaseRequisitionDialog from "../../components/ModelByPurchaseRequisitionDialog";
 import {getDictByCode} from "@/api/dictionary";
@@ -264,10 +265,19 @@ export default {
     //模具台账
     goLedger(item) {
       if (this.isEdit) return
-      let routeData = this.$router.resolve({
-        path: `/purchaseSupplier/mouldBook/details?bmSerial=${item.itemSourceCode}`
-      })
-      window.open(routeData.href, '_blank')
+      queryModelBmInfo(item.itemSourceCode).then(res => {
+        if (res.code == 200) {
+          let bmSerial = res.data.bmSerial;
+          let routeData = this.$router.resolve({
+            path: `/purchaseSupplier/mouldBook/details?bmSerial=${bmSerial}&id=${res.data.id}`
+          })
+          window.open(routeData.href, '_blank')
+        } else {
+          return this.$message.error(res.desZh);
+        }
+      });
+
+
     },
     openGrIr(item) {
       if (this.orderDetails.contractSapCode) {

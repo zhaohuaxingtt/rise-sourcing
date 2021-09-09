@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-09-08 15:02:21
+ * @LastEditTime: 2021-09-08 19:41:12
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -87,6 +87,7 @@
                     @activeName="acitiveName"
                     v-if="groupby"
                     @groupBy="groupBtn"
+                    @merge="merge"
                     v-bind="$attrs"></ungroupedTable>
   </div>
 </template>
@@ -110,6 +111,7 @@ import {
   down,
   getGroupInfo,
   addComponentToGroup,
+  merge,
   groupTerms,
   removeComponentFromGroup,
   groupedCancel,
@@ -391,6 +393,37 @@ export default {
         code: activeName === 'rawUngrouped' ? '1' : '2'
       }).then(res => {
         this.options = res.data
+      })
+    },
+    merge (e, result, activeName) {
+      if (result.length === 0) {
+        this.$message.error('请选择数据');
+        return
+      }
+      this.result = result
+      this.activeName = activeName
+      merge({
+        roundDetailIdList: this.result
+      }).then(res => {
+        this.groupby = false
+        // this.$refs.ungroupedTable.activeName = ""
+        this.$nextTick(() => {
+          this.groupby = true
+          this.$refs.ungroupedTable.activeName = this.activeName
+          this.$refs.ungroupedTable.chargeRetrieve({
+            isDefault: true,
+            viewType: this.activeName,
+            schemaId: this.SchemeId,
+            groupId: this.groupId
+          })
+        });
+        this.$refs.groupedTable.chargeRetrieve({
+          isDefault: true,
+          schemaId: this.SchemeId,
+          viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped',
+          groupId: this.groupId
+        })
+    
       })
     },
     groupToList () {

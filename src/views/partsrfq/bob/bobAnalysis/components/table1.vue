@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-08 15:01:31
+ * @LastEditTime: 2021-09-08 19:50:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -16,6 +16,7 @@
               v-loading="loading"
               stripe
               border
+              :height="heightFlag?'600px':''"
               :max-height="maxHeight"
               :cell-style="cellsytle"
               :row-style="rowStyle"
