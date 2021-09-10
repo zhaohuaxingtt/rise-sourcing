@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-09-09 19:54:27
+ * @LastEditTime: 2021-09-10 16:01:00
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -84,7 +84,7 @@
                     class="margin-top10"
                     :tableList="ungroupList"
                     :SchemeId="SchemeId"
-                    @activeName="acitiveName"
+                    @activeName="returnAcitiveName"
                     v-if="groupby"
                     @groupBy="groupBtn"
                     @merge="merge"
@@ -208,9 +208,9 @@ export default {
   mounted () {
     this.SchemeId = this.analysisSchemeId
     console.log(this.SchemeId)
-    this.$EventBus.$on("activeName", res => {
-      this.activeName = res
-    })
+    // this.$EventBus.$on("activeName", res => {
+    //   this.activeName = res
+    // })
 
   },
   methods: {
@@ -426,6 +426,9 @@ export default {
 
       })
     },
+    returnAcitiveName (val) {
+      this.activeName = val
+    },
     groupToList () {
       if (!this.value1) {
         this.$message.error('请选择分组');
@@ -441,7 +444,6 @@ export default {
         this.$nextTick(() => {
           this.groupby = true
           this.$refs.ungroupedTable.activeName = this.activeName
-
           this.$refs.ungroupedTable.chargeRetrieve({
             isDefault: true,
             viewType: this.activeName,
