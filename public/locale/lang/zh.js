@@ -869,6 +869,7 @@
         'LK_BANUMBERDISTRIBUTION': 'BA号分配',  //  BA号分配
         'LK_AMOUNTMONEYRMB': '金额（RMB）', //  金额（RMB）
         'LK_FIXEDINVESTTOTAL': '总定点投资金额',    //  总定点投资金额
+        'LK_QINGTIANXIWBIANGENGYUANYIN': '请填写比变更原因',    //  总定点投资金额
 
         // 'LK_XIAYIBU': '下一步',    //  下一步
 

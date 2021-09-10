@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 10:15:01
+ * @LastEditTime: 2021-09-10 14:43:19
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -583,7 +583,6 @@ export default {
   .overText{
     overflow: hidden;
     width: 100%;
-    display: inline-block;
     white-space: nowrap;
     text-overflow: ellipsis;
     height: 15px;

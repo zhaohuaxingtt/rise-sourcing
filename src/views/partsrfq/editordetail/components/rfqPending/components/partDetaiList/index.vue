@@ -87,8 +87,16 @@ export default {
     kmDialog
   },
   created() {
-    this.rfqId = this.$route.query.id
+    const {query} = this.$route;
+    const {id,businessKey} = query;
+    // this.rfqId = this.$route.query.id
+    this.rfqId = id;
     this.getTableList();
+
+    // 当类型为AEKO时 表头需要隐藏部分
+    if(businessKey == partProjTypes.AEKOLINGJIAN){
+      this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
+    }
   },
   data() {
     return {
