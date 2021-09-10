@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:02
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-08 16:12:42
+ * @LastEditTime: 2021-09-10 16:19:58
  * @Description: 排程版本查询
  * @FilePath: \front-web\src\views\project\schedulingassistant\scheduleVersion\index.vue
 -->
@@ -142,6 +142,12 @@ export default {
         iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU','请选择至少一条数据'))
         return
       }
+      // 如果选择的都有fileid，直接下载
+      if (this.selectTableData.filter(o => o.fileId).length === fileList.length) {
+        downloadFile(this.selectTableData.map(o => o.fileId))
+        return
+      }
+      // 部分没有fileID，调接口生成fileId
       this.batchUploading = true
       this.genScheduleVersion(fileList)
     },
