@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-08 15:06:27
+ * @LastEditTime: 2021-09-10 16:06:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -128,21 +128,7 @@ export default {
     activeName: {
       handler (val) {
         console.log(val)
-        if (val === 'rawGrouped') {
-          this.chargeRetrieve({
-            isDefault: true,
-            viewType: 'rawGrouped',
-            schemaId: this.SchemeId,
-            groupId: this.groupId
-          })
-        } else {
-          this.chargeRetrieve({
-            isDefault: true,
-            viewType: 'maGrouped',
-            schemaId: this.SchemeId,
-            groupId: this.groupId
-          })
-        }
+
       },
     }
   },
@@ -284,16 +270,38 @@ export default {
         console.log(res)
         if (res.code === '200') {
           iMessage.success('修改成功')
-          if (!this.activeName) {
-            this.activeName = "rawGrouped"
-          } else {
-            this.activeName = "maGrouped"
-          }
+          // if (!this.activeName) {
+          //   this.activeName = "rawGrouped"
+          // } else {
+          //   this.activeName = "maGrouped"
+          // }
           // this.chargeRetrieve({
           //   isDefault: true,
           //   viewType: this.activeName,
           //   schemaId: this.SchemeId
           // })
+          if (this.activeName === 'rawGrouped') {
+            this.chargeRetrieve({
+              isDefault: true,
+              viewType: 'rawGrouped',
+              schemaId: this.SchemeId,
+              groupId: this.groupId
+            })
+          } else if (!this.activeName) {
+            this.chargeRetrieve({
+              isDefault: true,
+              viewType: 'rawGrouped',
+              schemaId: this.SchemeId,
+              groupId: this.groupId
+            })
+          } else {
+            this.chargeRetrieve({
+              isDefault: true,
+              viewType: 'maGrouped',
+              schemaId: this.SchemeId,
+              groupId: this.groupId
+            })
+          }
         } else {
           iMessage.error('修改失败')
         }

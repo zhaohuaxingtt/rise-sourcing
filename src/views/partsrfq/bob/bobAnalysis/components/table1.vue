@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-09 20:12:03
+ * @LastEditTime: 2021-09-10 16:10:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -14,7 +14,6 @@
               :row-key="getRowKey"
               :expand-row-keys="expends"
               v-loading="loading"
-              stripe
               border
               :height="heightFlag?'600px':''"
               :max-height="maxHeight"
@@ -156,8 +155,15 @@ export default {
     },
     duration () {
       return function (i) {
-        let result = this.getTreeExpandKeys(this.tableList.element, i.label)
-        return result
+        this.$nextTick(() => {
+          let domWidth = this.$el.querySelector('.el-table__header-wrapper')
+          let result = this.getTreeExpandKeys(this.tableList.element, i.label)
+          if (parseInt(result) * this.tableList.title.length <= domWidth.clientWidth && i.label !== 'title') {
+            return ""
+          } else {
+            return result
+          }
+        });
       }
     }
   },
@@ -172,10 +178,16 @@ export default {
       immediate: true
     },
     tableList (val) {
-      console.log(val)
+
     }
   },
   mounted () {
+    this.$nextTick(() => {//解决弹窗内表格受外层表格斑马纹影响 
+      if (document.getElementsByClassName('el-table__row current-row el-table__row--striped').length != 0) {
+        document.getElementsByClassName('el-table__row current-row el-table__row--striped')[0].className = 'el-table__row current-row '
+      }
+    })
+
     // window.addEventListener('scroll', this.handleScroll, true)
   },
   data () {
@@ -247,6 +259,28 @@ export default {
         return styleJson
       }
     },
+    open () {
+      let els = this.$el.getElementsByClassName("el-table__expand-icon");
+      if (this.tableList.element.length != 0 && els.length != 0) {
+        this.flag = false;
+        this.flag1 = true;
+        for (let j1 = 0; j1 < els.length; j1++) {
+          els[j1].classList.add("dafult");
+        }
+        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
+          const open = this.$el.getElementsByClassName(
+            "el-table__expand-icon--expanded"
+          );
+          for (let j = 0; j < open.length; j++) {
+            open[j].classList.remove("dafult");
+          }
+          const dafult = this.$el.getElementsByClassName("dafult");
+          for (let a = 0; a < dafult.length; a++) {
+            dafult[a].click();
+          }
+        }
+      }
+    },
     close () {
       if (this.tableList.element.length != 0) {
         this.flag = true;
@@ -254,9 +288,7 @@ export default {
         const elsopen = this.$el.getElementsByClassName(
           "el-table__expand-icon--expanded"
         );
-        if (
-          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
-        ) {
+        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
           for (let i = 0; i < elsopen.length; i++) {
             elsopen[i].click();
           }
