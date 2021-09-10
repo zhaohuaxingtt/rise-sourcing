@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-09 16:45:32
- * @LastEditTime: 2021-09-07 16:39:05
+ * @LastEditTime: 2021-09-09 21:27:15
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\piecewise.vue
@@ -56,20 +56,37 @@ export default {
                value:[parseInt(item.riskScore),parseInt(item.moneyScore)],
                materialGroupName:item.materialGroupName,
                materialGroupCode:item.materialGroupCode,
+               // symbolSize:item.money,
                to:item.money,
             }
          })
+
+            // let currentCategory1={
+            //    value:[55,55],
+            //    materialGroupName:'11111',
+            //    materialGroupCode:'1111',
+            //    symbolSize:50,
+            // }
+            // let currentCategory2={
+            //    value:[55,55],
+            //    materialGroupName:'22222',
+            //    materialGroupCode:'222222',
+            //    symbolSize:100,
+            // }
+           
+            // marksData.push(currentCategory2)
+            // marksData.push(currentCategory1)
          // 当前点
          if(data.currentPoint){
             let currentCategory={
                value:[parseInt(data.currentPoint.riskScore),parseInt(data.currentPoint.moneyScore)],
                materialGroupName:data.currentPoint.materialGroupName,
                materialGroupCode:data.currentPoint.materialGroupCode,
-               // symbolSize:20,
+               // symbolSize:100,
             }
             marksData.push(currentCategory)
          }
-
+         console.log(marksData)
          let centerMarkX=parseInt(data.centerPoint.riskScore)
          let centerMarkY=parseInt(data.centerPoint.moneyScore)
          // 中心线
@@ -89,6 +106,7 @@ export default {
          ]
 
          let option = {
+            z:[10,5,1],
             tooltip: {
                axisPointer: {
                   show: true,
@@ -102,18 +120,18 @@ export default {
                   }
                },
                formatter:params => {
-                     // console.log(params)
-                     const {
-                        data,
-                        value
-                     } = params;
+                  // console.log(params)
+                  const {
+                     data,
+                     value
+                  } = params;
 
-                     return [
-                        `材料组名称:${data.materialGroupName}`,
-                        `材料组编号: ${data.materialGroupCode}`,
-                        `材料组分数:${value[0]},${value[1]} `,
-                        `TO:${data.to}`
-                           ].join("</br>")
+                  return [
+                     `材料组名称:${data.materialGroupName}`,
+                     `材料组编号: ${data.materialGroupCode}`,
+                     `材料组分数:(${value[0]},${value[1]})`,
+                     `TO:${data.to}`
+                        ].join("</br>")
                }
             },
             grid: {

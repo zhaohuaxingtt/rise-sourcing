@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-09-08 19:41:12
+ * @LastEditTime: 2021-09-09 19:54:27
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -423,7 +423,7 @@ export default {
           viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped',
           groupId: this.groupId
         })
-    
+
       })
     },
     groupToList () {
