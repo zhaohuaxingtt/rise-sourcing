@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 13:59:40
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 16:55:30
+ * @LastEditTime: 2021-09-10 15:16:52
  * @Description: 零件排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\index.vue
 -->
@@ -52,8 +52,8 @@ export default {
       carProjectName: '',
       searchList: [
         {value: 'partNum', label: '零件号', key: 'LINGJIANHAO', type: 'input', querySearch: this.querySearchPartNum},
-        {value: 'partNameZh', label: '零件中文名称', key: 'LINGJIANZHONGWENMINGCHENG', type: 'input', querySearch: this.querySearchPartNameZh},
-        {value: 'partNameDe', label: '零件德文名称', key: 'LINGJIANDEWENMINGCHENG', type: 'input', querySearch: this.querySearchPartNameDe},
+        {value: 'partNameZh', label: '零件名称', key: 'LINGJIANMINGCHENG', type: 'input', querySearch: this.querySearchPartNameZh},
+        {value: 'partStatus', label: '零件状态', key: 'LINGJIANZHUANGTAI', type: 'selectDict', selectOption: 'PART_PERIOD_TYPE'},
         {value: 'level', label: '风险等级', key: 'FENGXIANDENGJI', type: 'selectDict', selectOption: 'DELAY_GRADE_CONFIG'},
       ],
       searchParams: {},
