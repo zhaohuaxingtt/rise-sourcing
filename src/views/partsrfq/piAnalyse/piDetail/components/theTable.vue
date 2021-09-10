@@ -316,7 +316,7 @@ export default {
             item.matchId = copyItem.work.id || copyItem.matchId;
           }
           if (item.workProvince) {
-            item.workProvince = copyItem.workProvince.area || copyItem.workProvince;
+            item.workProvince = copyItem.workProvince.city || copyItem.workProvince;
             item.matchId = copyItem.workProvince.id || copyItem.matchId;
           }
         } else if (item.dataType === classType['exchangeRate']) {
