@@ -93,6 +93,8 @@
       <iTableList
           :tableData="tableListData"
           :tableTitle="tableTitle"
+          :selection="false"
+          :typeIndex="true"
           @handleSelectionChange="handleSelectionChange"
       >
         <template #changeNum="scope">

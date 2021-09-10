@@ -240,7 +240,7 @@
 
           <iButton
               v-show="isEdit"
-              @click="isEdit = false">
+              @click="backEdit">
             {{ language('LK_TUICHUBIANJI', '退出编辑') }}
           </iButton>
           <iButton
@@ -366,8 +366,8 @@
           <div v-show="!isEdit">{{ scope.row.changeReason }}</div>
           <div v-show="isEdit">
             <iInput
-                v-model="scope.row.changeReason"
                 @input="scope.row.isEdit = true"
+                v-model="scope.row.changeReason"
                 :placeholder="language('LK_QINGSHURU', '请输入')"
             >
             </iInput>
@@ -596,8 +596,9 @@ export default {
       this.tableListData[index].assetTotal = this.tableListData[index].count * value
       this.baseInfo.afterChangeAmount = this.tableListData.map(item => item.assetTotal).reduce((a, b) => a + b)
     },
-    changeAssetTotal(index, isMoney){
+    changeAssetTotal(index){
       this.countTemp = parseInt(String(this.tableListData[index].count))
+      this.tableListData[index].count = parseInt(String(this.tableListData[index].count))
       this.tableListData[index].assetTotal = this.countTemp * this.delcommafy(this.tableListData[index].assetPrice)
       this.tableListData[index].isEdit = true
       this.baseInfo.afterChangeAmount = this.tableListData.map(item => item.assetTotal).reduce((a, b) => a + b)
@@ -683,7 +684,8 @@ export default {
             partsTotalName: null,
             partsTotalNum: null,
             picture: null,
-            isEdit: true
+            isEdit: true,
+            isAdd: true
           })
           tableListData = tableListData.map((item, index) => {
             item.index = index
@@ -729,6 +731,16 @@ export default {
       })
       iMessage.success(this.language('LK_SHANCHUCHENGGONG', '删除成功'))
     },
+    backEdit(){
+      this.isEdit = false
+      if(this.tableListData[0].isAdd){
+        this.tableListData.shift()
+      }
+      this.tableListData = this.tableListData.map(item => {
+        item.isEdit = false
+        return item
+      })
+    },
     handleSave(){
       this.handleSaveLoading = true
       let changeOederData = {
@@ -739,6 +751,16 @@ export default {
         id: this.query.bmChangeId,
         newMoldInvestmentAmount: this.baseInfo.afterChangeAmount,
         optimistic: this.baseInfo.optimistic,
+      }
+      if(this.tableListData.some(item => {
+        if(item.isEdit){
+          return !item.changeReason
+        }
+        return false
+      })){
+        iMessage.warn(this.language('LK_QINGTIANXIWBIANGENGYUANYIN', '请填写比变更原因'))
+        this.handleSaveLoading = false
+        return
       }
       saveChange(changeOederData).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn

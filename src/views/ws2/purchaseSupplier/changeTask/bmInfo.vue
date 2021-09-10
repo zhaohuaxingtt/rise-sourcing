@@ -216,7 +216,7 @@
 
         <div class="top-r">
           <iButton
-              v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2 || Number(baseInfo.changeStatus) === 3)"
+              v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2)"
               @click="handleEdit">
             {{ language('LK_BIANJI', '编辑') }}
           </iButton>
@@ -234,7 +234,7 @@
 
           <iButton
               v-show="isEdit"
-              @click="isEdit = false">
+              @click="backEdit">
             {{ language('LK_TUICHUBIANJI', '退出编辑') }}
           </iButton>
           <iButton
@@ -280,11 +280,11 @@
         <!-- BM单流⽔号 -->
         <template #craftType="scope">
           <div v-show="!isEdit">{{scope.row.craftType}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.craftType" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.craftType" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #moldType="scope">
           <div v-show="!isEdit">{{scope.row.moldType}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.moldType" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.moldType" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #assetTypeNum="scope">
           <div v-show="!isEdit">{{scope.row.assetTypeNum}}</div>
@@ -292,6 +292,7 @@
               v-show="isEdit"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               v-model="scope.row.assetTypeNumNo"
+              @change="scope.row.isEdit = true"
               filterable
               clearable
               class="select"
@@ -325,11 +326,11 @@
         </template>
         <template #partsName="scope">
           <div v-show="!isEdit">{{scope.row.partsName}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.partsName" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.partsName" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #partsNum="scope">
           <div v-show="!isEdit">{{scope.row.partsNum}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.partsNum" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.partsNum" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #count="scope">
           <div v-show="!isEdit">{{scope.row.count}}</div>
@@ -358,6 +359,7 @@
           <div v-show="!isEdit">{{ scope.row.changeReason }}</div>
           <div v-show="isEdit">
             <iInput
+                @input="scope.row.isEdit = true"
                 v-model="scope.row.changeReason"
                 :placeholder="language('LK_QINGSHURU', '请输入')"
             >
@@ -632,6 +634,8 @@ export default {
             partsTotalName: null,
             partsTotalNum: null,
             picture: null,
+            isEdit: true,
+            isAdd: true
           })
           tableListData = tableListData.map((item, index) => {
             item.index = index
@@ -663,7 +667,6 @@ export default {
       let deleteItem = []
       this.multipleSelection2.map(item => {
         if(item.bmMoldId === null || item.bmMoldId === 0){
-          console.log(this.tableListData.findIndex(a => a.moldId === item.moldId))
           this.tableListData.splice(this.tableListData.findIndex(a => a.moldId === item.moldId), 1)
         } else {
           deleteItem.push(item.id)
@@ -672,13 +675,34 @@ export default {
       this.tableListData = this.tableListData.map(a => {
         if(deleteItem.some(b => b === a.id)){
           a.changeType = 0
+          a.isEdit = true
         }
         return a
       })
       iMessage.success(this.language('LK_SHANCHUCHENGGONG', '删除成功'))
     },
+    backEdit(){
+      this.isEdit = false
+      if(this.tableListData[0].isAdd){
+        this.tableListData.shift()
+      }
+      this.tableListData = this.tableListData.map(item => {
+        item.isEdit = false
+        return item
+      })
+    },
     handleSave(){
       this.handleSaveLoading = true
+      if(this.tableListData.some(item => {
+        if(item.isEdit){
+          return !item.changeReason
+        }
+        return false
+      })){
+        iMessage.warn(this.language('LK_QINGTIANXIWBIANGENGYUANYIN', '请填写比变更原因'))
+        this.handleSaveLoading = false
+        return
+      }
       saveChange({
         moldChangeDtos: this.tableListData.map(item => {
           item.assetPrice = Number(this.delcommafy(item.assetPrice))
@@ -714,6 +738,7 @@ export default {
     },
     changeAssetTotal(index, isMoney){
       this.countTemp = parseInt(String(this.tableListData[index].count))
+      this.tableListData[index].count = parseInt(String(this.tableListData[index].count))
       this.tableListData[index].assetTotal = this.countTemp * this.delcommafy(this.tableListData[index].assetPrice)
       this.tableListData[index].isEdit = true
       this.baseInfo.afterChangeAmount = this.tableListData.map(item => item.assetTotal).reduce((a, b) => a + b)
