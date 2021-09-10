@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-09-07 18:34:51
+ * @LastEditTime: 2021-09-10 10:05:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -14,28 +14,32 @@ export const tableTitle = [{
 		name: 'FSNF/GSNF/SPNR',
 		key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
 		tooltip: true,
-		width:120
+		width:120,
+		isAekoShow:true,
 	},
 	{
 		props: 'partNum',
 		name: '零件号',
 		key: 'partsprocure.PARTSPROCUREPARTNUMBER',
 		tooltip: true,
-		width:130
+		width:130,
+		isAekoShow:true,
 	},
 	{
 		props: 'partNameZh',
 		name: '零件名（中）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
 		tooltip: true,
-		width:100
+		width:100,
+		isAekoShow:true,
 	},
 	{
 		props: 'partNameDe',
 		name: '零件名（德）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
 		tooltip: true,
-		width:100
+		width:100,
+		isAekoShow:true,
 	},
 	// {
 	// 	props: 'statusName',
@@ -48,7 +52,8 @@ export const tableTitle = [{
 		name: 'LINIE',
 		key: 'partsprocure.PARTSPROCURELINIE',
 		tooltip: true,
-		width:60
+		width:60,
+		isAekoShow:false,
 	},
 	
 	{
@@ -56,7 +61,8 @@ export const tableTitle = [{
 		name: 'CF',
 		key: 'partsprocure.CF',
 		tooltip: true,
-		width:70
+		width:70,
+		isAekoShow:false,
 	},
 	// {
 	// 	props: 'cfControllerZh',
@@ -70,42 +76,48 @@ export const tableTitle = [{
 		name: '采购工厂',
 		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
 		tooltip: true,
-		width:80
+		width:80,
+		isAekoShow:true,
 	},
 	{
 		props: 'partProjectTypeDesc',
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 		tooltip: true,
-		width:110
+		width:110,
+		isAekoShow:true,
 	},
 	{
 		props: 'carTypeCategory',
 		name: '车型大类',
 		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
 		tooltip: true,
-		width:100
+		width:100,
+		isAekoShow:true,
 	},
 	{
 		props: 'carTypeProjectZh',
 		name: '车型项目',
 		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
 		tooltip: true,
-		minWidth:120
+		minWidth:120,
+		isAekoShow:true,
 	},
 	{
 		props: 'statusDesc',
 		name: '零件状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
 		tooltip: true,
-		width:75
+		minWidth:75,
+		isAekoShow:true,
 	},
 	{
 		props: 'buyerName',
 		name: '询价采购员',
 		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
 		tooltip: true,
-		width:90
+		width:90,
+		isAekoShow:false,
 	},
 ]
 

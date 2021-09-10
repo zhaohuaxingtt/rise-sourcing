@@ -72,6 +72,14 @@ export default {
   },
   created() {
     this.getTableList()
+
+     const {query={}} = this.$route;
+    const {businessKey} = query;
+
+    // 当类型为AEKO时 表头需要隐藏部分
+    if(businessKey == partProjTypes.AEKOLINGJIAN){
+      this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
+    }
   },
   methods: {
     //获取表格数据
