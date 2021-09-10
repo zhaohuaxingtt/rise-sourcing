@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-06 13:21:41
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-10 16:53:38
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -276,7 +276,7 @@
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_BMG" label="BMG：" name="test">
 							<iText >
-								{{ fillterss(detailData.bmg) }}
+								{{ fillterss(detailData.isBmg) }}
 							</iText>
 						</iFormItem>
 						<!---------------钢材批量采购及钢材一次性采购显示字段---------------------------------------------->
