@@ -276,7 +276,7 @@
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_BMG" label="BMG：" name="test">
 							<iText >
-								{{ fillterss(detailData.bmg) }}
+								{{ fillterss(detailData.isBmg) }}
 							</iText>
 						</iFormItem>
 						<!---------------钢材批量采购及钢材一次性采购显示字段---------------------------------------------->
