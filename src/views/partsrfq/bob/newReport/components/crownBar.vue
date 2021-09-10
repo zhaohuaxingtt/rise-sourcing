@@ -369,7 +369,7 @@ export default {
           if (i === 0) {
             tempArr[this.type] = [];
           }
-
+          this.yList = [...dataList1[row], this.sum(minList)]
           this.dataArray.push({
             name: row,
             type: "bar",

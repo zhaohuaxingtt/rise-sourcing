@@ -127,7 +127,7 @@ export default {
         name: "svw(百万元)"
       }, {
         value: 'otherAmount',
-        name: "其它(百万元)"
+        name: "其他(百万元)"
       }],
       bgimg: require('../img/list.png'),
       upImg: require('../img/up.png'),
@@ -811,7 +811,7 @@ h3 {
     flex: 1;
     padding: 10px 5px;
     border-radius: 5px;
-    background-color: #ccc;
+    background-color: #fff;
     text-align: center;
   }
 }
