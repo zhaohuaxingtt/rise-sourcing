@@ -7,6 +7,19 @@
     <div id="content">
       <iCard :collapse="false"
              id="downloadRef">
+        <div style="width: 75%; height: 30px;display: flex;flex-flow: row nowrap;justify-content: space-between;">
+          <div> <span class="chartTitle">{{chartTitle}}</span></div>
+          <div class="legend">
+            <ul>
+              <li v-for="(item,index) in anchorList"
+                  :key="index">
+                <i class="circle"
+                   :style="color(item)"></i>
+                <span style="vertical-align: baseline">{{item}}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
         <div class="clearfix">
           <iButton class="margin-left10 "
                    style="float: right"
@@ -78,6 +91,10 @@ export default {
     reportName: {
       type: String,
       default: ""
+    },
+    chartTitle: {
+      type: String,
+      default: ""
     }
   },
   data () {
@@ -90,12 +107,7 @@ export default {
       bobType: "Best of Best",
       tableList: "",
       reportSave: true,
-      // dataList1,
-      // dataList2,
-      // dataList3,
-      // dataList4,
-      // dataList5,
-      // dataList6,
+      anchorList: ['原材料/散件成本', '制造成本', '报废成本', '管理费用', '其他费用', '利润'],
       form: {
         supplier: [],
         turn: [],
@@ -108,7 +120,7 @@ export default {
       expends: [],
       // reportName: "",
       id: "",
-      chartTitle: "",
+      // chartTitle: "",
       groupId: ""
     };
   },
@@ -126,6 +138,25 @@ export default {
     // this.initChartData()
     // this.analysisSchemeId = this.$route.query.analysisSchemeId;
 
+  },
+  computed: {
+    color () {
+      return function (item) {
+        if (item === '原材料/散件成本') {
+          return 'background: #C6DEFF'
+        } else if (item === '制造成本') {
+          return 'background: #9BBEFF'
+        } else if (item === '报废成本') {
+          return 'background: #72AEFF'
+        } else if (item === '管理费用') {
+          return 'background: #5993FF'
+        } else if (item === '其他费用') {
+          return 'background: #1763F7'
+        } else if (item === '利润') {
+          return 'background: #0040BE'
+        }
+      }
+    }
   },
   methods: {
     open () {
@@ -333,11 +364,39 @@ export default {
     }
   }
 }
+.chartTitle {
+  font-size: 18px;
+  font-family: "Arial";
+  line-height: 16px;
+  font-weight: "bold";
+  margin-right: 20px;
+}
+.legend {
+  font-family: "Arial";
+  font-size: 16px;
+  color: #0d2451;
+  ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    li {
+      padding-right: 20px;
+    }
+  }
+}
 .clearfix::after {
   content: "";
   display: block;
   font-size: 0;
   height: 0;
   clear: both;
+}
+.circle {
+  display: inline-block;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  vertical-align: baseline;
+  margin-right: 10px;
 }
 </style>

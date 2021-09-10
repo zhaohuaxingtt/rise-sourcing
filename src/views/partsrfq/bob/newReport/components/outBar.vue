@@ -106,7 +106,7 @@ export default {
           left: "14%",
           top: '25%',
           right: '0%',
-          bottom: "25%",
+          bottom: "22%",
         },
         xAxis: [
           {
@@ -185,8 +185,8 @@ export default {
             type: 'value',
             name: '',
             axisLabel: {
+              show: false,
               color: '#7E84A3',
-
             },
             axisTick: {
               show: false
@@ -245,7 +245,7 @@ export default {
           // if (!this.preview) {
           //   img = ''
           // }
-          const str = name + '\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n\n' + "{font|" + temp + "}";
+          const str = name + '\n\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n\n' + "{font|" + temp + "}";
           const subtext = row.spareParts + '\n' + row.fs
           this.labelArray.push({
             value: str,
