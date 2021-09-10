@@ -119,7 +119,19 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_BIANGENGDANZHUANGTAI', '变更单状态') }}</span>
+                <span>
+                  {{ language('LK_BIANGENGDANZHUANGTAI', '变更单状态') }}
+                     <Popover
+                         v-if="Number(baseInfo.linieConfirmSupplier) === 1"
+                         class="popover"
+                         placement="bottom-start"
+                         :content="baseInfo.linieName + '在' + baseInfo.taskDealDate + '代确认'"
+                         trigger="hover">
+                        <div slot="reference">
+                          <icon symbol name="iconxinxitishi"></icon>
+                        </div>
+                    </Popover>
+                </span>
               </div>
               <div class="disabled">{{ Number(baseInfo.changeStatus) === 1 ? '草稿' :
                                       (Number(baseInfo.changeStatus) === 2 ? '已拒绝' :
@@ -397,7 +409,7 @@
           >
             <el-option
                 :value="item.value"
-                :label="item.name"
+                :label="item.value"
                 v-for="(item, index) in sharePartsList"
                 :key="index"
             ></el-option>
@@ -732,7 +744,8 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.isEdit = false
-          // this.moldHeaderByBmSerial()
+          this.moldHeaderByBmSerial()
+          this.findMoldViewList()
           iMessage.success(result);
         } else {
           iMessage.error(result);
@@ -938,7 +951,6 @@ export default {
             item.assetTypeNumNo = item.assetTypeNum ? item.assetTypeNum.split('-')[0] : ''
             return item
           })
-          console.log(this.tableListData)
         } else {
           iMessage.error(result);
         }

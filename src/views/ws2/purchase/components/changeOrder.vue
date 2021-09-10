@@ -206,7 +206,10 @@
         </el-table>
         <div class="foot">
           <div class="bottomLine">
-            <span v-for="(item, index) in baseInfo.approveVos" :key="index">{{ item.assigneeName }} {{ item.approveResult }} {{ item.approveDate }}</span>
+            <span v-for="(item, index) in baseInfo.approveVos" :key="index">
+              <div v-if="item.approveResult">{{ item.assigneeName }} {{ item.approveResult }} {{ item.approveDate }}</div>
+              <div v-else></div>
+            </span>
           </div>
           <div class="weight">
             <span v-for="(item, index) in baseInfo.approveVos" :key="index">{{ item.userOrg }}</span>
