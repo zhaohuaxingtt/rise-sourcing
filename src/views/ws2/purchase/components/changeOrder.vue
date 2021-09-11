@@ -22,9 +22,9 @@
           <div class="NO">NO.{{ baseInfo.changeNo }}</div>
           <div class="item">
             <span>变更类型：{{ baseInfo.changeTypeName }}</span>
-            <span>原总价：{{ baseInfo.oldAmount }}</span>
-            <span>资产总价：{{ baseInfo.newAmount }}</span>
-            <span>总价变化：{{ baseInfo.diffAmount }}</span>
+            <span>原总价：{{ getTousandNum(Number(baseInfo.oldAmount)) }}</span>
+            <span>资产总价：{{ getTousandNum(Number(baseInfo.newAmount)) }}</span>
+            <span>总价变化：{{ getTousandNum(Number(baseInfo.diffAmount)) }}</span>
           </div>
         </div>
       </div>
@@ -47,7 +47,6 @@
               label="模具ID">
           </el-table-column>
           <el-table-column
-              prop="assetName"
               align="center"
               label="固定资产名称（原名称）"
               width="120">
@@ -61,7 +60,6 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="craftTypeOld"
               width="100"
               align="center"
               label="工艺类型（原类型）">
@@ -75,7 +73,6 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="moldTypeOld"
               width="100"
               align="center"
               label="工模具种类（原种类）">
@@ -89,7 +86,6 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="assetTypeNumNameOld"
               width="100"
               align="center"
               label="资产分类（原分类）">
@@ -103,7 +99,6 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="partsTotalNumOld"
               width="120"
               align="center"
               label="总成零件号（原总成号）">
@@ -117,7 +112,6 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="partsTotalNameOld"
               width="120"
               align="center"
               label="总成零件名（原总成名）">
@@ -131,7 +125,6 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="partsNumOld"
               width="120"
               align="center"
               label="零件号（原零件号）">
@@ -145,7 +138,6 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="partsNameOld"
               width="100"
               align="center"
               label="零部件名称（原名称）">
@@ -172,26 +164,41 @@
               prop="assetPriceOld"
               align="center"
               label="原单价">
+            <template slot-scope="scope">
+              <div>{{ getTousandNum(Number(scope.row.assetPriceOld)) }}</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="assetPrice"
               align="center"
               label="资产单价">
+            <template slot-scope="scope">
+              <div>{{ getTousandNum(Number(scope.row.assetPrice)) }}</div>
+            </template>
           </el-table-column>
           <el-table-column
-              prop="address"
+              prop="assetTotal"
               align="center"
               label="原总价">
+            <template slot-scope="scope">
+              <div>{{ getTousandNum(Number(scope.row.assetTotal)) }}</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="assetTotalOld"
               align="center"
               label="资产总价">
+            <template slot-scope="scope">
+              <div>{{ getTousandNum(Number(scope.row.assetTotalOld)) }}</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="diffAssetTotal"
               align="center"
               label="总价变化">
+            <template slot-scope="scope">
+              <div>{{ getTousandNum(Number(scope.row.diffAssetTotal)) }}</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="changeTypeName"
@@ -238,6 +245,7 @@ import {
   preview,
   downPdf
 } from "@/api/ws2/purchase/changeTask";
+import {getTousandNum} from "@/utils/tool";
 
 export default {
   components: {
@@ -255,7 +263,8 @@ export default {
     return {
       tableLoading: false,
       downPdfLoading: false,
-      baseInfo: {}
+      baseInfo: {},
+      getTousandNum: getTousandNum
 
     }
   },
