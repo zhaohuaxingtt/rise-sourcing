@@ -82,7 +82,7 @@ export function bmChangeLiniePullDownByDept(data) {
     return VUE_APP_BMCHANGE({
         url: '/bmChangeLiniePullDownByDept',
         method: 'POST',
-        data: data
+        params: data
     })
 }
 
