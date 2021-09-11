@@ -22,9 +22,9 @@
           <div class="NO">NO.{{ baseInfo.changeNo }}</div>
           <div class="item">
             <span>变更类型：{{ baseInfo.changeTypeName }}</span>
-            <span>原总价：{{ getTousandNum(Number(baseInfo.oldAmount)) }}</span>
-            <span>资产总价：{{ getTousandNum(Number(baseInfo.newAmount)) }}</span>
-            <span>总价变化：{{ getTousandNum(Number(baseInfo.diffAmount)) }}</span>
+            <span>原总价：{{ getTousandNum(Number(baseInfo.oldAmount).toFixed(2)) }}</span>
+            <span>资产总价：{{ getTousandNum(Number(baseInfo.newAmount).toFixed(2)) }}</span>
+            <span>总价变化：{{ getTousandNum(Number(baseInfo.diffAmount).toFixed(2)) }}</span>
           </div>
         </div>
       </div>
@@ -165,7 +165,7 @@
               align="center"
               label="原单价">
             <template slot-scope="scope">
-              <div>{{ getTousandNum(Number(scope.row.assetPriceOld)) }}</div>
+              <div>{{ getTousandNum(Number(scope.row.assetPriceOld).toFixed(2)) }}</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -173,7 +173,7 @@
               align="center"
               label="资产单价">
             <template slot-scope="scope">
-              <div>{{ getTousandNum(Number(scope.row.assetPrice)) }}</div>
+              <div>{{ getTousandNum(Number(scope.row.assetPrice).toFixed(2)) }}</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -181,7 +181,7 @@
               align="center"
               label="原总价">
             <template slot-scope="scope">
-              <div>{{ getTousandNum(Number(scope.row.assetTotal)) }}</div>
+              <div>{{ getTousandNum(Number(scope.row.assetTotal).toFixed(2)) }}</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -189,7 +189,7 @@
               align="center"
               label="资产总价">
             <template slot-scope="scope">
-              <div>{{ getTousandNum(Number(scope.row.assetTotalOld)) }}</div>
+              <div>{{ getTousandNum(Number(scope.row.assetTotalOld).toFixed(2)) }}</div>
             </template>
           </el-table-column>
           <el-table-column
@@ -197,7 +197,7 @@
               align="center"
               label="总价变化">
             <template slot-scope="scope">
-              <div>{{ getTousandNum(Number(scope.row.diffAssetTotal)) }}</div>
+              <div>{{ getTousandNum(Number(scope.row.diffAssetTotal).toFixed(2)) }}</div>
             </template>
           </el-table-column>
           <el-table-column
