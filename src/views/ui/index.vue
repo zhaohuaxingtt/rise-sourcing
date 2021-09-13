@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-08-26 14:29:36
+ * @LastEditTime: 2021-09-08 16:05:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -149,7 +149,7 @@
 								<el-form-item label="活动名称">
 								<iInput></iInput>
 							</el-form-item>
-							<el-form-item :label="language('LANGRUIGEKEY1','活动名称12123')">
+							<el-form-item :label="language('LANGRUIGEKEY1','活动名称')">
 								<iInput></iInput>
 							</el-form-item>
 							<el-form-item :label="language('LANGRUIGEKEY2','活动名称12')">
