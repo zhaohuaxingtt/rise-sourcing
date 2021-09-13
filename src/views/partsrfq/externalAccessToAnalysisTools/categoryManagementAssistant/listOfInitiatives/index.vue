@@ -312,7 +312,7 @@ export default {
       if (this.saveFlag) {
         this.pageLoading = true;
         this.$nextTick(async () => {
-          const pdfName = `品类管理助手-${this.categoryName}-${window.moment().format('YYYY-MM-DD')}|`;
+          const pdfName = `品类管理助手-举措清单-${this.categoryName}-${window.moment().format('YYYY-MM-DD')}|`;
           const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'container',
             pdfName: pdfName,

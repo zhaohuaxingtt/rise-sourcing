@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-10 16:10:13
+ * @LastEditTime: 2021-09-11 13:52:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -155,15 +155,24 @@ export default {
     },
     duration () {
       return function (i) {
-        this.$nextTick(() => {
-          let domWidth = this.$el.querySelector('.el-table__header-wrapper')
-          let result = this.getTreeExpandKeys(this.tableList.element, i.label)
-          if (parseInt(result) * this.tableList.title.length <= domWidth.clientWidth && i.label !== 'title') {
-            return ""
-          } else {
-            return result
-          }
-        });
+
+        let domWidth = this.$el.querySelector('.el-table__header-wrapper')
+        let label = this.tableList.title
+        let element = this.tableList.element
+        let total = 0
+        label.forEach(item => {
+          if (element[0].child.length !== 0 && element[0].child[0][item.label] instanceof Array)
+            total += element[0].child[0][item.label].length * 140
+        })
+        total = total + 227
+        console.log(total, "total")
+        let result = this.getTreeExpandKeys(this.tableList.element, i.label)
+        if (total <= domWidth.clientWidth) {
+          return ""
+        } else {
+          return result
+        }
+
       }
     }
   },
@@ -177,9 +186,18 @@ export default {
       },
       immediate: true
     },
-    tableList (val) {
+    // tableList: {
+    //   handler (val) {
+    //     let total = 0
+    //     val.title.forEach(item => {
+    //       if(val.element[0].child.length!==0){
 
-    }
+    //       }
+
+    //     })
+
+    //   }
+    // }
   },
   mounted () {
     this.$nextTick(() => {//解决弹窗内表格受外层表格斑马纹影响 

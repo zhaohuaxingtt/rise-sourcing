@@ -37,6 +37,10 @@ export default {
       type: String,
       default: "supplier",
     },
+    maxData: {
+      type: String,
+      default: "",
+    }
   },
   data () {
     return {
@@ -166,7 +170,7 @@ export default {
         //   data: this.legendArray,
         // },
         grid: {
-          left: "6%",
+          left: "8%",
           top: '25%',
           right: '0%',
           bottom: "22%",
@@ -245,8 +249,9 @@ export default {
             axisLine: {
               show: false,
             },
-            splitNumber: 4,
+            // splitNumber: 4,
             nameLocation: "start",
+            max: this.maxData
           },
         ],
         emphasis: {
@@ -281,7 +286,6 @@ export default {
         const dataList1 = [];
         const typeList = [];
         newVal.forEach((row, i) => {
-
           const temp =
             row.vehicleType +
             "\n" +
@@ -346,10 +350,12 @@ export default {
             }
             tempArr[v].push(row[this.legendKeys[v]]);
             const sum = this.sumBy(this.take(this.legendArray, i + 1), (k) => {
+
               return Number(row[this.legendKeys[k]]);
             });
             // console.log(sum)
             dataList1[v].push(sum);
+           
           });
         });
         const minList = [];
@@ -369,7 +375,7 @@ export default {
           if (i === 0) {
             tempArr[this.type] = [];
           }
-          this.yList = [...dataList1[row], this.sum(minList)]
+
           this.dataArray.push({
             name: row,
             type: "bar",
