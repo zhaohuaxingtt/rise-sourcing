@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 16:37:12
- * @LastEditTime: 2021-08-10 09:35:11
+ * @LastEditTime: 2021-09-11 18:18:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisHandleInput\components\char.vue
@@ -54,6 +54,7 @@ export default {
   },
   methods: {
     initCharts() {
+      console.log('left', this.left);
       let count = 0;
       let currentNum = 0;
       const renderArr = []
@@ -102,8 +103,8 @@ export default {
             },
             labelLine: {
               show: true,
-              length: 40,
-              length2: 40,
+              length: 20,
+              length2: 20,
               lineStyle: {
                 color: '#C0C9D9'
               }
