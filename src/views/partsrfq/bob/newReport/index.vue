@@ -208,6 +208,7 @@
                            :supplierList="supplierList"
                            :partList="partList"
                            :title="chartTitle"
+                           :maxData="maxData"
                            @select="showSelect"
                            :type="bobType"
                            :by="chartType" />
@@ -235,6 +236,7 @@
                        style="flex:1">
                     <out-bar :chartData="chartData1"
                              @del="delOut"
+                             :maxData="maxData"
                              @change="changeOut"></out-bar>
                   </div>
                   <div v-else
@@ -407,7 +409,11 @@ export default {
       isCover: true,
       label: "",
       groupId: "",
-      formUpdata: {}
+      formUpdata: {},
+      maxData: '',
+      maxData1: '',
+      maxDataList: [],
+      maxDataList1: []
     };
   },
   async created () {
@@ -749,6 +755,15 @@ export default {
         this.chartData1 = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 1
         );
+        allData.bobLevelOneVOList.forEach(item => {
+          this.maxDataList.push(parseInt(item.sum))
+        })
+        this.maxData = _.max(this.maxDataList).toString()
+        let first = (Number(this.maxData.slice(0, 1)) + 1)
+        for (let i = 0; i < this.maxData.length - 1; i++) {
+          first += '0'
+        }
+        this.maxData = first
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
         if (this.chartType === 'combination') {
@@ -808,6 +823,7 @@ export default {
         analysisSchemeId: this.analysisSchemeId,
         groupId: this.groupId
       }).then((res) => {
+
         const allData = res.data || [];
         this.chartData = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 0
@@ -815,6 +831,16 @@ export default {
         this.chartData1 = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 1
         );
+        allData.bobLevelOneVOList.forEach(item => {
+          this.maxDataList.push(parseInt(item.sum))
+        })
+        this.maxData = _.max(this.maxDataList).toString()
+        let first = (Number(this.maxData.slice(0, 1)) + 1)
+        for (let i = 0; i < this.maxData.length - 1; i++) {
+          first += '0'
+        }
+
+        this.maxData = first
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
         this.analysisName = allData.name
@@ -871,6 +897,19 @@ export default {
           groupId: this.groupId
         })
       });
+    },
+    filterNumber (value) {
+      let num = ''
+      num = value / 100
+      if (num.toString().split(',').length == 1) {
+        return num + '.00'
+      } else {
+        if (num.toString().split(',')[1].toString().length == 1) {
+          return num + '0'
+        } else {
+          return num + ''
+        }
+      }
     },
     delOut () {
       removeBobOut({
