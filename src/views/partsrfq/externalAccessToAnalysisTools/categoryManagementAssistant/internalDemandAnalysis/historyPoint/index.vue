@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-08 16:48:22
+ * @LastEditTime: 2021-09-13 14:08:37
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
@@ -33,7 +33,7 @@
 
 <script>
 	import {iCard,iButton,iNavMvp,iSelect,iMessage} from 'rise';
-	import {tabList} from "./data";
+	import {tabList,tableTitleExport} from "./data";
 	import pointTable from './pointTable';
 	import supplierTable from './supplierTable';
 	import resultMessageMixin from '@/utils/resultMessageMixin';
@@ -49,6 +49,7 @@
 		data() {
 			return {
 				tabList,
+				tableTitleExport,
 				value:1,
 				dictData:{//字典數據
 					NOMI_TIME:[]
@@ -103,7 +104,7 @@
 			async save(){
 				const resFile = await this.getDownloadFileAndExportPdf({
 					domId: 'historyPoint',
-					pdfName: this.language("DINGDIANLISHIJILV","定点历史记录") + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD')+'-',
+           		pdfName:`品类管理助手_定点历史记录_${this.$store.state.rfq.categoryName}_${window.moment().format('YYYY-MM-DD')}_`,
 				});
 				let params={
 					categoryCode:this.searchCriteria.categoryCode,
@@ -119,13 +120,13 @@
 					// schemeName:"",
 				}
 				nomiSave(params).then(res=>{
-					
+					this.resultMessage(res)
 				})
 			},
 			//导出
 			exportTemplate() {
 				let tableData=this.value==1?this.$refs.pointTable.tableListData:this.$refs.supplierTable.tableListData
-				excelExport(tableData, this.$refs.pointTable.tableTitle)
+				excelExport(tableData, this.tableTitleExport)
 			},
 			// 查询字典
 			getDict() {

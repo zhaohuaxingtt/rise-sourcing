@@ -2,8 +2,8 @@
   <iPage class="new-bob">
     <div>
       <div class="navBox flex-between-center">
-        <span class="title font-weight">BOB{{ $t("TPZS.FENXI")
-          }}<span v-if="inside">-RFQ {{ rfq }}</span></span>
+        <span class="title font-weight">BOB{{ $t("TPZS.FENXI")}}
+          <span v-if="inside">-RFQ {{ rfq }}</span></span>
         <div class="flex-align-center">
           <!--预览-->
           <iButton class="margin-left30"
@@ -38,7 +38,6 @@
                   <el-form-item :label="$t('比较类型')">
                     <iSelect v-model="chartType"
                              @change="changeBy">
-
                       <el-option value="supplier"
                                  :label="$t('按供应商比较')">
                       </el-option>
@@ -55,11 +54,11 @@
                                value-key
                                :multiple-limit="chartType === 'supplier' ? 5 : 1"
                                v-model="form.supplier">
-                      <el-option v-for="(i, index) in supplierList"
+                      <el-option v-for="(i) in supplierList"
                                  :key="i.supplierId"
                                  :value="i.supplierId"
-                                 :label="i.nameZh">
-                        <span style="float: left">{{ i.nameZh }}</span>
+                                 :label="i.shortNameZh">
+                        <span style="float: left">{{ i.shortNameZh }}</span>
                         <span style="float: right; color: #8492a6; font-size: 13px"><i class="el-icon-error"></i>
                         </span>
                       </el-option>
@@ -150,6 +149,7 @@
 
                       </el-option>
                     </el-select> -->
+
                     <custom-select :data="options"
                                    label="nameZh"
                                    value="key"
@@ -208,6 +208,7 @@
                            :supplierList="supplierList"
                            :partList="partList"
                            :title="chartTitle"
+                           :maxData="maxData"
                            @select="showSelect"
                            :type="bobType"
                            :by="chartType" />
@@ -235,6 +236,7 @@
                        style="flex:1">
                     <out-bar :chartData="chartData1"
                              @del="delOut"
+                             :maxData="maxData"
                              @change="changeOut"></out-bar>
                   </div>
                   <div v-else
@@ -303,6 +305,7 @@
              :partList="partList"
              :analysisSchemeId="analysisSchemeId"
              :groupId="groupId"
+             :chartTitle="chartTitle"
              :reportName="reportName"
              :heightFlag="false"
              @closeDialog="closePreView"></preview>
@@ -401,12 +404,16 @@ export default {
       dialogVisible: false,
       analysisSave: false,
       reportSave: false,
-      anchorList: ['原材料/散件', '制造费', '报废成本', '管理费', '其他费用', '利润'],
+      anchorList: ['原材料/散件成本', '制造成本', '报废成本', '管理费用', '其他费用', '利润'],
       current: null,
       isCover: true,
       label: "",
       groupId: "",
-      formUpdata: {}
+      formUpdata: {},
+      maxData: '',
+      maxData1: '',
+      maxDataList: [],
+      maxDataList1: []
     };
   },
   async created () {
@@ -630,7 +637,7 @@ export default {
           if (res.code == 200) {
             loading.close()
             this.$message.success(res.desZh);
-            this.getChartData();
+            this.searchChartData()
             this.$refs.bobAnalysis.chargeRetrieve({
               viewType: 'all',
               isDefault: true,
@@ -719,17 +726,21 @@ export default {
           viewType: 'all',
         }
       } else {
+        let selectedList = []
+        this.form.combination.map(item => {
+          selectedList.push(item.key)
+        })
         params = {
           analysisSchemeId: this.$store.state.rfq.SchemeId,
           analysisDimension: this.chartType,
-          combination: this.form.combination.join(","),
+          combination: selectedList.join(','),
           defaultBobOptions: this.bobType,
           groupId: this.groupId
         }
         tableParams = {
           schemaId: this.analysisSchemeId,
           analysisDimension: this.chartType,
-          combination: this.form.combination.join(","),
+          combination: selectedList.join(','),
           groupId: this.groupId,
           isDefault: false,
           viewType: 'all',
@@ -738,15 +749,27 @@ export default {
       }
       getBobLevelOne(params).then((res) => {
         const allData = res.data || [];
+        this.maxDataList = []
         this.chartData = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 0
         );
         this.chartData1 = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 1
         );
+        allData.bobLevelOneVOList.forEach(item => {
+          this.maxDataList.push(parseInt(item.sum))
+        })
+        this.maxData = _.max(this.maxDataList).toString()
+        let first = (Number(this.maxData.slice(0, 1)) + 1)
+        for (let i = 0; i < this.maxData.length - 1; i++) {
+          first += '0'
+        }
+        this.maxData = first
+        console.log(this.maxData)
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
         if (this.chartType === 'combination') {
+          this.form.combination = []
           let combinationData = this.Split(allData.combination, ",");
           this.options.forEach(item => {
             combinationData.forEach(i => {
@@ -765,6 +788,29 @@ export default {
           this.form.turn = this.Split(allData.turn, ",").map(Number);
           this.form.spareParts = this.Split(allData.spareParts, ",");
         }
+        if (this.inside) {
+          this.formUpdata = {
+            analysisDimension: this.chartType,
+            defaultBobOptions: this.bobType,
+            id: this.analysisSchemeId,
+            name: this.analysisName,
+            spareParts: this.form.spareParts.join(","),
+            supplierId: this.form.supplier.join(","),
+            turn: this.form.turn.join(","),
+            isCover: this.isCover,
+            // remark: this.$refs.bobAnalysis.remark
+          };
+        } else {
+          this.formUpdata = {
+            analysisDimension: this.chartType,
+            defaultBobOptions: this.bobType,
+            id: this.analysisSchemeId,
+            name: this.analysisName,
+            combination: this.form.combination.join(','),
+            isCover: this.isCover,
+            // remark: this.$refs.bobAnalysis.remark
+          };
+        }
       });
       this.$refs.bobAnalysis.chargeRetrieve(tableParams);
     },
@@ -779,6 +825,7 @@ export default {
         analysisSchemeId: this.analysisSchemeId,
         groupId: this.groupId
       }).then((res) => {
+
         const allData = res.data || [];
         this.chartData = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 0
@@ -786,12 +833,23 @@ export default {
         this.chartData1 = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 1
         );
+        allData.bobLevelOneVOList.forEach(item => {
+          this.maxDataList.push(parseInt(item.sum))
+        })
+        this.maxData = _.max(this.maxDataList).toString()
+        let first = (Number(this.maxData.slice(0, 1)) + 1)
+        for (let i = 0; i < this.maxData.length - 1; i++) {
+          first += '0'
+        }
+
+        this.maxData = first
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
         this.analysisName = allData.name
         this.$refs.bobAnalysis.remark = allData.remark
         this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
         if (this.chartType === 'combination') {
+          this.form.combination = []
           let combinationData = this.Split(allData.combination, ",");
           this.options.forEach(item => {
             combinationData.forEach(i => {
@@ -800,7 +858,7 @@ export default {
               }
             })
           })
-          console.log(this.form.combination)
+          console.log('', this.form.combination)
         } else {
           this.form = {
             supplier: [],
@@ -842,6 +900,19 @@ export default {
         })
       });
     },
+    filterNumber (value) {
+      let num = ''
+      num = value / 100
+      if (num.toString().split(',').length == 1) {
+        return num + '.00'
+      } else {
+        if (num.toString().split(',')[1].toString().length == 1) {
+          return num + '0'
+        } else {
+          return num + ''
+        }
+      }
+    },
     delOut () {
       removeBobOut({
         id: this.chartData1[0].id,
@@ -854,7 +925,7 @@ export default {
             schemaId: this.analysisSchemeId,
             groupId: this.groupId
           })
-          this.getChartData();
+          this.searchChartData()
         } else {
           this.$message.error(res.desZh);
         }
@@ -865,6 +936,9 @@ export default {
         id: this.chartData1[0].id,
       });
       this.findPart();
+    },
+    handleMultiChange (val) {
+      console.log(val)
     },
     saveDialog () {
       this.dialogVisible = true;
@@ -969,24 +1043,40 @@ export default {
       if (this.chartType === "supplier") {
         return this.form.spareParts.toString();
       } else if (this.chartType === "turn") {
-        return this.form.supplier + " " + this.form.spareParts;
+        let nameZh = ""
+        this.supplierList.forEach(item => {
+          this.form.supplier.forEach(i => {
+            if (item.supplierId === i) {
+              nameZh = item.shortNameZh
+            }
+          })
+        })
+        return nameZh;
       } else if (this.chartType === "spareParts") {
-        return this.form.supplier;
+        let nameZh = ""
+        this.supplierList.forEach(item => {
+          this.form.supplier.forEach(i => {
+            if (item.supplierId === i) {
+              nameZh = item.shortNameZh
+            }
+          })
+        })
+        return nameZh;
       } else if (this.chartType === 'combination') {
-        return '';
+        return ''
       } else {
         return ''
       }
     },
-    color (item) {
+    color () {
       return function (item) {
-        if (item === '原材料/散件') {
+        if (item === '原材料/散件成本') {
           return 'background: #C6DEFF'
-        } else if (item === '制造费') {
+        } else if (item === '制造成本') {
           return 'background: #9BBEFF'
         } else if (item === '报废成本') {
           return 'background: #72AEFF'
-        } else if (item === '管理费') {
+        } else if (item === '管理费用') {
           return 'background: #5993FF'
         } else if (item === '其他费用') {
           return 'background: #1763F7'

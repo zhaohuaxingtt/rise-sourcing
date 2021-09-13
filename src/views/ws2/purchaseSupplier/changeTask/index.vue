@@ -93,6 +93,8 @@
       <iTableList
           :tableData="tableListData"
           :tableTitle="tableTitle"
+          :selection="false"
+          :typeIndex="true"
           @handleSelectionChange="handleSelectionChange"
       >
         <template #changeNum="scope">
@@ -207,7 +209,7 @@ export default {
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
         const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn
         if (Number(res[0].code) === 0) {
-          this.moldInvestmentStatusList = res[0].data;
+          this.moldInvestmentStatusList = res[0].data.filter(item => (item.bmStatus === '4' || item.bmStatus === '5' || item.bmStatus === '7'))
           // this.moldInvestmentStatus = this.moldInvestmentStatusList.filter(a => a.bmStatus !== '7').map(b => b.bmStatus)
           //
           // this.departmentsList = res[0].data
@@ -227,6 +229,7 @@ export default {
         }
         if (res[3].data) {
           this.ChangeStatusPullDown = res[3].data;
+          this.changeStatuId = ['1']
         } else {
           iMessage.error(result3);
         }

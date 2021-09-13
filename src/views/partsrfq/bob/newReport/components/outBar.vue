@@ -12,12 +12,15 @@ export default {
     chartData: {
       type: Array,
       default: () => [
-
       ]
     },
     preview: {
       type: Boolean,
       default: true
+    },
+    maxData: {
+      type: String,
+      default: "",
     }
   },
   data () {
@@ -106,7 +109,7 @@ export default {
           left: "14%",
           top: '25%',
           right: '0%',
-          bottom: "25%",
+          bottom: "22%",
         },
         xAxis: [
           {
@@ -168,8 +171,8 @@ export default {
           formatter: (params) => {
             let result = ''
             let domHtml = ''
+           
             params.forEach(item => {
-              console.log(item.value, "value")
               domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + item.color + '"></span>'
               result += domHtml + item.seriesName + ":" + this.doNumber(item.value) + '<br/>'
             })
@@ -185,8 +188,8 @@ export default {
             type: 'value',
             name: '',
             axisLabel: {
+              show: false,
               color: '#7E84A3',
-
             },
             axisTick: {
               show: false
@@ -194,7 +197,7 @@ export default {
             axisLine: {
               show: false,
             },
-            splitNumber: 4,
+            max: this.maxData
           }
         ],
         emphasis: {
@@ -245,7 +248,7 @@ export default {
           // if (!this.preview) {
           //   img = ''
           // }
-          const str = name + '\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n\n' + "{font|" + temp + "}";
+          const str = name + '\n\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n\n' + "{font|" + temp + "}";
           const subtext = row.spareParts + '\n' + row.fs
           this.labelArray.push({
             value: str,
@@ -283,23 +286,25 @@ export default {
               dataList1[v] = []
             }
             tempArr[v].push(row[this.legendKeys[v]])
-            const sum = this.sumBy(this.take(this.legendArray, i + 1), (k) => {
+            const sum = this.sumBy(this.take(this.legendArray, i), (k) => {
               return Number(row[this.legendKeys[k]])
             })
-            // console.log(sum)
+            console.log(sum)
             dataList1[v].push(sum)
-            // console.log(dataList1)
+            console.log(dataList1)
           })
         })
         // console.log(tempArr)
         const minList = []
-        this.legendArray.forEach((row, i) => {
-          const dataList0 = this.cloneDeep(tempArr[row])
 
+        this.legendArray.forEach((row, i) => {
+          console.log(row)
+          // const dataList0 = this.cloneDeep(tempArr[row])
+          console.log([...dataList1[row], this.sum(minList)])
           const min = this.min(tempArr[row])
           let data = min
           minList.push(data)
-          // console.log(dataList0)
+
           // console.log(dataList1)
           this.dataArray.push({
             name: row,
@@ -314,7 +319,7 @@ export default {
               position: 'insideTop',
               color: 'white',
               formatter: (params) => {
-                console.log(tempArr[row])
+               
                 return (tempArr[row][0])
               },
             },
@@ -325,9 +330,8 @@ export default {
               barBorderRadius: [5, 5, 0, 0]
             },
             barWidth: 50,
-            data: [...dataList1[row], this.sum(minList)],
+            data: [...tempArr[row]],
           })
-
         })
         this.dataArray.push({
           name: 'sum',

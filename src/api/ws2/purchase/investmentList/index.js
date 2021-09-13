@@ -78,6 +78,15 @@ export function sendSupplier(data) {
 }
 
 //发送供应商
+export function supplierToConfirm(bmId, bmChangeId, data) {
+    return VUE_APP_BMCONFIRMTASK({
+        url: `/supplierToConfirm/${bmId}/${bmChangeId}`,
+        method: 'POST',
+        data: data
+    })
+}
+
+//发送供应商
 export function verifyLine(parmars) {
     return VUE_APP_BMAPPROVE({
         url: '/verifyLine',

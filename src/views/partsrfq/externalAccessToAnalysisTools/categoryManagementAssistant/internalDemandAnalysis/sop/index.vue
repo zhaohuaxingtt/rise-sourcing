@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-16 14:51:40
- * @LastEditTime: 2021-09-08 16:09:51
+ * @LastEditTime: 2021-09-13 14:07:01
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\sop\index.vue
@@ -14,8 +14,8 @@
                <span>{{language("SOPJINDUZHOU","SOP进度轴")}}</span>
             </div>
             <div class="flex">
-              <iSelect class="margin-right15" v-model="carType" value-key="id">
-                   <el-option :value="item" :label="item.cartypeProNameZh" v-for="(item,index) in carTypeCodeArr" :key="index"></el-option>
+              <iSelect class="margin-right15" v-model="carType" filterable multiple collapse-tags>
+                   <el-option :value="item.cartypeProCode" :label="item.cartypeProNameZh" v-for="(item,index) in carTypeCodeArr" :key="index"></el-option>
                </iSelect>
                <iButton @click="getOverviewList">{{ language("QUEREN", "确认") }}</iButton>
                <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
@@ -37,9 +37,9 @@ import moment from 'moment';
 import tableList from './overviewTable'
 import {sopList,carTypeProList,sopPipeLineSave,sopParamInit} from "@/api/categoryManagementAssistant/internalDemandAnalysis/sop";
 import {downloadPdfMixins} from '@/utils/pdf';
-
+import resultMessageMixin from '@/utils/resultMessageMixin.js';
 export default ({
-    mixins:[downloadPdfMixins],
+    mixins:[downloadPdfMixins,resultMessageMixin],
    components:{iCard,iButton,tableList,iSelect},
    data () {
       const currentYear = moment().year()
@@ -73,7 +73,7 @@ export default ({
          ],
          tableDataTemp: [],
          categoryCode:"",//材料组
-         carType:{},//车型项目id
+         carType:[],//车型项目id
          id:"",//方案ID
          carTypeCodeArr:[]
       }
@@ -88,7 +88,7 @@ export default ({
 		async	"$store.state.rfq.categoryCode"(){
 				this.categoryCode=this.$store.state.rfq.categoryCode
         this.id=""
-        this.carType={}
+        this.carType=[]
         await this.sopParamInit()
         this.getOverviewList()
         this.carTypeProList()
@@ -99,7 +99,7 @@ export default ({
       async save(){
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'sop',
-            pdfName: this.language("SOPJINDUZHOU","SOP进度轴") + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD')+'-',
+            pdfName:'品类管理助手_SOP进度轴_' + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
          });
          let params={
             categoryCode:this.categoryCode,
@@ -112,12 +112,12 @@ export default ({
             carTypeProDTO:this.carType
          }
          sopPipeLineSave(params).then(res=>{
-            
+            this.resultMessage(res)
          })
       },
     // 重置
     reset(){
-      this.carType={}
+      this.carType=[]
       this.getOverviewList()
     },
     // 历史方案
@@ -146,8 +146,7 @@ export default ({
       this.tableLoading = true
       let params={
          categoryCode:this.categoryCode,
-         cartypeProCode:this.carType.cartypeProCode,
-         id:this.carType.id
+         cartypeProCodes:this.carType
       }
       sopList(params).then(res => {
         if (res?.result) {

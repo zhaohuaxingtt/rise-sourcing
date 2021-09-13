@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-08 19:37:03
+ * @LastEditTime: 2021-09-10 15:52:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -351,7 +351,7 @@ export default {
     },
     handleClick (val) {
       console.log(val)
-      this.$EventBus.$emit("activeName", val.name);
+      this.$emit("activeName", val.name);
       // this.activeName = val;
     },
     renderHeader (h, { column }) {

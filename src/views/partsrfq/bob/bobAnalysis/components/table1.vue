@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-08 19:50:20
+ * @LastEditTime: 2021-09-13 15:52:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -14,7 +14,6 @@
               :row-key="getRowKey"
               :expand-row-keys="expends"
               v-loading="loading"
-              stripe
               border
               :height="heightFlag?'600px':''"
               :max-height="maxHeight"
@@ -156,8 +155,27 @@ export default {
     },
     duration () {
       return function (i) {
+        // let domWidth = this.$el.querySelector('.el-table__header-wrapper')
+        let label = this.tableList.title
+        let element = this.tableList.element
+        let total = 0
+        label.forEach(item => {
+          // element.forEach(i => {
+          //   if (element[0].child.length !== 0 && element[0].child[0][item.label] instanceof Array)
+          //     total += element[0].child[0][item.label].length * 140
+          // })
+          total += this.getTreeExpandKeys(this.tableList.element, item.label)
+
+        })
+        // total = total + 227
+        console.log(total, "total")
         let result = this.getTreeExpandKeys(this.tableList.element, i.label)
-        return result
+        if (total <= this.domWidth.clientWidth) {
+          return ""
+        } else {
+          return result + 'px'
+        }
+
       }
     }
   },
@@ -171,8 +189,31 @@ export default {
       },
       immediate: true
     },
+    // tableList: {
+    //   handler (val) {
+    //     let total = 0
+    //     val.title.forEach(item => {
+    //       if(val.element[0].child.length!==0){
+
+    //       }
+
+    //     })
+
+    //   }
+    // }
+  },
+  created () {
+    this.$nextTick(() => {
+      this.domWidth = this.$el.querySelector('.el-table__header-wrapper')
+    });
   },
   mounted () {
+    this.$nextTick(() => {//解决弹窗内表格受外层表格斑马纹影响 
+      if (document.getElementsByClassName('el-table__row current-row el-table__row--striped').length != 0) {
+        document.getElementsByClassName('el-table__row current-row el-table__row--striped')[0].className = 'el-table__row current-row '
+      }
+    })
+
     // window.addEventListener('scroll', this.handleScroll, true)
   },
   data () {
@@ -181,22 +222,34 @@ export default {
       hasChildren: true,
       min: window._.min,
       max: window._.max,
+      domWidth: ""
     };
   },
   methods: {
     getTreeExpandKeys (data, i) {
-      if (i == 'title') { return "227px" }
+      if (i == 'title') { return 227 }
       let datalength = 0
       data.forEach(item => {
-        let obj = item.child[0][i]
-        let len = obj instanceof Array ? obj.length : 1
+        let obj, len
+        if (item.child.length !== 0) {
+          obj = item.child[0][i]
+        } else {
+          obj = 1
+        }
+        len = obj instanceof Array ? obj.length : 1
         datalength = len > datalength ? len : datalength
       })
-      return datalength * 120 + 'px'
+      return datalength * 140
     },
     renderHeader (h, { column }) {
       let header = column.label.split('<br/>');
-      return [h('p', [
+      return [h('p', {
+        style: {
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap'
+        },
+      }, [
         h('p', {}, header[0]),
         h('span', {}, header[1])
       ])];
@@ -216,7 +269,7 @@ export default {
     },
     cellsytle ({ row, column, rowIndex, columnIndex }) {
       let styleJson = {}
-      if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '报废成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
+      if (row.title == "原材料/散件成本" || row.title == '制造成本' || row.title == '报废成本' || row.title == '管理费用' || row.title == '其他费用' || row.title == '利润') {
         // return "font-weight: bold"
         styleJson = {
           "font-weight": "bold"
@@ -233,6 +286,28 @@ export default {
         return styleJson
       }
     },
+    open () {
+      let els = this.$el.getElementsByClassName("el-table__expand-icon");
+      if (this.tableList.element.length != 0 && els.length != 0) {
+        this.flag = false;
+        this.flag1 = true;
+        for (let j1 = 0; j1 < els.length; j1++) {
+          els[j1].classList.add("dafult");
+        }
+        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
+          const open = this.$el.getElementsByClassName(
+            "el-table__expand-icon--expanded"
+          );
+          for (let j = 0; j < open.length; j++) {
+            open[j].classList.remove("dafult");
+          }
+          const dafult = this.$el.getElementsByClassName("dafult");
+          for (let a = 0; a < dafult.length; a++) {
+            dafult[a].click();
+          }
+        }
+      }
+    },
     close () {
       if (this.tableList.element.length != 0) {
         this.flag = true;
@@ -240,9 +315,7 @@ export default {
         const elsopen = this.$el.getElementsByClassName(
           "el-table__expand-icon--expanded"
         );
-        if (
-          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
-        ) {
+        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
           for (let i = 0; i < elsopen.length; i++) {
             elsopen[i].click();
           }
@@ -302,6 +375,10 @@ export default {
 }
 ::v-deep.el-table__empty-text {
   transform: scaleY(-1);
+}
+::v-deep .el-table th.gutter {
+  display: table-cell !important;
+  background: #ffffff !important; //因为我改了我的默认表格背景颜色，所以要跟着改
 }
 </style>
 <style lang="scss">

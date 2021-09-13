@@ -7,12 +7,17 @@
         </div>
       </div>
       <tablelist
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="tableLoading"
-          @handleSelectionChange="handleSelectionChange"
-          :index="true"
-      ></tablelist>
+        lang
+        index
+        selection
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        @handleSelectionChange="handleSelectionChange"
+      >
+        <template #supplierName="scope">{{ scope.row[`suppliername${ $i18n.locale }`] }}</template>
+        <template #isMbdl="scope">{{ scope.row.isMbdl == 2 ? "M" : "" }}</template>
+      </tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
@@ -35,7 +40,7 @@
 </template>
 <script>
 import {iButton, iMessage, iDialog} from 'rise'
-import tablelist from "pages/partsrfq/components/tablelist";
+import tablelist from "@/views/partsign/editordetail/components/tableList";
 import {addSupplierTitle} from "./data"
 import {getAllRfqSupplier} from "@/api/partsrfq/editordetail";
 import {pageMixins} from "@/utils/pageMixins";
@@ -73,9 +78,15 @@ export default {
         this.tableLoading = true;
         try {
           const res = await getAllRfqSupplier(id)
-          this.tableListData = res.records;
-          this.tableLoading = false;
-        } catch {
+          this.tableListData = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              ...item,
+              suppliernameen: item.supplierNameEn,
+              suppliernamezh: item.supplierNameZh,
+            })) :
+            []
+        } finally {
           this.tableLoading = false;
         }
       }

@@ -119,7 +119,19 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_BIANGENGDANZHUANGTAI', '变更单状态') }}</span>
+                <span>
+                  {{ language('LK_BIANGENGDANZHUANGTAI', '变更单状态') }}
+                     <Popover
+                         v-if="Number(baseInfo.linieConfirmSupplier) === 1"
+                         class="popover"
+                         placement="bottom-start"
+                         :content="baseInfo.linieName + '在' + baseInfo.taskDealDate + '代确认'"
+                         trigger="hover">
+                        <div slot="reference">
+                          <icon symbol name="iconxinxitishi"></icon>
+                        </div>
+                    </Popover>
+                </span>
               </div>
               <div class="disabled">{{ Number(baseInfo.changeStatus) === 1 ? '草稿' :
                   (Number(baseInfo.changeStatus) === 2 ? '已拒绝' :
@@ -204,15 +216,9 @@
 
         <div class="top-r">
           <iButton
-              v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2 || Number(baseInfo.changeStatus) === 3)"
+              v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2)"
               @click="handleEdit">
             {{ language('LK_BIANJI', '编辑') }}
-          </iButton>
-          <iButton
-              v-show="(Number(baseInfo.changeStatus) === 4 || Number(baseInfo.changeStatus) === 5)"
-              v-loading="recallLoading"
-              @click="handleRecall">
-            {{ language('LK_CHEHUI', '撤回') }}
           </iButton>
           <iButton
               v-show="!isEdit"
@@ -220,15 +226,15 @@
             {{ language('LK_CHAKANBIANGENGDAN', '查看变更单') }}
           </iButton>
           <iButton
-              v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2 || Number(baseInfo.changeStatus) === 3)"
-              v-loading="sendSupplierLoading"
-              @click="sendSupplier">
-            {{ language('LK_TIJIAOSHENPI', '提交审批') }}
+              v-show="!isEdit && Number(baseInfo.changeStatus) === 1"
+              v-loading="sureSupplierLoading"
+              @click="sureSupplier">
+            {{ language('LK_QUEREN', '确认') }}
           </iButton>
 
           <iButton
               v-show="isEdit"
-              @click="isEdit = false">
+              @click="backEdit">
             {{ language('LK_TUICHUBIANJI', '退出编辑') }}
           </iButton>
           <iButton
@@ -274,11 +280,11 @@
         <!-- BM单流⽔号 -->
         <template #craftType="scope">
           <div v-show="!isEdit">{{scope.row.craftType}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.craftType" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.craftType" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #moldType="scope">
           <div v-show="!isEdit">{{scope.row.moldType}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.moldType" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.moldType" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #assetTypeNum="scope">
           <div v-show="!isEdit">{{scope.row.assetTypeNum}}</div>
@@ -286,6 +292,7 @@
               v-show="isEdit"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               v-model="scope.row.assetTypeNumNo"
+              @change="scope.row.isEdit = true"
               filterable
               clearable
               class="select"
@@ -304,13 +311,14 @@
               v-show="isEdit"
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               v-model="scope.row.partsTotalNum"
+              @change="changePartsTotalNum(scope.row)"
               filterable
               clearable
               class="select"
           >
             <el-option
                 :value="item.value"
-                :label="item.name"
+                :label="item.value"
                 v-for="(item, index) in assemblyPartsList"
                 :key="index"
             ></el-option>
@@ -318,17 +326,18 @@
         </template>
         <template #partsName="scope">
           <div v-show="!isEdit">{{scope.row.partsName}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.partsName" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.partsName" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #partsNum="scope">
           <div v-show="!isEdit">{{scope.row.partsNum}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.partsNum" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.partsNum" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #count="scope">
           <div v-show="!isEdit">{{scope.row.count}}</div>
           <div v-show="isEdit"><iInput
               v-model="scope.row.count"
               :placeholder="language('LK_QINGSHURU', '请输入')"
+              @blur="changeAssetTotal(scope.row.index)"
               onkeyup="value=value.replace(/[^0-9]+/g, '')"
           ></iInput></div>
         </template>
@@ -338,6 +347,7 @@
             <iInput
                 v-model="scope.row.assetPrice"
                 :placeholder="language('LK_QINGSHURU', '请输入')"
+                @input="scope.row.isEdit = true"
                 @focus="focus(scope.row.index)"
                 @blur="blur(scope.row.index)"
                 onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
@@ -349,6 +359,7 @@
           <div v-show="!isEdit">{{ scope.row.changeReason }}</div>
           <div v-show="isEdit">
             <iInput
+                @input="scope.row.isEdit = true"
                 v-model="scope.row.changeReason"
                 :placeholder="language('LK_QINGSHURU', '请输入')"
             >
@@ -390,7 +401,7 @@
           >
             <el-option
                 :value="item.value"
-                :label="item.name"
+                :label="item.value"
                 v-for="(item, index) in sharePartsList"
                 :key="index"
             ></el-option>
@@ -453,7 +464,7 @@ import {
   shareParts,
 } from "@/api/ws2/purchase/changeTask/bmInfo";
 import {delcommafy, getTousandNum} from "@/utils/tool";
-import {recall, sendSupplier} from "@/api/ws2/purchase/investmentList";
+import {recall} from "@/api/ws2/purchase/investmentList";
 import {cloneDeep} from "lodash";
 
 export default {
@@ -498,6 +509,7 @@ export default {
       tableLoading2: false,
       bmBuberLoading: false,
       recallLoading: false,
+      sureSupplierLoading: false,
       sendSupplierLoading: false,
       iLogShow: false,
       uploadButtonLoading: false,
@@ -528,6 +540,11 @@ export default {
     this.findMoldViewList()
   },
   methods: {
+    changePartsTotalNum(row){
+      let item = this.assemblyPartsList.find(item => row.partsTotalNum === item.value)
+      this.tableListData[row.index].partsTotalName = item ? item.name : ''
+      this.tableListData[row.index].isEdit  = true
+    },
     handleReset(){
       this.handleResetLoading = true
       reset({
@@ -565,11 +582,7 @@ export default {
       });
     },
     handleEdit(){
-      if(Number(this.baseInfo.changeStatus) === 1){
-        this.isEdit = true
-      } else {
-        iMessage.warn(this.language('LK_ZHIYOUCAOGAOZHUANGTAICAIYUNXUXIUGAI', '只有草稿状态才允许修改'));
-      }
+      this.isEdit = true
     },
     handlePreView(){
       this.changeOederData = {
@@ -621,6 +634,8 @@ export default {
             partsTotalName: null,
             partsTotalNum: null,
             picture: null,
+            isEdit: true,
+            isAdd: true
           })
           tableListData = tableListData.map((item, index) => {
             item.index = index
@@ -652,7 +667,6 @@ export default {
       let deleteItem = []
       this.multipleSelection2.map(item => {
         if(item.bmMoldId === null || item.bmMoldId === 0){
-          console.log(this.tableListData.findIndex(a => a.moldId === item.moldId))
           this.tableListData.splice(this.tableListData.findIndex(a => a.moldId === item.moldId), 1)
         } else {
           deleteItem.push(item.id)
@@ -661,13 +675,34 @@ export default {
       this.tableListData = this.tableListData.map(a => {
         if(deleteItem.some(b => b === a.id)){
           a.changeType = 0
+          a.isEdit = true
         }
         return a
       })
       iMessage.success(this.language('LK_SHANCHUCHENGGONG', '删除成功'))
     },
+    backEdit(){
+      this.isEdit = false
+      if(this.tableListData[0].isAdd){
+        this.tableListData.shift()
+      }
+      this.tableListData = this.tableListData.map(item => {
+        item.isEdit = false
+        return item
+      })
+    },
     handleSave(){
       this.handleSaveLoading = true
+      if(this.tableListData.some(item => {
+        if(item.isEdit){
+          return !item.changeReason
+        }
+        return false
+      })){
+        iMessage.warn(this.language('LK_QINGTIANXIWBIANGENGYUANYIN', '请填写比变更原因'))
+        this.handleSaveLoading = false
+        return
+      }
       saveChange({
         moldChangeDtos: this.tableListData.map(item => {
           item.assetPrice = Number(this.delcommafy(item.assetPrice))
@@ -680,7 +715,8 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.isEdit = false
-          // this.moldHeaderByBmSerial()
+          this.moldHeaderByBmSerial()
+          this.findMoldViewList()
           iMessage.success(result);
         } else {
           iMessage.error(result);
@@ -697,6 +733,15 @@ export default {
       let value = this.tableListData[index].assetPrice
       value = value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')
       this.tableListData[index].assetPrice = this.getTousandNum(Number(value).toFixed(2))
+      this.tableListData[index].assetTotal = this.tableListData[index].count * value
+      this.baseInfo.afterChangeAmount = this.tableListData.map(item => item.assetTotal).reduce((a, b) => a + b)
+    },
+    changeAssetTotal(index, isMoney){
+      this.countTemp = parseInt(String(this.tableListData[index].count))
+      this.tableListData[index].count = parseInt(String(this.tableListData[index].count))
+      this.tableListData[index].assetTotal = this.countTemp * this.delcommafy(this.tableListData[index].assetPrice)
+      this.tableListData[index].isEdit = true
+      this.baseInfo.afterChangeAmount = this.tableListData.map(item => item.assetTotal).reduce((a, b) => a + b)
     },
     handleSelectionChange2(list) {
       this.multipleSelection2 = list
@@ -773,21 +818,6 @@ export default {
         this.sureSupplierLoading = false
       }).catch(() => {
         this.sureSupplierLoading = false
-      });
-    },
-    sendSupplier(){
-      this.sendSupplierLoading = true
-      sendSupplier([{bmid: this.query.id}]).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          this.moldHeaderByBmSerial()
-          iMessage.success(result);
-        } else {
-          iMessage.error(result);
-        }
-        this.sendSupplierLoading = false
-      }).catch(() => {
-        this.sendSupplierLoading = false
       });
     },
     getAllSelect() {
@@ -869,7 +899,10 @@ export default {
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          this.tableListData = res.data
+          this.tableListData = res.data.map((item, index) => {
+            item.index = index
+            return item
+          })
         } else {
           iMessage.error(result);
         }
