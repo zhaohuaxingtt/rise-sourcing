@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-20 11:21:43
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-10 12:54:03
+ * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
@@ -93,13 +93,13 @@ export default {
           case 'CHENGBENZUCHENG':
             this.getCostData().then(res => {
               if(res.analysisType == "1") {
-                console.log('res', res);
                 //跳转系统
                 this.$router.push({
                   path: item.url,
                   query: {
                     schemeId: res.id || null,
-                    operateLog: res.operateLog || null
+                    operateLog: res.operateLog || null,
+                    fsNumList: JSON.stringify(res.nomiList.map(item => item.fsNum)) 
                   }
                 })
               } else {
