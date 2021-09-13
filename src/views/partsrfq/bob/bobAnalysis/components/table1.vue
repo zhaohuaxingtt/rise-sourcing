@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-11 13:52:15
+ * @LastEditTime: 2021-09-13 14:29:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -155,24 +155,24 @@ export default {
     },
     duration () {
       return function (i) {
-
-        let domWidth = this.$el.querySelector('.el-table__header-wrapper')
-        let label = this.tableList.title
-        let element = this.tableList.element
-        let total = 0
-        label.forEach(item => {
-          if (element[0].child.length !== 0 && element[0].child[0][item.label] instanceof Array)
-            total += element[0].child[0][item.label].length * 140
-        })
-        total = total + 227
-        console.log(total, "total")
-        let result = this.getTreeExpandKeys(this.tableList.element, i.label)
-        if (total <= domWidth.clientWidth) {
-          return ""
-        } else {
-          return result
-        }
-
+        this.$nextTick(() => {
+          let domWidth = this.$el.querySelector('.el-table__header-wrapper')
+          let label = this.tableList.title
+          let element = this.tableList.element
+          let total = 0
+          label.forEach(item => {
+            if (element[0].child.length !== 0 && element[0].child[0][item.label] instanceof Array)
+              total += element[0].child[0][item.label].length * 140
+          })
+          total = total + 227
+          console.log(total, "total")
+          let result = this.getTreeExpandKeys(this.tableList.element, i.label)
+          if (total <= domWidth.clientWidth) {
+            return ""
+          } else {
+            return result
+          }
+        });
       }
     }
   },
@@ -260,7 +260,7 @@ export default {
     },
     cellsytle ({ row, column, rowIndex, columnIndex }) {
       let styleJson = {}
-      if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '报废成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
+      if (row.title == "原材料/散件成本" || row.title == '制造成本' || row.title == '报废成本' || row.title == '管理费用' || row.title == '其他费用' || row.title == '利润') {
         // return "font-weight: bold"
         styleJson = {
           "font-weight": "bold"
