@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 14:24:52
+ * @LastEditTime: 2021-09-10 15:21:38
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -40,6 +40,13 @@
       <div v-for="pro in parts" :key="pro.label" class="productItem"> 
         <div class="productItem-top"> 
           <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
+            <el-popover
+              v-if="pro.zp && pro.zp === 'ZP5'"
+              :content="language('ZP5LINGJIANZHENGXUPAICHENGCONGDINGIDIANJIEDIANKAISHI','ZP5零件，正序排程从定点节点开始')"
+              placement="top-start"
+              trigger="hover">
+              <span slot="reference" >*</span>
+            </el-popover>
             {{`${pro.partNum} ${pro.partNameZh} ${pro.partNameDe}`}} 
           </el-checkbox> 
           <div class="productItem-top-targetList"> 
@@ -602,17 +609,23 @@ export default {
       },[]) 
     }, 
     /**
-     * @Description: 根据零件中文名去删选符合的零件
+     * @Description: 根据零件中文名/德文名去删选符合的零件
      * @Author: Luoshuang
      * @param {*} partNameZh 
      * @return {*}
      */    
     getFitPartNameZhList(partNameZh) { 
       return this.partsTemp.reduce((accu, curr) => { 
+        const filterRes = []
         if (curr.partNameZh.includes(partNameZh)) { 
-          return [...accu, {value:curr.partNameZh}] 
+          filterRes.push({value:curr.partNameZh})
+          
         } 
-        return [...accu] 
+        if (curr.partNameDe.includes(partNameZh)) { 
+          filterRes.push({value:curr.partNameDe})
+          
+        } 
+        return [...accu, ...filterRes] 
       },[]) 
     }, 
     /**
@@ -635,7 +648,7 @@ export default {
      * @param {*} 
      * @return {*} 
      */    
-    searchPartList({partNum, partNameZh, partNameDe, level}) { 
+    searchPartList({partNum, partNameZh, partNameDe, level, partStatus}) { 
       this.loading = true 
       // eslint-disable-next-line no-undef
       this.parts = this.partsTemp.filter(item => { 
@@ -644,11 +657,14 @@ export default {
           result = item.partNum.includes(partNum) 
         } 
         if (partNameZh && result === true) { 
-          result = item.partNameZh.includes(partNameZh) 
+          result = item.partNameZh.includes(partNameZh) || item.partNameDe.includes(partNameDe) 
         } 
         if (partNameDe && result === true) { 
           result = item.partNameDe.includes(partNameDe) 
         } 
+        if (partStatus && result === true) {
+          result = item.partPeriod == partStatus
+        }
         if (level && result === true) { 
           const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget] 
           if (level == 1) { 

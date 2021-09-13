@@ -29,7 +29,7 @@
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
-      <iPagination
+      <!-- <iPagination
           v-update
           @size-change="handleSizeChange($event, getTableList)"
           @current-change="handleCurrentChange($event, getTableList)"
@@ -39,7 +39,7 @@
           :layout="page.layout"
           :current-page='page.currPage'
           :total="page.totalCount"
-      />
+      /> -->
     </iCard>
     <!------------------------------------------------------------------------>
     <!--                  供应商材料准备                                      --->

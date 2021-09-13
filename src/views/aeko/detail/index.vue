@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-27 10:03:13
+ * @LastEditTime: 2021-09-08 16:42:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
@@ -55,6 +55,7 @@ import cover from "./components/cover"
 import attachment from "./components/attachment"
 import record from "./components/record"
 import { permissionArray } from "@/utils"
+import { cloneDeep } from "lodash"
 
 import {
   getAekoDetail,
@@ -99,6 +100,17 @@ export default {
       requirementAekoId: this.$route.query.requirementAekoId
     }
     
+    // 如果是linie的话 再从新排下序 将内容表态和封面表态放在前面
+    if(this.isLinie){
+      let newTabs = cloneDeep(this.tabs);
+      newTabs.sort((a,b)=>{
+        return (a.index - b.index)
+      })
+
+      this.tabs = newTabs;
+      this.currentTab = 'contentDeclare';
+    }
+    
     if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
       try {
         const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
@@ -109,8 +121,6 @@ export default {
     }
 
     this.tabs = permissionArray("permissionKey", this.tabs)
-
-    console.log(this.tabs)
 
     this.getBbasicInfo();
   },
@@ -131,11 +141,11 @@ export default {
         {label:'截⽌⽇期',labelKey:'LK_AEKOJIEZHIRIQI',props:'deadLine',permissionKey: "AEKO_AEKODETAIL_TEXT_DUE_DATE"},
       ],
       tabs: [
-        { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", permissionKey: "AEKO_AEKODETAIL_TAB_PART_LIST", components: ["partsList"] },
-        { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", permissionKey: "AEKO_AEKODETAIL_TAB_CONTENT_DECLARE", components: [ "contentDeclare" ] },
-        { label: "封⾯表态", name: "cover", key: "FENGMIANBIAOTAI", permissionKey: "AEKO_AEKODETAIL_TAB_COVER_DECLARE", components: ['cover'] },
-        { label: "审批附件", name: "attachment", key: "SHENPIFUJIAN", permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_ATTACHMENT", components: ['attachment'] },
-        { label: "审批记录", name: "record", key: "SHENPIFUJIAN", permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_RECORD", components: ['record'] }
+        { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", permissionKey: "AEKO_AEKODETAIL_TAB_PART_LIST", components: ["partsList"],index:3 },
+        { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", permissionKey: "AEKO_AEKODETAIL_TAB_CONTENT_DECLARE", components: [ "contentDeclare" ],index:1  },
+        { label: "封⾯表态", name: "cover", key: "FENGMIANBIAOTAI", permissionKey: "AEKO_AEKODETAIL_TAB_COVER_DECLARE", components: ['cover'],index:2 },
+        { label: "审批附件", name: "attachment", key: "SHENPIFUJIAN", permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_ATTACHMENT", components: ['attachment'],index:4 },
+        { label: "审批记录", name: "record", key: "SHENPIFUJIAN", permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_RECORD", components: ['record'],index:5  }
       ],
       isAekoManager: false,
       isCommodityCoordinator: false,
