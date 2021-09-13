@@ -142,9 +142,9 @@ export const tableTitle = [
   { props: 'meeting', name: '会议', key: 'HUIYI', tooltip: true },
   { props: 'nominateUserName', name: '询价采购员', key: 'XUNGJIACAIGOUYUAN', tooltip: true  },
   { props: 'linieName', name: 'LINIE', key: 'LINIE', tooltip: true },
-  { props: 'rsStatus', name: 'RS单状态', key: 'RSDANZHUANGTAI', tooltip: true  },
-  { props: 'rsFreezeDate', name: 'RS冻结日期', key: 'RSDONGJIERIQI', tooltip: true  },
-  { props: 'isPriceConsistentDesc', name: '报价一致性检验状态', key: 'BAOJIAYIZHIXINGJIANYANZHANGTAI', tooltip: true  },
+  { props: 'rsStatusDesc', name: 'RS单状态', key: 'RSDANZHUANGTAI', tooltip: true  },
+  { props: 'rsFreezeDate', name: 'RS冻结日期', key: 'RSDONGJIERIQI', tooltip: true, width:120 },
+  { props: 'isPriceConsistentDesc', name: '报价一致性检验状态', key: 'BAOJIAYIZHIXINGJIANYANZHANGTAI', tooltip: true , width:150 },
   { props: 'printStatusDesc', name: '打印状态', key: 'DAYINGZHUANGTAI', tooltip: true  },
   { props: 'freezeDate', name: '冻结日期', key: 'DONGJIERIQI', tooltip: true  },
   { props: 'nominateDate', name: '定点日期', key: 'DINGDIANRIQI', tooltip: true  }

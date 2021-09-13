@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-19 14:55:08
+ * @LastEditTime: 2021-09-13 14:15:28
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\index.vue
@@ -153,14 +153,14 @@
         this.pageLoading = true
 				const resFile = await this.getDownloadFileAndExportPdf({
 					domId: 'materialGroup',
-					pdfName: 'materialGroup',
+           		pdfName:`材料组定位_${this.$store.state.rfq.categoryName}_${window.moment().format('YYYY-MM-DD')}_`,
 				});
 				let params={
 					materialGroupCode:this.categoryCode,
 					materialGroupName:this.categoryName,
-					// reportFileName: resFile.downloadName,
-					// reportName: resFile.downloadName,
-					// schemeName:"",
+					reportFileName: resFile.downloadName,
+					reportName: resFile.downloadName,
+					schemeName:"",
 					reportUrl: resFile.downloadUrl,
 					problemAndSuggestionList:this.materialGroup.problemAndSuggestionList
 				}
