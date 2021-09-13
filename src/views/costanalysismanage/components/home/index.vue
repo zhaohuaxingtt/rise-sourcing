@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-09-02 14:15:27
+ * @LastEditTime: 2021-09-13 14:22:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -362,6 +362,7 @@ export default {
     },
     // 查询
     sure() {
+      this.page.currPage = 1
       this.getKmRfqList()
     },
     // 重置

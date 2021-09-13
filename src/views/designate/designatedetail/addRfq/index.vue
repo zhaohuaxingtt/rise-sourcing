@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-07 11:19:54
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-13 14:24:23
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -12,7 +12,7 @@
     <!------------------------------------------------------------------------>
     <!--                  search 搜索模块                                   --->
     <!------------------------------------------------------------------------>
-    <iSearch class="margin-bottom20" icon @reset="handleSearchReset" @sure="getTableList">
+    <iSearch class="margin-bottom20" icon @reset="handleSearchReset" @sure="sure">
       <el-form>
         <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
           <iInput :placeholder="language('QINGXUANZE','请选择')" v-model="form.fsnrGsnrNum" v-permission.auto="SOURCING_NOMINATION_ADDRFQPAGE_FSNRGSNR|零件号/FSNR/RFQ编号/采购员"></iInput>
@@ -121,6 +121,10 @@ export default {
     this.getTableList()
   },
   methods: {
+    sure(){
+      this.page.currPage = 1
+      this.getTableList()
+    },
     // 分析报告下载
     downLoad(row) {
       // downloadFile({

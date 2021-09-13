@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-08-30 11:19:30
+ * @LastEditTime: 2021-09-13 14:33:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -179,9 +179,11 @@ export default {
       .catch(() => {})
     },
     sure() {
+      this.page.currPage = 1
       this.getParts()
     },
     reset() {
+      this.page.currPage = 1
       this.form = cloneDeep(queryForm)
       this.getParts()
     },
