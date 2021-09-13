@@ -510,6 +510,7 @@ import {
 import {getTousandNum, delcommafy} from "@/utils/tool";
 import {submitApproval, recall} from "@/api/ws2/purchase/investmentList";
 import {cloneDeep} from "lodash";
+import {groupTerms} from "@/api/partsrfq/bob";
 
 export default {
   components: {
@@ -854,7 +855,7 @@ export default {
         this.recallLoading = false
       });
     },
-    sendSupplier(){
+    submitApproval(){
       this.sendSupplierLoading = true
       submitApproval(this.query.bmId, this.query.bmChangeId).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
@@ -868,6 +869,20 @@ export default {
       }).catch(() => {
         this.sendSupplierLoading = false
       });
+    },
+    sendSupplier(){
+      if(Number(this.baseInfo.changeStatus) === 1 || Number(this.baseInfo.changeStatus) === 2){
+        this.$confirm(this.language('LK_DANGQIANMOJUTOUZIBIANGENGDANGONGYINGSHANGSHANGWEIQUERENSHIFOUJIXUTIJIAO', '当前模具投资变更单供应商尚未确认，是否继续提交？'), this.language('LK_TISHI', '提示'), {
+          confirmButtonText: this.language('LK_QUEDING', '确定'),
+          cancelButtonText: this.language('LK_QUXIAO', '取消'),
+          type: 'warning'
+        }).then(() => {
+          this.submitApproval()
+        }).catch(() => {
+        })
+      } else {
+        this.submitApproval()
+      }
     },
     getAllSelect() {
       this.loadingiSearch = true

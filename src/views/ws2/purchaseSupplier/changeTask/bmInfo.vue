@@ -226,7 +226,7 @@
             {{ language('LK_CHAKANBIANGENGDAN', '查看变更单') }}
           </iButton>
           <iButton
-              v-show="!isEdit && Number(baseInfo.changeStatus) === 1"
+              v-show="!isEdit && (Number(baseInfo.changeStatus) === 1 || Number(baseInfo.changeStatus) === 2)"
               v-loading="sureSupplierLoading"
               @click="sureSupplier">
             {{ language('LK_QUEREN', '确认') }}
