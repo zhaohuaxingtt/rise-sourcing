@@ -24,10 +24,10 @@
             language('LK_FACHUXUNJIA','发出询价')
           }}
         </iButton>
-        <iButton  @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">
+        <iButton :loading='endingloading'  @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">
           {{ language('LK_JIESHUBENLUNXUNJIA','结束本轮询价') }}
         </iButton>
-        <iButton  @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
+        <iButton  :loading='transferlaoding' @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
           {{ language('LK_ZHUANTANPAN','转谈判') }}
         </iButton>
         <iButton v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION" :loading="createDesignateLoading" @click="createDesignate">
@@ -196,7 +196,9 @@ export default {
       nominateTypeDialogVisible: false,
       parmarsHasRfq: JSON.parse(JSON.stringify(form)),
       newRfqRoundDialogRes:{}, 
-      rfqloading:false
+      rfqloading:false,
+      endingloading:false,
+      transferlaoding:false
     }
   },
   created() {
@@ -287,7 +289,15 @@ export default {
     },
     async updateRfqStatus(updateType) {
       const query = this.$route.query
-      this.rfqloading = true
+      if(updateType === '06') {
+        this.rfqloading = true
+      }
+      if(updateType === '05') {
+        this.endingloading = true   
+      }
+      if(updateType === '03') {
+        this.transferlaoding = true
+      }
       const req = {
           updateType,
           tmRfqIdList: [query.id],
@@ -296,7 +306,16 @@ export default {
       const res = await modification(req)
       this.resultMessage(res)
       this.getBaseInfo()
-      this.rfqloading = false
+      if(updateType === '06') {
+        this.rfqloading = false
+      }      
+      if(updateType === '05') {
+        this.endingloading = false
+      }      
+      if(updateType === '03') {
+        this.transferlaoding = false
+      }
+
     },
     edit() {
       const rfqName = this.baseInfo.rfqName
