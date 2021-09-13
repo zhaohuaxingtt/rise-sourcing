@@ -583,6 +583,21 @@ export default {
     },
     handleEdit(){
       this.isEdit = true
+      this.tableTitle = this.tableTitle.map(item => {
+        if (
+            item.props === 'craftType' ||
+            item.props === 'moldType' ||
+            item.props === 'assetTypeNum' ||
+            item.props === 'partsTotalNum' ||
+            item.props === 'partsNum' ||
+            item.props === 'count' ||
+            item.props === 'assetPrice'
+        ) {
+          item.isStar = true
+        }
+        return item
+      })
+      console.log(this.tableTitle)
     },
     handlePreView(){
       this.changeOederData = {
@@ -690,16 +705,43 @@ export default {
         item.isEdit = false
         return item
       })
+      this.tableTitle = this.tableTitle.map(item => {
+        if (
+            item.props === 'craftType' ||
+            item.props === 'moldType' ||
+            item.props === 'assetTypeNum' ||
+            item.props === 'partsTotalNum' ||
+            item.props === 'partsNum' ||
+            item.props === 'count' ||
+            item.props === 'assetPrice'
+        ) {
+          item.isStar = false
+        }
+        return item
+      })
     },
     handleSave(){
       this.handleSaveLoading = true
+      if(this.tableListData.some(item => {
+        return  !item.craftType ||
+            !item.moldType ||
+            !item.assetTypeNum ||
+            !item.partsTotalNum ||
+            !item.partsNum ||
+            !item.count ||
+            !item.assetPrice
+      })){
+        iMessage.warn(this.language('LK_QINGTIANXIEBITIANXIANG', '请填写必填项'))
+        this.handleSaveLoading = false
+        return
+      }
       if(this.tableListData.some(item => {
         if(item.isEdit){
           return !item.changeReason
         }
         return false
       })){
-        iMessage.warn(this.language('LK_QINGTIANXIWBIANGENGYUANYIN', '请填写比变更原因'))
+        iMessage.warn(this.language('LK_QINGTIANXIWBIANGENGYUANYIN', '请填写变更原因'))
         this.handleSaveLoading = false
         return
       }

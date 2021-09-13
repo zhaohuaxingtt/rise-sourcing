@@ -869,7 +869,8 @@
         'LK_BANUMBERDISTRIBUTION': 'BA号分配',  //  BA号分配
         'LK_AMOUNTMONEYRMB': '金额（RMB）', //  金额（RMB）
         'LK_FIXEDINVESTTOTAL': '总定点投资金额',    //  总定点投资金额
-        'LK_QINGTIANXIWBIANGENGYUANYIN': '请填写比变更原因',    //  总定点投资金额
+        'LK_QINGTIANXIWBIANGENGYUANYIN': '请填写变更原因',    //  总定点投资金额
+        'LK_QINGTIANXIEBITIANXIANG': '请填写必填项',    //  总定点投资金额
         'LK_DANGQIANMOJUTOUZIBIANGENGDANGONGYINGSHANGSHANGWEIQUERENSHIFOUJIXUTIJIAO': '当前模具投资变更单供应商尚未确认，是否继续提交？',    //  当前模具投资变更单供应商尚未确认，是否继续提交？
         'LK_TISHI': '提示',    //  提示，是否继续提交？
 
