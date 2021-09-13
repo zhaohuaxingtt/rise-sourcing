@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-05 14:14:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-02 14:10:45
+ * @LastEditTime: 2021-09-13 14:29:07
  * @Description: 加入已有rfq
  * @FilePath: \front-web\src\views\designateFiles\fileManage\components\joinRfq.vue
 -->
@@ -18,7 +18,7 @@
     <!------------------------------------------------------------------------>
     <!--                  search 搜索模块                                   --->
     <!------------------------------------------------------------------------>
-    <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="getTableList"
+    <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="sure"
               :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
       <el-form>
         <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
@@ -120,6 +120,7 @@ export default {
   watch: {
     dialogVisible(val) {
       if (val) {
+        this.page.currPage = 1
         this.getTableList()
       }
     }
@@ -130,6 +131,10 @@ export default {
     this.getCartypeDict()
   },
   methods: {
+    sure(){
+      this.page.currPage = 1
+      this.getTableList()
+    },
     // 获取车型字典
     getCartypeDict() {
       getCartypeDict()
