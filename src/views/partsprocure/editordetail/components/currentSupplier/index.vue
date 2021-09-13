@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-07-19 19:29:34
+ * @LastEditTime: 2021-09-13 14:37:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -194,6 +194,7 @@ export default{
         this.searchForm[element] = ''
       });
       this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
+      this.page.currPage = 1
       this.supplierCurentBottom()
     },
     /**
@@ -205,6 +206,7 @@ export default{
       if(this.searchForm.procureFactoryId != '' && this.searchForm.supplierName == '' && this.searchForm.supplierSapCode == '' && this.searchForm.partNum == ""){
         iMessage.warn(this.language('QINGXUANZEQITAXINXI','请选择其他信息共同筛选!'))
       }
+      this.page.currPage = 1
       this.supplierCurentBottom()
     },
     /**
