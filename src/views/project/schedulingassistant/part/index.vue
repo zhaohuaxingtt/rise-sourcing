@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 13:59:40
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-10 15:16:52
+ * @LastEditTime: 2021-09-13 10:44:10
  * @Description: 零件排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\index.vue
 -->
@@ -190,7 +190,7 @@ export default {
   padding: 0;
   padding-top: 10px;
   height: calc(100% - 55px);
-  overflow: auto;
+  overflow: visible;
   .searchWrapper {
     display: flex;
     align-items: center;
@@ -217,7 +217,7 @@ export default {
     }
   }
   .partCard {
-    height: calc(100% - 360px);
+    height: calc(100% - 345px);
     &.withCollapse {
       height: calc(100% - 120px);
       overflow: auto;
