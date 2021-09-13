@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-08-20 11:21:43
+ * @LastEditTime: 2021-09-13 17:14:29
  * @LastEditors: 舒杰
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
@@ -60,8 +60,8 @@ export default {
               image:require("@/assets/images/partRfq/internalDemandAnalysis06.png"),
               url:"/sourcing/categoryManagementAssistant/internalDemandAnalysis/sop"
            },{
-              name:"成本组成",
-              key:"CHENGBENZUCHENG",
+              name:"成本结构",
+              key:"CHENGBENJIEGOU",
               image:require("@/assets/images/partRfq/internalDemandAnalysis07.png"),
               url:"/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain"
            },{
