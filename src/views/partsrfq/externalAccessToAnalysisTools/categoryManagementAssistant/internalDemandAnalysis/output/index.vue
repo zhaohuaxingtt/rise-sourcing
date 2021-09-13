@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-08 16:52:18
+ * @LastEditTime: 2021-09-13 14:04:46
  * @LastEditors: 舒杰
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
@@ -123,11 +123,16 @@ export default {
    methods: {
       // 保存
       async save(){
+         let typeName=""
+         this.dictData.CATEGORY_MANAGEMENT_LIST.filter(item=>{
+            if(item.code==this.config.pageName){
+               typeName=item.name+'_'
+            }
+         })
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'output',
-            pdfName: this.language("CHANLIANGZONGLAN","产量总览") + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD') +'-',
+            pdfName: '品类管理助手_产量总览_'+ typeName + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
          });
-         console.log(this.config.pageName)
          let schemeType=""
          switch (this.config.pageName) {
             case "ReportSection54602a61cb108b45223a":

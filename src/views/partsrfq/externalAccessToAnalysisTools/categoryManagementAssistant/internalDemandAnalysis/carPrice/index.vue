@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-09 17:45:43
+ * @LastEditTime: 2021-09-13 14:05:57
  * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
@@ -208,7 +208,7 @@ export default {
       async save(){
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'carPrice',
-            pdfName: this.language("CHEXINGJIAGEDUIBI","车型价格对比") + '_' + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD')+'_',
+            pdfName:'品类管理助手_车型价格对比_' + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
          });
          let params={
             categoryCode:this.categoryCode,
