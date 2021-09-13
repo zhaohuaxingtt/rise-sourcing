@@ -67,12 +67,6 @@ export default {
       tableLoading: false,
       selectTableData: [],
       tableListData: [],
-      pickerOptions: {
-        disabledDate(time) {
-          let currentYear = new Date().getFullYear()
-          return time.getFullYear() > currentYear;
-        }
-      },
       form: {
         categoryCode: '',
         startYear: '',

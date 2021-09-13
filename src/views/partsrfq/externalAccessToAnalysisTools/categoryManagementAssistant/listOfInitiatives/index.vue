@@ -251,18 +251,6 @@ export default {
         });
       });
     },
-    getCheckStatusFormId({treeData}) {
-      const idsArray = [];
-      const level1Array = [];
-      treeData.map(item => {
-        if (item.children) {
-          item.children.map(itemChildren => {
-            level1Array.push(itemChildren);
-          });
-        }
-      });
-
-    },
     setName(item) {
       return this.$i18n.locale === 'zh' ? item.name : item.nameEn;
     },
