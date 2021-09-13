@@ -451,8 +451,10 @@ a{
 
 .input-center {
   &,
+  .sInput,
+  .staticInputInner,
   input {
-    text-align: center;
+    text-align: center!important;
   }
 }
 
