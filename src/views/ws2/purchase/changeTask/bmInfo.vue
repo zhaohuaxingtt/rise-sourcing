@@ -510,6 +510,7 @@ import {
 import {getTousandNum, delcommafy} from "@/utils/tool";
 import {submitApproval, recall} from "@/api/ws2/purchase/investmentList";
 import {cloneDeep} from "lodash";
+import {groupTerms} from "@/api/partsrfq/bob";
 
 export default {
   components: {
@@ -633,6 +634,20 @@ export default {
     },
     handleEdit(){
       this.isEdit = true
+      this.tableTitle = this.tableTitle.map(item => {
+        if (
+            item.props === 'craftType' ||
+            item.props === 'moldType' ||
+            item.props === 'assetTypeNum' ||
+            item.props === 'partsTotalNum' ||
+            item.props === 'partsNum' ||
+            item.props === 'count' ||
+            item.props === 'assetPrice'
+        ) {
+          item.isStar = true
+        }
+        return item
+      })
     },
     handlePreView(){
       this.changeOederData = {
@@ -740,6 +755,20 @@ export default {
         item.isEdit = false
         return item
       })
+      this.tableTitle = this.tableTitle.map(item => {
+        if (
+            item.props === 'craftType' ||
+            item.props === 'moldType' ||
+            item.props === 'assetTypeNum' ||
+            item.props === 'partsTotalNum' ||
+            item.props === 'partsNum' ||
+            item.props === 'count' ||
+            item.props === 'assetPrice'
+        ) {
+          item.isStar = false
+        }
+        return item
+      })
     },
     handleSave(){
       this.handleSaveLoading = true
@@ -751,6 +780,19 @@ export default {
         id: this.query.bmChangeId,
         newMoldInvestmentAmount: this.baseInfo.afterChangeAmount,
         optimistic: this.baseInfo.optimistic,
+      }
+      if(this.tableListData.some(item => {
+        return  !item.craftType ||
+                !item.moldType ||
+                !item.assetTypeNum ||
+                !item.partsTotalNum ||
+                !item.partsNum ||
+                !item.count ||
+                !item.assetPrice
+      })){
+        iMessage.warn(this.language('LK_QINGTIANXIEBITIANXIANG', '请填写必填项'))
+        this.handleSaveLoading = false
+        return
       }
       if(this.tableListData.some(item => {
         if(item.isEdit){
@@ -854,7 +896,7 @@ export default {
         this.recallLoading = false
       });
     },
-    sendSupplier(){
+    submitApproval(){
       this.sendSupplierLoading = true
       submitApproval(this.query.bmId, this.query.bmChangeId).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
@@ -868,6 +910,20 @@ export default {
       }).catch(() => {
         this.sendSupplierLoading = false
       });
+    },
+    sendSupplier(){
+      if(Number(this.baseInfo.changeStatus) === 1 || Number(this.baseInfo.changeStatus) === 2){
+        this.$confirm(this.language('LK_DANGQIANMOJUTOUZIBIANGENGDANGONGYINGSHANGSHANGWEIQUERENSHIFOUJIXUTIJIAO', '当前模具投资变更单供应商尚未确认，是否继续提交？'), this.language('LK_TISHI', '提示'), {
+          confirmButtonText: this.language('LK_QUEDING', '确定'),
+          cancelButtonText: this.language('LK_QUXIAO', '取消'),
+          type: 'warning'
+        }).then(() => {
+          this.submitApproval()
+        }).catch(() => {
+        })
+      } else {
+        this.submitApproval()
+      }
     },
     getAllSelect() {
       this.loadingiSearch = true

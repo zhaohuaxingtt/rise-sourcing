@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 10:47:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 17:31:00
+ * @LastEditTime: 2021-09-13 15:53:30
  * @Description: 确认表格-通用
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\confirmTable\index.vue
 -->
@@ -29,58 +29,68 @@
     <tableList indexKey :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange">
       <template #scheNomiTimeKw="scope">
         <span v-if="!isFS">{{scope.row.scheNomiTimeKw}}</span>
-        <el-cascader
-          v-else
-          class="yearWeekSelect"
-          :value="scope.row.scheNomiTimeKw ? scope.row.scheNomiTimeKw.split('-KW') : []"
-          :options="yearWeekOptions"
-          @change="handleChange($event, scope.row, 'scheNomiTimeKw')"
-          separator="-KW"
-        ></el-cascader>
+        <template v-else>
+          <el-cascader
+            class="yearWeekSelect"
+            :value="scope.row.scheNomiTimeKw ? scope.row.scheNomiTimeKw.split('-KW') : []"
+            :options="yearWeekOptions"
+            @change="handleChange($event, scope.row, 'scheNomiTimeKw')"
+            separator="-KW"
+          ></el-cascader>
+          <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+        </template>
       </template>
       <template #scheFirstTryoutTimeKw="scope">
         <span v-if="!isFS">{{scope.row.scheFirstTryoutTimeKw}}</span>
-        <el-cascader
-          v-else
-          class="yearWeekSelect"
-          :value="scope.row.scheFirstTryoutTimeKw ? scope.row.scheFirstTryoutTimeKw.split('-KW') : []"
-          :options="yearWeekOptions"
-          @change="handleChange($event, scope.row, 'scheFirstTryoutTimeKw')"
-          separator="-KW"
-        ></el-cascader>
+        <template v-else>
+          <el-cascader
+            class="yearWeekSelect"
+            :value="scope.row.scheFirstTryoutTimeKw ? scope.row.scheFirstTryoutTimeKw.split('-KW') : []"
+            :options="yearWeekOptions"
+            @change="handleChange($event, scope.row, 'scheFirstTryoutTimeKw')"
+            separator="-KW"
+          ></el-cascader>
+          <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+        </template>
       </template>
       <template #scheOtsTimeKw="scope">
         <span v-if="!isFS">{{scope.row.scheOtsTimeKw}}</span>
-        <el-cascader
-          v-else
-          class="yearWeekSelect"
-          :value="scope.row.scheOtsTimeKw ? scope.row.scheOtsTimeKw.split('-KW') : []"
-          :options="yearWeekOptions"
-          @change="handleChange($event, scope.row, 'scheOtsTimeKw')"
-          separator="-KW"
-        ></el-cascader>
+        <template v-else>
+          <el-cascader
+            class="yearWeekSelect"
+            :value="scope.row.scheOtsTimeKw ? scope.row.scheOtsTimeKw.split('-KW') : []"
+            :options="yearWeekOptions"
+            @change="handleChange($event, scope.row, 'scheOtsTimeKw')"
+            separator="-KW"
+          ></el-cascader>
+          <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+        </template>
       </template>
       <template #scheEmTimeKw="scope">
         <span v-if="!isFS">{{scope.row.scheEmTimeKw}}</span>
-        <el-cascader
-          v-else
-          class="yearWeekSelect"
-          :value="scope.row.scheEmTimeKw ? scope.row.scheEmTimeKw.split('-KW') : []"
-          :options="yearWeekOptions"
-          @change="handleChange($event, scope.row, 'scheEmTimeKw')"
-          separator="-KW"
-        ></el-cascader>
+        <template v-else>
+          <el-cascader
+            class="yearWeekSelect"
+            :value="scope.row.scheEmTimeKw ? scope.row.scheEmTimeKw.split('-KW') : []"
+            :options="yearWeekOptions"
+            @change="handleChange($event, scope.row, 'scheEmTimeKw')"
+            separator="-KW"
+          ></el-cascader>
+          <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+        </template>
       </template>
       <template #scheKickoffTimeKw="scope">
         <span v-if="!isFS">{{scope.row.scheKickoffTimeKw}}</span>
-        <el-cascader
-          v-else
-          class="yearWeekSelect"
-          :value="scope.row.scheKickoffTimeKw ? scope.row.scheKickoffTimeKw.split('-KW') : []"
-          :options="yearWeekOptions"
-          @change="handleChange($event, scope.row, 'scheKickoffTimeKw')"
-          separator="-KW"
-        ></el-cascader>
+        <template v-else>
+          <el-cascader
+            class="yearWeekSelect"
+            :value="scope.row.scheKickoffTimeKw ? scope.row.scheKickoffTimeKw.split('-KW') : []"
+            :options="yearWeekOptions"
+            @change="handleChange($event, scope.row, 'scheKickoffTimeKw')"
+            separator="-KW"
+          ></el-cascader>
+          <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+        </template>
       </template>
     </tableList> 
     <!-- 分页 -->
@@ -94,7 +104,7 @@
 </template>
 
 <script>
-import { iCard, iPagination, iMessage } from 'rise'
+import { iCard, iPagination, iMessage, icon } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/project/schedulingassistant/progroup/components/tableList'
 import { getPartScheduleList } from '@/api/project'
@@ -106,7 +116,7 @@ import transferBtn from '../commonBtn/transferBtn'
 import sendFSBtn from '../commonBtn/sendFSBtn'
 export default {
   mixins: [pageMixins],
-  components: { iCard, tableList, iPagination, confirmBtn, saveBtn, backBtn, transferBtn, sendFSBtn },
+  components: { iCard, tableList, iPagination, confirmBtn, saveBtn, backBtn, transferBtn, sendFSBtn, icon },
   props: {
     title: {type:String},
     titleKey: {type:String},
@@ -248,5 +258,10 @@ export default {
   ::v-deep .el-input__suffix {
     display: none;
   }
+}
+.cascader-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 </style>

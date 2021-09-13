@@ -1,15 +1,15 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-09-07 15:33:14
+ * @LastEditTime: 2021-09-13 15:57:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
 -->
 <template>
-<div class="inline margin-left10 margin-right10" v-permission.auto="PARTSPROCURE_SHENGCHENGDINGDSQ_ACC|总成件-生成定点申请按钮">
+<div class="inline margin-left10 margin-right10 ssS" v-permission.auto="PARTSPROCURE_SHENGCHENGDINGDSQ_ACC|总成件-生成定点申请按钮">
     <iButton :loading='loadind' @click="created">{{language('SHENGCDINGIDANSHENGQACC','生成定点申请单')}}</iButton>
-    <iDialog :visible.sync="diologShow" :title="language('ZONGCHNEGGONGYS','总成供应商')" width='70%'>
+    <iDialog :visible.sync="diologShow" :title="language('ZONGCHNEGGONGYS','总成供应商')" width='70%' style="margin-bottom:40px;">
       <div class="top">
         <iFormGroup inline row='2' label-width='80px'>
           <iFormItem :label='language("ZHONGCHENGGYS","总成供应商")'>
@@ -100,7 +100,6 @@ export default{
     handleSelectionChange({row,selection}){
       this.ontologyList = selection
       const isSelect = selection.find(rows=>rows.itemKey == row.itemKey)
-      console.log(isSelect)
       if(row.needRow){ //勾选供应商表头
         if(isSelect){
           this.selectGroup(row)
@@ -171,7 +170,7 @@ export default{
       this.loadingbtn = true
       const sendData = {
         isUserPackage:this.isUserPackage,
-        ontologyList:this.ontologyList.filter(r=>!r.needRow || !r.addAssemblyNomi),
+        ontologyList:this.ontologyList.filter(r=>!r.needRow).filter(r=>!r.addAssemblyNomi),
         rate:this.rate,
         purchaseProjectPartId:this.detailData().id
       }
@@ -204,5 +203,10 @@ export default{
   }
   .el-form{
     width: 50%;
+  }
+  .ssS{
+    ::v-deep.el-dialog{
+      padding-bottom:40px;
+    }
   }
 </style>

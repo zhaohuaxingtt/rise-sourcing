@@ -99,16 +99,17 @@
                     slot-scope=""
                     v-if="titlePopover">
             <Popover v-if="items.name !== '定点金额-SVW'"
-                     placement="top-start"
+                     placement="bottom-start"
                      :content="$t(items.key)"
                      trigger="hover">
               <div slot="reference"
                    class="tableHeader">
                 {{ $t(items.key) }}
+                <span v-if="items.isStar" style="color: red;font-size: 18px;font-weight: normal;">*</span>
               </div>
             </Popover>
             <Popover v-else
-                     placement="top-start"
+                     placement="bottom-start"
                      content="定点金额-SVW = 系统内该车型包中所有车型项目的common sourcing零件已定点金额汇总"
                      trigger="hover">
               <div slot="reference"
