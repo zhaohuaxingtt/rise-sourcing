@@ -321,9 +321,10 @@ export default {
       this.selectTableData = val;
     },
     newRfq() {
-      this.$router.push({
+      const newRfqUrl = this.$router.resolve({
         path: '/sourceinquirypoint/sourcing/partsrfq/editordetail'
       })
+      window.open(newRfqUrl.href,'_blank')
     },
     async editRfq(updateType) {
       if (this.selectTableData.length === 0) {
@@ -505,13 +506,14 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
-          this.$router.push({
+          const openDesignate = this.$router.resolve({
             path: "/designate/rfqdetail", 
             query: {
               desinateId: res.data.nominateId, 
               designateType: res.data.nominateProcessType
             }
           })
+          window.open(openDesignate.href,'_blank')
         } else {
           iMessage.error(message)
         }
