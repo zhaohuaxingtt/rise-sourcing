@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-10 16:10:13
+ * @LastEditTime: 2021-09-13 14:29:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -157,8 +157,17 @@ export default {
       return function (i) {
         this.$nextTick(() => {
           let domWidth = this.$el.querySelector('.el-table__header-wrapper')
+          let label = this.tableList.title
+          let element = this.tableList.element
+          let total = 0
+          label.forEach(item => {
+            if (element[0].child.length !== 0 && element[0].child[0][item.label] instanceof Array)
+              total += element[0].child[0][item.label].length * 140
+          })
+          total = total + 227
+          console.log(total, "total")
           let result = this.getTreeExpandKeys(this.tableList.element, i.label)
-          if (parseInt(result) * this.tableList.title.length <= domWidth.clientWidth && i.label !== 'title') {
+          if (total <= domWidth.clientWidth) {
             return ""
           } else {
             return result
@@ -177,9 +186,18 @@ export default {
       },
       immediate: true
     },
-    tableList (val) {
+    // tableList: {
+    //   handler (val) {
+    //     let total = 0
+    //     val.title.forEach(item => {
+    //       if(val.element[0].child.length!==0){
 
-    }
+    //       }
+
+    //     })
+
+    //   }
+    // }
   },
   mounted () {
     this.$nextTick(() => {//解决弹窗内表格受外层表格斑马纹影响 
@@ -242,7 +260,7 @@ export default {
     },
     cellsytle ({ row, column, rowIndex, columnIndex }) {
       let styleJson = {}
-      if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '报废成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
+      if (row.title == "原材料/散件成本" || row.title == '制造成本' || row.title == '报废成本' || row.title == '管理费用' || row.title == '其他费用' || row.title == '利润') {
         // return "font-weight: bold"
         styleJson = {
           "font-weight": "bold"
