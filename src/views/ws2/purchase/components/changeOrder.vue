@@ -177,19 +177,19 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="assetTotal"
+              prop="assetTotalOld"
               align="center"
               label="原总价">
             <template slot-scope="scope">
-              <div>{{ getTousandNum(Number(scope.row.assetTotal).toFixed(2)) }}</div>
+              <div>{{ getTousandNum(Number(scope.row.assetTotalOld).toFixed(2)) }}</div>
             </template>
           </el-table-column>
           <el-table-column
-              prop="assetTotalOld"
+              prop="assetTotal"
               align="center"
               label="资产总价">
             <template slot-scope="scope">
-              <div>{{ getTousandNum(Number(scope.row.assetTotalOld).toFixed(2)) }}</div>
+              <div>{{ getTousandNum(Number(scope.row.assetTotal).toFixed(2)) }}</div>
             </template>
           </el-table-column>
           <el-table-column

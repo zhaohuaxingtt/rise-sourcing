@@ -537,6 +537,7 @@ export default {
       assetsTypeList: [], //  资产分类编号
       tableTitle: changeTaskBmInfoTitle,
       tableListData: [],
+      tableListDataClone: [],
       assetTypesList: [],
       craftTypesList: [],
       sharePartsList: [],
@@ -748,47 +749,43 @@ export default {
     },
     backEdit(){
       this.isEdit = false
-      if(this.tableListData[0].isAdd){
-        this.tableListData.shift()
-      }
-      this.tableListData = this.tableListData.map(item => {
-        item.isEdit = false
-        return item
-      })
+      this.tableListData = this.tableListDataClone
+      let arr = ['craftType', 'moldType', 'assetTypeNum', 'partsTotalNum', 'partsNum', 'count', 'assetPrice']
       this.tableTitle = this.tableTitle.map(item => {
-        if (
-            item.props === 'craftType' ||
-            item.props === 'moldType' ||
-            item.props === 'assetTypeNum' ||
-            item.props === 'partsTotalNum' ||
-            item.props === 'partsNum' ||
-            item.props === 'count' ||
-            item.props === 'assetPrice'
-        ) {
+        if (arr.includes(item.props)) {
           item.isStar = false
         }
         return item
       })
+    },
+    isNot0(val){
+      if(val === null || val === undefined || val === '' || val.length === 0){
+        return true
+      } else {
+        return false
+      }
     },
     handleSave(){
       this.handleSaveLoading = true
       let changeOederData = {
         moldChangeDtos: this.tableListData.map(item => {
           item.assetPrice = Number(this.delcommafy(item.assetPrice))
+          let assetTypeNumNo = this.assetTypesList.find(b => Number(b.value) === Number(item.assetTypeNumNo))
+          item.assetTypeNum = item.assetTypeNumNo ? (assetTypeNumNo ? assetTypeNumNo.name : '') : item.assetTypeNum
           return item
         }),
         id: this.query.bmChangeId,
         newMoldInvestmentAmount: this.baseInfo.afterChangeAmount,
         optimistic: this.baseInfo.optimistic,
       }
-      if(this.tableListData.some(item => {
-        return  !item.craftType ||
-                !item.moldType ||
-                !item.assetTypeNum ||
-                !item.partsTotalNum ||
-                !item.partsNum ||
-                !item.count ||
-                !item.assetPrice
+      if(changeOederData.moldChangeDtos.some(item => {
+        return  this.isNot0(item.craftType) ||
+                this.isNot0(item.moldType) ||
+                this.isNot0(item.assetTypeNum) ||
+                this.isNot0(item.partsTotalNum) ||
+                this.isNot0(item.partsNum) ||
+                this.isNot0(item.count) ||
+                this.isNot0(item.assetPrice)
       })){
         iMessage.warn(this.language('LK_QINGTIANXIEBITIANXIANG', '请填写必填项'))
         this.handleSaveLoading = false
@@ -1029,6 +1026,7 @@ export default {
             item.assetTypeNumNo = item.assetTypeNum ? item.assetTypeNum.split('-')[0] : ''
             return item
           })
+          this.tableListDataClone = cloneDeep(this.tableListData)
         } else {
           iMessage.error(result);
         }
