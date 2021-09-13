@@ -304,6 +304,7 @@ export default {
       downPdf(this.baseInfo).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
+          return
         } else {
           iMessage.error(result)
         }
