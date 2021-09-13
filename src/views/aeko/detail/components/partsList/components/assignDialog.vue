@@ -146,12 +146,12 @@ export default {
            if(this.assignType === 'commodity'){
                 // 单一分配时将预设科室回填
                 if(this.singleAssign.length){
-                    this.refferenceSmtNum = this.singleAssign[0].refferenceSmtNum;
+                    this.refferenceSmtNum = this.singleAssign[0].refferenceSmtId;
                 }else{
                     // 批量分派
                     // 需判断一下预设科室是否相同
                     const { selectItems } = this;
-                    const arr = selectItems.map((item)=>item.refferenceSmtNum);
+                    const arr = selectItems.map((item)=>item.refferenceSmtId);
                     const filterArr = Array.from(new Set(arr));
                     if(filterArr.length ==1){ // 批量处理的预设科室一致
                             this.refferenceSmtNum = filterArr[0];
