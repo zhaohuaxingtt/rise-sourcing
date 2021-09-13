@@ -211,8 +211,8 @@ export default {
                     aekoPartId:singleAssign[0].aekoPartId,
                     requirementAekoId,
                     linieDeptId:refferenceSmtNum,
-                    linieDeptName:depArr.length ? depArr[0].nameZh : '',
-                    linieDeptNum:depArr.length ? depArr[0].deptNum : '',
+                    linieDeptName:depArr.length ? depArr[0].nameZh : singleAssign[0].refferenceSmt,
+                    linieDeptNum:depArr.length ? depArr[0].deptNum : singleAssign[0].refferenceSmtNum,
                 }
                 data.push(singleData);
             }else{ // 批量分派
