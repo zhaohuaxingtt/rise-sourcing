@@ -65,12 +65,20 @@ export default {
           {
             name: '',
             type: 'pie',
-            radius: ['40%', '55%'],
+            radius: ['30%', '45%'],
             center: ['50%', '45%'],
-            avoidLabelOverlap: false,
+            avoidLabelOverlap: true,
             label: {
               show: true,
               formatter: '{b}:{d}%',
+              color: 'black',
+              fontSize: 10,
+             /* rich: {
+                value: {
+                  color: 'black',
+                  fontSize: 10,
+                },
+              }*/
             },
             itemStyle: {
               borderWidth: 1,
@@ -78,8 +86,8 @@ export default {
             },
             labelLine: {
               show: false,
-              length: 4,
-              length2: 4,
+              length: 1,
+              length2: 1,
             },
             data: this.seriesArray,
           },
