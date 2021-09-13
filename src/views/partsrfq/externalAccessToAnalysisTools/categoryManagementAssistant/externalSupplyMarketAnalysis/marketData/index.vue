@@ -308,9 +308,10 @@ export default {
       this.saveButtonLoading = true;
       this.isExporting = true;
       this.$nextTick(async () => {
+        const pdfName = `品类管理助手-市场数据-${this.getCurrentName()}-${this.categoryName}-${window.moment().format('YYYY-MM-DD')}|`;
         const resFile = await this.getDownloadFileAndExportPdf({
           domId: 'allContainer',
-          pdfName: 'market data',
+          pdfName,
           exportPdf: true,
           callBack: () => {
             this.isExporting = false;
@@ -461,6 +462,18 @@ export default {
         resolve(nodes);
       } else {
         resolve([]);
+      }
+    },
+    getCurrentName() {
+      switch (this.current) {
+        case RAWMATERIAL:
+          return '原材料';
+        case LABOUR:
+          return '劳动力';
+        case ENERGY:
+          return '能源';
+        default:
+          return '';
       }
     },
   },
