@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-13 14:29:33
+ * @LastEditTime: 2021-09-13 15:52:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -155,24 +155,27 @@ export default {
     },
     duration () {
       return function (i) {
-        this.$nextTick(() => {
-          let domWidth = this.$el.querySelector('.el-table__header-wrapper')
-          let label = this.tableList.title
-          let element = this.tableList.element
-          let total = 0
-          label.forEach(item => {
-            if (element[0].child.length !== 0 && element[0].child[0][item.label] instanceof Array)
-              total += element[0].child[0][item.label].length * 140
-          })
-          total = total + 227
-          console.log(total, "total")
-          let result = this.getTreeExpandKeys(this.tableList.element, i.label)
-          if (total <= domWidth.clientWidth) {
-            return ""
-          } else {
-            return result
-          }
-        });
+        // let domWidth = this.$el.querySelector('.el-table__header-wrapper')
+        let label = this.tableList.title
+        let element = this.tableList.element
+        let total = 0
+        label.forEach(item => {
+          // element.forEach(i => {
+          //   if (element[0].child.length !== 0 && element[0].child[0][item.label] instanceof Array)
+          //     total += element[0].child[0][item.label].length * 140
+          // })
+          total += this.getTreeExpandKeys(this.tableList.element, item.label)
+
+        })
+        // total = total + 227
+        console.log(total, "total")
+        let result = this.getTreeExpandKeys(this.tableList.element, i.label)
+        if (total <= this.domWidth.clientWidth) {
+          return ""
+        } else {
+          return result + 'px'
+        }
+
       }
     }
   },
@@ -199,6 +202,11 @@ export default {
     //   }
     // }
   },
+  created () {
+    this.$nextTick(() => {
+      this.domWidth = this.$el.querySelector('.el-table__header-wrapper')
+    });
+  },
   mounted () {
     this.$nextTick(() => {//解决弹窗内表格受外层表格斑马纹影响 
       if (document.getElementsByClassName('el-table__row current-row el-table__row--striped').length != 0) {
@@ -214,11 +222,12 @@ export default {
       hasChildren: true,
       min: window._.min,
       max: window._.max,
+      domWidth: ""
     };
   },
   methods: {
     getTreeExpandKeys (data, i) {
-      if (i == 'title') { return "227px" }
+      if (i == 'title') { return 227 }
       let datalength = 0
       data.forEach(item => {
         let obj, len
@@ -230,7 +239,7 @@ export default {
         len = obj instanceof Array ? obj.length : 1
         datalength = len > datalength ? len : datalength
       })
-      return datalength * 140 + 'px'
+      return datalength * 140
     },
     renderHeader (h, { column }) {
       let header = column.label.split('<br/>');
