@@ -517,7 +517,7 @@ export default {
                             const arr = selectItems.filter((item)=>item.isOperate);
                             if(arr.length){
                                 const arrIndex = arr.map((item)=>item.lineIndex);
-                                const tips = arrIndex.toString() + this.language('LK_AEKO_HANGYIFENPAICAIGOUYUANQINGQUERENSHIFOUCHONGXINFENPAI','行已分派采购员，请确认是否重新分派');
+                                const tips = arrIndex.toString() + this.language('LK_AEKO_HANGLINGJIANYIBIAOTAILINIEWUFAXIUGAI','行零件已表态,linie无法修改');
                                 iMessage.warn(tips);
                             }else{
                                 this.assignVisible = true;
