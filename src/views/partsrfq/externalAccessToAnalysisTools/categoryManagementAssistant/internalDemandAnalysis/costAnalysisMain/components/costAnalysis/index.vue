@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 16:38:55
- * @LastEditTime: 2021-08-30 17:19:51
+ * @LastEditTime: 2021-09-11 17:56:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysis\index.vue
@@ -64,6 +64,9 @@
                 <iInput class="nameInput" v-model="scope.row.schemeName"></iInput>
               </div>
             </div>
+          </template>
+          <template #categoryCode="scope">
+            {{scope.row.categoryCode}} - {{scope.row.categoryName}}
           </template>
           <template #option="scope">
             <div class="openPage" @click="clickPreview(scope.row)">
@@ -211,7 +214,6 @@ export default {
       this.page.currPage = 1
       this.page.pageSize = 10
       this.getTableData().then(res => {
-        console.log('res', res);
         if (!res || res.length == 0) {
           iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
         }
@@ -316,13 +318,15 @@ export default {
         })
       } else {
         // 打开手工
-        this.operateLog = val.operateLog
+        // this.operateLog = val.operateLog
+        // this.schemeId = val.id
+        // this.modalParam = {
+        //   ...this.modalParam,
+        //   key: Math.random(),
+        //   visible: true
+        // }
         this.schemeId = val.id
-        this.modalParam = {
-          ...this.modalParam,
-          key: Math.random(),
-          visible: true
-        }
+        this.handleSubmitDialog(val.operateLog)
       }
     },
     // 点击预览
@@ -353,7 +357,7 @@ export default {
         path: this.costAnalysisInputUrl,
         query: {
           schemeId: this.schemeId,
-          operateLog: JSON.stringify(data)
+          operateLog: data
         }
       })
     },

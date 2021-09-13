@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 16:53:34
+ * @LastEditTime: 2021-09-13 10:44:25
  * @Description: 产品组排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
@@ -280,7 +280,7 @@ export default {
   padding: 0;
   padding-top: 10px;
   height: calc(100% - 55px);
-  overflow: auto;
+  overflow: visible;
   .titleSearch {
     display: flex;
     align-items: center;
@@ -295,7 +295,7 @@ export default {
     }
   }
   .projectCard {
-    height: calc(100% - 360px);
+    height: calc(100% - 345px);
     &.withCollapse {
       height: calc(100% - 120px);
       overflow: auto;

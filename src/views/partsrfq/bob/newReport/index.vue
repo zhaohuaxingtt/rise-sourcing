@@ -58,7 +58,7 @@
                                  :key="i.supplierId"
                                  :value="i.supplierId"
                                  :label="i.shortNameZh">
-                        <span style="float: left">{{ i.nameZh }}</span>
+                        <span style="float: left">{{ i.shortNameZh }}</span>
                         <span style="float: right; color: #8492a6; font-size: 13px"><i class="el-icon-error"></i>
                         </span>
                       </el-option>
@@ -749,6 +749,7 @@ export default {
       }
       getBobLevelOne(params).then((res) => {
         const allData = res.data || [];
+        this.maxDataList = []
         this.chartData = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 0
         );
@@ -764,6 +765,7 @@ export default {
           first += '0'
         }
         this.maxData = first
+        console.log(this.maxData)
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
         if (this.chartType === 'combination') {
@@ -1045,7 +1047,7 @@ export default {
         this.supplierList.forEach(item => {
           this.form.supplier.forEach(i => {
             if (item.supplierId === i) {
-              nameZh = item.nameZh
+              nameZh = item.shortNameZh
             }
           })
         })
@@ -1055,7 +1057,7 @@ export default {
         this.supplierList.forEach(item => {
           this.form.supplier.forEach(i => {
             if (item.supplierId === i) {
-              nameZh = item.nameZh
+              nameZh = item.shortNameZh
             }
           })
         })
