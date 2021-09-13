@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-09 19:17:12
+ * @LastEditTime: 2021-09-11 15:23:20
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
@@ -33,7 +33,7 @@
 
 <script>
 	import {iCard,iButton,iNavMvp,iSelect,iMessage} from 'rise';
-	import {tabList} from "./data";
+	import {tabList,tableTitleExport} from "./data";
 	import pointTable from './pointTable';
 	import supplierTable from './supplierTable';
 	import resultMessageMixin from '@/utils/resultMessageMixin';
@@ -49,6 +49,7 @@
 		data() {
 			return {
 				tabList,
+				tableTitleExport,
 				value:1,
 				dictData:{//字典數據
 					NOMI_TIME:[]
@@ -125,7 +126,7 @@
 			//导出
 			exportTemplate() {
 				let tableData=this.value==1?this.$refs.pointTable.tableListData:this.$refs.supplierTable.tableListData
-				excelExport(tableData, this.$refs.pointTable.tableTitle)
+				excelExport(tableData, this.tableTitleExport)
 			},
 			// 查询字典
 			getDict() {

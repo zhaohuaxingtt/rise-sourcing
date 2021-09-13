@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-16 14:51:40
- * @LastEditTime: 2021-09-09 19:20:15
+ * @LastEditTime: 2021-09-11 15:42:40
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\sop\index.vue
@@ -14,8 +14,8 @@
                <span>{{language("SOPJINDUZHOU","SOP进度轴")}}</span>
             </div>
             <div class="flex">
-              <iSelect class="margin-right15" v-model="carType" value-key="id">
-                   <el-option :value="item" :label="item.cartypeProNameZh" v-for="(item,index) in carTypeCodeArr" :key="index"></el-option>
+              <iSelect class="margin-right15" v-model="carType" filterable multiple collapse-tags>
+                   <el-option :value="item.cartypeProCode" :label="item.cartypeProNameZh" v-for="(item,index) in carTypeCodeArr" :key="index"></el-option>
                </iSelect>
                <iButton @click="getOverviewList">{{ language("QUEREN", "确认") }}</iButton>
                <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
@@ -73,7 +73,7 @@ export default ({
          ],
          tableDataTemp: [],
          categoryCode:"",//材料组
-         carType:{},//车型项目id
+         carType:[],//车型项目id
          id:"",//方案ID
          carTypeCodeArr:[]
       }
@@ -88,7 +88,7 @@ export default ({
 		async	"$store.state.rfq.categoryCode"(){
 				this.categoryCode=this.$store.state.rfq.categoryCode
         this.id=""
-        this.carType={}
+        this.carType=[]
         await this.sopParamInit()
         this.getOverviewList()
         this.carTypeProList()
@@ -117,7 +117,7 @@ export default ({
       },
     // 重置
     reset(){
-      this.carType={}
+      this.carType=[]
       this.getOverviewList()
     },
     // 历史方案
@@ -146,8 +146,7 @@ export default ({
       this.tableLoading = true
       let params={
          categoryCode:this.categoryCode,
-         cartypeProCode:this.carType.cartypeProCode,
-         id:this.carType.id
+         cartypeProCodes:this.carType
       }
       sopList(params).then(res => {
         if (res?.result) {
