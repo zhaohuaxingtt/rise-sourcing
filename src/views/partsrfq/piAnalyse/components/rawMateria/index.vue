@@ -59,6 +59,9 @@
         <template #ratio="scope">
           <p :class="getPriceChangeClass(scope.row.ratio)">{{scope.row.ratio ? (scope.row.ratio > 0 ? '+' + scope.row.ratio + '%' : scope.row.ratio + '%') : null}} </p>
         </template>
+        <template #priceAmplitude="scope">
+          <p>{{scope.row.priceAmplitude}}% </p>
+        </template>
       </tableList>
       <iPagination
         v-update

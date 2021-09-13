@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-09 10:58:16
+ * @LastEditTime: 2021-09-13 16:47:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -21,7 +21,7 @@
       <div class="mainContent">
         <el-row :gutter="20">
           <el-col :span="10">
-            <costChar left="20%" :width="700" :chartData="pieData"/>
+            <costChar left="40%" :width="700" :chartData="pieData"/>
           </el-col>
           <el-col :span="14">
             <tableList
@@ -94,7 +94,7 @@ export default {
       this.loading = true
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode,
-        fsList: this.$route.query.fsNumList || [],
+        fsList: JSON.parse(this.$route.query.fsNumList) || [],
       }
       listNomiData(params).then(res => {
         this.loading = false
@@ -148,11 +148,19 @@ export default {
     },
     // 点击编辑按钮
     clickEdit() {
+      const operateLog = {
+          analysisType: "1",
+          fsList: this.tableListData.map(item => item.fsNum),
+          startDate: this.$route.query.startDate || null,
+          endDate: this.$route.query.endDate || null,
+          nomiNum: this.$route.query.nomiNum || null,
+          sixNum: this.$route.query.sixNum || null,
+        }
       this.$router.push({
         path: this.costAnalysisAddUrl,
         query: {
           schemeId: this.oldSchemeId,
-          operateLog: this.$route.query.operateLog || null
+          operateLog: JSON.stringify(operateLog) || null
         }
       })
     },
@@ -229,7 +237,7 @@ export default {
           fileType: "1",
           operateLog: JSON.stringify(operateLog),
           reportFileName: pdf.downloadName,
-          reportName: pdf.downloadName,
+          reportName: this.schemeName,
           reportUrl: pdf.downloadUrl,
         }
         fetchSave(params).then(res => {
