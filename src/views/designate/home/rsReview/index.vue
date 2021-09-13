@@ -12,8 +12,9 @@
     <!-- 搜索区 -->
     <search @search="handSearch" ref="searchForm" />
     <!-- 表格 -->
-    <iCard class="designateTable">
+    <iCard class="designateTable" >
       <div class="margin-bottom20 clearFloat">
+      <span class="font18 font-weight">{{ language( 'SHANGHUIRSDANFUHE', '上会RS单复核' ) }}</span>
         <div class="floatright">
           <!-- 发起复核 -->
           <iButton
@@ -235,7 +236,8 @@ export default {
       if (path === '/sourcing/partsnomination/signSheet/details?mode=add') {
         this.createSignSheet(path)
       } else {
-        this.$router.push({path})
+        const newSignSheet = this.$router.resolve({path})
+        window.open(newSignSheet.href,'_blanks')
       }
       
     },
@@ -249,7 +251,8 @@ export default {
             id: res.data.id,
             status: res.data.status && res.data.status.name || res.data.status
           }
-          this.$router.push({path, query})
+          const mCreateSing = this.$router.resolve({path, query}) 
+          window.open(mCreateSing.href,'_blank')
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

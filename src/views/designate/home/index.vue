@@ -14,6 +14,7 @@
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
+        <span class="font18 font-weight">{{ language( 'DINGDIANSHENQINGZONGHEGUANLI', '定点申请综合管理' ) }}</span>
         <div class="floatright">
           <!-- 新建定点申请 -->
           <iButton
