@@ -297,9 +297,10 @@ export default {
       }, 1000);
     },
     downloadFile() {
+      const pdfName = `品类管理助手-举措清单-${this.categoryName}-${window.moment().format('YYYY-MM-DD')}|`;
       downloadPDF({
         idEle: 'container',
-        pdfName: 'overview',
+        pdfName,
         exportPdf: true,
       });
     },
