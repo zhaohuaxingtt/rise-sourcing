@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-07 11:15:28
+ * @LastEditTime: 2021-09-13 19:21:01
  * @LastEditors: 舒杰
  * @Description: 技术路线
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\technology\index.vue
@@ -148,7 +148,7 @@
 			// 模板下载
 			down(){
 				template().then(res=>{
-					
+					window.open(res.data)
 				})
 				// if (this.selectData.length==0) {
 				// 	iMessage.error(this.$t('TPZS.CANNOTSELECT'))
