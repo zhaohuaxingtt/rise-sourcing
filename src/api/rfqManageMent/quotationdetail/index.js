@@ -382,9 +382,15 @@ export function updateCostSummaryDB(params) {
 }
 
 // 获取供应商token
+// export function getSupplierToken(params) {
+//   return requst({
+//     url:`/supplier/getSupplierProducePlace/${ params.supplierId }`,
+//     method: 'GET',
+//   })
+// }
 export function getSupplierToken(params) {
   return requst({
-    url:`/supplier/getSupplierProducePlace/${ params.supplierId }`,
+    url:`/quotation/supplier/${ params.supplierId }`,
     method: 'GET',
   })
 }
