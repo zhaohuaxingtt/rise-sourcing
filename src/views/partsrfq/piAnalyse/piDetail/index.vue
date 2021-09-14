@@ -399,6 +399,7 @@ export default {
             } else {
               this.handleTableSaveError();
             }
+            this.resultMessage(res)
             this.saveDialog = false;
           });
         } else {
@@ -409,6 +410,7 @@ export default {
           } else {
             this.handleTableSaveError();
           }
+          this.resultMessage(res)
           this.saveDialog = false;
         }
       } finally {

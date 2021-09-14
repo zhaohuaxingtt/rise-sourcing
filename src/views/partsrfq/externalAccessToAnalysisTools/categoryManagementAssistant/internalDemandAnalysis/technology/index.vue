@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-13 19:21:01
+ * @LastEditTime: 2021-09-14 11:32:52
  * @LastEditors: 舒杰
  * @Description: 技术路线
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\technology\index.vue
@@ -9,7 +9,7 @@
 <template>
 	<iCard :title='language("JISHULUXIAN","技术路线")' class="margin-top20">
 		<template slot="header-control">
-			<iButton @click="down">{{ language("MUBANXIAZAI", "模板下载") }}</iButton>
+			<iButton @click="down">{{ language("MUBANXIAZAI", "模版下载") }}</iButton>
 			<el-upload
 				class="upload"
 				:show-file-list="false"
@@ -109,7 +109,7 @@
 			//删除
 			deleted(){
 				if(this.selectData.length>0){
-					iMessageBox(this.language('QRSCXZWJ','确认删除选中文件'),this.language('TISHI','提示')).then(()=>{
+					iMessageBox(this.language('QRSCXZWJ','确认删除选中文件?'),this.language('TISHI','提示')).then(()=>{
 						let idList=this.selectData.map(res=>{
 							return res.id
 						})

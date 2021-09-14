@@ -59,8 +59,8 @@
 import {iButton,iSelect,iDialog,iInput,iMessage} from 'rise'
 import tableList from './components/table'
 import tableListSupplier from './components/tableListSupplier'
-import tablelistGSasRow from './components/tablelistGSasRow'
-import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList} from './components/data'
+// import tablelistGSasRow from './components/tablelistGSasRow'
+import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList,defaultLayoutTemplate} from './components/data'
 import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier},
@@ -121,6 +121,10 @@ export default{
     }
   },
   inject:['getbaseInfoData'],
+  created(){
+    this.layout = this.getLayoutDetaultNumber()
+    console.log(this.layout)
+  },
   mounted(){
     this.round = this.getbaseInfoData().currentRounds || 1
     this.init()
@@ -129,6 +133,16 @@ export default{
     return {vm:this}
   },
   methods:{
+    getLayoutDetaultNumber(){
+      try {
+        const partProjectType = this.$route.query.businessKey
+        if(!partProjectType) return '1'
+        if(defaultLayoutTemplate[partProjectType]) return defaultLayoutTemplate[partProjectType]
+        return '1'
+      } catch (error) {
+        return '1'
+      }
+    },
     reRenderTable(){
       this.showTable = false,
       setTimeout(() => {
