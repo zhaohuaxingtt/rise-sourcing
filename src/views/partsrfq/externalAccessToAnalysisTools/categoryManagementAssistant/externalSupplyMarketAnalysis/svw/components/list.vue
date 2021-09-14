@@ -804,7 +804,7 @@ h3 {
     // margin-left: 40px;
     // padding: 0 20px;
     margin-left: 20px;
-    width: calc(33%.33 - 49px);
+    width: calc(33.33% - 49px);
   }
   .interestsName {
     margin-left: 10px;
