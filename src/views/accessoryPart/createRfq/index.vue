@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-01 17:40:49
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-14 12:30:42
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -91,7 +91,7 @@ import addFileDialog from './components/addFile'
 import capacityPlanningDialog from './components/capacityPlanning'
 import { getPartBySP, autoInquiry, getDeptList, getUserList, updateRfq } from '@/api/accessoryPart/index'
 import {addRfq,insertRfqPart} from '@/api/partsrfq/home/index'
-import { changeProcure } from "@/api/partsprocure/home";
+import { updateProcureButch } from "@/api/partsprocure/home";
 import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
@@ -233,19 +233,17 @@ export default {
       }
       this.changefactoryDialogVisible(true)
     },
-    updateFactory(procureFactory) {
+    updateFactory(procureFactory, procureFactoryName) {
       // this.pushKey();
       // 复制参数对应key
-      let batch = {
-        operator: this.$store.state.permission.userInfo.id,
-        purchaseProjectIds: this.selectItems.map(item => item.purchasingProjectId),
-        partSrcProjectDTO: {
+      const  params = {
+        ids: this.selectItems.map(item => item.purchasingProjectId),
+        updateInfo: {
           procureFactory: procureFactory,
+          procureFactoryName: procureFactoryName
         }
       }
-      changeProcure({
-        batch,
-      }).then((res) => {
+      updateProcureButch(params).then((res) => {
         if (res.data) {
           iMessage.success(this.language("XIUGAICHENGGONG",'修改成功'));
           this.changefactoryDialogVisible(false)
