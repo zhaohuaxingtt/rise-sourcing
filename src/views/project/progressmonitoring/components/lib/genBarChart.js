@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-09-13 17:24:21
+ * @LastEditTime: 2021-09-14 15:33:19
  * @LastEditors: Hao,Jiang
  * @Description: 风险图的配置文件
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/components/barChart.js
@@ -14,81 +14,119 @@
  */
 export function generateOptions(params = {}, type = 1) {
     const colors = ['#4382FA', '#E30D0D','#FFCA53','#00BF87']
-    const seaiesItemArray1 = [
-        // 正常
-        {
-            key: 'value1',
-            name: '正常',
-            index: 0,
-            style: {
-                color: colors[3],
-                fontSize: 12
-            }
-        },
-        // 风险
-        {
-            key: 'value2',
-            name: '风险',
-            index: 1,
-            style: {
-                color: colors[2],
-                fontSize: 12
-            }
-        },
-        // 延误
-        {
-            key: 'value3',
-            name: '延误',
-            index: 2,
-            style: {
-                color: colors[1],
-                fontSize: 12
-            }
-        },
-        // 总计
-        {
-            key: 'value4',
-            name: '总计',
-            index: 3,
-            style: {
-                color: colors[0],
-                fontSize: 12
-            }
-        },
-    ]
-    const seaiesItemArray2 = [
-        // 按期
-        {
-            key: 'value6',
-            name: '按期',
-            index: 5,
-            style: {
-                color: colors[3],
-                fontSize: 12
-            }
-        },
-        // 超期
-        {
-            key: 'value5',
-            name: '超期',
-            index: 4,
-            style: {
-                color: colors[1],
-                fontSize: 12
-            }
-        },
-        // 总计
-        {
-            key: 'value4',
-            name: '总计',
-            index: 3,
-            style: {
-                color: colors[0],
-                fontSize: 12
-            }
-        },
-    ]
-    const seaiesItem = type === 1 ? seaiesItemArray1 : seaiesItemArray2
+    const seaiesList = {
+        // 通用指标，type:1【总计/延误/风险/正常】,含任务进度
+        '1': [
+            // 正常
+            {
+                key: 'value1',
+                name: '正常',
+                index: 0,
+                style: {
+                    color: colors[3],
+                    fontSize: 12
+                }
+            },
+            // 风险
+            {
+                key: 'value2',
+                name: '风险',
+                index: 1,
+                style: {
+                    color: colors[2],
+                    fontSize: 12
+                }
+            },
+            // 延误
+            {
+                key: 'value3',
+                name: '延误',
+                index: 2,
+                style: {
+                    color: colors[1],
+                    fontSize: 12
+                }
+            },
+            // 总计
+            {
+                key: 'value4',
+                name: '总计',
+                index: 3,
+                style: {
+                    color: colors[0],
+                    fontSize: 12
+                }
+            },
+        ],
+        // EM&OTS已完成指标，type:2【总计/超期/按期】
+        '2': [
+            // 按期
+            {
+                key: 'value6',
+                name: '按期',
+                index: 5,
+                style: {
+                    color: colors[3],
+                    fontSize: 12
+                }
+            },
+            // 超期
+            {
+                key: 'value5',
+                name: '超期',
+                index: 4,
+                style: {
+                    color: colors[1],
+                    fontSize: 12
+                }
+            },
+            // 总计
+            {
+                key: 'value4',
+                name: '总计',
+                index: 3,
+                style: {
+                    color: colors[0],
+                    fontSize: 12
+                }
+            },
+        ],
+        // 匹配异常指标，type:3【总计/待处理/已处理】
+        '3': [
+            // 已处理
+            {
+                key: 'value8',
+                name: '已处理',
+                index: 5,
+                style: {
+                    color: colors[3],
+                    fontSize: 12
+                }
+            },
+            // 待处理
+            {
+                key: 'value7',
+                name: '待处理',
+                index: 4,
+                style: {
+                    color: colors[1],
+                    fontSize: 12
+                }
+            },
+            // 总计
+            {
+                key: 'value4',
+                name: '总计',
+                index: 3,
+                style: {
+                    color: colors[0],
+                    fontSize: 12
+                }
+            },
+        ]
+    }
+    
+    const seaiesItem = seaiesList[type] || []
     
     const seaiesValues = []
     const seaiesData = []
@@ -159,7 +197,7 @@ export function generateOptions(params = {}, type = 1) {
             }
         },
         grid: {
-            left: 40,
+            left: type === 3 ? 55 : 40,
             right: 10,
             bottom: 10,
             top: 5,
