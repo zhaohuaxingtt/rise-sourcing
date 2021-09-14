@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-12 17:44:37
+ * @LastEditTime: 2021-09-14 10:49:14
  * @LastEditors: 舒杰
  * @Description: 按供应商查看
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\supplierTable.vue
@@ -52,7 +52,7 @@
 			}
 		},
 		mounted () {
-			this.getTableList()
+			// this.getTableList()
 		},
 		methods:{
 			getTableList(){

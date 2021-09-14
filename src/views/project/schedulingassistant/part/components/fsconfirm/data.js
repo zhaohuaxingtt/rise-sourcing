@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 16:01:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 15:47:01
+ * @LastEditTime: 2021-09-14 10:08:23
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\fsconfirm\data.js
  */
 
 export const tableTitleNomi = [ 
-  {props:'carTypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true}, 
+  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true}, 
   {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true}, 
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true}, 
   {props:'partName',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true}, 
@@ -24,7 +24,7 @@ export const tableTitleNomi = [
 ]
 
 export const tableTitleKickoff = [ 
-  {props:'carTypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true}, 
+  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true}, 
   {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true}, 
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true}, 
   {props:'partName',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true}, 

@@ -1,7 +1,7 @@
 /*
  * @Author: 舒杰
  * @Date: 2021-08-04 20:05:48
- * @LastEditTime: 2021-09-07 11:14:51
+ * @LastEditTime: 2021-09-13 19:15:06
  * @LastEditors: 舒杰
  * @Description: 技术路线
  * @FilePath: \front-sourcing\src\api\categoryManagementAssistant\internalDemandAnalysis\technology.js
@@ -39,8 +39,8 @@ export function technologyDelete(params) {
 export function template(params) {
   return request({
       url: '/technologyFile/template',
-      method: 'POST',
-      data:params
+      method: 'GET',
+      params
     });
 }
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-09-07 16:32:46
+ * @LastEditTime: 2021-09-14 13:32:58
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -21,7 +21,7 @@
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
-          <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="getTableList"
+          <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="sure"
                    :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
             <el-form>
               <!-- <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
@@ -262,6 +262,10 @@ export default {
     ...mapActions(["updateNavList"])
   },
   methods: {
+    sure(){
+      this.page.currPage = 1
+      this.getTableList()
+    },
     getYearMonth(date){
       date = (date + '').split(/[ ]+/);
       return date[0];
@@ -321,9 +325,10 @@ export default {
       this.selectTableData = val;
     },
     newRfq() {
-      this.$router.push({
+      const newRfqUrl = this.$router.resolve({
         path: '/sourceinquirypoint/sourcing/partsrfq/editordetail'
       })
+      window.open(newRfqUrl.href,'_blank')
     },
     async editRfq(updateType) {
       if (this.selectTableData.length === 0) {
@@ -505,13 +510,14 @@ export default {
 
         if (res.code == 200) {
           iMessage.success(message)
-          this.$router.push({
+          const openDesignate = this.$router.resolve({
             path: "/designate/rfqdetail", 
             query: {
               desinateId: res.data.nominateId, 
               designateType: res.data.nominateProcessType
             }
           })
+          window.open(openDesignate.href,'_blank')
         } else {
           iMessage.error(message)
         }
