@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-08-31 16:14:52
+ * @LastEditTime: 2021-09-14 20:08:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -64,6 +64,7 @@
 import { tableTitle } from './components/data'
 import { iButton, iCard, iPagination, iMessage } from 'rise'
 import infos from './components/infos'
+import {partProjTypes} from '@/config'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import {getMaterialGroup,getMeterialStuff} from '@/api/partsprocure/editordetail'
@@ -87,6 +88,7 @@ export default {
   },
   data() {
     return {
+      partProjTypes,
       tableTitle,
       loading: false, // 主loading
       tableLoading: false, // 工艺组表格loading
@@ -103,11 +105,12 @@ export default {
       if (status) this.getMeterialStuff()
     },
   },
-  created() {
-    this.getMaterialGroup()
+  mounted() {
+    if(this.params.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
+      this.getMaterialGroup()
+    }
   },
   methods: {
-    
     // 获取材料组数据
     getMaterialGroup() {
       // 签收的时候默认会设置一个采购项目为这个零件号。移除提示问题
