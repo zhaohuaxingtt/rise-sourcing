@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-09-14 16:15:23
+ * @LastEditTime: 2021-09-14 16:19:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -251,7 +251,7 @@ export default {
     setTableRowSelected() {
       this.$nextTick(() => {
         this.tableListData.map(item => {
-          if (item.isMbdl === '2') {
+          if (item.isMbdl === '2') { //这个地方的勾选逻辑为：只要是Mbdl，都默认勾选上。但是在组件内部中，会判断当前是否是普通轮次，并且当前是否是第一轮（如果满足当前要求，则将出现默认勾选并且不让取消）
             this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(item, true)
           }
         })
