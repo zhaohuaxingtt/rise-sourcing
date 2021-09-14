@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 17:19:16
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-14 13:57:25
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -141,6 +141,7 @@ export default {
           data = data.map((o, index) => {
             o.id = `chart${index}`
             o.title = o.modelStatusName || ''
+            o.title === 'tryout待完成' && (o.title = `<span class="sup">1<sup>st</sup> Tryout待完成</span>`)
             // 正常
             o.value1 = o.projectRiskNormal
             // 风险
