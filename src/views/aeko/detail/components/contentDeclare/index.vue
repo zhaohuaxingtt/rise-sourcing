@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-07 10:51:03
+ * @LastEditTime: 2021-09-14 16:59:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -523,7 +523,7 @@ export default {
     },
     // 导出
     handleExport() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAODAOCHUDEYUANLINGJIANXIANGMU", "请选择需要导出的原零件项目"))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("AEKO_QINGXUANZEYAODAOCHUDELINGJIANHANGXIANGMU", "请选择要导出的零件行项目!"))
       const ids = this.multipleSelection.map((item)=>item.objectAekoPartId);
       console.log(ids,'idsidsids');
       liniePartExport({ids});
