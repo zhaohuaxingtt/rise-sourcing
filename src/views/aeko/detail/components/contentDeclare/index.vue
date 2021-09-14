@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-14 16:59:32
+ * @LastEditTime: 2021-09-14 17:47:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
@@ -388,9 +388,15 @@ export default {
 
       const form = {}
       Object.keys(this.form).forEach(key => form[key] = typeof this.form[key] === "string" ? this.form[key].trim() : this.form[key])
+
+
+      // 零件号需要单独处理下  根据逗号和空格拆成List
+      const {partNum=''} = form;
+      let newPartNum = partNum=='' ? [] : partNum.split(/[ ,，]+/);
       
       getAekoLiniePartInfo({
         ...form,
+        partNum:newPartNum,
         requirementAekoId: this.aekoInfo.requirementAekoId,
         cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
