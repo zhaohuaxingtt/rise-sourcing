@@ -1,12 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-07-27 14:41:40
+ * @LastEditTime: 2021-09-14 15:09:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
  */
 import {_getMathNumber} from '@/utils'
+import {partProjTypes} from '@/config'
 //表格全集。
 export const fstitle = [
   {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false},
@@ -591,3 +592,9 @@ export function getleftTittleList(whiteList){
   })
   return list
 }
+
+
+export const defaultLayoutTemplate = {}
+defaultLayoutTemplate[partProjTypes.GSLINGJIAN] = '3'
+defaultLayoutTemplate[partProjTypes.GSLINGJIANIP] = '3'
+defaultLayoutTemplate[partProjTypes.GSCOMMONSOURCING] = '3'
