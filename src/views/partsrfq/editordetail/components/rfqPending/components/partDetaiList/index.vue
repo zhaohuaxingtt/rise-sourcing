@@ -90,7 +90,7 @@ export default {
     const {query} = this.$route;
     const {id,businessKey} = query;
     // this.rfqId = this.$route.query.id
-    this.rfqId = id;
+    this.rfqId = id || '';
     this.getTableList();
 
     // 当类型为AEKO时 表头需要隐藏部分
@@ -181,7 +181,7 @@ export default {
         this.confirmTableLoading = true
         this.parmarsHasRfq['size'] = this.page.pageSize
         this.parmarsHasRfq['current'] = this.page.currPage
-        this.parmarsHasRfq['rfqId'] = this.rfqId
+        this.parmarsHasRfq['rfqId'] = this.rfqId || ''
         getTabelData(this.parmarsHasRfq).then(res => {
           this.confirmTableLoading = false
           this.page.currPage = res.pageNum
