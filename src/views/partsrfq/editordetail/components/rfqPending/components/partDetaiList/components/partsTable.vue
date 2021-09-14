@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-09-14 13:46:39
+ * @LastEditTime: 2021-09-14 14:03:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
@@ -71,7 +71,6 @@ export default {
     }
   },
   created() {
-    
     this.getTableList()
     const {query={}} = this.$route;
     const {businessKey} = query;
