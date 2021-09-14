@@ -10,7 +10,7 @@
     <!-- 搜索区 -->
     <search @search="getFetchData" ref="search" />
     <!-- 表格 -->
-    <iCard class="designateTable">
+    <iCard class="designateTable"  >
       <div class="margin-bottom20 clearFloat">
         <!-- 签字单模式 -->
         <div class="floatright">

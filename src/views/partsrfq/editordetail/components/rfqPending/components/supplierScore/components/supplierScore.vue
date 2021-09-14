@@ -104,51 +104,52 @@ export default {
   methods: {
     async getTableList() {
       const id = this.$route.query.id
-      if (id) {
-        this.tableLoading = true;
-        try {
-          const req = {
-            rfqId: id,
-            userId: store.state.permission.userInfo.id,
-            current: this.page.currPage,
-            size: this.page.pageSize
-          }
-          const res = await getAllSupplier(req)
-          // const tpb = await getRaterAndCoordinatorByDepartmentId({'rfqId':id})
-          // ,tpb.data ||
-          this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
-          const tpb = res.data[0] ? (res.data[0].rateEntity ? res.data[0].rateEntity : []) : []
-          this.tableListData = this.trnaslateDataForView(res.data || [], tpb);
-          // this.page.currPage = res.current
-          // this.page.pageSize = res.size
-          this.page.totalCount = res.total
-          this.tableLoading = false;
 
-          this.supplierProducePlaces = this.tableListData.map(item => {
-            if (!item.companyAddressCode && item.companyAddress) {
-              item.companyAddressCode = item.companyAddress
-              item.isNoCodeData = true
-            }
+      if (!id) return
 
-            return ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress })
-          })
-          
-          const baseInfo = this.getbaseInfoData()
-          if (baseInfo.rfqType === "AFFIX") {
-            const tableTitle = cloneDeep(this.tableTitle)
-            
-            tableTitle.forEach(item => {
-              if (Array.isArray(item.list) && item.list.length > 0) {
-                item.list = item.list.filter(item => item.props === "rate" || item.props === "memo")
-              }
-            })
-
-            this.tableTitle = tableTitle
-          }
-        } catch {
-          this.tableLoading = false;
-          this.supplierProducePlaces = []
+      this.tableLoading = true;
+      try {
+        const req = {
+          rfqId: id,
+          userId: store.state.permission.userInfo.id,
+          current: this.page.currPage,
+          size: this.page.pageSize
         }
+        const res = await getAllSupplier(req)
+        // const tpb = await getRaterAndCoordinatorByDepartmentId({'rfqId':id})
+        // ,tpb.data ||
+        this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
+        const tpb = res.data[0] ? (res.data[0].rateEntity ? res.data[0].rateEntity : []) : []
+        this.tableListData = this.trnaslateDataForView(res.data || [], tpb);
+        // this.page.currPage = res.current
+        // this.page.pageSize = res.size
+        this.page.totalCount = res.total
+        this.tableLoading = false;
+
+        this.supplierProducePlaces = this.tableListData.map(item => {
+          if (!item.companyAddressCode && item.companyAddress) {
+            item.companyAddressCode = item.companyAddress
+            item.isNoCodeData = true
+          }
+
+          return ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress })
+        })
+        
+        const baseInfo = this.getbaseInfoData()
+        if (baseInfo.rfqType === "附件" || baseInfo.rfqType === "AFFIX") {
+          const tableTitle = cloneDeep(this.tableTitle)
+          
+          tableTitle.forEach(item => {
+            if (Array.isArray(item.list) && item.list.length > 0) {
+              item.list = item.list.filter(item => item.props.includes("rate") || item.props.includes("memo"))
+            }
+          })
+
+          this.tableTitle = tableTitle
+        }
+      } catch {
+        this.tableLoading = false;
+        this.supplierProducePlaces = []
       }
     },
     sendTaskForRating() {

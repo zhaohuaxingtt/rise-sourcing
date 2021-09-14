@@ -27,7 +27,7 @@ export function getFileHistory(params) {
 // 获取RFQ详情
 export function getRfqInfo(params) {
 	return requst({
-		url: `/getOneRfq/${ params.rfqId }`,
+		url: `/rfq/getById/${ params.rfqId }`,
 		method: 'GET'
 	})
 }
