@@ -274,7 +274,6 @@
 <script>
 import {iInput, iSelect, icon} from 'rise';
 import {
-  getColor,
   rawMaterialColor,
   FIRSTSELECT,
   SECONDSELECT,
@@ -330,7 +329,6 @@ export default {
     };
   },
   methods: {
-    getColor,
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val);
     },
@@ -370,14 +368,14 @@ export default {
     handleShow(row) {
       this.$emit('handleShow', row);
     },
-    borderStyle({row, column}) {
+    borderStyle({column}) {
       switch (column.property) {
         case 'systemMatch':
         case 'isShow':
           return 'border-left: 3px solid white';
       }
     },
-    headerBorderStyle({row, column}) {
+    headerBorderStyle({column}) {
       switch (column.property) {
         case 'systemMatch':
         case 'isShow':
