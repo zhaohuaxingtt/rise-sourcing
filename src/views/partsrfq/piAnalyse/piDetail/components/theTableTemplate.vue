@@ -224,20 +224,20 @@
               </el-popover>
             </template>
             <div class="systemMatchText" style="width: auto;">
-              <el-popover
-                  placement="top-start"
-                  width="200"
-                  trigger="hover"
-                  :content="language('PI.SHUJULAIYUAN', '数据来源') + '：' + scope.row.partSource ? scope.row.partSource : ''">
-                <span slot="reference">
-                  <template v-if="isTableEdit">
+              <template v-if="!isTableEdit">
+                <el-popover
+                    placement="top-start"
+                    width="200"
+                    trigger="hover"
+                    :content="language('PI.SHUJULAIYUAN', '数据来源') + '：' + scope.row.partSource ? scope.row.partSource : ''">
+                   <span slot="reference">
                       {{ language('PI.SHUJULAIYUAN', '数据来源') }}: {{ scope.row.partSource ? scope.row.partSource : '' }}
-                  </template>
-                  <template v-else>
-                     {{ language('PI.SHUJULAIYUAN', '数据来源') }}（{{ scope.row.partSource ? scope.row.partSource : '' }}）
-                  </template>
-                </span>
-              </el-popover>
+                   </span>
+                </el-popover>
+              </template>
+              <template v-else>
+                {{ language('PI.SHUJULAIYUAN', '数据来源') }}（{{ scope.row.partSource ? scope.row.partSource : '' }}）
+              </template>
               <iconTips
                   v-if="!scope.row.isMatch"
                   iconName="iconzhongyaoxinxitishi"
