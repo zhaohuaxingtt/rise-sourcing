@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 20:06:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:58:42
+ * @LastEditTime: 2021-09-14 12:59:10
  * @Description: 产能计划弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\capacityPlanning.vue
 -->
@@ -84,10 +84,8 @@ export default {
         }
       },[])
       updateOutputPlan({
-        partOutputPlanInsertFacadeDTOS: {
-          partOutputPlanInsertList: outputPlanList,
-          purchasingProjectId: this.detailInfo.purchasingProjectId,
-        }
+        partOutputPlanInsertList: outputPlanList,
+        purchasingProjectId: this.detailInfo.purchasingProjectId,
       })
         .then(res => {
           if (res?.result) {
@@ -110,8 +108,8 @@ export default {
     getData() {
       this.tableLoading = true
       getOutputPlan({
-        'partOutputPlanReqDTO.purchaseProjectId': this.detailInfo.purchasingProjectId,
-        'partOutputPlanReqDTO.year': moment(this.detailInfo.timeToMarket).year() + 1
+        'purchaseProjectId': this.detailInfo.purchasingProjectId,
+        'year': moment(this.detailInfo.timeToMarket).year() + 1
       })
         .then((res) => {
           this.tableTitle = cloneDeep(planTableTitle)
@@ -119,9 +117,9 @@ export default {
             {a: this.language('CHANLIANG_PC','产量（PC）')}
           ]
 
-          if (res.data && res.data.partRecordsResDTO) {
-            if (Array.isArray(res.data.partRecordsResDTO.outputPlanList)) {
-              res.data.partRecordsResDTO.outputPlanList.forEach((planData, index) => {
+          if (res.data && res.data) {
+            if (Array.isArray(res.data.outputPlanList)) {
+              res.data.outputPlanList.forEach((planData, index) => {
                 this.tableTitle.push({props: planData.year, name: planData.year, key: planData.year, editable: true, type: 'input', isPC: true})
                 this.tableData[0][planData.year] = planData.output
               })
