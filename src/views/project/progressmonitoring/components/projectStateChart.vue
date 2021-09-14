@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 16:55:21
- * @LastEditTime: 2021-09-03 15:45:17
+ * @LastEditTime: 2021-09-14 13:56:57
  * @LastEditors: Hao,Jiang
  * @Description: 项目状态图表
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/projectStateChart.vue
 -->
 <template>
   <div class="projectStateChart" :class="{'disabled': disabled}">
-    <div class="tit">{{(data && data.title )|| ''}}</div>
+    <div class="tit" v-html="(data && data.title) || ''"></div>
     <div class="projectStateChart-container">
       <div class="subtit" v-show="!disabled">{{language('XIANGMUFENGXIAN', '项目风险')}}</div>
       <div v-show="!disabled" :id="id" class="projectStateChart-charts"></div>
@@ -105,8 +105,12 @@ export default {
     text-align: center;
     font-size: 18px;
     font-weight: bold;
-    line-height: 21px;
+    // line-height: 21px;
     color: #0D0D0D;
+    ::v-deep.sup {
+      display: inline-block;
+      line-height: 10px;
+    }
   }
   .projectStateChart-container {
     box-sizing: border-box;
