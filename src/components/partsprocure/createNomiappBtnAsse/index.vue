@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-09-14 12:35:40
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-14 14:06:01
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
 -->
@@ -140,6 +140,8 @@ export default{
       })
     },
     created(){
+      if(this.detailData().carTypeProjectZh == '') return iMessage.warn(this.language('DANGQIANCHEXINGXIANGMU','当前车型项目为空，请先维护车型项目！'))
+      if(this.detailData().procureFactory == '') return iMessage.warn(this.language('DANGQIANCAIGGCWEIK','当前采购工厂为空，请先维护采购工厂！'))
       this.messageBox().then(()=>{
         this.loadind = true
         const sendData = {

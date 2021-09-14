@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-09-07 10:42:47
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-14 14:03:42
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
 -->
@@ -72,8 +72,7 @@ export default {
   },
   created() {
     this.getTableList()
-
-     const {query={}} = this.$route;
+    const {query={}} = this.$route;
     const {businessKey} = query;
 
     // 当类型为AEKO时 表头需要隐藏部分
@@ -84,8 +83,6 @@ export default {
   methods: {
     //获取表格数据
     getTableList() {
-      const rfqId = this.rfqId || this.$route.query.id
-      if (rfqId) {
         this.tableLoading = true
         this.parmarsNotHasRfq['size'] = this.page.pageSize
         this.parmarsNotHasRfq['current'] = this.page.currPage
@@ -97,7 +94,6 @@ export default {
           this.page.totalCount = res.total
           this.tableListData = res.data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) || []
         }).catch(() => this.tableLoading = false)
-      }
     },
     // 待选零件
     handleSelectionChange(e) {
