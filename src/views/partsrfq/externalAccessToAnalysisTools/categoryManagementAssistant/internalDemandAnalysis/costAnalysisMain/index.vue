@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-13 16:47:12
+ * @LastEditTime: 2021-09-14 15:15:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -92,9 +92,10 @@ export default {
     // 获取表格数据
     getTableData() {
       this.loading = true
+      const fsNumList = this.$route.query.fsNumList
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode,
-        fsList: JSON.parse(this.$route.query.fsNumList) || [],
+        fsList: fsNumList && fsNumList.length > 0 ? JSON.parse(fsNumList) : [],
       }
       listNomiData(params).then(res => {
         this.loading = false

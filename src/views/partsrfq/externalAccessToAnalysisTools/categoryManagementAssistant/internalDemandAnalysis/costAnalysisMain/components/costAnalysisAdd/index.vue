@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-13 16:48:57
+ * @LastEditTime: 2021-09-14 15:25:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -105,7 +105,11 @@ export default {
   },
   created() {
     // this.initTestData()
-    this.getTableData()
+    this.getTableData().then(res => {
+      this.$nextTick(_ => {
+        this.handleDefaultSelect()
+      })
+    })
   },
   methods: {
     // 初始化测试数据
@@ -128,6 +132,8 @@ export default {
           return
         }
         const params = {
+          pageNo: this.page.currPage,
+          pageSize: this.page.pageSize,
           categoryCode: this.$store.state.rfq.categoryCode,
           startDate: this.searchForm.date && this.searchForm.date.length > 0 ? this.searchForm.date[0] : null,
           endDate: this.searchForm.date && this.searchForm.date.length > 0 ? this.searchForm.date[1] : null,
@@ -140,21 +146,20 @@ export default {
             this.page.totalCount = res.total
             this.loading = false
             resolve(res.data)
-            this.$nextTick(_ => {
-              this.handleDefaultSelect()
-            })
           } else iMessage.error(res.desZh)
         })
       })
     },
-    // 处理默认选中
+    // 处理默认选中并排序
     handleDefaultSelect() {
-      console.log('operateLog', this.$route.query.operateLog);
       const operateLog = this.$route.query.operateLog ? JSON.parse(this.$route.query.operateLog) : null
       if(operateLog) {
         const fsList = operateLog.fsList
-        this.tableListData.map(item => {
-          if(fsList.indexOf(item.fsNum) > -1) this.$refs.multipleTable.$refs.dataTable.toggleRowSelection(item, true)
+        this.tableListData.map((item, index) => {
+          if(fsList.indexOf(item.fsNum) > -1) {
+            this.tableListData.unshift(this.tableListData.splice(index, 1)[0])
+            this.$refs.multipleTable.$refs.dataTable.toggleRowSelection(item, true)
+          }
         })
       }
     },
@@ -181,6 +186,7 @@ export default {
     handleSubmitSearch() {
       this.page.currPage = 1
       this.page.pageSize = 10
+      this.selection = []
       this.getTableData().then(res => {
         if (!res || res.length == 0) {
           iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
@@ -191,6 +197,7 @@ export default {
     handleSearchReset() {
       this.page.currPage = 1
       this.page.pageSize = 10
+      this.selection = []
       this.initSearchData()
       this.getTableData()
     },

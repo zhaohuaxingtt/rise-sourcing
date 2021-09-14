@@ -688,7 +688,6 @@ export default {
           }
         })
       }
-
     },
     async refresh () {
       // let res = await generateGroupId()
@@ -811,8 +810,9 @@ export default {
             // remark: this.$refs.bobAnalysis.remark
           };
         }
+        this.$refs.bobAnalysis.chargeRetrieve(tableParams);
       });
-      this.$refs.bobAnalysis.chargeRetrieve(tableParams);
+
     },
 
     async getChartData () {

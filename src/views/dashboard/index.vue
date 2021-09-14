@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-09-07 17:45:45
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-13 18:56:05
+ * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
 -->
@@ -202,7 +202,6 @@ export default {
     unJoinRFQURL() {
       return `/sourceinquirypoint/sourcing/partsprocure?status=11${this.userRoleParams()}`
     }
-
   },
   data() {
     return {
@@ -220,7 +219,7 @@ export default {
     // 专业采购员和前期采购员要传的参数
     userRoleParams(args = []) {
       let paramTxt = ''
-      const argsName = ['buyerName','linieName',]
+      const argsName = ['buyerName','linieName']
       if (args && args.length) {
         args.forEach((item, index) => {
           argsName[index] = item

@@ -137,10 +137,16 @@ export default {
       }
     },
     async handleSave() {
+      let page = ''
+      this.formGoup.pageList.forEach(item => {
+        if (item.code === this.form.page) {
+          page = item.name
+        }
+      })
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: 'allContainer',
-        pdfName: this.language('PINGLEIGUANLIZUSHOU', '品类管理助手') + '-' + this.language('CAIGOUJINGEZONGLAN', '采购金额总览') + this.form.page + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
+        pdfName: this.language('PINLEIGUANLIZHUSHOU', '品类管理助手') + '-' + this.language('CAIGOUJINGEZONGLAN', '采购金额总览') + '-' + page + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
       });
       let params = {
         categoryCode: this.form.categoryCode,

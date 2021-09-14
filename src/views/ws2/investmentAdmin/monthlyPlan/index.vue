@@ -237,7 +237,7 @@
 </template>
 
 <script>
-import { iSelect, iButton, iCard, iInput, icon } from "rise";
+import { iSelect, iButton, iCard, iInput, icon,iMessage } from "rise";
 import echarts from "@/utils/echarts";
 import { tableTitle, dataList } from "./components/data";
 import { iTableList } from '@/components';
@@ -254,7 +254,6 @@ import {
   importMonthData,
   refreshVersion
 } from "@/api/ws2/investmentAdmin";
-import { iMessage } from '../../../../components';
 import store from '@/store';
 import { getTousandNum, delcommafy } from "@/utils/tool";
 
