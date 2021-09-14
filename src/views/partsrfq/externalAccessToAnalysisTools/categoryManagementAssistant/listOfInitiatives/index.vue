@@ -275,7 +275,7 @@ export default {
       this.editStatus = false;
       delete this.$refs['headerNav'];
       Object.keys(this.$refs).map(item => {
-        this.$refs[item][0].handleShowHide(true);
+        this.$refs[item][0] && this.$refs[item][0].handleShowHide(true);
       });
       setTimeout(() => {
         this.downloadFile();
