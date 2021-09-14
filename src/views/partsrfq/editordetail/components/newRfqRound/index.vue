@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-09-03 12:50:40
+ * @LastEditTime: 2021-09-14 16:15:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -241,6 +241,7 @@ export default {
       }
     },
     handleSelectChange(val) {
+      this.setTableRowSelected()
       if (val === '00') {
         this.initTimeData()
       } else if (val === '01') {
@@ -250,10 +251,7 @@ export default {
     setTableRowSelected() {
       this.$nextTick(() => {
         this.tableListData.map(item => {
-          if (item.isChecked) {
-            this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(item, true)
-          }
-          if (item.isMbdl === '2' && this.roundsPhase === '01' && this.roundType === '00') {
+          if (item.isMbdl === '2') {
             this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(item, true)
           }
         })
