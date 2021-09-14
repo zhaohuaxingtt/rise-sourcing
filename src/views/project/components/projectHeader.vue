@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 10:14:57
+ * @LastEditTime: 2021-09-14 13:55:45
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -42,7 +42,7 @@ export default {
   methods: {
     // 跳转查看日志
     toLogPage() {
-      const id = 'scheduleReturn'
+      const id = 'scheduleRecordId'
       if (id) {
           window.open(`/#/log?recordId=${id}`, '_blank')
       }
