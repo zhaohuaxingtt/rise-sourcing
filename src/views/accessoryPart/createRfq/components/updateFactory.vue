@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:00:14
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:56:48
+ * @LastEditTime: 2021-09-14 12:30:39
  * @Description: 批量更新采购工厂
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\updateFactory.vue
 -->
@@ -68,7 +68,7 @@ export default {
     },
     handleConfirm() {
       this.loading = true
-      this.$emit('updateFactory', this.factory)
+      this.$emit('updateFactory', this.factory, this.fromGroup.PURCHASE_FACTORY.find(item => item.id === this.factory).name)
     },
     changeLoading(loading) {
       this.loading = loading
