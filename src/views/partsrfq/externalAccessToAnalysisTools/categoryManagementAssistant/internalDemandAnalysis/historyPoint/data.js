@@ -1,7 +1,7 @@
 /*
  * @Author: 舒杰
  * @Date: 2021-08-02 10:42:01
- * @LastEditTime: 2021-09-11 15:18:24
+ * @LastEditTime: 2021-09-14 11:10:37
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\data.js
@@ -10,8 +10,8 @@
 // 专项分析工具
 export const tableTitle = [
    { props: 'partsId', name: '零件号', key: 'LINGJIANHAO',name2:'零件号名称',key2:'LJMC', tooltip: true },
-   { props: 'fsnrGsnrNum', name: 'FS号', key: 'FSCODE',name2:'零件采购项目类型',key2:'LJCGXMLX', tooltip: true },
-   { props: 'categoryName', name: '材料组名称', key: 'CLZMC',name2:'工艺组名称',key2:'GYZMC', tooltip: true },
+   { props: 'fsnrGsnrNum', name: 'FS号', key: 'FSCODE',name2:'零件采购项目类型',key2:'LJCGXMLX', tooltip: true,width:180 },
+   { props: 'categoryName', name: '材料组名称', key: 'CLZMC',name2:'工艺组名称',key2:'GYZMC', tooltip: true,width:200},
    { props: 'rfqId', name: 'RFQ编号', key: 'RFQBH', tooltip: true },
    { props: 'partProjectName', name: '零件采购项目', key: 'LJCGXM', tooltip: true },
    { props: 'carTypeProj', name: '车型项目名称', key: 'CXXMMC', tooltip: true },

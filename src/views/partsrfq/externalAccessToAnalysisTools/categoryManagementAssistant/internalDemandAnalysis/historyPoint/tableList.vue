@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 14:15:26
- * @LastEditTime: 2021-08-12 16:56:54
+ * @LastEditTime: 2021-09-14 11:23:42
  * @LastEditors: 舒杰
  * @Description: SOURCING TABLE 封装
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\tableList.vue
@@ -60,6 +60,13 @@
 				</template>
 			</el-table-column>
 
+			<el-table-column v-else-if="item.key=='DDJE'" :key="$index" align="center" :label="language(item.key,item.name)" :prop="item.props"
+				:show-overflow-tooltip="item.tooltip" :width="item.width">
+				<template slot-scope="scope">
+					<span>{{getMoney(scope.row.nominatePrice)}}</span>
+				</template>
+			</el-table-column>
+
 			<el-table-column v-else :key="$index" align="center" :label="language(item.key,item.name)" :prop="item.props"
 				:show-overflow-tooltip="item.tooltip" :width="item.width">
 			</el-table-column>
@@ -68,6 +75,7 @@
 </template>
 
 <script>
+	import {getMoneyInfo} from './moneyComputation'
 	export default {
 		props: {
 			tableLoading: {
@@ -94,6 +102,9 @@
 		methods: {
 			handleSelectionChange(list) {
 				this.$emit('handleSelectionChange', list)
+			},
+			getMoney(num){
+				return getMoneyInfo(parseFloat(num))
 			}
 		}
 	}
