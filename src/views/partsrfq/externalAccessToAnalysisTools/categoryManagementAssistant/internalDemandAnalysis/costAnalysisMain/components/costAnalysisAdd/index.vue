@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-13 18:48:08
+ * @LastEditTime: 2021-09-14 15:25:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -132,6 +132,8 @@ export default {
           return
         }
         const params = {
+          pageNo: this.page.currPage,
+          pageSize: this.page.pageSize,
           categoryCode: this.$store.state.rfq.categoryCode,
           startDate: this.searchForm.date && this.searchForm.date.length > 0 ? this.searchForm.date[0] : null,
           endDate: this.searchForm.date && this.searchForm.date.length > 0 ? this.searchForm.date[1] : null,
