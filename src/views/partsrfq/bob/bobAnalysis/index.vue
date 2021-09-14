@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-09-13 09:58:28
+ * @LastEditTime: 2021-09-14 17:51:41
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -115,7 +115,8 @@ import {
   groupTerms,
   removeComponentFromGroup,
   groupedCancel,
-  groupedSubmit
+  groupedSubmit,
+  restore
 } from "@/api/partsrfq/bob";
 import { update } from "@/api/partsrfq/bob/analysisList";
 import {
@@ -326,7 +327,8 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
+      }).then(async () => {
+        await restore(this.SchemeId)
         groupTerms({
           analysisSchemeId: this.SchemeId
         }).then(res => {
@@ -403,7 +405,8 @@ export default {
       this.result = result
       this.activeName = activeName
       merge({
-        roundDetailIdList: this.result
+        roundDetailIdList: this.result,
+        comparedType: this.$attrs.chartType
       }).then(res => {
         if (res.code === '200') {
           this.groupby = false

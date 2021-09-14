@@ -220,11 +220,11 @@
                            @blur="closeDiv"
                            @change="changeType">
                     <el-option value="Best of Best"
-                               label="Best of Best"></el-option>
+                               label="Best of Best ▼"></el-option>
                     <el-option value="Best of Average"
-                               label="Best of Average"></el-option>
+                               label="Best of Average ▼"></el-option>
                     <el-option value="Best of Second"
-                               label="Best of Second"></el-option>
+                               label="Best of Second ▼"></el-option>
                   </iSelect>
                 </div>
               </el-col>
@@ -287,6 +287,7 @@
                        :reportSave="reportSave"
                        :label="label"
                        :bobType="bobType"
+                       :chartType="chartType"
                        :heightFlag="true"
                        :formUpdata="formUpdata"></bobAnalysis>
         </el-col>
@@ -766,7 +767,7 @@ export default {
         this.maxData = first
         console.log(this.maxData)
         this.chartType = allData.analysisDimension;
-        this.bobType = allData.defaultBobOptions;
+        this.bobType = allData.defaultBobOptionsForFront;
         if (this.chartType === 'combination') {
           this.form.combination = []
           let combinationData = this.Split(allData.combination, ",");
@@ -844,7 +845,7 @@ export default {
 
         this.maxData = first
         this.chartType = allData.analysisDimension;
-        this.bobType = allData.defaultBobOptions;
+        this.bobType = allData.defaultBobOptionsForFront;
         this.analysisName = allData.name
         this.$refs.bobAnalysis.remark = allData.remark
         this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
