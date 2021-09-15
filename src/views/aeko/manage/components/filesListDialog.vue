@@ -60,7 +60,7 @@ import {
 import {pageMixins} from '@/utils/pageMixins'
 import { filesTableTitle } from '../data'
 import tableList from "@/views/partsign/editordetail/components/tableList";
-import { downloadUdFile as downloadFile } from '@/api/file'
+import { downloadUdFile as downloadFile,downloadUdFileWithName } from '@/api/file'
 import { deleteFiles } from '@/api/aeko/manage'
 import {
     getFilesList,
@@ -162,7 +162,13 @@ export default {
              iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN','请选择需要下载的附件'));
             }else{
                 const list = selectItems.map((item)=>item.uploadId);
-                await downloadFile(list);
+                // 多文件打包的需要重命名
+                if(selectItems.length > 1){
+                    const { itemFile } = this;
+                    await downloadUdFileWithName(list,itemFile.aekoCode);
+                }else{
+                    await downloadFile(list);
+                }
             }
         },
         clearDialog() {

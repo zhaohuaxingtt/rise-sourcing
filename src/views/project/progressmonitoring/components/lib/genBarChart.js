@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-09-08 13:57:08
+ * @LastEditTime: 2021-09-14 15:33:19
  * @LastEditors: Hao,Jiang
  * @Description: 风险图的配置文件
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/components/barChart.js
@@ -14,115 +14,163 @@
  */
 export function generateOptions(params = {}, type = 1) {
     const colors = ['#4382FA', '#E30D0D','#FFCA53','#00BF87']
-    const seaiesItemArray1 = [
-        // 正常
-        {
-            key: 'value1',
-            name: '正常',
-            index: 0,
-            style: {
-                color: colors[3],
-                fontSize: 12
-            }
-        },
-        // 风险
-        {
-            key: 'value2',
-            name: '风险',
-            index: 1,
-            style: {
-                color: colors[2],
-                fontSize: 12
-            }
-        },
-        // 延误
-        {
-            key: 'value3',
-            name: '延误',
-            index: 2,
-            style: {
-                color: colors[1],
-                fontSize: 12
-            }
-        },
-        // 总计
-        {
-            key: 'value4',
-            name: '总计',
-            index: 3,
-            style: {
-                color: colors[0],
-                fontSize: 12
-            }
-        },
-    ]
-    const seaiesItemArray2 = [
-        // 按期
-        {
-            key: 'value6',
-            name: '按期',
-            index: 5,
-            style: {
-                color: colors[3],
-                fontSize: 12
-            }
-        },
-        // 超期
-        {
-            key: 'value5',
-            name: '超期',
-            index: 4,
-            style: {
-                color: colors[1],
-                fontSize: 12
-            }
-        },
-        // 总计
-        {
-            key: 'value4',
-            name: '总计',
-            index: 3,
-            style: {
-                color: colors[0],
-                fontSize: 12
-            }
-        },
-    ]
-    const seaiesItem = type === 1 ? seaiesItemArray1 : seaiesItemArray2
+    const seaiesList = {
+        // 通用指标，type:1【总计/延误/风险/正常】,含任务进度
+        '1': [
+            // 正常
+            {
+                key: 'value1',
+                name: '正常',
+                index: 0,
+                style: {
+                    color: colors[3],
+                    fontSize: 12
+                }
+            },
+            // 风险
+            {
+                key: 'value2',
+                name: '风险',
+                index: 1,
+                style: {
+                    color: colors[2],
+                    fontSize: 12
+                }
+            },
+            // 延误
+            {
+                key: 'value3',
+                name: '延误',
+                index: 2,
+                style: {
+                    color: colors[1],
+                    fontSize: 12
+                }
+            },
+            // 总计
+            {
+                key: 'value4',
+                name: '总计',
+                index: 3,
+                style: {
+                    color: colors[0],
+                    fontSize: 12
+                }
+            },
+        ],
+        // EM&OTS已完成指标，type:2【总计/超期/按期】
+        '2': [
+            // 按期
+            {
+                key: 'value6',
+                name: '按期',
+                index: 5,
+                style: {
+                    color: colors[3],
+                    fontSize: 12
+                }
+            },
+            // 超期
+            {
+                key: 'value5',
+                name: '超期',
+                index: 4,
+                style: {
+                    color: colors[1],
+                    fontSize: 12
+                }
+            },
+            // 总计
+            {
+                key: 'value4',
+                name: '总计',
+                index: 3,
+                style: {
+                    color: colors[0],
+                    fontSize: 12
+                }
+            },
+        ],
+        // 匹配异常指标，type:3【总计/待处理/已处理】
+        '3': [
+            // 已处理
+            {
+                key: 'value8',
+                name: '已处理',
+                index: 5,
+                style: {
+                    color: colors[3],
+                    fontSize: 12
+                }
+            },
+            // 待处理
+            {
+                key: 'value7',
+                name: '待处理',
+                index: 4,
+                style: {
+                    color: colors[1],
+                    fontSize: 12
+                }
+            },
+            // 总计
+            {
+                key: 'value4',
+                name: '总计',
+                index: 3,
+                style: {
+                    color: colors[0],
+                    fontSize: 12
+                }
+            },
+        ]
+    }
     
+    const seaiesItem = seaiesList[type] || []
+    
+    const seaiesValues = []
     const seaiesData = []
     const assistData = []
     const assistLineData = []
     seaiesItem.forEach((item, index) => {
+        // 总计
         const NumAll = params.value4 || 0
+        // 绘图差值（）
+        let diffValue = NumAll
+        // 柱子显示值
         let value = params[item.key] || '0'
+        // 辅助柱子的值（白色柱子）
         let assistValue = 0
+        // 辅助折线的值（灰色的线）
         let assistLineValue = value
+        
         // 辅助数据
-        if (![0, 3].includes(index)) {
-            if (value <= NumAll) {
-                // assistValue = NumAll - value
-                if (index === 1) {
-                    assistValue = NumAll - value - (type === 1 ? params.value3 : 0)
-                }
-                if (index === 2) {
-                    assistValue = NumAll - value
-                }
-                assistLineValue = assistValue
-            } else {
-                value = 0
-            } 
-        }
-        // assistLineValue特殊情况
-        if (type === 2 && index === 2) {
-            assistLineValue = value
-        }
+        const tempCount = []
+        // 数据与绘图顺序相反，需要reverse一下数组
+        const calcArray = window._.cloneDeep(seaiesItem).reverse()
+        calcArray.slice(1,index+1).forEach(c => {
+            tempCount.push(params[c.key])
+        })
+        // [计算绘图差]
+        index > 0 && (diffValue = window._.sum(tempCount))
 
-        // 主数据
+        // [计算辅助线]
+        assistLineValue = (index > 0 && index < seaiesItem.length - 1) ? window._.sum(seaiesValues) : value
+        // 辅助线不能大于总数值
+        assistLineValue = assistLineValue > NumAll ? NumAll : assistLineValue
+        // 上一个值为0，辅助线值为上一个辅助线记录值
+        assistLineValue = !Number(seaiesValues[index-1]) ? (assistLineData[index - 1] || 0) : assistLineValue
+
+        // [主数据]
         seaiesData.push({
             value,
             itemStyle: item.style
         })
+        // 缓存主数据做计算
+        seaiesValues.push(value)
+        // 辅助柱子的值
+        assistValue = NumAll - diffValue
+        // console.log(item.name, value, assistLineValue, assistLineData, assistLineData[index - 1])
         // 辅助柱状图数据
         assistData.push(assistValue)
         // 辅助线数据
@@ -149,7 +197,7 @@ export function generateOptions(params = {}, type = 1) {
             }
         },
         grid: {
-            left: 40,
+            left: type === 3 ? 55 : 40,
             right: 10,
             bottom: 10,
             top: 5,
@@ -192,7 +240,7 @@ export function generateOptions(params = {}, type = 1) {
                         color: 'rgba(0,0,0,0)'
                     }
                 },
-                data: assistData
+                data: assistData.reverse()
             },
             {
                 name: params.title,

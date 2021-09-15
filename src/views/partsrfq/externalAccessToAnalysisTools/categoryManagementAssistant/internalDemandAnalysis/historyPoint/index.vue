@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-13 14:08:37
+ * @LastEditTime: 2021-09-14 11:27:04
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
@@ -18,7 +18,7 @@
 		<div class="flex-between-center">
 			<iNavMvp lev="3" :list="tabList" @change="change" lang></iNavMvp>
 			<div class="flex-align-center">
-				<iSelect class="margin-right10" :placeholder='language("QXZGYSMC", "请选择供应商名称")' v-if="value==2" v-model="searchCriteria.supplierId">
+				<iSelect class="margin-right10" :placeholder='language("QXZGYSMC", "请选择供应商名称")' v-if="value==2" v-model="searchCriteria.supplierId" filterable>
 					<el-option :value="item.supplierId" :label="item.shortNameZh" v-for="(item,index) in supplierData" :key="index"></el-option>
 				</iSelect>
 				<iSelect class="margin-right10" :placeholder='language("QXZDDSJ", "请选择定点时间")' v-model="searchCriteria.latestYear">
@@ -72,6 +72,7 @@
 			await this.getNomiHistoryParamInit()
 			this.getDict()
 			this.getNomiSupplier()
+			this.value==1?this.$refs.pointTable.getTableList():this.$refs.supplierTable.getTableList()
 		},
 		watch: {
 			async "$store.state.rfq.categoryCode" (){
@@ -92,6 +93,9 @@
 			// tab切换
 			change(item){
 				this.value=item.value
+				this.$nextTick(()=>{
+					this.value==1?this.$refs.pointTable.getTableList():this.$refs.supplierTable.getTableList()
+				})
 			},
 			// 搜索
 			search(){

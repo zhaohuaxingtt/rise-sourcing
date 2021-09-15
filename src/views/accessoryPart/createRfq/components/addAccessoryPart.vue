@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 14:48:50
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-17 01:56:42
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-13 14:18:37
  * @Description: 添加配件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
 -->
@@ -97,7 +97,7 @@ export default {
   watch: {
     dialogVisible(val) {
       if(val) {
-        
+        this.page.currPage = 1
         this.getTableList()
         
       }

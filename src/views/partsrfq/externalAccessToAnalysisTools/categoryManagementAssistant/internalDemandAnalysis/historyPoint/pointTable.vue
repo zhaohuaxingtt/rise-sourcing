@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-08-12 17:44:31
+ * @LastEditTime: 2021-09-14 11:18:37
  * @LastEditors: 舒杰
  * @Description: 按定点记录查看
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\pointTable.vue
@@ -33,6 +33,7 @@
 	import {pageMixins} from '@/utils/pageMixins';
 	import {page} from "@/api/categoryManagementAssistant/internalDemandAnalysis/historyPoint.js"
 	import resultMessageMixin from '@/utils/resultMessageMixin';
+
 	export default{
 		mixins: [pageMixins,resultMessageMixin],
 		components:{
@@ -52,7 +53,7 @@
 			}
 		},
 		mounted () {
-			this.getTableList()
+			// this.getTableList()
 		},
 		methods:{
 			getTableList(){

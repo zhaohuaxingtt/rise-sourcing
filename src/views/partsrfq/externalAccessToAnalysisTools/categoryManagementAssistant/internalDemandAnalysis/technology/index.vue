@@ -1,33 +1,32 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-13 19:21:01
+ * @LastEditTime: 2021-09-14 11:32:52
  * @LastEditors: 舒杰
  * @Description: 技术路线
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\technology\index.vue
 -->
 <template>
-	<iCard class="margin-top20">
-		<!-- <template slot="header-control"> -->
-			<div class="margin-bottom20 clearFloat">
-				<span  class="font18 font-weight" >{{language("JISHULUXIAN","技术路线")}}</span>
-				<div class="floatright">
-					<iButton @click="down">{{ language("MUBANXIAZAI", "模板下载") }}</iButton>
-					<el-upload
-						class="upload"
-						:show-file-list="false"
-						name="multipartFile"
-						with-credentials
-						:on-success="handleAvatarSuccess"
-						:http-request="myUpload"
-						accept=".pdf">	
-						<iButton :loading="uploadButtonLoading">{{ language("SHUANGCHUAN", "上传") }}</iButton>
-					</el-upload>
-					<iButton @click="deleted">{{ language("SHANCHU", "删除") }}</iButton>
-					<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
-
-				</div>
+	<iCard class="margin-top20"
+	>
+	<div class="margin-bottom20 clearFloat">
+		<span class="font18 font-weight">{{ language("JISHULUXIAN","技术路线") }}</span>
+			<div class="floatright">
+				<iButton @click="down">{{ language("MUBANXIAZAI", "模版下载") }}</iButton>
+				<el-upload
+					class="upload"
+					:show-file-list="false"
+					name="multipartFile"
+					with-credentials
+					:on-success="handleAvatarSuccess"
+					:http-request="myUpload"
+					accept=".pdf">	
+					<iButton :loading="uploadButtonLoading">{{ language("SHUANGCHUAN", "上传") }}</iButton>
+				</el-upload>
+				<iButton @click="deleted">{{ language("SHANCHU", "删除") }}</iButton>
+				<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 			</div>
+		<!-- <template slot="header-control"> -->
 		<!-- </template> -->
 		<tableList 
 			:tableData="tableListData"
@@ -115,7 +114,7 @@
 			//删除
 			deleted(){
 				if(this.selectData.length>0){
-					iMessageBox(this.language('QRSCXZWJ','确认删除选中文件'),this.language('TISHI','提示')).then(()=>{
+					iMessageBox(this.language('QRSCXZWJ','确认删除选中文件?'),this.language('TISHI','提示')).then(()=>{
 						let idList=this.selectData.map(res=>{
 							return res.id
 						})

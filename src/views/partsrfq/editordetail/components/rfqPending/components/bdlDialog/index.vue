@@ -29,7 +29,6 @@
       </div>
       <tableList
         index
-        height="100%"
         class="table margin-top20"
         lang
         ref="table"

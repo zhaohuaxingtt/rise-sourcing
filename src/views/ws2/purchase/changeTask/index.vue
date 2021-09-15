@@ -263,7 +263,7 @@ export default {
         const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn
         const result4 = this.$i18n.locale === 'zh' ? res[4].desZh : res[4].desEn
         if (Number(res[0].code) === 0) {
-          this.moldInvestmentStatusList = res[0].data;
+          this.moldInvestmentStatusList = res[0].data.filter(item => (item.bmStatus === '4' || item.bmStatus === '5' || item.bmStatus === '7'))
           // this.moldInvestmentStatus = this.moldInvestmentStatusList.filter(a => a.bmStatus !== '7').map(b => b.bmStatus)
           //
           // this.departmentsList = res[0].data

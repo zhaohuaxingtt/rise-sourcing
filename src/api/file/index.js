@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-09-03 10:33:47
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-13 17:50:52
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\file\index.js
  */
@@ -25,6 +25,15 @@ export function downloadUdFile(params) {
         method: 'POST'
     })
 }
+
+// 自定义文件名下载
+export function downloadUdFileWithName(params,fileName) {
+    return fileRequst({
+        url: `/fileud/udDownWithName?${ Array.isArray(params) ? serialize(params.map(id => ({ fileIds: id })), Array) : 'fileIds=' + params }&fileName=${fileName}`,
+        method: 'POST'
+    })
+}
+
 
 //sourcing 获取文件列表不需要分页。
 export function getFile(params) {
