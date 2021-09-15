@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-14 20:04:14
+ * @LastEditTime: 2021-09-15 21:21:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -574,6 +574,8 @@
 							...res.data
 						}
 					}
+				}).catch(err=>{
+					iMessage.error(err.desZh)
 				});
 			},
 			// 查询fliter数据
