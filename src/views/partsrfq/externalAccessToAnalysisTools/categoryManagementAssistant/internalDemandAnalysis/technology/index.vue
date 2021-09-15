@@ -26,6 +26,7 @@
 				<iButton @click="deleted">{{ language("SHANCHU", "删除") }}</iButton>
 				<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 			</div>
+	</div>
 		<!-- <template slot="header-control"> -->
 		<!-- </template> -->
 		<tableList 
