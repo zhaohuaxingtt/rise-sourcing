@@ -246,8 +246,8 @@
         :selection="false"
       >
         <!-- BM单流⽔号 -->
-        <template #data1="scope">
-          <div class="table-link" @click="jumpchangeDetail(scope.row)">{{scope.row.data1}}</div>
+        <template #changeNum="scope">
+          <div class="table-link" @click="jumpchangeDetail(scope.row)">{{scope.row.changeNum}}</div>
         </template>
       </iTableList>
     </iCard>
@@ -335,8 +335,15 @@ export default {
 
   methods: {
     //  变更单列表跳转
-    jumpchangeDetail(){
-      let {href} = this.$router.resolve({path: `/purchase/changeTask`});
+    jumpchangeDetail(row){
+      let {href} = this.$router.resolve({
+        path: `/purchase/investmentList/changeTask/bmInfo`,
+        query: {
+          bmId: row.bmId,
+          bmChangeId: row.id,
+          changeNum: row.changeNum
+        }
+      });
       window.open(href, '_blank');
     },
 

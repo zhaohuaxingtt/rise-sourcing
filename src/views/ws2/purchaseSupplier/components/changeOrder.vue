@@ -428,7 +428,7 @@ export default {
         font-weight: bold;
       }
       span{
-        width: 200px;
+        min-width: 200px;
         margin-right: 60px;
         text-align: center;
         display: inline-block;
