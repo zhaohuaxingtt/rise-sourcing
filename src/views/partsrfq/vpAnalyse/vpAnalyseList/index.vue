@@ -64,7 +64,7 @@ export default {
     //点击新建按钮，跳转新建页面
     clickAdd() {
       const targetUrl = '/sourcing/partsrfq/vpAnalyCreat'
-      this.$router.push({
+      const newOpenAdd = this.$router.resolve({
         path: targetUrl,
         query: {
           round: this.round,
@@ -72,6 +72,7 @@ export default {
           materialGroup: this.searchData ? this.searchData.materialGroup : null,
         }
       })
+      window.open(newOpenAdd.href,'_blank')
     },
     //点击删除按钮
     clickDel() {
