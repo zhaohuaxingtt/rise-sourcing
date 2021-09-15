@@ -11,12 +11,12 @@
     <iButton :loading='loadind' @click="created">{{language('SHENGCDINGIDANSHENGQACC','生成定点申请单')}}</iButton>
     <iDialog :visible.sync="diologShow" :title="language('ZONGCHNEGGONGYS','总成供应商')" width='70%' style="margin-bottom:40px;">
       <div class="top">
-        <iFormGroup inline row='2' label-width='80px'>
+        <iFormGroup inline row='2' label-width='100px'>
           <iFormItem :label='language("ZHONGCHENGGYS","总成供应商")'>
             <iText>{{totalSupplier}}</iText>
           </iFormItem>
           <iFormItem :label='language("FENE","份额")'>
-            <iInput @input='numberProcessor(rate)' v-model="rate" />
+            <iInput @input='numberProcessor(rate)' @blur.native.capture="numberBlur" v-model="rate" />
           </iFormItem>
         </iFormGroup>
         <div class="btn">
@@ -127,6 +127,9 @@ export default{
     },
     numberProcessor(a){
       this.rate = numberProcessor(a,2,false) > 100 ? 100:numberProcessor(a,2,false)
+    },
+    numberBlur(){
+      this.rate =this.rate+'%'
     },
     partsAssemblyOutPlans(){
       return partsAssemblyOutPlan(this.detailData().id)

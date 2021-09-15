@@ -228,7 +228,7 @@ import { cloneDeep } from 'lodash'
 			},
 			getTargetPrice() {
 				getCfTargetApplyHistory({
-					fsNum: this.fsnrGsnrNum,
+					fsNums: [this.fsnrGsnrNum],
 					pageNo: this.page.currPage,
   				pageSize: this.page.pageSize
 				})
@@ -317,7 +317,7 @@ import { cloneDeep } from 'lodash'
 				this.applyLoading = true
 				const params = {
 					...this.targetprice.cfTargetPriceDetail,
-					purchasingProjectId: this.purchaseProjectId
+					purchasingProjectId: [this.purchaseProjectId]
 				}
 				applyCFTarget(params).then((res) => {
 					if (res?.result) {

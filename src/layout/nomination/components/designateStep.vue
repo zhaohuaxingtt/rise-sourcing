@@ -23,6 +23,7 @@
                 <iButton @click="gotoRsMainten" v-if="designateType === 'MEETING'">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
                 <iButton v-if="showExport" @click="doExport">{{language('LK_DAOCHU','导出')}}</iButton>
                 <iButton @click="submit" :loading="submitting">{{language('LK_TIJIAO','提交')}}</iButton>
+                <iButton v-if="designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton>
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview">{{language('LK_YULAN','预览')}}</iButton>
                 <logButton class="margin-left20" @click="log"  />
@@ -68,6 +69,7 @@
             @success="submit(...arguments, false)"
             @resetSubmitting="submitting = false"
             ref="mettingDialog" />
+        <meetingConclusionDialog :desinateId="desinateId" :visible.sync="meetingConclusionDialogVisible" @afterConfirm="afterConfirm" />
     </div>
 </template>
 
@@ -96,6 +98,7 @@ import {
     rsAttachExport
 } from '@/api/designate'
 import { applyStep } from './data'
+import meetingConclusionDialog from "./meetingConclusionDialog"
 
 export default {
     name:'designateStep',
@@ -104,7 +107,8 @@ export default {
         logButton,
         icon,
         iSelect,
-        mettingDialog
+        mettingDialog,
+        meetingConclusionDialog
     },
     props:{
         status: {
@@ -137,7 +141,7 @@ export default {
         }
 
     },
-     computed:{
+    computed:{
         phaseType(){
             return this.$store.getters.phaseType;
         },
@@ -163,7 +167,8 @@ export default {
             // 需要展示导出按钮的页面name
             supportExportPath: [
                 'designateDecisionRS'
-            ]
+            ],
+            meetingConclusionDialogVisible: false
         }
     },
     methods:{
@@ -540,6 +545,9 @@ export default {
             } catch (e) {
                 this.submitting = false
             }
+            
+        },
+        afterConfirm() {
             
         },
         // 定点导出---后端功能未做
