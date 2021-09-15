@@ -10,7 +10,7 @@
   <div class="mainBox">
     <iSearch @reset="handleSearchReset" @sure="handleSearch" :icon="false">
       <el-form label-position="top">
-        <el-row class="margin-bottom20">
+        <el-row >
           <!--材料组-->
           <el-form-item :label="$t('LK_CAILIAOZU')">
             <iInput
@@ -42,24 +42,26 @@
         </el-row>
       </el-form>
     </iSearch>
-    <iCard
-      :title="language('PIFENXIKU', 'Price Index分析库')"
-      class="margin-top20"
-    >
-      <template v-slot:header-control>
-        <div v-if="!editMode">
-          <iButton @click="clickRawMaterial">{{
-            language("YUANCAILIAOJIAGEZONGLAN", "原材料价格总览")
-          }}</iButton>
-          <iButton @click="clickEdit">{{ $t("LK_BIANJI") }}</iButton>
-          <iButton @click="clickAdd">{{ $t("TPZS.LK_CREATE") }}</iButton>
-          <iButton @click="clickDel">{{ $t("delete") }}</iButton>
+    <iCard class="margin-top20">
+          <!-- :title="language('PIFENXIKU', 'Price Index分析库')" -->
+        <div  class="margin-bottom20 clearFloat">
+          <span  class="font18 font-weight" >{{language('PIFENXIKU', 'Price Index分析库')}}</span>
+          <div class="floatright">
+          <div v-if="!editMode">
+            <iButton @click="clickRawMaterial">{{
+              language("YUANCAILIAOJIAGEZONGLAN", "原材料价格总览")
+            }}</iButton>
+            <iButton @click="clickEdit">{{ $t("LK_BIANJI") }}</iButton>
+            <iButton @click="clickAdd">{{ $t("TPZS.LK_CREATE") }}</iButton>
+            <iButton @click="clickDel">{{ $t("delete") }}</iButton>
+          </div>
+          <div v-else>
+            <iButton @click="cancelEdit">{{ $t("LK_QUXIAO") }}</iButton>
+            <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
+          </div>
+            </div>
         </div>
-        <div v-else>
-          <iButton @click="cancelEdit">{{ $t("LK_QUXIAO") }}</iButton>
-          <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
-        </div>
-      </template>
+
       <el-table
         tooltip-effect="light"
         ref="multipleTable"
@@ -516,13 +518,14 @@ export default {
     //点击方案名称，跳转总单价页面
     clickScheme (row) {
       const schemeUrl = '/sourcing/partsrfq/piAnalyseDetail'
-      this.$router.push({
+      const opneSchemeUrl = this.$router.resolve({
         path: schemeUrl,
         query: {
           schemeId: row.analysisSchemeId,
           round: this.round
         }
       })
+      window.open(opneSchemeUrl.href,'_blank')
     },
     //点击报告名称，打开报告预览弹窗
     clickReport (row) {
