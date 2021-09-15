@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-14 09:57:48
+ * @LastEditTime: 2021-09-15 17:29:37
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -47,7 +47,7 @@
               trigger="hover">
               <span slot="reference" >*</span>
             </el-popover>
-            {{`${pro.partNum} ${pro.partNameZh} ${pro.partNameDe}`}} 
+            {{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} 
           </el-checkbox> 
           <div class="productItem-top-targetList"> 
             <!---------------------------目标指示灯，1-正常 2-风险 3-延误-------------------------------------------> 
