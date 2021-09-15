@@ -178,3 +178,12 @@ export function updateNominate(data) {
       data,
   })
 }
+
+// 提交会议结论
+export function submitFlow(data) {
+  return requst({
+    url: "/nominate-apps/submitFlow",
+    method: "POST",
+    data
+  })
+}

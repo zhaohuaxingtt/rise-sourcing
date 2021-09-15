@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-09-13 14:32:49
+ * @LastEditTime: 2021-09-13 18:27:30
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -221,7 +221,7 @@ import {
   iSelect,
 } from 'rise';
 import tablelist from "./components/tableList";
-import { tableTitle, form, needTranslate, clickMessage, TAB} from "./components/data";
+import { tableTitle, form, needTranslate, clickMessage} from "./components/data";
 import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
@@ -264,8 +264,7 @@ export default {
       form: cloneDeep(form),
       fromGroup: {},
       tab: "source",
-      needTranslate: needTranslate,
-      list:TAB,
+      needTranslate: needTranslate
     };
   },
   created() {

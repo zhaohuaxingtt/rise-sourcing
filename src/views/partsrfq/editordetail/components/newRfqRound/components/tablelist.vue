@@ -78,7 +78,7 @@ export default {
     },
     selectable(row) {
       if(row.roundsPhase === '01' && this.roundType === '00') {
-        return !(row.isSelectMbdl && row.isMbdl === '2')
+        return !(row.isMbdl === '2')
       } else {
         return  true
       }

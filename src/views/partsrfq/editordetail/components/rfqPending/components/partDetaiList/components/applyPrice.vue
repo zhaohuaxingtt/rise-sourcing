@@ -79,9 +79,9 @@
 		},
 		props: {
 			handleSelectArr:{
-				type:Object,
+				type:Array,
 				default:()=>{
-					return {}
+					return []
 				}
 			}
 		},
@@ -125,7 +125,7 @@
 				this.saveLoading = true
 				const params = {
 					...this.targetprice.cfTargetPriceDetail,
-					purchasingProjectId: this.handleSelectArr[0].id
+					purchasingProjectId: this.handleSelectArr.map(item => item.id)
 				}
 				if (!params.applyType) {
 					iMessage.warn(this.language('QINGXUANZEMUBIAOJIALEIXING','请选择目标价类型'))
@@ -153,7 +153,7 @@
 				this.applyPriceShow = true
 				this.tableLoading = true
 				let data = {
-					fsNum: this.handleSelectArr[0].fsnrGsnrNum,
+					fsNums: this.handleSelectArr.map(item => item.fsnrGsnrNum),
 					pageNo: this.page.currPage,
 					pageSize: this.page.pageSize
 				};

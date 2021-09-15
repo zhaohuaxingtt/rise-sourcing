@@ -1,18 +1,18 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 16:55:21
- * @LastEditTime: 2021-09-03 15:45:17
+ * @LastEditTime: 2021-09-14 15:21:57
  * @LastEditors: Hao,Jiang
  * @Description: 项目状态图表
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/projectStateChart.vue
 -->
 <template>
   <div class="projectStateChart" :class="{'disabled': disabled}">
-    <div class="tit">{{(data && data.title )|| ''}}</div>
+    <div class="tit" v-html="(data && data.title) || ''"></div>
     <div class="projectStateChart-container">
       <div class="subtit" v-show="!disabled">{{language('XIANGMUFENGXIAN', '项目风险')}}</div>
       <div v-show="!disabled" :id="id" class="projectStateChart-charts"></div>
-      <div class="process" v-show="!disabled && !isEMOTSComplished">
+      <div class="process" v-show="!disabled && !(data && data.hideTaskProcess)">
         <div class="subtit">{{language('RENWUJINDU', '任务进度')}}</div>
         <ul>
           <li><icon symbol name="iconbaojiapingfengenzong-jiedian-lv" class="icon" /><span>{{data && data.taskProgressNormal || 0}}</span></li>
@@ -76,7 +76,7 @@ export default {
   methods: {
     init(params) {
       if (this.disabled || !params) return
-      const options = generateOptions(params, params.isEMOTSComplished ? 2 : 1)
+      const options = generateOptions(params, params.type)
       console.log('-mokeData-', options, this.id)
       const vm = echarts().init(document.getElementById(this.id));
       vm.clear()
@@ -105,8 +105,12 @@ export default {
     text-align: center;
     font-size: 18px;
     font-weight: bold;
-    line-height: 21px;
+    // line-height: 21px;
     color: #0D0D0D;
+    ::v-deep.sup {
+      display: inline-block;
+      line-height: 10px;
+    }
   }
   .projectStateChart-container {
     box-sizing: border-box;

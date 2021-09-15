@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-10 15:21:38
+ * @LastEditTime: 2021-09-14 09:57:48
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -415,8 +415,8 @@ export default {
           const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget] 
           const tableItem = {  
             // ...item, 
-            carTypeProId: this.cartypeProId, 
-            carTypeProject: this.carProjectName, 
+            cartypeProId: this.cartypeProId, 
+            cartypeProject: this.carProjectName, 
             partNum: item.partNum, 
             partName: item.partNameZh, 
             confirmDateDeadline: nextThreeWorkDay, 

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:59:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 16:47:06
+ * @LastEditTime: 2021-09-14 10:38:05
  * @Description: 发送FS确认弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\fsconfirm\index.vue
 -->
@@ -12,6 +12,7 @@
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="90%"
+    class="fsDialog"
   >
     <template slot="title">
       <div class="chosseProGroup">
@@ -77,6 +78,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.fsDialog {
+  ::v-deep .el-dialog {
+    min-height: 80%;
+    padding-bottom: 30px;
+  }
+}
 .chosseProGroup {
   display: flex;
   align-items: center;

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-01 10:14:57
+ * @LastEditTime: 2021-09-14 14:00:08
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -42,10 +42,9 @@ export default {
   methods: {
     // 跳转查看日志
     toLogPage() {
-      const id = 'scheduleReturn'
-      if (id) {
-          window.open(`/#/log?recordId=${id}`, '_blank')
-      }
+      const id = 'scheduleRecordId'
+      const router =  this.$router.resolve({path: `/log?recordId=${id}`})
+      window.open(router.href, '_blank')
     },
     gotoDBhistory() {
       const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`})

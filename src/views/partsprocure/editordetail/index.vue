@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-10 16:53:38
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-14 20:04:14
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -561,7 +561,9 @@
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
 					}
-					this.$refs.materialGroupInfo.getMaterialGroup()
+					if(this.detailData.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
+						this.$refs.materialGroupInfo.getMaterialGroup()
+					}
 				});
 			},
 			getProcureGroup() {
