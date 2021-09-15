@@ -12,7 +12,7 @@
       <iNavMvp class="margin-bottom30" lang @change="change" :list='navListLeft' routerPage lev="1" @message="clickMessage" />
       <iNavMvp class="margin-bottom30" lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
     </div>
-    <iSearch class="margin-bottom20" @sure="steeldemandcreation()" @reset='reset()' v-permission.auto="SOURCING_STEELDEMANCREATION_SEARCH|搜索">
+    <iSearch class="margin-bottom20" @sure="sure" @reset='reset()' v-permission.auto="SOURCING_STEELDEMANCREATION_SEARCH|搜索">
       <el-form>
         <template v-for='(items,index) in searchForm'>
           <el-form-item :label='language(items.i18nKey,items.i18nName)' :key="index">
@@ -136,6 +136,10 @@ export default{
           window.open(routeData.href, '_blank')
         })
       },
+      sure() {
+        this.page.currPage = 1
+        this.steeldemandcreation()
+      },
       /**
        * @description: 获取钢材列表数据。
        * @param {*}
@@ -183,7 +187,7 @@ export default{
         Object.keys(this.form).forEach(element => {
           this.form[element] = ''
         });
-        this.steeldemandcreation()
+        this.sure()
       },
       downloadTemplate(){
         downloadExcelBatch().then().catch(err=>{
@@ -234,7 +238,7 @@ export default{
   }
   .uploadfile{
     display: inline-block;
-    // margin: 10px 10px;
+    margin: 0 10px;
     &:nth-child(2){
       margin-right: 0px;
     }
