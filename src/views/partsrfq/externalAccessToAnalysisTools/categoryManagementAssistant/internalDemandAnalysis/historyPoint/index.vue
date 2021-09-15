@@ -7,10 +7,14 @@
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
 -->
 <template>
-	<iCard :title='language("DINGDIANLISHIJILV","定点历史记录")' class="margin-top20" id="historyPoint">
-		<template slot="header-control">
-			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
-		</template>
+	<iCard class="margin-top20" id="historyPoint">
+		<div class="margin-bottom20 clearFloat">
+			<!-- <span  class="font18 font-weight" >{{language("DINGDIANLISHIJILV","定点历史记录")}}</span> -->
+			<div class="floatright">
+							<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+
+			</div>
+		</div>
 		<div class="flex-between-center">
 			<iNavMvp lev="3" :list="tabList" @change="change" lang></iNavMvp>
 			<div class="flex-align-center">
