@@ -33,6 +33,7 @@
         <el-table
             :data="baseInfo.moldChangeSummaryVos"
             border
+            :height="tableHeight - 550"
             style="width: 100%">
           <el-table-column
               type="index"
@@ -246,8 +247,10 @@ import {
   downPdf
 } from "@/api/ws2/purchase/changeTask";
 import {getTousandNum} from "@/utils/tool";
+import { tableHeight } from "@/utils/tableHeight";
 
 export default {
+  mixins: [tableHeight],
   components: {
     iButton,
     iDialog,

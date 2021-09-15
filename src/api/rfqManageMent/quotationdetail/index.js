@@ -394,3 +394,16 @@ export function getSupplierToken(params) {
     method: 'GET',
   })
 }
+
+/**
+ * @description: 更新rfq
+ * @param {*} parmars
+ * @return {*}
+ */
+ export function quotations(parmars) {
+  return requstPart({
+      url: '/rfq-quotations',
+      method: 'POST',
+      data: parmars
+  })
+}

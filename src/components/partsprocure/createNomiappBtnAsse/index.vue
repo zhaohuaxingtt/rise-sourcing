@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-09-14 14:06:01
+ * @LastEditTime: 2021-09-14 20:22:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
@@ -33,7 +33,7 @@
 </template>
 <script>
 import {iButton,iDialog,iMessage,iInput,iFormItem,iFormGroup,iText,iMessageBox} from 'rise'
-import {nomiAutoPartsAssemblyCheck,nomiAutoPartsAssembly} from '@/api/partsprocure/editordetail'
+import {nomiAutoPartsAssemblyCheck,nomiAutoPartsAssembly,partsAssemblyOutPlan} from '@/api/partsprocure/editordetail'
 import tablelist from "pages/partsign/home/components/tableList";
 import { tableTitle } from './data'
 import {numberProcessor} from '@/utils' 
@@ -128,14 +128,23 @@ export default{
     numberProcessor(a){
       this.rate = numberProcessor(a,2,false) > 100 ? 100:numberProcessor(a,2,false)
     },
-    messageBox(){
+    partsAssemblyOutPlans(){
+      return partsAssemblyOutPlan(this.detailData().id)
+    },
+    async messageBox(){
       return new Promise(r=>{
-      iMessageBox('是否使用本体加工费的产量计划？').then(res=>{
-          this.isUserPackage = true
-          r()
-        }).catch(()=>{
-          this.isUserPackage = false
-          r()
+        this.partsAssemblyOutPlans().then(res=>{
+          if(res.data){
+            iMessageBox('是否使用本体加工费的产量计划？').then(res=>{
+              this.isUserPackage = true
+              r()
+            }).catch(()=>{
+              this.isUserPackage = false
+              r()
+            })
+          }else{
+            r()
+          }
         })
       })
     },

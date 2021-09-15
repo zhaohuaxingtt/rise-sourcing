@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-10 15:52:05
+ * @LastEditTime: 2021-09-14 17:42:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -186,6 +186,10 @@ export default {
     SchemeId: {
       type: String,
       default: ""
+    },
+    chartType: {
+      type: String,
+      default: ""
     }
     // tableList: {
     //   type: Object,
@@ -204,7 +208,6 @@ export default {
     },
   },
   mounted () {
-
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
     if (this.newBuild && this.entryStatus === 0) {

@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-09-14 13:32:58
+ * @LastEditTime: 2021-09-14 19:00:38
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -370,20 +370,15 @@ export default {
         "质量部门": "MQ",
         "技术部门": "EP"
       }
-
-      if (!list || !list.length) return
-
-      const req = this.list.map(item => ({
+      const req = list.map(item => ({
             deptNum: item.rateDepartNum,
             deptType: rateDepartMap[item.rateDepart], 
             graderId: item.raterId,
-            graderName: item.rater,
-            rfqId: this.rfqIds,
-            userId: store.state.permission.userInfo.id,
+            graderName: item.rater
       }))
       this.$refs.scoringDeptDialog.setSaveLoading(true)
       try {
-        const res = await ratingTranslate(req);
+        const res = await ratingTranslate({rfqId:this.rfqId,ratingInfoList:req});
         if (res.code == 200) {
           iMessage.success(this.language('LK_ZHUANPAICHENGGONG','转派成功'))
         } else {

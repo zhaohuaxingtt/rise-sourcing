@@ -141,3 +141,10 @@ export function renameComponentGroup(parmars) {
     data: parmars,
   })
 }
+// 重命名分组
+export function restore(parmars) {
+  return requst({
+    url: '/web/aon/bobRoundDetail/restore/' + parmars,
+    method: 'GET',
+  })
+}

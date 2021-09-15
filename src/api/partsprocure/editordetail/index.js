@@ -276,3 +276,9 @@ export function nomiAutoPartsAssembly(data){
 		data:data
   })
 }
+export function partsAssemblyOutPlan(purchaseProjectId){
+	return sourcing({
+    url: `/partsAssembly/partsAssemblyOutPlan/${purchaseProjectId}`,
+    method: "GET"
+  })
+}

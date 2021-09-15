@@ -940,6 +940,8 @@ export default {
         if (Number(res.code) === 0) {
           this.tableListData = res.data.map((item, index) => {
             item.index = index
+            item.partsShareNumNo = item.partsShareNum ? item.partsShareNum.split(',') : ''
+            item.assetTypeNumNo = item.assetTypeNum ? item.assetTypeNum.split('-')[0] : ''
             return item
           })
           this.tableListDataClone = cloneDeep(this.tableListData)
