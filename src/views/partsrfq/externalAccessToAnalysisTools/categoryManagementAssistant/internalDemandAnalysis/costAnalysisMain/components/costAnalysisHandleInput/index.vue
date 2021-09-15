@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 15:59:20
- * @LastEditTime: 2021-09-11 18:14:22
+ * @LastEditTime: 2021-09-15 10:38:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalyHandleInput.vue
@@ -21,7 +21,7 @@
       <div class="mainContent">
         <el-row :gutter="20">
           <el-col :span="16">
-            <costChar left="20%" :width="700" :height="600" :chartData="pieData"/>
+            <costChar left="5%" :width="800" :height="500" :chartData="pieData"/>
           </el-col>
           <el-col :span="8">
             <p class="formTitle">{{language('SHUZHI', '数值')}}</p>
