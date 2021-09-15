@@ -10,7 +10,7 @@ export const tableTitle = [
   { props: 'carTypeName', name: '单位：辆', key: 'TPZS.DWL', width: 100, tooltip: true },
   { props: 'actualProEndLastMonth', name: '', key: '' },
   { props: 'increaseRate', name: '涨幅', key: 'TPZS.ZF', width: 100, tooltip: true },
-  { props: 'lifeCycle', name: '生命周期', key: 'TPZS.SMZQ', width: 100, tooltip: true },
+  { props: 'lifeCycle', name: '生命周期', key: 'TPZS.SMZQ', width: 120, tooltip: true },
 ]
 export const partsTableTitle = [
   { props: 'partsId', name: '零件号', key: 'LK_SPAREPARTSNUMBER', width: 100, tooltip: true },

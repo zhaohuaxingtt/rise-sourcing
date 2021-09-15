@@ -6,7 +6,7 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard style="min-height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')+ `（截止${currentTime}）`" >
+  <iCard style="min-height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')+ `（截止${currentTime}）`">
     <template slot="header-control">
       <div class="header">
         <div class="flex-between-center-center margin-right40">
@@ -21,25 +21,18 @@
     </template>
     <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="false" @handleCurrentChange="handleCurrentChange">
       <template #actualProEndLastMonth="scope">
-        <div>
-          <el-row>
-            <el-col :span="20">
-              <div class="flex">
-                <div class="per-0" :style="'width:'+scope.row.planTotalProValue+'%'">
-                </div>
-                <div>
-                  {{scope.row.planTotalPro}}
-                </div>
-              </div>
-              <div class="flex">
-                <div class="per-1" :style="'width:'+scope.row.actualProEndLastMonthValue+'%'"></div>
-                <div>
-                  {{scope.row.actualProEndLastMonth}}
-                </div>
-              </div>
-            </el-col>
-            <el-col :span="2"></el-col>
-          </el-row>
+        <div class="flex">
+          <div class="per-0" :style="'width:'+scope.row.planTotalProValue+'%'">
+          </div>
+          <div>
+            {{scope.row.planTotalPro}}
+          </div>
+        </div>
+        <div class="flex">
+          <div class="per-1" :style="'width:'+scope.row.actualProEndLastMonthValue+'%'"></div>
+          <div>
+            {{scope.row.actualProEndLastMonth}}
+          </div>
         </div>
       </template>
       <template #increaseRate="scope">
@@ -47,7 +40,7 @@
         <span class="green" v-else>{{scope.row.increaseRate+'%'}}</span>
       </template>
       <template #lifeCycle="scope">
-        <el-progress color="#92B8FF" :stroke-width="10" :percentage="scope.row.lifeCycle"></el-progress>
+        <el-progress color="#92B8FF" :stroke-width="10" :percentage="parseInt(scope.row.lifeCycle)"></el-progress>
       </template>
     </tableList>
   </iCard>
@@ -71,7 +64,7 @@ export default {
       tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
-      currentTime: window.moment(new Date()).subtract(1,'months').startOf('month').format('YYYY-MM')
+      currentTime: window.moment(new Date()).subtract(1, 'months').startOf('month').format('YYYY-MM')
     }
   },
   // 监听属性 类似于data概念
@@ -89,16 +82,16 @@ export default {
         };
         const res = await getCarModelProjectList(req);
         if (res.result) {
-          this.handleCurrentChange(res.data[0])
           this.tableListData = res.data;
+          this.handleCurrentChange(res.data[0])
           var sum = 0
           // 求和-》百分比
-          res.data.forEach((item) => {
+          this.tableListData.forEach((item) => {
             sum = sum + item.actualProEndLastMonth
             sum = sum + item.planTotalPro
           })
-          res.data.map((item) => {
-            item.increaseRate = item.increaseRate.toFixed(2)//保留2位小数
+          this.tableListData.map((item) => {
+            item.increaseRate = parseFloat(item.increaseRate).toFixed(2)//保留2位小数
             item.actualProEndLastMonthValue = item.actualProEndLastMonth / sum * 100//计算百分比
             item.planTotalProValue = item.planTotalPro / sum * 100
             item.actualProEndLastMonth = String(item.actualProEndLastMonth).replace(/\B(?=(\d{3})+(?!\d))/g, ',')//千位符
