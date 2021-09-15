@@ -33,7 +33,7 @@
         <el-table
             :data="baseInfo.moldChangeSummaryVos"
             border
-            :height="tableHeight - 550"
+            :height="tableHeight - 450"
             style="width: 100%">
           <el-table-column
               type="index"
