@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-09-15 18:35:44
+ * @LastEditTime: 2021-09-15 21:01:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -348,7 +348,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
     const total = {}
     tableHeader.forEach(items=>{
       if(items.props == 'groupName'){
-        total["groupId"] = null
+        total["groupId"] = '-'
       }
       if(items.props == 'partNo'){
         total[items.props] = 'Subtotal'
@@ -419,7 +419,7 @@ export function kmOrbukeage(type,priceInfo,exampleDatas){
         exampleData[key] = ''
       }
       if(key == 'groupId'){
-        exampleData[key] = null
+        exampleData[key] = '-'
       }
     }
     for(let key in exampleData){
