@@ -99,6 +99,14 @@ export default [
               title: "项目管理-项目进度监控",
             },
             component: () => import("@/views/project/progressmonitoring/home"),
+          },
+          {
+            path: "partstask",
+            name: "progressmonitoring-parts-taskList",
+            meta: {
+              title: "项目管理-零件任务清单",
+            },
+            component: () => import("@/views/project/progressmonitoring/partsTaskList")
           }
         ]
       },
