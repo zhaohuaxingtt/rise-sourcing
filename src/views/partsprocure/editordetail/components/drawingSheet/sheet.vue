@@ -11,7 +11,7 @@
     <div class="body">
       <iFormGroup v-for="(chunk, $index) in items" :key="$index" :row="3" inline>
         <iFormItem v-for="item in chunk" :key="item.props" :label="language(item.key,item.name)">
-          <iText v-if="item.props === 'status'">{{ item.value | statusFilter }}</iText>
+          <iText v-if="item.props === 'status'">{{ item.value }}</iText>
           <iText v-else-if="item.props === 'createDate' || item.props === 'drawingDate'">{{ item.value | dateFilter }}</iText>
           <iText v-else-if="item.props === 'isSecondTier' || item.props === 'isBMG'">{{ item.value | boolFilter }}</iText>
           <iText v-else>{{ item.value }}</iText>
@@ -49,18 +49,6 @@ export default {
         })
       },
       deep: true
-    }
-  },
-  filters: {
-    statusFilter(val) {
-      const map = {
-        1: '未签收',
-        2: '签收',
-        3: '退回',
-        4: '中止'
-      }
-
-      return map[val] || ''
     }
   },
   data() {

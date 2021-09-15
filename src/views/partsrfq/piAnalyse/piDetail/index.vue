@@ -6,7 +6,7 @@
       <div class="floatright">
         <iButton @click="handleBack">{{ language('PI.PIFENXIKU', 'Price Index分析库') }}</iButton>
         <iButton @click="handlePreview">{{ language('PI.YULAN', '预览') }}</iButton>
-        <iButton @click="() => this.saveDialog = true">{{ language('PI.BAOCUN', '保存') }}</iButton>
+        <iButton @click="handleSaveButtonClick">{{ language('PI.BAOCUN', '保存') }}</iButton>
       </div>
     </div>
     <!--     零件列表-->
@@ -399,6 +399,7 @@ export default {
             } else {
               this.handleTableSaveError();
             }
+            this.resultMessage(res);
             this.saveDialog = false;
           });
         } else {
@@ -409,6 +410,7 @@ export default {
           } else {
             this.handleTableSaveError();
           }
+          this.resultMessage(res);
           this.saveDialog = false;
         }
       } finally {
@@ -567,6 +569,18 @@ export default {
             schemeId: this.currentTabData.analysisSchemeId,
           },
         });
+      }
+    },
+    // 保存按钮点击
+    handleSaveButtonClick() {
+      let res = '';
+      if (this.currentTab === CURRENTTIME) {
+        res = this.$refs.theCurrentTable.handleValidateTableFinish();
+      } else if (this.currentTab === AVERAGE) {
+        res = this.$refs.theAverageTable.handleValidateTableFinish();
+      }
+      if (res) {
+        this.saveDialog = true;
       }
     },
   },

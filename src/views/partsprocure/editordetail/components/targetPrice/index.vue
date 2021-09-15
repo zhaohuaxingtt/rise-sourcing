@@ -228,7 +228,7 @@ import { cloneDeep } from 'lodash'
 			},
 			getTargetPrice() {
 				getCfTargetApplyHistory({
-					fsNum: this.fsnrGsnrNum,
+					fsNums: [this.fsnrGsnrNum],
 					pageNo: this.page.currPage,
   				pageSize: this.page.pageSize
 				})

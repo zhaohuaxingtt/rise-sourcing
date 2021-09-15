@@ -47,3 +47,22 @@ export function getLastCarType(params) {
     params
   })
 }
+
+// 获取自动同步数据
+export function getAutoData(carTypeProjectId) {
+  return requst({
+    url: `/auto-car-data/getAutoSy/${carTypeProjectId}`,
+    method: 'GET',
+  })
+}
+
+
+// 更新自动同步数据
+export function updateAutoData(data) {
+  return requst({
+    url: `/auto-car-data/updateCarAuto`,
+    method: 'POST',
+    data
+  })
+}
+

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-14 13:57:25
+ * @LastEditTime: 2021-09-14 16:58:14
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -34,7 +34,7 @@
           <!--  -->
           <span class="switch">
             TIPS表
-            <el-switch v-model="showTips" width="35" disabled></el-switch>
+            <el-switch v-model="showTips" width="35" @change="confirmShowTips" disabled></el-switch>
           </span>
           
         </div>
@@ -47,7 +47,8 @@
             <projectStateChart
               :data="item"
               :id="item.id"
-              :disabled="item.disabled" />
+              :disabled="item.disabled"
+              :hideTaskProcess="item.hideTaskProcess" />
           </el-col>
         </el-row>
         <carEmpty v-else />
@@ -76,7 +77,7 @@ import carProject from '@/views/project/components/carprojectprogress'
 import carEmpty from '@/views/project/components/empty/carEmpty'
 import projectStateChart from './components/projectStateChart'
 import {pendingChartData} from './components/lib/data'
-import {getLastCarType, getProjectProgressMonitor} from '@/api/project/process'
+import {getLastCarType, getProjectProgressMonitor,getAutoData,updateAutoData} from '@/api/project/process'
 
 export default {
   components: { iCard, icon, carProject, iFormGroup, iFormItem, iInput, projectStateChart, carEmpty},
@@ -99,6 +100,40 @@ export default {
   },
   methods: {
     /**
+     * @description: TIPS表同步
+     * @param {*}
+     * @return {*}
+     */    
+    autoTips(){
+      const params = {
+        cartypeProId:this.carProject,
+        autoSyn:this.showTips,
+      }
+      updateAutoData(params).then(res => {
+        if (res.code != '200') {
+          this.showTips = false;
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    /**
+     * @description: 获取是否打开了TIPS表同步
+     * @param {*} carProjectId
+     * @return {*}
+     */    
+    async getAutoCarTips(carProjectId){
+      try {
+        const res = await getAutoData(carProjectId)
+        if (res.code === '200') {
+          this.showTips = res.data;
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    },
+    /**
      * @description: 获取最后一次查看的车型项目
      * @param {*}
      * @return {*}
@@ -113,7 +148,6 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       } catch (e) {
-        console.log('e',e)
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
@@ -150,8 +184,12 @@ export default {
             o.value3 = o.projectRiskDelay
             // 总计
             o.value4 = o.projectRiskSum
+            // 类型
+            o.type = 1
+            // 是否隐藏任务进度
+            o.hideTaskProcess = ['EM&OTS已完成', '匹配异常', '待释放'].includes(o.modelStatusName)
             if (index === data.length - 1) {
-              o.isEMOTSComplished = true
+              o.type = 2
               // 超期汇总
               o.value5 = o.projectRiskDelay
               // 按期汇总
@@ -170,20 +208,27 @@ export default {
         this.loading = false
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
-    }
-  },
-  watch: {
+    },
     /**
-     * @description: 是否显示tips切换按钮
-     * @param {*}
+     * @description: tips开关打开确认
+     * @param {*} state
      * @return {*}
      */    
-    showTips() {
-      this.data.map((o, index) => {
-        if (index <= 1) {
-          this.$set(o, 'disabled', !o.disabled)
+    confirmShowTips(state) {
+      // 确认
+      const code = state ? 'sureopentips' : 'sureclosetips'
+      const desc = state ? '您确定要打开TIPS开关？': '您确定要关闭TIPS开关？'
+      this.$confirm(this.language(code,desc)).then(confirmInfo => {
+        if (confirmInfo === 'confirm') {
+          this.data.map((o, index) => {
+            if (index <= 1) {
+              this.$set(o, 'disabled', !o.disabled)
+            }
+            return o
+          })
         }
-        return o
+      }).catch(()=> {
+        this.showTips = !state
       })
     }
   }

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-14 15:25:17
+ * @LastEditTime: 2021-09-15 10:04:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -61,8 +61,8 @@
         </tableList>
         <iPagination
           v-update
-          @size-change="handleSizeChange($event, getTableData)"
-          @current-change="handleCurrentChange($event, getTableData)"
+          @size-change="handleSizeChange($event, changePage)"
+          @current-change="handleCurrentChange($event, changePage)"
           background
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
@@ -121,6 +121,14 @@ export default {
         {id: 4, partsId: '123 456 789A', fsId: 'FS20-12345', supplierName: '上海汇众汽车有限公司', linie: 'XXXX', date: 'YYYY-MM-DD', carTypeProj: 'Tiguan L'},
       ]
       this.loading = false
+    },
+    // 改变分页
+    changePage() {
+      this.getTableData().then(res => {
+        this.$nextTick(_ => {
+          this.handleDefaultSelect()
+        })
+      })
     },
     // 获取表格数据
     getTableData() {

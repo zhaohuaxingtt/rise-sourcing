@@ -10,7 +10,7 @@
              @sure="handleSearch"
              :icon="false">
       <el-form label-position="top">
-        <el-row class="margin-bottom20">
+        <el-row>
           <!--材料组-->
           <el-form-item :label="$t('LK_CAILIAOZU')">
             <iInput :placeholder="$t('TPZS.QSRCLZBHMC')"
@@ -34,19 +34,24 @@
         </el-row>
       </el-form>
     </iSearch>
-    <iCard :title="$t('TPZS.BOBFXK')"
-           class="margin-top20">
-      <template v-slot:header-control>
-        <div v-if="!edit">
-          <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
-          <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
-          <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
+    <iCard class="margin-top20">
+        <div  class="margin-bottom20 clearFloat">
+          	<span  class="font18 font-weight" >{{$t('TPZS.BOBFXK')}}</span>
+          <div class="floatright">
+          <div v-if="!edit">
+            <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
+            <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
+            <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
+          </div>
+          <div v-else>
+            <iButton @click="cancelEditBob">{{ $t("LK_QUXIAO") }}</iButton>
+            <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
+          </div>
+
+          </div>
+      <!-- <template v-slot:header-control> -->
         </div>
-        <div v-else>
-          <iButton @click="cancelEditBob">{{ $t("LK_QUXIAO") }}</iButton>
-          <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
-        </div>
-      </template>
+      <!-- </template> -->
       <el-table tooltip-effect='light'
                 ref="multipleTable"
                 :data="tableListData"
@@ -456,7 +461,7 @@ export default {
         }).then((res) => {
           // this.$store.dispatch('setSchemeId', res.data);
           if (res.code === '200') {
-            this.$router.push({
+            const newBob = this.$router.resolve({
               path: '/sourcing/partsrfq/bobNew',
               query: {
                 chemeId: res.data,
@@ -464,6 +469,7 @@ export default {
                 groupId: this.groupId
               },
             })
+            window.open(newBob.href,'_blank')
             loading.close()
           } else {
             iMessage.error(res.desZh);
@@ -474,13 +480,14 @@ export default {
           loading.close()
         });
       } else {
-        this.$router.push({
+        const newBob =this.$router.resolve({
           path: "/sourcing/partsrfq/bobNew",
           query: {
             newBuild: true,
             groupId: this.groupId
           },
         });
+        window.open(newBob.href,'_blank')
         loading.close();
       }
     },
@@ -589,14 +596,15 @@ export default {
     clickName (val) {
       console.log(val) 
       if (val.fileType == this.$t('TPZS.SCHEME_TYPE')) {
-        this.$router.push({
+        const analysisName = this.$router.resolve({
           path: "/sourcing/partsrfq/bobNew",
           query: {
             chemeId: val.id,
             rfqId: val.rfqNo || '',
             groupId: this.groupId
           },
-        });
+        })
+        window.open(analysisName.href,'_blank')
       } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {
         this.reportTitle = val.name
         this.reportVisible = true;
