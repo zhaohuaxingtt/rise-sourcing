@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-24 15:55:46
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-02 10:56:13
+ * @LastEditTime: 2021-09-15 10:01:28
  * @Description: 财务目标价相关Api
  * @FilePath: \front-web\src\api\financialTargetPrice\index.js
  */
@@ -111,10 +111,11 @@ export function applyCFTarget(params) {
 }
 
 // 查询申请记录
-export function getCfTargetApplyHistory({fsNum, pageNo, pageSize}) {
+export function getCfTargetApplyHistory(data) {
   return requst({
-    url: `/cf-target-price-applies/apply-cf-target/list/${fsNum}/${pageNo}/${pageSize}`,
-    method: 'GET'
+    url: `/cf-target-price-applies/apply-cf-target/list`,
+    method: 'POST',
+    data
   })
 }
 
