@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-14 15:15:27
+ * @LastEditTime: 2021-09-15 10:28:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -21,7 +21,7 @@
       <div class="mainContent">
         <el-row :gutter="20">
           <el-col :span="10">
-            <costChar left="40%" :width="700" :chartData="pieData"/>
+            <costChar left="-5%" :width="540" :height="400" :chartData="pieData"/>
           </el-col>
           <el-col :span="14">
             <tableList

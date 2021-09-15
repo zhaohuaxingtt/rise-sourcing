@@ -20,7 +20,7 @@
 					with-credentials
 					:on-success="handleAvatarSuccess"
 					:http-request="myUpload"
-					accept=".pdf">	
+					accept=".pdf">
 					<iButton :loading="uploadButtonLoading">{{ language("SHUANGCHUAN", "上传") }}</iButton>
 				</el-upload>
 				<iButton @click="deleted">{{ language("SHANCHU", "删除") }}</iButton>
@@ -28,7 +28,7 @@
 			</div>
 		<!-- <template slot="header-control"> -->
 		<!-- </template> -->
-		<tableList 
+		<tableList
 			:tableData="tableListData"
 			:tableTitle="tableTitle"
 			:tableLoading="tableLoading"
@@ -48,7 +48,8 @@
 			:layout="page.layout"
 			:current-page='page.currPage'
 			:total="page.totalCount"/>
-	</iCard>
+  </div>
+  </iCard>
 </template>
 
 <script>
