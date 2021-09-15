@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-09-13 17:16:45
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-15 10:34:49
+ * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
@@ -90,7 +90,7 @@ export default {
       if(this.$store.state.rfq.categoryCode){
         switch (item.key) {
           // 成本结构
-          case 'CHENGBENZUCHENG':
+          case 'CHENGBENJIEGOU':
             this.getCostData().then(res => {
               if(res.analysisType == "1") {
                 //跳转系统
