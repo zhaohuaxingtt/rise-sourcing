@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-09-15 20:48:14
+ * @LastEditTime: 2021-09-15 21:09:52
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -307,7 +307,7 @@ export default{
       if(column.label == 'EBR' && rowIndex <= this.tableData.length - 4){
         return 'rightBorder'
       }
-      if(column.label == 'Group' && row.groupId){
+      if(column.label == 'Group' && row.groupId && row.groupId != '-'){
         return 'bgcoor'
       }
       if(this.vm.reRenderLastChild.name == removeKeysNumber(column.label)){
