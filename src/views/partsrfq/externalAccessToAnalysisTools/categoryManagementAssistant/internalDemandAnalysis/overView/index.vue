@@ -9,7 +9,7 @@
 <template>
    <el-row gutter="20">
       <el-col :span="8" v-for="(item,index) in list" :key="index">
-         <div @click="onJump(item)" class="cursor">
+         <div @click="onJump(item)" class="cursor cardBox" >
             <iCard class="icard" :title='language(item.key,item.name)'>
                <div class="img">
                   <img :src="item.image">
@@ -142,6 +142,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+   .cardBox {
+      margin: 10px 0;
+   }
    .icard{
       height: 406px;
       margin-bottom: 20px;
