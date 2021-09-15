@@ -28,14 +28,14 @@
 				</el-radio-group>
         <el-form-item :label="`${language('XUANZEHUIYIJIEGUO','选择会议结果')}:`">
           <el-radio-group v-model="meetingResult">
-					<el-radio
-            v-for="(item, index) in meetingResultArray"
-            :key="index"
-            :label="item.id"
-            size="small"
-            >{{language(item.key, item.name)}}</el-radio>
-				</el-radio-group>
-      </el-form-item>
+            <el-radio
+              v-for="(item, index) in meetingResultArray"
+              :key="index"
+              :label="item.id"
+              size="small"
+              >{{language(item.key, item.name)}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
       </el-form-item>
       </el-form>
       <div class="dialog-form-sbtn">
@@ -171,7 +171,7 @@ export default {
       const data = {
           nominateIdArr:[Number(desinateId)],
           // nominationType: this.$store.getters.nominationType || '',
-          meetingResult: this.meetingResult,
+          // meetingResult: this.meetingResult,
           meetingType: this.meetingType,
           meetingId: meetingIds && Number(meetingIds[0]) || '',
       }
