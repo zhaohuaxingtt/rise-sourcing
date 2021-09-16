@@ -1,16 +1,16 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-14 11:27:04
+ * @LastEditTime: 2021-09-16 14:23:56
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
 -->
 <template>
 	<iCard :title='language("DINGDIANLISHIJILV","定点历史记录")' class="margin-top20" id="historyPoint">
-		<template slot="header-control">
+		<!-- <template slot="header-control">
 			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
-		</template>
+		</template> -->
 		<div class="flex-between-center">
 			<iNavMvp lev="3" :list="tabList" @change="change" lang></iNavMvp>
 			<div class="flex-align-center">
@@ -24,6 +24,7 @@
 				<iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
 				<iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
 				<iButton @click="exportTemplate">{{ language("DAOCHU", "导出") }}</iButton>
+				<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 			</div>
 		</div>
 		<pointTable v-if="value==1" ref="pointTable" :searchCriteria="searchCriteria"></pointTable>
