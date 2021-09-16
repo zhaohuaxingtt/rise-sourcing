@@ -296,7 +296,7 @@ export default {
   methods: {
     getDict() {
       selectDictByKeys([
-        { keys: "RFQ_RATE_STATUS" },
+        { keys: "RfqRateStatus" },
         { keys: "CF_APPLY_STATUS" },
         { keys: "HEAVY_ITEM" }
       ])
@@ -304,35 +304,44 @@ export default {
         if (res.code == 200) {
           Object.keys(res.data).forEach(key => {
             switch(key) {
-              case "RFQ_RATE_STATUS":
-                this.rfqRateStatusOptions = res.data["RFQ_RATE_STATUS"].map(item => ({
-                  ...item,
-                  key: item.code,
-                  value: item.code,
-                  zh: item.name,
-                  en: item.nameEn,
-                  de: item.nameDe
-                }))
+              case "RfqRateStatus":
+                this.rfqRateStatusOptions = 
+                  Array.isArray(res.data["RfqRateStatus"]) ? 
+                  res.data["RfqRateStatus"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
                 break
               case "CF_APPLY_STATUS":
-                this.cfApplyStatusOptions = res.data["CF_APPLY_STATUS"].map(item => ({
-                  ...item,
-                  key: item.code,
-                  value: item.code,
-                  zh: item.name,
-                  en: item.nameEn,
-                  de: item.nameDe
-                }))
+                this.cfApplyStatusOptions = 
+                  Array.isArray(res.data["CF_APPLY_STATUS"]) ? 
+                  res.data["CF_APPLY_STATUS"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
                 break
               case "HEAVY_ITEM":
-                this.heavyItemOptions = res.data["HEAVY_ITEM"].map(item => ({
-                  ...item,
-                  key: item.code,
-                  value: item.code,
-                  zh: item.name,
-                  en: item.nameEn,
-                  de: item.nameDe
-                }))
+                this.heavyItemOptions = 
+                  Array.isArray(res.data["HEAVY_ITEM"]) ? 
+                  res.data["HEAVY_ITEM"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
                 break
               default:
             }
