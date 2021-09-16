@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 13:59:40
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-13 10:44:10
+ * @LastEditTime: 2021-09-16 14:22:33
  * @Description: 零件排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\index.vue
 -->
@@ -32,7 +32,7 @@
         </div>
       </div>
       <carEmpty v-show="!carProject" :isColumn="true" />
-      <partList v-show="carProject" ref="partList" :isSop="isSop" :collapseValue="collapseValue" :cartypeProId="carProject" :carProjectName="carProjectName" />
+      <partList v-show="carProject" ref="partList" :isSop="isSop" :collapseValue="collapseValue" :cartypeProId="carProject" :carProjectName="carProjectName" @reSetSearchParams="reSetSearchParams" />
     </iCard>
   </iPage>
 </template>
@@ -66,6 +66,9 @@ export default {
     this.init()
   },
   methods: {
+    reSetSearchParams() {
+      this.searchParams = {}
+    },
     querySearchPartNameDe(queryString, cb) {
       var results = []
       if(this.$refs.partList?.getFitPartNameDeList) {

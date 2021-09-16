@@ -92,8 +92,10 @@
       <!-- 定点单号 -->
       <template #nominateName="scope">
         <span class="flexRow">
-            <span class="openLinkText cursor "  @click="viewRsSheetDetail(scope.row)"> {{ scope.row.nominateName}}</span>
-            <span class="icon-gray  cursor " v-if="scope.row.nominateName"  @click="viewRsSheetDetail(scope.row)">
+          <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
+            <span class="openLinkText cursor leftRow"  @click="viewRsSheetDetail(scope.row)"> {{ scope.row.nominateName}}</span>
+          </el-tooltip>
+            <span class="icon-gray  cursor rightRow" v-if="scope.row.nominateName"  @click="viewRsSheetDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
             </span>
@@ -484,6 +486,18 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    .leftRow{
+      width:85%;
+      text-align: left;
+      white-space:nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      
+    }    
+    .rightRow{
+      width:5%
+    }
   }
   .icon-gray:hover{
     cursor: pointer;

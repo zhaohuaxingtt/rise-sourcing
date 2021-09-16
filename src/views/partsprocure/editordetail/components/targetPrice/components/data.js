@@ -34,6 +34,11 @@ export const targeTitle = [{
 	name: '申请状态',
 	key:'LK_SHENQINGZHUANGTAI'
 },
+{
+	props: 'approveStatusDesc',
+	name: '审批状态',
+	key:'SHENPIZHUANGTAI'
+},
 ]
 export const rwTitle = [{
 	props: 'applyDate',
