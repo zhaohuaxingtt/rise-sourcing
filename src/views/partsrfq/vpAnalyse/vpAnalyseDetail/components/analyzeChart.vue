@@ -46,18 +46,18 @@
           <!--          实际累计产量（截至上月末）-->
           <iLabel :label="$t('TPZS.SJLJCL')" slot="label" class="labelWidth"></iLabel>
           <iText class="valueWidth">{{ toThousands(dataInfo.actualProEndLastMonth) }}</iText>
-          <template v-if="dataInfo.proGrowthRate > 0">
+          <template v-if="dataInfo.proGrowthRate2 > 0">
             <div class="flex-align-center">
               <!--              <icon symbol name="iconshangsheng-VP" class="margin-left15 margin-right5"></icon>-->
               <img src="./images/upload.png" class="margin-left15 margin-right5" style="width: 10px; height: 10px">
-              <span class="up">{{ toFixedNumber(dataInfo.proGrowthRate, 2) }}%</span>
+              <span class="up">{{ toFixedNumber(dataInfo.proGrowthRate2, 2) }}%</span>
             </div>
           </template>
-          <template v-else-if="dataInfo.proGrowthRate < 0">
+          <template v-else-if="dataInfo.proGrowthRate2 < 0">
             <div class="flex-align-center">
               <!--              <icon symbol name="iconxiajiang-VP" class="margin-left15 margin-right5"></icon>-->
               <img src="./images/down.png" class="margin-left15 margin-right5" style="width: 10px; height: 10px">
-              <span class="down">{{ toFixedNumber(dataInfo.proGrowthRate, 2) }}%</span>
+              <span class="down">{{ toFixedNumber(dataInfo.proGrowthRate2, 2) }}%</span>
             </div>
           </template>
 
