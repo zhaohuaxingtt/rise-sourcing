@@ -55,11 +55,19 @@
                 </div>
                 <p v-if="index+1 !== applyStep.length" class="margin-bottom30" >
                     <!-- 正在进行中 -->
-                    <icon v-if="phaseType == item.id" symbol name="icondingdianguanlizhou-zhengzaijinhang" class="step-between-icon"></icon>
+                    <span v-if="phaseType == item.id" v-html="svgList['icondingdianguanlizhou-zhengzaijinhang']"></span>
                     <!-- 已完成 -->
-                    <icon v-else-if="phaseType > item.id" symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon>
+                    <span v-else-if="phaseType > item.id" v-html="svgList['iconliuchengjiedianyiwancheng1']"></span>
+                     <!-- 未完成 -->
+                     <span v-else v-html="svgList['icondingdianguanlizhou-weiwancheng']"></span>
+
+
+                    <!-- 正在进行中 -->
+                    <!-- <icon v-if="phaseType == item.id" symbol name="icondingdianguanlizhou-zhengzaijinhang" class="step-between-icon"></icon> -->
+                    <!-- 已完成 -->
+                    <!-- <icon v-else-if="phaseType > item.id" symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon> -->
                     <!-- 未完成 -->
-                    <icon v-else symbol name="icondingdianguanlizhou-weiwancheng" class="step-between-icon"></icon>
+                    <!-- <icon v-else symbol name="icondingdianguanlizhou-weiwancheng" class="step-between-icon"></icon> -->
                 </p>
             </div>
         </div>
@@ -97,7 +105,7 @@ import {
     updateNominate,
     rsAttachExport
 } from '@/api/designate'
-import { applyStep } from './data'
+import { applyStep,svgList } from './data'
 import meetingConclusionDialog from "./meetingConclusionDialog"
 
 export default {
@@ -108,7 +116,7 @@ export default {
         icon,
         iSelect,
         mettingDialog,
-        meetingConclusionDialog
+        meetingConclusionDialog,
     },
     props:{
         status: {
@@ -168,7 +176,8 @@ export default {
             supportExportPath: [
                 'designateDecisionRS'
             ],
-            meetingConclusionDialogVisible: false
+            meetingConclusionDialogVisible: false,
+            svgList:svgList,
         }
     },
     methods:{

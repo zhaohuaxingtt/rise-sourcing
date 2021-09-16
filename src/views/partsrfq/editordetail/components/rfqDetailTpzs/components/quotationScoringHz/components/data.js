@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-09-14 15:09:46
+ * @LastEditTime: 2021-09-15 21:01:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -15,8 +15,8 @@ export const fstitle = [
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'cfPartAPrice',label:'CF Part A Price',i18n:'',width:'130',tooltip:false},
-  {type:'',props:'cfPartBPrice',label:'CF Part B Price',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'130',tooltip:false},
+  {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false},
   {type:'',props:'ebr',label:'EBR',i18n:'',width:'100',tooltip:false}
@@ -27,8 +27,8 @@ export const gstitle = [
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'cfPartAPrice',label:'F-target A Price',i18n:'',width:'130',tooltip:false},
-  {type:'',props:'cfPartBPrice',label:'F-target B Price',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'130',tooltip:false},
+  {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false},
   {type:'',props:'currentSupplier',label:'CurrentSupplier',i18n:'',width:'100',tooltip:false},
