@@ -79,9 +79,9 @@ export default {
     //勾选逻辑，如果是谈判轮，不管哪个轮次都可以取消，询价轮必须勾选，不管是那个轮次。（Mbdl）
     selectable(row) {
       if(row.isNego) { //谈判轮
-        return false
+        return true
       } else { //询价轮
-        return  row.isMbdl === '2'
+        return  !row.isMbdl === '2'
       }
     }
   }
