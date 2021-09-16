@@ -66,8 +66,9 @@
           :lang="true"
           @handleSelectionChange="handleSelectionChange"
         >
-          <template #date="scope">
-            <span>{{ scope.row.date | dateFilter("YYYY-MM-DD") }}</span>
+          <template #activeTime="scope">
+            <span>{{ scope.row.activeTime }}</span>
+             <!-- | dateFilter("YYYY-MM-DD") -->
           </template>
           <template #log="scope">
             <span class="link" @click="log(scope.row)">{{ language("CHAKAN", "查看") }}</span>
