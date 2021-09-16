@@ -189,7 +189,7 @@ export default {
                     if(code ==200 ){
                         data.map((item)=>{
                         item.label = item.deptNum;
-                        item.value = item.deptNum;
+                        item.value = item.id;
                         })
                         this.commoditySelectOptions = data;
                     }else{
