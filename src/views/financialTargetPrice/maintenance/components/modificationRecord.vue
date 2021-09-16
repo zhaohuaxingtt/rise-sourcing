@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 15:55:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 15:36:43
+ * @LastEditTime: 2021-09-16 16:49:01
  * @Description: 修改记录弹窗
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\components\modificationRecord.vue
 -->
@@ -30,14 +30,14 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput, iSearch, iPagination, iMessage } from 'rise'
+import { iDialog, iPagination, iMessage } from 'rise'
 import tableList from '../../components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { modifyTableTitle } from '../data'
 import { getUpdateHistoryList } from "@/api/financialTargetPrice/index"
 export default {
   mixins: [pageMixins],
-  components: { iDialog, iButton, iSelect, iInput, tableList, iSearch, iPagination },
+  components: { iDialog, tableList, iPagination },
   props: {
     dialogVisible: { type: Boolean, default: false },
     id: {type:String}
