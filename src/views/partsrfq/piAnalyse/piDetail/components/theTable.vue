@@ -252,9 +252,8 @@ export default {
     handleAllSaveData() {
       const resTableData = this.handleSystemMatchData({tableListData: this.tableListData});
       const hideTableData = this.handleSystemMatchData({tableListData: this.hideTableData});
-      const resTableValidate = this.validateFinish(resTableData);
-      const hideTableValidate = this.validateFinish(hideTableData, true);
-      if (resTableValidate && hideTableValidate) {
+      const res = this.handleValidateTableFinish();
+      if (res) {
         const tableList = resTableData.concat(hideTableData);
         return {
           tableList,
@@ -264,6 +263,13 @@ export default {
           endTime: this.endTime,
         };
       }
+    },
+    handleValidateTableFinish() {
+      const resTableData = this.handleSystemMatchData({tableListData: this.tableListData});
+      const hideTableData = this.handleSystemMatchData({tableListData: this.hideTableData});
+      const resTableValidate = this.validateFinish(resTableData);
+      const hideTableValidate = this.validateFinish(hideTableData, true);
+      return resTableValidate && hideTableValidate;
     },
     validateFinish(resTableData, isHideTable = false) {
       let validateStatus = true;

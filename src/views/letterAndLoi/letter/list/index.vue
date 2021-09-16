@@ -23,8 +23,11 @@
             </el-form-item>
         </el-form>
     </iSearch>
-    <iCard class="contain margin-top20">
-        <template v-slot:header-control>
+    <iCard >
+        <div class="margin-bottom20 clearFloat">
+
+        <span class="font18 font-weight">{{ language( 'DINGDIANXIN', '定点信' ) }}</span>
+        <div class="floatright">
             <iButton v-permission.auto="LK_LETTER_LIST_QUERENBINGTIJIAO|确认并提交" :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_LINIEQUEREN|LINIE确认" :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_LINIETUIHUI|LINIE退回" :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
@@ -33,7 +36,8 @@
             <iButton v-permission.auto="LK_LETTER_LIST_GUANBI|关闭" @click="closeLetter">{{language('LK_GUANBI','关闭')}} </iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_JIHUO|激活" :loading="btnLoading.activate" @click="activate">{{language('LK_LETTER_JIHUO','激活')}} </iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_DAOCHU|导出" @click="downloadFiles">{{language('LK_DAOCHU','导出')}} </iButton>
-        </template>
+        </div>
+        </div>
         <!-- 表单区域 -->
         <tableList
             class="table aotoTableHeight"

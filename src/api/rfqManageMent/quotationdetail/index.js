@@ -382,9 +382,28 @@ export function updateCostSummaryDB(params) {
 }
 
 // 获取供应商token
+// export function getSupplierToken(params) {
+//   return requst({
+//     url:`/supplier/getSupplierProducePlace/${ params.supplierId }`,
+//     method: 'GET',
+//   })
+// }
 export function getSupplierToken(params) {
   return requst({
-    url:`/supplier/getSupplierProducePlace/${ params.supplierId }`,
+    url:`/quotation/supplier/${ params.supplierId }`,
     method: 'GET',
+  })
+}
+
+/**
+ * @description: 更新rfq
+ * @param {*} parmars
+ * @return {*}
+ */
+ export function quotations(parmars) {
+  return requstPart({
+      url: '/rfq-quotations',
+      method: 'POST',
+      data: parmars
   })
 }

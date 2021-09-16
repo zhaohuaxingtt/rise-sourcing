@@ -4,7 +4,7 @@
       width="95%"
       @close="clearDiolog"
   >
-    <iButton class="downloadButton" @click="getDownloadFile" :loading="downloadButtonLoading">{{
+    <iButton class="downloadButton" @click="getDownloadFile({exportPdf: true})" :loading="downloadButtonLoading">{{
         $t('LK_XIAZAI')
       }}
     </iButton>
@@ -96,10 +96,11 @@ export default {
     clearDiolog() {
       this.$emit('input', false);
     },
-    getDownloadFile({callBack}) {
+    getDownloadFile({exportPdf = false, callBack} = {}) {
       return this.getDownloadFileAndExportPdf({
         domId: 'content',
         pdfName: 'Volume Pricing Overview',
+        exportPdf,
         callBack,
       });
     },

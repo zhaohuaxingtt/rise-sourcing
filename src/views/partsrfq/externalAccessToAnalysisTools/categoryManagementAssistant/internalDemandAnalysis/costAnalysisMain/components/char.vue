@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 16:37:12
- * @LastEditTime: 2021-09-11 18:18:10
+ * @LastEditTime: 2021-09-15 10:22:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisHandleInput\components\char.vue

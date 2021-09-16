@@ -5,7 +5,7 @@
 <template>
   <iDialog :title="$t(title)" :visible.sync="value" width="95%" top="5vh" @close='clearDiolog' z-index="1000" class="iDialogAdd">
     <div slot="title" class="title">
-      <iButton class="download" @click="initiateChange">{{ language('LK_XIAZAI', '下载') }}</iButton>
+      <iButton class="download" v-loading="downPdfLoading" @click="downPdf">{{ language('LK_XIAZAI', '下载') }}</iButton>
     </div>
     <div class="changeContent" v-loading="tableLoading">
       <div class="head">
@@ -22,9 +22,9 @@
           <div class="NO">NO.{{ baseInfo.changeNo }}</div>
           <div class="item">
             <span>变更类型：{{ baseInfo.changeTypeName }}</span>
-            <span>原总价：{{ baseInfo.oldAmount }}</span>
-            <span>资产总价：{{ baseInfo.newAmount }}</span>
-            <span>总价变化：{{ baseInfo.ldiffAmount }}</span>
+            <span>原总价：{{ getTousandNum(Number(baseInfo.oldAmount).toFixed(2)) }}</span>
+            <span>资产总价：{{ getTousandNum(Number(baseInfo.newAmount).toFixed(2)) }}</span>
+            <span>总价变化：{{ getTousandNum(Number(baseInfo.diffAmount).toFixed(2)) }}</span>
           </div>
         </div>
       </div>
@@ -33,6 +33,7 @@
         <el-table
             :data="baseInfo.moldChangeSummaryVos"
             border
+            :height="tableHeight - 550"
             style="width: 100%">
           <el-table-column
               type="index"
@@ -47,52 +48,108 @@
               label="模具ID">
           </el-table-column>
           <el-table-column
-              prop="assetName"
               align="center"
               label="固定资产名称（原名称）"
               width="120">
+            <template slot="header">
+              <div>固定资产名称</div>
+              <div>（原名称）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.assetName }}</div>
+              <div v-if="scope.row.assetNameOld">（{{ scope.row.assetNameOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
-              prop="craftTypeOld"
               width="100"
               align="center"
               label="工艺类型（原类型）">
+            <template slot="header">
+              <div>工艺类型</div>
+              <div>（原类型）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.craftType }}</div>
+              <div v-if="scope.row.craftTypeOld">（{{ scope.row.craftTypeOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
-              prop="moldTypeOld"
               width="100"
               align="center"
               label="工模具种类（原种类）">
+            <template slot="header">
+              <div>工模具种类</div>
+              <div>（原种类）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.moldType }}</div>
+              <div v-if="scope.row.moldTypeOld">（{{ scope.row.moldTypeOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
-              prop="assetTypeNumNameOld"
               width="100"
               align="center"
               label="资产分类（原分类）">
+            <template slot="header">
+              <div>资产分类</div>
+              <div>（原分类）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.assetTypeNumName }}</div>
+              <div v-if="scope.row.assetTypeNumNameOld">（{{ scope.row.assetTypeNumNameOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
-              prop="partsTotalNumOld"
               width="120"
               align="center"
               label="总成零件号（原总成号）">
+            <template slot="header">
+              <div>总成零件号</div>
+              <div>（原总成号）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.partsTotalNum }}</div>
+              <div v-if="scope.row.partsTotalNumOld">（{{ scope.row.partsTotalNumOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
-              prop="partsTotalNameOld"
               width="120"
               align="center"
               label="总成零件名（原总成名）">
+            <template slot="header">
+              <div>总成零件名</div>
+              <div>（原总成名）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.partsTotalName }}</div>
+              <div v-if="scope.row.partsTotalNameOld">（{{ scope.row.partsTotalNameOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
-              prop="partsNumOld"
-              width="100"
+              width="120"
               align="center"
               label="零件号（原零件号）">
+            <template slot="header">
+              <div>零件号</div>
+              <div>（原零件号）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.partsNum }}</div>
+              <div v-if="scope.row.partsNumOld">（{{ scope.row.partsNumOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
-              prop="partsNameOld"
               width="100"
               align="center"
               label="零部件名称（原名称）">
+            <template slot="header">
+              <div>零部件名称</div>
+              <div>（原名称）</div>
+            </template>
+            <template slot-scope="scope">
+              <div>{{ scope.row.partsName }}</div>
+              <div v-if="scope.row.partsNameOld">（{{ scope.row.partsNameOld }}）</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="countOld"
@@ -108,29 +165,44 @@
               prop="assetPriceOld"
               align="center"
               label="原单价">
+            <template slot-scope="scope">
+              <div>{{ getTousandNum(Number(scope.row.assetPriceOld).toFixed(2)) }}</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="assetPrice"
               align="center"
               label="资产单价">
-          </el-table-column>
-          <el-table-column
-              prop="address"
-              align="center"
-              label="原总价">
+            <template slot-scope="scope">
+              <div>{{ getTousandNum(Number(scope.row.assetPrice).toFixed(2)) }}</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="assetTotalOld"
               align="center"
+              label="原总价">
+            <template slot-scope="scope">
+              <div>{{ getTousandNum(Number(scope.row.assetTotalOld).toFixed(2)) }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column
+              prop="assetTotal"
+              align="center"
               label="资产总价">
+            <template slot-scope="scope">
+              <div>{{ getTousandNum(Number(scope.row.assetTotal).toFixed(2)) }}</div>
+            </template>
           </el-table-column>
           <el-table-column
               prop="diffAssetTotal"
               align="center"
               label="总价变化">
+            <template slot-scope="scope">
+              <div>{{ getTousandNum(Number(scope.row.diffAssetTotal).toFixed(2)) }}</div>
+            </template>
           </el-table-column>
           <el-table-column
-              prop="address"
+              prop="changeTypeName"
               align="center"
               label="变更类型">
           </el-table-column>
@@ -142,7 +214,10 @@
         </el-table>
         <div class="foot">
           <div class="bottomLine">
-            <span v-for="(item, index) in baseInfo.approveVos" :key="index">{{ item.assigneeName }} {{ item.approveResult }} {{ item.approveDate }}</span>
+            <span v-for="(item, index) in baseInfo.approveVos" :key="index">
+              <div v-if="item.approveResult">{{ item.assigneeName }} {{ item.approveResult }} {{ item.approveDate }}</div>
+              <div v-else></div>
+            </span>
           </div>
           <div class="weight">
             <span v-for="(item, index) in baseInfo.approveVos" :key="index">{{ item.userOrg }}</span>
@@ -168,10 +243,14 @@ import {
 
 import {
   supplierShow,
-  supplierPreview
+  supplierPreview,
+  downPdf
 } from "@/api/ws2/purchase/changeTask";
+import {getTousandNum} from "@/utils/tool";
+import { tableHeight } from "@/utils/tableHeight";
 
 export default {
+  mixins: [tableHeight],
   components: {
     iButton,
     iDialog,
@@ -186,7 +265,9 @@ export default {
   data() {
     return {
       tableLoading: false,
-      baseInfo: {}
+      downPdfLoading: false,
+      baseInfo: {},
+      getTousandNum: getTousandNum
 
     }
   },
@@ -222,7 +303,20 @@ export default {
       }
 
     },
-
+    downPdf(){
+      this.downPdfLoading = true
+      downPdf(this.baseInfo).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          return
+        } else {
+          iMessage.error(result)
+        }
+        this.downPdfLoading = false
+      }).catch(err => {
+        this.downPdfLoading = false
+      })
+    },
     clearDiolog() {
       this.$emit('input', false)
     },

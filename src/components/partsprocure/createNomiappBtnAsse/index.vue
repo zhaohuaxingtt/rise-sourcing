@@ -1,22 +1,22 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-09-07 15:33:14
+ * @LastEditTime: 2021-09-14 20:22:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
 -->
 <template>
-<div class="inline margin-left10 margin-right10" v-permission.auto="PARTSPROCURE_SHENGCHENGDINGDSQ_ACC|总成件-生成定点申请按钮">
+<div class="inline margin-left10 margin-right10 ssS" v-permission.auto="PARTSPROCURE_SHENGCHENGDINGDSQ_ACC|总成件-生成定点申请按钮">
     <iButton :loading='loadind' @click="created">{{language('SHENGCDINGIDANSHENGQACC','生成定点申请单')}}</iButton>
-    <iDialog :visible.sync="diologShow" :title="language('ZONGCHNEGGONGYS','总成供应商')" width='70%'>
+    <iDialog :visible.sync="diologShow" :title="language('ZONGCHNEGGONGYS','总成供应商')" width='70%' style="margin-bottom:40px;">
       <div class="top">
-        <iFormGroup inline row='2' label-width='80px'>
+        <iFormGroup inline row='2' label-width='100px'>
           <iFormItem :label='language("ZHONGCHENGGYS","总成供应商")'>
             <iText>{{totalSupplier}}</iText>
           </iFormItem>
           <iFormItem :label='language("FENE","份额")'>
-            <iInput @input='numberProcessor(rate)' v-model="rate" />
+            <iInput @input='numberProcessor(rate)' @blur.native.capture="numberBlur" v-model="rate" />
           </iFormItem>
         </iFormGroup>
         <div class="btn">
@@ -33,7 +33,7 @@
 </template>
 <script>
 import {iButton,iDialog,iMessage,iInput,iFormItem,iFormGroup,iText,iMessageBox} from 'rise'
-import {nomiAutoPartsAssemblyCheck,nomiAutoPartsAssembly} from '@/api/partsprocure/editordetail'
+import {nomiAutoPartsAssemblyCheck,nomiAutoPartsAssembly,partsAssemblyOutPlan} from '@/api/partsprocure/editordetail'
 import tablelist from "pages/partsign/home/components/tableList";
 import { tableTitle } from './data'
 import {numberProcessor} from '@/utils' 
@@ -93,14 +93,28 @@ export default{
         iMessage.warn(this.language('DANGQLJHANYOUDUOGEJIAGONG','您已选择过零件类型含有加工装配的供应商，切勿重复选择！'))
         return
       }
+      //选择完成的数据数量刚好等于总量。勾选上供应商表头
       if(select.filter(i=>i.supplierId == row.supplierId && !i.needRow).length == this.tableList.filter(c=>c.supplierId == row.supplierId && !c.needRow).length){
-        new Set([...select,...this.tableList.filter(items=>items.supplierId == row.supplierId)]).forEach(i=>this.$refs.tabel.toggleRowSelection(i))
+        Array.from(new Set([...select,...this.tableList.filter(items=>items.supplierId == row.supplierId)])).forEach(i=>this.$refs.tabel.toggleRowSelection(i))
+      }
+      //选择完成的数据数量刚好小于总量。取消供应商表头
+      if(select.filter(i=>i.supplierId == row.supplierId && !i.needRow).length < this.tableList.filter(c=>c.supplierId == row.supplierId && !c.needRow).length){
+        this.$refs.tabel.clearSelection()
+        select.map(items=> {
+          if(items.needRow){
+            if(items.supplierId != row.supplierId){
+              return items
+            }
+          }else{
+            return items
+          }
+        }).forEach(i=>this.$refs.tabel.toggleRowSelection(i))
       }
     },
     handleSelectionChange({row,selection}){
-      this.ontologyList = selection
-      const isSelect = selection.find(rows=>rows.itemKey == row.itemKey)
-      console.log(isSelect)
+      const selections = selection.every(i=>i == undefined)?[]:selection
+      this.ontologyList = selections
+      const isSelect = selections.find(rows=>rows.itemKey == row.itemKey)
       if(row.needRow){ //勾选供应商表头
         if(isSelect){
           this.selectGroup(row)
@@ -108,24 +122,38 @@ export default{
           this.removeSelect(row)
         }
       }else{ //勾选了数据
-        this.selectData(row,selection)
+        this.selectData(row,selections || [])
       }
     },
     numberProcessor(a){
       this.rate = numberProcessor(a,2,false) > 100 ? 100:numberProcessor(a,2,false)
     },
-    messageBox(){
+    numberBlur(){
+      this.rate =this.rate+'%'
+    },
+    partsAssemblyOutPlans(){
+      return partsAssemblyOutPlan(this.detailData().id)
+    },
+    async messageBox(){
       return new Promise(r=>{
-      iMessageBox('是否使用本体加工费的产量计划？').then(res=>{
-          this.isUserPackage = true
-          r()
-        }).catch(()=>{
-          this.isUserPackage = false
-          r()
+        this.partsAssemblyOutPlans().then(res=>{
+          if(res.data){
+            iMessageBox('是否使用本体加工费的产量计划？').then(res=>{
+              this.isUserPackage = true
+              r()
+            }).catch(()=>{
+              this.isUserPackage = false
+              r()
+            })
+          }else{
+            r()
+          }
         })
       })
     },
     created(){
+      if(this.detailData().carTypeProjectZh == '') return iMessage.warn(this.language('DANGQIANCHEXINGXIANGMU','当前车型项目为空，请先维护车型项目！'))
+      if(this.detailData().procureFactory == '') return iMessage.warn(this.language('DANGQIANCAIGGCWEIK','当前采购工厂为空，请先维护采购工厂！'))
       this.messageBox().then(()=>{
         this.loadind = true
         const sendData = {
@@ -171,7 +199,7 @@ export default{
       this.loadingbtn = true
       const sendData = {
         isUserPackage:this.isUserPackage,
-        ontologyList:this.ontologyList.filter(r=>!r.needRow || !r.addAssemblyNomi),
+        ontologyList:this.ontologyList.filter(r=>!r.needRow).filter(r=>!r.addAssemblyNomi),
         rate:this.rate,
         purchaseProjectPartId:this.detailData().id
       }
@@ -204,5 +232,10 @@ export default{
   }
   .el-form{
     width: 50%;
+  }
+  .ssS{
+    ::v-deep.el-dialog{
+      padding-bottom:40px;
+    }
   }
 </style>

@@ -374,7 +374,7 @@ export default {
     //点击方案名称，跳转总单价页面
     clickScheme (row) {
       const schemeUrl = '/sourcing/partsrfq/vpAnalyseDetail'
-      this.$router.push({
+      const openSchemUrl = this.$router.resolve({
         path: schemeUrl,
         query: {
           type: 'edit',
@@ -382,6 +382,7 @@ export default {
           round: this.round
         }
       })
+      window.open(openSchemUrl.href,'_blank')
     },
     //点击报告名称，打开报告预览弹窗
     clickReport (row) {

@@ -39,13 +39,13 @@
         </iSelect>
         <iInput v-model="year1"
                 class="ml-49"
-                :disabled="isEdite" />
+                :disabled="isEdite"></iInput>
         <iInput v-model="year2"
                 class="ml-49"
-                :disabled="isEdite" />
+                :disabled="isEdite"></iInput>
         <iInput v-model="year3"
                 class="ml-49"
-                :disabled="isEdite" />
+                :disabled="isEdite"></iInput>
       </div>
       <div class="interests"
            v-else>
@@ -77,13 +77,13 @@
             <span class="nameText"
                   v-if="isEdite">{{x.customerName}}</span>
             <iInput v-else
-                    v-model="x.customerName" />
+                    v-model="x.customerName"></iInput>
           </div>
         </div>
         <div class="border last">
           <span v-if="isEdite">{{x.totalSalesPro+'%'}}</span>
           <iInput v-else
-                  v-model="x.totalSalesPro" />
+                  v-model="x.totalSalesPro"></iInput>
         </div>
       </div>
     </div>
@@ -804,7 +804,7 @@ h3 {
     // margin-left: 40px;
     // padding: 0 20px;
     margin-left: 20px;
-    width: calc(33%.33 - 49px);
+    width: calc(33.33% - 49px);
   }
   .interestsName {
     margin-left: 10px;

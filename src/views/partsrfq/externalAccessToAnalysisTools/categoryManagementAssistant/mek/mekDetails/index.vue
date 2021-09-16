@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-07 17:47:25
+ * @LastEditTime: 2021-09-16 11:15:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -83,7 +83,7 @@
                                @change="changePartNumber">
                       <el-option v-for="item in recursiveRetrieveList"
                                  :key="item.partId"
-                                 :value="item.partSixNumber"
+                                 :value="item.partNumber"
                                  :label="item.partNumber"> </el-option>
                     </el-select>
                   </el-form-item>
@@ -395,7 +395,7 @@ export default {
       //比较类型
       comparedType: "",
       //未选中的零件ID
-      exceptPart: "",
+      exceptPart: [],
       //mek类型list
       mekTypeList: [],
       //"mek价格类型"list
@@ -435,7 +435,8 @@ export default {
       }],
       categoryId: this.categoryId,
       schemeId: this.chemeId,
-      categoryCode: this.categoryCode
+      categoryCode: this.categoryCode,
+      unselected: this.exceptPart
     }
     this.ComparedMotor.forEach(item => {
       params.info.push({
@@ -507,6 +508,11 @@ export default {
         //目标车型
         getTargetMotor(params).then(res => {
           this.TargetMotorList = res.data
+          this.TargetMotorList.forEach(item => {
+            if (item.motorId === this.targetMotor) {
+              this.targetMotorCode = item.motorCode
+            }
+          })
         })
         getDictByCode('mekType').then(res => {
           this.mekTypeList = res.data[0].subDictResultVo
@@ -520,17 +526,24 @@ export default {
           targetMotorId: this.targetMotor
         }).then(res => {
           this.ComparedMotorList = res.data
+          this.ComparedMotorList.forEach(item => {
+            this.ComparedMotor.forEach(i => {
+              if (item.motorId === i) {
+                this.ComparedMotorCode.push(item.motorCode)
+              }
+            })
+          })
         })
         let params1 = {
           categoryId: this.categoryId,
-          motorIds: this.ComparedMotor,
+          motorIds: [this.targetMotor, ...this.ComparedMotor],
           schemeId: this.chemeId
         }
         recursiveRetrieve(params1).then(res => {
           if (res.code === '200') {
             let partNumber = []
             res.data.forEach(item => {
-              partNumber.push(item.partSixNumber)
+              partNumber.push(item.partNumber)
             })
             this.recursiveRetrieveList = res.data
             this.partNumber = _.difference(partNumber, this.exceptPart)
@@ -550,7 +563,8 @@ export default {
         }],
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
-        schemeId: this.chemeId
+        schemeId: this.chemeId,
+        unselected: this.exceptPart
       }
       this.ComparedMotor.forEach(item => {
         params.info.push({
@@ -594,6 +608,7 @@ export default {
       })
     },
     changeComparedMotor (val) {
+      console.log(this.targetMotor, this.ComparedMotor)
       this.ComparedMotorList.forEach(item => {
         if (item.motorId === val) {
           this.ComparedMotorCode.push(item.motorCode)
@@ -601,7 +616,7 @@ export default {
       })
       let params = {
         categoryId: this.categoryId,
-        motorIds: this.ComparedMotor,
+        motorIds: [this.targetMotor, ...this.ComparedMotor],
         schemeId: this.chemeId
       }
       recursiveRetrieve(params).then(res => {
@@ -682,15 +697,22 @@ export default {
     closeModalDialog1 (val) {
       this.detailVisible = val
     },
-    changePartNumber () {
-      this.exceptPart = []
-      this.recursiveRetrieveList.forEach(item => {
-        this.partNumber.forEach(i => {
-          if (item.partSixNumber === !i) {
-            this.exceptPart.push(i)
-          }
-        })
-      })
+    changePartNumber (val) {
+      if (!this.exceptPart) {
+        this.exceptPart = []
+      }
+      // this.recursiveRetrieveList.forEach(item => {
+      //   val.forEach((i, index) => {
+      //     if (item.partSixNumber !== i) {
+      //       this.exceptPart.push(i)
+      //     } else {
+      //       this.exceptPart.splice(index, 1)
+      //     }
+      //   })
+      // })
+      let recursiveRetrieveList = this.recursiveRetrieveList.map(item => item.partNumber)
+      this.exceptPart = _.difference(recursiveRetrieveList, val)
+      console.log(this.exceptPart)
     },
     //价格类型
     changPriceType (val) {
@@ -711,7 +733,8 @@ export default {
         }],
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
-        schemeId: this.chemeId
+        schemeId: this.chemeId,
+        unselected: this.exceptPart
       }
       if (this.entryStatus === 1) {
         params.isBindingRfq = true
@@ -774,7 +797,8 @@ export default {
         }],
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
-        schemeId: this.chemeId
+        schemeId: this.chemeId,
+        unselected: this.exceptPart
       }
       this.ComparedMotor = this.ComparedMotor.filter(i => i !== data.motorId)
       this.ComparedMotor.forEach(item => {
@@ -832,7 +856,9 @@ export default {
       })
     },
     handleMEKInfo () {
-      let vwModelCodes = JSON.stringify([...this.ComparedMotorCode, this.targetMotorCode])
+      let vwModelCodes = JSON.stringify([...this.ComparedMotor, this.targetMotor])
+      // let vmModelCodes = ['SK461/0CS_K', 'SK260/0CS_K']
+      console.log(vwModelCodes)
       this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: this.categoryCode, vwModelCodes, chemeId: this.chemeId } })
     },
     preview () {

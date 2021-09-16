@@ -18,7 +18,6 @@
               :data='tableData'
               :empty-text="$t('LK_ZANWUSHUJU')"
               v-loading='tableLoading'
-              highlight-current-row
               @selection-change="handleSelectionChange"
               @current-change="handleCurrentChange"
               :row-class-name="handleTableRow"

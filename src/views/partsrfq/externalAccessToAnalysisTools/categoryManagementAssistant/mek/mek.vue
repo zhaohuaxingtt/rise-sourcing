@@ -8,7 +8,7 @@
   <div class="bob-main">
     <iSearch @reset="handleSearchReset" @sure="initData" :icon="false">
       <el-form label-position="top">
-        <el-row class="margin-bottom20">
+        <el-row >
           <!--材料组-->
           <el-form-item :label="$t('LK_CAILIAOZU')">
             <iInput :placeholder="$t('TPZS.QSRCLZBHMC')" v-model="form.materialGroup"></iInput>
@@ -27,18 +27,24 @@
         </el-row>
       </el-form>
     </iSearch>
-    <iCard :title="$t('MEK分析库')" class="margin-top20">
-      <template v-slot:header-control>
-        <div v-if="!edit">
-          <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
-          <iButton @click="handleAdd">{{ $t("LK_XINZENG") }}</iButton>
-          <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
+    <iCard class="margin-top20">
+        <div  class="margin-bottom20 clearFloat">
+          <span  class="font18 font-weight" >{{$t('MEK分析库')}}</span>
+          <div class="floatright">
+          <div v-if="!edit">
+            <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
+            <iButton @click="handleAdd">{{ $t("LK_XINZENG") }}</iButton>
+            <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
+          </div>
+          <div v-else>
+            <iButton @click="cancelEditBob">{{ $t("LK_QUXIAO") }}</iButton>
+            <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
+          </div>
+
+          </div>
         </div>
-        <div v-else>
-          <iButton @click="cancelEditBob">{{ $t("LK_QUXIAO") }}</iButton>
-          <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
-        </div>
-      </template>
+      <!-- <template v-slot:header-control> -->
+      <!-- </template> -->
       <el-table v-loading="tableLoading" tooltip-effect='light' ref="multipleTable" :data="tableListData" style="width: 100%; margin-bottom: 20px" row-key="id" :max-height="450" :row-class-name="rowStyle" :tree-props="{ children: 'reportList' }" @selection-change="handleSelectionChange" @select="rowSelect" @select-all="selectAll">
         <el-table-column type="selection" width="55"> </el-table-column>
         <el-table-column label="#" type="index" :index="indexMethod" align="center" header-align="center" width="40">
@@ -407,13 +413,14 @@ export default {
     // 点击名称,触发跳转事件
     clickName(val) {
       if (val.fileType == this.$t('TPZS.SCHEME_TYPE')) {
-        this.$router.push({
+        const openUrl = this.$router.resolve({
           path: "/sourcing/mek/mekDetails",
           query: {
             chemeId: val.id,
             rfqId: val.rfqNo || ''
           },
         });
+        window.open(openUrl.href, '_blank')
       } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {
         this.reportTitle = val.name
         this.reportVisible = true;

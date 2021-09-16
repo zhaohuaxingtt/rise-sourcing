@@ -342,13 +342,14 @@ export default {
     },
     // 跳转详情
     openPage(item) {
-      this.$router.push({
+      const openParts = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
           businessKey:item.partProjectType //新增业务标识。
         },
       });
+      window.open(openParts.href,'_blank')
     },
     //获取上方group信息
     // part_status --零件状态
@@ -480,7 +481,10 @@ export default {
       });
     },
     openCreateParts() {
-      this.$router.push({ path: "/sourcing/createparts/home" })
+      const creatParts = this.$router.resolve({
+        path:'/sourcing/createparts/home'
+      })
+      window.open(creatParts.href, '_blank')
     },
     // 通过待办数跳转
     clickMessage

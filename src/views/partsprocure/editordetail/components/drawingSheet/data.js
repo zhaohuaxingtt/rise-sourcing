@@ -15,7 +15,7 @@ export const tableTitle = [
 
 export const items = [
   [
-    { props: 'attachmentStatus', name: '状态' , key: 'LK_ZHUANGTAI' },
+    { props: 'status', name: '状态' , key: 'LK_ZHUANGTAI' },
     { props: 'backReason', name: '退回原因', key: 'LK_TUIHUIYUANYIN' },
     { props: 'interruptReason', name: '取消原因', key: 'LK_QUXIAOYUANYIN' },
     { props: 'createDate', name: '创建日期', key: 'LK_CHUANGJIANRIQI' },
