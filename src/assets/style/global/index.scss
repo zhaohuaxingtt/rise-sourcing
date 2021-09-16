@@ -498,6 +498,7 @@ a{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   .openLinkText {
     color: $color-blue;
     &.underline {
@@ -520,6 +521,17 @@ a{
     .show{
       display: block;
     }
+  }
+  .leftRow{
+    width:85%;
+    text-align: left;
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+  }    
+  .rightRow{
+    width:5%
   }
 }
 
