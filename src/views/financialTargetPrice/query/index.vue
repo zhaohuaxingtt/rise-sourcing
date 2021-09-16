@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-08 10:02:22
+ * @LastEditTime: 2021-09-16 13:56:26
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -25,6 +25,7 @@
               :value="item.selectOption === 'LINIE' ? item.name : item.code">
             </el-option>
           </iSelect> 
+          <iDicoptions v-else-if="item.type === 'selectDict'" :optionAll="false" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
           <iDatePicker v-else-if="item.type === 'dateRange'" value-format="" type="daterange" v-model="searchParams[item.value]" :default-time="['00:00:00', '23:59:59']"></iDatePicker>
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
@@ -98,9 +99,10 @@ import { excelExport } from "@/utils/filedowLoad"
 import { omit } from 'lodash'
 import { getDictByCode } from '@/api/dictionary'
 import moment from 'moment'
+import iDicoptions from 'rise/web/components/iDicoptions'
 export default {
   mixins: [pageMixins],
-  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,approvalRecordDialog, assignDialog},
+  components: {iDicoptions,iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,approvalRecordDialog, assignDialog},
   data() {
     return {
       tableTitle: tableTitle,
@@ -134,7 +136,7 @@ export default {
   },
   created() {
     this.getSetOptions()
-    this.getDicts()
+    // this.getDicts()
     this.getProcureGroup()
     this.getCartypeDict()
     this.getCF()
@@ -150,7 +152,7 @@ export default {
             setOptions: res.data?.map(item => {
               return {
                 code: item.id,
-                name: item.nameZh
+                name: item.name
               }
             })
           }
