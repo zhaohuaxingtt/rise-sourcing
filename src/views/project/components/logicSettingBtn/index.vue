@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-26 15:20:37
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 15:41:06
+ * @LastEditTime: 2021-09-16 14:19:41
  * @Description: 算法配置按钮
  * @FilePath: \front-web\src\views\project\components\logicSettingBtn\index.vue
 -->
@@ -85,9 +85,9 @@ export default {
       this.logicVisible = visible 
     }, 
     changeSaveLoading(loading) { 
-      if (loading === false) { 
-        this.changeVisible(false) 
-      } 
+      // if (loading === false) { 
+      //   this.changeVisible(false) 
+      // } 
       this.$refs.logic.changeSaveLoading(loading) 
     } 
   } 
