@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 15:34:31
+ * @LastEditTime: 2021-09-16 15:13:44
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\data.js
  */
@@ -11,7 +11,6 @@ export const historyTableTitle = [
   {props:'lcBPrice',name:'CF LC_B Target', key: "CFLCBTARGET", tooltip: true, width: 120},
   {props:'lcAPrice',name:'CF LC_A Target', key: "CFLCATARGET", tooltip: true, width: 120},
   {props:'lcTcCurrencyId',name:'LC货币类型', key: "LCHUOBILEIXING", tooltip: true, width: 120},
-  {props:'skdTcCurrencyId',name:'SKD货币类型', key: "SKDHUOBILEIXING", tooltip: true, width: 100},
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
   {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
   {props:'modifer',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 120},
@@ -19,6 +18,7 @@ export const historyTableTitle = [
   {props:'lcExchangeRate',name:'LC汇率', key: "LCHUILV", tooltip: true},
   {props:'skdBPrice',name:'SKD_B Target', key: "SKDBTARGET", tooltip: true},
   {props:'skdAPrice',name:'SKD_A Target', key: "SKDATARGET", tooltip: true, width: 100},
+  {props:'skdTcCurrencyId',name:'SKD货币类型', key: "SKDHUOBILEIXING", tooltip: true, width: 100},
   {props:'skdExchangeRate',name:'SKD汇率', key: "SKDHUILV", tooltip: true, width: 120},
   {props:'ckdLanded',name:'CKD Landed', key: "CKDLANDED", tooltip: true, width: 120},
   {props:'ckdTcCurrencyId',name:'CKD货币类型', key: "CKDHUOBILEIXING", tooltip: true, width: 120},

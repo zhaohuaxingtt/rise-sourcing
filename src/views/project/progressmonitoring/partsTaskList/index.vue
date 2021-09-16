@@ -76,7 +76,8 @@ export default {
       partSortStatus,
       dialogVisible:false,
       searchParams: {
-        confirmStatus: 'TO_BE_CONFIRMED'
+        confirmStatus: 'TO_BE_CONFIRMED',
+        cartypeProId: this.$route.query.cartypeProId
       },
       selectOptions: {},
       tableData: [],

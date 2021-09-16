@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-16 13:48:52
+ * @LastEditTime: 2021-09-16 15:58:33
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -721,6 +721,7 @@ export default {
      */    
     getPartList(cartypeProId) {  
       this.loading = true 
+      this.$emit('reSetSearchParams')
       getPartSchedule(cartypeProId).then(res => { 
         if (res?.result) { 
           const partList = (res.data || []).map(item => { 
