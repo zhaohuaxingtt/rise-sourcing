@@ -61,6 +61,30 @@
                   <el-option v-for="item in cartTypeOptions" :key="item.key" :value="item.value" :label="item.label"/>
                 </iSelect>
               </el-form-item>
+              <el-form-item :label="language('LK_TPPINGFENZHUANGTAI','TP评分状态')">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.tpStatus" filterable>
+                  <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
+                  <el-option v-for="item in rfqRateStatusOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
+                </iSelect>
+              </el-form-item>
+              <el-form-item :label="language('LK_MQPINGFENZHUANGTAI','MQ评分状态')">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.mqStatus" filterable>
+                  <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
+                  <el-option v-for="item in rfqRateStatusOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
+                </iSelect>
+              </el-form-item>
+              <el-form-item :label="language('LK_CFMUBIAOJIAZHUANGTAI','CF目标价状态')">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.cfStatus" filterable>
+                  <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
+                  <el-option v-for="item in cfApplyStatusOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
+                </iSelect>
+              </el-form-item>
+              <el-form-item :label="language('LK_HEAVYITEMWEIHUZHUANGTAI','Heavy Item维护状态')">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.heavyItem" filterable>
+                  <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
+                  <el-option v-for="item in heavyItemOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
+                </iSelect>
+              </el-form-item>
             </el-form>
           </iSearch>
           <iCard>
@@ -192,7 +216,7 @@ import { downloadFile, downloadUdFile } from "@/api/file"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
 import { clickMessage} from "@/views/partsign/home/components/data"
-import { Row } from 'element-ui';
+import { selectDictByKeys } from "@/api/dictionary"
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -226,7 +250,11 @@ export default {
         partType: '',
         rfqStatus: '',
         car: '',
-        modelCode: ''
+        modelCode: '',
+        tpStatus: '',
+        mqStatus: '',
+        cfStatus: '',
+        heavyItem: ''
       },
       activateButtonLoading: false,
       closeButtonLoading: false,
@@ -246,11 +274,15 @@ export default {
       attachmentTableListData: [], 
       cartTypeOptions: [],
       createDesignateLoading: false,
-      nominateTypeDialogVisible: false
+      nominateTypeDialogVisible: false,
+      rfqRateStatusOptions: [],
+      cfApplyStatusOptions: [],
+      heavyItemOptions: []
     };
   },
   created() {
     this.getCartypeDict()
+    this.getDict()
     this.getTableList()
     this.getCarTypeOptions()
     this.getPartTypeOptions()
@@ -262,6 +294,64 @@ export default {
     ...mapActions(["updateNavList"])
   },
   methods: {
+    getDict() {
+      selectDictByKeys([
+        { keys: "RfqRateStatus" },
+        { keys: "CF_APPLY_STATUS" },
+        { keys: "HEAVY_ITEM" }
+      ])
+      .then(res => {
+        if (res.code == 200) {
+          Object.keys(res.data).forEach(key => {
+            switch(key) {
+              case "RfqRateStatus":
+                this.rfqRateStatusOptions = 
+                  Array.isArray(res.data["RfqRateStatus"]) ? 
+                  res.data["RfqRateStatus"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
+                break
+              case "CF_APPLY_STATUS":
+                this.cfApplyStatusOptions = 
+                  Array.isArray(res.data["CF_APPLY_STATUS"]) ? 
+                  res.data["CF_APPLY_STATUS"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
+                break
+              case "HEAVY_ITEM":
+                this.heavyItemOptions = 
+                  Array.isArray(res.data["HEAVY_ITEM"]) ? 
+                  res.data["HEAVY_ITEM"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
+                break
+              default:
+            }
+          })
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
     sure(){
       this.page.currPage = 1
       this.getTableList()
