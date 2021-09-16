@@ -19,11 +19,11 @@
     <div class="content">
       <div class="table" v-for="(value, index) in tableList" :key="index">
         <el-table @select="select" @select-all="selectAll($event,value.code)" row-key="id" :tree-props="{children:'childNodes'}" v-loading="tableLoading" :ref="'multipleTable'" :data="value.dimensions" @selection-change="handleSelectionChange($event,index)">
-          <el-table-column type="selection" width="55"> </el-table-column>
-          <el-table-column type="index" :index="indexMethod" label="#" width="55">
+          <el-table-column align="center" type="selection" width="55"> </el-table-column>
+          <el-table-column align="center" type="index" :index="indexMethod" label="#" width="55">
             <template slot-scope="scope">{{scope.row.sort}}</template>
           </el-table-column>
-          <el-table-column prop="name" :label="value.name">
+          <el-table-column align="left" prop="name" :label="value.name">
           </el-table-column>
         </el-table>
       </div>
@@ -237,12 +237,6 @@ export default {
   &:last-child {
     margin-right: 0;
   }
-}
-::v-deep td > .cell {
-  text-align: center;
-}
-::v-deep th > .cell {
-  text-align: center;
 }
 //有子节点 且未展开
 ::v-deep .el-table .el-icon-arrow-right:before {

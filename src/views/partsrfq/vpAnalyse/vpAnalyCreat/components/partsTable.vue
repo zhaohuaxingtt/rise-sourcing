@@ -2,11 +2,11 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 16:12:47
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Descripttion: your project
 -->
 <template>
-  <iCard style="min-height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')">
+  <iCard style="height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')">
     <template slot="header">
       <div> <span class="title">
           {{$t('TPZS.LJLB')}}
