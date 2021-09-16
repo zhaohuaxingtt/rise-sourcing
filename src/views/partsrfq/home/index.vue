@@ -286,9 +286,10 @@ export default {
     },
     //动态获取转派评分任务
     openPage(row) {
-      this.$router.push({
+      const openUrl = this.$router.resolve({
         path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}&businessKey=${row.partProjectType}`
       })
+      window.open(openUrl.href,'_blank')
     },
     //获取表格数据
     async getTableList() {
