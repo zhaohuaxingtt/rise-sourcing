@@ -81,7 +81,11 @@ export default {
       if(row.isNego) { //谈判轮
         return true
       } else { //询价轮
-        return  !row.isMbdl === '2'
+        if(row.isMbdl == '2'){
+          return false
+        }else{
+          return true
+        }
       }
     }
   }
