@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-14 16:58:14
+ * @LastEditTime: 2021-09-16 14:20:22
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -34,7 +34,7 @@
           <!--  -->
           <span class="switch">
             TIPS表
-            <el-switch v-model="showTips" width="35" @change="confirmShowTips" disabled></el-switch>
+            <el-switch v-model="showTips" width="35" @change="confirmShowTips"></el-switch>
           </span>
           
         </div>
@@ -48,7 +48,9 @@
               :data="item"
               :id="item.id"
               :disabled="item.disabled"
-              :hideTaskProcess="item.hideTaskProcess" />
+              :hideTaskProcess="item.hideTaskProcess"
+              @onSeriesBarClick="onSeriesBarClick"
+              @onTitleClick="onSeriesBarClick" />
           </el-col>
         </el-row>
         <carEmpty v-else />
@@ -99,6 +101,18 @@ export default {
     this.handleCarProjectChange(carProjectId, cartypeProjectZh)
   },
   methods: {
+    /**
+     * @description: 柱状图点击事件
+     * @param {*} params
+     * @return {*}
+     */    
+    onSeriesBarClick(params) {
+      const itemName = params.title || params.seriesName
+      const target = this.data.find(o => o.title === itemName) || {}
+      if (itemName === '匹配异常' && !(target && target.disabled)) {
+        this.$router.push({name: 'progressmonitoring-parts-taskList', query: {cartypeProId: this.carProject}})
+      }
+    },
     /**
      * @description: TIPS表同步
      * @param {*}
@@ -222,7 +236,7 @@ export default {
         if (confirmInfo === 'confirm') {
           this.data.map((o, index) => {
             if (index <= 1) {
-              this.$set(o, 'disabled', !o.disabled)
+              this.$set(o, 'disabled', !state)
             }
             return o
           })
