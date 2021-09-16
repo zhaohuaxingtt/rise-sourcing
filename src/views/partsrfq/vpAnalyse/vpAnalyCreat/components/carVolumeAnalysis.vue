@@ -6,7 +6,7 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard style="min-height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')+ `（截止${currentTime}）`">
+  <iCard style="height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')+ `（截止${currentTime}）`">
     <template slot="header-control">
       <div class="header">
         <div class="flex-between-center-center margin-right40">
@@ -19,7 +19,7 @@
         </div>
       </div>
     </template>
-    <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="false" @handleCurrentChange="handleCurrentChange">
+    <tableList :height="750" class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="false" @handleCurrentChange="handleCurrentChange">
       <template #actualProEndLastMonth="scope">
         <div class="flex">
           <div class="per-0" :style="'width:'+scope.row.planTotalProValue+'%'">
