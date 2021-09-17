@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 16:30:32
+ * @LastEditTime: 2021-09-16 16:12:55
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -16,7 +16,7 @@
           <!--------------------拟合进度按钮----------------------------------->
           <iButton @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
           <!--------------------回传进度按钮----------------------------------->
-          <iButton @click="rollBackProgress" :loading="rollBackLoading" >{{language('HUICHUANJINDU','回传进度')}}</iButton>
+          <iButton v-if="$route.query.cartypeProId && $route.query.sixPartCode" @click="rollBackProgress" :loading="rollBackLoading" >{{language('HUICHUANJINDU','回传进度')}}</iButton>
           <!--------------------配置显示字段按钮----------------------------------->
           <iButton @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
           <!--------------------导出按钮----------------------------------->

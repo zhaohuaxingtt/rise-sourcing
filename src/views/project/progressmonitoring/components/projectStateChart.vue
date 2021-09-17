@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 16:55:21
- * @LastEditTime: 2021-09-14 15:21:57
+ * @LastEditTime: 2021-09-16 11:12:45
  * @LastEditors: Hao,Jiang
  * @Description: 项目状态图表
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/projectStateChart.vue
 -->
 <template>
   <div class="projectStateChart" :class="{'disabled': disabled}">
-    <div class="tit" v-html="(data && data.title) || ''"></div>
+    <div class="tit" @click="onTitleClick" v-html="(data && data.title) || ''"></div>
     <div class="projectStateChart-container">
       <div class="subtit" v-show="!disabled">{{language('XIANGMUFENGXIAN', '项目风险')}}</div>
       <div v-show="!disabled" :id="id" class="projectStateChart-charts"></div>
@@ -76,12 +76,20 @@ export default {
   methods: {
     init(params) {
       if (this.disabled || !params) return
+      const self = this
       const options = generateOptions(params, params.type)
       console.log('-mokeData-', options, this.id)
       const vm = echarts().init(document.getElementById(this.id));
       vm.clear()
       vm.setOption(options);
+      // 点击事件
+      vm.on('click', 'series.bar', function (params) {
+        self.$emit('onSeriesBarClick', params)
+      });
     },
+    onTitleClick() {
+      this.$emit('onTitleClick', this.data)
+    }
   }
 }
 </script>

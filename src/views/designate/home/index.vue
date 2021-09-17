@@ -105,8 +105,10 @@
       <!-- 定点单号 -->
       <template #nominateName="scope">
          <span class="flexRow-link">
-            <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.nominateName }}</span>
-            <span class="icon-gray cursor "  @click="viewNominationDetail(scope.row)">
+            <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
+              <span class="openLinkText cursor leftRow"  @click="viewNominationDetail(scope.row)"> {{ scope.row.nominateName }}</span>
+            </el-tooltip>
+            <span class="icon-gray cursor rightRow"  @click="viewNominationDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
             </span>
