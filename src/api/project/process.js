@@ -1,10 +1,10 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-26 11:06:24
- * @LastEditTime: 2021-08-27 17:29:17
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-17 10:09:07
+ * @LastEditors: Luoshuang
  * @Description: 项目管理-项目进度监控接口
- * @FilePath: /front-web/src/api/project/process.js
+ * @FilePath: \front-web\src\api\project\process.js
  */
 
 
@@ -66,3 +66,11 @@ export function updateAutoData(data) {
   })
 }
 
+// 获取项目监控明细
+export function getProProgressMonitorDetail(data) {
+  return requst({
+    url: '/project-progress-monitor/proProressgMonitorDetail',
+    method: 'POST',
+    data
+  })
+}
