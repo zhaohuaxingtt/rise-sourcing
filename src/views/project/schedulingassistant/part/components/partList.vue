@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-17 10:30:08
+ * @LastEditTime: 2021-09-17 11:00:56
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -403,9 +403,9 @@ export default {
         const tableListNomi = []  
         const tableListKickoff = [] 
         selectRows.forEach((item) => { 
-          const fs = fsOptions && fsOptions[item.partNums] && fsOptions[item.partNums][0].userName || '' 
-          const fsId = fsOptions && fsOptions[item.partNums] && fsOptions[item.partNums][0].userId || '' 
-          const options = fsOptions ? fsOptions[item.partNums]?.reduce((accu, item) => { 
+          const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+          const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+          const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
             if (item.userId) { 
               return [...accu, { 
                 ...item, 
