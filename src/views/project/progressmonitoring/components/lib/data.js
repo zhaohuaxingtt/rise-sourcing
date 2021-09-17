@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 14:06:11
- * @LastEditTime: 2021-09-17 13:51:29
+ * @LastEditTime: 2021-09-17 14:24:02
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/components/data.js
@@ -117,7 +117,7 @@ export const chartData = [
   },
 
 ]
-
+// 项目风险
 export const projectRisk = [
   {
     code: '1',
@@ -130,6 +130,18 @@ export const projectRisk = [
   {
     code: '3',
     name: '风险',
+  }
+]
+
+// 项目已完成枚举值
+export const projectDone = [
+  {
+    code: '2',
+    name: '超期',
+  },
+  {
+    code: '1',
+    name: '按期',
   }
 ]
 

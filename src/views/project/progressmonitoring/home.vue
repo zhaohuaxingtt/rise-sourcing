@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-17 14:17:41
+ * @LastEditTime: 2021-09-17 14:22:35
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -79,7 +79,7 @@ import {iCard,icon,iFormGroup,iFormItem,iInput,iMessage } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress'
 import carEmpty from '@/views/project/components/empty/carEmpty'
 import projectStateChart from './components/projectStateChart'
-import {pendingChartData,chartData,projectRisk,partProc} from './components/lib/data'
+import {pendingChartData,chartData,projectRisk,partProc,projectDone} from './components/lib/data'
 import {getLastCarType, getProjectProgressMonitor,getAutoData,updateAutoData} from '@/api/project/process'
 import {selectDictByKeyss} from '@/api/dictionary'
 
@@ -93,6 +93,7 @@ export default {
       updateTime: window.moment().format('YYYY-MM-DD HH:mm:ss'),
       pendingChartData,
       projectRisk,
+      projectDone,
       partProc,
       data: [],
       notInTips: 0,
@@ -128,6 +129,8 @@ export default {
       const projectRisk = this.projectRisk.find(o => o.name === params.name) || {}
       // 零件进度
       const partProc = this.partProc.find(o => o.name === params.name) || {}
+      // 项目已结束指标
+      const projectDone = this.projectDone.find(o => o.name === params.name) || {}
      
       // 匹配异常跳转
       if (targetIndex === 0 && !(target && target.disabled)) {
@@ -143,7 +146,8 @@ export default {
           carProjectName: params.carProjectName,
           partStatus: params.partStatus,
           projectRisk: projectRisk.code || '',
-          partProc: partProc.code || ''
+          partProc: partProc.code || '',
+          projectDone: projectDone.code || ''
         }
         console.log('onSeriesBarClick', query, params)
         this.$router.push({name: 'progressmonitoring-detail', query
