@@ -59,7 +59,7 @@
             <div>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
-                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN|新增零件">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
+                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN|新增零件" @click="addParts">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN|删除零件" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI|科室退回" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
             </div>
@@ -126,6 +126,8 @@
       <assignDialog v-if="assignVisible" :assignType="assignType" :dialogVisible="assignVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" :singleAssign="singleAssign" :requirementAekoId="aekoInfo.requirementAekoId" :linieDeptNum="selectOptions.linieDeptNumList" :buyerName="selectOptions.buyerName" :userInfo="userInfo"/>
       <!-- 退回原因 -->
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
+      <!-- 新增零件弹窗 -->
+      <addPartsDialog v-if="addPartskVisible" :dialogVisible="addPartskVisible" @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -144,6 +146,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
 import departBackDialog from './components/departBackDialog'
+import addPartsDialog from './components/addPartsDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
 import aekoSelect from '../../../components/aekoSelect'
 import {
@@ -173,6 +176,7 @@ export default {
         assignDialog,
         departBackDialog,
         aekoSelect,
+        addPartsDialog,
     },
     computed: {
         //eslint-disable-next-line no-undef
@@ -266,7 +270,8 @@ export default {
             departBackVisible:false,
             isAekoManager: false,
             isCommodityCoordinator: false,
-            isLinie: false
+            isLinie: false,
+            addPartskVisible:false,
         }
     },
     methods:{
@@ -643,7 +648,12 @@ export default {
         }else{
           this.selectOptions[props] = selectOptionsCopy[props];
         }
-      }
+      },
+
+      // 新增零件
+      addParts(){
+        //   this.addPartskVisible = true;
+      },
     }
 }
 </script>
