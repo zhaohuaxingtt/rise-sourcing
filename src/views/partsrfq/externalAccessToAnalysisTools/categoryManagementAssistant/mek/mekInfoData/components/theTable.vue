@@ -11,15 +11,15 @@
       <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="5">
           <el-form-item :label="language('CAILIAOZU','材料组')">
-            <iSelect filterable @change="getTableList" :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
+            <iSelect clearable filterable @change="getTableList" :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
               <el-option :value="item.categoryCode" :label="item.categoryName" v-for="item of formGoup.materialGroupList" :key="item.categoryCode"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
         <el-col :span="5">
           <el-form-item :label="language('CHEXING','车型')">
-            <iSelect filterable @change="getTableList" :placeholder="language('QXZCX','请选择车型')" v-model="form.motorId">
-              <el-option :value="item.vwModelCode" :label="item.modelNameZh" v-for="item of formGoup.carTypeList" :key="item.vwModelCode"></el-option>
+            <iSelect clearable filterable @change="getTableList" :placeholder="language('QXZCX','请选择车型')" v-model="form.motorId">
+              <el-option :value="item.id" :label="item.modelNameZh" v-for="item of formGoup.carTypeList" :key="item.id"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
@@ -41,35 +41,35 @@
       </el-row>
     </el-form>
 
-    <el-table class="elTable" v-loading="tableLoading" @selection-change="handleSelectionChange" :data="tableListData" style="width: 100%">
+    <el-table tooltip-effect="light" class="elTable" v-loading="tableLoading" @selection-change="handleSelectionChange" :data="tableListData" style="width: 100%">
       <el-table-column type="selection" width="55">
       </el-table-column>
       <el-table-column type="index" :index="indexMethod" label="#" width="55"> </el-table-column>
-      <el-table-column :label="language('LINGJIAN','零件')" prop="date">
+      <el-table-column show-overflow-tooltip :label="language('LINGJIAN','零件')" prop="date">
         <template slot-scope="scope">
           <div>{{scope.row.partNumber}}</div>
           <div>{{scope.row.partName}}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('CAILIAOZU','材料组')" prop="materialGroup">
+      <el-table-column show-overflow-tooltip :label="language('CAILIAOZU','材料组')" prop="materialGroup">
         <template slot-scope="scope">
           <div>{{scope.row.materialGroup}}</div>
           <div>{{scope.row.stuffGroup}}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('CHEXINGXINGXI','车型信息')" prop="name">
+      <el-table-column show-overflow-tooltip :label="language('CHEXINGXINGXI','车型信息')" prop="name">
         <template slot-scope="scope">
           <div>{{scope.row.motorName}}</div>
           <div>{{scope.row.motorProject}}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('PINGPAIPINGTAI','品牌/平台')" prop="name">
+      <el-table-column show-overflow-tooltip :label="language('PINGPAIPINGTAI','品牌/平台')" prop="name">
         <template slot-scope="scope">
           <div>{{scope.row.brand}}</div>
           <div>{{scope.row.platform}}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('JIEBIELEIXING','级别/类型')" prop="name">
+      <el-table-column show-overflow-tooltip :label="language('JIEBIELEIXING','级别/类型')" prop="name">
         <template slot-scope="scope">
           <div>{{scope.row.position}}</div>
           <div>{{scope.row.type}}</div>
@@ -102,12 +102,12 @@
                 <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
                 <div v-for="(item,index) in scope.row.configurationList" :key="index" :class="item.isHighlight?'highlight':'black'">{{item.configuration}}</div>
               </div>
-              <div slot="reference">{{scope.row.transmission}}</div>
+              <div slot="reference">{{scope.row.ebr}}</div>
             </el-popover>
           </div>
         </template>
       </el-table-column>
-      <el-table-column width="250" :label="language('JIAGEXINGXI','价格信息')" prop="name">
+      <el-table-column show-overflow-tooltip width="250" :label="language('JIAGEXINGXI','价格信息')" prop="name">
         <template slot="header">
           <div>{{language('JIAGEXINGXI  ','价格信息')}}</div>
           <div class="flex-between-center-center margin-top10">
@@ -130,16 +130,16 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('GONGYINGSHANGXINGXI','供应商信息')" prop="name">
+      <el-table-column show-overflow-tooltip :label="language('GONGYINGSHANGXINGXI','供应商信息')" prop="name">
         <template slot-scope="scope">
           <div>{{scope.row.supplierCode}}</div>
           <div>{{scope.row.supplierName}}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="language('XIANSHIYINGCHANG','显示/隐藏')" prop="isHidden">
+      <el-table-column show-overflow-tooltip :label="language('XIANSHIYINGCHANG','显示/隐藏')" prop="isHidden">
         <template slot-scope="scope">
           <div class="cursor" @click="handleIsHidden(scope.row)">
-            <icon :name="scope.row.isHidden?'iconxianshi':'iconyincang'" symbol />
+            <icon :name="scope.row.isHidden?'iconyincang':'iconxianshi'" symbol />
           </div>
         </template>
       </el-table-column>
