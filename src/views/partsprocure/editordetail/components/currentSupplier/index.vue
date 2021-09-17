@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-09-16 18:50:37
+ * @LastEditTime: 2021-09-17 13:58:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
 -->
 <template>
-  <iDialog :visible.sync="dialogVisible.show" :title="language('WEIHUXGGYX','维护现供供应商')" width='80%'>
+  <iDialog :visible.sync="dialogVisible.show" :title="language('WEIHUXGGYX','维护现供供应商')" width='80%' :before-close='beforeClose'>
     <div class="search margin-bottom20">
       <template v-if='edit'>
         <iButton @click="edit = false">{{language('EDITBTN','编辑')}}</iButton>
@@ -84,7 +84,7 @@
   </iDialog>
 </template>
 <script>
-import {iDialog,iButton,iInput,iSelect,iSearch,iMessage,iPagination} from 'rise'
+import {iDialog,iButton,iInput,iSelect,iSearch,iMessage,iPagination,iMessageBox} from 'rise'
 import {tableTileList,tabelTitleListLast} from './data'
 import {supplierCurentBottom,supplierCurentTop,purchaseFactory,updateCurrentSupplierPage} from '@/api/partsprocure/editordetail'
 import {pageMixins} from "@/utils/pageMixins";
@@ -119,7 +119,7 @@ export default{
     }
   },
   watch:{
-    'dialogVisible.show':function(){
+    'dialogVisible.show':function(res){
       this.topSelect = []
       this.bottomSelect = []
       this.dataListTop = []
@@ -143,6 +143,11 @@ export default{
     }
   },
   methods:{
+    beforeClose(done){
+      iMessageBox('请确认数据已经保存，是否继续退出?').then(res=>{
+        done()
+      })
+    },
     deleteRow(){
       if(this.topSelect.length == 0) return iMessage.warn(this.language('QINGXUANZEYIGELIE','请选择一条数据！'))
       this.dataListTop.forEach((value,index)=>{
