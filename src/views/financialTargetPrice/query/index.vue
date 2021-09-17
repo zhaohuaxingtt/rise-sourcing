@@ -153,7 +153,7 @@ export default {
             setOptions: res.data?.map(item => {
               return {
                 code: item.id,
-                name: item.name
+                name: item.code
               }
             })
           }
