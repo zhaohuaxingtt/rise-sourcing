@@ -18,7 +18,7 @@
     </div>
     <div class="content">
       <div class="table" v-for="(value, index) in tableList" :key="index">
-        <el-table @select="select" @select-all="selectAll($event,value.code)" row-key="id" :tree-props="{children:'childNodes'}" v-loading="tableLoading" :ref="'multipleTable'" :data="value.dimensions" @selection-change="handleSelectionChange($event,index)">
+        <el-table @select="select" @select-all="selectAll($event,value.code)" row-key="sort" :tree-props="{children:'childNodes'}" v-loading="tableLoading" :ref="'multipleTable'" :data="value.dimensions" @selection-change="handleSelectionChange($event,index)">
           <el-table-column align="center" type="selection" width="55"> </el-table-column>
           <el-table-column align="center" type="index" :index="indexMethod" label="#" width="55">
             <template slot-scope="scope">{{scope.row.sort}}</template>

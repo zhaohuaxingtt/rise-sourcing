@@ -139,7 +139,7 @@
       <el-table-column show-overflow-tooltip :label="language('XIANSHIYINGCHANG','显示/隐藏')" prop="isHidden">
         <template slot-scope="scope">
           <div class="cursor" @click="handleIsHidden(scope.row)">
-            <icon :name="scope.row.isHidden?'iconxianshi':'iconyincang'" symbol />
+            <icon :name="scope.row.isHidden?'iconyincang':'iconxianshi'" symbol />
           </div>
         </template>
       </el-table-column>
