@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 17:50:25
+ * @LastEditTime: 2021-09-16 11:05:40
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -54,7 +54,8 @@
                   （<iInput :class="`productItem-bottom-stepBetween-input ${pro[nodeList[nodeList.length - 1].isChange] == 1 ? 'markBlue':''}` " v-model="pro[nodeList[nodeList.length - 1].keyPoint]"></iInput>）
                 </div>
               </div>
-              <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon>
+              <!-- <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon> -->
+              <span v-html="svgList['iconliuchengjiedianyiwancheng1']" class="step-between-icon"></span>
               <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom14 margin-top30 ${index === nodeList.length - 2 && 'small'}`">
                 <iText :class="`productItem-bottom-stepBetween-input text `">{{pro[item.const]}}</iText>
                 <div v-if="index === nodeList.length - 2" class="flex-box">
@@ -115,7 +116,10 @@ export default {
       fsTableList: [],
       downloadLoading: false,
       selectOptions: {},
-      interval: null
+      interval: null,
+      svgList: {
+        'iconliuchengjiedianyiwancheng1': '<svg t="1631761282163" class="icon" viewBox="0 0 128000 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="95301" width="200" height="200"><path d="M1212.928 1024C543.232 1024 0 794.624 0 512s543.232-512 1212.928-512h126150.656c669.696 0 641.024 519.68 634.368 512-8.192-15.36 35.84 512-634.368 512z" fill="#1660F1" p-id="95302"></path></svg>',
+      }
     }
   },
   created() {
@@ -560,6 +564,10 @@ export default {
           }
           .step-between-icon {
             width: 100%;
+            ::v-deep .icon {
+              height: 10px;
+              width: 100%;
+            }
           }
         }
       }

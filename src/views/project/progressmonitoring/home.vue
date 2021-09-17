@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-14 16:58:14
+ * @LastEditTime: 2021-09-16 17:06:07
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -33,8 +33,8 @@
         <div class="floatright" v-permission.auto="PROJECTMGT_PROGRESSMONITORING_TIPS|TIPS表">
           <!--  -->
           <span class="switch">
-            TIPS表
-            <el-switch v-model="showTips" width="35" @change="confirmShowTips" disabled></el-switch>
+            {{language("TIPSBIAO","TIPS表")}}
+            <el-switch v-model="showTips" width="35" @change="confirmShowTips"></el-switch>
           </span>
           
         </div>
@@ -48,7 +48,9 @@
               :data="item"
               :id="item.id"
               :disabled="item.disabled"
-              :hideTaskProcess="item.hideTaskProcess" />
+              :hideTaskProcess="item.hideTaskProcess"
+              @onSeriesBarClick="onSeriesBarClick"
+              @onTitleClick="onSeriesBarClick" />
           </el-col>
         </el-row>
         <carEmpty v-else />
@@ -58,11 +60,11 @@
          <iFormGroup row="4" class="form">
             <iFormItem>
               <span slot="label">{{language('WEIJINTIPSBIAO', '未进TIPS表')}}:</span>
-              <iInput v-model="notInTips" disabled />
+              <span class="cursor" @click="toPartList(1)"><iInput v-model="notInTips" disabled /></span>
             </iFormItem>
             <iFormItem>
               <span slot="label">{{language('DAIQUERENDECKDLINGJIAN', '待确认的CKD零件')}}:</span>
-              <iInput v-model="ckdconfirm" disabled />
+              <span class="cursor" @click="toPartList(2)"><iInput v-model="ckdconfirm" disabled /></span>
             </iFormItem>
          </iFormGroup>
       </div>
@@ -84,6 +86,7 @@ export default {
   data() {
     return {
       carProject: this.$route.query.carProject,
+      carProjectName: this.$route.query.cartypeProjectZh,
       showTips: false,
       updateTime: window.moment().format('YYYY-MM-DD HH:mm:ss'),
       pendingChartData,
@@ -99,6 +102,31 @@ export default {
     this.handleCarProjectChange(carProjectId, cartypeProjectZh)
   },
   methods: {
+    toPartList(type) {
+      this.$router.push({name: 'progressmonitoring-monitoring-partList', query: {
+        carProjectId: this.carProject,
+        carProjectName: this.carProjectName,
+        type
+      }})
+    },
+    /**
+     * @description: 柱状图点击事件
+     * @param {*} params
+     * @return {*}
+     */    
+    onSeriesBarClick(params) {
+      const itemName = params.title || params.seriesName
+      const target = this.data.find(o => o.title === itemName) || {}
+      const targetIndex = this.data.findIndex(o => o.title === itemName)
+      // 匹配异常跳转
+      if (targetIndex === 0 && !(target && target.disabled)) {
+        this.$router.push({name: 'progressmonitoring-parts-taskList', query: {
+          cartypeProId: this.carProject,
+          carProjectName: this.carProjectName,
+          }
+        })
+      }
+    },
     /**
      * @description: TIPS表同步
      * @param {*}
@@ -143,7 +171,8 @@ export default {
         const res = await getLastCarType()
         if (res.code === '200') {
           this.carProject = res.data.id
-          this.carProject && (this.handleCarProjectChange(this.carProject, res.data.cartypeProName))
+          this.carProjectName = res.data.cartypeProName
+          this.carProject && (this.handleCarProjectChange(this.carProject, this.carProjectName))
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -159,6 +188,7 @@ export default {
      */    
     async handleCarProjectChange(carProjectId, carProjectName) {
       this.carProject = String(carProjectId)
+      this.carProjectName = carProjectName
       if (!this.carProject) {
         this.getLastCarType()
         return
@@ -222,7 +252,7 @@ export default {
         if (confirmInfo === 'confirm') {
           this.data.map((o, index) => {
             if (index <= 1) {
-              this.$set(o, 'disabled', !o.disabled)
+              this.$set(o, 'disabled', !state)
             }
             return o
           })
@@ -249,6 +279,10 @@ export default {
   height: 450px;
 }
 .countView {
+  .cursor {
+    display: inline-block;
+    cursor: pointer;
+  }
   ::v-deep.el-form-item {
     margin-bottom: 0px;
     .el-form-item__content {

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-09-06 10:47:55
+ * @LastEditTime: 2021-09-17 11:23:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -123,8 +123,8 @@ export function getAekoCarDosage(params) {
 // 根据车型项目获取每车用量数据
 export function getAekoCarDosageByCarTypeProjectCode(params) {
   return requst({
-    url: `/aeko/aeko-project-change/${ params.carTypeProjectCode }`,
-    method: 'GET'
+    url: `/aeko/aeko-project-change?carTypeProjectCode=${ params.carTypeProjectCode }`,
+    method: 'POST',
   })
 }
 

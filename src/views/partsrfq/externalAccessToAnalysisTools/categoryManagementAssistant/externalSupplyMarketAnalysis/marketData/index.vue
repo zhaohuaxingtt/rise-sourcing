@@ -83,6 +83,7 @@ export default {
       categoryCode: this.$store.state.rfq.categoryCode,
       copySearchProps: {},
       isExporting: false,
+      categoryName: this.$store.state.rfq.categoryName,
     };
   },
   async created() {
@@ -475,6 +476,11 @@ export default {
         default:
           return '';
       }
+    },
+  },
+  watch: {
+    '$store.state.rfq.categoryName'() {
+      this.categoryName = this.$store.state.rfq.categoryName;
     },
   },
 };
