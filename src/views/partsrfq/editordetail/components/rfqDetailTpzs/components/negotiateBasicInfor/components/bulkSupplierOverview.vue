@@ -57,7 +57,7 @@ export default {
   methods: {
     // go供应商360
     handleHerf() {
-      window.location.href = 'http://rise-front-portal.apps.vmocp-dev.csvw.com/supplier/supplierList'
+      window.location.href = 'http://10.122.17.38/portal/#/supplier/supplierList'
     },
     // 获取备注
     async getRemark() {
