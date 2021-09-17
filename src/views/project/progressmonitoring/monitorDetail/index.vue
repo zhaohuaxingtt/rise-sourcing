@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-15 15:45:41
+ * @LastEditTime: 2021-09-17 14:19:48
  * @Description: 监控明细
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -29,17 +29,18 @@
         </div>
       </div>
       <div class="projectCard-content">
-        <partList />
+        <partList v-loading="loading" :list="partList" />
       </div>
     </iCard>
   </iPage>
 </template>
 
 <script>
-import { iPage, iCard, iButton } from 'rise'
+import { iPage, iCard, iButton, iMessage } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress/components/progress'
 import iDicoptions from 'rise/web/components/iDicoptions'
 import partList from './components/partList'
+import { getProProgressMonitorDetail } from '@/api/project/process'
 export default {
   components: { iPage, carProject, iCard, iDicoptions, iButton, partList },
   data() {
@@ -47,11 +48,16 @@ export default {
       collapseValue: true,
       searchList: [
         {value: 'partStatus', label: '零件状态', key: 'LINGJIANZHUANGTAI', type: 'selectDict', selectOption: 'PART_PERIOD_TYPE'},
-        {value: 'level', label: '项目风险', key: 'XIANGMUFENGXIAN', type: 'selectDict', selectOption: 'DELAY_GRADE_CONFIG'},
-        {value: 'level', label: '项目进度', key: 'XIANGMUJINDU', type: 'selectDict', selectOption: 'DELAY_GRADE_CONFIG'},
-        {value: 'level', label: '零件进度', key: 'LINGJIANJINDU', type: 'selectDict', selectOption: 'DELAY_GRADE_CONFIG'},
+        {value: 'projectRisk', label: '项目风险', key: 'XIANGMUFENGXIAN', type: 'selectDict', selectOption: 'DELAY_GRADE_CONFIG'},
+        {value: 'projectDone', label: '项目进度', key: 'XIANGMUJINDU', type: 'selectDict', selectOption: 'PROJECTDONE'},
+        {value: 'partProc', label: '零件进度', key: 'LINGJIANJINDU', type: 'selectDict', selectOption: 'PARTS_PROGRESS'},
       ],
-      searchParams: {}
+      searchParams: {
+        projectId: '1001862',
+        partStatus: '4'
+      },
+      partList: [],
+      loading: false
     }
   },
   computed: {
@@ -62,7 +68,32 @@ export default {
       return this.$route.query.carProjectName
     }
   },
+  created() {
+    const { carProjectId = '', partStatus = '', projectRisk = '', projectDone = '', partProc = ''} = this.$route.query
+    this.searchParams = { projectId: carProjectId, partStatus, projectRisk, projectDone, partProc }
+    this.handleSure()
+  },
   methods: {
+    handleReset() {
+      this.searchParams = {
+        ...this.searchParams,
+        projectRisk: '',
+        partProc: '',
+        projectDone: ''
+      }
+    },
+    handleSure() {
+      this.loading = true
+      getProProgressMonitorDetail(this.searchParams).then(res => {
+        if (res?.result) {
+          this.partList = res.data
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)  
+        }
+      }).finally(() => {
+        this.loading = false
+      })
+    },
     /**
      * @Description: 车型项目部分是否收起
      * @Author: Luoshuang
@@ -113,11 +144,15 @@ export default {
       }
     }
   }
-  .partCard {
-    height: calc(100% - 345px);
+  .projectCard {
+    height: calc(100% - 180px);
+    overflow: hidden;
     &.withCollapse {
       height: calc(100% - 120px);
       overflow: auto;
+    }
+    &-content {
+      height: calc(100% - 40px);
     }
   }
   ::v-deep .card > div:first-child {

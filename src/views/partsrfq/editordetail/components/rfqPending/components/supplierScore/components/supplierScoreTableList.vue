@@ -34,7 +34,7 @@
                 :key="supplierProducePlace.key"
                 :label="supplierProducePlace.label"
                 :value="supplierProducePlace.value">
-                  <el-tooltip class="item" effect="light" :open-delay="200" :content="`${ supplierProducePlace.name }_${ supplierProducePlace.province }_${ supplierProducePlace.city }_${ supplierProducePlace.address }`" placement="right">
+                  <el-tooltip class="item" :disabled="tooltipDisabled" effect="light" :open-delay="200" :content="`${ supplierProducePlace.name }_${ supplierProducePlace.province }_${ supplierProducePlace.city }_${ supplierProducePlace.address }`" placement="right">
                     <div class="item">{{ `${ supplierProducePlace.province }_${ supplierProducePlace.city }_${ supplierProducePlace.address }` }}</div>
                   </el-tooltip>
               </el-option>
@@ -79,6 +79,11 @@ export default {
     supplierProducePlacesLoading: { type: Boolean, default: false },
     disabled: { type: Boolean, default: true }
   },
+  data() {
+    return {
+      tooltipDisabled: false
+    }
+  },
   methods: {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val)
@@ -90,6 +95,7 @@ export default {
       this.$emit('openMultiHeaderPropsPage', row, key)
     },
     supplierProducePlacesVisibleChange(status, row) {
+      this.tooltipDisabled = !status
       this.$emit('supplierProducePlacesVisibleChange', status, row)
     },
     supplierProducePlacesChange(value, row) {

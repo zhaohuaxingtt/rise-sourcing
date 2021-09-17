@@ -23,7 +23,7 @@
             </el-form-item>
         </el-form>
     </iSearch>
-    <iCard >
+    <iCard class="contain margin-top20">
         <div class="margin-bottom20 clearFloat">
 
         <span class="font18 font-weight">{{ language( 'DINGDIANXIN', '定点信' ) }}</span>
