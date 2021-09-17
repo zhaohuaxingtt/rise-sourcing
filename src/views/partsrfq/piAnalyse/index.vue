@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-09-10 13:42:48
+ * @LastEditTime: 2021-09-17 10:11:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -72,6 +72,7 @@
         :row-class-name="rowStyle"
         :tree-props="{ children: 'children' }"
         @selection-change="handleSelectionChange"
+        @current-change="handleCurrentChange"
       >
         <el-table-column
           align="center"
@@ -226,7 +227,6 @@
       <iPagination
         v-update
         @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
         background
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
@@ -386,7 +386,6 @@ export default {
             this.page.totalCount = res.total;
             this.tableListData = res.data;
             this.handleTableNumber(this.tableListData, 1, null);
-            console.log('tableListData', this.tableListData);
             this.updateTableData();
             resolve(res);
           }
@@ -486,18 +485,58 @@ export default {
       if (val == "是") this.updatedDefault = true;
       this.updateTableData();
     },
+    // 获取发生编辑数据
+    handleGetEditData(data) {
+      return window._.cloneDeep(data).map((item, index) => {
+        if(item.piReportVOList && item.piReportVOList.length) {
+          const i = data.findIndex(x => x.number == item.number)
+          const childArr = this.handleGetEditData(item.piReportVOList)
+          this.$set(data[i], 'piReportVOList', this.handleGetEditData(item.piReportVOList))
+        }
+        const isEdit = this.checkIsEdit(item)
+        if(!isEdit && (!item.piReportVOList || item.piReportVOList.length == 0)) {
+          data.splice(index, 1)
+        }
+        return data
+      })
+    },
+    // 检查数据是否发生了变化
+    checkIsEdit(newVal) {
+      let res = false
+      let oldVal = this.getOldValByNumber(window._.cloneDeep(this.backUpData), newVal.number)
+      if(newVal.type == this.$t('TPZS.SCHEME_TYPE') && ((oldVal.analysisSchemeName != newVal.analysisSchemeName) || (oldVal.isDefault != newVal.isDefault))) {
+        res = true
+      } else if(newVal.type != this.$t('TPZS.SCHEME_TYPE') && ((oldVal.reportName != newVal.reportName) || (oldVal.isDefault != newVal.isDefault))) {
+        res = true
+      }
+      return res
+    },
+    // 获取number相同的备份数据元素
+    getOldValByNumber(data, number) {
+      for(let i = 0; i < data.length; i++) {
+        const item = data[i]
+        if(item.number == number) {
+          return item
+        }
+        if(item.piReportVOList && item.piReportVOList.length) {
+          return this.getOldValByNumber(item.piReportVOList, number)
+        }
+      }
+    },
     //保存编辑
     saveEdit() {
       this.editMode = false;
+      const editTableData = window._.cloneDeep(this.tableListData)
+      this.handleGetEditData(editTableData)
+      console.log('editTableData', editTableData);
       const params = {
-        piEditDTOList: this.tableListData
+        piEditDTOList: editTableData
       }
       fetchAnalysisSave(params).then((res) => {
         if (res && res.code == 200) {
           iMessage.success(res.desZh);
           this.getTableList();
         } else iMessage.error(res.desZh);
-        
       });
     },
     // 选中项发生改变

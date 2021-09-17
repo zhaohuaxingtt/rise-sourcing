@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-15 10:04:10
+ * @LastEditTime: 2021-09-17 13:52:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -105,6 +105,7 @@ export default {
   },
   created() {
     // this.initTestData()
+    this.initSearchData()
     this.getTableData().then(res => {
       this.$nextTick(_ => {
         this.handleDefaultSelect()
@@ -129,6 +130,22 @@ export default {
           this.handleDefaultSelect()
         })
       })
+    },
+    // 初始化检索条件
+    initSearchData() {
+      const operateLog = this.$route.query.operateLog ? JSON.parse(this.$route.query.operateLog) : null
+      this.searchForm = {
+        ...this.searchForm,
+        nomiNum: this.$route.query.schemeId ? (operateLog.nomiNum || null) : 20,
+        sixNum: operateLog ? operateLog.sixNum : null,
+      }
+      if(operateLog && operateLog.endDate && operateLog.startDate) {
+        const date = []
+        date.push(operateLog.startDate.valueOf())
+        date.push(operateLog.endDate.valueOf())
+        this.$set(this.searchForm, 'date', date)
+      }
+      this.page.pageSize = 100
     },
     // 获取表格数据
     getTableData() {
@@ -184,12 +201,6 @@ export default {
     clickBack() {
       this.$router.push(this.costAnalysisUrl)
     },
-    // 初始化检索条件数据
-    initSearchData() {
-      for(const key in this.searchForm) {
-        this.searchForm[key] = null
-      }
-    },
     // 点击确定查询
     handleSubmitSearch() {
       this.page.currPage = 1
@@ -218,7 +229,10 @@ export default {
       this.$router.push({
         path: this.costAnalysisMainUrl,
         query: {
-          ...this.searchForm,
+          startDate: this.searchForm.date && this.searchForm.date.length > 0 ? this.searchForm.date[0] : null,
+          endDate: this.searchForm.date && this.searchForm.date.length > 0 ? this.searchForm.date[1] : null,
+          nomiNum: this.searchForm.nomiNum,
+          sixNum: this.searchForm.sixNum,
           schemeId: this.$route.query.schemeId || null,
           fsNumList: JSON.stringify(this.selection.map(item => item.fsNum)),
         }

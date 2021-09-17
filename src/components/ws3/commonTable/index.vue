@@ -1,7 +1,7 @@
 <!--
  * @Author: yourname
  * @Date: 2021-04-13 17:30:36
- * @LastEditTime: 2021-08-20 10:15:19
+ * @LastEditTime: 2021-09-16 10:35:06
  * @LastEditors: Please set LastEditors
  * @Description: 通用表格
 -->
@@ -12,6 +12,7 @@
            :class="{ 'formStyle' :ruleLength === 0}"
            ref="commonTableForm">
     <el-table :height="height"
+              :max-height="maxHeight"
               ref="dataTable"
               :span-method="handleMerge"
               tooltip-effect='light'
@@ -173,6 +174,7 @@ export default {
     selection: { type: Boolean, default: true },
     index: { type: Boolean, default: false },
     height: { type: Number || String },
+    maxHeight: { type: Number || String },
     openPageProps: { type: String, default: '' },
     inputProps: {
       type: Array, default: () => {
