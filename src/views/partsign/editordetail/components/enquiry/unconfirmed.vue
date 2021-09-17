@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+      <tableList ref="table" class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #version="scope">
           <span class="flexRow">
             <span class="openLinkText cursor " @click="enquiry(scope.row)"> {{ scope.row.version }}</span>
@@ -96,15 +96,18 @@ export default {
           if (res.data.attachmentVersionVOS) {
             this.tableListData = Array.isArray(res.data.attachmentVersionVOS.tpRecordList) ? res.data.attachmentVersionVOS.tpRecordList : []
             this.page.totalCount = res.data.attachmentVersionVOS.totalCount || 0
+
+            this.$nextTick(() => {
+              this.tableListData.forEach(item => this.$refs.table.$refs.table.toggleRowSelection(item, true))
+            })
           } else {
             this.tableListData = []
             this.page.totalCount = 0
           }
 
           this.display = !!this.tableListData.length
-          this.loading = false
         })
-        .catch(() => this.loading = false)
+        .finally(() => this.loading = false)
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
