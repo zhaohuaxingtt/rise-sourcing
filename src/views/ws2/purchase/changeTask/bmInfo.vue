@@ -910,7 +910,7 @@ export default {
     },
     sendSupplier(){
       if(Number(this.baseInfo.changeStatus) === 1 || Number(this.baseInfo.changeStatus) === 2){
-        this.$confirm(this.language('LK_DANGQIANMOJUTOUZIBIANGENGDANGONGYINGSHANGSHANGWEIQUERENSHIFOUJIXUTIJIAO', '当前模具投资变更单供应商尚未确认，是否继续提交？'), this.language('LK_TISHI', '提示'), {
+        this.$confirm(this.language('LK_DANGQIANMOJUTOUZIBIANGENGDANGONGYINGSHANGSHANGWEIQUEREN', '当前模具投资变更单供应商尚未确认，是否代供应商确认并提交？'), this.language('LK_TISHI', '提示'), {
           confirmButtonText: this.language('LK_QUEDING', '确定'),
           cancelButtonText: this.language('LK_QUXIAO', '取消'),
           type: 'warning'

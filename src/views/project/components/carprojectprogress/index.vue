@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 22:46:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 09:51:45
+ * @LastEditTime: 2021-09-15 14:11:42
  * @Description: 车型项目详情
  * @FilePath: \front-web\src\views\project\components\carprojectprogress\index.vue
 -->

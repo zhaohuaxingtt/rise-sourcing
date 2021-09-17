@@ -1,36 +1,36 @@
 <!--
  * @Author: Luoshuang
- * @Date: 2021-07-28 15:14:21
+ * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-16 11:08:31
- * @Description: 节点视图
- * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
+ * @LastEditTime: 2021-09-15 16:26:34
+ * @Description: 
+ * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
 <template>
-  <div class="periodicView" v-loading="loading">
-    <div class="periodicView-title">
-      <div class="periodicView-title-span">
-        <el-checkbox class="periodicView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-        <span class="periodicView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>
-      </div>
-      <div>
-        <iButton @click="$emit('changeNodeView')">{{language('QIEHUANZHOUQISHITU', '切换周期视图')}}</iButton>
-        <iButton @click="handleDownloadNode" :loading="downloadLoading">{{language('DAOCHU', '导出')}}</iButton>
-      </div>
-    </div>
-    <div class="periodicView-content">
-      <div v-for="pro in products" :key="pro.label" class="productItem">
-        <div class="productItem-top">
-          <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)">
-            {{pro.productGroupNameZh}}
-          </el-checkbox>
-        </div>
+  <div class="partListView" v-loading="loading"> 
+    <div class="partListView-title"> 
+      <div class="partListView-title-span"> 
+        <!-- <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> 
+        <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>  -->
+      </div> 
+      <div > 
+        <iButton @click="handleSave" :loading="saveloading">{{language('CHAKANYANWUYUANYIN', '查看延误原因')}}</iButton> 
+        <iButton :loading="versionLoading" @click="handleSecheduleVersion">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
+        <iButton @click="handleSendFs">{{language('FASONGJINDUQUEREN', '发送进度确认')}}</iButton> 
+        <iButton :loading="versionLoading" @click="handleSecheduleVersion">{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
+        <iButton @click="handleSendFs">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
+      </div> 
+    </div> 
+    <div class="partListView-content"> 
+      <div v-for="pro in parts" :key="pro.label" class="productItem"> 
+        <div class="productItem-top"> 
+          <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
+            {{`${pro.partNum} ${pro.partNameZh} ${pro.partNameDe}`}} 
+          </el-checkbox> 
+        </div> 
         <div class="productItem-bottom">
           <div class="productItem-bottom-text">
             <div v-for="item in targetList" :key="item.value" class="productItem-top-targetList-item margin-top20">
-              <icon v-if="pro[item.value] == 1" symbol name="iconbaojiapingfengenzong-jiedian-lv" class="productItem-top-targetList-item-icon"></icon>
-              <icon v-else-if="pro[item.value] == 2" symbol name="iconbaojiapingfengenzong-jiedian-huang" class="productItem-top-targetList-item-icon"></icon>
-              <icon v-else-if="pro[item.value] == 3" symbol name="iconbaojiapingfengenzong-jiedian-hong" class="productItem-top-targetList-item-icon"></icon>
               <span class="productItem-top-targetList-item-label">{{language(item.key, item.label)}}</span>
             </div>
           </div>
@@ -41,19 +41,18 @@
               <icon v-if="pro[item.status] === 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon>
               <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
               <div class="flex-box margin-top20 " v-for="taItem in targetList" :key="taItem.value" >
-                <iText class="productItem-bottom-stepBetween-input text ">{{pro[item[taItem.props]]}}</iText>
-                <iText v-if="index === nodeList.length - 1" class="productItem-bottom-stepBetween-input text margin-left10">{{pro[item[taItem.props1]]}}</iText>
+                <iText class="productItem-bottom-stepBetween-input text ">{{pro[item[taItem.props]]}}{{index === nodeList.length - 1 ? '('+(pro[item[taItem.props1]] || '')+')' : ''}}</iText>
               </div>
             </div>
             <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
-              <!-- <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon margin-top45"></icon> -->
-              <span v-html="svgList['iconliuchengjiedianyiwancheng1']" class="step-between-icon margin-top45"></span>
+              <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon margin-top45"></icon>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </div> 
+    </div> 
+    <!-- <fsConfirm ref="fsConfirmPart" :dialogVisible="dialogVisibleFS" @handleConfirm="handleSendFsConfirm" :tableListNomi="tableListNomi" :tableListKickoff="tableListKickoff" :cartypeProId="cartypeProId" @changeVisible="changeFsConfirmVisible" />  -->
+  </div> 
 </template>
 
 <script>
@@ -68,14 +67,13 @@ export default {
     return {
       loading: false,
       checkAll: false,
-      products: [],
+      parts: [{partNum:'123232NN', partNameZh:'是啥', partNameDe: 'ZHFDSFLKF'}],
       checkedProducts: [],
       isIndeterminate: false,
       fsConfirmDialogVisible: false,
       targetList: [
-        {label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget', props: 'vff', props1: 'vff1'},
-        {label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget', props: 'pvs', props1: 'pvs1'},
-        {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget', props: 'os', props1: 'os1'}
+        {label: '计划时间', key: 'JIHUASHIJIAN', value: 'vffTarget', props: 'vff', props1: 'vff1'},
+        {label: '实际时间', key: 'SHIJISHIJIAN', value: 'pvsTarget', props: 'pvs', props1: 'pvs1'},
       ],
       nodeList: [
         {label: '释放', key: 'SHIFANG', pvs: 'pvsTargetReleaseWeek', vff: 'vffTargetReleaseWeek', os: 'zerosTargetReleaseWeek', status: 'releaseStatus'},
@@ -84,10 +82,7 @@ export default {
         {label: '1st Tryout', pvs: 'pvsTargetFirstTryWeek', vff: 'vffTargetFirstTryWeek', os: 'zerosTargetFirstTryWeek', status: 'firstTryStatus'},
         {label: 'EM(OTS)', pvs: 'pvsTargetEmWeek', vff: 'vffTargetEmWeek', os: 'zerosTargetEmWeek', pvs1: 'pvsTargetOtsWeek', vff1: 'vffTargetOtsWeek', os1: 'zerosTargetOtsWeek', status: 'emStatus'}
       ],
-      downloadLoading: false,
-      svgList: {
-        'iconliuchengjiedianyiwancheng1': '<svg t="1631761282163" class="icon" viewBox="0 0 128000 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="95301" width="200" height="200"><path d="M1212.928 1024C543.232 1024 0 794.624 0 512s543.232-512 1212.928-512h126150.656c669.696 0 641.024 519.68 634.368 512-8.192-15.36 35.84 512-634.368 512z" fill="#1660F1" p-id="95302"></path></svg>',
-      }
+      downloadLoading: false
     }
   },
   methods: {
@@ -103,7 +98,7 @@ export default {
       this.loading = true
       getProductGroupNodeInfoList(id).then(res => {
         if (res?.result) {
-          this.products = res.data || []
+          this.parts = res.data || []
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -112,7 +107,7 @@ export default {
       })
     },
     handleCheckAllChange(val) {
-      this.products = this.products.map(item => {
+      this.parts = this.parts.map(item => {
         return {
           ...item,
           isChecked: val
@@ -121,23 +116,23 @@ export default {
       this.isIndeterminate = false;
     },
     handleCheckboxChange(value, pro) {
-      console.log(this.products)
-      let checkedCount = this.products.filter(item => item.isChecked).length;
-      this.checkAll = checkedCount === this.products.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.products.length;
+      console.log(this.parts)
+      let checkedCount = this.parts.filter(item => item.isChecked).length;
+      this.checkAll = checkedCount === this.parts.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.parts.length;
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.periodicView {
+.partListView {
   height: 100%;
   &-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 0 20px;
+    padding: 0 0 20px;
     &-span {
       padding-left: 20px;
       display: flex;
@@ -243,7 +238,7 @@ export default {
           
           &-input {
             height: 30px;
-            width: 100px;
+            width: 160px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -260,10 +255,6 @@ export default {
           }
           .step-between-icon {
             width: 100%;
-            ::v-deep .icon {
-              height: 10px;
-              width: 100%;
-            }
           }
         }
       }

@@ -11,8 +11,8 @@ export const tableTitle = [
   { props: "partNameZh", name: "零件名(中)", key: "LINGJIANMINGZHONG", tooltip: true },
   { props: "partNameDe", name: "零件名(德)", key: "LINGJIANMINGDE", tooltip: true },
   { props: "source", name: "零件来源", key: "LINGJIANLAIYUAN", tooltip: true },
-  { props: "partStatus", name: "零件状态", key: "LINGJIANZHUANGTAI", tooltip: true },
-  { props: "date", name: "激活时间", key: "JIHUOSHIJIAN", tooltip: true },
+  { props: "partStatusDesc", name: "零件状态", key: "LINGJIANZHUANGTAI", tooltip: true },
+  { props: "activeTime", name: "激活时间", key: "JIHUOSHIJIAN", tooltip: true },
   { props: "log", name: "操作日志", key: "CAOZUORIZHI", tooltip: true },
 ]
 

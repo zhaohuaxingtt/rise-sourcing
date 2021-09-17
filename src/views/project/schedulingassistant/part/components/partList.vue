@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-14 10:07:53
+ * @LastEditTime: 2021-09-17 11:08:01
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -47,7 +47,7 @@
               trigger="hover">
               <span slot="reference" >*</span>
             </el-popover>
-            {{`${pro.partNum} ${pro.partNameZh} ${pro.partNameDe}`}} 
+            {{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} 
           </el-checkbox> 
           <div class="productItem-top-targetList"> 
             <!---------------------------目标指示灯，1-正常 2-风险 3-延误-------------------------------------------> 
@@ -109,7 +109,8 @@
                 </template> 
                 <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
               </div>  
-              <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon> 
+              <!-- <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon>  -->
+              <span v-html="svgList['iconliuchengjiedianyiwancheng1']" class="step-between-icon"></span>
             </div>  
           </div> 
         </div> 
@@ -170,7 +171,10 @@ export default {
         {label: '未释放零件', key: 'WEISHIFANGLINGJIAN', type: 3}, 
         {label: '未BF零件', key: 'WEIBFLINGJIAN', type: 2} 
       ], 
-      downloadLoading: false 
+      downloadLoading: false,
+      svgList: {
+        'iconliuchengjiedianyiwancheng1': '<svg t="1631761282163" class="icon" viewBox="0 0 128000 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="95301" width="200" height="200"><path d="M1212.928 1024C543.232 1024 0 794.624 0 512s543.232-512 1212.928-512h126150.656c669.696 0 641.024 519.68 634.368 512-8.192-15.36 35.84 512-634.368 512z" fill="#1660F1" p-id="95302"></path></svg>',
+      }
     } 
   }, 
   mounted() { 
@@ -399,9 +403,9 @@ export default {
         const tableListNomi = []  
         const tableListKickoff = [] 
         selectRows.forEach((item) => { 
-          const fs = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userName || '' 
-          const fsId = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userId || '' 
-          const options = fsOptions ? fsOptions[item.productGroupId]?.reduce((accu, item) => { 
+          const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+          const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+          const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
             if (item.userId) { 
               return [...accu, { 
                 ...item, 
@@ -475,7 +479,7 @@ export default {
       updatePartGroupConfig({...logicData, cartypeProId: this.cartypeProId}).then(res => { 
         if (res?.result) {  
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
-          this.changeLogicVisible(false)  
+          this.$refs.logicSettingBtn.changeVisible(false)  
           this.getPartList(this.cartypeProId) 
         } else {  
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
@@ -657,7 +661,7 @@ export default {
           result = item.partNum.includes(partNum) 
         } 
         if (partNameZh && result === true) { 
-          result = item.partNameZh.includes(partNameZh) || item.partNameDe.includes(partNameDe) 
+          result = item.partNameZh.includes(partNameZh) || item.partNameDe.includes(partNameZh) 
         } 
         if (partNameDe && result === true) { 
           result = item.partNameDe.includes(partNameDe) 
@@ -717,6 +721,7 @@ export default {
      */    
     getPartList(cartypeProId) {  
       this.loading = true 
+      this.$emit('reSetSearchParams')
       getPartSchedule(cartypeProId).then(res => { 
         if (res?.result) { 
           const partList = (res.data || []).map(item => { 
@@ -921,6 +926,10 @@ export default {
           } 
           .step-between-icon { 
             width: 100%; 
+            ::v-deep .icon {
+              height: 10px;
+              width: 100%;
+            }
           } 
         } 
       } 

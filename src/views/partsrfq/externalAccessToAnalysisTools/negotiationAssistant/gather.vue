@@ -8,7 +8,7 @@
 <template>
   <div>
     <div class="margin-bottom15 flex-between-center-center" v-if="$route.path==='/sourcing/partsrfq/externalNegotiationAssistant'">
-      <div class="flex-between-center-center">
+      <div class="flex-between-center-center" >
         <iNavMvp :list="tabRouterList" class="margin-bottom20" routerPage :lev="1" :query='$route.query' @change='changeRouter' />
       </div>
       <div class="floatright">

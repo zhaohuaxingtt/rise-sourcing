@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-24 13:53:50
- * @LastEditTime: 2021-07-23 10:58:54
+ * @LastEditTime: 2021-09-15 19:14:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\data.js
@@ -52,7 +52,7 @@ export const supplierTitle = [
     tooltip: false
   },
   {
-    props: 'supplierId',
+    props: 'supplierCode',
     name: '供应商号',
     key: 'nominationSupplier.GongYingShangHao',
     tooltip: false

@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 14:15:26
- * @LastEditTime: 2021-09-14 11:23:42
+ * @LastEditTime: 2021-09-16 14:26:32
  * @LastEditors: 舒杰
  * @Description: SOURCING TABLE 封装
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\tableList.vue
@@ -28,7 +28,7 @@
 				</template>
 			</el-table-column>
 
-			<el-table-column v-else-if="item.key=='FSCODE'" :key="$index" align="center" :label="language(item.key,item.name)" :prop="item.props"
+			<!-- <el-table-column v-else-if="item.key=='FSCODE'" :key="$index" align="center" :label="language(item.key,item.name)" :prop="item.props"
 				:show-overflow-tooltip="item.tooltip" :width="item.width">
 				<template slot="header">
 					<p class="tableTitleSolt">
@@ -42,7 +42,7 @@
 						<span>{{scope.row.partProjectType}}</span>
 					</p>
 				</template>
-			</el-table-column>
+			</el-table-column> -->
 
 			<el-table-column v-else-if="item.key=='CLZMC'" :key="$index" align="center" :label="language(item.key,item.name)" :prop="item.props"
 				:show-overflow-tooltip="item.tooltip" :width="item.width">

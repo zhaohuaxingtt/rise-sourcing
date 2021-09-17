@@ -9,7 +9,7 @@
 <template>
   <div>
     <div class="navBox">
-      <iNavMvp :list="tabRouterList" class="margin-bottom20" routerPage :lev="1"/>
+      <iNavMvp  class=" margin-bottom20" :list="tabRouterList" routerPage :lev="1"/>
       <div class="rightNav">
         <iNavMvp
             :list="categoryManagementAssistantList"

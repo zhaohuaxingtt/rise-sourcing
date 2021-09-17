@@ -11,6 +11,7 @@ import Vue from 'vue';
 import store from '../store'
 import router from '@/router'
 import {businessPermission} from '@/utils'
+import {getTousandNum, delcommafy} from "@/utils/tool";
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
@@ -284,5 +285,21 @@ Vue.directive("lazySelect", {
         dom.addEventListener("scroll", function() {
           if ((this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
         });
+    }
+})
+
+Vue.directive("moneyInput", {
+    inserted: function(el, binding) {
+        let input = el.querySelector('input')
+        input.addEventListener('keyup', () => {
+            input.value = input.value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')
+        })
+        input.addEventListener('focus', () => {
+            input.value = delcommafy(input.value)
+        })
+        input.addEventListener('blur', () => {
+            input.value = input.value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')
+            input.value = getTousandNum(Number(input.value).toFixed(2))
+        })
     }
 })
