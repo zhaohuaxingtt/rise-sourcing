@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-09-13 17:45:55
+ * @LastEditTime: 2021-09-16 18:50:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -154,7 +154,6 @@ export default{
         })
       })
       this.dataListTop = this.dataListTop.filter(i=>!i.isDelete) || []
-      console.log(this.dataListTop)
     },
     /**
      * @description: 上方表格保存
@@ -162,7 +161,7 @@ export default{
      * @return {*}
      */
     saveAll(){
-      if(this.dataListTop.length == 0 ) return iMessage.warn(this.language('NIHAWEIXUNAZXIAFANGGYS','请先添加供应商！'))
+      //if(this.dataListTop.length == 0 ) return iMessage.warn(this.language('NIHAWEIXUNAZXIAFANGGYS','请先添加供应商！'))
       updateCurrentSupplierPage({fsnrGsnrNum:this.detailData().fsnrGsnrNum,effectingSupplierDTOList:this.dataListTop}).then(res=>{
         if(res.code == 200){
           iMessage.success(this.language('CHAOZUOCHENGGONG','操作成功！'))
