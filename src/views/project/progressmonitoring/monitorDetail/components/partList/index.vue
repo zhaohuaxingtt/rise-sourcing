@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-17 15:37:39
+ * @LastEditTime: 2021-09-17 16:53:56
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -47,9 +47,9 @@
                 <!------------------------------节点图标----------------------------------->
                 <template v-if="Number(pro.partStatus) > item.partPeriod" slot="reference">
                   <icon v-if="pro.partProc == 1" symbol name="iconjindu_yiwancheng_lv" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="pro.partProc == 2" symbol name="iconjindu_yiwancheng_hong" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="pro.partProc == 3" symbol name="iconjindu_yiwancheng_hei" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="pro.partProc == 4" symbol name="iconjindu_yiwancheng_huang" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro.partProc == 2" symbol name="iconjindu_yiwancheng_huang" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro.partProc == 3" symbol name="iconjindu_yiwancheng_hong" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro.partProc == 4" symbol name="iconjindu_yiwancheng_hei" class="step-icon  click-icon"></icon>
                 </template>
                 <template v-else-if="Number(pro.partStatus) == item.partPeriod" slot="reference">
                   <icon v-if="item.key === 'SHIFANG' || pro.partProc == 1 " symbol name="iconjindu_jinhangzhong_lv" class="step-icon  click-icon"></icon>
