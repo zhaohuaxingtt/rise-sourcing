@@ -206,6 +206,9 @@ export default {
     font-size: 14px;
     left: 11.3rem;
     color: #a5a5a5;
+    width: 77rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   position: relative;
   #powerBi {
