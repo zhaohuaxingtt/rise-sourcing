@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-17 14:11:03
+ * @LastEditTime: 2021-09-17 14:17:41
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -125,7 +125,7 @@ export default {
       const target = this.data.find(o => o.title === itemName) || {}
       const targetIndex = this.data.findIndex(o => o.title === itemName)
       // 进度风险对象
-      const projectRisk = this.projectRisk.find(o => o.name === itemName) || {}
+      const projectRisk = this.projectRisk.find(o => o.name === params.name) || {}
       // 零件进度
       const partProc = this.partProc.find(o => o.name === params.name) || {}
      
