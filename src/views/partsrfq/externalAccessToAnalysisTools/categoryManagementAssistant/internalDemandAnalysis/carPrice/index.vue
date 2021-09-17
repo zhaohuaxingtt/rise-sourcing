@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-13 14:05:57
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-17 17:28:02
+ * @LastEditors: Please set LastEditors
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
 -->
@@ -27,7 +27,7 @@
          <div class="flex search">
             <div>
                <span>{{ language("DUIBIAOCHEXING", "对标车型") }}</span>
-               <iSelect class="select" v-model="filterCarValue" multiple collapse-tags multiple-limit="5">
+               <iSelect class="select" v-model="filterCarValue" multiple collapse-tags multiple-limit="5" @change="handleChangeCarVal">
                    <el-option :value="item.modelNameZh" :label="item.description" v-for="(item,index) in carType" :key="index"></el-option>
                </iSelect>
             </div>
@@ -148,8 +148,9 @@ export default {
          filterCarValue:[],//对标车型
          pickerOptions: {
             disabledDate(time) {
-               let currentYear = new Date().getTime()
-               return time.getTime() > currentYear;
+              //  let currentYear = new Date().getTime()
+              let currentYear = new Date().setMonth(new Date().getMonth() - 1)
+              return time.getTime() > currentYear;
             }
          },
       }
@@ -180,6 +181,10 @@ export default {
       }
    },
    methods: {
+      // 选中对标车型 
+      handleChangeCarVal() {
+        this.filterCarValue = window._.slice(this.filterCarValue, 0, 5)
+      },
       // 获取近期操作数据
       async getCategoryAnalysis(){
          let params={
