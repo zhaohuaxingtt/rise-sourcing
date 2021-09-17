@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-16 13:56:26
+ * @LastEditTime: 2021-09-16 16:47:23
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -71,7 +71,7 @@
     <!------------------------------------------------------------------------>
     <!--                  修改记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" :id="applyId" />
+    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" :id="fsNum" />
     <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
@@ -131,7 +131,8 @@ export default {
       approvalDialogVisible: false,
       selectItems: [],
       rfqId: '',
-      applyId: ''
+      applyId: '',
+      fsNum: ''
     }
   },
   created() {
@@ -152,7 +153,7 @@ export default {
             setOptions: res.data?.map(item => {
               return {
                 code: item.id,
-                name: item.name
+                name: item.code
               }
             })
           }
@@ -324,7 +325,7 @@ export default {
      * @return {*}
      */    
     openUpdateDialog(row){
-      this.applyId = row.applyId || ''
+      this.fsNum = row.fsnrGsnrNum || ''
       this.changeUpdateDialogVisible(true)
     },
     /**

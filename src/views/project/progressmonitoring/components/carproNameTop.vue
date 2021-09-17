@@ -1,15 +1,15 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:18:12
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-15 14:40:50
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-16 16:29:01
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\components\carproNameTop.vue
 -->
 
 <template>
   <div class="carProjectTop">
-    <span class="carProjectTop-name">{{carProjectName}}</span>
+    <span class="carProjectTop-name">{{language('CHEXINGXIANGMU','车型项目')}}: {{carProjectName}}</span>
     <div class="carProjectTop-control">
       <iButton @click="handleBack">{{language('FANHUI', '返回')}}</iButton>
       <logButton class="margin-left20" @click="toLogPage" />

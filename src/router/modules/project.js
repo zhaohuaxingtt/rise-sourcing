@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:02:20
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-15 13:51:26
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-16 15:51:50
  * @Description: 
  * @FilePath: \front-web\src\router\modules\project.js
  */
@@ -99,6 +99,15 @@ export default [
               title: "项目管理-项目进度监控",
             },
             component: () => import("@/views/project/progressmonitoring/home"),
+          },
+          {
+            path: "partList",
+            name: "progressmonitoring-monitoring-partList",
+            meta: {
+              title: "零件列表",
+              withoutTop: true,
+            },
+            component: () => import("@/views/project/progressmonitoring/partList"),
           },
           {
             path: "partstask",
