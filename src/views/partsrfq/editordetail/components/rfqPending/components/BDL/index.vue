@@ -161,10 +161,12 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
+          this.deleteLoading = false
           this.getTableList()
           this.selectTableDataCache = []
           this.resultMessage(res)
         } else {
+          this.deleteLoading = false
           this.resultMessage(res)
         }
       })
