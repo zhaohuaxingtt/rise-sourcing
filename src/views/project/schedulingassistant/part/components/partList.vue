@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-16 14:22:35
+ * @LastEditTime: 2021-09-17 11:04:55
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -403,9 +403,9 @@ export default {
         const tableListNomi = []  
         const tableListKickoff = [] 
         selectRows.forEach((item) => { 
-          const fs = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userName || '' 
-          const fsId = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userId || '' 
-          const options = fsOptions ? fsOptions[item.productGroupId]?.reduce((accu, item) => { 
+          const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+          const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+          const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
             if (item.userId) { 
               return [...accu, { 
                 ...item, 
@@ -479,7 +479,7 @@ export default {
       updatePartGroupConfig({...logicData, cartypeProId: this.cartypeProId}).then(res => { 
         if (res?.result) {  
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
-          this.changeLogicVisible(false)  
+          this.$refs.logicSettingBtn.changeVisible(false)  
           this.getPartList(this.cartypeProId) 
         } else {  
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
