@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 13:45:28
+ * @LastEditTime: 2021-09-17 15:21:11
  * @Description: 项目管理相关接口
  * @FilePath: \front-web\src\api\project\index.js
  */
@@ -306,9 +306,9 @@ export function updatePartSchedule(params) {
 }
 
 // 获取零件排程算法
-export function getPartGroupConfig(cartypeProId) {
+export function getPartGroupConfig(cartypeProId,partNum) {
   return requst({
-    url: `/part-group-config/carTypePro/${cartypeProId}`,
+    url: `/part-group-config/carTypePro/${cartypeProId}/${partNum}`,
     method: 'GET'
   })
 }

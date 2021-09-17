@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-15 16:26:34
+ * @LastEditTime: 2021-09-17 15:37:39
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -15,17 +15,17 @@
       </div> 
       <div > 
         <iButton @click="handleSave" :loading="saveloading">{{language('CHAKANYANWUYUANYIN', '查看延误原因')}}</iButton> 
-        <iButton :loading="versionLoading" @click="handleSecheduleVersion">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
+        <iButton :loading="versionLoading" @click="gotoSechedule">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
         <iButton @click="handleSendFs">{{language('FASONGJINDUQUEREN', '发送进度确认')}}</iButton> 
         <iButton :loading="versionLoading" @click="handleSecheduleVersion">{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
         <iButton @click="handleSendFs">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
     <div class="partListView-content"> 
-      <div v-for="pro in parts" :key="pro.label" class="productItem"> 
+      <div v-for="pro in list" :key="pro.label" class="productItem"> 
         <div class="productItem-top"> 
           <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
-            {{`${pro.partNum} ${pro.partNameZh} ${pro.partNameDe}`}} 
+            {{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''} ${pro.buyerName}`}} 
           </el-checkbox> 
         </div> 
         <div class="productItem-bottom">
@@ -38,14 +38,49 @@
             <div class="productItem-bottom-nodeItem">
               <span class="productItem-bottom-nodeItem-label" v-if="!item.label.includes('1st')">{{item.key ? language(item.key, item.label) : item.label}}</span>
               <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span>
-              <icon v-if="pro[item.status] === 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon>
-              <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
+              <el-popover
+                trigger="hover"
+                :content="pro[item.delayReason]"
+                placement="top-start"
+                :disabled="!pro[item.delayReason]"
+              >
+                <!------------------------------节点图标----------------------------------->
+                <template v-if="Number(pro.partStatus) > item.partPeriod" slot="reference">
+                  <icon v-if="pro.partProc == 1" symbol name="iconjindu_yiwancheng_lv" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro.partProc == 2" symbol name="iconjindu_yiwancheng_hong" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro.partProc == 3" symbol name="iconjindu_yiwancheng_hei" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro.partProc == 4" symbol name="iconjindu_yiwancheng_huang" class="step-icon  click-icon"></icon>
+                </template>
+                <template v-else-if="Number(pro.partStatus) == item.partPeriod" slot="reference">
+                  <icon v-if="item.key === 'SHIFANG' || pro.partProc == 1 " symbol name="iconjindu_jinhangzhong_lv" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro.partProc == 2" symbol name="iconjindu_jinhangzhong_huang" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro.partProc == 3" symbol name="iconjindu_jinhangzhong_hong" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro.partProc == 4" symbol name="iconjindu_jinhangzhong_hei" class="step-icon  click-icon"></icon>
+                  <icon v-else symbol name="iconjindu_daijinhang" class="step-icon  click-icon"></icon>
+                </template>
+                <template v-else slot="reference">
+                  <icon symbol name="iconjindu_daijinhang" class="step-icon  click-icon"></icon>
+                </template>
+                
+                <!------------------------------节点图标结束----------------------------------->
+              </el-popover>
+              
               <div class="flex-box margin-top20 " v-for="taItem in targetList" :key="taItem.value" >
-                <iText class="productItem-bottom-stepBetween-input text ">{{pro[item[taItem.props]]}}{{index === nodeList.length - 1 ? '('+(pro[item[taItem.props1]] || '')+')' : ''}}</iText>
+                <el-popover
+                  trigger="hover"
+                  placement="top-start"
+                  :disabled="taItem.key !== 'JIHUASHIJIAN'"
+                >
+                  <iText slot="reference" class="productItem-bottom-stepBetween-input text ">{{pro[item[taItem.props]]}}{{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '('+(pro[item[taItem.props1]] || '')+')' : ''}}</iText>
+                  <div>
+                    <p>soll1：年份-KWXX</p>
+                    <p>soll2：年份-KWXX</p>
+                  </div>
+                </el-popover>
               </div>
             </div>
             <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
-              <icon symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon margin-top45"></icon>
+              <span v-html="svgList['iconliuchengjiedianyiwancheng1']" class="step-between-icon margin-top45"></span>
             </div>
           </div>
         </div>
@@ -58,31 +93,33 @@
 <script>
 import { iButton, icon, iText, iMessage } from 'rise'
 import { getProductGroupNodeInfoList, downloadNodeView } from '@/api/project'
+import { svgList } from './data'
 export default {
   components: { iButton, icon, iText },
   props: {
-    cartypeProId: {type:String}
+    cartypeProId: {type:String},
+    list: {type:Array,default:() => []}
   },
   data() {
     return {
       loading: false,
       checkAll: false,
-      parts: [{partNum:'123232NN', partNameZh:'是啥', partNameDe: 'ZHFDSFLKF'}],
       checkedProducts: [],
       isIndeterminate: false,
       fsConfirmDialogVisible: false,
       targetList: [
-        {label: '计划时间', key: 'JIHUASHIJIAN', value: 'vffTarget', props: 'vff', props1: 'vff1'},
-        {label: '实际时间', key: 'SHIJISHIJIAN', value: 'pvsTarget', props: 'pvs', props1: 'pvs1'},
+        {label: '计划时间', key: 'JIHUASHIJIAN', value: 'vffTarget', props: 'planKw', props1: 'planKw1'},
+        {label: '实际时间', key: 'SHIJISHIJIAN', value: 'pvsTarget', props: 'kw', props1: 'kw1'},
       ],
       nodeList: [
-        {label: '释放', key: 'SHIFANG', pvs: 'pvsTargetReleaseWeek', vff: 'vffTargetReleaseWeek', os: 'zerosTargetReleaseWeek', status: 'releaseStatus'},
-        {label: '定点', key: 'DINGDIAN', pvs: 'pvsTargetNomiWeek', vff: 'vffTargetNomiWeek', os: 'zerosTargetNomiWeek', status: 'nomiStatus'},
-        {label: 'BF', pvs: 'pvsTargetBfWeek', vff: 'vffTargetBfWeek', os: 'zerosTargetBfWeek', status: 'bfStatus'},
-        {label: '1st Tryout', pvs: 'pvsTargetFirstTryWeek', vff: 'vffTargetFirstTryWeek', os: 'zerosTargetFirstTryWeek', status: 'firstTryStatus'},
-        {label: 'EM(OTS)', pvs: 'pvsTargetEmWeek', vff: 'vffTargetEmWeek', os: 'zerosTargetEmWeek', pvs1: 'pvsTargetOtsWeek', vff1: 'vffTargetOtsWeek', os1: 'zerosTargetOtsWeek', status: 'emStatus'}
+        {label: '释放', key: 'SHIFANG', kw: 'releaseTimeKw', planKw: 'planReleaseTimeKw', partPeriod: 1, isDelay: 'fsdocDelay',delayReason: 'fsdocRemark', soll1: 'fsdocSoll1', soll2: ''},
+        {label: '定点', key: 'DINGDIAN', kw: 'pvsTargetNomiWeek', planKw: 'planNomiTimeKw', partPeriod: 2, isDelay: 'cscDelay',delayReason: 'cscRemark', soll1: 'cscSoll1', soll2: 'cscSoll2'},
+        {label: 'BF', kw: 'bfTimeKw', planKw: 'planBfTimeKw', partPeriod: 4, isDelay: 'bfDelay',delayReason: 'bfRemark', soll1: 'bfSoll1', soll2: 'bfSoll2'},
+        {label: '1st Tryout', kw: 'pvsTargetFirstTryWeek', planKw: 'planFirstTryoutTimeKw', partPeriod: 5, isDelay: 'isttryoutDelay',delayReason: 'isttryoutRemark', soll1: 'isttryoutSoll1', soll2: 'isttryoutSoll2'},
+        {label: 'EM(OTS)', kw: 'pvsTargetEbfTimeKwmWeek', planKw: 'planEmTimeKw', kw1: 'pvsTargetOtsWeek', planKw1: 'planOtsTimeKw', partPeriod: 6, isDelay: 'emDelay',delayReason: 'emRemark', soll1: 'emSoll1', soll2: 'emSoll2' , isDelay2: 'emDelay',delayReason2: 'emRemark', soll12: 'emSoll1', soll22: 'emSoll2'}
       ],
-      downloadLoading: false
+      downloadLoading: false,
+      svgList
     }
   },
   methods: {
@@ -116,11 +153,15 @@ export default {
       this.isIndeterminate = false;
     },
     handleCheckboxChange(value, pro) {
-      console.log(this.parts)
-      let checkedCount = this.parts.filter(item => item.isChecked).length;
-      this.checkAll = checkedCount === this.parts.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.parts.length;
-    }
+      this.$set(pro, 'isChecked', value)
+      console.log(this.list)
+      let checkedCount = this.list.filter(item => item.isChecked).length;
+      this.checkAll = checkedCount === this.list.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length;
+    },
+    gotoSechedule() {
+      
+    },
   }
 }
 </script>
@@ -238,7 +279,7 @@ export default {
           
           &-input {
             height: 30px;
-            width: 160px;
+            width: 220px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -255,6 +296,10 @@ export default {
           }
           .step-between-icon {
             width: 100%;
+            ::v-deep .icon {
+              width: 100%;
+              height: 10px;
+            }
           }
         }
       }

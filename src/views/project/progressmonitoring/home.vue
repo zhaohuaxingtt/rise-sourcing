@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-16 17:06:07
+ * @LastEditTime: 2021-09-17 14:22:35
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -50,6 +50,7 @@
               :disabled="item.disabled"
               :hideTaskProcess="item.hideTaskProcess"
               @onSeriesBarClick="onSeriesBarClick"
+              @onTaskProcessClick="onSeriesBarClick"
               @onTitleClick="onSeriesBarClick" />
           </el-col>
         </el-row>
@@ -78,8 +79,9 @@ import {iCard,icon,iFormGroup,iFormItem,iInput,iMessage } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress'
 import carEmpty from '@/views/project/components/empty/carEmpty'
 import projectStateChart from './components/projectStateChart'
-import {pendingChartData} from './components/lib/data'
+import {pendingChartData,chartData,projectRisk,partProc,projectDone} from './components/lib/data'
 import {getLastCarType, getProjectProgressMonitor,getAutoData,updateAutoData} from '@/api/project/process'
+import {selectDictByKeyss} from '@/api/dictionary'
 
 export default {
   components: { iCard, icon, carProject, iFormGroup, iFormItem, iInput, projectStateChart, carEmpty},
@@ -90,9 +92,13 @@ export default {
       showTips: false,
       updateTime: window.moment().format('YYYY-MM-DD HH:mm:ss'),
       pendingChartData,
+      projectRisk,
+      projectDone,
+      partProc,
       data: [],
       notInTips: 0,
       ckdconfirm: 0,
+      options: {},
       loading: false
     }
   },
@@ -100,6 +106,7 @@ export default {
     const carProjectId = this.$route.query.carProject || ''
     const cartypeProjectZh = this.$route.query.cartypeProjectZh || ''
     this.handleCarProjectChange(carProjectId, cartypeProjectZh)
+    this.getOptions()
   },
   methods: {
     toPartList(type) {
@@ -115,15 +122,35 @@ export default {
      * @return {*}
      */    
     onSeriesBarClick(params) {
-      const itemName = params.title || params.seriesName
+      const itemName = params.seriesName || params.title
       const target = this.data.find(o => o.title === itemName) || {}
       const targetIndex = this.data.findIndex(o => o.title === itemName)
+      // 进度风险对象
+      const projectRisk = this.projectRisk.find(o => o.name === params.name) || {}
+      // 零件进度
+      const partProc = this.partProc.find(o => o.name === params.name) || {}
+      // 项目已结束指标
+      const projectDone = this.projectDone.find(o => o.name === params.name) || {}
+     
       // 匹配异常跳转
       if (targetIndex === 0 && !(target && target.disabled)) {
         this.$router.push({name: 'progressmonitoring-parts-taskList', query: {
           cartypeProId: this.carProject,
           carProjectName: this.carProjectName,
           }
+        })
+      }
+      if (targetIndex > 0) {
+        const query = {
+          carProjectId: params.carProjectId,
+          carProjectName: params.carProjectName,
+          partStatus: params.partStatus,
+          projectRisk: projectRisk.code || '',
+          partProc: partProc.code || '',
+          projectDone: projectDone.code || ''
+        }
+        console.log('onSeriesBarClick', query, params)
+        this.$router.push({name: 'progressmonitoring-detail', query
         })
       }
     },
@@ -203,7 +230,16 @@ export default {
         if (res.code === '200') {
           let data = res.data || []
           data = data.map((o, index) => {
+            const tarConfig = chartData.find(conf => conf.title === o.modelStatusName) || {}
+            // 零件状态
+            o.partStatus = tarConfig.code
+            // 车型项目名称
+            o.carProjectName = this.carProjectName
+            // 车型项目id
+            o.carProjectId = carProjectId
+            // 图表id
             o.id = `chart${index}`
+            // 图表标题
             o.title = o.modelStatusName || ''
             o.title === 'tryout待完成' && (o.title = `<span class="sup">1<sup>st</sup> Tryout待完成</span>`)
             // 正常
@@ -215,7 +251,7 @@ export default {
             // 总计
             o.value4 = o.projectRiskSum
             // 类型
-            o.type = 1
+            o.type = tarConfig.type
             // 是否隐藏任务进度
             o.hideTaskProcess = ['EM&OTS已完成', '匹配异常', '待释放'].includes(o.modelStatusName)
             if (index === data.length - 1) {
@@ -260,7 +296,20 @@ export default {
       }).catch(()=> {
         this.showTips = !state
       })
-    }
+    },
+    getOptions() {
+      let types = [
+        // 风险等级CODE
+        "DELAY_GRADE_CONFIG",
+        // 零件状态code
+        "PART_PERIOD_TYPE",
+        // 零件进度
+        "PARTS_PROGRESS"
+      ];
+      selectDictByKeyss(types).then((res) => {
+        this.options = res.data;
+      });
+    },
   }
 }
 </script>
