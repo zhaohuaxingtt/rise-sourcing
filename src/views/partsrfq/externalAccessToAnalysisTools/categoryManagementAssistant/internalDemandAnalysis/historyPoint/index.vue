@@ -1,20 +1,16 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-14 11:27:04
+ * @LastEditTime: 2021-09-17 19:35:47
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
 -->
 <template>
-	<iCard class="margin-top20" id="historyPoint">
-		<div class="margin-bottom20 clearFloat">
-			<!-- <span  class="font18 font-weight" >{{language("DINGDIANLISHIJILV","定点历史记录")}}</span> -->
-			<div class="floatright">
-							<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
-
-			</div>
-		</div>
+	<iCard :title='language("DINGDIANLISHIJILV","定点历史记录")' class="margin-top20" id="historyPoint">
+		<!-- <template slot="header-control">
+			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+		</template> -->
 		<div class="flex-between-center">
 			<iNavMvp lev="3" :list="tabList" @change="change" lang></iNavMvp>
 			<div class="flex-align-center">
@@ -28,6 +24,7 @@
 				<iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
 				<iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
 				<iButton @click="exportTemplate">{{ language("DAOCHU", "导出") }}</iButton>
+				<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
 			</div>
 		</div>
 		<pointTable v-if="value==1" ref="pointTable" :searchCriteria="searchCriteria"></pointTable>
@@ -155,11 +152,14 @@
 				await nomiHistoryParamInit({categoryCode:this.searchCriteria.categoryCode}).then(res=>{
 					if(res.data.id){
 						this.searchCriteria.id=res.data.id
-					}
-					if(res.data.nomiQueryDTO){
+						if(res.data.nomiQueryDTO){
 						this.searchCriteria.latestYear=res.data.nomiQueryDTO.latestYear
 						this.searchCriteria.supplierId=res.data.nomiQueryDTO.supplierId
 					}
+					}else{
+						this.searchCriteria.latestYear="1"
+					}
+					
 				})
 			}
 		}

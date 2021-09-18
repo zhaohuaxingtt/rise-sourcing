@@ -1,6 +1,6 @@
 export const infos = [
   { props: 'categoryCode', label: '材料组编号', key: 'LK_CAILIAOZUBIANHAO' },
-  { props: 'linieGroup', label: '材料组LINE部门', key: 'LK_CAILIAOZULINEBUMEN' },
+  { props: 'deptNames', label: '材料组LINIE部门', key: 'LK_CAILIAOZULINIEBUMEN' },
   { props: 'categoryNameZh', label: '材料组名称（中）', key: 'LK_CAILIAOZUMINGCHENGZHONG' },
   { props: 'categoryNameDe', label: '材料组名称（德）', key: 'LK_CAILIAOZUMINGCHENGDE' },
   { props: 'stuffCode', label: '工艺号', key: 'LK_GONGYIHAO' }

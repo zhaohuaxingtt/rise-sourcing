@@ -251,9 +251,9 @@ export default {
         this.currentSupplierId = data.id
         this.getSupplierProducePlace(data.id)
       } else {
-        setTimeout(() => {
-          this.supplierProducePlaces = this.tableListData.map(item => ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress }))
-        }, 100)
+        // setTimeout(() => {
+        //   this.supplierProducePlaces = this.tableListData.map(item => ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress }))
+        // }, 100)
       }
     },
     // 获取供应商生产地

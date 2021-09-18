@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-08-30 22:43:23
+ * @LastEditTime: 2021-09-16 16:28:24
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -275,7 +275,7 @@ export default{
      */
     headerClassName({row, column, rowIndex, columnIndex}){
       if(column.label == 'EBR'){
-        return 'leftRightBorder'
+        return 'rightBorder'
       }
       if(this.vm.reRenderLastChild.name == column.label){
         return 'rightBorder'
@@ -305,9 +305,9 @@ export default{
      */
     cellClassName({row, column, rowIndex, columnIndex}){
       if(column.label == 'EBR' && rowIndex <= this.tableData.length - 4){
-        return 'leftRightBorder'
+        return 'rightBorder'
       }
-      if(column.label == 'Group' && row.groupId){
+      if(column.label == 'Group' && row.groupId && row.groupId != '-'){
         return 'bgcoor'
       }
       if(this.vm.reRenderLastChild.name == removeKeysNumber(column.label)){
@@ -343,7 +343,7 @@ export default{
     color:$color-green;
   }
   .chengse{
-    color: $color-orange;
+    color: $color-delete;
   }
   .el-table {
     position: initial;
@@ -351,16 +351,10 @@ export default{
     ::v-deep.cell{
       overflow: visible;
     }
-    ::v-deep .el-table__fixed{
-      top: 200px!important;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.12)!important;
-    }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
       .cell{
-        height: 30px;
         span{
-          display: inline-block;
           width: 100%;
         }
         .el-checkbox{
@@ -408,7 +402,11 @@ export default{
       border-right: 1px solid #C5CCD6;
     }
     ::v-deep .bgcoor{
-      background: rgba(247, 250, 255, 1);
+      background: #f5f7fa;
+      border-bottom: 1px solid #e6eaef;
+      &:last-child{
+        border-bottom: none;
+      }
     }
     ::v-deep .rightBorder{
       border-right: 1px solid #C5CCD6;
@@ -435,16 +433,37 @@ export default{
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 36px;
-      left:-11px;
+      bottom: 34px;
+      left:-9px;
       border: 1px solid #C5CCD6;
       border-bottom: none;
+      border-left:none;
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
       overflow:hidden;
       display: flex;
+      border-top: none;
       ul{
         border-right: 1px solid #C5CCD6;
+        border-top: 1px solid #C5CCD6;
+        &:nth-child(2){
+          border-top-left-radius: 5px;
+          overflow: hidden;
+        }
+        &:first-child{
+          border-top-right-radius: 3px;
+          overflow: hidden;
+          border-right: 0px;
+          border: none;
+          li{
+            border-right: 1px solid #C5CCD6;
+            &:first-child{
+              background-color:white;
+              border:none;
+              border-right: 1px solid #C5CCD6;
+            }
+          }
+        }
         li{
           border-bottom: 1px solid #C5CCD6;
           height: 38px;
@@ -473,6 +492,25 @@ export default{
     width: 100%;
     padding-top: 200px;
     overflow-x: scroll;
+    ::v-deep.el-table__fixed{
+          height: 97%!important;
+          bottom: -1px;
+          padding-top: 200px;
+          box-sizing: border-box;
+          background-color: white;
+          z-index: 124;
+          top: 0px;
+          .el-table__fixed-header-wrapper{
+            position: static;
+            top: inherit;
+            left: inherit;
+          }
+          .el-table__fixed-body-wrapper{
+            position: static;
+            top: inherit;
+            left: inherit;
+          }
+    }
   }
   .conent{
     height: auto;

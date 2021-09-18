@@ -55,8 +55,16 @@ export function nTierCard(parmars) {
 //城市信息查询
 export function getCityInfo(params) {
   return requstDIC({
-      url: `/cityInfo`,
-      method: 'GET',
-      params
+    url: `/cityInfo`,
+    method: 'GET',
+    params
+  })
+}
+// ntier--查询上一次筛选条件
+export function nTierParamInit(params) {
+  return requst({
+    url: `/nTier/nTierParamInit`,
+    method: 'POST',
+    data: params
   })
 }

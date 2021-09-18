@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-09-09 17:00:26
+ * @LastEditTime: 2021-09-16 10:36:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -30,7 +30,7 @@
           :tableTitle="customTableTitle"
           :tableLoading="false"
           :index="true"
-          :height="500"
+          :maxHeight="300"
           @rowSelect="handleSelectTarget">
           <template #isShow="scope">
             <div @click="changeStatus(scope.row)" class="statusBox">

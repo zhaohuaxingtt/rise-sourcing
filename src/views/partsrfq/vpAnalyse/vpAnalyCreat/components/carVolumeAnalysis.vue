@@ -6,7 +6,7 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard style="min-height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')+ `（截止${currentTime}）`">
+  <iCard style="height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')+ `（截止${currentTime}）`">
     <template slot="header-control">
       <div class="header">
         <div class="flex-between-center-center margin-right40">
@@ -19,7 +19,7 @@
         </div>
       </div>
     </template>
-    <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="false" @handleCurrentChange="handleCurrentChange">
+    <tableList :height="750" class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="false" @handleCurrentChange="handleCurrentChange">
       <template #actualProEndLastMonth="scope">
         <div class="flex">
           <div class="per-0" :style="'width:'+scope.row.planTotalProValue+'%'">
@@ -40,7 +40,14 @@
         <span class="green" v-else>{{scope.row.increaseRate+'%'}}</span>
       </template>
       <template #lifeCycle="scope">
-        <el-progress color="#92B8FF" :stroke-width="10" :percentage="parseInt(scope.row.lifeCycle)"></el-progress>
+        <el-row type="flex" justify="space-between" align="middle">
+          <el-col>
+            <el-progress :show-text="false" :percentage="parseInt(scope.row.lifeCycle)"></el-progress>
+          </el-col>
+          <el-col>
+            <span class="el-progress__text">{{parseInt(scope.row.lifeCycle)+'%'}}</span>
+          </el-col>
+        </el-row>
       </template>
     </tableList>
   </iCard>
@@ -133,24 +140,22 @@ export default {
   }
 }
 .green {
+  font-size: 14px;
   color: #70ad47;
 }
 .red {
+  font-size: 14px;
   color: #c00000;
 }
 .legend {
   font-size: 12px !important;
   font-weight: bold;
 }
-.table-title {
-  display: flex;
-  justify-content: space-between;
-}
-.chart {
-  width: 100%;
-  height: 60rem;
+::v-deep .el-table tr {
+  background-color: #fff;
 }
 ::v-deep td:nth-child(2) {
+  font-size: 14px;
   border-left: solid 1px #cdd4e2;
   .cell {
     padding-left: 0;
@@ -175,12 +180,9 @@ export default {
     }
   }
 }
-::v-deep td:nth-child(4) {
-  .el-progress__text {
-    color: #0059ff !important;
-    font-weight: Bold;
-    font-size: 14px;
-  }
+.el-progress__text {
+  color: #0059ff !important;
+  font-size: 14px;
 }
 // @import url(); 引入公共css类
 </style>

@@ -23,7 +23,7 @@ export const tableTitle = [{
 {
   props: 'nominateName',
   name: '申请单名',
-  width: 400,
+  width: 250,
   key: 'nominationLanguage_ShenQingDanMing',
   tooltip: true
 },

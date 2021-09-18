@@ -76,11 +76,16 @@ export default {
     openPage(params) {
       this.$emit('openPage', params)
     },
+    //勾选逻辑，如果是谈判轮，不管哪个轮次都可以取消，询价轮必须勾选，不管是那个轮次。（Mbdl）
     selectable(row) {
-      if(row.roundsPhase === '01' && this.roundType === '00') {
-        return !(row.isMbdl === '2')
-      } else {
-        return  true
+      if(row.isNego) { //谈判轮
+        return true
+      } else { //询价轮
+        if(row.isMbdl == '2'){
+          return false
+        }else{
+          return true
+        }
       }
     }
   }

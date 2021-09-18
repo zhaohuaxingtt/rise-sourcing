@@ -7,7 +7,7 @@
 -->
 <template>
   <div id="allContainer" class="content">
-    <theSearch :ntierQueryConditionDTO="ntierQueryConditionDTO" @handleSave="handleSave" @getMapList="getMapList" class="search" />
+    <theSearch :saveButtonLoading="saveButtonLoading" @handleSave="handleSave" @getMapList="getMapList" class="search" />
     <theCard :provinceZh="provinceZh" :object="object" class="card-right" />
     <chartMap ref="chartMap" :mapListData="mapListData" />
   </div>
@@ -33,7 +33,6 @@ export default {
       saveButtonLoading: false,
       object: {},
       provinceZh: '',
-      ntierQueryConditionDTO: {}
     }
   },
   // 监听属性 类似于data概念
@@ -42,19 +41,20 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-    async handleSave(params) {
+    async handleSave(params, id) {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: 'allContainer',
-        pdfName:this.language('PINLEIGUANLIZHUSHOU','品类管理助手')+'-'+ this.language('NJIGONGYINGLIANGUANLI', 'N级供应链管理') + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
+        pdfName: this.language('PINLEIGUANLIZHUSHOU', '品类管理助手') + '-' + this.language('NJIGONGYINGLIANGUANLI', 'N级供应链管理') + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
       });
       const req = {
-        ...params,
+        id: id,
+        queryCondition: {
+          ...params,
+        },
         reportFileName: resFile.downloadName,
-        reportName: resFile.downloadName,
+        categoryCode: this.$store.state.rfq.categoryCode,
         reportUrl: resFile.downloadUrl,
-        id: '',
-        schemeName: ''
       };
       const res = await nTierSave(req)
       this.resultMessage(res, () => {
@@ -68,8 +68,6 @@ export default {
       this.provinceZh = pms.provinceZh
       const res = await nTierCard(pms)
       this.object = res.data
-      this.ntierQueryConditionDTO = res.data.ntierQueryConditionDTO
-      // this.mapListData = res.data.supplierAddressAllDTO.supplierPlantAddressDTOList
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

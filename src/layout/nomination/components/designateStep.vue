@@ -23,6 +23,7 @@
                 <iButton @click="gotoRsMainten" v-if="designateType === 'MEETING'">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
                 <iButton v-if="showExport" @click="doExport">{{language('LK_DAOCHU','导出')}}</iButton>
                 <iButton @click="submit" :loading="submitting">{{language('LK_TIJIAO','提交')}}</iButton>
+                <iButton v-if="designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton>
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview">{{language('LK_YULAN','预览')}}</iButton>
                 <logButton class="margin-left20" @click="log"  />
@@ -54,11 +55,19 @@
                 </div>
                 <p v-if="index+1 !== applyStep.length" class="margin-bottom30" >
                     <!-- 正在进行中 -->
-                    <icon v-if="phaseType == item.id" symbol name="icondingdianguanlizhou-zhengzaijinhang" class="step-between-icon"></icon>
+                    <span v-if="phaseType == item.id" v-html="svgList['icondingdianguanlizhou-zhengzaijinhang']"></span>
                     <!-- 已完成 -->
-                    <icon v-else-if="phaseType > item.id" symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon>
+                    <span v-else-if="phaseType > item.id" v-html="svgList['iconliuchengjiedianyiwancheng1']"></span>
+                     <!-- 未完成 -->
+                     <span v-else v-html="svgList['icondingdianguanlizhou-weiwancheng']"></span>
+
+
+                    <!-- 正在进行中 -->
+                    <!-- <icon v-if="phaseType == item.id" symbol name="icondingdianguanlizhou-zhengzaijinhang" class="step-between-icon"></icon> -->
+                    <!-- 已完成 -->
+                    <!-- <icon v-else-if="phaseType > item.id" symbol name="iconliuchengjiedianyiwancheng1" class="step-between-icon"></icon> -->
                     <!-- 未完成 -->
-                    <icon v-else symbol name="icondingdianguanlizhou-weiwancheng" class="step-between-icon"></icon>
+                    <!-- <icon v-else symbol name="icondingdianguanlizhou-weiwancheng" class="step-between-icon"></icon> -->
                 </p>
             </div>
         </div>
@@ -68,6 +77,7 @@
             @success="submit(...arguments, false)"
             @resetSubmitting="submitting = false"
             ref="mettingDialog" />
+        <meetingConclusionDialog :desinateId="desinateId" :visible.sync="meetingConclusionDialogVisible" @afterConfirm="afterConfirm" />
     </div>
 </template>
 
@@ -95,7 +105,8 @@ import {
     updateNominate,
     rsAttachExport
 } from '@/api/designate'
-import { applyStep } from './data'
+import { applyStep,svgList } from './data'
+import meetingConclusionDialog from "./meetingConclusionDialog"
 
 export default {
     name:'designateStep',
@@ -104,7 +115,8 @@ export default {
         logButton,
         icon,
         iSelect,
-        mettingDialog
+        mettingDialog,
+        meetingConclusionDialog,
     },
     props:{
         status: {
@@ -137,7 +149,7 @@ export default {
         }
 
     },
-     computed:{
+    computed:{
         phaseType(){
             return this.$store.getters.phaseType;
         },
@@ -163,7 +175,9 @@ export default {
             // 需要展示导出按钮的页面name
             supportExportPath: [
                 'designateDecisionRS'
-            ]
+            ],
+            meetingConclusionDialogVisible: false,
+            svgList:svgList,
         }
     },
     methods:{
@@ -540,6 +554,9 @@ export default {
             } catch (e) {
                 this.submitting = false
             }
+            
+        },
+        afterConfirm() {
             
         },
         // 定点导出---后端功能未做

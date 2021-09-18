@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 17:54:38
+ * @LastEditTime: 2021-09-16 16:44:31
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -90,7 +90,7 @@
     <!------------------------------------------------------------------------>
     <!--                  修改记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" :id="applyId" />
+    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" :id="fsNum" />
     <!------------------------------------------------------------------------>
     <!--                  附件弹窗                                      --->
     <!------------------------------------------------------------------------>
@@ -145,6 +145,7 @@ export default {
       recordId: '',
       applyId: '',
       rfqId: '',
+      fsNum: '',
       selectItems: [],
       uploadLoading: false,
       exportLoading: false
@@ -320,7 +321,7 @@ export default {
      * @return {*}
      */    
     openUpdateDialog(row){
-      this.applyId = row.applyId || ''
+      this.fsNum = row.fsnrGsnrNum || ''
       this.changeUpdateDialogVisible(true)
     },
     /**

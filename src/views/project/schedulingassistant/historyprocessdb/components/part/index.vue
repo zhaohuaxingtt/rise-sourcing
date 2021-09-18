@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 16:30:32
+ * @LastEditTime: 2021-09-17 15:49:51
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -16,7 +16,7 @@
           <!--------------------拟合进度按钮----------------------------------->
           <iButton @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
           <!--------------------回传进度按钮----------------------------------->
-          <iButton @click="rollBackProgress" :loading="rollBackLoading" >{{language('HUICHUANJINDU','回传进度')}}</iButton>
+          <iButton v-if="$route.query.cartypeProId && $route.query.sixPartCode" @click="rollBackProgress" :loading="rollBackLoading" >{{language('HUICHUANJINDU','回传进度')}}</iButton>
           <!--------------------配置显示字段按钮----------------------------------->
           <iButton @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
           <!--------------------导出按钮----------------------------------->
@@ -58,9 +58,8 @@ import { regularTableTitle, partTableTitle, partLogicList } from '../../data'
 import tableList from '@/views/project/schedulingassistant/progroup/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import logicSettingDialog from '@/views/project/components/logicSettingBtn/components/logicsetting'
-import { selectDictByKeyss } from '@/api/dictionary'
 import showItemDialog from '../showItem'
-import { getCondition, getFitting, downloadHistoryProgressFile, partSchedulePartFitting } from '@/api/project'
+import { getCondition, getFitting, downloadHistoryProgressFile, partSchedulePartFitting, getPartGroupConfig } from '@/api/project'
 export default {
   mixins: [pageMixins],
   components: { iCard, tableList, iPagination, iButton, logicSettingDialog, showItemDialog },
@@ -147,8 +146,6 @@ export default {
     },
   },
   created() {
-    const keys = 'CATEGORY_CONFIG_OPTIONS,CALCULATE_CONFIG_OPTIONS,VALUE_CONFIG_OPTIONS,YEAR_CONFIG_OPTIONS,CAR_TYPE_CONFIG_OPTIONS'
-    this.selectDictByKeys(keys)
     this.init()
   },
   methods: {
@@ -168,19 +165,25 @@ export default {
       let params = {}
       if (this.selectRowPart[0]) {
         params = {
-          ...this.selectRowPart[0],
-          type: 2 // 历史
+          carTypeProPartConfigDTO: this.logicData,
+          partHistoryProgressVO: {
+            ...this.selectRowPart[0],
+            type: 2 // 历史
+          }
         }
       } else {
         const selectFit = this.selectRowFit[0]
         params = {
-          ...this.partTableData[0],
-          fsdocCscWeekly: selectFit.fsdocCscWeekly,
-          cscBfWeekly: selectFit.cscBfWeekly,
-          bf1stWeekly: selectFit.bf1stWeekly,
-          ots1stWeekly: selectFit.ots1stWeekly,
-          em1stWeekly: selectFit.em1stWeekly,
-          type: 1 // 拟合
+          carTypeProPartConfigDTO: this.logicData,
+          partHistoryProgressVO: {
+            ...this.partTableData[0],
+            fsdocCscWeekly: selectFit.fsdocCscWeekly,
+            cscBfWeekly: selectFit.cscBfWeekly,
+            bf1stWeekly: selectFit.bf1stWeekly,
+            ots1stWeekly: selectFit.ots1stWeekly,
+            em1stWeekly: selectFit.em1stWeekly,
+            type: 1 // 拟合
+          }
         }
       }
       partSchedulePartFitting(params).then(res => {
@@ -271,13 +274,26 @@ export default {
       this.page.currPage = 1
       this.getFitting()
     },
-    init() {
-      if (this.$route.query.cartypeProId && this.$route.query.sixPartCode) {
-        this.logicData = {
-          ...this.logicData,
-          ...this.$route.query
+    async getLogicData({partNum, cartypeProId}) {
+      const res =  await getPartGroupConfig(cartypeProId, partNum)
+      if (res?.result) {
+        return res.data
+      } else {
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      }
+      return null
+    },
+    async init() {
+      const { cartypeProId, sixPartCode, partNum } = this.$route.query
+      if (cartypeProId && sixPartCode) {
+        const logicData = await this.getLogicData({partNum, cartypeProId})
+        if (logicData) {
+          this.logicData = {
+            ...this.$route.query,
+            ...logicData
+          }
+          this.getFitting()
         }
-        this.getFitting()
       } else {
         this.getCondition()
       }
@@ -358,15 +374,6 @@ export default {
           this.getCondition()
         }
       }
-    },
-    selectDictByKeys(keys) {
-      selectDictByKeyss(keys).then(res => {
-        if (res?.result) {
-          this.selectOptions = {...this.selectOptions,...res.data}
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
     },
     showProgress() {
       this.logicData = {
