@@ -15,22 +15,45 @@
         <el-form :inline="true">
             <el-row>
                 <el-col :span="8">
-                    <el-form-item
+                    <iFormItem
                         required
                         :label="language('LK_LINGJIANHAO','零件号')"
                     >
                     <iInput />
-                    </el-form-item>
+                    </iFormItem>
                 </el-col>
                 <el-col :span="16" class="text-align-right">
-                    <el-form-item>
+                    <iFormItem>
                         <iButton>{{language('LK_CHAXUN','查询')}}</iButton>
                         <iButton @click="goToAdd">{{language('LK_XINZENG','新增')}}</iButton>
-                    </el-form-item>
+                    </iFormItem>
                 </el-col>
             </el-row>
         </el-form>
-        <el-divider></el-divider>
+        <p class="divider"></p>
+        <!-- 查询内容区 -->
+        <div class="search-contain">
+            <iFormGroup row='2' label-width="100px">
+                <iFormItem 
+                    v-for="(item,index) in addPartsForm"
+                    :key="'addPartsForm_'+index"
+                    :required="item.required"
+                    :label="language(item.labelKey, item.label)+':'" 
+                >
+                <iSelect v-if="item.type === 'select'">
+                    <el-option
+                        :value="item.value"
+                        :label="item.label"
+                        v-for="(item) in selectOptions[item.selectOption]"
+                        :key="item.value"
+                    >
+                    </el-option>
+                </iSelect>
+                <iInput v-else-if="item.type === 'input'"/>
+                <iText v-else></iText>
+                </iFormItem>
+            </iFormGroup>
+        </div>
     </div>
     </iDialog>
 </template>
@@ -40,18 +63,35 @@ import {
     iDialog,
     iInput,
     iButton,
+    iFormGroup,
+    iFormItem,
+    iSelect,
+    iText,
 } from 'rise';
+import { addPartsForm } from '../data'
 export default {
     name:'addPartsDialog',
     components:{
         iDialog,
         iInput,
         iButton,
+        iFormGroup,
+        iFormItem,
+        iSelect,
+        iText,
     },
     props:{
         dialogVisible:{
             type:Boolean,
             default:false,
+        }
+    },
+    data(){
+        return{
+            addPartsForm:addPartsForm,
+            selectOptions:{
+                
+            },
         }
     },
     methods:{
@@ -69,7 +109,30 @@ export default {
 <style lang="scss" scoped>
     .addPartsDialog{
         .addPartsDialog-contain{
+            padding-bottom: 20px;
+            .divider{
+                width: 100%;
+                border-bottom: 1px dashed #909091;
+                margin-bottom: 20px;
+            }
+            .search-contain{
+                min-height: 200px;
+                ::v-deep.el-form-item__content {
+                    margin-left: 10px!important;
+                }
+            }
 
+            ::v-deep.el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before {
+                content: "*";
+                color: #f56c6c;
+                margin-right: 4px;
+                display: inline-block;
+            }
+            ::v-deep.el-table table th.label-require div::after{
+                content: "*";
+                color: #f56c6c;
+                margin-right: 4px;
+            }
         }
     }
 </style>
