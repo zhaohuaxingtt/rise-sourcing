@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-08-27 14:53:22
+ * @LastEditTime: 2021-09-18 14:40:46
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -112,9 +112,7 @@ export default{
       })
     },
     /**
-     * @description: //没到的格子不显示，所以只要出现的最后一个日期之前的全部点亮 
-     *               //week => 当前周
-     *               //progressTypeDesc => 当前周完成的内容名称
+     * @description: //progressTypeDesc => 当前周完成的内容名称
      *               //taskStatus => 当前周完成状态
      *               //doneYear => 当前完成的年份
      *               //doneDay => 处于当前周的第几天完成
@@ -125,30 +123,18 @@ export default{
     translateTimeLine(list){
       try {
         // eslint-disable-next-line no-debugger
+        if(list.length) throw new Error('current data has error, pleace check your data')
         const copeList = []
-        const startWeek = this.getTypeWeek(list)
-        for(let i = (list[0].donePeriod || list[0].planPeriod);i<=((list[list.length -1].donePeriod || list[list.length -1].planPeriod)<=24?24:this.getYear(list[list.length -1]));i++){
-          const matchItems = list.find(item=>(item.donePeriod || item.planPeriod) == i)
-          copeList.push(
-            {
-              week:i>52?52-i:i,
-              progressTypeDesc:matchItems?matchItems.progressTypeDesc:'',
-              active:i <= startWeek,
-              taskStatus:matchItems?matchItems.taskStatus:'default',
-              doneYear:matchItems?matchItems['doneYear']:'',
-              doneDay:matchItems?matchItems['doneDay']:'1',
-              oneWeekList:list.filter(items=>((items.donePeriod || items.planPeriod) == i)) || []
-            }
-          )
-        }
-        console.log(copeList)
+        list.forEach(element => {
+          copeList.push({...element,...{oneWeekList:list.filter(items=>((element.planPeriod) == items.planPeriod)) || []}})
+        });
         return copeList
       } catch (error) {
          const copeList = []
          let i = 1
          while (i < 25) {
            copeList.push({
-             week:i,
+             planPeriod:i,
              active:false
            })
            i++

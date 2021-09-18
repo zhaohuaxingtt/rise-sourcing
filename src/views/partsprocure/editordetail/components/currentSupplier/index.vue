@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-09-17 13:58:14
+ * @LastEditTime: 2021-09-18 15:18:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -128,6 +128,7 @@ export default{
         this.searchForm[element] = ''
       });
       this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
+      this.searchForm.fsnrGsnrNum = this.detailData().fsnrGsnrNum
       this.supplierCurentTop()
       this.supplierCurentBottom()
       this.purchaseFactory()
