@@ -12,9 +12,9 @@ export const partTitle = [
 	{key:'partNameDe',name:'零件名（德）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEGER', language: 'LK_LINGJIANMINGDE'},
 	{key:'inheritedCarModel',name:'车型大类',permissionKey:'PARTSIGN_EDITORDETAIL_VEHICLECATEGORIES', language: 'LK_CHEXINGDALEI'},
 	{key:'projectCarType',name:'车型项目',permissionKey:'PARTSIGN_EDITORDETAIL_MODELPROJECT', language: 'LK_CHEXINGXIANGMU'},
-	{key:'tpInfoType',name:'信息单类型',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONCLASSIFICATION', language: 'LK_XINXIDANLEIXING'},
+	{key:'stuffName',name:'询价采购员',permissionKey:'PARTSIGN_EDITORDETAIL_BUYER', language: 'LK_XUNJIACAIGOUYUAN'},
 	{key:'tpPartID',name:'新建信息单流水号',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONSERIALNUMBER', language: 'LK_XINJIANXINXIDANLIUSHUIHAO'},
-	{key:'stuffName',name:'采购员',permissionKey:'PARTSIGN_EDITORDETAIL_BUYER', language: 'LK_CAIGOUYUAN'},
+	{key:'tpInfoType',name:'信息单类型',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONCLASSIFICATION', language: 'LK_XINXIDANLEIXING'},
 	{key:'status',name:'信息单状态',permissionKey:'PARTSIGN_DETAIL_INFORMATIONSTATUS', language: 'LK_XINXIDANZHUANGTAI'},
   ]
 export const partDetailTitle=[
