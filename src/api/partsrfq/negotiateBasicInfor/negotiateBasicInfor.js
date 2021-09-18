@@ -95,3 +95,11 @@ export function getRfqSupplierAndCategory(parmars) {
     data: parmars
   })
 }
+//材料组/供应商--列表
+export function saveOverviewSupplierBatchReport(parmars) {
+  return requst({
+    url: `categoryReport/saveOverviewSupplierBatchReport`,
+    method: 'POST',
+    data: parmars
+  })
+}
