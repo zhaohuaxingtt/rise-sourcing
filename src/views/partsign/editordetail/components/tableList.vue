@@ -7,21 +7,8 @@
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
 <template>
-  <el-table 
-    ref="table" 
-    class="table" 
-    v-loading="tableLoading" 
-    :class="singleSelect ? 'singleSelectTable' : ''" 
-    :cell-style="borderLeft"
-    :empty-text="language('LK_ZANWUSHUJU','暂无数据')" 
-    :height="height" 
-    :data="tableData" 
-    :cell-class-name="cellClassName" 
-    @selection-change="handleSelectionChange" 
-    @select="handleSelect" 
-    @select-all="handleSelectAll"
-    @row-click="handleRowClick" >
-    <el-table-column v-if="selection || (selection && singleSelect)" type="selection" align="center" width="40" :fixed="fixed" :selectable="selectable"></el-table-column>
+  <el-table ref="table" class="table" :class="singleSelect ? 'singleSelectTable' : ''" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" @select-all="handleSelectAll" :cell-style="borderLeft" >
+    <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="40" :fixed="fixed" :selectable="selectable"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel" :fixed="fixed"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
       <el-table-column :key="$index" align="center" :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
@@ -83,15 +70,12 @@ export default {
     },
     selectable: { type: Function },
   },
-  data() {
-    return {
-      selections: []
-    }
+  created() {
+    console.log(this.$slots)
   },
   methods: {
     handleSelectionChange(list) {
       if (this.singleSelect) return
-      this.selections = list
       this.$emit('handleSelectionChange', list)
     },
     handleSelect(selection, row) {
@@ -103,10 +87,8 @@ export default {
         })
 
         this.$refs.table.toggleRowSelection(row, !!selection.length)
-        this.selections = selection.length ? [row] : []
         this.$emit('handleSingleSelectChange', selection.length ? row : null)
       }
-
       const selectdBorder = row.selectedBorder
       this.$set(row,'selectedBorder',!selectdBorder)
 
@@ -127,39 +109,6 @@ export default {
       }
       else{
         return ""
-      }
-    },
-    handleRowClick(row, column, e) {
-      if (this.selection) {
-        const targetEl = e.srcElement || e.target
-        const preventTagNames = ["INPUT", "SVG"]
-        const preventClassNames = ["link", "cursor"]
-
-        if (preventTagNames.some(tagName => targetEl.tagName === tagName)) return
-        if (preventClassNames.some(className => (targetEl.className || "").toLowerCase().includes(className))) return
-
-        if (this.singleSelect) {
-          this.tableData.forEach(item => {
-            if (item === row) return
-            this.$refs.table.toggleRowSelection(item, false)
-            this.$set(item, "selectedBorder", false)
-          })
-
-          if (this.selections.includes(row)) {
-            this.$refs.table.toggleRowSelection(row, false)
-            this.selections = []
-          } else {
-            this.$refs.table.toggleRowSelection(row, true)
-            this.selections = [ row ]
-          }
-        } else {
-          this.$refs.table.toggleRowSelection(row)
-        }
-        
-        this.$nextTick(() => {
-          this.$emit('handleSingleSelectChange', this.selections.length ? row : null)
-          this.$set(row,'selectedBorder', this.selections.includes(row))
-        })
       }
     }
   }
