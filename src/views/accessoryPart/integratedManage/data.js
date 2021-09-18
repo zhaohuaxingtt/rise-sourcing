@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-08 11:16:59
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-18 16:01:44
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\data.js
  */
@@ -56,6 +56,7 @@ export const searchList = [
   // {value: 'partState', label: '合同状态', type: 'select', key: 'HETONGZHUANGTAI', selectOption: 'contactStateOption'},
   // {value: 'cfTargetPrice', label: '是否有财务目标价', type: 'select', key: 'SHIFOUYOUCAIWUMUBIAOJIA', selectOption: 'yesOrNoOption'},
   // {value: 'nomiType', label: '定点状态', type: 'select', key: 'DINGDIANZHUANGTAI', selectOption: 'nominateStateOption'},
+  {value: 'rfqId', label: 'rfq编号', type: 'input', key: 'RFQBIANHAO', permission: 'APREPART_MANAGFMENT_RFQBIANHAO|配件-配件管理-RFQ编号'},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: 'accessoryIdStateOption', permission: 'APREPART_MANAGFMENT_IDSTATS|配件-配件管理-ID状态'}
 ]
 export const TAB = [

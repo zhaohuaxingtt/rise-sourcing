@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-08-23 14:17:09
+ * @LastEditTime: 2021-09-18 16:03:50
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -408,11 +408,15 @@ export default {
         updateInfo['oldProjectRelations'] = this.oldProjectRelations
         const ids = this.batch.purchaseProjectIds
       updateProcureButch({updateInfo:updateInfo,ids:ids}).then(res=>{
-        iMessage.success(this.language("LK_XIUGAICHENGGONG",'修改成功'));
-        if(partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey){this.$refs.onlyPartsChange.getDataList()}else{
-          this.$refs.outputPlan.getData()
+        if(res.result === true) {
+          iMessage.success(this.language("LK_XIUGAICHENGGONG",'修改成功'));
+          if(partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey){this.$refs.onlyPartsChange.getDataList()}else{
+            this.$refs.outputPlan.getData()
+          }
         }
-        this.saveButchLoading = false
+        else{
+            iMessage.error(res.desZh);
+        }
       }).catch(err=>{
         this.saveButchLoading = false
         iMessage.error(this.language("LK_XIUGAICHENGGONG",'修改失败'));

@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-14 18:03:14
+ * @LastEditTime: 2021-09-18 15:45:50
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -167,7 +167,8 @@ export const singleSupplierTitle = [
     props: 'department',
     name: '部门',
     key: 'nominationSupplier_BuMen',
-    tooltip: false
+    tooltip: false,
+    width:'200px'
   },
   {
     props: 'updateDate',

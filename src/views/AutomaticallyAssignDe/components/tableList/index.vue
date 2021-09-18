@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-12 18:06:55
+ * @LastEditTime: 2021-09-18 02:06:44
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
 -->
 <template>
-  <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="radio && 'radio'">
+  <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="radio && 'radio'" @row-click='rowClick'>
     <el-table-column v-if="selection && hasList(tableTitle)" type='selection' width="56" align='center'></el-table-column>
     <el-table-column v-if='indexKey && hasList(tableTitle)' type='index' width='50' align='center' label='#'>
       <template slot-scope="scope">
@@ -81,6 +81,9 @@ export default{
   },
   inject:['vm'],
   methods:{
+    rowClick(row){
+      this.$refs.moviesTable.toggleRowSelection(row)
+    },
     hasList(list){
       if(list && list.length>0 && list[0].list){
         return false

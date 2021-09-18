@@ -17,6 +17,10 @@
         <div class="flex-align-center">
           <div v-for="(val,ix) in item.carTypeProjectList" :key="ix">{{item.carTypeProjectList.length-1>ix?val+' |&nbsp;':val}}</div>
         </div>
+        <iLabel class="margin-top8 title1" :label="language('SHANGQIDAZHANGGONGCHANGDIZHI','上汽大众工厂地址')"></iLabel>
+        <div>
+          {{ item.factoryAddress}}
+        </div>
         <iLabel class="margin-top8 title1" :label="$t('TPZS.ZXSE')"></iLabel>
         <div>{{String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'}}</div>
       </iCard>

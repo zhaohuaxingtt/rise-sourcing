@@ -286,11 +286,11 @@
         <!-- BM单流⽔号 -->
         <template #craftType="scope">
           <div v-show="!isEdit">{{scope.row.craftType}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.craftType" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.craftType" :disabled="scope.row.changeType === 0" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #moldType="scope">
           <div v-show="!isEdit">{{scope.row.moldType}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.moldType" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.moldType" :disabled="scope.row.changeType === 0" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #assetTypeNum="scope">
           <div v-show="!isEdit">{{scope.row.assetTypeNum}}</div>
@@ -301,6 +301,7 @@
               @change="scope.row.isEdit = true"
               filterable
               clearable
+              :disabled="scope.row.changeType === 0"
               class="select"
           >
             <el-option
@@ -320,6 +321,7 @@
               @change="changePartsTotalNum(scope.row)"
               filterable
               clearable
+              :disabled="scope.row.changeType === 0"
               class="select"
           >
             <el-option
@@ -332,17 +334,18 @@
         </template>
         <template #partsName="scope">
           <div v-show="!isEdit">{{scope.row.partsName}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.partsName" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.partsName" :disabled="scope.row.changeType === 0" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #partsNum="scope">
           <div v-show="!isEdit">{{scope.row.partsNum}}</div>
-          <div v-show="isEdit"><iInput v-model="scope.row.partsNum" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
+          <div v-show="isEdit"><iInput v-model="scope.row.partsNum" :disabled="scope.row.changeType === 0" @input="scope.row.isEdit = true" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput></div>
         </template>
         <template #count="scope">
           <div v-show="!isEdit">{{scope.row.count}}</div>
           <div v-show="isEdit">
             <iInput
               v-model="scope.row.count"
+              :disabled="scope.row.changeType === 0"
               :placeholder="language('LK_QINGSHURU', '请输入')"
               @blur="changeAssetTotal(scope.row.index)"
               onkeyup="value=value.replace(/[^0-9]+/g, '')"
@@ -353,6 +356,7 @@
           <div v-show="isEdit">
             <iInput
                 v-model="scope.row.assetPrice"
+                :disabled="scope.row.changeType === 0"
                 :placeholder="language('LK_QINGSHURU', '请输入')"
                 @input="scope.row.isEdit = true"
                 @focus="focus(scope.row.index)"
@@ -406,6 +410,7 @@
               clearable
               collapse-tags
               multiple
+              :disabled="scope.row.changeType === 0"
           >
             <el-option
                 :value="item.value"
@@ -758,12 +763,15 @@ export default {
         return item
       })
     },
-    isNot0(val){
-      if(val === null || val === undefined || val === '' || val.length === 0){
-        return true
-      } else {
-        return false
-      }
+    isNot0(val, key){
+      let res = key.some(item => {
+        if(val[item] === null || val[item] === undefined || val[item] === '' || val[item].length === 0){
+          return true
+        } else {
+          return false
+        }
+      })
+      return res
     },
     handleSave(){
       this.handleSaveLoading = true
@@ -778,15 +786,7 @@ export default {
         newMoldInvestmentAmount: this.baseInfo.afterChangeAmount,
         optimistic: this.baseInfo.optimistic,
       }
-      if(changeOederData.moldChangeDtos.some(item => {
-        return  this.isNot0(item.craftType) ||
-                this.isNot0(item.moldType) ||
-                this.isNot0(item.assetTypeNum) ||
-                this.isNot0(item.partsTotalNum) ||
-                this.isNot0(item.partsNum) ||
-                this.isNot0(item.count) ||
-                this.isNot0(item.assetPrice)
-      })){
+      if(changeOederData.moldChangeDtos.some(item => (item.changeType !== 0) && (this.isNot0(item, ['craftType', 'moldType', 'assetTypeNum', 'partsTotalNum', 'partsNum', 'count', 'assetPrice'])))){
         iMessage.warn(this.language('LK_QINGTIANXIEBITIANXIANG', '请填写必填项'))
         this.handleSaveLoading = false
         return

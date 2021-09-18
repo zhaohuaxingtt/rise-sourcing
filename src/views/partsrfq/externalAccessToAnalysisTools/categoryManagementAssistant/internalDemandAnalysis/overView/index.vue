@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-09-15 10:34:49
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-17 19:21:46
+ * @LastEditors: 舒杰
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
@@ -10,7 +10,10 @@
    <el-row gutter="20">
       <el-col :span="8" v-for="(item,index) in list" :key="index">
          <div @click="onJump(item)" class="cursor cardBox" >
-            <iCard class="icard" :title='language(item.key,item.name)'>
+            <iCard class="icard">
+               <div slot="header">
+                  <span class="title">{{language(item.key,item.name)}}</span>
+               </div>
                <div class="img">
                   <img :src="item.image">
                </div>     

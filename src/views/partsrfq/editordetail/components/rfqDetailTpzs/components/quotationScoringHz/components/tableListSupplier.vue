@@ -13,6 +13,7 @@
     :height="height"
     :data="tableData"
     v-loading="loading"
+    :cell-class-name='cellClassName'
     :empty-text="$t('LK_ZANWUSHUJU')"
     ref='table'
   >
@@ -39,7 +40,7 @@
               <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
                 <template v-for="(itemss,index) in supplierLeftLit">
                     <li :key='index' v-if='itemss.name != "F-Target"'>{{items[itemss.props]}}</li>
-                    <li :key="index" v-else class="ftaget">
+                    <li :key="index" v-else :class="isLower">
                       <span>{{items['cfPartAPrice']}}</span>
                       <span></span>
                       <span>{{items['cfPartBPrice']}}</span>
@@ -102,7 +103,19 @@
               </template>
           <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
              <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
+          </template>     
+          <template v-else-if="removeKeysNumber(item.props) == 'fTarget'">
+            <span :class="{lvse:lvseFn(scope.row,item.props,'fTarget')}">{{scope.row[item.props]}}</span>
           </template>
+           <template v-else-if='item.props== "partName"'>
+            <span style="color:red;" :class="{lvse:lvseFn(scope.row,item.props,'partName')}">{{scope.row[item.props]}}</span>
+          </template>
+          <!-- <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
+            <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
+          </template>
+              <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
+                  <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
+              </template> -->
           <template v-else slot-scope="scope">
             <span>{{scope.row[item.props]}}</span>
           </template>
@@ -188,7 +201,26 @@ export default{
     doLayout(){
       this.$refs.table.doLayout()
     },
-  },
+    lvseFn(row,props,String) {
+      console.log('lvseFn',row,props,String);
+      try {
+        return row[getPorpsNumber(props)+String] == 1
+      } catch (error) {
+        return false
+      }
+    },
+    cellClassName({row, column, rowIndex, columnIndex}) {
+      console.log(column);
+      if(column.label =='LC A Price' ) {
+        return 'priceUnderLinePrice'
+      }      
+      if(column.property =='lcBPrice' ) {
+        return 'priceUnderLinePrice'
+      }      
+
+      
+    }
+  }, 
   computed:{
     paddingTop:function(){
       return this.supplierLeftLit.length * 30 + 20 + 'PX'
@@ -206,6 +238,7 @@ export default{
     height: 15px;
     line-height: 100%;
   }
+  
   .ftaget{
     text-align: left;
     span{
@@ -221,6 +254,9 @@ export default{
     overflow: visible;
     ::v-deep.cell{
       overflow: visible;
+    }
+    ::v-deep.priceUnderLinePrice{
+      border-bottom:3px solid blue;
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;

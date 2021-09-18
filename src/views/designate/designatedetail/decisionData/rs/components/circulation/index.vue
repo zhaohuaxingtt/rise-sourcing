@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-23 16:44:25
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-18 11:25:50
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -253,7 +253,7 @@ export default {
     init() {
       this.getTopList()
       this.getRemark()
-      this.getFileList()
+      this.$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI && this.getFileList()
     },
     /**
      * @Description: 获取表格初始数据
