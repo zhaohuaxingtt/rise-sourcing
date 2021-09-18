@@ -74,7 +74,7 @@ export default [{
       meta: {
         title: "PI分析库",
       },
-      component: () => import("@/views/partsrfq/piAnalyse/index")
+      component: () => import("@/views/partsrfq/piAnalyse/piList")
     },
     {
       path: "partsrfq/rawMateria",

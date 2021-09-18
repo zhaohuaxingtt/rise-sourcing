@@ -14,7 +14,7 @@
       <div class="rsTop">
         <div class="rsTop-left">
           <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
-            <div class="rsTop-left-item-title">{{item.name}} {{item.enName}}:</div>
+            <div class="rsTop-left-item-title">{{ item.lang == 'en' ? `${ item.enName }` : `${ item.name } ${ item.enName }` }}</div>
             <div class="rsTop-left-item-value">{{basicData[item.props]}}</div>
           </div>
         </div>
@@ -22,14 +22,15 @@
           <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
             <template v-if="Array.isArray(item)">
               <div class="rsTop-right-item-title">
-                <div v-for="(subItem, subIndex) in item" :key="subIndex">{{subItem.name}} {{subItem.enName}}<br v-if="subIndex < item.length - 1" /></div>
+                 <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{ subItem.lang == 'en' ? `${subItem.enName}` :`${subItem.name}${subItem.enName}`}} <br v-if="subIndex < item.length - 1" /></div>
               </div>
               <div class="rsTop-right-item-value">
                 <div v-for="(subItem, subIndex) in item" :key="subIndex">{{subItem.props === 'currency' ? basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : '' : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
               </div>
             </template>
             <template v-else>
-              <div  class="rsTop-right-item-title">{{item.name}} {{item.enName}}</div>
+              <!-- <div  class="rsTop-right-item-title">{{item.name}} {{item.enName}}</div> -->
+              <div  class="rsTop-right-item-title">{{ item.lang == 'en' ? `${item.enName}` :`${item.name}${item.enName}`}}</div>
               <div class="rsTop-right-item-value">{{basicData[item.props]}}</div>
             </template>
           </div>
@@ -343,10 +344,12 @@ export default {
        // 从非0开始至非0截至的数据 不包含0
        let strList = [];
        let strFlag = false;
+
        for(let i =0;i<row.length;i++){
-         if(row[i].ltcRate !='0.00'){
+         
+         if(row[i].ltcRate !='0.00' && row[i].ltcRate){
             strFlag = true;
-           strList.push(row[i].ltcRate);
+           strList.push(row[i].ltcRate-0);
          }else if(strFlag && row[i].ltcRate == '0.00'){
            break
          }

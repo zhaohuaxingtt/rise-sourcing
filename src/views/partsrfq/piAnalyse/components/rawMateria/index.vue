@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-09-09 10:11:06
+ * @LastEditTime: 2021-09-18 13:38:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -117,12 +117,12 @@ export default {
   },
   created() {
     // this.initTestData()
+    this.initSearchData()
     this.getTableData()
     this.getRawMaterialType()
     this.getRawMaterialArea()
     const date = new Date()
     this.initDate()
-    console.log('date', date);
   },
   methods: {
     // 初始化时间
@@ -234,6 +234,7 @@ export default {
     },
     // 初始化检索条件
     initSearchData() {
+      this.page.pageSize = 100
       for(const key in this.searchForm) {
         this.searchForm[key] = null
       }

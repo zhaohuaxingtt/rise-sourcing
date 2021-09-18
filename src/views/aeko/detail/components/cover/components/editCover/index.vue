@@ -66,13 +66,11 @@
                   <p class="font-weight margin-bottom5" style="text-align:center">{{scope.row['expressionList'][0] || ''}}</p>
                   <p class="font16" style="color:#747F9D;text-align:center">{{scope.row['expressionList'][1] || ''}}</p>
                 </div>
-                <!-- <icon class="margin-left8" symbol name="iconzengpjiacailiaochengben_lan"></icon> -->
                 <i class="el-icon-warning-outline font18 tipsIcon"></i>
               </el-tooltip>
 
 
                <i v-else class="el-icon-warning-outline font18 tipsIcon grey"></i>
-              <!-- <icon v-else  class="margin-left8" symbol name="iconzengjiacailiaochengben_hui"></icon> -->
             </span>
           </div>
             
@@ -101,7 +99,6 @@ import {
   iInput,
   iSelect,
   iText,
-  icon,
   iMessage,
 } from 'rise';
 import { previewBaicFrom,coverTableTitleCost } from '../../data'
@@ -127,7 +124,6 @@ export default {
       iSelect,
       iText,
       tableList,
-      icon,
     },
     props:{
       aekoInfo:{

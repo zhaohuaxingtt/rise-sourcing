@@ -1,12 +1,12 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-24 09:42:07
- * @LastEditTime: 2021-07-12 18:06:39
+ * @LastEditTime: 2021-09-18 02:03:51
  * @LastEditors: Please set LastEditors
  * @Description: 来自零件签收-table组件
 -->
 <template>
-  <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all v-bind="treeProps" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}">
+  <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all v-bind="treeProps" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}" @row-click='rowClick'>
     <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
@@ -53,6 +53,9 @@ export default{
   },
   inject:['vm'],
   methods:{
+    rowClick(row){
+      this.$refs.moviesTable.toggleRowSelection(row)
+    },
     handleSelectionChange(val){
 		if (this.radio) {
 			if (val.length > 1) {

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-09-17 10:11:48
+ * @LastEditTime: 2021-09-18 16:37:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -487,18 +487,34 @@ export default {
     },
     // 获取发生编辑数据
     handleGetEditData(data) {
-      return window._.cloneDeep(data).map((item, index) => {
+      // return window._.cloneDeep(data).map((item, index) => {
+      // return data.map((item, index) => {
+      //   if(item.piReportVOList && item.piReportVOList.length) {
+      //     const i = data.findIndex(x => x.number == item.number)
+      //     const arr = this.handleGetEditData(item.piReportVOList)[0]
+      //     this.$set(data[i], 'piReportVOList', arr)
+      //   }
+      //   const isEdit = this.checkIsEdit(item)
+      //   if(!isEdit && (!item.piReportVOList || (item.piReportVOList && item.piReportVOList.length == 0))) {
+      //     data.splice(index, 1)
+      //     index--
+      //   }
+      //   return data
+      // })
+      for(let index = 0; index < data.length; index++) {
+        const item = data[index]
         if(item.piReportVOList && item.piReportVOList.length) {
-          const i = data.findIndex(x => x.number == item.number)
-          const childArr = this.handleGetEditData(item.piReportVOList)
-          this.$set(data[i], 'piReportVOList', this.handleGetEditData(item.piReportVOList))
+          // const i = data.findIndex(x => x.number == item.number)
+          const arr = this.handleGetEditData(item.piReportVOList)
+          this.$set(data[index], 'piReportVOList', arr)
         }
         const isEdit = this.checkIsEdit(item)
-        if(!isEdit && (!item.piReportVOList || item.piReportVOList.length == 0)) {
+        if(!isEdit && (!item.piReportVOList || (item.piReportVOList && item.piReportVOList.length == 0))) {
           data.splice(index, 1)
+          index--
         }
-        return data
-      })
+      }
+      return data
     },
     // 检查数据是否发生了变化
     checkIsEdit(newVal) {
@@ -506,7 +522,7 @@ export default {
       let oldVal = this.getOldValByNumber(window._.cloneDeep(this.backUpData), newVal.number)
       if(newVal.type == this.$t('TPZS.SCHEME_TYPE') && ((oldVal.analysisSchemeName != newVal.analysisSchemeName) || (oldVal.isDefault != newVal.isDefault))) {
         res = true
-      } else if(newVal.type != this.$t('TPZS.SCHEME_TYPE') && ((oldVal.reportName != newVal.reportName) || (oldVal.isDefault != newVal.isDefault))) {
+      } else if(newVal.type == this.$t('TPZS.REPORT_TYPE') && ((oldVal.reportName != newVal.reportName) || (oldVal.isDefault != newVal.isDefault))) {
         res = true
       }
       return res
@@ -518,8 +534,9 @@ export default {
         if(item.number == number) {
           return item
         }
-        if(item.piReportVOList && item.piReportVOList.length) {
-          return this.getOldValByNumber(item.piReportVOList, number)
+        if(item.piReportVOList && item.piReportVOList.length > 0) {
+          const res = this.getOldValByNumber(item.piReportVOList, number)
+          if(res) return res
         }
       }
     },
