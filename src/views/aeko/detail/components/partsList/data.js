@@ -77,6 +77,6 @@ export const addPartsForm = [
   {props:'c',label:'BMG',labelKey:'LK_BMG'},
   {props:'d',label:'零件单位',labelKey:'LK_LINGJIANDANWEI'},
   {props:'e',label:'变更类型',labelKey:'LK_AEKOBIANGENGLEIXING',required:true,type:'select',selectOption:'e'},
-  {props:'f',label:'涉及PID',labelKey:'LK_AEKO_SHEJIPID',required:true,type:'select',selectOption:'f'},
+  {props:'f',label:'涉及PID',labelKey:'LK_AEKO_SHEJIPID',required:true,type:'select',selectOption:'f',multiple:true,},
   {props:'g',label:'每⻋⽤量',labelKey:'LK_AEKO_ADDPARTS_MEICHEYONGLIANG',required:true,type:'input'},
 ]

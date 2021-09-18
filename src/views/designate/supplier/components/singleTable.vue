@@ -97,6 +97,8 @@
           <div v-if="singleEditControl || scope.row.isEdit" class="required">
             <iSelect
               v-model="scope.row.department"
+              multiple
+              collapse-tags
               :placeholder="language('LK_QINGXUANZE','请选择')">
               <el-option
                 :value="items.value"

@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import {iButton, iSelect, iInput, iRadio} from 'rise'
+import { iButton, iSelect, iInput, iRadio, Icon} from 'rise'
 import iTableColumn from './iTableColumn'
 
 export default {
@@ -182,6 +182,10 @@ export default {
     this.getTableData()
   },
   methods: {
+    rowClick(row, column, event) {
+      this.$emit('row-click', row, column, event)
+      this.$refs.theCustomTable.toggleRowSelection(row)
+    },
     handleCurrentChange(val) {
       this.$emit('handle-current-change', val)
     },

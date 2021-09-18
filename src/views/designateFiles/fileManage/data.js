@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-08 10:56:04
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-18 15:57:50
  * @Description: 
  * @FilePath: \front-web\src\views\designateFiles\fileManage\data.js
  */
@@ -61,6 +61,7 @@ export const searchList = [
   // {value: 'procureGroup', label: '参考采购组', type: 'input'},
   {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', key: 'GONGYINGSHANGSAPHAO',permission: 'ACCESSORY_MANAGEMENT_SUPPLIERSAPCODE|附件-附件管理-供应商SAP号'},
   {value: 'spNum', label: 'SP号', type: 'input', key: 'SPHAO',permission: 'ACCESSORY_MANAGEMENT_SPNUM|附件-附件管理-SP号'},
+  {value: 'rfqId', label: 'RFQ编号', type: 'input', key: 'RFQBANHAO',permission: 'ACCESSORY_MANAGEMENT_RFQBIANHAO|附件-附件管理-RFQ编号'},
   {value: 'isShow', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'yesOrNoOption',permission: 'ACCESSORY_MANAGEMENT_ISME|附件-附件管理-是否自己'},
 ]
 
