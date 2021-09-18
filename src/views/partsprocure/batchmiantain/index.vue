@@ -408,9 +408,14 @@ export default {
         updateInfo['oldProjectRelations'] = this.oldProjectRelations
         const ids = this.batch.purchaseProjectIds
       updateProcureButch({updateInfo:updateInfo,ids:ids}).then(res=>{
-        iMessage.success(this.language("LK_XIUGAICHENGGONG",'修改成功'));
-        if(partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey){this.$refs.onlyPartsChange.getDataList()}else{
-          this.$refs.outputPlan.getData()
+        if(res.result === true) {
+          iMessage.success(this.language("LK_XIUGAICHENGGONG",'修改成功'));
+          if(partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey){this.$refs.onlyPartsChange.getDataList()}else{
+            this.$refs.outputPlan.getData()
+          }
+        }
+        else{
+            iMessage.error(res.desZh);
         }
         this.saveButchLoading = false
       }).catch(err=>{
