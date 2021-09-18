@@ -94,6 +94,10 @@ export default {
         iMessage.warn(this.language('partsignLanguage.QingXuanZe','请选择'))
         return false
       }
+
+      if (this.selectTableData.some(item => item.approvalStatus === "已提交" || item.approvalStatus === "submitted"))
+        return iMessage.warn(this.language("QINGWUXUANZEYITIJIAODESHUJU", "请勿选择已提交的数据"))
+
       this.selectTableData = this.selectTableData.map(item => {
         item.approvalStatus = 'submitted'
         return item
@@ -111,6 +115,10 @@ export default {
         iMessage.warn(this.language('partsignLanguage.QingXuanZe','请选择'))
         return false
       }
+
+      if (this.selectTableData.some(item => item.approvalStatus === "已撤销" || item.approvalStatus === "revoked"))
+        return iMessage.warn(this.language("QINGWUXUANZEYICHEXIAODESHUJU", "请勿选择已撤销的数据"))
+
       this.selectTableData = this.selectTableData.map(item => {
         item.approvalStatus = 'revoked'
         return item

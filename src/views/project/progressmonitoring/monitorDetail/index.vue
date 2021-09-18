@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-17 14:19:48
+ * @LastEditTime: 2021-09-18 10:24:50
  * @Description: 监控明细
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -81,6 +81,7 @@ export default {
         partProc: '',
         projectDone: ''
       }
+      this.handleSure()
     },
     handleSure() {
       this.loading = true
