@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-08-24 15:42:48
+ * @LastEditTime: 2021-09-18 14:07:13
  * @LastEditors: Please set LastEditors
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
@@ -10,28 +10,20 @@
   <div class="timeLine" :style="{paddingTop:paddingTop,paddingBottom:paddingBottom}">
     <div v-for='(items,index) in timeList' :key='index' class="lineitems">
       <p class="itemsa">
-        <span v-if='items.week % 2 != 0'>
-          CW{{items.week}}
+        <span v-if='items.planPeriod % 2 != 0'>
+          CW{{items.planPeriod}}
         </span>
         <span v-else style="display:inline-block;height:13px;"></span>
       </p>
       <p :class="{itemsb:true,active:items.active,width:'70px'}"></p>
-      <template v-if='items.oneWeekList && items.oneWeekList.length<=1'>
-        <p class="itemsc" :style='{top:`${(index%2==0?"":"-")}40px`,left:(items.doneDay-1) * 10 + "px"}' v-if='items.progressTypeDesc'>
+      <template>
+        <p class="itemsc" :style='{top:`${(index%2==0?"":"-")}40px`,left:(items.doneDay-1) * 9 + "px"}' v-if='items.progressTypeDesc'>
           <span><icon symbol :name='iconList_all_times["a"+items.taskStatus].icon' class="margin-right5"></icon>{{items.progressTypeDesc}}</span>
-          <span v-if='items.planYear'>{{items.planYear}}CW{{items.planPeriod}}</span>
-          <span v-if='items.doneYear'>{{items.doneYear}}CW{{items.donePeriod}}</span>
+          <span v-if='items.planYear'>计划：{{items.planYear}}CW{{items.planPeriod}}</span>
+          <span v-if='items.doneYear'>完成：{{items.doneYear}}CW{{items.donePeriod}}</span>
+          <span v-else>完成：-</span>
         </p>
-      </template>
-      <template v-else>
-        <template v-for="(itemss,indexs) in items.oneWeekList">
-          <p class="itemsc" :style='{top:`${(index%2==0?"":"-")+40*(indexs+1)}px`,left:(itemss.doneDay-1) * 10 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
-            <span><icon symbol :name='iconList_all_times["a"+itemss.taskStatus].icon' class="margin-right5"></icon>{{itemss.progressTypeDesc}}</span>
-            <span v-if='itemss.planYear'>{{itemss.planYear}}CW{{itemss.planPeriod}}</span>
-            <span v-if='itemss.doneYear'>{{itemss.doneYear}}CW{{itemss.donePeriod}}</span>
-          </p>
-        </template>
-      </template>
+      </template> 
     </div>
   </div>
 </template>
