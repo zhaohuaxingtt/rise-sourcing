@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 16:55:21
- * @LastEditTime: 2021-09-16 11:12:45
+ * @LastEditTime: 2021-09-17 14:13:13
  * @LastEditors: Hao,Jiang
  * @Description: 项目状态图表
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/projectStateChart.vue
@@ -15,10 +15,11 @@
       <div class="process" v-show="!disabled && !(data && data.hideTaskProcess)">
         <div class="subtit">{{language('RENWUJINDU', '任务进度')}}</div>
         <ul>
-          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-lv" class="icon" /><span>{{data && data.taskProgressNormal || 0}}</span></li>
-          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-huang" class="icon" /><span>{{data && data.taskProgressLittleDelay || 0}}</span></li>
-          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-hong" class="icon" /><span>{{data && data.taskProgressDelay || 0}}</span></li>
-          <li><icon symbol name="iconbaojiapingfengenzong-jiedian-hei" class="icon" /><span>{{data && data.taskSeriousDelay || 0}}</span></li>
+          <li 
+            v-for="(item, index) in partProc"
+            :key="index"
+            @click="onTaskProcessClick(item)">
+            <icon symbol :name="item.icon" class="icon" /><span>{{data && item.valueKey && data[item.valueKey] || 0}}</span></li>
         </ul>
       </div>
       
@@ -32,6 +33,7 @@
 import {icon} from 'rise'
 import echarts from "@/utils/echarts";
 import {generateOptions} from './lib/genBarChart'
+import {partProc} from './lib/data'
 
 export default {
   components: {icon},
@@ -56,6 +58,7 @@ export default {
   },
   data() {
     return {
+      partProc
     }
   },
   watch: {
@@ -84,12 +87,25 @@ export default {
       vm.setOption(options);
       // 点击事件
       vm.on('click', 'series.bar', function (params) {
-        self.$emit('onSeriesBarClick', params)
+        self.$emit('onSeriesBarClick', Object.assign(params, self.data))
       });
     },
+    /**
+     * @description: 点击标题
+     * @param {*}
+     * @return {*}
+     */    
     onTitleClick() {
       this.$emit('onTitleClick', this.data)
-    }
+    },
+    /**
+     * @description: 点击任务进度的点
+     * @param {*} row
+     * @return {*}
+     */    
+    onTaskProcessClick(row) {
+      this.$emit('onTaskProcessClick', Object.assign(this.data, row))
+    },
   }
 }
 </script>
@@ -141,6 +157,7 @@ export default {
         li {
           display: inline-block;
           padding: 2px 10px;
+          cursor: pointer;
           span {
             display: block;
             width: 100%;

@@ -47,6 +47,12 @@
                   :placeholder="language('LK_QINGTIANXIEGONGCHENGSHI','请填写工程师')"
                   v-model="form.tpPrincepalName"
                 ></iInput>
+              </el-form-item>              
+              <el-form-item :label="language('LK_XUNJIACAIGOUYUAN','询价采购员')" v-permission.auto="PARTSIGN_ENGINEER|询价采购员">
+                <iInput
+                  :placeholder="language('LK_QINGTIANXIEXUNJIACAIGOUYUAN','请填写询价采购员')"
+                  v-model="form.tpPrincepalName"
+                ></iInput>
               </el-form-item>
               <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')" v-permission.auto="PARTSIGN_MODELPROJECT|车型项目">
                 <iSelect

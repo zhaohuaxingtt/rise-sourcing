@@ -29,7 +29,7 @@
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item> -->
               <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称')" style="width: 400px">
-                <iInput v-on:keyup.enter.native="getTableList" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
+                <iInput  :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item>
               <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')">

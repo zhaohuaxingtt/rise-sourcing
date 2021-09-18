@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-09-07 16:45:44
+ * @LastEditTime: 2021-09-18 13:48:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -314,6 +314,7 @@ export default {
         item.supplierCode = item.supplierSap;
         item.supplierName = item.supplierNameZh;
         item.facadeCode = item.procureFactory;
+        item.facadeName = item.procureFactoryName;
       })
 
       const data = {
