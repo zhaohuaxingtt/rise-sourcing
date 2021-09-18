@@ -60,14 +60,17 @@ export function downloadPDF({
     // pdf.save('test')
     function addWaterMark(doc) {
       var totalPages = doc.internal.getNumberOfPages()
-      console.log(doc.internal.pageSize.height, totalPages)
       for (let i = 1; i <= totalPages; i++) {
-        doc.setPage(i)
-        //doc.addImage(imgData, 'PNG', 40, 40, 75, 75);
-        doc.setTextColor(150)
-        doc.text(50, doc.internal.pageSize.height - 30, 'Watermark')
+        for (var x = 100; x <= doc.internal.pageSize.height - 30; x = x + 100) {
+          for (var j = 30; j <= doc.internal.pageSize.width; j = j + 150) {
+            doc.setPage(i)
+            //doc.addImage(imgData, 'PNG', 40, 40, 75, 75);
+            doc.setTextColor(150)
+            doc.setFont("times", "italic");
+            doc.text('Watermark', j, x, 45)
+          }
+        }
       }
-
       return doc
     }
 

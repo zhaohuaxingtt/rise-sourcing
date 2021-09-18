@@ -77,7 +77,7 @@ export default {
       // 初始化地图
       var map = new AMap.Map('container', {
         WebGLParams: {
-          preserveDrawingBuffer: true
+          preserveDrawingBuffer: true //解除缓冲
         },
         resizeEnable: true, //是否监控地图容器尺寸变化
         zoom: 4, //初始地图级别
