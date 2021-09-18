@@ -8,7 +8,7 @@
 <template>
   <iCard id="allContainer" :title="language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')" :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true" collapse>
     <div class="center">
-      <div v-if="$route.path==='/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'" class="tip">
+      <div class="tip">
         <el-popover trigger="hover" placement="top-start" width="400" :content="language('TLJJGLJCLGYSGHBLCXCL','Turnover=零件价格*零件产量*供应商供货比例*车型产量')">
           <icon slot="reference" style="font-size:1.375rem" name="iconxinxitishi" tip="" symbol></icon>
         </el-popover>
@@ -28,7 +28,7 @@
 import { iCard, icon, iButton } from "rise";
 import map1 from "./map.vue";
 import theMapIcon from "./theMapIcon.vue";
-import { overviewBatchSupplierMap,saveOverviewSupplierBatchReport } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import { overviewBatchSupplierMap, saveOverviewSupplierBatchReport } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import supplierCard from "./supplierCard.vue";
 import { downloadPdfMixins } from '@/utils/pdf';
 import resultMessageMixin from '@/utils/resultMessageMixin';
