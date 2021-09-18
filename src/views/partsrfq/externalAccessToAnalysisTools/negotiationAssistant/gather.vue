@@ -40,7 +40,7 @@ import bobOverview from '../../bob/bob';
 import mekOverview from "@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mek.vue"
 import specialAnalysisTool
   from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/specialAnalysisTool/index.vue';
-import piOverView from '@/views/partsrfq/piAnalyse/index'
+import piOverView from '@/views/partsrfq/piAnalyse/piList'
 import { icon, iButton, iNavMvp } from 'rise';
 
 export default {

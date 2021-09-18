@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-09-16 10:36:35
+ * @LastEditTime: 2021-09-18 13:42:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -12,10 +12,10 @@
       <div class="optionBox">
         <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
           <el-form-item style="marginRight:68px" :label="language('LINGJIANHAO', '零件号')">
-            <iInput v-model="searchForm['partNo']" :placeholder="language('QINGSHURU','请输入')"></iInput>
+            <iInput v-model="searchForm['partsId']" :placeholder="language('QINGSHURU','请输入')"></iInput>
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('RFQHAOMINGCHENG', 'RFQ号-名称')">
-            <iInput v-model="searchForm['rfq']" :placeholder="language('QINGSHURU','请输入')"></iInput>
+            <iInput v-model="searchForm['rfqId']" :placeholder="language('QINGSHURU','请输入')"></iInput>
           </el-form-item>
           <el-form-item class="searchButton">
             <el-button @click="handleSubmitSearch">{{language('QR', '确认')}}</el-button>
