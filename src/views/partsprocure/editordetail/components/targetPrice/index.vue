@@ -213,12 +213,13 @@ import { cloneDeep } from 'lodash'
 		methods: {
 			getTargetPriceDetail() {
 				getTargetPriceDd(this.purchaseProjectId).then(res => {
-					if (res?.result) {
+					if (res?.data) {
 						this.targetprice = {
 							...this.targetprice,
 							cfTargetPriceDetail: {
 								...this.targetprice.cfTargetPriceDetail,
-								...res.data
+								...res.data,
+								applyType: res.data.applyType ? res.data.applyType : this.targetprice.cfTargetPriceDetail.applyType
 							}
 						}
 					} else {
