@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\data.js
  */
 export const scoreTableTitle = [
-  { props: "svw", name: "SVW号", key: "SVWHAO", tooltip: true },
+  { props: "sapCode", name: "SVW号", key: "SVWHAO", tooltip: true },
   { props: "supplierName", name: "供应商名", key: "GONGYINGSHANGMING", tooltip: true },
   { props: "proLocation", name: "供应商生产场地", key: "GONGYINGSHANGSHENGCHANCHANGDI", tooltip: true },
   { props: "partScore", name: "零件评分", key: "LINGJIANPINGFEN", tooltip: true },

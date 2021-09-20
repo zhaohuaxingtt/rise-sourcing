@@ -80,6 +80,9 @@
           </div>
           <span v-else>{{scope.row.ratio}}</span>
         </template>
+        <template #sapCode="scope">
+          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+        </template>
       </tablelist>
       <!-- <iPagination
         v-update

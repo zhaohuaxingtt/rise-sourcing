@@ -110,6 +110,9 @@
           </div>
           <span v-else>{{scope.row.department}}</span>
         </template>
+        <template #sapCode="scope">
+          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+        </template>
       </tablelist>
     <!-- 零件弹窗 -->
     <partDialog :visible.sync="partDialogVisibal" @add="onPartAdd" />
