@@ -47,6 +47,10 @@
           <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
         </template>
 
+        <template #supplierSapCode="scope">
+          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+        </template>
+
       </tableList>
       <div class="beizhu">
         备注 Remarks:

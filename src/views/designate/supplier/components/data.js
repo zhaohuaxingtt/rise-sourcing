@@ -28,7 +28,7 @@ export const multiSupplierTitle = [
     tooltip: false
   },
   {
-    props: 'sapNum',
+    props: 'sapCode',
     name: 'SAP号',
     key: 'nominationSupplier_SAPHao',
     tooltip: false
@@ -61,7 +61,7 @@ export const mokeMultiSupplierData = [
     "partNameGer": "SCHEIBE",
     "carModelProject": "",
     "currentRounds": null,
-    "sapNum": "11085",
+    "sapCode": "11085",
     "factoryNameCh": "上海爱导",
     "factoryNameEng": null,
     "isPresent": 0,
@@ -80,7 +80,7 @@ export const mokeMultiSupplierData = [
         "partNameGer": "SCHEIBE",
         "carModelProject": "",
         "currentRounds": null,
-        "sapNum": "11085",
+        "sapCode": "11085",
         "factoryNameCh": "立达汽车系统",
         "factoryNameEng": null,
         "isPresent": 0,
@@ -101,7 +101,7 @@ export const mokeMultiSupplierData = [
     "partNameGer": "ARBEITSKONTAKTRELAIS",
     "carModelProject": "",
     "currentRounds": null,
-    "sapNum": "11085",
+    "sapCode": "11085",
     "factoryNameCh": "上海爱导",
     "factoryNameEng": null,
     "isPresent": 0,
@@ -152,7 +152,7 @@ export const singleSupplierTitle = [
     tooltip: false
   },
   {
-    props: 'sapNum',
+    props: 'sapCode',
     name: 'SAP号',
     key: 'nominationSupplier_SAPHao',
     tooltip: false
@@ -185,7 +185,7 @@ export const mokeSingleSupplierData = [
     "partNum": "131231231",
     "descr":  "510923空调压缩机液压阀",
     "fsnrGsnrName": "海尔",
-    "sapNum": "88718273662",
+    "sapCode": "88718273662",
     "fsnrGsnrNameEn": "Haier",
     "supplierName": "Haier",
     "show": "Y",
@@ -196,7 +196,7 @@ export const mokeSingleSupplierData = [
     "partNum": "131231231",
     "descr":  "510923温度控制器液压阀",
     "fsnrGsnrName": "海尔",
-    "sapNum": "88718273662",
+    "sapCode": "88718273662",
     "supplierName": "Haier",
     "fsnrGsnrNameEn": "Haier",
     "show": "Y",

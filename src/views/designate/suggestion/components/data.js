@@ -52,7 +52,7 @@ export const supplierTitle = [
     tooltip: false
   },
   {
-    props: 'supplierCode',
+    props: 'sapCode',
     name: '供应商号',
     key: 'nominationSupplier.GongYingShangHao',
     tooltip: false

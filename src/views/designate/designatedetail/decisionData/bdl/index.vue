@@ -24,6 +24,9 @@
             </el-tooltip>
           </div>
         </template>
+        <template #sapCode="scope">
+          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+        </template>
       </tableList>
       <iPagination v-update 
         @size-change="val => sizeChange(val, index)" 
