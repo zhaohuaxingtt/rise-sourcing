@@ -14,6 +14,9 @@ import '../public/theme/index.css'
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 import './permission'
+import Vue from "vue"
+import { iTable } from 'rise'
+
 require('./auto').init()
 Vue.config.productionTip = false
 Vue.prototype.$t = (key, value) => i18n.t(key, value);
@@ -24,6 +27,8 @@ Promise.all([
     i18n.mergeLocaleMessage('zh', zhModule.default)
     i18n.mergeLocaleMessage('en', enModule.default)
 })
+
+Vue.component(iTable.name, iTable)
 
 new Vue({
     router,
