@@ -191,8 +191,8 @@ export default {
         // 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO
         isShowAddPart(){
             const {aekoInfo={}} = this;
-            const {aekoStatus=''} = aekoInfo;
-            return  aekoStatus!=='FROZEN' && aekoStatus!=='PASS' && aekoStatus!=='CANCELED';
+            const {aekoStatus='',sourse=''} = aekoInfo;
+            return  sourse!=='TCM' && aekoStatus!=='FROZEN' && aekoStatus!=='PASS' && aekoStatus!=='CANCELED';
         }
     },
     props:{

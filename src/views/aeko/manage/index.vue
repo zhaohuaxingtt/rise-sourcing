@@ -61,7 +61,7 @@
       <!-- 按钮区域 -->
       <template v-slot:header-control>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO|逾期BI报表">{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton>
-          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_HUIYITONGGUO|会议通过">{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
+          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_HUIYITONGGUO|会议通过" @click="meetingPass">{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_XIAZAIMUBAN|下载模板" @click="downloadTemplate">{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
           <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUAEKO|导入AEKO" class=" margin-left10 margin-right10">
             <Upload 
@@ -148,6 +148,9 @@
       <revokeDialog v-if="revokeVisible" :dialogVisible="revokeVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
       <!-- 附件列表查看 -->
       <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
+    
+      <!-- TCM导入清单 -->
+      <!-- <tcmList/> -->
     </div>
   </iPage>
 </template>
@@ -175,6 +178,7 @@ import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
 import {user as configUser } from '@/config'
 import aekoSelect from '../components/aekoSelect'
+import tcmList from './components/tcmList'
 import {
   getManageList,
   searchAekoStatus,
@@ -210,7 +214,8 @@ export default {
       revokeDialog,
       filesListDialog,
       Upload,
-      aekoSelect
+      aekoSelect,
+      tcmList,
     },
     data(){
       return{
@@ -711,6 +716,18 @@ export default {
           } else {
               this.$set(this.searchParams, key, this.searchParams[key].filter(item => item || item === 0))
           }
+      },
+
+      // 会议通过
+      async meetingPass(){
+        const isNext  = await this.isSelectItem(true);
+        const {selectItems} = this;
+        if(!isNext) return;
+        await this.$confirm(this.language('LK_AEKO_TIPS_SHIFOUQUEDINGHUIYITONGGUO','是否确定会议通过？')).then(()=>{
+
+        }).catch(()=>{
+
+        })
       },
 
 
