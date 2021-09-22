@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
 <template>
-  <el-table ref="table" class="table" :class="singleSelect ? 'singleSelectTable' : ''" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" @select-all="handleSelectAll" :cell-style="borderLeft" >
+  <el-table ref="table" class="table" :class="singleSelect ? 'singleSelectTable' : ''" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" @select-all="handleSelectAll" @row-click="handleRowClick" :cell-style="borderLeft" >
     <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="40" :fixed="fixed" :selectable="selectable"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel" :fixed="fixed"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
@@ -110,6 +110,9 @@ export default {
       else{
         return ""
       }
+    },
+    handleRowClick(row, column, event) {
+      this.$emit("handleRowClick", row, column, event)
     }
   }
 }

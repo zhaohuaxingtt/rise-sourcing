@@ -15,17 +15,21 @@ s<!--
     </template>
     <div class="body">
       <tableList
-        class="table"
         index
+        class="table"
+        ref="table"
         :lang="true"
         :cellClassName="cellClass"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange"
+        @handleRowClick="handleRowClick"
+        @handleSelectAll="handleSelectAll"
       >
         <template #partNum="scope">
           <span v-if="scope.row.sendKmFlag == 1" class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
+          <span v-else-if="scope.row.partProjectStatus == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.DESIGNATED')" class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
           <span v-else>{{ scope.row.partNum }}</span>
         </template>
         <template #round="scope">
@@ -69,6 +73,7 @@ import { numberProcessor } from "@/utils"
 import { getKmPartList, savePcaAndTia } from "@/api/costanalysismanage/rfqdetail"
 import downloadDialog from "../../../home/components/downloadFiles"
 import { partCbdKmFile } from "@/api/costanalysismanage/costanalysis"
+import { getEnumValue } from "@/config"
 
 export default {
   components: {
@@ -101,6 +106,7 @@ export default {
     this.getKmPartList()
   },
   methods: {
+    getEnumValue,
     // 获取零件清单
     getKmPartList() {
       this.loading = true
@@ -124,6 +130,12 @@ export default {
     },
     handleSelectionChange(list) {
       this.multipleSelection = list.filter(item => item.sendKmFlag == 1)
+    },
+    handleRowClick(row) {
+      if (row.sendKmFlag != 1) {
+        this.$refs.table.$refs.table.toggleRowSelection(row, false)
+        this.$set(row,'selectedBorder', false)
+      }
     },
     // 保存
     handleSave() {
@@ -210,6 +222,14 @@ export default {
       if (row.row.sendKmFlag != 1) {
         return "hideCheckbox"
       }
+    },
+    handleSelectAll(selection) {
+      // selection.forEach(row => {
+      //   if (row.sendKmFlag != 1) {
+      //     this.$refs.table.$refs.table.toggleRowSelection(row, false)
+      //     this.$set(row,'selectedBorder', false)
+      //   }
+      // })
     }
   }
 }
