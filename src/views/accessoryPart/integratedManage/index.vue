@@ -60,7 +60,11 @@
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_MANAGFMENT_EXPORT|配件-配件管理-导出">{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2" class="aotoTableHeight"></tableList>
+            <tableList :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2" class="aotoTableHeight">
+              <template #supplierSapCode="scope">
+                <span>{{ scope.row.supplierSapCode || scope.row.supplierSvwTempCode }}</span>
+              </template>
+            </tableList>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>

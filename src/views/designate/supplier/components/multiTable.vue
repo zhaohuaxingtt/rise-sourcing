@@ -62,6 +62,9 @@
     <template #isPresent="scope">
       <span>{{scope.row.isPresent === 1 ? language('LK_YES','是') : language('LK_NO','否') }}</span>
     </template>
+    <template #sapCode="scope">
+      <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+    </template>
     </tablelist>
     <iPagination
       v-update

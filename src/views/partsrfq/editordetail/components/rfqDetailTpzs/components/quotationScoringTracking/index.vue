@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-09-22 15:00:03
+ * @LastEditTime: 2021-09-18 16:07:31
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue

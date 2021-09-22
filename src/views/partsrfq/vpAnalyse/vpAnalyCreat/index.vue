@@ -7,7 +7,7 @@
 -->
 <template>
   <iPage>
-    <div class="header">{{$t('TPZS.VPFX')}}{{!!$route.query.rfqId?'-'+$route.query.rfqId:''}}
+    <div class="header">{{$t('TPZS.VPFX')}}{{!!$store.state.rfq.rfqId?'-'+$store.state.rfq.rfqId:''}}
       <div>
         <iButton @click="handleAnalysis">{{$t('TPZS.VPFXK')}}</iButton>
         <icon class="icon-x" name='icondatabaseweixuanzhong' symbol></icon>
@@ -49,7 +49,11 @@ export default {
       this.$refs.partsTable.getTableList(data)
     },
     handleAnalysis() {
-      this.$router.push({ path: '/sourcing/partsrfq/assistant', query: { id: this.$store.state.rfq.rfqId, round: this.$route.query.round, pageType: 'Volume Pricing', activityTabIndex: 'two' } })
+      if (this.$store.state.rfq.entryStatus) {
+        this.$router.push({ path: '/sourceinquirypoint/sourcing/partsrfq/assistant', query: { id: this.$store.state.rfq.rfqId, round: this.$route.query.round, pageType: 'VP', activityTabIndex: 'two' } })
+      } else {
+        this.$router.push({ path: '/sourcing/partsrfq/externalNegotiationAssistant', query: { pageType: 'VP' } })
+      }
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

@@ -1,11 +1,11 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-09-08 15:46:11
+ * @LastEditTime: 2021-09-02 18:49:40
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
- * @FilePath: \rise\src\utils\index.js
+ * @FilePath: \front-web\src\utils\index.js
  */
 import router from '../router'
 import store from '../store'
@@ -15,7 +15,9 @@ import {sendKey,sendPermissonKey} from '@/api/usercenter'
 import {onlyselfProject,allitemsList,BKMROLETAGID} from '@/config'
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
-  return Cookies.set(cookieName, cookieData, { domain: process.env.VUE_APP_ROOT_DOMAIN })
+  return Cookies.set(cookieName, cookieData, {
+    domain: process.env.VUE_APP_ROOT_DOMAIN,
+  })
 }
 export function removeCookie(cookieName) {
   // eslint-disable-next-line no-undef
@@ -73,20 +75,22 @@ export const math = window.math.create(window.math.all, {
 export function _getMathNumber(lamda) {
   return Number(math.format(math.evaluate(lamda), 14))
 }
-export function password(str,publicKey){
+export function password(str, publicKey) {
   const mathRsa = new jsencrypt()
-  mathRsa.setPublicKey('-----BEGIN PUBLIC KEY-----'+publicKey+'-----END PUBLIC KEY-----')
+  mathRsa.setPublicKey(
+    '-----BEGIN PUBLIC KEY-----' + publicKey + '-----END PUBLIC KEY-----'
+  )
   return mathRsa.encrypt(str)
 }
 
-export function closeCliantClearStoreage(){
-  let beginTime = null;
-  window.onbeforeunload = function (params) {
+export function closeCliantClearStoreage() {
+  let beginTime = null
+  window.onbeforeunload = function(params) {
     beginTime = new Date().getTime()
   }
-  window.onunload = function(){
+  window.onunload = function() {
     let endTime = new Date().getTime()
-    if(endTime - beginTime <=5){
+    if (endTime - beginTime <= 5) {
       removeToken()
       removeRefreshToken()
     }
@@ -94,17 +98,22 @@ export function closeCliantClearStoreage(){
 }
 
 //表头数据权限过滤
-export function permissionTitle(key,titleList){
+export function permissionTitle(key, titleList) {
   const permissionMap = store.state.permission.whiteBtnList[key]
   let newTitleList = JSON.parse(JSON.stringify(titleList))
-  if(permissionMap){
+  if (permissionMap) {
     const a = []
-    titleList.forEach(element => {
-       if(permissionMap.fieldList.find(items=>items.fieldName == element.props || element.list)) a.push(element)
-       if(element.list){
-        element.list = permissionTitle(key,element.list)
-       }
-    });
+    titleList.forEach((element) => {
+      if (
+        permissionMap.fieldList.find(
+          (items) => items.fieldName == element.props || element.list
+        )
+      )
+        a.push(element)
+      if (element.list) {
+        element.list = permissionTitle(key, element.list)
+      }
+    })
     newTitleList = a
   }
   return newTitleList
@@ -114,7 +123,7 @@ export function permissionTitle(key,titleList){
 export function serialize(data, type = Object) {
   let str = ''
 
-  switch(type) {
+  switch (type) {
     case Object:
       for (let key in data) {
         str += key + '=' + encodeURIComponent(data[key]) + '&'
@@ -124,15 +133,14 @@ export function serialize(data, type = Object) {
     case Array:
       if (Array.isArray(data)) {
         str = data
-          .map(item => {
+          .map((item) => {
             return serialize(item)
           })
-          .join("&")
+          .join('&')
       }
 
       return str
   }
-  
 }
 
 // 数字限制输入
@@ -150,12 +158,12 @@ export const numberProcessor = function(val, precision = 4, negative) {
         .replace(new RegExp(`^(.+\\.\\d{0,${ precision }})\\d*$`), "$1")
     } else {
       result = (val + "").replace(/[^\d.]/g, "")
-      .replace(/^\.*/g, "")
-      .replace(".", "$#$")
-      .replace(/\./g, "")
-      .replace("$#$", ".")
-      .replace(/^0+([0-9].*)/, "$1")
-      .replace(new RegExp(`^(.+\\.\\d{0,${ precision }})\\d*$`), "$1")
+        .replace(/^\.*/g, "")
+        .replace(".", "$#$")
+        .replace(/\./g, "")
+        .replace("$#$", ".")
+        .replace(/^0+([0-9].*)/, "$1")
+        .replace(new RegExp(`^(.+\\.\\d{0,${ precision }})\\d*$`), "$1")
     }
     
   } else {
@@ -165,18 +173,31 @@ export const numberProcessor = function(val, precision = 4, negative) {
         .replace(/^(-?)0+([0-9])/, "$1$2")
     } else {
       result = (val + "").replace(/\D/g, "")
-      .replace(/^0+([0-9])/, "$1")
+        .replace(/^0+([0-9])/, "$1")
     }
   }
   return result
 }
+
+export function filterEmptyChildren(arr, target) {
+  arr.forEach((value, index) => {
+    if (value.code && value.code === target) {
+      arr.splice(index, 1)
+    }
+    if (value.child && value.child.length > 0) {
+      filterEmptyChildren(value.child, target)
+    }
+  })
+}
 //i18N 翻译
 // eslint-disable-next-line no-undef
-let languageList = [];
+let languageList = []
 // eslint-disable-next-line no-undef
-Vue.prototype.language = function(languageKey,name){
-  if(process.env.NODE_ENV == 'dev'){
-    languageList.push(languageKey+'----'+name+ '----' + this.$router.currentRoute.path)
+Vue.prototype.language = function(languageKey, name) {
+  if (process.env.NODE_ENV == 'dev') {
+    languageList.push(
+      languageKey + '----' + name + '----' + this.$router.currentRoute.path
+    )
   }
   return this.$t(languageKey)
 }
@@ -245,6 +266,36 @@ export function filterProjectList(oldProjectList,currentProjectType){
   }
 }
 
+//小数点精确
+export function toFixedNumber(number, m) {
+  number = Number(number)
+  let result = Math.round(Math.pow(10, m) * number) / Math.pow(10, m);
+  result = String(result);
+  if (result.indexOf(".") === -1) {
+    result += ".";
+    result += new Array(m + 1).join('0');
+  } else {
+    let arr = result.split('.');
+    if (arr[1].length < m) {
+      arr[1] = arr[1] += new Array(m - arr[1].length + 1).join('0')
+    }
+    result = arr.join('.')
+  }
+  return result
+}
+
+//转千分位
+export function toThousands (number) {
+  return (number + '').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,')
+}
+
+//去除千分位
+export function deleteThousands (number) {
+  if(!number) return number;
+  number = number.toString();
+  number = number.replace(/,/gi, '');
+  return number;
+}
 /*********************************************************************************************************************************************
  * @description: 业务场景：用户在满足当前角色权限的情况下，业务不满足他去操作当前的组件，列如：仅零件号变更的零件采购项目，rfq，定点管理等...不需要展示。但是同一个
  * 控件已经定义了唯一key，为了复用当前key所衍生的业务权限判断方法，属于增量修改。
@@ -293,4 +344,45 @@ export function translateBackToWhite(currentKeyBusinessKey,whiteList,blackList,a
  */
 export function permissionArray(permissionKey, list) {
   return list.filter(item => store.state.permission.whiteBtnList[item[permissionKey]])
+}
+
+// 树转数组
+export function treeToArray(tree, childrenKey, res) {
+  res = res || []
+  for (let i = 0; i < tree.length; i++) {
+    const item = {}
+    for (const key in tree[i]) {
+      if (Object.hasOwnProperty.call(tree[i], key)) {
+        const element = tree[i][key]
+        if (childrenKey !== key) {
+          item[key] = element
+        }
+      }
+    }
+    res.push(item)
+
+    if (tree[i][childrenKey]) {
+      treeToArray(tree[i][childrenKey], childrenKey, res)
+    }
+  }
+  return res
+}
+
+// 数组转tree
+
+export function arrayToTree(list, idKey, parentKey, childrenKey) {
+  let obj = {}
+  for (let i = 0; i < list.length; i++) {
+    obj[list[i][idKey]] = list[i]
+  }
+  const result = []
+  list.forEach(node => {
+    if (!obj[node[parentKey]]) {
+      result.push(node)
+      return
+    }
+    obj[node[parentKey]][childrenKey] = obj[node[parentKey]][childrenKey] || []
+    obj[node[parentKey]][childrenKey].push(node)
+  })
+  return result
 }

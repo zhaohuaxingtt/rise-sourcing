@@ -28,34 +28,43 @@
          <iCard title="业务分配模拟" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"5")' collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_YEWUFENPEIMONI|业务分配模拟"></iCard>
       </template>
     </el-tab-pane>
-    <el-tab-pane lazy label="专项分析工具">
+    <el-tab-pane lazy name="two" label="专项分析工具">
       <gather />
     </el-tab-pane>
-    <el-tab-pane lazy label="谈判基本信息">
+    <el-tab-pane lazy name="three" label="谈判基本信息">
       <negotiateBasicInfor></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>
 </template>
 <script>
-import {iTabsList,iCard} from 'rise'
+import { iTabsList, iCard } from 'rise'
 import quotationScoringTracking from './components/quotationScoringTracking'
 import quotationScoringMj from './components/quotationScoringMj'
 import quotationScoringHZ from './components/quotationScoringHz'
 import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
 import buMonitor from './components/qutaionScoringBusses'
-import {icardData} from './components/data'
-import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/index.vue";
+import { icardData } from './components/data'
+import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/gather.vue";
 import negotiateBasicInfor from "./components/negotiateBasicInfor";
 
 
-export default{
-  components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj,quotationScoringHZ,quotationScoringEcartsCard,buMonitor, gather, negotiateBasicInfor},
-  data(){
+export default {
+  components: { iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, gather, negotiateBasicInfor },
+  data() {
     return {
-      cardShow:icardData
+      cardShow: icardData,
+      activityTabIndex: 'one'
     }
   },
-  methods:{
+  created() {
+    if (this.$route.query.activityTabIndex) {
+      this.activityTabIndex = this.$route.query.activityTabIndex
+    }
+  },
+  methods: {
+    handleTabClick(target) {
+      this.activityTabIndex = target.name
+    },
     /**
      * @description: 报价折叠
      * @param {*} e
@@ -65,9 +74,9 @@ export default{
 
 
 
-    handleCollapse(e,key){
-      this.cardShow.forEach(i=>{
-        if(i.key == key){
+    handleCollapse(e, key) {
+      this.cardShow.forEach(i => {
+        if (i.key == key) {
           i.show = e
         }
       })

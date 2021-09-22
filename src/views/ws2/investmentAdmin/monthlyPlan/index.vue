@@ -16,9 +16,9 @@
           :key="index"
         ></el-option>
       </iSelect>
-      <div @click="handleRefresh" v-if="versionData.editFlag">
+      <div @click="handleRefresh" v-if="versionData.editFlag" class="refresh-box">
         <icon class="refreshIcon" symbol name="iconmojukanbanshuaxin" />
-        <span class="refresh cursor">{{ $t('LK_SHUAXIN') }}</span>
+        <span>{{ $t('LK_SHUAXIN') }}</span>
       </div>
       <span class="refreshTime">{{ $t('LK_SHUAXINRIQI') }}：{{ versionData.updateDate }}</span>
       <div v-if="pageEdit">
@@ -761,16 +761,17 @@ export default {
 
   .versionSelect {
     width: 155px;
-    margin: 0 20px;
+    // margin: 0 20px;
   }
 
   .versionNum {
-    font-size: 16px;
+    color: #0D2451;
+    margin-right: 20px;
   }
 
   .refreshIcon {
-    margin-left: 10px;
-    margin-right: 10px;
+    // margin-left: 10px;
+    // margin-right: 10px;
     width: 15px;
     height: 15px;
     cursor: pointer;
@@ -783,10 +784,16 @@ export default {
   }
 }
 
+.refresh-box{
+  color: #1763F7;
+  margin-left: 30px;
+  cursor: pointer;
+}
+
 .refresh {
   font-size: 16px;
   color: $color-blue;
-  font-weight: bold;
+  // font-weight: bold;
 }
 
 #echart {

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:11:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-06 15:43:07
+ * @LastEditTime: 2021-09-06 15:46:48
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\data.js
  */

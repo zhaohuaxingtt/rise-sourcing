@@ -4,7 +4,7 @@
  * @LastEditTime: 2021-09-16 14:14:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\aekomanage\detail\components\contentDeclare\index.vue
+ * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
 <template>
   <div class="contentDeclare">

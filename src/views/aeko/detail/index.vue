@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-09-08 16:42:41
+ * @LastEditTime: 2021-08-27 10:27:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\aekomanage\detail\index.vue
+ * @FilePath: \front-web\src\views\aeko\detail\index.vue
 -->
 <template>
   <iPage class="aekodetail">

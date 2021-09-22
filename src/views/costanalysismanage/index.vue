@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 11:30:28
- * @LastEditTime: 2021-06-25 14:05:57
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-23 14:27:18
+ * @LastEditors: 舒杰
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\costanalysismanage\index.vue
+ * @FilePath: \front-sourcing\src\views\costanalysismanage\index.vue
 -->
 <!-- 成本分析管理 -->
 <template>

@@ -13,21 +13,19 @@
         <iLabel :label="'RFQ'" slot="label"></iLabel>
         <iText>{{  form.rfqName }}</iText>
       </iFormItem>
-      <!-- <iFormItem>
-        <iLabel :label="$t('LK_CHEXING')" slot="label"></iLabel>
-        <iText>{{  form.xxxxx }}</iText>
-      </iFormItem> -->
       <iFormItem>
         <iLabel :label="$t('LK_CAILIAOZU')" slot="label"></iLabel>
         <iText>{{  form.categoryName }}</iText>
       </iFormItem>
       <iFormItem>
-        <iLabel :label="'FS'" slot="label"></iLabel>
-        <iText>{{  form.xxxxx }}</iText>
+        <iLabel :label="'FS/CSS'" slot="label"></iLabel>
+        <iText>{{  form.buyerName }}</iText>
+      </iFormItem>
+      <iFormItem>
       </iFormItem>
       <iFormItem>
         <iLabel :label="'FOP'" slot="label"></iLabel>
-        <iText>{{  form.fop }}</iText>
+        <iText>{{  form.ep }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.MQXTY')" slot="label"></iLabel>
@@ -62,17 +60,9 @@
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.CFQK')" slot="label"></iLabel>
         <iText>
-          <icon :name="form.targetgradestatus==='1'?'iconbaojiapingfengenzong-jiedian-lv':form.targetgradestatus==='2'?'iconbaojiapingfengenzong-jiedian-huang':form.targetgradestatus==='3'?'iconbaojiapingfengenzong-jiedian-cheng':form.targetgradestatus==='4'?'iconbaojiapingfengenzong-jiedian-hong':''" symbol></icon>
+          <icon :name="form.targetGradeStatus==='1'?'iconbaojiapingfengenzong-jiedian-lv':form.targetGradeStatus==='2'?'iconbaojiapingfengenzong-jiedian-huang':form.targetGradeStatus==='3'?'iconbaojiapingfengenzong-jiedian-cheng':form.targetGradeStatus==='4'?'iconbaojiapingfengenzong-jiedian-hong':''" symbol></icon>
         </iText>
       </iFormItem>
-      <!-- <iFormItem>
-        <iLabel :label="$t('TPZS.CXLC')" slot="label"></iLabel>
-        <iText>{{  form.xxxxx }}</iText>
-      </iFormItem>
-      <iFormItem>
-        <iLabel :label="$t('TPZS.SOPRQ')" slot="label"></iLabel>
-        <iText>{{  form.xxxxx }}</iText>
-      </iFormItem> -->
     </iFormGroup>
   </div>
 </template>
@@ -99,7 +89,7 @@ export default {
         tpGradeStatus: '',//FOP情况
         mqGradeStatus: '',
         plStatus: '',
-        targetgradestatus: '',//cf情况
+        targetGradeStatus: '',//cf情况
       }
     }
   },
