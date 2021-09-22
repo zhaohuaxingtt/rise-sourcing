@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-09-18 14:40:46
+ * @LastEditTime: 2021-09-22 15:00:03
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -33,7 +33,7 @@
 <script>
 import timeline from './components/timeline'
 import {icon,iMessage} from 'rise'
-import {timeList,tableTile,tableDatas,iconList_car,iconList_all_times,buildTitleTabel,buildTableData} from './components/data'
+import {tableTile,tableDatas,iconList_car,iconList_all_times,buildTitleTabel,buildTableData} from './components/data'
 import dalyWeeks from './components/dalyWeeks'
 import tabelData from './components/tableList'
 import {getTimeLine,negoScoreReport} from '@/api/partsrfq/editordetail'
@@ -41,7 +41,7 @@ export default{
   components:{timeline,icon,dalyWeeks,tabelData},
   data(){
     return {
-      timeListdata:timeList,
+      timeListdata:[],
       tableTile:tableTile,
       tableDatas:tableDatas,
       daliyTime:1,
@@ -60,13 +60,13 @@ export default{
      * @param {*}
      * @return {*}
      */
-    getTypeWeek(list){
-      const lowNumberStatus = list.sort((a,b)=>a.taskStatus - b.taskStatus)
-      if(lowNumberStatus.taskStatus == -1){
-        return lowNumberStatus.donePeriod
-      }else{
-        return list[list.length -1].donePeriod
-      }
+    getTypeWeek(maps){
+      // eslint-disable-next-line no-undef
+      const currentWenk = Number(new moment().format('W')) + 1
+      // eslint-disable-next-line no-undef
+      const currentYear = new moment().format('yyyy')
+      if(currentYear < maps.planYear) return false
+      return maps.planPeriod <= currentWenk
     },
     /**
      * @description: 判断当前年是不是跨年。 
@@ -105,7 +105,7 @@ export default{
         if(res.data){
           this.daliyTime = res.data.wholeProgressRisk || 0 //整车进度风险
           this.allJdu = res.data.wholeTaskProgress || 0 //整体任务进度
-          this.timeListdata = this.translateTimeLine(res.data.rfqTimeAxisProgressVOList)
+          this.timeListdata = this.translateTimeLine(res.data.rfqTimeAxisNodeList)
         }
       }).catch(err=>{
         iMessage.error(err.desZh)
@@ -123,23 +123,17 @@ export default{
     translateTimeLine(list){
       try {
         // eslint-disable-next-line no-debugger
-        if(list.length) throw new Error('current data has error, pleace check your data')
+        if(!list.length) throw new Error('current data has error, pleace check your data')
         const copeList = []
         list.forEach(element => {
-          copeList.push({...element,...{oneWeekList:list.filter(items=>((element.planPeriod) == items.planPeriod)) || []}})
+          if(!element.rfqTimeAxisProgressVOList){
+            element.rfqTimeAxisProgressVOList = []
+          }
+          copeList.push(element)
         });
         return copeList
       } catch (error) {
-         const copeList = []
-         let i = 1
-         while (i < 25) {
-           copeList.push({
-             planPeriod:i,
-             active:false
-           })
-           i++
-         }
-         return copeList
+         return []
       }
     },
   }
