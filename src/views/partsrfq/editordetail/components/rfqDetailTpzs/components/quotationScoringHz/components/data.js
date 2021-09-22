@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-09-15 21:01:56
+ * @LastEditTime: 2021-09-22 20:13:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -47,20 +47,20 @@ export const fstableTileXh = function(index){
     {type:'',props:`${index?index:''}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price ',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:'LC A Price w/o alloc.',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:'SKD A Price w/o alloc.',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:'LC B Price w/o alloc.',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}skdBPriceWithoutAllocation`,label:'SKD B Price w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:"LC A Price \n w/o alloc.",i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:"SKD A Price \n w/o alloc.",i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:"LC B Price \n w/o alloc.",i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}skdBPriceWithoutAllocation`,label:"SKD B Price \n w/o alloc.",i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}bnk`,label:'BNK',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}bnkApprovalStatus`,label:'BNK status',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}tooling`,label:'Tooling',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}developmentCost`,label:'Dev. cost',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}supplierSopDate`,label:'Supplier SOP date',i18n:'',width:'100',tooltip:true},
+    {type:'',props:`${index?index:''}supplierSopDate`,label:'Supplier \n SOP date',i18n:'',width:'100',tooltip:true},
     {type:'',props:`${index?index:''}ltc`,label:'LTC',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC Star.Date',i18n:'',width:'100',tooltip:true},
     {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External Development cost',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External \n Development cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`Quotationdetails`,label:'Quo.details',i18n:'',width:'100',tooltip:false},
   ]
@@ -71,10 +71,10 @@ export const gstableTileXh = function(index){
     {type:'',props:`${index?index:''}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price ',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:'LC A Price w/o alloc.',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:'SKD A Price w/o alloc.',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:'LC B Price w/o alloc.',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}skdBPriceWithoutAllocation`,label:'SKD B Price w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:'LC A Price \n w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:'SKD A Price \n w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:'LC B Price \n w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}skdBPriceWithoutAllocation`,label:'SKD B Price \n w/o alloc.',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}bnk`,label:'BNK',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}bnkApprovalStatus`,label:'BNK status',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}tooling`,label:'Tooling',i18n:'',width:'100',tooltip:false},
@@ -84,7 +84,7 @@ export const gstableTileXh = function(index){
     {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC Star.Date',i18n:'',width:'100',tooltip:true},
     {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'Internal Dev. cost',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'Internal \n Dev. cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}saving`,label:'Saving',i18n:'',width:'100',tooltip:false},
     {type:'',props:`Quotationdetails`,label:'Quo.details',i18n:'',width:'100',tooltip:false},

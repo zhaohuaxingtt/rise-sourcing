@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-09-18 01:59:35
+ * @LastEditTime: 2021-09-22 18:19:52
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \front-web\src\views\partsign\home\components\tableList.vue
 -->
 <template>
-  <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" ref="moviesTable" :class="radio && 'radio'" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" @row-click='rowClick'>
+  <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" ref="moviesTable" :class="radio && 'radio'" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft">
     <el-table-column v-if="selection" :selectable='selectable' type='selection' width="40" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
@@ -49,9 +49,6 @@ export default{
   inject:['vm'],
   components: { icon } ,
   methods:{
-    rowClick(row){
-      this.$refs.moviesTable.toggleRowSelection(row)
-    },
     clearSelection(){
       this.$refs.moviesTable.clearSelection()
     },

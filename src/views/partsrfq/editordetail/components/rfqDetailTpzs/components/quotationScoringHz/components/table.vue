@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-09-16 16:28:24
+ * @LastEditTime: 2021-09-22 20:25:50
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -56,7 +56,7 @@
             v-else
             :fixed='item.props == "partName" || item.props == "cfPartBPrice"'
             :key="index"
-            :label="item.i18n ? $t(item.i18n) : item.label"
+            :label="`${item.label}`"
             :width="item.width"
             :prop='item.props'
             align="center"
@@ -350,6 +350,10 @@ export default{
     overflow: visible;
     ::v-deep.cell{
       overflow: visible;
+      span {
+        white-space:pre-line!important;
+        text-align: center;
+      }
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
@@ -433,7 +437,7 @@ export default{
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 34px;
+      bottom: 56px;
       left:-9px;
       border: 1px solid #C5CCD6;
       border-bottom: none;

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-09-18 15:18:40
+ * @LastEditTime: 2021-09-22 17:51:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -197,7 +197,9 @@ export default{
      */
     reset(){
       Object.keys(this.searchForm).forEach(element => {
-        this.searchForm[element] = ''
+        if(element !== "fsnrGsnrNum"){
+          this.searchForm[element] = ''
+        }
       });
       this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
       this.page.currPage = 1
