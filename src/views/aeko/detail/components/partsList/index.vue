@@ -251,12 +251,17 @@ export default {
                 cartypeCode:[''],
                 cartype:[''],
                 linieDeptNumList:[''],
+                a:'1',
             },
             selectOptions:{
                 cartypeCode:[],
                 buyerName:[],
                 cartype:[],
                 linieDeptNumList:[],
+                a:[
+                    {desc:'未分派',code:'1'},
+                    {desc:'已分派',code:'2'},
+                ]
             },
             selectOptionsCopy:{
                 cartypeCode:[],
