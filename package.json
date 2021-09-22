@@ -47,7 +47,8 @@
     "vue-count-to": "^1.0.13",
     "vue-katex": "^0.5.0",
     "vue-template-compiler": "2.6.11",
-    "webpack-bundle-analyzer": "^3.8.0"
+    "webpack-bundle-analyzer": "^3.8.0",
+    "rise":"^1.6.0"
   },
   "eslintConfig": {
     "root": true,
