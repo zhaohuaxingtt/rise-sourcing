@@ -18,7 +18,9 @@ export const nomalDetailTitle = [
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
   {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
-  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'}
+  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
+  {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'partProjectType', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
+
 ]
 
 // GS
@@ -33,7 +35,9 @@ export const nomalDetailTitleGS = [
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
   {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
-  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'}
+  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
+  {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'partProjectType', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
+
 ]
 
 export const nomalDetailTitlePF = [
@@ -47,7 +51,9 @@ export const nomalDetailTitlePF = [
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
   {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
-  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'}
+  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
+  {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'partProjectType', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
+
 ]
 
 
@@ -110,17 +116,17 @@ export const nomalTableTitle = [
 // 配件
 export const sparePartTableTitle = [
   {props:'fsnrGsnrNum',name:'SP号', enName: 'SP-NO.', key: "", minWidth: 60},
-  {props:'output',name:'年产量', enName: 'Demand(K)', key: "", minWidth: 60},
-  {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 55},
-  {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 85},
-  {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 60},
-  {props:'sapCode',name:'厂商', enName: 'Code', key: "", minWidth: 45},
-  {props:'supplierName',name:'供应商', enName: 'Supplier', key: "", minWidth: 55,lang:'en'},
-  {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75,lang:'en'},
-  {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
-  {props:'cfTargetBPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
-  {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 45},
-  {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
+  {props:'output',name:'年产量', enName: 'Demand(K)', key: "", minWidth: 70},
+  {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 65},
+  {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 95},
+  {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 70},
+  {props:'sapCode',name:'厂商', enName: 'Code', key: "", minWidth: 55},
+  {props:'supplierName',name:'供应商', enName: 'Supplier', key: "", minWidth: 65,lang:'en'},
+  {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 85,lang:'en'},
+  {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 65},
+  {props:'cfTargetBPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 105},
+  {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 55},
+  {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 55},
   {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
   {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},

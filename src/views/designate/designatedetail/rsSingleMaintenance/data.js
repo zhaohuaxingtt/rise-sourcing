@@ -49,13 +49,13 @@ export const rsMockData = [
 ]
 
 export const defaultLtcs = [
-  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false}
+  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false}
 ]
