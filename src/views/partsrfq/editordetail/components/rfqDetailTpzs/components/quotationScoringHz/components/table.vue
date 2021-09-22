@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-09-16 18:00:19
+ * @LastEditTime: 2021-09-16 12:06:55
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -351,10 +351,16 @@ export default{
     ::v-deep.cell{
       overflow: visible;
     }
+    ::v-deep .el-table__fixed{
+      top: 200px!important;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.12)!important;
+    }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
       .cell{
+        height: 30px;
         span{
+          display: inline-block;
           width: 100%;
         }
         .el-checkbox{
@@ -433,8 +439,8 @@ export default{
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 34px;
-      left:-9px;
+      bottom: 36px;
+      left:-11px;
       border: 1px solid #C5CCD6;
       border-bottom: none;
       border-left:none;
@@ -492,25 +498,6 @@ export default{
     width: 100%;
     padding-top: 200px;
     overflow-x: scroll;
-    ::v-deep.el-table__fixed{
-          height: 97%!important;
-          bottom: -1px;
-          padding-top: 200px;
-          box-sizing: border-box;
-          background-color: white;
-          z-index: 124;
-          top: 0px;
-          .el-table__fixed-header-wrapper{
-            position: static;
-            top: inherit;
-            left: inherit;
-          }
-          .el-table__fixed-body-wrapper{
-            position: static;
-            top: inherit;
-            left: inherit;
-          }
-    }
   }
   .conent{
     height: auto;
