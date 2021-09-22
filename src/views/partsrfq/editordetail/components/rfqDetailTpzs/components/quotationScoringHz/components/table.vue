@@ -355,10 +355,16 @@ export default{
         text-align: center;
       }
     }
+    ::v-deep .el-table__fixed{
+      top: 200px!important;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.12)!important;
+    }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
       .cell{
+        height: 30px;
         span{
+          display: inline-block;
           width: 100%;
         }
         .el-checkbox{
@@ -496,25 +502,6 @@ export default{
     width: 100%;
     padding-top: 200px;
     overflow-x: scroll;
-    ::v-deep.el-table__fixed{
-          height: 97%!important;
-          bottom: -1px;
-          padding-top: 200px;
-          box-sizing: border-box;
-          background-color: white;
-          z-index: 124;
-          top: 0px;
-          .el-table__fixed-header-wrapper{
-            position: static;
-            top: inherit;
-            left: inherit;
-          }
-          .el-table__fixed-body-wrapper{
-            position: static;
-            top: inherit;
-            left: inherit;
-          }
-    }
   }
   .conent{
     height: auto;

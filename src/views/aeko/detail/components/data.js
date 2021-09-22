@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-09-22 16:25:11
+ * @LastEditTime: 2021-09-22 17:11:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -24,7 +24,7 @@ export const contentDeclareTableTitle = [
   { props: "statusDesc", name: "内容状态", key: "NEIRONGZHUANGTAI", tooltip: true },
   { props: "changeType", name: "变更类型", key: "BIANGENGLEIXING", tooltip: true },
   { props: "cartypeZh", name: "涉及⻋型/⻋型项⽬", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width: 130,isExport:true },
-  { props: "oldPartNumPreset", name: "原零件号", key: "AEKO_YUANLINGJIANHAO", tooltip: true, width: 140,isExport:true },
+  { props: "oldPartNumPreset", name: "原零件号", key: "AEKO_YUANLINGJIANHAO_1", tooltip: true, width: 140,isExport:true },
   { props: "oldPartNamePreset", name: "原零件名称", key: "YUANLINGJIANMINGCHENG", tooltip: true},
   { props: "factoryName", name: "采购⼯⼚", key: "CAIGOUGONGCHANG", tooltip: true ,isExport:true},
   { props: "supplierSapCode", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true,width:100 ,isExport:true},
