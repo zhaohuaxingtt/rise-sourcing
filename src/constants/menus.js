@@ -3,6 +3,18 @@ const menuTooling = [
     title: '模具投资',
     url: '/tooling'
   },
+  {
+    title: '模具采购',
+    url: '/purchase'
+  },
+  {
+    title: '模具采购（供应商）',
+    url: '/purchaseSupplier'
+  },
+  {
+    title: '品类管理助手',
+    url: '/sourcing/categoryManagementAssistant/internalDemandAnalysis'
+  },
 ]
 
 const menuPortal = [
@@ -150,6 +162,12 @@ const menuApplication = [
   }
 ]
 
+const sprint12 = [
+  {
+    title: '供应商绩效',
+    url: '/supplier/kpiIndex'
+  },
+]
 export default [
   {
     icon: 'iconhomeweixuanzhong',
@@ -166,6 +184,7 @@ export default [
     key: 'tow',
     url: '/supplier',
     // subMenus: menuApplication
+    subMenus: sprint12
   },
   {
     icon: 'iconcommonfunctionweixuanzhong',

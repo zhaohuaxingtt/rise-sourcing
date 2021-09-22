@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-17 14:22:35
+ * @LastEditTime: 2021-09-22 14:54:13
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -105,10 +105,16 @@ export default {
   mounted() {
     const carProjectId = this.$route.query.carProject || ''
     const cartypeProjectZh = this.$route.query.cartypeProjectZh || ''
+    // 获取车型状态
     this.handleCarProjectChange(carProjectId, cartypeProjectZh)
-    this.getOptions()
+    // this.getOptions()
   },
   methods: {
+    /**
+     * @description: （未进TIPS表/待确认的CKD零件）跳转
+     * @param {*} type （1/2）
+     * @return {*}
+     */    
     toPartList(type) {
       this.$router.push({name: 'progressmonitoring-monitoring-partList', query: {
         carProjectId: this.carProject,
@@ -122,6 +128,7 @@ export default {
      * @return {*}
      */    
     onSeriesBarClick(params) {
+      if (params.disabled) return
       const itemName = params.seriesName || params.title
       const target = this.data.find(o => o.title === itemName) || {}
       const targetIndex = this.data.findIndex(o => o.title === itemName)
@@ -159,16 +166,26 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    autoTips(){
+    autoTips(cb){
       const params = {
         cartypeProId:this.carProject,
         autoSyn:this.showTips,
       }
       updateAutoData(params).then(res => {
-        if (res.code != '200') {
-          this.showTips = false;
+        if (res.code === '200') {
+          typeof cb === 'function' && (cb())
+        } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      })
+    },
+    toggleShowAutoTips(state) {
+      // 修改tips状态成功后的回调
+      this.data.map((o, index) => {
+        if (index <= 1) {
+          this.$set(o, 'disabled', !state)
+        }
+        return o
       })
     },
     /**
@@ -181,6 +198,7 @@ export default {
         const res = await getAutoData(carProjectId)
         if (res.code === '200') {
           this.showTips = res.data;
+          this.toggleShowAutoTips(res.data)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -220,6 +238,8 @@ export default {
         this.getLastCarType()
         return
       }
+      // 获取车型状态是否加入TIPS
+      this.getAutoCarTips(carProjectId)
       // console.log('carProjectId', carProjectId, carProjectName)
       try {
         // const res = require('./moke.json')
@@ -280,36 +300,34 @@ export default {
      * @param {*} state
      * @return {*}
      */    
-    confirmShowTips(state) {
+    async confirmShowTips(state) {
       // 确认
       const code = state ? 'sureopentips' : 'sureclosetips'
       const desc = state ? '您确定要打开TIPS开关？': '您确定要关闭TIPS开关？'
       this.$confirm(this.language(code,desc)).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
-          this.data.map((o, index) => {
-            if (index <= 1) {
-              this.$set(o, 'disabled', !state)
-            }
-            return o
+          this.autoTips(() => {
+            this.toggleShowAutoTips(state)
           })
+          
         }
       }).catch(()=> {
         this.showTips = !state
       })
     },
-    getOptions() {
-      let types = [
-        // 风险等级CODE
-        "DELAY_GRADE_CONFIG",
-        // 零件状态code
-        "PART_PERIOD_TYPE",
-        // 零件进度
-        "PARTS_PROGRESS"
-      ];
-      selectDictByKeyss(types).then((res) => {
-        this.options = res.data;
-      });
-    },
+    // getOptions() {
+    //   let types = [
+    //     // 风险等级CODE
+    //     "DELAY_GRADE_CONFIG",
+    //     // 零件状态code
+    //     "PART_PERIOD_TYPE",
+    //     // 零件进度
+    //     "PARTS_PROGRESS"
+    //   ];
+    //   selectDictByKeyss(types).then((res) => {
+    //     this.options = res.data;
+    //   });
+    // },
   }
 }
 </script>
@@ -339,6 +357,7 @@ export default {
         text-align: center;
         background: #F5F6F7;
         color: rgba(22, 96, 241, 1);
+        cursor: pointer;
       }
     }
   }

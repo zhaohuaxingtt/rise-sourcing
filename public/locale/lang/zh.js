@@ -5,6 +5,7 @@
 }(this, function(i18n) {
     'use strict'
     const oldLanguage = {
+        '#':"#",
         'delete': "删除",
         "deleteSure":'您确定要执行删除操作吗？',
         "revokeSure":'您确定要执行撤回操作吗？',
@@ -217,7 +218,16 @@
         <!--                                                                   --->
         <!------------------------------------------------------------------------>
         */
-
+        'supplierkpi':{
+            'SUPPLIERRESULT':'供应商筛选结果',
+            'TOTAL':'总分',
+            'fuwuzhilian':'服务质量',
+            'chengben':'成本',
+            'jiaofu':'交付',
+            'bumen':'所属部门',
+            'cailiao':'材料组',
+            'gongyingshangmincheng':'供应商名称'
+        },
         'LK_CAIGOUFENEFENPEIDABUDAO': '采购份额分配达不到100%', // 采购份额分配达不到100%
         'LK_CAIGOUGONGCHNEGMINGCHENG': '采购工厂名称', // 采购工厂名称
         'LK_CAOZUOCHENGGONG': '操作成功', // 操作成功
@@ -746,6 +756,7 @@
         'LK_SHANGHUI': '上会', // 上会
         'LK_LIUZHUAN': '流转', // 流转
         'LK_BEIAN': '备案', // 备案
+        'LK_QINGSHURUTUIHUIYUANYIN': '请输入退回原因', // 备案
 
         //摸具预算
         // 点击进入【生成投资清单】页面
@@ -858,6 +869,10 @@
         'LK_BANUMBERDISTRIBUTION': 'BA号分配',  //  BA号分配
         'LK_AMOUNTMONEYRMB': '金额（RMB）', //  金额（RMB）
         'LK_FIXEDINVESTTOTAL': '总定点投资金额',    //  总定点投资金额
+        'LK_QINGTIANXIWBIANGENGYUANYIN': '请填写变更原因',    //  总定点投资金额
+        'LK_QINGTIANXIEBITIANXIANG': '请填写必填项',    //  总定点投资金额
+        'LK_DANGQIANMOJUTOUZIBIANGENGDANGONGYINGSHANGSHANGWEIQUEREN': '当前模具投资变更单供应商尚未确认，是否代供应商确认并提交？',    //  当前模具投资变更单供应商尚未确认，是否继续提交？
+        'LK_TISHI': '提示',    //  提示，是否继续提交？
 
         // 'LK_XIAYIBU': '下一步',    //  下一步
 
@@ -1004,6 +1019,8 @@
         'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
         'LK_BMDANLIUSHUIHAO': 'BM单流水号',   //  BM单流⽔号LK_BMDANLIUSHUIHAO
         'LK_BMDANHAO': 'BM单号',    //  BM单号
+        'LK_SAPDINGDANHAO': 'SAP订单号',    //  BM单号
+        'LK_RUZHANGDANHAO': '入账单号',    //  BM单号
         'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
         'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
         'LK_BMDANJINE':  'BM单金额', //  BM单金额
@@ -1084,9 +1101,51 @@
 
         'LK_FUKUANKANBAN': '付款看板',  //  付款看板
         'LK_NIANDUJIHUA': '年度计划',   //  年度计划
+        'LK_CHEXINGXIANGMUXIANGQ': '车型项目详情',
 
         'DAXIAO': '大小', // 大小
         'WENJIANDAXIAO': '文件大小', // 文件大小
+
+        'LK_MUJUTOUZIJINE': '模具投资金额', //  模具投资金额
+        'LK_MUJUTOUZIQINGDANZHUANGTAI': '模具投资清单状态', //  模具投资清单状态
+        'LK_TOUZIQINGDANZHUANGTAI': '投资清单状态', //  投资清单状态
+        'LK_YEWUCHULIZHUANGTAI': '业务处理状态',    //  业务处理状态
+        'LK_XUHAO': '序号', //  序号
+        'LK_MUJUID': '模具ID',  //  模具ID
+        'LK_GUZIBIANHAO': '固资编号',   //  固资编号
+        'LK_MUJUZHIZHAOSHANG': '模具制造商',    //  模具制造商
+        'LK_GONGYILEIXING': '工艺类型', //  工艺类型
+        'LK_GONGMUJUZHONGLEI': '工模具种类',    //  工模具种类
+        'LK_ZICHANFENLEIBIANHAO': '资产分类编号',   //  资产分类编号
+        'LK_LINGJIANZONGCHENMINGCHEN': '零件总成名称',  //  零件总成名称
+        'LK_ZONGCHENLINGJIANHAO': '总成零件号', //  总成零件号
+        'LK_GONGXIANGLINGJIANHAO': '共享零件号',    //  共享零件号
+        'LK_LINGBUJIANMINGCHEN': '零部件名称',  //  零部件名称
+        'LK_ZICHANDANJIA': '资产单价',   //  资产单价
+        'LK_FASONGGONGYIUNGSHANGQUEREN': '发送供应商确认',   //  发送供应商确认
+        'LK_FAQIBIANGENG': '发起变更',   //  发起变更
+        'LK_XINZENGBIANGENG': '新增变更',   //  新增变更
+        'LK_ZHUANPAIZIJI': '转派自己',   //  转派自己
+        'LK_BIANGENDANHAO': '变更单号', //  变更单号
+        'LK_BIANGENHOUBANBEN': '变更后版本',    //  变更后版本
+        'LK_BIANGENLEIXING': '变更类型',    //  变更类型
+        'LK_FAQIREN': '发起人', //  发起人
+        'LK_BIANGENRIQI': '变更日期',   //  变更日期
+        'LK_ZICHANZONGE': '资产总额',   //  资产总额
+        'LK_TIAOZHENGSHUOMING': '调整说明', //  调整说明
+        'LK_ZHAOPIAN': '照片',  //  照片
+        'LK_GUZIMINGCHEN': '固资名称',  //  固资名称
+        'LK_DUIBUQIMEIYOUQUANXIAN': '对不起，您所在得岗位没有该材料组权限', //  对不起，您所在得岗位没有该材料组权限
+        'LK_XUANZEBMXINZENGBIANGENG': '选择BM新增单变更', //  选择BM新增单变更
+        'LK_CHAKANBIANGENGDAN': '查看变更单', //  查看变更单
+        'LK_TIJIAOSHENPI': '提交审批', //  提交审批
+        'LK_MUJUTOUZIQINGDANBIANGENGXIANGQING': '模具投资清单变更详情', //  模具投资清单变更详情
+        'LK_BIANGENGSHENPIFUJIAN': '变更审批附件', //  变更审批附件
+        'LK_BIANGENGDANZHUANGTAI': '变更单状态', //  变更单状态
+        'LK_CHUYUBIANGENGLIUCHENGZHONG':'处于变更流程中，不可重复发起变更', // 新增定点信
+        'LK_BIANGENGHOUJINE':'变更后金额', // 变更后金额
+        'LK_YULANBIANGENGDAN':'预览变更单', // 预览变更单
+        'LK_ZHIYOUCAOGAOZHUANGTAICAIYUNXUXIUGAI':'只有草稿状态才允许修改', // 只有草稿状态才允许修改
 
         // 定点管理
         'nominationLanguage': {
@@ -1333,7 +1392,7 @@
             'DDJV': "定点记录", //定点记录
             'VPFX':"Volume Pricing分析",//Volume Pricing分析
             'VPFXK':"Volume Pricing分析库",//Volume Pricing分析库
-            'CXJHCLYXSLJCLFX':"车型计划产量与现实累计产量分析（截止2021-02）",//车型计划产量与现实累计产量分析（截止2021-02）
+            'CXJHCLYXSLJCLFX':"车型计划产量与现实累计产量分析",//车型计划产量与现实累计产量分析（截止2021-02）
             'DWL':"单位：辆",//单位：辆
             'ZF':"涨幅",//涨幅
             'SMZQ':"生命周期",//生命周期
@@ -1395,6 +1454,100 @@
             'ZXFXGJNMYGLFXBGDHHILJ': '专项分析工具内没有相关的分析报告，且含Heavy Item零件', //专项分析工具内没有关联分析报告，但含heavy item零件
             'ZXFXGJNMYGLFXBGQBHHILJ': '专项分析工具内没有相关的分析报告，且不含Heavy Item零件', //专项分析工具内没有关联分析报告，且不含heavy item零件
             'FEIYONGZONGEHEYINGXIANGDANJIABUENGWEIKONG': '费用总额和影响单价不能为空', //费用总额和影响单价不能为空
+
+            'QSRCLZBHMC': '请输入材料组编号/名称',//请输入材料组编号/名称
+            'QSRRFQH': '请输入RFQ号',//请输入RFQ号
+            'BOBFXK': 'BoB分析库',//BoB分析库
+            'FXMC': '分析名称',//分析名称
+            'BQWFCXDJGSRCWHBCZQQRHCXSR': '抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入',//抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入
+            'QXZXYCZDSJ': '请选择需要操作的数据', //请选择需要操作的数据
+            'ZJSCSH': '最近上传时间:', //最近上传时间
+        },
+        'MEK':{
+            'QIEHUANCAILIAOZU':"切换材料组"
+        },
+        'MODEL-ORDER':{
+            'LK_RISEDINGDANHAO': 'RiSE订单号', // RiSE订单号
+            'LK_SAPDINGDANHAO': 'SAP订单号', // SAP订单号
+            'LK_GONGYINSHANG': '供应商', //供应商
+            'LK_CAIGOUGONGCHANG': '采购工厂', //采购工厂
+            'LK_LINGJIANHAO': '零件号', //零件号
+            'LK_CAIGOUZU': '采购组', //采购组
+            'LK_CAIGOUYUAN': '采购员', //采购员
+            'LK_DINGDANZHUANGTAI': '订单状态',
+            'LK_SAPFASONGZHUANGTAI': 'SAP发送状态', //SAP发送状态
+            'LK_HETONGZHUANGTAI': '合同状态', //合同状态
+            'LK_JINKANZIJI':'仅看自己',//仅看自己
+            'LK_XINJIAN': '新建', //新建
+            'LK_SHANCHU': '删除', //删除
+            'LK_ZHUANPAI': '转派', //转派
+            'LK_CHUANGJIANRUZHANGDAN':'创建入账单',//创建入账单
+            'LK_BAOXIAOSHENQING':'报销申请',//报销申请
+            'LK_DAOCHU': '导出', //导出
+            'LK_QUANBUSHOUQI': '全部收起', //全部收起
+            'LK_QUANBUZHANKAI': '全部展开', //全部展开
+            'LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN': '距离有效起始日期还有{day}天', //距离有效起始日期还有*天
+            'LK_CAIGOUZUCAIGOUYUAN': '采购组-采购员', //采购组-采购员
+            'LK_DINGDANRIQI': '订单日期',
+            'LK_DINGDAN': '订单',
+            'LK_HETONG': '合同', //合同
+            'LK_QINGKONG': '清空', //清空
+            'LK_BANBENSHNGJI': '版本升级', // 版本升级
+            'LK_DINGDANLEIXING': '订单类型',
+            'LK_QINGSHURUGONGYINGSHANGBIANMA': '请输入供应商编码',
+            'LK_QINGSHURUCAIGOUZU': '请输入采购组',
+            'LK_QINGXUANZECAIGOUGONGCHANG': '请选择采购工厂',
+            'LK_SUOSHUBUMEN': '所属部门', //所属部门
+            'LK_BANBEN': '版本', //版本
+            'LK_GONGSHIDAIMA': '公司代码', //公司代码
+            'LK_CAIGOUZUZHI': '采购组织', //采购组织
+            'LK_FUKUANTIAOJIAN': '付款条件', //付款条件
+            'LK_CANZHAOCAIGOUSHENQING': '参照采购申请',
+            'LK_SHANCHUXIANGCI': '删除项次', //删除项次
+            'LK_HUIFUXIANGCI': '恢复项次', //恢复项次
+            'LK_DUQUJIAGE': '读取价格', //读取价格
+            'LK_MIAOSHU': '描述', //描述
+             'LI_MOJUTAIZHANG':'模具台账',//模具台账
+            'LK_JIAGE':'价格',//价格
+            'LK_GR/IR': 'GR/IR', //GR/IR
+            'LK_KUCUNDIDIAN': '库存地点', //库存地点
+            'LK_YUANGUZIBIANHAO':'原固资编号',//原固资编号
+            'LK_FASONGSAP': '发送SAP', //发送SAP
+            'LK_ZHUANYECAIGOUYUAN': '专业采购员', //专业采购员
+            'LK_BUMEN': '部⻔', //部⻔
+            'LK_SAPBIANHAO': ' SAP编号', // SAP编号
+            'LK_QIWANGGONGYINGSHANG': '期望供应商', // 期望供应商
+            'LK_CAIGOUSHENQINGLEIXING': '采购申请类型', // 采购申请类型
+            'LK_YUPILIANGCAIGOUSHENQING': '预批量采购申请', // 预批量采购申请
+            'LK_BIAOZHUNCAIGOUSHENQING': '标准采购申请', // 标准采购申请
+            'LK_GONGXUWEIWAI': '工序委外',
+            'LK_MOJUCAIGOUSHENQING':'模具采购申请',//模具采购申请
+            'LK_RISEBIANHAO': 'RiSE编号', // RiSE编号
+            'LK_XUQIUGENZONGHAO': '需求跟踪号', // 需求跟踪号
+            'LK_XIANGCI': '项次', //项次
+            'LK_LINGJIANMINGCENG': '零件名称', //零件名称
+            'LK_SHENQINGSHIJIAN': '生成时间', // 生成时间
+            'LK_WULIAOZU': '物料组', //物料组
+            'LK_WBSYUANSU': 'WBS元素', // WBS元素
+            'LK_LAIYUANRISEBIANHAO': '来源RiSE编号',
+            'LK_LAIYUANXIANGCI': '来源项次',
+            'LK_RISEXIEYIHAO': 'RiSE协议号', //RISE协议号
+            'LK_SAPXIEYIHAO': 'SAP协议号', //SAP协议号
+            'LK_GUOZHANGQIZHIRIQI': '过账起止日期', //过账起止日期
+            'LK_ZHI': '至', //至
+            'LK_LEIXING': '类型', //类型
+            'LK_WULIAOPINGZHENG': '物料凭证', //物料凭证
+            'LK_XIANGMU': '项目', //项目
+            'LK_GUOZHANGRIQI': '过账日期', //过账日期
+            'LK_JINE': '金额', //金额
+            'LK_SAPDAORU': 'SAP导入', // SAP导入
+            'LK_CSCBIANHAO': 'CSC编号', // CSC编号
+            'LK_XIANGCILAIYUAN': '项次来源', //项次来源
+            'LK_YICIXINGDINGDIANZHUANGTAI': '一次性定点状态', // 一次性定点状态
+            'LK_RIQIFANWEI': '日期范围', // 日期范围
+            'LK_KAISHIRIQI': '开始⽇期', //开始⽇期
+            'LK_JIESHURIQI': '结束⽇期', //结束⽇期
+
         },
     }
     var xmlHttp = ''

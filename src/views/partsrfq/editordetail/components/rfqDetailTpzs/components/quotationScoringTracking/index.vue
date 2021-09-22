@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-08-27 14:53:22
+ * @LastEditTime: 2021-09-18 16:07:31
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -33,7 +33,7 @@
 <script>
 import timeline from './components/timeline'
 import {icon,iMessage} from 'rise'
-import {timeList,tableTile,tableDatas,iconList_car,iconList_all_times,buildTitleTabel,buildTableData} from './components/data'
+import {tableTile,tableDatas,iconList_car,iconList_all_times,buildTitleTabel,buildTableData} from './components/data'
 import dalyWeeks from './components/dalyWeeks'
 import tabelData from './components/tableList'
 import {getTimeLine,negoScoreReport} from '@/api/partsrfq/editordetail'
@@ -41,7 +41,7 @@ export default{
   components:{timeline,icon,dalyWeeks,tabelData},
   data(){
     return {
-      timeListdata:timeList,
+      timeListdata:[],
       tableTile:tableTile,
       tableDatas:tableDatas,
       daliyTime:1,
@@ -60,13 +60,13 @@ export default{
      * @param {*}
      * @return {*}
      */
-    getTypeWeek(list){
-      const lowNumberStatus = list.sort((a,b)=>a.taskStatus - b.taskStatus)
-      if(lowNumberStatus.taskStatus == -1){
-        return lowNumberStatus.donePeriod
-      }else{
-        return list[list.length -1].donePeriod
-      }
+    getTypeWeek(maps){
+      // eslint-disable-next-line no-undef
+      const currentWenk = Number(new moment().format('W')) + 1
+      // eslint-disable-next-line no-undef
+      const currentYear = new moment().format('yyyy')
+      if(currentYear < maps.planYear) return false
+      return maps.planPeriod <= currentWenk
     },
     /**
      * @description: 判断当前年是不是跨年。 
@@ -105,16 +105,14 @@ export default{
         if(res.data){
           this.daliyTime = res.data.wholeProgressRisk || 0 //整车进度风险
           this.allJdu = res.data.wholeTaskProgress || 0 //整体任务进度
-          this.timeListdata = this.translateTimeLine(res.data.rfqTimeAxisProgressVOList)
+          this.timeListdata = this.translateTimeLine(res.data.rfqTimeAxisNodeList)
         }
       }).catch(err=>{
         iMessage.error(err.desZh)
       })
     },
     /**
-     * @description: //没到的格子不显示，所以只要出现的最后一个日期之前的全部点亮 
-     *               //week => 当前周
-     *               //progressTypeDesc => 当前周完成的内容名称
+     * @description: //progressTypeDesc => 当前周完成的内容名称
      *               //taskStatus => 当前周完成状态
      *               //doneYear => 当前完成的年份
      *               //doneDay => 处于当前周的第几天完成
@@ -125,35 +123,17 @@ export default{
     translateTimeLine(list){
       try {
         // eslint-disable-next-line no-debugger
+        if(!list.length) throw new Error('current data has error, pleace check your data')
         const copeList = []
-        const startWeek = this.getTypeWeek(list)
-        for(let i = (list[0].donePeriod || list[0].planPeriod);i<=((list[list.length -1].donePeriod || list[list.length -1].planPeriod)<=24?24:this.getYear(list[list.length -1]));i++){
-          const matchItems = list.find(item=>(item.donePeriod || item.planPeriod) == i)
-          copeList.push(
-            {
-              week:i>52?52-i:i,
-              progressTypeDesc:matchItems?matchItems.progressTypeDesc:'',
-              active:i <= startWeek,
-              taskStatus:matchItems?matchItems.taskStatus:'default',
-              doneYear:matchItems?matchItems['doneYear']:'',
-              doneDay:matchItems?matchItems['doneDay']:'1',
-              oneWeekList:list.filter(items=>((items.donePeriod || items.planPeriod) == i)) || []
-            }
-          )
-        }
-        console.log(copeList)
+        list.forEach(element => {
+          if(!element.rfqTimeAxisProgressVOList){
+            element.rfqTimeAxisProgressVOList = []
+          }
+          copeList.push(element)
+        });
         return copeList
       } catch (error) {
-         const copeList = []
-         let i = 1
-         while (i < 25) {
-           copeList.push({
-             week:i,
-             active:false
-           })
-           i++
-         }
-         return copeList
+         return []
       }
     },
   }

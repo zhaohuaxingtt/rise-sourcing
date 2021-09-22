@@ -1,34 +1,30 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-08-24 15:42:48
+ * @LastEditTime: 2021-09-22 15:50:31
  * @LastEditors: Please set LastEditors
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
 -->
 <template>
   <div class="timeLine" :style="{paddingTop:paddingTop,paddingBottom:paddingBottom}">
-    <div v-for='(items,index) in timeList' :key='index' class="lineitems">
+    <div v-for='(items,index) in timeList' :key='index' class="lineitems" :style="{width:'60px'}">
       <p class="itemsa">
-        <span v-if='items.week % 2 != 0'>
-          CW{{items.week}}
+        <span v-if='items.planPeriod % 2 != 0'>
+          <p>{{items.planYear}}</p>
+          <p>CW{{items.planPeriod}}</p>
         </span>
         <span v-else style="display:inline-block;height:13px;"></span>
       </p>
-      <p :class="{itemsb:true,active:items.active,width:'70px'}"></p>
-      <template v-if='items.oneWeekList && items.oneWeekList.length<=1'>
-        <p class="itemsc" :style='{top:`${(index%2==0?"":"-")}40px`,left:(items.doneDay-1) * 10 + "px"}' v-if='items.progressTypeDesc'>
-          <span><icon symbol :name='iconList_all_times["a"+items.taskStatus].icon' class="margin-right5"></icon>{{items.progressTypeDesc}}</span>
-          <span v-if='items.planYear'>{{items.planYear}}CW{{items.planPeriod}}</span>
-          <span v-if='items.doneYear'>{{items.doneYear}}CW{{items.donePeriod}}</span>
-        </p>
+      <p :class="{itemsb:true,active:items.active}" :style="{width:'60px'}"></p>
+      <template v-if='!items.rfqTimeAxisProgressVOList'>
       </template>
       <template v-else>
-        <template v-for="(itemss,indexs) in items.oneWeekList">
-          <p class="itemsc" :style='{top:`${(index%2==0?"":"-")+40*(indexs+1)}px`,left:(itemss.doneDay-1) * 10 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
+        <template v-for="(itemss,indexs) in items.rfqTimeAxisProgressVOList">
+          <p class="itemsc" :style='{top:`${(index%2==0?"":"-")+(50)*(indexs+1)}px`,left:(itemss.doneDay-1) * 8.8 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
             <span><icon symbol :name='iconList_all_times["a"+itemss.taskStatus].icon' class="margin-right5"></icon>{{itemss.progressTypeDesc}}</span>
-            <span v-if='itemss.planYear'>{{itemss.planYear}}CW{{itemss.planPeriod}}</span>
-            <span v-if='itemss.doneYear'>{{itemss.doneYear}}CW{{itemss.donePeriod}}</span>
+            <span v-if='itemss.planYear'>计划:{{itemss.planYear}}CW{{itemss.planPeriod}}</span>
+            <span v-if='itemss.doneYear' :class="'color'+itemss.taskStatus">完成:{{itemss.doneYear}}CW{{itemss.donePeriod}}</span>
           </p>
         </template>
       </template>
@@ -52,8 +48,8 @@ export default{
   data(){
     return {
       iconList_all_times:iconList_all_times,
-      paddingTop:'40px',
-      paddingBottom:'40px'
+      paddingTop:'0px',
+      paddingBottom:'0px'
     }
   },
   methods:{
@@ -64,10 +60,11 @@ export default{
      */
     topPaddingBottomPadding(){
      try {
-        this.paddingBottom = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>d%2==0).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
-        this.paddingTop = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>!(d%2==0)).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
+        this.paddingBottom = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>d%2==0).sort((a,b)=>b.rfqTimeAxisProgressVOList.length - a.rfqTimeAxisProgressVOList.length)[0].rfqTimeAxisProgressVOList.length * 58 + 'px'
+        this.paddingTop = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>!(d%2==0)).sort((a,b)=>b.rfqTimeAxisProgressVOList.length - a.rfqTimeAxisProgressVOList.length)[0].rfqTimeAxisProgressVOList.length * 58 + 'px'
      } catch (error) {
-       this.paddingBottom = '40px';
+       console.log(error)
+       this.paddingBottom = '45px';
        this.paddingTop = '0px';
      }
     }
@@ -75,6 +72,21 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .color0{
+    color: black;
+  }
+  .color1{
+    color: black;
+  }
+  .color2{
+    color: green;
+  }
+  .color3{
+    color: red;
+  }
+  .color4{
+    color: orange;
+  }
   .timeLine{
     overflow-x: auto;
     margin-top: 30px;
@@ -92,6 +104,11 @@ export default{
         font-size: 14px;
         color: #5F6F8F;
         margin-bottom:5px;
+        span{
+          p{
+            text-align: center;
+          }
+        }
       }
       .itemsb{
         border-radius: 3px;
@@ -111,7 +128,10 @@ export default{
             font-weight: bold;
           }
           &:nth-child(2){
-            margin-left: 15px;
+            margin-left: 17px;
+          }
+          &:nth-child(3){
+            margin-left: 17px;
           }
         }
       }

@@ -97,6 +97,8 @@
           <div v-if="singleEditControl || scope.row.isEdit" class="required">
             <iSelect
               v-model="scope.row.department"
+              multiple
+              collapse-tags
               :placeholder="language('LK_QINGXUANZE','请选择')">
               <el-option
                 :value="items.value"
@@ -107,6 +109,9 @@
             </iSelect>
           </div>
           <span v-else>{{scope.row.department}}</span>
+        </template>
+        <template #sapCode="scope">
+          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
       </tablelist>
     <!-- 零件弹窗 -->

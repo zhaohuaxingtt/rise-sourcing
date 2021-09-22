@@ -15,7 +15,7 @@ export const tableTitle = [
   {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100},
   {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
   {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120},
-  {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 120},
+  {props:'priceAnaName',name:'CF', key: "CF", tooltip: true, width: 120},
   {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true},
   {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true},
   {props:'rwPrice',name:'RW价', key: "RWJIA", tooltip: true},

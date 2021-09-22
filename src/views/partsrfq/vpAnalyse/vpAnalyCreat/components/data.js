@@ -7,27 +7,27 @@
  */
 
 export const tableTitle = [
-  { props: 'carTypeProj', name: '单位：辆', key: 'TPZS.DWL', width: 100 },
+  { props: 'carTypeName', name: '单位：辆', key: 'TPZS.DWL', width: 100, tooltip: true },
   { props: 'actualProEndLastMonth', name: '', key: '' },
-  { props: 'increaseRate', name: '涨幅', key: 'TPZS.ZF', width: 100 },
-  { props: 'lifeCycle', name: '生命周期', key: 'TPZS.SMZQ', width: 100 },
+  { props: 'increaseRate', name: '涨幅', key: 'TPZS.ZF', width: 100, tooltip: true },
+  { props: 'lifeCycle', name: '生命周期', key: 'TPZS.SMZQ', width: 120, tooltip: true },
 ]
 export const partsTableTitle = [
-  { props: 'partsId', name: '零件号', key: 'LK_SPAREPARTSNUMBER', width: 100 },
-  { props: 'supplierName', name: '供应商', key: 'TPZS.GYS' },
-  { props: 'currentPlannedPro', name: '当前计划产量', key: 'TPZS.DQJHCL', width: 100 },
-  { props: 'currentActualPro', name: '当前实际产量', key: 'TPZS.DQSJCL', width: 100 },
-  { props: 'increaseRate', name: '涨幅', key: 'TPZS.ZF', width: 100 },
-  { props: 'carClassifyProject', name: '车型项目', key: 'TPZS.CHEXINGXIANGMU', width: 100 },
-  { props: 'supplyBeginTime', name: 'SOP时间', key: 'TPZS.SOPSH', width: 100 },
+  { props: 'partsId', name: '零件号', key: 'LK_SPAREPARTSNUMBER', width: 100, tooltip: true },
+  { props: 'supplierName', name: '供应商', key: 'TPZS.GYS', tooltip: true },
+  { props: 'currentPlannedPro', name: '当前计划产量', key: 'TPZS.DQJHCL', width: 100, tooltip: true },
+  { props: 'currentActualPro', name: '当前实际产量', key: 'TPZS.DQSJCL', width: 100, tooltip: true },
+  { props: 'increaseRate', name: '涨幅', key: 'TPZS.ZF', width: 100, tooltip: true },
+  { props: 'carTypeProj', name: '车型项目', key: 'TPZS.CHEXINGXIANGMU', width: 100, tooltip: true },
+  { props: 'supplyBeginTime', name: 'SOP时间', key: 'TPZS.SOPSH', width: 100, tooltip: true },
 ]
 export const partsDialogTableTitle = [
-  { props: 'partsId', name: '零件号', key: 'LK_SPAREPARTSNUMBER' },
-  { props: 'fsId', name: 'FS号', key: 'LK_FSHAO' },
-  { props: 'rfqId', name: 'RFQ号', key: 'LK_RFQHAO' },
-  { props: 'carClassifyProject', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG' },
-  { props: 'factory', name: '工厂', key: 'TPZS.GC' },
-  { props: 'fixedPointStatus', name: '状态', key: 'LK_ZHUANGTAI' },
-  { props: 'materialGroup', name: '材料组', key: 'TPZS.CLZ' },
-  { props: 'supplierName', name: '供应商名称', key: 'LK_GONGYINGSHANGMINGCHENG' },
+  { props: 'partsId', name: '零件号', key: 'LK_SPAREPARTSNUMBER', tooltip: true },
+  { props: 'fsId', name: 'FS号', key: 'LK_FSHAO', tooltip: true },
+  { props: 'rfqId', name: 'RFQ号', key: 'LK_RFQHAO', tooltip: true },
+  { props: 'carTypeProj', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG', tooltip: true },
+  { props: 'factory', name: '工厂', key: 'TPZS.GC', tooltip: true },
+  { props: 'fixedPointStatus', name: '状态', key: 'LK_ZHUANGTAI', tooltip: true },
+  { props: 'materialGroup', name: '材料组', key: 'TPZS.CLZ', tooltip: true },
+  { props: 'supplierName', name: '供应商名称', key: 'LK_GONGYINGSHANGMINGCHENG', tooltip: true },
 ]

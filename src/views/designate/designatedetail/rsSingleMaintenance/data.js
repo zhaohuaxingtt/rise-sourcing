@@ -22,7 +22,7 @@ export const rsTableTitle = [
   {props:'devFeeIsShared',name:'是否分摊', key: "SHIFOUFENTAN", width: 180, tooltip: false, editable: true, required: true, type: 'select', selectOption:[{value: true, label: '是'},{value: false, label: '否'}], isChange: 'devFeeIsSharedIsChange'},
   {props:'addFee',name:'认可费', key: "RENKEFEI", tooltip: false, width: 150, editable: true, required: true, type: 'input', isChange: 'addFeeIsChange'},
   {props:'savingFee',name:'估算节约值', key: "GUSUANJIEYUEZHI", tooltip: false, width: 200, editable: true, required: true, type: 'input', isChange: 'savingFeeIsChange'},
-  {props:'presentPrice',name:'现供价格', key: "XIANGONGJIAGE", tooltip: false, width: 180, editable: true, required: true, type: 'input', isChange: 'presentPriceIsChange'},
+  {props:'presentPrice',name:'现供价格', key: "XIANGONGJIAGE", tooltip: false, width: 180, editable: false, required: false, isChange: 'presentPriceIsChange'},
   {props:'beginYearReduce',name:'年降开始', key: "NIANJIANGKAISHI", tooltip: true, width: 180},
   {props:'ltcDate1', propsIndex: 1,name:'LTC Date1', key: "", tooltip: false, editable: true, required: true, type: 'date', width: 160, isChange: 'ltcDateIsChange1'},
   {props:'ltcRate1', propsIndex: 1,name:'LTC Rate1', key: "", tooltip: false, editable: true, required: true, type: 'rate', width: 160, isChange: 'ltcRateIsChange1'},

@@ -12,7 +12,12 @@
         :routerPage="true"
         :list="navList"
         class="iNavMvp"
-        v-if="($route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1) || $route.path.indexOf('investmentAdmin') > -1"
+        v-if="(
+            $route.path.indexOf('budgetManagement') > -1 &&
+            $route.path.indexOf('addModelBag') === -1) ||
+            $route.path.indexOf('investmentAdmin') > -1 ||
+            $route.path.indexOf('purchase/investmentList') > -1 ||
+            $route.path.indexOf('purchaseSupplier/investmentList') > -1"
     ></iNavMvp>
     <iButton
         v-if="$route.path.indexOf('budgetManagement/generateInvestmentList') > -1"
@@ -26,10 +31,10 @@
     <!--        <icon symbol name="iconrizhiwuzi" class="icon"/>-->
     <!--        <span @click="changeDataBase">{{ $t("LK_RIZHI") }}</span>-->
     <!--      </div>-->
-    <span @click="changeDataBase" class="dataBase">
+    <span v-if="historyDataBase" @click="changeDataBase" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
       <transition name="bounce">
         <Popover
-            content="历史数据库"
+            :content="hoverText"
             placement="top-start"
             trigger="hover">
             <icon slot="reference" v-if="!dataBase" symbol name="icondatabaseweixuanzhong"></icon>
@@ -37,7 +42,26 @@
       </transition>
       <transition name="bounceTo">
         <Popover
-            content="历史数据库"
+            :content="hoverText"
+            placement="top-start"
+            trigger="hover">
+            <icon slot="reference" v-if="dataBase" symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>
+        </Popover>
+      </transition>
+    </span>
+
+    <span v-if="mouldBook" @click="changeDataBase1" class="dataBase">
+      <transition name="bounce">
+        <Popover
+            :content="hoverText"
+            placement="top-start"
+            trigger="hover">
+            <icon slot="reference" v-if="!dataBase" symbol name="icondatabaseweixuanzhong"></icon>
+        </Popover>
+      </transition>
+      <transition name="bounceTo">
+        <Popover
+            :content="hoverText"
             placement="top-start"
             trigger="hover">
             <icon slot="reference" v-if="dataBase" symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>
@@ -56,6 +80,7 @@ import logButton from "pages/ws2/budgetManagement/components/logButton";
 import {budgetManagement3rd} from "pages/ws2/budgetManagement/components/data";
 import {iNavMvp} from 'rise';
 import store from '@/store';
+import {cloneDeep} from 'lodash'
 
 export default {
   props: {
@@ -65,6 +90,18 @@ export default {
     isIconShow: {
       type: Boolean,
       default: false
+    },
+    historyDataBase: {
+      type: Boolean,
+      default: true
+    },
+    mouldBook: {
+      type: Boolean,
+      default: false
+    },
+    hoverText: {
+      type: String,
+      default: '',
     }
   },
   mounted() {
@@ -86,10 +123,35 @@ export default {
       budgetManagement3rd: budgetManagement3rd,
     }
   },
+  computed: {
+    whiteBtnList: () => {
+      return store.state.permission.whiteBtnList
+    }
+  },
   created() {
+    // let cloneNavList = cloneDeep(this.navList)
+    // if(this.whiteBtnList['TOOLING_BUDGET_OVERVIEW']){
+    //   this.navListTemp.push(cloneNavList[0])
+    // }
+    // if(this.whiteBtnList['TOOLING_BUDGET_COMMONSOURCING_MODELBAGBUDGET']){
+    //   this.navListTemp.push(cloneNavList[1])
+    // }
+
+    // if(this.whiteBtnList['TOOLING_PAYMENTPLAN_PAYMENTBOARD']){  //  付款看板
+    //   this.navListTemp.push(cloneNavList[2])
+    // }
+    // if(this.whiteBtnList['TOOLING_PAYMENTPLAN_YEAR']){  //  年度付款计划
+    //   this.navListTemp.push(cloneNavList[3])
+    // }
+    // if(this.whiteBtnList['TOOLING_PAYMENTPLAN_MONTH']){ //  月度付款计划
+    //   this.navListTemp.push(cloneNavList[4])
+    // }
     this.$store.commit('SET_onleySelf', this.onleySelf)
     this.$store.commit('SET_checkHistory', this.checkHistory)
     if(this.$route.path == '/tooling/dataBase'){
+      this.dataBase = true
+    }
+    if(this.$route.path == '/purchase/mouldBook'){
       this.dataBase = true
     }
   },
@@ -105,7 +167,14 @@ export default {
       this.activeIndex = 999
       this.$router.push({path: '/tooling/dataBase'})
       this.$emit('changeDataBase')
-    }
+    },
+
+    changeDataBase1(){
+      this.dataBase = true
+      this.activeIndex = 999
+      this.$router.push({path: '/purchase/mouldBook'})
+      this.$emit('changeDataBase')
+    },
   },
   watch: {
     dataBaseInit(val){

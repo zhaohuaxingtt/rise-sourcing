@@ -64,6 +64,11 @@
 					</span>
 				</template>
 			</el-table-column>
+			<el-table-column :key="index" align="center" v-else-if="item.props == 'sapCode'" :prop="item.props" :label="$t(item.key)">
+				<template slot-scope="scope">
+					<span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+				</template>
+			</el-table-column>
 			<el-table-column v-else :key="index" align="center" :label="$t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip">
 				<template slot-scope="scope">
 					<span v-if="item.props == 'bdlType'">

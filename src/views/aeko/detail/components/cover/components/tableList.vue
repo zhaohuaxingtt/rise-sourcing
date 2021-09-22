@@ -21,6 +21,7 @@
     :summary-method="getSummaries"
     :sum-text="sumText"
     :header-cell-class-name="headerClass"
+    @row-click="cellClick"
   >
     <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="40" :selectable="selectable"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
@@ -88,6 +89,9 @@ export default {
     console.log(this.$slots)
   },
   methods: {
+    rowClick(row){
+      this.$refs.table.toggleRowSelection(row)
+    },
     handleSelectionChange(list) {
       if (this.singleSelect) return
       this.$emit('handleSelectionChange', list)

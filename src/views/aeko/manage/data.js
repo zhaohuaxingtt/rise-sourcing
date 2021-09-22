@@ -38,3 +38,18 @@ export const filesTableTitle = [
   {name:'上传人',key:'LK_SHANGCHUANREN',props:'uploadBy'},
   {name:'大小',key:'LK_DAXIAO',props:'fileSize'},
 ]
+
+// TCM导入清单-搜索
+export const tcmSearchList = [
+  {props:'aekoCode',label:'AEKO号',type:'input',key:'LK_AEKOHAO_MANAGE',permissionKey:'AEKO_TCMLIST_INPUT_AEKOCODE|AEKO号'},
+  {props:'a',label:'收到日期',type:'datePicker',key:'LK_AEKO_SHOUDAORIQI'},
+  {props:'b',label:'状态',type:'select',key:'LK_ZHUANGTAI',selectOption:'status'},
+]
+
+// TCM导入清单表头
+export const tcmTableTitle = [
+  { props: "aekoCode", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true,width:140 },
+  { props: "a", name: "标题", key: "LK_TCMLIST_TABLE_TITLE", tooltip: true },
+  { props: "b", name: "收到⽇期", key: "LK_TCMLIST_TABLE_SHOUDAORIQI", tooltip: true },
+  { props: "d", name: "状态", key: "LK_TCMLIST_TABLE_STATUS", tooltip: true },
+]

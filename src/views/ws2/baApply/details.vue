@@ -1,8 +1,11 @@
 <template>
   <iPage class="partsprocureHome">
     <div class="page-head">
-      <div class="page-headTitle">
-        车型项目详情
+      <div class="page-headTitle" v-if="!isBa">
+        {{$t('LK_CHEXINGXIANGMUXIANGQ')}}
+      </div>
+      <div class="page-headTitle" v-else>
+        {{$t('LK_BASHENQING')}} | {{$t('LK_CHEXINGXIANGMUXIANGQ')}}
       </div>
       <iNavWS2
       ></iNavWS2>
@@ -60,10 +63,12 @@ export default {
         currPage: 1,
         pageSize: 10,
       },
+      isBa: false,
     }
   },
 
   created(){
+    this.isBa = this.$route.query.isBa;
   },
 
   methods: {

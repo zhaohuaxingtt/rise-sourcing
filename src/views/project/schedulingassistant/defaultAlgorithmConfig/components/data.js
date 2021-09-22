@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-26 09:28:02
- * @LastEditTime: 2021-09-06 15:41:22
+ * @LastEditTime: 2021-09-06 15:46:32
  * @LastEditors: Luoshuang
  * @Description: 默认排程算法配置
  * @FilePath: \front-web\src\views\project\schedulingassistant\defaultAlgorithmConfig\components\data.js

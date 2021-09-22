@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-15 21:21:39
+ * @LastEditTime: 2021-09-16 13:48:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -95,6 +95,13 @@
 								{{ fillterss(detailData.isBmg) }}
 							</iText>
 						</iFormItem>
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType)" :label="language('LK_HUOBI','货币') + ':'" name="test">
+							<iSelect v-model="detailData.currencyCode" >
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
+								</el-option>
+							</iSelect>
+						</iFormItem>
 						<!-- <iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE" :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型') + ':'" name="test">
 							<iSelect
 								v-model="detailData.partProjectType"
@@ -119,22 +126,6 @@
 							<iSelect v-model="detailData.isDB" @change="onIsDBChange">
 								<el-option :value="1" :label="language('YES', '是')"></el-option>
 								<el-option :value="0" :label="language('NO', '否')"></el-option>
-							</iSelect>
-						</iFormItem>
-						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('LK_HUOBI','货币') + ':'" name="test">
-							<iSelect v-model="detailData.currencyCode" >
-								<el-option :value="item.code" :label="item.name"
-									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
-								</el-option>
-							</iSelect>
-						</iFormItem>
-						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
-							<iSelect v-model="detailData.payClause" >
-								<el-option :value="item.code" :label="item.name"
-									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
-								</el-option>
 							</iSelect>
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->
@@ -197,11 +188,11 @@
 									v-for="(item, index) in fromGroup.PAYMENT_RULE" :key="index"></el-option>
 							</iSelect>
 						</iFormItem> -->
-						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
-							<iSelect v-model="detailData.purchaseClause" >
+						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
+						<iFormItem v-if="[partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB" :label="language('LK_HUOBI','货币') + ':'" name="test">
+							<iSelect v-model="detailData.currencyCode" >
 								<el-option :value="item.code" :label="item.name"
-									v-for="(item, index) in fromGroup.TERMS_PURCHASE" :key="index">
+									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
 								</el-option>
 							</iSelect>
 						</iFormItem>
@@ -255,6 +246,14 @@
 								<el-option :value="false" label="否"></el-option>
 							</iSelect>
 						</iFormItem>
+						<!----------------------零件采购项目类型为DB零件时----------------------------------->
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
+							<iSelect v-model="detailData.purchaseClause" >
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.TERMS_PURCHASE" :key="index">
+								</el-option>
+							</iSelect>
+						</iFormItem>
 					</div>
 					<div class="col">
 
@@ -289,6 +288,14 @@
 							<iText>
 								{{ detailData.signDate }}
 							</iText>
+						</iFormItem>
+						<!----------------------零件采购项目类型为DB零件时----------------------------------->
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
+							<iSelect v-model="detailData.payClause" >
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
+								</el-option>
+							</iSelect>
 						</iFormItem>
 					
 
@@ -346,7 +353,7 @@
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_SHENQINGMUBIAOJIA','申请目标价')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
-				<targePrice :purchaseProjectId="purchaseProjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="partProjectType"></targePrice>
+				<targePrice :purchaseProjectId="purchaseProjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="detailData.partProjectType || partProjectType"></targePrice>
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_BEIZHUXINXI','备注信息')" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
 				<remarks></remarks>

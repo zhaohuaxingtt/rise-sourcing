@@ -20,7 +20,7 @@
             <!--------------------审批流按钮----------------------------------->
             <iButton @click="openAprroveFlow" v-permission.auto="SOURCING_NOMINATION_APPROVAL_SHENPILIU|审批流">{{language('SHENPILIU','审批流')}}</iButton>
             <!--------------------编辑按钮----------------------------------->
-            <iButton @click="handleEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EDIT|编辑">{{language('LK_BIANJI','编辑')}}</iButton>
+            <iButton v-if="!disabled" @click="handleEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EDIT|编辑">{{language('LK_BIANJI','编辑')}}</iButton>
             
           </div>
           <!------------------------------------------------------------------------------->
@@ -79,7 +79,8 @@ export default {
       saveLoading: false,
       deptOptions: [],
       parentDeptOptions: [],
-      processInstanceId: ''
+      processInstanceId: '',
+      disabled: false
     }
   },
   computed: {
@@ -98,6 +99,7 @@ export default {
   },
   created() {
     this.init()
+    this.disabled = this.$route.query.rsStatus === "FROZEN"
   },
   methods: {
     async init() {

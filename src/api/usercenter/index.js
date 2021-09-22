@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-18 20:15:17
- * @LastEditTime: 2021-08-31 11:40:40
+ * @LastEditTime: 2021-08-31 15:43:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\api\usercenter\index.js
@@ -9,6 +9,8 @@
 import axios from '@/utils/axios'
 
 const requst = axios(process.env.VUE_APP_USER_CENTER)
+const requst1 = axios(process.env.VUE_APP_USER_CENTER_M)
+
 
 export function purchaseUsers(parmars) {
     return requst({
@@ -59,10 +61,35 @@ export function sendKey(data){
     })
 }
 
-export function sendPermissonKey(parmars){
+//根据条件，分页查询用户
+export function getSapUserPageList(data){
     return requst({
-        url:'/resource/importBatch',
+        url:'/sapUser/pageList',
+        method:"post",
+        data:data
+    })
+}
+export function sendPermissonKey(parmars){ //待开雄开发...
+    return require({
+        url:'/web/resource/importBatch',
         method:'POST',
         data:parmars
+    })
+}
+
+//查询特殊身份部门信息（多个）,查linie时tagId传4
+export function getDeptListByTag(parmars){
+    return requst1({
+        url:'/api/dept/getDeptListByTag',
+        method:"GET",
+        params:parmars,
+    })
+}
+//根据用户身份查询用户列表（可添加部门筛选）,查linie时tagId传4
+export function getUserListByTag(parmars){
+    return requst1({
+        url:'/api/getUserListByTag',
+        method:"GET",
+        params:parmars,
     })
 }

@@ -1,3 +1,11 @@
+/*
+ * @Author: Luoshuang
+ * @Date: 2021-04-20 19:16:52
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-08-14 13:01:23
+ * @Description: 
+ * @FilePath: \front-web\src\api\file\upload.js
+ */
 import axios from '@/utils/axios'
 import store from '@/store'
 
@@ -7,6 +15,14 @@ const fileRequst = axios(process.env.VUE_APP_NEW_COMMON)
 export function uploadFile(parmars) {
     return requst({
         url: '/upload',
+        method: 'POST',
+        data: parmars
+    })
+}
+
+export function udSingleFile(parmars) {
+    return requst({
+        url: '/fileud/udMutilfilesController',
         method: 'POST',
         data: parmars
     })
