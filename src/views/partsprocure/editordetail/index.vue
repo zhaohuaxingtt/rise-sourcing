@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-22 22:12:40
+ * @LastEditTime: 2021-09-22 22:20:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -487,7 +487,7 @@
     * @return {*}
     */
 			changeUserDept(){
-				this.linieId = ''
+				this.detailData.linieId = ''
 				this.getLinie(this.detailData.linieDept)
 			},
 			getLinie(id){
