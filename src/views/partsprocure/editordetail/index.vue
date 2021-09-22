@@ -95,6 +95,13 @@
 								{{ fillterss(detailData.isBmg) }}
 							</iText>
 						</iFormItem>
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType)" :label="language('LK_HUOBI','货币') + ':'" name="test">
+							<iSelect v-model="detailData.currencyCode" >
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
+								</el-option>
+							</iSelect>
+						</iFormItem>
 						<!-- <iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE" :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型') + ':'" name="test">
 							<iSelect
 								v-model="detailData.partProjectType"
@@ -182,7 +189,7 @@
 							</iSelect>
 						</iFormItem> -->
 						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('LK_HUOBI','货币') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB" :label="language('LK_HUOBI','货币') + ':'" name="test">
 							<iSelect v-model="detailData.currencyCode" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">

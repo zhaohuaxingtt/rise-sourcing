@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-22 14:34:58
+ * @LastEditTime: 2021-09-22 14:54:13
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -128,6 +128,7 @@ export default {
      * @return {*}
      */    
     onSeriesBarClick(params) {
+      if (params.disabled) return
       const itemName = params.seriesName || params.title
       const target = this.data.find(o => o.title === itemName) || {}
       const targetIndex = this.data.findIndex(o => o.title === itemName)
@@ -356,6 +357,7 @@ export default {
         text-align: center;
         background: #F5F6F7;
         color: rgba(22, 96, 241, 1);
+        cursor: pointer;
       }
     }
   }
