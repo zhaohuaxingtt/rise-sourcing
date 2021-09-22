@@ -346,7 +346,7 @@
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_SHENQINGMUBIAOJIA','申请目标价')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
-				<targePrice :purchaseProjectId="purchaseProjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="partProjectType"></targePrice>
+				<targePrice :purchaseProjectId="purchaseProjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="detailData.partProjectType || partProjectType"></targePrice>
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_BEIZHUXINXI','备注信息')" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
 				<remarks></remarks>
