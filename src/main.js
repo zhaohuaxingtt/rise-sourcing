@@ -14,6 +14,8 @@ import '../public/theme/index.css'
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 import './permission'
+import Vue from "vue"
+import { iTable } from 'rise'
 // import AmapVue from '@amap/amap-vue'
 
 // AmapVue.config.key = 'ad8bb27d93a0b17188e1b46872a446f8'
@@ -30,6 +32,8 @@ Promise.all([
     i18n.mergeLocaleMessage('zh', zhModule.default)
     i18n.mergeLocaleMessage('en', enModule.default)
 })
+
+Vue.component(iTable.name, iTable)
 
 new Vue({
     router,
