@@ -321,7 +321,8 @@ export default {
           let temdata = res.data || {}
           temdata.suppliersNow =temdata.supplierVoList
           this.basicData = temdata
-          let data = res.data?.linesrEach((val,index) => {
+          let data = res.data?.lines
+          data.forEach((val,index) => {
             let suppliersNowCn =[]
             let suppliersNowEn =[]
             console.log( val.supplierVoList);
