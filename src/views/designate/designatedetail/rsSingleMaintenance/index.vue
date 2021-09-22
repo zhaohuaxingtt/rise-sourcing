@@ -263,6 +263,7 @@ export default {
       this.saveLoading = true
       const params = this.tableListData.map(item => {
         return {
+          // ...item,
           supplierId: item.supplierId,
           fsnrGsnrNum: item.fsnrGsnrNum,
           nominateDetailId: item.nominateDetailId,
@@ -276,6 +277,9 @@ export default {
           investFeeIsShared: item.investFeeIsShared,
           devFee: item.devFee,
           devFeeIsShared: item.devFeeIsShared,
+          addFee: item.addFee,
+          savingFee: item.savingFee,
+          presentPrice: item.presentPrice,
           ltcs: defaultLtcs.map((ltcsItem, ltcIndex) => {
             return {
               ltcDate: item['ltcDate'+(ltcIndex+1)] ? moment(item['ltcDate'+(ltcIndex+1)]).format('yyyy-MM') : '',
