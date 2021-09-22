@@ -14,7 +14,7 @@
       <div class="rsTop">
         <div class="rsTop-left">
           <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
-            <div class="rsTop-left-item-title">{{ item.lang == 'en' ? `${ item.enName }` : `${ item.name } ${ item.enName }` }}</div>
+            <div class="rsTop-left-item-title">{{ item.name }}{{ item.enName  }}</div>
             <div class="rsTop-left-item-value">{{basicData[item.props]}}</div>
           </div>
         </div>
@@ -22,16 +22,27 @@
           <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
             <template v-if="Array.isArray(item)">
               <div class="rsTop-right-item-title">
-                 <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{ subItem.lang == 'en' ? `${subItem.enName}` :`${subItem.name}${subItem.enName}`}} <br v-if="subIndex < item.length - 1" /></div>
+                 <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}}{{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
               </div>
               <div class="rsTop-right-item-value">
-                <div v-for="(subItem, subIndex) in item" :key="subIndex">{{subItem.props === 'currency' ? basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : '' : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                <div v-for="(subItem, subIndex) in item" :key="subIndex">
+                  {{subItem.props === 'currency' ? basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : '' : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
               </div>
             </template>
             <template v-else>
-              <!-- <div  class="rsTop-right-item-title">{{item.name}} {{item.enName}}</div> -->
-              <div  class="rsTop-right-item-title">{{ item.lang == 'en' ? `${item.enName}` :`${item.name}${item.enName}`}}</div>
-              <div class="rsTop-right-item-value">{{basicData[item.props]}}</div>
+              <div  class="rsTop-right-item-title">{{item.name}} {{item.enName}}</div>
+                <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
+                  <div v-for="(item,index) in basicData[item.props]" :key="index" style="overflow: hidden;text-overflow: ellipsis;">
+                      <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
+                        <div><span style="white-space: nowrap;">{{item.shortNameZh}}/</span>
+                        <span style="white-space: nowrap;">{{item.shortNameEn}}</span><br/></div>
+                      </el-tooltip>
+                  </div>
+                </div>       
+                <div class="rsTop-right-item-value" v-else >
+                  <span v-html="basicData[item.props]">
+                  </span>
+                </div>
             </template>
           </div>
         </div>
@@ -108,6 +119,7 @@ import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval } from '@/api/designate/decisiondata/rs'
 import {partProjTypes} from '@/config'
 import { findFrontPageSeat } from '@/api/designate'
+import { zipWith } from "lodash"
 export default {
   props: {
     isPreview: {type:Boolean, default:false},
@@ -134,7 +146,8 @@ export default {
       prototypeTitleList:prototypeTitleList,
       processApplyDate: '',
       projectType: '',
-      isSingle: false
+      isSingle: false,
+      suppliers: ''
     }
   },
   computed: {
@@ -169,6 +182,7 @@ export default {
       }
       // 其他
       return gsDetailTitleBlue
+
     },
     tableTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
@@ -304,8 +318,28 @@ export default {
     getTopList() {
       getList(this.nominateId).then(res => {
         if (res?.result) {
-          this.basicData = res.data || {}
-          this.tableData = res.data?.lines
+          let temdata = res.data || {}
+          temdata.suppliersNow =temdata.supplierVoList
+          this.basicData = temdata
+          let data = res.data?.linesrEach((val,index) => {
+            let suppliersNowCn =[]
+            let suppliersNowEn =[]
+            console.log( val.supplierVoList);
+            val.supplierVoList.forEach(val =>{
+              suppliersNowCn.push(val.shortNameZh)
+              suppliersNowEn.push(val.shortNameEn)
+            })
+            console.log(suppliersNowCn);
+            let supplierData=[]
+            for(let i = 0 ;i <suppliersNowCn.length;i++) {
+              let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
+              supplierData.push(dataSuper)
+            }
+            supplierData = supplierData.length ?   supplierData.join('\n') : '-'
+            val.suppliersNow = supplierData.replace(/\n/g,"<br/>");
+          console.log(supplierData);
+          })
+          this.tableData = data
           this.projectType = res.data.partProjectType || ''
         } else {
           this.basicData = {}

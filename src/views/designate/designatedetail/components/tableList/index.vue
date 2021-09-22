@@ -69,8 +69,7 @@
       <!-------------------------正常列--------------------------->
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key, items.name) : items.name" :prop="items.props">
         <template slot="header">
-          <span v-if="items.enName && !items.lang">{{items.name}}<span><br />{{items.enName}}<br v-if="items.enName1" />{{items.enName1}}</span></span>
-          <span v-if="items.enName  && items.lang=='en'">{{items.enName}}<span><br v-if="items.enName1" />{{items.enName1}}</span></span>
+          <span v-if="items.enName">{{items.name}}<span><br />{{items.enName}}<br v-if="items.enName1" />{{items.enName1}}</span></span>
           <span v-else>{{items.key ? language(items.key, items.name) : items.name}}</span>
         </template>
         <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
@@ -94,6 +93,9 @@
           <span v-else-if="items.props === 'ltcRateOfThree'">{{(scope.row.ltcs[0]?scope.row.ltcs[0].ltcRate:'')+'/'+(scope.row.ltcs[1]?scope.row.ltcs[1].ltcRate:'')+'/'+(scope.row.ltcs[2]?scope.row.ltcs[2].ltcRate:'')}}</span>
           <!------------------枚举列--------------------------->
           <span v-else-if="items.isObject">{{scope.row[items.props].name || scope.row[items.props] }}</span>
+           <!----------------现供供应商----------------------------->
+          <span v-else-if="items.props === 'suppliersNow'" v-html="scope.row[items.props]">
+            </span>
           <!------------------正常--------------------------->
           <span v-else>{{scope.row[items.props] || scope.row[items.props] === 0 ? scope.row[items.props].desc || scope.row[items.props] : ''}}</span>
         </template>

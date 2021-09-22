@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-09-16 16:28:24
+ * @LastEditTime: 2021-09-22 20:25:50
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -56,7 +56,7 @@
             v-else
             :fixed='item.props == "partName" || item.props == "cfPartBPrice"'
             :key="index"
-            :label="item.i18n ? $t(item.i18n) : item.label"
+            :label="`${item.label}`"
             :width="item.width"
             :prop='item.props'
             align="center"
@@ -350,11 +350,21 @@ export default{
     overflow: visible;
     ::v-deep.cell{
       overflow: visible;
+      span {
+        white-space:pre-line!important;
+        text-align: center;
+      }
+    }
+    ::v-deep .el-table__fixed{
+      top: 200px!important;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.12)!important;
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
       .cell{
+        height: 30px;
         span{
+          display: inline-block;
           width: 100%;
         }
         .el-checkbox{
@@ -433,7 +443,7 @@ export default{
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 34px;
+      bottom: 56px;
       left:-9px;
       border: 1px solid #C5CCD6;
       border-bottom: none;
@@ -492,25 +502,6 @@ export default{
     width: 100%;
     padding-top: 200px;
     overflow-x: scroll;
-    ::v-deep.el-table__fixed{
-          height: 97%!important;
-          bottom: -1px;
-          padding-top: 200px;
-          box-sizing: border-box;
-          background-color: white;
-          z-index: 124;
-          top: 0px;
-          .el-table__fixed-header-wrapper{
-            position: static;
-            top: inherit;
-            left: inherit;
-          }
-          .el-table__fixed-body-wrapper{
-            position: static;
-            top: inherit;
-            left: inherit;
-          }
-    }
   }
   .conent{
     height: auto;
