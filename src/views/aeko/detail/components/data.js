@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-09-01 15:27:02
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-01 18:15:47
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\aekomanage\detail\components\data.js
+ * @FilePath: \front-web\src\views\aeko\detail\components\data.js
  */
 export const contentDeclareQueryForm = {
   partNum: "",

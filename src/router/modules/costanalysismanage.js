@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 12:00:48
- * @LastEditTime: 2021-09-03 15:04:56
+ * @LastEditTime: 2021-09-03 15:13:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\router\modules\costanalysismanage.js
+ * @FilePath: \front-sourcing\src\router\modules\costanalysismanage.js
  */
 export default [
   {
@@ -13,9 +13,9 @@ export default [
     children: [
       {
         path: "/costanalysismanage",
-        name: "sourcing",
+        name: "costanalysismanage",
         component: () => import("@/views/costanalysismanage"),
-        redirect: "/home",
+        redirect: "costanalysismanage/home",
         children: [
           {
             path: "home",
@@ -28,6 +28,21 @@ export default [
             name: "costAnalysisManageDataMaintenance",
             meta: { title: "数据维护" },
             component: () => import("@/views/costanalysismanage/components/datamaintenance"),
+            redirect: "datamaintenance/costMaintenance",
+            children: [
+              {
+                path: "costMaintenance",
+                name: "laborCostMaintenance",
+                meta: { title: "人工成本维护" },
+                component: () => import("@/views/costanalysismanage/components/datamaintenance/components/costMaintenance"),
+              },
+              {
+                path: "costDataMaintenance",
+                name: "laborCostDataMaintenance",
+                meta: { title: "人工成本数据维护" },
+                component: () => import("@/views/costanalysismanage/components/datamaintenance/components/costDataMaintenance"),
+              },
+            ]
           }
         ]
       },

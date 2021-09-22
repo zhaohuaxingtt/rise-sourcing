@@ -4,7 +4,7 @@
       width="95%"
       @close="clearDiolog"
   >
-    <iButton class="downloadButton" @click="handleDownload" :loading="downloadButtonLoading">{{
+    <iButton class="downloadButton" @click="getDownloadFile({exportPdf: true})" :loading="downloadButtonLoading">{{
         $t('LK_XIAZAI')
       }}
     </iButton>
@@ -14,7 +14,7 @@
       </div>
       <baseInfo :dataInfo="dataInfo" :disabledSupplier="true"/>
       <el-divider class="margin-top20 margin-bottom20"/>
-      <totalUnitPriceTable :dataInfo="dataInfo" class="margin-bottom20" :showEditButton="false" ref="1"/>
+      <totalUnitPriceTable :dataInfo="dataInfo" class="margin-bottom20" :showEditButton="false"/>
       <div class="chartContainer margin-top20">
         <div class="left">
           <div class="font18 font-weight margin-bottom20">Volume Pricing{{ this.$t('TPZS.QUXIAN') }}</div>
@@ -24,11 +24,12 @@
               :newestScatterData="newestScatterData"
               :targetScatterData="targetScatterData"
               :lineData="lineData"
+              :cpLineData="cpLineData"
           />
         </div>
         <div class="right">
           <div class="font18 font-weight margin-bottom20">Volume Pricing{{ this.$t('TPZS.FENXI') }}</div>
-          <analyzeChart :dataInfo="dataInfo"/>
+          <analyzeChart :dataInfo="dataInfo" :disabledEstimatedActualTotalPro="true"/>
         </div>
       </div>
     </div>
@@ -36,42 +37,47 @@
 </template>
 
 <script>
-import { iButton, iDialog } from 'rise'
-import baseInfo from './baseInfo'
-import totalUnitPriceTable from './totalUnitPriceTable'
-import curveChart from './curveChart'
-import analyzeChart from './analyzeChart'
-import { downloadPDF, dataURLtoFile } from '@/utils/pdf'
-import { uploadFile } from '@/api/file/upload'
-import { addVpReports } from '../../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail'
+import {iButton, iDialog} from 'rise';
+import baseInfo from './baseInfo';
+import totalUnitPriceTable from './totalUnitPriceTable';
+import curveChart from './curveChart';
+import analyzeChart from './analyzeChart';
+import {downloadPdfMixins} from '@/utils/pdf';
 
 export default {
+  mixins: [downloadPdfMixins],
   props: {
     dataInfo: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       },
     },
     newestScatterData: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       },
     },
     targetScatterData: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       },
     },
     lineData: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       },
     },
-    value: { type: Boolean },
+    cpLineData: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    value: {type: Boolean},
   },
   components: {
     iButton,
@@ -81,46 +87,25 @@ export default {
     curveChart,
     analyzeChart,
   },
-  data () {
+  data() {
     return {
       downloadButtonLoading: false,
-    }
+    };
   },
   methods: {
-    clearDiolog () {
-      this.$emit('input', false)
+    clearDiolog() {
+      this.$emit('input', false);
     },
-    handleDownload () {
-      downloadPDF({
-        idEle: 'content',
+    getDownloadFile({exportPdf = false, callBack} = {}) {
+      return this.getDownloadFileAndExportPdf({
+        domId: 'content',
         pdfName: 'Volume Pricing Overview',
-        callback: async (pdf, pdfName) => {
-          try {
-            this.downloadButtonLoading = true
-            const time = new Date().getTime()
-            const filename = pdfName + time + '.pdf'
-            const pdfFile = pdf.output('datauristring')
-            const blob = dataURLtoFile(pdfFile, filename)
-            const formData = new FormData()
-            formData.append('multipartFile', blob)
-            formData.append('applicationName', 'rise')
-            const res = await uploadFile(formData)
-            const data = res.data[0]
-            const req = {
-              analysisSchemeId: 1,
-              downloadName: data.fileName,
-              downloadUrl: data.filePath,
-            }
-            await addVpReports(req)
-            this.downloadButtonLoading = false
-          } catch {
-            this.downloadButtonLoading = false
-          }
-        },
-      })
+        exportPdf,
+        callBack,
+      });
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">

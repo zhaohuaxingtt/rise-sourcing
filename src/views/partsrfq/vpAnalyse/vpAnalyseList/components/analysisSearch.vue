@@ -1,14 +1,14 @@
 <!--
  * @Author: youy
  * @Date: 2021-06-21 19:38:02
- * @LastEditTime: 2021-07-09 11:28:34
+ * @LastEditTime: 2021-08-24 15:28:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisSearch.vue
 -->
 <template>
   <div>
-    <iSearch  @reset="handleSearchReset" @sure="handleSubmitSearch">
+    <iSearch  :icon="false" @reset="handleSearchReset" @sure="handleSubmitSearch">
       <el-form :model="searchForm">
         <el-form-item :label="item.key?$t(item.key):item.name" v-for="(item,index) in searchData" :key="index">
           <iInput class="margin-top6" v-model="searchForm[item.props]" :disabled="isDisabled(item.props)"></iInput>
@@ -48,8 +48,13 @@ export default {
       this.searchForm = {}
       this.searchForm = {
         ...this.searchForm,
-        rfqNo: this.$store.state.rfq.rfqId
+        rfqNo: this.$store.state.rfq.rfqId,
+        materialGroup: this.$store.state.rfq.materialGroup,
+        partsNo: this.$store.state.rfq.spareParts,
       }
+      this.$nextTick(() => {
+        this.$emit('handleSubmitSearch', this.searchForm)
+      })
     },
     //点击确认按钮
     handleSubmitSearch() {
@@ -58,7 +63,6 @@ export default {
     //点击重置按钮
     handleSearchReset() {
       this.initData()
-      this.$emit('handleSubmitSearch', null)
     },
   } 
 }

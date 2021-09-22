@@ -1,35 +1,45 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-07-01 17:25:38
+ * @LastEditTime: 2021-09-09 16:52:49
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
 -->
 
 <template>
-  <iDialog
-    :title="$t('TPZS.CZLJ')"
-    :visible.sync="value"
-    width="90%"
-    @close="clearDiolog"
-  >
+  <iDialog :title="$t('TPZS.CZLJ')"
+           :visible.sync="value"
+           width="90%"
+           @close="clearDiolog">
     <div class="search">
-      <iSearch :icon="true" @sure="sure" @reset="reset">
+      <iSearch :icon="true"
+               @sure="sure"
+               @reset="reset">
         <el-form>
           <el-form-item :label="$t('LK_CAILIAOZU')">
-            <iSelect v-model="form.categoryCode">
-              <el-option :value='item.categoryCode' :label='item.categoryName' v-for="item in optionList" :key="item.categoryId"></el-option>
+            <iSelect v-model="form.categoryCode"
+                     clearable>
+              <el-option :value='item.categoryCode'
+                         :label='item.categoryName'
+                         v-for="item in optionList"
+                         :key="item.categoryId"></el-option>
             </iSelect>
           </el-form-item>
           <el-form-item :label="$t('LK_RFQHAO')">
-            <iInput placeholder="请输入" v-model="form.rfqId"></iInput>
+            <iInput placeholder="请输入"
+                    v-model="form.rfqId"
+                    clearable></iInput>
           </el-form-item>
-          <el-form-item :label="$t('LK_FSHAO')">
-            <iInput placeholder="请输入" v-model="form.fsNum"></iInput>
+          <el-form-item :label="$t('partsprocure.PARTSPROCUREFSNFGSNFSPNR')">
+            <iInput placeholder="请输入"
+                    v-model="form.fsNum"
+                    clearable></iInput>
           </el-form-item>
           <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTNUMBER')">
-            <iInput placeholder="请输入" v-model="form.partNum"></iInput>
+            <iInput placeholder="请输入"
+                    v-model="form.partNum"
+                    clearable></iInput>
           </el-form-item>
         </el-form>
       </iSearch>
@@ -39,28 +49,27 @@
         <span>搜索结果</span>
         <iButton @click="add">{{ $t("LK_TIANJIA") }}</iButton>
       </div>
-      <tableList
-        :tableData="confirmTableData"
-        :tableTitle="confirmTableHead"
-        class="table-footerStyle"
-        @handleSelectionChange="handleSelectionChange"
-      >
+      <tableList :tableData="confirmTableData"
+                 :tableTitle="confirmTableHead"
+                 class="table-footerStyle"
+                 v-loading="loading"
+                 :radio="status===1?true:false"
+                 @handleSelectionChange="handleSelectionChange">
       </tableList>
     </div>
   </iDialog>
 </template>
 <script>
-import { iButton, iDialog, iSearch, iSelect, iInput } from 'rise';
+import { iButton, iDialog, iSearch, iSelect, iInput, iMessage } from "rise";
 import { confirmTableHead } from "./data";
 import emitter from '@/utils/emitter.js'
 import {
   pagePart,
   category,
 } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
-import tableList from "@/views/partsrfq/reportList/components/tableList";
+import tableList from "@/components/iTableList";
 export default {
   name: "findingParts",
-  
   components: {
     iButton,
     iDialog,
@@ -69,7 +78,7 @@ export default {
     iInput,
     tableList,
   },
-  mixins:[emitter],
+  mixins: [emitter],
   props: {
     title: { type: String, default: "LK_SHANGCHUAN" },
     value: { type: Boolean },
@@ -81,9 +90,9 @@ export default {
       },
     },
   },
-  data() {
+  data () {
     return {
-      optionList:[],
+      optionList: [],
       confirmTableData: [],
       confirmTableHead,
       form: {
@@ -91,19 +100,27 @@ export default {
         rfqId: "",
         fsNum: "",
         partNum: "",
+        size: 1000
       },
-      colData:{}
+      status: 0,
+      colData: {},
+      loading: false
     };
   },
-  created() {
+  created () {
+    this.status = this.$store.state.rfq.entryStatus
+    this.form.categoryCode = this.$store.state.rfq.materialGroup
     this.pagePart();
-    this.dispatch('parentCom','event',"222")
     // this.category();
   },
   methods: {
-    async pagePart() {
-      let res= await category({});
-      this.optionList=res.data
+    async pagePart () {
+      this.loading = true
+      let res = await category({});
+      this.optionList = res.data
+      if (this.status === 1) {
+        this.form.status = '15'
+      }
       pagePart(this.form)
         .then((res) => {
           if (res.code === "200") {
@@ -111,36 +128,41 @@ export default {
             this.confirmTableData.forEach((value, index) => {
               value.index = index + 1;
             });
-           
+            this.loading = false
+            if (!res.data) {
+              iMessage.error('抱歉，无法查询到结果（输入错误或者不存在），请确认后重新输入。')
+            }
           }
         })
-        .catch((e) => {});
+        .catch((e) => {
+          this.loading = false
+        });
     },
-    
-    clearDiolog() {
+
+    clearDiolog () {
 
       this.$emit("close", false);
     },
-    submit() {
+    submit () {
 
       this.$emit("submit");
     },
-    sure() {
+    sure () {
       this.pagePart();
     },
-    handleSelectionChange(val){
-      this.colData=val
+    handleSelectionChange (val) {
+      this.colData = val
     },
-    reset() {
+    reset () {
       this.form = {
         categoryCode: "",
-        rfqId: "",
+        rfq: "",
         fsNum: "",
         partNum: "",
       };
       this.pagePart();
     },
-    add(){
+    add () {
       this.$emit('add', this.colData);
     }
   },
@@ -157,6 +179,9 @@ export default {
     justify-content: space-between;
     margin-bottom: 25px;
   }
+}
+::v-deep .el-table .el-table__body-wrapper {
+  overflow-x: hidden;
 }
 </style>
 

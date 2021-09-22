@@ -1,24 +1,24 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 17:51:32
- * @LastEditTime: 2021-06-25 14:14:57
- * @LastEditors: your name
+ * @LastEditTime: 2021-08-13 15:07:36
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\reportPreview.vue
 -->
 <template>
   <div>
-    <iDialog :title="$t('LK_VP_PORT_NO')" :visible.sync="visible" width="90%">
+    <iDialog :title="reportTitle" :visible.sync="visible" width="90%" @close="handleClose">
       <iframe :src="reportUrl" class="report"></iframe>
     </iDialog>
   </div>
 </template>
 
 <script>
-import {iDialog, iButton} from 'rise'
+import {iDialog} from 'rise'
 export default {
   name: 'ReportPreview',
-  components: {iDialog, iButton},
+  components: {iDialog},
   props: {
     visible: {
       type: Boolean,
@@ -27,6 +27,15 @@ export default {
     reportUrl: {
       type: String,
       default: ''
+    },
+    title: {
+      type: String,
+      default: null
+    }
+  },
+  computed: {
+    reportTitle() {
+      return this.title 
     }
   },
   data () {
@@ -38,7 +47,9 @@ export default {
 
   },
   methods: {
-
+    handleClose() {
+      this.$emit('handleCloseReport')
+    }
   }
 }
 </script>

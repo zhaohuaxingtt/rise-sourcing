@@ -386,8 +386,8 @@ export default {
     jumpDetails(scope){
       const query = {
         ...scope.row,
-        partNum: scope.row.behalfPartsNum,
-        purchasingRequirementId: '279830436628008960',
+        partNum: scope.row.partsNum,
+        // purchasingRequirementId: '279830436628008960',
       }
       console.log('跳转的参数：', query);
       this.$router.push({

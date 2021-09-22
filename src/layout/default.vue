@@ -1,6 +1,14 @@
+<!--
+ * @Author: 舒杰
+ * @Date: 2021-06-22 22:28:15
+ * @LastEditTime: 2021-08-03 10:45:20
+ * @LastEditors: 舒杰
+ * @Description: In User Settings Edit
+ * @FilePath: \front-sourcing\src\layout\default.vue
+-->
 <template>
-  <iLayout />
   <!-- <iLayout :menus="menus" /> -->
+  <iLayout />
 </template>
 
 <script>

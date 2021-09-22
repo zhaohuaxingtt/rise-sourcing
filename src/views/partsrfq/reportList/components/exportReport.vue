@@ -1,8 +1,11 @@
 <!--
- * @author: shujie
- * @createTime: 2021-6-17 2:19:05 ?F10: PM?
- * @Description:导出 报告清单 弹窗
- -->
+ * @Author: 舒杰
+ * @Date: 2021-07-06 13:40:04
+ * @LastEditTime: 2021-08-02 14:36:02
+ * @LastEditors: 舒杰
+ * @Description: 导出 报告清单 弹窗
+ * @FilePath: \front-sourcing\src\views\partsrfq\reportList\components\exportReport.vue
+-->
 <template>
 	<iDialog :visible.sync="value" width="90%" @close="clearDiolog">
 		<div class="flex-between-center margin-right30" slot="title">
@@ -34,8 +37,7 @@
 		components: {
 			iDialog,
 			iButton,
-			tableList,
-			iMessage
+			tableList
 		},
 		props:{
 			value:{type:Boolean,default:false},

@@ -21,12 +21,10 @@
 
 <script>
 import { iCard, iButton, } from "rise";
-import { powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import * as pbi from 'powerbi-client';
 import remarkDialog from "./remarkDialog.vue";
-import { getRfqToRemark, getRfqSupplierAndCategory } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import { getRfqToRemark, pageRfqPartPurPro, powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 
-// import pie from "./pie";
 export default {
   components: { iCard, iButton, remarkDialog },
   data() {
@@ -54,24 +52,18 @@ export default {
     }
   },
   created() {
-    this.getRemark()
-    this.filter = { ...this.filter, filterType: pbi.models.FilterType.BasicFilter },
-      this.powerBiUrl()
+    this.powerBiUrl()
   },
   methods: {
     // go供应商360
     handleHerf() {
-      window.location.href = 'http://rise-front-portal.apps.vmocp-dev.csvw.com/supplier/supplierList'
+      window.location.href = 'http://10.122.17.38/portal/#/supplier/supplierList'
     },
     // 获取备注
     async getRemark() {
       const res = await getRfqToRemark(this.$route.query.id)
-      const pms = {
-        rfqId: this.$route.query.id
-      }
-      const res1 = await getRfqSupplierAndCategory(pms.rfqId)
       if (res.result) {
-        this.remark = res.data.remark
+        this.remark = res.data && res.data.remark
       }
     },
     // 激活弹窗
@@ -79,28 +71,49 @@ export default {
       this.remarkDialog = true
     },
     // 获取财报iframeurl
-    powerBiUrl() {
-      powerBiUrl().then(res => {
-        if (res.data) {
-          this.url = res.data
-          this.renderBi()
-        }
-      })
+    async powerBiUrl() {
+      const pms = {
+        rfqId: this.$route.query.id
+      }
+      const res1 = await pageRfqPartPurPro(pms)
+      const res = await powerBiUrl()
+      let partNumList = []
+      if (res.data && res1.data) {
+        this.url = res.data
+        res1.data.forEach(item => {
+          partNumList.push(item.partNum)
+        })
+        this.renderBi(partNumList)
+      }
+
     },
     // 初始化页面
-    renderBi() {
-      var permissions = pbi.models.Permissions.All
-
+    renderBi(partNumList) {
       var config = {
         type: 'report',
         tokenType: pbi.models.TokenType.Embed,
         accessToken: this.url.accessToken,
         embedUrl: this.url.embedUrl,
-        // id: 'f6bfd646-b718-44dc-a378-b73e6b528204',
-        /*pageName: 'ReportSectioneb8c865100f8508cc533',
-        visualName: '47eb6c0240defd498d4b',
-        permissions: permissions,*/
         settings: {
+          commands: [
+            {
+              spotlight: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+              drill: {
+                displayOption: pbi.models.CommandDisplayOption.Disabled
+              },
+              exportData: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+              seeData: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+              includeExclude: {
+                displayOption: pbi.models.CommandDisplayOption.Hidden
+              },
+            }
+          ],
           panes: {
             filters: {
               visible: false
@@ -114,21 +127,32 @@ export default {
       let powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       var reportContainer = document.getElementById('powerBi');
       var report = powerbi.embed(reportContainer, config);
-
       // Report.off removes a given event handler if it exists.
       report.off("loaded");
-
       // Report.on will add an event handler which prints to Log window.
-      const name = this.name
-      const newfilter = window._.cloneDeep(this.filter);
-      newfilter.values = [name]
-      this.values = [name]
       report.on("loaded", function() {
-        console.log("Loaded");
-        if (name !== '') {
-          report.setFilters([newfilter])
-          // report.updateFilters(pbi.models.FiltersOperations.Add, [newfilter]);
+        // 零件集合：
+        var partNumListFilter = {
+          $schema: "http://powerbi.com/product/schema#basic",
+          target: {
+            table: "Table_Par&Stu",
+            column: "part_num"
+          },
+          operator: "In",
+          values: partNumList,
+          filterType: pbi.models.FilterType.BasicFilter,
+          requireSingleSelection: true
+        };
+        try {
+          //设置过滤条件	
+          report.setFilters([partNumListFilter]);
+          //report.updateFilters(models.FiltersOperations.Add, [filter_suppliers]);
+          console.log("Report filter was added.");
         }
+        catch (errors) {
+          console.log(errors);
+        }
+        console.log("Loaded");
       });
 
       // Report.off removes a given event handler if it exists.
@@ -160,7 +184,7 @@ export default {
       });
 
       this.report = report
-
+      document.getElementsByTagName('iframe')[0].style.border = 'none'
     },
   }
 }
@@ -182,6 +206,9 @@ export default {
     font-size: 14px;
     left: 11.3rem;
     color: #a5a5a5;
+    width: 77rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   position: relative;
   #powerBi {
