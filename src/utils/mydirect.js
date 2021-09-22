@@ -1,16 +1,17 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-09-08 14:33:50
+ * @LastEditTime: 2021-09-02 18:49:52
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
- * @FilePath: \rise\src\utils\mydirect.js
+ * @FilePath: \front-web\src\utils\mydirect.js
  */
 
 import Vue from 'vue';
 import store from '../store'
 import router from '@/router'
 import {businessPermission} from '@/utils'
+import {getTousandNum, delcommafy} from "@/utils/tool";
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
@@ -284,5 +285,21 @@ Vue.directive("lazySelect", {
         dom.addEventListener("scroll", function() {
           if ((this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
         });
+    }
+})
+
+Vue.directive("moneyInput", {
+    inserted: function(el, binding) {
+        let input = el.querySelector('input')
+        input.addEventListener('keyup', () => {
+            input.value = input.value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')
+        })
+        input.addEventListener('focus', () => {
+            input.value = delcommafy(input.value)
+        })
+        input.addEventListener('blur', () => {
+            input.value = input.value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')
+            input.value = getTousandNum(Number(input.value).toFixed(2))
+        })
     }
 })

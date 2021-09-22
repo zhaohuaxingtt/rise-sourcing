@@ -1,5 +1,7 @@
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_MAIL)
+import { getSocket } from '@/utils/webSocket'
+import store from '@/store'
 
 /*单条消息清除 */
 export function removeMailById(params) {
@@ -70,5 +72,16 @@ export function getUnreadTotal(params) {
     url: '/InMail/countUnReadInMail',
     method: 'GET',
     params: params
+  })
+}
+
+export const getHomeSocket = () => process.env.VUE_APP_SOCKET + store.state.permission?.userInfo?.id
+
+/* 实时获取消息 */
+
+export const getHomeSocketMessage = onMessage => {
+  console.log('store', store.state)
+  return getSocket(getHomeSocket, message => {
+    onMessage(message)
   })
 }

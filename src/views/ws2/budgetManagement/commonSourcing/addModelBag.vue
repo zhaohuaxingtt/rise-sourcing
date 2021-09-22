@@ -94,7 +94,7 @@
             </iSelect>
           </div>
           <div class="btn">
-            <iButton @click="saveAs">{{$t('保存为新版本')}}</iButton>
+            <iButton :disabled="!currentVersion" @click="saveAs">{{$t('保存为新版本')}}</iButton>
             <Upload
                 class="upload"
                 ref="uploadRef"
@@ -107,10 +107,10 @@
                 :limit="1"
                 :show-file-list="false"
                 :file-list="fileList">
-              <iButton>{{ $t('上传清单') }}</iButton>
+              <iButton :disabled="!currentVersion">{{ $t('上传清单') }}</iButton>
             </Upload>
             <iButton @click="hanldeDownload">{{$t('下载清单')}}</iButton>
-            <iButton @click="sendToAdmin">{{$t('发送项目采购员')}}</iButton>
+            <iButton :disabled="!currentVersion" @click="sendToAdmin">{{$t('发送项目采购员')}}</iButton>
           </div>
         </div>
         <iTableList

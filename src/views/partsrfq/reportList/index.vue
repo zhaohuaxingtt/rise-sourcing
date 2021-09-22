@@ -8,16 +8,20 @@
 		<div class="flex-between-center">
 			<!-- 报告清单 -->
 			<span class="pageTitle">{{$t('TPZS.BGQD')}}</span>
-			<!-- 导出 -->
-			<iButton @click="openExport">{{$t('LK_DAOCHU')}}</iButton>
+			<div>
+				<!-- 导出 -->
+				<iButton @click="openExport">{{$t('LK_DAOCHU')}}</iButton>
+				<!-- 返回 -->
+				<iButton @click="back">{{$t('LK_FANHUI')}}</iButton>
+			</div>
 		</div>
-		<iSearch class="margin-top20" @sure="sure" @reset="reset">
+		<iSearch class="margin-top20" @sure="sure" @reset="reset" icon="false">
 			<el-form>
 				<el-form-item :label="item.key?$t(item.key):item.name" v-for="(item,index) in search" :key="index">
 					<iSelect v-if="item.type=='select'" v-model="searchCriteria[item.props]">
 						<el-option :value="item.code" :label="item.name" v-for="item in fromGroup[item.select]" :key="item.code"></el-option>
 					</iSelect>
-					<iInput v-else :placeholder="$t(item.placeholder)" v-model="searchCriteria[item.props]"></iInput>
+					<iInput v-else :placeholder="$t(item.placeholder)" v-model="searchCriteria[item.props]" :disabled="item.props=='rfq' && inside"></iInput>
 				</el-form-item>
 			</el-form>
 		</iSearch>
@@ -40,7 +44,7 @@
 </template>
 
 <script>
-	import {iPage,iCard,iSelect,iInput,iButton,iSearch,iMessage} from 'rise';
+	import {iPage,iSelect,iInput,iButton,iSearch,iMessage} from 'rise';
 	import {search} from './components/data';
 	import {selectDictByKeys} from '@/api/dictionary';
 	import specialTools from './components/specialTools';
@@ -49,7 +53,7 @@
 	import exportReport from './components/exportReport'
 	export default{
 		components:{
-			iPage,iCard,iSelect,iInput,iButton,iSearch,specialTools,quotationAnalysis,negotiationBasic,exportReport
+			iPage,iSelect,iInput,iButton,iSearch,specialTools,quotationAnalysis,negotiationBasic,exportReport
 		},
 		data() {
 			return {
@@ -68,12 +72,8 @@
 			}
 		},
 		created() {
-			if (this.$route.query.rfq) {
-				this.searchCriteria.rfq=this.$route.query.rfq
-				this.inside=true
-			}else{
-				this.inside=false
-			}
+			this.searchCriteria.rfq=this.$store.state.rfq.rfqId
+			this.inside=this.$store.state.rfq.entryStatus===1?true:false
 			this.getAllSelect()
 		},
 		methods:{
@@ -100,15 +100,19 @@
 			},
 			//搜索
 			sure(){
-				this.$refs.specialTools.getTableList()
+				this.$refs.specialTools.search()
 			},
 			// 重置
 			reset() {
 				this.searchCriteria = {};
 				this.$nextTick(()=>{
-					this.$refs.specialTools.getTableList()
+					this.$refs.specialTools.search()
 				})
 			},
+			// 返回
+			back(){
+				this.$router.back(-1)
+			}
 		}
 	}
 </script>

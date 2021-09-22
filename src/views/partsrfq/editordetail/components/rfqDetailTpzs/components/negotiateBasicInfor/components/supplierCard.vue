@@ -11,14 +11,18 @@
       <iCard class="right margin-bottom5" v-for="(item,index) in tableData" :key="index">
         <div class="flex">
           <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
-          <span>{{item.supplierName}}</span>
+          <div class="title">{{item.name}}</div>
         </div>
-        <iLabel class="margin-top8 title1" :label="$t('LK_CHEXINGXIANGMU')+':'"></iLabel>
-        <div>{{item.factoryName}}</div>
-        <iLabel class="margin-top8 title1" :label="$t('TPZS.SQDZDZ')"></iLabel>
-        <div>{{item.address}}</div>
+        <iLabel class="margin-top8 title1" :label="$t('LK_CHEXING')+':'"></iLabel>
+        <div class="flex-align-center">
+          <div v-for="(val,ix) in item.carTypeProjectList" :key="ix">{{item.carTypeProjectList.length-1>ix?val+' |&nbsp;':val}}</div>
+        </div>
+        <iLabel class="margin-top8 title1" :label="language('SHANGQIDAZHANGGONGCHANGDIZHI','上汽大众工厂地址')"></iLabel>
+        <div>
+          {{ item.factoryAddress}}
+        </div>
         <iLabel class="margin-top8 title1" :label="$t('TPZS.ZXSE')"></iLabel>
-        <div>{{item.toAmount}}</div>
+        <div>{{String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'}}</div>
       </iCard>
     </div>
   </div>
@@ -29,16 +33,16 @@ import { iCard, icon, iLabel } from "rise";
 export default {
   components: { iCard, icon, iLabel },
   props: {
-    mapListData: {
-      type: String, default: () => {
-        return {}
+    supplierDataList: {
+      type: Array, default: () => {
+        return []
       }
     }
   },
   watch: {
-    mapListData: {
+    supplierDataList: {
       handler(data) {
-        this.tableData = data.listVO
+        this.tableData = data
       }
     }
   },
@@ -67,9 +71,13 @@ export default {
 }
 .icon-s {
   font-size: 33px;
+  margin-right: 5px;
 }
 .flex {
   align-items: center;
+  .title {
+    font-size: 20px;
+  }
 }
 .title1 {
   color: #7e84a3;

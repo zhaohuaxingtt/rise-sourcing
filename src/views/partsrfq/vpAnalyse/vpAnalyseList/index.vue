@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-09 10:34:55
+ * @LastEditTime: 2021-09-08 10:40:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -23,13 +23,13 @@
           <iButton @click="clickSaveEdit">{{$t('LK_BAOCUN')}}</iButton>
         </span>
       </div>
-      <analysisTable ref="analysisTable" :editMode="editMode"/>
+      <analysisTable v-if="isShowTable" ref="analysisTable" :editMode="editMode" :searchData="searchData"/>
     </iCard>
   </div>
 </template>
 
 <script>
-import {iCard, iButton} from 'rise'
+import {iCard, iButton, iMessage} from 'rise'
 import analysisSearch from './components/analysisSearch'
 import analysisTable from './components/analysisTable'
 export default {
@@ -41,6 +41,7 @@ export default {
       round: null,        //round
       searchData: null,
       backUpData: [],
+      isShowTable: true
     }
   },
   created() {
@@ -52,7 +53,7 @@ export default {
       if(!this.editMode) 
         this.backUpData = window._.cloneDeep(this.$refs.analysisTable.tableListData)
       else 
-        this.$refs.analysisTable.tableListData = window._.cloneDeep(this.backUpData)
+        this.$refs.analysisTable.cancelEditVP(this.backUpData)
       this.editMode = !this.editMode
     },
     //点击保存编辑数据
@@ -63,20 +64,34 @@ export default {
     //点击新建按钮，跳转新建页面
     clickAdd() {
       const targetUrl = '/sourcing/partsrfq/vpAnalyCreat'
-      this.$router.push({
+      const newOpenAdd = this.$router.resolve({
         path: targetUrl,
         query: {
-          round: this.round
+          round: this.round,
+          partsNo: this.searchData ? this.searchData.partsNo : null,
+          materialGroup: this.searchData ? this.searchData.materialGroup : null,
         }
       })
+      window.open(newOpenAdd.href,'_blank')
     },
     //点击删除按钮
     clickDel() {
+      this.isShowTable = false
       this.$refs.analysisTable.clickSaveDel()
+      this.isShowTable = true
     },
     //点击搜索按钮
     handleSubmitSearch(searchData) {
-      this.$refs.analysisTable.getTableData(searchData)
+      this.searchData = searchData
+      this.$refs.analysisTable.page.currPage = 1
+      this.$refs.analysisTable.page.pageSize = 10
+      this.$nextTick(() => {
+        this.$refs.analysisTable.getTableData().then(res => {
+          if(!res.data || res.data.length == 0) {
+            iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'))
+          }
+        })
+      })
     },
   }
 }
@@ -99,6 +114,4 @@ export default {
     right: 0;
   }
 }
-
- 
 </style>

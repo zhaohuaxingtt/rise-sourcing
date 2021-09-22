@@ -21,6 +21,7 @@
           :dataBaseInit="dataBaseInit"
           :navList="budgetManagement3rd"
           :isIconShow="isIconShow"
+          hoverText="历史数据库"
           @nextStep="nextStep"
           @changeDataBase="$refs.iNavMvpRef.activeIndex = 999"
       ></iNavWS2>
@@ -78,8 +79,7 @@ export default {
           ...item,
           value: index + 1
         }))
-
-        this.budgetManagement3rd = list;
+        this.budgetManagement3rd = this.filterRoutePermission(list);
       },
     },
   },
@@ -99,25 +99,6 @@ export default {
   },
   computed: {
     newTableTitle: () => {
-      // let whiteBtnList = store.state.permission.whiteBtnList
-      // let tabtitleTemp = []
-      //
-      // if(whiteBtnList['TOOLING_BUDGET_OVERVIEW'] || whiteBtnList['TOOLING_BUDGET_BUILD'] || whiteBtnList['TOOLING_BUDGET_INVESTMENT']){
-      //   tabtitleTemp.push(tabtitle[1])
-      // }
-      // if(whiteBtnList['TOOLING_BUDGET_BUDGETAPPROVAL']){
-      //   tabtitleTemp.push(tabtitle[2])
-      // }
-      // if(whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'] || whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_DETAILS'] || whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_CARTYPE']){
-      //   tabtitleTemp.push(tabtitle[3])
-      // }
-      // if(whiteBtnList['TOOLING_BUDGET_BAAPPROVAL_APPLY'] || whiteBtnList['TOOLING_BUDGET_BAAPPROVAL_MONEY'] || whiteBtnList['TOOLING_BUDGET_BAAPPROVAL_ALL']){
-      //   tabtitleTemp.push(tabtitle[6])
-      // }
-      // tabtitleTemp = tabtitleTemp.map((item, index) => {
-      //   item.value = index + 1
-      //   return item
-      // })
       const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
       const ksy2 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_DETAILS'];  //  是否有详情页权限
       const list = tabtitle.map(item => {
@@ -130,6 +111,10 @@ export default {
         return item;
       })
       return list;
+    },
+
+    whiteBtnList: () => {
+      return store.state.permission.whiteBtnList
     }
   },
   mounted() {
@@ -138,17 +123,14 @@ export default {
     }
   },
   methods: {
+    filterRoutePermission(list){
+      list = list.filter(item => this.whiteBtnList[item.permissionKey]);
+      console.log('权限对应：', list, this.whiteBtnList);
+      return list;
+    },
     changeNav(val) {
       this.dataBaseInit = !this.dataBaseInit
-      },
-    // budgetManagement(val, params) {
-    //   this.isGenerateInvestmentList = val.step == 1 ? true : false
-    //   this[params] = val
-    //   this.indexChilden = val.step
-    //   if (val.step == 2) {
-    //     this.investmentListParams = val
-    //   }
-    // },
+    },
     nextStep() {
       this.nextStepLoading = true
       let carTypeProject = this.$store.state.mouldManagement.budgetManagement.carTypeProject

@@ -1,135 +1,134 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-09-07 15:59:14
+ * @LastEditTime: 2021-09-07 16:50:20
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
- * @FilePath: \rise\src\views\partsign\components\tableList.vue
+ * @FilePath: \front-web\src\components\iTableList\index.vue
 -->
 <template>
   <div class="tableContent">
-    <iSelect
-        v-if="filterTable"
-        class="chooseCol"
-        :placeholder="$t('partsprocure.PLEENTER')"
-        v-model="chooseCol"
-        @change="changeCol"
-        collapse-tags
-        filterable
-        multiple
-    >
-      <el-option
-          :value="item.props"
-          :label="$t(item.key)"
-          v-for="(item, index) in tableTitle"
-          :key="index"
-      ></el-option>
+    <iSelect v-if="filterTable"
+             class="chooseCol"
+             :placeholder="$t('partsprocure.PLEENTER')"
+             v-model="chooseCol"
+             @change="changeCol"
+             collapse-tags
+             filterable
+             multiple>
+      <el-option :value="item.props"
+                 :label="$t(item.key)"
+                 v-for="(item, index) in tableTitle"
+                 :key="index"></el-option>
     </iSelect>
-    <el-table
-      tooltip-effect="light"
-      :height="height"
-      :data="tableData"
-      v-loading="tableLoading"
-      @selection-change="handleSelectionChange"
-      :empty-text="$t('LK_ZANWUSHUJU')"
-      ref="moviesTable"
-      :class="radio && 'radio'"
-      :show-summary="showSummary"
-      :summary-method="getSummaries"
-      :row-class-name="tableRowClassName"
-      @cell-mouse-leave="cellMouseLeave" 
-      @cell-mouse-enter="cellMouseEnter"
-      @select="handleSelect" 
-      @select-all="handleSelectAll" 
-      :cell-style="borderLeft" 
-    >
-      <el-table-column
-        v-if="selection"
-        type="selection"
-        :width="selectionWidth"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-          v-if="typeIndex"
-          type="index"
-          align="center"
-          label="序号"
-          width="50">
+    <el-table tooltip-effect="light"
+              :height="height"
+              :data="tableData"
+              v-loading="tableLoading"
+              @selection-change="handleSelectionChange"
+              :empty-text="$t('LK_ZANWUSHUJU')"
+              ref="moviesTable"
+              :class="radio && 'radio'"
+              :show-summary="showSummary"
+              :summary-method="getSummaries"
+              :row-class-name="tableRowClassName"
+              @cell-mouse-leave="cellMouseLeave"
+              @cell-mouse-enter="cellMouseEnter"
+              @select="handleSelect"
+              @select-all="handleSelectAll"
+              :cell-style="borderLeft">
+      <el-table-column v-if="selection"
+                       type="selection"
+                       :width="selectionWidth"
+                       align="center"></el-table-column>
+      <el-table-column v-if="typeIndex"
+                       type="index"
+                       align="center"
+                       label="序号"
+                       width="50">
       </el-table-column>
       <template v-for="(items, index) in tableTitle">
-        <el-table-column
-          :key="index"
-          align="center"
-          :show-overflow-tooltip="items.tooltip"
-          v-if="items.props == activeItems"
-          :prop="items.props"
-          :label="$t(items.key)"
-          :min-width="items.minWidth"
-          :width="items.width"
-        >
+        <el-table-column :key="index"
+                         align="center"
+                         :show-overflow-tooltip="items.tooltip"
+                         v-if="items.props == activeItems"
+                         :prop="items.props"
+                         :label="items.key?language(items.key,items.name):items.name"
+                         :min-width="items.minWidth"
+                         :width="items.width">
           <template slot-scope="row">
             <span class="flexRow">
-              <span class="openLinkText cursor " @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
-              <span v-if="row.row[activeItems]" class="icon-gray  cursor "  @click="openPage(row.row)">
-                <icon symbol class="show" name="icontiaozhuananniu" />
-                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+              <span class="openLinkText cursor "
+                    @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
+              <span v-if="row.row[activeItems]"
+                    class="icon-gray  cursor "
+                    @click="openPage(row.row)">
+                <icon symbol
+                      class="show"
+                      name="icontiaozhuananniu" />
+                <icon symbol
+                      class="active"
+                      name="icontiaozhuanxuanzhongzhuangtai" />
               </span>
             </span>
-          </template
-          >
+          </template>
         </el-table-column>
-        <el-table-column
-          :key="index"
-          align="center"
-          :show-overflow-tooltip="items.tooltip"
-          v-else-if="items.props == 'tpInfoType'"
-          :label="items.name"
-          :prop="items.props"
-          :min-width="items.minWidth"
-          :width="items.width"
-        >
+        <el-table-column :key="index"
+                         align="center"
+                         :show-overflow-tooltip="items.tooltip"
+                         v-else-if="items.props == 'tpInfoType'"
+                         :label="items.key?language(items.key,items.name):items.name"
+                         :prop="items.props"
+                         :min-width="items.minWidth"
+                         :width="items.width">
           <template slot-scope="scope">
             <span>{{
               translateData("tp_info_type", scope.row[items.props])
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          :key="index"
-          align="center"
-          :show-overflow-tooltip="items.tooltip"
-          v-else
-          :label="items.name"
-          :prop="items.props"
-          :min-width="items.minWidth"
-          :width="items.width"
-        >
-          <template slot="header" slot-scope="" v-if="titlePopover">
-            <Popover
-                v-if="items.name !== '定点金额-SVW'"
-                placement="top-start"
-                :content="$t(items.key)"
-                trigger="hover">
-              <div slot="reference" class="tableHeader">
+        <el-table-column :key="index"
+                         align="center"
+                         :show-overflow-tooltip="items.tooltip"
+                         v-else
+                         :label="items.key?language(items.key,items.name):items.name"
+                         :prop="items.props"
+                         :min-width="items.minWidth"
+                         :width="items.width">
+          <template slot="header"
+                    slot-scope=""
+                    v-if="titlePopover">
+            <Popover v-if="items.name !== '定点金额-SVW'"
+                     placement="bottom-start"
+                     :content="$t(items.key)"
+                     trigger="hover">
+              <div slot="reference"
+                   class="tableHeader">
                 {{ $t(items.key) }}
+                <span v-if="items.isStar" style="color: red;font-size: 18px;font-weight: normal;">*</span>
               </div>
             </Popover>
-            <Popover
-                v-else
-                placement="top-start"
-                content="定点金额-SVW = 系统内该车型包中所有车型项目的common sourcing零件已定点金额汇总"
-                trigger="hover">
-              <div slot="reference" class="tableHeader">
+            <Popover v-else
+                     placement="bottom-start"
+                     content="定点金额-SVW = 系统内该车型包中所有车型项目的common sourcing零件已定点金额汇总"
+                     trigger="hover">
+              <div slot="reference"
+                   class="tableHeader">
                 {{ $t(items.key) }}
-                <icon symbol  name="iconxinxitishi"></icon>
+                <icon symbol
+                      name="iconxinxitishi"></icon>
               </div>
             </Popover>
           </template>
-          <template slot="header" slot-scope="" v-else>
+          <template slot="header"
+                    slot-scope=""
+                    v-else>
             <div>{{ $t(items.key) }}</div>
           </template>
-          <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
-            <slot :name="items.props" :row="scope.row"></slot>
+          <template v-if="$scopedSlots[items.props] || $slots[items.props]"
+                    v-slot="scope">
+            <slot :name="items.props"
+                  :row="scope.row"></slot>
           </template>
         </el-table-column>
       </template>
@@ -138,8 +137,8 @@
 </template>
 
 <script>
-import {Popover} from "element-ui"
-import {iSelect, icon} from "rise"
+import { Popover } from "element-ui"
+import { iSelect, icon } from "rise"
 import { cloneDeep } from 'lodash'
 
 export default {
@@ -151,7 +150,7 @@ export default {
     typeIndex: { type: Boolean, default: false },
     index: { type: Boolean, default: false },
     indexLabel: { type: String, default: "#" },
-    selectionWidth: { type: String, default: "40" },
+    selectionWidth: { type: String, default: "50" },
     height: { type: Number || String },
     activeItems: { type: String, default: "b" },
     radio: { type: Boolean, default: false }, // 是否单选
@@ -167,32 +166,45 @@ export default {
     iSelect,
     icon,
   },
-  data() {
+  data () {
     return {
       chooseCol: [],
       // tableTitleTemp: cloneDeep(this.tableTitle),
       tableTitleTemp: [],
+      multipleSelection: []
     }
   },
-  mounted() {
-    if(this.filterTable){
+  mounted () {
+
+    this.multipleSelection = JSON.parse(localStorage.getItem('checkList'))
+    if (this.multipleSelection) {
+      this.$nextTick(() => {
+        this.multipleSelection.forEach(i => {
+          console.log(this.$refs.moviesTable)
+          this.$refs.moviesTable.toggleRowSelection(i, true)
+        })
+      });
+    }
+
+    if (this.filterTable) {
       this.initChoose()
     }
   },
   methods: {
-    initChoose(){
+    initChoose () {
       this.chooseCol = this.tableTitle.map(item => item.props)
     },
-    changeCol(val){
+    changeCol (val) {
       let tableTitleTemp = []
       this.tableTitle.map(item => {
-        if(val.includes(item.props)){
+        if (val.includes(item.props)) {
           tableTitleTemp.push(item)
         }
       })
       this.tableTitleTemp = tableTitleTemp
     },
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
+
       if (this.radio) {
         if (val.length > 1) {
           //取出最后val的最后一个返回出来
@@ -206,41 +218,43 @@ export default {
           this.$emit("handleSelectionChange", val);
         }
       } else {
+        this.multipleSelection = val
+        localStorage.setItem('checkList', JSON.stringify(val))
         this.$emit("handleSelectionChange", val);
       }
     },
-    openPage(e) {
+    openPage (e) {
       this.$emit("openPage", e);
     },
-    translateData(key, row) {
+    translateData (key, row) {
       try {
         return this.vm.getGroupList(key).find((i) => i.key == row).value;
       } catch (error) {
         return "";
       }
     },
-    cellMouseLeave() {
+    cellMouseLeave () {
       this.$emit("cellMouseLeave");
     },
-    cellMouseEnter(row) {
+    cellMouseEnter (row) {
       this.$emit("cellMouseEnter", row);
     },
-    handleSelect(selection,row){
+    handleSelect (selection, row) {
       const selectdBorder = row.selectedBorder
-      this.$set(row,'selectedBorder',!selectdBorder)
+      this.$set(row, 'selectedBorder', !selectdBorder)
     },
-    handleSelectAll(selection){  
+    handleSelectAll (selection) {
       const flag = selection.length
-      for(let i= 0  ; i<flag;i++){
-        this.$set(selection[i],'selectedBorder',!!flag)
+      for (let i = 0; i < flag; i++) {
+        this.$set(selection[i], 'selectedBorder', !!flag)
       }
-      !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+      !flag ? this.tableData.forEach(i => { i.selectedBorder = !i.selectedBorder }) : ''
     },
-    borderLeft({row, column, rowIndex, columnIndex}){
-      if(columnIndex === 0 && row.selectedBorder === true){
-         return "border-left:2px solid #1660F1;"
+    borderLeft ({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0 && row.selectedBorder === true) {
+        return "border-left:2px solid #1660F1;"
       }
-      else{
+      else {
         return ""
       }
     }
@@ -248,15 +262,15 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-.tableContent{
+.tableContent {
   //position: relative;
-  .chooseCol{
+  .chooseCol {
     width: 330px;
     position: absolute;
     top: -55px;
   }
 }
-.tableHeader{
+.tableHeader {
   max-width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -269,26 +283,26 @@ export default {
   ::v-deep thead .el-table-column--selection .cell {
     display: none;
   }
-  .icon-gray{
+  .icon-gray {
     cursor: pointer;
-    .active{
+    .active {
       display: none;
     }
-    .show{
+    .show {
       display: block;
     }
   }
-  .flexRow{
+  .flexRow {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .icon-gray:hover{
+  .icon-gray:hover {
     cursor: pointer;
-    .show{
+    .show {
       display: none;
     }
-    .active{
+    .active {
       display: block;
     }
   }

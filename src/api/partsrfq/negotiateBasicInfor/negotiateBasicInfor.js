@@ -72,9 +72,9 @@ export function modifyRfqToRemark(parmars) {
   })
 }
 //map
-export function batchSupplierMapOverview(parmars) {
+export function overviewBatchSupplierMap(parmars) {
   return requst({
-    url: `/batchOverview/batchSupplierMapOverview`,
+    url: `/batchOverview/overviewBatchSupplierMap`,
     method: 'POST',
     data: parmars
   })
@@ -92,6 +92,14 @@ export function getRfqSupplierAndCategory(parmars) {
   return requst({
     url: `/costAnalysisTool/rfq/getRfqSupplierAndCategory?rfqId=${parmars}`,
     method: 'GET',
+    data: parmars
+  })
+}
+//材料组/供应商--列表
+export function saveOverviewSupplierBatchReport(parmars) {
+  return requst({
+    url: `categoryReport/saveOverviewSupplierBatchReport`,
+    method: 'POST',
     data: parmars
   })
 }
