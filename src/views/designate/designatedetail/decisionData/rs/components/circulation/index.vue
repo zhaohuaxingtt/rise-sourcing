@@ -193,17 +193,17 @@ export default {
       // 年降开始时间
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
-        const list = row.filter((item)=> item.ltcRate!='0.00');
+        const list = row.filter((item)=> item.ltcRateStr !='0.00');
         return list.length ? list[0].ltcDate : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
        let strList = [];
        let strFlag = false;
        for(let i =0;i<row.length;i++){
-         if(row[i].ltcRate !='0.00'){
+         if(row[i].ltcRateStr  !='0.00'){
             strFlag = true;
-           strList.push(row[i].ltcRate);
-         }else if(strFlag && row[i].ltcRate == '0.00'){
+           strList.push(row[i].ltcRateStr );
+         }else if(strFlag && row[i].ltcRateStr  == '0.00'){
            break
          }
        }

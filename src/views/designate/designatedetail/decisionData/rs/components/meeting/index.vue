@@ -32,10 +32,10 @@
             <template v-else>
               <div  class="rsTop-right-item-title">{{item.name}} {{item.enName}}</div>
                 <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
-                  <div v-for="(item,index) in basicData[item.props]" :key="index" style="overflow: hidden;text-overflow: ellipsis;">
+                  <div v-for="(item,index) in basicData[item.props]" :key="index">
                       <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
-                        <div><span style="white-space: nowrap;">{{item.shortNameZh}}/</span>
-                        <span style="white-space: nowrap;">{{item.shortNameEn}}</span><br/></div>
+                        <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
+                        <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
                       </el-tooltip>
                   </div>
                 </div>       
@@ -321,7 +321,8 @@ export default {
           let temdata = res.data || {}
           temdata.suppliersNow =temdata.supplierVoList
           this.basicData = temdata
-          let data = res.data?.linesrEach((val,index) => {
+          let data = res.data?.lines
+          data.forEach((val,index) => {
             let suppliersNowCn =[]
             let suppliersNowEn =[]
             console.log( val.supplierVoList);
@@ -335,7 +336,7 @@ export default {
               let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
               supplierData.push(dataSuper)
             }
-            supplierData = supplierData.length ?   supplierData.join('\n') : '-'
+            supplierData = supplierData.length ? supplierData.join('\n') : '-'
             val.suppliersNow = supplierData.replace(/\n/g,"<br/>");
           console.log(supplierData);
           })
@@ -376,7 +377,7 @@ export default {
       // 年降开始时间
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
-        const list = row.filter((item)=> item.ltcRate!='0.00');
+        const list = row.filter((item)=> item.ltcRateStr !='0.00');
         return list.length ? list[0].ltcDate : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
@@ -385,10 +386,10 @@ export default {
 
        for(let i =0;i<row.length;i++){
          
-         if(row[i].ltcRate !='0.00' && row[i].ltcRate){
+         if(row[i].ltcRateStr  !='0.00' && row[i].ltcRateStr ){
             strFlag = true;
-           strList.push(row[i].ltcRate-0);
-         }else if(strFlag && row[i].ltcRate == '0.00'){
+           strList.push(row[i].ltcRateStr -0);
+         }else if(strFlag && row[i].ltcRateStr  == '0.00'){
            break
          }
        }

@@ -136,17 +136,17 @@ export default {
       // 年降开始时间
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
-        const list = row.filter((item)=> item.ltcRate!='0.00');
+        const list = row.filter((item)=> item.ltcRateStr !='0.00');
         return list.length ? list[0].ltcDate : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
        let strList = [];
        let strFlag = false;
        for(let i =0;i<row.length;i++){
-         if(row[i].ltcRate !='0.00'){
+         if(row[i].ltcRateStr  !='0.00'){
             strFlag = true;
-           strList.push(row[i].ltcRate);
-         }else if(strFlag && row[i].ltcRate == '0.00'){
+           strList.push(row[i].ltcRateStr );
+         }else if(strFlag && row[i].ltcRateStr  == '0.00'){
            break
          }
        }
@@ -284,7 +284,7 @@ export default {
             return {
               ltcDate: item['ltcDate'+(ltcIndex+1)] ? moment(item['ltcDate'+(ltcIndex+1)]).format('yyyy-MM') : '',
               ltcDateIsChange:item['ltcDateIsChange'+(ltcIndex+1)],
-              ltcRate:item['ltcRate'+(ltcIndex+1)],
+              ltcRateStr :item['ltcRateStr '+(ltcIndex+1)],
               ltcRateIsChange:item['ltcRateIsChange'+(ltcIndex+1)]
             }
           })
@@ -364,8 +364,8 @@ export default {
               singleItem['ltcDate'+(index+1)] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcDate ? item.ltcs[index].ltcDate : element.ltcDate),
               singleItem['ltcDate'+(index+1)+'Temp'] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcDate ? moment(item.ltcs[index].ltcDate).format('yyyy-MM') : element.ltcDate),
               singleItem['ltcDateIsChange'+(index+1)] = item.ltcs && item.ltcs[index]?.ltcDateIsChange ? item.ltcs[index].ltcDateIsChange : element.ltcDateIsChange,
-              singleItem['ltcRate'+(index+1)] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcRate ? item.ltcs[index].ltcRate : element.ltcRate),
-              singleItem['ltcRate'+(index+1)+'Temp'] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcRate ? item.ltcs[index].ltcRate : element.ltcRate),
+              singleItem['ltcRateStr '+(index+1)] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcRateStr  ? item.ltcs[index].ltcRateStr  : element.ltcRateStr ),
+              singleItem['ltcRateStr '+(index+1)+'Temp'] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcRateStr  ? item.ltcs[index].ltcRateStr  : element.ltcRateStr ),
               singleItem['ltcRateIsChange'+(index+1)] = item.ltcs && item.ltcs[index]?.ltcRateIsChange ? item.ltcs[index].ltcRateIsChange : element.ltcRateIsChange
             })
             return singleItem
