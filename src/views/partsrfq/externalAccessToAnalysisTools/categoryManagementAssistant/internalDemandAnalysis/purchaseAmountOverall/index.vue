@@ -11,7 +11,10 @@
     <div class="title flex-between-center-center margin-bottom30">
       <div>
         <div class="text flex">{{language('CAIGOUJINGEZONGLAN','采购金额总览')}}
-          <el-popover class="tip" trigger="hover" placement="top-start" width="400" :content="language('PVPSJLYYTZJGAJLJGYSCGGCLSYYWL','Turnover=Price*Volumeo Price：数据来源于台账价格A价（零件+供应商+采购工厂定位唯一价格）o Volume：历史零件产量数据来源于Pbom，未来零件产量数据来源于BKM')">
+          <el-popover class="tip" trigger="hover" placement="top-start">
+            <div>Turnover=Price*Volume</div>
+            <div style="text-indent: 15px">{{language('PLJLYYTZJGAJLJGYSCGGC','Price：数据来源于台账价格A价（零件+供应商+采购工厂定位唯一价格）')}}</div>
+            <div style="text-indent: 15px">{{language('VLSLJCLSJLYYPWLLJCLSJLYYBKM','Volume：历史零件产量数据来源于Pbom，未来零件产量数据来源于BKM')}}</div>
             <icon slot="reference" name="iconxinxitishi" tip="" symbol></icon>
           </el-popover>
         </div>
@@ -131,7 +134,13 @@ export default {
     async dictByCode() {
       const res = await dictByCode('CATEGORY_MANAGEMENT_LIST')
       this.formGoup.pageList = res
-      this.form.page = this.formGoup.pageList[0].code
+      if (this.form.page === '') {
+        this.form.page = this.formGoup.pageList[0].code
+      }
+      this.init()
+      this.renderBi()
+    },
+    async getCategoryAnalysis() {
       const pms = {
         categoryCode: this.form.categoryCode,
         schemeType: 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT'
@@ -140,6 +149,7 @@ export default {
       if (res1.data.categoryCode && res1.data.operateLog) {
         this.form = JSON.parse(res1.data.operateLog)
       }
+      this.dictByCode()
     },
     async handleSave() {
       let page = ''
@@ -187,8 +197,7 @@ export default {
       const res = await getPurchaseAmountPbi()
       if (res.data) {
         this.url = res.data
-        this.init()
-        this.renderBi()
+        this.getCategoryAnalysis()
       }
     },
     init() {
@@ -197,7 +206,7 @@ export default {
         tokenType: pbi.models.TokenType.Embed,
         accessToken: this.url.accessToken,
         embedUrl: this.url.embedUrl,
-        pageName: "",
+        pageName: this.form.page,
         settings: {
           commands: [
             {
@@ -313,12 +322,11 @@ export default {
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
-  async created() {
-    await this.dictByCode()
-    await this.powerBiUrl()
+  created() {
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
+    this.powerBiUrl()
   },
 }
 </script>
