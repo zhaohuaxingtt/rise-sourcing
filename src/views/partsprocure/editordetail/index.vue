@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-22 21:52:48
+ * @LastEditTime: 2021-09-22 22:12:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -478,9 +478,7 @@
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 			this.partProjectType = this.infoItem.partProjectType;
 			this.getDatailFn();
-			this.getProcureGroup();
 			this.getDicts()
-			this.purchasingDept()
 		},
 		methods: {
    /**
@@ -490,7 +488,7 @@
     */
 			changeUserDept(){
 				this.linieId = ''
-				this.getLinie(this.fromGroup.linieDept)
+				this.getLinie(this.detailData.linieDept)
 			},
 			getLinie(id){
 				purchasingLiline(id).then(r=>{
@@ -586,7 +584,7 @@
 					if(this.detailData.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
 						this.$refs.materialGroupInfo.getMaterialGroup()
 					}
-					this.getLinie(this.detailData.linieDept)
+					this.getProcureGroup()
 				});
 			},
 			//获取liline部门
@@ -601,10 +599,10 @@
 					if (res.data) {
 						this.fromGroup = {
 							...this.fromGroup,
-							...res.data,
-							...{LINIE_DEPT:[]},
-							...{LINIE:[]}
+							...res.data
 						}
+						this.purchasingDept()
+						this.getLinie(this.detailData.linieDept)
 					}
 				}).catch(err=>{
 					iMessage.error(err.desZh)
