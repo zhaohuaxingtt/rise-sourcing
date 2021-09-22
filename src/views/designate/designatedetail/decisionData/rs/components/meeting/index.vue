@@ -32,10 +32,10 @@
             <template v-else>
               <div  class="rsTop-right-item-title">{{item.name}} {{item.enName}}</div>
                 <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
-                  <div v-for="(item,index) in basicData[item.props]" :key="index" style="overflow: hidden;text-overflow: ellipsis;">
+                  <div v-for="(item,index) in basicData[item.props]" :key="index">
                       <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
-                        <div><span style="white-space: nowrap;">{{item.shortNameZh}}/</span>
-                        <span style="white-space: nowrap;">{{item.shortNameEn}}</span><br/></div>
+                        <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
+                        <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
                       </el-tooltip>
                   </div>
                 </div>       
@@ -336,7 +336,7 @@ export default {
               let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
               supplierData.push(dataSuper)
             }
-            supplierData = supplierData.length ?   supplierData.join('\n') : '-'
+            supplierData = supplierData.length ? supplierData.join('\n') : '-'
             val.suppliersNow = supplierData.replace(/\n/g,"<br/>");
           console.log(supplierData);
           })
