@@ -55,7 +55,11 @@
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_SIGN_EXPORT|配件-配件签收-导出">{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" class="aotoTableHeight"></tableList>
+            <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" class="aotoTableHeight">
+              <template #supplierSapCode="scope">
+                <span>{{ scope.row.supplierSapCode || scope.row.supplierSvwTempCode }}</span>
+              </template>
+            </tableList>
                 <!------------------------------------------------------------------------>
                 <!--                  表格分页                                          --->
                 <!------------------------------------------------------------------------>

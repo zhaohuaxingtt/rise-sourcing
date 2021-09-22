@@ -9,7 +9,7 @@
 
 export const tableTitle = [
   {props:'supplierName',name:'供应商', enName: 'Supplier Name', key: "GONGYINGSHANG", tooltip: true, width: 300},
-  {props:'supplierNo',name:'供应商编号', enName: 'Supplier No.', key: "GONGYINGSHANGBIANHAO", tooltip: true},
+  {props:'sapCode',name:'供应商编号', enName: 'Supplier No.', key: "GONGYINGSHANGBIANHAO", tooltip: true},
   {props:'location',name:'所在地', enName: 'Location', key: "SUOZAIDI", tooltip: true},
   {props:'isMbdl',name:'是否MBDL', enName: 'MBDL', key: "MBDL", tooltip: true},
   {props:'isQuotation',name:'已报价', enName: 'Completely Quoted', key: "YIBAOJIA", tooltip: true, width: 150},
@@ -24,8 +24,8 @@ export const tableTitle = [
 ]
 
 export const mockData = [
-  {supplier:'dds', supplierNo: '432kjk23lej2', location: 'xx地', MQ: 'A', PL: 'B+', EP: 'C', withIcon: ['MQ']},
-  {supplier:'ddfdsas', supplierNo: '432k32jk23lej2', location: 'xx地', MQ: 'A', PL: 'B+', EP: 'C'}
+  {supplier:'dds', sapCode: '432kjk23lej2', location: 'xx地', MQ: 'A', PL: 'B+', EP: 'C', withIcon: ['MQ']},
+  {supplier:'ddfdsas', sapCode: '432k32jk23lej2', location: 'xx地', MQ: 'A', PL: 'B+', EP: 'C'}
 ]
 
 export const partsRatingTableTitle = [

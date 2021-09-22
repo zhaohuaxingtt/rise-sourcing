@@ -42,6 +42,11 @@
             <span v-else>{{ scope.row.companyAddress }}</span>
           </template>
         </el-table-column>
+        <el-table-column :key="index" align="center" fixed="left" :label="items.key ? language(items.key,items.name) : items.name" v-if="items.props == 'svwCode'">
+          <template v-slot="scope">
+            {{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}
+          </template>
+        </el-table-column>
         <el-table-column :key="index" align='center' fixed="left" v-else-if="items.props == actionProps" :prop="items.props"
                          :label="items.key ? language(items.key,items.name) : items.name">
           <template slot-scope="scope">
