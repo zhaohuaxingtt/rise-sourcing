@@ -11,7 +11,7 @@ export const SearchList = [
   {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_BUYERNAME|Linie',selectOption:'buyerName',noShowAll:true,filterable:true,clearable:true},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_BRAND|品牌',selectOption:'brand'},
   {props:'cartype',label:'车型',isNewSelect:true,type:'select',labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_CARTYPE|车型',selectOption:'cartype',multiple:true,showCode:['AeA'],filterable:true},
-  // {props:'a',label:'分派状态',type:'select',labelKey:'LK_AEKO_FENPAIZHUANGTAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_FENPAIZHUANGTAI|分派状态',selectOption:'a'}
+  // {props:'sendStatus',label:'分派状态',type:'select',labelKey:'LK_AEKO_FENPAIZHUANGTAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_FENPAIZHUANGTAI|分派状态',selectOption:'sendStatus',isDicoptions:true,dicoptionKey:'AEKO_SEND_STATUS'}
 ]
 
 
@@ -73,11 +73,11 @@ export const linieTableTitle = [
 
 // 新增零件表单
 export const addPartsForm = [
-  {props:'a',label:'零件名(中)',labelKey:'LK_LINGJIANMINGZHONG'},
-  {props:'b',label:'零件名(德)',labelKey:'LK_LINGJIANMINGDE'},
-  {props:'c',label:'BMG',labelKey:'LK_BMG'},
-  {props:'d',label:'零件单位',labelKey:'LK_LINGJIANDANWEI'},
-  {props:'e',label:'变更类型',labelKey:'LK_AEKOBIANGENGLEIXING',required:true,type:'select',selectOption:'e'},
-  {props:'f',label:'涉及PID',labelKey:'LK_AEKO_SHEJIPID',required:true,type:'select',selectOption:'f',multiple:true,},
-  {props:'g',label:'每⻋⽤量',labelKey:'LK_AEKO_ADDPARTS_MEICHEYONGLIANG',required:true,type:'input'},
+  {props:'partNameZh',label:'零件名(中)',labelKey:'LK_LINGJIANMINGZHONG'},
+  {props:'partNameDe',label:'零件名(德)',labelKey:'LK_LINGJIANMINGDE'},
+  {props:'bmg',label:'BMG',labelKey:'LK_BMG',isBoolean:true},
+  {props:'unitNameZh',label:'零件单位',labelKey:'LK_LINGJIANDANWEI'},
+  {props:'changeType',label:'变更类型',labelKey:'LK_AEKOBIANGENGLEIXING',required:true,type:'select',selectOption:'changeType'},
+  {props:'pid',label:'涉及PID',labelKey:'LK_AEKO_SHEJIPID',required:true,type:'select',selectOption:'pid',multiple:true,filterable:true,clearable:true},
+  {props:'perCarDosage',label:'每⻋⽤量',labelKey:'LK_AEKO_ADDPARTS_MEICHEYONGLIANG',required:true,type:'input'},
 ]

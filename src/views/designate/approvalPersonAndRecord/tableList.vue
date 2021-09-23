@@ -43,7 +43,7 @@
 <script>
 import {iSelect,iInput} from 'rise'
 import {_getMathNumber} from '@/utils'
-import { getDeptSub, getDeptLeader } from '@/api/designate/decisiondata/approval'
+import { getSubDeptListByParam, getDeptLeader } from '@/api/designate/decisiondata/approval'
 export default{
   components:{iSelect,iInput},
   props:{
@@ -78,8 +78,8 @@ export default{
     },
     getDeptSubOptions(deptId, row) {
       this.$set(row, 'approveDeptNum', '')
-      getDeptSub(deptId).then(res => {
-        this.$set(row, 'deptSubOptions', res.data.supDeptList?.map(item => {
+      getSubDeptListByParam(deptId).then(res => {
+        this.$set(row, 'deptSubOptions', res.data.map(item => {
           return {
             ...item,
             label: item.nameZh,
@@ -92,6 +92,7 @@ export default{
       return this.options[optionType]
     },
     changeValue(val, row, item) {
+      console.log('val',val,'row',row,'item',item);
       this.$set(row, item.props, val)
       if (item.props === 'approveParentDeptNum') {
         this.getDeptSubOptions(val, row)
