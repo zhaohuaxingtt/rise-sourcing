@@ -104,7 +104,7 @@
             <template slot-scope="scope">
               <!----------------------------备注列-------------------------------->
               <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>
-              <span v-else-if="childItem.type === 'rate'">{{getRate(scope.row, childItem.props).partSupplierRate}}</span>
+              <span v-else-if="childItem.type === 'rate'">{{getRate(scope.row, childItem.props).rate}}</span>
               <icon v-else-if="childItem.type == 'rate' && getRate(scope.row, childItem.props).partSupplierRate === 0" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog', scope.row)"></icon>
               <span>{{scope.row[childItem.props]}}</span>
             </template>

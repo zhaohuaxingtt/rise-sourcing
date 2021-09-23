@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-09-22 17:11:02
+ * @LastEditTime: 2021-09-23 10:38:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -10,7 +10,7 @@ export const contentDeclareQueryForm = {
   partNum: "",
   supplierSapCode: "",
   cartypeProjectCode: [""],
-  status: ["EMPTY"],
+  status: [""],
   isMtz: "",
   procureFactory: "",
   supplierNameZh: "",
