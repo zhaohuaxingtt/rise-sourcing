@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-22 19:49:00
+ * @LastEditTime: 2021-09-23 10:23:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -146,7 +146,7 @@
                                  :label="item.motorName"> </el-option>
                     </el-select>
                     <span class="margin-bottom20 "
-                          style="line-height:16px;height:16px">best Ball</span>
+                          style="line-height:16px;height:16px">{{productFactoryNames}}</span>
                     <span class="yield"
                           style="line-height:12px">{{firstBarData.output}}</span>
                   </div>
@@ -434,10 +434,12 @@ export default {
       maxDataList: [],
       maxData: "",
       totalWidth: 0,
-      clientHeight: false
+      clientHeight: false,
+      productFactoryNames: ""
     };
   },
   async created () {
+
     await this.init()
     let params = {
       comparedType: this.comparedType,
@@ -476,6 +478,7 @@ export default {
       this.rfqId = this.$store.state.rfq.rfqId
       this.entryStatus = this.$store.state.rfq.entryStatus
       this.chemeId = this.$route.query.chemeId
+      this.productFactoryNames = this.$route.query.productFactoryNames
       await getSchemeInfo({
         schemeId: this.chemeId
       }).then(res => {
