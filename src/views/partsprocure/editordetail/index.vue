@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-22 22:20:40
+ * @LastEditTime: 2021-09-23 11:30:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -124,8 +124,8 @@
 						<!------------------------零件采购项目类型为一次性采购/DB一次性采购类型时与是否DB件联动--------------------------------------->
 						<iFormItem v-if="[partProjTypes.YICIXINGCAIGOU, partProjTypes.DBYICHIXINGCAIGOU].includes(detailData.partProjectType)" :label="language('SHIFOUDBJIAN','是否DB件') + ':'" name="test">
 							<iSelect v-model="detailData.isDB" @change="onIsDBChange">
-								<el-option :value="1" :label="language('YES', '是')"></el-option>
-								<el-option :value="0" :label="language('NO', '否')"></el-option>
+								<el-option :value="true" :label="language('YES', '是')"></el-option>
+								<el-option :value="false" :label="language('NO', '否')"></el-option>
 							</iSelect>
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->

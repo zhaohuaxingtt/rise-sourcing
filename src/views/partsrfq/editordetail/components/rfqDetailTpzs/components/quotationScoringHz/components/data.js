@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-09-22 20:13:59
+ * @LastEditTime: 2021-09-23 14:00:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -10,34 +10,34 @@ import {_getMathNumber} from '@/utils'
 import {partProjTypes} from '@/config'
 //表格全集。
 export const fstitle = [
-  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false},
-  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'130',tooltip:false},
-  {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false},
+  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false,fixed:true},
+  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'130',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'ebr',label:'EBR',i18n:'',width:'100',tooltip:false}
 ]
 export const gstitle = [
-  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false},
-  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'130',tooltip:false},
-  {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'currentSupplier',label:'CurrentSupplier',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'currentShare',label:'Share',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'currentAPrice',label:'Current A Price',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'currentBPrice',label:'Current B Price',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'currentTto',label:'Current TTO',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'currentSupplierSaving',label:'Cur. Supplier Saving',i18n:'',width:'100',tooltip:false},
+  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false,fixed:true},
+  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'130',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'currentSupplier',label:'Cur. Supplier',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'currentShare',label:'Share',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'currentAPrice',label:'Cur. \n A Price',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'currentBPrice',label:'Cur. \n B Price',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'currentTto',label:'Cur. TTO',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'currentSupplierSaving',label:'Cur.\n Sup.Saving',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'ebr',label:'EBR',i18n:'',width:'100',tooltip:false}
 ]
 //表格循环部分
@@ -79,7 +79,7 @@ export const gstableTileXh = function(index){
     {type:'',props:`${index?index:''}bnkApprovalStatus`,label:'BNK status',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}tooling`,label:'Tooling',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}developmentCost`,label:'Dev. cost',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}supplierSopDate`,label:'Supplier SOP date',i18n:'',width:'100',tooltip:true},
+    {type:'',props:`${index?index:''}supplierSopDate`,label:'Sup. SOP date',i18n:'',width:'100',tooltip:true},
     {type:'',props:`${index?index:''}ltc`,label:'LTC',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC Star.Date',i18n:'',width:'100',tooltip:true},
     {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype price',i18n:'',width:'100',tooltip:false},
