@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-22 14:54:13
+ * @LastEditTime: 2021-09-23 10:36:57
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -79,7 +79,7 @@ import {iCard,icon,iFormGroup,iFormItem,iInput,iMessage } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress'
 import carEmpty from '@/views/project/components/empty/carEmpty'
 import projectStateChart from './components/projectStateChart'
-import {pendingChartData,chartData,projectRisk,partProc,projectDone} from './components/lib/data'
+import {pendingChartData,chartData,projectRisk,partProc,projectDone,patchStatus} from './components/lib/data'
 import {getLastCarType, getProjectProgressMonitor,getAutoData,updateAutoData} from '@/api/project/process'
 import {selectDictByKeyss} from '@/api/dictionary'
 
@@ -95,6 +95,7 @@ export default {
       projectRisk,
       projectDone,
       partProc,
+      patchStatus,
       data: [],
       notInTips: 0,
       ckdconfirm: 0,
@@ -138,12 +139,15 @@ export default {
       const partProc = this.partProc.find(o => o.name === params.name) || {}
       // 项目已结束指标
       const projectDone = this.projectDone.find(o => o.name === params.name) || {}
-     
+      // 匹配异常
+      const patchStatus = this.patchStatus.find(o => o.name === params.name) || {}
+
       // 匹配异常跳转
       if (targetIndex === 0 && !(target && target.disabled)) {
         this.$router.push({name: 'progressmonitoring-parts-taskList', query: {
           cartypeProId: this.carProject,
           carProjectName: this.carProjectName,
+          status: patchStatus.code
           }
         })
       }
@@ -238,8 +242,6 @@ export default {
         this.getLastCarType()
         return
       }
-      // 获取车型状态是否加入TIPS
-      this.getAutoCarTips(carProjectId)
       // console.log('carProjectId', carProjectId, carProjectName)
       try {
         // const res = require('./moke.json')
@@ -284,6 +286,8 @@ export default {
             return o
           })
           this.data = [...pendingChartData, ...data]
+          // 获取车型状态是否加入TIPS
+          this.getAutoCarTips(carProjectId)
           console.log('this.data', this.data)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
