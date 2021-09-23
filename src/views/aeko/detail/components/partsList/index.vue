@@ -26,6 +26,11 @@
                         :multiple="item.multiple"
                         :clearable="item.clearable" 
                     />
+                    <iDicoptions 
+                        v-else-if="item.isDicoptions"
+                        v-model="searchParams[item.props]"
+                        :optionKey="item.dicoptionKey"
+                    />
                     <iSelect 
                         v-else
                         class="multipleSelect" 
@@ -150,6 +155,7 @@ import departBackDialog from './components/departBackDialog'
 import addPartsDialog from './components/addPartsDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
 import aekoSelect from '../../../components/aekoSelect'
+import iDicoptions from 'rise/web/components/iDicoptions' 
 import {
     getPartPage,
     deletePart,
@@ -178,6 +184,7 @@ export default {
         departBackDialog,
         aekoSelect,
         addPartsDialog,
+        iDicoptions,
     },
     computed: {
         //eslint-disable-next-line no-undef
@@ -329,7 +336,7 @@ export default {
             const {query} = this.$route;
             const { requirementAekoId ='',} = query;
             const { page,searchParams,aekoInfo={} } = this;
-            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName} = searchParams;
+            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName,sendStatus} = searchParams;
             let carTypeCodeList=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
@@ -349,6 +356,7 @@ export default {
                 partNum,
                 partNameZh,
                 buyerName,
+                sendStatus,
                 carTypeCodeList:(carTypeCodeList.length == 1 && carTypeCodeList[0] === '') ? [] : carTypeCodeList,
                 linieDeptNumList:(linieDeptNumList.length == 1 && linieDeptNumList[0] === '') ? [] : linieDeptNumList,
             }
