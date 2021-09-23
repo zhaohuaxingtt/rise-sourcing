@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-09-18 16:07:31
+ * @LastEditTime: 2021-09-23 16:10:04
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -26,7 +26,8 @@
           </el-tooltip>
         </span>
       </div>
-      <timeline  v-permission="RFQ_DETAIL_TIPS_BAOJIAFENXI_RENWUJINDU" :timeList='timeListdata'></timeline>
+      <timeline v-if='timeListdata.length>0' v-permission="RFQ_DETAIL_TIPS_BAOJIAFENXI_RENWUJINDU" :timeList='timeListdata'></timeline>
+      <div v-else class="noData">当前暂无进度数据</div>
       <tabelData :tableTile='tableTile' :tableData='tableDatas'></tabelData>
   </div>
 </template>
@@ -140,6 +141,13 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .noData{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid ghostwhite;
+    padding: 20px;
+    text-align: center;
+  }
   .timeline{
     .topline{
       span{

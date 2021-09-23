@@ -115,13 +115,13 @@
         </span> 
       </template>
       <!-- 定点类型 -->
-      <template #nominateProcessType="scope">
+      <!-- <template #nominateProcessType="scope">
         <span>{{(scope.row.nominateProcessType && scope.row.nominateProcessType.desc) || ''}}</span>
-      </template>
+      </template> -->
       <!-- 状态 -->
-      <template #applicationStatus="scope">
+      <!-- <template #applicationStatus="scope">
         <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || ''}}</span>
-      </template>
+      </template> -->
       <!-- 会议状态 -->
       <template #meetingStatus="scope">
         <span>{{(scope.row.meetingStatus && scope.row.meetingStatus.desc) || ''}}</span>
@@ -264,7 +264,6 @@ export default {
           path: '/designate/rfqdetail',
           query: {
             desinateId: row.id, 
-            rsStatus: row.rsStatus || "",
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
             partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',
             applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',

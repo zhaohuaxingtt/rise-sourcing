@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-22 22:20:40
+ * @LastEditTime: 2021-09-23 19:02:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -123,9 +123,9 @@
 						</iFormItem> -->
 						<!------------------------零件采购项目类型为一次性采购/DB一次性采购类型时与是否DB件联动--------------------------------------->
 						<iFormItem v-if="[partProjTypes.YICIXINGCAIGOU, partProjTypes.DBYICHIXINGCAIGOU].includes(detailData.partProjectType)" :label="language('SHIFOUDBJIAN','是否DB件') + ':'" name="test">
-							<iSelect v-model="detailData.isDB" @change="onIsDBChange">
-								<el-option :value="1" :label="language('YES', '是')"></el-option>
-								<el-option :value="0" :label="language('NO', '否')"></el-option>
+							<iSelect v-model="detailData.isDb" @change="onIsDBChange">
+								<el-option :value="true" :label="language('YES', '是')"></el-option>
+								<el-option :value="false" :label="language('NO', '否')"></el-option>
 							</iSelect>
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->
@@ -189,7 +189,7 @@
 							</iSelect>
 						</iFormItem> -->
 						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
-						<iFormItem v-if="[partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB" :label="language('LK_HUOBI','货币') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb" :label="language('LK_HUOBI','货币') + ':'" name="test">
 							<iSelect v-model="detailData.currencyCode" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
@@ -247,7 +247,7 @@
 							</iSelect>
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
 							<iSelect v-model="detailData.purchaseClause" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PURCHASE" :key="index">
@@ -290,7 +290,7 @@
 							</iText>
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
 							<iSelect v-model="detailData.payClause" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
@@ -760,7 +760,7 @@
 			*/
 			onIsDBChange(data) {
 				this.detailData.partProjectType = data ? partProjTypes.DBYICHIXINGCAIGOU : partProjTypes.YICIXINGCAIGOU
-				this.detailData.partProjectType === partProjTypes.DBYICHIXINGCAIGOU && (this.detailData.isDB = 1)
+				this.detailData.partProjectType === partProjTypes.DBYICHIXINGCAIGOU && this.detailData.isDb
 			},
 			/**
 			* @description: 零件项目类型,当类型为db一次性采购，isDB默认选是
@@ -768,7 +768,7 @@
 			* @return {*}
 			*/
 			onPartProjectTypeChange(data) {
-				this.detailData.isDB = data === partProjTypes.DBYICHIXINGCAIGOU ? 1: 0
+				this.detailData.isDb = data === partProjTypes.DBYICHIXINGCAIGOU
 			}
 		}
 }
