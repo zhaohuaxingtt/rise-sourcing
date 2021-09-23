@@ -6,7 +6,7 @@
       >
       <div class="floatright" v-if="!$store.getters.isPreview">
         <!-- 排序 -->
-        <iButton @click="sortVisibal = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_DRAWING_SORT|排序">
+        <iButton v-if="!nominationDisabled" @click="sortVisibal = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_DRAWING_SORT|排序">
           {{ language("strategicdoc_PaiXu",'排序') }}
         </iButton>
         <!-- 全部下载 -->
@@ -14,7 +14,7 @@
           {{ language("strategicdoc_QuanBuXiaZai",'全部下载') }}
         </iButton>
         <!-- 上传 -->
-        <iButton @click="uploadVisibal = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_DRAWING_UPLOAD|上传">
+        <iButton v-if="!nominationDisabled" @click="uploadVisibal = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_DRAWING_UPLOAD|上传">
           {{ language("strategicdoc_ShangChuan",'上传') }}
         </iButton>
       </div>
@@ -73,6 +73,12 @@ export default {
         totalCount: 0
       }
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
   },
   components: {
     iCard,

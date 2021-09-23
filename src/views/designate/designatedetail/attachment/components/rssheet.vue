@@ -17,29 +17,31 @@
           {{ language("strategicdoc_XiaZai",'下载') }}
         </iButton>
         <span>
+        <span v-if="!nominationDisabled">
           <!-- 删除 -->
-        <iButton
-          class="btn"
-          @click="deleteFile($event, getFetchDataList)"
-          v-if="!$store.getters.isPreview"
-        >
-          {{ language("LK_SHANCHU",'删除') }}
-        </iButton>
-        <!-- 上传文件 -->
-        <!-- <iButton
-          v-if="!$store.getters.isPreview"
-          @click="$router.push({path: '/designate/decisiondata/attachment/upload'})"
-        >
-          {{ language("strategicdoc.ShangChuanXianXiaRS") }}
-        </iButton> -->
-        <upload
-          class="upload-trigger btn"
-          v-if="!$store.getters.isPreview"
-          :hideTip="true"
-          :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
-          :buttonText="language('strategicdoc_ShangChuanXianXiaRS','上传线下RS文件')"
-          @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '103'}), getFetchDataList)"
-        />
+          <iButton
+            class="btn"
+            @click="deleteFile($event, getFetchDataList)"
+            v-if="!$store.getters.isPreview"
+          >
+            {{ language("LK_SHANCHU",'删除') }}
+          </iButton>
+          <!-- 上传文件 -->
+          <!-- <iButton
+            v-if="!$store.getters.isPreview"
+            @click="$router.push({path: '/designate/decisiondata/attachment/upload'})"
+          >
+            {{ language("strategicdoc.ShangChuanXianXiaRS") }}
+          </iButton> -->
+          <upload
+            class="upload-trigger btn"
+            v-if="!$store.getters.isPreview"
+            :hideTip="true"
+            :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
+            :buttonText="language('strategicdoc_ShangChuanXianXiaRS','上传线下RS文件')"
+            @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '103'}), getFetchDataList)"
+          />
+        </span>
         </span>
       </div>
     </div>
@@ -109,6 +111,12 @@ export default {
         layout:"prev, pager, next, jumper"
       }
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
   },
   mounted() {
     this.getFetchDataList()

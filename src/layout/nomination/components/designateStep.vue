@@ -10,7 +10,7 @@
             <div class="flex flex-between-center-center">
                 <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></span>
                 <span class="select-text margin-left10">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
-                <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType">
+                <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType || nominationDisabled">
                     <el-option
                     :value="item.id"
                     :label="language(item.key,item.name)"
@@ -20,10 +20,10 @@
                 </iSelect>
             </div>
             <div class="btnList flex-align-center">
-                <iButton @click="gotoRsMainten" v-if="designateType === 'MEETING'">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
+                <iButton @click="gotoRsMainten" v-if="!nominationDisabled && designateType === 'MEETING'">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
                 <iButton v-if="showExport" @click="doExport">{{language('LK_DAOCHU','导出')}}</iButton>
-                <iButton @click="submit" :loading="submitting">{{language('LK_TIJIAO','提交')}}</iButton>
-                <iButton v-if="designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton>
+                <iButton v-if="!nominationDisabled" @click="submit" :loading="submitting">{{language('LK_TIJIAO','提交')}}</iButton>
+                <iButton v-if="!nominationDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton>
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview">{{language('LK_YULAN','预览')}}</iButton>
                 <logButton class="margin-left20" @click="log"  />
@@ -147,9 +147,12 @@ export default {
         if(['designateRfqdetail', 'designateSuggestion', 'designateSupplier', 'approvalPersonAndRecord','designateDecisionData'].includes(name)) {
             this.$store.dispatch('checkPartNull', {})
         }
-
     },
     computed:{
+        // eslint-disable-next-line no-undef
+        ...Vuex.mapState({
+            nominationDisabled: state => state.nomination.nominationDisabled,
+        }),
         phaseType(){
             return this.$store.getters.phaseType;
         },

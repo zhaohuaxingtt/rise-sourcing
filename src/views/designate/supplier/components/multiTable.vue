@@ -4,7 +4,7 @@
       <span class="font18 font-weight">
         {{ language("nominationSupplier_GongYingShangLieBiao",'供应商列表') }}</span
       >
-      <div class="floatright">
+      <div class="floatright" v-if="!nominationDisabled">
         <span v-if="multiEditControl">
           <iButton @click="addShow(true)" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_MULTI_ADDSHOW|供应商列表加入展示按钮">
             {{ language("nominationSupplier_JiaRuZhanShi",'加入展示') }}
@@ -123,6 +123,12 @@ export default {
       selectMultiData: [],
       submiting: false
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
   },
   mounted() {
     this.getFetchDataList()

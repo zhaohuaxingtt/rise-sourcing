@@ -198,7 +198,7 @@ export function getRenderTableTile(whiteListService,supplierLength,layout){
         supplierDataList[0].bdlRateInfoList.filter(i=>i.supplierId ==supplierDataList[0].bdlRateInfoList[0].supplierId).forEach((itemss,index)=>{
           const ratess = JSON.parse(JSON.stringify(rateTitelList))
           ratess.props = (index == 0?'':index) + 'rate';
-          ratess.label = itemss.rateDepart
+          ratess.label = itemss.rateDepartNum
           items.list.push(ratess)
         })
         relTabelListDefault.push(items)
