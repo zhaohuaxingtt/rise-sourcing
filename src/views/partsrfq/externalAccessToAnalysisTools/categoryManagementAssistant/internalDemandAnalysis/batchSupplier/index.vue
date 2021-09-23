@@ -11,10 +11,23 @@
       <template slot="header">
          <div class="flex-between-center title">
             <div class="flex-align-center">
-               <span>{{language("PLGYSGL","批量供应商概览")}}</span>
-               <el-tooltip :content="mark" placement="top" effect="light" :disabled="!mark">
-                  <span class="mark">{{mark}}</span>
-               </el-tooltip>
+               <span class="margin-right10">{{language("PLGYSGL","批量供应商概览")}}</span>
+               <el-popover trigger="hover"  placement="bottom-start" width="800">
+                  <div>rnover=零件价格*零件产量*供应商供货比例*车型产量</div>
+                  <div class="tip">
+                     <p >单个LTC=（第N年台账1月1号之前最新版本中记录的最低零件价格）-（第N年台账1月1号版本中记录的最低零件价格）</p>
+                     <p >单个JPV=（第N年台账1月1号之前最新版本中记录的最低零件价格）-（第N年实时记录的最低零件价格）</p>
+                     <p >零件价格：数据来源于台账价格A价（通过零件+供应商+采购工厂定位唯一价格）</p>
+                     <p >零件产量：历史零件产量数据来源于PBOM，未来零件产量数据来源于BKM和RiSE车型产量表（基于BKM中N+1年的零件产量和车型产量计算比例，再通过该比例与RiSE车型产量表计算得到未来年份的零件产量）；</p>
+                     <p >车型产量：数据来源于RiSE车型产量表；</p>
+                     <p >供应商供货比例：数据来源于ERP+NOMI。</p>
+                  </div>
+                  <icon slot="reference" name="iconxinxitishi" symbol class="cursor"></icon>
+               </el-popover>
+               <el-popover trigger="hover" class="tip" placement="bottom-start" width="800">
+                  <div>{{mark}}</div>
+                  <span class="mark cursor" slot="reference">{{mark}}</span>
+               </el-popover>
             </div>
             <div class="flex">
                <iButton @click="onJump360">{{ language("GONGYINGSHANG360", "供应商360") }}</iButton>
@@ -31,7 +44,7 @@
    </iCard>
 </template>
 <script>
-import {iCard,iButton,iMessage} from "rise";
+import {iCard,iButton,iMessage,icon} from "rise";
 import {getCmSupplierPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/batchSupplier";
 import * as pbi from 'powerbi-client';
 import {getCategoryAnalysis,categoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
@@ -39,7 +52,7 @@ import marks from "./marks";
 import {downloadPdfMixins} from '@/utils/pdf';
 export default {
    mixins: [downloadPdfMixins],
-   components:{iCard,iButton,marks},
+   components:{iCard,iButton,marks,icon},
    data () {
       return {
          config :{
@@ -218,11 +231,12 @@ export default {
 .title{
    width: 100%;
    .mark{
+      display:inline-block;
       font-size: 14px !important;
       opacity: 0.42;
       margin-left: 32px;
       font-weight: normal;
-      max-width: 590px;
+      width: 600px;
       @include text_;
    }
 }
@@ -233,5 +247,10 @@ export default {
 #powerBi {
 	width: 100%;
 	height: calc(100vh - 300px);
+}
+.tip{
+   >p{
+      padding-left:15px;
+   }
 }
 </style>
