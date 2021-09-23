@@ -118,7 +118,7 @@ export default {
     getTableTitle(tableData) {
       const title = cloneDeep(tableTitle)
       const rates = uniq(tableData.reduce((accum, curr) => {
-        return [...accum, ...((curr.departmentRate || []).map(item => item.rateDepart))]
+        return [...accum, ...((curr.departmentRate || []).map(item => item.rateDepartNum))]
       },[]))
       console.log(rates)
       title.push({

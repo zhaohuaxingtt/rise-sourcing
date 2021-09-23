@@ -35,7 +35,7 @@
         </div>
         <div class="floatright" v-else>
           <!-- 编辑 -->
-          <iButton v-if="!$store.getters.isPreview" @click="handlEdit" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑">
+          <iButton v-if="!$store.getters.isPreview && !nominationDisabled" @click="handlEdit" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑">
             {{ language("nominationSupplier_Edit",'编辑') }}
           </iButton>
           <iButton @click="exportTasks" v-if="!$store.getters.isPreview" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EXPORT|导出">
@@ -184,6 +184,12 @@ export default {
         layout: "total, prev, pager, next, jumper"
       }
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
   },
   mounted() {
     this.toggleShowEditCol(!this.$store.getters.isPreview)

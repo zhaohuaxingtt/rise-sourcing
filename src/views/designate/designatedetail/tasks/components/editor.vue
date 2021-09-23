@@ -23,7 +23,7 @@
           </iButton>
         </span>
         <span v-else>
-          <iButton v-if="!$store.getters.isPreview" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
+          <iButton v-if="!$store.getters.isPreview && !nominationDisabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
             {{ language("LK_BIANJI",'编辑') }}
           </iButton>
         </span>
@@ -67,6 +67,12 @@ export default {
       submiting: false,
       multiEditControl: false
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
   },
   components: {
     // iInput,

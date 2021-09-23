@@ -33,7 +33,9 @@ const state = {
   // 该定点申请中是否有单一供应商
   isSingle:false,
   // 该定点申请RFQ是否加入了零件，前4步进行零件非空校验
-  isPartListNull: false
+  isPartListNull: false,
+  // 定点申请状态disabled
+  nominationDisabled: false
 };
 
 const mutations = {
@@ -60,6 +62,9 @@ const mutations = {
   },
   SET_PART_LIST_NULL(state,type){
     state.isPartListNull = type
+  },
+  SET_NOMINATION_DISABLED(state, disabled) {
+    state.nominationDisabled = disabled
   }
 };
 
@@ -78,6 +83,9 @@ const actions = {
   },
   setPartListNull({commit}, isPartListNull) {
     commit('SET_PART_LIST_NULL', isPartListNull)
+  },
+  setNominationDisabled({commit}, disabled) {
+    commit('SET_NOMINATION_DISABLED', disabled)
   },
   // 检查零件清单是否为空
   checkPartNull({commit, state}) {
@@ -149,7 +157,8 @@ const getters = {
   disableNominationType: (state) => state.disableNominationType,
   nomiAppId: (state) => state.nomiAppId,
   isSingle: (state) => state.isSingle,
-  isPartListNull: (state) => state.isPartListNull
+  isPartListNull: (state) => state.isPartListNull,
+  nominationDisabled: (state) => state.nominationDisabled
 };
 
 export default {
