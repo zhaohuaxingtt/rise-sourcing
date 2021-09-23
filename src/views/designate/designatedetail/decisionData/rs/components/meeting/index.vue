@@ -243,7 +243,6 @@ export default {
     getPrototypeList(){
       getPrototypeList(this.nominateId).then(res=>{
           this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
-
           // 获取上会备注
           if(res.data && res.code==200){
             this.remarkItem = meetingRemark.map(item => {
@@ -325,12 +324,10 @@ export default {
           data.forEach((val,index) => {
             let suppliersNowCn =[]
             let suppliersNowEn =[]
-            console.log( val.supplierVoList);
             val.supplierVoList.forEach(val =>{
               suppliersNowCn.push(val.shortNameZh)
               suppliersNowEn.push(val.shortNameEn)
             })
-            console.log(suppliersNowCn);
             let supplierData=[]
             for(let i = 0 ;i <suppliersNowCn.length;i++) {
               let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
@@ -338,7 +335,6 @@ export default {
             }
             supplierData = supplierData.length ? supplierData.join('\n') : '-'
             val.suppliersNow = supplierData.replace(/\n/g,"<br/>");
-          console.log(supplierData);
           })
           this.tableData = data
           this.projectType = res.data.partProjectType || ''
@@ -377,7 +373,7 @@ export default {
       // 年降开始时间
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
-        const list = row.filter((item)=> item.ltcRateStr !='0.00');
+        const list = row.filter((item)=> item.ltcRateStr !='0');
         return list.length ? list[0].ltcDate : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
@@ -386,10 +382,10 @@ export default {
 
        for(let i =0;i<row.length;i++){
          
-         if(row[i].ltcRateStr  !='0.00' && row[i].ltcRateStr ){
+         if(row[i].ltcRateStr  !='0' && row[i].ltcRateStr ){
             strFlag = true;
            strList.push(row[i].ltcRateStr -0);
-         }else if(strFlag && row[i].ltcRateStr  == '0.00'){
+         }else if(strFlag && row[i].ltcRateStr  == '0'){
            break
          }
        }

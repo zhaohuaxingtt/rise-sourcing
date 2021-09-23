@@ -12,6 +12,7 @@ import axios from "@/utils/axios"
 const requst = axios(process.env.VUE_APP_SOURCING_ZDH)
 const requstUserCenter = axios(process.env.VUE_APP_USER_CENTER_M)
 const requstApproval = axios(process.env.VUE_APP_APPROVAL)
+const requstRfq = axios(process.env.VUE_APP_RFQ )
 
 // 获取审批节点列表
 export function getApprovalNode(nomiAppId) {
@@ -66,5 +67,17 @@ export function getInstDetail(processInstanceId) {
   return requstApproval({
     url: '/taskInfo/getInstDetail?processInstanceId='+processInstanceId,
     method: 'GET'
+  })
+}
+export function getDeptListByParam(data) {
+  return requstRfq({
+    url: '/nominate/nomi-approval-process/getDeptListByParam',
+    method: 'GET'
+  })
+}
+export function getSubDeptListByParam(data) {
+  return requstRfq({
+    url: '/nominate/nomi-approval-process/getSubDeptListByParam/'+data,
+    method: 'GET',
   })
 }

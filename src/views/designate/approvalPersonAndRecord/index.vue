@@ -66,7 +66,7 @@ import tableList from './tableList'
 import { tableTitle } from './data'
 import { cloneDeep, omit } from 'lodash'
 import approvalFlowDialog from './approvalFlow'
-import { getApprovalNode, approvalSync, updateApprovalNode, getDept, getDeptSub } from '@/api/designate/decisiondata/approval'
+import { getApprovalNode, approvalSync, updateApprovalNode, getDept, getSubDeptListByParam, getDeptListByParam } from '@/api/designate/decisiondata/approval'
 export default {
   components: { iPage, iCard, tableList, iButton, approvalFlowDialog, icon },
   data() {
@@ -171,9 +171,10 @@ export default {
      * @return {*}
      */    
     async getDeptList() {
-      const res = await getDept()
+      const res = await getDeptListByParam()
       if (res?.result) {
         this.parentDeptOptions = res.data.map(item => {
+          console.log(item);
           return {
             ...item,
             label: item.nameZh,
@@ -183,8 +184,8 @@ export default {
       }
     },
     async getDeptSubOptions(item) {
-      const res = await getDeptSub(item.approveParentDeptNum)
-      return res.data.supDeptList?.map(item => {
+      const res = await getSubDeptListByParam(item.approveParentDeptNum)
+      return res.data.map(item => {
         return {
           ...item,
           label: item.nameZh,
@@ -192,6 +193,11 @@ export default {
         }
       })
     },
+    // getApperovalList(){
+    //   getDeptListByParam().then(res=>{
+    //     console.log(res);
+    //   })
+    // },
     /**
      * @Description: 获取列表数据
      * @Author: Luoshuang

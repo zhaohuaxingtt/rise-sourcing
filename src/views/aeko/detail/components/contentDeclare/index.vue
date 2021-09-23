@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-23 10:55:42
+ * @LastEditTime: 2021-09-23 13:41:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -154,7 +154,7 @@
         <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE|无关相关切换">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
         <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET|表态重置">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
         <iButton v-if="!disabled" :loading="declareSendSupplier" @click="sendSupplierPrice"  v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION|发放供应商报价">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
-        <iButton v-if="!disabled" disabled v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO|指定投资车型项目">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
+        <iButton v-if="!disabled" @click="goToinvestCarTypePro" disabled v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO|指定投资车型项目">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
         <iButton v-if="!disabled" @click="handleExport" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT|导出">
           {{ language("DAOCHU", "导出") }}
           <el-tooltip 
@@ -235,6 +235,7 @@
       </div>
     </iCard>
     <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" @update="init" />
+    <investCarTypeProDialog v-if="investCarTypeProVisible" :dialogVisible="investCarTypeProVisible" @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -251,11 +252,13 @@ import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, chunk, debounce } from "lodash"
 
+import investCarTypeProDialog from './components/investCarTypeProDialog' 
+
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 
 export default {
-  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog },
+  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog },
   mixins: [ pageMixins ],
   props: {
     aekoInfo: {
@@ -290,6 +293,7 @@ export default {
       declareResetLoading: false,
       currentRow: {},
       dosageDialogVisible: false,
+      investCarTypeProVisible: false,
       submitLoading: false,
       debouncer: null,
       declareSendSupplier:false,
@@ -770,6 +774,15 @@ export default {
             this.declareSendSupplier = false;
       })
     },
+
+    // 指定车型项目弹窗展示
+    goToinvestCarTypePro(){
+      this.investCarTypeProVisible = true;
+    },
+
+    changeVisible(type,visible){
+          this[type] = visible;
+      },
   },
 };
 </script>
