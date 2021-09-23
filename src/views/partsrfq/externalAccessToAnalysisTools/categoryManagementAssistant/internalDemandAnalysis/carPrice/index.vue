@@ -11,10 +11,17 @@
       <template slot="header">
          <div class="flex-between-center title">
             <div class="flex-align-center">
-               <span>{{language("CHEXINGJIAGEDUIBI","车型价格对比")}}</span>
-               <el-tooltip :content="mark" placement="top" effect="light" :disabled="!mark">
-                  <span class="mark">{{mark}}</span>
-               </el-tooltip>
+               <span class="margin-right10">{{language("CHEXINGJIAGEDUIBI","车型价格对比")}}</span>
+               <el-popover trigger="hover"  placement="bottom-start" width="800">
+                  <p >气泡大小=所选月份当前配置下车型配置产量之和（如2021.01-2021.05是把五个月产量加总）</p>
+                  <p >高度(即单车金额)= N-1月的零件用量*零件价格（如2021.01-2021.05是显示5月当月金额）——其中，单车用量是某一零件在某一车型上的用量，车型配置产量是每一个配置下的产量，零件价格是取该月最后一天的价格。</p>
+                  <p >基于所选车型（必选项）和配置/发动机/变速箱，在所选的月份(...~N-1)中看到所选条件下车型配置的数量以及单车价格。</p>
+                  <icon slot="reference" name="iconxinxitishi" symbol class="cursor"></icon>
+               </el-popover>
+               <el-popover trigger="hover" class="tip" placement="bottom-start" width="800">
+                  <div>{{mark}}</div>
+                  <span class="mark cursor" slot="reference">{{mark}}</span>
+               </el-popover>
             </div>
             <div class="flex">
                <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
@@ -33,7 +40,7 @@
             </div>
             <div>
                <span>{{ language("XIANSHILEIXING", "显示类型") }}</span>
-               <iSelect class="select" v-model="config.pageName">
+               <iSelect  v-model="config.pageName">
                    <el-option :value="item.code" :label="item.name" v-for="(item,index) in dictData.CATEGORY_MANAGEMENT_CAR_TYPE" :key="index"></el-option>
                </iSelect>
             </div>
@@ -55,7 +62,7 @@
    </iCard>
 </template>
 <script>
-import {iCard,iButton,iSelect,iDatePicker,iMessage} from "rise";
+import {iCard,iButton,iSelect,iDatePicker,iMessage,icon} from "rise";
 import {getCmCarTypePricePbi,carTypeByCategoryCode} from "@/api/categoryManagementAssistant/internalDemandAnalysis/carPrice";
 import * as pbi from 'powerbi-client';
 import marks from "../batchSupplier/marks";
@@ -64,7 +71,7 @@ import {downloadPdfMixins} from '@/utils/pdf';
 import { selectDictByKeys } from "@/api/dictionary";
 export default {
    mixins: [downloadPdfMixins],
-   components:{iCard,iButton,iSelect,iDatePicker,marks},
+   components:{iCard,iButton,iSelect,iDatePicker,marks,icon},
    data () {
       return {
          config :{
@@ -160,8 +167,8 @@ export default {
    },
    async mounted () {
 		await this.getPowerBiUrl()
+      await this.carTypeByCategoryCode()
       await this.getCategoryAnalysis()
-      this.carTypeByCategoryCode()
       this.getDict()
       this.init()
       this.renderBi()
@@ -171,12 +178,13 @@ export default {
          handler(newValue){
          this.renderBi()
       }},
-      '$store.state.rfq.categoryCode'(newVal){
+      async '$store.state.rfq.categoryCode'(){
          this.categoryCode=this.$store.state.rfq.categoryCode
          this.mark=''
          this.selectDate=[]
          this.filterCarValue=[]
          this.config.pageName=""
+         await this.getCategoryAnalysis()
          this.renderBi()
       }
    },
@@ -199,6 +207,9 @@ export default {
                   this.config.pageName=operateLog.pageName
                   this.selectDate=operateLog.selectDate
                   this.mark=operateLog.mark
+               }else{
+                  let newArr=window._.clone(this.carType).splice(0,5)
+                  this.filterCarValue=newArr.map((item,i)=>item.modelNameZh)
                }
             }
          })
@@ -255,11 +266,11 @@ export default {
          })
       },
       // 获取车型数据
-      carTypeByCategoryCode(){
+      async carTypeByCategoryCode(){
          let params={
             categoryCode:this.categoryCode
          }
-         carTypeByCategoryCode(params).then(res=>{
+         await carTypeByCategoryCode(params).then(res=>{
             this.carType=res.data
          })
       },
@@ -284,6 +295,7 @@ export default {
          filterArr.push(this.filter)
          // 如果有车型
          if(this.filterCarValue.length>0){
+            console.log(this.filterCarValue)
             this.filter_car.values=this.filterCarValue
             filterArr.push(this.filter_car)
          }
@@ -338,17 +350,18 @@ export default {
 .title{
    width: 100%;
    .mark{
+      display:inline-block;
       font-size: 14px !important;
       opacity: 0.42;
       margin-left: 32px;
       font-weight: normal;
-      width: 590px;
+      width: 600px;
       @include text_;
    }
 }
 .search{
    >div{
-      width:220px;
+      width:250px;
       margin-right: 30px;
       >span{
          display: block;
@@ -363,4 +376,11 @@ export default {
    margin-top:20px;
 	height: calc(100vh - 380px);
 }
+.select{
+   width:250px;
+   .el-select__tags{
+      max-width:200px
+   }
+}
+
 </style>

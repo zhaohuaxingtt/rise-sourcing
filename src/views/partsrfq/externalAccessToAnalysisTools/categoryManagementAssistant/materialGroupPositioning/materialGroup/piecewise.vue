@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-09 16:45:32
- * @LastEditTime: 2021-09-09 21:27:15
+ * @LastEditTime: 2021-09-18 14:14:51
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\piecewise.vue
@@ -73,9 +73,9 @@ export default {
             //    materialGroupCode:'222222',
             //    symbolSize:100,
             // }
-           
-            // marksData.push(currentCategory2)
-            // marksData.push(currentCategory1)
+            // marksData=[currentCategory1,currentCategory2,]
+
+            
          // 当前点
          if(data.currentPoint){
             let currentCategory={
@@ -106,7 +106,6 @@ export default {
          ]
 
          let option = {
-            z:[10,5,1],
             tooltip: {
                axisPointer: {
                   show: true,

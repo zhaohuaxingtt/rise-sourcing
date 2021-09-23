@@ -7,10 +7,26 @@
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
 -->
 <template>
-   <iCard :title='language("CHANLIANGZONGLAN","产量总览")' class="margin-top20" id="output">
-      <template slot="header-control">
-			<iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
-			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+   <iCard class="margin-top20" id="output">
+      <template slot="header">
+         <div class="flex-between-center title">
+            <div class="flex-align-center">
+               <span class="margin-right10">{{language("CHANLIANGZONGLAN","产量总览")}}</span>
+               <el-popover trigger="hover" placement="bottom-start"  width="800">
+                  <div>Volume=零件产量*供应商供货比例*车型产量</div>
+                  <div class="tip">
+                     <p>零件产量：历史零件产量数据来源于PBOM，未来零件产量数据来源于BKM和RiSE车型产量表（基于BKM中N+1年的零件产量和车型产量计算比例，再通过该比例与RiSE车型产量表计算得到未来年份的零件产量）</p>
+                     <p>车型产量：车型产量数据来源于RiSE车型产量表；</p>
+                     <p>供应商供货比例：数据来源于ERP+NOMI。</p>
+                  </div>
+                  <icon slot="reference" name="iconxinxitishi" symbol class="cursor"></icon>
+               </el-popover>
+            </div>
+            <div class="flex">
+               <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+			      <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+            </div>
+         </div>
 		</template>
       <div class="flex-between-center">
          <div class="flex">
@@ -29,7 +45,7 @@
    </iCard>
 </template>
 <script>
-import {iCard,iButton,iSelect,iDatePicker,iMessage} from "rise";
+import {iCard,iButton,iSelect,iDatePicker,iMessage,icon} from "rise";
 import {getCmOutputPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/output";
 import * as pbi from 'powerbi-client';
 import { selectDictByKeys } from "@/api/dictionary";
@@ -39,7 +55,7 @@ import {getCategoryAnalysis} from "@/api/categoryManagementAssistant/internalDem
 
 export default {
    mixins: [downloadPdfMixins],
-   components:{iCard,iButton,iSelect,iDatePicker},
+   components:{iCard,iButton,iSelect,iDatePicker,icon},
    data () {
       return {
          categoryCode:"",
@@ -255,6 +271,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.title{
+   width: 100%;
+}
    .select{
       width:200px;
       margin-right:30px;
@@ -264,4 +283,9 @@ export default {
 		height: calc(100vh - 350px);
       margin-top: 20px;
 	}
+   .tip{
+      >p{
+         padding-left:15px;
+      }
+   }
 </style>
