@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-16 13:48:38
+ * @LastEditTime: 2021-09-22 22:20:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -204,7 +204,7 @@
 							</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
-							<iSelect v-model="detailData.linieDept"
+							<iSelect @change="changeUserDept" v-model="detailData.linieDept"
 								>
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
@@ -212,7 +212,7 @@
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINE" label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieId" >
+							<iSelect v-model="detailData.linieId" placeholder='请先选择LINIE部门'>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.LINIE"
 									:key="item.name"></el-option>
 							</iSelect>
@@ -388,7 +388,7 @@
 	import logButton from "@/components/logButton";
 	import currentSupplier from './components/currentSupplier'
 	import {getProjectDetail,closeProcure,updateProcure,startProcure} from "@/api/partsprocure/home";
-	import {dictkey,checkFactory} from "@/api/partsprocure/editordetail";
+	import {dictkey,checkFactory,purchasingLiline,purchasingDept} from "@/api/partsprocure/editordetail";
 	import {detailData,partsCommonSourcing,translateDataForService } from "./components/data";
 	import splitFactory from "./components/splitFactory";
 	import designateInfo from './components/designateInfo'
@@ -478,10 +478,23 @@
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 			this.partProjectType = this.infoItem.partProjectType;
 			this.getDatailFn();
-			this.getProcureGroup();
 			this.getDicts()
 		},
 		methods: {
+   /**
+    * @description: 改变部门的时候，拿到最新的line
+    * @param {*}
+    * @return {*}
+    */
+			changeUserDept(){
+				this.detailData.linieId = ''
+				this.getLinie(this.detailData.linieDept)
+			},
+			getLinie(id){
+				purchasingLiline(id).then(r=>{
+					this.fromGroup['LINIE'] = r.data || []
+				})
+			},
 			openDiologOldParts(){
 				if(this.detailData.procureFactory == '') return  iMessage.warn(this.language('NINDANGQIANWEIXUANZE','您当前还未选择采购工厂，请选择后重试！'))
 				this.selectOldParts.show = true
@@ -571,7 +584,15 @@
 					if(this.detailData.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
 						this.$refs.materialGroupInfo.getMaterialGroup()
 					}
+					this.getProcureGroup()
 				});
+			},
+			//获取liline部门
+			
+			purchasingDept(){
+				purchasingDept().then(r=>{
+					this.fromGroup['LINIE_DEPT'] = r.data || []
+				})
 			},
 			getProcureGroup() {
 				dictkey().then((res) => {
@@ -580,6 +601,8 @@
 							...this.fromGroup,
 							...res.data
 						}
+						this.purchasingDept()
+						this.getLinie(this.detailData.linieDept)
 					}
 				}).catch(err=>{
 					iMessage.error(err.desZh)

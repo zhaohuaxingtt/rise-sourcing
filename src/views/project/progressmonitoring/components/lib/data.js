@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 14:06:11
- * @LastEditTime: 2021-09-17 14:24:02
+ * @LastEditTime: 2021-09-23 10:08:34
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/project/progressmonitoring/components/components/data.js
@@ -171,4 +171,16 @@ export const partProc = [
     icon: 'iconbaojiapingfengenzong-jiedian-hei',
     valueKey: 'taskSeriousDelay',
   }
+]
+
+// 匹配异常处理状态
+export const patchStatus = [
+  {
+    code: '1',
+    name: '待处理'
+  },
+  {
+    code: '2',
+    name: '待处理'
+  },
 ]

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:02:20
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-16 15:51:50
+ * @LastEditTime: 2021-09-23 10:52:25
  * @Description: 
  * @FilePath: \front-web\src\router\modules\project.js
  */
@@ -99,6 +99,14 @@ export default [
               title: "项目管理-项目进度监控",
             },
             component: () => import("@/views/project/progressmonitoring/home"),
+          },
+          {
+            path: "delaysummary",
+            name: "progressmonitoring-delaySummary",
+            meta: {
+              title: "延误原因汇总",
+            },
+            component: () => import("@/views/project/progressmonitoring/delaySummary"),
           },
           {
             path: "partList",
