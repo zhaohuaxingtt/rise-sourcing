@@ -13,15 +13,15 @@
           <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
           <div class="title">{{item.name}}</div>
         </div>
-        <iLabel class="margin-top8 title1" :label="$t('LK_CHEXING')+':'"></iLabel>
+        <iLabel class="margin-top8 title1" :label="language('CHEXINGXIANGMUMAOHAO','车型项目：')"></iLabel>
         <div class="flex-align-center">
           <div v-for="(val,ix) in item.carTypeProjectList" :key="ix">{{item.carTypeProjectList.length-1>ix?val+' |&nbsp;':val}}</div>
         </div>
-        <iLabel class="margin-top8 title1" :label="language('SHANGQIDAZHANGGONGCHANGDIZHI','上汽大众工厂地址')"></iLabel>
+        <iLabel class="margin-top8 title1" :label="language('GONGYINGSHANGGONGCHANGDIZHI','供应商工程厂地址：')"></iLabel>
         <div>
           {{ item.factoryAddress}}
         </div>
-        <iLabel class="margin-top8 title1" :label="$t('TPZS.ZXSE')"></iLabel>
+        <iLabel class="margin-top8 title1" :label="language('GONGCHANGZONGXIAOSHOUE','工厂总销售额：')"></iLabel>
         <div>{{String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'}}</div>
       </iCard>
     </div>
