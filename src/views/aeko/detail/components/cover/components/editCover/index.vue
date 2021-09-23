@@ -8,7 +8,14 @@
     <template v-if="!disabled" v-slot:header-control>
       <iButton  :loading="btnLoading" @click="save()">{{language('LK_BAOCUN','保存')}}</iButton>
       <iButton  :loading="btnLoading" v-if="basicInfo.aekoCoverId" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
-      <iButton  :loading="btnLoading">{{language('LK_AEKO_CHEHUI','撤回')}}</iButton>
+      <iButton  :loading="btnLoading">
+        {{language('LK_AEKO_CHEHUI','撤回')}}
+         <el-tooltip 
+            :content="`${language('LK_AEKO_FENGMIANBIAOTAIHENEIRONGBIAOTAIJIANGYIBINGCHEHUI','封⾯表态和内容表态将被⼀并撤回')}`"
+            placement="top">
+            <i class="el-icon-warning-outline font18 tipsIcon"></i>
+          </el-tooltip>
+      </iButton>
       <iButton  :loading="btnLoading" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
