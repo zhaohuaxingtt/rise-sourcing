@@ -26,7 +26,7 @@
               </div>
               <div class="rsTop-right-item-value">
                 <div v-for="(subItem, subIndex) in item" :key="subIndex">
-                  {{subItem.props === 'currency' ? basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : '' : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                  {{subItem.props === 'currency' ? basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : '' : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
               </div>
             </template>
             <template v-else>
@@ -72,7 +72,7 @@
       <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
         汇率：Exchange rate: 
         <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
-          1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].name : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.name : 'RMB'}}
+          1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
         </span>
       </div>
     </iCard>
@@ -319,6 +319,9 @@ export default {
         if (res?.result) {
           let temdata = res.data || {}
           temdata.suppliersNow =temdata.supplierVoList
+          if(temdata.partNameDe){
+            temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
+          }
           this.basicData = temdata
           let data = res.data?.lines
           data.forEach((val,index) => {
@@ -335,6 +338,10 @@ export default {
             }
             supplierData = supplierData.length ? supplierData.join('\n') : '-'
             val.suppliersNow = supplierData.replace(/\n/g,"<br/>");
+            if(val.supplierNameEn)
+            val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
+              if(val.partNameDe)
+            val.partName = `${val.partName}/${val.partNameDe}`
           })
           this.tableData = data
           this.projectType = res.data.partProjectType || ''
@@ -378,18 +385,28 @@ export default {
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
        let strList = [];
-       let strFlag = false;
+      //  let strFlag = false;
 
-       for(let i =0;i<row.length;i++){
+      //  for(let i =0;i<row.length;i++){
          
-         if(row[i].ltcRateStr  !='0' && row[i].ltcRateStr ){
-            strFlag = true;
-           strList.push(row[i].ltcRateStr -0);
-         }else if(strFlag && row[i].ltcRateStr  == '0'){
-           break
-         }
-       }
-       return strList.length ? strList.join('/') : '-'
+      //    if(row[i].ltcRateStr  !='0' && row[i].ltcRateStr ){
+      //       strFlag = true;
+      //      strList.push(row[i].ltcRateStr -0);
+      //    }else if(strFlag && row[i].ltcRateStr  == '0'){
+      //      break
+      //    }
+      //  }
+      //  return strList.length ? strList.join('/') : '-'
+        const ltcRateStrArr = row.map(item => item.ltcRateStr)
+
+        let i = 0
+        do {
+          i = ltcRateStrArr.length
+          if (ltcRateStrArr[0] == 0) ltcRateStrArr.shift()
+          if (ltcRateStrArr[ltcRateStrArr.length - 1] == 0) ltcRateStrArr.pop()
+        } while (i !== ltcRateStrArr.length)
+
+        return ltcRateStrArr.length ? ltcRateStrArr.join('/') : '-'
       }
     }
   }
