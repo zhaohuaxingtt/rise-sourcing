@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-16 14:14:37
+ * @LastEditTime: 2021-09-23 10:55:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -165,7 +165,14 @@
         </iButton>
         <iButton v-if="!disabled" disabled v-permission.atuo="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">{{ language("DAORU", "导⼊") }}</iButton>
         <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT|提交">{{ language("TIJIAO", "提交") }}</iButton>
-        <iButton v-if="!disabled" disabled v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">{{ language("CHEHUI", "撤回") }}</iButton>
+        <iButton v-if="!disabled" disabled v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
+          {{ language("CHEHUI", "撤回") }}
+          <el-tooltip 
+            :content="`${language('LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI','只针对内容撤回，如需撤回封⾯表态，请在封⾯表态中操作【撤回】')}`"
+            placement="top">
+            <i class="el-icon-warning-outline font18 tipsIcon"></i>
+          </el-tooltip>
+          </iButton>
       </template>
       <div class="body">
         <tableList
