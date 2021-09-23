@@ -2,29 +2,31 @@
   <iCard class="supplierTable singleSupplier">
       <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
-          <!-- 批量编辑 -->
-          <iButton @click="handleBatchEdit">
-            {{ language("LK_BATCHEDIT",'批量编辑') }}
-          </iButton>
-          <!-- 复制 -->
-          <iButton
-            @click="copyLines"
-          >
-            {{ language("LK_COPY",'复制') }}
-          </iButton>
-          <!-- 删除 -->
-          <iButton
-            :disabled="checkCanbeDelete"
-            @click="handleBatchDelete"
-          >
-            {{ language("LK_DELETE",'删除') }}
-          </iButton>
-          <iButton
-            @click="submit"
-            :loading="submiting"
-          >
-            {{ language("LK_BAOCUN","保存") }}
-          </iButton>
+          <span v-if="!nominationDisabled">
+            <!-- 批量编辑 -->
+            <iButton @click="handleBatchEdit">
+              {{ language("LK_BATCHEDIT",'批量编辑') }}
+            </iButton>
+            <!-- 复制 -->
+            <iButton
+              @click="copyLines"
+            >
+              {{ language("LK_COPY",'复制') }}
+            </iButton>
+            <!-- 删除 -->
+            <iButton
+              :disabled="checkCanbeDelete"
+              @click="handleBatchDelete"
+            >
+              {{ language("LK_DELETE",'删除') }}
+            </iButton>
+            <iButton
+              @click="submit"
+              :loading="submiting"
+            >
+              {{ language("LK_BAOCUN","保存") }}
+            </iButton>
+          </span>
           <iButton
             @click="showMouldVisibal"
           >
@@ -47,7 +49,7 @@
         </template>
         <!-- 供应商名 -->
         <template #supplierName="scope">
-          <div v-if="!onlyTable">
+          <div v-if="!onlyTable && !nominationDisabled">
             <iSelect
               v-model="scope.row.supplierName"
               @focus="getRfqDepartment(scope.row)"
@@ -65,7 +67,7 @@
         </template>
         <!-- 比例 -->
         <template #ratio="scope">
-          <div v-if="!onlyTable">
+          <div v-if="!onlyTable && !nominationDisabled">
             <iInput v-model="scope.row.ratio" :placeholder="language('LK_QINGSHURU','请输入')" />
             <!-- <iSelect
               v-model="scope.row.ratio"
@@ -188,6 +190,10 @@ export default {
     this.getDataList()
   },
   computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
     // 检查选中的条目是否可以被删除
     checkCanbeDelete() {
       let state = false

@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-08-15 12:03:31
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-23 16:48:15
+ * @LastEditors: Hao,Jiang
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
 -->
@@ -18,7 +18,7 @@
       <p :class="{itemsb:true,active:items.active, delay:items.delay, long: items.long}"></p>
       <template>
         <p class="itemsc" :class="{delay:items.delay, active:items.active,}">
-          <span class="tit"><icon symbol :name='iconList_all_times["a"+(items.active ? (items.delay ? 4 : 5) : 0)].icon' class="margin-right5"></icon>{{language(items.key,items.name)}}</span>
+          <span class="tit"><icon symbol :name='iconList_all_times["a"+(items.active ? (items.delay ? 3 : 5) : 0)].icon' class="margin-right5"></icon>{{language(items.key,items.name)}}</span>
           <span>{{items.planWeek}}</span>
         </p>
       </template>

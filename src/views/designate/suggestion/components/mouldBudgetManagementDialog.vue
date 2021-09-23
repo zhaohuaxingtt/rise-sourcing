@@ -15,7 +15,7 @@
   >
     <template #title>
       <p class="title">{{ language("MUJUYUSUANGUANLI", "模具预算管理") }}</p>
-      <div class="control" id="control">
+      <div class="control" id="control" v-if="!nominationDisabled">
         <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
         <iButton :loading="recallLoading" @click="handleRecall">{{ language("CHEHUI", "撤回") }}</iButton>
       </div>
@@ -39,7 +39,8 @@
           <span>{{ scope.row.applyTime | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #budget="scope">
-          <iInput class="input-center" v-model="scope.row.budget" @input="handleInputByBudget($event, scope.row)" />
+          <iInput class="input-center" v-model="scope.row.budget" v-if="!nominationDisabled" @input="handleInputByBudget($event, scope.row)" />
+          <span>{{ scope.row.budget }}</span>
         </template>
       </tableList>
     </div>
@@ -107,9 +108,9 @@ export default {
   },
   computed: {
     // eslint-disable-next-line no-undef
-    // ...Vuex.mapState({
-    //   userInfo: state => state.permission.userInfo,
-    // }),
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
   },
   data() {
     return {
