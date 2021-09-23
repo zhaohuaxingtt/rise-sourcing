@@ -137,11 +137,11 @@ export default {
                       <div class='flex'>
                         <div class="img"></div><div class='title'>${item.name}</div>
                       </div>
-                      <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
+                      <div class='label'>${this.language('CHEXINGXIANGMUMAOHAO','车型项目：')}</div>
                       <div class='value'>${carTypeList}</div>
-                      <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
+                      <div class='label'>${this.language('GONGYINGSHANGGONGCHANGDIZHI','供应商工程厂地址：')}</div>
                       <div class='value'>${item.factoryAddress}</div>
-                      <div class='label'>${this.$t('TPZS.ZXSE')}</div>
+                      <div class='label'>${this.language('GONGCHANGZONGXIAOSHOUE','工厂总销售额：')}</div>
                       <div class='value'>${item.toAmount}</div>
                   </div>`,
           offset: new AMap.Pixel(-0, -15)
@@ -173,25 +173,6 @@ export default {
           anchor: "center"
         });
         marker.setMap(map)
-        marker.on('mouseover', () => {
-          handleTooltip.open(map, [item.lon, item.lat])
-          console.log('purchase');
-        })
-        marker.on('mouseout', () => {
-          map.clearInfoWindow()
-        })
-        var handleTooltip = new AMap.InfoWindow({
-          content: `<div class='tips'>
-                        <div class='flex'>
-                          <div class="img-svw"></div><div class='title'>${item.name}</div>
-                        </div>
-                        <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
-                        <div class='value'>${carTypeList}</div>
-                        <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
-                        <div class='value'>${item.factoryAddress}</div>
-                      </div>`,
-          offset: new AMap.Pixel(7, -15)
-        });
       })
     },
   }
