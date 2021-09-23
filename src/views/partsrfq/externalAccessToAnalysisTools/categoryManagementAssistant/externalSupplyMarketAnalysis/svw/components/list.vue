@@ -409,6 +409,7 @@ export default {
           this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
         }
       },
+
     },
     year2: {
       handler (val) {
@@ -439,6 +440,7 @@ export default {
         }
 
       },
+
     },
     edite (val) {
       this.isEdite = val
@@ -481,15 +483,6 @@ export default {
         this.MarketOverviewObj.mainCustomerDTOList = this.MarketOverviewObj.mainCustomerDTOList.filter(item => item.customerName || item.totalSalesPro)
       }
     },
-    // MarketOverviewObj: {
-    //   handler (val) {
-    //     console.log(val)
-    //     this.MarketOverviewObj1 = _.cloneDeep(val)
-
-    //   },
-    //   immediate: true,
-    //   deep: true
-    // },
     MarketOverviewObj: {
       handler (val) {
         this.MarketOverviewObj1 = _.cloneDeep(val)
@@ -609,7 +602,6 @@ export default {
       immediate: true,
       deep: true
     },
-
     '$store.state.rfq.categoryCode': {
       handler (val) {
         this.categoryCode = val
@@ -661,6 +653,21 @@ export default {
       },
       immediate: true
     },
+    interestsStatus (val) {
+      if (val === "otherAmount") {
+        this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].otherAmount / 1000000).toFixed(2)
+        this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].otherAmount / 1000000).toFixed(2)
+        this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].otherAmount / 1000000).toFixed(2)
+      } else if (val === "svwAmount") {
+        this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].svwAmount / 1000000).toFixed(2)
+        this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].svwAmount / 1000000).toFixed(2)
+        this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].svwAmount / 1000000).toFixed(2)
+      } else if (val === "profit") {
+        this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].profit / 1000000).toFixed(2)
+        this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].profit / 1000000).toFixed(2)
+        this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].profit / 1000000).toFixed(2)
+      }
+    }
   },
   methods: {
     initCharts () {
@@ -677,9 +684,9 @@ export default {
           this.interestsName = item.name
         }
       })
-      this.year1 = ""
-      this.year2 = ""
-      this.year3 = ""
+      // this.year1 = ""
+      // this.year2 = ""
+      // this.year3 = ""
     },
     initturnover () {
       const myChart = echarts().init(this.$refs.turnover);
