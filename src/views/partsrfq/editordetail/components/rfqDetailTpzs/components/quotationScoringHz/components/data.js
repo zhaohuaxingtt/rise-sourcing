@@ -292,13 +292,13 @@ export function translateRating(supplierList,ratingList) {
      //如果是第一个供应商的时候，需要构造一个评分部门list
      if(index == 0){
       c.forEach(itemsq=>{
-        titleList.push(itemsq.rateDepart)
+        titleList.push(itemsq.rateDepartNum)
       })
      }
      maps.push({rate:c[0].supplierName,isAllPartRateConsistent:c[0].rfmRate,isRateRisk:c[0].isRateRisk})
      //拿到评分部门list 为每个部门设置评分
      titleList.forEach(itemsbb=>{
-       const map = c.find(it=>it.rateDepart == itemsbb)
+       const map = c.find(it=>it.rateDepartNum == itemsbb)
        if(map){
         maps.push({rate:map.rate,isAllPartRateConsistent:map.isAllPartRateConsistent} || '') 
        }
