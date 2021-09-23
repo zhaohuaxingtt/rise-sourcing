@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-08-19 18:06:58
+ * @LastEditTime: 2021-09-23 19:18:51
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\categoryGroup.vue
@@ -12,7 +12,7 @@
       <p class="tip margin-bottom10">{{ language("QXZCAILIAOZU", "请选择材料组") }}</p>
       <!-- <el-autocomplete class="autocomplete" v-model="categoryName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete> -->
       <iSelect class="select" v-model="category" filterable value-key="categoryCode">
-        <el-option :value="item" :label="item.categoryName" v-for="(item,index) in group" :key="index"></el-option>
+        <el-option :value="item" :label="item.categoryCode+'-'+item.categoryName" v-for="(item,index) in group" :key="index"></el-option>
       </iSelect>
       <span slot="footer" class="dialog-footer">
         <iButton @click="confirm">{{ language("QUEREN", "确认") }}</iButton>
@@ -47,6 +47,12 @@ export default {
   },
   created() {
     this.getDefaultCostStructure()
+  },
+  watch: {
+    "value"(){
+      this.category.categoryName=this.$store.state.rfq.categoryName
+      this.category.categoryCode=this.$store.state.rfq.categoryCode
+		}
   },
   methods: {
     // querySearchAsync(queryString, cb) {
