@@ -1,16 +1,15 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-09-06 10:28:12
+ * @LastEditTime: 2021-09-22 19:56:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
 -->
 <template>
-  <div>
-    <div style="height: 460px;width:100%"
-         ref="chart"></div>
-  </div>
+  <div ref="chart"
+       class="chart"
+       :style="{height:(clientHeight?'440px':'460px')}"></div>
 </template>
 
 <script>
@@ -37,20 +36,19 @@ export default {
     },
     maxWidth: {
       type: Number
+    },
+    maxData: {
+      type: String
+    },
+    clientHeight: {
+      type: Boolean
     }
   },
   watch: {
-    // typeSelection (val) {
-    //   if (val) {
-    //     this.$nextTick(() => {
-    //       this.initCharts();
-    //     });
-    //   }
-    // },
     firstBarData: {
       handler (val) {
         if (val) {
-          this.barDataItem = []
+          this.barData = []
           this.barxAxis = []
           val.forEach((item, index) => {
             const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
@@ -77,7 +75,6 @@ export default {
       immediate: true,
       deep: true
     },
-
   },
   mounted () {
     // this.$nextTick(() => {
@@ -87,10 +84,10 @@ export default {
   methods: {
     initCharts () {
       console.log(111)
-      if (this.maxWidth === 1) {
-        this.$refs.chart.style.width = '240px'
+      if (this.firstBarData.length === 1) {
+        this.$refs.chart.style.width = '300px'
       } else {
-        this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+        this.$refs.chart.style.width = this.firstBarData.length * 160 + 'px';
       }
 
       this.myChart = echarts().init(this.$refs.chart);
@@ -99,7 +96,7 @@ export default {
           show: true,
           subtext: "产量",
           left: 0,
-          top: 2,
+          top: -10,
         },
         xAxis: [
           {
@@ -123,10 +120,10 @@ export default {
           },
         ],
         grid: {
-          left: 0,
+          left: 10,
           right: 0,
-          bottom: "14%",
-          top: "30%",
+          bottom: "13%",
+          top: "20%",
         },
         yAxis: {
           type: "value",
@@ -146,7 +143,8 @@ export default {
           axisTick: {
             show: false,
           },
-          offset: -15,
+          max: this.maxData,
+          offset: - 10,
           splitNumber: 4,
           nameLocation: "start",
         },
@@ -204,12 +202,30 @@ export default {
       this.myChart.clear();
       this.myChart.resize();
       this.myChart.setOption(this.option);
+      this.myChart.off("click");
       this.myChart.on('click', (params) => {
-        this.$emit('detailDialog', true, params);
+        console.log(params)
+        let data = {}
+        this.firstBarData.forEach(item => {
+          if (item.value === params.value) {
+            data.engine = item.engine
+            data.transmission = item.transmission
+            data.position = item.position
+            data.vwCode = this.barData.motorCode
+            data.motorId = this.barData.motorId
+            data.priceType = this.barData.priceType
+          }
+        })
+        this.$emit('detailDialog', true, data);
       });
     },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.chart {
+  height: 460px;
+  width: 100%;
+}
+</style>
