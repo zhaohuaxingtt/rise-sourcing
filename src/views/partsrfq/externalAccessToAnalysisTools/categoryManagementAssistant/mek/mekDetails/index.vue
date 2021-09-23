@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-16 11:15:27
+ * @LastEditTime: 2021-09-22 19:49:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -46,12 +46,12 @@
       <el-row>
         <el-col :span="4">
           <iCard v-show="reportFlag"
-                 style="height:619px">
+                 style="height:670px">
             <div class=" searchForm"
                  style="margin-right:-20px">
               <el-form label-position="top"
                        :model="form"
-                       style="height:504px;margin-right:10px"
+                       style="height:564px;margin-right:10px"
                        label-width="200px">
                 <el-row class="margin-bottom20">
                   <!--对标车型-->
@@ -117,16 +117,21 @@
         </el-col>
         <el-col :span="20">
           <iCard class="margin-left20"
-                 style="height:619px">
-            <div class="chartBox1">
-              <div class="line"></div>
-              <div class="line1"></div>
-              <div class="line2"></div>
-              <div class="line3"></div>
-              <div class="line4"></div>
+                 ref="chartBox"
+                 style="height:670px">
+            <div class="chartBox1 ">
               <div class="chartBox">
-                <div class="flex chartItem"
-                     :style="{width:chartItemWidth}">
+                <div class="line"
+                     :style="{width:totalWidth}"></div>
+                <div class="line1"
+                     :style="{width:totalWidth}"></div>
+                <div class="line2"
+                     :style="{width:totalWidth}"></div>
+                <div class="line3"
+                     :style="{width:totalWidth}"></div>
+                <div class="line4"
+                     :style="{width:totalWidth}"></div>
+                <div class="flex chartItem">
                   <div class="operation1">
                     <div style="height:20px"
                          class="margin-bottom20"></div>
@@ -149,13 +154,15 @@
                                :typeSelection="mekMotorTypeFlag"
                                :firstBarData="firstBarData.detail"
                                :maxWidth="maxWidth"
+                               :maxData="maxData"
+                               :clientHeight="clientHeight"
                                @detailDialog="detailDialog"></datasetBar1>
                   <div class="xAxis"
                        v-if="mekMotorTypeFlag">
                     <div v-for="i in firstBarData.detail"
                          :key="i.value"
                          style="text-align:center">
-                      <div style="margin-bottom:10px">
+                      <div style="margin-bottom:5px">
                         <span class="detail"
                               @click="computeModal(firstBarData)">{{i.title}}</span>
                         <el-tooltip class="item"
@@ -170,9 +177,9 @@
                       <span @click="computeModal(firstBarData)">{{i.ebr}}</span>
                     </div>
                   </div>
+
                 </div>
                 <div class="flex chartItem"
-                     :style="{width:chartItemWidth}"
                      v-for="item in barData"
                      :key="item.motorId">
                   <div class="operation">
@@ -223,14 +230,17 @@
                   <datasetBar :barData="item"
                               :maxWidth="maxWidth"
                               :typeSelection="mekMotorTypeFlag"
+                              :maxData="maxData"
+                              :clientHeight="clientHeight"
                               @detailDialog="detailDialog"></datasetBar>
                   <div class="xAxis"
                        v-if="mekMotorTypeFlag">
                     <div v-for="i in item.detail"
                          :key="i.value"
                          style="text-align:center">
-                      <div style="margin-bottom:10px">
-                        <span @click="computeModal(item)">{{i.title}}</span>
+                      <div style="margin-bottom:5px">
+                        <span class="detail"
+                              @click="computeModal(item)">{{i.title}}</span>
                         <el-tooltip class="item"
                                     effect="dark"
                                     :content="item.tips"
@@ -252,7 +262,6 @@
 
         </el-col>
       </el-row>
-
       <tableList :gridData="gridData"
                  :editFlag="editFlag"
                  :addRowList="addRowList"
@@ -421,7 +430,11 @@ export default {
       previewFlag: false,
       targetMotorName: "",
       mekpriceType: "",
-      reportFlag: true
+      reportFlag: true,
+      maxDataList: [],
+      maxData: "",
+      totalWidth: 0,
+      clientHeight: false
     };
   },
   async created () {
@@ -819,40 +832,69 @@ export default {
     },
     getHistogram (params) {
       getHistogram(params).then(res => {
-        let data = res.data
-        let maxWidthList = []
-        if (data) {
-          data.forEach(item => {
-            maxWidthList.push(item.detail.length)
-          })
-          this.maxWidth = _.max(maxWidthList)
-          if (this.maxWidth === 1 || this.maxWidth === 0) {
-            this.chartItemWidth = '240px'
-          } else {
-            this.chartItemWidth = this.maxWidth * 120 + 'px'
-          }
-
-          this.firstBarData = data[0]
-          data.shift()
-          this.barData = data
-          this.barData.forEach(item => {
-            // item.checkList = []
-            this.$set(this.barData, 'checkList', []);
-          })
-          this.barData.forEach(item => {
-            item.detail.forEach(i => {
-              item.checkList.push(i.value)
-              // item.checkList = [...item.checkList]
+        this.$nextTick(() => {
+          let data = res.data
+          let maxWidthList = []
+          let maxList = []
+          this.totalWidth = 0
+          if (data) {
+            data.forEach(item => {
+              maxWidthList.push(item.detail.length)
+              if (item.detail.length === 1 || item.detail.length === 0) {
+                this.totalWidth = 300 * data.length
+              } else {
+                this.totalWidth += item.detail.length * 160
+              }
+              item.detail.forEach(i => {
+                maxList.push(parseInt(i.value))
+              })
             })
-          })
-          if (this.comparedType === "mekMotorType") {
-            this.mekMotorTypeFlag = true
+
+            if (this.totalWidth <= this.$refs.chartBox.$el.clientWidth) {
+              this.clientHeight = true
+            } else {
+              this.clientHeight = false
+            }
+            console.log(this.clientHeight, "222")
+            console.log(this.totalWidth, "111")
+            console.log(this.$refs.chartBox.$el.clientWidth, "333")
+            this.totalWidth = this.totalWidth + 100 + 'px'
+            this.maxData = _.max(maxList).toString()
+            let first = (Number(this.maxData.slice(0, 1)) + 1)
+            for (let i = 0; i < this.maxData.length - 1; i++) {
+              first += '0'
+            }
+            this.maxData = first
+            console.log(this.maxData)
+            // this.maxWidth = _.max(maxWidthList)
+            if (this.maxWidth === 1 || this.maxWidth === 0) {
+              this.chartItemWidth = '300px'
+            } else {
+              this.chartItemWidth = this.maxWidth * 160 + 'px'
+            }
+            this.firstBarData = data[0]
+            data.shift()
+            this.barData = data
+            this.barData.forEach(item => {
+              item.checkList = []
+              // this.$set(this.barData, 'checkList', []);
+            })
+            this.barData.forEach(item => {
+
+              item.detail.forEach(i => {
+                item.checkList.push(i.value)
+                // item.checkList = [...item.checkList]
+              })
+            })
+            if (this.comparedType === "mekMotorType") {
+              this.mekMotorTypeFlag = true
+            } else {
+              this.mekMotorTypeFlag = false
+            }
           } else {
-            this.mekMotorTypeFlag = false
+            iMessage.error(res.desZh)
           }
-        } else {
-          iMessage.error(res.desZh)
-        }
+        });
       })
     },
     handleMEKInfo () {
@@ -993,6 +1035,7 @@ export default {
   margin-top: 20px;
 }
 .chartItem {
+  float: left;
   position: relative;
   // flex: 1;
   flex-direction: column;
@@ -1004,18 +1047,18 @@ export default {
   }
 }
 .operation {
+  margin-bottom: -70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: -110px;
 }
 .operation1 {
+  margin-bottom: -70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: -45px;
 }
 .title {
   font-family: Arial;
@@ -1023,7 +1066,7 @@ export default {
   color: black;
   align-items: center;
   label {
-    width: 210px;
+    width: 130px;
   }
 }
 
@@ -1040,53 +1083,55 @@ export default {
   padding: 9px 26px;
 }
 .chartBox {
+  position: relative;
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
+  // overflow-x: auto;
+  // overflow-y: hidden;
 }
 .chartBox1 {
   width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   position: relative;
 }
 .line {
   position: absolute;
   left: 40px;
-  bottom: 13%;
+  bottom: 10%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line1 {
   position: absolute;
   left: 40px;
-  bottom: 23%;
+  bottom: 20%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line2 {
   position: absolute;
   left: 40px;
-  bottom: 33%;
+  bottom: 30%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line3 {
   position: absolute;
   left: 40px;
-  bottom: 43%;
+  bottom: 40%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line4 {
   position: absolute;
   left: 40px;
-  bottom: 55%;
+  bottom: 49%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .checkList {
@@ -1095,12 +1140,13 @@ export default {
 }
 .xAxis {
   position: absolute;
-  bottom: 2%;
-  font-size: 12px;
+  bottom: 1%;
+  font-size: 14px;
   color: "#3C4F74";
   font-family: "Arial";
   .detail:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 .motorName {
