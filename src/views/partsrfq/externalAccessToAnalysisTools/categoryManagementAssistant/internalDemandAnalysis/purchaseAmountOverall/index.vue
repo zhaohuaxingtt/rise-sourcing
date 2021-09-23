@@ -15,7 +15,7 @@
             <div>Turnover=Price*Volume</div>
             <div style="text-indent: 15px">{{language('PLJLYYTZJGAJLJGYSCGGC','Price：数据来源于台账价格A价（零件+供应商+采购工厂定位唯一价格）')}}</div>
             <div style="text-indent: 15px">{{language('VLSLJCLSJLYYPWLLJCLSJLYYBKM','Volume：历史零件产量数据来源于Pbom，未来零件产量数据来源于BKM')}}</div>
-            <icon slot="reference" name="iconxinxitishi" tip="" symbol></icon>
+            <icon slot="reference" name="iconxinxitishi" symbol></icon>
           </el-popover>
         </div>
         <el-row class="margin-top35" style="width:430px" :gutter="15">
