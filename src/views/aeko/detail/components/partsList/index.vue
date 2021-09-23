@@ -128,7 +128,7 @@
       <!-- 退回原因 -->
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
       <!-- 新增零件弹窗 -->
-      <addPartsDialog v-if="addPartskVisible" :dialogVisible="addPartskVisible" @changeVisible="changeVisible"/>
+      <addPartsDialog v-if="addPartskVisible" :dialogVisible="addPartskVisible" :aekoInfo="aekoInfo" @getList="sure" @changeVisible="changeVisible"/>
   </div>
 </template>
 
