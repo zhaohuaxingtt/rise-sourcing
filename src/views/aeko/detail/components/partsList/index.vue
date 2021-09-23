@@ -26,6 +26,11 @@
                         :multiple="item.multiple"
                         :clearable="item.clearable" 
                     />
+                    <iDicoptions 
+                        v-else-if="item.isDicoptions"
+                        v-model="searchParams[item.props]"
+                        :optionKey="item.dicoptionKey"
+                    />
                     <iSelect 
                         v-else
                         class="multipleSelect" 
@@ -150,6 +155,7 @@ import departBackDialog from './components/departBackDialog'
 import addPartsDialog from './components/addPartsDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
 import aekoSelect from '../../../components/aekoSelect'
+import iDicoptions from 'rise/web/components/iDicoptions' 
 import {
     getPartPage,
     deletePart,
@@ -178,6 +184,7 @@ export default {
         departBackDialog,
         aekoSelect,
         addPartsDialog,
+        iDicoptions,
     },
     computed: {
         //eslint-disable-next-line no-undef
