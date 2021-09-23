@@ -1,15 +1,18 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-09-18 18:18:13
+ * @LastEditTime: 2021-08-30 12:03:40
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
-<template>
-<div class="supplier">
-  <div class="selsTable" :style="{paddingTop:paddingTop}">
+<template>  
+  <div class="fatherTable">
+  <div class="table-fiexed-left" id="tableLeft"></div>
+  <div class="table-fiexed-right" id="tableRight"></div>
+  <div   class="selsTable" id="elTable" :style="{paddingTop:paddingTop}">
     <el-table
+    
       tooltip-effect="light"
       :height="height"
       :data="tableData"
@@ -18,7 +21,7 @@
       :empty-text="$t('LK_ZANWUSHUJU')"
       ref='table'
     >
-      <template v-for='(item,index) in tableTitle'>
+      <template v-for='(item,index) in tableTitle' >
         <!-----------------表格中内容模块------------------------>
         <el-table-column
           :key="index"
@@ -126,9 +129,7 @@
       </template>
     </el-table>
   </div>
-  <div class="leftFlex"></div>
-  <div class="rightFlex"></div>
-</div>
+  </div>
 </template>
 <script>
 import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
@@ -172,17 +173,14 @@ export default{
     return {
     supplierTableTop:supplierTableTop
   }},
+  watch:{
+    tableData(){
+        setTimeout(() => {
+           this.getTopWidth() 
+        }, 2000);
+    }
+  },
   methods:{
-    /**
-     * @description: fixed table to leftFlex and rightFlex
-     * @param {*}
-     * @return {*}
-     */
-    copyHtmlToInterHtml(){
-      const tableDomClone = document.querySelector('.selsTable');
-      document.querySelector('.leftFlex').innerHTML = tableDomClone
-      document.querySelector('.rightFlex').innerHTML = tableDomClone
-    },
     getPorpsNumber(props){return getPorpsNumber(props)},
     optionPage(items,index){
       const router = this.$router.resolve({
@@ -217,7 +215,6 @@ export default{
       }
     },
     cellClassName({row, column, rowIndex, columnIndex}) {
-      console.log(column);
       if(column.label =='LC A Price' ) {
         return 'priceUnderLinePrice'
       }      
@@ -230,34 +227,12 @@ export default{
   }, 
   computed:{
     paddingTop:function(){
-      this.$nextTick(()=>{
-        this.copyHtmlToInterHtml()
-      })
       return this.supplierLeftLit.length * 30 + 20 + 'PX'
     }
   }
 }
 </script>
 <style lang='scss' scoped>
-  .supplier{
-    position: relative;
-    .leftFlex{
-      position: absolute;
-      height: 100%;
-      bottom: 0px;
-      left: 0px;
-      z-index: 99;
-      width: 100px;
-    }
-    .rightFlex{
-      position: absolute;
-      height: 100%;
-      bottom: 0px;
-      right: 0px;
-      z-index: 99;
-      width: 100px;
-    }
-  }
   .overText{
     overflow: hidden;
     width: 100%;
@@ -279,7 +254,10 @@ export default{
       float: left;
     }
   }
-  .el-table {
+
+  .el-table{
+        // position: absolute;
+// top: 0px;
     overflow: visible;
     ::v-deep.cell{
       overflow: visible;
@@ -371,7 +349,15 @@ export default{
   }
   .selsTable{
     width: 100%;
-    overflow-x: scroll;
   }
-
+  .fatherTable{
+    overflow-x: scroll;
+    position: relative;
+  }
+  .table-fiexed-left{
+    position:absolute;
+    height: 100%;
+    width:100px;
+    left: 0;
+  }
 </style>
