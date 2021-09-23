@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-22 19:49:00
+ * @LastEditTime: 2021-09-23 14:09:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -146,7 +146,7 @@
                                  :label="item.motorName"> </el-option>
                     </el-select>
                     <span class="margin-bottom20 "
-                          style="line-height:16px;height:16px">best Ball</span>
+                          style="line-height:16px;height:16px">{{productFactoryNames}}</span>
                     <span class="yield"
                           style="line-height:12px">{{firstBarData.output}}</span>
                   </div>
@@ -434,10 +434,12 @@ export default {
       maxDataList: [],
       maxData: "",
       totalWidth: 0,
-      clientHeight: false
+      clientHeight: false,
+      productFactoryNames: ""
     };
   },
   async created () {
+
     await this.init()
     let params = {
       comparedType: this.comparedType,
@@ -476,6 +478,7 @@ export default {
       this.rfqId = this.$store.state.rfq.rfqId
       this.entryStatus = this.$store.state.rfq.entryStatus
       this.chemeId = this.$route.query.chemeId
+      this.productFactoryNames = this.$route.query.productFactoryNames
       await getSchemeInfo({
         schemeId: this.chemeId
       }).then(res => {
@@ -677,6 +680,8 @@ export default {
       this.priceType = ""
     },
     saveDialog () {
+      this.analysisName = this.categoryCode + '_' + this.categoryName + '_' + this.targetMotorName + "_" + 'MEK' + '_' + window.moment(new Date()).format("yyyy.MM")
+      this.reportName = this.categoryCode + '_' + this.categoryName + '_' + this.targetMotorName + "_" + 'MEK' + '_' + window.moment(new Date()).format("yyyy.MM")
       this.dialogVisible = true
     },
     //编辑数据
@@ -714,15 +719,6 @@ export default {
       if (!this.exceptPart) {
         this.exceptPart = []
       }
-      // this.recursiveRetrieveList.forEach(item => {
-      //   val.forEach((i, index) => {
-      //     if (item.partSixNumber !== i) {
-      //       this.exceptPart.push(i)
-      //     } else {
-      //       this.exceptPart.splice(index, 1)
-      //     }
-      //   })
-      // })
       let recursiveRetrieveList = this.recursiveRetrieveList.map(item => item.partNumber)
       this.exceptPart = _.difference(recursiveRetrieveList, val)
       console.log(this.exceptPart)
@@ -921,9 +917,9 @@ export default {
       }
     },
     save () {
+      console.log(this.barData)
       this.analysisSave = true
-      this.analysisName = this.categoryCode + '_' + this.categoryName + '_' + this.targetMotorName + "_" + 'MEK' + '_' + window.moment(new Date()).format("yyyy.MM")
-      this.reportName = this.categoryCode + '_' + this.categoryName + '_' + this.targetMotorName + "_" + 'MEK' + '_' + window.moment(new Date()).format("yyyy.MM")
+
       if (this.analysisSave) {
         let params = {
           categoryCode: this.categoryCode,
@@ -941,13 +937,16 @@ export default {
         if (this.barData[0]) {
           params.firstComparedMotor = this.barData[0].motorId || ""
           params.firstComparedPrice = this.barData[0].priceType || ""
-        } else if (this.barData[1]) {
+        }
+        if (this.barData[1]) {
           params.secondComparedMotor = this.barData[1].motorId || ""
           params.secondComparedPrice = this.barData[1].priceType || ""
-        } else if (this.barData[2]) {
+        }
+        if (this.barData[2]) {
           params.thirdComparedMotor = this.barData[2].motorId || ""
           params.thirdComparedPrice = this.barData[2].priceType || ""
-        } else if (this.barData[3]) {
+        }
+        if (this.barData[3]) {
           params.forthComparedMotor = this.barData[3].motorId || ""
           params.forthComparedPrice = this.barData[3].priceType || ""
         }
@@ -987,14 +986,7 @@ export default {
           },
         });
       }
-
-
-
-    },
-    // handleMEKInfo () {
-    //   let vwModelCodes = [...this.ComparedMotor, this.targetMotor]
-    //   this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: this.categoryCode, vwModelCodes: JSON.stringify(vwModelCodes), chemeId: this.chemeId } })
-    // }
+    }
   }
 };
 </script>

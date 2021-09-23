@@ -214,6 +214,7 @@ export default {
           path: "/sourcing/mek/mekDetails",
           query: {
             chemeId: res.data,
+            productFactoryNames:params.productFactoryNames
           },
         })
       })
