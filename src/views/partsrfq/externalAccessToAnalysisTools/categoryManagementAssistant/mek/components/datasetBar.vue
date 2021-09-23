@@ -1,14 +1,15 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-07 18:06:28
+ * @LastEditTime: 2021-09-22 19:56:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
 -->
 <template>
-  <div style="height: 460px;width:100%"
-       ref="chart"></div>
+  <div class="chart"
+       ref="chart"
+       :style="{height:(clientHeight?'440px':'460px')}"></div>
 </template>
 
 <script>
@@ -36,6 +37,12 @@ export default {
         return {}
       },
     },
+    maxData: {
+      type: String
+    },
+    clientHeight: {
+      type: Boolean
+    }
   },
   watch: {
     // typeSelection (val) {
@@ -89,10 +96,10 @@ export default {
   },
   methods: {
     initCharts () {
-      if (this.maxWidth === 1) {
-        this.$refs.chart.style.width = this.maxWidth * 240 + 'px';
+      if (this.barData.detail.length === 1) {
+        this.$refs.chart.style.width = this.barData.detail.length * 300 + 'px';
       } else {
-        this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+        this.$refs.chart.style.width = this.barData.detail.length * 160 + 'px';
       }
       // console.log(this.$refs.chart.style.width, 'number')
       // this.$refs.chart.style.minWidth = '100%';
@@ -118,7 +125,7 @@ export default {
         grid: {
           left: 0,
           right: 0,
-          bottom: '14%',
+          bottom: '13%',
           top: "30%"
         },
         yAxis: {
@@ -129,6 +136,7 @@ export default {
           splitLine: {
             show: false
           },
+          max: this.maxData,
           axisLabel: {
             formatter: (val) => {
               return "";
@@ -162,7 +170,9 @@ export default {
       this.myChart.clear()
       this.myChart.resize();
       this.myChart.setOption(this.option);
+      this.myChart.off("click");
       this.myChart.on('click', (params) => {
+        console.log(params)
         let data = {}
         this.barData.detail.forEach(item => {
           if (item.value === params.value) {
@@ -181,4 +191,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.chart {
+  height: 460px;
+  width: 100%;
+}
+</style>
