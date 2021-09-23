@@ -125,7 +125,7 @@ export function buildTitleTabel(params) {
     if(!params.rateTableHead) throw 'rateTableHead 无数据';
     params.rateTableHead.forEach(items=>{
       const temlateData = JSON.parse(JSON.stringify(tableTile))
-      temlateData.name = items.rateTableHeadDetailVO.rateDepartName
+      temlateData.name = items.rateTableHeadDetailVO.rateDepart
       temlateData.props = 'rateHead'+items.rateHead
       supplierRateTitle.push(temlateData)
    })

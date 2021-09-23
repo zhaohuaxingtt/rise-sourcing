@@ -12,7 +12,7 @@
       <!-- 三级导航栏 -->
       <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3" />
     </div>
-    <div class="nomination-content">
+    <div class="nomination-content" v-loading="loading">
       <router-view></router-view>
     </div>
   </div>
@@ -20,11 +20,13 @@
 </template>
 <script>
 import {
-  iPage
+  iPage,
+  iMessage
 } from "rise";
 import designateStep from './components/designateStep.vue'
 import decisionDataHeader from './components/decisionDataHeader'
 import { applyStep } from './components/data'
+import { nominateAppSDetail } from '@/api/designate'
 
 export default {
   components: {
@@ -34,6 +36,7 @@ export default {
   },
   data(){
     return{
+      loading: false,
       isPreview:'0'
     }
   },
@@ -42,6 +45,7 @@ export default {
     const {isPreview = '0'} = query;
     this.isPreview = isPreview;
     this.$store.dispatch('setPreviewState', isPreview)
+    this.nominateAppSDetail()
     // 缓存当前步骤
     this.getStepStatus();
   },
@@ -72,6 +76,40 @@ export default {
         }
         
       })
+    },
+    nominateAppSDetail() {
+      this.loading = true
+      nominateAppSDetail({
+        nominateAppId: this.$route.query.desinateId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          console.log(this.setDisabled(res.data || {}))
+          this.$store.dispatch('setNominationDisabled', this.setDisabled(res.data || {}))
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      })
+      .finally(() => this.loading = false)
+    },
+    setDisabled(data) {
+      const isPriceConsistent = data.isPriceConsistent // 一次性校验
+      const applicationCode = data.applicationStatus?.code // 定点申请状态
+      if (!applicationCode) return false
+
+      switch(this.$route.query.designateType) {
+        case "MEETING": // 上会
+          const disabledCodes = ["FREERE", "M_CHECK_INPROCESS", "M_CHECK_FAIL", "NOMINATE"] // 冻结, M审批中, M退回, 定点
+          if (isPriceConsistent) return disabledCodes.concat(["PASS", "CHECK_INPROCESS", "CHECK_PASS", "CHECK_FAIL"]).includes(applicationCode) // 通过一致性校验 已通过, 复核中, 复核通过, 复核未通过
+
+          return disabledCodes.includes(applicationCode)
+        case "TRANFORM": // 流转
+          return ["FREERE", "ONFLOW", "FINISHFLOW", "NOMINATE"].includes(applicationCode) // 冻结, 流转中, 流转完成, 定点
+        case "RECORD": // 备案
+          return ["FREERE", "NOMINATE"].includes(applicationCode) // 冻结, 定点
+        default:
+          return true
+      }
     },
   },
   watch:{$route(to,from){
