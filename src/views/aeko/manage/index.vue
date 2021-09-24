@@ -225,7 +225,7 @@ export default {
         searchParams:{
           brand:'',
           buyerName:'',
-          aekoStatusList:[''],
+          aekoStatusList:['IMPORTED'],
           coverStatusList:[''],
           carTypeCodeList:[''],
           linieDeptNumList:[''],
@@ -337,7 +337,7 @@ export default {
             aekoStatusList:aekoStatusList.length && aekoStatusList[0]=='' ? [] : aekoStatusList,
             coverStatusList:coverStatusList.length && coverStatusList[0]=='' ? [] : coverStatusList,
         };
-        if(frozenDate.length){
+        if(frozenDate && frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
             data['frozenDateEnd'] = frozenDate[1]+' 00:00:00';
         }
