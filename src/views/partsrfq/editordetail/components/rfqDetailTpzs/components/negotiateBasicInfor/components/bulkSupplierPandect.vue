@@ -113,7 +113,7 @@ export default {
 }
 .tip {
   position: absolute;
-  top: -3.2rem;
-  left: 11rem;
+  top: -3.22rem;
+  left: 11.3rem;
 }
 </style>
