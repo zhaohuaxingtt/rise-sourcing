@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-24 16:15:25
+ * @LastEditTime: 2021-09-24 17:09:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -167,7 +167,7 @@ export default {
     clickEdit () {
       const operateLog = {
         analysisType: "1",
-        fsList: this.tableListData.map(item => item.fsNum),
+        idList: this.tableListData.map(item => item.id),
         startDate: this.$route.query.startDate || null,
         endDate: this.$route.query.endDate || null,
         nomiNum: this.$route.query.nomiNum || null,
