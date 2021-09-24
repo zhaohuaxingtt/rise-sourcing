@@ -40,7 +40,7 @@
                   </div>
                 </div>       
                 <div class="rsTop-right-item-value" v-else >
-                  <span v-html="basicData[item.props]">
+                  <span v-html="basicData[item.props]" style="word-wrap: break-word;">
                   </span>
                 </div>
             </template>
