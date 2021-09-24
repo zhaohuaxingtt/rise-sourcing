@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-09-07 14:28:39
+ * @LastEditTime: 2021-09-24 10:26:32
  * @Description: 业务分配模拟
 -->
 
@@ -374,6 +374,8 @@ export default {
             // })
             return o
           })
+          // 为相同groupId的零件排序
+          newTableList = window._.sortBy(newTableList, 'groupId')
           this.tableListData = newTableList
           this.updateTime = res.data.refreshTime || ''
           this.updateTime = this.updateTime ? window.moment(this.updateTime).format('YYYY-MM-DD HH:mm:ss') : ''

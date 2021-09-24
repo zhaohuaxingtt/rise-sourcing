@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-09-03 15:03:33
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-23 15:34:04
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -79,7 +79,26 @@ export default [
           title: 'AEKO-报价单'
         },
         component: () => import("@/views/aeko/quotationdetail"),
-      }
+      },
+      {
+        path: "approve",
+        name: "aekoApprove",
+        meta: {
+          title: 'AEKO-审批'
+        },
+        redirect: "/aeko/approve/approvelist",
+        component: () => import("@/views/aeko/approve"),
+        children: [
+          {
+            path: "approvelist",
+            name: "progressmonitoring-monitoring",
+            meta: {
+              title: "AEKO-审批列表",
+            },
+            component: () => import("@/views/aeko/approve/approveList"),
+          },
+        ]
+      },
     ]
   }
 ]
