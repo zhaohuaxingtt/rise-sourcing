@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-24 16:05:31
+ * @LastEditTime: 2021-09-24 17:12:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -175,6 +175,26 @@
           </iButton>
       </template>
       <div class="body">
+        <!-- 列隐藏显示 -->
+        <!-- <p class="flex-align-center margin-bottom20">
+          <span class="margin-right10">{{language('LK_AEKO_CONTENTDECLARE_LIEYINCANGXIANSHI','列隐藏/显示')}}:</span>
+          <iSelect
+            style="width: 200px;"
+            collapse-tags
+            multiple
+            clearable
+            v-model="addTableTitle"
+            :placeholder="language('partsprocure.CHOOSE','请选择')"
+          >
+            <el-option
+                v-for="(item,index) in showLineList || []"
+                :key="'showLineList_'+index"
+                :label="item.desc"
+                :value="item.code"
+                >
+              </el-option> 
+          </iSelect>
+        </p> -->
         <tableList
           class="table"
           index
@@ -243,7 +263,7 @@
 import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import dosageDialog from "../dosageDialog"
-import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
+import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle,hidenTableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
 import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent } from "@/api/aeko/detail"
@@ -298,6 +318,8 @@ export default {
       debouncer: null,
       declareSendSupplier:false,
       cancelLoading:false,
+      showLineList:hidenTableTitle,
+      addTableTitle:[],
     };
   },
   created() {

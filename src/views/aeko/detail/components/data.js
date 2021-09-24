@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-09-23 10:38:04
+ * @LastEditTime: 2021-09-24 16:19:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -38,6 +38,10 @@ export const contentDeclareTableTitle = [
   { props: "isMtz", name: "MTZ变更", key: "MTZBIANGENG", tooltip: true },
   { props: "originBnkTranWayDesc", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true },
   { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true }
+]
+
+export const hidenTableTitle=[
+  
 ]
 
 export const mtzOptions = [
