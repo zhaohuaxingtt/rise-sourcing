@@ -8,8 +8,6 @@
 -->
 <template>  
   <div class="fatherTable">
-  <div class="table-fiexed-left" id="tableLeft"></div>
-  <div class="table-fiexed-right" id="tableRight"></div>
   <div   class="selsTable" id="elTable" :style="{paddingTop:paddingTop}">
     <el-table
     
@@ -340,7 +338,7 @@ export default{
       if(column.label =='LC A Price' ) {
         return 'priceUnderLinePrice'
       }      
-      if(column.property =='lcBPrice' ) {
+      if(column.label =='LC B Price' ) {
         return 'priceUnderLinePrice'
       }      
 

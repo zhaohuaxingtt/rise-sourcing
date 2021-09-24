@@ -45,7 +45,7 @@ export const fstableTileXh = function(index){
   return [
     {type:'',props:`${index?index:''}lcAPrice`,label:'LC A Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price ',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:"LC A Price \n w/o alloc.",i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:"SKD A Price \n w/o alloc.",i18n:'',width:'100',tooltip:false},
