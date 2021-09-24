@@ -6,9 +6,15 @@
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
+<<<<<<< HEAD
+<template>  
+  <div class="fatherTable">
+  <div   class="selsTable" id="elTable" :style="{paddingTop:paddingTop}">
+=======
 <template>
 <div class="supplier">
   <div class="selsTable" :style="{paddingTop:paddingTop}">
+>>>>>>> 0472dbdfc6e7057a3d08a0bd24967140cb20c538
     <el-table
       tooltip-effect="light"
       :height="height"
@@ -332,7 +338,7 @@ export default{
       if(column.label =='LC A Price' ) {
         return 'priceUnderLinePrice'
       }      
-      if(column.property =='lcBPrice' ) {
+      if(column.label =='LC B Price' ) {
         return 'priceUnderLinePrice'
       }      
 

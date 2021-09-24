@@ -672,7 +672,7 @@ export default {
 
       // 新增零件
       addParts(){
-        //   this.addPartskVisible = true;
+        // this.addPartskVisible = true;
       },
     }
 }

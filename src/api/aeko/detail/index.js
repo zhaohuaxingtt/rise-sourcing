@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-09-17 11:23:03
+ * @LastEditTime: 2021-09-24 15:36:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -186,6 +186,16 @@ export function sendSupplierCheck(data) {
 export function liniePartExport(data) {
   return fileRequst({
     url: '/aeko/aeko-linie-part/export',
+    method: 'POST',
+    data,
+  }) 
+}
+
+
+// 内容表态--撤回
+export function cancelContent(data) {
+  return requst({
+    url: '/aeko/cover/cancelContent',
     method: 'POST',
     data,
   }) 

@@ -198,7 +198,7 @@ export default {
         },
         // 跳转到新增页面
         goToAdd(){
-
+            window.open(`${ process.env.VUE_APP_PORTAL_URL }materielData/parts-message/edit `, '_blank')
         },
 
         // 获取涉及
