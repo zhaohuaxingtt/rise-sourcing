@@ -90,10 +90,10 @@
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
 
           <!-- 暂时添加的按钮 -->
-          <template v-if="isAekoManager">
+          <!-- <template v-if="isAekoManager">
             <iButton :loading="btnLoading.tcm" @click="getTCM">TCM AEKO同步</iButton>
             <iButton :loading="btnLoading.tcmFiles" @click="getTCMFiles">TCM AEKO附件同步</iButton>
-          </template>
+          </template> -->
       </template>
       <!-- 表单区域 -->
       <div v-permission.auto="AEKO_MANAGELIST_TABLE|AEKO管理TABLE">
