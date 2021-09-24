@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-23 13:41:01
+ * @LastEditTime: 2021-09-24 17:12:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -165,7 +165,7 @@
         </iButton>
         <iButton v-if="!disabled" disabled v-permission.atuo="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">{{ language("DAORU", "导⼊") }}</iButton>
         <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT|提交">{{ language("TIJIAO", "提交") }}</iButton>
-        <iButton v-if="!disabled" disabled v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
+        <iButton v-if="!disabled" disabled :loading="cancelLoading" @click="cancelContent" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
           {{ language("CHEHUI", "撤回") }}
           <el-tooltip 
             :content="`${language('LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI','只针对内容撤回，如需撤回封⾯表态，请在封⾯表态中操作【撤回】')}`"
@@ -175,6 +175,26 @@
           </iButton>
       </template>
       <div class="body">
+        <!-- 列隐藏显示 -->
+        <!-- <p class="flex-align-center margin-bottom20">
+          <span class="margin-right10">{{language('LK_AEKO_CONTENTDECLARE_LIEYINCANGXIANSHI','列隐藏/显示')}}:</span>
+          <iSelect
+            style="width: 200px;"
+            collapse-tags
+            multiple
+            clearable
+            v-model="addTableTitle"
+            :placeholder="language('partsprocure.CHOOSE','请选择')"
+          >
+            <el-option
+                v-for="(item,index) in showLineList || []"
+                :key="'showLineList_'+index"
+                :label="item.desc"
+                :value="item.code"
+                >
+              </el-option> 
+          </iSelect>
+        </p> -->
         <tableList
           class="table"
           index
@@ -243,10 +263,10 @@
 import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import dosageDialog from "../dosageDialog"
-import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
+import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle,hidenTableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck } from "@/api/aeko/detail"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
@@ -297,6 +317,9 @@ export default {
       submitLoading: false,
       debouncer: null,
       declareSendSupplier:false,
+      cancelLoading:false,
+      showLineList:hidenTableTitle,
+      addTableTitle:[],
     };
   },
   created() {
@@ -781,8 +804,28 @@ export default {
     },
 
     changeVisible(type,visible){
-          this[type] = visible;
-      },
+      this[type] = visible;
+    },
+
+    // 撤回
+    async cancelContent(){
+      const { multipleSelection } = this;
+      if (!multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHEHUIBIAOTAIDELINGJIAN", "请选择需要撤回表态的零件"))
+      const data = multipleSelection.map((item)=>item.objectAekoPartId);
+      this.cancelLoading = true;
+      await cancelContent(data).then((res)=>{
+        this.cancelLoading = false;
+        if(res.code == 200){
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          this.init()
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch((err)=>{
+        this.cancelLoading = false;
+      })
+    },
+
   },
 };
 </script>

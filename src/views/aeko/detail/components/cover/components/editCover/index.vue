@@ -6,9 +6,14 @@
 <template>
   <iCard class="aeko-editCover">
     <template v-if="!disabled" v-slot:header-control>
-      <iButton  :loading="btnLoading" @click="save()">{{language('LK_BAOCUN','保存')}}</iButton>
-      <iButton  :loading="btnLoading" v-if="basicInfo.aekoCoverId" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
-      <iButton  :loading="btnLoading">
+      <!-- 封面状态为已提交时不展示保存和提交按钮 -->
+      <template v-if="!isSubmit">
+        <iButton  :loading="btnLoading" @click="save()">{{language('LK_BAOCUN','保存')}}</iButton>
+        <!-- 保存之后才能提交以及封面状态是待表态 -->
+        <iButton  :loading="btnLoading" v-if="basicInfo.aekoCoverId && basicInfo.coverStatus == 'TOBE_STATED'" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
+      </template>
+      <!-- 封面状态为已提交时可展示 -->
+      <iButton  v-if="isSubmit" disabled  :loading="btnLoading" @click="cancelCover">
         {{language('LK_AEKO_CHEHUI','撤回')}}
          <el-tooltip 
             :content="`${language('LK_AEKO_FENGMIANBIAOTAIHENEIRONGBIAOTAIJIANGYIBINGCHEHUI','封⾯表态和内容表态将被⼀并撤回')}`"
@@ -16,7 +21,7 @@
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
       </iButton>
-      <iButton  :loading="btnLoading" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
+      <iButton v-if="!isSubmit"  :loading="btnLoading" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
       <iFormGroup row='4'>
@@ -28,10 +33,10 @@
           <template v-if="item.editable && isEdit">
             <template v-if="item.type === 'input'">
               <!-- 新⾸批送样周期(周数)处理正整数 -->
-              <iInput  v-if="item.props == 'sendCycle'" :disabled="disabled"  @input="handleNumber($event,basicInfo,'sendCycle')" v-model="basicInfo[item.props]"  />
-              <iInput v-else :disabled="disabled" v-model="basicInfo[item.props]"  />
+              <iInput  v-if="item.props == 'sendCycle'" :disabled="disabled || isSubmit"  @input="handleNumber($event,basicInfo,'sendCycle')" v-model="basicInfo[item.props]"  />
+              <iInput v-else :disabled="disabled || isSubmit" v-model="basicInfo[item.props]"  />
             </template>
-            <iSelect v-else-if="item.type === 'select'" v-model="basicInfo[item.props]" :disabled="disabled" >
+            <iSelect v-else-if="item.type === 'select'" v-model="basicInfo[item.props]" :disabled="disabled || isSubmit" >
               <el-option
                 :value="item.value"
                 :label="item.label"
@@ -49,7 +54,7 @@
         rows="10" 
         resize="none"
         v-model="basicInfo.remark"
-        :disabled="disabled"
+        :disabled="disabled || isSubmit"
         v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS|封面表态备注框_编辑"
       />
       <div class="margin-top50" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE_LINE|封面表态费用表单_编辑">
@@ -66,7 +71,7 @@
         <!-- 增加材料成本(RMB/⻋) -->
         <template #materialIncrease="scope">
           <div class="table-materialIncrease" style="width:120px">
-            <iInput :disabled="disabled" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
+            <iInput :disabled="disabled || isSubmit" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
             <span class="icon-tips" v-if="scope.row.isShowTips">
               <el-tooltip v-if="scope.row['expressionList'].length > 1" placement="top" effect="light" >
                 <div slot="content">
@@ -84,11 +89,11 @@
         </template>
         <!-- 增加投资费⽤(不含税) -->
         <template #investmentIncrease="scope">
-          <iInput :disabled="disabled" v-model="scope.row['investmentIncrease']" @input="handleNumber($event,scope.row,'investmentIncrease')" style="width:100px" />
+          <iInput :disabled="disabled || isSubmit" v-model="scope.row['investmentIncrease']" @input="handleNumber($event,scope.row,'investmentIncrease')" style="width:100px" />
         </template>
         <!-- 其他费⽤(不含税) -->
         <template #otherCost="scope">
-          <iInput :disabled="disabled" v-model="scope.row['otherCost']" @input="handleNumber($event,scope.row,'otherCost')" style="width:100px"/>
+          <iInput :disabled="disabled || isSubmit" v-model="scope.row['otherCost']" @input="handleNumber($event,scope.row,'otherCost')" style="width:100px"/>
         </template>
         </tableList>
         <p class="bottom-tips margin-top20">Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder Invest≥10,000,000 RMB</p>
@@ -118,6 +123,7 @@ import {
   getFsUser,
   coverSave,
   coverSubmit,
+  coverCancel,
 } from '@/api/aeko/detail/cover.js'
 export default {
     name:'editCover',
@@ -144,6 +150,12 @@ export default {
         const { aekoInfo={} } = this;
         return aekoInfo.aekoStatus == 'FROZEN' || aekoInfo.aekoStatus == 'CANCELED';
       },
+
+      // 封面状态为已提交时不可编辑只可撤销
+      isSubmit(){
+        const { basicInfo={} } = this;
+        return basicInfo.coverStatus == 'SUBMITED';
+      }
       
     },
     data(){
@@ -352,6 +364,24 @@ export default {
               if(last == '.00') fixstr = fixstr.substr(0,fixstr.length-3);
           }
           return fixstr;
+      },
+
+      // 撤回
+      async cancelCover(){
+        const {basicInfo} = this;
+        const {aekoCoverId} = basicInfo;
+        this.btnLoading = true;
+        await coverCancel({aekoCoverId}).then((res)=>{
+          this.btnLoading = false;
+          if(res.code == 200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getDetail();
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch((err)=>{
+          this.btnLoading = false;
+        })
       },
     }
 }

@@ -55,7 +55,7 @@
         <!-- 科室linie费用table -->
         <div v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE|封面表态LINIE表_预览">
             <p class="btn-list margin-bottom20">
-                <iButton @click="unfreeze" disabled>{{language('LK_JIEDONG','解冻')}}</iButton>
+                <iButton @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
             </p>
             <tableList
                 index
@@ -89,7 +89,7 @@
             />
         </div>
         <!-- 解冻弹窗 -->
-        <unfreezeDialog :dialogVisible="dialogVisible"/>
+        <unfreezeDialog v-if="dialogVisible" :dialogVisible="dialogVisible" :basicInfo="basicInfo" @changeVisible="changeVisible" @getList="getList"/>
     </iCard>
 </template>
 
@@ -237,6 +237,10 @@ export default {
         unfreeze(){
             this.dialogVisible = true;
         },
+
+        changeVisible(type,visible){
+          this[type] = visible;
+      },
     }
 }
 </script>

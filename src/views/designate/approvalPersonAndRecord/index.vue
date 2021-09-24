@@ -174,7 +174,6 @@ export default {
       const res = await getDeptListByParam()
       if (res?.result) {
         this.parentDeptOptions = res.data.map(item => {
-          console.log(item);
           return {
             ...item,
             label: item.nameZh,

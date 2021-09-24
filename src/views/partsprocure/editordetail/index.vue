@@ -560,7 +560,7 @@
 			},
 			//判断采购项目来源，查看是否能选择车型项目
 			carTypeCanselect(){
-				if(this.detailData.partProjectSource == 1){
+				if(this.detailData.partProjectSource == 1 || this.detailData.partProjectSource == 4){
 					return true
 				}else {
 					return false

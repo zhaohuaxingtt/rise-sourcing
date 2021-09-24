@@ -47,12 +47,19 @@
                   :placeholder="language('LK_QINGTIANXIEGONGCHENGSHI','请填写工程师')"
                   v-model="form.tpPrincepalName"
                 ></iInput>
-              </el-form-item>              
-              <el-form-item :label="language('LK_XUNJIACAIGOUYUAN','询价采购员')" v-permission.auto="PARTSIGN_ENGINEER|询价采购员">
-                <iInput
+              </el-form-item>            
+              <el-form-item :label="language('LK_XUNJIACAIGOUYUAN','询价采购员')" v-permission.auto="PARTSIGN_INQUIRYPURCHASER|询价采购员">
+                <iSelect multiple v-model="form.userId" :placeholder="language('LK_QINGXUANZHEXUNJIACAIGOUYUAN','请选择询价采购员')" value-key="id">
+                  <el-option 
+                  v-for="(items,index) in inquiryBuyerList" 
+                  :key='index' 
+                  :value='items.id' 
+                  :label="items.nameZh"/>
+                </iSelect>
+                <!-- <iInput
                   :placeholder="language('LK_QINGTIANXIEXUNJIACAIGOUYUAN','请填写询价采购员')"
                   v-model="form.tpPrincepalName"
-                ></iInput>
+                ></iInput> -->
               </el-form-item>
               <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')" v-permission.auto="PARTSIGN_MODELPROJECT|车型项目">
                 <iSelect
@@ -228,7 +235,8 @@ import {
 } from 'rise';
 import tablelist from "./components/tableList";
 import { tableTitle, form, needTranslate, clickMessage} from "./components/data";
-import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home";
+import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home"
+import {purchaseUsers} from '@/api/usercenter'
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
@@ -237,7 +245,7 @@ import filters from "@/utils/filters";
 import { iNavMvp,iMessageBox } from "rise";
 import { cloneDeep } from "lodash"
 import {selectDictByKeyss} from '@/api/dictionary'
-
+import store from '@/store'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -280,6 +288,7 @@ export default {
     
     this.getSelectOptions();
     this.getTableList();
+    this.getInquiryBuyerListFn()
     this.updateNavList
   },
   provide() {
@@ -292,6 +301,21 @@ export default {
     ...mapActions(["updateNavList"])
   },
   methods: {
+    //获取询价采购员数据。
+    getInquiryBuyerListFn(){
+      purchaseUsers({userId:store.state.permission.userInfo.id}).then(res=> {
+        let userInfoId = store.state.permission.userInfo.id
+        this.inquiryBuyerList = res.data || []
+        let data = this.inquiryBuyerList
+        data.forEach(val=>{
+          if(val.id === userInfoId) {
+            this.form.userId = userInfoId
+          }
+        })
+      }
+      
+      )
+    },
     //在跳转到详情界面之前，需要将数据格式化为中文。
     translateDataForDetail(v) {
       this.needTranslate.forEach((element) => {
