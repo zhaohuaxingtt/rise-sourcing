@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-23 14:09:27
+ * @LastEditTime: 2021-09-24 11:25:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -145,10 +145,8 @@
                                  :value="item.motorId"
                                  :label="item.motorName"> </el-option>
                     </el-select>
-                    <span class="margin-bottom20 "
-                          style="line-height:16px;height:16px">{{productFactoryNames}}</span>
-                    <span class="yield"
-                          style="line-height:12px">{{firstBarData.output}}</span>
+                    <span class="margin-bottom20 productFactoryNames">{{productFactoryNames}}</span>
+                    <span class="yield">{{firstBarData.output}}</span>
                   </div>
                   <datasetBar1 ref="datasetBar1"
                                :typeSelection="mekMotorTypeFlag"
@@ -212,7 +210,7 @@
                       <el-select v-model="item.priceType"
                                  @change="changPriceType"
                                  style="width:150px;z-index:1000"
-                                 v-if="item.priceType!=='monthPrice'">
+                                 v-if="!flag1">
                         <el-option v-for="i in mekpriceTypeList"
                                    :key="i.id"
                                    :value="i.code"
@@ -223,7 +221,7 @@
                                       placeholder="选择日期"
                                       @change="changeDate"
                                       style="width:150px;z-index:1000"
-                                      v-if="item.priceType==='monthPrice'">
+                                      v-if="flag1">
                       </el-date-picker>
                     </div>
                   </div>
@@ -355,7 +353,7 @@ export default {
       //时间选择
       date: "",
       //开关
-      flag1: true,
+      flag1: false,
       gridData: {},
       //保存弹窗
       dialogVisible: false,
@@ -676,8 +674,8 @@ export default {
     },
 
     changeDate () {
-      this.flag1 = true
-      this.priceType = ""
+      this.flag1 = false
+      // this.priceType = ""
     },
     saveDialog () {
       this.analysisName = this.categoryCode + '_' + this.categoryName + '_' + this.targetMotorName + "_" + 'MEK' + '_' + window.moment(new Date()).format("yyyy.MM")
@@ -725,8 +723,9 @@ export default {
     },
     //价格类型
     changPriceType (val) {
-      if (val === '2') {
-        this.flag1 = false
+      console.log(val)
+      if (val === 'monthPrice') {
+        this.flag1 = true
       }
       this.mekpriceTypeList.forEach(item => {
         if (item.code === val) {
@@ -837,9 +836,9 @@ export default {
             data.forEach(item => {
               maxWidthList.push(item.detail.length)
               if (item.detail.length === 1 || item.detail.length === 0) {
-                this.totalWidth = 300 * data.length
+                this.totalWidth = 260 * data.length
               } else {
-                this.totalWidth += item.detail.length * 160
+                this.totalWidth += item.detail.length * 100
               }
               item.detail.forEach(i => {
                 maxList.push(parseInt(i.value))
@@ -851,23 +850,18 @@ export default {
             } else {
               this.clientHeight = false
             }
-            console.log(this.clientHeight, "222")
-            console.log(this.totalWidth, "111")
-            console.log(this.$refs.chartBox.$el.clientWidth, "333")
-            this.totalWidth = this.totalWidth + 100 + 'px'
+            this.totalWidth = this.totalWidth + 200 + 'px'
             this.maxData = _.max(maxList).toString()
             let first = (Number(this.maxData.slice(0, 1)) + 1)
             for (let i = 0; i < this.maxData.length - 1; i++) {
               first += '0'
             }
             this.maxData = first
-            console.log(this.maxData)
-            // this.maxWidth = _.max(maxWidthList)
-            if (this.maxWidth === 1 || this.maxWidth === 0) {
-              this.chartItemWidth = '300px'
-            } else {
-              this.chartItemWidth = this.maxWidth * 160 + 'px'
-            }
+            // if (this.maxWidth === 1 || this.maxWidth === 0) {
+            //   this.chartItemWidth = '300px'
+            // } else {
+            //   this.chartItemWidth = this.maxWidth * 160 + 'px'
+            // }
             this.firstBarData = data[0]
             data.shift()
             this.barData = data
@@ -876,7 +870,6 @@ export default {
               // this.$set(this.barData, 'checkList', []);
             })
             this.barData.forEach(item => {
-
               item.detail.forEach(i => {
                 item.checkList.push(i.value)
                 // item.checkList = [...item.checkList]
@@ -1067,12 +1060,15 @@ export default {
   height: 45px;
 }
 .yield {
-  width: 100px;
+  width: 120px;
   height: 35px;
+  line-height: 25px;
+  text-align: center;
   background: #eef2fb;
   opacity: 1;
+  font-size: 16px;
   border-radius: 20px;
-  padding: 9px 26px;
+  padding: 5px;
 }
 .chartBox {
   position: relative;
@@ -1085,6 +1081,11 @@ export default {
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
+}
+.productFactoryNames {
+  font-size: 16px;
+  line-height: 16px;
+  height: 16px;
 }
 .line {
   position: absolute;
@@ -1142,6 +1143,7 @@ export default {
   }
 }
 .motorName {
+  font-size: 16px;
   height: 32px;
 }
 ::v-deep .el-select {
@@ -1151,9 +1153,7 @@ export default {
   }
 }
 ::v-deep .el-select__tags {
-  flex-direction: column;
   justify-content: flex-start;
-  left: -16%;
 }
 </style>
 <style lang="scss">

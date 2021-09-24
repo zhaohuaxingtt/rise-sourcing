@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-09-22 19:56:41
+ * @LastEditTime: 2021-09-24 10:55:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -85,9 +85,9 @@ export default {
     initCharts () {
       console.log(111)
       if (this.firstBarData.length === 1) {
-        this.$refs.chart.style.width = '300px'
+        this.$refs.chart.style.width = '260px'
       } else {
-        this.$refs.chart.style.width = this.firstBarData.length * 160 + 'px';
+        this.$refs.chart.style.width = this.firstBarData.length * 100 + 'px';
       }
 
       this.myChart = echarts().init(this.$refs.chart);
@@ -120,7 +120,7 @@ export default {
           },
         ],
         grid: {
-          left: 10,
+          left: 30,
           right: 0,
           bottom: "13%",
           top: "20%",
@@ -144,8 +144,7 @@ export default {
             show: false,
           },
           max: this.maxData,
-          offset: - 10,
-          splitNumber: 4,
+          offset: 10,
           nameLocation: "start",
         },
         series: [

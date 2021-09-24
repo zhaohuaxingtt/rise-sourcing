@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-09-13 15:56:48
+ * @LastEditTime: 2021-09-24 10:08:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -188,19 +188,7 @@ export default {
       handler (val) {
       },
       immediate: true
-    },
-    // tableList: {
-    //   handler (val) {
-    //     let total = 0
-    //     val.title.forEach(item => {
-    //       if(val.element[0].child.length!==0){
-
-    //       }
-
-    //     })
-
-    //   }
-    // }
+    }
   },
   created () {
     this.$nextTick(() => {

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-09-09 10:29:00
+ * @LastEditTime: 2021-09-24 10:03:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -37,9 +37,11 @@
       <el-table-column v-for="(item,index) in gridData.title"
                        :key="index"
                        :label="item.motorTypeName"
-                       min-width="180">
+                       min-width="180"
+                       show-overflow-tooltip>
         <el-table-column :label="gridData.config[item.label]"
-                         :prop="item.label">
+                         :prop="item.label"
+                         show-overflow-tooltip>
           <editable-cell slot-scope="{row}"
                          :show-input="row.editMode"
                          v-model="row[item.label]">
