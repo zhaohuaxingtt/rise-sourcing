@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-09-23 20:02:05
+ * @LastEditTime: 2021-09-24 12:05:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -93,7 +93,10 @@ export const iconList_all_times = { //整体任务进度以及每格进度
     icon:'iconbaojiapingfengenzong-jiedian-hei' //黑色
   },
   'a0':{
-    icon:'iconbaojiapingfengenzong-jiedian-hei' //黑色
+    icon:'iconbaojiapingfengenzong-jiedian-hui' //灰色
+  },
+  'a6':{
+    icon:'iconbaojiapingfengenzong-jiedian-hui' //灰色
   },
   'a4':{
     icon:'iconbaojiapingfengenzong-jiedian-cheng' //橙色
