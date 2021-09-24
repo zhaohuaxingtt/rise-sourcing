@@ -20,7 +20,7 @@
           <span v-for="(val,ix) in item.carTypeProjectList" :key="ix">{{item.carTypeProjectList.length-1>ix?val+' |&nbsp;':val}}</span>
         </div>
         <iLabel class="margin-top8 title1" :label="language('GONGYINGSHANGSUOGONGSVWGONGCHANGDIZHI','供应商所供SVW工厂地址：')"></iLabel>
-        <div style="height:32px">
+        <div style="min-height:14px">
           {{ item.factoryAddress}}
         </div>
         <iLabel class="margin-top8 title1" :label="language('GONGCHANGZONGXIAOSHOUE','工厂总销售额：')"></iLabel>
