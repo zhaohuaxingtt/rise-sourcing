@@ -49,10 +49,10 @@ export default {
         this.svwData = data.purchaseDataList
         this.tableData = data.offerDataList
         this.tableData && this.tableData.forEach(item => {
-          sum = sum + item.toAmount
+          sum = sum + parseFloat(item.toAmount)
         })
         this.tableData && this.tableData.map(item => {
-          item.symbolSize = item.toAmount / sum * 100 / 5
+          item.symbolSize = parseFloat(item.toAmount) / sum * 100 / 5
           item.toAmount = String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'
           return item.value = [item.lon, item.lat]
         })
@@ -60,6 +60,7 @@ export default {
           return item.value = [item.lon, item.lat]
         })
         if (this.$refs.charMap && (this.tableData || this.svwData)) {
+          console.log('table', this.tableData);
           this.handleMap()
         }
       },
@@ -91,8 +92,8 @@ export default {
       // 圆点
       this.tableData && this.tableData.map((item, index) => {
         let carTypeList = ''
-        item.carTypeProjectList.forEach((val, index) => {
-          carTypeList += item.carTypeProjectList.length - 1 > index ? val + ' | ' : val
+        item.carTypeProjectList.forEach((val, i) => {
+          carTypeList += item.carTypeProjectList.length - 1 > i ? val + ' | ' : val
         })
         var circleMarker = new AMap.CircleMarker({
           center: [item.lon, item.lat],
@@ -108,11 +109,13 @@ export default {
           clickable: true,
           data: item
         })
+        console.log(circleMarker);
         circleMarker.setMap(map)
         let clickIcon = new AMap.Icon({
           image: this.highlight,
-          size: new AMap.Size(135, 40), //图标大小
-          imageSize: new AMap.Size(135, 40)
+          size: new AMap.Size(40, 30),
+          imageSize: new AMap.Size(20, 30),
+          anchor: 'center',
         });
         // 点
         let marker = new AMap.Marker({
@@ -120,7 +123,7 @@ export default {
           icon: clickIcon,
           clickable: true,
           anchor: "center",
-          offset: new AMap.Pixel(-17, 0) //设置偏移量
+          offset: new AMap.Pixel(-10, 0) //设置偏移量
         });
         marker.setMap(map)
         marker.hide()
@@ -137,11 +140,11 @@ export default {
                       <div class='flex'>
                         <div class="img"></div><div class='title'>${item.name}</div>
                       </div>
-                      <div class='label'>${this.language('CHEXINGXIANGMUMAOHAO','车型项目：')}</div>
+                      <div class='label'>${this.language('CHEXINGXIANGMUMAOHAO', '车型：')}</div>
                       <div class='value'>${carTypeList}</div>
-                      <div class='label'>${this.language('GONGYINGSHANGGONGCHANGDIZHI','供应商工程厂地址：')}</div>
+                      <div class='label'>${this.language('GONGYINGSHANGGONGCHANGDIZHI', '供应商工厂地址：')}</div>
                       <div class='value'>${item.factoryAddress}</div>
-                      <div class='label'>${this.language('GONGCHANGZONGXIAOSHOUE','工厂总销售额：')}</div>
+                      <div class='label'>${this.language('GONGCHANGZONGXIAOSHOUE', '工厂总销售额：')}</div>
                       <div class='value'>${item.toAmount}</div>
                   </div>`,
           offset: new AMap.Pixel(-0, -15)
@@ -159,11 +162,6 @@ export default {
           imageSize: new AMap.Size(20, 20),
           image: this.svwImg,
           anchor: 'center',
-        });
-        let clickIcon = new AMap.Icon({
-          image: this.highlight,
-          size: new AMap.Size(135, 40), //图标大小
-          imageSize: new AMap.Size(135, 40)
         });
         // 点
         let marker = new AMap.Marker({

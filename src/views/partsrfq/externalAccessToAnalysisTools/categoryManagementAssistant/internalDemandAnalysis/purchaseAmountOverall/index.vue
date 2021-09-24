@@ -39,7 +39,7 @@
       </div>
     </div>
     <!-- <iframe  src=""></iframe> -->
-    <div style="height:60rem" id='powerBi'>
+    <div id='powerBi'>
     </div>
   </iCard>
 </template>
@@ -338,6 +338,10 @@ export default {
       font-size: 22px;
       font-weight: Bold;
     }
+  }
+  #powerBi {
+    width: 100%;
+    height: calc(100vh - 350px);
   }
 }
 </style>
