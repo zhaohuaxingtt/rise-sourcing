@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-09-24 10:03:43
+ * @LastEditTime: 2021-09-24 16:27:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -47,6 +47,13 @@
                          v-model="row[item.label]">
             <span slot="content">{{row[item.label]}}</span>
           </editable-cell>
+          <template slot="header">
+            <el-tooltip effect="dark"
+                        :content="gridData.config[item.label]"
+                        placement="top">
+              <span>{{ gridData.config[item.label] }}</span>
+            </el-tooltip>
+          </template>
         </el-table-column>
       </el-table-column>
     </el-table>
