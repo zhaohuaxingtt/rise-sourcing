@@ -380,7 +380,7 @@ export default {
       // 年降开始时间
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
-        const list = row.filter((item)=> item.ltcRateStr !='0');
+        const list = row.filter((item)=> item.ltcRateStr!='0');
         return list.length ? list[0].ltcDate : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
@@ -389,10 +389,10 @@ export default {
 
       //  for(let i =0;i<row.length;i++){
          
-      //    if(row[i].ltcRateStr  !='0' && row[i].ltcRateStr ){
+      //    if(row[i].ltcRateStr !='0' && row[i].ltcRateStr){
       //       strFlag = true;
-      //      strList.push(row[i].ltcRateStr -0);
-      //    }else if(strFlag && row[i].ltcRateStr  == '0'){
+      //      strList.push(row[i].ltcRateStr-0);
+      //    }else if(strFlag && row[i].ltcRateStr == '0'){
       //      break
       //    }
       //  }
