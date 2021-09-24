@@ -6,10 +6,13 @@
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
-<template>
-<div class="supplier">
-  <div class="selsTable" :style="{paddingTop:paddingTop}">
+<template>  
+  <div class="fatherTable">
+  <div class="table-fiexed-left" id="tableLeft"></div>
+  <div class="table-fiexed-right" id="tableRight"></div>
+  <div   class="selsTable" id="elTable" :style="{paddingTop:paddingTop}">
     <el-table
+    
       tooltip-effect="light"
       :height="height"
       :data="tableData"
@@ -18,7 +21,7 @@
       :empty-text="$t('LK_ZANWUSHUJU')"
       ref='table'
     >
-      <template v-for='(item,index) in tableTitle'>
+      <template v-for='(item,index) in tableTitle' >
         <!-----------------表格中内容模块------------------------>
         <el-table-column
           :key="index"
@@ -293,6 +296,13 @@ export default{
     return {
     supplierTableTop:supplierTableTop
   }},
+  watch:{
+    tableData(){
+        setTimeout(() => {
+           this.getTopWidth() 
+        }, 2000);
+    }
+  },
   methods:{
     getPorpsNumber(props){return getPorpsNumber(props)},
     optionPage(items,index){
@@ -328,7 +338,6 @@ export default{
       }
     },
     cellClassName({row, column, rowIndex, columnIndex}) {
-      console.log(column);
       if(column.label =='LC A Price' ) {
         return 'priceUnderLinePrice'
       }      
@@ -408,7 +417,10 @@ export default{
       float: left;
     }
   }
-  .el-table {
+
+  .el-table{
+        // position: absolute;
+// top: 0px;
     overflow: visible;
     ::v-deep.cell{
       overflow: visible;
@@ -500,7 +512,15 @@ export default{
   }
   .selsTable{
     width: 100%;
-    overflow-x: scroll;
   }
-
+  .fatherTable{
+    overflow-x: scroll;
+    position: relative;
+  }
+  .table-fiexed-left{
+    position:absolute;
+    height: 100%;
+    width:100px;
+    left: 0;
+  }
 </style>
