@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-17 10:57:17
+ * @LastEditTime: 2021-09-24 16:15:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -9,50 +9,55 @@
 <template>
   <div id="content">
     <iCard>
-      <div slot="header" class="headBox">
+      <div slot="header"
+           class="headBox">
         <p class="headTitle">{{ language('CHENGBENJIEGOUFENXITUXITONGSHAIXUAN', '成本结构分析图-系统筛选') }}</p>
         <span class="buttonBox">
           <iButton @click="clickEdit">{{ language('BIANJI', '编辑') }}</iButton>
           <iButton @click="clickAnalysis">{{ language('FENXIKU', '分析库') }}</iButton>
-          <iButton @click="clickSave" :loading="downloadButtonLoading">{{ language('BAOCUN', '保存') }}</iButton>
+          <iButton @click="clickSave"
+                   :loading="downloadButtonLoading">{{ language('BAOCUN', '保存') }}</iButton>
           <iButton @click="clickBack">{{ language('FANHUI', '返回') }}</iButton>
         </span>
       </div>
       <div class="mainContent">
         <el-row :gutter="20">
           <el-col :span="10">
-            <costChar left="-5%" :width="540" :height="400" :chartData="pieData"/>
+            <costChar left="-5%"
+                      :width="540"
+                      :height="400"
+                      :chartData="pieData" />
           </el-col>
           <el-col :span="14">
-            <tableList
-              :tableData="tableListData"
-              :tableTitle="tableTitle"
-              :selection="false"
-              :tableLoading="loading"
-              :index="true"
-              :max-height="600"
-              @handleSelectionChange="handleSelectionChange"
-            >
+            <tableList :tableData="tableListData"
+                       :tableTitle="tableTitle"
+                       :selection="false"
+                       :tableLoading="loading"
+                       :index="true"
+                       :max-height="600"
+                       @handleSelectionChange="handleSelectionChange">
             </tableList>
           </el-col>
         </el-row>
       </div>
-      <saveModal :key="saveModalParams.key" v-model="saveModalParams.visible" @checkSchemeName="checkSchemeName"/>
+      <saveModal :key="saveModalParams.key"
+                 v-model="saveModalParams.visible"
+                 @checkSchemeName="checkSchemeName" />
     </iCard>
   </div>
 </template>
 
 <script>
-import {iCard, iButton, iMessage, iMessageBox} from 'rise'
+import { iCard, iButton, iMessage, iMessageBox } from 'rise'
 import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain/components/char'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data';
 import { downloadPdfMixins } from '@/utils/pdf';
-import { getTotalCbdData, listNomiData, getCostStructureAnalysisByName, fetchSave} from '@/api/partsrfq/costAnalysis/index.js'
+import { getTotalCbdData, listNomiData, getCostStructureAnalysisByName, fetchSave } from '@/api/partsrfq/costAnalysis/index.js'
 import saveModal from './components/save'
 export default {
   name: 'CostAnalysisMain',
-  components: {iCard, iButton, costChar, iMessageBox, saveModal, tableList},
+  components: { iCard, iButton, costChar, iMessageBox, saveModal, tableList },
   mixins: [downloadPdfMixins],
   data () {
     return {
@@ -71,49 +76,60 @@ export default {
       oldSchemeId: this.$route.query.schemeId || null,
       targetSchemeId: null,
       schemeName: null,
-      loading: true
+      loading: false
     }
   },
-  created() {
+  created () {
+    if (this.$route.query.default) {
+      this.tableListData = JSON.parse(this.$route.query.nomiList)
+      this.getPieData()
+    } else {
+      this.getTableData()
+    }
     // this.initTestData()
-    this.getTableData()
-    
   },
   methods: {
     // 初始化测试数据
-    initTestData() {
+    initTestData () {
       this.tableListData = [
-        {id: 1, partsId: '123 456 789A', fsId: 'FS20-12345', supplierName: '上海汇众汽车有限公司', linie: 'XXXX', date: 'YYYY-MM-DD', carTypeProj: 'Tiguan L'},
-        {id: 2, partsId: '123 456 789A', fsId: 'FS20-12345', supplierName: '上海汇众汽车有限公司', linie: 'XXXX', date: 'YYYY-MM-DD', carTypeProj: 'Tiguan L'},
-        {id: 3, partsId: '123 456 789A', fsId: 'FS20-12345', supplierName: '上海汇众汽车有限公司', linie: 'XXXX', date: 'YYYY-MM-DD', carTypeProj: 'Tiguan L'},
-        {id: 4, partsId: '123 456 789A', fsId: 'FS20-12345', supplierName: '上海汇众汽车有限公司', linie: 'XXXX', date: 'YYYY-MM-DD', carTypeProj: 'Tiguan L'},
+        { id: 1, partsId: '123 456 789A', fsId: 'FS20-12345', supplierName: '上海汇众汽车有限公司', linie: 'XXXX', date: 'YYYY-MM-DD', carTypeProj: 'Tiguan L' },
+        { id: 2, partsId: '123 456 789A', fsId: 'FS20-12345', supplierName: '上海汇众汽车有限公司', linie: 'XXXX', date: 'YYYY-MM-DD', carTypeProj: 'Tiguan L' },
+        { id: 3, partsId: '123 456 789A', fsId: 'FS20-12345', supplierName: '上海汇众汽车有限公司', linie: 'XXXX', date: 'YYYY-MM-DD', carTypeProj: 'Tiguan L' },
+        { id: 4, partsId: '123 456 789A', fsId: 'FS20-12345', supplierName: '上海汇众汽车有限公司', linie: 'XXXX', date: 'YYYY-MM-DD', carTypeProj: 'Tiguan L' },
       ]
     },
     // 获取表格数据
-    getTableData() {
+    getTableData () {
       this.loading = true
       const fsNumList = this.$route.query.fsNumList
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode,
-        fsList: fsNumList && fsNumList.length > 0 ? JSON.parse(fsNumList) : [],
+        idList: fsNumList && fsNumList.length > 0 ? JSON.parse(fsNumList) : [],
       }
       listNomiData(params).then(res => {
         this.loading = false
-        if(res && res.code == 200) {
+        if (res && res.code == 200) {
           this.tableListData = res.data
           this.getPieData()
         } else iMessage.error(res.desZh)
       })
     },
     // 获取pie数据（cbd）
-    getPieData() {
+    getPieData () {
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode,
-        fsList: this.tableListData.map(item => item.fsNum)
+        quotationList: this.tableListData.map(item => {
+          return {
+            fsNum: item.fsNum,
+            supplierId: item.supplierId,
+            round: item.round || null,
+            partNum: item.partNum
+          }
+        })
       }
       getTotalCbdData(params).then(res => {
-        if(res && res.code == 200) {
-          for(const key in res.data) {
+        if (res && res.code == 200) {
+          for (const key in res.data) {
             let name = null
             switch (key) {
               case 'manage':
@@ -144,19 +160,19 @@ export default {
       })
     },
     // 选中表格事件
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.selection = val
     },
     // 点击编辑按钮
-    clickEdit() {
+    clickEdit () {
       const operateLog = {
-          analysisType: "1",
-          fsList: this.tableListData.map(item => item.fsNum),
-          startDate: this.$route.query.startDate || null,
-          endDate: this.$route.query.endDate || null,
-          nomiNum: this.$route.query.nomiNum || null,
-          sixNum: this.$route.query.sixNum || null,
-        }
+        analysisType: "1",
+        fsList: this.tableListData.map(item => item.fsNum),
+        startDate: this.$route.query.startDate || null,
+        endDate: this.$route.query.endDate || null,
+        nomiNum: this.$route.query.nomiNum || null,
+        sixNum: this.$route.query.sixNum || null,
+      }
       this.$router.push({
         path: this.costAnalysisAddUrl,
         query: {
@@ -166,20 +182,20 @@ export default {
       })
     },
     // 点击分析库按钮
-    clickAnalysis() {
+    clickAnalysis () {
       this.$router.push(this.costAnalysisUrl)
     },
     // 点击保存按钮
-    clickSave() {
+    clickSave () {
       this.$set(this.saveModalParams, 'key', Math.random())
       this.$set(this.saveModalParams, 'visible', true)
     },
     // 点击返回按钮
-    clickBack() {
+    clickBack () {
       this.$router.push(this.overViewUrl)
     },
     // 生成PDF
-    createPdf() {
+    createPdf () {
       return new Promise(resolve => {
         this.downloadButtonLoading = true
         const pdfParam = {
@@ -188,22 +204,22 @@ export default {
         }
         this.getDownloadFileAndExportPdf(pdfParam).then(res => {
           this.downloadButtonLoading = false
-          resolve(res) 
+          resolve(res)
         })
       })
     },
     // 校验方案名称
-    checkSchemeName(schemeName) {
+    checkSchemeName (schemeName) {
       this.schemeName = schemeName
       this.targetSchemeId = null
       this.$set(this.saveModalParams, 'visible', false)
       setTimeout(() => {
-        getCostStructureAnalysisByName({name: schemeName}).then(res => {
-          if(res && res.code == 200) {
-            if(res.data) {
+        getCostStructureAnalysisByName({ name: schemeName }).then(res => {
+          if (res && res.code == 200) {
+            if (res.data) {
               //名称校验重复
               this.targetSchemeId = res.data.id
-              iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ cancelButtonText: this.language('LK_QUXIAO','取 消'), confirmButtonText: this.language('LK_QUEDING','确定') }).then(_ => {
+              iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'), this.language('TISHI', '提示'), { cancelButtonText: this.language('LK_QUXIAO', '取 消'), confirmButtonText: this.language('LK_QUEDING', '确定') }).then(_ => {
                 this.createPdfAndSave()
               })
             } else {
@@ -215,15 +231,15 @@ export default {
       }, 500);
     },
     // 创建pdf并保存数据
-    createPdfAndSave() {
+    createPdfAndSave () {
       this.createPdf().then(pdf => {
-        if(!pdf) {
+        if (!pdf) {
           iMessage.error(this.language('CHUANGJIANPDFSHIBAI', '创建PDF失败'))
           return
         }
         const operateLog = {
           analysisType: "1",
-          fsList: this.tableListData.map(item => item.fsNum),
+          idList: this.tableListData.map(item => item.id),
           startDate: this.$route.query.startDate || null,
           endDate: this.$route.query.endDate || null,
           nomiNum: this.$route.query.nomiNum || null,
@@ -242,7 +258,7 @@ export default {
           reportUrl: pdf.downloadUrl,
         }
         fetchSave(params).then(res => {
-          if(res && res.code == 200) iMessage.success(res.desZh)
+          if (res && res.code == 200) iMessage.success(res.desZh)
           else iMessage.error(res.desZh)
         })
       })
