@@ -644,21 +644,21 @@ export default {
       },
       immediate: true
     },
-    // interestsStatus (val) {
-    //   if (val === "otherAmount") {
-    //     this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].otherAmount / 1000000).toFixed(2)
-    //     this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].otherAmount / 1000000).toFixed(2)
-    //     this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].otherAmount / 1000000).toFixed(2)
-    //   } else if (val === "svwAmount") {
-    //     this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].svwAmount / 1000000).toFixed(2)
-    //     this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].svwAmount / 1000000).toFixed(2)
-    //     this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].svwAmount / 1000000).toFixed(2)
-    //   } else if (val === "profit") {
-    //     this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].profit / 1000000).toFixed(2)
-    //     this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].profit / 1000000).toFixed(2)
-    //     this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].profit / 1000000).toFixed(2)
-    //   }
-    // }
+    interestsStatus (val) {
+      if (val === "otherAmount") {
+        this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].otherAmount / 1000000).toFixed(2)
+        this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].otherAmount / 1000000).toFixed(2)
+        this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].otherAmount / 1000000).toFixed(2)
+      } else if (val === "svwAmount") {
+        this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].svwAmount / 1000000).toFixed(2)
+        this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].svwAmount / 1000000).toFixed(2)
+        this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].svwAmount / 1000000).toFixed(2)
+      } else if (val === "profit") {
+        this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].profit / 1000000).toFixed(2)
+        this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].profit / 1000000).toFixed(2)
+        this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].profit / 1000000).toFixed(2)
+      }
+    }
   },
   methods: {
     initCharts () {
@@ -691,7 +691,6 @@ export default {
       //   dataIndex: 0
       // });
     }
-
   }
 
 }
