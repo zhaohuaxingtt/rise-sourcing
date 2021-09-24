@@ -21,7 +21,6 @@ export default {
   props: {
     mapListData: {
       type: Object, default: (data) => {
-        console.log(data);
         return {}
       }
     }
@@ -43,7 +42,6 @@ export default {
     mapListData: {
       handler(objects) {
         const data = cloneDeep(objects)
-        console.log(data);
         var sum = 0
 
         this.svwData = data.purchaseDataList
@@ -60,7 +58,6 @@ export default {
           return item.value = [item.lon, item.lat]
         })
         if (this.$refs.charMap && (this.tableData || this.svwData)) {
-          console.log('table', this.tableData);
           this.handleMap()
         }
       },
@@ -100,16 +97,15 @@ export default {
           radius: item.symbolSize,//3D视图下，CircleMarker半径不要超过64px
           strokeColor: this.color[index],
           strokeWeight: 2,
-          strokeOpacity: 0.5,
+          strokeOpacity: 1,
           fillColor: this.color[index],
-          fillOpacity: 0.5,
+          fillOpacity: 1,
           zIndex: 10,
           bubble: true,
           cursor: 'pointer',
           clickable: true,
           data: item
         })
-        console.log(circleMarker);
         circleMarker.setMap(map)
         let clickIcon = new AMap.Icon({
           image: this.highlight,
