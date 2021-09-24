@@ -1,8 +1,12 @@
 
 <template>
   <div class="productGroup">
+    <p class="font18 font-weight">
+      车型项目：{{titleName}}
+    </p>
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
+        <iButton @click="back">{{language('Back', '返回')}}</iButton>
         <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
         <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
@@ -27,6 +31,7 @@
         <div class="floatright">
           <!--------------------处理按钮----------------------------------->
           <iButton  @click="handleBatchUpdate" >{{language('PILIANGXIUGAIZHUANGTAI','批量修改状态')}}</iButton>
+          <iButton  @click="updatePartTask" >{{language('BAOCUN','保存')}}</iButton>
           <iButton  @click="handleExport('1')" >{{language('DAOCHUDEIEPQUERENQINGDAN','导出待EP确认清单')}}</iButton>
           <iButton  @click="handleExport('2')" >{{language('DAOCHUDEIMQQUERENQINGDAN','导出待MQ确认清单')}}</iButton>
 
@@ -76,9 +81,10 @@ export default {
       partSortStatus,
       dialogVisible:false,
       searchParams: {
-        confirmStatus: 'TO_BE_CONFIRMED',
-        cartypeProId: this.$route.query.cartypeProId
+        cartypeProId: this.$route.query.cartypeProId,
+        status: this.$route.query.status
       },
+      titleName:this.$route.query.carProjectName,
       selectOptions: {},
       tableData: [],
       tableLoading: false,
@@ -86,6 +92,7 @@ export default {
       fsDialogVisible: false,
       sendRows: [],
       oldTableData:[],
+      batchUpdataMap:new Map(),
       dialogPartSort:"",
     }
   },
@@ -93,7 +100,6 @@ export default {
 
   },
   created() {
-    this.getCarProjectOptions()
     this.getSelectOptions()
     this.getTableList()
   },
@@ -111,30 +117,46 @@ export default {
         this.$refs.productGroupTransfer.changeLoading(false)
       })
     },
+    //返回
+    back() {
+      this.$router.go(-1);
+    },
     //列表数据选择零件状态
     handleSelectChange(val, item) {
-      let ids= [item.id];
-      let choosePartSort = item.partSort;
-      let rowPartSort = "";
-      this.oldTableData.forEach(data => {
-         if(data.id == item.id){
-           rowPartSort = data.partSort;
-         }
-      })
-      if(!this.handingPartSortStatus(rowPartSort,choosePartSort)){
-        item.partSort = rowPartSort;
-        return;
-      }
-      this.updatePartTask(ids,choosePartSort)
-    },
-    //更新数据
-    updatePartTask(optionIds,optionPartSort) {
+      // let ids= [item.id];
+      // let choosePartSort = item.partSort;
+      // let rowPartSort = "";
+      // this.oldTableData.forEach(data => {
+      //    if(data.id == item.id){
+      //      rowPartSort = data.partSort;
+      //    }
+      // })
+      // if(!this.handingPartSortStatus(rowPartSort,choosePartSort)){
+      //   item.partSort = rowPartSort;
+      //   return;
+      // }
+      // this.updatePartTask(ids,choosePartSort)
 
-      const params = {
-        id:optionIds,
-        partSort:optionPartSort,
+      //存储变更数据
+      this.batchUpdataMap.set(item.id,item);
+    },
+    /**
+     * @Description: 点击保存 批量更新数据
+     * @Author: leobao
+     * @return {*}
+     */
+    updatePartTask() {
+
+      console.log(this.batchUpdataMap);
+
+      const partTaskDTOS = [];
+
+      for(let [key,item] of this.batchUpdataMap){
+        console.log(item);
+        partTaskDTOS.push({ id:item.id, partSort:item.partSort, })
       }
-      updatePartInfoList(params).then(res => {
+
+      updatePartInfoList(partTaskDTOS).then(res => {
         if (res?.result) {
           this.getTableList();
         } else {
@@ -142,45 +164,54 @@ export default {
         }
       })
     },
+    /**
+     * @Description: 导出execl mq 和ep公用
+     * @Author: leobao
+     * @return {*}
+     */
     handleExport(flag){
       let ids = [];
       this.selectRows.forEach(d => {
         ids.push(d.id);
       })
       const params = {
-        id:ids,
+        ids:ids,
         cartypeProId:this.searchParams.cartypeProId,
-        partSort:flag,
+        downPartSort:flag,
       }
       downLoadPartScheduleFile(params).then(res => {
-        if (res?.result) {
-          this.getTableList();
-        } else {
+        this.getTableList();
+        if (!res?.result) {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
     },
+    /**
+     * @Description: 批量更新弹出框
+     * @Author: leobao
+     * @return {*}
+     */
     handleBatchUpdate(){
 
       if(this.selectRows.length ==0){
-        iMessage.error(this.language('QINGXUANZHEPILIANGGENGXINGSHUJU','请选择批量更新数据'));
+        iMessage.error(this.language('QINGXUANZHELINGJIANJILUHOUPILIANGCAOZUO','请选择零件记录后批量操作！'));
         return
       }
 
       //判断零件分类状态是否一致
-      let partSort = this.selectRows[0].partSort;
-      let compareParSort = false;
-      this.selectRows.forEach(d => {
-        if(d.partSort !=partSort){
-          compareParSort = true;
-          return
-        }
-      })
-      if(compareParSort){
-        iMessage.error(this.language('QINGXUANZHELINGJIANFENGLEI','请选择同类型零件分类数据'))
-        return
-      }
-      this.dialogPartSort = true;
+      // let partSort = this.selectRows[0].partSort;
+      // let compareParSort = false;
+      // this.selectRows.forEach(d => {
+      //   if(d.partSort !=partSort){
+      //     compareParSort = true;
+      //     return
+      //   }
+      // })
+      // if(compareParSort){
+      //   iMessage.error(this.language('QINGXUANZHELINGJIANFENGLEI','请选择同类型零件分类数据'))
+      //   return
+      // }
+      this.dialogPartSort = '';
       this.dialogVisible = true;
     },
     //弹出框
@@ -189,22 +220,31 @@ export default {
         iMessage.error(this.language('QINGXUANZHELINGJIANFENGLEI','请选择零件分类'))
         return
       }
-      let rowsPartSort = this.selectRows[0].partSort;
-
-      //判断零件状态
-      if(!this.handingPartSortStatus(rowsPartSort,this.dialogPartSort)){
-        return;
-      }
+      // let rowsPartSort = this.selectRows[0].partSort;
+      //
+      // //判断零件状态
+      // if(!this.handingPartSortStatus(rowsPartSort,this.dialogPartSort)){
+      //   return;
+      // }
 
       //更新批量数据
       let ids = [];
       this.selectRows.forEach(d => {
-        ids.push(d.id);
+        d.partSort = this.dialogPartSort;
+        // ids.push(d.id);
+        //存储变更数据
+        this.batchUpdataMap.set(d.id,d);
       })
 
-      this.updatePartTask(ids,this.dialogPartSort)
+
+      //this.updatePartTask(ids,this.dialogPartSort)
       this.dialogVisible = false;
     },
+    /**
+     * @Description: 判断选择逻辑  暂时弃用
+     * @Author: leobao
+     * @return {*}
+     */
     handingPartSortStatus(rowsPartSort,choosePartSort){
       //判断选择的列表数据零件分类是否为EP确认
       if(rowsPartSort === partSortStatus.PART_TASK_NEED_EP_CONFIEMED){
@@ -234,6 +274,8 @@ export default {
       this.getDictionary('partTaskPartSort', 'PART_TAKS_SORT')
       // 处理状态
       this.getDictionary('partTaskStatus', 'PART_TAKS_STATUS')
+      // 异常原因
+      this.getDictionary('partTaskRisePartDesc', 'PART_TAKS_RISE_PART_DESC')
     },
     /**
      * @Description: 调取数据字典获取下拉
@@ -246,31 +288,17 @@ export default {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
           this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+            if(optionName == 'partTaskPartSort'){
+              item.code = parseInt(item.code);
+            }
             return { value: item.code, label: item.name }
           })
         }
       })
     },
-    getCarProjectOptions() {
-      getCarTypePro().then(res => {
-        if (res?.result) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            carProjectOptions: res.data.map(item => {
-              return {
-                ...item,
-                value: item.id,
-                label: item.cartypeProName
-              }
-            })
-          }
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      })
-    },
     handleReset() {
       this.searchParams = {
+        cartypeProId:this.$route.query.cartypeProId
       }
       this.handleSure()
     },
@@ -296,6 +324,7 @@ export default {
         cartypeProId:this.searchParams.cartypeProId,
         partSort:this.searchParams.partSort,
         status:this.searchParams.status,
+        risePartDesc:this.searchParams.risePartDesc
       }
       this.tableLoading = true
       getPartTaskList(params).then(res => {
@@ -305,6 +334,7 @@ export default {
           this.page.pageSize = Number(res.pageSize)
           this.page.totalCount = Number(res.total)
           this.page.currPage = Number(res.pageNum)
+          this.batchUpdataMap = new Map();
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
