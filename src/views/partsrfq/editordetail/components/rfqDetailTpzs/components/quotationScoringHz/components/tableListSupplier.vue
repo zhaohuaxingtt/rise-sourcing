@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-09-23 16:01:02
+ * @LastEditTime: 2021-09-24 11:33:52
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -248,6 +248,7 @@
   </div>
   <!-- <div class="rightFlex">
   </div> -->
+  
 </div>
 </template>
 <script>
