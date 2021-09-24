@@ -274,7 +274,7 @@ export default {
     },
     handleSave() {
       const list = this.multipleSelection.filter(item => !item.deleteStatus)
-      if(list.length == 0) return iMessage.warn(this.language('NINGDANGQIANHAWEIXUANZESHUJU','您当前还未选择数据！'))
+      if(this.multipleSelection.length == 0) return iMessage.warn(this.language('NINGDANGQIANHAWEIXUANZESHUJU','您当前还未选择数据！'))
       for (let i = 0, item; (item = list[i++]);) {
         if (!item.coordinatorId || !item.raterId || !item.rateDepart || !item.rateDepartNum) {
           return iMessage.warn(this.language('LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN','请选择完数据再做保存'))
