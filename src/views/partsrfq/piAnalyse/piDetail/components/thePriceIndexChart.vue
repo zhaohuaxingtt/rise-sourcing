@@ -34,10 +34,10 @@
       <div class="theChart" ref="theChart" :style="{'height': chartHeight}" />
       <div class="legendBox">
         <div class="legendItem" v-for="(item,index) of resChartData" :key="index">
-          <template v-if="item.waveType === 'compositeWaveRatio'">
+          <template v-if="['compositeWaveRatio','mixPrice','purchase'].includes(item.waveType)">
             <div class="shape" :style="{'background': item.color}"></div>
           </template>
-          <template v-else-if="item.waveType === 'compositeWaveAvg'">
+          <template v-else-if="['compositeWaveAvg','mixPriceAvg'].includes(item.waveType)">
             <div class="shape">
               <div class="doubleBox" :style="{'background': item.color}"></div>
               <div class="doubleBox" :style="{'background': item.color}"></div>
@@ -52,6 +52,7 @@
               <div class="dotBox" :style="{'background': item.color}"></div>
             </div>
           </template>
+
           <div class="text">{{ item.waveTypeName }}</div>
         </div>
       </div>
@@ -256,7 +257,6 @@ export default {
         endLabel: {
           show: true,
           position: 'right',
-          fontWeight: 'bold',
           rich: {
             bg: {
               align: 'right',
@@ -264,16 +264,17 @@ export default {
               color: '#fff',
               padding: [4, 4, 4, 7],
               fontWeight: 'bold',
+              width: 50
             },
-          },
-          formatter: (obj) => {
-            let res = ''
-            if (lineType === 'dashed') {
-              res = `{bg|${data[data.length - 1].value}%}`;
-            } else {
-              res = `{bf|${data[data.length - 1].value}%}`;
+            bf: {
+              width: 50,
+              align: 'right',
+              fontWeight: 'bold',
+              padding: [4, 4, 4, 7],
             }
-            return res;
+          },
+          formatter: () => {
+            return `{bf|${data[data.length - 1].value}%}`;
           }
         },
         labelLayout: {
@@ -333,6 +334,12 @@ export default {
       switch (type) {
         case 'compositeWaveAvg':
           return 'dashed';
+        case 'mixPriceAvg':
+          return 'dashed';
+        case 'purchase':
+          return 'solid';
+        case 'mixPrice':
+          return 'solid';
         case 'compositeWaveRatio':
           return 'solid';
         case 'waveRatio':
