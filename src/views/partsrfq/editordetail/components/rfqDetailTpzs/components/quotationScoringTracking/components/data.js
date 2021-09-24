@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-07-15 00:03:20
+ * @LastEditTime: 2021-09-23 20:02:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -111,10 +111,11 @@ export const tableTile = {props:'supplierName',name:'供应商',key: '',tooltip:
  */
 export function buildTitleTabel(params) {
    //前方评分 
-   const supplierTitle = [JSON.parse(JSON.stringify(tableTile))]
+   const supplierTitle = []
    params.roundTableHead.forEach(element => {
      const temlateData = JSON.parse(JSON.stringify(tableTile))
      temlateData.props = 'round' + element.round
+     temlateData['round'] = element.round
      temlateData.name = '第'+element.round+`轮(${element.roundHeadDetailVO.inquiryType})`
      temlateData.roundHeadDetailVO = element.roundHeadDetailVO
      supplierTitle.push(temlateData)
@@ -125,15 +126,14 @@ export function buildTitleTabel(params) {
     if(!params.rateTableHead) throw 'rateTableHead 无数据';
     params.rateTableHead.forEach(items=>{
       const temlateData = JSON.parse(JSON.stringify(tableTile))
-      temlateData.name = items.rateTableHeadDetailVO.rateDepartName
+      temlateData.name = items.rateTableHeadDetailVO.rateDepart
       temlateData.props = 'rateHead'+items.rateHead
       supplierRateTitle.push(temlateData)
    })
    } catch (error) {
-    console.log(error)
     supplierRateTitle = [{props:'ep',name:'EP',key: '',tooltip:false, width:'100'},{props:'mq',name:'MQ',key: '',tooltip:false, width:'100'},{props:'pl',name:'PL',key: '',tooltip:false, width:'100'}]
    }
-   return [...supplierTitle,...supplierRateTitle]
+   return [...[JSON.parse(JSON.stringify(tableTile))],...supplierRateTitle,...supplierTitle.sort((a,b)=>b.round-a.round)]
 }
 
 /**

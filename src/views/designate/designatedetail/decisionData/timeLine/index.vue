@@ -12,7 +12,9 @@
                 <iButton @click="edit" v-permission.auto="SOURCING_NOMINATION_ATTATCH_CANCEL|取消">{{language('LK_QUXIAO','取 消')}}</iButton>
                 <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_SHOW|展示">{{language('LK_ZHANSHI','展示')}}</iButton>
             </span>
-            <iButton v-else @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
+            <span v-else>
+                <iButton v-if="!nominationDisabled" @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
+            </span>
         </div>
         <div v-for="(item,index) in detailData" :key="'timeLine_'+index">
             <!-- 编辑状态 -->
@@ -197,6 +199,10 @@ export default {
         },
     },
     computed:{
+        // eslint-disable-next-line no-undef
+        ...Vuex.mapState({
+            nominationDisabled: state => state.nomination.nominationDisabled,
+        }),
         isPreview(){
             return this.$store.getters.isPreview;
         }

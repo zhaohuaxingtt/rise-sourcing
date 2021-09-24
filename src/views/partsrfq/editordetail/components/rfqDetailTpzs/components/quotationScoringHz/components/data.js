@@ -57,7 +57,7 @@ export const fstableTileXh = function(index){
     {type:'',props:`${index?index:''}developmentCost`,label:'Dev. cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}supplierSopDate`,label:'Supplier \n SOP date',i18n:'',width:'100',tooltip:true},
     {type:'',props:`${index?index:''}ltc`,label:'LTC',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC Star.Date',i18n:'',width:'100',tooltip:true},
+    {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC Start.Date',i18n:'',width:'110',tooltip:true},
     {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External \n Development cost',i18n:'',width:'100',tooltip:false},
@@ -81,7 +81,7 @@ export const gstableTileXh = function(index){
     {type:'',props:`${index?index:''}developmentCost`,label:'Dev. cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}supplierSopDate`,label:'Sup. SOP date',i18n:'',width:'100',tooltip:true},
     {type:'',props:`${index?index:''}ltc`,label:'LTC',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC Star.Date',i18n:'',width:'100',tooltip:true},
+    {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC Start.Date',i18n:'',width:'110',tooltip:true},
     {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'Internal \n Dev. cost',i18n:'',width:'100',tooltip:false},
@@ -198,7 +198,7 @@ export function getRenderTableTile(whiteListService,supplierLength,layout){
         supplierDataList[0].bdlRateInfoList.filter(i=>i.supplierId ==supplierDataList[0].bdlRateInfoList[0].supplierId).forEach((itemss,index)=>{
           const ratess = JSON.parse(JSON.stringify(rateTitelList))
           ratess.props = (index == 0?'':index) + 'rate';
-          ratess.label = itemss.rateDepart
+          ratess.label = itemss.rateDepartNum
           items.list.push(ratess)
         })
         relTabelListDefault.push(items)
@@ -292,13 +292,13 @@ export function translateRating(supplierList,ratingList) {
      //如果是第一个供应商的时候，需要构造一个评分部门list
      if(index == 0){
       c.forEach(itemsq=>{
-        titleList.push(itemsq.rateDepart)
+        titleList.push(itemsq.rateDepartNum)
       })
      }
      maps.push({rate:c[0].supplierName,isAllPartRateConsistent:c[0].rfmRate,isRateRisk:c[0].isRateRisk})
      //拿到评分部门list 为每个部门设置评分
      titleList.forEach(itemsbb=>{
-       const map = c.find(it=>it.rateDepart == itemsbb)
+       const map = c.find(it=>it.rateDepartNum == itemsbb)
        if(map){
         maps.push({rate:map.rate,isAllPartRateConsistent:map.isAllPartRateConsistent} || '') 
        }

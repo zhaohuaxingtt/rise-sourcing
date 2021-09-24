@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-09-07 10:43:36
+ * @LastEditTime: 2021-09-23 20:07:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -9,7 +9,7 @@
 
 <template>
   <div>
-    <el-table class="table" tooltip-effect="light"  :data="tableData" v-loading="tableLoading" :empty-text="$t('LK_ZANWUSHUJU')">
+    <el-table class="table" tooltip-effect="light" height="400px"  :data="tableData" v-loading="tableLoading" :empty-text="$t('LK_ZANWUSHUJU')">
       <template v-for="(item,index) in tableTile">
         <!--------------------------------------------------------->
         <!------------------------ep模块---------------------------->
@@ -27,7 +27,7 @@
           <!-- </template>
         </el-table-column> -->
 
-        <el-table-column v-if="item.props == 'supplierName'" :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="200" align="center">
+        <el-table-column v-if="item.props == 'supplierName'" fixed :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="200" align="center">
           <template slot-scope="scope">
             {{scope.row[item.props]?scope.row[item.props]:"-"}}
           </template>
