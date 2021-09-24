@@ -13,7 +13,7 @@
       </div>
       <div class="operation">
         <iButton @click="handleAll">{{ $t("全选") }} </iButton>
-        <iButton @click="handleExport">{{ $t("LK_DAOCHU") }} </iButton>
+        <iButton :loading="exportLoading" @click="handleExport">{{ $t("LK_DAOCHU") }} </iButton>
       </div>
     </div>
     <div class="content">
@@ -42,6 +42,7 @@ export default {
     return {
       tableList: [],
       tableLoading: false,
+      exportLoading: false,
       selectTableData0: [],
       selectTableData1: [],
       selectTableData2: [],
@@ -182,7 +183,9 @@ export default {
         iMessage.warn(this.language('BQNMYXZSJ', '抱歉，你没有选择数据'))
         return
       }
+      this.exportLoading = true
       await categoryReportExport(pms)
+      this.exportLoading = false
     },
     handleAll() {
       this.$refs.multipleTable[0].clearSelection()

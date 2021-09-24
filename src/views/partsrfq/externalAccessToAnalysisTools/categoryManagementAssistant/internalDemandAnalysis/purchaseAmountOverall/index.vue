@@ -11,10 +11,10 @@
     <div class="title flex-between-center-center margin-bottom30">
       <div>
         <div class="text flex">{{language('CAIGOUJINGEZONGLAN','采购金额总览')}}
-          <el-popover class="tip" trigger="hover" placement="top-start">
-            <div>Turnover=Price*Volume</div>
-            <div style="text-indent: 15px">{{language('PLJLYYTZJGAJLJGYSCGGC','Price：数据来源于台账价格A价（零件+供应商+采购工厂定位唯一价格）')}}</div>
-            <div style="text-indent: 15px">{{language('VLSLJCLSJLYYPWLLJCLSJLYYBKM','Volume：历史零件产量数据来源于Pbom，未来零件产量数据来源于BKM')}}</div>
+          <el-popover class="margin-left10 tip" trigger="hover" placement="bottom-start">
+            <div>{{language('TGGWSNZWLLNDCLZCGJEZL','提供过往三年至未来两年的材料组采购金额总览：')}}</div>
+            <div style="text-indent: 15px">{{language('JGSJLYYLJTZJG','价格数据：来源于零件台账价格')}}</div>
+            <div style="text-indent: 15px">{{language('CLSHLSLJCLSJLYYFISCXSCJLYJPBOM','产量数据：历史零件产量数据来源于FIS车型生产记录以及PBOM，未来零件产量数据来源于最新的BKM KTB产量计划')}}</div>
             <icon slot="reference" name="iconxinxitishi" symbol></icon>
           </el-popover>
         </div>
