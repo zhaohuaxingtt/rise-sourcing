@@ -8,7 +8,7 @@
  */
 export const infos = [
   { row: 4, name: "RFQ编号", props: "id", key: "RFQBIANHAO" },
-  { row: 4, name: "RFQ状态", props: "currentStatus", key: "RFQZHUANGTAI" },
+  { row: 4, name: "RFQ状态", props: "statusName", key: "RFQZHUANGTAI" },
   { row: 4, name: "创建日期", props: "createDate", key: "CHUANGJIANRIQI" },
   { row: 4, name: "RFQ名称", props: "rfqName", key: "RFQMINGCHENG" },
   { row: 4, name: "询价采购员", props: "buyerName", key: "XUNJIACAIGOUYUAN" },

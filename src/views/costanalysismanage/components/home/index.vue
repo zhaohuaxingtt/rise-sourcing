@@ -139,7 +139,7 @@
         :tableTitle="tableTitle"
         :tableLoading="loading">
         <template #id="scope">
-          <span class="link-underline" @click="jumpRfq(scope.row)">{{ scope.row.id }}</span>
+          <span :class="(scope.row.sendDate)?'link-underline':''" @click="jumpRfq(scope.row)">{{ scope.row.id }}</span>
         </template>
         <template #createDate="scope">
           <span>{{ scope.row.createDate | dateFilter("YYYY-MM-DD") }}</span>

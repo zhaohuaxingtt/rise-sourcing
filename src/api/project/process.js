@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-26 11:06:24
- * @LastEditTime: 2021-09-24 15:02:26
+ * @LastEditTime: 2021-09-26 09:45:42
  * @LastEditors: Hao,Jiang
  * @Description: 项目管理-项目进度监控接口
  * @FilePath: \front-web\src\api\project\process.js
@@ -69,7 +69,33 @@ export function updateAutoData(data) {
 // 获取项目监控明细
 export function getProProgressMonitorDetail(data) {
   return requst({
-    url: '/project-progress-monitor/proProressgMonitorDetail',
+    url: '/project-progress-monitor/proProgressMonitorDetail',
+    method: 'POST',
+    data
+  })
+}
+
+// 灭灯操作
+export function actionPlan(data) {
+  return requst({
+    url: '/project-progress-monitor/actionPlan',
+    method: 'POST',
+    data
+  })
+}
+
+// 获取需要确认延误原因的零件列表
+export function getDelayReasonConfirmList(data) {
+  return requst({
+    url: '/project-progress-monitor/listDelayReasonConfirm',
+    method: 'POST',
+    data
+  })
+}
+
+export function sendDelayReasonConfirm(data) {
+  return requst({
+    url: '/project-progress-monitor/sendDelayReasonConfirm',
     method: 'POST',
     data
   })
