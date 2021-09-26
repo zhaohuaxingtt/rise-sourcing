@@ -92,6 +92,8 @@ export default {
           }
         })
         .finally(() => this.loading = false)
+      } else{
+        this.loading = false
       }
     },
     setDisabled(data) {
