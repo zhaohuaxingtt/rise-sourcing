@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-09-14 10:40:38
+ * @LastEditTime: 2021-09-26 10:34:00
  * @LastEditors: 舒杰
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
@@ -13,14 +13,13 @@
             <div class="flex-align-center">
                <span class="margin-right10">{{language("PLGYSGL","批量供应商概览")}}</span>
                <el-popover trigger="hover"  placement="bottom-start" width="800">
-                  <div>rnover=零件价格*零件产量*供应商供货比例*车型产量</div>
+                  <div>提供过往三年至未来两年的材料组内批量供应商的供货金额，LTC&JPV数据概览：</div>
                   <div class="tip">
-                     <p >单个LTC=（第N年台账1月1号之前最新版本中记录的最低零件价格）-（第N年台账1月1号版本中记录的最低零件价格）</p>
-                     <p >单个JPV=（第N年台账1月1号之前最新版本中记录的最低零件价格）-（第N年实时记录的最低零件价格）</p>
-                     <p >零件价格：数据来源于台账价格A价（通过零件+供应商+采购工厂定位唯一价格）</p>
-                     <p >零件产量：历史零件产量数据来源于PBOM，未来零件产量数据来源于BKM和RiSE车型产量表（基于BKM中N+1年的零件产量和车型产量计算比例，再通过该比例与RiSE车型产量表计算得到未来年份的零件产量）；</p>
-                     <p >车型产量：数据来源于RiSE车型产量表；</p>
-                     <p >供应商供货比例：数据来源于ERP+NOMI。</p>
+                     <p >价格数据：来源于零件台账价格</p>
+                     <p >产量数据：历史零件产量数据来源于FIS车型生产记录以及PBOM，未来零件产量数据来源于最新的BKM KTB产量计划</p>
+                     <p >供应商供货比例：供应商供货比例数据来源于历史货源配额计划，历史定点记录，以及BKM中的未来零件供货比例</p>
+                     <p >单个零件LTC=(（第N年台账1月1号之前最新版本中记录的N-1年12月31日最低零件价格）-（第N年台账1月1号之前最新版本中记录的N年最低零件价格）)/ （第N年台账1月1号之前最新版本中记录的N-1年12月31日最低零件价格）</p>
+                     <p >单个零件JPV=（（第N年台账1月1号之前最新版本中记录的N年最低零件价格）-（第N年实时记录的N年最低零件价格））/（第N年台账1月1号之前最新版本中记录的N年最低零件价格）。</p>
                   </div>
                   <icon slot="reference" name="iconxinxitishi" symbol class="cursor"></icon>
                </el-popover>
