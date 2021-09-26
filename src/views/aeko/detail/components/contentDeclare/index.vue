@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-26 15:12:12
+ * @LastEditTime: 2021-09-26 16:01:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -221,7 +221,8 @@
             <span v-if="scope.row.quotationId" class="link-underline" @click="jumpQuotation(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #priceAxis="scope">
-            <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <!-- -disabled -->
+            <span class="link-underline" @click="showPriceAxis(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #investCarTypePro="scope">
             <iSelect
@@ -255,7 +256,10 @@
       </div>
     </iCard>
     <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" @update="init" />
+    <!-- 指定投资⻋型项⽬ -->
     <investCarTypeProDialog v-if="investCarTypeProVisible" :dialogVisible="investCarTypeProVisible" @changeVisible="changeVisible"/>
+    <!-- 价格轴 -->
+    <priceAxisDialog v-if="priceAxisVisible" :dialogVisible="priceAxisVisible" @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -273,12 +277,13 @@ import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, chunk, debounce } from "lodash"
 
 import investCarTypeProDialog from './components/investCarTypeProDialog' 
+import priceAxisDialog from './components/priceAxisDialog' 
 
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 
 export default {
-  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog },
+  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog },
   mixins: [ pageMixins ],
   props: {
     aekoInfo: {
@@ -314,6 +319,7 @@ export default {
       currentRow: {},
       dosageDialogVisible: false,
       investCarTypeProVisible: false,
+      priceAxisVisible: false,
       submitLoading: false,
       debouncer: null,
       declareSendSupplier:false,
@@ -825,6 +831,11 @@ export default {
         this.cancelLoading = false;
       })
     },
+
+    // 查看价格轴弹窗
+    showPriceAxis(){
+      // this.priceAxisVisible = true;
+    }
 
   },
 };
