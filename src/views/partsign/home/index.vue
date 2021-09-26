@@ -48,7 +48,7 @@
                   v-model="form.tpPrincepalName"
                 ></iInput>
               </el-form-item>            
-              <el-form-item :label="language('LK_XUNJIACAIGOUYUAN','询价采购员')" v-permission.auto="PARTSIGN_INQUIRYPURCHASER|询价采购员">
+              <!-- <el-form-item :label="language('LK_XUNJIACAIGOUYUAN','询价采购员')" v-permission.auto="PARTSIGN_INQUIRYPURCHASER|询价采购员">
                 <iSelect multiple v-model="form.userId" :placeholder="language('LK_QINGXUANZHEXUNJIACAIGOUYUAN','请选择询价采购员')" value-key="id">
                   <el-option 
                   v-for="(items,index) in inquiryBuyerList" 
@@ -56,11 +56,11 @@
                   :value='items.id' 
                   :label="items.nameZh"/>
                 </iSelect>
-                <!-- <iInput
+                <iInput
                   :placeholder="language('LK_QINGTIANXIEXUNJIACAIGOUYUAN','请填写询价采购员')"
                   v-model="form.tpPrincepalName"
-                ></iInput> -->
-              </el-form-item>
+                ></iInput>
+              </el-form-item> -->
               <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')" v-permission.auto="PARTSIGN_MODELPROJECT|车型项目">
                 <iSelect
                   v-model="form.projectCarType"

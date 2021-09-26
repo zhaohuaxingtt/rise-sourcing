@@ -58,6 +58,9 @@ export default {
   props: {
     rfqId: {
       type: String
+    },
+    queryForm: {
+      type: Object
     }
   },
   data() {
@@ -71,7 +74,7 @@ export default {
     }
   },
   created() {
-    this.getTableList()
+    // this.getTableList()
     const {query={}} = this.$route;
     const {businessKey} = query;
 
@@ -87,6 +90,10 @@ export default {
         this.parmarsNotHasRfq['size'] = this.page.pageSize
         this.parmarsNotHasRfq['current'] = this.page.currPage
         this.parmarsNotHasRfq['status'] = '11'
+        this.parmarsNotHasRfq['buyerId'] = this.queryForm.buyerId
+        this.parmarsNotHasRfq['linieId'] = this.queryForm.linieId
+        this.parmarsNotHasRfq['partProjectType'] = this.queryForm.partProjectType
+        
         getTabelData(this.parmarsNotHasRfq).then(res => {
           this.tableLoading = false
           this.page.currPage = res.pageNum
