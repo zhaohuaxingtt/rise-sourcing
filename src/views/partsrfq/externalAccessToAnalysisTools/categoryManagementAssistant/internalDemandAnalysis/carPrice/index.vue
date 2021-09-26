@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-17 17:28:02
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-26 10:35:46
+ * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
 -->
@@ -13,9 +13,12 @@
             <div class="flex-align-center">
                <span class="margin-right10">{{language("CHEXINGJIAGEDUIBI","车型价格对比")}}</span>
                <el-popover trigger="hover"  placement="bottom-start" width="800">
-                  <p >气泡大小=所选月份当前配置下车型配置产量之和（如2021.01-2021.05是把五个月产量加总）</p>
-                  <p >高度(即单车金额)= N-1月的零件用量*零件价格（如2021.01-2021.05是显示5月当月金额）——其中，单车用量是某一零件在某一车型上的用量，车型配置产量是每一个配置下的产量，零件价格是取该月最后一天的价格。</p>
-                  <p >基于所选车型（必选项）和配置/发动机/变速箱，在所选的月份(...~N-1)中看到所选条件下车型配置的数量以及单车价格。</p>
+                  <div>提供基于历史车型配置的产量对比与材料组对应配置的单车价格对比：</div>
+                  <div class="tip">
+                     <p >基于所选车型（必选项）和配置/发动机/变速箱，在所选的月份(...~N-1)中看到所选条件下车型配置的数量以及材料组单车价格。</p>
+                     <p >气泡大小为所选月份区间，所选车型配置产量之和（如2021.01-2021.05是把五个月产量加总）</p>
+                     <p >单车金额为材料组在车型配置下所有零件的 N-1月的零件单车用量*零件价格（取N-1月最后一天零件价格）之和</p>
+                  </div>
                   <icon slot="reference" name="iconxinxitishi" symbol class="cursor"></icon>
                </el-popover>
                <el-popover trigger="hover" class="tip" placement="bottom-start" width="800">
@@ -382,5 +385,9 @@ export default {
       max-width:200px
    }
 }
-
+.tip{
+   >p{
+      padding-left:15px;
+   }
+}
 </style>
