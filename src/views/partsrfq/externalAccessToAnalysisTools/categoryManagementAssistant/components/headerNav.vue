@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-12 09:58:51
- * @LastEditTime: 2021-09-26 11:24:54
- * @LastEditors: zbin
+ * @LastEditTime: 2021-09-26 18:15:45
+ * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\headerNav.vue
 -->
@@ -22,7 +22,7 @@
       <logButton class="logButton" />
       <!--      报告清单-->
       <reportInventory v-model="reportInventoryDialog" />
-      <categoryGroup v-model="openCatecoryDialog"></categoryGroup>
+      <categoryGroup v-model="openCatecoryDialog" @clearDiolog="clearDiolog"></categoryGroup>
     </div>
   </div>
 </template>
@@ -72,6 +72,9 @@ export default {
     openCatecory() {
       this.openCatecoryDialog = true;
     },
+    clearDiolog(){
+      this.openCatecoryDialog=false
+    }
   },
 };
 </script>
