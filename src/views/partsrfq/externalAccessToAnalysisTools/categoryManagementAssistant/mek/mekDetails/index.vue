@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-26 17:04:59
+ * @LastEditTime: 2021-09-26 19:02:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -146,7 +146,7 @@
                                  :label="item.motorName"> </el-option>
                     </el-select>
                     <span class="margin-bottom20 productFactoryNames">{{productFactoryNames}}</span>
-                    <span class="yield">{{firstBarData.output}}</span>
+                    <span class="yield">{{parseInt(fmoney(firstBarData.output))  }}</span>
                   </div>
                   <datasetBar1 ref="datasetBar1"
                                :typeSelection="mekMotorTypeFlag"
@@ -205,7 +205,7 @@
                     </el-popover>
                     <span class="margin-bottom20 motorName"
                           style="line-height:16px;height:16px">{{item.factory}}</span>
-                    <span class="yield margin-bottom15">{{item.output}}</span>
+                    <span class="yield margin-bottom15">{{parseInt(fmoney(item.output)) }}</span>
                     <div>
                       <el-select v-model="item.priceType"
                                  @change="changPriceType"
@@ -327,6 +327,7 @@ import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, 
 import { getDictByCode } from '@/api/dictionary'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import { uploadFile } from "@/api/file/upload";
+import { fmoney } from '@/utils/index.js'
 export default {
   name: "mekDetails",
   components: {
@@ -433,7 +434,8 @@ export default {
       maxData: "",
       totalWidth: 0,
       clientHeight: false,
-      productFactoryNames: ""
+      productFactoryNames: "",
+      fmoney
     };
   },
   async created () {
@@ -837,7 +839,6 @@ export default {
         background: 'rgba(0, 0, 0, 0.7)'
       });
       getHistogram(params).then(res => {
-
         this.$nextTick(() => {
           loading.close();
           let data = res.data
@@ -891,8 +892,8 @@ export default {
               this.mekMotorTypeFlag = false
             }
           } else {
-              loading.close();
-              iMessage.error(res.desZh)
+            loading.close();
+            iMessage.error(res.desZh)
           }
         });
       })

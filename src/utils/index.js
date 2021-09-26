@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-09-26 16:58:19
+ * @LastEditTime: 2021-09-26 17:54:11
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -441,24 +441,24 @@ export function arrayToTree(list, idKey, parentKey, childrenKey) {
   return result
 }
 
-// export function fmoney(s, n) {
-//   n = n > 0 && n <= 20 ? n : 2
-//   s = parseFloat((s + '').replace(/[^\d\.-]/g, '')).toFixed(n) + ''
-//   var l = s
-//       .split('.')[0]
-//       .split('')
-//       .reverse(),
-//     r = s.split('.')[1]
-//   t = ''
-//   for (i = 0; i < l.length; i++) {
-//     t += l[i] + ((i + 1) % 3 == 0 && i + 1 != l.length ? ',' : '')
-//   }
-//   return (
-//     t
-//       .split('')
-//       .reverse()
-//       .join('') +
-//     '.' +
-//     r
-//   )
-// }
+export function fmoney(s, n) {
+  n = n > 0 && n <= 20 ? n : 2
+  s = parseFloat((s + '').replace(/[^\d\.-]/g, '')).toFixed(n) + ''
+  var l = s
+      .split('.')[0]
+      .split('')
+      .reverse(),
+    r = s.split('.')[1],
+    t = ''
+  for (let i = 0; i < l.length; i++) {
+    t += l[i] + ((i + 1) % 3 == 0 && i + 1 != l.length ? ',' : '')
+  }
+  return (
+    t
+      .split('')
+      .reverse()
+      .join('') +
+    '.' +
+    r
+  )
+}
