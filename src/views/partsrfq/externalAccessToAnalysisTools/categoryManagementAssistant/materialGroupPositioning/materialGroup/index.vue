@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-26 16:52:32
+ * @LastEditTime: 2021-09-26 17:08:28
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\index.vue
@@ -228,7 +228,7 @@ export default {
       let data = {
         materialGroupCode: this.categoryCode,
         userId: this.$store.state.permission.userInfo.id,
-        deptId: this.deptId,
+        departId: this.deptId,
       };
       materialGroupPosition(data)
         .then((res) => {
