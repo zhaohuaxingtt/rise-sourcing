@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-23 10:36:57
+ * @LastEditTime: 2021-09-24 16:34:54
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -33,7 +33,11 @@
         <div class="floatright" v-permission.auto="PROJECTMGT_PROGRESSMONITORING_TIPS|TIPS表">
           <!--  -->
           <span class="switch">
-            {{language("TIPSBIAO","TIPS表")}}
+            {{!showTips ? language("TIPSBIAO","TIPS表") : `${language("TIPSBIAOZONGJI","TIPS表总计")}:`}}
+            <el-tooltip placement="top" popper-class="tooltip-proper" v-if="showTips">
+              <div slot="content">{{language('TIPSBIAOCONTENTDESC','本数字为匹配异常至EM&OTS已完成八个模块与CKD/HT零件的零件个数汇总')}}</div>
+              <span class="tipsSum">{{tipsSum}}</span>
+            </el-tooltip>
             <el-switch v-model="showTips" width="35" @change="confirmShowTips"></el-switch>
           </span>
           
@@ -99,6 +103,7 @@ export default {
       data: [],
       notInTips: 0,
       ckdconfirm: 0,
+      tipsSum: 0,
       options: {},
       loading: false
     }
@@ -171,6 +176,10 @@ export default {
      * @return {*}
      */    
     autoTips(cb){
+      if (!this.carProject) {
+        iMessage.error(this.language('NOCARPROJECTTYPEERROR','未获取到车型项目'))
+        return
+      }
       const params = {
         cartypeProId:this.carProject,
         autoSyn:this.showTips,
@@ -250,7 +259,7 @@ export default {
           carTypeProjectId: carProjectId
         })
         if (res.code === '200') {
-          let data = res.data || []
+          let data = res.data && res.data.records || []
           data = data.map((o, index) => {
             const tarConfig = chartData.find(conf => conf.title === o.modelStatusName) || {}
             // 零件状态
@@ -274,6 +283,12 @@ export default {
             o.value4 = o.projectRiskSum
             // 类型
             o.type = tarConfig.type
+            if (index < 1) {
+              // 待处理
+              o.value7 = o.projectRiskDelay
+              // 已处理
+              o.value8 = o.projectRiskNormal
+            }
             // 是否隐藏任务进度
             o.hideTaskProcess = ['EM&OTS已完成', '匹配异常', '待释放'].includes(o.modelStatusName)
             if (index === data.length - 1) {
@@ -285,7 +300,13 @@ export default {
             }
             return o
           })
-          this.data = [...pendingChartData, ...data]
+          this.data = [...data]
+          // notInTips
+          this.notInTips = res.data && res.data.noTipsNum || 0
+          // ckdconfirm
+          this.ckdconfirm = res.data && res.data.ckdNum || 0
+          // tipsSum
+          this.tipsSum = res.data && res.data.tipsSum || 0
           // 获取车型状态是否加入TIPS
           this.getAutoCarTips(carProjectId)
           console.log('this.data', this.data)
@@ -364,6 +385,12 @@ export default {
         cursor: pointer;
       }
     }
+  }
+}
+.switch {
+  .tipsSum {
+    display: inline-block;
+    padding: 0px 5px;
   }
 }
 </style>
