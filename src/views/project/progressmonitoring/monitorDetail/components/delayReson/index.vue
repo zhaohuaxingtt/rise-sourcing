@@ -1,0 +1,250 @@
+<!--
+ * @Author: Luoshuang
+ * @Date: 2021-09-24 13:44:50
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-24 17:06:35
+ * @Description: 延误原因确认弹窗
+ * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
+-->
+
+<template> 
+  <iDialog  
+    :visible.sync="dialogVisible" 
+    @close="clearDialog" 
+    width="90%" 
+    class="fsDialog"
+  > 
+    <template slot="title"> 
+      <div class="chosseProGroup"> 
+        <span class="chosseProGroup-title">{{language('FASONGYANWUYUANYINQUEREN','发送延误原因确认')}}</span> 
+        <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton> 
+      </div> 
+    </template> 
+    <div class="tableWrapper" > 
+      <tableList indexKey :tableTitle="tableTitle" :tableData="tableList" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @handleSelectChange="handleSelectChange">
+      </tableList> 
+    </div> 
+  </iDialog> 
+</template> 
+
+<script> 
+import { iDialog, iButton, iMessage } from 'rise' 
+import { tableTitle } from './data' 
+import tableList from '@/views/project/schedulingassistant/progroup/components/tableList' 
+import { getDelayReasonConfirmList } from '@/api/project/process'
+import { getFsUserListPart, getAllFS } from '@/api/project'
+export default { 
+  components: { iDialog, iButton, tableList }, 
+  props: { 
+    dialogVisible: { type: Boolean, default: false }, 
+    cartypeProId: {type:String}, 
+    type: {type:String},
+    partStatus: {type:String},
+    partNums: {type:Array, default:() => []},
+    carProjectName: {type:String}
+  }, 
+  data() { 
+    return { 
+      saveLoading: false, 
+      tableTitle: tableTitle, 
+      tableLoading: false, 
+      tableList: [],
+      buyer: '', 
+      fsOptions: {}, 
+      selectData: [], 
+      tableData: tableList,
+      selectOptions: {}
+    } 
+  }, 
+  watch: {
+    dialogVisible(val) {
+      if(val) {
+        this.getDelayReasonConfirmList()
+      }
+    }
+  },
+  created() {
+    this.getFSOPtions()
+  },
+  methods: { 
+    /** 
+     * @Description: 根据选中的行获取每一行的fs下拉列表 
+     * @Author: Luoshuang 
+     * @param {*} tableList 
+     * @return {*} 
+     */    
+    async getFsUserList(tableList) {  
+      const res = await getFsUserListPart({partNums: tableList.map(item => item.partNum).join(',')}) 
+        if (res?.result) { 
+          return res.data   
+        } else { 
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+          return null  
+        } 
+    }, 
+    /**
+     * @Description: 判断time1是否大于time2,time1和time2格式为'2021-KW21' 
+     * @Author: Luoshuang 
+     * @param {*} time1 
+     * @param {*} time2 
+     * @return {*}
+     */    
+    isLarger(time1, time2) { 
+      if (!time1) { 
+        return false 
+      } 
+      if (!time2) { 
+        return true 
+      } 
+      const year1 = time1.split('-')[0] 
+      const week1 = time1.split('KW')[1] 
+      const year2 = time2.split('-')[0] 
+      const week2 = time2.split('KW')[1] 
+      if (year1 > year2) {  
+        return true 
+      } 
+      if (week1 >= week2) { 
+        return true 
+      } 
+      return false 
+    },  
+    /**
+     * @Description: 获取fs下拉选项 
+     * @Author: Luoshuang 
+     * @param {*} 
+     * @return {*} 
+     */     
+    getFSOPtions() { 
+      getAllFS().then(res => { 
+        if (res?.result) { 
+          this.selectOptions = {  
+            ...this.selectOptions, 
+            fsOptions: res.data.map(item => { 
+              return {  
+                ...item,  
+                value: item.id, 
+                label: item.nameZh  
+              }  
+            }) 
+          } 
+        } else {  
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+        } 
+      }) 
+    }, 
+    async getDelayReasonConfirmList() {
+      try {
+        const params = {
+          partNums: this.partNums,
+          partStatus: this.partStatus,
+          projectId: this.cartypeProId
+        }
+        this.tableLoading = true
+        const res = await getDelayReasonConfirmList(params)
+        if (res?.result) {
+          const tableList = res.data || []
+          const fsOptions = await this.getFsUserList(tableList) 
+          this.tableList = tableList.map(item => {
+            const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+            const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+            const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
+              if (item.userId) { 
+                return [...accu, { 
+                  ...item, 
+                  value: item.userId, 
+                  label: item.userName 
+                }] 
+              } else { 
+                return accu 
+              } 
+            },[]) : []  
+            return {  
+              ...item, 
+              cartypeProId: this.cartypeProId, 
+              cartypeProject: this.carProjectName, 
+              // projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
+              // projectPurchaserId: this.$store.state.permission.userInfo.id, 
+              selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+              fs, 
+              fsId,
+              originTime: this.partStatus == '3' ? item.planKickoffTimeKw : this.partStatus == '2' ? item.planNomiTimeKw : this.partStatus == '5' ? item.planFirstTryoutTimeKw : this.partStatus == '6' && this.isLarger(item.planEmTimeKw, item.planOtsTimeKw) ? item.planEmTimeKw : item.planOtsTimeKw,
+            } 
+          });
+        } else {
+          this.tableList = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+        }
+        this.tableLoading = false
+      } catch (e) {
+        console.log(e)
+        this.tableList = []
+        this.tableLoading = false
+      }
+      
+    },
+    handleSelectChange(val, row) { 
+      this.$set(row, 'fs', row.selectOption.find(item => item.value === val).label) 
+    }, 
+    handleSelectionChange(val) { 
+      this.selectData = val 
+    }, 
+    clearDialog() { 
+      this.$emit('changeVisible', false) 
+    }, 
+    handleConfirm() { 
+      if (this.selectData.length < 1) { 
+        iMessage.warn(this.language('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据')) 
+        return 
+      } 
+      if (this.selectData.some(item => !item.fsId)) { 
+        iMessage.warn(this.selectData.filter(item => !item.fsId).map(item => item.partName).join(',') + this.language('XUNJIACAIGOUYUANBUNENGWEIKONG', '询价采购员不能为空')) 
+        return 
+      } 
+      this.saveLoading = true 
+      // this.$emit('handleConfirm', [...this.selectDataNomi, ...this.selectDataKickoff]) 
+    }, 
+    changeSaveLoading(loading) { 
+      this.saveLoading = loading 
+    } 
+  } 
+} 
+</script> 
+
+<style lang="scss" scoped> 
+.borderTop {
+  border-top: 1px dashed rgba(65, 67, 74, .2);
+}
+.fsDialog {
+  ::v-deep .el-dialog {
+    min-height: 80%;
+    padding-bottom: 30px;
+  }
+}
+.chosseProGroup {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding-right: 20px; 
+  &-title { 
+    font-size: 18px; 
+    font-weight: 600; 
+    color: #000 
+  }
+} 
+.tableWrapper { 
+  padding-bottom: 20px; 
+  .tableTitle { 
+    display: block; 
+    font-size: 18px; 
+    font-weight: bold; 
+    color: #000; 
+    padding: 20px 0; 
+  } 
+  &:first-child {
+    .tableTitle {
+      padding-top: 0;
+    }
+  }
+} 
+
+</style>
