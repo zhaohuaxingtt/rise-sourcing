@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-09-09 10:29:00
+ * @LastEditTime: 2021-09-26 16:48:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -37,14 +37,23 @@
       <el-table-column v-for="(item,index) in gridData.title"
                        :key="index"
                        :label="item.motorTypeName"
-                       min-width="180">
+                       min-width="180"
+                       show-overflow-tooltip>
         <el-table-column :label="gridData.config[item.label]"
-                         :prop="item.label">
+                         :prop="item.label"
+                         show-overflow-tooltip>
           <editable-cell slot-scope="{row}"
                          :show-input="row.editMode"
                          v-model="row[item.label]">
             <span slot="content">{{row[item.label]}}</span>
           </editable-cell>
+          <template slot="header">
+            <el-tooltip effect="dark"
+                        :content="gridData.config[item.label]"
+                        placement="top">
+              <span>{{ gridData.config[item.label] }}</span>
+            </el-tooltip>
+          </template>
         </el-table-column>
       </el-table-column>
     </el-table>
@@ -201,7 +210,7 @@ export default {
           addRowList[item.label] = ""
         }
         addRowList['id#' + item.label.split("#")[1]] = ""
-        addRowList.editMode = false
+        addRowList.editMode = true
         addRowList['index'] = this.gridData1.length + 1
       })
       this.gridData1.push(addRowList)

@@ -3,13 +3,7 @@
     <div class="header-box">
       <div class="title">
         {{ language('PI.PIJIAGEFENXI', 'Price Index价格分析') }}
-        <iconTips
-            iconName="iconxinxitishi"
-            :tipContent="language('PI.PIINDEXTISHI', '图中波动均为加权平均波动')"
-            :iconStyle="{'fontSize': '12px'}"
-            tipWidth="200"
-            class="margin-left10"
-        />
+        <iconTips iconName="iconxinxitishi" :tipContent="language('PI.PIINDEXTISHI', '图中波动均为加权平均波动')" :iconStyle="{'fontSize': '12px'}" tipWidth="200" class="margin-left10" />
       </div>
       <div class="select-box">
         <template v-if="isPreview">
@@ -20,42 +14,30 @@
         <template v-else>
           <div class="select-item">
             <div class="label">{{ language('PI.JIAGEWEIDU', '价格维度') }}</div>
-            <el-cascader
-                v-model="form.dimension"
-                :options="priceLatitudeOptions"
-                :props="{
+            <el-cascader v-model="form.dimension" :options="priceLatitudeOptions" :props="{
                   multiple: true,
                   value: 'id',
                   label: 'name',
                   children: 'children'
-                }"
-                @change="handlePriceLatitudeChange"
-                collapse-tags
-                clearable
-            />
+                }" @change="handlePriceLatitudeChange" collapse-tags clearable />
           </div>
           <div class="select-item margin-left30">
             <div class="label">{{ language('PI.SHIJIANKELIDU', '时间颗粒度') }}</div>
             <iSelect v-model="form.particleSize" @change="handleTimeGranularityChange" clearable>
-              <el-option
-                  v-for="item of timeGranularityOptions"
-                  :key="item.name"
-                  :label="item.name"
-                  :value="item.value"
-              ></el-option>
+              <el-option v-for="item of timeGranularityOptions" :key="item.name" :label="item.name" :value="item.value"></el-option>
             </iSelect>
           </div>
         </template>
       </div>
     </div>
     <div class="chartBox">
-      <div class="theChart" ref="theChart" :style="{'height': chartHeight}"/>
+      <div class="theChart" ref="theChart" :style="{'height': chartHeight}" />
       <div class="legendBox">
         <div class="legendItem" v-for="(item,index) of resChartData" :key="index">
-          <template v-if="item.waveType === 'compositeWaveRatio'">
+          <template v-if="['compositeWaveRatio','mixPrice','purchase'].includes(item.waveType)">
             <div class="shape" :style="{'background': item.color}"></div>
           </template>
-          <template v-else-if="item.waveType === 'compositeWaveAvg'">
+          <template v-else-if="['compositeWaveAvg','mixPriceAvg'].includes(item.waveType)">
             <div class="shape">
               <div class="doubleBox" :style="{'background': item.color}"></div>
               <div class="doubleBox" :style="{'background': item.color}"></div>
@@ -70,6 +52,7 @@
               <div class="dotBox" :style="{'background': item.color}"></div>
             </div>
           </template>
+
           <div class="text">{{ item.waveTypeName }}</div>
         </div>
       </div>
@@ -78,13 +61,13 @@
 </template>
 
 <script>
-import {iSelect} from 'rise';
+import { iSelect } from 'rise';
 import iconTips from '../../../../../components/ws3/iconTips';
 import echarts from '@/utils/echarts';
-import {getPiIndexPartCostWave} from '../../../../../api/partsrfq/piAnalysis/piDetail';
-import {CURRENTTIME} from './data';
+import { getPiIndexPartCostWave } from '../../../../../api/partsrfq/piAnalysis/piDetail';
+import { CURRENTTIME } from './data';
 import _ from 'lodash';
-import {mapState} from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -130,9 +113,9 @@ export default {
   data() {
     return {
       timeGranularityOptions: [
-        {name: '年', value: '1'},
-        {name: '季度', value: '2'},
-        {name: '月', value: '3'},
+        { name: '年', value: '1' },
+        { name: '季度', value: '2' },
+        { name: '月', value: '3' },
       ],
       timeGranularity: {
         '1': '年',
@@ -186,13 +169,22 @@ export default {
             const titleDiv = `<div class="tooltipText">${obj[0].axisValueLabel}</div>`;
             const contentDiv = [];
             obj.map(item => {
-              const itemDiv = `<div>
-              <span class="tooltipText">${item.seriesName}：</span>
-              <span class="tooltipText">${this.language('PIDETAIL.FUDU', '幅度')}</span>
-              <span class="tooltipText">${item.value}%，</span>
-              <span class="tooltipText">${this.language('PIDETAIL.ZHI', '值')}</span>
-              <span class="tooltipText">${item.name}</span>
-              </div>`;
+              let itemDiv = ``
+              if (item.data.waveType === 'waveRatio') {
+                itemDiv = `<div>
+                  <span class="tooltipText">${item.seriesName}：</span>
+                  <span class="tooltipText">${this.language('PIDETAIL.FUDU', '幅度')}</span>
+                  <span class="tooltipText">${item.value}%，</span>
+                  <span class="tooltipText">${this.language('PIDETAIL.ZHI', '值')}</span>
+                  <span class="tooltipText">${item.name + item.data.currency}</span>
+                </div>`;
+              } else {
+                itemDiv = `<div>
+                  <span class="tooltipText">${item.seriesName}：</span>
+                  <span class="tooltipText">${this.language('PIDETAIL.FUDU', '幅度')}</span>
+                  <span class="tooltipText">${item.value}%</span>
+                </div>`;
+              }
               contentDiv.push(itemDiv);
             });
             return `
@@ -239,52 +231,18 @@ export default {
       await this.getChartData();
       await this.initEcharts();
     },
-    setNormalLineLastDataMark(data) {
-      const lastIndex = data.length - 1;
+    setAverageLineLastDataMark(data) {
       const resData = data.map(item => {
         return {
           value: item.value,
           name: item.name,
+          waveType: item.waveType,
+          currency: item.currency
         };
       });
-      resData[lastIndex]['label'] = {
-        show: true,
-        color: '#000000',
-        fontWeight: 'bold',
-        position: 'right',
-        formatter: (obj) => {
-          return `${obj.value}%`;
-        },
-      };
       return resData;
     },
-    setAverageLineLastDataMark(data, backgroundColor) {
-      const lastIndex = data.length - 1;
-      const resData = data.map(item => {
-        return {
-          value: item.value,
-          name: item.name,
-        };
-      });
-      resData[lastIndex]['label'] = {
-        rich: {
-          bg: {
-            padding: [4, 12],
-            backgroundColor,
-            color: '#fff',
-            fontWeight: 'bold',
-          },
-        },
-        show: true,
-        color: '#000000',
-        position: 'right',
-        formatter: (obj) => {
-          return `{bg|${obj.value}%}`;
-        },
-      };
-      return resData;
-    },
-    setLineData({lineType, lineColor, name, data}) {
+    setLineData({ lineType, lineColor, name, data }) {
       const obj = {
         name: name,
         type: 'line',
@@ -293,12 +251,37 @@ export default {
           type: lineType,
           color: lineColor,
         },
+        emphasis: {
+          focus: 'series'
+        },
+        endLabel: {
+          show: true,
+          position: 'right',
+          rich: {
+            bg: {
+              align: 'right',
+              backgroundColor: lineColor,
+              color: '#fff',
+              padding: [4, 4, 4, 7],
+              fontWeight: 'bold',
+              width: 50
+            },
+            bf: {
+              width: 50,
+              align: 'right',
+              fontWeight: 'bold',
+              padding: [4, 4, 4, 7],
+            }
+          },
+          formatter: () => {
+            return `{bf|${data[data.length - 1].value}%}`;
+          }
+        },
+        labelLayout: {
+          moveOverlap: 'shiftY',   //设置这个配置项之后标签不在重叠
+        },
       };
-      if (lineType === 'dashed') {
-        obj.data = this.setAverageLineLastDataMark(data, lineColor);
-      } else {
-        obj.data = this.setNormalLineLastDataMark(data);
-      }
+      obj.data = this.setAverageLineLastDataMark(data);
       return obj;
     },
     async getChartData() {
@@ -323,6 +306,8 @@ export default {
               return {
                 value: itemData.rate,
                 name: itemData.value,
+                waveType: item.waveType,
+                currency: itemData.currency
               };
             });
             return this.setLineData({
@@ -349,6 +334,12 @@ export default {
       switch (type) {
         case 'compositeWaveAvg':
           return 'dashed';
+        case 'mixPriceAvg':
+          return 'dashed';
+        case 'purchase':
+          return 'solid';
+        case 'mixPrice':
+          return 'solid';
         case 'compositeWaveRatio':
           return 'solid';
         case 'waveRatio':
@@ -458,7 +449,7 @@ export default {
         .text {
           white-space: nowrap;
           font-size: 12px;
-          color: #41434A;
+          color: #41434a;
         }
       }
 
@@ -469,12 +460,6 @@ export default {
   }
 
   .tooltipContainer {
-    box-sizing: border-box;
-    padding: 5px;
-    background: #FFFFFF;
-    box-shadow: 0 3px 10px rgba(27, 29, 33, 0.16);
-    border-radius: 5px;
-
     .tooltipText {
       font-size: 14px;
       color: #000000;

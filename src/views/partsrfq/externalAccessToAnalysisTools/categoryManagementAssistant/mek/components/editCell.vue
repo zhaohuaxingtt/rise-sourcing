@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:16:19
- * @LastEditTime: 2021-08-27 14:53:10
+ * @LastEditTime: 2021-09-24 16:32:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\editcell.vue
@@ -17,7 +17,8 @@
     </el-tooltip> -->
     <div tabindex="0"
          @keyup.enter="onFieldClick"
-         v-if="!editMode && !showInput">
+         v-if="!editMode && !showInput"
+         style="height:100%">
       <slot name="content"></slot>
     </div>
     <component :is="editableComponent"

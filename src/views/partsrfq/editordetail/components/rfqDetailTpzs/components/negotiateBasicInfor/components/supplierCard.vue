@@ -11,18 +11,20 @@
       <iCard class="right margin-bottom5" v-for="(item,index) in tableData" :key="index">
         <div class="flex">
           <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
-          <div class="title">{{item.name}}</div>
+          <el-popover trigger="hover" placement="top-start" :content="item.name">
+            <div slot="reference" class="title">{{item.name}}</div>
+          </el-popover>
         </div>
-        <iLabel class="margin-top8 title1" :label="$t('LK_CHEXING')+':'"></iLabel>
-        <div class="flex-align-center">
-          <div v-for="(val,ix) in item.carTypeProjectList" :key="ix">{{item.carTypeProjectList.length-1>ix?val+' |&nbsp;':val}}</div>
+        <iLabel class="margin-top8 title1" :label="language('CHEXINGXI','车型：')"></iLabel>
+        <div class="carBox">
+          <span v-for="(val,ix) in item.carTypeProjectList" :key="ix">{{item.carTypeProjectList.length-1>ix?val+' |&nbsp;':val}}</span>
         </div>
-        <iLabel class="margin-top8 title1" :label="language('SHANGQIDAZHANGGONGCHANGDIZHI','上汽大众工厂地址')"></iLabel>
-        <div>
+        <iLabel class="margin-top8 title1" :label="language('GONGYINGSHANGSUOGONGSVWGONGCHANGDIZHI','供应商所供SVW工厂地址：')"></iLabel>
+        <div style="min-height:14px">
           {{ item.factoryAddress}}
         </div>
-        <iLabel class="margin-top8 title1" :label="$t('TPZS.ZXSE')"></iLabel>
-        <div>{{String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'}}</div>
+        <iLabel class="margin-top8 title1" :label="language('GONGCHANGZONGXIAOSHOUE','工厂总销售额：')"></iLabel>
+        <div style="height:14px">{{String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'}}</div>
       </iCard>
     </div>
   </div>
@@ -79,6 +81,12 @@ export default {
     font-size: 20px;
   }
 }
+.title {
+  width: 13rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .title1 {
   color: #7e84a3;
   margin-bottom: 8px;
@@ -89,5 +97,9 @@ export default {
   overflow-x: hidden;
   z-index: 5;
   height: 58.3125rem;
+}
+.carBox {
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
