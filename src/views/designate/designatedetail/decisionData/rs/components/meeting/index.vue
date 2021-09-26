@@ -444,6 +444,9 @@ export default {
 }
 .rsTop {
   display: flex;
+    .rsTop-left-item-title{
+      white-space: pre-line;
+    }
   &-left {
     width: 65%;
     display: flex;
