@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-09-23 19:18:51
+ * @LastEditTime: 2021-09-26 18:14:14
  * @LastEditors: 舒杰
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\categoryGroup.vue
@@ -82,7 +82,7 @@ export default {
       }
       this.$store.dispatch('setCategoryCode', this.category.categoryCode)
       this.$store.dispatch('setCategoryName', this.category.categoryName)
-      this.value = false
+      this.$emit('clearDiolog')
     },
     // 重新定位材料组
     openCategoryCode() {
