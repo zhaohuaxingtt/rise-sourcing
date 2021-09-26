@@ -35,7 +35,7 @@
         {{ language('LK_TIANJIA','添加') }}
       </iButton>
     </div>
-    <partsTable ref="partsTable" :rfqId="rfqId" @targetHand="waitSelect" @openPage='(row)=>openPage(row)' @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
+    <partsTable ref="partsTable" :rfqId="rfqId" :queryForm="queryForm" @targetHand="waitSelect" @openPage='(row)=>openPage(row)' @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
     <!-- 发送KM -->
@@ -86,18 +86,21 @@ export default {
     partsTable,
     kmDialog
   },
-  created() {
+  async mounted() {
     const {query} = this.$route;
     const {id,businessKey} = query;
     // this.rfqId = this.$route.query.id
     this.rfqId = id || '';
-    this.getTableList();
 
     // 当类型为AEKO时 表头需要隐藏部分
     if(businessKey == partProjTypes.AEKOLINGJIAN){
       this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
     }
+
+    await this.getTableList()
+    this.$refs.partsTable.getTableList()
   },
+  inject: ['getbaseInfoData'],
   data() {
     return {
       tableTitle,
@@ -110,7 +113,8 @@ export default {
       rfqId: "",
       addLoding: false,
       kmDialogVisible: false,
-      partProjTypes
+      partProjTypes,
+      queryForm: {}
     };
   },
   methods: {
@@ -160,20 +164,17 @@ export default {
       this.addLoding = true;
       const parmars = this.waitHandleSelectArr.map(r=>{return {...r,...{userId: store.state.permission.userInfo.id || '',userName: store.state.permission.userInfo.userName,rfqId: this.rfqId}}})
       addRfq(parmars)
-          .then((res) => {
-            this.addLoding = false;
-            if (res.data && res.data.rfqId) {
-              this.getTableList()
-              this.resultMessage(res)
-              //this.$refs.applyPrice.getTableList()
-              this.$refs.partsTable.getTableList()
-            } else {
-              this.resultMessage(res)
-            }
-          })
-          .catch(() => {
-            this.addLoding = false;
-          });
+      .then(async (res) => {
+        if (res.data && res.data.rfqId) {
+          this.resultMessage(res)
+          await this.getTableList()
+          //this.$refs.applyPrice.getTableList()
+          this.$refs.partsTable.getTableList()
+        } else {
+          this.resultMessage(res)
+        }
+      })
+      .finally(() => this.addLoding = false)
     },
     //获取表格数据
     getTableList() {
@@ -182,14 +183,28 @@ export default {
         this.parmarsHasRfq['size'] = this.page.pageSize
         this.parmarsHasRfq['current'] = this.page.currPage
         this.parmarsHasRfq['rfqId'] = this.rfqId || ''
-        getTabelData(this.parmarsHasRfq).then(res => {
-          this.confirmTableLoading = false
+        return getTabelData(this.parmarsHasRfq).then(res => {
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
-          this.tableListData = res.data
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          
+          if (this.tableListData.length) {
+            this.queryForm = {
+              buyerId: this.tableListData[0].buyerId,
+              linieId: this.tableListData[0].linieId,
+              partProjectType: this.tableListData[0].partProjectType
+            }
+          } else {
+            const baseInfo = this.getbaseInfoData()
+            this.queryForm = {
+              buyerId: baseInfo.buyerId,
+              linieId: baseInfo.linieUserId,
+            }
+          }
+          
           this.$store.dispatch('setPendingPartsList', this.tableListData.map(r=>{return {...r,...{purchaseProjectId:r.id}}}))
-        }).catch(() => this.confirmTableLoading = false)
+        }).finally(() => this.confirmTableLoading = false)
       }
     },
     // 新申请财务目标价

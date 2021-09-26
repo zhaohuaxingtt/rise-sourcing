@@ -140,7 +140,7 @@ export default{
   inject:['vm'],
   methods:{
     getRate(row, props) {
-      const findItem = row.departmentRate?.find(item => item.rateDepart === props)
+      const findItem = row.departmentRate?.find(item => item.rateDepartNum === props)
       return findItem || {}
     },
     handleAttachmentDonwload(row) {

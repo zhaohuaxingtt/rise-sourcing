@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-24 17:12:23
+ * @LastEditTime: 2021-09-26 10:28:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -168,7 +168,7 @@
         <iButton v-if="!disabled" disabled :loading="cancelLoading" @click="cancelContent" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
           {{ language("CHEHUI", "撤回") }}
           <el-tooltip 
-            :content="`${language('LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI','只针对内容撤回，如需撤回封⾯表态，请在封⾯表态中操作【撤回】')}`"
+            :content="`${language('LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI_CAOZUO','审批前，可对已提交的单据进行撤回。此处只针对内容撤回，如需撤回封面表态，请在封面表态中操作【撤回】')}`"
             placement="top">
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
