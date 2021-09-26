@@ -19,7 +19,7 @@ export const nomalDetailTitle = [
   {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
-  {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'partProjectType', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
+  {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'Part ProjectType', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
 
 ]
 
@@ -36,7 +36,7 @@ export const nomalDetailTitleGS = [
   {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
-  {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'partProjectType', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
+  {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'Part ProjectType', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
 
 ]
 
@@ -52,7 +52,7 @@ export const nomalDetailTitlePF = [
   {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
   {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
-  {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'partProjectType', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
+  {props: 'partProjectTypeDesc', name: '零件采购项目类型', enName: 'Part ProjectType', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
 
 ]
 

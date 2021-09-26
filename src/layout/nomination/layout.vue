@@ -79,18 +79,20 @@ export default {
     },
     nominateAppSDetail() {
       this.loading = true
-      nominateAppSDetail({
-        nominateAppId: this.$route.query.desinateId
-      })
-      .then(res => {
-        if (res.code == 200) {
-          console.log(this.setDisabled(res.data || {}))
-          this.$store.dispatch('setNominationDisabled', this.setDisabled(res.data || {}))
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-        }
-      })
-      .finally(() => this.loading = false)
+      if(this.$route.query.desinateId){
+        nominateAppSDetail({
+          nominateAppId: this.$route.query.desinateId
+        })
+        .then(res => {
+          if (res.code == 200) {
+            console.log(this.setDisabled(res.data || {}))
+            this.$store.dispatch('setNominationDisabled', this.setDisabled(res.data || {}))
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+        })
+        .finally(() => this.loading = false)
+      }
     },
     setDisabled(data) {
       const isPriceConsistent = data.isPriceConsistent // 一次性校验
