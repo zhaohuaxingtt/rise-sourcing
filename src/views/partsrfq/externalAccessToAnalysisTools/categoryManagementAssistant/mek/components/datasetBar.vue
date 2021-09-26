@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-24 10:54:16
+ * @LastEditTime: 2021-09-26 19:20:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -14,13 +14,15 @@
 
 <script>
 import echarts from "@/utils/echarts";
+import { fmoney } from '@/utils/index.js'
 export default {
   data () {
     return {
       myChart: null,
       barDataItem: [],
       barxAxis: [],
-      option: {}
+      option: {},
+      fmoney
     };
   },
   props: {
@@ -62,10 +64,15 @@ export default {
             const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
             const itemData = {
               value: item.value,
+              // value: item.value,
               label: {
                 show: true,
                 position: 'top',
-                color: "#000"
+                color: "#000",
+                formatter: (val) => {
+                  console.log(val)
+                  return this.fmoney(val.value, 2)
+                }
               },
               itemStyle: {
                 color: colorList[index]
@@ -75,7 +82,7 @@ export default {
             if (item.title == 'MIX') {
               str = item.title + "\n\n"
             } else {
-              str = item.title + "\n\n" + item.ebr
+              str = item.title + "\n\n" + item.ebr || ''
             }
             this.barDataItem.push(itemData)
             this.barxAxis.push(str)
