@@ -165,6 +165,8 @@ export default {
         currentStatus: '',
         fsnrGsnrNum: ''
       }
+
+      this.sure()
     },
     getRfqStatusOptions() {
       getSelectOptions('03').then(res => {

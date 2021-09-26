@@ -12,7 +12,7 @@ export const rsTableTitle = [
   {props:'partNo',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 100},
   {props:'partName',name:'零件名称', key: "LINGJIANMINGCHENG", tooltip: true, width: 120},
   {props:'supplierName',name:'厂商名', key: "CHANGSHANGMING", tooltip: true, width: 120},
-  {props:'supplierId',name:'供应商', key: "GONGYINGSHANG", tooltip: true, width: 120},
+  {props:'supplier',name:'供应商', key: "GONGYINGSHANG", tooltip: true, width: 120},
   {props:'source',name:'来源', key: "LAIYUAN", tooltip: true, width: 120},
   {props:'aprice',name:'A价', key: "AJIA", tooltip: false, width: 100, editable: true, required: true, type: 'input', isChange: 'apriceIsChange'},
   {props:'bprice',name:'B价', key: "BJIA", tooltip: false, width: 100, editable: true, required: true, type: 'input', isChange: 'bpriceIsChange'},
@@ -49,13 +49,13 @@ export const rsMockData = [
 ]
 
 export const defaultLtcs = [
-  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false},
-  {ltcDate:'',ltcDateIsChange:false,ltcRateStr : '',ltcRateIsChange:false}
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false}
 ]

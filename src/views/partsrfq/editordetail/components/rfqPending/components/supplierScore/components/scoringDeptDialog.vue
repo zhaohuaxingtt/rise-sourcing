@@ -9,12 +9,12 @@
       </div>
       <tableList index height="83%" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" :cellClassName="deleteLine" @handleSelectionChange="handleSelectionChange">
         <template #tagName="scope">
-          <!-- <iSelect v-model="scope.row.rateDepart" :disabled="scope.row.deleteStatus || customAction" @change="handleClearAll(scope.row)">
-            <el-option v-for="(item, $index) in Object.keys(deptScoringMap)" :key="$index" :label="item" :value="item"></el-option>
-          </iSelect> -->
           <iSelect v-model="scope.row.tagName" :disabled="scope.row.deleteStatus || customAction" @change="handleClearAll($event, scope.row)">
-            <el-option v-for="(item, $index) in scoreDeptOptions" :key="$index" :label="item.label" :value="item.value"></el-option>
+            <el-option v-for="item in deptScoringOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </iSelect>
+          <!-- <iSelect v-model="scope.row.tagName" :disabled="scope.row.deleteStatus || customAction" @change="handleClearAll($event, scope.row)">
+            <el-option v-for="(item, $index) in scoreDeptOptions" :key="$index" :label="item.label" :value="item.value"></el-option>
+          </iSelect> -->
         </template>
         <template #rateDepartNum="scope">
           <iSelect v-if="scope.row.tagName" v-model="scope.row.rateDepartNum" :disabled="scope.row.deleteStatus || customAction" @change="handleClearCoordinatorAndRater(scope.row)">
@@ -66,7 +66,7 @@ export default {
   watch: {
     visible(nv) {
       if (nv && this.ids.length) {
-        this.getDictByCode()
+        // this.getDictByCode()
         this.getAllScoringDepartmentInfo()
         this.getRaterAndCoordinatorByDepartmentId()
       } else {
@@ -93,7 +93,7 @@ export default {
       tableTitle,
       tableListData: [],
       multipleSelection: [],
-      deptScoringMap: {},
+      deptScoringOptions: [],
       saveLoading: false,
       isUpdate: false,
       scoreDeptOptions: [],
@@ -130,79 +130,14 @@ export default {
       })
         .then(res => {
           if (res.code == 200) {
-            this.deptScoringMap = res.data || {}
-            console.log(this.deptScoringMap)
-            // return
-            this.deptScoringMap = {
-              "技术部门": {
-                "purchase_2": {
-                  "left": [
-                    {
-                      nameZh: "王源源",
-                      id: "52",
-                      tagName: "技术部门"
-                    }
-                  ],
-                  "right": [
-                    {
-                      nameZh: "姜谷兰",
-                      id: "51",
-                      tagName: "技术部门"
-                    }
-                  ]
-                },
-                "WS1QQCGGA": {
-                  "left": [
-                    {
-                      nameZh: "宁勇男",
-                      id: "44",
-                      tagName: "技术部门"
-                    }
-                  ],
-                  "right": [
-                    {
-                      nameZh: "谈和玉",
-                      id: "45",
-                      tagName: "技术部门"
-                    }
-                  ]
-                }
-              },
-              "质量部门": {
-                "purchase_pro_2": {
-                  "left": [
-                    {
-                      nameZh: "刘发",
-                      id: "42",
-                      tagName: "质量部门"
-                    }
-                  ],
-                  "right": [
-                    {
-                      nameZh: "刘财",
-                      id: "43",
-                      tagName: "质量部门"
-                    }
-                  ]
-                },
-                "WS1QQCGGB": {
-                  "left": [
-                    {
-                      nameZh: "须奇水",
-                      id: "46",
-                      tagName: "质量部门"
-                    }
-                  ],
-                  "right": [
-                    {
-                      nameZh: "冉兴腾",
-                      id: "47",
-                      tagName: "质量部门"
-                    }
-                  ]
-                }
-              }
-            }
+            this.deptScoringOptions = 
+              Array.isArray(res.data) ? 
+              res.data.map(item => ({
+                ...item,
+                label: item.rateTagDesc,
+                value: item.rateTag
+              })) :
+              []
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
@@ -274,7 +209,7 @@ export default {
     },
     handleSave() {
       const list = this.multipleSelection.filter(item => !item.deleteStatus)
-      if(list.length == 0) return iMessage.warn(this.language('NINGDANGQIANHAWEIXUANZESHUJU','您当前还未选择数据！'))
+      if(this.multipleSelection.length == 0) return iMessage.warn(this.language('NINGDANGQIANHAWEIXUANZESHUJU','您当前还未选择数据！'))
       for (let i = 0, item; (item = list[i++]);) {
         if (!item.coordinatorId || !item.raterId || !item.rateDepart || !item.rateDepartNum) {
           return iMessage.warn(this.language('LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN','请选择完数据再做保存'))
