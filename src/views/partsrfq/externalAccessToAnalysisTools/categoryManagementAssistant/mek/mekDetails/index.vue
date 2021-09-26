@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-24 11:25:30
+ * @LastEditTime: 2021-09-26 17:04:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -203,14 +203,14 @@
                       <div class="motorName"
                            slot="reference">{{item.motorName}}</div>
                     </el-popover>
-                    <span class="margin-bottom20"
+                    <span class="margin-bottom20 motorName"
                           style="line-height:16px;height:16px">{{item.factory}}</span>
                     <span class="yield margin-bottom15">{{item.output}}</span>
                     <div>
                       <el-select v-model="item.priceType"
                                  @change="changPriceType"
                                  style="width:150px;z-index:1000"
-                                 v-if="!flag1">
+                                 v-if="item.priceType!=='monthPrice'">
                         <el-option v-for="i in mekpriceTypeList"
                                    :key="i.id"
                                    :value="i.code"
@@ -219,9 +219,9 @@
                       <el-date-picker v-model="date"
                                       type="date"
                                       placeholder="选择日期"
-                                      @change="changeDate"
+                                      @change="changeDate(item.priceType)"
                                       style="width:150px;z-index:1000"
-                                      v-if="flag1">
+                                      v-if="item.priceType==='monthPrice'">
                       </el-date-picker>
                     </div>
                   </div>
@@ -437,7 +437,6 @@ export default {
     };
   },
   async created () {
-
     await this.init()
     let params = {
       comparedType: this.comparedType,
@@ -568,6 +567,7 @@ export default {
     },
     //查询  
     searchChartData () {
+      console.log(this.barData)
       let params = {
         comparedType: this.comparedType,
         info: [{
@@ -581,11 +581,16 @@ export default {
         unselected: this.exceptPart
       }
       this.ComparedMotor.forEach(item => {
-        params.info.push({
-          motorId: item,
-          priceType: 'sopPrice',
-          isTargetMotor: false
+        this.barData.forEach(i => {
+          if (item === i.motorId) {
+            params.info.push({
+              motorId: item,
+              priceType: i.priceType,
+              isTargetMotor: false
+            })
+          }
         })
+
       })
       if (this.entryStatus === 1) {
         params.isBindingRfq = true
@@ -723,7 +728,6 @@ export default {
     },
     //价格类型
     changPriceType (val) {
-      console.log(val)
       if (val === 'monthPrice') {
         this.flag1 = true
       }
@@ -753,7 +757,7 @@ export default {
       this.barData.forEach(item => {
         let obj = {
           motorId: item.motorId,
-          priceType: val,
+          priceType: item.priceType,
           isTargetMotor: false
         }
         params.info.push(obj)
@@ -826,8 +830,16 @@ export default {
       this.getMekTable()
     },
     getHistogram (params) {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
       getHistogram(params).then(res => {
+
         this.$nextTick(() => {
+          loading.close();
           let data = res.data
           let maxWidthList = []
           let maxList = []
@@ -867,12 +879,10 @@ export default {
             this.barData = data
             this.barData.forEach(item => {
               item.checkList = []
-              // this.$set(this.barData, 'checkList', []);
             })
             this.barData.forEach(item => {
               item.detail.forEach(i => {
                 item.checkList.push(i.value)
-                // item.checkList = [...item.checkList]
               })
             })
             if (this.comparedType === "mekMotorType") {
@@ -881,7 +891,8 @@ export default {
               this.mekMotorTypeFlag = false
             }
           } else {
-            iMessage.error(res.desZh)
+              loading.close();
+              iMessage.error(res.desZh)
           }
         });
       })

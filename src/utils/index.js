@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-09-02 18:49:40
+ * @LastEditTime: 2021-09-26 16:58:19
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -11,8 +11,8 @@ import router from '../router'
 import store from '../store'
 import localStoreage from './localstorage'
 import jsencrypt from 'jsencrypt'
-import {sendKey,sendPermissonKey} from '@/api/usercenter'
-import {onlyselfProject,allitemsList,BKMROLETAGID} from '@/config'
+import { sendKey, sendPermissonKey } from '@/api/usercenter'
+import { onlyselfProject, allitemsList, BKMROLETAGID } from '@/config'
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
   return Cookies.set(cookieName, cookieData, {
@@ -145,35 +145,36 @@ export function serialize(data, type = Object) {
 
 // 数字限制输入
 export const numberProcessor = function(val, precision = 4, negative) {
-  let result = ""
+  let result = ''
   if (+precision > 0) {
     if (negative) {
-      result = (val + "").replace(/[^\d.-]/g, "")
-        .replace(/(?<=(-|[^-]+))-/, "")
-        .replace(/^(-?)\.*/g, "$1")
-        .replace(".", "$#$")
-        .replace(/\./g, "")
-        .replace("$#$", ".")
-        .replace(/^(-?)0+([0-9].*)/, "$1$2")
-        .replace(new RegExp(`^(.+\\.\\d{0,${ precision }})\\d*$`), "$1")
+      result = (val + '')
+        .replace(/[^\d.-]/g, '')
+        .replace(/(?<=(-|[^-]+))-/, '')
+        .replace(/^(-?)\.*/g, '$1')
+        .replace('.', '$#$')
+        .replace(/\./g, '')
+        .replace('$#$', '.')
+        .replace(/^(-?)0+([0-9].*)/, '$1$2')
+        .replace(new RegExp(`^(.+\\.\\d{0,${precision}})\\d*$`), '$1')
     } else {
-      result = (val + "").replace(/[^\d.]/g, "")
-        .replace(/^\.*/g, "")
-        .replace(".", "$#$")
-        .replace(/\./g, "")
-        .replace("$#$", ".")
-        .replace(/^0+([0-9].*)/, "$1")
-        .replace(new RegExp(`^(.+\\.\\d{0,${ precision }})\\d*$`), "$1")
+      result = (val + '')
+        .replace(/[^\d.]/g, '')
+        .replace(/^\.*/g, '')
+        .replace('.', '$#$')
+        .replace(/\./g, '')
+        .replace('$#$', '.')
+        .replace(/^0+([0-9].*)/, '$1')
+        .replace(new RegExp(`^(.+\\.\\d{0,${precision}})\\d*$`), '$1')
     }
-    
   } else {
     if (negative) {
-      result = (val + "").replace(/[^\d-]/g, "")
-        .replace(/(?<=(-|[^-]+))-/, "")
-        .replace(/^(-?)0+([0-9])/, "$1$2")
+      result = (val + '')
+        .replace(/[^\d-]/g, '')
+        .replace(/(?<=(-|[^-]+))-/, '')
+        .replace(/^(-?)0+([0-9])/, '$1$2')
     } else {
-      result = (val + "").replace(/\D/g, "")
-        .replace(/^0+([0-9])/, "$1")
+      result = (val + '').replace(/\D/g, '').replace(/^0+([0-9])/, '$1')
     }
   }
   return result
@@ -202,25 +203,42 @@ Vue.prototype.language = function(languageKey, name) {
   return this.$t(languageKey)
 }
 // eslint-disable-next-line no-undef
-router.afterEach((to,from)=>{
-  if(process.env.NODE_ENV == 'dev' && languageList.length !== 0){
+router.afterEach((to, from) => {
+  if (process.env.NODE_ENV == 'dev' && languageList.length !== 0) {
     _languageSendToService()
   }
-  if(process.env.NODE_ENV == 'dev' && store.state.permission.resourceList.length > 0){
+  if (
+    process.env.NODE_ENV == 'dev' &&
+    store.state.permission.resourceList.length > 0
+  ) {
     _permissionKeySendToService(from)
   }
 })
-function _languageSendToService(){
+function _languageSendToService() {
   let languageLists = Array.from(new Set(languageList))
   sendKey(languageLists)
   languageList = []
 }
-function _permissionKeySendToService(router){
-  console.log(`============The permissions automatically collected in the current interface are ${store.state.permission.resourceList.length}============`)
+function _permissionKeySendToService(router) {
+  console.log(
+    `============The permissions automatically collected in the current interface are ${store.state.permission.resourceList.length}============`
+  )
   console.log(store.state.permission.resourceList)
-  const serviceData = router.matched.map((r,i)=>{ return {'type':3,'name':r.meta.title,'permissionKey':r.path.toUpperCase() , 'url':r.path,'target':r.path,resourceList:i==router.matched.length-1?store.state.permission.resourceList:[]}})
+  const serviceData = router.matched.map((r, i) => {
+    return {
+      type: 3,
+      name: r.meta.title,
+      permissionKey: r.path.toUpperCase(),
+      url: r.path,
+      target: r.path,
+      resourceList:
+        i == router.matched.length - 1
+          ? store.state.permission.resourceList
+          : [],
+    }
+  })
   sendPermissonKey(serviceData)
-  store.dispatch('clearResource',[])
+  store.dispatch('clearResource', [])
 }
 /**********************************************************************************************************************************************
  * @description: 结合业务逻辑和角色，处理权限列表, 过滤逻辑：
@@ -232,30 +250,51 @@ function _permissionKeySendToService(router){
  * @param {*} currentProjectType   当前的零件采购项目。
  * @return {*}
  *********************************************************************************************************************************************/
-export function filterProjectList(oldProjectList,currentProjectType){
+export function filterProjectList(oldProjectList, currentProjectType) {
   try {
     let newProjectLists = []
-    const onlyselfList = Object.keys(JSON.parse(JSON.stringify(onlyselfProject))).map(i=> onlyselfProject[i])
-    const allreturnlist = Object.keys(JSON.parse(JSON.stringify(allitemsList))).map(i=> allitemsList[i])
-    const needHuc = [onlyselfProject.DBYICHIXINGCAIGOU,onlyselfProject.YICIXINGCAIGOU]
-    if(currentProjectType == ""){newProjectLists = oldProjectList}
-    if(onlyselfList.includes(currentProjectType)){
-      newProjectLists = oldProjectList.filter(i=>i.code == currentProjectType)
-      if(needHuc.includes(currentProjectType)){
-        newProjectLists = oldProjectList.filter(i=>needHuc.find((ii)=>ii == i.code))
+    const onlyselfList = Object.keys(
+      JSON.parse(JSON.stringify(onlyselfProject))
+    ).map((i) => onlyselfProject[i])
+    const allreturnlist = Object.keys(
+      JSON.parse(JSON.stringify(allitemsList))
+    ).map((i) => allitemsList[i])
+    const needHuc = [
+      onlyselfProject.DBYICHIXINGCAIGOU,
+      onlyselfProject.YICIXINGCAIGOU,
+    ]
+    if (currentProjectType == '') {
+      newProjectLists = oldProjectList
+    }
+    if (onlyselfList.includes(currentProjectType)) {
+      newProjectLists = oldProjectList.filter(
+        (i) => i.code == currentProjectType
+      )
+      if (needHuc.includes(currentProjectType)) {
+        newProjectLists = oldProjectList.filter((i) =>
+          needHuc.find((ii) => ii == i.code)
+        )
       }
     }
-    if(allreturnlist.includes(currentProjectType)){
-      newProjectLists = oldProjectList.filter(i=>allreturnlist.find(ii=>i.code==ii))
-      if(store.state.permission.roleList.length == 1){
-        if(store.state.permission.roleList.find(i=>i == BKMROLETAGID)){
-          newProjectLists = newProjectLists.filter(i=>i.code == allitemsList['KUOCHANNENG'])
-        }else{
-          newProjectLists = newProjectLists.filter(ii=>!(ii.code == allitemsList['KUOCHANNENG']))
+    if (allreturnlist.includes(currentProjectType)) {
+      newProjectLists = oldProjectList.filter((i) =>
+        allreturnlist.find((ii) => i.code == ii)
+      )
+      if (store.state.permission.roleList.length == 1) {
+        if (store.state.permission.roleList.find((i) => i == BKMROLETAGID)) {
+          newProjectLists = newProjectLists.filter(
+            (i) => i.code == allitemsList['KUOCHANNENG']
+          )
+        } else {
+          newProjectLists = newProjectLists.filter(
+            (ii) => !(ii.code == allitemsList['KUOCHANNENG'])
+          )
         }
-      }else{
-        if(!store.state.permission.roleList.find(i=>i == BKMROLETAGID)){
-          newProjectLists = newProjectLists.filter(ii=>!(ii.code == allitemsList['KUOCHANNENG']))
+      } else {
+        if (!store.state.permission.roleList.find((i) => i == BKMROLETAGID)) {
+          newProjectLists = newProjectLists.filter(
+            (ii) => !(ii.code == allitemsList['KUOCHANNENG'])
+          )
         }
       }
     }
@@ -269,13 +308,13 @@ export function filterProjectList(oldProjectList,currentProjectType){
 //小数点精确
 export function toFixedNumber(number, m) {
   number = Number(number)
-  let result = Math.round(Math.pow(10, m) * number) / Math.pow(10, m);
-  result = String(result);
-  if (result.indexOf(".") === -1) {
-    result += ".";
-    result += new Array(m + 1).join('0');
+  let result = Math.round(Math.pow(10, m) * number) / Math.pow(10, m)
+  result = String(result)
+  if (result.indexOf('.') === -1) {
+    result += '.'
+    result += new Array(m + 1).join('0')
   } else {
-    let arr = result.split('.');
+    let arr = result.split('.')
     if (arr[1].length < m) {
       arr[1] = arr[1] += new Array(m - arr[1].length + 1).join('0')
     }
@@ -285,16 +324,16 @@ export function toFixedNumber(number, m) {
 }
 
 //转千分位
-export function toThousands (number) {
+export function toThousands(number) {
   return (number + '').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,')
 }
 
 //去除千分位
-export function deleteThousands (number) {
-  if(!number) return number;
-  number = number.toString();
-  number = number.replace(/,/gi, '');
-  return number;
+export function deleteThousands(number) {
+  if (!number) return number
+  number = number.toString()
+  number = number.replace(/,/gi, '')
+  return number
 }
 /*********************************************************************************************************************************************
  * @description: 业务场景：用户在满足当前角色权限的情况下，业务不满足他去操作当前的组件，列如：仅零件号变更的零件采购项目，rfq，定点管理等...不需要展示。但是同一个
@@ -307,12 +346,13 @@ export function deleteThousands (number) {
  * @param {*} currentProjectParmars   当前的业务ID
  * @return {*} Boolean
  ********************************************************************************************************************************************/
-import {businessKey} from '@/config/businesskey'
-export function businessPermission(currentPermissinKey,currentProjectParmars){
+import { businessKey } from '@/config/businesskey'
+export function businessPermission(currentPermissinKey, currentProjectParmars) {
   try {
-    if(!currentProjectParmars.businessKey) return false
-    const businessKeyQuery = currentProjectParmars.businessKey;
-    if(businessKey[businessKeyQuery].find(i=>i == currentPermissinKey)) return true;
+    if (!currentProjectParmars.businessKey) return false
+    const businessKeyQuery = currentProjectParmars.businessKey
+    if (businessKey[businessKeyQuery].find((i) => i == currentPermissinKey))
+      return true
   } catch (error) {
     return false
   }
@@ -327,12 +367,24 @@ export function businessPermission(currentPermissinKey,currentProjectParmars){
  * @param {*} config                  需要改变的原始对象
  * @return {*}
  ********************************************************************************************************************************************/
-export function translateBackToWhite(currentKeyBusinessKey,whiteList,blackList,allBusinessKey,config){
-  Object.keys(allBusinessKey).forEach(i=>{
-    if(allBusinessKey[i] == currentKeyBusinessKey){
-      config[currentKeyBusinessKey] = [...(config[currentKeyBusinessKey] || []),...blackList]
-    }else{
-      config[allBusinessKey[i]] = [...(config[allBusinessKey[i]] || []),...whiteList]
+export function translateBackToWhite(
+  currentKeyBusinessKey,
+  whiteList,
+  blackList,
+  allBusinessKey,
+  config
+) {
+  Object.keys(allBusinessKey).forEach((i) => {
+    if (allBusinessKey[i] == currentKeyBusinessKey) {
+      config[currentKeyBusinessKey] = [
+        ...(config[currentKeyBusinessKey] || []),
+        ...blackList,
+      ]
+    } else {
+      config[allBusinessKey[i]] = [
+        ...(config[allBusinessKey[i]] || []),
+        ...whiteList,
+      ]
     }
   })
 }
@@ -343,7 +395,9 @@ export function translateBackToWhite(currentKeyBusinessKey,whiteList,blackList,a
  * @param {*} list
  */
 export function permissionArray(permissionKey, list) {
-  return list.filter(item => store.state.permission.whiteBtnList[item[permissionKey]])
+  return list.filter(
+    (item) => store.state.permission.whiteBtnList[item[permissionKey]]
+  )
 }
 
 // 树转数组
@@ -376,7 +430,7 @@ export function arrayToTree(list, idKey, parentKey, childrenKey) {
     obj[list[i][idKey]] = list[i]
   }
   const result = []
-  list.forEach(node => {
+  list.forEach((node) => {
     if (!obj[node[parentKey]]) {
       result.push(node)
       return
@@ -386,3 +440,25 @@ export function arrayToTree(list, idKey, parentKey, childrenKey) {
   })
   return result
 }
+
+// export function fmoney(s, n) {
+//   n = n > 0 && n <= 20 ? n : 2
+//   s = parseFloat((s + '').replace(/[^\d\.-]/g, '')).toFixed(n) + ''
+//   var l = s
+//       .split('.')[0]
+//       .split('')
+//       .reverse(),
+//     r = s.split('.')[1]
+//   t = ''
+//   for (i = 0; i < l.length; i++) {
+//     t += l[i] + ((i + 1) % 3 == 0 && i + 1 != l.length ? ',' : '')
+//   }
+//   return (
+//     t
+//       .split('')
+//       .reverse()
+//       .join('') +
+//     '.' +
+//     r
+//   )
+// }

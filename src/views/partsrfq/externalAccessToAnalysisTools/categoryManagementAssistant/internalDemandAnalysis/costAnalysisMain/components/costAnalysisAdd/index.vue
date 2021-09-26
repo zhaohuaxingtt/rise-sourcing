@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-24 17:07:40
+ * @LastEditTime: 2021-09-26 16:01:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -192,17 +192,26 @@ export default {
       const operateLog = this.$route.query.operateLog ? JSON.parse(this.$route.query.operateLog) : null
       if (operateLog) {
         const fsList = operateLog.idList
+        let checkList = []
         this.tableListData.map((item, index) => {
           if (fsList.indexOf(item.id) > -1) {
-            this.tableListData.unshift(this.tableListData.splice(index, 1)[0])
-            this.$refs.multipleTable.$refs.dataTable.toggleRowSelection(item, true)
+            checkList.push(this.tableListData.splice(index, 1)[0])
+            this.tableListData.splice(index, 1)
           }
         })
+        this.tableListData = [...checkList, ...this.tableListData]
+        this.$nextTick(() => {
+          this.tableListData.forEach(item => {
+            if (fsList.indexOf(item.id) > -1) {
+              this.$refs.multipleTable.$refs.dataTable.toggleRowSelection(item, true)
+            }
+          })
+        });
+
       }
     },
     // 表格选中事件
     handleSelectionChange (val) {
-      console.log(val)
       this.selection = val
     },
     // 点击手工输入
