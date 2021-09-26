@@ -13,10 +13,10 @@
         <iButton  :loading="btnLoading" v-if="basicInfo.aekoCoverId && basicInfo.coverStatus == 'TOBE_STATED'" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
       </template>
       <!-- 封面状态为已提交时可展示 -->
-      <iButton  v-if="isSubmit" disabled  :loading="btnLoading" @click="cancelCover">
+      <iButton  v-if="isSubmit" disabled :loading="btnLoading" @click="cancelCover">
         {{language('LK_AEKO_CHEHUI','撤回')}}
          <el-tooltip 
-            :content="`${language('LK_AEKO_FENGMIANBIAOTAIHENEIRONGBIAOTAIJIANGYIBINGCHEHUI','封⾯表态和内容表态将被⼀并撤回')}`"
+            :content="`${language('LK_AEKO_COVER_TIPS_FENGMIANBIAOTAIHENEIRONGBIAOTAIJIANGYIBINGCHEHUI','审批前，可对已提交的的单据进行撤回。封面表态和内容表态将被一并撤回。')}`"
             placement="top">
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
