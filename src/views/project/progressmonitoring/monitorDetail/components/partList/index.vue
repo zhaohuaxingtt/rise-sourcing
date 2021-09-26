@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-17 16:53:56
+ * @LastEditTime: 2021-09-24 17:12:27
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -13,20 +13,27 @@
         <!-- <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> 
         <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>  -->
       </div> 
-      <div > 
-        <iButton @click="handleSave" :loading="saveloading">{{language('CHAKANYANWUYUANYIN', '查看延误原因')}}</iButton> 
-        <iButton :loading="versionLoading" @click="gotoSechedule">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
-        <iButton @click="handleSendFs">{{language('FASONGJINDUQUEREN', '发送进度确认')}}</iButton> 
-        <iButton :loading="versionLoading" @click="handleSecheduleVersion">{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
-        <iButton @click="handleSendFs">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
+      <div v-if="partStatus != 7"> 
+        <iButton @click="showDelayResaons" :loading="saveloading" v-if="partStatus != 1">{{language('CHAKANYANWUYUANYIN', '查看延误原因')}}</iButton> 
+        <iButton @click="gotoSechedule">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
+        <iButton @click="handleSendFs" v-if="partStatus == 2 || partStatus == 3">{{language('FASONGJINDUQUEREN', '发送进度确认')}}</iButton> 
+        <iButton @click="openDelayReasonDialog" v-if="[3,2,5,6].includes(Number(partStatus))" >{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
+        <iButton @click="handleSendFs" v-if="[1].includes(partStatus)">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
     <div class="partListView-content"> 
-      <div v-for="pro in list" :key="pro.label" class="productItem"> 
+      <div v-for="pro in listWithNodeDelayWeeks" :key="pro.label" class="productItem"> 
         <div class="productItem-top"> 
           <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
-            {{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''} ${pro.buyerName}`}} 
+            {{`${pro.partNameZh || ''}`}} 
           </el-checkbox> 
+          <icon @click.native="openChangeLight(pro)" class="productItem-top-icon cursor" symbol name="iconbianji"></icon>
+          <template>
+            <icon class="productItem-top-icon2" v-if="pro.projectRisk == '3'" symbol name="iconzhuangtai_hong"></icon>
+            <icon class="productItem-top-icon2" v-else-if="pro.projectRisk == '2'" symbol name="iconzhuangtai_huang"></icon>
+            <icon class="productItem-top-icon2" v-else-if="pro.projectRisk == '1'" symbol name="iconzhuangtai_lv"></icon>
+          </template>
+          <span class="productItem-top-desc">{{`${pro.partNum || ''}  ${pro.partNameDe || ''}  ${pro.buyerName || ''}`}}</span>
         </div> 
         <div class="productItem-bottom">
           <div class="productItem-bottom-text">
@@ -40,22 +47,26 @@
               <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span>
               <el-popover
                 trigger="hover"
-                :content="pro[item.delayReason]"
                 placement="top-start"
-                :disabled="!pro[item.delayReason]"
+                :disabled="!(pro[item.delayReason] || pro[item.delayReason2])"
+                :value="showDelayResaon"
               >
+                <template>
+                  <p v-if="pro[item.delayReason]">{{pro[item.delayReason]}}</p>
+                  <p v-if="pro[item.delayReason2]">{{pro[item.delayReason2] || ''}}</p>
+                </template>
                 <!------------------------------节点图标----------------------------------->
                 <template v-if="Number(pro.partStatus) > item.partPeriod" slot="reference">
-                  <icon v-if="pro.partProc == 1" symbol name="iconjindu_yiwancheng_lv" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="pro.partProc == 2" symbol name="iconjindu_yiwancheng_huang" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="pro.partProc == 3" symbol name="iconjindu_yiwancheng_hong" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="pro.partProc == 4" symbol name="iconjindu_yiwancheng_hei" class="step-icon  click-icon"></icon>
+                  <icon v-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 1 " symbol name="iconjindu_yiwancheng_lv" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 3 " symbol name="iconjindu_yiwancheng_huang" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 5 " symbol name="iconjindu_yiwancheng_hong" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) > 4" symbol name="iconjindu_yiwancheng_hei" class="step-icon  click-icon"></icon>
                 </template>
-                <template v-else-if="Number(pro.partStatus) == item.partPeriod" slot="reference">
-                  <icon v-if="item.key === 'SHIFANG' || pro.partProc == 1 " symbol name="iconjindu_jinhangzhong_lv" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="pro.partProc == 2" symbol name="iconjindu_jinhangzhong_huang" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="pro.partProc == 3" symbol name="iconjindu_jinhangzhong_hong" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="pro.partProc == 4" symbol name="iconjindu_jinhangzhong_hei" class="step-icon  click-icon"></icon>
+                <template v-else-if="item.partPeriod == 4 ? [4,3].includes(Number(pro.partStatus)) : Number(pro.partStatus) == item.partPeriod" slot="reference">
+                  <icon v-if="item.key === 'SHIFANG' || ( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 1  " symbol name="iconjindu_jinhangzhong_lv" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 3 " symbol name="iconjindu_jinhangzhong_huang" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 5 " symbol name="iconjindu_jinhangzhong_hong" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) > 4 " symbol name="iconjindu_jinhangzhong_hei" class="step-icon  click-icon"></icon>
                   <icon v-else symbol name="iconjindu_daijinhang" class="step-icon  click-icon"></icon>
                 </template>
                 <template v-else slot="reference">
@@ -69,9 +80,12 @@
                 <el-popover
                   trigger="hover"
                   placement="top-start"
-                  :disabled="taItem.key !== 'JIHUASHIJIAN'"
+                  :disabled="taItem.key !== 'JIHUASHIJIAN' || !pro[item.soll2]"
                 >
-                  <iText slot="reference" class="productItem-bottom-stepBetween-input text ">{{pro[item[taItem.props]]}}{{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '('+(pro[item[taItem.props1]] || '')+')' : ''}}</iText>
+                  <iText slot="reference" class="productItem-bottom-stepBetween-input text ">
+                    {{pro[item[taItem.props]]}}{{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '('+(pro[item[taItem.props1]] || '')+')' : ''}}
+                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0">+W{{pro[item.delayWeeks]}}</span>
+                  </iText>
                   <div>
                     <p>soll1：年份-KWXX</p>
                     <p>soll2：年份-KWXX</p>
@@ -80,25 +94,42 @@
               </div>
             </div>
             <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
-              <span v-html="svgList['iconliuchengjiedianyiwancheng1']" class="step-between-icon margin-top45"></span>
+              <template v-if="Number(pro.partStatus) > nodeList[index + 1].partPeriod" >
+                <span v-html="svgList['iconliuchengjiedianyiwancheng1']" class="step-between-icon margin-top45"></span>
+              </template>
+              <template v-else-if="nodeList[index + 1].partPeriod == 4 ? [4,3].includes(Number(pro.partStatus)) : Number(pro.partStatus) == nodeList[index + 1].partPeriod" >
+                <span v-html="svgList['iconliuchengjiedianjinhangzhong1']" class="step-between-icon margin-top45"></span>
+              </template>
+              <template v-else>
+                <span v-html="svgList['iconliuchengjiedian-weikaishi']" class="step-between-icon margin-top45"></span>
+              </template>
             </div>
           </div>
         </div>
       </div> 
     </div> 
-    <!-- <fsConfirm ref="fsConfirmPart" :dialogVisible="dialogVisibleFS" @handleConfirm="handleSendFsConfirm" :tableListNomi="tableListNomi" :tableListKickoff="tableListKickoff" :cartypeProId="cartypeProId" @changeVisible="changeFsConfirmVisible" />  -->
+    <fsConfirm ref="fsConfirmPart" :dialogVisible="dialogVisibleFS" @handleConfirm="handleSendFsConfirm" :tableListNomi="tableListNomi" :tableListKickoff="tableListKickoff" :cartypeProId="cartypeProId" @changeVisible="changeFsConfirmVisible" /> 
+    <changeLightDialog ref="changeLight" :dialogVisible="dialogVisibleLight" @changeVisible="changeLightDialogVisible" @handleActionPlan="handleActionPlan" :actionPlan="selectParts.actionPlan" :delayLevelPro="selectParts.delayLevelPro" />
+    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" :partStatus="partStatus" :cartypeProId="cartypeProId" :partNums="selectPartNums" :carProjectName="carProjectName" />
   </div> 
 </template>
 
 <script>
 import { iButton, icon, iText, iMessage } from 'rise'
-import { getProductGroupNodeInfoList, downloadNodeView } from '@/api/project'
-import { svgList } from './data'
+import { getProductGroupNodeInfoList, downloadNodeView, partProgressConfirm } from '@/api/project'
+import { actionPlan } from '@/api/project/process'
+import { svgList, nodeList } from './data'
+import moment from 'moment'
+import fsConfirm from '@/views/project/schedulingassistant/part/components/fsconfirm'
+import changeLightDialog from '../changeLight'
+import delayReasonDialog from '../delayReson'
 export default {
-  components: { iButton, icon, iText },
+  components: { iButton, icon, iText, fsConfirm, changeLightDialog, delayReasonDialog },
   props: {
     cartypeProId: {type:String},
-    list: {type:Array,default:() => []}
+    list: {type:Array,default:() => []},
+    partStatus: {type: String||Number},
+    carProjectName: {type:String}
   },
   data() {
     return {
@@ -106,23 +137,156 @@ export default {
       checkAll: false,
       checkedProducts: [],
       isIndeterminate: false,
-      fsConfirmDialogVisible: false,
       targetList: [
         {label: '计划时间', key: 'JIHUASHIJIAN', value: 'vffTarget', props: 'planKw', props1: 'planKw1'},
         {label: '实际时间', key: 'SHIJISHIJIAN', value: 'pvsTarget', props: 'kw', props1: 'kw1'},
       ],
-      nodeList: [
-        {label: '释放', key: 'SHIFANG', kw: 'releaseTimeKw', planKw: 'planReleaseTimeKw', partPeriod: 1, isDelay: 'fsdocDelay',delayReason: 'fsdocRemark', soll1: 'fsdocSoll1', soll2: ''},
-        {label: '定点', key: 'DINGDIAN', kw: 'pvsTargetNomiWeek', planKw: 'planNomiTimeKw', partPeriod: 2, isDelay: 'cscDelay',delayReason: 'cscRemark', soll1: 'cscSoll1', soll2: 'cscSoll2'},
-        {label: 'BF', kw: 'bfTimeKw', planKw: 'planBfTimeKw', partPeriod: 4, isDelay: 'bfDelay',delayReason: 'bfRemark', soll1: 'bfSoll1', soll2: 'bfSoll2'},
-        {label: '1st Tryout', kw: 'pvsTargetFirstTryWeek', planKw: 'planFirstTryoutTimeKw', partPeriod: 5, isDelay: 'isttryoutDelay',delayReason: 'isttryoutRemark', soll1: 'isttryoutSoll1', soll2: 'isttryoutSoll2'},
-        {label: 'EM(OTS)', kw: 'pvsTargetEbfTimeKwmWeek', planKw: 'planEmTimeKw', kw1: 'pvsTargetOtsWeek', planKw1: 'planOtsTimeKw', partPeriod: 6, isDelay: 'emDelay',delayReason: 'emRemark', soll1: 'emSoll1', soll2: 'emSoll2' , isDelay2: 'emDelay',delayReason2: 'emRemark', soll12: 'emSoll1', soll22: 'emSoll2'}
-      ],
+      nodeList: nodeList,
       downloadLoading: false,
-      svgList
+      svgList,
+      showDelayResaon: false,
+      selectPartNums: [],
+      dialogVisibleFS: false,
+      tableListNomi: [],
+      tableListKickoff: [],
+      dialogVisibleLight: false,
+      selectParts: {},
+      dialogVisibleDelayReason: false
+    }
+  },
+  computed: {
+    listWithNodeDelayWeeks() {
+      // 当前时间周，针对即将发生但未发生的节点用计划时间和当前时间周去判断延误时间（周）
+      const currentKw = moment().format('YYYY-[KW]WW')
+      
+      return this.list.map(item => {
+        const partStatus = Number(item.partStatus)
+        return {
+          ...item,
+          releaseDelayWeeks: partStatus > 0 ? this.getDelayWeeks(item.planReleaseTimeKw, item.releaseTimeKw || currentKw) : 0,
+          nomiDelayWeeks: partStatus > 1 ? this.getDelayWeeks(item.planNomiTimeKw, item.nomiTimeKw || currentKw) : 0,
+          bfDelayWeeks: partStatus > 2 ? this.getDelayWeeks(item.planBfTimeKw, item.bfTimeKw || currentKw) : 0,
+          firstTryoutDelayWeeks: partStatus > 4 ? this.getDelayWeeks(item.planFirstTryoutTimeKw, item.firstTryoutTimeKw || currentKw) : 0,
+          emDelayWeeks: partStatus > 5 ? this.getDelayWeeks(item.planEmTimeKw, item.emTimeKw || currentKw) : 0,
+          otsDelayWeeks: partStatus > 5 ? this.getDelayWeeks(item.planOtsTimeKw, item.otsTimeKw || currentKw) : 0,
+          emOtsDelayWeeks: partStatus > 5 ? Math.max(this.getDelayWeeks(item.planEmTimeKw, item.emTimeKw || currentKw),this.getDelayWeeks(item.planOtsTimeKw, item.otsTimeKw || currentKw)): 0
+        }
+      })
     }
   },
   methods: {
+    handleActionPlan(delayLevelPro, actionPlanReason) {
+      const params = {
+        ...this.selectParts,
+        delayLevelPro,
+        actionPlan: actionPlanReason
+      }
+      actionPlan(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeLightDialogVisible(false) 
+          this.$emit('handleSure')
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+        }
+      }).finally(() => {
+        this.$refs.changeLight.changeSaveLoading(false)
+      })
+    },
+    openDelayReasonDialog() {
+      this.changeDelayReasonDialogVisible(true)
+    },
+    changeDelayReasonDialogVisible(visible) {
+      this.dialogVisibleDelayReason = visible
+    },
+    /**
+     * @Description: 打开进度灯弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    openChangeLight(pro) {
+      this.selectParts = pro
+      this.changeLightDialogVisible(true)
+    },
+    /**
+     * @Description: 修改进度灯状态转换弹窗显隐状态
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
+    changeLightDialogVisible(visible) {
+      this.dialogVisibleLight = visible
+    },
+    /**
+     * @Description: 组合数据打开发送fs弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleSendFs() {
+      // 根据车型id和零件状态去获取需要发送的数据
+      // 根据需要发送的数据的零件号去获取对应的询价采购员列表
+      // 组合好数据，打开弹窗
+      this.changeFsConfirmVisible(true)
+    },
+    /**
+     * @Description: 修改fs弹窗
+     * @Author: Luoshuang 
+     * @param {*} 
+     * @return {*} 
+     */
+    changeFsConfirmVisible(visible) {  
+      this.dialogVisibleFS = visible  
+    },  
+    handleSendFsConfirm(selectRow) {  
+      // eslint-disable-next-line no-undef 
+      partProgressConfirm(selectRow.map(item => _.omit(item, 'selectOption'))).then(res => { 
+        if (res?.result) {  
+          if (res.data && res.data.length > 0) {  
+            iMessage.warn(res.data.map(item => item.partName).join(',')+this.language('BUFUHEFASONGTIAOJIANWUFAFASONG','不符合发送条件，无法发送')) 
+          } else {  
+            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+            this.changeFsConfirmVisible(false) 
+          } 
+        } else {  
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+        } 
+      }).finally(() => {  
+        this.$refs.fsConfirmPart.changeSaveLoading(false) 
+      }) 
+    },  
+    showDelayResaons() {
+      this.showDelayResaon = !this.showDelayResaon
+    },
+    /**
+     * @Description: 计算实际时间比计划时间延误（周） 
+     * @Author: Luoshuang 
+     * @param {*} time1 计划时间
+     * @param {*} time2 实际时间
+     * @return {*} 
+     */    
+    getDelayWeeks(time1, time2) {
+      console.log(time1, time2) 
+      if (!time1 || !time2) {
+        return 0
+      }
+      const year1 = Number(time1.split('-KW')[0]) 
+      const week1 = Number(time1.split('-KW')[1]) 
+      const year2 = Number(time2.split('-KW')[0]) 
+      const week2 = Number(time2.split('-KW')[1]) 
+      if (year1 < year2) { 
+        let weeks = 0 
+        for (var i = year1; i <= year2; i++) { 
+          weeks += i === year2 ? week2 : moment(i+'-01-01').weeksInYear() - (i === year1 ? week1 : 0) 
+        } 
+        return weeks 
+      } 
+      if (year1 === year2 && week1 < week2) { 
+        return week2 - week1 
+      } 
+      return 0
+    }, 
     async handleDownloadNode() {
       this.downloadLoading = true
       await downloadNodeView(this.cartypeProId)
@@ -154,13 +318,21 @@ export default {
     },
     handleCheckboxChange(value, pro) {
       this.$set(pro, 'isChecked', value)
-      console.log(this.list)
-      let checkedCount = this.list.filter(item => item.isChecked).length;
-      this.checkAll = checkedCount === this.list.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length;
+      if (value) {
+        this.selectPartNums.push(pro.partNum)
+      } else {
+        // eslint-disable-next-line no-undef
+        _.pull(this.selectPartNums, pro.partNum)
+      }
+      console.log(this.selectPartNums)
+      // let checkedCount = this.list.filter(item => item.isChecked).length;
+      // this.checkAll = checkedCount === this.list.length;
+      // this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length;
     },
     gotoSechedule() {
-      
+      // const selectPartNums = this.list.filter(item => item.isChecked).map(item => item.partNum)
+      const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/partscheduling`, query: {partNum: this.selectPartNums.join(','),carProject:this.cartypeProId, carProjectName: this.carProjectName}}) 
+      window.open(router.href,'_blank') 
     },
   }
 }
@@ -214,6 +386,21 @@ export default {
             color: rgba(0, 0, 0, 0.8);
           }
         }
+      }
+      &-icon {
+        width: 15px;
+        height: 15px;
+        margin-left: 34px;
+      }
+      &-icon2 {
+        width: 20px;
+        height: 20px;
+        margin-left: 10px;
+      }
+      &-desc {
+        font-size: 16px;
+        opacity: 0.8;
+        margin-left: 10px;
       }
     }
     &-bottom {
@@ -278,8 +465,9 @@ export default {
           align-items: center;
           
           &-input {
+            font-size: 14px;
             height: 30px;
-            width: 220px;
+            width: 180px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -287,6 +475,13 @@ export default {
             &.text {
               border: 1px solid rgba(181, 186, 198, 0.19);
               background-color: rgba(233, 236, 241, 0.75);
+              .hidden {
+                visibility: hidden;
+              }
+              .flowWeek {
+                font-family: Arial;
+                margin-left: 15px;
+              }
             }
           }
           .small {
