@@ -15,7 +15,7 @@
       <!-- AEKO号 -->
       <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')">
         <iInput
-          v-model="form.aekoCode"
+          v-model="form.aekoNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -31,62 +31,40 @@
       <!-- 科室 -->
       <el-form-item :label="language('LK_AEKOKESHI','科室')">
         <iSelect
-          v-model="form.linieDeptNumList"
+          class="multi-select"
+          v-model="form.departmentIdList"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          multiple
           filterable
           clearable
         >
           <el-option
             value=""
-            :label="language('all','全部') | capitalizeFilter"
+            :label="language('all','全部')"
           ></el-option>
           <el-option
             :value="items.code"
             :label="items.value"
-            v-for="(items, index) in selectOptions.linieDeptNumList || []"
+            v-for="(items, index) in (selectOptions && selectOptions.linieDeptNumList) || []"
             :key="index"
           ></el-option>
         </iSelect>
       </el-form-item>
       <!-- 专业采购员 -->
       <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')">
-        <iSelect
-          v-model="form.linie"
-          :placeholder="language('LK_QINGXUANZE','请选择')"
-          filterable
+        <iInput
+          v-model="form.buyerName"
+          :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
-        >
-          <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
-          <el-option
-            :value="items.code"
-            :label="items.value"
-            v-for="(items, index) in selectOptions.buyerName || []"
-            :key="index"
-          ></el-option>
-        </iSelect>
+        ></iInput>
       </el-form-item>
       <!-- CSF股长 -->
       <el-form-item :label="language('CSFGUZHANG','CSF股长')">
-        <iSelect
-          v-model="form.linie"
-          :placeholder="language('LK_QINGXUANZE','请选择')"
-          filterable
+        <iInput
+          v-model="form.chiefName"
+          :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
-        >
-          <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
-          <el-option
-            :value="items.code"
-            :label="items.value"
-            v-for="(items, index) in []"
-            :key="index"
-          ></el-option>
-        </iSelect>
+        ></iInput>
       </el-form-item>
     </el-form>
   </iSearch>
@@ -102,15 +80,17 @@ import {
 } from "rise";
 import {
   searchCommodity,
-  searchLinie,
 } from '@/api/aeko/manage'
-import {user as configUser } from '@/config'
 
 export default {
   data() {
     return {
-      form: {},
-      selectOptions: {}
+      form: {
+        departmentIdList: []
+      },
+      selectOptions: {
+        linieDeptNumList: []
+      }
     }
   },
   components: {
@@ -134,39 +114,34 @@ export default {
     },
     // 获取搜索框下拉数据
     getSearchList(){
-
       // 科室
       searchCommodity().then((res)=>{
         const {code,data} = res;
-        if(code ==200 ){
-          data.map((item)=>{
-            item.value = item.deptNum;
-            item.code = item.id;
-          })
-          this.selectOptions.linieDeptNumList = data;
+        if(code === '200' ) {
+          this.selectOptions.linieDeptNumList = data.map((item)=>{
+            return {
+              value: item.deptNum,
+              code: item.id
+            }
+          });
+          console.log('selectOptions', this.selectOptions)
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
       })
-
-      // LINIE
-      searchLinie({tagId: configUser.LINLIE}).then((res)=>{
-        const {code,data} = res;
-        if(code ==200 ){
-          data.map((item)=>{
-            item.value = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-            item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-            item.lowerCaseLabel =  typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
-          })
-          this.selectOptions.buyerName = data;
-        }else{
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-        }
-      })
+      
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.multi-select {
+  &::v-deep.el-select {
+    .el-select__tags {
+      max-height: 60px !important;
+      overflow: hidden;
+    }
+  }
+}
 </style>
