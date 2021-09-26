@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-09-24 16:27:14
+ * @LastEditTime: 2021-09-26 16:48:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -210,7 +210,7 @@ export default {
           addRowList[item.label] = ""
         }
         addRowList['id#' + item.label.split("#")[1]] = ""
-        addRowList.editMode = false
+        addRowList.editMode = true
         addRowList['index'] = this.gridData1.length + 1
       })
       this.gridData1.push(addRowList)

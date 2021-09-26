@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-24 17:09:47
+ * @LastEditTime: 2021-09-26 17:00:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
@@ -105,6 +105,7 @@ export default {
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode,
         idList: fsNumList && fsNumList.length > 0 ? JSON.parse(fsNumList) : [],
+        pageSize: 0
       }
       listNomiData(params).then(res => {
         this.loading = false
@@ -117,14 +118,9 @@ export default {
     // 获取pie数据（cbd）
     getPieData () {
       const params = {
-        categoryCode: this.$store.state.rfq.categoryCode,
+        // categoryCode: this.$store.state.rfq.categoryCode,
         quotationList: this.tableListData.map(item => {
-          return {
-            fsNum: item.fsNum,
-            supplierId: item.supplierId,
-            round: item.round || null,
-            partNum: item.partNum
-          }
+          return item.quotationId
         })
       }
       getTotalCbdData(params).then(res => {
