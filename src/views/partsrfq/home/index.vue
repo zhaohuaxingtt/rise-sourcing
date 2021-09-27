@@ -187,7 +187,7 @@
                 :rfq-id="assignmentRfqIdList"
                 :selectDatalist='selectDatalist'
             /> -->
-            <scoringDeptDialog ref="scoringDeptDialog" :visible.sync="scoringDeptVisible" :ids="rfqIds" :customAction="true" @handleSave="scoringDeptSave" />
+            <scoringDeptDialog ref="scoringDeptDialog" :visible.sync="scoringDeptVisible" :ids="rfqIds" customAction @handleSave="scoringDeptSave" />
           </iCard>
           <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
         </div>

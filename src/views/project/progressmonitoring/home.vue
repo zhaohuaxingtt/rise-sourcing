@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-17 14:22:35
+ * @LastEditTime: 2021-09-24 16:34:54
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -33,7 +33,11 @@
         <div class="floatright" v-permission.auto="PROJECTMGT_PROGRESSMONITORING_TIPS|TIPS表">
           <!--  -->
           <span class="switch">
-            {{language("TIPSBIAO","TIPS表")}}
+            {{!showTips ? language("TIPSBIAO","TIPS表") : `${language("TIPSBIAOZONGJI","TIPS表总计")}:`}}
+            <el-tooltip placement="top" popper-class="tooltip-proper" v-if="showTips">
+              <div slot="content">{{language('TIPSBIAOCONTENTDESC','本数字为匹配异常至EM&OTS已完成八个模块与CKD/HT零件的零件个数汇总')}}</div>
+              <span class="tipsSum">{{tipsSum}}</span>
+            </el-tooltip>
             <el-switch v-model="showTips" width="35" @change="confirmShowTips"></el-switch>
           </span>
           
@@ -79,7 +83,7 @@ import {iCard,icon,iFormGroup,iFormItem,iInput,iMessage } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress'
 import carEmpty from '@/views/project/components/empty/carEmpty'
 import projectStateChart from './components/projectStateChart'
-import {pendingChartData,chartData,projectRisk,partProc,projectDone} from './components/lib/data'
+import {pendingChartData,chartData,projectRisk,partProc,projectDone,patchStatus} from './components/lib/data'
 import {getLastCarType, getProjectProgressMonitor,getAutoData,updateAutoData} from '@/api/project/process'
 import {selectDictByKeyss} from '@/api/dictionary'
 
@@ -95,9 +99,11 @@ export default {
       projectRisk,
       projectDone,
       partProc,
+      patchStatus,
       data: [],
       notInTips: 0,
       ckdconfirm: 0,
+      tipsSum: 0,
       options: {},
       loading: false
     }
@@ -105,10 +111,16 @@ export default {
   mounted() {
     const carProjectId = this.$route.query.carProject || ''
     const cartypeProjectZh = this.$route.query.cartypeProjectZh || ''
+    // 获取车型状态
     this.handleCarProjectChange(carProjectId, cartypeProjectZh)
-    this.getOptions()
+    // this.getOptions()
   },
   methods: {
+    /**
+     * @description: （未进TIPS表/待确认的CKD零件）跳转
+     * @param {*} type （1/2）
+     * @return {*}
+     */    
     toPartList(type) {
       this.$router.push({name: 'progressmonitoring-monitoring-partList', query: {
         carProjectId: this.carProject,
@@ -122,6 +134,7 @@ export default {
      * @return {*}
      */    
     onSeriesBarClick(params) {
+      if (params.disabled) return
       const itemName = params.seriesName || params.title
       const target = this.data.find(o => o.title === itemName) || {}
       const targetIndex = this.data.findIndex(o => o.title === itemName)
@@ -131,12 +144,15 @@ export default {
       const partProc = this.partProc.find(o => o.name === params.name) || {}
       // 项目已结束指标
       const projectDone = this.projectDone.find(o => o.name === params.name) || {}
-     
+      // 匹配异常
+      const patchStatus = this.patchStatus.find(o => o.name === params.name) || {}
+
       // 匹配异常跳转
       if (targetIndex === 0 && !(target && target.disabled)) {
         this.$router.push({name: 'progressmonitoring-parts-taskList', query: {
           cartypeProId: this.carProject,
           carProjectName: this.carProjectName,
+          status: patchStatus.code
           }
         })
       }
@@ -159,16 +175,30 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    autoTips(){
+    autoTips(cb){
+      if (!this.carProject) {
+        iMessage.error(this.language('NOCARPROJECTTYPEERROR','未获取到车型项目'))
+        return
+      }
       const params = {
         cartypeProId:this.carProject,
         autoSyn:this.showTips,
       }
       updateAutoData(params).then(res => {
-        if (res.code != '200') {
-          this.showTips = false;
+        if (res.code === '200') {
+          typeof cb === 'function' && (cb())
+        } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      })
+    },
+    toggleShowAutoTips(state) {
+      // 修改tips状态成功后的回调
+      this.data.map((o, index) => {
+        if (index <= 1) {
+          this.$set(o, 'disabled', !state)
+        }
+        return o
       })
     },
     /**
@@ -181,6 +211,7 @@ export default {
         const res = await getAutoData(carProjectId)
         if (res.code === '200') {
           this.showTips = res.data;
+          this.toggleShowAutoTips(res.data)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -228,7 +259,7 @@ export default {
           carTypeProjectId: carProjectId
         })
         if (res.code === '200') {
-          let data = res.data || []
+          let data = res.data && res.data.records || []
           data = data.map((o, index) => {
             const tarConfig = chartData.find(conf => conf.title === o.modelStatusName) || {}
             // 零件状态
@@ -252,6 +283,12 @@ export default {
             o.value4 = o.projectRiskSum
             // 类型
             o.type = tarConfig.type
+            if (index < 1) {
+              // 待处理
+              o.value7 = o.projectRiskDelay
+              // 已处理
+              o.value8 = o.projectRiskNormal
+            }
             // 是否隐藏任务进度
             o.hideTaskProcess = ['EM&OTS已完成', '匹配异常', '待释放'].includes(o.modelStatusName)
             if (index === data.length - 1) {
@@ -263,7 +300,15 @@ export default {
             }
             return o
           })
-          this.data = [...pendingChartData, ...data]
+          this.data = [...data]
+          // notInTips
+          this.notInTips = res.data && res.data.noTipsNum || 0
+          // ckdconfirm
+          this.ckdconfirm = res.data && res.data.ckdNum || 0
+          // tipsSum
+          this.tipsSum = res.data && res.data.tipsSum || 0
+          // 获取车型状态是否加入TIPS
+          this.getAutoCarTips(carProjectId)
           console.log('this.data', this.data)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -280,36 +325,34 @@ export default {
      * @param {*} state
      * @return {*}
      */    
-    confirmShowTips(state) {
+    async confirmShowTips(state) {
       // 确认
       const code = state ? 'sureopentips' : 'sureclosetips'
       const desc = state ? '您确定要打开TIPS开关？': '您确定要关闭TIPS开关？'
       this.$confirm(this.language(code,desc)).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
-          this.data.map((o, index) => {
-            if (index <= 1) {
-              this.$set(o, 'disabled', !state)
-            }
-            return o
+          this.autoTips(() => {
+            this.toggleShowAutoTips(state)
           })
+          
         }
       }).catch(()=> {
         this.showTips = !state
       })
     },
-    getOptions() {
-      let types = [
-        // 风险等级CODE
-        "DELAY_GRADE_CONFIG",
-        // 零件状态code
-        "PART_PERIOD_TYPE",
-        // 零件进度
-        "PARTS_PROGRESS"
-      ];
-      selectDictByKeyss(types).then((res) => {
-        this.options = res.data;
-      });
-    },
+    // getOptions() {
+    //   let types = [
+    //     // 风险等级CODE
+    //     "DELAY_GRADE_CONFIG",
+    //     // 零件状态code
+    //     "PART_PERIOD_TYPE",
+    //     // 零件进度
+    //     "PARTS_PROGRESS"
+    //   ];
+    //   selectDictByKeyss(types).then((res) => {
+    //     this.options = res.data;
+    //   });
+    // },
   }
 }
 </script>
@@ -339,8 +382,15 @@ export default {
         text-align: center;
         background: #F5F6F7;
         color: rgba(22, 96, 241, 1);
+        cursor: pointer;
       }
     }
+  }
+}
+.switch {
+  .tipsSum {
+    display: inline-block;
+    padding: 0px 5px;
   }
 }
 </style>

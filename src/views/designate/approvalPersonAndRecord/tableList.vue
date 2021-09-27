@@ -20,7 +20,7 @@
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if="items.editable" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
         <template slot-scope="scope">
           <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)"></iInput>
-          <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)">
+          <iSelect v-else-if="items.type === 'select'" filterable  v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)">
             <el-option
               :value="item.value"
               :label="item.label"
@@ -43,7 +43,7 @@
 <script>
 import {iSelect,iInput} from 'rise'
 import {_getMathNumber} from '@/utils'
-import { getDeptSub, getDeptLeader } from '@/api/designate/decisiondata/approval'
+import { getSubDeptListByParam, getDeptLeader } from '@/api/designate/decisiondata/approval'
 export default{
   components:{iSelect,iInput},
   props:{
@@ -78,8 +78,8 @@ export default{
     },
     getDeptSubOptions(deptId, row) {
       this.$set(row, 'approveDeptNum', '')
-      getDeptSub(deptId).then(res => {
-        this.$set(row, 'deptSubOptions', res.data.supDeptList?.map(item => {
+      getSubDeptListByParam(deptId).then(res => {
+        this.$set(row, 'deptSubOptions', res.data.map(item => {
           return {
             ...item,
             label: item.nameZh,
@@ -92,6 +92,7 @@ export default{
       return this.options[optionType]
     },
     changeValue(val, row, item) {
+      console.log('val',val,'row',row,'item',item);
       this.$set(row, item.props, val)
       if (item.props === 'approveParentDeptNum') {
         this.getDeptSubOptions(val, row)
@@ -104,7 +105,6 @@ export default{
         if (dept) {
           this.getDeptLeader(dept.deptNum, row)
         }
-        
         // console.log(val, row, item)
         // const dept = row.deptSubOptions.find(item => item.value === val)
         // if  (dept) {
@@ -143,7 +143,7 @@ export default{
     },
     updateSlot(e,a){
       this.$emit('updateSlot',[e,a])
-    },
+    }
   }
 }
 </script>

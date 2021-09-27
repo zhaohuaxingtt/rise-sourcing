@@ -61,3 +61,30 @@ export function coverSubmit(data) {
     data,
   })
 }
+
+// 解冻弹窗获取需要冻结的LINIE
+export function frozenLinies(params) {
+  return requst({
+    url: `/aeko/cover/frozenLinies/${params.aekoManageId}`,
+    method: 'GET',
+    params,
+  })
+}
+
+// 封面表态-解冻  
+export function thawConvers(data) {
+  return requst({
+    url: '/aeko/cover/thawConvers',
+    method: 'POST',
+    data,
+  })
+}
+
+// 封面表态--撤回
+export function coverCancel(data) {
+  return requst({
+    url: `/aeko/cover/cancel/${data.aekoCoverId}`,
+    method: 'POST',
+    data,
+  })
+}

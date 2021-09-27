@@ -201,7 +201,7 @@ export default {
       .catch(() => this.recallLoading = false)
     },
     cellClass(row) {
-      if (row.row.cbdLevel != "L3") {
+      if (row.row.cbdLevel != "L3" || !row.row.isQuotationCbd || row.row.isQuotationCbd === "否") {
         return "hideCheckbox"
       }
     }

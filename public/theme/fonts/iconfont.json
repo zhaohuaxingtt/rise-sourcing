@@ -6,6 +6,202 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "14843457",
+      "name": "员工",
+      "font_class": "yuangong",
+      "unicode": "e728",
+      "unicode_decimal": 59176
+    },
+    {
+      "icon_id": "24482193",
+      "name": "资产基础信息帮助",
+      "font_class": "zichanjichuxinxibangzhu",
+      "unicode": "e723",
+      "unicode_decimal": 59171
+    },
+    {
+      "icon_id": "24482194",
+      "name": "列表照片查看",
+      "font_class": "liebiaozhaopianchakan",
+      "unicode": "e724",
+      "unicode_decimal": 59172
+    },
+    {
+      "icon_id": "24482195",
+      "name": "资产模具照片",
+      "font_class": "zichanmojuzhaopian",
+      "unicode": "e725",
+      "unicode_decimal": 59173
+    },
+    {
+      "icon_id": "24482196",
+      "name": "列表变更记录查看",
+      "font_class": "liebiaobiangengjiluchakan",
+      "unicode": "e726",
+      "unicode_decimal": 59174
+    },
+    {
+      "icon_id": "24482197",
+      "name": "资产附件上传",
+      "font_class": "zichanfujianshangchuan",
+      "unicode": "e727",
+      "unicode_decimal": 59175
+    },
+    {
+      "icon_id": "24481966",
+      "name": "零件基础信息标签7",
+      "font_class": "lingjianjichuxinxibiaoqian7",
+      "unicode": "e66d",
+      "unicode_decimal": 58989
+    },
+    {
+      "icon_id": "24481967",
+      "name": "零件演变进程分支节点多对多",
+      "font_class": "lingjianyanbianjinchengfenzhijiedianduoduiduo",
+      "unicode": "e66f",
+      "unicode_decimal": 58991
+    },
+    {
+      "icon_id": "24481968",
+      "name": "零件基础信息标签6",
+      "font_class": "lingjianjichuxinxibiaoqian6",
+      "unicode": "e670",
+      "unicode_decimal": 58992
+    },
+    {
+      "icon_id": "24481969",
+      "name": "零件基础信息标签5",
+      "font_class": "lingjianjichuxinxibiaoqian5",
+      "unicode": "e671",
+      "unicode_decimal": 58993
+    },
+    {
+      "icon_id": "24481970",
+      "name": "零件基础信息标签3",
+      "font_class": "lingjianjichuxinxibiaoqian3",
+      "unicode": "e6b0",
+      "unicode_decimal": 59056
+    },
+    {
+      "icon_id": "24481971",
+      "name": "零件基础信息标签4",
+      "font_class": "lingjianjichuxinxibiaoqian4",
+      "unicode": "e6ce",
+      "unicode_decimal": 59086
+    },
+    {
+      "icon_id": "24481972",
+      "name": "零件基础信息标签1",
+      "font_class": "lingjianjichuxinxibiaoqian1",
+      "unicode": "e6cf",
+      "unicode_decimal": 59087
+    },
+    {
+      "icon_id": "24481973",
+      "name": "零件基础信息标签2",
+      "font_class": "lingjianjichuxinxibiaoqian2",
+      "unicode": "e6d0",
+      "unicode_decimal": 59088
+    },
+    {
+      "icon_id": "24481974",
+      "name": "零件履历标签",
+      "font_class": "lingjianlvlibiaoqian",
+      "unicode": "e6e4",
+      "unicode_decimal": 59108
+    },
+    {
+      "icon_id": "24481975",
+      "name": "零件履历Aeko已实施标记",
+      "font_class": "lingjianlvliAekoyishishibiaoji",
+      "unicode": "e6fc",
+      "unicode_decimal": 59132
+    },
+    {
+      "icon_id": "24481976",
+      "name": "零件演变进程分支节点",
+      "font_class": "lingjianyanbianjinchengfenzhijiedian",
+      "unicode": "e712",
+      "unicode_decimal": 59154
+    },
+    {
+      "icon_id": "24481977",
+      "name": "零件履历分支节点",
+      "font_class": "lingjianlvlifenzhijiedian",
+      "unicode": "e71c",
+      "unicode_decimal": 59164
+    },
+    {
+      "icon_id": "24481979",
+      "name": "零件已标记",
+      "font_class": "lingjianyibiaoji",
+      "unicode": "e71d",
+      "unicode_decimal": 59165
+    },
+    {
+      "icon_id": "24481981",
+      "name": "零件未标记",
+      "font_class": "lingjianweibiaoji",
+      "unicode": "e71e",
+      "unicode_decimal": 59166
+    },
+    {
+      "icon_id": "24481982",
+      "name": "零件已收藏",
+      "font_class": "lingjianyishoucang",
+      "unicode": "e71f",
+      "unicode_decimal": 59167
+    },
+    {
+      "icon_id": "24481983",
+      "name": "零件未收藏",
+      "font_class": "lingjianweishoucang",
+      "unicode": "e720",
+      "unicode_decimal": 59168
+    },
+    {
+      "icon_id": "24481999",
+      "name": "零件演变进程:零件履历主节点",
+      "font_class": "a-lingjianyanbianjinchenglingjianlvlizhujiedian",
+      "unicode": "e721",
+      "unicode_decimal": 59169
+    },
+    {
+      "icon_id": "24482002",
+      "name": "零件演变进程:零件履历次节点",
+      "font_class": "a-lingjianyanbianjinchenglingjianlvlicijiedian",
+      "unicode": "e722",
+      "unicode_decimal": 59170
+    },
+    {
+      "icon_id": "24474488",
+      "name": "状态_黄",
+      "font_class": "zhuangtai_huang",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "24474489",
+      "name": "状态_绿",
+      "font_class": "zhuangtai_lv",
+      "unicode": "e65d",
+      "unicode_decimal": 58973
+    },
+    {
+      "icon_id": "24432789",
+      "name": "当前使用版本",
+      "font_class": "dangqianshiyongbanben",
+      "unicode": "e650",
+      "unicode_decimal": 58960
+    },
+    {
+      "icon_id": "24425195",
+      "name": "状态_红",
+      "font_class": "zhuangtai_hong",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
       "icon_id": "24370660",
       "name": "进度_进行中_红",
       "font_class": "jindu_jinhangzhong_hong",

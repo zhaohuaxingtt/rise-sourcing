@@ -26,6 +26,11 @@
                         :multiple="item.multiple"
                         :clearable="item.clearable" 
                     />
+                    <iDicoptions 
+                        v-else-if="item.isDicoptions"
+                        v-model="searchParams[item.props]"
+                        :optionKey="item.dicoptionKey"
+                    />
                     <iSelect 
                         v-else
                         class="multipleSelect" 
@@ -128,7 +133,7 @@
       <!-- 退回原因 -->
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
       <!-- 新增零件弹窗 -->
-      <addPartsDialog v-if="addPartskVisible" :dialogVisible="addPartskVisible" @changeVisible="changeVisible"/>
+      <addPartsDialog v-if="addPartskVisible" :dialogVisible="addPartskVisible" :aekoInfo="aekoInfo" @getList="sure" @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -150,6 +155,7 @@ import departBackDialog from './components/departBackDialog'
 import addPartsDialog from './components/addPartsDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
 import aekoSelect from '../../../components/aekoSelect'
+import iDicoptions from 'rise/web/components/iDicoptions' 
 import {
     getPartPage,
     deletePart,
@@ -178,6 +184,7 @@ export default {
         departBackDialog,
         aekoSelect,
         addPartsDialog,
+        iDicoptions,
     },
     computed: {
         //eslint-disable-next-line no-undef
@@ -191,8 +198,8 @@ export default {
         // 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO
         isShowAddPart(){
             const {aekoInfo={}} = this;
-            const {aekoStatus=''} = aekoInfo;
-            return  aekoStatus!=='FROZEN' && aekoStatus!=='PASS' && aekoStatus!=='CANCELED';
+            const {aekoStatus='',sourse=''} = aekoInfo;
+            return  sourse!=='TCM' && aekoStatus!=='FROZEN' && aekoStatus!=='PASS' && aekoStatus!=='CANCELED';
         }
     },
     props:{
@@ -251,12 +258,17 @@ export default {
                 cartypeCode:[''],
                 cartype:[''],
                 linieDeptNumList:[''],
+                a:'1',
             },
             selectOptions:{
                 cartypeCode:[],
                 buyerName:[],
                 cartype:[],
                 linieDeptNumList:[],
+                a:[
+                    {desc:'未分派',code:'1'},
+                    {desc:'已分派',code:'2'},
+                ]
             },
             selectOptionsCopy:{
                 cartypeCode:[],
@@ -324,7 +336,7 @@ export default {
             const {query} = this.$route;
             const { requirementAekoId ='',} = query;
             const { page,searchParams,aekoInfo={} } = this;
-            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName} = searchParams;
+            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName,sendStatus} = searchParams;
             let carTypeCodeList=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
@@ -344,6 +356,7 @@ export default {
                 partNum,
                 partNameZh,
                 buyerName,
+                sendStatus,
                 carTypeCodeList:(carTypeCodeList.length == 1 && carTypeCodeList[0] === '') ? [] : carTypeCodeList,
                 linieDeptNumList:(linieDeptNumList.length == 1 && linieDeptNumList[0] === '') ? [] : linieDeptNumList,
             }
@@ -659,7 +672,7 @@ export default {
 
       // 新增零件
       addParts(){
-        //   this.addPartskVisible = true;
+        // this.addPartskVisible = true;
       },
     }
 }

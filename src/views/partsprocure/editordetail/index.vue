@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-16 13:48:38
+ * @LastEditTime: 2021-09-23 19:02:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -95,6 +95,13 @@
 								{{ fillterss(detailData.isBmg) }}
 							</iText>
 						</iFormItem>
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType)" :label="language('LK_HUOBI','货币') + ':'" name="test">
+							<iSelect v-model="detailData.currencyCode" >
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
+								</el-option>
+							</iSelect>
+						</iFormItem>
 						<!-- <iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE" :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型') + ':'" name="test">
 							<iSelect
 								v-model="detailData.partProjectType"
@@ -116,9 +123,9 @@
 						</iFormItem> -->
 						<!------------------------零件采购项目类型为一次性采购/DB一次性采购类型时与是否DB件联动--------------------------------------->
 						<iFormItem v-if="[partProjTypes.YICIXINGCAIGOU, partProjTypes.DBYICHIXINGCAIGOU].includes(detailData.partProjectType)" :label="language('SHIFOUDBJIAN','是否DB件') + ':'" name="test">
-							<iSelect v-model="detailData.isDB" @change="onIsDBChange">
-								<el-option :value="1" :label="language('YES', '是')"></el-option>
-								<el-option :value="0" :label="language('NO', '否')"></el-option>
+							<iSelect v-model="detailData.isDb" @change="onIsDBChange">
+								<el-option :value="true" :label="language('YES', '是')"></el-option>
+								<el-option :value="false" :label="language('NO', '否')"></el-option>
 							</iSelect>
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->
@@ -148,7 +155,8 @@
 							</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test">
-							<iSelect :disabled='carTypeCanselect()' v-model="detailData.carTypeProjectZh" >
+							<iSelect v-model="detailData.carTypeProjectZh" >
+								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
 								</el-option>
@@ -156,7 +164,7 @@
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
-							<iSelect v-model="detailData.procureFactory"
+							<iSelect v-model="detailData.procureFactory" :disabled='procureFactoryCanselect()'
 								@change="checkFactory()"
 								>
 								<el-option :value="item.code" :label="item.name"
@@ -182,7 +190,7 @@
 							</iSelect>
 						</iFormItem> -->
 						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('LK_HUOBI','货币') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb" :label="language('LK_HUOBI','货币') + ':'" name="test">
 							<iSelect v-model="detailData.currencyCode" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
@@ -197,7 +205,7 @@
 							</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
-							<iSelect v-model="detailData.linieDept"
+							<iSelect @change="changeUserDept" v-model="detailData.linieDept"
 								>
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
@@ -205,7 +213,7 @@
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINE" label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieId" >
+							<iSelect v-model="detailData.linieId" placeholder='请先选择LINIE部门'>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.LINIE"
 									:key="item.name"></el-option>
 							</iSelect>
@@ -240,7 +248,7 @@
 							</iSelect>
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
 							<iSelect v-model="detailData.purchaseClause" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PURCHASE" :key="index">
@@ -283,7 +291,7 @@
 							</iText>
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
 							<iSelect v-model="detailData.payClause" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
@@ -346,7 +354,7 @@
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_SHENQINGMUBIAOJIA','申请目标价')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
-				<targePrice :purchaseProjectId="purchaseProjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="partProjectType"></targePrice>
+				<targePrice :purchaseProjectId="purchaseProjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="detailData.partProjectType || partProjectType"></targePrice>
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_BEIZHUXINXI','备注信息')" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
 				<remarks></remarks>
@@ -381,7 +389,7 @@
 	import logButton from "@/components/logButton";
 	import currentSupplier from './components/currentSupplier'
 	import {getProjectDetail,closeProcure,updateProcure,startProcure} from "@/api/partsprocure/home";
-	import {dictkey,checkFactory} from "@/api/partsprocure/editordetail";
+	import {dictkey,checkFactory,purchasingLiline,purchasingDept} from "@/api/partsprocure/editordetail";
 	import {detailData,partsCommonSourcing,translateDataForService } from "./components/data";
 	import splitFactory from "./components/splitFactory";
 	import designateInfo from './components/designateInfo'
@@ -471,10 +479,23 @@
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 			this.partProjectType = this.infoItem.partProjectType;
 			this.getDatailFn();
-			this.getProcureGroup();
 			this.getDicts()
 		},
 		methods: {
+   /**
+    * @description: 改变部门的时候，拿到最新的line
+    * @param {*}
+    * @return {*}
+    */
+			changeUserDept(){
+				this.detailData.linieId = ''
+				this.getLinie(this.detailData.linieDept)
+			},
+			getLinie(id){
+				purchasingLiline(id).then(r=>{
+					this.fromGroup['LINIE'] = r.data || []
+				})
+			},
 			openDiologOldParts(){
 				if(this.detailData.procureFactory == '') return  iMessage.warn(this.language('NINDANGQIANWEIXUANZE','您当前还未选择采购工厂，请选择后重试！'))
 				this.selectOldParts.show = true
@@ -539,12 +560,16 @@
 				})
 			},
 			//判断采购项目来源，查看是否能选择车型项目
-			carTypeCanselect(){
-				if(this.detailData.partProjectSource == 1){
-					return true
-				}else {
-					return false
-				}
+			// carTypeCanselect(){
+			// 	if(this.detailData.partProjectSource == 1){
+			// 		return true
+			// 	}else {
+			// 		return false
+			// 	}
+			// },
+			// 判断采购项目来源，查看是否能选择采购工厂
+			procureFactoryCanselect() {
+				return this.detailData.partProjectSource == 1 || this.detailData.partProjectSource == 4
 			},
 			splitPurchFn() {
 				this.splitPurch.splitPurchBoolean = true;
@@ -564,7 +589,15 @@
 					if(this.detailData.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
 						this.$refs.materialGroupInfo.getMaterialGroup()
 					}
+					this.getProcureGroup()
 				});
+			},
+			//获取liline部门
+			
+			purchasingDept(){
+				purchasingDept().then(r=>{
+					this.fromGroup['LINIE_DEPT'] = r.data || []
+				})
 			},
 			getProcureGroup() {
 				dictkey().then((res) => {
@@ -573,6 +606,8 @@
 							...this.fromGroup,
 							...res.data
 						}
+						this.purchasingDept()
+						this.getLinie(this.detailData.linieDept)
 					}
 				}).catch(err=>{
 					iMessage.error(err.desZh)
@@ -730,7 +765,7 @@
 			*/
 			onIsDBChange(data) {
 				this.detailData.partProjectType = data ? partProjTypes.DBYICHIXINGCAIGOU : partProjTypes.YICIXINGCAIGOU
-				this.detailData.partProjectType === partProjTypes.DBYICHIXINGCAIGOU && (this.detailData.isDB = 1)
+				this.detailData.partProjectType === partProjTypes.DBYICHIXINGCAIGOU && this.detailData.isDb
 			},
 			/**
 			* @description: 零件项目类型,当类型为db一次性采购，isDB默认选是
@@ -738,7 +773,7 @@
 			* @return {*}
 			*/
 			onPartProjectTypeChange(data) {
-				this.detailData.isDB = data === partProjTypes.DBYICHIXINGCAIGOU ? 1: 0
+				this.detailData.isDb = data === partProjTypes.DBYICHIXINGCAIGOU
 			}
 		}
 }

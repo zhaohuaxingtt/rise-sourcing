@@ -14,7 +14,7 @@
       <div class="rsTop">
         <div class="rsTop-left">
           <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
-            <div class="rsTop-left-item-title">{{ item.lang == 'en' ? `${ item.enName }` : `${ item.name } ${ item.enName }` }}</div>
+            <div class="rsTop-left-item-title">{{ item.name }}{{ item.enName  }}</div>
             <div class="rsTop-left-item-value">{{basicData[item.props]}}</div>
           </div>
         </div>
@@ -22,16 +22,27 @@
           <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
             <template v-if="Array.isArray(item)">
               <div class="rsTop-right-item-title">
-                 <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{ subItem.lang == 'en' ? `${subItem.enName}` :`${subItem.name}${subItem.enName}`}} <br v-if="subIndex < item.length - 1" /></div>
+                 <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}}{{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
               </div>
               <div class="rsTop-right-item-value">
-                <div v-for="(subItem, subIndex) in item" :key="subIndex">{{subItem.props === 'currency' ? basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : '' : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                <div v-for="(subItem, subIndex) in item" :key="subIndex">
+                  {{subItem.props === 'currency' ? basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : '' : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
               </div>
             </template>
             <template v-else>
-              <!-- <div  class="rsTop-right-item-title">{{item.name}} {{item.enName}}</div> -->
-              <div  class="rsTop-right-item-title">{{ item.lang == 'en' ? `${item.enName}` :`${item.name}${item.enName}`}}</div>
-              <div class="rsTop-right-item-value">{{basicData[item.props]}}</div>
+              <div  class="rsTop-right-item-title">{{item.name}} {{item.enName}}</div>
+                <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
+                  <div v-for="(item,index) in basicData[item.props]" :key="index">
+                      <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
+                        <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
+                        <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
+                      </el-tooltip>
+                  </div>
+                </div>       
+                <div class="rsTop-right-item-value" v-else >
+                  <span v-html="basicData[item.props]" style="word-wrap: break-word;">
+                  </span>
+                </div>
             </template>
           </div>
         </div>
@@ -61,7 +72,7 @@
       <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
         汇率：Exchange rate: 
         <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
-          1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].name : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.name : 'RMB'}}
+          1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
         </span>
       </div>
     </iCard>
@@ -108,6 +119,7 @@ import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval } from '@/api/designate/decisiondata/rs'
 import {partProjTypes} from '@/config'
 import { findFrontPageSeat } from '@/api/designate'
+import { zipWith } from "lodash"
 export default {
   props: {
     isPreview: {type:Boolean, default:false},
@@ -134,7 +146,8 @@ export default {
       prototypeTitleList:prototypeTitleList,
       processApplyDate: '',
       projectType: '',
-      isSingle: false
+      isSingle: false,
+      suppliers: ''
     }
   },
   computed: {
@@ -169,6 +182,7 @@ export default {
       }
       // 其他
       return gsDetailTitleBlue
+
     },
     tableTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
@@ -229,7 +243,6 @@ export default {
     getPrototypeList(){
       getPrototypeList(this.nominateId).then(res=>{
           this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
-
           // 获取上会备注
           if(res.data && res.code==200){
             this.remarkItem = meetingRemark.map(item => {
@@ -304,8 +317,33 @@ export default {
     getTopList() {
       getList(this.nominateId).then(res => {
         if (res?.result) {
-          this.basicData = res.data || {}
-          this.tableData = res.data?.lines
+          let temdata = res.data || {}
+          temdata.suppliersNow =temdata.supplierVoList
+          if(temdata.partNameDe){
+            temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
+          }
+          this.basicData = temdata
+          let data = res.data?.lines
+          data.forEach((val,index) => {
+            let suppliersNowCn =[]
+            let suppliersNowEn =[]
+            val.supplierVoList.forEach(val =>{
+              suppliersNowCn.push(val.shortNameZh)
+              suppliersNowEn.push(val.shortNameEn)
+            })
+            let supplierData=[]
+            for(let i = 0 ;i <suppliersNowCn.length;i++) {
+              let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
+              supplierData.push(dataSuper)
+            }
+            supplierData = supplierData.length ? supplierData.join('\n') : '-'
+            val.suppliersNow = supplierData.replace(/\n/g,"<br/>");
+            if(val.supplierNameEn)
+            val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
+              if(val.partNameDe)
+            val.partName = `${val.partName}/${val.partNameDe}`
+          })
+          this.tableData = data
           this.projectType = res.data.partProjectType || ''
         } else {
           this.basicData = {}
@@ -342,23 +380,33 @@ export default {
       // 年降开始时间
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
-        const list = row.filter((item)=> item.ltcRate!='0.00');
+        const list = row.filter((item)=> item.ltcRateStr!='0');
         return list.length ? list[0].ltcDate : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
        let strList = [];
-       let strFlag = false;
+      //  let strFlag = false;
 
-       for(let i =0;i<row.length;i++){
+      //  for(let i =0;i<row.length;i++){
          
-         if(row[i].ltcRate !='0.00' && row[i].ltcRate){
-            strFlag = true;
-           strList.push(row[i].ltcRate-0);
-         }else if(strFlag && row[i].ltcRate == '0.00'){
-           break
-         }
-       }
-       return strList.length ? strList.join('/') : '-'
+      //    if(row[i].ltcRateStr !='0' && row[i].ltcRateStr){
+      //       strFlag = true;
+      //      strList.push(row[i].ltcRateStr-0);
+      //    }else if(strFlag && row[i].ltcRateStr == '0'){
+      //      break
+      //    }
+      //  }
+      //  return strList.length ? strList.join('/') : '-'
+        const ltcRateStrArr = row.map(item => item.ltcRateStr)
+
+        let i = 0
+        do {
+          i = ltcRateStrArr.length
+          if (ltcRateStrArr[0] == 0) ltcRateStrArr.shift()
+          if (ltcRateStrArr[ltcRateStrArr.length - 1] == 0) ltcRateStrArr.pop()
+        } while (i !== ltcRateStrArr.length)
+
+        return ltcRateStrArr.length ? ltcRateStrArr.join('/') : '-'
       }
     }
   }
@@ -396,6 +444,9 @@ export default {
 }
 .rsTop {
   display: flex;
+    .rsTop-left-item-title{
+      white-space: pre-line;
+    }
   &-left {
     width: 65%;
     display: flex;

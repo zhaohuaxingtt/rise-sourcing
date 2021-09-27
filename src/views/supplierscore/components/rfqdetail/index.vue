@@ -60,6 +60,7 @@ export default {
   },
   created() {
     this.rfqId = this.$route.query.rfqId
+    this.currentTab = this.$route.query.currentTab
     this.getRfqDetailByCurrentDept()
   },
   mounted() {

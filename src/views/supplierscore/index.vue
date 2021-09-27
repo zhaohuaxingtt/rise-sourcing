@@ -403,7 +403,8 @@ export default {
       const route = this.$router.resolve({
         path: "/supplierscore/rfqdetail",
         query: {
-          rfqId: row.rfqId
+          rfqId: row.rfqId,
+          currentTab: "supplierScore"
         }
       })
       window.open(route.href, "_blank")

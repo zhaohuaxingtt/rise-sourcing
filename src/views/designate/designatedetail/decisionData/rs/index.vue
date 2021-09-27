@@ -9,8 +9,8 @@
 
 <template>
   <div v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS|决策资料-rs">
-    <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview" :nominateId="nominateId" :projectType="projectType" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_CIRCULATION|circulation" />
-    <meeting ref="meeting" v-else :isPreview="isPreview" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_METTING|meeting" />
+    <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview || nominationDisabled" :nominateId="nominateId" :projectType="projectType" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_CIRCULATION|circulation" />
+    <meeting ref="meeting" v-else :isPreview="isPreview || nominationDisabled" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_METTING|meeting" />
   </div>
 </template>
 
@@ -33,6 +33,10 @@ export default {
     this.init()
   },
   computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
     /**
      * @Description: 是否是流转类型，如果从其他页面点击预览，则从props里取定点类型，如是定点流程中的rs，则从url上获取定点类型
      * @Author: Luoshuang

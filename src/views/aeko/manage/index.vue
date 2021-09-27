@@ -61,7 +61,7 @@
       <!-- 按钮区域 -->
       <template v-slot:header-control>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO|逾期BI报表">{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton>
-          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_HUIYITONGGUO|会议通过">{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
+          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_HUIYITONGGUO|会议通过" @click="meetingPass">{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_XIAZAIMUBAN|下载模板" @click="downloadTemplate">{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
           <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUAEKO|导入AEKO" class=" margin-left10 margin-right10">
             <Upload 
@@ -90,10 +90,10 @@
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
 
           <!-- 暂时添加的按钮 -->
-          <template v-if="isAekoManager">
+          <!-- <template v-if="isAekoManager">
             <iButton :loading="btnLoading.tcm" @click="getTCM">TCM AEKO同步</iButton>
             <iButton :loading="btnLoading.tcmFiles" @click="getTCMFiles">TCM AEKO附件同步</iButton>
-          </template>
+          </template> -->
       </template>
       <!-- 表单区域 -->
       <div v-permission.auto="AEKO_MANAGELIST_TABLE|AEKO管理TABLE">
@@ -148,6 +148,9 @@
       <revokeDialog v-if="revokeVisible" :dialogVisible="revokeVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
       <!-- 附件列表查看 -->
       <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
+    
+      <!-- TCM导入清单 -->
+      <!-- <tcmList/> -->
     </div>
   </iPage>
 </template>
@@ -175,6 +178,7 @@ import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
 import {user as configUser } from '@/config'
 import aekoSelect from '../components/aekoSelect'
+import tcmList from './components/tcmList'
 import {
   getManageList,
   searchAekoStatus,
@@ -210,7 +214,8 @@ export default {
       revokeDialog,
       filesListDialog,
       Upload,
-      aekoSelect
+      aekoSelect,
+      tcmList,
     },
     data(){
       return{
@@ -220,7 +225,7 @@ export default {
         searchParams:{
           brand:'',
           buyerName:'',
-          aekoStatusList:[''],
+          aekoStatusList:['IMPORTED'],
           coverStatusList:[''],
           carTypeCodeList:[''],
           linieDeptNumList:[''],
@@ -332,7 +337,7 @@ export default {
             aekoStatusList:aekoStatusList.length && aekoStatusList[0]=='' ? [] : aekoStatusList,
             coverStatusList:coverStatusList.length && coverStatusList[0]=='' ? [] : coverStatusList,
         };
-        if(frozenDate.length){
+        if(frozenDate && frozenDate.length){
             data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
             data['frozenDateEnd'] = frozenDate[1]+' 00:00:00';
         }
@@ -711,6 +716,18 @@ export default {
           } else {
               this.$set(this.searchParams, key, this.searchParams[key].filter(item => item || item === 0))
           }
+      },
+
+      // 会议通过
+      async meetingPass(){
+        const isNext  = await this.isSelectItem(true);
+        const {selectItems} = this;
+        if(!isNext) return;
+        await this.$confirm(this.language('LK_AEKO_TIPS_SHIFOUQUEDINGHUIYITONGGUO','是否确定会议通过？')).then(()=>{
+
+        }).catch(()=>{
+
+        })
       },
 
 

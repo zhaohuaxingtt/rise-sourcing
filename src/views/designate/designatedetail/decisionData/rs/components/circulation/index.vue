@@ -40,6 +40,10 @@
         <template #beginYearReduce="scope">
           <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
         </template>
+
+        <template #sapCode="scope">
+          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+        </template>
       </tableList>
     </iCard>
     <iCard :title="language('BEIZHU','备注')" :class="!isPreview && 'margin-top20'">

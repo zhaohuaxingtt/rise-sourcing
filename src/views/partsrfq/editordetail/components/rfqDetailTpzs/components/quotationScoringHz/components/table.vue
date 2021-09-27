@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-09-16 16:28:24
+ * @LastEditTime: 2021-09-23 13:53:21
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -54,9 +54,9 @@
           <!-----------------表格中内容模块------------------------>
           <el-table-column
             v-else
-            :fixed='item.props == "partName" || item.props == "cfPartBPrice"'
+            :fixed='item.fixed'
             :key="index"
-            :label="item.i18n ? $t(item.i18n) : item.label"
+            :label="item.label"
             :width="item.width"
             :prop='item.props'
             align="center"
@@ -350,6 +350,11 @@ export default{
     overflow: visible;
     ::v-deep.cell{
       overflow: visible;
+      position: static;
+      span {
+        white-space:pre-line!important;
+        text-align: center;
+      }
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
@@ -410,6 +415,7 @@ export default{
     }
     ::v-deep .rightBorder{
       border-right: 1px solid #C5CCD6;
+      position: relative;
     }
     ::v-deep .is-sortable{
       .cell{
@@ -427,14 +433,18 @@ export default{
     }
   }
   .headerContent{
-    position: relative;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 0px;
+    width: 0px;
     .c{
       position: absolute;
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 34px;
-      left:-9px;
+      bottom: -1px;
+      left:-98PX;
       border: 1px solid #C5CCD6;
       border-bottom: none;
       border-left:none;
