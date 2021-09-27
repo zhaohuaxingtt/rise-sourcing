@@ -15,7 +15,7 @@
     "macdev": "npm run start:win:dev",
     "build:win:dev:publish": "vue-cli-service build --mode dev && node ./loadersPlugins/publishDevCode.js",
     "conect": "node ./loadersPlugins/publishDevCode.js",
-    "fix-memory-limit": "cross-env LIMIT=10240 increase-memory-limit"
+    "fix-memory-limit": "cross-env LIMIT=3500 increase-memory-limit"
   },
   "dependencies": {
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
