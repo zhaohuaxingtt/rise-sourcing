@@ -234,7 +234,6 @@ export default {
         return
       }
 
-      this.loading = true
       console.log(this.rules);
       const params = {
         fuelTypeValue: this.rules.filter(item => item.input1 === 4).input2,
