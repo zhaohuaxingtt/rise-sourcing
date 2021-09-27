@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 11:17:33
- * @LastEditTime: 2021-09-18 13:38:09
+ * @LastEditTime: 2021-09-27 09:58:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\rawMateria\index.vue
@@ -53,7 +53,7 @@
         :index="true"
         :openPageGetRowData="true"
         openPageProps="associatedPart"
-        :height="500"
+        :height="450"
         @openPage="clickPreview"
       >
         <template #ratio="scope">
@@ -63,7 +63,7 @@
           <p>{{scope.row.priceAmplitude}}% </p>
         </template>
       </tableList>
-      <iPagination
+      <!-- <iPagination
         v-update
         @size-change="handleSizeChange($event, getTableData)"
         @current-change="handleCurrentChange($event, getTableData)"
@@ -73,7 +73,7 @@
         :layout="page.layout"
         :current-page="page.currPage"
         :total="page.totalCount"
-      />
+      /> -->
     </div>
     <detail :key="detailParam.key" :materiaName="name" v-model="detailParam.visible" @handleCloseModal="handleCloseModal"/>
   </div>
