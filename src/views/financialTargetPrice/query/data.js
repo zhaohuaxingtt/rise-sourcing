@@ -9,7 +9,7 @@
 
 
 export const tableTitle = [
-  {props:'fsnrGsnrNum',name:'FsNr/GsNr', key: "FSNRGSNR", tooltip: true, width: 120},
+  {props:'fsnrGsnrNum',name:'FS/GS/SP No.', key: "FSGSSPNO", tooltip: true, width: 120},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 120},
   {props:'partNameZh',name:'零件名称', key: "LINGJIANMINGCHENG", tooltip: true, width: 120},
   {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100},

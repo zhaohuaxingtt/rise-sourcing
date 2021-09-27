@@ -11,7 +11,7 @@ export const SearchList = [
   {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_BUYERNAME|Linie',selectOption:'buyerName',noShowAll:true,filterable:true,clearable:true},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_BRAND|品牌',selectOption:'brand'},
   {props:'cartype',label:'车型',isNewSelect:true,type:'select',labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_CARTYPE|车型',selectOption:'cartype',multiple:true,showCode:['AeA'],filterable:true},
-  // {props:'sendStatus',label:'分派状态',type:'select',labelKey:'LK_AEKO_FENPAIZHUANGTAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_FENPAIZHUANGTAI|分派状态',selectOption:'sendStatus',isDicoptions:true,dicoptionKey:'AEKO_SEND_STATUS'}
+  {props:'sendStatus',label:'分派状态',type:'select',labelKey:'LK_AEKO_FENPAIZHUANGTAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_FENPAIZHUANGTAI|分派状态',selectOption:'sendStatus',isDicoptions:true,dicoptionKey:'AEKO_SEND_STATUS'}
 ]
 
 

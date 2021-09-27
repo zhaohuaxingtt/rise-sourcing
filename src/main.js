@@ -1,10 +1,15 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
+<<<<<<< HEAD
  * @LastEditTime: 2021-09-27 10:24:33
  * @LastEditors: Please set LastEditors
+=======
+ * @LastEditTime: 2021-09-27 11:34:33
+ * @LastEditors: Luoshuang
+>>>>>>> workStream1
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\main.js
+ * @FilePath: \front-web\src\main.js
  */
 /* eslint-disable no-undef */
 import router from './router'
@@ -13,7 +18,13 @@ import store from './store'
 import '../public/theme/index.css'
 import '@/assets/style/global/index.scss'
 import './permission'
+<<<<<<< HEAD
 import { iTable } from "rise"
+=======
+import Vue from "vue"
+import { iTable } from 'rise' 
+// import AmapVue from '@amap/amap-vue'
+>>>>>>> workStream1
 
 require('./auto').init()
 Vue.config.productionTip = false

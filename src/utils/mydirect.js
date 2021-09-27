@@ -1,8 +1,13 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
+<<<<<<< HEAD
  * @LastEditTime: 2021-09-27 10:17:44
  * @LastEditors: Please set LastEditors
+=======
+ * @LastEditTime: 2021-09-26 17:28:50
+ * @LastEditors: Hao,Jiang
+>>>>>>> workStream1
  * @Description: 自定义指令文件。
  * @FilePath: \front-web\src\utils\mydirect.js
  */
@@ -43,6 +48,10 @@ Vue.directive('permission', {
                        el.parentNode.removeChild(el)
                     }
                 // }
+                // force permission
+                if (binding.modifiers.force && !store.state.permission.whiteBtnList[splitValue[0]]) {
+                    el.parentNode.removeChild(el)
+                }
             } else { //remove
                 // if (!store.state.permission.whiteBtnList[binding.expression]) {
                 //     el.parentNode.removeChild(el)

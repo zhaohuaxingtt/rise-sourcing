@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-09-24 11:35:33
+ * @LastEditTime: 2021-09-27 12:11:18
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -41,9 +41,9 @@
                 <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
                   <template v-for="(itemss,index) in supplierLeftLit">
                       <li :key='index' v-if='itemss.name != "F-Target"'>{{items[itemss.props]}}</li>
-                      <li :key="index" v-else :class="isLower">
+                      <li :key="index" v-else class="ftaget">
                         <span>{{items['cfPartAPrice']}}</span>
-                        <span></span>
+                        <span style="width:99PX"></span>
                         <span>{{items['cfPartBPrice']}}</span>
                       </li>
                   </template>
@@ -160,9 +160,9 @@
                 <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
                   <template v-for="(itemss,index) in supplierLeftLit">
                       <li :key='index' v-if='itemss.name != "F-Target"'>{{items[itemss.props]}}</li>
-                      <li :key="index" v-else :class="isLower">
+                      <li :key="index" v-else class="ftaget">
                         <span>{{items['cfPartAPrice']}}</span>
-                        <span></span>
+                        <span style="width:99PX"></span>
                         <span>{{items['cfPartBPrice']}}</span>
                       </li>
                   </template>
@@ -401,7 +401,7 @@ export default{
   .ftaget{
     text-align: left;
     span{
-      width: 100PX;
+      width: 82PX;
       display: inline-block;
       height: 100%;
       border-right: 1px solid #C5CCD6;
