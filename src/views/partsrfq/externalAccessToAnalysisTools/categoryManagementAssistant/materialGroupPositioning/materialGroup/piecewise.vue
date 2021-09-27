@@ -1,13 +1,13 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-09 16:45:32
- * @LastEditTime: 2021-09-27 16:08:07
+ * @LastEditTime: 2021-09-27 17:39:28
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\piecewise.vue
 -->
 <template>
-   <div ref="chart" style="height:600px" ></div>
+   <div ref="chart" class="piecewise" ></div>
 </template>
 <script>
 import echarts from '@/utils/echarts';
@@ -54,7 +54,7 @@ export default {
          if(data.otherPointList){
             marksData=data.otherPointList.map(item=>{
                return {
-                  value:[parseInt(item.riskScore),parseInt(item.moneyScore)],
+                  value:[parseFloat(item.riskScore),parseFloat(item.moneyScore)],
                   materialGroupName:item.materialGroupName,
                   materialGroupCode:item.materialGroupCode,
                   symbolSize:item.size,
@@ -89,8 +89,15 @@ export default {
             }
             marksData.push(currentCategory)
          }
-         let centerMarkX=parseInt(data.centerPoint.riskScore)
-         let centerMarkY=parseInt(data.centerPoint.moneyScore)
+         let centerMarkX=parseFloat(data.centerPoint.riskScore)
+         let centerMarkY=parseFloat(data.centerPoint.moneyScore)
+         if(marksData.length==0){
+            let centerMark={
+               value:[500,500],
+               symbolSize:0
+            }
+            marksData=[centerMark]
+         }
          // 中心线
          let centerLine = [
             {
@@ -321,4 +328,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.piecewise{
+   height: 600px;
+}
 </style>
