@@ -7,14 +7,15 @@
     "start:win:sit": "vue-cli-service serve --mode sit",
     "build:win:dev": "npm install rise@latest && vue-cli-service build --mode dev",
     "build:win:sit": "npm install rise@latest && vue-cli-service build --mode sit",
-    "build:win:vmsit": "npm install rise@latest && NODE_ENV=production && vue-cli-service build --mode vmsit",
+    "build:win:vmsit": "npm install rise@latest && vue-cli-service build --mode vmsit",
     "build:win:uat": "vue-cli-service build --mode uat",
     "build:win:prod": "vue-cli-service build --mode prod",
     "lint": "vue-cli-service lint",
     "report": "vue-cli-service build --mode sit --report",
     "macdev": "npm run start:win:dev",
     "build:win:dev:publish": "vue-cli-service build --mode dev && node ./loadersPlugins/publishDevCode.js",
-    "conect": "node ./loadersPlugins/publishDevCode.js"
+    "conect": "node ./loadersPlugins/publishDevCode.js",
+    "fix-memory-limit": "cross-env LIMIT=3500 increase-memory-limit"
   },
   "dependencies": {
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
@@ -48,7 +49,9 @@
     "vue-katex": "^0.5.0",
     "vue-template-compiler": "2.6.11",
     "webpack-bundle-analyzer": "^3.8.0",
-    "rise": "^1.6.0"
+    "rise": "^1.6.0",
+    "increase-memory-limit":"^1.0.0",
+    "cross-env":"^7.0.0"
   },
   "eslintConfig": {
     "root": true,
