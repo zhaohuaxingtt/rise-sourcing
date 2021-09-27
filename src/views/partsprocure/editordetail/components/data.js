@@ -87,3 +87,12 @@ export function translateDataForService(data){
 	})
 	return newMap
 }
+
+export function getOptionField(value, valueField, options, otherField = "name") {
+	if (!Array.isArray(options)) return value
+
+	const currentOption = options.find(item => item[valueField] === value)
+	if (!currentOption) return value
+
+	return currentOption[otherField]
+}

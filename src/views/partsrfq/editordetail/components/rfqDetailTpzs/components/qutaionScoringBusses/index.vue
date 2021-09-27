@@ -24,6 +24,12 @@ export default {
       default:''
     }
   },
+  inject: ['getDisabled'],
+  computed: {
+    disabled() {
+      return this.getDisabled()
+    }
+  },
   data(){
     return {
       rfqId:this.$route.query.id

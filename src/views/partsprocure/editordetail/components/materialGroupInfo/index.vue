@@ -8,7 +8,7 @@
 -->
 <template>
   <iCard class="materialGroupInfo" tabCard v-loading="loading">
-    <template v-slot:header-control>
+    <template v-slot:header-control v-if="!disabled">
       <iButton
         v-if="!setMaterialGroupStatus"
         @click="setMaterialGroup"
@@ -74,6 +74,7 @@ import { batchUpdateStuff } from '@/api/partsprocure/home'
 export default {
   components: { iButton, iCard, iPagination, tableList, infos },
   mixins: [ pageMixins ],
+  inject: ['getDisabled'],
   props: {
     params: {
       type: Object,
@@ -85,6 +86,9 @@ export default {
     ...Vuex.mapState({
       userInfo: (state) => state.permission.userInfo,
     }),
+    disabled() {
+      return this.getDisabled()
+    }
   },
   data() {
     return {

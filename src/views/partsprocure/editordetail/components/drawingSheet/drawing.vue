@@ -2,8 +2,9 @@
   <iCard class="outputRecord" tabCard :title="language('LK_XUNJIAFUJIAN','询价附件')">
     <template v-slot:header-control>
       <iButton @click="handleDownload" :loading="downloadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDDOWNLOAD">{{ language('LK_XIAZAI','下载') }}</iButton>
-      <iButton class="deleteBtn" @click="handleDelete" :loading="deleteLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEDELETE">{{ language('LK_SHANCHU','删除') }}</iButton>
+      <iButton v-if="!disabled" class="deleteBtn" @click="handleDelete" :loading="deleteLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEDELETE">{{ language('LK_SHANCHU','删除') }}</iButton>
       <el-upload 
+        v-if="!disabled"
         class="uploadBtn" 
         multiple
         ref="upload"
@@ -27,7 +28,7 @@
         <template #tpPartAttachmentName="scope">
           <span class="flexRow">
             <span class="openLinkText cursor" @click="preview(scope.row)"> {{scope.row.tpPartAttachmentName}}</span>
-            <span class="icon-gray  cursor  " v-if="scope.row.tpPartAttachmentName"  @click="gpreview(scope.row)">
+            <span class="icon-gray  cursor  " v-if="scope.row.tpPartAttachmentName"  @click="preview(scope.row)">
               <icon symbol class="show" name="icontiaozhuananniu" />
               <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
             </span>
@@ -66,6 +67,7 @@ import { getToken } from "@/utils";
 
 export default {
   components: { iCard, iButton, tableList, iPagination, icon},
+  inject: ['getDisabled'],
   mixins: [ pageMixins, filters ],
   props: {
     params: {
@@ -85,6 +87,11 @@ export default {
       multipleSelection: [],
       fileList: [],
       timer: 0
+    }
+  },
+  computed: {
+    disabled() {
+      return this.getDisabled()
     }
   },
   created() {

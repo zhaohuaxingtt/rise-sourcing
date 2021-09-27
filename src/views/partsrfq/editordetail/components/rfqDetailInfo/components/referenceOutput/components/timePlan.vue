@@ -4,22 +4,24 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ language('LK_SHIJIANJIHUA','时间计划') }}</span>
         <div class="floatright">
-          <template v-if="!editStatus">
-            <iButton @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EDIT">{{
-                language('LK_BIANJI','编辑')
-              }}
-            </iButton>
-          </template>
-          <template v-else>
-            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_SAVE">{{
-                language('LK_BAOCUN','保存')
-              }}
-            </iButton>
-            <iButton @click="back" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_BACK">{{
-                language('LK_FANHUI','返回')
-              }}
-            </iButton>
-          </template>
+          <span v-if="!disabled">
+            <template v-if="!editStatus">
+              <iButton @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EDIT">{{
+                  language('LK_BIANJI','编辑')
+                }}
+              </iButton>
+            </template>
+            <template v-else>
+              <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_SAVE">{{
+                  language('LK_BAOCUN','保存')
+                }}
+              </iButton>
+              <iButton @click="back" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_BACK">{{
+                  language('LK_FANHUI','返回')
+                }}
+              </iButton>
+            </template>
+          </span>
 
           <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EXPORTS">
             {{ language('LK_DAOCHU','导出') }}
@@ -83,6 +85,12 @@ export default {
       inputProps: [],
       showTable: true
     };
+  },
+  inject: ["getDisabled"],
+  computed: {
+    disabled() {
+      return this.getDisabled()
+    }
   },
   created() {
     this.getTableList();

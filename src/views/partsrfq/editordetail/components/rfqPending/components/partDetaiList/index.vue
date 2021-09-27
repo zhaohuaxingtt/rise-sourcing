@@ -6,7 +6,7 @@
  -->
 <template>
   <iCard>
-    <div class="header flex-align-center">
+    <div class="header flex-align-center" v-if="!disabled">
       <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE">{{
           language('delete','删除')
         }}
@@ -30,12 +30,12 @@
                  @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
                  :page-size="page.pageSize" :current-page="page.currPage" :layout="page.layout"
                  :total="page.totalCount"></iPagination>
-    <div class="addFs flex-align-center">
+    <div class="addFs flex-align-center" v-if="!disabled">
       <iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">
         {{ language('LK_TIANJIA','添加') }}
       </iButton>
     </div>
-    <partsTable ref="partsTable" :rfqId="rfqId" :queryForm="queryForm" @targetHand="waitSelect" @openPage='(row)=>openPage(row)' @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
+    <partsTable v-if="!disabled" ref="partsTable" :rfqId="rfqId" :queryForm="queryForm" @targetHand="waitSelect" @openPage='(row)=>openPage(row)' @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
     <!-- 发送KM -->
@@ -100,7 +100,12 @@ export default {
     await this.getTableList()
     this.$refs.partsTable.getTableList()
   },
-  inject: ['getbaseInfoData'],
+  inject: ['getbaseInfoData', 'getDisabled'],
+  computed: {
+    disabled() {
+      return this.getDisabled()
+    }
+  },
   data() {
     return {
       tableTitle,

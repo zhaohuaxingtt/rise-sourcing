@@ -17,7 +17,7 @@
     </div>
     <span slot="footer" class="dialog-footer">
        <iButton @click="submit" v-if="!disabled">{{ language('LK_QUEREN','确认') }}</iButton>
-       <iButton @click="clearDiolog">{{language('LK_QUXIAO','取 消')}}</iButton>
+       <iButton @click="clearDiolog">{{disabled ? language('LK_GUANBI','关闭') : language('LK_QUXIAO','取 消')}}</iButton>
     </span>
   </iDialog>
 </template>

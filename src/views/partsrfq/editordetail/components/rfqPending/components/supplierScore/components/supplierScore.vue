@@ -2,7 +2,7 @@
   <iCard>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language('LK_GONGYINGSHANGPINGFEN','供应商评分') }}</span>
-      <div class="floatright">
+      <div class="floatright" v-if="!disabled">
         <!-- v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE" -->
         <iButton v-if="!editStatus" @click="editStatus = true">{{ language('LK_BIANJI','编辑') }}</iButton>
         <iButton v-if="editStatus" @click="editStatus = false">{{ language('LK_QUXIAO','取 消') }}</iButton>
@@ -22,7 +22,7 @@
         @supplierProducePlacesVisibleChange="supplierProducePlacesVisibleChange"
         @openActionPropsPage="openActionPropsPage"
         @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
-        :disabled="!editStatus"
+        :disabled="!editStatus || disabled"
         @link="link"
     ></tablelist>
     <!------------------------------------------------------------------------>
@@ -46,6 +46,7 @@
         v-model="dialogRemarks"
         @submit="handleRemarksSubmit"
         :memo="memo"
+        :disabled="disabled"
     />
     <scoringDeptDialog :visible.sync="scoringDeptVisible" :ids="[$route.query.id]" @update="updateTable" />
   </iCard>
@@ -100,7 +101,12 @@ export default {
     this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
     this.getTableList();
   },
-  inject: ['getBaseInfo', 'getbaseInfoData'],
+  inject: ['getBaseInfo', 'getbaseInfoData', 'getDisabled'],
+  computed: {
+    disabled() {
+      return this.getDisabled()
+    }
+  },
   methods: {
     async getTableList() {
       const id = this.$route.query.id
