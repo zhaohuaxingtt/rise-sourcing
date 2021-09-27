@@ -1,8 +1,8 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-26 11:06:24
- * @LastEditTime: 2021-09-26 09:45:42
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-26 21:21:01
+ * @LastEditors: Luoshuang
  * @Description: 项目管理-项目进度监控接口
  * @FilePath: \front-web\src\api\project\process.js
  */
@@ -105,6 +105,15 @@ export function sendDelayReasonConfirm(data) {
 export function pageProProgressMonitorData(data) {
   return requst({
     url: '/project-progress-monitor/pageProProgressMonitorData',
+    method: 'POST',
+    data
+  })
+}
+
+// 获取发送进度确认的零件列表
+export function getProgressConfirmList(data) {
+  return requst({
+    url: '/project-progress-monitor/listProgressConfirm',
     method: 'POST',
     data
   })
