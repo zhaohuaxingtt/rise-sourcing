@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-26 21:40:46
+ * @LastEditTime: 2021-09-27 18:04:38
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -18,7 +18,7 @@
         <iButton @click="gotoSechedule">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
         <iButton @click="handleSendFs" v-if="partStatus == 2 || partStatus == 3">{{language('FASONGJINDUQUEREN', '发送进度确认')}}</iButton> 
         <iButton @click="openDelayReasonDialog" v-if="[3,2,5,6].includes(Number(partStatus))" >{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
-        <iButton @click="handleExport" v-if="[1].includes(partStatus)">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
+        <iButton @click="handleExport" v-if="[1].includes(Number(partStatus))">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
     <div class="partListView-content"> 
@@ -27,11 +27,11 @@
           <el-checkbox @change="handleCheckboxChange($event, pro)"> 
             {{`${pro.partNameZh || ''}`}} 
           </el-checkbox> 
-          <icon @click.native="openChangeLight(pro)" class="productItem-top-icon cursor" symbol name="iconbianji"></icon>
+          <icon v-if="partStatus != 7" @click.native="openChangeLight(pro)" class="productItem-top-icon cursor" symbol name="iconbianji"></icon>
           <template>
-            <icon class="productItem-top-icon2" v-if="pro.projectRisk == '3'" symbol name="iconzhuangtai_hong"></icon>
-            <icon class="productItem-top-icon2" v-else-if="pro.projectRisk == '2'" symbol name="iconzhuangtai_huang"></icon>
-            <icon class="productItem-top-icon2" v-else-if="pro.projectRisk == '1'" symbol name="iconzhuangtai_lv"></icon>
+            <icon class="productItem-top-icon2" v-if="pro[pro.partStatus == 7 ? 'projectProc' :'projectRisk'] == '3'" symbol name="iconzhuangtai_hong"></icon>
+            <icon class="productItem-top-icon2" v-else-if="pro[pro.partStatus == 7 ? 'projectProc' :'projectRisk'] == '2'" symbol name="iconzhuangtai_huang"></icon>
+            <icon class="productItem-top-icon2" v-else-if="pro[pro.partStatus == 7 ? 'projectProc' :'projectRisk'] == '1'" symbol name="iconzhuangtai_lv"></icon>
           </template>
           <span class="productItem-top-desc">{{`${pro.partNum || ''}  ${pro.partNameDe || ''}  ${pro.buyerName || ''}`}}</span>
         </div> 
@@ -92,8 +92,8 @@
                     <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0">+W{{pro[item.delayWeeks]}}</span>
                   </iText>
                   <div>
-                    <p>soll1：{{getSollKw(pro[item.soll1])}} <span v-if="pro[item.soll22]">soll1：{{getSollKw(pro[item.soll12])}}</span></p>
-                    <p>soll2：{{getSollKw(pro[item.soll2])}} <span v-if="pro[item.soll22]">soll2：{{getSollKw(pro[item.soll22])}}</span></p>
+                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll1：{{getSollKw(pro[item.soll1])}} <span v-if="pro[item.soll22]">OTS soll1：{{getSollKw(pro[item.soll12])}}</span></p>
+                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll2：{{getSollKw(pro[item.soll2])}} <span v-if="pro[item.soll22]">OTS soll2：{{getSollKw(pro[item.soll22])}}</span></p>
                   </div>
                 </el-popover>
               </div>
@@ -219,6 +219,9 @@ export default {
      * @return {*}
      */    
     openChangeLight(pro) {
+      if (this.partStatus == 7) {
+        return
+      }
       this.selectParts = pro
       this.changeLightDialogVisible(true)
     },
@@ -290,7 +293,10 @@ export default {
         if (res?.result) {
           let tableList = res.data || []
           const fsOptions = await this.getFsUserList(tableList)
-          tableList = tableList.map(item => {
+          tableList = tableList.reduce((accu, item) => {
+            if (item.procStatus != 1 && item.procStatus != 3) {
+              return accu
+            }
             const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
             const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
             const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
@@ -304,7 +310,7 @@ export default {
                 return accu 
               } 
             },[]) : []  
-            return {  
+            return [...accu, {  
               ...item, 
               cartypeProId: this.cartypeProId, 
               cartypeProject: this.carProjectName, 
@@ -324,10 +330,10 @@ export default {
               scheOtsTimeKw: item.otsTimeKw, 
               scheEmTimeKw: item.emTimeKw, 
               riskLevel: item.projectRisk, 
-              // confirmStatus: item.fsConfirmStatus, 
+              confirmStatus: item.procStatus, 
               partPeriod: item.partStatus 
-            } 
-          })
+            } ]
+          },[])
           if (this.partStatus == 2) {
             this.tableListNomi = tableList
             this.tableListKickoff = []
