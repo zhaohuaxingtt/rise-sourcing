@@ -4,7 +4,7 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ language('LK_JIAGEMINGXI','价格明细') }}</span>
 			<div class="control">
-				<iButton  @click="save('save')" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SAVE">{{ language('LK_BAOCUN','保存') }}</iButton>
+				<iButton v-if="!disabled" @click="save('save')" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SAVE">{{ language('LK_BAOCUN','保存') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="3" icon inline>
@@ -33,13 +33,16 @@
 		</iFormGroup>
 		<iFormGroup row="3" icon inline>
 			<iFormItem label="CKD Duty(%)" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdDuty" v-Int maxlength="3" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_Duty"></iInput>
+				<iInput v-if="!disabled" v-model="targetprice.cfTargetPriceDetail.ckdDuty" v-Int maxlength="3" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_Duty"></iInput>
+				<iText v-else>{{targetprice.cfTargetPriceDetail.ckdDuty}}</iText>
 			</iFormItem>
 			<iFormItem label="CKD EX_Work" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdExwork" v-Int  maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_EX"></iInput>
+				<iInput v-if="!disabled" v-model="targetprice.cfTargetPriceDetail.ckdExwork" v-Int  maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_EX"></iInput>
+				<iText v-else>{{targetprice.cfTargetPriceDetail.ckdExwork}}</iText>
 			</iFormItem>
 			<iFormItem label="CKD LANDED" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdLanded" v-Int maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_LANDED"></iInput>
+				<iInput v-if="!disabled" v-model="targetprice.cfTargetPriceDetail.ckdLanded" v-Int maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_LANDED"></iInput>
+				<iText v-else>{{targetprice.cfTargetPriceDetail.ckdLanded}}</iText>
 			</iFormItem>
 		</iFormGroup>
 		<div class="line"></div>
@@ -47,12 +50,12 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ language('LK_SHENQINGCAIWUMUBIAOJIA','申请财务目标价') }}</span>
 			<div class="control">
-				<iButton @click="saveApply" :loading="applyLoading" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ language('LK_SHENQING','申请') }}</iButton>
+				<iButton v-if="!disabled" @click="saveApply" :loading="applyLoading" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ language('LK_SHENQING','申请') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline>
 			<iFormItem :label="language('LK_SHENQINGLEIXING','申请类型')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
-				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
+				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType" :disabled="disabled">
 					<el-radio label="LC" size="small">LC</el-radio>
 					<el-radio label="SKD" size="small">SKD</el-radio>
 					<el-radio label="CKD LANDED" size="small">CKD LANDED</el-radio>
@@ -60,16 +63,17 @@
 				<!-- <span class="start">*</span> -->
 			</iFormItem>
 			<iFormItem :label="language('LK_QIWANGMUBIAOJIA','期望目标价')" name="test"  v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
-				<iInput v-model="targetprice.cfTargetPriceDetail.expTargetpri" v-Int  maxlength="20"></iInput>
+				<iInput v-if="!disabled" v-model="targetprice.cfTargetPriceDetail.expTargetpri" v-Int  maxlength="20"></iInput>
+				<iText v-else>{{targetprice.cfTargetPriceDetail.expTargetpri}}</iText>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
 			<iFormItem :label="language('LK_SHENQINGYUANYIN','申请原因')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQYY">
-				<iInput type="textarea" rows="6" resize="none" maxlength="500" v-model="targetprice.cfTargetPriceDetail.applyReason">
+				<iInput :disabled="disabled" type="textarea" rows="6" resize="none" maxlength="500" v-model="targetprice.cfTargetPriceDetail.applyReason">
 				</iInput>
 			</iFormItem>
 			<iFormItem :label="language('LK_SHENQINGBEIZHU','申请备注')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQBZ">
-				<iInput type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.cfTargetPriceDetail.memo">
+				<iInput :disabled="disabled" type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.cfTargetPriceDetail.memo">
 				</iInput>
 			</iFormItem>
 		</iFormGroup>
@@ -166,6 +170,7 @@ import { cloneDeep } from 'lodash'
 			iPagination
 		},
 		mixins: [ pageMixins ],
+		inject: ['getDisabled'],
 		props: {
 			purchaseProjectId: {
 				type: String
@@ -188,6 +193,11 @@ import { cloneDeep } from 'lodash'
 					}
 				},
 				immediate: true
+			}
+		},
+		computed: {
+			disabled() {
+				return this.getDisabled()
 			}
 		},
 		data() {

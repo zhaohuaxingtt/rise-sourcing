@@ -25,7 +25,7 @@ import {
 } from "rise";
 import designateStep from './components/designateStep.vue'
 import decisionDataHeader from './components/decisionDataHeader'
-import { applyStep } from './components/data'
+import { applyStep, setDisabled } from './components/data'
 import { nominateAppSDetail } from '@/api/designate'
 
 export default {
@@ -85,8 +85,7 @@ export default {
         })
         .then(res => {
           if (res.code == 200) {
-            console.log(this.setDisabled(res.data || {}))
-            this.$store.dispatch('setNominationDisabled', this.setDisabled(res.data || {}))
+            this.$store.dispatch('setNominationDisabled', this.setDisabled({ ...res.data, designateType: this.$route.query.designateType } || {}))
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
@@ -96,25 +95,7 @@ export default {
         this.loading = false
       }
     },
-    setDisabled(data) {
-      const isPriceConsistent = data.isPriceConsistent // 一次性校验
-      const applicationStatus = data.applicationStatus // 定点申请状态
-      if (!applicationStatus) return true
-
-      switch(this.$route.query.designateType) {
-        case "MEETING": // 上会
-          const disabledCodes = ["FREERE", "M_CHECK_INPROCESS", "M_CHECK_FAIL", "NOMINATE"] // 冻结, M审批中, M退回, 定点
-          if (isPriceConsistent) return disabledCodes.concat(["PASS", "CHECK_INPROCESS", "CHECK_PASS", "CHECK_FAIL"]).includes(applicationStatus) // 通过一致性校验 已通过, 复核中, 复核通过, 复核未通过
-
-          return disabledCodes.includes(applicationStatus)
-        case "TRANFORM": // 流转
-          return ["FREERE", "ONFLOW", "FINISHFLOW", "NOMINATE"].includes(applicationStatus) // 冻结, 流转中, 流转完成, 定点
-        case "RECORD": // 备案
-          return ["FREERE", "NOMINATE"].includes(applicationStatus) // 冻结, 定点
-        default:
-          return true
-      }
-    },
+    setDisabled
   },
   watch:{$route(to,from){
     console.log(to,from)

@@ -1,6 +1,6 @@
 <template>
   <iCard class="outputRecord" tabCard collapse :title="language('LK_LINGJIANCHANLIANGJILU','零件产量记录')">
-    <template v-slot:header-control>
+    <template v-slot:header-control v-if="!disabled">
       <iButton v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE" @click="updateOutput">{{language('LK_GENGXINZHIXUNJIACHANLIANG','更新至询价产量')}}</iButton>
     </template>
     <div class="body">
@@ -37,6 +37,7 @@ import { cloneDeep } from 'lodash'
 export default {
   components: { iCard, iButton, tablelist, iPagination },
   mixins: [ pageMixins ],
+  inject: ['getDisabled'],
   props: {
     params: {
       type: Object,
@@ -50,6 +51,11 @@ export default {
       tableListData: [],
       multipleSelection: [],
       startYear: ''
+    }
+  },
+  computed: {
+    disabled() {
+      return this.getDisabled()
     }
   },
   created() {

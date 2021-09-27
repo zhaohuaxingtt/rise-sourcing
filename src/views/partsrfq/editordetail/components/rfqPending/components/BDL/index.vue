@@ -15,7 +15,7 @@
           </div>
         </iInput>
       </div>
-      <div>
+      <div v-if="!disabled">
         <div v-if="!addCustomStatus">
           <iButton v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" @click="handleAdd">{{ language("TIANJIA", "添加") }}</iButton>
           <!-- <iButton v-if="editSelectTableDataCache.length" @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ language('LK_QUEREN','确认') }}</iButton> -->
@@ -90,6 +90,12 @@ export default {
       addCustomStatus: false,
       bdlDialogVisible: false,
       supplierName: ""
+    }
+  },
+  inject: ['getDisabled'],
+  computed: {
+    disabled() {
+      return this.getDisabled()
     }
   },
   created() {

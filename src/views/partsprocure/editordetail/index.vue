@@ -29,26 +29,28 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{language("LK_LINGJIANCAIGOUXIANGMU",'零件采购项目')}}</span>
 			<div class="floatright">
-				<!-- 供应商创建定点申请单 -->
-				<createNomiappBtn :datalist='[detailData]'></createNomiappBtn>
-				<!-------------------零件总成件的自动生成定点申请单--------------------->
-				<createNomiappBtnAccs v-if='createdNomiappAsscShow'></createNomiappBtnAccs>
-				<!-------------------------------------------------------------------------------->
-				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
-				<!---出现此按钮。------------------------------------------------------------------->
-				<iButton v-permission.auto='PARTSPROCURE_EDITORDETAIL_WHXGGYS' v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
-				<iButton @click="start" v-permission.auto="PARTSPROCURE_EDITORDETAIL_STARTUP|启动项目"
-					v-if="detailData.status == '16'">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
-				<creatFsGsNr :projectItems="[detailData]" @refresh="getDatailFn"></creatFsGsNr>
-				<cancelProject :backItems='[detailData]'  @refresh="getDatailFn"></cancelProject>
-				<!-- <iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
-					{{ language("LK_CHAIFENCAIGOUGONGCHANG",'拆分采购工厂') }}
-				</iButton> -->
-				<iButton @click="openDiologClose" v-permission.auto="PARTSPROCURE_EDITORDETAIL_ENDPROJECT|结束项目"
-					v-if="detailData.status != '16'">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
-				<iButton :loading='saveLoading' @click="saveFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE|保存零件采购项目按钮">{{ language("LK_BAOCUN",'保存') }}
-				</iButton>
-				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">{{ language("LK_FANHUI",'返回') }}</iButton>
+				<span v-if="!disabled">
+					<!-- 供应商创建定点申请单 -->
+					<createNomiappBtn :datalist='[detailData]'></createNomiappBtn>
+					<!-------------------零件总成件的自动生成定点申请单--------------------->
+					<createNomiappBtnAccs v-if='createdNomiappAsscShow'></createNomiappBtnAccs>
+					<!-------------------------------------------------------------------------------->
+					<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
+					<!---出现此按钮。------------------------------------------------------------------->
+					<iButton v-permission.auto='PARTSPROCURE_EDITORDETAIL_WHXGGYS' v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
+					<iButton @click="start" v-permission.auto="PARTSPROCURE_EDITORDETAIL_STARTUP|启动项目"
+						v-if="detailData.status == '16'">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
+					<creatFsGsNr :projectItems="[detailData]" @refresh="getDatailFn"></creatFsGsNr>
+					<cancelProject :backItems='[detailData]'  @refresh="getDatailFn"></cancelProject>
+					<!-- <iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
+						{{ language("LK_CHAIFENCAIGOUGONGCHANG",'拆分采购工厂') }}
+					</iButton> -->
+					<iButton @click="openDiologClose" v-permission.auto="PARTSPROCURE_EDITORDETAIL_ENDPROJECT|结束项目"
+						v-if="detailData.status != '16'">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
+					<iButton :loading='saveLoading' @click="saveFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE|保存零件采购项目按钮">{{ language("LK_BAOCUN",'保存') }}
+					</iButton>
+					<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">{{ language("LK_FANHUI",'返回') }}</iButton>
+				</span>
 				<logButton class="margin-left20" @click="log" v-permission="PARTSPROCURE_EDITORDETAIL_LOG" />
 				<span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
@@ -79,16 +81,18 @@
 							</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_PARTTYPE" :label="language('LK_LINGJIANLEIXING','零件类型') + ':'" name="test">
-							<iSelect v-model="detailData.partType" >
+							<iSelect v-model="detailData.partType" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PART_TYPE" :key="index"></el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.partType, "code", fromGroup.PART_TYPE) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_UNIT" :label="language('LK_DANWEI','价格单位') + ':'" name="test">
-							<iSelect v-model="detailData.unit" >
+							<iSelect v-model="detailData.unit" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name" v-for="(item, index) in fromGroup.UNIT"
 									:key="index"></el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.unit, "code", fromGroup.UNIT) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_BMG" label="BMG：" name="test">
 							<iText >
@@ -96,11 +100,12 @@
 							</iText>
 						</iFormItem>
 						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType)" :label="language('LK_HUOBI','货币') + ':'" name="test">
-							<iSelect v-model="detailData.currencyCode" >
+							<iSelect v-model="detailData.currencyCode" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
 								</el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.currencyCode, "code", fromGroup.CURRENCY_TYPE) }}</iText>
 						</iFormItem>
 						<!-- <iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE" :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型') + ':'" name="test">
 							<iSelect
@@ -123,25 +128,29 @@
 						</iFormItem> -->
 						<!------------------------零件采购项目类型为一次性采购/DB一次性采购类型时与是否DB件联动--------------------------------------->
 						<iFormItem v-if="[partProjTypes.YICIXINGCAIGOU, partProjTypes.DBYICHIXINGCAIGOU].includes(detailData.partProjectType)" :label="language('SHIFOUDBJIAN','是否DB件') + ':'" name="test">
-							<iSelect v-model="detailData.isDb" @change="onIsDBChange">
+							<iSelect v-model="detailData.isDb" @change="onIsDBChange" v-if="!disabled">
 								<el-option :value="true" :label="language('YES', '是')"></el-option>
 								<el-option :value="false" :label="language('NO', '否')"></el-option>
 							</iSelect>
+							<iText v-else>{{ detailData.isDb ? "是" : "否" }}</iText>
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->
 						<iFormItem v-if='partProjTypes.JINLINGJIANHAOGENGGAI == detailData.partProjectType' :label="language('YUANLINGJIANHAO', '原FS/GS号') + ':'">
-							<iInput class="removeInputDisabelColor" disabled search v-model="detailData.oldFsnrGsnrNum"> <i class="el-icon-search el-input__icon cursor" slot="suffix" @click="openDiologOldParts"></i></iInput>	
+							<iInput class="removeInputDisabelColor" v-if="!disabled" disabled search v-model="detailData.oldFsnrGsnrNum"> <i class="el-icon-search el-input__icon cursor" slot="suffix" @click="openDiologOldParts"></i></iInput>	
+							<iText v-else>{{ detailData.oldFsnrGsnrNum }}</iText>
 						</iFormItem>
 					</div>
 					<div class="col">
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE" :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型') + ':'" name="test">
 							<iSelect
+								v-if="!disabled"
 								v-model="detailData.partProjectType"
 								@change="onPartProjectTypeChange">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in filterProjectList(partProjectTypeArray,detailData.partProjectType)" :key="index">
 								</el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.partProjectType, "code", filterProjectList(partProjectTypeArray,detailData.partProjectType)) }}</iText>
 						</iFormItem>
 
 						<iFormItem label="FSNR/GSNR/SPNR：" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_FSNRGSNRSPNR">
@@ -155,28 +164,28 @@
 							</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test">
-							<iSelect v-model="detailData.carTypeProjectZh" >
+							<iSelect v-model="detailData.carTypeProjectZh" v-if="!disabled">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
 								</el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.carTypeProjectZh, "code", fromGroup.CAR_TYPE_PRO) }}</iText>
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
-							<iSelect v-model="detailData.procureFactory" :disabled='procureFactoryCanselect()'
-								@change="checkFactory()"
-								>
+							<iSelect v-model="detailData.procureFactory" :disabled='procureFactoryCanselect()' @change="checkFactory()" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index">
 								</el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.procureFactory, "code", fromGroup.PURCHASE_FACTORY) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE" :label="language('LK_SOPRIQI','SOP日期') + ':'" name="test">
 							<!----------------------------------------------------------------------------------------------->
 							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
 							<!----------------------------------------------------------------------------------------------->
-							<iDatePicker v-if='currentSupplierButton' v-model='detailData.sopDate' type="date"></iDatePicker>
+							<iDatePicker v-if='currentSupplierButton && !disabled' v-model='detailData.sopDate' type="date"></iDatePicker>
 							<iText v-else >
 								{{ detailData.sopDate }}
 							</iText>
@@ -191,11 +200,12 @@
 						</iFormItem> -->
 						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
 						<iFormItem v-if="[partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb" :label="language('LK_HUOBI','货币') + ':'" name="test">
-							<iSelect v-model="detailData.currencyCode" >
+							<iSelect v-model="detailData.currencyCode" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
 								</el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.currencyCode, "code", fromGroup.CURRENCY_TYPE) }}</iText>
 						</iFormItem>
 					</div>
 					<div class="col">
@@ -205,23 +215,25 @@
 							</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
-							<iSelect @change="changeUserDept" v-model="detailData.linieDept"
-								>
+							<iSelect @change="changeUserDept" v-model="detailData.linieDept" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.linieDept, "code", fromGroup.LINIE_DEPT) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINE" label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieId" placeholder='请先选择LINIE部门'>
+							<iSelect v-model="detailData.linieId" placeholder='请先选择LINIE部门' v-if="!disabled">
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.LINIE"
 									:key="item.name"></el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.linieId, "code", fromGroup.LINIE) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER|CF控制员" :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
-							<iSelect v-model="detailData.cfController" >
+							<iSelect v-model="detailData.cfController" v-if="!disabled">
 								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.cfController, "id", fromGroup.CF_CONTROL) }}</iText>
 						</iFormItem>
 						<iFormItem name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_COMMINSOURCING|CommonSourcing">
 							<template slot="label">
@@ -240,20 +252,23 @@
 							<!--------预设置联动第二版：如果零件采购项目为FS common sourcing，但是否common sourcing选择否，则在保存/生成FS号时提示采购员：“[零件采购项目]与[是否common sourcing]不统一，请确认是否继续”---->
 							<!--------选择联动：如果当前的零件采购项目为fs零件，和gs零件，如果选项为【是】需要反向设置当前采购项目类型为当前项对应的COMMONSOURCING 零件”---->
 							<iSelect v-model="detailData.isCommonSourcing"
+								v-if="!disabled"
 								:disabled='canSelectCommonSourcing'
 								@change="changeCommonSourcing"
 								v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING">
 								<el-option :value="true" label="是"></el-option>
 								<el-option :value="false" label="否"></el-option>
 							</iSelect>
+							<iText v-else>{{ detailData.isCommonSourcing ? "是" : "否" }}</iText>
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
 						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
-							<iSelect v-model="detailData.purchaseClause" >
+							<iSelect v-model="detailData.purchaseClause" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PURCHASE" :key="index">
 								</el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.purchaseClause, "code", fromGroup.TERMS_PURCHASE) }}</iText>
 						</iFormItem>
 					</div>
 					<div class="col">
@@ -280,10 +295,11 @@
 							</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_MTZPARTS" :label="language('LK_MTZLINGJIAN','MTZ零件') + ':'" name="test">
-							<iSelect v-model="detailData.mtz" >
+							<iSelect v-model="detailData.mtz" v-if="!disabled">
 								<el-option :value="true" label="是"></el-option>
 								<el-option :value="false" label="否"></el-option>
 							</iSelect>
+							<iText v-else>{{ detailData.mtz ? "是" : "否" }}</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_DATEOFRECEIPT" :label="language('LK_QIANSHOURIQI','签收日期') + ':'" name="test">
 							<iText>
@@ -292,11 +308,12 @@
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
 						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
-							<iSelect v-model="detailData.payClause" >
+							<iSelect v-model="detailData.payClause" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
 								</el-option>
 							</iSelect>
+							<iText v-else>{{ getName(detailData.payClause, "code", fromGroup.TERMS_PAYMENT) }}</iText>
 						</iFormItem>
 					
 
@@ -390,7 +407,7 @@
 	import currentSupplier from './components/currentSupplier'
 	import {getProjectDetail,closeProcure,updateProcure,startProcure} from "@/api/partsprocure/home";
 	import {dictkey,checkFactory,purchasingLiline,purchasingDept} from "@/api/partsprocure/editordetail";
-	import {detailData,partsCommonSourcing,translateDataForService } from "./components/data";
+	import {detailData,partsCommonSourcing,translateDataForService, getOptionField } from "./components/data";
 	import splitFactory from "./components/splitFactory";
 	import designateInfo from './components/designateInfo'
 	import { getDictByCode } from '@/api/dictionary'
@@ -398,10 +415,11 @@
 	import {filterProjectList} from '@/utils'
 	import selectOldpartsNumber from './components/selectOldpartsNumber'
 	import {cancelProject,creatFsGsNr,createNomiappBtn,createNomiappBtnAccs} from '@/components'
+	import { setDisabled } from "@/layout/nomination/components/data"
 	export default {
 		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs},
 		provide:function(){
-			return {detailData:this.getDetailData}
+			return {detailData:this.getDetailData, getDisabled: this.getDisabled}
 		},
 		computed: {
 			...Vuex.mapState({
@@ -470,11 +488,23 @@
 					selectData:[]
 				},
 				saveLoading:false,
-				detailLoading:false
+				detailLoading:false,
+				disabled: false
 			};
 		},
 		created() {
 			this.infoItem = JSON.parse(this.$route.query.item);
+			if (this.infoItem.applicationStatus || this.infoItem.nominateProcessType || this.infoItem.isPriceConsistent) {
+				this.disabled = setDisabled({
+					applicationStatus: this.infoItem.applicationStatus,
+					designateType: this.infoItem.nominateProcessType,
+					isPriceConsistent: this.infoItem.isPriceConsistent,
+				})
+			} else {
+				this.disabled = false
+			}
+			
+			nominateProcessType
 			this.purchaseProjectId = this.infoItem.id;
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 			this.partProjectType = this.infoItem.partProjectType;
@@ -775,6 +805,12 @@
 			*/
 			onPartProjectTypeChange(data) {
 				this.detailData.isDb = data === partProjTypes.DBYICHIXINGCAIGOU
+			},
+			getName(value, code, options) {
+				return getOptionField(value, code, options)
+			},
+			getDisabled() {
+				return this.disabled
 			}
 		}
 }
