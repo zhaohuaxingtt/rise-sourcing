@@ -7,7 +7,7 @@
   <i-card v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_INDEXPAGE">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language('LK_GONGYINGSHANGCAILIAOZHUNBEI','供应商材料准备') }}</span>
-      <div class="floatright">
+      <div class="floatright" v-if="!disabled">
         <iButton @click="add" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADD">{{language('LK_TIANJIA','添加')}}</iButton>
       </div>
     </div>
@@ -15,7 +15,7 @@
                 v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_DESTEXT">
       <template v-for="(item,index) of dynamicForm.baseInfo">
         <iFormItem label=" " :name="index" :key="index" class="form-item-style">
-          <iInput type="textarea" :rows="4" resize="none" :placeholder="language(item.placeholderkey,item.placeholder)" v-model="item.value"
+          <iInput type="textarea" :disabled="disabled" :rows="4" resize="none" :placeholder="language(item.placeholderkey,item.placeholder)" v-model="item.value"
                   maxlength="100" show-word-limit></iInput>
           <div @click="deleteItems(index+ 1)"
                v-if="(index+1)%3 === 0">
@@ -50,6 +50,12 @@ export default {
           {value: '', placeholder: '供应商timeline', placeholderkey: 'LK_GONGYINGSHANGTIMELINE'},
         ]
       }
+    }
+  },
+  inject: ["getDisabled"],
+  computed: {
+    disabled() {
+      return this.getDisabled()
     }
   },
   methods: {

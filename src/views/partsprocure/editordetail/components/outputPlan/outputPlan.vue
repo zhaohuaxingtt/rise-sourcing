@@ -1,6 +1,6 @@
 <template>
   <iCard class="outputPlan tabCard" :title="language('LK_XUNJIACHANLIANGJIHUA','询价产量计划')" tabCard collapse v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_INDEXPAGE">
-    <template v-slot:header-control>
+    <template v-slot:header-control v-if="!disabled">
       <iButton @click="handleSave" :loading="saveLoading" v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_SAVE">{{language('LK_BAOCUN','保存')}}</iButton>
     </template>
     <div class="body">
@@ -12,16 +12,18 @@
         <template v-for="(items, $index) in tableTitle">
           <el-table-column :key="$index" align="center" v-if="$index == 1" :prop="items.props" :label="language(items.key,items.name)">
             <template v-slot:header>
-              <iSelect v-model="startYear" class="select" @change="handleStartYearChange">
+              <iSelect v-model="startYear" class="select" @change="handleStartYearChange" v-if="!disabled">
                 <el-option
                   v-for="(item, $index) in years"
                   :key="$index"
                   :label="item"
                   :value="item" />
               </iSelect>
+              <span v-else>{{ startYear }}</span>
             </template>
             <template v-slot="scope">
-              <iInput class="input" v-model="scope.row[startYear]" @input="handleInput($event, startYear)"/>
+              <iInput class="input" v-model="scope.row[startYear]" v-if="!disabled" @input="handleInput($event, startYear)"/>
+              <span v-else>{{ scope.row[startYear] }}</span>
             </template>
           </el-table-column>
           <el-table-column v-if="$index == 0" :key="$index" align="center" :label="language(items.key,items.name)">
@@ -31,7 +33,8 @@
           </el-table-column>
           <el-table-column v-else :key="$index" align="center" :label="language(items.key,items.name)" :prop="items.props">
             <template v-slot="scope">
-              <iInput class="input" :disabled="$index == tableTitle.length - 1 || $index == tableTitle.length - 2" v-model="scope.row[items.props]" @input="handleInput($event, items.props)"/>
+              <iInput class="input" v-if="!disabled" :disabled="$index == tableTitle.length - 1 || $index == tableTitle.length - 2" v-model="scope.row[items.props]" @input="handleInput($event, items.props)"/>
+              <span v-else>{{ scope.row[items.props] }}</span>
             </template>
           </el-table-column>
         </template>
@@ -48,6 +51,7 @@ import { cloneDeep } from 'lodash'
 
 export default {
   components: { iCard, iButton, iSelect, iInput },
+  inject: ['getDisabled'],
   props: {
     params: {
       type: Object,
@@ -64,6 +68,11 @@ export default {
       tableListData: [
         { pc: '产量（PC）', info: {} }
       ],
+    }
+  },
+  computed: {
+    disabled() {
+      return this.getDisabled()
     }
   },
   created() {

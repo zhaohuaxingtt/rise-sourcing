@@ -15,29 +15,31 @@
         <iNavMvp lang :query='$route.query' :lev='2' routerPage :list='navList' @change='changeRouter'></iNavMvp>
       </div>
       <div class="btnList">
-        <iButton :loading="newRfqOpenValidateLoading" @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">
-          {{
-          language('LK_XINJIANRFQLUNCI','新建RFQ轮次')
-          }}
-        </iButton>
-        <iButton :loading='rfqloading' @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">{{
-            language('LK_FACHUXUNJIA','发出询价')
-          }}
-        </iButton>
-        <iButton :loading='endingloading'  @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">
-          {{ language('LK_JIESHUBENLUNXUNJIA','结束本轮询价') }}
-        </iButton>
-        <iButton  :loading='transferlaoding' @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
-          {{ language('LK_ZHUANTANPAN','转谈判') }}
-        </iButton>
-        <iButton v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION" :loading="createDesignateLoading" @click="createDesignate">
-          {{ language('LK_CHUANGJIANDINGDIANSHENQING','创建定点申请') }}
-        </iButton>
-        <iButton @click="backPage">{{ language('LK_FANHUI','返回') }}</iButton>
-        <iButton type="text" @click="toLogPage" v-permission="PARTSRFQ_EDITORDETAIL_LOG">
-          <icon symbol name="iconrizhiwuzi" class="log-icon"/>
-          <span class="log-word">{{ language('LK_RIZHI','日志') }}</span>
-        </iButton>
+        <span v-if="!disabled">
+          <iButton :loading="newRfqOpenValidateLoading" @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">
+            {{
+            language('LK_XINJIANRFQLUNCI','新建RFQ轮次')
+            }}
+          </iButton>
+          <iButton :loading='rfqloading' @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">{{
+              language('LK_FACHUXUNJIA','发出询价')
+            }}
+          </iButton>
+          <iButton :loading='endingloading'  @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">
+            {{ language('LK_JIESHUBENLUNXUNJIA','结束本轮询价') }}
+          </iButton>
+          <iButton  :loading='transferlaoding' @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
+            {{ language('LK_ZHUANTANPAN','转谈判') }}
+          </iButton>
+          <iButton v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION" :loading="createDesignateLoading" @click="createDesignate">
+            {{ language('LK_CHUANGJIANDINGDIANSHENQING','创建定点申请') }}
+          </iButton>
+          <iButton @click="backPage">{{ language('LK_FANHUI','返回') }}</iButton>
+          </span>
+          <iButton type="text" @click="toLogPage" v-permission="PARTSRFQ_EDITORDETAIL_LOG">
+            <icon symbol name="iconrizhiwuzi" class="log-icon"/>
+            <span class="log-word">{{ language('LK_RIZHI','日志') }}</span>
+          </iButton>
         <span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
 				</span>
@@ -108,7 +110,7 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTSTATE">{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">
-              <i-button @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_SAVE">{{
+              <i-button v-if="!disabled" @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_SAVE">{{
                   !editStatus ? language('LK_BIANJI','编辑') : language('LK_BAOCUN','保存')
                 }}
               </i-button>
@@ -160,6 +162,7 @@ import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import { getTabelData} from "@/api/partsprocure/home";
 import { pageMixins } from "@/utils/pageMixins";
 import { tableTitle,form } from "@/views/partsprocure/home/components/data";
+import { setDisabled } from "@/layout/nomination/components/data"
 export default {
   components: {
     iButton,
@@ -198,7 +201,8 @@ export default {
       newRfqRoundDialogRes:{}, 
       rfqloading:false,
       endingloading:false,
-      transferlaoding:false
+      transferlaoding:false,
+      disabled: true
     }
   },
   created() {
@@ -208,7 +212,8 @@ export default {
   provide: function(){
     return {
       getBaseInfo:this.getBaseInfo, //当前是一个请求
-      getbaseInfoData:this.getbaseInfoData  //直接reture当前请求完的数据
+      getbaseInfoData:this.getbaseInfoData,  //直接reture当前请求完的数据
+      getDisabled: this.getDisabled
     }
   },
   methods: {
@@ -259,6 +264,16 @@ export default {
           const resList = res.data
           if (resList.length > 0) {
             this.baseInfo = res.data[0]
+
+            if (this.baseInfo.applicationStatus || this.baseInfo.nominateProcessType || this.baseInfo.isPriceConsistent) {
+              this.disabled = setDisabled({
+                applicationStatus: this.baseInfo.applicationStatus,
+                designateType: this.baseInfo.nominateProcessType,
+                isPriceConsistent: this.baseInfo.isPriceConsistent,
+              })
+            } else {
+              this.disabled = false
+            }
           } else {
             this.baseInfo = ''
           }
@@ -416,6 +431,9 @@ export default {
         this.createDesignateLoading = false
       })
       .catch(() => this.createDesignateLoading = false)
+    },
+    getDisabled() {
+      return this.disabled
     }
   }
 }

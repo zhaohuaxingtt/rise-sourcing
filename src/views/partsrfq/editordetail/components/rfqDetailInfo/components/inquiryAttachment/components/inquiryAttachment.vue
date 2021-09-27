@@ -3,11 +3,12 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language('LK_XUNJIAFUJIAN','询价附件') }}</span>
       <div class="floatright">
-        <iButton @click="deleteItems"
+        <iButton v-if="!disabled" @click="deleteItems"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DELETE">
           {{ language('LK_SHANCHU','删除') }}
         </iButton>
         <upload-button
+            v-if="!disabled"
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
             class="margin-left8 margin-right8"
@@ -19,7 +20,7 @@
           {{ language('LK_XIAZAI','下载') }}
         </iButton>
         <!-- 暂不做，后端暂无接口：用户可以选择“通知全部供应商”，询价附件会发送给当前RFQ BDL中所选择的全部供应商-->
-        <iButton @click="notifyAllSuppliers"
+        <iButton v-if="!disabled" @click="notifyAllSuppliers"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYALL">
           {{ language('LK_TONGZHIQUANBUGONGYINGSHANG','通知全部供应商') }}
         </iButton>
@@ -89,6 +90,12 @@ export default {
   },
   created() {
     this.getTableList();
+  },
+  inject: ["getDisabled"],
+  computed: {
+    disabled() {
+      return this.getDisabled()
+    }
   },
   methods: {
     async getTableList() {
