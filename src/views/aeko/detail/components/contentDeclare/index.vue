@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-27 13:47:47
+ * @LastEditTime: 2021-09-27 14:48:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -185,12 +185,13 @@
             clearable
             v-model="addTableTitle"
             :placeholder="language('partsprocure.CHOOSE','请选择')"
+            @change="handleChangeTable"
           >
             <el-option
                 v-for="(item,index) in showLineList || []"
                 :key="'showLineList_'+index"
-                :label="item.desc"
-                :value="item.code"
+                :label="language(item.key,item.name)"
+                :value="item.props"
                 >
               </el-option> 
           </iSelect>
@@ -240,6 +241,10 @@
           </template>
           <template #isMtz="scope">
             <span v-if="scope.row.isMtz == 1" class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+          </template>
+          <!-- 是否待报价 -->
+          <template #isReplace="scope">
+            <span v-if="scope.row.isReplace!==null">{{scope.row.isReplace ? language('nominationLanguage.Yes','是')  : language('nominationLanguage.No','否')}}</span>
           </template>
         </tableList>
         <iPagination 
@@ -835,6 +840,16 @@ export default {
     // 查看价格轴弹窗
     showPriceAxis(){
       // this.priceAxisVisible = true;
+    },
+
+    // 显示隐藏表头
+    handleChangeTable(value=[]){
+      const arr = [];
+      value.map((item)=>{
+        const filterItem = hidenTableTitle.filter((item2)=> item2.props == item);
+        if(filterItem.length) arr.push(filterItem[0]);
+      })
+      this.tableTitle = tableTitle.concat(arr);
     }
 
   },

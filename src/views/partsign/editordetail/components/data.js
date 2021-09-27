@@ -10,7 +10,7 @@ export const partTitle = [
 	{key:'partNum',name:'零件号',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNUMBER', language: 'LK_LINGJIANHAO'},
 	{key:'partNameCn',name:'零件名（中）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEZH', language: 'LK_LINGJIANMINGZHONG'},
 	{key:'partNameDe',name:'零件名（德）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEGER', language: 'LK_LINGJIANMINGDE'},
-	{key:'inheritedCarModel',name:'车型大类',permissionKey:'PARTSIGN_EDITORDETAIL_VEHICLECATEGORIES', language: 'LK_CHEXINGDALEI'},
+	{key:'carModelID',name:'车型大类',permissionKey:'PARTSIGN_EDITORDETAIL_VEHICLECATEGORIES', language: 'LK_CHEXINGDALEI'},
 	{key:'projectCarType',name:'车型项目',permissionKey:'PARTSIGN_EDITORDETAIL_MODELPROJECT', language: 'LK_CHEXINGXIANGMU'},
 	{key:'stuffName',name:'询价采购员',permissionKey:'PARTSIGN_EDITORDETAIL_BUYER', language: 'LK_XUNJIACAIGOUYUAN'},
 	{key:'tpPartID',name:'新建信息单流水号',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONSERIALNUMBER', language: 'LK_XINJIANXINXIDANLIUSHUIHAO'},
@@ -48,7 +48,7 @@ export const partDetailTitle=[
 	
 	{key:'partDerived',name:'从零件派生',language: 'LK_CONGLINGJIANPAISHENG'},
 	{key:'replacedPartNum',name:'被代替零件',language: 'LK_BEIDAITILINGJIAN'},
-	{key:'inheritedCarModel',name:'沿用车型大类代码',language: 'LK_YANYONGCHEXINGDALEIDAIMA'},
+	{key:'carModelID',name:'沿用车型大类代码',language: 'LK_YANYONGCHEXINGDALEIDAIMA'},
 	
 	{key:'partTypeName',name:'零件类型',language: 'LK_LINGJIANLEIXING'},
 	{key:'partTypeNum',name:'零件类型代码',language: 'LK_LINGJIANLEIXINGDAIMA'},

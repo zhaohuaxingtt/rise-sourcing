@@ -124,11 +124,10 @@ export default{
             fsNum:items[round].partPrjCode || ''
           }
       if(round.replace(/[^0-9]/ig,"") != this.getbaseInfoData().currentRounds || this.getbaseInfoData().currentRoundsStatus == "已关闭"){
-        map['fix'] = true
+        // map['fix'] = true
         map['sourcing'] = true
       }else{
         if(type == 3){
-          map['agentQutation'] = true
           map['currentTab'] = "costsummary"
           map['sourcing'] = true
         }
@@ -136,17 +135,15 @@ export default{
           map['fix'] = true
           map['sourcing'] = true
         }else{
-          if(value.indexOf('/') > -1){
-            map['agentQutation'] = true
+          if(value.indexOf('/') > -1) {
             map['currentTab'] = "costsummary"
             map['sourcing'] = true
-     
-          }else{
-            map['watingSupplier'] = true
-            map['fix'] = true
+          } else {
             map['sourcing'] = true
           }
         }
+
+        map['watingSupplier'] = true
       }
       return map
     },
