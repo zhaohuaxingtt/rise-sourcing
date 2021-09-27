@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-24 15:26:07
+ * @LastEditTime: 2021-09-27 10:22:45
  * @Description: 监控明细
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -20,7 +20,7 @@
         <div class="titleSearch">
           <div v-for="(item, index) in searchListByPartStatus" :key="index" class="titleSearch-item" v-permission.auto="item.permission">
             <span class="titleSearch-item-lable">{{language(item.key, item.label)}}</span>
-            <iDicoptions v-if="item.type === 'selectDict'" class="titleSearch-item-content" :optionAll="item.optionAll" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
+            <iDicoptions @change="handleChange" v-if="item.type === 'selectDict'" class="titleSearch-item-content" :optionAll="item.optionAll" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
           </div>
         </div>
         <div>
@@ -100,6 +100,9 @@ export default {
     this.handleSure()
   },
   methods: {
+    handleChange(val) {
+      console.log(val)
+    },
     handleReset() {
       this.searchParams = {
         ...this.searchParams,
@@ -179,7 +182,7 @@ export default {
     }
   }
   .projectCard {
-    height: calc(100% - 180px);
+    height: calc(100% - 200px);
     overflow: hidden;
     &.withCollapse {
       height: calc(100% - 120px);
