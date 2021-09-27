@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-17 19:35:47
+ * @LastEditTime: 2021-09-18 10:29:11
  * @LastEditors: 舒杰
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
@@ -159,7 +159,6 @@
 					}else{
 						this.searchCriteria.latestYear="1"
 					}
-					
 				})
 			}
 		}

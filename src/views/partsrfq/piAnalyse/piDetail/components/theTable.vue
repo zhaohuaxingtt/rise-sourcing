@@ -3,7 +3,7 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
         <span class="margin-right30">{{
-            language('PI.DANGQIANJIAGE', '当前价格')
+            language('PI.LINGJIANJIAGEBODONG', '零件价格波动')
           }}：{{ nowPriceRatio }}%</span>
         <span>{{
             language('PI.ZONGHEJIAGEYINGXIANG', '综合价格影响')

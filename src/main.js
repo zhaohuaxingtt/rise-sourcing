@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-09-18 16:06:53
+ * @LastEditTime: 2021-09-27 10:08:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\main.js
@@ -14,11 +14,7 @@ import '../public/theme/index.css'
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 import './permission'
-import Vue from "vue"
-import { iTable } from 'rise'
-// import AmapVue from '@amap/amap-vue'
 
-// AmapVue.config.key = 'ad8bb27d93a0b17188e1b46872a446f8'
 import Directives from '@/utils/directives/index'
 require('./auto').init()
 Vue.config.productionTip = false

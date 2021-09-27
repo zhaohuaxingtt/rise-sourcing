@@ -21,7 +21,6 @@ export default {
   props: {
     mapListData: {
       type: Object, default: (data) => {
-        console.log(data);
         return {}
       }
     }
@@ -43,16 +42,15 @@ export default {
     mapListData: {
       handler(objects) {
         const data = cloneDeep(objects)
-        console.log(data);
         var sum = 0
 
         this.svwData = data.purchaseDataList
         this.tableData = data.offerDataList
         this.tableData && this.tableData.forEach(item => {
-          sum = sum + item.toAmount
+          sum = sum + parseFloat(item.toAmount)
         })
         this.tableData && this.tableData.map(item => {
-          item.symbolSize = item.toAmount / sum * 100 / 5
+          item.symbolSize = parseFloat(item.toAmount) / sum * 100 / 5
           item.toAmount = String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'
           return item.value = [item.lon, item.lat]
         })
@@ -91,17 +89,17 @@ export default {
       // 圆点
       this.tableData && this.tableData.map((item, index) => {
         let carTypeList = ''
-        item.carTypeProjectList.forEach((val, index) => {
-          carTypeList += item.carTypeProjectList.length - 1 > index ? val + ' | ' : val
+        item.carTypeProjectList.forEach((val, i) => {
+          carTypeList += item.carTypeProjectList.length - 1 > i ? val + ' | ' : val
         })
         var circleMarker = new AMap.CircleMarker({
           center: [item.lon, item.lat],
           radius: item.symbolSize,//3D视图下，CircleMarker半径不要超过64px
           strokeColor: this.color[index],
           strokeWeight: 2,
-          strokeOpacity: 0.5,
+          strokeOpacity: 1,
           fillColor: this.color[index],
-          fillOpacity: 0.5,
+          fillOpacity: 1,
           zIndex: 10,
           bubble: true,
           cursor: 'pointer',
@@ -111,8 +109,9 @@ export default {
         circleMarker.setMap(map)
         let clickIcon = new AMap.Icon({
           image: this.highlight,
-          size: new AMap.Size(135, 40), //图标大小
-          imageSize: new AMap.Size(135, 40)
+          size: new AMap.Size(40, 30),
+          imageSize: new AMap.Size(20, 30),
+          anchor: 'center',
         });
         // 点
         let marker = new AMap.Marker({
@@ -120,7 +119,7 @@ export default {
           icon: clickIcon,
           clickable: true,
           anchor: "center",
-          offset: new AMap.Pixel(-17, 0) //设置偏移量
+          offset: new AMap.Pixel(-10, 0) //设置偏移量
         });
         marker.setMap(map)
         marker.hide()
@@ -137,11 +136,11 @@ export default {
                       <div class='flex'>
                         <div class="img"></div><div class='title'>${item.name}</div>
                       </div>
-                      <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
+                      <div class='label'>${this.language('CHEXINGXIANGMUMAOHAO', '车型：')}</div>
                       <div class='value'>${carTypeList}</div>
-                      <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
+                      <div class='label'>${this.language('GONGYINGSHANGGONGCHANGDIZHI', '供应商工厂地址：')}</div>
                       <div class='value'>${item.factoryAddress}</div>
-                      <div class='label'>${this.$t('TPZS.ZXSE')}</div>
+                      <div class='label'>${this.language('GONGCHANGZONGXIAOSHOUE', '工厂总销售额：')}</div>
                       <div class='value'>${item.toAmount}</div>
                   </div>`,
           offset: new AMap.Pixel(-0, -15)
@@ -160,11 +159,6 @@ export default {
           image: this.svwImg,
           anchor: 'center',
         });
-        let clickIcon = new AMap.Icon({
-          image: this.highlight,
-          size: new AMap.Size(135, 40), //图标大小
-          imageSize: new AMap.Size(135, 40)
-        });
         // 点
         let marker = new AMap.Marker({
           position: new AMap.LngLat(item.lon, item.lat),
@@ -173,25 +167,6 @@ export default {
           anchor: "center"
         });
         marker.setMap(map)
-        marker.on('mouseover', () => {
-          handleTooltip.open(map, [item.lon, item.lat])
-          console.log('purchase');
-        })
-        marker.on('mouseout', () => {
-          map.clearInfoWindow()
-        })
-        var handleTooltip = new AMap.InfoWindow({
-          content: `<div class='tips'>
-                        <div class='flex'>
-                          <div class="img-svw"></div><div class='title'>${item.name}</div>
-                        </div>
-                        <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
-                        <div class='value'>${carTypeList}</div>
-                        <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
-                        <div class='value'>${item.factoryAddress}</div>
-                      </div>`,
-          offset: new AMap.Pixel(7, -15)
-        });
       })
     },
   }

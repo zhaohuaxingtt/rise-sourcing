@@ -8,9 +8,14 @@
 <template>
   <div class="scroll flex">
     <div class="flex-align-center margin-right50" v-for="(item,index) in tableData" :key="index">
-      <div v-if="item.title==='OFFER'" :style="'background:'+color[index]" class="circle margin-right4"></div>
-      <icon v-else name="iconshangqidazhong" symbol></icon>
-      <div class="margin-left10">{{item.name}}</div>
+      <div class="flex-align-center" v-if="item.title==='OFFER'">
+        <div :style="'background:'+color[index]" class="circle margin-right4"></div>
+        <div class="margin-left10">{{item.name}}</div>
+      </div>
+      <div class="flex-align-center" v-else>
+        <icon name="iconshangqidazhong" symbol></icon>
+        <div class="margin-left10">{{item.factoryName}}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -39,8 +44,8 @@ export default {
   watch: {
     mapListData: {
       handler(data) {
-        this.tableData = data.offerDataList && [...data.offerDataList] 
-        this.tableData = data.purchaseDataList && [...data.purchaseDataList] 
+        this.tableData = data.offerDataList && [...data.offerDataList]
+        this.tableData = data.purchaseDataList && [...this.tableData, ...data.purchaseDataList]
       }
     }
   },
