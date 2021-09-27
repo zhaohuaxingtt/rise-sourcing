@@ -104,8 +104,8 @@ export default {
             SearchList:tcmSearchList,
             selectOptions:{
                 status:[
-                    {label:'导入失败',value:'SUCCESS',labelKey:'LK_AEKO_TCM_DAORUCHENGGONG'},
-                    {label:'导入成功',value:'FAIL',labelKey:'LK_AEKO_TCM_DAORUSHIBAI'},
+                    {label:'导入成功',value:'SUCCESS',labelKey:'LK_AEKO_TCM_DAORUCHENGGONG_1'},
+                    {label:'导入失败',value:'FAIL',labelKey:'LK_AEKO_TCM_DAORUSHIBAI_1'},
                 ]
             },
             searchParams:{
@@ -207,7 +207,7 @@ export default {
             }
         }
         .divider{
-            border-bottom: 1px dashed #909091;
+            border-bottom: 1px dashed #9FA4AE;
             padding: 10px 0;
         }
     }
