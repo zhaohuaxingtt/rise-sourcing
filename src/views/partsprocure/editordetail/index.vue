@@ -207,7 +207,7 @@
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
 							<iSelect @change="changeUserDept" v-model="detailData.linieDept"
 								>
-								<el-option :value="item.code" :label="item.name"
+								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
@@ -220,7 +220,7 @@
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER|CF控制员" :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
 							<iSelect v-model="detailData.cfController" >
-								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
+								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_COMMINSOURCING|CommonSourcing">
@@ -583,6 +583,7 @@
 					this.detailData = res.data;
 					this.fsnrGsnrNum = res.data.fsnrGsnrNum
 					this.checkFactoryString = res.data.procureFactory
+					
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
 					}
