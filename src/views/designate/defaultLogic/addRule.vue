@@ -234,9 +234,9 @@ export default {
         return
       }
 
-      console.log(this.rules);
+      let fuelTypeValue  = this.rules.find(item => item.input1 === 4) === undefined ?'':this.rules.find(item => item.input1 === 4).input1
       const params = {
-        fuelTypeValue: this.rules.filter(item => item.input1 === 4).input2,
+        fuelTypeValue,
         nomiType: this.ddType,
         partTermType: this.rules[0].input2,
         presetLogic:this.rules.filter(item => item.input1 != 4).reduce((accu, curr, index) => {
@@ -254,6 +254,7 @@ export default {
           return [...accu, data]
         },[])
       }
+      console.log(params);
       this.$emit('handleSave', params)
     },
     /**
