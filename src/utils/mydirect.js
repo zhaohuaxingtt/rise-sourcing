@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-09-02 18:49:52
+ * @LastEditTime: 2021-09-27 10:17:44
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \front-web\src\utils\mydirect.js
@@ -303,3 +303,93 @@ Vue.directive("moneyInput", {
         })
     }
 })
+
+// 限制只能输入中文或英文逗号
+Vue.directive("alphabet", {
+  inserted(e) {
+    const el = e.querySelector('.el-input__inner');
+    el.addEventListener('input', e => {
+      //进行验证
+      checkedfun(el);
+    })
+    let checkedfun = el => {
+      // let reg = new RegExp("^[A-Za-z0-9]*$");
+      let reg = new RegExp("^[\d\,]*$");
+      if (!reg.test(el.value)) {
+        // el.value = el.value.replace(/[^A-Za-z0-9]+/g, "");
+        el.value = el.value.replace(/[^\d\,]+/g, "");
+        el.dispatchEvent(new Event("input"));//调用input事件使vue v-model绑定更新
+      }
+    }
+  }
+})
+
+/**
+ * @desc 验证整数类型数字方法
+ * @param {Object} e
+ * @param {regular} reg 正则
+ * @param {Number} charcode 键盘code
+ * */
+ let checkNumber = (e, reg, charcode) => {
+  if (!reg.test(String.fromCharCode(charcode)) && charcode > 9 && !e.ctrlKey) {
+    if (e.preventDefault) {
+      e.preventDefault()
+    } else {
+      e.returnValue = false
+    }
+  }
+}
+
+/**
+ * @desc 验证浮点类型小数方法(建议用text类型的表单)
+ * @param {Object} e
+ * @param {regular} reg 正则
+ * @param {Number} charcode 键盘code
+ * @param {Object} el dom对象
+ * */
+let checkFloat = (e, reg, charcode, el) => {
+  if (charcode == 46) {
+    if (el.value.includes('.')) {
+      e.preventDefault()
+    }
+  } else if (
+    !reg.test(String.fromCharCode(charcode)) &&
+    charcode > 9 &&
+    !e.ctrlKey
+  ) {
+    if (e.preventDefault) {
+      e.preventDefault()
+    } else {
+      e.returnValue = false
+    }
+  }
+}
+
+Vue.directive("positive", {
+  inserted(el, bind) {
+    el.addEventListener('keypress', e => {
+      e = e || window.event
+      let charcode = typeof e.charCode === 'number' ? e.charCode : e.keyCode
+      let reg = null
+      switch (bind.value) {
+        case 'num':
+          reg = /\d/
+          checkNumber(e, reg, charcode)
+          break
+        case 'int':
+          if (el.value.length === 0) {
+            reg = /^[1-9]$/
+          } else {
+            reg = /\d/
+          }
+          checkNumber(e, reg, charcode)
+          break
+        case 'float':
+          reg = /\d/
+          checkFloat(e, reg, charcode, el)
+          break
+      }
+    })
+  }
+})
+
