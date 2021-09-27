@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-09-27 10:24:33
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-27 11:36:21
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\main.js
+ * @FilePath: \front-web\src\main.js
  */
 /* eslint-disable no-undef */
 import router from './router'

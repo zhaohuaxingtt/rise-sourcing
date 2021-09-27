@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-24 17:06:35
+ * @LastEditTime: 2021-09-26 11:04:35
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -167,7 +167,7 @@ export default {
               selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
               fs, 
               fsId,
-              originTime: this.partStatus == '3' ? item.planKickoffTimeKw : this.partStatus == '2' ? item.planNomiTimeKw : this.partStatus == '5' ? item.planFirstTryoutTimeKw : this.partStatus == '6' && this.isLarger(item.planEmTimeKw, item.planOtsTimeKw) ? item.planEmTimeKw : item.planOtsTimeKw,
+              originTime: this.partStatus == '3' ? item.kickoffTimeKw : this.partStatus == '2' ? item.nomiTimeKw : this.partStatus == '5' ? item.firstTryoutTimeKw : this.partStatus == '6' && this.isLarger(item.emTimeKw, item.otsTimeKw) ? item.emTimeKw : item.otsTimeKw,
             } 
           });
         } else {

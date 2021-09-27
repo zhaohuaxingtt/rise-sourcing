@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:02:20
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-23 10:52:25
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-27 10:57:22
  * @Description: 
  * @FilePath: \front-web\src\router\modules\project.js
  */
@@ -133,6 +133,14 @@ export default [
               withoutTop: true,
             },
             component: () => import("@/views/project/progressmonitoring/monitorDetail")
+          },
+          {
+            path: "delayconfirm",
+            name: "progressmonitoring-delayconfirm",
+            meta: {
+              title: "延误原因确认",
+            },
+            component: () => import("@/views/project/progressmonitoring/delaySummary"),
           },
         ]
       },
