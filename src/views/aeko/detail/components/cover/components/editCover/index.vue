@@ -203,8 +203,8 @@ export default {
 
             const costData = cloneDeep(coverCostsWithCarType);
             costData.map((item)=>{
-              item.investmentIncrease = this.fixNumber(item.investmentIncrease,0);
-              item.otherCost = this.fixNumber(item.otherCost,0);
+              item.investmentIncrease = this.fixNumber(item.investmentIncrease,0) || 0;
+              item.otherCost = this.fixNumber(item.otherCost,0) || 0;
 
               
               item.isShowTips = item.materialIncrease == item.calMaterialIncrease;
