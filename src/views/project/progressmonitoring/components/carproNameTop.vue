@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:18:12
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-16 16:29:01
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-23 10:30:19
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\components\carproNameTop.vue
 -->
@@ -50,8 +50,9 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15px;
   &-name {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
   }
   &-control {

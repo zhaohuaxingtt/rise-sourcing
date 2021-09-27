@@ -45,7 +45,7 @@ export const fstableTileXh = function(index){
   return [
     {type:'',props:`${index?index:''}lcAPrice`,label:'LC A Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price ',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:"LC A Price \n w/o alloc.",i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:"SKD A Price \n w/o alloc.",i18n:'',width:'100',tooltip:false},
@@ -195,13 +195,16 @@ export function getRenderTableTile(whiteListService,supplierLength,layout){
       if(items.props == 'supplierName'){
         relTabelListDefault.push(items)
       }else{
-        supplierDataList[0].bdlRateInfoList.filter(i=>i.supplierId ==supplierDataList[0].bdlRateInfoList[0].supplierId).forEach((itemss,index)=>{
+        // supplierDataList[0].bdlRateInfoList.filter(i=>i.supplierId == supplierDataList[0].bdlRateInfoList[0].supplierId).forEach((itemss,index)=>{
+        supplierDataList[0].bdlRateInfoList.forEach((itemss,index)=>{
           const ratess = JSON.parse(JSON.stringify(rateTitelList))
           ratess.props = (index == 0?'':index) + 'rate';
           ratess.label = itemss.rateDepartNum
+          console.log(ratess,'ratess');
           items.list.push(ratess)
         })
         relTabelListDefault.push(items)
+        console.log(relTabelListDefault,'relTabelListDefault');
       }
     })
     for(let i = 0;i < xuhTable.length;i++){ //通过白名单过滤一次表头

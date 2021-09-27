@@ -90,7 +90,7 @@
             </template>
             <span slot="reference" @click="handleAttachmentDonwload(scope.row)" class="openLinkText cursor">下载</span>
           </el-popover>
-          <span v-else-if="items.props === 'ltcRateOfThree'">{{(scope.row.ltcs[0]?scope.row.ltcs[0].ltcRateStr :'')+'/'+(scope.row.ltcs[1]?scope.row.ltcs[1].ltcRateStr :'')+'/'+(scope.row.ltcs[2]?scope.row.ltcs[2].ltcRateStr :'')}}</span>
+          <span v-else-if="items.props === 'ltcRateOfThree'">{{(scope.row.ltcs[0]?scope.row.ltcs[0].ltcRate:'')+'/'+(scope.row.ltcs[1]?scope.row.ltcs[1].ltcRate:'')+'/'+(scope.row.ltcs[2]?scope.row.ltcs[2].ltcRate:'')}}</span>
           <!------------------枚举列--------------------------->
           <span v-else-if="items.isObject">{{scope.row[items.props].name || scope.row[items.props] }}</span>
            <!----------------现供供应商----------------------------->
@@ -140,7 +140,7 @@ export default{
   inject:['vm'],
   methods:{
     getRate(row, props) {
-      const findItem = row.departmentRate?.find(item => item.rateDepart === props)
+      const findItem = row.departmentRate?.find(item => item.rateDepartNum === props)
       return findItem || {}
     },
     handleAttachmentDonwload(row) {

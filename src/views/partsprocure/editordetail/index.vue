@@ -155,7 +155,8 @@
 							</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test">
-							<iSelect :disabled='carTypeCanselect()' v-model="detailData.carTypeProjectZh" >
+							<iSelect v-model="detailData.carTypeProjectZh" >
+								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
 								</el-option>
@@ -163,7 +164,7 @@
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
-							<iSelect v-model="detailData.procureFactory"
+							<iSelect v-model="detailData.procureFactory" :disabled='procureFactoryCanselect()'
 								@change="checkFactory()"
 								>
 								<el-option :value="item.code" :label="item.name"
@@ -559,12 +560,16 @@
 				})
 			},
 			//判断采购项目来源，查看是否能选择车型项目
-			carTypeCanselect(){
-				if(this.detailData.partProjectSource == 1){
-					return true
-				}else {
-					return false
-				}
+			// carTypeCanselect(){
+			// 	if(this.detailData.partProjectSource == 1){
+			// 		return true
+			// 	}else {
+			// 		return false
+			// 	}
+			// },
+			// 判断采购项目来源，查看是否能选择采购工厂
+			procureFactoryCanselect() {
+				return this.detailData.partProjectSource == 1 || this.detailData.partProjectSource == 4
 			},
 			splitPurchFn() {
 				this.splitPurch.splitPurchBoolean = true;

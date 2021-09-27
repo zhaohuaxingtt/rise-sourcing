@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-23 13:41:01
+ * @LastEditTime: 2021-09-26 16:01:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -165,16 +165,36 @@
         </iButton>
         <iButton v-if="!disabled" disabled v-permission.atuo="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">{{ language("DAORU", "导⼊") }}</iButton>
         <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT|提交">{{ language("TIJIAO", "提交") }}</iButton>
-        <iButton v-if="!disabled" disabled v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
+        <iButton v-if="!disabled" disabled :loading="cancelLoading" @click="cancelContent" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
           {{ language("CHEHUI", "撤回") }}
           <el-tooltip 
-            :content="`${language('LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI','只针对内容撤回，如需撤回封⾯表态，请在封⾯表态中操作【撤回】')}`"
+            :content="`${language('LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI_CAOZUO','审批前，可对已提交的单据进行撤回。此处只针对内容撤回，如需撤回封面表态，请在封面表态中操作【撤回】')}`"
             placement="top">
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
           </iButton>
       </template>
       <div class="body">
+        <!-- 列隐藏显示 -->
+        <!-- <p class="flex-align-center margin-bottom20">
+          <span class="margin-right10">{{language('LK_AEKO_CONTENTDECLARE_LIEYINCANGXIANSHI','列隐藏/显示')}}:</span>
+          <iSelect
+            style="width: 200px;"
+            collapse-tags
+            multiple
+            clearable
+            v-model="addTableTitle"
+            :placeholder="language('partsprocure.CHOOSE','请选择')"
+          >
+            <el-option
+                v-for="(item,index) in showLineList || []"
+                :key="'showLineList_'+index"
+                :label="item.desc"
+                :value="item.code"
+                >
+              </el-option> 
+          </iSelect>
+        </p> -->
         <tableList
           class="table"
           index
@@ -201,7 +221,8 @@
             <span v-if="scope.row.quotationId" class="link-underline" @click="jumpQuotation(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #priceAxis="scope">
-            <span class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <!-- -disabled -->
+            <span class="link-underline" @click="showPriceAxis(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #investCarTypePro="scope">
             <iSelect
@@ -235,7 +256,10 @@
       </div>
     </iCard>
     <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" @update="init" />
+    <!-- 指定投资⻋型项⽬ -->
     <investCarTypeProDialog v-if="investCarTypeProVisible" :dialogVisible="investCarTypeProVisible" @changeVisible="changeVisible"/>
+    <!-- 价格轴 -->
+    <priceAxisDialog v-if="priceAxisVisible" :dialogVisible="priceAxisVisible" @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -243,22 +267,23 @@
 import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import dosageDialog from "../dosageDialog"
-import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
+import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle,hidenTableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck } from "@/api/aeko/detail"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, chunk, debounce } from "lodash"
 
 import investCarTypeProDialog from './components/investCarTypeProDialog' 
+import priceAxisDialog from './components/priceAxisDialog' 
 
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 
 export default {
-  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog },
+  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog },
   mixins: [ pageMixins ],
   props: {
     aekoInfo: {
@@ -294,9 +319,13 @@ export default {
       currentRow: {},
       dosageDialogVisible: false,
       investCarTypeProVisible: false,
+      priceAxisVisible: false,
       submitLoading: false,
       debouncer: null,
       declareSendSupplier:false,
+      cancelLoading:false,
+      showLineList:hidenTableTitle,
+      addTableTitle:[],
     };
   },
   created() {
@@ -781,8 +810,33 @@ export default {
     },
 
     changeVisible(type,visible){
-          this[type] = visible;
-      },
+      this[type] = visible;
+    },
+
+    // 撤回
+    async cancelContent(){
+      const { multipleSelection } = this;
+      if (!multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOCHEHUIBIAOTAIDELINGJIAN", "请选择需要撤回表态的零件"))
+      const data = multipleSelection.map((item)=>item.objectAekoPartId);
+      this.cancelLoading = true;
+      await cancelContent(data).then((res)=>{
+        this.cancelLoading = false;
+        if(res.code == 200){
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          this.init()
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch((err)=>{
+        this.cancelLoading = false;
+      })
+    },
+
+    // 查看价格轴弹窗
+    showPriceAxis(){
+      // this.priceAxisVisible = true;
+    }
+
   },
 };
 </script>

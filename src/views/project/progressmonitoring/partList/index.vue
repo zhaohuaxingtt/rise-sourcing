@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-16 16:53:58
+ * @LastEditTime: 2021-09-24 15:27:57
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -29,6 +29,13 @@
             v-loading="tableLoading"
             @handleSelectionChange="handleSelectionChange"
           >
+          <template #cartypeProject="">
+            <span>{{carProjectName}}</span>
+          </template>
+          <template #productGroup="scope">
+            <span v-if="$i18n.locale === 'zh'">{{scope.row.productGroupZh}}</span>
+            <span v-else>{{scope.row.productGroupDe}}</span>
+          </template>
           </tablelist>
         </div>
       </div>
@@ -58,6 +65,7 @@ import {
 } from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
+import {pageProProgressMonitorData} from '@/api/project/process'
 
 export default {
   mixins: [ filters, pageMixins ],
@@ -75,10 +83,11 @@ export default {
       ltcTitle: [],
       selectTableData: [],
       startLoding: false,
+      carProjectName: this.$route.query.carProjectName || ''
     }
   },
   created() {
-    // this.getFetchData()
+    this.getFetchData()
   },
   computed: {
     tableTitle() {
@@ -105,7 +114,22 @@ export default {
     // 获取定点管理列表
     async getFetchData(params = {}) {
       this.tableLoading = true
+      params = Object.assign({
+        partMonitorStatus: this.$route.query.type,
+        partStatus: 1,
+        projectId: this.$route.query.carProjectId,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }, params)
       try {
+        const res = await pageProProgressMonitorData(params)
+        if (res.code === '200') {
+          this.tableListData = res.data || []
+          this.page.totalCount = res.total || 0
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.tableLoading = false
         // 
       } catch(e) {
         this.tableLoading = false

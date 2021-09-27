@@ -26,7 +26,7 @@
     <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="40" :selectable="selectable"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column :key="$index" align="center" :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''">
+      <el-table-column :key="$index" align="center" :label="lang ? language(item.key, item.name) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row"></slot>
         </template>

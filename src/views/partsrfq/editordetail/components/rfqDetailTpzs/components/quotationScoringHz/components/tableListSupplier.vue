@@ -332,7 +332,7 @@ export default{
       if(column.label =='LC A Price' ) {
         return 'priceUnderLinePrice'
       }      
-      if(column.property =='lcBPrice' ) {
+      if(column.label =='LC B Price' ) {
         return 'priceUnderLinePrice'
       }      
 
