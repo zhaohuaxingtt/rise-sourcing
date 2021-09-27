@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-26 16:01:13
+ * @LastEditTime: 2021-09-27 12:44:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -72,7 +72,7 @@
                    :index="true"
                    @handleSelectionChange="handleSelectionChange">
         </tableList>
-        <iPagination v-update
+        <!-- <iPagination v-update
                      @size-change="handleSizeChange($event, changePage)"
                      @current-change="handleCurrentChange($event, changePage)"
                      background
@@ -80,7 +80,7 @@
                      :page-size="page.pageSize"
                      :layout="page.layout"
                      :current-page='page.currPage'
-                     :total="page.totalCount" />
+                     :total="page.totalCount" /> -->
       </div>
     </iCard>
   </div>
@@ -170,7 +170,7 @@ export default {
         }
         const params = {
           pageNo: this.page.currPage,
-          pageSize: this.page.pageSize,
+          pageSize: 50,
           categoryCode: this.$store.state.rfq.categoryCode,
           startDate: this.searchForm.date && this.searchForm.date.length > 0 ? this.searchForm.date[0] : null,
           endDate: this.searchForm.date && this.searchForm.date.length > 0 ? this.searchForm.date[1] : null,
@@ -192,13 +192,15 @@ export default {
       const operateLog = this.$route.query.operateLog ? JSON.parse(this.$route.query.operateLog) : null
       if (operateLog) {
         const fsList = operateLog.idList
+        console.log(fsList)
         let checkList = []
         this.tableListData.map((item, index) => {
           if (fsList.indexOf(item.id) > -1) {
-            checkList.push(this.tableListData.splice(index, 1)[0])
+            checkList.push(item)
             this.tableListData.splice(index, 1)
           }
         })
+        console.log(checkList,"333")
         this.tableListData = [...checkList, ...this.tableListData]
         this.$nextTick(() => {
           this.tableListData.forEach(item => {
@@ -226,7 +228,7 @@ export default {
     // 点击确定查询
     handleSubmitSearch () {
       this.page.currPage = 1
-      this.page.pageSize = 10
+      this.page.pageSize = 50
       this.selection = []
       this.getTableData().then(res => {
         if (!res || res.length == 0) {
@@ -237,7 +239,7 @@ export default {
     // 点击重置查询
     handleSearchReset () {
       this.page.currPage = 1
-      this.page.pageSize = 10
+      this.page.pageSize = 50
       this.selection = []
       this.initSearchData()
       this.getTableData()
