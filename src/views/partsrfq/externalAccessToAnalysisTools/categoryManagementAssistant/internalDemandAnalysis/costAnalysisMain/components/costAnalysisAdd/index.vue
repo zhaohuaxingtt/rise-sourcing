@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-27 15:17:03
+ * @LastEditTime: 2021-09-27 16:47:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -282,22 +282,15 @@ export default {
         console.log(fsList);
         let checkList = [];
         this.tableListData.forEach((item, index) => {
-          fsList.forEach((i) => {
-            if (item.id === i) {
-              this.tableListData.splice(item, 1);
-            }
-          });
+          if (fsList.indexOf(item.id) > -1) {
+            checkList.push(item)
+            this.tableListData.splice(item,1)
+          }
           // console.log(fsList.indexOf(item.id));
-
-          // if (fsList.indexOf(item.id) > -1) {
-          //   // checkList.push(item)
-          // }
         });
-        console.log(this.tableListData, "222");
-        // checkList.sort((a, b) => b.nomiDate.localeCompare(a.nomiDate))
-        //  console.log(checkList,"333")
-        // this.tableListData = [...checkList, ...this.tableListData]
+        this.tableListData = [...checkList, ...this.tableListData]
         this.$nextTick(() => {
+          this.tableListData.sort((a, b) => b.nomiDate.localeCompare(a.nomiDate))
           this.tableListData.forEach((item) => {
             if (fsList.indexOf(item.id) > -1) {
               this.$refs.multipleTable.$refs.dataTable.toggleRowSelection(
