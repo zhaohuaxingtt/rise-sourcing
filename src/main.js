@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-09-18 16:06:53
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-27 11:34:33
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\main.js
+ * @FilePath: \front-web\src\main.js
  */
 /* eslint-disable no-undef */
 import router from './router'
@@ -15,7 +15,7 @@ import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 import './permission'
 import Vue from "vue"
-import { iTable } from 'rise'
+import { iTable } from 'rise' 
 // import AmapVue from '@amap/amap-vue'
 
 // AmapVue.config.key = 'ad8bb27d93a0b17188e1b46872a446f8'
