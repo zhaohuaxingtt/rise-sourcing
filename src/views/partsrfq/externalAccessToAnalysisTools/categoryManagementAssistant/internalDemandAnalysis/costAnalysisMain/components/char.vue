@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 16:37:12
- * @LastEditTime: 2021-09-15 10:22:22
+ * @LastEditTime: 2021-09-24 14:26:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisHandleInput\components\char.vue
@@ -54,7 +54,6 @@ export default {
   },
   methods: {
     initCharts() {
-      console.log('left', this.left);
       let count = 0;
       let currentNum = 0;
       const renderArr = []
