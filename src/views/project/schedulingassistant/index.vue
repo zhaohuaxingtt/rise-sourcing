@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:12:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-23 17:14:10
+ * @LastEditTime: 2021-09-27 10:42:09
  * @Description: 项目管理-排程助手
  * @FilePath: \front-web\src\views\project\schedulingassistant\index.vue
 -->
@@ -37,7 +37,7 @@ export default {
     },
     navList() {
       if (this.$route.path.includes('proconfirm')) {
-        return TAB.filter(item => item.value === 2)
+        return TAB.filter(item => item.value === 2 || item.value === 3)
       }
       // eslint-disable-next-line no-undef
       return _.cloneDeep(TAB)
