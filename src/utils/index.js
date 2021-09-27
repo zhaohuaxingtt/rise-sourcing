@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-09-26 17:54:11
+ * @LastEditTime: 2021-09-27 20:23:17
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -461,4 +461,29 @@ export function fmoney(s, n) {
     '.' +
     r
   )
+}
+
+export function toThousand(num) {
+  num = (num || 0).toString();
+  let number = 0,
+      floatNum = '',
+      intNum = '';
+  // 判断是否有小数位，有则截取小数点后的数字
+  if (num.indexOf('.') > 0) {
+    number = num.indexOf('.'); // 获取小数点出现的位置
+    floatNum = num.substr(number); // 截取arr.substr(form, length)
+    intNum = num.substring(0,number); // 截取arr.substring(start, end)
+  } else {
+    intNum = num;
+  }
+  let result = [],
+      counter = 0;
+  intNum = intNum.split('');
+  // 利用3的倍数，向数组插入','
+  for (let i = intNum.length - 1; i >= 0; i--) {
+    counter++;
+    result.unshift(intNum[i]);
+    if (!(counter % 3) && i != 0) { result.unshift(','); }
+  }
+  return result.join('') + floatNum || '';
 }

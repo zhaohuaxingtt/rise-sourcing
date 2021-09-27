@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-26 19:02:25
+ * @LastEditTime: 2021-09-27 21:26:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -146,11 +146,11 @@
                                  :label="item.motorName"> </el-option>
                     </el-select>
                     <span class="margin-bottom20 productFactoryNames">{{productFactoryNames}}</span>
-                    <span class="yield">{{parseInt(fmoney(firstBarData.output))  }}</span>
+                    <span class="yield">{{toThousand(parseInt(firstBarData.output)) }}</span>
                   </div>
                   <datasetBar1 ref="datasetBar1"
                                :typeSelection="mekMotorTypeFlag"
-                               :firstBarData="firstBarData.detail"
+                               :firstBarData="firstBarData"
                                :maxWidth="maxWidth"
                                :maxData="maxData"
                                :clientHeight="clientHeight"
@@ -205,7 +205,7 @@
                     </el-popover>
                     <span class="margin-bottom20 motorName"
                           style="line-height:16px;height:16px">{{item.factory}}</span>
-                    <span class="yield margin-bottom15">{{parseInt(fmoney(item.output)) }}</span>
+                    <span class="yield margin-bottom15">{{toThousand(parseInt(item.output)) }}</span>
                     <div>
                       <el-select v-model="item.priceType"
                                  @change="changPriceType"
@@ -327,7 +327,7 @@ import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, 
 import { getDictByCode } from '@/api/dictionary'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import { uploadFile } from "@/api/file/upload";
-import { fmoney } from '@/utils/index.js'
+import { fmoney , toThousand} from '@/utils/index.js'
 export default {
   name: "mekDetails",
   components: {
@@ -435,7 +435,8 @@ export default {
       totalWidth: 0,
       clientHeight: false,
       productFactoryNames: "",
-      fmoney
+      fmoney,
+      toThousand
     };
   },
   async created () {

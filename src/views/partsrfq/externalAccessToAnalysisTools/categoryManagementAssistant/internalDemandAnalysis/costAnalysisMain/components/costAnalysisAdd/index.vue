@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-27 16:47:24
+ * @LastEditTime: 2021-09-27 19:52:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -150,6 +150,7 @@ export default {
       labelPosition: "top",
       tableTitle,
       tableListData: [],
+      tableListData1: [],
       loading: false,
       modalParam: {
         key: 0,
@@ -162,9 +163,13 @@ export default {
     // this.initTestData()
     this.initSearchData();
     this.getTableData().then((res) => {
-      this.$nextTick((_) => {
-        this.handleDefaultSelect();
-      });
+      console.log(1111)
+      if (res) {
+        this.$nextTick((_) => {
+          console.log(2222)
+          this.handleDefaultSelect();
+        });
+      }
     });
   },
   methods: {
@@ -210,14 +215,6 @@ export default {
       ];
       this.loading = false;
     },
-    // 改变分页
-    changePage() {
-      this.getTableData().then((res) => {
-        this.$nextTick((_) => {
-          this.handleDefaultSelect(res);
-        });
-      });
-    },
     // 初始化检索条件
     initSearchData() {
       const operateLog = this.$route.query.operateLog
@@ -262,9 +259,8 @@ export default {
         };
         listNomiData(params).then((res) => {
           if (res && res.code == 200) {
-            console.log(res.data)
-            this.tableListData = _.cloneDeep(res.data);
-            console.log(this.tableListData,"1111")
+            console.log(res.data);
+            this.tableListData1 = _.cloneDeep(res.data);
             this.page.totalCount = res.total;
             this.loading = false;
             resolve(_.cloneDeep(res.data));
@@ -274,6 +270,9 @@ export default {
     },
     // 处理默认选中并排序
     handleDefaultSelect() {
+      debugger
+      let dataList = _.cloneDeep(this.tableListData1);
+      console.log(this.tableListData);
       const operateLog = this.$route.query.operateLog
         ? JSON.parse(this.$route.query.operateLog)
         : null;
@@ -281,16 +280,19 @@ export default {
         const fsList = operateLog.idList;
         console.log(fsList);
         let checkList = [];
-        this.tableListData.forEach((item, index) => {
+        dataList.forEach((item, index) => {
+          
           if (fsList.indexOf(item.id) > -1) {
-            checkList.push(item)
-            this.tableListData.splice(item,1)
+            checkList.push(item);
+            this.tableListData.splice(index, 1);
           }
           // console.log(fsList.indexOf(item.id));
         });
-        this.tableListData = [...checkList, ...this.tableListData]
+        this.tableListData = [...checkList, ...this.tableListData];
         this.$nextTick(() => {
-          this.tableListData.sort((a, b) => b.nomiDate.localeCompare(a.nomiDate))
+          this.tableListData.sort((a, b) =>
+            b.nomiDate.localeCompare(a.nomiDate)
+          );
           this.tableListData.forEach((item) => {
             if (fsList.indexOf(item.id) > -1) {
               this.$refs.multipleTable.$refs.dataTable.toggleRowSelection(
