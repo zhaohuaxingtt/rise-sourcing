@@ -327,14 +327,15 @@ export default{
         return false
       }
     },
-    cellClassName({row, column, rowIndex, columnIndex}) {
-      console.log(column);
-      if(column.label =='LC A Price' ) {
-        return 'priceUnderLinePrice'
-      }      
-      if(column.label =='LC B Price' ) {
-        return 'priceUnderLinePrice'
-      }      
+    cellClassName({row, column, rowIndex, columnIndex}) { 
+      if(row.suggestFlag === 1){
+        if(column.label =='LC A Price' ) {
+          return 'priceUnderLinePrice'
+        }      
+        if(column.level === 2 && column.property.indexOf('lcBPrice')>-1) {
+          return 'priceUnderLinePrice'
+        }      
+      }
 
       
     }
