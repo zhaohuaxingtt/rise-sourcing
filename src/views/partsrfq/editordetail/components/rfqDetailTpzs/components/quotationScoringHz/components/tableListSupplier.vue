@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-09-27 12:06:28
+ * @LastEditTime: 2021-09-27 12:11:18
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -327,14 +327,15 @@ export default{
         return false
       }
     },
-    cellClassName({row, column, rowIndex, columnIndex}) {
-      console.log(column);
-      if(column.label =='LC A Price' ) {
-        return 'priceUnderLinePrice'
-      }      
-      if(column.property =='lcBPrice' ) {
-        return 'priceUnderLinePrice'
-      }      
+    cellClassName({row, column, rowIndex, columnIndex}) { 
+      if(row.suggestFlag === 1){
+        if(column.label =='LC A Price' ) {
+          return 'priceUnderLinePrice'
+        }      
+        if(column.level === 2 && column.property.indexOf('lcBPrice')>-1) {
+          return 'priceUnderLinePrice'
+        }      
+      }
 
       
     }
