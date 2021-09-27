@@ -207,7 +207,7 @@
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
 							<iSelect @change="changeUserDept" v-model="detailData.linieDept"
 								>
-								<el-option :value="item.id" :label="item.name"
+								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
