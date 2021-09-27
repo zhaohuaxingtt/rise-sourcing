@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-16 11:15:27
+ * @LastEditTime: 2021-09-26 19:02:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -46,12 +46,12 @@
       <el-row>
         <el-col :span="4">
           <iCard v-show="reportFlag"
-                 style="height:619px">
+                 style="height:670px">
             <div class=" searchForm"
                  style="margin-right:-20px">
               <el-form label-position="top"
                        :model="form"
-                       style="height:504px;margin-right:10px"
+                       style="height:564px;margin-right:10px"
                        label-width="200px">
                 <el-row class="margin-bottom20">
                   <!--对标车型-->
@@ -117,16 +117,21 @@
         </el-col>
         <el-col :span="20">
           <iCard class="margin-left20"
-                 style="height:619px">
-            <div class="chartBox1">
-              <div class="line"></div>
-              <div class="line1"></div>
-              <div class="line2"></div>
-              <div class="line3"></div>
-              <div class="line4"></div>
+                 ref="chartBox"
+                 style="height:670px">
+            <div class="chartBox1 ">
               <div class="chartBox">
-                <div class="flex chartItem"
-                     :style="{width:chartItemWidth}">
+                <div class="line"
+                     :style="{width:totalWidth}"></div>
+                <div class="line1"
+                     :style="{width:totalWidth}"></div>
+                <div class="line2"
+                     :style="{width:totalWidth}"></div>
+                <div class="line3"
+                     :style="{width:totalWidth}"></div>
+                <div class="line4"
+                     :style="{width:totalWidth}"></div>
+                <div class="flex chartItem">
                   <div class="operation1">
                     <div style="height:20px"
                          class="margin-bottom20"></div>
@@ -140,22 +145,22 @@
                                  :value="item.motorId"
                                  :label="item.motorName"> </el-option>
                     </el-select>
-                    <span class="margin-bottom20 "
-                          style="line-height:16px;height:16px">best Ball</span>
-                    <span class="yield"
-                          style="line-height:12px">{{firstBarData.output}}</span>
+                    <span class="margin-bottom20 productFactoryNames">{{productFactoryNames}}</span>
+                    <span class="yield">{{parseInt(fmoney(firstBarData.output))  }}</span>
                   </div>
                   <datasetBar1 ref="datasetBar1"
                                :typeSelection="mekMotorTypeFlag"
                                :firstBarData="firstBarData.detail"
                                :maxWidth="maxWidth"
+                               :maxData="maxData"
+                               :clientHeight="clientHeight"
                                @detailDialog="detailDialog"></datasetBar1>
                   <div class="xAxis"
                        v-if="mekMotorTypeFlag">
                     <div v-for="i in firstBarData.detail"
                          :key="i.value"
                          style="text-align:center">
-                      <div style="margin-bottom:10px">
+                      <div style="margin-bottom:5px">
                         <span class="detail"
                               @click="computeModal(firstBarData)">{{i.title}}</span>
                         <el-tooltip class="item"
@@ -170,9 +175,9 @@
                       <span @click="computeModal(firstBarData)">{{i.ebr}}</span>
                     </div>
                   </div>
+
                 </div>
                 <div class="flex chartItem"
-                     :style="{width:chartItemWidth}"
                      v-for="item in barData"
                      :key="item.motorId">
                   <div class="operation">
@@ -198,9 +203,9 @@
                       <div class="motorName"
                            slot="reference">{{item.motorName}}</div>
                     </el-popover>
-                    <span class="margin-bottom20"
+                    <span class="margin-bottom20 motorName"
                           style="line-height:16px;height:16px">{{item.factory}}</span>
-                    <span class="yield margin-bottom15">{{item.output}}</span>
+                    <span class="yield margin-bottom15">{{parseInt(fmoney(item.output)) }}</span>
                     <div>
                       <el-select v-model="item.priceType"
                                  @change="changPriceType"
@@ -214,7 +219,7 @@
                       <el-date-picker v-model="date"
                                       type="date"
                                       placeholder="选择日期"
-                                      @change="changeDate"
+                                      @change="changeDate(item.priceType)"
                                       style="width:150px;z-index:1000"
                                       v-if="item.priceType==='monthPrice'">
                       </el-date-picker>
@@ -223,14 +228,17 @@
                   <datasetBar :barData="item"
                               :maxWidth="maxWidth"
                               :typeSelection="mekMotorTypeFlag"
+                              :maxData="maxData"
+                              :clientHeight="clientHeight"
                               @detailDialog="detailDialog"></datasetBar>
                   <div class="xAxis"
                        v-if="mekMotorTypeFlag">
                     <div v-for="i in item.detail"
                          :key="i.value"
                          style="text-align:center">
-                      <div style="margin-bottom:10px">
-                        <span @click="computeModal(item)">{{i.title}}</span>
+                      <div style="margin-bottom:5px">
+                        <span class="detail"
+                              @click="computeModal(item)">{{i.title}}</span>
                         <el-tooltip class="item"
                                     effect="dark"
                                     :content="item.tips"
@@ -252,7 +260,6 @@
 
         </el-col>
       </el-row>
-
       <tableList :gridData="gridData"
                  :editFlag="editFlag"
                  :addRowList="addRowList"
@@ -320,6 +327,7 @@ import { getMekTable, getHistogram, category, getComparedMotor, getTargetMotor, 
 import { getDictByCode } from '@/api/dictionary'
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import { uploadFile } from "@/api/file/upload";
+import { fmoney } from '@/utils/index.js'
 export default {
   name: "mekDetails",
   components: {
@@ -346,7 +354,7 @@ export default {
       //时间选择
       date: "",
       //开关
-      flag1: true,
+      flag1: false,
       gridData: {},
       //保存弹窗
       dialogVisible: false,
@@ -421,7 +429,13 @@ export default {
       previewFlag: false,
       targetMotorName: "",
       mekpriceType: "",
-      reportFlag: true
+      reportFlag: true,
+      maxDataList: [],
+      maxData: "",
+      totalWidth: 0,
+      clientHeight: false,
+      productFactoryNames: "",
+      fmoney
     };
   },
   async created () {
@@ -463,6 +477,7 @@ export default {
       this.rfqId = this.$store.state.rfq.rfqId
       this.entryStatus = this.$store.state.rfq.entryStatus
       this.chemeId = this.$route.query.chemeId
+      this.productFactoryNames = this.$route.query.productFactoryNames
       await getSchemeInfo({
         schemeId: this.chemeId
       }).then(res => {
@@ -554,6 +569,7 @@ export default {
     },
     //查询  
     searchChartData () {
+      console.log(this.barData)
       let params = {
         comparedType: this.comparedType,
         info: [{
@@ -567,11 +583,16 @@ export default {
         unselected: this.exceptPart
       }
       this.ComparedMotor.forEach(item => {
-        params.info.push({
-          motorId: item,
-          priceType: 'sopPrice',
-          isTargetMotor: false
+        this.barData.forEach(i => {
+          if (item === i.motorId) {
+            params.info.push({
+              motorId: item,
+              priceType: i.priceType,
+              isTargetMotor: false
+            })
+          }
         })
+
       })
       if (this.entryStatus === 1) {
         params.isBindingRfq = true
@@ -660,10 +681,12 @@ export default {
     },
 
     changeDate () {
-      this.flag1 = true
-      this.priceType = ""
+      this.flag1 = false
+      // this.priceType = ""
     },
     saveDialog () {
+      this.analysisName = this.categoryCode + '_' + this.categoryName + '_' + this.targetMotorName + "_" + 'MEK' + '_' + window.moment(new Date()).format("yyyy.MM")
+      this.reportName = this.categoryCode + '_' + this.categoryName + '_' + this.targetMotorName + "_" + 'MEK' + '_' + window.moment(new Date()).format("yyyy.MM")
       this.dialogVisible = true
     },
     //编辑数据
@@ -701,23 +724,14 @@ export default {
       if (!this.exceptPart) {
         this.exceptPart = []
       }
-      // this.recursiveRetrieveList.forEach(item => {
-      //   val.forEach((i, index) => {
-      //     if (item.partSixNumber !== i) {
-      //       this.exceptPart.push(i)
-      //     } else {
-      //       this.exceptPart.splice(index, 1)
-      //     }
-      //   })
-      // })
       let recursiveRetrieveList = this.recursiveRetrieveList.map(item => item.partNumber)
       this.exceptPart = _.difference(recursiveRetrieveList, val)
       console.log(this.exceptPart)
     },
     //价格类型
     changPriceType (val) {
-      if (val === '2') {
-        this.flag1 = false
+      if (val === 'monthPrice') {
+        this.flag1 = true
       }
       this.mekpriceTypeList.forEach(item => {
         if (item.code === val) {
@@ -745,7 +759,7 @@ export default {
       this.barData.forEach(item => {
         let obj = {
           motorId: item.motorId,
-          priceType: val,
+          priceType: item.priceType,
           isTargetMotor: false
         }
         params.info.push(obj)
@@ -818,41 +832,70 @@ export default {
       this.getMekTable()
     },
     getHistogram (params) {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
       getHistogram(params).then(res => {
-        let data = res.data
-        let maxWidthList = []
-        if (data) {
-          data.forEach(item => {
-            maxWidthList.push(item.detail.length)
-          })
-          this.maxWidth = _.max(maxWidthList)
-          if (this.maxWidth === 1 || this.maxWidth === 0) {
-            this.chartItemWidth = '240px'
-          } else {
-            this.chartItemWidth = this.maxWidth * 120 + 'px'
-          }
-
-          this.firstBarData = data[0]
-          data.shift()
-          this.barData = data
-          this.barData.forEach(item => {
-            // item.checkList = []
-            this.$set(this.barData, 'checkList', []);
-          })
-          this.barData.forEach(item => {
-            item.detail.forEach(i => {
-              item.checkList.push(i.value)
-              // item.checkList = [...item.checkList]
+        this.$nextTick(() => {
+          loading.close();
+          let data = res.data
+          let maxWidthList = []
+          let maxList = []
+          this.totalWidth = 0
+          if (data) {
+            data.forEach(item => {
+              maxWidthList.push(item.detail.length)
+              if (item.detail.length === 1 || item.detail.length === 0) {
+                this.totalWidth = 260 * data.length
+              } else {
+                this.totalWidth += item.detail.length * 100
+              }
+              item.detail.forEach(i => {
+                maxList.push(parseInt(i.value))
+              })
             })
-          })
-          if (this.comparedType === "mekMotorType") {
-            this.mekMotorTypeFlag = true
+
+            if (this.totalWidth <= this.$refs.chartBox.$el.clientWidth) {
+              this.clientHeight = true
+            } else {
+              this.clientHeight = false
+            }
+            this.totalWidth = this.totalWidth + 200 + 'px'
+            this.maxData = _.max(maxList).toString()
+            let first = (Number(this.maxData.slice(0, 1)) + 1)
+            for (let i = 0; i < this.maxData.length - 1; i++) {
+              first += '0'
+            }
+            this.maxData = first
+            // if (this.maxWidth === 1 || this.maxWidth === 0) {
+            //   this.chartItemWidth = '300px'
+            // } else {
+            //   this.chartItemWidth = this.maxWidth * 160 + 'px'
+            // }
+            this.firstBarData = data[0]
+            data.shift()
+            this.barData = data
+            this.barData.forEach(item => {
+              item.checkList = []
+            })
+            this.barData.forEach(item => {
+              item.detail.forEach(i => {
+                item.checkList.push(i.value)
+              })
+            })
+            if (this.comparedType === "mekMotorType") {
+              this.mekMotorTypeFlag = true
+            } else {
+              this.mekMotorTypeFlag = false
+            }
           } else {
-            this.mekMotorTypeFlag = false
+            loading.close();
+            iMessage.error(res.desZh)
           }
-        } else {
-          iMessage.error(res.desZh)
-        }
+        });
       })
     },
     handleMEKInfo () {
@@ -879,9 +922,9 @@ export default {
       }
     },
     save () {
+      console.log(this.barData)
       this.analysisSave = true
-      this.analysisName = this.categoryCode + '_' + this.categoryName + '_' + this.targetMotorName + "_" + 'MEK' + '_' + window.moment(new Date()).format("yyyy.MM")
-      this.reportName = this.categoryCode + '_' + this.categoryName + '_' + this.targetMotorName + "_" + 'MEK' + '_' + window.moment(new Date()).format("yyyy.MM")
+
       if (this.analysisSave) {
         let params = {
           categoryCode: this.categoryCode,
@@ -899,13 +942,16 @@ export default {
         if (this.barData[0]) {
           params.firstComparedMotor = this.barData[0].motorId || ""
           params.firstComparedPrice = this.barData[0].priceType || ""
-        } else if (this.barData[1]) {
+        }
+        if (this.barData[1]) {
           params.secondComparedMotor = this.barData[1].motorId || ""
           params.secondComparedPrice = this.barData[1].priceType || ""
-        } else if (this.barData[2]) {
+        }
+        if (this.barData[2]) {
           params.thirdComparedMotor = this.barData[2].motorId || ""
           params.thirdComparedPrice = this.barData[2].priceType || ""
-        } else if (this.barData[3]) {
+        }
+        if (this.barData[3]) {
           params.forthComparedMotor = this.barData[3].motorId || ""
           params.forthComparedPrice = this.barData[3].priceType || ""
         }
@@ -945,14 +991,7 @@ export default {
           },
         });
       }
-
-
-
-    },
-    // handleMEKInfo () {
-    //   let vwModelCodes = [...this.ComparedMotor, this.targetMotor]
-    //   this.$router.push({ path: '/sourcing/partsrfq/mekInfoData', query: { categoryCode: this.categoryCode, vwModelCodes: JSON.stringify(vwModelCodes), chemeId: this.chemeId } })
-    // }
+    }
   }
 };
 </script>
@@ -993,6 +1032,7 @@ export default {
   margin-top: 20px;
 }
 .chartItem {
+  float: left;
   position: relative;
   // flex: 1;
   flex-direction: column;
@@ -1004,18 +1044,18 @@ export default {
   }
 }
 .operation {
+  margin-bottom: -70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: -110px;
 }
 .operation1 {
+  margin-bottom: -70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: -45px;
 }
 .title {
   font-family: Arial;
@@ -1023,7 +1063,7 @@ export default {
   color: black;
   align-items: center;
   label {
-    width: 210px;
+    width: 130px;
   }
 }
 
@@ -1032,61 +1072,71 @@ export default {
   height: 45px;
 }
 .yield {
-  width: 100px;
+  width: 120px;
   height: 35px;
+  line-height: 25px;
+  text-align: center;
   background: #eef2fb;
   opacity: 1;
+  font-size: 16px;
   border-radius: 20px;
-  padding: 9px 26px;
+  padding: 5px;
 }
 .chartBox {
+  position: relative;
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
+  // overflow-x: auto;
+  // overflow-y: hidden;
 }
 .chartBox1 {
   width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   position: relative;
+}
+.productFactoryNames {
+  font-size: 16px;
+  line-height: 16px;
+  height: 16px;
 }
 .line {
   position: absolute;
   left: 40px;
-  bottom: 13%;
+  bottom: 10%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line1 {
   position: absolute;
   left: 40px;
-  bottom: 23%;
+  bottom: 20%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line2 {
   position: absolute;
   left: 40px;
-  bottom: 33%;
+  bottom: 30%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line3 {
   position: absolute;
   left: 40px;
-  bottom: 43%;
+  bottom: 40%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line4 {
   position: absolute;
   left: 40px;
-  bottom: 55%;
+  bottom: 49%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .checkList {
@@ -1095,15 +1145,17 @@ export default {
 }
 .xAxis {
   position: absolute;
-  bottom: 2%;
-  font-size: 12px;
+  bottom: 1%;
+  font-size: 14px;
   color: "#3C4F74";
   font-family: "Arial";
   .detail:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 .motorName {
+  font-size: 16px;
   height: 32px;
 }
 ::v-deep .el-select {
@@ -1113,9 +1165,7 @@ export default {
   }
 }
 ::v-deep .el-select__tags {
-  flex-direction: column;
   justify-content: flex-start;
-  left: -16%;
 }
 </style>
 <style lang="scss">

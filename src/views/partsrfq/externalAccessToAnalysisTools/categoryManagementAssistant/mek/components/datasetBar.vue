@@ -1,25 +1,28 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-07 18:06:28
+ * @LastEditTime: 2021-09-26 19:20:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
 -->
 <template>
-  <div style="height: 460px;width:100%"
-       ref="chart"></div>
+  <div class="chart"
+       ref="chart"
+       :style="{height:(clientHeight?'440px':'460px')}"></div>
 </template>
 
 <script>
 import echarts from "@/utils/echarts";
+import { fmoney } from '@/utils/index.js'
 export default {
   data () {
     return {
       myChart: null,
       barDataItem: [],
       barxAxis: [],
-      option: {}
+      option: {},
+      fmoney
     };
   },
   props: {
@@ -36,6 +39,12 @@ export default {
         return {}
       },
     },
+    maxData: {
+      type: String
+    },
+    clientHeight: {
+      type: Boolean
+    }
   },
   watch: {
     // typeSelection (val) {
@@ -55,10 +64,15 @@ export default {
             const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
             const itemData = {
               value: item.value,
+              // value: item.value,
               label: {
                 show: true,
                 position: 'top',
-                color: "#000"
+                color: "#000",
+                formatter: (val) => {
+                  console.log(val)
+                  return this.fmoney(val.value, 2)
+                }
               },
               itemStyle: {
                 color: colorList[index]
@@ -68,7 +82,7 @@ export default {
             if (item.title == 'MIX') {
               str = item.title + "\n\n"
             } else {
-              str = item.title + "\n\n" + item.ebr
+              str = item.title + "\n\n" + item.ebr || ''
             }
             this.barDataItem.push(itemData)
             this.barxAxis.push(str)
@@ -89,10 +103,10 @@ export default {
   },
   methods: {
     initCharts () {
-      if (this.maxWidth === 1) {
-        this.$refs.chart.style.width = this.maxWidth * 240 + 'px';
+      if (this.barData.detail.length === 1) {
+        this.$refs.chart.style.width = this.barData.detail.length * 260 + 'px';
       } else {
-        this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+        this.$refs.chart.style.width = this.barData.detail.length * 100 + 'px';
       }
       // console.log(this.$refs.chart.style.width, 'number')
       // this.$refs.chart.style.minWidth = '100%';
@@ -116,10 +130,10 @@ export default {
           }
         ],
         grid: {
-          left: 0,
+          left: 30,
           right: 0,
-          bottom: '14%',
-          top: "30%"
+          bottom: '13%',
+          top: "20%"
         },
         yAxis: {
           type: "value",
@@ -129,6 +143,7 @@ export default {
           splitLine: {
             show: false
           },
+          max: this.maxData,
           axisLabel: {
             formatter: (val) => {
               return "";
@@ -162,7 +177,9 @@ export default {
       this.myChart.clear()
       this.myChart.resize();
       this.myChart.setOption(this.option);
+      this.myChart.off("click");
       this.myChart.on('click', (params) => {
+        console.log(params)
         let data = {}
         this.barData.detail.forEach(item => {
           if (item.value === params.value) {
@@ -181,4 +198,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.chart {
+  height: 460px;
+  width: 100%;
+}
+</style>

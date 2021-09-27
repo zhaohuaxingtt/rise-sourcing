@@ -1,6 +1,6 @@
 <template>
 
-  <div >
+  <div>
     <iCard>
       <div :class="{isFixed:isFixeds==true}">
         <div class="head">
@@ -70,7 +70,8 @@ export default {
       categoryCode: "",
       categoryName: "",
       savereport: true,
-      isFixeds: false
+      isFixeds: false,
+      isFirst: true
     }
   },
   components: {
@@ -106,7 +107,7 @@ export default {
   },
   methods: {
     getmarketOverview () {
-      marketOverview({ categoryCode: this.categoryCode }).then(res => {
+      marketOverview({ categoryCode: this.categoryCode, isFirst: this.isFirst }).then(res => {
         if (res.data) {
           this.SchemeId = res.data.id
           this.MarketOverviewDTO = JSON.parse(JSON.stringify(res.data.marketOverviewDTOList))
@@ -128,6 +129,7 @@ export default {
         // reportFileName: data.name,
         marketOverviewSaveDTOList: this.MarketOverviewDTO
       }).then(res => {
+        this.isFirst = false
         loading.close();
         iMessage.success("保存成功");
         this.getmarketOverview()
