@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-09-26 19:22:26
+ * @LastEditTime: 2021-09-27 21:28:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -47,12 +47,11 @@ export default {
     }
   },
   watch: {
-    firstBarData: {
+    'firstBarData.detail': {
       handler (val) {
         if (val) {
           this.barData = []
           this.barxAxis = []
-
           val.forEach((item, index) => {
             let str = ''
             const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
@@ -95,10 +94,10 @@ export default {
   },
   methods: {
     initCharts () {
-      if (this.firstBarData.length === 1) {
+      if (this.firstBarData.detail.length === 1) {
         this.$refs.chart.style.width = '260px'
       } else {
-        this.$refs.chart.style.width = this.firstBarData.length * 100 + 'px';
+        this.$refs.chart.style.width = this.firstBarData.detail.length * 100 + 'px';
       }
 
       this.myChart = echarts().init(this.$refs.chart);
@@ -214,16 +213,17 @@ export default {
       this.myChart.setOption(this.option);
       this.myChart.off("click");
       this.myChart.on('click', (params) => {
-        console.log(params)
+        console.log(params,this.firstBarData)
         let data = {}
-        this.firstBarData.forEach(item => {
+        this.firstBarData.detail.forEach(item => {
           if (item.value === params.value) {
             data.engine = item.engine
             data.transmission = item.transmission
             data.position = item.position
-            data.vwCode = this.barData.motorCode
-            data.motorId = this.barData.motorId
-            data.priceType = this.barData.priceType
+            data.vwCode = this.firstBarData.motorCode
+            data.motorId = this.firstBarData.motorId
+            data.priceType = this.firstBarData.priceType
+            data.priceDate=this.firstBarData.priceDate
           }
         })
         this.$emit('detailDialog', true, data);
