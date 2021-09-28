@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-11 14:17:10
- * @LastEditTime: 2021-08-26 20:03:34
+ * @LastEditTime: 2021-09-28 17:47:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\modalDialog.vue
@@ -19,6 +19,16 @@
                 class="table-footerStyle"
                 radio
                 @handleSelectionChange="handleSelectionChange">
+      <template slot='isCalculate'
+                slot-scope="scope">
+        <div v-if="scope.row.isCalculate==='Y'"
+             style="color:#5993FF">
+          {{scope.row.isCalculate}}
+        </div>
+        <div v-else>
+          {{scope.row.isCalculate}}
+        </div>
+      </template>
     </iTableList>
     <div slot="footer"
          class="dialog-footer">
@@ -50,6 +60,9 @@ export default {
       default: () => {
         return []
       }
+    },
+    index: {
+      type: Number
     }
   },
   watch: {
@@ -75,7 +88,9 @@ export default {
       this.selectData = val
     },
     handleSearchSure () {
-      this.$emit('selectData', this.selectData);
+      console.log(this.index)
+      this.modalVisible = false
+      this.$emit('selectData', this.selectData, this.index);
     }
   }
 }
