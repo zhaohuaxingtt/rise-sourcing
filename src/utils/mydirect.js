@@ -4,7 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
- * @LastEditTime: 2021-09-28 18:36:49
+ * @LastEditTime: 2021-09-28 18:50:33
  * @LastEditors: Please set LastEditors
 =======
  * @LastEditTime: 2021-09-26 17:28:50
@@ -298,11 +298,10 @@ function removeStyle(evt) {
     target.setAttribute('style', style)
 }
 
-Vue.directive("lazySelect", {
+Vue.directive("lazyselect", {
     bind(el, binding) {
         const dom = el.querySelector(".el-select-dropdown .el-select-dropdown__wrap")
         dom.addEventListener("scroll", function() {
-            console.log(this,this.scrollHeight,this.scrollTop,(this.scrollHeight - this.scrollTop) <= this.clientHeight);
           if ((this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
         });
     }
