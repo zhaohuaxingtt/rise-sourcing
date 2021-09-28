@@ -1,10 +1,10 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-27 19:52:20
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-28 12:42:42
+ * @LastEditors: 舒杰
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisMain\components\costAnalysisAdd\index.vue
+ * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\components\costAnalysisAdd\index.vue
 -->
 <template>
   <div>
@@ -261,6 +261,7 @@ export default {
           if (res && res.code == 200) {
             console.log(res.data);
             this.tableListData1 = _.cloneDeep(res.data);
+            console.log(this.tableListData1)
             this.page.totalCount = res.total;
             this.loading = false;
             resolve(_.cloneDeep(res.data));
@@ -270,9 +271,8 @@ export default {
     },
     // 处理默认选中并排序
     handleDefaultSelect() {
-      debugger
       let dataList = _.cloneDeep(this.tableListData1);
-      console.log(this.tableListData);
+      console.log(dataList,this.tableListData1);
       const operateLog = this.$route.query.operateLog
         ? JSON.parse(this.$route.query.operateLog)
         : null;
@@ -280,19 +280,24 @@ export default {
         const fsList = operateLog.idList;
         console.log(fsList);
         let checkList = [];
+        let checkList2=[]
         dataList.forEach((item, index) => {
           
           if (fsList.indexOf(item.id) > -1) {
             checkList.push(item);
-            this.tableListData.splice(index, 1);
+           
+          }else{
+            checkList2.push(item);
           }
-          // console.log(fsList.indexOf(item.id));
+          
         });
-        this.tableListData = [...checkList, ...this.tableListData];
-        this.$nextTick(() => {
-          this.tableListData.sort((a, b) =>
+          checkList.sort((a, b) =>
             b.nomiDate.localeCompare(a.nomiDate)
           );
+        console.log(checkList,checkList2);
+        this.tableListData = [...checkList, ...checkList2];
+        this.$nextTick(() => {
+        
           this.tableListData.forEach((item) => {
             if (fsList.indexOf(item.id) > -1) {
               this.$refs.multipleTable.$refs.dataTable.toggleRowSelection(
@@ -325,6 +330,8 @@ export default {
       this.getTableData().then((res) => {
         if (!res || res.length == 0) {
           iMessage.error(this.$t("TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR"));
+        }else{
+          this.handleDefaultSelect()
         }
       });
     },
