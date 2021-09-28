@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-28 12:42:42
+ * @LastEditTime: 2021-09-28 19:48:10
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -157,10 +157,13 @@ export default {
         visible: false,
       },
       selection: [],
+      isReset:false
     };
   },
   created() {
     // this.initTestData()
+    
+    this.operateLog = this.$route.query.operateLog? JSON.parse(this.$route.query.operateLog): null;
     this.initSearchData();
     this.getTableData().then((res) => {
       console.log(1111)
@@ -217,12 +220,15 @@ export default {
     },
     // 初始化检索条件
     initSearchData() {
-      const operateLog = this.$route.query.operateLog
-        ? JSON.parse(this.$route.query.operateLog)
-        : null;
+      // const operateLog = this.$route.query.operateLog
+      //   ? JSON.parse(this.$route.query.operateLog)
+      //   : null;
+      let operateLog=this.operateLog
+      let nomiNum=20
+      if(operateLog && operateLog.nomiNum>20)nomiNum=operateLog.nomiNum
       this.searchForm = {
         ...this.searchForm,
-        nomiNum: this.$route.query.schemeId ? operateLog.nomiNum || null : 20,
+        nomiNum: nomiNum,
         sixNum: operateLog ? operateLog.sixNum : null,
       };
       if (operateLog && operateLog.endDate && operateLog.startDate) {
@@ -259,9 +265,11 @@ export default {
         };
         listNomiData(params).then((res) => {
           if (res && res.code == 200) {
-            console.log(res.data);
+           
             this.tableListData1 = _.cloneDeep(res.data);
-            console.log(this.tableListData1)
+            if(!this.operateLog){
+              this.tableListData=this.tableListData1
+            }
             this.page.totalCount = res.total;
             this.loading = false;
             resolve(_.cloneDeep(res.data));
@@ -272,12 +280,12 @@ export default {
     // 处理默认选中并排序
     handleDefaultSelect() {
       let dataList = _.cloneDeep(this.tableListData1);
-      console.log(dataList,this.tableListData1);
+     
       const operateLog = this.$route.query.operateLog
         ? JSON.parse(this.$route.query.operateLog)
         : null;
       if (operateLog) {
-        const fsList = operateLog.idList;
+        const fsList = this.isReset?[]:operateLog.idList;
         console.log(fsList);
         let checkList = [];
         let checkList2=[]
@@ -294,7 +302,6 @@ export default {
           checkList.sort((a, b) =>
             b.nomiDate.localeCompare(a.nomiDate)
           );
-        console.log(checkList,checkList2);
         this.tableListData = [...checkList, ...checkList2];
         this.$nextTick(() => {
         
@@ -340,8 +347,22 @@ export default {
       this.page.currPage = 1;
       this.page.pageSize = 50;
       this.selection = [];
+      this.searchForm={}
+      this.isReset=true
+      if(this.operateLog){
+        this.operateLog.nomiNum=20
+      }else{
+        // this.operateLog={nomiNum:20}
+      }
+      
       this.initSearchData();
-      this.getTableData();
+      this.getTableData().then((res) => {
+        if (!res || res.length == 0) {
+          iMessage.error(this.$t("TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR"));
+        }else{
+          this.tableListData=this.tableListData1
+        }
+      });
     },
     // 点击生成
     clickCreate() {
