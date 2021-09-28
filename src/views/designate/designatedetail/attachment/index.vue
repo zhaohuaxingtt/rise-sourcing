@@ -10,7 +10,8 @@
       <!-- 附件列表 -->
       <attachment v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_ATTACHMENT|attachment" />
       <!-- RS Sheet -->
-      <rssheet v-if="showRsSheet" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSHEET|rssheet" />
+      <rssheet v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSHEET|rssheet" />
+      <!-- v-if="showRsSheet"  -->
   </div>
 </template>
 <script>

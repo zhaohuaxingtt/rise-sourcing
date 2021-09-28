@@ -13,7 +13,7 @@
                 <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_SHOW|展示">{{language('LK_ZHANSHI','展示')}}</iButton>
             </span>
             <span v-else>
-                <iButton v-if="!nominationDisabled" @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
+                <iButton v-if="!nominationDisabled && !rsDisabled" @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
             </span>
         </div>
         <div v-for="(item,index) in detailData" :key="'timeLine_'+index">
@@ -202,6 +202,7 @@ export default {
         // eslint-disable-next-line no-undef
         ...Vuex.mapState({
             nominationDisabled: state => state.nomination.nominationDisabled,
+            rsDisabled: state => state.nomination.rsDisabled,
         }),
         isPreview(){
             return this.$store.getters.isPreview;
