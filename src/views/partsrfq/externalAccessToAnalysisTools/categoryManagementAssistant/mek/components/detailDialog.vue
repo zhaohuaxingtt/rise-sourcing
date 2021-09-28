@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-25 16:06:28
- * @LastEditTime: 2021-09-27 21:36:37
+ * @LastEditTime: 2021-09-28 15:41:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\detailDialog.vue
@@ -12,7 +12,7 @@
            @close="clearDiolog">
     <div slot="title"
          class="title">
-      {{language('XUANZEJISUANCHEXING','选择计算车型')}}
+      {{detailMotorName+'-'+detailFactory}}
     </div>
     <iTableList :tableData="detailsData"
                 :tableTitle="confirmTableHead"
@@ -42,6 +42,12 @@ export default {
       default: () => {
         return []
       }
+    },
+    detailMotorName: {
+      type: String
+    },
+    detailFactory: {
+      type: String
     }
   },
   watch: {
@@ -49,6 +55,12 @@ export default {
       handler (val) {
         console.log(val)
       }
+    },
+    detailMotorName (val) {
+      console.log(val)
+    },
+    detailFactory (val) {
+      console.log(val)
     }
   },
   data () {

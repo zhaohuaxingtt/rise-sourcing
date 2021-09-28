@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-28 14:19:45
+ * @LastEditTime: 2021-09-28 15:49:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -175,12 +175,13 @@
                          :key="i.value"
                          style="text-align:center">
                       <div style="margin-bottom:5px">
+                        <span class="detail"
+                              @click="computeModal(firstBarData)">{{ i.title }}</span>
                         <el-tooltip class="item"
                                     effect="dark"
                                     :content="firstBarData.tips"
                                     placement="top-end">
-                          <span class="detail"
-                                @click="computeModal(firstBarData)">{{ i.title }}</span>
+
                           <icon name="iconzengjiacailiaochengben_lan"
                                 symbol
                                 style="width:14px;height:14px;margin-left:10px"></icon>
@@ -255,12 +256,13 @@
                          :key="i.value"
                          style="text-align:center">
                       <div style="margin-bottom:5px">
+                        <span class="detail"
+                              @click="computeModal(item)">{{i.title}}</span>
                         <el-tooltip class="item"
                                     effect="dark"
                                     :content="item.tips"
                                     placement="top-end">
-                          <span class="detail"
-                                @click="computeModal(item)">{{i.title}}</span>
+
                           <icon name="iconzengjiacailiaochengben_lan"
                                 symbol
                                 style="width:14px;height:14px;margin-left:10px"></icon>
@@ -315,6 +317,8 @@
                    :computeModalData="computeModalData"></modalDialog>
       <detailDialog :detailVisible="detailVisible"
                     :detailsData="detailsData"
+                    :detailMotorName="detailMotorName"
+                    :detailFactory="detailFactory"
                     @input="closeModalDialog1"></detailDialog>
       <preview v-if="previewFlag"
                :value="previewFlag"
@@ -475,7 +479,9 @@ export default {
       productFactoryNames: "",
       fmoney,
       toThousand,
-      loading: false
+      loading: false,
+      detailMotorName: "",
+      detailFactory: ""
     };
   },
   async created () {
@@ -715,6 +721,7 @@ export default {
     },
     //
     detailDialog (flag, val) {
+      console.log(val)
       this.detailVisible = flag;
       let params = {
         comparedType: this.comparedType,
@@ -726,6 +733,9 @@ export default {
       queryPartEbr(params).then((res) => {
         if (res.code === "200") {
           this.detailsData = res.data;
+          this.detailMotorName = val.motorName
+          this.detailFactory = val.factory
+          // console.log(this.detailMotorName, this.detailFactory)
         }
       });
       console.log(flag, val);
@@ -768,26 +778,8 @@ export default {
       this.getHistogram(params);
     },
     saveDialog () {
-      this.analysisName =
-        this.categoryCode +
-        "_" +
-        this.categoryName +
-        "_" +
-        this.targetMotorName +
-        "_" +
-        "MEK" +
-        "_" +
-        window.moment(new Date()).format("yyyy.MM");
-      this.reportName =
-        this.categoryCode +
-        "_" +
-        this.categoryName +
-        "_" +
-        this.targetMotorName +
-        "_" +
-        "MEK" +
-        "_" +
-        window.moment(new Date()).format("yyyy.MM");
+      this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
+      this.reportName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
       this.dialogVisible = true;
       this.analysisSave = true
     },
