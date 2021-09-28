@@ -140,11 +140,9 @@ export function getFilesList(params) {
     sortColumn=null,
     isAsc=true,
     fileType=1000,
-    pageNo,
-    pageSize=10,
   } = params;
   return requst({
-    url: `/file-histories/page/${hostId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
+    url: `/file-histories/file-history//${hostId}/${sortColumn}/${isAsc}/${fileType}`,
     method: 'GET',
     params,
   })
