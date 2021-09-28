@@ -9,21 +9,27 @@
   <div>
     <el-form label-position="left" label-width="50">
       <el-row type="flex" justify="space-between" align="middle">
-        <el-col :span="5">
+        <el-col :span="4">
           <el-form-item :label="language('CAILIAOZU','材料组')">
             <iSelect clearable filterable @change="getTableList" :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
               <el-option :value="item.categoryCode" :label="item.categoryName" v-for="item of formGoup.materialGroupList" :key="item.categoryCode"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="4">
           <el-form-item :label="language('CHEXING','车型')">
             <iSelect clearable filterable @change="getTableList" :placeholder="language('QXZCX','请选择车型')" v-model="form.motorId">
               <el-option :value="item.id" :label="item.modelNameZh" v-for="item of formGoup.carTypeList" :key="item.id"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="4">
+          <el-form-item :label="language('LINGJIANHAO','零件号')">
+            <iInput clearable @change="getTableList" :placeholder="language('QSRLINGJIANHAO','请输入零件号')" v-model="form.partNumber">
+            </iInput>
+          </el-form-item>
+        </el-col>
+        <el-col :span="10">
           <el-form-item>
             <div v-if="isEdit">
               <iButton @click="edit">{{language('BIANJI','编辑')}}</iButton>
@@ -153,7 +159,7 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { iButton, icon, iSelect, iPagination, iLog, iMessage } from "rise";
+import { iButton, icon, iSelect, iPagination, iLog, iMessage, iInput } from "rise";
 import addPartDialog from "./addPartDialog.vue";
 import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
@@ -164,7 +170,7 @@ import { excelExport } from "@/utils/filedowLoad";
 export default {
   // import引入的组件需要注入到对象中才能使用
   mixins: [pageMixins, resultMessageMixin],
-  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, iLog },
+  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, iLog, iInput },
   data() {
     // 这里存放数据
     return {
@@ -173,7 +179,8 @@ export default {
       changeLogDialog: false,
       form: {
         materialGroupCode: '',
-        motorId: ""
+        motorId: "",
+        partNumber: ''
       },
       formGoup: {
         materialGroupList: [],
@@ -382,7 +389,7 @@ export default {
 .el-form-item {
   display: flex;
 }
-::v-deep .el-col-12 .el-form-item {
+::v-deep .el-col-10 .el-form-item {
   display: flex;
   justify-content: flex-end;
 }
