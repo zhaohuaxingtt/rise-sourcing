@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-22 17:22:38
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-24 16:52:44
+ * @LastEditors: Hao,Jiang
 -->
 
 <template>
@@ -403,10 +403,10 @@ export default {
         // 以纵向供应商维度，每个零件都必须有报价
         const cstStatus = !data.map(dataItem => dataItem.TTo[index]).filter(p => p === 0).length
         // 取出该供应商所有零件报价的TTo
-        const wholePackageData = data.map(o => o.TTo[index])
+        const wholePackageData = data.map(o => Number(o.TTo[index]) || 0)
         cstStatus && (bestGroup[index] = {
           index,
-          data: _.sum(wholePackageData)
+          data: Number(_.sum(wholePackageData)).toFixed(2)
         })
       })
       if (!bestGroup.length) return false
@@ -442,7 +442,7 @@ export default {
       supplierTemlate.forEach((supplierName, index) => {
         // 检查该供应商是否支持汇总，这个供应商对所有零件都有报价才支持
         const cstStatus = !data.map(dataItem => dataItem.TTo[index]).filter(p => p === 0).length
-        const wholePackageData = data.map(o => o.TTo[index])
+        const wholePackageData = data.map(o => Number(o.TTo[index] || 0))
         cstStatus && (countSupplier[index] = {
           index,
           data:  _.sum(wholePackageData)
@@ -450,7 +450,7 @@ export default {
       })
       // wholePackage 排序
       countSupplier = countSupplier.sort((a, b) => a.data - b.data)
-      // console.log('countSupplier', countSupplier)
+      console.log('countSupplier', countSupplier)
       const wholePackage = Number(countSupplier[0] && countSupplier[0].data).toFixed(2) || 0
       const wholePackageIndex = (countSupplier[0] && countSupplier[0].index) || 0
       // 记录该供应商
@@ -469,6 +469,7 @@ export default {
         const groupedArray = data.filter(o => o[GroupKey] === gid)
         // 已分组，取最低TTO，
         const itemBestGroup = this.filterBestGrouper(groupedArray)
+        console.log('最低tto-group', itemBestGroup)
         if (itemBestGroup) {
           bestGroup.push(itemBestGroup)
         }
@@ -498,7 +499,7 @@ export default {
       // 记录该供应商
       supplier.push(bestGroupSupplierIndex)
       
-      // console.log('weightSupplier', weightSupplier)
+      console.log('weightSupplier', weightSupplier, unGroupedList)
 
 
       // Best TTO \n by Part
@@ -508,7 +509,7 @@ export default {
       // 求最低tto之和，遍历零件，过滤掉未报价的供应商，取报价最低的TTO求和
       data.forEach((item) => {
         const tto = item.TTo.filter(p => p > 0).sort((a,b)=>a-b)
-        minPartSupplierTToTotal += Number(tto[0])
+        minPartSupplierTToTotal += (Number(tto[0]) || 0)
       })
       let bestPartList = []
       // 记录供应商的，和供应商的tto
@@ -529,7 +530,7 @@ export default {
       bestPartList = bestPartList.sort((a,b)=>a-b)
       supplierTemlate.forEach((supplierName, index) => {
         const sup = bestPartList.filter(o => o.index === index)
-        const dataCount = _.sum(sup.map(supItem => supItem.data))
+        const dataCount = _.sum(sup.map(supItem => Number(supItem.data) || 0))
         
         if (dataCount) {
           // 记录该供应商
@@ -587,6 +588,7 @@ export default {
         isShowWeightStick,
         supplier
       }
+      console.log(res)
       return res
     }
   }
@@ -597,9 +599,12 @@ export default {
   ::v-deep .el-table {
     height: 450px;
     .supplier-tto {
-      display: block;
+      display: flex;
       width: 100%;
-      min-height:40px
+      min-height:40px;
+      align-items: center;
+      /* text-align: center; */
+      justify-content: center;
     }
   }
   ::v-deep .el-table--border {

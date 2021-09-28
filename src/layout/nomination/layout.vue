@@ -86,6 +86,7 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.$store.dispatch('setNominationDisabled', this.setDisabled({ ...res.data, designateType: this.$route.query.designateType } || {}))
+            this.$store.dispatch('setRsDisabled', res.data.rsStatus === "FROZEN")
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
@@ -95,7 +96,7 @@ export default {
         this.loading = false
       }
     },
-    setDisabled
+    setDisabled,
   },
   watch:{$route(to,from){
     console.log(to,from)
