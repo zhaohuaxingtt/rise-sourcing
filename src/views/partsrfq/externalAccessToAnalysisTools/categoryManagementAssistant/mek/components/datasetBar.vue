@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-27 21:35:07
+ * @LastEditTime: 2021-09-28 15:50:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -129,7 +129,7 @@ export default {
           }
         ],
         grid: {
-          left: 30,
+          left: 0,
           right: 0,
           bottom: '13%',
           top: "20%"

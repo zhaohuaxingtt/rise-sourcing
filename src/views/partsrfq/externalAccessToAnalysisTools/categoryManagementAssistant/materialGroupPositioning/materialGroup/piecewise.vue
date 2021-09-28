@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-09 16:45:32
- * @LastEditTime: 2021-09-27 17:39:28
+ * @LastEditTime: 2021-09-28 16:30:56
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\piecewise.vue
@@ -85,7 +85,8 @@ export default {
                value:[parseInt(data.currentPoint.riskScore),parseInt(data.currentPoint.moneyScore)],
                materialGroupName:data.currentPoint.materialGroupName,
                materialGroupCode:data.currentPoint.materialGroupCode,
-               // symbolSize:100,
+               to:data.currentPoint.money,
+               symbolSize:data.currentPoint.size,
             }
             marksData.push(currentCategory)
          }
