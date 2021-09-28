@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-09-23 15:34:04
+ * @LastEditTime: 2021-09-26 17:18:58
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -91,11 +91,19 @@ export default [
         children: [
           {
             path: "approvelist",
-            name: "progressmonitoring-monitoring",
+            name: "aekoApprove-list",
             meta: {
               title: "AEKO-审批列表",
             },
             component: () => import("@/views/aeko/approve/approveList"),
+          },
+          {
+            path: "approvelistcsf",
+            name: "aekoApprove-listcsf",
+            meta: {
+              title: "AEKO-审批列表",
+            },
+            component: () => import("@/views/aeko/approve/approveList/approveList"),
           },
         ]
       },

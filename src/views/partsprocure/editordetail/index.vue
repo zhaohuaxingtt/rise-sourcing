@@ -504,7 +504,6 @@
 				this.disabled = false
 			}
 			
-			nominateProcessType
 			this.purchaseProjectId = this.infoItem.id;
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 			this.partProjectType = this.infoItem.partProjectType;

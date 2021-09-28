@@ -233,9 +233,7 @@ export default {
         iMessage.warn(this.language('LK_QINGJIANGGUIZETIANXIEWANZHENG','请将规则填写完整'))
         return
       }
-
       this.loading = true
-    
       let fuelTypeValue  = this.rules.find(item => item.input1 === 4) === undefined ?'':this.rules.find(item => item.input1 === 4).input1
       const params = {
         fuelTypeValue,

@@ -21,7 +21,7 @@
               :value="item.value">
             </el-option>
           </iSelect>
-          <iInput v-else-if="item.type === 'input'" v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')" />
+          <iInput v-else-if="item.type === 'input'" v-model="searchParams[item.value]" :placeholder="language('QINGSHURUDUOGELINGJIANHAO', '请输入多个零件号，多个逗号分割')" />
         </el-form-item>
       </el-form>
     </iSearch>
@@ -104,7 +104,6 @@ export default {
     this.getTableList()
   },
   methods: {
-
     handleTransfer(val) {
       transferSchedule(this.selectRows.map(item => item.id), val).then(res => {
         if (res?.result) {
@@ -123,20 +122,6 @@ export default {
     },
     //列表数据选择零件状态
     handleSelectChange(val, item) {
-      // let ids= [item.id];
-      // let choosePartSort = item.partSort;
-      // let rowPartSort = "";
-      // this.oldTableData.forEach(data => {
-      //    if(data.id == item.id){
-      //      rowPartSort = data.partSort;
-      //    }
-      // })
-      // if(!this.handingPartSortStatus(rowPartSort,choosePartSort)){
-      //   item.partSort = rowPartSort;
-      //   return;
-      // }
-      // this.updatePartTask(ids,choosePartSort)
-
       //存储变更数据
       this.batchUpdataMap.set(item.id,item);
     },
@@ -197,20 +182,6 @@ export default {
         iMessage.error(this.language('QINGXUANZHELINGJIANJILUHOUPILIANGCAOZUO','请选择零件记录后批量操作！'));
         return
       }
-
-      //判断零件分类状态是否一致
-      // let partSort = this.selectRows[0].partSort;
-      // let compareParSort = false;
-      // this.selectRows.forEach(d => {
-      //   if(d.partSort !=partSort){
-      //     compareParSort = true;
-      //     return
-      //   }
-      // })
-      // if(compareParSort){
-      //   iMessage.error(this.language('QINGXUANZHELINGJIANFENGLEI','请选择同类型零件分类数据'))
-      //   return
-      // }
       this.dialogPartSort = '';
       this.dialogVisible = true;
     },
@@ -220,18 +191,10 @@ export default {
         iMessage.error(this.language('QINGXUANZHELINGJIANFENGLEI','请选择零件分类'))
         return
       }
-      // let rowsPartSort = this.selectRows[0].partSort;
-      //
-      // //判断零件状态
-      // if(!this.handingPartSortStatus(rowsPartSort,this.dialogPartSort)){
-      //   return;
-      // }
-
       //更新批量数据
       let ids = [];
       this.selectRows.forEach(d => {
         d.partSort = this.dialogPartSort;
-        // ids.push(d.id);
         //存储变更数据
         this.batchUpdataMap.set(d.id,d);
       })
@@ -240,30 +203,7 @@ export default {
       //this.updatePartTask(ids,this.dialogPartSort)
       this.dialogVisible = false;
     },
-    /**
-     * @Description: 判断选择逻辑  暂时弃用
-     * @Author: leobao
-     * @return {*}
-     */
-    handingPartSortStatus(rowsPartSort,choosePartSort){
-      //判断选择的列表数据零件分类是否为EP确认
-      if(rowsPartSort === partSortStatus.PART_TASK_NEED_EP_CONFIEMED){
-        //判断弹框选择零件分类是否为等待释放或删除
-        if(choosePartSort !== partSortStatus.PART_TASK_WAIT_RELEASE && choosePartSort !== partSortStatus.PART_TASK_WAIT_DELETE) {
-          iMessage.error(this.language('LINGJIANFENLEIPARTPORTSTATUSEP','零件分类为 【需EP确认】 只能改为 【等待释放】or【等待删除】'))
-          return false;
-        }
-        //【需MQ确认】更改为 【等待删除】or 【正常零件】
-        //判断选择的列表数据零件分类是否为需MQ确认
-      }else if(rowsPartSort === partSortStatus.PART_TASK_NEED_MQ_CONFIEMED){
-        //判断弹框选择零件分类是否为等待删除或正常零件
-        if(choosePartSort !== partSortStatus.PART_TASK_NORMAL_PARTS && choosePartSort !== partSortStatus.PART_TASK_WAIT_DELETE) {
-          iMessage.error(this.language('LINGJIANFENLEIPARTPORTSTATUSMQ','零件分类为 【需MQ确认】 只能改为 【正常零件】or【等待删除】'))
-          return false;
-        }
-      }
-      return true;
-    },
+
     /**
      * @Description: 获取下拉数据
      * @Author: leobao
@@ -276,6 +216,9 @@ export default {
       this.getDictionary('partTaskStatus', 'PART_TAKS_STATUS')
       // 异常原因
       this.getDictionary('partTaskRisePartDesc', 'PART_TAKS_RISE_PART_DESC')
+      //查询零件状态
+      this.getDictionary('partTaskPartSortQuery', 'PART_TAKS_SORT')
+
     },
     /**
      * @Description: 调取数据字典获取下拉
@@ -288,11 +231,16 @@ export default {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
           this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
-            if(optionName == 'partTaskPartSort'){
-              item.code = parseInt(item.code);
-            }
+             if(optionName == 'partTaskPartSort'){
+               item.code = parseInt(item.code);
+             }
             return { value: item.code, label: item.name }
           })
+          if(optionName == 'partTaskPartSortQuery' ){
+            this.selectOptions[optionName] = this.selectOptions[optionName].filter(item => {
+              return item.value !='5';
+            })
+          }
         }
       })
     },

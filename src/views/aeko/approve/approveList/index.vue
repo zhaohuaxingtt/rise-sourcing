@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-26 16:11:18
+ * @LastEditTime: 2021-09-27 18:07:24
  * @Description: 
 -->
 <template>
@@ -27,6 +27,7 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         :lang="true"
+        :selectable="(row, index) => {return row.unresigned}"
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
@@ -37,13 +38,13 @@
       </template>
       <template #aekoNum="scope">
         <div style="text-align:left">
-          <a class="link-underline" href="javascript:;">
+          <a class="link-underline" href="javascript:;" @click="toDetailUrl(scope.row)">
             {{scope.row.aekoNum}}
           </a>
         </div>
       </template>
-      <template #describe="">
-        <a class="link-underline" href="javascript:;">
+      <template #describe="scope">
+        <a class="link-underline" href="javascript:;" @click="toDescUrl(scope.row)">
           {{language('CHAKAN', '查看')}}
         </a>
       </template>
@@ -96,6 +97,10 @@ import {user as configUser } from '@/config'
 import {
   searchLinie,
 } from '@/api/aeko/manage'
+import {
+  getApproveDistributionPage,
+  approveDistributionSave
+} from '@/api/aeko/approve'
 
 export default {
   mixins: [pageMixins],
@@ -123,41 +128,134 @@ export default {
     this.getLinies()
   },
   methods: {
+    toDetailUrl(row) {
+      this.$router.push({name: 'aekodetail', query: {
+        from: '',
+        requirementAekoId: row.requirementAekoId
+      }})
+    },
+    toDescUrl(row) {
+      this.$router.push({name: 'aekoDescribe', query: {
+        requirementAekoId: row.requirementAekoId,
+        aekoCode: row.aekoNum
+      }})
+    },
+    /**
+     * @description: 选择
+     * @param {*} val
+     * @return {*}
+     */    
     handleSelectionChange(val) {
       this.tableSelecteData = val
     },
+    /**
+     * @description: 搜索
+     * @param {*}
+     * @return {*}
+     */    
     onSearch() {
       this.page.currPage = 1
       this.getFetchData()
     },
+    /**
+     * @description: 获取数据列表
+     * @param {*}
+     * @return {*}
+     */    
     getFetchData() {
       console.log(this.$refs.search.form)
-      this.tableListData = [
-        {
-          aekoNum: '12313',
-          isTop: true,
-          describe: '23444',
+      const form = this.$refs.search.form || {}
+      const parmas = Object.assign({
+        current: this.page.currPage,
+        size: this.page.pageSize
+      },form)
+      this.tableLoading = true
+      getApproveDistributionPage(parmas).then(res => {
+        if (res.code === '200') {
+          const tableListData = (res.data || []).map(o => {
+            o.unresigned = !o.chiefName
+            return o
+          })
+          this.tableListData = tableListData
+          this.page.totalCount = res.total
+        } else {
+          this.tableListData = []
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
-      ]
+        this.tableLoading = false
+      }).catch(e => {
+        this.tableLoading = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+      }).finally(() => {
+        this.tableLoading = false
+      })
     },
+    /**
+     * @description: 获取专业采购员列表
+     * @param {*}
+     * @return {*}
+     */    
     getLinies() {
       // LINIE
       searchLinie({tagId: configUser.LINLIE}).then((res)=>{
         const {code,data} = res;
         if(code === '200' ) {
           this.buyerNames = data.map((item)=>{
-            item.value = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-            item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-            item.lowerCaseLabel =  typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
-            return item
+            return {
+              value: this.$i18n.locale === "zh" ? item.nameZh : item.nameEn,
+              code: item.id,
+              lowerCaseLabel: typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
+            }
           });
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
       })
     },
+    /**
+     * @description: 分派
+     * @param {*}
+     * @return {*}
+     */    
     assign() {
-      
+      const selectedData = this.tableSelecteData.filter(o => o.unresigned)
+      if (!selectedData.length) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
+      // 标记是否选择csf股长
+      let state = true
+      selectedData.forEach(item => {
+        if (state && !(item.chiefNames && item.chiefNames.length)) {
+          state = false
+        }
+      })
+      if (!state) return iMessage.warn(this.language("QINGXUANZHECSFGUZHANG", "请选择CSF股长"))
+      console.log(selectedData)
+      const parmas = selectedData.map(o => {
+        const choseChiefs = o.chiefNames || []
+        const chiefName = choseChiefs.map(chiefId => {
+          const cName = this.buyerNames.find(buyer => buyer.code === chiefId) || {}
+          return {
+            id: o.id || '',
+            postId: o.postId || '',
+            chiefId,
+            chiefName:  cName.value || '',
+          }
+        })
+        return chiefName
+      })
+      console.log(parmas)
+      this.$confirm(this.language('NINQUEDINGYAOZHIXINGFENPAI','您确定要执行分派吗')).then(confirmInfo => {
+        if (confirmInfo === 'confirm') {
+          approveDistributionSave(parmas).then(res => {
+            if (res.code === '200') {
+              iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+            } else {
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          }).catch(e => {
+            iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+          })
+        }
+      })
     }
   }
 }
