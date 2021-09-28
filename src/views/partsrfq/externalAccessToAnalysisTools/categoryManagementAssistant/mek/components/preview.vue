@@ -40,7 +40,7 @@
                     <span class="margin-bottom15 "
                           style="min-height:14px">{{firstBarData.motorName}}</span>
                     <span class="yield"
-                          style="line-height:12px">{{firstBarData.output}}</span>
+                          style="line-height:12px">{{toThousand(parseInt(firstBarData.output))}}</span>
                   </div>
                   <datasetBar1 :firstBarData="firstBarData.detail"
                                :maxWidth="maxWidth"
@@ -72,7 +72,7 @@
                     </el-popover>
                     <span class="margin-bottom15"
                           style="line-height:16px;height:16px">{{item.factory}}</span>
-                    <span class="yield margin-bottom15">{{item.output}}</span>
+                    <span class="yield margin-bottom15">{{toThousand(parseInt(item.output))}}</span>
                     <div>
                       <el-select v-model="item.priceType"
                                  @change="changPriceType"
@@ -117,6 +117,7 @@ import { iPage, iButton, iCard, iSelect, icon, iDialog } from "rise";
 import datasetBar from "./datasetBar";
 import datasetBar1 from "./datasetBar1";
 import tableList from "./tableList";
+import { fmoney, toThousand } from "@/utils/index.js";
 export default {
   components: {
     iDialog,
