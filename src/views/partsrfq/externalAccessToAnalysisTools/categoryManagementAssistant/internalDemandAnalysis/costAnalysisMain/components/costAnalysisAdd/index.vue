@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-28 15:37:05
+ * @LastEditTime: 2021-09-28 18:02:23
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -347,7 +347,12 @@ export default {
       this.page.pageSize = 50;
       this.selection = [];
       this.searchForm={}
-      this.operateLog.nomiNum=20
+      if(this.operateLog){
+        this.operateLog.nomiNum=20
+      }else{
+        this.operateLog={nomiNum:20}
+      }
+      
       this.initSearchData();
       this.getTableData().then((res) => {
         if (!res || res.length == 0) {
