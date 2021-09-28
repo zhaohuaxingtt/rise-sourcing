@@ -27,7 +27,7 @@
             :tableLoading="loading"
             @handleSelectionChange="handleSelectionChange"
             :height="500"
-            >
+        >
             <!-- 附件 -->
             <template #fileName="scope">
                 <span class="link" @click="downloadSingleFile(scope.row)">{{scope.row.fileName}}</span>
