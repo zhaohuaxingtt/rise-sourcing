@@ -30,7 +30,7 @@
       >
       <iButton v-permission.auto="PARTSPROCURE_EDITORDETAIL_CHAZHAOGONGYIZUGONGYINGSHANG|查找工艺组供应商" @click="jumpBdl">{{ language('LK_CHAZHAOGONGYIZUGONGYINGSHANG','查找工艺组供应商') }}</iButton>
     </template>
-    <div class="body">
+    <div class="body" :class="{ bodyMarginTop: disabled }">
       <infos :data="info" />
       <div v-if="setMaterialGroupStatus">
         <tableList
@@ -212,5 +212,9 @@ export default {
   ::v-deep .el-loading-mask {
     z-index: 2;
   }
+}
+
+.bodyMarginTop {
+  margin-top: 20px;
 }
 </style>
