@@ -67,7 +67,7 @@ export function downloadPDF({
             doc.setPage(i)
             //doc.addImage(imgData, 'PNG', 40, 40, 75, 75);
             doc.setTextColor(150)
-            addfont(doc)
+            // addfont(doc)
             // doc.addFont('bolds', 'b', 'normal')
             // doc.setFont('b');
             doc.text('Wordmark', j, x, 45)
