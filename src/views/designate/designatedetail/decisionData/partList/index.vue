@@ -9,7 +9,7 @@
        <div class="decision-data-partList-content">
           <h1 class="flex-between-center margin-bottom20 font18">
               <span>Part List</span>
-              <div v-if="isPreview!='1' && !nominationDisabled">
+              <div v-if="isPreview!='1' && !nominationDisabled && !rsDisabled">
                   <iButton @click="goToRfq" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TOPARTLIST|跳转至零件清单添加">{{language('LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN','跳转至零件清单添加')}}</iButton>
                   <iButton :loading="saveLoading" @click="save" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
               </div>
@@ -32,7 +32,7 @@
                      <span v-if="item.props === 'ebrCalculatedValue'">{{scope.row.ebrCalculatedValue || 0}}</span>
                      <!-- 手工输入EBR值 -->
                      <span v-else-if="item.props === 'ebrConfirmValue'">
-                        <span v-if="isPreview=='1' || nominationDisabled">{{scope.row.ebrConfirmValue || 0}}</span>
+                        <span v-if="isPreview=='1' || nominationDisabled || rsDisabled">{{scope.row.ebrConfirmValue || 0}}</span>
                         <iInput v-else v-model="scope.row.ebrConfirmValue" @input="handleInputLimit($event, scope.row)" />
                      </span>
                      <span v-else>{{scope.row[item.props] || '-'}}</span>
@@ -106,6 +106,7 @@ export default {
       // eslint-disable-next-line no-undef
       ...Vuex.mapState({
          nominationDisabled: state => state.nomination.nominationDisabled,
+         rsDisabled: state => state.nomination.rsDisabled,
       }),
       isPreview(){
          return this.$store.getters.isPreview;
