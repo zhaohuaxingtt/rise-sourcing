@@ -13,7 +13,7 @@
       >
       <div class="floatright">
         <!-- 下载 -->
-        <iButton @click="downloadFile" class="btn">
+        <iButton @click="downloadFile" class="btn margin-right10">
           {{ language("strategicdoc_XiaZai",'下载') }}
         </iButton>
         <span>
@@ -22,7 +22,7 @@
           <iButton
             class="btn"
             @click="deleteFile($event, getFetchDataList)"
-            v-if="!$store.getters.isPreview"
+            v-if="!$store.getters.isPreview && !rsDisabled"
           >
             {{ language("LK_SHANCHU",'删除') }}
           </iButton>
@@ -116,6 +116,7 @@ export default {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
       nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
     }),
   },
   mounted() {
