@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-27 17:11:03
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-27 20:15:46
+ * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
 -->
@@ -269,7 +269,6 @@ export default {
     // 选中对标车型
     handleChangeCarVal(val) {
       this.filterCarValueName = val.map((item) => item.modelNameZh);
-      console.log(this.filterCarValue, "222");
       this.filterCarValueName = window._.slice(this.filterCarValueName, 0, 5);
     },
     // 获取近期操作数据
@@ -378,7 +377,15 @@ export default {
     // 重置
     reset() {
       this.selectDate = [];
-      this.filterCarValue = [];
+      let newArr = window._.clone(this.carType).splice(0, 5);
+      this.filterCarValueName = newArr.map((item, i) => item.modelNameZh);
+      this.carType.forEach((item) => {
+        this.filterCarValueName.forEach((i) => {
+          if (item.modelNameZh === i) {
+            this.filterCarValue.push(item);
+          }
+        });
+      });
       this.config.pageName = "";
       this.renderBi();
     },
@@ -418,6 +425,7 @@ export default {
       report.off("loaded");
       // Report.on will add an event handler which prints to Log window.
       report.on("loaded", () => {
+        console.log(filterArr)
         report.setFilters(filterArr);
       });
       // Report.off removes a given event handler if it exists.

@@ -67,11 +67,11 @@ export function downloadPDF({
             doc.setPage(i)
             //doc.addImage(imgData, 'PNG', 40, 40, 75, 75);
             doc.setTextColor(150)
-            addfont(doc)
-            // doc.addFont('bolds', 'b', 'normal')
-            // doc.setFont('b');
-            doc.text('Wordmark', j, x, 45)
-            // doc.text(window.moment().format('YYYY-MM-DD HH:mm:ss'), j + 13, x + 15, 45)
+            window.addfont(doc)
+            doc.addFont('bolds', 'b', 'normal')
+            doc.setFont('b');
+            doc.text(dept, j, x, 45)
+            doc.text(window.moment().format('YYYY-MM-DD HH:mm:ss'), j + 13, x + 15, 45)
           }
         }
       }
