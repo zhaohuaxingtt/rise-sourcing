@@ -1,27 +1,3 @@
-/*
- * @Author: yuszhou
- * @Date: 2021-02-19 14:29:09
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
- * @LastEditTime: 2021-09-28 18:50:33
- * @LastEditors: Please set LastEditors
-=======
- * @LastEditTime: 2021-09-26 17:28:50
- * @LastEditors: Hao,Jiang
->>>>>>> workStream1
-=======
- * @LastEditTime: 2021-09-27 12:52:37
- * @LastEditors: Please set LastEditors
->>>>>>> 6bc1e687ccbf9505a092fa42673d7c62d65f345c
-=======
- * @LastEditTime: 2021-09-28 18:05:46
- * @LastEditors: Please set LastEditors
->>>>>>> origin/workStream1
- * @Description: 自定义指令文件。
- * @FilePath: \front-web\src\utils\mydirect.js
- */
-
 import Vue from 'vue';
 import store from '../store'
 import router from '@/router'
