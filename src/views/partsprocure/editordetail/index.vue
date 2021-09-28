@@ -494,16 +494,6 @@
 		},
 		created() {
 			this.infoItem = JSON.parse(this.$route.query.item);
-			if (this.infoItem.applicationStatus || this.infoItem.nominateProcessType || this.infoItem.isPriceConsistent) {
-				this.disabled = setDisabled({
-					applicationStatus: this.infoItem.applicationStatus,
-					designateType: this.infoItem.nominateProcessType,
-					isPriceConsistent: this.infoItem.isPriceConsistent,
-				})
-			} else {
-				this.disabled = false
-			}
-			
 			this.purchaseProjectId = this.infoItem.id;
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 			this.partProjectType = this.infoItem.partProjectType;
@@ -612,6 +602,16 @@
 					this.detailData = res.data;
 					this.fsnrGsnrNum = res.data.fsnrGsnrNum
 					this.checkFactoryString = res.data.procureFactory
+
+					if (res.data.applicationStatus || res.data.nominateProcessType || res.data.isPriceConsistent) {
+						this.disabled = setDisabled({
+							applicationStatus: res.data.applicationStatus,
+							designateType: res.data.nominateProcessType,
+							isPriceConsistent: res.data.isPriceConsistent,
+						})
+					} else {
+						this.disabled = false
+					}
 					
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
