@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-03 10:35:28
- * @LastEditTime: 2021-09-28 15:37:05
+ * @LastEditTime: 2021-09-28 19:48:10
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\components\costAnalysisAdd\index.vue
@@ -157,6 +157,7 @@ export default {
         visible: false,
       },
       selection: [],
+      isReset:false
     };
   },
   created() {
@@ -284,7 +285,7 @@ export default {
         ? JSON.parse(this.$route.query.operateLog)
         : null;
       if (operateLog) {
-        const fsList = operateLog.idList;
+        const fsList = this.isReset?[]:operateLog.idList;
         console.log(fsList);
         let checkList = [];
         let checkList2=[]
@@ -347,7 +348,13 @@ export default {
       this.page.pageSize = 50;
       this.selection = [];
       this.searchForm={}
-      this.operateLog.nomiNum=20
+      this.isReset=true
+      if(this.operateLog){
+        this.operateLog.nomiNum=20
+      }else{
+        // this.operateLog={nomiNum:20}
+      }
+      
       this.initSearchData();
       this.getTableData().then((res) => {
         if (!res || res.length == 0) {
