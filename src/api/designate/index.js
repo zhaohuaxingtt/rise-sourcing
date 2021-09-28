@@ -71,7 +71,14 @@ export function checkNomiMeetingSubmit3(params) {
       params,
   })
 }
-
+// 上会类型提交之前的校验4 强校验
+export function checkNomiMeetingSubmit4(params) {
+  return requst({
+    url: "/nominate-apps/submit-check-fitting",
+    method: "GET",
+    params,
+  })
+}
 export function getMeetingPage(params) {
   return requst({
       url: "/nominate-apps/meeting-page",
