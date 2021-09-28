@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-28 15:50:00
+ * @LastEditTime: 2021-09-28 16:13:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -189,6 +189,8 @@ export default {
             data.motorId = this.barData.motorId
             data.priceType = this.barData.priceType
             data.priceDate = this.barData.priceDate
+            data.factory = this.barData.factory
+            data.motorName = this.barData.motorName
           }
         })
         this.$emit('detailDialog', true, data);
