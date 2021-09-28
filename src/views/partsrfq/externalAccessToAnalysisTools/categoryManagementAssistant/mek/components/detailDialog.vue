@@ -44,6 +44,13 @@ export default {
       }
     }
   },
+  watch: {
+    detailsData: {
+      handler (val) {
+        console.log(val)
+      }
+    }
+  },
   data () {
     return {
       confirmTableHead

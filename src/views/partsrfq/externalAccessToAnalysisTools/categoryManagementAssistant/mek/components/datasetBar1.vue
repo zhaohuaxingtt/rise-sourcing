@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-09-27 21:28:52
+ * @LastEditTime: 2021-09-28 14:17:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -213,7 +213,7 @@ export default {
       this.myChart.setOption(this.option);
       this.myChart.off("click");
       this.myChart.on('click', (params) => {
-        console.log(params,this.firstBarData)
+        console.log(params, this.firstBarData)
         let data = {}
         this.firstBarData.detail.forEach(item => {
           if (item.value === params.value) {
@@ -223,7 +223,9 @@ export default {
             data.vwCode = this.firstBarData.motorCode
             data.motorId = this.firstBarData.motorId
             data.priceType = this.firstBarData.priceType
-            data.priceDate=this.firstBarData.priceDate
+            data.priceDate = this.firstBarData.priceDate
+            data.factory = this.firstBarData.factory
+            data.motorName = this.firstBarData.motorName
           }
         })
         this.$emit('detailDialog', true, data);

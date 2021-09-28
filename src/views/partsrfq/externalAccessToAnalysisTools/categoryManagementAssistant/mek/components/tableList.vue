@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-09-27 20:37:57
+ * @LastEditTime: 2021-09-28 11:01:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -33,7 +33,7 @@
       </el-table-column>
       <el-table-column label="#"
                        prop="index"
-                       width="55">
+                       width="65">
       </el-table-column>
       <el-table-column v-for="(item,index) in gridData.title"
                        :key="index"
