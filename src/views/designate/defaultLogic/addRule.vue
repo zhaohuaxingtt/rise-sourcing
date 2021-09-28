@@ -234,7 +234,7 @@ export default {
         return
       }
       this.loading = true
-      let fuelTypeValue  = this.rules.find(item => item.input1 === 4) === undefined ?'':this.rules.find(item => item.input1 === 4).input1
+      let fuelTypeValue  = this.rules.find(item => item.input1 === 4) === undefined ?'':this.rules.find(item => item.input1 === 4).input2
       const params = {
         fuelTypeValue,
         nomiType: this.ddType,
