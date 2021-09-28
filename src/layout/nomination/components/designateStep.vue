@@ -519,7 +519,8 @@ export default {
                             const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
                                 confirmButtonText: this.language('LK_JIXU','继续'),
                                 cancelButtonText: this.language('QUXIAO','取消'),
-                                type: 'warning'
+                                type: 'warning',
+                                 dangerouslyUseHTMLString:true
                             })
                             if (confirmNextInfo !== 'confirm') {
                                 this.submitting = false

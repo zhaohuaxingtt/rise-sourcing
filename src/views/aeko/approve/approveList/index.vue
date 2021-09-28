@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-27 18:07:24
+ * @LastEditTime: 2021-09-28 13:56:04
  * @Description: 
 -->
 <template>
@@ -95,11 +95,9 @@ import {iCard, iSelect, iButton, iPagination, icon, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import {user as configUser } from '@/config'
 import {
-  searchLinie,
-} from '@/api/aeko/manage'
-import {
   getApproveDistributionPage,
-  approveDistributionSave
+  approveDistributionSave,
+  getRoleUserList
 } from '@/api/aeko/approve'
 
 export default {
@@ -125,7 +123,7 @@ export default {
   },
   mounted() {
     this.getFetchData()
-    this.getLinies()
+    this.getQQCGGZ()
   },
   methods: {
     toDetailUrl(row) {
@@ -191,13 +189,13 @@ export default {
       })
     },
     /**
-     * @description: 获取专业采购员列表
+     * @description: 获取前期采购股长列表
      * @param {*}
      * @return {*}
      */    
-    getLinies() {
-      // LINIE
-      searchLinie({tagId: configUser.LINLIE}).then((res)=>{
+    getQQCGGZ() {
+      // 前期采购股长
+      getRoleUserList({roleCode: configUser.QQCGGZ}).then((res)=>{
         const {code,data} = res;
         if(code === '200' ) {
           this.buyerNames = data.map((item)=>{
@@ -229,7 +227,7 @@ export default {
       })
       if (!state) return iMessage.warn(this.language("QINGXUANZHECSFGUZHANG", "请选择CSF股长"))
       console.log(selectedData)
-      const parmas = selectedData.map(o => {
+      let parmas = selectedData.map(o => {
         const choseChiefs = o.chiefNames || []
         const chiefName = choseChiefs.map(chiefId => {
           const cName = this.buyerNames.find(buyer => buyer.code === chiefId) || {}
@@ -242,12 +240,14 @@ export default {
         })
         return chiefName
       })
+      parmas = Array.from(new Set(parmas.flat(Infinity)))
       console.log(parmas)
       this.$confirm(this.language('NINQUEDINGYAOZHIXINGFENPAI','您确定要执行分派吗')).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
           approveDistributionSave(parmas).then(res => {
             if (res.code === '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+              this.getFetchData()
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }

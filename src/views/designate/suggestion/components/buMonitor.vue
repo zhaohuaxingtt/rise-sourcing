@@ -21,7 +21,7 @@
                 {{updateTime}}
               </span>
               
-              <div class="floatright" v-if="!readOnly && !nominationDisabled">
+              <div class="floatright" v-if="!readOnly && !nominationDisabled && !rsDisabled">
                 
                 <span class="combine" v-if="multiEditControl && !disabled">
                   <!-- 合并功能 -->
@@ -170,6 +170,7 @@ export default {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
       nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
     }),
     scenarioType() {
       return {

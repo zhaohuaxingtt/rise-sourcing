@@ -123,12 +123,15 @@ export default {
       if (isShowGroupStick) {
         this.mapControl.push(1)
       }
+      // 排序
+      this.mapControl = this.mapControl.sort()
+      // 根据实际情况生成新的下拉的数组
       const mapOptionsArray = []
       this.mapControl.forEach(key => {
         mapOptionsArray.push(this.mapOptions[key])
       })
       this.mapOptionsArray = mapOptionsArray
-      // this.mapControl = isShowWeightStick ? [] : [0, 1, 2]
+
       this.load()
     },
     load() {
@@ -214,7 +217,6 @@ export default {
                   <span class="value">${Number((wholePackage - minPartSupplierTToTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
               </div>`)
-
               params.dataIndex === 3 && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
@@ -288,6 +290,7 @@ export default {
           series
         };
         // console.log(JSON.stringify(option))
+        console.log('option', option)
         vm.clear()
         vm.setOption(option);
       })
@@ -304,6 +307,7 @@ export default {
       const wholePackage = self.data.wholePackage
       // Best TTO for Whole Package
       series.push({
+        _type: 'wholePackage',
         data: [wholePackage, '', '', ''],
         type: 'bar',
         barWidth: 30,
@@ -326,16 +330,12 @@ export default {
       // Best TTO by Group
       const bestGroupSupplier = self.data.bestGroupSupplier
       const bestGroupSupplierMin = bestGroupSupplier && bestGroupSupplier[0]
-      // const bestGroupSupplierMax = bestGroupSupplier && bestGroupSupplier[1]
       const bestGroupSupplierMinIndex = self.data.bestGroupSupplierIndex
       
-      // const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2]
-      const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[1]
-      // let totalGroupPercent = 0
-
       // console.log('----',bestGroupSupplier)
       
       series.push({
+        _type: 'bestGroupSupplierMin',
         data: ['', bestGroupSupplierMin, '', ''],
         type: 'bar',
         barWidth: 30,
@@ -360,40 +360,11 @@ export default {
         },
         itemStyle: {
           normal: {
-            barBorderRadius: Number(bestGroupSupplierTotal) === bestGroupSupplierMin ? [5, 5, 0, 0] : [0, 0, 0, 0],
+            barBorderRadius: [5, 5, 0, 0],
             color: colorPanel[bestGroupSupplierMinIndex]
           },
         }
       })
-      // if (Number(bestGroupSupplierTotal) !== bestGroupSupplierMin) {
-      //   series.push({
-      //     data: ['', bestGroupSupplierMax, '', ''],
-      //     type: 'bar',
-      //     barWidth: 30,
-      //     barMinHeight: 30,
-      //     stack: 'total',
-      //     label: {
-      //       show: true,
-      //       position: 'inside',
-      //       textStyle,
-      //       formatter: function(params) {
-      //         const fz = Number(params.data)
-      //         const fm = Number(bestGroupSupplierTotal)
-      //         // const percent = Math.floor(fz/fm*100)
-      //         const percent = 100 - totalGroupPercent
-      //         return `${params.data}\n{p|${percent.toFixed(2)}%}`
-      //       },
-      //       rich,
-      //       interval: 0
-      //     },
-      //     itemStyle: {
-      //       normal: {
-      //         barBorderRadius: [5, 5, 0, 0],
-      //         color: bgColor
-      //       },
-      //     }
-      //   })
-      // }
       // 分组最佳柱子label
       // bestGroupSupplierTotal&& (series.push({
       //   data: ['', 1, '', ''],
@@ -425,6 +396,7 @@ export default {
   
       minPartSupplierTToArray.forEach((item, index) => {
         series.push({
+          _type: 'minPartSupplier',
           data: ['', '', item.data, ''],
           type: 'bar',
           barWidth: 30,
@@ -452,13 +424,13 @@ export default {
           }
         })
       })
-      // 零件最佳柱子label
+      // 零件最佳柱子label,
       minPartSupplierTToTotal&& (series.push({
-        data: ['', '', minPartSupplierTToTotal, ''],
+        _type: 'minPartSupplierTToTotallabel',
+        data: ['', '', 0, ''],
         type: 'bar',
         barWidth: 30,
         stack: 'total',
-        _data: minPartSupplierTToTotal,
         label: {
           show: true,
           position: 'top',
@@ -468,12 +440,6 @@ export default {
           formatter: function() {
             return Number(minPartSupplierTToTotal).toFixed(2)
           }
-        },
-        itemStyle: {
-          normal: {
-            barBorderRadius: [5, 5, 0, 0],
-            color: bgColor
-          },
         }
       }))
 
@@ -483,6 +449,7 @@ export default {
       let weightPercent = 0
       weightSupplier.forEach((item, index) => {
         series.push({
+          _type: 'weightSupplier',
           data: ['', '', '', item.data],
           type: 'bar',
           barWidth: 30,
@@ -512,11 +479,11 @@ export default {
       })
       // 最后一根柱子的label
       weightSupplierTotal && (series.push({
-        data: ['', '', '', '1'],
+        _type: 'weightSupplierTotallabel',
+        data: ['', '', '', '0'],
         type: 'bar',
         barWidth: 30,
         stack: 'total',
-        _data: weightSupplierTotal,
         label: {
           show: true,
           position: 'top',
@@ -526,12 +493,6 @@ export default {
           formatter: function() {
             return Number(weightSupplierTotal).toFixed(2)
           }
-        },
-        itemStyle: {
-          normal: {
-            barBorderRadius: [0, 0, 0, 0],
-            color: '#ff0000'
-          },
         }
       }))
       
