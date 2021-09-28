@@ -2,7 +2,7 @@
   <iCard>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language('LK_GONGYINGSHANGPINGFENFUJIAN','供应商评分附件') }}</span>
-      <div class="floatright">
+      <div class="floatright" v-if="!disabled">
         <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE">
          {{ language('LK_SHANCHU','删除') }}
         </iButton>
@@ -69,6 +69,12 @@ export default {
       attachmentList: [],
       uploadAttachmentsButtonLoading: false
     };
+  },
+  inject: ["getDisabled"],
+  computed: {
+    disabled() {
+      return this.getDisabled()
+    }
   },
   created() {
     this.getTableList();

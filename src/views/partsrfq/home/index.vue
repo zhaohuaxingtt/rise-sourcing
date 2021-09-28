@@ -33,7 +33,7 @@
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item>
               <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')">
-                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.carType"
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.carTypeNum"
                          v-permission="PARTSRFQ_MODELPROJECT">
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
@@ -246,7 +246,7 @@ export default {
       diologAssignmentOfScroingTasks: false,
       form: {
         searchConditions: '',
-        carType: '',
+        carTypeNum: '',
         partType: '',
         rfqStatus: '',
         car: '',

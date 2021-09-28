@@ -7,7 +7,7 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_XUNJIACAIGOUYUANBEIZHU','询价采购员备注') }}</span>
 					</p>
-					<iInput  type="textarea" rows="8" resize="none" v-model="vmdetailData.csfMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER"></iInput>
+					<iInput :disabled="disabled" type="textarea" rows="8" resize="none" v-model="vmdetailData.csfMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER"></iInput>
 						<!-- partsprocure.PARTSPROCURETRANSFER -->
 				</div>
 
@@ -17,7 +17,7 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_LINIEBEIZHU','Linie备注') }}</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="vmdetailData.linieMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES"></iInput>
+					<iInput :disabled="disabled" type="textarea" rows="8" resize="none" v-model="vmdetailData.linieMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES"></iInput>
 				</div>
 
 
@@ -27,7 +27,7 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_AEKO_GUANLIYUANBEIZHU','aeko管理员备注') }}</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="vmdetailData.aekoManagerMemo" ></iInput>
+					<iInput :disabled="disabled" type="textarea" rows="8" resize="none" v-model="vmdetailData.aekoManagerMemo" ></iInput>
 				</div>
 
 				
@@ -36,17 +36,17 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_CS_1BEIZHU','CS*1备注') }}</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="vmdetailData.cs1Memo"  v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_CS1REMARKS"></iInput>
+					<iInput :disabled="disabled" type="textarea" rows="8" resize="none" v-model="vmdetailData.cs1Memo"  v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_CS1REMARKS"></iInput>
 				</div>
 				<!-- 保存 -->
 				<span class="save">
-					<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE">{{ language('LK_BAOCUN','保存') }}
+					<iButton v-if="!disabled" @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE">{{ language('LK_BAOCUN','保存') }}
 					</iButton>
 				</span>
 
 				<!-- AEKO管理员-保存 -->
 				<span class="save">
-					<iButton @click="save" v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE_AEKO_MANGE|保存-AEKO管理员">{{ language('LK_BAOCUN','保存') }}
+					<iButton v-if="!disabled" @click="save" v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE_AEKO_MANGE|保存-AEKO管理员">{{ language('LK_BAOCUN','保存') }}
 					</iButton>
 				</span>
 			</div>
@@ -105,7 +105,12 @@
 				isAeko:false,
 			};
 		},
-		inject:['detailData'],
+		inject:['detailData', 'getDisabled'],
+		computed: {
+			disabled() {
+				return this.getDisabled()
+			}
+		},
 		created() {
 			this.vmdetailData = this.detailData();
 		},

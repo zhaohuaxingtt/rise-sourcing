@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-26 16:01:27
+ * @LastEditTime: 2021-09-27 14:48:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -154,7 +154,7 @@
         <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE|无关相关切换">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
         <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET|表态重置">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
         <iButton v-if="!disabled" :loading="declareSendSupplier" @click="sendSupplierPrice"  v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION|发放供应商报价">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
-        <iButton v-if="!disabled" @click="goToinvestCarTypePro" disabled v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO|指定投资车型项目">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
+        <iButton v-if="!disabled" disabled @click="goToinvestCarTypePro" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO|指定投资车型项目">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
         <iButton v-if="!disabled" @click="handleExport" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT|导出">
           {{ language("DAOCHU", "导出") }}
           <el-tooltip 
@@ -165,7 +165,7 @@
         </iButton>
         <iButton v-if="!disabled" disabled v-permission.atuo="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">{{ language("DAORU", "导⼊") }}</iButton>
         <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT|提交">{{ language("TIJIAO", "提交") }}</iButton>
-        <iButton v-if="!disabled" disabled :loading="cancelLoading" @click="cancelContent" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
+        <iButton v-if="!disabled" :loading="cancelLoading" @click="cancelContent" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
           {{ language("CHEHUI", "撤回") }}
           <el-tooltip 
             :content="`${language('LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI_CAOZUO','审批前，可对已提交的单据进行撤回。此处只针对内容撤回，如需撤回封面表态，请在封面表态中操作【撤回】')}`"
@@ -185,12 +185,13 @@
             clearable
             v-model="addTableTitle"
             :placeholder="language('partsprocure.CHOOSE','请选择')"
+            @change="handleChangeTable"
           >
             <el-option
                 v-for="(item,index) in showLineList || []"
                 :key="'showLineList_'+index"
-                :label="item.desc"
-                :value="item.code"
+                :label="language(item.key,item.name)"
+                :value="item.props"
                 >
               </el-option> 
           </iSelect>
@@ -240,6 +241,10 @@
           </template>
           <template #isMtz="scope">
             <span v-if="scope.row.isMtz == 1" class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+          </template>
+          <!-- 是否待报价 -->
+          <template #isReplace="scope">
+            <span v-if="scope.row.isReplace!==null">{{scope.row.isReplace ? language('nominationLanguage.Yes','是')  : language('nominationLanguage.No','否')}}</span>
           </template>
         </tableList>
         <iPagination 
@@ -806,7 +811,7 @@ export default {
 
     // 指定车型项目弹窗展示
     goToinvestCarTypePro(){
-      this.investCarTypeProVisible = true;
+      // this.investCarTypeProVisible = true;
     },
 
     changeVisible(type,visible){
@@ -835,6 +840,16 @@ export default {
     // 查看价格轴弹窗
     showPriceAxis(){
       // this.priceAxisVisible = true;
+    },
+
+    // 显示隐藏表头
+    handleChangeTable(value=[]){
+      const arr = [];
+      value.map((item)=>{
+        const filterItem = hidenTableTitle.filter((item2)=> item2.props == item);
+        if(filterItem.length) arr.push(filterItem[0]);
+      })
+      this.tableTitle = tableTitle.concat(arr);
     }
 
   },

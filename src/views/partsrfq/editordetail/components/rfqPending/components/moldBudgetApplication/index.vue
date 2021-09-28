@@ -2,20 +2,23 @@
   <div>
     <iCard v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE">
       <div class="margin-bottom20 clearFloat">
-        <div class="floatright">
+        <div class="floatright" v-if="!disabled">
           <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">{{ language('LK_TIJIAO','提交') }}</iButton>
           <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">{{ language('LK_CHEHUI','撤回') }}</iButton>
         </div>
       </div>
-      <tablelist
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="tableLoading"
-          :index="true"
-          @handleSelectionChange="handleSelectionChange"
-          :input-props="['budget']"
-          input-type="number"
-      ></tablelist>
+      <tableList
+        index
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        @handleSelectionChange="handleSelectionChange"
+      >
+        <template #budget="scope">
+          <iInput v-model="scope.row.budget" v-if="!disabled" @input="handleInput($event, scope.row)"/>
+          <span v-else>{{ scope.row.budget }}</span>
+        </template>
+      </tableList>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
@@ -35,20 +38,22 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination, iMessage} from 'rise';
-import tablelist from 'pages/partsrfq/components/tablelist'
+import {iCard, iButton, iPagination, iMessage, iInput} from 'rise';
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getModelBudgetList, patchMouldBudget, cancelMoldBudget} from "@/api/partsrfq/editordetail";
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+import tableList from "@/views/partsign/editordetail/components/tableList"
+import { numberProcessor } from "@/utils"
 
 export default {
   components: {
     iCard,
     iButton,
     iPagination,
-    tablelist
+    tableList,
+    iInput
   },
   mixins: [pageMixins, rfqCommonFunMixins],
   data() {
@@ -61,6 +66,12 @@ export default {
   },
   created() {
     this.getTableList();
+  },
+  inject: ["getDisabled"],
+  computed: {
+    disabled() {
+      return this.getDisabled()
+    }
   },
   methods: {
     //获取表格数据
@@ -134,6 +145,9 @@ export default {
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
+    },
+    handleInput(value, row) {
+      this.$set(row, "budget", numberProcessor(value, 4))
     }
   }
 }

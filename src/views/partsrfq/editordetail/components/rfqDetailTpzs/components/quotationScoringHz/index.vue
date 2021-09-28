@@ -32,7 +32,7 @@
           </iSelect> 
         </div>            
       </div>
-      <div class="btnSearch" v-if='!disabel'>
+      <div class="btnSearch" v-if='!disabel && !disabled'>
         <iButton @click="quote" v-if='quoteShow' :loading="quoteInquiryPriceLoading">引用报价</iButton>
         <iButton @click="group"  v-if='layout == "1" && !abPrice'>组合</iButton>
         <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
@@ -120,7 +120,12 @@ export default{
     }
     }
   },
-  inject:['getbaseInfoData'],
+  inject:['getbaseInfoData', 'getDisabled'],
+  computed: {
+    disabled() {
+      return this.getDisabled === "function" ? this.getDisabled() : false
+    }
+  },
   created(){
     this.layout = this.getLayoutDetaultNumber()
     console.log(this.layout)

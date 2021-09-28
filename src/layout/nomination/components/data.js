@@ -96,3 +96,23 @@ export const svgList = {
     // 未完成
     'icondingdianguanlizhou-weiwancheng':'<svg t="1631702090376" class="icon" viewBox="0 0 128000 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="78717" width="200" height="100"><path d="M124426.24 1024a512 512 0 0 1 0-1024H127488a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 0 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.152a512 512 0 0 1 0 1024z m-4589.056 0a512 512 0 0 1 0-1024h2545.664a512 512 0 0 1 0 1024zM101478.4 1024a512 512 0 0 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 1 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024h2546.176a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 1 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024h2546.176a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2546.176a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024zM50995.2 1024a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024zM37227.52 1024a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024H12236.8a512 512 0 1 1 0 1024zM5101.568 1024a512 512 0 1 1 0-1024h2545.664a512 512 0 0 1 0 1024zM512 1024a512 512 0 1 1 0-1024h2545.152a512 512 0 1 1 0 1024z" fill="#CED4E1" p-id="78718"></path></svg>'
 }
+
+export const setDisabled = function(data) {
+    const isPriceConsistent = data.isPriceConsistent // 一次性校验
+    const applicationStatus = data.applicationStatus // 定点申请状态
+    if (!applicationStatus) return true
+
+    switch(data.designateType) {
+    case "MEETING": // 上会
+        const disabledCodes = ["FREERE", "M_CHECK_INPROCESS", "M_CHECK_FAIL", "NOMINATE"] // 冻结, M审批中, M退回, 定点
+        if (isPriceConsistent) return disabledCodes.concat(["PASS", "CHECK_INPROCESS", "CHECK_PASS", "CHECK_FAIL"]).includes(applicationStatus) // 通过一致性校验 已通过, 复核中, 复核通过, 复核未通过
+
+        return disabledCodes.includes(applicationStatus)
+    case "TRANFORM": // 流转
+        return ["FREERE", "ONFLOW", "FINISHFLOW", "NOMINATE"].includes(applicationStatus) // 冻结, 流转中, 流转完成, 定点
+    case "RECORD": // 备案
+        return ["FREERE", "NOMINATE"].includes(applicationStatus) // 冻结, 定点
+    default:
+        return true
+    }
+}

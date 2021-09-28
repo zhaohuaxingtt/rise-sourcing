@@ -55,7 +55,7 @@
         <!-- 科室linie费用table -->
         <div v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE|封面表态LINIE表_预览">
             <p class="btn-list margin-bottom20">
-                <iButton @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
+                <iButton disabled @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
             </p>
             <tableList
                 index
