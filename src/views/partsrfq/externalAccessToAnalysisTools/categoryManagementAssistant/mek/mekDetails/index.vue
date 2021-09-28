@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-28 21:28:44
+ * @LastEditTime: 2021-09-28 23:50:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -98,7 +98,6 @@
                 </el-row>
               </el-form>
             </div>
-
             <div class="end">
               <iButton type="primary"
                        style="width:100px;height:35px"
@@ -209,10 +208,10 @@
                                 class="margin-bottom20">
                       <el-checkbox-group v-model="item.checkList"
                                          class="checkList"
-                                         @change="changeCheckList">
+                                         @change="changeCheckList(ind)">
                         <el-checkbox v-for="(i, index) in item.detail"
                                      :key="index"
-                                     :label="i.value">{{ i.title }}</el-checkbox>
+                                     :label="i.title"></el-checkbox>
                       </el-checkbox-group>
                       <div class="motorName"
                            slot="reference">
@@ -272,7 +271,6 @@
                 </div>
               </div>
             </div>
-            <!-- <report :dialogVisible="true"></report> -->
           </iCard>
         </el-col>
       </el-row>
@@ -632,22 +630,31 @@ export default {
         schemeId: this.chemeId,
         unselected: this.exceptPart,
       };
-      if (this.barData && !this.delItemFlag) {
-        this.ComparedMotor.forEach((item) => {
-          this.barData.forEach((i) => {
-            if (item === i.motorId) {
-              params.info.push({
-                motorId: item,
-                priceType: i.priceType,
-                isTargetMotor: false,
-                priceDate: i.priceDate,
-                engine: i.engine || "",
-                position: i.position || "",
-                transmission: i.transmission || ""
-              });
-            }
-          });
-        });
+      let motorIdList = []
+      if (this.barData) {
+        this.barData.forEach(item => {
+          if (this.ComparedMotor.indexOf(item.motorId) > -1) {
+            params.info.push({
+              motorId: item.motorId,
+              priceType: item.priceType,
+              isTargetMotor: false,
+              priceDate: item.priceDate,
+              engine: item.engine || "",
+              position: item.position || "",
+              transmission: item.transmission || ""
+            });
+            motorIdList.push(item.motorId)
+          }
+        })
+        this.ComparedMotor.forEach(item => {
+          if (motorIdList.indexOf(item) === -1) {
+            params.info.push({
+              motorId: item,
+              priceType: 'sopPrice',
+              isTargetMotor: false,
+            });
+          }
+        })
       } else {
         this.ComparedMotor.forEach((item) => {
           params.info.push({
@@ -735,7 +742,6 @@ export default {
       });
     },
     changeComparedMotor (val) {
-      console.log(this.targetMotor, this.ComparedMotor);
       this.ComparedMotorList.forEach((item) => {
         if (item.motorId === val) {
           this.ComparedMotorCode.push(item.motorCode);
@@ -774,6 +780,7 @@ export default {
       let params = {
         comparedType: this.comparedType,
         schemeId: this.chemeId,
+        unselected: this.unselected,
         ...val,
       };
       delete params.motorName
@@ -788,8 +795,13 @@ export default {
       });
       console.log(flag, val);
     },
-    changeCheckList (val) {
-      console.log(this.barData);
+    changeCheckList (index) {
+      this.$forceUpdate();
+      this.barData[index].detail.forEach(item => {
+        if (this.barData[index].checkList.indexOf(item.title) === -1) {
+          this.barData[index].detail.splice(item, 1)
+        }
+      })
     },
     changeDate (val, index) {
       this.$forceUpdate();
@@ -1089,7 +1101,7 @@ export default {
             });
             this.barData.forEach((item) => {
               item.detail.forEach((i) => {
-                item.checkList.push(i.value);
+                item.checkList.push(i.title);
               });
             });
             console.log(this.barData, "@222");

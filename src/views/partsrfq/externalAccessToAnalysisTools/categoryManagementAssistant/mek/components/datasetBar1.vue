@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-09-28 15:51:35
+ * @LastEditTime: 2021-09-28 23:16:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -216,7 +216,7 @@ export default {
         console.log(params, this.firstBarData)
         let data = {}
         this.firstBarData.detail.forEach(item => {
-          if (item.value === params.value) {
+          if (item.title === params.name.match(/(\S*)\n/)[1]) {
             data.engine = item.engine
             data.transmission = item.transmission
             data.position = item.position
