@@ -25,8 +25,9 @@ import {
 } from "rise";
 import designateStep from './components/designateStep.vue'
 import decisionDataHeader from './components/decisionDataHeader'
-import { applyStep, setDisabled } from './components/data'
+import { applyStep } from './components/data'
 import { nominateAppSDetail } from '@/api/designate'
+import { getNominateDisabled } from "rise/web/common"
 
 export default {
   components: {
@@ -85,7 +86,7 @@ export default {
         })
         .then(res => {
           if (res.code == 200) {
-            this.$store.dispatch('setNominationDisabled', this.setDisabled({ ...res.data, designateType: this.$route.query.designateType } || {}))
+            this.$store.dispatch('setNominationDisabled', getNominateDisabled({ ...res.data, designateType: this.$route.query.designateType } || {}))
             this.$store.dispatch('setRsDisabled', res.data.rsStatus === "FROZEN")
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -96,7 +97,6 @@ export default {
         this.loading = false
       }
     },
-    setDisabled,
   },
   watch:{$route(to,from){
     console.log(to,from)
