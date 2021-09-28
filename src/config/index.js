@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-09-03 14:57:30
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-28 13:54:19
+ * @LastEditors: Hao,Jiang
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js
  */
@@ -77,7 +77,9 @@ export const user = {
   //linie
   LINLIE:4,
   //扩产能管理员
-  BKMROLETAGID:'KCNGLY'
+  BKMROLETAGID:'KCNGLY',
+  // 前期采购股长
+  QQCGGZ: 'QQCGGZ'
 }
 
 //上传文件的hostId
