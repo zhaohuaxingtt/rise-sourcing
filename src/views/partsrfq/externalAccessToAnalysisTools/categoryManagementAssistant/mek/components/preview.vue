@@ -42,7 +42,7 @@
                     <span class="yield"
                           style="line-height:12px">{{toThousand(parseInt(firstBarData.output))}}</span>
                   </div>
-                  <datasetBar1 :firstBarData="firstBarData.detail"
+                  <datasetBar1 :firstBarData="firstBarData"
                                :maxWidth="maxWidth"
                                @detailDialog="detailDialog"></datasetBar1>
                 </div>
@@ -179,10 +179,19 @@ export default {
   watch: {
     value (val) {
       console.log(val)
+    },
+    firstBarData: {
+      handler (val) {
+        console.log(val)
+      },
+      deep:true,
+      immediate:true
     }
   },
   data () {
     return {
+      toThousand,
+      fmoney
     };
   },
   mounted () {
@@ -234,7 +243,7 @@ export default {
   position: relative;
   // flex: 1;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   margin-right: 60px;
   &:last-child {
@@ -246,7 +255,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: -110px;
+  margin-bottom: -60px;
 }
 .operation1 {
   display: flex;
@@ -270,7 +279,7 @@ export default {
   height: 45px;
 }
 .yield {
-  width: 100px;
+  width: 120px;
   height: 35px;
   background: #eef2fb;
   opacity: 1;
@@ -290,7 +299,7 @@ export default {
 .line {
   position: absolute;
   left: 40px;
-  bottom: 12%;
+  bottom: 13%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -298,7 +307,7 @@ export default {
 .line1 {
   position: absolute;
   left: 40px;
-  bottom: 22%;
+  bottom: 23%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -306,7 +315,7 @@ export default {
 .line2 {
   position: absolute;
   left: 40px;
-  bottom: 32%;
+  bottom: 33%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
@@ -314,7 +323,7 @@ export default {
 .line3 {
   position: absolute;
   left: 40px;
-  bottom: 42%;
+  bottom: 43%;
   height: 2px;
   width: 100%;
   border: 1px solid #f1f1f5;
