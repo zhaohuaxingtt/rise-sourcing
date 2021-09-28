@@ -4,7 +4,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  * @LastEditTime: 2021-09-27 10:17:44
+=======
+ * @LastEditTime: 2021-09-28 18:36:49
+>>>>>>> origin/workStream1
  * @LastEditors: Please set LastEditors
 =======
  * @LastEditTime: 2021-09-26 17:28:50
@@ -300,9 +304,10 @@ function removeStyle(evt) {
 
 Vue.directive("lazySelect", {
     bind(el, binding) {
-        const dom = el.querySelector(".el-select-dropdown__wrap")
+        const dom = el.querySelector(".el-select-dropdown .el-select-dropdown__wrap")
         dom.addEventListener("scroll", function() {
-          if ((dom.scrollHeight - dom.scrollTop) <= dom.clientHeight) binding.value()
+            console.log(this,this.scrollHeight,this.scrollTop,(this.scrollHeight - this.scrollTop) <= this.clientHeight);
+          if ((this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
         });
     }
 })
