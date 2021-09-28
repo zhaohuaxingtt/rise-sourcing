@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-27 20:15:46
+ * @LastEditTime: 2021-09-28 10:52:30
  * @LastEditors: 舒杰
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
@@ -49,7 +49,9 @@
         </div>
         <div class="flex">
           <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
-          <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton @click="save" :loading="saveLoading">{{
+            language("BAOCUN", "保存")
+          }}</iButton>
           <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
         </div>
       </div>
@@ -236,6 +238,7 @@ export default {
           return time.getTime() > currentYear;
         },
       },
+      saveLoading: false, //保存loading
     };
   },
   created() {
@@ -289,21 +292,22 @@ export default {
                 }
               });
             });
-            console.log(this.filterCarValue)
+            console.log(this.filterCarValue);
             this.config.pageName = operateLog.pageName;
             this.selectDate = operateLog.selectDate;
             this.mark = operateLog.mark;
-          } else {
-            let newArr = window._.clone(this.carType).splice(0, 5);
-            this.filterCarValueName = newArr.map((item, i) => item.modelNameZh);
-            this.carType.forEach((item) => {
-              this.filterCarValueName.forEach((i) => {
-                if (item.modelNameZh === i) {
-                  this.filterCarValue.push(item);
-                }
-              });
-            });
           }
+          // else {
+          //   let newArr = window._.clone(this.carType).splice(0, 5);
+          //   this.filterCarValueName = newArr.map((item, i) => item.modelNameZh);
+          //   this.carType.forEach((item) => {
+          //     this.filterCarValueName.forEach((i) => {
+          //       if (item.modelNameZh === i) {
+          //         this.filterCarValue.push(item);
+          //       }
+          //     });
+          //   });
+          // }
         }
       });
     },
@@ -314,35 +318,41 @@ export default {
     },
     // 保存
     async save() {
-      const resFile = await this.getDownloadFileAndExportPdf({
-        domId: "carPrice",
-        pdfName:
-          "品类管理助手_车型价格对比_" +
-          this.$store.state.rfq.categoryName +
-          "_" +
-          window.moment().format("YYYY-MM-DD") +
-          "_",
-      });
-      let params = {
-        categoryCode: this.categoryCode,
-        fileType: "PDF",
-        schemeType: "CATEGORY_MANAGEMENT_CAR_TYPE",
-        reportFileName: resFile.downloadName,
-        reportName: resFile.downloadName,
-        schemeName: "",
-        reportUrl: resFile.downloadUrl,
-        operateLog: JSON.stringify({
-          mark: this.mark,
-          selectDate: this.selectDate,
-          filterCarValue: this.filterCarValueName,
-          pageName: this.config.pageName,
-        }),
-      };
-      categoryAnalysis(params).then((res) => {
-        if (res.code == "200") {
-          iMessage.success(this.language("BAOCUNCHENGGONG", "保存成功"));
-        }
-      });
+      try {
+        this.saveLoading = true;
+        const resFile = await this.getDownloadFileAndExportPdf({
+          domId: "carPrice",
+          pdfName:
+            "品类管理助手_车型价格对比_" +
+            this.$store.state.rfq.categoryName +
+            "_" +
+            window.moment().format("YYYY-MM-DD") +
+            "_",
+        });
+        let params = {
+          categoryCode: this.categoryCode,
+          fileType: "PDF",
+          schemeType: "CATEGORY_MANAGEMENT_CAR_TYPE",
+          reportFileName: resFile.downloadName,
+          reportName: resFile.downloadName,
+          schemeName: "",
+          reportUrl: resFile.downloadUrl,
+          operateLog: JSON.stringify({
+            mark: this.mark,
+            selectDate: this.selectDate,
+            filterCarValue: this.filterCarValueName,
+            pageName: this.config.pageName,
+          }),
+        };
+        categoryAnalysis(params).then((res) => {
+          this.saveLoading = false;
+          if (res.code == "200") {
+            iMessage.success(this.language("BAOCUNCHENGGONG", "保存成功"));
+          }
+        });
+      } catch (error) {
+        this.saveLoading = false;
+      }
     },
     // 打开备注弹窗
     openMark() {
@@ -377,15 +387,8 @@ export default {
     // 重置
     reset() {
       this.selectDate = [];
-      let newArr = window._.clone(this.carType).splice(0, 5);
-      this.filterCarValueName = newArr.map((item, i) => item.modelNameZh);
-      this.carType.forEach((item) => {
-        this.filterCarValueName.forEach((i) => {
-          if (item.modelNameZh === i) {
-            this.filterCarValue.push(item);
-          }
-        });
-      });
+      this.filterCarValue = [];
+      this.filterCarValueName = [];
       this.config.pageName = "";
       this.renderBi();
     },
@@ -405,12 +408,20 @@ export default {
       let filterArr = [];
       this.filter.values = [this.categoryCode];
       filterArr.push(this.filter);
-      // 如果有车型
-      if (this.filterCarValueName.length > 0) {
-        console.log(this.filterCarValueName);
-        this.filter_car.values = this.filterCarValueName;
-        filterArr.push(this.filter_car);
+      // 如果没有车型
+      if (this.filterCarValueName.length == 0) {
+        let newArr = window._.clone(this.carType).splice(0, 5);
+        this.filterCarValueName = newArr.map((item, i) => item.modelNameZh);
+        this.carType.forEach((item) => {
+          this.filterCarValueName.forEach((i) => {
+            if (item.modelNameZh === i) {
+              this.filterCarValue.push(item);
+            }
+          });
+        });
       }
+      this.filter_car.values = this.filterCarValueName;
+      filterArr.push(this.filter_car);
       if (this.selectDate.length) {
         this.filter_time_start.values = [this.selectDate[0]];
         this.filter_time_end.values = [this.selectDate[1]];
@@ -425,7 +436,7 @@ export default {
       report.off("loaded");
       // Report.on will add an event handler which prints to Log window.
       report.on("loaded", () => {
-        console.log(filterArr)
+        console.log(filterArr);
         report.setFilters(filterArr);
       });
       // Report.off removes a given event handler if it exists.
