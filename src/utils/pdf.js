@@ -2,7 +2,7 @@ import html2canvas from 'html2canvas'
 import JsPDF from 'jspdf'
 import { uploadUdFile } from '@/api/file/upload'
 import Store from '@/store'
-import { addfont } from "./font.js";
+// import { addfont } from "./font.js";
 /**
  * @param  ele          要生成 pdf 的DOM元素（容器）
  * @param  padfName     PDF文件生成后的文件名字
@@ -68,10 +68,10 @@ export function downloadPDF({
             //doc.addImage(imgData, 'PNG', 40, 40, 75, 75);
             doc.setTextColor(150)
             addfont(doc)
-            doc.addFont('bolds', 'b', 'normal')
-            doc.setFont('b');
-            doc.text(dept, j, x, 45)
-            doc.text(window.moment().format('YYYY-MM-DD HH:mm:ss'), j + 13, x + 15, 45)
+            // doc.addFont('bolds', 'b', 'normal')
+            // doc.setFont('b');
+            doc.text('Wordmark', j, x, 45)
+            // doc.text(window.moment().format('YYYY-MM-DD HH:mm:ss'), j + 13, x + 15, 45)
           }
         }
       }

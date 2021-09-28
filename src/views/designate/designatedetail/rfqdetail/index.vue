@@ -18,9 +18,9 @@
             <icon symble slot="suffix" name="iconshaixuankuangsousuo" />
           </iInput>
           <!--------------------新增按钮----------------------------------->
-          <iButton @click="addRfq" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_ADDRFQ|新增RFQ">{{language('XINZENG','新增')}}</iButton>
+          <iButton v-if="!nominationDisabled" @click="addRfq" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_ADDRFQ|新增RFQ">{{language('XINZENG','新增')}}</iButton>
           <!--------------------删除按钮----------------------------------->
-          <iButton @click="deleteRfq" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_DELETERFQ|删除RFQ">{{language('SHANCHU','删除')}}</iButton>
+          <iButton v-if="!nominationDisabled" @click="deleteRfq" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_DELETERFQ|删除RFQ">{{language('SHANCHU','删除')}}</iButton>
         </div>
       </div>
       <tableList
@@ -59,7 +59,7 @@
         <span class="font18 font-weight">{{language('LK_LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
           <!--------------------保存按钮----------------------------------->
-          <iButton @click="saveParts">{{language('BAOCUN','保存')}}</iButton>
+          <iButton v-if="!nominationDisabled" @click="saveParts">{{language('BAOCUN','保存')}}</iButton>
         </div>
       </div>
       <tableList
@@ -109,6 +109,12 @@ export default {
       attachmentTableTitle,
       attachmentLoading: false
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
   },
   created(){
     if(this.$route.query.desinateId){

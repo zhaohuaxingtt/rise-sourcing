@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-14 12:30:42
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-22 20:30:21
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -288,7 +288,9 @@ export default {
         const params = {
             rfqName: this.detailData.rfqName,
             rfqDesc: this.detailData.rfqDesc,
-            userId: this.$store.state.permission.userInfo.id
+            userId: this.$store.state.permission.userInfo.id,
+            linieId: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linie : this.detailData.linie,
+            linieName: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linieName : this.fromGroup.LINIE.find(item => item.value === this.detailData.linie)?.label || this.tableData[0].linieName,
         }
         addRfq(params).then(res => {
           if (res?.result) {

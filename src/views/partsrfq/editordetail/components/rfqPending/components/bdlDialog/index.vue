@@ -38,6 +38,9 @@
         @handleSelectionChange="handleSelectionChange"
         @handleSelect="handleSelect"
         @handleSelectAll="handleSelectAll">
+        <template #sapCode="scope">
+          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+        </template>
         <template #supplierNameZh="scope">
           <div class="flexRow">
             <span class="openLinkText cursor " @click="onJump360(scope.row)"> {{ scope.row.supplierNameZh }}

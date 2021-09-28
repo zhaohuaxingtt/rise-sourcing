@@ -140,17 +140,28 @@ export default {
         return list.length ? list[0].ltcDate : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
-       let strList = [];
-       let strFlag = false;
-       for(let i =0;i<row.length;i++){
-         if(row[i].ltcRate !='0.00'){
-            strFlag = true;
-           strList.push(row[i].ltcRate);
-         }else if(strFlag && row[i].ltcRate == '0.00'){
-           break
-         }
-       }
-       return strList.length ? strList.join('/') : '-'
+      //  let strList = [];
+      //  let strFlag = false;
+      //  for(let i =0;i<row.length;i++){
+      //    if(row[i].ltcRate !='0.00'){
+      //       strFlag = true;
+      //      strList.push(row[i].ltcRate);
+      //    }else if(strFlag && row[i].ltcRate == '0.00'){
+      //      break
+      //    }
+      //  }
+      //  return strList.length ? strList.join('/') : '-'
+
+        const ltcRateStrArr = row.map(item => item.ltcRateStr)
+
+        let i = 0
+        do {
+          i = ltcRateStrArr.length
+          if (ltcRateStrArr[0] == 0) ltcRateStrArr.shift()
+          if (ltcRateStrArr[ltcRateStrArr.length - 1] == 0) ltcRateStrArr.pop()
+        } while (i !== ltcRateStrArr.length)
+
+        return ltcRateStrArr.length ? ltcRateStrArr.join('/') : '-'
       }
     },
     handlePreviewRS() {
@@ -263,6 +274,7 @@ export default {
       this.saveLoading = true
       const params = this.tableListData.map(item => {
         return {
+          // ...item,
           supplierId: item.supplierId,
           fsnrGsnrNum: item.fsnrGsnrNum,
           nominateDetailId: item.nominateDetailId,
@@ -276,6 +288,9 @@ export default {
           investFeeIsShared: item.investFeeIsShared,
           devFee: item.devFee,
           devFeeIsShared: item.devFeeIsShared,
+          addFee: item.addFee,
+          savingFee: item.savingFee,
+          presentPrice: item.presentPrice,
           ltcs: defaultLtcs.map((ltcsItem, ltcIndex) => {
             return {
               ltcDate: item['ltcDate'+(ltcIndex+1)] ? moment(item['ltcDate'+(ltcIndex+1)]).format('yyyy-MM') : '',

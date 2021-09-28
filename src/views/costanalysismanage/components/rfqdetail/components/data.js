@@ -8,7 +8,7 @@
  */
 export const infos = [
   { row: 4, name: "RFQ编号", props: "id", key: "RFQBIANHAO" },
-  { row: 4, name: "RFQ状态", props: "currentStatus", key: "RFQZHUANGTAI" },
+  { row: 4, name: "RFQ状态", props: "statusName", key: "RFQZHUANGTAI" },
   { row: 4, name: "创建日期", props: "createDate", key: "CHUANGJIANRIQI" },
   { row: 4, name: "RFQ名称", props: "rfqName", key: "RFQMINGCHENG" },
   { row: 4, name: "询价采购员", props: "buyerName", key: "XUNJIACAIGOUYUAN" },
@@ -21,7 +21,7 @@ export const infos = [
 
 export const partListTableTitle = [
   { props: "fsnrGsnrNum", name: "FSNF/GSNF/SPNR", key: "FSNFGSNFSPNR", tooltip: true, width: 130 },
-  { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true },
+  { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true, width: 130 },
   { props: "partNameZh", name: "零件名(中)", key: "LINGJIANMINGZHONG", tooltip: true },
   { props: "partNameDe", name: "零件名(德)", key: "LINGJIANMINGDE", tooltip: true },
   { props: "procureFactory", name: "采购工厂", key: "CAIGOUGONGCHANG", tooltip: true },

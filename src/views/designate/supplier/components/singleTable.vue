@@ -36,7 +36,7 @@
           </iButton>
         </div>
         <div class="floatright" v-else>
-          <iButton @click="handlEdit" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_EDIT|单一供应商编辑按钮">
+          <iButton @click="handlEdit" v-if="!nominationDisabled" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_EDIT|单一供应商编辑按钮">
             {{ language("nominationSupplier_Edit",'编辑') }}
           </iButton>
           <iButton @click="exportSupplier" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_EXPORT|单一供应商导出按钮">
@@ -110,6 +110,9 @@
           </div>
           <span v-else>{{scope.row.department}}</span>
         </template>
+        <template #sapCode="scope">
+          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+        </template>
       </tablelist>
     <!-- 零件弹窗 -->
     <partDialog :visible.sync="partDialogVisibal" @add="onPartAdd" />
@@ -176,6 +179,12 @@ export default {
       // 记录删除的行
       deletedRowList: []
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
   },
   mounted() {
     this.getFetchDataList()

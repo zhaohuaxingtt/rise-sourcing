@@ -187,3 +187,21 @@ export function synAekoFromTCM(params) {
       params,
   })
 }
+
+// 获取TCM列表
+export function getAekoImportRecordPage(data) {
+  return requst({
+      url: '/aeko/aekoImportRecordPage',
+      method: 'POST',
+      data,
+  })
+}
+
+// TCM-手工导入
+export function manualImportAekoFromTCM(params) {
+  return requst({
+      url: '/aeko/manualImportAekoFromTCM',
+      method: 'GET',
+      params,
+  })
+}

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-25 16:06:28
- * @LastEditTime: 2021-08-26 17:14:51
+ * @LastEditTime: 2021-09-27 21:36:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\detailDialog.vue
@@ -19,6 +19,10 @@
                 :selection="false"
                 class="table-footerStyle">
     </iTableList>
+    <div slot="footer"
+         class="dialog-footer">
+      <!-- <iButton @click="handleSearchSure">{{language('QUEDING','确定')}}</iButton> -->
+    </div>
   </iDialog>
 </template>
 

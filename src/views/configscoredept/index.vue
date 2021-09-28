@@ -87,9 +87,10 @@
           <template #rateTag="scope">
             <iSelect
               v-if="editStauts"
-              v-model="scope.row.rateTag.code"
+              v-model="scope.row.rateTag"
               :placeholder="language('QINGXUANZEBUMENPINGFENLEIXING', '请选择部门评分类型')"
               class="deptScoreTypeSelect"
+              @change="handleChangeByRateTag($event, scope.row)"
             >
               <el-option
                 :value="item.value"
@@ -98,7 +99,7 @@
                 :key="item.key"
               ></el-option>
             </iSelect>
-            <span v-else>{{ scope.row.rateTag.desc }}</span>
+            <span v-else>{{ scope.row.rateTagDesc }}</span>
           </template>
           <template #rateDepartNum="scope">
             <iInput v-if="editStauts" class="deptNumSelect" :placeholder="language('QINGXUANZEBUMENBIANHAO', '请选择部门编号')" v-model="scope.row.rateDepartNum" readonly @click.native="handleSelectDeptNum(scope.row)">
@@ -240,25 +241,29 @@ export default {
     handleSelectionChange(list) {
       this.multipleSelection = list
     },
+    handleChangeByRateTag(value, row) {
+      this.$set(row, "rateTagDesc", this.scoreDeptOptions.find(item => item.value === value)?.label ?? "")
+    },
     // 查询
-    sure() {
+    async sure() {
+      await this.handleCloseEdit()
+
       this.getRfqRateDeparts()
     },
     // 重置
-    reset() {
+    async reset() {
+      await this.handleCloseEdit() 
+
       this.form = cloneDeep(queryForm)
       this.getRfqRateDeparts()
     },
     // 结束编辑
-    handleCloseEdit() {
+    async handleCloseEdit() {
       if (!isEqual(this.tableListData, this.tableListDataCache)) {
-        this.$confirm(this.language("NOSAVEISQUIT", "您还有数据更改尚未保存, 请确认是否需要退出编辑模式"))
-        .then(() => {
-          // this.tableListData = this.tableListData.filter(item => !item.isCache)
-          this.tableListData = cloneDeep(this.tableListDataCache)
-          this.editStauts = false
-        })
-        .catch(() => {})
+        await this.$confirm(this.language("NOSAVEISQUIT", "您还有数据更改尚未保存, 请确认是否需要退出编辑模式"))
+        // this.tableListData = this.tableListData.filter(item => !item.isCache)
+        this.tableListData = cloneDeep(this.tableListDataCache)
+        this.editStauts = false
       } else {
         this.editStauts = false
       }
@@ -271,7 +276,7 @@ export default {
       saveRfqRateDeparts(
         this.tableListData.map(item => ({
           ...item,
-          rateTag: item.rateTag.code
+          rateTag: item.rateTag
         }))
       )
       .then(res => {
@@ -304,9 +309,7 @@ export default {
     handleAdd() {
       this.tableListData.unshift({
         isCache: true,
-        rateTag: {
-          code: ""
-        },
+        rateTag: "",
         rateDepartNum: "",
         isCheck: ""
       })
@@ -347,6 +350,7 @@ export default {
     // 获取选择的部门编号
     selectDeptNum(data) {
       this.currentRow.rateDepartNum = data.deptNum
+      this.currentRow.deptId = data.id
       
       this.currentRow = null
     }

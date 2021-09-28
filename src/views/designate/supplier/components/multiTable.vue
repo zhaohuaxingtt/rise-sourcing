@@ -4,7 +4,7 @@
       <span class="font18 font-weight">
         {{ language("nominationSupplier_GongYingShangLieBiao",'供应商列表') }}</span
       >
-      <div class="floatright">
+      <div class="floatright" v-if="!nominationDisabled">
         <span v-if="multiEditControl">
           <iButton @click="addShow(true)" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_MULTI_ADDSHOW|供应商列表加入展示按钮">
             {{ language("nominationSupplier_JiaRuZhanShi",'加入展示') }}
@@ -61,6 +61,9 @@
     <!-- 是否展示 -->
     <template #isPresent="scope">
       <span>{{scope.row.isPresent === 1 ? language('LK_YES','是') : language('LK_NO','否') }}</span>
+    </template>
+    <template #sapCode="scope">
+      <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
     </template>
     </tablelist>
     <iPagination
@@ -120,6 +123,12 @@ export default {
       selectMultiData: [],
       submiting: false
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
   },
   mounted() {
     this.getFetchDataList()

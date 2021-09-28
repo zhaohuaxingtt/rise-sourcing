@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-09-26 16:48:50
+ * @LastEditTime: 2021-09-27 20:37:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -14,11 +14,12 @@
            v-if="!preview"
            v-show="reportFlag">
         <div v-if="!editFlag">
-          <iButton @click="addRow">新增</iButton>
-          <iButton @click="del">删除</iButton>
+         
           <iButton @click="edit">编辑</iButton>
         </div>
         <div v-else>
+          <iButton @click="addRow">新增</iButton>
+          <iButton @click="del">删除</iButton>
           <iButton @click="saveTable">保存</iButton>
           <iButton @click="cancel">取消</iButton>
         </div>
@@ -113,7 +114,7 @@ export default {
               return {
                 ...row,
                 index: index + 1,
-                editMode: false
+                editMode: this.editFlag?true:false
               }
             });
           } else {
@@ -123,7 +124,7 @@ export default {
               return {
                 ...row,
                 index: index + 1,
-                editMode: false
+                editMode: this.editFlag?true:false
               }
             });
             console.log(this.tableData)

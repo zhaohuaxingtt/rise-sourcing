@@ -14,29 +14,31 @@
           <!------------------------------------------------------------------------------->
           <!-------------------------未编辑状态下的按钮---------------------------------------->
           <!------------------------------------------------------------------------------->
-          <div class="floatright"  v-if="!isEdit">
+          <div class="floatright" v-if="!isEdit">
             <!--------------------同步按钮----------------------------------->
-            <span class="cursor tongbu" @click="synchronization" :loading="approvalSyncLoading" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ASYNC|同步"><icon symbol class="margin-right8" name='icontongbu' ></icon>{{language('LK_TONGBU','同步')}}</span>
+            <span v-if="!nominationDisabled" class="cursor tongbu" @click="synchronization" :loading="approvalSyncLoading" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ASYNC|同步"><icon symbol class="margin-right8" name='icontongbu' ></icon>{{language('LK_TONGBU','同步')}}</span>
             <!--------------------审批流按钮----------------------------------->
             <iButton @click="openAprroveFlow" v-permission.auto="SOURCING_NOMINATION_APPROVAL_SHENPILIU|审批流">{{language('SHENPILIU','审批流')}}</iButton>
             <!--------------------编辑按钮----------------------------------->
-            <iButton @click="handleEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EDIT|编辑">{{language('LK_BIANJI','编辑')}}</iButton>
+            <iButton v-if="!nominationDisabled" @click="handleEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EDIT|编辑">{{language('LK_BIANJI','编辑')}}</iButton>
             
           </div>
           <!------------------------------------------------------------------------------->
           <!-------------------------编辑状态下的按钮---------------------------------------->
           <!------------------------------------------------------------------------------->
           <div class="floatright" v-else>
-            <!--------------------新增按钮----------------------------------->
-            <iButton @click="handleAdd" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ADD|新增">{{language('LK_XINZENG','新增')}}</iButton>
-            <!--------------------删除按钮----------------------------------->
-            <iButton @click="handleDelete" v-permission.auto="SOURCING_NOMINATION_APPROVAL_DELETE|删除">{{language('LK_SHANCHU','删除')}}</iButton>
-            <!--------------------恢复按钮----------------------------------->
-            <iButton @click="handleRecover" v-permission.auto="SOURCING_NOMINATION_APPROVAL_RECOVER|恢复">{{language('LK_HUIFU','恢复')}}</iButton>
-            <!--------------------保存按钮----------------------------------->
-            <iButton @click="handleSave" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_APPROVAL_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
-            <!--------------------取消按钮----------------------------------->
-            <iButton @click="handleCancelEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EXITEDIT|结束编辑">{{language('LK_JIESHUBIANJI','结束编辑')}}</iButton>
+            <span v-if="!nominationDisabled">
+              <!--------------------新增按钮----------------------------------->
+              <iButton @click="handleAdd" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ADD|新增">{{language('LK_XINZENG','新增')}}</iButton>
+              <!--------------------删除按钮----------------------------------->
+              <iButton @click="handleDelete" v-permission.auto="SOURCING_NOMINATION_APPROVAL_DELETE|删除">{{language('LK_SHANCHU','删除')}}</iButton>
+              <!--------------------恢复按钮----------------------------------->
+              <iButton @click="handleRecover" v-permission.auto="SOURCING_NOMINATION_APPROVAL_RECOVER|恢复">{{language('LK_HUIFU','恢复')}}</iButton>
+              <!--------------------保存按钮----------------------------------->
+              <iButton @click="handleSave" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_APPROVAL_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
+              <!--------------------取消按钮----------------------------------->
+              <iButton @click="handleCancelEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EXITEDIT|结束编辑">{{language('LK_JIESHUBIANJI','结束编辑')}}</iButton>
+            </span>
           </div>
       </div>
       <tableList 
@@ -64,7 +66,7 @@ import tableList from './tableList'
 import { tableTitle } from './data'
 import { cloneDeep, omit } from 'lodash'
 import approvalFlowDialog from './approvalFlow'
-import { getApprovalNode, approvalSync, updateApprovalNode, getDept, getDeptSub } from '@/api/designate/decisiondata/approval'
+import { getApprovalNode, approvalSync, updateApprovalNode, getDept, getSubDeptListByParam, getDeptListByParam } from '@/api/designate/decisiondata/approval'
 export default {
   components: { iPage, iCard, tableList, iButton, approvalFlowDialog, icon },
   data() {
@@ -83,6 +85,10 @@ export default {
     }
   },
   computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+    }),
     tableTitle() {
       return tableTitle.map(item => {
         return {
@@ -165,7 +171,7 @@ export default {
      * @return {*}
      */    
     async getDeptList() {
-      const res = await getDept()
+      const res = await getDeptListByParam()
       if (res?.result) {
         this.parentDeptOptions = res.data.map(item => {
           return {
@@ -177,8 +183,8 @@ export default {
       }
     },
     async getDeptSubOptions(item) {
-      const res = await getDeptSub(item.approveParentDeptNum)
-      return res.data.supDeptList?.map(item => {
+      const res = await getSubDeptListByParam(item.approveParentDeptNum)
+      return res.data.map(item => {
         return {
           ...item,
           label: item.nameZh,
@@ -186,6 +192,11 @@ export default {
         }
       })
     },
+    // getApperovalList(){
+    //   getDeptListByParam().then(res=>{
+    //     console.log(res);
+    //   })
+    // },
     /**
      * @Description: 获取列表数据
      * @Author: Luoshuang

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-26 19:20:45
+ * @LastEditTime: 2021-09-27 21:35:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -70,7 +70,6 @@ export default {
                 position: 'top',
                 color: "#000",
                 formatter: (val) => {
-                  console.log(val)
                   return this.fmoney(val.value, 2)
                 }
               },
@@ -189,6 +188,7 @@ export default {
             data.vwCode = this.barData.motorCode
             data.motorId = this.barData.motorId
             data.priceType = this.barData.priceType
+            data.priceDate = this.barData.priceDate
           }
         })
         this.$emit('detailDialog', true, data);
