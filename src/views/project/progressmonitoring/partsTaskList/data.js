@@ -1,7 +1,7 @@
 
 export const searchList = [
-  {value: 'partNum', name: '零件号', key: 'LINGJIAHAO', type: 'input'},
-  {value: 'partSort', name: '零件分类', key: 'LINGJIANFENLEI', type: 'select', selectOption: 'partTaskPartSort'},
+  {value: 'partNum', name: '零件号', key: 'LINGJIAHAO', type: 'input'  },
+  {value: 'partSort', name: '零件分类', key: 'LINGJIANFENLEI', type: 'select', selectOption: 'partTaskPartSortQuery'},
   {value: 'status', name: '处理状态', key: 'CHULIZHUANGTAI', type: 'select', filterable: true, selectOption: 'partTaskStatus'},
   {value: 'risePartDesc', name: '异常原因', key: 'YICHANGYUANYING', type: 'select', filterable: true, selectOption: 'partTaskRisePartDesc'},
 ]

@@ -115,6 +115,7 @@ export default {
      * @return {*}
      */    
     handleSaveLogic(logic) {
+      this.$refs.addRuleRef.changeSaveLoading(true)
       addNominateRules(logic).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
