@@ -26,6 +26,7 @@
             :tableTitle="tableTitle"
             :tableLoading="loading"
             @handleSelectionChange="handleSelectionChange"
+            :height="500"
             >
             <!-- 附件 -->
             <template #fileName="scope">
@@ -34,7 +35,7 @@
             
         </tableList>
         <!-- 分页 -->
-        <iPagination
+        <!-- <iPagination
             class="margin-bottom20"
             @size-change="handleSizeChange($event, getList)"
             @current-change="handleCurrentChange($event, getList)"
@@ -44,7 +45,7 @@
             :layout="page.layout"
             :current-page="page.currPage"
             :total="page.totalCount" v-update
-        />
+        /> -->
   </div>
 
 </iDialog>
@@ -52,7 +53,7 @@
 
 <script>
 import {
-    iPagination,
+    // iPagination,
     iButton,
     iMessage,
     iDialog,
@@ -69,7 +70,7 @@ export default {
     name:'filesListDialog',
     mixins:[pageMixins],
     components:{
-        iPagination,
+        // iPagination,
         iButton,
         tableList,
         iDialog,
@@ -104,15 +105,15 @@ export default {
             const { itemFile,page } = this;
             const data = {
                 hostId:itemFile.requirementAekoId,
-                pageNo:page.currPage,
-                pageSize:page.pageSize,
+                // pageNo:page.currPage,
+                // pageSize:page.pageSize,
             }
             await getFilesList(data).then((res)=>{
                 this.loading = false;
                 const { code,data=[],total } = res;
                 if(code == 200){
                     this.tableListData = data;
-                    this.page.totalCount = total;
+                    // this.page.totalCount = total;
                 }
             }).catch((err)=>{
                 this.loading = false;
