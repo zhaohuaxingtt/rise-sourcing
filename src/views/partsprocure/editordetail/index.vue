@@ -416,7 +416,7 @@
 	import {filterProjectList} from '@/utils'
 	import selectOldpartsNumber from './components/selectOldpartsNumber'
 	import {cancelProject,creatFsGsNr,createNomiappBtn,createNomiappBtnAccs} from '@/components'
-	import { setDisabled } from "@/layout/nomination/components/data"
+	import { getNominateDisabled } from "rise/web/common"
 	export default {
 		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs},
 		provide:function(){
@@ -632,7 +632,7 @@
 					this.checkFactoryString = res.data.procureFactory
 
 					if (res.data.applicationStatus || res.data.nominateProcessType || res.data.isPriceConsistent) {
-						this.disabled = setDisabled({
+						this.disabled = getNominateDisabled({
 							applicationStatus: res.data.applicationStatus,
 							designateType: res.data.nominateProcessType,
 							isPriceConsistent: res.data.isPriceConsistent,
