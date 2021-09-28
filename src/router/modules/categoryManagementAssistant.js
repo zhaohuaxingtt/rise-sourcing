@@ -14,6 +14,7 @@
 export default [{
   path: "/sourcing",
   name: "categoryManagementAssistant",
+  meta: { title: "寻源" },
   component: () => import("@/layout/default"),
   children: [
     {
