@@ -163,6 +163,7 @@ import { getTabelData} from "@/api/partsprocure/home";
 import { pageMixins } from "@/utils/pageMixins";
 import { tableTitle,form } from "@/views/partsprocure/home/components/data";
 import { setDisabled } from "@/layout/nomination/components/data"
+import { getRfqInfo } from "@/api/costanalysismanage/rfqdetail"
 export default {
   components: {
     iButton,
@@ -208,6 +209,7 @@ export default {
   created() {
     this.getBaseInfo()
     this.getTableList()
+    this.getRfqInfo()
   },
   provide: function(){
     return {
@@ -284,6 +286,21 @@ export default {
       } else {
         this.editStatus = true
       }
+    },
+    getRfqInfo() {
+      this.baseInfoLoading = true
+
+      getRfqInfo({
+        rfqId: this.$route.query.id
+      })
+      .then(res => {
+        if (res.code == 200) {
+          
+        } else {
+          iMessage.error(this.language("HUOQURFQDINGDIANXINXISHIBAI", "获取RFQ定点信息失败"))
+        }
+      })
+      .finally(() => this.baseInfoLoading = false)
     },
     changeNav(target) {
       this.navActivtyValue = target.index

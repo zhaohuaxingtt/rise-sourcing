@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-09-26 17:18:58
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-28 10:34:07
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -71,6 +71,16 @@ export default [
             title: 'AEKO描述'
         },
         component: () => import("@/views/aeko/describe"),
+      },
+      
+      // AEKO零件清单
+      {
+        path: "partslist",
+          name: "aekoPartslist",
+          meta: {
+              title: 'AEKO零件清单'
+          },
+          component: () => import ("@/views/aeko/partslist")
       },
       {
         path: "quotationdetail",
