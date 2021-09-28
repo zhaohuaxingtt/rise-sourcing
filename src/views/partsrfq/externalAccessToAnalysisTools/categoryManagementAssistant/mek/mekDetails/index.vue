@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-27 23:59:27
+ * @LastEditTime: 2021-09-28 00:10:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -1041,7 +1041,6 @@ export default {
             this.barData = data;
             this.barData.forEach((item) => {
               item.checkList = [];
-              item.priceDate = "";
             });
             this.barData.forEach((item) => {
               item.detail.forEach((i) => {
