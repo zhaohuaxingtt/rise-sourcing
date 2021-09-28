@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-09-26 17:28:50
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-09-28 18:05:46
+ * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \front-web\src\utils\mydirect.js
  */
@@ -287,7 +287,7 @@ Vue.directive("lazySelect", {
     bind(el, binding) {
         const dom = el.querySelector(".el-select-dropdown__wrap")
         dom.addEventListener("scroll", function() {
-          if ((this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
+          if ((dom.scrollHeight - dom.scrollTop) <= dom.clientHeight) binding.value()
         });
     }
 })
