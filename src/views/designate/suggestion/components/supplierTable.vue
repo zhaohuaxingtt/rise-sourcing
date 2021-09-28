@@ -2,7 +2,7 @@
   <iCard class="supplierTable singleSupplier">
       <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
-          <span v-if="!nominationDisabled">
+          <span v-if="!nominationDisabled && !rsDisabled">
             <!-- 批量编辑 -->
             <iButton @click="handleBatchEdit">
               {{ language("LK_BATCHEDIT",'批量编辑') }}
@@ -49,7 +49,7 @@
         </template>
         <!-- 供应商名 -->
         <template #supplierName="scope">
-          <div v-if="!onlyTable && !nominationDisabled">
+          <div v-if="!onlyTable && !nominationDisabled && !rsDisabled">
             <iSelect
               v-model="scope.row.supplierName"
               @focus="getRfqDepartment(scope.row)"
@@ -67,7 +67,7 @@
         </template>
         <!-- 比例 -->
         <template #ratio="scope">
-          <div v-if="!onlyTable && !nominationDisabled">
+          <div v-if="!onlyTable && !nominationDisabled && !rsDisabled">
             <iInput v-model="scope.row.ratio" :placeholder="language('LK_QINGSHURU','请输入')" />
             <!-- <iSelect
               v-model="scope.row.ratio"
@@ -193,6 +193,7 @@ export default {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
       nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
     }),
     // 检查选中的条目是否可以被删除
     checkCanbeDelete() {

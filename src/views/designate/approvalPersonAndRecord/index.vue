@@ -16,18 +16,18 @@
           <!------------------------------------------------------------------------------->
           <div class="floatright" v-if="!isEdit">
             <!--------------------同步按钮----------------------------------->
-            <span v-if="!nominationDisabled" class="cursor tongbu" @click="synchronization" :loading="approvalSyncLoading" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ASYNC|同步"><icon symbol class="margin-right8" name='icontongbu' ></icon>{{language('LK_TONGBU','同步')}}</span>
+            <span v-if="!nominationDisabled && !rsDisabled" class="cursor tongbu" @click="synchronization" :loading="approvalSyncLoading" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ASYNC|同步"><icon symbol class="margin-right8" name='icontongbu' ></icon>{{language('LK_TONGBU','同步')}}</span>
             <!--------------------审批流按钮----------------------------------->
             <iButton @click="openAprroveFlow" v-permission.auto="SOURCING_NOMINATION_APPROVAL_SHENPILIU|审批流">{{language('SHENPILIU','审批流')}}</iButton>
             <!--------------------编辑按钮----------------------------------->
-            <iButton v-if="!nominationDisabled" @click="handleEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EDIT|编辑">{{language('LK_BIANJI','编辑')}}</iButton>
+            <iButton v-if="!nominationDisabled && !rsDisabled" @click="handleEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EDIT|编辑">{{language('LK_BIANJI','编辑')}}</iButton>
             
           </div>
           <!------------------------------------------------------------------------------->
           <!-------------------------编辑状态下的按钮---------------------------------------->
           <!------------------------------------------------------------------------------->
           <div class="floatright" v-else>
-            <span v-if="!nominationDisabled">
+            <span v-if="!nominationDisabled && !rsDisabled">
               <!--------------------新增按钮----------------------------------->
               <iButton @click="handleAdd" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ADD|新增">{{language('LK_XINZENG','新增')}}</iButton>
               <!--------------------删除按钮----------------------------------->
@@ -88,6 +88,7 @@ export default {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
       nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
     }),
     tableTitle() {
       return tableTitle.map(item => {
@@ -184,6 +185,7 @@ export default {
     },
     async getDeptSubOptions(item) {
       const res = await getSubDeptListByParam(item.approveParentDeptNum)
+      if (!Array.isArray(res.data)) return []
       return res.data.map(item => {
         return {
           ...item,
@@ -207,12 +209,14 @@ export default {
       this.tableLoading = true
       //this.$route.query.desinateId 
       const res = await getApprovalNode(this.$route.query.desinateId)
-      if (res?.result) {
+
+      if (res.code == 200) {
         for(var i = 0; i < (res.data.nomiApprovalProcessNodeVOList || []).length; i++) {
-          const deptSubOptions = await this.getDeptSubOptions(res.data.nomiApprovalProcessNodeVOList[i])
-          res.data.nomiApprovalProcessNodeVOList[i].deptOptions = this.parentDeptOptions
-          res.data.nomiApprovalProcessNodeVOList[i].deptSubOptions = deptSubOptions
+        const deptSubOptions = await this.getDeptSubOptions(res.data.nomiApprovalProcessNodeVOList[i])
+        res.data.nomiApprovalProcessNodeVOList[i].deptOptions = this.parentDeptOptions
+        res.data.nomiApprovalProcessNodeVOList[i].deptSubOptions = deptSubOptions
         }
+        
         this.tableDataTemp = cloneDeep(res.data.nomiApprovalProcessNodeVOList)
         this.processInstanceId = res.data.nominateAppVo?.processInstanceId
       } else {
