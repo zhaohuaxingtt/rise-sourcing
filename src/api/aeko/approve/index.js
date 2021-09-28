@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-27 14:15:19
+ * @LastEditTime: 2021-09-28 13:52:51
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -26,5 +26,14 @@ export function approveDistributionSave(data) {
     url: '/aeko/approve/distribution/save',
     method: 'POST',
     data,
+  })
+}
+
+// 获取角色用户列表
+export function getRoleUserList(params) {
+  return requst({
+    url: '/aeko/purchasing/search-chief',
+    method: 'GET',
+    params,
   })
 }

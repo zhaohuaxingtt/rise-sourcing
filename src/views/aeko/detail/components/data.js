@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-09-27 14:08:11
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-28 14:27:56
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
  */
@@ -67,4 +67,26 @@ export const dosageDialogTableTitle = [
   { props: "gearType", name: "变速箱/⾥程", key: "BIANSUXIANGLICHENG", tooltip: true },
   { props: "assemblyRate", name: "装⻋率", key: "ZHUANGCHELV", tooltip: true },
   { props: "perCarDosage", name: "⽤量", key: "YONGLIANG", tooltip: true },
+]
+
+// 审批附件表头
+export const approveAttachTableTitle = [
+  { props: "fileName", name: "文件名", key: "LK_WENJIANMING", tooltip: true },
+  { props: "fileDescribe", name: "文件描述", key: "LK_WENJIANMIOASHU", tooltip: true },
+  { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
+  { props: "createDate", name: "上传日期", key: "SHANGCHUANRIQI", tooltip: true },
+  { props: "createBy", name: "上传人", key: "SHANGCHUANREN", tooltip: true },
+  { props: "remark", name: "备注", key: "LK_BEIZHU", tooltip: true }
+]
+
+// 审批记录表头
+export const approveReCordTableTitle = [
+  { props: "levels", name: "审批类型", key: "SHENPILEIXING", tooltip: true },
+  { props: "engineType", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
+  { props: "gearType", name: "操作", key: "CAOZUO", tooltip: true },
+  { props: "assemblyRate", name: "操作人", key: "CAOZUOREN", tooltip: true },
+  { props: "perCarDosage", name: "操作时间", key: "LK_UpdateDate", tooltip: true },
+  { props: "perCarDosage", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true },
+  { props: "perCarDosage", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true },
+  { props: "attach", name: "解释附件", key: "JIESHIFUJIAN", tooltip: true },
 ]
