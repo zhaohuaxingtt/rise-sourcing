@@ -9,6 +9,8 @@
       <h2 class="title">
         {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
       </h2>
+       <iNavMvp :list="describeTab" lang  :lev="2" routerPage right></iNavMvp>
+
       <div class="contain margin-top20" ref="aekoDescribe">
         <el-row :gutter="10">
           <el-col :span="6">
@@ -40,8 +42,10 @@ import {
   iPage,
   iCard,
   iMessage,
+  iNavMvp,
 } from 'rise'
 import aekoFilesList from './components/filesList'
+import { describeTab } from '../data'
 import {
   getAekoDesc,
 } from '@/api/aeko/describe'
@@ -51,6 +55,7 @@ export default {
       iPage,
       iCard,
       aekoFilesList,
+      iNavMvp,
     },
     data(){
       return{
@@ -61,11 +66,20 @@ export default {
         noScorll:{
           contain:false,
           files:false,
-        }
+        },
+        describeTab:describeTab,
       }
     },
     created(){
       this.getDetail();
+      // 把当前路由的参数带过去
+       const {query} = this.$route;
+       describeTab.map((item)=>{
+         if(item.key == 'LK_AEKO_PARTSLIST'){
+           item.query = query
+         }
+       })
+       this.describeTab = describeTab;
       
     },
     methods:{
@@ -88,17 +102,16 @@ export default {
         })
       },
       resetHeight(){
-      this.$nextTick(()=>{
-        const parentHeight = this.$refs['aekoDescribe'].offsetHeight;
-        const containHeight = this.$refs['aekoDescribe'].querySelector('.card-contain').offsetHeight;
-        const filesHeight = this.$refs['aekoDescribe'].querySelector('.card-files').offsetHeight;
-        console.log(parentHeight,containHeight,filesHeight);
-        this.noScorll = {
-          contain:containHeight+50 > parentHeight,
-          files:filesHeight+50 > parentHeight,
-        }
-      });
-    },
+        this.$nextTick(()=>{
+          const parentHeight = this.$refs['aekoDescribe'].offsetHeight;
+          const containHeight = this.$refs['aekoDescribe'].querySelector('.card-contain').offsetHeight;
+          const filesHeight = this.$refs['aekoDescribe'].querySelector('.card-files').offsetHeight;
+          this.noScorll = {
+            contain:containHeight+50 > parentHeight,
+            files:filesHeight+50 > parentHeight,
+          }
+        });
+      },
     },
     
 }

@@ -135,7 +135,7 @@
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREMODELPROJECT','车型项目')
                   "
-                  v-model="form['carTypeProjectZh']"
+                  v-model="form['carTypeProjectNum']"
                 >
                   <el-option
                     value=""

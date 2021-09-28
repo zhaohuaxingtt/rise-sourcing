@@ -215,11 +215,12 @@
 							</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
-							<iSelect @change="changeUserDept" v-model="detailData.linieDept" v-if="!disabled">
+							<!-- detailData. -->
+							<iSelect @change="changeUserDept" v-model="linieDept" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.linieDept, "code", fromGroup.LINIE_DEPT) }}</iText>
+							<iText v-else>{{ Array.isArray(fromGroup.LINIE_DEPT) && fromGroup.LINIE_DEPT.find(item => item.code === detailData.linieDept) ? getName(detailData.linieDept, "code", fromGroup.LINIE_DEPT) : detailData.linieDeptName }}</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_LINE" label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
@@ -230,7 +231,7 @@
 							<iText v-else>{{ getName(detailData.linieId, "code", fromGroup.LINIE) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER|CF控制员" :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
-							<iSelect v-model="detailData.cfController" v-if="!disabled">
+							<iSelect v-model="cfController" v-if="!disabled">
 								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 							<iText v-else>{{ getName(detailData.cfController, "id", fromGroup.CF_CONTROL) }}</iText>
@@ -437,6 +438,7 @@
 			partProjectTypeArray() {
 				return this.fromGroup.PART_PROJECT_TYPE || []
 			},
+
    /**
     * @description: 是否可以选择commonSourcing的逻辑。如果当前用户更改零件采购系项目类型为 fsCommonSourcing gsCommonSourcing fs零件 GS零件 FS总成件  其他零件不能选择
     * @param {*}
@@ -458,6 +460,32 @@
     */
 			createdNomiappAsscShow(){
 				return this.detailData.partType == partsType.PARTSACCS
+			},
+			linieDept: {
+				get() {
+					if (Array.isArray(this.fromGroup.LINIE_DEPT) && !this.fromGroup.LINIE_DEPT.find(item => item.code === this.detailData.linieDept)) {
+						return this.detailData.linieDeptName
+					}
+
+					return this.detailData.linieDept
+				},
+				set(nv) {
+					this.detailData.linieDept = nv
+					this.detailData.linieDeptName = this.fromGroup.LINIE_DEPT.find(item => item.code === nv).name
+				}
+			},
+			cfController: {
+				get() {
+					if (Array.isArray(this.fromGroup.CF_CONTROL) && !this.fromGroup.CF_CONTROL.find(item => item.id === this.detailData.cfController)) {
+						return this.detailData.cfControllerName
+					}
+
+					return this.detailData.cfController
+				},
+				set(nv) {
+					this.detailData.cfController = nv
+					this.detailData.cfControllerName = this.fromGroup.CF_CONTROL.find(item => item.id === nv).name
+				}
 			}
 		},
 		watch:{
@@ -494,16 +522,6 @@
 		},
 		created() {
 			this.infoItem = JSON.parse(this.$route.query.item);
-			if (this.infoItem.applicationStatus || this.infoItem.nominateProcessType || this.infoItem.isPriceConsistent) {
-				this.disabled = setDisabled({
-					applicationStatus: this.infoItem.applicationStatus,
-					designateType: this.infoItem.nominateProcessType,
-					isPriceConsistent: this.infoItem.isPriceConsistent,
-				})
-			} else {
-				this.disabled = false
-			}
-			
 			this.purchaseProjectId = this.infoItem.id;
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 			this.partProjectType = this.infoItem.partProjectType;
@@ -612,6 +630,16 @@
 					this.detailData = res.data;
 					this.fsnrGsnrNum = res.data.fsnrGsnrNum
 					this.checkFactoryString = res.data.procureFactory
+
+					if (res.data.applicationStatus || res.data.nominateProcessType || res.data.isPriceConsistent) {
+						this.disabled = setDisabled({
+							applicationStatus: res.data.applicationStatus,
+							designateType: res.data.nominateProcessType,
+							isPriceConsistent: res.data.isPriceConsistent,
+						})
+					} else {
+						this.disabled = false
+					}
 					
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
