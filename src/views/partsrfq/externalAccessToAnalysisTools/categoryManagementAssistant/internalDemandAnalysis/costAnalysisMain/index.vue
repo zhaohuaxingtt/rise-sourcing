@@ -1,10 +1,10 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-26 17:00:10
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-28 17:04:23
+ * @LastEditors: 舒杰
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\index.vue
+ * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\index.vue
 -->
 <template>
   <div id="content">
@@ -76,12 +76,14 @@ export default {
       oldSchemeId: this.$route.query.schemeId || null,
       targetSchemeId: null,
       schemeName: null,
-      loading: false
+      loading: false,
+      
     }
   },
   created () {
     if (this.$route.query.default) {
       this.tableListData = JSON.parse(this.$route.query.nomiList)
+      
       this.getPieData()
     } else {
       this.getTableData()
@@ -161,12 +163,19 @@ export default {
     },
     // 点击编辑按钮
     clickEdit () {
+      
+      let nomiNum=20
+      if(this.$route.query.operateLog){
+        nomiNum=JSON.parse(this.$route.query.operateLog).nomiNum
+      }else{
+        nomiNum=this.$route.query.nomiNum
+      }
       const operateLog = {
         analysisType: "1",
         idList: this.tableListData.map(item => item.id),
         startDate: this.$route.query.startDate || null,
         endDate: this.$route.query.endDate || null,
-        nomiNum: this.$route.query.nomiNum || null,
+        nomiNum: nomiNum,
         sixNum: this.$route.query.sixNum || null,
       }
       this.$router.push({
