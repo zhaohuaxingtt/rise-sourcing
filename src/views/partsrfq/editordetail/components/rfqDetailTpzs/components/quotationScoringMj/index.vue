@@ -13,7 +13,7 @@ import {hasShowDelegate} from '@/api/partsrfq/editordetail'
 import {iMessageBox,iMessage} from 'rise'
 export default {
   extends:quotationMj,
-  inject:['getbaseInfoData'],
+  inject:['getbaseInfoData', 'getDisabled'],
   provide(){
     return {
       supplierId: this.supplierId
@@ -32,8 +32,8 @@ export default {
     }
   },
   computed:{
-    disabled(){
-      return !this.dgysBj
+    disabled() {
+      return !this.dgysBj || this.getDisabled()
     },
     hastateSupplierBj(){
       return this.getbaseInfoData().currentRoundsStatus != "已关闭" && this.quotationSupplierState

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-09-24 16:19:30
+ * @LastEditTime: 2021-09-27 14:08:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -41,7 +41,12 @@ export const contentDeclareTableTitle = [
 ]
 
 export const hidenTableTitle=[
-  
+  { props: "currency", name: "货币", key: "LK_AEKO_SELECT_HUOBI", tooltip: true },
+  { props: "sampleCost", name: "样件费", key: "LK_AEKO_SELECT_YANGJIANFEI", tooltip: true },
+  { props: "terminationPrice", name: "终止费", key: "LK_AEKO_SELECT_ZHONGZHIFEI", tooltip: true },
+  { props: "priceUnit", name: "价格单位", key: "LK_AEKO_SELECT_JIAGEDANWEI", tooltip: true },
+  { props: "measureUnit", name: "计量单位", key: "LK_AEKO_SELECT_JILIANGDANWEI", tooltip: true },
+  { props: "isReplace", name: "是否代报价", key: "LK_AEKO_SELECT_SHIFOUDAIBAOJIA", tooltip: true },
 ]
 
 export const mtzOptions = [

@@ -52,7 +52,7 @@
         </iSelect>
       </el-form-item>
       <el-form-item v-if="item.input1 !== '' && item.input1 !== 0 && item.input1 !== 4" :label="' '">
-        <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="item.input3" type="number" oninput="if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"></iInput>
+        <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="item.input3" type="number" oninput="if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+5)}"></iInput>
       </el-form-item>
       <icon v-if="index > 0" symbol name="icondingdianshenqingyusheluoji-shanchu" @click.native="handleDeleteRule(index)" class="delete-icon cursor"></icon>
     </el-form>
@@ -234,9 +234,9 @@ export default {
         return
       }
 
-      this.loading = true
+      let fuelTypeValue  = this.rules.find(item => item.input1 === 4) === undefined ?'':this.rules.find(item => item.input1 === 4).input1
       const params = {
-        fuelTypeValue: this.rules.find(item => item.input1 === 4).input2,
+        fuelTypeValue,
         nomiType: this.ddType,
         partTermType: this.rules[0].input2,
         presetLogic:this.rules.filter(item => item.input1 != 4).reduce((accu, curr, index) => {
@@ -254,6 +254,7 @@ export default {
           return [...accu, data]
         },[])
       }
+      console.log(params);
       this.$emit('handleSave', params)
     },
     /**

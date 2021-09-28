@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-16 15:17:46
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-23 11:29:13
+ * @LastEditTime: 2021-09-26 13:54:06
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\data.js
  */

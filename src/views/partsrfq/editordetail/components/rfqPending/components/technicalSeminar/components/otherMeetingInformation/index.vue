@@ -13,15 +13,15 @@
     </div>
     <iFormGroup :row="2" inline icon>
       <iFormItem :label="language('LK_HUIYISHIJIAN','会议时间')+':'" name="test">
-        <iDatePicker type="date" placeholder="2021-01-08" v-model="form.meetingDate" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_OTHERMEETINGINFORMATION_TIME"></iDatePicker>
+        <iDatePicker :disabled="disabled" type="date" placeholder="2021-01-08" v-model="form.meetingDate" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_OTHERMEETINGINFORMATION_TIME"></iDatePicker>
       </iFormItem>
       <iFormItem :label="language('LK_HUIYIDIDIAN','会议地点')+':'" name="test">
-        <iInput :placeholder="language('LK_SHANGQIDAZHONGYUANQU','上汽⼤众园区303室')" v-model="form.meetingLocation" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_OTHERMEETINGINFORMATION_LOCATION"></iInput>
+        <iInput :disabled="disabled" :placeholder="language('LK_SHANGQIDAZHONGYUANQU','上汽⼤众园区303室')" v-model="form.meetingLocation" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_OTHERMEETINGINFORMATION_LOCATION"></iInput>
       </iFormItem>
     </iFormGroup>
     <iFormGroup :row="1" inline icon>
       <iFormItem :label="language('LK_BEIZHU','备注')+':'" name="test">
-        <iInput type="textarea" :rows="4" resize="none" :placeholder="language('LK_LIRUMENJING','例如：⻔禁申请步骤，其他备注信息等')" v-model="form.memo" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_OTHERMEETINGINFORMATION_REMARKS"></iInput>
+        <iInput :disabled="disabled" type="textarea" :rows="4" resize="none" :placeholder="language('LK_LIRUMENJING','例如：⻔禁申请步骤，其他备注信息等')" v-model="form.memo" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_OTHERMEETINGINFORMATION_REMARKS"></iInput>
       </iFormItem>
     </iFormGroup>
   </i-card>
@@ -37,6 +37,12 @@ export default {
     iFormItem,
     iInput,
     iDatePicker
+  },
+  inject: ["getDisabled"],
+  computed: {
+    disabled() {
+      return this.getDisabled()
+    }
   },
   data() {
     return {

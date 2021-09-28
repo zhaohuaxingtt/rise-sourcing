@@ -430,9 +430,9 @@ export default {
                     if (res.data && res.data.length) {
                         res.data.forEach((item) => {
                             if (this.$i18n.locale === "zh") {
-                                dataInfo+= `${item.zhMsg}\n`
+                                dataInfo+= `${item.zhMsg}<br>`
                             } else {
-                                dataInfo+= `${item.engMsg}\n`
+                                dataInfo+= `${item.engMsg}<br>`
                             }
                         })
                     } else {
@@ -475,7 +475,9 @@ export default {
                                 cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
                                 showCancelButton: true,
                                 showConfirmButton: res.systemerror ? false : true,
-                                type: res.systemerror? 'error' : 'warning'
+                                type: res.systemerror? 'error' : 'warning',
+                                dangerouslyUseHTMLString:true
+                                
                             })
                             if (confirmNextInfo !== 'confirm') {
                                 this.submitting = false
@@ -496,7 +498,9 @@ export default {
                                 cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
                                 showCancelButton: true,
                                 showConfirmButton: res.systemerror ? false : true,
-                                type: res.systemerror? 'error' : 'warning'
+                                type: res.systemerror? 'error' : 'warning',
+                                dangerouslyUseHTMLString:true
+
                             })
                             if (confirmNextInfo !== 'confirm') {
                                 this.submitting = false

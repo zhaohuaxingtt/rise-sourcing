@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-24 17:12:27
+ * @LastEditTime: 2021-09-27 18:04:38
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -18,20 +18,20 @@
         <iButton @click="gotoSechedule">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
         <iButton @click="handleSendFs" v-if="partStatus == 2 || partStatus == 3">{{language('FASONGJINDUQUEREN', '发送进度确认')}}</iButton> 
         <iButton @click="openDelayReasonDialog" v-if="[3,2,5,6].includes(Number(partStatus))" >{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
-        <iButton @click="handleSendFs" v-if="[1].includes(partStatus)">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
+        <iButton @click="handleExport" v-if="[1].includes(Number(partStatus))">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
     <div class="partListView-content"> 
       <div v-for="pro in listWithNodeDelayWeeks" :key="pro.label" class="productItem"> 
         <div class="productItem-top"> 
-          <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
+          <el-checkbox @change="handleCheckboxChange($event, pro)"> 
             {{`${pro.partNameZh || ''}`}} 
           </el-checkbox> 
-          <icon @click.native="openChangeLight(pro)" class="productItem-top-icon cursor" symbol name="iconbianji"></icon>
+          <icon v-if="partStatus != 7" @click.native="openChangeLight(pro)" class="productItem-top-icon cursor" symbol name="iconbianji"></icon>
           <template>
-            <icon class="productItem-top-icon2" v-if="pro.projectRisk == '3'" symbol name="iconzhuangtai_hong"></icon>
-            <icon class="productItem-top-icon2" v-else-if="pro.projectRisk == '2'" symbol name="iconzhuangtai_huang"></icon>
-            <icon class="productItem-top-icon2" v-else-if="pro.projectRisk == '1'" symbol name="iconzhuangtai_lv"></icon>
+            <icon class="productItem-top-icon2" v-if="pro[pro.partStatus == 7 ? 'projectProc' :'projectRisk'] == '3'" symbol name="iconzhuangtai_hong"></icon>
+            <icon class="productItem-top-icon2" v-else-if="pro[pro.partStatus == 7 ? 'projectProc' :'projectRisk'] == '2'" symbol name="iconzhuangtai_huang"></icon>
+            <icon class="productItem-top-icon2" v-else-if="pro[pro.partStatus == 7 ? 'projectProc' :'projectRisk'] == '1'" symbol name="iconzhuangtai_lv"></icon>
           </template>
           <span class="productItem-top-desc">{{`${pro.partNum || ''}  ${pro.partNameDe || ''}  ${pro.buyerName || ''}`}}</span>
         </div> 
@@ -80,15 +80,20 @@
                 <el-popover
                   trigger="hover"
                   placement="top-start"
-                  :disabled="taItem.key !== 'JIHUASHIJIAN' || !pro[item.soll2]"
+                  :disabled="taItem.key !== 'JIHUASHIJIAN' || !(pro[item.soll2] || pro[item.soll22])"
                 >
-                  <iText slot="reference" class="productItem-bottom-stepBetween-input text ">
-                    {{pro[item[taItem.props]]}}{{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '('+(pro[item[taItem.props1]] || '')+')' : ''}}
+                  <iText slot="reference"  v-if="Number(pro.partStatus) <= item.partPeriod" class="productItem-bottom-stepBetween-input text ">
+                    {{taItem.key === 'JIHUASHIJIAN' ? pro[item.kw] : ''}}
+                    {{taItem.key === 'JIHUASHIJIAN' ? index === nodeList.length - 1 && pro[item.kw] ? '('+(pro[item.kw1] || '')+')' : '' : ''}}
+                  </iText>
+                  <iText slot="reference"  v-else class="productItem-bottom-stepBetween-input text ">
+                    {{pro[item[taItem.props]]}}
+                    {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '('+(pro[item[taItem.props1]] || '')+')' : ''}}
                     <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0">+W{{pro[item.delayWeeks]}}</span>
                   </iText>
                   <div>
-                    <p>soll1：年份-KWXX</p>
-                    <p>soll2：年份-KWXX</p>
+                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll1：{{getSollKw(pro[item.soll1])}} <span v-if="pro[item.soll22]">OTS soll1：{{getSollKw(pro[item.soll12])}}</span></p>
+                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll2：{{getSollKw(pro[item.soll2])}} <span v-if="pro[item.soll22]">OTS soll2：{{getSollKw(pro[item.soll22])}}</span></p>
                   </div>
                 </el-popover>
               </div>
@@ -116,8 +121,8 @@
 
 <script>
 import { iButton, icon, iText, iMessage } from 'rise'
-import { getProductGroupNodeInfoList, downloadNodeView, partProgressConfirm } from '@/api/project'
-import { actionPlan } from '@/api/project/process'
+import { getProductGroupNodeInfoList, downloadNodeView, partProgressConfirm, getFsUserListPart, getAllFS } from '@/api/project'
+import { actionPlan, getProgressConfirmList } from '@/api/project/process'
 import { svgList, nodeList } from './data'
 import moment from 'moment'
 import fsConfirm from '@/views/project/schedulingassistant/part/components/fsconfirm'
@@ -151,7 +156,8 @@ export default {
       tableListKickoff: [],
       dialogVisibleLight: false,
       selectParts: {},
-      dialogVisibleDelayReason: false
+      dialogVisibleDelayReason: false,
+      moment
     }
   },
   computed: {
@@ -161,20 +167,27 @@ export default {
       
       return this.list.map(item => {
         const partStatus = Number(item.partStatus)
+        const emDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'emTimeKw' : 'planEmTimeKw'], partStatus == 6 ? currentKw : item.emTimeKw) : 0
+        const otsDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'otsTimeKw' : 'planOtsTimeKw'], partStatus == 6 ? currentKw : item.otsTimeKw) : 0
         return {
           ...item,
-          releaseDelayWeeks: partStatus > 0 ? this.getDelayWeeks(item.planReleaseTimeKw, item.releaseTimeKw || currentKw) : 0,
-          nomiDelayWeeks: partStatus > 1 ? this.getDelayWeeks(item.planNomiTimeKw, item.nomiTimeKw || currentKw) : 0,
-          bfDelayWeeks: partStatus > 2 ? this.getDelayWeeks(item.planBfTimeKw, item.bfTimeKw || currentKw) : 0,
-          firstTryoutDelayWeeks: partStatus > 4 ? this.getDelayWeeks(item.planFirstTryoutTimeKw, item.firstTryoutTimeKw || currentKw) : 0,
-          emDelayWeeks: partStatus > 5 ? this.getDelayWeeks(item.planEmTimeKw, item.emTimeKw || currentKw) : 0,
-          otsDelayWeeks: partStatus > 5 ? this.getDelayWeeks(item.planOtsTimeKw, item.otsTimeKw || currentKw) : 0,
-          emOtsDelayWeeks: partStatus > 5 ? Math.max(this.getDelayWeeks(item.planEmTimeKw, item.emTimeKw || currentKw),this.getDelayWeeks(item.planOtsTimeKw, item.otsTimeKw || currentKw)): 0
+          releaseDelayWeeks: partStatus > 0 ? this.getDelayWeeks(partStatus == 1 ? item.releaseTimeKw : item.planReleaseTimeKw, partStatus == 1 ? currentKw : item.releaseTimeKw) : 0,
+          nomiDelayWeeks: partStatus > 1 ? this.getDelayWeeks(partStatus == 2 ? item.nomiTimeKw : item.planNomiTimeKw, partStatus == 2 ? currentKw : item.nomiTimeKw) : 0,
+          bfDelayWeeks: partStatus > 2 ? this.getDelayWeeks(item[partStatus == 4 || partStatus == 3  ? 'bfTimeKw' : 'planBfTimeKw'], partStatus == 4 || partStatus == 3 ? currentKw : item.bfTimeKw) : 0,
+          firstTryoutDelayWeeks: partStatus > 4 ? this.getDelayWeeks(item[partStatus == 5 ? 'firstTryoutTimeKw' : 'planFirstTryoutTimeKw'], partStatus == 5 ? currentKw : item.firstTryoutTimeKw) : 0,
+          emDelayWeeks,
+          otsDelayWeeks,
+          emOtsDelayWeeks: partStatus > 5 ? Math.max(emDelayWeeks,otsDelayWeeks): 0
         }
       })
     }
   },
   methods: {
+    getSollKw(time) {
+      const momentTime = moment(time)
+      const weeks = momentTime.weeks()
+      return momentTime.year() + '-' + 'KW' + (weeks < 10 ? '0'+ weeks : weeks)
+    },
     handleActionPlan(delayLevelPro, actionPlanReason) {
       const params = {
         ...this.selectParts,
@@ -206,6 +219,9 @@ export default {
      * @return {*}
      */    
     openChangeLight(pro) {
+      if (this.partStatus == 7) {
+        return
+      }
       this.selectParts = pro
       this.changeLightDialogVisible(true)
     },
@@ -218,17 +234,127 @@ export default {
     changeLightDialogVisible(visible) {
       this.dialogVisibleLight = visible
     },
+    /** 
+     * @Description: 根据选中的行获取每一行的fs下拉列表 
+     * @Author: Luoshuang 
+     * @param {*} tableList 
+     * @return {*} 
+     */    
+    async getFsUserList(tableList) {  
+      const res = await getFsUserListPart({partNums: tableList.map(item => item.partNum).join(',')}) 
+        if (res?.result) { 
+          return res.data   
+        } else { 
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+          return null  
+        } 
+    }, 
+    /**
+     * @Description: 获取fs下拉选项 
+     * @Author: Luoshuang 
+     * @param {*} 
+     * @return {*} 
+     */     
+    getFSOPtions() { 
+      getAllFS().then(res => { 
+        if (res?.result) { 
+          this.selectOptions = {  
+            ...this.selectOptions, 
+            fsOptions: res.data.map(item => { 
+              return {  
+                ...item,  
+                value: item.id, 
+                label: item.nameZh  
+              }  
+            }) 
+          } 
+        } else {  
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+        } 
+      }) 
+    }, 
     /**
      * @Description: 组合数据打开发送fs弹窗
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
      */    
-    handleSendFs() {
+    async handleSendFs() {
       // 根据车型id和零件状态去获取需要发送的数据
       // 根据需要发送的数据的零件号去获取对应的询价采购员列表
       // 组合好数据，打开弹窗
-      this.changeFsConfirmVisible(true)
+      const params = {
+        partStatus: this.partStatus,
+        projectId: this.cartypeProId
+      }
+      try {
+        this.loading = true
+        const res = await getProgressConfirmList(params)
+        if (res?.result) {
+          let tableList = res.data || []
+          const fsOptions = await this.getFsUserList(tableList)
+          tableList = tableList.reduce((accu, item) => {
+            if (item.procStatus != 1 && item.procStatus != 3) {
+              return accu
+            }
+            const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+            const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+            const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
+              if (item.userId) { 
+                return [...accu, { 
+                  ...item, 
+                  value: item.userId, 
+                  label: item.userName 
+                }] 
+              } else { 
+                return accu 
+              } 
+            },[]) : []  
+            return [...accu, {  
+              ...item, 
+              cartypeProId: this.cartypeProId, 
+              cartypeProject: this.carProjectName, 
+              projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
+              projectPurchaserId: this.$store.state.permission.userInfo.id, 
+              selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+              fs, 
+              fsId,
+              confirmDateDeadline: moment(this.replyEndDate).format('YYYY-MM-DD'), 
+              partNum: item.partNum, 
+              partName: item.partNameZh, 
+              delayWeek: item.delayWeeks,
+              isBmg: item.bmgFlag || '否',
+              scheNomiTimeKw: item.nomiTimeKw, 
+              scheKickoffTimeKw: item.kickoffTimeKw, 
+              scheFirstTryoutTimeKw: item.firstTryoutTimeKw, 
+              scheOtsTimeKw: item.otsTimeKw, 
+              scheEmTimeKw: item.emTimeKw, 
+              riskLevel: item.projectRisk, 
+              confirmStatus: item.procStatus, 
+              partPeriod: item.partStatus 
+            } ]
+          },[])
+          if (this.partStatus == 2) {
+            this.tableListNomi = tableList
+            this.tableListKickoff = []
+          } else if (this.partStatus == 3) {
+            this.tableListKickoff = tableList
+            this.tableListNomi = []
+          }
+          this.changeFsConfirmVisible(true)
+        } else {
+          this.tableListNomi = []
+          this.tableListKickoff = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+        this.loading = false
+      } catch (e) {
+        this.tableListNomi = []
+        this.tableListKickoff = []
+        this.loading = false
+      }
+      
+      
     },
     /**
      * @Description: 修改fs弹窗
@@ -246,7 +372,7 @@ export default {
           if (res.data && res.data.length > 0) {  
             iMessage.warn(res.data.map(item => item.partName).join(',')+this.language('BUFUHEFASONGTIAOJIANWUFAFASONG','不符合发送条件，无法发送')) 
           } else {  
-            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
             this.changeFsConfirmVisible(false) 
           } 
         } else {  
@@ -267,7 +393,6 @@ export default {
      * @return {*} 
      */    
     getDelayWeeks(time1, time2) {
-      console.log(time1, time2) 
       if (!time1 || !time2) {
         return 0
       }
@@ -317,14 +442,13 @@ export default {
       this.isIndeterminate = false;
     },
     handleCheckboxChange(value, pro) {
-      this.$set(pro, 'isChecked', value)
+      // this.$set(pro, 'isChecked', value)
       if (value) {
         this.selectPartNums.push(pro.partNum)
       } else {
         // eslint-disable-next-line no-undef
         _.pull(this.selectPartNums, pro.partNum)
       }
-      console.log(this.selectPartNums)
       // let checkedCount = this.list.filter(item => item.isChecked).length;
       // this.checkAll = checkedCount === this.list.length;
       // this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length;
