@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-28 21:22:30
+ * @LastEditTime: 2021-09-28 21:28:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -661,6 +661,43 @@ export default {
           });
         });
       }
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true;
+        params.rfq = this.rfqId;
+      } else {
+        params.isBindingRfq = false;
+      }
+      await this.getHistogram(params);
+      await this.getMekTable();
+      this.delItemFlag = false
+      console.log(this.delItemFlag)
+    },
+    async handleSearchReset () {
+      let params = {
+        comparedType: this.comparedType,
+        info: [
+          {
+            motorId: this.targetMotor,
+            priceType: "sopPrice",
+            isTargetMotor: true,
+          },
+        ],
+        categoryId: this.categoryId,
+        categoryCode: this.categoryCode,
+        schemeId: this.chemeId,
+        unselected: this.exceptPart,
+      };
+      this.ComparedMotor.forEach((item) => {
+        params.info.push({
+          motorId: item,
+          priceType: 'sopPrice',
+          isTargetMotor: false,
+          priceDate: "",
+          engine: "",
+          position: "",
+          transmission: ""
+        });
+      });
       if (this.entryStatus === 1) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
