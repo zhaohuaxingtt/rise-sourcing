@@ -7,19 +7,32 @@
     <div class="new-MEK"
          id="downloadRef">
       <div class=" bodyBox clearFloat">
-        <el-col :span="4">
-          <iCard style="height:670px">
-            <div class="cardBox">
-              <div class=" searchForm"
-                   style="margin-right:20px">
-                <label for=""
-                       style="font-weight:600;font-size:14px">六位零件号</label>
-                <ul style="margin-top:10px">
-                  <li style="maring-bottom:10px"
-                      v-for="(item,index) in partNumber"
-                      :key="index">{{item}}</li>
-                </ul>
-              </div>
+        <div class="cardBox"
+             style="width:18%">
+          <iCard>
+            <div class=" searchForm"
+                 style="margin-right:20px">
+              <label for=""
+                     style="font-weight:600;font-size:14px">六位零件号</label>
+              <ul style="margin-top:10px">
+                <li style="maring-bottom:10px"
+                    v-for="(item,index) in partNumber"
+                    :key="index">{{item}}</li>
+              </ul>
+              <label for=""
+                     style="font-weight:600;font-size:14px">六位零件号</label>
+              <ul style="margin-top:10px">
+                <li style="maring-bottom:10px"
+                    v-for="(item,index) in partNumber"
+                    :key="index">{{item}}</li>
+              </ul>
+              <label for=""
+                     style="font-weight:600;font-size:14px">六位零件号</label>
+              <ul style="margin-top:10px">
+                <li style="maring-bottom:10px"
+                    v-for="(item,index) in partNumber"
+                    :key="index">{{item}}</li>
+              </ul>
             </div>
           </iCard>
         </el-col>
