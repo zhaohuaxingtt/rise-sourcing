@@ -223,7 +223,7 @@ import { iPage, iButton, iSearch, iSelect, iMessage } from 'rise';
 import outputPlan from "./components/outputPlan";
 import {batchUpdateStuff,updateProcureButch } from "@/api/partsprocure/home";
 import onlyPartsChange from './components/onlyPartsChange'
-import {getStuffByCategory,dictkey} from "@/api/partsprocure/editordetail";
+import {getStuffByCategory,dictkey,purchasingDept} from "@/api/partsprocure/editordetail";
 import {creatFsGsNr,createNomiappBtn} from '@/components'
 import {translateDataForService} from '../editordetail/components/data'
 import {filterProjectList} from '@/utils'
@@ -242,7 +242,7 @@ export default {
   data() {
     return {
       partProjTypes,
-      fromGroup: [],
+      fromGroup: {},
       category: [], //材料组数据
       stuffArr: [], //工艺组数据
       batch: {
@@ -277,6 +277,7 @@ export default {
   },
   created() {
     this.getProcureGroup();
+    this.purchasingDept()
     this.purchaseProjectIds = this.$route.query.ids
   },
   computed: {
@@ -293,7 +294,11 @@ export default {
     getProcureGroup() {
       dictkey().then((res) => {
         if (res.data) {
-          this.fromGroup = res.data;
+          Object.keys(res.data).forEach(key => {
+            if (key !== "LINIE_DEPT") {
+              this.$set(this.fromGroup, key, res.data[key])
+            }
+          })
         }
       });
     },
@@ -329,6 +334,11 @@ export default {
         this.batch.purchaseProjectIds = this.selectTableData.map(item => item.purchaseProjectId)
       }
       this.oldProjectRelations = e.map(r=>{return {...translateDataForService(r.oldFsnrGsnrNum),...{purchasingProjectId:r.id}}})
+    },
+    purchasingDept() {
+      purchasingDept().then(r=>{
+        this.fromGroup['LINIE_DEPT'] = r.data || []
+      })
     },
     // 修改采购项目详情和
     save(type) {
