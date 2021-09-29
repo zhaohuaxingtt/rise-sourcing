@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-08-05 15:47:10
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
@@ -178,7 +178,7 @@ export default {
       addPartDialog: false,
       changeLogDialog: false,
       form: {
-        materialGroupCode: '',
+        materialGroupCode: this.$route.query.categoryCode,
         motorId: "",
         partNumber: ''
       },
