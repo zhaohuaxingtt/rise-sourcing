@@ -15,7 +15,7 @@
         reserve-keyword
         @change="handleChange"
         :filter-method="dataFilter"
-        v-lazyselect="cartypeProjectLazy"
+        v-lazy-select="cartypeProjectLazy"
         @visible-change="selectVisibleChange"
     >
     <el-option value="" :label="language('all','全部')"></el-option>
