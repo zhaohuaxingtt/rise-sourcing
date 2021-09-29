@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-09-28 14:27:56
+ * @LastEditTime: 2021-09-28 17:32:33
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -75,7 +75,7 @@ export const approveAttachTableTitle = [
   { props: "fileDescribe", name: "文件描述", key: "LK_WENJIANMIOASHU", tooltip: true },
   { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
   { props: "createDate", name: "上传日期", key: "SHANGCHUANRIQI", tooltip: true },
-  { props: "createBy", name: "上传人", key: "SHANGCHUANREN", tooltip: true },
+  { props: "userName", name: "上传人", key: "SHANGCHUANREN", tooltip: true },
   { props: "remark", name: "备注", key: "LK_BEIZHU", tooltip: true }
 ]
 
