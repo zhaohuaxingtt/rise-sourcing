@@ -212,9 +212,9 @@ export default {
   ::v-deep .el-loading-mask {
     z-index: 2;
   }
-}
 
-.bodyMarginTop {
-  margin-top: 20px;
+  .bodyMarginTop {
+    padding-top: 30px;
+  }
 }
 </style>
