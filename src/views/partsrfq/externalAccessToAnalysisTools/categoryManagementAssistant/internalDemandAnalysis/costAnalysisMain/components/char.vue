@@ -1,27 +1,28 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 16:37:12
- * @LastEditTime: 2021-09-24 14:26:05
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-29 20:57:50
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisHandleInput\components\char.vue
 -->
 <template>
-  <div :style="{width: width + 'px', height: height + 'px'}" ref="pieChart"></div>
+  <div :style="{width: '100%', height: height + 'px'}" ref="pieChart"></div>
 </template>
 
 <script>
 import imgUrl from '@/assets/images/pie-icon.png'
 import echarts from '@/utils/echarts'
+import { log } from 'util'
 export default {
-  props:{
-    chartData:{
-        type:Array,
-        default:()=>[]
+  props: {
+    chartData: {
+      type: Array,
+      default: () => []
     },
     colors: {
       type: Array,
-      default: () => ['#0C47A1','#1765C0','#1976D1','#1F88E5','#2297F3','#41A5F5']
+      default: () => ['#0C47A1', '#1765C0', '#1976D1', '#1F88E5', '#2297F3', '#41A5F5']
     },
     width: {
       type: Number,
@@ -42,9 +43,8 @@ export default {
   },
   computed: {
   },
-  data () {
+  data() {
     return {
-
     }
   },
   created() {
@@ -70,7 +70,6 @@ export default {
             radius: ['40%', '70%'],
             avoidLabelOverlap: false,
             itemStyle: {
-              borderRadius: 10,
               borderColor: '#fff',
               borderWidth: 2
             },
@@ -78,27 +77,84 @@ export default {
               show: true,
               position: 'outside',
               formatter: value => {
-                if(renderArr.indexOf(value.data.name) == -1) {
+                if (renderArr.indexOf(value.data.name) == -1) {
                   let res = ''
                   currentNum = count + value.percent / 2
                   count += value.percent
-                  if(currentNum <= 50){
-                    res = '{pieIcon|}   ' + value.data.name + ('  ' + value.percent + '%')
+                  this.p = this.p + 1
+                  if (currentNum <= 50) {
+                    res = `{pieIcon${this.colors.indexOf(value.color)}|} ` + `{text|${value.data.name + ('  ' + value.percent + '%')}}`
                   } else {
-                    res = value.data.name + ('  ' + value.percent + '%') + '   {pieIcon|}'
+                    res = value.data.name + ('  ' + value.percent + '%') + `   {pieIcon${this.colors.indexOf(value.color)}|}`
                   }
                   renderArr.push(value.data.name)
                   return res
                 }
               },
               rich: {
-                pieIcon: {
-                  backgroundColor: {
-                    image: imgUrl
-                  },
-                  height: 20
-                }
-						  }
+                text: {
+                  width: 130,
+                  align: 'right',
+                  fontSize:'12px',
+                },
+                pieIcon0: {
+                  borderColor: this.colors[0],
+                  borderWidth: 5,
+                  borderType: 'solid',
+                  height: 15,
+                  width: 15,
+                  borderRadius: 10,
+                },
+                pieIcon1: {
+                  borderColor: this.colors[1],
+                  borderWidth: 5,
+                  borderType: 'solid',
+                  height: 15,
+                  width: 15,
+                  borderRadius: 10,
+                },
+                pieIcon2: {
+                  borderColor: this.colors[2],
+                  borderWidth: 5,
+                  borderType: 'solid',
+                  height: 15,
+                  width: 15,
+                  borderRadius: 10,
+                },
+                pieIcon3: {
+                  borderColor: this.colors[3],
+                  borderWidth: 5,
+                  borderType: 'solid',
+                  height: 15,
+                  width: 15,
+                  borderRadius: 10,
+                },
+                pieIcon4: {
+                  borderColor: this.colors[4],
+                  borderWidth: 5,
+                  borderType: 'solid',
+                  height: 15,
+                  width: 15,
+                  borderRadius: 10,
+                },
+                pieIcon5: {
+                  borderColor: this.colors[5],
+                  borderWidth: 5,
+                  borderType: 'solid',
+                  height: 15,
+                  width: 15,
+                  borderRadius: 10,
+                },
+                pieIcon6: {
+                  borderColor: this.colors[6],
+                  borderWidth: 5,
+                  borderType: 'solid',
+                  height: 15,
+                  width: 15,
+                  borderRadius: 10,
+                },
+
+              }
             },
             labelLine: {
               show: true,
@@ -115,22 +171,20 @@ export default {
       myChart.setOption(option);
     }
   },
-  watch:{
-    chartData:{
-      handler(newVal){
-        if(newVal){
-          if(this.$refs.pieChart && newVal.length>0){
+  watch: {
+    chartData: {
+      handler(newVal) {
+        if (newVal) {
+          if (this.$refs.pieChart && newVal.length > 0) {
             this.initCharts();
           }
         }
       },
-      immediate:true,
+      immediate: true,
     }
   }
 }
 </script>
 
 <style lang='scss' scoped>
-
- 
 </style>

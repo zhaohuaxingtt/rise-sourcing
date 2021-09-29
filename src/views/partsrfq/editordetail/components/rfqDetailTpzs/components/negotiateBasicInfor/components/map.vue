@@ -80,10 +80,10 @@ export default {
         resizeEnable: true, //是否监控地图容器尺寸变化
         zoom: 4, //初始地图级别
         center: [121, 31], //初始地图中心点
-        showIndoorMap: false, //关闭室内地图
-        roam: false,
-        zoomEnable: false,
-        dragEnable: false,
+        showIndoorMap: true, //关闭室内地图
+        roam: true,
+        zoomEnable: true,
+        dragEnable: true,
         mapStyle: 'amap://styles/macaron'
       });
       // 圆点
@@ -123,7 +123,7 @@ export default {
         });
         marker.setMap(map)
         marker.hide()
-        circleMarker.on('mouseover', () => {
+        circleMarker.on('click', () => {
           marker.show()
           handleTooltip.open(map, [item.lon, item.lat])
         })
@@ -132,14 +132,14 @@ export default {
           marker.hide()
         })
         var handleTooltip = new AMap.InfoWindow({
-          content: `<div class='tips'>
+          content: `<div class='tips' style="height:'350px'">
                       <div class='flex'>
                         <div class="img"></div><div class='title'>${item.name}</div>
                       </div>
                       <div class='label'>${this.language('CHEXINGXIANGMUMAOHAO', '车型：')}</div>
-                      <div class='value'>${carTypeList}</div>
+                      <div class='carType'>${carTypeList}</div>
                       <div class='label'>${this.language('GONGYINGSHANGGONGCHANGDIZHI', '供应商工厂地址：')}</div>
-                      <div class='value'>${item.factoryAddress}</div>
+                      <div class='value'>${item.factoryName}-${item.factoryAddress}</div>
                       <div class='label'>${this.language('GONGCHANGZONGXIAOSHOUE', '工厂总销售额：')}</div>
                       <div class='value'>${item.toAmount}</div>
                   </div>`,
@@ -167,6 +167,22 @@ export default {
           anchor: "center"
         });
         marker.setMap(map)
+        marker.on('click', () => {
+          handleTooltip.open(map, [item.lon, item.lat])
+          console.log('purchase');
+        })
+        var handleTooltip = new AMap.InfoWindow({
+          content: `<div class='tips' style="height="300px"">
+                        <div class='flex'>
+                          <div class="img-svw"></div><div class='title'>${item.name}</div>
+                        </div>
+                        <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
+                        <div class='carType'>${carTypeList}</div>
+                        <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
+                        <div class='value'>${item.factoryName}-${item.factoryAddress}</div>
+                      </div>`,
+          offset: new AMap.Pixel(7, -15)
+        });
       })
     },
   }
@@ -186,7 +202,7 @@ export default {
 }
 ::v-deep .tips {
   background-color: #fff;
-  width: 20rem;
+  width: 415px;
   .flex {
     align-items: center;
     .title {
@@ -209,14 +225,21 @@ export default {
   }
   .label {
     color: #7e84a3;
-    font-size: 20px;
     text-align: left;
     margin-top: 20px;
     margin-bottom: 8px;
+    font-size: 12px;
+  }
+  .carType {
+    height: 3rem;
+    overflow: auto;
+    color: #131523;
+    font-size: 12px;
+    text-align: left;
   }
   .value {
     color: #131523;
-    font-size: 16px;
+    font-size: 12px;
     text-align: left;
   }
 }
