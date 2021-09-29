@@ -95,6 +95,7 @@ export default {
   position: relative;
   width: 100%;
   .card-right {
+    margin: 20px;
     position: absolute;
     right: 0;
     z-index: 2;
