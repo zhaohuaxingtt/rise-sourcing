@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-29 10:29:25
+ * @LastEditTime: 2021-09-29 15:22:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -376,6 +376,8 @@
         :chartItemWidth="chartItemWidth"
         :barData="barData"
         :gridData="gridData"
+        :mekTypeName="mekTypeName"
+        :ComparedMotorName="ComparedMotorName"
         :partNumber="partNumber"
         @closeDialog="closeDialog"
         :maxWidth="maxWidth"
@@ -535,7 +537,8 @@ export default {
       detailMotorName: "",
       detailFactory: "",
       index: 0,
-      delItemFlag: false,
+      mekTypeName:"",
+      ComparedMotorName:[]
     };
   },
   async created() {
@@ -632,6 +635,11 @@ export default {
         });
         getDictByCode("mekType").then((res) => {
           this.mekTypeList = res.data[0].subDictResultVo;
+           this.mekTypeList.forEach((item) => {
+            if (item.code === this.comparedType) {
+             this. mekTypeName = item.name;
+            }
+          });
         });
         getDictByCode("mekpriceType").then((res) => {
           this.mekpriceTypeList = res.data[0].subDictResultVo;
@@ -646,6 +654,7 @@ export default {
             this.ComparedMotor.forEach((i) => {
               if (item.motorId === i) {
                 this.ComparedMotorCode.push(item.motorCode);
+                this.ComparedMotorName.push(item.motorName);
               }
             });
           });
