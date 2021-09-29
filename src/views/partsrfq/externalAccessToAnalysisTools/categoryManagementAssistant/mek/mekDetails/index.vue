@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-29 22:50:56
+ * @LastEditTime: 2021-09-30 00:31:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -166,34 +166,9 @@
                     <span class="margin-bottom20 productFactoryNames">{{
                       productFactoryNames
                     }}</span>
-                    <span class="yield margin-bottom10">{{
+                    <span class="yield">{{
                       toThousand(parseInt(firstBarData.output))
                     }}</span>
-                    <div class="flex">
-                      <el-select
-                        v-model="firstBarData.priceType"
-                        @change="changTargetPrice"
-                        style="width:150px;z-index:1000"
-                      >
-                        <el-option
-                          v-for="i in mekpriceTypeList"
-                          :key="i.id"
-                          :value="i.code"
-                          :label="i.name"
-                        >
-                        </el-option>
-                      </el-select>
-                      <el-date-picker
-                        v-model="firstBarData.priceDate"
-                        type="date"
-                        placeholder="选择日期"
-                        @input="changeTargetDate"
-                        value-format="yyyy-MM-dd"
-                        style="width:150px;z-index:1000;margin-left:20px"
-                        v-if="firstBarData.priceType === 'monthPrice'"
-                      >
-                      </el-date-picker>
-                    </div>
                   </div>
                   <datasetBar1
                     ref="datasetBar1"
@@ -257,14 +232,14 @@
                       class="margin-bottom20"
                     >
                       <el-checkbox-group
-                        v-model="item.checkList"
+                        v-model="orginBarData[ind].checkList"
                         class="checkList"
                         @change="changeCheckList(ind)"
                       >
                         <el-checkbox
-                          v-for="(i, index) in item.checkList"
+                          v-for="(i, index) in orginBarData[ind].detail"
                           :key="index"
-                          :label="i"
+                          :label="i.title"
                         ></el-checkbox>
                       </el-checkbox-group>
                       <div class="motorName" slot="reference">
@@ -399,12 +374,8 @@
         :value="previewFlag"
         :firstBarData="firstBarData"
         :chartItemWidth="chartItemWidth"
-        :productFactoryNames="productFactoryNames"
         :barData="barData"
-        :clientHeight="clientHeight"
-        :maxData="maxData"
         :gridData="gridData"
-        :totalWidth="totalWidth"
         :mekTypeName="mekTypeName"
         :ComparedMotorName="ComparedMotorName"
         :partNumber="partNumber"
@@ -568,7 +539,7 @@ export default {
       index: 0,
       mekTypeName: "",
       ComparedMotorName: [],
-      checkAllList: [],
+      orginBarData: [],
     };
   },
   async created() {
@@ -578,7 +549,7 @@ export default {
       info: [
         {
           motorId: this.targetMotor,
-          priceType: "latestPrice",
+          priceType: "sopPrice",
           isTargetMotor: true,
         },
       ],
@@ -590,7 +561,7 @@ export default {
     this.ComparedMotor.forEach((item) => {
       params.info.push({
         motorId: item,
-        priceType: "latestPrice",
+        priceType: "sopPrice",
         isTargetMotor: false,
       });
     });
@@ -660,7 +631,6 @@ export default {
           this.TargetMotorList.forEach((item) => {
             if (item.motorId === this.targetMotor) {
               this.targetMotorCode = item.motorCode;
-              this.targetMotorName = item.motorName;
             }
           });
         });
@@ -708,13 +678,13 @@ export default {
       });
     },
     //查询
-    searchChartData() {
+    async searchChartData() {
       let params = {
         comparedType: this.comparedType,
         info: [
           {
             motorId: this.targetMotor,
-            priceType: "latestPrice",
+            priceType: "sopPrice",
             isTargetMotor: true,
           },
         ],
@@ -743,7 +713,7 @@ export default {
           if (motorIdList.indexOf(item) === -1) {
             params.info.push({
               motorId: item,
-              priceType: "latestPrice",
+              priceType: "sopPrice",
               isTargetMotor: false,
             });
           }
@@ -752,7 +722,7 @@ export default {
         this.ComparedMotor.forEach((item) => {
           params.info.push({
             motorId: item,
-            priceType: "latestPrice",
+            priceType: "sopPrice",
             isTargetMotor: false,
             priceDate: "",
             engine: "",
@@ -767,8 +737,8 @@ export default {
       } else {
         params.isBindingRfq = false;
       }
-      this.getHistogram(params);
-      this.getMekTable();
+      await this.getHistogram(params);
+      await this.getMekTable();
       this.delItemFlag = false;
       console.log(this.delItemFlag);
     },
@@ -783,7 +753,7 @@ export default {
         info: [
           {
             motorId: this.targetMotor,
-            priceType: "latestPrice",
+            priceType: "sopPrice",
             isTargetMotor: true,
           },
         ],
@@ -795,7 +765,7 @@ export default {
       this.ComparedMotor.forEach((item) => {
         params.info.push({
           motorId: item,
-          priceType: "latestPrice",
+          priceType: "sopPrice",
           isTargetMotor: false,
         });
       });
@@ -890,102 +860,29 @@ export default {
       console.log(flag, val);
     },
     changeCheckList(index) {
-      this.$forceUpdate();
-      this.barData[index].detail.forEach((item, i) => {
-        if (this.barData[index].checkList.indexOf(item.title) === -1) {
-          this.barData[index].detail.splice(i, 1);
+      let detail=_.cloneDeep(this.orginBarData[index].detail)
+      this.barData[index].detail= [...detail]
+      // this.$set( this.barData[index], 'detail',detail);
+      // this.barData[index].detail = _.cloneDeep(this.orginBarData[index].detail);
+      this.barData[index].detail.forEach((item) => {
+        if (this.orginBarData[index].checkList.indexOf(item.title) === -1) {
+          this.barData[index].detail.splice(item, 1);
         }
       });
-      console.log(this.barData[index].checkList);
+      console.log(this.barData)
+      this.barData = [...this.barData];
+      this.$forceUpdate();
     },
     changeDate(val, index) {
       this.$forceUpdate();
+      console.log(val, index);
       let params = {
         comparedType: this.comparedType,
         info: [
           {
             motorId: this.targetMotor,
-            priceType: "latestPrice",
+            priceType: "sopPrice",
             priceDate: "",
-            isTargetMotor: true,
-            engine: "",
-            position: "",
-            transmission: "",
-          },
-        ],
-        categoryId: this.categoryId,
-        categoryCode: this.categoryCode,
-        schemeId: this.chemeId,
-        unselected: this.exceptPart,
-      };
-      if (this.entryStatus === 1) {
-        params.isBindingRfq = true;
-        params.rfq = this.rfqId;
-      } else {
-        params.isBindingRfq = false;
-      }
-      this.barData.forEach((item) => {
-        let obj = {
-          motorId: item.motorId,
-          priceType: item.priceType,
-          priceDate: item.priceDate,
-          isTargetMotor: false,
-          engine: item.engine || "",
-          position: item.position || "",
-          transmission: item.transmission || "",
-        };
-        params.info.push(obj);
-      });
-      this.getHistogram(params);
-    },
-    changTargetPrice(val) {
-      let params = {
-        comparedType: this.comparedType,
-        info: [
-          {
-            motorId: this.targetMotor,
-            priceType: val,
-            isTargetMotor: true,
-            priceDate: "",
-            engine: "",
-            position: "",
-            transmission: "",
-          },
-        ],
-        categoryId: this.categoryId,
-        categoryCode: this.categoryCode,
-        schemeId: this.chemeId,
-        unselected: this.exceptPart,
-      };
-      if (this.entryStatus === 1) {
-        params.isBindingRfq = true;
-        params.rfq = this.rfqId;
-      } else {
-        params.isBindingRfq = false;
-      }
-      this.barData.forEach((item) => {
-        let obj = {
-          motorId: item.motorId,
-          priceType: item.priceType,
-          priceDate: item.priceDate,
-          isTargetMotor: false,
-          engine: item.engine || "",
-          position: item.position || "",
-          transmission: item.transmission || "",
-        };
-        params.info.push(obj);
-      });
-      this.getHistogram(params);
-    },
-    changeTargetDate(val) {
-      this.$forceUpdate();
-      let params = {
-        comparedType: this.comparedType,
-        info: [
-          {
-            motorId: this.targetMotor,
-            priceType: this.firstBarData.priceType,
-            priceDate: val,
             isTargetMotor: true,
             engine: "",
             position: "",
@@ -1092,7 +989,7 @@ export default {
         info: [
           {
             motorId: this.targetMotor,
-            priceType: "latestPrice",
+            priceType: "sopPrice",
             isTargetMotor: true,
             priceDate: "",
             engine: "",
@@ -1172,7 +1069,7 @@ export default {
         info: [
           {
             motorId: this.targetMotor,
-            priceType: "latestPrice",
+            priceType: "sopPrice",
             isTargetMotor: true,
             priceDate: "",
             engine: !index && index !== 0 ? val[0].engine : "",
@@ -1207,6 +1104,7 @@ export default {
       params.info[index + 1].engine = val[0].engine;
       params.info[index + 1].position = val[0].position;
       params.info[index + 1].transmission = val[0].transmission;
+      console.log(params, "end");
       this.getHistogram(params);
     },
     delItem(data) {
@@ -1215,7 +1113,7 @@ export default {
         info: [
           {
             motorId: this.targetMotor,
-            priceType: "latestPrice",
+            priceType: "sopPrice",
             isTargetMotor: true,
           },
         ],
@@ -1261,9 +1159,9 @@ export default {
             data.forEach((item) => {
               maxWidthList.push(item.detail.length);
               if (item.detail.length === 1 || item.detail.length === 0) {
-                this.totalWidth = 240 * data.length;
+                this.totalWidth = 260 * data.length;
               } else {
-                this.totalWidth += item.detail.length * 80;
+                this.totalWidth += item.detail.length * 100;
               }
               item.detail.forEach((i) => {
                 maxList.push(parseInt(i.value));
@@ -1285,15 +1183,17 @@ export default {
             console.log(this.firstBarData, this.barData);
             data.shift();
             this.barData = data;
-
             this.barData.forEach((item) => {
               item.checkList = [];
+              item.orginCheckList = [];
             });
             this.barData.forEach((item) => {
               item.detail.forEach((i) => {
                 item.checkList.push(i.title);
+                item.orginCheckList.push(i.title);
               });
             });
+            this.orginBarData = _.cloneDeep(this.barData);
             if (this.comparedType === "mekMotorType") {
               this.mekMotorTypeFlag = true;
             } else {
@@ -1360,14 +1260,13 @@ export default {
           categoryId: this.categoryId,
           categoryName: this.categoryName,
           comparedType: this.comparedType,
-          exceptPart: this.exceptPart ? this.exceptPart.toString() : null,
+          exceptPart: this.exceptPart,
           firstComparedConfig: "",
           secondComparedConfig: "",
           thirdComparedConfig: "",
           forthComparedConfig: "",
           schemeId: this.chemeId,
           targetMotor: this.targetMotor,
-          name: this.analysisName,
         };
         console.log(this.barData);
         if (this.barData[0]) {
