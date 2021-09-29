@@ -40,7 +40,6 @@ export const describeTab = [
         name: "AEKO描述",
         url: "/aeko/stancelist",
         activePath: "/stancelist",
-        role:['isLinie'],
         message: 0,
         key: "LK_AEKOFUJIANMIAOSHU",
         permissionKey:'AEKO_DESCRIBE',
