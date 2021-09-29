@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-09-28 11:01:45
+ * @LastEditTime: 2021-09-29 10:43:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -42,7 +42,8 @@
                        show-overflow-tooltip>
         <el-table-column :label="gridData.config[item.label]"
                          :prop="item.label"
-                         show-overflow-tooltip>
+                         show-overflow-tooltip
+                         :render-header="renderHeader">
           <editable-cell slot-scope="{row}"
                          :show-input="row.editMode"
                          v-model="row[item.label]">
@@ -172,6 +173,23 @@ export default {
       }).then(res => {
         this.$parent.$parent.getMekTable()
       })
+    },
+      renderHeader (h, { column }) {
+      let header = column.label.split('<br/>');
+      console.log(header)
+      return [h('p', {
+        style: {
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap'
+        },
+      }, [
+        h('p', {}, header[0]),
+        h('p', {}, header[1]),
+        h('p', {}, header[2]),
+        h('p', {}, header[3]),
+        h('p', {}, header[4])
+      ])];
     },
     //表格保存
     saveTable () {
