@@ -157,7 +157,7 @@ export default {
       tableLoading: false,
       addDialog: false,
       form: {
-        materialGroup: this.$store.state.rfq.materialGroup || '',
+        materialGroup: this.$route.state.rfq.materialGroup || '',
         createName: "",
         spareParts: this.$store.state.rfq.spareParts || "",
         rfqNo: this.$store.state.rfq.rfqId || "",

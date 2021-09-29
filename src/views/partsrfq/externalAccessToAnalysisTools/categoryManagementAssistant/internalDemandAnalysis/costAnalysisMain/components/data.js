@@ -1,17 +1,17 @@
 /*
  * @Author: youy
  * @Date: 2021-08-02 15:46:31
- * @LastEditTime: 2021-09-27 13:45:41
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-28 17:55:15
+ * @LastEditors: 舒杰
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysis\components\data.js
+ * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\components\data.js
  */
 
 export const tableTitle = [
-  {props: 'partNum', name: '零件号', key: 'LINGJIANHAO'},
-  {props: 'fsNum', name: 'FS号', key: 'FSHAO'},
-  {props: 'supplierName', name: '供应商', key: 'GONGYINGSHANG',width:300},
-  {props: 'linie', name: 'Linie', key: 'LINIEXIAOXIE'},
-  {props: 'nomiDate', name: '定点日期', key: 'DINGDIANRIQI'},
-  {props: 'cartypeProjectZh', name: '车型项目', key: 'CHEXINGXIANGMU'},
+  {props: 'partNum', name: '零件号', key: 'LINGJIANHAO',width:120,tooltip: true},
+  {props: 'fsNum', name: 'FS号', key: 'FSHAO',width:140,tooltip: true},
+  {props: 'supplierName', name: '供应商', key: 'GONGYINGSHANG',tooltip: true},
+  {props: 'linie', name: 'Linie', key: 'LINIEXIAOXIE',width:80,tooltip: true},
+  {props: 'nomiDate', name: '定点日期', key: 'DINGDIANRIQI',tooltip: true},
+  {props: 'cartypeProjectZh', name: '车型项目', key: 'CHEXINGXIANGMU',tooltip: true},
 ]
