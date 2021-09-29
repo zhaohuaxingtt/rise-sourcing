@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-11 14:17:10
- * @LastEditTime: 2021-09-28 17:47:35
+ * @LastEditTime: 2021-09-29 10:13:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\modalDialog.vue
@@ -18,7 +18,8 @@
                 :tableTitle="confirmTableHead"
                 class="table-footerStyle"
                 radio
-                @handleSelectionChange="handleSelectionChange">
+                @handleSelectionChange="handleSelectionChange"
+                @handleSelect="handleSelect">
       <template slot='isCalculate'
                 slot-scope="scope">
         <div v-if="scope.row.isCalculate==='Y'"
@@ -86,6 +87,9 @@ export default {
     },
     handleSelectionChange (val) {
       this.selectData = val
+    },
+    handleSelect(val){
+
     },
     handleSearchSure () {
       console.log(this.index)
