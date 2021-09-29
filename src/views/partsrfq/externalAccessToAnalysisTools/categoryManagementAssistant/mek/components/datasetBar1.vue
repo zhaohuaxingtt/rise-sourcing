@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-09-29 01:25:37
+ * @LastEditTime: 2021-09-29 21:51:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -97,10 +97,10 @@ export default {
   methods: {
     initCharts() {
       if (this.firstBarData.detail.length === 1) {
-        this.$refs.chart.style.width = "260px";
+        this.$refs.chart.style.width = "240px";
       } else {
         this.$refs.chart.style.width =
-          this.firstBarData.detail.length * 100 + "px";
+          this.firstBarData.detail.length * 80 + "px";
       }
 
       this.myChart = echarts().init(this.$refs.chart);
@@ -189,39 +189,6 @@ export default {
               barBorderRadius: [5, 5, 0, 0],
             },
             data: this.barData,
-            // data: [{
-            //   value: 400,
-            //   label: {
-            //     show: true,
-            //     position: 'top',
-            //     color: "#000"
-            //   },
-            //   itemStyle: {
-            //     color: "#A1D0FF"
-            //   }
-            // },
-            // {
-            //   value: 450,
-            //   label: {
-            //     show: true,
-            //     position: 'top',
-            //     color: "#000"
-            //   },
-            //   itemStyle: {
-            //     color: "#92B8FF"
-            //   }
-            // },
-            // {
-            //   value: 500,
-            //   label: {
-            //     show: true,
-            //     position: 'top',
-            //     color: "#000"
-            //   },
-            //   itemStyle: {
-            //     color: "#5993FF"
-            //   }
-            // }],
           },
         ],
       };

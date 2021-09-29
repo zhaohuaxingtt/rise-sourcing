@@ -9,7 +9,7 @@
     <div class="new-MEK" id="downloadRef">
       <div class=" bodyBox clearFloat">
         <el-col :span="4">
-          <iCard style="width:100%;height:670px">
+          <iCard style="width:100%;height:610px">
             <div class="cardBox" style="width:100%;">
               <div class=" searchForm" style="margin-right:20px">
                 <div class="searchFormItem">
@@ -29,7 +29,9 @@
                   <label for="" style="font-weight:600;font-size:14px"
                     >类型选择</label
                   >
-                  <el-tag>{{ mekTypeName }}</el-tag>
+                  <div class="flexBox">
+                    <el-tag>{{ mekTypeName }}</el-tag>
+                  </div>
                 </div>
                 <div class="searchFormItem">
                   <label for="" style="font-weight:600;font-size:14px"
@@ -46,7 +48,7 @@
           </iCard>
         </el-col>
         <el-col :span="20">
-          <iCard class="margin-left20" ref="chartBox" style="height:670px">
+          <iCard class="margin-left20" ref="chartBox" style="height:610px">
             <div class="chartBox1 ">
               <div class="chartBox">
                 <div class="line" :style="{ width: totalWidth }"></div>
@@ -56,22 +58,7 @@
                 <div class="line4" :style="{ width: totalWidth }"></div>
                 <div class="flex chartItem">
                   <div class="operation1">
-                    <div style="height:20px" class="margin-bottom20"></div>
-                    <el-select
-                      v-model="targetMotor"
-                      @change="changeTargetMotor"
-                      style="width:150px"
-                      class="margin-bottom20"
-                      placeholder="请选择目标车型"
-                    >
-                      <el-option
-                        v-for="item in TargetMotorList"
-                        :key="item.motorId"
-                        :value="item.motorId"
-                        :label="item.motorName"
-                      >
-                      </el-option>
-                    </el-select>
+                    <p class="motorName">{{targetMotorName}}</p>
                     <span class="margin-bottom20 productFactoryNames">{{
                       productFactoryNames
                     }}</span>
@@ -88,36 +75,6 @@
                     :clientHeight="clientHeight"
                     @detailDialog="detailDialog"
                   ></datasetBar1>
-                  <div class="xAxis1" v-if="mekMotorTypeFlag">
-                    <div
-                      v-for="i in firstBarData.detail"
-                      :key="i.value"
-                      style="text-align:center"
-                    >
-                      <div style="margin-bottom:5px">
-                        <span
-                          class="detail"
-                          @click="computeModal(firstBarData)"
-                          >{{ i.title }}</span
-                        >
-                        <el-tooltip
-                          class="item"
-                          effect="dark"
-                          :content="firstBarData.tips"
-                          placement="top-end"
-                        >
-                          <icon
-                            name="iconzengjiacailiaochengben_lan"
-                            symbol
-                            style="width:14px;height:14px;margin-left:10px"
-                          ></icon>
-                        </el-tooltip>
-                      </div>
-                      <span @click="computeModal(firstBarData)">{{
-                        i.ebr
-                      }}</span>
-                    </div>
-                  </div>
                 </div>
                 <div
                   class="flex chartItem"
@@ -125,37 +82,9 @@
                   :key="item.motorId"
                 >
                   <div class="operation">
-                    <div @click="delItem(item)" style="z-index:1000">
-                      <icon
-                        symbol
-                        name="iconbob-shanchu"
-                        class="margin-bottom20 "
-                        style="width:20px;height:20px;"
-                      ></icon>
-                    </div>
-                    <el-popover
-                      placement="bottom"
-                      width="80"
-                      trigger="click"
-                      visible-arrow
-                      class="margin-bottom20"
-                    >
-                      <el-checkbox-group
-                        v-model="item.checkList"
-                        class="checkList"
-                        @change="changeCheckList"
-                      >
-                        <el-checkbox
-                          v-for="(i, index) in item.detail"
-                          :key="index"
-                          :label="i.value"
-                          >{{ i.title }}</el-checkbox
-                        >
-                      </el-checkbox-group>
-                      <div class="motorName" slot="reference">
+                      <P class="motorName">
                         {{ item.motorName }}
-                      </div>
-                    </el-popover>
+                      </P>
                     <span
                       class="margin-bottom20 motorName"
                       style="line-height:16px;height:16px"
@@ -196,34 +125,7 @@
                     :typeSelection="mekMotorTypeFlag"
                     :maxData="maxData"
                     :clientHeight="clientHeight"
-                    @detailDialog="detailDialog"
                   ></datasetBar>
-                  <div class="xAxis" v-if="mekMotorTypeFlag">
-                    <div
-                      v-for="i in item.detail"
-                      :key="i.value"
-                      style="text-align:center"
-                    >
-                      <div style="margin-bottom:5px">
-                        <span class="detail" @click="computeModal(item, ind)">{{
-                          i.title
-                        }}</span>
-                        <el-tooltip
-                          class="item"
-                          effect="dark"
-                          :content="item.tips"
-                          placement="top-end"
-                        >
-                          <icon
-                            name="iconzengjiacailiaochengben_lan"
-                            symbol
-                            style="width:14px;height:14px;margin-left:10px"
-                          ></icon>
-                        </el-tooltip>
-                      </div>
-                      <span @click="computeModal(item)">{{ i.ebr }}</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -312,6 +214,18 @@ export default {
     ComparedMotorName: {
       type: Array,
     },
+    totalWidth:{
+      type:String
+    },
+    productFactoryNames:{
+      type:String
+    },
+    maxData:{
+      tyep:String
+    },
+    clientHeight:{
+      type:String
+    }
   },
   watch: {
     value(val) {
@@ -359,14 +273,16 @@ export default {
   }
 }
 .searchForm {
-  text-align: center;
-  height: 540px;
   overflow-y: auto;
   overflow-x: hidden;
   margin-bottom: 20px;
   &::-webkit-scrollbar {
     margin-left: 10px !important;
   }
+}
+.searchForm1 {
+  height: 559px;
+  text-align: center;
 }
 ::v-deep .cardBox {
   float: left;
@@ -375,29 +291,30 @@ export default {
   margin-top: 20px;
 }
 .chartItem {
+  float: left;
   position: relative;
   // flex: 1;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  margin-right: 60px;
+  margin-right: 10px;
   &:last-child {
     margin-right: 0;
   }
 }
 .operation {
+  margin-bottom: -70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: -60px;
 }
 .operation1 {
+  margin-bottom: -70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: -45px;
 }
 .title {
   font-family: Arial;
@@ -405,7 +322,7 @@ export default {
   color: black;
   align-items: center;
   label {
-    width: 210px;
+    width: 90px;
   }
 }
 
@@ -416,59 +333,70 @@ export default {
 .yield {
   width: 120px;
   height: 35px;
+  line-height: 25px;
+  text-align: center;
   background: #eef2fb;
   opacity: 1;
+  font-size: 16px;
   border-radius: 20px;
-  padding: 9px 26px;
+  padding: 5px;
 }
 .chartBox {
+  position: relative;
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
+  // overflow-x: auto;
+  // overflow-y: hidden;
 }
 .chartBox1 {
+  height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   position: relative;
+}
+.productFactoryNames {
+  font-size: 16px;
+  line-height: 16px;
+  height: 16px;
 }
 .line {
   position: absolute;
   left: 40px;
-  bottom: 13%;
+  bottom: 10%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line1 {
   position: absolute;
   left: 40px;
-  bottom: 23%;
+  bottom: 20%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line2 {
   position: absolute;
   left: 40px;
-  bottom: 33%;
+  bottom: 30%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line3 {
   position: absolute;
   left: 40px;
-  bottom: 43%;
+  bottom: 40%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line4 {
   position: absolute;
   left: 40px;
-  bottom: 54%;
+  bottom: 49%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .checkList {
@@ -477,12 +405,31 @@ export default {
 }
 .xAxis {
   position: absolute;
-  bottom: 3%;
-  font-size: 12px;
+  bottom: 1%;
+  font-size: 14px;
   color: "#3C4F74";
   font-family: "Arial";
+  .detail:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
-
+.xAxis1 {
+  position: absolute;
+  left: 23%;
+  bottom: 1%;
+  font-size: 14px;
+  color: "#3C4F74";
+  font-family: "Arial";
+  .detail:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+.motorName {
+  font-size: 16px;
+  height: 32px;
+}
 ::v-deep .el-select {
   width: 100%;
   .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {
@@ -490,9 +437,7 @@ export default {
   }
 }
 ::v-deep .el-select__tags {
-  flex-direction: column;
   justify-content: flex-start;
-  left: -16%;
 }
 .searchFormItem {
   margin-bottom: 60px;

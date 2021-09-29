@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-29 01:31:22
+ * @LastEditTime: 2021-09-29 21:51:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -105,9 +105,9 @@ export default {
   methods: {
     initCharts() {
       if (this.barData.detail.length === 1) {
-        this.$refs.chart.style.width = this.barData.detail.length * 260 + "px";
+        this.$refs.chart.style.width = this.barData.detail.length * 240 + "px";
       } else {
-        this.$refs.chart.style.width = this.barData.detail.length * 100 + "px";
+        this.$refs.chart.style.width = this.barData.detail.length * 80 + "px";
       }
       // console.log(this.$refs.chart.style.width, 'number')
       // this.$refs.chart.style.minWidth = '100%';
