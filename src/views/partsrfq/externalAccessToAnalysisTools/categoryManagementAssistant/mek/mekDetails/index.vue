@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-29 01:43:04
+ * @LastEditTime: 2021-09-29 10:29:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -9,89 +9,95 @@
 <template>
   <iPage class="new-MEK">
     <div id="content">
-      <div class="navBox flex-between-center"
-           style="margin-bottom:20px">
+      <div class="navBox flex-between-center" style="margin-bottom:20px">
         <div class="title font-weight flex">
           <label for="">{{ language("CAILIAOZU", "材料组") }}:</label>
-          <iSelect @change="changeCategory"
-                   v-model="categoryCode"
-                   v-if="entryStatus === '1'">
-            <el-option v-for="item in categoryList"
-                       :key="item.categoryId"
-                       :value="item.categoryCode"
-                       :label="item.categoryName">
+          <iSelect
+            @change="changeCategory"
+            v-model="categoryCode"
+            v-if="entryStatus === '1'"
+          >
+            <el-option
+              v-for="item in categoryList"
+              :key="item.categoryId"
+              :value="item.categoryCode"
+              :label="item.categoryName"
+            >
             </el-option>
           </iSelect>
           <span v-else>{{ categoryName }}</span>
         </div>
-        <div class="flex"
-             v-show="reportFlag">
+        <div class="flex" v-show="reportFlag">
           <!--预览-->
-          <iButton class="margin-left30"
-                   @click="handleAnalysis">{{
+          <iButton class="margin-left30" @click="handleAnalysis">{{
             $t("MEK分析库")
           }}</iButton>
           <!--保存-->
-          <iButton @click="handleMEKInfo"
-                   class="margin-left30">{{
+          <iButton @click="handleMEKInfo" class="margin-left30">{{
             $t("MEK基础数据库")
           }}</iButton>
           <!--BoB分析库-->
-          <iButton class="margin-left30"
-                   @click="preview">{{
+          <iButton class="margin-left30" @click="preview">{{
             $t("预览")
           }}</iButton>
           <!--查找零件-->
-          <iButton class="margin-left30"
-                   @click="saveDialog">{{
+          <iButton class="margin-left30" @click="saveDialog">{{
             $t("保存")
           }}</iButton>
         </div>
       </div>
       <el-row>
         <el-col :span="4">
-          <iCard v-show="reportFlag"
-                 style="height:670px">
-            <div class=" searchForm"
-                 style="margin-right:-20px">
-              <el-form label-position="top"
-                       :model="form"
-                       style="height:564px;margin-right:10px"
-                       label-width="200px">
+          <iCard v-show="reportFlag" style="height:670px">
+            <div class=" searchForm" style="margin-right:-20px">
+              <el-form
+                label-position="top"
+                :model="form"
+                style="height:564px;margin-right:10px"
+                label-width="200px"
+              >
                 <el-row class="margin-bottom20">
                   <!--对标车型-->
-                  <el-form-item :label="$t('对标车型')"
-                                label-width="180px">
-                    <el-select v-model="ComparedMotor"
-                               @change="changeComparedMotor"
-                               multiple>
-                      <el-option v-for="item in ComparedMotorList"
-                                 :key="item.motorId"
-                                 :value="item.motorId"
-                                 :label="item.motorName">
+                  <el-form-item :label="$t('对标车型')" label-width="180px">
+                    <el-select
+                      v-model="ComparedMotor"
+                      @change="changeComparedMotor"
+                      multiple
+                    >
+                      <el-option
+                        v-for="item in ComparedMotorList"
+                        :key="item.motorId"
+                        :value="item.motorId"
+                        :label="item.motorName"
+                      >
                       </el-option>
                     </el-select>
                   </el-form-item>
                   <!--类型选择-->
                   <el-form-item :label="$t('类型选择')">
-                    <el-select v-model="comparedType"
-                               @change="comparedTypeBy">
-                      <el-option v-for="item in mekTypeList"
-                                 :key="item.id"
-                                 :value="item.code"
-                                 :label="item.name">
+                    <el-select v-model="comparedType" @change="comparedTypeBy">
+                      <el-option
+                        v-for="item in mekTypeList"
+                        :key="item.id"
+                        :value="item.code"
+                        :label="item.name"
+                      >
                       </el-option>
                     </el-select>
                   </el-form-item>
                   <!--零件六位号-->
                   <el-form-item :label="$t('零件六位号')">
-                    <el-select v-model="partNumber"
-                               multiple
-                               @change="changePartNumber">
-                      <el-option v-for="item in recursiveRetrieveList"
-                                 :key="item.partId"
-                                 :value="item.partNumber"
-                                 :label="item.partSixNumber">
+                    <el-select
+                      v-model="partNumber"
+                      multiple
+                      @change="changePartNumber"
+                    >
+                      <el-option
+                        v-for="item in recursiveRetrieveList"
+                        :key="item.partId"
+                        :value="item.partNumber"
+                        :label="item.partSixNumber"
+                      >
                       </el-option>
                     </el-select>
                   </el-form-item>
@@ -99,24 +105,31 @@
               </el-form>
             </div>
             <div class="end">
-              <iButton type="primary"
-                       style="width:100px;height:35px"
-                       @click="searchChartData">{{ $t("LK_QUEDING") }}</iButton>
-              <iButton type="primary"
-                       style="width:100px;height:35px"
-                       @click="handleSearchReset">{{ $t("LK_ZHONGZHI") }}</iButton>
+              <iButton
+                type="primary"
+                style="width:100px;height:35px"
+                @click="searchChartData"
+                >{{ $t("LK_QUEDING") }}</iButton
+              >
+              <iButton
+                type="primary"
+                style="width:100px;height:35px"
+                @click="handleSearchReset"
+                >{{ $t("LK_ZHONGZHI") }}</iButton
+              >
             </div>
           </iCard>
-          <iCard v-show="!reportFlag"
-                 style="height:619px">
-            <div class=" searchForm1"
-                 style="margin-right:20px">
-              <label for=""
-                     style="font-weight:600;font-size:14px">六位零件号</label>
+          <iCard v-show="!reportFlag" style="height:619px">
+            <div class=" searchForm1" style="margin-right:20px">
+              <label for="" style="font-weight:600;font-size:14px"
+                >六位零件号</label
+              >
               <ul style="margin-top:10px">
-                <li style="maring-bottom:10px"
-                    v-for="(item, index) in partNumber"
-                    :key="index">
+                <li
+                  style="maring-bottom:10px"
+                  v-for="(item, index) in partNumber"
+                  :key="index"
+                >
                   {{ item }}
                 </li>
               </ul>
@@ -124,34 +137,30 @@
           </iCard>
         </el-col>
         <el-col :span="20">
-          <iCard class="margin-left20"
-                 ref="chartBox"
-                 style="height:670px">
+          <iCard class="margin-left20" ref="chartBox" style="height:670px">
             <div class="chartBox1 ">
               <div class="chartBox">
-                <div class="line"
-                     :style="{ width: totalWidth }"></div>
-                <div class="line1"
-                     :style="{ width: totalWidth }"></div>
-                <div class="line2"
-                     :style="{ width: totalWidth }"></div>
-                <div class="line3"
-                     :style="{ width: totalWidth }"></div>
-                <div class="line4"
-                     :style="{ width: totalWidth }"></div>
+                <div class="line" :style="{ width: totalWidth }"></div>
+                <div class="line1" :style="{ width: totalWidth }"></div>
+                <div class="line2" :style="{ width: totalWidth }"></div>
+                <div class="line3" :style="{ width: totalWidth }"></div>
+                <div class="line4" :style="{ width: totalWidth }"></div>
                 <div class="flex chartItem">
                   <div class="operation1">
-                    <div style="height:20px"
-                         class="margin-bottom20"></div>
-                    <el-select v-model="targetMotor"
-                               @change="changeTargetMotor"
-                               style="width:150px"
-                               class="margin-bottom20"
-                               placeholder="请选择目标车型">
-                      <el-option v-for="item in TargetMotorList"
-                                 :key="item.motorId"
-                                 :value="item.motorId"
-                                 :label="item.motorName">
+                    <div style="height:20px" class="margin-bottom20"></div>
+                    <el-select
+                      v-model="targetMotor"
+                      @change="changeTargetMotor"
+                      style="width:150px"
+                      class="margin-bottom20"
+                      placeholder="请选择目标车型"
+                    >
+                      <el-option
+                        v-for="item in TargetMotorList"
+                        :key="item.motorId"
+                        :value="item.motorId"
+                        :label="item.motorName"
+                      >
                       </el-option>
                     </el-select>
                     <span class="margin-bottom20 productFactoryNames">{{
@@ -161,108 +170,145 @@
                       toThousand(parseInt(firstBarData.output))
                     }}</span>
                   </div>
-                  <datasetBar1 ref="datasetBar1"
-                               :typeSelection="mekMotorTypeFlag"
-                               :firstBarData="firstBarData"
-                               :maxWidth="maxWidth"
-                               :maxData="maxData"
-                               :clientHeight="clientHeight"
-                               @detailDialog="detailDialog"></datasetBar1>
-                  <div class="xAxis1"
-                       v-if="mekMotorTypeFlag">
-                    <div v-for="i in firstBarData.detail"
-                         :key="i.value"
-                         style="text-align:center">
+                  <datasetBar1
+                    ref="datasetBar1"
+                    :typeSelection="mekMotorTypeFlag"
+                    :firstBarData="firstBarData"
+                    :maxWidth="maxWidth"
+                    :maxData="maxData"
+                    :clientHeight="clientHeight"
+                    @detailDialog="detailDialog"
+                  ></datasetBar1>
+                  <div class="xAxis1" v-if="mekMotorTypeFlag">
+                    <div
+                      v-for="i in firstBarData.detail"
+                      :key="i.value"
+                      style="text-align:center"
+                    >
                       <div style="margin-bottom:5px">
-                        <span class="detail"
-                              @click="computeModal(firstBarData)">{{ i.title }}</span>
-                        <el-tooltip class="item"
-                                    effect="dark"
-                                    :content="firstBarData.tips"
-                                    placement="top-end">
-
-                          <icon name="iconzengjiacailiaochengben_lan"
-                                symbol
-                                style="width:14px;height:14px;margin-left:10px"></icon>
+                        <span
+                          class="detail"
+                          @click="computeModal(firstBarData)"
+                          >{{ i.title }}</span
+                        >
+                        <el-tooltip
+                          class="item"
+                          effect="dark"
+                          :content="firstBarData.tips"
+                          placement="top-end"
+                        >
+                          <icon
+                            name="iconzengjiacailiaochengben_lan"
+                            symbol
+                            style="width:14px;height:14px;margin-left:10px"
+                          ></icon>
                         </el-tooltip>
                       </div>
-                      <span @click="computeModal(firstBarData)">{{ i.ebr }}</span>
+                      <span @click="computeModal(firstBarData)">{{
+                        i.ebr
+                      }}</span>
                     </div>
                   </div>
                 </div>
-                <div class="flex chartItem"
-                     v-for="(item,ind) in barData"
-                     :key="item.motorId">
+                <div
+                  class="flex chartItem"
+                  v-for="(item, ind) in barData"
+                  :key="item.motorId"
+                >
                   <div class="operation">
-                    <div @click="delItem(item)"
-                         style="z-index:1000">
-                      <icon symbol
-                            name="iconbob-shanchu"
-                            class="margin-bottom20 "
-                            style="width:20px;height:20px;"></icon>
+                    <div @click="delItem(item)" style="z-index:1000">
+                      <icon
+                        symbol
+                        name="iconbob-shanchu"
+                        class="margin-bottom20 "
+                        style="width:20px;height:20px;"
+                      ></icon>
                     </div>
-                    <el-popover placement="bottom"
-                                width="80"
-                                trigger="click"
-                                visible-arrow
-                                class="margin-bottom20">
-                      <el-checkbox-group v-model="item.checkList"
-                                         class="checkList"
-                                         @change="changeCheckList(ind)">
-                        <el-checkbox v-for="(i, index) in item.detail"
-                                     :key="index"
-                                     :label="i.title"></el-checkbox>
+                    <el-popover
+                      placement="bottom"
+                      width="80"
+                      trigger="click"
+                      visible-arrow
+                      class="margin-bottom20"
+                    >
+                      <el-checkbox-group
+                        v-model="item.checkList"
+                        class="checkList"
+                        @change="changeCheckList(ind)"
+                      >
+                        <el-checkbox
+                          v-for="(i, index) in item.detail"
+                          :key="index"
+                          :label="i.title"
+                        ></el-checkbox>
                       </el-checkbox-group>
-                      <div class="motorName"
-                           slot="reference">
+                      <div class="motorName" slot="reference">
                         {{ item.motorName }}
                       </div>
                     </el-popover>
-                    <span class="margin-bottom20 motorName"
-                          style="line-height:16px;height:16px">{{ item.factory }}</span>
-                    <span class="yield margin-bottom15">{{toThousand(parseInt(item.output))}}</span>
+                    <span
+                      class="margin-bottom20 motorName"
+                      style="line-height:16px;height:16px"
+                      >{{ item.factory }}</span
+                    >
+                    <span class="yield margin-bottom15">{{
+                      toThousand(parseInt(item.output))
+                    }}</span>
                     <div class="flex">
-                      <el-select v-model="item.priceType"
-                                 @change="changPriceType"
-                                 style="width:150px;z-index:1000">
-                        <el-option v-for="i in mekpriceTypeList"
-                                   :key="i.id"
-                                   :value="i.code"
-                                   :label="i.name">
+                      <el-select
+                        v-model="item.priceType"
+                        @change="changPriceType"
+                        style="width:150px;z-index:1000"
+                      >
+                        <el-option
+                          v-for="i in mekpriceTypeList"
+                          :key="i.id"
+                          :value="i.code"
+                          :label="i.name"
+                        >
                         </el-option>
                       </el-select>
-                      <el-date-picker v-model="item.priceDate"
-                                      type="date"
-                                      placeholder="选择日期"
-                                      @input="changeDate(item.priceDate,ind)"
-                                      value-format="yyyy-MM-dd"
-                                      style="width:150px;z-index:1000;margin-left:20px"
-                                      v-if="item.priceType === 'monthPrice'">
+                      <el-date-picker
+                        v-model="item.priceDate"
+                        type="date"
+                        placeholder="选择日期"
+                        @input="changeDate(item.priceDate, ind)"
+                        value-format="yyyy-MM-dd"
+                        style="width:150px;z-index:1000;margin-left:20px"
+                        v-if="item.priceType === 'monthPrice'"
+                      >
                       </el-date-picker>
                     </div>
                   </div>
-                  <datasetBar :barData="item"
-                              :maxWidth="maxWidth"
-                              :typeSelection="mekMotorTypeFlag"
-                              :maxData="maxData"
-                              :clientHeight="clientHeight"
-                              @detailDialog="detailDialog"></datasetBar>
-                  <div class="xAxis"
-                       v-if="mekMotorTypeFlag">
-                    <div v-for="i in item.detail"
-                         :key="i.value"
-                         style="text-align:center">
+                  <datasetBar
+                    :barData="item"
+                    :maxWidth="maxWidth"
+                    :typeSelection="mekMotorTypeFlag"
+                    :maxData="maxData"
+                    :clientHeight="clientHeight"
+                    @detailDialog="detailDialog"
+                  ></datasetBar>
+                  <div class="xAxis" v-if="mekMotorTypeFlag">
+                    <div
+                      v-for="i in item.detail"
+                      :key="i.value"
+                      style="text-align:center"
+                    >
                       <div style="margin-bottom:5px">
-                        <span class="detail"
-                              @click="computeModal(item,ind)">{{i.title}}</span>
-                        <el-tooltip class="item"
-                                    effect="dark"
-                                    :content="item.tips"
-                                    placement="top-end">
-
-                          <icon name="iconzengjiacailiaochengben_lan"
-                                symbol
-                                style="width:14px;height:14px;margin-left:10px"></icon>
+                        <span class="detail" @click="computeModal(item, ind)">{{
+                          i.title
+                        }}</span>
+                        <el-tooltip
+                          class="item"
+                          effect="dark"
+                          :content="item.tips"
+                          placement="top-end"
+                        >
+                          <icon
+                            name="iconzengjiacailiaochengben_lan"
+                            symbol
+                            style="width:14px;height:14px;margin-left:10px"
+                          ></icon>
                         </el-tooltip>
                       </div>
                       <span @click="computeModal(item)">{{ i.ebr }}</span>
@@ -274,62 +320,69 @@
           </iCard>
         </el-col>
       </el-row>
-      <tableList :gridData="gridData"
-                 :editFlag="editFlag"
-                 :addRowList="addRowList"
-                 @editData="editData"
-                 :reportFlag="reportFlag"
-                 @addData="addData"></tableList>
+      <tableList
+        :gridData="gridData"
+        :editFlag="editFlag"
+        :addRowList="addRowList"
+        @editData="editData"
+        :reportFlag="reportFlag"
+        @addData="addData"
+      ></tableList>
 
-      <iDialog title="保存"
-               :visible.sync="dialogVisible"
-               width="20%"
-               @close="close">
+      <iDialog
+        title="保存"
+        :visible.sync="dialogVisible"
+        width="20%"
+        @close="close"
+      >
         <div>
           <div class="margin-bottom15 flex-between-center">
             <label for="">保存在分析库</label>
             <el-checkbox v-model="analysisSave"></el-checkbox>
           </div>
-          <iInput v-model="analysisName"
-                  placeholder="请输入文件名称" />
+          <iInput v-model="analysisName" placeholder="请输入文件名称" />
         </div>
         <div class="margin-top20">
           <div class="margin-bottom15 flex-between-center">
             <label for="">保存为报告</label>
             <el-checkbox v-model="reportSave"></el-checkbox>
           </div>
-          <iInput v-model="reportName"
-                  placeholder="请输入文件名称" />
+          <iInput v-model="reportName" placeholder="请输入文件名称" />
         </div>
-        <span slot="footer"
-              class="dialog-footer">
-          <iButton type="primary"
-                   @click="save"
-                   v-loading="loading">确 定</iButton>
+        <span slot="footer" class="dialog-footer">
+          <iButton type="primary" @click="save" v-loading="loading"
+            >确 定</iButton
+          >
         </span>
       </iDialog>
-      <modalDialog :modalVisible="modalVisible"
-                   @input="closeModalDialog"
-                   :computeModalData="computeModalData"
-                   :index="index"
-                   @selectData="selectData"></modalDialog>
-      <detailDialog :detailVisible="detailVisible"
-                    :detailsData="detailsData"
-                    :detailMotorName="detailMotorName"
-                    :detailFactory="detailFactory"
-                    @input="closeModalDialog1"></detailDialog>
-      <preview v-if="previewFlag"
-               :value="previewFlag"
-               :firstBarData="firstBarData"
-               :chartItemWidth="chartItemWidth"
-               :barData="barData"
-               :gridData="gridData"
-               :partNumber="partNumber"
-               @closeDialog="closeDialog"
-               :maxWidth="maxWidth"
-               :targetMotorName="targetMotorName"
-               :mekpriceType="mekpriceType"
-               :preview="true"></preview>
+      <modalDialog
+        :modalVisible="modalVisible"
+        @input="closeModalDialog"
+        :computeModalData="computeModalData"
+        :index="index"
+        @selectData="selectData"
+      ></modalDialog>
+      <detailDialog
+        :detailVisible="detailVisible"
+        :detailsData="detailsData"
+        :detailMotorName="detailMotorName"
+        :detailFactory="detailFactory"
+        @input="closeModalDialog1"
+      ></detailDialog>
+      <preview
+        v-if="previewFlag"
+        :value="previewFlag"
+        :firstBarData="firstBarData"
+        :chartItemWidth="chartItemWidth"
+        :barData="barData"
+        :gridData="gridData"
+        :partNumber="partNumber"
+        @closeDialog="closeDialog"
+        :maxWidth="maxWidth"
+        :targetMotorName="targetMotorName"
+        :mekpriceType="mekpriceType"
+        :preview="true"
+      ></preview>
     </div>
   </iPage>
 </template>
@@ -385,7 +438,7 @@ export default {
     detailDialog,
     preview,
   },
-  data () {
+  data() {
     return {
       //类型选择
       type: "",
@@ -482,10 +535,10 @@ export default {
       detailMotorName: "",
       detailFactory: "",
       index: 0,
-      delItemFlag: false
+      delItemFlag: false,
     };
   },
-  async created () {
+  async created() {
     await this.init();
     let params = {
       comparedType: this.comparedType,
@@ -519,9 +572,9 @@ export default {
     }
     this.getMekTable();
   },
-  mounted () { },
+  mounted() {},
   methods: {
-    async init () {
+    async init() {
       this.rfqId = this.$store.state.rfq.rfqId;
       this.entryStatus = this.$store.state.rfq.entryStatus;
       this.chemeId = this.$route.query.chemeId;
@@ -615,7 +668,7 @@ export default {
       });
     },
     //查询
-    async searchChartData () {
+    async searchChartData() {
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -630,9 +683,9 @@ export default {
         schemeId: this.chemeId,
         unselected: this.exceptPart,
       };
-      let motorIdList = []
+      let motorIdList = [];
       if (this.barData) {
-        this.barData.forEach(item => {
+        this.barData.forEach((item) => {
           if (this.ComparedMotor.indexOf(item.motorId) > -1) {
             params.info.push({
               motorId: item.motorId,
@@ -641,30 +694,30 @@ export default {
               priceDate: item.priceDate,
               engine: item.engine || "",
               position: item.position || "",
-              transmission: item.transmission || ""
+              transmission: item.transmission || "",
             });
-            motorIdList.push(item.motorId)
+            motorIdList.push(item.motorId);
           }
-        })
-        this.ComparedMotor.forEach(item => {
+        });
+        this.ComparedMotor.forEach((item) => {
           if (motorIdList.indexOf(item) === -1) {
             params.info.push({
               motorId: item,
-              priceType: 'sopPrice',
+              priceType: "sopPrice",
               isTargetMotor: false,
             });
           }
-        })
+        });
       } else {
         this.ComparedMotor.forEach((item) => {
           params.info.push({
             motorId: item,
-            priceType: 'sopPrice',
+            priceType: "sopPrice",
             isTargetMotor: false,
             priceDate: "",
             engine: "",
             position: "",
-            transmission: ""
+            transmission: "",
           });
         });
       }
@@ -676,10 +729,15 @@ export default {
       }
       await this.getHistogram(params);
       await this.getMekTable();
-      this.delItemFlag = false
-      console.log(this.delItemFlag)
+      this.delItemFlag = false;
+      console.log(this.delItemFlag);
     },
-    async handleSearchReset () {
+    async handleSearchReset() {
+      this.targetMotor = [];
+      this.ComparedMotor = [];
+      this.comparedType = "";
+      this.exceptPart = "";
+      await this.init();
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -690,19 +748,15 @@ export default {
           },
         ],
         categoryId: this.categoryId,
-        categoryCode: this.categoryCode,
         schemeId: this.chemeId,
+        categoryCode: this.categoryCode,
         unselected: this.exceptPart,
       };
       this.ComparedMotor.forEach((item) => {
         params.info.push({
           motorId: item,
-          priceType: 'sopPrice',
+          priceType: "sopPrice",
           isTargetMotor: false,
-          priceDate: "",
-          engine: "",
-          position: "",
-          transmission: ""
         });
       });
       if (this.entryStatus === 1) {
@@ -711,13 +765,13 @@ export default {
       } else {
         params.isBindingRfq = false;
       }
-      await this.getHistogram(params);
-      await this.getMekTable();
-      this.delItemFlag = false
-      console.log(this.delItemFlag)
+      if (this.categoryId && this.chemeId && this.categoryCode) {
+        this.getHistogram(params);
+      }
+      this.getMekTable();
     },
     //选择材料组
-    changeCategory (val) {
+    changeCategory(val) {
       let obj = {};
       obj = this.categoryList.find((item) => {
         return item.categoryCode === val;
@@ -741,7 +795,7 @@ export default {
         this.TargetMotorList = res.data;
       });
     },
-    changeComparedMotor (val) {
+    changeComparedMotor(val) {
       this.ComparedMotorList.forEach((item) => {
         if (item.motorId === val) {
           this.ComparedMotorCode.push(item.motorCode);
@@ -757,7 +811,7 @@ export default {
       });
     },
     //选择目标车型
-    changeTargetMotor (val) {
+    changeTargetMotor(val) {
       this.TargetMotorList.forEach((item) => {
         if (item.motorId === val) {
           this.targetMotorName = item.motorName;
@@ -774,8 +828,8 @@ export default {
       });
     },
     //
-    detailDialog (flag, val) {
-      console.log(val)
+    detailDialog(flag, val) {
+      console.log(val);
       this.detailVisible = flag;
       let params = {
         comparedType: this.comparedType,
@@ -783,40 +837,40 @@ export default {
         unselected: this.unselected,
         ...val,
       };
-      delete params.motorName
-      delete params.factory
+      delete params.motorName;
+      delete params.factory;
       queryPartEbr(params).then((res) => {
         if (res.code === "200") {
           this.detailsData = res.data;
-          this.detailMotorName = val.motorName
-          this.detailFactory = val.factory
+          this.detailMotorName = val.motorName;
+          this.detailFactory = val.factory;
           // console.log(this.detailMotorName, this.detailFactory)
         }
       });
       console.log(flag, val);
     },
-    changeCheckList (index) {
+    changeCheckList(index) {
       this.$forceUpdate();
-      this.barData[index].detail.forEach(item => {
+      this.barData[index].detail.forEach((item) => {
         if (this.barData[index].checkList.indexOf(item.title) === -1) {
-          this.barData[index].detail.splice(item, 1)
+          this.barData[index].detail.splice(item, 1);
         }
-      })
+      });
     },
-    changeDate (val, index) {
+    changeDate(val, index) {
       this.$forceUpdate();
-      console.log(val, index)
+      console.log(val, index);
       let params = {
         comparedType: this.comparedType,
         info: [
           {
             motorId: this.targetMotor,
             priceType: "sopPrice",
-            priceDate: '',
+            priceDate: "",
             isTargetMotor: true,
             engine: "",
             position: "",
-            transmission: ""
+            transmission: "",
           },
         ],
         categoryId: this.categoryId,
@@ -838,29 +892,47 @@ export default {
           isTargetMotor: false,
           engine: item.engine || "",
           position: item.position || "",
-          transmission: item.transmission || ""
+          transmission: item.transmission || "",
         };
         params.info.push(obj);
       });
       this.getHistogram(params);
     },
-    saveDialog () {
-      this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
-      this.reportName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
+    saveDialog() {
+      this.analysisName =
+        this.categoryCode +
+        "_" +
+        this.categoryName +
+        "_" +
+        this.targetMotorName +
+        "_" +
+        "MEK" +
+        "_" +
+        window.moment(new Date()).format("yyyy.MM");
+      this.reportName =
+        this.categoryCode +
+        "_" +
+        this.categoryName +
+        "_" +
+        this.targetMotorName +
+        "_" +
+        "MEK" +
+        "_" +
+        window.moment(new Date()).format("yyyy.MM");
       this.dialogVisible = true;
-      this.analysisSave = true
+      this.analysisSave = true;
     },
     //编辑数据
-    editData (val) {
+    editData(val) {
       this.editDataList = val;
     },
     //新增数据
-    addData (val) {
+    addData(val) {
       this.addDataList = val;
     },
     //计算车型弹窗
-    computeModal (val, index) {
-      console.log(index)
+    computeModal(val, index) {
+      console.log(index);
       this.modalVisible = true;
       let params = {
         engine: val.detail[0].engine,
@@ -873,19 +945,18 @@ export default {
         if (res.code === "200") {
           this.computeModalData = res.data;
           if (index) {
-            this.index = index
+            this.index = index;
           }
-
         }
       });
     },
-    closeModalDialog (val) {
+    closeModalDialog(val) {
       this.modalVisible = val;
     },
-    closeModalDialog1 (val) {
+    closeModalDialog1(val) {
       this.detailVisible = val;
     },
-    changePartNumber (val) {
+    changePartNumber(val) {
       if (!this.exceptPart) {
         this.exceptPart = [];
       }
@@ -896,7 +967,7 @@ export default {
       console.log(this.exceptPart);
     },
     //价格类型
-    changPriceType (val) {
+    changPriceType(val) {
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -907,7 +978,7 @@ export default {
             priceDate: "",
             engine: "",
             position: "",
-            transmission: ""
+            transmission: "",
           },
         ],
         categoryId: this.categoryId,
@@ -929,14 +1000,14 @@ export default {
           isTargetMotor: false,
           engine: item.engine || "",
           position: item.position || "",
-          transmission: item.transmission || ""
+          transmission: item.transmission || "",
         };
         params.info.push(obj);
       });
       this.getHistogram(params);
     },
     //获取表格
-    getMekTable () {
+    getMekTable() {
       let params = {
         comparedType: this.comparedType,
         motorIds: this.ComparedMotor,
@@ -963,7 +1034,7 @@ export default {
         });
       }
     },
-    comparedTypeBy (val) {
+    comparedTypeBy(val) {
       let mekTypeName = "";
       this.mekTypeList.forEach((item) => {
         if (item.code === val) {
@@ -975,8 +1046,8 @@ export default {
         this.gridData.config["label#-1"] = mekTypeName;
       }
     },
-    selectData (val, index) {
-      console.log(val, index)
+    selectData(val, index) {
+      console.log(val, index);
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -985,9 +1056,9 @@ export default {
             priceType: "sopPrice",
             isTargetMotor: true,
             priceDate: "",
-            engine: (!index && index !== 0) ? val[0].engine : "",
-            position: (!index && index !== 0) ? val[0].position : "",
-            transmission: (!index && index !== 0) ? val[0].transmission : ""
+            engine: !index && index !== 0 ? val[0].engine : "",
+            position: !index && index !== 0 ? val[0].position : "",
+            transmission: !index && index !== 0 ? val[0].transmission : "",
           },
         ],
         categoryId: this.categoryId,
@@ -1001,7 +1072,7 @@ export default {
       } else {
         params.isBindingRfq = false;
       }
-      this.barData.forEach(item => {
+      this.barData.forEach((item) => {
         let obj = {
           motorId: item.motorId,
           priceType: item.priceType,
@@ -1009,18 +1080,18 @@ export default {
           isTargetMotor: false,
           engine: "",
           position: "",
-          transmission: ""
+          transmission: "",
         };
         params.info.push(obj);
       });
-      console.log(params)
-      params.info[index + 1].engine = val[0].engine
-      params.info[index + 1].position = val[0].position
-      params.info[index + 1].transmission = val[0].transmission
-      console.log(params, "end")
+      console.log(params);
+      params.info[index + 1].engine = val[0].engine;
+      params.info[index + 1].position = val[0].position;
+      params.info[index + 1].transmission = val[0].transmission;
+      console.log(params, "end");
       this.getHistogram(params);
     },
-    delItem (data) {
+    delItem(data) {
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -1049,11 +1120,11 @@ export default {
       } else {
         params.isBindingRfq = false;
       }
-      this.delItemFlag = true
+      this.delItemFlag = true;
       this.getHistogram(params);
       this.getMekTable();
     },
-    getHistogram (params) {
+    getHistogram(params) {
       const loading = this.$loading({
         lock: true,
         text: "Loading",
@@ -1064,7 +1135,7 @@ export default {
         this.$nextTick(() => {
           loading.close();
           let data = res.data;
-          this.totalData = _.cloneDeep(res.data)
+          this.totalData = _.cloneDeep(res.data);
           let maxWidthList = [];
           let maxList = [];
           this.totalWidth = 0;
@@ -1093,7 +1164,7 @@ export default {
             }
             this.maxData = first;
             this.firstBarData = data[0];
-            console.log(this.firstBarData, this.barData)
+            console.log(this.firstBarData, this.barData);
             data.shift();
             this.barData = data;
             this.barData.forEach((item) => {
@@ -1117,7 +1188,7 @@ export default {
         });
       });
     },
-    handleMEKInfo () {
+    handleMEKInfo() {
       let vwModelCodes = JSON.stringify([
         ...this.ComparedMotor,
         this.targetMotor,
@@ -1133,17 +1204,17 @@ export default {
         },
       });
     },
-    preview () {
+    preview() {
       this.previewFlag = true;
     },
-    closeDialog (val) {
+    closeDialog(val) {
       this.previewFlag = val;
     },
-    close () {
+    close() {
       this.dialogVisible = false;
       this.reportFlag = true;
     },
-    handleAnalysis () {
+    handleAnalysis() {
       if (this.entryStatus) {
         this.$router.push({
           path: "/sourceinquirypoint/sourcing/partsrfq/assistant",
@@ -1161,8 +1232,8 @@ export default {
         });
       }
     },
-    save () {
-      this.loading = true
+    save() {
+      this.loading = true;
       this.analysisSave = true;
 
       if (this.analysisSave) {
@@ -1179,7 +1250,7 @@ export default {
           schemeId: this.chemeId,
           targetMotor: this.targetMotor,
         };
-        console.log(this.barData)
+        console.log(this.barData);
         if (this.barData[0]) {
           params.firstComparedMotor = this.barData[0].motorId || "";
           params.firstComparedPrice = this.barData[0].priceType || "";
@@ -1197,8 +1268,8 @@ export default {
           params.forthComparedPrice = this.barData[3].priceType || "";
         }
         updateScheme(params).then(() => {
-          this.loading = false
-          this.dialogVisible = false
+          this.loading = false;
+          this.dialogVisible = false;
           iMessage.success("保存成功");
         });
       }

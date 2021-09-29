@@ -47,7 +47,7 @@
       <!-- </template> -->
       <el-table v-loading="tableLoading" tooltip-effect='light' ref="multipleTable" :data="tableListData" style="width: 100%; margin-bottom: 20px" row-key="id" :max-height="450" :row-class-name="rowStyle" :tree-props="{ children: 'reportList' }" @selection-change="handleSelectionChange" @select="rowSelect" @select-all="selectAll">
         <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column label="#" type="index" :index="indexMethod" align="center" header-align="center" width="40">
+        <el-table-column label="#" type="index" :index="indexMethod" align="center" header-align="center" width="60">
         </el-table-column>
         <el-table-column align="center" header-align="center" :label="$t('TPZS.FXMC')" width="450">
           <template slot-scope="scope">
@@ -157,7 +157,7 @@ export default {
       tableLoading: false,
       addDialog: false,
       form: {
-        materialGroup: this.$route.state.rfq.materialGroup || '',
+        materialGroup: this.$store.state.rfq.materialGroup || '',
         createName: "",
         spareParts: this.$store.state.rfq.spareParts || "",
         rfqNo: this.$store.state.rfq.rfqId || "",
