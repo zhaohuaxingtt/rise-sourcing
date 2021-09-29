@@ -17,3 +17,13 @@ export function getAekoDesc(params) {
       params,
     })
   }
+
+
+  // aeko审批 零件清单分页查询
+  export function getPartAuditPage(data) {
+    return requst({
+      url: '/aeko/part/auditPage',
+      method: 'POST',
+      data,
+    })
+  }
