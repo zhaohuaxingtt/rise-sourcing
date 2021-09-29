@@ -7,6 +7,7 @@
     <div class="new-MEK"
          id="downloadRef">
       <div class=" bodyBox clearFloat">
+        <el-col>
         <div class="cardBox"
              style="width:18%">
           <iCard>
@@ -35,6 +36,7 @@
               </ul>
             </div>
           </iCard>
+        </div>
         </el-col>
         <el-col :span="20">
           <iCard class="margin-left20"
