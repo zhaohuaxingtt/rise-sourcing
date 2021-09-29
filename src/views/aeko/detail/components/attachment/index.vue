@@ -4,26 +4,203 @@
  * @Description: aeko详情-审批附件
 -->
 <template>
-    <iCard class="aekoDetailAttachment">
-        <p class="font20 margin-top50 margin-bottom50">不在sprint12范围内，敬请期待</p>
-    </iCard>
+  <iCard class="aekoDetailAttachment">
+    <span class="font18 font-weight">
+      {{ language("LK_SHENPIFUJIAN", "审批附件") }}
+    </span>
+    <div class="editControl floatright margin-bottom20">
+      <upload
+				class="upload-trigger"
+				:hideTip="true"
+				:accept="'.jpg,.jpeg,.png,.pdf,.tif'"
+				:buttonText="language('LK_SHANGCHUAN','上传')"
+				:uploadButtonLoading="uploading"
+				@on-success="onUploadsucess"
+			/>
+			<iButton class="margin-left5" @click="deleteFile">
+        {{ language("LK_SHANCHU", "删除") }}
+      </iButton>
+
+    </div>
+    <tablelist
+      height="400"
+      index
+      :selection="false"
+      :tableData="tableListData"
+      :tableTitle="tableTitle"
+      :tableLoading="tableLoading"
+      :lang="true"
+      v-loading="tableLoading"
+    >
+      <template #fileName="scope">
+        <div style="text-align: left">
+          <a class="link-underline" href="javascript:;" @click="download(scope.row)">
+            {{ scope.row.fileName }}
+          </a>
+        </div>
+      </template>
+      <template #fileDescribe="scope">
+        <iInput v-model="scope.row.fileDescribe" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+      </template>
+			<template #remark="scope">
+        <iInput v-model="scope.row.remark" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+      </template>
+    </tablelist>
+    <div class="pagination">
+      <iPagination
+        v-update
+        class="pagination"
+        @size-change="handleSizeChange($event, getFetchData)"
+        @current-change="handleCurrentChange($event, getFetchData)"
+        background
+        :current-page="page.currPage"
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :total="page.totalCount"
+      />
+    </div>
+  </iCard>
 </template>
 
 <script>
+import Vuex from 'vuex'
+import {approveAttachTableTitle as tableTitle} from '../data'
+import upload from 'rise/web/components/iFile/upload'
+import tablelist from 'rise/web/components/iFile/tableList';
+import {downloadFile} from 'rise/web/components/iFile/lib'
+import {iCard, iButton, iPagination, iInput, iMessage} from 'rise'
+import { pageMixins } from '@/utils/pageMixins'
 import {
-    iCard,
-} from 'rise';
+  getAuditFilePage,
+  auditFileSave,
+	auditFileUpdate,
+	auditFileDelete
+} from '@/api/aeko/detail/approveAttach'
+
 export default {
-    name:'aekoDetailAttachment',
-    components:{
-        iCard,
+  name: "aekoDetailRecord",
+  mixins: [pageMixins],
+  components: {
+    iCard,
+    iButton,
+    iPagination,
+		iInput,
+    tablelist,
+		upload
+    // iFileDialog
+  },
+	computed: {
+		...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    }),
+	},
+  props:{
+    aekoInfo:{
+      type:Object,
+      default:()=>{},
+    }
+  },
+  data() {
+    return {
+      tableTitle,
+      tableListData: [],
+      tableLoading: false,
+			uploading: false
+    };
+  },
+  mounted() {
+    this.getFetchData()
+  },
+  methods: {
+		download(row) {
+			const fileId = row.uploadId || ''
+			downloadFile(fileId)
+		},
+		updateApproveAttach(fileData) {
+			console.log(fileData)
+			const parmas = {
+				remark: fileData.remark,
+				fileDescribe: fileData.fileDescribe,
+			}
+			auditFileUpdate(parmas).then(res => {
+        if (res.code !== '200') {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+      })
+		},
+    onUploadsucess(data) {
+      console.log('data', data)
+			const fileData = data.data || {}
+			const parmas = {
+				aekoNum: this.aekoInfo.requirementAekoId,
+				manageId: Number(this.aekoInfo.aekoManageId) || '',
+				fileName: fileData.name || '',
+				filePath: fileData.path || '',
+				fileSize: fileData.size || 0,
+				fileType: fileData.extensionName || '',
+				uploadId: fileData.id || '',
+				linieId: this.userInfo.id || '',
+				deptId: this.userInfo.deptDTO && this.userInfo.deptDTO.id || '',
+				taskId: Number(this.aekoInfo.taskId) || 0,
+
+			}
+			this.uploading = true
+			auditFileSave(parmas).then(res => {
+        if (res.code === '200') {
+					iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+					this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+				this.uploading = false
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+				this.uploading = false
+      })
     },
-}
+    /**
+     * @description: 获取数据列表
+     * @param {*}
+     * @return {*}
+     */    
+    getFetchData() {
+			console.log(this.aekoInfo)
+      const parmas = Object.assign({
+				linieId: this.userInfo.id || '',
+				aekoNum: this.aekoInfo.requirementAekoId,
+				manageId: Number(this.aekoInfo.aekoManageId) || '',
+        current: this.page.currPage,
+        size: this.page.pageSize
+      })
+      this.tableLoading = true
+      getAuditFilePage(parmas).then(res => {
+        if (res.code === '200') {
+          this.tableListData = res.data || []
+          this.page.totalCount = res.total
+        } else {
+          this.tableListData = []
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+        this.tableLoading = false
+      }).catch(e => {
+        this.tableLoading = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+      }).finally(() => {
+        this.tableLoading = false
+      })
+    },
+		deleteFile() {
+
+		}
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-    .aekoDetailAttachment{
-        text-align: center;
-    }
+	.aekoDetailAttachment{
+	}
 
 </style>

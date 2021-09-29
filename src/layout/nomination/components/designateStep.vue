@@ -102,6 +102,7 @@ import {
     checkNomiMeetingSubmit1,
     checkNomiMeetingSubmit2,
     checkNomiMeetingSubmit3,
+    checkNomiMeetingSubmit4,
     updateNominate,
     rsAttachExport
 } from '@/api/designate'
@@ -410,7 +411,7 @@ export default {
                 }
             })
         },
-        // 提交定点申请三轮校验
+        // 提交定点申请四轮校验
         async checkNomiMeetingSubmit(level = 1) {
             const { query } = this.$route;
             const {desinateId} = query;
@@ -425,6 +426,7 @@ export default {
                 if (level === 1) res = await checkNomiMeetingSubmit1(data)
                 if (level === 2) res = await checkNomiMeetingSubmit2(data)
                 if (level === 3) res = await checkNomiMeetingSubmit3(data)
+                if (level === 4) res = await checkNomiMeetingSubmit4(data)
                 if (res && res.code === '200') {
                     state = true
                     if (res.data && res.data.length) {
@@ -453,7 +455,7 @@ export default {
             return {state, dataInfo, systemerror}
         },
         // 提交
-        // 提交逻辑需求有变化，所有类型的定点申请都要进行三轮校验，且第三轮为强制
+        // 提交逻辑需求有变化，所有类型的定点申请都要进行四轮校验，且第四轮为强制
         async submit(params = {}, check = true){
             const { query } = this.$route;
             const {desinateId} = query;
@@ -519,7 +521,8 @@ export default {
                             const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
                                 confirmButtonText: this.language('LK_JIXU','继续'),
                                 cancelButtonText: this.language('QUXIAO','取消'),
-                                type: 'warning'
+                                type: 'warning',
+                                 dangerouslyUseHTMLString:true
                             })
                             if (confirmNextInfo !== 'confirm') {
                                 this.submitting = false
@@ -530,7 +533,26 @@ export default {
                             return
                         }
                     }
+                    res = await this.checkNomiMeetingSubmit(4)
+                    if (res.state) { 
+                        console.log('4',res.dataInfo);
+                        try{
+                              const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                                confirmButtonText: this.language('LK_JIXU','继续'),
+                                cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
+                                type:'warning',
+                                dangerouslyUseHTMLString:true
 
+                            })
+                            if (confirmNextInfo !== 'confirm') {
+                                this.submitting = false
+                                return
+                            }
+                        } catch (e) {
+                            this.submitting = false
+                            return
+                        }
+                    }
                     // 打开上会确认弹窗
                     if (nominationType === 'MEETING') {
                         this.mettingDialogVisible = true
@@ -560,6 +582,7 @@ export default {
                 })
             } catch (e) {
                 this.submitting = false
+                
             }
             
         },

@@ -162,7 +162,6 @@ import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import { getTabelData} from "@/api/partsprocure/home";
 import { pageMixins } from "@/utils/pageMixins";
 import { tableTitle,form } from "@/views/partsprocure/home/components/data";
-import { setDisabled } from "@/layout/nomination/components/data"
 import { getRfqInfo } from "@/api/costanalysismanage/rfqdetail"
 export default {
   components: {
@@ -266,16 +265,6 @@ export default {
           const resList = res.data
           if (resList.length > 0) {
             this.baseInfo = res.data[0]
-
-            if (this.baseInfo.applicationStatus || this.baseInfo.nominateProcessType || this.baseInfo.isPriceConsistent) {
-              this.disabled = setDisabled({
-                applicationStatus: this.baseInfo.applicationStatus,
-                designateType: this.baseInfo.nominateProcessType,
-                isPriceConsistent: this.baseInfo.isPriceConsistent,
-              })
-            } else {
-              this.disabled = false
-            }
           } else {
             this.baseInfo = ''
           }
@@ -295,7 +284,7 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          
+          this.disabled = !!res.data.isFreeze
         } else {
           iMessage.error(this.language("HUOQURFQDINGDIANXINXISHIBAI", "获取RFQ定点信息失败"))
         }
