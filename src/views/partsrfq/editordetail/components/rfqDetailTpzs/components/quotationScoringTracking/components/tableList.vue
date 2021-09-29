@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-09-23 20:07:30
+ * @LastEditTime: 2021-09-29 14:33:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -46,19 +46,21 @@
           <!--------------------------------------------------------->
           <!------------------------内容是打勾------------------------>
           <!--------------------------------------------------------->
-            <span v-if='scope.row[item.props].schedule == 3' class="cursor" @click="openUrl('3',scope.row,item.props,scope.row[item.props].schedule)">
+            <span v-if='scope.row[item.props].schedule == 3 && scope.row[item.props].quotationId' class="cursor" @click="openUrl('3',scope.row,item.props,scope.row[item.props].schedule)">
               <icon name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon>
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是打叉------------------------>
           <!--------------------------------------------------------->
-            <span v-else-if='scope.row[item.props].schedule == 2' class="cursor" @click="openUrl('2',scope.row,item.props,scope.row[item.props].schedule)">
+            <span v-else-if='scope.row[item.props].schedule == 2 && scope.row[item.props].quotationId' class="cursor" @click="openUrl('2',scope.row,item.props,scope.row[item.props].schedule)">
               <icon name='iconbaojiazhuangtailiebiao_yijujue' symbol></icon>
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是横岗百分比------------------->
           <!--------------------------------------------------------->
-          <span v-else class="cursor" @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule)">{{scope.row[item.props].schedule}}</span>
+          <template v-else>
+            <span v-if='scope.row[item.props].quotationId' class="cursor" @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule)">{{scope.row[item.props].schedule}}</span>
+          </template>
           </template>
         </el-table-column>
         <el-table-column v-else :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" align="center">
