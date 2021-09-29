@@ -1,70 +1,75 @@
 <template>
-  <iDialog :title="reportName"
-           :visible.sync="value"
-           width="95%"
-           @close="closeDialog"
-           @opened="open">
-    <div class="new-MEK"
-         id="downloadRef">
+  <iDialog
+    :title="reportName"
+    :visible.sync="value"
+    width="95%"
+    @close="closeDialog"
+    @opened="open"
+  >
+    <div class="new-MEK" id="downloadRef">
       <div class=" bodyBox clearFloat">
-        <div class="cardBox"
-             style="width:18%">
-          <iCard>
-            <div class=" searchForm"
-                 style="margin-right:20px">
-              <label for=""
-                     style="font-weight:600;font-size:14px">六位零件号</label>
-              <ul style="margin-top:10px">
-                <li style="maring-bottom:10px"
-                    v-for="(item,index) in partNumber"
-                    :key="index">{{item}}</li>
-              </ul>
-              <label for=""
-                     style="font-weight:600;font-size:14px">六位零件号</label>
-              <ul style="margin-top:10px">
-                <li style="maring-bottom:10px"
-                    v-for="(item,index) in partNumber"
-                    :key="index">{{item}}</li>
-              </ul>
-              <label for=""
-                     style="font-weight:600;font-size:14px">六位零件号</label>
-              <ul style="margin-top:10px">
-                <li style="maring-bottom:10px"
-                    v-for="(item,index) in partNumber"
-                    :key="index">{{item}}</li>
-              </ul>
+        <el-col :span="4">
+          <iCard style="width:100%;height:670px">
+            <div class="cardBox" style="width:100%;">
+              <div class=" searchForm" style="margin-right:20px">
+                <div class="searchFormItem">
+                  <label for="" style="font-weight:600;font-size:14px"
+                    >对标车型</label
+                  >
+                  <div class="flexBox">
+                    <el-tag
+                      v-for="(item, index) in ComparedMotorName"
+                      :key="index"
+                    >
+                      {{ item }}
+                    </el-tag>
+                  </div>
+                </div>
+                <div class="searchFormItem">
+                  <label for="" style="font-weight:600;font-size:14px"
+                    >类型选择</label
+                  >
+                  <el-tag>{{ mekTypeName }}</el-tag>
+                </div>
+                <div class="searchFormItem">
+                  <label for="" style="font-weight:600;font-size:14px"
+                    >六位零件号</label
+                  >
+                  <div class="flexBox">
+                    <el-tag v-for="(item, index) in partNumber" :key="index">
+                      {{ item }}
+                    </el-tag>
+                  </div>
+                </div>
+              </div>
             </div>
           </iCard>
         </el-col>
         <el-col :span="20">
-          <iCard class="margin-left20"
-                 ref="chartBox"
-                 style="height:670px">
+          <iCard class="margin-left20" ref="chartBox" style="height:670px">
             <div class="chartBox1 ">
               <div class="chartBox">
-                <div class="line"
-                     :style="{ width: totalWidth }"></div>
-                <div class="line1"
-                     :style="{ width: totalWidth }"></div>
-                <div class="line2"
-                     :style="{ width: totalWidth }"></div>
-                <div class="line3"
-                     :style="{ width: totalWidth }"></div>
-                <div class="line4"
-                     :style="{ width: totalWidth }"></div>
+                <div class="line" :style="{ width: totalWidth }"></div>
+                <div class="line1" :style="{ width: totalWidth }"></div>
+                <div class="line2" :style="{ width: totalWidth }"></div>
+                <div class="line3" :style="{ width: totalWidth }"></div>
+                <div class="line4" :style="{ width: totalWidth }"></div>
                 <div class="flex chartItem">
                   <div class="operation1">
-                    <div style="height:20px"
-                         class="margin-bottom20"></div>
-                    <el-select v-model="targetMotor"
-                               @change="changeTargetMotor"
-                               style="width:150px"
-                               class="margin-bottom20"
-                               placeholder="请选择目标车型">
-                      <el-option v-for="item in TargetMotorList"
-                                 :key="item.motorId"
-                                 :value="item.motorId"
-                                 :label="item.motorName">
+                    <div style="height:20px" class="margin-bottom20"></div>
+                    <el-select
+                      v-model="targetMotor"
+                      @change="changeTargetMotor"
+                      style="width:150px"
+                      class="margin-bottom20"
+                      placeholder="请选择目标车型"
+                    >
+                      <el-option
+                        v-for="item in TargetMotorList"
+                        :key="item.motorId"
+                        :value="item.motorId"
+                        :label="item.motorName"
+                      >
                       </el-option>
                     </el-select>
                     <span class="margin-bottom20 productFactoryNames">{{
@@ -74,108 +79,146 @@
                       toThousand(parseInt(firstBarData.output))
                     }}</span>
                   </div>
-                  <datasetBar1 ref="datasetBar1"
-                               :typeSelection="mekMotorTypeFlag"
-                               :firstBarData="firstBarData"
-                               :maxWidth="maxWidth"
-                               :maxData="maxData"
-                               :clientHeight="clientHeight"
-                               @detailDialog="detailDialog"></datasetBar1>
-                  <div class="xAxis1"
-                       v-if="mekMotorTypeFlag">
-                    <div v-for="i in firstBarData.detail"
-                         :key="i.value"
-                         style="text-align:center">
+                  <datasetBar1
+                    ref="datasetBar1"
+                    :typeSelection="mekMotorTypeFlag"
+                    :firstBarData="firstBarData"
+                    :maxWidth="maxWidth"
+                    :maxData="maxData"
+                    :clientHeight="clientHeight"
+                    @detailDialog="detailDialog"
+                  ></datasetBar1>
+                  <div class="xAxis1" v-if="mekMotorTypeFlag">
+                    <div
+                      v-for="i in firstBarData.detail"
+                      :key="i.value"
+                      style="text-align:center"
+                    >
                       <div style="margin-bottom:5px">
-                        <span class="detail"
-                              @click="computeModal(firstBarData)">{{ i.title }}</span>
-                        <el-tooltip class="item"
-                                    effect="dark"
-                                    :content="firstBarData.tips"
-                                    placement="top-end">
-
-                          <icon name="iconzengjiacailiaochengben_lan"
-                                symbol
-                                style="width:14px;height:14px;margin-left:10px"></icon>
+                        <span
+                          class="detail"
+                          @click="computeModal(firstBarData)"
+                          >{{ i.title }}</span
+                        >
+                        <el-tooltip
+                          class="item"
+                          effect="dark"
+                          :content="firstBarData.tips"
+                          placement="top-end"
+                        >
+                          <icon
+                            name="iconzengjiacailiaochengben_lan"
+                            symbol
+                            style="width:14px;height:14px;margin-left:10px"
+                          ></icon>
                         </el-tooltip>
                       </div>
-                      <span @click="computeModal(firstBarData)">{{ i.ebr }}</span>
+                      <span @click="computeModal(firstBarData)">{{
+                        i.ebr
+                      }}</span>
                     </div>
                   </div>
                 </div>
-                <div class="flex chartItem"
-                     v-for="(item,ind) in barData"
-                     :key="item.motorId">
+                <div
+                  class="flex chartItem"
+                  v-for="(item, ind) in barData"
+                  :key="item.motorId"
+                >
                   <div class="operation">
-                    <div @click="delItem(item)"
-                         style="z-index:1000">
-                      <icon symbol
-                            name="iconbob-shanchu"
-                            class="margin-bottom20 "
-                            style="width:20px;height:20px;"></icon>
+                    <div @click="delItem(item)" style="z-index:1000">
+                      <icon
+                        symbol
+                        name="iconbob-shanchu"
+                        class="margin-bottom20 "
+                        style="width:20px;height:20px;"
+                      ></icon>
                     </div>
-                    <el-popover placement="bottom"
-                                width="80"
-                                trigger="click"
-                                visible-arrow
-                                class="margin-bottom20">
-                      <el-checkbox-group v-model="item.checkList"
-                                         class="checkList"
-                                         @change="changeCheckList">
-                        <el-checkbox v-for="(i, index) in item.detail"
-                                     :key="index"
-                                     :label="i.value">{{ i.title }}</el-checkbox>
+                    <el-popover
+                      placement="bottom"
+                      width="80"
+                      trigger="click"
+                      visible-arrow
+                      class="margin-bottom20"
+                    >
+                      <el-checkbox-group
+                        v-model="item.checkList"
+                        class="checkList"
+                        @change="changeCheckList"
+                      >
+                        <el-checkbox
+                          v-for="(i, index) in item.detail"
+                          :key="index"
+                          :label="i.value"
+                          >{{ i.title }}</el-checkbox
+                        >
                       </el-checkbox-group>
-                      <div class="motorName"
-                           slot="reference">
+                      <div class="motorName" slot="reference">
                         {{ item.motorName }}
                       </div>
                     </el-popover>
-                    <span class="margin-bottom20 motorName"
-                          style="line-height:16px;height:16px">{{ item.factory }}</span>
-                    <span class="yield margin-bottom15">{{toThousand(parseInt(item.output))}}</span>
+                    <span
+                      class="margin-bottom20 motorName"
+                      style="line-height:16px;height:16px"
+                      >{{ item.factory }}</span
+                    >
+                    <span class="yield margin-bottom15">{{
+                      toThousand(parseInt(item.output))
+                    }}</span>
                     <div class="flex">
-                      <el-select v-model="item.priceType"
-                                 @change="changPriceType"
-                                 style="width:150px;z-index:1000">
-                        <el-option v-for="i in mekpriceTypeList"
-                                   :key="i.id"
-                                   :value="i.code"
-                                   :label="i.name">
+                      <el-select
+                        v-model="item.priceType"
+                        @change="changPriceType"
+                        style="width:150px;z-index:1000"
+                      >
+                        <el-option
+                          v-for="i in mekpriceTypeList"
+                          :key="i.id"
+                          :value="i.code"
+                          :label="i.name"
+                        >
                         </el-option>
                       </el-select>
-                      <el-date-picker v-model="item.priceDate"
-                                      type="date"
-                                      placeholder="选择日期"
-                                      @input="changeDate(item.priceDate,ind)"
-                                      value-format="yyyy-MM-dd"
-                                      style="width:150px;z-index:1000;margin-left:20px"
-                                      v-if="item.priceType === 'monthPrice'">
+                      <el-date-picker
+                        v-model="item.priceDate"
+                        type="date"
+                        placeholder="选择日期"
+                        @input="changeDate(item.priceDate, ind)"
+                        value-format="yyyy-MM-dd"
+                        style="width:150px;z-index:1000;margin-left:20px"
+                        v-if="item.priceType === 'monthPrice'"
+                      >
                       </el-date-picker>
                     </div>
                   </div>
-                  <datasetBar :barData="item"
-                              :maxWidth="maxWidth"
-                              :typeSelection="mekMotorTypeFlag"
-                              :maxData="maxData"
-                              :clientHeight="clientHeight"
-                              @detailDialog="detailDialog"></datasetBar>
-                  <div class="xAxis"
-                       v-if="mekMotorTypeFlag">
-                    <div v-for="i in item.detail"
-                         :key="i.value"
-                         style="text-align:center">
+                  <datasetBar
+                    :barData="item"
+                    :maxWidth="maxWidth"
+                    :typeSelection="mekMotorTypeFlag"
+                    :maxData="maxData"
+                    :clientHeight="clientHeight"
+                    @detailDialog="detailDialog"
+                  ></datasetBar>
+                  <div class="xAxis" v-if="mekMotorTypeFlag">
+                    <div
+                      v-for="i in item.detail"
+                      :key="i.value"
+                      style="text-align:center"
+                    >
                       <div style="margin-bottom:5px">
-                        <span class="detail"
-                              @click="computeModal(item,ind)">{{i.title}}</span>
-                        <el-tooltip class="item"
-                                    effect="dark"
-                                    :content="item.tips"
-                                    placement="top-end">
-
-                          <icon name="iconzengjiacailiaochengben_lan"
-                                symbol
-                                style="width:14px;height:14px;margin-left:10px"></icon>
+                        <span class="detail" @click="computeModal(item, ind)">{{
+                          i.title
+                        }}</span>
+                        <el-tooltip
+                          class="item"
+                          effect="dark"
+                          :content="item.tips"
+                          placement="top-end"
+                        >
+                          <icon
+                            name="iconzengjiacailiaochengben_lan"
+                            symbol
+                            style="width:14px;height:14px;margin-left:10px"
+                          ></icon>
                         </el-tooltip>
                       </div>
                       <span @click="computeModal(item)">{{ i.ebr }}</span>
@@ -188,12 +231,14 @@
           </iCard>
         </el-col>
       </div>
-      <tableList v-bind="$attr"
-                 :gridData="gridData"
-                 :editFlag="editFlag"
-                 :addRowList="addRowList"
-                 @editData="editData"
-                 @addData="addData"></tableList>
+      <tableList
+        v-bind="$attr"
+        :gridData="gridData"
+        :editFlag="editFlag"
+        :addRowList="addRowList"
+        @editData="editData"
+        @addData="addData"
+      ></tableList>
     </div>
   </iDialog>
 </template>
@@ -211,7 +256,7 @@ export default {
     iCard,
     datasetBar,
     datasetBar1,
-    tableList
+    tableList,
   },
   props: {
     value: {
@@ -221,24 +266,24 @@ export default {
     firstBarData: {
       type: Object,
       default: () => {
-        return {}
-      }
+        return {};
+      },
     },
     chartItemWidth: {
       type: Number,
-      default: 1
+      default: 1,
     },
     barData: {
       type: Array,
       default: () => {
-        return []
-      }
+        return [];
+      },
     },
     gridData: {
       type: Array,
       default: () => {
-        return []
-      }
+        return [];
+      },
     },
     preview: {
       type: Boolean,
@@ -247,45 +292,49 @@ export default {
     partNumber: {
       type: Array,
       default: () => {
-        return []
-      }
+        return [];
+      },
     },
     targetMotorName: {
       type: String,
-      default: ""
+      default: "",
     },
     mekpriceType: {
       type: String,
-      default: ""
+      default: "",
     },
     maxWidth: {
-      type: Number
-    }
+      type: Number,
+    },
+    mekTypeName: {
+      type: String,
+    },
+    ComparedMotorName: {
+      type: Array,
+    },
   },
   watch: {
-    value (val) {
-      console.log(val)
+    value(val) {
+      console.log(val);
     },
     firstBarData: {
-      handler (val) {
-        console.log(val)
+      handler(val) {
+        console.log(val);
       },
       deep: true,
-      immediate: true
-    }
+      immediate: true,
+    },
   },
-  data () {
+  data() {
     return {
       toThousand,
-      fmoney
+      fmoney,
     };
   },
-  mounted () {
-
-  },
+  mounted() {},
   methods: {
-    closeDialog () {
-      this.$emit('closeDialog', false);
+    closeDialog() {
+      this.$emit("closeDialog", false);
       // this.value = val;
     },
   },
@@ -444,5 +493,18 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   left: -16%;
+}
+.searchFormItem {
+  margin-bottom: 60px;
+  ul {
+    li {
+      margin-bottom: 20px;
+    }
+  }
+}
+.flexBox {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 </style>
