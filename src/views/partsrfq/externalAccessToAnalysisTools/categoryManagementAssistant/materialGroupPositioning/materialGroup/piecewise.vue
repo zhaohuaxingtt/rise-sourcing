@@ -1,13 +1,13 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-09 16:45:32
- * @LastEditTime: 2021-09-26 14:07:56
+ * @LastEditTime: 2021-09-28 16:30:56
  * @LastEditors: 舒杰
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\piecewise.vue
 -->
 <template>
-   <div ref="chart" style="height:600px" ></div>
+   <div ref="chart" class="piecewise" ></div>
 </template>
 <script>
 import echarts from '@/utils/echarts';
@@ -17,7 +17,8 @@ export default {
    data () {
       return {
         mateData:[],//当前账号下的材料组数据
-        categoryCode:""
+        categoryCode:"",
+        isInit:true,//是否第一次初始化
       }
    },
    props: {
@@ -28,7 +29,6 @@ export default {
    },
    watch: {
       materialGroupPosition(newVal){
-         console.log(newVal)
          this.init()
       }
    },
@@ -51,15 +51,18 @@ export default {
 
          // 散点数据
          let marksData=[]
-         marksData=data.otherPointList.map(item=>{
-            return {
-               value:[parseInt(item.riskScore),parseInt(item.moneyScore)],
-               materialGroupName:item.materialGroupName,
-               materialGroupCode:item.materialGroupCode,
-               symbolSize:item.size,
-               to:item.money,
-            }
-         })
+         if(data.otherPointList){
+            marksData=data.otherPointList.map(item=>{
+               return {
+                  value:[parseFloat(item.riskScore),parseFloat(item.moneyScore)],
+                  materialGroupName:item.materialGroupName,
+                  materialGroupCode:item.materialGroupCode,
+                  symbolSize:item.size,
+                  to:item.money,
+               }
+            })
+         }
+         
 
             // let currentCategory1={
             //    value:[55,55],
@@ -82,13 +85,20 @@ export default {
                value:[parseInt(data.currentPoint.riskScore),parseInt(data.currentPoint.moneyScore)],
                materialGroupName:data.currentPoint.materialGroupName,
                materialGroupCode:data.currentPoint.materialGroupCode,
-               // symbolSize:100,
+               to:data.currentPoint.money,
+               symbolSize:data.currentPoint.size,
             }
             marksData.push(currentCategory)
          }
-         console.log(marksData)
-         let centerMarkX=parseInt(data.centerPoint.riskScore)
-         let centerMarkY=parseInt(data.centerPoint.moneyScore)
+         let centerMarkX=parseFloat(data.centerPoint.riskScore)
+         let centerMarkY=parseFloat(data.centerPoint.moneyScore)
+         if(marksData.length==0){
+            let centerMark={
+               value:[500,500],
+               symbolSize:0
+            }
+            marksData=[centerMark]
+         }
          // 中心线
          let centerLine = [
             {
@@ -308,14 +318,18 @@ export default {
             }]
          }
          myChart.setOption(option);
-         const _this = this
-         myChart.on('click', function (params) {
-            console.log(params);
-           _this.$emit('handleChartClick', params.data.materialGroupCode)
-         });
+         if(this.isInit){
+            myChart.on('click',  (params)=> {
+               this.isInit=false
+               this.$emit('handleChartClick', params.data.materialGroupCode)
+            });
+         }
       }
    }
 }
 </script>
 <style lang="scss" scoped>
+.piecewise{
+   height: 600px;
+}
 </style>

@@ -1,28 +1,30 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-09-26 19:22:26
+ * @LastEditTime: 2021-09-29 01:25:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
 -->
 <template>
-  <div ref="chart"
-       class="chart"
-       :style="{height:(clientHeight?'440px':'460px')}"></div>
+  <div
+    ref="chart"
+    class="chart"
+    :style="{ height: clientHeight ? '440px' : '460px' }"
+  ></div>
 </template>
 
 <script>
 import echarts from "@/utils/echarts";
-import { fmoney } from '@/utils/index.js'
+import { fmoney } from "@/utils/index.js";
 export default {
-  data () {
+  data() {
     return {
       myChart: null,
       barData: [],
       barxAxis: [],
       option: {},
-      fmoney
+      fmoney,
     };
   },
   props: {
@@ -33,72 +35,72 @@ export default {
     firstBarData: {
       type: Array,
       default: () => {
-        return []
+        return [];
       },
     },
     maxWidth: {
-      type: Number
+      type: Number,
     },
     maxData: {
-      type: String
+      type: String,
     },
     clientHeight: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   watch: {
-    firstBarData: {
-      handler (val) {
+    "firstBarData.detail": {
+      handler(val) {
         if (val) {
-          this.barData = []
-          this.barxAxis = []
-
+          this.barData = [];
+          this.barxAxis = [];
           val.forEach((item, index) => {
-            let str = ''
-            const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
+            let str = "";
+            const colorList = ["#A1D0FF", "#92B8FF", "#5993FF"];
             const itemData = {
               value: item.value,
               label: {
                 show: true,
-                position: 'top',
+                position: "top",
                 color: "#000",
                 formatter: (val) => {
-                  console.log(val)
-                  return this.fmoney(val.value, 2)
-                }
+                  console.log(val);
+                  return this.fmoney(val.value, 2);
+                },
               },
               itemStyle: {
-                color: colorList[index]
-              }
-            }
-            if (item.title == 'MIX') {
-              str = item.title + "\n\n"
+                color: colorList[index],
+              },
+            };
+            if (item.title == "MIX") {
+              str = item.title + "\n\n";
             } else {
-              str = item.title + "\n\n" + item.ebr || ''
+              str = item.title + "\n\n" + item.ebr || "";
             }
-            this.barData.push(itemData)
-            this.barxAxis.push(str)
-          })
+            this.barData.push(itemData);
+            this.barxAxis.push(str);
+          });
           this.$nextTick(() => {
             this.initCharts();
           });
         }
       },
       immediate: true,
-      deep: true
+      deep: true,
     },
   },
-  mounted () {
+  mounted() {
     // this.$nextTick(() => {
     //   this.initCharts();
     // });
   },
   methods: {
-    initCharts () {
-      if (this.firstBarData.length === 1) {
-        this.$refs.chart.style.width = '260px'
+    initCharts() {
+      if (this.firstBarData.detail.length === 1) {
+        this.$refs.chart.style.width = "260px";
       } else {
-        this.$refs.chart.style.width = this.firstBarData.length * 100 + 'px';
+        this.$refs.chart.style.width =
+          this.firstBarData.detail.length * 100 + "px";
       }
 
       this.myChart = echarts().init(this.$refs.chart);
@@ -108,6 +110,20 @@ export default {
           subtext: "产量",
           left: 0,
           top: -10,
+        },
+        tooltip: {
+          show: true,
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+          },
+          formatter(params) {
+            let arr = params.name.match(/(\S*)\n/)[1];
+            let name = arr.split("/")[2];
+            if (name) {
+              return name;
+            }
+          },
         },
         xAxis: [
           {
@@ -120,14 +136,14 @@ export default {
             axisLabel: {
               color: "#3C4F74",
               fontSize: 12,
-              fontFamily: "Arial"
+              fontFamily: "Arial",
             },
             data: this.barxAxis,
             axisLine: {
-              show: false
+              show: false,
             },
             offset: 6,
-            triggerEvent: true
+            triggerEvent: true,
           },
         ],
         grid: {
@@ -143,7 +159,7 @@ export default {
             show: false,
           },
           splitLine: {
-            show: false
+            show: false,
           },
           axisLabel: {
             show: false,
@@ -172,7 +188,7 @@ export default {
             itemStyle: {
               barBorderRadius: [5, 5, 0, 0],
             },
-            data: this.barData
+            data: this.barData,
             // data: [{
             //   value: 400,
             //   label: {
@@ -213,20 +229,23 @@ export default {
       this.myChart.resize();
       this.myChart.setOption(this.option);
       this.myChart.off("click");
-      this.myChart.on('click', (params) => {
-        console.log(params)
-        let data = {}
-        this.firstBarData.forEach(item => {
-          if (item.value === params.value) {
-            data.engine = item.engine
-            data.transmission = item.transmission
-            data.position = item.position
-            data.vwCode = this.barData.motorCode
-            data.motorId = this.barData.motorId
-            data.priceType = this.barData.priceType
+      this.myChart.on("click", (params) => {
+        console.log(params, this.firstBarData);
+        let data = {};
+        this.firstBarData.detail.forEach((item) => {
+          if (item.title === params.name.match(/(\S*)\n/)[1]) {
+            data.engine = item.engine;
+            data.transmission = item.transmission;
+            data.position = item.position;
+            data.vwCode = this.firstBarData.motorCode;
+            data.motorId = this.firstBarData.motorId;
+            data.priceType = this.firstBarData.priceType;
+            data.priceDate = this.firstBarData.priceDate;
+            data.factory = this.firstBarData.factory;
+            data.motorName = this.firstBarData.motorName;
           }
-        })
-        this.$emit('detailDialog', true, data);
+        });
+        this.$emit("detailDialog", true, data);
       });
     },
   },

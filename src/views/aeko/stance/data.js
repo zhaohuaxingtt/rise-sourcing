@@ -26,7 +26,7 @@ export const searchList = [
       { props: "aekoStatusDesc", name: "AEKO状态", key: "LK_AEKOZHUANGTAI", tooltip: true },
       { props: "coverStatusDesc", name: "封⾯状态", key: "LK_AEKOFENGMIANZHUANGTAI", tooltip: true },
       { props: "linieAssignTime", name: "分派日期", key: "LK_AEKOFENPAIRIQI", tooltip: true },
-      { props: "deadLine", name: "截至日期", key: "LK_AEKOJIEZHIRIQI", tooltip: true },
+      { props: "deadLine", name: "截⽌⽇期", key: "LK_AEKOJIEZHIRIQI", tooltip: true },
       { props: "approval", name: "审批单", key: "LK_AEKOSHENPIDAN" },
   ]
   

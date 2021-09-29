@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-17 16:03:28
+ * @LastEditTime: 2021-09-24 14:53:54
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -717,9 +717,10 @@ export default {
      * @Description: 获取零件排程列表 
      * @Author: Luoshuang 
      * @param {*} cartypeProId 
+     * @param {*} selectPartNums 选择的零件
      * @return {*} 
      */    
-    getPartList(cartypeProId) {  
+    getPartList(cartypeProId, selectPartNums = '') {  
       this.loading = true 
       this.$emit('reSetSearchParams')
       getPartSchedule(cartypeProId).then(res => { 
@@ -730,8 +731,10 @@ export default {
               emIsLarger: this.isLarger(item.emTimeKw, item.otsTimeKw) 
             } 
           }) 
+          const selectPartNumsArr = selectPartNums !== '' ? selectPartNums.split(',') : []
+          const selectPartNumsArrLength = selectPartNumsArr.length
           // eslint-disable-next-line no-undef 
-          this.parts = _.cloneDeep(partList) 
+          this.parts = [...partList.filter(item => selectPartNumsArrLength > 0 ? selectPartNumsArr.includes(item.partNum) : true)]
           // eslint-disable-next-line no-undef 
           this.partsTemp = _.cloneDeep(partList) 
           this.checkAll = false 

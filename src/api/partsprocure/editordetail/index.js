@@ -282,3 +282,17 @@ export function partsAssemblyOutPlan(purchaseProjectId){
     method: "GET"
   })
 }
+
+//获取line部门
+export function purchasingDept(){
+	return sourcing({
+    url: `/purchasing-project-parts/dept`,
+    method: "GET"
+  })
+}
+export function purchasingLiline(dptId){
+	return sourcing({
+    url: `/purchasing-project-parts/linie/${dptId}`,
+    method: "GET"
+  })
+}

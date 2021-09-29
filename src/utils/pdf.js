@@ -1,7 +1,8 @@
 import html2canvas from 'html2canvas'
 import JsPDF from 'jspdf'
 import { uploadUdFile } from '@/api/file/upload'
-
+import Store from '@/store'
+// import { addfont } from "./font.js";
 /**
  * @param  ele          要生成 pdf 的DOM元素（容器）
  * @param  padfName     PDF文件生成后的文件名字
@@ -56,18 +57,21 @@ export function downloadPDF({
     var imgHeight = (595.28 / contentWidth) * contentHeight
     let pageData = canvas.toDataURL('image/jpeg', 1.0)
     var pdf = new JsPDF('', 'pt', 'a4')
-
+    let dept = Store.state.permission.userInfo.deptDTO.nameZh + '-' + Store.state.permission.userInfo.userNum + '-' + Store.state.permission.userInfo.nameZh
     // pdf.save('test')
     function addWaterMark(doc) {
       var totalPages = doc.internal.getNumberOfPages()
       for (let i = 1; i <= totalPages; i++) {
-        for (var x = 100; x <= doc.internal.pageSize.height - 30; x = x + 100) {
-          for (var j = 30; j <= doc.internal.pageSize.width; j = j + 150) {
+        for (var x = 200; x <= doc.internal.pageSize.height - 30; x = x + 300) {
+          for (var j = 30; j <= doc.internal.pageSize.width - 30; j = j + 200) {
             doc.setPage(i)
             //doc.addImage(imgData, 'PNG', 40, 40, 75, 75);
             doc.setTextColor(150)
-            doc.setFont("times", "italic");
-            doc.text('Watermark', j, x, 45)
+            window.addfont(doc)
+            doc.addFont('bolds', 'b', 'normal')
+            doc.setFont('b');
+            doc.text(dept, j, x, 45)
+            doc.text(window.moment().format('YYYY-MM-DD HH:mm:ss'), j + 13, x + 15, 45)
           }
         }
       }

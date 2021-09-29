@@ -37,14 +37,14 @@ export const tableTitle = [{
   width:130
 },
 {
-  props: 'nominateProcessType',
+  props: 'nominateProcessTypeDesc',
   name: '类型',
   key: 'nominationLanguage_LeiXing',
   tooltip: true,
   width:80
 },
 {
-	props: 'applicationStatus',
+	props: 'applicationStatusDesc',
 	name: '状态',
 	key: 'LK_ZHUANGTAI',
 	tooltip:false,

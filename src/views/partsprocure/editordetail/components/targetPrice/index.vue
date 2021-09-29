@@ -176,6 +176,7 @@ import { cloneDeep } from 'lodash'
 		watch: {
 			partProjectType: {
 				handler(val) {
+					console.log("val", val)
 					if (val === partProjTypes.DBYICHIXINGCAIGOU || val === partProjTypes.DBLINGJIAN) {
 						this.targetprice = {
 							...this.targetprice,

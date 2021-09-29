@@ -47,7 +47,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { FilesTitle } from '../data'
 import { getAllAnnex } from "@/api/partsrfq/editordetail";
-import { downloadFile, downloadUdFile } from '@/api/file'
+import { downloadFile, downloadUdFile, downloadUdFileWithName } from '@/api/file'
 
 export default {
     name:'inquiryFiles',
@@ -100,7 +100,8 @@ export default {
             }else{
                 // const list = selectItems.map((item)=>item.fileName);
                 // this.download(list);
-                downloadUdFile(selectItems.map(item => item.uploadId))
+                // downloadUdFile(selectItems.map(item => item.uploadId))
+                downloadUdFileWithName(selectItems.map(item => item.uploadId), `${ selectItems[0].rfqId }_${ moment().format("YYYY-MM-DD_HH：mm：ss") }`)
             }
         },
         // 单文件下载

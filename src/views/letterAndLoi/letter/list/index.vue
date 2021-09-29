@@ -72,6 +72,9 @@
             <template #parts="scope">
                 <span>{{getRfqId(scope.row)}}</span>
             </template>
+            <template #svwCode="scope">
+                <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+            </template>
             <!-- 是否签署协议 -->
             <template #isSignAgreement="scope">
                 <span>{{scope.row.isSignAgreement ? language('nominationLanguage.Yes','是') :language('nominationLanguage.No','否')}}</span>

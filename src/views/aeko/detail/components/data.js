@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-09-01 18:15:47
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-27 14:08:11
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
  */
@@ -10,7 +10,7 @@ export const contentDeclareQueryForm = {
   partNum: "",
   supplierSapCode: "",
   cartypeProjectCode: [""],
-  status: ["EMPTY"],
+  status: [""],
   isMtz: "",
   procureFactory: "",
   supplierNameZh: "",
@@ -24,7 +24,7 @@ export const contentDeclareTableTitle = [
   { props: "statusDesc", name: "内容状态", key: "NEIRONGZHUANGTAI", tooltip: true },
   { props: "changeType", name: "变更类型", key: "BIANGENGLEIXING", tooltip: true },
   { props: "cartypeZh", name: "涉及⻋型/⻋型项⽬", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width: 130,isExport:true },
-  { props: "oldPartNumPreset", name: "原零件号", key: "YUANLINGJIANHAO", tooltip: true, width: 140,isExport:true },
+  { props: "oldPartNumPreset", name: "原零件号", key: "AEKO_YUANLINGJIANHAO_1", tooltip: true, width: 140,isExport:true },
   { props: "oldPartNamePreset", name: "原零件名称", key: "YUANLINGJIANMINGCHENG", tooltip: true},
   { props: "factoryName", name: "采购⼯⼚", key: "CAIGOUGONGCHANG", tooltip: true ,isExport:true},
   { props: "supplierSapCode", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true,width:100 ,isExport:true},
@@ -38,6 +38,15 @@ export const contentDeclareTableTitle = [
   { props: "isMtz", name: "MTZ变更", key: "MTZBIANGENG", tooltip: true },
   { props: "originBnkTranWayDesc", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true },
   { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true }
+]
+
+export const hidenTableTitle=[
+  { props: "currency", name: "货币", key: "LK_AEKO_SELECT_HUOBI", tooltip: true },
+  { props: "sampleCost", name: "样件费", key: "LK_AEKO_SELECT_YANGJIANFEI", tooltip: true },
+  { props: "terminationPrice", name: "终止费", key: "LK_AEKO_SELECT_ZHONGZHIFEI", tooltip: true },
+  { props: "priceUnit", name: "价格单位", key: "LK_AEKO_SELECT_JIAGEDANWEI", tooltip: true },
+  { props: "measureUnit", name: "计量单位", key: "LK_AEKO_SELECT_JILIANGDANWEI", tooltip: true },
+  { props: "isReplace", name: "是否代报价", key: "LK_AEKO_SELECT_SHIFOUDAIBAOJIA", tooltip: true },
 ]
 
 export const mtzOptions = [

@@ -296,7 +296,7 @@ export default {
       const self = this
       const bgColor = '#94c8fc'
       const textStyle = {
-        color: '#efefef',
+        color: '#000000',
         fontSize: '10'
       }
       const series = []
@@ -454,7 +454,7 @@ export default {
       })
       // 零件最佳柱子label
       minPartSupplierTToTotal&& (series.push({
-        data: ['', '', 1, ''],
+        data: ['', '', minPartSupplierTToTotal, ''],
         type: 'bar',
         barWidth: 30,
         stack: 'total',
@@ -530,7 +530,7 @@ export default {
         itemStyle: {
           normal: {
             barBorderRadius: [0, 0, 0, 0],
-            color: '#ffffff'
+            color: '#ff0000'
           },
         }
       }))

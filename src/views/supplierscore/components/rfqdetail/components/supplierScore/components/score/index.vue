@@ -29,7 +29,10 @@
         :empty-text="language('ZANWUSHUJU', '暂无数据')">
         <el-table-column type="index" align="center" label="#"></el-table-column>
         <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="language(item.key, item.name)" :show-overflow-tooltip="true">
-          <template v-if="item.props === 'partScore'" v-slot="scope">
+          <template v-if="item.props === 'sapCode'" v-slot="scope">
+            <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+          </template>
+          <template v-else-if="item.props === 'partScore'" v-slot="scope">
             <span class="link-underline" @click="viewPartScore(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template v-else v-slot="scope">

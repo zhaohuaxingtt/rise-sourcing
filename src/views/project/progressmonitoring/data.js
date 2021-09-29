@@ -1,13 +1,29 @@
 /*
  * @Author: your name
  * @Date: 2021-08-24 14:53:57
- * @LastEditTime: 2021-08-27 09:54:28
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-23 10:48:20
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: /front-web/src/views/project/progressmonitoring/data.js
  */
 
 export const MENU = [
+  {
+    value: 1,
+    name: '项目进度监控',
+    message: 0,
+    url: '/projectmgt/projectprogressmonitoring/home',
+    activePath: 'home',
+    key: 'XIANGMUJINDUJIANKONG'
+  },
+  {
+    value: 2,
+    name: '延误原因汇总',
+    message: 0,
+    url: '/projectmgt/projectprogressmonitoring/delaySummary',
+    activePath: 'delaySummary',
+    key: 'YANWUYUANYINHUIZONG'
+  },
 ]
 
 export const riskAndAlarmTitle = [

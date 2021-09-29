@@ -47,7 +47,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import { DrawingTitle } from '../data'
 // import { getFileHistory } from "@/api/costanalysismanage/rfqdetail"
 import { pageInquiryDrawingsByRfqId } from "@/api/partsrfq/home/index"
-import { downloadFile, downloadUdFile } from '@/api/file'
+import { downloadFile, downloadUdFile, downloadUdFileWithName } from '@/api/file'
 
 export default {
     name:'inquiryDrawing',
@@ -95,7 +95,8 @@ export default {
             }else{
                 // const list = selectItems.map((item)=>item.tpPartAttachmentName);
                 // this.download(list);
-                downloadUdFile(selectItems.map(item => item.uploadId))
+                // downloadUdFile(selectItems.map(item => item.uploadId))
+                downloadUdFileWithName(selectItems.map(item => item.uploadId), `${ selectItems[0].partNum }_${ selectItems[0].carTypeProj }_${ moment().format("YYYY-MM-DD_HH：mm：ss") }`)
             }
         },
         // 单文件下载

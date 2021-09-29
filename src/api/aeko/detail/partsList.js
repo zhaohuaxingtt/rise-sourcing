@@ -52,3 +52,30 @@ export function deptRollback(data) {
     data,
   })
 }
+
+// 根据零件号查询主数据信息
+export function getpartInfo(params) {
+  return requst({
+    url: `/aeko/partCf/${params.partNum}`,
+    method: 'GET',
+    params,
+  })
+}
+
+// 获取涉及PID列表
+export function getPidList(params) {
+  return requst({
+    url: `/aeko/pid/${params.requirementAekoId}`,
+    method: 'GET',
+    params,
+  })
+}
+
+// 新增aeko零件保存
+export function addPart(data) {
+  return requst({
+    url: '/aeko/add-part',
+    method: 'POST',
+    data,
+  })
+}
