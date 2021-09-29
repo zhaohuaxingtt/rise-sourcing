@@ -17,7 +17,7 @@
 				:uploadButtonLoading="uploading"
 				@on-success="onUploadsucess"
 			/>
-			<iButton class="margin-left5" @click="deleteFile">
+			<iButton class="margin-left5" @click="deleteFile" :loading="deleting">
         {{ language("LK_SHANCHU", "删除") }}
       </iButton>
 
@@ -25,12 +25,12 @@
     <tablelist
       height="400"
       index
-      :selection="false"
+      :selection="true"
       :tableData="tableListData"
       :tableTitle="tableTitle"
       :tableLoading="tableLoading"
       :lang="true"
-      v-loading="tableLoading"
+			@handleSelectionChange="handleSelectionChange"
     >
       <template #fileName="scope">
         <div style="text-align: left">
@@ -40,10 +40,10 @@
         </div>
       </template>
       <template #fileDescribe="scope">
-        <iInput v-model="scope.row.fileDescribe" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+        <iInput v-model="scope.row.fileDescribe" @blur="updateApproveAttach(scope.row)" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
       </template>
 			<template #remark="scope">
-        <iInput v-model="scope.row.remark" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+        <iInput v-model="scope.row.remark" @blur="updateApproveAttach(scope.row)" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
       </template>
     </tablelist>
     <div class="pagination">
@@ -105,24 +105,35 @@ export default {
     return {
       tableTitle,
       tableListData: [],
+			tableSelecteData: [],
       tableLoading: false,
-			uploading: false
+			uploading: false,
+			deleting: false
     };
   },
   mounted() {
     this.getFetchData()
   },
   methods: {
+  /**
+   * @description: 表格选择
+   * @param {*} val
+   * @return {*}
+   */    
+		handleSelectionChange(val) {
+      this.tableSelecteData = val
+    },
+  /**
+   * @description: 点击文件名下载
+   * @param {*} row
+   * @return {*}
+   */    
 		download(row) {
-			const fileId = row.uploadId || ''
-			downloadFile(fileId)
+			downloadFile(row.uploadId)
 		},
 		updateApproveAttach(fileData) {
 			console.log(fileData)
-			const parmas = {
-				remark: fileData.remark,
-				fileDescribe: fileData.fileDescribe,
-			}
+			const parmas = window._.cloneDeep(fileData)
 			auditFileUpdate(parmas).then(res => {
         if (res.code !== '200') {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -139,7 +150,7 @@ export default {
 				manageId: Number(this.aekoInfo.aekoManageId) || '',
 				fileName: fileData.name || '',
 				filePath: fileData.path || '',
-				fileSize: fileData.size || 0,
+				fileSize: Number(fileData.size/1000/1000).toFixed(2) || 0, // 文件大小MB
 				fileType: fileData.extensionName || '',
 				uploadId: fileData.id || '',
 				linieId: this.userInfo.id || '',
@@ -172,6 +183,7 @@ export default {
 				linieId: this.userInfo.id || '',
 				aekoNum: this.aekoInfo.requirementAekoId,
 				manageId: Number(this.aekoInfo.aekoManageId) || '',
+				taskId: Number(this.aekoInfo.taskId) || 0,
         current: this.page.currPage,
         size: this.page.pageSize
       })
@@ -193,7 +205,29 @@ export default {
       })
     },
 		deleteFile() {
-
+			if (!this.tableSelecteData.length) {
+				iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU','请选择至少一条数据'))
+				return
+			}
+			const fileList = this.tableSelecteData.map(o => o.id)
+			if (fileList && !fileList.length) return iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU','请选择至少一条数据'))
+				this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？')).then(confirmInfo => {
+				if (confirmInfo === 'confirm') {
+          this.deleting = true
+					auditFileDelete(fileList).then(res => {
+						if (res.code === '200') {
+							iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+							this.getFetchData()
+						} else {
+							iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+						}
+					}).catch(e => {
+						iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+					}).finally(() => {
+            this.deleting = false
+          })
+				}
+			})
 		}
   }
 };
