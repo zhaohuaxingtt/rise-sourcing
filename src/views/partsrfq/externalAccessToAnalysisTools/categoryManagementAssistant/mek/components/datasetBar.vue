@@ -1,36 +1,36 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-29 21:51:59
+ * @LastEditTime: 2021-09-30 12:37:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
 -->
 <template>
-  <div
-    class="chart"
-    ref="chart"
-    :style="{ height: clientHeight ? '440px' : '460px' }"
-  ></div>
+  <div class="chart"
+       ref="chart"
+       :style="{ height: clientHeight ? '440px' : '460px' }"></div>
 </template>
 
 <script>
 import echarts from "@/utils/echarts";
 import { fmoney } from "@/utils/index.js";
 export default {
-  data() {
+  data () {
     return {
       myChart: null,
       barDataItem: [],
       barxAxis: [],
       option: {},
       fmoney,
+      legendList: []
     };
   },
   props: {
     maxWidth: {
       type: Number,
     },
+
     typeSelection: {
       type: Boolean,
       default: false,
@@ -57,14 +57,19 @@ export default {
     //   }
     // },
     barData: {
-      handler(val) {
+      handler (val) {
         console.log(val);
         if (val) {
           this.barDataItem = [];
           this.barxAxis = [];
           val.detail.forEach((item, index) => {
+            this.legendList.push({
+              name: item.title,
+              icon: 'circle',
+            })
             const colorList = ["#A1D0FF", "#92B8FF", "#5993FF"];
             const itemData = {
+              name: item.title,
               value: item.value,
               // value: item.value,
               label: {
@@ -88,6 +93,7 @@ export default {
             this.barDataItem.push(itemData);
             this.barxAxis.push(str);
           });
+          console.log(this.legendList)
           this.$nextTick(() => {
             this.initCharts();
           });
@@ -97,17 +103,17 @@ export default {
       deep: true,
     },
   },
-  mounted() {
+  mounted () {
     // this.$nextTick(() => {
     //   this.initCharts();
     // });
   },
   methods: {
-    initCharts() {
+    initCharts () {
       if (this.barData.detail.length === 1) {
         this.$refs.chart.style.width = this.barData.detail.length * 240 + "px";
       } else {
-        this.$refs.chart.style.width = this.barData.detail.length * 80 + "px";
+        this.$refs.chart.style.width = this.barData.detail.length * 100 + "px";
       }
       // console.log(this.$refs.chart.style.width, 'number')
       // this.$refs.chart.style.minWidth = '100%';
@@ -136,6 +142,11 @@ export default {
           bottom: "13%",
           top: "20%",
         },
+        legend: {
+          data: this.legendList,
+          right: '3%',
+          top: '8%'
+        },
         yAxis: {
           type: "value",
           axisLine: {
@@ -155,13 +166,12 @@ export default {
         // to a column of dataset.source by default.
         series: [
           {
-            name: "Mix",
             type: "bar",
             emphasis: {
               focus: "series",
             },
             itemStyle: {
-              formatter: (val) => {},
+              formatter: (val) => { },
               barBorderRadius: [5, 5, 0, 0],
             },
             // barCategoryGap: '50%',

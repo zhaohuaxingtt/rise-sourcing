@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-09-29 10:43:01
+ * @LastEditTime: 2021-09-30 13:12:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -14,7 +14,7 @@
            v-if="!preview"
            v-show="reportFlag">
         <div v-if="!editFlag">
-         
+
           <iButton @click="edit">编辑</iButton>
         </div>
         <div v-else>
@@ -115,7 +115,7 @@ export default {
               return {
                 ...row,
                 index: index + 1,
-                editMode: this.editFlag?true:false
+                editMode: this.editFlag ? true : false
               }
             });
           } else {
@@ -125,7 +125,7 @@ export default {
               return {
                 ...row,
                 index: index + 1,
-                editMode: this.editFlag?true:false
+                editMode: this.editFlag ? true : false
               }
             });
             console.log(this.tableData)
@@ -174,9 +174,8 @@ export default {
         this.$parent.$parent.getMekTable()
       })
     },
-      renderHeader (h, { column }) {
+    renderHeader (h, { column }) {
       let header = column.label.split('<br/>');
-      console.log(header)
       return [h('p', {
         style: {
           overflow: 'hidden',

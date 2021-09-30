@@ -60,6 +60,7 @@ export default {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: 'allContainer',
+        watermark: this.$store.state.permission.userInfo.deptDTO.nameZh + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
         pdfName: this.language('PINLEIGUANLIZHUSHOU', '品类管理助手') + '-' + this.language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN', '批量供应商工厂总览') + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
       });
       let params = {
