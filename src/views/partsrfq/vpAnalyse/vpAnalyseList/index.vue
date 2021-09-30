@@ -13,14 +13,16 @@
     <iCard class="margin-top20">
       <div slot="header" class="headBox">
         <p class="headTitle">{{$t('TPZS.VPFXK')}}</p>
-        <span class="buttonBox" v-if="!editMode">
-          <iButton @click="clickAdd">{{$t('TPZS.LK_CREATE')}}</iButton>
-          <iButton @click="clickEdit">{{$t('LK_BIANJI')}}</iButton>
-          <iButton @click="clickDel">{{$t('delete')}}</iButton>
-        </span>
-        <span class="buttonBox" v-if="editMode">
-          <iButton @click="clickEdit">{{$t('LK_QUXIAO')}}</iButton>
-          <iButton @click="clickSaveEdit">{{$t('LK_BAOCUN')}}</iButton>
+        <span v-if="!disabled">
+          <span class="buttonBox" v-if="!editMode">
+            <iButton @click="clickAdd">{{$t('TPZS.LK_CREATE')}}</iButton>
+            <iButton @click="clickEdit">{{$t('LK_BIANJI')}}</iButton>
+            <iButton @click="clickDel">{{$t('delete')}}</iButton>
+          </span>
+          <span class="buttonBox" v-if="editMode">
+            <iButton @click="clickEdit">{{$t('LK_QUXIAO')}}</iButton>
+            <iButton @click="clickSaveEdit">{{$t('LK_BAOCUN')}}</iButton>
+          </span>
         </span>
       </div>
       <analysisTable v-if="isShowTable" ref="analysisTable" :editMode="editMode" :searchData="searchData"/>
@@ -42,6 +44,12 @@ export default {
       searchData: null,
       backUpData: [],
       isShowTable: true
+    }
+  },
+  inject: ['getDisabled'],
+  computed: {
+    disabled() {
+      return typeof this.getDisabled === "function" ? this.getDisabled() : false
     }
   },
   created() {

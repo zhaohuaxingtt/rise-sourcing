@@ -37,17 +37,16 @@
     <iCard class="margin-top20">
         <div  class="margin-bottom20 clearFloat">
           	<span  class="font18 font-weight" >{{$t('TPZS.BOBFXK')}}</span>
-          <div class="floatright">
-          <div v-if="!edit">
-            <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
-            <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
-            <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
-          </div>
-          <div v-else>
-            <iButton @click="cancelEditBob">{{ $t("LK_QUXIAO") }}</iButton>
-            <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
-          </div>
-
+          <div class="floatright" v-if="!disabled">
+            <div v-if="!edit">
+              <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
+              <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
+              <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
+            </div>
+            <div v-else>
+              <iButton @click="cancelEditBob">{{ $t("LK_QUXIAO") }}</iButton>
+              <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
+            </div>
           </div>
       <!-- <template v-slot:header-control> -->
         </div>
@@ -240,6 +239,7 @@ export default {
     icon,
     reportPreview,
   },
+  inject: ['getDisabled'],
   data () {
     return {
       form: {},
@@ -286,6 +286,9 @@ export default {
         return val.fileType == this.$t('TPZS.SCHEME_TYPE') ? flag : null;
       };
     },
+    disabled() {
+      return typeof this.getDisabled === "function" ? this.getDisabled() : false
+    }
   },
   methods: {
     //初始化查询数据

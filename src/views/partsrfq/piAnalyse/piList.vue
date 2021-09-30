@@ -46,7 +46,7 @@
           <!-- :title="language('PIFENXIKU', 'Price Index分析库')" -->
         <div  class="margin-bottom20 clearFloat">
           <span  class="font18 font-weight" >{{language('PIFENXIKU', 'Price Index分析库')}}</span>
-          <div class="floatright">
+          <div class="floatright" v-if="!disabled">
           <div v-if="!editMode">
             <iButton @click="clickRawMaterial">{{
               language("YUANCAILIAOJIAGEZONGLAN", "原材料价格总览")
@@ -311,6 +311,7 @@ export default {
   mounted() {
     this.getTableList();
   },
+  inject: ['getDisabled'],
   computed: {
     defaultStatus () {
       return function (val, status) {
@@ -323,6 +324,9 @@ export default {
         return val.type == this.$t('TPZS.SCHEME_TYPE') ? flag : null;
       };
     },
+    disabled() {
+      return typeof this.getDisabled === "function" ? this.getDisabled() : false
+    }
   },
   methods: {
     //初始化查询数据
