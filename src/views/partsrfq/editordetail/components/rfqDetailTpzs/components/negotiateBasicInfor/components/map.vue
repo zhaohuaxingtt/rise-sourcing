@@ -178,7 +178,7 @@ export default {
                         </div>
                         <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
                         <div class='carType'>${carTypeList}</div>
-                        <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
+                        <div class='label'>${this.language('GONGCHANGDIZHI','工厂地址')}</div>
                         <div class='value'>${item.factoryName}-${item.factoryAddress}</div>
                       </div>`,
           offset: new AMap.Pixel(7, -15)
@@ -201,7 +201,6 @@ export default {
   display: none !important;
 }
 ::v-deep .tips {
-  background-color: #fff;
   width: 415px;
   .flex {
     align-items: center;

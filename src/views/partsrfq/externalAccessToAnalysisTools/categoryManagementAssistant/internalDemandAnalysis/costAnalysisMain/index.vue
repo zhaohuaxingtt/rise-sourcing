@@ -1,8 +1,8 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-28 17:04:23
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-30 10:45:50
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\index.vue
 -->
@@ -25,8 +25,9 @@
           <el-col :span="10">
             <costChar left="-5%"
                       :width="540"
-                      :height="400"
-                      :chartData="pieData" />
+                      :height="600"
+                      :chartData="pieData"
+                      :pieWidth="[35,65]" />
           </el-col>
           <el-col :span="14">
             <tableList :tableData="tableListData"

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 16:37:12
- * @LastEditTime: 2021-09-29 20:57:50
+ * @LastEditTime: 2021-09-30 10:51:11
  * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisHandleInput\components\char.vue
@@ -11,9 +11,7 @@
 </template>
 
 <script>
-import imgUrl from '@/assets/images/pie-icon.png'
 import echarts from '@/utils/echarts'
-import { log } from 'util'
 export default {
   props: {
     chartData: {
@@ -39,12 +37,17 @@ export default {
     left: {
       type: String,
       default: '0'
+    },
+    pieWidth: {
+      type: Array,
+      default: []
     }
   },
   computed: {
   },
   data() {
     return {
+      myChart: {}
     }
   },
   created() {
@@ -52,12 +55,18 @@ export default {
       this.initCharts()
     })
   },
+  mounted() {
+    let _this = this;
+    window.onresize = function() {
+      _this.myChart.resize()
+    }
+  },
   methods: {
     initCharts() {
       let count = 0;
       let currentNum = 0;
       const renderArr = []
-      const myChart = echarts().init(this.$refs.pieChart);
+      this.myChart = echarts().init(this.$refs.pieChart);
       const option = {
         color: this.colors,
         grid: {
@@ -67,7 +76,7 @@ export default {
         series: [
           {
             type: 'pie',
-            radius: ['40%', '70%'],
+            radius: this.pieWidth,
             avoidLabelOverlap: false,
             itemStyle: {
               borderColor: '#fff',
@@ -95,7 +104,7 @@ export default {
                 text: {
                   width: 130,
                   align: 'right',
-                  fontSize:'12px',
+                  fontSize: '12px',
                 },
                 pieIcon0: {
                   borderColor: this.colors[0],
@@ -168,7 +177,7 @@ export default {
           }
         ]
       }
-      myChart.setOption(option);
+      this.myChart.setOption(option);
     }
   },
   watch: {

@@ -1,8 +1,8 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 15:59:20
- * @LastEditTime: 2021-09-15 10:38:23
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-30 10:40:51
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalyHandleInput.vue
 -->
@@ -21,7 +21,7 @@
       <div class="mainContent">
         <el-row :gutter="20">
           <el-col :span="16">
-            <costChar left="5%" :width="800" :height="500" :chartData="pieData"/>
+            <costChar :pieWidth="['40%','70%']" left="5%" :width="800" :height="500" :chartData="pieData" />
           </el-col>
           <el-col :span="8">
             <p class="formTitle">{{language('SHUZHI', '数值')}}</p>
@@ -30,7 +30,7 @@
                 <iInput class="form-item" v-model="form.material + '%'" disabled></iInput>
               </el-form-item>
               <el-form-item :label="language('ZHIZAOCHENGBEN', '制造成本')">
-                <iInput class="form-item" v-model="form.production + '%'" disabled ></iInput>
+                <iInput class="form-item" v-model="form.production + '%'" disabled></iInput>
               </el-form-item>
               <el-form-item :label="language('BAOFEICHENGBEN', '报废成本')">
                 <iInput class="form-item" v-model="form.scrap + '%'" disabled></iInput>
@@ -49,19 +49,13 @@
         </el-row>
       </div>
     </iCard>
-    <handleInput
-    :key="modalParam.key"
-    :data="operateLog"
-    v-model="modalParam.visible"
-    @handleCloseDialog="handleCancel"
-    @handleSubmitDialog="handleSubmitDialog"
-    />
-    <saveModal :key="saveModalParams.key" v-model="saveModalParams.visible" @checkSchemeName="checkSchemeName"/>
+    <handleInput :key="modalParam.key" :data="operateLog" v-model="modalParam.visible" @handleCloseDialog="handleCancel" @handleSubmitDialog="handleSubmitDialog" />
+    <saveModal :key="saveModalParams.key" v-model="saveModalParams.visible" @checkSchemeName="checkSchemeName" />
   </div>
 </template>
 
 <script>
-import {iCard, iButton, iInput, iMessage, iMessageBox} from 'rise'
+import { iCard, iButton, iInput, iMessage, iMessageBox } from 'rise'
 import { downloadPdfMixins } from '@/utils/pdf';
 import handleInput from '../costAnalysisAdd/components/handleInput'
 import saveModal from '../save'
@@ -69,9 +63,9 @@ import costChar from '@/views/partsrfq/externalAccessToAnalysisTools/categoryMan
 import { getCostStructureAnalysisByName, fetchSave } from '@/api/partsrfq/costAnalysis/index.js'
 export default {
   name: 'CostAnalysisHandleInput',
-  components: {iCard, iButton, iInput, handleInput, costChar, saveModal, iMessageBox},
+  components: { iCard, iButton, iInput, handleInput, costChar, saveModal, iMessageBox },
   mixins: [downloadPdfMixins],
-  data () {
+  data() {
     return {
       overViewUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/overView',
       costAnalysisUrl: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysis',
@@ -86,7 +80,7 @@ export default {
       modalParam: {
         key: 0,
         visible: false
-      },  
+      },
       saveModalParams: {
         key: 0,
         visible: false
@@ -94,7 +88,7 @@ export default {
     }
   },
   created() {
-    if(this.operateLog) {
+    if (this.operateLog) {
       this.initData()
     }
   },
@@ -103,7 +97,7 @@ export default {
     initData() {
       const operateLogData = JSON.parse(this.operateLog)
       this.form = operateLogData
-      for(const key in operateLogData) {
+      for (const key in operateLogData) {
         let name = null
         switch (key) {
           case 'manage':
@@ -171,12 +165,12 @@ export default {
       this.targetSchemeId = null
       this.$set(this.saveModalParams, 'visible', false)
       setTimeout(() => {
-        getCostStructureAnalysisByName({name: schemeName}).then(res => {
-          if(res && res.code == 200) {
-            if(res.data) {
+        getCostStructureAnalysisByName({ name: schemeName }).then(res => {
+          if (res && res.code == 200) {
+            if (res.data) {
               //名称校验重复
               this.targetSchemeId = res.data.id
-              iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'),this.language('TISHI','提示'),{ cancelButtonText: this.language('LK_QUXIAO','取 消'), confirmButtonText: this.language('LK_QUEDING','确定') }).then(_ => {
+              iMessageBox(this.language('COVERCONFIRM', '此分析方案/报告名称已存在，是否覆盖？'), this.language('TISHI', '提示'), { cancelButtonText: this.language('LK_QUXIAO', '取 消'), confirmButtonText: this.language('LK_QUEDING', '确定') }).then(_ => {
                 this.createPdfAndSave()
               })
             } else {
@@ -190,7 +184,7 @@ export default {
     // 创建pdf并保存数据
     createPdfAndSave() {
       this.createPdf().then(pdf => {
-        if(!pdf) {
+        if (!pdf) {
           iMessage.error(this.language('CHUANGJIANPDFSHIBAI', '创建PDF失败'))
           return
         }
@@ -210,7 +204,7 @@ export default {
           reportUrl: pdf.downloadUrl,
         }
         fetchSave(params).then(res => {
-          if(res && res.code == 200) iMessage.success(res.desZh)
+          if (res && res.code == 200) iMessage.success(res.desZh)
           else iMessage.error(res.desZh)
         })
       })
@@ -225,7 +219,7 @@ export default {
         }
         this.getDownloadFileAndExportPdf(pdfParam).then(res => {
           this.downloadButtonLoading = false
-          resolve(res) 
+          resolve(res)
         })
       })
     },
@@ -260,10 +254,9 @@ export default {
   .form-item {
     width: 80%;
   }
-  ::v-deep .el-input .el-input__inner{
+  ::v-deep .el-input .el-input__inner {
     text-align: center;
   }
-  
 }
 </style>
 
