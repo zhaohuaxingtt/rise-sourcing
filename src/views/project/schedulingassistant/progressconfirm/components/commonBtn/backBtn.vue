@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 17:34:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-30 17:48:29
+ * @LastEditTime: 2021-09-29 17:22:58
  * @Description: 退回按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\backBtn.vue
 -->
@@ -18,6 +18,7 @@
 import { iMessage, iButton } from 'rise'
 import { returnPartScheduleList, returnSchedule } from '@/api/project'
 import backDialog from '../back'
+import { backDelayReasonConfirm } from '@/api/project/process'
 export default {
   components: { iButton, backDialog },
   props: {
@@ -61,8 +62,10 @@ export default {
     handleBack(val) {
       if (this.backType === '1') {
         this.returnSchedule(val)
+      } else if (this.backType === '2') {
+        this.returnPartScheduleList(val)
       } else {
-        this.returnPartScheduleList()
+        this.backDelayReasonConfirm(val)
       }
     },
     /**
@@ -92,6 +95,25 @@ export default {
      */    
     returnPartScheduleList(val) {
       returnPartScheduleList(this.backData.map(item => item.id), val).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeBackVisible(false)
+          this.$emit('getTableList')
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.$refs.productGroupBack.changeSaveLoading(false)
+      })
+    },
+    /**
+     * @Description: 延误原因退回
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
+    backDelayReasonConfirm(val) {
+      backDelayReasonConfirm(this.backData.map(item => {return {...item, backReason:val}})).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.changeBackVisible(false)
