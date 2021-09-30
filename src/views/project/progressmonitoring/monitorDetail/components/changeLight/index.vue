@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 10:36:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-24 16:01:13
+ * @LastEditTime: 2021-09-28 14:55:04
  * @Description: 指示灯修改弹窗
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\changeLight\index.vue
 -->
 
 <template>
   <iDialog 
-    :title="language('RENWUTIAOZHENG','任务调整')"
+    :title="language('FENGXIANDENGJITIAOZHENG','风险等级调整')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
   >
@@ -18,7 +18,8 @@
       <iButton @click="clearDialog">{{language('QUXIAO','取消')}}</iButton>
     </template>
     <el-form label-position="top">
-      <el-form-item class="formItem-inRow" :label="language('QINGXUANZEYUJINGDENGYANSE','请选择预警灯颜色')+':'">
+      <el-form-item class="formItem-inRow" >
+        <span slot="label"><span class="margin-right5" style="color:red;font-size:14px">*</span>{{language('YUJINGDENGYANSE','预警灯颜色')}}:</span>
         <iSelect v-model="delayLevelPro" :placeholder="language('QINGXUANZE','请选择')" style="width:220px" >
           <el-option
             v-for="item in lightOption"
@@ -28,9 +29,8 @@
           </el-option> 
         </iSelect> 
       </el-form-item>
-      <el-form-item >
-        <span slot="label">{{language('QINGTIANXIEACTIONPLAN','请填写Action Plan')}}<span class="margin-left10" style="color:red;font-size:16px">*</span>:</span>
-        <iInput v-model="actionPlan" :placeholder="language('QINGSHURU','请输入')" type="textarea" :rows="6" resize="none" ></iInput> 
+      <el-form-item :label="language('TIAOZHENGBEIZHU','调整备注') + ':'">
+        <iInput v-model="actionPlan" :placeholder="language('QINGSHURUTIAOZHENGBEIZHU','请输入调整备注') + ':'" type="textarea" :rows="6" resize="none" ></iInput> 
       </el-form-item>
     </el-form>
   </iDialog>
