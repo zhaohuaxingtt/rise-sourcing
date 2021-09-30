@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-26 11:06:24
- * @LastEditTime: 2021-09-29 16:19:37
+ * @LastEditTime: 2021-09-30 10:08:52
  * @LastEditors: Luoshuang
  * @Description: 项目管理-项目进度监控接口
  * @FilePath: \front-web\src\api\project\process.js
@@ -9,8 +9,10 @@
 
 
 import axios from '@/utils/axios'
+import axiosDownload from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_PROJECTMGT)
+const downloadRequst = axiosDownload(process.env.VUE_APP_PROJECTMGT)
 
 // 项目进度监控-获取
 export function getDelayGradeConfig(params) {
@@ -160,6 +162,15 @@ export function transferDelayReasonConfirm(data) {
 export function backDelayReasonConfirm(data) {
   return requst({
     url: '/project-progress-monitor/backDelayReasonConfirm',
+    method: 'POST',
+    data
+  })
+}
+
+// 监控明细下载
+export function downloadProjectMonitorFile(data) {
+  return downloadRequst({
+    url: '/project-progress-monitor/projectMonitorFile',
     method: 'POST',
     data
   })
