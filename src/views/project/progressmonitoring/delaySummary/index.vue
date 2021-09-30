@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-30 08:48:55
+ * @LastEditTime: 2021-09-30 09:19:45
  * @Description: 延误原因汇总
 -->
 
@@ -177,7 +177,7 @@ export default {
       } else {
         this.withSend = false
       }
-      if (this.searchParams.confirmStatus === '2') {
+      if (this.searchParams.confirmStatus === '1') {
         this.withAllBtn = true
       } else {
         this.withAllBtn = false
