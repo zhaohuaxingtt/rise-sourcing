@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-30 10:45:50
+ * @LastEditTime: 2021-09-30 13:23:06
  * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\index.vue
@@ -206,6 +206,7 @@ export default {
         this.downloadButtonLoading = true
         const pdfParam = {
           domId: 'content',
+          watermark: this.$store.state.permission.userInfo.deptDTO.nameZh + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
           pdfName: this.schemeName,
         }
         this.getDownloadFileAndExportPdf(pdfParam).then(res => {

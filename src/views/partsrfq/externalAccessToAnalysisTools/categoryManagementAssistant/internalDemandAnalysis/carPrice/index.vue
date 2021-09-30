@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-28 10:52:30
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-30 13:22:51
+ * @LastEditors: zbin
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
 -->
@@ -322,6 +322,7 @@ export default {
         this.saveLoading = true;
         const resFile = await this.getDownloadFileAndExportPdf({
           domId: "carPrice",
+          watermark: this.$store.state.permission.userInfo.deptDTO.nameZh + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
           pdfName:
             "品类管理助手_车型价格对比_" +
             this.$store.state.rfq.categoryName +

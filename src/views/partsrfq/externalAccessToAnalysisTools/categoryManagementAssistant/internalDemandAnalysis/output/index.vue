@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-26 11:29:01
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-30 13:23:59
+ * @LastEditors: zbin
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
 -->
@@ -156,6 +156,7 @@ export default {
          })
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'output',
+            watermark: this.$store.state.permission.userInfo.deptDTO.nameZh + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
             pdfName: '品类管理助手_产量总览_'+ typeName + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
          });
          console.log(resFile)
