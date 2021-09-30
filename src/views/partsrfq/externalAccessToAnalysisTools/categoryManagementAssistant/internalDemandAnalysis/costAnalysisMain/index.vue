@@ -206,7 +206,7 @@ export default {
         this.downloadButtonLoading = true
         const pdfParam = {
           domId: 'content',
-          watermark: this.$store.state.permission.userInfo.deptDTO.nameZh + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
+          watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
           pdfName: this.schemeName,
         }
         this.getDownloadFileAndExportPdf(pdfParam).then(res => {
