@@ -1,6 +1,6 @@
 import html2canvas from 'html2canvas'
 import JsPDF from 'jspdf'
-import { uploadUdFile } from '@/api/file/upload'
+import { uploads } from '@/api/file/upload'
 import Store from '@/store'
 // import { addfont } from "./font.js";
 /**
@@ -57,26 +57,25 @@ export function downloadPDF({
     var imgHeight = (595.28 / contentWidth) * contentHeight
     let pageData = canvas.toDataURL('image/jpeg', 1.0)
     var pdf = new JsPDF('', 'pt', 'a4')
-    let dept = Store.state.permission.userInfo.deptDTO.nameZh + '-' + Store.state.permission.userInfo.userNum + '-' + Store.state.permission.userInfo.nameZh
     // pdf.save('test')
-    function addWaterMark(doc) {
-      var totalPages = doc.internal.getNumberOfPages()
-      for (let i = 1; i <= totalPages; i++) {
-        for (var x = 200; x <= doc.internal.pageSize.height - 30; x = x + 300) {
-          for (var j = 30; j <= doc.internal.pageSize.width - 30; j = j + 200) {
-            doc.setPage(i)
-            //doc.addImage(imgData, 'PNG', 40, 40, 75, 75);
-            doc.setTextColor(150)
-            window.addfont(doc)
-            doc.addFont('bolds', 'b', 'normal')
-            doc.setFont('b');
-            doc.text(dept, j, x, 45)
-            doc.text(window.moment().format('YYYY-MM-DD HH:mm:ss'), j + 13, x + 15, 45)
-          }
-        }
-      }
-      return doc
-    }
+    // function addWaterMark(doc) {
+    //   var totalPages = doc.internal.getNumberOfPages()
+    //   for (let i = 1; i <= totalPages; i++) {
+    //     for (var x = 200; x <= doc.internal.pageSize.height - 30; x = x + 300) {
+    //       for (var j = 30; j <= doc.internal.pageSize.width - 30; j = j + 200) {
+    //         doc.setPage(i)
+    //         //doc.addImage(imgData, 'PNG', 40, 40, 75, 75);
+    //         doc.setTextColor(150)
+    //         window.addfont(doc)
+    //         doc.addFont('bolds', 'b', 'normal')
+    //         doc.setFont('b');
+    //         doc.text(dept, j, x, 45)
+    //         doc.text(window.moment().format('YYYY-MM-DD HH:mm:ss'), j + 13, x + 15, 45)
+    //       }
+    //     }
+    //   }
+    //   return doc
+    // }
 
     if (leftHeight < pageHeight) {
       //在pdf.addImage(pageData, 'JPEG', 左，上，宽度，高度)设置在pdf中显示；
@@ -94,7 +93,7 @@ export function downloadPDF({
       }
     }
     //可动态生成
-    pdf = addWaterMark(pdf)
+    // pdf = addWaterMark(pdf)
     if (exportPdf) {
       pdf.save(pdfName)
     }
@@ -123,7 +122,7 @@ export function dataURLtoFile(dataurl, filename) {
 // pdf相关处理
 export const downloadPdfMixins = {
   methods: {
-    getDownloadFileAndExportPdf({ domId, pdfName, callBack, exportPdf }) {
+    getDownloadFileAndExportPdf({ domId, pdfName, watermark, callBack, exportPdf }) {
       return new Promise((resolve) => {
         downloadPDF({
           idEle: domId,
@@ -136,8 +135,9 @@ export const downloadPdfMixins = {
             const blob = dataURLtoFile(pdfFile, filename)
             const formDataReq = {
               multifile: blob,
+              watermark: watermark
             }
-            const res = await uploadUdFile(formDataReq)
+            const res = await uploads(formDataReq)
             const data = res.data[0]
             const req = {
               downloadName: data.name,

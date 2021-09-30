@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-09-26 10:34:00
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-30 13:22:32
+ * @LastEditors: zbin
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
 -->
@@ -139,6 +139,7 @@ export default {
       async save(){
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'batchSupplier',
+            watermark: this.$store.state.permission.userInfo.deptDTO.nameZh + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
             pdfName:'品类管理助手_批量供应商概览_' + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
         });
          let params={

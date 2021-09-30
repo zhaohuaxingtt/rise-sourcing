@@ -99,6 +99,7 @@ export default {
     getDownloadFile({exportPdf = false, callBack} = {}) {
       return this.getDownloadFileAndExportPdf({
         domId: 'content',
+        watermark: this.$store.state.permission.userInfo.deptDTO.nameZh + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
         pdfName: 'Volume Pricing Overview',
         exportPdf,
         callBack,

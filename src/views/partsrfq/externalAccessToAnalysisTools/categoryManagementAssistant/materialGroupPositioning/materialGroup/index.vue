@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-27 17:41:33
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-30 13:24:35
+ * @LastEditors: zbin
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\materialGroupPositioning\materialGroup\index.vue
 -->
@@ -248,6 +248,7 @@ export default {
       this.pageLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: "materialGroup",
+        watermark: this.$store.state.permission.userInfo.deptDTO.nameZh + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
         pdfName: `品类管理助手_材料组定位_${
           this.$store.state.rfq.categoryName
         }_${window.moment().format("YYYY-MM-DD")}_`,
