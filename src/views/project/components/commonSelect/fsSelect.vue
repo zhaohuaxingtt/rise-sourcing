@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 15:18:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-30 16:03:20
+ * @LastEditTime: 2021-09-29 17:11:37
  * @Description: 询价采购员下拉框
  * @FilePath: \front-web\src\views\project\components\commonSelect\fsSelect.vue
 -->
 
 <template>
-  <iSelect :filterable="filterable" v-model="data" :placeholder="language('QINGXUANZE', '请选择')">
+  <iSelect :filterable="filterable" v-model="data" :placeholder="language('QINGXUANZE', '请选择')" @change="handleChange">
     <el-option
       v-for="item in options"
       :key="item.value"
@@ -43,13 +43,17 @@ export default {
   data() {
     return {
       options: [],
-      data: this.value
+      data: this.value,
     }
   },
   created() {
     this.getFSOPtions()
   },
   methods: {
+    handleChange(val) {
+      // this.dataDesc = this.options.find(item => item.value === val).label
+      this.$emit('handleChange', val, this.options.find(item => item.value === val).label)
+    },
     getFSOPtions() {
       getAllFS().then(res => {
         if (res?.result) {
