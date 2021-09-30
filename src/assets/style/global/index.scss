@@ -559,3 +559,18 @@ a{
     text-align: center;
   }
 }
+
+.partSelect {
+  margin-top: 4px!important;
+
+  li {
+    padding: 0;
+    height: 100%;
+    color: #8F8F90;
+    font-size: 18.5px;
+  }
+
+  .selected {
+    background: #E8EFFE;
+  }
+}

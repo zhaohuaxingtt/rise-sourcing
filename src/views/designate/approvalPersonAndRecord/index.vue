@@ -189,7 +189,7 @@ export default {
       return res.data.map(item => {
         return {
           ...item,
-          label: item.nameZh,
+          label: item.deptNum,
           value: item.id
         }
       })

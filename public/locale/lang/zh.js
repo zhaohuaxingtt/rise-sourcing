@@ -1187,7 +1187,7 @@
             'RFQANDLINGJIANQINGDAN':'RFQ & 零件清单', // RFQ & 零件清单
             'GONGYINGSHANGANDDANYIGONGYINGSHANG':'供应商 & 单⼀供应商', // 供应商 & 单⼀供应商
             'DINGDIANJIANYI':'定点建议', // 定点建议
-            'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
+            'SHENPIRENANDSHENPIJILU':'审批人 & 审批记录', // 审批⼈ & 审批记录
             'JUECEZILIAO':'决策资料', // 决策资料
             'DINGDIAN':'定点', // 定点
             'QUXIAODINGDIAN':'取消定点', // 取消定点

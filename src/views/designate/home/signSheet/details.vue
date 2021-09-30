@@ -327,6 +327,25 @@ export default {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
+    // 查看详情
+    viewNominationDetail(row) {
+      // 缓存nominateProcessType
+      // this.$store.dispatch('setNominationType', row.nominateProcessType)
+      // 禁用nominateProcessType编辑
+      this.$store.dispatch('setNominationTypeDisable', true)
+      this.$nextTick(() => {
+        const routeData = this.$router.resolve({
+          path: '/designate/rfqdetail',
+          query: {
+            desinateId: row.id, 
+            designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
+            partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',
+            applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
+          }
+        })
+        window.open(routeData.href, '_blank')
+      })
+    },
   }
 
 }

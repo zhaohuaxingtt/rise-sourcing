@@ -2,12 +2,12 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-27 11:15:38
+ * @LastEditTime: 2021-09-30 10:11:39
  * @Description: 延误原因汇总
 -->
 
 <template>
-  <div class="delaySummary">
+  <iPage class="delaySummary" v-permission.dynamic.auto="permissionKey">
     <iSearch :icon="true" class="margin-top30">
       <template slot="button">
         <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
@@ -31,18 +31,17 @@
       <!-- <template slot="header-control"> -->
       <div class="floatright" slot="header-control">
         <!--------------------发送按钮----------------------------------->
-        <!-- <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('FASONG','发送')}}</iButton> -->
-        <sendFSBtn v-if="!isFS && withSend" sendType="2" :sendData="selectRow" @getTableList="getTableList" />
-        <iButton v-if="!isFS">{{language('DAOCHU','导出')}}</iButton>
+        <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('FASONG','发送')}}</iButton>
+        <iButton v-if="!isFS" @click="handleExport">{{language('DAOCHU','导出')}}</iButton>
         <template v-if="isFS">
           <!--------------------转派按钮----------------------------------->
-          <transferBtn class="margin-right10" tansferType="2" :tansferData="selectRow" @getTableList="getTableList" ></transferBtn>
+          <transferBtn class="margin-right10" tansferType="3" :tansferData="selectRow" @getTableList="getTableList" ></transferBtn>
           <!--------------------退回按钮----------------------------------->
-          <backBtn class="margin-right10" v-if="withAllBtn" backType="2" :backData="selectRow" @getTableList="getTableList" ></backBtn>
+          <backBtn class="margin-right10" v-if="withAllBtn" backType="3" :backData="selectRow" @getTableList="getTableList" ></backBtn>
           <!--------------------保存按钮----------------------------------->
-          <saveBtn v-if="withAllBtn" saveType="2" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
+          <saveBtn v-if="withAllBtn" saveType="3" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
           <!--------------------确认并发送按钮----------------------------------->
-          <confirmBtn v-if="withAllBtn" confirmType="2" :confirmData="selectRow" @getTableList="getTableList" ></confirmBtn>
+          <confirmBtn v-if="withAllBtn" confirmType="3" :confirmData="selectRow" @getTableList="getTableList" ></confirmBtn>
         </template>
       </div>
       <!-- 表格 -->
@@ -78,7 +77,8 @@
         :total="page.totalCount"
       />
     </iCard>
-  </div>
+    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" type="2" :delayList="selectTableData" />
+  </iPage>
   
 </template>
 
@@ -96,10 +96,11 @@ import confirmBtn from '@/views/project/schedulingassistant/progressconfirm/comp
 import saveBtn from '@/views/project/schedulingassistant/progressconfirm/components/commonBtn/saveBtn'
 import backBtn from '@/views/project/schedulingassistant/progressconfirm/components/commonBtn/backBtn'
 import transferBtn from '@/views/project/schedulingassistant/progressconfirm/components/commonBtn/transferBtn'
-import sendFSBtn from '@/views/project/schedulingassistant/progressconfirm/components/commonBtn/sendFSBtn'
+import { getDelayReasonSummary } from '@/api/project/process'
+import delayReasonDialog from '../monitorDetail/components/delayReson'
 export default {
   mixins: [pageMixins],
-  components: { iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, sendFSBtn },
+  components: { iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, delayReasonDialog },
   data() {
     return {
       tableTitle,
@@ -110,12 +111,16 @@ export default {
       searchParams: {},
       withSend: false,
       withAllBtn: false,
+      dialogVisibleDelayReason: false
     }
   },
   computed: {
     isFS() {
       return this.$route.path.includes('delayconfirm')
-    }
+    },
+    permissionKey() {
+      return !this.isFS ? 'PROJECTMGT_DELAYSUMMARY_PAGE|项目管理-进度监控-延误原因汇总页面' : 'PROJECTMGT_DELAYCONFIRM_PAGE|项目管理-进度监控-延误原因确认页面'
+    }, 
   },
   created() {
     this.initSearchParams()
@@ -123,6 +128,16 @@ export default {
     this.getTableList()
   },
   methods: {
+    handleSend() {
+      if (this.selectTableData.lenth < 1) {
+        iMessage.warn(this.language('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据'))
+        return
+      }
+      this.changeDelayReasonDialogVisible(true)
+    },
+    changeDelayReasonDialogVisible(visible) {
+      this.dialogVisibleDelayReason = visible
+    },
     /**
      * @Description: 重置分页器
      * @Author: Luoshuang
@@ -163,12 +178,33 @@ export default {
       } else {
         this.withSend = false
       }
-      if (this.searchParams.confirmStatus === '2') {
+      if (this.searchParams.confirmStatus === '1') {
         this.withAllBtn = true
       } else {
         this.withAllBtn = false
       }
-      // this.getPartScheduleList()
+      this.getDelaySummaryList()
+    },
+    getDelaySummaryList() {
+      this.tableLoading = true
+      const params = {
+        ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }
+      getDelayReasonSummary(params).then(res => {
+        if (res?.result) {
+          this.tableData = res.data
+          this.page.currPage = res.pageNum
+          this.page.pageSize = res.pageSize
+          this.page.totalCount = res.total
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
     },
     handleReset() {
       this.initSearchParams()
@@ -178,7 +214,7 @@ export default {
     },
     initSearchParams() {
       this.searchParams = {
-        confirmStatus: '2',
+        confirmStatus: '1',
         cartypeProId: this.$route.query.cartypeProId || '',
         partNum: this.$route.query.partNum || '',
         fsId: '',
@@ -194,3 +230,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.delaySummary {
+  padding: 0;
+  padding-top: 10px;
+  // height: calc(100% - 65px);
+  // overflow: visible;
+}
+</style>

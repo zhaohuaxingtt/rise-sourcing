@@ -9,16 +9,16 @@
 
 
 export const tableTitle = [
-  {props:'fsnrGsnrNum',name:'FsNr/GsNr', key: "FSNRGSNR", tooltip: true, width: 120},
+  {props:'fsnrGsnrNum',name:'FS/GS/SP No.', key: "FSGSSPNO", tooltip: true, width: 120},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 120},
   {props:'partNameZh',name:'零件名称', key: "LINGJIANMINGCHENG", tooltip: true, width: 120},
   {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100},
   {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
   {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 100},
   {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 100},
-  {props:'rwPrice',name:'RW价', key: "RWJIA", tooltip: true},
   {props:'lcAVary',name:'LC_A变化', key: "LCABIANHUA", tooltip: true, width: 120},
   {props:'lcBVary',name:'LC_B变化', key: "LCBBIANHUA", tooltip: true, width: 120},
+  {props:'rwPrice',name:'RW价', key: "RWJIA", tooltip: true},
   {props:'skdAVary',name:'SKD_A变化', key: "SKDABIANHUA", tooltip: true, width: 120},
   {props:'skdBVary',name:'SKD_B变化', key: "SKDBBIANHUA", tooltip: true, width: 100},
   {props:'ckdLandedVary',name:'CKD Landed变化', key: "CKDLANDEDBIANHUA", tooltip: true, width: 120},
@@ -37,7 +37,7 @@ export const tableMockData = [
 
 export const searchList = [
   {value: 'rfqId', label: 'RFQ编号', type: 'input', i18n_label: 'RFQBIANHAO',permission: 'FINANCIALTARGETPRICE_APPROVAL_RFQNUM|财务目标价管理-目标价审批-RFQ编号'},
-  {value: 'fsNum', label: 'FSNR/GSNR/SPNR', type: 'input', i18n_label: 'FSGSSP',permission: 'FINANCIALTARGETPRICE_APPROVAL_FSNUM|财务目标价管理-目标价审批-FSGSNO'},
+  {value: 'fsNum', label: 'FS/GS/SP No.', type: 'input', i18n_label: 'FSGSSP',permission: 'FINANCIALTARGETPRICE_APPROVAL_FSNUM|财务目标价管理-目标价审批-FSGSNO'},
   {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',permission: 'FINANCIALTARGETPRICE_APPROVAL_PARTNUM|财务目标价管理-目标价审批-零件号'},
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG',permission: 'FINANCIALTARGETPRICE_APPROVAL_PARTNAME|财务目标价管理-目标价审批-零件名称'},
   {value: 'cfId', label: 'CF', type: 'select', i18n_label: 'CF',selectOption:'CF_USER',permission: 'FINANCIALTARGETPRICE_APPROVAL_CF|财务目标价管理-目标价审批-CF'},

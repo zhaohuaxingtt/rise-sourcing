@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-27 18:04:38
+ * @LastEditTime: 2021-09-30 10:13:23
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -18,7 +18,7 @@
         <iButton @click="gotoSechedule">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
         <iButton @click="handleSendFs" v-if="partStatus == 2 || partStatus == 3">{{language('FASONGJINDUQUEREN', '发送进度确认')}}</iButton> 
         <iButton @click="openDelayReasonDialog" v-if="[3,2,5,6].includes(Number(partStatus))" >{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
-        <iButton @click="handleExport" v-if="[1].includes(Number(partStatus))">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
+        <iButton @click="handleExport" v-if="[1].includes(Number(partStatus))" :loading="downloadLoading" >{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
     <div class="partListView-content"> 
@@ -122,7 +122,7 @@
 <script>
 import { iButton, icon, iText, iMessage } from 'rise'
 import { getProductGroupNodeInfoList, downloadNodeView, partProgressConfirm, getFsUserListPart, getAllFS } from '@/api/project'
-import { actionPlan, getProgressConfirmList } from '@/api/project/process'
+import { actionPlan, getProgressConfirmList, downloadProjectMonitorFile } from '@/api/project/process'
 import { svgList, nodeList } from './data'
 import moment from 'moment'
 import fsConfirm from '@/views/project/schedulingassistant/part/components/fsconfirm'
@@ -183,6 +183,15 @@ export default {
     }
   },
   methods: {
+    async handleExport() {
+      if (this.selectPartNums.length < 1) {
+        iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
+        return
+      }
+      this.downloadLoading = true
+      await downloadProjectMonitorFile(this.list.filter(item => this.selectPartNums.includes(item.partNum)))
+      this.downloadLoading = false
+    },
     getSollKw(time) {
       const momentTime = moment(time)
       const weeks = momentTime.weeks()

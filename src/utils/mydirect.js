@@ -274,7 +274,7 @@ function removeStyle(evt) {
     target.setAttribute('style', style)
 }
 
-Vue.directive("lazyselect", {
+Vue.directive("lazySelect", {
     bind(el, binding) {
         const dom = el.querySelector(".el-select-dropdown .el-select-dropdown__wrap")
         dom.addEventListener("scroll", function() {

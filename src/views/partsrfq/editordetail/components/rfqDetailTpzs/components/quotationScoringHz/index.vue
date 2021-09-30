@@ -123,7 +123,7 @@ export default{
   inject:['getbaseInfoData', 'getDisabled'],
   computed: {
     disabled() {
-      return this.getDisabled === "function" ? this.getDisabled() : false
+      return typeof this.getDisabled === "function" ? this.getDisabled() : false
     }
   },
   created(){

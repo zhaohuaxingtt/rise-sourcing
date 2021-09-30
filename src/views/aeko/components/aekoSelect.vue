@@ -15,18 +15,18 @@
         reserve-keyword
         @change="handleChange"
         :filter-method="dataFilter"
-        v-lazyselect="cartypeProjectLazy"
+        v-lazy-select="cartypeProjectLazy"
         @visible-change="selectVisibleChange"
     >
-    <el-option value="" :label="language('all','全部')"></el-option>
-    <el-option
-        v-for="(item,index) in ProjectOptions || []"
-        :key="'ProjectOptions_'+index"
-        :label="item.desc"
-        :value="item.code"
-    >
-    </el-option>  
-</iSelect> 
+        <el-option value="" :label="language('all','全部')"></el-option>
+        <el-option
+            v-for="(item,index) in ProjectOptions || []"
+            :key="'ProjectOptions_'+index"
+            :label="item.desc"
+            :value="item.code"
+        >
+        </el-option>  
+    </iSelect> 
 </template>
 
 <script>

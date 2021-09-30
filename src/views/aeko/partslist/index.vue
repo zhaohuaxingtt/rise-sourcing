@@ -14,6 +14,7 @@
       <iSearch @sure="sure" @reset="reset">
         <el-form>
           <el-form-item 
+          v-show="!item.showCode || (item.showCode && (item.showCode).includes(aekoType))"
           v-for="(item,index) in SearchList" 
           :key="'SearchList_parts_aeko'+index" 
           :label="language(item.labelKey,item.label)"
@@ -105,7 +106,12 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";import {
     searchCartypeProject,
     getSearchCartype,
+    searchLinie,
+    searchCommodity,
 } from '@/api/aeko/manage'
+import {
+  getPartAuditPage,
+} from '@/api/aeko/describe'
 export default {
     name:'partslist',
     mixins: [pageMixins],
@@ -124,13 +130,20 @@ export default {
       return{
         describeTab:describeTab,
         aekoCode:'',
+        aekoType:'',
         SearchList:searchList,
-        searchParams:{},
+        searchParams:{
+          cartypeCode:[''],
+          cartype:[''],
+          buyerId:'',
+          partNum:'',
+          linieDeptNumList:['']
+        },
         selectOptions:{
           'linieDeptNumList':[],
           'cartypeCode':[],
           'cartype':[],
-          'buyerName':[],
+          'buyerId':[],
         },
         loading:false,
         tableTitle:tableTitle,
@@ -142,51 +155,182 @@ export default {
       const {query} = this.$route;
       const { requirementAekoId ='',aekoCode,} = query;
       this.aekoCode = aekoCode;
+      this.aekoType = this.aekoTypeByAekocode(aekoCode);
 
+      console.log(this.aekoType,'aekoType');
 
       this.getSearchList();
+
+      this.getList();
     },
     methods:{
       sure(){
-
+        this.page.currPage = 1
+        this.getList()
       },
       reset(){
-
+        this.searchParams={
+          cartypeCode:[''],
+          cartype:[''],
+          buyerName:'',
+          partNum:'',
+          linieDeptNumList:['']
+        };
+        this.sure();
       },
       // 获取列表
-      getList(){
+      async getList(){
+        const {query} = this.$route;
+        const {page,searchParams,aekoType} = this;
+        const {linieDeptNumList=[],partNum,buyerId} = searchParams;
+        const { requirementAekoId ='',} = query;
+         this.loading = true;
 
+         let carTypeCodeList=[];
+          // 车型和车型项目同一个code参数 单独处理下
+          if(aekoType){
+                if(aekoType == 'AEA'){  // 车型
+                    carTypeCodeList = searchParams.cartype;
+                }else if(['AEKO','MP'].includes(aekoType)){ // 车型项目
+                    carTypeCodeList = searchParams.cartypeCode;
+                }
+            }
+
+         const data = {
+           requirementAekoId,
+            current:page.currPage,
+            size:page.pageSize,
+            buyerId,
+            partNum,
+            carTypeCodeList:(carTypeCodeList.length == 1 && carTypeCodeList[0] === '') ? [] : carTypeCodeList,
+            linieDeptNumList:(linieDeptNumList.length == 1 && linieDeptNumList[0] === '') ? [] : linieDeptNumList,
+         };
+         await getPartAuditPage(data).then((res)=>{
+           this.loading = false;
+            const {code,data} = res;
+            if(code == 200){
+                const { records=[],total } = data;
+                records.map((item,index)=>{
+                    item.lineIndex = index+1;
+                })
+                this.tableListData =  records;
+                this.page.totalCount = total;
+            }else{
+                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            }
+         }).catch(()=>this.loading = false);
       },
       // 获取搜索框下拉数据
       getSearchList(){
         // 车型项目
         searchCartypeProject().then((res)=>{
-              const {code,data} = res;
-            if(code ==200 ){
-                data.map((item)=>{
-                    item.desc = item.name;
-                    item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
-                })
-                this.selectOptions.cartypeCode = data;
-            }else{
-                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-            }
+          const {code,data} = res;
+          if(code ==200 ){
+              data.map((item)=>{
+                  item.desc = item.name;
+                  item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
+              })
+              this.selectOptions.cartypeCode = data;
+          }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
         })
 
         // 车型
         getSearchCartype().then((res)=>{
+          const {code,data} = res;
+          if(code ==200){
+              data.map((item)=>{
+                  item.desc = item.name;
+                  item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
+              })
+              this.selectOptions.cartype = data.filter((item)=>item.name) || [];
+          }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+
+        // 专业采购员
+        searchLinie().then((res)=>{
+          const {code,data} = res;
+          if(code ==200 ){
+              data.map((item)=>{
+                  item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                  item.code = item.id;
+              })
+              this.selectOptions.buyerId = data;
+          }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+
+        // 科室
+        searchCommodity().then((res)=>{
             const {code,data} = res;
-            if(code ==200){
+            if(code ==200 ){
                 data.map((item)=>{
-                    item.desc = item.name;
-                    item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
+                    item.desc = item.deptNum;
+                    item.code = item.deptNum;
                 })
-                this.selectOptions.cartype = data.filter((item)=>item.name) || [];
+                this.selectOptions.linieDeptNumList = data;
+                this.selectOptionsCopy.linieDeptNumList = data;
             }else{
                 iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }
+        })
+      },
+
+      // 根据AEKO号判断AEKO类型
+      aekoTypeByAekocode(aekoCode){
+        if(/^[a-z|A-Z]{2}.*/.test(aekoCode)){
+          return 'AEKO'
+        }else if(/^[a-z|A-Z]{1}[0-9]{1}.*/.test(aekoCode)){
+          return 'AEA'
+        }else if(/^[0-9]{2}.*/.test(aekoCode)){
+          return 'MP'
+        }else{
+          return '-'
+        }
+      },
+
+      // 模糊搜索处理
+      dataFilter(val,props){
+        // 去除前后空格
+        const trimVal = val.trim();
+        const { selectOptionsCopy={}} = this;
+        if(trimVal){
+            // 人名要特殊处理 --- 可搜索英文去除大小写
+          if(props == 'buyerName'){
+            const list = selectOptionsCopy[props].filter((item) => {
+              if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                return true
+              }
             })
-      }
+            this.selectOptions[props] = list;
+          }else{
+            const list = selectOptionsCopy[props].filter((item) => {
+              if(~item.desc.indexOf(trimVal) || !!~item.desc.toUpperCase().indexOf(trimVal.toUpperCase())){
+                  return true;
+              } 
+            })
+             this.selectOptions[props] = list;
+          }
+        }else{
+          this.selectOptions[props] = selectOptionsCopy[props];
+        }
+      },
+
+        // 多选处理
+        handleMultipleChange(value, key,multiple) {
+          // 单选不处理
+          if(!multiple) return;
+
+          if (!value[value.length - 1]) {
+              this.$set(this.searchParams, key, [""])
+          } else {
+              this.$set(this.searchParams, key, this.searchParams[key].filter(item => item || item === 0))
+          }
+        },
 
     },
 }
