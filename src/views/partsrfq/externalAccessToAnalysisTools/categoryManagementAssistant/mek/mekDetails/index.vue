@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-30 12:15:40
+ * @LastEditTime: 2021-09-30 14:14:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -546,7 +546,7 @@ export default {
       params.isBindingRfq = false;
     }
     if (this.categoryId && this.chemeId && this.categoryCode) {
-      this.getHistogram(params);
+      await this.getHistogram(params);
     }
     this.getMekTable();
   },
@@ -653,7 +653,7 @@ export default {
       });
     },
     //查询
-    searchChartData () {
+    async searchChartData () {
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -712,11 +712,11 @@ export default {
       } else {
         params.isBindingRfq = false;
       }
-      this.getHistogram(params);
+      await this.getHistogram(params);
+      console.log(this.totalData,"totalData")
       this.getMekTable();
-      this.delItemFlag = false;
-      console.log(this.delItemFlag);
     },
+
     async handleSearchReset () {
       this.targetMotor = [];
       this.ComparedMotor = [];
@@ -751,7 +751,7 @@ export default {
         params.isBindingRfq = false;
       }
       if (this.categoryId && this.chemeId && this.categoryCode) {
-        this.getHistogram(params);
+        await this.getHistogram(params);
       }
       this.getMekTable();
     },
@@ -1077,13 +1077,19 @@ export default {
         motorIds: this.ComparedMotor,
         schemeId: this.chemeId,
         targetMotorId: this.targetMotor,
+        config: {}
       };
-      if (
-        this.comparedType &&
-        this.ComparedMotor &&
-        this.chemeId &&
-        this.targetMotor
-      ) {
+      if (this.comparedType === 'mekMotorType') {
+        this.totalData.forEach(item => {
+          params.config[item.motorId] = {
+            engine: item.detail[0].engine,
+            position: item.detail[0].position,
+            transmission: item.detail[0].transmission
+          }
+        })
+
+      }
+      if (this.comparedType && this.ComparedMotor && this.chemeId && this.targetMotor) {
         getMekTable(params).then((res) => {
           let data = _.cloneDeep(res);
           let mekTypeName = "";
@@ -1154,7 +1160,7 @@ export default {
       params.info[index + 1].transmission = val[0].transmission;
       this.getHistogram(params);
     },
-    delItem (data) {
+    async delItem (data) {
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -1184,9 +1190,10 @@ export default {
         params.isBindingRfq = false;
       }
       this.delItemFlag = true;
-      this.getHistogram(params);
+      await this.getHistogram(params);
       this.getMekTable();
     },
+
     getHistogram (params) {
       const loading = this.$loading({
         lock: true,
