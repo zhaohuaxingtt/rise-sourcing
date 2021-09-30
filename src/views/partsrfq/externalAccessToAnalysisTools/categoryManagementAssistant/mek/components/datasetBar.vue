@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-30 12:18:01
+ * @LastEditTime: 2021-09-30 12:37:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -63,9 +63,13 @@ export default {
           this.barDataItem = [];
           this.barxAxis = [];
           val.detail.forEach((item, index) => {
-            this.legendList.push(item.title)
+            this.legendList.push({
+              name: item.title,
+              icon: 'circle',
+            })
             const colorList = ["#A1D0FF", "#92B8FF", "#5993FF"];
             const itemData = {
+              name: item.title,
               value: item.value,
               // value: item.value,
               label: {
@@ -89,6 +93,7 @@ export default {
             this.barDataItem.push(itemData);
             this.barxAxis.push(str);
           });
+          console.log(this.legendList)
           this.$nextTick(() => {
             this.initCharts();
           });
@@ -139,9 +144,8 @@ export default {
         },
         legend: {
           data: this.legendList,
-          icon: 'circle',
-          left: 30,
-          top: 20
+          right: '3%',
+          top: '8%'
         },
         yAxis: {
           type: "value",
@@ -162,7 +166,6 @@ export default {
         // to a column of dataset.source by default.
         series: [
           {
-            name: "Mix",
             type: "bar",
             emphasis: {
               focus: "series",
