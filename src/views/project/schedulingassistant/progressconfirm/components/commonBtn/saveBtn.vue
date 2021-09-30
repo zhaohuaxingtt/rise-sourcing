@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 17:34:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-30 17:37:52
+ * @LastEditTime: 2021-09-29 16:41:38
  * @Description: 保存按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\saveBtn.vue
 -->
@@ -14,6 +14,7 @@
 <script>
 import { iMessage, iButton } from 'rise'
 import { savePartScheduleList, saveSchedule } from '@/api/project'
+import { saveDelayReasonConfirm } from '@/api/project/process'
 export default {
   components: { iButton },
   props: {
@@ -44,8 +45,10 @@ export default {
       }
       if (this.saveType === '1') {
         this.saveSchedule()
-      } else {
+      } else if (this.saveType === '2') {
         this.savePartScheduleList()
+      } else {
+        this.saveDelayReasonConfirm()
       }
     },
     saveSchedule() {
@@ -70,6 +73,25 @@ export default {
     savePartScheduleList() {
       this.loading = true
       savePartScheduleList(this.saveData).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.$emit('getTableList')
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    /**
+     * @Description: 延误原因保存
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    saveDelayReasonConfirm() {
+      this.loading = true
+      saveDelayReasonConfirm(this.saveData).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.$emit('getTableList')

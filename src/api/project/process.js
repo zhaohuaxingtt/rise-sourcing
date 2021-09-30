@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-26 11:06:24
- * @LastEditTime: 2021-09-26 21:21:01
+ * @LastEditTime: 2021-09-29 16:19:37
  * @LastEditors: Luoshuang
  * @Description: 项目管理-项目进度监控接口
  * @FilePath: \front-web\src\api\project\process.js
@@ -93,6 +93,7 @@ export function getDelayReasonConfirmList(data) {
   })
 }
 
+// 延误原因发送确认-询价采购员
 export function sendDelayReasonConfirm(data) {
   return requst({
     url: '/project-progress-monitor/sendDelayReasonConfirm',
@@ -114,6 +115,51 @@ export function pageProProgressMonitorData(data) {
 export function getProgressConfirmList(data) {
   return requst({
     url: '/project-progress-monitor/listProgressConfirm',
+    method: 'POST',
+    data
+  })
+}
+
+// 延误原因汇总列表获取
+export function getDelayReasonSummary(data) {
+  return requst({
+    url: '/project-progress-monitor/pageDelayReasonSummary',
+    method: 'POST',
+    data
+  })
+}
+
+// 延误原因发送-项目采购员
+export function sendDelayReason(data) {
+  return requst({
+    url: '/project-progress-monitor/sendDelayReason',
+    method: 'POST',
+    data
+  })
+}
+
+// 延误原因保存-询价采购员
+export function saveDelayReasonConfirm(data) {
+  return requst({
+    url: '/project-progress-monitor/saveDelayReasonConfirm',
+    method: 'POST',
+    data
+  })
+}
+
+// 延误原因转派-询价采购员
+export function transferDelayReasonConfirm(data) {
+  return requst({
+    url: '/project-progress-monitor/transferDelayReasonConfirm',
+    method: 'POST',
+    data
+  })
+}
+
+// 延误原因退回-询价采购员
+export function backDelayReasonConfirm(data) {
+  return requst({
+    url: '/project-progress-monitor/backDelayReasonConfirm',
     method: 'POST',
     data
   })
