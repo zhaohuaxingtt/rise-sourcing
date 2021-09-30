@@ -322,7 +322,7 @@ export default {
         this.saveLoading = true;
         const resFile = await this.getDownloadFileAndExportPdf({
           domId: "carPrice",
-          watermark: this.$store.state.permission.userInfo.deptDTO.nameZh + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
+          watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
           pdfName:
             "品类管理助手_车型价格对比_" +
             this.$store.state.rfq.categoryName +
