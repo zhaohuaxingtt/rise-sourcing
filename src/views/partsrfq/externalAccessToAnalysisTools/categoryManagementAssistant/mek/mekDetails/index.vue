@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-28 15:49:32
+ * @LastEditTime: 2021-09-30 10:16:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -12,7 +12,7 @@
       <div class="navBox flex-between-center"
            style="margin-bottom:20px">
         <div class="title font-weight flex">
-          <label for="">{{ language("QIEHUANCAILIAOZU", "材料组") }}:</label>
+          <label for="">{{ language("CAILIAOZU", "材料组") }}:</label>
           <iSelect @change="changeCategory"
                    v-model="categoryCode"
                    v-if="entryStatus === '1'">
@@ -98,7 +98,6 @@
                 </el-row>
               </el-form>
             </div>
-
             <div class="end">
               <iButton type="primary"
                        style="width:100px;height:35px"
@@ -161,72 +160,11 @@
                     <span class="yield">{{
                       toThousand(parseInt(firstBarData.output))
                     }}</span>
-                  </div>
-                  <datasetBar1 ref="datasetBar1"
-                               :typeSelection="mekMotorTypeFlag"
-                               :firstBarData="firstBarData"
-                               :maxWidth="maxWidth"
-                               :maxData="maxData"
-                               :clientHeight="clientHeight"
-                               @detailDialog="detailDialog"></datasetBar1>
-                  <div class="xAxis"
-                       v-if="mekMotorTypeFlag">
-                    <div v-for="i in firstBarData.detail"
-                         :key="i.value"
-                         style="text-align:center">
-                      <div style="margin-bottom:5px">
-                        <span class="detail"
-                              @click="computeModal(firstBarData)">{{ i.title }}</span>
-                        <el-tooltip class="item"
-                                    effect="dark"
-                                    :content="firstBarData.tips"
-                                    placement="top-end">
-
-                          <icon name="iconzengjiacailiaochengben_lan"
-                                symbol
-                                style="width:14px;height:14px;margin-left:10px"></icon>
-                        </el-tooltip>
-                      </div>
-                      <span @click="computeModal(firstBarData)">{{
-                        i.ebr
-                      }}</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="flex chartItem"
-                     v-for="item in barData"
-                     :key="item.motorId">
-                  <div class="operation">
-                    <div @click="delItem(item)"
-                         style="z-index:1000">
-                      <icon symbol
-                            name="iconbob-shanchu"
-                            class="margin-bottom20 "
-                            style="width:20px;height:20px;"></icon>
-                    </div>
-                    <el-popover placement="bottom"
-                                width="80"
-                                trigger="click"
-                                visible-arrow
-                                class="margin-bottom20">
-                      <el-checkbox-group v-model="item.checkList"
-                                         class="checkList"
-                                         @change="changeCheckList">
-                        <el-checkbox v-for="(i, index) in item.detail"
-                                     :key="index"
-                                     :label="i.value">{{ i.title }}</el-checkbox>
-                      </el-checkbox-group>
-                      <div class="motorName"
-                           slot="reference">
-                        {{ item.motorName }}
-                      </div>
-                    </el-popover>
-                    <span class="margin-bottom20 motorName"
-                          style="line-height:16px;height:16px">{{ item.factory }}</span>
-                    <span class="yield margin-bottom15">{{toThousand(parseInt(item.output))}}</span>
-                    <div class="flex">
-                      <el-select v-model="item.priceType"
-                                 @change="changPriceType"
+                    <<<<<<< HEAD
+                            <div
+                            class="flex">
+                      <el-select v-model="firstBarData.priceType"
+                                 @change="changTargetPrice"
                                  style="width:150px;z-index:1000">
                         <el-option v-for="i in mekpriceTypeList"
                                    :key="i.id"
@@ -234,104 +172,212 @@
                                    :label="i.name">
                         </el-option>
                       </el-select>
-                      <el-date-picker v-model="item.priceDate"
+                      <el-date-picker v-model="firstBarData.priceDate"
                                       type="date"
                                       placeholder="选择日期"
-                                      @input="changeDate"
-                                      value-format="yyyy-mm-dd"
+                                      @input="changeTargetDate"
+                                      value-format="yyyy-MM-dd"
                                       style="width:150px;z-index:1000;margin-left:20px"
-                                      v-if="item.priceType === 'monthPrice'">
+                                      v-if="firstBarData.priceType === 'monthPrice'">
                       </el-date-picker>
-                    </div>
                   </div>
-                  <datasetBar :barData="item"
-                              :maxWidth="maxWidth"
-                              :typeSelection="mekMotorTypeFlag"
-                              :maxData="maxData"
-                              :clientHeight="clientHeight"
-                              @detailDialog="detailDialog"></datasetBar>
-                  <div class="xAxis"
-                       v-if="mekMotorTypeFlag">
-                    <div v-for="i in item.detail"
-                         :key="i.value"
-                         style="text-align:center">
-                      <div style="margin-bottom:5px">
-                        <span class="detail"
-                              @click="computeModal(item)">{{i.title}}</span>
-                        <el-tooltip class="item"
-                                    effect="dark"
-                                    :content="item.tips"
-                                    placement="top-end">
-
-                          <icon name="iconzengjiacailiaochengben_lan"
-                                symbol
-                                style="width:14px;height:14px;margin-left:10px"></icon>
-                        </el-tooltip>
-                      </div>
-                      <span @click="computeModal(item)">{{ i.ebr }}</span>
+                  =======
+                  >>>>>>> origin/ws3-sprint11
+                </div>
+                <datasetBar1 ref="datasetBar1"
+                             :typeSelection="mekMotorTypeFlag"
+                             :firstBarData="firstBarData"
+                             :maxWidth="maxWidth"
+                             :maxData="maxData"
+                             :clientHeight="clientHeight"
+                             @detailDialog="detailDialog"></datasetBar1>
+                <div class="xAxis1"
+                     v-if="mekMotorTypeFlag">
+                  <div v-for="i in firstBarData.detail"
+                       :key="i.value"
+                       style="text-align:center">
+                    <div style="margin-bottom:5px">
+                      <span class="detail"
+                            @click="computeModal(firstBarData)">{{ i.title }}</span>
+                      <el-tooltip class="item"
+                                  effect="dark"
+                                  :content="firstBarData.tips"
+                                  placement="top-end">
+                        <icon name="iconzengjiacailiaochengben_lan"
+                              symbol
+                              style="width:14px;height:14px;margin-left:10px"></icon>
+                      </el-tooltip>
                     </div>
+                    <span @click="computeModal(firstBarData)">{{
+                        i.ebr
+                      }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex chartItem"
+                   v-for="(item, ind) in barData"
+                   :key="item.motorId">
+                <div class="operation">
+                  <div @click="delItem(item)"
+                       style="z-index:1000">
+                    <icon symbol
+                          name="iconbob-shanchu"
+                          class="margin-bottom20 "
+                          style="width:20px;height:20px;"></icon>
+                  </div>
+                  <<<<<<< HEAD
+                          <el-popover
+                          placement="bottom"
+                          width="80"
+                          trigger="click"
+                          visible-arrow
+                          class="margin-bottom20">
+                    <el-checkbox-group v-model="item.checkList"
+                                       class="checkList"
+                                       @change="changeCheckList(ind)">
+                      <el-checkbox v-for="(i, index) in item.checkList"
+                                   :key="index"
+                                   :label="i"></el-checkbox>
+                      =======
+                      <el-popover placement="bottom"
+                                  width="80"
+                                  trigger="click"
+                                  visible-arrow
+                                  class="margin-bottom20">
+                        <el-checkbox-group v-model="orginBarData[ind].checkList"
+                                           class="checkList"
+                                           @change="changeCheckList(ind)">
+                          <el-checkbox v-for="(i, index) in orginBarData[ind].detail"
+                                       :key="index"
+                                       :label="i.title"></el-checkbox>
+                          >>>>>>> origin/ws3-sprint11
+                        </el-checkbox-group>
+                        <div class="motorName"
+                             slot="reference">
+                          {{ item.motorName }}
+                        </div>
+                      </el-popover>
+                      <span class="margin-bottom20 motorName"
+                            style="line-height:16px;height:16px">{{ item.factory }}</span>
+                      <span class="yield margin-bottom15">{{
+                      toThousand(parseInt(item.output))
+                    }}</span>
+                      <div class="flex">
+                        <el-select v-model="item.priceType"
+                                   @change="changPriceType"
+                                   style="width:150px;z-index:1000">
+                          <el-option v-for="i in mekpriceTypeList"
+                                     :key="i.id"
+                                     :value="i.code"
+                                     :label="i.name">
+                          </el-option>
+                        </el-select>
+                        <el-date-picker v-model="item.priceDate"
+                                        type="date"
+                                        placeholder="选择日期"
+                                        @input="changeDate(item.priceDate, ind)"
+                                        value-format="yyyy-MM-dd"
+                                        style="width:150px;z-index:1000;margin-left:20px"
+                                        v-if="item.priceType === 'monthPrice'">
+                        </el-date-picker>
+                      </div>
+                </div>
+                <datasetBar :barData="item"
+                            :maxWidth="maxWidth"
+                            :typeSelection="mekMotorTypeFlag"
+                            :maxData="maxData"
+                            :clientHeight="clientHeight"
+                            @detailDialog="detailDialog"></datasetBar>
+                <div class="xAxis"
+                     v-if="mekMotorTypeFlag">
+                  <div v-for="i in item.detail"
+                       :key="i.value"
+                       style="text-align:center">
+                    <div style="margin-bottom:5px">
+                      <span class="detail"
+                            @click="computeModal(item, ind)">{{
+                          i.title
+                        }}</span>
+                      <el-tooltip class="item"
+                                  effect="dark"
+                                  :content="item.tips"
+                                  placement="top-end">
+                        <icon name="iconzengjiacailiaochengben_lan"
+                              symbol
+                              style="width:14px;height:14px;margin-left:10px"></icon>
+                      </el-tooltip>
+                    </div>
+                    <span @click="computeModal(item)">{{ i.ebr }}</span>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- <report :dialogVisible="true"></report> -->
-          </iCard>
-        </el-col>
-      </el-row>
-      <tableList :gridData="gridData"
-                 :editFlag="editFlag"
-                 :addRowList="addRowList"
-                 @editData="editData"
-                 :reportFlag="reportFlag"
-                 @addData="addData"></tableList>
+    </div>
+    </iCard>
+    </el-col>
+    </el-row>
+    <tableList :gridData="gridData"
+               :editFlag="editFlag"
+               :addRowList="addRowList"
+               @editData="editData"
+               :reportFlag="reportFlag"
+               @addData="addData"></tableList>
 
-      <iDialog title="保存"
-               :visible.sync="dialogVisible"
-               width="20%"
-               @close="close">
-        <div>
-          <div class="margin-bottom15 flex-between-center">
-            <label for="">保存在分析库</label>
-            <el-checkbox v-model="analysisSave"></el-checkbox>
-          </div>
-          <iInput v-model="analysisName"
-                  placeholder="请输入文件名称" />
+    <iDialog title="保存"
+             :visible.sync="dialogVisible"
+             width="20%"
+             @close="close">
+      <div>
+        <div class="margin-bottom15 flex-between-center">
+          <label for="">保存在分析库</label>
+          <el-checkbox v-model="analysisSave"></el-checkbox>
         </div>
-        <div class="margin-top20">
-          <div class="margin-bottom15 flex-between-center">
-            <label for="">保存为报告</label>
-            <el-checkbox v-model="reportSave"></el-checkbox>
-          </div>
-          <iInput v-model="reportName"
-                  placeholder="请输入文件名称" />
+        <iInput v-model="analysisName"
+                placeholder="请输入文件名称" />
+      </div>
+      <div class="margin-top20">
+        <div class="margin-bottom15 flex-between-center">
+          <label for="">保存为报告</label>
+          <el-checkbox v-model="reportSave"></el-checkbox>
         </div>
-        <span slot="footer"
-              class="dialog-footer">
-          <iButton type="primary"
-                   @click="save"
-                   v-loading="loading">确 定</iButton>
-        </span>
-      </iDialog>
-      <modalDialog :modalVisible="modalVisible"
-                   @input="closeModalDialog"
-                   :computeModalData="computeModalData"></modalDialog>
-      <detailDialog :detailVisible="detailVisible"
-                    :detailsData="detailsData"
-                    :detailMotorName="detailMotorName"
-                    :detailFactory="detailFactory"
-                    @input="closeModalDialog1"></detailDialog>
-      <preview v-if="previewFlag"
-               :value="previewFlag"
-               :firstBarData="firstBarData"
-               :chartItemWidth="chartItemWidth"
-               :barData="barData"
-               :gridData="gridData"
-               :partNumber="partNumber"
-               @closeDialog="closeDialog"
-               :maxWidth="maxWidth"
-               :targetMotorName="targetMotorName"
-               :mekpriceType="mekpriceType"
-               :preview="true"></preview>
+        <iInput v-model="reportName"
+                placeholder="请输入文件名称" />
+      </div>
+      <span slot="footer"
+            class="dialog-footer">
+        <iButton type="primary"
+                 @click="save"
+                 v-loading="loading">确 定</iButton>
+      </span>
+    </iDialog>
+    <modalDialog :modalVisible="modalVisible"
+                 @input="closeModalDialog"
+                 :computeModalData="computeModalData"
+                 :index="index"
+                 @selectData="selectData"></modalDialog>
+    <detailDialog :detailVisible="detailVisible"
+                  :detailsData="detailsData"
+                  :detailMotorName="detailMotorName"
+                  :detailFactory="detailFactory"
+                  @input="closeModalDialog1"></detailDialog>
+    <preview v-if="previewFlag"
+             :value="previewFlag"
+             :firstBarData="firstBarData"
+             :chartItemWidth="chartItemWidth"
+             :productFactoryNames="productFactoryNames"
+             :barData="barData"
+             :clientHeight="clientHeight"
+             :maxData="maxData"
+             :gridData="gridData"
+             :totalWidth="totalWidth"
+             :mekTypeName="mekTypeName"
+             :ComparedMotorName="ComparedMotorName"
+             :partNumber="partNumber"
+             @closeDialog="closeDialog"
+             :maxWidth="maxWidth"
+             :targetMotorName="targetMotorName"
+             :mekpriceType="mekpriceType"
+             :preview="true"></preview>
     </div>
   </iPage>
 </template>
@@ -398,6 +444,7 @@ export default {
       //开关
       flag1: false,
       gridData: {},
+      totalData: [],
       //保存弹窗
       dialogVisible: false,
       //计算车型开关
@@ -481,7 +528,11 @@ export default {
       toThousand,
       loading: false,
       detailMotorName: "",
-      detailFactory: ""
+      detailFactory: "",
+      index: 0,
+      mekTypeName: "",
+      ComparedMotorName: [],
+      orginBarData: [],
     };
   },
   async created () {
@@ -578,6 +629,11 @@ export default {
         });
         getDictByCode("mekType").then((res) => {
           this.mekTypeList = res.data[0].subDictResultVo;
+          this.mekTypeList.forEach((item) => {
+            if (item.code === this.comparedType) {
+              this.mekTypeName = item.name;
+            }
+          });
         });
         getDictByCode("mekpriceType").then((res) => {
           this.mekpriceTypeList = res.data[0].subDictResultVo;
@@ -592,6 +648,7 @@ export default {
             this.ComparedMotor.forEach((i) => {
               if (item.motorId === i) {
                 this.ComparedMotorCode.push(item.motorCode);
+                this.ComparedMotorName.push(item.motorName);
               }
             });
           });
@@ -629,26 +686,41 @@ export default {
         schemeId: this.chemeId,
         unselected: this.exceptPart,
       };
+      let motorIdList = [];
       if (this.barData) {
+        this.barData.forEach((item) => {
+          if (this.ComparedMotor.indexOf(item.motorId) > -1) {
+            params.info.push({
+              motorId: item.motorId,
+              priceType: item.priceType,
+              isTargetMotor: false,
+              priceDate: item.priceDate,
+              engine: item.engine || "",
+              position: item.position || "",
+              transmission: item.transmission || "",
+            });
+            motorIdList.push(item.motorId);
+          }
+        });
         this.ComparedMotor.forEach((item) => {
-          this.barData.forEach((i) => {
-            if (item === i.motorId) {
-              params.info.push({
-                motorId: item,
-                priceType: i.priceType,
-                isTargetMotor: false,
-                priceDate: i.priceDate
-              });
-            }
-          });
+          if (motorIdList.indexOf(item) === -1) {
+            params.info.push({
+              motorId: item,
+              priceType: "sopPrice",
+              isTargetMotor: false,
+            });
+          }
         });
       } else {
         this.ComparedMotor.forEach((item) => {
           params.info.push({
             motorId: item,
-            priceType: 'sopPrice',
+            priceType: "sopPrice",
             isTargetMotor: false,
-            priceDate: ""
+            priceDate: "",
+            engine: "",
+            position: "",
+            transmission: "",
           });
         });
       }
@@ -659,6 +731,46 @@ export default {
         params.isBindingRfq = false;
       }
       this.getHistogram(params);
+      this.getMekTable();
+      this.delItemFlag = false;
+      console.log(this.delItemFlag);
+    },
+    async handleSearchReset () {
+      this.targetMotor = [];
+      this.ComparedMotor = [];
+      this.comparedType = "";
+      this.exceptPart = "";
+      await this.init();
+      let params = {
+        comparedType: this.comparedType,
+        info: [
+          {
+            motorId: this.targetMotor,
+            priceType: "sopPrice",
+            isTargetMotor: true,
+          },
+        ],
+        categoryId: this.categoryId,
+        schemeId: this.chemeId,
+        categoryCode: this.categoryCode,
+        unselected: this.exceptPart,
+      };
+      this.ComparedMotor.forEach((item) => {
+        params.info.push({
+          motorId: item,
+          priceType: "sopPrice",
+          isTargetMotor: false,
+        });
+      });
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true;
+        params.rfq = this.rfqId;
+      } else {
+        params.isBindingRfq = false;
+      }
+      if (this.categoryId && this.chemeId && this.categoryCode) {
+        this.getHistogram(params);
+      }
       this.getMekTable();
     },
     //选择材料组
@@ -687,7 +799,6 @@ export default {
       });
     },
     changeComparedMotor (val) {
-      console.log(this.targetMotor, this.ComparedMotor);
       this.ComparedMotorList.forEach((item) => {
         if (item.motorId === val) {
           this.ComparedMotorCode.push(item.motorCode);
@@ -721,38 +832,51 @@ export default {
     },
     //
     detailDialog (flag, val) {
-      console.log(val)
+      console.log(val);
       this.detailVisible = flag;
       let params = {
         comparedType: this.comparedType,
         schemeId: this.chemeId,
+        unselected: this.unselected,
         ...val,
       };
-      delete params.motorName
-      delete params.factory
+      delete params.motorName;
+      delete params.factory;
       queryPartEbr(params).then((res) => {
         if (res.code === "200") {
           this.detailsData = res.data;
-          this.detailMotorName = val.motorName
-          this.detailFactory = val.factory
+          this.detailMotorName = val.motorName;
+          this.detailFactory = val.factory;
           // console.log(this.detailMotorName, this.detailFactory)
         }
       });
       console.log(flag, val);
     },
-    changeCheckList (val) {
-      console.log(this.barData);
-    },
-    changeDate (val) {
+    changeCheckList (index) {
       this.$forceUpdate();
-      console.log(val)
+      this.barData[index].detail.forEach((item, i) => {
+        if (this.barData[index].checkList.indexOf(item.title) === -1) {
+          this.barData[index].detail.splice(i, 1);
+        }
+      });
+      console.log(this.barData)
+      this.barData = [...this.barData];
+      this.$forceUpdate();
+    },
+    changeDate (val, index) {
+      this.$forceUpdate();
+      console.log(val, index);
       let params = {
         comparedType: this.comparedType,
         info: [
           {
             motorId: this.targetMotor,
-            priceType: "sopPrice",
+            priceType: "latestPrice",
+            priceDate: "",
             isTargetMotor: true,
+            engine: "",
+            position: "",
+            transmission: "",
           },
         ],
         categoryId: this.categoryId,
@@ -772,16 +896,116 @@ export default {
           priceType: item.priceType,
           priceDate: item.priceDate,
           isTargetMotor: false,
+          engine: item.engine || "",
+          position: item.position || "",
+          transmission: item.transmission || "",
+        };
+        params.info.push(obj);
+      });
+      this.getHistogram(params);
+    },
+    changTargetPrice (val) {
+      let params = {
+        comparedType: this.comparedType,
+        info: [
+          {
+            motorId: this.targetMotor,
+            priceType: val,
+            isTargetMotor: true,
+            priceDate: "",
+            engine: "",
+            position: "",
+            transmission: "",
+          },
+        ],
+        categoryId: this.categoryId,
+        categoryCode: this.categoryCode,
+        schemeId: this.chemeId,
+        unselected: this.exceptPart,
+      };
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true;
+        params.rfq = this.rfqId;
+      } else {
+        params.isBindingRfq = false;
+      }
+      this.barData.forEach((item) => {
+        let obj = {
+          motorId: item.motorId,
+          priceType: item.priceType,
+          priceDate: item.priceDate,
+          isTargetMotor: false,
+          engine: item.engine || "",
+          position: item.position || "",
+          transmission: item.transmission || "",
+        };
+        params.info.push(obj);
+      });
+      this.getHistogram(params);
+    },
+    changeTargetDate (val) {
+      this.$forceUpdate();
+      let params = {
+        comparedType: this.comparedType,
+        info: [
+          {
+            motorId: this.targetMotor,
+            priceType: this.firstBarData.priceType,
+            priceDate: val,
+            isTargetMotor: true,
+            engine: "",
+            position: "",
+            transmission: "",
+          },
+        ],
+        categoryId: this.categoryId,
+        categoryCode: this.categoryCode,
+        schemeId: this.chemeId,
+        unselected: this.exceptPart,
+      };
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true;
+        params.rfq = this.rfqId;
+      } else {
+        params.isBindingRfq = false;
+      }
+      this.barData.forEach((item) => {
+        let obj = {
+          motorId: item.motorId,
+          priceType: item.priceType,
+          priceDate: item.priceDate,
+          isTargetMotor: false,
+          engine: item.engine || "",
+          position: item.position || "",
+          transmission: item.transmission || "",
         };
         params.info.push(obj);
       });
       this.getHistogram(params);
     },
     saveDialog () {
-      this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
-      this.reportName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
+      this.analysisName =
+        this.categoryCode +
+        "_" +
+        this.categoryName +
+        "_" +
+        this.targetMotorName +
+        "_" +
+        "MEK" +
+        "_" +
+        window.moment(new Date()).format("yyyy.MM");
+      this.reportName =
+        this.categoryCode +
+        "_" +
+        this.categoryName +
+        "_" +
+        this.targetMotorName +
+        "_" +
+        "MEK" +
+        "_" +
+        window.moment(new Date()).format("yyyy.MM");
       this.dialogVisible = true;
-      this.analysisSave = true
+      this.analysisSave = true;
     },
     //编辑数据
     editData (val) {
@@ -792,18 +1016,22 @@ export default {
       this.addDataList = val;
     },
     //计算车型弹窗
-    computeModal (val) {
+    computeModal (val, index) {
+      console.log(index);
       this.modalVisible = true;
       let params = {
         engine: val.detail[0].engine,
         motorId: val.motorId,
         position: val.detail[0].position,
         schemeId: this.chemeId,
-        transmission: val.detail[0].engine,
+        transmission: val.detail[0].transmission,
       };
       queryCal(params).then((res) => {
         if (res.code === "200") {
           this.computeModalData = res.data;
+          if (index) {
+            this.index = index;
+          }
         }
       });
     },
@@ -825,14 +1053,6 @@ export default {
     },
     //价格类型
     changPriceType (val) {
-      if (val === "monthPrice") {
-        this.flag1 = true;
-      }
-      this.mekpriceTypeList.forEach((item) => {
-        if (item.code === val) {
-          this.mekpriceType = item.label;
-        }
-      });
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -840,6 +1060,10 @@ export default {
             motorId: this.targetMotor,
             priceType: "sopPrice",
             isTargetMotor: true,
+            priceDate: "",
+            engine: "",
+            position: "",
+            transmission: "",
           },
         ],
         categoryId: this.categoryId,
@@ -857,7 +1081,11 @@ export default {
         let obj = {
           motorId: item.motorId,
           priceType: item.priceType,
+          priceDate: item.priceDate,
           isTargetMotor: false,
+          engine: item.engine || "",
+          position: item.position || "",
+          transmission: item.transmission || "",
         };
         params.info.push(obj);
       });
@@ -903,6 +1131,51 @@ export default {
         this.gridData.config["label#-1"] = mekTypeName;
       }
     },
+    selectData (val, index) {
+      console.log(val, index);
+      let params = {
+        comparedType: this.comparedType,
+        info: [
+          {
+            motorId: this.targetMotor,
+            priceType: "sopPrice",
+            isTargetMotor: true,
+            priceDate: "",
+            engine: !index && index !== 0 ? val[0].engine : "",
+            position: !index && index !== 0 ? val[0].position : "",
+            transmission: !index && index !== 0 ? val[0].transmission : "",
+          },
+        ],
+        categoryId: this.categoryId,
+        categoryCode: this.categoryCode,
+        schemeId: this.chemeId,
+        unselected: this.exceptPart,
+      };
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true;
+        params.rfq = this.rfqId;
+      } else {
+        params.isBindingRfq = false;
+      }
+      this.barData.forEach((item) => {
+        let obj = {
+          motorId: item.motorId,
+          priceType: item.priceType,
+          priceDate: item.priceDate,
+          isTargetMotor: false,
+          engine: "",
+          position: "",
+          transmission: "",
+        };
+        params.info.push(obj);
+      });
+      console.log(params);
+      params.info[index + 1].engine = val[0].engine;
+      params.info[index + 1].position = val[0].position;
+      params.info[index + 1].transmission = val[0].transmission;
+      console.log(params, "end");
+      this.getHistogram(params);
+    },
     delItem (data) {
       let params = {
         comparedType: this.comparedType,
@@ -932,6 +1205,7 @@ export default {
       } else {
         params.isBindingRfq = false;
       }
+      this.delItemFlag = true;
       this.getHistogram(params);
       this.getMekTable();
     },
@@ -946,6 +1220,7 @@ export default {
         this.$nextTick(() => {
           loading.close();
           let data = res.data;
+          this.totalData = _.cloneDeep(res.data);
           let maxWidthList = [];
           let maxList = [];
           this.totalWidth = 0;
@@ -966,7 +1241,7 @@ export default {
             } else {
               this.clientHeight = false;
             }
-            this.totalWidth = this.totalWidth + 200 + "px";
+            this.totalWidth = this.totalWidth + 100 + "px";
             this.maxData = _.max(maxList).toString();
             let first = Number(this.maxData.slice(0, 1)) + 1;
             for (let i = 0; i < this.maxData.length - 1; i++) {
@@ -974,17 +1249,20 @@ export default {
             }
             this.maxData = first;
             this.firstBarData = data[0];
+            console.log(this.firstBarData, this.barData);
             data.shift();
             this.barData = data;
             this.barData.forEach((item) => {
               item.checkList = [];
+              item.orginCheckList = [];
             });
             this.barData.forEach((item) => {
               item.detail.forEach((i) => {
-                item.checkList.push(i.value);
+                item.checkList.push(i.title);
+                item.orginCheckList.push(i.title);
               });
             });
-            console.log(this.barData, "@222");
+            this.orginBarData = _.cloneDeep(this.barData);
             if (this.comparedType === "mekMotorType") {
               this.mekMotorTypeFlag = true;
             } else {
@@ -1042,7 +1320,7 @@ export default {
       }
     },
     save () {
-      this.loading = true
+      this.loading = true;
       this.analysisSave = true;
 
       if (this.analysisSave) {
@@ -1059,7 +1337,7 @@ export default {
           schemeId: this.chemeId,
           targetMotor: this.targetMotor,
         };
-        console.log(this.barData)
+        console.log(this.barData);
         if (this.barData[0]) {
           params.firstComparedMotor = this.barData[0].motorId || "";
           params.firstComparedPrice = this.barData[0].priceType || "";
@@ -1077,8 +1355,8 @@ export default {
           params.forthComparedPrice = this.barData[3].priceType || "";
         }
         updateScheme(params).then(() => {
-          this.loading = false
-          this.dialogVisible = false
+          this.loading = false;
+          this.dialogVisible = false;
           iMessage.success("保存成功");
         });
       }
@@ -1163,7 +1441,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-right: 60px;
+  margin-right: 10px;
   &:last-child {
     margin-right: 0;
   }
@@ -1188,7 +1466,7 @@ export default {
   color: black;
   align-items: center;
   label {
-    width: 130px;
+    width: 90px;
   }
 }
 
@@ -1270,6 +1548,18 @@ export default {
 }
 .xAxis {
   position: absolute;
+  bottom: 1%;
+  font-size: 14px;
+  color: "#3C4F74";
+  font-family: "Arial";
+  .detail:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+.xAxis1 {
+  position: absolute;
+  left: 23%;
   bottom: 1%;
   font-size: 14px;
   color: "#3C4F74";

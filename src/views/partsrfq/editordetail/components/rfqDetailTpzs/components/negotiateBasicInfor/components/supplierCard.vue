@@ -11,17 +11,19 @@
       <iCard class="right margin-bottom5" v-for="(item,index) in tableData" :key="index">
         <div class="flex">
           <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
-          <el-popover trigger="hover" placement="top-start" :content="item.name">
-            <div slot="reference" class="title">{{item.name}}</div>
-          </el-popover>
+          <div class="title">{{item.name}}</div>
         </div>
         <iLabel class="margin-top8 title1" :label="language('CHEXINGXI','车型：')"></iLabel>
         <div class="carBox">
-          <span v-for="(val,ix) in item.carTypeProjectList" :key="ix">{{item.carTypeProjectList.length-1>ix?val+' |&nbsp;':val}}</span>
+          <span v-for="(val,ix) in item.carTypeProjectList" :key="ix">{{item.carTypeProjectList.length-1>ix?val+' |&nbsp;&nbsp;':val}}</span>
         </div>
-        <iLabel class="margin-top8 title1" :label="language('GONGYINGSHANGSUOGONGSVWGONGCHANGDIZHI','供应商所供SVW工厂地址：')"></iLabel>
-        <div style="min-height:14px">
-          {{ item.factoryAddress}}
+        <div class="address">
+          <div v-for="(val,i) in item.factoryAddress" :key="i">
+            <iLabel class="margin-top8 title1" :label="`${language('GONGYINGSHANGGONGCHANGDIZI','供应商工厂地址')}${i+1}：`"></iLabel>
+            <div>
+              {{ val}}
+            </div>
+          </div>
         </div>
         <iLabel class="margin-top8 title1" :label="language('GONGCHANGZONGXIAOSHOUE','工厂总销售额：')"></iLabel>
         <div style="height:14px">{{String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'}}</div>
@@ -45,6 +47,9 @@ export default {
     supplierDataList: {
       handler(data) {
         this.tableData = data
+        this.tableData.map(item => {
+          return item.factoryAddress = item.factoryAddress.split(',')
+        })
       }
     }
   },
@@ -66,7 +71,7 @@ export default {
 <style lang="scss" scoped>
 .right {
   text-align: left;
-  width: 339px;
+  width: 496px;
   // height: 251px;
   /* right: 0px;
   position: relative; */
@@ -80,6 +85,10 @@ export default {
   .title {
     font-size: 20px;
   }
+}
+.address {
+  overflow: auto;
+  height: 4rem;
 }
 .title {
   width: 13rem;
@@ -99,6 +108,8 @@ export default {
   height: 58.3125rem;
 }
 .carBox {
+  overflow: auto;
+  height: 3rem;
   display: flex;
   flex-wrap: wrap;
 }

@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-08-05 15:47:10
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
@@ -89,7 +89,7 @@
             <icon name="iconMEK-xuxian" symbol />
             <div class="flex-between-center-center">
               <span>{{language('CHUANDONG','EBR')}}</span>
-              <el-popover trigger="hover" placement="top-start" :content="language('SBXTZBFBSCXFCGLGLJSZCX','鼠标悬停在百分比上出现浮窗，高亮出该零件所在车型')">
+              <el-popover trigger="hover" placement="top-start" :content="language('SBXTZEBRSZSJFCZSCGLJSZDCXPZ','鼠标悬停在EBR数值上将浮窗展示出该零件所在的车型配置')">
                 <icon slot="reference" symbol name="iconxinxitishi" class="font-size16 margin-left5" />
               </el-popover>
             </div>
@@ -178,7 +178,7 @@ export default {
       addPartDialog: false,
       changeLogDialog: false,
       form: {
-        materialGroupCode: '',
+        materialGroupCode: this.$route.query.categoryCode,
         motorId: "",
         partNumber: ''
       },
