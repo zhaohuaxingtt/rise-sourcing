@@ -1,24 +1,22 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-09-29 21:51:36
+ * @LastEditTime: 2021-09-30 12:15:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
 -->
 <template>
-  <div
-    ref="chart"
-    class="chart"
-    :style="{ height: clientHeight ? '440px' : '460px' }"
-  ></div>
+  <div ref="chart"
+       class="chart"
+       :style="{ height: clientHeight ? '440px' : '460px' }"></div>
 </template>
 
 <script>
 import echarts from "@/utils/echarts";
 import { fmoney } from "@/utils/index.js";
 export default {
-  data() {
+  data () {
     return {
       myChart: null,
       barData: [],
@@ -50,7 +48,7 @@ export default {
   },
   watch: {
     "firstBarData.detail": {
-      handler(val) {
+      handler (val) {
         if (val) {
           this.barData = [];
           this.barxAxis = [];
@@ -89,18 +87,18 @@ export default {
       deep: true,
     },
   },
-  mounted() {
+  mounted () {
     // this.$nextTick(() => {
     //   this.initCharts();
     // });
   },
   methods: {
-    initCharts() {
+    initCharts () {
       if (this.firstBarData.detail.length === 1) {
         this.$refs.chart.style.width = "240px";
       } else {
         this.$refs.chart.style.width =
-          this.firstBarData.detail.length * 80 + "px";
+          this.firstBarData.detail.length * 100 + "px";
       }
 
       this.myChart = echarts().init(this.$refs.chart);
@@ -117,7 +115,7 @@ export default {
             // 坐标轴指示器，坐标轴触发有效
             type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
           },
-          formatter(params) {
+          formatter (params) {
             let arr = params.name.match(/(\S*)\n/)[1];
             let name = arr.split("/")[2];
             if (name) {
