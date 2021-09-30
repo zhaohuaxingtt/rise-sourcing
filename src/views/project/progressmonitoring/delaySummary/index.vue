@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-30 09:19:45
+ * @LastEditTime: 2021-09-30 10:11:39
  * @Description: 延误原因汇总
 -->
 
@@ -32,7 +32,7 @@
       <div class="floatright" slot="header-control">
         <!--------------------发送按钮----------------------------------->
         <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('FASONG','发送')}}</iButton>
-        <iButton v-if="!isFS">{{language('DAOCHU','导出')}}</iButton>
+        <iButton v-if="!isFS" @click="handleExport">{{language('DAOCHU','导出')}}</iButton>
         <template v-if="isFS">
           <!--------------------转派按钮----------------------------------->
           <transferBtn class="margin-right10" tansferType="3" :tansferData="selectRow" @getTableList="getTableList" ></transferBtn>
@@ -131,6 +131,7 @@ export default {
     handleSend() {
       if (this.selectTableData.lenth < 1) {
         iMessage.warn(this.language('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据'))
+        return
       }
       this.changeDelayReasonDialogVisible(true)
     },
