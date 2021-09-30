@@ -70,14 +70,15 @@
 </template>
 
 <script>
+import Vuex from 'vuex'
 import {approveReCordTableTitle as tableTitle} from '../data'
 import iFileDialog from 'rise/web/components/iFile/dialog'
 import tablelist from 'rise/web/components/iFile/tableList'; 
 import {iCard, iButton, iPagination, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import {
-  getAuditFilePage,
-  approveDistributionSave
+  aekoAuditSupplementalresult,
+  // approveDistributionSave
 } from '@/api/aeko/detail/approveRecord'
 
 export default {
@@ -90,6 +91,11 @@ export default {
     tablelist,
     iFileDialog
   },
+  computed: {
+		...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    }),
+	},
   props:{
     aekoInfo:{
       type:Object,
@@ -121,59 +127,65 @@ export default {
      * @return {*}
      */    
     getFetchData() {
-      const parmas = Object.assign({
-        current: this.page.currPage,
-        size: this.page.pageSize
-      })
-      this.tableLoading = true
-      getAuditFilePage(parmas).then(res => {
-        if (res.code === '200') {
-          const tableListData = (res.data || []).map(o => {
-            o.unresigned = !o.chiefName
-            return o
-          })
-          this.tableListData = tableListData
-          this.page.totalCount = res.total
-        } else {
-          this.tableListData = []
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+      this.tableListData = [
+        {
+          id: 12313333,
+          requirementAekoId: this.$route.query.requirementAekoId
         }
-        this.tableLoading = false
-      }).catch(e => {
-        this.tableLoading = false
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
-      }).finally(() => {
-        this.tableLoading = false
-      })
+      ]
+      // const parmas = Object.assign({
+      //   current: this.page.currPage,
+      //   size: this.page.pageSize
+      // })
+      // this.tableLoading = true
+      // getAuditFilePage(parmas).then(res => {
+      //   if (res.code === '200') {
+      //     const tableListData = (res.data || []).map(o => {
+      //       o.unresigned = !o.chiefName
+      //       return o
+      //     })
+      //     this.tableListData = tableListData
+      //     this.page.totalCount = res.total
+      //   } else {
+      //     this.tableListData = []
+      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+      //   }
+      //   this.tableLoading = false
+      // }).catch(e => {
+      //   this.tableLoading = false
+      //   iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+      // }).finally(() => {
+      //   this.tableLoading = false
+      // })
     },
     /**
      * @description: 提交
      * @param {*}
      * @return {*}
      */    
-    submit() {
-      const parmas = []
-      this.$confirm(this.language('submitSure','您确定要执行提交操作吗？')).then(confirmInfo => {
-        if (confirmInfo === 'confirm') {
-          approveDistributionSave(parmas).then(res => {
-            if (res.code === '200') {
-              iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-              this.getFetchData()
-            } else {
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-            }
-          }).catch(e => {
-            iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
-          })
-        }
-      })
-    }
+    // submit() {
+    //   const parmas = []
+    //   this.$confirm(this.language('submitSure','您确定要执行提交操作吗？')).then(confirmInfo => {
+    //     if (confirmInfo === 'confirm') {
+    //       approveDistributionSave(parmas).then(res => {
+    //         if (res.code === '200') {
+    //           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+    //           this.getFetchData()
+    //         } else {
+    //           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+    //         }
+    //       }).catch(e => {
+    //         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+    //       })
+    //     }
+    //   })
+    // }
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .aekoDetailRecord {
-  
+
 }
 </style>
