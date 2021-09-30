@@ -178,7 +178,7 @@ export default {
                         </div>
                         <div class='label'>${this.$t('LK_CHEXING') + ':'}</div>
                         <div class='carType'>${carTypeList}</div>
-                        <div class='label'>${this.language('GONGCHANGDIZHI','工厂地址')}</div>
+                        <div class='label'>${this.language('GONGCHANGDIZHI','工厂地址:')}</div>
                         <div class='value'>${item.factoryName}-${item.factoryAddress}</div>
                       </div>`,
           offset: new AMap.Pixel(7, -15)
