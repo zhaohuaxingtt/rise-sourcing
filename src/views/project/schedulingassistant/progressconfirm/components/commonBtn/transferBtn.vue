@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 17:49:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-03 11:04:01
+ * @LastEditTime: 2021-09-29 17:16:21
  * @Description: 转派按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\transferBtn.vue
 -->
@@ -18,6 +18,7 @@
 import { iMessage, iButton } from 'rise'
 import { transferPartScheduleList, transferSchedule } from '@/api/project'
 import transferDialog from '../transfer'
+import { transferDelayReasonConfirm } from '@/api/project/process'
 export default {
   components: { iButton, transferDialog },
   props: {
@@ -58,11 +59,13 @@ export default {
     changeTransferVisible(visible) {
       this.transferDialogVisible = visible
     },
-    handleTransfer(val) {
+    handleTransfer(val, valDesc) {
       if (this.tansferType === '1') {
-        this.transferSchedule(val)
+        this.transferSchedule(val, valDesc)
+      } else if (this.tansferType === '2') {
+        this.transferPartScheduleList(val, valDesc)
       } else {
-        this.transferPartScheduleList(val)
+        this.transferDelayReasonConfirm(val, valDesc)
       }
     },
     /**
@@ -92,6 +95,26 @@ export default {
      */    
     transferPartScheduleList(val) {
       transferPartScheduleList(this.tansferData.map(item => item.id), val).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeTransferVisible(false)
+          this.$emit('getTableList')
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.$refs.productGroupTransfer.changeSaveLoading(false)
+      })
+    },
+    transferDelayReasonConfirm(val, valDesc) {
+      transferDelayReasonConfirm(this.transferData.map(item => {
+        return {
+          ...item,
+          oldFs: item.projectPurchaser,
+          projectPurchaser: valDesc,
+          projectPurchaserId: val
+        }
+      })).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.changeTransferVisible(false)

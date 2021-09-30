@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-09-30 10:47:45
+ * @LastEditTime: 2021-09-30 10:50:32
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
@@ -92,6 +92,7 @@ export default {
     const {query} = this.$route;
     const {from=''} = query;
     const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
+    console.log(roleArr)
     if(roleArr.length > 1){
         if(from == 'manage'){
             this.isLinie = false;
@@ -128,6 +129,9 @@ export default {
 
     this.tabs = permissionArray("permissionKey", this.tabs)
 
+    
+  },
+  mounted() {
     this.getBbasicInfo();
   },
   computed: {
