@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-16 11:05:40
+ * @LastEditTime: 2021-10-08 14:00:17
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -353,7 +353,7 @@ export default {
             productGroupDe: item.productGroupNameDe,
             productGroupZh: item.productGroupNameZh,
             confirmDateDeadline: nextThreeWorkDay,
-            projectPurchaser: this.$store.state.permission.userInfo.nameZh,
+            projectPurchaser: this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn,
             projectPurchaserId: this.$store.state.permission.userInfo.id,
             selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions,
             fs: fs,

@@ -67,12 +67,14 @@
 			},
 			openPage(item){
 				const openParts = this.$router.resolve({
-					path:"/sourceinquirypoint/sourcing/partsprocure/editordetail",
+					path:"/sourceinquirypoint/sourcing/partsprocure/outputplan",
 					query:{
-						item: JSON.stringify(item),
-						businessKey:item.partProjectType
+						id:item.purchaseProjectId,
+						purchasingRequirementId:item.purchasingRequirementId,
+						partNum:item.partNum,
+						purchasingRequirementObjectId:item.purchasingRequirementObjectId
 					}
-				});
+				})
 				window.open(openParts.href,'_blank')
 			}
 		}

@@ -346,7 +346,7 @@ export default {
     },
     getLinie(id){
       purchasingLiline(id).then(r=>{
-        this.fromGroup['LINIE'] = r.data || []
+        this.$set(this.fromGroup,'LINIE',r.data || [])
       })
     },
     // 修改采购项目详情和
