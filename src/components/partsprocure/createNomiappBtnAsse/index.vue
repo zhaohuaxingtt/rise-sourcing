@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-10-08 12:07:04
+ * @LastEditTime: 2021-10-08 16:11:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
@@ -112,7 +112,7 @@ export default{
       }
     },
     handleSelectionChange({row,selection}){
-      const selections = selection.every(i=>i == undefined)?[]:selection
+      const selections = selection.filter(i=>i !== undefined)
       this.ontologyList = selections
       const isSelect = selections.find(rows=>rows.itemKey == row.itemKey)
       if(row.needRow){ //勾选供应商表头
@@ -129,7 +129,7 @@ export default{
       this.rate = numberProcessor(a,2,false) > 100 ? 100:numberProcessor(a,2,false)
     },
     numberBlur(){
-      this.rate =this.rate+'%'
+      this.rate = this.rate.indexOf('%')>-1?this.rate:this.rate+'%'
     },
     partsAssemblyOutPlans(){
       return partsAssemblyOutPlan(this.detailData().id)
@@ -164,6 +164,7 @@ export default{
         nomiAutoPartsAssemblyCheck(sendData).then(res=>{
           this.loadind = false
           if(res.data){
+            this.ontologyList = []
             this.tableList = this.translateDataForRender(res.data.nomiPartsAssemblySupplierVoList)
             this.$nextTick(()=>{
               document.querySelector('.el-table__header-wrapper .el-checkbox').style.display = 'none'
@@ -195,6 +196,7 @@ export default{
     createNomi(){
       const submitValidate = this.ontologyList.filter(items=>items.partType === 'S')
       if(this.rate === '') return iMessage.warn(this.language('DANGQIANFENEBNWEIK','抱歉，您还未填写份额！'))
+      if(this.rate === '0%') return iMessage.warn(this.language('QINGSHURUDAYUINGDESHU','抱歉！份额请填写大于0小于等于100的数'))
       if(submitValidate && submitValidate.length > 1) return iMessage.warn(this.language('XUANZEDEBUNENGDAYULIANGT','抱歉！零件类型【加工装配费】只能为一条！'))
       this.loadingbtn = true
       const sendData = {
