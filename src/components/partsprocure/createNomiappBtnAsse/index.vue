@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-10-08 16:05:16
+ * @LastEditTime: 2021-10-08 16:11:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
@@ -87,13 +87,9 @@ export default{
         select.filter(i=>i.supplierId !== row.supplierId).forEach(t=>this.$refs.tabel.toggleRowSelection(t))
       }
       if(select.filter(i=>i.partType === 'S').length > 1){
-        console.log('-----------1--------------')
         this.$refs.tabel.clearSelection()
-        console.log('-----------2--------------')
         const selectfilterPartTypeS = (select.filter(i=>i.partType === 'S').map(r=>r.itemKey)).splice(1,1,'')
-        console.log('-----------3--------------')
         select.filter(b=>!selectfilterPartTypeS.includes(b.itemKey)).forEach(r=>this.$refs.tabel.toggleRowSelection(r))
-        console.log('-----------4--------------')
         iMessage.warn(this.language('DANGQLJHANYOUDUOGEJIAGONG','您已选择过零件类型含有加工装配的供应商，切勿重复选择！'))
         return
       }
