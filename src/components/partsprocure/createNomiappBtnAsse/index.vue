@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-10-08 16:35:50
+ * @LastEditTime: 2021-10-08 19:58:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
@@ -164,6 +164,7 @@ export default{
         nomiAutoPartsAssemblyCheck(sendData).then(res=>{
           this.loadind = false
           if(res.data){
+            this.rate = ''
             this.ontologyList = []
             this.tableList = this.translateDataForRender(res.data.nomiPartsAssemblySupplierVoList)
             this.$nextTick(()=>{
