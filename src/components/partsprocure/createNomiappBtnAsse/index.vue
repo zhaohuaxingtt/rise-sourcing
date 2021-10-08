@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-09-14 20:22:29
+ * @LastEditTime: 2021-10-08 11:54:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
@@ -200,7 +200,7 @@ export default{
       const sendData = {
         isUserPackage:this.isUserPackage,
         ontologyList:this.ontologyList.filter(r=>!r.needRow).filter(r=>!r.addAssemblyNomi),
-        rate:this.rate,
+        rate:this.rate.indexOf('%')>-1?JSON.parse(JSON.stringify(this.rate)).substring(0,this.rate.length - 1):this.rate, //将rate后面的百分号去除
         purchaseProjectPartId:this.detailData().id
       }
       nomiAutoPartsAssembly(sendData).then(res=>{
