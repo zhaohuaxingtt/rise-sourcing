@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-09-14 19:00:38
+ * @LastEditTime: 2021-10-08 20:43:06
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -28,7 +28,7 @@
                 <iInput :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item> -->
-              <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称')" style="width: 400px">
+              <el-form-item class="currentWidth" :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称')">
                 <iInput  :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item>
@@ -55,7 +55,7 @@
                              :label="items.name"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_CHEXING','车型')" style="margin-right:50px">
+              <el-form-item :label="language('LK_CHEXING','车型')">
                 <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.modelCode" filterable>
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in cartTypeOptions" :key="item.key" :value="item.value" :label="item.label"/>
@@ -618,6 +618,9 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.currentWidth{
+  width: 490px!important;
+}
 .icon-color-active {
   color: $color-blue;
 }
