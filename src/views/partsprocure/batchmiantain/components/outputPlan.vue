@@ -66,15 +66,14 @@
 				this.$emit('handleSelectionChange',e)
 			},
 			openPage(item){
-				this.$router.push({
-					path:"/sourceinquirypoint/sourcing/partsprocure/outputplan",
+				const openParts = this.$router.resolve({
+					path:"/sourceinquirypoint/sourcing/partsprocure/editordetail",
 					query:{
-						id:item.purchaseProjectId,
-						purchasingRequirementId:item.purchasingRequirementId,
-						partNum:item.partNum,
-						purchasingRequirementObjectId:item.purchasingRequirementObjectId
+						item: JSON.stringify(item),
+						businessKey:item.partProjectType
 					}
-				})
+				});
+				window.open(openParts.href,'_blank')
 			}
 		}
 	}

@@ -522,7 +522,12 @@
 		},
 		created() {
 			this.infoItem = JSON.parse(this.$route.query.item);
-			this.purchaseProjectId = this.infoItem.id;
+			if(this.infoItem.id) {
+				this.purchaseProjectId = this.infoItem.id;
+			} else {
+				this.purchaseProjectId = this.infoItem.purchaseProjectId;
+				this.infoItem.id = this.infoItem.purchaseProjectId;
+			}
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 			this.partProjectType = this.infoItem.partProjectType;
 			this.getDatailFn();
