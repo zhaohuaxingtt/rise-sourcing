@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     disabled() {
-      return this.getDisabled()
+      return typeof this.getDisabled === "function" &&this.getDisabled()
     }
   },
   created() {

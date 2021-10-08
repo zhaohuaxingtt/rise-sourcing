@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 17:49:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-29 17:16:21
+ * @LastEditTime: 2021-10-08 15:58:04
  * @Description: 转派按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\transferBtn.vue
 -->
@@ -107,12 +107,13 @@ export default {
       })
     },
     transferDelayReasonConfirm(val, valDesc) {
-      transferDelayReasonConfirm(this.transferData.map(item => {
+      console.log(this.tansferData)
+      transferDelayReasonConfirm(this.tansferData.map(item => {
         return {
           ...item,
           oldFs: item.projectPurchaser,
-          projectPurchaser: valDesc,
-          projectPurchaserId: val
+          fs: valDesc,
+          fsId: val
         }
       })).then(res => {
         if (res?.result) {

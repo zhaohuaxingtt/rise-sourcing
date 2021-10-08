@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-30 10:11:39
+ * @LastEditTime: 2021-10-08 16:21:02
  * @Description: 延误原因汇总
 -->
 
@@ -35,36 +35,35 @@
         <iButton v-if="!isFS" @click="handleExport">{{language('DAOCHU','导出')}}</iButton>
         <template v-if="isFS">
           <!--------------------转派按钮----------------------------------->
-          <transferBtn class="margin-right10" tansferType="3" :tansferData="selectRow" @getTableList="getTableList" ></transferBtn>
+          <transferBtn class="margin-right10" tansferType="3" :tansferData="selectTableData" @getTableList="getTableList" ></transferBtn>
           <!--------------------退回按钮----------------------------------->
-          <backBtn class="margin-right10" v-if="withAllBtn" backType="3" :backData="selectRow" @getTableList="getTableList" ></backBtn>
+          <backBtn class="margin-right10" v-if="withAllBtn" backType="3" :backData="selectTableData" @getTableList="getTableList" ></backBtn>
           <!--------------------保存按钮----------------------------------->
           <saveBtn v-if="withAllBtn" saveType="3" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
           <!--------------------确认并发送按钮----------------------------------->
-          <confirmBtn v-if="withAllBtn" confirmType="3" :confirmData="selectRow" @getTableList="getTableList" ></confirmBtn>
+          <confirmBtn v-if="withAllBtn" confirmType="3" :confirmData="selectTableData" @getTableList="getTableList" ></confirmBtn>
         </template>
       </div>
       <!-- 表格 -->
       <tableList indexKey :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange">
-        <template #newPlanKw="scope">
-          <span v-if="!isFS">{{scope.row.newPlanKw}}</span>
+        <template #newPlanDate="scope">
+          <span v-if="!isFS || (isFS && !withAllBtn)">{{scope.row.newPlanDate}}</span>
           <template v-else>
             <el-cascader
               class="yearWeekSelect"
-              :value="scope.row.newPlanKw ? scope.row.newPlanKw.split('-KW') : []"
+              :value="scope.row.newPlanDate ? scope.row.newPlanDate.split('-KW') : []"
               :options="yearWeekOptions"
-              @change="handleChange($event, scope.row, 'newPlanKw')"
+              @change="handleChange($event, scope.row, 'newPlanDate')"
               separator="-KW"
             ></el-cascader>
             <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
           </template>
         </template>
         <template #delayReason="scope">
-          <span v-if="!isFS">{{scope.row.delayReason}}</span>
+          <span v-if="!isFS || (isFS && !withAllBtn)">{{scope.row.delayReason}}</span>
           <template v-else>
             <iInput
-              class="yearWeekSelect"
-              :v-model="scope.row.delayReason"
+              v-model="scope.row.delayReason"
             ></iInput>
           </template>
         </template>
@@ -111,7 +110,8 @@ export default {
       searchParams: {},
       withSend: false,
       withAllBtn: false,
-      dialogVisibleDelayReason: false
+      dialogVisibleDelayReason: false,
+      yearWeekOptions: []
     }
   },
   computed: {
@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     handleSend() {
-      if (this.selectTableData.lenth < 1) {
+      if (this.selectTableData.length < 1) {
         iMessage.warn(this.language('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据'))
         return
       }
@@ -237,5 +237,19 @@ export default {
   padding-top: 10px;
   // height: calc(100% - 65px);
   // overflow: visible;
+}
+.yearWeekSelect {
+  ::v-deep .el-input__inner {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  ::v-deep .el-input__suffix {
+    display: none;
+  }
+}
+.cascader-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 </style>
