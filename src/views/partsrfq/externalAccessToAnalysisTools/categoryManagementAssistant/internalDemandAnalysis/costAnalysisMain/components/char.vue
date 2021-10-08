@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-07-30 16:37:12
- * @LastEditTime: 2021-09-30 10:51:11
+ * @LastEditTime: 2021-09-30 15:44:34
  * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\components\costAnalysisHandleInput\components\char.vue
@@ -77,7 +77,9 @@ export default {
           {
             type: 'pie',
             radius: this.pieWidth,
-            avoidLabelOverlap: false,
+            minMargin: 5,
+            edgeDistance: 10,
+            lineHeight: 15,
             itemStyle: {
               borderColor: '#fff',
               borderWidth: 2

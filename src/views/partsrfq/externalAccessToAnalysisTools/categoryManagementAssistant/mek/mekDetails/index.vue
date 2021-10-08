@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-30 14:14:23
+ * @LastEditTime: 2021-09-30 14:30:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -548,7 +548,7 @@ export default {
     if (this.categoryId && this.chemeId && this.categoryCode) {
       await this.getHistogram(params);
     }
-    this.getMekTable();
+    // this.getMekTable();
   },
   mounted () { },
   methods: {
@@ -653,7 +653,7 @@ export default {
       });
     },
     //查询
-    async searchChartData () {
+    searchChartData () {
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -712,9 +712,8 @@ export default {
       } else {
         params.isBindingRfq = false;
       }
-      await this.getHistogram(params);
-      console.log(this.totalData,"totalData")
-      this.getMekTable();
+      this.getHistogram(params);
+      // this.getMekTable();
     },
 
     async handleSearchReset () {
@@ -751,9 +750,9 @@ export default {
         params.isBindingRfq = false;
       }
       if (this.categoryId && this.chemeId && this.categoryCode) {
-        await this.getHistogram(params);
+        this.getHistogram(params);
       }
-      this.getMekTable();
+      // this.getMekTable();
     },
     //选择材料组
     changeCategory (val) {
@@ -963,16 +962,7 @@ export default {
       this.getHistogram(params);
     },
     saveDialog () {
-      this.analysisName =
-        this.categoryCode +
-        "_" +
-        this.categoryName +
-        "_" +
-        this.targetMotorName +
-        "_" +
-        "MEK" +
-        "_" +
-        window.moment(new Date()).format("yyyy.MM");
+      this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
       this.reportName =
         this.categoryCode +
         "_" +
@@ -1160,7 +1150,7 @@ export default {
       params.info[index + 1].transmission = val[0].transmission;
       this.getHistogram(params);
     },
-    async delItem (data) {
+     delItem (data) {
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -1190,8 +1180,8 @@ export default {
         params.isBindingRfq = false;
       }
       this.delItemFlag = true;
-      await this.getHistogram(params);
-      this.getMekTable();
+       this.getHistogram(params);
+      // this.getMekTable();
     },
 
     getHistogram (params) {
@@ -1251,6 +1241,7 @@ export default {
             } else {
               this.mekMotorTypeFlag = false;
             }
+            this.getMekTable();
           } else {
             loading.close();
             iMessage.error(res.desZh);
