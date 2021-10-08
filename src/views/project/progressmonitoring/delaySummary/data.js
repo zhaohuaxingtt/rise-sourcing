@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-26 10:18:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-29 16:51:06
+ * @LastEditTime: 2021-10-08 15:37:13
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\delaySummary\data.js
  */
@@ -17,7 +17,7 @@ export const tableTitle = [
   {props:'planDate',name:'原计划时间', key: "YUANJIHUASHIJIAN", tooltip: true, minWidth: 120},
   {props:'delayWeek',name:'已延误周数', key: "YIYANWUZHOUSHU", tooltip: true, minWidth: 140},
   {props:'delayReason',name:'延误原因', key: "YANWUYUANYIN", tooltip: true, minWidth: 120},
-  {props:'newPlanDate',name:'新计划时间', key: "XINJIAHUASHIJIAN", tooltip: true, minWidth: 120},
+  {props:'newPlanDate',name:'新计划时间', key: "XINJIAHUASHIJIAN", minWidth: 120},
   {props:'fs',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, minWidth: 120},
   {props:'linie',name:'Linie', key: "LINIE", tooltip: true, minWidth: 120},
   {props:'sendDate',name:'发送时间', key: "FASONGSHIJIAN", tooltip: true, minWidth: 150},
