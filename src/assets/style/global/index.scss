@@ -503,7 +503,7 @@ a{
   display: inline-block;
 }
 .el-message.el-message--warning {
-  z-index: 3000 !important;
+  z-index: 99999 !important;
 }
 .unitStyle{
   color: #999999;
