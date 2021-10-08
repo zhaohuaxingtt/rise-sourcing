@@ -278,18 +278,22 @@ export default {
     },
     getRfqInfo() {
       this.baseInfoLoading = true
-
-      getRfqInfo({
-        rfqId: this.$route.query.id
-      })
-      .then(res => {
-        if (res.code == 200) {
-          this.disabled = !!res.data.isFreeze
-        } else {
-          iMessage.error(this.language("HUOQURFQDINGDIANXINXISHIBAI", "获取RFQ定点信息失败"))
-        }
-      })
-      .finally(() => this.baseInfoLoading = false)
+      if(this.$route.query.id){
+        getRfqInfo({
+          rfqId: this.$route.query.id
+        })
+        .then(res => {
+          if (res.code == 200) {
+            this.disabled = !!res.data.isFreeze
+          } else {
+            iMessage.error(this.language("HUOQURFQDINGDIANXINXISHIBAI", "获取RFQ定点信息失败"))
+          }
+        })
+        .finally(() => this.baseInfoLoading = false)
+      } else {
+        this.disabled = false
+        this.baseInfoLoading = false
+      }
     },
     changeNav(target) {
       this.navActivtyValue = target.index

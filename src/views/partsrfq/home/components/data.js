@@ -23,7 +23,7 @@ export const tableTitle = [
     { props: 'linieNameZh', name: 'LINIE', key: 'LINIE', tooltip: true,width:100 },
     { props: 'tpGradeStatus', name: '技术评分状态', key: 'JISHUPINGFENZHUANGTAI', tooltip: true, width: 100 },
     { props: 'mqGradeStatus', name: '质量评分状态', key: 'ZHILIANGPINGFENZHUANGTAI', tooltip: true, width: 100 },
-    { props: 'targetGradeStatus', name: '财务目标价状态', key: 'CAIWUMUBIAOJIAZHUANGTAI', tooltip: true, width: 100 },
+    { props: 'targetGradeStatus', name: '财务目标价状态', key: 'CAIWUMUBIAOJIAZHUANGTAI', tooltip: true, width: 110 },
     { props: 'heavyItem', name: 'Heavy Item', key: 'HEAVYITEM', tooltip: true, width: 100 },
     { props: 'kmAnalysis', name: '分析报告', key: 'FENXIBAOGAO', tooltip: true, width: 100 },
     { props: 'recordId', name: '', key: '', tooltip: true },
