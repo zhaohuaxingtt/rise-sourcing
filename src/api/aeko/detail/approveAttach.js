@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-28 14:01:48
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-28 15:20:09
+ * @LastEditTime: 2021-09-28 17:34:02
  * @Description: 审批附件
  */
 import axios from '@/utils/axios'
@@ -30,7 +30,7 @@ export function auditFileSave(data) {
 export function auditFileUpdate(data) {
   return requst({
     url: '/aeko/audit/file/update',
-    method: 'POST',
+    method: 'PUT',
     data,
   })
 }
@@ -39,7 +39,7 @@ export function auditFileUpdate(data) {
 export function auditFileDelete(data) {
   return requst({
     url: '/aeko/audit/file/delete',
-    method: 'POST',
+    method: 'DELETE',
     data,
   })
 }

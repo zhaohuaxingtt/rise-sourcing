@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-08-13 02:54:59
+ * @LastEditTime: 2021-09-30 11:19:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -125,6 +125,7 @@ export default {
       loading: false,
       form,
       carProjectOptions: [],
+      carProjectOptionsList: [],
       dosage: {},
       tableTitle,
       saveLoading: false,
@@ -145,7 +146,8 @@ export default {
               label: item.carTypeProjectZh,
               value: item.carTypeProjectCode
             })) :
-            []
+            [];
+            this.carProjectOptionsList = res.data || [];
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -189,6 +191,15 @@ export default {
     },
     handleChangeByCarTypeProject(value) {
       this.dosage.carTypeProjectZh = this.carProjectOptions.find(item => item.value === value).label
+
+
+      // const {carProjectOptionsList=[]} = this;
+      // carProjectOptionsList.map((item)=>{
+      //     console.log(item.value,value)
+      //   if(item.carTypeProjectCode === value){
+      //     this.dosage.aekoProjectCarDosageList = Array.isArray(item.aekoProjectChange) ? item.aekoProjectChange : []
+      //   }
+      // })
 
       this.getAekoCarDosageByCarTypeProjectCode(value)
     },

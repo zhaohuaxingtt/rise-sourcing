@@ -31,6 +31,11 @@
                  :page-size="page.pageSize" :current-page="page.currPage" :layout="page.layout"
                  :total="page.totalCount"></iPagination>
     <div class="addFs flex-align-center" v-if="!disabled">
+      <iInput class="partInput" v-model="partNumList" :placeholder="language('partsprocure.PARTSPROCURE', '请输入零件号')">
+        <div class="inputSearchIcon" slot="suffix">
+          <icon symbol name="iconshaixuankuangsousuo" @click.native="queryParts" />
+        </div>
+      </iInput>
       <iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">
         {{ language('LK_TIANJIA','添加') }}
       </iButton>
@@ -49,7 +54,9 @@ import {
   iCard,
   iPagination,
   iMessage,
-  iMessageBox
+  iMessageBox,
+  iInput,
+  icon
 } from "rise";
 import tableList from "@/views/partsign/home/components/tableList";
 import {
@@ -84,7 +91,9 @@ export default {
     iPagination,
     applyPrice,
     partsTable,
-    kmDialog
+    kmDialog,
+    iInput,
+    icon
   },
   async mounted() {
     const {query} = this.$route;
@@ -119,7 +128,8 @@ export default {
       addLoding: false,
       kmDialogVisible: false,
       partProjTypes,
-      queryForm: {}
+      queryForm: {},
+      partNumList: ""
     };
   },
   methods: {
@@ -174,6 +184,8 @@ export default {
           this.resultMessage(res)
           await this.getTableList()
           //this.$refs.applyPrice.getTableList()
+          this.queryForm = { ...this.queryForm, partNumList: this.partNumList }
+          this.$refs.partsTable.page.currPage = 1
           this.$refs.partsTable.getTableList()
         } else {
           this.resultMessage(res)
@@ -248,6 +260,8 @@ export default {
         const res = await deleteRfqPart(req)
         this.resultMessage(res)
         this.getTableList()
+        this.queryForm = { ...this.queryForm, partNumList: this.partNumList }
+        this.$refs.partsTable.page.currPage = 1
         this.$refs.partsTable.getTableList()
         })
     },
@@ -255,7 +269,13 @@ export default {
     sendKM() {
       if (!this.handleSelectArr.length) return iMessage.warn(this.language("LK_QINGXUANZEZHISHAOYITIAOSHUJU",'请选择至少一条数据'))
       this.kmDialogVisible = true
-    }
+    },
+    // 查询零件列表
+    queryParts() {
+      this.queryForm = { ...this.queryForm, partNumList: this.partNumList }
+      this.$refs.partsTable.page.currPage = 1
+      this.$refs.partsTable.getTableList()
+    },
   },
 };
 </script>
@@ -268,9 +288,31 @@ export default {
 
 .addFs {
   height: 85px;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 .openLinkText{
   color:$color-blue;
+}
+
+.partInput {
+  width: 260px;
+
+  ::v-deep .el-input__suffix {
+    .el-input__suffix-inner {
+      height: 100% !important;
+    }
+
+    .inputSearchIcon {
+      display: inline-block;
+      width: 30px;
+      font-size: 16px;
+      height: 100%;
+      cursor: pointer;
+
+      .icon {
+        height: 100% !important;
+      }
+    }
+  }
 }
 </style>

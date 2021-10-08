@@ -93,6 +93,10 @@ export default {
         if (res.code == 200) {
           this.tableListData = res.data.tpRecordList
           this.page.totalCount = res.data.totalCount
+
+          this.$nextTick(() => {
+            this.tableListData.forEach(item => this.$refs.table.$refs.table.toggleRowSelection(item, true))
+          })
         } else {
           this.tableListData = []
           this.page.totalCount = 0

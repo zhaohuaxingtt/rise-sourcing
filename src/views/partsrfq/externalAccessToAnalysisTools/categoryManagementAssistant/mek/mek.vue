@@ -30,7 +30,7 @@
     <iCard class="margin-top20">
         <div  class="margin-bottom20 clearFloat">
           <span  class="font18 font-weight" >{{$t('MEK分析库')}}</span>
-          <div class="floatright">
+          <div class="floatright" v-if="!disabled">
           <div v-if="!edit">
             <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
             <iButton @click="handleAdd">{{ $t("LK_XINZENG") }}</iButton>
@@ -180,6 +180,12 @@ export default {
       currentDefaultObj: null, //当前编辑对象
       updatedDefault: false //是否已更新默认项
     };
+  },
+  inject: ['getDisabled'],
+  computed: {
+    disabled() {
+      return typeof this.getDisabled === "function" ? this.getDisabled() : false
+    }
   },
   created() {
     this.initData()

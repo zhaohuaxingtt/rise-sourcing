@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 17:22:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-30 17:33:21
+ * @LastEditTime: 2021-09-29 17:36:26
  * @Description: 确认并发送按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\confirmBtn.vue
 -->
@@ -14,6 +14,7 @@
 <script>
 import { iMessage, iButton } from 'rise'
 import { confirmPartScheduleList, confirmSchedule } from '@/api/project'
+import { sendDelayReasonConfirm } from '@/api/project/process'
 export default {
   components: { iButton },
   props: {
@@ -45,8 +46,10 @@ export default {
       }
       if (this.confirmType === '1') {
         this.confirmSchedule()
-      } else {
+      } else if (this.confirmType === '2') {
         this.confirmPartScheduleList()
+      } else {
+        this.sendDelayReasonConfirm()
       }
     },
     confirmSchedule() {
@@ -71,6 +74,19 @@ export default {
     confirmPartScheduleList() {
       this.loading = true
       confirmPartScheduleList(this.confirmData).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.$emit('getTableList')
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    sendDelayReasonConfirm() {
+      this.loading = true
+      sendDelayReasonConfirm(this.confirmData).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           this.$emit('getTableList')
