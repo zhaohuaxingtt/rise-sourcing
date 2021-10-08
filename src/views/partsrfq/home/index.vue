@@ -55,25 +55,25 @@
                              :label="items.name"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_CHEXING','车型')">
+              <el-form-item :label="language('LK_CHEXING','车型')" style="margin-right:50px">
                 <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.modelCode" filterable>
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in cartTypeOptions" :key="item.key" :value="item.value" :label="item.label"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_TPPINGFENZHUANGTAI','TP评分状态')">
+              <el-form-item :label="language('LK_JISHUPINGFENZHUANGTAI','技术评分状态')">
                 <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.tpStatus" filterable>
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in rfqRateStatusOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_MQPINGFENZHUANGTAI','MQ评分状态')">
+              <el-form-item :label="language('LK_ZHILIANGPINGFENZHUANGTAI','质量评分状态')">
                 <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.mqStatus" filterable>
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in rfqRateStatusOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_CFMUBIAOJIAZHUANGTAI','CF目标价状态')">
+              <el-form-item :label="language('LK_CAIWUMUBIAOJIAZHUANGTAI','财务目标价状态')">
                 <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.cfStatus" filterable>
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in cfApplyStatusOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />

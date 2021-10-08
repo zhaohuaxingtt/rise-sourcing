@@ -427,6 +427,7 @@ export default {
         updateInfo['oldProjectRelations'] = this.oldProjectRelations
         const ids = this.batch.purchaseProjectIds
       updateProcureButch({updateInfo:updateInfo,ids:ids}).then(res=>{
+        this.saveButchLoading = false
         if(res.result === true) {
           iMessage.success(this.language("LK_XIUGAICHENGGONG",'修改成功'));
           if(partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey){this.$refs.onlyPartsChange.getDataList()}else{
