@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-10-08 11:54:34
+ * @LastEditTime: 2021-10-08 12:07:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
@@ -172,8 +172,8 @@ export default{
             this.diologShow = true
           }else{
             this.ontologyList = this.tableList
-            this.rate = null
-            this.createNomi()
+            this.rate = res.data.nomiPartsAssemblySupplierVoList[0].nomiPartsAssemblyRecordVoList.find(r=>r.partType == "S").rate || 0
+            this.createNomi() 
           }
           }else{
             iMessage.error(res.desZh)
