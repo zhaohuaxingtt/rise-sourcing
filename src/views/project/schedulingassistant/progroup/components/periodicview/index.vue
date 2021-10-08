@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-08 14:00:17
+ * @LastEditTime: 2021-10-08 21:07:01
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -11,7 +11,7 @@
   <div class="periodicView" v-loading="loading">
     <div class="periodicView-title">
       <div class="periodicView-title-span">
-        <el-checkbox class="periodicView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+        <el-checkbox class="periodicView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">{{language('QUANXUAN','全选')}}</el-checkbox>
         <span class="periodicView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>
       </div>
       <div v-if="!isSop">
