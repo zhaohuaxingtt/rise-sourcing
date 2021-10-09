@@ -16,7 +16,7 @@
 					<span class="flexRow">
             			<span class="openLinkText cursor " @click="openPage(scope.row)"> {{ scope.row.supplierNameZh }}
 							<el-tooltip effect="light" :content="`FRM评级：${scope.row.frm}`" v-if="scope.row.frm">
-          					<span>
+          					<span v-if="getStatus(scope.row.frm)">
             					<icon symbol class="cursor margin-left8" name="iconzhongyaoxinxitishi" />
         			 	 	</span>
         					</el-tooltip>
@@ -127,6 +127,10 @@
 			}
 		},
 		methods: {
+			getStatus(value) {
+				const arr = ['CCC', 'CC', 'C']
+				return arr.some(item => item === value)
+			},
 			//自动选中MBDL里面的数据
 			toggleSelection() {
 				this.tableData.forEach(items=>{
