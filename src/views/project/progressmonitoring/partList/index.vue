@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-24 15:27:57
+ * @LastEditTime: 2021-10-09 14:14:55
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -65,7 +65,7 @@ import {
 } from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
-import {pageProProgressMonitorData} from '@/api/project/process'
+import {pageProProgressMonitorData,proProgressMonitorFile} from '@/api/project/process'
 
 export default {
   mixins: [ filters, pageMixins ],
@@ -136,8 +136,17 @@ export default {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
-    exportfile() {
-      
+    async exportfile() {
+      try {
+        const params = {
+        partMonitorStatus: this.$route.query.type,
+        partStatus: 1,
+        projectId: this.$route.query.carProjectId
+      }
+        proProgressMonitorFile(params)
+      } catch(e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
     }
   }
 }
