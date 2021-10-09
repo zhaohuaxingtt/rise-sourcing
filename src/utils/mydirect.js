@@ -277,6 +277,7 @@ function removeStyle(evt) {
 Vue.directive("lazySelect", {
     bind(el, binding) {
         const dom = el.querySelector(".el-select-dropdown .el-select-dropdown__wrap")
+        console.log(el,dom,'domdomdom');
         dom.addEventListener("scroll", function() {
           if ((this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
         });

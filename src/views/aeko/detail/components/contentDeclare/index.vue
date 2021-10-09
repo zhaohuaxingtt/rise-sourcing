@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-09-27 15:46:59
+ * @LastEditTime: 2021-10-08 15:34:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -576,7 +576,6 @@ export default {
     handleExport() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("AEKO_QINGXUANZEYAODAOCHUDELINGJIANHANGXIANGMU", "请选择要导出的零件行项目!"))
       const ids = this.multipleSelection.map((item)=>item.objectAekoPartId);
-      console.log(ids,'idsidsids');
       liniePartExport({ids});
       // let printTableTitle = tableTitle.filter(item => item.isExport);
       // let oldPartIndex = 0;
@@ -787,26 +786,24 @@ export default {
     // 发送供应商报价
     async sendSupplier(data){
       await sendSupplier(data).then((res)=>{
+        this.declareSendSupplier = false;
+        const SupplierMessage = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
+        if(res.code == 200){
+          // 若data有值的情况下需抛出提示
+          if(Array.isArray(res.data) && res.data.length > 0){
+            this.$alert(res.data.toString(),this.language('LK_WENXINTISHI','温馨提示'), {
+              confirmButtonText: this.language('LK_QUEDING','确定'),
+            });
+          }else{
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.init();
+          }
+        }else{
+          iMessage.error(SupplierMessage);
+        }   
+      }).catch((err)=>{
             this.declareSendSupplier = false;
-            const SupplierMessage = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
-            if(res.code == 200){
-              // 若data有值的情况下需抛出提示
-              if(Array.isArray(res.data) && res.data.length > 0){
-                this.$alert(res.data.toString(),this.language('LK_WENXINTISHI','温馨提示'), {
-                  confirmButtonText: this.language('LK_QUEDING','确定'),
-                });
-              }else{
-                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                this.init();
-              }
-              
-            }else{
-              iMessage.error(SupplierMessage);
-            }
-            
-          }).catch((err)=>{
-            this.declareSendSupplier = false;
-      })
+        })
     },
 
     // 指定车型项目弹窗展示
