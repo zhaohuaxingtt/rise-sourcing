@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-09-27 12:11:18
+ * @LastEditTime: 2021-10-08 19:41:56
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -89,11 +89,25 @@
           <!--------------时间格式------------>
           <template slot-scope="scope">
             <template v-if ='removeKeysNumber(item.props) == "developmentCost"'>
-              <span>{{scope.row[item.props]}}</span>
+              <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>
+                <template slot="content">
+                  <div>一次性：{{scope.row[getPorpsNumber(item.props)+"developmentCost"]-scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
+                  <div>分摊：{{scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
+                </template>
+                <span>{{scope.row[item.props]}}</span>
+              </el-tooltip>
+              <span v-else>{{scope.row[item.props]}}</span>
               <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
             </template>
             <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
-              <span>{{scope.row[item.props]}}</span>
+              <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>
+                <template slot="content">
+                  <div>一次性：{{scope.row[getPorpsNumber(item.props)+"tooling"]-scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
+                  <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
+                </template>
+                <span>{{scope.row[item.props]}}</span>
+              </el-tooltip>
+              <span v-else>{{scope.row[item.props]}}</span>
               <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate"'>
@@ -219,8 +233,8 @@
               <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "ltcStaringDate"'>
-                  <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
-                </template>
+              <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
+            </template>
             <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
               <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
             </template>     
@@ -248,7 +262,6 @@
   </div>
   <!-- <div class="rightFlex">
   </div> -->
-  
 </div>
 </template>
 <script>

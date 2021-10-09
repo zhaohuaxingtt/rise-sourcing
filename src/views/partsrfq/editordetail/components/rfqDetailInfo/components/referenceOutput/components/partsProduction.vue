@@ -125,7 +125,7 @@ export default {
       } else {
         const rfqId = this.$route.query.id;
         const rfqPlanId = row.rfqPlanId;
-        const purchaseProjectId = row.purchaseProjectId;
+        const id = row.purchaseProjectId;
         const purchasingRequirementId = row.purchasingRequirementId
         const partNum = row.ninePartNum
         const categoryCode = row.categoryCode
@@ -135,7 +135,7 @@ export default {
         const req = {
           rfqId,
           rfqPlanId,
-          purchaseProjectId,
+          id,
           purchasingRequirementId,
           categoryCode,
           purchasingRequirementObjectId,

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-08 15:45:51
+ * @LastEditTime: 2021-10-08 10:19:36
  * @Description: 项目管理概览
  * @FilePath: \front-web\src\views\project\overview\index.vue
 -->
@@ -24,7 +24,7 @@
         </template>
         <el-form>
           <el-form-item :label="language('CHEXINGXIANGMU','车型项目')" v-permission.auto='PROJECTMGT_OVERVIEW_CARPROJECT|项目管理-概览-车型项目'>
-            <iSelect filterable v-model="searchParams.carProject">
+            <iSelect filterable v-model="searchParams.carProject" :placeholder="language('QINGXUANZE','请选择')">
               <el-option
                 v-for="item in carProjectOptions"
                 :key="item.value"

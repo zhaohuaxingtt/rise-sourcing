@@ -70,7 +70,7 @@ export const partScroingTitle = [
 ]
 
 export const scoringDeptTitle = [
-    { props: 'tagName', name: '部门评分类型', key: 'LK_BUMENPINGFENLEIXING' },
+    { props: 'rateTag', name: '部门评分类型', key: 'LK_BUMENPINGFENLEIXING' },
     { props: 'rateDepartNum', name: '部门编号', key: 'LK_BUMENBIANHAO', tooltip: true },
     { props: 'raterId', name: '评分人', key: 'LK_PINGFENREN' },
     { props: 'coordinatorId', name: '协调人', key: 'LK_XIETIAOREN' }
