@@ -25,6 +25,60 @@ export const TAB = [
     key: 'LK_AEKOBAOBIAO'
   },
 ]
+export  const AEKOAPPROVEMENU=[
+  { value: 1,
+    message: 0,
+    name: 'AEKO操作',
+    activePath: '/aeko/approve',
+    url: '/aeko/approve/approvelistcsf',
+    // 用于判断子路由是否处于当前父路由下
+    currentPath: '/aeko/approve',
+    // 右侧魔方是否展示
+    magicCube: true,
+    // 右侧魔方跳转Path
+    magicCubePath: '/projectmgt/projectscheassistant/historyprocessdb',
+    // 右侧魔方Hover content
+    magicCubeHoverText: '模具台账',
+    key: 'AEKO操作',
+    rightNavList: [
+      {
+        value: 1,
+        message: 0,
+        name: 'AEKO审批',
+        activePath: 'approvelistcsf',
+        url: '/aeko/approve/approvelistcsf',
+        key: 'AEKO审批'
+      },
+      {
+        value: 2,
+        message: 0,
+        name: 'AEKO查看',
+        activePath: 'changeTask',
+        url: '#',
+        key: 'AEKO查看'
+      }
+    ]
+
+  },{
+    value: 2,
+    message: 0,
+    name: 'AEKO报表',
+    activePath: '/aeko/approve/#',
+    url: '/aeko/approve/#',
+    key: 'AEKO报表',
+    // 用于判断子路由是否处于当前父路由下
+    currentPath: '/aeko/approve/#',
+    // 右侧魔方是否展示
+    magicCube: false,
+    // 右侧魔方跳转Path
+    magicCubePath: '#',
+    // 右侧魔方Hover content
+    magicCubeHoverText: '模具台账',
+    rightNavList: [ ]
+  },
+
+]
+
 
 export const SUBMENU = [
   {

@@ -20,21 +20,22 @@
 <script>
 import { iNavMvp, icon } from "rise"
 import { TAB,SUBMENU } from "./data"
-
 export default {
   components: {
     iNavMvp,
-    icon
+    icon,
   },
   props: {
     navList: {type:Array, default: window._.cloneDeep(TAB)},
-    subNavList: {type:Array, default: window._.cloneDeep(SUBMENU)}
+    subNavList: {type:Array, default: window._.cloneDeep(SUBMENU)},
   },
+
   computed: {
     isProgressConfirm() {
       return this.$route.path.includes('progressconfirmsummary') || this.$route.path.includes('proconfirm')
     }
   },
+
   methods: {
     gotoDBhistory() {
       const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`})
