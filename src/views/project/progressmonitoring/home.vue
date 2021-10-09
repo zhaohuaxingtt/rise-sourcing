@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-24 16:34:54
+ * @LastEditTime: 2021-10-09 14:33:10
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -109,19 +109,27 @@ export default {
     }
   },
   mounted() {
-    const carProjectId = this.$route.query.carProject || ''
-    const cartypeProjectZh = this.$route.query.cartypeProjectZh || ''
-    // 获取车型状态
-    this.handleCarProjectChange(carProjectId, cartypeProjectZh)
-    // this.getOptions()
+    this.init()
   },
   methods: {
+    /**
+     * @description: 初始化图表
+     * @param {*}
+     * @return {*}
+     */    
+    init() {
+      const carProjectId = this.$route.query.carProject || ''
+      const cartypeProjectZh = this.$route.query.cartypeProjectZh || ''
+      // 获取车型状态
+      this.handleCarProjectChange(carProjectId, cartypeProjectZh)
+    },
     /**
      * @description: （未进TIPS表/待确认的CKD零件）跳转
      * @param {*} type （1/2）
      * @return {*}
      */    
     toPartList(type) {
+      if (!this.showTips) return
       this.$router.push({name: 'progressmonitoring-monitoring-partList', query: {
         carProjectId: this.carProject,
         carProjectName: this.carProjectName,
@@ -302,11 +310,11 @@ export default {
           })
           this.data = [...data]
           // notInTips
-          this.notInTips = res.data && res.data.noTipsNum || 0
+          this.notInTips = this.showTips ? (res.data && res.data.noTipsNum || 0) : 0
           // ckdconfirm
-          this.ckdconfirm = res.data && res.data.ckdNum || 0
+          this.ckdconfirm = this.showTips ? (res.data && res.data.ckdNum || 0) : 0
           // tipsSum
-          this.tipsSum = res.data && res.data.tipsSum || 0
+          this.tipsSum = this.showTips ? (res.data && res.data.tipsSum || 0) : 0
           // 获取车型状态是否加入TIPS
           this.getAutoCarTips(carProjectId)
           console.log('this.data', this.data)
@@ -333,6 +341,11 @@ export default {
         if (confirmInfo === 'confirm') {
           this.autoTips(() => {
             this.toggleShowAutoTips(state)
+            if (!state) {
+              this.notInTips = 0
+              this.ckdconfirm = 0
+              this.tipsSum = 0
+            }
           })
           
         }

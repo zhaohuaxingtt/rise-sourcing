@@ -1,8 +1,8 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-26 11:06:24
- * @LastEditTime: 2021-09-30 10:08:52
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-10-09 14:17:00
+ * @LastEditors: Hao,Jiang
  * @Description: 项目管理-项目进度监控接口
  * @FilePath: \front-web\src\api\project\process.js
  */
@@ -108,6 +108,15 @@ export function sendDelayReasonConfirm(data) {
 export function pageProProgressMonitorData(data) {
   return requst({
     url: '/project-progress-monitor/pageProProgressMonitorData',
+    method: 'POST',
+    data
+  })
+}
+
+// 导出车型项目下对应零件监控状态的数据
+export function proProgressMonitorFile(data) {
+  return downloadRequst({
+    url: '/project-progress-monitor/proProgressMonitorFile',
     method: 'POST',
     data
   })
