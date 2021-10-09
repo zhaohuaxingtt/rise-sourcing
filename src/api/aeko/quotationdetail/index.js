@@ -12,7 +12,7 @@ import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 const requst = axios(process.env.VUE_APP_RFQ)
 const requstFile = axiosFile(process.env.VUE_APP_RFQ)
-
+const requstTooling = axios(process.env.VUE_APP_BMMOLD)
 
 export function bnkSupplierToken(params) {
   return requst({
@@ -76,6 +76,57 @@ export function exportQuotation(params) {
 export function submitAekoQuotation(params) {
   return requst({
     url: `/aeko/submit/quotation/${ params.quotationId }/${ params.objectAekoId }`,
+    method: 'GET'
+  })
+}
+
+// 获取AEKO变动值汇总表
+export function getAekoCbdPriceSum(params) {
+  return requst({
+    url: `/aeko/get/aekoCbdPriceSum/${ params.quotationId }`,
+    method: 'GET'
+  })
+}
+
+// 保存AEKO变动值汇总表
+export function saveAekoCbdPriceSum(data) {
+  return requst({
+    url: `/aeko/save/aekoCbdPriceSum`,
+    method: 'POST',
+    data,
+  })
+}
+
+// 获取原零件CBD
+export function getMoldCbd(data) {
+  return requstTooling({
+    url: `/getMoldCbd`,
+    method: 'POST',
+    data,
+  })
+}
+
+// 获取模具费
+export function getMoulds(params) {
+  return requst({
+    url: `/aeko/mould/get/mould/${ params.quotationId }`,
+    method: 'GET'
+  })
+}
+
+// 保存模具费
+export function saveMoulds(data) {
+  return requst({
+    url: `/aeko/mould/save/moulds`,
+    method: 'POST',
+    data,
+  })
+}
+
+// 查询关联零件
+export function getMouldParts(params) {
+  return requst({
+    url: `/aeko/mould/get/mould/getMouldParts/${ params.quotationId }`,
     method: 'GET'
   })
 }
