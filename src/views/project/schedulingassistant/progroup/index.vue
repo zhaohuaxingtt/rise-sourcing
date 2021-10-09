@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-13 10:44:25
+ * @LastEditTime: 2021-10-08 21:26:16
  * @Description: 产品组排程页面
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
 -->
@@ -22,7 +22,7 @@
         <div class="titleSearch">
           <span class="margin-right20 titleSearch-label">{{language('CHANPINZU','产品组')}}</span>
           <div :class="`chooseProGroup ${!proGroup ? 'noPro' : ''} ${isSop || isNodeView ? 'disabled' : ''}`" @click="openChooseProGroup">
-            <div :title="proGroup">{{proGroup || '请选择'}}</div>
+            <div :title="proGroup">{{proGroup || language('QINGXUANZE','请选择')}}</div>
             <icon symbol name="iconshaixuankuangsousuo" class="step-icon"></icon>
           </div>
         </div>

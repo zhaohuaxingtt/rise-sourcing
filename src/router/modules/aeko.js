@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-09-28 10:34:07
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-08 10:15:49
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -81,6 +81,15 @@ export default [
               title: 'AEKO零件清单'
           },
           component: () => import ("@/views/aeko/partslist")
+      },
+      // aeko CSF AEKO审批分配人 零件清单页面
+      {
+        path: "partslist1",
+          name: "aekoPartslist1",
+          meta: {
+              title: 'AEKO零件清单'
+          },
+          component: () => import ("@/views/aeko/partslist/partList")
       },
       {
         path: "quotationdetail",
