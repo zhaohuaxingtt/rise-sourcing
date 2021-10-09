@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-08 16:23:24
+ * @LastEditTime: 2021-10-09 12:43:36
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -80,7 +80,7 @@ export default {
      * @return {*} 
      */    
     async getFsUserList(tableList) {  
-      const res = await getFsUserListPart({partNums: tableList.map(item => item.partNum).join(',')}) 
+      const res = await getFsUserListPart(tableList.map(item => item.partNum)) 
         if (res?.result) { 
           return res.data   
         } else { 
