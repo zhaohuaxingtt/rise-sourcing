@@ -77,7 +77,7 @@ import tablelist from 'rise/web/components/iFile/tableList';
 import {iCard, iButton, iPagination, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import {
-  aekoAuditSupplementalresult,
+  findHistoryByAeko,
   // approveDistributionSave
 } from '@/api/aeko/detail/approveRecord'
 
@@ -127,36 +127,40 @@ export default {
      * @return {*}
      */    
     getFetchData() {
-      this.tableListData = [
-        {
-          id: 12313333,
-          requirementAekoId: this.$route.query.requirementAekoId
-        }
-      ]
-      // const parmas = Object.assign({
-      //   current: this.page.currPage,
-      //   size: this.page.pageSize
-      // })
-      // this.tableLoading = true
-      // getAuditFilePage(parmas).then(res => {
-      //   if (res.code === '200') {
-      //     const tableListData = (res.data || []).map(o => {
-      //       o.unresigned = !o.chiefName
-      //       return o
-      //     })
-      //     this.tableListData = tableListData
-      //     this.page.totalCount = res.total
-      //   } else {
-      //     this.tableListData = []
-      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+      console.log(this.aekoInfo)
+      // this.tableListData = [
+      //   {
+      //     id: 12313333,
+      //     requirementAekoId: this.$route.query.requirementAekoId
       //   }
-      //   this.tableLoading = false
-      // }).catch(e => {
-      //   this.tableLoading = false
-      //   iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
-      // }).finally(() => {
-      //   this.tableLoading = false
-      // })
+      // ]
+      const parmas = Object.assign({
+        applyUserId: this.userInfo.id || '',
+        businessId: Number(this.aekoInfo.aekoManageId) || '',
+        // procStatus: '',
+        pageNo: this.page.currPage,
+        pageSize: this.page.pageSize
+      })
+      this.tableLoading = true
+      findHistoryByAeko(parmas).then(res => {
+        if (res.code === '200') {
+          const tableListData = (res.data || []).map(o => {
+            o.unresigned = !o.chiefName
+            return o
+          })
+          this.tableListData = tableListData
+          this.page.totalCount = res.total
+        } else {
+          this.tableListData = []
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+        this.tableLoading = false
+      }).catch(e => {
+        this.tableLoading = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+      }).finally(() => {
+        this.tableLoading = false
+      })
     },
     /**
      * @description: 提交
