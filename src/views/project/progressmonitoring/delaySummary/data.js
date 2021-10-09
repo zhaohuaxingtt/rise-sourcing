@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-26 10:18:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-08 15:37:13
+ * @LastEditTime: 2021-10-09 17:46:11
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\delaySummary\data.js
  */
@@ -13,7 +13,7 @@ export const tableTitle = [
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 100},
   {props:'partName',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true, minWidth: 100},
   {props:'isBmg',name:'是否BMG', key: "SHIFOUBMG", tooltip: true, minWidth: 90},
-  {props:'partPeriod',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true, minWidth: 120},
+  {props:'partPeriodDesc',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true, minWidth: 120},
   {props:'planDate',name:'原计划时间', key: "YUANJIHUASHIJIAN", tooltip: true, minWidth: 120},
   {props:'delayWeek',name:'已延误周数', key: "YIYANWUZHOUSHU", tooltip: true, minWidth: 140},
   {props:'delayReason',name:'延误原因', key: "YANWUYUANYIN", tooltip: true, minWidth: 120},

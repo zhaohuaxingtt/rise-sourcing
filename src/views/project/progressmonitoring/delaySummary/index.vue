@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-08 16:21:02
+ * @LastEditTime: 2021-10-09 17:45:56
  * @Description: 延误原因汇总
 -->
 
@@ -62,9 +62,7 @@
         <template #delayReason="scope">
           <span v-if="!isFS || (isFS && !withAllBtn)">{{scope.row.delayReason}}</span>
           <template v-else>
-            <iInput
-              v-model="scope.row.delayReason"
-            ></iInput>
+            <el-autocomplete :fetch-suggestions="querySearch" v-model="scope.row.delayReason" /> 
           </template>
         </template>
       </tableList> 
@@ -97,6 +95,7 @@ import backBtn from '@/views/project/schedulingassistant/progressconfirm/compone
 import transferBtn from '@/views/project/schedulingassistant/progressconfirm/components/commonBtn/transferBtn'
 import { getDelayReasonSummary } from '@/api/project/process'
 import delayReasonDialog from '../monitorDetail/components/delayReson'
+import { selectDictByKeyss } from '@/api/dictionary'
 export default {
   mixins: [pageMixins],
   components: { iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, delayReasonDialog },
@@ -111,7 +110,8 @@ export default {
       withSend: false,
       withAllBtn: false,
       dialogVisibleDelayReason: false,
-      yearWeekOptions: []
+      yearWeekOptions: [],
+      delayReasonOptions: {}
     }
   },
   computed: {
@@ -126,8 +126,33 @@ export default {
     this.initSearchParams()
     this.yearWeekOptions = this.initOption()
     this.getTableList()
+    if(this.isFS) {
+      this.getDelayReason()
+    }
   },
   methods: {
+    getDelayReason() {
+      selectDictByKeyss('OTS_EM_DELAYREASON').then(res => {
+        if (res?.result) {
+          this.delayReasonOptions ={
+            ...res.data,
+            OTS_EM_DELAYREASON: res.data.OTS_EM_DELAYREASON.map(item => {return {...item,value:item.name}})
+          }
+        }
+      })
+    },
+    querySearch(queryString, cb) { 
+      var restaurants = this.delayReasonOptions.OTS_EM_DELAYREASON; 
+      // var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants; 
+      var results = []
+      // 调用 callback 返回建议列表的数据 
+      cb(results); 
+    },
+    createFilter(queryString) { 
+      return (restaurant=this.delayReasonOptions.OTS_EM_DELAYREASON) => { 
+        return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0); 
+      }; 
+    },  
     handleSend() {
       if (this.selectTableData.length < 1) {
         iMessage.warn(this.language('QINGXUANZEXUYAOFASONGDESHUJU', '请选择需要发送的数据'))
