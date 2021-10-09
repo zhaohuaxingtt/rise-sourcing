@@ -121,11 +121,11 @@ export default {
       .catch(() => {})
     },
     // 获取下拉列表值
-    getRfqRateDeparts(rateTag) {
+    getRfqRateDeparts(rateTag, type) {
       if (this.deptMap[rateTag] && Object.keys(this.deptMap[rateTag]).length) return
 
       return getRfqRateDeparts({
-        rfqIds: this.ids,
+        rfqIds: type === "all" ? undefined : this.ids,
         rateTag
       })
       .then(res => {
@@ -243,7 +243,7 @@ export default {
     handleClearAll(value, row) {
       if (this.deptMap[value] && Object.keys(this.deptMap[value]).length) return
 
-      this.getRfqRateDeparts(value)
+      this.getRfqRateDeparts(value, "all")
       this.$set(row, "rateTagDesc", this.deptScoringOptions.find(item => item.rateTag === value)?.rateTagDesc ?? "")
 
       const keys = ['coordinator', 'coordinatorId', 'rateDepartNum', 'rater', 'raterId']
