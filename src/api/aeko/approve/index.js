@@ -46,3 +46,13 @@ export function queryApproved(params){
     data:params
   })
 }
+
+//查询AKEO待审批列表
+export function pendingApprovalList(params){
+  return requst({
+        url: '/aeko/approve/distribution/approvalPendingPage',
+        method: 'POST',
+        data:params
+      }
+  )
+}
