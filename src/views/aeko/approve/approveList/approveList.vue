@@ -54,7 +54,8 @@ export default {
       } else if (tab.name == 2) {
         this.currentView = 'AKEOApprovedPage'
       }
-      sessionStorage.setItem('TAEKO-OPTION-SEL-ITEM', JSON.stringify(tab))
+      let selVal={name:this.tab.name}
+      sessionStorage.setItem('TAEKO-OPTION-SEL-ITEM', JSON.stringify(selVal))
     },
 
   }
