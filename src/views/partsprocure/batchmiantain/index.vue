@@ -252,6 +252,7 @@ export default {
         categoryName: null, //材料名称
         cfController: null, //CF控制员
         linieDept: null, //LINIE部门
+        linieDeptName: "", // LINIE部门名称
         linieName: null, //采购人名称
         linieNum: null, //采购员编号–同上关联
         partType: null, //零件类型
@@ -342,6 +343,7 @@ export default {
     },
     handleChangeByLinieDept(value) {
       this.linie = null
+      this.batch.linieDeptName = this.fromGroup.LINIE_DEPT.find(item => item.code === value)?.name??""
       this.getLinie(value)
     },
     getLinie(id){
@@ -416,6 +418,7 @@ export default {
           carTypeProjectZh: this.carTypeProject.name,
           cfController: this.batch.cfController,
           linieDept: this.batch.linieDept,
+          linieDeptName: this.batch.linieDeptName,
           linieName: this.linie.name, 
           linieId: this.linie.code,
           partProjectType: this.batch.type,
