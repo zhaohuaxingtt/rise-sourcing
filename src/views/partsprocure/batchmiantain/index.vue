@@ -417,7 +417,7 @@ export default {
           cfController: this.batch.cfController,
           linieDept: this.batch.linieDept,
           linieName: this.linie.name, 
-          linieUserId: this.linie.code,
+          linieId: this.linie.code,
           partProjectType: this.batch.type,
           partType: this.batch.partType,
           procureFactory: this.batch.procureFactory,
