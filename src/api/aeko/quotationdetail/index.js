@@ -130,3 +130,12 @@ export function getMouldParts(params) {
     method: 'GET'
   })
 }
+
+// 保存关联零件
+export function saveMouldParts(data) {
+  return requst({
+    url: `/aeko/mould/save/mould/mouldParts/${ data.quotationId }`,
+    method: 'POST',
+    data: data.list,
+  })
+}

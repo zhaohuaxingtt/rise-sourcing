@@ -55,10 +55,11 @@
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
+          @handleRowClick="handleRowClick"
           :select-props="['cbdTemplateId']"
           :round-type="roundType"
       ></tablelist>
-      <tablelist
+      <!-- <tablelist
           ref="multipleTable"
           v-else
           :tableData="tableListData"
@@ -66,7 +67,7 @@
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
-      ></tablelist>
+      ></tablelist> -->
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
@@ -256,6 +257,9 @@ export default {
           }
         })
       })
+    },
+    handleRowClick(row, column, event) {
+      if (!this.$refs.multipleTable.selectable(row)) this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(row, true)
     }
   },
   watch: {
