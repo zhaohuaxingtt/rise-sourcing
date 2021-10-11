@@ -2,8 +2,8 @@
 <template>
   <div>
     <AEKOApprovalComponents/>
-    <CoverStatementComponents/>
-    <RecommendationTablePendingApprovalComponents/>
+    <CoverStatementComponents class="margin-top20"/>
+    <RecommendationTablePendingApprovalComponents class="margin-top20"/>
   </div>
 </template>
 

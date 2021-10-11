@@ -7,52 +7,19 @@
 -->
 <template>
   <iPage>
-    <project-top :navList="navList" :subNavList="subNavList"></project-top>
-    <!-- <router-view></router-view> -->
-    <variationCBDSummaryTable />
+    <ApprovalDetailsTopComponents/>
+     <router-view></router-view>
   </iPage>
 </template>
 
 <script>
-import { iPage } from "rise";
-import projectTop from "../components/projectHeader";
-import variationCBDSummaryTable from "./components/variationCBDSummaryTable";
+import {iPage} from "rise"
+import ApprovalDetailsTopComponents from "./components/ApprovalDetailsTopComponents";
 export default {
   components: {
+    ApprovalDetailsTopComponents,
     iPage,
-    projectTop,
-    variationCBDSummaryTable,
-  },
-  data() {
-    return {
-      navList: [],
-      subNavList: [
-        {
-          value: 1,
-          name: "AEKO审批",
-          message: 0,
-          url: "/aeko/approve",
-          activePath: "projectoverview",
-          key: "审批单",
-        },
-        {
-          value: 2,
-          name: "AEKO查看",
-          message: 0,
-          url: "/aeko/approve",
-          activePath: "projectoverview",
-          key: "CBD汇总",
-        },
-        {
-          value: 3,
-          name: "AEKO查看",
-          message: 0,
-          url: "/aeko/approve",
-          activePath: "projectoverview",
-          key: "审批附件",
-        },
-      ],
-    };
+    //projectTop,
   },
 };
 </script>
