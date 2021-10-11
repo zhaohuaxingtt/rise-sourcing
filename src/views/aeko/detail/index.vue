@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-09-30 10:50:32
+ * @LastEditTime: 2021-10-11 14:39:09
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
@@ -203,7 +203,7 @@ export default {
             this.tabChange();
           }
           // 审批记录选项卡，有审批记录或补充材料的，选项卡要做红点标识
-          this.checkAttachAlarm();
+          // this.checkAttachAlarm();
 
          
         }else{
