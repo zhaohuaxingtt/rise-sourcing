@@ -92,22 +92,68 @@
         </template>
         <template #aekoNum="scope">
           <div style="text-align:left">
-            <a class="link-underline" href="javascript:;">
-              {{ scope.row.aekoNum }}
+            <a class="link-underline" @click="lookDetails(scope.row)">
+              {{ scope.row.aekoCode }}
             </a>
           </div>
         </template>
+        <template #auditTypeName="scope">
+          <span>{{scope.row.auditType}}</span>
+        </template>
         <template #describe="">
-          <a class="link-underline" href="javascript:;">
+          <a class="link-underline" href="javascript:;" >
             {{ language('CHAKAN', '查看') }}
           </a>
         </template>
-        <template #assignsheet="">
-          <a class="link-underline" href="javascript:;">
-            {{ language('CHAKAN', '查看') }}
-          </a>
+        <!---更改零件名称-->
+        <template #assignsheet="scope">
+          <span>{{scope.row.partName}}</span>
+        </template>
+        <!--涉及车型和车型项目-->
+        <template #carType="scope">
+          <span>{{scope.row.cartypeNameZh}}</span>
         </template>
 
+        <!--主要供应商-->
+        <template #supplier="scope">>
+          <span>{{scope.row.mainSupplier}}</span>
+        </template>
+        <!--增加材料成本-->
+        <template #EP1="scope">
+          <span>{{scope.row.materialIncrease}}</span>
+        </template>
+
+        <!--增加投资税-->
+        <template #EP2="scope">
+          <span>{{scope.row.investmentIncrease}}</span>
+        </template>
+
+        <!--其他费用-->
+        <template #EP3="scope">
+          <span>{{scope.row.otherCost}}</span>
+        </template>
+        <!--科室-->
+        <template #DepartmentName="scope">>
+          <span>{{scope.row.linieDeptName}}</span>
+        </template>
+        <!--采购员-->
+        <template #buyerName="scope">>
+          <span>{{scope.row.linieName}}</span>
+        </template>
+        <!--附件-->
+        <template #attach="">
+          <a class="link-underline" href="javascript:;">
+            {{ language('CHAKAN', '查看') }}
+          </a>
+        </template>
+        <!--AEKO截止日期-->
+        <template #date="scope">
+          <span>{{scope.row.deadLine}}</span>
+        </template>
+        <!--创建时间-->
+        <template #createDate="scope">
+          <span>{{scope.row.createDate}}</span>
+        </template>
       </tablelist>
       <div class="pagination">
         <iPagination v-update class="pagination"
@@ -217,6 +263,13 @@ export default {
       this.queryAkeoForm.size = this.page.pageSize
       this.loadApprovedList()
     },
+    //跳转到详情
+    lookDetails(row){
+      let routeData = this.$router.resolve({
+        path: `/aeko/AEKOApprovalDetails`,
+      })
+      window.open(routeData.href, '_blank')
+    }
   }
 }
 </script>
