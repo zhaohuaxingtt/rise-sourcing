@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-09 12:43:36
+ * @LastEditTime: 2021-10-11 16:12:32
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -179,6 +179,11 @@ export default {
         const res = await getDelayReasonConfirmList(params)
         if (res?.result) {
           const tableList = res.data || []
+          if (tableList.length < 1) {
+            iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件')) 
+            this.tableList = []
+            throw(false)
+          }
           const fsOptions = await this.getFsUserList(tableList) 
           this.tableList = tableList.map(item => {
             const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
