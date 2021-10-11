@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-09 14:33:10
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-10-09 15:21:20
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -65,11 +65,11 @@
          <iFormGroup row="4" class="form">
             <iFormItem>
               <span slot="label">{{language('WEIJINTIPSBIAO', '未进TIPS表')}}:</span>
-              <span class="cursor" @click="toPartList(1)"><iInput v-model="notInTips" disabled /></span>
+              <span class="cursor" @click="toPartList(1)"><iInput :value="showTips ? notInTips : 0" disabled /></span>
             </iFormItem>
             <iFormItem>
               <span slot="label">{{language('DAIQUERENDECKDLINGJIAN', '待确认的CKD零件')}}:</span>
-              <span class="cursor" @click="toPartList(2)"><iInput v-model="ckdconfirm" disabled /></span>
+              <span class="cursor" @click="toPartList(2)"><iInput :value="showTips ? ckdconfirm : 0" disabled /></span>
             </iFormItem>
          </iFormGroup>
       </div>
@@ -143,13 +143,14 @@ export default {
      */    
     onSeriesBarClick(params) {
       if (params.disabled) return
+      console.log(params)
       const itemName = params.seriesName || params.title
       const target = this.data.find(o => o.title === itemName) || {}
       const targetIndex = this.data.findIndex(o => o.title === itemName)
       // 进度风险对象
-      const projectRisk = this.projectRisk.find(o => o.name === params.name) || {}
+      const projectRisk = !params.seriesName ? '' : this.projectRisk.find(o => o.name === params.name) || {}
       // 零件进度
-      const partProc = this.partProc.find(o => o.name === params.name) || {}
+      const partProc = params.seriesName ? '' : this.partProc.find(o => o.name === params.name) || {}
       // 项目已结束指标
       const projectDone = this.projectDone.find(o => o.name === params.name) || {}
       // 匹配异常
@@ -263,6 +264,8 @@ export default {
       try {
         // const res = require('./moke.json')
         this.loading = true
+        // 获取车型状态是否加入TIPS
+        await this.getAutoCarTips(carProjectId)
         const res = await getProjectProgressMonitor({
           carTypeProjectId: carProjectId
         })
@@ -310,13 +313,12 @@ export default {
           })
           this.data = [...data]
           // notInTips
-          this.notInTips = this.showTips ? (res.data && res.data.noTipsNum || 0) : 0
+          this.notInTips = res.data && res.data.noTipsNum || 0
           // ckdconfirm
-          this.ckdconfirm = this.showTips ? (res.data && res.data.ckdNum || 0) : 0
+          this.ckdconfirm = res.data && res.data.ckdNum || 0
           // tipsSum
-          this.tipsSum = this.showTips ? (res.data && res.data.tipsSum || 0) : 0
-          // 获取车型状态是否加入TIPS
-          this.getAutoCarTips(carProjectId)
+          this.tipsSum = res.data && res.data.tipsSum || 0
+          
           console.log('this.data', this.data)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -342,9 +344,9 @@ export default {
           this.autoTips(() => {
             this.toggleShowAutoTips(state)
             if (!state) {
-              this.notInTips = 0
-              this.ckdconfirm = 0
-              this.tipsSum = 0
+              // this.notInTips = 0
+              // this.ckdconfirm = 0
+              // this.tipsSum = 0
             }
           })
           

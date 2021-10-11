@@ -228,7 +228,10 @@ export default {
             const id = item.id
             const path = item.path
             // 决策资料允许，特例跳转，不更新当前步骤
-            if (id === 5) this.gotoNomiAttach()
+            if (id === 5 && Number(this.phaseType) !== 4) {
+                this.gotoNomiAttach()
+                return
+            }
             // 不允许跳转到未开始的步骤
             if (id > this.phaseType + 1) return
             console.log(this.$store.getters.isPartListNull, item.path)

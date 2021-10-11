@@ -45,13 +45,30 @@
         ></iInput>
       </el-form-item>
       <!-- 成本变化Δ值 -->
-      <!-- <el-form-item :label="language('LK_CHENGBENBIANHUAZHI','成本变化Δ值')">
-        <iInput
-          v-model="form.chiefName"
-          :placeholder="language('LK_QINGSHURU','请输入')"
-          clearable
-        ></iInput>
-      </el-form-item> -->
+       <el-form-item :label="language('LK_CHENGBENBIANHUAZHI','成本变化Δ值')" class="intervalCss">
+         <iInput
+             v-model="form.chiefName"
+             :placeholder="language('LK_QINGSHURU','请输入')"
+             clearable
+         />
+         <span>-</span>
+         <iInput
+             v-model="form.chiefName"
+             :placeholder="language('LK_QINGSHURU','请输入')"
+             clearable
+         />
+      </el-form-item>
+      <!--审批状态-->
+      <el-form-item :label="language('LK_SHNEPIZHUANGTAI','审批状态')">
+        <i-select v-model="value1" multiple placeholder="请选择">
+          <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+          </el-option>
+        </i-select>
+      </el-form-item>
     </el-form>
   </iSearch>
 </template>
@@ -61,7 +78,7 @@
 import {
   iSearch,
   iInput,
-  // iSelect,
+  iSelect,
   // iMessage
 } from "rise";
 
@@ -69,6 +86,7 @@ export default {
   data() {
     return {
       form: {
+
       },
       selectOptions: {
       }
@@ -77,7 +95,7 @@ export default {
   components: {
     iSearch,
     iInput,
-    // iSelect,
+    iSelect,
   },
   mounted() {
   },
@@ -103,5 +121,9 @@ export default {
       overflow: hidden;
     }
   }
+}
+::v-deep.intervalCss .el-form-item__content{
+  display: inline-flex;
+  align-items: center;
 }
 </style>

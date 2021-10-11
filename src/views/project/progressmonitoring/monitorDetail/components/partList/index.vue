@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-08 17:31:10
+ * @LastEditTime: 2021-10-09 15:42:14
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -150,7 +150,7 @@ export default {
       downloadLoading: false,
       svgList,
       showDelayResaon: false,
-      selectPartNums: [],
+      selectPart: [],
       dialogVisibleFS: false,
       tableListNomi: [],
       tableListKickoff: [],
@@ -161,11 +161,14 @@ export default {
     }
   },
   computed: {
+    selectPartNums() {
+      return this.selectPart.map(item => item.partNum)
+    },
     listWithNodeDelayWeeks() {
       // 当前时间周，针对即将发生但未发生的节点用计划时间和当前时间周去判断延误时间（周）
       const currentKw = moment().format('YYYY-[KW]WW')
       
-      return this.list.map(item => {
+      return this.list ? this.list.map(item => {
         const partStatus = Number(item.partStatus)
         const emDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'emTimeKw' : 'planEmTimeKw'], partStatus == 6 ? currentKw : item.emTimeKw) : 0
         const otsDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'otsTimeKw' : 'planOtsTimeKw'], partStatus == 6 ? currentKw : item.otsTimeKw) : 0
@@ -179,17 +182,17 @@ export default {
           otsDelayWeeks,
           emOtsDelayWeeks: partStatus > 5 ? Math.max(emDelayWeeks,otsDelayWeeks): 0
         }
-      })
+      }) : []
     }
   },
   methods: {
     async handleExport() {
-      if (this.selectPartNums.length < 1) {
+      if (this.selectPart.length < 1) {
         iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
         return
       }
       this.downloadLoading = true
-      await downloadProjectMonitorFile(this.list.filter(item => this.selectPartNums.includes(item.partNum)))
+      await downloadProjectMonitorFile(this.selectPart)
       this.downloadLoading = false
     },
     getSollKw(time) {
@@ -250,7 +253,7 @@ export default {
      * @return {*} 
      */    
     async getFsUserList(tableList) {  
-      const res = await getFsUserListPart({partNums: tableList.map(item => item.partNum).join(',')}) 
+      const res = await getFsUserListPart(tableList.map(item => item.partNum)) 
         if (res?.result) { 
           return res.data   
         } else { 
@@ -308,7 +311,7 @@ export default {
             }
             const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
             const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
-            const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
+            const options = fsOptions && fsOptions[item.partNum] ? fsOptions[item.partNum].reduce((accu, item) => { 
               if (item.userId) { 
                 return [...accu, { 
                   ...item, 
@@ -343,6 +346,10 @@ export default {
               partPeriod: item.partStatus 
             } ]
           },[])
+          if (tableList.length < 1) {
+            iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件')) 
+            throw(false)
+          }
           if (this.partStatus == 2) {
             this.tableListNomi = tableList
             this.tableListKickoff = []
@@ -453,18 +460,18 @@ export default {
     handleCheckboxChange(value, pro) {
       // this.$set(pro, 'isChecked', value)
       if (value) {
-        this.selectPartNums.push(pro.partNum)
+        this.selectPart.push(pro)
       } else {
         // eslint-disable-next-line no-undef
-        _.pull(this.selectPartNums, pro.partNum)
+        _.pull(this.selectPart, pro)
       }
       // let checkedCount = this.list.filter(item => item.isChecked).length;
       // this.checkAll = checkedCount === this.list.length;
       // this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length;
     },
     gotoSechedule() {
-      // const selectPartNums = this.list.filter(item => item.isChecked).map(item => item.partNum)
-      const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/partscheduling`, query: {partNum: this.selectPartNums.join(','),carProject:this.cartypeProId, carProjectName: this.carProjectName}}) 
+      // const selectPart = this.list.filter(item => item.isChecked).map(item => item.partNum)
+      const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/partscheduling`, query: {partNum: this.selectPart.map(item => item.partNum).join(','),carProject:this.cartypeProId, carProjectName: this.carProjectName}}) 
       window.open(router.href,'_blank') 
     },
   }
