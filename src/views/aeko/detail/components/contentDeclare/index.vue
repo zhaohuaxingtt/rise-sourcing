@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-11 11:13:55
+ * @LastEditTime: 2021-10-11 16:52:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -262,7 +262,7 @@
     </iCard>
     <dosageDialog :visible.sync="dosageDialogVisible" :aekoInfo="aekoInfo" :objectAekoPartId="currentRow.objectAekoPartId" @update="init" />
     <!-- 指定投资⻋型项⽬ -->
-    <investCarTypeProDialog v-if="investCarTypeProVisible" :dialogVisible="investCarTypeProVisible" @changeVisible="changeVisible"/>
+    <investCarTypeProDialog v-if="investCarTypeProVisible" :multipleSelection="multipleSelection" :dialogVisible="investCarTypeProVisible" @changeVisible="changeVisible" @refresh="init"/>
     <!-- 价格轴 -->
     <priceAxisDialog v-if="priceAxisVisible" :dialogVisible="priceAxisVisible" @changeVisible="changeVisible"/>
   </div>
@@ -808,7 +808,9 @@ export default {
 
     // 指定车型项目弹窗展示
     goToinvestCarTypePro(){
-      // this.investCarTypeProVisible = true;
+      const { multipleSelection } = this;
+      if (!multipleSelection.length) return iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+      this.investCarTypeProVisible = true;
     },
 
     changeVisible(type,visible){
