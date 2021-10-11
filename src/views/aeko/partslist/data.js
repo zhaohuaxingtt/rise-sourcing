@@ -39,11 +39,11 @@ export const aekoCSFsearchList = [
 export const aekoCSFtableTitle = [
   { props: "partNum", name: "零件号", key: "LK_LINGJIANHAO", tooltip: true },
   { props: "partNameZh", name: "零件名", key: "LK_LINGJIANMING", tooltip: true },
-  { props: "partNum1", name: "原零件号", key: "YUANLINGJIANHAO", tooltip: true },
+  { props: "originPartNum", name: "原零件号", key: "YUANLINGJIANHAO", tooltip: true },
   { props: "newMsgSheet", name: "新建信息单", key: "LK_XINJIANXINXIDAN", tooltip: true },
-  { props: "changeType", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
+  { props: "changeTypeDesc", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
   { props: "prNumber", name: "PR", key: "LK_AEKOPR", tooltip: true },
   { props: "cartypeZh", name: "涉及⻋型项⽬", key: "LK_AEKOSHEJICHEXINGXIANGMU", tooltip: true,width:130 },
-  { props: "linieDeptNum", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
+  { props: "linieDeptName", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
   { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true },
 ]

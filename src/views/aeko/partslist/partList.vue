@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-30 11:39:01
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-09 10:38:11
+ * @LastEditTime: 2021-10-11 16:23:25
  * @Description: 零件列表 AEKO 
 -->
 <template>
@@ -10,7 +10,7 @@
     <h2 class="title">
       {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
     </h2>
-    <iNavMvp :list="describeTab" lang  :lev="2" routerPage right></iNavMvp>
+    <iNavMvp :list="describeTab" lang  :lev="2" :query="$route.query || {}" routerPage right></iNavMvp>
     <div class="contain margin-top20">
       <!-- 搜索区域 -->
       <iSearch @sure="sure" @reset="reset">
@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import Vuex from 'vuex'
 import {
   iPage,
   iNavMvp,
@@ -117,6 +118,10 @@ import { pageMixins } from "@/utils/pageMixins";import {
 import {
   getPartAuditPage,
 } from '@/api/aeko/describe'
+import { getTabelData } from "@/api/partsign/home"
+import { needTranslate } from "@/views/partsign/home/components/data";
+import local from "@/utils/localstorage";
+
 export default {
     name:'partslist',
     mixins: [pageMixins],
@@ -131,6 +136,11 @@ export default {
       tableList,
       iCard,
     },
+    computed: {
+		...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
+	},
     data(){
       return{
         describeTab:describeTab,
@@ -169,7 +179,64 @@ export default {
       this.getList();
     },
     methods:{
-      toMsgSheet(row) {
+      openPartSignPage(val) {
+        local.set(
+          "tpPartInfoVO",
+          JSON.stringify(this.translateDataForDetail(val))
+        );
+        this.$router.push({
+          path: "/sourceinquirypoint/sourcing/partsign/editordetail",
+        });
+      },
+      //在跳转到详情界面之前，需要将数据格式化为中文。
+      translateDataForDetail(v) {
+        needTranslate.forEach((element) => {
+          if (v[element.name]) {
+            try {
+              const options = element.option ? (this.fromGroup[element.option] || []) : []
+              const result = options.find((i) => i.code == v[element.name]);
+              v[element.name] = result ? result.name : "";
+            } catch (error) {
+              v[element.name] = "";
+            }
+          }
+        });
+        return v;
+      },
+      async toMsgSheet(row) {
+        console.log('零件信息', row)
+        try {
+          const tPrams = {
+            partNum: row.originPartNum,
+            pageSize: 10,
+            currPage: 1,
+            userId: this.userInfo.id,
+            "tpPrincepalName": "",
+            "attachmentStatus": "",
+            "dept": "",
+            "tpId": "",
+            "partDosageStatus": "",
+            "partNameZh": "",
+            "projectCarType": "",
+            "status": "",
+            "tpInfoType": "",
+          }
+          const tpInfo = await getTabelData(tPrams)
+          const result = (tpInfo && tpInfo.code === '200' && tpInfo.data && tpInfo.data.tpRecordsSenarioResult) || {}
+          if ( result.totalCount && result.tpRecordList && result.tpRecordList[0] && result.tpRecordList[0].tpPartInfoVO) {
+            const tpInfoData = Object.assign(result.tpRecordList[0].tpPartInfoVO, {
+              tpDisabled: true
+            })
+            console.log('新件信息单', tpInfoData)
+            this.openPartSignPage(tpInfoData)
+          } else {
+            iMessage.error(this.language('WEIZHAODAOXINJIANXINXIDAN', '未找到新件信息单'))
+          }
+        } catch(e) {
+          console.log(e)
+          iMessage.error(this.language('WEIZHAODAOXINJIANXINXIDAN', '未找到新件信息单'))
+        }
+        
         // this.$router.push({name: 'partsign', query: {partNum: row.partNum1}})
       },
       sure(){
@@ -205,6 +272,8 @@ export default {
             }
 
          const data = {
+          //  特指asf aeko审批人的零件清单
+           searchType: '0',
            requirementAekoId,
             current:page.currPage,
             size:page.pageSize,
