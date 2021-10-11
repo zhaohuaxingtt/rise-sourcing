@@ -45,7 +45,7 @@
           <div class="flexRow">
             <span class="openLinkText cursor " @click="onJump360(scope.row)"> {{ scope.row.supplierNameZh }}
               <el-tooltip effect="light" :content="`FRM评级：${scope.row.frm}`" v-if="scope.row.frm">
-                <span>
+                <span v-if="getStatus(scope.row.frm)">
                   <icon symbol class="cursor margin-left8" name="iconzhongyaoxinxitishi" />
                 </span>
               </el-tooltip>
@@ -142,6 +142,10 @@ export default {
     };
   },
   methods: {
+    getStatus(value) {
+      const arr = ['C','CC','CCC']
+      return arr.some(item => item === value)
+    },
     // 获取列表
     unselectRfqBdlPage() {
       this.loading = true
