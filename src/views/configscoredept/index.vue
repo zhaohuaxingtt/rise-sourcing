@@ -171,8 +171,8 @@ export default {
       saveLoading: false,
       deleteLoading: false,
       isAuditOptions: [
-        { key: 1, value: "1", label: "是" },
-        { key: 0, value: "0", label: "否" }
+        { key: 1, value: 1, label: "是" },
+        { key: 0, value: 0, label: "否" }
       ],
       currentRow: null,
       deptDialogVisible: false
