@@ -44,15 +44,15 @@ export const describeTab = [
         key: "LK_AEKOFUJIANMIAOSHU",
         permissionKey:'AEKO_DESCRIBE',
     },
-    // {
-    //     value: 2,
-    //     name: "零件清单",
-    //     url: "/aeko/partslist",
-    //     activePath: "/partslist",
-    //     message: 0,
-    //     key: "LK_AEKO_PARTSLIST",
-    //     permissionKey:'AEKO_DESCRIBE_PARTLIST',
-    // },
+    {
+        value: 2,
+        name: "零件清单",
+        url: "/aeko/partslist",
+        activePath: "/partslist",
+        message: 0,
+        key: "LK_AEKO_PARTSLIST",
+        permissionKey:'AEKO_DESCRIBE_PARTLIST',
+    },
 ]
 
 export const filterRole = function(role = {}){
