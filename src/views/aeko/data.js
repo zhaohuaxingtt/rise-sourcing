@@ -38,8 +38,8 @@ export const describeTab = [
     {
         value: 1,
         name: "AEKO描述",
-        url: "/aeko/stancelist",
-        activePath: "/stancelist",
+        url: "/aeko/describe",
+        activePath: "/describe",
         message: 0,
         key: "LK_AEKOFUJIANMIAOSHU",
         permissionKey:'AEKO_DESCRIBE',

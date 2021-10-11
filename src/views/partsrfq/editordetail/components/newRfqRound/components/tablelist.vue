@@ -4,6 +4,7 @@
       :data='tableData'
       :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
       v-loading='tableLoading'
+      @row-click="handleRowClick"
       @selection-change="handleSelectionChange"
       ref="newRoundTable"
   >
@@ -97,6 +98,9 @@ export default {
         }
       }
       }
+    },
+    handleRowClick(row, column, event) {
+      this.$emit("handleRowClick", row, column, event)
     }
   }
 }

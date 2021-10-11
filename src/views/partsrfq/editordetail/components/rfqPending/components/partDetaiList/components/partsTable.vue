@@ -94,7 +94,6 @@ export default {
         this.parmarsNotHasRfq['linieId'] = this.queryForm.linieId
         this.parmarsNotHasRfq['partProjectType'] = this.queryForm.partProjectType
         this.parmarsNotHasRfq['partNumList'] = this.queryForm.partNumList
-        
         getTabelData(this.parmarsNotHasRfq).then(res => {
           this.tableLoading = false
           this.page.currPage = res.pageNum
