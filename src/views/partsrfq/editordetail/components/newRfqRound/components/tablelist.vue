@@ -85,7 +85,7 @@ export default {
     },
     //勾选逻辑，如果是谈判轮，不管哪个轮次都可以取消，询价轮必须勾选，不管是那个轮次。（Mbdl）
     selectable(row) {
-      if(this.rfqSelectedProjectParts && (this.rfqSelectedProjectParts[0].partProjectType == (partProjTypes.GSLINGJIAN || partProjTypes.DBLINGJIAN))){
+      if(this.rfqSelectedProjectParts && (this.rfqSelectedProjectParts[0].partProjectType == (partProjTypes.GSLINGJIAN || partProjTypes.ZHANGJIALINGJIAN))){
         return true
       }else{
       if(row.isNego) { //谈判轮
