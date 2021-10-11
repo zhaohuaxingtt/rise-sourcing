@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-08 15:34:19
+ * @LastEditTime: 2021-10-11 11:13:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -152,7 +152,7 @@
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
       <template v-slot:header-control>
         <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE|无关相关切换">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
-        <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET|表态重置">{{ language("BIAOTAICHONGZHI", "表态重置") }}</iButton>
+        <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET|表态重置">{{ language("AEKO_YUANLINGJIANHAOCHONGZHI", "原零件号重置") }}</iButton>
         <iButton v-if="!disabled" :loading="declareSendSupplier" @click="sendSupplierPrice"  v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION|发放供应商报价">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
         <iButton v-if="!disabled" disabled @click="goToinvestCarTypePro" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO|指定投资车型项目">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
         <iButton v-if="!disabled" @click="handleExport" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT|导出">
@@ -219,7 +219,7 @@
             <span v-if="scope.row.status !='EMPTY'" class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotationId="scope">
-            <span v-if="scope.row.quotationId" class="link-underline" @click="jumpQuotation(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.quotationId" class="link-underline" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
           </template>
           <template #priceAxis="scope">
             <!-- -disabled -->
