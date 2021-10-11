@@ -8,7 +8,7 @@
     <h2 class="title">
       {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
     </h2>
-    <iNavMvp :list="describeTab" lang  :lev="2" routerPage right></iNavMvp>
+    <iNavMvp :list="describeTab" lang  :lev="2" :query="$route.query || {}" routerPage right></iNavMvp>
     <div class="contain margin-top20">
       <!-- 搜索区域 -->
       <iSearch @sure="sure" @reset="reset">
