@@ -1,138 +1,157 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-11 08:52:22
+ * @LastEditTime: 2021-10-12 08:59:13
  * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
-  <iPage>
+  <div>
     <iCard class="mb-16">
       <p class="title">变动值CBD - 汇总表</p>
       <el-table :data="tabledata" stripe :span-method="spanMethod">
-        <el-table-column label="#" prop="col1" align="center">
-          <template slot-scope="{ row }">
-            <div v-if="row.total" class="center-align">
-              <span>TOTAL</span>
-            </div>
-            <div v-else>
-              <span>{{ row.col1 }}</span>
-            </div>
+        <el-table-column
+          v-for="(item, index) in SummaryTitle"
+          :key="index"
+          :prop="item.prop"
+          :label="item.label"
+          :width="item.width"
+          align="center"
+        >
+          <template v-if="item.children.length > 0">
+            <el-table-column
+              v-for="(child, cindex) in item.children"
+              :key="cindex"
+              :prop="child.prop"
+              :label="child.label"
+              :width="child.width"
+              align="center"
+            ></el-table-column>
           </template>
-        </el-table-column>
-        <el-table-column label="AEKO零件号" prop="col2" align="center">
           <template slot-scope="{ row }">
-            <template v-if="row.total">
-              <div class="end-align">
-                <span>{{ row.total }}</span>
+            <template v-if="item.prop == 'col1'">
+              <div v-if="row.total" class="center-align">
+                <span>TOTAL</span>
+              </div>
+              <div v-else>
+                <span>{{ row.col1 }}</span>
               </div>
             </template>
+            <template v-else-if="item.prop == 'col2'">
+              <template v-if="row.total">
+                <div class="end-align">
+                  <span>{{ row.total }}</span>
+                </div>
+              </template>
+              <template v-else>
+                {{ row.col2 }}
+              </template>
+            </template>
             <template v-else>
-              {{ row.col2 }}
+              {{ row[item.prop] }}
             </template>
           </template>
         </el-table-column>
-        <el-table-column
-          label="类别"
-          prop="col3"
-          align="center"
-          :show-overflow-tooltip="true"
-        ></el-table-column>
-        <el-table-column
-          label="内容"
-          prop="col4"
-          align="center"
-        ></el-table-column>
-        <el-table-column label="原零件" align="center">
-          <el-table-column
-            label="原零件号"
-            prop="col5"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            label="单价"
-            prop="col6"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            label="单位"
-            prop="col7"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            label="用量"
-            prop="col8"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            label="小计"
-            prop="col9"
-            align="center"
-          ></el-table-column>
-        </el-table-column>
-        <el-table-column label="新零件" align="center">
-          <el-table-column
-            label="新零件号"
-            prop="col10"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            label="单价"
-            prop="col11"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            label="单位"
-            prop="col12"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            label="用量"
-            prop="col13"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            label="小计"
-            prop="col14"
-            align="center"
-          ></el-table-column>
-        </el-table-column>
-        <el-table-column
-          label="变动值"
-          prop="col15"
-          align="center"
-        ></el-table-column>
       </el-table>
     </iCard>
     <switchParts />
-    <iTabsList type="card" v-model="defaultTab">
-      <el-tab-pane label="A价变动(含分摊)" name="0">
-        <APriceChange />
+    <iTabsList
+      class="margin-top20"
+      type="card"
+      v-model="currentTab"
+      @tab-click="tabChange"
+    >
+      <el-tab-pane
+        v-for="(tab, $tabIndex) in tabs"
+        :key="$tabIndex"
+        :label="language(tab.key, tab.label)"
+        :name="tab.name"
+        v-permission.dynamic.auto="tab.permissionKey"
+      >
+        <template v-if="tab.name == currentTab">
+          <component
+            :ref="tab.name"
+            :is="component"
+            v-for="(component, $componentIndex) in tab.components"
+            :class="$componentIndex !== 0 ? 'margin-top20' : ''"
+            :key="$componentIndex"
+            :partInfo="partInfo"
+            :basicInfo="basicInfo"
+            :disabled="disabled"
+          />
+        </template>
       </el-tab-pane>
-      <el-tab-pane label="模具投资变动" name="1"> 模具投资变动 </el-tab-pane>
-      <el-tab-pane label="开发费" name="2"> 开发费 </el-tab-pane>
-      <el-tab-pane label="终止费" name="3"> 终止费 </el-tab-pane>
-      <el-tab-pane label="样件费" name="4"> 样件费 </el-tab-pane>
     </iTabsList>
-  </iPage>
+  </div>
 </template>
 
 <script>
-import { iPage, iCard, iTabsList, iTableCustom } from "rise";
-import APriceChange from "./APriceChange.vue";
-import switchParts from "./switchParts.vue";
+import { iCard, iTabsList, iTableCustom } from "rise";
+import switchParts from "./switchParts";
+import aPriceChange from "./aPriceChange";
+import mouldInvestmentChange from "./mouldInvestmentChange";
+import developmentFee from "./developmentFee";
+import damages from "./damages";
+import sampleFee from "./sampleFee";
+import { SummaryTableTitle } from "../data.js";
 export default {
   components: {
-    iPage,
     iCard,
     iTabsList,
     iTableCustom,
-    APriceChange,
     switchParts,
+    aPriceChange,
+    mouldInvestmentChange,
+    developmentFee,
+    damages,
+    sampleFee,
   },
   data() {
     return {
+      SummaryTitle: SummaryTableTitle,
       defaultTab: "0",
+      partInfo: {},
+      basicInfo: {},
+      disabled: true,
+      currentTab: "aPriceChange",
+      tabs: [
+        {
+          label: "A价变动(含分摊)",
+          name: "aPriceChange",
+          key: "AJIABIANDONGHANFENTAN",
+          components: ["aPriceChange"],
+          permissionKey: "AEKO_QUOTATION_CBD_TAB_BIANDONGZHICBD|变动值CBD",
+        },
+        {
+          label: "模具投资变动",
+          name: "mouldInvestmentChange",
+          key: "MUJUTOUZIBIANDONG",
+          components: ["mouldInvestmentChange"],
+          permissionKey:
+            "AEKO_QUOTATION_CBD_TAB_MUJUTOUZIBIANDONG|模具投资变动",
+        },
+        {
+          label: "开发费",
+          name: "developmentFee",
+          key: "KAIFAFEI",
+          components: ["developmentFee"],
+          permissionKey: "AEKO_QUOTATION_CBD_TAB_KAIFAFEI|开发费",
+        },
+        {
+          label: "终⽌费",
+          name: "damages",
+          key: "ZHONGZHIFEI",
+          components: ["damages"],
+          permissionKey: "AEKO_QUOTATION_CBD_TAB_ZHONGZHIFEI|终⽌费",
+        },
+        {
+          label: "样件费",
+          name: "sampleFee",
+          key: "YANGJIANFEI",
+          components: ["sampleFee"],
+          permissionKey: "AEKO_QUOTATION_CBD_TAB_YANGJIANFEI|样件费",
+        },
+      ],
       tabledata: [
         {
           col1: "1",
@@ -218,6 +237,14 @@ export default {
         }
       }
       return [1, 1];
+    },
+
+    // 页签切换
+    tabChange() {
+      this.$nextTick(() => {
+        const component = this.$refs[this.currentTab][0];
+        if (typeof component.init === "function") component.init();
+      });
     },
   },
 };
