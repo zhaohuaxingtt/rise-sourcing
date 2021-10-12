@@ -24,7 +24,7 @@
 import {navList} from '../components/data'
 import AKEOPendingPage from "./AKEOPendingPage"
 import AKEOApprovedPage from "./AKEOApprovedPage";
-import { iTabsList} from 'rise'
+import {iTabsList} from 'rise'
 
 
 export default {
@@ -54,7 +54,8 @@ export default {
       } else if (tab.name == 2) {
         this.currentView = 'AKEOApprovedPage'
       }
-      let selVal={name:this.tab.name}
+      let selVal = {name: this.tab.name}
+      this.$store.dispatch("setOptionAEKOApproveVal", tab.name);
       sessionStorage.setItem('TAEKO-OPTION-SEL-ITEM', JSON.stringify(selVal))
     },
 
