@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-30 12:37:35
+ * @LastEditTime: 2021-10-09 18:50:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -58,7 +58,7 @@ export default {
     // },
     barData: {
       handler (val) {
-        console.log(val);
+
         if (val) {
           this.barDataItem = [];
           this.barxAxis = [];
@@ -93,7 +93,7 @@ export default {
             this.barDataItem.push(itemData);
             this.barxAxis.push(str);
           });
-          console.log(this.legendList)
+         
           this.$nextTick(() => {
             this.initCharts();
           });
@@ -187,7 +187,7 @@ export default {
       this.myChart.setOption(this.option);
       this.myChart.off("click");
       this.myChart.on("click", (params) => {
-        console.log(params);
+        
         let data = {};
         this.barData.detail.forEach((item) => {
           if (item.value === params.value) {
