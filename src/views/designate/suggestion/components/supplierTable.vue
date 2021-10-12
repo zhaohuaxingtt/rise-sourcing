@@ -28,6 +28,7 @@
             </iButton>
           </span>
           <iButton
+            class="margin-left10"
             @click="showMouldVisibal"
           >
             {{ language("MOJUYUSUANGUANLI","模具预算管理") }}

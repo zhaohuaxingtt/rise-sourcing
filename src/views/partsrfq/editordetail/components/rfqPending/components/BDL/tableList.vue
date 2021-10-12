@@ -127,6 +127,7 @@
 			}
 		},
 		methods: {
+			//评级
 			getStatus(value) {
 				const arr = ['CCC', 'CC', 'C']
 				return arr.some(item => item === value)

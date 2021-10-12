@@ -27,7 +27,7 @@ export const rfqListTitle = [
 ]
 
 export const partsListTitle = [
-  {props:'fsnrGsnrNum',name:'FSNR/GSNR/SPNR', key: "FSGSSP", tooltip: true, width: 130},
+  {props:'fsnrGsnrNum',name:'FS/GS/SP No.', key: "FSGSSP", tooltip: true, width: 130},
   {props:'rfqId',name:'RFQ号', key: "RFQHAO", tooltip: true},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
   {props:'partNameZh',name:'零件名（中）', key: "LINGJIANMING_ZH", tooltip: true, width: 120},
