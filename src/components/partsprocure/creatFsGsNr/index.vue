@@ -4,7 +4,7 @@
 			{{ language('partsprocure.PARTSPROCUREGENERATEFSGSNR','生成零件采购项目号') }}
 		</iButton>
 		<!-- 单条插入RFQ表格 -->
-		<iDialog :title="language('LK_RFQLIST','RFQ列表')" :visible.sync="visible">
+		<iDialog :title="language('LK_RFQLIST','RFQ列表')" :visible.sync="visible" style="background:yellow">
 			<div class="flex-align-center add">
 				<iButton @click="addRfq">{{ language('LK_TIANJIA','添加') }}</iButton>
 			</div>
@@ -64,7 +64,7 @@
 								tip=tip+res.fsnrGsnrNum+','
 							})
 							tip=tip+this.language('LK_SHIFOUZUHEXINJIANRFQ','是否组合新建RFQ')
-							iMessageBox(tip,'',{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(val=>{
+							iMessageBox(tip,'',{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消'),dangerouslyUseHTMLString: true }).then(val=>{
 								insertRfq({ rfqPartDTOList: res.data.canJoinProjectList.map(r=>{return {...r,...{purchaseProjectId:r.id}}})}).then((res) => {
 									if (res.data && res.data.rfqId) {
 										iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
@@ -75,7 +75,7 @@
 							})	
 						}else if(res.data.canJoinRfqList){
 							// 单条插入RFQ
-							iMessageBox(this.language('LK_SHIFOUJIARUYIYOURFQ','是否加入已有RFQ'),'',{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(val=>{
+							iMessageBox(this.language('LK_SHIFOUJIARUYIYOURFQ','是否加入已有RFQ'),'',{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') ,dangerouslyUseHTMLString: true}).then(val=>{
 								this.visible=true
 								this.tableListData=res.data.canJoinRfqList
 								this.rfqPartDTOList = res.data.projectList.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) 
@@ -145,5 +145,8 @@
 	}
 	.placeholder{
 		height: 30px;
+	}
+	::v-deep .el-message-box__wrapper .el-message-box__message p{
+  		word-break: break-all !important;  
 	}
 </style>
