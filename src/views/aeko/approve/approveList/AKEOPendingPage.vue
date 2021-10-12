@@ -78,6 +78,8 @@
       <div class="editControl floatright margin-bottom20">
         <i-button @click="batchApproval"> {{ language('LK_PILIANGSHENPI', '批量审批') }}</i-button>
         <i-button @click="approval"> {{ language('SHENPI', '审批') }}</i-button>
+        <i-button @click="transfer"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
+
       </div>
       <!--表格展示区-->
       <tablelist
@@ -184,6 +186,7 @@
       </div>
     </i-card>
 
+    <AEKOTransferDialog v-model="transferDialogVal" @confirmTransfer="confirmTransfer"/>
   </div>
 </template>
 
@@ -195,11 +198,13 @@ import {pageMixins} from '@/utils/pageMixins'
 import {pendingApprovalList} from "@/api/aeko/approve";
 import {searchLinie} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
+import AEKOTransferDialog from "./components/AEKOTransferDialog";
 
 export default {
   name: "AKEOPendingPage",
   mixins: [pageMixins],
   components: {
+    AEKOTransferDialog,
     iSearch,
     iInput,
     iCard,
@@ -233,6 +238,7 @@ export default {
       loading: false,
       buyerUsers: [],//专业采购员
       options: [],
+      transferDialogVal: false
 
     }
 
@@ -283,7 +289,7 @@ export default {
     },
     //查询
     queryPendingAKEOForm() {
-      if(this.checkMinCost()&&this.checkMaxCost()){
+      if (this.checkMinCost() && this.checkMaxCost()) {
         this.page.currPage = 1
         this.queryAkeoForm.size = this.page.pageSize
         this.loadPendingAKEOList()
@@ -335,6 +341,15 @@ export default {
         })
       }
     },
+    //转派
+    transfer() {
+      //this.$message.error('您已完成当前AEKO行的审批，不可进行转派')
+
+      this.transferDialogVal = true
+    },
+    confirmTransfer(selBuyerId){
+
+    },
     //批量批准
     batchApproval() {
       if (this.selectPendingList.length <= 0) {
@@ -344,7 +359,7 @@ export default {
     },
     //审批
     approval() {
-      let transmitObj={option:1,aekoApprovalDetails:{aekoNum:'123456'}}
+      let transmitObj = {option: 1, aekoApprovalDetails: {aekoNum: '123456'}}
       sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(transmitObj))
       let routeData = this.$router.resolve({
         path: `/aeko/AEKOApprovalDetails`,
