@@ -188,22 +188,22 @@ export default {
                 decoration: 'none',
             },
             formatter: function(params) {
-              const wholePackage = self.data && self.data.wholePackage
+              const wholePackage = self.data && Number(self.data.wholePackage) || 0
               const bestGroupSupplier = self.data.bestGroupSupplier
               // const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2] || 0
-              const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[1] || 0
+              const bestGroupSupplierTotal = self.data && Number(self.data.minPartSupplierTToTotal)|| 0
               const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
               const weightSupplierTotal = self.data.weightSupplierTotal || 0
               let tpl = ''
 
               // toolTip Best TTO \n for Whole Package
-              params.dataIndex === 0 && (tpl = `
+              params.name === quota[0] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Best TTO <br> for Whole Package: <span class="value">${params.data}</span></p>
               </div>`)
 
               // toolTip Best TTO \n by Group
-              params.dataIndex === 1 && (tpl = `
+              params.name === quota[1] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage - bestGroupSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
@@ -211,13 +211,13 @@ export default {
               </div>`)
 
               // toolTip Best TTO \n by Part
-              params.dataIndex === 2 && (tpl = `
+              params.name === quota[2] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage - minPartSupplierTToTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
               </div>`)
-              params.dataIndex === 3 && (tpl = `
+              params.name === quota[3] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage-weightSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
@@ -227,6 +227,7 @@ export default {
                   share: ${Number(params.data/weightSupplierTotal*100).toFixed(2)}%
                 </p>
               </div>`)
+              console.log(`params`, params)
 
               return `
               <div class="toolTipBox" style="${!params.data ? 'display: none' : ''}">
