@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-25 16:06:28
- * @LastEditTime: 2021-09-28 15:41:34
+ * @LastEditTime: 2021-10-09 18:50:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\detailDialog.vue
@@ -53,14 +53,14 @@ export default {
   watch: {
     detailsData: {
       handler (val) {
-        console.log(val)
+
       }
     },
     detailMotorName (val) {
-      console.log(val)
+     
     },
     detailFactory (val) {
-      console.log(val)
+      
     }
   },
   data () {
@@ -70,7 +70,7 @@ export default {
   },
 
   created () {
-    console.log(this.confirmTableHead, "confirmTableHead")
+  
   },
   methods: {
     clearDiolog () {

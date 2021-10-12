@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-09-30 14:30:52
+ * @LastEditTime: 2021-10-09 19:28:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -288,7 +288,7 @@
                                 style="width:14px;height:14px;margin-left:10px"></icon>
                         </el-tooltip>
                       </div>
-                      <span @click="computeModal(item)">{{ i.ebr }}</span>
+                      <span @click="computeModal(item,ind)">{{ i.ebr }}</span>
                     </div>
                   </div>
                 </div>
@@ -986,7 +986,6 @@ export default {
     },
     //计算车型弹窗
     computeModal (val, index) {
-      console.log(index);
       this.modalVisible = true;
       let params = {
         engine: val.detail[0].engine,
@@ -998,8 +997,12 @@ export default {
       queryCal(params).then((res) => {
         if (res.code === "200") {
           this.computeModalData = res.data;
-          if (index) {
-            this.index = index;
+          if (index !== undefined && index === 0) {
+            this.index = index + 1;
+          } else if (index !== undefined) {
+            this.index = index + 1
+          } else {
+            this.index = 0
           }
         }
       });
@@ -1107,7 +1110,9 @@ export default {
       }
     },
     selectData (val, index) {
-      console.log(val, index);
+      console.log(this.firstBarData)
+      console.log(this.barData)
+      console.log(index)
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -1116,9 +1121,9 @@ export default {
             priceType: "latestPrice",
             isTargetMotor: true,
             priceDate: "",
-            engine: !index && index !== 0 ? val[0].engine : "",
-            position: !index && index !== 0 ? val[0].position : "",
-            transmission: !index && index !== 0 ? val[0].transmission : "",
+            engine: index === 0 ? val[0].engine : this.firstBarData.detail[0].engine,
+            position: index === 0 ? val[0].position : this.firstBarData.detail[0].position,
+            transmission: index === 0 ? val[0].transmission : this.firstBarData.detail[0].transmission
           },
         ],
         categoryId: this.categoryId,
@@ -1138,19 +1143,22 @@ export default {
           priceType: item.priceType,
           priceDate: item.priceDate,
           isTargetMotor: false,
-          engine: "",
-          position: "",
-          transmission: "",
+          engine: item.detail[0].engine || "",
+          position: item.detail[0].position || "",
+          transmission: item.detail[0].transmission || "",
         };
         params.info.push(obj);
       });
-      console.log(params);
-      params.info[index + 1].engine = val[0].engine;
-      params.info[index + 1].position = val[0].position;
-      params.info[index + 1].transmission = val[0].transmission;
+      console.log(params)
+      if (index !== 0) {
+        params.info[index].engine = val[0].engine;
+        params.info[index].position = val[0].position;
+        params.info[index].transmission = val[0].transmission;
+      }
+      console.log(params)
       this.getHistogram(params);
     },
-     delItem (data) {
+    delItem (data) {
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -1180,7 +1188,7 @@ export default {
         params.isBindingRfq = false;
       }
       this.delItemFlag = true;
-       this.getHistogram(params);
+      this.getHistogram(params);
       // this.getMekTable();
     },
 

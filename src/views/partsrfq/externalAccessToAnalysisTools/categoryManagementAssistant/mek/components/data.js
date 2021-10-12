@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-06 15:49:37
- * @LastEditTime: 2021-08-26 19:44:57
+ * @LastEditTime: 2021-10-09 19:30:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\data.js
@@ -11,8 +11,8 @@ export const confirmTableHead = [
   { props: 'index', name: '#', key: '#', tooltip: false, width: 40 },
   {
     props: 'engine',
-    name: '引擎-升数',
-    key: 'MEK_YINQINGSHENGSHU',
+    name: '动力',
+    key: 'DONGLI',
     tooltip: false,
   },
   // {
