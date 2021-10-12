@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-07 09:35:37
- * @LastEditTime: 2021-07-15 14:29:49
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-12 19:22:31
+ * @LastEditors: Hao,Jiang
  * @Description: 扩产能天，周，年表格
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/capacity.vue
 -->
@@ -31,6 +31,12 @@
           width="150"
           prop="name"
           :label="''">
+        </el-table-column>
+        <el-table-column
+          align='center'
+          width="150"
+          prop="date"
+          :label="'Date'">
         </el-table-column>
         <el-table-column
           align='center'
@@ -108,6 +114,7 @@ export default {
     data(data) {
       if (data && data.length) {
         this.dataList.map((o, index) => {
+          Vue.set(o, 'date', data[index] && data[index].date)
           Vue.set(o, 'capacityNormDay', data[index] && data[index].capacityNormDay)
           Vue.set(o, 'capacityMaxDay', data[index] && data[index].capacityMaxDay)
           Vue.set(o, 'capacityNormWeek', data[index] && data[index].capacityNormWeek)

@@ -89,7 +89,7 @@ export default {
         this.tableLoading = true
         this.parmarsNotHasRfq['size'] = this.page.pageSize
         this.parmarsNotHasRfq['current'] = this.page.currPage
-        this.parmarsNotHasRfq['status'] = '11'
+        this.parmarsNotHasRfq['status'] = 'NOT_IN_RFQ'
         this.parmarsNotHasRfq['buyerId'] = this.queryForm.buyerId
         this.parmarsNotHasRfq['linieId'] = this.queryForm.linieId
         this.parmarsNotHasRfq['partProjectType'] = this.queryForm.partProjectType
