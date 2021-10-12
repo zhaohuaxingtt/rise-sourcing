@@ -56,3 +56,12 @@ export function pendingApprovalList(params){
       }
   )
 }
+//审批单
+export  function queryAKEOApprovalForm(params){
+  return requst({
+        url: '/aeko/auditForm',
+        method: 'GET',
+        params:params
+      }
+  )
+}
