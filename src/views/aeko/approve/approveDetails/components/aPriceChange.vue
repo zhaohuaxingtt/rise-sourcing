@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-11 19:01:06
+ * @LastEditTime: 2021-10-12 11:24:20
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -69,12 +69,13 @@
       <hr class="divider" />
       <div>
         <p class="title">2.2 制造成本</p>
-        <el-table :data="manufacturingCostTableData" stripe :span-method="spanMethod">
+        <el-table :data="manufacturingCostTableData" stripe :span-method="spanMethod" :row-class-name="originRowClass">
           <el-table-column
             v-for="(item, index) in manufacturingCostTableTitle"
             :key="index"
             :prop="item.prop"
-            :label="item.label"
+            :label="language(item.labelKey,item.label)"
+            :render-header="item.renderHeader"
             :width="item.width"
             :min-width="minWidth"
             align="center"
@@ -85,19 +86,36 @@
                 :key="cindex"
                 :prop="child.prop"
                 :label="child.label"
+                :render-header="child.renderHeader"
                 :width="child.width"
                 align="center"
               >
+                  
                 <template slot-scope="{ row }">
-                  <template v-if="child.isNew">
+                  <template v-if="child.prop=='col2'">
+                    <div class="manufacturingMethodColumn">
+                      <icon
+                          symbol
+                          v-if="row.isNew"
+                          class="iconFont"
+                          name="iconxinlingjianCBD"
+                        />
+                      <div>
+                        <span>{{row.col2}}</span>
+                        <!-- <iInput v-if="(row.partCbdType == 1 || row.partCbdType == 2) && !disabled" class="input-center" v-model="row.manufacturingMethod" :class="{ changeClass: originMap[row.frontOriginProductionId ? row.frontOriginProductionId : row.originProductionId] ? (row.manufacturingMethod !== originMap[row.frontOriginProductionId ? row.frontOriginProductionId : row.originProductionId].manufacturingMethod) : false }"></iInput>
+                        <div v-else :class="{ changeClass: originMap[row.frontOriginProductionId ? row.frontOriginProductionId : row.originProductionId] ? (row.manufacturingMethod !== originMap[row.frontOriginProductionId ? row.frontOriginProductionId : row.originProductionId].manufacturingMethod) : false }">{{ row.manufacturingMethod }}</div> -->
+                      </div>
+                    </div>
+                  </template>
+                  <!-- <template v-if="child.isNew">
                     <icon
                       symbol
                       v-if="row.isNew"
                       class="icon"
                       name="iconxinlingjianCBD"
                     />
-                  </template>
-                  <template>{{ row[child.prop] }}</template>
+                  </template> -->
+                  <template v-else>{{ row[child.prop] }}</template>
                 </template>
               </el-table-column>
             </template>
@@ -237,7 +255,7 @@
 
 <script>
 import { iCard, iText, iTableCustom, icon } from "rise";
-import { changesValueCBD, partsCostTableTitle, manufacturingCostTableTitle } from "../data.js";
+import { changesValueCBD, partsCostTableTitle, manufacturingCostTableTitle, originRowClass } from "../data.js";
 export default {
   components: {
     iCard,
@@ -373,6 +391,9 @@ export default {
       ],
     };
   },
+  methods:{
+    originRowClass,
+  }
 };
 </script>
 
@@ -437,4 +458,25 @@ export default {
     }
   }
 }
+
+    .manufacturingMethodColumn {
+      position: relative;
+
+      ::v-deep .iconFont {
+        width: 30px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(0, -50%);
+
+        svg {
+          vertical-align: middle;
+          float: left;
+        }
+      }
+
+      & > div:not(.iconFont) {
+        padding-left: 40px;
+      }
+    }
 </style>
