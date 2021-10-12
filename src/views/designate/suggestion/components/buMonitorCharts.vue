@@ -411,7 +411,7 @@ export default {
               const fz = Number(params.data)
               const fm = Number(minPartSupplierTToTotal)
               const percent =parseFloat(fz/fm*100).toFixed(2)
-              return `${params.data}\n{p|${percent}%}`
+              return `${Number(params.data).toFixed(2)}\n{p|${percent}%}`
             },
             rich,
             interval: 0
@@ -464,7 +464,7 @@ export default {
               const fm = Number(weightSupplierTotal)
               const percent =(index === weightSupplier.length - 1) ? (100 - weightPercent).toFixed(2) : (fz/fm*100).toFixed(2)
               weightPercent += Number(percent)
-              return percent < 10 ?  '' : `${params.data}\n{p|${percent}%}`
+              return percent < 10 ?  '' : `${Number(params.data).toFixed(2)}\n{p|${percent}%}`
             },
             rich,
             interval: 0
