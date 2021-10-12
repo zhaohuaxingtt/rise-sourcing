@@ -299,7 +299,9 @@ export default {
       const self = this
       const bgColor = '#94c8fc'
       const textStyle = {
-        color: '#000000',
+        color: '#fff',
+        textShadowBlur: 2,
+        textShadowColor: 'rgba(0, 0, 0, 1)',
         fontSize: '10'
       }
       const series = []
@@ -392,7 +394,6 @@ export default {
       // 单个零件最小
       const minPartSupplierTToArray = self.data.minPartSupplierTToArray || []
       const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
-      let partPercent = 0
   
       minPartSupplierTToArray.forEach((item, index) => {
         series.push({
@@ -409,9 +410,8 @@ export default {
             formatter: function(params) {
               const fz = Number(params.data)
               const fm = Number(minPartSupplierTToTotal)
-              const percent =(item.index === minPartSupplierTToArray.length - 1) ? (100 - partPercent).toFixed(2) : parseFloat(fz/fm*100).toFixed(2)
-              partPercent += Number(percent)
-              return `${params.data}\n{p|${percent}%}`
+              const percent =parseFloat(fz/fm*100).toFixed(2)
+              return `${Number(params.data).toFixed(2)}\n{p|${percent}%}`
             },
             rich,
             interval: 0
@@ -464,7 +464,7 @@ export default {
               const fm = Number(weightSupplierTotal)
               const percent =(index === weightSupplier.length - 1) ? (100 - weightPercent).toFixed(2) : (fz/fm*100).toFixed(2)
               weightPercent += Number(percent)
-              return percent < 10 ?  '' : `${params.data}\n{p|${percent}%}`
+              return percent < 10 ?  '' : `${Number(params.data).toFixed(2)}\n{p|${percent}%}`
             },
             rich,
             interval: 0

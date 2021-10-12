@@ -1,12 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 20:16:45
- * @LastEditors: 舒杰
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\store\module\rfq.js
  */
 const state = {
-  pendingPartsList: [],
+  pendingPartsList: [], //已经加入rfq里面的零件采购项目
   entryStatus: parseInt(window.sessionStorage.getItem('entryStatus')) || 0, //0:外部，1：内部
   rfqId: window.sessionStorage.getItem('rfqId') || '',
   SchemeId: window.sessionStorage.getItem('SchemeId') || '',
