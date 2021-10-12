@@ -394,7 +394,6 @@ export default {
       // 单个零件最小
       const minPartSupplierTToArray = self.data.minPartSupplierTToArray || []
       const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
-      let partPercent = 0
   
       minPartSupplierTToArray.forEach((item, index) => {
         series.push({
@@ -411,8 +410,7 @@ export default {
             formatter: function(params) {
               const fz = Number(params.data)
               const fm = Number(minPartSupplierTToTotal)
-              const percent =(item.index === minPartSupplierTToArray.length - 1) ? (100 - partPercent).toFixed(2) : parseFloat(fz/fm*100).toFixed(2)
-              partPercent += Number(percent)
+              const percent =parseFloat(fz/fm*100).toFixed(2)
               return `${params.data}\n{p|${percent}%}`
             },
             rich,
