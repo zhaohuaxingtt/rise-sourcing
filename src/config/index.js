@@ -121,7 +121,7 @@ const enums = {
   },
   "PURCHASE_PROJECT_STATE_ENUM": { // 零件采购项目状态
     "NO_PROJECT_NUM": "10", // 无采购项目编号
-    "NO_RFQ": "11", // 未加入RFQ
+    "NO_RFQ": "NOT_IN_RFQ", // 未加入RFQ
     "HAS_RFQ": "12", // 已加入RFQ
     "APPLICATION_DESIGNAT": "13", // 已申请定点
     "FROZEN": "14", // 已冻结

@@ -107,7 +107,7 @@ export default {
     }
 
     await this.getTableList()
-    this.$refs.partsTable.getTableList()
+    this.$refs.partsTable && this.$refs.partsTable.getTableList() 
   },
   inject: ['getbaseInfoData', 'getDisabled'],
   computed: {
@@ -186,7 +186,7 @@ export default {
           //this.$refs.applyPrice.getTableList()
           this.queryForm = { ...this.queryForm, partNumList: this.partNumList }
           this.$refs.partsTable.page.currPage = 1
-          this.$refs.partsTable.getTableList()
+          this.$refs.partsTable && this.$refs.partsTable.getTableList()
         } else {
           this.resultMessage(res)
         }
@@ -201,6 +201,8 @@ export default {
         this.parmarsHasRfq['current'] = this.page.currPage
         this.parmarsHasRfq['rfqId'] = this.rfqId || ''
         return getTabelData(this.parmarsHasRfq).then(res => {
+                    console.log(res,'partDetailList');
+
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
