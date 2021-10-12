@@ -299,7 +299,9 @@ export default {
       const self = this
       const bgColor = '#94c8fc'
       const textStyle = {
-        color: '#000000',
+        color: '#fff',
+        textShadowBlur: 2,
+        textShadowColor: 'rgba(0, 0, 0, 1)',
         fontSize: '10'
       }
       const series = []
