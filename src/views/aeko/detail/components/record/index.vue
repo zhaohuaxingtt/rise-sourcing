@@ -224,7 +224,7 @@ export default {
       }
       this.$confirm(this.language('submitSure','您确定要执行提交操作吗？')).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
-          submitForApproval(parmas[0]).then(res => {
+          submitForApproval(parmas).then(res => {
             if (res.code === '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
               this.getFetchData()
