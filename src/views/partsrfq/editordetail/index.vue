@@ -210,6 +210,7 @@ export default {
     this.getBaseInfo()
     this.getTableList()
     this.getRfqInfo()
+    this.getPartTableList = this.$store.state.rfq.partfunc
   },
   provide: function(){
     return {
@@ -269,7 +270,9 @@ export default {
           const resList = res.data
           if (resList.length > 0) {
             this.baseInfo = res.data[0]
-            this.getTableList()
+            this.$store.state.rfq.partfunc
+            if(typeof this.$store.state.rfq.partfunc === "function")
+              this.getPartTableList()
           } else {
             this.baseInfo = ''
           }

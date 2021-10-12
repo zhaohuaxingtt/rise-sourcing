@@ -201,13 +201,10 @@ export default {
         this.parmarsHasRfq['current'] = this.page.currPage
         this.parmarsHasRfq['rfqId'] = this.rfqId || ''
         return getTabelData(this.parmarsHasRfq).then(res => {
-                    console.log(res,'partDetailList');
-
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
           this.tableListData = Array.isArray(res.data) ? res.data : []
-          
           if (this.tableListData.length) {
             this.queryForm = {
               buyerId: this.tableListData[0].buyerId,
