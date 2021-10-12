@@ -12,7 +12,7 @@
         <div class="floatright title-button-box">
           <template>
             <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">{{ language('LK_BAOCUN','保存') }}</iButton>
-            <iButton v-if="roundType === '00'" @click="updateRfqStatus('06')" :disabled="!saveStaus"
+            <iButton v-if="roundType === 'commonRound'" @click="updateRfqStatus('06')" :disabled="!saveStaus"
                      v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">{{ language('LK_FASONGXUNJIA','发送询价') }}
             </iButton>
           </template>
@@ -30,13 +30,13 @@
             <el-option v-for="items in roundTypeOptions" :key='items.code' :value='items.code' :label="items.name" :disabled="items.disabled"/>
           </i-select>
         </iFormItem>
-        <iFormItem :label="language('LK_BENLUNBAOJIAQIZHISHIJIAN','本轮报价起止时间')" name="test" v-if="['00', '01'].includes(roundType)">
+        <iFormItem :label="language('LK_BENLUNBAOJIAQIZHISHIJIAN','本轮报价起止时间')" name="test" v-if="['commonRound', 'manualBidding'].includes(roundType)">
           <div class="flex">
             <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="startTime" value-format="yyyy-MM-dd"
                             v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME" disabled></iDatePicker>
           </div>
         </iFormItem>
-        <iFormItem label="" name="test" v-if="['00', '01'].includes(roundType)">
+        <iFormItem label="" name="test" v-if="['commonRound', 'manualBidding'].includes(roundType)">
           <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="endTime" value-format="yyyy-MM-dd"
                           v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"
                           :picker-options="{
@@ -49,7 +49,7 @@
       </iFormGroup>
       <tablelist
           ref="multipleTable"
-          v-if="roundType === '00'"
+          v-if="roundType === 'commonRound'"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -186,7 +186,7 @@ export default {
     async getRoundTypeOptions() {
       const res = await findBySearches('04')
       this.roundTypeOptions = res.data.map(item => {
-        item.disabled = item.code === '02'
+        item.disabled = item.code === 'autoBidding'
         return item
       })
       this.roundType = this.roundTypeOptions[0].code
@@ -196,7 +196,7 @@ export default {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZERENWU','抱歉，您当前还未选择任务！'));
       }
       //online-bidding逻辑：如果当前rfq中的零件采购项目为DB零件 && 货币类型不一样，无法选择在线竞价-英式
-      if(this.rfqSelectedProjectParts && this.rfqSelectedProjectParts.some(r=>r.currencyCode !== this.rfqSelectedProjectParts[0].currencyCode) && this.roundType == '04' && this.rfqSelectedProjectParts.every(r=>this.dbParts.includes(r.partProjectType))){
+      if(this.rfqSelectedProjectParts && this.rfqSelectedProjectParts.some(r=>r.currencyCode !== this.rfqSelectedProjectParts[0].currencyCode) && this.roundType == 'biddingRound' && this.rfqSelectedProjectParts.every(r=>this.dbParts.includes(r.partProjectType))){
         return iMessage.warn(this.language('DBLJQTYZXHBFQZXJ','DB业务请统一货币再发起在线竞价'))
       }
       const id = this.$route.query.id
@@ -241,7 +241,7 @@ export default {
       this.$emit('refreshBaseInfo')
     },
     initTimeData() {
-      if (this.roundType === '00') {
+      if (this.roundType === 'commonRound') {
         // eslint-disable-next-line no-undef
         this.startTime = moment().format('YYYY-MM-DD')
         if (this.roundsPhase === '01') {
@@ -255,9 +255,9 @@ export default {
     },
     handleSelectChange(val) {
       this.setTableRowSelected()
-      if (val === '00') {
+      if (val === 'commonRound') {
         this.initTimeData()
-      } else if (val === '01') {
+      } else if (val === 'manualBidding') {
         this.endTime = ''
       }
     },
