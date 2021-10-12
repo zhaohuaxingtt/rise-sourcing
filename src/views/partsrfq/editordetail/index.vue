@@ -202,7 +202,8 @@ export default {
       rfqloading:false,
       endingloading:false,
       transferlaoding:false,
-      disabled: true
+      disabled: true,
+      linieUserId:''
     }
   },
   created() {
@@ -231,7 +232,10 @@ export default {
         this.confirmTableLoading = true
         this.parmarsHasRfq['size'] = this.pageSize || 10
         this.parmarsHasRfq['current'] = this.currPage || 1
-        this.parmarsHasRfq['rfqId'] = this.$route.query.id
+        // this.parmarsHasRfq['rfqId'] = this.$route.query.id
+        this.parmarsHasRfq['status'] = 'NOT_IN_RFQ'
+        this.parmarsHasRfq['linieId'] = this.linieUserId
+        this.parmarsHasRfq['buyerId'] = this.baseInfo.buyerId
         getTabelData(this.parmarsHasRfq).then(res => {
           this.$store.dispatch('setPendingPartsList', res.data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}))
         }).catch(() => this.confirmTableLoading = false)
@@ -265,6 +269,7 @@ export default {
           const resList = res.data
           if (resList.length > 0) {
             this.baseInfo = res.data[0]
+            this.getTableList()
           } else {
             this.baseInfo = ''
           }
@@ -377,6 +382,7 @@ export default {
             ...params
         }
         const res = await addRfq(req)
+        this.linieUserId = res.data.linieUserId
         this.resultMessage(res)
         this.$router.push({
           path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${res.data.rfqId}`
