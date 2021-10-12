@@ -107,7 +107,7 @@ export default {
     }
 
     await this.getTableList()
-    this.$refs.partsTable.getTableList()
+    this.$refs.partsTable && this.$refs.partsTable.getTableList() 
   },
   inject: ['getbaseInfoData', 'getDisabled'],
   computed: {
@@ -186,7 +186,7 @@ export default {
           //this.$refs.applyPrice.getTableList()
           this.queryForm = { ...this.queryForm, partNumList: this.partNumList }
           this.$refs.partsTable.page.currPage = 1
-          this.$refs.partsTable.getTableList()
+          this.$refs.partsTable && this.$refs.partsTable.getTableList()
         } else {
           this.resultMessage(res)
         }
@@ -205,7 +205,6 @@ export default {
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
           this.tableListData = Array.isArray(res.data) ? res.data : []
-          
           if (this.tableListData.length) {
             this.queryForm = {
               buyerId: this.tableListData[0].buyerId,

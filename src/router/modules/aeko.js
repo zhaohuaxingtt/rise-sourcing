@@ -137,8 +137,9 @@ export default [
         redirect: "/aeko/AEKOApprovalDetails/Approvalform",
         children: [
           {
-            path: "Approvalform",
+            path: 'Approvalform',
             name: "Approvalform",
+            prop:true,
             meta: {
               title: "AEKO-审批单",
             },

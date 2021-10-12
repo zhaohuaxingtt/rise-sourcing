@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: YoHo
- * @LastEditTime: 2021-10-12 19:46:38
+ * @LastEditTime: 2021-10-12 21:35:54
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -56,9 +56,16 @@ export function pendingApprovalList(params) {
   }
   )
 }
-
-// 查询CBD汇总表/aeko/get/alterationCbdSummarySnapshot/{workFlowId}
-
+//审批单
+export  function queryAKEOApprovalForm(params){
+  return requst({
+        url: '/aeko/auditForm',
+        method: 'GET',
+        params:params
+      }
+  )
+}
+// 查询CBD汇总表
 export function alterationCbdSummary({ workFlowId }) {
   return requst({
     url: `/aeko/get/alterationCbdSummary/${workFlowId}`,
