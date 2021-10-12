@@ -198,7 +198,7 @@ export function setRaterAndCoordinatorByDepartmentId(params) {
 // 推送评分任务
 export function sendTaskForRating(params) {
     return requst({
-        url: '/supplier/sendRfqRatingTask',
+        url: '/supplier/sendTaskForRating',
         method: 'POST',
         data: params
     })
