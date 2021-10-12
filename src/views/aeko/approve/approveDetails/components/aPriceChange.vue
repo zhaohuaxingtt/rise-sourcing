@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-12 10:56:59
+ * @LastEditTime: 2021-10-12 11:24:20
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -86,6 +86,7 @@
                 :key="cindex"
                 :prop="child.prop"
                 :label="child.label"
+                :render-header="child.renderHeader"
                 :width="child.width"
                 align="center"
               >
