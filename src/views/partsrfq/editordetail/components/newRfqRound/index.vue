@@ -59,7 +59,7 @@
           :select-props="['cbdTemplateId']"
           :round-type="roundType"
       ></tablelist>
-      <!-- <tablelist
+      <tablelist
           ref="multipleTable"
           v-else
           :tableData="tableListData"
@@ -67,7 +67,8 @@
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
-      ></tablelist> -->
+          @handleRowClick="handleRowClick"
+      ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
