@@ -28,13 +28,13 @@
         <div class="c-right">
           <iCard class="c-card-r" v-loading="chartLoading">
             <div class="right-head">
-              <div class="right-title">年度计划</div>
+              <div class="right-title">{{ $t('LK_NIANDUJIHUA') }}</div>
               <div class="right-sildBox">
-                <div>系统计算上半年</div>
-                <div>系统计算下半年</div>
-                <div>系统计算Backlog</div>
-                <div>⼿⼯调整</div>
-                <div>⼿⼯调整Risk</div>
+                <div>{{ $t('LK_XITONGJIHUASHANGBANNIAN') }}</div>
+                <div>{{ $t('LK_XITONGJIHUAXIABANNIAN') }}</div>
+                <div>{{ $t('LK_XITONGJISUANBACKLOG') }}</div>
+                <div>{{ $t('LK_SHOUGONGTIAOZHENG') }}</div>
+                <div>{{ $t('LK_SHOUGONGTIAOZHENGRISK') }}</div>
               </div>
             </div>
             <div id="echarts"></div>
