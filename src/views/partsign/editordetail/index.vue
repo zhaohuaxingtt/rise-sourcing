@@ -26,17 +26,17 @@
     </iCard>
     <!-- 零件详情tab页 -->
     <div class="iTabs">
-      <iTabs-list type="card" class="margin-top20" >
-        <el-tab-pane lazy :label="language('LK_XINXIDANXIANGQING','信息单详情')" v-permission="PARTSIGN_EDITORDETAIL_INFORMATIONSHEETDETAILS">
+      <iTabs-list type="card" class="margin-top20" value="2">
+        <el-tab-pane lazy :label="language('LK_XINXIDANXIANGQING','信息单详情')" name="1" v-permission="PARTSIGN_EDITORDETAIL_INFORMATIONSHEETDETAILS">
           <iCard>
             <partInfo :title="item" :data="partDetails" v-for="(item,index) in partDetailTitle" :key="index"></partInfo>
           </iCard>
         </el-tab-pane>
-        <el-tab-pane lazy :label="language('LK_XUNJIAZILIAO','询价资料')" v-permission="PARTSIGN_EDITORDETAIL_INQUIRYINFORMATION">
+        <el-tab-pane lazy :label="language('LK_XUNJIAZILIAO','询价资料')" name="2" v-permission="PARTSIGN_EDITORDETAIL_INQUIRYINFORMATION">
           <enquiryUnconfirmed ref="enquiryUnconfirmed" class="enquiryUnconfirmed" :data="partDetails" @updateVersion="updateEnquiryVersion" />
           <enquiry ref="enquiry" class="enquiry" :data="partDetails" />
         </el-tab-pane>
-        <el-tab-pane lazy :label="language('LK_MEICHEYONGLIANG','每车用量')" v-permission="PARTSIGN_EDITORDETAIL_USAGEPERVEHICLE">
+        <el-tab-pane lazy :label="language('LK_MEICHEYONGLIANG','每车用量')" name="3" v-permission="PARTSIGN_EDITORDETAIL_USAGEPERVEHICLE">
           <volumeUnconfirmed ref="volumeUnconfirmed" class="volumeUnconfirmed" :data="partDetails" @updateVersion="updateVolumeVersion" />
           <volume ref="volume" class="volume" :data="partDetails" />
         </el-tab-pane>
