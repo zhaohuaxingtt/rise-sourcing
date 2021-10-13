@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-10-13 15:18:18
+ * @LastEditTime: 2021-10-13 16:38:58
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -117,15 +117,6 @@ export default [
             component: () => import("@/views/aeko/approve/approveList"),
           },
           {
-            path: "explainattach",
-            name: "aekoApprove-list",
-            meta: {
-              title: "AEKO-解释附件",
-              subMenuType: 2 // 区分解释附件的子菜单
-            },
-            component: () => import("@/views/aeko/approve/approveList/explainAttach"),
-          },
-          {
             path: "approvelistcsf",
             name: "aekoApprove-listcsf",
             meta: {
@@ -158,9 +149,18 @@ export default [
             path: "CBDSummary",
             name: "CBDSummary",
             meta: {
-              title: "AEKO-审批列表",
+              title: "CBD汇总",
             },
             component: () => import("@/views/aeko/approve/approveDetails/components/variationCBDSummaryTable"),
+          },
+          {
+            path: "explainattach",
+            name: "explainattach",
+            meta: {
+              title: "AEKO-解释附件",
+              subMenuType: 2 // 区分解释附件的子菜单
+            },
+            component: () => import("@/views/aeko/approve/approveList/explainAttach"),
           },
         ]
       },

@@ -72,25 +72,27 @@
         </el-table-column>
         <el-table-column
             align="center"
+            prop="materialIncrease"
             label="增加材料成本(RMB/车)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.materialIncreaseTotal }}</span>
+            <span>{{ scope.row.materialIncrease }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
                         :content="queryRowMaterialIncreaseTipContent(scope.row)" placement="top">
-              <i class="el-icon-info bule"></i>
+              <i class="el-icon-warning-outline bule margin-left5"></i>
             </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column
             align="center"
+            prop="investmentIncrease"
             label="增加投资费用(不含税)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.investmentIncreaseTotal }}</span>
+            <span>{{ scope.row.investmentIncrease }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
                         :content="queryRowMaterialIncreaseTipContent(scope.row)" placement="top">
-              <i class="el-icon-info bule"></i>
+              <i class="el-icon-warning-outline bule margin-left5"></i>
             </el-tooltip>
           </template>
 
@@ -101,10 +103,10 @@
             label="其它费用(不含税)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.otherCostTotal }}</span>
+            <span>{{ scope.row.otherCost }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
                         :content="queryRowotherCostTipContent(scope.row)" placement="top">
-              <i class="el-icon-info bule"></i>
+              <i class="el-icon-warning-outline bule margin-left5"></i>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -135,9 +137,10 @@ export default {
     auditCoverStatus: {type: String, default: () => ''},
     auditCover: { type: Object, default: () => ({})}
   },
-  created() {
-    console.log(this.auditCover)
-    this.costsWithCarType = this.auditCover?.costsWithCarType
+  watch:{
+    auditCover(val){
+      this.costsWithCarType = this.auditCover?.costsWithCarType
+    }
   },
   data() {
     return {
@@ -152,7 +155,7 @@ export default {
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptName}-${item.linieName}:${item.currencyUnit} ${item.investmentIncrease} \n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${item.investmentIncrease} \n`
         })
         return strTip
       }
@@ -164,7 +167,7 @@ export default {
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptName}-${item.linieName}:${item.currencyUnit} ${item.materialIncrease} \n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${item.materialIncrease} \n`
         })
         return strTip
       }
@@ -176,20 +179,20 @@ export default {
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptName}-${item.linieName}:${item.currencyUnit} ${item.otherCost} \n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${item.otherCost} \n`
         })
         return strTip
       }
       return ''
     },
     rowClassName({row, rowIndex}) {
-      if (rowIndex == this.modelProjectList.length - 1) {
+      if (rowIndex == this.costsWithCarType.length - 1) {
         return 'lastCelStyle'
       }
       return ''
     },
     getSummaries(param) {
-      const {columns, data} = param;
+      const { columns, data } = param;
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 1) {
@@ -208,6 +211,7 @@ export default {
           }, 0);
         }
       });
+
       return sums;
     }
   }

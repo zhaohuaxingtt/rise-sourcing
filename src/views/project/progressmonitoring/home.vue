@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-09 15:21:20
+ * @LastEditTime: 2021-10-13 19:52:22
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -264,8 +264,6 @@ export default {
       try {
         // const res = require('./moke.json')
         this.loading = true
-        // 获取车型状态是否加入TIPS
-        await this.getAutoCarTips(carProjectId)
         const res = await getProjectProgressMonitor({
           carTypeProjectId: carProjectId
         })
@@ -318,7 +316,8 @@ export default {
           this.ckdconfirm = res.data && res.data.ckdNum || 0
           // tipsSum
           this.tipsSum = res.data && res.data.tipsSum || 0
-          
+          // 获取车型状态是否加入TIPS
+          await this.getAutoCarTips(carProjectId)
           console.log('this.data', this.data)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
