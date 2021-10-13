@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-27 14:14:39
+ * @LastEditTime: 2021-10-13 14:35:27
  * @Description: 
  */
 
@@ -143,4 +143,13 @@ export const tableCsfTitle = [
   { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true },
   { props: "date", name: "AEKO截止日期", key: "LK_AEKO_AEKOJIEZHIRIQI" },
   { props: "createDate", name: "创建时间", key: "CHUANGJIANRIQI" },
+]
+
+// 解释附件表头
+export const explainAttachTableTitle = [
+  { props: "fileName", name: "文件名", key: "LK_WENJIANMING", tooltip: true },
+  { props: "fileDescribe", name: "文件描述", key: "LK_WENJIANMIOASHU", tooltip: true, width: 450},
+  { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
+  { props: "createDate", name: "上传时间", key: "SHANGCHUANSHIJIAN", tooltip: true },
+  { props: "userName", name: "上传人", key: "SHANGCHUANREN", tooltip: true },
 ]
