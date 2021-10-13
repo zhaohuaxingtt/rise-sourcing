@@ -57,11 +57,11 @@ export function pendingApprovalList(params) {
   )
 }
 //审批单
-export  function queryAKEOApprovalForm(params){
+export  function queryAKEOApprovalForm(aekoAuditType,workFlowIds){
   return requst({
-        url: '/aeko/auditForm',
-        method: 'GET',
-        params:params
+        url: `/aeko/auditForm?aekoAuditType=${aekoAuditType}`,
+        method: 'POST',
+        data:workFlowIds
       }
   )
 }
@@ -84,5 +84,23 @@ export function cbdDataQuery({ workFlowId, quotationId }) {
   return requst({
     url: `/aeko/get/cbdDataQuery/${workFlowId}/${quotationId}`,
     method: 'GET',
+  })
+}
+
+//审批
+export  function  aekoAudit(data){
+  return requst({
+    url:`/aeko/aekoAudit`,
+    method:'POST',
+    data:data
+  })
+}
+
+//转派
+export  function  transferAEKO(data){
+  return requst({
+    url:`/aeko/approve/distribution/reassignment`,
+    method:'POST',
+    data:data
   })
 }

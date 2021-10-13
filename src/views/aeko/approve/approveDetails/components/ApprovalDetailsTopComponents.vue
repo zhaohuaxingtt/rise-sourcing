@@ -12,18 +12,23 @@
 </template>
 
 <script>
-import { iNavMvp, icon,iButton } from "rise"
+import {iNavMvp, icon, iButton} from "rise"
 import LogButton from "./LogButton";
+
 export default {
   name: "ApprovalDetailsComponents",
-  components:{
+  components: {
     LogButton,
     iNavMvp,
     icon,
     iButton
   },
-  data(){
+  created() {
+    this.transmitObj= JSON.parse(sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM'))
+  },
+  data() {
     return {
+      transmitObj:{},
       subNavList: [
         {
           value: 1,
@@ -52,26 +57,29 @@ export default {
       ],
     }
   },
-  methods:{
-    gotoDBhistory(){}
+  methods: {
+    gotoDBhistory() {
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
- .akeoTitle{
-   font-size: 20px;
-   font-family: Arial;
-   font-weight: bold;
-   align-items: center;
-   color: #000000;
+.akeoTitle {
+  font-size: 20px;
+  font-family: Arial;
+  font-weight: bold;
+  align-items: center;
+  color: #000000;
 
- }
-.myLogIcon{
+}
+
+.myLogIcon {
   width: 21px;
   height: 21px;
 }
-.margin-left25{
+
+.margin-left25 {
   margin-left: 25px !important;
 }
 </style>

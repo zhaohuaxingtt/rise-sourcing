@@ -149,7 +149,7 @@ export default [
             path: "CBDSummary",
             name: "CBDSummary",
             meta: {
-              title: "AEKO-审批列表",
+              title: "CBD汇总",
             },
             component: () => import("@/views/aeko/approve/approveDetails/components/variationCBDSummaryTable"),
           },
