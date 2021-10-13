@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-09-24 15:36:44
+ * @LastEditTime: 2021-10-13 10:48:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -197,6 +197,24 @@ export function cancelContent(data) {
   return requst({
     url: '/aeko/cover/cancelContent',
     method: 'POST',
+    data,
+  }) 
+}
+
+// 内容表态--指定投资车型项目查询 
+export function getInvestCarProject(data) {
+  return requst({
+    url: '/aeko/get/aeko-invest-car-project',
+    method: 'POST',
+    data,
+  }) 
+}
+
+// 内容表态--指定投资车型项目更新
+export function updateInvestCarProject(data) {
+  return requst({
+    url: '/aeko/update/aeko-invest-car-project',
+    method: 'PUT',
     data,
   }) 
 }
