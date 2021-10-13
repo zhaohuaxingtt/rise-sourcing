@@ -96,11 +96,25 @@
          </a>
        </template>
        <template #assignsheet="">
-         <a class="link-underline" href="javascript:;">
-           {{language('CHAKAN', '查看')}}
-         </a>
+         <span>变速箱</span>
+       </template>
+       <!--涉及车型和车型项目-->
+       <template #money="">
+         <span>Polo</span>
+       </template>
+       <!--主要供应商-->
+       <template #assignsheet="">>
+         <span>上汽大众</span>
        </template>
 
+       <!--增加材料成本-->
+       <template #assignsheet="">
+         <span>100 </span>
+         <el-tooltip  effect="light" popper-class="custom-card-tooltip" content="Top Center 提示文字" placement="top">
+           <i class="el-icon-info bule"></i>
+         </el-tooltip>
+
+       </template>
      </tablelist>
      <div class="pagination">
        <iPagination v-update class="pagination"
@@ -173,6 +187,7 @@ export default {
           aekoNum: '12313',
           isTop: true,
           describe: '23444',
+          money:1222,
         }
       ]
     },
@@ -206,9 +221,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
-::v-deep.intervalCss .el-form-item__content{
+::v-deep.intervalCss {
   display: inline-flex;
   align-items: center;
+  width: 100%;
+  vertical-align: top;
+
+  .el-form-item {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
 .icon {
   svg {
