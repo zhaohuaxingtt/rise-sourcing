@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-13 16:38:17
+ * @LastEditTime: 2021-10-13 16:58:43
  * @Description: 解释附件查看列表
 -->
 <template>
@@ -95,10 +95,12 @@ export default {
      * @return {*}
      */    
     getFetchData() {
-      const requirementAekoId = this.$route.query.requirementAekoId || ''
-      const aekoManageId = this.$route.query.aekoManageId || ''
-      const linieId = this.$route.query.linieId || ''
-      const taskId = this.$route.query.taskId || ''
+      const AECOAPPROVEPARAMS = sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM') || {}
+      const aekoApprovalDetails = AECOAPPROVEPARAMS.aekoApprovalDetails || {}
+      const requirementAekoId = this.$route.query.requirementAekoId || aekoApprovalDetails.requirementAekoId || ''
+      const aekoManageId = this.$route.query.aekoManageId || aekoApprovalDetails.aekoManageId || ''
+      const linieId = this.$route.query.linieId || aekoApprovalDetails.linieId || ''
+      const taskId = this.$route.query.taskId || aekoApprovalDetails.taskId || ''
       const form = this.$refs.search.form || {}
       const parmas = Object.assign({
         linieId: linieId || '',
@@ -114,6 +116,10 @@ export default {
       }
       if (!parmas.aekoNum) {
         iMessage.error(this.language('AEKOIDBUENNGWEIKONG','aekoid不能为空'))
+        return
+      }
+      if (!parmas.linieId) {
+        iMessage.error(this.language('LINIEIDBUENNGWEIKONG','linieid不能为空'))
         return
       }
       this.tableLoading = true
