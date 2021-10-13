@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-10-08 19:41:56
+ * @LastEditTime: 2021-10-13 15:55:25
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -33,7 +33,7 @@
             <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
             <div class="headerContent" v-if='scope.column.label == "Supplier"'>
               <div class="c" :style="{width:cWidth}">
-                <ul class="ca" :style="{width:tableTitle.find(i=>i.label == 'Ratings').list.length * 50 + 100 + 'PX'}">
+                <ul class="ca" :style="{width:250 + 'PX'}">
                   <li v-for='(items,index) in supplierLeftLit' :key='index'>
                     {{items.name}}
                   </li>
@@ -42,9 +42,9 @@
                   <template v-for="(itemss,index) in supplierLeftLit">
                       <li :key='index' v-if='itemss.name != "F-Target"'>{{items[itemss.props]}}</li>
                       <li :key="index" v-else class="ftaget">
-                        <span>{{items['cfPartAPrice']}}</span>
+                        <!-- <span>{{items['cfPartAPrice']}}</span>
                         <span style="width:99PX"></span>
-                        <span>{{items['cfPartBPrice']}}</span>
+                        <span>{{items['cfPartBPrice']}}</span> -->
                       </li>
                   </template>
                 </ul>
@@ -66,7 +66,11 @@
                   </ul>
                 </div>
               </div>
+            
             </div>
+            <span class="price pricea" v-if='removeKeysNumber(scope.column.property) == "lcAPrice"'>
+                {{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartAPrice')}}
+            </span>
           </template>
           <!----------存在二级表头------>
           <template v-if='item.list && item.list.length >0'>
@@ -78,10 +82,11 @@
                   align="center"
                   :resizable="false"
                 >
-                <template slot="header">
+                <template slot="header" slot-scope="scope">
                   <el-tooltip :content='levelTowItem.label' effect='light'>
                     <span class="overText">{{levelTowItem.label}}</span>
                   </el-tooltip>
+                  <span class="price priceb" v-if='removeKeysNumber(scope.column.property) == "lcBPrice"'>{{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPrice')}}</span>
                 </template>
                 </el-table-column>
             </template>
@@ -115,7 +120,7 @@
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "ltcStaringDate"'>
                   <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
-                </template>
+            </template>
             <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
               <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
             </template>     
@@ -125,12 +130,12 @@
             <template v-else-if='item.props== "partName"'>
               <span style="color:red;" :class="{lvse:lvseFn(scope.row,item.props,'partName')}">{{scope.row[item.props]}}</span>
             </template>
-            <!-- <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
+            <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
+              <span>{{scope.row[item.props]}}</span>
             </template>
-                <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
-                    <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
-                </template> -->
+            <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
+                <span>{{scope.row[item.props]}}</span>
+            </template>
             <template v-else slot-scope="scope">
               <span>{{scope.row[item.props]}}</span>
             </template>
@@ -140,7 +145,7 @@
       </template>
     </el-table>
   </div>
-  <div class="leftFlex" :style="{width:tableTitle.find(i=>i.label == 'Ratings').list.length * 50 + 100 + 'PX'}">
+  <div class="leftFlex" :style="{width:250 + 'PX'}">
   <div class="selsTable" :style="{paddingTop:paddingTop}">
     <el-table
       tooltip-effect="light"
@@ -166,7 +171,7 @@
             <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
             <div class="headerContent" v-if='scope.column.label == "Supplier"'>
               <div class="c" :style="{width:cWidth}">
-                <ul class="ca" :style="{width:tableTitle.find(i=>i.label == 'Ratings').list.length * 50 + 100 + 'PX'}">
+                <ul class="ca" :style="{width: 250+ 'PX'}">
                   <li v-for='(items,index) in supplierLeftLit' :key='index'>
                     {{items.name}}
                   </li>
@@ -308,6 +313,13 @@ export default{
   }},
   methods:{
     getPorpsNumber(props){return getPorpsNumber(props)},
+    getCfPartsAorBprice(arrayList,index,props){
+      try {
+        return arrayList[index || 0][props]
+      } catch (error) { 
+        return ''
+      }
+    },
     optionPage(items,index){
       const router = this.$router.resolve({
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
@@ -426,6 +438,24 @@ export default{
     overflow: visible;
     ::v-deep.cell{
       overflow: visible;
+        .price{
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          height: 38px;
+          line-height: 38px;
+          display: inline-block;
+          width: 100%;
+          border-left: 1px solid #C5CCD6;
+          border-right: 1px solid #C5CCD6;
+        }
+        .pricea{
+            top:-70px;
+            border-left: none;
+        }
+        .priceb{
+            top:-95px;
+        }
     }
     ::v-deep.priceUnderLinePrice{
       border-bottom:3px solid blue;
