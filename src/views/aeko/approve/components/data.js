@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-27 14:14:39
+ * @LastEditTime: 2021-10-13 15:32:56
  * @Description: 
  */
 
@@ -98,6 +98,33 @@ export const SUBMENU = [
     key: 'LK_AEKOCHAKAN'
   },
 ]
+// 主菜单
+export const ATTACHSUBMENU = [
+  {
+    value: 1,
+    name: '审批单',
+    message: 0,
+    url: '/aeko/AEKOApprovalDetails/Approvalform',
+    activePath: 'Approvalform',
+    key: 'LK_AEKOSHENPIDAN'
+  },
+  {
+    value: 2,
+    name: 'CBD汇总',
+    message: 0,
+    url: '/aeko/AEKOApprovalDetails/CBDSummary',
+    activePath: 'CBDSummary',
+    key: 'LK_CBDHUIZONG'
+  },
+  {
+    value: 3,
+    name: '审批附件',
+    message: 0,
+    url: '/aeko/approve/explainattach',
+    activePath: 'explainattach',
+    key: 'LK_AEKO_SHENPIFUJIAN'
+  },
+]
 
 // csf / commodity 审批界面选项卡
 export const navList = [
@@ -143,4 +170,13 @@ export const tableCsfTitle = [
   { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true },
   { props: "date", name: "AEKO截止日期", key: "LK_AEKO_AEKOJIEZHIRIQI" },
   { props: "createDate", name: "创建时间", key: "CHUANGJIANRIQI" },
+]
+
+// 解释附件表头
+export const explainAttachTableTitle = [
+  { props: "fileName", name: "文件名", key: "LK_WENJIANMING", tooltip: true },
+  { props: "fileDescribe", name: "文件描述", key: "LK_WENJIANMIOASHU", tooltip: true, width: 450},
+  { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
+  { props: "createDate", name: "上传时间", key: "SHANGCHUANSHIJIAN", tooltip: true },
+  { props: "userName", name: "上传人", key: "SHANGCHUANREN", tooltip: true },
 ]
