@@ -59,11 +59,11 @@ export function pendingApprovalList(params) {
 }
 
 //审批单
-export  function queryAKEOApprovalForm(aekoAuditType,workFlowIds){
+export  function queryAKEOApprovalForm(data){
   return requst({
-        url: `/aeko/auditForm?aekoAuditType=${aekoAuditType}`,
+        url: `/aeko/auditForm`,
         method: 'POST',
-        data:workFlowIds
+        data:data
       }
   )
 }

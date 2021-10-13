@@ -157,12 +157,12 @@ export default {
 
       }
       this.localAuditItems.forEach(item => {
-        item.workFlowIds.forEach(val => {
+        item.workFlowDTOS.forEach(val => {
           req.push({
             aekoAuditType: this.transmitObj.aekoApprovalDetails.aekoAuditType,
             approvalResult: item.approvalResult,
             comment: item.auditOpinion,
-            workFlowIdAndTaskId: val
+            workFlowDTO: val
           })
         })
       })

@@ -34,7 +34,8 @@ export default {
   },
   methods: {
     loadAKEOApprovalForm() {
-      queryAKEOApprovalForm(this.aekoApprovalDetails.aekoAuditType,this.aekoApprovalDetails.workflowIds).then(res => {
+      let reqData={aekoAuditType:this.aekoApprovalDetails.aekoAuditType,workFlowDTOS:this.aekoApprovalDetails.workFlowDTOS}
+      queryAKEOApprovalForm(reqData).then(res => {
         if (res.code == 200) {
           this.auditItems = res.data.auditItems
           this.auditCoverStatus = res.data.auditCoverStatus

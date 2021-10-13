@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2021-10-13 18:34:39
+ * @LastEditTime: 2021-10-13 21:17:05
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -44,7 +44,7 @@
 
 <script>
 import { switchPartsTableTitle } from "../data.js";
-import { iCard, iSelect } from "rise";
+import { iCard, iSelect, iMessage } from "rise";
 import tableList from "rise/web/quotationdetail/components/tableList";
 import { getSwitchParts } from "@/api/aeko/approve";
 export default {
@@ -74,25 +74,27 @@ export default {
     };
   },
   created(){
-    this.getPartsList()
-    // this.workFlowId&&this.getPartsList()
+    this.workFlowId&&this.getPartsList()
   },
   methods:{
     // 获取切换零件下拉框数据
     getPartsList() {
       this.loading = true
-      getSwitchParts({workFlowId:this.workFlowId}).then(({data})=>{
-        this.partsObj = data[0];
-        this.partsId = this.partsObj&&Object.values(this.partsObj)[0]
-        this.getCbdDataQuery()
+      getSwitchParts({workFlowId:this.workFlowId}).then((res)=>{
+        if(res?.code==='200'){
+          this.partsObj = res.data[0];
+          this.partsId = this.partsObj&&Object.keys(this.partsObj)[0]
+          this.getCbdDataQuery()
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
         this.loading = false
       }).catch(()=>{
         this.loading = false
       })
     },
     getCbdDataQuery(){
-      // this.$emit('getCbdDataQuery',this.partsId)
-      this.$emit('getCbdDataQuery','1')
+      this.$emit('getCbdDataQuery',this.partsId)
     }
   }
 };

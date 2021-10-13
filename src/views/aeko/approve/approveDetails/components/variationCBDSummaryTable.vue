@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-13 19:43:54
+ * @LastEditTime: 2021-10-13 21:15:01
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -182,19 +182,19 @@ export default {
     };
   },
   created() {
-    // let parmas = {
-    //   option: 1,
-    //   aekoApprovalDetails: {
-    //     aekoNum: "AZJ7294",
-    //     requirementAekoId: 10967,
-    //     aekoAuditType: 2,
-    //     workflowIds: [1052679],
-    //   },
-    // };
-    // sessionStorage.setItem(
-    //   "AEKO-APPROVAL-DETAILS-ITEM",
-    //   JSON.stringify(parmas)
-    // );
+    let parmas = {
+      option: 1,
+      aekoApprovalDetails: {
+        aekoNum: "AZJ7294",
+        requirementAekoId: 10967,
+        aekoAuditType: 2,
+        workflowIds: [1052679],
+      },
+    };
+    sessionStorage.setItem(
+      "AEKO-APPROVAL-DETAILS-ITEM",
+      JSON.stringify(parmas)
+    );
     let workFlowId = JSON.parse(
       sessionStorage.getItem("AEKO-APPROVAL-DETAILS-ITEM")
     )?.aekoApprovalDetails?.workflowIds[0];
@@ -246,6 +246,8 @@ export default {
             data.push(item);
           });
           this.tableData = data.sort((a, b) => a.partNum - b.partNum);
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
       });
     },
@@ -253,16 +255,21 @@ export default {
     getCbdDataQuery(partsId) {
       this.loading = true;
       if (!partsId) {
-        this.hasData = false
+        this.hasData = false;
         this.loading = false;
         return;
       }
-      this.hasData = true
       cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
-        ({ data }) => {
-          this.switchPartsTable = [data.extSnapshotVO];
-          this.aPriceChangeData = data;
-          this.loading = false;
+        (res) => {
+          if (res?.code === "200") {
+            this.switchPartsTable = [data?.extSnapshotVO];
+            this.aPriceChangeData = data;
+            this.loading = false;
+            this.hasData = true;
+          } else {
+            this.loading = false;
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
         }
       );
     },

@@ -203,6 +203,7 @@ import {searchLinie} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import AEKOTransferDialog from "./components/AEKOTransferDialog";
 import {getAekoDetail} from "@/api/aeko/detail";
+import {transferAEKO} from "../../../../api/aeko/approve";
 
 export default {
   name: "AKEOPendingPage",
@@ -357,10 +358,20 @@ export default {
     //转派
     transfer() {
       //this.$message.error('您已完成当前AEKO行的审批，不可进行转派')
-
+      if (this.selectPendingList.length === 0 || this.selectPendingList.length > 1) {
+        return this.$message.error(this.$t('LK_NINDANGQIANHAIWEIXUANZE'))
+      }
       this.transferDialogVal = true
     },
     confirmTransfer(selBuyerId) {
+      let transfer = {
+        targetUserId:selBuyerId,
+        aekoCode:this.selectPendingList[0].aekoNum,
+
+      }
+      transferAEKO(transfer).then(res=>{
+
+      })
 
     },
     //增加材料成本Tip
@@ -436,7 +447,7 @@ export default {
               aekoNum: row.aekoNum,
               requirementAekoId: row.requirementAekoId,
               aekoAuditType: row.auditType,
-              workflowIds: row.workflowIds,
+              workFlowDTOS: row.workFlowDTOS,
               aekoManageId: res.aekoManageId
             }
           }
