@@ -203,3 +203,13 @@ export function manualImportAekoFromTCM(params) {
       params,
   })
 }
+
+
+// 会议通过
+export function adoptedMeeting(data) {
+  return requst({
+      url: '/aeko/adoptedMeeting',
+      method: 'POST',
+      data,
+  })
+}
