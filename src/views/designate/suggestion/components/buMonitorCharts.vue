@@ -191,7 +191,7 @@ export default {
               const wholePackage = self.data && Number(self.data.wholePackage) || 0
               const bestGroupSupplier = self.data.bestGroupSupplier
               // const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2] || 0
-              const bestGroupSupplierTotal = self.data && Number(self.data.minPartSupplierTToTotal)|| 0
+              const bestGroupSupplierTotal = self.data && Number(self.data.bestGroupSupplierTotal)|| 0
               const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
               const weightSupplierTotal = self.data.weightSupplierTotal || 0
               let tpl = ''
@@ -209,7 +209,6 @@ export default {
                   <span class="value">${Number((wholePackage - bestGroupSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
               </div>`)
-
               // toolTip Best TTO \n by Part
               params.name === quota[2] && (tpl = `
               <div class="toolTipBox-content">
@@ -227,7 +226,6 @@ export default {
                   share: ${Number(params.data/weightSupplierTotal*100).toFixed(2)}%
                 </p>
               </div>`)
-              console.log(`params`, params)
 
               return `
               <div class="toolTipBox" style="${!params.data ? 'display: none' : ''}">

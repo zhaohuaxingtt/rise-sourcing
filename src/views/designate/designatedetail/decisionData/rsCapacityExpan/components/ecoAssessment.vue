@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-10-13 12:30:08
+ * @LastEditTime: 2021-10-13 14:08:51
  * @LastEditors: Hao,Jiang
  * @Description: Economic Assessment
 -->
@@ -74,8 +74,9 @@
       <!-- 底部拼接表格 -->
       <div class="middleLevel">
         <div class="leftNote">
-          Bemerkung 
+          <!-- Bemerkung  -->
           <!-- <br> 备注 -->
+          Comments
         </div>
         <ul>
           <li v-for="(item, index) in lifeTimeList" :key="index" :class="dataList.length % 2 ? 'odd' :'even'">

@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-10-12 12:56:09
+ * @LastEditTime: 2021-10-13 16:06:45
  * @LastEditors: Hao,Jiang
 -->
 
@@ -495,6 +495,7 @@ export default {
       // const bestGroupSupplier = [bestGroup[0].data, bestGroupTotal - bestGroup[0].data]
       const bestGroupSupplier = [bestGroup[0].data]
       const bestGroupSupplierIndex = bestGroup[0].index
+      const bestGroupSupplierTotal = bestGroupTotal
       bestGroupSupplier.push(bestGroupTotal)
       // 记录该供应商
       supplier.push(bestGroupSupplierIndex)
@@ -575,6 +576,7 @@ export default {
         // 分组最佳
         bestGroupSupplier,
         bestGroupSupplierIndex,
+        bestGroupSupplierTotal,
         // 是否显示分组最佳，默认在无分组的情况下不显示
         isShowGroupStick,
         // 报价都是最低的供应商
