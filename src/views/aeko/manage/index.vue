@@ -150,7 +150,7 @@
       <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     
       <!-- TCM导入清单 -->
-      <!-- <tcmList/> -->
+      <tcmList/>
     </div>
   </iPage>
 </template>

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-09-30 13:12:43
+ * @LastEditTime: 2021-10-09 18:51:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -107,7 +107,7 @@ export default {
     },
     gridData: {
       handler (newVal) {
-        console.log(newVal, 'hahahah')
+        
         if (newVal) {
           if (newVal.data) {
             this.tableData = newVal.data
@@ -192,7 +192,7 @@ export default {
     },
     //表格保存
     saveTable () {
-      console.log(this.gridData1)
+
       this.editFlag = false
       let params = {
         "comparedType": this.$parent.$parent.comparedType,
@@ -233,7 +233,7 @@ export default {
       })
       this.gridData1.push(addRowList)
       this.gridData1 = [...this.gridData1]
-      console.log(this.gridData1)
+      
     },
   },
   mounted () {

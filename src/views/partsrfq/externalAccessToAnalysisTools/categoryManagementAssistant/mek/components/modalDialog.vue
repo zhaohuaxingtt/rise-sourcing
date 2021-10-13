@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-11 14:17:10
- * @LastEditTime: 2021-09-29 10:13:57
+ * @LastEditTime: 2021-10-09 18:51:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\modalDialog.vue
@@ -79,7 +79,7 @@ export default {
     }
   },
   created () {
-    console.log(this.confirmTableHead, "confirmTableHead")
+
   },
   methods: {
     clearDiolog () {
@@ -88,7 +88,7 @@ export default {
     handleSelectionChange (val) {
       this.selectData = val
     },
-    handleSelect(val){
+    handleSelect (val) {
 
     },
     handleSearchSure () {

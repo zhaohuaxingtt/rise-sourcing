@@ -88,6 +88,7 @@ export default{
       }
       if(select.filter(i=>i.partType === 'S').length > 1){
         this.$refs.tabel.clearSelection()
+        this.ontologyList = []
         const selectfilterPartTypeS = (select.filter(i=>i.partType === 'S').map(r=>r.itemKey)).splice(1,1,'')
         select.filter(b=>!selectfilterPartTypeS.includes(b.itemKey)).forEach(r=>this.$refs.tabel.toggleRowSelection(r))
         iMessage.warn(this.language('DANGQLJHANYOUDUOGEJIAGONG','您已选择过零件类型含有加工装配的供应商，切勿重复选择！'))
