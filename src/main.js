@@ -16,6 +16,7 @@ import './permission'
 import Vue from "vue"
 import { iTable } from 'rise' 
 // import AmapVue from '@amap/amap-vue'
+import './utils/mydirect'
 
 require('./auto').init()
 Vue.config.productionTip = false

@@ -600,7 +600,8 @@ export default {
             path: "/designate/rfqdetail", 
             query: {
               desinateId: res.data.nominateId, 
-              designateType: res.data.nominateProcessType
+              designateType: res.data.nominateProcessType,
+              partProjType: res.data.partProjectType
             }
           })
           window.open(openDesignate.href,'_blank')

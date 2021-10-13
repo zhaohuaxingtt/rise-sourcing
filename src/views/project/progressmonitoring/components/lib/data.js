@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 14:06:11
- * @LastEditTime: 2021-09-23 10:08:34
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-09 15:13:54
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: /front-web/src/views/project/progressmonitoring/components/components/data.js
+ * @FilePath: \front-web\src\views\project\progressmonitoring\components\lib\data.js
  */
 export const pendingChartData = [
   {
@@ -129,7 +129,7 @@ export const projectRisk = [
   },
   {
     code: '3',
-    name: '风险',
+    name: '延误',
   }
 ]
 

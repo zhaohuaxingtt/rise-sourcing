@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-09-30 12:15:33
+ * @LastEditTime: 2021-10-09 18:50:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -62,7 +62,7 @@ export default {
                 position: "top",
                 color: "#000",
                 formatter: (val) => {
-                  console.log(val);
+                
                   return this.fmoney(val.value, 2);
                 },
               },
@@ -195,7 +195,7 @@ export default {
       this.myChart.setOption(this.option);
       this.myChart.off("click");
       this.myChart.on("click", (params) => {
-        console.log(params, this.firstBarData);
+
         let data = {};
         this.firstBarData.detail.forEach((item) => {
           if (item.title === params.name.match(/(\S*)\n/)[1]) {

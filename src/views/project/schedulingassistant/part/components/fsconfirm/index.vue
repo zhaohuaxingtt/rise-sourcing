@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:59:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-14 10:46:42
+ * @LastEditTime: 2021-10-09 10:20:21
  * @Description: 发送FS确认弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\fsconfirm\index.vue
 -->
@@ -16,15 +16,15 @@
   > 
     <template slot="title"> 
       <div class="chosseProGroup"> 
-        <span class="chosseProGroup-title">{{language('CHANGZHOUQICHANPINZUJINDUQUEREN','长周期产品组进度确认')}}</span> 
+        <span class="chosseProGroup-title">{{language('FENGXIANLINGJIANJINDUQUEREN','风险零件进度确认')}}</span> 
         <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton> 
       </div> 
     </template> 
-    <div class="tableWrapper" v-if="tableListNomi.length > 0"> 
+    <div class="tableWrapper" v-if="tableListNomi && tableListNomi.length > 0"> 
       <span class="tableTitle">{{language('DAIDINGDIAN','待定点')}}</span> 
       <tableList indexKey :tableTitle="tableTitleNomi" :tableData="tableListNomi" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChangeNomi" @handleSelectChange="handleSelectChange"></tableList> 
     </div> 
-    <div class="tableWrapper borderTop" v-if="tableListKickoff.length > 0"> 
+    <div class="tableWrapper borderTop" v-if="tableListKickoff && tableListKickoff.length > 0"> 
       <span class="tableTitle">{{language('DAIKICKOFF','待Kickoff')}}</span> 
       <tableList indexKey :tableTitle="tableTitleKickoff" :tableData="tableListKickoff" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChangeKickoff" @handleSelectChange="handleSelectChange"></tableList> 
     </div> 

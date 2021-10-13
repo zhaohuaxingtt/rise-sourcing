@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-08 21:12:34
+ * @LastEditTime: 2021-10-09 12:44:11
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -347,7 +347,7 @@ export default {
      * @return {*} 
      */    
     async getFsUserList(tableList) {  
-      const res = await getFsUserListPart({partNums: tableList.map(item => item.partNum).join(',')}) 
+      const res = await getFsUserListPart(tableList.map(item => item.partNum)) 
         if (res?.result) { 
           return res.data   
         } else { 

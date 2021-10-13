@@ -82,6 +82,7 @@ export default {
     if(businessKey == partProjTypes.AEKOLINGJIAN){
       this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
     }
+    this.$store.commit('SET_PART_PROJECT', this.getTableList)
   },
   methods: {
     //获取表格数据
@@ -89,18 +90,18 @@ export default {
         this.tableLoading = true
         this.parmarsNotHasRfq['size'] = this.page.pageSize
         this.parmarsNotHasRfq['current'] = this.page.currPage
-        this.parmarsNotHasRfq['status'] = '11'
+        this.parmarsNotHasRfq['status'] = 'NOT_IN_RFQ'
         this.parmarsNotHasRfq['buyerId'] = this.queryForm.buyerId
         this.parmarsNotHasRfq['linieId'] = this.queryForm.linieId
         this.parmarsNotHasRfq['partProjectType'] = this.queryForm.partProjectType
         this.parmarsNotHasRfq['partNumList'] = this.queryForm.partNumList
-        
         getTabelData(this.parmarsNotHasRfq).then(res => {
           this.tableLoading = false
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
           this.tableListData = res.data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) || []
+          this.$forceUpdate()
         }).catch(() => this.tableLoading = false)
     },
     // 待选零件

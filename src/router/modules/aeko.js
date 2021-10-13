@@ -126,6 +126,35 @@ export default [
           },
         ]
       },
+        //Aeko审批详情
+      {
+        path: "AEKOApprovalDetails",
+        name: "AEKOApprovalDetails",
+        meta: {
+          title: 'AEKO-审批详情'
+        },
+        props: true,
+        component: () => import("@/views/aeko/approve/approveDetails"),
+        redirect: "/aeko/AEKOApprovalDetails/Approvalform",
+        children: [
+          {
+            path: "Approvalform",
+            name: "Approvalform",
+            meta: {
+              title: "AEKO-审批单",
+            },
+            component: () => import("@/views/aeko/approve/approveDetails/ApprovalFormDetails"),
+          },
+          {
+            path: "CBDSummary",
+            name: "CBDSummary",
+            meta: {
+              title: "AEKO-审批列表",
+            },
+            component: () => import("@/views/aeko/approve/approveDetails/components/variationCBDSummaryTable"),
+          },
+        ]
+      },
     ]
   }
 ]

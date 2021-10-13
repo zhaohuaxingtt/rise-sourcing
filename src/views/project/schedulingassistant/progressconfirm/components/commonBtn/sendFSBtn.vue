@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-31 17:49:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 13:56:49
+ * @LastEditTime: 2021-10-09 12:44:23
  * @Description: 发送FS按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\sendFSBtn.vue
 -->
@@ -68,7 +68,7 @@ export default {
      * @return {*}
      */    
     async getFsUserList(tableList) {
-      const res = await getFsUserListPart({partNums: tableList.map(item => item.partNum).join(',')})
+      const res = await getFsUserListPart(tableList.map(item => item.partNum))
       if (res?.result) {
         return res.data
       } else {

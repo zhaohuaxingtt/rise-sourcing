@@ -37,3 +37,31 @@ export function getRoleUserList(params) {
     params,
   })
 }
+
+//查询AKEO已审批列表
+export function queryApproved(params){
+  return requst({
+    url: '/aeko/approvedPage',
+    method: 'POST',
+    data:params
+  })
+}
+
+//查询AKEO待审批列表
+export function pendingApprovalList(params){
+  return requst({
+        url: '/aeko/approve/distribution/approvalPendingPage',
+        method: 'POST',
+        data:params
+      }
+  )
+}
+//审批单
+export  function queryAKEOApprovalForm(params){
+  return requst({
+        url: '/aeko/auditForm',
+        method: 'GET',
+        params:params
+      }
+  )
+}
