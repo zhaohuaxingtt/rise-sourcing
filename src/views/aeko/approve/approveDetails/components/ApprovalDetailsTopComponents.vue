@@ -3,9 +3,9 @@
    <span class="akeoTitle">Aeko号:AE19221</span>
    <div style="display: flex;justify-content: space-between;align-items: center" >
      <iNavMvp  :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
-     <i-button class="margin-left25">查看已审批</i-button>
-     <i-button class="margin-left25">AEKO详情</i-button>
-     <log-button class="margin-left25"/>
+     <i-button v-if="$route.name !== 'explainattach'" class="margin-left25">查看已审批</i-button>
+     <i-button v-if="$route.name !== 'explainattach'" class="margin-left25">AEKO详情</i-button>
+     <log-button v-if="$route.name !== 'explainattach'" class="margin-left25"/>
      <icon @click.native="gotoDBhistory"  symbol name="icondatabaseweixuanzhong" class="log-icon margin-left20 cursor myLogIcon"></icon>
    </div>
  </div>
@@ -30,7 +30,7 @@ export default {
           name: "审批单",
           message: 0,
           url: "/aeko/AEKOApprovalDetails/Approvalform",
-          activePath: "/aeko/AEKOApprovalDetails/Approvalform",
+          activePath: "Approvalform",
           key: "审批单",
         },
         {
@@ -38,15 +38,15 @@ export default {
           name: "CBD汇总",
           message: 0,
           url: "/aeko/AEKOApprovalDetails/CBDSummary",
-          activePath: "/aeko/AEKOApprovalDetails/CBDSummary",
+          activePath: "CBDSummary",
           key: "CBD汇总",
         },
         {
           value: 3,
           name: "审批附件",
           message: 0,
-          url: "#",
-          activePath: "#",
+          url: "/aeko/AEKOApprovalDetails/explainattach",
+          activePath: "explainattach",
           key: "审批附件",
         },
       ],
