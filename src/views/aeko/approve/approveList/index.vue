@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-28 13:56:04
+ * @LastEditTime: 2021-10-13 14:05:25
  * @Description: 
 -->
 <template>
@@ -49,7 +49,7 @@
         </a>
       </template>
       <template #assignsheet="">
-        <a class="link-underline" href="javascript:;">
+        <a class="link-underline" href="javascript:;" @click="toAssignSheetUrl(scope.row)">
           {{language('CHAKAN', '查看')}}
         </a>
       </template>
@@ -126,12 +126,42 @@ export default {
     this.getQQCGGZ()
   },
   methods: {
+    /**
+     * @description: 跳转审批单
+     * @param {*} row
+     * @return {*}
+     */    
+    toAssignSheetUrl(row) {
+      const transmitObj= {
+        option: 1, 
+        aekoApprovalDetails:{
+          aekoNum: row.aekoNum,
+          requirementAekoId: row.requirementAekoId,
+          aekoAuditType: row.auditType,
+          workflowIds: row.workflowIds
+        }
+      }
+      sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(transmitObj))
+      this.$nextTick(() => {
+        this.$router.push({path: '/aeko/AEKOApprovalDetails'})
+      })
+    },
+    /**
+     * @description: 跳转aeko详情
+     * @param {*} row
+     * @return {*}
+     */    
     toDetailUrl(row) {
       this.$router.push({name: 'aekodetail', query: {
         from: '',
         requirementAekoId: row.requirementAekoId
       }})
     },
+    /**
+     * @description: 跳转描述
+     * @param {*} row
+     * @return {*}
+     */    
     toDescUrl(row) {
       this.$router.push({name: 'aekoDescribe', query: {
         requirementAekoId: row.requirementAekoId,

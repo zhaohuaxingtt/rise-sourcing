@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-09-06 14:59:35
+ * @LastEditTime: 2021-10-12 19:51:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -122,7 +122,7 @@
     <!--------------------------------------------------------------->
     <!-------------------------RFQ待办信息---------------------------->
     <!--------------------------------------------------------------->
-    <rfqPending v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"></rfqPending>
+    <rfqPending ref="rfqPending" v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"></rfqPending>
     <!--------------------------------------------------------------->
     <!-------------------------RFQ详情信息---------------------------->
     <!--------------------------------------------------------------->    
@@ -276,6 +276,8 @@ export default {
           } else {
             this.baseInfo = ''
           }
+          //获取详细信息后 刷新tab栏里面的询价管理（只要存在轮次大于1则显示询价管理页签）
+          this.$refs.rfqPending.updateTabs(this.baseInfo)
           this.baseInfoLoading = false
         } catch {
           this.baseInfoLoading = false

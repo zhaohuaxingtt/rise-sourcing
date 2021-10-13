@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: YoHo
- * @LastEditTime: 2021-10-13 15:08:40
+ * @LastEditTime: 2021-10-13 19:46:54
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -59,12 +59,12 @@ export function pendingApprovalList(params) {
 }
 
 //审批单
-export function queryAKEOApprovalForm(params) {
+export  function queryAKEOApprovalForm(aekoAuditType,workFlowIds){
   return requst({
-    url: '/aeko/auditForm',
-    method: 'GET',
-    params: params
-  }
+        url: `/aeko/auditForm?aekoAuditType=${aekoAuditType}`,
+        method: 'POST',
+        data:workFlowIds
+      }
   )
 }
 
@@ -89,5 +89,23 @@ export function cbdDataQuery({ workFlowId, quotationId }) {
   return requst_sourcing({
     url: `/aeko/get/cbdDataQuery/${workFlowId}/${quotationId}`,
     method: 'GET',
+  })
+}
+
+//审批
+export  function  aekoAudit(data){
+  return requst({
+    url:`/aeko/aekoAudit`,
+    method:'POST',
+    data:data
+  })
+}
+
+//转派
+export  function  transferAEKO(data){
+  return requst({
+    url:`/aeko/approve/distribution/reassignment`,
+    method:'POST',
+    data:data
   })
 }

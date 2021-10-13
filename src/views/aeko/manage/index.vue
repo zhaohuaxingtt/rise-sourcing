@@ -150,7 +150,7 @@
       <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     
       <!-- TCM导入清单 -->
-      <!-- <tcmList/> -->
+      <tcmList/>
     </div>
   </iPage>
 </template>
@@ -194,6 +194,7 @@ import {
   searchLinie,
   synAekoFromTCM,
   synAekoAttachmentFromTCM,
+  adoptedMeeting,
 } from '@/api/aeko/manage'
 import { debounce } from "lodash";
 export default {
@@ -724,9 +725,17 @@ export default {
         const {selectItems} = this;
         if(!isNext) return;
         await this.$confirm(this.language('LK_AEKO_TIPS_SHIFOUQUEDINGHUIYITONGGUO','是否确定会议通过？')).then(()=>{
-
+          const arr = selectItems.map((item)=>item.aekoManageId);
+          adoptedMeeting(arr).then((res)=>{
+            if(res.code == 200){
+             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+             this.getList();
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            }
+          })
         }).catch(()=>{
-
+ 
         })
       },
 
