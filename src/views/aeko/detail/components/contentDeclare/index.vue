@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-11 16:52:33
+ * @LastEditTime: 2021-10-13 11:31:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -154,7 +154,7 @@
         <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE|无关相关切换">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
         <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET|表态重置">{{ language("AEKO_YUANLINGJIANHAOCHONGZHI", "原零件号重置") }}</iButton>
         <iButton v-if="!disabled" :loading="declareSendSupplier" @click="sendSupplierPrice"  v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION|发放供应商报价">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
-        <iButton v-if="!disabled" disabled @click="goToinvestCarTypePro" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO|指定投资车型项目">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
+        <iButton v-if="!disabled" @click="goToinvestCarTypePro" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_INVESTCARTYPEPRO|指定投资车型项目">{{ language("ZHIDINGTOUZICHEXINGXIANGMU", "指定投资⻋型项⽬") }}</iButton>
         <iButton v-if="!disabled" @click="handleExport" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT|导出">
           {{ language("DAOCHU", "导出") }}
           <el-tooltip 
@@ -176,7 +176,7 @@
       </template>
       <div class="body">
         <!-- 列隐藏显示 -->
-        <!-- <p class="flex-align-center margin-bottom20">
+        <p class="flex-align-center margin-bottom20">
           <span class="margin-right10">{{language('LK_AEKO_CONTENTDECLARE_LIEYINCANGXIANSHI','列隐藏/显示')}}:</span>
           <iSelect
             style="width: 200px;"
@@ -195,7 +195,7 @@
                 >
               </el-option> 
           </iSelect>
-        </p> -->
+        </p>
         <tableList
           class="table"
           index
