@@ -1,13 +1,13 @@
 /*
  * @Author: YoHo
  * @Date: 2021-10-11 17:18:47
- * @LastEditTime: 2021-10-12 21:26:58
+ * @LastEditTime: 2021-10-13 14:15:45
  * @LastEditors: YoHo
  * @Description: 
  */
 // CBD-汇总表
 export const SummaryTableTitle = [
-  { prop: 'index', label: '#', labelKey:'#', width: '70', children: [] },
+  { prop: 'index', label: '#', labelKey: '#', width: '70', children: [] },
   { prop: 'partNum', label: 'AEKO零件号', width: '140', labelKey: 'AEKOLINGJIANHAO', children: [] },
   { prop: 'typeName', label: '类别', width: '140', labelKey: 'LEIBIE', children: [] },
   { prop: 'originContent', label: '内容', width: '140', labelKey: 'NEIRONG', children: [] },
@@ -29,7 +29,7 @@ export const SummaryTableTitle = [
       { prop: 'newTotalPrice', label: '小计', width: '100', labelKey: 'XIAOJI', children: [] },
     ]
   },
-  { prop: 'alteration', label: '变动值', width: 'auto', labelKey: 'BIANDONGZHI', children: [] },
+  { prop: 'alteration', label: '变动值', width: '100', labelKey: 'BIANDONGZHI', children: [] },
 ]
 // 切换零件
 export const switchPartsTableTitle = [
@@ -59,91 +59,91 @@ export const cbdSummaryTableTitle = [
 export const partsCostTableTitle = [
   {
     label: '原材料/散件成本', labelKey: 'YUANCAILIAOSANJIANCHENGBEN', children: [
-      { prop: 'serialNum', label: '#', labelKey: '#', width: '80', children: [] },
-      { isNew: true, prop: 'partName', label: '类型', width: '120', labelKey: 'LEIXING', children: [] },
+      { prop: 'serialNum', label: '#', labelKey: '#', width: '85', children: [] },
+      { isNew: true, prop: 'partName', label: '类型', width: '160', labelKey: 'LEIXING', children: [] },
     ]
   },
-  { prop: 'partNumber', label: '原材料/散件描述', width: '140', labelKey: 'YUANCAILIAOSANJIANMIAOSHU', children: [] },
-  { prop: 'supplierName', label: '供应商名称', width: '100', labelKey: 'GONGYINGSHANGMINGCHENG', children: [] },
-  { prop: 'productionCountry', label: '原产国', width: '100', labelKey: 'YUANCHANGUO', children: [] },
-  { prop: 'isSvwAssignPriceParts', label: '是否SVW指定价格散件', type: 'Boolean', width: '160', labelKey: 'SHIFOUSVWZHIDINGJIAGESANJIAN', children: [] },
-  { prop: 'quantityUnit', width: '120', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHULIANGDANWEI', '数量单位')}<br/>（UoM）` } }) }, children: [] },
-  { prop: 'unitPrice', width: '100', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('DANJIARMBUOM', '单价')}(RMB/UoM)` } }) }, children: [] },
+  { prop: 'partNumber', label: '原材料/散件描述', width: '150', labelKey: 'YUANCAILIAOSANJIANMIAOSHU', children: [] },
+  { prop: 'supplierName', label: '供应商名称', width: '110', labelKey: 'GONGYINGSHANGMINGCHENG', children: [] },
+  { prop: 'productionCountry', label: '原产国', width: '110', labelKey: 'YUANCHANGUO', children: [] },
+  { prop: 'isSvwAssignPriceParts', label: '', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('是否', '是否')}SVW<br/>${this.language('指定价格散件', '指定价格散件')}` } }) }, type: 'Boolean', width: '140', labelKey: 'SHIFOUSVWZHIDINGJIAGESANJIAN', children: [] },
+  { prop: 'quantityUnit', width: '100', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHULIANGDANWEI', '数量单位')}<br/>（UoM）` } }) }, children: [] },
+  { prop: 'unitPrice', width: '145', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('DANJIARMBUOM', '单价')}(RMB/UoM)` } }) }, children: [] },
   { prop: 'quantity', width: '100', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHULIANG', '数量')}(1..n)` } }) }, children: [] },
-  { prop: 'directMaterialCost', width: '160', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('ZHIJIEYUANCAILIAOSANJIANCHENGBEN', '直接原材料/散件成本')}<br/>（RMB/Pc.）` } }) }, children: [] },
+  { prop: 'directMaterialCost', width: '175', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('ZHIJIEYUANCAILIAOSANJIANCHENGBEN', '直接原材料/散件成本')}<br/>（RMB/Pc.）` } }) }, children: [] },
   {
-    label: '物料管理费', width: '100', labelKey: 'WULIAOGUANLIFEI', children: [
-      { prop: 'materialManageCostRate', label: '(%)', labelKey: '(%)', width: '100', children: [] },
-      { prop: 'materialManageCost', label: '(RMB/Pc.)', labelKey: '(RMB/Pc.)', width: '100', children: [] },
+    label: '物料管理费', labelKey: 'WULIAOGUANLIFEI', children: [
+      { prop: 'materialManageCostRate', label: '(%)', labelKey: '(%)', width: '110', children: [] },
+      { prop: 'materialManageCost', label: '(RMB/Pc.)', labelKey: '(RMB/Pc.)', width: '115', children: [] },
     ]
   },
-  { prop: 'materialCost', width: 'auto', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANCAILIAOSANJIANCHENGBEN', '原材料/散件成本')}<br/>（RMB/Pc.）` } }) }, children: [] },
+  { prop: 'materialCost', width: '147', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANCAILIAOSANJIANCHENGBEN', '原材料/散件成本')}<br/>（RMB/Pc.）` } }) }, children: [] },
 ]
 // 制造成本
 export const manufacturingCostTableTitle = [
   {
     label: '制造成本', labelKey: 'ZHIZAOCHENGBEN', children: [
       { prop: 'serialNum', label: '#', labelKey: '#', width: '80', children: [] },
-      { isNew: true, prop: 'manufacturingMethod', label: '制造工序', labelKey: 'ZHIZAOGONGXU', width: '160', children: [] },
+      { isNew: true, prop: 'manufacturingMethod', label: '制造工序', labelKey: 'ZHIZAOGONGXU', width: '170', children: [] },
     ]
   },
-  { prop: 'material', width: '140', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('DUIYINGYUANCAILIAOSANJIAN', '对应原材料/散件')}<br/>（Ref.-ID）` } }) }, children: [] },
-  { prop: 'machineName', width: '100', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHEBEIMINGCHENGXINGHAO', '设备名称/型号')}<br/>（Ref.-Name）` } }) }, children: [] },
-  { prop: 'specialDeviceCost', width: '100', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHANGQIDAZHONGZHUANYONGSHEBEIFEI', '上汽大众专用设备费')}<br/>（RMB）` } }) }, children: [] },
-  { prop: 'taktTime', width: '160', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHENGCHANJIEPAI', '生产节拍')}<br/>（Sec.）` } }) }, children: [] },
-  { prop: 'taktTimeNumber', width: '120', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('JIANSHUSHENGCHANJIEPAI', '件数/生产节拍')}<br/>（1..n）` } }) }, children: [] },
+  { prop: 'material', width: '135', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('DUIYINGYUANCAILIAOSANJIAN', '对应原材料/散件')}<br/>(Ref.-ID)` } }) }, children: [] },
+  { prop: 'machineName', width: '120', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHEBEIMINGCHENGXINGHAO', '设备名称/型号')}<br/>(Ref.-Name)` } }) }, children: [] },
+  { prop: 'specialDeviceCost', width: '160', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHANGQIDAZHONGZHUANYONGSHEBEIFEI', '上汽大众专用设备费')}<br/>(RMB)` } }) }, children: [] },
+  { prop: 'taktTime', width: '85', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHENGCHANJIEPAI', '生产节拍')}<br/>(Sec.)` } }) }, children: [] },
+  { prop: 'taktTimeNumber', width: '120', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('JIANSHUSHENGCHANJIEPAI', '件数/生产节拍')}<br/>(1..n)` } }) }, children: [] },
   {
-    label: '人工成本', labelKey: 'RENGONGCHENGBEN', width: '100', children: [
-      { prop: 'directLaborRate', width: '110', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('ZHIJIERENGONGFEILV', '直接人工费率')}<br/>（RMB/Hour）` } }) }, children: [] },
-      { prop: 'directLaborQuantity', width: '110', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('ZHIJIERENGONGSHULIANG', '直接人工数量')}<br/>（0..n）` } }) }, children: [] },
-    ]
-  },
-  {
-    label: '设备费', labelKey: 'SHEBEIFEI', width: '160', children: [
-      { prop: 'deviceRate', width: '160', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHEBEIFEILV', '设备费率')}<br/>（RMB/Hour）` } }) }, children: [] },
+    label: '人工成本', labelKey: 'RENGONGCHENGBEN', children: [
+      { prop: 'directLaborRate', width: '115', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('ZHIJIERENGONGFEILV', '直接人工费率')}<br/>(RMB/Hour)` } }) }, children: [] },
+      { prop: 'directLaborQuantity', width: '115', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('ZHIJIERENGONGSHULIANG', '直接人工数量')}<br/>(0..n)` } }) }, children: [] },
     ]
   },
   {
-    label: '间接制造成本', labelKey: 'JIANJIEZHIZAOCHENGBEN', width: '100', children: [
-      { prop: 'indirectManufacturingRate', label: '(%)', labelKey: '(%)', width: '100', children: [] },
+    label: '设备费', labelKey: 'SHEBEIFEI', children: [
+      { prop: 'deviceRate', width: '115', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHEBEIFEILV', '设备费率')}<br/>(RMB/Hour)` } }) }, children: [] },
+    ]
+  },
+  {
+    label: '间接制造成本', labelKey: 'JIANJIEZHIZAOCHENGBEN', children: [
+      { prop: 'indirectManufacturingRate', label: '(%)', labelKey: '(%)', width: '85', children: [] },
       { prop: 'indirectManufacturingAmount', label: '(RMB/Pc.)', labelKey: '(RMB/Pc.)', width: '100', children: [] },
     ]
   },
-  { prop: 'laborCost', width: '100', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('RENGONGCHENGBEN', '人工成本')}<br/>（RMB/Pc.）` } }) }, children: [] },
-  { prop: 'deviceCost', width: 'auto', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHEBEICHENGBEN', '设备成本')}<br/>（RMB/Pc.）` } }) }, children: [] },
+  { prop: 'laborCost', width: '110', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('RENGONGCHENGBEN', '人工成本')}<br/>(RMB/Pc.)` } }) }, children: [] },
+  { prop: 'deviceCost', width: '110', renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('SHEBEICHENGBEN', '设备成本')}<br/>(RMB/Pc.)` } }) }, children: [] },
 ]
 // 报废成本
 export const scrapCostTableTitle = [
-  { props: "id", name: "#", width: "60" },
-  { props: "amount", key: "BAOFEICHENGBEN", name: "报废成本", width: "190" },
-  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBAOFEILV', '原报废率')}(%)` } }) }, width: "110" },
-  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBAOFEILV', '现报废率')}(%)` } }) }, width: "110" },
-  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) } },
+  { props: "id", name: "#", width: "80" },
+  { props: "amount", key: "BAOFEICHENGBEN", name: "报废成本", width: "210" },
+  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBAOFEILV', '原报废率')}(%)` } }) }, width: "140" },
+  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBAOFEILV', '现报废率')}(%)` } }) }, width: "140" },
+  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) }, width: "auto" },
 ]
 // 管理费
 export const manageCostTableTitle = [
-  { props: "id", name: "#", width: "60" },
-  { props: "typeNameByLang", key: "GUANLIFEI", name: "管理费", width: "190" },
+  { props: "id", name: "#", width: "80" },
+  { props: "typeNameByLang", key: "GUANLIFEI", name: "管理费", width: "300" },
   { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBILI', '原比例')}(%)` } }) }, width: "110" },
-  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBILI', '现比例')}(%)` } }) }, width: "110" },
-  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) } },
+  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBILI', '现比例')}(%)` } }) }, width: "100" },
+  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) }, width: "auto" },
 ]
 
 // 其它费用
 export const otherCostTableTitle = [
-  { props: "id", name: "#", width: "60" },
-  { props: "itemTypeNameByLang", key: "QITAFEIYONG", name: "其他费用", width: "190" },
-  { props: "shareTotal", key: "JINE", name: "金额", width: "110" },
-  { props: "shareQuantity", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('FENTANSHULIANG', '分摊数量')}(1..n)` } }) }, width: "110" },
-  { props: "shareAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('FENTANJINE', '分摊金额')}(RMB/Pc.)` } }) } },
+  { props: "id", name: "#", width: "80" },
+  { props: "itemTypeNameByLang", key: "QITAFEIYONG", name: "其他费用", width: "210" },
+  { props: "shareTotal", key: "JINE", name: "金额", width: "140" },
+  { props: "shareQuantity", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('FENTANSHULIANG', '分摊数量')}(1..n)` } }) }, width: "140" },
+  { props: "shareAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('FENTANJINE', '分摊金额')}(RMB/Pc.)` } }) }, width: "auto" },
 ]
 // 利润
 export const profitTableTitle = [
-  { props: "id", name: "#", width: "60" },
-  { props: "typeNameByLang", key: "LIRUN", name: "利润", width: "190" },
+  { props: "id", name: "#", width: "80" },
+  { props: "typeNameByLang", key: "LIRUN", name: "利润", width: "310" },
   { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBILI', '原比例')}(%)` } }) }, width: "110" },
-  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBILI', '现比例')}(%)` } }) }, width: "110" },
-  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) } },
+  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBILI', '现比例')}(%)` } }) }, width: "100" },
+  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) }, width: "auto" },
 ]
 // 是否为“新”数据
 export const originRowClass = function ({ row }) {

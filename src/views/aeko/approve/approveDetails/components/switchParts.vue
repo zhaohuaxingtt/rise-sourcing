@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2021-10-12 21:32:21
+ * @LastEditTime: 2021-10-13 18:34:39
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -19,6 +19,7 @@
       </iSelect>
     </div>
     <tableList
+      v-loading="loading"
       lang
       class="table"
       :selection="false"
@@ -43,17 +44,20 @@
 
 <script>
 import { switchPartsTableTitle } from "../data.js";
-import { iCard, iSelect, iTableCustom } from "rise";
+import { iCard, iSelect } from "rise";
 import tableList from "rise/web/quotationdetail/components/tableList";
 import { getSwitchParts } from "@/api/aeko/approve";
 export default {
   components: {
     iCard,
     iSelect,
-    iTableCustom,
     tableList,
   },
   props:{
+    workFlowId:{
+      type: String,
+      require: true,
+    },
     tableData:{
       type: Array,
       default: ()=>{
@@ -63,40 +67,32 @@ export default {
   },
   data() {
     return {
-      test: "123",
+      loading: false,
       partsId: "",
       partsObj:{},
       tableTitle: switchPartsTableTitle,
     };
   },
   created(){
-    // this.getPartsList()
+    this.getPartsList()
+    // this.workFlowId&&this.getPartsList()
   },
   methods:{
     // 获取切换零件下拉框数据
     getPartsList() {
-      // let res = {
-      //   code: "string",
-      //   data: [
-      //     {
-      //       additionalProp1: "string",
-      //       additionalProp2: "string",
-      //       additionalProp3: "string",
-      //     },
-      //   ],
-      //   desEn: "string",
-      //   desZh: "string",
-      //   result: true,
-      // };
-      // let { data } = res;
-      getSwitchParts({workFlowId:1}).then(({data})=>{
+      this.loading = true
+      getSwitchParts({workFlowId:this.workFlowId}).then(({data})=>{
         this.partsObj = data[0];
-        this.partsId = Object.values(this.partsObj)[0]
-        this.$emit('getCbdDataQuery',this.partsId)
+        this.partsId = this.partsObj&&Object.values(this.partsObj)[0]
+        this.getCbdDataQuery()
+        this.loading = false
+      }).catch(()=>{
+        this.loading = false
       })
     },
     getCbdDataQuery(){
-      this.$emit('getCbdDataQuery',this.partsId)
+      // this.$emit('getCbdDataQuery',this.partsId)
+      this.$emit('getCbdDataQuery','1')
     }
   }
 };
