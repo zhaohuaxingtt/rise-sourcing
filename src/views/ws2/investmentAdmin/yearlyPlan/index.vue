@@ -176,7 +176,7 @@
       />
     </div>
   </div>
-  
+
 </template>
 
 <script>
@@ -757,7 +757,7 @@ export default {
   height: 94%;
   position: absolute;
   top: 0;
-  padding-top: 80px;
+  padding-top: 95px;
 
   .baApply-table{
     ::v-deep .el-input__inner{

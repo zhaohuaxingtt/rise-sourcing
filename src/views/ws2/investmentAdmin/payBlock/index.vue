@@ -5,6 +5,10 @@
  -->
 <template>
 	<div>
+<!--    <div>-->
+<!--      <span @click="toZH">中文 </span>-->
+<!--      <span @click="toEN"> 英文</span>-->
+<!--    </div>-->
 		<!-- v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD" -->
 		<iPage class="page-content" v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD">
 			<iCard id='powerBi'>
@@ -20,6 +24,7 @@
 	import changeItem from './changeItem';
 	import {powerBiUrl,averageName,supplierName} from "@/api/ws2/investmentAdmin/payBlock";
 	import * as pbi from 'powerbi-client';
+  import store from "@/store";
 	export default {
 		components: {iPage,iCard},
 		data() {
@@ -57,7 +62,12 @@
 			this.powerBiUrl()
 		},
 		methods: {
-			
+      toZH(){
+        store.state.investmentAdmin.report.setPage(process.env.VUE_APP_CHANGELANG_POWERBI_CODE_ZH);
+      },
+      toEN(){
+        store.state.investmentAdmin.report.setPage(process.env.VUE_APP_CHANGELANG_POWERBI_CODE_EN);
+      },
 			// 打开呈现对象弹窗
 			openVisible() {
 				this.visible = true
@@ -104,15 +114,16 @@
 			// 初始化页面
 			renderBi() {
 				var permissions = pbi.models.Permissions.All
-				
+				let pageName = localStorage.getItem('lang') == 'zh' ? process.env.VUE_APP_CHANGELANG_POWERBI_CODE_ZH : process.env.VUE_APP_CHANGELANG_POWERBI_CODE_EN
+
 				var config = {
 					type: 'report',
 					tokenType: pbi.models.TokenType.Embed,
 					accessToken: this.url.accessToken,
 					embedUrl: this.url.embedUrl,
 					// id: 'f6bfd646-b718-44dc-a378-b73e6b528204',
-					/*pageName: 'ReportSectioneb8c865100f8508cc533',
-					visualName: '47eb6c0240defd498d4b',
+					pageName: pageName,
+					/*visualName: '47eb6c0240defd498d4b',
 					permissions: permissions,*/
 					settings: {
 						panes: {
@@ -151,67 +162,67 @@
 
 				// Report.on will add an event handler which prints to Log window.
 				report.on("rendered", async function() {
-					console.log("Rendered");
-					//获取所有页面
-					const pages = await report.getPages();
-					let page = pages.filter(function (page) {
-							return page.isActive
-					})[0];
-
-					//获取所有视觉对象
-					const visuals = await page.getVisuals();
-					//获取单个视觉对象
-					var visual = visuals.filter(async function (visual) {
-						//56e2a71da3229e40e713
-						if(visual.name == "56e2a71da3229e40e713"){
-							console.log("表格："+visual.title);
-							//导出某个视觉对象的数据
-							var result =await visual.exportData(pbi.models.ExportDataType.Summarized);
-							console.log(result.data);
-
-
-					    var newSettings = {
-								commands: [
-										{
-											/**
-												spotlight: {
-														displayOption: models.CommandDisplayOption.Hidden
-												},
-												drill: {
-														displayOption: models.CommandDisplayOption.Hidden
-												},
-												*/
-												exportData: {
-													displayOption: pbi.models.CommandDisplayOption.Enabled
-												}
-										}
-								]
-							};
-				    	report.updateSettings(newSettings);
-					  }else{
-
-							var newSettings = {
-										commands: [
-												{
-													/**
-														spotlight: {
-																displayOption: models.CommandDisplayOption.Hidden
-														},
-														drill: {
-																displayOption: models.CommandDisplayOption.Hidden
-														},
-														*/
-														exportData: {
-															displayOption: pbi.models.CommandDisplayOption.Hidden
-														}
-												}
-										]
-							};
-							report.updateSettings(newSettings);
-					  }
-
-						return visual.title === "表格";
-				})[0];
+				// 	console.log("Rendered");
+				// 	//获取所有页面
+				// 	const pages = await report.getPages();
+				// 	let page = pages.filter(function (page) {
+				// 			return page.isActive
+				// 	})[0];
+        //
+				// 	//获取所有视觉对象
+				// 	const visuals = await page.getVisuals();
+				// 	//获取单个视觉对象
+				// 	var visual = visuals.filter(async function (visual) {
+				// 		//56e2a71da3229e40e713
+				// 		if(visual.name == "56e2a71da3229e40e713"){
+				// 			console.log("表格："+visual.title);
+				// 			//导出某个视觉对象的数据
+				// 			var result =await visual.exportData(pbi.models.ExportDataType.Summarized);
+				// 			console.log(result.data);
+        //
+        //
+				// 	    var newSettings = {
+				// 				commands: [
+				// 						{
+				// 							/**
+				// 								spotlight: {
+				// 										displayOption: models.CommandDisplayOption.Hidden
+				// 								},
+				// 								drill: {
+				// 										displayOption: models.CommandDisplayOption.Hidden
+				// 								},
+				// 								*/
+				// 								exportData: {
+				// 									displayOption: pbi.models.CommandDisplayOption.Enabled
+				// 								}
+				// 						}
+				// 				]
+				// 			};
+				//     	report.updateSettings(newSettings);
+				// 	  }else{
+        //
+				// 			var newSettings = {
+				// 						commands: [
+				// 								{
+				// 									/**
+				// 										spotlight: {
+				// 												displayOption: models.CommandDisplayOption.Hidden
+				// 										},
+				// 										drill: {
+				// 												displayOption: models.CommandDisplayOption.Hidden
+				// 										},
+				// 										*/
+				// 										exportData: {
+				// 											displayOption: pbi.models.CommandDisplayOption.Hidden
+				// 										}
+				// 								}
+				// 						]
+				// 			};
+				// 			report.updateSettings(newSettings);
+				// 	  }
+        //
+				// 		return visual.title === "表格";
+				// })[0];
 
 
 
@@ -237,7 +248,7 @@
 							);
 					}
 				});
-				
+
 				this.report=report
 				
 			},
