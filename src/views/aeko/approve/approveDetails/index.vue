@@ -8,19 +8,23 @@
 <template>
   <iPage>
     <ApprovalDetailsTopComponents/>
-     <router-view></router-view>
+    <router-view></router-view>
   </iPage>
 </template>
 
 <script>
 import {iPage} from "rise"
 import ApprovalDetailsTopComponents from "./components/ApprovalDetailsTopComponents";
+
 export default {
   components: {
     ApprovalDetailsTopComponents,
     iPage,
     //projectTop,
   },
+  created() {
+  }
+
 };
 </script>
 

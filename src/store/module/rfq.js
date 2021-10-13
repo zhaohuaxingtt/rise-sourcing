@@ -25,10 +25,14 @@ const state = {
     seriesArray: [],
     xLabelData: [],
     resChartData: []
-  }
+  },
+  partfunc:null
 
 }
 const mutations = {
+  SET_PART_PROJECT(state, data) {
+    state.partfunc = data
+  },
   SET_PENDING_PARTS_LIST(state, data) {
     state.pendingPartsList = data
   },
