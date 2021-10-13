@@ -1,80 +1,50 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-12 11:24:20
+ * @LastEditTime: 2021-10-12 19:29:07
  * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
-  <div>
+  <div class="aPriceChange">
     <iCard class="mb-20">
-      <p class="title">变动值</p>
-      <el-form inline>
-        <el-form-item label="A价变动(含分摊):">
-          <div class="price-itext">
-            <iText>{{ priceChange }}</iText>
-          </div>
-        </el-form-item>
-      </el-form>
+      <p class="title mb-20">{{ language("BIANDONGZHI", "变动值") }}</p>
+      <div class="input">
+        <span class="label"
+          >{{ language("AJIABIANDONGHANFENTAN", "A价变动(含分摊)") }}:</span
+        >
+        <iText>{{ apriceChange }}</iText>
+      </div>
     </iCard>
     <iCard class="mb-20">
+      <p class="title mb-20">
+        <span>{{ `${language("BIANDONGZHI", "变动值")} - CBD` }}</span>
+        <span class="tip ml-12">{{ language("DANWEI", "单位") }}：RMB/Pc.</span>
+      </p>
       <div>
-        <p class="title mb-20">
-          变动值-CBD <span class="small">单位：RMB/Pc.</span>
-        </p>
-        <iTableCustom
-          :data="tableData"
-          :columns="setCloum"
-          align="center"
-        ></iTableCustom>
+        <tableList
+          lang
+          class="table"
+          :selection="false"
+          :tableTitle="setCloum"
+          :tableData="tableData"
+        />
       </div>
       <hr class="divider" />
       <div>
-        <p class="title">2.1 原材料/散件成本</p>
-        <el-table :data="partsCostTableData" stripe :span-method="spanMethod">
+        <p class="title">
+          2.1 {{ language("YUANCAILIAOSANJIANCHENGBEN", "原材料/散件成本") }}
+        </p>
+        <el-table
+          :data="partsCostTableData"
+          :span-method="spanMethod"
+          :row-class-name="originRowClass"
+        >
           <el-table-column
             v-for="(item, index) in partsCostTableTitle"
             :key="index"
             :prop="item.prop"
-            :label="item.label"
-            :width="item.width"
-            :min-width="minWidth"
-            align="center"
-          >
-            <template v-if="item.children.length > 0">
-              <el-table-column
-                v-for="(child, cindex) in item.children"
-                :key="cindex"
-                :prop="child.prop"
-                :label="child.label"
-                :width="child.width"
-                align="center"
-              >
-                <template slot-scope="{ row }">
-                  <template v-if="child.isNew">
-                    <icon
-                      symbol
-                      v-if="row.isNew"
-                      class="icon"
-                      name="iconxinlingjianCBD"
-                    />
-                  </template>
-                  <template>{{ row[child.prop] }}</template>
-                </template>
-              </el-table-column>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <hr class="divider" />
-      <div>
-        <p class="title">2.2 制造成本</p>
-        <el-table :data="manufacturingCostTableData" stripe :span-method="spanMethod" :row-class-name="originRowClass">
-          <el-table-column
-            v-for="(item, index) in manufacturingCostTableTitle"
-            :key="index"
-            :prop="item.prop"
-            :label="language(item.labelKey,item.label)"
+            :label="language(item.labelKey, item.label)"
             :render-header="item.renderHeader"
             :width="item.width"
             :min-width="minWidth"
@@ -85,36 +55,80 @@
                 v-for="(child, cindex) in item.children"
                 :key="cindex"
                 :prop="child.prop"
-                :label="child.label"
+                :label="language(child.labelKey, child.label)"
                 :render-header="child.renderHeader"
                 :width="child.width"
                 align="center"
               >
-                  
                 <template slot-scope="{ row }">
-                  <template v-if="child.prop=='col2'">
+                  <template v-if="child.isNew">
                     <div class="manufacturingMethodColumn">
                       <icon
-                          symbol
-                          v-if="row.isNew"
-                          class="iconFont"
-                          name="iconxinlingjianCBD"
-                        />
+                        symbol
+                        v-if="row.partCbdType"
+                        class="iconFont"
+                        name="iconxinlingjianCBD"
+                      />
                       <div>
-                        <span>{{row.col2}}</span>
-                        <!-- <iInput v-if="(row.partCbdType == 1 || row.partCbdType == 2) && !disabled" class="input-center" v-model="row.manufacturingMethod" :class="{ changeClass: originMap[row.frontOriginProductionId ? row.frontOriginProductionId : row.originProductionId] ? (row.manufacturingMethod !== originMap[row.frontOriginProductionId ? row.frontOriginProductionId : row.originProductionId].manufacturingMethod) : false }"></iInput>
-                        <div v-else :class="{ changeClass: originMap[row.frontOriginProductionId ? row.frontOriginProductionId : row.originProductionId] ? (row.manufacturingMethod !== originMap[row.frontOriginProductionId ? row.frontOriginProductionId : row.originProductionId].manufacturingMethod) : false }">{{ row.manufacturingMethod }}</div> -->
+                        <span>{{ row[child.prop] }}</span>
                       </div>
                     </div>
                   </template>
-                  <!-- <template v-if="child.isNew">
-                    <icon
-                      symbol
-                      v-if="row.isNew"
-                      class="icon"
-                      name="iconxinlingjianCBD"
-                    />
-                  </template> -->
+                  <template v-else>{{ row[child.prop] }}</template>
+                </template>
+              </el-table-column>
+            </template>
+            <template slot-scope="{ row }">
+              <template v-if="item.type === 'Boolean'">{{
+                row[item.prop] ? "是" : "否"
+              }}</template>
+              <template v-else>{{ row[item.prop] }}</template>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <hr class="divider" />
+      <div>
+        <p class="title">2.2 {{ language("ZHIZAOCHENGBEN", "制造成本") }}</p>
+        <el-table
+          :data="manufacturingCostTableData"
+          :span-method="spanMethod"
+          :row-class-name="originRowClass"
+        >
+          <el-table-column
+            v-for="(item, index) in manufacturingCostTableTitle"
+            :key="index"
+            :prop="item.prop"
+            :label="language(item.labelKey, item.label)"
+            :render-header="item.renderHeader"
+            :width="item.width"
+            :min-width="minWidth"
+            align="center"
+          >
+            <template v-if="item.children.length > 0">
+              <el-table-column
+                v-for="(child, cindex) in item.children"
+                :key="cindex"
+                :prop="child.prop"
+                :label="language(child.labelKey, child.label)"
+                :render-header="child.renderHeader"
+                :width="child.width"
+                align="center"
+              >
+                <template slot-scope="{ row }">
+                  <template v-if="child.isNew">
+                    <div class="manufacturingMethodColumn">
+                      <icon
+                        symbol
+                        v-if="row.isNew"
+                        class="iconFont"
+                        name="iconxinlingjianCBD"
+                      />
+                      <div>
+                        <span>{{ row[child.prop] }}</span>
+                      </div>
+                    </div>
+                  </template>
                   <template v-else>{{ row[child.prop] }}</template>
                 </template>
               </el-table-column>
@@ -125,128 +139,55 @@
       <hr class="divider" />
       <div class="flexBox">
         <div>
-          <p class="title mb-20">2.3 报废成本</p>
-          <el-table :data="scrapCostTable">
-            <el-table-column
-              prop="col1"
-              label="#"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col2"
-              label="报废成本"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col3"
-              label="原报废率(%)"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col4"
-              label="现报废率(%)"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col5"
-              label="变动金额(RMB/Pc.)"
-              align="center"
-            ></el-table-column>
-          </el-table>
+          <p class="title mb-20">
+            2.3 {{ language("BAOFEICHENGBEN", "报废成本") }}
+          </p>
+          <tableList
+            lang
+            class="table"
+            :selection="false"
+            :tableTitle="scrapCostTableTitle"
+            :tableData="scrapCostTable"
+          >
+          </tableList>
         </div>
         <div>
-          <p class="title mb-20">2.4 管理费</p>
-          <el-table :data="managementFeeTable">
-            <el-table-column
-              prop="col1"
-              label="#"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col2"
-              label="管理费"
-              align="center"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="col3"
-              label="原比例(%)"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col4"
-              label="现比例(%)"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col5"
-              label="变动金额(RMB/Pc.)"
-              align="center"
-            ></el-table-column>
-          </el-table>
+          <p class="title mb-20">2.4 {{ language("GUANLIFEI", "管理费") }}</p>
+          <tableList
+            lang
+            class="table"
+            :selection="false"
+            :tableTitle="manageCostTableTitle"
+            :tableData="managementFeeTable"
+          >
+          </tableList>
         </div>
       </div>
       <hr class="divider" />
       <div class="flexBox">
         <div>
-          <p class="title mb-20">2.5 其他费用</p>
-          <el-table :data="OtherFeesTable">
-            <el-table-column
-              prop="col1"
-              label="#"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col2"
-              label="其他费用"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col3"
-              label="金额"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col4"
-              label="分摊数量(1..n)"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col5"
-              label="分摊金额(RMB/Pc.)"
-              align="center"
-            ></el-table-column>
-          </el-table>
+          <p class="title mb-20">
+            2.5 {{ language("QITAFEIYONG", "其他费用") }}
+          </p>
+          <tableList
+            lang
+            class="table"
+            :selection="false"
+            :tableTitle="otherCostTableTitle"
+            :tableData="otherFeesTable"
+          >
+          </tableList>
         </div>
         <div>
-          <p class="title mb-20">2.6 利润</p>
-          <el-table :data="ProfitTable">
-            <el-table-column
-              prop="col1"
-              label="#"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col2"
-              label="利润"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col3"
-              label="原比例(%)"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col4"
-              label="现比例(%)"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              prop="col5"
-              label="变动金额(RMB/Pc.)"
-              align="center"
-            ></el-table-column>
-          </el-table>
+          <p class="title mb-20">2.6 {{ language("LIRUN", "利润") }}</p>
+          <tableList
+            lang
+            class="table"
+            :selection="false"
+            :tableTitle="profitTableTitle"
+            :tableData="profitTable"
+          >
+          </tableList>
         </div>
       </div>
     </iCard>
@@ -254,229 +195,204 @@
 </template>
 
 <script>
-import { iCard, iText, iTableCustom, icon } from "rise";
-import { changesValueCBD, partsCostTableTitle, manufacturingCostTableTitle, originRowClass } from "../data.js";
+import { iCard, iText, icon } from "rise";
+import tableList from "rise/web/quotationdetail/components/tableList";
+import {
+  cbdSummaryTableTitle,
+  partsCostTableTitle,
+  manufacturingCostTableTitle,
+  originRowClass,
+  scrapCostTableTitle,
+  manageCostTableTitle,
+  otherCostTableTitle,
+  profitTableTitle,
+} from "../data.js";
 export default {
   components: {
     iCard,
     iText,
-    iTableCustom,
     icon,
+    tableList,
+  },
+  props: {
+    Data: {
+      type: Object,
+      default: () => {
+        return {
+          // CBD-变动值
+          cbdLevelVO: {},
+          // 切换零件
+          extSnapshotVO: {},
+          // 制造成本
+          makeCostList: [],
+          // 管理费
+          manageFeeList: [],
+          // 其它费用
+          otherFeeList: [],
+          // 利润
+          profitVO: {},
+          // 原材料/散件成本
+          rawMaterialList: [],
+          // 报废成本
+          scrapVO: {},
+        };
+      },
+    },
   },
   data() {
     return {
-      priceChange: 0,
-      setCloum: changesValueCBD,
-      tableData: [
-        {
-          isTop: true,
-          col1: "test",
-          col2: "test1",
-          col3: "test2",
-          col4: "test3",
-          col5: "test4",
-        },
-      ],
-      // 原材料/散件成本
-      partsCostTableTitle: partsCostTableTitle,
-      partsCostTableData: [
-        {
-          col1: "C1",
-          col2: "原材料",
-          col3: "PA66",
-          col4: "ABC",
-          col5: "China",
-          col6: "否",
-          col7: "KG",
-          col8: "47.00",
-          col9: "3.5",
-          col10: "34.50",
-          col11: "2.00",
-          col12: "0.69",
-          col13: "35.19",
-        },
-        {
-          col1: "C1",
-          col2: "原材料",
-          col3: "PA66",
-          col4: "ABC",
-          col5: "China",
-          col6: "否",
-          col7: "KG",
-          col8: "47.00",
-          col9: "3.5",
-          col10: "34.50",
-          col11: "2.00",
-          col12: "0.69",
-          col13: "35.19",
-          isNew: true,
-        },
-      ],
-      // 制造成本
-      manufacturingCostTableTitle: manufacturingCostTableTitle,
-      manufacturingCostTableData: [
-        {
-          col1: "P1",
-          col2: "Injection Molding",
-          col3: "C1",
-          col4: "Haitian 120T",
-          col5: "350,000",
-          col6: "30.00",
-          col7: "2",
-          col8: "25.00",
-          col9: "2",
-          col10: "120,000",
-          col11: "4.09",
-          col12: "0.02",
-          col13: "10.00",
-          col14: "10.00",
-        },
-        {
-          col1: "P1",
-          col2: "Injection Molding",
-          col3: "C1",
-          col4: "Haitian 120T",
-          col5: "350,000",
-          col6: "30.00",
-          col7: "2",
-          col8: "25.00",
-          col9: "2",
-          col10: "120,000",
-          col11: "4.09",
-          col12: "0.02",
-          col13: "10.00",
-          col14: "10.00",
-          isNew: true,
-        },
-      ],
-      // 报废成本
-      scrapCostTable: [
-        {
-          col1: "S1",
-          col2: "整体报废成本变动",
-          col3: "2.00",
-          col4: "2.00",
-          col5: "0.00",
-        },
-      ],
-      // 管理费
-      managementFeeTable: [
-        {
-          col1: "O1",
-          col2: "原材料与散件(不含SVW指定散件)管理费",
-          col3: "2.00",
-          col4: "2.00",
-          col5: "0.00",
-        },
-      ],
-      // 其它费用
-      OtherFeesTable: [
-        {
-          col1: "A1",
-          col2: "分摊开发费",
-          col3: "50,000",
-          col4: "10,000",
-          col5: "5.00",
-        },
-      ],
-      // 利润
-      ProfitTable: [
-        {
-          col1: "P1",
-          col2: "利润(不含SVW指定散件)",
-          col3: "10.00",
-          col4: "13.20",
-          col5: "0.00",
-        },
-      ],
+      partsCostTableTitle,
+      manufacturingCostTableTitle,
+      scrapCostTableTitle,
+      manageCostTableTitle,
+      otherCostTableTitle,
+      profitTableTitle,
+      apriceChange: 0,
+      setCloum: cbdSummaryTableTitle,
     };
   },
-  methods:{
+  computed: {
+    // 变动值-CBD
+    tableData() {
+      return [this.Data.cbdLevelVO];
+    },
+    // 原材料/散件成本
+    partsCostTableData() {
+      return this.Data.rawMaterialList;
+    },
+    // 制造成本
+    manufacturingCostTableData() {
+      return this.Data.makeCostList;
+    },
+    // 报废成本
+    scrapCostTable() {
+      return [this.Data.scrapVO];
+    },
+    // 管理费
+    managementFeeTable() {
+      return this.Data.manageFeeList;
+    },
+    // 其它费用
+    otherFeesTable() {
+      return this.Data.otherFeeList;
+    },
+    // 利润
+    profitTable() {
+      return [this.Data.profitVO];
+    },
+  },
+  mounted() {
+    setTimeout(() => {
+      console.log(this.Data);
+    }, 1000);
+  },
+  methods: {
     originRowClass,
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.mb-20 {
-  margin-bottom: 20px;
-}
-.title {
-  font-size: 18px;
-  font-family: Arial;
-  font-weight: bold;
-  color: #000000;
-  margin-bottom: 30px;
-  .small {
-    font-size: 14px;
+.aPriceChange {
+  ::v-deep .el-table {
+    .originRow {
+      background: #f4f8ff;
+    }
+    .isNewRow {
+      background: #ffffff;
+    }
+  }
+  .title {
+    font-size: 18px;
     font-family: Arial;
-    font-weight: 400;
-    color: #485465;
-    opacity: 0.7;
-  }
-}
-.price-itext {
-  width: 220px;
-  height: 35px;
-}
-.icon {
-  font-size: 17px;
-}
-.divider {
-  width: 100%;
-  height: 0px;
-  margin: 30px 0;
-  border: 1px dashed #bbc4d6;
-}
-
-.flexBox {
-  display: flex;
-  flex-wrap: wrap;
-
-  & > div {
-    width: 50%;
-    box-sizing: border-box;
-
-    &:nth-of-type(odd) {
-      ::v-deep .topCutLine {
-        margin-right: 2px;
-      }
-      padding-right: 55px;
-    }
-
-    &:nth-of-type(even) {
-      ::v-deep .topCutLine {
-        margin-left: 2px;
-      }
-      padding-left: 55px;
-    }
-
-    &:last-of-type:not(&:nth-of-type(even)) {
-      ::v-deep .topCutLine {
-        width: 200%;
-      }
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 30px;
+    .tip {
+      font-size: 14px;
+      font-family: Arial;
+      font-weight: 400;
+      color: #485465;
+      opacity: 0.7;
     }
   }
-}
+  .input {
+    // width: 366px;
+    width: 100%;
+    display: flex;
+    align-items: center;
 
-    .manufacturingMethodColumn {
-      position: relative;
+    .label {
+      // width: 126px;
+      font-size: 16px;
+      margin-right: 20px;
+    }
 
-      ::v-deep .iconFont {
-        width: 30px;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translate(0, -50%);
+    ::v-deep .itext {
+      width: 220px;
+    }
+  }
+  .iconFont-xin {
+    font-size: 17px;
+  }
+  .divider {
+    width: 100%;
+    height: 0px;
+    margin: 30px 0;
+    border: 1px dashed #bbc4d6;
+  }
 
-        svg {
-          vertical-align: middle;
-          float: left;
+  .flexBox {
+    display: flex;
+    flex-wrap: wrap;
+
+    & > div {
+      width: 50%;
+      box-sizing: border-box;
+
+      &:nth-of-type(odd) {
+        ::v-deep .topCutLine {
+          margin-right: 2px;
+        }
+        padding-right: 55px;
+      }
+
+      &:nth-of-type(even) {
+        ::v-deep .topCutLine {
+          margin-left: 2px;
+        }
+        padding-left: 55px;
+      }
+
+      &:last-of-type:not(&:nth-of-type(even)) {
+        ::v-deep .topCutLine {
+          width: 200%;
         }
       }
-
-      & > div:not(.iconFont) {
-        padding-left: 40px;
-      }
     }
+  }
+
+  .manufacturingMethodColumn {
+    position: relative;
+
+    ::v-deep .iconFont {
+      width: 30px;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translate(0, -50%);
+      font-size: 12px;
+    }
+
+    & > div:not(.iconFont) {
+      padding-left: 40px;
+    }
+  }
+  .mb-20 {
+    margin-bottom: 20px;
+  }
+  .ml-12 {
+    margin-left: 12px;
+  }
+}
 </style>

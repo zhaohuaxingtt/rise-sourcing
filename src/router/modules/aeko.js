@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-10-08 10:15:49
+ * @LastEditTime: 2021-10-13 15:18:18
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -117,6 +117,15 @@ export default [
             component: () => import("@/views/aeko/approve/approveList"),
           },
           {
+            path: "explainattach",
+            name: "aekoApprove-list",
+            meta: {
+              title: "AEKO-解释附件",
+              subMenuType: 2 // 区分解释附件的子菜单
+            },
+            component: () => import("@/views/aeko/approve/approveList/explainAttach"),
+          },
+          {
             path: "approvelistcsf",
             name: "aekoApprove-listcsf",
             meta: {
@@ -137,8 +146,9 @@ export default [
         redirect: "/aeko/AEKOApprovalDetails/Approvalform",
         children: [
           {
-            path: "Approvalform",
+            path: 'Approvalform',
             name: "Approvalform",
+            prop:true,
             meta: {
               title: "AEKO-审批单",
             },

@@ -4,21 +4,21 @@
       <div class="margin-bottom20">
         <span class="card-title">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
         <div class="floatright">
-          <i-button medium>确认审批</i-button>
+          <i-button v-show="pageCanOption" medium>确认审批</i-button>
         </div>
       </div>
-      <el-table :data="approveList" stripe>
+      <el-table :data="auditItems" stripe>
         <el-table-column
             label="专业科室"
             align="center"
             width="150"
-            prop="keshi">
+            prop="linieDeptName">
         </el-table-column>
         <el-table-column
             label="采购员"
             align="center"
             width="150"
-            prop="name">
+            prop="linieName">
         </el-table-column>
         <el-table-column
             label="批准"
@@ -62,20 +62,20 @@
             <span class="custom-title">审批意见</span>
           </template>
           <template slot-scope="scope">
-            <i-input v-if="approvalComments(scope.row)" v-model="scope.row.approvalComments"></i-input>
-            <span v-else>{{ scope.row.approvalComments }}</span>
+            <i-input v-if="approvalComments(scope.row)" v-model="scope.row.auditOpinion"></i-input>
+            <span v-else>{{ scope.row.auditOpinion }}</span>
           </template>
 
         </el-table-column>
         <el-table-column
             label="审批人解释"
             align="center"
-            prop="explain">
+            prop="applicantExplain">
         </el-table-column>
         <el-table-column
             label="解释附件"
             align="center"
-            prop="explainAttachment">
+            prop="explainFile">
         </el-table-column>
       </el-table>
     </i-card>
@@ -84,10 +84,13 @@
 </template>
 
 <script>
-import {iInput, iCard,  icon, iButton} from "rise"
+import {iInput, iCard, icon, iButton} from "rise"
 
 export default {
   name: "AEKOApprovalComponents",
+  props: {
+    auditItems: {type: Array, default: () => []},
+  },
   components: {
     iCard,
     iButton,
@@ -95,51 +98,26 @@ export default {
     iInput,
   },
   data() {
-    return {
-      //审批列表数据
-      approveList: [
-        {
-          id: '1',
-          keshi: 'CSP1',
-          name: '张三',
-          approvalStatus: 1,
-          approvalComments: '同意',
-          explain: '',
-          explainAttachment: ''
-        },
-        {
-          id: '2',
-          keshi: 'CSP2',
-          name: '李四',
-          approvalStatus: 2,
-          approvalComments: '拒绝',
-          explain: '',
-          explainAttachment: ''
-        },
-        {
-          id: '3',
-          keshi: 'CSP3',
-          name: '王五',
-          approvalStatus: 3,
-          approvalComments: '补充材料',
-          explain: '',
-          explainAttachment: ''
-        }
-      ],
-
+    return {}
+  },
+  computed: {
+    pageCanOption: function () {
+      return this.$store.getters.getOptionAEKOApprove == 1
     }
   },
   methods: {
     calculateSelected(row, state) {
-      return row.approvalStatus == state;
+      return row.approvalResult == state;
     },
     //审批意见状态
     approvalComments(row) {
-      return row.approvalStatus == 3
+      return row.approvalResult == 3
     },
     changeStatus(row, state) {
-      if(row.approvalStatus!=state){
-         row.approvalStatus=state
+      if(this.pageCanOption){
+        if (row.approvalResult != state) {
+          row.approvalResult = state
+        }
       }
     }
   }

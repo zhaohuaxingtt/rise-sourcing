@@ -1,14 +1,14 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-07-08 17:45:05
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-13 12:36:44
+ * @LastEditors: Hao,Jiang
  * @Description: part Infomation
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/partInfomation.vue
 -->
 <template>
   <div class="caexpan-card">
-    <div class="tit">3 Part infomation</div>
+    <div class="tit">3 Part Infomation</div>
     <div class="caexpan-card-body">
       <el-table
         fit
@@ -37,7 +37,7 @@
         <el-table-column
           align='center'
           prop="eimzl"
-          label="Einzel/ZSB">
+          label="Einzel/ZSB.">
         </el-table-column>
         <!-- 横向排列 重复一遍 -->
         <el-table-column
@@ -58,7 +58,7 @@
         <el-table-column
           align='center'
           prop="eimzl1"
-          label="Einzel/ZSB">
+          label="Einzel/ZSB.">
         </el-table-column>
       </el-table>
     </div>

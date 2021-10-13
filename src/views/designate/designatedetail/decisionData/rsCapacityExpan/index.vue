@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-06 22:11:41
- * @LastEditTime: 2021-07-23 15:37:26
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-13 12:39:32
+ * @LastEditors: Hao,Jiang
  * @Description: 决策资料 - 扩产能
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/index.vue
 -->
@@ -20,11 +20,12 @@
     <ecoAssessment :data="assesmentList" :timeList="yearList" class="margin-top20" />
     <!-- footer -->
     <div class="caexpan-footer">
-      <span><strong>{{language('TOTALINVESTMENTVAT','Total Investment(Excel VAT)不含税')}}：</strong>
-        {{language('TOTALINVESTMENTVATINFO','小于100万，签到CS,大于100万，签到M')}}
+      <span><strong>{{language('TOTALINVESTMENTVAT','Total investment(Excl VAT)不含税')}}：</strong>
+        <!-- {{language('TOTALINVESTMENTVATINFO','小于100万，签到CS,大于100万，签到M')}} -->
       </span>
       <span><strong>Developing period：</strong>
-        {{language('DEVELOPINGPERIODINFO','研发周期，系统不管，单位是周')}}
+      <span class="caexpan-content"></span>
+        <!-- {{language('DEVELOPINGPERIODINFO','研发周期，系统不管，单位是周')}} -->
       </span>
     </div>
     <div class="caexpan-sign margin-top20">
@@ -153,6 +154,10 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .caexpan-content {
+      display: inline-block;
+      width: 250px;
+    }
   }
   .caexpan-sign {
     overflow: hidden;

@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-28 14:01:48
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-09 10:28:29
+ * @LastEditTime: 2021-10-11 17:29:15
  * @Description: 审批记录
  */
 import axios from '@/utils/axios'
@@ -21,6 +21,15 @@ export function aekoAuditSupplementalresult(data) {
 export function findHistoryByAeko(data) {
   return approve({
     url: `/aeko/findHistoryByAeko`,
+    method: 'POST',
+    data
+  })
+}
+
+// 提交审批记录
+export function submitForApproval(data) {
+  return requst({
+    url: `aeko/audit/file/submitForApproval`,
     method: 'POST',
     data
   })
