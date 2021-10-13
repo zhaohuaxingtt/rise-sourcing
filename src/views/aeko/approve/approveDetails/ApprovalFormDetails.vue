@@ -1,8 +1,8 @@
 <!--审批单--->
 <template>
   <div>
-    <AEKOApprovalComponents/>
-    <CoverStatementComponents class="margin-top20"/>
+    <AEKOApprovalComponents :audit-items="auditItems" :transmit-obj="transmitObj" />
+    <CoverStatementComponents class="margin-top20" :audit-cover="auditCover" />
     <RecommendationTablePendingApprovalComponents class="margin-top20"/>
   </div>
 </template>
@@ -23,17 +23,18 @@ export default {
       auditCover: [],//封面数据集合
       auditContents: [],//推荐表集合
       auditContentStatus: '',//推荐表状态
+      transmitObj: {},
+      aekoApprovalDetails: {},
     }
   },
   created() {
-    let obj=JSON.parse(sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM'))
-
-    console.log('obj传递至',obj)
+    this.transmitObj = JSON.parse(sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM'))
+    this.aekoApprovalDetails = this.transmitObj.aekoApprovalDetails
+    this.loadAKEOApprovalForm()
   },
   methods: {
     loadAKEOApprovalForm() {
-      let queryParams = {aekoAuditType: '', workFlowIds: []}
-      queryAKEOApprovalForm().then(res => {
+      queryAKEOApprovalForm(this.aekoApprovalDetails.aekoAuditType,this.aekoApprovalDetails.workflowIds).then(res => {
         if (res.code == 200) {
           this.auditItems = res.data.auditItems
           this.auditCoverStatus = res.data.auditCoverStatus
