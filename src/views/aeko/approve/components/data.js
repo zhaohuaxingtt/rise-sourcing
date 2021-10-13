@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-13 14:35:27
+ * @LastEditTime: 2021-10-13 15:32:56
  * @Description: 
  */
 
@@ -96,6 +96,33 @@ export const SUBMENU = [
     url: '/aeko/approve',
     activePath: 'projectoverview',
     key: 'LK_AEKOCHAKAN'
+  },
+]
+// 主菜单
+export const ATTACHSUBMENU = [
+  {
+    value: 1,
+    name: '审批单',
+    message: 0,
+    url: '/aeko/AEKOApprovalDetails/Approvalform',
+    activePath: 'Approvalform',
+    key: 'LK_AEKOSHENPIDAN'
+  },
+  {
+    value: 2,
+    name: 'CBD汇总',
+    message: 0,
+    url: '/aeko/AEKOApprovalDetails/CBDSummary',
+    activePath: 'CBDSummary',
+    key: 'LK_CBDHUIZONG'
+  },
+  {
+    value: 3,
+    name: '审批附件',
+    message: 0,
+    url: '/aeko/approve/explainattach',
+    activePath: 'explainattach',
+    key: 'LK_AEKO_SHENPIFUJIAN'
   },
 ]
 
