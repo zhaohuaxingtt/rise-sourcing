@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-13 14:59:13
+ * @LastEditTime: 2021-10-13 16:38:17
  * @Description: 解释附件查看列表
 -->
 <template>
@@ -52,6 +52,7 @@ import {explainAttachTableTitle as tableTitle} from '../components/data'
 import tablelist from 'rise/web/components/iFile/tableList'; 
 import {iCard, iSelect, iPagination, icon, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
+// 解释附件、审批附件查询，审批附件带taskId
 import {
   getAuditFilePage,
 } from '@/api/aeko/detail/approveAttach'
@@ -97,12 +98,13 @@ export default {
       const requirementAekoId = this.$route.query.requirementAekoId || ''
       const aekoManageId = this.$route.query.aekoManageId || ''
       const linieId = this.$route.query.linieId || ''
+      const taskId = this.$route.query.taskId || ''
       const form = this.$refs.search.form || {}
       const parmas = Object.assign({
         linieId: linieId || '',
 				aekoNum: requirementAekoId,
 				manageId: Number(aekoManageId) || '',
-				taskId: 0,
+				taskId: taskId || '',
         current: this.page.currPage,
         size: this.page.pageSize
       },form)
