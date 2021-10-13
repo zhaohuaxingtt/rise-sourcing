@@ -471,9 +471,9 @@ export default {
                       planSystemNextBacklog, planSystemNextSecond, planSystemNextFirst
                     } = resData;
                     if(params.name == _this.vereceive.year){ //  当年
-                      return (planSystemCurrentBacklog + planSystemCurrentSecond + planSystemCurrentFirst).toFixed(2);
+                      return (Number(planSystemCurrentBacklog) + Number(planSystemCurrentSecond) + Number(planSystemCurrentFirst)).toFixed(2);
                     }else{
-                      return (planSystemNextBacklog + planSystemNextSecond + planSystemNextFirst).toFixed(2);
+                      return (Number(planSystemNextBacklog) + Number(planSystemNextBacklog) + Number(planSystemNextFirst)).toFixed(2);
                     }
                   }
                 }
@@ -504,9 +504,9 @@ export default {
                   formatter: function (params){
                     const { planManualCurrentRisk, planManualCurrent, planManualNextRisk, planManualNext } = resData;
                     if(params.name == _this.vereceive.year){ //  当年
-                      return (planManualCurrentRisk + planManualCurrent).toFixed(2);
+                      return (Number(planManualCurrentRisk) + Number(planManualCurrent)).toFixed(2);
                     }else{
-                      return (planManualNextRisk + planManualNext).toFixed(2);
+                      return (Number(planManualNextRisk) + Number(planManualNext)).toFixed(2);
                     }
                   }
                 }
