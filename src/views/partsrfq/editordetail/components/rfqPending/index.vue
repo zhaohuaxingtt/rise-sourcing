@@ -19,7 +19,7 @@ import BDL from "./components/BDL";
 import supplierScore from "./components/supplierScore";
 import moldBudgetApplication from "./components/moldBudgetApplication";
 import technicalSeminar from "./components/technicalSeminar";
-
+import inquiryManagement from 'rise/web/inquiryManagement';
 export default {
   components: {
     iTabsList,
@@ -27,7 +27,8 @@ export default {
     BDL,
     supplierScore,
     moldBudgetApplication,
-    technicalSeminar
+    technicalSeminar,
+    inquiryManagement
   },
   data() {
     return {
@@ -74,7 +75,18 @@ export default {
   methods: {
     handleTabClick(target) {
       this.activityTabIndex = target.index
-    }
+    },
+    updateTabs(parmras){
+      if(parmras.currentRounds > 0){
+        this.tabList.push(        {
+          index: '5',
+          label: '询价管理',
+          component: 'inquiryManagement',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE',
+          key: 'XUNJIAGUANLI'
+        })
+      }
+    },
   }
 };
 </script>
