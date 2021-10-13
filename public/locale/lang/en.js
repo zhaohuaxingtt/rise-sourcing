@@ -934,15 +934,15 @@
         'LK_SHANGBANNIANSOPFUKUANDUIBI': 'SOP in 1~6 Month Payment',   //  上半年SOP付款⽐
         'LK_XIABANNIANSOPFUKUANDUIBI': 'SOP in 7-12 Month Payment',   //  下半年SOP付款⽐
         'LK_SOPSHIJIAN': 'SOP时间', //  SOP时间
-        'LK_YUSUANJINE': '预算⾦额',    //  预算⾦额
-        'LK_BMJINE': 'BM金额',  //  BM金额
-        'LK_YIFUKUANJINEWANGNIAN': '已付款⾦额-往年',   //  已付款⾦额-往年
-        'LK_YIFUKUAIJINEDANGNIAN': '已付款⾦额-当年',   //  已付款⾦额-当年
-        'LK_JIHUAFUKUANDANGNIAN': '计划付款-当年', // 计划付款-当年
-        'LK_JIHUAFUKUANCINIAN': '计划付款-次年', // 计划付款-次年
-        'LK_SOPFUKUANBI': 'SOP付款比',  //  SOP付款比
+        'LK_YUSUANJINE': 'Budget',    //  预算⾦额
+        'LK_BMJINE': 'BM Amount',  //  BM金额
+        'LK_YIFUKUANJINEWANGNIAN': 'Finished-Past Year',   //  已付款⾦额-往年
+        'LK_YIFUKUAIJINEDANGNIAN': 'Finished-This Year',   //  已付款⾦额-当年
+        'LK_JIHUAFUKUANDANGNIAN': 'Payment Plan-This Year', // 计划付款-当年
+        'LK_JIHUAFUKUANCINIAN': 'Payment Plan-Next Year', // 计划付款-次年
+        'LK_SOPFUKUANBI': 'SOP Payment Percentage',  //  SOP付款比
         'LK_XIANGMUCAIGOUYUAN': '项目采购员',   //  项目采购员
-        'LK_XITONGJISUAN': '系统计算',  //  系统计算
+        'LK_XITONGJISUAN': 'Project Payment Detail',  //  系统计算
         'LK_RENMINBI': '人民币',    //  人民币
         'LK_BUHANSUI': '不含税',    //  不含税
         'LK_QINGXUANZHE': '请先选择',   //  请先选择

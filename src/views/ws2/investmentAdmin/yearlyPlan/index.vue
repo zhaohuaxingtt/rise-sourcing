@@ -47,9 +47,10 @@
       <Popup :visible="systemVisible" @changeLayer="() => this.systemVisible = false" :title="$t('LK_XITONGJISUAN')">
         <template slot="btns">
           <div class="btns-txt">
-            <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>
-            <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>
-            <span>{{$t('LK_BUHANSUI')}}</span>
+            <span>{{ $t('LK_HUOBIRENMINBI') }}</span>
+<!--            <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>-->
+<!--            <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>-->
+<!--            <span>{{$t('LK_BUHANSUI')}}</span>-->
           </div><!-- 货币：人民币  |  单位：百万元  |  不含税  -->
           <iButton @click="downloadExport">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
         </template>
@@ -127,9 +128,10 @@
           </div>
         </template>
         <div class="btns-txt manual-txt"><!-- 货币：人民币  |  单位：百万元  |  不含税  -->
-          <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>
-          <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>
-          <span>{{$t('LK_BUHANSUI')}}</span>
+          <span>{{ $t('LK_HUOBIRENMINBI') }}</span>
+<!--          <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>-->
+<!--          <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>-->
+<!--          <span>{{$t('LK_BUHANSUI')}}</span>-->
         </div>
         <div class="manual-content">
           <div class="content-l">
