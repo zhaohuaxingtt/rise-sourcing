@@ -133,13 +133,13 @@ export default [
         meta: {
           title: 'AEKO-审批详情'
         },
-        props: true,
         component: () => import("@/views/aeko/approve/approveDetails"),
         redirect: "/aeko/AEKOApprovalDetails/Approvalform",
         children: [
           {
-            path: "Approvalform",
+            path: 'Approvalform',
             name: "Approvalform",
+            prop:true,
             meta: {
               title: "AEKO-审批单",
             },

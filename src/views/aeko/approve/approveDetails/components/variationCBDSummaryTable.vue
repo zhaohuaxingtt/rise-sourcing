@@ -1,20 +1,32 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-12 08:59:13
+ * @LastEditTime: 2021-10-12 21:31:34
  * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
   <div>
     <iCard class="mb-16">
-      <p class="title">变动值CBD - 汇总表</p>
-      <el-table :data="tabledata" stripe :span-method="spanMethod">
+      <p class="title">
+        {{
+          `${language("BIANDONGZHI", "变动值")}CBD - ${language(
+            "HUIZONGBIAO",
+            "汇总表"
+          )}`
+        }}
+      </p>
+      <el-table
+        :data="tableData"
+        :span-method="spanMethod"
+        :row-class-name="totalRowClass"
+      >
         <el-table-column
           v-for="(item, index) in SummaryTitle"
           :key="index"
           :prop="item.prop"
-          :label="item.label"
+          :label="language(item.labelKey, item.label)"
+          :render-header="item.renderHeader"
           :width="item.width"
           align="center"
         >
@@ -23,29 +35,27 @@
               v-for="(child, cindex) in item.children"
               :key="cindex"
               :prop="child.prop"
-              :label="child.label"
+              :label="language(child.labelKey, child.label)"
               :width="child.width"
               align="center"
             ></el-table-column>
           </template>
           <template slot-scope="{ row }">
-            <template v-if="item.prop == 'col1'">
-              <div v-if="row.total" class="center-align">
+            <template v-if="item.prop == 'index'">
+              <div v-if="row.total != undefined" class="center-align">
                 <span>TOTAL</span>
               </div>
               <div v-else>
-                <span>{{ row.col1 }}</span>
+                <span>{{ row[item.prop] }}</span>
               </div>
             </template>
-            <template v-else-if="item.prop == 'col2'">
-              <template v-if="row.total">
-                <div class="end-align">
-                  <span>{{ row.total }}</span>
-                </div>
-              </template>
-              <template v-else>
-                {{ row.col2 }}
-              </template>
+            <template v-else-if="item.prop == 'partNum'">
+              <div v-if="row.total != undefined" class="end-align">
+                <span>{{ row.total }}</span>
+              </div>
+              <div v-else>
+                {{ row[item.prop] }}
+              </div>
             </template>
             <template v-else>
               {{ row[item.prop] }}
@@ -54,7 +64,10 @@
         </el-table-column>
       </el-table>
     </iCard>
-    <switchParts />
+    <switchParts
+      :tableData="switchPartsTable"
+      @getCbdDataQuery="getCbdDataQuery"
+    />
     <iTabsList
       class="margin-top20"
       type="card"
@@ -72,11 +85,11 @@
           <component
             :ref="tab.name"
             :is="component"
+            v-loading="loading"
             v-for="(component, $componentIndex) in tab.components"
             :class="$componentIndex !== 0 ? 'margin-top20' : ''"
+            :Data="aPriceChangeData"
             :key="$componentIndex"
-            :partInfo="partInfo"
-            :basicInfo="basicInfo"
             :disabled="disabled"
           />
         </template>
@@ -93,7 +106,8 @@ import mouldInvestmentChange from "./mouldInvestmentChange";
 import developmentFee from "./developmentFee";
 import damages from "./damages";
 import sampleFee from "./sampleFee";
-import { SummaryTableTitle } from "../data.js";
+import { SummaryTableTitle, totalRowClass } from "../data.js";
+import { alterationCbdSummary, cbdDataQuery } from "@/api/aeko/approve";
 export default {
   components: {
     iCard,
@@ -108,12 +122,14 @@ export default {
   },
   data() {
     return {
+      loading:false,
       SummaryTitle: SummaryTableTitle,
       defaultTab: "0",
       partInfo: {},
       basicInfo: {},
       disabled: true,
       currentTab: "aPriceChange",
+      aPriceChangeData: {},
       tabs: [
         {
           label: "A价变动(含分摊)",
@@ -134,104 +150,42 @@ export default {
           label: "开发费",
           name: "developmentFee",
           key: "KAIFAFEI",
-          components: ["developmentFee"],
+          // components: ["developmentFee"],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_KAIFAFEI|开发费",
         },
         {
           label: "终⽌费",
           name: "damages",
           key: "ZHONGZHIFEI",
-          components: ["damages"],
+          // components: ["damages"],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_ZHONGZHIFEI|终⽌费",
         },
         {
           label: "样件费",
           name: "sampleFee",
           key: "YANGJIANFEI",
-          components: ["sampleFee"],
+          // components: ["sampleFee"],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_YANGJIANFEI|样件费",
         },
       ],
-      tabledata: [
-        {
-          col1: "1",
-          col2: "A23D654321",
-          col3: "2.1 原材料/散件成本",
-          col4: "",
-          col5: "A23D654321",
-          col6: "10.0000",
-          col7: "件",
-          col8: "2.0000",
-          col9: "20.0000",
-          col10: "A23D654321",
-          col11: "9.0000",
-          col12: "件",
-          col13: "2.0000",
-          col14: "18.0000",
-          col15: "2.0000",
-        },
-        {
-          col1: "2",
-          col2: "A23D654321",
-          col3: "2.1 原材料/散件成本",
-          col4: "",
-          col5: "A23D654321",
-          col6: "10.0000",
-          col7: "件",
-          col8: "2.0000",
-          col9: "20.0000",
-          col10: "A23D654321",
-          col11: "9.0000",
-          col12: "件",
-          col13: "2.0000",
-          col14: "18.0000",
-          col15: "2.0000",
-        },
-        {
-          col1: "3",
-          col2: "A23D654321",
-          col3: "2.1 原材料/散件成本",
-          col4: "",
-          col5: "A23D654321",
-          col6: "10.0000",
-          col7: "件",
-          col8: "2.0000",
-          col9: "20.0000",
-          col10: "A23D654321",
-          col11: "9.0000",
-          col12: "件",
-          col13: "2.0000",
-          col14: "18.0000",
-          col15: "2.0000",
-        },
-        {
-          col1: "TOTAL",
-          col2: "RMB 2.0000",
-          col3: "",
-          col4: "",
-          col5: "",
-          col6: "",
-          col7: "",
-          col8: "",
-          col9: "",
-          col10: "",
-          col11: "",
-          col12: "",
-          col13: "",
-          col14: "",
-          col15: "",
-          total: "RMB 2.0000",
-        },
-      ],
+      switchPartsTable: [],
+      tableData: [],
+      workFlowId: "",
+      quotationId: "",
     };
   },
+  mounted() {
+    // this.getTableData();
+    // this.getCbdDataQuery();
+  },
   methods: {
+    totalRowClass,
     spanMethod({ row, columnIndex }) {
       if (row.total) {
         if (!columnIndex) {
           return [1, 1];
         } else if ((columnIndex = 1)) {
-          return [1, Object.keys(row).length - 2];
+          return [1, 14];
         } else {
           return [0, 0];
         }
@@ -241,10 +195,73 @@ export default {
 
     // 页签切换
     tabChange() {
+      this.loading = true
       this.$nextTick(() => {
+        setTimeout(()=>{
+          this.loading=false
+        },2000)
         const component = this.$refs[this.currentTab][0];
         if (typeof component.init === "function") component.init();
       });
+    },
+    // 获取汇总表数据
+    getTableData() {
+      alterationCbdSummary({workFlowId:1}).then(({data})=>{
+        let obj = {};
+        data.forEach((item, index) => {
+          item.index = index;
+          obj[item.partNum]
+            ? (obj[item.partNum] += item.alteration)
+            : (obj[item.partNum] = item.alteration);
+        });
+        Object.keys(obj).forEach((key) => {
+          let item = {
+            index: "",
+            partNum: key,
+            total: "RMB " + (+obj[key]).toFixed(4),
+          };
+          data.push(item);
+        });
+        this.tableData = data.sort((a, b) => a.partNum - b.partNum);
+      })
+    },
+    // 获取其它数据
+    getCbdDataQuery(partsId) {
+      this.loading = true
+      setTimeout(()=>{
+        this.loading = false
+      },2000)
+      let obj=JSON.parse(sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM'))
+      let workFlowId = obj.workFlowId;
+      let quotationId = partsId;
+      cbdDataQuery({workFlowId, quotationId}).then(({data})=>{
+        this.switchPartsTable = [data.extSnapshotVO];
+        this.aPriceChangeData = data;
+        this.loading = false
+      })
+      // let res = {
+      //   data: {
+      //     cbdId: 0,
+      //     // CBD-变动值
+      //     cbdLevelVO: {},
+      //     // 切换零件
+      //     extSnapshotVO: {},
+      //     // 制造成本
+      //     makeCostList: [],
+      //     // 管理费
+      //     manageFeeList: [],
+      //     // 其它费用
+      //     otherFeeList: [],
+      //     // 利润
+      //     profitVO: {},
+      //     quotationId: 0,
+      //     // 原材料/散件成本
+      //     rawMaterialList: [],
+      //     // 报废成本
+      //     scrapVO: {},
+      //     workFlowId: 0,
+      //   },
+      // };
     },
   },
 };
@@ -280,6 +297,15 @@ export default {
   .end-align {
     padding: 0 28px 0;
     text-align: right;
+  }
+  .totalRow {
+    background: #f7faff;
+  }
+  .originRow {
+    background: #f4f8ff;
+  }
+  .isNewRow {
+    background: #ffffff;
   }
 }
 .i-select {

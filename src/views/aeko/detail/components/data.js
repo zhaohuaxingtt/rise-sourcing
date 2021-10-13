@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-10-12 16:44:49
+ * @LastEditTime: 2021-10-13 09:52:19
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -72,7 +72,7 @@ export const dosageDialogTableTitle = [
 // 审批附件表头
 export const approveAttachTableTitle = [
   { props: "fileName", name: "文件名", key: "LK_WENJIANMING", tooltip: true },
-  { props: "fileDescribe", name: "文件描述", key: "LK_WENJIANMIOASHU", tooltip: true },
+  { props: "fileDescribe", name: "文件描述", key: "LK_WENJIANMIOASHU", tooltip: true, width: 450, _headerRequiredRight: true },
   { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
   { props: "createDate", name: "上传日期", key: "SHANGCHUANRIQI", tooltip: true },
   { props: "userName", name: "上传人", key: "SHANGCHUANREN", tooltip: true },
@@ -85,8 +85,8 @@ export const approveReCordTableTitle = [
   { props: "assignedDeptFullCode", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
   { props: "operation", name: "操作", key: "CAOZUO", tooltip: true },
   { props: "assigneeName", name: "操作人", key: "CAOZUOREN", tooltip: true },
-  { props: "endTime", name: "操作时间", key: "LK_UpdateDate", tooltip: true },
-  { props: "comment", name: "审批意见/申请人解释", key: "SHENPIYIJIANANDJIESHI", tooltip: true, width: 250},
+  { props: "endTime", name: "操作时间", key: "LK_UpdateDate", tooltip: true, width: 150 },
+  { props: "comment", name: "审批意见/申请人解释", key: "SHENPIYIJIANANDJIESHI", tooltip: true, width: 250, _headerRequiredRight: true},
   // { props: "perCarDosage", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true },
   { props: "attach", name: "解释附件", key: "JIESHIFUJIAN", tooltip: true },
 ]
