@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-13 15:38:26
+ * @LastEditTime: 2021-10-14 10:13:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -265,7 +265,7 @@
     <!-- 指定投资⻋型项⽬ -->
     <investCarTypeProDialog v-if="investCarTypeProVisible" :multipleSelection="multipleSelection" :dialogVisible="investCarTypeProVisible" @changeVisible="changeVisible" @refresh="init"/>
     <!-- 价格轴 -->
-    <priceAxisDialog v-if="priceAxisVisible" :dialogVisible="priceAxisVisible" @changeVisible="changeVisible"/>
+    <priceAxisDialog v-if="priceAxisVisible" :dialogVisible="priceAxisVisible" :priceAxisRow="priceAxisRow" @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -326,6 +326,7 @@ export default {
       dosageDialogVisible: false,
       investCarTypeProVisible: false,
       priceAxisVisible: false,
+      priceAxisRow:{},
       submitLoading: false,
       debouncer: null,
       declareSendSupplier:false,
@@ -838,8 +839,9 @@ export default {
     },
 
     // 查看价格轴弹窗
-    showPriceAxis(){
+    showPriceAxis(row={}){
       this.priceAxisVisible = true;
+      this.priceAxisRow = row;
     },
 
     // 显示隐藏表头
