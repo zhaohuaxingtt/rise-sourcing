@@ -24,7 +24,7 @@ export const partsTableTitle = [
 export const partsDialogTableTitle = [
   { props: 'partsId', name: '零件号', key: 'LINGJIANHAO', tooltip: true },
   { props: 'fsId', name: 'FS号', key: 'LK_FSHAO', tooltip: true },
-  { props: 'rfqId', name: 'RFQ号', key: 'LK_RFQHAO', tooltip: true },
+  { props: 'rfqId', name: 'RFQ号', key: 'RFQHAO', tooltip: true },
   { props: 'carTypeProj', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG', tooltip: true },
   { props: 'factory', name: '工厂', key: 'TPZS.GC', tooltip: true },
   { props: 'fixedPointStatus', name: '状态', key: 'LK_ZHUANGTAI', tooltip: true },
