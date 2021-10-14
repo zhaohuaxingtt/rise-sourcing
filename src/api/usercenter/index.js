@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-03-18 20:15:17
- * @LastEditTime: 2021-08-31 15:43:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-14 11:11:53
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\api\usercenter\index.js
+ * @FilePath: \front-web\src\api\usercenter\index.js
  */
 import axios from '@/utils/axios'
 
@@ -70,7 +70,7 @@ export function getSapUserPageList(data){
     })
 }
 export function sendPermissonKey(parmars){ //待开雄开发...
-    return require({
+    return requst1({
         url:'/web/resource/importBatch',
         method:'POST',
         data:parmars
