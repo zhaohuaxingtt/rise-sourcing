@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-09-27 10:21:20
+ * @LastEditTime: 2021-10-13 15:50:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -476,7 +476,7 @@ export const rateTitelList = {type:'',props:'',label:'',i18n:'',width:'50',toolt
 
 export const supplierTile = [
   {type:'',props:'supplierName',label:'Supplier',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'rating',label:'Ratings',i18n:'',width:'',tooltip:false,list:[]},
+  {type:'',props:'rating',label:'Ratings',i18n:'',width:'150',tooltip:false,list:[]},
 ]
 /**
  * @description: 动态拿到表头factory，在供应商横轴中，从第一条到最后一条里面包含的factoryList实际上是一样的。

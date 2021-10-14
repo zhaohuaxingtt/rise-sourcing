@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-12 19:29:07
+ * @LastEditTime: 2021-10-13 18:32:32
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -39,6 +39,7 @@
           :data="partsCostTableData"
           :span-method="spanMethod"
           :row-class-name="originRowClass"
+          :empty-text="language('ZANWUSHUJU', '暂无数据')"
         >
           <el-table-column
             v-for="(item, index) in partsCostTableTitle"
@@ -46,8 +47,7 @@
             :prop="item.prop"
             :label="language(item.labelKey, item.label)"
             :render-header="item.renderHeader"
-            :width="item.width"
-            :min-width="minWidth"
+            :min-width="item.width"
             align="center"
           >
             <template v-if="item.children.length > 0">
@@ -57,7 +57,7 @@
                 :prop="child.prop"
                 :label="language(child.labelKey, child.label)"
                 :render-header="child.renderHeader"
-                :width="child.width"
+                :min-width="child.width"
                 align="center"
               >
                 <template slot-scope="{ row }">
@@ -94,6 +94,7 @@
           :data="manufacturingCostTableData"
           :span-method="spanMethod"
           :row-class-name="originRowClass"
+          :empty-text="language('ZANWUSHUJU', '暂无数据')"
         >
           <el-table-column
             v-for="(item, index) in manufacturingCostTableTitle"
@@ -101,8 +102,7 @@
             :prop="item.prop"
             :label="language(item.labelKey, item.label)"
             :render-header="item.renderHeader"
-            :width="item.width"
-            :min-width="minWidth"
+            :min-width="item.width"
             align="center"
           >
             <template v-if="item.children.length > 0">
@@ -112,7 +112,7 @@
                 :prop="child.prop"
                 :label="language(child.labelKey, child.label)"
                 :render-header="child.renderHeader"
-                :width="child.width"
+                :min-width="child.width"
                 align="center"
               >
                 <template slot-scope="{ row }">
@@ -201,11 +201,11 @@ import {
   cbdSummaryTableTitle,
   partsCostTableTitle,
   manufacturingCostTableTitle,
-  originRowClass,
   scrapCostTableTitle,
   manageCostTableTitle,
   otherCostTableTitle,
   profitTableTitle,
+  originRowClass,
 } from "../data.js";
 export default {
   components: {
@@ -254,7 +254,7 @@ export default {
   computed: {
     // 变动值-CBD
     tableData() {
-      return [this.Data.cbdLevelVO];
+      return this.Data.cbdLevelVO && [this.Data.cbdLevelVO];
     },
     // 原材料/散件成本
     partsCostTableData() {
@@ -266,7 +266,7 @@ export default {
     },
     // 报废成本
     scrapCostTable() {
-      return [this.Data.scrapVO];
+      return this.Data.scrapVO && [this.Data.scrapVO];
     },
     // 管理费
     managementFeeTable() {
@@ -278,13 +278,8 @@ export default {
     },
     // 利润
     profitTable() {
-      return [this.Data.profitVO];
+      return this.Data.profitVO && [this.Data.profitVO];
     },
-  },
-  mounted() {
-    setTimeout(() => {
-      console.log(this.Data);
-    }, 1000);
   },
   methods: {
     originRowClass,

@@ -273,8 +273,9 @@ export default {
       }
       this.saveLoading = true
 
-      saveRfqRateDeparts(
-        list.map(item => ({
+      saveRfqRateDeparts({
+        rfqId: this.ids[0],
+        data: list.map(item => ({
           id: item.id,
           rateTag: item.rateTag,
           rateTagDesc: item.rateTagDesc,
@@ -286,8 +287,8 @@ export default {
           rater: item.rater,
           raterId: item.raterId,
           rfqId: this.ids[0],
-        }))
-      )
+        })) 
+      })
       .then(res => {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)

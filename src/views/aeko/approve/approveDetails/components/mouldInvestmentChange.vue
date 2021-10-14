@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:40:38
- * @LastEditTime: 2021-10-12 20:56:23
+ * @LastEditTime: 2021-10-13 16:06:21
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -109,7 +109,10 @@ export default {
     };
   },
   methods: {
-    // statesFilter,
+    // 初始化数据
+    init(){
+      console.log('获取初始化数据');
+    }
   },
   filters: {
     statesFilter(val) {

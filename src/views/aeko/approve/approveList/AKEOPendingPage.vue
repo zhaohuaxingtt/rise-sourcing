@@ -30,9 +30,9 @@
           ></i-input>
         </el-form-item>
         <!-- 专业采购员 -->
-        <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')" prop='buyerName'>
+        <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')" prop='buyerId'>
           <i-select
-              v-model="queryAkeoForm.buyerName"
+              v-model="queryAkeoForm.buyerId"
               filterable
               remote
               reserve-keyword
@@ -45,7 +45,7 @@
                 v-for="item in options"
                 :key="item.value"
                 :label="item.label"
-                :value="item.label">
+                :value="item.value">
             </el-option>
           </i-select>
         </el-form-item>
@@ -111,8 +111,8 @@
           <span>{{ scope.row.auditTypeName }}</span>
         </template>
         <!--描述-->
-        <template #describe="">
-          <a class="link-underline" href="javascript:;">
+        <template #describe="scope">
+          <a class="link-underline" @click="lookAEKODesc(scope.row)">
             {{ language('CHAKAN', '查看') }}
           </a>
         </template>
@@ -125,42 +125,45 @@
           <span>{{ scope.row.carType }}</span>
         </template>
         <!--主要供应商-->
-        <template #supplier="scope">>
+        <template #supplier="scope">
           <span>{{ scope.row.supplierNameZh }}</span>
         </template>
 
         <!--增加材料成本-->
         <template #EP1="scope">
           <span>{{ scope.row.materialIncrease }}</span>
-          <el-tooltip effect="light" popper-class="custom-card-tooltip" content="Top Center 提示文字" placement="top">
-            <i class="el-icon-info bule"></i>
+          <el-tooltip effect="light" popper-class="custom-card-tooltip"
+                      :content="queryRowMaterialIncreaseTipContent(scope.row)" placement="top">
+            <i class="el-icon-warning-outline bule"></i>
           </el-tooltip>
         </template>
         <!--增加投资税-->
         <template #EP2="scope">
           <span>{{ scope.row.investmentIncrease }}</span>
-          <el-tooltip effect="light" popper-class="custom-card-tooltip" content="Top Center 提示文字" placement="top">
-            <i class="el-icon-info bule"></i>
+          <el-tooltip effect="light" popper-class="custom-card-tooltip"
+                      :content="queryRowInvestmentIncreaseTipContent(scope.row)" placement="top">
+            <i class="el-icon-warning-outline bule"></i>
           </el-tooltip>
         </template>
         <!--其他费用-->
         <template #EP3="scope">
           <span>{{ scope.row.otherCost }}</span>
-          <el-tooltip effect="light" popper-class="custom-card-tooltip" content="Top Center 提示文字" placement="top">
-            <i class="el-icon-info bule"></i>
+          <el-tooltip effect="light" popper-class="custom-card-tooltip"
+                      :content="queryRowotherCostTipContent(scope.row)" placement="top">
+            <i class="el-icon-warning-outline bule"></i>
           </el-tooltip>
         </template>
         <!--科室-->
-        <template #DepartmentName="scope">>
+        <template #DepartmentName="scope">
           <span>{{ scope.row.departmentName }}</span>
         </template>
         <!--采购员-->
-        <template #buyerName="scope">>
+        <template #buyerName="scope">
           <span>{{ scope.row.buyerName }}</span>
         </template>
         <!--审批附件-->
-        <template #describe="">
-          <a class="link-underline" href="javascript:;">
+        <template #attach="scope">
+          <a class="link-underline" @click="openApprovalAttachment(scope.row)">
             {{ language('CHAKAN', '查看') }}
           </a>
         </template>
@@ -199,6 +202,8 @@ import {pendingApprovalList} from "@/api/aeko/approve";
 import {searchLinie} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import AEKOTransferDialog from "./components/AEKOTransferDialog";
+import {getAekoDetail} from "@/api/aeko/detail";
+import {transferAEKO} from "../../../../api/aeko/approve";
 
 export default {
   name: "AKEOPendingPage",
@@ -227,6 +232,7 @@ export default {
         buyerName: '',//专业采购员
         supplierName: '',//供应商简称
         partNum: '',//零件号
+        buyerId: '',//
       },
       //返回数据
       pendingList: [],
@@ -248,6 +254,7 @@ export default {
     this.queryAllLin()
   },
   methods: {
+    //aeko/describe?requirementAekoId=10535&aekoCode=VA1EH8
     checkMinCost() {
       let value = this.queryAkeoForm.minCost
       if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
@@ -341,15 +348,69 @@ export default {
         })
       }
     },
+    //查看描述
+    lookAEKODesc(row) {
+      let routeData = this.$router.resolve({
+        path: `/aeko/describe?requirementAekoId=${row.requirementAekoId}&aekoCode=${row.aekoNum}`,
+      })
+      window.open(routeData.href, '_blank')
+    },
     //转派
     transfer() {
       //this.$message.error('您已完成当前AEKO行的审批，不可进行转派')
-
+      if (this.selectPendingList.length === 0 || this.selectPendingList.length > 1) {
+        return this.$message.error(this.$t('LK_NINDANGQIANHAIWEIXUANZE'))
+      }
       this.transferDialogVal = true
     },
-    confirmTransfer(selBuyerId){
+    confirmTransfer(selBuyerId) {
+      let transfer = {
+        targetUserId:selBuyerId,
+        aekoCode:this.selectPendingList[0].aekoNum,
+
+      }
+      transferAEKO(transfer).then(res=>{
+
+      })
 
     },
+    //增加材料成本Tip
+    queryRowMaterialIncreaseTipContent(row) {
+      let costsWithLinie = row.aekoCoverCostVOList
+      if (costsWithLinie != null && costsWithLinie.length > 0) {
+        let strTip = ''
+        costsWithLinie.forEach(item => {
+          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${item.materialIncrease} \n`
+        })
+        return strTip
+      }
+      return ''
+    },
+    //查询增加投资费Tip
+    queryRowInvestmentIncreaseTipContent(row) {
+      let costsWithLinie = row.aekoCoverCostVOList
+      if (costsWithLinie != null && costsWithLinie.length > 0) {
+        let strTip = ''
+        costsWithLinie.forEach(item => {
+          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${item.investmentIncrease} \n`
+        })
+        return strTip
+      }
+      return ''
+    },
+    //其他费用Tip
+    queryRowotherCostTipContent(row) {
+      let costsWithLinie = row.aekoCoverCostVOList
+      if (costsWithLinie != null && costsWithLinie.length > 0) {
+        let strTip = ''
+        costsWithLinie.forEach(item => {
+          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${item.otherCost} \n`
+        })
+        return strTip
+      }
+      return ''
+    },
+
     //批量批准
     batchApproval() {
       if (this.selectPendingList.length <= 0) {
@@ -371,14 +432,39 @@ export default {
     handleSelectionChange(val) {
       this.selectPendingList = val
     },
-//跳转到详情
+    //打开审批附件
+    openApprovalAttachment(row){
+
+    },
+    //跳转到详情
     lookDetails(row) {
-      let routeData = this.$router.resolve({
-        path: `/aeko/AEKOApprovalDetails`,
+      let reqP = {requirementAekoId: row.requirementAekoId}
+      getAekoDetail(reqP).then(res => {
+        if (res.code == 200) {
+          let transmitObj = {
+            option: 1,
+            aekoApprovalDetails: {
+              aekoNum: row.aekoNum,
+              requirementAekoId: row.requirementAekoId,
+              aekoAuditType: row.auditType,
+              workFlowDTOS: row.workFlowDTOS,
+              aekoManageId: res.aekoManageId
+            }
+          }
+          sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(transmitObj))
+          let routeData = this.$router.resolve({
+            path: `/aeko/AEKOApprovalDetails`,
+          })
+          window.open(routeData.href, '_blank')
+        } else {
+          this.$message.error(res.desZh)
+        }
       })
-      window.open(routeData.href, '_blank')
+
+
     }
   }
+
 }
 </script>
 
