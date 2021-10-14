@@ -72,8 +72,9 @@ export default{
   methods:{
     getDeptLeader(deptId, row) {
       getDeptLeader(deptId).then(res => {
-        this.$set(row, 'deptManager', res.data?.positionList?.reduce((accu,curr)=>{return[...accu,...curr?.userDTOList?.map(item => item.id)]},[]).join(','))
-        this.$set(row, 'deptManagerName', res.data?.positionList?.reduce((accu,curr)=>{return[...accu,...curr?.userDTOList?.map(item => item.nameZh)]},[]).join(','))
+        // this.$set(row, 'deptManagerName')
+        this.$set(row, 'deptManager', res.data.userDTOList.map(item => item.id).join(","))
+        this.$set(row, 'deptManagerName', res.data.userDTOList.map(item => item.nameZh).join(","))
       })
     },
     getDeptSubOptions(deptId, row, grade) {
