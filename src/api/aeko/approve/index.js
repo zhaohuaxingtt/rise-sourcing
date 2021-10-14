@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
- * @LastEditors: YoHo
- * @LastEditTime: 2021-10-13 19:46:54
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-14 15:35:36
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -34,6 +34,15 @@ export function approveDistributionSave(data) {
 export function getRoleUserList(params) {
   return requst({
     url: '/aeko/purchasing/search-chief',
+    method: 'GET',
+    params,
+  })
+}
+
+// 获取对应AEKO 下的前期采购股长
+export function getChiefUserList(params) {
+  return requst({
+    url: '/aeko/purchasing/search-chief-param',
     method: 'GET',
     params,
   })

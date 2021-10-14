@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-13 16:58:43
+ * @LastEditTime: 2021-10-14 17:30:35
  * @Description: 解释附件查看列表
 -->
 <template>
@@ -106,7 +106,7 @@ export default {
         linieId: linieId || '',
 				aekoNum: requirementAekoId,
 				manageId: Number(aekoManageId) || '',
-				taskId: taskId || '',
+				taskId: String(taskId).split(',') || [],
         current: this.page.currPage,
         size: this.page.pageSize
       },form)

@@ -278,7 +278,7 @@ export default {
 				linieId: this.userInfo.id || '',
 				aekoNum: this.aekoInfo.requirementAekoId,
 				manageId: Number(this.aekoInfo.aekoManageId) || '',
-				taskId: Number(this.currentRow.taskId) || '',
+				taskId: [Number(this.currentRow.taskId)],
         current: this.page.currPage,
         size: this.page.pageSize
       })
