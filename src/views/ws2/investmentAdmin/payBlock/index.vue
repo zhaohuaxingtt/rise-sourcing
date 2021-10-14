@@ -252,7 +252,17 @@
 				this.report=report
 				
 			},
-		}
+		},
+
+    watch: {
+      '$store.state.permission.language': (val) => {
+        if(val === 'zh'){
+          store.state.investmentAdmin.report.setPage(process.env.VUE_APP_CHANGELANG_POWERBI_CODE_ZH);
+        } else {
+          store.state.investmentAdmin.report.setPage(process.env.VUE_APP_CHANGELANG_POWERBI_CODE_EN);
+        }
+      }
+    }
 	}
 </script>
 
