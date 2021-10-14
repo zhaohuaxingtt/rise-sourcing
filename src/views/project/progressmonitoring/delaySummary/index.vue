@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-09 17:45:56
+ * @LastEditTime: 2021-10-14 10:26:41
  * @Description: 延误原因汇总
 -->
 
@@ -214,6 +214,7 @@ export default {
       this.tableLoading = true
       const params = {
         ...this.searchParams,
+        identityTag: this.isFS ? '2' : '1',
         current: this.page.currPage,
         size: this.page.pageSize
       }
