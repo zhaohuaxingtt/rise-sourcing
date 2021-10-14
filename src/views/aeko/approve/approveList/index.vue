@@ -2,11 +2,11 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-13 14:05:25
+ * @LastEditTime: 2021-10-14 09:23:42
  * @Description: 
 -->
 <template>
-  <div class="aeko-assign">
+  <div class="aeko-assign" v-permission.auto="AEKO_APPROVE_APPROVELIST_PAGE|Aeko审批分配列表">
     <!-- 搜索 -->
     <search @search="getFetchData" ref="search" />
     <!-- 表格 -->
@@ -14,6 +14,7 @@
       <div class="editControl">
         <iButton
             class="floatright margin-bottom20"
+            v-permission.auto="AEKO_APPROVE_APPROVELIST_PAGE_ASSIGN|分配"
             @click="assign"
           >
             {{ language('LK_FENPAI', '分派') }}
@@ -29,6 +30,7 @@
         :lang="true"
         :selectable="(row, index) => {return row.unresigned}"
         v-loading="tableLoading"
+        v-permission.auto="AEKO_APPROVE_APPROVELIST_TABLE|表格"
         @handleSelectionChange="handleSelectionChange"
       >
       <template #isTop="scope">
