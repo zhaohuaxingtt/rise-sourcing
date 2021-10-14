@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-09-29 14:33:03
+ * @LastEditTime: 2021-10-14 17:34:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -39,7 +39,7 @@
                <p>{{`询价开始时间: ${item.roundHeadDetailVO.roundsStartTime || "-"}`}}</p>
                <p>{{`询价结束时间: ${item.roundHeadDetailVO.roundsEndTime || "-"}`}}</p>
               </template>
-              <span>{{item.key ? $t(item.key) : item.name}}</span>
+              <span>{{item.key ? $t(item.key) : item.name}}<icon name='iconweikaibiao' symbol class="margin-left5"></icon></span>
             </el-tooltip>
           </template> 
           <template slot-scope="scope">
@@ -77,6 +77,7 @@
       <span><icon name='iconbaojiazhuangtailiebiao_yijujue' symbol></icon> 已拒绝</span>
       <span><i>—</i> 已收RFQ尚未接受报价</span>
       <span>n/m 共m个零件，已进行n个零件的报价</span>
+      <span><icon name='iconweikaibiao' symbol class="margin-right5"></icon>尚未开标的轮次，无法查看报价内容</span>
     </div>
           <!--------------------------------------------------------->
           <!------------------------零件评分弹窗----------------------->
