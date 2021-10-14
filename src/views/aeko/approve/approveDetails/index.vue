@@ -22,8 +22,7 @@ export default {
     iPage,
     //projectTop,
   },
-  created() {
-  }
+
 
 };
 </script>

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-07 09:35:37
- * @LastEditTime: 2021-10-12 19:22:31
+ * @LastEditTime: 2021-10-13 11:25:57
  * @LastEditors: Hao,Jiang
  * @Description: 扩产能天，周，年表格
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/capacity.vue
@@ -135,12 +135,12 @@ export default {
         {
           gid: 1,
           capa: 'Capa.',
-          name: 'Nomination Kapa'
+          name: 'Nomination Kapa.'
         },
         {
           capa: 'Capa.',
           gid: 1,
-          name: 'Current Kapa'
+          name: 'Current Kapa.'
         },
         {
           capa: 'Capa.',

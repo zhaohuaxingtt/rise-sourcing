@@ -2,12 +2,13 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-28 13:52:51
+ * @LastEditTime: 2021-10-14 15:35:36
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
 import download from '@/utils/axios.download'
 
+const requst_sourcing = axios(process.env.VUE_APP_NEGO)
 const requst = axios(process.env.VUE_APP_PARTS)
 const fileRequst = download(process.env.VUE_APP_PARTS)
 
@@ -38,30 +39,82 @@ export function getRoleUserList(params) {
   })
 }
 
+// 获取对应AEKO 下的前期采购股长
+export function getChiefUserList(params) {
+  return requst({
+    url: '/aeko/purchasing/search-chief-param',
+    method: 'GET',
+    params,
+  })
+}
+
 //查询AKEO已审批列表
-export function queryApproved(params){
+export function queryApproved(params) {
   return requst({
     url: '/aeko/approvedPage',
     method: 'POST',
-    data:params
+    data: params
   })
 }
 
 //查询AKEO待审批列表
-export function pendingApprovalList(params){
+export function pendingApprovalList(params) {
   return requst({
-        url: '/aeko/approve/distribution/approvalPendingPage',
+    url: '/aeko/approve/distribution/approvalPendingPage',
+    method: 'POST',
+    data: params
+  }
+  )
+}
+
+//审批单
+export  function queryAKEOApprovalForm(data){
+  return requst({
+        url: `/aeko/auditForm`,
         method: 'POST',
-        data:params
+        data:data
       }
   )
 }
-//审批单
-export  function queryAKEOApprovalForm(params){
+
+// 查询CBD汇总表
+export function alterationCbdSummary({ workFlowId }) {
+  return requst_sourcing({
+    url: `/aeko/get/alterationCbdSummarySnapshot/${workFlowId}`,
+    method: 'GET',
+  })
+}
+
+// 切换零件下拉框接口
+export function getSwitchParts({ workFlowId }) {
   return requst({
-        url: '/aeko/auditForm',
-        method: 'GET',
-        params:params
-      }
-  )
+    url: `/aeko/purchasing/aekopart/getSwitchParts/${workFlowId}`,
+    method: 'GET',
+  })
+}
+
+// 查询CBD汇总表其余数据
+export function cbdDataQuery({ workFlowId, quotationId }) {
+  return requst_sourcing({
+    url: `/aeko/get/cbdDataQuery/${workFlowId}/${quotationId}`,
+    method: 'GET',
+  })
+}
+
+//审批
+export  function  aekoAudit(data){
+  return requst({
+    url:`/aeko/aekoAudit`,
+    method:'POST',
+    data:data
+  })
+}
+
+//转派
+export  function  transferAEKO(data){
+  return requst({
+    url:`/aeko/approve/distribution/reassignment`,
+    method:'POST',
+    data:data
+  })
 }

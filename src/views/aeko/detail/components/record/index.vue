@@ -32,7 +32,7 @@
         </div>
       </template>
       <template #comment="scope">
-        <iInput v-model="scope.row.comment" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+        <iInput v-model="scope.row.comment" type="textarea" rows="2" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
       </template>
       <template #describe="">
         <a class="link-underline" href="javascript:;">
@@ -278,7 +278,7 @@ export default {
 				linieId: this.userInfo.id || '',
 				aekoNum: this.aekoInfo.requirementAekoId,
 				manageId: Number(this.aekoInfo.aekoManageId) || '',
-				taskId: Number(this.aekoInfo.taskId) || 1075873,
+				taskId: [Number(this.currentRow.taskId)],
         current: this.page.currPage,
         size: this.page.pageSize
       })
@@ -290,7 +290,10 @@ export default {
       }))
       getAuditFilePage(parmas).then(res => {
         if (res.code === '200') {
-          tableListData = res.data || []
+          tableListData = (res.data || []).map(o => {
+            o.fileSize = `${o.fileSize} MB`
+            return o
+          })
           totalCount = res.total
         } else {
           tableListData = []
@@ -343,6 +346,17 @@ export default {
 
 <style lang="scss" scoped>
 .aekoDetailRecord {
-
+  ::v-deep.el-table {
+    th,td {
+      vertical-align: top;
+      .el-textarea {
+        height: 60px;
+        .el-textarea__inner {
+          height: 100%;
+          resize: none !important;
+        }
+      }
+    }
+  }
 }
 </style>

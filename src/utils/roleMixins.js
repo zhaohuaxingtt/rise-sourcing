@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-03 16:13:03
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-03 17:05:51
+ * @LastEditTime: 2021-10-14 09:53:54
  * @Description: 前端获取当前登录用户角色身份
  */
 
@@ -13,7 +13,9 @@ import {
   // 专业采购员
   zhuanyecaigou,
   // 定点管理员
-  dingdianguanli
+  dingdianguanli,
+  // AEKO CSF AEKO审批分配人
+  csfaekoshenpifenpei
 } from '@/config/role'
 
 export const roleMixins = {
@@ -40,12 +42,14 @@ export const roleMixins = {
      */    
     userRole() {
       return {
-        // 是否是前期采购员
+        // 是否是前期采购相关角色（包含 前期采购员，前期采购股长，前期采购科长）
         isQQCG: this.checkUserRole(qianqicaigou),
-        // 是否是专业采购员
+        // 是否是专业采购相关角色 （包含 专业采购员，专业采购股长，专业采购科长）
         isZYCG: this.checkUserRole(zhuanyecaigou),
         // 定点管理员
-        isDDGL: this.checkUserRole(dingdianguanli)
+        isDDGL: this.checkUserRole(dingdianguanli),
+        // AEKO CSF AEKO审批分配人 
+        isCSFAEKOFENPEI: this.checkUserRole(csfaekoshenpifenpei),
       }
     }
   },

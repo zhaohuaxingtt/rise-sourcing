@@ -4,15 +4,15 @@
       <div class="margin-bottom20">
         <span class="card-title">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
         <div class="floatright">
-          <i-button v-show="pageCanOption" medium>确认审批</i-button>
+          <i-button v-show="pageCanOption" medium @click="optionApprove">确认审批</i-button>
         </div>
       </div>
-      <el-table :data="auditItems" stripe>
+      <el-table :data="localAuditItems" stripe>
         <el-table-column
             label="专业科室"
             align="center"
             width="150"
-            prop="linieDeptName">
+            prop="linieDeptNum">
         </el-table-column>
         <el-table-column
             label="采购员"
@@ -76,50 +76,115 @@
             label="解释附件"
             align="center"
             prop="explainFile">
+          <template  slot-scope="scope">
+            <a class="link-underline" @click="lookExplainFile(scope.row)">
+              {{ language('CHAKAN', '查看') }}
+            </a>
+          </template>
         </el-table-column>
       </el-table>
     </i-card>
+    <AEKOExplainAttachmentDialog v-if="explainAttachmentDialogVal" v-model="explainAttachmentDialogVal" />
   </div>
 
 </template>
 
 <script>
 import {iInput, iCard, icon, iButton} from "rise"
+import {aekoAudit} from "@/api/aeko/approve";
+import AEKOExplainAttachmentDialog from "./AEKOExplainAttachmentDialog";
 
 export default {
   name: "AEKOApprovalComponents",
   props: {
     auditItems: {type: Array, default: () => []},
+    transmitObj: {type: Object, default: () => ({})},
   },
   components: {
+    AEKOExplainAttachmentDialog,
     iCard,
     iButton,
     icon,
     iInput,
   },
   data() {
-    return {}
+    return {
+      localAuditItems: [],
+      explainAttachmentDialogVal: false,
+      explainAttachmentReqData:[],
+    }
+  },
+  watch: {
+    auditItems(val) {
+      this.localAuditItems = JSON.parse(JSON.stringify(this.auditItems)); //this.templateData是父组件传递的对象
+    }
   },
   computed: {
     pageCanOption: function () {
-      return this.$store.getters.getOptionAEKOApprove == 1
+      return this.transmitObj.option == 1
     }
   },
+
   methods: {
     calculateSelected(row, state) {
       return row.approvalResult == state;
     },
     //审批意见状态
     approvalComments(row) {
-      return row.approvalResult == 3
+      return row.approvalResult == 3 || row.approvalResult == 2
     },
     changeStatus(row, state) {
-      if(this.pageCanOption){
+      if (this.pageCanOption) {
         if (row.approvalResult != state) {
           row.approvalResult = state
         }
+        if (state == 1) {
+          row.auditOpinion = ''
+        }
       }
+    },
+    //审批
+    optionApprove() {
+      let req = []
+      for (let i = 0; i < this.localAuditItems.length; i++) {
+        let item = this.localAuditItems[i]
+        if (item.approvalResult != 1) {
+          if (item.auditOpinion == null || item.auditOpinion == '') {
+
+            return this.$message.error('请填写审批意见')
+          }
+        }
+
+      }
+      this.localAuditItems.forEach(item => {
+        item.workFlowDTOS.forEach(val => {
+          req.push({
+            aekoAuditType: this.transmitObj.aekoApprovalDetails.aekoAuditType,
+            approvalResult: item.approvalResult,
+            comment: item.auditOpinion,
+            workFlowDTO: val
+          })
+        })
+      })
+
+      aekoAudit(req).then(res => {
+        this.$message.error(res.desZh)
+      })
+
+
+    },
+    //查看解释附件
+    lookExplainFile(row) {
+      this.explainAttachmentReqData={
+        aekoNum:this.transmitObj.aekoApprovalDetails.aekoNum,
+        linieId:row.linieId,
+        manageId:this.transmitObj.aekoApprovalDetails.aekoManageId,
+        taskId:'',
+      }
+
+      this.explainAttachmentDialogVal = true
     }
+
   }
 }
 </script>

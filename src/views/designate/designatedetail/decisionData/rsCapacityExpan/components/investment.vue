@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-07-08 17:35:49
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-13 12:28:59
+ * @LastEditors: Hao,Jiang
  * @Description: Bentchmark - Investment(RMB) 
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/investment.vue
 -->
@@ -22,16 +22,16 @@
         <el-table-column
           align='center'
           prop="supplierName"
-          label="supplier">
-        </el-table-column>
-        <el-table-column
-          align='center'
-          prop="nomiSuggestionInvestmentFee"
-          label="CSC-Investition">
+          label="Supplier">
         </el-table-column>
         <el-table-column
           align='center'
           prop="nomiRecordInvestmentFee"
+          label="CSC-Investition">
+        </el-table-column>
+        <el-table-column
+          align='center'
+          prop="nomiSuggestionInvestmentFee"
           label="New Investment">
         </el-table-column>
         <el-table-column
