@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-10-13 10:48:32
+ * @LastEditTime: 2021-10-14 10:24:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -216,5 +216,13 @@ export function updateInvestCarProject(data) {
     url: '/aeko/update/aeko-invest-car-project',
     method: 'PUT',
     data,
+  })
+}
+
+// 内容表态--获取价格轴数据
+export function getPriceAxis(objectAekoPartId) {
+  return requst({
+    url: `/aeko/price-axis/${objectAekoPartId}`,
+    method: 'GET',
   })
 }

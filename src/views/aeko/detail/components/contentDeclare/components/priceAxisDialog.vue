@@ -26,16 +26,16 @@
       <div class="contain-priceAxis" id="priceAxisEcharts">
       </div>
       <div class="contain-info">
-        <p class="title">该新零件的价格变化趋势，仅供参考。</p>
-        <p class="tips">Aeko实施时，原零件价格发生变化，或者原零件的生效时间，都会引起该新零件的价格变化。</p>
+        <p class="title">{{language('AEKO_PRICE_GAIXINLINGJIANDEJIAGEBIANHUAQUSHI','该新零件的价格变化趋势，仅供参考。')}}</p>
+        <p class="tips">{{language('AEKO_PRICE_AEKOSHISHISHIYUANLINGJIANJIAGEFASHENGBIANHUA','Aeko实施时，原零件价格发生变化，或者原零件的生效时间，都会引起该新零件的价格变化。')}}</p>
         <ul class="price-list">
-          <li><span>表态时的原零件价格：</span><span>XX RMB,</span></li>
-          <li><span>成本变动：</span><span>XX RMB,</span></li>
-          <li><span>新零件价格：</span><span>XX RMB,</span></li>
+          <li><span>{{language('AEKO_PRICE_BIAOTAISHIDEYUANLINGJIANJIAGE','表态时的原零件价格')}}：</span><span>{{priceAxisInfo.contentOldPrice}} RMB,</span></li>
+          <li><span>{{language('AEKO_PRICE_BIANDONGCHENGBEN','成本变动')}}：</span><span>{{priceAxisInfo.changPrice}} RMB,</span></li>
+          <li><span>{{language('AEKO_PRICE_XINLINGJIANJIAGE','新零件价格')}}：</span><span>{{priceAxisInfo.currentPrice}} RMB,</span></li>
         </ul>
         <div class="footer-price">
-          <p>当前预估的新零件⽣效价格： XX RMB</p>
-          <p>最终的新零件⽣效价格： XX RMB</p>
+          <p>{{language('AEKO_PRICE_DANGQIANYUGUDEXINLINGJIANSHENGXIAOJIAGE','当前预估的新零件⽣效价格')}}： {{priceAxisInfo.effectPrice}} RMB</p>
+          <p>{{language('AEKO_PRICE_ZUIZHONGDEXINLINGJIANSHENGXIAOJIAGE','最终的新零件⽣效价格')}}： {{priceAxisInfo.newPartPrice}} RMB</p>
         </div>
       </div>
     </div>
@@ -46,8 +46,10 @@
 import {
     iDialog,
     iSelect,
+    iMessage,
 } from 'rise';
 import echarts from "@/utils/echarts";
+import { getPriceAxis } from "@/api/aeko/detail";
 
 let vm = null;
 export default {
@@ -60,34 +62,63 @@ export default {
       dialogVisible:{
         type:Boolean,
         default:false,
-      },  
+      }, 
+      priceAxisRow:{
+        type:Object,
+        default:()=>{},
+      } 
     },
     data(){
         return{
           priceTypeOptions:[
-            {label:'A价',value:'1'},
-            {label:'B价',value:'2'},
-            {label:'BNK价',value:'3'},
+            {label:'A价',value:'aPrice'},
+            {label:'B价',value:'bPrice'},
+            {label:'BNK价',value:'bnkPrice'},
           ],
-          priceType:'1',
+          priceType:'aPrice',
           loading:false,
+          priceAxisInfo:{},
+          priceAxisList:{
+            aPrice:{},
+            bPrice:{},
+            bnkPrice:{},
+          },
         }
     },
     mounted(){
-      setTimeout(() => {
-        this.init();
-      }, 500);
-      
+      // setTimeout(() => {
+      //   this.init();
+      // }, 500);
+      this.init();
     },
     methods:{
         clearDialog() {
             this.$emit('changeVisible','priceAxisVisible',false);
         },
-        init(){
-          this.initEcharts();
+        async init(){
+          this.loading = true;
+          const {priceAxisRow={}} = this;
+          const {objectAekoPartId=''} = priceAxisRow;
+          await getPriceAxis(objectAekoPartId).then((res)=>{
+            this.loading = false;
+            const {code,data={}} = res;
+            if(res.code == 200){
+              this.priceAxisInfo = data;
+              // 将A,B,BNK价格拆分
+              let axisData = {};
+              axisData.aPrice = this.resetData(data.anewPrice,data.aoldPrice);
+              axisData.bPrice = this.resetData(data.bnewPrice,data.boldPrice);
+              axisData.bnkPrice = this.resetData(data.bnkNewPrice,data.bnkOldPrice);
+              this.priceAxisList = axisData;
+              this.initEcharts(axisData.aPrice);
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          }).catch(()=>this.loading = false)
         },
         // 初始化echart
-        initEcharts(){
+        initEcharts(priceList={}){
+          
           vm = echarts().init(document.getElementById("priceAxisEcharts"));
 
           let option = {
@@ -107,7 +138,8 @@ export default {
             },
             xAxis: {
               type: 'category',
-              data: ['2018-03-15', '2019-04-15', '2019-05-15', '2019-06-15', '2019-07-15', '2019-08-15', '2019-09-15']
+              // data: ['2018-03-15', '2019-04-15', '2019-05-15', '2019-06-15', '2019-07-15', '2019-08-15', '2019-09-15']
+              data:priceList.date || []
             },
             yAxis: {
               type: 'value'
@@ -117,7 +149,8 @@ export default {
                 name: '新零件价格',
                 type: 'line',
                 step: 'middle',
-                data: [120, 132, 101, 134, 90, 230, 210],
+                // data: [120, 132, 101, 134, 90, 230, 210],
+                data: priceList.newPirce||[],
                 itemStyle : {  
                     normal : {  
                         color:'#1763F7',  
@@ -131,7 +164,8 @@ export default {
                 name: '原零件价格',
                 type: 'line',
                 step: 'start',
-                data: [220, 282, 201, 234, 290, 430, 410],
+                // data: [220, 282, 201, 234, 290, 430, 410],
+                data: priceList.oldPrice||[],
                 itemStyle : {  
                     normal : {  
                         color:'#9FA4AE',  
@@ -152,8 +186,11 @@ export default {
 
         // 更新价格轴
         refreshData(value){
+          const {priceAxisList} = this;
           var option = vm.getOption();
-          option.series[0].data = [110, 110, 110, 110, 110, 110, 110];
+          option.xAxis.data = priceAxisList[value].date;
+          option.series[0].data = priceAxisList[value].newPirce;
+          option.series[1].data = priceAxisList[value].oldPrice;
           vm.setOption(option);  
           this.loading = false;
         },
@@ -161,7 +198,37 @@ export default {
         // 切换类型
         handleChange(value){
           this.loading = true;
-          this.refreshData();
+          this.refreshData(value);
+        },
+
+        // 数据转换
+        resetData(newData=[],oldData=[]){
+          console.log(newData,oldData)
+          let data = {
+            date:[],
+            newPirce:[],
+            oldPrice:[],
+          };
+          data.date = newData.map((item)=>item.startTime).concat(oldData.map((item)=>item.startTime));
+          // 去重
+          data.date = Array.from(new Set(data.date));
+          // 排序
+          data.date = data.date.sort((a,b)=>{
+            return a > b ? 1:-1
+          })
+
+          data.date.map((item)=>{
+            let filterNew = newData.filter((itemData)=>itemData.startTime == item);
+            let filterOld = oldData.filter((itemData)=>itemData.startTime == item);
+            if(filterNew.length){
+              data.newPirce.push(filterNew[0].price);
+            }
+            if(filterOld.length){
+              data.oldPrice.push(filterNew[0].price);
+            }
+          })
+
+          return data;
         },
     },
 }

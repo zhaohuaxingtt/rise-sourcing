@@ -36,7 +36,7 @@
       <p class="divider"></p>
       <!-- 操作按钮 -->
       <p class="text-align-right padding-top15 padding-bottom15">
-          <iButton :loading="btnLoading" @click="exportTCM">{{language('LK_AEKO_TCM_SHOUDONGDAORU','⼿动导⼊')}}</iButton>
+          <iButton v-permission.auto="AEKO_TCMLIST_BUTTON_SHOUDONGDAORU|手动导入" :loading="btnLoading" @click="exportTCM">{{language('LK_AEKO_TCM_SHOUDONGDAORU','⼿动导⼊')}}</iButton>
       </p>
       <!-- 表单区域 -->
       <tableList

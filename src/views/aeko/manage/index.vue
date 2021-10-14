@@ -150,7 +150,7 @@
       <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     
       <!-- TCM导入清单 -->
-      <tcmList/>
+      <tcmList v-permission.auto="AEKO_TCMLIST_TABLE|AEKO管理TCM导入清单TABLE"/>
     </div>
   </iPage>
 </template>

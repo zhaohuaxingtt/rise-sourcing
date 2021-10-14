@@ -75,9 +75,9 @@ export function getDeptListByParam(data) {
     method: 'GET'
   })
 }
-export function getSubDeptListByParam(data) {
+export function getSubDeptListByParam(data, grade) {
   return requstRfq({
-    url: '/nominate/nomi-approval-process/getSubDeptListByParam/'+data,
+    url: `/nominate/nomi-approval-process/getSubDeptListByParam/${ data }/${ grade }`,
     method: 'GET',
   })
 }
