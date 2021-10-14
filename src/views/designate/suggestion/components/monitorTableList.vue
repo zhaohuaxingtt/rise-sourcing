@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-10-14 22:18:48
+ * @LastEditTime: 2021-10-14 22:45:04
  * @LastEditors: Hao,Jiang
 -->
 
@@ -85,7 +85,7 @@
         </template>
         <template slot-scope="scope">
           <div class="supplier-tto" @click="handleCellClick(scope.row, hindex)">
-            {{scope.row.TTo && scope.row.TTo[hindex] || '' | thousandsFilter }}
+            <span v-if="scope.row.TTo && scope.row.TTo[hindex]">{{ scope.row.TTo[hindex] | thousandsFilter}}</span>
           </div>
         </template>
       </el-table-column>
