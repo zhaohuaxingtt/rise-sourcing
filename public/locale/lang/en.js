@@ -817,7 +817,7 @@
 
         'LK_XIAYIBU': 'Next step',    //  下一步
 
-        'LK_BAAPPROVAL': 'BA审批',  //  BA审批
+        'LK_BAAPPROVAL': 'BA Approve',  //  BA审批
         'LK_BADANSTATUS': 'BA单状态', // BA单状态
         'LK_ALL': '全部',   //  全部
         'LK_BAODDNUMBERS': 'BA单号',    //  BA单号
@@ -909,7 +909,7 @@
         'LK_BMZHUANGTAI': 'BM单状态',   //  BM单状态
         'LK_DINGDIANLEIXING': '定点类型',   //  定点类型
         'LK_AEKOZENGZHIJINE': 'AEKO增值金额',  //  Aeko增值金额
-        'LK_XIAZAIQINGDAN': '下载清单', //  下载清单
+        'LK_XIAZAIQINGDAN': 'Download', //  下载清单
         'LK_QUERENSHENQING': '确认申请',    //  确认申请
         'LK_ZUOFEI': '作废', // 作废
         'LK_DAIBIAOLINGJIANHAO': '代表零件号',  //  代表零件号
@@ -928,24 +928,23 @@
         'LK_LINGJIANMINGCHENZHONG': '零件名称（中）',   //  零件名称（中）
         'LK_LINGJIANMINGCHENDE': '零件名称（德）',  //  零件名称（德）
         'LK_CSF': 'CSF',    //  CSF
-        'LK_BAOCUNWEIZUIXINBANBEN': '保存为最新版本',  //
-        'LK_SHUAXIN': '刷新',   //  刷新
-        'LK_SHUAXINRIQI': '刷新日期',   //  刷新日期
-        'LK_SHANGBANNIANSOPFUKUANDUIBI': '上半年SOP付款⽐',   //  上半年SOP付款⽐
-        'LK_XIABANNIANSOPFUKUANDUIBI': '下半年SOP付款⽐',   //  下半年SOP付款⽐
+        'LK_BAOCUNWEIZUIXINBANBEN': 'Save New',  //
+        'LK_SHUAXIN': 'Refresh',   //  刷新
+        'LK_SHUAXINRIQI': 'Refresh Date',   //  刷新日期
+        'LK_SHANGBANNIANSOPFUKUANDUIBI': 'SOP in 1~6 Month Payment',   //  上半年SOP付款⽐
+        'LK_XIABANNIANSOPFUKUANDUIBI': 'SOP in 7-12 Month Payment',   //  下半年SOP付款⽐
         'LK_SOPSHIJIAN': 'SOP时间', //  SOP时间
-        'LK_YUSUANJINE': '预算⾦额',    //  预算⾦额
-        'LK_BMJINE': 'BM金额',  //  BM金额
-        'LK_YIFUKUANJINEWANGNIAN': '已付款⾦额-往年',   //  已付款⾦额-往年
-        'LK_YIFUKUAIJINEDANGNIAN': '已付款⾦额-当年',   //  已付款⾦额-当年
-        'LK_JIHUAFUKUANDANGNIAN': '计划付款-当年', // 计划付款-当年
-        'LK_JIHUAFUKUANCINIAN': '计划付款-次年', // 计划付款-次年
-        'LK_SOPFUKUANBI': 'SOP付款比',  //  SOP付款比
+        'LK_YUSUANJINE': 'Budget',    //  预算⾦额
+        'LK_BMJINE': 'BM Amount',  //  BM金额
+        'LK_YIFUKUANJINEWANGNIAN': 'Finished-Past Year',   //  已付款⾦额-往年
+        'LK_YIFUKUAIJINEDANGNIAN': 'Finished-This Year',   //  已付款⾦额-当年
+        'LK_JIHUAFUKUANDANGNIAN': 'Payment Plan-This Year', // 计划付款-当年
+        'LK_JIHUAFUKUANCINIAN': 'Payment Plan-Next Year', // 计划付款-次年
+        'LK_SOPFUKUANBI': 'SOP Payment Percentage',  //  SOP付款比
         'LK_XIANGMUCAIGOUYUAN': '项目采购员',   //  项目采购员
-        'LK_XITONGJISUAN': '系统计算',  //  系统计算
+        'LK_XITONGJISUAN': 'Project Payment Detail',  //  系统计算
         'LK_RENMINBI': '人民币',    //  人民币
         'LK_BUHANSUI': '不含税',    //  不含税
-        'LK_SHOUGONGTIAOZHENG': '手工调整', //  手工调整
         'LK_QINGXUANZHE': '请先选择',   //  请先选择
         'LK_XUQIUGENZHONGHAO': '需求跟踪号',    //  需求跟踪号
         'LK_JILIANGDANWEI': '计量单位', //  计量单位
@@ -953,8 +952,9 @@
         'LK_LIZI': '例',    //  例
         'LK_LIZISHUOMING': '代表零件号的车型项目/零件号/零件名称/供应商简称',  //  代表零件号的车型项目/零件号/零件名称/供应商简称
         'LK_BMAPPLYBAOCUNMSG': '你有必填字段未填',  //  你有必填字段未填
-        'LK_FUKUANJIHUADINGZHIYUCHAKAN':  '付款计划制定与查看',   //  付款计划制定与查看
+        'LK_FUKUANJIHUADINGZHIYUCHAKAN':  'CS tooling Payment plan',   //  付款计划制定与查看
         'LK_YUAN': '元',    //  元
+        'LK_HUOBIRENMINBI':'Mio. RMB | excl.VAT', // 货币：人民币 | 单位：百万元 | 不含税
 
         'SPR_FRM_DEP_FINANA': '财报分析', //财报分析
         'SPR_FRM_DEP_CXWHDX': '维护呈现对象', //维护呈现对象
@@ -963,8 +963,13 @@
         'SPR_FRM_DEP_OBJPLACE': '请选择呈现对象', // 请选择呈现对象
         'SPR_FRM_DEP_AVGPLACE': '请选择行业均值', // 请选择行业均值
 
-        'LK_FUKUANKANBAN': '付款看板',  //  付款看板
-        'LK_NIANDUJIHUA': '年度计划',   //  年度计划
+        'LK_FUKUANKANBAN': 'Payment Dashboard',  //  付款看板
+        'LK_NIANDUJIHUA': 'Annual Plan',   //  年度计划
+        'LK_XITONGJIHUASHANGBANNIAN': 'First half year',   //  年度计划
+        'LK_XITONGJIHUAXIABANNIAN': 'Second half year',   //  年度计划
+        'LK_XITONGJISUANBACKLOG': 'Backlog',   //  年度计划
+        'LK_SHOUGONGTIAOZHENG': 'Manual',   //  年度计划
+        'LK_SHOUGONGTIAOZHENGRISK': 'Risk',   //  年度计划
         'LK_CHEXINGXIANGMUXIANGQ': '车型项目详情',
 
         'DAXIAO': 'Size', // 大小
@@ -1088,11 +1093,12 @@
             'LK_FRMPINGJI':'FRM评级', // FRM评级
             'LK_CBDSTATUS':'CBD状态', // CBD状态
         },
-        'LK_TUICHUBIANJI': '退出编辑',    //  退出编辑
-        'LK_SHANGCHUANQINGDAN': '上传清单',    //  上传清单
-        'LK_YUEDUJIHUA': '月度计划',    //  月度计划
-        'LK_DANGNIANFUKUANJIHUA': '当年付款计划',    //  当年付款计划
-        'LK_CINIANFUKUANJIHUA': '次年付款计划',    //  次年付款计划
+        'LK_BANBENJIHUANIANFEN': 'Version Year',    //  退出编辑
+        'LK_TUICHUBIANJI1': 'Exit',    //  退出编辑
+        'LK_SHANGCHUANQINGDAN': 'Upload',    //  上传清单
+        'LK_YUEDUJIHUA': 'Monthly Plan',    //  月度计划
+        'LK_DANGNIANFUKUANJIHUA': 'Payment Plan-This Year',    //  当年付款计划
+        'LK_CINIANFUKUANJIHUA': 'Payment Plan-Next Year',    //  次年付款计划
         'LK_YIYUE': 'Jan',    //  一月
         'LK_ERYUE': 'Feb',    //  二月
         'LK_SANYUE': 'Mar',    //  三月
