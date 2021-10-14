@@ -26,12 +26,12 @@
         </el-table-column>
         <el-table-column
           align='center'
-          prop="nomiSuggestionInvestmentFee"
+          prop="nomiRecordInvestmentFee"
           label="CSC-Investition">
         </el-table-column>
         <el-table-column
           align='center'
-          prop="nomiRecordInvestmentFee"
+          prop="nomiSuggestionInvestmentFee"
           label="New Investment">
         </el-table-column>
         <el-table-column

@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-13 21:15:01
+ * @LastEditTime: 2021-10-14 17:24:21
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -182,22 +182,9 @@ export default {
     };
   },
   created() {
-    let parmas = {
-      option: 1,
-      aekoApprovalDetails: {
-        aekoNum: "AZJ7294",
-        requirementAekoId: 10967,
-        aekoAuditType: 2,
-        workflowIds: [1052679],
-      },
-    };
-    sessionStorage.setItem(
-      "AEKO-APPROVAL-DETAILS-ITEM",
-      JSON.stringify(parmas)
-    );
     let workFlowId = JSON.parse(
       sessionStorage.getItem("AEKO-APPROVAL-DETAILS-ITEM")
-    )?.aekoApprovalDetails?.workflowIds[0];
+    )?.aekoApprovalDetails?.workFlowDTOS[0].workFlowId;
     this.workFlowId = workFlowId || "";
     this.workFlowId ? this.getTableData() : iMessage.warn("缺少流程ID");
   },
