@@ -2,11 +2,11 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-30 11:39:01
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-11 16:23:25
+ * @LastEditTime: 2021-10-14 10:26:40
  * @Description: 零件列表 AEKO 
 -->
 <template>
-  <iPage class="aekoPartslist">
+  <iPage class="aekoPartslist" v-permission.auto="AEKO_PARTLIST_CSFAEKOPARTLIST_PAGE|CSF&AEKO审批分配人零件清单">
     <h2 class="title">
       {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
     </h2>
@@ -60,7 +60,7 @@
       </iSearch>
     </div>
 
-    <iCard class="margin-top20" :title="language('LK_AEKO_PARTSLIST','零件清单')">
+    <iCard class="margin-top20" :title="language('LK_AEKO_PARTSLIST','零件清单')" v-permission.auto="AEKO_PARTLIST_CSFAEKOPARTLIST_TABLE|表格">
       <div>
         <tableList
           class="table"
