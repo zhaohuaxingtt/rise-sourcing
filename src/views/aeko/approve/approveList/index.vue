@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-14 09:23:42
+ * @LastEditTime: 2021-10-14 16:53:31
  * @Description: 
 -->
 <template>
@@ -59,6 +59,7 @@
         <iSelect
           v-if="!scope.row.chiefName"
           v-model="scope.row.chiefNames"
+          @focus="getcheifUserList(scope.row)"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           multiple
           filterable
@@ -67,7 +68,7 @@
           <el-option
             :value="items.code"
             :label="items.value"
-            v-for="(items, index) in buyerNames || []"
+            v-for="(items, index) in buyerSelectOPtions || []"
             :key="index"
           ></el-option>
         </iSelect>
@@ -99,7 +100,8 @@ import {user as configUser } from '@/config'
 import {
   getApproveDistributionPage,
   approveDistributionSave,
-  getRoleUserList
+  getRoleUserList,
+  getChiefUserList
 } from '@/api/aeko/approve'
 
 export default {
@@ -120,7 +122,9 @@ export default {
       tableSelecteData: [],
       tableLoading: false,
       // linies
-      buyerNames: []
+      buyerNames: [],
+      // 对应股长
+      buyerSelectOPtions: []
     }
   },
   mounted() {
@@ -243,6 +247,35 @@ export default {
       })
     },
     /**
+     * @description: 获取前期采购股长列表
+     * @param {*} row: 行数据
+     * @param {*} type: 1 根据前期采购股长角色获取所有的前期采购股长
+     * @param {*} type: 2 根据审批类型查找对应的前期采购股长
+     * @return {*}
+     */    
+    getcheifUserList(row={}) {
+      // 前期采购股长
+      const params = {
+        id: row.id,
+        auditType: row.auditType
+      }
+      this.buyerSelectOPtions  = []
+      getChiefUserList(params).then((res)=>{
+        const {code,data} = res;
+        if(code === '200' ) {
+          this.buyerSelectOPtions = data.map((item)=>{
+            return {
+              value: this.$i18n.locale === "zh" ? item.nameZh : item.nameEn,
+              code: item.id,
+              lowerCaseLabel: typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
+            }
+          });
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      })
+    },
+    /**
      * @description: 分派
      * @param {*}
      * @return {*}
@@ -262,7 +295,7 @@ export default {
       let parmas = selectedData.map(o => {
         const choseChiefs = o.chiefNames || []
         const chiefName = choseChiefs.map(chiefId => {
-          const cName = this.buyerNames.find(buyer => buyer.code === chiefId) || {}
+          const cName = this.buyerSelectOPtions.find(buyer => buyer.code === chiefId) || {}
           return {
             id: o.id || '',
             postId: o.postId || '',
