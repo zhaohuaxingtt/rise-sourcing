@@ -22,6 +22,11 @@ export default {
     iPage,
     //projectTop,
   },
+  created() {
+   console.log('---------------',this.$router)
+    console.log('---------------',this.$route)
+
+  }
 
 
 };
