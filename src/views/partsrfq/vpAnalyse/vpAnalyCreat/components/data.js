@@ -13,7 +13,7 @@ export const tableTitle = [
   { props: 'lifeCycle', name: '生命周期', key: 'TPZS.SMZQ', width: 120, tooltip: true },
 ]
 export const partsTableTitle = [
-  { props: 'partsId', name: '零件号', key: 'LK_SPAREPARTSNUMBER', width: 100, tooltip: true },
+  { props: 'partsId', name: '零件号', key: 'LINGJIANHAO', width: 100, tooltip: true },
   { props: 'supplierName', name: '供应商', key: 'TPZS.GYS', tooltip: true },
   { props: 'currentPlannedPro', name: '当前计划产量', key: 'TPZS.DQJHCL', width: 100, tooltip: true },
   { props: 'currentActualPro', name: '当前实际产量', key: 'TPZS.DQSJCL', width: 100, tooltip: true },
@@ -22,7 +22,7 @@ export const partsTableTitle = [
   { props: 'supplyBeginTime', name: 'SOP时间', key: 'TPZS.SOPSH', width: 100, tooltip: true },
 ]
 export const partsDialogTableTitle = [
-  { props: 'partsId', name: '零件号', key: 'LK_SPAREPARTSNUMBER', tooltip: true },
+  { props: 'partsId', name: '零件号', key: 'LINGJIANHAO', tooltip: true },
   { props: 'fsId', name: 'FS号', key: 'LK_FSHAO', tooltip: true },
   { props: 'rfqId', name: 'RFQ号', key: 'LK_RFQHAO', tooltip: true },
   { props: 'carTypeProj', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG', tooltip: true },

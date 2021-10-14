@@ -1109,30 +1109,171 @@
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
         },
-        //谈判助手
-        "TPZS": {
-            'FENXI': ' Analyze', //分析
-            'YULAN': 'preview', //预览
-            'GONGYINGSHANG': 'Supplier', //供应商
-            'CHEXINGXIANGMU': 'Model project', //车型项目
-            'CHEXING': 'Model', //车型
-            'GONGCHANG': 'Factory', //工厂
-            'ZONGDANJIA': 'Total unit price', //总单价
-            'GUDINGCHENGBENZHANBI': 'Percentage of fixed costs', //固定成本占比
-            'FEIYONGLEIXING': 'Types of fee', //费用类型
-            'FEIYONGZONGE': 'Total cost', //费用总额
-            'FENTANSHULIANG': 'Apportioned quantity', //分摊数量
-            'YINGXIANGDANJIA': 'Affect the unit price', //影响单价
-            'YINGXIANGCHENGBENZHANBI': 'Affect the proportion of cost', //影响成本占比
-            'XIANSHIYINGCANG': 'show/hide', //显示/隐藏
-            'WANCHENG': 'finish', //完成
-            'QINGSHURUBIANHAOMINGCHENG': 'Please enter the number/name', //请输入编号/名称
-            'QINGSHURUCHUANGJIANRENMINGCHENG': 'Please enter the name of the creator', //请输入创建人名称,
-            'PCAZONGLAN': 'PCA overview', //PCA总览
-            'BAOGAOMINGCHENG': 'Report name', //报告名称
-            'QUXIAN': ' curve', //曲线
-            'ZUIXINDINGDIANDANJIA': 'The latest fixed-point unit price', //最新定点单价
-            'MUBIAODANJIA': 'Target unit price', //目标单价,
+         //谈判助手
+         'TPZS': {
+          'FENXI': 'Analysis', //分析  
+          'YULAN': 'Preview', //预览  
+          'GONGYINGSHANG': 'Supplier', // 
+          'CHEXINGXIANGMU': 'Car Project', //车型项目
+          'CHEXING': 'Car Type', //车型 
+          'GONGCHANG': 'Factory', //工厂 
+          'ZONGDANJIA': 'Total UoM', //总单价 
+          'GUDINGCHENGBENZHANBI': 'Fixed Costs', //固定成本占比 
+          'FEIYONGLEIXING': 'Cost Type', //费用类型 
+          'FEIYONGZONGE': 'Total Cost', //费用总额 
+          'FENTANSHULIANG': 'Allocation Quantity', //分摊数量 
+          'YINGXIANGDANJIA': 'UoM', //影响单价 
+          'YINGXIANGCHENGBENZHANBI': 'Percentage of  Costs', //影响成本占比 
+          'XIANSHIYINGCANG': 'Show/Hide', //显示/隐藏 
+          'WANCHENG': 'Done', //完成 
+          'QINGSHURUBIANHAOMINGCHENG': 'Please enter the Code/Name', //请输入编号/名称 
+          'QINGSHURUCHUANGJIANRENMINGCHENG': 'Please enter the Creator Name', //请输入创建人名称 
+          'PCAZONGLAN': 'PCA Overview', //PCA总览 
+          'PINLEIGUANLIZHUSHOU': 'Material Group Management Assitant', //品类管理助手 
+          'TANPANZHUSHOU': 'Negotiation Assistant', //谈判助手 
+          'BAOGAOMINGCHENG': 'Name of Report', //报告名称 
+          'TIAZONGLAN': 'TIA Overview', //报告名称 
+          // ---------------------------------舒杰报告清单start-----------------------------------------------
+          'BGQD': 'Report List', //报告清单 
+          'ZXFXGJ': 'Analysis Tool', //专项分析工具 
+          'BJFX': 'Quotation Analysis', //报价分析 
+          'TPJBXX': 'Negotiation Basic Information', //谈判基本信息 
+          'BGMC': 'Name of Report', //报告名称 
+          'FXGJLX': 'Tool Type', //分析工具类型 
+          'RFQHMC': 'RFQ No./Name', //报告清单 
+          'MRX': 'Default item', //默认项 
+          'WJLX': 'Document Type', //文件类型 
+          'CJR': 'Creator', //创建人 
+          'SCXGRQ': 'Last Update Date', //上次修改日期 
+          'RFQ': 'RFQ', //RFQ RFQ
+          'FX': "Analysis:", //分析 
+          'QSRBGMC': 'Please enter Report Name...',//请输入报告名称... 
+          'QSRCLZ': 'Please enter Material group...',//请输入材料组... 
+          'QSRLJH': 'Please enter Part No...',//请输入零件号... Please enter Part No.
+          'QSRRFQMC': 'Please enter RFQ/Name...',//请输入RFQ/名称... .
+          'ZDDCBG': 'Export up to 10 reports',//最多导出10条报告 .
+          'CANNOTSELECT': 'Have not selected report',//未选择需要导出的报告  .
+
+          // ---------------------------------舒杰报告清单end-------------------------------------------------
+          // 张兵
+          'BG': "Report:", //报告						
+          'SCGXSJ': "Last updated time:", //上次更新时间						
+          'SCDCSJ': "Last exported time:", //上次导出时间						
+          'PLGYSGL': "Batch supplier overview", //批量供应商概览
+          'PLGYSZL': "Batch supplier overview", //批量供应商总览						
+          'GYS360': "Supplier 360", //供应商360						
+          'DW': "单位:", //单位						unit
+          'XMGL': "Project overview:", //项目概览						
+          'XMXX': "Project info", //项目信息						
+          'MQXTY': "MQ Coordinator", //MQ协调员						
+          'PLXTY': "PL Coordinator", //PL协调员						
+          'CFXTY': "CF Coordinator", //CF协调员						
+          'FOPQK': "FOP status", //FOP情况						
+          'MQQK': "PL status", //MQ情况						
+          'PLQK': "PL status", //PL情况						
+          'CFQK': "CF status", //CF情况						
+          'CXLC': "Production of models", //车型量产						
+          'SOPRQ': "SOP date", //SOP日期						 
+          'LCHTIPS': "Green: submitted, ontime / Yellow: not submitted, due in 2 weeks / Orange: not submitted , due in 2-4 weeks / Red: not submitted, overdue ",
+          'LJLBXX': "Part list", //零件列表信息						
+          'LJH': "Part number/part ID", //零件号						
+          'LJM': "Part name", //零件名						
+          'GC': "Plant", //工厂						
+          'SOP': "SOP", //SOP						
+          'EBR': "EBR%", //EBR%						
+          'XMMC': "Project name", //项目名称						
+          'QSMZQCL': "Full life-cycle yield", //全生命周期产量						
+          'FZNCL': "Peak annual yield", //峰值年产量						
+          'GYSXX': "Supplier info", //供应商信息						
+          'SZD': "Location", //所在地						
+          'SFMBDL': "Is MBDL", //是否MBDL						
+          'BJZT': "Quote status", //报价状态						
+          'MQDF': "MQ rating", //MQ打分						
+          'PLDF': "PL rating", //PL打分						
+          'EPDF': "EP rating", //EP打分						
+          'CLZMC': "Material group name", //材料组名称						
+          'GYZMC': "Process group name", //工艺组名称						
+          'DDJE': "Nominated price", //定点金额						
+          'DDSJ': "Nominated time", //定点时间						
+          'SQDZDZ': "SVW address", //上汽大众地址：						
+          'ZXSE': "Total Sales:", //总销售额：						
+          'DDJV': "Nominated record", //定点记录						
+          'VPFX': "Volume Pricing analysis",//Volume Pricing分析						
+          'VPFXK': "Volume Pricing analysis database",//Volume Pricing分析库						
+          'CXJHCLYXSLJCLFX': "Analysis of the planned production and the realistic cumulative production of the model",//车型计划产量与现实累计产量分析（截止2021-02）						
+          'DWL': "Unit:vehicle",//单位：辆						
+          'ZF': "gains",//涨幅						
+          'SMZQ': "Life cycle",//生命周期						
+          'PLGLZS': "Category Management Assistant",//品类管理助手						
+          'JRZXFXGJ': "Enter analysis tool",//进入专项分析工具						
+          'CLZRFQLJH': "Category group, RFQ, Part number",//材料组，RFQ，零件号…						
+          'JHCL': "Planned production",//计划产量						
+          'SJCL': "Actual production",//实际产量						
+          'LJLB': "Part list",//零件列表						
+          'QLLJ': "Full part",//全量零件						
+          'YXLJ': "Selected part",//已选零件						
+          'CZLJ': "Search part",//查找零件						
+          'GYS': "Supplier",//供应商						
+          'DQJHCL': "Current planned production",//当前计划产量						
+          'DQSJCL': "Current actual production",//当前实际产量						
+          'SOPSH': "SOP date",//SOP时间						
+          'JRFX': "Go to the analysis",//进入分析						
+          'CLZ': "Category group",//材料组						
+          'SSJG': "Search results",//搜索结果						
+          'JHCLDQSJCLSOP': "The information presented for the planned production, the current actual production, and the SOP time are all corresponding to the part number at the starting point of the last nominated batch delivery time of the model.",//计划产量、当前实际产量、SOP时间所展示信息均为该零件号在该⻋型最近⼀次定点的批量供货时间起点所对应的信息。						
+          'QXZYTSJ': "Please scelect a record",//请选择一条数据						
+
+          'BQYXLJMYSJQZQLLJZTJZYXLJ': "Sorry, the selected part does not have data, please selected part and add to the list.",//抱歉，已选零件没有数据，请在全量零件中添加至已选零件						
+          'QUXIAN': 'Curve', //曲线						
+          'GHQSSJ': 'Start time of delivery', //供货起始时间						
+          'LCSJ': 'Production time', //量产时间						
+          'JHLCDCL': 'Planned production completion rate', //计划量产达成率						
+          'GHJSSJ': 'End of supply time', //供货结束时间						
+          'JHCLJZSYM': 'Planned production (as of the end of last month)', //计划产量（截至上月末）						
+          'SJLJCL': 'Actual cumulative production (as of the end of last month)', //实际累计产量（截至上月末）						
+          'VPJFQL': "Volume Pricing's decline potential", //Volume Pricing降幅潜力						
+          'JBDJ': 'Reduce the unit price', //降本单价						
+          'YUAN': 'CNY', //元						
+          'JHZCL': 'Total planned production', //计划总产量						
+          'YJZCL': 'Expected Total production', //预计总产量						
+          'YSXEWJJ': 'Additional price reductions achieved', //已实现额外降价						
+          'SCHEME_TYPE': 'Solution',  //方案类型						
+          'REPORT_TYPE': 'Report type',  //报告类型						
+          'LK_CREATE': 'Create',    //新建						
+          'LK_CUSTOM_TITLE': 'Custom', //自定义						
+          'SHOWORHIDE': 'Display/Hidden',  //显示/隐藏						
+          'SORT': 'Sort',   //排序						
+          'SEARCH_PART': 'Search part', //请搜索零件号						
+          'PART_REQUIRE_MESSAGE': 'Part number required',//零件号不能为空						
+          'PART_UNIQUE_MESSAGE': 'Unique part number required', //零件号不能重复						
+          'YXLJZDZNTJYBT': 'Maximium 100 selected parts', //已选零件最多只能添加100条						
+          'ZUIXINDINGDIANDANJIA': 'Nominated price', //最新定点单价						
+          'MUBIAODANJIA': 'Taget price', //目标单价						
+          'CHANLIANGLIANG': 'Production(vehicle)', //产量（辆）						
+          'DANJIA': 'Unit price', //单价						
+          'YUANJIAN': '（CNY/PC）', //（元/件）						
+          'BAOGAO': 'Report', //报告						
+          'JIHUAZHONGCHANLIANG': 'Plan volumn', //计划总产量
+          'YUJIZONGCHANLIANG': 'Expected volumn', //预计总产量
+          'GUDINGCHENGBEN': 'Fixed cost', //固定成本
+          'ZONGJIANGJIA': 'Price total reduction', //总降价
+          'JIANGJIA': 'Price reduction', //降价
+          'ZXFXGJNHYGLFXBG': 'Have related analysis report', //专项分析工具内有关联分析报告
+          'ZXFXGJNMYGLFXBGDHHILJ': 'There is no analysis report, include Heavr Item.', //专项分析工具内没有关联分析报告，但含heavy item零件
+          'ZXFXGJNMYGLFXBGQBHHILJ': 'There is no analysis report, and not include Heavr Item.', //专项分析工具内没有关联分析报告，且不含heavy item零件
+          'FEIYONGZONGEHEYINGXIANGDANJIABUENGWEIKONG': 'Total cost and Unit Price can not be empty.', //费用总额和影响单价不能为空
+
+          'QSRCLZBHMC': 'Please input category group code / name',//请输入材料组编号/名称
+          'QSRRFQH': 'Please input RFQ No.',//请输入RFQ号
+          'BOBFXK': 'BoB Analysis Lib.',//BoB分析库
+          'FXMC': 'Analysis Name',//分析名称
+          'BQWFCXDJGSRCWHBCZQQRHCXSR': 'Sorry, no data, confirm and re-input.',//抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入
+          'QXZXYCZDSJ': 'Please select data for operate', //请选择需要操作的数据
+          'ZJSCSH': 'Last upload time:', //最近上传时间
+          "JIEZHI":'Cut-off ' //截止
+        },
+        'MEK': {
+          'QIEHUANCAILIAOZU': "Switch Cateory Group"
         },
         'MODEL-ORDER':{
             'LK_RISEDINGDANHAO': 'RiSE PO No', // RiSE订单号
