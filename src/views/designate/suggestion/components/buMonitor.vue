@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-09-24 10:26:32
+ * @LastEditTime: 2021-10-14 17:06:59
  * @Description: 业务分配模拟
 -->
 
@@ -68,6 +68,7 @@
                 :tableData="tableListData"
                 :supplier="supplierList"
                 :batchEdit="multiEditControl"
+                :height="450"
                 v-loading="tableLoading"
                 v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TABLE|表格"
                 ref="monitorTable" />
