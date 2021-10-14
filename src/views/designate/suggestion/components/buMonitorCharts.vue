@@ -188,36 +188,35 @@ export default {
                 decoration: 'none',
             },
             formatter: function(params) {
-              const wholePackage = self.data && self.data.wholePackage
+              const wholePackage = self.data && Number(self.data.wholePackage) || 0
               const bestGroupSupplier = self.data.bestGroupSupplier
               // const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2] || 0
-              const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[1] || 0
+              const bestGroupSupplierTotal = self.data && Number(self.data.bestGroupSupplierTotal)|| 0
               const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
               const weightSupplierTotal = self.data.weightSupplierTotal || 0
               let tpl = ''
 
               // toolTip Best TTO \n for Whole Package
-              params.dataIndex === 0 && (tpl = `
+              params.name === quota[0] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Best TTO <br> for Whole Package: <span class="value">${params.data}</span></p>
               </div>`)
 
               // toolTip Best TTO \n by Group
-              params.dataIndex === 1 && (tpl = `
+              params.name === quota[1] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage - bestGroupSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
               </div>`)
-
               // toolTip Best TTO \n by Part
-              params.dataIndex === 2 && (tpl = `
+              params.name === quota[2] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage - minPartSupplierTToTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
               </div>`)
-              params.dataIndex === 3 && (tpl = `
+              params.name === quota[3] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage-weightSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
@@ -299,7 +298,9 @@ export default {
       const self = this
       const bgColor = '#94c8fc'
       const textStyle = {
-        color: '#000000',
+        color: '#fff',
+        textShadowBlur: 2,
+        textShadowColor: 'rgba(0, 0, 0, 1)',
         fontSize: '10'
       }
       const series = []
@@ -392,7 +393,6 @@ export default {
       // 单个零件最小
       const minPartSupplierTToArray = self.data.minPartSupplierTToArray || []
       const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
-      let partPercent = 0
   
       minPartSupplierTToArray.forEach((item, index) => {
         series.push({
@@ -409,9 +409,8 @@ export default {
             formatter: function(params) {
               const fz = Number(params.data)
               const fm = Number(minPartSupplierTToTotal)
-              const percent =(item.index === minPartSupplierTToArray.length - 1) ? (100 - partPercent).toFixed(2) : parseFloat(fz/fm*100).toFixed(2)
-              partPercent += Number(percent)
-              return `${params.data}\n{p|${percent}%}`
+              const percent =parseFloat(fz/fm*100).toFixed(2)
+              return `${Number(params.data).toFixed(2)}\n{p|${percent}%}`
             },
             rich,
             interval: 0
@@ -464,7 +463,7 @@ export default {
               const fm = Number(weightSupplierTotal)
               const percent =(index === weightSupplier.length - 1) ? (100 - weightPercent).toFixed(2) : (fz/fm*100).toFixed(2)
               weightPercent += Number(percent)
-              return percent < 10 ?  '' : `${params.data}\n{p|${percent}%}`
+              return percent < 10 ?  '' : `${Number(params.data).toFixed(2)}\n{p|${percent}%}`
             },
             rich,
             interval: 0

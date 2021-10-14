@@ -28,7 +28,7 @@ export const multiSupplierTitle = [
     tooltip: false
   },
   {
-    props: 'sapCode',
+    props: 'sapNum',
     name: 'SAP号',
     key: 'nominationSupplier_SAPHao',
     tooltip: false

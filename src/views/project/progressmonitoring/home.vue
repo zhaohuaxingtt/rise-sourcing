@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-24 16:34:54
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-10-13 19:52:22
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -65,11 +65,11 @@
          <iFormGroup row="4" class="form">
             <iFormItem>
               <span slot="label">{{language('WEIJINTIPSBIAO', '未进TIPS表')}}:</span>
-              <span class="cursor" @click="toPartList(1)"><iInput v-model="notInTips" disabled /></span>
+              <span class="cursor" @click="toPartList(1)"><iInput :value="showTips ? notInTips : 0" disabled /></span>
             </iFormItem>
             <iFormItem>
               <span slot="label">{{language('DAIQUERENDECKDLINGJIAN', '待确认的CKD零件')}}:</span>
-              <span class="cursor" @click="toPartList(2)"><iInput v-model="ckdconfirm" disabled /></span>
+              <span class="cursor" @click="toPartList(2)"><iInput :value="showTips ? ckdconfirm : 0" disabled /></span>
             </iFormItem>
          </iFormGroup>
       </div>
@@ -109,19 +109,27 @@ export default {
     }
   },
   mounted() {
-    const carProjectId = this.$route.query.carProject || ''
-    const cartypeProjectZh = this.$route.query.cartypeProjectZh || ''
-    // 获取车型状态
-    this.handleCarProjectChange(carProjectId, cartypeProjectZh)
-    // this.getOptions()
+    this.init()
   },
   methods: {
+    /**
+     * @description: 初始化图表
+     * @param {*}
+     * @return {*}
+     */    
+    init() {
+      const carProjectId = this.$route.query.carProject || ''
+      const cartypeProjectZh = this.$route.query.cartypeProjectZh || ''
+      // 获取车型状态
+      this.handleCarProjectChange(carProjectId, cartypeProjectZh)
+    },
     /**
      * @description: （未进TIPS表/待确认的CKD零件）跳转
      * @param {*} type （1/2）
      * @return {*}
      */    
     toPartList(type) {
+      if (!this.showTips) return
       this.$router.push({name: 'progressmonitoring-monitoring-partList', query: {
         carProjectId: this.carProject,
         carProjectName: this.carProjectName,
@@ -135,13 +143,14 @@ export default {
      */    
     onSeriesBarClick(params) {
       if (params.disabled) return
+      console.log(params)
       const itemName = params.seriesName || params.title
       const target = this.data.find(o => o.title === itemName) || {}
       const targetIndex = this.data.findIndex(o => o.title === itemName)
       // 进度风险对象
-      const projectRisk = this.projectRisk.find(o => o.name === params.name) || {}
+      const projectRisk = !params.seriesName ? '' : this.projectRisk.find(o => o.name === params.name) || {}
       // 零件进度
-      const partProc = this.partProc.find(o => o.name === params.name) || {}
+      const partProc = params.seriesName ? '' : this.partProc.find(o => o.name === params.name) || {}
       // 项目已结束指标
       const projectDone = this.projectDone.find(o => o.name === params.name) || {}
       // 匹配异常
@@ -308,7 +317,7 @@ export default {
           // tipsSum
           this.tipsSum = res.data && res.data.tipsSum || 0
           // 获取车型状态是否加入TIPS
-          this.getAutoCarTips(carProjectId)
+          await this.getAutoCarTips(carProjectId)
           console.log('this.data', this.data)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -333,6 +342,11 @@ export default {
         if (confirmInfo === 'confirm') {
           this.autoTips(() => {
             this.toggleShowAutoTips(state)
+            if (!state) {
+              // this.notInTips = 0
+              // this.ckdconfirm = 0
+              // this.tipsSum = 0
+            }
           })
           
         }

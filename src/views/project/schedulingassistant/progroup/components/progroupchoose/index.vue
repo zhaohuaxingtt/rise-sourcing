@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 11:23:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-30 17:59:33
+ * @LastEditTime: 2021-10-08 14:05:23
  * @Description: 选择产品组弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\progroupchoose\index.vue
 -->
@@ -59,7 +59,7 @@ export default {
       this.$emit('changeVisible', false)
     },
     handleConfirm() {
-      console.log(this.selectValue)
+      // console.log(this.selectValue)
       this.saveLoading = true
       this.$emit('handleConfirm', this.selectValue)
     },

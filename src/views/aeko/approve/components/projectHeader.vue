@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-23 15:18:59
+ * @LastEditTime: 2021-10-13 15:34:52
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -11,7 +11,7 @@
   <div :class="`projectTop`">
     <iNavMvp v-if="navList" :lev="1" :list="navList" :lang="true" routerPage class="nav" />
     <div style="display:flex;align-items:center">
-      <iNavMvp v-if="subNavList" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
+      <iNavMvp v-if="subMenu" :lev="2" :list="subMenu" :lang="true" routerPage class="nav-sub" />
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
     </div>
   </div>
@@ -19,22 +19,26 @@
 
 <script>
 import { iNavMvp, icon } from "rise"
-import { TAB,SUBMENU } from "./data"
-
+import { TAB,SUBMENU,ATTACHSUBMENU } from "./data"
 export default {
   components: {
     iNavMvp,
-    icon
+    icon,
   },
   props: {
     navList: {type:Array, default: window._.cloneDeep(TAB)},
-    subNavList: {type:Array, default: window._.cloneDeep(SUBMENU)}
+    subNavList: {type:Array, default: window._.cloneDeep(SUBMENU)},
   },
+
   computed: {
     isProgressConfirm() {
       return this.$route.path.includes('progressconfirmsummary') || this.$route.path.includes('proconfirm')
+    },
+    subMenu() {
+      return this.$route.meta.subMenuType === 2 ? ATTACHSUBMENU : this.subNavList
     }
   },
+
   methods: {
     gotoDBhistory() {
       const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`})

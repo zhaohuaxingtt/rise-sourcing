@@ -252,6 +252,7 @@ export default {
         categoryName: null, //材料名称
         cfController: null, //CF控制员
         linieDept: null, //LINIE部门
+        linieDeptName: "", // LINIE部门名称
         linieName: null, //采购人名称
         linieNum: null, //采购员编号–同上关联
         partType: null, //零件类型
@@ -342,11 +343,12 @@ export default {
     },
     handleChangeByLinieDept(value) {
       this.linie = null
+      this.batch.linieDeptName = this.fromGroup.LINIE_DEPT.find(item => item.code === value)?.name??""
       this.getLinie(value)
     },
     getLinie(id){
       purchasingLiline(id).then(r=>{
-        this.fromGroup['LINIE'] = r.data || []
+        this.$set(this.fromGroup,'LINIE',r.data || [])
       })
     },
     // 修改采购项目详情和
@@ -416,8 +418,9 @@ export default {
           carTypeProjectZh: this.carTypeProject.name,
           cfController: this.batch.cfController,
           linieDept: this.batch.linieDept,
+          linieDeptName: this.batch.linieDeptName,
           linieName: this.linie.name, 
-          linieUserId: this.linie.code,
+          linieId: this.linie.code,
           partProjectType: this.batch.type,
           partType: this.batch.partType,
           procureFactory: this.batch.procureFactory,
@@ -427,6 +430,7 @@ export default {
         updateInfo['oldProjectRelations'] = this.oldProjectRelations
         const ids = this.batch.purchaseProjectIds
       updateProcureButch({updateInfo:updateInfo,ids:ids}).then(res=>{
+        this.saveButchLoading = false
         if(res.result === true) {
           iMessage.success(this.language("LK_XIUGAICHENGGONG",'修改成功'));
           if(partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey){this.$refs.onlyPartsChange.getDataList()}else{

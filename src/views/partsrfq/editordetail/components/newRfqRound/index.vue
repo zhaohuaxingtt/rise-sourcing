@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-09-14 16:19:42
+ * @LastEditTime: 2021-10-11 20:05:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -10,17 +10,17 @@
     <div class="changeContent">
       <div class="clearFloat">
         <div class="floatright title-button-box">
-          <template v-if="roundType === '00'">
+          <template>
             <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">{{ language('LK_BAOCUN','保存') }}</iButton>
-            <iButton @click="updateRfqStatus('06')" :disabled="!saveStaus"
+            <iButton v-if="roundType === 'commonRound'" @click="updateRfqStatus('06')" :disabled="!saveStaus"
                      v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">{{ language('LK_FASONGXUNJIA','发送询价') }}
             </iButton>
           </template>
-          <template v-else>
+          <!-- <template v-else>
             <iButton @click="saveAndCreate" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVEANDCREATE">
-              {{ language('LK_BAOCUNBINGCHUANGJIAN','保存并创建') }}
+              {{ language('LK_BAOCUNBINGCHUANGJIAN','保存') }}
             </iButton>
-          </template>
+          </template> -->
         </div>
       </div>
       <iFormGroup inline icon>
@@ -30,13 +30,13 @@
             <el-option v-for="items in roundTypeOptions" :key='items.code' :value='items.code' :label="items.name" :disabled="items.disabled"/>
           </i-select>
         </iFormItem>
-        <iFormItem :label="language('LK_BENLUNBAOJIAQIZHISHIJIAN','本轮报价起止时间')" name="test" v-if="['00', '01'].includes(roundType)">
+        <iFormItem :label="language('LK_BENLUNBAOJIAQIZHISHIJIAN','本轮报价起止时间')" name="test" v-if="['commonRound', 'manualBidding'].includes(roundType)">
           <div class="flex">
             <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="startTime" value-format="yyyy-MM-dd"
                             v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME" disabled></iDatePicker>
           </div>
         </iFormItem>
-        <iFormItem label="" name="test" v-if="['00', '01'].includes(roundType)">
+        <iFormItem label="" name="test" v-if="['commonRound', 'manualBidding'].includes(roundType)">
           <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="endTime" value-format="yyyy-MM-dd"
                           v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"
                           :picker-options="{
@@ -49,12 +49,13 @@
       </iFormGroup>
       <tablelist
           ref="multipleTable"
-          v-if="roundType === '00'"
+          v-if="roundType === 'commonRound'"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
+          @handleRowClick="handleRowClick"
           :select-props="['cbdTemplateId']"
           :round-type="roundType"
       ></tablelist>
@@ -66,6 +67,7 @@
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
+          @handleRowClick="handleRowClick"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -92,8 +94,8 @@ import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, tableTitle2} from "./components/data";
 import {findBySearches, pageRfqRound, rfqRoundCreated, modification} from "@/api/partsrfq/home";
 import store from '@/store'
+import {partProjTypes} from '@/config'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
-
 export default {
   components: {iButton, iDialog, iFormGroup, iFormItem, iSelect, tablelist, iPagination, iDatePicker},
   mixins: [pageMixins, rfqCommonFunMixins],
@@ -106,6 +108,12 @@ export default {
       type:Object,
       default:()=>{},
     }
+  },
+  computed:{
+        //eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+        rfqSelectedProjectParts: state => state.rfq.pendingPartsList,
+    }),
   },
   data() {
     return {
@@ -121,7 +129,8 @@ export default {
       tableTitle,
       tableTitle2,
       saveStaus: false,
-      roundsPhase: ''
+      roundsPhase: '',
+      dbParts:[partProjTypes.DBLINGJIANYICIXCAIGOU,partProjTypes.DBYICHIXINGCAIGOU,partProjTypes.DBJINLINGJIANHAOGENGAI,partProjTypes.DBZHANGJIA,partProjTypes.DBLINGJIAN,]
     }
   },
   created() {
@@ -177,7 +186,7 @@ export default {
     async getRoundTypeOptions() {
       const res = await findBySearches('04')
       this.roundTypeOptions = res.data.map(item => {
-        item.disabled = item.code === '02'
+        item.disabled = item.code === 'autoBidding'
         return item
       })
       this.roundType = this.roundTypeOptions[0].code
@@ -185,6 +194,10 @@ export default {
     async save() {
       if (this.selectTableData.length === 0) {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZERENWU','抱歉，您当前还未选择任务！'));
+      }
+      //online-bidding逻辑：如果当前rfq中的零件采购项目为DB零件 && 货币类型不一样，无法选择在线竞价-英式
+      if(this.rfqSelectedProjectParts && this.rfqSelectedProjectParts.some(r=>r.currencyCode !== this.rfqSelectedProjectParts[0].currencyCode) && this.roundType == 'biddingRound' && this.rfqSelectedProjectParts.every(r=>this.dbParts.includes(r.partProjectType))){
+        return iMessage.warn(this.language('DBLJQTYZXHBFQZXJ','DB业务请统一货币再发起在线竞价'))
       }
       const id = this.$route.query.id
       if (id) {
@@ -228,7 +241,7 @@ export default {
       this.$emit('refreshBaseInfo')
     },
     initTimeData() {
-      if (this.roundType === '00') {
+      if (this.roundType === 'commonRound') {
         // eslint-disable-next-line no-undef
         this.startTime = moment().format('YYYY-MM-DD')
         if (this.roundsPhase === '01') {
@@ -242,9 +255,9 @@ export default {
     },
     handleSelectChange(val) {
       this.setTableRowSelected()
-      if (val === '00') {
+      if (val === 'commonRound') {
         this.initTimeData()
-      } else if (val === '01') {
+      } else if (val === 'manualBidding') {
         this.endTime = ''
       }
     },
@@ -256,6 +269,9 @@ export default {
           }
         })
       })
+    },
+    handleRowClick(row, column, event) {
+      if (!this.$refs.multipleTable.selectable(row)) this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(row, true)
     }
   },
   watch: {

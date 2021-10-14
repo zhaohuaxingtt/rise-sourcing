@@ -139,6 +139,7 @@ export default {
         const res = await getRfqKmInfo(req);
         if (res.result) {
           this.tableListData = res.data;
+          this.tableListData = []
           this.page.currPage = res.pageNum;
           this.page.pageSize = res.pageSize;
           this.page.totalCount = res.total || 0;

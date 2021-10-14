@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-24 14:53:54
+ * @LastEditTime: 2021-10-09 12:44:11
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -11,7 +11,7 @@
   <div class="partListView" v-loading="loading"> 
     <div class="partListView-title"> 
       <div class="partListView-title-span"> 
-        <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> 
+        <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">{{language('QUANXUAN','全选')}}</el-checkbox> 
         <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span> 
       </div> 
       <div v-if="!isSop && parts.length > 0"> 
@@ -347,7 +347,7 @@ export default {
      * @return {*} 
      */    
     async getFsUserList(tableList) {  
-      const res = await getFsUserListPart({partNums: tableList.map(item => item.partNum).join(',')}) 
+      const res = await getFsUserListPart(tableList.map(item => item.partNum)) 
         if (res?.result) { 
           return res.data   
         } else { 

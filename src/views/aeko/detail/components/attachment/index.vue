@@ -134,6 +134,16 @@ export default {
 		updateApproveAttach(fileData) {
 			console.log(fileData)
 			const parmas = window._.cloneDeep(fileData)
+      // 删除备份
+      delete parmas._fileDescribe
+      // 必填校验
+      if (!parmas.fileDescribe) {
+        iMessage.error(this.language('WENJIANMIAOSHUBUNENGWEIKONG','文件描述不能为空'))
+        this.$set(fileData, 'fileDescribe', fileData._fileDescribe)
+        return
+      }
+      // 内容没改变，直接退出
+      if (parmas.fileDescribe === fileData._fileDescribe) return
 			auditFileUpdate(parmas).then(res => {
         if (res.code !== '200') {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -183,14 +193,18 @@ export default {
 				linieId: this.userInfo.id || '',
 				aekoNum: this.aekoInfo.requirementAekoId,
 				manageId: Number(this.aekoInfo.aekoManageId) || '',
-				taskId: Number(this.aekoInfo.taskId) || 0,
+				taskId: [],
         current: this.page.currPage,
         size: this.page.pageSize
       })
       this.tableLoading = true
       getAuditFilePage(parmas).then(res => {
         if (res.code === '200') {
-          this.tableListData = res.data || []
+          this.tableListData = (res.data || []).map(o => {
+            o._fileDescribe = o.fileDescribe
+            o.fileSize = `${o.fileSize} MB`
+            return o
+          })
           this.page.totalCount = res.total
         } else {
           this.tableListData = []

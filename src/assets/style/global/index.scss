@@ -414,6 +414,14 @@ a{
 		margin-top: 34px;
 		font-size: 14px;
 		color: #000000;
+    .el-message-box__container{
+      .el-message-box__message {
+        p{
+          word-break: break-all !important;  
+        }
+      }
+    }
+   
 	}
 	.el-message-box__btns{
 		margin-top: 53px;
@@ -483,6 +491,7 @@ a{
 
 .el-message-box__wrapper {
   z-index: 99999999!important;
+
 }
 
 .hideCheckbox {
@@ -503,7 +512,7 @@ a{
   display: inline-block;
 }
 .el-message.el-message--warning {
-  z-index: 3000 !important;
+  z-index: 99999 !important;
 }
 .unitStyle{
   color: #999999;
@@ -573,4 +582,12 @@ a{
   .selected {
     background: #E8EFFE;
   }
+}
+
+.custom-card-tooltip.is-light{
+  border:0 !important;
+  box-shadow: 0px 3px 10px rgba(27, 29, 33, 0.16);
+  .popper__arrow {
+    border-top-color: #FFFFFF !important;
+    }
 }

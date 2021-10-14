@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-09-24 16:52:44
+ * @LastEditTime: 2021-10-13 16:06:45
  * @LastEditors: Hao,Jiang
 -->
 
@@ -495,6 +495,7 @@ export default {
       // const bestGroupSupplier = [bestGroup[0].data, bestGroupTotal - bestGroup[0].data]
       const bestGroupSupplier = [bestGroup[0].data]
       const bestGroupSupplierIndex = bestGroup[0].index
+      const bestGroupSupplierTotal = bestGroupTotal
       bestGroupSupplier.push(bestGroupTotal)
       // 记录该供应商
       supplier.push(bestGroupSupplierIndex)
@@ -507,22 +508,18 @@ export default {
       let minPartSupplierTToTotal = 0
       let minPartSupplierTToArray = []
       // 求最低tto之和，遍历零件，过滤掉未报价的供应商，取报价最低的TTO求和
-      data.forEach((item) => {
-        const tto = item.TTo.filter(p => p > 0).sort((a,b)=>a-b)
-        minPartSupplierTToTotal += (Number(tto[0]) || 0)
-      })
+      // 筛选出每个零件最低tto的供应商
       let bestPartList = []
       // 记录供应商的，和供应商的tto
       data.forEach(item => {
         let minTTo = item.TTo.map((data, index) => {
           return {
-          index, 
-          data
-        }
+            index, 
+            data: Number(data)
+          }
         })
         // 过滤掉未报价的供应商
         minTTo = _.sortBy(minTTo.filter(o=> o.data > 0), ['data'])
-        // console.log('minTTo[0]', minTTo[0])
         if (minTTo[0]) {
           bestPartList.push(minTTo[0])
         }
@@ -541,6 +538,9 @@ export default {
           }
         }
       })
+      minPartSupplierTToTotal = _.sum(minPartSupplierTToArray.map(o => o.data))
+
+
       
       // console.log('minPartSupplierTTo',minPartSupplierTToArray)
       // Recommend \n Scenario
@@ -576,6 +576,7 @@ export default {
         // 分组最佳
         bestGroupSupplier,
         bestGroupSupplierIndex,
+        bestGroupSupplierTotal,
         // 是否显示分组最佳，默认在无分组的情况下不显示
         isShowGroupStick,
         // 报价都是最低的供应商

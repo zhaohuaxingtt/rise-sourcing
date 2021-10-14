@@ -1,0 +1,316 @@
+<!--
+ * @Author: YoHo
+ * @Date: 2021-10-09 11:32:16
+ * @LastEditTime: 2021-10-14 17:24:21
+ * @LastEditors: YoHo
+ * @Description: 
+-->
+<template>
+  <div>
+    <iCard class="mb-16">
+      <p class="title">
+        {{
+          `${language("BIANDONGZHI", "变动值")}CBD - ${language(
+            "HUIZONGBIAO",
+            "汇总表"
+          )}`
+        }}
+      </p>
+      <el-table
+        :data="tableData"
+        :span-method="spanMethod"
+        :row-class-name="totalRowClass"
+        :empty-text="language('ZANWUSHUJU', '暂无数据')"
+      >
+        <el-table-column
+          v-for="(item, index) in SummaryTitle"
+          :key="index"
+          :prop="item.prop"
+          :label="language(item.labelKey, item.label)"
+          :render-header="item.renderHeader"
+          :min-width="item.width"
+          align="center"
+        >
+          <template v-if="item.children.length > 0">
+            <el-table-column
+              v-for="(child, cindex) in item.children"
+              :key="cindex"
+              :prop="child.prop"
+              :label="language(child.labelKey, child.label)"
+              :min-width="child.width"
+              align="center"
+            ></el-table-column>
+          </template>
+          <template slot-scope="{ row }">
+            <template v-if="item.prop == 'index'">
+              <div v-if="row.total != undefined" class="center-align">
+                <span>TOTAL</span>
+              </div>
+              <div v-else>
+                <span>{{ row[item.prop] }}</span>
+              </div>
+            </template>
+            <template v-else-if="item.prop == 'partNum'">
+              <div v-if="row.total != undefined" class="end-align">
+                <span>{{ row.total }}</span>
+              </div>
+              <div v-else>
+                {{ row[item.prop] }}
+              </div>
+            </template>
+            <template v-else>
+              {{ row[item.prop] }}
+            </template>
+          </template>
+        </el-table-column>
+      </el-table>
+    </iCard>
+    <switchParts
+      :workFlowId="workFlowId"
+      :tableData="switchPartsTable"
+      @getCbdDataQuery="getCbdDataQuery"
+    />
+    <iTabsList
+      class="margin-top20"
+      type="card"
+      v-show="hasData"
+      v-model="currentTab"
+      @tab-click="tabChange"
+    >
+      <el-tab-pane
+        v-for="(tab, $tabIndex) in tabs"
+        :key="$tabIndex"
+        :label="language(tab.key, tab.label)"
+        :name="tab.name"
+        v-permission.dynamic.auto="tab.permissionKey"
+      >
+        <template v-if="tab.name == currentTab">
+          <component
+            :ref="tab.name"
+            :is="component"
+            v-loading="loading"
+            v-for="(component, $componentIndex) in tab.components"
+            :class="$componentIndex !== 0 ? 'margin-top20' : ''"
+            :Data="aPriceChangeData"
+            :key="$componentIndex"
+          />
+        </template>
+      </el-tab-pane>
+    </iTabsList>
+  </div>
+</template>
+
+<script>
+import { iCard, iTabsList, iTableCustom, iMessage } from "rise";
+import switchParts from "./switchParts";
+import aPriceChange from "./aPriceChange";
+import mouldInvestmentChange from "./mouldInvestmentChange";
+import developmentFee from "./developmentFee";
+import damages from "./damages";
+import sampleFee from "./sampleFee";
+import { SummaryTableTitle, totalRowClass } from "../data.js";
+import { alterationCbdSummary, cbdDataQuery } from "@/api/aeko/approve";
+export default {
+  components: {
+    iCard,
+    iTabsList,
+    iTableCustom,
+    switchParts,
+    aPriceChange,
+    mouldInvestmentChange,
+    developmentFee,
+    damages,
+    sampleFee,
+  },
+  data() {
+    return {
+      loading: false,
+      hasData: false,
+      SummaryTitle: SummaryTableTitle,
+      currentTab: "aPriceChange",
+      aPriceChangeData: {},
+      tabs: [
+        {
+          label: "A价变动(含分摊)",
+          name: "aPriceChange",
+          key: "AJIABIANDONGHANFENTAN",
+          components: ["aPriceChange"],
+          permissionKey: "AEKO_QUOTATION_CBD_TAB_BIANDONGZHICBD|变动值CBD",
+        },
+        {
+          label: "模具投资变动",
+          name: "mouldInvestmentChange",
+          key: "MUJUTOUZIBIANDONG",
+          components: [
+            // "mouldInvestmentChange"
+          ],
+          permissionKey:
+            "AEKO_QUOTATION_CBD_TAB_MUJUTOUZIBIANDONG|模具投资变动",
+        },
+        {
+          label: "开发费",
+          name: "developmentFee",
+          key: "KAIFAFEI",
+          components: [
+            // "developmentFee"
+          ],
+          permissionKey: "AEKO_QUOTATION_CBD_TAB_KAIFAFEI|开发费",
+        },
+        {
+          label: "终⽌费",
+          name: "damages",
+          key: "ZHONGZHIFEI",
+          components: [
+            // "damages"
+          ],
+          permissionKey: "AEKO_QUOTATION_CBD_TAB_ZHONGZHIFEI|终⽌费",
+        },
+        {
+          label: "样件费",
+          name: "sampleFee",
+          key: "YANGJIANFEI",
+          components: [
+            // "sampleFee"
+          ],
+          permissionKey: "AEKO_QUOTATION_CBD_TAB_YANGJIANFEI|样件费",
+        },
+      ],
+      switchPartsTable: [],
+      tableData: [],
+      workFlowId: "",
+      quotationId: "",
+    };
+  },
+  created() {
+    let workFlowId = JSON.parse(
+      sessionStorage.getItem("AEKO-APPROVAL-DETAILS-ITEM")
+    )?.aekoApprovalDetails?.workFlowDTOS[0].workFlowId;
+    this.workFlowId = workFlowId || "";
+    this.workFlowId ? this.getTableData() : iMessage.warn("缺少流程ID");
+  },
+  methods: {
+    totalRowClass,
+    spanMethod({ row, columnIndex }) {
+      if (row.total) {
+        if (!columnIndex) {
+          return [1, 1];
+        } else if ((columnIndex = 1)) {
+          return [1, 14];
+        } else {
+          return [0, 0];
+        }
+      }
+      return [1, 1];
+    },
+
+    // 页签切换
+    tabChange() {
+      this.$nextTick(() => {
+        const component =
+          this.$refs[this.currentTab] && this.$refs[this.currentTab][0];
+        if (typeof component.init === "function") component.init();
+      });
+    },
+    // 获取汇总表数据
+    getTableData() {
+      alterationCbdSummary({ workFlowId: this.workFlowId }).then((res) => {
+        if (res?.code === "200") {
+          let data = res?.data || [];
+          let obj = {};
+          data.length &&
+            data.forEach((item, index) => {
+              item.index = index;
+              obj[item.partNum]
+                ? (obj[item.partNum] += item.alteration)
+                : (obj[item.partNum] = item.alteration);
+            });
+          Object.keys(obj).forEach((key) => {
+            let item = {
+              index: "",
+              partNum: key,
+              total: "RMB " + (+obj[key]).toFixed(4),
+            };
+            data.push(item);
+          });
+          this.tableData = data.sort((a, b) => a.partNum - b.partNum);
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      });
+    },
+    // 获取A价变动其它数据
+    getCbdDataQuery(partsId) {
+      this.loading = true;
+      if (!partsId) {
+        this.hasData = false;
+        this.loading = false;
+        return;
+      }
+      cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
+        (res) => {
+          if (res?.code === "200") {
+            this.switchPartsTable = [data?.extSnapshotVO];
+            this.aPriceChangeData = data;
+            this.loading = false;
+            this.hasData = true;
+          } else {
+            this.loading = false;
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        }
+      );
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.title {
+  height: 25px;
+  font-size: 18px;
+  font-family: Arial;
+  font-weight: bold;
+  line-height: 21px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+.mb-16 {
+  margin-bottom: 16px;
+}
+::v-deep .el-table {
+  tr {
+    td {
+      border: 0;
+      .cell {
+        font-size: 14px;
+      }
+    }
+  }
+  .center-align,
+  .end-align {
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .end-align {
+    padding: 0 28px 0;
+    text-align: right;
+  }
+  .totalRow {
+    background: #f7faff;
+  }
+  .originRow {
+    background: #f4f8ff;
+  }
+  .isNewRow {
+    background: #ffffff;
+  }
+}
+.i-select {
+  width: 366px;
+  height: 35px;
+  background: #ffffff;
+  box-shadow: 0px 0px 3px rgba(0, 38, 98, 0.15);
+  opacity: 1;
+  border-radius: 4px;
+}
+</style>

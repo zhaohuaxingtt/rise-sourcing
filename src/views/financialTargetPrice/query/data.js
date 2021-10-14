@@ -15,6 +15,7 @@ export const tableTitle = [
   {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100},
   {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
   {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120},
+  {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 100},
   {props:'priceAnaName',name:'CF', key: "CF", tooltip: true, width: 120},
   {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true},
   {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true},
@@ -36,7 +37,7 @@ export const tableMockData = [
 ]
 
 export const searchList = [
-  {value: 'fsNum', label: 'FSNR/GSNR/SPNR', type: 'input', i18n_label: 'FSGSSP',permission: 'FINANCIALTARGETPRICE_QUERY_FSNUM|财务目标价管理-目标价查询-FSGSNO'},
+  {value: 'fsNum', label: 'FS/GS/SP No.', type: 'input', i18n_label: 'FSGSSP',permission: 'FINANCIALTARGETPRICE_QUERY_FSNUM|财务目标价管理-目标价查询-FSGSNO'},
   {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',permission: 'FINANCIALTARGETPRICE_QUERY_PARTNUM|财务目标价管理-目标价查询-零件号'},
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG',permission: 'FINANCIALTARGETPRICE_QUERY_PARTNAME|财务目标价管理-目标价查询-零件名称'},
   {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',selectOption:'',permission: 'FINANCIALTARGETPRICE_QUERY_BUYER|财务目标价管理-目标价查询-询价采购员'},

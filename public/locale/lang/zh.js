@@ -294,6 +294,9 @@
         'LK_LINIEBUMEN': 'LINIE部门', //LINIE部门
         'LK_LINIESHANGHUIBEIZHU': 'Linie上会备注', //Linie上会备注
         'LK_MBDL': 'MBDL', //MBDL
+        'LK_JISHUPINGFENZHUANGTAI': '技术评分状态', //技术评分状态
+        'LK_ZHILIANGPINGFENZHUANGTAI': '质量评分状态', //质量评分状态
+        'LK_CAIWUMUBIAOJIAZHUANGTAI': '财务目标价状态', //财务目标价状态
         'LK_MQPINGFENZHUANGTAI': 'MQ评分', //MQ评分状态
         'LK_MTZLINGJIAN': 'MTZ零件', //MTZ零件
         'LK_RFQBIANHAO': 'RFQ编号', //RFQ编号
@@ -1187,7 +1190,7 @@
             'RFQANDLINGJIANQINGDAN':'RFQ & 零件清单', // RFQ & 零件清单
             'GONGYINGSHANGANDDANYIGONGYINGSHANG':'供应商 & 单⼀供应商', // 供应商 & 单⼀供应商
             'DINGDIANJIANYI':'定点建议', // 定点建议
-            'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
+            'SHENPIRENANDSHENPIJILU':'审批人 & 审批记录', // 审批⼈ & 审批记录
             'JUECEZILIAO':'决策资料', // 决策资料
             'DINGDIAN':'定点', // 定点
             'QUXIAODINGDIAN':'取消定点', // 取消定点

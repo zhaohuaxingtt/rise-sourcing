@@ -183,13 +183,13 @@ export default {
         })
       }
     },
-    async getDeptSubOptions(item) {
-      const res = await getSubDeptListByParam(item.approveParentDeptNum)
+    async getDeptSubOptions(item, grade) {
+      const res = await getSubDeptListByParam(item.approveParentDeptNum, grade)
       if (!Array.isArray(res.data)) return []
       return res.data.map(item => {
         return {
           ...item,
-          label: item.nameZh,
+          label: item.deptNum,
           value: item.id
         }
       })
@@ -208,21 +208,29 @@ export default {
     async getTableList() {
       this.tableLoading = true
       //this.$route.query.desinateId 
-      const res = await getApprovalNode(this.$route.query.desinateId)
 
-      if (res.code == 200) {
-        for(var i = 0; i < (res.data.nomiApprovalProcessNodeVOList || []).length; i++) {
-        const deptSubOptions = await this.getDeptSubOptions(res.data.nomiApprovalProcessNodeVOList[i])
-        res.data.nomiApprovalProcessNodeVOList[i].deptOptions = this.parentDeptOptions
-        res.data.nomiApprovalProcessNodeVOList[i].deptSubOptions = deptSubOptions
+      try {
+        const res = await getApprovalNode(this.$route.query.desinateId)
+
+         if (res.code == 200) {
+          for(var i = 0; i < (res.data.nomiApprovalProcessNodeVOList || []).length; i++) {
+            const grade = this.parentDeptOptions.find(item => item.id === res.data.nomiApprovalProcessNodeVOList[i].approveParentDeptNum)?.grade
+            res.data.nomiApprovalProcessNodeVOList[i].deptOptions = this.parentDeptOptions
+
+            if (grade) {
+              const deptSubOptions = await this.getDeptSubOptions(res.data.nomiApprovalProcessNodeVOList[i], grade)
+              res.data.nomiApprovalProcessNodeVOList[i].deptSubOptions = deptSubOptions || []
+            }
+          }
+          
+          this.tableDataTemp = cloneDeep(res.data.nomiApprovalProcessNodeVOList)
+          this.processInstanceId = res.data.nominateAppVo?.processInstanceId
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
-        
-        this.tableDataTemp = cloneDeep(res.data.nomiApprovalProcessNodeVOList)
-        this.processInstanceId = res.data.nominateAppVo?.processInstanceId
-      } else {
-        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      } finally {
+        this.tableLoading = false
       }
-      this.tableLoading = false
     },
     /**
      * @Description: 同步按钮点击事件

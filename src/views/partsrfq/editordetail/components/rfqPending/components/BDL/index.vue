@@ -71,6 +71,9 @@ export default {
     ...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
     }),
+    disabled() {
+      return this.getDisabled()
+    }
   },
   data() {
     return {
@@ -93,11 +96,6 @@ export default {
     }
   },
   inject: ['getDisabled'],
-  computed: {
-    disabled() {
-      return this.getDisabled()
-    }
-  },
   created() {
     this.rfqId = this.$route.query.id
     this.getTableList()

@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-09-28 10:34:07
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-14 10:01:24
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -80,7 +80,16 @@ export default [
           meta: {
               title: 'AEKO零件清单'
           },
-          component: () => import ("@/views/aeko/partslist")
+          component: () => import ("@/views/aeko/partslist/home")
+      },
+      // aeko CSF AEKO审批分配人 零件清单页面
+      {
+        path: "partslist1",
+          name: "aekoPartslist1",
+          meta: {
+              title: 'AEKO零件清单'
+          },
+          component: () => import ("@/views/aeko/partslist/partList")
       },
       {
         path: "quotationdetail",
@@ -114,6 +123,44 @@ export default [
               title: "AEKO-审批列表",
             },
             component: () => import("@/views/aeko/approve/approveList/approveList"),
+          },
+        ]
+      },
+        //Aeko审批详情
+      {
+        path: "AEKOApprovalDetails",
+        name: "AEKOApprovalDetails",
+        meta: {
+          title: 'AEKO-审批详情'
+        },
+        component: () => import("@/views/aeko/approve/approveDetails"),
+        redirect: "/aeko/AEKOApprovalDetails/Approvalform",
+        children: [
+          {
+            path: 'Approvalform',
+            name: "Approvalform",
+            prop:true,
+            meta: {
+              title: "AEKO-审批单",
+            },
+            component: () => import("@/views/aeko/approve/approveDetails/ApprovalFormDetails"),
+          },
+          {
+            path: "CBDSummary",
+            name: "CBDSummary",
+            meta: {
+              title: "CBD汇总",
+            },
+            component: () => import("@/views/aeko/approve/approveDetails/components/variationCBDSummaryTable"),
+          },
+          {
+            path: "explainattach",
+            name: "explainattach",
+            meta: {
+              title: "AEKO-解释附件",
+              subMenuType: 2 // 区分解释附件的子菜单
+            },
+            component: () => import("@/views/aeko/approve/approveList/explainAttach"),
           },
         ]
       },

@@ -45,7 +45,9 @@ import {
   iDialog,
   iButton,
   icon,
+  iMessage,
 } from 'rise';
+import { getInvestCarProject,updateInvestCarProject } from "@/api/aeko/detail/index.js"
 
 export default {
     name:'investCarTypeProDialog',
@@ -59,15 +61,19 @@ export default {
         type:Boolean,
         default:false,
       },
+      multipleSelection:{
+        type:Array,
+        default:()=>[],
+      }
     },
     data(){
       return{
         tableTitle:[],
         tableData:[
-          {'partNum':'a','a':true,'b':null,'c':null,'d':null},
-          {'partNum':'b','a':null,'b':true,'c':false,'d':null},
-          {'partNum':'c','a':null,'b':null,'c':true,'d':null},
-          {'partNum':'d','a':null,'b':null,'c':false,'d':true},
+          // {'partNum':'a','a':true,'b':null,'c':null,'d':null},
+          // {'partNum':'b','a':null,'b':true,'c':false,'d':null},
+          // {'partNum':'c','a':null,'b':null,'c':true,'d':null},
+          // {'partNum':'d','a':null,'b':null,'c':false,'d':true},
         ],
         tableLoading:false,
       }
@@ -79,23 +85,82 @@ export default {
         clearDialog() {
             this.$emit('changeVisible','investCarTypeProVisible',false);
         },
-        init(){
-          // 设置表头
-          const tableTitle = [];
-          tableTitle.push({
-            props: "partNum", name:this.language('零件号','LINGJIANHAO'), key: "LINGJIANHAO", tooltip: true
-          });
-          const typeList = ['a','b','c','d'];
-          typeList.map((item)=>{
-            tableTitle.push({
-              props:item,
-              name:item,
-              key:item,
-              type:'icon'
-            })
-          })
 
-          this.tableTitle = tableTitle;
+        // 指定投资车型项目查询
+        async init(){
+          this.tableLoading = true;
+          const param = {
+            partNums:this.multipleSelection.map((item)=>item.partNum),
+            requirementAekoId:this.$route.query.requirementAekoId,
+          };
+          await getInvestCarProject(param).then((res)=>{
+            this.tableLoading = false;
+            const {code,data=[]} = res;
+            if(code == 200){
+              // 获取所有车型项目
+              let carTypeList = [];
+              let tableTitle = [];
+              tableTitle.push({
+                props: "partNum", name:this.language('零件号','LINGJIANHAO'), key: "LINGJIANHAO", tooltip: true
+              });
+              data.map((item)=>{
+                carTypeList = carTypeList.concat(item.aekoInvestCarProjectCodes);
+                // 勾选已选项
+                item[item.aekoInvestCarProjectCode] = true;
+                // 排除已选项数据的列表
+                item.aekoInvestCarProjectCodes.map((code)=>{
+                  if(code != item.aekoInvestCarProjectCode){
+                    item[code] = false;
+                  }
+                })
+              })
+              carTypeList =  Array.from(new Set(carTypeList)); // 去重
+              carTypeList.map((item)=>{
+                tableTitle.push({
+                  props:item,
+                  name:item,
+                  key:item,
+                  type:'icon'
+                })
+              })
+
+              this.tableTitle = tableTitle;
+              this.tableData = data;
+
+            }
+          }).catch(()=>{ this.tableLoading = false; });
+
+        },
+
+        // 确定
+        async submit(){
+            const requirementAekoId = this.$route.query.requirementAekoId;
+            let data = [];
+            this.tableData.map((item)=>{
+              const obj = {
+                objectAekoPartId:item.objectAekoPartId,
+                requirementAekoId,
+              };
+              item.aekoInvestCarProjectCodes.map((code)=>{
+                if(item[code]){
+                  obj.investCarTypePro = code;
+                }
+              })
+              data.push(obj);
+            })
+            this.submiting = true;
+
+            await updateInvestCarProject(data).then((res)=>{
+              this.submiting = false;
+              if(res.code == 200){
+                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                this.clearDialog();
+                this.$emit('refresh');
+              }else{
+                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+              }
+
+            }).catch(()=>this.submiting = false)
         },
 
         // 判断是否为空
@@ -110,9 +175,9 @@ export default {
         // 改变零件指定类型状态
         changeStatus(props,row,status){
           if(status == '0'){
-            for(let i in row){
-              if(i == props) row[i] = false;
-            }
+            // for(let i in row){
+            //   if(i == props) row[i] = false;
+            // }
           }else if(status == '1'){
             for(let i in row){
               if(i == props) row[i] = true;

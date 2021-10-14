@@ -171,8 +171,8 @@ export default {
       saveLoading: false,
       deleteLoading: false,
       isAuditOptions: [
-        { key: 1, value: "1", label: "是" },
-        { key: 0, value: "0", label: "否" }
+        { key: 1, value: 1, label: "是" },
+        { key: 0, value: 0, label: "否" }
       ],
       currentRow: null,
       deptDialogVisible: false
@@ -273,12 +273,12 @@ export default {
       if (!this.tableListData.every(item => item.rateTag && item.rateDepartNum && (item.isCheck || item.isCheck === 0))) return iMessage.warn(this.language("QINGJIANGSHUJUTIANXIEWANZHENG", "请将数据填写完整"))
 
       this.saveLoading = true
-      saveRfqRateDeparts(
-        this.tableListData.map(item => ({
+      saveRfqRateDeparts({
+        data: this.tableListData.map(item => ({
           ...item,
           rateTag: item.rateTag
-        }))
-      )
+        })) 
+      })
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 

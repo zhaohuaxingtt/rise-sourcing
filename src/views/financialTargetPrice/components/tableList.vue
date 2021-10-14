@@ -8,8 +8,8 @@
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
-    <el-table-column v-if="selection" type='selection' width="56" align='center' ></el-table-column>
-    <el-table-column v-if='indexKey' type='index' width='35' align='center' label='#'>
+    <el-table-column v-if="selection" type='selection' width="45" align='center' ></el-table-column>
+    <el-table-column v-if='indexKey' type='index' width='30' align='center' label='#'>
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
       </template>

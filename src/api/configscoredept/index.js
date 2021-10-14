@@ -19,11 +19,11 @@ export function getRfqRateDeparts(params) {
 }
 
 // 保存评分部门列表
-export function saveRfqRateDeparts(params) {
+export function saveRfqRateDeparts(data) {
   return requst({
-    url: "/rfq-rate-departs/batch-update",
+    url: `/rfq-rate-departs/batch-update?rfqId=${ data.rfqId || 'null' }`,
     method: "PATCH",
-    data: params
+    data: data.data
   })
 }
 
@@ -42,5 +42,21 @@ export function getAllDept(params) {
     url: "/rfq-rate-departs/getAllDept",
     method: "POST",
     data: params
+  })
+}
+
+// 获取评分部门类型
+export function getAllDeptTag() {
+  return requst({
+    url: "/rfq-rate-departs/getAllDeptTag",
+    method: "GET"
+  })
+}
+
+// 获取评分人和协调人列表
+export function getAllRaterAndCoordinator(params) {
+  return requst({
+    url: `/rfq-rate-departs/getAllRaterAndCoordinator/${ params.rateTag }/${ params.rateDepartNum }`,
+    method: "GET"
   })
 }

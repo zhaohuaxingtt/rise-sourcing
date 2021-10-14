@@ -1,0 +1,391 @@
+<!--已审批--->
+<template>
+  <div>
+    <!--搜索区--->
+    <i-search class="margin-bottom20" @sure="queryApprovedAKEOForm" @reset="restQueryForm" :resetKey="QUEREN"
+              :searchKey="REST">
+      <el-form :model="queryAkeoForm" ref="AKEOQueryFormRef">
+        <!-- AEKO号 -->
+        <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')" prop='aekoCode'>
+          <i-input
+              v-model="queryAkeoForm.aekoCode"
+              :placeholder="language('LK_QINGSHURU','请输入')"
+              clearable
+          ></i-input>
+        </el-form-item>
+        <!-- 零件号 -->
+        <el-form-item :label="language('LINGJIAHAO', '零件号')" prop='partNum'>
+          <i-input
+              v-model="queryAkeoForm.partNum"
+              :placeholder="language('LK_QINGSHURU','请输入')"
+              clearable
+          ></i-input>
+        </el-form-item>
+        <!-- 供应商简称 -->
+        <el-form-item :label="language('GONGYINGSHANGJIANCHENG','供应商简称')" prop='supplierName'>
+          <i-input
+              v-model="queryAkeoForm.supplierName"
+              :placeholder="language('LK_QINGSHURU','请输入')"
+              clearable
+          ></i-input>
+        </el-form-item>
+        <!-- 专业采购员 -->
+        <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')" prop='linieName'>
+          <i-select
+              v-model="queryAkeoForm.buyerName"
+              filterable
+              remote
+              reserve-keyword
+              :remote-method="remoteMethod"
+              :loading="loading"
+              :placeholder="language('LK_QINGSHURU','请输入')"
+              clearable
+          >
+            <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.label">
+            </el-option>
+          </i-select>
+        </el-form-item>
+        <!-- 成本变化Δ值 -->
+        <el-form-item :label="language('LK_CHENGBENBIANHUAZHI','成本变化Δ值')">
+          <div class="intervalCss">
+            <el-form-item prop="costChangeMin">
+              <i-input
+                  v-model="queryAkeoForm.costChangeMin"
+                  :placeholder="language('LK_QINGSHURU','请输入')"
+                  clearable
+              ></i-input>
+            </el-form-item>
+            <span class="splitLine"></span>
+            <el-form-item prop="costChangeMax">
+              <i-input
+                  v-model="queryAkeoForm.costChangeMax"
+                  :placeholder="language('LK_QINGSHURU','请输入')"
+                  clearable
+              ></i-input>
+            </el-form-item>
+          </div>
+        </el-form-item>
+
+        <el-form-item :label="language('LK_SHENPIZHUANGTAI','审批状态')" prop='auditStatus'>
+          <i-select v-model="queryAkeoForm.auditStatus" multiple placeholder="请选择" >
+            <el-option
+                v-for="item in auditStatusList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+          </i-select>
+        </el-form-item>
+      </el-form>
+    </i-search>
+    <!--表格展示区--->
+    <i-card>
+      <span class="font18 font-weight">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
+      <!--表格展示区-->
+      <tablelist
+          height="400"
+          index
+          :selection="true"
+          :tableData="approvedList"
+          :tableTitle="approvedHeader"
+          :tableLoading="tableLoading"
+          :lang="true"
+          v-loading="tableLoading"
+          @handleSelectionChange="handleSelectionChange"
+      >
+        <template #isTop="scope">
+          <div>
+            <span class="icon"><icon v-if="scope.row.isTop" symbol class="icon" name="iconAEKO_TOP"/></span>
+          </div>
+        </template>
+        <template #aekoNum="scope">
+          <div style="text-align:left">
+            <a class="link-underline" @click="lookDetails(scope.row)">
+              {{ scope.row.aekoCode }}
+            </a>
+          </div>
+        </template>
+        <template #auditTypeName="scope">
+          <span>{{scope.row.auditType}}</span>
+        </template>
+        <template #describe="">
+          <a class="link-underline" href="javascript:;" >
+            {{ language('CHAKAN', '查看') }}
+          </a>
+        </template>
+        <!---更改零件名称-->
+        <template #assignsheet="scope">
+          <span>{{scope.row.partName}}</span>
+        </template>
+        <!--涉及车型和车型项目-->
+        <template #carType="scope">
+          <span>{{scope.row.cartypeNameZh}}</span>
+        </template>
+
+        <!--主要供应商-->
+        <template #supplier="scope">>
+          <span>{{scope.row.mainSupplier}}</span>
+        </template>
+        <!--增加材料成本-->
+        <template #EP1="scope">
+          <span>{{scope.row.materialIncrease}}</span>
+        </template>
+
+        <!--增加投资税-->
+        <template #EP2="scope">
+          <span>{{scope.row.investmentIncrease}}</span>
+        </template>
+
+        <!--其他费用-->
+        <template #EP3="scope">
+          <span>{{scope.row.otherCost}}</span>
+        </template>
+        <!--科室-->
+        <template #DepartmentName="scope">>
+          <span>{{scope.row.linieDeptName}}</span>
+        </template>
+        <!--采购员-->
+        <template #buyerName="scope">>
+          <span>{{scope.row.linieName}}</span>
+        </template>
+        <!--附件-->
+        <template #attach="">
+          <a class="link-underline" href="javascript:;">
+            {{ language('CHAKAN', '查看') }}
+          </a>
+        </template>
+        <!--AEKO截止日期-->
+        <template #date="scope">
+          <span>{{scope.row.deadLine}}</span>
+        </template>
+        <!--创建时间-->
+        <template #createDate="scope">
+          <span>{{scope.row.createDate}}</span>
+        </template>
+      </tablelist>
+      <div class="pagination">
+        <iPagination v-update class="pagination"
+                     @size-change="handleSizeChange($event, loadApprovedList)"
+                     @current-change="handleCurrentChange($event, loadApprovedList)"
+                     background
+                     :current-page="page.currPage"
+                     :page-sizes="page.pageSizes"
+                     :page-size="page.pageSize"
+                     :layout="page.layout"
+                     :total="page.totalCount"/>
+      </div>
+    </i-card>
+
+  </div>
+</template>
+
+<script>
+import {iSearch, iInput, iCard, iPagination, icon, iSelect, iMessage} from "rise"
+import {tableCsfTitle as approvedHeader} from '../components/data'
+import tablelist from 'rise/web/components/iFile/tableList';
+import {pageMixins} from '@/utils/pageMixins'
+import {queryApproved} from "@/api/aeko/approve";
+import {searchLinie} from "@/api/aeko/manage";
+import {user as configUser } from '@/config'
+
+export default {
+  name: "AKEOApprovedPage",
+  mixins: [pageMixins],
+  components: {
+    iSearch,
+    iInput,
+    iCard,
+    tablelist,
+    iPagination,
+    icon,
+    iSelect
+  },
+  data() {
+    return {
+      //查询表单
+      queryAkeoForm: {
+        aekoCode: '',//aeko号
+        auditStatus: null,//审批状态
+        costChangeMax: '',//成本变化上限
+        costChangeMin: '',//成本变化下限
+        current: 1,//当前页
+        size: 10,//分页大小
+        linieName: '',//专业采购员
+        supplierName: '',//供应商简称
+        partNum: '',//零件号
+      },
+      //返回数据
+      approvedList: [],
+      //列表数据表头
+      approvedHeader: approvedHeader,
+      tableLoading: false,
+      //选中回调数据集合
+      selectApprovedList: [],
+      auditStatusList: [{value: 1, name: '同意'}, {value: 2, name: '拒绝'}, {value: 3, name: '补充材料'}],
+      buyerUsers:[],
+      options:[],
+      loading: false,
+    }
+  },
+  created() {
+    this.loadApprovedList()
+    this.queryAllLin()
+  },
+  methods: {
+    checkMinCost() {
+      let value = this.queryAkeoForm.minCost
+      if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
+        this.$message.error('请输入正确的数值，小数点后保留四位数字')
+        return false
+      }
+      if (!isNaN(this.queryAkeoForm.maxCost)) {
+        if (Number(value) > Number(this.queryAkeoForm.maxCost)) {
+          this.$message.error('最小值不能大于最大值');
+          return false
+        }
+      }
+      return true
+    },
+    checkMaxCost() {
+      let value = this.queryAkeoForm.maxCost
+      if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
+        this.$message.error('请输入正确的数值，小数点后保留四位数字')
+        return false
+      }
+      if (!isNaN(this.queryAkeoForm.minCost)) {
+        if (Number(value) < Number(this.queryAkeoForm.maxCost)) {
+          this.$message.error('最大值不能小于最小值');
+          return false
+        }
+      }
+      return true
+    },
+
+    //加载数据
+    loadApprovedList() {
+      this.tableLoading = true
+      this.queryAkeoForm.current = this.page.currPage
+      this.queryAkeoForm.size = this.page.pageSize
+      queryApproved(this.queryAkeoForm).then(res => {
+        this.tableLoading = false
+        if (res.code == 200) {
+          this.approvedList = res.data.records
+          this.page.totalCount = res.data.total
+        } else {
+          this.$message.error(res.desZh)
+        }
+      })
+      /*  this.approvedList = [
+          {
+            aekoNum: '12313',
+            isTop: true,
+            describe: '23444',
+          }
+        ]*/
+    },
+    //查询
+    queryApprovedAKEOForm() {
+      if(this.checkMaxCost()&&this.checkMaxCost()){
+        this.queryAkeoForm.current = 1
+        this.queryAkeoForm.size = this.page.pageSize
+        this.loadApprovedList()
+      }
+    },
+    //重置查询表单
+    restQueryForm() {
+      this.$refs.AKEOQueryFormRef.resetFields()
+      this.queryAkeoForm.current = 1
+      this.queryAkeoForm.size = this.page.pageSize
+      this.loadApprovedList()
+    },
+    queryAllLin(){
+      const { buyerName=[],userInfo={} } = this;
+      if(buyerName.length){
+        buyerName.map((item)=>{
+          item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+          item.value = item.id;
+        })
+        this.buyerUsers = buyerName;
+      }else{
+        const {deptDTO={}} = userInfo;
+        const deptId = deptDTO.id;
+        searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
+          const {code,data} = res;
+          if(code ==200 ){
+            data.map((item)=>{
+              item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+              item.value = item.id;
+            })
+            this.buyerUsers = data;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+      }
+    },
+    //远程搜索专业采购员
+    remoteMethod(query) {
+      if (query !== '') {
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+          this.options = this.buyerUsers.filter(item => {
+            return item.label.toLowerCase()
+                .indexOf(query.toLowerCase()) > -1;
+          });
+        }, 200);
+      } else {
+        this.options = [];
+      }
+    },
+
+    //选中回调
+    handleSelectionChange(val) {
+      this.selectApprovedList = val
+      this.queryAkeoForm.current = 1
+      this.queryAkeoForm.size = this.page.pageSize
+      this.loadApprovedList()
+    },
+    //跳转到详情
+    lookDetails(row){
+      let routeData = this.$router.resolve({
+        path: `/aeko/AEKOApprovalDetails`,
+      })
+      window.open(routeData.href, '_blank')
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+::v-deep.intervalCss {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  vertical-align: top;
+
+  .el-form-item {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+.icon {
+  svg {
+    font-size: 28px;
+  }
+}
+
+.splitLine {
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 8px;
+  height: 0;
+  border: 1px solid #000000;
+  opacity: 1;
+}
+</style>

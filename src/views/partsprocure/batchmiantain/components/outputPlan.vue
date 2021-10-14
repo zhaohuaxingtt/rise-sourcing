@@ -66,7 +66,7 @@
 				this.$emit('handleSelectionChange',e)
 			},
 			openPage(item){
-				this.$router.push({
+				const openParts = this.$router.resolve({
 					path:"/sourceinquirypoint/sourcing/partsprocure/outputplan",
 					query:{
 						id:item.purchaseProjectId,
@@ -75,6 +75,7 @@
 						purchasingRequirementObjectId:item.purchasingRequirementObjectId
 					}
 				})
+				window.open(openParts.href,'_blank')
 			}
 		}
 	}

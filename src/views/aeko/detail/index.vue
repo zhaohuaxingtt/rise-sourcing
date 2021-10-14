@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-08-27 10:27:42
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-11 14:39:09
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
 -->
@@ -26,9 +26,10 @@
           </template>
       </iFormGroup>
     </iCard>
-    <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
+    <iTabsList class="aekodetail-tabs margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
       <!-- language(tab.key, tab.label) -->
       <el-tab-pane lazy v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="tab.label" :name="tab.name" v-permission.dynamic="tab.permissionKey">
+        <span slot="label">{{tab.label}}<icon v-if="tab.isAlarm" symbol name="iconbaojiadan-youfujian" class="icon-alarm" ></icon></span>
         <template v-if="currentTab==tab.name">
           <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :aekoInfo="aekoInfo" @getBbasicInfo="getBbasicInfo"/>
         </template>
@@ -46,6 +47,7 @@ import {
   iFormGroup,
   iFormItem,
   iText,
+  icon,
   iMessage,
  } from "rise"
 import logButton from "@/components/logButton"
@@ -60,6 +62,9 @@ import { cloneDeep } from "lodash"
 import {
   getAekoDetail,
 } from '@/api/aeko/detail'
+import {
+  aekoAuditSupplementalresult,
+} from '@/api/aeko/detail/approveRecord'
 
 export default {
   components: { 
@@ -68,6 +73,7 @@ export default {
     contentDeclare,
     iCard,
     iButton,
+    icon,
     logButton,
     iFormGroup,
     iFormItem,
@@ -86,6 +92,7 @@ export default {
     const {query} = this.$route;
     const {from=''} = query;
     const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
+    console.log(roleArr)
     if(roleArr.length > 1){
         if(from == 'manage'){
             this.isLinie = false;
@@ -122,12 +129,16 @@ export default {
 
     this.tabs = permissionArray("permissionKey", this.tabs)
 
+    
+  },
+  mounted() {
     this.getBbasicInfo();
   },
   computed: {
     //eslint-disable-next-line no-undef
     ...Vuex.mapState({
-      permission: state => state.permission
+      permission: state => state.permission,
+      userInfo: state => state.permission.userInfo,
     }),
   },
   data() {
@@ -153,6 +164,21 @@ export default {
     }
   },
   methods: {
+    /**
+     * @description: 审批记录选项卡，有审批记录或补充材料的，选项卡要做红点标识
+     * @param {*}
+     * @return {*}
+     */    
+    checkAttachAlarm() {
+      const params = {
+        linieId: this.userInfo.id || '',
+        manageId: this.aekoInfo.aekoManageId || '',
+      }
+      const record = this.tabs.find(o => o.name === 'record') || {}
+      aekoAuditSupplementalresult(params).then(res => {
+        this.$set(record, 'isAlarm', res.code === '200' && res.data)
+      })
+    },
     // 页签切换
     tabChange() {
       this.$nextTick(() => {
@@ -176,6 +202,8 @@ export default {
             // }
             this.tabChange();
           }
+          // 审批记录选项卡，有审批记录或补充材料的，选项卡要做红点标识
+          // this.checkAttachAlarm();
 
          
         }else{
@@ -206,6 +234,17 @@ export default {
   .basic-form{
     ::v-deep.el-form-item__content {
       margin-left: 0!important;
+    }
+  }
+  .aekodetail-tabs {
+    ::v-deep.el-tabs__item {
+      position: relative;
+      .icon-alarm {
+        display: block;
+        position: absolute;
+        right: 1px;
+        top: 1px;
+      }
     }
   }
 }

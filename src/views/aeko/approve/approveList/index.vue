@@ -2,11 +2,11 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-28 13:56:04
+ * @LastEditTime: 2021-10-14 16:53:31
  * @Description: 
 -->
 <template>
-  <div class="aeko-assign">
+  <div class="aeko-assign" v-permission.auto="AEKO_APPROVE_APPROVELIST_PAGE|Aeko审批分配列表">
     <!-- 搜索 -->
     <search @search="getFetchData" ref="search" />
     <!-- 表格 -->
@@ -14,6 +14,7 @@
       <div class="editControl">
         <iButton
             class="floatright margin-bottom20"
+            v-permission.auto="AEKO_APPROVE_APPROVELIST_PAGE_ASSIGN|分配"
             @click="assign"
           >
             {{ language('LK_FENPAI', '分派') }}
@@ -29,6 +30,7 @@
         :lang="true"
         :selectable="(row, index) => {return row.unresigned}"
         v-loading="tableLoading"
+        v-permission.auto="AEKO_APPROVE_APPROVELIST_TABLE|表格"
         @handleSelectionChange="handleSelectionChange"
       >
       <template #isTop="scope">
@@ -49,7 +51,7 @@
         </a>
       </template>
       <template #assignsheet="">
-        <a class="link-underline" href="javascript:;">
+        <a class="link-underline" href="javascript:;" @click="toAssignSheetUrl(scope.row)">
           {{language('CHAKAN', '查看')}}
         </a>
       </template>
@@ -57,6 +59,7 @@
         <iSelect
           v-if="!scope.row.chiefName"
           v-model="scope.row.chiefNames"
+          @focus="getcheifUserList(scope.row)"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           multiple
           filterable
@@ -65,7 +68,7 @@
           <el-option
             :value="items.code"
             :label="items.value"
-            v-for="(items, index) in buyerNames || []"
+            v-for="(items, index) in buyerSelectOPtions || []"
             :key="index"
           ></el-option>
         </iSelect>
@@ -97,7 +100,8 @@ import {user as configUser } from '@/config'
 import {
   getApproveDistributionPage,
   approveDistributionSave,
-  getRoleUserList
+  getRoleUserList,
+  getChiefUserList
 } from '@/api/aeko/approve'
 
 export default {
@@ -118,7 +122,9 @@ export default {
       tableSelecteData: [],
       tableLoading: false,
       // linies
-      buyerNames: []
+      buyerNames: [],
+      // 对应股长
+      buyerSelectOPtions: []
     }
   },
   mounted() {
@@ -126,12 +132,42 @@ export default {
     this.getQQCGGZ()
   },
   methods: {
+    /**
+     * @description: 跳转审批单
+     * @param {*} row
+     * @return {*}
+     */    
+    toAssignSheetUrl(row) {
+      const transmitObj= {
+        option: 1, 
+        aekoApprovalDetails:{
+          aekoNum: row.aekoNum,
+          requirementAekoId: row.requirementAekoId,
+          aekoAuditType: row.auditType,
+          workflowIds: row.workflowIds
+        }
+      }
+      sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(transmitObj))
+      this.$nextTick(() => {
+        this.$router.push({path: '/aeko/AEKOApprovalDetails'})
+      })
+    },
+    /**
+     * @description: 跳转aeko详情
+     * @param {*} row
+     * @return {*}
+     */    
     toDetailUrl(row) {
       this.$router.push({name: 'aekodetail', query: {
         from: '',
         requirementAekoId: row.requirementAekoId
       }})
     },
+    /**
+     * @description: 跳转描述
+     * @param {*} row
+     * @return {*}
+     */    
     toDescUrl(row) {
       this.$router.push({name: 'aekoDescribe', query: {
         requirementAekoId: row.requirementAekoId,
@@ -211,6 +247,35 @@ export default {
       })
     },
     /**
+     * @description: 获取前期采购股长列表
+     * @param {*} row: 行数据
+     * @param {*} type: 1 根据前期采购股长角色获取所有的前期采购股长
+     * @param {*} type: 2 根据审批类型查找对应的前期采购股长
+     * @return {*}
+     */    
+    getcheifUserList(row={}) {
+      // 前期采购股长
+      const params = {
+        id: row.id,
+        auditType: row.auditType
+      }
+      this.buyerSelectOPtions  = []
+      getChiefUserList(params).then((res)=>{
+        const {code,data} = res;
+        if(code === '200' ) {
+          this.buyerSelectOPtions = data.map((item)=>{
+            return {
+              value: this.$i18n.locale === "zh" ? item.nameZh : item.nameEn,
+              code: item.id,
+              lowerCaseLabel: typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
+            }
+          });
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      })
+    },
+    /**
      * @description: 分派
      * @param {*}
      * @return {*}
@@ -230,7 +295,7 @@ export default {
       let parmas = selectedData.map(o => {
         const choseChiefs = o.chiefNames || []
         const chiefName = choseChiefs.map(chiefId => {
-          const cName = this.buyerNames.find(buyer => buyer.code === chiefId) || {}
+          const cName = this.buyerSelectOPtions.find(buyer => buyer.code === chiefId) || {}
           return {
             id: o.id || '',
             postId: o.postId || '',

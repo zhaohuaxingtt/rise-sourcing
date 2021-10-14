@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-09-06 14:59:35
+ * @LastEditTime: 2021-10-12 19:51:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -122,7 +122,7 @@
     <!--------------------------------------------------------------->
     <!-------------------------RFQ待办信息---------------------------->
     <!--------------------------------------------------------------->
-    <rfqPending v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"></rfqPending>
+    <rfqPending ref="rfqPending" v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"></rfqPending>
     <!--------------------------------------------------------------->
     <!-------------------------RFQ详情信息---------------------------->
     <!--------------------------------------------------------------->    
@@ -202,13 +202,15 @@ export default {
       rfqloading:false,
       endingloading:false,
       transferlaoding:false,
-      disabled: true
+      disabled: true,
+      linieUserId:''
     }
   },
   created() {
     this.getBaseInfo()
     this.getTableList()
     this.getRfqInfo()
+    this.getPartTableList = this.$store.state.rfq.partfunc
   },
   provide: function(){
     return {
@@ -231,7 +233,10 @@ export default {
         this.confirmTableLoading = true
         this.parmarsHasRfq['size'] = this.pageSize || 10
         this.parmarsHasRfq['current'] = this.currPage || 1
-        this.parmarsHasRfq['rfqId'] = this.$route.query.id
+        // this.parmarsHasRfq['rfqId'] = this.$route.query.id
+        this.parmarsHasRfq['status'] = 'NOT_IN_RFQ'
+        this.parmarsHasRfq['linieId'] = this.linieUserId
+        this.parmarsHasRfq['buyerId'] = this.baseInfo.buyerId
         getTabelData(this.parmarsHasRfq).then(res => {
           this.$store.dispatch('setPendingPartsList', res.data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}))
         }).catch(() => this.confirmTableLoading = false)
@@ -265,9 +270,14 @@ export default {
           const resList = res.data
           if (resList.length > 0) {
             this.baseInfo = res.data[0]
+            this.$store.state.rfq.partfunc
+            if(typeof this.$store.state.rfq.partfunc === "function")
+              this.getPartTableList()
           } else {
             this.baseInfo = ''
           }
+          //获取详细信息后 刷新tab栏里面的询价管理（只要存在轮次大于1则显示询价管理页签）
+          this.$refs.rfqPending.updateTabs(this.baseInfo)
           this.baseInfoLoading = false
         } catch {
           this.baseInfoLoading = false
@@ -278,18 +288,22 @@ export default {
     },
     getRfqInfo() {
       this.baseInfoLoading = true
-
-      getRfqInfo({
-        rfqId: this.$route.query.id
-      })
-      .then(res => {
-        if (res.code == 200) {
-          this.disabled = !!res.data.isFreeze
-        } else {
-          iMessage.error(this.language("HUOQURFQDINGDIANXINXISHIBAI", "获取RFQ定点信息失败"))
-        }
-      })
-      .finally(() => this.baseInfoLoading = false)
+      if(this.$route.query.id){
+        getRfqInfo({
+          rfqId: this.$route.query.id
+        })
+        .then(res => {
+          if (res.code == 200) {
+            this.disabled = !!res.data.isFreeze
+          } else {
+            iMessage.error(this.language("HUOQURFQDINGDIANXINXISHIBAI", "获取RFQ定点信息失败"))
+          }
+        })
+        .finally(() => this.baseInfoLoading = false)
+      } else {
+        this.disabled = false
+        this.baseInfoLoading = false
+      }
     },
     changeNav(target) {
       this.navActivtyValue = target.index
@@ -373,6 +387,7 @@ export default {
             ...params
         }
         const res = await addRfq(req)
+        this.linieUserId = res.data.linieUserId
         this.resultMessage(res)
         this.$router.push({
           path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${res.data.rfqId}`
@@ -427,7 +442,7 @@ export default {
             path: "/designate/rfqdetail", 
             query: {
               desinateId: res.data.nominateId, 
-              designateType: res.data.nominateProcessType
+              designateType: res.data.nominateProcessType,
             }
           })
         } else {

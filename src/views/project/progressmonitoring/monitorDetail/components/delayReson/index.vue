@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-26 11:04:35
+ * @LastEditTime: 2021-10-11 16:12:32
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -31,17 +31,19 @@
 import { iDialog, iButton, iMessage } from 'rise' 
 import { tableTitle } from './data' 
 import tableList from '@/views/project/schedulingassistant/progroup/components/tableList' 
-import { getDelayReasonConfirmList } from '@/api/project/process'
+import { getDelayReasonConfirmList, sendDelayReason } from '@/api/project/process'
 import { getFsUserListPart, getAllFS } from '@/api/project'
+import moment from 'moment'
 export default { 
   components: { iDialog, iButton, tableList }, 
   props: { 
     dialogVisible: { type: Boolean, default: false }, 
     cartypeProId: {type:String}, 
-    type: {type:String},
+    type: {type:String, default: '1'},
     partStatus: {type:String},
     partNums: {type:Array, default:() => []},
-    carProjectName: {type:String}
+    carProjectName: {type:String},
+    delayList: {type:Array, default:() => []}
   }, 
   data() { 
     return { 
@@ -59,7 +61,11 @@ export default {
   watch: {
     dialogVisible(val) {
       if(val) {
-        this.getDelayReasonConfirmList()
+        if (this.type === '1') {
+          this.getDelayReasonConfirmList()
+        } else {
+          this.getTableList()
+        }
       }
     }
   },
@@ -74,7 +80,7 @@ export default {
      * @return {*} 
      */    
     async getFsUserList(tableList) {  
-      const res = await getFsUserListPart({partNums: tableList.map(item => item.partNum).join(',')}) 
+      const res = await getFsUserListPart(tableList.map(item => item.partNum)) 
         if (res?.result) { 
           return res.data   
         } else { 
@@ -132,6 +138,36 @@ export default {
         } 
       }) 
     }, 
+    async getTableList() {
+      this.tableLoading = true
+      const fsOptions = await this.getFsUserList(this.delayList || [])
+      this.tableList = this.delayList.map(item => {
+        const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+        const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+        const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
+          if (item.userId) { 
+            return [...accu, { 
+              ...item, 
+              value: item.userId, 
+              label: item.userName 
+            }] 
+          } else { 
+            return accu 
+          } 
+        },[]) : []  
+        return {  
+          ...item, 
+          // cartypeProId: this.cartypeProId, 
+          // cartypeProject: this.carProjectName, 
+          // projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
+          // projectPurchaserId: this.$store.state.permission.userInfo.id, 
+          selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+          fs, 
+          fsId,
+        } 
+      });
+      this.tableLoading = false
+    },
     async getDelayReasonConfirmList() {
       try {
         const params = {
@@ -143,6 +179,11 @@ export default {
         const res = await getDelayReasonConfirmList(params)
         if (res?.result) {
           const tableList = res.data || []
+          if (tableList.length < 1) {
+            iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件')) 
+            this.tableList = []
+            throw(false)
+          }
           const fsOptions = await this.getFsUserList(tableList) 
           this.tableList = tableList.map(item => {
             const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
@@ -162,12 +203,17 @@ export default {
               ...item, 
               cartypeProId: this.cartypeProId, 
               cartypeProject: this.carProjectName, 
-              // projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
-              // projectPurchaserId: this.$store.state.permission.userInfo.id, 
+              projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
+              projectPurchaserId: this.$store.state.permission.userInfo.id, 
               selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
               fs, 
               fsId,
-              originTime: this.partStatus == '3' ? item.kickoffTimeKw : this.partStatus == '2' ? item.nomiTimeKw : this.partStatus == '5' ? item.firstTryoutTimeKw : this.partStatus == '6' && this.isLarger(item.emTimeKw, item.otsTimeKw) ? item.emTimeKw : item.otsTimeKw,
+              planDate: this.partStatus == '3' ? item.kickoffTimeKw : this.partStatus == '2' ? item.nomiTimeKw : this.partStatus == '5' ? item.firstTryoutTimeKw : this.partStatus == '6' && this.isLarger(item.emTimeKw, item.otsTimeKw) ? item.emTimeKw : item.otsTimeKw,
+              partPeriod: item.partStatus,
+              delayWeek: item.delayWeeks,
+              confirmDateDeadline: moment(item.replyEndDate).format('YYYY-MM-DD'),
+              partName: item.partNameZh,
+              isBmg: item.bmgFlag
             } 
           });
         } else {
@@ -201,6 +247,16 @@ export default {
         return 
       } 
       this.saveLoading = true 
+      sendDelayReason(this.selectData).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+          this.$emit('changeVisible', false) 
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+        }
+      }).finally(() => {
+        this.saveLoading = false
+      })
       // this.$emit('handleConfirm', [...this.selectDataNomi, ...this.selectDataKickoff]) 
     }, 
     changeSaveLoading(loading) { 

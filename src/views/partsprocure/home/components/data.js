@@ -88,7 +88,7 @@ export const tableTitle = [{
 		isAekoShow:true,
 	},
 	{
-		props: 'carTypeCategory',
+		props: 'modelNameZh',
 		name: '车型大类',
 		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
 		tooltip: true,

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { iCard, iPagination } from 'rise';
+import { iCard, iPagination, iMessage } from 'rise';
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { pageMixins } from "@/utils/pageMixins";
 import { volumeTableTitle as tableTitle } from "./data";
@@ -37,7 +37,6 @@ import {
   getPerCarDosageVersion,
   getPerCarDosageInfo,
 } from "@/api/partsign/editordetail";
-import { iMessage } from '../../../../../components';
 
 export default {
   components: { iCard, tableList, iPagination },
@@ -64,7 +63,7 @@ export default {
   },
   methods: {
     async getData() {
-      if (this.params.partProjectSource == 2) return // 手工创建的采购项目不调用该接口
+      if (this.params.partProjectSource != 1) return // 手工创建的采购项目不调用该接口
 
       this.loading = true;
 
