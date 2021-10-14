@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:51:18
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-24 15:30:56
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-10-14 17:08:49
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件 列表表头
  */
 
@@ -12,7 +12,7 @@ export const TIPStableTitle = [
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
   {props:'partNameZh',name:'零件名称(中)', key: "LINGJIANMINGCHEN_ZH", tooltip: true},
   {props:'partNameDe',name:'零件名称(德)', key: "LINGJIANMINGCHEN_DE", tooltip: true},
-  {props:'partStatus',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true},
+  {props:'partStatusDesc',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true},
   {props:'productGroup',name:'产品组', key: "LK_CHANPINZU", tooltip: true},
   {props:'fsnrGsnrNum',name:'FS号', key: "LK_FSHAO", tooltip: true},
   {props:'buyerName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
