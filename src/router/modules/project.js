@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:02:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-27 10:57:22
+ * @LastEditTime: 2021-10-15 17:10:35
  * @Description: 
  * @FilePath: \front-web\src\router\modules\project.js
  */
@@ -122,6 +122,7 @@ export default [
             name: "progressmonitoring-parts-taskList",
             meta: {
               title: "项目管理-零件任务清单",
+              withoutTop: true,
             },
             component: () => import("@/views/project/progressmonitoring/partsTaskList")
           },
@@ -151,6 +152,33 @@ export default [
           title: "项目管理-项目进度报告",
         },
         component: () => import("@/views/project/progressreport"),
+        redirect: "/projectmgt/projectprogressreport/partprogress",
+        children: [
+          {
+            path: "partprogress",
+            name: "partprogress",
+            meta: {
+              title: "项目管理-项目进度报告-零件进度报告",
+            },
+            component: () => import("@/views/project/progressreport/partprogress"),
+          },
+          {
+            path: "materialcost",
+            name: "materialcost",
+            meta: {
+              title: "项目管理-项目进度报告-材料成本报告",
+            },
+            component: () => import("@/views/project/progressreport/materialcost"),
+          },
+          {
+            path: "performanceanalysis",
+            name: "performanceanalysis",
+            meta: {
+              title: "项目管理-项目进度报告-项目管理绩效分析",
+            },
+            component: () => import("@/views/project/progressreport/performanceanalysis"),
+          }
+        ]
       }
     ]
   }
