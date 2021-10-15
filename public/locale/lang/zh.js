@@ -337,7 +337,7 @@
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOQIANSHOUDEXINXIDAN': '抱歉，您当前还未选择您需要签收的信息单！', //抱歉，您当前还未选择您需要签收的信息单！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOQUXIAODELINGJIANCAIGOUXIANGMU': '抱歉，您当前还未选择您需要取消的零件采购项目！', //抱歉，您当前还未选择您需要取消的零件采购项目！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU': '抱歉，您当前还未选择您需要生成FS号的零件采购项目！', //抱歉，您当前还未选择您需要生成FS号的零件采购项目！
-        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU': '抱歉，您当前还未选择您需要生批量维护的项目！', //抱歉，您当前还未选择您需要生批量维护的项目！
+        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU': '抱歉，您当前还未选择您需要批量维护的项目！', //抱歉，您当前还未选择您需要生批量维护的项目！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN': '抱歉，您当前还未选择您需要退回的信息单！', //抱歉，您当前还未选择您需要退回的信息单！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU': '抱歉，您当前还未选择您需要转派的零件采购项目！', //抱歉，您当前还未选择您需要转派的零件采购项目！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOPILIANGWEIHUCHANLIANGJIHUADEXIANGMU': '抱歉，您当前还未选择您需要批量维护产量计划的项目！', //抱歉，您当前还未选择您需要批量维护产量计划的项目！
@@ -1068,7 +1068,6 @@
         'LK_XITONGJISUAN': '系统计算',  //  系统计算
         'LK_RENMINBI': '人民币',    //  人民币
         'LK_BUHANSUI': '不含税',    //  不含税
-        'LK_SHOUGONGTIAOZHENG': '手工调整', //  手工调整
         'LK_QINGXUANZHE': '请先选择',   //  请先选择
         'LK_XUQIUGENZHONGHAO': '需求跟踪号',    //  需求跟踪号
         'LK_JILIANGDANWEI': '计量单位', //  计量单位
@@ -1086,7 +1085,8 @@
         'SPR_FRM_DEP_OBJPLACE': '请选择呈现对象', // 请选择呈现对象
         'SPR_FRM_DEP_AVGPLACE': '请选择行业均值', // 请选择行业均值
 
-        'LK_TUICHUBIANJI': '退出编辑',    //  退出编辑
+        'LK_BANBENJIHUANIANFEN': '版本计划年份',    //  退出编辑
+        'LK_TUICHUBIANJI1': '退出编辑',    //  退出编辑
         'LK_SHANGCHUANQINGDAN': '上传清单',    //  上传清单
         'LK_YUEDUJIHUA': '月度计划',    //  月度计划
         'LK_DANGNIANFUKUANJIHUA': '当年付款计划',    //  当年付款计划
@@ -1106,6 +1106,11 @@
 
         'LK_FUKUANKANBAN': '付款看板',  //  付款看板
         'LK_NIANDUJIHUA': '年度计划',   //  年度计划
+        'LK_XITONGJIHUASHANGBANNIAN': '系统计算上半年',   //  年度计划
+        'LK_XITONGJIHUAXIABANNIAN': '系统计算下半年',   //  年度计划
+        'LK_XITONGJISUANBACKLOG': '系统计算Backlog',   //  年度计划
+        'LK_SHOUGONGTIAOZHENG': '手工调整',   //  年度计划
+        'LK_SHOUGONGTIAOZHENGRISK': '手工调整Risk',   //  年度计划
         'LK_CHEXINGXIANGMUXIANGQ': '车型项目详情',
 
         'DAXIAO': '大小', // 大小
@@ -1151,6 +1156,7 @@
         'LK_BIANGENGHOUJINE':'变更后金额', // 变更后金额
         'LK_YULANBIANGENGDAN':'预览变更单', // 预览变更单
         'LK_ZHIYOUCAOGAOZHUANGTAICAIYUNXUXIUGAI':'只有草稿状态才允许修改', // 只有草稿状态才允许修改
+        'LK_HUOBIRENMINBI':'货币：人民币 | 单位：百万元 | 不含税', // 货币：人民币 | 单位：百万元 | 不含税
 
         // 定点管理
         'nominationLanguage': {
@@ -1467,6 +1473,7 @@
             'BQWFCXDJGSRCWHBCZQQRHCXSR': '抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入',//抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入
             'QXZXYCZDSJ': '请选择需要操作的数据', //请选择需要操作的数据
             'ZJSCSH': '最近上传时间:', //最近上传时间
+            "JIEZHI":'截止' //截止
         },
         'MEK':{
             'QIEHUANCAILIAOZU':"切换材料组"

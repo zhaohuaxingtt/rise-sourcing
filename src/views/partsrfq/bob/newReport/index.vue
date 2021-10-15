@@ -991,37 +991,6 @@ export default {
       }
       if (this.reportSave) {
         this.pre = true
-        // downloadPDF({
-        //   idEle: "content",
-        //   pdfName: that.reportName,
-        //   callback: async (pdf, pdfName) => {
-        //     try {
-        //       const time = new Date().getTime();
-        //       const filename = pdfName + time + ".pdf";
-        //       const pdfFile = pdf.output("datauristring");
-        //       const blob = dataURLtoFile(pdfFile, filename);
-        //       const formData = new FormData();
-        //       formData.append("multipartFile", blob);
-        //       formData.append("applicationName", "rise");
-        //       const res = await uploadFile(formData);
-        //       const data = res.data[0];
-        //       const req = {
-        //         analysisSchemeId: this.analysisSchemeId,
-        //         name: data.fileName,
-        //         path: data.filePath,
-        //         remark: that.reportName,
-        //       };
-        //       await add(req);
-        //       that.dialogVisible = false;
-        //       that.reportSave = false;
-        //       iMessage.success("保存成功");
-        //     } catch {
-        //       iMessage.err("保存失败");
-        //       that.dialogVisible = false;
-        //       that.reportSave = false;
-        //     }
-        //   },
-        // });
       }
     },
     doActive (i, index) {

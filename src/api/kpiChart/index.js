@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-08-07 10:24:35
- * @LastEditTime: 2021-08-17 16:32:43
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-26 14:17:07
+ * @LastEditors: 舒杰
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\api\kpiChart\index.js
+ * @FilePath: \front-sourcing\src\api\kpiChart\index.js
  */
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_KPI)
@@ -181,3 +181,4 @@ export function getTO(data) {
     data: data
   })
 }
+

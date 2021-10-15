@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-14 11:32:52
+ * @LastEditTime: 2021-09-23 19:17:00
  * @LastEditors: 舒杰
  * @Description: 技术路线
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\technology\index.vue
@@ -49,7 +49,6 @@
 			:layout="page.layout"
 			:current-page='page.currPage'
 			:total="page.totalCount"/>
-  </div>
   </iCard>
 </template>
 
