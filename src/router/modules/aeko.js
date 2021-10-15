@@ -164,6 +164,14 @@ export default [
           },
         ]
       },
+      {
+        path: "relatingParts",
+        name: "aekoRelatingParts",
+        meta: {
+          title: 'AEKO-关联零件'
+        },
+        component: () => import("@/views/aeko/relatingParts"),
+      }
     ]
   }
 ]
