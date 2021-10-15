@@ -48,6 +48,7 @@ import {
 } from './data'
 import filters from "@/utils/filters"
 import _ from 'lodash'
+import { items } from '../../../partsprocure/editordetail/components/drawingSheet/data';
 
 export default {
   mixins: [ filters ],
@@ -175,6 +176,21 @@ export default {
         })
         console.log('series', series)
 
+        const genSupTPL = (dataArray, dataCounTotal=0) => {
+          const supplierList = self.data.supplierList || []
+          let dataTemplate = ''
+          dataArray.forEach(item => {
+            dataTemplate+=`
+              <p class="margin-top10">
+                <span class="margin-right5" style="background-color:${colorPanel[item.index]};display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;"></span>
+                <span class="ttoTitle">${supplierList[item.index]}</span>
+              </p>
+              <p class="ttolist padding-left25"><span>TTO:${self.thousandsFilter(item.data)}</span><span>${Number(item.data/dataCounTotal*100).toFixed(2)}%</span></p>
+            `
+          })
+          return dataTemplate
+        }
+
         let option = {
           grid: {
             left: '10',
@@ -196,6 +212,7 @@ export default {
               const supplierList = self.data.supplierList || []
               const wholePackage = self.data && Number(self.data.wholePackage) || 0
               // Best TTO \n by Group 
+              const bestGroup = self.data.bestGroup || []
               const bestGroupSupplierMinIndex = self.data.bestGroupSupplierIndex
               const bestGroupSupplierTotal = self.data && Number(self.data.bestGroupSupplierTotal)|| 0
               // Best TTO \n by Part
@@ -218,49 +235,25 @@ export default {
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage - bestGroupSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
-                <p class="margin-top10">
-                  <span class="margin-right5" style="background-color:${colorPanel[bestGroupSupplierMinIndex]};display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;"></span>
-                  <span class="ttoTitle">${supplierList[bestGroupSupplierMinIndex]}</span>
-                </p>
-                <p class="ttolist padding-left25"><span>TTO:${self.thousandsFilter(params.data)}</span><span>100%</span></p>
+                ${genSupTPL(bestGroup, bestGroupSupplierTotal)}
               </div>`)
 
               // toolTip Best TTO \n by Part
-              let tmpPartTPL = ''
-              minPartSupplierTToArray.forEach(item => {
-                tmpPartTPL+=`
-                  <p class="margin-top10">
-                    <span class="margin-right5" style="background-color:${colorPanel[item.index]};display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;"></span>
-                    <span class="ttoTitle">${supplierList[item.index]}</span>
-                  </p>
-                  <p class="ttolist padding-left25"><span>TTO:${self.thousandsFilter(item.data)}</span><span>${Number(item.data/minPartSupplierTToTotal*100).toFixed(2)}%</span></p>
-                `
-              })
               params.name === quota[2] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage - minPartSupplierTToTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
-                ${tmpPartTPL}
+                ${genSupTPL(minPartSupplierTToArray, minPartSupplierTToTotal)}
               </div>`)
 
               // Recommend \n Scenario
-              let tmpWeightTPL = ''
-              weightSupplier.forEach(item => {
-                tmpWeightTPL+=`
-                  <p class="margin-top10">
-                    <span class="margin-right5" style="background-color:${colorPanel[item.index]};display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;"></span>
-                    <span class="ttoTitle">${supplierList[item.index]}</span>
-                  </p>
-                  <p class="ttolist padding-left25"><span>TTO:${self.thousandsFilter(item.data)}</span><span>${Number(item.data/minPartSupplierTToTotal*100).toFixed(2)}%</span></p>
-                `
-              })
               params.name === quota[3] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage-weightSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
-                ${tmpWeightTPL}
+                ${genSupTPL(weightSupplier, weightSupplierTotal)}
               </div>`)
               // <p class="margin-top15" style="display: ${(params.data/weightSupplierTotal*100) < 10 ? 'block' : 'none'}">${self.language('GONGYINGSHANGTTO','供应商TTO')}: ${params.data}</p>
               // <p style="display: ${(params.data/weightSupplierTotal*100) < 10 ? 'block' : 'none'}">
@@ -368,18 +361,51 @@ export default {
         }
       })
       // Best TTO by Group
-      const bestGroupSupplier = self.data.bestGroupSupplier
-      const bestGroupSupplierMin = bestGroupSupplier && bestGroupSupplier[0]
-      const bestGroupSupplierMinIndex = self.data.bestGroupSupplierIndex
+      // const bestGroupSupplier = self.data.bestGroupSupplier
+      // 分组中TTO最小的那个分组
+      // const bestGroupSupplierMin = bestGroupSupplier && bestGroupSupplier[0]
+      // const bestGroupSupplierMinIndex = self.data.bestGroupSupplierIndex
+      const bestGroup = self.data.bestGroup || []
+      const bestGroupSupplierTotal = self.data.bestGroupSupplierTotal || 0
       
       // console.log('----',bestGroupSupplier)
+      bestGroup.forEach((item, index) => {
+        series.push({
+          _type: 'bestGroupSupplier',
+          data: ['', item.data, '', ''],
+          type: 'bar',
+          barWidth: 30,
+          barMinHeight: 30,
+          stack: 'total',
+          label: {
+            show: true,
+            position: 'inside',
+            textStyle: {
+              color: '#485465'
+            },
+            formatter: function(params) {
+              const fz = Number(params.data)
+              const fm = Number(bestGroupSupplierTotal)
+              const percent = parseFloat(fz/fm*100).toFixed(2)
+              return `{p|${percent}%}`
+            },
+            rich,
+            interval: 0
+          },
+          itemStyle: {
+            normal: {
+              barBorderRadius: index === (bestGroup.length - 1) ? [5, 5, 0, 0] : [0, 0, 0, 0],
+              color: colorPanel[item.index]
+            },
+          }
+        })
+      })
       
-      series.push({
-        _type: 'bestGroupSupplierMin',
-        data: ['', bestGroupSupplierMin, '', ''],
+      // 分组最佳柱子label
+      bestGroupSupplierTotal&& (series.push({
+        data: ['', 1, '', ''],
         type: 'bar',
         barWidth: 30,
-        barMinHeight: 30,
         stack: 'total',
         label: {
           show: true,
@@ -387,47 +413,11 @@ export default {
           textStyle: {
             color: '#485465'
           },
-          formatter: function(params) {
-            // const fz = Number(params.data)
-            // const fm = Number(bestGroupSupplierTotal)
-            // const percent = parseFloat(fz/fm*100).toFixed(2)
-            // totalGroupPercent += Number(percent)
-            // return `${params.data}\n{p|${percent}%}`
-            return `${self.thousandsFilter(Number(params.data).toFixed(2))}`
-          },
-          rich,
-          interval: 0
+          formatter: function() {
+            return self.thousandsFilter(Number(bestGroupSupplierTotal).toFixed(2))
+          }
         },
-        itemStyle: {
-          normal: {
-            barBorderRadius: [5, 5, 0, 0],
-            color: colorPanel[bestGroupSupplierMinIndex]
-          },
-        }
-      })
-      // 分组最佳柱子label
-      // bestGroupSupplierTotal&& (series.push({
-      //   data: ['', 1, '', ''],
-      //   type: 'bar',
-      //   barWidth: 30,
-      //   stack: 'total',
-      //   label: {
-      //     show: true,
-      //     position: 'top',
-      //     textStyle: {
-      //       color: '#485465'
-      //     },
-      //     formatter: function() {
-      //       return bestGroupSupplierTotal
-      //     }
-      //   },
-      //   itemStyle: {
-      //     normal: {
-      //       barBorderRadius: [5, 5, 0, 0],
-      //       color: bgColor
-      //     },
-      //   }
-      // }))
+      }))
 
       // 单个零件最小
       const minPartSupplierTToArray = self.data.minPartSupplierTToArray || []
@@ -456,7 +446,7 @@ export default {
           },
           itemStyle: {
             normal: {
-              barBorderRadius: item.index === (minPartSupplierTToArray.length - 1) ? [5, 5, 0, 0] : [0, 0, 0, 0],
+              barBorderRadius: index === (minPartSupplierTToArray.length - 1) ? [5, 5, 0, 0] : [0, 0, 0, 0],
               color: colorPanel[item.index]
             },
           }
