@@ -4,16 +4,16 @@
  * @Description: 封面表态---编辑页
 -->
 <template>
-  <iCard class="aeko-editCover">
+  <iCard class="aeko-editCover" v-loading="btnLoading">
     <template v-if="!disabled" v-slot:header-control>
       <!-- 封面状态为已提交时不展示保存和提交按钮 -->
       <template v-if="!isSubmit">
-        <iButton  :loading="btnLoading" @click="save()">{{language('LK_BAOCUN','保存')}}</iButton>
+        <iButton @click="save()">{{language('LK_BAOCUN','保存')}}</iButton>
         <!-- 保存之后才能提交以及封面状态是待表态 -->
-        <iButton  :loading="btnLoading" v-if="basicInfo.aekoCoverId && basicInfo.coverStatus == 'TOBE_STATED'" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
+        <iButton v-if="basicInfo.aekoCoverId && basicInfo.coverStatus == 'TOBE_STATED'" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
       </template>
       <!-- 封面状态为已提交时可展示 -->
-      <iButton  v-if="isSubmit" :loading="btnLoading" @click="cancelCover">
+      <iButton  v-if="isSubmit" @click="cancelCover">
         {{language('LK_AEKO_CHEHUI','撤回')}}
          <el-tooltip 
             :content="`${language('LK_AEKO_COVER_TIPS_FENGMIANBIAOTAIHENEIRONGBIAOTAIJIANGYIBINGCHEHUI','审批前，可对已提交的的单据进行撤回。封面表态和内容表态将被一并撤回。')}`"
@@ -21,7 +21,7 @@
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
       </iButton>
-      <iButton v-if="!isSubmit"  :loading="btnLoading" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
+      <iButton v-if="!isSubmit" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
       <iFormGroup row='4'>
