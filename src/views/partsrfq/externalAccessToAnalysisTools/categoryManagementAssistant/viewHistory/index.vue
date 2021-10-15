@@ -38,7 +38,7 @@
       <div class="flex-between-center titleBox">
         <span class="title">搜索结果</span>
         <div class="operation">
-          <iButton @click="handleExampleDownload">{{ $t("LK_XIAZAI") }} </iButton>
+          <iButton :loading="downloadLoading" @click="handleExampleDownload">{{ $t("LK_XIAZAI") }} </iButton>
         </div>
       </div>
       <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :index="true" @handleSelectionChange="handleSelectionChange" />
@@ -51,18 +51,18 @@
 <script>
 import { getMaterialGroupByUserIds } from "@/api/kpiChart/index.js";
 import { getReportList } from "@/api/categoryManagementAssistant/categoryManagementAssistant/index.js";
-import { iDialog, iButton, iDatePicker, iSelect, iPagination } from "rise";
+import { iDialog, iButton, iDatePicker, iSelect, iPagination, iMessage } from "rise";
 import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import { tableTitle } from "./components/data.js";
 import tableList from '@/components/ws3/commonTable';
-import { iMessage } from '../../../../../components/index.js';
 import { downloadFile } from '@/api/file'
 
 export default {
   mixins: [resultMessageMixin, pageMixins],
   data() {
     return {
+      downloadLoading: false,
       tableTitle,
       tableLoading: false,
       selectTableData: [],
@@ -127,11 +127,13 @@ export default {
       this.selectTableData.forEach(item => {
         req.fileList.push(item.reportFileName)
       })
-      if (!req.fileList.length) {
+      if (req.fileList.length) {
+        this.downloadLoading = true
+        await downloadFile(req)
+        this.downloadLoading = false
+      } else {
         iMessage.warn(this.language('BAOQIANQINGXUANZHESHUJU', '抱歉，请选择数据'))
-        return
       }
-      await downloadFile(req)
     },
     handleReset() {
       this.form = {

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-05 21:18:14
- * @LastEditTime: 2021-09-09 16:59:58
+ * @LastEditTime: 2021-09-27 10:05:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\components\index.vue
@@ -108,7 +108,7 @@ export default {
         if(res && res.code == 200) {
           this.targetTableData.map(targetObj => {
             const index = res.data.findIndex(item => item.fsId == targetObj.fsId)
-            res.data.splice(index, 1)
+            if(index > -1) res.data.splice(index, 1)
           })
           this.mainTableData = res.data
           this.loading = false

@@ -60,6 +60,7 @@ export default {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: 'allContainer',
+        watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
         pdfName: this.language('PINLEIGUANLIZHUSHOU', '品类管理助手') + '-' + this.language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN', '批量供应商工厂总览') + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
       });
       let params = {
@@ -95,6 +96,7 @@ export default {
   position: relative;
   width: 100%;
   .card-right {
+    margin: 20px;
     position: absolute;
     right: 0;
     z-index: 2;
@@ -113,7 +115,7 @@ export default {
 }
 .tip {
   position: absolute;
-  top: -3.2rem;
-  left: 11rem;
+  top: -3.22rem;
+  left: 11.3rem;
 }
 </style>

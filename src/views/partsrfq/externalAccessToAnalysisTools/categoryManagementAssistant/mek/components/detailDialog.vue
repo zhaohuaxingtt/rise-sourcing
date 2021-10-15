@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-25 16:06:28
- * @LastEditTime: 2021-08-26 17:14:51
+ * @LastEditTime: 2021-10-09 18:50:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\detailDialog.vue
@@ -12,13 +12,17 @@
            @close="clearDiolog">
     <div slot="title"
          class="title">
-      {{language('XUANZEJISUANCHEXING','选择计算车型')}}
+      {{detailMotorName+'-'+detailFactory}}
     </div>
     <iTableList :tableData="detailsData"
                 :tableTitle="confirmTableHead"
                 :selection="false"
                 class="table-footerStyle">
     </iTableList>
+    <div slot="footer"
+         class="dialog-footer">
+      <!-- <iButton @click="handleSearchSure">{{language('QUEDING','确定')}}</iButton> -->
+    </div>
   </iDialog>
 </template>
 
@@ -38,6 +42,25 @@ export default {
       default: () => {
         return []
       }
+    },
+    detailMotorName: {
+      type: String
+    },
+    detailFactory: {
+      type: String
+    }
+  },
+  watch: {
+    detailsData: {
+      handler (val) {
+
+      }
+    },
+    detailMotorName (val) {
+     
+    },
+    detailFactory (val) {
+      
     }
   },
   data () {
@@ -47,7 +70,7 @@ export default {
   },
 
   created () {
-    console.log(this.confirmTableHead, "confirmTableHead")
+  
   },
   methods: {
     clearDiolog () {

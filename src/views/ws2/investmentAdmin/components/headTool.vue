@@ -24,9 +24,10 @@
       </div>
       <div class="date">{{ $t('LK_SHUAXINRIQI') }}：{{listDetail.updateDate}}</div><!-- 刷新日期 -->
       <div class="date">
-        <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>
-        <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>
-        <span>{{$t('LK_BUHANSUI')}}</span>
+        <span>{{ $t('LK_HUOBIRENMINBI') }}</span>
+<!--        <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>-->
+<!--        <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>-->
+<!--        <span>{{$t('LK_BUHANSUI')}}</span>-->
       </div><!-- 货币：人民币  |  单位：百万元  |  不含税  -->
     </div>
 

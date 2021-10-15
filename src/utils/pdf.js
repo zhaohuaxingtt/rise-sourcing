@@ -1,7 +1,6 @@
 import html2canvas from 'html2canvas'
 import JsPDF from 'jspdf'
-import { uploadUdFile } from '@/api/file/upload'
-
+import { uploads } from '@/api/file/upload'
 /**
  * @param  ele          要生成 pdf 的DOM元素（容器）
  * @param  padfName     PDF文件生成后的文件名字
@@ -16,7 +15,6 @@ export function downloadPDF({
   let el = document.getElementById(ele) //通过getElementById获取要导出的内容
   let eleW = el.offsetWidth // 获得该容器的宽
   let eleH = el.offsetHeight // 获得该容器的高
-
   let eleOffsetTop = el.offsetTop // 获得该容器到文档顶部的距离
   let eleOffsetLeft = el.offsetLeft // 获得该容器到文档最左的距离
   var canvas = document.createElement('canvas')
@@ -56,24 +54,6 @@ export function downloadPDF({
     var imgHeight = (595.28 / contentWidth) * contentHeight
     let pageData = canvas.toDataURL('image/jpeg', 1.0)
     var pdf = new JsPDF('', 'pt', 'a4')
-
-    // pdf.save('test')
-    function addWaterMark(doc) {
-      var totalPages = doc.internal.getNumberOfPages()
-      for (let i = 1; i <= totalPages; i++) {
-        for (var x = 100; x <= doc.internal.pageSize.height - 30; x = x + 100) {
-          for (var j = 30; j <= doc.internal.pageSize.width; j = j + 150) {
-            doc.setPage(i)
-            //doc.addImage(imgData, 'PNG', 40, 40, 75, 75);
-            doc.setTextColor(150)
-            doc.setFont("times", "italic");
-            doc.text('Watermark', j, x, 45)
-          }
-        }
-      }
-      return doc
-    }
-
     if (leftHeight < pageHeight) {
       //在pdf.addImage(pageData, 'JPEG', 左，上，宽度，高度)设置在pdf中显示；
       pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight)
@@ -90,7 +70,6 @@ export function downloadPDF({
       }
     }
     //可动态生成
-    pdf = addWaterMark(pdf)
     if (exportPdf) {
       pdf.save(pdfName)
     }
@@ -119,7 +98,7 @@ export function dataURLtoFile(dataurl, filename) {
 // pdf相关处理
 export const downloadPdfMixins = {
   methods: {
-    getDownloadFileAndExportPdf({ domId, pdfName, callBack, exportPdf }) {
+    getDownloadFileAndExportPdf({ domId, pdfName, watermark, callBack, exportPdf }) {
       return new Promise((resolve) => {
         downloadPDF({
           idEle: domId,
@@ -132,8 +111,9 @@ export const downloadPdfMixins = {
             const blob = dataURLtoFile(pdfFile, filename)
             const formDataReq = {
               multifile: blob,
+              watermark: watermark
             }
-            const res = await uploadUdFile(formDataReq)
+            const res = await uploads(formDataReq)
             const data = res.data[0]
             const req = {
               downloadName: data.name,

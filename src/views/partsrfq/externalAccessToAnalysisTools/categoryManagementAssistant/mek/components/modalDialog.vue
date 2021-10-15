@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-11 14:17:10
- * @LastEditTime: 2021-08-26 20:03:34
+ * @LastEditTime: 2021-10-09 18:51:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\modalDialog.vue
@@ -18,7 +18,18 @@
                 :tableTitle="confirmTableHead"
                 class="table-footerStyle"
                 radio
-                @handleSelectionChange="handleSelectionChange">
+                @handleSelectionChange="handleSelectionChange"
+                @handleSelect="handleSelect">
+      <template slot='isCalculate'
+                slot-scope="scope">
+        <div v-if="scope.row.isCalculate==='Y'"
+             style="color:#5993FF">
+          {{scope.row.isCalculate}}
+        </div>
+        <div v-else>
+          {{scope.row.isCalculate}}
+        </div>
+      </template>
     </iTableList>
     <div slot="footer"
          class="dialog-footer">
@@ -50,6 +61,9 @@ export default {
       default: () => {
         return []
       }
+    },
+    index: {
+      type: Number
     }
   },
   watch: {
@@ -65,7 +79,7 @@ export default {
     }
   },
   created () {
-    console.log(this.confirmTableHead, "confirmTableHead")
+
   },
   methods: {
     clearDiolog () {
@@ -74,8 +88,13 @@ export default {
     handleSelectionChange (val) {
       this.selectData = val
     },
+    handleSelect (val) {
+
+    },
     handleSearchSure () {
-      this.$emit('selectData', this.selectData);
+      console.log(this.index)
+      this.modalVisible = false
+      this.$emit('selectData', this.selectData, this.index);
     }
   }
 }

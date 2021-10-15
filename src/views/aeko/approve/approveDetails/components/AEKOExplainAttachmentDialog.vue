@@ -76,7 +76,7 @@ export default {
         size: 1000,
         aekoNum: this.explainAttachmentReqData.aekoNum,
         manageId: this.explainAttachmentReqData.manageId,
-        taskId: 0
+        taskId: this.explainAttachmentReqData.taskId
       }
       getAuditFilePage(data).then(res => {
         if (res.code == 200) {

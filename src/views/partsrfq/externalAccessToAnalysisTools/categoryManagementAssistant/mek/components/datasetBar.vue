@@ -1,31 +1,36 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-09-07 18:06:28
+ * @LastEditTime: 2021-10-09 18:50:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
 -->
 <template>
-  <div style="height: 460px;width:100%"
-       ref="chart"></div>
+  <div class="chart"
+       ref="chart"
+       :style="{ height: clientHeight ? '440px' : '460px' }"></div>
 </template>
 
 <script>
 import echarts from "@/utils/echarts";
+import { fmoney } from "@/utils/index.js";
 export default {
   data () {
     return {
       myChart: null,
       barDataItem: [],
       barxAxis: [],
-      option: {}
+      option: {},
+      fmoney,
+      legendList: []
     };
   },
   props: {
     maxWidth: {
-      type: Number
+      type: Number,
     },
+
     typeSelection: {
       type: Boolean,
       default: false,
@@ -33,8 +38,15 @@ export default {
     barData: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       },
+    },
+    checkedCarLevel: Array,
+    maxData: {
+      type: String,
+    },
+    clientHeight: {
+      type: Boolean,
     },
   },
   watch: {
@@ -47,40 +59,52 @@ export default {
     // },
     barData: {
       handler (val) {
-        console.log(val)
+
         if (val) {
-          this.barDataItem = []
-          this.barxAxis = []
+
+          this.barDataItem = [];
+          this.barxAxis = [];
           val.detail.forEach((item, index) => {
-            const colorList = ['#A1D0FF', '#92B8FF', '#5993FF']
+            this.legendList.push({
+              name: item.title,
+              icon: 'circle',
+            })
+            const colorList = ["#A1D0FF", "#92B8FF", "#5993FF"];
             const itemData = {
+              name: item.title,
               value: item.value,
+              // value: item.value,
               label: {
                 show: true,
-                position: 'top',
-                color: "#000"
+                position: "top",
+                color: "#000",
+                formatter: (val) => {
+                  return this.fmoney(val.value, 2);
+                },
               },
               itemStyle: {
-                color: colorList[index]
-              }
-            }
-            let str = ""
-            if (item.title == 'MIX') {
-              str = item.title + "\n\n"
+                color: colorList[index],
+              },
+            };
+            let str = "";
+            if (item.title == "MIX") {
+              str = item.title + "\n\n";
             } else {
-              str = item.title + "\n\n" + item.ebr
+              str = item.title + "\n\n" + item.ebr || "";
             }
-            this.barDataItem.push(itemData)
-            this.barxAxis.push(str)
-          })
+
+              this.barDataItem.push(itemData);
+              this.barxAxis.push(str);
+          });
+         
           this.$nextTick(() => {
             this.initCharts();
           });
         }
       },
       immediate: true,
-      deep: true
-    },
+      deep: true,
+    }
   },
   mounted () {
     // this.$nextTick(() => {
@@ -88,11 +112,68 @@ export default {
     // });
   },
   methods: {
+    resetOptions(val) {
+
+          this.barDataItem = [];
+          this.barxAxis = [];
+          this.barData.detail.forEach((item, index) => {
+            this.legendList.push({
+              name: item.title,
+              icon: 'circle',
+            })
+            const colorList = ["#A1D0FF", "#92B8FF", "#5993FF"];
+            const itemData = {
+              name: item.title,
+              value: item.value,
+              // value: item.value,
+              label: {
+                show: true,
+                position: "top",
+                color: "#000",
+                formatter: (val) => {
+                  return this.fmoney(val.value, 2);
+                },
+              },
+              itemStyle: {
+                color: colorList[index],
+              },
+            };
+            let str = "";
+            if (item.title == "MIX") {
+              str = item.title + "\n\n";
+            } else {
+              str = item.title + "\n\n" + item.ebr || "";
+            }
+            if (!val || val.indexOf(itemData.name) >= 0) {
+
+              this.barDataItem.push(itemData);
+              this.barxAxis.push(str);
+            }
+          });
+         
+          this.$nextTick(() => {
+            this.initCharts();
+          });
+
+        // for (var i=this.barDataItem.length - 1;i>=0;i--) {
+        //   if (val.indexOf(this.barDataItem[i].name) < 0) {
+        //     console.log("delete")
+        //     this.barDataItem.splice(i,1);
+        //   }
+        // }
+        //   this.$nextTick(() => {
+        //     this.myChart.clear();
+        //     // this.initCharts();
+        //     this.option.series[0].data = this.barDataItem;
+        //     console.log("ddd", this.option)
+        //     this.myChart.setOption(this.option);
+        //   });
+    },
     initCharts () {
-      if (this.maxWidth === 1) {
-        this.$refs.chart.style.width = this.maxWidth * 240 + 'px';
+      if (this.barData.detail.length === 1) {
+        this.$refs.chart.style.width = this.barData.detail.length * 240 + "px";
       } else {
-        this.$refs.chart.style.width = this.maxWidth * 120 + 'px';
+        this.$refs.chart.style.width = this.barData.detail.length * 100 + "px";
       }
       // console.log(this.$refs.chart.style.width, 'number')
       // this.$refs.chart.style.minWidth = '100%';
@@ -106,20 +187,25 @@ export default {
             axisLabel: {
               color: "#3C4F74",
               fontSize: 12,
-              fontFamily: "Arial"
+              fontFamily: "Arial",
             },
             axisLine: {
-              show: false
+              show: false,
             },
             offset: 6,
             data: this.barxAxis,
-          }
+          },
         ],
         grid: {
           left: 0,
           right: 0,
-          bottom: '14%',
-          top: "30%"
+          bottom: "13%",
+          top: "20%",
+        },
+        legend: {
+          data: this.legendList,
+          right: '3%',
+          top: '8%'
         },
         yAxis: {
           type: "value",
@@ -127,8 +213,9 @@ export default {
             show: false,
           },
           splitLine: {
-            show: false
+            show: false,
           },
+          max: this.maxData,
           axisLabel: {
             formatter: (val) => {
               return "";
@@ -139,46 +226,52 @@ export default {
         // to a column of dataset.source by default.
         series: [
           {
-            name: "Mix",
             type: "bar",
             emphasis: {
               focus: "series",
             },
             itemStyle: {
-              formatter: (val) => {
-
-              },
+              formatter: (val) => { },
               barBorderRadius: [5, 5, 0, 0],
-
             },
             // barCategoryGap: '50%',
             // barMinWidth: 30,
             // barMinWidth: 30,
             barWidth: 30,
-            data: this.barDataItem
-          }
+            data: this.barDataItem,
+          },
         ],
       };
-      this.myChart.clear()
+      this.myChart.clear();
       this.myChart.resize();
       this.myChart.setOption(this.option);
-      this.myChart.on('click', (params) => {
-        let data = {}
-        this.barData.detail.forEach(item => {
+      this.myChart.off("click");
+      this.myChart.on("click", (params) => {
+        
+        let data = {};
+        this.barData.detail.forEach((item) => {
           if (item.value === params.value) {
-            data.engine = item.engine
-            data.transmission = item.transmission
-            data.position = item.position
-            data.vwCode = this.barData.motorCode
-            data.motorId = this.barData.motorId
-            data.priceType = this.barData.priceType
+            data.engine = item.engine;
+            data.transmission = item.transmission;
+            data.position = item.position;
+            data.vwCode = this.barData.motorCode;
+            data.motorId = this.barData.motorId;
+            data.priceType = this.barData.priceType;
+            data.priceDate = this.barData.priceDate;
+            data.factory = this.barData.factory;
+            data.motorName = this.barData.motorName;
           }
-        })
-        this.$emit('detailDialog', true, data);
+        });
+        this.$emit("detailDialog", true, data);
       });
     },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.chart {
+  height: 460px;
+  width: 100%;
+}
+</style>

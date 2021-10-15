@@ -11,11 +11,11 @@
     <div class="title flex-between-center-center margin-bottom30">
       <div>
         <div class="text flex">{{language('CAIGOUJINGEZONGLAN','采购金额总览')}}
-          <el-popover class="tip" trigger="hover" placement="top-start">
-            <div>Turnover=Price*Volume</div>
-            <div style="text-indent: 15px">{{language('PLJLYYTZJGAJLJGYSCGGC','Price：数据来源于台账价格A价（零件+供应商+采购工厂定位唯一价格）')}}</div>
-            <div style="text-indent: 15px">{{language('VLSLJCLSJLYYPWLLJCLSJLYYBKM','Volume：历史零件产量数据来源于Pbom，未来零件产量数据来源于BKM')}}</div>
-            <icon slot="reference" name="iconxinxitishi" tip="" symbol></icon>
+          <el-popover class="margin-left10 tip" trigger="hover" placement="bottom-start">
+            <div>{{language('TGGWSNZWLLNDCLZCGJEZL','提供过往三年至未来两年的材料组采购金额总览：')}}</div>
+            <div style="text-indent: 15px">{{language('JGSJLYYLJTZJG','价格数据：来源于零件台账价格')}}</div>
+            <div style="text-indent: 15px">{{language('CLSHLSLJCLSJLYYFISCXSCJLYJPBOM','产量数据：历史零件产量数据来源于FIS车型生产记录以及PBOM，未来零件产量数据来源于最新的BKM KTB产量计划')}}</div>
+            <icon slot="reference" name="iconxinxitishi" symbol></icon>
           </el-popover>
         </div>
         <el-row class="margin-top35" style="width:430px" :gutter="15">
@@ -39,7 +39,7 @@
       </div>
     </div>
     <!-- <iframe  src=""></iframe> -->
-    <div style="height:60rem" id='powerBi'>
+    <div id='powerBi'>
     </div>
   </iCard>
 </template>
@@ -161,6 +161,7 @@ export default {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: 'allContainer',
+        watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
         pdfName: this.language('PINLEIGUANLIZHUSHOU', '品类管理助手') + '-' + this.language('CAIGOUJINGEZONGLAN', '采购金额总览') + '-' + page + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
       });
       let params = {
@@ -338,6 +339,10 @@ export default {
       font-size: 22px;
       font-weight: Bold;
     }
+  }
+  #powerBi {
+    width: 100%;
+    height: calc(100vh - 350px);
   }
 }
 </style>
