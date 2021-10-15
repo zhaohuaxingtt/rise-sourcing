@@ -2,28 +2,34 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-08-05 15:47:10
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
   <div>
     <el-form label-position="left" label-width="50">
       <el-row type="flex" justify="space-between" align="middle">
-        <el-col :span="5">
+        <el-col :span="4">
           <el-form-item :label="language('CAILIAOZU','材料组')">
             <iSelect clearable filterable @change="getTableList" :placeholder="language('QXZCLZ','请选择材料组')" v-model="form.materialGroupCode">
               <el-option :value="item.categoryCode" :label="item.categoryName" v-for="item of formGoup.materialGroupList" :key="item.categoryCode"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="4">
           <el-form-item :label="language('CHEXING','车型')">
             <iSelect clearable filterable @change="getTableList" :placeholder="language('QXZCX','请选择车型')" v-model="form.motorId">
               <el-option :value="item.id" :label="item.modelNameZh" v-for="item of formGoup.carTypeList" :key="item.id"></el-option>
             </iSelect>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="4">
+          <el-form-item :label="language('LINGJIANHAO','零件号')">
+            <iInput clearable @change="getTableList" :placeholder="language('QSRLINGJIANHAO','请输入零件号')" v-model="form.partNumber">
+            </iInput>
+          </el-form-item>
+        </el-col>
+        <el-col :span="10">
           <el-form-item>
             <div v-if="isEdit">
               <iButton @click="edit">{{language('BIANJI','编辑')}}</iButton>
@@ -83,7 +89,7 @@
             <icon name="iconMEK-xuxian" symbol />
             <div class="flex-between-center-center">
               <span>{{language('CHUANDONG','EBR')}}</span>
-              <el-popover trigger="hover" placement="top-start" :content="language('SBXTZBFBSCXFCGLGLJSZCX','鼠标悬停在百分比上出现浮窗，高亮出该零件所在车型')">
+              <el-popover trigger="hover" placement="top-start" :content="language('SBXTZEBRSZSJFCZSCGLJSZDCXPZ','鼠标悬停在EBR数值上将浮窗展示出该零件所在的车型配置')">
                 <icon slot="reference" symbol name="iconxinxitishi" class="font-size16 margin-left5" />
               </el-popover>
             </div>
@@ -153,7 +159,7 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { iButton, icon, iSelect, iPagination, iLog, iMessage } from "rise";
+import { iButton, icon, iSelect, iPagination, iLog, iMessage, iInput } from "rise";
 import addPartDialog from "./addPartDialog.vue";
 import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
@@ -164,7 +170,7 @@ import { excelExport } from "@/utils/filedowLoad";
 export default {
   // import引入的组件需要注入到对象中才能使用
   mixins: [pageMixins, resultMessageMixin],
-  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, iLog },
+  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, iLog, iInput },
   data() {
     // 这里存放数据
     return {
@@ -172,8 +178,9 @@ export default {
       addPartDialog: false,
       changeLogDialog: false,
       form: {
-        materialGroupCode: '',
-        motorId: ""
+        materialGroupCode: this.$route.query.categoryCode,
+        motorId: "",
+        partNumber: ''
       },
       formGoup: {
         materialGroupList: [],
@@ -382,7 +389,7 @@ export default {
 .el-form-item {
   display: flex;
 }
-::v-deep .el-col-12 .el-form-item {
+::v-deep .el-col-10 .el-form-item {
   display: flex;
   justify-content: flex-end;
 }

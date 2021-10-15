@@ -75,7 +75,7 @@ export function getUnreadTotal(params) {
   })
 }
 
-export const getHomeSocket = () => process.env.VUE_APP_SOCKET + store.state.permission?.userInfo?.id
+export const getHomeSocket = () => process.env.VUE_APP_SOCKET + store.state.permission?.userInfo?.accountId
 
 /* 实时获取消息 */
 
