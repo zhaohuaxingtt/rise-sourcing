@@ -107,7 +107,11 @@ export default {
     }
 
     await this.getTableList()
-    this.$refs.partsTable && this.$refs.partsTable.getTableList() 
+    console.log(this.queryForm.buyerId,'this.queryForm.buyerId');
+    if(this.queryForm.buyerId != undefined){
+
+      this.$refs.partsTable && this.$refs.partsTable.getTableList() 
+    }
   },
   inject: ['getbaseInfoData', 'getDisabled'],
   computed: {
@@ -129,7 +133,8 @@ export default {
       kmDialogVisible: false,
       partProjTypes,
       queryForm: {},
-      partNumList: ""
+      partNumList: "",
+      
     };
   },
   methods: {
