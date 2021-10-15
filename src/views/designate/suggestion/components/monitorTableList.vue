@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-10-15 11:38:42
+ * @LastEditTime: 2021-10-15 14:24:47
  * @LastEditors: Hao,Jiang
 -->
 
@@ -410,10 +410,14 @@ export default {
         const wholePackageData = data.map(o => Number(o.TTo[index]) || 0)
         cstStatus && (bestGroup[index] = {
           index,
-          data: Number(_.sum(wholePackageData)).toFixed(2),
+          data: _.sum(wholePackageData),
           groupId: data[0] && data[0].groupId || '',
           groupName: data[0] && data[0].groupName || '',
         })
+      })
+      bestGroup.map(o => {
+        o.data = Number(o.data)
+        return o
       })
       if (!bestGroup.length) return false
       // 根据TTO之和排序
@@ -507,6 +511,7 @@ export default {
           // weightedGroup.push(this.cacleSc([item]))
         })
       }
+      const bestGroups = _.cloneDeep(bestGroup)
       bestGroup = this.uniqueCountSupplier(bestGroup)
       bestGroup = _.sortBy(bestGroup, ['data'])
       // console.log('bestGroup', bestGroup)
@@ -595,6 +600,8 @@ export default {
         wholePackageIndex,
         // 分组最佳
         bestGroup,
+        // debugger时候用，未合并之前的最佳分组数据列表
+        bestGroups,
         bestGroupSupplier,
         bestGroupSupplierIndex,
         bestGroupSupplierTotal,
