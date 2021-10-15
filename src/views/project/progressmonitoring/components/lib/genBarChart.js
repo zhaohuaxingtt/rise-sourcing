@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-10-15 16:15:26
+ * @LastEditTime: 2021-10-15 16:18:50
  * @LastEditors: Luoshuang
  * @Description: 风险图的配置文件
  * @FilePath: \front-web\src\views\project\progressmonitoring\components\lib\genBarChart.js
@@ -263,7 +263,8 @@ export function generateOptions(params = {}, type = 1) {
                     show: true,
                     position: 'insideRight',
                     textStyle: {
-                        fontSize: 10
+                        fontSize: 10,
+                        color: '#fff'
                     },
                     formatter: (params) => {
                         return params.value === '0' || Number(params.value) < Number(seaiesData[seaiesData.length - 1].value) * (0.105 * (seaiesData[params.dataIndex].value + '').length) ? '' : params.value
@@ -290,7 +291,8 @@ export function generateOptions(params = {}, type = 1) {
                     show: true,
                     position: 'right',
                     textStyle: {
-                        fontSize: 10
+                        fontSize: 10,
+                        color: '#000'
                     },
                     formatter: (params) => {
                         return params.dataIndex !== seaiesData.length - 2 && Number(seaiesData[params.dataIndex].value) < Number(seaiesData[seaiesData.length - 1].value) * (0.105 * (seaiesData[params.dataIndex].value + '').length) ? seaiesData[params.dataIndex].value : ''
