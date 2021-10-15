@@ -88,13 +88,17 @@ export default{
     getDeptSubOptions(deptId, row, grade) {
       this.$set(row, 'approveDeptNum', '')
       getSubDeptListByParam(deptId, grade).then(res => {
-        this.$set(row, 'deptSubOptions', res.data.map(item => {
-          return {
-            ...item,
-            label: item.deptNum,
-            value: item.id
-          }
-        }))
+        if (res.code == 200 && Array.isArray(res.data)) {
+          this.$set(row, 'deptSubOptions', res.data.map(item => {
+            return {
+              ...item,
+              label: item.deptNum,
+              value: item.id
+            }
+          }))
+        } else {
+          this.$set(row, 'deptSubOptions', [])
+        }
       })
     },
     getOptions(optionType) {
@@ -104,6 +108,7 @@ export default{
       console.log('val',val,'row',row,'item',item);
       this.$set(row, item.props, val)
       if (item.props === 'approveParentDeptNum') {
+        this.$set(row, 'deptSubOptions', [])
         const dept = row.deptOptions.find(item => item.value === val)
         this.getDeptSubOptions(val, row, dept.grade)
         if (dept) {
