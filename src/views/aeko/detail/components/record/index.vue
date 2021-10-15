@@ -162,14 +162,14 @@ export default {
       console.log(this.aekoInfo)
       const parmas = Object.assign({
         applyUserId: this.userInfo.id || '',
-        businessId: Number(this.aekoInfo.aekoManageId) || '',
-        // procStatus: '',
+        currentUserId: this.userInfo.id || '',
+        aekoNo: this.aekoInfo.aekoCode || '',
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize
       })
       this.tableLoading = true
       findHistoryByAeko(parmas).then(res => {
-        if (res.data && res.data.records) {
+        if (res.code === '200') {
           const tableListData = (res.data && res.data.records || []).map(o => {
             o.unresigned = !o.chiefName
             return o
@@ -181,6 +181,7 @@ export default {
           this.tableListData = []
           // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
+        console.log('-----', res)
         this.tableLoading = false
         
       }).catch(e => {
