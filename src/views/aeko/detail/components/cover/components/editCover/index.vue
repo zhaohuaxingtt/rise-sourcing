@@ -389,6 +389,7 @@ export default {
 
 <style lang="scss" scoped>
 .aeko-editCover{
+  padding-top: 20px;
   .remark-label::before{
     content: "*";
     color: #f56c6c;

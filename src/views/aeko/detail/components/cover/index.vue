@@ -6,7 +6,7 @@
 <template>
     <div>
         <editCover :aekoInfo="aekoInfo" v-if="isLinie" @getBbasicInfo="getBbasicInfo"/>
-        <previewCover v-else/>
+        <previewCover @getBbasicInfo="getBbasicInfo" v-else/>
     </div>
 </template>
 
