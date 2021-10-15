@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-10-15 16:18:50
+ * @LastEditTime: 2021-10-15 16:28:29
  * @LastEditors: Luoshuang
  * @Description: 风险图的配置文件
  * @FilePath: \front-web\src\views\project\progressmonitoring\components\lib\genBarChart.js
@@ -248,7 +248,7 @@ export function generateOptions(params = {}, type = 1) {
                         color: '#000'
                     },
                     formatter: (params) => {
-                        return params.dataIndex === seaiesData.length - 2 && Number(seaiesData[params.dataIndex].value) < Number(seaiesData[seaiesData.length - 1].value) * (0.105 * (seaiesData[params.dataIndex].value + '').length) ? seaiesData[params.dataIndex].value : ''
+                        return seaiesData[params.dataIndex].value !== '0' && params.dataIndex === seaiesData.length - 2 && Number(seaiesData[params.dataIndex].value) < Number(seaiesData[seaiesData.length - 1].value) * (0.105 * (seaiesData[params.dataIndex].value + '').length) ? seaiesData[params.dataIndex].value : ''
                     }
                 },
                 data: assistData.reverse()
@@ -295,7 +295,7 @@ export function generateOptions(params = {}, type = 1) {
                         color: '#000'
                     },
                     formatter: (params) => {
-                        return params.dataIndex !== seaiesData.length - 2 && Number(seaiesData[params.dataIndex].value) < Number(seaiesData[seaiesData.length - 1].value) * (0.105 * (seaiesData[params.dataIndex].value + '').length) ? seaiesData[params.dataIndex].value : ''
+                        return seaiesData[params.dataIndex].value !== '0' && params.dataIndex !== seaiesData.length - 2 && Number(seaiesData[params.dataIndex].value) < Number(seaiesData[seaiesData.length - 1].value) * (0.105 * (seaiesData[params.dataIndex].value + '').length) ? seaiesData[params.dataIndex].value : ''
                     }
                 },
                 data: seaiesData.map(item => 0)
