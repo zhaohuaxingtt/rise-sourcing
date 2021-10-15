@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-14 17:24:21
+ * @LastEditTime: 2021-10-15 16:24:11
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -182,10 +182,16 @@ export default {
     };
   },
   created() {
-    let workFlowId = JSON.parse(
-      sessionStorage.getItem("AEKO-APPROVAL-DETAILS-ITEM")
-    )?.aekoApprovalDetails?.workFlowDTOS[0].workFlowId;
-    this.workFlowId = workFlowId || "";
+    this.queryParams = this.$route.query;
+    let str_json = window.atob(this.queryParams.transmitObj);
+    let transmitObj = JSON.parse(decodeURIComponent(escape(str_json)));
+    // let workFlowId = JSON.parse(
+    //   sessionStorage.getItem("AEKO-APPROVAL-DETAILS-ITEM")
+    // )?.aekoApprovalDetails?.workFlowDTOS[0].workFlowId;
+    this.workFlowId =
+      transmitObj.aekoApprovalDetails.workFlowId ||
+      transmitObj.aekoApprovalDetails.workFlowDTOS[0].workFlowId ||
+      "";
     this.workFlowId ? this.getTableData() : iMessage.warn("缺少流程ID");
   },
   methods: {
@@ -233,7 +239,7 @@ export default {
             data.push(item);
           });
           this.tableData = data.sort((a, b) => a.partNum - b.partNum);
-        }else{
+        } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
       });

@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-06 22:11:41
- * @LastEditTime: 2021-10-15 13:08:25
+ * @LastEditTime: 2021-10-15 15:09:52
  * @LastEditors: Hao,Jiang
  * @Description: 决策资料 - 扩产能
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/index.vue
@@ -99,7 +99,8 @@ export default {
   computed: {
     // 是否显示MC内容填写
     showMC() {
-      return (this.InvestmentData || []).filter(o => Number(o.nomiSuggestionInvestmentFee) >= 1000000).length
+      const nomiSuggestionInvestmentFee = (this.InvestmentData || []).map(o => Number(o.nomiSuggestionInvestmentFee))
+      return window._.sum(nomiSuggestionInvestmentFee) >= 1000000
     }
   },
   mounted(){

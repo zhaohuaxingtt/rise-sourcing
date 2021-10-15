@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-13 18:32:32
+ * @LastEditTime: 2021-10-15 11:20:15
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -30,8 +30,8 @@
           :tableData="tableData"
         />
       </div>
-      <hr class="divider" />
       <div>
+        <i class="topCutLine"></i>
         <p class="title">
           2.1 {{ language("YUANCAILIAOSANJIANCHENGBEN", "原材料/散件成本") }}
         </p>
@@ -87,8 +87,8 @@
           </el-table-column>
         </el-table>
       </div>
-      <hr class="divider" />
       <div>
+        <i class="topCutLine"></i>
         <p class="title">2.2 {{ language("ZHIZAOCHENGBEN", "制造成本") }}</p>
         <el-table
           :data="manufacturingCostTableData"
@@ -136,58 +136,70 @@
           </el-table-column>
         </el-table>
       </div>
-      <hr class="divider" />
       <div class="flexBox">
-        <div>
+        <div v-if="Array.isArray(scrapCostTable) && scrapCostTable.length > 0">
+          <i class="topCutLine"></i>
           <p class="title mb-20">
             2.3 {{ language("BAOFEICHENGBEN", "报废成本") }}
           </p>
-          <tableList
-            lang
-            class="table"
-            :selection="false"
-            :tableTitle="scrapCostTableTitle"
-            :tableData="scrapCostTable"
-          >
-          </tableList>
+          <div class="main">
+            <tableList
+              lang
+              class="table"
+              :selection="false"
+              :tableTitle="scrapCostTableTitle"
+              :tableData="scrapCostTable"
+            >
+            </tableList>
+          </div>
         </div>
-        <div>
+        <div
+          v-if="
+            Array.isArray(managementFeeTable) && managementFeeTable.length > 0
+          "
+        >
+          <i class="topCutLine"></i>
           <p class="title mb-20">2.4 {{ language("GUANLIFEI", "管理费") }}</p>
-          <tableList
-            lang
-            class="table"
-            :selection="false"
-            :tableTitle="manageCostTableTitle"
-            :tableData="managementFeeTable"
-          >
-          </tableList>
+          <div class="main">
+            <tableList
+              lang
+              class="table"
+              :selection="false"
+              :tableTitle="manageCostTableTitle"
+              :tableData="managementFeeTable"
+            >
+            </tableList>
+          </div>
         </div>
-      </div>
-      <hr class="divider" />
-      <div class="flexBox">
-        <div>
+        <div v-if="Array.isArray(otherFeesTable) && otherFeesTable.length > 0">
+          <i class="topCutLine"></i>
           <p class="title mb-20">
             2.5 {{ language("QITAFEIYONG", "其他费用") }}
           </p>
-          <tableList
-            lang
-            class="table"
-            :selection="false"
-            :tableTitle="otherCostTableTitle"
-            :tableData="otherFeesTable"
-          >
-          </tableList>
+          <div class="main">
+            <tableList
+              lang
+              class="table"
+              :selection="false"
+              :tableTitle="otherCostTableTitle"
+              :tableData="otherFeesTable"
+            >
+            </tableList>
+          </div>
         </div>
-        <div>
+        <div v-if="Array.isArray(profitTable) && profitTable.length > 0">
+          <i class="topCutLine"></i>
           <p class="title mb-20">2.6 {{ language("LIRUN", "利润") }}</p>
-          <tableList
-            lang
-            class="table"
-            :selection="false"
-            :tableTitle="profitTableTitle"
-            :tableData="profitTable"
-          >
-          </tableList>
+          <div class="main">
+            <tableList
+              lang
+              class="table"
+              :selection="false"
+              :tableTitle="profitTableTitle"
+              :tableData="profitTable"
+            >
+            </tableList>
+          </div>
         </div>
       </div>
     </iCard>
@@ -221,19 +233,19 @@ export default {
         return {
           // CBD-变动值
           cbdLevelVO: {},
-          // 切换零件
+          // // 切换零件
           extSnapshotVO: {},
-          // 制造成本
-          makeCostList: [],
-          // 管理费
-          manageFeeList: [],
-          // 其它费用
-          otherFeeList: [],
-          // 利润
-          profitVO: {},
           // 原材料/散件成本
           rawMaterialList: [],
-          // 报废成本
+          // // 制造成本
+          makeCostList: [],
+          // // 管理费
+          manageFeeList: [],
+          // // 其它费用
+          otherFeeList: [],
+          // // 利润
+          profitVO: {},
+          // // 报废成本
           scrapVO: {},
         };
       },
@@ -254,7 +266,10 @@ export default {
   computed: {
     // 变动值-CBD
     tableData() {
-      return this.Data.cbdLevelVO && [this.Data.cbdLevelVO];
+      if (this.Data.cbdLevelVO?.id) {
+        return [this.Data.cbdLevelVO];
+      }
+      return [];
     },
     // 原材料/散件成本
     partsCostTableData() {
@@ -266,7 +281,10 @@ export default {
     },
     // 报废成本
     scrapCostTable() {
-      return this.Data.scrapVO && [this.Data.scrapVO];
+      if (this.Data.scrapVO?.id) {
+        return [this.Data.scrapVO];
+      }
+      return [];
     },
     // 管理费
     managementFeeTable() {
@@ -278,7 +296,10 @@ export default {
     },
     // 利润
     profitTable() {
-      return this.Data.profitVO && [this.Data.profitVO];
+      if (this.Data.profitVO?.id) {
+        return [this.Data.profitVO];
+      }
+      return [];
     },
   },
   methods: {
@@ -330,13 +351,13 @@ export default {
   .iconFont-xin {
     font-size: 17px;
   }
-  .divider {
+  .topCutLine {
+    display: block;
     width: 100%;
     height: 0px;
     margin: 30px 0;
     border: 1px dashed #bbc4d6;
   }
-
   .flexBox {
     display: flex;
     flex-wrap: wrap;
@@ -349,14 +370,20 @@ export default {
         ::v-deep .topCutLine {
           margin-right: 2px;
         }
-        padding-right: 55px;
+
+        ::v-deep .main {
+          padding-right: 55px;
+        }
       }
 
       &:nth-of-type(even) {
         ::v-deep .topCutLine {
           margin-left: 2px;
         }
-        padding-left: 55px;
+
+        ::v-deep .main {
+          padding-left: 55px;
+        }
       }
 
       &:last-of-type:not(&:nth-of-type(even)) {
