@@ -46,9 +46,11 @@ import {rich} from './lib/chart'
 import {
   colorPanel
 } from './data'
+import filters from "@/utils/filters"
 import _ from 'lodash'
 
 export default {
+  mixins: [ filters ],
   components: {
     iSelect
   },
@@ -100,6 +102,9 @@ export default {
   mounted() {
   },
   methods: {
+    thousandsFilter(num) {
+      return filters.filters.thousandsFilter(num)
+    },
     init() {
       // 初始化，默认isShowWeightStick判断是否展示权重柱子
       const isShowWeightStick = this.data.isShowWeightStick || false
@@ -188,18 +193,23 @@ export default {
                 decoration: 'none',
             },
             formatter: function(params) {
+              const supplierList = self.data.supplierList || []
               const wholePackage = self.data && Number(self.data.wholePackage) || 0
-              const bestGroupSupplier = self.data.bestGroupSupplier
-              // const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2] || 0
-              const bestGroupSupplierTotal = self.data && Number(self.data.minPartSupplierTToTotal)|| 0
+              // Best TTO \n by Group 
+              const bestGroupSupplierMinIndex = self.data.bestGroupSupplierIndex
+              const bestGroupSupplierTotal = self.data && Number(self.data.bestGroupSupplierTotal)|| 0
+              // Best TTO \n by Part
+              const minPartSupplierTToArray = self.data.minPartSupplierTToArray || []
               const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
+              // Recommend \n Scenario
+              const weightSupplier = self.data.weightSupplier || []
               const weightSupplierTotal = self.data.weightSupplierTotal || 0
               let tpl = ''
 
               // toolTip Best TTO \n for Whole Package
               params.name === quota[0] && (tpl = `
               <div class="toolTipBox-content">
-                <p>Best TTO <br> for Whole Package: <span class="value">${params.data}</span></p>
+                <p>Best TTO <br> for Whole Package: <span class="value">${self.thousandsFilter(params.data)}</span></p>
               </div>`)
 
               // toolTip Best TTO \n by Group
@@ -208,27 +218,54 @@ export default {
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage - bestGroupSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
+                <p class="margin-top10">
+                  <span class="margin-right5" style="background-color:${colorPanel[bestGroupSupplierMinIndex]};display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;"></span>
+                  <span class="ttoTitle">${supplierList[bestGroupSupplierMinIndex]}</span>
+                </p>
+                <p class="ttolist padding-left25"><span>TTO:${self.thousandsFilter(params.data)}</span><span>100%</span></p>
               </div>`)
 
               // toolTip Best TTO \n by Part
+              let tmpPartTPL = ''
+              minPartSupplierTToArray.forEach(item => {
+                tmpPartTPL+=`
+                  <p class="margin-top10">
+                    <span class="margin-right5" style="background-color:${colorPanel[item.index]};display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;"></span>
+                    <span class="ttoTitle">${supplierList[item.index]}</span>
+                  </p>
+                  <p class="ttolist padding-left25"><span>TTO:${self.thousandsFilter(item.data)}</span><span>${Number(item.data/minPartSupplierTToTotal*100).toFixed(2)}%</span></p>
+                `
+              })
               params.name === quota[2] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage - minPartSupplierTToTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
+                ${tmpPartTPL}
               </div>`)
+
+              // Recommend \n Scenario
+              let tmpWeightTPL = ''
+              weightSupplier.forEach(item => {
+                tmpWeightTPL+=`
+                  <p class="margin-top10">
+                    <span class="margin-right5" style="background-color:${colorPanel[item.index]};display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;"></span>
+                    <span class="ttoTitle">${supplierList[item.index]}</span>
+                  </p>
+                  <p class="ttolist padding-left25"><span>TTO:${self.thousandsFilter(item.data)}</span><span>${Number(item.data/minPartSupplierTToTotal*100).toFixed(2)}%</span></p>
+                `
+              })
               params.name === quota[3] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage-weightSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
-                <p style="display: ${(params.data/weightSupplierTotal*100) < 10 ? 'block' : 'none'}">${self.language('GONGYINGSHANGTTO','供应商TTO')}: ${params.data}</p>
-                <p style="display: ${(params.data/weightSupplierTotal*100) < 10 ? 'block' : 'none'}">
-                  share: ${Number(params.data/weightSupplierTotal*100).toFixed(2)}%
-                </p>
+                ${tmpWeightTPL}
               </div>`)
-              console.log(`params`, params)
-
+              // <p class="margin-top15" style="display: ${(params.data/weightSupplierTotal*100) < 10 ? 'block' : 'none'}">${self.language('GONGYINGSHANGTTO','供应商TTO')}: ${params.data}</p>
+              // <p style="display: ${(params.data/weightSupplierTotal*100) < 10 ? 'block' : 'none'}">
+              //   share: ${Number(params.data/weightSupplierTotal*100).toFixed(2)}%
+              // </p>
               return `
               <div class="toolTipBox" style="${!params.data ? 'display: none' : ''}">
                 ${tpl}
@@ -321,7 +358,7 @@ export default {
           textStyle: {
             color: '#485465'
           },
-          formatter: Number(wholePackage).toFixed(2)
+          formatter: self.thousandsFilter(Number(wholePackage).toFixed(2))
         },
         itemStyle: {
           normal: {
@@ -356,7 +393,7 @@ export default {
             // const percent = parseFloat(fz/fm*100).toFixed(2)
             // totalGroupPercent += Number(percent)
             // return `${params.data}\n{p|${percent}%}`
-            return `${Number(params.data).toFixed(2)}`
+            return `${self.thousandsFilter(Number(params.data).toFixed(2))}`
           },
           rich,
           interval: 0
@@ -412,7 +449,7 @@ export default {
               const fz = Number(params.data)
               const fm = Number(minPartSupplierTToTotal)
               const percent =parseFloat(fz/fm*100).toFixed(2)
-              return `${Number(params.data).toFixed(2)}\n{p|${percent}%}`
+              return `{p|${percent}%}`
             },
             rich,
             interval: 0
@@ -439,7 +476,7 @@ export default {
             color: '#485465'
           },
           formatter: function() {
-            return Number(minPartSupplierTToTotal).toFixed(2)
+            return self.thousandsFilter(Number(minPartSupplierTToTotal).toFixed(2))
           }
         }
       }))
@@ -465,7 +502,7 @@ export default {
               const fm = Number(weightSupplierTotal)
               const percent =(index === weightSupplier.length - 1) ? (100 - weightPercent).toFixed(2) : (fz/fm*100).toFixed(2)
               weightPercent += Number(percent)
-              return percent < 10 ?  '' : `${Number(params.data).toFixed(2)}\n{p|${percent}%}`
+              return percent < 10 ?  '' : `{p|${percent}%}`
             },
             rich,
             interval: 0
@@ -492,7 +529,7 @@ export default {
             color: '#485465'
           },
           formatter: function() {
-            return Number(weightSupplierTotal).toFixed(2)
+            return self.thousandsFilter(Number(weightSupplierTotal).toFixed(2))
           }
         }
       }))
@@ -558,19 +595,34 @@ export default {
   }
   #charts0 {
     width: 100%;
-    height: 350PX;
+    height: 400PX;
   }
   ::v-deep.toolTipBox {
     background: #fff;
     border-radius: 5px;
     padding: 20px;
-    border: 1px solid #efefef;
+    border: 1px solid #efefef !important;
+    min-width: 300px;
     &.hide {
       display: none !important;
     }
     p {
       font-size: 12px;
       font-weight: 100;
+    }
+    .ttoTitle {
+      font-size: 13px;
+      font-weight: bold;
+      color: #000;
+    }
+    .ttolist {
+      display: flex;
+      justify-content: space-between;
+      span {
+        display: inline-block;
+        color:#9290a6;
+        font-size: 12px;
+      }
     }
     .value {
       font-size: 12px;

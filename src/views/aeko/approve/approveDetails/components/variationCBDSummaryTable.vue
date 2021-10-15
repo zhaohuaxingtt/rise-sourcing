@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-12 21:31:34
+ * @LastEditTime: 2021-10-14 17:24:21
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -20,6 +20,7 @@
         :data="tableData"
         :span-method="spanMethod"
         :row-class-name="totalRowClass"
+        :empty-text="language('ZANWUSHUJU', '暂无数据')"
       >
         <el-table-column
           v-for="(item, index) in SummaryTitle"
@@ -27,7 +28,7 @@
           :prop="item.prop"
           :label="language(item.labelKey, item.label)"
           :render-header="item.renderHeader"
-          :width="item.width"
+          :min-width="item.width"
           align="center"
         >
           <template v-if="item.children.length > 0">
@@ -36,7 +37,7 @@
               :key="cindex"
               :prop="child.prop"
               :label="language(child.labelKey, child.label)"
-              :width="child.width"
+              :min-width="child.width"
               align="center"
             ></el-table-column>
           </template>
@@ -65,12 +66,14 @@
       </el-table>
     </iCard>
     <switchParts
+      :workFlowId="workFlowId"
       :tableData="switchPartsTable"
       @getCbdDataQuery="getCbdDataQuery"
     />
     <iTabsList
       class="margin-top20"
       type="card"
+      v-show="hasData"
       v-model="currentTab"
       @tab-click="tabChange"
     >
@@ -90,7 +93,6 @@
             :class="$componentIndex !== 0 ? 'margin-top20' : ''"
             :Data="aPriceChangeData"
             :key="$componentIndex"
-            :disabled="disabled"
           />
         </template>
       </el-tab-pane>
@@ -99,7 +101,7 @@
 </template>
 
 <script>
-import { iCard, iTabsList, iTableCustom } from "rise";
+import { iCard, iTabsList, iTableCustom, iMessage } from "rise";
 import switchParts from "./switchParts";
 import aPriceChange from "./aPriceChange";
 import mouldInvestmentChange from "./mouldInvestmentChange";
@@ -122,12 +124,9 @@ export default {
   },
   data() {
     return {
-      loading:false,
+      loading: false,
+      hasData: false,
       SummaryTitle: SummaryTableTitle,
-      defaultTab: "0",
-      partInfo: {},
-      basicInfo: {},
-      disabled: true,
       currentTab: "aPriceChange",
       aPriceChangeData: {},
       tabs: [
@@ -142,7 +141,9 @@ export default {
           label: "模具投资变动",
           name: "mouldInvestmentChange",
           key: "MUJUTOUZIBIANDONG",
-          components: ["mouldInvestmentChange"],
+          components: [
+            // "mouldInvestmentChange"
+          ],
           permissionKey:
             "AEKO_QUOTATION_CBD_TAB_MUJUTOUZIBIANDONG|模具投资变动",
         },
@@ -150,21 +151,27 @@ export default {
           label: "开发费",
           name: "developmentFee",
           key: "KAIFAFEI",
-          // components: ["developmentFee"],
+          components: [
+            // "developmentFee"
+          ],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_KAIFAFEI|开发费",
         },
         {
           label: "终⽌费",
           name: "damages",
           key: "ZHONGZHIFEI",
-          // components: ["damages"],
+          components: [
+            // "damages"
+          ],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_ZHONGZHIFEI|终⽌费",
         },
         {
           label: "样件费",
           name: "sampleFee",
           key: "YANGJIANFEI",
-          // components: ["sampleFee"],
+          components: [
+            // "sampleFee"
+          ],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_YANGJIANFEI|样件费",
         },
       ],
@@ -174,9 +181,12 @@ export default {
       quotationId: "",
     };
   },
-  mounted() {
-    // this.getTableData();
-    // this.getCbdDataQuery();
+  created() {
+    let workFlowId = JSON.parse(
+      sessionStorage.getItem("AEKO-APPROVAL-DETAILS-ITEM")
+    )?.aekoApprovalDetails?.workFlowDTOS[0].workFlowId;
+    this.workFlowId = workFlowId || "";
+    this.workFlowId ? this.getTableData() : iMessage.warn("缺少流程ID");
   },
   methods: {
     totalRowClass,
@@ -195,73 +205,60 @@ export default {
 
     // 页签切换
     tabChange() {
-      this.loading = true
       this.$nextTick(() => {
-        setTimeout(()=>{
-          this.loading=false
-        },2000)
-        const component = this.$refs[this.currentTab][0];
+        const component =
+          this.$refs[this.currentTab] && this.$refs[this.currentTab][0];
         if (typeof component.init === "function") component.init();
       });
     },
     // 获取汇总表数据
     getTableData() {
-      alterationCbdSummary({workFlowId:1}).then(({data})=>{
-        let obj = {};
-        data.forEach((item, index) => {
-          item.index = index;
-          obj[item.partNum]
-            ? (obj[item.partNum] += item.alteration)
-            : (obj[item.partNum] = item.alteration);
-        });
-        Object.keys(obj).forEach((key) => {
-          let item = {
-            index: "",
-            partNum: key,
-            total: "RMB " + (+obj[key]).toFixed(4),
-          };
-          data.push(item);
-        });
-        this.tableData = data.sort((a, b) => a.partNum - b.partNum);
-      })
+      alterationCbdSummary({ workFlowId: this.workFlowId }).then((res) => {
+        if (res?.code === "200") {
+          let data = res?.data || [];
+          let obj = {};
+          data.length &&
+            data.forEach((item, index) => {
+              item.index = index;
+              obj[item.partNum]
+                ? (obj[item.partNum] += item.alteration)
+                : (obj[item.partNum] = item.alteration);
+            });
+          Object.keys(obj).forEach((key) => {
+            let item = {
+              index: "",
+              partNum: key,
+              total: "RMB " + (+obj[key]).toFixed(4),
+            };
+            data.push(item);
+          });
+          this.tableData = data.sort((a, b) => a.partNum - b.partNum);
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      });
     },
-    // 获取其它数据
+    // 获取A价变动其它数据
     getCbdDataQuery(partsId) {
-      this.loading = true
-      setTimeout(()=>{
-        this.loading = false
-      },2000)
-      let obj=JSON.parse(sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM'))
-      let workFlowId = obj.workFlowId;
-      let quotationId = partsId;
-      cbdDataQuery({workFlowId, quotationId}).then(({data})=>{
-        this.switchPartsTable = [data.extSnapshotVO];
-        this.aPriceChangeData = data;
-        this.loading = false
-      })
-      // let res = {
-      //   data: {
-      //     cbdId: 0,
-      //     // CBD-变动值
-      //     cbdLevelVO: {},
-      //     // 切换零件
-      //     extSnapshotVO: {},
-      //     // 制造成本
-      //     makeCostList: [],
-      //     // 管理费
-      //     manageFeeList: [],
-      //     // 其它费用
-      //     otherFeeList: [],
-      //     // 利润
-      //     profitVO: {},
-      //     quotationId: 0,
-      //     // 原材料/散件成本
-      //     rawMaterialList: [],
-      //     // 报废成本
-      //     scrapVO: {},
-      //     workFlowId: 0,
-      //   },
-      // };
+      this.loading = true;
+      if (!partsId) {
+        this.hasData = false;
+        this.loading = false;
+        return;
+      }
+      cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
+        (res) => {
+          if (res?.code === "200") {
+            this.switchPartsTable = [data?.extSnapshotVO];
+            this.aPriceChangeData = data;
+            this.loading = false;
+            this.hasData = true;
+          } else {
+            this.loading = false;
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        }
+      );
     },
   },
 };

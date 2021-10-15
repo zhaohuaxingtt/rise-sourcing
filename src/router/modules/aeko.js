@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-10-08 10:15:49
+ * @LastEditTime: 2021-10-14 10:01:24
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -80,7 +80,7 @@ export default [
           meta: {
               title: 'AEKO零件清单'
           },
-          component: () => import ("@/views/aeko/partslist")
+          component: () => import ("@/views/aeko/partslist/home")
       },
       // aeko CSF AEKO审批分配人 零件清单页面
       {
@@ -149,9 +149,18 @@ export default [
             path: "CBDSummary",
             name: "CBDSummary",
             meta: {
-              title: "AEKO-审批列表",
+              title: "CBD汇总",
             },
             component: () => import("@/views/aeko/approve/approveDetails/components/variationCBDSummaryTable"),
+          },
+          {
+            path: "explainattach",
+            name: "explainattach",
+            meta: {
+              title: "AEKO-解释附件",
+              subMenuType: 2 // 区分解释附件的子菜单
+            },
+            component: () => import("@/views/aeko/approve/approveList/explainAttach"),
           },
         ]
       },

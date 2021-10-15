@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-09-23 19:02:24
+ * @LastEditTime: 2021-10-13 17:15:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -185,7 +185,7 @@
 							<!----------------------------------------------------------------------------------------------->
 							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
 							<!----------------------------------------------------------------------------------------------->
-							<iDatePicker v-if='currentSupplierButton && !disabled' v-model='detailData.sopDate' type="date"></iDatePicker>
+							<iDatePicker v-if='detailData.partProjectSource == 2 && !disabled' v-model='detailData.sopDate' type="date"></iDatePicker>
 							<iText v-else >
 								{{ detailData.sopDate }}
 							</iText>

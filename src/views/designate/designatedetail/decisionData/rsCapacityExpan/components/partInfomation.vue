@@ -1,14 +1,14 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-10-12 19:58:47
+ * @LastEditTime: 2021-10-13 12:36:44
  * @LastEditors: Hao,Jiang
  * @Description: part Infomation
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/partInfomation.vue
 -->
 <template>
   <div class="caexpan-card">
-    <div class="tit">3 Part infomation</div>
+    <div class="tit">3 Part Infomation</div>
     <div class="caexpan-card-body">
       <el-table
         fit

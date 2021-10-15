@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-20 14:07:50
- * @Description: 
+ * @Description: csf/commodity 筛选
 -->
 <template>
   <iSearch
@@ -12,30 +12,11 @@
     :searchKey="REST"
   >
     <el-form>
-      <!-- AEKO号 -->
-      <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')">
-        <iInput
-          v-model="form.aekoNum"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_AEKONUM|AEKO号"
-          :placeholder="language('LK_QINGSHURU','请输入')"
-          clearable
-        ></iInput>
-      </el-form-item>
-      <!-- 零件号 -->
-      <el-form-item :label="language('LINGJIAHAO', '零件号')">
-        <iInput
-          v-model="form.partNum"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_PARTNUM|零件号"
-          :placeholder="language('LK_QINGSHURU','请输入')"
-          clearable
-        ></iInput>
-      </el-form-item>
       <!-- 科室 -->
       <el-form-item :label="language('LK_AEKOKESHI','科室')">
         <iSelect
           class="multi-select"
           v-model="form.departmentIdList"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_DEPARTMENTIDLIST|科室"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           multiple
           filterable
@@ -53,20 +34,18 @@
           ></el-option>
         </iSelect>
       </el-form-item>
-      <!-- 专业采购员 -->
-      <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')">
+      <!-- 上传人 -->
+      <el-form-item :label="language('SHANGCHUANREN', '上传人')">
         <iInput
-          v-model="form.buyerName"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_BUYERNAME|专业采购员"
+          v-model="form.userName"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
       </el-form-item>
-      <!-- CSF股长 -->
-      <el-form-item :label="language('CSFGUZHANG','CSF股长')">
+      <!-- 文件描述 -->
+      <el-form-item :label="language('LK_WENJIANMIOASHU', '文件描述')">
         <iInput
-          v-model="form.chiefName"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_CHIEFNAME|CSF股长"
+          v-model="form.fileDescribe"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -91,7 +70,7 @@ export default {
   data() {
     return {
       form: {
-        departmentIdList: []
+
       },
       selectOptions: {
         linieDeptNumList: []
@@ -104,7 +83,6 @@ export default {
     iSelect,
   },
   mounted() {
-    // 获取下拉数据
     this.getSearchList()
   },
   beforeDestroy() {
@@ -129,7 +107,6 @@ export default {
               code: item.id
             }
           });
-          console.log('selectOptions', this.selectOptions)
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
@@ -148,5 +125,9 @@ export default {
       overflow: hidden;
     }
   }
+}
+::v-deep.intervalCss .el-form-item__content{
+  display: inline-flex;
+  align-items: center;
 }
 </style>

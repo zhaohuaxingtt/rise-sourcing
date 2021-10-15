@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-09-07 18:13:46
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-13 13:46:48
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\home\components\data.js
  */
@@ -37,7 +37,7 @@ export const form = {
   partNameZh:"",//零件中文名称
   partNum:'',//零件号
   projectCarType:'',//车型项目
-  status:'1',//信息单状态，默认查询 解决bug
+  status:'NOTACCEPTED',//信息单状态，默认查询 解决bug
   tpInfoType:'',//信息单分类
   userId:store.state.permission.userInfo?.id
 }

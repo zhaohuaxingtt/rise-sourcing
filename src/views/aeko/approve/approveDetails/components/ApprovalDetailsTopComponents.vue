@@ -1,36 +1,44 @@
 <template>
- <div class="margin-bottom25" style="display: flex;justify-content: space-between;align-items: center" >
-   <span class="akeoTitle">Aeko号:AE19221</span>
-   <div style="display: flex;justify-content: space-between;align-items: center" >
-     <iNavMvp  :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
-     <i-button class="margin-left25">查看已审批</i-button>
-     <i-button class="margin-left25">AEKO详情</i-button>
-     <log-button class="margin-left25"/>
-     <icon @click.native="gotoDBhistory"  symbol name="icondatabaseweixuanzhong" class="log-icon margin-left20 cursor myLogIcon"></icon>
-   </div>
- </div>
+  <div class="margin-bottom25" style="display: flex;justify-content: space-between;align-items: center">
+    <span class="akeoTitle">Aeko号:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
+    <div style="display: flex;justify-content: space-between;align-items: center">
+      <iNavMvp :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
+      <i-button v-if="$route.name !== 'explainattach'" class="margin-left25">查看已审批</i-button>
+      <i-button v-if="$route.name !== 'explainattach'" class="margin-left25">AEKO详情</i-button>
+      <log-button v-if="$route.name !== 'explainattach'" class="margin-left25"/>
+      <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
+            class="log-icon margin-left20 cursor myLogIcon"></icon>
+    </div>
+  </div>
 </template>
 
 <script>
-import { iNavMvp, icon,iButton } from "rise"
+import {iNavMvp, icon, iButton} from "rise"
 import LogButton from "./LogButton";
+
 export default {
   name: "ApprovalDetailsComponents",
-  components:{
+  components: {
     LogButton,
     iNavMvp,
     icon,
     iButton
   },
-  data(){
+  created() {
+    this.queryParams = this.$route.query
+    this.transmitObj = JSON.parse(sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM'))
+  },
+  data() {
     return {
+      transmitObj: {},
+      queryParams: {},
       subNavList: [
         {
           value: 1,
           name: "审批单",
           message: 0,
           url: "/aeko/AEKOApprovalDetails/Approvalform",
-          activePath: "/aeko/AEKOApprovalDetails/Approvalform",
+          activePath: "Approvalform",
           key: "审批单",
         },
         {
@@ -38,40 +46,43 @@ export default {
           name: "CBD汇总",
           message: 0,
           url: "/aeko/AEKOApprovalDetails/CBDSummary",
-          activePath: "/aeko/AEKOApprovalDetails/CBDSummary",
+          activePath: "CBDSummary",
           key: "CBD汇总",
         },
         {
           value: 3,
           name: "审批附件",
           message: 0,
-          url: "#",
-          activePath: "#",
+          url: "/aeko/AEKOApprovalDetails/explainattach",
+          activePath: "explainattach",
           key: "审批附件",
         },
       ],
     }
   },
-  methods:{
-    gotoDBhistory(){}
+  methods: {
+    gotoDBhistory() {
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
- .akeoTitle{
-   font-size: 20px;
-   font-family: Arial;
-   font-weight: bold;
-   align-items: center;
-   color: #000000;
+.akeoTitle {
+  font-size: 20px;
+  font-family: Arial;
+  font-weight: bold;
+  align-items: center;
+  color: #000000;
 
- }
-.myLogIcon{
+}
+
+.myLogIcon {
   width: 21px;
   height: 21px;
 }
-.margin-left25{
+
+.margin-left25 {
   margin-left: 25px !important;
 }
 </style>

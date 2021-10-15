@@ -72,13 +72,14 @@ export default{
   methods:{
     getDeptLeader(deptId, row) {
       getDeptLeader(deptId).then(res => {
-        this.$set(row, 'deptManager', res.data?.positionList?.reduce((accu,curr)=>{return[...accu,...curr?.userDTOList?.map(item => item.id)]},[]).join(','))
-        this.$set(row, 'deptManagerName', res.data?.positionList?.reduce((accu,curr)=>{return[...accu,...curr?.userDTOList?.map(item => item.nameZh)]},[]).join(','))
+        // this.$set(row, 'deptManagerName')
+        this.$set(row, 'deptManager', res.data.userDTOList.map(item => item.id).join(","))
+        this.$set(row, 'deptManagerName', res.data.userDTOList.map(item => item.nameZh).join(","))
       })
     },
-    getDeptSubOptions(deptId, row) {
+    getDeptSubOptions(deptId, row, grade) {
       this.$set(row, 'approveDeptNum', '')
-      getSubDeptListByParam(deptId).then(res => {
+      getSubDeptListByParam(deptId, grade).then(res => {
         this.$set(row, 'deptSubOptions', res.data.map(item => {
           return {
             ...item,
@@ -95,8 +96,8 @@ export default{
       console.log('val',val,'row',row,'item',item);
       this.$set(row, item.props, val)
       if (item.props === 'approveParentDeptNum') {
-        this.getDeptSubOptions(val, row)
         const dept = row.deptOptions.find(item => item.value === val)
+        this.getDeptSubOptions(val, row, dept.grade)
         if (dept) {
           this.getDeptLeader(dept.deptNum, row)
         }

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-13 11:31:37
+ * @LastEditTime: 2021-10-14 10:13:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -230,12 +230,13 @@
               v-model="scope.row.investCarTypePro"
               :disabled="disabled"
               :placeholder="language('QINGXUANZE', '请选择')"
+              @change="handleChangeCarInvestProjects($event, scope.row)"
             >
               <el-option
-                :value="item.value"
-                :label="item.label"
-                v-for="item in options"
-                :key="item.key"
+                :value="item"
+                :label="item"
+                v-for="item in (scope.row.carInvestProjects || [])"
+                :key="item"
               ></el-option>
             </iSelect>
           </template>
@@ -264,7 +265,7 @@
     <!-- 指定投资⻋型项⽬ -->
     <investCarTypeProDialog v-if="investCarTypeProVisible" :multipleSelection="multipleSelection" :dialogVisible="investCarTypeProVisible" @changeVisible="changeVisible" @refresh="init"/>
     <!-- 价格轴 -->
-    <priceAxisDialog v-if="priceAxisVisible" :dialogVisible="priceAxisVisible" @changeVisible="changeVisible"/>
+    <priceAxisDialog v-if="priceAxisVisible" :dialogVisible="priceAxisVisible" :priceAxisRow="priceAxisRow" @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -275,7 +276,7 @@ import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle,hidenTableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent } from "@/api/aeko/detail"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent,updateInvestCarProject } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
@@ -325,6 +326,7 @@ export default {
       dosageDialogVisible: false,
       investCarTypeProVisible: false,
       priceAxisVisible: false,
+      priceAxisRow:{},
       submitLoading: false,
       debouncer: null,
       declareSendSupplier:false,
@@ -837,8 +839,9 @@ export default {
     },
 
     // 查看价格轴弹窗
-    showPriceAxis(){
-      // this.priceAxisVisible = true;
+    showPriceAxis(row={}){
+      this.priceAxisVisible = true;
+      this.priceAxisRow = row;
     },
 
     // 显示隐藏表头
@@ -849,6 +852,24 @@ export default {
         if(filterItem.length) arr.push(filterItem[0]);
       })
       this.tableTitle = tableTitle.concat(arr);
+    },
+
+    // 变更投资车型项目
+    async handleChangeCarInvestProjects(value,row){
+      const data =[{
+        investCarTypePro: value,
+        objectAekoPartId: row.objectAekoPartId,
+        requirementAekoId: this.$route.query.requirementAekoId
+      }];
+      await updateInvestCarProject(data).then((res)=>{
+        if(res.code == 200){
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+        }else{
+          this.init();
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          
+        }
+      })
     }
 
   },

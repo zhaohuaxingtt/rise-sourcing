@@ -23,7 +23,11 @@ export default {
     //projectTop,
   },
   created() {
+   console.log('---------------',this.$router)
+    console.log('---------------',this.$route)
+
   }
+
 
 };
 </script>

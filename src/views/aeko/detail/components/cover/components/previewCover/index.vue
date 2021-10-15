@@ -152,7 +152,7 @@ export default {
     },
     methods:{
         // 获取详情
-        async getList(){
+        async getList(type=null){
             this.tableLoading={cost:true,};
             const {query} = this.$route;
             const { requirementAekoId ='',} = query;
@@ -162,6 +162,7 @@ export default {
                 if(code == 200){
                     this.basicInfo = data;
                     this.tableTDataCost = data.coverCostsWithCarType || []; // 费用汇总 车型维度
+                    if(type == 'refresh') this.$emit('getBbasicInfo');
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
