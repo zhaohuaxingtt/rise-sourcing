@@ -32,11 +32,11 @@
         </div>
       </template>
       <template #comment="scope">
-        <iInput v-if="!scope.row.comment" v-model="scope.row.comment" type="textarea" rows="2" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+        <iInput v-if="!scope.row.disabled" v-model="scope.row.comment" type="textarea" rows="2" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
         <span v-else>{{scope.row.comment}}</span>
       </template>
       <template #attach="scope">
-        <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row)" v-if="!scope.row.comment">
+        <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row)" v-if="!scope.row.disabled">
           {{ language("LK_SHANGCHUAN", "上传") }}
         </a>
         <a class="link-underline" href="javascript:;" v-else>
@@ -167,7 +167,7 @@ export default {
       findHistoryByAeko(parmas).then(res => {
         if (res.code === '200') {
           const tableListData = (res.data && res.data.records || []).map(o => {
-            o.unresigned = !o.chiefName
+            o.disabled = Boolean(o.comment)
             return o
           })
           console.log('tableListData',res.data, tableListData)
