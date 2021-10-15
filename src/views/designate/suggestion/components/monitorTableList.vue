@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-10-14 22:45:04
+ * @LastEditTime: 2021-10-15 11:38:42
  * @LastEditors: Hao,Jiang
 -->
 
@@ -410,7 +410,9 @@ export default {
         const wholePackageData = data.map(o => Number(o.TTo[index]) || 0)
         cstStatus && (bestGroup[index] = {
           index,
-          data: Number(_.sum(wholePackageData)).toFixed(2)
+          data: Number(_.sum(wholePackageData)).toFixed(2),
+          groupId: data[0] && data[0].groupId || '',
+          groupName: data[0] && data[0].groupName || '',
         })
       })
       if (!bestGroup.length) return false
@@ -419,6 +421,20 @@ export default {
       // console.log('--bestGroup', bestGroup)
       // 返回零件之和最低的供应商
       return bestGroup[0]
+    },
+    // 合并求和相同的供应商
+    uniqueCountSupplier(data=[]) {
+      const res = []
+      // 取出所有的不重复供应商列表
+      let supplierIds = _.uniq(data.map(o => o.index)) || []
+      supplierIds.forEach(supId => {
+        const total = _.sum(data.filter(o => o.index === supId).map(o => (Number(o.data) || 0)))
+        res.push({
+          index: supId,
+          data: total
+        })
+      })
+      return res
     },
     /**
      * 计算柱状图最佳TTO
@@ -491,15 +507,15 @@ export default {
           // weightedGroup.push(this.cacleSc([item]))
         })
       }
+      bestGroup = this.uniqueCountSupplier(bestGroup)
       bestGroup = _.sortBy(bestGroup, ['data'])
       // console.log('bestGroup', bestGroup)
-      // 筛选分组最低数据
-      // const bestGroupTotal = _.sum(bestGroup.map(o => o.data))
+      // 筛选分组最低数据，暂时没有用
       const bestGroupTotal = bestGroup[0].data
-      // const bestGroupSupplier = [bestGroup[0].data, bestGroupTotal - bestGroup[0].data]
       const bestGroupSupplier = [bestGroup[0].data]
       const bestGroupSupplierIndex = bestGroup[0].index
-      const bestGroupSupplierTotal = bestGroupTotal
+      // 分组数据
+      const bestGroupSupplierTotal = _.sum(bestGroup.map(o => (Number(o.data) || 0)))
       bestGroupSupplier.push(bestGroupTotal)
       // 记录该供应商
       supplier.push(bestGroupSupplierIndex)
@@ -578,6 +594,7 @@ export default {
         wholePackage,
         wholePackageIndex,
         // 分组最佳
+        bestGroup,
         bestGroupSupplier,
         bestGroupSupplierIndex,
         bestGroupSupplierTotal,

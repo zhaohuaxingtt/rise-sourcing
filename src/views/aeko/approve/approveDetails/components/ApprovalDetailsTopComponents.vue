@@ -26,7 +26,8 @@ export default {
   },
   created() {
     this.queryParams = this.$route.query
-    this.transmitObj = JSON.parse(sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM'))
+    let str_json = window.atob(this.queryParams.transmitObj)
+    this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
   },
   data() {
     return {

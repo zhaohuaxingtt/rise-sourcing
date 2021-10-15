@@ -462,14 +462,14 @@ export default {
           })
         })
         aekoAudit(reqArrays).then(res => {
-          if(res.code==200){
-            if(res.data.failCount>0){
+          if (res.code == 200) {
+            if (res.data.failCount > 0) {
               this.$message.error(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态，请重试`)
-            }else{
+            } else {
               this.$message.success(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态!`)
             }
             this.loadPendingAKEOList()
-          }else{
+          } else {
             this.$message.error(res.desZh)
 
           }
@@ -491,9 +491,9 @@ export default {
     //打开审批附件
     openApprovalAttachment(row) {
       let reqP = {requirementAekoId: row.requirementAekoId}
-      getAekoDetail(reqP).then(res=>{
-        if(res.code==200){
-          let taskIds =row.workFlowDTOS.map((item) => item.taskId)
+      getAekoDetail(reqP).then(res => {
+        if (res.code == 200) {
+          let taskIds = row.workFlowDTOS.map((item) => item.taskId)
           let taskId = taskIds.join(',');
           let transmitObj = {
             option: 1,
@@ -502,24 +502,23 @@ export default {
               requirementAekoId: row.requirementAekoId,
               aekoAuditType: row.auditType,
               workFlowDTOS: row.workFlowDTOS,
-              aekoManageId: res.data.aekoManageId,
-              linieId:this.$store.state.permission.userInfo.id,
-              taskId:taskId
+              aekoManageId: res.data.aekoManageId
             }
           }
-          sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(transmitObj))
           let routeData = this.$router.resolve({
             path: `/aeko/AEKOApprovalDetails/explainattach`,
             query: {
-              requirementAekoId:row.requirementAekoId,
-              aekoManageId:res.data.aekoManageId,
-              linieId:this.$store.state.permission.userInfo.id,
-              taskId:taskId
+              requirementAekoId: row.requirementAekoId,
+              aekoManageId: res.data.aekoManageId,
+              linieId: this.$store.state.permission.userInfo.id,
+              taskId: taskId,
+              transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj)))
+              )
             },
           })
           window.open(routeData.href, '_blank')
 
-        }else{
+        } else {
           this.$message.error(res.desZh)
         }
       })
@@ -531,9 +530,8 @@ export default {
       let reqP = {requirementAekoId: row.requirementAekoId}
       getAekoDetail(reqP).then(res => {
         if (res.code == 200) {
-          let taskIds =row.workFlowDTOS.map((item) => item.taskId)
+          let taskIds = row.workFlowDTOS.map((item) => item.taskId)
           let taskId = taskIds.join(',');
-
           let transmitObj = {
             option: 1,
             aekoApprovalDetails: {
@@ -541,12 +539,18 @@ export default {
               requirementAekoId: row.requirementAekoId,
               aekoAuditType: row.auditType,
               workFlowDTOS: row.workFlowDTOS,
-              aekoManageId: res.aekoManageId
+              aekoManageId: res.data.aekoManageId
             }
           }
-          sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(transmitObj))
           let routeData = this.$router.resolve({
             path: `/aeko/AEKOApprovalDetails`,
+            query: {
+              requirementAekoId: row.requirementAekoId,
+              aekoManageId: res.data.aekoManageId,
+              linieId: this.$store.state.permission.userInfo.id,
+              taskId: taskId,
+              transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj))))
+            }
 
           })
           window.open(routeData.href, '_blank')
