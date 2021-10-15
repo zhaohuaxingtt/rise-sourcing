@@ -463,7 +463,7 @@ export default {
         return iMessage.warn(
           this.language(
             "LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU",
-            '抱歉，您当前还未选择您需要生批量维护的项目！'
+            '抱歉，您当前还未选择您需要批量维护产量计划的项目'
           )
         );
       }
