@@ -1,12 +1,12 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-30 11:39:01
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-14 10:26:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-15 14:50:56
  * @Description: 零件列表 AEKO 
 -->
 <template>
-  <iPage class="aekoPartslist" v-permission.auto="AEKO_PARTLIST_CSFAEKOPARTLIST_PAGE|CSF&AEKO审批分配人零件清单">
+  <div class="aekoPartslist" v-permission.auto="AEKO_PARTLIST_CSFAEKOPARTLIST_PAGE|CSF&AEKO审批分配人零件清单">
     <h2 class="title">
       {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
     </h2>
@@ -90,13 +90,12 @@
       </div>
     </iCard>
 
-  </iPage>
+  </div>
 </template>
 
 <script>
 import Vuex from 'vuex'
 import {
-  iPage,
   iNavMvp,
   iSearch,
   iSelect,
@@ -126,7 +125,6 @@ export default {
     name:'partslist',
     mixins: [pageMixins],
     components:{
-      iPage,
       iNavMvp,
       iSearch,
       aekoSelect,
