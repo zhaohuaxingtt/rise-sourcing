@@ -221,18 +221,23 @@
                             class="margin-bottom20 "
                             style="width:20px;height:20px;"></icon>
                     </div>
+                    
                     <el-popover placement="bottom"
                                 width="80"
                                 trigger="click"
                                 visible-arrow
                                 class="margin-bottom20">
-                      <el-checkbox-group v-model="item.checkList"
-                                         class="checkList"
-                                         @change="changeCheckList(ind)">
-                        <el-checkbox v-for="(i, index) in item.checkList"
-                                     :key="index"
-                                     :label="i"></el-checkbox>
-                      </el-checkbox-group>
+                      <car-level-select :motor-id="item.motorId" :car-level-options="carLevelOptions[item.motorId]" 
+                        :org-checked="checkedCarLevelOptions[item.motorId]" @option-changed="changeCheckList">
+                      </car-level-select>
+                      <!-- <el-checkbox-group v-model="checkedCarLevelOptions[item.motorId]"
+                      //                    class="checkList"
+                      //                    @change="changeCheckList(item)">
+                      //   <el-checkbox v-for="(i, index) in carLevelOptions[item.motorId]"
+                      //                :key="index"
+                      //                :label="i"></el-checkbox>
+                      // </el-checkbox-group> -->
+
                       <div class="motorName"
                            slot="reference">
                         {{ item.motorName }}
@@ -263,7 +268,8 @@
                       </el-date-picker>
                     </div>
                   </div>
-                  <datasetBar :barData="item"
+                  <datasetBar :ref="`${item.motorId}`" :barData="item"
+                              :checkedCarLevel="checkedCarLevelOptions[item.motorId]"
                               :maxWidth="maxWidth"
                               :typeSelection="mekMotorTypeFlag"
                               :maxData="maxData"
@@ -380,6 +386,7 @@ import tableList from "../components/tableList";
 import modalDialog from "../components/modalDialog";
 import detailDialog from "../components/detailDialog";
 import preview from "../components/preview";
+import carLevelSelect from "../components/carLevelSelect"
 import {
   getMekTable,
   getHistogram,
@@ -413,6 +420,7 @@ export default {
     modalDialog,
     detailDialog,
     preview,
+    carLevelSelect
   },
   data () {
     return {
@@ -514,6 +522,8 @@ export default {
       mekTypeName: "",
       ComparedMotorName: [],
       checkAllList: [],
+      carLevelOptions: {},
+      checkedCarLevelOptions: {}
     };
   },
   async created () {
@@ -813,7 +823,6 @@ export default {
     },
     //
     detailDialog (flag, val) {
-      console.log(val);
       this.detailVisible = flag;
       let params = {
         comparedType: this.comparedType,
@@ -828,19 +837,25 @@ export default {
           this.detailsData = res.data;
           this.detailMotorName = val.motorName;
           this.detailFactory = val.factory;
-          // console.log(this.detailMotorName, this.detailFactory)
         }
       });
-      console.log(flag, val);
     },
-    changeCheckList (index) {
-      this.$forceUpdate();
-      this.barData[index].detail.forEach((item, i) => {
-        if (this.barData[index].checkList.indexOf(item.title) === -1) {
-          this.barData[index].detail.splice(i, 1);
-        }
-      });
-      console.log(this.barData[index].checkList);
+    changeCheckList (motorId, checkedCarLevel) {
+      Vue.set(this.checkedCarLevelOptions, motorId, checkedCarLevel);
+
+      this.$nextTick(() => {
+        // console.log(this.$refs[motorId][0].resetOptions)
+        this.$refs[motorId][0].resetOptions(checkedCarLevel)
+      })
+
+      // this.$forceUpdate();
+      
+      // this.barData[index].detail.forEach((item, i) => {
+      //   if (this.barData[index].checkList.indexOf(item.title) === -1) {
+      //     this.barData[index].detail.splice(i, 1);
+      //   }
+      // });
+      // console.log(this.barData[index].checkList);
     },
     changeDate (val, index) {
       this.$forceUpdate();
@@ -1021,7 +1036,6 @@ export default {
         (item) => item.partNumber
       );
       this.exceptPart = _.difference(recursiveRetrieveList, val);
-      console.log(this.exceptPart);
     },
     //价格类型
     changPriceType (val) {
@@ -1093,7 +1107,6 @@ export default {
           });
           data.config["label#-1"] = mekTypeName;
           this.gridData = data;
-          console.log(this.gridData);
         });
       }
     },
@@ -1110,9 +1123,6 @@ export default {
       }
     },
     selectData (val, index) {
-      console.log(this.firstBarData)
-      console.log(this.barData)
-      console.log(index)
       let params = {
         comparedType: this.comparedType,
         info: [
@@ -1149,13 +1159,11 @@ export default {
         };
         params.info.push(obj);
       });
-      console.log(params)
       if (index !== 0) {
         params.info[index].engine = val[0].engine;
         params.info[index].position = val[0].position;
         params.info[index].transmission = val[0].transmission;
       }
-      console.log(params)
       this.getHistogram(params);
     },
     delItem (data) {
@@ -1232,16 +1240,20 @@ export default {
             }
             this.maxData = first;
             this.firstBarData = data[0];
-            console.log(this.firstBarData, this.barData);
             data.shift();
             this.barData = data;
 
+            this.carLevelOptions = {};
             this.barData.forEach((item) => {
               item.checkList = [];
+              this.carLevelOptions[item.motorId] = [];
+              this.checkedCarLevelOptions[item.motorId] = [];
             });
             this.barData.forEach((item) => {
               item.detail.forEach((i) => {
                 item.checkList.push(i.title);
+                this.carLevelOptions[item.motorId].push(i.title);
+                this.checkedCarLevelOptions[item.motorId].push(i.title);
               });
             });
             if (this.comparedType === "mekMotorType") {
@@ -1263,7 +1275,6 @@ export default {
         this.targetMotor,
       ]);
       // let vmModelCodes = ['SK461/0CS_K', 'SK260/0CS_K']
-      console.log(vwModelCodes);
       this.$router.push({
         path: "/sourcing/partsrfq/mekInfoData",
         query: {
@@ -1320,7 +1331,6 @@ export default {
           targetMotor: this.targetMotor,
           name: this.analysisName,
         };
-        console.log(this.barData);
         if (this.barData[0]) {
           params.firstComparedMotor = this.barData[0].motorId || "";
           params.firstComparedPrice = this.barData[0].priceType || "";

@@ -41,6 +41,7 @@ export default {
         return {};
       },
     },
+    checkedCarLevel: Array,
     maxData: {
       type: String,
     },
@@ -60,6 +61,7 @@ export default {
       handler (val) {
 
         if (val) {
+
           this.barDataItem = [];
           this.barxAxis = [];
           val.detail.forEach((item, index) => {
@@ -90,8 +92,9 @@ export default {
             } else {
               str = item.title + "\n\n" + item.ebr || "";
             }
-            this.barDataItem.push(itemData);
-            this.barxAxis.push(str);
+
+              this.barDataItem.push(itemData);
+              this.barxAxis.push(str);
           });
          
           this.$nextTick(() => {
@@ -101,7 +104,7 @@ export default {
       },
       immediate: true,
       deep: true,
-    },
+    }
   },
   mounted () {
     // this.$nextTick(() => {
@@ -109,6 +112,63 @@ export default {
     // });
   },
   methods: {
+    resetOptions(val) {
+
+          this.barDataItem = [];
+          this.barxAxis = [];
+          this.barData.detail.forEach((item, index) => {
+            this.legendList.push({
+              name: item.title,
+              icon: 'circle',
+            })
+            const colorList = ["#A1D0FF", "#92B8FF", "#5993FF"];
+            const itemData = {
+              name: item.title,
+              value: item.value,
+              // value: item.value,
+              label: {
+                show: true,
+                position: "top",
+                color: "#000",
+                formatter: (val) => {
+                  return this.fmoney(val.value, 2);
+                },
+              },
+              itemStyle: {
+                color: colorList[index],
+              },
+            };
+            let str = "";
+            if (item.title == "MIX") {
+              str = item.title + "\n\n";
+            } else {
+              str = item.title + "\n\n" + item.ebr || "";
+            }
+            if (!val || val.indexOf(itemData.name) >= 0) {
+
+              this.barDataItem.push(itemData);
+              this.barxAxis.push(str);
+            }
+          });
+         
+          this.$nextTick(() => {
+            this.initCharts();
+          });
+
+        // for (var i=this.barDataItem.length - 1;i>=0;i--) {
+        //   if (val.indexOf(this.barDataItem[i].name) < 0) {
+        //     console.log("delete")
+        //     this.barDataItem.splice(i,1);
+        //   }
+        // }
+        //   this.$nextTick(() => {
+        //     this.myChart.clear();
+        //     // this.initCharts();
+        //     this.option.series[0].data = this.barDataItem;
+        //     console.log("ddd", this.option)
+        //     this.myChart.setOption(this.option);
+        //   });
+    },
     initCharts () {
       if (this.barData.detail.length === 1) {
         this.$refs.chart.style.width = this.barData.detail.length * 240 + "px";
