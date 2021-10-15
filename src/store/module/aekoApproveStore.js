@@ -20,7 +20,6 @@ const mutations = {
     },
     setOptionAEKOApprove(state,optionAEKOApprove){
         state.optionAEKOApprove=optionAEKOApprove
-        console.log('setOptionAEKOApprove',state.optionAEKOApprove)
     }
 }
 
@@ -36,7 +35,6 @@ const actions ={
         commit("setItemAekoApproveDetails", itemAekoApproveDetails);
     },
     setOptionAEKOApproveVal({commit,state}, optionAEKOApprove) {
-         console.log('setOptionAEKOApproveVal',optionAEKOApprove)
         commit("setOptionAEKOApprove", optionAEKOApprove);
 
     }
