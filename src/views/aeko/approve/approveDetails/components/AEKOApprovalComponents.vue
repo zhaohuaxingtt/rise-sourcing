@@ -192,7 +192,7 @@ export default {
         aekoNum:this.transmitObj.aekoApprovalDetails.aekoNum,
         linieId:row.linieId,
         manageId:this.transmitObj.aekoApprovalDetails.aekoManageId,
-        taskId:row.workFlowDTOS[0].taskId,
+        taskId:row.workFlowDTOS.filter((i) => i.taskId).map((i) => i.taskId),
       }
       this.explainAttachmentDialogVal = true
     }
