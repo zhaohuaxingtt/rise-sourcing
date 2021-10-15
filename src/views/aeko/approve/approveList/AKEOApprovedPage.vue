@@ -146,7 +146,7 @@
         </template>
         <!--科室-->
         <template #DepartmentName="scope">
-          <span>{{ scope.row.linieDeptName }}</span>
+          <span>{{ scope.row.linieDeptNum }}</span>
         </template>
         <!--采购员-->
         <template #buyerName="scope">
@@ -361,9 +361,9 @@ export default {
             aekoApprovalDetails: {
               aekoNum: row.aekoCode,
               requirementAekoId: row.requirementAekoId,
-              aekoAuditType: row.auditType,
+              aekoAuditType: 2,
               workFlowId: row.workFlowId,
-              workFlowDTOS: [],
+              workFlowDTOS: [{workFlowId: row.workFlowId,taskId:'11'}],
               taskId:row.taskId,
               aekoManageId: res.data.aekoManageId
             }
