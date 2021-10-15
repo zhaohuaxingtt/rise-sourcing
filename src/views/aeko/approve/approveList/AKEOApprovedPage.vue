@@ -127,7 +127,7 @@
         </template>
 
         <!--主要供应商-->
-        <template #supplier="scope">>
+        <template #supplier="scope">
           <span>{{ scope.row.mainSupplier }}</span>
         </template>
         <!--增加材料成本-->
@@ -359,17 +359,25 @@ export default {
           let transmitObj = {
             option: 2,
             aekoApprovalDetails: {
-              aekoNum: row.aekoNum,
+              aekoNum: row.aekoCode,
               requirementAekoId: row.requirementAekoId,
               aekoAuditType: row.auditType,
               workFlowId: row.workFlowId,
               workFlowDTOS: [],
-              aekoManageId: res.aekoManageId
+              taskId:row.taskId,
+              aekoManageId: res.data.aekoManageId
             }
           }
-          sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(transmitObj))
+          console.log(transmitObj)
           let routeData = this.$router.resolve({
             path: `/aeko/AEKOApprovalDetails`,
+            query: {
+              requirementAekoId: row.requirementAekoId,
+              aekoManageId: res.data.aekoManageId,
+              linieId: this.$store.state.permission.userInfo.id,
+              taskId: row.taskId,
+              transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj))))
+            },
           })
           window.open(routeData.href, '_blank')
         } else {
@@ -389,30 +397,26 @@ export default {
       let reqP = {requirementAekoId: row.requirementAekoId}
       getAekoDetail(reqP).then(res=>{
         if(res.code==200){
-          let taskIds =row.workFlowDTOS.map((item) => item.taskId)
-          let taskId = taskIds.join(',');
-
           let transmitObj = {
-            option: 1,
+            option: 2,
             aekoApprovalDetails: {
               aekoNum: row.aekoNum,
               requirementAekoId: row.requirementAekoId,
               aekoAuditType: row.auditType,
-              workFlowDTOS: row.workFlowDTOS,
-              aekoManageId: res.aekoManageId,
-              linieId:this.$store.state.permission.userInfo.id,
-              taskId:taskId
+              workFlowId: row.workFlowId,
+              workFlowDTOS: [],
+              taskId:row.taskId,
+              aekoManageId: res.data.aekoManageId
             }
           }
-          sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(transmitObj))
           let routeData = this.$router.resolve({
             path: `/aeko/AEKOApprovalDetails/explainattach`,
             query: {
               requirementAekoId:row.requirementAekoId,
-              aekoManageId:res.aekoManageId,
+              aekoManageId:res.data.aekoManageId,
               linieId:this.$store.state.permission.userInfo.id,
-              taskId:taskId
-              //requirementAekoId=10535&aekoManageId=467&linieId=190259&taskId=1233
+              taskId:row.taskId,
+              transmitObj: window.btoa(JSON.stringify(transmitObj))
             },
           })
           window.open(routeData.href, '_blank')

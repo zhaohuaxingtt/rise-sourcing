@@ -26,10 +26,13 @@ export default {
       auditContentStatus: '',//推荐表状态
       transmitObj: {},
       aekoApprovalDetails: {},
+      queryParams: {},
     }
   },
   created() {
-    this.transmitObj = JSON.parse(sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM'))
+    this.queryParams = this.$route.query
+    let str_json = window.atob(this.queryParams.transmitObj)
+    this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
     this.aekoApprovalDetails = this.transmitObj.aekoApprovalDetails
     if (this.transmitObj.option == 1) {
       this.loadAKEOApprovalForm()
@@ -40,12 +43,17 @@ export default {
   methods: {
     refreshForm(option) {
       this.transmitObj.option = option
-      sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(this.transmitObj))
+      this.queryParams.transmitObj = window.btoa(JSON.stringify(this.transmitObj))
+      this.$router.replace({
+        path: '/aeko/AEKOApprovalDetails/Approvalform',
+        query: this.queryParams
+      })
+      /*sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(this.transmitObj))
       if (this.transmitObj.option == 1) {
         this.loadAKEOApprovalForm()
       } else {
         this.lookAKEOApprovalForm()
-      }
+      }*/
     },
 
     loadAKEOApprovalForm() {
