@@ -210,6 +210,7 @@
               >
               <div class="floatright">
                 <!-- 手工采购项目创建 -->
+                <batchMiantainOutputPlan :planItems="selectTableData"></batchMiantainOutputPlan>
                 <iButton @click="openCreateParts">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
                 <iButton :loading='zpLoading' @click="openDiologChangeItems" v-permission="PARTSPROCURE_TRANSFER">{{ language("partsprocure.PARTSPROCURETRANSFER",'转派') }} </iButton>
                 <creatFsGsNr :projectItems="selectTableData" @refresh="getTableListFn" v-permission="PARTSPROCURE_GENERATEFSBUTTON" ></creatFsGsNr>
@@ -251,6 +252,7 @@
             @sure="sureChangeItems"
             :title="language('LK_LINGJIANCAIGOUXIANGMUZHUANPAI','零件采购项目转派')"
           ></changeItems>
+          
         </div>
       <!-- </el-tab-pane> -->
     <!-- </el-tabs> -->
@@ -271,6 +273,7 @@ import {
 import { pageMixins } from "@/utils/pageMixins";
 import {cancelProject,creatFsGsNr,startProject} from '@/components'
 import { tableTitle, form,validateProjectConfig } from "./components/data";
+import  batchMiantainOutputPlan from "./components/batchMiantainOutputPlan";
 import tablelist from "../../partsign/home/components/tableList";
 import { getTabelData,changeProcure} from "@/api/partsprocure/home";
 import changeItems from "../../partsign/home/components/changeItems";
@@ -296,7 +299,8 @@ export default {
     iSelect,
     creatFsGsNr,
     cancelProject,
-    startProject
+    startProject,
+    batchMiantainOutputPlan
   },
   data() {
     return {

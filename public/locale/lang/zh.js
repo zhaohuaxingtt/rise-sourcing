@@ -65,6 +65,7 @@
             'CHOOSE': '请选择',
             "CF": 'CF',
             'SHOUGONGCAIGOUXIANGMUCHUANGJIAN': '手工采购项目创建', // 手工采购项目创建
+            'PILIANGWEIHUCHANLIANGJIHUA': '批量维护产量计划', // 批量维护产量计划
             'FaSong': '发送', // 发送
             'CheHui': '撤回', // 撤回
             'LingJianHao': '零件号', // 零件号
@@ -339,6 +340,7 @@
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU': '抱歉，您当前还未选择您需要生批量维护的项目！', //抱歉，您当前还未选择您需要生批量维护的项目！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN': '抱歉，您当前还未选择您需要退回的信息单！', //抱歉，您当前还未选择您需要退回的信息单！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU': '抱歉，您当前还未选择您需要转派的零件采购项目！', //抱歉，您当前还未选择您需要转派的零件采购项目！
+        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOPILIANGWEIHUCHANLIANGJIHUADEXIANGMU': '抱歉，您当前还未选择您需要批量维护产量计划的项目！', //抱歉，您当前还未选择您需要批量维护产量计划的项目！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU': '抱歉，您当前还未选择您需要转派的评分任务！', //抱歉，您当前还未选择您需要转派的评分任务！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN': '抱歉，您当前还未选择您需要转派的信息单！', //抱歉，您当前还未选择您需要转派的信息单！
         'LK_NINDANGQIANHAIWEIXUANZERENWU': '抱歉，您当前还未选择任务！', //抱歉，您当前还未选择任务！
