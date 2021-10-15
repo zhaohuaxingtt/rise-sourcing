@@ -151,3 +151,24 @@ export const validateProjectConfig = [
 	}
 ]
 
+//批量维护产量计划
+
+export const batchMaintainTableTitle = [
+	{props: 'startyear', name: '开始年份',Key: 'LK_KAISHINIANFEN' },
+	{props: 'zero', name: '+0' },
+	{props: 'one', name: '+1' },
+	{props: 'two', name: '+2'},
+	{props: 'three', name: '+3'},
+	{props: 'fore', name: '+4'},
+	{props: 'five', name: '+5'},
+	{props: 'six', name: '+6' },
+	{props: 'seven', name: '+7'},
+	{props: 'eight', name: '+8'},
+	{props: 'nine', name: '+9' },
+	{props: 'ten', name: '+10' },
+	{props: 'eleven', name: '+11' },
+	{props: 'twelve', name: '+12' },
+	{props: 'thirteen', name: '+13' },
+	{props: 'fourteen', name: '+14' }
+]
+

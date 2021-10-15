@@ -441,6 +441,7 @@ export default {
             query: {
               desinateId: res.data.nominateId, 
               designateType: res.data.nominateProcessType,
+              partProjType: this.$route.query.businessKey
             }
           })
         } else {
