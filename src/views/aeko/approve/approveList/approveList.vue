@@ -14,10 +14,7 @@
                      :name="item.code"></el-tab-pane>
       </iTabsList>
     </div>
-    <keep-alive>
-      <component :is="currentView"/>
-    </keep-alive>
-
+    <router-view></router-view>
   </div>
 </template>
 <script>
@@ -29,34 +26,42 @@ import {iTabsList} from 'rise'
 
 export default {
   components: {
-    AKEOApprovedPage,
-    AKEOPendingPage,
     iTabsList
   },
   data() {
     return {
       tab: '1',
       navList,
-      currentView: 'AKEOPendingPage',
     }
   },
   created() {
-    let strSaveTab = sessionStorage.getItem('TAEKO-OPTION-SEL-ITEM')
-    if (strSaveTab != null && strSaveTab != '' && strSaveTab != undefined) {
-      this.handleTabClick(JSON.parse(strSaveTab))
+    if(this.$route.name=='AKEOPendingPage'){
+      this.tab='1'
+    }
+    if(this.$route.name=='AKEOApprovedPage'){
+      this.tab='2'
     }
   },
   methods: {
     //tab切换
     handleTabClick(tab) {
-      if (tab.name == 1) {
-        this.currentView = 'AKEOPendingPage'
-      } else if (tab.name == 2) {
-        this.currentView = 'AKEOApprovedPage'
+      console.log(this.$route.name)
+
+      if (tab.name == '1') {
+        this.tab='1'
+        if(this.$route.name!='AKEOPendingPage'){
+          this.$router.replace({
+            path: `/aeko/approve/approvelistcsf/AKEOPendingPage`,
+          })
+        }
+      } else if (tab.name == '2') {
+        this.tab='2'
+        if(this.$route.name!='AKEOApprovedPage'){
+          this.$router.replace({
+            path: `/aeko/approve/approvelistcsf/AKEOApprovedPage`,
+          })
+        }
       }
-      let selVal = {name: this.tab.name}
-      this.$store.dispatch("setOptionAEKOApproveVal", tab.name);
-      sessionStorage.setItem('TAEKO-OPTION-SEL-ITEM', JSON.stringify(selVal))
     },
 
   }
