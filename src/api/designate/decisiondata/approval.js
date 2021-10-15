@@ -55,11 +55,11 @@ export function getDeptSub(id) {
   })
 }
 
-export function getDeptLeader(deptNum) {
+export function getDeptLeader(data) {
   return requst({
     url: '/nominate/nomi-approval-process/approval',
     method: 'POST',
-    data: {deptNum}
+    data
   })
 }
 

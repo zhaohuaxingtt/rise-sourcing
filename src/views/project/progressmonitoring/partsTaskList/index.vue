@@ -1,12 +1,12 @@
 
 <template>
   <div class="productGroup">
-    <p class="font18 font-weight">
+    <!-- <p class="font18 font-weight">
       车型项目：{{titleName}}
-    </p>
-    <iSearch :icon="true" class="margin-top30">
+    </p> -->
+    <iSearch :icon="true" class="margin-top20">
       <template slot="button">
-        <iButton @click="back">{{language('Back', '返回')}}</iButton>
+        <!-- <iButton @click="back">{{language('Back', '返回')}}</iButton> -->
         <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
         <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
