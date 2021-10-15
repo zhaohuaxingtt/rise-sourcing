@@ -29,13 +29,13 @@
         <p class="title">{{language('AEKO_PRICE_GAIXINLINGJIANDEJIAGEBIANHUAQUSHI','该新零件的价格变化趋势，仅供参考。')}}</p>
         <p class="tips">{{language('AEKO_PRICE_AEKOSHISHISHIYUANLINGJIANJIAGEFASHENGBIANHUA','Aeko实施时，原零件价格发生变化，或者原零件的生效时间，都会引起该新零件的价格变化。')}}</p>
         <ul class="price-list">
-          <li><span>{{language('AEKO_PRICE_BIAOTAISHIDEYUANLINGJIANJIAGE','表态时的原零件价格')}}：</span><span>{{priceAxisInfo.contentOldPrice}} RMB,</span></li>
-          <li><span>{{language('AEKO_PRICE_BIANDONGCHENGBEN','成本变动')}}：</span><span>{{priceAxisInfo.changPrice}} RMB,</span></li>
-          <li><span>{{language('AEKO_PRICE_XINLINGJIANJIAGE','新零件价格')}}：</span><span>{{priceAxisInfo.currentPrice}} RMB,</span></li>
+          <li><span>{{language('AEKO_PRICE_BIAOTAISHIDEYUANLINGJIANJIAGE','表态时的原零件价格')}}：</span><span>{{priceType =='bnkPrice' ? '-' : priceAxisInfo.contentOldPrice+'RMB'}},</span></li>
+          <li><span>{{language('AEKO_PRICE_BIANDONGCHENGBEN','成本变动')}}：</span><span>{{priceType =='bnkPrice' ? '-' : priceAxisInfo.changPrice+'RMB'}} ,</span></li>
+          <li><span>{{language('AEKO_PRICE_XINLINGJIANJIAGE','新零件价格')}}：</span><span>{{priceType =='bnkPrice' ? '-' : priceAxisInfo.currentPrice+'RMB'}} ,</span></li>
         </ul>
         <div class="footer-price">
-          <p>{{language('AEKO_PRICE_DANGQIANYUGUDEXINLINGJIANSHENGXIAOJIAGE','当前预估的新零件⽣效价格')}}： {{priceAxisInfo.effectPrice}} RMB</p>
-          <p>{{language('AEKO_PRICE_ZUIZHONGDEXINLINGJIANSHENGXIAOJIAGE','最终的新零件⽣效价格')}}： {{priceAxisInfo.newPartPrice}} RMB</p>
+          <p>{{language('AEKO_PRICE_DANGQIANYUGUDEXINLINGJIANSHENGXIAOJIAGE','当前预估的新零件⽣效价格')}}： {{priceType =='bnkPrice' ? '-' : priceAxisInfo.effectPrice+'RMB'}} </p>
+          <p>{{language('AEKO_PRICE_ZUIZHONGDEXINLINGJIANSHENGXIAOJIAGE','最终的新零件⽣效价格')}}： {{priceType =='bnkPrice' ? '-' : priceAxisInfo.newPartPrice+'RMB'}} </p>
         </div>
       </div>
     </div>
