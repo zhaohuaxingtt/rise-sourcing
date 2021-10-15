@@ -76,6 +76,15 @@ export  function queryAKEOApprovalForm(data){
       }
   )
 }
+//已审批审批单
+export  function getAKEOApprovalForm (data){
+  return requst({
+        url: `/aeko/approved/auditForm`,
+        method: 'POST',
+        data:data
+      }
+  )
+}
 
 // 查询CBD汇总表
 export function alterationCbdSummary({ workFlowId }) {

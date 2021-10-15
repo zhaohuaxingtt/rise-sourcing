@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-10-13 16:06:45
+ * @LastEditTime: 2021-10-14 22:45:04
  * @LastEditors: Hao,Jiang
 -->
 
@@ -33,7 +33,7 @@
         </template>
       </el-table-column> -->
       <el-table-column
-        width="60"
+        width="100"
         label='Group'
         align='center'>
         <template slot-scope="scope">
@@ -54,12 +54,14 @@
       <el-table-column
         align='center'
         prop="partNo"
-        label="Teil Nr.">
+        label="Teil Nr."
+        width="120">
       </el-table-column>
       <el-table-column
         align='center'
         prop="partPrjCode"
-        label="FSNr.">
+        label="FSNr."
+        width="120">
       </el-table-column>
       <el-table-column
         align='center'
@@ -83,7 +85,7 @@
         </template>
         <template slot-scope="scope">
           <div class="supplier-tto" @click="handleCellClick(scope.row, hindex)">
-            {{scope.row.TTo && scope.row.TTo[hindex] || '' }}
+            <span v-if="scope.row.TTo && scope.row.TTo[hindex]">{{ scope.row.TTo[hindex] | thousandsFilter}}</span>
           </div>
         </template>
       </el-table-column>
@@ -136,9 +138,11 @@
 import Vue from 'vue'
 // import {mokeMouldMonitorData} from './data'
 import {iMessage, iInput} from 'rise'
+import filters from "@/utils/filters"
 import _ from 'lodash'
 
 export default {
+  mixins: [ filters ],
    props:{
     tableData:{type:Array},
     tableLoading:{type:Boolean,default:false},
@@ -587,7 +591,9 @@ export default {
         weightSupplierTotal,
         // 是否显示第四根柱子
         isShowWeightStick,
-        supplier
+        supplier,
+        // 供应商名称列表
+        supplierList: this.supplier
       }
       console.log(res)
       return res
