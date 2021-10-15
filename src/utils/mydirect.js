@@ -278,7 +278,7 @@ Vue.directive("lazySelect", {
     bind(el, binding) {
         const dom = el.querySelector(".el-select-dropdown .el-select-dropdown__wrap")
         dom.addEventListener("scroll", function() {
-          if ((this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
+          if (Math.floor(this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
         });
     }
 })
