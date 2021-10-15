@@ -45,6 +45,15 @@ export function getAllDept(params) {
   })
 }
 
+// 分页获取所有部门列表
+export function getAllDeptByPage(data) {
+  return requst({
+    url: "/rfq-rate-departs/getDept",
+    method: "POST",
+    data
+  })
+}
+
 // 获取评分部门类型
 export function getAllDeptTag() {
   return requst({
