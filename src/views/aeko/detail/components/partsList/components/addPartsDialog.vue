@@ -56,6 +56,8 @@
                 </iFormGroup>
                 <p class="text-align-right"><iButton :loading="btnLoading.save" @click="save">{{language('LK_BAOCUN','保存')}}</iButton></p>
             </div>
+            <!-- 未查询到相关零件 -->
+            <p v-if="!infoShow && noInfoData" class="no-data-tips">{{language('LK_AEKO_TIPS_WEICHAXUNDAOGAILINGJIAN','未查询到该零件，可点击新增创建零件')}}</p>
         </div>
     </div>
     </iDialog>
@@ -119,6 +121,7 @@ export default {
                 changeType:'A',
             },
             infoShow:false,
+            noInfoData:false,
         }
     },
     created(){
@@ -162,6 +165,7 @@ export default {
                         this.infoShow = true;
                     }else{
                         this.infoShow = false;
+                        this.noInfoData = true;
                     }
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -223,6 +227,9 @@ export default {
             }
             .search-contain{
                 min-height: 200px;
+                .no-data-tips{
+                    text-align: center;
+                }
             }
             ::v-deep.el-form-item__content {
                 margin-left: 10px!important;

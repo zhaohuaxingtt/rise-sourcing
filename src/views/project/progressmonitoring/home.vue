@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-13 19:52:22
+ * @LastEditTime: 2021-10-15 14:02:46
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -338,7 +338,15 @@ export default {
       // 确认
       const code = state ? 'sureopentips' : 'sureclosetips'
       const desc = state ? '您确定要打开TIPS开关？': '您确定要关闭TIPS开关？'
-      this.$confirm(this.language(code,desc)).then(confirmInfo => {
+      this.$confirm(
+        this.language(code,desc), 
+        this.language('TIPSTONGBU','TIPS同步'), 
+        {
+          confirmButtonText: this.language('SHI', '是'),
+          cancelButtonText: this.language('FOU', '否'),
+          customClass: 'progressmoni-tipsConfirm'
+        }
+      ).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
           this.autoTips(() => {
             this.toggleShowAutoTips(state)
@@ -405,6 +413,17 @@ export default {
   .tipsSum {
     display: inline-block;
     padding: 0px 5px;
+  }
+}
+</style>
+<style lang="scss">
+.progressmoni-tipsConfirm {
+  .el-message-box__btns {
+    display: flex;
+    flex-direction: row-reverse;
+    .el-button {
+      margin-left: 20px;
+    }
   }
 }
 </style>
