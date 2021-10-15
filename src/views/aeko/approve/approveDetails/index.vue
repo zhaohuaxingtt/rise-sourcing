@@ -22,6 +22,10 @@ export default {
     iPage,
     //projectTop,
   },
+  created() {
+
+
+  }
 
 
 };

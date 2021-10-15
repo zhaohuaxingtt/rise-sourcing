@@ -30,9 +30,9 @@
           ></i-input>
         </el-form-item>
         <!-- 专业采购员 -->
-        <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')" prop='linieName'>
+        <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')" prop='buyerId'>
           <i-select
-              v-model="queryAkeoForm.buyerName"
+              v-model="queryAkeoForm.buyerId"
               filterable
               remote
               reserve-keyword
@@ -45,7 +45,7 @@
                 v-for="item in options"
                 :key="item.value"
                 :label="item.label"
-                :value="item.label">
+                :value="item.value">
             </el-option>
           </i-select>
         </el-form-item>
@@ -71,7 +71,7 @@
         </el-form-item>
 
         <el-form-item :label="language('LK_SHENPIZHUANGTAI','审批状态')" prop='auditStatus'>
-          <i-select v-model="queryAkeoForm.auditStatus" multiple placeholder="请选择" >
+          <i-select v-model="queryAkeoForm.auditStatus" multiple placeholder="请选择">
             <el-option
                 v-for="item in auditStatusList"
                 :key="item.value"
@@ -110,47 +110,47 @@
           </div>
         </template>
         <template #auditTypeName="scope">
-          <span>{{scope.row.auditType}}</span>
+          <span>{{ scope.row.auditType }}</span>
         </template>
         <template #describe="">
-          <a class="link-underline" href="javascript:;" >
+          <a class="link-underline" @click="lookAEKODesc(scope.row)">
             {{ language('CHAKAN', '查看') }}
           </a>
         </template>
         <!---更改零件名称-->
         <template #assignsheet="scope">
-          <span>{{scope.row.partName}}</span>
+          <span>{{ scope.row.partName }}</span>
         </template>
         <!--涉及车型和车型项目-->
         <template #carType="scope">
-          <span>{{scope.row.cartypeNameZh}}</span>
+          <span>{{ scope.row.cartypeNameZh }}</span>
         </template>
 
         <!--主要供应商-->
-        <template #supplier="scope">>
-          <span>{{scope.row.mainSupplier}}</span>
+        <template #supplier="scope">
+          <span>{{ scope.row.mainSupplier }}</span>
         </template>
         <!--增加材料成本-->
         <template #EP1="scope">
-          <span>{{scope.row.materialIncrease}}</span>
+          <span>{{ scope.row.materialIncrease }}</span>
         </template>
 
         <!--增加投资税-->
         <template #EP2="scope">
-          <span>{{scope.row.investmentIncrease}}</span>
+          <span>{{ scope.row.investmentIncrease }}</span>
         </template>
 
         <!--其他费用-->
         <template #EP3="scope">
-          <span>{{scope.row.otherCost}}</span>
+          <span>{{ scope.row.otherCost }}</span>
         </template>
         <!--科室-->
-        <template #DepartmentName="scope">>
-          <span>{{scope.row.linieDeptName}}</span>
+        <template #DepartmentName="scope">
+          <span>{{ scope.row.linieDeptName }}</span>
         </template>
         <!--采购员-->
-        <template #buyerName="scope">>
-          <span>{{scope.row.linieName}}</span>
+        <template #buyerName="scope">
+          <span>{{ scope.row.linieName }}</span>
         </template>
         <!--附件-->
         <template #attach="">
@@ -160,11 +160,11 @@
         </template>
         <!--AEKO截止日期-->
         <template #date="scope">
-          <span>{{scope.row.deadLine}}</span>
+          <span>{{ scope.row.deadLine }}</span>
         </template>
         <!--创建时间-->
         <template #createDate="scope">
-          <span>{{scope.row.createDate}}</span>
+          <span>{{ scope.row.createDate }}</span>
         </template>
       </tablelist>
       <div class="pagination">
@@ -190,7 +190,8 @@ import tablelist from 'rise/web/components/iFile/tableList';
 import {pageMixins} from '@/utils/pageMixins'
 import {queryApproved} from "@/api/aeko/approve";
 import {searchLinie} from "@/api/aeko/manage";
-import {user as configUser } from '@/config'
+import {user as configUser} from '@/config'
+import {getAekoDetail} from "@/api/aeko/detail";
 
 export default {
   name: "AKEOApprovedPage",
@@ -226,8 +227,8 @@ export default {
       //选中回调数据集合
       selectApprovedList: [],
       auditStatusList: [{value: 1, name: '同意'}, {value: 2, name: '拒绝'}, {value: 3, name: '补充材料'}],
-      buyerUsers:[],
-      options:[],
+      buyerUsers: [],
+      options: [],
       loading: false,
     }
   },
@@ -237,13 +238,13 @@ export default {
   },
   methods: {
     checkMinCost() {
-      let value = this.queryAkeoForm.minCost
+      let value = this.queryAkeoForm.costChangeMin
       if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
         this.$message.error('请输入正确的数值，小数点后保留四位数字')
         return false
       }
-      if (!isNaN(this.queryAkeoForm.maxCost)) {
-        if (Number(value) > Number(this.queryAkeoForm.maxCost)) {
+      if (!isNaN(this.queryAkeoForm.costChangeMax)) {
+        if (Number(value) > Number(this.queryAkeoForm.costChangeMax)) {
           this.$message.error('最小值不能大于最大值');
           return false
         }
@@ -251,13 +252,13 @@ export default {
       return true
     },
     checkMaxCost() {
-      let value = this.queryAkeoForm.maxCost
+      let value = this.queryAkeoForm.costChangeMax
       if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
         this.$message.error('请输入正确的数值，小数点后保留四位数字')
         return false
       }
-      if (!isNaN(this.queryAkeoForm.minCost)) {
-        if (Number(value) < Number(this.queryAkeoForm.maxCost)) {
+      if (!isNaN(this.queryAkeoForm.costChangeMin)) {
+        if (Number(value) < Number(this.queryAkeoForm.costChangeMax)) {
           this.$message.error('最大值不能小于最小值');
           return false
         }
@@ -289,7 +290,7 @@ export default {
     },
     //查询
     queryApprovedAKEOForm() {
-      if(this.checkMaxCost()&&this.checkMaxCost()){
+      if (this.checkMaxCost() && this.checkMaxCost()) {
         this.queryAkeoForm.current = 1
         this.queryAkeoForm.size = this.page.pageSize
         this.loadApprovedList()
@@ -302,27 +303,27 @@ export default {
       this.queryAkeoForm.size = this.page.pageSize
       this.loadApprovedList()
     },
-    queryAllLin(){
-      const { buyerName=[],userInfo={} } = this;
-      if(buyerName.length){
-        buyerName.map((item)=>{
+    queryAllLin() {
+      const {buyerName = [], userInfo = {}} = this;
+      if (buyerName.length) {
+        buyerName.map((item) => {
           item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
           item.value = item.id;
         })
         this.buyerUsers = buyerName;
-      }else{
-        const {deptDTO={}} = userInfo;
+      } else {
+        const {deptDTO = {}} = userInfo;
         const deptId = deptDTO.id;
-        searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
-          const {code,data} = res;
-          if(code ==200 ){
-            data.map((item)=>{
+        searchLinie({tagId: configUser.LINLIE, deptId,}).then((res) => {
+          const {code, data} = res;
+          if (code == 200) {
+            data.map((item) => {
               item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
               item.value = item.id;
             })
             this.buyerUsers = data;
-          }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          } else {
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
       }
@@ -351,12 +352,81 @@ export default {
       this.loadApprovedList()
     },
     //跳转到详情
-    lookDetails(row){
+    lookDetails(row) {
+      let reqP = {requirementAekoId: row.requirementAekoId}
+      getAekoDetail(reqP).then(res => {
+        if (res.code == 200) {
+          let transmitObj = {
+            option: 2,
+            aekoApprovalDetails: {
+              aekoNum: row.aekoCode,
+              requirementAekoId: row.requirementAekoId,
+              aekoAuditType: row.auditType,
+              workFlowId: row.workFlowId,
+              workFlowDTOS: [],
+              taskId:row.taskId,
+              aekoManageId: res.data.aekoManageId
+            }
+          }
+          console.log(transmitObj)
+          let routeData = this.$router.resolve({
+            path: `/aeko/AEKOApprovalDetails`,
+            query: {
+              requirementAekoId: row.requirementAekoId,
+              aekoManageId: res.data.aekoManageId,
+              linieId: this.$store.state.permission.userInfo.id,
+              taskId: row.taskId,
+              transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj))))
+            },
+          })
+          window.open(routeData.href, '_blank')
+        } else {
+          this.$message.error(res.desZh)
+        }
+      })
+    },
+    //查看描述
+    lookAEKODesc(row) {
       let routeData = this.$router.resolve({
-        path: `/aeko/AEKOApprovalDetails`,
+        path: `/aeko/describe?requirementAekoId=${row.requirementAekoId}&aekoCode=${row.aekoNum}`,
       })
       window.open(routeData.href, '_blank')
-    }
+    },
+    //打开审批附件
+    openApprovalAttachment(row) {
+      let reqP = {requirementAekoId: row.requirementAekoId}
+      getAekoDetail(reqP).then(res=>{
+        if(res.code==200){
+          let transmitObj = {
+            option: 2,
+            aekoApprovalDetails: {
+              aekoNum: row.aekoNum,
+              requirementAekoId: row.requirementAekoId,
+              aekoAuditType: row.auditType,
+              workFlowId: row.workFlowId,
+              workFlowDTOS: [],
+              taskId:row.taskId,
+              aekoManageId: res.data.aekoManageId
+            }
+          }
+          let routeData = this.$router.resolve({
+            path: `/aeko/AEKOApprovalDetails/explainattach`,
+            query: {
+              requirementAekoId:row.requirementAekoId,
+              aekoManageId:res.data.aekoManageId,
+              linieId:this.$store.state.permission.userInfo.id,
+              taskId:row.taskId,
+              transmitObj: window.btoa(JSON.stringify(transmitObj))
+            },
+          })
+          window.open(routeData.href, '_blank')
+
+        }else{
+          this.$message.error(res.desZh)
+        }
+      })
+
+    },
   }
 }
 </script>

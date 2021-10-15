@@ -21,8 +21,7 @@
 </template>
 
 <script>
-import {iButton, iDialog, iMessage, iSelect} from 'rise'
-import {user as configUser} from '@/config'
+import {iButton, iDialog, iSelect} from 'rise'
 import {getRoleUserList} from "@/api/aeko/approve";
 
 export default {
@@ -51,7 +50,8 @@ export default {
     },
 
     queryRoleUserList() {
-      getRoleUserList({roleCode: configUser.QQCGGZ}).then((res) => {
+
+      getRoleUserList({roleCode:'QQCGGZ'}).then((res) => {
         const {code, data} = res;
         if (code == 200) {
           this.buyerNames = data.map((item) => {
@@ -62,7 +62,7 @@ export default {
             }
           });
         } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
       })
     },

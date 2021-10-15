@@ -76,9 +76,9 @@
     <i-card>
       <span class="font18 font-weight">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
       <div class="editControl floatright margin-bottom20">
-        <i-button @click="batchApproval"> {{ language('LK_PILIANGSHENPI', '批量审批') }}</i-button>
+        <i-button @click="batchApproval"> 批量批准</i-button>
         <i-button @click="approval"> {{ language('SHENPI', '审批') }}</i-button>
-        <i-button @click="transfer"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
+        <i-button @click="transfer" v-if="transferButtonDisplay"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
 
       </div>
       <!--表格展示区-->
@@ -198,12 +198,11 @@ import {iSearch, iInput, iCard, iButton, iSelect, iPagination, icon, iMessage} f
 import {tableCsfTitle as pendingHeader} from '../components/data'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {pageMixins} from '@/utils/pageMixins'
-import {pendingApprovalList} from "@/api/aeko/approve";
+import {pendingApprovalList, aekoAudit, transferAEKO} from "@/api/aeko/approve";
 import {searchLinie} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import AEKOTransferDialog from "./components/AEKOTransferDialog";
 import {getAekoDetail} from "@/api/aeko/detail";
-import {transferAEKO} from "../../../../api/aeko/approve";
 
 export default {
   name: "AKEOPendingPage",
@@ -219,7 +218,24 @@ export default {
     icon,
     iSelect
   },
-  computed: {},
+  computed: {
+    transferButtonDisplay: function () {
+      let user = this.$store.state.permission.userInfo
+      let roles = user.roleList
+      if (null != roles && roles.length > 0) {
+        let btnShow = false
+        for (let i = 0; i < roles.length; i++) {
+          let item = roles[i]
+          if (item.code == 'QQCGGZ') {
+            btnShow = true
+            break
+          }
+        }
+        return btnShow
+      }
+      return false
+    }
+  },
   data() {
     return {
       //查询表单
@@ -250,6 +266,7 @@ export default {
 
   },
   created() {
+    console.log('----', this.$store.state.permission.userInfo)
     this.loadPendingAKEOList()
     this.queryAllLin()
   },
@@ -261,7 +278,7 @@ export default {
         this.$message.error('请输入正确的数值，小数点后保留四位数字')
         return false
       }
-      if (!isNaN(this.queryAkeoForm.maxCost)) {
+      if (this.queryAkeoForm.maxCost != null && this.queryAkeoForm.maxCost != '') {
         if (Number(value) > Number(this.queryAkeoForm.maxCost)) {
           this.$message.error('最小值不能大于最大值');
           return false
@@ -364,14 +381,26 @@ export default {
       this.transferDialogVal = true
     },
     confirmTransfer(selBuyerId) {
-      let transfer = {
-        targetUserId:selBuyerId,
-        aekoCode:this.selectPendingList[0].aekoNum,
-
+      let selectPendingItem = this.selectPendingList[0]
+      if (null != selectPendingItem) {
+        let transfers = []
+        selectPendingItem.workFlowDTOS.forEach(item => {
+          transfers.push({
+            targetUserId: selBuyerId,
+            aekoCode: selectPendingItem.aekoNum,
+            taskId: item.taskId,
+            userId: this.$store.state.permission.userInfo.id
+          })
+        })
+        transferAEKO(transfers).then(res => {
+          if (res.code == 200) {
+            this.loadPendingAKEOList()
+          } else {
+            this.$message.error(res.desZh)
+          }
+        })
       }
-      transferAEKO(transfer).then(res=>{
 
-      })
 
     },
     //增加材料成本Tip
@@ -416,31 +445,56 @@ export default {
       if (this.selectPendingList.length <= 0) {
         return this.$message.warning('请选择需要审批的数据')
       }
+      this.$confirm('当选勾选AEKO将会全部批准,请确认', '批准', {
+        confirmButtonText: '确认',
+        cancelButtonText: '返回',
+      }).then(() => {
+        let reqArrays = []
+        this.selectPendingList.forEach(item => {
+          item.workFlowDTOS.forEach(workItem => {
+            reqArrays.push({
+              aekoCode: item.aekoNum,
+              aekoAuditType: item.auditType,
+              approvalResult: 1,
+              comment: '',
+              workFlowDTO: workItem
+            })
+          })
+        })
+        aekoAudit(reqArrays).then(res => {
+          if (res.code == 200) {
+            if (res.data.failCount > 0) {
+              this.$message.error(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态，请重试`)
+            } else {
+              this.$message.success(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态!`)
+            }
+            this.loadPendingAKEOList()
+          } else {
+            this.$message.error(res.desZh)
 
+          }
+        })
+
+      }).catch(() => {
+
+      });
     },
     //审批
     approval() {
-      let transmitObj = {option: 1, aekoApprovalDetails: {aekoNum: '123456'}}
-      sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(transmitObj))
-      let routeData = this.$router.resolve({
-        path: `/aeko/AEKOApprovalDetails`,
-      })
-      window.open(routeData.href, '_blank')
-      //this.$message.warning('期待下个版本吧')
+
+      this.$message.warning('期待下个版本吧')
     },
     //选中回调
     handleSelectionChange(val) {
       this.selectPendingList = val
     },
     //打开审批附件
-    openApprovalAttachment(row){
-
-    },
-    //跳转到详情
-    lookDetails(row) {
+    openApprovalAttachment(row) {
       let reqP = {requirementAekoId: row.requirementAekoId}
       getAekoDetail(reqP).then(res => {
         if (res.code == 200) {
+          let taskIds = row.workFlowDTOS.map((item) => item.taskId)
+          let taskId = taskIds.join(',');
           let transmitObj = {
             option: 1,
             aekoApprovalDetails: {
@@ -448,12 +502,56 @@ export default {
               requirementAekoId: row.requirementAekoId,
               aekoAuditType: row.auditType,
               workFlowDTOS: row.workFlowDTOS,
-              aekoManageId: res.aekoManageId
+              aekoManageId: res.data.aekoManageId
             }
           }
-          sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(transmitObj))
+          let routeData = this.$router.resolve({
+            path: `/aeko/AEKOApprovalDetails/explainattach`,
+            query: {
+              requirementAekoId: row.requirementAekoId,
+              aekoManageId: res.data.aekoManageId,
+              linieId: this.$store.state.permission.userInfo.id,
+              taskId: taskId,
+              transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj)))
+              )
+            },
+          })
+          window.open(routeData.href, '_blank')
+
+        } else {
+          this.$message.error(res.desZh)
+        }
+      })
+
+
+    },
+    //跳转到详情
+    lookDetails(row) {
+      let reqP = {requirementAekoId: row.requirementAekoId}
+      getAekoDetail(reqP).then(res => {
+        if (res.code == 200) {
+          let taskIds = row.workFlowDTOS.map((item) => item.taskId)
+          let taskId = taskIds.join(',');
+          let transmitObj = {
+            option: 1,
+            aekoApprovalDetails: {
+              aekoNum: row.aekoNum,
+              requirementAekoId: row.requirementAekoId,
+              aekoAuditType: row.auditType,
+              workFlowDTOS: row.workFlowDTOS,
+              aekoManageId: res.data.aekoManageId
+            }
+          }
           let routeData = this.$router.resolve({
             path: `/aeko/AEKOApprovalDetails`,
+            query: {
+              requirementAekoId: row.requirementAekoId,
+              aekoManageId: res.data.aekoManageId,
+              linieId: this.$store.state.permission.userInfo.id,
+              taskId: taskId,
+              transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj))))
+            }
+
           })
           window.open(routeData.href, '_blank')
         } else {
