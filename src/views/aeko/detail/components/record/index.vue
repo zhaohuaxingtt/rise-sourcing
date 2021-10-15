@@ -161,8 +161,8 @@ export default {
     getFetchData() {
       console.log(this.aekoInfo)
       const parmas = Object.assign({
-        applyUserId: this.userInfo.id || '',
-        currentUserId: this.userInfo.id || '',
+        applyUserId: String(this.userInfo.id) || '',
+        currentUserId: String(this.userInfo.id) || '',
         aekoNo: this.aekoInfo.aekoCode || '',
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize
