@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-09-14 15:33:19
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-15 16:18:50
+ * @LastEditors: Luoshuang
  * @Description: 风险图的配置文件
- * @FilePath: /front-web/src/views/project/progressmonitoring/components/components/barChart.js
+ * @FilePath: \front-web\src\views\project\progressmonitoring\components\lib\genBarChart.js
  */
 /**
  * @description: 
@@ -240,6 +240,17 @@ export function generateOptions(params = {}, type = 1) {
                         color: 'rgba(0,0,0,0)'
                     }
                 },
+                label: {
+                    show: true,
+                    position: 'insideRight',
+                    textStyle: {
+                        fontSize: 10,
+                        color: '#000'
+                    },
+                    formatter: (params) => {
+                        return params.dataIndex === seaiesData.length - 2 && Number(seaiesData[params.dataIndex].value) < Number(seaiesData[seaiesData.length - 1].value) * (0.105 * (seaiesData[params.dataIndex].value + '').length) ? seaiesData[params.dataIndex].value : ''
+                    }
+                },
                 data: assistData.reverse()
             },
             {
@@ -251,11 +262,43 @@ export function generateOptions(params = {}, type = 1) {
                 label: {
                     show: true,
                     position: 'insideRight',
+                    textStyle: {
+                        fontSize: 10,
+                        color: '#fff'
+                    },
                     formatter: (params) => {
-                        return params.value === '0' ? '' : params.value
+                        return params.value === '0' || Number(params.value) < Number(seaiesData[seaiesData.length - 1].value) * (0.105 * (seaiesData[params.dataIndex].value + '').length) ? '' : params.value
                     }
                 },
                 data: seaiesData
+            },
+            {
+                name: '辅助2',
+                type: 'bar',
+                zlevel: 1,
+                stack: '总量',
+                itemStyle: {
+                    barBorderColor: 'rgba(0,0,0,0)',
+                    color: 'rgba(0,0,0,0)'
+                },
+                emphasis: {
+                    itemStyle: {
+                        barBorderColor: 'rgba(0,0,0,0)',
+                        color: 'rgba(0,0,0,0)'
+                    }
+                },
+                label: {
+                    show: true,
+                    position: 'right',
+                    textStyle: {
+                        fontSize: 10,
+                        color: '#000'
+                    },
+                    formatter: (params) => {
+                        return params.dataIndex !== seaiesData.length - 2 && Number(seaiesData[params.dataIndex].value) < Number(seaiesData[seaiesData.length - 1].value) * (0.105 * (seaiesData[params.dataIndex].value + '').length) ? seaiesData[params.dataIndex].value : ''
+                    }
+                },
+                data: seaiesData.map(item => 0)
             },
             {
                 name: '辅助线',
