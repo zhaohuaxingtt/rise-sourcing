@@ -101,7 +101,7 @@ export default {
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
           this.tableListData = res.data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) || []
-          this.$forceUpdate()
+          // this.$forceUpdate()
         }).catch(() => this.tableLoading = false)
     },
     // 待选零件

@@ -8,6 +8,7 @@ const requstPartsProcure = axios(process.env.VUE_APP_PARTSPROCURE)
 const sourcing = axios(process.env.VUE_APP_PART_PROCURE)
 const sourcingDL = axios(process.env.VUE_APP_SOURCING_WDL)
 const quotation = axios(process.env.VUE_APP_QUOTATION)
+const requestOutputPart = axios(process.env.VUE_APP_RFQ)
 //自动定点-创建接口
 export function autonomi(params) {
 	return sourcing({
@@ -295,4 +296,12 @@ export function purchasingLiline(dptId){
     url: `/purchasing-project-parts/linie/${dptId}`,
     method: "GET"
   })
+}
+
+export function batchMaintainOutPutPlan(data) {
+	return  requestOutputPart ({
+		url: `/part-output/batchMaintainOutPutPlan`,
+		method:"post",
+		data
+	}) 
 }
