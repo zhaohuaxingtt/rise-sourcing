@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2021-09-14 10:40:38
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-30 13:22:32
+ * @LastEditors: zbin
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
 -->
@@ -11,10 +11,22 @@
       <template slot="header">
          <div class="flex-between-center title">
             <div class="flex-align-center">
-               <span>{{language("PLGYSGL","批量供应商概览")}}</span>
-               <el-tooltip :content="mark" placement="top" effect="light" :disabled="!mark">
-                  <span class="mark">{{mark}}</span>
-               </el-tooltip>
+               <span class="margin-right10">{{language("PLGYSGL","批量供应商概览")}}</span>
+               <el-popover trigger="hover"  placement="bottom-start" width="800">
+                  <div>提供过往三年至未来两年的材料组内批量供应商的供货金额，LTC&JPV数据概览：</div>
+                  <div class="tip">
+                     <p >价格数据：来源于零件台账价格</p>
+                     <p >产量数据：历史零件产量数据来源于FIS车型生产记录以及PBOM，未来零件产量数据来源于最新的BKM KTB产量计划</p>
+                     <p >供应商供货比例：供应商供货比例数据来源于历史货源配额计划，历史定点记录，以及BKM中的未来零件供货比例</p>
+                     <p >单个零件LTC=(（第N年台账1月1号之前最新版本中记录的N-1年12月31日最低零件价格）-（第N年台账1月1号之前最新版本中记录的N年最低零件价格）)/ （第N年台账1月1号之前最新版本中记录的N-1年12月31日最低零件价格）</p>
+                     <p >单个零件JPV=（（第N年台账1月1号之前最新版本中记录的N年最低零件价格）-（第N年实时记录的N年最低零件价格））/（第N年台账1月1号之前最新版本中记录的N年最低零件价格）。</p>
+                  </div>
+                  <icon slot="reference" name="iconxinxitishi" symbol class="cursor"></icon>
+               </el-popover>
+               <el-popover trigger="hover" class="tip" placement="bottom-start" width="800">
+                  <div>{{mark}}</div>
+                  <span class="mark cursor" slot="reference">{{mark}}</span>
+               </el-popover>
             </div>
             <div class="flex">
                <iButton @click="onJump360">{{ language("GONGYINGSHANG360", "供应商360") }}</iButton>
@@ -31,7 +43,7 @@
    </iCard>
 </template>
 <script>
-import {iCard,iButton,iMessage} from "rise";
+import {iCard,iButton,iMessage,icon} from "rise";
 import {getCmSupplierPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/batchSupplier";
 import * as pbi from 'powerbi-client';
 import {getCategoryAnalysis,categoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
@@ -39,7 +51,7 @@ import marks from "./marks";
 import {downloadPdfMixins} from '@/utils/pdf';
 export default {
    mixins: [downloadPdfMixins],
-   components:{iCard,iButton,marks},
+   components:{iCard,iButton,marks,icon},
    data () {
       return {
          config :{
@@ -127,6 +139,7 @@ export default {
       async save(){
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'batchSupplier',
+            watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
             pdfName:'品类管理助手_批量供应商概览_' + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
         });
          let params={
@@ -218,11 +231,12 @@ export default {
 .title{
    width: 100%;
    .mark{
+      display:inline-block;
       font-size: 14px !important;
       opacity: 0.42;
       margin-left: 32px;
       font-weight: normal;
-      max-width: 590px;
+      width: 600px;
       @include text_;
    }
 }
@@ -233,5 +247,10 @@ export default {
 #powerBi {
 	width: 100%;
 	height: calc(100vh - 300px);
+}
+.tip{
+   >p{
+      padding-left:15px;
+   }
 }
 </style>

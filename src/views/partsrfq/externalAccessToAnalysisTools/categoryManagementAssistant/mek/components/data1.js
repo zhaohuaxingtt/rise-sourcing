@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 16:07:05
- * @LastEditTime: 2021-08-26 17:08:17
+ * @LastEditTime: 2021-09-29 22:37:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\data1.js
@@ -30,6 +30,12 @@ export const confirmTableHead = [
     props: 'ebr',
     name: 'EBR%',
     key: 'EBR%',
+    tooltip: false,
+  },
+  {
+    props: 'position',
+    name: '车型等级',
+    key: 'CHEXINGDENGJI',
     tooltip: false,
   },
 ]
