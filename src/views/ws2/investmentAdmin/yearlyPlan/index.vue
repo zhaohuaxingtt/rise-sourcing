@@ -28,13 +28,13 @@
         <div class="c-right">
           <iCard class="c-card-r" v-loading="chartLoading">
             <div class="right-head">
-              <div class="right-title">年度计划</div>
+              <div class="right-title">{{ $t('LK_NIANDUJIHUA') }}</div>
               <div class="right-sildBox">
-                <div>系统计算上半年</div>
-                <div>系统计算下半年</div>
-                <div>系统计算Backlog</div>
-                <div>⼿⼯调整</div>
-                <div>⼿⼯调整Risk</div>
+                <div>{{ $t('LK_XITONGJIHUASHANGBANNIAN') }}</div>
+                <div>{{ $t('LK_XITONGJIHUAXIABANNIAN') }}</div>
+                <div>{{ $t('LK_XITONGJISUANBACKLOG') }}</div>
+                <div>{{ $t('LK_SHOUGONGTIAOZHENG') }}</div>
+                <div>{{ $t('LK_SHOUGONGTIAOZHENGRISK') }}</div>
               </div>
             </div>
             <div id="echarts"></div>
@@ -47,9 +47,10 @@
       <Popup :visible="systemVisible" @changeLayer="() => this.systemVisible = false" :title="$t('LK_XITONGJISUAN')">
         <template slot="btns">
           <div class="btns-txt">
-            <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>
-            <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>
-            <span>{{$t('LK_BUHANSUI')}}</span>
+            <span>{{ $t('LK_HUOBIRENMINBI') }}</span>
+<!--            <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>-->
+<!--            <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>-->
+<!--            <span>{{$t('LK_BUHANSUI')}}</span>-->
           </div><!-- 货币：人民币  |  单位：百万元  |  不含税  -->
           <iButton @click="downloadExport">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
         </template>
@@ -127,9 +128,10 @@
           </div>
         </template>
         <div class="btns-txt manual-txt"><!-- 货币：人民币  |  单位：百万元  |  不含税  -->
-          <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>
-          <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>
-          <span>{{$t('LK_BUHANSUI')}}</span>
+          <span>{{ $t('LK_HUOBIRENMINBI') }}</span>
+<!--          <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>-->
+<!--          <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>-->
+<!--          <span>{{$t('LK_BUHANSUI')}}</span>-->
         </div>
         <div class="manual-content">
           <div class="content-l">
@@ -174,7 +176,7 @@
       />
     </div>
   </div>
-  
+
 </template>
 
 <script>
@@ -471,9 +473,9 @@ export default {
                       planSystemNextBacklog, planSystemNextSecond, planSystemNextFirst
                     } = resData;
                     if(params.name == _this.vereceive.year){ //  当年
-                      return (planSystemCurrentBacklog + planSystemCurrentSecond + planSystemCurrentFirst).toFixed(2);
+                      return (Number(planSystemCurrentBacklog) + Number(planSystemCurrentSecond) + Number(planSystemCurrentFirst)).toFixed(2);
                     }else{
-                      return (planSystemNextBacklog + planSystemNextSecond + planSystemNextFirst).toFixed(2);
+                      return (Number(planSystemNextBacklog) + Number(planSystemNextBacklog) + Number(planSystemNextFirst)).toFixed(2);
                     }
                   }
                 }
@@ -504,9 +506,9 @@ export default {
                   formatter: function (params){
                     const { planManualCurrentRisk, planManualCurrent, planManualNextRisk, planManualNext } = resData;
                     if(params.name == _this.vereceive.year){ //  当年
-                      return (planManualCurrentRisk + planManualCurrent).toFixed(2);
+                      return (Number(planManualCurrentRisk) + Number(planManualCurrent)).toFixed(2);
                     }else{
-                      return (planManualNextRisk + planManualNext).toFixed(2);
+                      return (Number(planManualNextRisk) + Number(planManualNext)).toFixed(2);
                     }
                   }
                 }
@@ -755,7 +757,7 @@ export default {
   height: 94%;
   position: absolute;
   top: 0;
-  padding-top: 80px;
+  padding-top: 95px;
 
   .baApply-table{
     ::v-deep .el-input__inner{

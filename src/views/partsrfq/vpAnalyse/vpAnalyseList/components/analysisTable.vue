@@ -1,173 +1,85 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-09-08 11:15:59
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-15 00:21:01
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisTable.vue
 -->
 <template>
   <div class="vpMainBox">
-    <el-table tooltip-effect='light'
-              :data="tableListData"
-              style="width: 100%;margin-bottom: 20px;"
-              row-key="number"
-              :row-class-name="rowStyle"
-              :max-height="450"
-              :tree-props="{children: 'children'}"
-              @selection-change="handleSelectionChange"
-              @select="rowSelect"
-              @select-all="selectAll">
-      <el-table-column type="selection"
-                       align="center"
-                       header-align="center"
-                       width="55">
+    <el-table tooltip-effect='light' :data="tableListData" style="width: 100%;margin-bottom: 20px;" row-key="number" :row-class-name="rowStyle" :max-height="450" :tree-props="{children: 'children'}" @selection-change="handleSelectionChange" @select="rowSelect" @select-all="selectAll">
+      <el-table-column type="selection" align="center" header-align="center" width="55">
       </el-table-column>
-      <el-table-column label="#"
-                       type='index'
-                       :index="indexMethod"
-                       align="center"
-                       header-align="center"
-                       width="50">
+      <el-table-column label="#" type='index' :index="indexMethod" align="center" header-align="center" width="50">
       </el-table-column>
-      <el-table-column align="center"
-                       header-align="center"
-                       :label="$t('TPZS.FXMC')"
-                       width="450">
+      <el-table-column align="center" header-align="center" :label="$t('TPZS.FXMC')" width="450">
         <template slot-scope="scope">
           <div class="openPage">
             <el-row :gutter="20">
               <el-col :span="20">
-                <span v-if="!editMode"
-                      style="textAlgin: center">
-                  <el-tooltip :content="scope.row.analysisSchemeName"
-                              placement="top"
-                              effect="light">
-                    <span class="ellipsis"
-                       v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
-                       @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
+                <span v-if="!editMode" style="textAlgin: center">
+                  <el-tooltip :content="scope.row.analysisSchemeName" placement="top" effect="light">
+                    <span class="ellipsis" v-if="scope.row.type == '方案'" @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
                   </el-tooltip>
-                  <el-tooltip :content="scope.row.reportName"
-                              placement="top"
-                              effect="light">
-                    <span class="ellipsis"
-                       v-if="scope.row.type == $t('TPZS.REPORT_TYPE')"
-                       @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
+                  <el-tooltip :content="scope.row.reportName" placement="top" effect="light">
+                    <span class="ellipsis" v-if="scope.row.type == '报告'" @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
                   </el-tooltip>
                 </span>
                 <span v-else>
-                  <iInput class="nameInput"
-                          v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
-                          v-model="scope.row.analysisSchemeName"></iInput>
-                  <iInput class="nameInput"
-                          v-if="scope.row.type == $t('TPZS.REPORT_TYPE')"
-                          v-model="scope.row.reportName"></iInput>
+                  <iInput class="nameInput" v-if="scope.row.type == '方案'" v-model="scope.row.analysisSchemeName"></iInput>
+                  <iInput class="nameInput" v-if="scope.row.type == '报告'" v-model="scope.row.reportName"></iInput>
                 </span>
               </el-col>
               <el-col :span="4">
-                <span v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')">
+                <span v-if="scope.row.type == '方案'">
                   <span class="number">
                     {{scope.row.reportCount}}
                   </span>
-                  <icon class="numberIcon"
-                        style="{font-size:24px}"
-                        symbol
-                        name="iconwenjianshuliangbeijing"></icon>
+                  <icon class="numberIcon" style="{font-size:24px}" symbol name="iconwenjianshuliangbeijing"></icon>
                 </span>
               </el-col>
             </el-row>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="materialGroup"
-                       align="center"
-                       header-align="center"
-                       label="材料组">
+      <el-table-column prop="materialGroup" align="center" header-align="center" label="材料组">
       </el-table-column>
-      <el-table-column prop="rfqId"
-                       align="center"
-                       header-align="center"
-                       label="RFQ"
-                       width="100">
+      <el-table-column prop="rfqId" align="center" header-align="center" label="RFQ" width="100">
       </el-table-column>
-      <el-table-column prop="isDefault"
-                       align="center"
-                       header-align="center"
-                       :label="$t('TPZS.MRX')"
-                       width="80">
+      <el-table-column prop="isDefault" align="center" header-align="center" :label="$t('TPZS.MRX')" width="80">
         <template slot-scope="scope">
           <div v-if="!editMode">
             {{ defaultStatus(scope.row, scope.row.isDefault) }}
           </div>
           <div v-else-if="editMode && scope.row.type == $t('TPZS.SCHEME_TYPE') && scope.row.isDefault != '空' && scope.row.isDefault">
-            <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)"
-                     @change="changeDefault($event, scope.row)">
-              <el-option :value="item.value"
-                         :label="item.label"
-                         v-for="(item, index) in defaultData"
-                         :key="index"></el-option>
+            <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)" @change="changeDefault($event, scope.row)">
+              <el-option :value="item.value" :label="item.label" v-for="(item, index) in defaultData" :key="index"></el-option>
             </iSelect>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="type"
-                       align="center"
-                       header-align="center"
-                       :label="$t('TPZS.WJLX')">
+      <el-table-column prop="type" align="center" header-align="center" :label="$t('TPZS.WJLX')">
       </el-table-column>
-      <el-table-column prop="createByName"
-                       align="center"
-                       header-align="center"
-                       :label="$t('TPZS.CJR')">
+      <el-table-column prop="createByName" align="center" header-align="center" :label="$t('TPZS.CJR')">
       </el-table-column>
-      <el-table-column prop="createDate"
-                       align="center"
-                       header-align="center"
-                       show-overflow-tooltip
-                       :label="$t('LK_CHUANGJIANRIQI')">
+      <el-table-column prop="createDate" align="center" header-align="center" show-overflow-tooltip :label="$t('LK_CHUANGJIANRIQI')">
       </el-table-column>
-      <el-table-column prop="updateDate"
-                       align="center"
-                       header-align="center"
-                       show-overflow-tooltip
-                       :label="$t('TPZS.SCXGRQ')">
+      <el-table-column prop="updateDate" align="center" header-align="center" show-overflow-tooltip :label="$t('TPZS.SCXGRQ')">
       </el-table-column>
-      <el-table-column align="center"
-                       header-align="center"
-                       width="50">
+      <el-table-column align="center" header-align="center" width="50">
         <template slot-scope="scope">
-          <div class="stickIcon"
-               v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
-               @click="clickStick(scope.row)">
-            <icon v-if="scope.row.isTop && scope.row.isTop == 1"
-                  style="{font-size:24px}"
-                  symbol
-                  name="iconliebiaoyizhiding"></icon>
-            <icon v-else
-                  style="{font-size:24px}"
-                  symbol
-                  name="iconliebiaoweizhiding"
-                  @click="clickStick(scope.row)"></icon>
+          <div class="stickIcon" v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')" @click="clickStick(scope.row)">
+            <icon v-if="scope.row.isTop && scope.row.isTop == 1" style="{font-size:24px}" symbol name="iconliebiaoyizhiding"></icon>
+            <icon v-else style="{font-size:24px}" symbol name="iconliebiaoweizhiding" @click="clickStick(scope.row)"></icon>
           </div>
         </template>
       </el-table-column>
     </el-table>
 
-    <iPagination v-update
-                 @size-change="handleSizeChange($event, getTableData)"
-                 @current-change="handleCurrentChange($event, getTableData)"
-                 background
-                 :page-sizes="page.pageSizes"
-                 :page-size="page.pageSize"
-                 :layout="page.layout"
-                 :current-page='page.currPage'
-                 :total="page.totalCount" />
+    <iPagination v-update @size-change="handleSizeChange($event, getTableData)" @current-change="handleCurrentChange($event, getTableData)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page='page.currPage' :total="page.totalCount" />
 
-    <reportPreview :key="reportKey"
-                   :visible="reportVisible"
-                   :reportUrl="reportUrl"
-                   :title="reportTitle"
-                   @handleCloseReport="handleCloseReport" />
+    <reportPreview :key="reportKey" :visible="reportVisible" :reportUrl="reportUrl" :title="reportTitle" @handleCloseReport="handleCloseReport" />
   </div>
 </template>
 
@@ -188,10 +100,10 @@ export default {
     },
     searchData: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
-  data () {
+  data() {
     return {
       tableListData: [],
       tableLoading: false,
@@ -209,12 +121,12 @@ export default {
       updatedDefault: false, //是否已更新默认项
     }
   },
-  created () {
+  created() {
     this.round = this.$route.query.round ? this.$route.query.round : this.round
   },
   computed: {
-    defaultStatus () {
-      return function (val, status) {
+    defaultStatus() {
+      return function(val, status) {
         let flag = status === "是" || status === "否" ? status : null;
         if (this.currentDefaultObj && this.currentDefaultObj.isDefault == "是") {
           if (val.number == this.currentDefaultObj.number) flag = "是";
@@ -227,7 +139,7 @@ export default {
   },
   methods: {
     //初始化测试数据（静态数据）
-    initTestTableData () {
+    initTestTableData() {
       this.tableListData = [
         {
           id: 0, name: 'test1', materials: '编号-名称', rfq: 'RFQ号-名称', default: 0, fileType: 0, stick: true, children: [
@@ -240,7 +152,7 @@ export default {
       this.handleTableNumber(this.tableListData, 1, null)
     },
     // 初始化列表数据
-    getTableData () {
+    getTableData() {
       return new Promise(resolve => {
         const params = {
           pageNo: this.page.currPage,
@@ -262,7 +174,7 @@ export default {
       })
     },
     //更新表格数据
-    updateTableData () {
+    updateTableData() {
       if (this.updatedDefault) {
         this.tableListData.map((item, index) => {
           let flag = item.isDefault === "是" || item.isDefault === "否" ? item.isDefault : null;
@@ -277,7 +189,7 @@ export default {
       }
     },
     //递归处理树结构数据的序号
-    handleTableNumber (data, suffix, prefix) {
+    handleTableNumber(data, suffix, prefix) {
       data.forEach((item) => {
         const number = prefix ? (prefix + '.' + suffix) : suffix
         item['number'] = number
@@ -289,7 +201,7 @@ export default {
       })
     },
     // 获取下标
-    indexMethod (e) {
+    indexMethod(e) {
       const rows = []
       this.tableListData.forEach((r) => {
         rows.push(r.number)
@@ -302,11 +214,11 @@ export default {
       return rows[e]
     },
     // 选中项数据发生改变
-    handleSelectionChange (selection) {
+    handleSelectionChange(selection) {
       this.selectionData = selection
     },
     //点击置顶事件
-    clickStick (row) {
+    clickStick(row) {
       const params = {
         id: row.id
       }
@@ -318,14 +230,14 @@ export default {
       })
     },
     //编辑时，改变默认项事件
-    changeDefault (val, row) {
+    changeDefault(val, row) {
       this.$set(row, "isDefault", val);
       this.$set(this, "currentDefaultObj", row);
       if (val == '是') this.updatedDefault = true
       this.updateTableData()
     },
     //点击取消编辑按钮事件
-    cancelEditVP (backUpData) {
+    cancelEditVP(backUpData) {
       backUpData.map((item, index) => {
         if (item.type == this.$t('TPZS.SCHEME_TYPE'))
           this.$set(this.tableListData[index], 'analysisSchemeName', item.analysisSchemeName)
@@ -336,7 +248,7 @@ export default {
       this.edit = !this.edit;
     },
     //点击提交保存编辑事件
-    clickSaveEdit () {
+    clickSaveEdit() {
       const params = {
         vpEditDTOList: this.tableListData
       }
@@ -349,7 +261,7 @@ export default {
       })
     },
     //点击提交删除选中数据
-    clickSaveDel () {
+    clickSaveDel() {
       const ids = []
       const reportIds = []
       if (!this.selectionData || this.selectionData.length == 0) {
@@ -372,7 +284,7 @@ export default {
       })
     },
     //点击方案名称，跳转总单价页面
-    clickScheme (row) {
+    clickScheme(row) {
       const schemeUrl = '/sourcing/partsrfq/vpAnalyseDetail'
       const openSchemUrl = this.$router.resolve({
         path: schemeUrl,
@@ -382,16 +294,16 @@ export default {
           round: this.round
         }
       })
-      window.open(openSchemUrl.href,'_blank')
+      window.open(openSchemUrl.href, '_blank')
     },
     //点击报告名称，打开报告预览弹窗
-    clickReport (row) {
+    clickReport(row) {
       this.reportTitle = row.reportName
       this.reportKey = Math.random()
       if (row.downloadUrl) this.reportUrl = row.downloadUrl
       this.reportVisible = true
     },
-    rowSelect (selection, row) {
+    rowSelect(selection, row) {
       if (row.fileList) { //只对有子节点的行响应
         if (!row.isChecked) {   //由行数据中的元素isChecked判断当前是否被选中
           row.fileList.map((item) => { //遍历所有子节点
@@ -414,7 +326,7 @@ export default {
         }
       }
     },
-    selectAll (selection) {
+    selectAll(selection) {
       // selection 是选中的数据集合
       this.$refs.dataTable.data.map((items) => { //使用$ref获取注册的子组件信息，用data获取所有行，并用map函数遍历行
         if (items.fileList) {
@@ -442,11 +354,11 @@ export default {
 
     },
     //点击关闭报告预览弹窗
-    handleCloseReport () {
+    handleCloseReport() {
       this.reportVisible = false
     },
     //给方案数据设置斑马纹样式名
-    rowStyle({row, rowIndex}) { 
+    rowStyle({ row, rowIndex }) {
       return row.type == this.$t('TPZS.SCHEME_TYPE') && row.number % 2 == 0 ? 'scheme' : 'report'
     }
   }
@@ -479,7 +391,7 @@ export default {
   width: 96%;
 }
 
-::v-deep .el-table .scheme{
+::v-deep .el-table .scheme {
   background-color: #e0eafd;
 }
 ::v-deep .el-table .report {

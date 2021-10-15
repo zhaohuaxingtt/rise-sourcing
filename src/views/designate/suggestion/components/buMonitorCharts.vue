@@ -179,7 +179,7 @@ export default {
         const genSupTPL = (dataArray, dataCounTotal=0) => {
           const supplierList = self.data.supplierList || []
           let dataTemplate = ''
-          dataArray.forEach(item => {
+          window._.cloneDeep(dataArray).reverse().forEach(item => {
             dataTemplate+=`
               <p class="margin-top10">
                 <span class="margin-right5" style="background-color:${colorPanel[item.index]};display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;"></span>
@@ -233,7 +233,7 @@ export default {
               params.name === quota[1] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((wholePackage - bestGroupSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
+                  <span class="value">${Number((bestGroupSupplierTotal - wholePackage)/wholePackage*100).toFixed(2)}%</span>
                 </p>
                 ${genSupTPL(bestGroup, bestGroupSupplierTotal)}
               </div>`)
@@ -242,7 +242,7 @@ export default {
               params.name === quota[2] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((wholePackage - minPartSupplierTToTotal)/wholePackage*100).toFixed(2)}%</span>
+                  <span class="value">${Number((minPartSupplierTToTotal - wholePackage)/wholePackage*100).toFixed(2)}%</span>
                 </p>
                 ${genSupTPL(minPartSupplierTToArray, minPartSupplierTToTotal)}
               </div>`)
@@ -251,7 +251,7 @@ export default {
               params.name === quota[3] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((wholePackage-weightSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
+                  <span class="value">${Number((weightSupplierTotal - wholePackage)/wholePackage*100).toFixed(2)}%</span>
                 </p>
                 ${genSupTPL(weightSupplier, weightSupplierTotal)}
               </div>`)

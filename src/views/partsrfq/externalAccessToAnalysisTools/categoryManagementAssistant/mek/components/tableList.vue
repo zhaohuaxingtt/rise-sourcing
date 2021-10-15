@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-09-09 10:29:00
+ * @LastEditTime: 2021-10-09 18:51:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -14,11 +14,12 @@
            v-if="!preview"
            v-show="reportFlag">
         <div v-if="!editFlag">
-          <iButton @click="addRow">新增</iButton>
-          <iButton @click="del">删除</iButton>
+
           <iButton @click="edit">编辑</iButton>
         </div>
         <div v-else>
+          <iButton @click="addRow">新增</iButton>
+          <iButton @click="del">删除</iButton>
           <iButton @click="saveTable">保存</iButton>
           <iButton @click="cancel">取消</iButton>
         </div>
@@ -32,19 +33,29 @@
       </el-table-column>
       <el-table-column label="#"
                        prop="index"
-                       width="55">
+                       width="65">
       </el-table-column>
       <el-table-column v-for="(item,index) in gridData.title"
                        :key="index"
                        :label="item.motorTypeName"
-                       min-width="180">
+                       min-width="180"
+                       show-overflow-tooltip>
         <el-table-column :label="gridData.config[item.label]"
-                         :prop="item.label">
+                         :prop="item.label"
+                         show-overflow-tooltip
+                         :render-header="renderHeader">
           <editable-cell slot-scope="{row}"
                          :show-input="row.editMode"
                          v-model="row[item.label]">
             <span slot="content">{{row[item.label]}}</span>
           </editable-cell>
+          <template slot="header">
+            <el-tooltip effect="dark"
+                        :content="gridData.config[item.label]"
+                        placement="top">
+              <span>{{ gridData.config[item.label] }}</span>
+            </el-tooltip>
+          </template>
         </el-table-column>
       </el-table-column>
     </el-table>
@@ -96,7 +107,7 @@ export default {
     },
     gridData: {
       handler (newVal) {
-        console.log(newVal, 'hahahah')
+        
         if (newVal) {
           if (newVal.data) {
             this.tableData = newVal.data
@@ -104,7 +115,7 @@ export default {
               return {
                 ...row,
                 index: index + 1,
-                editMode: false
+                editMode: this.editFlag ? true : false
               }
             });
           } else {
@@ -114,7 +125,7 @@ export default {
               return {
                 ...row,
                 index: index + 1,
-                editMode: false
+                editMode: this.editFlag ? true : false
               }
             });
             console.log(this.tableData)
@@ -163,9 +174,25 @@ export default {
         this.$parent.$parent.getMekTable()
       })
     },
+    renderHeader (h, { column }) {
+      let header = column.label.split('<br/>');
+      return [h('p', {
+        style: {
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap'
+        },
+      }, [
+        h('p', {}, header[0]),
+        h('p', {}, header[1]),
+        h('p', {}, header[2]),
+        h('p', {}, header[3]),
+        h('p', {}, header[4])
+      ])];
+    },
     //表格保存
     saveTable () {
-      console.log(this.gridData1)
+
       this.editFlag = false
       let params = {
         "comparedType": this.$parent.$parent.comparedType,
@@ -201,12 +228,12 @@ export default {
           addRowList[item.label] = ""
         }
         addRowList['id#' + item.label.split("#")[1]] = ""
-        addRowList.editMode = false
+        addRowList.editMode = true
         addRowList['index'] = this.gridData1.length + 1
       })
       this.gridData1.push(addRowList)
       this.gridData1 = [...this.gridData1]
-      console.log(this.gridData1)
+      
     },
   },
   mounted () {

@@ -1,8 +1,8 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-09-08 10:40:57
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-14 23:17:04
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
 -->
@@ -17,7 +17,7 @@
           <span class="buttonBox" v-if="!editMode">
             <iButton @click="clickAdd">{{$t('TPZS.LK_CREATE')}}</iButton>
             <iButton @click="clickEdit">{{$t('LK_BIANJI')}}</iButton>
-            <iButton @click="clickDel">{{$t('delete')}}</iButton>
+            <iButton @click="clickDel">{{$t('LK_SHANCHU')}}</iButton>
           </span>
           <span class="buttonBox" v-if="editMode">
             <iButton @click="clickEdit">{{$t('LK_QUXIAO')}}</iButton>

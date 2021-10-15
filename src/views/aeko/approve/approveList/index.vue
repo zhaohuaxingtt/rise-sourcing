@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-14 16:53:31
+ * @LastEditTime: 2021-10-15 15:42:36
  * @Description: 
 -->
 <template>
@@ -50,7 +50,7 @@
           {{language('CHAKAN', '查看')}}
         </a>
       </template>
-      <template #assignsheet="">
+      <template #assignsheet="scope">
         <a class="link-underline" href="javascript:;" @click="toAssignSheetUrl(scope.row)">
           {{language('CHAKAN', '查看')}}
         </a>
@@ -138,19 +138,30 @@ export default {
      * @return {*}
      */    
     toAssignSheetUrl(row) {
-      const transmitObj= {
-        option: 1, 
-        aekoApprovalDetails:{
+      let taskIds = row.workFlowDTOS.map((item) => item.taskId)
+      let taskId = taskIds.join(',');
+      const transmitObj = {
+        option: 1,
+        aekoApprovalDetails: {
           aekoNum: row.aekoNum,
           requirementAekoId: row.requirementAekoId,
           aekoAuditType: row.auditType,
-          workflowIds: row.workflowIds
+          workFlowDTOS: row.workFlowDTOS,
+          aekoManageId: row.aekoManageId
         }
       }
-      sessionStorage.setItem('AEKO-APPROVAL-DETAILS-ITEM', JSON.stringify(transmitObj))
-      this.$nextTick(() => {
-        this.$router.push({path: '/aeko/AEKOApprovalDetails'})
+      let routeData = this.$router.resolve({
+        path: `/aeko/AEKOApprovalDetails`,
+        query: {
+          requirementAekoId: row.requirementAekoId,
+          aekoManageId: row.aekoManageId,
+          linieId: this.$store.state.permission.userInfo.id,
+          taskId: taskId,
+          transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj))))
+        }
+
       })
+      window.open(routeData.href, '_blank')
     },
     /**
      * @description: 跳转aeko详情
@@ -158,10 +169,11 @@ export default {
      * @return {*}
      */    
     toDetailUrl(row) {
-      this.$router.push({name: 'aekodetail', query: {
+      const routeData = this.$router.resolve({name: 'aekodetail', query: {
         from: '',
         requirementAekoId: row.requirementAekoId
       }})
+      window.open(routeData.href, '_blank')
     },
     /**
      * @description: 跳转描述
@@ -169,10 +181,11 @@ export default {
      * @return {*}
      */    
     toDescUrl(row) {
-      this.$router.push({name: 'aekoDescribe', query: {
+      const routeData = this.$router.resolve({name: 'aekoDescribe', query: {
         requirementAekoId: row.requirementAekoId,
         aekoCode: row.aekoNum
       }})
+      window.open(routeData.href, '_blank')
     },
     /**
      * @description: 选择

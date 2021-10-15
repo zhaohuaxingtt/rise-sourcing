@@ -16,7 +16,7 @@
         </el-form-item>
       </el-col>
       <el-col :span="4">
-        <el-form-item :label="$t('LK_RFQHAO')">
+        <el-form-item :label="language('RFQHAO','RFQ号')">
           <iInput :disabled='!!$route.query.rfqId' :placeholder="$t('LK_QINGSHURU')" v-model="form.rfqId"></iInput>
         </el-form-item>
       </el-col>

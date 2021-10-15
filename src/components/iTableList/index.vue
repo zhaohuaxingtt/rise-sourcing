@@ -204,7 +204,6 @@ export default {
       this.tableTitleTemp = tableTitleTemp
     },
     handleSelectionChange (val) {
-
       if (this.radio) {
         if (val.length > 1) {
           //取出最后val的最后一个返回出来
@@ -239,10 +238,10 @@ export default {
     cellMouseEnter (row) {
       this.$emit("cellMouseEnter", row);
     },
-    handleSelect (selection, row) {
-      const selectdBorder = row.selectedBorder
-      this.$set(row, 'selectedBorder', !selectdBorder)
-    },
+    // handleSelect (selection, row) {
+    //   const selectdBorder = row.selectedBorder
+    //   this.$set(row, 'selectedBorder', !selectdBorder)
+    // },
     handleSelectAll (selection) {
       const flag = selection.length
       for (let i = 0; i < flag; i++) {

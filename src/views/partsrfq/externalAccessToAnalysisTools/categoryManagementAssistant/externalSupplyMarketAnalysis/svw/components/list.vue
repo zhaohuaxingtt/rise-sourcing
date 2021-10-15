@@ -204,9 +204,7 @@ export default {
             },
             data: [{
               value: 20,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0]
-              },
+             
               label: {
                 normal: {
                   show: true,
@@ -215,9 +213,7 @@ export default {
               }
             }, {
               value: 50,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0]
-              },
+             
               label: {
                 normal: {
                   show: true,
@@ -226,9 +222,7 @@ export default {
               }
             }, {
               value: 47,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0]
-              },
+             
               label: {
                 normal: {
                   show: true,
@@ -250,9 +244,6 @@ export default {
             },
             data: [{
               value: 20,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0],
-              },
               label: {
                 normal: {
                   show: true,
@@ -262,9 +253,7 @@ export default {
 
             }, {
               value: 50,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0]
-              },
+             
               label: {
                 normal: {
                   show: true,
@@ -273,9 +262,7 @@ export default {
               }
             }, {
               value: 60,
-              itemStyle: {
-                borderRadius: [25, 25, 0, 0]
-              },
+             
               label: {
                 normal: {
                   show: true,
@@ -304,6 +291,7 @@ export default {
             // name: '访问来源',
             type: 'pie',
             radius: '50%',
+            selectedMode: "single",
             data: [
               {
                 value: 1048,
@@ -409,6 +397,7 @@ export default {
           this.$emit('returnObj', this.MarketOverviewObj1, this.index - 1);
         }
       },
+
     },
     year2: {
       handler (val) {
@@ -439,6 +428,7 @@ export default {
         }
 
       },
+
     },
     edite (val) {
       this.isEdite = val
@@ -481,15 +471,6 @@ export default {
         this.MarketOverviewObj.mainCustomerDTOList = this.MarketOverviewObj.mainCustomerDTOList.filter(item => item.customerName || item.totalSalesPro)
       }
     },
-    // MarketOverviewObj: {
-    //   handler (val) {
-    //     console.log(val)
-    //     this.MarketOverviewObj1 = _.cloneDeep(val)
-
-    //   },
-    //   immediate: true,
-    //   deep: true
-    // },
     MarketOverviewObj: {
       handler (val) {
         this.MarketOverviewObj1 = _.cloneDeep(val)
@@ -544,62 +525,63 @@ export default {
               this.profit3 = x.profit
             }
           });
-          // 饼图
-          if (val.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
-            let data = []
-            let legend = []
-            let check = true
-            let otherObj = {}
-            val.supplierAllStuffDTO.supplierStuffCountDTOList.forEach((x, index) => {
-              let seriesObj = {
-                value: 1048,
-                name: '材料组A',
-                itemStyle: {
-                  color: ""
-                },
-                label: {
-                  normal: {
-                    show: true,
-                    formatter: '{d}%'
-                  }
-                }
-              }
-              let colorList = ['#0C47A1', '#1976D1', '#2297F3', '#64B5F6', '#00579B', '#0188D1', '#03A9F4', '#50C2F7']
-              if (x.sapStuffCode == this.categoryCode) {
-                seriesObj.selected = true
-                check = false
-              } else {
-                seriesObj.selected = false
-              }
-              if (x.sapStuffCode === "other") {
-                otherObj = seriesObj
-              }
-              seriesObj.value = x.postAmount
-              seriesObj.name = x.categoryNameZh
-              seriesObj.itemStyle.color = colorList[index]
-              seriesObj.label.normal.formatter = x.rate + '%'
-              data.push(seriesObj)
-              legend.push(x.categoryNameZh)
-            })
-            if (check) {
-              otherObj.selected = true
-            }
-            this.turnover.series[0].data = data
-            this.turnover.legend.data = legend
-          }
-          let total = new Number()
-          if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
-            val.mainCustomerDTOList.forEach(item => {
-              total += Number(item.totalSalesPro)
-            })
-            if (total > 100) {
-              iMessage.error('超过100%')
-              return
-            }
-          }
+          // // 饼图
+          // if (val.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
+          //   let data = []
+          //   let legend = []
+          //   let check = true
+          //   let otherObj = {}
+          //   val.supplierAllStuffDTO.supplierStuffCountDTOList.forEach((x, index) => {
+          //     let seriesObj = {
+          //       value: 1048,
+          //       name: '材料组A',
+          //       itemStyle: {
+          //         color: ""
+          //       },
+          //       label: {
+          //         normal: {
+          //           show: true,
+          //           formatter: '{d}%'
+          //         }
+          //       }
+          //     }
+          //     let colorList = ['#0C47A1', '#1976D1', '#2297F3', '#64B5F6', '#00579B', '#0188D1', '#03A9F4', '#50C2F7']
+          //     // console.log(this.categoryCode)
+          //     // if (x.sapStuffCode == this.categoryCode) {
+          //     //   seriesObj.selected = true
+          //     //   check = false
+          //     // } else {
+          //     //   seriesObj.selected = false
+          //     // }
+          //     // if (x.sapStuffCode === "other") {
+          //     //   otherObj = seriesObj
+          //     // }
+          //     seriesObj.value = x.postAmount
+          //     seriesObj.name = x.categoryNameZh
+          //     seriesObj.itemStyle.color = colorList[index]
+          //     seriesObj.label.normal.formatter = x.rate + '%'
+          //     data.push(seriesObj)
+          //     legend.push(x.categoryNameZh)
+          //   })
+          //   if (check) {
+          //     otherObj.selected = true
+          //   }
+          //   this.turnover.series[0].data = data
+          //   this.turnover.legend.data = legend
+          // }
+          // let total = new Number()
+          // if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
+          //   val.mainCustomerDTOList.forEach(item => {
+          //     total += Number(item.totalSalesPro)
+          //   })
+          //   if (total > 100) {
+          //     iMessage.error('超过100%')
+          //     return
+          //   }
+          // }
           this.$nextTick(() => {
             this.initCharts()
-            this.initturnover()
+            // this.initturnover()
           });
         } else {
           this.option.series[0].data = []
@@ -609,9 +591,9 @@ export default {
       immediate: true,
       deep: true
     },
-
     '$store.state.rfq.categoryCode': {
       handler (val) {
+        console.log(val)
         this.categoryCode = val
         if (this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
           let data = []
@@ -630,7 +612,7 @@ export default {
                   show: true,
                   formatter: '{d}%'
                 }
-              }
+              },
             }
             let colorList = ['#0C47A1', '#1976D1', '#2297F3', '#64B5F6', '#00579B', '#0188D1', '#03A9F4', '#50C2F7']
             if (x.sapStuffCode == val) {
@@ -652,6 +634,7 @@ export default {
           if (check) {
             otherObj.selected = true
           }
+
           this.turnover.series[0].data = data
           this.turnover.legend.data = legend
         }
@@ -661,6 +644,21 @@ export default {
       },
       immediate: true
     },
+    interestsStatus (val) {
+      if (val === "otherAmount") {
+        this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].otherAmount / 1000000).toFixed(2)
+        this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].otherAmount / 1000000).toFixed(2)
+        this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].otherAmount / 1000000).toFixed(2)
+      } else if (val === "svwAmount") {
+        this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].svwAmount / 1000000).toFixed(2)
+        this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].svwAmount / 1000000).toFixed(2)
+        this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].svwAmount / 1000000).toFixed(2)
+      } else if (val === "profit") {
+        this.year1 = (this.MarketOverviewObj1.supplierFinanceDTOList[0].profit / 1000000).toFixed(2)
+        this.year2 = (this.MarketOverviewObj1.supplierFinanceDTOList[1].profit / 1000000).toFixed(2)
+        this.year3 = (this.MarketOverviewObj1.supplierFinanceDTOList[2].profit / 1000000).toFixed(2)
+      }
+    }
   },
   methods: {
     initCharts () {
@@ -677,15 +675,15 @@ export default {
           this.interestsName = item.name
         }
       })
-      this.year1 = ""
-      this.year2 = ""
-      this.year3 = ""
+      // this.year1 = ""
+      // this.year2 = ""
+      // this.year3 = ""
     },
     initturnover () {
       const myChart = echarts().init(this.$refs.turnover);
       // 绘制图表
       const option = this.turnover
-
+      console.log(option)
       myChart.setOption(option);
       // myChart.dispatchAction({
       //   type: 'showTip',
@@ -693,7 +691,6 @@ export default {
       //   dataIndex: 0
       // });
     }
-
   }
 
 }
