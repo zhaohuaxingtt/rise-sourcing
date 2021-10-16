@@ -34,6 +34,8 @@ export default {
     let str_json = window.atob(this.queryParams.transmitObj)
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
     this.aekoApprovalDetails = this.transmitObj.aekoApprovalDetails
+    console.log('approvalResult',this.aekoApprovalDetails.approvalResult)
+
     if (this.transmitObj.option == 1) {
       this.loadAKEOApprovalForm()
     } else {
@@ -80,7 +82,8 @@ export default {
     lookAKEOApprovalForm() {
       let reqData = {
         aekoAuditType: this.aekoApprovalDetails.aekoAuditType,
-        workFlowDTOS: this.aekoApprovalDetails.workFlowDTOS
+        workFlowDTOS: this.aekoApprovalDetails.workFlowDTOS,
+        approvalResult:this.aekoApprovalDetails.approvalResult
       }
       getAKEOApprovalForm(reqData).then(res => {
         if (res.code == 200) {
