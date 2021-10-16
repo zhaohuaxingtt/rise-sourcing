@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-06 22:11:41
- * @LastEditTime: 2021-10-13 12:39:32
+ * @LastEditTime: 2021-10-15 15:09:52
  * @LastEditors: Hao,Jiang
  * @Description: 决策资料 - 扩产能
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/index.vue
@@ -29,7 +29,15 @@
       </span>
     </div>
     <div class="caexpan-sign margin-top20">
-      <div class="signItem"><span class="label">CS:</span><span class="line"></span></div>
+      <el-row class="margin-top30" gutter="100" v-if="showMC">
+        <el-col :span="8">
+          <div class="signItem"><span class="label">M:</span><span class="line"></span></div>
+        </el-col>
+        <el-col :span="8">
+          <div class="signItem" style="text-align: right"><span class="label">C:</span><span class="line"></span></div>
+        </el-col>
+      </el-row>
+      <div class="signItem margin-top30"><span class="label">CS:</span><span class="line"></span></div>
       <el-row class="margin-top30" gutter="100">
         <el-col :span="8">
           <div class="signItem"><span class="label">Commodity:</span><span class="line"></span></div>
@@ -86,6 +94,13 @@ export default {
       yearList: [],
       assesmentList: []
 
+    }
+  },
+  computed: {
+    // 是否显示MC内容填写
+    showMC() {
+      const nomiSuggestionInvestmentFee = (this.InvestmentData || []).map(o => Number(o.nomiSuggestionInvestmentFee))
+      return window._.sum(nomiSuggestionInvestmentFee) >= 1000000
     }
   },
   mounted(){

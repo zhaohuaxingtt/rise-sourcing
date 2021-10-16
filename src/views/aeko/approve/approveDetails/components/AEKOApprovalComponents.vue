@@ -131,7 +131,7 @@ export default {
     },
     //审批意见状态
     approvalComments(row) {
-      return row.approvalResult == 3 || row.approvalResult == 2
+      return this.pageCanOption&&( row.approvalResult == 3 || row.approvalResult == 2)
     },
     changeStatus(row, state) {
       if (this.pageCanOption) {
@@ -154,11 +154,11 @@ export default {
             return this.$message.error('请填写审批意见')
           }
         }
-
       }
       this.localAuditItems.forEach(item => {
         item.workFlowDTOS.forEach(val => {
           req.push({
+            aekoCode:this.transmitObj.aekoApprovalDetails.aekoNum,
             aekoAuditType: this.transmitObj.aekoApprovalDetails.aekoAuditType,
             approvalResult: item.approvalResult,
             comment: item.auditOpinion,
@@ -168,7 +168,20 @@ export default {
       })
 
       aekoAudit(req).then(res => {
-        this.$message.error(res.desZh)
+        if(res.code==200){
+           if(res.data.failCount>0){
+             this.$message.error(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态，请重试`)
+             this.$emit('refreshForm',1)
+
+           }else{
+             this.$message.success(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态!`)
+             this.$emit('refreshForm',2)
+
+           }
+        }else{
+          this.$message.error(res.desZh)
+
+        }
       })
 
 
@@ -179,9 +192,8 @@ export default {
         aekoNum:this.transmitObj.aekoApprovalDetails.aekoNum,
         linieId:row.linieId,
         manageId:this.transmitObj.aekoApprovalDetails.aekoManageId,
-        taskId:'',
+        taskId:row.workFlowDTOS.filter((i) => i.taskId).map((i) => i.taskId),
       }
-
       this.explainAttachmentDialogVal = true
     }
 

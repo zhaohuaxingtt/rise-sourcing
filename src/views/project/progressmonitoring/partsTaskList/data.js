@@ -15,7 +15,7 @@ export const tableTitle = [
   {props:'risePartDesc',name:'异常原因', key: "YICHANGYUANYING", tooltip: true},
   {props:'partSort',name:'零件分类', key: "LINGJIANFENLEI", tooltip: true,editable:true,type:"select",selectOption: 'partTaskPartSort'},
   {props:'statusDesc',name:'处理状态', key: "CHULIZHUANGTAI", tooltip: true},
-  {props:'buyerName',name:'询价采购员', key: "QUERENJIEZHIRIQI", tooltip: true},
+  {props:'buyerName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
   {props:'linieName',name:'专业采购员', key: "ZHUANYECAIGOUYUAN", tooltip: true},
   {props:'epEngineer',name:'EP工程师',key:'QUERENSHIJIAN',tooltip: true},
 ]

@@ -32,15 +32,11 @@
         </div>
       </template>
       <template #comment="scope">
-        <iInput v-model="scope.row.comment" type="textarea" rows="2" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
-      </template>
-      <template #describe="">
-        <a class="link-underline" href="javascript:;">
-          {{ language("CHAKAN", "查看") }}
-        </a>
+        <iInput v-if="!scope.row.disabled" v-model="scope.row.comment" type="textarea" rows="2" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+        <span v-else>{{scope.row.comment}}</span>
       </template>
       <template #attach="scope">
-        <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row)" v-if="!scope.row.attachment">
+        <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row)" v-if="!scope.row.disabled">
           {{ language("LK_SHANGCHUAN", "上传") }}
         </a>
         <a class="link-underline" href="javascript:;" v-else>
@@ -150,7 +146,7 @@ export default {
         return
       }
       this.attachDialogVisibal = true
-      this.attachAekoCode = row.requirementAekoId
+      this.attachAekoCode = row.aekoCode
       this.currentRow = row
     },
     /**
@@ -161,17 +157,17 @@ export default {
     getFetchData() {
       console.log(this.aekoInfo)
       const parmas = Object.assign({
-        applyUserId: this.userInfo.id || '',
-        businessId: Number(this.aekoInfo.aekoManageId) || '',
-        // procStatus: '',
+        applyUserId: String(this.userInfo.id) || '',
+        currentUserId: String(this.userInfo.id) || '',
+        aekoNo: this.aekoInfo.aekoCode || '',
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize
       })
       this.tableLoading = true
       findHistoryByAeko(parmas).then(res => {
-        if (res.data && res.data.records) {
+        if (res.code === '200') {
           const tableListData = (res.data && res.data.records || []).map(o => {
-            o.unresigned = !o.chiefName
+            o.disabled = Boolean(o.comment)
             return o
           })
           console.log('tableListData',res.data, tableListData)
@@ -181,6 +177,7 @@ export default {
           this.tableListData = []
           // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
+        console.log('-----', res)
         this.tableLoading = false
         
       }).catch(e => {
@@ -241,7 +238,7 @@ export default {
       console.log('data', data)
 			const fileData = data.data || {}
 			const parmas = {
-				aekoNum: this.aekoInfo.requirementAekoId,
+				aekoNum: this.aekoInfo.aekoCode,
 				manageId: Number(this.aekoInfo.aekoManageId) || '',
 				fileName: fileData.name || '',
 				filePath: fileData.path || '',
@@ -276,7 +273,7 @@ export default {
 			console.log(this.aekoInfo)
       const parmas = Object.assign({
 				linieId: this.userInfo.id || '',
-				aekoNum: this.aekoInfo.requirementAekoId,
+				aekoNum: this.aekoInfo.aekoCode,
 				manageId: Number(this.aekoInfo.aekoManageId) || '',
 				taskId: [Number(this.currentRow.taskId)],
         current: this.page.currPage,

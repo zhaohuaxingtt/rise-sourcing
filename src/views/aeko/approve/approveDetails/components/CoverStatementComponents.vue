@@ -7,12 +7,12 @@
         <el-row :gutter='20'>
           <el-col :span='6'>
             <i-form-item label="是否Top:">
-              <i-text>{{ auditCover.isTop && (auditCover.isTop == 1 ? '是' : '否') }}</i-text>
+              <i-text>{{ auditCover.isTopDesc }}</i-text>
             </i-form-item>
           </el-col>
           <el-col :span='6'>
             <i-form-item label="是否相关:">
-              <i-text>{{ auditCover.isReference == 1 ? '是' : '否' }}</i-text>
+              <i-text>{{ auditCover.isReferenceDesc }}</i-text>
             </i-form-item>
           </el-col>
           <el-col :span='6'>
@@ -35,7 +35,7 @@
           </el-col>
           <el-col :span='6'>
             <i-form-item label="影响进度:">
-              <i-text>{{ auditCover.isEffectpro == 1 ? '是' : '否' }}</i-text>
+              <i-text>{{ auditCover.isEffectproDesc }}</i-text>
             </i-form-item>
           </el-col>
           <el-col :span='6'>
@@ -45,7 +45,7 @@
           </el-col>
           <el-col :span='6'>
             <i-form-item label="封面状态:">
-              <i-text>{{ auditCover.coverStatus }}</i-text>
+              <i-text>{{ auditCover.coverStatusDesc }}</i-text>
             </i-form-item>
           </el-col>
         </el-row>

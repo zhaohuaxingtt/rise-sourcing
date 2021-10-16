@@ -107,7 +107,9 @@ export default {
     }
 
     await this.getTableList()
+    if(this.queryForm.buyerId != undefined){
     this.$refs.partsTable && this.$refs.partsTable.getTableList() 
+    }
   },
   inject: ['getbaseInfoData', 'getDisabled'],
   computed: {
@@ -128,8 +130,11 @@ export default {
       addLoding: false,
       kmDialogVisible: false,
       partProjTypes,
-      queryForm: {},
-      partNumList: ""
+      queryForm: {
+         buyerId:this.$store.state.permission.userInfo.id
+      },
+      partNumList: "",
+      
     };
   },
   methods: {

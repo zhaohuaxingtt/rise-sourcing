@@ -135,12 +135,12 @@ export default {
         {
           gid: 1,
           capa: 'Capa.',
-          name: 'Nomination Kapa.'
+          name: 'Nomination Capa.'
         },
         {
           capa: 'Capa.',
           gid: 1,
-          name: 'Current Kapa.'
+          name: 'Current Capa.'
         },
         {
           capa: 'Capa.',

@@ -22,7 +22,7 @@
       </div>
       <span class="refreshTime">{{ $t('LK_SHUAXINRIQI') }}：{{ versionData.updateDate }}</span>
       <div v-if="pageEdit">
-        <iButton @click="exitEdit">{{ $t("LK_TUICHUBIANJI") }}</iButton>
+        <iButton @click="exitEdit">{{ $t('LK_TUICHUBIANJI1') }}</iButton>
         <!-- <iButton @click="uploadList">{{ $t("上传清单") }}</iButton> -->
         <upload-button
           @uploadedCallback="uploadList"
@@ -44,15 +44,7 @@
           <span class="planTitle">{{ getYear(versionData.year) }}{{ $t('LK_YUEDUJIHUA') }}</span>
           <span class="totalText">Total:</span>
           <span class="refresh">{{ totalAmount }}</span>
-          <span class="unitText margin-left20"
-            >{{ $t("LK_HUOBI") }}: {{ $t("LK_RENMINBI") }}</span
-          >
-          <span class="marginUnit unitText">|</span>
-          <span class="unitText"
-            >{{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}</span
-          >
-          <span class="marginUnit unitText">|</span>
-          <span class="unitText">{{ $t("LK_BUHANSUI") }}</span>
+          <span class="unitText margin-left20">{{ $t('LK_HUOBIRENMINBI') }}</span>
         </div>
         <div class="legend" v-if="tableListData">
           <div v-for="(item, index) in tableListData" :key="index">{{ item.commodity }}</div>

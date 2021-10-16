@@ -123,6 +123,25 @@ export default [
               title: "AEKO-审批列表",
             },
             component: () => import("@/views/aeko/approve/approveList/approveList"),
+            redirect: "/aeko/approve/approvelistcsf/AKEOPendingPage",
+            children:[
+              {
+                path: "AKEOPendingPage",
+                name: "AKEOPendingPage",
+                meta: {
+                  title: "AEKO-待审批列表",
+                },
+                component: () => import("@/views/aeko/approve/approveList/AKEOPendingPage"),
+              },
+              {
+                path: "AKEOApprovedPage",
+                name: "AKEOApprovedPage",
+                meta: {
+                  title: "AEKO-已审批列表",
+                },
+                component: () => import("@/views/aeko/approve/approveList/AKEOApprovedPage"),
+              }
+            ]
           },
         ]
       },
@@ -164,6 +183,14 @@ export default [
           },
         ]
       },
+      {
+        path: "relatingParts",
+        name: "aekoRelatingParts",
+        meta: {
+          title: 'AEKO-关联零件'
+        },
+        component: () => import("@/views/aeko/relatingParts"),
+      }
     ]
   }
 ]

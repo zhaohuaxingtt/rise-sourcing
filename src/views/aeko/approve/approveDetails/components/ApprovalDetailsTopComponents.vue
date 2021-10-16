@@ -1,14 +1,15 @@
 <template>
- <div class="margin-bottom25" style="display: flex;justify-content: space-between;align-items: center" >
-   <span class="akeoTitle">Aeko号:AE19221</span>
-   <div style="display: flex;justify-content: space-between;align-items: center" >
-     <iNavMvp  :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
-     <i-button v-if="$route.name !== 'explainattach'" class="margin-left25">查看已审批</i-button>
-     <i-button v-if="$route.name !== 'explainattach'" class="margin-left25">AEKO详情</i-button>
-     <log-button v-if="$route.name !== 'explainattach'" class="margin-left25"/>
-     <icon @click.native="gotoDBhistory"  symbol name="icondatabaseweixuanzhong" class="log-icon margin-left20 cursor myLogIcon"></icon>
-   </div>
- </div>
+  <div class="margin-bottom25" style="display: flex;justify-content: space-between;align-items: center">
+    <span class="akeoTitle">Aeko号:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
+    <div style="display: flex;justify-content: space-between;align-items: center">
+      <iNavMvp :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
+      <i-button v-if="$route.name !== 'explainattach'" @click="goViewApproved"  class="margin-left25">查看已审批</i-button>
+      <i-button v-if="$route.name !== 'explainattach'" @click="lookAEKODetails" class="margin-left25">AEKO详情</i-button>
+      <log-button v-if="$route.name !== 'explainattach'" class="margin-left25"/>
+      <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
+            class="log-icon margin-left20 cursor myLogIcon"></icon>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -24,11 +25,14 @@ export default {
     iButton
   },
   created() {
-    this.transmitObj= JSON.parse(sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM'))
+    this.queryParams = this.$route.query
+    let str_json = window.atob(this.queryParams.transmitObj)
+    this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
   },
   data() {
     return {
-      transmitObj:{},
+      transmitObj: {},
+      queryParams: {},
       subNavList: [
         {
           value: 1,
@@ -58,6 +62,25 @@ export default {
     }
   },
   methods: {
+    //查看AEKO详情
+    lookAEKODetails(){
+      let routeData = this.$router.resolve({
+        path: `/aeko/describe`,
+        query: {
+          requirementAekoId: this.transmitObj.aekoApprovalDetails.requirementAekoId,
+          aekoCode: this.transmitObj.aekoApprovalDetails.aekoNum,
+          from:'approve'
+        },
+      })
+      window.open(routeData.href, '_blank')
+    },
+    //查看已审批
+    goViewApproved(){
+      let routeData = this.$router.resolve({
+        path: `/aeko/approve/approvelistcsf/AKEOApprovedPage`,
+      })
+      window.open(routeData.href, '_blank')
+    },
     gotoDBhistory() {
     }
   }

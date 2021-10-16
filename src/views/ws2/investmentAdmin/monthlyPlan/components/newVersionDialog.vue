@@ -7,7 +7,7 @@
         class="point-dialog"
     >
     <el-form>
-        <el-form-item :label="$t('版本计划年份')" class="date-pick">
+        <el-form-item :label="$t('LK_BANBENJIHUANIANFEN')" class="date-pick">
             <iDatePicker 
                 v-model="planYear" 
                 format="yyyyMMdd" 

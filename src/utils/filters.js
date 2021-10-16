@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 10:12:38
- * @LastEditTime: 2021-07-19 11:48:42
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-14 22:06:27
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\filters.js
  */
@@ -31,5 +31,14 @@ export default {
 
       return map[val] ? map[val] : val
     },
+    // 金额千分位
+    thousandsFilter(num, len = 2) {
+      num = String(num).replace(/[^0-9.-]/ig, '');
+      num = Number(num).toFixed(len);
+      const numArray = String(num).split('.');
+      numArray[0] = parseFloat(numArray[0]).toLocaleString();
+      const value = numArray.join('.');
+      return value || 0;
+  },
   },
 }

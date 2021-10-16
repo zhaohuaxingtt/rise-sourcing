@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-10-13 16:06:45
+ * @LastEditTime: 2021-10-15 14:24:47
  * @LastEditors: Hao,Jiang
 -->
 
@@ -33,7 +33,7 @@
         </template>
       </el-table-column> -->
       <el-table-column
-        width="60"
+        width="100"
         label='Group'
         align='center'>
         <template slot-scope="scope">
@@ -54,12 +54,14 @@
       <el-table-column
         align='center'
         prop="partNo"
-        label="Teil Nr.">
+        label="Teil Nr."
+        width="120">
       </el-table-column>
       <el-table-column
         align='center'
         prop="partPrjCode"
-        label="FSNr.">
+        label="FSNr."
+        width="120">
       </el-table-column>
       <el-table-column
         align='center'
@@ -83,7 +85,7 @@
         </template>
         <template slot-scope="scope">
           <div class="supplier-tto" @click="handleCellClick(scope.row, hindex)">
-            {{scope.row.TTo && scope.row.TTo[hindex] || '' }}
+            <span v-if="scope.row.TTo && scope.row.TTo[hindex]">{{ scope.row.TTo[hindex] | thousandsFilter}}</span>
           </div>
         </template>
       </el-table-column>
@@ -136,9 +138,11 @@
 import Vue from 'vue'
 // import {mokeMouldMonitorData} from './data'
 import {iMessage, iInput} from 'rise'
+import filters from "@/utils/filters"
 import _ from 'lodash'
 
 export default {
+  mixins: [ filters ],
    props:{
     tableData:{type:Array},
     tableLoading:{type:Boolean,default:false},
@@ -406,8 +410,14 @@ export default {
         const wholePackageData = data.map(o => Number(o.TTo[index]) || 0)
         cstStatus && (bestGroup[index] = {
           index,
-          data: Number(_.sum(wholePackageData)).toFixed(2)
+          data: _.sum(wholePackageData),
+          groupId: data[0] && data[0].groupId || '',
+          groupName: data[0] && data[0].groupName || '',
         })
+      })
+      bestGroup.map(o => {
+        o.data = Number(o.data)
+        return o
       })
       if (!bestGroup.length) return false
       // 根据TTO之和排序
@@ -415,6 +425,20 @@ export default {
       // console.log('--bestGroup', bestGroup)
       // 返回零件之和最低的供应商
       return bestGroup[0]
+    },
+    // 合并求和相同的供应商
+    uniqueCountSupplier(data=[]) {
+      const res = []
+      // 取出所有的不重复供应商列表
+      let supplierIds = _.uniq(data.map(o => o.index)) || []
+      supplierIds.forEach(supId => {
+        const total = _.sum(data.filter(o => o.index === supId).map(o => (Number(o.data) || 0)))
+        res.push({
+          index: supId,
+          data: total
+        })
+      })
+      return res
     },
     /**
      * 计算柱状图最佳TTO
@@ -487,15 +511,16 @@ export default {
           // weightedGroup.push(this.cacleSc([item]))
         })
       }
+      const bestGroups = _.cloneDeep(bestGroup)
+      bestGroup = this.uniqueCountSupplier(bestGroup)
       bestGroup = _.sortBy(bestGroup, ['data'])
       // console.log('bestGroup', bestGroup)
-      // 筛选分组最低数据
-      // const bestGroupTotal = _.sum(bestGroup.map(o => o.data))
+      // 筛选分组最低数据，暂时没有用
       const bestGroupTotal = bestGroup[0].data
-      // const bestGroupSupplier = [bestGroup[0].data, bestGroupTotal - bestGroup[0].data]
       const bestGroupSupplier = [bestGroup[0].data]
       const bestGroupSupplierIndex = bestGroup[0].index
-      const bestGroupSupplierTotal = bestGroupTotal
+      // 分组数据
+      const bestGroupSupplierTotal = _.sum(bestGroup.map(o => (Number(o.data) || 0)))
       bestGroupSupplier.push(bestGroupTotal)
       // 记录该供应商
       supplier.push(bestGroupSupplierIndex)
@@ -574,6 +599,9 @@ export default {
         wholePackage,
         wholePackageIndex,
         // 分组最佳
+        bestGroup,
+        // debugger时候用，未合并之前的最佳分组数据列表
+        bestGroups,
         bestGroupSupplier,
         bestGroupSupplierIndex,
         bestGroupSupplierTotal,
@@ -587,7 +615,9 @@ export default {
         weightSupplierTotal,
         // 是否显示第四根柱子
         isShowWeightStick,
-        supplier
+        supplier,
+        // 供应商名称列表
+        supplierList: this.supplier
       }
       console.log(res)
       return res
