@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-10-14 10:24:46
+ * @LastEditTime: 2021-10-16 18:20:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -9,7 +9,12 @@
 import axios from '@/utils/axios'
 import download from '@/utils/axios.download'
 
+import router from '../../../router/index'
+
+const supplierId = ()=> router.currentRoute.query.supplierId?router.currentRoute.query.supplierId:''
+
 const requst = axios(process.env.VUE_APP_PARTS)
+const souringRequst = axios(process.env.VUE_APP_RFQ)
 const partRequst = axios(process.env.VUE_APP_PARTSPROCURE)
 const priceRequst = axios(process.env.VUE_APP_PRICE_LEDGER)
 const fileRequst = download(process.env.VUE_APP_PARTS)
@@ -224,5 +229,15 @@ export function getPriceAxis(objectAekoPartId) {
   return requst({
     url: `/aeko/price-axis/${objectAekoPartId}`,
     method: 'GET',
+  })
+}
+
+
+// 保存开发费
+export function saveModuleDevFee(params) {
+  return souringRequst({
+    url: `/aeko/mould/save/saveDevFee?supplierId=${supplierId()}`,
+    method: 'POST',
+    data: params
   })
 }
