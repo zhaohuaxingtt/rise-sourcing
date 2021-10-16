@@ -379,6 +379,7 @@ export default {
       let reqP = {requirementAekoId: row.requirementAekoId}
       getAekoDetail(reqP).then(res => {
         if (res.code == 200) {
+          console.log('approvalResult',row.approvalResult)
           let transmitObj = {
             option: 2,
             aekoApprovalDetails: {
