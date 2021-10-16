@@ -379,12 +379,14 @@ export default {
       let reqP = {requirementAekoId: row.requirementAekoId}
       getAekoDetail(reqP).then(res => {
         if (res.code == 200) {
+          console.log('approvalResult',row.approvalResult)
           let transmitObj = {
             option: 2,
             aekoApprovalDetails: {
               aekoNum: row.aekoCode,
               requirementAekoId: row.requirementAekoId,
-              aekoAuditType: 2,
+              aekoAuditType: row.auditType,
+              approvalResult:row.approvalResult,
               workFlowId: row.workFlowId,
               workFlowDTOS: [{workFlowId: row.workFlowId,taskId:row.taskId}],
               taskId:row.taskId,
@@ -424,7 +426,6 @@ export default {
             aekoApprovalDetails: {
               aekoNum: row.aekoCode,
               requirementAekoId: row.requirementAekoId,
-              approvalResult:row.approvalResult,
               aekoAuditType: row.auditType,
               workFlowDTOS: [{workFlowId: row.workFlowId,taskId:row.taskId}],
               aekoManageId: res.data.aekoManageId
