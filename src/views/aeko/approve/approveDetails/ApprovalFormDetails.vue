@@ -34,8 +34,6 @@ export default {
     let str_json = window.atob(this.queryParams.transmitObj)
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
     this.aekoApprovalDetails = this.transmitObj.aekoApprovalDetails
-    console.log('approvalResult',this.aekoApprovalDetails.approvalResult)
-
     if (this.transmitObj.option == 1) {
       this.loadAKEOApprovalForm()
     } else {
