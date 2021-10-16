@@ -95,10 +95,10 @@ export default {
   methods: {
     initCharts () {
       if (this.firstBarData.detail.length === 1) {
-        this.$refs.chart.style.width = "240px";
+        this.$refs.chart.style.width = "230px";
       } else {
         this.$refs.chart.style.width =
-          this.firstBarData.detail.length * 100 + "px";
+          this.firstBarData.detail.length * 80 + "px";
       }
 
       this.myChart = echarts().init(this.$refs.chart);
