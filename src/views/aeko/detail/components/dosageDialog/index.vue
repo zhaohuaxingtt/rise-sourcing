@@ -193,15 +193,15 @@ export default {
       this.dosage.carTypeProjectZh = this.carProjectOptions.find(item => item.value === value).label
 
 
-      // const {carProjectOptionsList=[]} = this;
-      // carProjectOptionsList.map((item)=>{
-      //     console.log(item.value,value)
-      //   if(item.carTypeProjectCode === value){
-      //     this.dosage.aekoProjectCarDosageList = Array.isArray(item.aekoProjectChange) ? item.aekoProjectChange : []
-      //   }
-      // })
+      const {carProjectOptionsList=[]} = this;
+      carProjectOptionsList.map((item)=>{
+          console.log(item.value,value)
+        if(item.carTypeProjectCode === value){
+          this.dosage.aekoProjectCarDosageList = Array.isArray(item.aekoProjectChange) ? item.aekoProjectChange : []
+        }
+      })
 
-      this.getAekoCarDosageByCarTypeProjectCode(value)
+      // this.getAekoCarDosageByCarTypeProjectCode(value)
     },
     handleInputByUsePortion(value) {
       this.$set(this.dosage, "usePortion", numberProcessor(value, 2))
