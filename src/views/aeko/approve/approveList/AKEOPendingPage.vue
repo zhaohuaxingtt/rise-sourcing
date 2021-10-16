@@ -132,24 +132,30 @@
         <!--增加材料成本-->
         <template #EP1="scope">
           <span>{{ scope.row.materialIncrease }}</span>
-          <el-tooltip effect="light" popper-class="custom-card-tooltip"
-                      :content="queryRowMaterialIncreaseTipContent(scope.row)" placement="top">
+          <el-tooltip v-if="scope.row.auditType!=3"  effect="light" popper-class="custom-card-tooltip"
+                      placement="top">
+            <div slot="content" v-html="queryRowMaterialIncreaseTipContent(scope.row)"></div>
+            <div class="oneLine">{{ queryRowMaterialIncreaseTipContent(scope.row) }}</div>
             <i class="el-icon-warning-outline bule"></i>
           </el-tooltip>
         </template>
         <!--增加投资税-->
         <template #EP2="scope">
           <span>{{ scope.row.investmentIncrease }}</span>
-          <el-tooltip effect="light" popper-class="custom-card-tooltip"
-                      :content="queryRowInvestmentIncreaseTipContent(scope.row)" placement="top">
+          <el-tooltip v-if="scope.row.auditType!=3"  effect="light" popper-class="custom-card-tooltip"
+                      placement="top">
+            <div slot="content" v-html="queryRowInvestmentIncreaseTipContent(scope.row)"></div>
+            <div class="oneLine">{{ queryRowInvestmentIncreaseTipContent(scope.row) }}</div>
             <i class="el-icon-warning-outline bule"></i>
           </el-tooltip>
         </template>
         <!--其他费用-->
         <template #EP3="scope">
           <span>{{ scope.row.otherCost }}</span>
-          <el-tooltip effect="light" popper-class="custom-card-tooltip"
-                      :content="queryRowotherCostTipContent(scope.row)" placement="top">
+          <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
+                      placement="top">
+            <div slot="content" v-html="queryRowotherCostTipContent(scope.row)"></div>
+            <div class="oneLine">{{ queryRowotherCostTipContent(scope.row) }}</div>
             <i class="el-icon-warning-outline bule"></i>
           </el-tooltip>
         </template>
@@ -169,11 +175,11 @@
         </template>
         <!--AEKO截止日期-->
         <template #date="scope">
-          <span>{{ scope.row.deadLine }}</span>
+          <span>{{ scope.row.deadLine|formatDate }}</span>
         </template>
         <!--创建时间-->
         <template #createDate="scope">
-          <span>{{ scope.row.createDate }}</span>
+          <span>{{ scope.row.createDate|formatDate }}</span>
         </template>
       </tablelist>
       <div class="pagination">
@@ -203,6 +209,7 @@ import {searchLinie} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import AEKOTransferDialog from "./components/AEKOTransferDialog";
 import {getAekoDetail} from "@/api/aeko/detail";
+import * as dateUtils from "@/utils/date";
 
 export default {
   name: "AKEOPendingPage",
@@ -217,6 +224,12 @@ export default {
     iPagination,
     icon,
     iSelect
+  },
+  filters:{
+    formatDate (value) {
+      let date = new Date(value);
+      return  dateUtils.formatDate(date,'yyyy-MM-dd')
+    }
   },
   computed: {
     transferButtonDisplay: function () {
@@ -266,7 +279,6 @@ export default {
 
   },
   created() {
-    console.log('----', this.$store.state.permission.userInfo)
     this.loadPendingAKEOList()
     this.queryAllLin()
   },
@@ -405,39 +417,79 @@ export default {
     },
     //增加材料成本Tip
     queryRowMaterialIncreaseTipContent(row) {
-      let costsWithLinie = row.aekoCoverCostVOList
+      let costsWithLinie = this.assemblyTipData(row.aekoCoverCostVOList)
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${item.materialIncrease} \n`
+          let materialIncreaseMoney = 0
+          item.data.forEach(item1 => {
+            materialIncreaseMoney += Number(item1.materialIncrease)
+          })
+          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${materialIncreaseMoney} \n `
         })
-        return strTip
+        return strTip.split("\n").join("<br/>")
       }
       return ''
     },
     //查询增加投资费Tip
     queryRowInvestmentIncreaseTipContent(row) {
-      let costsWithLinie = row.aekoCoverCostVOList
+      let costsWithLinie = this.assemblyTipData(row.aekoCoverCostVOList)
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${item.investmentIncrease} \n`
+          let investmentIncreaseCostMoney = 0
+          item.data.forEach(item1 => {
+            investmentIncreaseCostMoney += Number(item1.investmentIncrease)
+          })
+          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${investmentIncreaseCostMoney}\n`
         })
-        return strTip
+        return strTip.split("\n").join("<br/>")
       }
       return ''
     },
     //其他费用Tip
     queryRowotherCostTipContent(row) {
-      let costsWithLinie = row.aekoCoverCostVOList
+      let costsWithLinie = this.assemblyTipData(row.aekoCoverCostVOList)
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${item.otherCost} \n`
+          let otherCostMoney = 0
+          item.data.forEach(item1 => {
+            otherCostMoney += Number(item1.otherCost)
+          })
+          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${otherCostMoney}\n`
         })
-        return strTip
+        return strTip.split("\n").join("<br/>")
       }
       return ''
+    },
+
+    assemblyTipData(sourceData) {
+      let map = {}
+      let dest = []
+      if (null != sourceData && sourceData.length > 0) {
+        for (let i = 0; i < sourceData.length; i++) {
+          let ai = sourceData[i];
+          if (!map[ai.linieName]) {
+            dest.push({
+              linieDeptNum: ai.linieDeptNum,
+              linieName: ai.linieName,
+              data: [ai]
+            });
+            map[ai.linieName] = ai;
+          } else {
+            for (let j = 0; j < dest.length; j++) {
+              let dj = dest[j];
+              if (dj.linieName == ai.linieName) {
+                dj.data.push(ai);
+                break;
+              }
+            }
+          }
+        }
+        return dest
+      }
+      return []
     },
 
     //批量批准
@@ -592,5 +644,11 @@ export default {
   height: 0;
   border: 1px solid #000000;
   opacity: 1;
+}
+
+.oneLine {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>

@@ -69,6 +69,7 @@ export default {
         query: {
           requirementAekoId: this.transmitObj.aekoApprovalDetails.requirementAekoId,
           aekoCode: this.transmitObj.aekoApprovalDetails.aekoNum,
+          from:'approve'
         },
       })
       window.open(routeData.href, '_blank')
