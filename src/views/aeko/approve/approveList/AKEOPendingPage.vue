@@ -142,7 +142,7 @@
         <!--增加投资税-->
         <template #EP2="scope">
           <span>{{ scope.row.investmentIncrease }}</span>
-          <el-tooltip v-if="scope.auditType!=3"  effect="light" popper-class="custom-card-tooltip"
+          <el-tooltip v-if="scope.row.auditType!=3"  effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowInvestmentIncreaseTipContent(scope.row)"></div>
             <div class="oneLine">{{ queryRowInvestmentIncreaseTipContent(scope.row) }}</div>
@@ -152,7 +152,7 @@
         <!--其他费用-->
         <template #EP3="scope">
           <span>{{ scope.row.otherCost }}</span>
-          <el-tooltip v-if="scope.auditType!=3" effect="light" popper-class="custom-card-tooltip"
+          <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowotherCostTipContent(scope.row)"></div>
             <div class="oneLine">{{ queryRowotherCostTipContent(scope.row) }}</div>
@@ -175,11 +175,11 @@
         </template>
         <!--AEKO截止日期-->
         <template #date="scope">
-          <span>{{ scope.row.deadLine }}</span>
+          <span>{{ scope.row.deadLine|formatDate }}</span>
         </template>
         <!--创建时间-->
         <template #createDate="scope">
-          <span>{{ scope.row.createDate }}</span>
+          <span>{{ scope.row.createDate|formatDate }}</span>
         </template>
       </tablelist>
       <div class="pagination">
@@ -209,6 +209,7 @@ import {searchLinie} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import AEKOTransferDialog from "./components/AEKOTransferDialog";
 import {getAekoDetail} from "@/api/aeko/detail";
+import * as dateUtils from "@/utils/date";
 
 export default {
   name: "AKEOPendingPage",
@@ -223,6 +224,12 @@ export default {
     iPagination,
     icon,
     iSelect
+  },
+  filters:{
+    formatDate (value) {
+      let date = new Date(value);
+      return  dateUtils.formatDate(date,'yyyy-MM-dd')
+    }
   },
   computed: {
     transferButtonDisplay: function () {
