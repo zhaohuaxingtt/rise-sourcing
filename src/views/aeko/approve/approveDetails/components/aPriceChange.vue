@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-16 14:09:42
+ * @LastEditTime: 2021-10-16 18:36:09
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -30,7 +30,11 @@
           :tableData="tableData"
         />
       </div>
-      <div v-if="Array.isArray(partsCostTableData) && partsCostTableData.length > 0">
+      <div
+        v-if="
+          Array.isArray(partsCostTableData) && partsCostTableData.length > 0
+        "
+      >
         <i class="topCutLine"></i>
         <p class="title">
           2.1 {{ language("YUANCAILIAOSANJIANCHENGBEN", "原材料/散件成本") }}
@@ -87,7 +91,12 @@
           </el-table-column>
         </el-table>
       </div>
-      <div v-if="Array.isArray(manufacturingCostTableData) && manufacturingCostTableData.length > 0">
+      <div
+        v-if="
+          Array.isArray(manufacturingCostTableData) &&
+          manufacturingCostTableData.length > 0
+        "
+      >
         <i class="topCutLine"></i>
         <p class="title">2.2 {{ language("ZHIZAOCHENGBEN", "制造成本") }}</p>
         <el-table
@@ -273,133 +282,155 @@ export default {
     },
     // 原材料/散件成本
     partsCostTableData() {
-      return this.Data.rawMaterialList||[];
+      return this.Data.rawMaterialList || [];
     },
     // 制造成本
     manufacturingCostTableData() {
-      return this.Data.makeCostList||[];
+      return this.Data.makeCostList || [];
     },
     // 报废成本
     scrapCostTable() {
-      return this.setScrapCostTableData(this.Data.scrapVO ? [this.Data.scrapVO] : [])
+      return this.setScrapCostTableData(
+        this.Data.scrapVO ? [this.Data.scrapVO] : []
+      );
     },
     // 管理费
     managementFeeTable() {
-      return this.setManageTableData(Array.isArray(this.Data.manageFeeList) ? this.Data.manageFeeList : [])
+      return this.setManageTableData(
+        Array.isArray(this.Data.manageFeeList) ? this.Data.manageFeeList : []
+      );
     },
     // 其它费用
     otherFeesTable() {
-      return this.setOtherCostTableData(Array.isArray(this.Data.otherFeeList) ? this.Data.otherFeeList : [])
+      return this.setOtherCostTableData(
+        Array.isArray(this.Data.otherFeeList) ? this.Data.otherFeeList : []
+      );
     },
     // 利润
     profitTable() {
-      return this.setProfitTableData(this.Data.profitVO ? [this.Data.profitVO] : [])
+      return this.setProfitTableData(
+        this.Data.profitVO ? [this.Data.profitVO] : []
+      );
     },
   },
-  mounted(){
-    console.log(this.scrapCostTable)
+  mounted() {
+    console.log(this.scrapCostTable);
   },
   methods: {
     originRowClass,
     // 报废成本
     setScrapCostTableData(data = []) {
-      const result = []
+      const result = [];
 
       if (data.length > 0) {
-        result.push(
-          {
-            index: "S1",
-            typeName: "discardCost",
-            typeNameByLang: this.language("ZHENGTIBAOFEICHENGBENBIANDONG", "整体报废成本变动"),
-            originRatio: data[0].originRatio ?? "0.00",
-            ratio: data[0].ratio ?? "0.00",
-            changeAmount: data[0].changeAmount ?? "0.00",
-            originScrapId: data[0].originScrapId
-          }
-        )
+        result.push({
+          index: "S1",
+          typeName: "discardCost",
+          typeNameByLang: this.language(
+            "ZHENGTIBAOFEICHENGBENBIANDONG",
+            "整体报废成本变动"
+          ),
+          originRatio: data[0].originRatio ,
+          ratio: data[0].ratio,
+          changeAmount: data[0].changeAmount,
+          originScrapId: data[0].originScrapId,
+        });
       }
 
-      return result
+      return result;
     },
     // 管理费
     setManageTableData(data = []) {
-      const result = []
+      const result = [];
 
       if (data.length > 0) {
-        return data.map(item => {
-          switch(item.typeName) {
+        return data.map((item) => {
+          switch (item.typeName) {
             case "原材料与散件（不含SVW指定散件）管理费":
-              item.index = "O1"
-              item.typeNameByLang = this.language("YUANCAILIAOYUSANJIANBUHANSVWZHIDINGSANJIANGUANLIFEI", "原材料与散件(不含SVW指定散件)管理费")
-              break
+              item.index = "O1";
+              item.typeNameByLang = this.language(
+                "YUANCAILIAOYUSANJIANBUHANSVWZHIDINGSANJIANGUANLIFEI",
+                "原材料与散件(不含SVW指定散件)管理费"
+              );
+              break;
             case "制造管理费":
-              item.index = "O2"
-              item.typeNameByLang = this.language("ZHIZAOGUANLIFEI", "制造管理费")
-              break
+              item.index = "O2";
+              item.typeNameByLang = this.language(
+                "ZHIZAOGUANLIFEI",
+                "制造管理费"
+              );
+              break;
             default:
           }
 
-          return item
-        })
+          return item;
+        });
       }
-      
-      return result
+
+      return result;
     },
     // 其他费用
     setOtherCostTableData(data = []) {
-      const result = []
+      const result = [];
 
       if (data.length > 0) {
         data.forEach((item, index) => {
-          switch(item.itemType) {
+          switch (item.itemType) {
             case 0:
               result.push({
-                index: `A${ ++index }`,
+                index: `A${++index}`,
                 itemType: item.itemType,
-                itemTypeNameByLang: this.language("FENTANMUJUFEI", "分摊模具费"),
+                itemTypeNameByLang: this.language(
+                  "FENTANMUJUFEI",
+                  "分摊模具费"
+                ),
                 shareTotal: item.shareTotal,
                 shareQuantity: item.shareQuantity,
                 shareAmount: item.shareAmount,
-                totalPrice: item.totalPrice
-              })
-              break
+                totalPrice: item.totalPrice,
+              });
+              break;
             case 1:
               result.push({
-                index: `A${ ++index }`,
+                index: `A${++index}`,
                 itemType: item.itemType,
-                itemTypeNameByLang: this.language("FENTANKAIFAFEI", "分摊开发费"),
+                itemTypeNameByLang: this.language(
+                  "FENTANKAIFAFEI",
+                  "分摊开发费"
+                ),
                 shareTotal: item.shareTotal,
                 shareQuantity: item.shareQuantity,
                 shareAmount: item.shareAmount,
-                totalPrice: item.totalPrice
-              })
-              break
+                totalPrice: item.totalPrice,
+              });
+              break;
             default:
           }
-        })
+        });
       }
 
-      return result
+      return result;
     },
     // 利润
     setProfitTableData(data = []) {
-      const result = []
+      const result = [];
 
       if (data.length > 0) {
-        result.push(
-          {
-            index: "P1",
-            typeName: "profit",
-            typeNameByLang: this.language("LIRUNBUHANSVWZHIDINGSANJIAN", "利润(不含SVW指定散件)"),
-            originRatio: data[0].originRatio,
-            ratio: data[0].ratio,
-            changeAmount: data[0].changeAmount,
-            originProfitId: data[0].originProfitId
-          }
-        )
+        result.push({
+          index: "P1",
+          typeName: "profit",
+          typeNameByLang: this.language(
+            "LIRUNBUHANSVWZHIDINGSANJIAN",
+            "利润(不含SVW指定散件)"
+          ),
+          originRatio: data[0].originRatio,
+          ratio: data[0].ratio,
+          changeAmount: data[0].changeAmount,
+          originProfitId: data[0].originProfitId,
+        });
       }
 
-      return result
+      return result;
     },
   },
 };
