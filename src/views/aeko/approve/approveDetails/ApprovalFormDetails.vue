@@ -80,7 +80,8 @@ export default {
     lookAKEOApprovalForm() {
       let reqData = {
         aekoAuditType: this.aekoApprovalDetails.aekoAuditType,
-        workFlowDTOS: this.aekoApprovalDetails.workFlowDTOS
+        workFlowDTOS: this.aekoApprovalDetails.workFlowDTOS,
+        approvalResult:this.aekoApprovalDetails.approvalResult
       }
       getAKEOApprovalForm(reqData).then(res => {
         if (res.code == 200) {

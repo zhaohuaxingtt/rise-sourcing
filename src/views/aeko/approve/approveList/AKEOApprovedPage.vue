@@ -424,6 +424,7 @@ export default {
             aekoApprovalDetails: {
               aekoNum: row.aekoCode,
               requirementAekoId: row.requirementAekoId,
+              approvalResult:row.approvalResult,
               aekoAuditType: row.auditType,
               workFlowDTOS: [{workFlowId: row.workFlowId,taskId:row.taskId}],
               aekoManageId: res.data.aekoManageId
