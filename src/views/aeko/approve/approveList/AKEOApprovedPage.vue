@@ -165,11 +165,11 @@
         </template>
         <!--AEKO截止日期-->
         <template #date="scope">
-          <span>{{ scope.row.deadLine }}</span>
+          <span>{{ scope.row.deadLine|formatDate }}</span>
         </template>
         <!--创建时间-->
         <template #createDate="scope">
-          <span>{{ scope.row.createDate }}</span>
+          <span>{{ scope.row.createDate|formatDate }}</span>
         </template>
       </tablelist>
       <div class="pagination">
@@ -197,6 +197,7 @@ import {queryApproved} from "@/api/aeko/approve";
 import {searchLinie} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import {getAekoDetail} from "@/api/aeko/detail";
+import * as dateUtils from "@/utils/date";
 
 export default {
   name: "AKEOApprovedPage",
@@ -209,6 +210,13 @@ export default {
     iPagination,
     icon,
     iSelect
+  },
+  filters:{
+    formatDate (value) {
+      let date = new Date(value);
+
+      return  dateUtils.formatDate(date,'yyyy-MM-dd')
+    }
   },
   data() {
     return {
@@ -371,19 +379,20 @@ export default {
       let reqP = {requirementAekoId: row.requirementAekoId}
       getAekoDetail(reqP).then(res => {
         if (res.code == 200) {
+          console.log('approvalResult',row.approvalResult)
           let transmitObj = {
             option: 2,
             aekoApprovalDetails: {
               aekoNum: row.aekoCode,
               requirementAekoId: row.requirementAekoId,
-              aekoAuditType: 2,
+              aekoAuditType: row.auditType,
+              approvalResult:row.approvalResult,
               workFlowId: row.workFlowId,
               workFlowDTOS: [{workFlowId: row.workFlowId,taskId:row.taskId}],
               taskId:row.taskId,
               aekoManageId: res.data.aekoManageId
             }
           }
-          console.log(transmitObj)
           let routeData = this.$router.resolve({
             path: `/aeko/AEKOApprovalDetails`,
             query: {
