@@ -111,7 +111,7 @@
           </div>
         </template>
         <template #auditTypeName="scope">
-          <span>{{ getAuditTypeDesc(scope.row.auditType) }}</span>
+          <span>{{ scope.row.auditTypeDesc }}</span>
         </template>
         <template #describe="scope">
           <a class="link-underline" @click="lookAEKODesc(scope.row)">

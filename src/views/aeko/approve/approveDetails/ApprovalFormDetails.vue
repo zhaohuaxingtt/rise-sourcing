@@ -3,7 +3,7 @@
   <div>
     <AEKOApprovalComponents :audit-items="auditItems" :transmit-obj="transmitObj" @refreshForm="refreshForm($event)"/>
     <CoverStatementComponents class="margin-top20" :audit-cover-status="auditContentStatus" :audit-cover="auditCover"/>
-    <RecommendationTablePendingApprovalComponents :audit-contents="auditContents"
+    <RecommendationTablePendingApprovalComponents  :audit-contents="auditContents"
                                                   :audit-content-status="auditContentStatus" class="margin-top20"/>
   </div>
 </template>
