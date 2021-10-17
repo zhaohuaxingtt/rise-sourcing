@@ -36,16 +36,20 @@ export default {
     auditContents: {type: Object, require: true, default: () => []},
     auditContentStatus: {type: String, default: () => ''},
   },
-  created() {
-    this.page.totalCount = this.auditContents.length
-    this.recommendationFormPendingApprovalList = this.auditContents.slice(this.page.currPage, this.page.pageSizes)
+  watch: {
+    auditContents(val) {
+      this.page.totalCount = this.auditContents.length
+      this.recommendationFormPendingApprovalList = this.auditContents.slice(this.page.currPage-1, this.page.pageSize)
+    }
   },
+  created() {
+},
   data() {
     return {
       recommendationFormPendingApprovalList: [],
       recommendationFormPendingApprovalTitle: [
         {
-          prop: 'index',
+          type:"index",
           align: 'center',
           label: '#',
         },
@@ -158,7 +162,7 @@ export default {
   },
   methods: {
     loadRecommendData() {
-      this.recommendationFormPendingApprovalList = this.auditContents.slice((this.page.currPage - 1) * this.page.pageSizes, this.page.currPage * this.page.pageSizes)
+      this.recommendationFormPendingApprovalList = this.auditContents.slice((this.page.currPage - 1) * this.page.pageSize, this.page.currPage * this.page.pageSizes)
     },
 
   }
