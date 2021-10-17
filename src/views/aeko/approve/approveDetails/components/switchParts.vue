@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2021-10-13 21:17:05
+ * @LastEditTime: 2021-10-17 14:40:19
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -11,10 +11,10 @@
     <div class="i-select mb-20">
       <iSelect v-model="partsId" :placeholder="language('QINGXUANZE','请选择')" @change="getCbdDataQuery">
         <el-option
-          :value="id"
-          :label="label"
-          v-for="(label, id) in partsObj"
-          :key="id"
+          :value="item.key"
+          :label="item.value"
+          v-for="item in partsList"
+          :key="item.key"
         ></el-option>
       </iSelect>
     </div>
@@ -69,7 +69,7 @@ export default {
     return {
       loading: false,
       partsId: "",
-      partsObj:{},
+      partsList:[],
       tableTitle: switchPartsTableTitle,
     };
   },
@@ -82,8 +82,8 @@ export default {
       this.loading = true
       getSwitchParts({workFlowId:this.workFlowId}).then((res)=>{
         if(res?.code==='200'){
-          this.partsObj = res.data[0];
-          this.partsId = this.partsObj&&Object.keys(this.partsObj)[0]
+          this.partsList = res.data;
+          this.partsId = this.partsList&&this.partsList[0].key
           this.getCbdDataQuery()
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
