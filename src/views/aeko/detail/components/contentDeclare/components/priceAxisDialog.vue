@@ -118,8 +118,12 @@ export default {
         },
         // 初始化echart
         initEcharts(priceList={}){
+
+          console.log(priceList,'priceList');
           
           vm = echarts().init(document.getElementById("priceAxisEcharts"));
+
+          
 
           let option = {
             tooltip: {
@@ -216,15 +220,18 @@ export default {
           data.date = data.date.sort((a,b)=>{
             return a > b ? 1:-1
           })
-
           data.date.map((item)=>{
             let filterNew = newData.filter((itemData)=>itemData.startTime == item);
             let filterOld = oldData.filter((itemData)=>itemData.startTime == item);
             if(filterNew.length){
               data.newPirce.push(filterNew[0].price);
+            }else{
+              data.newPirce.push(null);
             }
             if(filterOld.length){
-              data.oldPrice.push(filterNew[0].price);
+              data.oldPrice.push(filterOld[0].price);
+            }else{
+              data.oldPrice.push(null);
             }
           })
 
