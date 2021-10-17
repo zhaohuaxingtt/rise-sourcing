@@ -6,11 +6,11 @@
 <template>
   <iCard class="aeko-editCover" v-loading="btnLoading">
     <template v-if="!disabled" v-slot:header-control>
-      <!-- 封面状态为已提交时不展示保存和提交按钮 -->
-      <template v-if="!isSubmit">
+      <!-- 封面状态为待表态时展示 -->
+      <template v-if="!isSubmit && basicInfo.coverStatus == 'TOBE_STATED'">
         <iButton @click="save()">{{language('LK_BAOCUN','保存')}}</iButton>
-        <!-- 保存之后才能提交以及封面状态是待表态 -->
-        <iButton v-if="basicInfo.aekoCoverId && basicInfo.coverStatus == 'TOBE_STATED'" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
+        <!-- 保存之后才能提交 -->
+        <iButton v-if="basicInfo.aekoCoverId" @click="save('submit')">{{language('LK_TIJIAO','提交')}}</iButton>
       </template>
       <!-- 封面状态为已提交时可展示 -->
       <iButton  v-if="isSubmit" @click="cancelCover">
