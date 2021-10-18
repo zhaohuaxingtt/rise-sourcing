@@ -140,15 +140,24 @@ export default {
       console.log(this.batchUpdataMap);
 
       const partTaskDTOS = [];
+      let isMessage = '1';
+
 
       for(let [key,item] of this.batchUpdataMap){
         console.log(item);
+        if(item.partSort == 5){
+          isMessage ='2'
+        }
         partTaskDTOS.push({ id:item.id, partSort:item.partSort, })
       }
 
       updatePartInfoList(partTaskDTOS).then(res => {
         if (res?.result) {
           this.getTableList();
+          if(isMessage == '2'){
+            iMessage.success(this.language('BAOCUNCHENGGONJINRUHOUXUJIANKONMOKUAI','保存成功，[正常零件]已进入后续监控模块！'));
+            return
+          }
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
