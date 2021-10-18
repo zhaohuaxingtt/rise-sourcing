@@ -236,9 +236,9 @@ export default {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
           this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
-             /*if(optionName == 'partTaskPartSort'){
+             if(optionName == 'partTaskPartSort'){
                item.code = parseInt(item.code);
-             }*/
+             }
             return { value: item.code, label: item.name }
           })
           if(optionName == 'partTaskPartSortQuery' ){
