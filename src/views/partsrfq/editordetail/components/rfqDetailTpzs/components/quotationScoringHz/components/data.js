@@ -229,7 +229,6 @@ export function getRenderTableTile(whiteListService,supplierLength,layout){
         relTableListXh = [...relTableListXh,...addtitle(JSON.parse(JSON.stringify(templateListxh)),i,supplierDataList[0].partInfoList)]
       }
     }
-    console.log([...relTabelListDefault,...relTableListXh,...lastSupplier])
     return [...relTabelListDefault,...relTableListXh,...lastSupplier]
    } catch (error) {
      console.log(error)

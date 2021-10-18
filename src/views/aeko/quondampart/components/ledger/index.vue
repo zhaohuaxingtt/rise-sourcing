@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-10-14 13:40:59
+ * @LastEditTime: 2021-10-18 15:57:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -253,7 +253,7 @@ export default {
         objectAekoPartId: this.objectAekoPartId,
         current: this.page.currPage,
         size: this.page.pageSize,
-        partNum: this.oldPartNumPreset ? this.oldPartNumPreset : undefined
+        // partNum: this.oldPartNumPreset ? this.oldPartNumPreset : undefined
       }
 
       params = {
