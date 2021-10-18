@@ -78,7 +78,7 @@
       <div class="editControl floatright margin-bottom20">
         <i-button @click="batchApproval"> 批量批准</i-button>
         <i-button @click="approval"> {{ language('SHENPI', '审批') }}</i-button>
-        <i-button @click="transfer" v-if="transferButtonDisplay"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
+        <i-button @click="transfer" > {{ language('LK_ZHUANPAI', '转派') }}</i-button>
 
       </div>
       <!--表格展示区-->
@@ -88,7 +88,6 @@
           :selection="true"
           :tableData="pendingList"
           :tableTitle="pendingHeader"
-          :tableLoading="tableLoading"
           :lang="true"
           v-loading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
@@ -108,7 +107,9 @@
         </template>
         <!--审批类型-->
         <template #auditTypeName="scope">
-          <span>{{ scope.row.auditTypeName }}</span>
+          <div style="text-align:left">
+            <span>{{ scope.row.auditTypeName }}</span>
+          </div>
         </template>
         <!--描述-->
         <template #describe="scope">
@@ -314,9 +315,11 @@ export default {
     },
     //加载数据
     loadPendingAKEOList() {
+      this.tableLoading=true
       this.queryAkeoForm.current = this.page.currPage
       this.queryAkeoForm.size = this.page.pageSize
       pendingApprovalList(this.queryAkeoForm).then(res => {
+        this.tableLoading=false
         if (res.code == 200) {
           this.pendingList = res.data
           this.page.totalCount = res.total

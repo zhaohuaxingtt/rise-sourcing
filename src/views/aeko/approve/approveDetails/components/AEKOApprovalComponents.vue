@@ -4,7 +4,7 @@
       <div class="margin-bottom20">
         <span class="card-title">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
         <div class="floatright">
-          <i-button v-show="pageCanOption" medium @click="optionApprove">确认审批</i-button>
+          <i-button v-show="pageCanOption"   v-loading.fullscreen.lock="fullscreenLoading" medium @click="optionApprove">确认审批</i-button>
         </div>
       </div>
       <el-table :data="localAuditItems" stripe>
@@ -112,6 +112,7 @@ export default {
       localAuditItems: [],
       explainAttachmentDialogVal: false,
       explainAttachmentReqData:[],
+      fullscreenLoading:false,
     }
   },
   watch: {
@@ -155,6 +156,7 @@ export default {
           }
         }
       }
+
       this.localAuditItems.forEach(item => {
         item.workFlowDTOS.forEach(val => {
           req.push({
@@ -166,8 +168,9 @@ export default {
           })
         })
       })
-
+     this.fullscreenLoading=true
       aekoAudit(req).then(res => {
+        this.fullscreenLoading=false
         if(res.code==200){
            if(res.data.failCount>0){
              this.$message.error(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态，请重试`)
