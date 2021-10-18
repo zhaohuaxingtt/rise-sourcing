@@ -186,8 +186,6 @@ export default {
 
         }
       })
-
-
     },
     //查看解释附件
     lookExplainFile(row) {

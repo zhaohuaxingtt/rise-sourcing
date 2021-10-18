@@ -407,7 +407,9 @@ export default {
             userId: this.$store.state.permission.userInfo.id
           })
         })
+        this.tableLoading=true
         transferAEKO(transfers).then(res => {
+          this.tableLoading=false
           if (res.code == 200) {
             this.loadPendingAKEOList()
           } else {
