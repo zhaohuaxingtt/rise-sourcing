@@ -4,7 +4,7 @@
 			{{ language('partsprocure.PARTSPROCUREGENERATEFSGSNR','生成零件采购项目号') }}
 		</iButton>
 		<!-- 单条插入RFQ表格 -->
-		<iDialog :title="language('LK_RFQLIST','RFQ列表')" :visible.sync="visible" style="background:yellow">
+		<iDialog :title="language('LK_RFQLIST','RFQ列表')" :visible.sync="visible">
 			<div class="flex-align-center add">
 				<iButton @click="addRfq">{{ language('LK_TIANJIA','添加') }}</iButton>
 			</div>
