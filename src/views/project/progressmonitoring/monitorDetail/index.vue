@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-27 10:22:45
+ * @LastEditTime: 2021-10-18 18:06:19
  * @Description: 监控明细
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -20,7 +20,7 @@
         <div class="titleSearch">
           <div v-for="(item, index) in searchListByPartStatus" :key="index" class="titleSearch-item" v-permission.auto="item.permission">
             <span class="titleSearch-item-lable">{{language(item.key, item.label)}}</span>
-            <iDicoptions @change="handleChange" v-if="item.type === 'selectDict'" class="titleSearch-item-content" :optionAll="item.optionAll" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
+            <iDicoptions @change="handleChange" v-if="item.type === 'selectDict'" class="titleSearch-item-content" :optionAll="item.optionAll" :optionKey="item.selectOption" v-model="searchParams[item.value]" :optionAllText="language('ZONGJI','总计')" />
           </div>
         </div>
         <div>
