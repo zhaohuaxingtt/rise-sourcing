@@ -91,6 +91,7 @@ export default {
              {props:'fsNum',name:'FS NO.',key:'FSNo'},
              {props:'partNum',name:'Part NO.',key:'PARTNO'},
              {props:'partNameZh',name:'Part Name',key:'PartName'},
+             {props:'mtz',name:'MTZ',key:'MTZ'},
              {props:'materialGroup',name:'Material Group',key:'MaterialGroup'},
              {props:'procureFactory',name:'Factory',key:'Factory'},
              {props:'project',name:'PROJECT',key:'PROJECT'},
