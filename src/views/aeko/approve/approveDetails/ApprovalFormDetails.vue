@@ -67,7 +67,7 @@ export default {
           this.auditCoverStatus = res.data.auditCoverStatusDesc
           this.auditCover = res.data.auditCover
           this.auditContents = res.data.auditContents
-          this.auditContentStatus = res.data.auditCoverStatusDesc
+          this.auditContentStatus = res.data.auditContentStatusDesc
           //获取到审批数据
           this.auditItems.forEach((item, index) => {
             item.approvalResult = 1
@@ -89,7 +89,7 @@ export default {
           this.auditCoverStatus = res.data.auditCoverStatusDesc
           this.auditCover = res.data.auditCover
           this.auditContents = res.data.auditContents
-          this.auditContentStatus = res.data.auditCoverStatusDesc
+          this.auditContentStatus = res.data.auditContentStatusDesc
         }
       })
     }

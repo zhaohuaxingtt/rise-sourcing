@@ -170,6 +170,7 @@ export default {
     await this.getAekoOriginFactory()
 
     if (this.oldPartNumPreset) {
+      this.form.partNum = this.oldPartNumPreset
       this.judgeRight()
     } else {
       this.procureFactorySelectVo()
@@ -248,12 +249,19 @@ export default {
 
       this.$refs.aekoList.getList('isRest');
 
-      getAekoOriginPartInfo({
-        ...this.form,
+      let params = {
         objectAekoPartId: this.objectAekoPartId,
         current: this.page.currPage,
-        size: this.page.pageSize
-      })
+        size: this.page.pageSize,
+        partNum: this.oldPartNumPreset ? this.oldPartNumPreset : undefined
+      }
+
+      params = {
+        ...this.form,
+        ...params
+      }
+
+      getAekoOriginPartInfo(params)
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
