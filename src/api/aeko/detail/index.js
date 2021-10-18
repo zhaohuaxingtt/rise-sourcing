@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-10-16 18:20:21
+ * @LastEditTime: 2021-10-18 09:59:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -239,5 +239,13 @@ export function saveModuleDevFee(params) {
     url: `/aeko/mould/save/saveDevFee?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
+  })
+}
+
+// 内容表态-搜索栏-投资车型项目下拉数据
+export function searchInvestCar(requirementAekoId) {
+  return requst({
+    url: `/aeko/purchasing/search-invest-car/project/${requirementAekoId}`,
+    method: 'GET',
   })
 }

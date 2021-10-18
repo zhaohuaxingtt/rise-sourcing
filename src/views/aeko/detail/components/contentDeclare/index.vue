@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-15 14:05:45
+ * @LastEditTime: 2021-10-18 10:08:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -140,10 +140,10 @@
               :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
-              :value="item.value"
-              :label="item.label"
-              v-for="item in options"
-              :key="item.key"
+              :value="item"
+              :label="item"
+              v-for="(item,index) in investCarTypeProOptions"
+              :key="item+index"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -277,7 +277,7 @@ import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle,hidenTableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent,updateInvestCarProject } from "@/api/aeko/detail"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent,updateInvestCarProject,searchInvestCar } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 import { searchCartypeProject } from "@/api/aeko/manage"
 import { procureFactorySelectVo } from "@/api/dictionary"
@@ -316,7 +316,7 @@ export default {
       mtzOptions,
       procureFactoryOptiopns: [],
       procureFactoryOptiopnsCache: [],
-      options: [],
+      investCarTypeProOptions: [],
       loading: false,
       tableTitle,
       tableListData: [],
@@ -340,6 +340,7 @@ export default {
     this.searchCartypeProject()
     this.getDictByCode()
     this.procureFactorySelectVo()
+    this.getSearchInvestCar()
 
     if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
       try {
@@ -430,6 +431,15 @@ export default {
       } else {
         this.$set(this.form, key, this.form[key].filter(item => item || item === 0))
       }
+    },
+    // 获取投资车型项目下拉
+    async getSearchInvestCar(){
+      const requirementAekoId = this.$route.query.requirementAekoId;
+      await searchInvestCar(requirementAekoId).then((res)=>{
+        if(res.code == 200){
+          this.investCarTypeProOptions = res.data || [];
+        }
+      })
     },
     init() {
       this.loading = true
