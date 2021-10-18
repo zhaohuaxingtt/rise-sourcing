@@ -75,6 +75,7 @@ export default{
               path: "/sourceinquirypoint/sourcing/partsrfq/editordetail",
               query: {
                 id: res.data.rfqId,
+                businessKey: this.startItems[0].partProjectType,
               },
             });
           } else {
