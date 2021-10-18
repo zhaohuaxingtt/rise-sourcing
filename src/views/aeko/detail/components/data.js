@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-10-13 09:52:19
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-18 15:25:45
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
  */
@@ -14,7 +14,7 @@ export const contentDeclareQueryForm = {
   isMtz: "",
   procureFactory: "",
   supplierNameZh: "",
-  investCarTypePro: ""
+  investCarTypePros: [""],
 }
 
 export const contentDeclareTableTitle = [

@@ -48,12 +48,17 @@
       />
     </iCard>
 
-    <iDialog :visible.sync="dialogVisible" title="请选择零件分类"  @close="clearDialog"  width="20%" >
+    <iDialog :visible.sync="dialogVisible" title="零件分类"  @close="clearDialog"  width="20%" >
       <div >
-        <iSelect  :filterable="false" v-model="dialogPartSort" :placeholder="language('QINGXUANZE', '请选择')">
-          <el-option  v-for="item in selectOptions['partTaskPartSort']" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </iSelect>
+        <el-form>
+
+          <el-form-item :label="language('XUANZHELINGJIANFENLEI','选择零件分类')">
+            <iSelect  :filterable="false" v-model="dialogPartSort" :placeholder="language('QINGXUANZE', '请选择')">
+              <el-option  v-for="item in selectOptions['partTaskPartSort']" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </iSelect>
+          </el-form-item>
+        </el-form>
       </div>
 
       <div slot="footer" class="dialog-footer">
