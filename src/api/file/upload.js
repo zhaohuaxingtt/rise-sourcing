@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-04-20 19:16:52
- * @LastEditors: zbin
- * @LastEditTime: 2021-09-30 13:17:34
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-18 16:52:52
  * @Description: 
  * @FilePath: \front-web\src\api\file\upload.js
  */
@@ -59,7 +59,8 @@ export function uploadUdFile(params) {
   const formData = new FormData()
   formData.append('applicationName', params.applicationName || 'rise') // 桶名，默认固定rise
   formData.append('businessId', params.businessId || 8025) // 业务id，默认固定8025
-  formData.append('currentUserId', store.state.permission.userInfo.id) // 用户id
+  // formData.append('currentUserId', store.state.permission.userInfo.id) // 用户id
+  formData.append('currentUser', store.state.permission.userInfo.id) // 用户id
   formData.append('type', params.type || 1) // 文件类型 1:OBS 2:NFS，默认1
   formData.append('multifile', params.multifile || []) // 文件
 
