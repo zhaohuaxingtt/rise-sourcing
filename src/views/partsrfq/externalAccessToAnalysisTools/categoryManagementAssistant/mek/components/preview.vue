@@ -1,113 +1,146 @@
 <template>
-  <iDialog :title="reportName"
-           :visible.sync="value"
-           width="95%"
-           @close="closeDialog"
-           @opened="open">
-    <div class="new-MEK"
-         id="downloadRef">
+  <iDialog
+    :title="reportName"
+    :visible.sync="value"
+    width="95%"
+    @close="closeDialog"
+    @opened="open"
+  >
+    <div class="new-MEK" id="downloadRef">
       <div class=" bodyBox clearFloat">
-        <div class="cardBox"
-             style="width:18%">
-          <iCard>
-            <div class=" searchForm"
-                 style="margin-right:20px">
-              <label for=""
-                     style="font-weight:600;font-size:14px">六位零件号</label>
-              <ul style="margin-top:10px">
-                <li style="maring-bottom:10px"
-                    v-for="(item,index) in partNumber"
-                    :key="index">{{item}}</li>
-              </ul>
-            </div>
-          </iCard>
-        </div>
-        <div class="cardBox"
-             style="width:82%">
-          <iCard class="margin-left20"
-                 style="height:619px">
-            <div class="chartBox1">
-              <div class="line"></div>
-              <div class="line1"></div>
-              <div class="line2"></div>
-              <div class="line3"></div>
-              <div class="line4"></div>
-              <div class="chartBox">
-                <div class="flex chartItem"
-                     :style="{width:chartItemWidth}">
-                  <div class="operation1">
-                    <span class="margin-bottom15 margin-top40">{{targetMotorName}}</span>
-                    <span class="margin-bottom15 "
-                          style="min-height:14px">{{firstBarData.motorName}}</span>
-                    <span class="yield"
-                          style="line-height:12px">{{firstBarData.output}}</span>
+        <el-col :span="4">
+          <iCard style="width:100%;height:610px">
+            <div class="cardBox" style="width:100%;">
+              <div class=" searchForm" style="margin-right:20px">
+                <div class="searchFormItem">
+                  <label for="" style="font-weight:600;font-size:14px"
+                    >对标车型</label
+                  >
+                  <div class="flexBox">
+                    <el-tag
+                      v-for="(item, index) in ComparedMotorName"
+                      :key="index"
+                    >
+                      {{ item }}
+                    </el-tag>
                   </div>
-                  <datasetBar1 :firstBarData="firstBarData.detail"
-                               :maxWidth="maxWidth"
-                               @detailDialog="detailDialog"></datasetBar1>
                 </div>
-                <div class="flex chartItem"
-                     :style="{width:chartItemWidth}"
-                     v-for="item in barData"
-                     :key="item.motorId">
-                  <div class="operation">
-                    <icon symbol
-                          name="iconbob-shanchu"
-                          class="margin-bottom20 "
-                          style="width:20px;height:20px"></icon>
-                    <el-popover placement="bottom"
-                                width="80"
-                                trigger="click"
-                                visible-arrow
-                                class="margin-bottom15">
-                      <el-checkbox-group v-model="item.checkList"
-                                         class="checkList"
-                                         @change="changeCheckList">
-                        <el-checkbox v-for="(i,index) in item.detail"
-                                     :key="index"
-                                     :label="i.value">{{i.title}}</el-checkbox>
-                      </el-checkbox-group>
-                      <div style="line-height:30px"
-                           slot="reference">{{item.motorName}}</div>
-                    </el-popover>
-                    <span class="margin-bottom15"
-                          style="line-height:16px;height:16px">{{item.factory}}</span>
-                    <span class="yield margin-bottom15">{{item.output}}</span>
-                    <div>
-                      <el-select v-model="item.priceType"
-                                 @change="changPriceType"
-                                 style="width:150px;z-index:1000"
-                                 v-if="flag1">
-                        <el-option v-for="i in mekpriceTypeList"
-                                   :key="i.id"
-                                   :value="i.code"
-                                   :label="i.name"> </el-option>
-                      </el-select>
-                      <el-date-picker v-model="date"
-                                      type="date"
-                                      placeholder="选择日期"
-                                      @change="changeDate"
-                                      style="width:150px;z-index:1000"
-                                      v-if="priceType==='2'">
-                      </el-date-picker>
-                    </div>
+                <div class="searchFormItem">
+                  <label for="" style="font-weight:600;font-size:14px"
+                    >类型选择</label
+                  >
+                  <div class="flexBox">
+                    <el-tag>{{ mekTypeName }}</el-tag>
                   </div>
-                  <datasetBar :barData="item"
-                              :maxWidth="maxWidth"
-                              :typeSelection="mekMotorTypeFlag"
-                              @detailDialog="detailDialog"></datasetBar>
+                </div>
+                <div class="searchFormItem">
+                  <label for="" style="font-weight:600;font-size:14px"
+                    >六位零件号</label
+                  >
+                  <div class="flexBox">
+                    <el-tag v-for="(item, index) in partNumber" :key="index">
+                      {{ item }}
+                    </el-tag>
+                  </div>
                 </div>
               </div>
             </div>
           </iCard>
-        </div>
+        </el-col>
+        <el-col :span="20">
+          <iCard class="margin-left20" ref="chartBox" style="height:610px">
+            <div class="chartBox1 ">
+              <div class="chartBox">
+                <div class="line" :style="{ width: totalWidth }"></div>
+                <div class="line1" :style="{ width: totalWidth }"></div>
+                <div class="line2" :style="{ width: totalWidth }"></div>
+                <div class="line3" :style="{ width: totalWidth }"></div>
+                <div class="line4" :style="{ width: totalWidth }"></div>
+                <div class="flex chartItem">
+                  <div class="operation1">
+                    <p class="motorName">{{targetMotorName}}</p>
+                    <span class="margin-bottom20 productFactoryNames">{{
+                      productFactoryNames
+                    }}</span>
+                    <span class="yield">{{
+                      toThousand(parseInt(firstBarData.output))
+                    }}</span>
+                  </div>
+                  <datasetBar1
+                    ref="datasetBar1"
+                    :typeSelection="mekMotorTypeFlag"
+                    :firstBarData="firstBarData"
+                    :maxWidth="maxWidth"
+                    :maxData="maxData"
+                    :clientHeight="clientHeight"
+                    @detailDialog="detailDialog"
+                  ></datasetBar1>
+                </div>
+                <div
+                  class="flex chartItem"
+                  v-for="(item, ind) in barData"
+                  :key="item.motorId"
+                >
+                  <div class="operation">
+                      <P class="motorName">
+                        {{ item.motorName }}
+                      </P>
+                    <span
+                      class="margin-bottom20 motorName"
+                      style="line-height:16px;height:16px"
+                      >{{ item.factory }}</span
+                    >
+                    <span class="yield margin-bottom15">{{
+                      toThousand(parseInt(item.output))
+                    }}</span>
+                    <div class="flex">
+                      <el-select
+                        v-model="item.priceType"
+                        @change="changPriceType"
+                        style="width:150px;z-index:1000"
+                      >
+                        <el-option
+                          v-for="i in mekpriceTypeList"
+                          :key="i.id"
+                          :value="i.code"
+                          :label="i.name"
+                        >
+                        </el-option>
+                      </el-select>
+                      <el-date-picker
+                        v-model="item.priceDate"
+                        type="date"
+                        placeholder="选择日期"
+                        @input="changeDate(item.priceDate, ind)"
+                        value-format="yyyy-MM-dd"
+                        style="width:150px;z-index:1000;margin-left:20px"
+                        v-if="item.priceType === 'monthPrice'"
+                      >
+                      </el-date-picker>
+                    </div>
+                  </div>
+                  <datasetBar
+                    :barData="item"
+                    :maxWidth="maxWidth"
+                    :typeSelection="mekMotorTypeFlag"
+                    :maxData="maxData"
+                    :clientHeight="clientHeight"
+                  ></datasetBar>
+                </div>
+              </div>
+            </div>
+            <!-- <report :dialogVisible="true"></report> -->
+          </iCard>
+        </el-col>
       </div>
-      <tableList v-bind="$attr"
-                 :gridData="gridData"
-                 :editFlag="editFlag"
-                 :addRowList="addRowList"
-                 @editData="editData"
-                 @addData="addData"></tableList>
+      <tableList
+        v-bind="$attr"
+        :gridData="gridData"
+        :editFlag="editFlag"
+        :addRowList="addRowList"
+        @editData="editData"
+        @addData="addData"
+      ></tableList>
     </div>
   </iDialog>
 </template>
@@ -117,6 +150,7 @@ import { iPage, iButton, iCard, iSelect, icon, iDialog } from "rise";
 import datasetBar from "./datasetBar";
 import datasetBar1 from "./datasetBar1";
 import tableList from "./tableList";
+import { fmoney, toThousand } from "@/utils/index.js";
 export default {
   components: {
     iDialog,
@@ -124,7 +158,7 @@ export default {
     iCard,
     datasetBar,
     datasetBar1,
-    tableList
+    tableList,
   },
   props: {
     value: {
@@ -134,24 +168,24 @@ export default {
     firstBarData: {
       type: Object,
       default: () => {
-        return {}
-      }
+        return {};
+      },
     },
     chartItemWidth: {
       type: Number,
-      default: 1
+      default: 1,
     },
     barData: {
       type: Array,
       default: () => {
-        return []
-      }
+        return [];
+      },
     },
     gridData: {
       type: Array,
       default: () => {
-        return []
-      }
+        return [];
+      },
     },
     preview: {
       type: Boolean,
@@ -160,36 +194,61 @@ export default {
     partNumber: {
       type: Array,
       default: () => {
-        return []
-      }
+        return [];
+      },
     },
     targetMotorName: {
       type: String,
-      default: ""
+      default: "",
     },
     mekpriceType: {
       type: String,
-      default: ""
+      default: "",
     },
     maxWidth: {
-      type: Number
+      type: Number,
+    },
+    mekTypeName: {
+      type: String,
+    },
+    ComparedMotorName: {
+      type: Array,
+    },
+    totalWidth:{
+      type:String
+    },
+    productFactoryNames:{
+      type:String
+    },
+    maxData:{
+      tyep:String
+    },
+    clientHeight:{
+      type:String
     }
   },
   watch: {
-    value (val) {
-      console.log(val)
-    }
+    value(val) {
+      console.log(val);
+    },
+    firstBarData: {
+      handler(val) {
+        console.log(val);
+      },
+      deep: true,
+      immediate: true,
+    },
   },
-  data () {
+  data() {
     return {
+      toThousand,
+      fmoney,
     };
   },
-  mounted () {
-
-  },
+  mounted() {},
   methods: {
-    closeDialog () {
-      this.$emit('closeDialog', false);
+    closeDialog() {
+      this.$emit("closeDialog", false);
       // this.value = val;
     },
   },
@@ -214,14 +273,16 @@ export default {
   }
 }
 .searchForm {
-  text-align: center;
-  height: 540px;
   overflow-y: auto;
   overflow-x: hidden;
   margin-bottom: 20px;
   &::-webkit-scrollbar {
     margin-left: 10px !important;
   }
+}
+.searchForm1 {
+  height: 559px;
+  text-align: center;
 }
 ::v-deep .cardBox {
   float: left;
@@ -230,29 +291,30 @@ export default {
   margin-top: 20px;
 }
 .chartItem {
+  float: left;
   position: relative;
   // flex: 1;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-right: 60px;
+  margin-right: 10px;
   &:last-child {
     margin-right: 0;
   }
 }
 .operation {
+  margin-bottom: -70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: -110px;
 }
 .operation1 {
+  margin-bottom: -70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: -45px;
 }
 .title {
   font-family: Arial;
@@ -260,7 +322,7 @@ export default {
   color: black;
   align-items: center;
   label {
-    width: 210px;
+    width: 90px;
   }
 }
 
@@ -269,61 +331,72 @@ export default {
   height: 45px;
 }
 .yield {
-  width: 100px;
+  width: 120px;
   height: 35px;
+  line-height: 25px;
+  text-align: center;
   background: #eef2fb;
   opacity: 1;
+  font-size: 16px;
   border-radius: 20px;
-  padding: 9px 26px;
+  padding: 5px;
 }
 .chartBox {
+  position: relative;
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
+  // overflow-x: auto;
+  // overflow-y: hidden;
 }
 .chartBox1 {
+  height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   position: relative;
+}
+.productFactoryNames {
+  font-size: 16px;
+  line-height: 16px;
+  height: 16px;
 }
 .line {
   position: absolute;
   left: 40px;
-  bottom: 12%;
+  bottom: 10%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line1 {
   position: absolute;
   left: 40px;
-  bottom: 22%;
+  bottom: 20%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line2 {
   position: absolute;
   left: 40px;
-  bottom: 32%;
+  bottom: 30%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line3 {
   position: absolute;
   left: 40px;
-  bottom: 42%;
+  bottom: 40%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .line4 {
   position: absolute;
   left: 40px;
-  bottom: 54%;
+  bottom: 49%;
   height: 2px;
-  width: 100%;
+
   border: 1px solid #f1f1f5;
 }
 .checkList {
@@ -332,12 +405,31 @@ export default {
 }
 .xAxis {
   position: absolute;
-  bottom: 3%;
-  font-size: 12px;
+  bottom: 1%;
+  font-size: 14px;
   color: "#3C4F74";
   font-family: "Arial";
+  .detail:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
-
+.xAxis1 {
+  position: absolute;
+  left: 23%;
+  bottom: 1%;
+  font-size: 14px;
+  color: "#3C4F74";
+  font-family: "Arial";
+  .detail:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+.motorName {
+  font-size: 16px;
+  height: 32px;
+}
 ::v-deep .el-select {
   width: 100%;
   .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {
@@ -345,8 +437,19 @@ export default {
   }
 }
 ::v-deep .el-select__tags {
-  flex-direction: column;
   justify-content: flex-start;
-  left: -16%;
+}
+.searchFormItem {
+  margin-bottom: 60px;
+  ul {
+    li {
+      margin-bottom: 20px;
+    }
+  }
+}
+.flexBox {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 </style>

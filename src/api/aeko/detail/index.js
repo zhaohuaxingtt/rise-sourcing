@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-10-14 10:24:46
+ * @LastEditTime: 2021-10-18 09:59:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -9,7 +9,12 @@
 import axios from '@/utils/axios'
 import download from '@/utils/axios.download'
 
+import router from '../../../router/index'
+
+const supplierId = ()=> router.currentRoute.query.supplierId?router.currentRoute.query.supplierId:''
+
 const requst = axios(process.env.VUE_APP_PARTS)
+const souringRequst = axios(process.env.VUE_APP_RFQ)
 const partRequst = axios(process.env.VUE_APP_PARTSPROCURE)
 const priceRequst = axios(process.env.VUE_APP_PRICE_LEDGER)
 const fileRequst = download(process.env.VUE_APP_PARTS)
@@ -201,13 +206,13 @@ export function cancelContent(data) {
   }) 
 }
 
-// 内容表态--指定投资车型项目查询 
+// 内容表态--指定投资车型项目查询
 export function getInvestCarProject(data) {
   return requst({
     url: '/aeko/get/aeko-invest-car-project',
     method: 'POST',
     data,
-  }) 
+  })
 }
 
 // 内容表态--指定投资车型项目更新
@@ -216,13 +221,31 @@ export function updateInvestCarProject(data) {
     url: '/aeko/update/aeko-invest-car-project',
     method: 'PUT',
     data,
-  }) 
+  })
 }
 
 // 内容表态--获取价格轴数据
 export function getPriceAxis(objectAekoPartId) {
   return requst({
     url: `/aeko/price-axis/${objectAekoPartId}`,
+    method: 'GET',
+  })
+}
+
+
+// 保存开发费
+export function saveModuleDevFee(params) {
+  return souringRequst({
+    url: `/aeko/mould/save/saveDevFee?supplierId=${supplierId()}`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 内容表态-搜索栏-投资车型项目下拉数据
+export function searchInvestCar(requirementAekoId) {
+  return requst({
+    url: `/aeko/purchasing/search-invest-car/project/${requirementAekoId}`,
     method: 'GET',
   })
 }

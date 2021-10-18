@@ -3,7 +3,7 @@
   <div>
     <AEKOApprovalComponents :audit-items="auditItems" :transmit-obj="transmitObj" @refreshForm="refreshForm($event)"/>
     <CoverStatementComponents class="margin-top20" :audit-cover-status="auditContentStatus" :audit-cover="auditCover"/>
-    <RecommendationTablePendingApprovalComponents :audit-contents="auditContents"
+    <RecommendationTablePendingApprovalComponents  :audit-contents="auditContents"
                                                   :audit-content-status="auditContentStatus" class="margin-top20"/>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default {
           this.auditCoverStatus = res.data.auditCoverStatusDesc
           this.auditCover = res.data.auditCover
           this.auditContents = res.data.auditContents
-          this.auditContentStatus = res.data.auditCoverStatusDesc
+          this.auditContentStatus = res.data.auditContentStatusDesc
           //获取到审批数据
           this.auditItems.forEach((item, index) => {
             item.approvalResult = 1
@@ -80,7 +80,8 @@ export default {
     lookAKEOApprovalForm() {
       let reqData = {
         aekoAuditType: this.aekoApprovalDetails.aekoAuditType,
-        workFlowDTOS: this.aekoApprovalDetails.workFlowDTOS
+        workFlowDTOS: this.aekoApprovalDetails.workFlowDTOS,
+        approvalResult:this.aekoApprovalDetails.approvalResult
       }
       getAKEOApprovalForm(reqData).then(res => {
         if (res.code == 200) {
@@ -88,7 +89,7 @@ export default {
           this.auditCoverStatus = res.data.auditCoverStatusDesc
           this.auditCover = res.data.auditCover
           this.auditContents = res.data.auditContents
-          this.auditContentStatus = res.data.auditCoverStatusDesc
+          this.auditContentStatus = res.data.auditContentStatusDesc
         }
       })
     }

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-10-14 13:40:59
+ * @LastEditTime: 2021-10-18 15:57:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -170,6 +170,7 @@ export default {
     await this.getAekoOriginFactory()
 
     if (this.oldPartNumPreset) {
+      this.form.partNum = this.oldPartNumPreset
       this.judgeRight()
     } else {
       this.procureFactorySelectVo()
@@ -248,12 +249,19 @@ export default {
 
       this.$refs.aekoList.getList('isRest');
 
-      getAekoOriginPartInfo({
-        ...this.form,
+      let params = {
         objectAekoPartId: this.objectAekoPartId,
         current: this.page.currPage,
-        size: this.page.pageSize
-      })
+        size: this.page.pageSize,
+        // partNum: this.oldPartNumPreset ? this.oldPartNumPreset : undefined
+      }
+
+      params = {
+        ...this.form,
+        ...params
+      }
+
+      getAekoOriginPartInfo(params)
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []

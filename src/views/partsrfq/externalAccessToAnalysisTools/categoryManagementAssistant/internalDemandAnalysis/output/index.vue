@@ -1,16 +1,31 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-13 14:04:46
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-30 13:23:59
+ * @LastEditors: zbin
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
 -->
 <template>
-   <iCard :title='language("CHANLIANGZONGLAN","产量总览")' class="margin-top20" id="output">
-      <template slot="header-control">
-			<iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
-			<iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+   <iCard class="margin-top20" id="output">
+      <template slot="header">
+         <div class="flex-between-center title">
+            <div class="flex-align-center">
+               <span class="margin-right10">{{language("CHANLIANGZONGLAN","产量总览")}}</span>
+               <el-popover trigger="hover" placement="bottom-start"  width="800">
+                  <div>提供过往三年至未来两年的材料组零件产量总览：</div>
+                  <div class="tip">
+                     <p>产量数据：历史零件产量数据来源于FIS车型生产记录以及PBOM，未来零件产量数据来源于最新的BKM KTB产量计划</p>
+                     <p>供应商供货比例：供应商供货比例数据来源于历史货源配额计划，历史定点记录，以及BKM中的未来零件供货比例</p>
+                  </div>
+                  <icon slot="reference" name="iconxinxitishi" symbol class="cursor"></icon>
+               </el-popover>
+            </div>
+            <div class="flex">
+               <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+			      <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+            </div>
+         </div>
 		</template>
       <div class="flex-between-center">
          <div class="flex">
@@ -29,17 +44,17 @@
    </iCard>
 </template>
 <script>
-import {iCard,iButton,iSelect,iDatePicker,iMessage} from "rise";
+import {iCard,iButton,iSelect,iDatePicker,iMessage,icon} from "rise";
 import {getCmOutputPbi} from "@/api/categoryManagementAssistant/internalDemandAnalysis/output";
 import * as pbi from 'powerbi-client';
 import { selectDictByKeys } from "@/api/dictionary";
 import {downloadPdfMixins} from '@/utils/pdf';
 import {categoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
 import {getCategoryAnalysis} from "@/api/categoryManagementAssistant/internalDemandAnalysis";
-
+import {setWaterMark,removeWatermark} from 'rise/utils/watermark'
 export default {
    mixins: [downloadPdfMixins],
-   components:{iCard,iButton,iSelect,iDatePicker},
+   components:{iCard,iButton,iSelect,iDatePicker,icon},
    data () {
       return {
          categoryCode:"",
@@ -108,6 +123,15 @@ export default {
    mounted () {
 		this.getPowerBiUrl()
    },
+   computed: {
+      // eslint-disable-next-line no-undef
+     ...Vuex.mapState({
+         userInfo: (state) => state.permission.userInfo,
+      }), 
+   },
+   destroyed(){
+      // removeWatermark()
+   },
    watch:{
       '$i18n.locale':{
          handler(newValue){
@@ -123,6 +147,7 @@ export default {
    methods: {
       // 保存
       async save(){
+         // setWaterMark(this.userInfo.nameZh+this.userInfo.id+'仅供CS内部使用',1000,700)
          let typeName=""
          this.dictData.CATEGORY_MANAGEMENT_LIST.filter(item=>{
             if(item.code==this.config.pageName){
@@ -131,8 +156,11 @@ export default {
          })
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'output',
+            watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
             pdfName: '品类管理助手_产量总览_'+ typeName + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
          });
+         console.log(resFile)
+         // removeWatermark()
          let schemeType=""
          switch (this.config.pageName) {
             case "ReportSection54602a61cb108b45223a":
@@ -255,6 +283,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.title{
+   width: 100%;
+}
    .select{
       width:200px;
       margin-right:30px;
@@ -264,4 +295,9 @@ export default {
 		height: calc(100vh - 350px);
       margin-top: 20px;
 	}
+   .tip{
+      >p{
+         padding-left:15px;
+      }
+   }
 </style>

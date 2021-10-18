@@ -7,10 +7,13 @@
 -->
 <template>
   <div class="scroll flex">
-    <div class="flex-align-center margin-right50" v-for="(item,index) in tableData" :key="index">
-      <div v-if="item.title==='OFFER'" :style="'background:'+color[index]" class="circle margin-right4"></div>
-      <icon v-else name="iconshangqidazhong" symbol></icon>
+    <div class="flex-align-center margin-right50" v-for="(item,index) in mapListData.offerDataList" :key="index">
+      <div :style="'background:'+color[index]" class="circle margin-right4"></div>
       <div class="margin-left10">{{item.name}}</div>
+    </div>
+    <div class="flex-align-center" v-if="mapListData.purchaseDataList.length">
+      <icon name="iconshangqidazhong" symbol></icon>
+      <div class="margin-left10">{{language("SHANGQIDAZONGGONGCHANGMINGCHEN",'上汽大众工厂')}}</div>
     </div>
   </div>
 </template>
@@ -30,19 +33,12 @@ export default {
     // 这里存放数据
     return {
       color: ['#B9DDFA', '#8BC7F7', '#46B3F3', '#009FEF', '#008CEE', '#0078ED', '#0050EB', '#0641C8', '#0B31A5', '#46647C', '#235A7A', '#005078'],
-      tableData: []
     }
   },
   // 监听属性 类似于data概念
   computed: {},
   // 监控data中的数据变化
   watch: {
-    mapListData: {
-      handler(data) {
-        this.tableData = data.offerDataList && [...data.offerDataList] 
-        this.tableData = data.purchaseDataList && [...data.purchaseDataList] 
-      }
-    }
   },
   // 方法集合
   methods: {
@@ -54,7 +50,6 @@ export default {
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-
   },
 }
 </script>

@@ -88,6 +88,7 @@
       <!--表格展示区-->
       <tablelist
           height="400"
+          class="margin-top20"
           index
           :selection="true"
           :tableData="approvedList"
@@ -110,9 +111,9 @@
           </div>
         </template>
         <template #auditTypeName="scope">
-          <span>{{ scope.row.auditType }}</span>
+          <span>{{ scope.row.auditTypeDesc }}</span>
         </template>
-        <template #describe="">
+        <template #describe="scope">
           <a class="link-underline" @click="lookAEKODesc(scope.row)">
             {{ language('CHAKAN', '查看') }}
           </a>
@@ -146,25 +147,29 @@
         </template>
         <!--科室-->
         <template #DepartmentName="scope">
-          <span>{{ scope.row.linieDeptName }}</span>
+          <span>{{ scope.row.linieDeptNum }}</span>
         </template>
         <!--采购员-->
         <template #buyerName="scope">
           <span>{{ scope.row.linieName }}</span>
         </template>
         <!--附件-->
-        <template #attach="">
-          <a class="link-underline" href="javascript:;">
+        <template #attach="scope">
+          <a class="link-underline" @click="openApprovalAttachment(scope.row)">
             {{ language('CHAKAN', '查看') }}
           </a>
         </template>
+        <!--审批状态-->
+        <template #auditStatus="scope">
+          <span>{{scope.row.auditStatus}}</span>
+        </template>
         <!--AEKO截止日期-->
         <template #date="scope">
-          <span>{{ scope.row.deadLine }}</span>
+          <span>{{ scope.row.deadLine|formatDate }}</span>
         </template>
         <!--创建时间-->
         <template #createDate="scope">
-          <span>{{ scope.row.createDate }}</span>
+          <span>{{ scope.row.createDate|formatDate }}</span>
         </template>
       </tablelist>
       <div class="pagination">
@@ -185,13 +190,14 @@
 
 <script>
 import {iSearch, iInput, iCard, iPagination, icon, iSelect, iMessage} from "rise"
-import {tableCsfTitle as approvedHeader} from '../components/data'
+import {tableAKEOApprovedTitle as approvedHeader} from '../components/data'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {pageMixins} from '@/utils/pageMixins'
 import {queryApproved} from "@/api/aeko/approve";
 import {searchLinie} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import {getAekoDetail} from "@/api/aeko/detail";
+import * as dateUtils from "@/utils/date";
 
 export default {
   name: "AKEOApprovedPage",
@@ -204,6 +210,13 @@ export default {
     iPagination,
     icon,
     iSelect
+  },
+  filters:{
+    formatDate (value) {
+      let date = new Date(value);
+
+      return  dateUtils.formatDate(date,'yyyy-MM-dd')
+    }
   },
   data() {
     return {
@@ -237,6 +250,16 @@ export default {
     this.queryAllLin()
   },
   methods: {
+    //转换审批描述
+    getAuditTypeDesc(auditType){
+      if(auditType==1){
+        return '内容表态'
+      }else if(auditType==2){
+        return '封面表态'
+      }else {
+        return '推荐表态'
+      }
+    },
     checkMinCost() {
       let value = this.queryAkeoForm.costChangeMin
       if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
@@ -362,13 +385,13 @@ export default {
               aekoNum: row.aekoCode,
               requirementAekoId: row.requirementAekoId,
               aekoAuditType: row.auditType,
+              approvalResult:row.approvalResult,
               workFlowId: row.workFlowId,
-              workFlowDTOS: [],
+              workFlowDTOS: [{workFlowId: row.workFlowId,taskId:row.taskId}],
               taskId:row.taskId,
               aekoManageId: res.data.aekoManageId
             }
           }
-          console.log(transmitObj)
           let routeData = this.$router.resolve({
             path: `/aeko/AEKOApprovalDetails`,
             query: {
@@ -388,45 +411,44 @@ export default {
     //查看描述
     lookAEKODesc(row) {
       let routeData = this.$router.resolve({
-        path: `/aeko/describe?requirementAekoId=${row.requirementAekoId}&aekoCode=${row.aekoNum}`,
+        path: `/aeko/describe?requirementAekoId=${row.requirementAekoId}&aekoCode=${row.aekoCode}`,
       })
       window.open(routeData.href, '_blank')
     },
     //打开审批附件
     openApprovalAttachment(row) {
       let reqP = {requirementAekoId: row.requirementAekoId}
-      getAekoDetail(reqP).then(res=>{
-        if(res.code==200){
+      getAekoDetail(reqP).then(res => {
+        if (res.code == 200) {
           let transmitObj = {
-            option: 2,
+            option: 1,
             aekoApprovalDetails: {
-              aekoNum: row.aekoNum,
+              aekoNum: row.aekoCode,
               requirementAekoId: row.requirementAekoId,
               aekoAuditType: row.auditType,
-              workFlowId: row.workFlowId,
-              workFlowDTOS: [],
-              taskId:row.taskId,
+              workFlowDTOS: [{workFlowId: row.workFlowId,taskId:row.taskId}],
               aekoManageId: res.data.aekoManageId
             }
           }
           let routeData = this.$router.resolve({
             path: `/aeko/AEKOApprovalDetails/explainattach`,
             query: {
-              requirementAekoId:row.requirementAekoId,
-              aekoManageId:res.data.aekoManageId,
-              linieId:this.$store.state.permission.userInfo.id,
-              taskId:row.taskId,
-              transmitObj: window.btoa(JSON.stringify(transmitObj))
+              requirementAekoId: row.requirementAekoId,
+              aekoManageId: res.data.aekoManageId,
+              linieId: this.$store.state.permission.userInfo.id,
+              taskId: row.taskId,
+              transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj)))
+              )
             },
           })
           window.open(routeData.href, '_blank')
 
-        }else{
+        } else {
           this.$message.error(res.desZh)
         }
       })
-
     },
+
   }
 }
 </script>

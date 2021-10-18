@@ -4,7 +4,7 @@
  * @Description: 零件清单列表
 -->
 <template>
-  <iPage class="aekoPartslist">
+  <div  class="aekoPartslist"  v-permission.auto="AEKO_SHENPI_PARTLIST_PAGE|AEKO审批-详情-零件清单">
     <h2 class="title">
       {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
     </h2>
@@ -85,12 +85,11 @@
       </div>
     </iCard>
 
-  </iPage>
+  </div>
 </template>
 
 <script>
 import {
-  iPage,
   iNavMvp,
   iSearch,
   iSelect,
@@ -116,7 +115,6 @@ export default {
     name:'partslist',
     mixins: [pageMixins],
     components:{
-      iPage,
       iNavMvp,
       iSearch,
       aekoSelect,
@@ -156,8 +154,6 @@ export default {
       const { requirementAekoId ='',aekoCode,} = query;
       this.aekoCode = aekoCode;
       this.aekoType = this.aekoTypeByAekocode(aekoCode);
-
-      console.log(this.aekoType,'aekoType');
 
       this.getSearchList();
 

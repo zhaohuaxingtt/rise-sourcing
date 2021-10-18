@@ -1,12 +1,12 @@
 
 <template>
   <div class="productGroup">
-    <p class="font18 font-weight">
+    <!-- <p class="font18 font-weight">
       车型项目：{{titleName}}
-    </p>
-    <iSearch :icon="true" class="margin-top30">
+    </p> -->
+    <iSearch :icon="true" class="margin-top20">
       <template slot="button">
-        <iButton @click="back">{{language('Back', '返回')}}</iButton>
+        <!-- <iButton @click="back">{{language('Back', '返回')}}</iButton> -->
         <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
         <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
       </template>
@@ -48,12 +48,17 @@
       />
     </iCard>
 
-    <iDialog :visible.sync="dialogVisible" title="请选择零件分类"  @close="clearDialog"  width="20%" >
+    <iDialog :visible.sync="dialogVisible" title="零件分类"  @close="clearDialog"  width="20%" >
       <div >
-        <iSelect  :filterable="false" v-model="dialogPartSort" :placeholder="language('QINGXUANZE', '请选择')">
-          <el-option  v-for="item in selectOptions['partTaskPartSort']" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </iSelect>
+        <el-form>
+
+          <el-form-item :label="language('XUANZHELINGJIANFENLEI','选择零件分类')">
+            <iSelect  :filterable="false" v-model="dialogPartSort" :placeholder="language('QINGXUANZE', '请选择')">
+              <el-option  v-for="item in selectOptions['partTaskPartSort']" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </iSelect>
+          </el-form-item>
+        </el-form>
       </div>
 
       <div slot="footer" class="dialog-footer">
@@ -231,9 +236,9 @@ export default {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
           this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
-             if(optionName == 'partTaskPartSort'){
+             /*if(optionName == 'partTaskPartSort'){
                item.code = parseInt(item.code);
-             }
+             }*/
             return { value: item.code, label: item.name }
           })
           if(optionName == 'partTaskPartSortQuery' ){

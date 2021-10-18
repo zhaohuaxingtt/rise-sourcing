@@ -156,7 +156,7 @@ export default {
       console.log('data', data)
 			const fileData = data.data || {}
 			const parmas = {
-				aekoNum: this.aekoInfo.requirementAekoId,
+				aekoNum: this.aekoInfo.aekoCode,
 				manageId: Number(this.aekoInfo.aekoManageId) || '',
 				fileName: fileData.name || '',
 				filePath: fileData.path || '',
@@ -191,7 +191,7 @@ export default {
 			console.log(this.aekoInfo)
       const parmas = Object.assign({
 				linieId: this.userInfo.id || '',
-				aekoNum: this.aekoInfo.requirementAekoId,
+				aekoNum: this.aekoInfo.aekoCode,
 				manageId: Number(this.aekoInfo.aekoManageId) || '',
 				taskId: [],
         current: this.page.currPage,

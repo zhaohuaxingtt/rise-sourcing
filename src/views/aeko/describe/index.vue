@@ -74,12 +74,18 @@ export default {
       this.getDetail();
       // 把当前路由的参数带过去
        const {query} = this.$route;
-       describeTab.map((item)=>{
-         if(item.key == 'LK_AEKO_PARTSLIST'){
-           item.query = query
-         }
-       })
-       this.describeTab = describeTab;
+       const {from=null} = query;
+       console.log(from!='approve',from,'approve');
+       if(from!='approve'){
+        this.describeTab = describeTab.slice(0,1);
+      }else{
+        describeTab.map((item)=>{
+          if(item.key == 'LK_AEKO_PARTSLIST'){
+            item.query = query
+          }
+        })
+        this.describeTab = describeTab;
+      }
       
     },
     methods:{

@@ -162,6 +162,8 @@ export default {
                 if(code == 200){
                     if(data){
                         this.form = data;
+                        // 变更类型默认为A
+                        this.form['changeType'] = 'A';
                         this.infoShow = true;
                     }else{
                         this.infoShow = false;

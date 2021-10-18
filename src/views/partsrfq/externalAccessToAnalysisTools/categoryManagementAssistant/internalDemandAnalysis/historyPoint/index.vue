@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-09-17 19:35:47
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-30 13:23:42
+ * @LastEditors: zbin
  * @Description: 定点历史记录
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\historyPoint\index.vue
 -->
@@ -109,6 +109,7 @@
 			async save(){
 				const resFile = await this.getDownloadFileAndExportPdf({
 					domId: 'historyPoint',
+          watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
            		pdfName:`品类管理助手_定点历史记录_${this.$store.state.rfq.categoryName}_${window.moment().format('YYYY-MM-DD')}_`,
 				});
 				let params={
@@ -159,7 +160,6 @@
 					}else{
 						this.searchCriteria.latestYear="1"
 					}
-					
 				})
 			}
 		}

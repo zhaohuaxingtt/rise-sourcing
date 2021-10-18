@@ -3,8 +3,8 @@
     <span class="akeoTitle">Aeko号:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
     <div style="display: flex;justify-content: space-between;align-items: center">
       <iNavMvp :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
-      <i-button v-if="$route.name !== 'explainattach'" class="margin-left25">查看已审批</i-button>
-      <i-button v-if="$route.name !== 'explainattach'" class="margin-left25">AEKO详情</i-button>
+      <i-button v-if="$route.name !== 'explainattach'" @click="goViewApproved"  class="margin-left25">查看已审批</i-button>
+      <i-button v-if="$route.name !== 'explainattach'" @click="lookAEKODetails" class="margin-left25">AEKO详情</i-button>
       <log-button v-if="$route.name !== 'explainattach'" class="margin-left25"/>
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
             class="log-icon margin-left20 cursor myLogIcon"></icon>
@@ -62,6 +62,25 @@ export default {
     }
   },
   methods: {
+    //查看AEKO详情
+    lookAEKODetails(){
+      let routeData = this.$router.resolve({
+        path: `/aeko/describe`,
+        query: {
+          requirementAekoId: this.transmitObj.aekoApprovalDetails.requirementAekoId,
+          aekoCode: this.transmitObj.aekoApprovalDetails.aekoNum,
+          from:'approve'
+        },
+      })
+      window.open(routeData.href, '_blank')
+    },
+    //查看已审批
+    goViewApproved(){
+      let routeData = this.$router.resolve({
+        path: `/aeko/approve/approvelistcsf/AKEOApprovedPage`,
+      })
+      window.open(routeData.href, '_blank')
+    },
     gotoDBhistory() {
     }
   }

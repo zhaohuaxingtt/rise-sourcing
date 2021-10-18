@@ -70,23 +70,35 @@ export default{
     }
   },
   methods:{
-    getDeptLeader(deptId, row) {
-      getDeptLeader(deptId).then(res => {
+    getDeptLeader(deptId, grade, row) {
+      getDeptLeader({
+        deptNum: deptId,
+        grade
+      }).then(res => {
         // this.$set(row, 'deptManagerName')
-        this.$set(row, 'deptManager', res.data.userDTOList.map(item => item.id).join(","))
-        this.$set(row, 'deptManagerName', res.data.userDTOList.map(item => item.nameZh).join(","))
+        if (res.code == 200 && res.data && Array.isArray(res.data.userDTOList)) {
+          this.$set(row, 'deptManager', res.data.userDTOList.map(item => item.id).join(","))
+          this.$set(row, 'deptManagerName', res.data.userDTOList.map(item => item.nameZh).join(","))
+        } else {
+          this.$set(row, 'deptManager', "")
+          this.$set(row, 'deptManagerName', "")
+        }
       })
     },
     getDeptSubOptions(deptId, row, grade) {
       this.$set(row, 'approveDeptNum', '')
       getSubDeptListByParam(deptId, grade).then(res => {
-        this.$set(row, 'deptSubOptions', res.data.map(item => {
-          return {
-            ...item,
-            label: item.deptNum,
-            value: item.id
-          }
-        }))
+        if (res.code == 200 && Array.isArray(res.data)) {
+          this.$set(row, 'deptSubOptions', res.data.map(item => {
+            return {
+              ...item,
+              label: item.deptNum,
+              value: item.id
+            }
+          }))
+        } else {
+          this.$set(row, 'deptSubOptions', [])
+        }
       })
     },
     getOptions(optionType) {
@@ -96,15 +108,16 @@ export default{
       console.log('val',val,'row',row,'item',item);
       this.$set(row, item.props, val)
       if (item.props === 'approveParentDeptNum') {
+        this.$set(row, 'deptSubOptions', [])
         const dept = row.deptOptions.find(item => item.value === val)
         this.getDeptSubOptions(val, row, dept.grade)
         if (dept) {
-          this.getDeptLeader(dept.deptNum, row)
+          this.getDeptLeader(dept.deptNum, dept.grade, row)
         }
       } else {
         const dept = row.deptSubOptions.find(item => item.value === val)
         if (dept) {
-          this.getDeptLeader(dept.deptNum, row)
+          this.getDeptLeader(dept.deptNum, dept.grade, row)
         }
         // console.log(val, row, item)
         // const dept = row.deptSubOptions.find(item => item.value === val)

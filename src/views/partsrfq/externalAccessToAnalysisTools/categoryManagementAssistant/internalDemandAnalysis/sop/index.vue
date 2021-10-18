@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-16 14:51:40
- * @LastEditTime: 2021-09-13 14:07:01
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-09-30 13:24:11
+ * @LastEditors: zbin
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\sop\index.vue
 -->
@@ -99,6 +99,7 @@ export default ({
       async save(){
          const resFile = await this.getDownloadFileAndExportPdf({
             domId: 'sop',
+            watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
             pdfName:'品类管理助手_SOP进度轴_' + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
          });
          let params={

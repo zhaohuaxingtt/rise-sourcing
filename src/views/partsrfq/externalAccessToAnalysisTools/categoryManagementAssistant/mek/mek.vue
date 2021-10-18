@@ -30,7 +30,7 @@
     <iCard class="margin-top20">
         <div  class="margin-bottom20 clearFloat">
           <span  class="font18 font-weight" >{{$t('MEK分析库')}}</span>
-          <div class="floatright" v-if="!disabled">
+          <div class="floatright">
           <div v-if="!edit">
             <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
             <iButton @click="handleAdd">{{ $t("LK_XINZENG") }}</iButton>
@@ -47,7 +47,7 @@
       <!-- </template> -->
       <el-table v-loading="tableLoading" tooltip-effect='light' ref="multipleTable" :data="tableListData" style="width: 100%; margin-bottom: 20px" row-key="id" :max-height="450" :row-class-name="rowStyle" :tree-props="{ children: 'reportList' }" @selection-change="handleSelectionChange" @select="rowSelect" @select-all="selectAll">
         <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column label="#" type="index" :index="indexMethod" align="center" header-align="center" width="40">
+        <el-table-column label="#" type="index" :index="indexMethod" align="center" header-align="center" width="60">
         </el-table-column>
         <el-table-column align="center" header-align="center" :label="$t('TPZS.FXMC')" width="450">
           <template slot-scope="scope">
@@ -181,12 +181,6 @@ export default {
       updatedDefault: false //是否已更新默认项
     };
   },
-  inject: ['getDisabled'],
-  computed: {
-    disabled() {
-      return typeof this.getDisabled === "function" ? this.getDisabled() : false
-    }
-  },
   created() {
     this.initData()
   },
@@ -220,6 +214,7 @@ export default {
           path: "/sourcing/mek/mekDetails",
           query: {
             chemeId: res.data,
+            productFactoryNames:params.productFactoryNames
           },
         })
       })
