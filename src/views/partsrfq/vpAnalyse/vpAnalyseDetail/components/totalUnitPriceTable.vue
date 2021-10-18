@@ -12,7 +12,7 @@
           <!--新增-->
           <iButton @click="handleAdd">{{ $t('LK_XINZENG') }}</iButton>
           <!--删除-->
-          <iButton @click="handleDelete">{{ $t('delete') }}</iButton>
+          <iButton @click="handleDelete">{{ $t('LK_SHANCHU') }}</iButton>
           <!--取消-->
           <iButton @click="handleCancel">{{ $t('LK_QUXIAO') }}</iButton>
           <!--完成-->

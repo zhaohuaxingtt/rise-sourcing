@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="caexpan-card">
-    <div class="tit">2 Bentchmark - Investment(RMB)</div>
+    <div class="tit">2 Benchmark - Investment(RMB)</div>
     <div class="caexpan-card-body">
       <el-table
         fit
