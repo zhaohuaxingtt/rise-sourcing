@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-09 15:42:14
+ * @LastEditTime: 2021-10-18 17:01:13
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -18,7 +18,7 @@
         <iButton @click="gotoSechedule">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
         <iButton @click="handleSendFs" v-if="partStatus == 2 || partStatus == 3">{{language('FASONGJINDUQUEREN', '发送进度确认')}}</iButton> 
         <iButton @click="openDelayReasonDialog" v-if="[3,2,5,6].includes(Number(partStatus))" >{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
-        <iButton @click="handleExport" v-if="[1].includes(Number(partStatus))" :loading="downloadLoading">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
+        <iButton @click="handleExport" :loading="downloadLoading">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
     <div class="partListView-content"> 
@@ -187,6 +187,9 @@ export default {
   },
   methods: {
     async handleExport() {
+      if (this.partStatus != 1) {
+        return
+      }
       if (this.selectPart.length < 1) {
         iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
         return
