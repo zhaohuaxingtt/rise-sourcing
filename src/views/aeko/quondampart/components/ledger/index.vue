@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-10-18 15:57:01
+ * @LastEditTime: 2021-10-18 16:01:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -249,19 +249,13 @@ export default {
 
       this.$refs.aekoList.getList('isRest');
 
-      let params = {
+      getAekoOriginPartInfo({
+        ...this.form,
         objectAekoPartId: this.objectAekoPartId,
         current: this.page.currPage,
         size: this.page.pageSize,
-        // partNum: this.oldPartNumPreset ? this.oldPartNumPreset : undefined
-      }
 
-      params = {
-        ...this.form,
-        ...params
-      }
-
-      getAekoOriginPartInfo(params)
+      })
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
@@ -290,7 +284,7 @@ export default {
     },
     reset() {
       this.page.currPage = 1
-      this.form = cloneDeep({ ledgerQueryForm, factoryCode: this.factoryDisabled ? this.form.factoryCode : ""})
+      this.form = cloneDeep({ ledgerQueryForm, factoryCode: this.factoryDisabled ? this.form.factoryCode : "",partNum: this.oldPartNumPreset ? this.oldPartNumPreset : undefined})
       this.objectAekoPartId = this.$route.query.objectAekoPartId
       // this.getAekoOriginPartInfo()
     },
