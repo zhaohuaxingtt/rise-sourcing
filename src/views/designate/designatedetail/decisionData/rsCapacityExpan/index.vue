@@ -93,8 +93,7 @@ export default {
       InvestmentData: [],
       PartTableData: [],
       yearList: [],
-      assesmentList: []
-
+      assesmentList: [],
     }
   },
   computed: {

@@ -1,5 +1,5 @@
 <template>
-  <iDialog class="dialog" :title="`${language('LK_FUJIANLIEBIAO','附件列表') }（${language('LK_DANGQIANBANBEN','当前版本') } ：${ params.version }）`" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="dialog" :title="`${language('LK_FUJIANLIEBIAO','附件列表') }（${language('LK_DANGQIANBANBEN','当前版本') } : V${ params.version }）`" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
       <div class="control" id="control">
         <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRYDIALOG_DOWNLOAD">{{ language('LK_XIAZAI','下载') }}</iButton>
