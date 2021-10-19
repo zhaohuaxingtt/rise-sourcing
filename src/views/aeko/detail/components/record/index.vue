@@ -9,14 +9,15 @@
       {{ language("SHENPIJILU", "审批记录") }}
     </span>
     <div class="editControl floatright margin-bottom20">
-      <iButton class="" @click="submit">
+      <iButton class="" @click="submit" v-if="alowSubmit">
         {{ language("TIJIAO", "提交") }}
       </iButton>
     </div>
     <tablelist
+      class="margin-top15"
       height="400"
       index
-      :selection="true"
+      :selection="alowSubmit"
       :tableData="tableListData"
       :tableTitle="tableTitle"
       :tableLoading="tableLoading"
@@ -31,15 +32,18 @@
           </a>
         </div>
       </template>
-      <template #comment="scope">
-        <iInput v-if="!scope.row.disabled" v-model="scope.row.comment" type="textarea" rows="2" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
-        <span v-else>{{scope.row.comment}}</span>
+      <template #akeoAuditType="scope">
+        {{getAdiType(scope.row.akeoAuditType)}}
+      </template>
+      <template #explainReason="scope">
+        <iInput v-if="!scope.row.disabled" v-model="scope.row.explainReason" type="textarea" rows="2" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+        <span v-else>{{scope.row.explainReason}}</span>
       </template>
       <template #attach="scope">
-        <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row)" v-if="!scope.row.disabled">
+        <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row, false)" v-if="!scope.row.disabled">
           {{ language("LK_SHANGCHUAN", "上传") }}
         </a>
-        <a class="link-underline" href="javascript:;" v-else>
+        <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row, true)" v-else>
           {{ language("CHAKAN", "查看") }}
         </a>
       </template>
@@ -60,6 +64,7 @@
     </div>
     <!-- 上传附件弹窗 -->
     <iFileDialog
+      width="800"
       :title="language('JIESHIFUJIANCHAKAN', '解释附件查看')"
       :visible.sync="attachDialogVisibal"
       :hostId="attachAekoCode"
@@ -70,13 +75,13 @@
       :customizeTableTitle="attachTableTitle"
       :editControl="['delete','upload']"
       :activeItems="'fileName'"
-      :readOnly="false" />
+      :readOnly="attachReadOnly" />
   </iCard>
 </template>
 
 <script>
 import Vuex from 'vuex'
-import {approveReCordTableTitle as tableTitle} from '../data'
+import {approveReCordTableTitle as tableTitle, aekoApproveTypes} from '../data'
 import {attachTableTitle} from './components/data'
 import iFileDialog from 'rise/web/components/iFile/dialog'
 import tablelist from 'rise/web/components/iFile/tableList'; 
@@ -107,6 +112,10 @@ export default {
 		...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
     }),
+    // 是否允许提交
+    alowSubmit() {
+      return true
+    }
 	},
   props:{
     aekoInfo:{
@@ -120,23 +129,31 @@ export default {
       tableListData: [],
       tableSelecteData: [],
       tableLoading: false,
+      // 解释记录
+      tableExplainData: [],
       // 自定义解释附件表头
       attachTableTitle,
       // 附件弹窗
       attachDialogVisibal: false,
       attachAekoCode: '',
+      attachReadOnly: false,
       currentRow: {}
     };
   },
   mounted() {
+    // 查询审批数据
     this.getFetchData()
   },
   methods: {
+    getAdiType(code) {
+      return aekoApproveTypes.find(o => o.id === code) ?.name || ''
+    },
     handleSelectionChange(val) {
       this.tableSelecteData = val
     },
-    openUploadDialog(row) {
+    openUploadDialog(row, attachReadOnly) {
       console.log('openUploadDialog', row)
+      this.attachReadOnly = attachReadOnly
       if (!row.taskId) {
         iMessage.error(this.language('TASKIDBUNENGWEIKONG','TASK ID 不能为空'))
         return
@@ -149,27 +166,72 @@ export default {
       this.attachAekoCode = row.aekoCode
       this.currentRow = row
     },
+    async getFetchData() {
+      this.tableLoading = true
+      await this.getexplainList()
+      this.getData()
+    },
+    /**
+     * @description: 获取解释记录
+     * @param {*}
+     * @return {*}
+     */    
+    async getexplainList() {
+      const parmas = Object.assign({
+        applyUserId: String(this.userInfo.id) || '',
+        currentUserId: String(this.userInfo.id) || '',
+        aekoNo: this.aekoInfo.aekoCode || '',
+        hasParentTaskId: true,
+        pageNo: 1,
+        pageSize: 1000
+      })
+      try {
+        const res = await findHistoryByAeko(parmas)
+        if (res.code === '200') {
+          // 审批解释列表
+          this.tableExplainData = (res.data && res.data.records || []).filter(o => o.parentTaskId)
+        } else {
+          this.tableExplainData = []
+        }
+      } catch {
+        this.tableLoading = false
+        this.tableExplainData = []
+      }
+    },
     /**
      * @description: 获取数据列表
      * @param {*}
      * @return {*}
      */    
-    getFetchData() {
-      console.log(this.aekoInfo)
+    getData() {
+      console.log('init', this.aekoInfo, this.tableExplainData)
       const parmas = Object.assign({
         applyUserId: String(this.userInfo.id) || '',
         currentUserId: String(this.userInfo.id) || '',
         aekoNo: this.aekoInfo.aekoCode || '',
+        hasParentTaskId: false,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize
       })
       this.tableLoading = true
       findHistoryByAeko(parmas).then(res => {
+        // parId字段
+        const parId = 'parentTaskId'
         if (res.code === '200') {
-          const tableListData = (res.data && res.data.records || []).map(o => {
-            o.disabled = Boolean(o.comment)
+          // 审批记录列表
+          let tableListData = (res.data && res.data.records || []).map(o => {
+            // 封面表态处于
+            o.disabled = !this.alowSubmit
+            const tar = this.tableExplainData.find(item => item[parId] === o.id)
+            if (tar) {
+              // 写入审批解释
+              o.explainReason = tar.comment
+              // 写入可编辑状态，只要有parId && 封面表态状态 均不可编辑 
+              o.disabled = true
+            }
             return o
           })
+          tableListData = tableListData.filter(o => !o[parId])
           console.log('tableListData',res.data, tableListData)
           this.tableListData = tableListData
           this.page.totalCount = res.data.total
@@ -177,7 +239,6 @@ export default {
           this.tableListData = []
           // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
-        console.log('-----', res)
         this.tableLoading = false
         
       }).catch(e => {
@@ -200,18 +261,18 @@ export default {
 				return
 			}
       let parmas = this.tableSelecteData.map(o => {
-        if (state && !o.comment) {
+        if (state && !o.explainReason) {
           state = false
           info = this.language('SHENPIYIJIANANDJIESHIBUNENGWEIKONG','审批意见/申请人解释不能为空')
         }
-        state && !o.comment && (state = false)
+        state && !o.explainReason && (state = false)
         return {
           workFlowId: o.processInstanceId,
           taskId: o.taskId,
           // workFlowId: '1075838',
           // taskId: '1075873',
           auditUserId: this.userInfo.id,
-          explainReason: o.comment || '',
+          explainReason: o.explainReason || '',
           addMaterialUserId: this.userInfo.id,
         }
       })

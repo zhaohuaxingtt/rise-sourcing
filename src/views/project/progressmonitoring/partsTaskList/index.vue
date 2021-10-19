@@ -27,7 +27,7 @@
     </iSearch>
     <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">{{language('CHANPINZUJINDUQUERENHUIZONG', '零件任务清单更新')}}</span>
+        <span class="font18 font-weight">{{language('LINGJIANRENWUQINGDANGENGXIN', '零件任务清单更新')}}</span>
         <div class="floatright">
           <!--------------------处理按钮----------------------------------->
           <iButton  @click="handleBatchUpdate" >{{language('PILIANGXIUGAIZHUANGTAI','批量修改状态')}}</iButton>
@@ -48,12 +48,17 @@
       />
     </iCard>
 
-    <iDialog :visible.sync="dialogVisible" title="请选择零件分类"  @close="clearDialog"  width="20%" >
+    <iDialog :visible.sync="dialogVisible" title="零件分类"  @close="clearDialog"  width="20%" >
       <div >
-        <iSelect  :filterable="false" v-model="dialogPartSort" :placeholder="language('QINGXUANZE', '请选择')">
-          <el-option  v-for="item in selectOptions['partTaskPartSort']" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </iSelect>
+        <el-form>
+
+          <el-form-item :label="language('XUANZHELINGJIANFENLEI','选择零件分类')">
+            <iSelect  :filterable="false" v-model="dialogPartSort" :placeholder="language('QINGXUANZE', '请选择')">
+              <el-option  v-for="item in selectOptions['partTaskPartSort']" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </iSelect>
+          </el-form-item>
+        </el-form>
       </div>
 
       <div slot="footer" class="dialog-footer">
@@ -135,15 +140,24 @@ export default {
       console.log(this.batchUpdataMap);
 
       const partTaskDTOS = [];
+      let isMessage = '1';
+
 
       for(let [key,item] of this.batchUpdataMap){
         console.log(item);
+        if(item.partSort == 5){
+          isMessage ='2'
+        }
         partTaskDTOS.push({ id:item.id, partSort:item.partSort, })
       }
 
       updatePartInfoList(partTaskDTOS).then(res => {
         if (res?.result) {
           this.getTableList();
+          if(isMessage == '2'){
+            iMessage.success(this.language('BAOCUNCHENGGONJINRUHOUXUJIANKONMOKUAI','保存成功，[正常零件]已进入后续监控模块！'));
+            return
+          }
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }

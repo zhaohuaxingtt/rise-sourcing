@@ -18,12 +18,12 @@
           <template v-for="(item, $index) in tableTitle">
             <el-table-column v-if="$index == 0"  :key="$index" align="center" :label="item.name">
               <template slot-scope="scope">
-                  <iInput v-model="scope.row[item.props]" @input="isStartYear(item.props)"></iInput>
+                  <iInput v-model="scope.row[item.props]"   @input="isStartYear($event,item.props)" maxlength="4" size="4"></iInput>
               </template>
             </el-table-column>
-            <el-table-column v-else :key="$index" align="center" :prop="numStart -0 +$index -1" :label="item.name">
+            <el-table-column v-else :key="$index" align="center" :prop="item.props" :label="item.name">
               <template slot-scope="scope">
-                <iInput v-model="scope.row[numStart -0 +$index -1]"  @input="handleInput($event, numStart -0 +$index -1)"></iInput>
+                <iInput v-model="scope.row[item.props]"  @input="handleInput($event,item.props)"></iInput>
               </template>
             </el-table-column>
           </template>
@@ -35,7 +35,7 @@
 
 <script>
 import {iDialog, iButton, iInput, iMessage} from 'rise'
-import {batchMaintainTableTitle as tableTitle} from './data'
+import {getPlanyear} from './data'
 import {batchMaintainOutPutPlan} from '@/api/partsprocure/editordetail'
 import { cloneDeep } from 'lodash'
 export default {
@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      tableTitle: cloneDeep(tableTitle),
+      tableTitle: [],
       tableListData:[
         {
           startyear:''
@@ -60,47 +60,48 @@ export default {
       numStart:''
     }
   },
+  created(){
+    this.tableTitle = getPlanyear()
+  },
   methods: {
     clearDiolog() {
       this.$emit('changeVisible', false)
-      console.log('11');
     },
     apply() {
-      let testYear = /^\d{4}$/
-      this.startYear = this.tableListData[0].startyear
-      let isYear = testYear.test(this.startYear)
-      if(isYear == false) {
+      let yearOutputDTOsdata = []
+      let templateTableList = cloneDeep(this.tableListData)|| []
+      templateTableList.forEach(val => {
+        Object.keys(val).filter(re => re != 'startyear').forEach(value => {
+          const maps = {
+            year:(val.startyear-0)+(value-0),
+           output:val[value]
+          }
+          yearOutputDTOsdata.push(maps)
+        })
+      })
+      console.log(this.tableListData[0].startyear);
+      console.log(this.tableListData[0]);
+      if(this.tableListData[0].startyear == '') {
         return iMessage.warn(
           this.language(
-            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOPILIANGWEIHUCHANLIANGJIHUADEXIANGMU",
-            '抱歉，您当前还未选择您需要批量维护产量计划的项目！'
+            "LK_NINSHANGWEISHURUKAISHINIANFEN",
+            '抱歉，您尚未输入开始年份'
           )
         )
-      } 
-      let Yeardata = this.tableListData[0]
-      let yearOutputDTOs =[]
-      for(let item in Yeardata) {
-        yearOutputDTOs.push()
-        let itemdata = {}
-        itemdata.year = item
-        itemdata.output = Yeardata[item]
-        if( itemdata.year != 'startyear') {
-          yearOutputDTOs.push(itemdata)
-        }
+      } else{
+          let batchMaintainOutPutPlanDTO  = {}
+          batchMaintainOutPutPlanDTO.purchasingProjectIds = this.openPlanItemsIds
+          batchMaintainOutPutPlanDTO.yearOutputDTOs = yearOutputDTOsdata
+          batchMaintainOutPutPlan(batchMaintainOutPutPlanDTO).then(res=>{
+        })
       }
-      let batchMaintainOutPutPlanDTO  = {}
-      batchMaintainOutPutPlanDTO.purchasingProjectIds = this.openPlanItemsIds
-      batchMaintainOutPutPlanDTO.yearOutputDTOs = yearOutputDTOs
-      batchMaintainOutPutPlan(batchMaintainOutPutPlanDTO).then(res=>{
-        console.log(res);
-      })
-      console.log(batchMaintainOutPutPlanDTO);
+
     },
-    isStartYear() {
-      this.numStart = this.tableListData[0].startyear-0
+    isStartYear(val,key) {
+      this.tableListData[0][key] = (val + '').replace(/\D/g, '')
     },
     handleInput(val,key) {
-      this.tableListData[0][key] = (val + '').replace(/\D/g, '').replace(/([0]*)(0|[1-9]+[0-9]+)/, "$2")
+      this.tableListData[0][key] = (val + '').replace(/[^\d.]/g, '').replace(/^\./g,'').replace(/\.{2,}/g,'.'). replace(".", "$#$").replace(/\./g, "").replace("$#$", ".").replace(/^(\-)*(\d+)\.(\d\d\d\d\d\d).*$/, "$1$2.$3")
     }
   }
 }

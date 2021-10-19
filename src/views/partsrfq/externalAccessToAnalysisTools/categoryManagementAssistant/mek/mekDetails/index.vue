@@ -226,21 +226,15 @@
                                 width="80"
                                 trigger="click"
                                 visible-arrow
-                                class="margin-bottom20">
+                                class="margin-bottom20" @show="onCarLevelVisible = true" @hide="onCarLevelVisible = false">
                       <car-level-select :motor-id="item.motorId" :car-level-options="carLevelOptions[item.motorId]" 
                         :org-checked="checkedCarLevelOptions[item.motorId]" @option-changed="changeCheckList">
                       </car-level-select>
-                      <!-- <el-checkbox-group v-model="checkedCarLevelOptions[item.motorId]"
-                      //                    class="checkList"
-                      //                    @change="changeCheckList(item)">
-                      //   <el-checkbox v-for="(i, index) in carLevelOptions[item.motorId]"
-                      //                :key="index"
-                      //                :label="i"></el-checkbox>
-                      // </el-checkbox-group> -->
 
-                      <div class="motorName"
+                      <div class="motor-selection"
                            slot="reference">
-                        {{ item.motorName }}
+                        <span style="color: #4D4F5C;font-size: 0.875rem;">{{ item.motorName }}</span>
+                        <span :class="onCarLevelVisible ? 'el-icon-arrow-up' : 'el-icon-arrow-down'" style="color:#AAAAAA;font-size:0.75rem;"></span>
                       </div>
                     </el-popover>
                     <span class="margin-bottom20 motorName"
@@ -523,7 +517,8 @@ export default {
       ComparedMotorName: [],
       checkAllList: [],
       carLevelOptions: {},
-      checkedCarLevelOptions: {}
+      checkedCarLevelOptions: {},
+      onCarLevelVisible: false
     };
   },
   async created () {
@@ -1199,6 +1194,9 @@ export default {
       this.getHistogram(params);
       // this.getMekTable();
     },
+    onCarLevelShow() {
+      this.onCarLevelVisible = true;
+    },
 
     getHistogram (params) {
       const loading = this.$loading({
@@ -1219,9 +1217,9 @@ export default {
             data.forEach((item) => {
               maxWidthList.push(item.detail.length);
               if (item.detail.length === 1 || item.detail.length === 0) {
-                this.totalWidth = 240 * data.length;
+                this.totalWidth = 200 * data.length;
               } else {
-                this.totalWidth += item.detail.length * 100;
+                this.totalWidth += item.detail.length * 75;
               }
               item.detail.forEach((i) => {
                 maxList.push(parseInt(i.value));
@@ -1232,7 +1230,7 @@ export default {
             } else {
               this.clientHeight = false;
             }
-            this.totalWidth = this.totalWidth + 100 + "px";
+            this.totalWidth = this.totalWidth + 75 + "px";
             this.maxData = _.max(maxList).toString();
             let first = Number(this.maxData.slice(0, 1)) + 1;
             for (let i = 0; i < this.maxData.length - 1; i++) {
@@ -1565,6 +1563,18 @@ export default {
 .motorName {
   font-size: 16px;
   height: 32px;
+}
+.motor-selection {
+  font-size: 16px;
+  height: 32px;
+  width: 150px;
+  border: 0.0625rem solid #E0E6ED;
+  border-radius: 5px;
+  padding: 0 5px;
+  display:flex;
+  flex-flow:row nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 ::v-deep .el-select {
   width: 100%;

@@ -1,14 +1,14 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-10-13 12:28:59
+ * @LastEditTime: 2021-10-19 16:34:02
  * @LastEditors: Hao,Jiang
  * @Description: Bentchmark - Investment(RMB) 
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/investment.vue
 -->
 <template>
   <div class="caexpan-card">
-    <div class="tit">2 Bentchmark - Investment(RMB)</div>
+    <div class="tit">2 Benchmark - Investment(RMB)</div>
     <div class="caexpan-card-body">
       <el-table
         fit
@@ -27,7 +27,7 @@
         <el-table-column
           align='center'
           prop="nomiRecordInvestmentFee"
-          label="CSC-Investition">
+          label="CSC-Investment">
         </el-table-column>
         <el-table-column
           align='center'

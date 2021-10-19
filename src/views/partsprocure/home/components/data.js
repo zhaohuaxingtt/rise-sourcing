@@ -41,6 +41,14 @@ export const tableTitle = [{
 		width:100,
 		isAekoShow:true,
 	},
+	{
+		props: 'mtz',
+		name: 'MTZ',
+		key: 'partsprocure.mtz',
+		tooltip: true,
+		width:100,
+		isAekoShow:true,
+	},
 	// {
 	// 	props: 'statusName',
 	// 	name: '项目状态',
@@ -155,20 +163,18 @@ export const validateProjectConfig = [
 
 export const batchMaintainTableTitle = [
 	{props: 'startyear', name: '开始年份',Key: 'LK_KAISHINIANFEN' },
-	{props: 'zero', name: '+0' },
-	{props: 'one', name: '+1' },
-	{props: 'two', name: '+2'},
-	{props: 'three', name: '+3'},
-	{props: 'fore', name: '+4'},
-	{props: 'five', name: '+5'},
-	{props: 'six', name: '+6' },
-	{props: 'seven', name: '+7'},
-	{props: 'eight', name: '+8'},
-	{props: 'nine', name: '+9' },
-	{props: 'ten', name: '+10' },
-	{props: 'eleven', name: '+11' },
-	{props: 'twelve', name: '+12' },
-	{props: 'thirteen', name: '+13' },
-	{props: 'fourteen', name: '+14' }
 ]
+
+// 
+export function getPlanyear(defaultNumberMax=15){
+	for(let i = 0;i < defaultNumberMax;i++){
+		const maps= {}
+		maps.props = i;
+		maps.name = '+'+i;
+		batchMaintainTableTitle.push(maps)
+		console.log(maps);
+	}
+	return batchMaintainTableTitle
+}
+
 
