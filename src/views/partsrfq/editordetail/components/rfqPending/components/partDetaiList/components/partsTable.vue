@@ -100,7 +100,9 @@ export default {
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
-          this.tableListData = res.data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) || []
+          let data = res.data
+          data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = ''})
+          this.tableListData = data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) || []
           // this.$forceUpdate()
         }).catch(() => this.tableLoading = false)
     },

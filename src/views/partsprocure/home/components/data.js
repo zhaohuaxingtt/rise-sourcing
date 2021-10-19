@@ -41,6 +41,14 @@ export const tableTitle = [{
 		width:100,
 		isAekoShow:true,
 	},
+	{
+		props: 'mtz',
+		name: 'MTZ',
+		key: 'partsprocure.mtz',
+		tooltip: true,
+		width:100,
+		isAekoShow:true,
+	},
 	// {
 	// 	props: 'statusName',
 	// 	name: '项目状态',
@@ -160,14 +168,12 @@ export const batchMaintainTableTitle = [
 // 
 export function getPlanyear(defaultNumberMax=15){
 	for(let i = 0;i < defaultNumberMax;i++){
-		console.log(i);
 		const maps= {}
 		maps.props = i;
 		maps.name = '+'+i;
 		batchMaintainTableTitle.push(maps)
 		console.log(maps);
 	}
-	console.log(batchMaintainTableTitle,'1');
 	return batchMaintainTableTitle
 }
 

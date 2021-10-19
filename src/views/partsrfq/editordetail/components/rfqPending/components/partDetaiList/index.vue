@@ -107,8 +107,20 @@ export default {
     }
 
     await this.getTableList()
+    this.queryForm.buyerId = this.$store.state.permission.userInfo.id
     if(this.queryForm.buyerId != undefined){
-    this.$refs.partsTable && this.$refs.partsTable.getTableList() 
+        this.$refs.partsTable && this.$refs.partsTable.getTableList() 
+    }
+  },
+  watch:{
+    disabled(val){
+      if(!val) {
+        this.$nextTick(() => {
+          if(this.queryForm.buyerId != undefined){
+            this.$refs.partsTable && this.$refs.partsTable.getTableList() 
+          }
+        })
+      }
     }
   },
   inject: ['getbaseInfoData', 'getDisabled'],
@@ -131,7 +143,7 @@ export default {
       kmDialogVisible: false,
       partProjTypes,
       queryForm: {
-         buyerId:this.$store.state.permission.userInfo.id
+         buyerId:''
       },
       partNumList: "",
       
@@ -209,6 +221,7 @@ export default {
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
+          res.data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = ''})
           this.tableListData = Array.isArray(res.data) ? res.data : []
           if (this.tableListData.length) {
             this.queryForm = {
