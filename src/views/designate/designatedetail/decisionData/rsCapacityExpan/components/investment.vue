@@ -27,7 +27,7 @@
         <el-table-column
           align='center'
           prop="nomiRecordInvestmentFee"
-          label="CSC-Investition">
+          label="CSC-Investment">
         </el-table-column>
         <el-table-column
           align='center'

@@ -21,6 +21,7 @@
     <!-- footer -->
     <div class="caexpan-footer">
       <span><strong>{{language('TOTALINVESTMENTVAT','Total investment(Excl VAT)不含税')}}：</strong>
+      {{totalInvestment}}
         <!-- {{language('TOTALINVESTMENTVATINFO','小于100万，签到CS,大于100万，签到M')}} -->
       </span>
       <span><strong>Developing period：</strong>
@@ -92,8 +93,8 @@ export default {
       InvestmentData: [],
       PartTableData: [],
       yearList: [],
-      assesmentList: []
-
+      assesmentList: [],
+      totalInvestment:''
     }
   },
   computed: {
@@ -125,6 +126,7 @@ export default {
           // 
           this.assesmentList = res.data.capacityExpEconomicAssessmentVOList || []
           this.yearList = res.data.capacityExpCarTypeProPlanVOList || []
+          this.totalInvestment = res.data.totalInvestment
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

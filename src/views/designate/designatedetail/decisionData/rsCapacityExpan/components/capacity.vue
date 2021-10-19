@@ -145,7 +145,7 @@ export default {
         {
           capa: 'Capa.',
           gid: 1,
-          name: 'Alter Invested'
+          name: 'After Invested'
         },
         {
           capa: 'Capa.',
