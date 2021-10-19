@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-10-15 14:59:26
+ * @LastEditTime: 2021-10-19 16:36:12
  * @LastEditors: Hao,Jiang
  * @Description: part Infomation
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/partInfomation.vue
@@ -38,6 +38,7 @@
           align='center'
           prop="eimzl"
           label="Einzel/ZSB.">
+          <template slot-scope="scope">{{scope.row.eimzl || 'ZSB'}}</template>
         </el-table-column>
         <!-- 横向排列 重复一遍 -->
         <el-table-column
@@ -59,6 +60,7 @@
           align='center'
           prop="eimzl1"
           label="Einzel/ZSB.">
+          <template slot-scope="scope">{{scope.row.eimzl1 || 'ZSB'}}</template>
         </el-table-column>
       </el-table>
     </div>
