@@ -437,7 +437,7 @@ export default {
         .then((res) => {
           this.tableLoading = false;
           this.page.totalCount = res.total || 0
-          res.data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = '1'})
+          res.data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = ''})
           this.tableListData = res.data;
         })
         .catch(() => (this.tableLoading = false));

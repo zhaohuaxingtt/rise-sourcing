@@ -2,7 +2,7 @@
   <iCard
     class="volume"
     tabCard
-    :title="`${language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}（${ language('LK_DANGQIANBANBEN','当前版本') } ：${version}）`"
+    :title="`${language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`"
   >
     <div class="body">
       <tableList

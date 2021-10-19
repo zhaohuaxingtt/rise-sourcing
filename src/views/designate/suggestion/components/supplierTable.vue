@@ -3,6 +3,10 @@
       <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
           <span v-if="!nominationDisabled && !rsDisabled">
+            <!-- 创建MTZ申请 -->
+            <iButton @click="handlecreatemtz">
+              {{ language("LK_CREATEMTZREQUEST",'创建MTZ申请') }}
+            </iButton>
             <!-- 批量编辑 -->
             <iButton @click="handleBatchEdit">
               {{ language("LK_BATCHEDIT",'批量编辑') }}
@@ -398,6 +402,7 @@ export default {
           // this.data = this.data.slice(0, 4)
           this.data.map(o => {
             !o.sid && (o.sid = this.randomid())
+            o.mtz == 'true' ? o.mtz = '是' : o.mtz = '否'
             return
           })
           this.page.totalCount = res.total || this.data.length
@@ -433,6 +438,18 @@ export default {
       this.supplierIds = _.uniq(this.supplierIds)
 
       this.mouldVisibal = true
+    },
+    // 创建MTZ申请
+    handlecreatemtz() {
+      if(!this.selectData.length) {
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+        return
+      } else {
+        //nom为定点申请单id；item为采购项目id
+        let nom
+        let item
+        window.open(`http://10.122.17.38/portal/#/mtz/create?nomi=`+nom+`&item=`+item)
+      }
     }
   }
 }
