@@ -1,7 +1,7 @@
 /*
  * @Author: YoHo
  * @Date: 2021-10-11 17:18:47
- * @LastEditTime: 2021-10-16 13:59:31
+ * @LastEditTime: 2021-10-19 18:20:08
  * @LastEditors: YoHo
  * @Description: 
  */
@@ -10,7 +10,7 @@ export const SummaryTableTitle = [
   { prop: 'index', label: '#', labelKey: '#', width: '70', children: [] },
   { prop: 'partNum', label: 'AEKO零件号', width: '140', labelKey: 'AEKOLINGJIANHAO', children: [] },
   { prop: 'typeName', label: '类别', width: '140', labelKey: 'LEIBIE', children: [] },
-  { prop: 'originContent', label: '内容', width: '140', labelKey: 'NEIRONG', children: [] },
+  { prop: 'newContent', label: '内容', width: '140', labelKey: 'NEIRONG', children: [] },
   {
     label: '原零件', labelKey: 'YUANLINGJIAN', children: [
       { prop: 'originPartNum', label: '原零件号', width: '120', labelKey: 'YUANLINGJIANHAO', children: [] },
@@ -148,7 +148,7 @@ export const profitTableTitle = [
 ]
 // 是否为“新”数据
 export const originRowClass = function ({ row }) {
-  return !row.partCbdType ? "originRow" : "isNewRow"
+  return row.partCbdType!=1 ? "isNewRow" : "originRow"
 }
 // 是否为“TOTAL”数据
 export const totalRowClass = function ({ row }) {
