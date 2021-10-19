@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-19 19:53:28
+ * @LastEditTime: 2021-10-19 20:28:02
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -333,7 +333,7 @@ export default {
               selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
               fs, 
               fsId,
-              confirmDateDeadline: moment(this.replyEndDate).format('YYYY-MM-DD'), 
+              confirmDateDeadline: moment(item.replyEndDate).format('YYYY-MM-DD'), 
               partNum: item.partNum, 
               partName: item.partNameZh, 
               delayWeek: item.delayWeeks,
