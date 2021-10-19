@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-19 18:23:09
+ * @LastEditTime: 2021-10-19 20:45:11
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -99,6 +99,7 @@
             v-for="(component, $componentIndex) in tab.components"
             :class="$componentIndex !== 0 ? 'margin-top20' : ''"
             :Data="aPriceChangeData"
+            :apriceChange="apriceChangeVal"
             :key="$componentIndex"
           />
         </template>
@@ -136,6 +137,8 @@ export default {
       SummaryTitle: SummaryTableTitle,
       currentTab: "aPriceChange",
       aPriceChangeData: {},
+      aPriceChangeObj:{},
+      partsId:'',
       typeObj: {
         material: {
           seq: "2.1",
@@ -226,13 +229,15 @@ export default {
       quotationId: "",
     };
   },
+  computed:{
+    apriceChangeVal(){
+      return this.aPriceChangeObj[this.partsId]?.toFixed(4) || 0
+    }
+  },
   created() {
     this.queryParams = this.$route.query;
     let str_json = window.atob(this.queryParams.transmitObj);
     let transmitObj = JSON.parse(decodeURIComponent(escape(str_json)));
-    // let workFlowId = JSON.parse(
-    //   sessionStorage.getItem("AEKO-APPROVAL-DETAILS-ITEM")
-    // )?.aekoApprovalDetails?.workFlowDTOS[0].workFlowId;
     this.workFlowId =
       transmitObj.aekoApprovalDetails.workFlowId ||
       transmitObj.aekoApprovalDetails.workFlowDTOS[0].workFlowId ||
@@ -259,7 +264,7 @@ export default {
       this.$nextTick(() => {
         const component =
           this.$refs[this.currentTab] && this.$refs[this.currentTab][0];
-        if (typeof component.init === "function") component.init();
+        if (component && typeof component.init === "function") component.init();
       });
     },
     // 获取汇总表数据
@@ -267,27 +272,24 @@ export default {
       alterationCbdSummary({ workFlowId: this.workFlowId }).then((res) => {
         if (res?.code === "200") {
           let data = res?.data || [];
-          console.log(res);
-          console.log(data);
-          let obj = {};
+          let aPriceChangeObj = {};
           data.length &&
             data.forEach((item, index) => {
               item.index = 1+index;
-              obj[item.partNum]
-                // ? (obj[item.partNum] += item.alteration)
-                ? (obj[item.partNum] = math.add(obj[item.partNum], math.bignumber(item.alteration || 0)))
-                : (obj[item.partNum] = math.bignumber(item.alteration || 0));
+              aPriceChangeObj[item.quotationId]
+                ? (aPriceChangeObj[item.quotationId] = math.add(aPriceChangeObj[item.quotationId], math.bignumber(item.alteration || 0)))
+                : (aPriceChangeObj[item.quotationId] = math.bignumber(item.alteration || 0));
             });
-          Object.keys(obj).forEach((key) => {
+          Object.keys(aPriceChangeObj).forEach((key) => {
             let item = {
               index: "",
               partNum: key,
-              total: "RMB " + (+obj[key]).toFixed(4),
+              total: "RMB " + (+aPriceChangeObj[key]).toFixed(4),
             };
             data.push(item);
           });
+          this.aPriceChangeObj = aPriceChangeObj
           this.tableData = data.sort((a, b) => a.partNum - b.partNum);
-          console.log(this.tableData);
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
@@ -295,6 +297,7 @@ export default {
     },
     // 获取A价变动其它数据
     getCbdDataQuery(partsId) {
+      this.partsId = partsId
       this.loading = true;
       if (!partsId) {
         this.hasData = false;

@@ -26,7 +26,7 @@
             size="small"
             >{{language(item.key, item.name)}}</el-radio>
 				</el-radio-group>
-        <el-form-item :label="`${language('XUANZEHUIYIJIEGUO','选择会议结果')}:`">
+        <!-- <el-form-item :label="`${language('XUANZEHUIYIJIEGUO','选择会议结果')}:`">
           <el-radio-group v-model="meetingResult">
             <el-radio
               v-for="(item, index) in meetingResultArray"
@@ -35,7 +35,7 @@
               size="small"
               >{{language(item.key, item.name)}}</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
       </el-form-item>
       </el-form>
       <div class="dialog-form-sbtn">
