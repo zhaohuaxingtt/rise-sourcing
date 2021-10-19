@@ -9,7 +9,7 @@
 <template>
   <iCard class="volume">
     <div class="header clearFloat">
-      <span class="title">{{ language('LK_MEICHEYONGLIANG','每车用量') }}（{{ language('LK_DANGQIANBANBEN','当前版本') }} ：{{ version }}）</span>
+      <span class="title">{{ language('LK_MEICHEYONGLIANG','每车用量') }}（{{ language('LK_DANGQIANBANBEN','当前版本') }} : V{{ version }}）</span>
       <div class="control">
         <iButton @click="jump" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_ALL">{{ language('LK_CHAKANQUANBUBANBEN','查看全部版本') }}</iButton>
         <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT">{{ language('LK_DAOCHU','导出') }}</iButton>

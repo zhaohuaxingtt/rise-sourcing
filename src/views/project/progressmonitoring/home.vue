@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-15 14:02:46
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-19 15:13:06
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -65,11 +65,11 @@
          <iFormGroup row="4" class="form">
             <iFormItem>
               <span slot="label">{{language('WEIJINTIPSBIAO', '未进TIPS表')}}:</span>
-              <span class="cursor" @click="toPartList(1)"><iInput :value="showTips ? notInTips : 0" disabled /></span>
+              <span class="cursor" @click="toPartList(1)"><iText>{{showTips ? notInTips : 0}}</iText></span>
             </iFormItem>
             <iFormItem>
               <span slot="label">{{language('DAIQUERENDECKDLINGJIAN', '待确认的CKD零件')}}:</span>
-              <span class="cursor" @click="toPartList(2)"><iInput :value="showTips ? ckdconfirm : 0" disabled /></span>
+              <span class="cursor" @click="toPartList(2)"><iText>{{showTips ? ckdconfirm : 0}}</iText></span>
             </iFormItem>
          </iFormGroup>
       </div>
@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import {iCard,icon,iFormGroup,iFormItem,iInput,iMessage } from 'rise'
+import {iCard,icon,iFormGroup,iFormItem,iText,iMessage } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress'
 import carEmpty from '@/views/project/components/empty/carEmpty'
 import projectStateChart from './components/projectStateChart'
@@ -88,7 +88,7 @@ import {getLastCarType, getProjectProgressMonitor,getAutoData,updateAutoData} fr
 import {selectDictByKeyss} from '@/api/dictionary'
 
 export default {
-  components: { iCard, icon, carProject, iFormGroup, iFormItem, iInput, projectStateChart, carEmpty},
+  components: { iCard, icon, carProject, iFormGroup, iFormItem, iText, projectStateChart, carEmpty},
   data() {
     return {
       carProject: this.$route.query.carProject,
@@ -396,10 +396,20 @@ export default {
   .cursor {
     display: inline-block;
     cursor: pointer;
+    width: 100%;
+    height: 100%;
   }
   ::v-deep.el-form-item {
     margin-bottom: 0px;
     .el-form-item__content {
+      text-align: center !important;
+      background: #F5F6F7;
+      cursor: pointer;
+      .itext {
+        text-align: center;
+        background: #F5F6F7;
+        cursor: pointer;
+      }
       .el-input__inner {
         text-align: center;
         background: #F5F6F7;
