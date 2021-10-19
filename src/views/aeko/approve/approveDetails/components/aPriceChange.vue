@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-16 18:36:09
+ * @LastEditTime: 2021-10-19 18:23:36
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -51,6 +51,7 @@
             :prop="item.prop"
             :label="language(item.labelKey, item.label)"
             :render-header="item.renderHeader"
+            :show-overflow-tooltip="true"
             :min-width="item.width"
             align="center"
           >
@@ -61,15 +62,16 @@
                 :prop="child.prop"
                 :label="language(child.labelKey, child.label)"
                 :render-header="child.renderHeader"
+                :show-overflow-tooltip="true"
                 :min-width="child.width"
                 align="center"
               >
                 <template slot-scope="{ row }">
-                  <template v-if="child.isNew">
+                  <template v-if="child.prop == 'partName'">
                     <div class="manufacturingMethodColumn">
                       <icon
                         symbol
-                        v-if="row.partCbdType"
+                        v-if="row.partCbdType!=1"
                         class="iconFont"
                         name="iconxinlingjianCBD"
                       />
@@ -77,6 +79,9 @@
                         <span>{{ row[child.prop] }}</span>
                       </div>
                     </div>
+                  </template>
+                  
+                  <template v-else-if="child.prop == 'serialNum' && row.partCbdType!=1">
                   </template>
                   <template v-else>{{ row[child.prop] }}</template>
                 </template>
@@ -111,6 +116,7 @@
             :prop="item.prop"
             :label="language(item.labelKey, item.label)"
             :render-header="item.renderHeader"
+            :show-overflow-tooltip="true"
             :min-width="item.width"
             align="center"
           >
@@ -121,15 +127,16 @@
                 :prop="child.prop"
                 :label="language(child.labelKey, child.label)"
                 :render-header="child.renderHeader"
+                :show-overflow-tooltip="true"
                 :min-width="child.width"
                 align="center"
               >
                 <template slot-scope="{ row }">
-                  <template v-if="child.isNew">
+                  <template v-if="child.prop == 'manufacturingMethod'">
                     <div class="manufacturingMethodColumn">
                       <icon
                         symbol
-                        v-if="row.isNew"
+                        v-if="row.partCbdType!=1"
                         class="iconFont"
                         name="iconxinlingjianCBD"
                       />
@@ -137,6 +144,8 @@
                         <span>{{ row[child.prop] }}</span>
                       </div>
                     </div>
+                  </template>
+                  <template v-else-if="child.prop == 'serialNum' && row.partCbdType!=1">
                   </template>
                   <template v-else>{{ row[child.prop] }}</template>
                 </template>
@@ -240,6 +249,8 @@ export default {
       type: Object,
       default: () => {
         return {
+          // A价变动
+          apriceChange: 0,
           // CBD-变动值
           cbdLevelVO: {},
           // // 切换零件
@@ -273,9 +284,18 @@ export default {
     };
   },
   computed: {
+    // A价变动
+    apriceChange(){
+      if(this.Data?.apriceChange){
+        return this.Data.apriceChange
+      }else{
+        return 0
+      }
+    },
     // 变动值-CBD
     tableData() {
-      if (this.Data.cbdLevelVO?.id) {
+      if (this.Data?.cbdLevelVO) {
+        this.Data.cbdLevelVO.apriceChange = this.apriceChange || 0
         return [this.Data.cbdLevelVO];
       }
       return [];
@@ -313,9 +333,6 @@ export default {
       );
     },
   },
-  mounted() {
-    console.log(this.scrapCostTable);
-  },
   methods: {
     originRowClass,
     // 报废成本
@@ -330,7 +347,7 @@ export default {
             "ZHENGTIBAOFEICHENGBENBIANDONG",
             "整体报废成本变动"
           ),
-          originRatio: data[0].originRatio ,
+          originRatio: data[0].originRatio,
           ratio: data[0].ratio,
           changeAmount: data[0].changeAmount,
           originScrapId: data[0].originScrapId,

@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-06 22:11:41
- * @LastEditTime: 2021-10-15 15:09:52
+ * @LastEditTime: 2021-10-19 16:37:59
  * @LastEditors: Hao,Jiang
  * @Description: 决策资料 - 扩产能
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/index.vue
@@ -20,8 +20,8 @@
     <ecoAssessment :data="assesmentList" :timeList="yearList" class="margin-top20" />
     <!-- footer -->
     <div class="caexpan-footer">
-      <span><strong>{{language('TOTALINVESTMENTVAT','Total investment(Excl VAT)不含税')}}：</strong>
-      {{totalInvestment}}
+      <span><strong>{{language('TOTALINVESTMENTVAT','Total investment(Excl VAT)')}}：</strong>
+      {{countInvestNum}}
         <!-- {{language('TOTALINVESTMENTVATINFO','小于100万，签到CS,大于100万，签到M')}} -->
       </span>
       <span><strong>Developing period：</strong>
@@ -94,7 +94,6 @@ export default {
       PartTableData: [],
       yearList: [],
       assesmentList: [],
-      totalInvestment:''
     }
   },
   computed: {
@@ -102,6 +101,9 @@ export default {
     showMC() {
       const nomiSuggestionInvestmentFee = (this.InvestmentData || []).map(o => Number(o.nomiSuggestionInvestmentFee))
       return window._.sum(nomiSuggestionInvestmentFee) >= 1000000
+    },
+    countInvestNum() {
+      return window._.sum(this.InvestmentData.map(o => Number(o.nomiSuggestionInvestmentFee) || 0))
     }
   },
   mounted(){
@@ -119,6 +121,15 @@ export default {
           this.basicFormData = res.data.capacityExpHeaderVO || {}
           // 扩产能计划
           this.capacityExpPlanVOList = res.data.capacityExpPlanVOList || []
+          // 扩产能计划保留整数位
+          this.capacityExpPlanVOList.map(o => {
+            const keys = Object.keys(o)
+            keys.forEach(key => {
+              const value = Number(o[key]).toFixed(0)
+              !isNaN(value) && (o[key] = value)
+            })
+            return o
+          })
           // 投资计划
           this.InvestmentData = res.data.capacityExpInvestmentFeeVOList || []
           // 零件计划
@@ -126,7 +137,6 @@ export default {
           // 
           this.assesmentList = res.data.capacityExpEconomicAssessmentVOList || []
           this.yearList = res.data.capacityExpCarTypeProPlanVOList || []
-          this.totalInvestment = res.data.totalInvestment
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

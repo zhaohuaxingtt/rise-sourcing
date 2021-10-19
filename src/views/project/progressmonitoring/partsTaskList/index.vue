@@ -27,7 +27,7 @@
     </iSearch>
     <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">{{language('CHANPINZUJINDUQUERENHUIZONG', '零件任务清单更新')}}</span>
+        <span class="font18 font-weight">{{language('LINGJIANRENWUQINGDANGENGXIN', '零件任务清单更新')}}</span>
         <div class="floatright">
           <!--------------------处理按钮----------------------------------->
           <iButton  @click="handleBatchUpdate" >{{language('PILIANGXIUGAIZHUANGTAI','批量修改状态')}}</iButton>

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-18 18:06:19
+ * @LastEditTime: 2021-10-19 14:13:43
  * @Description: 监控明细
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -49,7 +49,7 @@ export default {
       searchList: [
         {value: 'partStatus', label: '零件状态', key: 'LINGJIANZHUANGTAI', type: 'selectDict', selectOption: 'PART_PERIOD_TYPE', optionAll: false, permission: 'PROJECTMGT_MONITORINGDETAIL_PARTSTATUS|项目管理-监控明细-零件状态'},
         {value: 'projectRisk', label: '项目风险', key: 'XIANGMUFENGXIAN', type: 'selectDict', selectOption: 'DELAY_GRADE_CONFIG', optionAll: true, permission: 'PROJECTMGT_MONITORINGDETAIL_PROJECTRISK|项目管理-监控明细-项目风险'},
-        {value: 'projectDone', label: '项目进度', key: 'XIANGMUJINDU', type: 'selectDict', selectOption: 'PROJECTDONE', optionAll: true,permission: 'PROJECTMGT_MONITORINGDETAIL_PROJECTDONE|项目管理-监控明细-项目进度'},
+        {value: 'projectProc', label: '项目进度', key: 'XIANGMUJINDU', type: 'selectDict', selectOption: 'PROJECTDONE', optionAll: true,permission: 'PROJECTMGT_MONITORINGDETAIL_PROJECTDONE|项目管理-监控明细-项目进度'},
         {value: 'partProc', label: '零件进度', key: 'LINGJIANJINDU', type: 'selectDict', selectOption: 'PARTS_PROGRESS', optionAll: true,permission: 'PROJECTMGT_MONITORINGDETAIL_PARTPROC|项目管理-监控明细-零件进度'},
       ],
       searchParams: {
@@ -96,7 +96,7 @@ export default {
   },
   created() {
     const { carProjectId = '', partStatus = '', projectRisk = '', projectDone = '', partProc = ''} = this.$route.query
-    this.searchParams = { projectId: carProjectId, partStatus, projectRisk, projectDone, partProc }
+    this.searchParams = { projectId: carProjectId, partStatus, projectRisk, projectProc: projectDone, partProc }
     this.handleSure()
   },
   methods: {
@@ -108,7 +108,7 @@ export default {
         ...this.searchParams,
         projectRisk: '',
         partProc: '',
-        projectDone: ''
+        projectProc: ''
       }
       this.handleSure()
     },
@@ -116,7 +116,7 @@ export default {
       this.searchParams = {
         ...this.searchParams,
         projectRisk: this.searchParams.partStatus == 7 ? '' : this.searchParams.projectRisk,
-        projectDone: this.searchParams.partStatus == 7 ? this.searchParams.projectDone : '',
+        projectProc: this.searchParams.partStatus == 7 ? this.searchParams.projectProc : '',
         partProc: this.searchParams.partStatus == 7 && this.searchParams.partStatus == 1 ? '' : this.searchParams.partProc
       }
       this.partStatus = this.searchParams.partStatus

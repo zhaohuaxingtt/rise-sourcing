@@ -17,7 +17,7 @@ export const tableTitle = [
   {props:'statusDesc',name:'处理状态', key: "CHULIZHUANGTAI", tooltip: true},
   {props:'buyerName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
   {props:'linieName',name:'专业采购员', key: "ZHUANYECAIGOUYUAN", tooltip: true},
-  {props:'epEngineer',name:'EP工程师',key:'QUERENSHIJIAN',tooltip: true},
+  {props:'epEngineer',name:'EP工程师',key:'EPGONCHENGSHI',tooltip: true},
 ]
 
 export const partSortStatus = {
