@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-19 14:04:14
+ * @LastEditTime: 2021-10-19 15:56:45
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -190,12 +190,12 @@ export default {
       if (this.partStatus != 1) {
         return
       }
-      if (this.selectPart.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
-        return
-      }
+      // if (this.selectPart.length < 1) {
+      //   iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
+      //   return
+      // }
       this.downloadLoading = true
-      await downloadProjectMonitorFile(this.selectPart)
+      await downloadProjectMonitorFile(this.selectPart.length < 1 ? this.list : this.selectPart)
       this.downloadLoading = false
     },
     getSollKw(time) {
