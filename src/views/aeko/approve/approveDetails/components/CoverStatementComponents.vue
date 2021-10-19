@@ -91,7 +91,7 @@
           <template slot-scope="scope">
             <span>{{ scope.row.investmentIncrease }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
-                        :content="queryRowMaterialIncreaseTipContent(scope.row)" placement="top">
+                        :content="queryRowInvestmentIncreaseTipContent(scope.row)" placement="top">
               <i class="el-icon-warning-outline bule margin-left5"></i>
             </el-tooltip>
           </template>

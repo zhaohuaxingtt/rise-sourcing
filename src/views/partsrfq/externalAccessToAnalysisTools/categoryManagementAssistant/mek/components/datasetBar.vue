@@ -73,7 +73,6 @@ export default {
             const itemData = {
               name: item.title,
               value: item.value,
-              // value: item.value,
               label: {
                 show: true,
                 position: "top",
@@ -107,9 +106,6 @@ export default {
     }
   },
   mounted () {
-    // this.$nextTick(() => {
-    //   this.initCharts();
-    // });
   },
   methods: {
     resetOptions(val) {
@@ -154,26 +150,12 @@ export default {
           this.$nextTick(() => {
             this.initCharts();
           });
-
-        // for (var i=this.barDataItem.length - 1;i>=0;i--) {
-        //   if (val.indexOf(this.barDataItem[i].name) < 0) {
-        //     console.log("delete")
-        //     this.barDataItem.splice(i,1);
-        //   }
-        // }
-        //   this.$nextTick(() => {
-        //     this.myChart.clear();
-        //     // this.initCharts();
-        //     this.option.series[0].data = this.barDataItem;
-        //     console.log("ddd", this.option)
-        //     this.myChart.setOption(this.option);
-        //   });
     },
     initCharts () {
-      if (this.barData.detail.length === 1) {
-        this.$refs.chart.style.width = this.barData.detail.length * 240 + "px";
+      if (this.barDataItem.length <= 3) {
+        this.$refs.chart.style.width = "240px";
       } else {
-        this.$refs.chart.style.width = this.barData.detail.length * 100 + "px";
+        this.$refs.chart.style.width = this.barDataItem.length * 80 + "px";
       }
       // console.log(this.$refs.chart.style.width, 'number')
       // this.$refs.chart.style.minWidth = '100%';
@@ -238,6 +220,7 @@ export default {
             // barMinWidth: 30,
             // barMinWidth: 30,
             barWidth: 30,
+            // barCategoryGap: '0%',
             data: this.barDataItem,
           },
         ],
