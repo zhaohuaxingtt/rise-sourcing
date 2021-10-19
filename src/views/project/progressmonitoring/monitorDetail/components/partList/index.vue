@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-18 17:01:13
+ * @LastEditTime: 2021-10-19 14:04:14
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -13,11 +13,11 @@
         <!-- <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> 
         <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>  -->
       </div> 
-      <div v-if="partStatus != 7"> 
+      <div> 
         <iButton @click="showDelayResaons" :loading="saveloading" v-if="partStatus != 1">{{language('CHAKANYANWUYUANYIN', '查看延误原因')}}</iButton> 
         <iButton @click="gotoSechedule">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
         <iButton @click="handleSendFs" v-if="partStatus == 2 || partStatus == 3">{{language('FASONGJINDUQUEREN', '发送进度确认')}}</iButton> 
-        <iButton @click="openDelayReasonDialog" v-if="[3,2,5,6].includes(Number(partStatus))" >{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
+        <iButton @click="openDelayReasonDialog" v-if="[3,2,5,6, 7].includes(Number(partStatus))" >{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
         <iButton @click="handleExport" :loading="downloadLoading">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
