@@ -93,7 +93,6 @@
           :selection="true"
           :tableData="approvedList"
           :tableTitle="approvedHeader"
-          :tableLoading="tableLoading"
           :lang="true"
           v-loading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
@@ -111,7 +110,9 @@
           </div>
         </template>
         <template #auditTypeName="scope">
-          <span>{{ scope.row.auditTypeDesc }}</span>
+          <div style="text-align:left">
+            <span>{{ scope.row.auditTypeDesc }}</span>
+          </div>
         </template>
         <template #describe="scope">
           <a class="link-underline" @click="lookAEKODesc(scope.row)">

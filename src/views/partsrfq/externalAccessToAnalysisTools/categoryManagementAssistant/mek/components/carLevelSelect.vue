@@ -1,3 +1,6 @@
+<style scoped>
+
+</style>
 <template>
     <el-checkbox-group v-model="checkedOptions"
                         class="checkList"

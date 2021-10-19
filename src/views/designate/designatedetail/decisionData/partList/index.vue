@@ -91,6 +91,7 @@ export default {
              {props:'fsNum',name:'FS NO.',key:'FSNo'},
              {props:'partNum',name:'Part NO.',key:'PARTNO'},
              {props:'partNameZh',name:'Part Name',key:'PartName'},
+             {props:'mtz',name:'MTZ',key:'MTZ'},
              {props:'materialGroup',name:'Material Group',key:'MaterialGroup'},
              {props:'procureFactory',name:'Factory',key:'Factory'},
              {props:'project',name:'PROJECT',key:'PROJECT'},
@@ -130,6 +131,7 @@ export default {
              const {code,data} = res;
              if(code === '200' && data){
                 const { records=[],total } = data;
+                records.forEach(val => val.mtz === true ? val.mtz = 'MTZ' : val.mtz  = '');
                 this.tableListData = records;
                 this.page.totalCount = total;
              }

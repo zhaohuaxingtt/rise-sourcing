@@ -12,12 +12,16 @@
       <!-- RS Sheet -->
       <rssheet v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSHEET|rssheet" />
       <!-- v-if="showRsSheet"  -->
+      <!-- mtzAttachment -->
+      <mtzAttachment />
+
   </div>
 </template>
 <script>
 
 import attachment from "./components/attachment";
 import rssheet from "./components/rssheet";
+import mtzAttachment from "./components/mtzAttachment";
 
 export default {
   computed: {
@@ -37,7 +41,8 @@ export default {
   },
   components: {
     attachment,
-    rssheet
+    rssheet,
+    mtzAttachment
   }
 }
 </script>
