@@ -14,6 +14,7 @@
       </iButton>
     </div>
     <tablelist
+      class="margin-top15"
       height="400"
       index
       :selection="alowSubmit"
@@ -128,6 +129,8 @@ export default {
       tableListData: [],
       tableSelecteData: [],
       tableLoading: false,
+      // 解释记录
+      tableExplainData: [],
       // 自定义解释附件表头
       attachTableTitle,
       // 附件弹窗
@@ -138,6 +141,7 @@ export default {
     };
   },
   mounted() {
+    // 查询审批数据
     this.getFetchData()
   },
   methods: {
@@ -162,17 +166,48 @@ export default {
       this.attachAekoCode = row.aekoCode
       this.currentRow = row
     },
+    async getFetchData() {
+      await this.getexplainList()
+      this.getData()
+    },
+    /**
+     * @description: 获取解释记录
+     * @param {*}
+     * @return {*}
+     */    
+    async getexplainList() {
+      const parmas = Object.assign({
+        applyUserId: String(this.userInfo.id) || '',
+        currentUserId: String(this.userInfo.id) || '',
+        aekoNo: this.aekoInfo.aekoCode || '',
+        hasParentTaskId: false,
+        pageNo: 1,
+        pageSize: 100
+      })
+      try {
+        const res = await findHistoryByAeko(parmas)
+        if (res.code === '200') {
+          // 审批解释列表
+          this.tableExplainData = (res.data && res.data.records || [])
+        } else {
+          this.tableExplainData = []
+        }
+      } catch {
+        this.tableExplainData = []
+      }
+    },
     /**
      * @description: 获取数据列表
      * @param {*}
      * @return {*}
      */    
-    getFetchData() {
-      console.log(this.aekoInfo)
+    getData() {
+      console.log('init', this.aekoInfo, this.tableExplainData)
       const parmas = Object.assign({
         applyUserId: String(this.userInfo.id) || '',
         currentUserId: String(this.userInfo.id) || '',
         aekoNo: this.aekoInfo.aekoCode || '',
+        hasParentTaskId: true,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize
       })
@@ -181,14 +216,11 @@ export default {
         // parId字段
         const parId = 'parentTaskId'
         if (res.code === '200') {
-          // 审批解释列表
-          let tableExplainData = (res.data && res.data.records || []).filter(o => o[parId])
           // 审批记录列表
           let tableListData = (res.data && res.data.records || []).map(o => {
             // 封面表态处于
             o.disabled = !this.alowSubmit
-            const tar = tableExplainData.find(item => item[parId] === o.id)
-            console.log('tar-coverStatus', tar)
+            const tar = this.tableExplainData.find(item => item[parId] === o.id)
             if (tar) {
               // 写入审批解释
               o.explainReason = tar.comment

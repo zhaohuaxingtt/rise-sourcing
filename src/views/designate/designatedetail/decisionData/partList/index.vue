@@ -131,6 +131,7 @@ export default {
              const {code,data} = res;
              if(code === '200' && data){
                 const { records=[],total } = data;
+                records.forEach(val => val.mtz === true ? val.mtz = 'MTZ' : val.mtz  = '');
                 this.tableListData = records;
                 this.page.totalCount = total;
              }
