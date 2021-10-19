@@ -46,6 +46,12 @@ export const supplierTitle = [
     tooltip: false
   },
   {
+    props: 'mtz',
+    name: '是否MTZ',
+    key: 'nominationLanguage.ismtz',
+    tooltip: false
+  },
+  {
     props: 'supplierName',
     name: '供应商名',
     key: 'nominationSupplier.GongYingShangMing',

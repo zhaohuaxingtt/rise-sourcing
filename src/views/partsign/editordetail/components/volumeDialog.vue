@@ -1,5 +1,5 @@
 <template>
-  <iDialog class="dialog" :title="`${language('LK_MEICHEYONGLIANG','每车用量') }（${language('LK_DANGQIANBANBEN','当前版本') } ：${ volumeParams.version }）`" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="dialog" :title="`${language('LK_MEICHEYONGLIANG','每车用量') }（${language('LK_DANGQIANBANBEN','当前版本') } : V${ volumeParams.version }）`" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
       <tableList index height="100%" :selection="false" v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" />
     </div>
