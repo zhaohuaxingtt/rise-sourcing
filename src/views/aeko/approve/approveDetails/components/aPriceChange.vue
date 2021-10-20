@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-19 18:23:36
+ * @LastEditTime: 2021-10-19 20:38:47
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -245,6 +245,10 @@ export default {
     tableList,
   },
   props: {
+    apriceChange:{
+      type: Number,
+      default: 0,
+    },
     Data: {
       type: Object,
       default: () => {
@@ -279,23 +283,14 @@ export default {
       manageCostTableTitle,
       otherCostTableTitle,
       profitTableTitle,
-      apriceChange: 0,
       setCloum: cbdSummaryTableTitle,
     };
   },
   computed: {
-    // A价变动
-    apriceChange(){
-      if(this.Data?.apriceChange){
-        return this.Data.apriceChange
-      }else{
-        return 0
-      }
-    },
     // 变动值-CBD
     tableData() {
       if (this.Data?.cbdLevelVO) {
-        this.Data.cbdLevelVO.apriceChange = this.apriceChange || 0
+        this.Data.cbdLevelVO.apriceChange = this.Data.extSnapshotVO.apriceChange || 0
         return [this.Data.cbdLevelVO];
       }
       return [];

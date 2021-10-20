@@ -15,7 +15,7 @@
       <!-- AEKO号 -->
       <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')">
         <iInput
-          v-model="form.aekoNum"
+          v-model.trim="form.aekoNum"
           v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_AEKONUM|AEKO号"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
@@ -24,7 +24,7 @@
       <!-- 零件号 -->
       <el-form-item :label="language('LINGJIAHAO', '零件号')">
         <iInput
-          v-model="form.partNum"
+          v-model.trim="form.partNum"
           v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_PARTNUM|零件号"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
@@ -56,7 +56,7 @@
       <!-- 专业采购员 -->
       <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')">
         <iInput
-          v-model="form.buyerName"
+          v-model.trim="form.buyerName"
           v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_BUYERNAME|专业采购员"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
@@ -65,7 +65,7 @@
       <!-- CSF股长 -->
       <el-form-item :label="language('CSFGUZHANG','CSF股长')">
         <iInput
-          v-model="form.chiefName"
+          v-model.trim="form.chiefName"
           v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_CHIEFNAME|CSF股长"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
