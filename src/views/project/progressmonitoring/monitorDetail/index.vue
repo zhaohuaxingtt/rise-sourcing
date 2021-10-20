@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-19 14:13:43
+ * @LastEditTime: 2021-10-20 16:13:40
  * @Description: 监控明细
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="projectCard-content">
-        <partList v-loading="loading" :list="partList" :partStatus="partStatus" :cartypeProId="carProjectId" :carProjectName="carProjectName" @handleSure="handleSure" />
+        <partList ref="monitorDetailPartList" v-loading="loading" :list="partList" :partStatus="partStatus" :cartypeProId="carProjectId" :carProjectName="carProjectName" @handleSure="handleSure" />
       </div>
     </iCard>
   </iPage>
@@ -129,6 +129,7 @@ export default {
         }
       }).finally(() => {
         this.loading = false
+        this.$refs.monitorDetailPartList.resetSelectPart()
       })
     },
     /**

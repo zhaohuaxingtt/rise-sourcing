@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-09 12:44:11
+ * @LastEditTime: 2021-10-20 17:23:41
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -36,8 +36,8 @@
         </el-popover> 
       </div> 
     </div> 
-    <div class="partListView-content"> 
-      <div v-for="pro in parts" :key="pro.label" class="productItem"> 
+    <div class="partListView-content" ref="partSchedulPartListViewContent" v-infinite-scroll="load"> 
+      <div v-for="pro in showParts" :key="pro.label" class="productItem" ref="partSchedulPartListViewItem"> 
         <div class="productItem-top"> 
           <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
             <el-popover
@@ -71,9 +71,9 @@
               <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>  
               <!--------------------------节点发生时间-已发生的不可编辑------------------------------------> 
               <template v-if="index == nodeList.length - 1"> 
-                <iText v-if="pro[item.status] == 1 && pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText> 
-                <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw2]}}</iText> 
-                <el-cascader 
+                <iText v-if="pro[item.status] == 1 && pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
+                <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw2]}}</iText> 
+                <!-- <el-cascader 
                   v-else-if="pro.emIsLarger" 
                   :class="`productItem-bottom-stepBetween-input margin-top20 ` " 
                   :value="pro[item.kw].split('-KW')" 
@@ -88,17 +88,20 @@
                   :options="yearWeekOptions(pro, item.kw2, index)" 
                   @change="handleChange($event, pro, item.kw2, index)" 
                   separator="-KW" 
-                ></el-cascader>  
+                ></el-cascader>   -->
+                <span v-else-if="pro.emIsLarger"  :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
+                <span v-else :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>
               </template>   
-              <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20`">{{pro[item.kw]}}</iText> 
-              <el-cascader 
+              <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
+              <!-- <el-cascader 
                   v-else 
                   :class="`productItem-bottom-stepBetween-input margin-top20 ` "  
                   :value="pro[item.kw].split('-KW')"  
                   :options="yearWeekOptions(pro, item.kw, index)"  
                   @change="handleChange($event, pro, item.kw, index)" 
                   separator="-KW" 
-                ></el-cascader>  
+                ></el-cascader>   -->
+                <span v-else :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
             </div> 
             <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1"> 
               <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom5`"> 
@@ -117,18 +120,20 @@
       </div> 
     </div> 
     <fsConfirm ref="fsConfirmPart" :dialogVisible="dialogVisibleFS" @handleConfirm="handleSendFsConfirm" :tableListNomi="tableListNomi" :tableListKickoff="tableListKickoff" :cartypeProId="cartypeProId" @changeVisible="changeFsConfirmVisible" /> 
+    <selectKwDialog :dialogVisible="dialogVisibleSelectKw" @changeVisible="changeSelectKwVisible" :value="selectKw" @handleChange="handleChangeKw" />
   </div> 
 </template> 
 
 <script> 
-import { iButton, icon, iText, iMessage } from 'rise' 
+import { iButton, icon, iText, iMessage, iInput } from 'rise' 
 import { getPartSchedule, getFsUserListPart, exportPartSchedule, partProgressConfirm, updatePartSchedule, getAllFS, addScheduleVersion, getPartGroupConfig, updatePartGroupConfig } from '@/api/project' 
 import logicSettingBtn from '@/views/project/components/logicSettingBtn' 
 import moment from 'moment' 
 import { partLogicList } from '../data' 
 import fsConfirm from './fsconfirm' 
+import selectKwDialog from './selectKw'
 export default { 
-  components: { iButton, icon, iText, logicSettingBtn, fsConfirm }, 
+  components: { iButton, icon, iText, logicSettingBtn, fsConfirm, selectKwDialog }, 
   props: { 
     cartypeProId: {type:String}, 
     carProjectName: {type:String}, 
@@ -174,11 +179,25 @@ export default {
       downloadLoading: false,
       svgList: {
         'iconliuchengjiedianyiwancheng1': '<svg t="1631761282163" class="icon" viewBox="0 0 128000 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="95301" width="200" height="200"><path d="M1212.928 1024C543.232 1024 0 794.624 0 512s543.232-512 1212.928-512h126150.656c669.696 0 641.024 519.68 634.368 512-8.192-15.36 35.84 512-634.368 512z" fill="#1660F1" p-id="95302"></path></svg>',
-      }
+      },
+      sliceArr: [0, 10],
+      partLength: 0,
+      selectKw: '',
+      selectKwPro: {},
+      dialogVisibleSelectKw: false
     } 
   }, 
   mounted() { 
     this.option = this.initOption() 
+    // let timeId;
+    // window.addEventListener('scroll', () => {
+    //   // 页面滚动停止100毫秒后才会执行下面的函数。
+    //   clearTimeout(timeId);
+    //   timeId = setTimeout(() => {
+    //     this.scrollToTop();
+    //     console.log('执行完了哦');
+    //   }, 100);
+    // } , true);
   },  
   created() { 
     this.getFSOPtions() 
@@ -223,9 +242,30 @@ export default {
       //   } 
       //   return selectOption 
       // } 
-    } 
+    },
+    showParts() {
+      return this.parts.length < 10 ? this.parts : this.parts.slice(this.sliceArr[0],this.sliceArr[1])
+      // return this.parts
+    }
   }, 
   methods: { 
+    changeSelectKwVisible(visible) {
+      this.dialogVisibleSelectKw = visible
+    },
+    handleChangeKw(val) {
+      const { pro, item, index } = this.selectKwPro
+      this.handleChange(val, pro, item, index)
+    },
+    openChangeKw(pro, item, index) {
+      console.log(pro, item, pro[item], index)
+      this.selectKw = pro[item]
+      this.selectKwPro = {pro, item, index}
+      this.changeSelectKwVisible(true)
+    },
+    load() {
+      this.sliceArr = [0, this.sliceArr[1] + 1]
+    },
+    
     async handleDownload(item) {  
       // item.type 导出类型 1-风险预警 2-未BF 3-未释放 
       const partScheduleInfoVOList = this.partsTemp.filter(pItem => { 
@@ -556,14 +596,13 @@ export default {
      * @return {*}
      */    
     handleChange(val, item, props, index) { 
-      console.log(val, item, props) 
-      this.$set(item, props, val.join('-KW')) 
+      this.$set(item, props, val) 
       // const index = this.nodeList.findIndex(item => item.kw === props || item.kw2 === props) 
       if (this.nodeList[index - 1]) {  
-        this.$set(item, this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val.join('-KW'))) 
+        this.$set(item, this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val)) 
       } 
       if (this.nodeList[index + 1]) { 
-        this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val.join('-KW'), props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw])) 
+        this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val, props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw])) 
       } 
     }, 
     /**
@@ -680,7 +719,8 @@ export default {
           } 
         } 
         return result 
-      }) 
+      })
+      this.partLength = this.parts.length 
       setTimeout(() => { 
         this.loading = false 
       }, 500); 
@@ -734,14 +774,16 @@ export default {
           const selectPartNumsArr = selectPartNums !== '' ? selectPartNums.split(',') : []
           const selectPartNumsArrLength = selectPartNumsArr.length
           // eslint-disable-next-line no-undef 
-          this.parts = [...partList.filter(item => selectPartNumsArrLength > 0 ? selectPartNumsArr.includes(item.partNum) : true)]
+          this.parts = selectPartNumsArrLength < 1 ? [...partList] : partList.filter(item => selectPartNumsArr.includes(item.partNum))
           // eslint-disable-next-line no-undef 
           this.partsTemp = _.cloneDeep(partList) 
+          // this.partLength = this.parts.length
           this.checkAll = false 
           this.isIndeterminate = false 
         } else { 
           this.parts = [] 
           this.partsTemp = [] 
+          this.partLength = 0
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
         } 
       }).finally(() => {  
@@ -911,6 +953,11 @@ export default {
               border: 1px solid rgba(181, 186, 198, 0.19); 
               background-color: rgba(233, 236, 241, 0.75); 
             } 
+            &.input {
+              font-size: 14px;
+              border: 1px solid rgba(181, 186, 198, 0.19); 
+              background-color: #fff; 
+            }
             &.markBlue { 
               ::v-deep .el-input__inner{ 
                 color: rgba(23, 99, 247, 1); 

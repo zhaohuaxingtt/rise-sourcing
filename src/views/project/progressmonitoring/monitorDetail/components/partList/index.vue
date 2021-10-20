@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-20 11:06:59
+ * @LastEditTime: 2021-10-20 16:48:45
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -24,7 +24,7 @@
     <div class="partListView-content" ref="partListViewContent"> 
       <div v-for="pro in listWithNodeDelayWeeks" :key="pro.label" class="productItem"> 
         <div class="productItem-top"> 
-          <el-checkbox @change="handleCheckboxChange($event, pro)"> 
+          <el-checkbox :value="pro.checked" @change="handleCheckboxChange($event, pro)"> 
             {{`${pro.partNameZh || ''}`}} 
           </el-checkbox> 
           <icon v-if="partStatus != 7" @click.native="openChangeLight(pro)" class="productItem-top-icon cursor" symbol name="iconbianji"></icon>
@@ -115,7 +115,7 @@
     </div> 
     <fsConfirm ref="fsConfirmPart" :dialogVisible="dialogVisibleFS" @handleConfirm="handleSendFsConfirm" :tableListNomi="tableListNomi" :tableListKickoff="tableListKickoff" :cartypeProId="cartypeProId" @changeVisible="changeFsConfirmVisible" /> 
     <changeLightDialog ref="changeLight" :dialogVisible="dialogVisibleLight" @changeVisible="changeLightDialogVisible" @handleActionPlan="handleActionPlan" :actionPlan="selectParts.actionPlan" :delayLevelPro="selectParts.delayLevelPro" />
-    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" :partStatus="partStatus" :cartypeProId="cartypeProId" :partNums="selectPartNums" :carProjectName="carProjectName" />
+    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" :partStatus="partStatus" :cartypeProId="cartypeProId" :partNums="selectPart" :carProjectName="carProjectName" />
   </div> 
 </template>
 
@@ -179,12 +179,17 @@ export default {
           firstTryoutDelayWeeks: partStatus > 4 ? this.getDelayWeeks(item[partStatus == 5 ? 'firstTryoutTimeKw' : 'planFirstTryoutTimeKw'], partStatus == 5 ? currentKw : item.firstTryoutTimeKw) : 0,
           emDelayWeeks,
           otsDelayWeeks,
-          emOtsDelayWeeks: partStatus > 5 ? Math.max(emDelayWeeks,otsDelayWeeks): 0
+          emOtsDelayWeeks: partStatus > 5 ? Math.max(emDelayWeeks,otsDelayWeeks): 0,
+          checked: this.selectPart.some(sitem => sitem.id == item.id)
         }
       }) : []
     }
   },
   methods: {
+    resetSelectPart() {
+      this.selectPart = []
+      console.log(this.selectPart, this.listWithNodeDelayWeeks)
+    }, 
     async handleExport() {
       if (this.partStatus != 1) {
         return
@@ -460,13 +465,13 @@ export default {
       this.isIndeterminate = false;
     },
     handleCheckboxChange(value, pro) {
-      // this.$set(pro, 'isChecked', value)
+      // this.$set(pro, 'checked', value)
       if (value) {
         this.selectPart.push(pro)
       } else {
-        // eslint-disable-next-line no-undef
-        _.pull(this.selectPart, pro)
+        this.selectPart = this.selectPart.filter(item => item.id != pro.id)
       }
+      // console.log(this.selectPart)
       // let checkedCount = this.list.filter(item => item.isChecked).length;
       // this.checkAll = checkedCount === this.list.length;
       // this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length;
