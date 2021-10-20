@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-19 20:40:36
+ * @LastEditTime: 2021-10-20 11:07:08
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -171,9 +171,9 @@ export default {
     async getDelayReasonConfirmList() {
       try {
         const params = {
-          partNums: this.partNums,
           partStatus: this.partStatus,
-          projectId: this.cartypeProId
+          projectId: this.cartypeProId,
+          selectList: this.partNums
         }
         this.tableLoading = true
         const res = await getDelayReasonConfirmList(params)

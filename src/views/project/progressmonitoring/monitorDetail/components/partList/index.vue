@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-19 20:28:02
+ * @LastEditTime: 2021-10-20 11:06:59
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -162,7 +162,7 @@ export default {
   },
   computed: {
     selectPartNums() {
-      return this.selectPart.map(item => item.partNum)
+      return this.selectPart.map(item => {return {partNum: item.partNum, tempCode: item.tempCode}})
     },
     listWithNodeDelayWeeks() {
       // 当前时间周，针对即将发生但未发生的节点用计划时间和当前时间周去判断延误时间（周）
