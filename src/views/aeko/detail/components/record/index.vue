@@ -220,7 +220,7 @@ export default {
           // 审批记录列表
           let tableListData = (res.data && res.data.records || []).map(o => {
             // 封面表态处于
-            // o.disabled = o.activityName !== '【补充材料通知】补充材料'
+            o.disabled = o.activityName !== '【补充材料通知】补充材料'
             const tar = this.tableExplainData.find(item => item[parId] === o.id)
             if (tar) {
               // 写入审批解释
