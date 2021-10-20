@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-20 16:02:22
+ * @LastEditTime: 2021-10-20 17:23:41
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -89,8 +89,8 @@
                   @change="handleChange($event, pro, item.kw2, index)" 
                   separator="-KW" 
                 ></el-cascader>   -->
-                <iText v-else-if="pro.emIsLarger"  :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</iText>
-                <iText v-else :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</iText>
+                <span v-else-if="pro.emIsLarger"  :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
+                <span v-else :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>
               </template>   
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
               <!-- <el-cascader 
@@ -954,6 +954,7 @@ export default {
               background-color: rgba(233, 236, 241, 0.75); 
             } 
             &.input {
+              font-size: 14px;
               border: 1px solid rgba(181, 186, 198, 0.19); 
               background-color: #fff; 
             }
