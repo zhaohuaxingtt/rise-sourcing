@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-20 16:48:45
+ * @LastEditTime: 2021-10-20 18:02:06
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -82,14 +82,16 @@
                   placement="top-start"
                   :disabled="taItem.key !== 'JIHUASHIJIAN' || !(pro[item.soll2] || pro[item.soll22])"
                 >
-                  <iText slot="reference"  v-if="Number(pro.partStatus) <= item.partPeriod" class="productItem-bottom-stepBetween-input text ">
+                  <iText slot="reference"  v-if="Number(pro.partStatus) <= item.partPeriod" class="productItem-bottom-stepBetween-input text " :class="index === nodeList.length - 1 ? 'largeText' : ''">
                     {{taItem.key === 'JIHUASHIJIAN' ? pro[item.kw] : ''}}
                     {{taItem.key === 'JIHUASHIJIAN' ? index === nodeList.length - 1 && pro[item.kw] ? '('+(pro[item.kw1] || '')+')' : '' : ''}}
                   </iText>
-                  <iText slot="reference"  v-else class="productItem-bottom-stepBetween-input text ">
+                  <iText slot="reference"  v-else class="productItem-bottom-stepBetween-input text " :class="index === nodeList.length - 1 ? 'largeText' : ''">
                     {{pro[item[taItem.props]]}}
-                    {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '('+(pro[item[taItem.props1]] || '')+')' : ''}}
-                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0 && partStatus != 7">+W{{pro[item.delayWeeks]}}</span>
+                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0">+W{{pro[item.delayWeeks]}}</span>
+                    {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '( '+(pro[item[taItem.props1]] || '') : ''}}
+                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="index === nodeList.length - 1 && pro[item.kw1] && pro[item.delayWeeks2] > 0">+W{{pro[item.delayWeeks2]}}</span>
+                    {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? ')' : ''}}
                   </iText>
                   <div>
                     <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll1：{{getSollKw(pro[item.soll1])}} <span v-if="pro[item.soll22]">OTS soll1：{{getSollKw(pro[item.soll12])}}</span></p>
@@ -171,6 +173,7 @@ export default {
         const partStatus = Number(item.partStatus)
         const emDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'emTimeKw' : 'planEmTimeKw'], partStatus == 6 ? currentKw : item.emTimeKw) : 0
         const otsDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'otsTimeKw' : 'planOtsTimeKw'], partStatus == 6 ? currentKw : item.otsTimeKw) : 0
+        console.log('otsDelayWeeks', emDelayWeeks, otsDelayWeeks)
         return {
           ...item,
           releaseDelayWeeks: partStatus > 0 ? this.getDelayWeeks(partStatus == 1 ? item.releaseTimeKw : item.planReleaseTimeKw, partStatus == 1 ? currentKw : item.releaseTimeKw) : 0,
@@ -578,7 +581,7 @@ export default {
         position: relative;
         display: flex;
         &:last-child {
-          flex: 1;
+          // flex: 1;
         }
         .productItem-bottom-nodeItem {
           display: flex;
@@ -614,7 +617,7 @@ export default {
           &-input {
             font-size: 14px;
             height: 30px;
-            width: 180px;
+            min-width: 180px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -628,6 +631,12 @@ export default {
               .flowWeek {
                 font-family: Arial;
                 margin-left: 15px;
+              }
+            }
+            &.largeText {
+              min-width: 200px;
+              .flowWeek {
+                margin-left: 8px;
               }
             }
           }
