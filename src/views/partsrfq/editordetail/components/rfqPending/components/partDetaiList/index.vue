@@ -221,7 +221,7 @@ export default {
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
-          res.data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = ''})
+          res.data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = '否'})
           this.tableListData = Array.isArray(res.data) ? res.data : []
           if (this.tableListData.length) {
             this.queryForm = {

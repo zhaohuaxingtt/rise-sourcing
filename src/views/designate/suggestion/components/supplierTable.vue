@@ -445,10 +445,10 @@ export default {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       } else {
-        //nom为定点申请单id；item为采购项目id
-        let nom
-        let item
-        window.open(`http://10.122.17.38/portal/#/mtz/create?nomi=`+nom+`&item=`+item)
+        let nom = this.selectData[0].nominateId
+        let item =[]
+        item = this.selectData.map(val => val.partProjectId).join(',')
+        window.open(`http://10.122.17.38/portal/#/mtz/create?nomi=`+nom+`&item=`+item,'_blank')
       }
     }
   }
