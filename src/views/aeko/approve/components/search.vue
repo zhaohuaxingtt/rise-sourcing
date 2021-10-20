@@ -55,7 +55,7 @@
       </el-form-item>
       <!-- 专业采购员 -->
       <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')">
-        <iSelect
+        <el-select
           v-model="form.buyerId"
           v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_BUYERNAME|专业采购员"
           :placeholder="language('LK_QINGXUANZE','请选择')"
@@ -66,25 +66,37 @@
         >
         <!-- @blur="resetOption(...arguments, 'linieList')" -->
           <el-option
-            value=""
-            :label="language('all','全部')"
-          ></el-option>
-          <el-option
             :value="items.code"
             :label="items.value"
             v-for="(items, index) in (options && options.linieList) || []"
             :key="index"
           ></el-option>
-        </iSelect>
+        </el-select>
       </el-form-item>
       <!-- CSF股长 -->
       <el-form-item :label="language('CSFGUZHANG','CSF股长')">
-        <iInput
+        <el-select
+          v-model="form.chiefId"
+          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_CHIEFNAME|CSF股长"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+          :filter-method="filter.filterChief"
+          @visible-change="resetOption(...arguments, 'chiefList')"
+          filterable
+          clearable
+        >
+          <el-option
+            :value="items.code"
+            :label="items.value"
+            v-for="(items, index) in (options && options.chiefList) || []"
+            :key="index"
+          ></el-option>
+        </el-select>
+        <!-- <iInput
           v-model.trim="form.chiefId"
           v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_CHIEFNAME|CSF股长"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
-        ></iInput>
+        ></iInput> -->
       </el-form-item>
     </el-form>
   </iSearch>
@@ -102,23 +114,33 @@ import {
   searchCommodity,
   searchLinie,
 } from '@/api/aeko/manage'
+import {user as configUser } from '@/config'
+import {
+  getRoleUserList,
+} from '@/api/aeko/approve'
 
 export default {
   data() {
     return {
+      buyerId: '',
       form: {
         departmentIdList: []
       },
       selectOptions: {
         linieDeptNumList: [],
-        linieList: []
+        linieList: [],
+        chiefList: []
       },
       options: {
-        linieList: []
+        linieList: [],
+        chiefList: []
       },
       filter: {
         filterLinie: (key) => {
-          return this.filterOption(key, 'linieList')
+          return this.filterOption(key, 'linieList', 'buyerId')
+        },
+        filterChief: (key) => {
+          return this.filterOption(key, 'chiefList', 'chiefId')
         },
       },
     }
@@ -142,14 +164,14 @@ export default {
       this.form = {}
       this.$emit('search', {})
     },
-    filterOption(data, optionKey) {
+    filterOption(data, optionKey, valueKey) {
       // 去除空格
       data = String(data).trim()
       const startWords = String(data).spell().toLocaleLowerCase()
       const options = window._.cloneDeep(this.selectOptions[optionKey]) || []
       const filtedOption = options.filter(o => String(o.name).indexOf(data) > -1 || String(o.cnChar).indexOf(startWords)>-1)
       Vue.set(this.options, optionKey, filtedOption)
-      console.log(startWords, optionKey, filtedOption)
+      Vue.set(this.form, valueKey, data)
     },
     resetOption(state, optionKey) {
       console.log('resetOption', state, optionKey)
@@ -157,8 +179,31 @@ export default {
       const options = window._.cloneDeep(this.selectOptions[optionKey]) || []
       this.options[optionKey] = options
     },
+    // 前期采购股长
+    getQQCGGZ() {
+      getRoleUserList({roleCode: configUser.QQCGGZ}).then((res)=>{
+        const {code,data} = res;
+        if(code === '200' ) {
+          this.selectOptions.chiefList = data.map((item)=>{
+            const value = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+            return {
+              value,
+              name: value,
+              code: String(item.id),
+              cnChar: String(value).spell().toLocaleLowerCase(),
+              lowerCaseLabel: typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
+            }
+          });
+          this.options.chiefList = window._.cloneDeep(this.selectOptions.chiefList)
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      })
+    },
     // 获取搜索框下拉数据
     getSearchList(){
+      // csf股长
+      this.getQQCGGZ()
       // 科室
       searchCommodity().then((res)=>{
         const {code,data} = res;
@@ -174,17 +219,19 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
       })
+      // 查询linie
       searchLinie().then((res)=>{
         const {code,data} = res;
         if(code === '200' ) {
-          this.selectOptions.linieList = data.map((item)=>{
+          const linieList = data.map((item)=>{
             return {
               cnChar: item.namePinyin,
               name: this.$i18n.locale === "zh" ? item.nameZh : item.nameEn,
               value: this.$i18n.locale === "zh" ? item.nameZh : item.nameEn,
-              code: item.id
+              code: String(item.id)
             }
           });
+          this.selectOptions.linieList = linieList
           this.options.linieList = window._.cloneDeep(this.selectOptions.linieList)
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
