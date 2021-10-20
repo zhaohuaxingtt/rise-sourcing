@@ -304,6 +304,7 @@ export default {
 .caexpan-card {
   .tit {
     padding: 15px 0;
+    font-size: 14px;
   }
   .caexpan-card-body {
     padding-left: 20px;
