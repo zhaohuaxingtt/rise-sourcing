@@ -313,7 +313,9 @@ export default {
           return {
             id: o.id || '',
             postId: o.postId || '',
+            auditType:o.auditType || '',
             chiefId,
+            aekoManageId:o.aekoManageId ||'',
             chiefName:  cName.value || '',
           }
         })
