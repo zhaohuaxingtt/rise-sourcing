@@ -79,8 +79,6 @@ export default {
           yearOutputDTOsdata.push(maps)
         })
       })
-      console.log(this.tableListData[0].startyear);
-      console.log(this.tableListData[0]);
       if(this.tableListData[0].startyear == '') {
         return iMessage.warn(
           this.language(
