@@ -8,7 +8,7 @@
   >
     <div class="main_body">
       <div class="btn margin-bottom20">
-        <iButton @close="clearDiolog" >取消</iButton>
+        <iButton @click="clearDiolog" >取消</iButton>
         <iButton @click="apply">应用</iButton>
       </div>
       <div class="tableYear margin-top20">
@@ -65,6 +65,11 @@ export default {
   },
   methods: {
     clearDiolog() {
+      this.tableListData = [
+        {
+          startyear:''
+        }
+      ]
       this.$emit('changeVisible', false)
     },
     apply() {
@@ -86,11 +91,28 @@ export default {
             '抱歉，您尚未输入开始年份'
           )
         )
+      } else if(this.tableListData[0].startyear.length != 4) {
+        return iMessage.warn(
+          this.language(
+            "LK_SHURUDEKAISHINIANFENGESHIYOUWU",
+            '抱歉，输入的开始年份格式有误'
+          )
+        )
       } else{
           let batchMaintainOutPutPlanDTO  = {}
           batchMaintainOutPutPlanDTO.purchasingProjectIds = this.openPlanItemsIds
           batchMaintainOutPutPlanDTO.yearOutputDTOs = yearOutputDTOsdata
           batchMaintainOutPutPlan(batchMaintainOutPutPlanDTO).then(res=>{
+            if(res.code === '200') {
+              iMessage.success(
+                this.language(
+                  'LK_CAOZUOCHENGGONG','操作成功'
+                )
+              )
+              this.clearDiolog()
+            } else {
+              iMessage.error(res.desZh)
+            }
         })
       }
 

@@ -340,6 +340,7 @@
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU': '抱歉，您当前还未选择您需要生成FS号的零件采购项目！', //抱歉，您当前还未选择您需要生成FS号的零件采购项目！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU': '抱歉，您当前还未选择您需要批量维护的项目！', //抱歉，您当前还未选择您需要生批量维护的项目！
         'LK_NINSHANGWEISHURUKAISHINIANFEN': '抱歉，您尚未输入开始年份', //抱歉，您尚未输入开始年份
+        'LK_SHURUDEKAISHINIANFENGESHIYOUWU': '抱歉，输入的开始年份格式有误', //抱歉，输入的开始年份格式有误
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN': '抱歉，您当前还未选择您需要退回的信息单！', //抱歉，您当前还未选择您需要退回的信息单！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU': '抱歉，您当前还未选择您需要转派的零件采购项目！', //抱歉，您当前还未选择您需要转派的零件采购项目！
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOPILIANGWEIHUCHANLIANGJIHUADEXIANGMU': '抱歉，您当前还未选择您需要批量维护产量计划的项目！', //抱歉，您当前还未选择您需要批量维护产量计划的项目！
