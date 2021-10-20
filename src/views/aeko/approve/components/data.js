@@ -144,10 +144,10 @@ export const navList = [
 // 表头
 export const tableTitle = [
   { props: "isTop", name: "", key: "", tooltip: false, width:30 },
-  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true,width:60 },
+  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true,width:110 },
   { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true },
   { props: "assignsheet", name: "审批单", key: "LK_AEKOSHENPIDAN", tooltip: true },
-  { props: "auditTypeName", name: "审批类型", key: "SHENPILEIXING", tooltip: true },
+  { props: "auditTypeName", name: "审批类型", key: "SHENPILEIXING", tooltip: true,width:110  },
   { props: "departmentName", name: "commodity科室", key: "COMMODITYKESHI", tooltip: true },
   { props: "buyerName", name: "专业采购员", key: "ZHUANYECAIGOUYUAN", tooltip: true },
   { props: "chiefName", name: "CSF股长", key: "CSFGUZHANG", tooltip: true },

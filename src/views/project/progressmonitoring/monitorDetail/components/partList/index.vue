@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-19 15:56:45
+ * @LastEditTime: 2021-10-20 16:48:45
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -21,16 +21,16 @@
         <iButton @click="handleExport" :loading="downloadLoading">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
-    <div class="partListView-content"> 
+    <div class="partListView-content" ref="partListViewContent"> 
       <div v-for="pro in listWithNodeDelayWeeks" :key="pro.label" class="productItem"> 
         <div class="productItem-top"> 
-          <el-checkbox @change="handleCheckboxChange($event, pro)"> 
+          <el-checkbox :value="pro.checked" @change="handleCheckboxChange($event, pro)"> 
             {{`${pro.partNameZh || ''}`}} 
           </el-checkbox> 
           <icon v-if="partStatus != 7" @click.native="openChangeLight(pro)" class="productItem-top-icon cursor" symbol name="iconbianji"></icon>
           <template>
-            <icon class="productItem-top-icon2" v-if="pro[pro.partStatus == 7 ? 'projectProc' :'projectRisk'] == '3'" symbol name="iconzhuangtai_hong"></icon>
-            <icon class="productItem-top-icon2" v-else-if="pro[pro.partStatus == 7 ? 'projectProc' :'projectRisk'] == '2'" symbol name="iconzhuangtai_huang"></icon>
+            <icon class="productItem-top-icon2" v-if="(pro.partStatus == 7  && pro.projectProc == 2) || (pro.partStatus != 7  && pro.projectRisk == '3')" symbol name="iconzhuangtai_hong"></icon>
+            <icon class="productItem-top-icon2" v-else-if="pro.partStatus != 7 && pro['projectRisk'] == '2'" symbol name="iconzhuangtai_huang"></icon>
             <icon class="productItem-top-icon2" v-else-if="pro[pro.partStatus == 7 ? 'projectProc' :'projectRisk'] == '1'" symbol name="iconzhuangtai_lv"></icon>
           </template>
           <span class="productItem-top-desc">{{`${pro.partNum || ''}  ${pro.partNameDe || ''}  ${pro.buyerName || ''}`}}</span>
@@ -89,7 +89,7 @@
                   <iText slot="reference"  v-else class="productItem-bottom-stepBetween-input text ">
                     {{pro[item[taItem.props]]}}
                     {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '('+(pro[item[taItem.props1]] || '')+')' : ''}}
-                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0">+W{{pro[item.delayWeeks]}}</span>
+                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0 && partStatus != 7">+W{{pro[item.delayWeeks]}}</span>
                   </iText>
                   <div>
                     <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll1：{{getSollKw(pro[item.soll1])}} <span v-if="pro[item.soll22]">OTS soll1：{{getSollKw(pro[item.soll12])}}</span></p>
@@ -115,7 +115,7 @@
     </div> 
     <fsConfirm ref="fsConfirmPart" :dialogVisible="dialogVisibleFS" @handleConfirm="handleSendFsConfirm" :tableListNomi="tableListNomi" :tableListKickoff="tableListKickoff" :cartypeProId="cartypeProId" @changeVisible="changeFsConfirmVisible" /> 
     <changeLightDialog ref="changeLight" :dialogVisible="dialogVisibleLight" @changeVisible="changeLightDialogVisible" @handleActionPlan="handleActionPlan" :actionPlan="selectParts.actionPlan" :delayLevelPro="selectParts.delayLevelPro" />
-    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" :partStatus="partStatus" :cartypeProId="cartypeProId" :partNums="selectPartNums" :carProjectName="carProjectName" />
+    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" :partStatus="partStatus" :cartypeProId="cartypeProId" :partNums="selectPart" :carProjectName="carProjectName" />
   </div> 
 </template>
 
@@ -157,17 +157,16 @@ export default {
       dialogVisibleLight: false,
       selectParts: {},
       dialogVisibleDelayReason: false,
-      moment
+      moment,
     }
   },
   computed: {
     selectPartNums() {
-      return this.selectPart.map(item => item.partNum)
+      return this.selectPart.map(item => {return {partNum: item.partNum, tempCode: item.tempCode}})
     },
     listWithNodeDelayWeeks() {
       // 当前时间周，针对即将发生但未发生的节点用计划时间和当前时间周去判断延误时间（周）
       const currentKw = moment().format('YYYY-[KW]WW')
-      
       return this.list ? this.list.map(item => {
         const partStatus = Number(item.partStatus)
         const emDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'emTimeKw' : 'planEmTimeKw'], partStatus == 6 ? currentKw : item.emTimeKw) : 0
@@ -180,12 +179,17 @@ export default {
           firstTryoutDelayWeeks: partStatus > 4 ? this.getDelayWeeks(item[partStatus == 5 ? 'firstTryoutTimeKw' : 'planFirstTryoutTimeKw'], partStatus == 5 ? currentKw : item.firstTryoutTimeKw) : 0,
           emDelayWeeks,
           otsDelayWeeks,
-          emOtsDelayWeeks: partStatus > 5 ? Math.max(emDelayWeeks,otsDelayWeeks): 0
+          emOtsDelayWeeks: partStatus > 5 ? Math.max(emDelayWeeks,otsDelayWeeks): 0,
+          checked: this.selectPart.some(sitem => sitem.id == item.id)
         }
       }) : []
     }
   },
   methods: {
+    resetSelectPart() {
+      this.selectPart = []
+      console.log(this.selectPart, this.listWithNodeDelayWeeks)
+    }, 
     async handleExport() {
       if (this.partStatus != 1) {
         return
@@ -334,7 +338,7 @@ export default {
               selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
               fs, 
               fsId,
-              confirmDateDeadline: moment(this.replyEndDate).format('YYYY-MM-DD'), 
+              confirmDateDeadline: moment(item.replyEndDate).format('YYYY-MM-DD'), 
               partNum: item.partNum, 
               partName: item.partNameZh, 
               delayWeek: item.delayWeeks,
@@ -461,13 +465,13 @@ export default {
       this.isIndeterminate = false;
     },
     handleCheckboxChange(value, pro) {
-      // this.$set(pro, 'isChecked', value)
+      // this.$set(pro, 'checked', value)
       if (value) {
         this.selectPart.push(pro)
       } else {
-        // eslint-disable-next-line no-undef
-        _.pull(this.selectPart, pro)
+        this.selectPart = this.selectPart.filter(item => item.id != pro.id)
       }
+      // console.log(this.selectPart)
       // let checkedCount = this.list.filter(item => item.isChecked).length;
       // this.checkAll = checkedCount === this.list.length;
       // this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length;

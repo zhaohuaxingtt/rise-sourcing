@@ -103,6 +103,7 @@
             'TuiHui': '退回', //退回
             'LingJianMingZH': '零件名（中）', //零件名（中）
             'LingJianMingDE': '零件名（德）', //零件名（德）
+            'ismtz': 'ISMTZ', //ISMTZ
             'XinXiDanLeiXing': '信息单类型', //信息单类型
             'XianShiDiTiaoDaoTiaoJiLuGongTiaoJiLu': '显示第    条到    条记录，共    条记录', //显示第    条到    条记录，共    条记录
             'ShangYiYe': '上一页', //上一页

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 20:00:13
- * @LastEditTime: 2021-08-30 18:01:08
+ * @LastEditTime: 2021-10-20 16:06:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\index.vue
@@ -12,7 +12,7 @@
       <div class="title">{{ language("ZHIDINGYUANLINGJIAN", "指定原零件") }}</div>
       <div class="control">
         <!-- <iNavMvp class="nav margin-right20" :lev="2" :list="navList" lang routerPage routerParam /> -->
-        <iButton :loading="saveLoading" @click="save" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("LK_BAOCUN", "保存") }}</iButton>
+        <iButton :loading="saveLoading" @click="save" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("LK_AEKO_XUANZE", "选择") }}</iButton>
         <iButton @click="handleBack">{{ language("FANHUI", "返回") }}</iButton>
         <div class="control">
           <logButton class="margin-left20" />

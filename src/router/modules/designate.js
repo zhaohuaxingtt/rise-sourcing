@@ -196,6 +196,15 @@ export default [
               import ("@/views/designate/approvalPersonAndRecord/index")
           },
           {                             
+            path: "/designate/decisiondata/mtz",
+            name: "designateDecisionDataMTZ",
+            meta: {
+                title: "定点管理-决策资料-MTZ",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/decisionData/mtz")
+          },
+          {                             
             path: "/designate/decisiondata/attachment",
             name: "designateDecisionAttachment",
             meta: {
