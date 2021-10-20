@@ -21,7 +21,7 @@
               :value="item.value">
             </el-option>
           </iSelect>
-          <iInput v-else-if="item.type === 'input'" v-model="searchParams[item.value]" :placeholder="language('QINGSHURUDUOGELINGJIANHAO', '请输入多个零件号，多个逗号分割')" />
+          <iInput v-else-if="item.type === 'input'" v-mo del="searchParams[item.value]" :placeholder="language('QINGSHURUDUOGELINGJIANHAO', '请输入多个零件号，多个逗号分割')" />
         </el-form-item>
       </el-form>
     </iSearch>
@@ -90,7 +90,12 @@ export default {
         status: this.$route.query.status
       },
       titleName:this.$route.query.carProjectName,
-      selectOptions: {},
+      selectOptions: {
+        'partTaskPartSortQuery':[],
+        'partTaskStatus':[],
+        'partTaskRisePartDesc':[],
+        'partTaskPartSort':[]
+      },
       tableData: [],
       tableLoading: false,
       selectRows: [],
@@ -104,23 +109,14 @@ export default {
   computed: {
 
   },
+  mounted() {
+    console.log("页面加载完成")
+  },
   created() {
     this.getSelectOptions()
     this.getTableList()
   },
   methods: {
-    handleTransfer(val) {
-      transferSchedule(this.selectRows.map(item => item.id), val).then(res => {
-        if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.getTableList()
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.$refs.productGroupTransfer.changeLoading(false)
-      })
-    },
     //返回
     back() {
       this.$router.go(-1);
@@ -297,6 +293,7 @@ export default {
           this.page.totalCount = Number(res.total)
           this.page.currPage = Number(res.pageNum)
           this.batchUpdataMap = new Map();
+          console.log("列表查询")
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
