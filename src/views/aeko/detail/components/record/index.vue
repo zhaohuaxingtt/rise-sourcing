@@ -112,6 +112,9 @@ export default {
 		...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
     }),
+    alowSubmit() {
+      return true
+    }
 	},
   props:{
     aekoInfo:{
