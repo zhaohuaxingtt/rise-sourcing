@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-21 16:00:40
+ * @LastEditTime: 2021-10-21 16:05:02
  * @Description: 延误原因汇总
 -->
 
@@ -243,7 +243,7 @@ export default {
     },
     initSearchParams() {
       this.searchParams = {
-        confirmStatus: '1',
+        confirmStatus: this.isFS ? '1' : '2',
         projectId: this.$route.query.projectId || '',
         partNum: this.$route.query.partNum || '',
         fsId: '',
