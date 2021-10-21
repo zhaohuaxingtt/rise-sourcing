@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-08-26 20:27:53
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-21 15:14:31
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
 -->
@@ -11,8 +11,8 @@
     <div class="header clearFloat">
       <span class="title">{{ language('LK_MEICHEYONGLIANG','每车用量') }}（{{ language('LK_DANGQIANBANBEN','当前版本') }} : V{{ version }}）</span>
       <div class="control">
-        <iButton @click="jump" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_ALL">{{ language('LK_CHAKANQUANBUBANBEN','查看全部版本') }}</iButton>
-        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT">{{ language('LK_DAOCHU','导出') }}</iButton>
+        <iButton v-if="!disabled" @click="jump" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_ALL">{{ language('LK_CHAKANQUANBUBANBEN','查看全部版本') }}</iButton>
+        <iButton v-if="!disabled" @click="download" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT">{{ language('LK_DAOCHU','导出') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">
@@ -48,6 +48,10 @@ export default {
     data: {
       type: Object,
       default: () => ({})
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
