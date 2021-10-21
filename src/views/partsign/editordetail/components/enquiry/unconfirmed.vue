@@ -3,9 +3,9 @@
     <div class="header clearFloat">
       <span class="title">{{ language('LK_DAIQUERENBANBEN','待确认版本') }}</span>
       <div class="control">
-        <iButton @click="confirm" :loading="confirmLoading" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_CONFIRM">{{ language('LK_QUEREN','确认') }}</iButton>
-        <iButton @click="reject" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_REFUSE">{{ language('LK_JUJUE','拒绝') }}</iButton>
-        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_DOWNLOAD" :loading="downLoading">{{ language('LK_XIAZAI','下载') }}</iButton>
+        <iButton v-if="!disabled" @click="confirm" :loading="confirmLoading" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_CONFIRM">{{ language('LK_QUEREN','确认') }}</iButton>
+        <iButton v-if="!disabled" @click="reject" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_REFUSE">{{ language('LK_JUJUE','拒绝') }}</iButton>
+        <iButton v-if="!disabled" @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_DOWNLOAD" :loading="downLoading">{{ language('LK_XIAZAI','下载') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">
@@ -59,6 +59,10 @@ export default {
     data: {
       type: Object,
       default: () => ({})
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
