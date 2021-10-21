@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-15 15:42:36
+ * @LastEditTime: 2021-10-20 17:34:39
  * @Description: 
 -->
 <template>
@@ -232,6 +232,7 @@ export default {
         this.tableLoading = false
       }).catch(e => {
         this.tableLoading = false
+        this.tableListData = []
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
       }).finally(() => {
         this.tableLoading = false
@@ -312,7 +313,9 @@ export default {
           return {
             id: o.id || '',
             postId: o.postId || '',
+            auditType:o.auditType || '',
             chiefId,
+            aekoManageId:o.aekoManageId ||'',
             chiefName:  cName.value || '',
           }
         })

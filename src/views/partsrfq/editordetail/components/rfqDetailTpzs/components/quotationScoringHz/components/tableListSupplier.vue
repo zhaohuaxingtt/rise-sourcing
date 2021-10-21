@@ -271,6 +271,7 @@
 </template>
 <script>
 import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
+import {toThousands} from '@/utils'
 export default{
   inject:['getbaseInfoData'],
   props:{
@@ -312,6 +313,13 @@ export default{
     supplierTableTop:supplierTableTop
   }},
   methods:{
+    ttoShow(data){
+      if(parseInt(data)){
+        return toThousands(parseInt(data))
+      }else{
+        return data
+      }
+    },
     getPorpsNumber(props){return getPorpsNumber(props)},
     getCfPartsAorBprice(arrayList,index,props){
       try {

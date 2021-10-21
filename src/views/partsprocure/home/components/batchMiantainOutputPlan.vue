@@ -34,7 +34,6 @@ export default {
         } else {
           let planItemsIds = this.planItems.map((res) => res.id)
           this.planItemsIds = planItemsIds
-          console.log( this.planItemsIds);
           this.batchdialogVisible = true
         }
        },

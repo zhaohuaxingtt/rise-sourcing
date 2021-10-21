@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-09-13 18:27:30
+ * @LastEditTime: 2021-10-21 16:07:19
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -469,7 +469,7 @@ export default {
           cancelButtonText: this.language("LK_QUXIAO",'取 消'),
         }
       ).then((res) => {
-        this.patchRecords(2, this.selectTableData);
+        this.patchRecords('ACCEPTED', this.selectTableData);
       });
     },
     //退回
@@ -498,7 +498,7 @@ export default {
     //退回
     sureBackmark(val) {
       this.backmark = val;
-      this.patchRecords(3, this.selectTableData);
+      this.patchRecords('REFUSED', this.selectTableData);
       this.diologBack = false;
     },
     //转派

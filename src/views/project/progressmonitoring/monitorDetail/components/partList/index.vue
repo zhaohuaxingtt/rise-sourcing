@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-19 20:28:02
+ * @LastEditTime: 2021-10-21 19:45:19
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -24,7 +24,7 @@
     <div class="partListView-content" ref="partListViewContent"> 
       <div v-for="pro in listWithNodeDelayWeeks" :key="pro.label" class="productItem"> 
         <div class="productItem-top"> 
-          <el-checkbox @change="handleCheckboxChange($event, pro)"> 
+          <el-checkbox :value="pro.checked" @change="handleCheckboxChange($event, pro)"> 
             {{`${pro.partNameZh || ''}`}} 
           </el-checkbox> 
           <icon v-if="partStatus != 7" @click.native="openChangeLight(pro)" class="productItem-top-icon cursor" symbol name="iconbianji"></icon>
@@ -82,18 +82,20 @@
                   placement="top-start"
                   :disabled="taItem.key !== 'JIHUASHIJIAN' || !(pro[item.soll2] || pro[item.soll22])"
                 >
-                  <iText slot="reference"  v-if="Number(pro.partStatus) <= item.partPeriod" class="productItem-bottom-stepBetween-input text ">
+                  <iText slot="reference"  v-if="Number(pro.partStatus) <= item.partPeriod" class="productItem-bottom-stepBetween-input text " :class="index === nodeList.length - 1 ? 'largeText' : ''">
                     {{taItem.key === 'JIHUASHIJIAN' ? pro[item.kw] : ''}}
                     {{taItem.key === 'JIHUASHIJIAN' ? index === nodeList.length - 1 && pro[item.kw] ? '('+(pro[item.kw1] || '')+')' : '' : ''}}
                   </iText>
-                  <iText slot="reference"  v-else class="productItem-bottom-stepBetween-input text ">
+                  <iText slot="reference"  v-else class="productItem-bottom-stepBetween-input text " :class="index === nodeList.length - 1 ? 'largeText' : ''">
                     {{pro[item[taItem.props]]}}
-                    {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '('+(pro[item[taItem.props1]] || '')+')' : ''}}
-                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0 && partStatus != 7">+W{{pro[item.delayWeeks]}}</span>
+                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0">+W{{pro[item.delayWeeks]}}</span>
+                    {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '( '+(pro[item[taItem.props1]] || '') : ''}}
+                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="index === nodeList.length - 1 && pro[item.kw1] && pro[item.delayWeeks2] > 0">+W{{pro[item.delayWeeks2]}}</span>
+                    {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? ')' : ''}}
                   </iText>
                   <div>
-                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll1：{{getSollKw(pro[item.soll1])}} <span v-if="pro[item.soll22]">OTS soll1：{{getSollKw(pro[item.soll12])}}</span></p>
-                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll2：{{getSollKw(pro[item.soll2])}} <span v-if="pro[item.soll22]">OTS soll2：{{getSollKw(pro[item.soll22])}}</span></p>
+                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll1：{{pro[item.soll1]}} <span v-if="pro[item.soll22]">OTS soll1：{{pro[item.soll12]}}</span></p>
+                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll2：{{pro[item.soll2]}} <span v-if="pro[item.soll22]">OTS soll2：{{pro[item.soll22]}}</span></p>
                   </div>
                 </el-popover>
               </div>
@@ -115,7 +117,7 @@
     </div> 
     <fsConfirm ref="fsConfirmPart" :dialogVisible="dialogVisibleFS" @handleConfirm="handleSendFsConfirm" :tableListNomi="tableListNomi" :tableListKickoff="tableListKickoff" :cartypeProId="cartypeProId" @changeVisible="changeFsConfirmVisible" /> 
     <changeLightDialog ref="changeLight" :dialogVisible="dialogVisibleLight" @changeVisible="changeLightDialogVisible" @handleActionPlan="handleActionPlan" :actionPlan="selectParts.actionPlan" :delayLevelPro="selectParts.delayLevelPro" />
-    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" :partStatus="partStatus" :cartypeProId="cartypeProId" :partNums="selectPartNums" :carProjectName="carProjectName" />
+    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" :partStatus="partStatus" :cartypeProId="cartypeProId" :partNums="selectPart" :carProjectName="carProjectName" />
   </div> 
 </template>
 
@@ -162,7 +164,7 @@ export default {
   },
   computed: {
     selectPartNums() {
-      return this.selectPart.map(item => item.partNum)
+      return this.selectPart.map(item => {return {partNum: item.partNum, tempCode: item.tempCode}})
     },
     listWithNodeDelayWeeks() {
       // 当前时间周，针对即将发生但未发生的节点用计划时间和当前时间周去判断延误时间（周）
@@ -179,12 +181,17 @@ export default {
           firstTryoutDelayWeeks: partStatus > 4 ? this.getDelayWeeks(item[partStatus == 5 ? 'firstTryoutTimeKw' : 'planFirstTryoutTimeKw'], partStatus == 5 ? currentKw : item.firstTryoutTimeKw) : 0,
           emDelayWeeks,
           otsDelayWeeks,
-          emOtsDelayWeeks: partStatus > 5 ? Math.max(emDelayWeeks,otsDelayWeeks): 0
+          emOtsDelayWeeks: partStatus > 5 ? Math.max(emDelayWeeks,otsDelayWeeks): 0,
+          checked: this.selectPart.some(sitem => sitem.id == item.id)
         }
       }) : []
     }
   },
   methods: {
+    resetSelectPart() {
+      this.selectPart = []
+      console.log(this.selectPart, this.listWithNodeDelayWeeks)
+    }, 
     async handleExport() {
       if (this.partStatus != 1) {
         return
@@ -460,13 +467,13 @@ export default {
       this.isIndeterminate = false;
     },
     handleCheckboxChange(value, pro) {
-      // this.$set(pro, 'isChecked', value)
+      // this.$set(pro, 'checked', value)
       if (value) {
         this.selectPart.push(pro)
       } else {
-        // eslint-disable-next-line no-undef
-        _.pull(this.selectPart, pro)
+        this.selectPart = this.selectPart.filter(item => item.id != pro.id)
       }
+      // console.log(this.selectPart)
       // let checkedCount = this.list.filter(item => item.isChecked).length;
       // this.checkAll = checkedCount === this.list.length;
       // this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length;
@@ -573,7 +580,7 @@ export default {
         position: relative;
         display: flex;
         &:last-child {
-          flex: 1;
+          // flex: 1;
         }
         .productItem-bottom-nodeItem {
           display: flex;
@@ -609,7 +616,7 @@ export default {
           &-input {
             font-size: 14px;
             height: 30px;
-            width: 180px;
+            min-width: 180px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -623,6 +630,12 @@ export default {
               .flowWeek {
                 font-family: Arial;
                 margin-left: 15px;
+              }
+            }
+            &.largeText {
+              min-width: 200px;
+              .flowWeek {
+                margin-left: 8px;
               }
             }
           }
