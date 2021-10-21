@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-08 21:07:01
+ * @LastEditTime: 2021-10-21 10:56:22
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -83,7 +83,7 @@
 <script>
 import { iButton, icon, iInput, iText, iMessage } from 'rise'
 import fsConfirm from '../fsconfirm'
-import { getProductGroupInfoList, saveProductGroupInfoList, deliveryProduct, getAllFS, downloadPvPk, getFsUserList, getBuyer, getCarConfig, validSchedule } from '@/api/project'
+import { getProductGroupInfoList, saveProductGroupInfoList, deliveryProduct, getAllFS, downloadPvPk, getFsUserList, getBuyer, getCarConfig, validSchedule, getWorkDay } from '@/api/project'
 import moment from 'moment'
 export default {
   components: { iButton, fsConfirm, icon, iInput, iText },
@@ -330,6 +330,7 @@ export default {
         const canSendRows = selectRows.filter(item => !(validScheduleRowsRes.data || []).some(rItem => rItem.productGroupId === item.productGroupId))
         const fsOptions = await this.getFsUserList(canSendRows)
         const nextThreeWorkDay = await this.getNextThreeWorkDay()
+        // console.log(nextThreeWorkDay)
         this.fsTableList = canSendRows.map(item => {
           const fs = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userName || ''
           const fsId = fsOptions && fsOptions[item.productGroupId] && fsOptions[item.productGroupId][0].userId || ''
@@ -373,11 +374,16 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    getNextThreeWorkDay() {
-      if (moment().day() === 2 || moment().day() === 1) {
-        return moment().add(3, 'days').format('YYYY-MM-DD')
-      } else {
-        return moment().add(5, 'days').format('YYYY-MM-DD')
+    async getNextThreeWorkDay() {
+      const params = {
+        queryDayNum: 4,
+        queryType: 1,
+        startDay: moment().format('YYYY-MM-DD')
+      }
+      const res = await getWorkDay(params) 
+      if (res && res.result && res.data && res.data.length > 0) {
+        const { year, month, day } = res.data[res.data.length - 1]
+        return year + '-' + month + '-' + day
       }
     },
     /**
