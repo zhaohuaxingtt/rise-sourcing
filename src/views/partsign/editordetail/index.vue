@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-26 14:55:05
- * @LastEditors: Please set LastEditors
+ * @LastEditors: Hao,Jiang
 * @Description: In User Settings Edit
  -->
 <template>
@@ -10,9 +10,9 @@
     <div class="pageTitle flex-between-center-center">
       <span>{{partDetails.partNum || ''}}</span>
       <div class="btnList flex-align-center">
-        <iButton :disabled='tpInfoStuats()' @click="openDiologChangeItems" v-permission.auto='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON|转派'>{{ language('LK_ZHUANPAI','转派') }}</iButton>
-        <iButton :disabled='tpInfoStuats()' @click="save" v-permission.auto="PARTSIGN_EDITORDETAIL_SIGNBUTTON|签收">{{ language('LK_QIANSHOU','签收') }}</iButton>
-        <iButton :disabled='tpInfoStuats()' @click="openDiologBack" v-permission.auto="PARTSIGN_EDITORDETAIL_BACKBUTTON|退回">{{ language('LK_TUIHUI','退回') }}</iButton>
+        <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="openDiologChangeItems" v-permission.auto='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON|转派'>{{ language('LK_ZHUANPAI','转派') }}</iButton>
+        <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="save" v-permission.auto="PARTSIGN_EDITORDETAIL_SIGNBUTTON|签收">{{ language('LK_QIANSHOU','签收') }}</iButton>
+        <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="openDiologBack" v-permission.auto="PARTSIGN_EDITORDETAIL_BACKBUTTON|退回">{{ language('LK_TUIHUI','退回') }}</iButton>
         <iButton @click="back" v-permission.auto="PARTSIGN_EDITORDETAIL_RETURN|返回">{{ language('LK_FANHUI','返回') }}</iButton>
         <logButton class="margin-left20" @click="log"  v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志"/>
         <span>
@@ -33,12 +33,12 @@
           </iCard>
         </el-tab-pane>
         <el-tab-pane lazy :label="language('LK_XUNJIAZILIAO','询价资料')" name="2" v-permission="PARTSIGN_EDITORDETAIL_INQUIRYINFORMATION">
-          <enquiryUnconfirmed ref="enquiryUnconfirmed" class="enquiryUnconfirmed" :data="partDetails" @updateVersion="updateEnquiryVersion" />
-          <enquiry ref="enquiry" class="enquiry" :data="partDetails" />
+          <enquiryUnconfirmed ref="enquiryUnconfirmed" class="enquiryUnconfirmed" :data="partDetails" :disabled="isDisabled" @updateVersion="updateEnquiryVersion" />
+          <enquiry ref="enquiry" class="enquiry" :data="partDetails" :disabled="isDisabled" />
         </el-tab-pane>
         <el-tab-pane lazy :label="language('LK_MEICHEYONGLIANG','每车用量')" name="3" v-permission="PARTSIGN_EDITORDETAIL_USAGEPERVEHICLE">
-          <volumeUnconfirmed ref="volumeUnconfirmed" class="volumeUnconfirmed" :data="partDetails" @updateVersion="updateVolumeVersion" />
-          <volume ref="volume" class="volume" :data="partDetails" />
+          <volumeUnconfirmed ref="volumeUnconfirmed" class="volumeUnconfirmed" :data="partDetails" :disabled="isDisabled" @updateVersion="updateVolumeVersion" />
+          <volume ref="volume" class="volume" :data="partDetails" :disabled="isDisabled" />
         </el-tab-pane>
       </iTabs-list>
     </div>
@@ -90,6 +90,12 @@ export default {
       partDetails: {}, //零件信息单详情
       backmark:''
     };
+  },
+  computed: {
+    // 页面是否处于预览模式
+    isDisabled() {
+      return this.$route.meta.isPreview
+    }
   },
   created() {
     this.getPartInfo();
