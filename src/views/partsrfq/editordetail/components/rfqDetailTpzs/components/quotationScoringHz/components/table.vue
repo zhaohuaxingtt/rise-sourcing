@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-10-08 19:42:58
+ * @LastEditTime: 2021-10-19 19:13:27
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -116,7 +116,7 @@
                   <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{scope.row[item.props]}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "tto"'>
-                  <span :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}">{{scope.row[item.props]}}</span>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
                 <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
@@ -163,6 +163,7 @@
 import {removeKeysNumber,getPorpsNumber} from './data'
 import {icon} from 'rise'
 import moment from 'moment'
+import {toThousands} from '@/utils'
 export default{
   components:{icon},
   props:{
@@ -206,6 +207,13 @@ export default{
     }
   },
   methods:{
+    ttoShow(data){
+      if(parseInt(data)){
+        return toThousands(parseInt(data))
+      }else{
+        return data
+      }
+    },
     sortChangeTable({column, prop, order}){
       this.$emit('sortChangeTabless',{prop:prop,props:order})
     },
