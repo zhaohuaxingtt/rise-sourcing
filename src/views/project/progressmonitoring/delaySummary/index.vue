@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-21 11:03:46
+ * @LastEditTime: 2021-10-21 16:00:40
  * @Description: 延误原因汇总
 -->
 
@@ -31,7 +31,7 @@
       <!-- <template slot="header-control"> -->
       <div class="floatright" slot="header-control">
         <!--------------------发送按钮----------------------------------->
-        <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('FASONG','发送')}}</iButton>
+        <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('ZAICIFASONG','再次发送')}}</iButton>
         <iButton v-if="!isFS" @click="handleExport">{{language('DAOCHU','导出')}}</iButton>
         <template v-if="isFS">
           <!--------------------转派按钮----------------------------------->
@@ -201,7 +201,7 @@ export default {
       if (resetPage) {
         this.resetPageInfo()
       }
-      if (this.searchParams.confirmStatus === '3') {
+      if (this.searchParams.confirmStatus === '3' || this.searchParams.confirmStatus === '2') {
         this.withSend = true
       } else {
         this.withSend = false
