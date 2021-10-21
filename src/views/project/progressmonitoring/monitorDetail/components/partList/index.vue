@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-20 18:02:06
+ * @LastEditTime: 2021-10-21 19:45:19
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -94,8 +94,8 @@
                     {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? ')' : ''}}
                   </iText>
                   <div>
-                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll1：{{getSollKw(pro[item.soll1])}} <span v-if="pro[item.soll22]">OTS soll1：{{getSollKw(pro[item.soll12])}}</span></p>
-                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll2：{{getSollKw(pro[item.soll2])}} <span v-if="pro[item.soll22]">OTS soll2：{{getSollKw(pro[item.soll22])}}</span></p>
+                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll1：{{pro[item.soll1]}} <span v-if="pro[item.soll22]">OTS soll1：{{pro[item.soll12]}}</span></p>
+                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll2：{{pro[item.soll2]}} <span v-if="pro[item.soll22]">OTS soll2：{{pro[item.soll22]}}</span></p>
                   </div>
                 </el-popover>
               </div>
@@ -173,7 +173,6 @@ export default {
         const partStatus = Number(item.partStatus)
         const emDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'emTimeKw' : 'planEmTimeKw'], partStatus == 6 ? currentKw : item.emTimeKw) : 0
         const otsDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'otsTimeKw' : 'planOtsTimeKw'], partStatus == 6 ? currentKw : item.otsTimeKw) : 0
-        console.log('otsDelayWeeks', emDelayWeeks, otsDelayWeeks)
         return {
           ...item,
           releaseDelayWeeks: partStatus > 0 ? this.getDelayWeeks(partStatus == 1 ? item.releaseTimeKw : item.planReleaseTimeKw, partStatus == 1 ? currentKw : item.releaseTimeKw) : 0,
