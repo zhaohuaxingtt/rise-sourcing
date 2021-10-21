@@ -11,33 +11,43 @@ export const cutOutNum = (num, decimals) => {
     let tempNum = Number(num)
     return tempNum.toFixed(dec)
     // 默认为保留的小数点后两位
-   /* let dec = decimals ? decimals : 2
-    let tempNum = Number(num)
-    let pointIndex = String(tempNum).indexOf('.') + 1 // 获取小数点的位置 + 1
-    let pointCount = pointIndex ? String(tempNum).length - pointIndex : 0 // 获取小数点后的个数(需要保证有小数位)
-    // 源数据为整数或者小数点后面小于decimals位的作补零处理
-    if (pointIndex === 0 || pointCount <= dec) {
-        let tempNumA = tempNum
-        if (pointIndex === 0) {
-            tempNumA = `${tempNumA}.`
-            for (let index = 0; index < dec - pointCount; index++) {
-                tempNumA = `${tempNumA}0`
-            }
-        } else {
-            for (let index = 0; index < dec - pointCount; index++) {
-                tempNumA = `${tempNumA}0`
-            }
-        }
-        return tempNumA
-    }
-    let realVal = ''
-    // 截取当前数据到小数点后decimals位
-    realVal = `${String(tempNum).split('.')[0]}.${String(tempNum)
-        .split('.')[1]
-        .substring(0, dec)}`
-    // 判断截取之后数据的数值是否为0
-    if (realVal == 0) {
-        realVal = 0
-    }
-    return realVal*/
+    /* let dec = decimals ? decimals : 2
+     let tempNum = Number(num)
+     let pointIndex = String(tempNum).indexOf('.') + 1 // 获取小数点的位置 + 1
+     let pointCount = pointIndex ? String(tempNum).length - pointIndex : 0 // 获取小数点后的个数(需要保证有小数位)
+     // 源数据为整数或者小数点后面小于decimals位的作补零处理
+     if (pointIndex === 0 || pointCount <= dec) {
+         let tempNumA = tempNum
+         if (pointIndex === 0) {
+             tempNumA = `${tempNumA}.`
+             for (let index = 0; index < dec - pointCount; index++) {
+                 tempNumA = `${tempNumA}0`
+             }
+         } else {
+             for (let index = 0; index < dec - pointCount; index++) {
+                 tempNumA = `${tempNumA}0`
+             }
+         }
+         return tempNumA
+     }
+     let realVal = ''
+     // 截取当前数据到小数点后decimals位
+     realVal = `${String(tempNum).split('.')[0]}.${String(tempNum)
+         .split('.')[1]
+         .substring(0, dec)}`
+     // 判断截取之后数据的数值是否为0
+     if (realVal == 0) {
+         realVal = 0
+     }
+     return realVal*/
+}
+
+
+export const fixNumber = (num) => {
+    if (!num) return null;
+    let re = /(?=(?!(\b))(\d{3})+$)/g;
+    let fixstr = (num || 0).toString().split(".");
+    fixstr[0] = fixstr[0].replace(re, ",");
+    if (fixstr[1] && fixstr[1] == '00') return fixstr[0];
+    return fixstr.join('.');
 }

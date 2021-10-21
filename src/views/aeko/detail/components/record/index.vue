@@ -14,16 +14,16 @@
       </iButton>
     </div>
     <tablelist
-      class="margin-top15"
-      height="400"
-      index
-      :selection="alowSubmit"
-      :tableData="tableListData"
-      :tableTitle="tableTitle"
-      :tableLoading="tableLoading"
-      :lang="true"
-      @handleSelectionChange="handleSelectionChange"
-      v-loading="tableLoading"
+        class="margin-top15"
+        height="400"
+        index
+        :selection="alowSubmit"
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        :lang="true"
+        @handleSelectionChange="handleSelectionChange"
+        v-loading="tableLoading"
     >
       <template #aekoNum="scope">
         <div style="text-align: left">
@@ -33,14 +33,16 @@
         </div>
       </template>
       <template #akeoAuditType="scope">
-        {{getAdiType(scope.row.akeoAuditType)}}
+        {{ getAdiType(scope.row.akeoAuditType) }}
       </template>
       <template #explainReason="scope">
-        <iInput v-if="!scope.row.disabled" v-model="scope.row.explainReason" type="textarea" rows="2" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
-        <span v-else>{{scope.row.explainReason}}</span>
+        <iInput v-if="!itemIsCanReply(scope.row)" v-model="scope.row.explainReason" type="textarea" rows="2"
+                :placeholder="language('LK_QINGSHURU','请输入')" clearable/>
+        <span v-else>{{ scope.row.explainReason }}</span>
       </template>
       <template #attach="scope">
-        <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row, false)" v-if="!scope.row.disabled">
+        <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row, false)"
+           v-if="!itemIsCanReply(scope.row)">
           {{ language("LK_SHANGCHUAN", "上传") }}
         </a>
         <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row, true)" v-else>
@@ -50,32 +52,32 @@
     </tablelist>
     <div class="pagination">
       <iPagination
-        v-update
-        class="pagination"
-        @size-change="handleSizeChange($event, getFetchData)"
-        @current-change="handleCurrentChange($event, getFetchData)"
-        background
-        :current-page="page.currPage"
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :total="page.totalCount"
+          v-update
+          class="pagination"
+          @size-change="handleSizeChange($event, getFetchData)"
+          @current-change="handleCurrentChange($event, getFetchData)"
+          background
+          :current-page="page.currPage"
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :total="page.totalCount"
       />
     </div>
     <!-- 上传附件弹窗 -->
     <iFileDialog
-      width="800"
-      :title="language('JIESHIFUJIANCHAKAN', '解释附件查看')"
-      :visible.sync="attachDialogVisibal"
-      :hostId="attachAekoCode"
-      :init="false"
-      :getFileCallBack="getAttach"
-      :onSuccessCallBack="onUploadsucess"
-      :deleteFileCallBack="deleteFile"
-      :customizeTableTitle="attachTableTitle"
-      :editControl="['delete','upload']"
-      :activeItems="'fileName'"
-      :readOnly="attachReadOnly" />
+        width="800"
+        :title="language('JIESHIFUJIANCHAKAN', '解释附件查看')"
+        :visible.sync="attachDialogVisibal"
+        :hostId="attachAekoCode"
+        :init="false"
+        :getFileCallBack="getAttach"
+        :onSuccessCallBack="onUploadsucess"
+        :deleteFileCallBack="deleteFile"
+        :customizeTableTitle="attachTableTitle"
+        :editControl="['delete','upload']"
+        :activeItems="'fileName'"
+        :readOnly="attachReadOnly"/>
   </iCard>
 </template>
 
@@ -84,9 +86,9 @@ import Vuex from 'vuex'
 import {approveReCordTableTitle as tableTitle, aekoApproveTypes} from '../data'
 import {attachTableTitle} from './components/data'
 import iFileDialog from 'rise/web/components/iFile/dialog'
-import tablelist from 'rise/web/components/iFile/tableList'; 
+import tablelist from 'rise/web/components/iFile/tableList';
 import {iCard, iButton, iPagination, iInput, iMessage} from 'rise'
-import { pageMixins } from '@/utils/pageMixins'
+import {pageMixins} from '@/utils/pageMixins'
 import {
   findHistoryByAeko,
   submitForApproval
@@ -94,7 +96,7 @@ import {
 import {
   getAuditFilePage,
   auditFileSave,
-	auditFileDelete
+  auditFileDelete
 } from '@/api/aeko/detail/approveAttach'
 
 export default {
@@ -109,17 +111,18 @@ export default {
     iFileDialog
   },
   computed: {
-		...Vuex.mapState({
+    ...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
     }),
     alowSubmit() {
       return true
     }
-	},
-  props:{
-    aekoInfo:{
-      type:Object,
-      default:()=>{},
+  },
+  props: {
+    aekoInfo: {
+      type: Object,
+      default: () => {
+      },
     }
   },
   data() {
@@ -145,7 +148,7 @@ export default {
   },
   methods: {
     getAdiType(code) {
-      return aekoApproveTypes.find(o => o.id === code) ?.name || ''
+      return aekoApproveTypes.find(o => o.id === code)?.name || ''
     },
     handleSelectionChange(val) {
       this.tableSelecteData = val
@@ -154,11 +157,11 @@ export default {
       console.log('openUploadDialog', row)
       this.attachReadOnly = attachReadOnly
       if (!row.taskId) {
-        iMessage.error(this.language('TASKIDBUNENGWEIKONG','TASK ID 不能为空'))
+        iMessage.error(this.language('TASKIDBUNENGWEIKONG', 'TASK ID 不能为空'))
         return
       }
       if (!row.processInstanceId) {
-        iMessage.error(this.language('LIUCHNEGIDBUENNGWEIKONG','流程不能为空'))
+        iMessage.error(this.language('LIUCHNEGIDBUENNGWEIKONG', '流程不能为空'))
         return
       }
       this.attachDialogVisibal = true
@@ -168,40 +171,50 @@ export default {
     async getFetchData() {
       this.tableLoading = true
       await this.getexplainList()
-      this.getData()
+      // this.getData()
     },
     /**
      * @description: 获取解释记录
      * @param {*}
      * @return {*}
-     */    
-    async getexplainList() {
+     */
+    getexplainList() {
       const parmas = Object.assign({
         applyUserId: String(this.userInfo.id) || '',
         currentUserId: String(this.userInfo.id) || '',
         aekoNo: this.aekoInfo.aekoCode || '',
         hasParentTaskId: true,
-        pageNo: 1,
-        pageSize: 1000
+        pageNo: this.page.currPage,
+        pageSize: this.page.pageSize
       })
-      try {
-        const res = await findHistoryByAeko(parmas)
-        if (res.code === '200') {
-          // 审批解释列表
-          this.tableExplainData = (res.data && res.data.records || []).filter(o => o.parentTaskId)
-        } else {
-          this.tableExplainData = []
-        }
-      } catch {
+      findHistoryByAeko(parmas).then(res => {
         this.tableLoading = false
-        this.tableExplainData = []
+        if (res.code == 200) {
+          let resDatas = res.data.records
+          this.tableListData = resDatas.map(item => {
+            item.disabled = item.activityName != '【补充材料通知】补充材料'
+            return item
+          })
+        }
+      })
+
+    },
+
+    itemIsCanReply(row) {
+      if (row.activityName == "【补充材料通知】补充材料") {
+        let findRes = this.tableListData.filter(item => item.parentTaskId == row.id)
+        console.log('findRes', findRes)
+        console.log('------------', findRes != null && findRes.length > 0)
+        return findRes != null && findRes.length > 0
       }
+      //不用回复
+      return row.disabled
     },
     /**
      * @description: 获取数据列表
      * @param {*}
      * @return {*}
-     */    
+     */
     getData() {
       console.log('init', this.aekoInfo, this.tableExplainData)
       const parmas = Object.assign({
@@ -231,7 +244,7 @@ export default {
             return o
           })
           tableListData = tableListData.filter(o => !o[parId])
-          console.log('tableListData',res.data, tableListData)
+          console.log('tableListData', res.data, tableListData)
           this.tableListData = tableListData
           this.page.totalCount = res.data.total
         } else {
@@ -239,7 +252,7 @@ export default {
           // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
         this.tableLoading = false
-        
+
       }).catch(e => {
         this.tableLoading = false
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
@@ -251,18 +264,18 @@ export default {
      * @description: 提交
      * @param {*}
      * @return {*}
-     */    
+     */
     submit() {
       let state = true
       let info = ''
       if (!this.tableSelecteData.length) {
-				iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU','请选择至少一条数据'))
-				return
-			}
+        iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
+        return
+      }
       let parmas = this.tableSelecteData.map(o => {
         if (state && !o.explainReason) {
           state = false
-          info = this.language('SHENPIYIJIANANDJIESHIBUNENGWEIKONG','审批意见/申请人解释不能为空')
+          info = this.language('SHENPIYIJIANANDJIESHIBUNENGWEIKONG', '审批意见/申请人解释不能为空')
         }
         state && !o.explainReason && (state = false)
         return {
@@ -279,11 +292,11 @@ export default {
         iMessage.error(info)
         return
       }
-      this.$confirm(this.language('submitSure','您确定要执行提交操作吗？')).then(confirmInfo => {
+      this.$confirm(this.language('submitSure', '您确定要执行提交操作吗？')).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
           submitForApproval(parmas).then(res => {
             if (res.code === '200') {
-              iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+              iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
               this.getFetchData()
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -296,46 +309,46 @@ export default {
     },
     onUploadsucess(data, cb) {
       console.log('data', data)
-			const fileData = data.data || {}
-			const parmas = {
-				aekoNum: this.aekoInfo.aekoCode,
-				manageId: Number(this.aekoInfo.aekoManageId) || '',
-				fileName: fileData.name || '',
-				filePath: fileData.path || '',
-				fileSize: Number(fileData.size/1000/1000).toFixed(2) || 0, // 文件大小MB
-				fileType: fileData.extensionName || '',
-				uploadId: fileData.id || '',
-				linieId: this.userInfo.id || '',
-				deptId: this.userInfo.deptDTO && this.userInfo.deptDTO.id || '',
+      const fileData = data.data || {}
+      const parmas = {
+        aekoNum: this.aekoInfo.aekoCode,
+        manageId: Number(this.aekoInfo.aekoManageId) || '',
+        fileName: fileData.name || '',
+        filePath: fileData.path || '',
+        fileSize: Number(fileData.size / 1000 / 1000).toFixed(2) || 0, // 文件大小MB
+        fileType: fileData.extensionName || '',
+        uploadId: fileData.id || '',
+        linieId: this.userInfo.id || '',
+        deptId: this.userInfo.deptDTO && this.userInfo.deptDTO.id || '',
         auditUserId: this.userInfo.id || '',
-				taskId: Number(this.currentRow.taskId) || 1075873,
-			}
-			this.uploading = true
-			auditFileSave(parmas).then(res => {
+        taskId: Number(this.currentRow.taskId) || 1075873,
+      }
+      this.uploading = true
+      auditFileSave(parmas).then(res => {
         if (res.code === '200') {
-					iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-					cb && typeof cb === 'function' && (cb())
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+          cb && typeof cb === 'function' && (cb())
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
-				this.uploading = false
+        this.uploading = false
       }).catch(e => {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
-				this.uploading = false
+        this.uploading = false
       })
     },
     /**
      * @description: 获取数据列表
      * @param {*}
      * @return {*}
-     */    
+     */
     getAttach(cb) {
-			console.log(this.aekoInfo)
+      console.log(this.aekoInfo)
       const parmas = Object.assign({
-				linieId: this.userInfo.id || '',
-				aekoNum: this.aekoInfo.aekoCode,
-				manageId: Number(this.aekoInfo.aekoManageId) || '',
-				taskId: [Number(this.currentRow.taskId)],
+        linieId: this.userInfo.id || '',
+        aekoNum: this.aekoInfo.aekoCode,
+        manageId: Number(this.aekoInfo.aekoManageId) || '',
+        taskId: [Number(this.currentRow.taskId)],
         current: this.page.currPage,
         size: this.page.pageSize
       })
@@ -373,30 +386,30 @@ export default {
         }))
       })
     },
-		deleteFile(data=[], cb) {
+    deleteFile(data = [], cb) {
       console.log('删除文件', data, cb)
-			if (!data.length) {
-				iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU','请选择至少一条数据'))
-				return
-			}
-			const fileList = data.map(o => o.id)
-			if (fileList && !fileList.length) return iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU','请选择至少一条数据'))
-				this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？')).then(confirmInfo => {
-				if (confirmInfo === 'confirm') {
-					auditFileDelete(fileList).then(res => {
-						if (res.code === '200') {
-							iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+      if (!data.length) {
+        iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
+        return
+      }
+      const fileList = data.map(o => o.id)
+      if (fileList && !fileList.length) return iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
+      this.$confirm(this.language('deleteSure', '您确定要执行删除操作吗？')).then(confirmInfo => {
+        if (confirmInfo === 'confirm') {
+          auditFileDelete(fileList).then(res => {
+            if (res.code === '200') {
+              iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
               cb && typeof cb === 'function' && (cb())
-						} else {
-							iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-						}
-					}).catch(e => {
-						iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-					}).finally(() => {
+            } else {
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            }
+          }).catch(e => {
+            iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+          }).finally(() => {
           })
-				}
-			})
-		}
+        }
+      })
+    }
   }
 };
 </script>
@@ -404,10 +417,12 @@ export default {
 <style lang="scss" scoped>
 .aekoDetailRecord {
   ::v-deep.el-table {
-    th,td {
+    th, td {
       vertical-align: top;
+
       .el-textarea {
         height: 60px;
+
         .el-textarea__inner {
           height: 100%;
           resize: none !important;

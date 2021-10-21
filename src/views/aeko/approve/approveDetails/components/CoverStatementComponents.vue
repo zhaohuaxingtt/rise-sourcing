@@ -76,7 +76,7 @@
             label="增加材料成本(RMB/车)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.materialIncrease }}</span>
+            <span>{{ scope.row.materialIncrease|numFilter }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
                         :content="queryRowMaterialIncreaseTipContent(scope.row)" placement="top">
               <i class="el-icon-warning-outline bule margin-left5"></i>
@@ -89,7 +89,7 @@
             label="增加投资费用(不含税)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.investmentIncrease }}</span>
+            <span>{{ scope.row.investmentIncrease | numFilter }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
                         :content="queryRowInvestmentIncreaseTipContent(scope.row)" placement="top">
               <i class="el-icon-warning-outline bule margin-left5"></i>
@@ -103,7 +103,7 @@
             label="其它费用(不含税)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.otherCost }}</span>
+            <span>{{ scope.row.otherCost | numFilter }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
                         :content="queryRowotherCostTipContent(scope.row)" placement="top">
               <i class="el-icon-warning-outline bule margin-left5"></i>
@@ -123,6 +123,7 @@
 
 <script>
 import {iInput, iCard, iFormItem, iFormGroup, iText} from "rise"
+import {fixNumber} from "../../../../../utils/cutOutNum";
 
 export default {
   name: "CoverStatementComponents",
@@ -133,12 +134,18 @@ export default {
     iInput,
     iFormGroup,
   },
+  filters: {
+    numFilter(value) {
+      return fixNumber(value)
+    }
+  },
+
   props: {
     auditCoverStatus: {type: String, default: () => ''},
-    auditCover: { type: Object, default: () => ({})}
+    auditCover: {type: Object, default: () => ({})}
   },
-  watch:{
-    auditCover(val){
+  watch: {
+    auditCover(val) {
       this.costsWithCarType = this.auditCover?.costsWithCarType
     }
   },
@@ -192,7 +199,7 @@ export default {
       return ''
     },
     getSummaries(param) {
-      const { columns, data } = param;
+      const {columns, data} = param;
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 1) {
@@ -201,14 +208,15 @@ export default {
         }
         const values = data.map(item => Number(item[column.property]));
         if (!values.every(value => isNaN(value))) {
-          sums[index] = values.reduce((prev, curr) => {
-            const value = Number(curr);
+          let mValue = values.reduce((prev, curr) => {
+            let value = Number(curr);
             if (!isNaN(value)) {
               return prev + curr;
             } else {
               return prev;
             }
           }, 0);
+          sums[index] = fixNumber(mValue)
         }
       });
 
