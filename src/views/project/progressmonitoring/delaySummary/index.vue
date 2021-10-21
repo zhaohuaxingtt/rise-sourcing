@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-21 11:01:53
+ * @LastEditTime: 2021-10-21 11:03:46
  * @Description: 延误原因汇总
 -->
 
@@ -244,7 +244,7 @@ export default {
     initSearchParams() {
       this.searchParams = {
         confirmStatus: '1',
-        cartypeProId: this.$route.query.projectId || '',
+        projectId: this.$route.query.projectId || '',
         partNum: this.$route.query.partNum || '',
         fsId: '',
         projectPurchaserId: ''
