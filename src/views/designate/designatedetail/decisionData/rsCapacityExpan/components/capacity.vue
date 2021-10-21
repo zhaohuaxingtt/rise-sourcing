@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-07 09:35:37
- * @LastEditTime: 2021-10-13 11:25:57
+ * @LastEditTime: 2021-10-19 16:26:00
  * @LastEditors: Hao,Jiang
  * @Description: 扩产能天，周，年表格
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/capacity.vue
@@ -145,7 +145,7 @@ export default {
         {
           capa: 'Capa.',
           gid: 1,
-          name: 'Alter Invested'
+          name: 'After Invested'
         },
         {
           capa: 'Capa.',
@@ -304,6 +304,7 @@ export default {
 .caexpan-card {
   .tit {
     padding: 15px 0;
+    font-size: 14px;
   }
   .caexpan-card-body {
     padding-left: 20px;

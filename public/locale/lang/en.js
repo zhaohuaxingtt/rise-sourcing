@@ -93,6 +93,7 @@
             'TuiHui': 'Return', //退回
             'LingJianMingZH': 'Part Name (Cn)', //零件名（中）
             'LingJianMingDE': 'Part Name (Ger)', //零件名（德）
+            'ismtz': 'ISMTZ', //ISMTZ
             'XinXiDanLeiXing': 'Information Sheet Type', //信息单类型
             'XianShiDiTiaoDaoTiaoJiLuGongTiaoJiLu': 'Display Records From Records To Records In Total', //显示第    条到    条记录，共    条记录
             'ShangYiYe': 'Previous Page', //上一页

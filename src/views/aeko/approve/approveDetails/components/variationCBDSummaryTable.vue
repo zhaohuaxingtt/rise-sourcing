@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-15 16:24:11
+ * @LastEditTime: 2021-10-19 20:45:11
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -29,6 +29,7 @@
           :label="language(item.labelKey, item.label)"
           :render-header="item.renderHeader"
           :min-width="item.width"
+          :show-overflow-tooltip="true"
           align="center"
         >
           <template v-if="item.children.length > 0">
@@ -37,6 +38,7 @@
               :key="cindex"
               :prop="child.prop"
               :label="language(child.labelKey, child.label)"
+              :show-overflow-tooltip="true"
               :min-width="child.width"
               align="center"
             ></el-table-column>
@@ -57,6 +59,11 @@
               <div v-else>
                 {{ row[item.prop] }}
               </div>
+            </template>
+            <template v-else-if="item.prop == 'typeName'">
+              <span>
+                {{ row.typeName&&(typeObj[row.typeName].seq + language(typeObj[row.typeName].labelKey,typeObj[row.typeName].label)) }}
+              </span>
             </template>
             <template v-else>
               {{ row[item.prop] }}
@@ -92,6 +99,7 @@
             v-for="(component, $componentIndex) in tab.components"
             :class="$componentIndex !== 0 ? 'margin-top20' : ''"
             :Data="aPriceChangeData"
+            :apriceChange="apriceChangeVal"
             :key="$componentIndex"
           />
         </template>
@@ -129,6 +137,46 @@ export default {
       SummaryTitle: SummaryTableTitle,
       currentTab: "aPriceChange",
       aPriceChangeData: {},
+      aPriceChangeObj:{},
+      partsId:'',
+      typeObj: {
+        material: {
+          seq: "2.1",
+          label: "原材料/散件",
+          labelKey: "YUANCAILIAOSANJIAN",
+          permissionKey:
+            "AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIAN|原材料/散件",
+        },
+        production: {
+          seq: "2.2",
+          label: "制造成本",
+          labelKey: "YUANCAILIAOSANJIAN",
+          permissionKey: "AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN|制造成本",
+        },
+        scrap: {
+          seq: "2.3",
+          label: "报废成本",
+          labelKey: "YUANCAILIAOSANJIAN",
+          permissionKey: "AEKO_QUOTATION_CBD_VIEW_BAOFEICHENGBEN|报废成本",
+        },
+        manage: {
+          seq: "2.4",
+          label: "管理费",
+          labelKey: "YUANCAILIAOSANJIAN",
+          permissionKey: "AEKO_QUOTATION_CBD_VIEW_GUANLIFEI|管理费",
+        },
+        other: {
+          seq: "2.5",
+          label: "其他费用",
+          labelKey: "YUANCAILIAOSANJIAN",
+        },
+        profit: {
+          seq: "2.6",
+          label: "利润",
+          labelKey: "YUANCAILIAOSANJIAN",
+          permissionKey: "AEKO_QUOTATION_CBD_VIEW_LIRUN|利润",
+        },
+      },
       tabs: [
         {
           label: "A价变动(含分摊)",
@@ -181,13 +229,15 @@ export default {
       quotationId: "",
     };
   },
+  computed:{
+    apriceChangeVal(){
+      return this.aPriceChangeObj[this.partsId]?.toFixed(4) || 0
+    }
+  },
   created() {
     this.queryParams = this.$route.query;
     let str_json = window.atob(this.queryParams.transmitObj);
     let transmitObj = JSON.parse(decodeURIComponent(escape(str_json)));
-    // let workFlowId = JSON.parse(
-    //   sessionStorage.getItem("AEKO-APPROVAL-DETAILS-ITEM")
-    // )?.aekoApprovalDetails?.workFlowDTOS[0].workFlowId;
     this.workFlowId =
       transmitObj.aekoApprovalDetails.workFlowId ||
       transmitObj.aekoApprovalDetails.workFlowDTOS[0].workFlowId ||
@@ -214,7 +264,7 @@ export default {
       this.$nextTick(() => {
         const component =
           this.$refs[this.currentTab] && this.$refs[this.currentTab][0];
-        if (typeof component.init === "function") component.init();
+        if (component && typeof component.init === "function") component.init();
       });
     },
     // 获取汇总表数据
@@ -222,22 +272,23 @@ export default {
       alterationCbdSummary({ workFlowId: this.workFlowId }).then((res) => {
         if (res?.code === "200") {
           let data = res?.data || [];
-          let obj = {};
+          let aPriceChangeObj = {};
           data.length &&
             data.forEach((item, index) => {
-              item.index = index;
-              obj[item.partNum]
-                ? (obj[item.partNum] += item.alteration)
-                : (obj[item.partNum] = item.alteration);
+              item.index = 1+index;
+              aPriceChangeObj[item.quotationId]
+                ? (aPriceChangeObj[item.quotationId] = math.add(aPriceChangeObj[item.quotationId], math.bignumber(item.alteration || 0)))
+                : (aPriceChangeObj[item.quotationId] = math.bignumber(item.alteration || 0));
             });
-          Object.keys(obj).forEach((key) => {
+          Object.keys(aPriceChangeObj).forEach((key) => {
             let item = {
               index: "",
               partNum: key,
-              total: "RMB " + (+obj[key]).toFixed(4),
+              total: "RMB " + (+aPriceChangeObj[key]).toFixed(4),
             };
             data.push(item);
           });
+          this.aPriceChangeObj = aPriceChangeObj
           this.tableData = data.sort((a, b) => a.partNum - b.partNum);
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -246,6 +297,7 @@ export default {
     },
     // 获取A价变动其它数据
     getCbdDataQuery(partsId) {
+      this.partsId = partsId
       this.loading = true;
       if (!partsId) {
         this.hasData = false;
@@ -255,6 +307,7 @@ export default {
       cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
         (res) => {
           if (res?.code === "200") {
+            let data  = res.data
             this.switchPartsTable = [data?.extSnapshotVO];
             this.aPriceChangeData = data;
             this.loading = false;

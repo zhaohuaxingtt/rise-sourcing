@@ -44,7 +44,7 @@
             <el-option
                 v-for="item in options"
                 :key="item.value"
-                :label="item.label"
+                :label="item.name"
                 :value="item.value">
             </el-option>
           </i-select>
@@ -75,7 +75,7 @@
             <el-option
                 v-for="item in auditStatusList"
                 :key="item.value"
-                :label="item.label"
+                :label="item.name"
                 :value="item.value">
             </el-option>
           </i-select>

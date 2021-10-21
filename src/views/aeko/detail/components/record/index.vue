@@ -112,9 +112,8 @@ export default {
 		...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
     }),
-    // 是否允许提交
     alowSubmit() {
-      return this.aekoInfo.coverStatus === 'ADD_ATTACH'
+      return true
     }
 	},
   props:{
@@ -167,6 +166,7 @@ export default {
       this.currentRow = row
     },
     async getFetchData() {
+      this.tableLoading = true
       await this.getexplainList()
       this.getData()
     },
@@ -180,19 +180,20 @@ export default {
         applyUserId: String(this.userInfo.id) || '',
         currentUserId: String(this.userInfo.id) || '',
         aekoNo: this.aekoInfo.aekoCode || '',
-        hasParentTaskId: false,
+        hasParentTaskId: true,
         pageNo: 1,
-        pageSize: 100
+        pageSize: 1000
       })
       try {
         const res = await findHistoryByAeko(parmas)
         if (res.code === '200') {
           // 审批解释列表
-          this.tableExplainData = (res.data && res.data.records || [])
+          this.tableExplainData = (res.data && res.data.records || []).filter(o => o.parentTaskId)
         } else {
           this.tableExplainData = []
         }
       } catch {
+        this.tableLoading = false
         this.tableExplainData = []
       }
     },
@@ -207,7 +208,7 @@ export default {
         applyUserId: String(this.userInfo.id) || '',
         currentUserId: String(this.userInfo.id) || '',
         aekoNo: this.aekoInfo.aekoCode || '',
-        hasParentTaskId: true,
+        hasParentTaskId: false,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize
       })
@@ -219,7 +220,7 @@ export default {
           // 审批记录列表
           let tableListData = (res.data && res.data.records || []).map(o => {
             // 封面表态处于
-            o.disabled = !this.alowSubmit
+            o.disabled = o.activityName !== '【补充材料通知】补充材料'
             const tar = this.tableExplainData.find(item => item[parId] === o.id)
             if (tar) {
               // 写入审批解释

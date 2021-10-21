@@ -172,7 +172,6 @@ export function getPlanyear(defaultNumberMax=15){
 		maps.props = i;
 		maps.name = '+'+i;
 		batchMaintainTableTitle.push(maps)
-		console.log(maps);
 	}
 	return batchMaintainTableTitle
 }

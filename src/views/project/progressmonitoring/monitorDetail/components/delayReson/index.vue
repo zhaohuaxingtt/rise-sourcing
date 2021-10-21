@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-11 16:12:32
+ * @LastEditTime: 2021-10-20 16:11:26
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -171,9 +171,9 @@ export default {
     async getDelayReasonConfirmList() {
       try {
         const params = {
-          partNums: this.partNums,
           partStatus: this.partStatus,
-          projectId: this.cartypeProId
+          projectId: this.cartypeProId,
+          selectList: this.partNums.map(item => {return {partNum: item.partNum, tempCode: item.tempCode}})
         }
         this.tableLoading = true
         const res = await getDelayReasonConfirmList(params)
@@ -210,6 +210,7 @@ export default {
               fsId,
               planDate: this.partStatus == '3' ? item.kickoffTimeKw : this.partStatus == '2' ? item.nomiTimeKw : this.partStatus == '5' ? item.firstTryoutTimeKw : this.partStatus == '6' && this.isLarger(item.emTimeKw, item.otsTimeKw) ? item.emTimeKw : item.otsTimeKw,
               partPeriod: item.partStatus,
+              partPeriodDesc: item.partStatusDesc,
               delayWeek: item.delayWeeks,
               confirmDateDeadline: moment(item.replyEndDate).format('YYYY-MM-DD'),
               partName: item.partNameZh,

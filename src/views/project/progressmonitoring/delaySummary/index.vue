@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-14 10:26:41
+ * @LastEditTime: 2021-10-21 11:03:46
  * @Description: 延误原因汇总
 -->
 
@@ -62,7 +62,7 @@
         <template #delayReason="scope">
           <span v-if="!isFS || (isFS && !withAllBtn)">{{scope.row.delayReason}}</span>
           <template v-else>
-            <el-autocomplete :fetch-suggestions="querySearch" v-model="scope.row.delayReason" /> 
+            <el-autocomplete :fetch-suggestions="querySearch" v-model="scope.row.delayReason" @blur="e => handleBlurChange(scope.partPeriod)" /> 
           </template>
         </template>
       </tableList> 
@@ -111,7 +111,8 @@ export default {
       withAllBtn: false,
       dialogVisibleDelayReason: false,
       yearWeekOptions: [],
-      delayReasonOptions: {}
+      delayReasonOptions: {},
+      currPartPeriod: ''
     }
   },
   computed: {
@@ -131,6 +132,9 @@ export default {
     }
   },
   methods: {
+    handleBlurChange(partPeriod) {
+      this.currPartPeriod = partPeriod
+    },
     getDelayReason() {
       selectDictByKeyss('OTS_EM_DELAYREASON').then(res => {
         if (res?.result) {
@@ -143,8 +147,7 @@ export default {
     },
     querySearch(queryString, cb) { 
       var restaurants = this.delayReasonOptions.OTS_EM_DELAYREASON; 
-      // var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants; 
-      var results = []
+      var results = this.currPartPeriod == 7 ? queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants : [];
       // 调用 callback 返回建议列表的数据 
       cb(results); 
     },
@@ -241,7 +244,7 @@ export default {
     initSearchParams() {
       this.searchParams = {
         confirmStatus: '1',
-        cartypeProId: this.$route.query.cartypeProId || '',
+        projectId: this.$route.query.projectId || '',
         partNum: this.$route.query.partNum || '',
         fsId: '',
         projectPurchaserId: ''
