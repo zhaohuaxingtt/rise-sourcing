@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-10-08 19:58:06
+ * @LastEditTime: 2021-10-21 21:15:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
@@ -27,7 +27,7 @@
       <!------------------------------------------------------------------------------------>
       <!----界面勾选逻辑：进入界面，默认勾选全部，若勾选多条加工装配费或多条本体定点记录时提醒：请只选择一条加工装配费与一条本体的定点记录，此处提醒不做强制限制-------->
       <!----已经勾选过的需要将前面的勾选框变成disabel状态----------------------------------------->
-      <tablelist ref='tabel' :borderLeftStatus='false' :selectable='disabelRow' selection :tableData='tableList' :tableTitle='tableTitle' @select='handleSelectionChange'></tablelist>
+      <tablelist class="padding-bottom40" ref='tabel' :borderLeftStatus='false' :selectable='disabelRow' selection :tableData='tableList' :tableTitle='tableTitle' @select='handleSelectionChange'></tablelist>
     </iDialog>
 </div>
 </template>
