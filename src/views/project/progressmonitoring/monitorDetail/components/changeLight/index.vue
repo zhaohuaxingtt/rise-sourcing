@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 10:36:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-28 14:55:04
+ * @LastEditTime: 2021-10-21 15:16:33
  * @Description: 指示灯修改弹窗
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\changeLight\index.vue
 -->
@@ -29,7 +29,8 @@
           </el-option> 
         </iSelect> 
       </el-form-item>
-      <el-form-item :label="language('TIAOZHENGBEIZHU','调整备注') + ':'">
+      <el-form-item>
+        <span slot="label"><span class="margin-right5" style="color:red;font-size:14px">*</span>{{language('TIAOZHENGBEIZHU','调整备注')}}:</span>
         <iInput v-model="actionPlan" :placeholder="language('QINGSHURUTIAOZHENGBEIZHU','请输入调整备注') + ':'" type="textarea" :rows="6" resize="none" ></iInput> 
       </el-form-item>
     </el-form>
@@ -37,13 +38,13 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput } from 'rise'
+import { iDialog, iButton, iSelect, iInput, iMessage } from 'rise'
 export default {
   components: { iDialog, iButton, iSelect, iInput },
   props: {
     dialogVisible: { type: Boolean, default: false },
-    delayLevelPro: {type:String},
-    actionPlan: {type:String}
+    // delayLevelPro: {type:String},
+    // actionPlan: {type:String}
   },
   data() {
     return {
@@ -53,7 +54,9 @@ export default {
         {value: '3', label: this.language('HONGDENG', '红灯')}
       ],
       loading: false,
-      saveLoading: false
+      saveLoading: false,
+      delayLevelPro: '',
+      actionPlan: ''
     }
   },
   watch: {
@@ -71,6 +74,14 @@ export default {
       this.$emit('changeVisible', false)
     },
     handleConfirm() {
+      if (!this.delayLevelPro || this.delayLevelPro == '') {
+        iMessage.warn(this.language('LKQINGXUANZEYUJINGDENGYANSE', '请选择预警灯颜色'))
+        return
+      }
+      if (!this.actionPlan || this.actionPlan == '') {
+        iMessage.warn(this.language('QINGSHURUTIAOZHENGBEIZHU', '请输入调整备注'))
+        return
+      }
       this.saveLoading = true
       this.$emit('handleActionPlan', this.delayLevelPro, this.actionPlan)
     },
