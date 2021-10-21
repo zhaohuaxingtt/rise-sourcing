@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-20 17:23:41
+ * @LastEditTime: 2021-10-21 10:43:42
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -125,8 +125,8 @@
 </template> 
 
 <script> 
-import { iButton, icon, iText, iMessage, iInput } from 'rise' 
-import { getPartSchedule, getFsUserListPart, exportPartSchedule, partProgressConfirm, updatePartSchedule, getAllFS, addScheduleVersion, getPartGroupConfig, updatePartGroupConfig } from '@/api/project' 
+import { iButton, icon, iText, iMessage } from 'rise' 
+import { getPartSchedule, getFsUserListPart, exportPartSchedule, partProgressConfirm, updatePartSchedule, getAllFS, addScheduleVersion, getPartGroupConfig, updatePartGroupConfig, getWorkDay } from '@/api/project' 
 import logicSettingBtn from '@/views/project/components/logicSettingBtn' 
 import moment from 'moment' 
 import { partLogicList } from '../data' 
@@ -401,12 +401,17 @@ export default {
      * @param {*} 
      * @return {*} 
      */    
-    getNextThreeWorkDay() { 
-      if (moment().day() === 2 || moment().day() === 1) { 
-        return moment().add(3, 'days').format('YYYY-MM-DD') 
-      } else { 
-        return moment().add(5, 'days').format('YYYY-MM-DD') 
-      }  
+    async getNextThreeWorkDay() { 
+      const params = {
+        queryDayNum: 4,
+        queryType: 1,
+        startDay: moment().format('YYYY-MM-DD')
+      }
+      const res = await getWorkDay(params) 
+      if (res && res.result && res.data && res.data.length > 0) {
+        const { year, month, day } = res.data[res.data.length - 1]
+        return year + '-' + month + '-' + day
+      }
     }, 
     /**
      * @Description: 修改fs弹窗
