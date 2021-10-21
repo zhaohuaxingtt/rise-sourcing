@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-30 11:39:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-15 14:50:56
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-21 15:33:04
  * @Description: 零件列表 AEKO 
 -->
 <template>
@@ -183,7 +183,7 @@ export default {
           JSON.stringify(this.translateDataForDetail(val))
         );
         this.$router.push({
-          path: "/sourceinquirypoint/sourcing/partsign/editordetail",
+          name: "editordetailPreview",
         });
       },
       //在跳转到详情界面之前，需要将数据格式化为中文。
