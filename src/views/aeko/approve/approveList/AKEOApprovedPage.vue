@@ -162,7 +162,7 @@
         </template>
         <!--审批状态-->
         <template #auditStatus="scope">
-          <span>{{scope.row.auditStatus}}</span>
+          <span>{{scope.row.auditStatusDesc}}</span>
         </template>
         <!--AEKO截止日期-->
         <template #date="scope">
@@ -171,6 +171,10 @@
         <!--创建时间-->
         <template #createDate="scope">
           <span>{{ scope.row.createDate|formatDate }}</span>
+        </template>
+        <!--创建时间-->
+        <template #complatedDate="scope">
+          <span>{{ scope.row.complatedDate|formatDate }}</span>
         </template>
       </tablelist>
       <div class="pagination">
@@ -214,9 +218,9 @@ export default {
   },
   filters:{
     formatDate (value) {
-      let date = new Date(value);
-
-      return  dateUtils.formatDate(date,'yyyy-MM-dd')
+      if (value == null || value == '') return ''
+        let date = new Date(value);
+        return  dateUtils.formatDate(date,'yyyy-MM-dd')
     }
   },
   data() {

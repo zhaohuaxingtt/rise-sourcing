@@ -78,7 +78,7 @@
       <div class="editControl floatright margin-bottom20">
         <i-button @click="batchApproval"> 批量批准</i-button>
         <i-button @click="approval"> {{ language('SHENPI', '审批') }}</i-button>
-        <i-button @click="transfer" > {{ language('LK_ZHUANPAI', '转派') }}</i-button>
+        <i-button @click="transfer"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
 
       </div>
       <!--表格展示区-->
@@ -133,7 +133,7 @@
         <!--增加材料成本-->
         <template #EP1="scope">
           <span>{{ scope.row.materialIncrease }}</span>
-          <el-tooltip v-if="scope.row.auditType!=3"  effect="light" popper-class="custom-card-tooltip"
+          <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowMaterialIncreaseTipContent(scope.row)"></div>
             <div class="oneLine">{{ queryRowMaterialIncreaseTipContent(scope.row) }}</div>
@@ -143,7 +143,7 @@
         <!--增加投资税-->
         <template #EP2="scope">
           <span>{{ scope.row.investmentIncrease }}</span>
-          <el-tooltip v-if="scope.row.auditType!=3"  effect="light" popper-class="custom-card-tooltip"
+          <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowInvestmentIncreaseTipContent(scope.row)"></div>
             <div class="oneLine">{{ queryRowInvestmentIncreaseTipContent(scope.row) }}</div>
@@ -226,10 +226,11 @@ export default {
     icon,
     iSelect
   },
-  filters:{
-    formatDate (value) {
+  filters: {
+    formatDate(value) {
+      if (value == null || value == '') return ''
       let date = new Date(value);
-      return  dateUtils.formatDate(date,'yyyy-MM-dd')
+      return dateUtils.formatDate(date, 'yyyy-MM-dd')
     }
   },
   computed: {
@@ -315,11 +316,11 @@ export default {
     },
     //加载数据
     loadPendingAKEOList() {
-      this.tableLoading=true
+      this.tableLoading = true
       this.queryAkeoForm.current = this.page.currPage
       this.queryAkeoForm.size = this.page.pageSize
       pendingApprovalList(this.queryAkeoForm).then(res => {
-        this.tableLoading=false
+        this.tableLoading = false
         if (res.code == 200) {
           this.pendingList = res.data
           this.page.totalCount = res.total
@@ -407,9 +408,9 @@ export default {
             userId: this.$store.state.permission.userInfo.id
           })
         })
-        this.tableLoading=true
+        this.tableLoading = true
         transferAEKO(transfers).then(res => {
-          this.tableLoading=false
+          this.tableLoading = false
           if (res.code == 200) {
             this.loadPendingAKEOList()
           } else {

@@ -68,7 +68,7 @@
 
         </el-table-column>
         <el-table-column
-            label="审批人解释"
+            label="申请人解释"
             align="center"
             prop="applicantExplain">
         </el-table-column>
@@ -100,6 +100,8 @@ export default {
     auditItems: {type: Array, default: () => []},
     transmitObj: {type: Object, default: () => ({})},
   },
+
+
   components: {
     AEKOExplainAttachmentDialog,
     iCard,
@@ -179,7 +181,6 @@ export default {
            }else{
              this.$message.success(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态!`)
              this.$emit('refreshForm',2)
-
            }
         }else{
           this.$message.error(res.desZh)
