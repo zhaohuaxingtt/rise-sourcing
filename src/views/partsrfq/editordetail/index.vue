@@ -295,6 +295,8 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.disabled = !!res.data.isFreeze
+            console.log(res.data.isFreeze)
+            console.log(this.disabled)
           } else {
             iMessage.error(this.language("HUOQURFQDINGDIANXINXISHIBAI", "获取RFQ定点信息失败"))
           }
@@ -412,7 +414,8 @@ export default {
             findType: '10',
             rfqId: id,
             current: 1,
-            size: 10,
+            // size: 10,
+            size: 9999,
         }
         try {
           const res = await pageRfqRound(req)

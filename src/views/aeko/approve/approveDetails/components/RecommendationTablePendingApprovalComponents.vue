@@ -78,6 +78,7 @@ export default {
           i18n: "LK_LINGJIANHAO",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "partNameZh",
@@ -85,12 +86,14 @@ export default {
           i18n: "LK_LINGJIANMINGCHENG",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "cartypeZh",
           label: "车型项目/车型",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "originPartNum",
@@ -98,6 +101,7 @@ export default {
           i18n: "LK_YUANLINGJIANHAO",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "linieDeptName",
@@ -105,6 +109,7 @@ export default {
           i18n: "LK_KESHI",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "linieName",
@@ -112,6 +117,7 @@ export default {
           i18n: "MODEL-ORDER.LK_CAIGOUYUAN",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "newAPrice",
@@ -119,6 +125,7 @@ export default {
           i18n: "",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "apriceChange",
@@ -126,6 +133,7 @@ export default {
           i18n: "",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "bnkChange",
@@ -133,6 +141,7 @@ export default {
           i18n: "",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "newBPrice",
@@ -140,6 +149,7 @@ export default {
           i18n: "",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "incInvestmentCost",
@@ -147,6 +157,7 @@ export default {
           i18n: "",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "developmentCost",
@@ -154,20 +165,23 @@ export default {
           i18n: "",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "procureFactory",
           label: "采购工厂",
-          i18n: "ORDER.LK_CAIGOUGONGCHANG",
+          i18n: "nominationSupplier.CaiGouGongChang",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "supplierSapCode",
-          label: "供应商编号",
+          label: "供应商SAP号",
           i18n: "",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
         {
           prop: "supplierNameZh",
@@ -175,6 +189,7 @@ export default {
           i18n: "LK_GONGYINGSHANGMINGCHENG",
           headerAlign: "center",
           align: "center",
+          tooltip: true,
         },
       ],
     };
