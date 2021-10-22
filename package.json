@@ -22,8 +22,8 @@
     "@vue/babel-preset-jsx": "^1.2.4",
     "core-js": "^3.6.5",
     "dayjs": "^1.10.7",
-    "lodash": "^4.17.21",
-    "front-bidding": "git+http://gitlab.devops.csvw.com/RISE/front-bidding.git#dev"
+    "front-bidding": "git+http://gitlab.devops.csvw.com/RISE/front-bidding.git#dev",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
@@ -45,7 +45,7 @@
     "postcss-px2rem": "0.3.0",
     "powerbi-client": "^2.17.2",
     "px2rem-loader": "0.1.9",
-    "rise": "^1.9.7",
+    "rise": "^1.10.8",
     "sass": "^1.26.10",
     "sass-loader": "9.0.2",
     "uglifyjs-webpack-plugin": "^2.2.0",
