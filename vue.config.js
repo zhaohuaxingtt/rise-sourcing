@@ -388,6 +388,13 @@ module.exports = {
           '^/newCommonApi': '',
         },
       },
+      '/biddingApi': {
+        target: 'http://10.122.17.38:8056',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/biddingApi': '',
+        },
+      },
       //cf组件代理
       '/baseInfo': {
         target: 'http://10.122.17.38:8011/baseinfo',
