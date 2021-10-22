@@ -81,11 +81,11 @@ export const approveAttachTableTitle = [
 
 // 审批记录表头
 export const approveReCordTableTitle = [
-  { props: "akeoAuditType", name: "审批类型", key: "SHENPILEIXING", tooltip: true },
+  { props: "akeoAuditType", name: "审批类型", key: "SHENPILEIXING", tooltip: true,width:200 },
   { props: "assignedDeptFullCode", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
   { props: "operation", name: "操作", key: "CAOZUO", tooltip: true },
   { props: "assigneeName", name: "操作人", key: "CAOZUOREN", tooltip: true },
-  { props: "endTime", name: "操作时间", key: "LK_UpdateDate", tooltip: true },
+  { props: "endTime", name: "操作时间", key: "LK_UpdateDate", tooltip: true,width:200 },
   { props: "comment", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true, width: 250},
   { props: "explainReason", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true, width: 250, _headerRequiredRight: true },
   { props: "attach", name: "解释附件", key: "JIESHIFUJIAN", tooltip: true },

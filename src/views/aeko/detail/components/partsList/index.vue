@@ -159,12 +159,13 @@ import iDicoptions from 'rise/web/components/iDicoptions'
 import {
     getPartPage,
     deletePart,
+    partListGetCartype,
 } from '@/api/aeko/detail/partsList.js'
 import {
     searchBrand,
-    searchCartypeProject,
     searchLinie,
-    getSearchCartype,
+    // getSearchCartype,
+    // searchCartypeProject,
     searchCommodity,
 } from '@/api/aeko/manage'
 import { cloneDeep } from "lodash"
@@ -379,8 +380,26 @@ export default {
         },
         // 获取搜索框下拉数据
         getSearchList(){
-            // 车型项目
-            searchCartypeProject().then((res)=>{
+
+            // 车型
+            // getSearchCartype().then((res)=>{
+            // const {code,data} = res;
+            // if(code ==200){
+            //     data.map((item)=>{
+            //         item.desc = item.name;
+            //         item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
+            //     })
+            //     this.selectOptions.cartype = data.filter((item)=>item.name) || [];
+            //     this.selectOptionsCopy.cartype = data.filter((item)=>item.name) || [];
+            // }else{
+            //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            // }
+            // })
+
+            // 车型项目 && 车型
+            const {query} = this.$route;
+            const { requirementAekoId ='',} = query;
+            partListGetCartype(requirementAekoId).then((res)=>{
                  const {code,data} = res;
                 if(code ==200 ){
                     data.map((item)=>{
@@ -389,6 +408,8 @@ export default {
                     })
                     this.selectOptions.cartypeCode = data;
                     this.selectOptionsCopy.cartypeCode = data;
+                    this.selectOptions.cartype = data.filter((item)=>item.name) || [];
+                    this.selectOptionsCopy.cartype = data.filter((item)=>item.name) || [];
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -438,20 +459,6 @@ export default {
                 }
             })
 
-            // 车型
-            getSearchCartype().then((res)=>{
-            const {code,data} = res;
-            if(code ==200){
-                data.map((item)=>{
-                    item.desc = item.name;
-                    item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
-                })
-                this.selectOptions.cartype = data.filter((item)=>item.name) || [];
-                this.selectOptionsCopy.cartype = data.filter((item)=>item.name) || [];
-            }else{
-                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-            }
-            })
 
         },
         // 删除零件

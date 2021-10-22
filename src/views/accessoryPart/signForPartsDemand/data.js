@@ -14,7 +14,7 @@ export const tableTitle = [
   {props:'partNameCh',name:'配件零件中文名', key: "PEIJIANLINGJIANZHONGWENMING", tooltip: true, width: 240},
   {props:'carType',name:'配件车型', key: "PEIJIANCHEXING", tooltip: true, width: 140},
   {props:'deliveryWarehouse',name:'送货仓库', key: "SONGHUOCANGKU", tooltip: true,width:80},
-  {props:'supplierSapCode',name:'供应商SAP号', key: "GONGYINGSHANGSAPHAO", tooltip: true, width: 120},
+  {props:'supplierSapCode',name:'供应商号', key: "GONGYINGSHANGHAO", tooltip: true, width: 120},
   {props:'supplierNameZh',name:'供应商中文名', key: "GONGYINGSHANGZHONGWENMING", tooltip: true, width: 200},
   {props:'sendDate',name:'需求发送日期', key: "XUQIUFASONGRIQI", tooltip: true, width: 120},
   {props:'stateDesc',name:'配件状态', key: "PEIJIANZHUANGTAI", tooltip: true, width: 160},
