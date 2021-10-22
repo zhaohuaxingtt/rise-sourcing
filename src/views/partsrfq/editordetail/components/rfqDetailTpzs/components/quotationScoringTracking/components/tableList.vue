@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-10-21 20:26:27
+ * @LastEditTime: 2021-10-22 18:35:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -39,7 +39,7 @@
                <p>{{`询价开始时间: ${item.roundHeadDetailVO.roundsStartTime || "-"}`}}</p>
                <p>{{`询价结束时间: ${item.roundHeadDetailVO.roundsEndTime || "-"}`}}</p>
               </template>
-              <span>{{item.key ? $t(item.key) : item.name}}<icon v-if='item.roundHeadDetailVO.isNoBidOpne' name='iconweikaibiao' symbol class="margin-left5"></icon></span>
+              <span>{{item.key ? $t(item.key) : item.name}}<icon v-if='item.roundHeadDetailVO.isNoBidOpen' name='iconweikaibiao' symbol class="margin-left5"></icon></span>
             </el-tooltip>
           </template> 
           <template slot-scope="scope">
@@ -175,7 +175,7 @@ export default{
      * @return {*}
      */
     openUrl(type,items,round,value,headerVo){
-      if(headerVo.isNoBidOpne) return iMessage.warn(this.language('DANGQIANLUNCIWEIKAIBIAO','当前轮次还未开标，请开标后再试'))
+      if(headerVo.isNoBidOpen) return iMessage.warn(this.language('DANGQIANLUNCIWEIKAIBIAO','当前轮次还未开标，请开标后再试'))
 
       const datas = this.getQueryDatas(type,items,round,value)
 
