@@ -123,7 +123,7 @@
 
 <script>
 import {iInput, iCard, iFormItem, iFormGroup, iText} from "rise"
-import {fixNumber} from "../../../../../utils/cutOutNum";
+import {fixNumber, numberToCurrencyNo} from "../../../../../utils/cutOutNum";
 
 export default {
   name: "CoverStatementComponents",
@@ -136,7 +136,7 @@ export default {
   },
   filters: {
     numFilter(value) {
-      return fixNumber(value)
+      return numberToCurrencyNo(value)
     }
   },
 
@@ -162,7 +162,7 @@ export default {
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${item.investmentIncrease} \n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.investmentIncrease)} \n`
         })
         return strTip
       }
@@ -174,7 +174,7 @@ export default {
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${item.materialIncrease} \n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.materialIncrease)} \n`
         })
         return strTip
       }
@@ -186,7 +186,7 @@ export default {
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${item.otherCost} \n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.otherCost)} \n`
         })
         return strTip
       }
@@ -207,7 +207,10 @@ export default {
           return;
         }
         const values = data.map(item => Number(item[column.property]));
-        if (!values.every(value => isNaN(value))) {
+        console.log('-values----',values)
+        let maxNum6 = Math.max(...values);
+        sums[index] = numberToCurrencyNo(maxNum6)
+        /*if (!values.every(value => isNaN(value))) {
           let mValue = values.reduce((prev, curr) => {
             let value = Number(curr);
             if (!isNaN(value)) {
@@ -216,8 +219,8 @@ export default {
               return prev;
             }
           }, 0);
-          sums[index] = fixNumber(mValue)
-        }
+          sums[index] = numberToCurrencyNo(mValue)
+        }*/
       });
 
       return sums;

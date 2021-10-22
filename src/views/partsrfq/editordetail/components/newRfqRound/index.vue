@@ -72,7 +72,7 @@
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
-      <iPagination
+      <!-- <iPagination
           v-update
           @size-change="handleSizeChange($event, getTableList)"
           @current-change="handleCurrentChange($event, getTableList)"
@@ -82,7 +82,7 @@
           :layout="page.layout"
           :current-page='page.currPage'
           :total="page.totalCount"
-      />
+      /> -->
     </div>
   </iDialog>
 </template>
@@ -141,9 +141,9 @@ export default {
       const res = this.dataRes;
       this.tableListData = res.data;
       this.roundsPhase = this.tableListData[0].roundsPhase
-      this.page.currPage = res.pageNum
-      this.page.pageSize = res.pageSize
-      this.page.totalCount = res.total
+      // this.page.currPage = res.pageNum
+      // this.page.pageSize = res.pageSize
+      // this.page.totalCount = res.total
       this.setTableRowSelected()
       this.initTimeData()
     },
@@ -155,16 +155,18 @@ export default {
         const req = {
             findType: '10',
             rfqId: id,
-            current: this.page.currPage,
-            size: this.page.pageSize,
+            // current: this.page.currPage,
+            // size: this.page.pageSize,
+            current: 1,
+            size: 9999,
         }
         try {
           const res = await pageRfqRound(req)
           this.tableListData = res.data;
           this.roundsPhase = this.tableListData[0].roundsPhase
-          this.page.currPage = res.pageNum
-          this.page.pageSize = res.pageSize
-          this.page.totalCount = res.total
+          // this.page.currPage = res.pageNum
+          // this.page.pageSize = res.pageSize
+          // this.page.totalCount = res.total
           this.setTableRowSelected()
           this.tableLoading = false;
           this.initTimeData()
