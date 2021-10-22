@@ -119,7 +119,7 @@ module.exports = {
     proxy: {
       '/projectApi': {
         target: 'http://10.122.17.38:8005',
-        // target: 'http://10.122.18.166:8005', //dev
+        // target: 'http://10.122.17.38:8005', //dev
         // target: 'http://10.160.141.116:10085',
         changeOrigin: true,
         pathRewrite: {
@@ -242,7 +242,7 @@ module.exports = {
       '/tpInfoApi': {
         //高攀弘服务地址http://10.122.18.166:8023/
         target: 'http://10.122.17.38:8023',
-        //target: 'http://10.160.137.253:8023',
+        //target: 'http://10.160.143.194:8023',
         // target: 'http://10.160.141.45:8023',
         changeOrigin: true,
         pathRewrite: {
@@ -293,7 +293,7 @@ module.exports = {
       '/dictionaryApi': {
         // 数据字典api地址
         target: 'http://10.122.17.38:8011',
-        // target: 'http://10.122.18.166:8011',
+        // target: 'http://10.122.17.38:8011',
         changeOrigin: true,
         pathRewrite: {
           '^/dictionaryApi': '',
@@ -366,7 +366,7 @@ module.exports = {
         },
       },
       '/aonApi': {
-        //  target: 'http://10.122.18.166:8036',
+        //  target: 'http://10.122.17.38:8036',
         // target: 'http://10.160.143.174:8036',
         target: 'http://10.122.17.38:8036',
         changeOrigin: true,
@@ -375,7 +375,7 @@ module.exports = {
         },
       },
       '/risemessage': {
-        target: 'http://10.122.18.166:8044/risemessage',
+        target: 'http://10.122.17.38:8044/risemessage',
         changeOrigin: true,
         pathRewrite: {
           '^/risemessage': '',
@@ -388,6 +388,13 @@ module.exports = {
           '^/newCommonApi': '',
         },
       },
+      '/biddingApi': {
+        target: 'http://10.122.17.38:8056',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/biddingApi': '',
+        },
+      },
       //cf组件代理
       '/baseInfo': {
         target: 'http://10.122.17.38:8011/baseinfo',
@@ -398,14 +405,14 @@ module.exports = {
       },
       '/bizlog': {
         //cf
-        target: 'http://10.122.18.166:8013/bizlog',
+        target: 'http://10.122.17.38:8013/bizlog',
         changeOrigin: true,
         pathRewrite: {
           '^/bizlog': '',
         },
       },
       '/supplierSpiApi': {
-        target: 'http://10.122.18.166:8010',
+        target: 'http://10.122.17.38:8010',
         changeOrigin: true,
         pathRewrite: {
           '^/supplierSpiApi': '',
@@ -426,7 +433,7 @@ module.exports = {
         },
       },
       '/fileud': {
-        target: 'http://10.122.18.166:8034/fileud',
+        target: 'http://10.122.17.38:8034/fileud',
         changeOrigin: true,
         pathRewrite: {
           '^/fileud': '',
@@ -435,7 +442,7 @@ module.exports = {
       '/changepriceApi': {
         // 采购订单
         //target: 'http://http://10.122.17.38:8026/',
-        target: 'http://10.122.18.166:8026',
+        target: 'http://10.122.17.38:8026',
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {
@@ -444,7 +451,7 @@ module.exports = {
       },
       '/supplierApplication': {
         // 蒋林明供应商接口
-        target: 'http://10.122.18.166:8010',
+        target: 'http://10.122.17.38:8010',
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {

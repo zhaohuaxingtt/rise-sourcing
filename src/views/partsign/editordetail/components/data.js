@@ -1,7 +1,7 @@
 /*
  * @Author: shujie
  * @Date: 2021-02-24 10:17:53
- * @LastEditTime: 2021-07-13 14:32:32
+ * @LastEditTime: 2021-10-15 12:11:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\data.js
@@ -56,7 +56,7 @@ export const partDetailTitle=[
 	
 	{key:'specialRequirement',name:'特殊要求',language: 'LK_TESHUYAOQIU'},
 	{key:'lccDegreeNum',name:'深度国产化代码',language: 'LK_SHENDUGUOCHANHUADAIMA'},
-	{key:'isLCC',name:'是否深度国产化',language: 'LK_SHIFOUSHENDUGUOCHANHUA'},
+	{key:'isLcc',name:'是否深度国产化',language: 'LK_SHIFOUSHENDUGUOCHANHUA'},
 	
 	{key:'lccMemo',name:'深度国产化备注',language: 'LK_SHENDUGUOCHANHUABEIZHU'}],
 	[
