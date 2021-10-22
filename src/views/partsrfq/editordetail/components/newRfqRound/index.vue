@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-10-11 20:05:16
+ * @LastEditTime: 2021-10-22 13:52:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -23,21 +23,19 @@
           </template> -->
         </div>
       </div>
-      <iFormGroup inline icon>
+      <iFormGroup inline icon label-width='120px'>
         <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')" name="test"
                    v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ROUNDTYPE">
           <i-select v-model="roundType" @change="handleSelectChange">
             <el-option v-for="items in roundTypeOptions" :key='items.code' :value='items.code' :label="items.name" :disabled="items.disabled"/>
           </i-select>
         </iFormItem>
-        <iFormItem :label="language('LK_BENLUNBAOJIAQIZHISHIJIAN','本轮报价起止时间')" name="test" v-if="['commonRound', 'manualBidding'].includes(roundType)">
+        <iFormItem :label="language('LK_BENLUNBAOJIAQIZHISHIJIAN','本轮报价起止时间')" name="test" v-if="['commonRound', 'manualBidding','autoBidding','bidRound','biddingRound'].includes(roundType)">
           <div class="flex">
             <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="startTime" value-format="yyyy-MM-dd"
-                            v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME" disabled></iDatePicker>
-          </div>
-        </iFormItem>
-        <iFormItem label="" name="test" v-if="['commonRound', 'manualBidding'].includes(roundType)">
-          <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="endTime" value-format="yyyy-MM-dd"
+                            v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME" disabled></iDatePicker> 
+            <span class="padding10 flex"></span>
+            <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="endTime" value-format="yyyy-MM-dd"
                           v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"
                           :picker-options="{
                             disabledDate(time) {
@@ -45,7 +43,26 @@
                             }
                           }"
           ></iDatePicker>
+          </div>
         </iFormItem>
+        <!-- <iFormItem :label="language('LK_BENLUNBAOJIAQIZHISHIJIAN竞价','竞价起止时间')" name="test" v-if="['biddingRound'].includes(roundType)">
+          <div class="flex">
+            <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="startTime" value-format="yyyy-MM-dd"
+                            v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME"></iDatePicker> 
+            <span class="padding10 flex"></span>
+            <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="endTime" value-format="yyyy-MM-dd"
+                          v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"
+                          :picker-options="{
+                            disabledDate(time) {
+                              return time.getTime() < Date.now()
+                            }
+                          }"
+          ></iDatePicker>
+          </div>
+        </iFormItem> -->
+        <!-- <iFormItem :label="language('KAIBIASHIJIANXUANZE','开标时间')" name="test" v-if="['bidRound'].includes(roundType)">
+            <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="startTime" value-format="yyyy-MM-dd" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME"></iDatePicker>           
+        </iFormItem> -->
       </iFormGroup>
       <tablelist
           ref="multipleTable"

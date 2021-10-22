@@ -29,6 +29,7 @@ import store from '@/store'
           ...config.params
         }
       }
+      console.log(config.url, config);
       // 定义请求得数据结构是json
       config.headers['json-wrapper'] = '1';
       

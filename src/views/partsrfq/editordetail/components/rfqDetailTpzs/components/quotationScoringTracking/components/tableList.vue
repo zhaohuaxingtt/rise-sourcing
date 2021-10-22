@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-09-29 14:33:03
+ * @LastEditTime: 2021-10-22 18:35:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -39,27 +39,27 @@
                <p>{{`询价开始时间: ${item.roundHeadDetailVO.roundsStartTime || "-"}`}}</p>
                <p>{{`询价结束时间: ${item.roundHeadDetailVO.roundsEndTime || "-"}`}}</p>
               </template>
-              <span>{{item.key ? $t(item.key) : item.name}}</span>
+              <span>{{item.key ? $t(item.key) : item.name}}<icon v-if='item.roundHeadDetailVO.isNoBidOpen' name='iconweikaibiao' symbol class="margin-left5"></icon></span>
             </el-tooltip>
           </template> 
           <template slot-scope="scope">
           <!--------------------------------------------------------->
           <!------------------------内容是打勾------------------------>
           <!--------------------------------------------------------->
-            <span v-if='scope.row[item.props].schedule == 3 && scope.row[item.props].quotationId' class="cursor" @click="openUrl('3',scope.row,item.props,scope.row[item.props].schedule)">
+            <span v-if='scope.row[item.props].schedule == 3 && scope.row[item.props].quotationId' class="cursor" @click="openUrl('3',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">
               <icon name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon>
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是打叉------------------------>
           <!--------------------------------------------------------->
-            <span v-else-if='scope.row[item.props].schedule == 2 && scope.row[item.props].quotationId' class="cursor" @click="openUrl('2',scope.row,item.props,scope.row[item.props].schedule)">
+            <span v-else-if='scope.row[item.props].schedule == 2 && scope.row[item.props].quotationId' class="cursor" @click="openUrl('2',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">
               <icon name='iconbaojiazhuangtailiebiao_yijujue' symbol></icon>
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是横岗百分比------------------->
           <!--------------------------------------------------------->
           <template v-else>
-            <span v-if='scope.row[item.props].quotationId' class="cursor" @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule)">{{scope.row[item.props].schedule}}</span>
+            <span v-if='scope.row[item.props].quotationId' class="cursor" @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">{{scope.row[item.props].schedule}}</span>
           </template>
           </template>
         </el-table-column>
@@ -77,6 +77,7 @@
       <span><icon name='iconbaojiazhuangtailiebiao_yijujue' symbol></icon> 已拒绝</span>
       <span><i>—</i> 已收RFQ尚未接受报价</span>
       <span>n/m 共m个零件，已进行n个零件的报价</span>
+      <span><icon name='iconweikaibiao' symbol class="margin-right5"></icon>尚未开标的轮次，无法查看报价内容</span>
     </div>
           <!--------------------------------------------------------->
           <!------------------------零件评分弹窗----------------------->
@@ -86,7 +87,7 @@
   </div>
 </template>
 <script>
-import {icon} from 'rise'
+import {icon,iMessage} from 'rise'
 import riteDialog from '@/views/designate/designatedetail/decisionData/bdl/partsRating.vue'
 import { getPorpsNumber } from '../../quotationScoringHz/components/data'
 import {onlyselfProject} from '@/config/index'
@@ -167,12 +168,15 @@ export default{
      *                                            -  报价成本汇总  接受报价，拒绝报价
      * 
      *                        第四：基于以上第三点 都取决于rfq状态，如果rfq是已经关闭的状态 则为 fix 
+     *                        第五：所有供应商中，如果对应得有开标轮，得等到开标后采购员才能去给供应商报价。
      * @param {*} type
      * @param {*} items
      * @param {*} round
      * @return {*}
      */
-    openUrl(type,items,round,value){
+    openUrl(type,items,round,value,headerVo){
+      if(headerVo.isNoBidOpen) return iMessage.warn(this.language('DANGQIANLUNCIWEIKAIBIAO','当前轮次还未开标，请开标后再试'))
+
       const datas = this.getQueryDatas(type,items,round,value)
 
       const {query} = this.$route;

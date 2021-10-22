@@ -36,7 +36,7 @@
         <iButton @click="quote" v-if='quoteShow' :loading="quoteInquiryPriceLoading">引用报价</iButton>
         <iButton @click="group"  v-if='layout == "1" && !abPrice'>组合</iButton>
         <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
-        <!-- <iButton>导出</iButton> -->
+        <iButton @click="options.show = true">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
       </div>
       <!--------------表格模块-------------->
     </div>
@@ -54,17 +54,19 @@
         <iButton @click="sureClick()">确定</iButton>
       </template>
     </iDialog>
+    <!-------开标结果------->
+    <bidOpenResult :options='options'></bidOpenResult>
   </div>
 </template>
 <script>
 import {iButton,iSelect,iDialog,iInput,iMessage} from 'rise'
 import tableList from './components/table'
 import tableListSupplier from './components/tableListSupplier'
-// import tablelistGSasRow from './components/tablelistGSasRow'
+import bidOpenResult from './components/bidOpenResult'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList,defaultLayoutTemplate} from './components/data'
 import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice} from '@/api/partsrfq/editordetail'
 export default{
-  components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier},
+  components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
     title:getRenderTableTile([],0,1),
     exampelData:exampelData,
@@ -102,6 +104,7 @@ export default{
     budget:'',
     kmTooling:'',
     quoteInquiryPriceLoading: false,
+    options:{show:false}
   }},
   watch:{
     /**
