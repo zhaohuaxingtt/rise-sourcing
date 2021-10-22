@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-10-22 15:55:08
+ * @LastEditTime: 2021-10-22 22:21:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -55,6 +55,10 @@
         :tableTitle="tableTitle">
         <template #perCarDosage="scope">
           <iInput class="perCarDosage" v-model="scope.row.perCarDosage" :disabled="disabled" @input="handleInputByPerCarDosage($event, scope.row)" @blur="handleBlurByPerCarDosage(scope.row.perCarDosage, scope.row)"></iInput>
+        </template>
+        <!-- 装车率加个% -->
+        <template #assemblyRate="scope">
+          {{scope.row.assemblyRate ? `${scope.row.assemblyRate}%` :''}}
         </template>
       </tableList>
       <i class="dashes"></i>
