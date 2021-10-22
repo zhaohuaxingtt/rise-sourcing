@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 17:49:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-08 15:58:04
+ * @LastEditTime: 2021-10-22 18:36:10
  * @Description: 转派按钮
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\commonBtn\transferBtn.vue
 -->
@@ -84,7 +84,7 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       }).finally(() => {
-        this.$refs.productGroupTransfer.changeSaveLoading(false)
+        this.$refs.productGroupTransfer.changeLoading(false)
       })
     },
     /**
@@ -103,7 +103,7 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       }).finally(() => {
-        this.$refs.productGroupTransfer.changeSaveLoading(false)
+        this.$refs.productGroupTransfer.changeLoading(false)
       })
     },
     transferDelayReasonConfirm(val, valDesc) {
@@ -124,7 +124,7 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       }).finally(() => {
-        this.$refs.productGroupTransfer.changeSaveLoading(false)
+        this.$refs.productGroupTransfer.changeLoading(false)
       })
     }
   }
