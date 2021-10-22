@@ -3,7 +3,7 @@ import store from '@/store'
 
 const requst = axios();
 const requstBase = axios(process.env.VUE_APP_BASEINFO);
-const requstParts = axios(process.env.VUE_APP_PARTS);
+const requstParts = axios(process.env.VUE_APP_PARTS_BIDDING);
 const addUserId = function (config) {
   console.log(config.url, config);
   config.params = {
