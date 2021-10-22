@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-10-18 17:43:53
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-22 11:31:07
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
  */
@@ -73,7 +73,7 @@ export const dosageDialogTableTitle = [
 export const approveAttachTableTitle = [
   { props: "fileName", name: "文件名", key: "LK_WENJIANMING", tooltip: true },
   { props: "fileDescribe", name: "文件描述", key: "LK_WENJIANMIOASHU", tooltip: true, width: 450, _headerRequiredRight: true },
-  { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
+  { props: "_fileSize", name: "大小", key: "DAXIAO", tooltip: true },
   { props: "createDate", name: "上传日期", key: "SHANGCHUANRIQI", tooltip: true },
   { props: "userName", name: "上传人", key: "SHANGCHUANREN", tooltip: true },
   { props: "remark", name: "备注", key: "LK_BEIZHU", tooltip: true }

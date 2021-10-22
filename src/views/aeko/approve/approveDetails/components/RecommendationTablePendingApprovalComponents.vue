@@ -200,7 +200,7 @@ export default {
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
     let auditContents = sessionStorage.getItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`)
     this.auditContents = JSON.parse(auditContents)
-    this.auditContentStatus = sessionStorage.getItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatus`)
+    this.auditContentStatus = sessionStorage.getItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`)
   },
   methods: {
     loadRecommendData() {
