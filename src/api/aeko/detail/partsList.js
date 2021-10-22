@@ -79,3 +79,12 @@ export function addPart(data) {
     data,
   })
 }
+
+
+// 零件清单内获取车型及车型项目的下拉框 
+export function partListGetCartype(requirementAekoId) {
+  return requst({
+    url: `/aeko/part/getCartype/${requirementAekoId}`,
+    method: 'GET',
+  })
+}
