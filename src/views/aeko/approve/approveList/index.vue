@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-20 17:34:39
+ * @LastEditTime: 2021-10-22 15:46:50
  * @Description: 
 -->
 <template>
@@ -177,7 +177,7 @@ export default {
     toDetailUrl(row) {
       const routeData = this.$router.resolve({
         name: 'aekodetail', query: {
-          from: '',
+          from: 'manage',
           requirementAekoId: row.requirementAekoId
         }
       })
@@ -192,7 +192,8 @@ export default {
       const routeData = this.$router.resolve({
         name: 'aekoDescribe', query: {
           requirementAekoId: row.requirementAekoId,
-          aekoCode: row.aekoNum
+          aekoCode: row.aekoNum,
+          from: 'approve'
         }
       })
       window.open(routeData.href, '_blank')

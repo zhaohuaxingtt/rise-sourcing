@@ -202,12 +202,15 @@ export default {
       const {columns, data} = param;
       const sums = [];
       columns.forEach((column, index) => {
+        if(index==0){
+          sums[index] = '';
+          return;
+        }
         if (index === 1) {
           sums[index] = 'TOTAL';
           return;
         }
         const values = data.map(item => Number(item[column.property]));
-        console.log('-values----',values)
         let maxNum6 = Math.max(...values);
         sums[index] = numberToCurrencyNo(maxNum6)
         /*if (!values.every(value => isNaN(value))) {
