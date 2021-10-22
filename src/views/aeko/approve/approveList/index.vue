@@ -177,7 +177,7 @@ export default {
     toDetailUrl(row) {
       const routeData = this.$router.resolve({
         name: 'aekodetail', query: {
-          from: '',
+          from: 'manage',
           requirementAekoId: row.requirementAekoId
         }
       })
