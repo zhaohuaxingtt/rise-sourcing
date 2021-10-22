@@ -29,8 +29,8 @@ export const multiSupplierTitle = [
   },
   {
     props: 'sapNum',
-    name: 'SAP号',
-    key: 'nominationSupplier_SAPHao',
+    name: '供应商号',
+    key: 'GONGYINGSHANGHAO',
     tooltip: false
   },
   {
@@ -153,8 +153,8 @@ export const singleSupplierTitle = [
   },
   {
     props: 'sapCode',
-    name: 'SAP号',
-    key: 'nominationSupplier_SAPHao',
+    name: '供应商号',
+    key: 'GONGYINGSHANGHAO',
     tooltip: false
   },
   {

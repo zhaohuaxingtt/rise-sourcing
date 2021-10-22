@@ -14,7 +14,7 @@ export const tableTitle = [
   {props:'assemblyPartNum',name:'批量供货总成号', key: "PILIANGGONGHUOZONGCHENGHAO", tooltip: true, width: 140},
   {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 140},
   {props:'partNameCh',name:'配件零件名称', key: "PEIJIANLINGJIANMINGCHENG", tooltip: true, width: 140},
-  {props:'supplierSapCode',name:'供应商SAP号', key: "GONGYINGSHANGSAPHAO", tooltip: true, width: 120},
+  {props:'supplierSapCode',name:'供应商号', key: "GONGYINGSHANGHAO", tooltip: true, width: 120},
   {props:'supplierNameZh',name:'供应商中文名', key: "GONGYINGSHANGMINGCHENG", tooltip: true, width: 240},
   {props:'respDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, width: 140},
   {props:'respLinieName',name:'LINIE', key: "LINIE", tooltip: true, width: 100},
