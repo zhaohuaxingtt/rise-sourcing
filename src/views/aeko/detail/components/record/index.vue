@@ -35,9 +35,13 @@
       <template #akeoAuditType="scope">
         {{ getAdiType(scope.row.akeoAuditType) }}
       </template>
+      <template #comment="scope">
+        <span>{{ itemCommentContent(scope.row) }}</span>
+      </template>
       <template #explainReason="scope">
         <iInput v-if="!itemIsCanReply(scope.row)" v-model="scope.row.explainReason" type="textarea" rows="2"
                 :placeholder="language('LK_QINGSHURU','请输入')" clearable/>
+        <span v-else-if="itemExplainShow(scope.row)">{{ itemExplain(scope.row) }}</span>
         <span v-else>{{ scope.row.explainReason }}</span>
       </template>
       <template #attach="scope">
@@ -154,7 +158,6 @@ export default {
       this.tableSelecteData = val
     },
     openUploadDialog(row, attachReadOnly) {
-      console.log('openUploadDialog', row)
       this.attachReadOnly = attachReadOnly
       if (!row.taskId) {
         iMessage.error(this.language('TASKIDBUNENGWEIKONG', 'TASK ID 不能为空'))
@@ -197,14 +200,25 @@ export default {
           })
         }
       })
-
     },
-
+    itemCommentContent(row) {
+      if (row.activityName == "【补充材料回复】补充材料") {
+        return ''
+      }
+      return row.comment
+    },
+    itemExplain(row) {
+      if (row.activityName == "【补充材料回复】补充材料") {
+        return row.comment
+      }
+      return ''
+    },
+    itemExplainShow(row) {
+      return row.activityName == "【补充材料回复】补充材料"
+    },
     itemIsCanReply(row) {
       if (row.activityName == "【补充材料通知】补充材料") {
         let findRes = this.tableListData.filter(item => item.parentTaskId == row.id)
-        console.log('findRes', findRes)
-        console.log('------------', findRes != null && findRes.length > 0)
         return findRes != null && findRes.length > 0
       }
       //不用回复
