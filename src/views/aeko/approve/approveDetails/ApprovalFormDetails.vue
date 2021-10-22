@@ -28,6 +28,7 @@ export default {
       queryParams: {},
     }
   },
+
   created() {
     this.queryParams = this.$route.query
     let str_json = window.atob(this.queryParams.transmitObj)
