@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-10-14 15:45:47
+ * @LastEditTime: 2021-10-22 13:52:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -45,7 +45,7 @@
           ></iDatePicker>
           </div>
         </iFormItem>
-        <iFormItem :label="language('LK_BENLUNBAOJIAQIZHISHIJIAN竞价','竞价起止时间')" name="test" v-if="['biddingRound'].includes(roundType)">
+        <!-- <iFormItem :label="language('LK_BENLUNBAOJIAQIZHISHIJIAN竞价','竞价起止时间')" name="test" v-if="['biddingRound'].includes(roundType)">
           <div class="flex">
             <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="startTime" value-format="yyyy-MM-dd"
                             v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME"></iDatePicker> 
@@ -59,10 +59,10 @@
                           }"
           ></iDatePicker>
           </div>
-        </iFormItem>
-        <iFormItem :label="language('KAIBIASHIJIANXUANZE','开标时间')" name="test" v-if="['bidRound'].includes(roundType)">
+        </iFormItem> -->
+        <!-- <iFormItem :label="language('KAIBIASHIJIANXUANZE','开标时间')" name="test" v-if="['bidRound'].includes(roundType)">
             <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="startTime" value-format="yyyy-MM-dd" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME"></iDatePicker>           
-        </iFormItem>
+        </iFormItem> -->
       </iFormGroup>
       <tablelist
           ref="multipleTable"
