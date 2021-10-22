@@ -8,7 +8,7 @@
         <!-- AEKO号 -->
         <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')" prop='aekoNum'>
           <i-input
-              v-model="queryAkeoForm.aekoNum"
+              v-model.trim="queryAkeoForm.aekoNum"
               :placeholder="language('LK_QINGSHURU','请输入')"
               clearable
           ></i-input>
@@ -16,7 +16,7 @@
         <!-- 零件号 -->
         <el-form-item :label="language('LINGJIAHAO', '零件号')" prop='partNum'>
           <i-input
-              v-model="queryAkeoForm.partNum"
+              v-model.trim="queryAkeoForm.partNum"
               :placeholder="language('LK_QINGSHURU','请输入')"
               clearable
           ></i-input>
@@ -24,7 +24,7 @@
         <!-- 供应商简称 -->
         <el-form-item :label="language('GONGYINGSHANGJIANCHENG','供应商简称')" prop='supplierName'>
           <i-input
-              v-model="queryAkeoForm.supplierName"
+              v-model.trim="queryAkeoForm.supplierName"
               :placeholder="language('LK_QINGSHURU','请输入')"
               clearable
           ></i-input>
@@ -32,7 +32,7 @@
         <!-- 专业采购员 -->
         <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')" prop='buyerId'>
           <i-select
-              v-model="queryAkeoForm.buyerId"
+              v-model.trim="queryAkeoForm.buyerId"
               filterable
               remote
               reserve-keyword
@@ -54,7 +54,8 @@
           <div class="intervalCss">
             <el-form-item prop="minCost">
               <i-input
-                  v-model="queryAkeoForm.minCost"
+                  v-model.trim="queryAkeoForm.minCost"
+                  @input="queryAkeoForm.minCost=queryAkeoForm.minCost.replace(/^(\-)*(\d+)\.(\d{4}).*$/, '$1$2.$3')"
                   :placeholder="language('LK_QINGSHURU','请输入')"
                   clearable
               ></i-input>
@@ -62,7 +63,8 @@
             <span class="splitLine"></span>
             <el-form-item prop="maxCost">
               <i-input
-                  v-model="queryAkeoForm.maxCost"
+                  v-model.trim="queryAkeoForm.maxCost"
+                  @input="queryAkeoForm.maxCost=queryAkeoForm.maxCost.replace(/^(\-)*(\d+)\.(\d{4}).*$/, '$1$2.$3')"
                   :placeholder="language('LK_QINGSHURU','请输入')"
                   clearable
               ></i-input>
@@ -78,7 +80,7 @@
       <div class="editControl floatright margin-bottom20">
         <i-button @click="batchApproval"> 批量批准</i-button>
         <i-button @click="approval"> {{ language('SHENPI', '审批') }}</i-button>
-        <i-button @click="transfer"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
+        <i-button @click="transfer" v-if="transferButtonDisplay"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
 
       </div>
       <!--表格展示区-->
@@ -288,31 +290,42 @@ export default {
     //aeko/describe?requirementAekoId=10535&aekoCode=VA1EH8
     checkMinCost() {
       let value = this.queryAkeoForm.minCost
-      if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
-        this.$message.error('请输入正确的数值，小数点后保留四位数字')
+
+      if (!isNaN(Number(value))){
+        if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
+        this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHIXIAODIANHOUBAONIUSIWEIXIAOSHU','请输入正确的数值，小数点后保留四位数字'))
         return false
       }
       if (this.queryAkeoForm.maxCost != null && this.queryAkeoForm.maxCost != '') {
         if (Number(value) > Number(this.queryAkeoForm.maxCost)) {
-          this.$message.error('最小值不能大于最大值');
+          this.$message.error(this.language('LK_ZUIXIAOZHIBUNENGDAYUZUIDAZHI','最小值不能大于最大值'));
           return false
         }
       }
       return true
+      }else{
+        this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHI', '请输入正确数值'));
+        return false
+      }
     },
     checkMaxCost() {
       let value = this.queryAkeoForm.maxCost
-      if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
-        this.$message.error('请输入正确的数值，小数点后保留四位数字')
-        return false
-      }
-      if (!isNaN(this.queryAkeoForm.minCost)) {
-        if (Number(value) < Number(this.queryAkeoForm.maxCost)) {
-          this.$message.error('最大值不能小于最小值');
+     if (!isNaN(Number(value))) {
+        if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
+          this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHIXIAODIANHOUBAONIUSIWEIXIAOSHU','请输入正确的数值，小数点后保留四位数字'))
           return false
         }
+        if (!isNaN(this.queryAkeoForm.minCost)) {
+          if (Number(value) < Number(this.queryAkeoForm.maxCost)) {
+            this.$message.error(this.language('LK_ZUIDAZHIBUNENGXIAOYUZUIXIAOZHI','最大值不能小于最小值'));
+            return false
+          }
+        }
+        return true
+      }else{
+        this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHI', '请输入正确数值'));
+        return false
       }
-      return true
     },
     //加载数据
     loadPendingAKEOList() {

@@ -8,7 +8,7 @@
         <!-- AEKO号 -->
         <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')" prop='aekoCode'>
           <i-input
-              v-model="queryAkeoForm.aekoCode"
+              v-model.trim="queryAkeoForm.aekoCode"
               :placeholder="language('LK_QINGSHURU','请输入')"
               clearable
           ></i-input>
@@ -16,7 +16,7 @@
         <!-- 零件号 -->
         <el-form-item :label="language('LINGJIAHAO', '零件号')" prop='partNum'>
           <i-input
-              v-model="queryAkeoForm.partNum"
+              v-model.trim="queryAkeoForm.partNum"
               :placeholder="language('LK_QINGSHURU','请输入')"
               clearable
           ></i-input>
@@ -24,7 +24,7 @@
         <!-- 供应商简称 -->
         <el-form-item :label="language('GONGYINGSHANGJIANCHENG','供应商简称')" prop='supplierName'>
           <i-input
-              v-model="queryAkeoForm.supplierName"
+              v-model.trim="queryAkeoForm.supplierName"
               :placeholder="language('LK_QINGSHURU','请输入')"
               clearable
           ></i-input>
@@ -32,7 +32,7 @@
         <!-- 专业采购员 -->
         <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')" prop='buyerId'>
           <i-select
-              v-model="queryAkeoForm.buyerId"
+              v-model.trim="queryAkeoForm.buyerId"
               filterable
               remote
               reserve-keyword
@@ -54,16 +54,18 @@
           <div class="intervalCss">
             <el-form-item prop="costChangeMin">
               <i-input
-                  v-model="queryAkeoForm.costChangeMin"
+                  v-model.trim="queryAkeoForm.costChangeMin"
                   :placeholder="language('LK_QINGSHURU','请输入')"
+                  @input="queryAkeoForm.costChangeMin=queryAkeoForm.costChangeMin.replace(/^(\-)*(\d+)\.(\d{4}).*$/, '$1$2.$3')"
                   clearable
               ></i-input>
             </el-form-item>
             <span class="splitLine"></span>
             <el-form-item prop="costChangeMax">
               <i-input
-                  v-model="queryAkeoForm.costChangeMax"
+                  v-model.trim="queryAkeoForm.costChangeMax"
                   :placeholder="language('LK_QINGSHURU','请输入')"
+                  @input="queryAkeoForm.costChangeMax=queryAkeoForm.costChangeMax.replace(/^(\-)*(\d+)\.(\d{4}).*$/, '$1$2.$3')"
                   clearable
               ></i-input>
             </el-form-item>
@@ -162,7 +164,7 @@
         </template>
         <!--审批状态-->
         <template #auditStatus="scope">
-          <span>{{scope.row.auditStatusDesc}}</span>
+          <span>{{ scope.row.auditStatusDesc }}</span>
         </template>
         <!--AEKO截止日期-->
         <template #date="scope">
@@ -216,11 +218,11 @@ export default {
     icon,
     iSelect
   },
-  filters:{
-    formatDate (value) {
+  filters: {
+    formatDate(value) {
       if (value == null || value == '') return ''
-        let date = new Date(value);
-        return  dateUtils.formatDate(date,'yyyy-MM-dd')
+      let date = new Date(value);
+      return dateUtils.formatDate(date, 'yyyy-MM-dd')
     }
   },
   data() {
@@ -256,42 +258,52 @@ export default {
   },
   methods: {
     //转换审批描述
-    getAuditTypeDesc(auditType){
-      if(auditType==1){
+    getAuditTypeDesc(auditType) {
+      if (auditType == 1) {
         return '内容表态'
-      }else if(auditType==2){
+      } else if (auditType == 2) {
         return '封面表态'
-      }else {
+      } else {
         return '推荐表态'
       }
     },
     checkMinCost() {
       let value = this.queryAkeoForm.costChangeMin
-      if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
-        this.$message.error('请输入正确的数值，小数点后保留四位数字')
-        return false
-      }
-      if (!isNaN(this.queryAkeoForm.costChangeMax)) {
-        if (Number(value) > Number(this.queryAkeoForm.costChangeMax)) {
-          this.$message.error('最小值不能大于最大值');
+      if (!isNaN(Number(value))) {
+        if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
+          this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHIXIAODIANHOUBAONIUSIWEIXIAOSHU', '请输入正确的数值，小数点后保留四位数字'))
           return false
         }
+        if (!isNaN(this.queryAkeoForm.costChangeMax)) {
+          if (Number(value) > Number(this.queryAkeoForm.costChangeMax)) {
+            this.$message.error(this.language('LK_ZUIXIAOZHIBUNENGDAYUZUIDAZHI', '最小值不能大于最大值'));
+            return false
+          }
+        }
+        return true
+      } else {
+        this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHI', '请输入正确数值'));
+        return false
       }
-      return true
     },
     checkMaxCost() {
       let value = this.queryAkeoForm.costChangeMax
-      if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
-        this.$message.error('请输入正确的数值，小数点后保留四位数字')
-        return false
-      }
-      if (!isNaN(this.queryAkeoForm.costChangeMin)) {
-        if (Number(value) < Number(this.queryAkeoForm.costChangeMax)) {
-          this.$message.error('最大值不能小于最小值');
+      if (!isNaN(Number(value))) {
+        if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
+          this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHIXIAODIANHOUBAONIUSIWEIXIAOSHU', '请输入正确的数值，小数点后保留四位数字'))
           return false
         }
+        if (!isNaN(this.queryAkeoForm.costChangeMin)) {
+          if (Number(value) < Number(this.queryAkeoForm.costChangeMax)) {
+            this.$message.error(this.language('LK_ZUIDAZHIBUNENGXIAOYUZUIXIAOZHI', '最大值不能小于最小值'));
+            return false
+          }
+        }
+        return true
+      } else {
+        this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHI', '请输入正确数值'));
+        return false
       }
-      return true
     },
 
     //加载数据
@@ -318,7 +330,7 @@ export default {
     },
     //查询
     queryApprovedAKEOForm() {
-      if (this.checkMaxCost() && this.checkMaxCost()) {
+      if (this.checkMinCost() && this.checkMaxCost()) {
         this.queryAkeoForm.current = 1
         this.queryAkeoForm.size = this.page.pageSize
         this.loadApprovedList()
@@ -390,10 +402,10 @@ export default {
               aekoNum: row.aekoCode,
               requirementAekoId: row.requirementAekoId,
               aekoAuditType: row.auditType,
-              approvalResult:row.approvalResult,
+              approvalResult: row.approvalResult,
               workFlowId: row.workFlowId,
-              workFlowDTOS: [{workFlowId: row.workFlowId,taskId:row.taskId}],
-              taskId:row.taskId,
+              workFlowDTOS: [{workFlowId: row.workFlowId, taskId: row.taskId}],
+              taskId: row.taskId,
               aekoManageId: res.data.aekoManageId
             }
           }
@@ -431,7 +443,7 @@ export default {
               aekoNum: row.aekoCode,
               requirementAekoId: row.requirementAekoId,
               aekoAuditType: row.auditType,
-              workFlowDTOS: [{workFlowId: row.workFlowId,taskId:row.taskId}],
+              workFlowDTOS: [{workFlowId: row.workFlowId, taskId: row.taskId}],
               aekoManageId: res.data.aekoManageId
             }
           }
