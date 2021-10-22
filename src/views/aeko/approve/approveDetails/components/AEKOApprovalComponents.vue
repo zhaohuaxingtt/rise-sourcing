@@ -5,12 +5,12 @@
         <span class="card-title">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
         <div class="floatright">
           <i-button v-show="pageCanOption" v-loading.fullscreen.lock="fullscreenLoading" medium @click="optionApprove">
-              language('LK_QUERENZHUANGPAI', '确认审批')
+            {{ language('LK_AEKO_QUERENSHENPI', '确认审批') }}
           </i-button>
-<!--          <i-button @click="transfer" v-if="transferButtonDisplay&&pageCanOption"> {{
-              language('LK_ZHUANPAI', '转派')
-            }}
-          </i-button>-->
+          <!--          <i-button @click="transfer" v-if="transferButtonDisplay&&pageCanOption"> {{
+                        language('LK_ZHUANPAI', '转派')
+                      }}
+                    </i-button>-->
 
         </div>
       </div>
@@ -91,9 +91,10 @@
         </el-table-column>
       </el-table>
     </i-card>
-    <AEKOExplainAttachmentDialog v-if="explainAttachmentDialogVal" v-model="explainAttachmentDialogVal"/>
+    <AEKOExplainAttachmentDialog v-if="explainAttachmentDialogVal" :explain-attachment-req-data="explainAttachmentReqData" v-model="explainAttachmentDialogVal"/>
 
-    <AEKOTransferDialog v-model="transferDialogVal" @confirmTransfer="confirmTransfer"/>
+    <AEKOTransferDialog v-model="transferDialogVal"
+                        @confirmTransfer="confirmTransfer"/>
 
   </div>
 
@@ -123,7 +124,7 @@ export default {
     return {
       localAuditItems: [],
       explainAttachmentDialogVal: false,
-      explainAttachmentReqData: [],
+      explainAttachmentReqData:null,
       fullscreenLoading: false,
       transferDialogVal: false,
     }
