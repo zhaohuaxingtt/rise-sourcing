@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-10-14 10:01:24
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-21 19:10:59
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -163,6 +163,14 @@ export default [
               title: "AEKO-审批单",
             },
             component: () => import("@/views/aeko/approve/approveDetails/ApprovalFormDetails"),
+          },
+          {
+            path: "RecommendationTable",
+            name: "RecommendationTable",
+            meta: {
+              title: "AEKO-推荐表",
+            },
+            component: () => import("@/views/aeko/approve/approveDetails/components/RecommendationTablePendingApprovalComponents"),
           },
           {
             path: "CBDSummary",

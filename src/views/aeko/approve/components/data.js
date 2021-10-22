@@ -188,7 +188,9 @@ export const tableAKEOApprovedTitle = [
   { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true },
   { props: "auditStatus", name: "审批状态", key: "LK_SHENPIZHUANGTAI", tooltip: true },
   { props: "date", name: "AEKO截止日期", key: "LK_AEKO_AEKOJIEZHIRIQI",width:100,},
-  { props: "createDate", name: "创建时间", key: "CHUANGJIANRIQI",width:100 },
+  { props: "createDate", name: "创建时间", key: "LK_CHUANGJIANRIQI",width:100 },
+  { props: "complatedDate", name: "完成时间", key: "LK_WANCHENGSHIJIAN",width:100 },
+
 ]
 
 // 解释附件表头

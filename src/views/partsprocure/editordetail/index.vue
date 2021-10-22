@@ -199,7 +199,7 @@
 							</iSelect>
 						</iFormItem> -->
 						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
-						<iFormItem v-if="[partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb" :label="language('LK_HUOBI','货币') + ':'" name="test">
+						<iFormItem v-if="([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb) || originPartIsDb" :label="language('LK_HUOBI','货币') + ':'" name="test">
 							<iSelect v-model="detailData.currencyCode" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
@@ -486,7 +486,10 @@
 					this.detailData.cfController = nv
 					this.detailData.cfControllerName = this.fromGroup.CF_CONTROL.find(item => item.id === nv).name
 				}
-			}
+			},
+			originPartIsDb() { // 采购项目类型为仅零件号变更，且原零件号的采购项目类型为DB
+				return [this.partProjTypes.JINLINGJIANHAOGENGGAI].includes(this.detailData.partProjectType) && this.detailData.oldPartProjectType === this.partProjTypes.DBLINGJIAN
+			},
 		},
 		watch:{
 			'selectOldParts.selectData':function(res){

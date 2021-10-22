@@ -127,3 +127,11 @@ export  function  transferAEKO(data){
     data:data
   })
 }
+
+//CSF分派
+export function queryApprovalStatus(id){
+  return requst({
+    url:`/aeko/approve/distribution/getApprovalStatus/${id}`,
+    method:'GET',
+  })
+}

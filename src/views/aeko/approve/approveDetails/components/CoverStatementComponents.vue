@@ -76,7 +76,7 @@
             label="增加材料成本(RMB/车)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.materialIncrease }}</span>
+            <span>{{ scope.row.materialIncrease|numFilter }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
                         :content="queryRowMaterialIncreaseTipContent(scope.row)" placement="top">
               <i class="el-icon-warning-outline bule margin-left5"></i>
@@ -89,7 +89,7 @@
             label="增加投资费用(不含税)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.investmentIncrease }}</span>
+            <span>{{ scope.row.investmentIncrease | numFilter }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
                         :content="queryRowInvestmentIncreaseTipContent(scope.row)" placement="top">
               <i class="el-icon-warning-outline bule margin-left5"></i>
@@ -103,7 +103,7 @@
             label="其它费用(不含税)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.otherCost }}</span>
+            <span>{{ scope.row.otherCost | numFilter }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
                         :content="queryRowotherCostTipContent(scope.row)" placement="top">
               <i class="el-icon-warning-outline bule margin-left5"></i>
@@ -123,6 +123,7 @@
 
 <script>
 import {iInput, iCard, iFormItem, iFormGroup, iText} from "rise"
+import {fixNumber, numberToCurrencyNo} from "../../../../../utils/cutOutNum";
 
 export default {
   name: "CoverStatementComponents",
@@ -133,12 +134,18 @@ export default {
     iInput,
     iFormGroup,
   },
+  filters: {
+    numFilter(value) {
+      return numberToCurrencyNo(value)
+    }
+  },
+
   props: {
     auditCoverStatus: {type: String, default: () => ''},
-    auditCover: { type: Object, default: () => ({})}
+    auditCover: {type: Object, default: () => ({})}
   },
-  watch:{
-    auditCover(val){
+  watch: {
+    auditCover(val) {
       this.costsWithCarType = this.auditCover?.costsWithCarType
     }
   },
@@ -155,7 +162,7 @@ export default {
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${item.investmentIncrease} \n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.investmentIncrease)} \n`
         })
         return strTip
       }
@@ -167,7 +174,7 @@ export default {
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${item.materialIncrease} \n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.materialIncrease)} \n`
         })
         return strTip
       }
@@ -179,7 +186,7 @@ export default {
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${item.otherCost} \n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.otherCost)} \n`
         })
         return strTip
       }
@@ -192,7 +199,7 @@ export default {
       return ''
     },
     getSummaries(param) {
-      const { columns, data } = param;
+      const {columns, data} = param;
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 1) {
@@ -200,16 +207,20 @@ export default {
           return;
         }
         const values = data.map(item => Number(item[column.property]));
-        if (!values.every(value => isNaN(value))) {
-          sums[index] = values.reduce((prev, curr) => {
-            const value = Number(curr);
+        console.log('-values----',values)
+        let maxNum6 = Math.max(...values);
+        sums[index] = numberToCurrencyNo(maxNum6)
+        /*if (!values.every(value => isNaN(value))) {
+          let mValue = values.reduce((prev, curr) => {
+            let value = Number(curr);
             if (!isNaN(value)) {
               return prev + curr;
             } else {
               return prev;
             }
           }, 0);
-        }
+          sums[index] = numberToCurrencyNo(mValue)
+        }*/
       });
 
       return sums;

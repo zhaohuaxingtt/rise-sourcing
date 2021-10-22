@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-26 10:18:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-21 17:27:36
+ * @LastEditTime: 2021-10-21 17:31:29
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\delaySummary\data.js
  */
