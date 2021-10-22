@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-09-30 11:19:41
+ * @LastEditTime: 2021-10-22 15:55:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -40,7 +40,7 @@
           </div>
           <iText v-if="item.props === 'factoryName' || item.props === 'supplierName'">{{ dosage[item.props] }}</iText>
           <iInput class="percentInput" v-else-if="item.props === 'usePortion'" v-model="dosage[item.props]" :disabled="disabled" @input="handleInputByUsePortion" @blur="handleBlurByUsePortion">
-            <template slot="append">%</template>
+            <template slot="append"><span style="color:#000">%</span></template>
           </iInput>
         </iFormItem>
       </iFormGroup>
