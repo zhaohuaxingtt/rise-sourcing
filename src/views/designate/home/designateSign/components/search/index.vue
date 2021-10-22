@@ -173,6 +173,7 @@ import {
   priceConsistentStatus 
 } from '@/views/designate/home/components/options'
 import {selectDictByKeyss} from '@/api/dictionary'
+import { cloneDeep } from "lodash"
 
 import {
   iSearch,
@@ -184,7 +185,7 @@ import {
 export default {
   data() {
     return {
-      form,
+      form: cloneDeep(form),
       ptocessType: applyType,
       applicationStatus,
       selStatus: signSheetselStatus,
@@ -208,8 +209,8 @@ export default {
       this.$emit('search', this.form)
     },
     reset() {
-      this.form = {}
-      this.$emit('search', {})
+      this.form = cloneDeep(form)
+      this.$emit('search', this.form)
     },
     getOptions() {
       let types = [
