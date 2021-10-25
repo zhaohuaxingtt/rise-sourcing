@@ -6,11 +6,11 @@
 
 // 搜索
 export const searchList = [
-    {props:'buyerId',label:'专业采购员',type:'select',labelKey:'LK_AEKO_PARTS_ZHUANYECAIGOUYUAN',selectOption:'buyerId',permissionKey:'AEKO_PARTSLIST_SELECT_ZHUANYECAIGOUYUAN|专业采购员',noShowAll:false,filterable:true,clearable:true},
+    {props:'buyerId',label:'专业采购员',type:'select',labelKey:'LK_AEKO_PARTS_ZHUANYECAIGOUYUAN',selectOption:'buyerId',permissionKey:'AEKO_PARTSLIST_SELECT_ZHUANYECAIGOUYUAN|专业采购员',noShowAll:false,filterable:true,clearable:true,isNewSelect: true,searchKey: 'pinyin'},
     {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_PARTSLIST_INPUT_PARTNUM|零件号'},
-    {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',isNewSelect:true,permissionKey:'AEKO_PARTSLIST_SELECT_CARTYPECODE|⻋型项⽬',showCode:['AEKO','MP'],selectOption:'cartypeCode',filterable:true,noShowAll:true,clearable:true,multiple:true,},
-    {props:'cartype',label:'车型',type:'select',isNewSelect:true,labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO__PARTSLIST_SELECT_CARTYPE|车型',selectOption:'cartype',showCode:['AEA'],multiple:true,filterable:true,clearable:true,noShowAll:true,},
-    {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',permissionKey:'AEKO_PARTSLIST_SELECT_LINIEDEPtNUM|科室',selectOption:'linieDeptNumList',filterable:true,clearable:true,multiple:true,},
+    {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',isNewSelect:true,permissionKey:'AEKO_PARTSLIST_SELECT_CARTYPECODE|⻋型项⽬',showCode:['AEKO','MP'],selectOption:'cartypeCode',filterable:true,noShowAll:true,clearable:true,multiple:true, searchKey: 'pinyin'},
+    {props:'cartype',label:'车型',type:'select',isNewSelect:true,labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO__PARTSLIST_SELECT_CARTYPE|车型',selectOption:'cartype',showCode:['AEA'],multiple:true,filterable:true,clearable:true,noShowAll:true, searchKey: 'pinyin'},
+    {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',permissionKey:'AEKO_PARTSLIST_SELECT_LINIEDEPtNUM|科室',selectOption:'linieDeptNumList',filterable:true,clearable:true,multiple:true,isNewSelect: true,searchKey: 'pinyin'},
   ]
 
 
@@ -29,9 +29,9 @@ export const searchList = [
 export const aekoCSFsearchList = [
   {props: "partNameZh", name: "零件名", labelKey: "LK_LINGJIANMING", tooltip: true },
   {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_PARTSLIST_INPUT_PARTNUM|零件号'},
-  {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',permissionKey:'AEKO_PARTSLIST_SELECT_LINIEDEPtNUM|科室',selectOption:'linieDeptNumList',filterable:true,clearable:true,multiple:true,},
-  {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',isNewSelect:true,permissionKey:'AEKO_PARTSLIST_SELECT_CARTYPECODE|⻋型项⽬',showCode:['AEKO','MP'],selectOption:'cartypeCode',filterable:true,noShowAll:true,clearable:true,multiple:true,},
-  {props:'buyerId',label:'专业采购员',type:'select',labelKey:'LK_AEKO_PARTS_ZHUANYECAIGOUYUAN', selectOption:'buyerId',permissionKey:'AEKO_PARTSLIST_SELECT_ZHUANYECAIGOUYUAN|专业采购员',noShowAll:false,filterable:true,clearable:true},
+  {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',permissionKey:'AEKO_PARTSLIST_SELECT_LINIEDEPtNUM|科室',selectOption:'linieDeptNumList',filterable:true,clearable:true,multiple:true,isNewSelect: true,searchKey: 'pinyin'},
+  {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU', permissionKey:'AEKO_PARTSLIST_SELECT_CARTYPECODE|⻋型项⽬',showCode:['AEKO','MP'],selectOption:'cartypeCode',filterable:true,noShowAll:true,clearable:true,multiple:true,isNewSelect: true,searchKey: 'pinyin'},
+  {props:'buyerId',label:'专业采购员',type:'select', labelKey:'LK_AEKO_PARTS_ZHUANYECAIGOUYUAN', selectOption:'buyerId',permissionKey:'AEKO_PARTSLIST_SELECT_ZHUANYECAIGOUYUAN|专业采购员',noShowAll:false,filterable:true,clearable:true,isNewSelect: true,searchKey: 'nameEn'},
 ]
 
 
