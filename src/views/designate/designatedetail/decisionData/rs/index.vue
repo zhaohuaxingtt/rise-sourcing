@@ -17,6 +17,8 @@
 <script>
 import meeting from './components/meeting'
 import circulation from './components/circulation'
+import { getList } from '@/api/designate/decisiondata/rs'
+
 export default {
   components: { meeting, circulation },
   props: {
@@ -27,10 +29,18 @@ export default {
     showSignatureForm: {type:Boolean, default: false}
   },
   data() {
-    return {}
+    return {
+      nominateProcessType:''
+    }
   },
   mounted() {
     this.init()
+  },
+  created() {
+    let data = this.otherPreview ? this.otherNominationId : this.$route.query.desinateId
+    getList(data).then(res => {
+      this.nominateProcessType = res.data?.lines[0].nominateProcessType
+    })
   },
   computed: {
     // eslint-disable-next-line no-undef
@@ -45,7 +55,8 @@ export default {
      * @return {*}
      */    
     isCirculation(){
-      return this.otherPreview ? this.otherNominationType === 'TRANFORM' : this.$route.query.designateType === 'TRANFORM'
+      let processType = this.$route.query.designateType === '' ? this.nominateProcessType :this.$route.query.designateType      
+      return this.otherPreview ? this.otherNominationType === 'TRANFORM' : processType === 'TRANFORM'
     },
     /**
      * @Description: 是否是预览状态
