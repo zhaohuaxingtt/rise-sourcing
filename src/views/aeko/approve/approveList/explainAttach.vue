@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
  * @LastEditors: YoHo
- * @LastEditTime: 2021-10-22 22:29:58
+ * @LastEditTime: 2021-10-25 09:06:27
  * @Description: 解释附件查看列表
 -->
 <template>
@@ -99,7 +99,6 @@ export default {
       console.log(this.queryParams);
       let str_json = window.atob(this.queryParams.transmitObj);
       const AECOAPPROVEPARAMS = JSON.parse(decodeURIComponent(escape(str_json)))||{};
-      console.log(AECOAPPROVEPARAMS);
       // const AECOAPPROVEPARAMS = sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM') || {}
       const aekoApprovalDetails = AECOAPPROVEPARAMS || {}
       const aekoNum = aekoApprovalDetails?.aekoApprovalDetails?.aekoNum || ''
@@ -116,7 +115,6 @@ export default {
         current: this.page.currPage,
         size: this.page.pageSize
       },form)
-      console.log(parmas);
       if (!parmas.manageId) {
         iMessage.error(this.language('AEKOMANAGEIDBUNENGWEIKONG','aekoManageId不能为空'))
         return
