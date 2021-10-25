@@ -1287,6 +1287,17 @@
             'QingShuRuFenZuMing': '请输入分组名', //请输入分组名
             'NingShuRuDeBiLiBuHeFa': '您输入的比例不合法', //您输入的比例不合法
             'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
+            'CHANGSHANG':'厂商',//厂商
+            'OUJIA':'欧价',//欧价
+            'CHANDI':'产地',//产地
+            'HUILU':'汇率',//汇率
+            'MOJIJIAGEBUHANSHUI':'模具价格(不含税)',//模具价格(不含税)
+            'MOJUFENTAN':'模具分摊',//模具分摊
+            'KAIFAFEIBUHANSHUI':'开发费(不含税)',//开发费(不含税)
+            'KAIFAFEIFENTAN':'开发费分摊',//开发费分摊
+            'TPPINGFEN':'TP评分',//TP评分
+            'MAPINGFEN':'MQ评分',//MQ评分
+            
         },
         // 决策资料
         "strategicdoc": {
