@@ -1,14 +1,15 @@
 <!--
- * @Author: wentliao
- * @Date: 2021-08-17 10:22:54
- * @Description: select选项过多时的组件
+ * @Autor: Hao,Jiang
+ * @Date: 2021-10-25 15:02:21
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-25 15:12:41
+ * @Description: select选项过多时的组件,支持拼音/文字/英文模糊搜索
 -->
 <template>
-    <iSelect 
-        class="multipleSelect" 
+    <iSelect
         collapse-tags
-				reserve-keyword
-				v-model="data"
+        reserve-keyword
+        v-model="data"
         :multiple="multiple" 
         :filterable="filterable" 
         :clearable="clearable"
@@ -20,7 +21,7 @@
         <el-option value="" :label="language('all','全部')"></el-option>
         <el-option
             v-for="(item,index) in projectOptions || []"
-            :key="`projectOptions_${index}`"
+            :key="index"
             :label="item[optionName]"
             :value="item[optionKey]"
         >
@@ -73,91 +74,89 @@ export default {
         }
     },
     data(){
-			return{
-				data: this.value,
-				projectOptions:[],
-				optionsCacheChunks: [],
-				optionsFilterCache: [],
-				currentItem: {},
-				currentPage:1,
-				debouncer: null,
-				dropdownLazyLoad: null
-			}
+        return{
+            data: this.value,
+            projectOptions:[],
+            optionsCacheChunks: [],
+            optionsFilterCache: [],
+            currentPage:1,
+            debouncer: null,
+        }
     },
     watch:{
         options(val){
-					if(val){
-						const {options} = this;
-						this.OptionsCache = options;
-						this.optionsFilterCache= options;
-						this.optionsCacheChunks = chunk(options, 20);
-						this.projectOptions = this.optionsCacheChunks[0] || [];
-					}
+            if(val){
+                const {options} = this;
+                this.OptionsCache = options;
+                this.optionsFilterCache= options;
+                this.optionsCacheChunks = chunk(options, 20);
+                this.projectOptions = this.optionsCacheChunks[0] || [];
+            }
         },
         data(val) {
-					if (val) {
-						this.$nextTick(() => {
-							this.data = val
-						})
-					}
-					this.$emit('input', val)
+            if (val) {
+                this.$nextTick(() => {
+                    this.data = val
+                })
+            }
+            this.$emit('input', val)
         },
         value(val) {
             this.data = val
         }
     },
-		directives: {
-			lazyOptionsLoad: {
-				bind(el, binding) {
-					const dom = el.querySelector(".el-select-dropdown .el-select-dropdown__wrap")
-					dom.addEventListener("scroll", function() {
-						if (Math.floor(this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
-					});
-				}
-			}
-		},
+    directives: {
+        lazyOptionsLoad: {
+            bind(el, binding) {
+                const dom = el.querySelector(".el-select-dropdown .el-select-dropdown__wrap")
+                dom.addEventListener("scroll", function() {
+                    if (Math.floor(this.scrollHeight - this.scrollTop) <= this.clientHeight) binding.value()
+                });
+            }
+        }
+    },
     methods:{
-      dataFilter(value){
-        const {searchKey,optionName} = this;
-        if (this.debouncer && typeof this.debouncer.cancel === "function") this.debouncer.cancel();
+        dataFilter(value){
+            const {searchKey,optionName} = this;
+            if (this.debouncer && typeof this.debouncer.cancel === "function") this.debouncer.cancel();
 
-        this.debouncer = debounce(() => {
-					let _value = typeof value === "string" ? String(value).trim().toLowerCase() : _value;
-					if (_value) {
-						this.optionsFilterCache = this.OptionsCache.filter(item => item[optionName].includes(_value)|| item[searchKey].includes(_value));
-						this.optionsCacheChunks = chunk(this.optionsFilterCache, 20);
-					} else {
-						this.optionsFilterCache = this.OptionsCache;
-						this.optionsCacheChunks = chunk(this.OptionsCache, 20);
-					}
+            this.debouncer = debounce(() => {
+                let _value = typeof value === "string" ? String(value).trim().toLowerCase() : _value;
+                if (_value) {
+                    this.optionsFilterCache = this.OptionsCache.filter(item => item[optionName].includes(_value)|| item[searchKey].includes(_value));
+                    this.optionsCacheChunks = chunk(this.optionsFilterCache, 20);
+                } else {
+                    this.optionsFilterCache = this.OptionsCache;
+                    this.optionsCacheChunks = chunk(this.OptionsCache, 20);
+                }
 
-					this.currentPage = 1;
-					this.projectOptions = this.optionsCacheChunks[0] || [];
-        },400);
-        this.debouncer();
-      },
+                this.currentPage = 1;
+                this.projectOptions = this.optionsCacheChunks[0] || [];
+            },400);
+            this.debouncer();
+        },
 
-			lazyOptionsLoad() {
-				if (this.projectOptions.length < this.optionsFilterCache.length) {
-					this.currentPage += 1;
-					this.projectOptions = this.projectOptions.concat(this.optionsCacheChunks[this.currentPage - 1]);
-				}
-			},
+        lazyOptionsLoad() {
+            if (this.projectOptions.length < this.optionsFilterCache.length) {
+                this.currentPage += 1;
+                this.projectOptions = this.projectOptions.concat(this.optionsCacheChunks[this.currentPage - 1]);
+            }
+        },
 
-			selectVisibleChange(visible){
-					const value = this.data || ''
-					// 选择过的项目默认提前
-					const currentItem = this.options.find(o => o[this.optionKey] === value)
-					this.OptionsCache = this.options.filter(o => o[this.optionKey] !== value)
-					this.OptionsCache =currentItem ? [currentItem, ...this.OptionsCache] : this.OptionsCache
-					if (!visible) {
-							this.optionsFilterCache = this.OptionsCache;
-							this.optionsCacheChunks = chunk(this.OptionsCache, 20)
-					}
+        selectVisibleChange(visible){
+            const value = this.data || ''
+            // 选择过的项目默认提前
+            const currentItem = this.options.find(o => o[this.optionKey] === value)
+            this.OptionsCache = this.options.filter(o => o[this.optionKey] !== value)
+            this.OptionsCache =currentItem ? [currentItem, ...this.OptionsCache] : this.OptionsCache
+            if (!visible) {
+                this.optionsFilterCache = this.OptionsCache;
+                this.optionsCacheChunks = chunk(this.OptionsCache, 20)
+            }
 
-					this.projectOptions = this.optionsCacheChunks[0] || []
-					this.cartypeProjectcurrentPage = 1
-			},
+            this.projectOptions = this.optionsCacheChunks[0] || []
+            this.cartypeProjectcurrentPage = 1
+        },
     }
     
 }
