@@ -58,6 +58,7 @@ export const linieQueryForm = {
   partNameZh: "",
   partNum: "",
   linieDeptNumList:[''],
+  buyerName:'',
 }
 
 export const linieTableTitle = [
