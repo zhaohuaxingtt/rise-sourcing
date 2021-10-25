@@ -44,16 +44,17 @@ export const commodityTableTitle = [
 export const linieSearchList = [
   {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey: "AEKO_AEKODETAIL_PARTLIST_INPUT_PARTNUM|零件号-LINIE"},
   {props:'partNameZh',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG',permissionKey: "AEKO_AEKODETAIL_PARTLIST_INPUT_PARTNAMEZH|零件名称-LINIE"},
-  {props:'cartypeCode',label:'⻋型项⽬',type:'select',multiple:true,labelKey:'LK_AEKOCHEXINGXIANGMU',showCode:'aeko/mp',permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_CARTYPECODE|⻋型项⽬-LINIE"},
-  {props:'linieDeptNum',label:'科室',type:'input',labelKey:'LK_AEKOKESHI', disabled:true,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_LINIEDEPTNUM|科室-LINIE"},
-  {props:'buyerName',label:'Linie',type:'input',labelKey:'LK_AEKOLINIE',disabled:true,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_LINIE|Linie-LINIE"},
+  {props:'cartypeCode',label:'⻋型项⽬',type:'select',selectOption:'cartypeCode',multiple:true,labelKey:'LK_AEKOCHEXINGXIANGMU',showCode:['Aeko','MP'],permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_CARTYPECODE|⻋型项⽬-LINIE"},
+  {props:'linieDeptNumList',label:'科室',selectOption:'linieDeptNumList',type:'select',labelKey:'LK_AEKOKESHI', disabled:false,filterable:true,multiple:true,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_LINIEDEPTNUM|科室-LINIE"},
+  {props:'buyerName',label:'Linie',selectOption:'buyerName',type:'select',labelKey:'LK_AEKOLINIE',disabled:false,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_LINIE|Linie-LINIE"},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand',permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_BRAND|品牌-LINIE"},
-  {props:'cartypeCode',label:'车型',type:'select',multiple:true,labelKey:'LK_AEKO_CHEXING',selectOption:'cartypeCode',showCode:'AeA',permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_CARTYPECODE|车型-LINIE"},
+  {props:'cartype',label:'车型',type:'select',multiple:true,labelKey:'LK_AEKO_CHEXING',selectOption:'cartypeCode',showCode:['AeA'],permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_CARTYPECODE|车型-LINIE"},
 ]
 
 export const linieQueryForm = {
   brand: "",
-  cartypeCode: [],
+  cartypeCode:[''],
+  cartype:[''],
   partNameZh: "",
   partNum: ""
 }
