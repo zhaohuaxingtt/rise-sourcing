@@ -139,3 +139,12 @@ export function saveMouldParts(data) {
     data: data.list,
   })
 }
+
+//  A价变动CBD有效无效更新
+export function updateCbdCanEdit(data) {
+  return requst({
+    url: '/aeko/update/cbd_can_edit',
+    method: 'POST',
+    data,
+  })
+}
