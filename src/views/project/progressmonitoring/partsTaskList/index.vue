@@ -1,6 +1,6 @@
 
 <template>
-  <div class="productGroup">
+  <iPage class="partsTaskList" v-permission.auto="PROJECTMGT_PARTSTASK_PAGE|项目管理-零件任务清单-页面">
     <!-- <p class="font18 font-weight">
       车型项目：{{titleName}}
     </p> -->
@@ -12,7 +12,7 @@
       </template>
       <el-form>
 
-        <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)">
+        <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)" v-permission.dynamic.auto="item.permission">
           <iSelect v-if="item.type ==='select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
             <el-option
               v-for="item in selectOptions[item.selectOption]"
@@ -25,7 +25,7 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <iCard class="margin-top20">
+    <iCard class="margin-top20" v-permission.auto="PROJECTMGT_PARTSTASK_TABLE|项目管理-零件任务清单-表格">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('LINGJIANRENWUQINGDANGENGXIN', '零件任务清单更新')}}</span>
         <div class="floatright">
@@ -66,11 +66,11 @@
       </div>
 
     </iDialog>
-  </div>
+  </iPage>
 </template>
 
 <script>
-import { iSearch, iSelect, iInput, iButton, iCard, iPagination, iMessage,iDialog } from 'rise'
+import { iSearch, iSelect, iInput, iButton, iCard, iPagination, iMessage,iDialog, iPage } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import { searchList, tableTitle,partSortStatus } from './data'
 import tableList from '@/views/project/progressmonitoring/partsTaskList/components/tableList'
@@ -78,7 +78,7 @@ import { getCarTypePro, getPartTaskList,downLoadPartScheduleFile,updatePartInfoL
 import { getDictByCode } from '@/api/dictionary'
 export default {
   mixins: [pageMixins],
-  components: { iSearch, iSelect, iInput, iButton, iCard, tableList, iPagination,iDialog },
+  components: { iSearch, iSelect, iInput, iButton, iCard, tableList, iPagination,iDialog, iPage },
   data() {
     return {
       searchList,
@@ -306,5 +306,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.partsTaskList {
+  padding: 0;
+  height: auto;
+  overflow-y: auto;
+}
 </style>

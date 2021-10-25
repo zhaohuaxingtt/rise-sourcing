@@ -1,9 +1,17 @@
+/*
+ * @Author: Luoshuang
+ * @Date: 2021-10-11 10:31:41
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-10-25 11:13:50
+ * @Description: 
+ * @FilePath: \front-web\src\views\project\progressmonitoring\partsTaskList\data.js
+ */
 
 export const searchList = [
-  {value: 'partNum', name: '零件号', key: 'LINGJIAHAO', type: 'input'  },
-  {value: 'partSort', name: '零件分类', key: 'LINGJIANFENLEI', type: 'select', selectOption: 'partTaskPartSortQuery'},
-  {value: 'status', name: '处理状态', key: 'CHULIZHUANGTAI', type: 'select', filterable: true, selectOption: 'partTaskStatus'},
-  {value: 'risePartDesc', name: '异常原因', key: 'YICHANGYUANYING', type: 'select', filterable: true, selectOption: 'partTaskRisePartDesc'},
+  {value: 'partNum', name: '零件号', key: 'LINGJIAHAO', type: 'input', permission: "PROJECTMGT_PARTSTASK_PARTNUM|项目管理-零件任务清单-零件号"  },
+  {value: 'partSort', name: '零件分类', key: 'LINGJIANFENLEI', type: 'select', selectOption: 'partTaskPartSortQuery', permission: "PROJECTMGT_PARTSTASK_PARTSORT|项目管理-零件任务清单-零件分类"},
+  {value: 'status', name: '处理状态', key: 'CHULIZHUANGTAI', type: 'select', filterable: true, selectOption: 'partTaskStatus', permission: "PROJECTMGT_PARTSTASK_STATUS|项目管理-零件任务清单-处理状态"},
+  {value: 'risePartDesc', name: '异常原因', key: 'YICHANGYUANYING', type: 'select', filterable: true, selectOption: 'partTaskRisePartDesc', permission: "PROJECTMGT_PARTSTASK_RISEPARTDESC|项目管理-零件任务清单-异常原因"},
 ]
 
 export const tableTitle = [
