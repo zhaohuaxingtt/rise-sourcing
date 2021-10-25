@@ -31,7 +31,7 @@ export const aekoCSFsearchList = [
   {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_PARTSLIST_INPUT_PARTNUM|零件号'},
   {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',permissionKey:'AEKO_PARTSLIST_SELECT_LINIEDEPtNUM|科室',selectOption:'linieDeptNumList',filterable:true,clearable:true,multiple:true,isNewSelect: true,searchKey: 'pinyin'},
   {props:'cartypeCode',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU', permissionKey:'AEKO_PARTSLIST_SELECT_CARTYPECODE|⻋型项⽬',showCode:['AEKO','MP'],selectOption:'cartypeCode',filterable:true,noShowAll:true,clearable:true,multiple:true,isNewSelect: true,searchKey: 'pinyin'},
-  {props:'buyerId',label:'专业采购员',type:'select', labelKey:'LK_AEKO_PARTS_ZHUANYECAIGOUYUAN', selectOption:'buyerId',permissionKey:'AEKO_PARTSLIST_SELECT_ZHUANYECAIGOUYUAN|专业采购员',noShowAll:false,filterable:true,clearable:true,isNewSelect: true,searchKey: 'nameEn'},
+  {props:'buyerId',label:'专业采购员',type:'select', labelKey:'LK_AEKO_PARTS_ZHUANYECAIGOUYUAN', selectOption:'buyerId',permissionKey:'AEKO_PARTSLIST_SELECT_ZHUANYECAIGOUYUAN|专业采购员',noShowAll:false,filterable:true,clearable:true,isNewSelect: true,searchKey: 'pinyin'},
 ]
 
 
