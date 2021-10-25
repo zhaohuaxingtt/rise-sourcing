@@ -1,9 +1,9 @@
 <template>
-  <i-dialog :title="language('LK_JIESHIFUJIANCHAKAN','解释附件查看')" :visible.sync="value"
+  <i-dialog :title="language('LK_AEKO_JIESHIFUJIANCHAKAN','解释附件查看')" :visible.sync="value"
             @close="clearDiolog"
             top="40vh">
-    <i-table-custom  :columns='explainAttachment'
-                    :data='explainAttachmentList'>
+    <i-table-custom class="margin-bottom20 padding-bottom30" :columns='explainAttachment'
+                    :data='explainAttachmentList' @downloadFile="download">
     </i-table-custom>
 
   </i-dialog>
@@ -12,7 +12,9 @@
 <script>
 import {iDialog} from 'rise'
 import iTableCustom from '@/components/iTableCustom'
-import {getAuditFilePage} from "../../../../../api/aeko/detail/approveAttach";
+import {getAuditFilePage} from "@/api/aeko/detail/approveAttach";
+import {downloadFile} from 'rise/web/components/iFile/lib'
+import LinkComponeents from "./LinkComponeents";
 
 export default {
   name: "AEKOExplainAttachmentDialog",
@@ -22,7 +24,12 @@ export default {
   },
   props: {
     value: {type: Boolean, require: true, default: false},
-    explainAttachmentReqData:{type:Object,default: () => ({})},
+    explainAttachmentReqData: {type: Object, default: null},
+  },
+  watch: {
+    explainAttachmentReqData(val) {
+
+    }
   },
   created() {
     this.queryAttachment()
@@ -31,7 +38,7 @@ export default {
     return {
       explainAttachmentList: [],
       explainAttachment: [{
-        prop: 'index',
+        type: 'index',
         align: 'center',
         label: '#',
       },
@@ -41,9 +48,15 @@ export default {
           i18n: 'LK_WENJIANMING',
           headerAlign: 'center',
           align: 'center',
+          width: 200,
+          emit: 'downloadFile',
+          tooltip: true,
+          customRender: (h, scope, column) => {
+            return <LinkComponeents content={scope.row.fileName}/>
+          },
         },
         {
-          prop: 'updateDate',
+          prop: 'createDate',
           label: '操作时间',
           i18n: 'LK_UpdateDate',
           headerAlign: 'center',
@@ -74,6 +87,7 @@ export default {
       let data = {
         current: 1,
         size: 1000,
+        linieId: this.explainAttachmentReqData.linieId,
         aekoNum: this.explainAttachmentReqData.aekoNum,
         manageId: this.explainAttachmentReqData.manageId,
         taskId: this.explainAttachmentReqData.taskId
@@ -83,7 +97,13 @@ export default {
           this.explainAttachmentList = res.data
         }
       })
-    }
+    },
+    downloadFile() {
+
+    },
+    download(row) {
+      downloadFile(row.uploadId)
+    },
   }
 }
 </script>

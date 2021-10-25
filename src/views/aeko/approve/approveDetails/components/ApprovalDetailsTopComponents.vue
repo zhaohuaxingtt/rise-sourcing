@@ -77,7 +77,8 @@ export default {
     //查看已审批
     goViewApproved(){
       let routeData = this.$router.resolve({
-        path: `/aeko/approve/approvelistcsf/AKEOApprovedPage`,
+        path: `/aeko/AEKOApprovalDetails/RecommendationTable`,
+        query: this.$route.query
       })
       window.open(routeData.href, '_blank')
     },

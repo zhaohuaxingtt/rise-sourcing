@@ -162,9 +162,9 @@ export const tableCsfTitle = [
   { props: "assignsheet", name: "更改零件名称", key: "LK_AEKO_GENGGAILINGJIANMINGCHENG", tooltip: true, width:100  },
   { props: "carType", name: "涉及车型/车型项目", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width:120 },
   { props: "supplier", name: "主要供应商", key: "LK_AEKO_ZHUYAOGONGYINGSHANG", tooltip: true },
-  { props: "EP1", name: "增加材料成本（RMB/车）", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true },
-  { props: "EP2", name: "增加投资费用（不含税）", key: "LK_AEKO_ZENGJIATOUZIFEIYONG", tooltip: true },
-  { props: "EP3", name: "其他费用(不含税）", key: "LK_AEKO_QITAFEIYONGBUHANSHUI", tooltip: true },
+  { props: "EP1", name: "增加材料成本（RMB/车）", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true,width:100 },
+  { props: "EP2", name: "增加投资费用（不含税）", key: "LK_AEKO_ZENGJIATOUZIFEIYONG", tooltip: true,width:100 },
+  { props: "EP3", name: "其他费用(不含税）", key: "LK_AEKO_QITAFEIYONGBUHANSHUI", tooltip: true,width:100 },
   { props: "DepartmentName", name: "科室", key: "LK_KESHI", tooltip: true },
   { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true },
   { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true },
@@ -188,7 +188,9 @@ export const tableAKEOApprovedTitle = [
   { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true },
   { props: "auditStatus", name: "审批状态", key: "LK_SHENPIZHUANGTAI", tooltip: true },
   { props: "date", name: "AEKO截止日期", key: "LK_AEKO_AEKOJIEZHIRIQI",width:100,},
-  { props: "createDate", name: "创建时间", key: "CHUANGJIANRIQI",width:100 },
+  { props: "createDate", name: "创建时间", key: "LK_CHUANGJIANRIQI",width:100 },
+  { props: "complatedDate", name: "完成时间", key: "LK_WANCHENGSHIJIAN",width:100 },
+
 ]
 
 // 解释附件表头

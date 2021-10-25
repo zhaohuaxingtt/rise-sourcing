@@ -1,12 +1,12 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-30 11:39:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-15 14:50:56
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-24 14:32:59
  * @Description: 零件列表 AEKO 
 -->
 <template>
-  <div class="aekoPartslist" v-permission.auto="AEKO_PARTLIST_CSFAEKOPARTLIST_PAGE|CSF&AEKO审批分配人零件清单">
+  <iPage class="aekoPartslist" v-permission.auto="AEKO_PARTLIST_CSFAEKOPARTLIST_PAGE|CSF&AEKO审批分配人零件清单">
     <h2 class="title">
       {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
     </h2>
@@ -27,6 +27,7 @@
                 v-if="item.isNewSelect"
                 :searchParams="searchParams" 
                 :ParamKey="item.props" 
+                :searchKey="item.searchKey"
                 :allOptionsData="selectOptions[item.selectOption]" 
                 :multiple="item.multiple"
                 :clearable="item.clearable" 
@@ -90,12 +91,13 @@
       </div>
     </iCard>
 
-  </div>
+  </iPage>
 </template>
 
 <script>
 import Vuex from 'vuex'
 import {
+  iPage,
   iNavMvp,
   iSearch,
   iSelect,
@@ -125,6 +127,7 @@ export default {
     name:'partslist',
     mixins: [pageMixins],
     components:{
+      iPage,
       iNavMvp,
       iSearch,
       aekoSelect,
@@ -183,7 +186,7 @@ export default {
           JSON.stringify(this.translateDataForDetail(val))
         );
         this.$router.push({
-          path: "/sourceinquirypoint/sourcing/partsign/editordetail",
+          name: "editordetailPreview",
         });
       },
       //在跳转到详情界面之前，需要将数据格式化为中文。
@@ -303,7 +306,8 @@ export default {
           if(code ==200 ){
               data.map((item)=>{
                   item.desc = item.name;
-                  item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
+                  item.pinyin = String(item.name).spell().toLowerCase()
+                  // item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
               })
               this.selectOptions.cartypeCode = data;
           }else{
@@ -317,7 +321,8 @@ export default {
           if(code ==200){
               data.map((item)=>{
                   item.desc = item.name;
-                  item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
+                  // item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
+                  item.pinyin = String(item.name).spell().toLowerCase()
               })
               this.selectOptions.cartype = data.filter((item)=>item.name) || [];
           }else{
@@ -332,6 +337,7 @@ export default {
               data.map((item)=>{
                   item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
                   item.code = item.id;
+                  item.pinyin = String(this.$i18n.locale === "zh" ? item.nameZh : item.nameEn).spell().toLowerCase()
               })
               this.selectOptions.buyerId = data;
           }else{
@@ -346,6 +352,7 @@ export default {
                 data.map((item)=>{
                     item.desc = item.deptNum;
                     item.code = item.deptNum;
+                    item.pinyin = String(item.deptNum).spell().toLowerCase()
                 })
                 this.selectOptions.linieDeptNumList = data;
                 this.selectOptionsCopy.linieDeptNumList = data;

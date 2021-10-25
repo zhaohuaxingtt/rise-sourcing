@@ -4,7 +4,14 @@
       <div class="margin-bottom20">
         <span class="card-title">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
         <div class="floatright">
-          <i-button v-show="pageCanOption"   v-loading.fullscreen.lock="fullscreenLoading" medium @click="optionApprove">确认审批</i-button>
+          <i-button v-show="pageCanOption" v-loading.fullscreen.lock="fullscreenLoading" medium @click="optionApprove">
+            {{ language('LK_AEKO_QUERENSHENPI', '确认审批') }}
+          </i-button>
+          <!--          <i-button @click="transfer" v-if="transferButtonDisplay&&pageCanOption"> {{
+                        language('LK_ZHUANPAI', '转派')
+                      }}
+                    </i-button>-->
+
         </div>
       </div>
       <el-table :data="localAuditItems" stripe>
@@ -68,7 +75,7 @@
 
         </el-table-column>
         <el-table-column
-            label="审批人解释"
+            label="申请人解释"
             align="center"
             prop="applicantExplain">
         </el-table-column>
@@ -76,7 +83,7 @@
             label="解释附件"
             align="center"
             prop="explainFile">
-          <template  slot-scope="scope">
+          <template slot-scope="scope">
             <a class="link-underline" @click="lookExplainFile(scope.row)">
               {{ language('CHAKAN', '查看') }}
             </a>
@@ -84,14 +91,18 @@
         </el-table-column>
       </el-table>
     </i-card>
-    <AEKOExplainAttachmentDialog v-if="explainAttachmentDialogVal" v-model="explainAttachmentDialogVal" />
+    <AEKOExplainAttachmentDialog v-if="explainAttachmentDialogVal" :explain-attachment-req-data="explainAttachmentReqData" v-model="explainAttachmentDialogVal"/>
+
+    <AEKOTransferDialog v-model="transferDialogVal"
+                        @confirmTransfer="confirmTransfer"/>
+
   </div>
 
 </template>
 
 <script>
 import {iInput, iCard, icon, iButton} from "rise"
-import {aekoAudit} from "@/api/aeko/approve";
+import {aekoAudit, transferAEKO} from "@/api/aeko/approve";
 import AEKOExplainAttachmentDialog from "./AEKOExplainAttachmentDialog";
 
 export default {
@@ -100,6 +111,8 @@ export default {
     auditItems: {type: Array, default: () => []},
     transmitObj: {type: Object, default: () => ({})},
   },
+
+
   components: {
     AEKOExplainAttachmentDialog,
     iCard,
@@ -111,8 +124,9 @@ export default {
     return {
       localAuditItems: [],
       explainAttachmentDialogVal: false,
-      explainAttachmentReqData:[],
-      fullscreenLoading:false,
+      explainAttachmentReqData:null,
+      fullscreenLoading: false,
+      transferDialogVal: false,
     }
   },
   watch: {
@@ -123,6 +137,22 @@ export default {
   computed: {
     pageCanOption: function () {
       return this.transmitObj.option == 1
+    },
+    transferButtonDisplay: function () {
+      let user = this.$store.state.permission.userInfo
+      let roles = user.roleList
+      if (null != roles && roles.length > 0) {
+        let btnShow = false
+        for (let i = 0; i < roles.length; i++) {
+          let item = roles[i]
+          if (item.code == 'QQCGGZ') {
+            btnShow = true
+            break
+          }
+        }
+        return btnShow
+      }
+      return false
     }
   },
 
@@ -132,7 +162,7 @@ export default {
     },
     //审批意见状态
     approvalComments(row) {
-      return this.pageCanOption&&( row.approvalResult == 3 || row.approvalResult == 2)
+      return this.pageCanOption && (row.approvalResult == 3 || row.approvalResult == 2)
     },
     changeStatus(row, state) {
       if (this.pageCanOption) {
@@ -144,6 +174,33 @@ export default {
         }
       }
     },
+    //转派
+    transfer() {
+      this.transferDialogVal = true
+    },
+    confirmTransfer(selBuyerId) {
+      let selectPendingItem = this.transmitObj.aekoApprovalDetails
+      if (null != selectPendingItem) {
+        let transfers = []
+        selectPendingItem.workFlowDTOS.forEach(item => {
+          transfers.push({
+            targetUserId: selBuyerId,
+            aekoCode: selectPendingItem.aekoNum,
+            taskId: item.taskId,
+            userId: this.$store.state.permission.userInfo.id
+          })
+        })
+        this.fullscreenLoading = true
+        transferAEKO(transfers).then(res => {
+          this.fullscreenLoading = false
+          if (res.code == 200) {
+            this.loadPendingAKEOList()
+          } else {
+            this.$message.error(res.desZh)
+          }
+        })
+      }
+    },
     //审批
     optionApprove() {
       let req = []
@@ -152,7 +209,7 @@ export default {
         if (item.approvalResult != 1) {
           if (item.auditOpinion == null || item.auditOpinion == '') {
 
-            return this.$message.error('请填写审批意见')
+            return this.$message.error(this.language('LK_AEKO_QINGTIANXIESHENPIYIJIAN','请填写审批意见'))
           }
         }
       }
@@ -160,7 +217,7 @@ export default {
       this.localAuditItems.forEach(item => {
         item.workFlowDTOS.forEach(val => {
           req.push({
-            aekoCode:this.transmitObj.aekoApprovalDetails.aekoNum,
+            aekoCode: this.transmitObj.aekoApprovalDetails.aekoNum,
             aekoAuditType: this.transmitObj.aekoApprovalDetails.aekoAuditType,
             approvalResult: item.approvalResult,
             comment: item.auditOpinion,
@@ -168,32 +225,29 @@ export default {
           })
         })
       })
-     this.fullscreenLoading=true
+      this.fullscreenLoading = true
       aekoAudit(req).then(res => {
-        this.fullscreenLoading=false
-        if(res.code==200){
-           if(res.data.failCount>0){
-             this.$message.error(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态，请重试`)
-             this.$emit('refreshForm',1)
-
-           }else{
-             this.$message.success(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态!`)
-             this.$emit('refreshForm',2)
-
-           }
-        }else{
+        this.fullscreenLoading = false
+        if (res.code == 200) {
+          if (res.data.failCount > 0) {
+            this.$message.error(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态，请重试`)
+            this.$emit('refreshForm', 1)
+          } else {
+            this.$message.success(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态!`)
+            this.$emit('refreshForm', 2)
+          }
+        } else {
           this.$message.error(res.desZh)
-
         }
       })
     },
     //查看解释附件
     lookExplainFile(row) {
-      this.explainAttachmentReqData={
-        aekoNum:this.transmitObj.aekoApprovalDetails.aekoNum,
-        linieId:row.linieId,
-        manageId:this.transmitObj.aekoApprovalDetails.aekoManageId,
-        taskId:row.workFlowDTOS.filter((i) => i.taskId).map((i) => i.taskId),
+      this.explainAttachmentReqData = {
+        aekoNum: this.transmitObj.aekoApprovalDetails.aekoNum,
+        linieId: row.linieId,
+        manageId: this.transmitObj.aekoApprovalDetails.aekoManageId,
+        taskId: row.workFlowDTOS.filter((i) => i.taskId).map((i) => i.taskId),
       }
       this.explainAttachmentDialogVal = true
     }

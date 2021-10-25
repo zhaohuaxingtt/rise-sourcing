@@ -242,7 +242,7 @@ module.exports = {
       '/tpInfoApi': {
         //高攀弘服务地址http://10.122.17.38:8023/
         target: 'http://10.122.17.38:8023',
-        //target: 'http://10.160.139.185:8023',
+        //target: 'http://10.160.143.194:8023',
         // target: 'http://10.160.141.45:8023',
         changeOrigin: true,
         pathRewrite: {
@@ -301,7 +301,7 @@ module.exports = {
       },
       '/usercenterApi': {
         // usercenter.../唐开雄
-        // target: 'http://10.122.17.38:8015',
+        // target: 'http://10.122.18.166:8015',
         target: 'http://10.122.17.38:8015',
         // target:'http://10.160.137.165:8015',
         changeOrigin: true,
@@ -386,6 +386,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/newCommonApi': '',
+        },
+      },
+      '/biddingApi': {
+        target: 'http://10.122.17.38:8056',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/biddingApi': '',
         },
       },
       //cf组件代理

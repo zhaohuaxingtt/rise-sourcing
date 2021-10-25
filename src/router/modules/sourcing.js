@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-08-31 14:02:08
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-21 15:16:51
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\sourcing.js
  */
@@ -132,6 +132,16 @@ export default [
             name: "editordetail",
             meta: {
                 title: "新建信息单详情",
+            },
+            component: () =>
+                import ("@/views/partsign/editordetail"),
+        },
+        {
+            path: "partsign/preview",
+            name: "editordetailPreview",
+            meta: {
+                isPreview: true,
+                title: "新建信息单预览",
             },
             component: () =>
                 import ("@/views/partsign/editordetail"),

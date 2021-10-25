@@ -125,8 +125,8 @@
       </tablelist>
       <iPagination
         v-update
-        @size-change="handleSizeChange($event, getFetchData)"
-        @current-change="handleCurrentChange($event, getFetchData)"
+        @size-change="handleSizeChange($event, getChooseData)"
+        @current-change="handleCurrentChange($event, getChooseData)"
         background
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
@@ -276,7 +276,7 @@ export default {
         const res = await saveSignSheet(params)
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.getFetchData()
+          this.getChooseData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -299,7 +299,7 @@ export default {
         })
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.getFetchData()
+          this.getChooseData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -319,7 +319,7 @@ export default {
           nominateIdArr: idList})
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.getFetchData()
+          this.getChooseData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
