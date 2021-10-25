@@ -461,7 +461,8 @@ module.exports = {
       '/nominateRecord':{
         //龙行伟定点记录接口
         // target:'http://10.160.141.127:8888',
-        target:'http://10.160.139.234:8888',
+        // target:'http://10.160.140.240:8888',
+        target:'http://10.160.139.195:8888',
         changeOrigin:true,
         pathRewrite: {
           '^/nominateRecord':'',

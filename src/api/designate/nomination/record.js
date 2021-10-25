@@ -1,8 +1,8 @@
 /*
  * @Description: 定点记录
- * @Author: tyra liu
+ * @Author: lt
  * @Date: 2021-10-22 10:51:43
- * @LastEditTime: 2021-10-22 16:16:38
+ * @LastEditTime: 2021-10-25 13:47:45
  * @LastEditors:  
  */
 import axios from "@/utils/axios"
@@ -22,6 +22,15 @@ export function getNomiApplicationPageList(data) {
 export function exportNomiRecordExcel(data) {
   return fileRequest({
     url:'/nominate-apps/exportNomiRecordExcel',
+    method:'POST',
+    data
+  })
+}
+
+// 定点管理-定点记录详情
+export function getNomiRecordDetailPageList(data) {
+  return request({
+    url:'/nominate-apps/getNomiRecordDetailPageList',
     method:'POST',
     data
   })
