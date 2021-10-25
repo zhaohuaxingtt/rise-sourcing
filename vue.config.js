@@ -240,7 +240,7 @@ module.exports = {
         },
       },
       '/tpInfoApi': {
-        //高攀弘服务地址http://10.122.18.166:8023/
+        //高攀弘服务地址http://10.122.17.38:8023/
         target: 'http://10.122.17.38:8023',
         //target: 'http://10.160.143.194:8023',
         // target: 'http://10.160.141.45:8023',
@@ -319,7 +319,7 @@ module.exports = {
       },
       '/ws2Api': {
         // ws2Api.../ 王鹏霄
-        // target: 'http://10.122.18.166:8022', //	dev
+        // target: 'http://10.122.17.38:8022', //	dev
         target: 'http://10.122.17.38:8022',	//	vmsit
         // target: 'http://192.168.50.160:8022', // 圆圆
         // target: 'http://192.168.50.166:8022', // 立立
@@ -458,6 +458,15 @@ module.exports = {
           '^/supplierApplication': '',
         },
       },
+      '/nominateRecord':{
+        //龙行伟定点记录接口
+        // target:'http://10.160.141.127:8888',
+        target:'http://10.160.139.234:8888',
+        changeOrigin:true,
+        pathRewrite: {
+          '^/nominateRecord':'',
+        }
+      }
     },
   },
 }
