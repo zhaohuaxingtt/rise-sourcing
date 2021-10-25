@@ -56,7 +56,7 @@ export default {
   // },
   watch: {
     auditContents(val) {
-      this.page.totalCount = this.auditContents.length;
+      this.page.totalCount = this.auditContents?.length;
       this.recommendationFormPendingApprovalList = this.auditContents.slice(
         this.page.currPage - 1,
         this.page.pageSize

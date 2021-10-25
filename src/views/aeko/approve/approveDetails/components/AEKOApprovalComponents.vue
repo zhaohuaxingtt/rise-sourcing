@@ -209,7 +209,7 @@ export default {
         if (item.approvalResult != 1) {
           if (item.auditOpinion == null || item.auditOpinion == '') {
 
-            return this.$message.error('请填写审批意见')
+            return this.$message.error(this.language('LK_AEKO_QINGTIANXIESHENPIYIJIAN','请填写审批意见'))
           }
         }
       }
@@ -232,14 +232,12 @@ export default {
           if (res.data.failCount > 0) {
             this.$message.error(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态，请重试`)
             this.$emit('refreshForm', 1)
-
           } else {
             this.$message.success(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态!`)
             this.$emit('refreshForm', 2)
           }
         } else {
           this.$message.error(res.desZh)
-
         }
       })
     },

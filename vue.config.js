@@ -242,7 +242,7 @@ module.exports = {
       '/tpInfoApi': {
         //高攀弘服务地址http://10.122.18.166:8023/
         target: 'http://10.122.17.38:8023',
-        //target: 'http://10.160.142.73:8023',
+        //target: 'http://10.160.143.194:8023',
         // target: 'http://10.160.141.45:8023',
         changeOrigin: true,
         pathRewrite: {
