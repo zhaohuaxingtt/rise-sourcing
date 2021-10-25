@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-10-14 20:10:00
+ * @LastEditTime: 2021-10-23 14:42:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -608,9 +608,9 @@ defaultLayoutTemplate[partProjTypes.GSCOMMONSOURCING] = '3'
  * @return {*}
  */
 export const suplierTableDataTitel = [
-  {type:'',props:'mixPrice',name:'排名',key:'PAIMINGKEY',width:'100',tooltip:false},
-  {type:'',props:'mixPrice',name:'供应商编号',key:'GONGYINGSMINGC',width:'',tooltip:false},
-  {type:'',props:'mixPrice',name:'供应商名称',key:'',width:'GONGYSBIANHAO',tooltip:false},
-  {type:'',props:'mixPrice',name:'TTO',key:'',width:'100',tooltip:false},
-  {type:'',props:'mixPrice',name:'报价进度',key:'BAOJIAJINGDU',width:'100',tooltip:false}
+  {type:'',props:'currentSort',name:'排名',key:'PAIMINGKEY',width:'100',tooltip:false},
+  {type:'',props:'supplierCode',name:'供应商编号',key:'GONGYINGSMINGC',width:'',tooltip:false},
+  {type:'',props:'supplierName',name:'供应商名称',key:'',width:'GONGYSBIANHAO',tooltip:false},
+  {type:'',props:'offerPrice',name:'TTO',key:'',width:'100',tooltip:false},
+  // {type:'',props:'mixPrice',name:'报价进度',key:'BAOJIAJINGDU',width:'100',tooltip:false}
 ]

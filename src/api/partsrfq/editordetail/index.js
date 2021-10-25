@@ -431,3 +431,12 @@ export function quoteInquiryPrice(params) {
         method: 'GET',
     })
 }
+
+//当前rfq下 最新轮次供应商的排名情况
+export function getPriceRank(params) {
+    return requst({
+        url: `/online-bidding/getPriceRank`,
+        method: 'POST',
+        data:params
+    })
+}

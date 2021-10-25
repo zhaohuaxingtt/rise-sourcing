@@ -117,9 +117,7 @@ export default {
                 'pid':[],
             },
             partNum:'',
-            form:{
-                changeType:'A',
-            },
+            form:{ },
             infoShow:false,
             noInfoData:false,
         }
@@ -161,9 +159,11 @@ export default {
                 const {code,data=null} = res;
                 if(code == 200){
                     if(data){
-                        this.form = data;
-                        // 变更类型默认为A
-                        this.form['changeType'] = 'A';
+                        this.form = {
+                            ...data,
+                            'changeType':'A'  // 变更类型默认为A
+                            };
+                       
                         this.infoShow = true;
                     }else{
                         this.infoShow = false;
@@ -208,12 +208,9 @@ export default {
         },
 
         // 获取涉及
-
         handleNumber(val, row, props) {
             this.$set(row, props, numberProcessor(val, 0));
         },
-
-      
     }
 }
 </script>

@@ -19,7 +19,7 @@ import BDL from "./components/BDL";
 import supplierScore from "./components/supplierScore";
 import moldBudgetApplication from "./components/moldBudgetApplication";
 import technicalSeminar from "./components/technicalSeminar";
-import inquiryManagement from 'front-bidding/src/views/manage/bidding/project/inquiry';
+// import inquiryManagement from 'front-bidding/src/views/manage/bidding/project/inquiry';
 export default {
   components: {
     iTabsList,
@@ -28,7 +28,7 @@ export default {
     supplierScore,
     moldBudgetApplication,
     technicalSeminar,
-    inquiryManagement
+    // inquiryManagement
   },
   data() {
     return {
@@ -77,15 +77,6 @@ export default {
       this.activityTabIndex = target.index
     },
     updateTabs(parmras){
-      if(parmras.currentRounds > 0 && !this.tabList.find(i=>i.index == 5)){
-        this.tabList.push({
-          index: '5',
-          label: '询价管理',
-          component: 'inquiryManagement',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE',
-          key: 'XUNJIAGUANLI'
-        })
-      }
     },
   }
 };
