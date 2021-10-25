@@ -21,7 +21,7 @@
               :value="item.value">
             </el-option>
           </iSelect>
-          <iInput v-else-if="item.type === 'input'" v-mo del="searchParams[item.value]" :placeholder="language('QINGSHURUDUOGELINGJIANHAO', '请输入多个零件号，多个逗号分割')" />
+          <iInput v-else-if="item.type === 'input'" v-model="searchParams[item.value]" :placeholder="language('QINGSHURUDUOGELINGJIANHAO', '请输入多个零件号，多个逗号分割')" />
         </el-form-item>
       </el-form>
     </iSearch>

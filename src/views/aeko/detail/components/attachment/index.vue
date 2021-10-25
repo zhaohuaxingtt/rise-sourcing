@@ -132,10 +132,10 @@ export default {
 			downloadFile(row.uploadId)
 		},
 		updateApproveAttach(fileData) {
-			console.log(fileData)
 			const parmas = window._.cloneDeep(fileData)
       // 删除备份
       delete parmas._fileDescribe
+      delete parmas._remark
       // 必填校验
       if (!parmas.fileDescribe) {
         iMessage.error(this.language('WENJIANMIAOSHUBUNENGWEIKONG','文件描述不能为空'))
@@ -143,17 +143,19 @@ export default {
         return
       }
       // 内容没改变，直接退出
-      if (parmas.fileDescribe === fileData._fileDescribe) return
+      if (parmas.fileDescribe === fileData._fileDescribe && parmas.remark === fileData._remark) return
 			auditFileUpdate(parmas).then(res => {
         if (res.code !== '200') {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }else{
+          fileData._fileDescribe = fileData.fileDescribe
+          fileData._remark = fileData.remark
         }
       }).catch(e => {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
       })
 		},
     onUploadsucess(data) {
-      console.log('data', data)
 			const fileData = data.data || {}
 			const parmas = {
 				aekoNum: this.aekoInfo.aekoCode,
@@ -188,7 +190,6 @@ export default {
      * @return {*}
      */    
     getFetchData() {
-			console.log(this.aekoInfo)
       const parmas = Object.assign({
 				linieId: this.userInfo.id || '',
 				aekoNum: this.aekoInfo.aekoCode,
@@ -202,7 +203,8 @@ export default {
         if (res.code === '200') {
           this.tableListData = (res.data || []).map(o => {
             o._fileDescribe = o.fileDescribe
-            o.fileSize = `${o.fileSize} MB`
+            o._remark = o.remark
+            o._fileSize = `${o.fileSize} MB`
             return o
           })
           this.page.totalCount = res.total

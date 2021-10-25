@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-14 17:30:35
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-10-22 22:29:58
  * @Description: 解释附件查看列表
 -->
 <template>
@@ -95,8 +95,14 @@ export default {
      * @return {*}
      */    
     getFetchData() {
-      const AECOAPPROVEPARAMS = sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM') || {}
-      const aekoApprovalDetails = AECOAPPROVEPARAMS.aekoApprovalDetails || {}
+      this.queryParams = this.$route.query;
+      console.log(this.queryParams);
+      let str_json = window.atob(this.queryParams.transmitObj);
+      const AECOAPPROVEPARAMS = JSON.parse(decodeURIComponent(escape(str_json)))||{};
+      console.log(AECOAPPROVEPARAMS);
+      // const AECOAPPROVEPARAMS = sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM') || {}
+      const aekoApprovalDetails = AECOAPPROVEPARAMS || {}
+      const aekoNum = aekoApprovalDetails?.aekoApprovalDetails?.aekoNum || ''
       const requirementAekoId = this.$route.query.requirementAekoId || aekoApprovalDetails.requirementAekoId || ''
       const aekoManageId = this.$route.query.aekoManageId || aekoApprovalDetails.aekoManageId || ''
       const linieId = this.$route.query.linieId || aekoApprovalDetails.linieId || ''
@@ -104,12 +110,13 @@ export default {
       const form = this.$refs.search.form || {}
       const parmas = Object.assign({
         linieId: linieId || '',
-				aekoNum: requirementAekoId,
+				aekoNum: aekoNum,
 				manageId: Number(aekoManageId) || '',
 				taskId: String(taskId).split(',') || [],
         current: this.page.currPage,
         size: this.page.pageSize
       },form)
+      console.log(parmas);
       if (!parmas.manageId) {
         iMessage.error(this.language('AEKOMANAGEIDBUNENGWEIKONG','aekoManageId不能为空'))
         return

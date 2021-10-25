@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-10-13 15:50:18
+ * @LastEditTime: 2021-10-14 20:10:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -600,3 +600,17 @@ export const defaultLayoutTemplate = {}
 defaultLayoutTemplate[partProjTypes.GSLINGJIAN] = '3'
 defaultLayoutTemplate[partProjTypes.GSLINGJIANIP] = '3'
 defaultLayoutTemplate[partProjTypes.GSCOMMONSOURCING] = '3'
+
+
+/**
+ * @description: 静态数据在线报价结果表头字段
+ * @param {*}
+ * @return {*}
+ */
+export const suplierTableDataTitel = [
+  {type:'',props:'mixPrice',name:'排名',key:'PAIMINGKEY',width:'100',tooltip:false},
+  {type:'',props:'mixPrice',name:'供应商编号',key:'GONGYINGSMINGC',width:'',tooltip:false},
+  {type:'',props:'mixPrice',name:'供应商名称',key:'',width:'GONGYSBIANHAO',tooltip:false},
+  {type:'',props:'mixPrice',name:'TTO',key:'',width:'100',tooltip:false},
+  {type:'',props:'mixPrice',name:'报价进度',key:'BAOJIAJINGDU',width:'100',tooltip:false}
+]
