@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-19 20:45:11
+ * @LastEditTime: 2021-10-25 15:00:03
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -231,7 +231,7 @@ export default {
   },
   computed:{
     apriceChangeVal(){
-      return this.aPriceChangeObj[this.partsId]?.toFixed(4) || 0
+      return this.aPriceChangeObj[this.partsId]?.total?.toFixed(4) || 0
     }
   },
   created() {
@@ -276,20 +276,39 @@ export default {
           data.length &&
             data.forEach((item, index) => {
               item.index = 1+index;
-              aPriceChangeObj[item.quotationId]
-                ? (aPriceChangeObj[item.quotationId] = math.add(aPriceChangeObj[item.quotationId], math.bignumber(item.alteration || 0)))
-                : (aPriceChangeObj[item.quotationId] = math.bignumber(item.alteration || 0));
+              if(aPriceChangeObj[item.quotationId]){
+                aPriceChangeObj[item.quotationId] = {
+                  total:math.add(aPriceChangeObj[item.quotationId].total, math.bignumber(item.alteration || 0)),
+                  partNum: item.partNum
+                }
+              }else{
+                aPriceChangeObj[item.quotationId] = {
+                  total:math.bignumber(item.alteration || 0),
+                  partNum: item.partNum
+                }
+              }
             });
           Object.keys(aPriceChangeObj).forEach((key) => {
             let item = {
               index: "",
-              partNum: key,
-              total: "RMB " + (+aPriceChangeObj[key]).toFixed(4),
+              partNum: aPriceChangeObj[key].partNum,
+              total: "RMB " + (+aPriceChangeObj[key].total).toFixed(4),
             };
             data.push(item);
           });
+          let arr_group = {}
+          data.forEach((i)=>{
+            if(!arr_group[i.partNum]){
+              arr_group[i.partNum] = [i]
+            }else{
+              arr_group[i.partNum] = [...arr_group[i.partNum],i]
+            }
+          })
           this.aPriceChangeObj = aPriceChangeObj
-          this.tableData = data.sort((a, b) => a.partNum - b.partNum);
+          let arr = Object.values(arr_group).reduce((arr,i)=>{
+            return [...arr,...i]
+          },[])
+          this.tableData = arr;
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }

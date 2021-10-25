@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-21 15:32:55
+ * @LastEditTime: 2021-10-25 16:22:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -28,7 +28,7 @@
             :placeholder="language('QINGSHURUGONGYINGSHANGBIANHAO', '请输入供应商编号')"
           />
         </el-form-item>
-        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_CARTYPEPROJECTCODE|车型项目">
+        <el-form-item :label="showCarTypeLabel" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_CARTYPEPROJECTCODE|车型项目">
           <iSelect
             multiple
             collapse-tags
@@ -37,7 +37,7 @@
             size="mini"
             class="multipleSelect"
             v-model="form.cartypeProjectCode"
-            :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
+            :placeholder="language('partsprocure.CHOOSE','请选择')"
             :filter-method="$event => selectFilter($event, 'cartypeProjectCode')"
             v-lazy-select="cartypeProjectLazy"
             @change="handleChangeByAll($event, 'cartypeProjectCode')"
@@ -285,7 +285,8 @@ import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
 import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent,updateInvestCarProject,searchInvestCar } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
-import { searchCartypeProject } from "@/api/aeko/manage"
+// import { searchCartypeProject } from "@/api/aeko/manage"
+import { partListGetCartype } from "@/api/aeko/detail/partsList.js"
 import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, chunk, debounce } from "lodash"
 
@@ -308,7 +309,16 @@ export default {
   computed: {
     disabled() {
       return this.aekoInfo.aekoStatus == "CANCELED"
-    }
+    },
+    // 判断展示车型还是车型项目 展示label
+    showCarTypeLabel(){
+      const {aekoInfo={}} = this;
+      if(aekoInfo.aekoType == 'AeA'){  // 车型
+        return this.language('LK_AEKO_CHEXING', '车型')
+      }else{ // 车型项目
+        return this.language('CHEXINGXIANGMU', '车型项目')
+      }
+    },
   },
   data() {
     return {
@@ -363,7 +373,9 @@ export default {
   },
   methods: {
     searchCartypeProject() {
-      searchCartypeProject()
+      const {query} = this.$route;
+      const { requirementAekoId ='',} = query;
+      partListGetCartype(requirementAekoId)
       .then(res => {
         if (res.code == 200) {
           this.carTypeProjectOptionsCache = 
@@ -907,7 +919,7 @@ export default {
           
         }
       })
-    }
+    },
 
   },
 };

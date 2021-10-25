@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-19 20:38:47
+ * @LastEditTime: 2021-10-25 09:54:28
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -306,7 +306,7 @@ export default {
     // 报废成本
     scrapCostTable() {
       return this.setScrapCostTableData(
-        this.Data.scrapVO ? [this.Data.scrapVO] : []
+        this.Data.scrapVO?.id ? [this.Data.scrapVO] : []
       );
     },
     // 管理费
@@ -324,7 +324,7 @@ export default {
     // 利润
     profitTable() {
       return this.setProfitTableData(
-        this.Data.profitVO ? [this.Data.profitVO] : []
+        this.Data.profitVO?.id ? [this.Data.profitVO] : []
       );
     },
   },

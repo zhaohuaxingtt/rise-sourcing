@@ -237,8 +237,8 @@ export default {
             this.SearchList = linieSearchList
             this.tableTitle = linieTableTitle
             this.searchParams = cloneDeep(linieQueryForm)
-            this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
-            this.searchParams.buyerName = this.userInfo.nameZh
+            // this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
+            // this.searchParams.buyerName = this.userInfo.nameZh
         } else if (this.isCommodityCoordinator) {
             this.SearchList = SearchList
             this.tableTitle = commodityTableTitle;
@@ -259,14 +259,14 @@ export default {
                 cartypeCode:[''],
                 cartype:[''],
                 linieDeptNumList:[''],
-                a:'1',
+                sendStatus:'',
             },
             selectOptions:{
                 cartypeCode:[],
                 buyerName:[],
                 cartype:[],
                 linieDeptNumList:[],
-                a:[
+                sendStatus:[
                     {desc:'未分派',code:'1'},
                     {desc:'已分派',code:'2'},
                 ]
@@ -310,8 +310,8 @@ export default {
 
             if (this.isLinie) {
                 this.searchParams = cloneDeep(linieQueryForm)
-                this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
-                this.searchParams.buyerName = this.userInfo.nameZh
+                // this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
+                // this.searchParams.buyerName = this.userInfo.nameZh
             } else {
                 this.searchParams = {
                      brand:'',
@@ -569,12 +569,29 @@ export default {
         getAekoContentPart() {
             this.loading = true
 
+            const {searchParams,aekoInfo={} } = this;
+            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName} = searchParams;
+            let carTypeCodeList=[];
+            // 车型和车型项目同一个code参数 单独处理下
+            if(aekoInfo && aekoInfo.aekoType ){
+                if(aekoInfo.aekoType == 'AeA'){  // 车型
+                    carTypeCodeList = searchParams.cartype;
+                }else if(['Aeko','MP'].includes(aekoInfo.aekoType)){ // 车型项目
+                    carTypeCodeList = searchParams.cartypeCode;
+                }
+            }
+
             getAekoContentPart({
-                ...this.searchParams,
-                cartypeCode: Array.isArray(this.searchParams.cartypeCode) ? (this.searchParams.cartypeCode.length === 1 && this.searchParams.cartypeCode[0] === "" ? null : this.searchParams.cartypeCode) : null,
+                // ...this.searchParams,
+                carTypeCodeList:(carTypeCodeList.length == 1 && carTypeCodeList[0] === '') ? [] : carTypeCodeList,
+                linieDeptNumList:(linieDeptNumList.length == 1 && linieDeptNumList[0] === '') ? [] : linieDeptNumList,
                 requirementAekoId: this.aekoInfo.requirementAekoId,
-                buyerName: undefined,
-                linieDeptNum: undefined,
+                partNum,
+                partNameZh,
+                buyerName,
+                brand,
+                // buyerName: undefined,
+                // linieDeptNum: undefined,
                 current: this.page.currPage,
                 size: this.page.pageSize
             })
