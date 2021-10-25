@@ -25,6 +25,7 @@
                 v-if="item.isNewSelect"
                 :searchParams="searchParams" 
                 :ParamKey="item.props" 
+                :searchKey="item.searchKey"
                 :allOptionsData="selectOptions[item.selectOption]" 
                 :multiple="item.multiple"
                 :clearable="item.clearable" 
@@ -224,7 +225,8 @@ export default {
           if(code ==200 ){
               data.map((item)=>{
                   item.desc = item.name;
-                  item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
+                  item.pinyin = String(item.name).spell().toLowerCase()
+                  // item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
               })
               this.selectOptions.cartypeCode = data;
           }else{
@@ -238,7 +240,7 @@ export default {
           if(code ==200){
               data.map((item)=>{
                   item.desc = item.name;
-                  item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
+                  item.pinyin = String(item.name).spell().toLowerCase()
               })
               this.selectOptions.cartype = data.filter((item)=>item.name) || [];
           }else{
@@ -253,6 +255,7 @@ export default {
               data.map((item)=>{
                   item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
                   item.code = item.id;
+                  item.pinyin = String(this.$i18n.locale === "zh" ? item.nameZh : item.nameEn).spell().toLowerCase()
               })
               this.selectOptions.buyerId = data;
           }else{
@@ -267,6 +270,7 @@ export default {
                 data.map((item)=>{
                     item.desc = item.deptNum;
                     item.code = item.deptNum;
+                    item.pinyin = String(item.deptNum).spell().toLowerCase()
                 })
                 this.selectOptions.linieDeptNumList = data;
                 this.selectOptionsCopy.linieDeptNumList = data;

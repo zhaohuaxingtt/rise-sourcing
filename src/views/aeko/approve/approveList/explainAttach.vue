@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
  * @LastEditors: YoHo
- * @LastEditTime: 2021-10-22 13:43:31
+ * @LastEditTime: 2021-10-22 22:29:58
  * @Description: 解释附件查看列表
 -->
 <template>
@@ -96,12 +96,9 @@ export default {
      */    
     getFetchData() {
       this.queryParams = this.$route.query;
-      console.log(this.queryParams);
       let str_json = window.atob(this.queryParams.transmitObj);
       const AECOAPPROVEPARAMS = JSON.parse(decodeURIComponent(escape(str_json)))||{};
-      console.log(AECOAPPROVEPARAMS);
-      // const AECOAPPROVEPARAMS = sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM') || {}
-      const aekoApprovalDetails = AECOAPPROVEPARAMS.aekoApprovalDetails || {}
+      const aekoApprovalDetails = AECOAPPROVEPARAMS || {}
       const aekoNum = aekoApprovalDetails?.aekoApprovalDetails?.aekoNum || ''
       const requirementAekoId = this.$route.query.requirementAekoId || aekoApprovalDetails.requirementAekoId || ''
       const aekoManageId = this.$route.query.aekoManageId || aekoApprovalDetails.aekoManageId || ''
@@ -117,15 +114,15 @@ export default {
         size: this.page.pageSize
       },form)
       if (!parmas.manageId) {
-        iMessage.error(this.language('AEKOMANAGEIDBUNENGWEIKONG','aekoManageId不能为空'))
+        this.$message.error(this.language('AEKOMANAGEIDBUNENGWEIKONG','aekoManageId不能为空'))
         return
       }
       if (!parmas.aekoNum) {
-        iMessage.error(this.language('AEKOIDBUENNGWEIKONG','aekoid不能为空'))
+        this.$message.error(this.language('AEKOIDBUENNGWEIKONG','aekoid不能为空'))
         return
       }
       if (!parmas.linieId) {
-        iMessage.error(this.language('LINIEIDBUENNGWEIKONG','linieid不能为空'))
+        this.$message.error(this.language('LINIEIDBUENNGWEIKONG','linieid不能为空'))
         return
       }
       this.tableLoading = true
@@ -139,12 +136,12 @@ export default {
           this.page.totalCount = res.total
         } else {
           this.tableListData = []
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
         this.tableLoading = false
       }).catch(e => {
         this.tableLoading = false
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+        this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
       }).finally(() => {
         this.tableLoading = false
       })
