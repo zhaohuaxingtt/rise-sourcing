@@ -259,13 +259,14 @@ export default {
                 cartypeCode:[''],
                 cartype:[''],
                 linieDeptNumList:[''],
+                sendStatus:'',
             },
             selectOptions:{
                 cartypeCode:[],
                 buyerName:[],
                 cartype:[],
                 linieDeptNumList:[],
-                a:[
+                sendStatus:[
                     {desc:'未分派',code:'1'},
                     {desc:'已分派',code:'2'},
                 ]
@@ -309,8 +310,8 @@ export default {
 
             if (this.isLinie) {
                 this.searchParams = cloneDeep(linieQueryForm)
-                this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
-                this.searchParams.buyerName = this.userInfo.nameZh
+                // this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
+                // this.searchParams.buyerName = this.userInfo.nameZh
             } else {
                 this.searchParams = {
                      brand:'',
