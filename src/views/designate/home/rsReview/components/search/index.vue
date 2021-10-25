@@ -39,7 +39,7 @@
       <!-- 车型项目 -->
       <el-form-item :label="language('CHEXINGXIANGMU','车型项目')">
         <iSelect
-          v-model="form.carTypeProj"
+          v-model="form.carType"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           v-permission.auto="SOURCING_NOMINATION_RSREVIEW_CARTYPEPROJ|车型项目"
           filterable
@@ -61,7 +61,7 @@
       <!-- 询价采购员 -->
       <el-form-item :label="language('XUNJIACAIGOUYUAN','询价采购员')">
         <iInput
-          v-model="form.buyerName"
+          v-model="form.nominateUserName"
           :placeholder="language('LK_QINGSHURU','请输入')"
           v-permission.auto="SOURCING_NOMINATION_RSREVIEW_BUYERNAME|询价采购员"
         ></iInput>
@@ -85,7 +85,7 @@
         <!-- RFQ编号 -->
       <el-form-item :label="language('nominationLanguage.RFQBianHao','RFQ编号')">
         <iInput
-          v-model="form.rfqIq"
+          v-model="form.rfqId"
           :placeholder="language('LK_QINGSHURU','请输入')"
           v-permission.auto="SOURCING_NOMINATION_RSREVIEW_RFQID|RFQ编号"
         ></iInput>
@@ -93,7 +93,7 @@
       <!-- 会议 -->
       <el-form-item :label="language('nominationLanguage_HuiYi','会议')">
         <iInput
-          v-model="form.meetingName"
+          v-model="form.meetingType"
           :placeholder="language('LK_QINGSHURU','请输入')"
           v-permission.auto="SOURCING_NOMINATION_RSREVIEW_MEETINGNAME|会议"
         ></iInput>
@@ -201,7 +201,7 @@
       <!-- 是否单一供应商 -->
       <el-form-item :label="language('nominationLanguage_ShiFouDnaYiGongYingShang','是否单一供应商')">
         <iSelect
-          v-model="form.singleSourcing"
+          v-model="form.isSingle"
           v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SINGLESOURCING|是否单一供应商"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
