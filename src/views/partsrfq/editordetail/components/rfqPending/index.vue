@@ -19,7 +19,6 @@ import BDL from "./components/BDL";
 import supplierScore from "./components/supplierScore";
 import moldBudgetApplication from "./components/moldBudgetApplication";
 import technicalSeminar from "./components/technicalSeminar";
-// import inquiryManagement from 'front-bidding/src/views/manage/bidding/project/inquiry';
 export default {
   components: {
     iTabsList,
@@ -27,8 +26,7 @@ export default {
     BDL,
     supplierScore,
     moldBudgetApplication,
-    technicalSeminar,
-    // inquiryManagement
+    technicalSeminar
   },
   data() {
     return {
@@ -77,6 +75,8 @@ export default {
       this.activityTabIndex = target.index
     },
     updateTabs(parmras){
+      if(parmras.currentRounds > 0 && !this.tabList.find(i=>i.index == 5)){
+      }
     },
   }
 };
