@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-09-07 11:24:51
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-21 20:03:23
+ * @LastEditors:  
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -44,6 +44,24 @@ export default [
         },
         component: () =>
             import ("@/views/designate/home/rsReview/details"),
+      },
+      {
+        path: "/sourcing/partsnomination/record",
+        name: "designateRecord",
+        meta: {
+          title: "定点记录综合管理",
+        },
+        component: () =>
+            import ("@/views/designate/home/record"),
+      },
+      {
+        path:'/sourcing/partsnomination/record/detail',
+        name:'designateRecordDetails',
+        meta: {
+          title:'定点记录详情'
+        },
+        component: () => 
+          import("@/views/designate/home/record/detail")
       },
       {
         path: "/sourcing/partsnomination/signSheet",

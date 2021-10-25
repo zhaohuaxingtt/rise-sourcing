@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
  * @LastEditors: YoHo
- * @LastEditTime: 2021-10-25 09:06:27
+ * @LastEditTime: 2021-10-25 15:02:24
  * @Description: 解释附件查看列表
 -->
 <template>
@@ -96,7 +96,6 @@ export default {
      */    
     getFetchData() {
       this.queryParams = this.$route.query;
-      console.log(this.queryParams);
       let str_json = window.atob(this.queryParams.transmitObj);
       const AECOAPPROVEPARAMS = JSON.parse(decodeURIComponent(escape(str_json)))||{};
       // const AECOAPPROVEPARAMS = sessionStorage.getItem('AEKO-APPROVAL-DETAILS-ITEM') || {}
@@ -116,15 +115,15 @@ export default {
         size: this.page.pageSize
       },form)
       if (!parmas.manageId) {
-        iMessage.error(this.language('AEKOMANAGEIDBUNENGWEIKONG','aekoManageId不能为空'))
+        this.$message.error(this.language('AEKOMANAGEIDBUNENGWEIKONG','aekoManageId不能为空'))
         return
       }
       if (!parmas.aekoNum) {
-        iMessage.error(this.language('AEKOIDBUENNGWEIKONG','aekoid不能为空'))
+        this.$message.error(this.language('AEKOIDBUENNGWEIKONG','aekoid不能为空'))
         return
       }
       if (!parmas.linieId) {
-        iMessage.error(this.language('LINIEIDBUENNGWEIKONG','linieid不能为空'))
+        this.$message.error(this.language('LINIEIDBUENNGWEIKONG','linieid不能为空'))
         return
       }
       this.tableLoading = true
@@ -138,12 +137,12 @@ export default {
           this.page.totalCount = res.total
         } else {
           this.tableListData = []
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
         this.tableLoading = false
       }).catch(e => {
         this.tableLoading = false
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+        this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
       }).finally(() => {
         this.tableLoading = false
       })
