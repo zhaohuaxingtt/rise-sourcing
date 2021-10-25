@@ -56,7 +56,8 @@ export const linieQueryForm = {
   cartypeCode:[''],
   cartype:[''],
   partNameZh: "",
-  partNum: ""
+  partNum: "",
+  linieDeptNumList:[''],
 }
 
 export const linieTableTitle = [
