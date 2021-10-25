@@ -194,15 +194,15 @@ export function cbdfiles(parmars) {
   })
 }
 export function partsQuotations(rfqId,lv,supplierId) {
-  return requstxw({
-    url: `/part/parts-quotations/${rfqId}/${lv}/${supplierId}`,
+  return requst({
+    url: `/part/parts-quotations-LC/${rfqId}/${lv}/${supplierId}`,
     method: 'GET'
   })
 }
 
 // 获取关联零件列表
 export function getMouldPartList(params) {
-  return requstdl({
+  return requst({
     url: `/quotation/mould-parts-list?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
@@ -228,7 +228,7 @@ export function postCostSummary(params) {
 }
 // 保存关联零件列表
 export function saveMouldPartList(params) {
-  return requstdl({
+  return requst({
     url: `/quotation/mould-parts?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
@@ -405,5 +405,109 @@ export function getSupplierToken(params) {
       url: '/rfq-quotations',
       method: 'POST',
       data: parmars
+  })
+}
+
+// 获取SKD报价成本汇总
+export function getSkdCostSummary(params) {
+  return requst({
+    url: `/part/getSkdCostSummary/${ params.quotationId }`,
+    method: 'GET',
+  })
+}
+
+// 保存SKD报价成本汇总
+export function saveSkdCostSummary(data) {
+  return requst({
+    url: `/part/saveSkdCostSummary`,
+    method: 'POST',
+    data
+  })
+}
+
+// 获取SKD模具费用
+export function getMouldFeeSKD(data) {
+  return requst({
+    url: '/part/getMouldFeeSKD',
+    method: 'POST',
+    data
+  })
+}
+
+// 获取SKD开发费用
+export function getDevFeeSKD(data) {
+  return requst({
+    url: '/part/getDevFeeSKD',
+    method: 'POST',
+    data
+  })
+}
+
+// 保存SKD模具费用和开发费用
+export function saveModuleDevFeeSkd(data) {
+  return requst({
+    url: '/part/module-dev-fee-skd',
+    method: 'POST',
+    data
+  })
+}
+
+// 获取SKDLC降价计划
+export function getLtcPlanSkcLc(quotationId) {
+  return requst({
+    url: `/part/ltc-plan-sdk-lc/${ quotationId }`,
+    method: 'GET',
+  })
+}
+
+// 获取RFQ下报价单价格状态为SKD的模具
+export function getAllMouldSKDFee(data) {
+  return requst({
+    url: '/part/getAllMouldSKDFee',
+    method: 'POST',
+    data
+  })
+}
+
+// 保存rfq下报价
+export function saveModuleFeeSkd(params) {
+  return requst({
+    url: '/part/module-fee-SKD',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 获取SKD关联零件列表
+export function getMouldPartSkdList(data) {
+  return requst({
+    url: '/quotation/mould-parts-SKD-list',
+    method: 'POST',
+    data
+  })
+}
+
+// 保存SKD关联零件列表
+export function saveMouldPartSkdList(data) {
+  return requst({
+    url: '/quotation/mould-parts-SKD',
+    method: 'POST',
+    data
+  })
+}
+
+export function getPartsQuotationsSkd(params) {
+  return requst({
+    url: `/part/parts-quotations-SKD/${ params.rfqId }/${ params.round }/${ params.supplierId }`,
+    method: 'GET'
+  })
+}
+
+// 复制SKD报价
+export function copyPartsQuotationSkd(data) {
+  return requst({
+    url: `/part/copy-partsQuotation-SKD`,
+    method: 'POST',
+    data
   })
 }

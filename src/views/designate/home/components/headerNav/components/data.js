@@ -17,4 +17,9 @@ export const heaederSubMenu = [
     name:'上会RS单复核',
     path:'/sourcing/partsnomination/rsReview'
   },
+  {
+    key:'record',
+    name:'定点记录',
+    path:'/sourcing/partsnomination/record'
+  },
 ]
