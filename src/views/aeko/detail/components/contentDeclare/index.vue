@@ -285,7 +285,8 @@ import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
 import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent,updateInvestCarProject,searchInvestCar } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
-import { searchCartypeProject } from "@/api/aeko/manage"
+// import { searchCartypeProject } from "@/api/aeko/manage"
+import { partListGetCartype } from "@/api/aeko/detail/partsList.js"
 import { procureFactorySelectVo } from "@/api/dictionary"
 import { cloneDeep, chunk, debounce } from "lodash"
 
@@ -363,7 +364,9 @@ export default {
   },
   methods: {
     searchCartypeProject() {
-      searchCartypeProject()
+      const {query} = this.$route;
+      const { requirementAekoId ='',} = query;
+      partListGetCartype(requirementAekoId)
       .then(res => {
         if (res.code == 200) {
           this.carTypeProjectOptionsCache = 
