@@ -511,3 +511,12 @@ export function copyPartsQuotationSkd(data) {
     data
   })
 }
+
+// 自动计算起步生产日期
+export function getIsAutoCal(data) {
+  return requst({
+    url: `/part/cost-summary/isAutoCal`,
+    method: 'POST',
+    data
+  })
+}
