@@ -194,15 +194,15 @@ export function cbdfiles(parmars) {
   })
 }
 export function partsQuotations(rfqId,lv,supplierId) {
-  return requstxw({
-    url: `/part/parts-quotations/${rfqId}/${lv}/${supplierId}`,
+  return requst({
+    url: `/part/parts-quotations-LC/${rfqId}/${lv}/${supplierId}`,
     method: 'GET'
   })
 }
 
 // 获取关联零件列表
 export function getMouldPartList(params) {
-  return requstdl({
+  return requst({
     url: `/quotation/mould-parts-list?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
@@ -228,7 +228,7 @@ export function postCostSummary(params) {
 }
 // 保存关联零件列表
 export function saveMouldPartList(params) {
-  return requstdl({
+  return requst({
     url: `/quotation/mould-parts?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
