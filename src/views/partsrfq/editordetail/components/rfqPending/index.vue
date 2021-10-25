@@ -26,8 +26,7 @@ export default {
     BDL,
     supplierScore,
     moldBudgetApplication,
-    technicalSeminar,
-    inquiryManagement
+    technicalSeminar
   },
   data() {
     return {
