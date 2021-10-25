@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 14:17:55
- * @LastEditTime: 2021-10-22 14:03:53
+ * @LastEditTime: 2021-10-25 20:10:13
  * @LastEditors:  
 -->
 <template>
@@ -36,24 +36,49 @@
         </el-form-item>
         <el-form-item :label="language('CHEXING','车型')">
           <iSelect 
+          :placeholder="
+              language('LK_QINGXUANZE','请选择') +
+              language('CHEXING','车型')
+            "
+
             v-model="formRecord.carType"
-            :placeholder="language('LK_QINGXUANZE','请选择')"
             >
-            <el-option value='' label='全部'></el-option>
+            <el-option value='' 
+              :label="language('all','全部') | capitalizeFilter"
+            ></el-option>
+             <el-option 
+             v-for="items  in (fromGroup && fromGroup['cartOptions']) || []" 
+             :key='items.code' 
+             :value='items.code'  
+            :label="items.name"/>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('CHEXINGXIANGMU','车型项目')">
-          <iSelect 
-            v-model="formRecord.carTypeProj"
-            :placeholder="language('LK_QINGXUANZE','请选择')"
-            >
-            <el-option value='' label='全部'></el-option>
-          </iSelect> 
+          <iSelect
+            :placeholder="
+              language('LK_QINGXUANZE','请选择') +
+              language('partsprocure.PARTSPROCUREMODELPROJECT','车型项目')
+            "
+            v-model="formRecord.carProject"
+          >
+            <el-option
+              value=""
+              :label="language('all','全部') | capitalizeFilter"
+            ></el-option>
+            <el-option
+              :value="items.code"
+              :label="items.value"
+              v-for="(items, index) in (fromGroup && fromGroup.CAR_TYPE_PRO) || []"
+              :key="index"
+            ></el-option>
+          </iSelect>
         </el-form-item>
         <el-form-item :label="language('JIAGEZHUANGTAI','价格状态')">
           <iSelect 
             v-model="formRecord.applicationStatus"
-            :placeholder="language('LK_QINGXUANZE','请选择')"
+            :placeholder="language('LK_QINGXUANZE','请选择') + 
+            language('JIAGEZHUANGTAI','价格状态')
+            "
             >
             <el-option value='' label='全部'></el-option>
           </iSelect> 
@@ -68,9 +93,21 @@
         <el-form-item :label="language('LINGJIANXIANGMULEIXING','零件项目类型')">
           <iSelect 
             v-model="formRecord.partProjType"
-            :placeholder="language('LK_QINGXUANZE','请选择')"
+            :placeholder="
+            language('partsprocure.CHOOSE','请选择') +
+            language('partsprocure.PARTSPROCUREPARTITEMTYPE','零件项目类型')
+            "
             >
-            <el-option value='' label='全部'></el-option>
+             <el-option
+              value=""
+              :label="language('all','全部') | capitalizeFilter"
+            ></el-option>
+            <el-option
+              :value="items.code"
+              :label="items.name"
+              v-for="(items, index) in (fromGroup && fromGroup.PPT) || []"
+              :key="index"
+            ></el-option>
           </iSelect> 
         </el-form-item>
         <el-form-item :label="language('XUNJIACAIGOUYUAN','询价采购员')">
@@ -90,10 +127,21 @@
         <el-form-item :label="language('DINGDIANSHENQINGLEIXING','定点申请类型')">
           <iSelect 
             v-model="formRecord.isNewNominate"
-            :placeholder="language('LK_QINGXUANZE','请选择')"
-            >
-            <el-option value='' label='全部'></el-option>
-          </iSelect> 
+            :placeholder="language('LK_QINGXUANZE','请选择')
+             + 
+             language('DINGDIANSHENQINGLEIXING','定点申请类型')"
+             >
+             <el-option
+              value=""
+              :label="language('all','全部') | capitalizeFilter"
+            ></el-option>
+            <el-option
+            :value="item.id"
+            :label="item.desc"
+            v-for="(item, index)  in (fromGroup && fromGroup['applyType']) || []"
+            :key="index"
+            ></el-option>
+          </iSelect>
         </el-form-item>
           <el-form-item :label="language('DINGDIANSHIJIAN','定点时间')">
           <iDatePicker v-moudel='formRecord.nominateTime' type="date"></iDatePicker>
@@ -104,6 +152,12 @@
 </template>
 <script>
 import {iSearch, iInput, iSelect, iDatePicker} from 'rise'
+import {selectDictByKeyss} from '@/api/dictionary'
+import {getCartypeDict} from "@/api/partsrfq/home";
+
+import {
+  getNominateType
+} from '@/api/designate'
 import {form} from '../data'
 export default {
   components: {
@@ -115,7 +169,11 @@ export default {
   data() {
     return {
       formRecord:{...form},
+      fromGroup:[]
     }
+  },
+  created() {
+    this.getSelectGroup()
   },
   methods: {
     sure() {
@@ -125,7 +183,40 @@ export default {
     reset() {
       this.formRecord = {}
     this.$emit('search',{})    
-  }
+    },
+    getSelectGroup() {
+      let types = [
+        "RFQ_PART_STATUS_CODE_TYPE",
+        "CAR_TYPE_PRO",
+        "PPT"
+      ];
+      selectDictByKeyss(types).then((res) => {
+        this.fromGroup = res.data
+        this.getNominate()
+        this.getCar()
+      });
+      
+     
+      console.log(this.fromGroup,'====================-----------------------');
+    },
+    getNominate(){
+      getNominateType().then(res => {
+        this.$set(this.fromGroup,'applyType',res.data)
+      })
+    },
+    getCar(){
+       getCartypeDict().then(res=> {
+         let data = Array.isArray(res.data) ?
+            res.data.map(item => ({
+              ...item,
+              key: item.code,
+              label: item.name,
+              value: item.value
+            })) :
+            []
+          this.$set(this.fromGroup,'cartOptions',data)
+      })
+    }
   }
 }
 </script>

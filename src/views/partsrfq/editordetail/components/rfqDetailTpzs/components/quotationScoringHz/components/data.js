@@ -110,7 +110,7 @@ export const whiteListGs = ['groupName','partNo','partName','currentAPrice','cur
  * @param {*} title
  * @return {*}
  */
-export const needSubTotal = ['cfPartAPrice','cfPartBPrice','lcAPrice','lcBPrice','tooling','tto']
+export const needSubTotal = ['cfPartAPrice','cfPartBPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto']
 /**
  * @description:根据不同type获取options列表，这个方法适用于所有模板
  * @param {*} type 想要获取的type类型
