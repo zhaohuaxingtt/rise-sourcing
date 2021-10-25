@@ -23,6 +23,9 @@
     </div>
     <div class="body" v-loading="tableLoading">
       <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="dataList" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange">
+        <template #fileName="scope">
+          <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+        </template>
         <template #uploadDate="scope">
           {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
         </template>
@@ -61,6 +64,7 @@ import upload from '@/components/Upload'
 import {
   batchConfirmSelSheet
 } from '@/api/designate/nomination/selsheet'
+import { downloadUdFile as downloadFile  } from '@/api/file'
 
 export default {
   components: { tableList, iPagination, iDialog, iButton, upload },
@@ -152,7 +156,10 @@ export default {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
-    
+    // 下载
+    download(row) {
+      downloadFile(row.uploadId)
+    },
   }
 }
 </script>

@@ -21,14 +21,14 @@
           v-permission.dynamic.auto="item.permissionKey"
           >
           <template  v-if="item.type === 'select'" >
-              <aeko-select 
+              <fullSelect
                 v-if="item.isNewSelect"
-                :searchParams="searchParams" 
-                :ParamKey="item.props" 
+                v-model="searchParams[item.props]"
                 :searchKey="item.searchKey"
-                :allOptionsData="selectOptions[item.selectOption]" 
+                :options="selectOptions[item.selectOption]" 
                 :multiple="item.multiple"
-                :clearable="item.clearable" 
+                :clearable="item.clearable"
+                optionName="desc"
               />
               <iSelect
                 v-else
@@ -99,7 +99,7 @@ import {
   iCard,
   iMessage,
 } from 'rise'
-import aekoSelect from '../components/aekoSelect'
+import fullSelect from '../components/fullSelect'
 import { describeTab } from '../data'
 import { searchList,tableTitle } from './data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -118,7 +118,7 @@ export default {
     components:{
       iNavMvp,
       iSearch,
-      aekoSelect,
+      fullSelect,
       iSelect,
       iInput,
       iPagination,
@@ -138,6 +138,7 @@ export default {
           partNum:'',
           linieDeptNumList:['']
         },
+        selectOptionsCopy: {},
         selectOptions:{
           'linieDeptNumList':[],
           'cartypeCode':[],
@@ -254,7 +255,7 @@ export default {
           if(code ==200 ){
               data.map((item)=>{
                   item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                  item.code = item.id;
+                  item.code = String(item.id);
                   item.pinyin = String(this.$i18n.locale === "zh" ? item.nameZh : item.nameEn).spell().toLowerCase()
               })
               this.selectOptions.buyerId = data;

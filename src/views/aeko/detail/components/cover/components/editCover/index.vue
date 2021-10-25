@@ -124,6 +124,7 @@ import {
   coverSave,
   coverSubmit,
   coverCancel,
+  checkAekoContentSubmitState,
 } from '@/api/aeko/detail/cover.js'
 export default {
     name:'editCover',
@@ -284,20 +285,28 @@ export default {
             this.btnLoading = false;
             return;
           }
-          await coverSubmit(data).then((res)=>{
-              this.btnLoading = false;
-              const {code} = res;
-              if(code == 200){
-                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                this.$emit('getBbasicInfo');
-                this.getDetail();
+          // 提交前需校验下审批情况
+          await checkAekoContentSubmitState(requirementAekoId).then((res)=>{
+            if(res.code == 200){
+              if(res.data){
+                this.$confirm(
+                  this.language('LK_TIPS_AKEO_COVER_DANGQIANFENGMIANXIAYOUDAISHENPIDENEIRONGBIAOTAI','当前封面下有待审批的内容表态，将和封面一同提交审批，请确认'),
+                  this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
+                  ).then(()=>{
+                    this.submitCover(data);
+                  }).catch(()=>{
+                    this.btnLoading = false;
+                  })
               }else{
-                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                this.submitCover(data);
               }
-
-            }).catch((err)=>{
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            }
+          }).catch(()=>{
             this.btnLoading = false;
-          })
+          });
+          return;
         }else{ // 保存
           await coverSave(data).then((res)=>{
             this.btnLoading = false;
@@ -313,6 +322,24 @@ export default {
             this.btnLoading = false;
           })
         }
+      },
+
+      // 提交封面表态
+      async submitCover(data){
+          await coverSubmit(data).then((res)=>{
+              this.btnLoading = false;
+              const {code} = res;
+              if(code == 200){
+                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                this.$emit('getBbasicInfo');
+                this.getDetail();
+              }else{
+                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+              }
+
+            }).catch((err)=>{
+            this.btnLoading = false;
+          })
       },
 
       // 提交时校验一下

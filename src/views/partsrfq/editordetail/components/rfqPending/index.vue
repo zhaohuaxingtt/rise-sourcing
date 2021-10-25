@@ -75,8 +75,6 @@ export default {
       this.activityTabIndex = target.index
     },
     updateTabs(parmras){
-      if(parmras.currentRounds > 0 && !this.tabList.find(i=>i.index == 5)){
-      }
     },
   }
 };
