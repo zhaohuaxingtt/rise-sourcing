@@ -268,7 +268,8 @@ module.exports = {
       },
       '/rfqApi': {
         //周德华，rfq模块的api地址
-        target: 'http://10.122.17.38:8025',
+        target: 'http://10.160.141.223:8888',//龙行伟
+        // target: 'http://10.122.17.38:8025',
         // target: 'http://10.160.143.190:8025',
         // target: 'http://rise-front-web.apps.vmocp-dev.csvw.com', // SIT
         // target: 'http://10.160.137.16:8029',  // 周德华
@@ -462,7 +463,7 @@ module.exports = {
         //龙行伟定点记录接口
         // target:'http://10.160.141.127:8888',
         // target:'http://10.160.140.240:8888',
-        target:'http://10.160.139.195:8888',
+        target:'http://10.160.139.55:8888',
         changeOrigin:true,
         pathRewrite: {
           '^/nominateRecord':'',

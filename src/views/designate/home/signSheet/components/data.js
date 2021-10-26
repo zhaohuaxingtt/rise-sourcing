@@ -1,8 +1,8 @@
 /*
  * @Author: Haojiang
  * @Date: 2021-06-28 09:26:28
- * @LastEditTime: 2021-09-07 10:22:29
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-26 16:28:23
+ * @LastEditors:  
  * @Description: 签字单
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/data.js
  */
@@ -18,33 +18,16 @@ export const tableTitle = [
     tooltip: false
   },
   {
-    props: 'description',
-    name: '申请单名',
-    key: 'nominationLanguage_ShenQingDanMing',
-    tooltip: false
-  },
-  {
-    props: 'meetingName',
-    name: '会议名称',
-    key: 'HUIYIMINGCHENG',
-    tooltip: false
-  },
-  {
-    props: 'projectType',
-    name: '零件项目类型',
-    key: 'LK_LINGJIANXIANGMULEIXING',
+    props: 'statusDesc',
+    name: '签字单状态',
+    width: 150,
+    key: 'QIANZIDANZHUANGTAI',
     tooltip: false
   },
   {
     props: 'csf',
-    name: 'CSF',
-    key: 'CSF',
-    tooltip: false
-  },
-  {
-    props: 'linieName',
-    name: 'LINIE',
-    key: 'LINIE',
+    name: '创建人',
+    key: 'CJR',
     tooltip: false
   },
   {
@@ -59,13 +42,35 @@ export const tableTitle = [
     key: 'JIEZHIRIQI',
     tooltip: false
   },
+  
   {
-    props: 'statusDesc',
-    name: '签字单状态',
-    width: 150,
-    key: 'QIANZIDANZHUANGTAI',
+    props: 'description',
+    name: '描述',
+    key: 'LK_MIAOSHU',
     tooltip: false
   },
+//   {
+//     props: 'meetingName',
+//     name: '会议名称',
+//     key: 'HUIYIMINGCHENG',
+//     tooltip: false
+//   },
+// 
+//   {
+//     props: 'projectType',
+//     name: '零件项目类型',
+//     key: 'LK_LINGJIANXIANGMULEIXING',
+//     tooltip: false
+//   },
+// 
+//   {
+//     props: 'linieName',
+//     name: 'LINIE',
+//     key: 'LINIE',
+//     tooltip: false
+//   },
+
+
 ]
 
 export const mokeData = [
