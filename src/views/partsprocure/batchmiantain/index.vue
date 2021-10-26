@@ -347,6 +347,7 @@ export default {
       this.getLinie(value)
     },
     getLinie(id){
+      if (!id) return
       purchasingLiline(id).then(r=>{
         this.$set(this.fromGroup,'LINIE',r.data || [])
       })
