@@ -75,7 +75,7 @@ export default {
       this.activityTabIndex = target.index
     },
     updateTabs(parmras){
-
+      
     },
   }
 };
