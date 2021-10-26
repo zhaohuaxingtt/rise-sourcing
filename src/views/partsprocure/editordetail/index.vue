@@ -542,6 +542,7 @@
 				this.getLinie(this.detailData.linieDept)
 			},
 			getLinie(id){
+				if (!id) return
 				purchasingLiline(id).then(r=>{
 					this.fromGroup['LINIE'] = r.data || []
 				})

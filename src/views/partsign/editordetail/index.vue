@@ -121,7 +121,7 @@ export default {
         this.language('LK_WENXINTISHI','温馨提示'), 
         { confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }
       ).then(res=>{
-        this.patchRecords(2)
+        this.patchRecords("ACCEPTED")
       })
     },
     //退回
@@ -136,7 +136,7 @@ export default {
     sureBackmark(val) {
       this.backMark = val
       this.diologBack = false;
-      this.patchRecords(3)
+      this.patchRecords("REFUSED")
     },
     // 确定转派
     sureChangeItems(val) {
