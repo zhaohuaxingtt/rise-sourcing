@@ -47,6 +47,8 @@
             'PARTSPROCURESTARTINQUIRY': '启动询价',
             'PARTSPROCURETRANSFER': '转派',
             'PARTSPROCUREFSNFGSNFSPNR': '零件采购项目号',
+            'PARTSPROCUREPUECHASEAPPLYNUMBER': '采购申请编号',
+            'PARTSPROCUREPITEM': '项次号',
             'PARTSPROCUREPARTNUMBER': '零件号',
             'PARTSPROCUREPARTNAMEZH': '零件名（中）',
             'PARTSPROCUREPARTNAMEDE': '零件名（德）',
