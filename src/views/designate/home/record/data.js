@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2021-10-25 15:57:06
+ * @LastEditTime: 2021-10-26 11:43:40
  * @LastEditors:  
  */
 export const form = {
@@ -34,7 +34,7 @@ export const tableTitle = [
     tooltip:true
   },
   {
-    props:'partName',
+    props:'partNameCn',
     name:'零件名称',
     key:'nominationLanguage_LingJianMingCheng',
     tooltip:true
@@ -46,13 +46,13 @@ export const tableTitle = [
     tooltip:true
   },
   {
-    props:'carTypeProj',
+    props:'carType',
     name:'车型',
     key:'CHEXING',
     tooltip:true
   },
   {
-    props:'carProject',
+    props:'carTypeProj',
     name:'车型项目',
     key:'CHEXINGXIANGMU',
     tooltip:true

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-07 11:14:00
+ * @LastEditors:  
+ * @LastEditTime: 2021-10-26 17:49:58
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -309,7 +309,8 @@ export default {
       this.partsTableLoading = true
       getPartList(this.desinateId).then(res => {
         if(res?.result) {
-          this.partsTableListData = res.data
+          res.data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = '否'})
+          this.partsTableListData = res.data  
           this.partsTableListDataTemp = cloneDeep(res.data)
           this.$nextTick(()=>{
             this.defaultSelectTable()
