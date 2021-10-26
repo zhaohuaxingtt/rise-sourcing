@@ -706,6 +706,7 @@ export default {
             if(!value){
               const {selectOptionsCopy={}} = this;
               this.$set(this.selectOptions,key,selectOptionsCopy[key]);
+              return;
             }else{
               this.$set(this.searchParams,key,value);
               return;
