@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 14:17:55
- * @LastEditTime: 2021-10-25 20:10:13
+ * @LastEditTime: 2021-10-25 20:48:10
  * @LastEditors:  
 -->
 <template>
@@ -36,14 +36,15 @@
         </el-form-item>
         <el-form-item :label="language('CHEXING','车型')">
           <iSelect 
-          :placeholder="
+            :placeholder="
               language('LK_QINGXUANZE','请选择') +
               language('CHEXING','车型')
             "
 
             v-model="formRecord.carType"
             >
-            <el-option value='' 
+            <el-option
+              value=""
               :label="language('all','全部') | capitalizeFilter"
             ></el-option>
              <el-option 
@@ -57,7 +58,7 @@
           <iSelect
             :placeholder="
               language('LK_QINGXUANZE','请选择') +
-              language('partsprocure.PARTSPROCUREMODELPROJECT','车型项目')
+              language('CHEXINGXIANGMU','车型项目')
             "
             v-model="formRecord.carProject"
           >
@@ -74,13 +75,23 @@
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('JIAGEZHUANGTAI','价格状态')">
-          <iSelect 
-            v-model="formRecord.applicationStatus"
-            :placeholder="language('LK_QINGXUANZE','请选择') + 
+           <iSelect 
+            v-model="formRecord.partProjType"
+            :placeholder="
+            language('partsprocure.CHOOSE','请选择') +
             language('JIAGEZHUANGTAI','价格状态')
             "
             >
-            <el-option value='' label='全部'></el-option>
+             <el-option
+              value=""
+              :label="language('all','全部') | capitalizeFilter"
+            ></el-option>
+            <el-option
+              :value="items.code"
+              :label="items.name"
+              v-for="(items, index) in (fromGroup && fromGroup.PRICE_STATE) || []"
+              :key="index"
+            ></el-option>
           </iSelect> 
         </el-form-item>
         <el-form-item :label="language('DINGDIANGONGYINGSHANG','定点供应商')">
@@ -188,7 +199,8 @@ export default {
       let types = [
         "RFQ_PART_STATUS_CODE_TYPE",
         "CAR_TYPE_PRO",
-        "PPT"
+        "PPT",
+        'PRICE_STATE'
       ];
       selectDictByKeyss(types).then((res) => {
         this.fromGroup = res.data
