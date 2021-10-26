@@ -441,14 +441,25 @@ export default {
     },
     // 创建MTZ申请
     handlecreatemtz() {
+        let isNullmtzApplyId = true
+        let isFrozen = true
+        this.selectData.forEach(val=>{
+          val.mtzApplyId != null ? isNullmtzApplyId = false : isNullmtzApplyId = true
+          val.isBeforeFrozen === true ? isFrozen = true : isFrozen = false
+        })
+        console.log(isNullmtzApplyId,isFrozen);
       if(!this.selectData.length) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
-      } else {
+      } else if(isNullmtzApplyId == false){
+        iMessage.error(this.language('nominationSuggestion_DANGQIANDEDINGDIANSHENQINGDANYIJINGGUANLIANGUOMTZSHENQINGDAN','当前的定点申请单已经关联过MTZ申请单'))
+      } else if(isFrozen == false ) {
+        iMessage.error(this.language('nominationSuggestion_XUANZEDEDANGQIANDEDINGDIANSHENQINGZHUANGTAIBIXUZAISHENQINGDONGJIEZHUANGTAIZHIQIAN','选择的当前的定点申请状态必须在申请冻结状态之前'))
+      }else {
         let nom = this.selectData[0].nominateId
         let item =[]
         item = this.selectData.map(val => val.partProjectId).join(',')
-        window.open(`http://10.122.17.38/portal/#/mtz/create?nomi=`+nom+`&item=`+item,'_blank')
+        window.open(`http://10.122.17.38/portal/#/mtz/create?nom=`+nom+`&item=`+item,'_blank')
       }
     }
   }

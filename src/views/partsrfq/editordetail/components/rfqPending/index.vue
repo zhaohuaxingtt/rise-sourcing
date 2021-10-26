@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 10:58:09
- * @LastEditors: Please set LastEditors
+ * @LastEditors:  
 * @Description: RFQ待办事项
  -->
 <template>
@@ -75,6 +75,7 @@ export default {
       this.activityTabIndex = target.index
     },
     updateTabs(parmras){
+
     },
   }
 };
