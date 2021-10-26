@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-21 19:45:19
+ * @LastEditTime: 2021-10-26 18:26:13
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -53,7 +53,7 @@
               >
                 <template>
                   <p v-if="pro[item.delayReason]">{{pro[item.delayReason]}}</p>
-                  <p v-if="pro[item.delayReason2]">{{pro[item.delayReason2] || ''}}</p>
+                  <!-- <p v-if="pro[item.delayReason2]">{{pro[item.delayReason2] || ''}}</p> -->
                 </template>
                 <!------------------------------节点图标----------------------------------->
                 <template v-if="Number(pro.partStatus) > item.partPeriod" slot="reference">
