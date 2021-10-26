@@ -135,7 +135,7 @@
 							<iText v-else>{{ detailData.isDb ? "是" : "否" }}</iText>
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->
-						<iFormItem v-if='partProjTypes.JINLINGJIANHAOGENGGAI == detailData.partProjectType' :label="language('YUANLINGJIANHAO', '原FS/GS号') + ':'">
+						<iFormItem v-if='partProjTypes.JINLINGJIANHAOGENGGAI == detailData.partProjectType' :label="language('YUANFSGSHAO', '原FS/GS号') + ':'">
 							<iInput class="removeInputDisabelColor" v-if="!disabled" disabled search v-model="detailData.oldFsnrGsnrNum"> <i class="el-icon-search el-input__icon cursor" slot="suffix" @click="openDiologOldParts"></i></iInput>	
 							<iText v-else>{{ detailData.oldFsnrGsnrNum }}</iText>
 						</iFormItem>
