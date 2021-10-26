@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-09-02 17:05:48
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-25 21:33:12
+ * @LastEditors:  
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
 -->
@@ -226,7 +226,9 @@
               :tableLoading="tableLoading"
               @handleSelectionChange="handleSelectionChange"
               @openPage="openPage"
+              @openPageTwo="openPageTwo"
               :activeItems="'partNum'"
+              :activeItemsTwo="'code'"
             >
             </tablelist>
             <!------------------------------------------------------------------------>
@@ -354,6 +356,9 @@ export default {
         },
       });
       window.open(openParts.href,'_blank')
+    },
+    openPageTwo(row) {
+      console.log(row);
     },
     //获取上方group信息
     // part_status --零件状态
