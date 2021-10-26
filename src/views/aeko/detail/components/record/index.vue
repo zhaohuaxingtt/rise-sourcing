@@ -91,7 +91,7 @@ import {approveReCordTableTitle as tableTitle, aekoApproveTypes} from '../data'
 import {attachTableTitle} from './components/data'
 import iFileDialog from 'rise/web/components/iFile/dialog'
 import tablelist from 'rise/web/components/iFile/tableList';
-import {iCard, iButton, iPagination, iInput, iMessage} from 'rise'
+import {iCard, iButton, iPagination, iInput} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
 import {
   findHistoryByAeko,
@@ -169,11 +169,11 @@ export default {
     openUploadDialog(row, attachReadOnly) {
       this.attachReadOnly = attachReadOnly
       if (!row.taskId) {
-        iMessage.error(this.language('TASKIDBUNENGWEIKONG', 'TASK ID 不能为空'))
+        this.$message.error(this.language('TASKIDBUNENGWEIKONG', 'TASK ID 不能为空'))
         return
       }
       if (!row.processInstanceId) {
-        iMessage.error(this.language('LIUCHNEGIDBUENNGWEIKONG', '流程不能为空'))
+        this.$message.error(this.language('LIUCHNEGIDBUENNGWEIKONG', '流程不能为空'))
         return
       }
       this.attachDialogVisibal = true
@@ -277,7 +277,7 @@ export default {
 
       }).catch(e => {
         this.tableLoading = false
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+        this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
       }).finally(() => {
         this.tableLoading = false
       })
@@ -291,7 +291,7 @@ export default {
       let state = true
       let info = ''
       if (!this.tableSelecteData.length) {
-        iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
+        this.$message.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
         return
       }
       let parmas = this.tableSelecteData.map(o => {
@@ -305,26 +305,27 @@ export default {
           taskId: o.taskId,
           // workFlowId: '1075838',
           // taskId: '1075873',
-          auditUserId: this.userInfo.id,
+          parentTaskId:o.parentTaskId,
+          auditUserId: o.assignee,
           explainReason: o.explainReason || '',
           addMaterialUserId: this.userInfo.id,
         }
       })
       if (!state && info) {
-        iMessage.error(info)
+        this.$message.error(info)
         return
       }
       this.$confirm(this.language('submitSure', '您确定要执行提交操作吗？')).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
           submitForApproval(parmas).then(res => {
             if (res.code === '200') {
-              iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+              this.$message.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
               this.getFetchData()
             } else {
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }
           }).catch(e => {
-            iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+            this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
           })
         }
       })
@@ -343,19 +344,19 @@ export default {
         linieId: this.userInfo.id || '',
         deptId: this.userInfo.deptDTO && this.userInfo.deptDTO.id || '',
         auditUserId: this.userInfo.id || '',
-        taskId: Number(this.currentRow.taskId) || 1075873,
+        taskId: this.currentRow.parentTaskId,
       }
       this.uploading = true
       auditFileSave(parmas).then(res => {
         if (res.code === '200') {
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+          this.$message.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
           cb && typeof cb === 'function' && (cb())
         } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
         this.uploading = false
       }).catch(e => {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+        this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
         this.uploading = false
       })
     },
@@ -389,7 +390,7 @@ export default {
           totalCount = res.total
         } else {
           tableListData = []
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
         tableLoading = false
         cb && typeof cb === 'function' && (cb({
@@ -401,7 +402,7 @@ export default {
         cb && typeof cb === 'function' && (cb({
           fileTableLoading: false
         }))
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+        this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
       }).finally(() => {
         cb && typeof cb === 'function' && (cb({
           fileTableLoading: false
@@ -411,22 +412,22 @@ export default {
     deleteFile(data = [], cb) {
       console.log('删除文件', data, cb)
       if (!data.length) {
-        iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
+        this.$message.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
         return
       }
       const fileList = data.map(o => o.id)
-      if (fileList && !fileList.length) return iMessage.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
+      if (fileList && !fileList.length) return this.$message.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
       this.$confirm(this.language('deleteSure', '您确定要执行删除操作吗？')).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
           auditFileDelete(fileList).then(res => {
             if (res.code === '200') {
-              iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+              this.$message.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
               cb && typeof cb === 'function' && (cb())
             } else {
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
           }).catch(e => {
-            iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+            this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
           }).finally(() => {
           })
         }
