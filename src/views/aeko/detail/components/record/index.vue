@@ -9,7 +9,7 @@
       {{ language("SHENPIJILU", "审批记录") }}
     </span>
     <div class="editControl floatright margin-bottom20">
-      <iButton class="" @click="submit" v-if="alowSubmit">
+      <iButton class="" @click="submit" v-if="checkLastRecord">
         {{ language("TIJIAO", "提交") }}
       </iButton>
     </div>
@@ -120,7 +120,15 @@ export default {
     }),
     alowSubmit() {
       return true
-    }
+    },
+    checkLastRecord() {
+      if (this.tableListData == null || this.tableListData.length <= 0) return false
+      let [lastItem] = [...this.tableListData].reverse()
+      if (null != lastItem) {
+        return lastItem.operation == '补充材料'
+      }
+      return false
+    },
   },
   props: {
     aekoInfo: {
@@ -151,6 +159,7 @@ export default {
     this.getFetchData()
   },
   methods: {
+
     getAdiType(code) {
       return aekoApproveTypes.find(o => o.id === code)?.name || ''
     },
@@ -230,7 +239,6 @@ export default {
      * @return {*}
      */
     getData() {
-      console.log('init', this.aekoInfo, this.tableExplainData)
       const parmas = Object.assign({
         applyUserId: String(this.userInfo.id) || '',
         currentUserId: String(this.userInfo.id) || '',
