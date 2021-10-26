@@ -1,8 +1,8 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-09-06 17:53:52
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-25 14:33:51
+ * @LastEditors:  
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
@@ -335,7 +335,7 @@ export default {
       this.$store.dispatch('setNominationTypeDisable', true)
       this.$nextTick(() => {
         const routeData = this.$router.resolve({
-          path: '/designate/rfqdetail',
+          path: '/designate/decisiondata/rs',
           query: {
             desinateId: row.id, 
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
