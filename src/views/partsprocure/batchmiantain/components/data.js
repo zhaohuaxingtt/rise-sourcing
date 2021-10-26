@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-10-26 10:00:42
+ * @LastEditTime: 2021-10-26 20:47:14
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\data.js
@@ -31,7 +31,7 @@ export const tableTitleOnlyPartsChange = [
   { props: 'linieDept', name: 'LINIE部门', key: 'LK_LINEBUMEN' },
   { props: 'partProjectTypeDesc', name: '零件项目类型', key: 'LK_LINGJIANLEIX' },
   { props: 'procureFactoryName', name: '采购工厂', key: 'LK_CAIGOUGONGCHANG' },
-  { props: 'linieName', name: 'LINIE', key: 'LK_LINE' },
+  { props: 'linieDeptName', name: 'LINIE', key: 'LK_LINE' },
   { props: 'cfControllerName', name: 'CF控制员', key: 'LK_CFKONGZHIYUAN' },
   { props: 'oldFsnrGsnrNum', name: '原FS号', key: 'LK_YUANFSHAO',width:'150'}
 ]

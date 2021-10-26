@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-10-13 17:15:14
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-26 19:26:33
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -179,7 +179,7 @@
 									v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index">
 								</el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.procureFactory, "code", fromGroup.PURCHASE_FACTORY) }}</iText>
+							<iText v-else>{{ getName(detailData.procureFactoryName, "code", fromGroup.PURCHASE_FACTORY) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE" :label="language('LK_SOPRIQI','SOP日期') + ':'" name="test">
 							<!----------------------------------------------------------------------------------------------->
