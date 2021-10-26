@@ -84,14 +84,16 @@
             align="center"
             prop="explainFile">
           <template slot-scope="scope">
-            <a class="link-underline" @click="lookExplainFile(scope.row)">
+            <a class="link-underline" v-if="scope.row.explainFileIds!=null" @click="lookExplainFile(scope.row)">
               {{ language('CHAKAN', '查看') }}
             </a>
           </template>
         </el-table-column>
       </el-table>
     </i-card>
-    <AEKOExplainAttachmentDialog v-if="explainAttachmentDialogVal" :explain-attachment-req-data="explainAttachmentReqData" v-model="explainAttachmentDialogVal"/>
+    <AEKOExplainAttachmentDialog v-if="explainAttachmentDialogVal"
+                                 :explain-attachment-req-data="explainAttachmentReqData"
+                                 v-model="explainAttachmentDialogVal"/>
 
     <AEKOTransferDialog v-model="transferDialogVal"
                         @confirmTransfer="confirmTransfer"/>
@@ -124,7 +126,7 @@ export default {
     return {
       localAuditItems: [],
       explainAttachmentDialogVal: false,
-      explainAttachmentReqData:null,
+      explainAttachmentReqData: null,
       fullscreenLoading: false,
       transferDialogVal: false,
     }
@@ -209,7 +211,7 @@ export default {
         if (item.approvalResult != 1) {
           if (item.auditOpinion == null || item.auditOpinion == '') {
 
-            return this.$message.error(this.language('LK_AEKO_QINGTIANXIESHENPIYIJIAN','请填写审批意见'))
+            return this.$message.error(this.language('LK_AEKO_QINGTIANXIESHENPIYIJIAN', '请填写审批意见'))
           }
         }
       }
