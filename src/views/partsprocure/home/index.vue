@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-10-25 21:33:12
+ * @LastEditTime: 2021-10-26 16:40:40
  * @LastEditors:  
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -358,7 +358,7 @@ export default {
       window.open(openParts.href,'_blank')
     },
     openPageTwo(row) {
-      console.log(row);
+      window.open(`http://10.122.17.38/order/#/purchaserequisition/newapplication?code=`+row.code,'_blank')
     },
     //获取上方group信息
     // part_status --零件状态

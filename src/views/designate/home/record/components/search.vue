@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 14:17:55
- * @LastEditTime: 2021-10-25 20:48:10
+ * @LastEditTime: 2021-10-26 11:42:32
  * @LastEditors:  
 -->
 <template>
@@ -60,7 +60,7 @@
               language('LK_QINGXUANZE','请选择') +
               language('CHEXINGXIANGMU','车型项目')
             "
-            v-model="formRecord.carProject"
+            v-model="formRecord.carTypeProj"
           >
             <el-option
               value=""
@@ -76,7 +76,7 @@
         </el-form-item>
         <el-form-item :label="language('JIAGEZHUANGTAI','价格状态')">
            <iSelect 
-            v-model="formRecord.partProjType"
+            v-model="formRecord.applicationStatus"
             :placeholder="
             language('partsprocure.CHOOSE','请选择') +
             language('JIAGEZHUANGTAI','价格状态')
@@ -154,8 +154,11 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-          <el-form-item :label="language('DINGDIANSHIJIAN','定点时间')">
-          <iDatePicker v-moudel='formRecord.nominateTime' type="date"></iDatePicker>
+        <el-form-item :label="language('DINGDIANSHIJIAN','定点时间')">
+          <iDatePicker 
+          v-model='formRecord.nominateTime'
+           value-format="yyyy-MM-dd">
+           </iDatePicker>
         </el-form-item>
       </el-form>
   </iSearch>
@@ -207,9 +210,6 @@ export default {
         this.getNominate()
         this.getCar()
       });
-      
-     
-      console.log(this.fromGroup,'====================-----------------------');
     },
     getNominate(){
       getNominateType().then(res => {
