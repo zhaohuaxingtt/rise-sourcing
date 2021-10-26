@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-22 15:46:50
+ * @LastEditTime: 2021-10-26 15:17:25
  * @Description: 
 -->
 <template>
@@ -57,19 +57,20 @@
         </template>
         <template #chiefName="scope">
           <iSelect
-              v-if="!scope.row.chiefName"
-              v-model="scope.row.chiefNames"
-              @focus="getcheifUserList(scope.row)"
-              :placeholder="language('LK_QINGXUANZE','请选择')"
-              multiple
-              filterable
-              clearable
+            v-if="!scope.row.chiefName"
+            v-model="scope.row.chiefNames"
+            @visible-change="getcheifUserList($event, scope.row)"
+            :loading="optionLoading"
+            :placeholder="language('LK_QINGXUANZE','请选择')"
+            multiple
+            filterable
+            clearable
           >
             <el-option
-                :value="items.code"
-                :label="items.value"
-                v-for="(items, index) in buyerSelectOPtions || []"
-                :key="index"
+              :value="items.code"
+              :label="items.value"
+              v-for="(items, index) in scope.row.selectOptions || []"
+              :key="index"
             ></el-option>
           </iSelect>
           <span v-else>{{ scope.row.chiefName }}</span>
@@ -77,15 +78,15 @@
       </tablelist>
       <div class="pagination">
         <iPagination v-update
-                     class="pagination"
-                     @size-change="handleSizeChange($event, getFetchData)"
-                     @current-change="handleCurrentChange($event, getFetchData)"
-                     background
-                     :current-page="page.currPage"
-                     :page-sizes="page.pageSizes"
-                     :page-size="page.pageSize"
-                     :layout="page.layout"
-                     :total="page.totalCount"/>
+          class="pagination"
+          @size-change="handleSizeChange($event, getFetchData)"
+          @current-change="handleCurrentChange($event, getFetchData)"
+          background
+          :current-page="page.currPage"
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :total="page.totalCount"/>
       </div>
     </iCard>
   </div>
@@ -125,7 +126,9 @@ export default {
       // linies
       buyerNames: [],
       // 对应股长
-      buyerSelectOPtions: []
+      buyerSelectOPtions: [],
+      // 加载中
+      optionLoading: false
     }
   },
   mounted() {
@@ -232,6 +235,24 @@ export default {
         if (res.code === '200') {
           const tableListData = (res.data || []).map(o => {
             o.unresigned = !o.chiefName
+            // 预设股长
+            const preSetChief = []
+            const presetChiefIds = String(o.presetChiefId).split(',')
+            const presetChiefNames = String(o.presetChiefName).split(',')
+            // 有预设股长的话，默认值为预设股长
+            if (o.presetChiefId) {
+              presetChiefIds.forEach((p, pindex) => {
+                preSetChief.push({
+                  code: String(p),
+                  value: presetChiefNames[pindex]
+                })
+              })
+              o.chiefsOptions = preSetChief
+              o.chiefNames = preSetChief.map(o => o.code)
+            } else {
+              o.chiefsOptions = []
+            }
+            o.selectOptions = window._.cloneDeep(o.chiefsOptions)
             return o
           })
           this.tableListData = tableListData
@@ -278,26 +299,34 @@ export default {
      * @param {*} type: 2 根据审批类型查找对应的前期采购股长
      * @return {*}
      */
-    getcheifUserList(row = {}) {
+    getcheifUserList(state, row = {}) {
+      console.log(state, row)
+      if (!state) return
       // 前期采购股长
       const params = {
         id: row.id,
         auditType: row.auditType
       }
-      this.buyerSelectOPtions = []
+      this.optionLoading = true
       getChiefUserList(params).then((res) => {
         const {code, data} = res;
         if (code === '200') {
-          this.buyerSelectOPtions = data.map((item) => {
+          const dataList = data.map((item) => {
             return {
               value: this.$i18n.locale === "zh" ? item.nameZh : item.nameEn,
-              code: item.id,
-              lowerCaseLabel: typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
+              code: String(item.id),
             }
-          });
+          })
+          const chiefsOptions = row.chiefsOptions || []
+          let selectOptions = [...chiefsOptions, ...dataList];
+          selectOptions = Array.from(new Set(selectOptions.flat(Infinity)))
+          this.$set(row, 'selectOptions', selectOptions)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
+        this.optionLoading = false
+      }).finally(() => {
+        this.optionLoading = false
       })
     },
     /**
@@ -316,11 +345,11 @@ export default {
         }
       })
       if (!state) return iMessage.warn(this.language("QINGXUANZHECSFGUZHANG", "请选择CSF股长"))
-      console.log(selectedData)
       let parmas = selectedData.map(o => {
         const choseChiefs = o.chiefNames || []
         const chiefName = choseChiefs.map(chiefId => {
-          const cName = this.buyerSelectOPtions.find(buyer => buyer.code === chiefId) || {}
+          const cName = (o.selectOptions || []).find(buyer => buyer.code === chiefId) || {}
+          console.log('selectOptions', o.selectOptions || [])
           return {
             id: o.id || '',
             postId: o.postId || '',
@@ -333,7 +362,7 @@ export default {
         return chiefName
       })
       parmas = Array.from(new Set(parmas.flat(Infinity)))
-      console.log(parmas)
+      console.log('parmas', selectedData, parmas)
       this.$confirm(this.language('NINQUEDINGYAOZHIXINGFENPAI', '您确定要执行分派吗')).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
           approveDistributionSave(parmas).then(res => {
