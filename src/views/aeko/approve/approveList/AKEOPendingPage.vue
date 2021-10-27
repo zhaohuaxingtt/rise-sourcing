@@ -138,7 +138,7 @@
 
         <!--增加材料成本-->
         <template #EP1="scope">
-          <span>{{ numberToCurrencyNo(scope.row.materialIncrease) }}</span>
+          <span>{{ scope.row.materialIncrease|numberToCurrency}}</span>
           <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowMaterialIncreaseTipContent(scope.row)"></div>
@@ -148,7 +148,7 @@
         </template>
         <!--增加投资税-->
         <template #EP2="scope">
-          <span>{{ numberToCurrencyNo(scope.row.investmentIncrease) }}</span>
+          <span>{{ scope.row.investmentIncrease|numberToCurrency}}</span>
           <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowInvestmentIncreaseTipContent(scope.row)"></div>
@@ -158,7 +158,7 @@
         </template>
         <!--其他费用-->
         <template #EP3="scope">
-          <span>{{ numberToCurrencyNo(scope.row.otherCost)}}</span>
+          <span>{{ scope.row.otherCost|numberToCurrency}}</span>
           <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowotherCostTipContent(scope.row)"></div>
@@ -240,7 +240,10 @@ export default {
       let date = new Date(value);
       return dateUtils.formatDate(date, 'yyyy-MM-dd')
     },
-
+    numberToCurrency(value) {
+      if (value == null || value == '') return ''
+      return numberToCurrencyNo(value)
+    }
   },
   computed: {
     transferButtonDisplay: function () {
