@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-09-14 20:08:02
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-27 14:28:27
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
 -->
@@ -12,20 +12,20 @@
       <iButton
         v-if="!setMaterialGroupStatus"
         @click="setMaterialGroup"
-        v-permission="PARTSPROCURE_EDITORDETAIL_SETPROCESSGROUP"
+        v-permission.auto="PARTSPROCURE_EDITORDETAIL_SETPROCESSGROUP|设置工艺组"
         >{{ language("LK_SHEZHIGONGYIZU",'设置工艺组') }}</iButton
       >
       <iButton
         v-if="setMaterialGroupStatus"
         @click="confirmMaterialGroup"
         :loading="confirmLoading"
-        v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_CONFIRM"
+        v-permission.auto="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_CONFIRM|确认"
         >{{ language("LK_QUEREN",'确认') }}</iButton
       >
       <iButton
         v-if="setMaterialGroupStatus"
         @click="back"
-        v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_BACK"
+        v-permission.auto="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_BACK|返回"
         >{{ language("LK_FANHUI",'返回') }}</iButton
       >
       <iButton v-permission.auto="PARTSPROCURE_EDITORDETAIL_CHAZHAOGONGYIZUGONGYINGSHANG|查找工艺组供应商" @click="jumpBdl">{{ language('LK_CHAZHAOGONGYIZUGONGYINGSHANG','查找工艺组供应商') }}</iButton>
