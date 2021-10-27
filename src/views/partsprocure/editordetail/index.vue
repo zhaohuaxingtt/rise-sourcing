@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-10-27 14:45:31
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-27 17:26:08
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -28,6 +28,8 @@
 			; -->
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{language("LK_LINGJIANCAIGOUXIANGMU",'零件采购项目')}}</span>
+			<span v-if="this.infoItem.code" class="font16 font-weight margin-left20">{{language("LK_LCAIGOUSHENQING",'采购申请')}}:</span>
+			<span class="openLinkText cursor">{{this.infoItem.code}}</span>
 			<div class="floatright">
 				<span v-if="!disabled">
 					<!-- 供应商创建定点申请单 -->
@@ -847,6 +849,11 @@
 }
 </script>
 <style lang="scss" scoped>
+	.openLinkText{
+		color:$color-blue;
+		text-decoration: underline;
+		margin-left: 5px;
+	}
 	::v-deep.removeInputDisabelColor{
 		.el-input__inner{
 			background-color: white!important;
