@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-10-13 17:15:14
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-26 19:26:33
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -135,7 +135,7 @@
 							<iText v-else>{{ detailData.isDb ? "是" : "否" }}</iText>
 						</iFormItem>
 						<!-----------------------采购项目为仅零件号变更-------------------------------------->
-						<iFormItem v-if='partProjTypes.JINLINGJIANHAOGENGGAI == detailData.partProjectType' :label="language('YUANLINGJIANHAO', '原FS/GS号') + ':'">
+						<iFormItem v-if='partProjTypes.JINLINGJIANHAOGENGGAI == detailData.partProjectType' :label="language('YUANFSGSHAO', '原FS/GS号') + ':'">
 							<iInput class="removeInputDisabelColor" v-if="!disabled" disabled search v-model="detailData.oldFsnrGsnrNum"> <i class="el-icon-search el-input__icon cursor" slot="suffix" @click="openDiologOldParts"></i></iInput>	
 							<iText v-else>{{ detailData.oldFsnrGsnrNum }}</iText>
 						</iFormItem>
@@ -179,7 +179,7 @@
 									v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index">
 								</el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.procureFactory, "code", fromGroup.PURCHASE_FACTORY) }}</iText>
+							<iText v-else>{{ getName(detailData.procureFactoryName, "code", fromGroup.PURCHASE_FACTORY) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE" :label="language('LK_SOPRIQI','SOP日期') + ':'" name="test">
 							<!----------------------------------------------------------------------------------------------->
