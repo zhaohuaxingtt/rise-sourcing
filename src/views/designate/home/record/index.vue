@@ -2,11 +2,11 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 13:54:25
- * @LastEditTime: 2021-10-27 16:04:43
+ * @LastEditTime: 2021-10-27 17:22:12
  * @LastEditors: Hao,Jiang
 -->
 <template>
-  <iPage class="designatehome" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PAGE|定点记录">
+  <iPage class="designatehome" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PAGE|定点记录页面">
     <!-- 头部 -->
     <headerNav/>
     <!-- 筛选框 -->
