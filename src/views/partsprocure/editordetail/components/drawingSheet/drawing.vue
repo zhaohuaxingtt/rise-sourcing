@@ -1,8 +1,8 @@
 <template>
   <iCard class="outputRecord" tabCard :title="language('LK_XUNJIAFUJIAN','询价附件')">
     <template v-slot:header-control>
-      <iButton @click="handleDownload" :loading="downloadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDDOWNLOAD">{{ language('LK_XIAZAI','下载') }}</iButton>
-      <iButton v-if="!disabled" class="deleteBtn" @click="handleDelete" :loading="deleteLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEDELETE">{{ language('LK_SHANCHU','删除') }}</iButton>
+      <iButton @click="handleDownload" :loading="downloadLoading" v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDDOWNLOAD|下载">{{ language('LK_XIAZAI','下载') }}</iButton>
+      <iButton v-if="!disabled" class="deleteBtn" @click="handleDelete" :loading="deleteLoading" v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEDELETE|删除">{{ language('LK_SHANCHU','删除') }}</iButton>
       <el-upload 
         v-if="!disabled"
         class="uploadBtn" 
@@ -13,7 +13,7 @@
         :show-file-list="false" 
         :before-upload="beforeUpload"
         accept=".pdf,.xlsx,.docx">
-          <iButton :loading="uploadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEUPLOAD">{{ language('LK_SHANGCHUANFUJIAN','上传附件') }}</iButton>
+          <iButton :loading="uploadLoading" v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEUPLOAD|上传附件">{{ language('LK_SHANGCHUANFUJIAN','上传附件') }}</iButton>
       </el-upload>
     </template>
     <div class="body">

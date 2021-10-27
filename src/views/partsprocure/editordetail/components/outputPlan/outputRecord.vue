@@ -1,7 +1,7 @@
 <template>
   <iCard class="outputRecord" tabCard collapse :title="language('LK_LINGJIANCHANLIANGJILU','零件产量记录')">
     <template v-slot:header-control v-if="!disabled">
-      <iButton v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE" @click="updateOutput">{{language('LK_GENGXINZHIXUNJIACHANLIANG','更新至询价产量')}}</iButton>
+      <iButton v-permission.auto="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE|更新至询价产量" @click="updateOutput">{{language('LK_GENGXINZHIXUNJIACHANLIANG','更新至询价产量')}}</iButton>
     </template>
     <div class="body">
       <tablelist

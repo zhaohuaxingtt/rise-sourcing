@@ -25,7 +25,7 @@ export const partListTableTitle = [
   { props: "partNameZh", name: "零件名(中)", key: "LINGJIANMINGZHONG", tooltip: true },
   { props: "partNameDe", name: "零件名(德)", key: "LINGJIANMINGDE", tooltip: true },
   { props: "procureFactory", name: "采购工厂", key: "CAIGOUGONGCHANG", tooltip: true },
-  { props: "partProjectType", name: "零件项目类型", key: "LINGJIANXIANGMULEIXING", tooltip: true, width: 110 },
+  { props: "partProjectTypeDesc", name: "零件项目类型", key: "LINGJIANXIANGMULEIXING", tooltip: true, width: 110 },
   { props: "cartypeCategory", name: "车型大类", key: "CHEXINGDALEI", tooltip: true },
   { props: "cartypeProjectZh", name: "车型项目", key: "CHEXINGXIANGMU", tooltip: true },
   { props: "heavyItem", name: "Heavy Item", key: "HEAVYITEM", tooltip: true, width: 100 },
