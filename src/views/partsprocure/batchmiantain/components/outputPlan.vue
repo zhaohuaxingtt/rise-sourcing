@@ -1,13 +1,17 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-08-30 10:55:53
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-27 15:40:37
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\outputPlan.vue
 -->
 <template>
 	<iCard class="outputPlan" :title="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')" tabCard>
+		<!-- 手工采购项目创建 -->
+		<div class="btn-right">
+			<batch-miantain-output-plan :planItems="selectTions"></batch-miantain-output-plan>
+		</div>
 		<div class="body">
 			<tablelist ref='tabel' class="table" index :tableData="tableListData" :tableTitle="tableTitle"
 				:tableLoading="loading" @handleSelectionChange="handleSelectionChange" activeItems="partNum" @openPage="openPage"/>
@@ -21,15 +25,17 @@
 	import {pageMixins} from '@/utils/pageMixins'
 	import {tableTitle} from './data'
 	import {getPartslistButch} from "@/api/partsprocure/home";
+	import BatchMiantainOutputPlan from '../../home/components/batchMiantainOutputPlan.vue'
 	export default {
-		components: {iCard,tablelist},
+		components: {iCard,tablelist,BatchMiantainOutputPlan},
 		mixins: [pageMixins],
 		data() {
 			return {
 				loading: false,
 				tableTitle,
 				tableListData: [],
-				purchaseProjectIds: []
+				purchaseProjectIds: [],
+				selectTions:[]
 			}
 		},
 		created() {
@@ -63,6 +69,7 @@
 				})
 			},
 			handleSelectionChange(e){
+				this.selectTions = e
 				this.$emit('handleSelectionChange',e)
 			},
 			openPage(item){
@@ -80,3 +87,10 @@
 		}
 	}
 </script>
+<style lang="scss" scoped>
+.btn-right{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+ }
+</style>
