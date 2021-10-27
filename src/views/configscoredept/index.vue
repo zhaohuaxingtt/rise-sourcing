@@ -349,6 +349,7 @@ export default {
     },
     // 获取选择的部门编号
     selectDeptNum(data) {
+      this.currentRow.rateDepart = data.nameZh
       this.currentRow.rateDepartNum = data.deptNum
       this.currentRow.deptId = data.id
       
