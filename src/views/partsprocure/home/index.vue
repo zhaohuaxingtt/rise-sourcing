@@ -2,7 +2,7 @@
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
 <<<<<<< HEAD
- * @LastEditTime: 2021-10-27 15:40:26
+ * @LastEditTime: 2021-10-27 17:18:11
  * @LastEditors:  
 =======
  * @LastEditTime: 2021-10-27 13:45:04
@@ -354,7 +354,8 @@ export default {
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
-          businessKey:item.partProjectType //新增业务标识。
+          businessKey:item.partProjectType, //新增业务标识。
+          code:item.code //采购申请编号
         },
       });
       window.open(openParts.href,'_blank')
