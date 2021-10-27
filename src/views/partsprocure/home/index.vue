@@ -1,8 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
+<<<<<<< HEAD
+ * @LastEditTime: 2021-10-27 15:40:26
+ * @LastEditors:  
+=======
  * @LastEditTime: 2021-10-27 13:45:04
  * @LastEditors: Hao,Jiang
+>>>>>>> 2e1120723de4ea6896218e6fe44fe6365767c6b4
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
 -->
@@ -210,7 +215,6 @@
               >
               <div class="floatright">
                 <!-- 手工采购项目创建 -->
-                <batchMiantainOutputPlan :planItems="selectTableData" v-permission.auto="PARTSPROCURE_BATCHMANTAINCEPRODUCTPLAN|批量维护产量计划"></batchMiantainOutputPlan>
                 <iButton @click="openCreateParts" v-permission.auto="PARTSPROCURE_TRANSFER|手工采购项目创建">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
                 <iButton :loading='zpLoading' @click="openDiologChangeItems" v-permission.auto="PARTSPROCURE_TRANSFER|转派">{{ language("partsprocure.PARTSPROCURETRANSFER",'转派') }} </iButton>
                 <creatFsGsNr :projectItems="selectTableData" @refresh="getTableListFn" v-permission.auto="PARTSPROCURE_GENERATEFSBUTTON|生成零件采购项目号" ></creatFsGsNr>
@@ -275,7 +279,6 @@ import {
 import { pageMixins } from "@/utils/pageMixins";
 import {cancelProject,creatFsGsNr,startProject} from '@/components'
 import { tableTitle, form,validateProjectConfig } from "./components/data";
-import  batchMiantainOutputPlan from "./components/batchMiantainOutputPlan";
 import tablelist from "../../partsign/home/components/tableList";
 import { getTabelData,changeProcure} from "@/api/partsprocure/home";
 import changeItems from "../../partsign/home/components/changeItems";
@@ -302,7 +305,6 @@ export default {
     creatFsGsNr,
     cancelProject,
     startProject,
-    batchMiantainOutputPlan
   },
   data() {
     return {

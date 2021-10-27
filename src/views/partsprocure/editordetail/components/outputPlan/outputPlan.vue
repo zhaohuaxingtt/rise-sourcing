@@ -1,7 +1,7 @@
 <template>
   <iCard class="outputPlan tabCard" :title="language('LK_XUNJIACHANLIANGJIHUA','询价产量计划')" tabCard collapse v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_INDEXPAGE">
     <template v-slot:header-control v-if="!disabled">
-      <iButton @click="handleSave" :loading="saveLoading" v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_SAVE">{{language('LK_BAOCUN','保存')}}</iButton>
+      <iButton @click="handleSave" :loading="saveLoading" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
     </template>
     <div class="body">
       <el-table

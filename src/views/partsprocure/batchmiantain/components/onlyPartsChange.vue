@@ -1,13 +1,17 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-04 13:54:47
- * @LastEditTime: 2021-08-23 14:30:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-27 16:16:03
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\onlyPartsChange.vue
 -->
 <template>
   <iCard>
+    <div class="btn-right">
+      <!-- 手工采购项目创建 -->
+      <batch-miantain-output-plan :planItems="selectTions" v-permission.auto="PARTSPROCURE_BATCHMANTAINCEPRODUCTPLAN|批量维护产量计划"></batch-miantain-output-plan>
+    </div>
     <iTalbeList ref='tabel' :tableLoading='loading' @handleSelectionChange='handleSelectionChange' :tableTitle='tableTitleOnlyPartsChange' :tableData='tableData'>
       <template #oldFsnrGsnrNum='{row}'>
         <iInput class="removeInputDisabelColor" disabled search :value="(typeof row.oldFsnrGsnrNum == 'string' || row.oldFsnrGsnrNum == null)?row.oldFsnrGsnrNum:row.oldFsnrGsnrNum.fsnrGsnrNum"> <i class="el-icon-search el-input__icon cursor" slot="suffix" @click="openDiologOldParts(row)"></i></iInput>	
@@ -23,8 +27,9 @@ import iTalbeList from '@/views/partsign/home/components/tableList'
 import {tableTitleOnlyPartsChange} from './data'
 import {getDataListBatchList} from '@/api/partsprocure/editordetail'
 import selectOldpartsNumber from '@/views/partsprocure/editordetail/components/selectOldpartsNumber'
+import BatchMiantainOutputPlan from '../../home/components/batchMiantainOutputPlan.vue'
 export default{
-  components:{iCard,iTalbeList,selectOldpartsNumber,iInput},
+  components:{iCard,iTalbeList,selectOldpartsNumber,iInput, BatchMiantainOutputPlan},
   data(){return {
     tableTitleOnlyPartsChange:tableTitleOnlyPartsChange,
     tableData:[],
@@ -80,6 +85,11 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .btn-right{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
 	::v-deep.removeInputDisabelColor{
 		.el-input__inner{
 			background-color: white!important;

@@ -23,7 +23,7 @@
         </span>
         <!-- 设置按钮 -->
         <!-- 临时跳转的时候，当前步骤不在决策资料，不支持排序 -->
-        <span class="tab-icon" @click="sortDialogVisibal = true" v-else-if="!isTemp"><icon symbol name="iconSetting"></icon></span>
+        <span class="tab-icon" @click="sortDialogVisibal = true" v-else-if="!isTemp" v-permission.auto="NOMINATION_NOMINATIONDETAILS_MOUDULES_SORT|定点管理详情菜单排序"><icon symbol name="iconSetting"></icon></span>
         <!-- 排序弹窗 -->
         <sortDialog :visible.sync="sortDialogVisibal" />
     </div>
