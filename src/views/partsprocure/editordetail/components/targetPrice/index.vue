@@ -4,28 +4,28 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ language('LK_JIAGEMINGXI','价格明细') }}</span>
 			<div class="control">
-				<iButton v-if="!disabled" @click="save('save')" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SAVE">{{ language('LK_BAOCUN','保存') }}</iButton>
+				<iButton v-if="!disabled" @click="save('save')" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SAVE|保存">{{ language('LK_BAOCUN','保存') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="3" icon inline>
-			<iFormItem label="LC_B" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_LC_B">
+			<iFormItem label="LC_B" name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_LC_B|lcBPrice">
 				<iText>
 					{{targetprice.cfTargetPriceDetail.lcBPrice}}
 				</iText>
 			</iFormItem>
-			<iFormItem label="SKD_B" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SKD_B">
+			<iFormItem label="SKD_B" name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SKD_B|skdBPrice">
 				<iText>
 					{{targetprice.cfTargetPriceDetail.skdBPrice}}
 				</iText>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="3" icon inline>
-			<iFormItem label="LC_A" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_LC_A">
+			<iFormItem label="LC_A" name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_LC_A|lcAPrice">
 				<iText>
 					{{targetprice.cfTargetPriceDetail.lcAPrice}}
 				</iText>
 			</iFormItem>
-			<iFormItem label="SKD_A" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SKD_A">
+			<iFormItem label="SKD_A" name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SKD_A|skdAPrice">
 				<iText>
 					{{targetprice.cfTargetPriceDetail.skdAPrice}}
 				</iText>
@@ -33,15 +33,15 @@
 		</iFormGroup>
 		<iFormGroup row="3" icon inline>
 			<iFormItem label="CKD Duty(%)" name="test">
-				<iInput v-if="!disabled" v-model="targetprice.cfTargetPriceDetail.ckdDuty" v-Int maxlength="3" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_Duty"></iInput>
+				<iInput v-if="!disabled" v-model="targetprice.cfTargetPriceDetail.ckdDuty" v-Int maxlength="3" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_Duty|ckdDuty"></iInput>
 				<iText v-else>{{targetprice.cfTargetPriceDetail.ckdDuty}}</iText>
 			</iFormItem>
 			<iFormItem label="CKD EX_Work" name="test">
-				<iInput v-if="!disabled" v-model="targetprice.cfTargetPriceDetail.ckdExwork" v-Int  maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_EX"></iInput>
+				<iInput v-if="!disabled" v-model="targetprice.cfTargetPriceDetail.ckdExwork" v-Int  maxlength="15" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_EX|ckdExwork"></iInput>
 				<iText v-else>{{targetprice.cfTargetPriceDetail.ckdExwork}}</iText>
 			</iFormItem>
 			<iFormItem label="CKD LANDED" name="test">
-				<iInput v-if="!disabled" v-model="targetprice.cfTargetPriceDetail.ckdLanded" v-Int maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_LANDED"></iInput>
+				<iInput v-if="!disabled" v-model="targetprice.cfTargetPriceDetail.ckdLanded" v-Int maxlength="15" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_LANDED|ckdLanded"></iInput>
 				<iText v-else>{{targetprice.cfTargetPriceDetail.ckdLanded}}</iText>
 			</iFormItem>
 		</iFormGroup>
@@ -50,11 +50,11 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ language('LK_SHENQINGCAIWUMUBIAOJIA','申请财务目标价') }}</span>
 			<div class="control">
-				<iButton v-if="!disabled" @click="saveApply" :loading="applyLoading" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ language('LK_SHENQING','申请') }}</iButton>
+				<iButton v-if="!disabled" @click="saveApply" :loading="applyLoading" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY|申请">{{ language('LK_SHENQING','申请') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline>
-			<iFormItem :label="language('LK_SHENQINGLEIXING','申请类型')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
+			<iFormItem :label="language('LK_SHENQINGLEIXING','申请类型')" name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX|申请类型">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType" :disabled="disabled">
 					<el-radio label="LC" size="small">LC</el-radio>
 					<el-radio label="SKD" size="small">SKD</el-radio>
@@ -62,17 +62,17 @@
 				</el-radio-group>
 				<!-- <span class="start">*</span> -->
 			</iFormItem>
-			<iFormItem :label="language('LK_QIWANGMUBIAOJIA','期望目标价')" name="test"  v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
+			<iFormItem :label="language('LK_QIWANGMUBIAOJIA','期望目标价')" name="test"  v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ|期望目标价">
 				<iInput v-if="!disabled" v-model="targetprice.cfTargetPriceDetail.expTargetpri" v-Int  maxlength="20"></iInput>
 				<iText v-else>{{targetprice.cfTargetPriceDetail.expTargetpri}}</iText>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
-			<iFormItem :label="language('LK_SHENQINGYUANYIN','申请原因')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQYY">
+			<iFormItem :label="language('LK_SHENQINGYUANYIN','申请原因')" name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQYY|申请原因">
 				<iInput :disabled="disabled" type="textarea" rows="6" resize="none" maxlength="500" v-model="targetprice.cfTargetPriceDetail.applyReason">
 				</iInput>
 			</iFormItem>
-			<iFormItem :label="language('LK_SHENQINGBEIZHU','申请备注')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQBZ">
+			<iFormItem :label="language('LK_SHENQINGBEIZHU','申请备注')" name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQBZ|申请备注">
 				<iInput :disabled="disabled" type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.cfTargetPriceDetail.memo">
 				</iInput>
 			</iFormItem>
@@ -242,7 +242,7 @@ import { cloneDeep } from 'lodash'
 				getCfTargetApplyHistory({
 					fsNums: [this.fsnrGsnrNum],
 					pageNo: this.page.currPage,
-  				pageSize: this.page.pageSize
+					pageSize: this.page.pageSize
 				})
 				.then(res => {
 					if (res.code == 200) {

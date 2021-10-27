@@ -79,7 +79,11 @@
       <span class="font18 font-weight">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
       <div class="editControl floatright margin-bottom20">
         <i-button @click="batchApproval"> 批量批准</i-button>
-        <i-button @click="approval"> {{ language('SHENPI', '审批') }}</i-button>
+        <i-button @click="approval"> {{ language('SHENPI', '审批') }} 
+					<el-tooltip effect="light"  popper-class="custom-card-tooltip" :content="language('GOUXUANDUOGEXIANGMUSHENPI','可勾选多个项目，进行批量审批')" placement="top">
+            <i class="el-icon-warning-outline bule iconSuffix"></i>
+          </el-tooltip>
+				</i-button>
         <i-button @click="transfer" v-if="transferButtonDisplay"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
 
       </div>
@@ -134,7 +138,7 @@
 
         <!--增加材料成本-->
         <template #EP1="scope">
-          <span>{{ scope.row.materialIncrease }}</span>
+          <span>{{ scope.row.materialIncrease|numberToCurrency}}</span>
           <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowMaterialIncreaseTipContent(scope.row)"></div>
@@ -144,7 +148,7 @@
         </template>
         <!--增加投资税-->
         <template #EP2="scope">
-          <span>{{ scope.row.investmentIncrease }}</span>
+          <span>{{ scope.row.investmentIncrease|numberToCurrency}}</span>
           <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowInvestmentIncreaseTipContent(scope.row)"></div>
@@ -154,7 +158,7 @@
         </template>
         <!--其他费用-->
         <template #EP3="scope">
-          <span>{{ scope.row.otherCost }}</span>
+          <span>{{ scope.row.otherCost|numberToCurrency}}</span>
           <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowotherCostTipContent(scope.row)"></div>
@@ -213,6 +217,8 @@ import {user as configUser} from '@/config'
 import AEKOTransferDialog from "./components/AEKOTransferDialog";
 import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
+import {lookDetails} from './lib'
+import {numberToCurrencyNo} from "@/utils/cutOutNum";
 
 export default {
   name: "AKEOPendingPage",
@@ -233,6 +239,10 @@ export default {
       if (value == null || value == '') return ''
       let date = new Date(value);
       return dateUtils.formatDate(date, 'yyyy-MM-dd')
+    },
+    numberToCurrency(value) {
+      if (value == null || value == '') return ''
+      return numberToCurrencyNo(value)
     }
   },
   computed: {
@@ -291,38 +301,38 @@ export default {
     checkMinCost() {
       let value = this.queryAkeoForm.minCost
 
-      if (!isNaN(Number(value))){
+      if (!isNaN(Number(value))) {
         if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
-        this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHIXIAODIANHOUBAONIUSIWEIXIAOSHU','请输入正确的数值，小数点后保留四位数字'))
-        return false
-      }
-      if (this.queryAkeoForm.maxCost != null && this.queryAkeoForm.maxCost != '') {
-        if (Number(value) > Number(this.queryAkeoForm.maxCost)) {
-          this.$message.error(this.language('LK_ZUIXIAOZHIBUNENGDAYUZUIDAZHI','最小值不能大于最大值'));
+          this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHIXIAODIANHOUBAONIUSIWEIXIAOSHU', '请输入正确的数值，小数点后保留四位数字'))
           return false
         }
-      }
-      return true
-      }else{
+        if (this.queryAkeoForm.maxCost != null && this.queryAkeoForm.maxCost != '') {
+          if (Number(value) > Number(this.queryAkeoForm.maxCost)) {
+            this.$message.error(this.language('LK_ZUIXIAOZHIBUNENGDAYUZUIDAZHI', '最小值不能大于最大值'));
+            return false
+          }
+        }
+        return true
+      } else {
         this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHI', '请输入正确数值'));
         return false
       }
     },
     checkMaxCost() {
       let value = this.queryAkeoForm.maxCost
-     if (!isNaN(Number(value))) {
+      if (!isNaN(Number(value))) {
         if (value.indexOf('.') > -1 && value.toString().split('.')[1].length > 4) {
-          this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHIXIAODIANHOUBAONIUSIWEIXIAOSHU','请输入正确的数值，小数点后保留四位数字'))
+          this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHIXIAODIANHOUBAONIUSIWEIXIAOSHU', '请输入正确的数值，小数点后保留四位数字'))
           return false
         }
         if (!isNaN(this.queryAkeoForm.minCost)) {
           if (Number(value) < Number(this.queryAkeoForm.maxCost)) {
-            this.$message.error(this.language('LK_ZUIDAZHIBUNENGXIAOYUZUIXIAOZHI','最大值不能小于最小值'));
+            this.$message.error(this.language('LK_ZUIDAZHIBUNENGXIAOYUZUIXIAOZHI', '最大值不能小于最小值'));
             return false
           }
         }
         return true
-      }else{
+      } else {
         this.$message.error(this.language('LK_QINGSHURUZHENGQUESHUZHI', '请输入正确数值'));
         return false
       }
@@ -436,15 +446,25 @@ export default {
     },
     //增加材料成本Tip
     queryRowMaterialIncreaseTipContent(row) {
-      let costsWithLinie = this.assemblyTipData(row.aekoCoverCostVOList)
-      if (costsWithLinie != null && costsWithLinie.length > 0) {
-        let strTip = ''
-        costsWithLinie.forEach(item => {
-          let materialIncreaseMoney = 0
+      let groupModelProjects = this.groupModelProject(row.aekoCoverCostVOList)
+      if (null != groupModelProjects && groupModelProjects.length > 0) {
+        groupModelProjects.forEach(item => {
+          let materialIncreaseMoneyCount = 0
           item.data.forEach(item1 => {
-            materialIncreaseMoney += Number(item1.materialIncrease)
+            materialIncreaseMoneyCount += Number(item1.materialIncrease)
           })
-          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${materialIncreaseMoney} \n `
+          item.materialIncreaseMoneyCount = materialIncreaseMoneyCount
+        })
+        //利用map遍历。return出数组
+        let arrs = groupModelProjects.map((value, index, array) => {
+          return value.materialIncreaseMoneyCount
+        })
+        let maxMaterialIncreaseMoneyCount = Math.max(...arrs)
+        let item = groupModelProjects.find(item => item.materialIncreaseMoneyCount == maxMaterialIncreaseMoneyCount)
+        row.materialIncrease=maxMaterialIncreaseMoneyCount
+        let strTip = ''
+        item.data.forEach(item1 => {
+          strTip += `${item1.linieDeptNum}-${item1.linieName}:RMB ${numberToCurrencyNo(item1.materialIncrease)} \n `
         })
         return strTip.split("\n").join("<br/>")
       }
@@ -460,7 +480,7 @@ export default {
           item.data.forEach(item1 => {
             investmentIncreaseCostMoney += Number(item1.investmentIncrease)
           })
-          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${investmentIncreaseCostMoney}\n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${numberToCurrencyNo(investmentIncreaseCostMoney)}\n`
         })
         return strTip.split("\n").join("<br/>")
       }
@@ -476,11 +496,38 @@ export default {
           item.data.forEach(item1 => {
             otherCostMoney += Number(item1.otherCost)
           })
-          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${otherCostMoney}\n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:RMB ${numberToCurrencyNo(otherCostMoney)}\n`
         })
         return strTip.split("\n").join("<br/>")
       }
       return ''
+    },
+    //按车型项目分组计算增加材料成本
+    groupModelProject(sourceData) {
+      let map = {}
+      let dest = []
+      if (null != sourceData && sourceData.length > 0) {
+        for (let i = 0; i < sourceData.length; i++) {
+          let ai = sourceData[i];
+          if (!map[ai.cartypeCode]) {
+            dest.push({
+              cartypeCode: ai.cartypeCode,
+              data: [ai]
+            });
+            map[ai.cartypeCode] = ai;
+          } else {
+            for (let j = 0; j < dest.length; j++) {
+              let dj = dest[j];
+              if (dj.cartypeCode == ai.cartypeCode) {
+                dj.data.push(ai);
+                break;
+              }
+            }
+          }
+        }
+        return dest
+      }
+      return []
     },
 
     assemblyTipData(sourceData) {
@@ -552,8 +599,20 @@ export default {
     },
     //审批
     approval() {
+      if (this.selectPendingList.length <= 0) {
+        return this.$message.warning(this.language('QINGXUANZEYAOSHENPIDESHUJU','请选择需要审批的数据'))
+      }
+      let aekoSelectPendingList = window._.cloneDeep(this.selectPendingList)
+      let queueList = this.selectPendingList.map(o => o.requirementAekoId)
+      aekoSelectPendingList.shift()
+      queueList.shift()
 
-      this.$message.warning('期待下个版本吧')
+      console.log('queue', aekoSelectPendingList, queueList)
+      // 缓存任务列表
+      localStorage.setItem('aekoSelectPendingList', JSON.stringify(aekoSelectPendingList))
+      // 跳转第一个审批单
+			lookDetails(this, this.selectPendingList[0], true, queueList)
+      // this.$message.warning('期待下个版本吧')
     },
     //选中回调
     handleSelectionChange(val) {
@@ -598,38 +657,8 @@ export default {
     },
     //跳转到详情
     lookDetails(row) {
-      let reqP = {requirementAekoId: row.requirementAekoId}
-      getAekoDetail(reqP).then(res => {
-        if (res.code == 200) {
-          let taskIds = row.workFlowDTOS.map((item) => item.taskId)
-          let taskId = taskIds.join(',');
-          let transmitObj = {
-            option: 1,
-            aekoApprovalDetails: {
-              aekoNum: row.aekoNum,
-              requirementAekoId: row.requirementAekoId,
-              aekoAuditType: row.auditType,
-              workFlowDTOS: row.workFlowDTOS,
-              aekoManageId: res.data.aekoManageId
-            }
-          }
-          let routeData = this.$router.resolve({
-            path: `/aeko/AEKOApprovalDetails`,
-            query: {
-              requirementAekoId: row.requirementAekoId,
-              aekoManageId: res.data.aekoManageId,
-              linieId: this.$store.state.permission.userInfo.id,
-              taskId: taskId,
-              transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj))))
-            }
-
-          })
-          window.open(routeData.href, '_blank')
-        } else {
-          this.$message.error(res.desZh)
-        }
-      })
-
+			// **因为审批单页需要跳转详情，所以将跳转抽出来了**
+			lookDetails(this, row, true)
 
     }
   }
@@ -669,5 +698,15 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.editControl {
+  ::v-deep.el-button {
+    &:hover {
+      .iconSuffix {
+        color: #ffffff;
+      }
+    }
+  }
 }
 </style>

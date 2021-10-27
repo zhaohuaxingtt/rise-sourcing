@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-19 15:13:06
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-10-26 10:21:03
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -316,6 +316,7 @@ export default {
           this.ckdconfirm = res.data && res.data.ckdNum || 0
           // tipsSum
           this.tipsSum = res.data && res.data.tipsSum || 0
+          this.updateTime = res.data && res.data.synDate || ''
           // 获取车型状态是否加入TIPS
           await this.getAutoCarTips(carProjectId)
           console.log('this.data', this.data)

@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 10:58:09
- * @LastEditors: Please set LastEditors
+ * @LastEditors:  
 * @Description: RFQ待办事项
  -->
 <template>
@@ -19,7 +19,6 @@ import BDL from "./components/BDL";
 import supplierScore from "./components/supplierScore";
 import moldBudgetApplication from "./components/moldBudgetApplication";
 import technicalSeminar from "./components/technicalSeminar";
-// import inquiryManagement from 'front-bidding/src/views/manage/bidding/project/inquiry';
 export default {
   components: {
     iTabsList,
@@ -27,8 +26,7 @@ export default {
     BDL,
     supplierScore,
     moldBudgetApplication,
-    technicalSeminar,
-    // inquiryManagement
+    technicalSeminar
   },
   data() {
     return {

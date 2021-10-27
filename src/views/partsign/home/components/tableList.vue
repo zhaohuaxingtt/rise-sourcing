@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-09-22 18:19:52
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-26 16:42:47
+ * @LastEditors:  
  * @Description: 零件签收-table组件。
  * @FilePath: \front-web\src\views\partsign\home\components\tableList.vue
 -->
@@ -19,6 +19,22 @@
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
             </span>
+          </span>  
+        </template>
+      </el-table-column>
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-else-if='items.props == activeItemsTwo' :prop="items.props" :label="items.key ? language(items.key,items.name) : items.name">
+        <template slot-scope="row">
+          <span class="flexRowTwo">
+            <div class="left">
+              <span class="openLinkText cursor " @click="openPageTwo(row.row)"> {{ row.row[activeItemsTwo] }}</span>
+            </div>
+            <div class="right">
+              <span v-if="row.row[activeItemsTwo]" class="icon-gray  cursor "  @click="openPageTwo(row.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+              </span>
+            </div>
+
           </span>  
         </template>
       </el-table-column>
@@ -42,6 +58,7 @@ export default{
     indexLabel:{type:String,default:'#'},
     height:{type:Number||String},
     activeItems:{type:String,default:'b'},
+    activeItemsTwo:{type:String,default:'b'},
 	  radio:{type:Boolean,default:false},// 是否单选
     selectable:{type:Function,default:()=> true},
     borderLeftStatus:{type:Boolean,default:true}
@@ -74,6 +91,9 @@ export default{
     },
     openPage(e){
       this.$emit('openPage',e)
+    },
+    openPageTwo(e){
+      this.$emit('openPageTwo',e)
     },
     translateData(key,row){
       try {
@@ -131,6 +151,22 @@ export default{
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .flexRowTwo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    .left{
+      width: 85%;
+      white-space:nowrap;
+      text-align: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .right{
+      width: 5%;
+    }
   }
   .icon-gray:hover{
     cursor: pointer;

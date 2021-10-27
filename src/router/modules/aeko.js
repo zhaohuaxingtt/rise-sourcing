@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-10-21 19:10:59
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-10-26 14:03:22
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -33,6 +33,15 @@ export default [
             title: 'AEKO表态'
         },
         component: () => import ("@/views/aeko/stance")
+    },
+    {
+      // AEKO查看
+      path: "checklist",
+      name: "aekoCheckList",
+      meta: {
+          title: 'AEKO查看'
+      },
+      component: () => import ("@/views/aeko/check")
     },
       // 
       {

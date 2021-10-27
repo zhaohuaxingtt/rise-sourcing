@@ -242,7 +242,7 @@ module.exports = {
       '/tpInfoApi': {
         //高攀弘服务地址http://10.122.17.38:8023/
         target: 'http://10.122.17.38:8023',
-        //target: 'http://10.160.143.194:8023',
+        //target: 'http://10.160.143.25:8023',
         // target: 'http://10.160.141.45:8023',
         changeOrigin: true,
         pathRewrite: {
@@ -268,6 +268,7 @@ module.exports = {
       },
       '/rfqApi': {
         //周德华，rfq模块的api地址
+        // target: 'http://10.160.141.223:8888',//龙行伟
         target: 'http://10.122.17.38:8025',
         // target: 'http://10.160.143.190:8025',
         // target: 'http://rise-front-web.apps.vmocp-dev.csvw.com', // SIT
@@ -461,7 +462,9 @@ module.exports = {
       '/nominateRecord':{
         //龙行伟定点记录接口
         // target:'http://10.160.141.127:8888',
-        target:'http://10.160.139.234:8888',
+        // target:'http://10.160.140.240:8888',
+        // target:'http://10.160.139.55:8888',
+        target: 'http://10.122.17.38:8025',
         changeOrigin:true,
         pathRewrite: {
           '^/nominateRecord':'',

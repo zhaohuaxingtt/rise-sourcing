@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-10-27 15:53:57
+ * @LastEditTime: 2021-10-27 16:09:26
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -162,29 +162,13 @@
 </template>
 
 <script>
-import {
-  iDialog,
-  iButton,
-  iFormGroup,
-  iFormItem,
-  iSelect,
-  iText,
-  iInput,
-  iMessage,
-} from "rise";
-import tableList from "@/views/partsign/editordetail/components/tableList";
-import {
-  dosageDialogForm as form,
-  dosageDialogTableTitle as tableTitle,
-} from "../data";
-import { numberProcessor } from "@/utils";
-import filters from "@/utils/filters";
-import {
-  getAekoCarProject,
-  getAekoCarDosage,
-  getAekoCarDosageByCarTypeProjectCode,
-  saveAekoCarDosage,
-} from "@/api/aeko/detail";
+import { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, iMessage } from "rise"
+import tableList from "@/views/partsign/editordetail/components/tableList"
+import { dosageDialogForm as form, dosageDialogTableTitle as tableTitle } from "../data"
+import { numberProcessor } from "@/utils"
+import filters from "@/utils/filters"
+import { getAekoCarProject, getAekoCarDosage, getAekoCarDosageByCarTypeProjectCode, saveAekoCarDosage } from "@/api/aeko/detail"
+import {cutOutNum} from "@/utils/cutOutNum";
 
 export default {
   components: {
@@ -215,6 +199,7 @@ export default {
       default: "",
     },
   },
+
   watch: {
     status(nv) {
       if (nv) {
@@ -379,18 +364,11 @@ export default {
         .catch(() => (this.loading = false));
     },
     handleChangeByCarTypeProject(value) {
-      this.dosage.carTypeProjectZh = this.carProjectOptions.find(
-        (item) => item.value === value
-      ).label;
-
-      const { carProjectOptionsList = [] } = this;
-      carProjectOptionsList.map((item) => {
-        if (item.carTypeProjectCode === value) {
-          this.dosage.aekoProjectCarDosageList = Array.isArray(
-            item.aekoProjectChange
-          )
-            ? item.aekoProjectChange
-            : [];
+      this.dosage.carTypeProjectZh = this.carProjectOptions.find(item => item.value === value).label
+      const {carProjectOptionsList=[]} = this;
+      carProjectOptionsList.map((item)=>{
+        if(item.carTypeProjectCode === value){
+          this.dosage.aekoProjectCarDosageList = Array.isArray(item.aekoProjectChange) ? item.aekoProjectChange : []
         }
       });
 

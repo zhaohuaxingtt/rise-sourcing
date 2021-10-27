@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 13:54:25
- * @LastEditTime: 2021-10-22 17:50:14
+ * @LastEditTime: 2021-10-25 15:30:12
  * @LastEditors:  
 -->
 <template>
@@ -93,17 +93,21 @@ export default {
   methods: {
     query(val) {
       this.searchForm = {...val}
-      console.log(this.searchForm);
     },
     openPage(val) {
       let id = val.id
+      let desinateId = val.appId
+      let designateType =val.nominateType
+      let partProjType =val.partProjType
        const opnDetail = this.$router.resolve({
         path: "/sourcing/partsnomination/record/detail",
         query: {
-          id
+          id,
+          desinateId,
+          designateType,
+          partProjType
         }
       })
-      console.log(opnDetail,'opnDetail');
       window.open(opnDetail.href,'_blank')
     },
     initTableList() {
@@ -113,19 +117,25 @@ export default {
         current: this.page.currPage,
         size: this.page.pageSize
       }
-      console.log(data);
-      getNomiApplicationPageList(data).then(res => {
+      try{
+        getNomiApplicationPageList(data).then(res => {
+          this.tableLoading = false
+          if(res.code === '200') {
+            this.tableListData = res.data.records || []
+            this.page.totalCount = res.data.total
+          } else {
+            this.tableListData = []
+            this.page.totalCount = 0
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+  
+          }
+        })
+      } catch(e) {
         this.tableLoading = false
-        if(res.code === '200') {
-          this.tableListData = res.data.records || []
-          this.page.totalCount = res.data.total
-        } else {
-          this.tableListData = []
-          this.page.totalCount = 0
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-
-        }
-      })
+         this.tableListData = []
+        this.page.totalCount = 0
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
     },
     handleSelectionChange(data){
       this.selectTableData = data
