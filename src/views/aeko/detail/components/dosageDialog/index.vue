@@ -58,7 +58,7 @@
         </template>
         <!-- 装车率加个% -->
         <template #assemblyRate="scope">
-          {{scope.row.assemblyRate ? `${scope.row.assemblyRate}%` :''}}
+          {{scope.row.assemblyRate ? `${scope.row.assemblyRate*100}%` :''}}
         </template>
       </tableList>
       <i class="dashes"></i>
@@ -73,6 +73,7 @@ import { dosageDialogForm as form, dosageDialogTableTitle as tableTitle } from "
 import { numberProcessor } from "@/utils"
 import filters from "@/utils/filters"
 import { getAekoCarProject, getAekoCarDosage, getAekoCarDosageByCarTypeProjectCode, saveAekoCarDosage } from "@/api/aeko/detail"
+import {cutOutNum} from "@/utils/cutOutNum";
 
 export default {
   components: { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, tableList },
@@ -94,6 +95,7 @@ export default {
       default: ""
     }
   },
+
   watch: {
     status(nv) {
       if (nv) {
@@ -195,11 +197,8 @@ export default {
     },
     handleChangeByCarTypeProject(value) {
       this.dosage.carTypeProjectZh = this.carProjectOptions.find(item => item.value === value).label
-
-
       const {carProjectOptionsList=[]} = this;
       carProjectOptionsList.map((item)=>{
-          console.log(item.value,value)
         if(item.carTypeProjectCode === value){
           this.dosage.aekoProjectCarDosageList = Array.isArray(item.aekoProjectChange) ? item.aekoProjectChange : []
         }
