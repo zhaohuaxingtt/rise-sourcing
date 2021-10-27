@@ -139,11 +139,10 @@ export default {
     },
     // 保存
     handleSave() {
-      this.saveLoading = true
-
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOBAOCUNDESHUJU", "请选择需要保存的数据"))
       if (this.multipleSelection.some(item => item.sendKmFlag == 1 && (!item.pcaResult || !item.tiaResult))) return iMessage.warn(this.language("SAVEPCARESANDTIARESTIPS", "请填写完整PCA分析结果和TIA分析结果"))
 
+      this.saveLoading = true
       savePcaAndTia({
         savePcaTiaDTOS: this.tableListData.map(item => ({
           fsnrGsnrNum: item.fsnrGsnrNum,
@@ -161,10 +160,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-
-        this.saveLoading = false
       })
-      .catch(() => this.saveLoading = false)
+      .finally(() => this.saveLoading = false)
     },
     // 下载技术资料
     handleDownloadTechnicalData() {
