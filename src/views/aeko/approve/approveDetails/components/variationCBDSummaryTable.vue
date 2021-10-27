@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-25 15:00:03
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-10-27 13:43:18
+ * @LastEditors: Please set LastEditors
  * @Description: 
 -->
 <template>
@@ -101,6 +101,8 @@
             :Data="aPriceChangeData"
             :apriceChange="apriceChangeVal"
             :key="$componentIndex"
+            :workFlowId="workFlowId"
+            :quotationId="partsId"
           />
         </template>
       </el-tab-pane>
@@ -190,7 +192,7 @@ export default {
           name: "mouldInvestmentChange",
           key: "MUJUTOUZIBIANDONG",
           components: [
-            // "mouldInvestmentChange"
+            "mouldInvestmentChange"
           ],
           permissionKey:
             "AEKO_QUOTATION_CBD_TAB_MUJUTOUZIBIANDONG|模具投资变动",
@@ -200,7 +202,7 @@ export default {
           name: "developmentFee",
           key: "KAIFAFEI",
           components: [
-            // "developmentFee"
+            "developmentFee"
           ],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_KAIFAFEI|开发费",
         },
@@ -209,7 +211,7 @@ export default {
           name: "damages",
           key: "ZHONGZHIFEI",
           components: [
-            // "damages"
+            "damages"
           ],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_ZHONGZHIFEI|终⽌费",
         },
@@ -218,7 +220,7 @@ export default {
           name: "sampleFee",
           key: "YANGJIANFEI",
           components: [
-            // "sampleFee"
+            "sampleFee"
           ],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_YANGJIANFEI|样件费",
         },
@@ -337,6 +339,8 @@ export default {
           }
         }
       );
+
+      this.tabChange();
     },
   },
 };
