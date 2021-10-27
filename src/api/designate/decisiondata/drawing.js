@@ -38,7 +38,7 @@ export function uploadDaring(data) {
 export function batchDeleteDaring(data) {
   return requst({
       url: `/file-histories/delete-files`,
-      method: "POST",
+      method: "DELETE",
       data
   })
 }
