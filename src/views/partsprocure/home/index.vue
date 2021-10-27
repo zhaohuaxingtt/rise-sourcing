@@ -1,8 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
+<<<<<<< HEAD
  * @LastEditTime: 2021-10-27 15:40:26
  * @LastEditors:  
+=======
+ * @LastEditTime: 2021-10-27 13:45:04
+ * @LastEditors: Hao,Jiang
+>>>>>>> 2e1120723de4ea6896218e6fe44fe6365767c6b4
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
 -->
@@ -183,7 +188,7 @@
                     language('partsprocure.PARTSPROCUREPURCHASINGFACTORY','采购工厂')
                   "
                   v-model="form['procureFactory']"
-                  v-permission="PARTSPROCURE_PURCHASINGFACTORY"
+                  v-permission.auto="PARTSPROCURE_PURCHASINGFACTORY|采购工厂"
                 >
                   <el-option
                     value=""
@@ -209,12 +214,13 @@
                 {{ language("partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT",'零件采购项目管理') }}</span
               >
               <div class="floatright">
-                <iButton @click="openCreateParts">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
-                <iButton :loading='zpLoading' @click="openDiologChangeItems" v-permission="PARTSPROCURE_TRANSFER">{{ language("partsprocure.PARTSPROCURETRANSFER",'转派') }} </iButton>
-                <creatFsGsNr :projectItems="selectTableData" @refresh="getTableListFn" v-permission="PARTSPROCURE_GENERATEFSBUTTON" ></creatFsGsNr>
-                <cancelProject :backItems='selectTableData'  @refresh="getTableListFn" v-permission="PARTSPROCURE_CANCELPROCUREMENTITEMS"></cancelProject>
-                <iButton @click="openBatchmiantain" v-permission="PARTSPROCURE_BATCHMAINTENANCE">{{ language("partsprocure.PARTSPROCUREBATCHMAINTENANCE",'批量维护') }}</iButton>
-                <startProject :startItems='selectTableData' v-permission="PARTSPROCURE_STARTINQUIRY"></startProject>
+                <!-- 手工采购项目创建 -->
+                <iButton @click="openCreateParts" v-permission.auto="PARTSPROCURE_TRANSFER|手工采购项目创建">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
+                <iButton :loading='zpLoading' @click="openDiologChangeItems" v-permission.auto="PARTSPROCURE_TRANSFER|转派">{{ language("partsprocure.PARTSPROCURETRANSFER",'转派') }} </iButton>
+                <creatFsGsNr :projectItems="selectTableData" @refresh="getTableListFn" v-permission.auto="PARTSPROCURE_GENERATEFSBUTTON|生成零件采购项目号" ></creatFsGsNr>
+                <cancelProject :backItems='selectTableData'  @refresh="getTableListFn" v-permission.auto="PARTSPROCURE_CANCELPROCUREMENTITEMS|取消零件采购项目号"></cancelProject>
+                <iButton @click="openBatchmiantain" v-permission.auto="PARTSPROCURE_BATCHMAINTENANCE|批量维护">{{ language("partsprocure.PARTSPROCUREBATCHMAINTENANCE",'批量维护') }}</iButton>
+                <startProject :startItems='selectTableData' v-permission.auto="PARTSPROCURE_STARTINQUIRY|启动询价"></startProject>
               </div>
             </div>
             <tablelist

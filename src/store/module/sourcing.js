@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2021-08-30 15:19:39
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-27 13:22:24
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
  */
@@ -18,7 +18,9 @@ const state = {
       message: 0,
       url: "/sourceinquirypoint/sourcing/partsign",
       activePath: "partsign",
-      key: "LK_LINGJIANQIANSHOU"
+      key: "LK_LINGJIANQIANSHOU",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSIGN',
+      permissionName: '寻源执行-零件签收'
     },
     {
       value: 2,
@@ -26,7 +28,9 @@ const state = {
       message: 0,
       url: "/sourceinquirypoint/sourcing/partsprocure",
       activePath: "partsprocure",
-      key: "LK_CAIGOUXIANGMUJIANLI"
+      key: "LK_CAIGOUXIANGMUJIANLI",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSPROCURE',
+      permissionName: '寻源执行-采购项目建立'
     },
     {
       value: 3,
@@ -34,7 +38,9 @@ const state = {
       message: 0,
       url: "/sourceinquirypoint/sourcing/signforpartsdemand",
       activePath: "signforpartsdemand",
-      key: "LK_PEIJIANXUQIUQIANSHOU"
+      key: "LK_PEIJIANXUQIUQIANSHOU",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_SIGNFORPARTSDEMAND',
+      permissionName: '寻源执行-配件签收'
     },
     {
       value: 4,
@@ -42,7 +48,9 @@ const state = {
       message: 0,
       url: "/sourceinquirypoint/sourcing/integratedmanage",
       activePath: "integratedmanage",
-      key: "LK_PEIJIANZONGHEGUANLI"
+      key: "LK_PEIJIANZONGHEGUANLI",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_INTEGRATEDMANAGE',
+      permissionName: '寻源执行-配件管理'
     },
     {
       value: 5,
@@ -50,7 +58,9 @@ const state = {
       message: 0,
       url: "/sourceinquirypoint/sourcing/importfiles",
       activePath: "importfiles",
-      key: "LK_FUJIANXUQIUDAORU"
+      key: "LK_FUJIANXUQIUDAORU",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_IMPORTFILES',
+      permissionName: '寻源执行-附件导入'
     },
     {
       value: 6,
@@ -58,7 +68,9 @@ const state = {
       message: 0,
       url: "/sourceinquirypoint/sourcing/filemanage",
       activePath: "filemanage",
-      key: "LK_FUJIANZONGHEGUANLI"
+      key: "LK_FUJIANZONGHEGUANLI",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_FILEMANAGE',
+      permissionName: '寻源执行-附件管理'
     },
     {
       value: 7,
@@ -66,7 +78,9 @@ const state = {
       message: 0,
       url: "/sourceinquirypoint/sourcing/partsrfq",
       activePath: "partsrfq",
-      key: "LK_RFQGUANLI"
+      key: "LK_RFQGUANLI",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSRFQ',
+      permissionName: '寻源执行-RFQ管理'
     },
     {
       value: 8,
@@ -74,7 +88,9 @@ const state = {
       message: 0,
       url: "/sourcing/partsnomination",
       activePath: "partsnomination",
-      key: "LK_DINGDIANGUANLI"
+      key: "LK_DINGDIANGUANLI",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSNOMINATION',
+      permissionName: '寻源执行-定点管理'
     },
     {
       value: 9,
@@ -82,7 +98,9 @@ const state = {
       message: 0,
       url: "/sourceinquirypoint/sourcing/steeldemandcreation",
       activePath: "steeldemandcreation",
-      key: "GANGCAIXUQIUCHUANGJIAN"
+      key: "GANGCAIXUQIUCHUANGJIAN",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_STEELDEMANDCREATION',
+      permissionName: '寻源执行-钢材创建'
     },
     {
       value: 10,
@@ -90,7 +108,9 @@ const state = {
       message: 0,
       url: "/sourceinquirypoint/sourcing/partsletter",
       activePath: "partsletter",
-      key: "LK_DINGDIANXINLOI"
+      key: "LK_DINGDIANXINLOI",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSLETTER',
+      permissionName: '寻源执行-定点信/LOI'
     },
   ],
   navListLeft:[ //sourcing 三级菜单列表
@@ -100,7 +120,9 @@ const state = {
       message: 0,
       url: "/sourceinquirypoint/sourcing/partsign",
       activePath: "sourcing",
-      key: "XUANYUANCAIDAN"
+      key: "XUANYUANCAIDAN",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_MENU',
+      permissionName: '寻源执行'
     }
   ]
 }

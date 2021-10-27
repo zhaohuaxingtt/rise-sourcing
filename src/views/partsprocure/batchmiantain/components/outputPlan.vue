@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2021-10-27 15:40:37
+ * @LastEditTime: 2021-10-27 16:16:16
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\outputPlan.vue
@@ -10,7 +10,7 @@
 	<iCard class="outputPlan" :title="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')" tabCard>
 		<!-- 手工采购项目创建 -->
 		<div class="btn-right">
-			<batch-miantain-output-plan :planItems="selectTions"></batch-miantain-output-plan>
+			<batch-miantain-output-plan :planItems="selectTions" v-permission.auto="PARTSPROCURE_BATCHMANTAINCEPRODUCTPLAN|批量维护产量计划"></batch-miantain-output-plan>
 		</div>
 		<div class="body">
 			<tablelist ref='tabel' class="table" index :tableData="tableListData" :tableTitle="tableTitle"

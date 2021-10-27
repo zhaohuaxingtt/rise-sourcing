@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-14 15:35:36
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-27 14:05:01
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -132,6 +132,38 @@ export  function  transferAEKO(data){
 export function queryApprovalStatus(id){
   return requst({
     url:`/aeko/approve/distribution/getApprovalStatus/${id}`,
+    method:'GET',
+  })
+}
+
+// Aeko审批-详情页-CBD-模具投资变动
+export function getMoulds(data){
+  return requst_sourcing({
+    url:`/aeko/get/mouldcbd/${data.workFlowId}/${data.quotationId} `,
+    method:'GET',
+  })
+}
+
+// Aeko审批-详情页-CBD-终止费
+export function getTerminationPrice(data){
+  return requst_sourcing({
+    url:`/aeko/get/terminationPrice/${data.workFlowId}/${data.quotationId}`,
+    method:'GET',
+  })
+}
+
+// Aeko审批-详情页-CBD-开发费
+export function getCbdkent(data){
+  return requst_sourcing({
+    url:`/aeko/get/cbdkent/${data.workFlowId}/${data.quotationId}`,
+    method:'GET',
+  })
+}
+
+// Aeko审批-详情页-CBD-样件费  
+export function getToolingsample(data){  
+  return requst_sourcing({
+    url:`/aeko/get/toolingsample/${data.workFlowId}/${data.quotationId}`,
     method:'GET',
   })
 }
