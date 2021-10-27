@@ -4,13 +4,13 @@
  * @Description: LOI详情页
 -->
 <template>
-    <iPage class="loiDetail">
+    <iPage class="loiDetail" v-permission.auto="LK_LOI_DETAIL_PAGE|LOI详情页">
         <div class="header clearFloat">
         <div class="title">{{language('LK_LOIBIANHAO','LOI编号')}}: {{loiInfo.loiNum}}</div>
         <div class="control">
             <span v-if="isEdit">
-                <iButton :loading="btnLoading.save" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
-                <iButton @click="changeEditStatus">{{language('LK_QUXIAO','取消')}}</iButton>
+                <iButton :loading="btnLoading.save" v-permission.auto="LK_LETTERANDLOI_LETTERDETAIL_SAVE|保存" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
+                <iButton @click="changeEditStatus" v-permission.auto="LK_LETTERANDLOI_LETTERDETAIL_CANCEL|取消">{{language('LK_QUXIAO','取消')}}</iButton>
             </span>
             <span v-else><!-- 状态为作废时显示 -->
                 <iButton v-permission.auto="LK_LOI_DETAIL_ADDLOI|新增LOI" :loading="btnLoading.add" @click="add" v-if="loiStatus=='TOVOID'">{{language('LK_LETTER_XINZENGLOI','新增LOI')}}</iButton>
@@ -31,7 +31,7 @@
             <logButton class="margin-left20" />
         </div>
         </div>
-        <iCard class="margin-top30">
+        <iCard class="margin-top30" v-permission.auto="LK_LOI_DETAIL_FORM|表单">
            <el-radio-group v-model="radioType" :disabled="!isEdit">
                 <el-radio :label="'standard'">{{language('LK_BIAOZHUNLOI','标准LOI')}}</el-radio>
                 <el-radio :label="'NonStandard'">{{language('LK_FEIBIAOZHUNLOI','⾮标准LOI')}}</el-radio>
@@ -74,7 +74,7 @@
         </iCard>
 
         <!-- 非标准LOI -->
-        <loiNonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit" :nomiAppId="nomiAppId" />
+        <loiNonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit" :nomiAppId="nomiAppId" v-permission.auto="LK_LOI_DETAIL_NONSTANDARDLOI|非标准LOI板块"  />
 
         <!-- 历史LOI弹窗 -->
         <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" :loiInfo="loiInfo"/>

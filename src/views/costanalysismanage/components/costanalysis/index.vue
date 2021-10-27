@@ -66,7 +66,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { tableTitle } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
-import { getKmFileHistory, uploadFiles, deleteFileHistory } from "@/api/costanalysismanage/costanalysis"
+import { getKmFileHistory, kmUploadFiles, deleteFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { downloadFile, downloadUdFile } from "@/api/file"
 
 export default {
@@ -131,7 +131,7 @@ export default {
     uploadFiles() {
       this.loading = true
 
-      uploadFiles({
+      kmUploadFiles({
         fileHistoryDTOS: this.fileList.map(item => ({
           fileCode: "0",
           fileName: item.fileName,

@@ -147,7 +147,7 @@ export default {
       this.selectTableData = val;
     },
     handleInput(value, row) {
-      this.$set(row, "budget", numberProcessor(value, 4))
+      this.$set(row, "budget", numberProcessor(value, 2))
     }
   }
 }
