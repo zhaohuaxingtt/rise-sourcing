@@ -79,7 +79,11 @@
       <span class="font18 font-weight">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
       <div class="editControl floatright margin-bottom20">
         <i-button @click="batchApproval"> 批量批准</i-button>
-        <i-button @click="approval"> {{ language('SHENPI', '审批') }}</i-button>
+        <i-button @click="approval"> {{ language('SHENPI', '审批') }} 
+					<el-tooltip effect="light"  popper-class="custom-card-tooltip" :content="language('GOUXUANDUOGEXIANGMUSHENPI','可勾选多个项目，进行批量审批')" placement="top">
+            <i class="el-icon-warning-outline bule iconSuffix"></i>
+          </el-tooltip>
+				</i-button>
         <i-button @click="transfer" v-if="transferButtonDisplay"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
 
       </div>
@@ -213,6 +217,7 @@ import {user as configUser} from '@/config'
 import AEKOTransferDialog from "./components/AEKOTransferDialog";
 import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
+import {lookDetails} from './lib'
 
 export default {
   name: "AKEOPendingPage",
@@ -552,8 +557,20 @@ export default {
     },
     //审批
     approval() {
+      if (this.selectPendingList.length <= 0) {
+        return this.$message.warning(this.language('QINGXUANZEYAOSHENPIDESHUJU','请选择需要审批的数据'))
+      }
+      let aekoSelectPendingList = window._.cloneDeep(this.selectPendingList)
+      let queueList = this.selectPendingList.map(o => o.requirementAekoId)
+      aekoSelectPendingList.shift()
+      queueList.shift()
 
-      this.$message.warning('期待下个版本吧')
+      console.log('queue', aekoSelectPendingList, queueList)
+      // 缓存任务列表
+      localStorage.setItem('aekoSelectPendingList', JSON.stringify(aekoSelectPendingList))
+      // 跳转第一个审批单
+			lookDetails(this, this.selectPendingList[0], true, queueList)
+      // this.$message.warning('期待下个版本吧')
     },
     //选中回调
     handleSelectionChange(val) {
@@ -598,38 +615,8 @@ export default {
     },
     //跳转到详情
     lookDetails(row) {
-      let reqP = {requirementAekoId: row.requirementAekoId}
-      getAekoDetail(reqP).then(res => {
-        if (res.code == 200) {
-          let taskIds = row.workFlowDTOS.map((item) => item.taskId)
-          let taskId = taskIds.join(',');
-          let transmitObj = {
-            option: 1,
-            aekoApprovalDetails: {
-              aekoNum: row.aekoNum,
-              requirementAekoId: row.requirementAekoId,
-              aekoAuditType: row.auditType,
-              workFlowDTOS: row.workFlowDTOS,
-              aekoManageId: res.data.aekoManageId
-            }
-          }
-          let routeData = this.$router.resolve({
-            path: `/aeko/AEKOApprovalDetails`,
-            query: {
-              requirementAekoId: row.requirementAekoId,
-              aekoManageId: res.data.aekoManageId,
-              linieId: this.$store.state.permission.userInfo.id,
-              taskId: taskId,
-              transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj))))
-            }
-
-          })
-          window.open(routeData.href, '_blank')
-        } else {
-          this.$message.error(res.desZh)
-        }
-      })
-
+			// **因为审批单页需要跳转详情，所以将跳转抽出来了**
+			lookDetails(this, row, true)
 
     }
   }
@@ -669,5 +656,15 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.editControl {
+  ::v-deep.el-button {
+    &:hover {
+      .iconSuffix {
+        color: #ffffff;
+      }
+    }
+  }
 }
 </style>

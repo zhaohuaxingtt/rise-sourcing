@@ -5,7 +5,10 @@
         <span class="card-title">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
         <div class="floatright">
           <i-button v-show="pageCanOption" v-loading.fullscreen.lock="fullscreenLoading" medium @click="optionApprove">
-            {{ language('LK_AEKO_QUERENSHENPI', '确认审批') }}
+            <span v-if="!isBatchApproveMode">{{language('LK_AEKO_QUERENSHENPI', '确认审批')}}</span>
+            <span v-else>
+              {{  approveQueue !== 0 ? language('AEKOQUERENSHENPITIAOZHUANXAIYIYE', '确认审批，将跳转下一页') : language('QUERENSHENPIGUANBICHUANGKOU', '确认审批，窗口将自动关闭') }}
+            </span>
           </i-button>
           <!--          <i-button @click="transfer" v-if="transferButtonDisplay&&pageCanOption"> {{
                         language('LK_ZHUANPAI', '转派')
@@ -104,6 +107,7 @@
 import {iInput, iCard, icon, iButton} from "rise"
 import {aekoAudit, transferAEKO} from "@/api/aeko/approve";
 import AEKOExplainAttachmentDialog from "./AEKOExplainAttachmentDialog";
+import {lookDetails} from '../../approveList/lib'
 
 export default {
   name: "AEKOApprovalComponents",
@@ -135,6 +139,14 @@ export default {
     }
   },
   computed: {
+    // 是否处于队列审批模式
+    isBatchApproveMode() {
+      return this.transmitObj.isBatchApprove
+    },
+    // 审批队列,为null 表示任务已全部审批完毕
+    approveQueue() {
+      return this.transmitObj.queue && this.transmitObj.queue.length
+    },
     pageCanOption: function () {
       return this.transmitObj.option == 1
     },
@@ -157,6 +169,42 @@ export default {
   },
 
   methods: {
+    closePage() {
+      if (navigator.userAgent.indexOf("MSIE") > 0) {
+        //IE
+        if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
+          window.opener = null;
+          window.close();
+        } else {
+          window.open('', '_top');
+          window.top.close();
+        }
+      } else if (navigator.userAgent.indexOf("Firefox") > 0) {
+        //firefox
+        window.open("about:blank","_self").close()
+      } else {
+        // chrome
+        window.opener = null;
+        window.open("","_self").close()
+      }
+    },
+    toNextApproval() {
+      let selectPendingList = localStorage.getItem('aekoSelectPendingList') || ''
+      selectPendingList = JSON.parse(selectPendingList) || []
+      console.log(selectPendingList)
+      if (selectPendingList.length <= 0) {
+        return this.$message.warning('the queue is empty')
+      }
+      let aekoSelectPendingList = window._.cloneDeep(selectPendingList)
+      let queueList = selectPendingList.map(o => o.requirementAekoId)
+      aekoSelectPendingList.shift()
+      queueList.shift()
+
+      // 缓存任务列表
+      localStorage.setItem('aekoSelectPendingList', JSON.stringify(aekoSelectPendingList))
+      // 跳转第一个审批单
+			lookDetails(this, selectPendingList[0], false, queueList)
+    },
     calculateSelected(row, state) {
       return row.approvalResult == state;
     },
@@ -238,6 +286,16 @@ export default {
           }
         } else {
           this.$message.error(res.desZh)
+        }
+        // 批量审批模式，审批单存在审批队列
+        if (this.isBatchApproveMode) {
+          setTimeout(() => {
+            if (this.approveQueue) {
+              this.toNextApproval()
+            } else {
+              this.closePage()
+            }
+          }, 2000)
         }
       })
     },
