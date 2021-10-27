@@ -73,7 +73,7 @@
           :tableLoading="loading"
         >
         <template #newMsgSheet="scope">
-          <a href="javascript:;" @click="toMsgSheet(scope.row)">查看</a>
+          <a href="javascript:;" @click="toMsgSheet(scope.row)">{{ language('CHAKAN', '查看') }}</a>
         </template>
         </tableList>
         <!-- 分页 -->

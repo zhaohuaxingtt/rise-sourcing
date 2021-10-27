@@ -44,7 +44,7 @@
             <el-option
                 v-for="item in options"
                 :key="item.value"
-                :label="item.name"
+                :label="item.label"
                 :value="item.value">
             </el-option>
           </i-select>
@@ -97,7 +97,6 @@
           :tableTitle="approvedHeader"
           :lang="true"
           v-loading="tableLoading"
-          @handleSelectionChange="handleSelectionChange"
       >
         <template #isTop="scope">
           <div>
@@ -392,13 +391,6 @@ export default {
       }
     },
 
-    //选中回调
-    handleSelectionChange(val) {
-      this.selectApprovedList = val
-      this.queryAkeoForm.current = 1
-      this.queryAkeoForm.size = this.page.pageSize
-      this.loadApprovedList()
-    },
     //跳转到详情
     lookDetails(row) {
       let reqP = {requirementAekoId: row.requirementAekoId}
