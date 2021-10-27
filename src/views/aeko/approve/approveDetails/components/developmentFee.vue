@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-27 14:03:28
+ * @LastEditTime: 2021-10-27 16:06:44
  * @LastEditors: Please set LastEditors
  * @Description: 
 -->
@@ -48,7 +48,7 @@ import {
   iText,
 } from 'rise';
 import tableList from 'rise/web/quotationdetail/components/tableList';
-import { developmentCostTableTitle as tableTitle,developmentCostInfos } from "rise/web/quotationdetail/components/mouldAndDevelopmentCost/components/data.js"
+import { developmentCostTableTitle as tableTitle,developmentCostInfos,statesFilter } from "rise/web/quotationdetail/components/mouldAndDevelopmentCost/components/data.js"
 import { getCbdkent } from "@/api/aeko/approve";
 import { cloneDeep } from "lodash"
 export default {
@@ -69,6 +69,9 @@ export default {
       type:String,
       default:'',
     }
+  },
+  filters: {
+    statesFilter
   },
   data(){
     return{
@@ -95,10 +98,10 @@ export default {
         if(res.code == 200){
           if(res.code == 200){
             this.tableListData = Array.isArray(res.data.cbdKentList) ? res.data.cbdKentList : [];
-            this.$set(this.dataGroup, "rfqDevFeeTotal", res.data.shareTotal)
-            this.$set(this.dataGroup, "shareDevFee", res.data.shareAmount)
-            this.$set(this.dataGroup, "shareQuantity", res.data.shareQuantity)
-            this.$set(this.dataGroup, "unitPrice", res.data.totalPrice)
+            this.$set(this.dataGroup, "devFee", res.data.shareTotal) // 开发费合计
+            this.$set(this.dataGroup, "shareDevFee", res.data.shareAmount) // 分摊开发费用
+            this.$set(this.dataGroup, "shareQuantity", res.data.shareQuantity) // 分摊数量
+            this.$set(this.dataGroup, "unitPrice", res.data.totalPrice) // 单件开发成本
           }
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
