@@ -502,6 +502,7 @@
         'LK_LISHISHIYONGGAILÜ': '历史适用概率', //历史适用概率
         'LK_LIRUMENJING': '例如：⻔禁申请步骤，其他备注信息等', //例如：⻔禁申请步骤，其他备注信息等
         'LK_LINGJIANCAIGOUXIANGMU': '零件采购项目', //零件采购项目
+        'LK_LCAIGOUSHENQING': '采购申请', //采购申请
         'LK_LINGJIANCAIGOUXIANGMUGUANLI': '零件采购项目管理', //零件采购项目管理
         'LK_LINGJIANCAIGOUXIANGMULEIXING': '零件采购项目类型', //零件采购项目类型
         "LK_LINGJIANCAIGOUXIANGMUZHUANPAI": '零件采购项目转派', //零件采购项目转派
