@@ -58,7 +58,8 @@ export function saveTerminationPrice(data) {
 // 保存AEKO 报价单数据
 export function saveAekoQuotationSummary(data) {
   return requst({
-    url: `/aeko/save/quotation-summary`,
+    // url: `/aeko/save/quotation-summary`,
+    url: `/aeko/save/aPirce`,
     method: 'POST',
     data,
   })
