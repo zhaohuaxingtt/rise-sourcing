@@ -21,7 +21,7 @@ export function getRfqRateDeparts(params) {
 // 保存评分部门列表
 export function saveRfqRateDeparts(data) {
   return requst({
-    url: `/rfq-rate-departs/batch-update?rfqId=${ data.rfqId || 'null' }`,
+    url: `/rfq-rate-departs/batch-update${ data.rfqId ? '?rfqId=' + data.rfqId : '' }`,
     method: "PATCH",
     data: data.data
   })
