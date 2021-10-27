@@ -4,11 +4,11 @@
       <span class="font18 font-weight">{{ language('LK_GONGYINGSHANGPINGFEN','供应商评分') }}</span>
       <div class="floatright" v-if="!disabled">
         <!-- v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE" -->
-        <iButton v-if="!editStatus" @click="editStatus = true">{{ language('LK_BIANJI','编辑') }}</iButton>
-        <iButton v-if="editStatus" @click="editStatus = false">{{ language('LK_QUXIAO','取 消') }}</iButton>
-        <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language('LK_BAOCUN','保存') }}</iButton>
-        <iButton @click="setScoringDept">{{ language('LK_SHEZHIPINGFENBUMEN','设置评分部门') }}</iButton>
-        <iButton @click="sendTaskForRating" :loading="pushLoading">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton>
+        <iButton v-if="!editStatus" @click="editStatus = true" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_EDIT|供应商评分编辑">{{ language('LK_BIANJI','编辑') }}</iButton>
+        <iButton v-if="editStatus" @click="editStatus = false" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_CANCEL|供应商评分取消">{{ language('LK_QUXIAO','取 消') }}</iButton>
+        <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SAVE|供应商评分保存">{{ language('LK_BAOCUN','保存') }}</iButton>
+        <iButton @click="setScoringDept" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_SHEZHIPINGFENBUMEN','设置评分部门') }}</iButton>
+        <iButton @click="sendTaskForRating" :loading="pushLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PUSHSCORETASK|供应商评分推送评分任务">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton>
       </div>
     </div>
     <tablelist
