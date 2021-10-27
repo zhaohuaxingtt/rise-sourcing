@@ -17,6 +17,7 @@
           <!-- 选择 -->
           <iButton
             @click="handleChoose"
+            v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_NOMINATE_ADDNOMI|选择定点申请单"
           >
             {{ language("XUANZE", '选择') }}
           </iButton>
