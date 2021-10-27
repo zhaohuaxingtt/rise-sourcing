@@ -28,6 +28,15 @@ export function uploadFiles(params) {
   })
 }
 
+// km关联附件
+export function kmUploadFiles(data) {
+  return requst({
+    url: '/km/upload-files',
+    method: 'POST',
+    data
+  })
+}
+
 // 删除关联附件记录
 export function deleteFileHistory(params) {
   return requst({
