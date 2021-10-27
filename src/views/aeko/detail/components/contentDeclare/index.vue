@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-26 21:38:49
+ * @LastEditTime: 2021-10-27 09:19:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -797,7 +797,7 @@ export default {
           // 存在一品多点
           if(Array.isArray(res.data) && res.data.length > 0){
             this.$confirm(
-            this.language('LK_TIPS_AKEO_LINGJIANCUNZAIYIPINDUODIAN_1','当前选中的零件中存在一品多点，将同时发送报价至相关供应商，（还没加)   是否继续发送报价？'),
+            this.language('LK_TIPS_AKEO_LINGJIANCUNZAIYIPINDUODIAN','当前选中的零件中存在一品多点，将同时发送报价至相关供应商，是否继续发送报价？'),
             this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
             {
                 confirmButtonText: this.language('nominationLanguage.Yes','是'),
