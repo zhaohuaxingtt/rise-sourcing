@@ -8,7 +8,7 @@
  */
 export const tableTitle = [
   {props:'supplierName',name:'',key: '',tooltip:false,width:''},
-  {props:'fsnrGsnrNum',name:'',key: 'LK_FSNRGSNRNUMBER',tooltip:false,width:''},
+  {props:'fsnrGsnrNum',name:'FS号',key: 'FSNRGSNRNUMBER',tooltip:false,width:''},
   {props:'sapNum',name:'供应商SAP号',key: 'LK_SAPNUMBER',tooltip:false,width:''},
   {props:'procureFactoryName',name:'采购工厂',key: 'LK_CAIGOUGONGC',tooltip:false,width:''},
   {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO',tooltip:false,width:''},

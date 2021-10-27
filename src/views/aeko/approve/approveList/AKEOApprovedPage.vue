@@ -136,17 +136,19 @@
         </template>
         <!--增加材料成本-->
         <template #EP1="scope">
-          <span>{{ scope.row.materialIncrease }}</span>
+          <span>{{ scope.row.materialIncrease|numberToCurrency }}</span>
         </template>
 
         <!--增加投资税-->
         <template #EP2="scope">
-          <span>{{ scope.row.investmentIncrease }}</span>
+          <span>{{ scope.row.investmentIncrease|numberToCurrency }}</span>
         </template>
 
         <!--其他费用-->
         <template #EP3="scope">
-          <span>{{ scope.row.otherCost }}</span>
+          <span>{{
+              scope.row.otherCost|numberToCurrency
+            }}</span>
         </template>
         <!--科室-->
         <template #DepartmentName="scope">
@@ -205,6 +207,7 @@ import {searchLinie} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
+import {numberToCurrencyNo} from '../../../../utils/cutOutNum'
 
 export default {
   name: "AKEOApprovedPage",
@@ -223,6 +226,11 @@ export default {
       if (value == null || value == '') return ''
       let date = new Date(value);
       return dateUtils.formatDate(date, 'yyyy-MM-dd')
+    },
+    numberToCurrency(value) {
+      if (value == null || value == '') return ''
+
+      return numberToCurrencyNo(value)
     }
   },
   data() {

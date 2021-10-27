@@ -74,7 +74,7 @@ export default {
               this.tableTitle = cloneDeep(tableTitle)
               
               res.data[0].outputPlanList.forEach((planData, index) => {
-                this.tableTitle.splice(index, 0, { props: planData.year, name: planData.year, key: planData.year })
+                this.tableTitle.splice(index, 0, { props: planData.year + "", name: planData.year + "", key: planData.year + "" })
               })
 
               this.tableListData = res.data.map(item => {
@@ -96,7 +96,7 @@ export default {
               })
             }
 
-            this.page.totalCount = res.data.total || 0
+            this.page.totalCount = res.total || 0
           }
 
           this.loading = false
