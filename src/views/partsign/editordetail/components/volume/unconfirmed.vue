@@ -3,9 +3,9 @@
     <div class="header clearFloat">
       <span class="title">{{ language('LK_DAIQUERENBANBEN','待确认版本') }}</span>
       <div class="control">
-        <iButton v-if="!disabled" @click="confirm" :loading="confirmLoading" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_CONFIRM">{{ language('LK_QUEREN','确认') }}</iButton>
-        <iButton v-if="!disabled" @click="reject" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_REFUSE">{{ language('LK_JUJUE','拒绝') }}</iButton>
-        <iButton v-if="!disabled" @click="download" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_EXPORT">{{ language('LK_DAOCHU','导出') }}</iButton>
+        <iButton v-if="!disabled" @click="confirm" :loading="confirmLoading" v-permission.auto="PARTSIGN_EDITORDETAIL_UNCONFIRMED_CONFIRM|每车用量待确认版本确认">{{ language('LK_QUEREN','确认') }}</iButton>
+        <iButton v-if="!disabled" @click="reject" v-permission.auto="PARTSIGN_EDITORDETAIL_UNCONFIRMED_REFUSE|每车用量待确认版本拒绝">{{ language('LK_JUJUE','拒绝') }}</iButton>
+        <iButton v-if="!disabled" @click="download" v-permission.auto="PARTSIGN_EDITORDETAIL_UNCONFIRMED_EXPORT|每车用量待确认版本导出">{{ language('LK_DAOCHU','导出') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">
