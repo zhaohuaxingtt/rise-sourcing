@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-10-28 13:33:46
+ * @LastEditTime: 2021-10-28 13:57:42
  * @LastEditors: Hao,Jiang
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -108,12 +108,12 @@
             <div class="dashboard-card-content">
               <dl>
                 <dt>{{language('LK_SHANGHUIZHONG','上会中')}}</dt>
-                <dd><strong class="note cursor" @click="toLink(nomiURL('上会'))">{{basicData.meetingNum || 0}}</strong>
+                <dd><strong class="note cursor" @click="toLink(nomiURL('上会'))">{{basicData.nomiManageDTO && basicData.nomiManageDTO.meetingNum || 0}}</strong>
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('LK_LIUZHUANZHONG','流转中')}}</dt>
-                <dd><strong class="note cursor" @click="toLink(nomiURL('流转'))">{{basicData.tranformNum || 0}}</strong>
+                <dd><strong class="note cursor" @click="toLink(nomiURL('流转'))">{{basicData.nomiManageDTO &&  basicData.nomiManageDTO.tranformNum || 0}}</strong>
                 </dd>
               </dl>
             </div>
