@@ -1,13 +1,13 @@
 <template>
-  <div v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE">
+  <div v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE|技术交底会">
     <iCard>
       <div class="margin-bottom5 clearFloat" v-if="!disabled">
         <div class="floatright">
-          <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">
+          <iButton @click="addSupplier" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER|技术交底会-添加供应商">
             {{ language('LK_TIANJIAGONGYINGSHANG','添加供应商') }}
           </iButton>
           <iButton @click="sendToMyEmail"
-                   v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">
+                   v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL|技术交底会-发送至我的邮箱">
             {{ language('LK_FASONGZHIWODEYOUXIANG','发送至我的邮箱') }}
           </iButton>
         </div>
@@ -44,11 +44,11 @@
     <!------------------------------------------------------------------------>
     <!--                  供应商材料准备                                      --->
     <!------------------------------------------------------------------------>
-    <supplier-material-preparation class="margin-top20" ref="supplierMaterialPreparation"/>
+    <supplier-material-preparation v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SUPPLIERDOCUMENTS|技术交底会-供应商材料准备" class="margin-top20" ref="supplierMaterialPreparation"/>
     <!------------------------------------------------------------------------>
     <!--                  会议其它信息                                      --->
     <!------------------------------------------------------------------------>
-    <other-meeting-information class="margin-top20" ref="otherMeetingInformation"/>
+    <other-meeting-information v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_OTHERINFO|技术交底会-会议其它信息" class="margin-top20" ref="otherMeetingInformation"/>
     <!------------------------------------------------------------------------>
     <!--                  图纸弹框                                      --->
     <!------------------------------------------------------------------------>

@@ -4,13 +4,13 @@
  * @Description: 定点信详情页
 -->
 <template>
-    <iPage class="letterDetail">
+    <iPage class="letterDetail" v-permission.auto="LK_LETTER_DETAIL_PAGE|定点信详情页">
         <div class="header clearFloat">
         <div class="title">{{language('LK_DINGDIANXINBIANHAO','定点信编号')}}: {{detailInfo.letterNum}}</div>
         <div class="control">
             <span v-if="isEdit">
-                <iButton :loading="btnLoading.save" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
-                <iButton @click="changeEditStatus">{{language('LK_QUXIAO','取 消')}}</iButton>
+                <iButton :loading="btnLoading.save" @click="save" v-permission.auto="LK_LETTER_DETAIL_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
+                <iButton @click="changeEditStatus" v-permission.auto="LK_LETTER_DETAIL_CANCEL|取消">{{language('LK_QUXIAO','取 消')}}</iButton>
             </span>
             <span v-else>
                 <!-- 状态为作废时显示 -->
@@ -32,7 +32,7 @@
             <logButton class="margin-left20" @click="toLogPage"/>
         </div>
         </div>
-        <iCard class="margin-top30">
+        <iCard class="margin-top30" v-permission.auto="LK_LETTER_DETAIL_FORM|表单">
            <el-radio-group v-model="radioType" :disabled="!isEdit">
                 <el-radio :label="'standard'">{{language('LK_BIAOZHUNDINGDIANXIN','标准定点信')}}</el-radio>
                 <el-radio :label="'NonStandard'">{{language('LK_FEIBIAOZHUNDINGDIANXIN','⾮标准定点信')}}</el-radio>
@@ -71,7 +71,7 @@
         </iCard>
 
         <!-- 非标准定点信 -->
-        <nonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit" :nomiAppId="nominateLetterId"/>
+        <nonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit" :nomiAppId="nominateLetterId" v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER|非标准定点信" />
 
         <!-- 历史定点信弹窗 -->
         <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" :nominateLetterId ="nominateLetterId"/>

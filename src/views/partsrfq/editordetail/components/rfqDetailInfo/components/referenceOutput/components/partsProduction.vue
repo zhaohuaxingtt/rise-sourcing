@@ -4,7 +4,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ language('LK_LINGJIANCHANLIANG','零件产量') }}</span>
         <div class="floatright">
-          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_EXPORTS">{{
+          <iButton @click="exports" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_EXPORTS|零件产量导出">{{
               language('LK_DAOCHU','导出')
             }}
           </iButton>

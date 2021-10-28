@@ -4,7 +4,7 @@
       <span class="font18 font-weight">{{ language('LK_XUNJIAFUJIAN','询价附件') }}</span>
       <div class="floatright">
         <iButton v-if="!disabled" @click="deleteItems"
-                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DELETE">
+                 v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DELETE|询价附件-删除">
           {{ language('LK_SHANCHU','删除') }}
         </iButton>
         <upload-button
@@ -13,15 +13,15 @@
             :upload-button-loading="uploadAttachmentsButtonLoading"
             class="margin-left8 margin-right8"
             :buttonText="language('LK_SHANGCHUAN','上传')"
-            v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_UPLOADBUTTON"/>
+            v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_UPLOADBUTTON|询价附件-上传"/>
         <iButton @click="download"
                  :loading="downloadLoading"
-                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DOWNLOADBUTTON">
+                 v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DOWNLOADBUTTON|询价附件-下载">
           {{ language('LK_XIAZAI','下载') }}
         </iButton>
         <!-- 暂不做，后端暂无接口：用户可以选择“通知全部供应商”，询价附件会发送给当前RFQ BDL中所选择的全部供应商-->
         <iButton v-if="!disabled" @click="notifyAllSuppliers"
-                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYALL">
+                 v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYALL|询价附件-通知全部供应商">
           {{ language('LK_TONGZHIQUANBUGONGYINGSHANG','通知全部供应商') }}
         </iButton>
         <!-- 暂不做，后端暂无接口：用户选择“通知已报价供应商”，系统会根据RFQ的报价记录，发给有有效报价的供应商-->
