@@ -102,7 +102,7 @@
         </iCard>
 
         <!-- 附件列表查看 -->
-      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
+      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList" :fromPage="'check'"/>
     </iPage>
 </template>
 
