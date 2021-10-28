@@ -327,13 +327,6 @@ export default {
           this.$message.error(res.desZh)
         }
       })
-      /*  this.approvedList = [
-          {
-            aekoNum: '12313',
-            isTop: true,
-            describe: '23444',
-          }
-        ]*/
     },
     //查询
     queryApprovedAKEOForm() {
@@ -356,8 +349,11 @@ export default {
       if (buyerName.length) {
         buyerName.map((item) => {
           item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-          item.value = item.id;
+          item.value = item.id
+          item.enName=item.nameEn
+          item.zhName=item.nameZh
         })
+        this.options=buyerName
         this.buyerUsers = buyerName;
       } else {
         const {deptDTO = {}} = userInfo;
@@ -367,8 +363,11 @@ export default {
           if (code == 200) {
             data.map((item) => {
               item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-              item.value = item.id;
+              item.value = item.id
+              item.enName=item.nameEn
+              item.zhName=item.nameZh
             })
+            this.options=buyerName
             this.buyerUsers = data;
           } else {
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -383,12 +382,13 @@ export default {
         setTimeout(() => {
           this.loading = false;
           this.options = this.buyerUsers.filter(item => {
-            return item.label.toLowerCase()
-                .indexOf(query.toLowerCase()) > -1;
+            let isZhNameRes=item.zhName&&item.zhName.indexOf(query)>-1?true:false
+            let isEnNameRes=item.enName&&item.enName.indexOf(query)>-1?true:false
+            return isZhNameRes||isEnNameRes
           });
         }, 200);
       } else {
-        this.options = [];
+        this.options = this.buyerUsers;
       }
     },
 
