@@ -17,8 +17,10 @@ function splitStr(str, num){
     return str.match(reg).join('\n');
 }
 
-export function generateOptions(params) {
+export function generateOptions(params, vm=null) {
     try {
+        // 零件采购项目数量汇总
+        const partPurscoreData = params.partsProcureData || []
         // 平均定点周期
         const freq = params.freqData || []
         // 生成freqData
@@ -93,9 +95,15 @@ export function generateOptions(params) {
                     color: '#333'
                 },
                 formatter: function(params) {
+                    // 零件采购项目数量
+                    const partPurscoreName = vm ? vm.language('LINGJIANCAIGOUXIANGMUZONGSHU', '零件采购项目总数') : '零件采购项目总数'
+                    const partPurscoreNum = params[0].dataIndex !== undefined && partPurscoreData[params[0].dataIndex] || 0
                     return `<div class="dashboard-tooltip">
                         <span class="item-name">${params[0].name}</span><br>
                         <p style="padding-left: 5px; padding-top: 5px;">
+                            ${maker0} ${partPurscoreName}:${partPurscoreNum}
+                        <p>
+                        <p style="padding-left: 5px;">
                             ${maker0} ${params[0].seriesName}:${params[0].value}%
                         <p>
                         <p style="padding-left: 5px;">
