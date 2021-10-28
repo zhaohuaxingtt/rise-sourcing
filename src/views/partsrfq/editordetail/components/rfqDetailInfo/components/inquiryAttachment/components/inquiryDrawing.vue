@@ -6,7 +6,7 @@
       <div class="floatright">
         <iButton @click="download"
                  :loading="downloadLoading"
-                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DRAWINGDOWNLOAD">
+                 v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DRAWINGDOWNLOAD|询价图纸下载">
           {{ language('LK_XIAZAI','下载') }}
         </iButton>
       </div>

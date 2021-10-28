@@ -1,7 +1,7 @@
 /*
  * @Author: YoHo
  * @Date: 2021-10-11 17:18:47
- * @LastEditTime: 2021-10-19 18:20:08
+ * @LastEditTime: 2021-10-26 19:27:14
  * @LastEditors: YoHo
  * @Description: 
  */
@@ -148,7 +148,7 @@ export const profitTableTitle = [
 ]
 // 是否为“新”数据
 export const originRowClass = function ({ row }) {
-  return row.partCbdType!=1 ? "isNewRow" : "originRow"
+  return row.partCbdType != 1 ? "isNewRow" : "originRow"
 }
 // 是否为“TOTAL”数据
 export const totalRowClass = function ({ row }) {
@@ -180,3 +180,54 @@ export const mouldCostInfos = [
   { props: "shareQuantity", name: "分摊数量", key: "LK_FENTANSHULIANG" },
   { props: "shareAmount", name: "单件投资变动成本", key: "DANJIANTOUZICHENGBENBIANDONG" }
 ]
+
+// 金额数据，千分位格式处理
+export const list = [
+  // 汇总表
+  'originUnitPrice', 
+  'originTotalPrice', 
+  'newUnitPrice', 
+  'newTotalPrice', 
+  'alteration', 
+  'total', 
+  // 原材料/散件成本
+  'unitPrice',
+  'directMaterialCost',
+  'materialManageCost',
+  'materialCost',
+  // 制造成本
+  'specialDeviceCost',
+  'directLaborRate',
+  'deviceRate',
+  'indirectManufacturingAmount',
+  'laborCost',
+  'deviceCost',
+]
+
+// 保留位数
+export function floatNum(num, minFixed = 2, maxFixed = 4) {
+  if ((num ?? '') === '') return null;
+  let floatNum = Number(Number(num).toFixed(maxFixed));
+  let float = floatNum.toString().split(".")[1];
+  floatNum =
+    (float?.length || 0) < minFixed
+      ? floatNum.toFixed(minFixed)
+      : floatNum;
+  return floatNum;
+}
+
+// 费用千分位处理
+export function fixNumber(str, precision = 2) {
+  if (!str) return null;
+  var re = /(?=(?!(\b))(\d{3})+$)/g;
+  var fixstr = (str || 0).toString().split(".");
+  fixstr[0] = fixstr[0].replace(re, ",");
+  if (precision == 0) {
+    // 若小数点后两位是 .00 去除小数点后两位
+    if (fixstr[1] && fixstr[1] == "00") return fixstr[0];
+  }
+  return fixstr.join(".");
+}
+export function floatFixNum(num, minFixed = 2, maxFixed = 4) {
+  return fixNumber(floatNum(num, minFixed, maxFixed), minFixed)
+}
