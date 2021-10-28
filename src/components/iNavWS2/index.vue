@@ -5,26 +5,65 @@
  -->
 <template>
   <div class="btnList flex-align-center">
+    <!-- v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD" -->
+    <icon v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD" @click.native="powerBiUrl" v-if="isIconShow" symbol name="iconicon-xiazai" class="card-icon"></icon>
     <iNavMvp
-      :lev='2'
-      :routerPage="true"
-      :list="navList"
-      class="iNavMvp"
+        :lev='2'
+        :routerPage="true"
+        :list="navList"
+        class="iNavMvp"
+        v-if="(
+            $route.path.indexOf('budgetManagement') > -1 &&
+            $route.path.indexOf('addModelBag') === -1) ||
+            $route.path.indexOf('investmentAdmin') > -1 ||
+            $route.path.indexOf('purchase/investmentList') > -1 ||
+            $route.path.indexOf('purchaseSupplier/investmentList') > -1"
     ></iNavMvp>
-    <span v-if="magicCube" @click="changeDataBase" class="dataBase">
+    <iButton
+        v-if="$route.path.indexOf('budgetManagement/generateInvestmentList') > -1"
+        class="nextStep"
+        @click="$emit('nextStep')"
+        :disabled="$store.state.mouldManagement.isBudget == 3"
+        v-loading="nextStepLoading"
+    >{{ $t('LK_XIAYIBU') }}
+    </iButton>
+    <!--      <div class="logButton" @click="$emit('click')">-->
+    <!--        <icon symbol name="iconrizhiwuzi" class="icon"/>-->
+    <!--        <span @click="changeDataBase">{{ $t("LK_RIZHI") }}</span>-->
+    <!--      </div>-->
+    <span v-if="historyDataBase" @click="changeDataBase" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
       <transition name="bounce">
         <Popover
-          :content="magicCubeHoverText"
-          placement="top-start"
-          trigger="hover">
+            :content="hoverText"
+            placement="top-start"
+            trigger="hover">
             <icon slot="reference" v-if="!dataBase" symbol name="icondatabaseweixuanzhong"></icon>
         </Popover>
       </transition>
       <transition name="bounceTo">
         <Popover
-          :content="magicCubeHoverText"
-          placement="top-start"
-          trigger="hover">
+            :content="hoverText"
+            placement="top-start"
+            trigger="hover">
+            <icon slot="reference" v-if="dataBase" symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>
+        </Popover>
+      </transition>
+    </span>
+
+    <span v-if="mouldBook" @click="changeDataBase1" class="dataBase">
+      <transition name="bounce">
+        <Popover
+            :content="hoverText"
+            placement="top-start"
+            trigger="hover">
+            <icon slot="reference" v-if="!dataBase" symbol name="icondatabaseweixuanzhong"></icon>
+        </Popover>
+      </transition>
+      <transition name="bounceTo">
+        <Popover
+            :content="hoverText"
+            placement="top-start"
+            trigger="hover">
             <icon slot="reference" v-if="dataBase" symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>
         </Popover>
       </transition>
@@ -34,30 +73,33 @@
 <script>
 import {
   icon,
+  iButton,
 } from "rise";
 import { Popover } from "element-ui";
+import logButton from "pages/ws2/budgetManagement/components/logButton";
+import {budgetManagement3rd} from "pages/ws2/budgetManagement/components/data";
 import {iNavMvp} from 'rise';
 import store from '@/store';
+import {cloneDeep} from 'lodash'
 
 export default {
   props: {
-    // 导航List
-    navList: {
-      type: Array,
-      default: () => []
-    },
-    // 是否展示右侧魔方
-    magicCube: {
+    nextStepLoading: Boolean,
+    dataBaseInit: Boolean,
+    navList: Array,
+    isIconShow: {
       type: Boolean,
       default: false
     },
-    // 是否展示右侧魔方, PS需magicCube: true
-    magicCubePath: {
-      type: String,
-      default: ''
+    historyDataBase: {
+      type: Boolean,
+      default: true
     },
-    // 魔方HOVER的文案, PS需magicCube: true
-    magicCubeHoverText: {
+    mouldBook: {
+      type: Boolean,
+      default: false
+    },
+    hoverText: {
       type: String,
       default: '',
     }
@@ -66,14 +108,19 @@ export default {
   },
   components: {
     icon,
+    iButton,
     iNavMvp,
-    Popover,
+    Popover
   },
   data() {
     return {
+      activeIndex: 999,
       routerPage: true,
       query: true,
       dataBase: false,
+      onleySelf: true,
+      checkHistory: false,
+      budgetManagement3rd: budgetManagement3rd,
     }
   },
   computed: {
@@ -82,16 +129,57 @@ export default {
     }
   },
   created() {
-    this.dataBase = this.$route.path.includes(this.magicCubePath) ? true : false
+    // let cloneNavList = cloneDeep(this.navList)
+    // if(this.whiteBtnList['TOOLING_BUDGET_OVERVIEW']){
+    //   this.navListTemp.push(cloneNavList[0])
+    // }
+    // if(this.whiteBtnList['TOOLING_BUDGET_COMMONSOURCING_MODELBAGBUDGET']){
+    //   this.navListTemp.push(cloneNavList[1])
+    // }
+
+    // if(this.whiteBtnList['TOOLING_PAYMENTPLAN_PAYMENTBOARD']){  //  付款看板
+    //   this.navListTemp.push(cloneNavList[2])
+    // }
+    // if(this.whiteBtnList['TOOLING_PAYMENTPLAN_YEAR']){  //  年度付款计划
+    //   this.navListTemp.push(cloneNavList[3])
+    // }
+    // if(this.whiteBtnList['TOOLING_PAYMENTPLAN_MONTH']){ //  月度付款计划
+    //   this.navListTemp.push(cloneNavList[4])
+    // }
+    this.$store.commit('SET_onleySelf', this.onleySelf)
+    this.$store.commit('SET_checkHistory', this.checkHistory)
+    if(this.$route.path == '/tooling/dataBase'){
+      this.dataBase = true
+    }
+    if(this.$route.path == '/purchase/mouldBook'){
+      this.dataBase = true
+    }
   },
   methods: {
-    changeDataBase(){
+
+    powerBiUrl(){ //  打印
+      const report = store.state.investmentAdmin.report;
+      report.print();
+    },
+
+    changeDataBase() {
       this.dataBase = true
-      this.$router.push({path: this.magicCubePath})
+      this.activeIndex = 999
+      this.$router.push({path: '/tooling/dataBase'})
+      this.$emit('changeDataBase')
+    },
+
+    changeDataBase1(){
+      this.dataBase = true
+      this.activeIndex = 999
+      this.$router.push({path: '/purchase/mouldBook'})
       this.$emit('changeDataBase')
     },
   },
   watch: {
+    dataBaseInit(val){
+      this.dataBase = false
+    }
   }
 }
 </script>
@@ -182,6 +270,10 @@ export default {
 }
 
 .btnList {
+  .nextStep {
+    margin-right: 20px;
+  }
+
   > span {
     font-size: 20px;
 
@@ -203,6 +295,31 @@ export default {
     .openIcon {
       width: 31px;
       height: 36px;
+    }
+  }
+
+  .logButton {
+    display: inline-block;
+    user-select: none;
+    cursor: pointer;
+    margin-right: 20px;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      vertical-align: top;
+
+      & + span {
+        margin-left: 4px;
+      }
+    }
+
+    span {
+      display: inline-block;
+      font-size: 14px;
+      height: 20px;
+      line-height: 20px;
+      color: $color-blue;
     }
   }
 }

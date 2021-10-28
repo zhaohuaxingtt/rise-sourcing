@@ -147,7 +147,7 @@ export default {
           let taskIds = res.data.map((item) => item.taskId)
           let taskId = taskIds.join(',');
           let transmitObj = {
-            option: 2,
+            option: 3,
             aekoApprovalDetails: {
               aekoNum: row.aekoNum,
               requirementAekoId: row.requirementAekoId,
