@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-10-27 16:42:44
+ * @LastEditTime: 2021-10-28 20:35:44
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -90,7 +90,7 @@
           >
             <template slot="header" slot-scope="scope">
               <div>
-                {{ language(item.key, item.label) }}
+                {{ language(item.key, item.name) }}
                 <span class="require">*</span>
               </div>
             </template>
@@ -135,7 +135,7 @@
           <el-table-column
             v-else
             :key="item.key"
-            :label="language(item.key, item.label)"
+            :label="language(item.key, item.name)"
             :prop="item.props"
             align="center"
           >
@@ -229,7 +229,7 @@ export default {
     summary() {
       let result = {};
       let sumlist = ["originPerCarDosage", "perCarDosage"];
-      tableTitle.forEach((i) => {
+      this.tableTitle.forEach((i) => {
         if (sumlist.includes(i.props)) {
           result[i.props] = 0;
         } else {
