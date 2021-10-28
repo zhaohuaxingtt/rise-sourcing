@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-10-11 14:39:09
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-28 14:55:32
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
 -->
@@ -116,6 +116,11 @@ export default {
 
       this.tabs = newTabs;
       this.currentTab = 'contentDeclare';
+    }
+
+    // 若从AEKO查看跳转过来的默认进入封面表态
+    if(from == 'check'){
+       this.currentTab ='cover';
     }
     
     if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {

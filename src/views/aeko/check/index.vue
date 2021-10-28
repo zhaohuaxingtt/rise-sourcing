@@ -69,37 +69,40 @@
                 :tableLoading="loading"
                 @handleSelectionChange="handleSelectionChange"
                 >
-                <!-- AEKO号 -->
-                <template #aekoCode="scope">
-                  <div class="table-item-aeko">
-                      <icon v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
-                      <span class="link" ><a @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </a></span>
-                      <a v-if="scope.row.fileCount && scope.row.fileCount > 0" class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
-                  </div>
-                </template>
-                <!-- 描述 -->
-                <template #describe="scope">
-                  <span class="link" @click="checkDescribe(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
-                </template>
-                <!-- 审批单 -->
-                <template #assignsheet="scope">
-                  <span class="link" @click="checkAssignsheet(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
-                </template>
+                  <!-- AEKO号 -->
+                  <template #aekoCode="scope">
+                    <div class="table-item-aeko">
+                        <icon v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
+                        <span class="link" ><a @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </a></span>
+                        <a v-if="scope.row.fileCount && scope.row.fileCount > 0" class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+                    </div>
+                  </template>
+                  <!-- 描述 -->
+                  <template #describe="scope">
+                    <span class="link" @click="checkDescribe(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+                  </template>
+                  <!-- 审批单 -->
+                  <template #assignsheet="scope">
+                    <span class="link" @click="checkAssignsheet(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+                  </template>
                 </tableList>
                 <!-- 分页 -->
                 <iPagination
-                    v-update
-                    @size-change="handleSizeChange($event, getList)"
-                    @current-change="handleCurrentChange($event, getList)"
-                    background
-                    :current-page="page.currPage"
-                    :page-sizes="page.pageSizes"
-                    :page-size="page.pageSize"
-                    :layout="page.layout"
-                    :total="page.totalCount"
+                  v-update
+                  @size-change="handleSizeChange($event, getList)"
+                  @current-change="handleCurrentChange($event, getList)"
+                  background
+                  :current-page="page.currPage"
+                  :page-sizes="page.pageSizes"
+                  :page-size="page.pageSize"
+                  :layout="page.layout"
+                  :total="page.totalCount"
                 />
             </div>
         </iCard>
+
+        <!-- 附件列表查看 -->
+      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     </iPage>
 </template>
 
@@ -122,6 +125,7 @@ import { TAB,getLeftTab } from '../data';
 import aekoSelect from '../components/aekoSelect'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
+import filesListDialog from '../manage/components/filesListDialog'
 import {
   searchAekoStatus,
   searchBrand,
@@ -136,6 +140,7 @@ import {
 } from '@/api/aeko/check';
 import {user as configUser } from '@/config'
 import { debounce } from "lodash";
+import { lookDetails } from '../approve/approveList/lib'
 
 export default {
     name:'aekoCheck',
@@ -153,6 +158,7 @@ export default {
         iCard,
         iButton,
         icon,
+        filesListDialog,
     },
     created(){
         this.getSearchList();
@@ -160,53 +166,89 @@ export default {
         this.leftTab = getLeftTab(2);
     },
     data(){
-        return{
-            navList:TAB,
-            leftTab:[],
-            SearchList:SearchList || [],
-            searchParams:{
-              brand:'',
-              linieDeptNumList:[''],
-              carTypeCodeList:[''],
-              coverStatusList:[''],
-            },
-            selectOptions:{
-                linieDeptNumList:[],
-                cartypeCode:[],
-                carTypeCodeList:[],
-                buyerId:[],
-                aekoStatusList:[],
-                coverStatusList:[],
-                brand:[]
-            },
-            selectOptionsCopy:{
-                linieDeptNumList:[],
-                cartypeCode:[],
-                carTypeCodeList:[],
-                buyerId:[],
-                aekoStatusList:[],
-                coverStatusList:[],
-                brand:[]
-            },
-            tableListData:[],
-            tableTitle:tableTitle,
-            loading:false,
-            selectItems:[],
-        }
+      return{
+        navList:TAB,
+        leftTab:[],
+        SearchList:SearchList || [],
+        searchParams:{
+          brand:'',
+          buyerName:'',
+          linieDeptNumList:[''],
+          carTypeCodeList:[''],
+          cartypeCode:[''],
+          coverStatusList:[''],
+          aekoStatusList:[''],
+        },
+        selectOptions:{
+            linieDeptNumList:[],
+            cartypeCode:[],
+            carTypeCodeList:[],
+            buyerName:[],
+            aekoStatusList:[],
+            coverStatusList:[],
+            brand:[]
+        },
+        selectOptionsCopy:{
+            linieDeptNumList:[],
+            cartypeCode:[],
+            carTypeCodeList:[],
+            buyerName:[],
+            aekoStatusList:[],
+            coverStatusList:[],
+            brand:[]
+        },
+        tableListData:[],
+        tableTitle:tableTitle,
+        loading:false,
+        selectItems:[],
+        filesVisible:false,
+        itemFileData:{},
+      }
     },
     methods:{
         sure(){
-
+          this.page.currPage = 1;
+          this.getList();
         },
         reset(){
-
+          this.searchParams = {
+            brand:'',
+            buyerName:'',
+            linieDeptNumList:[''],
+            carTypeCodeList:[''],
+            cartypeCode:[''],
+            coverStatusList:[''],
+            aekoStatusList:[''],
+          };
+          this.sure();
         },
         async getList(){
           const { page,searchParams } = this;
+          const {aekoCode,partNum,linieDeptNumList,cartypeCode,carTypeCodeList,buyerName,aekoStatusList,coverStatusList,frozenDate=[],brand} = searchParams;
+          // 车型和车型项目合并到一个参数里面传给后端查询
+          let cartypeArr = [
+            ...(cartypeCode.length && cartypeCode[0]=='' ? [] : cartypeCode),
+            ...(carTypeCodeList.length && carTypeCodeList[0]=='' ? [] : carTypeCodeList),
+          ];
+          
           const data = {
               current:page.currPage,
               size:page.pageSize,
+              aekoCode,
+              partNum,
+              buyerName,
+              brand,
+              linieDeptNumList:linieDeptNumList.length && linieDeptNumList[0]=='' ? undefined : linieDeptNumList,
+              aekoStatusList:aekoStatusList.length && aekoStatusList[0]=='' ? undefined : aekoStatusList,
+              coverStatusList:coverStatusList.length && coverStatusList[0]=='' ? undefined : coverStatusList,
+              carTypeCodeList:cartypeArr,
+              frozenDate,
           };
+          // 若有冻结起止时间将其拆分成两个字段
+          if(frozenDate && frozenDate.length){
+              data['frozenDateStart'] = frozenDate[0]+' 00:00:00';
+              data['frozenDateEnd'] = frozenDate[1]+' 00:00:00';
+          }
           this.loading = true;
           getCheckList(data).then((res)=>{
             this.loading = false;
@@ -404,8 +446,17 @@ export default {
         window.open(routeData.href, '_blank')
       },
       // 跳转到审批单
-      checkAssignsheet(){
+      checkAssignsheet(row){
+        lookDetails(this, row, true)
+      },
 
+      // 查看附件列表
+      async checkFiles(row){
+        this.itemFileData = row;
+        this.changeVisible('filesVisible',true);
+      },
+      changeVisible(type,visible){
+          this[type] = visible;
       },
       // 导出
       exportAeko(){
@@ -447,5 +498,15 @@ export default {
                 top: 0;
             }
         }
+    ::v-deep .el-select__tags-text{
+      display: inline-block;
+      max-width: 70px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    ::v-deep .el-select .el-tag__close.el-icon-close{
+      top: -4px;
+    }
     }
 </style>
