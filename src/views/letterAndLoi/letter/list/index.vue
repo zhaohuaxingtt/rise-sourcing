@@ -179,7 +179,7 @@ export default {
     },
     created(){
         // 添加默认筛选参数
-        const acceptKeys = ['status','linieName','csfCssName']
+        const acceptKeys = ['status','linieName','csfCssName', 'currentUser', 'isDelay']
         Object.keys(this.$route.query).forEach(key => {
             acceptKeys.includes(key) && (this.$set(this.searchParams, `${ key }`, this.$route.query[key]))
         })
