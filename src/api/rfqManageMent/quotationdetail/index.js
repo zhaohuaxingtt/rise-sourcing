@@ -520,3 +520,21 @@ export function getIsAutoCal(data) {
     data
   })
 }
+
+// 承诺书签署状态
+export function getNoticeStatus(data) {
+  return requst({
+    url: `/part/getNoticeStatus`,
+    method: 'POST',
+    data
+  })
+}
+
+// 获取承诺书
+export function getNoticeDetail(data) {
+  return requst({
+    url: `/part/getNoticeDetail`,
+    method: 'POST',
+    data
+  })
+}

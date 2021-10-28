@@ -9,7 +9,7 @@
 <script>
 import quotationDetail from "rise/web/quotationdetail"
 import {iMessage} from 'rise'
-import {quotations} from '@/api/rfqManageMent/workingRfq'
+import {quotations, getNoticeStatus} from '@/api/rfqManageMent/workingRfq'
 export default {
   extends: quotationDetail,
   created(){
@@ -34,10 +34,13 @@ export default {
      * @param {*}
      * @return {*}
      */
-    agreePrice(){
+    async agreePrice() {
+      // const status = await this.getNoticeStatus()
+      // if (!status) return
+      
       this.quotations(1)
     },
-        /**
+    /**
      * @description: 签收拒绝 
      * @param {*} type
      * @return {*}
