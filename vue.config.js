@@ -117,6 +117,22 @@ module.exports = {
     https: false,
     hot: true,
     proxy: {
+      "/supplierservice": {
+        target: "http://10.122.17.38:8010",
+        changeOrigin: true,
+        /* pathRewrite: {
+                "^/rise-mock": "",
+              }, */
+      },
+      // ------------------ 共用地址 end ------------------------------
+      // ------------------ 共用地址 start ----------------------------
+      "/supplier": {
+        target: "http://10.122.17.38:8017",
+        changeOrigin: true,
+        /* pathRewrite: {
+                "^/rise-mock": "",
+              }, */
+      },
       '/projectApi': {
         target: 'http://10.122.17.38:8005',
         // target: 'http://10.122.17.38:8005', //dev
@@ -133,14 +149,14 @@ module.exports = {
           '^/approvalApi': '',
         },
       },
-      '/api': {
-        // target: 'http://10.160.138.38:8788',
-        target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': '',
-        },
-      },
+      // '/api': {
+      //   // target: 'http://10.160.138.38:8788',
+      //   target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/',
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/api': '',
+      //   },
+      // },
       '/quotationApiDL': {
         // target: 'http://10.160.138.38:8788',
         target: 'http://10.122.17.38:8025',
@@ -394,6 +410,10 @@ module.exports = {
         pathRewrite: {
           '^/biddingApi': '',
         },
+      },
+      '/bidding': {
+        target: 'http://10.122.17.38:8056',
+        changeOrigin: true,
       },
       //cf组件代理
       '/baseInfo': {

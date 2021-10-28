@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-03-18 20:15:17
- * @LastEditTime: 2021-10-14 11:11:53
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-10-27 23:58:11
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\usercenter\index.js
  */
@@ -91,5 +91,14 @@ export function getUserListByTag(parmars){
         url:'/api/getUserListByTag',
         method:"GET",
         params:parmars,
+    })
+}
+
+//根据权限树导出excel
+export function allResourceTreeList(){
+    return requst({
+        url:'/resource/allResourceTreeList',
+        method:"POST",
+        data:{}
     })
 }

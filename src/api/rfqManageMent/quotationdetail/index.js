@@ -2,7 +2,7 @@
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-08-19 14:58:02
+ * @LastEditTime: 2021-10-27 19:49:54
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -24,7 +24,14 @@ export function getPartsQuotations(params) {
     method: 'GET'
   })
 }
-
+// 竞价结果回传对比
+export function contrastBidding(params) {
+  return requst({
+    url: `/online-bidding/contrast-bidding/${params}`,
+    method: 'POST',
+    data: params
+  })
+}
 // 提交报价单
 export function submitPartsQuotation(params) {
   return requst({
