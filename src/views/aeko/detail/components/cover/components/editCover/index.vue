@@ -42,6 +42,7 @@
               :clearable="item.clearable"
               v-model="basicInfo[item.props]" 
               :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+              @visible-change="selectVisibleChange($event, item.selectOption)"
               :disabled="disabled" 
               
             >
@@ -440,6 +441,16 @@ export default {
           }
         }else{
           this.selectOptions[props] = selectOptionsCopy[props];
+        }
+      },
+      selectVisibleChange(visible, key){
+        switch(key) {
+          case "fsList":
+          if (!visible) {
+            this.selectOptions['fsList'] = this.selectOptionsCopy['fsList']
+          }
+          break
+          default:
         }
       },
     }
