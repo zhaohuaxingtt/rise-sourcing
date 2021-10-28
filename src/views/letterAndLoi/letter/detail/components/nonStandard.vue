@@ -27,7 +27,7 @@
             {{language('LK_FUJIAN','附件')}}
             <span class="title-tips">{{language('LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN','上传时文件请旋转至正常方向后上传')}}</span>
         </p>
-        <div> 
+        <div v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER_TABLE|非标准定点信表格"> 
             <tableList
                 class="table"
                 index
