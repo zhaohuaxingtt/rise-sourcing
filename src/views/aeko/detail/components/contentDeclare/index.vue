@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-27 16:06:33
+ * @LastEditTime: 2021-10-27 17:03:11
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -531,6 +531,7 @@ export default {
       // if (!row.oldPartNumPreset) return
 
       const query = {
+        partNum: row.partNum,
         requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: row.objectAekoPartId,
         oldPartNumPreset: typeof row.oldPartNumPreset === "string" && row.oldPartNumPreset.trim()
