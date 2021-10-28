@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-06 15:21:13
- * @LastEditTime: 2021-09-08 09:41:27
+ * @LastEditTime: 2021-10-28 11:02:39
  * @LastEditors: Hao,Jiang
  * @Description: 状态跟踪详情
  * @FilePath: /front-web/src/views/dashboard/report/index.vue
@@ -107,10 +107,14 @@ export default {
       this.loading = initState
       this.dataLoading = true
       console.log('新请求', this.$refs)
+      const acceptKeys = ['type','currentUser','isDelay']
       const searchParams = this.$refs.search.form || {}
       const params = Object.assign(searchParams, {
         current: this.current,
         size: this.size
+      })
+      Object.keys(this.$route.query).forEach(key => {
+          acceptKeys.includes(key) && (this.$set(params, `${ key }`, this.$route.query[key]))
       })
       try {
         // const res = require('./moke.json')

@@ -16,7 +16,7 @@
         <!-- 零件号 -->
         <el-form-item :label="language('LINGJIAHAO', '零件号')" prop='partNum'>
           <i-input
-              v-model.trim="queryAkeoForm.partNum"
+              v-model="queryAkeoForm.partNum"
               :placeholder="language('LK_QINGSHURU','请输入')"
               clearable
           ></i-input>
@@ -355,6 +355,7 @@ export default {
       if (this.checkMinCost() && this.checkMaxCost()) {
         this.page.currPage = 1
         this.queryAkeoForm.size = this.page.pageSize
+        this.queryAkeoForm.partNum=this.queryAkeoForm.partNum.trim()
         this.loadPendingAKEOList()
       }
     },

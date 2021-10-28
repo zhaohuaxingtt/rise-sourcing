@@ -100,3 +100,15 @@ export function checkAekoContentSubmitState(requirementAekoId) {
         data,
     })
 }
+
+// 封面表态--取消通过
+export function cancelPass(data) {
+    return new Promise((r,j)=>{
+        r({
+            code:'200',
+            data:data,
+            desZh:'前端模拟接口',
+            desEh:'前端模拟接口'
+        })
+    })
+}

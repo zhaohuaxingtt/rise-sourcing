@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2021-10-17 14:40:19
+ * @LastEditTime: 2021-10-26 16:15:46
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -26,7 +26,7 @@
       :tableTitle="tableTitle"
       :tableData="tableData"
     >
-        <template #originalAPrice="scope">
+        <template #originAPrice="scope">
           <el-popover
             placement="top"
             trigger="hover">
@@ -34,16 +34,40 @@
               <p style="text-align:center">{{ scope.row.source }}</p>
             </template>
             <template #reference>
-              <span>{{ scope.row.originalAPrice }}</span>
+              <span>{{ floatFixNum(scope.row.originAPrice) || '' }}</span>
             </template>
           </el-popover>
+        </template>
+        <template #apriceChange="scope">
+          {{floatFixNum(scope.row.apriceChange) || '' }}
+        </template>
+        <template #aprice="scope">
+          {{floatFixNum(scope.row.aprice) || '' }}
+        </template>
+        <template #originBnkFee="scope">
+          {{floatFixNum(scope.row.originBnkFee) || '' }}
+        </template>
+        <template #bnkFee="scope">
+          {{floatFixNum(scope.row.bnkFee) || '' }}
+        </template>
+        <template #tooling="scope">
+          {{floatFixNum(scope.row.tooling) || '' }}
+        </template>
+        <template #developmentCost="scope">
+          {{floatFixNum(scope.row.developmentCost) || '' }}
+        </template>
+        <template #terminationPrice="scope">
+          {{floatFixNum(scope.row.terminationPrice) || '' }}
+        </template>
+        <template #sampleCost="scope">
+          {{floatFixNum(scope.row.sampleCost) || '' }}
         </template>
     </tableList>
   </iCard>
 </template>
 
 <script>
-import { switchPartsTableTitle } from "../data.js";
+import { switchPartsTableTitle, floatFixNum } from "../data.js";
 import { iCard, iSelect, iMessage } from "rise";
 import tableList from "rise/web/quotationdetail/components/tableList";
 import { getSwitchParts } from "@/api/aeko/approve";
@@ -77,6 +101,7 @@ export default {
     this.workFlowId&&this.getPartsList()
   },
   methods:{
+    floatFixNum,
     // 获取切换零件下拉框数据
     getPartsList() {
       this.loading = true
