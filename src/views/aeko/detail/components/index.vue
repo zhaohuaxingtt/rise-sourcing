@@ -92,7 +92,6 @@ export default {
     this.aekoInfo = {
       requirementAekoId: this.$route.query.requirementAekoId
     }
-    
     // 如果是linie的话 再从新排下序 将内容表态和封面表态放在前面
     if(this.isLinie){
       let newTabs = cloneDeep(this.tabs);
@@ -102,6 +101,11 @@ export default {
 
       this.tabs = newTabs;
       this.currentTab = 'contentDeclare';
+    }
+
+    // 若从AEKO查看跳转过来的默认进入封面表态
+    if(from == 'check'){
+       this.currentTab ='cover';
     }
     
     if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
