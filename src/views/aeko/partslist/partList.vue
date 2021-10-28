@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-30 11:39:01
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-24 14:32:59
+ * @LastEditTime: 2021-10-25 14:44:40
  * @Description: 零件列表 AEKO 
 -->
 <template>
@@ -23,14 +23,14 @@
           v-permission.dynamic.auto="item.permissionKey"
           >
           <template  v-if="item.type === 'select'" >
-              <aeko-select 
+              <fullSelect 
                 v-if="item.isNewSelect"
-                :searchParams="searchParams" 
-                :ParamKey="item.props" 
+                v-model="searchParams[item.props]"
                 :searchKey="item.searchKey"
-                :allOptionsData="selectOptions[item.selectOption]" 
+                :options="selectOptions[item.selectOption]" 
                 :multiple="item.multiple"
                 :clearable="item.clearable" 
+                optionName="desc"
               />
               <iSelect
                 v-else
@@ -73,7 +73,7 @@
           :tableLoading="loading"
         >
         <template #newMsgSheet="scope">
-          <a href="javascript:;" @click="toMsgSheet(scope.row)">查看</a>
+          <a href="javascript:;" @click="toMsgSheet(scope.row)">{{ language('CHAKAN', '查看') }}</a>
         </template>
         </tableList>
         <!-- 分页 -->
@@ -106,7 +106,7 @@ import {
   iCard,
   iMessage,
 } from 'rise'
-import aekoSelect from '../components/aekoSelect'
+import fullSelect from '../components/fullSelect'
 import { describeTab } from '../data'
 import { aekoCSFsearchList as searchList, aekoCSFtableTitle as tableTitle } from './data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -130,7 +130,7 @@ export default {
       iPage,
       iNavMvp,
       iSearch,
-      aekoSelect,
+      fullSelect,
       iSelect,
       iInput,
       iPagination,
@@ -161,6 +161,7 @@ export default {
           'cartype':[],
           'buyerId':[],
         },
+        selectOptionsCopy: {},
         loading:false,
         tableTitle:tableTitle,
         tableListData:[],
@@ -336,7 +337,7 @@ export default {
           if(code ==200 ){
               data.map((item)=>{
                   item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                  item.code = item.id;
+                  item.code = String(item.id);
                   item.pinyin = String(this.$i18n.locale === "zh" ? item.nameZh : item.nameEn).spell().toLowerCase()
               })
               this.selectOptions.buyerId = data;

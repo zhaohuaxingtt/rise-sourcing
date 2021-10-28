@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-18 11:25:50
+ * @LastEditors:  
+ * @LastEditTime: 2021-10-25 19:46:44
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -69,7 +69,7 @@
           <iButton @click='downloadFile'>下载</iButton>
           <iButton @click='deleteFile' >删除</iButton>
         </div> 
-        <tableList :tableTitle="fileTableTitle" @handleSelectionChange="(r)=>fileTableSelect=r" :tableData="fileTableData"></tableList>
+        <tableList :tableTitle="fileTableTitle" @handleSelectionChange="(r)=>fileTableSelect=r" :tableData="fileTableData"  :activeItems='"fileName"' @openPage="handleOpenPage"></tableList>
     </iCard>
   </div>
 </template>
@@ -302,6 +302,10 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
+    },
+     handleOpenPage(row) {
+       console.log(row);
+      downloadUdFile(row.uploadId)
     }
   }
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-10-22 11:31:07
+ * @LastEditTime: 2021-10-27 15:39:03
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -58,7 +58,7 @@ export const dosageDialogForm = [
   { props: "cartypeProject", name: "⻋型项⽬", key: "CHEXINGXIANGMU", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_SELECT_CARTYPEPROJECT" },
   { props: "factoryName", name: "工厂", key: "GONGCHANG", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TEXT_FACTORY" },
   { props: "supplierName", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TEXT_SUPPLIERNAME" },
-  { props: "usePortion", name: "沿⽤原零件份额", key: "YANYONGYUANLINGJIANFENE", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_INPUT_USEPORTION" }
+  { props: "usePortion", name: "沿⽤原零件份额", key: "YANYONGYUANLINGJIANFENE", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_INPUT_USEPORTION", required: true }
 ]
 
 export const dosageDialogTableTitle = [
@@ -66,7 +66,8 @@ export const dosageDialogTableTitle = [
   { props: "engineType", name: "发动机/电池", key: "FADONGJIDIANCHI", tooltip: true },
   { props: "gearType", name: "变速箱/⾥程", key: "BIANSUXIANGLICHENG", tooltip: true },
   { props: "assemblyRate", name: "装⻋率", key: "ZHUANGCHELV", tooltip: true },
-  { props: "perCarDosage", name: "⽤量", key: "YONGLIANG", tooltip: true },
+  { props: "originPerCarDosage", name: "原零件用量", key: "YUANLINGJIANYONGLIANG", tooltip: true, required: true },
+  { props: "perCarDosage", name: "新零件⽤量", key: "XINLINGJIANYONGLIANG", tooltip: true, required: true },
 ]
 
 // 审批附件表头
@@ -86,8 +87,8 @@ export const approveReCordTableTitle = [
   { props: "operation", name: "操作", key: "CAOZUO", tooltip: true },
   { props: "assigneeName", name: "操作人", key: "CAOZUOREN", tooltip: true },
   { props: "endTime", name: "操作时间", key: "LK_UpdateDate", tooltip: true,width:200 },
-  { props: "comment", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true, width: 250},
-  { props: "explainReason", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true, width: 250, _headerRequiredRight: true },
+  { props: "comment", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true, width: 330},
+  { props: "explainReason", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true, width: 330, _headerRequiredRight: true },
   { props: "attach", name: "解释附件", key: "JIESHIFUJIAN", tooltip: true },
 ]
 

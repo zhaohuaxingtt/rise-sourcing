@@ -144,7 +144,7 @@
             href="javascript:;" 
             class="selStatus-link" 
             @click="confirmSelSheet(scope.row)" 
-            v-if="userRole.isZYCG && scope.row.selStatus === 'UNCONFIRMED'">
+            v-if="userRole.isZYCG && (scope.row.selStatus === 'UNCONFIRMED' || scope.row.selStatus === 'CONFIRMED')">
           {{scope.row.selStatusDesc}}
         </a>
           <span v-else>{{scope.row.selStatusDesc}}</span>

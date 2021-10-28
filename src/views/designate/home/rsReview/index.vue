@@ -4,7 +4,7 @@
  * @Description: 
 -->
 <template>
-  <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_PAGE|页面">
+  <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_PAGE|上会复核页面">
     <!-- 头部 -->
     <headerNav  />
     <!-- 筛选框 -->

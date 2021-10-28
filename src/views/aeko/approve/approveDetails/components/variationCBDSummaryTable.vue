@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-19 20:45:11
+ * @LastEditTime: 2021-10-27 16:05:56
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -41,7 +41,11 @@
               :show-overflow-tooltip="true"
               :min-width="child.width"
               align="center"
-            ></el-table-column>
+            >
+            <template slot-scope="{ row }">
+              {{ row[child.prop] | floatNum(child.prop) }}
+            </template>
+            </el-table-column>
           </template>
           <template slot-scope="{ row }">
             <template v-if="item.prop == 'index'">
@@ -54,7 +58,7 @@
             </template>
             <template v-else-if="item.prop == 'partNum'">
               <div v-if="row.total != undefined" class="end-align">
-                <span>{{ row.total }}</span>
+                <span>RMB {{ row.total | floatNum('total') }}</span>
               </div>
               <div v-else>
                 {{ row[item.prop] }}
@@ -62,11 +66,18 @@
             </template>
             <template v-else-if="item.prop == 'typeName'">
               <span>
-                {{ row.typeName&&(typeObj[row.typeName].seq + language(typeObj[row.typeName].labelKey,typeObj[row.typeName].label)) }}
+                {{
+                  row.typeName &&
+                  typeObj[row.typeName].seq +
+                    language(
+                      typeObj[row.typeName].labelKey,
+                      typeObj[row.typeName].label
+                    )
+                }}
               </span>
             </template>
             <template v-else>
-              {{ row[item.prop] }}
+              {{ row[item.prop] | floatNum(item.prop) }}
             </template>
           </template>
         </el-table-column>
@@ -101,6 +112,8 @@
             :Data="aPriceChangeData"
             :apriceChange="apriceChangeVal"
             :key="$componentIndex"
+            :workFlowId="workFlowId"
+            :quotationId="partsId"
           />
         </template>
       </el-tab-pane>
@@ -116,7 +129,7 @@ import mouldInvestmentChange from "./mouldInvestmentChange";
 import developmentFee from "./developmentFee";
 import damages from "./damages";
 import sampleFee from "./sampleFee";
-import { SummaryTableTitle, totalRowClass } from "../data.js";
+import { SummaryTableTitle, totalRowClass, floatFixNum, list } from "../data.js";
 import { alterationCbdSummary, cbdDataQuery } from "@/api/aeko/approve";
 export default {
   components: {
@@ -137,8 +150,8 @@ export default {
       SummaryTitle: SummaryTableTitle,
       currentTab: "aPriceChange",
       aPriceChangeData: {},
-      aPriceChangeObj:{},
-      partsId:'',
+      aPriceChangeObj: {},
+      partsId: "",
       typeObj: {
         material: {
           seq: "2.1",
@@ -190,7 +203,7 @@ export default {
           name: "mouldInvestmentChange",
           key: "MUJUTOUZIBIANDONG",
           components: [
-            // "mouldInvestmentChange"
+            "mouldInvestmentChange"
           ],
           permissionKey:
             "AEKO_QUOTATION_CBD_TAB_MUJUTOUZIBIANDONG|模具投资变动",
@@ -200,7 +213,7 @@ export default {
           name: "developmentFee",
           key: "KAIFAFEI",
           components: [
-            // "developmentFee"
+            "developmentFee"
           ],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_KAIFAFEI|开发费",
         },
@@ -209,7 +222,7 @@ export default {
           name: "damages",
           key: "ZHONGZHIFEI",
           components: [
-            // "damages"
+            "damages"
           ],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_ZHONGZHIFEI|终⽌费",
         },
@@ -218,7 +231,7 @@ export default {
           name: "sampleFee",
           key: "YANGJIANFEI",
           components: [
-            // "sampleFee"
+            "sampleFee"
           ],
           permissionKey: "AEKO_QUOTATION_CBD_TAB_YANGJIANFEI|样件费",
         },
@@ -229,10 +242,10 @@ export default {
       quotationId: "",
     };
   },
-  computed:{
-    apriceChangeVal(){
-      return this.aPriceChangeObj[this.partsId]?.toFixed(4) || 0
-    }
+  computed: {
+    apriceChangeVal() {
+      return this.aPriceChangeObj[this.partsId]?.total?.toFixed(4) || 0;
+    },
   },
   created() {
     this.queryParams = this.$route.query;
@@ -275,21 +288,43 @@ export default {
           let aPriceChangeObj = {};
           data.length &&
             data.forEach((item, index) => {
-              item.index = 1+index;
-              aPriceChangeObj[item.quotationId]
-                ? (aPriceChangeObj[item.quotationId] = math.add(aPriceChangeObj[item.quotationId], math.bignumber(item.alteration || 0)))
-                : (aPriceChangeObj[item.quotationId] = math.bignumber(item.alteration || 0));
+              item.index = 1 + index;
+              if (aPriceChangeObj[item.quotationId]) {
+                aPriceChangeObj[item.quotationId] = {
+                  total: math.add(
+                    aPriceChangeObj[item.quotationId].total,
+                    math.bignumber(item.alteration || 0)
+                  ),
+                  partNum: item.partNum,
+                };
+              } else {
+                aPriceChangeObj[item.quotationId] = {
+                  total: math.bignumber(item.alteration || 0),
+                  partNum: item.partNum,
+                };
+              }
             });
           Object.keys(aPriceChangeObj).forEach((key) => {
             let item = {
               index: "",
-              partNum: key,
-              total: "RMB " + (+aPriceChangeObj[key]).toFixed(4),
+              partNum: aPriceChangeObj[key].partNum,
+              total: +aPriceChangeObj[key].total,
             };
             data.push(item);
           });
-          this.aPriceChangeObj = aPriceChangeObj
-          this.tableData = data.sort((a, b) => a.partNum - b.partNum);
+          let arr_group = {};
+          data.forEach((i) => {
+            if (!arr_group[i.partNum]) {
+              arr_group[i.partNum] = [i];
+            } else {
+              arr_group[i.partNum] = [...arr_group[i.partNum], i];
+            }
+          });
+          this.aPriceChangeObj = aPriceChangeObj;
+          let arr = Object.values(arr_group).reduce((arr, i) => {
+            return [...arr, ...i];
+          }, []);
+          this.tableData = arr;
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
@@ -297,7 +332,7 @@ export default {
     },
     // 获取A价变动其它数据
     getCbdDataQuery(partsId) {
-      this.partsId = partsId
+      this.partsId = partsId;
       this.loading = true;
       if (!partsId) {
         this.hasData = false;
@@ -307,7 +342,7 @@ export default {
       cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
         (res) => {
           if (res?.code === "200") {
-            let data  = res.data
+            let data = res.data;
             this.switchPartsTable = [data?.extSnapshotVO];
             this.aPriceChangeData = data;
             this.loading = false;
@@ -318,8 +353,18 @@ export default {
           }
         }
       );
+
+      this.tabChange();
     },
   },
+  filters:{
+    floatNum(val, prop){
+      if(list.includes(prop)){
+        return floatFixNum(val)
+      }
+      return val
+    }
+  }
 };
 </script>
 

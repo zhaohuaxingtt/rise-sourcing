@@ -36,7 +36,16 @@
               <iInput  v-if="item.props == 'sendCycle'" :disabled="disabled"  @input="handleNumber($event,basicInfo,'sendCycle')" v-model="basicInfo[item.props]"  />
               <iInput v-else :disabled="disabled" v-model="basicInfo[item.props]"  />
             </template>
-            <iSelect v-else-if="item.type === 'select'" v-model="basicInfo[item.props]" :disabled="disabled" >
+            <iSelect 
+              v-else-if="item.type === 'select'" 
+              :filterable="item.filterable"
+              :clearable="item.clearable"
+              v-model="basicInfo[item.props]" 
+              :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+              @visible-change="selectVisibleChange($event, item.selectOption)"
+              :disabled="disabled" 
+              
+            >
               <el-option
                 :value="item.value"
                 :label="item.label"
@@ -179,6 +188,9 @@ export default {
           ],
           fsList:[],
         },
+        selectOptionsCopy:{
+          fsList:[],
+        },
         tableData:[],
         tableTitle:coverTableTitleCost,
         tableLoading:false,
@@ -241,6 +253,7 @@ export default {
               item.value = item.id;
             });
             this.selectOptions['fsList'] = data;
+            this.selectOptionsCopy['fsList'] = data;
           }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
@@ -409,6 +422,36 @@ export default {
         }).catch((err)=>{
           this.btnLoading = false;
         })
+      },
+
+      // 指定前期采购员模糊搜索处理
+      dataFilter(val,props){
+        // 去除前后空格
+        const trimVal = val.trim();
+        const { selectOptions=[],selectOptionsCopy=[]} = this;
+        if(trimVal){
+            // 人名要特殊处理 --- 可搜索英文去除大小写
+          if(props == 'fsList'){
+            const list = selectOptions[props].filter((item) => {
+              if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                return true
+              }
+            })
+            this.selectOptions[props] = list;
+          }
+        }else{
+          this.selectOptions[props] = selectOptionsCopy[props];
+        }
+      },
+      selectVisibleChange(visible, key){
+        switch(key) {
+          case "fsList":
+          if (!visible) {
+            this.selectOptions['fsList'] = this.selectOptionsCopy['fsList']
+          }
+          break
+          default:
+        }
       },
     }
 }

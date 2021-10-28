@@ -1,107 +1,41 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-10-12 21:45:35
+ * @LastEditTime: 2021-10-27 15:14:22
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\partsrfq\piAnalyse\piDetail\components\previewDialog.vue
+-->
 <template>
-  <iDialog
-      :visible.sync="value"
-      width="95%"
-      @close="clearDiolog"
-  >
-    <div id="content">
-      <div class="title">{{ language('PI.PIINDEXBAOGAO', 'Price Index报告') }}-{{ dataInfo.partsId }}</div>
-      <theBaseInfo class="margin-top20" :dataInfo="dataInfo"/>
-      <el-divider class="margin-top20 margin-bottom20"/>
-      <!--表格-->
-      <theTable
-          v-show="currentTab === CURRENTTIME"
-          :isPreview="true"
-          :dataInfo="dataInfo"
-          :currentTab="currentTab"
-      />
-      <theTable
-          v-show="currentTab === AVERAGE"
-          :isPreview="true"
-          :averageData="averageData"
-          :currentTab="currentTab"
-      />
-      <el-divider class="margin-top20 margin-bottom20"/>
-      <div class="chartBox">
-        <!--      Price Index价格分析-->
-        <thePriceIndexChart
-            class="lineBox"
-            :isPreview="true"
-            :previewDialog="value"
-        />
-        <!--      零件成本构成-->
-        <thePartsCostChart
-            class="pieBox"
-            :dataInfo="dataInfo"
-            :averageData="averageData"
-            :currentTab="currentTab"
-        />
-      </div>
-    </div>
+  <iDialog :visible.sync="value"
+           width="95%"
+           @close="clearDiolog">
+    <piPreview v-bind="$attrs"></piPreview>
   </iDialog>
 </template>
 
 <script>
-import {iDialog} from 'rise';
-import theBaseInfo from './theBaseInfo';
-import theTable from './theTable';
-import thePriceIndexChart from './thePriceIndexChart';
-import thePartsCostChart from './thePartsCostChart';
-import {CURRENTTIME, AVERAGE} from './data';
-import {downloadPdfMixins} from '@/utils/pdf';
+import { iDialog } from 'rise';
+import piPreview from './piPreview'
 
 export default {
-  mixins: [downloadPdfMixins],
   props: {
-    dataInfo: {
-      type: Object,
-      default: () => {
-        return {};
-      },
-    },
-    averageData: {
-      type: Object,
-      default: () => {
-        return {};
-      },
-    },
-    value: {type: Boolean},
-    currentTab: {
-      type: String,
-      default: '',
-    },
-    currentTabData: {
-      type: Object,
-      default: () => {
-        return {};
-      },
-    },
+    value: { type: Boolean },
   },
   components: {
     iDialog,
-    theBaseInfo,
-    theTable,
-    thePriceIndexChart,
-    thePartsCostChart,
+    piPreview
   },
-  data() {
+  data () {
     return {
-      CURRENTTIME,
-      AVERAGE,
     };
   },
+  mounted () {
+  },
   methods: {
-    clearDiolog() {
+    clearDiolog () {
       this.$emit('input', false);
-    },
-    getDownloadFile({callBack}) {
-      return this.getDownloadFileAndExportPdf({
-        domId: 'content',
-        watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
-        pdfName: 'Overview',
-        callBack,
-      });
-    },
+    }
   },
 };
 </script>
@@ -109,7 +43,6 @@ export default {
 <style scoped lang="scss">
 #content {
   padding: 20px;
-
   .title {
     font-size: 22px;
     font-weight: bold;

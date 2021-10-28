@@ -1,13 +1,13 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-09 14:14:55
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-10-28 14:05:06
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
   <div class="margin-top20">
-    <iCard>
+    <iCard v-permission.auto="tableTitle.permision">
       <div class="cardview">
         <div class="cardview-header">
           <div class="font18 font-weight">{{language(tableTitle.titleKey, tableTitle.titleName)}}</div>
@@ -95,12 +95,14 @@ export default {
         "1": {
           titleName: '未进TIPS表的已释放零件',
           titleKey: 'WEIJINTIPSBIAOYISHIFANGLINGJIAN',
-          title: TIPStableTitle
+          title: TIPStableTitle,
+          permision: 'PROJECTMGT-MONITORPARTLIST-NOTIPSTABLE|项目管理-监控零件清单-未进TIPS表格'
         },
         "2": {
-          titleName: 'CKD/HT零件',
-          titleKey: 'CKDHTLINGJIAN',
-          title: CKDHTtableTitle
+          titleName: 'CKD/HT/ZSB零件',
+          titleKey: 'CKDHTZSBLINGJIAN',
+          title: CKDHTtableTitle,
+          permision: 'PROJECTMGT-MONITORPARTLIST-CKDHTTABLE|项目管理-监控零件清单-CKDHT表格'
         }
       }
       const type = this.$route.query.type || 1
@@ -108,6 +110,9 @@ export default {
     },
   },
   methods: {
+    handleSelectionChange(val) {
+      this.selectTableData = val
+    },
     close() {
       this.$router.back()
     },
@@ -141,7 +146,8 @@ export default {
         const params = {
         partMonitorStatus: this.$route.query.type,
         partStatus: 1,
-        projectId: this.$route.query.carProjectId
+        projectId: this.$route.query.carProjectId,
+        ids: this.selectTableData.map(item => item.id)
       }
         proProgressMonitorFile(params)
       } catch(e) {

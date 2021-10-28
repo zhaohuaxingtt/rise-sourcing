@@ -47,6 +47,8 @@
             'PARTSPROCURESTARTINQUIRY': '启动询价',
             'PARTSPROCURETRANSFER': '转派',
             'PARTSPROCUREFSNFGSNFSPNR': '零件采购项目号',
+            'PARTSPROCUREPUECHASEAPPLYNUMBER': '采购申请编号',
+            'PARTSPROCUREPITEM': '项次号',
             'PARTSPROCUREPARTNUMBER': '零件号',
             'PARTSPROCUREPARTNAMEZH': '零件名（中）',
             'PARTSPROCUREPARTNAMEDE': '零件名（德）',
@@ -500,6 +502,7 @@
         'LK_LISHISHIYONGGAILÜ': '历史适用概率', //历史适用概率
         'LK_LIRUMENJING': '例如：⻔禁申请步骤，其他备注信息等', //例如：⻔禁申请步骤，其他备注信息等
         'LK_LINGJIANCAIGOUXIANGMU': '零件采购项目', //零件采购项目
+        'LK_LCAIGOUSHENQING': '采购申请', //采购申请
         'LK_LINGJIANCAIGOUXIANGMUGUANLI': '零件采购项目管理', //零件采购项目管理
         'LK_LINGJIANCAIGOUXIANGMULEIXING': '零件采购项目类型', //零件采购项目类型
         "LK_LINGJIANCAIGOUXIANGMUZHUANPAI": '零件采购项目转派', //零件采购项目转派
@@ -1287,6 +1290,17 @@
             'QingShuRuFenZuMing': '请输入分组名', //请输入分组名
             'NingShuRuDeBiLiBuHeFa': '您输入的比例不合法', //您输入的比例不合法
             'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
+            'CHANGSHANG':'厂商',//厂商
+            'OUJIA':'欧价',//欧价
+            'CHANDI':'产地',//产地
+            'HUILU':'汇率',//汇率
+            'MOJIJIAGEBUHANSHUI':'模具价格(不含税)',//模具价格(不含税)
+            'MOJUFENTAN':'模具分摊',//模具分摊
+            'KAIFAFEIBUHANSHUI':'开发费(不含税)',//开发费(不含税)
+            'KAIFAFEIFENTAN':'开发费分摊',//开发费分摊
+            'TPPINGFEN':'TP评分',//TP评分
+            'MAPINGFEN':'MQ评分',//MQ评分
+            
         },
         // 决策资料
         "strategicdoc": {

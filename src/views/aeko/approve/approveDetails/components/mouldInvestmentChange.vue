@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:40:38
- * @LastEditTime: 2021-10-13 16:06:21
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-10-27 13:52:01
+ * @LastEditors: Please set LastEditors
  * @Description: 
 -->
 <template>
@@ -39,79 +39,64 @@
 </template>
 
 <script>
-import { iCard, iText } from "rise";
+import { iCard, iText,iMessage } from "rise";
 import tableList from "rise/web/quotationdetail/components/tableList";
 import { moduleTableTitle as tableTitle, mouldCostInfos } from "../data";
+import { getMoulds } from "@/api/aeko/approve";
 export default {
   components: {
     iCard,
     iText,
     tableList,
   },
+  props:{
+    workFlowId:{
+      type:String,
+      default:''
+    },
+    quotationId:{
+      type:String,
+      default:'',
+    }
+  },
   data() {
     return {
       tableTitle,
       mouldCostInfos,
       dataGroup: {},
-      tableData: [
-        {
-          mouldId: "ID-1",
-          isShared: false,
-          changeType: "修模",
-          fixedAssetsName: "ABCDEFGHIJKL",
-          stuffType: "注塑",
-          mouldType: "盖板注塑模",
-          assetTypeCode: "13",
-          assembledPartPrjCode: "AK2100001",
-          supplierPartNameList: "壳体",
-          supplierPartCodeList: "Xxx",
-          quantity: "1",
-          changeUnitPrice: "9,000.00",
-          changeTotalPrice: "150,000.00",
-          originTotalPrice: "150,000.00",
-          totalPrice: "150,000.00",
-        },
-        {
-          mouldId: "2",
-          isShared: true,
-          changeType: "2.1 原材料/散件成本",
-          fixedAssetsName: "",
-          stuffType: "A23D654321",
-          mouldType: "10.0000",
-          assetTypeCode: "件",
-          assembledPartPrjCode: "2.0000",
-          supplierPartNameList: "20.0000",
-          supplierPartCodeList: "A23D654321",
-          quantity: "9.0000",
-          changeUnitPrice: "件",
-          changeTotalPrice: "2.0000",
-          originTotalPrice: "18.0000",
-          totalPrice: "2.0000",
-        },
-        {
-          mouldId: "3",
-          isShared: true,
-          changeType: "2.1 原材料/散件成本",
-          fixedAssetsName: "",
-          stuffType: "A23D654321",
-          mouldType: "10.0000",
-          assetTypeCode: "件",
-          assembledPartPrjCode: "2.0000",
-          supplierPartNameList: "20.0000",
-          supplierPartCodeList: "A23D654321",
-          quantity: "9.0000",
-          changeUnitPrice: "件",
-          changeTotalPrice: "2.0000",
-          originTotalPrice: "18.0000",
-          totalPrice: "2.0000",
-        },
-      ],
+      tableData: [],
     };
   },
   methods: {
     // 初始化数据
     init(){
       console.log('获取初始化数据');
+      this.getMoulds();
+    },
+    // 获取数据
+    async getMoulds(){
+      const {workFlowId,quotationId} = this;
+      this.loading = true;
+      await getMoulds({
+        workFlowId,
+        quotationId,
+      }).then(res => {
+        this.loading = false
+        if (res.code == 200) {
+           const mouldCbdList = Array.isArray(res.data.mouldCbdList) ? res.data.mouldCbdList : [];
+          // FS单号取最外层数据
+          mouldCbdList.map((item)=>{
+            item.assembledPartPrjCode = res.data.fs || '';
+          })
+          this.tableData = mouldCbdList;
+          this.$set(this.dataGroup, "totalPrice", res.data.totalPrice)
+          this.$set(this.dataGroup, "shareTotal", res.data.shareTotal)
+          this.$set(this.dataGroup, "shareQuantity", res.data.shareQuantity)
+          this.$set(this.dataGroup, "shareAmount", res.data.shareAmount)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(() => this.loading = false)
     }
   },
   filters: {

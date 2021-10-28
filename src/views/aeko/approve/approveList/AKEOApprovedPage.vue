@@ -16,7 +16,7 @@
         <!-- 零件号 -->
         <el-form-item :label="language('LINGJIAHAO', '零件号')" prop='partNum'>
           <i-input
-              v-model.trim="queryAkeoForm.partNum"
+              v-model="queryAkeoForm.partNum"
               :placeholder="language('LK_QINGSHURU','请输入')"
               clearable
           ></i-input>
@@ -44,7 +44,7 @@
             <el-option
                 v-for="item in options"
                 :key="item.value"
-                :label="item.name"
+                :label="item.label"
                 :value="item.value">
             </el-option>
           </i-select>
@@ -97,7 +97,6 @@
           :tableTitle="approvedHeader"
           :lang="true"
           v-loading="tableLoading"
-          @handleSelectionChange="handleSelectionChange"
       >
         <template #isTop="scope">
           <div>
@@ -136,17 +135,19 @@
         </template>
         <!--增加材料成本-->
         <template #EP1="scope">
-          <span>{{ scope.row.materialIncrease }}</span>
+          <span>{{ scope.row.materialIncrease|numberToCurrency }}</span>
         </template>
 
         <!--增加投资税-->
         <template #EP2="scope">
-          <span>{{ scope.row.investmentIncrease }}</span>
+          <span>{{ scope.row.investmentIncrease|numberToCurrency }}</span>
         </template>
 
         <!--其他费用-->
         <template #EP3="scope">
-          <span>{{ scope.row.otherCost }}</span>
+          <span>{{
+              scope.row.otherCost|numberToCurrency
+            }}</span>
         </template>
         <!--科室-->
         <template #DepartmentName="scope">
@@ -205,6 +206,7 @@ import {searchLinie} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
+import {numberToCurrencyNo} from '../../../../utils/cutOutNum'
 
 export default {
   name: "AKEOApprovedPage",
@@ -223,6 +225,11 @@ export default {
       if (value == null || value == '') return ''
       let date = new Date(value);
       return dateUtils.formatDate(date, 'yyyy-MM-dd')
+    },
+    numberToCurrency(value) {
+      if (value == null || value == '') return ''
+
+      return numberToCurrencyNo(value)
     }
   },
   data() {
@@ -320,19 +327,13 @@ export default {
           this.$message.error(res.desZh)
         }
       })
-      /*  this.approvedList = [
-          {
-            aekoNum: '12313',
-            isTop: true,
-            describe: '23444',
-          }
-        ]*/
     },
     //查询
     queryApprovedAKEOForm() {
       if (this.checkMinCost() && this.checkMaxCost()) {
         this.queryAkeoForm.current = 1
         this.queryAkeoForm.size = this.page.pageSize
+        this.queryAkeoForm.partNum=this.queryAkeoForm.partNum.trim()
         this.loadApprovedList()
       }
     },
@@ -348,8 +349,11 @@ export default {
       if (buyerName.length) {
         buyerName.map((item) => {
           item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-          item.value = item.id;
+          item.value = item.id
+          item.enName=item.nameEn
+          item.zhName=item.nameZh
         })
+        this.options=buyerName
         this.buyerUsers = buyerName;
       } else {
         const {deptDTO = {}} = userInfo;
@@ -359,8 +363,11 @@ export default {
           if (code == 200) {
             data.map((item) => {
               item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-              item.value = item.id;
+              item.value = item.id
+              item.enName=item.nameEn
+              item.zhName=item.nameZh
             })
+            this.options=buyerName
             this.buyerUsers = data;
           } else {
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -375,22 +382,16 @@ export default {
         setTimeout(() => {
           this.loading = false;
           this.options = this.buyerUsers.filter(item => {
-            return item.label.toLowerCase()
-                .indexOf(query.toLowerCase()) > -1;
+            let isZhNameRes=item.zhName&&item.zhName.indexOf(query)>-1?true:false
+            let isEnNameRes=item.enName&&item.enName.indexOf(query)>-1?true:false
+            return isZhNameRes||isEnNameRes
           });
         }, 200);
       } else {
-        this.options = [];
+        this.options = this.buyerUsers;
       }
     },
 
-    //选中回调
-    handleSelectionChange(val) {
-      this.selectApprovedList = val
-      this.queryAkeoForm.current = 1
-      this.queryAkeoForm.size = this.page.pageSize
-      this.loadApprovedList()
-    },
     //跳转到详情
     lookDetails(row) {
       let reqP = {requirementAekoId: row.requirementAekoId}

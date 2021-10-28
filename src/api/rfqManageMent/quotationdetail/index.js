@@ -518,3 +518,30 @@ export function copyPartsQuotationSkd(data) {
     data
   })
 }
+
+// 自动计算起步生产日期
+export function getIsAutoCal(data) {
+  return requst({
+    url: `/part/cost-summary/isAutoCal`,
+    method: 'POST',
+    data
+  })
+}
+
+// 承诺书签署状态
+export function getNoticeStatus(data) {
+  return requst({
+    url: `/part/getNoticeStatus`,
+    method: 'POST',
+    data
+  })
+}
+
+// 获取承诺书
+export function getNoticeDetail(data) {
+  return requst({
+    url: `/part/getNoticeDetail`,
+    method: 'POST',
+    data
+  })
+}

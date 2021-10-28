@@ -72,7 +72,7 @@ import {
 } from '@/api/designate/decisiondata/drawing'
 import { uploadDaring } from '@/api/costanalysismanage/rfqdetail'
 import { downloadFile, downloadUdFile } from '@/api/file'
-import { getKmFileHistory, uploadFiles } from "@/api/costanalysismanage/costanalysis"
+import { getKmFileHistory, kmUploadFiles } from "@/api/costanalysismanage/costanalysis"
 import filters from "@/utils/filters"
 import uploadButton from "@/views/costanalysismanage/components/uploadButton"
 
@@ -205,7 +205,7 @@ export default {
         uploadFiles() {
             this.loading = true
 
-            uploadFiles({
+            kmUploadFiles({
                 fileHistoryDTOS: this.fileList.map(item => ({
                     fileCode: "0",
                     fileName: item.fileName,

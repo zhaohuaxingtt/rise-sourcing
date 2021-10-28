@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-19 20:38:47
+ * @LastEditTime: 2021-10-26 19:43:39
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -13,7 +13,7 @@
         <span class="label"
           >{{ language("AJIABIANDONGHANFENTAN", "A价变动(含分摊)") }}:</span
         >
-        <iText>{{ apriceChange }}</iText>
+        <iText>{{ floatFixNum(apriceChange) }}</iText>
       </div>
     </iCard>
     <iCard class="mb-20">
@@ -28,7 +28,29 @@
           :selection="false"
           :tableTitle="setCloum"
           :tableData="tableData"
-        />
+        >
+          <template #materialChange="scope">{{
+            floatFixNum(scope.row.materialChange)
+          }}</template>
+          <template #makeCostChange="scope">{{
+            floatFixNum(scope.row.makeCostChange)
+          }}</template>
+          <template #discardCostChange="scope">{{
+            floatFixNum(scope.row.discardCostChange)
+          }}</template>
+          <template #manageFeeChange="scope">{{
+            floatFixNum(scope.row.manageFeeChange)
+          }}</template>
+          <template #otherFee="scope">{{
+            floatFixNum(scope.row.otherFee)
+          }}</template>
+          <template #profitChange="scope">{{
+            floatFixNum(scope.row.profitChange)
+          }}</template>
+          <template #apriceChange="scope">{{
+            floatFixNum(scope.row.apriceChange)
+          }}</template>
+        </tableList>
       </div>
       <div
         v-if="
@@ -71,7 +93,7 @@
                     <div class="manufacturingMethodColumn">
                       <icon
                         symbol
-                        v-if="row.partCbdType!=1"
+                        v-if="row.partCbdType != 1"
                         class="iconFont"
                         name="iconxinlingjianCBD"
                       />
@@ -80,10 +102,14 @@
                       </div>
                     </div>
                   </template>
-                  
-                  <template v-else-if="child.prop == 'serialNum' && row.partCbdType!=1">
+
+                  <template
+                    v-else-if="
+                      child.prop == 'serialNum' && row.partCbdType != 1
+                    "
+                  >
                   </template>
-                  <template v-else>{{ row[child.prop] }}</template>
+                  <template v-else>{{ row[child.prop] | floatNum(child.prop) }}</template>
                 </template>
               </el-table-column>
             </template>
@@ -91,7 +117,7 @@
               <template v-if="item.type === 'Boolean'">{{
                 row[item.prop] ? "是" : "否"
               }}</template>
-              <template v-else>{{ row[item.prop] }}</template>
+              <template v-else>{{ row[item.prop] | floatNum(item.prop)  }}</template>
             </template>
           </el-table-column>
         </el-table>
@@ -136,7 +162,7 @@
                     <div class="manufacturingMethodColumn">
                       <icon
                         symbol
-                        v-if="row.partCbdType!=1"
+                        v-if="row.partCbdType != 1"
                         class="iconFont"
                         name="iconxinlingjianCBD"
                       />
@@ -145,11 +171,18 @@
                       </div>
                     </div>
                   </template>
-                  <template v-else-if="child.prop == 'serialNum' && row.partCbdType!=1">
+                  <template
+                    v-else-if="
+                      child.prop == 'serialNum' && row.partCbdType != 1
+                    "
+                  >
                   </template>
-                  <template v-else>{{ row[child.prop] }}</template>
+                  <template v-else>{{ row[child.prop] | floatNum(child.prop) }}</template>
                 </template>
               </el-table-column>
+            </template>
+            <template slot-scope="{ row }">
+              {{ row[item.prop] | floatNum(item.prop) }}
             </template>
           </el-table-column>
         </el-table>
@@ -168,6 +201,7 @@
               :tableTitle="scrapCostTableTitle"
               :tableData="scrapCostTable"
             >
+              <template #changeAmount="scope">{{floatFixNum(scope.row.changeAmount)}}</template>
             </tableList>
           </div>
         </div>
@@ -186,6 +220,7 @@
               :tableTitle="manageCostTableTitle"
               :tableData="managementFeeTable"
             >
+              <template #changeAmount="scope">{{floatFixNum(scope.row.changeAmount)}}</template>
             </tableList>
           </div>
         </div>
@@ -202,6 +237,7 @@
               :tableTitle="otherCostTableTitle"
               :tableData="otherFeesTable"
             >
+              <template #changeAmount="scope">{{floatFixNum(scope.row.changeAmount)}}</template>
             </tableList>
           </div>
         </div>
@@ -216,6 +252,7 @@
               :tableTitle="profitTableTitle"
               :tableData="profitTable"
             >
+              <template #changeAmount="scope">{{floatFixNum(scope.row.changeAmount)}}</template>
             </tableList>
           </div>
         </div>
@@ -236,6 +273,8 @@ import {
   otherCostTableTitle,
   profitTableTitle,
   originRowClass,
+  list,
+  floatFixNum,
 } from "../data.js";
 export default {
   components: {
@@ -245,7 +284,7 @@ export default {
     tableList,
   },
   props: {
-    apriceChange:{
+    apriceChange: {
       type: Number,
       default: 0,
     },
@@ -290,7 +329,8 @@ export default {
     // 变动值-CBD
     tableData() {
       if (this.Data?.cbdLevelVO) {
-        this.Data.cbdLevelVO.apriceChange = this.Data.extSnapshotVO.apriceChange || 0
+        this.Data.cbdLevelVO.apriceChange =
+          this.Data.extSnapshotVO.apriceChange || 0;
         return [this.Data.cbdLevelVO];
       }
       return [];
@@ -306,7 +346,7 @@ export default {
     // 报废成本
     scrapCostTable() {
       return this.setScrapCostTableData(
-        this.Data.scrapVO ? [this.Data.scrapVO] : []
+        this.Data.scrapVO?.id ? [this.Data.scrapVO] : []
       );
     },
     // 管理费
@@ -324,11 +364,12 @@ export default {
     // 利润
     profitTable() {
       return this.setProfitTableData(
-        this.Data.profitVO ? [this.Data.profitVO] : []
+        this.Data.profitVO?.id ? [this.Data.profitVO] : []
       );
     },
   },
   methods: {
+    floatFixNum,
     originRowClass,
     // 报废成本
     setScrapCostTableData(data = []) {
@@ -445,6 +486,14 @@ export default {
       return result;
     },
   },
+  filters:{
+    floatNum(val, prop){
+      if(list.includes(prop)){
+        return floatFixNum(val)
+      }
+      return val
+    }
+  }
 };
 </script>
 

@@ -3,13 +3,13 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language('LK_GONGYINGSHANGPINGFENFUJIAN','供应商评分附件') }}</span>
       <div class="floatright" v-if="!disabled">
-        <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE">
+        <iButton @click="deleteItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE|供应商评分附件-删除">
          {{ language('LK_SHANCHU','删除') }}
         </iButton>
         <upload-button
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
-            class="margin-left8" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_UPLOAD"/>
+            class="margin-left8" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_UPLOAD|供应商评分附件-上传附件"/>
       </div>
     </div>
     <tablelist

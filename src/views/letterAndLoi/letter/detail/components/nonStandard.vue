@@ -11,13 +11,15 @@
                     hideTip
                     :buttonText="language('LK_SHANGCHUAN','上传')"
                     accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif"
+                    v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER_UPLOAD|非标准定点信上传"
                     @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '119',hostId:nomiAppId}), getFetchDataList)"
                     
                 />
             </span>
-            <iButton @click="downloadFile">{{language('LK_XIAZAI','下载')}}</iButton>
+            <iButton @click="downloadFile" v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER_DOWNLOAD|非标准定点信下载">{{language('LK_XIAZAI','下载')}}</iButton>
             <iButton 
-            v-if="isEdit" 
+            v-if="isEdit"
+            v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER_DELETE|非标准定点信删除" 
             @click="deleteFile($event, getFetchDataList)"
           >{{language('delete','删除')}}</iButton>
         </template>
@@ -25,7 +27,7 @@
             {{language('LK_FUJIAN','附件')}}
             <span class="title-tips">{{language('LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN','上传时文件请旋转至正常方向后上传')}}</span>
         </p>
-        <div> 
+        <div v-permission.auto="LK_LETTER_DETAIL_NONSTANDARDLETTER_TABLE|非标准定点信表格"> 
             <tableList
                 class="table"
                 index
