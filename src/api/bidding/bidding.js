@@ -1,15 +1,5 @@
 import axios from "@/utils/axios";
-import store from '@/store'
-
-const requst = axios(process.env.VUE_APP_BIDDING);
-requst.interceptors.request.use(function (config) {
-  console.log(config.url, config);
-  config.params = {
-    ...config.params,
-    userId: store.state.permission.userInfo.id,
-  }
-  return config;
-});
+const requst = axios();
 
 // 创建RFQ轮次
 export function saveBiddingInfo(data) {
@@ -355,6 +345,15 @@ export function findSupplierOffer(data) {
 export function getQuotation(data) {
   return requst({
     url: `/bidding/biddingQueryService/getQuotation`,
+    method: "POST",
+    data,
+  });
+}
+
+// 根据 RfqCode 获取询价管理数据
+export function findRfqInquiry(data) {
+  return requst({
+    url: `/bidding/biddingQueryService/findRfqInquiry`,
     method: "POST",
     data,
   });
