@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-28 17:45:15
+ * @LastEditTime: 2021-10-28 18:57:26
  * @Description: 
 -->
 <template>
@@ -323,6 +323,7 @@ export default {
           const chiefsOptions = row.chiefsOptions || []
           let selectOptions = [...chiefsOptions, ...dataList];
           selectOptions = Array.from(new Set(selectOptions.flat(Infinity)))
+          selectOptions = selectOptions.filter(o => o.code && o.postId)
           selectOptions = window._.uniqBy(selectOptions, o => o.code)
           this.$set(row, 'selectOptions', selectOptions)
         } else {
