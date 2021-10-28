@@ -1,14 +1,14 @@
 <!--
  * @Author: yuszhou 
  * @Date: 2021-10-14 17:53:29
- * @LastEditTime: 2021-10-23 14:43:30
+ * @LastEditTime: 2021-10-25 21:54:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\bidOpenResult.vue
 -->
 <template>
   <iDialog :title='language("KAIBIAOJIEGUO","开标结果")' :visible.sync="options.show">
-    <tabelList class="padding-bottom20" :tableTitle='suplierTableDataTitel' :tabelData='tabelData'></tabelList>
+    <tabelList class="padding-bottom20" :tableTitle='suplierTableDataTitel' :tableData='tabelData'></tabelList>
   </iDialog>
 </template>
 <script>
@@ -48,6 +48,7 @@ export default{
         rfqRound:this.round
       }
       getPriceRank(sendData).then(r=>{
+        console.log(r)
         if(r.data && r.data.supplierRanks.length){
           this.tabelData = r.data.supplierRanks
         }

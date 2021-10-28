@@ -21,7 +21,9 @@
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
     "@vue/babel-preset-jsx": "^1.2.4",
     "core-js": "^3.6.5",
-    "lodash": "^4.17.21"
+    "dayjs": "^1.10.7",
+    "lodash": "^4.17.21",
+    "front-bidding": "git+http://gitlab.devops.csvw.com/RISE/front-bidding.git#dev"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
