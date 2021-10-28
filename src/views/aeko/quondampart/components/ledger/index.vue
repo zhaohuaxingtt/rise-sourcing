@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-10-18 16:01:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-27 19:23:16
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -20,6 +20,7 @@
         <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_PARTNUM">
           <iInput
             v-model="form.partNum"
+            :disabled="disabled"
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
@@ -56,6 +57,7 @@
         </el-form-item>
       </el-form>
     </iSearch>
+    <!-- 指定台账库 -->
     <iCard class="margin-top20" :title="language('ZHIDINGTAIZHANGKUYUANLINGJIAN', '指定台账库原零件')" v-if="tableListData.length">
       <template #header-control>
         <!-- <iButton @click="handleSave" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton> -->
@@ -135,6 +137,7 @@ export default {
   },
   data() {
     return {
+      partNum: "",
       objectAekoPartId: "",
       requirementAekoId: "",
       oldPartNumPreset: "",
@@ -147,6 +150,7 @@ export default {
       visible: false,
       currentRow: {},
       factoryDisabled: false,
+      disabled: false, // 禁止编辑零件号
       factoryName: "",
       aekomultipleSelection:[],
     }
@@ -164,18 +168,19 @@ export default {
     }
   },
   async created() {
+    this.partNum = this.$route.query.partNum  // 零件号
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
     this.oldPartNumPreset = this.$route.query.oldPartNumPreset
     await this.getAekoOriginFactory()
-
-    if (this.oldPartNumPreset) {
-      this.form.partNum = this.oldPartNumPreset
+    // 新零件号一定存在，所以不需要else
+    // if (this.oldPartNumPreset || this.partNum) {
+      this.form.partNum = this.oldPartNumPreset || this.partNum
       this.judgeRight()
-    } else {
-      this.procureFactorySelectVo()
-      // this.getAekoOriginPartInfo()
-    }
+    // } else {
+      // this.procureFactorySelectVo()
+    //   // this.getAekoOriginPartInfo()
+    // }
   },
   methods: {
     getAekoOriginFactory() {
@@ -202,25 +207,26 @@ export default {
     judgeRight() {
       judgeRight([
         {
-          partNum: this.oldPartNumPreset,
+          partNum: this.oldPartNumPreset || this.partNum,
           userId: this.userInfo.id
         }
       ])
       .then(res => {
         if (res.code == 200) {
           if (res.data[0].isView) {
-            this.procureFactorySelectVo()
             this.getAekoOriginPartInfo()
           } else {
             iMessage.error(res.data[0].describe)
             this.loading = false
           }
+          this.procureFactorySelectVo()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
       .catch(() => this.loading = false)
     },
+    // 查询采购工厂
     procureFactorySelectVo() {
       procureFactorySelectVo()
       .then(res => {
@@ -239,6 +245,7 @@ export default {
       })
       .catch(() => {})
     },
+    // 查询台账库数据
     getAekoOriginPartInfo() {
       // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
       if(this.form.partNum && this.form.partNum.trim().length < 9){
@@ -260,7 +267,9 @@ export default {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
           this.page.totalCount = res.total || 0
+          this.disabled = res.total&&true||false
         } else {
+          this.disabled = false
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
 

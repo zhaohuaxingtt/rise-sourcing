@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-10-27 16:09:26
+ * @LastEditTime: 2021-10-27 16:42:44
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -276,6 +276,18 @@ export default {
           this.language("LK_AEKO_BUNENGWEIKONG", "不能为空");
         iMessage.warn(tips);
         isValidate = false;
+      }
+      // originPerCarDosage:原零件
+      // perCarDosage:新零件
+      for (let j = 0; j < this.dosage.aekoProjectCarDosageList.length; j++) {
+        const basicItem = this.dosage.aekoProjectCarDosageList[j];
+        if(!basicItem['originPerCarDosage']&&!basicItem['perCarDosage']){
+          const tips = this.language('YUANLINGJIANYONGLIANG','原零件用量')+'、'+this.language('XINLINGJIANYONGLIANG','新零件⽤量')+this.language('ZHISHAOYOUYIGE','至少有一个') +
+          this.language("LK_AEKO_BUNENGWEIKONG", "不能为空");;
+          iMessage.warn(tips);
+          isValidate = false;
+          break;
+        }
       }
       return isValidate;
     },
