@@ -71,13 +71,19 @@
                 >
                 <!-- AEKO号 -->
                 <template #aekoCode="scope">
-                
-                <div class="table-item-aeko">
-                    <icon v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
-                    <span class="link" ><a @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </a></span>
-                    <a v-if="scope.row.fileCount && scope.row.fileCount > 0" class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
-                </div>
-                
+                  <div class="table-item-aeko">
+                      <icon v-if="scope.row.isTop==1" class="margin-right5 font24 top-icon" symbol name="iconAEKO_TOP"></icon>
+                      <span class="link" ><a @click="goToDetail(scope.row)">{{scope.row.aekoCode}} </a></span>
+                      <a v-if="scope.row.fileCount && scope.row.fileCount > 0" class="file-icon" @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+                  </div>
+                </template>
+                <!-- 描述 -->
+                <template #describe="scope">
+                  <span class="link" @click="checkDescribe(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+                </template>
+                <!-- 审批单 -->
+                <template #assignsheet="scope">
+                  <span class="link" @click="checkAssignsheet(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
                 </template>
                 </tableList>
                 <!-- 分页 -->
@@ -109,6 +115,7 @@ import {
     iCard,
     iButton,
     iMessage,
+    icon,
 } from 'rise';
 import { SearchList,tableTitle } from './data';
 import { TAB,getLeftTab } from '../data';
@@ -124,6 +131,9 @@ import {
   searchLinie,
   getSearchCartype,
 } from '@/api/aeko/manage'
+import {
+  getCheckList,
+} from '@/api/aeko/check';
 import {user as configUser } from '@/config'
 import { debounce } from "lodash";
 
@@ -142,10 +152,11 @@ export default {
         iPagination,
         iCard,
         iButton,
+        icon,
     },
     created(){
         this.getSearchList();
-
+        this.getList();
         this.leftTab = getLeftTab(2);
     },
     data(){
@@ -153,7 +164,12 @@ export default {
             navList:TAB,
             leftTab:[],
             SearchList:SearchList || [],
-            searchParams:{},
+            searchParams:{
+              brand:'',
+              linieDeptNumList:[''],
+              carTypeCodeList:[''],
+              coverStatusList:[''],
+            },
             selectOptions:{
                 linieDeptNumList:[],
                 cartypeCode:[],
@@ -186,104 +202,121 @@ export default {
 
         },
         async getList(){
+          const { page,searchParams } = this;
+          const data = {
+              current:page.currPage,
+              size:page.pageSize,
+          };
+          this.loading = true;
+          getCheckList(data).then((res)=>{
+            this.loading = false;
+            const{code,data} =res;
+            if(code == 200){
+              const {records=[],total} = data;
+              this.tableListData = records;
+              this.page.totalCount = total;
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
 
+          }).catch(()=>this.loading = false)
         },
         // 获取搜索框下拉数据
         getSearchList(){
-                    // aeko状态
-        searchAekoStatus().then((res)=>{
-          const {code,data=[]} = res;
-          if(code ==200 && data){
-            this.selectOptions.aekoStatusList = data;
-            this.selectOptionsCopy.aekoStatusList = data;
-          }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          }
-        })
-         //品牌
-        searchBrand().then((res)=>{
-          const {code,data=[]} = res;
-          if(code ==200 && data){
-             data.map((item)=>{
-              item.desc = item.code;
-            })
-            this.selectOptions.brand = data;
-            this.selectOptionsCopy.brand = data;
-          }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          }
-        })
-        // 封面状态
-        searchCoverStatus().then((res)=>{
-          const {code,data=[]} = res;
-          if(code ==200 && data){
-            this.selectOptions.coverStatusList = data;
-            this.selectOptionsCopy.coverStatusList = data;
-          }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          }
-        })
+          // aeko状态
+          searchAekoStatus().then((res)=>{
+            const {code,data=[]} = res;
+            if(code ==200 && data){
+              this.selectOptions.aekoStatusList = data;
+              this.selectOptionsCopy.aekoStatusList = data;
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          })
+          //品牌
+          searchBrand().then((res)=>{
+            const {code,data=[]} = res;
+            if(code ==200 && data){
+              data.map((item)=>{
+                item.desc = item.code;
+              })
+              this.selectOptions.brand = data;
+              this.selectOptionsCopy.brand = data;
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          })
+          // 封面状态
+          searchCoverStatus().then((res)=>{
+            const {code,data=[]} = res;
+            if(code ==200 && data){
+              this.selectOptions.coverStatusList = data;
+              this.selectOptionsCopy.coverStatusList = data;
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          })
 
-        // 车型
-        getSearchCartype().then((res)=>{
-          const {code,data} = res;
-          if(code ==200){
-            data.map((item)=>{
-              item.desc = item.name;
-              item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
-            })
-            this.selectOptions.cartypeCode = data.filter((item)=>item.name) || [];
-            this.selectOptionsCopy.cartypeCode = data.filter((item)=>item.name) || [];
-          }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          }
-        })
+          // 车型
+          getSearchCartype().then((res)=>{
+            const {code,data} = res;
+            if(code ==200){
+              data.map((item)=>{
+                item.desc = item.name;
+                item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
+              })
+              this.selectOptions.cartypeCode = data.filter((item)=>item.name) || [];
+              this.selectOptionsCopy.cartypeCode = data.filter((item)=>item.name) || [];
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          })
 
-        // 车型项目
-        searchCartypeProject().then((res)=>{
-          const {code,data} = res;
-          if(code ==200 ){
-            data.map((item)=>{
-              item.desc = item.name;
-              item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
-            })
-            this.selectOptions.carTypeCodeList = data;
-            this.selectOptionsCopy.carTypeCodeList = data;
-          }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          }
-        })
+          // 车型项目
+          searchCartypeProject().then((res)=>{
+            const {code,data} = res;
+            if(code ==200 ){
+              data.map((item)=>{
+                item.desc = item.name;
+                item.lowerCaseLabel = typeof item.name === "string" ? item.name.toLowerCase() : item.name
+              })
+              this.selectOptions.carTypeCodeList = data;
+              this.selectOptionsCopy.carTypeCodeList = data;
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          })
 
-        // 科室
-        searchCommodity().then((res)=>{
-          const {code,data} = res;
-          if(code ==200 ){
-            data.map((item)=>{
-              item.desc = item.deptNum;
-              item.code = item.id;
-            })
-            this.selectOptions.linieDeptNumList = data;
-            this.selectOptionsCopy.linieDeptNumList = data;
-          }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          }
-        })
+          // 科室
+          searchCommodity().then((res)=>{
+            const {code,data} = res;
+            if(code ==200 ){
+              data.map((item)=>{
+                item.desc = item.deptNum;
+                item.code = item.id;
+              })
+              this.selectOptions.linieDeptNumList = data;
+              this.selectOptionsCopy.linieDeptNumList = data;
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          })
 
-        // LINIE
-        searchLinie({tagId:configUser.LINLIE}).then((res)=>{
-          const {code,data} = res;
-          if(code ==200 ){
-            data.map((item)=>{
-              item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-              item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-              item.lowerCaseLabel =  typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
-            })
-            this.selectOptions.buyerName = data;
-            this.selectOptionsCopy.buyerName = data;
-          }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-          }
-        })
+          // LINIE
+          searchLinie({tagId:configUser.LINLIE}).then((res)=>{
+            const {code,data} = res;
+            if(code ==200 ){
+              data.map((item)=>{
+                item.desc = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                item.code = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+                item.lowerCaseLabel =  typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
+              })
+              this.selectOptions.buyerName = data;
+              this.selectOptionsCopy.buyerName = data;
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          })
 
         },
         handleSelectionChange(val){
@@ -346,10 +379,38 @@ export default {
           },400);
         this.debouncer()
       },
-        // 导出
-        exportAeko(){
+      // 查看描述
+      checkDescribe(row){
+        const { requirementAekoId,aekoCode } = row;
+        const routeData = this.$router.resolve({
+          path: '/aeko/describe',
+          query: {
+            requirementAekoId,
+            aekoCode,
+          },
+        })
+        window.open(routeData.href, '_blank')
+      },
+      // 跳转详情页
+      goToDetail(row){
+        const { requirementAekoId } = row;
+        const routeData = this.$router.resolve({
+          path: '/aeko/aekodetail',
+          query: {
+            from:'check',
+            requirementAekoId,
+          },
+        })
+        window.open(routeData.href, '_blank')
+      },
+      // 跳转到审批单
+      checkAssignsheet(){
 
-        },
+      },
+      // 导出
+      exportAeko(){
+
+      },
     }
 }
 </script>
