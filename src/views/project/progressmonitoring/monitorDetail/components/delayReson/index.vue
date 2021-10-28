@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-22 18:19:17
+ * @LastEditTime: 2021-10-28 10:39:42
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -208,7 +208,7 @@ export default {
               selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
               fs, 
               fsId,
-              planDate: this.partStatus == '3' ? item.kickoffTimeKw : this.partStatus == '2' ? item.nomiTimeKw : this.partStatus == '5' ? item.firstTryoutTimeKw : (this.partStatus == '6' || this.partStatus == '7') && this.isLarger(item.emTimeKw, item.otsTimeKw) ? item.emTimeKw : item.otsTimeKw,
+              planDate: this.partStatus == '3' ? item.kickoffTimeKw : this.partStatus == '2' ? item.nomiTimeKw : this.partStatus == '5' ? item.firstTryoutTimeKw : (this.partStatus == '6' || this.partStatus == '7') && this.isLarger(item.emTimeKw, item.otsTimeKw) ? item.otsTimeKw : item.emTimeKw,
               partPeriod: item.partStatus,
               partPeriodDesc: item.partStatusDesc,
               delayWeek: item.delayWeeks,
