@@ -66,6 +66,9 @@ export const filterRole = function(role = {}){
         }
     })
     const filterTab = TAB.filter((item)=>item.show);
+    filterTab.map((item,index)=>{
+        item.value = index+1;
+    })
     return filterTab
 }
 

@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-26 15:17:25
+ * @LastEditTime: 2021-10-28 18:57:26
  * @Description: 
 -->
 <template>
@@ -230,6 +230,7 @@ export default {
         current: this.page.currPage,
         size: this.page.pageSize
       }, form)
+      parmas.departmentIdList = parmas.departmentIdList.filter(o => o)
       this.tableLoading = true
       getApproveDistributionPage(parmas).then(res => {
         if (res.code === '200') {
@@ -244,7 +245,8 @@ export default {
               presetChiefIds.forEach((p, pindex) => {
                 preSetChief.push({
                   code: String(p),
-                  value: presetChiefNames[pindex]
+                  value: presetChiefNames[pindex],
+                  postId: o.postId || ''
                 })
               })
               o.chiefsOptions = preSetChief
@@ -315,11 +317,14 @@ export default {
             return {
               value: this.$i18n.locale === "zh" ? item.nameZh : item.nameEn,
               code: String(item.id),
+              postId: item.positionDTO && item.positionDTO.id || ''
             }
           })
           const chiefsOptions = row.chiefsOptions || []
           let selectOptions = [...chiefsOptions, ...dataList];
           selectOptions = Array.from(new Set(selectOptions.flat(Infinity)))
+          selectOptions = selectOptions.filter(o => o.code && o.postId)
+          selectOptions = window._.uniqBy(selectOptions, o => o.code)
           this.$set(row, 'selectOptions', selectOptions)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -348,15 +353,15 @@ export default {
       let parmas = selectedData.map(o => {
         const choseChiefs = o.chiefNames || []
         const chiefName = choseChiefs.map(chiefId => {
-          const cName = (o.selectOptions || []).find(buyer => buyer.code === chiefId) || {}
+          const chiefs = (o.selectOptions || []).find(buyer => buyer.code === chiefId) || {}
           console.log('selectOptions', o.selectOptions || [])
           return {
             id: o.id || '',
-            postId: o.postId || '',
+            postId: chiefs.postId || '',
             auditType: o.auditType || '',
             chiefId,
             aekoManageId: o.aekoManageId || '',
-            chiefName: cName.value || '',
+            chiefName: chiefs.value || '',
           }
         })
         return chiefName
