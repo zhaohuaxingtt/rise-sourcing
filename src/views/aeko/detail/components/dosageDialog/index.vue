@@ -142,7 +142,7 @@
             <template slot-scope="scope">
               <!-- 装车率加个% -->
               <template v-if="item.props == 'assemblyRate'"
-                >{{ scope.row[item.props] }}%</template
+                >{{ scope.row[item.props]*100 }}%</template
               >
               <template v-else>{{ scope.row[item.props] }}</template>
             </template>
