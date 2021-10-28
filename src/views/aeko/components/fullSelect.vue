@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-25 15:02:21
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-25 15:12:41
+ * @LastEditTime: 2021-10-28 16:25:58
  * @Description: select选项过多时的组件,支持拼音/文字/英文模糊搜索
 -->
 <template>
@@ -16,9 +16,14 @@
         :placeholder="language('partsprocure.CHOOSE','请选择')"
         :filter-method="dataFilter"
         v-lazy-options-load="lazyOptionsLoad"
+        @change="onMultipleChosen"
         @visible-change="selectVisibleChange"
     >
-        <el-option value="" :label="language('all','全部')"></el-option>
+        <el-option
+        v-if="optionAll"
+        value=""
+        :label="optionAllText || language('all','全部')"
+        ></el-option>
         <el-option
             v-for="(item,index) in projectOptions || []"
             :key="index"
@@ -55,6 +60,13 @@ export default {
         optionName:{ // 绑定的描述
             type:String,
             default:'desc'
+        },
+        optionAll: { // 是否展示全选选项
+            type: Boolean,
+            default: true
+        },
+        optionAllText: { // 全选文案
+            type:String
         },
         searchKey:{ // 模糊搜索对比字段
             type:String,
@@ -116,6 +128,15 @@ export default {
         }
     },
     methods:{
+        onMultipleChosen(value) {
+            if (this.multiple && this.optionAll) {
+                if (!value[value.length - 1]) {
+                    this.data=['']
+                } else {
+                    this.data=this.data.filter(item => item)
+                }   
+            }
+        },
         dataFilter(value){
             const {searchKey,optionName} = this;
             if (this.debouncer && typeof this.debouncer.cancel === "function") this.debouncer.cancel();

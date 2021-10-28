@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 16:16:30
- * @LastEditTime: 2021-08-20 10:43:37
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-28 16:13:22
+ * @LastEditors: Hao,Jiang
  * @Description: 材料组定点时率及平均定点周期
  * @FilePath: /front-web/src/views/designate/home/components/headerNav/components/nomiCharts.vue
 -->
@@ -59,7 +59,7 @@ export default {
   methods: {
     init(params) {
       if (!Object.keys(params).length) return
-      const options = generateOptions(params)
+      const options = generateOptions(params, this)
       console.log('-mokeChartsData-', options)
       const vm = echarts().init(document.getElementById("charts0"));
       vm.clear()

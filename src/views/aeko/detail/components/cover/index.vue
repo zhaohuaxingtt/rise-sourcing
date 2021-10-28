@@ -49,6 +49,11 @@ export default {
                 this.isCommodityCoordinator = false;
             }
         }
+
+        // 若是从AEKO查看进入该页面则只可查看不能编辑
+        if(from == 'check'){
+            this.isLinie = false;
+        }
     },
     methods:{
         getBbasicInfo(){
