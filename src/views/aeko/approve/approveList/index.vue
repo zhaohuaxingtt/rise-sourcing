@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-26 15:17:25
+ * @LastEditTime: 2021-10-28 15:33:30
  * @Description: 
 -->
 <template>
@@ -230,6 +230,7 @@ export default {
         current: this.page.currPage,
         size: this.page.pageSize
       }, form)
+      parmas.departmentIdList = parmas.departmentIdList.filter(o => o)
       this.tableLoading = true
       getApproveDistributionPage(parmas).then(res => {
         if (res.code === '200') {
@@ -320,6 +321,7 @@ export default {
           const chiefsOptions = row.chiefsOptions || []
           let selectOptions = [...chiefsOptions, ...dataList];
           selectOptions = Array.from(new Set(selectOptions.flat(Infinity)))
+          selectOptions = window._.uniqBy(selectOptions, o => o.code)
           this.$set(row, 'selectOptions', selectOptions)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
