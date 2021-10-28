@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-10-28 13:57:42
+ * @LastEditTime: 2021-10-28 16:15:02
  * @LastEditors: Hao,Jiang
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -295,6 +295,7 @@ export default {
           const materialGroupOverviewDTO = res.data.materialGroupOverviewDTO || []
           this.materialGroupData = {
             freqData: materialGroupOverviewDTO.map(o => o.avgPeriodPercent || 0) || [],
+            partsProcureData: materialGroupOverviewDTO.map(o => o.timeRateSum || 0) || [],
             nomiData: materialGroupOverviewDTO.map(o => o.timeRatePercent) || [],
             fugroup: materialGroupOverviewDTO.map(o => `${o.materialGroupName} ${o.materialCode}`) || [],
           }
