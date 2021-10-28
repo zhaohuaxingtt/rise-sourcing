@@ -10,101 +10,89 @@
       </div>
     </div>
     <!--     零件列表-->
-    <thePartsList
-        :partList="partList"
-        :partItemCurrent="partItemCurrent"
-        @handleOpenCustomDialog="handleOpenCustomDialog"
-        @handlePartItemClose="handlePartItemClose"
-        @handlePartItemClick="handlePartItemClick"
-    />
+    <thePartsList :partList="partList"
+                  :partItemCurrent="partItemCurrent"
+                  @handleOpenCustomDialog="handleOpenCustomDialog"
+                  @handlePartItemClose="handlePartItemClose"
+                  @handlePartItemClick="handlePartItemClick" />
     <!-- 自定义零件弹窗 -->
-    <customPart v-if="customParams.visible" :key="customParams.key" :batchNumber="currentTabData.batchNumber"
+    <customPart v-if="customParams.visible"
+                :key="customParams.key"
+                :batchNumber="currentTabData.batchNumber"
                 v-model="customParams.visible"
-                @handleCloseCustom="handleCloseCustom" @handleSaveCustom="handleSaveCustom"/>
+                @handleCloseCustom="handleCloseCustom"
+                @handleSaveCustom="handleSaveCustom" />
     <!--信息-->
     <iCard class="margin-bottom20">
-      <theBaseInfo :dataInfo="dataInfo"/>
+      <theBaseInfo :dataInfo="dataInfo" />
     </iCard>
 
     <!--类型标签-->
-    <theTabs
-        class="margin-bottom20"
-        @handleItemClick="handleTabsClick"
-        @handleTimeChange="handleTimeChange"
-        :currentTab="currentTab"
-        :timeRange="timeRange"
-    />
+    <theTabs class="margin-bottom20"
+             @handleItemClick="handleTabsClick"
+             @handleTimeChange="handleTimeChange"
+             :currentTab="currentTab"
+             :timeRange="timeRange" />
 
     <!--表格-->
-    <iCard tabCard class="margin-bottom20">
-      <theTable
-          v-show="currentTab === CURRENTTIME"
-          ref="theCurrentTable"
-          :dataInfo="dataInfo"
-          :currentTab="currentTab"
-          :tableLoading="tableLoading"
-          @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
-          :tableStatus="tableStatus"
-          @handleTableStatus="handleTableStatus"
-      />
-      <theTable
-          v-show="currentTab === AVERAGE"
-          ref="theAverageTable"
-          :averageData="averageData"
-          :currentTab="currentTab"
-          :tableLoading="tableLoading"
-          :tableStatus="averageTableStatus"
-          @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
-          @handleTableStatus="handleAverageTableStatus"
-      />
+    <iCard tabCard
+           class="margin-bottom20">
+      <theTable v-show="currentTab === CURRENTTIME"
+                ref="theCurrentTable"
+                :dataInfo="dataInfo"
+                :currentTab="currentTab"
+                :tableLoading="tableLoading"
+                @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
+                :tableStatus="tableStatus"
+                @handleTableStatus="handleTableStatus" />
+      <theTable v-show="currentTab === AVERAGE"
+                ref="theAverageTable"
+                :averageData="averageData"
+                :currentTab="currentTab"
+                :tableLoading="tableLoading"
+                :tableStatus="averageTableStatus"
+                @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
+                @handleTableStatus="handleAverageTableStatus" />
     </iCard>
 
     <!--图形-->
     <div class="chartBox">
       <!--      Price Index价格分析-->
       <iCard class="lineBox">
-        <thePriceIndexChart
-            v-if="showPiChart"
-            ref="thePriceIndexChart"
-            :currentTab="currentTab"
-            :currentTabData="currentTabData"
-            :priceLatitudeOptions="priceLatitudeOptions"
-        />
+        <thePriceIndexChart v-if="showPiChart"
+                            ref="thePriceIndexChart"
+                            :currentTab="currentTab"
+                            :currentTabData="currentTabData"
+                            :priceLatitudeOptions="priceLatitudeOptions" />
       </iCard>
       <!--      零件成本构成-->
       <iCard class="pieBox">
-        <thePartsCostChart
-            ref="thePartsCostChart"
-            :currentTab="currentTab"
-            :dataInfo="dataInfo"
-            :averageData="averageData"
-            :pieLoading="pieLoading"
-        />
+        <thePartsCostChart ref="thePartsCostChart"
+                           :currentTab="currentTab"
+                           :dataInfo="dataInfo"
+                           :averageData="averageData"
+                           :pieLoading="pieLoading" />
       </iCard>
     </div>
 
     <!--预览-->
-    <previewDialog
-        ref="previewDialog"
-        v-model="previewDialog"
-        :dataInfo="dataInfo"
-        :averageData="averageData"
-        :currentTab="currentTab"
-        :currentTabData="currentTabData"
-    />
-
+    <previewDialog ref="previewDialog"
+                   v-if="previewDialog"
+                   v-model="previewDialog"
+                   :dataInfo="dataInfo"
+                   :averageData="averageData"
+                   :currentTab="currentTab"
+                   :currentTabData="currentTabData" />
     <!--    保存弹框-->
-    <saveDialog
-        ref="saveDialog"
-        v-model="saveDialog"
-        @handleSaveDialog="handleSaveDialog"
-        :dataInfo="dataInfo"
-    />
+    <saveDialog ref="saveDialog"
+                v-model="saveDialog"
+                @handleSaveDialog="handleSaveDialog"
+                :dataInfo="dataInfo" />
   </iPage>
 </template>
 
 <script>
-import {iPage, iButton, iMessageBox, iCard} from 'rise';
+import { iPage, iButton, iMessageBox, iCard } from 'rise';
 import thePartsList from './components/thePartsList';
 import theBaseInfo from './components/theBaseInfo';
 import theTabs from './components/theTabs';
@@ -115,7 +103,7 @@ import thePriceIndexChart from './components/thePriceIndexChart';
 import previewDialog from './components/previewDialog';
 import saveDialog from './components/saveDialog';
 import resultMessageMixin from '@/utils/resultMessageMixin';
-import {CURRENTTIME, AVERAGE} from './components/data';
+import { CURRENTTIME, AVERAGE } from './components/data';
 import {
   getAnalysisSchemeDetails,
   getAveragePartCostPrice,
@@ -125,7 +113,7 @@ import {
   getPiIndexWaveSelectList,
 } from '../../../../api/partsrfq/piAnalysis/piDetail';
 import _ from 'lodash';
-import {mapState} from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   mixins: [resultMessageMixin],
@@ -148,7 +136,7 @@ export default {
       piIndexChartParams: (state) => state.rfq.piIndexChartParams,
     }),
   },
-  data() {
+  data () {
     return {
       pageLoading: false,
       saveDialog: false,
@@ -181,12 +169,12 @@ export default {
       averageTableStatus: '',
     };
   },
-  created() {
+  created () {
     this.getDataInfo();
   },
   methods: {
     // 返回
-    handleBack() {
+    handleBack () {
       if (this.$store.state.rfq.entryStatus === 1) {
         this.$router.push({
           path: '/sourceinquirypoint/sourcing/partsrfq/assistant',
@@ -207,11 +195,11 @@ export default {
       }
     },
     // 预览
-    handlePreview() {
+    handlePreview () {
       this.previewDialog = true;
     },
     // 打开自定义零件
-    handleOpenCustomDialog() {
+    handleOpenCustomDialog () {
       this.customParams = {
         ...this.customParams,
         key: Math.random(),
@@ -219,14 +207,14 @@ export default {
       };
     },
     // 关闭自定义零件
-    handleCloseCustom() {
+    handleCloseCustom () {
       this.customParams = {
         ...this.customParams,
         visible: false,
       };
     },
     // 保存自定义零件
-    handleSaveCustom() {
+    handleSaveCustom () {
       this.customParams = {
         ...this.customParams,
         visible: false,
@@ -234,12 +222,12 @@ export default {
       this.getDataInfo();
     },
     // 关闭零件
-    handlePartItemClose({event, item}) {
+    handlePartItemClose ({ event, item }) {
       event.stopPropagation();
       iMessageBox(
-          this.$t('LK_SHIFOUQUERENSHANCHU'),
-          this.$t('LK_WENXINTISHI'),
-          {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+        this.$t('LK_SHIFOUQUERENSHANCHU'),
+        this.$t('LK_WENXINTISHI'),
+        { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') },
       ).then(async () => {
         const req = {
           id: item.id,
@@ -262,7 +250,7 @@ export default {
       });
     },
     // 点击零件
-    handlePartItemClick({item, index}) {
+    handlePartItemClick ({ item, index }) {
       this.partItemCurrent = index;
       this.currentTabData = {
         ...this.currentTabData,
@@ -276,7 +264,7 @@ export default {
       this.getDataInfo();
     },
     // 点击标签
-    handleTabsClick(val) {
+    handleTabsClick (val) {
       this.$store.dispatch('setPiIndexChartParams', {
         dimensionHandle: [],
         particleSize: '3',
@@ -290,22 +278,22 @@ export default {
         if (this.currentTab === AVERAGE) {
           await this.getAverageData();
         } else {
-          await this.getDataInfo({propsArrayLoading: ['tableLoading', 'pieLoading']});
+          await this.getDataInfo({ propsArrayLoading: ['tableLoading', 'pieLoading'] });
         }
       });
     },
     // 时间改变
-    async handleTimeChange(time) {
+    async handleTimeChange (time) {
       const extraParams = {
         beginTime: time[0],
         endTime: time[1],
       };
-      await this.getAverageData({extraParams});
+      await this.getAverageData({ extraParams });
     },
     // 获取信息
-    async getDataInfo({propsArrayLoading = ['pageLoading', 'tableLoading', 'pieLoading']} = {}) {
+    async getDataInfo ({ propsArrayLoading = ['pageLoading', 'tableLoading', 'pieLoading'] } = {}) {
       try {
-        this.setLoading({propsArray: propsArrayLoading, boolean: true});
+        this.setLoading({ propsArray: propsArrayLoading, boolean: true });
         const req = {
           ...this.currentTabData,
         };
@@ -333,13 +321,13 @@ export default {
           return item;
         });
       } finally {
-        this.setLoading({propsArray: propsArrayLoading, boolean: false});
+        this.setLoading({ propsArray: propsArrayLoading, boolean: false });
       }
     },
     // 获取平均数据
-    async getAverageData({extraParams} = {}) {
+    async getAverageData ({ extraParams } = {}) {
       try {
-        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: true});
+        this.setLoading({ propsArray: ['tableLoading', 'pieLoading'], boolean: true });
         this.averageData = {};
         const req = {
           ...this.currentTabData,
@@ -361,18 +349,18 @@ export default {
       } catch {
         this.averageData = {};
       } finally {
-        this.setLoading({propsArray: ['tableLoading', 'pieLoading'], boolean: false});
+        this.setLoading({ propsArray: ['tableLoading', 'pieLoading'], boolean: false });
       }
     },
     // 处理保存弹窗
-    async handleSaveDialog(reqParams) {
+    async handleSaveDialog (reqParams) {
       const resCheckName = await this.checkName(reqParams);
       if (resCheckName) {
         this.saveDialog = false;
         iMessageBox(
-            this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
-            this.$t('LK_WENXINTISHI'),
-            {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+          this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
+          this.$t('LK_WENXINTISHI'),
+          { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') },
         ).then(async () => {
           await this.handleSaveProcess(reqParams, true);
         }).catch(async () => {
@@ -383,7 +371,7 @@ export default {
       }
     },
     // 处理保存请求
-    async handleSaveProcess(reqParams, isCover = false) {
+    async handleSaveProcess (reqParams, isCover = false) {
       try {
         this.pageLoading = true;
         const req = this.handleAllSaveReq(reqParams);
@@ -418,7 +406,7 @@ export default {
       }
     },
     // 处理整页保存参数
-    handleAllSaveReq(reqParams) {
+    handleAllSaveReq (reqParams) {
       const req = {
         ...this.currentTabData,
       };
@@ -445,7 +433,7 @@ export default {
       return req;
     },
     // 处理保存报告并导出 获取导出后的参数
-    async handleSaveAsReport(callback) {
+    async handleSaveAsReport (callback) {
       this.previewDialog = true;
       setTimeout(async () => {
         const res = await this.$refs.previewDialog.getDownloadFile({
@@ -461,20 +449,20 @@ export default {
       }, 1000);
     },
     // 处理loading
-    setLoading({propsArray, boolean}) {
+    setLoading ({ propsArray, boolean }) {
       propsArray.map(item => {
         this[item] = boolean;
       });
     },
     // 设置piIndex图 时间参数
-    setPiIndexTimeParams(data) {
+    setPiIndexTimeParams (data) {
       const copyPiIndexChartParams = _.cloneDeep(this.piIndexChartParams);
       copyPiIndexChartParams.beginTime = data.beginTime;
       copyPiIndexChartParams.endTime = data.endTime;
       this.$store.dispatch('setPiIndexChartParams', copyPiIndexChartParams);
     },
     //处理单独表格保存
-    async handlePriceTableFinish(value, tab) {
+    async handlePriceTableFinish (value, tab) {
       try {
         this.tableLoading = true;
         const req = {
@@ -498,7 +486,7 @@ export default {
           this.setTableEditStatus('');
           this.handleAddModelUrlChange();
           if (tab === CURRENTTIME) {
-            await this.getDataInfo({propsArrayLoading: ['tableLoading', 'pieLoading']});
+            await this.getDataInfo({ propsArrayLoading: ['tableLoading', 'pieLoading'] });
           } else if (tab === AVERAGE) {
             await this.getAverageData();
           }
@@ -512,7 +500,7 @@ export default {
       }
     },
     // 检查名字是否重复
-    async checkName(reqParams) {
+    async checkName (reqParams) {
       let isRepeat = false;
       const req = {};
       if (reqParams.analysisSave && reqParams.reportSave) {
@@ -530,11 +518,11 @@ export default {
       return isRepeat;
     },
     // 设置表格编辑状态
-    setTableEditStatus(boolean) {
+    setTableEditStatus (boolean) {
       this.handleTableStatus(boolean);
       this.handleAverageTableStatus(boolean);
     },
-    handleTableSaveError() {
+    handleTableSaveError () {
       if (this.currentTab === CURRENTTIME && this.$refs.theCurrentTable.tableStatus === 'edit') {
         this.setTableEditStatus('edit');
       } else if (this.currentTab === AVERAGE && this.$refs.theAverageTable.tableStatus === 'edit') {
@@ -542,7 +530,7 @@ export default {
       }
     },
     // 曲线纬度下拉
-    async getPiIndexWaveSelectList() {
+    async getPiIndexWaveSelectList () {
       try {
         this.priceLatitudeOptions = [];
         const req = {
@@ -555,13 +543,13 @@ export default {
         this.priceLatitudeOptions = [];
       }
     },
-    handleTableStatus(val) {
+    handleTableStatus (val) {
       this.tableStatus = val;
     },
-    handleAverageTableStatus(val) {
+    handleAverageTableStatus (val) {
       this.averageTableStatus = val;
     },
-    handleAddModelUrlChange() {
+    handleAddModelUrlChange () {
       if (this.$route.query.batchNumber) {
         this.$router.push({
           path: '/sourcing/partsrfq/piAnalyseDetail',
@@ -572,7 +560,7 @@ export default {
       }
     },
     // 保存按钮点击
-    handleSaveButtonClick() {
+    handleSaveButtonClick () {
       let res = '';
       if (this.currentTab === CURRENTTIME) {
         res = this.$refs.theCurrentTable.handleValidateTableFinish();
