@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-10-27 19:23:16
+ * @LastEditTime: 2021-10-28 16:28:40
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -218,6 +218,7 @@ export default {
           } else {
             iMessage.error(res.data[0].describe)
             this.loading = false
+            this.factoryDisabled = false
           }
           this.procureFactorySelectVo()
         } else {
@@ -272,7 +273,7 @@ export default {
           this.disabled = false
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-
+        this.factoryDisabled = this.disabled
         this.loading = false
       })
       .catch(() => this.loading = false)
