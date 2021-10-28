@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-10-28 11:34:37
+ * @LastEditTime: 2021-10-28 13:33:46
  * @LastEditors: Hao,Jiang
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -108,12 +108,12 @@
             <div class="dashboard-card-content">
               <dl>
                 <dt>{{language('LK_SHANGHUIZHONG','上会中')}}</dt>
-                <dd><strong class="note">{{basicData.meetingNum || 0}}</strong>
+                <dd><strong class="note cursor" @click="toLink(nomiURL('上会'))">{{basicData.meetingNum || 0}}</strong>
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('LK_LIUZHUANZHONG','流转中')}}</dt>
-                <dd><strong class="note">{{basicData.tranformNum || 0}}</strong>
+                <dd><strong class="note cursor" @click="toLink(nomiURL('流转'))">{{basicData.tranformNum || 0}}</strong>
                 </dd>
               </dl>
             </div>
@@ -166,6 +166,8 @@ import {sourcingOverview} from '@/api/dashboard'
 import {iPage, iCard, icon, iMessage} from 'rise'
 import {roleMixins} from '@/utils/roleMixins'
 import {selectDictByKeyss} from '@/api/dictionary'
+// 定点类型
+import { applyType } from '@/layout/nomination/components/data'
 
 export default {
   mixins: [roleMixins],
@@ -233,6 +235,11 @@ export default {
         2 : `/sourceinquirypoint/sourcing/partsletter?cardType=LOI&loiStatus=${status}&currentUser=true&isDelay=false`
       }
       return types[type]
+    },
+    nomiURL(type){
+      const data = applyType.find(o => o.name === type)
+      const code = data && data.id || ''
+      return `/sourcing/partsnomination?nominateProcessType=${code}&currentUser=true&isDelay=true`
     },
     // 获取下拉值
     getSearchOptions() {

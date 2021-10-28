@@ -236,6 +236,10 @@ export default {
     this.form = { 
       showMe:true, // 默认显示自己
     }
+    const acceptKeys = ['nominateProcessType', 'currentUser', 'isDelay']
+    Object.keys(this.$route.query).forEach(key => {
+        acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, this.$route.query[key]))
+    })
     this.getOptions()
   },
   beforeDestroy() {
