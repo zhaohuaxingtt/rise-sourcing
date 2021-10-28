@@ -1,10 +1,10 @@
 <template>
   <div>
-    <iCard v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE">
+    <iCard v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE|模具预算申请页面">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright" v-if="!disabled">
-          <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">{{ language('LK_TIJIAO','提交') }}</iButton>
-          <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">{{ language('LK_CHEHUI','撤回') }}</iButton>
+          <iButton @click="submit" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT|模具预算申请提交">{{ language('LK_TIJIAO','提交') }}</iButton>
+          <iButton @click="recall" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL|模具预算申请撤回">{{ language('LK_CHEHUI','撤回') }}</iButton>
         </div>
       </div>
       <tableList
