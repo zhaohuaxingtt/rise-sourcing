@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-10-28 14:16:47
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-10-29 08:52:56
+ * @LastEditors: Hao,Jiang
  * @Description: 
 -->
 <template>
@@ -193,7 +193,7 @@ export default {
             this.tabChange();
           }
           // 审批记录选项卡，有审批记录或补充材料的，选项卡要做红点标识
-          // this.checkAttachAlarm();
+          this.checkAttachAlarm();
 
          
         }else{
