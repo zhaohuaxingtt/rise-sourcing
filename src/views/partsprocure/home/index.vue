@@ -1,13 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
-<<<<<<< HEAD
- * @LastEditTime: 2021-10-27 17:18:11
+ * @LastEditTime: 2021-10-29 09:46:45
  * @LastEditors:  
-=======
- * @LastEditTime: 2021-10-27 13:45:04
- * @LastEditors: Hao,Jiang
->>>>>>> 2e1120723de4ea6896218e6fe44fe6365767c6b4
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
 -->

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2021-10-26 11:43:40
+ * @LastEditTime: 2021-10-28 21:01:44
  * @LastEditors:  
  */
 export const form = {
@@ -23,7 +23,7 @@ export const form = {
 export const tableTitle = [
   {
     props:'fsnrGsnrNum',
-    name:'FS号',
+    name:'FS/GS/SP No.',
     key:'FSNUMBER',
     tooltip:true
   },
@@ -58,9 +58,9 @@ export const tableTitle = [
     tooltip:true
   },
   {
-    props:'rfqSupplierName',
-    name:'定点供应商',
-    key:'DINGDIANGONGYINGSHANG',
+    props:'buyerName',
+    name:'询价采购员',
+    key:'XUNJIACAIGOUYUAN',
     tooltip:true
   },
   {
@@ -90,7 +90,7 @@ export const tableDetailTitle = [
   {
     props:'supplierId',
     name:'厂商',
-    key:'CHANGSHANG',
+    key:'CHANGSHANGMING',
     tooltip:true
   },
   {
@@ -169,7 +169,8 @@ export const tableDetailTitle = [
     props:'moldPrice',
     name:'模具价格(不含税)',
     key:'MOJIJIAGEBUHANSHUI',
-    tooltip:true
+    tooltip:true,
+    width:140
   },
   {
     props:'MOJUFENTAN',
@@ -187,7 +188,8 @@ export const tableDetailTitle = [
     props:'developPrice',
     name:'开发费(不含税)',
     key:'KAIFAFEIBUHANSHUI',
-    tooltip:true
+    tooltip:true,
+    width:140
   },
   {
     props:'developApportionPrice',

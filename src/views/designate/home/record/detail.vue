@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 19:56:57
- * @LastEditTime: 2021-10-27 16:06:23
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-10-28 20:58:33
+ * @LastEditors:  
 -->
 <template>
   <iPage v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_PAGE|定点记录详情">   
@@ -24,6 +24,7 @@
         <iButton @click='gotoRs' v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_TORS|RS单">RS单</iButton>
       </div>
       <tablelist
+        lang
         class="aotoTableHeight"
         :tableTitle="tableDetailTitle"
         :tableData="tableListData"
