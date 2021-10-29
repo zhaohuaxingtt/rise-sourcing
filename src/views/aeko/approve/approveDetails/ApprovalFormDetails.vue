@@ -1,6 +1,6 @@
 <!--审批单--->
 <template>
-  <div>
+  <div v-permission.auto="AEKO_APPROVAL_FORM_DETAILS_PAGE|AEKO审批单详情">
     <AEKOApprovalComponents v-if="transmitObj.option!=3" :audit-items="auditItems" :transmit-obj="transmitObj" @refreshForm="refreshForm($event)"/>
     <CoverStatementComponents class="margin-top20" :audit-cover-status="auditCoverStatus" :audit-cover="auditCover"/>
     <RecommendationTablePendingApprovalComponents v-show="Array.isArray(auditContents)&&auditContents.length>0" :audit-contents="auditContents" :audit-content-status="auditContentStatus" class="margin-top20"/>
