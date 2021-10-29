@@ -101,7 +101,11 @@ export default {
           sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`,res.data.auditContentStatusDesc || '')
         }
       })
-    }
+    },
+    // 从AEKO查看跳转过来调用的详情
+    lookAKEOApprovalDetailFromCheck(){
+
+    },
   },
 
 }
