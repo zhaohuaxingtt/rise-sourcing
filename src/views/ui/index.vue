@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-09-08 16:05:14
+ * @LastEditTime: 2021-10-28 03:21:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -80,7 +80,7 @@
 		<el-row>
 			<el-col :span="24">
 				<icard title="iButton">
-					<iButton slot="components">iButton example</iButton>
+					<iButton slot="components" @click="permisstionExcelExport">iButton example</iButton>
 					<iButton slot="components" loading>iButton loading</iButton>
 					<iButton slot="components" :loading="loading" @click="repeatClick" icon="el-icon-delete">iButton NoRepeat Submit</iButton>
 					<iButton slot="components" size="mini">Mini iButton example</iButton>
@@ -278,6 +278,8 @@
 	import {
 		getTableList
 	} from "@/api/ui";
+	import {allResourceTreeList} from '@/api/usercenter'
+	import {excelExport} from '@/utils/filedowLoad'
 	export default {
 		components: {
 			icard,
@@ -307,7 +309,8 @@
 					"iconcaidanzhankai",
 				],
 				partInfoTitle:[{key:"a",name:"零件信息"}],
-				partInfoData:{a:"D232121FF"}
+				partInfoData:{a:"D232121FF"},
+				excelData:[]
 			};
 		},
 		created() {
@@ -316,6 +319,34 @@
 			});
 		},
 		methods: {
+			permisstionExcelExport(){
+				const title = ['一级','二级','三级','控件']
+				allResourceTreeList().then(res=>{
+					const xyddData = res.data[0].menuList[1].menuList.find(items=>items.id == '5004').menuList
+					this.translateData(xyddData,['询源到定点'],0)
+					excelExport(this.excelData,title)
+				})
+			},
+			translateData(lists,data,index){
+					let datass = [...data]
+					lists.forEach(element => {
+						datass.push(element.name) 
+						if(element.menuList && element.menuList.length > 0){
+							this.translateData(element.menuList,datass,index)
+						}else{
+							if(element.resourceList && element.resourceList.length>0){
+								const datassIndex = datass.length
+								element.resourceList.forEach(i=>{
+									datass[datassIndex] = i.name
+									if(i.name && i.permissionKey != 'undefined'){
+										this.excelData.push(JSON.parse(JSON.stringify(datass)))
+									}
+								})
+							}
+							datass = ['询源到定点']
+						}
+					});
+			},
 			repeatClick() {
 				console.log("you have clicked the button");
 				this.loading = !this.loading;

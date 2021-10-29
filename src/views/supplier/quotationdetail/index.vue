@@ -35,8 +35,8 @@ export default {
      * @return {*}
      */
     async agreePrice() {
-      const status = await this.getNoticeStatus()
-      if (!status) return
+      // const status = await this.getNoticeStatus()
+      // if (!status) return
       
       this.quotations(1)
     },
