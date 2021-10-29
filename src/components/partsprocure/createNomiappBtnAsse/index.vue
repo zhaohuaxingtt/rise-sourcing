@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-10-22 15:51:31
+ * @LastEditTime: 2021-10-26 21:45:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
@@ -60,11 +60,11 @@ export default{
   },
   methods:{
     disabelRow(row){
-      if(row.addAssemblyNomi){
-        return false
-      }else {
-        return true
-      }
+      // if(row.addAssemblyNomi){
+      //   return false
+      // }else {
+      //   return true
+      // }
     },
     removeSelect(row){
       this.$refs.tabel.clearSelection()
@@ -78,7 +78,11 @@ export default{
         iMessage.warn(this.language('DANGQLJHANYOUDUOGEJIAGONG','您已选择过零件类型含有加工装配的供应商，切勿重复选择！'))
       }else{
         this.ontologyList = [...new Set([...this.ontologyList,...this.tableList.filter(items=>items.supplierId === row.supplierId)])]
-        this.ontologyList.forEach(r => this.$refs.tabel.toggleRowSelection(r))
+        this.ontologyList.forEach(r => {
+          if(!r.addAssemblyNomi){
+            this.$refs.tabel.toggleRowSelection(r)
+          }
+        })
       }
     },
     selectData(row,select){

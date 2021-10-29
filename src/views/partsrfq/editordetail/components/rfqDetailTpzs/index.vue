@@ -28,10 +28,10 @@
          <iCard title="业务分配模拟" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"5")' collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_YEWUFENPEIMONI|业务分配模拟"></iCard>
       </template>
     </el-tab-pane>
-    <el-tab-pane lazy name="two" label="专项分析工具">
+    <el-tab-pane lazy name="two" label="专项分析工具" v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU|专项分析工具">
       <gather />
     </el-tab-pane>
-    <el-tab-pane lazy name="three" label="谈判基本信息">
+    <el-tab-pane lazy name="three" label="谈判基本信息" v-permission.auto="RFQ_DETAIL_TIPS_TANPANJIBENXINXI|谈判基本信息">
       <negotiateBasicInfor></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>

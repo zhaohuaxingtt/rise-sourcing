@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-10-15 14:24:47
+ * @LastEditTime: 2021-10-28 16:45:49
  * @LastEditors: Hao,Jiang
 -->
 
@@ -55,13 +55,13 @@
         align='center'
         prop="partNo"
         label="Teil Nr."
-        width="120">
+        width="90">
       </el-table-column>
       <el-table-column
         align='center'
         prop="partPrjCode"
         label="FSNr."
-        width="120">
+        width="110">
       </el-table-column>
       <el-table-column
         align='center'

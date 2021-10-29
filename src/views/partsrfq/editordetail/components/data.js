@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:32
- * @LastEditTime: 2021-09-08 10:19:11
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-27 15:20:11
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\components\data.js
  */
@@ -14,7 +14,8 @@ export const navList = [{
     url:'/sourceinquirypoint/sourcing/partsrfq/editordetail',
     activePath: "/sourceinquirypoint/sourcing/partsrfq/editordetail",
     key:"LK_DAIBANSHIXIANG",
-    permissionKey:'RFQ_DAIBANSHIXIANG'
+    permissionKey:'RFQ_DAIBANSHIXIANG',
+    permissionName:'RFQ详情-待办事项'
     }, {
     value: 2,
     name: "详情信息",
@@ -22,7 +23,8 @@ export const navList = [{
     url:'/sourceinquirypoint/sourcing/partsrfq/editorInfo',
     activePath: "/sourceinquirypoint/sourcing/partsrfq/editorInfo",
     key:"LK_XIANGQINGXINXI",
-    permissionKey:'RFQ_XIANGXIXINGXI'
+    permissionKey:'RFQ_XIANGXIXINGXI',
+    permissionName:'RFQ详情-详情信息'
     }, {
     value: 3,
     name: "谈判助手",
@@ -30,6 +32,7 @@ export const navList = [{
     url:'/sourceinquirypoint/sourcing/partsrfq/assistant',
     activePath: "/sourceinquirypoint/sourcing/partsrfq/assistant",
     key:"LK_TANPANZS",
-    permissionKey:'RFQ_TANPANZHUSHOU'
+    permissionKey:'RFQ_TANPANZHUSHOU',
+    permissionName:'RFQ详情-谈判助手'
 }]
 

@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-10-26 14:03:22
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-28 19:22:40
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -207,6 +207,14 @@ export default [
           title: 'AEKO-关联零件'
         },
         component: () => import("@/views/aeko/relatingParts"),
+      },
+      {
+        path: "mtz",
+        name: "mtz",
+        meta: {
+          title: 'AEKO-mtz'
+        },
+        component: () => import("@/views/aeko/mtz"),
       }
     ]
   }

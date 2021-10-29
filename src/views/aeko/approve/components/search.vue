@@ -37,6 +37,7 @@
           v-model="form.departmentIdList"
           v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_DEPARTMENTIDLIST|科室"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          @change="handlemultipleDeptChange"
           multiple
           filterable
           clearable
@@ -124,7 +125,7 @@ export default {
     return {
       buyerId: '',
       form: {
-        departmentIdList: []
+        departmentIdList: ['']
       },
       selectOptions: {
         linieDeptNumList: [],
@@ -161,8 +162,18 @@ export default {
       this.$emit('search', this.form)
     },
     reset() {
-      this.form = {}
+      this.form = {
+        departmentIdList: ['']
+      }
       this.$emit('search', {})
+    },
+    handlemultipleDeptChange(value) {
+      if (!value[value.length - 1]) {
+        this.form.departmentIdList=['']
+      } else {
+        this.form.departmentIdList=this.form.departmentIdList.filter(item => item)
+      }
+      
     },
     filterOption(data, optionKey, valueKey) {
       // 去除空格

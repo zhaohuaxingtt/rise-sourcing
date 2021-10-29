@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-10-29 09:46:45
+ * @LastEditTime: 2021-10-29 09:48:31
  * @LastEditors:  
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -432,7 +432,7 @@ export default {
       this.form.size = this.page.pageSize;
       this.form.current = this.page.currPage;
       // 获取预置的参数
-      const acceptKeys = ['status','buyerName','linieName']
+      const acceptKeys = ['status','buyerName','linieName','currentUser','isDelay']
       Object.keys(this.$route.query).forEach(key => {
           acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, this.$route.query[key]))
       })

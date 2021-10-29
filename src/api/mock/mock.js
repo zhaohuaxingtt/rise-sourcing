@@ -1,25 +1,17 @@
 import axios from "@/utils/axios";
-import store from '@/store'
-
+import store from "@/store";
 const requst = axios();
 const requstBase = axios(process.env.VUE_APP_BASEINFO);
 const requstParts = axios(process.env.VUE_APP_PARTS_BIDDING);
-const addUserId = function (config) {
-  console.log(config.url, config);
-  config.params = {
-    ...config.params,
-    userId: store.state.permission.userInfo.id,
-  }
-  return config;
-}
-requst.interceptors.request.use(addUserId);
-requstBase.interceptors.request.use(addUserId);
-requstParts.interceptors.request.use(addUserId);
+const requstRfq = axios(process.env.VUE_APP_RFQ);
+const requstSupplier = axios(process.env.VUE_APP_SUPPLIERINFO);
+const requstFile = axios(process.env.VUE_APP_FILE_SERVER);
 
 // 获取rfqCode
 export function getRfqCodesList(data) {
-  return requst({
-    url: `/rise-mock/mockService/getRfqCodes`,
+  return requstRfq({
+    // url: `/rise-mock/mockService/getRfqCodes`,
+    url: `/api/rfq/getRfqIdList/${store.state.permission.userInfo.id}`,
     method: "POST",
     data,
   });
@@ -27,8 +19,9 @@ export function getRfqCodesList(data) {
 
 // 获取供应商信息
 export function getSupplierInfo(data) {
-  return requst({
-    url: `/rise-mock/mockService/getSupplierInfo`,
+  return requstSupplier({
+    // url: `/api/getSupplierInfo`,
+    url: `/web/supplier360View/page/querySupplierInfo`,
     method: "POST",
     data,
   });
@@ -36,41 +29,48 @@ export function getSupplierInfo(data) {
 
 // 获取供应商层级
 export function getSuppliers(data) {
-  return requst({
-    url: `/rise-mock/mockService/getSuppliers`,
+  return requstParts({
+    url: `/api/bdlInfoList`,
     method: "POST",
     data,
   });
 }
 
-//下载文件
-export function downloadFile(fileId) {
-  return `/rise-mock/mockService/files/download/${fileId}`;
+// 根据 ID 获取供应商信息  联系人
+export function getSupplierInfoById(data) {
+  return requstSupplier({
+    // url: `/api/getSupplierInfoList?supplierIds=${supplierIds}`,
+    url: `/web/user/list`,
+    method: "POST",
+    data
+  });
 }
 
 // 上传文件
-export function uploadFile(data) {
-  return requst({
-    url: `/rise-mock/mockService/files/upload-file`,
-    method: "POST",
+export function uploadFile(data, options) {
+  data.append("multifile", data.get("file"));
+  data.append("applicationName", 111);
+  data.append("businessId", 8025);
+  data.append("currentUser", store.state.permission?.userInfo?.nameZh || 'admin');
+  data.append("type", 1);
+  data.delete("file");
+  return requstFile({
+    url: `/udMutilfiles`,
     data,
+    method: "POST",
+    timeout: 600000,
+    ...options,
+  }).then(async (res) => {
+    return res[0];
   });
 }
 
 //通过文件 ID 下载文件, 返回字节流
 export function getFileId(fileId) {
-  return requst({
-    url: `/rise-mock/mockService/files/download/${fileId}`,
+  return requstFile({
+    url: `/udDown/${fileId}`,
     method: "GET",
     responseType: "blob",
-  });
-}
-
-// 根据 ID 获取供应商信息
-export function getSupplierInfoById({ supplierId }) {
-  return requst({
-    url: `/rise-mock/mockService/getSupplierInfoById/${supplierId}`,
-    method: "POST",
   });
 }
 
