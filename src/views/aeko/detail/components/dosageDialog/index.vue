@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-10-28 20:35:44
+ * @LastEditTime: 2021-10-29 15:15:00
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -279,15 +279,12 @@ export default {
       }
       // originPerCarDosage:原零件
       // perCarDosage:新零件
-      for (let j = 0; j < this.dosage.aekoProjectCarDosageList.length; j++) {
-        const basicItem = this.dosage.aekoProjectCarDosageList[j];
-        if(!basicItem['originPerCarDosage']&&!basicItem['perCarDosage']){
-          const tips = this.language('YUANLINGJIANYONGLIANG','原零件用量')+'、'+this.language('XINLINGJIANYONGLIANG','新零件⽤量')+this.language('ZHISHAOYOUYIGE','至少有一个') +
-          this.language("LK_AEKO_BUNENGWEIKONG", "不能为空");;
-          iMessage.warn(tips);
-          isValidate = false;
-          break;
-        }
+      let validList = this.dosage.aekoProjectCarDosageList.filter((i)=> i.perCarDosage&&i.originPerCarDosage)
+      if(!(Array.isArray(validList)&&validList.length>0)){
+        const tips = this.language('ZHISHAOYAOYOUYIHANG','至少要有一行') + this.language('YUANLINGJIANYONGLIANG','原零件用量')+'、'+this.language('XINLINGJIANYONGLIANG','新零件⽤量')+
+        this.language("LK_AEKO_BUNENGWEIKONG", "不能为空");;
+        iMessage.warn(tips);
+        isValidate = false;
       }
       return isValidate;
     },
