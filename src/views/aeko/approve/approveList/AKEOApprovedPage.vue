@@ -1,8 +1,9 @@
 <!--已审批--->
 <template>
-  <div>
+  <div v-permission.auto="AEKO_APPROVED_PAGE|AEKO已审批页面">
     <!--搜索区--->
-    <i-search class="margin-bottom20" @sure="queryApprovedAKEOForm" @reset="restQueryForm" :resetKey="QUEREN"
+    <i-search v-permission.auto="AEKO_APPROVED_PAGE_SEARCHAREA|AEKO已审批页面搜索区" class="margin-bottom20"
+              @sure="queryApprovedAKEOForm" @reset="restQueryForm" :resetKey="QUEREN"
               :searchKey="REST">
       <el-form :model="queryAkeoForm" ref="AKEOQueryFormRef">
         <!-- AEKO号 -->
@@ -85,7 +86,7 @@
       </el-form>
     </i-search>
     <!--表格展示区--->
-    <i-card>
+    <i-card v-permission.auto="AEKO_APPROVED_PAGE_DATA_DISPLAY_AREA|AEKO已审批数据展示区">
       <span class="font18 font-weight">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
       <!--表格展示区-->
       <tablelist
@@ -333,7 +334,7 @@ export default {
       if (this.checkMinCost() && this.checkMaxCost()) {
         this.queryAkeoForm.current = 1
         this.queryAkeoForm.size = this.page.pageSize
-        this.queryAkeoForm.partNum=this.queryAkeoForm.partNum.trim()
+        this.queryAkeoForm.partNum = this.queryAkeoForm.partNum.trim()
         this.loadApprovedList()
       }
     },
@@ -350,10 +351,10 @@ export default {
         buyerName.map((item) => {
           item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
           item.value = item.id
-          item.enName=item.nameEn
-          item.zhName=item.nameZh
+          item.enName = item.nameEn
+          item.zhName = item.nameZh
         })
-        this.options=buyerName
+        this.options = buyerName
         this.buyerUsers = buyerName;
       } else {
         const {deptDTO = {}} = userInfo;
@@ -364,10 +365,10 @@ export default {
             data.map((item) => {
               item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
               item.value = item.id
-              item.enName=item.nameEn
-              item.zhName=item.nameZh
+              item.enName = item.nameEn
+              item.zhName = item.nameZh
             })
-            this.options=buyerName
+            this.options = buyerName
             this.buyerUsers = data;
           } else {
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -382,9 +383,9 @@ export default {
         setTimeout(() => {
           this.loading = false;
           this.options = this.buyerUsers.filter(item => {
-            let isZhNameRes=item.zhName&&item.zhName.indexOf(query)>-1?true:false
-            let isEnNameRes=item.enName&&item.enName.indexOf(query)>-1?true:false
-            return isZhNameRes||isEnNameRes
+            let isZhNameRes = item.zhName && item.zhName.indexOf(query) > -1 ? true : false
+            let isEnNameRes = item.enName && item.enName.indexOf(query) > -1 ? true : false
+            return isZhNameRes || isEnNameRes
           });
         }, 200);
       } else {

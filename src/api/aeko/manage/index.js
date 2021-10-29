@@ -204,6 +204,13 @@ export function manualImportAekoFromTCM(params) {
   })
 }
 
+// 待办数量查询
+export function getLogCount({pageCode, id}) {
+  return requst({
+      url: `/web/aeko/backlog/count/${pageCode}/${id}`,
+      method: 'GET',
+  })
+}
 
 // 会议通过
 export function adoptedMeeting(data) {
