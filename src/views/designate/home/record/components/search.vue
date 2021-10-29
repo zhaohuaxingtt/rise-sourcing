@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 14:17:55
- * @LastEditTime: 2021-10-26 11:42:32
+ * @LastEditTime: 2021-10-28 20:25:37
  * @LastEditors:  
 -->
 <template>
@@ -94,13 +94,13 @@
             ></el-option>
           </iSelect> 
         </el-form-item>
-        <el-form-item :label="language('DINGDIANGONGYINGSHANG','定点供应商')">
+        <!-- <el-form-item :label="language('DINGDIANGONGYINGSHANG','定点供应商')">
           <iInput
             v-model="formRecord.rfqSupplierName"
             :placeholder="language('LK_QINGSHURU','请输入')"
           >
           </iInput> 
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="language('LINGJIANXIANGMULEIXING','零件项目类型')">
           <iSelect 
             v-model="formRecord.partProjType"

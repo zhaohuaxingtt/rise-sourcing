@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-15 11:20:31
- * @LastEditTime: 2021-10-27 15:35:48
+ * @LastEditTime: 2021-10-28 22:21:22
  * @LastEditors:  
 -->
 <template>
@@ -39,7 +39,7 @@ export default {
             )
           )
         } else {
-          let planItemsIds = this.planItems.map((res) => res.id)
+          let planItemsIds = this.planItems.map((res) => res.purchaseProjectId)
           this.planItemsIds = planItemsIds
           this.batchdialogVisible = true
         }

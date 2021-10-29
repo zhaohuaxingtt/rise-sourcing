@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-10-22 18:35:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-28 14:00:43
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
 -->
@@ -46,20 +46,21 @@
           <!--------------------------------------------------------->
           <!------------------------内容是打勾------------------------>
           <!--------------------------------------------------------->
-            <span v-if='scope.row[item.props].schedule == 3 && scope.row[item.props].quotationId' class="cursor" @click="openUrl('3',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">
+            <span v-if='scope.row[item.props].schedule == 3 && scope.row[item.props].quotationId' class="cursor blue-color" @click="openUrl('3',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">
               <icon name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon>
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是打叉------------------------>
           <!--------------------------------------------------------->
-            <span v-else-if='scope.row[item.props].schedule == 2 && scope.row[item.props].quotationId' class="cursor" @click="openUrl('2',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">
+            <span v-else-if='scope.row[item.props].schedule == 2 && scope.row[item.props].quotationId' class="cursor blue-color" @click="openUrl('2',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">
               <icon name='iconbaojiazhuangtailiebiao_yijujue' symbol></icon>
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是横岗百分比------------------->
           <!--------------------------------------------------------->
           <template v-else>
-            <span v-if='scope.row[item.props].quotationId' class="cursor" @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">{{scope.row[item.props].schedule}}</span>
+            <span v-if='scope.row[item.props].quotationId' class="cursor blue-color" @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">{{scope.row[item.props].schedule}}</span>
+            <span v-else>\</span>
           </template>
           </template>
         </el-table-column>
@@ -205,6 +206,9 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .blue-color{
+    color:rgb(23, 99, 247)
+  }
   .mineTile{
     .line{
       position: absolute;
