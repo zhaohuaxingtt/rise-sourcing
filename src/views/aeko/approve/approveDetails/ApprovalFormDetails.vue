@@ -1,7 +1,7 @@
 <!--审批单--->
 <template>
   <div>
-    <AEKOApprovalComponents v-if="transmitObj.option!=3" :audit-items="auditItems" :transmit-obj="transmitObj" @refreshForm="refreshForm($event)"/>
+    <AEKOApprovalComponents v-if="[1,2].includes(transmitObj.option)" :audit-items="auditItems" :transmit-obj="transmitObj" @refreshForm="refreshForm($event)"/>
     <CoverStatementComponents class="margin-top20" :audit-cover-status="auditCoverStatus" :audit-cover="auditCover"/>
     <RecommendationTablePendingApprovalComponents v-show="Array.isArray(auditContents)&&auditContents.length>0" :audit-contents="auditContents" :audit-content-status="auditContentStatus" class="margin-top20"/>
   </div>
@@ -12,6 +12,7 @@ import AEKOApprovalComponents from "./components/AEKOApprovalComponents";
 import CoverStatementComponents from "./components/CoverStatementComponents";
 import RecommendationTablePendingApprovalComponents from "./components/RecommendationTablePendingApprovalComponents";
 import {queryAKEOApprovalForm, getAKEOApprovalForm} from "@/api/aeko/approve";
+import  { iMessage } from "rise"
 
 export default {
   name: "ApprovalFormDetails",
@@ -36,6 +37,8 @@ export default {
     this.aekoApprovalDetails = this.transmitObj.aekoApprovalDetails
     if (this.transmitObj.option == 1) {
       this.loadAKEOApprovalForm()
+    } else if (this.transmitObj.option == 4) {  // Linie 预览
+      this.getPreviewData()
     } else {
       this.lookAKEOApprovalForm()
     }
@@ -100,6 +103,11 @@ export default {
           sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`,res.data.auditContentStatusDesc || '')
         }
       })
+    },
+
+    // Linie 审批单预览数据
+    getPreviewData(){
+      iMessage.warn('接口待调试')
     }
   },
 
