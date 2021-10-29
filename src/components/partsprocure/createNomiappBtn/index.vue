@@ -1,7 +1,7 @@
 <!--
  * @Author: 创建定点申请按钮
  * @Date: 2021-08-04 12:07:53
- * @LastEditTime: 2021-08-31 17:25:53
+ * @LastEditTime: 2021-10-26 21:21:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
@@ -104,9 +104,9 @@ export default{
       const routeData = this.$router.resolve({
         path:'/designate/decisiondata/title',
         query:{
-          desinateId:items.nominateId,
-          designateType:items.nominateProcessType,
-          partProjType:items.partProjectType
+          desinateId:items.nominateId || '',
+          designateType:items.nominateProcessType || '',
+          partProjType:items.partProjectType || ''
         }
       })
       window.open(routeData.href, '_blank')

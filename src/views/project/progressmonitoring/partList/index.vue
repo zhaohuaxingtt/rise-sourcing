@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-25 11:20:16
+ * @LastEditTime: 2021-10-28 14:05:06
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -99,8 +99,8 @@ export default {
           permision: 'PROJECTMGT-MONITORPARTLIST-NOTIPSTABLE|项目管理-监控零件清单-未进TIPS表格'
         },
         "2": {
-          titleName: 'CKD/HT零件',
-          titleKey: 'CKDHTLINGJIAN',
+          titleName: 'CKD/HT/ZSB零件',
+          titleKey: 'CKDHTZSBLINGJIAN',
           title: CKDHTtableTitle,
           permision: 'PROJECTMGT-MONITORPARTLIST-CKDHTTABLE|项目管理-监控零件清单-CKDHT表格'
         }
@@ -110,6 +110,9 @@ export default {
     },
   },
   methods: {
+    handleSelectionChange(val) {
+      this.selectTableData = val
+    },
     close() {
       this.$router.back()
     },
@@ -143,7 +146,8 @@ export default {
         const params = {
         partMonitorStatus: this.$route.query.type,
         partStatus: 1,
-        projectId: this.$route.query.carProjectId
+        projectId: this.$route.query.carProjectId,
+        ids: this.selectTableData.map(item => item.id)
       }
         proProgressMonitorFile(params)
       } catch(e) {

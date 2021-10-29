@@ -6,24 +6,24 @@
         <div class="floatright">
           <span v-if="!disabled">
             <template v-if="!editStatus">
-              <iButton @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EDIT">{{
+              <iButton @click="edit" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EDIT|时间计划-编辑">{{
                   language('LK_BIANJI','编辑')
                 }}
               </iButton>
             </template>
             <template v-else>
-              <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_SAVE">{{
+              <iButton @click="save" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_SAVE|时间计划-保存">{{
                   language('LK_BAOCUN','保存')
                 }}
               </iButton>
-              <iButton @click="back" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_BACK">{{
+              <iButton @click="back" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_BACK|时间计划-返回">{{
                   language('LK_FANHUI','返回')
                 }}
               </iButton>
             </template>
           </span>
 
-          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EXPORTS">
+          <iButton @click="exports" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EXPORTS|时间计划-导出">
             {{ language('LK_DAOCHU','导出') }}
           </iButton>
         </div>

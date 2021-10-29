@@ -16,7 +16,7 @@
         <!-- 零件号 -->
         <el-form-item :label="language('LINGJIAHAO', '零件号')" prop='partNum'>
           <i-input
-              v-model.trim="queryAkeoForm.partNum"
+              v-model="queryAkeoForm.partNum"
               :placeholder="language('LK_QINGSHURU','请输入')"
               clearable
           ></i-input>
@@ -355,6 +355,7 @@ export default {
       if (this.checkMinCost() && this.checkMaxCost()) {
         this.page.currPage = 1
         this.queryAkeoForm.size = this.page.pageSize
+        this.queryAkeoForm.partNum=this.queryAkeoForm.partNum.trim()
         this.loadPendingAKEOList()
       }
     },
@@ -370,12 +371,13 @@ export default {
         setTimeout(() => {
           this.loading = false;
           this.options = this.buyerUsers.filter(item => {
-            return item.label.toLowerCase()
-                .indexOf(query.toLowerCase()) > -1;
+            let isZhNameRes=item.zhName&&item.zhName.indexOf(query)>-1?true:false
+            let isEnNameRes=item.enName&&item.enName.indexOf(query)>-1?true:false
+            return isZhNameRes||isEnNameRes
           });
         }, 200);
       } else {
-        this.options = [];
+        this.options = this.buyerUsers;
       }
     },
 
@@ -385,7 +387,10 @@ export default {
         buyerName.map((item) => {
           item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
           item.value = item.id;
+          item.enName=item.nameEn
+          item.zhName=item.nameZh
         })
+        this.options=buyerName
         this.buyerUsers = buyerName;
       } else {
         const {deptDTO = {}} = userInfo;
@@ -396,8 +401,11 @@ export default {
             data.map((item) => {
               item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
               item.value = item.id;
+              item.enName=item.nameEn
+              item.zhName=item.nameZh
             })
             this.buyerUsers = data;
+            this.options=data
           } else {
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }

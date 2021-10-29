@@ -9,7 +9,7 @@
 <template>
   <iCard class="volume">
     <div class="header clearFloat">
-      <span class="title">{{ language('LK_FUJIANLIEBIAO','附件列表') }} （{{ language('LK_DANGQIANBANBEN','当前版本') }} : V{{ version }}）</span>
+      <span class="title">{{ language('LK_FUJIANLIEBIAO','附件列表') }} （{{ language('LK_DANGQIANBANBEN','当前版本') }} : {{ versionComputed }}）</span>
       <div class="control">
         <iButton v-if="!disabled" @click="download" v-permission.auto="PARTSIGN_EDITORDETAIL_ENQUIRY_DOWNLOAD|询价资料下载">{{ language('LK_XIAZAI','下载') }}</iButton>
         <iButton v-if="!disabled" @click="jump" v-permission.auto="PARTSIGN_EDITORDETAIL_ENQUIRY_ALL|询价资料查看全部版本">{{ language('LK_CHAKANQUANBUBANBEN','查看全部版本') }}</iButton>
@@ -80,6 +80,13 @@ export default {
   },
   created() {
     this.getEnquiry()
+  },
+  computed: {
+    versionComputed() {
+      const str = this.version ? this.version + "" : "V1"
+      
+      return !/^v\d+$/i.test(str) ? `V${ str }` : str 
+    }
   },
   methods: {
     async getEnquiry() {

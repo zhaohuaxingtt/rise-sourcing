@@ -54,7 +54,8 @@
 
         <!-- 科室linie费用table -->
         <div v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE|封面表态LINIE表_预览">
-            <p class="btn-list margin-bottom20">
+            <p class="btn-list margin-bottom20" v-if="!isFromCheck">
+                <iButton v-if="pending" @click="cancelPass" :loading="canceling">{{language('LK_QUXIAOTONGGUO','取消通过')}}</iButton>
                 <iButton @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
             </p>
             <tableList
@@ -111,6 +112,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import {
     getCoverDetail,
     getLiniePage,
+    cancelPass,
 } from '@/api/aeko/detail/cover.js'
 import unfreezeDialog from './unfreezeDialog'
 export default {
@@ -143,12 +145,26 @@ export default {
             tableTitle:coverTableTitleDepart,
             selectItems:[],
             dialogVisible:false,
+            canceling:false,
+            pending:false, // 未调试,调试后移除
+            isFromCheck:false,
 
         }
     },
     created(){
         this.getList();
         this.getLinie();
+
+        // 判断是否从AEKO查看跳转进入该页面 并且底部表单多一个冻结时间字段
+
+        const {query} = this.$route;
+        const {from=''} = query;
+        if(from == 'check') {
+            this.isFromCheck = true;
+            this.tableTitle.push(
+                { props: "frozenTime", name: "冻结时间", key: "LK_AEKO_DONGJIESHIJIAN", tooltip: true },
+            )
+        }
     },
     methods:{
         // 获取详情
@@ -232,6 +248,30 @@ export default {
             }
             
             return fixstr.join('.');
+        },
+
+        // 取消通过
+        cancelPass(){
+            const {query} = this.$route;
+            const { requirementAekoId ='',} = query;
+            this.$confirm(this.language('cancelPassSure','请再次确认是否取消通过该封面？')).then(confirmInfo => {
+				if (confirmInfo === 'confirm') {
+                    this.canceling = true
+                    cancelPass(requirementAekoId).then(res => {
+                        if (res.code === '200') {
+                            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+                            // 刷新页面
+                            this.$emit('getBbasicInfo');
+                        } else {
+                            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                        }
+                    }).catch(e => {
+                        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                    }).finally(() => {
+                        this.canceling = false
+                    })
+                }
+            }).catch(()=>{})
         },
 
         // 解冻
