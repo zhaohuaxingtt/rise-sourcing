@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-10-29 15:15:00
+ * @LastEditTime: 2021-10-29 15:37:48
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -236,7 +236,6 @@ export default {
           result[i.props] = "";
         }
       });
-      console.log(this.dosage);
       this.dosage?.aekoProjectCarDosageList?.forEach((i) => {
         i &&
           Object.keys(i).forEach((key) => {
@@ -292,8 +291,6 @@ export default {
     summaryMethod(param) {
       const { columns, data } = param;
       const sums = [];
-      console.log("columns=>", columns);
-      console.log("data=>", data);
       columns.forEach((column, index) => {
         if (index === 0) {
           sums[index] = "TOTAL";
@@ -313,7 +310,6 @@ export default {
           sums[index] = "";
         }
       });
-      console.log(sums);
       this.sums = sums;
       return sums;
     },
