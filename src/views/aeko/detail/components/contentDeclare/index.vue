@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-29 09:41:17
+ * @LastEditTime: 2021-10-29 15:47:48
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -308,7 +308,10 @@ export default {
   },
   computed: {
     disabled() {
-      return this.aekoInfo.aekoStatus == "CANCELED"
+      // AEKO状态为撤销以及从AEKO查看跳转过来的
+      const {query} = this.$route;
+      const {from=''} = query;
+      return this.aekoInfo.aekoStatus == "CANCELED"  || from == 'check';
     },
     // 判断展示车型还是车型项目 展示label
     showCarTypeLabel(){

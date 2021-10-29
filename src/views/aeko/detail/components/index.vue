@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-10-28 14:16:47
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-10-29 11:12:32
+ * @LastEditors: Please set LastEditors
  * @Description: 
 -->
 <template>
@@ -54,8 +54,10 @@ import {
 import {
   aekoAuditSupplementalresult,
 } from '@/api/aeko/detail/approveRecord'
+import { roleMixins } from "@/utils/roleMixins";
 
 export default {
+  mixins: [roleMixins],
   components: { 
     iTabsList, 
     contentDeclare,
@@ -70,15 +72,15 @@ export default {
     record,
   },
   created() {
-    this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
-    this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
-    this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+    const roleList = this.roleList;
+    this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
+    this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+    this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
 
     // 判断下多角色情况 若多角色时就判断url的跳转来源
     const {query} = this.$route;
     const {from=''} = query;
     const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
-    console.log(roleArr)
     if(roleArr.length > 1){
         if(from == 'manage'){
             this.isLinie = false;
@@ -92,6 +94,15 @@ export default {
     this.aekoInfo = {
       requirementAekoId: this.$route.query.requirementAekoId
     }
+
+    // 若从AEKO查看跳转过来的默认进入封面表态
+    if(from == 'check'){
+      this.currentTab ='cover';
+      this.isLinie = true;
+      this.isAekoManager = false;
+      this.isCommodityCoordinator = false;
+    }
+    
     // 如果是linie的话 再从新排下序 将内容表态和封面表态放在前面
     if(this.isLinie){
       let newTabs = cloneDeep(this.tabs);
@@ -99,14 +110,13 @@ export default {
         return (a.index - b.index)
       })
 
-      this.tabs = newTabs;
-      this.currentTab = 'contentDeclare';
+      if(from != 'check'){
+        this.tabs = newTabs;
+        this.currentTab = 'contentDeclare';
+      }
     }
 
-    // 若从AEKO查看跳转过来的默认进入封面表态
-    if(from == 'check'){
-       this.currentTab ='cover';
-    }
+    
     
     if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
       try {
@@ -193,7 +203,7 @@ export default {
             this.tabChange();
           }
           // 审批记录选项卡，有审批记录或补充材料的，选项卡要做红点标识
-          // this.checkAttachAlarm();
+          this.checkAttachAlarm();
 
          
         }else{

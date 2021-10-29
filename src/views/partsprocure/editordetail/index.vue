@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-10-27 17:26:08
+ * @LastEditTime: 2021-10-29 09:46:17
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -29,7 +29,7 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{language("LK_LINGJIANCAIGOUXIANGMU",'零件采购项目')}}</span>
 			<span v-if="this.infoItem.code" class="font16 font-weight margin-left20">{{language("LK_LCAIGOUSHENQING",'采购申请')}}:</span>
-			<span class="openLinkText cursor">{{this.infoItem.code}}</span>
+			<span class="openLinkText cursor" @click="openCode">{{this.infoItem.code}}</span>
 			<div class="floatright">
 				<span v-if="!disabled">
 					<!-- 供应商创建定点申请单 -->
@@ -391,6 +391,8 @@
 		<currentSupplier :dialogVisible='curentSupplierDialog'></currentSupplier>
 		<!-----------------------选择原fs号--------------------------------->
 		<selectOldpartsNumber :diolog='selectOldParts' v-model="selectOldParts.selectData"></selectOldpartsNumber>
+    	<!---------------------- 采购申请弹框 -------------------------------->
+        <purchaseApply :visibleDiolog="dialogVisibleCode" @changeVisible='dialogVisibleCode = false'></purchaseApply>	
 	</iPage>
 </template>
 <script>
@@ -419,8 +421,9 @@
 	import selectOldpartsNumber from './components/selectOldpartsNumber'
 	import {cancelProject,creatFsGsNr,createNomiappBtn,createNomiappBtnAccs} from '@/components'
 	import { getNominateDisabled } from "rise/web/common"
+    import purchaseApply from "./components/purchaseApply"
 	export default {
-		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs},
+		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs, purchaseApply},
 		provide:function(){
 			return {detailData:this.getDetailData, getDisabled: this.getDisabled}
 		},
@@ -514,6 +517,7 @@
 				}, //拆分采购工厂
 				purchaseProjectId: "",
 				curentSupplierDialog:{show:false},
+        		dialogVisibleCode:false,
 				fsnrGsnrNum: '',
 				partProjectType: '',
 				selectOldParts:{
@@ -844,6 +848,9 @@
 			},
 			getDisabled() {
 				return this.disabled
+			},
+			openCode() {
+				this.dialogVisibleCode = true
 			}
 		}
 }

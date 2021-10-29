@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 17:29:03
- * @LastEditTime: 2021-07-13 14:31:16
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-28 09:51:20
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\components\data.js
  */
@@ -24,7 +24,7 @@ export const partListTableTitle = [
   { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true, width: 130 },
   { props: "partNameZh", name: "零件名(中)", key: "LINGJIANMINGZHONG", tooltip: true },
   { props: "partNameDe", name: "零件名(德)", key: "LINGJIANMINGDE", tooltip: true },
-  { props: "procureFactory", name: "采购工厂", key: "CAIGOUGONGCHANG", tooltip: true },
+  { props: "procureFactoryName", name: "采购工厂", key: "CAIGOUGONGCHANG", tooltip: true },
   { props: "partProjectTypeDesc", name: "零件项目类型", key: "LINGJIANXIANGMULEIXING", tooltip: true, width: 110 },
   { props: "cartypeCategory", name: "车型大类", key: "CHEXINGDALEI", tooltip: true },
   { props: "cartypeProjectZh", name: "车型项目", key: "CHEXINGXIANGMU", tooltip: true },

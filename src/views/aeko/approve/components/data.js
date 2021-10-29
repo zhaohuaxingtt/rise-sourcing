@@ -106,7 +106,9 @@ export const ATTACHSUBMENU = [
     message: 0,
     url: '/aeko/AEKOApprovalDetails/Approvalform',
     activePath: 'Approvalform',
-    key: 'LK_AEKOSHENPIDAN'
+    key: 'LK_AEKOSHENPIDAN',
+    permissionKey:'AEKO_APPROVAL_DETAILS_TAB_APPROVALFORM'
+
   },
   {
     value: 2,
@@ -114,7 +116,9 @@ export const ATTACHSUBMENU = [
     message: 0,
     url: '/aeko/AEKOApprovalDetails/CBDSummary',
     activePath: 'CBDSummary',
-    key: 'LK_CBDHUIZONG'
+    key: 'LK_CBDHUIZONG',
+    permissionKey:'AEKO_APPROVAL_DETAILS_TAB_CBD_SUMMARY'
+
   },
   {
     value: 3,
@@ -122,7 +126,10 @@ export const ATTACHSUBMENU = [
     message: 0,
     url: '/aeko/approve/explainattach',
     activePath: 'explainattach',
-    key: 'LK_AEKO_SHENPIFUJIAN'
+    key: 'LK_AEKO_SHENPIFUJIAN',
+    permissionKey:'AEKO_APPROVAL_DETAILS_TAB_APPROVAL_ATTACHMENT'
+
+
   },
 ]
 
@@ -132,12 +139,15 @@ export const navList = [
     code: '1',
     name:'待审批',
     key:'LK_DAISHENPI',
+    permissionKey:'AEKO_APPROVE_TAB_PENDING'
     // path:'/sourcing/partsnomination'
   },
   {
     code: '2',
     name:'已审批',
-    key:'LK_YISHENPI'
+    key:'LK_YISHENPI',
+    permissionKey:'AEKO_APPROVE_TAB_APPROVED'
+
   },
 ]
 
