@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-10-29 09:52:29
+ * @LastEditTime: 2021-10-29 14:12:18
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       aekoInfo: {},
-      pending:false
+      pending:true
     }
   },
   methods: {
