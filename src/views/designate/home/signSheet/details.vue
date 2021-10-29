@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-10-25 14:33:51
+ * @LastEditTime: 2021-10-27 21:47:13
  * @LastEditors:  
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
@@ -37,6 +37,7 @@
         </div>
       </div>
       <iCard>
+        
         <el-form class="signsheet-filter" :inline="true">
           <el-row gutter="20">
             <el-col span="6">
@@ -70,9 +71,14 @@
             </el-col>
           </el-row>
         </el-form>
-
+        <div class="btn-right">
+          <iButton @click="chooseSignsheet()">
+            {{ language("XUANZE", '选择') }}
+          </iButton>
+        </div>
         <!-- 表格 -->
         <tablelist
+        class="margin-top20"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -135,7 +141,7 @@
         :total="page.totalCount"
       />
       </iCard>
-
+      <addSignsheet :dialogVisible='dialogVisible' @changeVisible='dialogVisible = false'></addSignsheet>
       <div class="margin-top20">
         <!-- 引入定点申请综合管理页面 -->
         <designateSign
@@ -152,6 +158,7 @@ import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
 import tablelist from "@/views/designate/supplier/components/tableList";
 import designateSign from "@/views/designate/home/designateSign/index";
+import addSignsheet from "./components/addSignsheet";
 import {
   getNomiSelectedPage,
   getNomiNotSelectedPage,
@@ -184,7 +191,8 @@ export default {
       tableListData: [],
       selectTableData: [],
       tableLoading: false,
-      designateSignRefresh: false
+      designateSignRefresh: false,
+      dialogVisible:false
     }
   },
   components: {
@@ -194,7 +202,8 @@ export default {
     iButton,
     iPagination,
     tablelist,
-    designateSign
+    designateSign,
+    addSignsheet
   },
   created() {
     const {query = {}} = this.$route
@@ -346,11 +355,20 @@ export default {
         window.open(routeData.href, '_blank')
       })
     },
+    chooseSignsheet() {
+      this.dialogVisible = true
+      console.log(this.dialogVisible,'11111111111111');
+    }
   }
 
 }
 </script>
 <style lang="scss" scoped>
+  .btn-right{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
 .signsheet-filter {
   .el-form-item {
     ::v-deep .el-form-item__label {

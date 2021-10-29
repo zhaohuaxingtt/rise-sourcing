@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-08-31 16:19:56
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-28 09:46:47
+ * @LastEditors:  
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
 -->
@@ -15,7 +15,7 @@
       <el-form inline>
           <el-form-item label="价格维度" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_JIAGEWEIDU_SELECT|价格维度">
             <iSelect style="width:80px;" :placeholder="language('partsprocure.CHOOSE','请选择')" v-model="form.priceLatitude">
-              <el-option label="mixPrice" value='1'></el-option>
+              <el-option label="MixPrice" value='1'></el-option>
               <el-option label="To" value='2'></el-option>
             </iSelect>
           </el-form-item>

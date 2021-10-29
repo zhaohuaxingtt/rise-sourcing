@@ -44,6 +44,7 @@ export default {
     refreshForm(option) {
       this.transmitObj.option = option
       this.queryParams.transmitObj = window.btoa(JSON.stringify(this.transmitObj))
+
       this.$router.replace({
         path: '/aeko/AEKOApprovalDetails/Approvalform',
         query: this.queryParams

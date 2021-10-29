@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-10-25 21:18:38
+ * @LastEditTime: 2021-10-28 21:57:37
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -177,17 +177,19 @@ export const validateProjectConfig = [
 
 //批量维护产量计划
 
-export const batchMaintainTableTitle = [
-	{props: 'startyear', name: '开始年份',Key: 'LK_KAISHINIANFEN' },
-]
+
 
 // 
 export function getPlanyear(defaultNumberMax=15){
+	const batchMaintainTableTitle = [
+		{props: 'startyear', name: '开始年份',Key: 'LK_KAISHINIANFEN' },
+	]
 	for(let i = 0;i < defaultNumberMax;i++){
 		const maps= {}
 		maps.props = i;
 		maps.name = '+'+i;
 		batchMaintainTableTitle.push(maps)
+
 	}
 	return batchMaintainTableTitle
 }
