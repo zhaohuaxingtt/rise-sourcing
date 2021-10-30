@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-29 15:47:48
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-10-30 11:56:03
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -248,7 +248,7 @@
             </iSelect>
           </template>
           <template #isMtz="scope">
-            <span v-if="scope.row.isMtz == 1" class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <!-- 是否待报价 -->
           <template #isReplace="scope">
@@ -529,7 +529,13 @@ export default {
 
       window.open(route.href, "_blank")
     },
-    view() {},
+    // 查看mtz变更
+    view(row) {
+      this.$router.push({name: 'aekoMtzDetails', query: {
+        objectAekoPartId: row.objectAekoPartId,
+        aekoNum: this.aekoInfo.aekoCode
+      }})
+    },
     oldPartNumPresetSelect(row) {
       // if (!row.oldPartNumPreset) return
 

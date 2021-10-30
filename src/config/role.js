@@ -14,7 +14,7 @@ export const qianqicaigou = [
 
 // 专业采购员
 export const zhuanyecaigou = [
-  'ZYCGY','ZYCGKZ','ZYCGGZ','WS1ZYCGY','WS1ZYCGKZ','WS1ZYCGGZ','WS2ZYCGY','WS2ZYCGKZ','WS2ZYCGGZ'
+  'ZYCGY','ZYCGKZ','ZYCGGZ','WS1ZYCGY','WS1ZYCGKZ','WS1ZYCGGZ','WS2ZYCGY','WS2ZYCGKZ','WS2ZYCGGZ','LINIE','QQCGY'
 ]
 
 // 定点管理员
