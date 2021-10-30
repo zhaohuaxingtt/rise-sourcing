@@ -123,7 +123,7 @@ export default {
     },
     checkFirstRecord() {
       if (this.tableListData == null || this.tableListData.length <= 0) return false
-      let firstItem =this.tableTitle[0]
+      let firstItem =this.tableListData[0]
       if (null != firstItem) {
         return firstItem.operation == '补充材料'
       }
