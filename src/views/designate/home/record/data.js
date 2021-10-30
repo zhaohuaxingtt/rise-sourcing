@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2021-10-28 21:01:44
+ * @LastEditTime: 2021-10-30 17:15:59
  * @LastEditors:  
  */
 export const form = {
@@ -136,6 +136,12 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
+    props:'aPriceMode',
+    name:'含模B价',
+    key:'HANMOAJIA',
+    tooltip:true
+  },
+  {
     props:'bPriceMode',
     name:'含模B价',
     key:'HANMOBJIA',
@@ -150,6 +156,12 @@ export const tableDetailTitle = [
   {
     props:'transportPrice',
     name:'运输费',
+    key:'YUNSHUFEI',
+    tooltip:true
+  },
+  {
+    props:'operatePrice',
+    name:'操作费',
     key:'YUNSHUFEI',
     tooltip:true
   },
@@ -205,14 +217,32 @@ export const tableDetailTitle = [
   },
   {
     props:'tpGrade',
-    name:'TP评分',
-    key:'TPPINGFEN',
+    name:'技术评分',
+    key:'JISHUPINGFEN',
     tooltip:true
   },
   {
     props:'mqGrade',
-    name:'MQ评分',
-    key:'MAPINGFEN',
+    name:'质量评分',
+    key:'ZHILIANGPINGFEN',
+    tooltip:true
+  },
+  {
+    props:'plGrade',
+    name:'物流评分',
+    key:'WULIUPINGFEN',
+    tooltip:true
+  },
+  {
+    props:'ltcRate',
+    name:'年降',
+    key:'NIANJIANG',
+    tooltip:true
+  },
+  {
+    props:'ltcDate',
+    name:'年降开始时间',
+    key:'NIANJIANGKAISHISHIJIAN',
     tooltip:true
   }
 ]

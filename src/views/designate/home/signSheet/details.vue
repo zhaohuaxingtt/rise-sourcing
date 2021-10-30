@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-10-27 21:47:13
+ * @LastEditTime: 2021-10-29 11:22:43
  * @LastEditors:  
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
@@ -141,14 +141,18 @@
         :total="page.totalCount"
       />
       </iCard>
-      <addSignsheet :dialogVisible='dialogVisible' @changeVisible='dialogVisible = false'></addSignsheet>
+      <addSignsheet 
+      :dialogVisible='dialogVisible' 
+      @changeVisible='dialogVisible = false'
+      @choose="handleChoose"
+      ></addSignsheet>
       <div class="margin-top20">
         <!-- 引入定点申请综合管理页面 -->
-        <designateSign
+        <!-- <designateSign
           :mode="'sign'"
           @choose="handleChoose"
           v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAIL_UNCHOSENTABLE|签字单详情未选择表格"
-          :refresh.sync="designateSignRefresh" />
+          :refresh.sync="designateSignRefresh" /> -->
       </div>
   </iPage>
 </template>
@@ -202,8 +206,8 @@ export default {
     iButton,
     iPagination,
     tablelist,
-    designateSign,
-    addSignsheet
+    addSignsheet,
+    // designateSign
   },
   created() {
     const {query = {}} = this.$route
@@ -217,7 +221,7 @@ export default {
   },
   methods: {
     handleChoose(data) {
-      console.log(data)
+      console.log(data,'------------------------------------')
       this.tableListData = data
     },
     // 多选

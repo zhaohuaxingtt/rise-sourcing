@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-10-28 09:46:47
+ * @LastEditTime: 2021-10-30 16:25:57
  * @LastEditors:  
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -31,14 +31,14 @@
               <el-option v-for="(items,index) in partList" :key='index' :label="items.name" :value='items.value'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('LK_FSHAO','FS号')" class="ccc" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_FSHAO_SELECT|FS号">
+          <!-- <el-form-item :label="language('LK_FSHAO','FS号')" class="ccc" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_FSHAO_SELECT|FS号">
             <iSelect :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="fsSelect" @visible-change="removeOther($event,'fsSelect')">
               <el-option label="All" value="all"></el-option>
               <template v-for="(items,index) in fslist">
                   <el-option :value="items.value" :key='index' :label="items.name"></el-option>
               </template>
             </iSelect>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item :label="language('LK_DANGQIANLUNCI','当前轮次')" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_DANGQIANLUNCI_SELECT|当前轮次">
             <iSelect style="width:100px;" :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="luncSelect"  @visible-change="removeOther($event,'luncSelect')">
               <el-option label="All" value="all"></el-option>
