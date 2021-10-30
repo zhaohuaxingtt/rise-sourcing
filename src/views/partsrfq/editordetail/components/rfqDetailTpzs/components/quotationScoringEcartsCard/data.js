@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-04-23 09:18:12
- * @LastEditTime: 2021-07-13 16:58:41
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-30 16:24:35
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\data.js
  */
@@ -164,6 +164,7 @@ export function MaxLength(datas){
 export function translateGetLunci(params,gjhLunchi) {
   //params = MaxLength(params)
   //找到当前零件中的最大轮次。
+  console.log(params,'----------------------');
   let options = {
     legend:[],
     xAxis:[],
@@ -175,6 +176,7 @@ export function translateGetLunci(params,gjhLunchi) {
         element['color'] = params.length <= color.length?color[index]:getLineColor()
         element['type'] = 'line',
         element['symbol'] = 'circle',
+        element['name'] = element['name'] +'   '
         options['legend'].push(element['name'])
       });
       params[0].data.forEach(element => {
