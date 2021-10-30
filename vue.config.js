@@ -137,6 +137,7 @@ module.exports = {
         target: 'http://10.122.17.38:8005',
         // target: 'http://10.122.17.38:8005', //dev
         // target: 'http://10.160.141.116:10085',
+        //target: 'http://127.0.0.1:18006',
         changeOrigin: true,
         pathRewrite: {
           '^/projectApi': '',
@@ -258,7 +259,7 @@ module.exports = {
       '/tpInfoApi': {
         //高攀弘服务地址http://10.122.17.38:8023/
         target: 'http://10.122.17.38:8023',
-        //target: 'http://10.160.140.97:3181',
+       // target: 'http://10.160.136.100:8023',
         // target: 'http://10.160.141.45:8023',
         changeOrigin: true,
         pathRewrite: {

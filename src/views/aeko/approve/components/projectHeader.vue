@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-13 15:34:52
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-10-29 12:31:18
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -20,6 +20,7 @@
 <script>
 import { iNavMvp, icon } from "rise"
 import { TAB,SUBMENU,ATTACHSUBMENU } from "./data"
+import { getLogCount } from '@/api/aeko/manage'
 export default {
   components: {
     iNavMvp,
@@ -36,10 +37,35 @@ export default {
     },
     subMenu() {
       return this.$route.meta.subMenuType === 2 ? ATTACHSUBMENU : this.subNavList
-    }
+    },
+    //eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+      permission: state => state.permission
+    }),
   },
-
+  created(){
+    this.getLogCount();
+  },
   methods: {
+    // 查询待办数量
+    getLogCount(){
+      let params = {
+        pageCode:'SPR',  // LINIE: AEKO表态; ADMIN: AEKO管理; SPR: AEKO审批
+        id: this.userInfo.id
+      }
+      getLogCount(params).then(res=>{
+        if(res?.code==200){
+          this.subMenu.forEach(item=>{
+            if(item.name=='AEKO审批'){
+              item.message = res.data
+            }
+          })
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
     gotoDBhistory() {
       const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`})
       window.open(router.href,'_blank')

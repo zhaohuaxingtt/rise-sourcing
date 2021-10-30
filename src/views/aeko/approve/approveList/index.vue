@@ -62,7 +62,7 @@
             @visible-change="getcheifUserList($event, scope.row)"
             :loading="optionLoading"
             :placeholder="language('LK_QINGXUANZE','请选择')"
-            multiple
+            :multiple="scope.row.auditType!=3"
             filterable
             clearable
           >
