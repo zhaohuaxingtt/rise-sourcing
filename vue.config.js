@@ -484,7 +484,7 @@ module.exports = {
         // target:'http://10.160.141.127:8888',
         // target:'http://10.160.140.240:8888',
         // target:'http://10.160.139.55:8888',
-        target: 'http://10.122.17.38:8025',
+        target: 'http://10.160.141.219:8888',
         changeOrigin:true,
         pathRewrite: {
           '^/nominateRecord':'',
