@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-27 17:03:11
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-10-30 11:56:03
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -248,7 +248,7 @@
             </iSelect>
           </template>
           <template #isMtz="scope">
-            <span v-if="scope.row.isMtz == 1" class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <!-- 是否待报价 -->
           <template #isReplace="scope">
@@ -308,7 +308,10 @@ export default {
   },
   computed: {
     disabled() {
-      return this.aekoInfo.aekoStatus == "CANCELED"
+      // AEKO状态为撤销以及从AEKO查看跳转过来的
+      const {query} = this.$route;
+      const {from=''} = query;
+      return this.aekoInfo.aekoStatus == "CANCELED"  || from == 'check';
     },
     // 判断展示车型还是车型项目 展示label
     showCarTypeLabel(){
@@ -526,7 +529,13 @@ export default {
 
       window.open(route.href, "_blank")
     },
-    view() {},
+    // 查看mtz变更
+    view(row) {
+      this.$router.push({name: 'aekoMtzDetails', query: {
+        objectAekoPartId: row.objectAekoPartId,
+        aekoNum: this.aekoInfo.aekoCode
+      }})
+    },
     oldPartNumPresetSelect(row) {
       // if (!row.oldPartNumPreset) return
 
@@ -666,8 +675,8 @@ export default {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIJIAOBIAOTAIDELINGJIAN", "请选择需要提交表态的零件"))
 
       for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
-        if (item.status !== "TOBE_STATED" && item.status !== "QUOTING" && item.status !== "QUOTED")
-          return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价的零件进行提交"))
+        if (!['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(item.status))
+          return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"))
       }
 
       this.submitLoading = true

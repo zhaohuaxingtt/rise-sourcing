@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-10-28 19:22:40
+ * @LastEditTime: 2021-10-29 14:27:34
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -212,9 +212,30 @@ export default [
         path: "mtz",
         name: "mtz",
         meta: {
-          title: 'AEKO-mtz'
+          title: 'mtz'
         },
-        component: () => import("@/views/aeko/mtz"),
+        component: () => import("@/views/aeko/mtz/index"),
+        redirect: "/aeko/mtz/list",
+        children: [
+          {
+            path: 'list',
+            name: "aekoMtzlist",
+            prop:true,
+            meta: {
+              title: "AEKO-mtz查看",
+            },
+            component: () => import("@/views/aeko/mtz/list"),
+          },
+          {
+            path: 'details',
+            name: "aekoMtzDetails",
+            prop:true,
+            meta: {
+              title: "AEKO-mtz变更",
+            },
+            component: () => import("@/views/aeko/mtz/details"),
+          },
+        ]
       }
     ]
   }
