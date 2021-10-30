@@ -108,8 +108,12 @@ export default {
 			tableSelecteData: [],
       tableLoading: false,
 			uploading: false,
-			deleting: false
+			deleting: false,
+      disabled:false,
     };
+  },
+  created(){
+
   },
   mounted() {
     this.getFetchData()

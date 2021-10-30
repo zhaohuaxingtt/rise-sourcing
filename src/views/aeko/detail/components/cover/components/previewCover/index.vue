@@ -146,7 +146,7 @@ export default {
             selectItems:[],
             dialogVisible:false,
             canceling:false,
-            pending:false, // 未调试,调试后移除
+            pending:true, // 未调试,调试后移除
             isFromCheck:false,
 
         }

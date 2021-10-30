@@ -149,6 +149,7 @@ import {
   searchCoverStatus,
   searchCartypeProject,
   getSearchCartype,
+  getLogCount,
 } from '@/api/aeko/manage'
 import aekoSelect from '../components/aekoSelect'
 export default {
@@ -210,7 +211,7 @@ export default {
     created(){
       this.getList();
       this.getSearchList();
-      
+      this.getLogCount();
       
       this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
       this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
@@ -239,6 +240,24 @@ export default {
 
     },
     methods:{
+      // 查询待办数量
+      getLogCount(){
+        let params = {
+          pageCode:'LINIE',  // LINIE: AEKO表态; ADMIN: AEKO管理; SPR: AEKO审批
+          id: this.userInfo.id
+        }
+        getLogCount(params).then(res=>{
+          if(res?.code==200){
+            this.navList.forEach(item=>{
+              if(item.name=='AEKO表态'){
+                item.message = res.data
+              }
+            })
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        })
+      },
       // 重置
       reset(){
         this.searchParams = {

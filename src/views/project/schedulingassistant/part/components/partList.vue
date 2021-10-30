@@ -340,7 +340,7 @@ export default {
       partProgressConfirm(selectRow.map(item => _.omit(item, 'selectOption'))).then(res => { 
         if (res?.result) {  
           if (res.data && res.data.length > 0) {  
-            iMessage.warn(res.data.map(item => item.partName).join(',')+this.language('BUFUHEFASONGTIAOJIANWUFAFASONG','不符合发送条件，无法发送')) 
+            iMessage.warn(res.data.map(item => item.partName).join(',')+this.language('BUFUHEFASONGTIAOJIANWUFAFASONG','不符合发送条件，无法发送'))
           } else {  
             iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
             this.changeFsConfirmVisible(false) 
@@ -409,7 +409,10 @@ export default {
       }
       const res = await getWorkDay(params) 
       if (res && res.result && res.data && res.data.length > 0) {
-        const { year, month, day } = res.data[res.data.length - 1]
+        let { year, month, day } = res.data[res.data.length - 1]
+        if(+day <10){
+          day = '0'+day
+        }
         return year + '-' + month + '-' + day
       }
     }, 

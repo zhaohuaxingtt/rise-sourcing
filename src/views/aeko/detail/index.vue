@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-10-28 16:35:36
+ * @LastEditTime: 2021-10-29 14:12:18
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
@@ -11,7 +11,7 @@
     <div class="header flex-between-center margin-bottom20">
       <h2>AEKO号：{{ aekoInfo.aekoCode }}</h2>
       <div>
-        <iButton @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
+        <iButton v-if="pending" @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
         <iButton @click="goToDetail">{{language('LK_AEKO_BUTTON_DETAIL','AEKO详情')}}</iButton>
         <logButton class="margin-left20" />
       </div>
@@ -43,6 +43,7 @@ export default {
   data() {
     return {
       aekoInfo: {},
+      pending:true
     }
   },
   methods: {
@@ -69,7 +70,7 @@ export default {
        const { aekoInfo } = this;
        console.log(aekoInfo);
        let transmitObj = {
-            option: 2,
+            option: 4,
             aekoApprovalDetails: {
               aekoNum: aekoInfo.aekoCode,
               requirementAekoId: aekoInfo.requirementAekoId,

@@ -25,7 +25,7 @@ export const tableTitle = [
     { props: "aekoStatusDesc", name: "AEKO状态", key: "LK_AEKOZHUANGTAI", tooltip: true },
     { props: "coverStatusDesc", name: "封⾯状态", key: "LK_AEKOFENGMIANZHUANGTAI", tooltip: true },
     // 这里需要插入一个内容状态
-    { props: "aekoPartStatusDesc", name: "内容状态", key: "LK_AEKO_NEIRONGZHUANGTAI", tooltip: true },
+    { props: "contentStatusDesc", name: "内容状态", key: "LK_AEKO_NEIRONGZHUANGTAI", tooltip: true },
     
     { props: "tcmResultDesc", name: "狼堡决议", key: "LK_AEKOLANGBAOJUEYI", tooltip: true },
     { props: "createDate", name: "创建⽇期", key: "LK_AEKOCHUANGJIANRIQI", tooltip: true },

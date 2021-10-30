@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-10-26 10:54:02
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-26 17:59:36
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-29 15:53:48
  * @Description: 
  */
 import {getAekoDetail} from "@/api/aeko/detail";
@@ -15,19 +15,20 @@ import {getAekoDetail} from "@/api/aeko/detail";
  * @param {*} queue 队列
  * @return {*}
  */
-export function lookDetails(vm, row, _blank=true, queue=null) {
+export function lookDetails(vm, row, _blank=true, queue=null,isfromCheck=false) {
   let reqP = {requirementAekoId: row.requirementAekoId}
+  let workFlowDTOS = row.workFlowDTOS || [];
     getAekoDetail(reqP).then(res => {
       if (res.code == 200) {
-        let taskIds = row.workFlowDTOS.map((item) => item.taskId)
+        let taskIds = workFlowDTOS.map((item) => item.taskId)
         let taskId = taskIds.join(',');
         let transmitObj = {
-          option: 1,
+          option: isfromCheck ? 5:1, // 如果从AEKO查看跳转过来
           aekoApprovalDetails: {
             aekoNum: row.aekoNum,
             requirementAekoId: row.requirementAekoId,
             aekoAuditType: row.auditType,
-            workFlowDTOS: row.workFlowDTOS,
+            workFlowDTOS: workFlowDTOS,
             aekoManageId: res.data.aekoManageId
           },
           isBatchApprove: queue !== null,
