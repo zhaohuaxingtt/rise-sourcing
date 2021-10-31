@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2021-10-30 17:15:59
+ * @LastEditTime: 2021-11-01 03:06:32
  * @LastEditors:  
  */
 export const form = {
@@ -24,7 +24,7 @@ export const tableTitle = [
   {
     props:'fsnrGsnrNum',
     name:'FS/GS/SP No.',
-    key:'FSNUMBER',
+    key:'FSGSSPNO',
     tooltip:true
   },
   {
@@ -61,6 +61,12 @@ export const tableTitle = [
     props:'buyerName',
     name:'询价采购员',
     key:'XUNJIACAIGOUYUAN',
+    tooltip:true
+  },
+  {
+    props:'linie',
+    name:'LINIE采购员',
+    key:'RECORDLINIECAIGOUYUAN',
     tooltip:true
   },
   {
@@ -191,6 +197,12 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
+    props:'fsNumber',
+    name:'分摊数量',
+    key:'FENTANSHULIANG',
+    tooltip:true
+  },
+  {
     props:'moldTcCurrencyId',
     name:'模具货币',
     key:'MOJUHUOBI',
@@ -207,12 +219,6 @@ export const tableDetailTitle = [
     props:'developApportionPrice',
     name:'开发费分摊',
     key:'KAIFAFEIFENTAN',
-    tooltip:true
-  },
-  {
-    props:'fsNumber',
-    name:'分摊数量',
-    key:'FENTANSHULIANG',
     tooltip:true
   },
   {
@@ -243,6 +249,7 @@ export const tableDetailTitle = [
     props:'ltcDate',
     name:'年降开始时间',
     key:'NIANJIANGKAISHISHIJIAN',
-    tooltip:true
+    tooltip:true,
+    width:150
   }
 ]
