@@ -305,7 +305,12 @@ export default {
         this.$message.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
         return
       }
-      let parmas = this.tableSelecteData.map(o => {
+      let sourceFirstItem=this.tableListData[0]
+      if(this.tableSelecteData[0].id!=sourceFirstItem.id){
+        return this.$message.error(this.language('LK_QINGXUANZEBUCHONGCAILIAOJILUJINXINGTIJIAO', '请选择补充材料记录进行提交'))
+      }
+      let selResArray=this.tableSelecteData.filter(item=>item.id==sourceFirstItem.id)
+      let parmas = selResArray.map(o => {
         if (state && !o.explainReason) {
           state = false
           info = this.language('SHENPIYIJIANANDJIESHIBUNENGWEIKONG', '审批意见/申请人解释不能为空')

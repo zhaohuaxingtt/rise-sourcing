@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-10-27 15:04:00
+ * @LastEditTime: 2021-11-01 17:09:02
  * @LastEditors: Hao,Jiang
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -384,6 +384,12 @@ export default {
     //获取表格数据
     async getTableList() {
       this.tableLoading = true;
+      // 获取预置的参数
+      const acceptKeys = ['type','currentUser','isDelay']
+      Object.keys(this.$route.query).forEach(key => {
+          const keyValue = this.$route.query[key]
+          acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, key === 'type' ? Number(keyValue) : keyValue))
+      })
       const req = {
           userId: store.state.permission.userInfo.id,
           current: this.page.currPage,
