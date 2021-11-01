@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 13:54:25
- * @LastEditTime: 2021-10-27 17:22:12
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-01 03:07:23
+ * @LastEditors:  
 -->
 <template>
   <iPage class="designatehome" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PAGE|定点记录页面">
@@ -19,6 +19,7 @@
         <iButton @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
       </div>
       <tablelist
+      lang
         class="aotoTableHeight"
         :tableTitle="tableTitle"
         :tableData="tableListData"

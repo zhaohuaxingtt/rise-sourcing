@@ -188,7 +188,8 @@ export default {
                partNameDe:form.partNameDe,
                partNum:form.partNum,
                perCarDosage:form.perCarDosage,
-               pid:form.pid
+               pid:form.pid,
+               partNameZh:form.partNameZh,
            };
            this.btnLoading.save = true;
            await addPart(data).then((res)=>{
