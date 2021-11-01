@@ -198,9 +198,10 @@ import {
   getLogCount,
 } from '@/api/aeko/manage'
 import { debounce } from "lodash";
+import { roleMixins } from "@/utils/roleMixins";
 export default {
     name:'aekoManageList',
-    mixins: [pageMixins],
+    mixins: [pageMixins,roleMixins],
     components:{
       iPage,
       iNavMvp,
@@ -277,10 +278,11 @@ export default {
       this.getList();
       this.getSearchList();
       this.getLogCount();
-      
-      this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
-      this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
-      this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+
+      const roleList = this.roleList;
+      this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
+      this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+      this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
 
       const { isAekoManager,isCommodityCoordinator,isLinie,$route } = this;
       const role = {
@@ -481,7 +483,11 @@ export default {
 
       // 查看日志
       checkLog(row){
-         iMessage.warn('暂未开通此功能')
+        //  iMessage.warn('暂未开通此功能')
+        this.$router.push({
+          path:'/aeko/log',
+          query:{}
+        })
       },
 
       // 查看描述

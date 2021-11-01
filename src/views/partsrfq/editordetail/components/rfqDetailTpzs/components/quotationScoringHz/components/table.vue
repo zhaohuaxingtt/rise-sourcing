@@ -63,7 +63,7 @@
           >
             <!----------在表头上方需要显示评分的点，插入表头标签------>
             <template slot="header" slot-scope="scope">
-              <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
+              <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
               <div class="headerContent" v-if='scope.column.label == "EBR"'>
                 <div class="c" :style="{width:cWidth}" v-if='ratingList.firstTile.length > 0'>
                   <ul style="width:99.5px">
@@ -119,7 +119,7 @@
                   <span :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
-                <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
+                <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">View</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate"'>
                 <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>

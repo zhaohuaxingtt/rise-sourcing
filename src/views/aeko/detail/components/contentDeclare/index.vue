@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-30 11:56:03
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-01 16:29:04
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -254,6 +254,10 @@
           <template #isReplace="scope">
             <span v-if="scope.row.isReplace!==null">{{scope.row.isReplace ? language('nominationLanguage.Yes','是')  : language('nominationLanguage.No','否')}}</span>
           </template>
+          <!-- 合并原承运方式和新承运方式 -->
+          <template #tranWayDesc="scope">
+            <span>{{getRranWayDesc(scope.row)}}</span>
+          </template>
         </tableList>
         <iPagination 
           v-update
@@ -373,6 +377,16 @@ export default {
         console.error(e)
       }
     }
+
+    const {query} = this.$route;
+    const {from=''} = query;
+    // AEKO查看跳转过来的数据table的新承运方式和原承运方式合并成一列
+    if(from == 'check'){
+      this.tableTitle = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc')
+    }else{
+      this.tableTitle = tableTitle.filter((item)=>item.props!='tranWayDesc')
+    }
+    
   },
   methods: {
     searchCartypeProject() {
@@ -524,6 +538,7 @@ export default {
         path: '/aeko/quotationdetail',
         query: {
           quotationId,
+          editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status)
         }
       })
 
@@ -538,6 +553,10 @@ export default {
     },
     oldPartNumPresetSelect(row) {
       // if (!row.oldPartNumPreset) return
+      // 如果是从AEKO查看跳转过来的 不允许跳转
+      const routeQuery = this.$route.query;
+      const {from=''} = routeQuery;
+      if(from == 'check') return;
 
       const query = {
         partNum: row.partNum,
@@ -676,7 +695,7 @@ export default {
 
       for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
         if (!['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(item.status))
-          return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"))
+          return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"))
       }
 
       this.submitLoading = true
@@ -930,6 +949,21 @@ export default {
         }
       })
     },
+
+    // 承运方式展示字段
+    getRranWayDesc(row){
+      console.log(row,'getRranWayDesc');
+      if(row.originBnkTranWay==null && row.newBnkTranWay==null){
+        return ' '
+      }else if(row.originBnkTranWay == row.newBnkTranWay){ //若新原零件承运方式相同，则承运方式显示自运或者承运
+        return row.originBnkTranWayDesc
+      }else if(row.originBnkTranWay != row.newBnkTranWay){  //若新原零件承运方式不同 则承运方式显示原承运方式&（原）&-&新承运方式&（新）
+        return `${row.originBnkTranWayDesc || '-'}(原)-${row.newBnkTranWayDesc || '-'}(新)`
+      }else{
+        return ' '
+      }
+      
+    }
 
   },
 };

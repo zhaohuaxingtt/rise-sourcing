@@ -591,3 +591,17 @@ a{
     border-top-color: #FFFFFF !important;
     }
 }
+
+.el-select-multi {
+  position: relative;
+  .el-select__tags-text{
+    display: inline-block;
+    max-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .el-tag__close.el-icon-close{
+    top: -4px;
+  }
+}

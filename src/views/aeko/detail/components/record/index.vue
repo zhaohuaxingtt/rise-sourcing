@@ -18,6 +18,7 @@
         height="400"
         index
         :selection="alowSubmit"
+        :selectable="selectable"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -123,6 +124,14 @@ export default {
     },
     checkFirstRecord() {
       if (this.tableListData == null || this.tableListData.length <= 0) return false
+
+      let valid = false
+      const validItems = this.tableListData.filter(o => o.activityName === '【补充材料通知】补充材料')
+      validItems.forEach(item => {
+        !valid && (valid = !this.itemIsCanReply(item))
+      })
+      if (valid) return true
+
       let firstItem =this.tableListData[0]
       if (null != firstItem) {
         return firstItem.operation == '补充材料'
@@ -159,7 +168,9 @@ export default {
     this.getFetchData()
   },
   methods: {
-
+    selectable(row) {
+      return !this.itemIsCanReply(row)
+    },
     getAdiType(code) {
       return aekoApproveTypes.find(o => o.id === code)?.name || ''
     },
@@ -211,19 +222,19 @@ export default {
       })
     },
     itemCommentContent(row) {
-      if (row.activityName == "【补充材料回复】补充材料") {
+      if (row.activityName == "【解释说明回复】") {
         return ''
       }
       return row.comment
     },
     itemExplain(row) {
-      if (row.activityName == "【补充材料回复】补充材料") {
+      if (row.activityName == "【解释说明回复】") {
         return row.comment
       }
       return ''
     },
     itemExplainShow(row) {
-      return row.activityName == "【补充材料回复】补充材料"
+      return row.activityName == "【解释说明回复】"
     },
     itemIsCanReply(row) {
       if (row.activityName == "【补充材料通知】补充材料") {
@@ -294,7 +305,12 @@ export default {
         this.$message.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
         return
       }
-      let parmas = this.tableSelecteData.map(o => {
+      let sourceFirstItem=this.tableListData[0]
+      if(this.tableSelecteData[0].id!=sourceFirstItem.id){
+        return this.$message.error(this.language('LK_QINGXUANZEBUCHONGCAILIAOJILUJINXINGTIJIAO', '请选择补充材料记录进行提交'))
+      }
+      let selResArray=this.tableSelecteData.filter(item=>item.id==sourceFirstItem.id)
+      let parmas = selResArray.map(o => {
         if (state && !o.explainReason) {
           state = false
           info = this.language('SHENPIYIJIANANDJIESHIBUNENGWEIKONG', '审批意见/申请人解释不能为空')
