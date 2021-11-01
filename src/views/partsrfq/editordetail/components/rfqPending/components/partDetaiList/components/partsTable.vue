@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-09-14 14:03:42
+ * @LastEditTime: 2021-10-29 19:22:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
@@ -74,10 +74,8 @@ export default {
     }
   },
   created() {
-    // this.getTableList()
     const {query={}} = this.$route;
     const {businessKey} = query;
-
     // 当类型为AEKO时 表头需要隐藏部分
     if(businessKey == partProjTypes.AEKOLINGJIAN){
       this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
@@ -92,9 +90,11 @@ export default {
         this.parmarsNotHasRfq['current'] = this.page.currPage
         this.parmarsNotHasRfq['status'] = 'NOT_IN_RFQ'
         this.parmarsNotHasRfq['buyerId'] = this.queryForm.buyerId
+        // 这个地方直接取当前rfq的linineId
         this.parmarsNotHasRfq['linieId'] = this.queryForm.linieId
         this.parmarsNotHasRfq['partProjectType'] = this.queryForm.partProjectType
         this.parmarsNotHasRfq['partNumList'] = this.queryForm.partNumList
+        this.parmarsNotHasRfq['isNotInRfqList'] = true
         getTabelData(this.parmarsNotHasRfq).then(res => {
           this.tableLoading = false
           this.page.currPage = res.pageNum
@@ -103,7 +103,6 @@ export default {
           let data = res.data
           data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = '否'})
           this.tableListData = data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) || []
-          // this.$forceUpdate()
         }).catch(() => this.tableLoading = false)
     },
     // 待选零件

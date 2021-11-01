@@ -36,7 +36,8 @@
         <iButton @click="quote" v-if='quoteShow' :loading="quoteInquiryPriceLoading">引用报价</iButton>
         <iButton @click="group"  v-if='layout == "1" && !abPrice'>组合</iButton>
         <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
-        <iButton @click="options.show = true">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
+        <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton>
+        <iButton v-if='isKborJj == 2' @click="options.show = true">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
       </div>
       <!--------------表格模块-------------->
     </div>
@@ -61,6 +62,7 @@
 <script>
 import {iButton,iSelect,iDialog,iInput,iMessage} from 'rise'
 import tableList from './components/table'
+import {roundsType} from '@/config'
 import tableListSupplier from './components/tableListSupplier'
 import bidOpenResult from './components/bidOpenResult'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList,defaultLayoutTemplate} from './components/data'
@@ -104,7 +106,8 @@ export default{
     budget:'',
     kmTooling:'',
     quoteInquiryPriceLoading: false,
-    options:{show:false}
+    options:{show:false},
+    roundsType
   }},
   watch:{
     /**
@@ -128,6 +131,13 @@ export default{
   computed: {
     disabled() {
       return typeof this.getDisabled === "function" ? this.getDisabled() : false
+    },
+    //判断当前是开标还是竞价，需要对按钮做不同的展示。
+    isKborJj(){
+      console.log(this.getbaseInfoData())
+      if(this.getbaseInfoData().roundsType == this.roundsType.zxjjys) return 1
+      if(this.getbaseInfoData().roundsType == this.roundsType.zxkb) return 2
+      return 0
     }
   },
   created(){
@@ -142,6 +152,14 @@ export default{
     return {vm:this}
   },
   methods:{
+    /**
+     * @description: 点击进入竞价大厅。
+     * @param {*}
+     * @return {*}
+     */
+    openjjdt(){
+      alert('online-bidding 暂未提供跳转url,稍等片刻...')
+    },
     getLayoutDetaultNumber(){
       try {
         const partProjectType = this.$route.query.businessKey
