@@ -483,7 +483,11 @@ export default {
 
       // 查看日志
       checkLog(row){
-         iMessage.warn('暂未开通此功能')
+        //  iMessage.warn('暂未开通此功能')
+        this.$router.push({
+          path:'/aeko/log',
+          query:{}
+        })
       },
 
       // 查看描述

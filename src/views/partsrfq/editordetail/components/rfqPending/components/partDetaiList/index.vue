@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: Hao,Jiang
+ * @LastEditors: Please set LastEditors
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -291,7 +291,7 @@ export default {
     queryParts() {
       this.queryForm = { ...this.queryForm, partNumList: this.partNumList }
       this.$refs.partsTable.page.currPage = 1
-      this.$refs.partsTable.getTableList()
+      this.$refs.partsTable.getTableList(this.queryForm)
     },
   },
 };

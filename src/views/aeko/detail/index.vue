@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-10-29 14:12:18
+ * @LastEditTime: 2021-11-01 17:23:04
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
@@ -13,7 +13,7 @@
       <div>
         <iButton v-if="pending" @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
         <iButton @click="goToDetail">{{language('LK_AEKO_BUTTON_DETAIL','AEKO详情')}}</iButton>
-        <logButton class="margin-left20" />
+        <logButton @click="gotoLog" class="margin-left20" />
       </div>
     </div>
     <page-content ref="pageContent" @setAekoInfo="setAekoInfo"></page-content>
@@ -91,6 +91,13 @@ export default {
         }
       })
       window.open(routeData.href, '_blank')
+    },
+    // 跳转日志
+    gotoLog(){
+      this.$router.push({
+        path:'/aeko/log',
+        query:{}
+      })
     }
   }
 }
