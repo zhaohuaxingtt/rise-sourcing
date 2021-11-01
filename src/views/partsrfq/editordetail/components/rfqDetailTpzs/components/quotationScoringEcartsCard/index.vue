@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-10-30 16:25:57
+ * @LastEditTime: 2021-11-01 19:24:13
  * @LastEditors:  
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -19,14 +19,14 @@
               <el-option label="To" value='2'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="供应商" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_GONGYINGSHANG_SELECT|供应商">
+          <el-form-item label="供应商" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_GONGYINGSHANG_SELECT|供应商" >
             <iSelect :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="supplierSelectlist" @visible-change="removeOther($event,'supplierSelectlist')">
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in supplierlist" :key='index' :label="items.supplierName" :value='items.supplierNum'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('Lk_LINGJIAN','零件')" class="ccc"  v-permission.atuo="RFQ_DETAIL_TIPS_BAOJIAQUSHI_LINGJIAN_SELECT | 零件">
-            <iSelect :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="partsSelect" @change='changeParts' @visible-change="removeOther($event,'partsSelect')">
+          <el-form-item :label="language('Lk_LINGJIAN','零件')" class="ccc partClass"  v-permission.atuo="RFQ_DETAIL_TIPS_BAOJIAQUSHI_LINGJIAN_SELECT | 零件">
+            <iSelect :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="partsSelect" @change='changeParts' @visible-change="removeOther($event,'partsSelect')" >
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in partList" :key='index' :label="items.name" :value='items.value'></el-option>
             </iSelect>
@@ -208,7 +208,7 @@ export default{
           })
         }else{
           partList.push({
-            name:element.partNum,
+            name:element.partNum+'-'+element.fsNum+'-'+element.partName+'-'+element.partNameDe,
             value:element.partNum,
             list:[
               {
@@ -228,10 +228,20 @@ export default{
   .laschildwidth{
     width: 350px;
   }
+  .partClass{
+    ::v-deep .el-select{
+      width:300px !important
+      
+    }
+  }
   .echarts{
     height: 50px;
     ::v-deep .el-form-item{
       margin-right: 30px!important;
+        .el-select__tags-text{
+          overflow: hidden;
+          max-width: 160px
+        }
     }
   }
   #echartsPage{
