@@ -36,7 +36,7 @@
         <iButton @click="quote" v-if='quoteShow' :loading="quoteInquiryPriceLoading">引用报价</iButton>
         <iButton @click="group"  v-if='layout == "1" && !abPrice'>组合</iButton>
         <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
-        <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton>
+        <!-- <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton> -->
         <iButton v-if='isKborJj == 2' @click="options.show = true">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
       </div>
       <!--------------表格模块-------------->
