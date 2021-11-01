@@ -18,6 +18,7 @@
         height="400"
         index
         :selection="alowSubmit"
+        :selectable="selectable"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -123,6 +124,14 @@ export default {
     },
     checkFirstRecord() {
       if (this.tableListData == null || this.tableListData.length <= 0) return false
+
+      let valid = false
+      const validItems = this.tableListData.filter(o => o.activityName === '【补充材料通知】补充材料')
+      validItems.forEach(item => {
+        !valid && (valid = !this.itemIsCanReply(item))
+      })
+      if (valid) return true
+
       let firstItem =this.tableListData[0]
       if (null != firstItem) {
         return firstItem.operation == '补充材料'
@@ -159,7 +168,9 @@ export default {
     this.getFetchData()
   },
   methods: {
-
+    selectable(row) {
+      return !this.itemIsCanReply(row)
+    },
     getAdiType(code) {
       return aekoApproveTypes.find(o => o.id === code)?.name || ''
     },
