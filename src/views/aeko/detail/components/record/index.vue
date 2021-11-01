@@ -211,19 +211,19 @@ export default {
       })
     },
     itemCommentContent(row) {
-      if (row.activityName == "【补充材料回复】补充材料") {
+      if (row.activityName == "【解释说明回复】") {
         return ''
       }
       return row.comment
     },
     itemExplain(row) {
-      if (row.activityName == "【补充材料回复】补充材料") {
+      if (row.activityName == "【解释说明回复】") {
         return row.comment
       }
       return ''
     },
     itemExplainShow(row) {
-      return row.activityName == "【补充材料回复】补充材料"
+      return row.activityName == "【解释说明回复】"
     },
     itemIsCanReply(row) {
       if (row.activityName == "【补充材料通知】补充材料") {
