@@ -58,7 +58,7 @@ module.exports = {
             compress: {
               drop_debugger: true,
               drop_console: true,
-              pure_funcs: ['console.log'],
+              pure_funcs: ['console.log','console.warn'],
             },
           },
           sourceMap: false,
