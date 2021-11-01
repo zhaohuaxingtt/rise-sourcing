@@ -207,7 +207,7 @@ export function manualImportAekoFromTCM(params) {
 // 待办数量查询
 export function getLogCount({pageCode, id}) {
   return requst({
-      url: `/web/aeko/backlog/count/${pageCode}/${id}`,
+      url: `/aeko/backlog/count/${pageCode}/${id}`,
       method: 'GET',
   })
 }
