@@ -33,11 +33,12 @@
       <!-- 科室 -->
       <el-form-item :label="language('LK_AEKOKESHI','科室')">
         <iSelect
-          class="multi-select"
+          class="el-select-multi"
           v-model="form.departmentIdList"
           v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_DEPARTMENTIDLIST|科室"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           @change="handlemultipleDeptChange"
+          collapse-tags 
           multiple
           filterable
           clearable

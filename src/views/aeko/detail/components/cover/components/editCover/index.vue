@@ -120,7 +120,6 @@ import {
   iInput,
   iSelect,
   iText,
-  iMessage,
 } from 'rise';
 import { previewBaicFrom,coverTableTitleCost } from '../../data'
 import tableList from "../tableList"
@@ -237,7 +236,7 @@ export default {
 
             this.tableData = costData;
           }else{
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         }).catch((err)=>{
           this.tableLoading = false;
@@ -255,7 +254,7 @@ export default {
             this.selectOptions['fsList'] = data;
             this.selectOptionsCopy['fsList'] = data;
           }else{
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         })
       },
@@ -304,9 +303,9 @@ export default {
               if(res.data){
                 const tips = this.language('LK_TIPS_AKEO_COVER_DANGQIANFENGMIANXIAYOUDAISHENPIDENEIRONGBIAOTAI','当前封面下有已提交待审批的内容表态，将和封面一同提交审批。');
                 this.$message({
-                  type:'warning',
+                  type:'success',
                   message: tips,
-                  duration: 3000,
+                  duration: 2000,
                   onClose:()=>{
                     this.submitCover(data);
                   }
@@ -325,7 +324,7 @@ export default {
                 this.submitCover(data);
               }
             }else{
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
           }).catch(()=>{
             this.btnLoading = false;
@@ -336,10 +335,10 @@ export default {
             this.btnLoading = false;
             const {code} = res;
             if(code == 200){
-              iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+              this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
               this.getDetail();
             }else{
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
 
           }).catch((err)=>{
@@ -354,11 +353,11 @@ export default {
               this.btnLoading = false;
               const {code} = res;
               if(code == 200){
-                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                 this.$emit('getBbasicInfo');
                 this.getDetail();
               }else{
-                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
               }
 
             }).catch((err)=>{
@@ -375,7 +374,7 @@ export default {
           if(basic['required']){
               if((!data[basic['props']] && basic['type']=='input') || (data[basic['props']]==='' && basic['type']=='select')){
                 const tips = this.language(basicTitle[i]['labelKey'],basicTitle[i]['label'])+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
-                iMessage.warn(tips);
+                this.$message.warning(tips);
                 isValidate = false;
                 break;
               }
@@ -385,7 +384,7 @@ export default {
           // 备注
           if(isValidate && !data.remark){
             const tips = this.language('LK_BEIZHU','备注')+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
-            iMessage.warn(tips);
+            this.$message.warning(tips);
             isValidate = false;
           }
 
@@ -396,7 +395,7 @@ export default {
               const cost = coverCostsWithCarType[i] || {};
               if(!cost['investmentIncrease'] || !cost['materialIncrease'] ||!cost['otherCost']){
                 const tips = this.language('LK_AEKO_BIAODANNEIFEIYONG','表单内费用') + this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
-                iMessage.warn(tips);
+                this.$message.warning(tips);
                 isValidate = false;
                 break;
               }
@@ -425,10 +424,10 @@ export default {
         await coverCancel({aekoCoverId}).then((res)=>{
           this.btnLoading = false;
           if(res.code == 200){
-            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getDetail();
           }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         }).catch((err)=>{
           this.btnLoading = false;
