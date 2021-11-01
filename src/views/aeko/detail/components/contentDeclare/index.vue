@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-29 15:47:48
+ * @LastEditTime: 2021-11-01 10:10:54
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -524,6 +524,7 @@ export default {
         path: '/aeko/quotationdetail',
         query: {
           quotationId,
+          editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status)
         }
       })
 
@@ -670,7 +671,7 @@ export default {
 
       for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
         if (!['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(item.status))
-          return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"))
+          return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"))
       }
 
       this.submitLoading = true
