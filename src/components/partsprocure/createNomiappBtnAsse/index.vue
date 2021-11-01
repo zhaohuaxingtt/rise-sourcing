@@ -48,7 +48,7 @@ export default{
       tableTitle:tableTitle,
       rate:'',
       ontologyList:[],
-      isUserPackage:false,
+      isUserPackage:true,
       loadingbtn:false
     }
   },
@@ -61,7 +61,7 @@ export default{
   watch: {
     diologShow(nv) {
       if (!nv) {
-        this.isUserPackage = false
+        this.isUserPackage = true
       }
     }
   },
