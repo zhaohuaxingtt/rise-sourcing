@@ -2,13 +2,13 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-29 13:53:54
+ * @LastEditTime: 2021-10-30 22:00:40
  * @Description: 
 -->
 <template>
   <div class="aeko-mtz" >
     <!-- 筛选 -->
-    <search ref="search" />
+    <search ref="search" @search="onSearch" />
     <!-- 表格 -->
     <iCard class="aeko-mtz-table">
       <tablelist
@@ -40,14 +40,15 @@
 </template>
 
 <script>
-import {tableTitle} from './components/data'
+import {mtzListtableTitle as tableTitle} from './components/data'
 import search from './components/search'
 import tablelist from 'rise/web/components/iFile/tableList'; 
 import {iCard, iButton, iPagination, iInput, iDatePicker, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 // 解释附件、审批附件查询，审批附件带taskId
 import {
-  aekoMtzDosage
+  aekoMtzDosage,
+  getMaterial
 } from '@/api/aeko/mtz'
 
 export default {
@@ -80,22 +81,22 @@ export default {
      * @return {*}
      */    
     getFetchData() {
-      const parmas = {
-        objectAekoPartId: this.$route.query.objectAekoPartId || '',
+      const parmas = Object.assign({
+        aekoWorkFlowDTO: {
+          taskId: '',
+          workFlowId: '1127706'
+        },
+        supplierName: '',
+        requirementAekoId: this.$route.query.requirementAekoId || '11021',
         current: this.page.currPage,
         size: this.page.pageSize
-      }
-      if (!parmas.objectAekoPartId) {
-        this.$message.error(this.language('LK_OBJECTAEKOPARTIDBUNENGWEIKONG', 'objectAekoPartId不能为空'));
-        return
-      }
+      }, this.$refs.search.form)
+      parmas.partNums = String(parmas.partNums).split(',')
+      parmas.materialCodeList = parmas.materialCodeList.length === 1 && !parmas.materialCodeList[0] ? [] : parmas.materialCodeList
       this.tableLoading = true
       aekoMtzDosage(parmas).then(res => {
         if (res.code === '200') {
-          this.tableListData = (res.data && res.data.records || []).map(o => {
-            
-            return o
-          })
+          this.tableListData = (res.data && res.data.records || [])
           this.page.totalCount = res.data.total
         } else {
           this.tableListData = []

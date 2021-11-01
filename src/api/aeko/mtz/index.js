@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-28 17:06:50
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-29 10:18:46
+ * @LastEditTime: 2021-10-30 21:12:58
  * @Description: 
  */
 import axios from '@/utils/axios'
@@ -53,5 +53,14 @@ export function aekoMtzDosage(data) {
     url: '/aeko/mtz/dosage',
     method: 'POST',
     data,
+  })
+}
+
+// aeko 获取mtz 原材料
+export function getMaterial(params) {
+  return requst({
+    url: '/aeko/get/material',
+    method: 'GET',
+    params,
   })
 }
