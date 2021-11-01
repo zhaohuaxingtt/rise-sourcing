@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-10-27 15:39:03
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-01 15:57:24
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
  */
@@ -37,7 +37,8 @@ export const contentDeclareTableTitle = [
   { props: "investCarTypePro", name: "指定投资⻋型项⽬", key: "ZHIDINGTOUZICHEXINGXIANGMU", tooltip: true, width: 150 },
   { props: "isMtz", name: "MTZ变更", key: "MTZBIANGENG", tooltip: true },
   { props: "originBnkTranWayDesc", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true },
-  { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true }
+  { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true },
+  { props: "tranWayDesc", name: "承运方式", key: "LK_AEKO_CHENGYUNFANGSHI", tooltip: true },
 ]
 
 export const hidenTableTitle=[
@@ -87,8 +88,8 @@ export const approveReCordTableTitle = [
   { props: "operation", name: "操作", key: "CAOZUO", tooltip: true },
   { props: "assigneeName", name: "操作人", key: "CAOZUOREN", tooltip: true },
   { props: "endTime", name: "操作时间", key: "LK_UpdateDate", tooltip: true,width:200 },
-  { props: "comment", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true, width: 330},
-  { props: "explainReason", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true, width: 330, _headerRequiredRight: true },
+  { props: "comment", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true,  align: 'left', width: 300},
+  { props: "explainReason", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true, width: 300, _headerRequiredRight: true },
   { props: "attach", name: "解释附件", key: "JIESHIFUJIAN", tooltip: true },
 ]
 

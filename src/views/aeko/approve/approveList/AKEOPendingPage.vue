@@ -1,9 +1,9 @@
 <!--待审批--->
 <template>
-  <div>
+  <div v-permission.auto="AEKO_PENDING_APPROVAL_PAGE|待审批页面">
     <!--搜索区--->
     <i-search class="margin-bottom20" @sure="queryPendingAKEOForm" @reset="restQueryForm" :resetKey="QUEREN"
-              :searchKey="REST">
+              :searchKey="REST" v-permission.auto="AEKO_PENDING_APPROVAL_PAGE_SEARCHAREA|待审批页面搜索区">
       <el-form :model="queryAkeoForm" ref="AKEOQueryFormRef">
         <!-- AEKO号 -->
         <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')" prop='aekoNum'>
@@ -75,16 +75,16 @@
     </i-search>
 
     <!--表格展示区--->
-    <i-card>
+    <i-card v-permission.auto="AEKO_PENDING_APPROVAL_TABLE_PAGE|待审批页面数据展示区">
       <span class="font18 font-weight">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
       <div class="editControl floatright margin-bottom20">
-        <i-button @click="batchApproval"> 批量批准</i-button>
-        <i-button @click="approval"> {{ language('SHENPI', '审批') }} 
+        <i-button @click="batchApproval" v-permission.auto="AEKO_PENDING_APPROVAL_BATCH_APPROVAL|待审批页面按钮_批量批准"> 批量批准</i-button>
+        <i-button @click="approval" v-permission.auto="AEKO_PENDING_APPROVAL_BATCH_APPROVAL1|待审批页面按钮_批量审批"> {{ language('SHENPI', '审批') }}
 					<el-tooltip effect="light"  popper-class="custom-card-tooltip" :content="language('GOUXUANDUOGEXIANGMUSHENPI','可勾选多个项目，进行批量审批')" placement="top">
             <i class="el-icon-warning-outline bule iconSuffix"></i>
           </el-tooltip>
 				</i-button>
-        <i-button @click="transfer" v-if="transferButtonDisplay"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
+        <i-button @click="transfer" v-if="transferButtonDisplay" v-permission.auto="AEKO_PENDING_APPROVAL_TRANSFER|待审批页面按钮_转派"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
 
       </div>
       <!--表格展示区-->

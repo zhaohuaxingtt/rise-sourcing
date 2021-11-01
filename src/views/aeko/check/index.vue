@@ -7,7 +7,7 @@
     <iPage class="aeko-check-list">
         <iNavMvp :lev="1" :list="leftTab" :lang="true" routerPage left class="check-nav margin-bottom10" />
         <iNavMvp :list="navList" lang  :lev="2" routerPage right class="margin-bottom10"/>
-
+        
         <!-- 搜索区域 -->
         <iSearch @sure="sure" @reset="reset">
           <el-form>
@@ -160,10 +160,20 @@ export default {
         icon,
         filesListDialog,
     },
+    computed: {
+        //eslint-disable-next-line no-undef
+        ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+            permission: state => state.permission
+        }),
+    },
     created(){
         this.getSearchList();
         this.getList();
         this.leftTab = getLeftTab(2);
+        // 表头是否展示内容表态 AEKO_CHECKLIST_TABLE_TITLE_NEIRONGZHUANGTAI
+        const isShow = !!this.permission.whiteBtnList["AEKO_CHECKLIST_TABLE_TITLE_NEIRONGZHUANGTAI"];
+        this.tableTitle = !isShow ? tableTitle.filter((item)=>item.props!=='contentStatusDesc') : tableTitle;
     },
     data(){
       return{
@@ -447,7 +457,7 @@ export default {
       },
       // 跳转到审批单
       checkAssignsheet(row){
-        lookDetails(this, row, true)
+        lookDetails(this, row, true,null,true)
       },
 
       // 查看附件列表

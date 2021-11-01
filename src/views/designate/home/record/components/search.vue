@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 14:17:55
- * @LastEditTime: 2021-10-28 20:25:37
+ * @LastEditTime: 2021-10-30 10:53:51
  * @LastEditors:  
 -->
 <template>
@@ -147,10 +147,10 @@
               :label="language('all','全部') | capitalizeFilter"
             ></el-option>
             <el-option
-            :value="item.id"
-            :label="item.desc"
-            v-for="(item, index)  in (fromGroup && fromGroup['applyType']) || []"
-            :key="index"
+              :value="item.id"
+              :label="language(item.key,item.name)"
+              v-for="(item, index)  in (fromGroup && fromGroup['applyType']) || []"
+              :key="index"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -165,7 +165,7 @@
   </div>
 </template>
 <script>
-import {iSearch, iInput, iSelect, iDatePicker} from 'rise'
+import {iSearch, iInput, iSelect, iDatePicker, iMessage} from 'rise'
 import {selectDictByKeyss} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
 
@@ -213,8 +213,18 @@ export default {
     },
     getNominate(){
       getNominateType().then(res => {
-        this.$set(this.fromGroup,'applyType',res.data)
-      })
+        if (res?.result) {
+            const apply = []
+            Array.from(res.data).forEach(item => {
+                apply.push({id:item.code,name:item.desc,key:item.code})
+            })
+            this.$set(this.fromGroup,'applyType',apply)
+        } else {
+            this.applyType = []
+            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+        })
+
     },
     getCar(){
        getCartypeDict().then(res=> {
