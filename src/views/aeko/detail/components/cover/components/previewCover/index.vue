@@ -156,7 +156,6 @@ export default {
         this.getLinie();
 
         // 判断是否从AEKO查看跳转进入该页面 并且底部表单多一个冻结时间字段
-
         const {query} = this.$route;
         const {from=''} = query;
         if(from == 'check') {
