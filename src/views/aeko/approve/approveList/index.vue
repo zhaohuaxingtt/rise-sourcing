@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-01 13:46:35
+ * @LastEditTime: 2021-11-01 15:54:15
  * @Description: 
 -->
 <template>
@@ -339,7 +339,8 @@ export default {
       })
       if (!state) return iMessage.warn(this.language("QINGXUANZHECSFGUZHANG", "请选择CSF股长"))
       let parmas = selectedData.map(o => {
-        const choseChiefs = o.chiefNames || []
+        let choseChiefs = (o && o.chiefNames)
+        choseChiefs = typeof choseChiefs === 'string' ? [choseChiefs] : choseChiefs
         const chiefName = choseChiefs.map(chiefId => {
           const chiefs = (o.selectOptions || []).find(buyer => buyer.code === chiefId) || {}
           console.log('selectOptions', o.selectOptions || [])
