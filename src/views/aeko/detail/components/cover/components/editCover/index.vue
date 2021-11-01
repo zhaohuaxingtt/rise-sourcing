@@ -302,16 +302,27 @@ export default {
           await checkAekoContentSubmitState(requirementAekoId).then((res)=>{
             if(res.code == 200){
               if(res.data){
-                this.$confirm(
-                  this.language('LK_TIPS_AKEO_COVER_DANGQIANFENGMIANXIAYOUDAISHENPIDENEIRONGBIAOTAI','当前封面下有待审批的内容表态，将和封面一同提交审批，请确认'),
-                  this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
-                  ).then(()=>{
+                const tips = this.language('LK_TIPS_AKEO_COVER_DANGQIANFENGMIANXIAYOUDAISHENPIDENEIRONGBIAOTAI','当前封面下有已提交待审批的内容表态，将和封面一同提交审批。');
+                this.$message({
+                  type:'warning',
+                  message: tips,
+                  duration: 3000,
+                  onClose:()=>{
                     this.submitCover(data);
-                  }).catch(()=>{
-                    this.btnLoading = false;
-                  })
+                  }
+                })
+                // this.submitCover(data);
+
+                // this.$confirm(
+                //   this.language('LK_TIPS_AKEO_COVER_DANGQIANFENGMIANXIAYOUDAISHENPIDENEIRONGBIAOTAI','当前封面下有已提交待审批的内容表态，将和封面一同提交审批。'),
+                //   this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
+                //   ).then(()=>{
+                //     this.submitCover(data);
+                //   }).catch(()=>{
+                //     this.btnLoading = false;
+                //   })
               }else{
-                this.submitCover(data);
+                // this.submitCover(data);
               }
             }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
