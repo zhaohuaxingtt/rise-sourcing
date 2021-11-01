@@ -75,7 +75,7 @@
 
 <script>
 import { iPage, icon, iCard, iButton, iPagination, iMessage, iSelect } from 'rise'
-import { tableTitle } from './data'
+// import { tableTitle } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 import { queryLogByAeko } from '@/api/log'

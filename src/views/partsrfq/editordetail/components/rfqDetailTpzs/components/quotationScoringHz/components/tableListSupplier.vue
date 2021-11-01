@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-10-13 15:55:25
+ * @LastEditTime: 2021-11-01 21:44:46
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -68,7 +68,7 @@
               </div>
             
             </div>
-            <span class="price pricea" v-if='removeKeysNumber(scope.column.property) == "lcAPrice"'>
+            <span :class="{price:true,pricea:true,redPrice:getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartAPriceStatus') == 2}" v-if='removeKeysNumber(scope.column.property) == "lcAPrice"'>
                 {{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartAPrice')}}
             </span>
           </template>
@@ -86,7 +86,7 @@
                   <el-tooltip :content='levelTowItem.label' effect='light'>
                     <span class="overText">{{levelTowItem.label}}</span>
                   </el-tooltip>
-                  <span class="price priceb" v-if='removeKeysNumber(scope.column.property) == "lcBPrice"'>{{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPrice')}}</span>
+                  <span :class="{price:true,priceb:true,redPrice:getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPriceStatus') == 2}" v-if='removeKeysNumber(scope.column.property) == "lcBPrice"'>{{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPrice')}}</span>
                 </template>
                 </el-table-column>
             </template>
