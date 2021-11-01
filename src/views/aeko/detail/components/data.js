@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-10-27 15:39:03
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-01 15:57:24
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
  */
@@ -37,7 +37,8 @@ export const contentDeclareTableTitle = [
   { props: "investCarTypePro", name: "指定投资⻋型项⽬", key: "ZHIDINGTOUZICHEXINGXIANGMU", tooltip: true, width: 150 },
   { props: "isMtz", name: "MTZ变更", key: "MTZBIANGENG", tooltip: true },
   { props: "originBnkTranWayDesc", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true },
-  { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true }
+  { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true },
+  { props: "tranWayDesc", name: "承运方式", key: "LK_AEKO_CHENGYUNFANGSHI", tooltip: true },
 ]
 
 export const hidenTableTitle=[

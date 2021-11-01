@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-10-29 15:37:48
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-01 15:02:59
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
 -->
@@ -248,7 +248,10 @@ export default {
       return result;
     },
     disabled() {
-      return this.aekoInfo.aekoStatus == "CANCELED";
+      // AEKO状态为撤销以及从AEKO查看跳转过来的
+      const {query} = this.$route;
+      const {from=''} = query;
+      return this.aekoInfo.aekoStatus == "CANCELED"|| from == 'check';
     },
   },
   data() {
@@ -281,7 +284,7 @@ export default {
       let validList = this.dosage.aekoProjectCarDosageList.filter((i)=> i.perCarDosage&&i.originPerCarDosage)
       if(!(Array.isArray(validList)&&validList.length>0)){
         const tips = this.language('ZHISHAOYAOYOUYIHANG','至少要有一行') + this.language('YUANLINGJIANYONGLIANG','原零件用量')+'、'+this.language('XINLINGJIANYONGLIANG','新零件⽤量')+
-        this.language("LK_AEKO_BUNENGWEIKONG", "不能为空");;
+        this.language("LK_AEKO_BUNENGWEIKONG", "不能为空");
         iMessage.warn(tips);
         isValidate = false;
       }
