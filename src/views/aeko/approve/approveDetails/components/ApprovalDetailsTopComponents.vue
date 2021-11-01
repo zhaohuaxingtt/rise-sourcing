@@ -26,6 +26,8 @@ export default {
   },
   created() {
     this.queryParams = this.$route.query
+    // 标记审批单跳转的参数
+    this.queryParams.from = 'approve'
     let str_json = window.atob(this.queryParams.transmitObj)
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
   },
