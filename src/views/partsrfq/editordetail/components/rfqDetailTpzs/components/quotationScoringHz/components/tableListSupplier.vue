@@ -30,7 +30,7 @@
         >
           <!----------在表头上方需要显示评分的点，插入表头标签------>
           <template slot="header" slot-scope="scope">
-            <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
+            <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
             <div class="headerContent" v-if='scope.column.label == "Supplier"'>
               <div class="c" :style="{width:cWidth}">
                 <ul class="ca" :style="{width:250 + 'PX'}">
