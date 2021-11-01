@@ -447,7 +447,7 @@ export default {
       },
       // 跳转到审批单
       checkAssignsheet(row){
-        lookDetails(this, row, true)
+        lookDetails(this, row, true,null,true)
       },
 
       // 查看附件列表

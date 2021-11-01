@@ -34,7 +34,7 @@
         :cellClassName="cellClass"
         @handleSelectionChange="handleSelectionChange">
         <template #sendKmFlag="scope">
-          <span>{{ scope.row.cbdLevel == "L3" ? scope.row.sendKmFlag : "" }}</span>
+          <span>{{ scope.row.cbdLevelCode == "3" ? scope.row.sendKmFlag : "" }}</span>
         </template>  
       </tableList>
     </div>
@@ -201,7 +201,7 @@ export default {
       .catch(() => this.recallLoading = false)
     },
     cellClass(row) {
-      if (row.row.cbdLevel != "L3" || !row.row.isQuotationCbd || row.row.isQuotationCbd === "否") {
+      if (row.row.cbdLevelCode != "3" || !row.row.isQuotationCbd || row.row.isQuotationCbd === "否") {
         return "hideCheckbox"
       }
     }

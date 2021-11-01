@@ -9,7 +9,7 @@
       {{ language("SHENPIJILU", "审批记录") }}
     </span>
     <div class="editControl floatright margin-bottom20">
-      <iButton class="" @click="submit" v-if="checkLastRecord">
+      <iButton class="" @click="submit" v-if="checkFirstRecord">
         {{ language("TIJIAO", "提交") }}
       </iButton>
     </div>
@@ -121,11 +121,11 @@ export default {
     alowSubmit() {
       return true
     },
-    checkLastRecord() {
+    checkFirstRecord() {
       if (this.tableListData == null || this.tableListData.length <= 0) return false
-      let [lastItem] = [...this.tableListData].reverse()
-      if (null != lastItem) {
-        return lastItem.operation == '补充材料'
+      let firstItem =this.tableListData[0]
+      if (null != firstItem) {
+        return firstItem.operation == '补充材料'
       }
       return false
     },
@@ -211,19 +211,19 @@ export default {
       })
     },
     itemCommentContent(row) {
-      if (row.activityName == "【补充材料回复】补充材料") {
+      if (row.activityName == "【解释说明回复】") {
         return ''
       }
       return row.comment
     },
     itemExplain(row) {
-      if (row.activityName == "【补充材料回复】补充材料") {
+      if (row.activityName == "【解释说明回复】") {
         return row.comment
       }
       return ''
     },
     itemExplainShow(row) {
-      return row.activityName == "【补充材料回复】补充材料"
+      return row.activityName == "【解释说明回复】"
     },
     itemIsCanReply(row) {
       if (row.activityName == "【补充材料通知】补充材料") {

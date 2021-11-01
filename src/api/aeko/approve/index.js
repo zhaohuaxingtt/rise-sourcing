@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-27 14:05:01
+ * @LastEditTime: 2021-10-29 16:14:31
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -84,6 +84,14 @@ export  function getAKEOApprovalForm (data){
         data:data
       }
   )
+}
+
+// AEKO查看跳转过来获取审批详情
+export function getAekoCheckAuditForm(requirementId) {
+  return requst({
+    url: `/aeko/view/auditForm/${requirementId}`,
+    method: 'GET',
+  })
 }
 
 // 查询CBD汇总表
