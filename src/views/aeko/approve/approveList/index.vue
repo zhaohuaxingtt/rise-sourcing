@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-01 11:23:41
+ * @LastEditTime: 2021-11-01 13:46:35
  * @Description: 
 -->
 <template>
@@ -57,11 +57,13 @@
         </template>
         <template #chiefName="scope">
           <iSelect
+            class="el-select-multi"
             v-if="!scope.row.chiefName"
             v-model="scope.row.chiefNames"
             :loading="optionLoading"
             :placeholder="language('LK_QINGXUANZE','请选择')"
             :multiple="scope.row.auditType!=3"
+            collapse-tags 
             filterable
             clearable
           >
