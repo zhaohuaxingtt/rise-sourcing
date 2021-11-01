@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-10-29 10:42:40
+ * @LastEditTime: 2021-11-01 16:20:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -203,7 +203,8 @@ export default {
       endingloading:false,
       transferlaoding:false,
       disabled: true,
-      linieUserId:''
+      linieUserId:'',
+      childFnList:[]
     }
   },
   mounted(){
@@ -218,10 +219,14 @@ export default {
     return {
       getBaseInfo:this.getBaseInfo, //当前是一个请求
       getbaseInfoData:this.getbaseInfoData,  //直接reture当前请求完的数据
-      getDisabled: this.getDisabled
+      getDisabled: this.getDisabled,
+      registerFn:this.registerFn
     }
   },
   methods: {
+    registerFn(fn){
+      this.childFnList.push(fn)
+    },
     getbaseInfoData(){
       return this.baseInfo
     },
@@ -279,8 +284,7 @@ export default {
             this.baseInfo = ''
           }
             //获取详细信息后 刷新tab栏里面的询价管理（只要存在轮次大于1则显示询价管理页签）
-          console.log(this.$refs.rfqPending)
-          this.$refs.rfqPending.updateTabs(this.baseInfo)
+          this.childFnList.forEach(i=>i())
           this.baseInfoLoading = false
         } catch {
           this.baseInfoLoading = false
