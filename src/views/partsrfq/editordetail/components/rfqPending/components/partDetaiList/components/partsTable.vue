@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-10-29 19:22:14
+ * @LastEditTime: 2021-11-01 21:16:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
@@ -84,16 +84,17 @@ export default {
   },
   methods: {
     //获取表格数据
-    getTableList() {
+    getTableList(queryData) {
+        const queryForm = queryData || this.queryForm
         this.tableLoading = true
         this.parmarsNotHasRfq['size'] = this.page.pageSize
         this.parmarsNotHasRfq['current'] = this.page.currPage
         this.parmarsNotHasRfq['status'] = 'NOT_IN_RFQ'
-        this.parmarsNotHasRfq['buyerId'] = this.queryForm.buyerId
+        this.parmarsNotHasRfq['buyerId'] = queryForm.buyerId
         // 这个地方直接取当前rfq的linineId
-        this.parmarsNotHasRfq['linieId'] = this.queryForm.linieId
-        this.parmarsNotHasRfq['partProjectType'] = this.queryForm.partProjectType
-        this.parmarsNotHasRfq['partNumList'] = this.queryForm.partNumList
+        this.parmarsNotHasRfq['linieId'] = queryForm.linieId
+        this.parmarsNotHasRfq['partProjectType'] = queryForm.partProjectType
+        this.parmarsNotHasRfq['partNumList'] = queryForm.partNumList
         this.parmarsNotHasRfq['isNotInRfqList'] = true
         getTabelData(this.parmarsNotHasRfq).then(res => {
           this.tableLoading = false
