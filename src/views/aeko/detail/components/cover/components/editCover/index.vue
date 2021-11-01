@@ -322,7 +322,7 @@ export default {
                 //     this.btnLoading = false;
                 //   })
               }else{
-                // this.submitCover(data);
+                this.submitCover(data);
               }
             }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
