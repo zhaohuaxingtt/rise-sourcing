@@ -236,9 +236,14 @@ export default {
     this.form = { 
       showMe:true, // 默认显示自己
     }
-    const acceptKeys = ['nominateProcessType', 'currentUser', 'isDelay']
+    const acceptKeys = ['nominateProcessType', 'applicationStatus', 'currentUser', 'isDelay']
     Object.keys(this.$route.query).forEach(key => {
-        acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, this.$route.query[key]))
+      const keyValue = this.$route.query[key]
+      // 判断寻源概览过来的参数为查询流转中，只有流转中需要带参数
+      if (key === 'nominateProcessType') {
+        this.onNomiProcessTypeChange(keyValue)
+      }
+        acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, keyValue))
     })
     this.getOptions()
   },
