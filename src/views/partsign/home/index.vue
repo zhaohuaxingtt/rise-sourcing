@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-10-21 16:07:19
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-01 16:29:33
+ * @LastEditors: Hao,Jiang
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
 -->
@@ -426,10 +426,13 @@ export default {
     //获取表格数据
     getTableList() {
       this.tableLoading = true;
-      getTabelData({
+      const params = {
         ...this.form,
         ...this.page,
-      })
+      }
+      // 用户寻源概览的参数
+      this.$route.query.currentUser && (params.currentUser = true)
+      getTabelData(params)
         .then((res) => {
           this.tableLoading = false;
           this.page.currPage = res.data.tpRecordsSenarioResult.currPage;
