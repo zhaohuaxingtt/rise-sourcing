@@ -152,9 +152,10 @@ import {
   getLogCount,
 } from '@/api/aeko/manage'
 import aekoSelect from '../components/aekoSelect'
+import { roleMixins } from "@/utils/roleMixins";
 export default {
     name:'aekoStanceList',
-    mixins: [pageMixins],
+    mixins: [pageMixins,roleMixins],
     components:{
       iPage,
       iNavMvp,
@@ -213,9 +214,10 @@ export default {
       this.getSearchList();
       this.getLogCount();
       
-      this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
-      this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
-      this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+      const roleList = this.roleList;
+      this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
+      this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+      this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
 
       const { isAekoManager,isCommodityCoordinator,isLinie,$route } = this;
       const role = {
