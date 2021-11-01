@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-10-28 16:15:02
+ * @LastEditTime: 2021-11-01 17:28:45
  * @LastEditors: Hao,Jiang
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -20,7 +20,7 @@
               <span>{{language('LK_LINGJIANQIANSHOU','零件签收')}}</span>
             </div>
             <div class="dashboard-card-content">
-              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong class="cursor" @click="toLink('/sourceinquirypoint/sourcing/partsign')">{{basicData.partSigningNum || 0}}</strong></dd></dl>
+              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong class="cursor" @click="toLink('/sourceinquirypoint/sourcing/partsign?currentUser=true')">{{basicData.partSigningNum || 0}}</strong></dd></dl>
             </div>
           </iCard>
         </el-col>
@@ -61,14 +61,14 @@
                 <dl>
                   <dt>{{language('WEIZHUANTANPAN','未转谈判')}}</dt>
                   <dd>
-                    <strong class="note cursor" @click="toLink(rfqURL('未转谈判', true))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.notNego || 0}}</strong>
-                    /<span class="cursor" @click="toLink(rfqURL('未转谈判', false))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.notNegoSum || 0}}</span>
+                    <strong class="note cursor" @click="toLink(rfqURL('未转谈判', true, true))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.notNego || 0}}</strong>
+                    /<span class="cursor" @click="toLink(rfqURL('未转谈判', false, true))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.notNegoSum || 0}}</span>
                   </dd>
                 </dl>
                 <dl>
                   <dt>{{language('DAISHANGHUIORLIUZHUAN','待上会/流转')}}</dt>
                   <dd>
-                    <strong class="note cursor" @click="toLink(rfqURL('待上会/流转', true))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.circulation || 0}}</strong>
+                    <strong class="note cursor" @click="toLink(rfqURL('待上会/流转', true, true))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.circulation || 0}}</strong>
                   </dd>
                 </dl>
               </div>
@@ -168,6 +168,9 @@ import {roleMixins} from '@/utils/roleMixins'
 import {selectDictByKeyss} from '@/api/dictionary'
 // 定点类型
 import { applyType } from '@/layout/nomination/components/data'
+import {
+  nomiApplicationStatus
+} from '@/views/designate/home/components/options'
 
 export default {
   mixins: [roleMixins],
@@ -208,38 +211,53 @@ export default {
       return `/sourceinquirypoint/sourcing/partsprocure?status=${code}&currentUser=true&isDelay=${isDelay}`
     },
     // rfq链接
-    rfqURL(name, isDelay=false) {
+    /**
+     * @description: 
+     * @param {*} name 名称
+     * @param {*} isDelay 是否统计延误数据
+     * @param {*} isRfq 是否跳转到rfq管理
+     * @return {*}
+     */    
+    rfqURL(name, isDelay=false, isRfq = false) {
       const data = (this.options['RFQ_OVERVIEW_TYPE'] || []).find(o => o.name === name)
       const code = data && data.code || ''
-      return `/sourceinquirypoint/sourcing/reportmgmt/details?type=${code}&currentUser=true&isDelay=${isDelay}`
+      const URL = isRfq ? '/sourceinquirypoint/sourcing/partsrfq':'/sourceinquirypoint/sourcing/reportmgmt/details'
+      return `${URL}?type=${code}&currentUser=true&isDelay=${isDelay}`
     },
     // 前期采购员待确认定点信链接
     // type:1 定点信 2：LOI
     letterAndLoiURL(type) {
-      let status = ''
-      // 只查询 定点信 前期处理中状态
-      const letterData = (this.options['NOMINATION_LETTER_STATUS'] || []).find(o => o.name === '前期处理中')
-      const letterCode = letterData && letterData.code || 'CSF_HANDLING'
-      // 只查询 LOI 前期处理中状态
-      const loiData = (this.options['NOMINATION_LETTER_STATUS'] || []).find(o => o.name === '前期处理中')
-      const loiCode = loiData && loiData.code || 'LINIE_CONFIRING'
-      // 前期采购员
-      if (this.userRole.isQQCG) status = letterCode
-      // 专业采购员
-      if (this.userRole.isZYCG) status = loiCode
-      // 前期采购员 && 专业采购员
-      if (this.userRole.isZYCG && this.userRole.isQQCG) status = letterCode
+      // let status = ''
+      // // 只查询 定点信 前期处理中状态
+      // const letterData = (this.options['NOMINATION_LETTER_STATUS'] || []).find(o => o.name === '前期处理中')
+      // const letterCode = letterData && letterData.code || 'CSF_HANDLING'
+      // // 只查询 LOI 前期处理中状态
+      // const loiData = (this.options['NOMINATION_LETTER_STATUS'] || []).find(o => o.name === '前期处理中')
+      // const loiCode = loiData && loiData.code || 'LINIE_CONFIRING'
+      // // 前期采购员
+      // if (this.userRole.isQQCG) status = letterCode
+      // // 专业采购员
+      // if (this.userRole.isZYCG) status = loiCode
+      // // 前期采购员 && 专业采购员
+      // if (this.userRole.isZYCG && this.userRole.isQQCG) status = letterCode
 
+      // const types = {
+      //   1 : `/sourceinquirypoint/sourcing/partsletter?status=${status}&currentUser=true&isDelay=false`,
+      //   2 : `/sourceinquirypoint/sourcing/partsletter?cardType=LOI&loiStatus=${status}&currentUser=true&isDelay=false`
+      // }
       const types = {
-        1 : `/sourceinquirypoint/sourcing/partsletter?status=${status}&currentUser=true&isDelay=false`,
-        2 : `/sourceinquirypoint/sourcing/partsletter?cardType=LOI&loiStatus=${status}&currentUser=true&isDelay=false`
+        1 : `/sourceinquirypoint/sourcing/partsletter?currentUser=true&isDelay=false`,
+        2 : `/sourceinquirypoint/sourcing/partsletter?cardType=LOI&currentUser=true&isDelay=false`
       }
       return types[type]
     },
     nomiURL(type){
       const data = applyType.find(o => o.name === type)
       const code = data && data.id || ''
-      return `/sourcing/partsnomination?nominateProcessType=${code}&currentUser=true&isDelay=true`
+      const applicationStatus = nomiApplicationStatus.find(o => o.name === '流转中')
+      const applicationStatusCode = applicationStatus && applicationStatus.id || ''
+      const nominateParams = type === '流转' ? `nominateProcessType=${code}&applicationStatus=${applicationStatusCode}&` : ''
+      return `/sourcing/partsnomination?${nominateParams}currentUser=true&isDelay=true`
     },
     // 获取下拉值
     getSearchOptions() {
