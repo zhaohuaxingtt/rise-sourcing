@@ -397,7 +397,25 @@ export default {
 
       // 查看日志
       checkLog(row){
-         iMessage.warn('暂未开通此功能')
+        //  iMessage.warn('暂未开通此功能')
+        const { requirementAekoId } = row;
+        // 打开新页面
+        // const routeData = this.$router.resolve({
+        //   path: '/aeko/log',
+        //   query: {
+        //     from:'stance',
+        //     requirementAekoId,
+        //   },
+        // })
+        // window.open(routeData.href, '_blank')
+        // 跳转新路由
+        this.$router.replace({
+          path: '/aeko/log',
+          query: {
+            from:'stance',
+            requirementAekoId,
+          },
+        })
       },
 
       // 查看描述
