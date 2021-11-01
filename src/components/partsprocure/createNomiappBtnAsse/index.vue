@@ -58,13 +58,20 @@ export default{
       return s?s.sname:''
     }
   },
+  watch: {
+    diologShow(nv) {
+      if (!nv) {
+        this.isUserPackage = false
+      }
+    }
+  },
   methods:{
     disabelRow(row){
-      // if(row.addAssemblyNomi){
-      //   return false
-      // }else {
-      //   return true
-      // }
+      if(row.addAssemblyNomi){
+        return false
+      }else {
+        return true
+      }
     },
     removeSelect(row){
       this.$refs.tabel.clearSelection()
@@ -134,7 +141,8 @@ export default{
       this.rate = numberProcessor(a,2,false) > 100 ? 100:numberProcessor(a,2,false)
     },
     numberBlur(){
-      this.rate = this.rate.indexOf('%')>-1?this.rate:this.rate+'%'
+      const rate = this.rate.toString()
+      this.rate = rate.indexOf('%') >- 1 ? this.rate : (rate ? this.rate + '%' : '')
     },
     partsAssemblyOutPlans(){
       return partsAssemblyOutPlan(this.detailData().id)
@@ -208,7 +216,7 @@ export default{
       const sendData = {
         isUserPackage:this.isUserPackage,
         ontologyList:this.ontologyList.filter(r=>!r.needRow).filter(r=>!r.addAssemblyNomi),
-        rate:this.rate.indexOf('%')>-1?JSON.parse(JSON.stringify(this.rate)).substring(0,this.rate.length - 1):this.rate, //将rate后面的百分号去除
+        rate:this.rate.toString().indexOf('%')>-1?JSON.parse(JSON.stringify(this.rate)).substring(0,this.rate.length - 1):this.rate, //将rate后面的百分号去除
         purchaseProjectPartId:this.detailData().id
       }
       nomiAutoPartsAssembly(sendData).then(res=>{
