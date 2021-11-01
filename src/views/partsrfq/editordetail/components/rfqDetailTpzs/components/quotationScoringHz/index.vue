@@ -158,7 +158,7 @@ export default{
      * @return {*}
      */
     openjjdt(){
-
+      alert('online-bidding 暂未提供跳转url,稍等片刻...')
     },
     getLayoutDetaultNumber(){
       try {
