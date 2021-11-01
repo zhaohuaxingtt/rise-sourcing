@@ -79,7 +79,8 @@ export function chartsOptions(options,title,unit) {
               }     
             }
             return htmlContentText
-          }
+          },
+          ...options.tooltip
       },
       // 右上方提示
       legend: {
@@ -179,19 +180,58 @@ export function translateGetLunci(params,gjhLunchi) {
         element['name'] = element['name'] +'   '
         options['legend'].push(element['name'])
       });
+      const showRounds = [] // 显示的轮次
       params[0].data.forEach(element => {
         options['xAxis'].push({value:`${gjhLunchi}${' '}${element.round}`,textStyle:{color:'#7E84A3',fontSize:12}})
+        showRounds.push(element.round)
       })
-      options['xAxis'] = [...options['xAxis'],...[{value:'',textStyle:{color:'#7E84A3',fontSize:12}},{value:'有效报价',textStyle:{color:'#7E84A3',fontSize:12}}]]
-      params.forEach((e,i)=>{
+      // options['xAxis'] = [...options['xAxis'],...[{value:'',textStyle:{color:'#7E84A3',fontSize:12}},{value:'有效报价',textStyle:{color:'#7E84A3',fontSize:12}}]]
+      options['xAxis'] = [...options['xAxis'],...[{value:'有效报价',textStyle:{color:'#7E84A3',fontSize:12}}]]
+      const validRounds = []
+
+      const _params = params.map(item => ({ // 限轮
+        ...item,
+        data: item.data.filter(item => showRounds.includes(item.round))
+      }))
+
+      _params.forEach((e,i)=>{
         for(let a = e.data.length-1;a>=0;a--){
           if(e.data[a].value){
-            e.data = [...e.data,...[{round: "",symbolSize: "",value: null},e.data[a]]]
+            // e.data = [...e.data,...[{round: "",symbolSize: "",value: null},e.data[a]]]
+            validRounds.push({ ...e, data: [['有效报价', e.data[a].value]], type: 'scatter', symbolSize: 6 })
             break;
           }
         }
       })
-      options.series = params
+      const data = _params.concat(validRounds)
+      
+      options.tooltip = {
+        formatter: params => {
+          let htmlContentText = ""
+
+          const Xname = params[0].name
+          htmlContentText += '<div style="margin-bottom:10px;"> '+ Xname + '<div/>'
+          for (let index = 0; index < params.length; index++) {
+            if (params[index].axisDim === "x" && params[index].axisValueLabel === "有效报价") {
+              htmlContentText += '<div>';
+              htmlContentText += '<span style="margin-right:5px;display:inline-block;height:13px;width:13px;font-size: 12pt; border-radius:50%;background-color:'+params[index].color+'"></span>';
+              htmlContentText += '<span>'+(params[index].seriesName.indexOf('series')> -1?'Null':params[index].seriesName) +"："+params[index].data[1]+'</span>';
+              htmlContentText += '</div>'
+            } else {
+              if(params[index].data.value != null && params[index].seriesName && params[index].data.symbolSize > 0){
+                htmlContentText += '<div>';
+                htmlContentText += '<span style="margin-right:5px;display:inline-block;height:13px;width:13px;font-size: 12pt; border-radius:50%;background-color:'+params[index].color+'"></span>';
+                htmlContentText += '<span>'+(params[index].seriesName.indexOf('series')> -1?'Null':params[index].seriesName) +"："+params[index].data.value+'</span>';
+                htmlContentText += '</div>'
+              }
+            }
+          }
+
+          return htmlContentText
+        }
+      }
+
+      options.series = data
   } catch (error) {
     console.log(error)
     options = {
