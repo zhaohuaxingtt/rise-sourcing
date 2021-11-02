@@ -75,7 +75,6 @@ export default {
       // 把当前路由的参数带过去
        const {query} = this.$route;
        const {from=null} = query;
-       console.log(from!='approve',from,'approve');
        if(from!='approve'){
         this.describeTab = describeTab.slice(0,1);
       }else{

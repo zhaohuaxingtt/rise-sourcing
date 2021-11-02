@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-02 10:05:21
- * @LastEditors:  
+ * @LastEditTime: 2021-11-01 22:30:49
+ * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
@@ -106,6 +106,7 @@
               <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
                   <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
               </template>
+            
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
                   <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
               </template>    
@@ -212,7 +213,7 @@ export default{
   methods:{
     ttoShow(data){
       if(parseInt(data)){
-        return toThousands(parseInt(data))
+        return toThousands(parseInt(data)) 
       }else{
         return data
       }

@@ -88,6 +88,7 @@
           v-model="form.rfqId"
           :placeholder="language('LK_QINGSHURU','请输入')"
           v-permission.auto="SOURCING_NOMINATION_RSREVIEW_RFQID|RFQ编号"
+          @input="form.rfqId = numberProcessor(form.rfqId, 0)"
         ></iInput>
       </el-form-item>
       <!-- 会议 -->
@@ -104,6 +105,7 @@
           v-model="form.signId"
           :placeholder="language('LK_QINGSHURU','请输入')"
           v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SIGNID|签字单号"
+          @input="form.signId = numberProcessor(form.signId, 0)"
         ></iInput>
       </el-form-item>
       <!-- rs冻结日期 -->
@@ -295,6 +297,7 @@ import {
   iDatePicker
 } from "rise";
 import _ from 'lodash'
+import { numberProcessor } from '@/utils' 
 
 export default {
   data() {
@@ -323,6 +326,7 @@ export default {
     this.form = {}
   },
   methods: {
+    numberProcessor,
     sure() {
       const form = _.cloneDeep(this.form)
       delete form.recheckDueDate
