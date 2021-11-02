@@ -141,7 +141,8 @@ export default {
   },
   computed:{
     coverStatusDesc:function (){
-        if(this.auditCover.coverStatusDesc==null&&this.auditCover.converStatus=='APPROVED'){
+        if((this.auditCover.coverStatusDesc==null||this.auditCover.coverStatusDesc==undefined)
+            &&this.auditCover.coverStatus=='APPROVED'){
           return '已审批'
         }
         return this.auditCover.coverStatusDesc
