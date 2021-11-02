@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-30 22:00:40
+ * @LastEditTime: 2021-11-02 10:17:43
  * @Description: 
 -->
 <template>
@@ -81,17 +81,17 @@ export default {
      * @return {*}
      */    
     getFetchData() {
+      const query = this.$route.query
+      const aekoWorkFlow = window.atob(query.workflow)
+      const aekoWorkFlowDTO = JSON.parse(decodeURIComponent(escape(aekoWorkFlow)))
       const parmas = Object.assign({
-        aekoWorkFlowDTO: {
-          taskId: '',
-          workFlowId: '1127706'
-        },
+        aekoWorkFlowDTO,
         supplierName: '',
-        requirementAekoId: this.$route.query.requirementAekoId || '11021',
+        requirementAekoId: this.$route.query.requirementAekoId || '',
         current: this.page.currPage,
         size: this.page.pageSize
       }, this.$refs.search.form)
-      parmas.partNums = String(parmas.partNums).split(',')
+      parmas.partNums = parmas.partNums ? String(parmas.partNums).split(',') : []
       parmas.materialCodeList = parmas.materialCodeList.length === 1 && !parmas.materialCodeList[0] ? [] : parmas.materialCodeList
       this.tableLoading = true
       aekoMtzDosage(parmas).then(res => {
