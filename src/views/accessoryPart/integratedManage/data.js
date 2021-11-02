@@ -56,7 +56,7 @@ export const searchList = [
   // {value: 'partState', label: '合同状态', type: 'select', key: 'HETONGZHUANGTAI', selectOption: 'contactStateOption'},
   // {value: 'cfTargetPrice', label: '是否有财务目标价', type: 'select', key: 'SHIFOUYOUCAIWUMUBIAOJIA', selectOption: 'yesOrNoOption'},
   // {value: 'nomiType', label: '定点状态', type: 'select', key: 'DINGDIANZHUANGTAI', selectOption: 'nominateStateOption'},
-  {value: 'rfqId', label: 'rfq编号', type: 'input', key: 'RFQBIANHAO', permission: 'APREPART_MANAGFMENT_RFQBIANHAO|配件-配件管理-RFQ编号'},
+  {value: 'rfqId', label: 'rfq编号', type: 'input', key: 'RFQBIANHAO', permission: 'APREPART_MANAGFMENT_RFQBIANHAO|配件-配件管理-RFQ编号', inputType: "int"},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: 'accessoryIdStateOption', permission: 'APREPART_MANAGFMENT_IDSTATS|配件-配件管理-ID状态'}
 ]
 export const TAB = [
