@@ -60,7 +60,7 @@
       <iCard class="contain margin-top20" :title="language('LK_AEKOGUANLI','AEKO管理')">
       <!-- 按钮区域 -->
       <template v-slot:header-control>
-          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO|逾期BI报表">{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton>
+          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO|逾期BI报表" @click="gotoBIPage">{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_HUIYITONGGUO|会议通过" @click="meetingPass">{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_XIAZAIMUBAN|下载模板" @click="downloadTemplate">{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
           <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUAEKO|导入AEKO" class=" margin-left10 margin-right10">
@@ -152,6 +152,7 @@
       <!-- TCM导入清单 -->
       <tcmList v-permission.auto="AEKO_TCMLIST_TABLE|AEKO管理TCM导入清单TABLE"/>
     </div>
+    <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
   </iPage>
 </template>
 
@@ -168,6 +169,7 @@ import {
   iPagination,
   icon,
   iMessage,
+  iLog
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
@@ -219,6 +221,7 @@ export default {
       Upload,
       aekoSelect,
       tcmList,
+      iLog
     },
     data(){
       return{
@@ -264,7 +267,9 @@ export default {
         },
         importAeko:importAeko,
         itemFileData:{},
-        debouncer: null
+        debouncer: null,
+        showDialog: false,
+        bizId: ''
       }
     },
     computed: {
@@ -481,13 +486,19 @@ export default {
         window.open(routeData.href, '_blank')
       },
 
+      //BI逾期报表 
+      gotoBIPage(){
+        const routeData = this.$router.resolve({
+          path: '/aeko/BIPage',
+          query: {},
+        })
+        window.open(routeData.href, '_blank')
+      },
       // 查看日志
       checkLog(row){
-        //  iMessage.warn('暂未开通此功能')
-        this.$router.push({
-          path:'/aeko/log',
-          query:{}
-        })
+        this.bizId = row.requirementAekoId || iMessage.error('AEKO id 获取失败')
+        if(this.bizId)
+        this.showDialog = true
       },
 
       // 查看描述

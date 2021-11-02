@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-11-01 17:23:04
+ * @LastEditTime: 2021-11-02 16:55:53
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
@@ -11,9 +11,10 @@
     <div class="header flex-between-center margin-bottom20">
       <h2>AEKO号：{{ aekoInfo.aekoCode }}</h2>
       <div>
-        <iButton v-if="pending" @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
+        <iButton @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
         <iButton @click="goToDetail">{{language('LK_AEKO_BUTTON_DETAIL','AEKO详情')}}</iButton>
-        <logButton @click="gotoLog" class="margin-left20" />
+        <logButton @click="openLog" class="margin-left20" />
+        <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
       </div>
     </div>
     <page-content ref="pageContent" @setAekoInfo="setAekoInfo"></page-content>
@@ -24,6 +25,8 @@
 import { 
   iPage, 
   iButton,
+  iLog,
+  iMessage
  } from "rise"
 import logButton from "@/components/logButton"
 import pageContent from "./components"
@@ -34,6 +37,7 @@ export default {
     iButton,
     logButton,
     pageContent,
+    iLog
   },
   created() {
     this.aekoInfo = {
@@ -43,7 +47,8 @@ export default {
   data() {
     return {
       aekoInfo: {},
-      pending:true
+      showDialog: false,
+      bizId: ''
     }
   },
   methods: {
@@ -92,12 +97,11 @@ export default {
       })
       window.open(routeData.href, '_blank')
     },
-    // 跳转日志
-    gotoLog(){
-      this.$router.push({
-        path:'/aeko/log',
-        query:{}
-      })
+    // 打开日志
+    openLog(){
+      this.bizId = this.aekoInfo.requirementAekoId || iMessage.error('AEKO id 获取失败')
+      if(this.bizId)
+      this.showDialog = true
     }
   }
 }
