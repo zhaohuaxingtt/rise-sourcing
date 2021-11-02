@@ -78,7 +78,7 @@ export default {
 
 .icon {
   svg {
-    font-size: 28px;
+    font-size: 26px;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-10-28 16:28:40
+ * @LastEditTime: 2021-11-01 14:15:26
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -176,7 +176,7 @@ export default {
     // 新零件号一定存在，所以不需要else
     // if (this.oldPartNumPreset || this.partNum) {
       this.form.partNum = this.oldPartNumPreset || this.partNum
-      this.judgeRight()
+      this.judgeRight('init')  // 初次进入查询新零件
     // } else {
       // this.procureFactorySelectVo()
     //   // this.getAekoOriginPartInfo()
@@ -204,7 +204,7 @@ export default {
       })
       .catch(() => {})
     },
-    judgeRight() {
+    judgeRight(flag='') {
       judgeRight([
         {
           partNum: this.oldPartNumPreset || this.partNum,
@@ -213,14 +213,13 @@ export default {
       ])
       .then(res => {
         if (res.code == 200) {
-          if (res.data[0].isView) {
-            this.getAekoOriginPartInfo()
+          if (!res.data[0].isView) {
+            this.procureFactorySelectVo()
+            this.getAekoOriginPartInfo(flag)
           } else {
             iMessage.error(res.data[0].describe)
             this.loading = false
-            this.factoryDisabled = false
           }
-          this.procureFactorySelectVo()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -247,7 +246,7 @@ export default {
       .catch(() => {})
     },
     // 查询台账库数据
-    getAekoOriginPartInfo() {
+    getAekoOriginPartInfo(flag='') {
       // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
       if(this.form.partNum && this.form.partNum.trim().length < 9){
         return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
@@ -268,12 +267,15 @@ export default {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
           this.page.totalCount = res.total || 0
-          this.disabled = res.total&&true||false
+          if(flag=='init'){
+            this.disabled = res.total&&true||false
+          }
         } else {
-          this.disabled = false
+          if(flag=='init'){
+            this.disabled = false
+          }
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-        this.factoryDisabled = this.disabled
         this.loading = false
       })
       .catch(() => this.loading = false)

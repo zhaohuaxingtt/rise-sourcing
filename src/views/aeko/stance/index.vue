@@ -120,6 +120,7 @@
       <!-- 附件列表查看 -->
       <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     </div>
+    <iLog :show.sync="showDialog" :bizId="bizId" />
   </iPage>
 </template>
 
@@ -135,6 +136,7 @@ import {
   iPagination,
   icon,
   iMessage,
+  iLog
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
@@ -169,6 +171,7 @@ export default {
       icon,
       filesListDialog,
       aekoSelect,
+      iLog
     },
     data(){
       return{
@@ -200,6 +203,8 @@ export default {
           uploadFiles:false,
         },
         itemFileData:{},
+        showDialog: false,
+        bizId: ''
       }
     },
     computed: {
@@ -399,7 +404,9 @@ export default {
 
       // 查看日志
       checkLog(row){
-         iMessage.warn('暂未开通此功能')
+        this.bizId = row.requirementAekoId || iMessage.error('AEKO id 获取失败')
+        if(this.bizId)
+        this.showDialog = true
       },
 
       // 查看描述

@@ -138,8 +138,9 @@ export default {
   },
   computed: {
     // 是否处于队列审批模式
+    // 判断标准： 队列数据大于等于1
     isBatchApproveMode() {
-      return this.transmitObj.isBatchApprove
+      return this.transmitObj.isBatchApprove && this.approveQueue >= 1
     },
     // 审批队列,为null 表示任务已全部审批完毕
     approveQueue() {

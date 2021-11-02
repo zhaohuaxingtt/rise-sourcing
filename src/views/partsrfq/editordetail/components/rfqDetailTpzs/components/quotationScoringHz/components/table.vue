@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-10-19 19:13:27
+ * @LastEditTime: 2021-11-01 22:30:49
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -63,7 +63,7 @@
           >
             <!----------在表头上方需要显示评分的点，插入表头标签------>
             <template slot="header" slot-scope="scope">
-              <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
+              <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
               <div class="headerContent" v-if='scope.column.label == "EBR"'>
                 <div class="c" :style="{width:cWidth}" v-if='ratingList.firstTile.length > 0'>
                   <ul style="width:99.5px">
@@ -106,6 +106,7 @@
               <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
                   <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
               </template>
+            
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
                   <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
               </template>
@@ -119,7 +120,7 @@
                   <span :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
-                <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
+                <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">View</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate"'>
                 <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
@@ -209,7 +210,7 @@ export default{
   methods:{
     ttoShow(data){
       if(parseInt(data)){
-        return toThousands(parseInt(data))
+        return toThousands(parseInt(data)) 
       }else{
         return data
       }
