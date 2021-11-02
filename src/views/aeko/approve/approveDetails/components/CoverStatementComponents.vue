@@ -45,7 +45,7 @@
           </el-col>
           <el-col :span='6'>
             <i-form-item label="封面状态:">
-              <i-text>{{ auditCover.coverStatusDesc }}</i-text>
+              <i-text>{{ coverStatusDesc }}</i-text>
             </i-form-item>
           </el-col>
         </el-row>
@@ -137,6 +137,14 @@ export default {
   filters: {
     numFilter(value) {
       return numberToCurrencyNo(value)
+    }
+  },
+  computed:{
+    coverStatusDesc:function (){
+        if(this.auditCover.coverStatusDesc==null&&this.auditCover.converStatus=='APPROVED'){
+          return '已审批'
+        }
+        return this.auditCover.coverStatusDesc
     }
   },
 
