@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-10-29 14:27:34
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-02 17:06:55
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -236,6 +236,14 @@ export default [
             component: () => import("@/views/aeko/mtz/details"),
           },
         ]
+      },
+      {
+        path: "bipage",
+        name: "bipage",
+        meta: {
+          title: 'AEKO-逾期报表'
+        },
+        component: () => import("@/views/aeko/BIPage"),
       }
     ]
   }

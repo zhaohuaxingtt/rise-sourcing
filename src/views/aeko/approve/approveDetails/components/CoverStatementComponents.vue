@@ -76,7 +76,7 @@
             label="增加材料成本(RMB/车)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.materialIncrease|numFilter }}</span>
+            <span>{{ scope.row.materialIncrease|numberToCurrencyNo2 }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
                         :content="queryRowMaterialIncreaseTipContent(scope.row)" placement="top">
               <i class="el-icon-warning-outline bule margin-left5"></i>
@@ -123,7 +123,7 @@
 
 <script>
 import {iInput, iCard, iFormItem, iFormGroup, iText} from "rise"
-import {fixNumber, numberToCurrencyNo} from "../../../../../utils/cutOutNum";
+import {fixNumber, numberToCurrencyNo,numberToCurrencyNo2} from "../../../../../utils/cutOutNum";
 
 export default {
   name: "CoverStatementComponents",
@@ -136,7 +136,13 @@ export default {
   },
   filters: {
     numFilter(value) {
+      if (value == null || value == '') return ''
       return numberToCurrencyNo(value)
+    },
+    numberToCurrencyNo2(value){
+      if (value == null || value == '') return ''
+      return numberToCurrencyNo2(value)
+
     }
   },
   computed:{
