@@ -1,8 +1,8 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-28 09:29:08
- * @LastEditTime: 2021-09-06 17:44:00
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-02 20:42:10
+ * @LastEditors:  
  * @Description: m签字单搜索
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/search/index.vue
 -->
@@ -104,7 +104,7 @@
       <!-- 签字单号 -->
       <el-form-item :label="language('QIANZIDANHAO','签字单号')">
         <iInput
-          v-model="form.id"
+          v-model="form.signCode"
           v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_SIGNID|签字单号"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
@@ -144,7 +144,10 @@ export default {
     iDatePicker
   },
   mounted() {
-    this.form = {}
+    this.form = {
+      isPassCheck:false,
+      status:3
+    }
   },
   beforeDestroy() {
     this.form = {}
