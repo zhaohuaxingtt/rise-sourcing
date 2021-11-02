@@ -35,6 +35,7 @@ export default {
   inject:['getbaseInfoData','registerFn'],
   data() {
     return {
+      hashCode:'12099923883',
       activityTabIndex: '0',
       tabList: [
         {
@@ -108,7 +109,7 @@ export default {
       this.activityTabIndex = target.index
     },
     updateTabs(){
-      this.hashCode = Math.random() * 10000000
+      this.hashCode = Math.random() * 10000000000
     } 
   }
 };

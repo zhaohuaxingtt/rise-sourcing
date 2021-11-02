@@ -28,6 +28,7 @@
           :placeholder="language('LK_QINGSHURU','请输入')"
           v-permission.auto="SOURCING_NOMINATION_NOMINATEID|申请单号"
           clearable
+          @input="form.nominateId = numberProcessor(form.nominateId, 0)"
         ></iInput>
       </el-form-item>
         <!-- RFQ编号 -->
@@ -36,6 +37,7 @@
           v-model="form.rfqId"
           :placeholder="language('LK_QINGSHURU','请输入')"
           v-permission.auto="SOURCING_NOMINATION_RFQID|RFQ编号"
+          @input="form.rfqId = numberProcessor(form.rfqId, 0)"
           clearable
         ></iInput>
       </el-form-item>
@@ -214,6 +216,7 @@ import {
   iInput,
   iSelect
 } from "rise";
+import { numberProcessor } from '@/utils' 
 
 export default {
   data() {
@@ -253,6 +256,7 @@ export default {
     }
   },
   methods: {
+    numberProcessor,
     sure() {
       this.$emit('search', this.form)
     },

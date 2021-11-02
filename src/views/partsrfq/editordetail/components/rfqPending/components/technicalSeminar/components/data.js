@@ -7,9 +7,9 @@
 import {permissionTitle} from '@/utils'
 
 export const tableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_VIEWBUTTON", [
-    {props: 'carType', name: '车型', key: 'LK_CHEXING'},
+    {props: 'carTypeProjectZh', name: '车型', key: 'LK_CHEXING'},
     {props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO'},
-    {props: 'partName', name: '零件名称', key: 'LK_LINGJIANMINGCHENG'},
+    {props: 'partNameZh', name: '零件名称', key: 'LK_LINGJIANMINGCHENG'},
     {props: 'action', name: '图纸', key: 'LK_TUZHI',width:80}
 ])
 

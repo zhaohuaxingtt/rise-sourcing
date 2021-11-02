@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-01 17:57:48
+ * @LastEditTime: 2021-11-02 16:27:37
  * @Description: 解释附件查看列表
 -->
 <template>
@@ -127,7 +127,7 @@ export default {
       //   return
       // }
       // 如果请求来源于审批单，去掉linie id
-      if (parmas.from === 'approve') delete parmas.linieId
+      if (this.$route.query.from === 'approve') delete parmas.linieId
       this.tableLoading = true
       getAuditFilePage(parmas).then(res => {
         if (res.code === '200') {
