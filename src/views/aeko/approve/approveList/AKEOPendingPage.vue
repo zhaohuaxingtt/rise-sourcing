@@ -100,7 +100,7 @@
       >
         <template #isTop="scope">
           <div>
-            <span class="icon"><icon v-if="scope.row.isTop" symbol class="icon" name="iconAEKO_TOP"/></span>
+            <span class="icon"><icon v-if="scope.row.isTop" symbol class="icon " name="iconAEKO_TOP"/></span>
           </div>
         </template>
         <!--aekoNum-->
@@ -138,7 +138,7 @@
 
         <!--增加材料成本-->
         <template #EP1="scope">
-          <span>{{ scope.row.materialIncrease|numberToCurrency}}</span>
+          <span>{{ scope.row.materialIncrease|numberToCurrencyNo2}}</span>
           <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowMaterialIncreaseTipContent(scope.row)"></div>
@@ -218,7 +218,7 @@ import AEKOTransferDialog from "./components/AEKOTransferDialog";
 import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
 import {lookDetails} from './lib'
-import {numberToCurrencyNo} from "@/utils/cutOutNum";
+import {numberToCurrencyNo,numberToCurrencyNo2} from "@/utils/cutOutNum";
 
 export default {
   name: "AKEOPendingPage",
@@ -243,6 +243,10 @@ export default {
     numberToCurrency(value) {
       if (value == null || value == '') return ''
       return numberToCurrencyNo(value)
+    },
+    numberToCurrencyNo2(value){
+      if (value == null || value == '') return ''
+      return numberToCurrencyNo2(value)
     }
   },
   computed: {
@@ -690,7 +694,7 @@ export default {
 
 .icon {
   svg {
-    font-size: 28px;
+    font-size: 26px;
   }
 }
 

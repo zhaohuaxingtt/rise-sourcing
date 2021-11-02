@@ -136,7 +136,7 @@
         </template>
         <!--增加材料成本-->
         <template #EP1="scope">
-          <span>{{ scope.row.materialIncrease|numberToCurrency }}</span>
+          <span>{{ scope.row.materialIncrease|numberToCurrencyNo2 }}</span>
         </template>
 
         <!--增加投资税-->
@@ -207,7 +207,7 @@ import {searchLinie} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
-import {numberToCurrencyNo} from '../../../../utils/cutOutNum'
+import {numberToCurrencyNo, numberToCurrencyNo2} from '../../../../utils/cutOutNum'
 
 export default {
   name: "AKEOApprovedPage",
@@ -231,6 +231,11 @@ export default {
       if (value == null || value == '') return ''
 
       return numberToCurrencyNo(value)
+    },
+    numberToCurrencyNo2(value){
+      if (value == null || value == '') return ''
+
+      return numberToCurrencyNo2(value)
     }
   },
   data() {
@@ -488,7 +493,7 @@ export default {
 
 .icon {
   svg {
-    font-size: 28px;
+    font-size: 26px;
   }
 }
 
