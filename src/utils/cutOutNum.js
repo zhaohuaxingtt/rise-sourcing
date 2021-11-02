@@ -67,7 +67,9 @@ export function numberToCurrencyNo(value) {
         // 小数部分
         if (Number(floatPart) != 0) {
             return intPartFormat + '.' + floatPart
+        }else{
+            return intPartFormat + '.00'
         }
     }
-    return intPartFormat
+    return intPartFormat+'.00'
 }

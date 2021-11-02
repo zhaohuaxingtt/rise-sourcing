@@ -132,7 +132,7 @@ export default {
       })
       if (valid) return true
 
-      let firstItem =this.tableListData[0]
+      let firstItem = this.tableListData[0]
       if (null != firstItem) {
         return firstItem.operation == '补充材料'
       }
@@ -194,7 +194,6 @@ export default {
     async getFetchData() {
       this.tableLoading = true
       await this.getexplainList()
-      // this.getData()
     },
     /**
      * @description: 获取解释记录
@@ -212,13 +211,11 @@ export default {
       })
       findHistoryByAeko(parmas).then(res => {
         this.tableLoading = false
-        if (res.code == 200) {
-          let resDatas = res.data.records
-          this.tableListData = resDatas.map(item => {
-            item.disabled = item.activityName != '【补充材料通知】补充材料'
-            return item
-          })
-        }
+        let resDatas = res.data.records
+        this.tableListData = resDatas.map(item => {
+          item.disabled = item.activityName != '【补充材料通知】补充材料'
+          return item
+        })
       })
     },
     itemCommentContent(row) {
@@ -244,55 +241,7 @@ export default {
       //不用回复
       return row.disabled
     },
-    /**
-     * @description: 获取数据列表
-     * @param {*}
-     * @return {*}
-     */
-    getData() {
-      const parmas = Object.assign({
-        applyUserId: String(this.userInfo.id) || '',
-        currentUserId: String(this.userInfo.id) || '',
-        aekoNo: this.aekoInfo.aekoCode || '',
-        hasParentTaskId: false,
-        pageNo: this.page.currPage,
-        pageSize: this.page.pageSize
-      })
-      this.tableLoading = true
-      findHistoryByAeko(parmas).then(res => {
-        // parId字段
-        const parId = 'parentTaskId'
-        if (res.code === '200') {
-          // 审批记录列表
-          let tableListData = (res.data && res.data.records || []).map(o => {
-            // 封面表态处于
-            o.disabled = o.activityName !== '【补充材料通知】补充材料'
-            const tar = this.tableExplainData.find(item => item[parId] === o.id)
-            if (tar) {
-              // 写入审批解释
-              o.explainReason = tar.comment
-              // 写入可编辑状态，只要有parId && 封面表态状态 均不可编辑 
-              o.disabled = true
-            }
-            return o
-          })
-          tableListData = tableListData.filter(o => !o[parId])
-          console.log('tableListData', res.data, tableListData)
-          this.tableListData = tableListData
-          this.page.totalCount = res.data.total
-        } else {
-          this.tableListData = []
-          // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-        }
-        this.tableLoading = false
 
-      }).catch(e => {
-        this.tableLoading = false
-        this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
-      }).finally(() => {
-        this.tableLoading = false
-      })
-    },
     /**
      * @description: 提交
      * @param {*}
@@ -301,15 +250,14 @@ export default {
     submit() {
       let state = true
       let info = ''
+      let sourceFirstItem = this.tableListData[0]
       if (!this.tableSelecteData.length) {
-        this.$message.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
-        return
+        this.tableSelecteData.push(sourceFirstItem)
       }
-      let sourceFirstItem=this.tableListData[0]
-      if(this.tableSelecteData[0].id!=sourceFirstItem.id){
+      if (this.tableSelecteData[0].id != sourceFirstItem.id) {
         return this.$message.error(this.language('LK_QINGXUANZEBUCHONGCAILIAOJILUJINXINGTIJIAO', '请选择补充材料记录进行提交'))
       }
-      let selResArray=this.tableSelecteData.filter(item=>item.id==sourceFirstItem.id)
+      let selResArray = this.tableSelecteData.filter(item => item.id == sourceFirstItem.id)
       let parmas = selResArray.map(o => {
         if (state && !o.explainReason) {
           state = false
@@ -321,7 +269,7 @@ export default {
           taskId: o.taskId,
           // workFlowId: '1075838',
           // taskId: '1075873',
-          parentTaskId:o.parentTaskId,
+          parentTaskId: o.parentTaskId,
           auditUserId: o.assignee,
           explainReason: o.explainReason || '',
           addMaterialUserId: this.userInfo.id,
