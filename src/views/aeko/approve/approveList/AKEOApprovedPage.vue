@@ -456,6 +456,7 @@ export default {
               aekoManageId: res.data.aekoManageId,
               linieId: this.$store.state.permission.userInfo.id,
               taskId: row.taskId,
+              form: 'approve',
               transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj)))
               )
             },
