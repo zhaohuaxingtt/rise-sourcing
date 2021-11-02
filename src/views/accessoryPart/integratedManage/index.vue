@@ -31,7 +31,7 @@
                     :value="item.value">
                   </el-option>  
                 </iSelect> 
-                <iInput v-else v-model="searchParams[item.value]"></iInput> 
+                <iInput v-else v-model="searchParams[item.value]" @input="item.inputType ? handleInput($event, item, searchParams) : ''"></iInput> 
               </el-form-item>
             </el-form>
           </iSearch>
@@ -122,6 +122,7 @@ import {
 } from "@/api/partsprocure/editordetail";
 import { clickMessage } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
+import { numberProcessor } from '@/utils' 
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -661,6 +662,14 @@ export default {
     },
     // 通过待办数跳转
     clickMessage,
+    handleInput(value, item, obj) {
+      switch(item.inputType) {
+        case "int":
+          this.$set(obj, item.value, numberProcessor(value, 0))
+          break
+        default:
+      }
+    }
   }
 }
 </script>
