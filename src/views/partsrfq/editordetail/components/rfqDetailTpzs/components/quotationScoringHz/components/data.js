@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-01 22:30:44
+ * @LastEditTime: 2021-11-02 10:49:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -47,7 +47,6 @@ export const fstableTileXh = function(index){
     {type:'',props:`${index?index:''}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}productionLocation`,label:'Prod. Location',i18n:'',width:'110',tooltip:false},
     {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:"LC A Price \n w/o Alloc.",i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:"SKD A Price \n w/o Alloc.",i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:"LC B Price \n w/o Alloc.",i18n:'',width:'100',tooltip:false},
@@ -103,7 +102,7 @@ export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPart
  * @param {*}
  * @return {*}
  */
-export const whiteListGs = ['groupName','partNo','partName','currentAPrice','currentBPrice','ebr','lcAPrice','lcBPrice','bnkApprovalStatus','tooling','supplierSopDate','ltc','ltcStaringDate','tto','externalDevelopmentCost','releaseCost','saving','Quotationdetails'] //默认需要显示的数据
+export const whiteListGs = ['groupName','partNo','partName','currentAPrice','currentBPrice','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList

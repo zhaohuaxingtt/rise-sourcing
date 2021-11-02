@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2021-11-01 03:06:32
+ * @LastEditTime: 2021-11-01 21:42:43
  * @LastEditors:  
  */
 export const form = {
@@ -143,7 +143,7 @@ export const tableDetailTitle = [
   },
   {
     props:'aPriceMode',
-    name:'含模B价',
+    name:'含模A价',
     key:'HANMOAJIA',
     tooltip:true
   },
@@ -168,7 +168,7 @@ export const tableDetailTitle = [
   {
     props:'operatePrice',
     name:'操作费',
-    key:'YUNSHUFEI',
+    key:'CAOZUOFEI',
     tooltip:true
   },
   {
