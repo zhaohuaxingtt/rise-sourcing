@@ -433,6 +433,13 @@ module.exports = {
         pathRewrite: {
           '^/nominateRecord':'',
         }
+      },
+      '/priceRecord':{
+        target: 'http://10.160.143.208:8026',
+        changeOrigin:true,
+        pathRewrite: {
+          '^/priceRecord':'',
+        }
       }
     },
   },

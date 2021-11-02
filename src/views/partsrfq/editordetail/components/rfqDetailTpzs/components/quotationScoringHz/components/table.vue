@@ -109,7 +109,7 @@
             
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
                   <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
-              </template>
+              </template>    
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
                   <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{scope.row[item.props]}}</span>
               </template>
@@ -149,6 +149,9 @@
               </el-tooltip>
               <span v-else>{{scope.row[item.props]}}</span>
                 <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "ebr"'>
+                <span>{{ebrShow(scope.row[item.props])}}</span>
               </template>
               <template v-else>
                 <span>{{scope.row[item.props]}}</span>
@@ -215,6 +218,16 @@ export default{
         return data
       }
     },
+//     ebrShow(data) {
+//       if(data === 0 )
+//         {
+//           parseInt(data)
+//           return data = data + '%'
+//         } else if(data) {
+//           return
+//         }
+// 
+//     },
     sortChangeTable({column, prop, order}){
       this.$emit('sortChangeTabless',{prop:prop,props:order})
     },
