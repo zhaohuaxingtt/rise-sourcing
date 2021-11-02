@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-19 10:59:33
- * @LastEditTime: 2021-10-29 13:53:47
+ * @LastEditTime: 2021-11-01 17:00:00
  * @LastEditors:  
 -->
 <template>
@@ -15,7 +15,7 @@
     <tablelist
       index
       :selection="!$store.getters.isPreview"
-      :tableTitle ="uploadtableTitle"
+      :tableTitle ="mtzuploadtableTitle"
       :tableData ="mtzTableData"
       :tableLoading ="tbaleLoading"
       v-loading="tableLoading"
@@ -42,7 +42,7 @@
 <script>
 import {iCard, iPagination} from 'rise'
 import tablelist from "@/views/designate/supplier/components/tableList";
-import { uploadtableTitle} from './data'
+import { mtzuploadtableTitle} from './data'
 import { attachMixins } from '@/utils/attachMixins'
 import { pageMixins } from '@/utils/pageMixins'
 import { getMtzAttachmentPageList } from '@/api/designate/designatedetail/attachment'
@@ -55,11 +55,12 @@ export default {
   },
   data() {
     return{
-      nomiAppId: this.$route.query.desinateId || '',
-      uploadtableTitle,
+      nomiAppId: this.$route.query.mtzApplyId || '',
+      mtzuploadtableTitle,
       tableLoading: false,
       multiEditState: false,
       multiEditControl: false,
+      mtzTableData:[],
       page: {
         currPage: 1,
         pageSizes: 10,
@@ -78,8 +79,9 @@ export default {
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize
       }
+      if(this.nomiAppId !== '')
       getMtzAttachmentPageList(data).then(res => {
-        console.log(res,'----------------------')
+        this.mtzTableData = res.data
       })
     }
   }
