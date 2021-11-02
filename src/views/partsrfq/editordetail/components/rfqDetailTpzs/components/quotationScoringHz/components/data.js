@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-10-30 12:05:06
- * @LastEditors:  
+ * @LastEditTime: 2021-11-01 22:30:44
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
  */
@@ -571,9 +571,9 @@ export const translateDataListSupplier = function(supplierlist) {
   }
 }
 
-export const leftSideData = [
+export const leftSideData = [ // fitller
   {props:'partNo',name:'Part'},
-  {props:'partName',name:'Part Name'},
+  // {props:'partName',name:'Part Name'},
   {props:'partPrjCode',name:'FS/GS/SP No.'},
   {props:'ebr',name:'EBR'},
   {props:'project',name:'Project'},
