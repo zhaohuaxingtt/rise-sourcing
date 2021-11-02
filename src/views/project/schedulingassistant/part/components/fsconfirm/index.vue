@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:59:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-09 10:20:21
+ * @LastEditTime: 2021-11-02 16:49:51
  * @Description: 发送FS确认弹窗
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\fsconfirm\index.vue
 -->
@@ -68,6 +68,8 @@ export default {
       this.selectDataKickoff = val 
     }, 
     clearDialog() { 
+      this.selectDataNomi = []
+      this.selectDataKickoff = []
       this.$emit('changeVisible', false) 
     }, 
     handleConfirm() { 
