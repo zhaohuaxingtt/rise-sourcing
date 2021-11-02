@@ -90,10 +90,10 @@ export default {
         }
         try {
           const res = await pageByRfqId(req)
-          this.tableListData = res.data.partLogisticRequirementsVOList;
-          this.page.currPage = res.data.pageNum
-          this.page.pageSize = res.data.pageSize
-          this.page.totalCount = res.data.total
+          this.tableListData = res.data;
+          this.page.currPage = res.pageNum
+          this.page.pageSize = res.pageSize
+          this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
