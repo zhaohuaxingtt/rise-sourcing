@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-30 22:52:09
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-01 16:31:37
+ * @LastEditors: Luoshuang
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -25,6 +25,7 @@ import mek from './modules/mek'
 import ws2 from './modules/ws2'
 import reportmanage from './modules/reportmanage'
 import sourceInquirypoint from './modules/sourceInquirypoint'
+import modeltargetpriceRoutes from './modules/modeltargetprice'
 Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
 
@@ -347,6 +348,8 @@ export default new VueRouter({
     // 报表管理
     ...reportmanage,
     // 询源于定点
-    ...sourceInquirypoint
+    ...sourceInquirypoint,
+    // 模具目标价
+    ...modeltargetpriceRoutes
   ],
 })

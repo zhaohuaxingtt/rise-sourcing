@@ -623,7 +623,7 @@ export default {
       // 缓存任务列表
       localStorage.setItem('aekoSelectPendingList', JSON.stringify(aekoSelectPendingList))
       // 跳转第一个审批单
-			lookDetails(this, this.selectPendingList[0], true, queueList)
+			lookDetails(this, this.selectPendingList[0], true, queueList, false, this.selectPendingList.length)
       // this.$message.warning('期待下个版本吧')
     },
     //选中回调
@@ -694,7 +694,7 @@ export default {
 
 .icon {
   svg {
-    font-size: 26px;
+    font-size: 24px;
   }
 }
 

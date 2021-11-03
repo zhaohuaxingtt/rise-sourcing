@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-02 16:27:37
+ * @LastEditTime: 2021-11-03 13:50:37
  * @Description: 解释附件查看列表
 -->
 <template>
@@ -23,6 +23,9 @@
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
+      <template #userName="scope">
+        <span>{{`${scope.row.deptName ? `${scope.row.deptName} - ` : ''}${scope.row.userName}`}}</span>
+      </template>
       <template #fileName="scope">
         <div style="text-align: left">
           <a class="link-underline" href="javascript:;" @click="download(scope.row)">

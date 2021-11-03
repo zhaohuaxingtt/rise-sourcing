@@ -172,6 +172,7 @@ export default {
 				uploadId: fileData.id || '',
 				linieId: this.userInfo.id || '',
 				deptId: this.userInfo.deptDTO && this.userInfo.deptDTO.id || '',
+        deptName: this.userInfo.deptDTO && this.userInfo.deptDTO.nameEn || '',
 				taskId: Number(this.aekoInfo.taskId) || 0,
 
 			}

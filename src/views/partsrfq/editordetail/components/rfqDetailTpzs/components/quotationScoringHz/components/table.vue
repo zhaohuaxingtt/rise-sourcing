@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-03 15:36:37
+ * @LastEditTime: 2021-11-03 16:31:38
  * @LastEditors:  
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -150,9 +150,9 @@
               <span v-else>{{scope.row[item.props]}}</span>
                 <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
               </template>
-              <template v-else-if='removeKeysNumber(item.props) == "ebr"'>
+              <!-- <template v-else-if='removeKeysNumber(item.props) == "ebr"'>
                 <span>{{ebrShow(scope.row[item.props])}}</span>
-              </template>
+              </template> -->
               <template v-else>
                 <span>{{scope.row[item.props]}}</span>
               </template>

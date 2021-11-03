@@ -4,7 +4,7 @@
       <div class="margin-bottom15">
         <span class="card-title"
           >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatus }}</span>
-        <span class="floatright">
+        <span class="floatright" v-if="show">
           <iButton @click="toMtzUrl">{{ language('LK_CHAKANMTZBIANGENG',"查看MTZ变更") }}</iButton>
         </span>
       </div>
@@ -41,6 +41,7 @@ import { iCard, iPagination, iButton, iMessage } from "rise";
 import iTableCustom from "@/components/iTableCustom";
 import { pageMixins } from "@/utils/pageMixins";
 import filters from "@/utils/filters";
+import {searchApproved} from "@/api/aeko/detail";
 
 export default {
   name: "RecommendationTablePendingApprovalComponents",
@@ -198,16 +199,19 @@ export default {
           tooltip: true,
         },
       ],
-      transmitObj: {}
+      transmitObj: {},
+      show:true
     };
   },
   created() {
     this.queryParams = this.$route.query
     let str_json = window.atob(this.queryParams.transmitObj)
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
-    let auditContents = sessionStorage.getItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`)
-    this.auditContents = JSON.parse(auditContents)
-    this.auditContentStatus = sessionStorage.getItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`)
+    if(this.queryParams?.goto){
+      this.searchApproved(this.queryParams.requirementAekoId)
+      this.auditContentStatus = '已审批'
+      this.show = false
+    }
   },
   methods: {
     // 查看mtz变更
@@ -236,6 +240,21 @@ export default {
         this.page.currPage * this.page.pageSizes
       );
     },
+    // 查询数据
+    searchApproved(requirementAekoId){
+      searchApproved(requirementAekoId).then(res=>{
+        this.auditContents = res?.data||[];
+        if(res?.code=='200'){
+          this.page.totalCount = res.data?.length || 0;
+          this.recommendationFormPendingApprovalList = res.data.slice(
+            this.page.currPage - 1,
+            this.page.pageSize
+          );
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      })
+    }
   },
 };
 </script>
