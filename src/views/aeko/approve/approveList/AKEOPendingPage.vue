@@ -575,7 +575,7 @@ export default {
       if (this.selectPendingList.length <= 0) {
         return this.$message.warning('请选择需要审批的数据')
       }
-      this.$confirm('当选勾选AEKO将会全部批准,请确认', '批准', {
+      this.$confirm('当前勾选AEKO将会全部批准,请确认', '批准', {
         confirmButtonText: '确认',
         cancelButtonText: '返回',
       }).then(() => {
@@ -695,6 +695,7 @@ export default {
 .icon {
   svg {
     font-size: 24px;
+
   }
 }
 

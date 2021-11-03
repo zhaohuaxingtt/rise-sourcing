@@ -6,7 +6,7 @@
           <span class="info">(备注:请先保存表态单据，审批单数据方可预览)</span>
         </span>
       </span>
-      <i-form-group row='1'>
+      <i-form-group row='1' class="margin-top10">
         <!--第一行-->
         <el-row :gutter='20'>
           <el-col :span='6'>
