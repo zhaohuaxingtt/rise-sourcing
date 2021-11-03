@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-30 11:39:01
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-25 14:44:40
+ * @LastEditTime: 2021-11-03 14:14:59
  * @Description: 零件列表 AEKO 
 -->
 <template>
@@ -207,12 +207,16 @@ export default {
       },
       async toMsgSheet(row) {
         console.log('零件信息', row)
+        if (!row.originPartBuyerId) {
+          iMessage.error(this.language('WEIZHAODAOXINJIANXINXIDAN', '未找到新件信息单'))
+          return
+        }
         try {
           const tPrams = {
             partNum: row.originPartNum,
             pageSize: 10,
             currPage: 1,
-            userId: this.userInfo.id,
+            userId: row.originPartBuyerId,
             "tpPrincepalName": "",
             "attachmentStatus": "",
             "dept": "",
