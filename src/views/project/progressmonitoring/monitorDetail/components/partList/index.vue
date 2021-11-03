@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-26 18:26:13
+ * @LastEditTime: 2021-11-02 17:43:12
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -193,15 +193,13 @@ export default {
       console.log(this.selectPart, this.listWithNodeDelayWeeks)
     }, 
     async handleExport() {
-      if (this.partStatus != 1) {
-        return
-      }
-      // if (this.selectPart.length < 1) {
-      //   iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
-      //   return
-      // }
       this.downloadLoading = true
-      await downloadProjectMonitorFile(this.selectPart.length < 1 ? this.list : this.selectPart)
+      const params = {
+        ids: this.selectPart.map(item => item.id),
+        projectId: this.cartypeProId,
+        partStatus: this.partStatus
+      }
+      await downloadProjectMonitorFile(params)
       this.downloadLoading = false
     },
     getSollKw(time) {
