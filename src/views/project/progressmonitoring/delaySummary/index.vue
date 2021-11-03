@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-21 16:05:02
+ * @LastEditTime: 2021-11-03 16:42:10
  * @Description: 延误原因汇总
 -->
 
@@ -32,7 +32,7 @@
       <div class="floatright" slot="header-control">
         <!--------------------发送按钮----------------------------------->
         <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('ZAICIFASONG','再次发送')}}</iButton>
-        <iButton v-if="!isFS" @click="handleExport">{{language('DAOCHU','导出')}}</iButton>
+        <iButton v-if="!isFS" @click="handleExport" :loading="exportLoading">{{language('DAOCHU','导出')}}</iButton>
         <template v-if="isFS">
           <!--------------------转派按钮----------------------------------->
           <transferBtn class="margin-right10" tansferType="3" :tansferData="selectTableData" @getTableList="getTableList" ></transferBtn>
@@ -93,7 +93,7 @@ import confirmBtn from '@/views/project/schedulingassistant/progressconfirm/comp
 import saveBtn from '@/views/project/schedulingassistant/progressconfirm/components/commonBtn/saveBtn'
 import backBtn from '@/views/project/schedulingassistant/progressconfirm/components/commonBtn/backBtn'
 import transferBtn from '@/views/project/schedulingassistant/progressconfirm/components/commonBtn/transferBtn'
-import { getDelayReasonSummary } from '@/api/project/process'
+import { getDelayReasonSummary, exportDelayReasonConfirm } from '@/api/project/process'
 import delayReasonDialog from '../monitorDetail/components/delayReson'
 import { selectDictByKeyss } from '@/api/dictionary'
 export default {
@@ -112,7 +112,8 @@ export default {
       dialogVisibleDelayReason: false,
       yearWeekOptions: [],
       delayReasonOptions: {},
-      currPartPeriod: ''
+      currPartPeriod: '',
+      exportLoading: false
     }
   },
   computed: {
@@ -132,6 +133,15 @@ export default {
     }
   },
   methods: {
+    async handleExport() {
+      this.exportLoading = true
+      const params = {
+        ids: this.selectTableData.map(item => item.id),
+        identityTag: this.isFS ? '2' : '1',
+      }
+      await exportDelayReasonConfirm(params)
+      this.exportLoading = false
+    },
     handleBlurChange(partPeriod) {
       this.currPartPeriod = partPeriod
     },
