@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-11-03 12:56:00
+ * @LastEditTime: 2021-11-03 15:05:44
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\index.vue
@@ -283,14 +283,14 @@ export default {
           const resList = res.data
           if (resList.length > 0) {
             this.baseInfo = res.data[0]
+            // 定向刷新部分组件，当主数据更新后。
+            this.childFnList.forEach(i=>i())
             this.$store.state.rfq.partfunc
             if(typeof this.$store.state.rfq.partfunc === "function")
               this.getPartTableList()
           } else {
             this.baseInfo = ''
           }
-            //获取详细信息后 刷新tab栏里面的询价管理（只要存在轮次大于1则显示询价管理页签）
-          this.childFnList.forEach(i=>i())
           this.baseInfoLoading = false
         } catch {
           this.baseInfoLoading = false
