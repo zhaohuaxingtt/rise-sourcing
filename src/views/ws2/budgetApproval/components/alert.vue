@@ -10,6 +10,7 @@
     </div>
     <div class="changeContent">
       <div v-loading="tableLoading">
+        <div style="font-weight: bold; margin: 10px 0;">车型项目总预算超额提示：</div>
         <div
             v-for="(item, index) in totalBudget"
             :key="index"
@@ -18,6 +19,7 @@
           {{item.tmCarTypeProName}}车型项目，总预算
           {{item.totalBudget}}。申请金额已超出总预算。
         </div>
+        <div style="font-weight: bold; margin: 10px 0;">材料组预算超额提示：</div>
         <div
             v-for="(item, index) in tableListData"
             :key="index"
