@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-01 17:32:10
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-03 12:04:26
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -392,7 +392,7 @@
 		<!-----------------------选择原fs号--------------------------------->
 		<selectOldpartsNumber :diolog='selectOldParts' v-model="selectOldParts.selectData"></selectOldpartsNumber>
     	<!---------------------- 采购申请弹框 -------------------------------->
-        <purchaseApply :visibleDiolog="dialogVisibleCode" @changeVisible='dialogVisibleCode = false'></purchaseApply>	
+        <purchaseApply :visibleDiolog="dialogVisibleCode" @changeVisible='dialogVisibleCode = false' :item="itemPurchase"></purchaseApply>	
 	</iPage>
 </template>
 <script>
@@ -526,7 +526,8 @@
 				},
 				saveLoading:false,
 				detailLoading:false,
-				disabled: false
+				disabled: false,
+				itemPurchase:{}
 			};
 		},
 		created() {
@@ -851,6 +852,10 @@
 			},
 			openCode() {
 				this.dialogVisibleCode = true
+				let data = JSON.parse(this.$route.query.item)
+				this.itemPurchase.riseCode = data.code
+				this.itemPurchase.sapItem = data.item
+				console.log(this.itemPurchase,'++++++++++++++++++++++++++++++');
 			}
 		}
 }
