@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-10-18 09:59:52
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-02 11:07:30
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
  */
@@ -247,5 +247,32 @@ export function searchInvestCar(requirementAekoId) {
   return requst({
     url: `/aeko/purchasing/search-invest-car/project/${requirementAekoId}`,
     method: 'GET',
+  })
+}
+
+// 保存一对多，多对一组合
+export function saveCombination(params) {
+  return requst({
+    url: `/aeko/save/combination`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 修改组合名称
+export function updateGroupName(params) {
+  return requst({
+    url: `/aeko/update/groupName`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 取消组合名称
+export function cancelCombination(params) {
+  return requst({
+    url: `/aeko/cancel/combination`,
+    method: 'POST',
+    data: params
   })
 }

@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-11-01 16:20:09
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-02 19:30:34
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
 -->
@@ -61,7 +61,6 @@
                 {{ baseInfo.rfqName }}
               </iText>
             </iFormItem>
-
             <iFormItem :label="language('LK_EP','技术评分人')+':'" name="ep" v-permission.auto="PARTSRFQ_EDITORDETAIL_EP|技术评分人">
               <iText  forceTooltip :tooltipContent="baseInfo.ep">{{ nameProcessor(baseInfo.ep) }}</iText>
             </iFormItem>
@@ -87,9 +86,9 @@
             <iFormItem :label="language('LK_DANGQIANLUNCI','当前轮次')+':'" name="currentRounds" v-permission.auto="PARTSRFQ_EDITORDETAIL_CURRENTROUND|当前轮次">
               <iText >{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
-            <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')+':'" name="roundsType" v-permission.auto="PARTSRFQ_EDITORDETAIL_ROUNDTYPE|轮次类型">
+            <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')+':'" name="roundsTypeName" v-permission.auto="PARTSRFQ_EDITORDETAIL_ROUNDTYPE|轮次类型">
               <iText >
-                {{ baseInfo.roundsType }}
+                {{ baseInfo.roundsTypeName }}
               </iText>
             </iFormItem>
           </div>

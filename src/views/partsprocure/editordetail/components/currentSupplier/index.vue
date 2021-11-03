@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-09-22 17:51:46
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-02 17:52:03
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
 -->
@@ -26,6 +26,15 @@
               <template v-if='items.props == "qualtity"' >
                   <span v-if='edit'>{{scope.row[items.props]}}</span>
                   <iInput type='number' v-else v-model="scope.row[items.props]"></iInput>
+              </template>         
+              <template v-else-if='items.props == "priceRecord"' >
+                <span class="flexRow">
+                  <span class="openLinkText cursor "  @click="openPage(row.row)"> {{ row.row[activeItems]}}</span>
+                  <span class="icon-gray  cursor " v-if="row.row[activeItems]"  @click="openPage(row.row)">
+                      <icon symbol class="show" name="icontiaozhuananniu" />
+                      <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+                  </span>
+                </span>
               </template>
               <template v-else>
                 {{scope.row[items.props]}}
@@ -33,6 +42,17 @@
           </template>
         </el-table-column>
       </template>
+       <el-table-column label="价格记录">
+        <template slot-scope="row">
+          <span class="flexRow">
+            <span class="openLinkText cursor "  @click="openPage(row.row)">查看</span>
+            <span class="icon-gray  cursor "   @click="openPage(row.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+            </span>
+          </span> 
+        </template>
+    </el-table-column>
     </el-table>
     <div class="line"></div>
     <iSearch :icon='false' class="searchCard margin-bottom20">
@@ -81,15 +101,16 @@
         :total="page.totalCount"
     />
     <div style="height:20px;"></div> 
+    
   </iDialog>
 </template>
 <script>
-import {iDialog,iButton,iInput,iSelect,iSearch,iMessage,iPagination,iMessageBox} from 'rise'
+import {iDialog,iButton,iInput,iSelect,iSearch,iMessage,iPagination,iMessageBox, icon} from 'rise'
 import {tableTileList,tabelTitleListLast} from './data'
 import {supplierCurentBottom,supplierCurentTop,purchaseFactory,updateCurrentSupplierPage} from '@/api/partsprocure/editordetail'
 import {pageMixins} from "@/utils/pageMixins";
 export default{
-  components:{iDialog,iButton,iInput,iSelect,iSearch,iPagination},
+  components:{iDialog,iButton,iInput,iSelect,iSearch,iPagination, icon},
   mixins:[pageMixins],
   inject:['detailData'],
   props:{
@@ -270,10 +291,29 @@ export default{
         console.warn(err)
       })
     },
+    openPage(row) {
+      console.log(row);      
+      const recordRouter = this.$router.resolve({
+        path:"/sourceinquirypoint/sourcing/partsprocure/editordetail/priceRecord",
+        query:{
+          fsnrGsnrNum:row.fsnrGsnrNum,
+          partNum:row.partNum,
+          partType:row.partType,
+          procureFactoryId:row.procureFactoryId,
+          supplierId:row.supplierId,
+          nomiRecordDetailId:row.nomiRecordDetailId
+        }
+      })
+      
+      window.open(recordRouter.href, '_blank')
+    }
   }
 }
 </script>
 <style lang='scss' scoped>
+  .openLinkText{
+    color:$color-blue;
+  }
   .search{
     text-align: right;
     transition: all 0.5s;
@@ -289,6 +329,29 @@ export default{
     box-shadow:inherit!important;
     ::v-deep .cardBody{
       padding: 0px!important;
+    }
+  }
+  .icon-gray{
+    cursor: pointer;
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+  .flexRow{
+    display: flex;
+    justify-content: space-between ;
+    align-items: center;
+  }
+  .icon-gray:hover{
+    cursor: pointer;
+    .show{
+      display: none;
+    }
+    .active{
+      display: block;
     }
   }
 </style>

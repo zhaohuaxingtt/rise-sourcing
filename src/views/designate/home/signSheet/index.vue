@@ -41,11 +41,11 @@
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- 签字单 -->
-      <template #id="scope">
+      <template #signCode="scope">
         <a
           href="javascript:;"
           @click="viewDetail(scope.row)">
-          {{scope.row.id}}
+          {{scope.row.signCode}}
         </a>
       </template>
       <!-- 提交日期 -->
