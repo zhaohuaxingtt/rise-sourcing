@@ -11,7 +11,7 @@
 import AEKOApprovalComponents from "./components/AEKOApprovalComponents";
 import CoverStatementComponents from "./components/CoverStatementComponents";
 import RecommendationTablePendingApprovalComponents from "./components/RecommendationTablePendingApprovalComponents";
-import {queryAKEOApprovalForm, getAKEOApprovalForm,getAekoCheckAuditForm} from "@/api/aeko/approve";
+import {queryAKEOApprovalForm, getAKEOApprovalForm,getAekoCheckAuditForm, getAekoCheckPreview} from "@/api/aeko/approve";
 import  { iMessage } from "rise"
 
 export default {
@@ -129,7 +129,26 @@ export default {
     },
     // Linie 审批单预览数据
     getPreviewData(){
-      iMessage.warn('接口待调试')
+      let params = {
+        "aekoCode": this.transmitObj.aekoApprovalDetails.aekoNum,
+        "isLinie": true,
+        "linieIds": [this.transmitObj.aekoApprovalDetails.linieId]
+      }
+      getAekoCheckPreview(params).then(res=>{
+        if (res.code == 200) {
+          this.auditItems = res.data.auditItems
+          this.auditCoverStatus = res.data.auditCoverStatusDesc
+          this.auditCover = res.data.auditCover || {}
+          this.auditContents = res.data.auditContents
+          sessionStorage.removeItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`)
+          sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`,JSON.stringify(res.data.auditContents))
+          this.auditContentStatus = res.data.auditContentStatusDesc
+          sessionStorage.removeItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`)
+          sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`,res.data.auditContentStatusDesc || '')
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      })
     }
   },
 

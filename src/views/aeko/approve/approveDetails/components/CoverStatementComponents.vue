@@ -1,8 +1,12 @@
 <template>
   <div>
     <i-card>
-      <span class="card-title">封面表态 - {{ auditCoverStatus }}</span>
-      <i-form-group row='1'>
+      <span class="card-title">封面表态 - {{ auditCoverStatus }}
+        <span v-if="show">
+          <span class="info">(备注:请先保存表态单据，审批单数据方可预览)</span>
+        </span>
+      </span>
+      <i-form-group row='1' class="margin-top10">
         <!--第一行-->
         <el-row :gutter='20'>
           <el-col :span='6'>
@@ -154,7 +158,6 @@ export default {
       return this.auditCover.coverStatusDesc
     }
   },
-
   props: {
     auditCoverStatus: {type: String, default: () => ''},
     auditCover: {type: Object, default: () => ({})}
@@ -162,11 +165,17 @@ export default {
   watch: {
     auditCover(val) {
       this.costsWithCarType = this.auditCover?.costsWithCarType
+      if(!Object.keys(val).length){
+        this.show = true
+      }else{
+        this.show = false
+      }
     }
   },
   data() {
     return {
       costsWithCarType: [],
+      show: false
     }
   },
 
@@ -255,6 +264,13 @@ export default {
   font-size: 18px;
   font-family: Arial;
   font-weight: bold;
+  margin-bottom: 20px;
+  display: block;
+  .info{
+    font-size: 14px;
+    margin-left: 20px;
+    color: #E30D0D;
+  }
 }
 
 .lastCelStyle {
