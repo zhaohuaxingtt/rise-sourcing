@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-29 16:14:31
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-03 09:47:22
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -173,5 +173,14 @@ export function getToolingsample(data){
   return requst_sourcing({
     url:`/aeko/get/toolingsample/${data.workFlowId}/${data.quotationId}`,
     method:'GET',
+  })
+}
+
+// 获取报表
+export function statement(data) {
+  return requst({
+    url: `/aeko/overdue/statement`,
+    method: "POST",
+    data
   })
 }

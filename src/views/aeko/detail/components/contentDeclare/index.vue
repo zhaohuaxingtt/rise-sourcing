@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-01 16:29:04
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-02 22:05:07
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -534,11 +534,12 @@ export default {
     },
     jumpQuotation(row){
       const { quotationId="" } = row;
+      let { quotationFrom="" } = row; // 有quotationFrom则是绑定报价单，不能编辑
       const route = this.$router.resolve({
         path: '/aeko/quotationdetail',
         query: {
-          quotationId,
-          editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status)
+          quotationId: quotationFrom || quotationId,
+          editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status) || (quotationFrom?true:false)
         }
       })
 
