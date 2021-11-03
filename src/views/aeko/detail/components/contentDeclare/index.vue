@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-02 18:16:53
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-03 15:27:14
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -178,7 +178,15 @@
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
         </iButton>
-        <iButton v-if="!disabled" disabled v-permission.atuo="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">{{ language("DAORU", "导⼊") }}</iButton>
+        <span class="margin-left5 margin-right5" v-if="!disabled" v-permission.atuo="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">
+          <Upload 
+            hideTip
+            :buttonText="language('DAORU','导⼊')"
+            :request="importItemExcel"
+            :onHttpUploaded="onHttpUploaded"
+            :accept="'.xlsx,.xls'"
+          />
+        </span>
         <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT|提交">{{ language("TIJIAO", "提交") }}</iButton>
         <iButton v-if="!disabled" :loading="cancelLoading" @click="cancelContent" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
           {{ language("CHEHUI", "撤回") }}
@@ -225,8 +233,9 @@
         >
           <template #groupName="scope">
             <div class="aeko-combine-input" v-if="scope.row.groupCode">
-              <iInput type="textarea" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName">
+              <iInput type="textarea" v-if="!disabled" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName">
               </iInput>
+              <span v-else>{{scope.row.groupName}}</span>
             </div>
           </template>
           <template #oldPartNumPreset="scope">
@@ -303,7 +312,7 @@ import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle,hidenTableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
-import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent,updateInvestCarProject,searchInvestCar } from "@/api/aeko/detail"
+import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent,updateInvestCarProject,searchInvestCar,importItemExcel } from "@/api/aeko/detail"
 import { getDictByCode } from "@/api/dictionary"
 // import { searchCartypeProject } from "@/api/aeko/manage"
 import { partListGetCartype } from "@/api/aeko/detail/partsList.js"
@@ -317,11 +326,14 @@ import priceAxisDialog from './components/priceAxisDialog'
 import {combine} from './mixins/combine'
 
 
+import Upload from '@/components/Upload'
+
+
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 
 export default {
-  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog },
+  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload },
   mixins: [ pageMixins, combine ],
   props: {
     aekoInfo: {
@@ -377,6 +389,7 @@ export default {
       cancelLoading:false,
       showLineList:hidenTableTitle,
       addTableTitle:[],
+      importItemExcel:importItemExcel,
     };
   },
   created() {
@@ -520,6 +533,11 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.tableListData.map(o => {
+            // 分组管理需要备份原始分组名称
+            o.groupNameBak = o.groupName
+            return
+          })
           this.page.totalCount = res.total || 0
           this.rowspan(this.tableListData)
         } else {
@@ -554,11 +572,12 @@ export default {
     },
     jumpQuotation(row){
       const { quotationId="" } = row;
+      let { quotationFrom="" } = row; // 有quotationFrom则是绑定报价单，不能编辑
       const route = this.$router.resolve({
         path: '/aeko/quotationdetail',
         query: {
-          quotationId,
-          editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status)
+          quotationId: quotationFrom || quotationId,
+          editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status) || (quotationFrom?true:false)
         }
       })
 
@@ -983,6 +1002,26 @@ export default {
         return ' '
       }
       
+    },
+
+    // 导入
+    async onHttpUploaded(formData,content){
+      const newFormData = new FormData()
+      newFormData.append('uploadFile', content.file)
+      await importItemExcel(newFormData).then((res)=>{
+        const {code} = res;
+        if(code!=200){
+          const tips = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
+          this.$alert(tips, this.language('LK_AEKO_ALERT_TISHI','提示'), {
+            confirmButtonText: this.language('LK_QUEDING','确定'),
+          })
+        }else{
+          this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+          this.init();
+        }
+      }).catch((e)=>{
+        this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      });
     }
 
   },
@@ -1081,12 +1120,19 @@ export default {
   position: relative;
 }
 .aeko-combine-input {
-  width: 96%;
-  height: 96%;
+  width: 100%;
+  height: 100%;
   position: absolute;
-  left: 2%;
-  top: 2%;
-  border: 1px solid rgba(217, 222, 229, 1);
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  border: 1px solid rgba(217, 222, 229, 0.5);
   background: #fff;
+  ::v-deep.el-textarea {
+    .el-textarea__inner {
+      resize: none;
+      box-shadow: none;
+    }
+  }
 }
 </style>

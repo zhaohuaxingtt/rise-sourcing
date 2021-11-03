@@ -8,7 +8,7 @@
 
 <script>
 	import {iPage,iCard} from 'rise';
-	import {powerBiService} from '@/api/dashboard'
+	import {statement} from '@/api/aeko/approve'
 	import * as pbi from 'powerbi-client';
 	export default {
 		components: {
@@ -45,7 +45,12 @@
 		methods: {
 			// 获取财报iframeurl
 			powerBiUrl() {
-				powerBiService().then(res => {
+				let params = {
+					workspaceId: '876776a9-f959-442e-a011-b4bade0dd862', 
+					reportId: '6087b0b2-cdd2-40c5-9290-40a7fd2eba36' 
+				}
+				statement(params).then(res => {
+					console.log(res);
 					if (res.data) {
 						this.url = res.data
 						this.renderBi()

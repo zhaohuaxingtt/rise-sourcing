@@ -123,7 +123,7 @@
 
 <script>
 import {iInput, iCard, iFormItem, iFormGroup, iText} from "rise"
-import {fixNumber, numberToCurrencyNo,numberToCurrencyNo2} from "../../../../../utils/cutOutNum";
+import {fixNumber, numberToCurrencyNo, numberToCurrencyNo2} from "../../../../../utils/cutOutNum";
 
 export default {
   name: "CoverStatementComponents",
@@ -139,19 +139,19 @@ export default {
       if (value == null || value == '') return ''
       return numberToCurrencyNo(value)
     },
-    numberToCurrencyNo2(value){
+    numberToCurrencyNo2(value) {
       if (value == null || value == '') return ''
       return numberToCurrencyNo2(value)
 
     }
   },
-  computed:{
-    coverStatusDesc:function (){
-        if((this.auditCover.coverStatusDesc==null||this.auditCover.coverStatusDesc==undefined)
-            &&this.auditCover.coverStatus=='APPROVED'){
-          return '已审批'
-        }
-        return this.auditCover.coverStatusDesc
+  computed: {
+    coverStatusDesc: function () {
+      if ((this.auditCover.coverStatusDesc == null || this.auditCover.coverStatusDesc == undefined)
+          && this.auditCover.coverStatus == 'APPROVED') {
+        return '已审批'
+      }
+      return this.auditCover.coverStatusDesc
     }
   },
 
@@ -217,7 +217,7 @@ export default {
       const {columns, data} = param;
       const sums = [];
       columns.forEach((column, index) => {
-        if(index==0){
+        if (index == 0) {
           sums[index] = '';
           return;
         }
@@ -226,11 +226,14 @@ export default {
           return;
         }
         const values = data.map(item => Number(item[column.property]));
-        let maxNum6 = Math.max(...values);
-        sums[index] = numberToCurrencyNo(maxNum6)
-        /*if (!values.every(value => isNaN(value))) {
+        if (column.property == 'materialIncrease') {
+          let maxNum6 = Math.max(...values);
+          sums[index] = numberToCurrencyNo2(maxNum6)
+          return;
+        }
+        if (!values.every(value => isNaN(value))) {
           let mValue = values.reduce((prev, curr) => {
-            let value = Number(curr);
+            const value = Number(curr);
             if (!isNaN(value)) {
               return prev + curr;
             } else {
@@ -238,9 +241,9 @@ export default {
             }
           }, 0);
           sums[index] = numberToCurrencyNo(mValue)
-        }*/
-      });
+        }
 
+      });
       return sums;
     }
   }
