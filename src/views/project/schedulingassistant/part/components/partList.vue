@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 16:05:24
+ * @LastEditTime: 2021-11-03 16:15:32
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -668,13 +668,11 @@ export default {
     getFitPartNameZhList(partNameZh) { 
       return this.partsTemp.reduce((accu, curr) => { 
         const filterRes = []
-        if (curr.partNameZh.includes(partNameZh)) { 
+        if (curr.partNameZh && curr.partNameZh.includes(partNameZh)) { 
           filterRes.push({value:curr.partNameZh})
-          
         } 
-        if (curr.partNameDe.includes(partNameZh)) { 
+        if (curr.partNameDe && curr.partNameDe.includes(partNameZh)) { 
           filterRes.push({value:curr.partNameDe})
-          
         } 
         return [...accu, ...filterRes] 
       },[]) 
@@ -687,7 +685,7 @@ export default {
      */    
     getFitPartNumList(partNum) { 
       return this.partsTemp.reduce((accu, curr) => { 
-        if (curr.partNum.includes(partNum)) { 
+        if (curr.partNum && curr.partNum.includes(partNum)) { 
           return [...accu, {value:curr.partNum}] 
         } 
         return [...accu] 
