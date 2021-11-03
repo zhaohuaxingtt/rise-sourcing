@@ -1,7 +1,7 @@
 /*
  * @Author: Haojiang
  * @Date: 2021-06-28 09:26:28
- * @LastEditTime: 2021-11-02 20:34:59
+ * @LastEditTime: 2021-11-02 21:24:58
  * @LastEditors:  
  * @Description: 签字单
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/data.js
@@ -9,7 +9,7 @@
 
 // 搜索参数
 export const form = {
- 
+
 }
 // M签字单
 export const tableTitle = [
