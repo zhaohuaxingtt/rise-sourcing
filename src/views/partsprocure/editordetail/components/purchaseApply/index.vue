@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-28 16:01:28
- * @LastEditTime: 2021-10-28 18:03:42
+ * @LastEditTime: 2021-11-03 14:00:28
  * @LastEditors:  
 -->
 <template>
@@ -22,6 +22,7 @@
 <script>
 import {iDialog, iFormGroup, iFormItem, iText} from 'rise' 
 import {detailList} from './data'
+import {getPurchaseDetail} from '@/api/partsprocure/editordetail'
 export default {
   components: {
     iDialog,
@@ -34,7 +35,7 @@ export default {
       type: Boolean,
       default:false
     },
-     diolog:{
+     item:{
       type:Object,
       default:()=>{}
     }
@@ -44,12 +45,24 @@ export default {
       detailList
     }
   },
-  created() {
-    console.log(this.detailList);
+  watch:{
+    'visibleDiolog':function(res) {
+       if (res == true) this.init()
+    }
   },
   methods: {
     clearDiolog() {
       this.$emit('changeVisible',false)
+    },
+    init() {
+      let data = {
+        riseCode:this.item.riseCode,
+        sapItem:this.item.sapItem,
+      }
+      console.log(data);
+      getPurchaseDetail(data).then(res => {
+        console.log(res);
+      })
     }
   }
   
