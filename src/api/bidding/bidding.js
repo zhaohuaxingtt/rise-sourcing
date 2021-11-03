@@ -358,3 +358,21 @@ export function findRfqInquiry(data) {
     data,
   });
 }
+
+// 根据 RfqCode 获取询价管理数据
+export function getRfqIdList(data) {
+  return requst({
+    url: `/bidding/proxyService/getRfqIdList`,
+    method: "POST",
+    data,
+  });
+}
+
+
+// 根据supplierCode获取供应商层级
+export function cbdLevel(data) {
+  return requst({
+    url: `/bidding/proxyService/queryBdlCbdLevel?supplierCode=${data}`,
+    method: "POST",
+  });
+}
