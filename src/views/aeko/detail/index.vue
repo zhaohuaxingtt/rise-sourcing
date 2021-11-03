@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-11-02 16:55:53
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-02 17:24:13
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
 -->
@@ -11,8 +11,8 @@
     <div class="header flex-between-center margin-bottom20">
       <h2>AEKO号：{{ aekoInfo.aekoCode }}</h2>
       <div>
-        <iButton @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
-        <iButton @click="goToDetail">{{language('LK_AEKO_BUTTON_DETAIL','AEKO详情')}}</iButton>
+        <iButton v-permission.auto="AEKO_DETAIL_BUTTON_SHENPIDANYULAN|审批单预览" @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
+        <iButton v-permission.auto="AEKO_DETAIL_BUTTON_AEKOXIANGQING|AEKO详情" @click="goToDetail">{{language('LK_AEKO_BUTTON_DETAIL','AEKO详情')}}</iButton>
         <logButton @click="openLog" class="margin-left20" />
         <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
       </div>

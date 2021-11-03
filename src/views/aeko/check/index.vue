@@ -55,14 +55,12 @@
           </el-form>
         </iSearch>
         <iCard class="margin-top20">
-            <template v-slot:header-control>
-                <iButton v-permission.auto="AEKO_CHECKLIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
-            </template>
             <!-- 表单区域 -->
             <div v-permission.auto="AEKO_CHECKLIST_TABLE|AEKO查看TABLE" >
                 <tableList
                 class="table"
                 index
+                :selection="false"
                 :lang="true"
                 :tableData="tableListData"
                 :tableTitle="tableTitle"
@@ -116,7 +114,6 @@ import {
     iInput,
     iPagination,
     iCard,
-    iButton,
     iMessage,
     icon,
 } from 'rise';
@@ -156,7 +153,6 @@ export default {
         tableList,
         iPagination,
         iCard,
-        iButton,
         icon,
         filesListDialog,
     },

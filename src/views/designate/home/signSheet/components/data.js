@@ -1,18 +1,20 @@
 /*
  * @Author: Haojiang
  * @Date: 2021-06-28 09:26:28
- * @LastEditTime: 2021-10-26 16:28:23
+ * @LastEditTime: 2021-11-02 21:24:58
  * @LastEditors:  
  * @Description: 签字单
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/data.js
  */
 
 // 搜索参数
-export const form = {}
+export const form = {
+
+}
 // M签字单
 export const tableTitle = [
   {
-    props: 'id',
+    props: 'signCode',
     name: '签字单号',
     key: 'QIANZIDANHAO',
     tooltip: false

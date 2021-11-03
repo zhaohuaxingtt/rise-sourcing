@@ -83,6 +83,6 @@ export const priceConsistentStatus = [
 export const signSheetStatus =[
   {id:2,name:'草稿',key:'LK_CAOGAO'},
   {id:3,name:'审批中',key:'LK_SHENPIZHONG'},
-  {id:4,name:'已批准',key:'LK_YIPIZHUN'},
+  {id:4,name:'通过',key:'TONGGUO'},
   {id:1,name:'已拒绝',key:'LK_YIJUJUE'}
 ]

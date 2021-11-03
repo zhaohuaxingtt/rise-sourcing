@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2021-11-01 21:42:43
+ * @LastEditTime: 2021-11-02 19:12:20
  * @LastEditors:  
  */
 export const form = {
@@ -124,7 +124,7 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'qualtity',
+    props:'statusDesc',
     name:'状态',
     key:'ZHUANGTAI',
     tooltip:true
@@ -142,13 +142,13 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'aPriceMode',
+    props:'apriceMode',
     name:'含模A价',
     key:'HANMOAJIA',
     tooltip:true
   },
   {
-    props:'bPriceMode',
+    props:'bpriceMode',
     name:'含模B价',
     key:'HANMOBJIA',
     tooltip:true

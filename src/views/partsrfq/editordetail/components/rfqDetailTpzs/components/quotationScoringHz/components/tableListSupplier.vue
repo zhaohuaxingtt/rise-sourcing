@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-01 22:09:29
+ * @LastEditTime: 2021-11-03 10:38:13
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -384,6 +384,9 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .redPrice{
+    color:red;
+  }
   .supplier{
     position: relative;
     .leftFlex{

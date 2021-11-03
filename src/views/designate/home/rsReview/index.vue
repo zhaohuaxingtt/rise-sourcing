@@ -125,8 +125,8 @@
         <span>{{scope.row.freezeDate | dateFilter("YYYY-MM-DD")}}</span>
       </template>
 
-      <template #signId="scope">
-        <a href="javascript:;" class="selStatus-link" @click="$router.push({path: '/sourcing/partsnomination/signSheet/details', query: {id: scope.row.signId}})">{{scope.row.signId}}</a>
+      <template #signCode="scope">
+        <a href="javascript:;" class="selStatus-link" @click="$router.push({path: '/sourcing/partsnomination/signSheet/details', query: {id: scope.row.signId}})">{{scope.row.signCode}}</a>
       </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
