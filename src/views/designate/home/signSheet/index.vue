@@ -10,7 +10,7 @@
     </div>
 
     <!-- 搜索区 -->
-    <search @search="getFetchData" />
+    <search @search="handSearch" ref="searchForm"/>
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -127,6 +127,10 @@ export default {
     this.getFetchData()
   },
   methods: {
+    handSearch(data) {
+      this.page.currPage = 1
+      this.getFetchData()
+    },
     // 新建签字单
     createSignSheet() {
       let query = {}
@@ -162,10 +166,10 @@ export default {
         // window.open(routeData.href, '_blank')
     },
     // 获取定点管理列表
-    getFetchData(params = {}) {
+    getFetchData() {
       this.tableLoading = true
       getSignList({
-        ...params,
+         ...this.$refs.searchForm.form,
         current: this.page.currPage,
         size: this.page.pageSize
       }).then(res => {
@@ -310,7 +314,6 @@ export default {
         }
       }
     }
-
   }
 }
 </script>
