@@ -42,7 +42,8 @@
       <!---------------------------可编辑列---------------------------------->
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.isPC" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
         <template slot-scope="scope">
-          <iInput type="number" v-if="items.type === 'input'" v-model="scope.row[items.props]"  @input="val=>changeValue(val, scope.row, items)"></iInput>
+          <iInput type="number" v-if="items.type === 'input' && !disabled" v-model="scope.row[items.props]"  @input="val=>changeValue(val, scope.row, items)"></iInput>
+          <span>{{ scope.row[items.props] }}</span>
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
@@ -51,19 +52,25 @@
           <span v-if="items.required" style="color:red;">*</span>
         </template>
         <template slot-scope="scope">
-          <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && editCompare && 'isChange'" @input="val=>changeValue(val, scope.row, items)"></iInput>
-          <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && editCompare && 'isChange'" @change="val=>changeValue(val, scope.row, items)">
-            <el-option
-              :value="item.value"
-              :label="item.label"
-              v-for="(item, index) in items.selectOption"
-              :key="index"
-            ></el-option>
-          </iSelect>
-          <iDatePicker v-else-if="items.type === 'date' && items.parentProps" type="month" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" format="yyyy-MM" value-format="yyyy-MM" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iDatePicker>
-          <iDatePicker v-else-if="items.type === 'date'" type="month" v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)" format="yyyy-MM" value-format="yyyy-MM" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iDatePicker>
-          <iInput v-else-if="items.type === 'rate' && items.parentProps" :value="getValue(scope.row, items)" @input="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iInput>
-          <iInput v-else-if="items.type === 'rate'" v-model="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iInput>
+          <div v-if="!disabled">
+            <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && editCompare && 'isChange'" @input="val=>changeValue(val, scope.row, items)"></iInput>
+            <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && editCompare && 'isChange'" @change="val=>changeValue(val, scope.row, items)">
+              <el-option
+                :value="item.value"
+                :label="item.label"
+                v-for="(item, index) in items.selectOption"
+                :key="index"
+              ></el-option>
+            </iSelect>
+            <iDatePicker v-else-if="items.type === 'date' && items.parentProps" type="month" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" format="yyyy-MM" value-format="yyyy-MM" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iDatePicker>
+            <iDatePicker v-else-if="items.type === 'date'" type="month" v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)" format="yyyy-MM" value-format="yyyy-MM" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iDatePicker>
+            <iInput v-else-if="items.type === 'rate' && items.parentProps" :value="getValue(scope.row, items)" @input="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iInput>
+            <iInput v-else-if="items.type === 'rate'" v-model="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iInput>
+          </div>
+          <div v-else>
+            <span v-if="items.type === 'select'">{{ showLabel(scope.row[items.props], items.selectOption) }}</span>
+            <span v-else>{{ scope.row[items.props] }}</span>
+          </div>
         </template>
       </el-table-column>
       <!-------------------------正常列--------------------------->
@@ -136,6 +143,7 @@ export default{
     selectedItems:{type:Array},
     editCompare: {type: Boolean, default: true},
     activeItems2:{type:String,default:'b'},
+    disabled: {type:Boolean,default: false}
   },
   inject:['vm'],
   methods:{
@@ -212,6 +220,11 @@ export default{
       else{
         return ""
       }
+    },
+    showLabel(value, options = []) {
+      const current =  options.find(item => item.value === value)
+
+      return current ? current.label : value
     }
   }
 }

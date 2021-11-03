@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-10-21 15:16:51
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-02 15:36:45
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\sourcing.js
  */
@@ -181,6 +181,15 @@ export default [
             },
             component: () =>
                 import ("@/views/partsprocure/editordetail"),
+        },
+        {
+            path: "partsprocure/editordetail/priceRecord",
+            name: "partsprocure",
+            meta: {
+                title: "价格记录",
+            },
+            component: () =>
+                import ("@/views/partsprocure/editordetail/components/currentSupplier/priceRecord"),
         },
         {
             path: "partsprocure/batchmiantain",

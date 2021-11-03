@@ -16,8 +16,9 @@
       <el-form-item :label="language('LK_AEKOKESHI','科室')">
         <iSelect
           class="multi-select"
-          v-model="form.departmentIdList"
+          v-model="form.deptIds"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          collapse-tags 
           multiple
           filterable
           clearable

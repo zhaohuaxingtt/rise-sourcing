@@ -55,7 +55,7 @@
         <!-- 科室linie费用table -->
         <div v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE|封面表态LINIE表_预览">
             <p class="btn-list margin-bottom20" v-if="!isFromCheck">
-                <iButton v-if="pending" @click="cancelPass" :loading="canceling">{{language('LK_QUXIAOTONGGUO','取消通过')}}</iButton>
+                <iButton v-if="!disabled" @click="cancelPass" :loading="canceling">{{language('LK_QUXIAOTONGGUO','取消通过')}}</iButton>
                 <iButton @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
             </p>
             <tableList
@@ -115,9 +115,10 @@ import {
     cancelPass,
 } from '@/api/aeko/detail/cover.js'
 import unfreezeDialog from './unfreezeDialog'
+import { roleMixins } from "@/utils/roleMixins";
 export default {
     name:'previewCover',
-    mixins: [pageMixins],
+    mixins: [pageMixins, roleMixins],
     components:{
         iCard,
         iFormGroup,
@@ -146,15 +147,14 @@ export default {
             selectItems:[],
             dialogVisible:false,
             canceling:false,
-            pending:true, // 未调试,调试后移除
             isFromCheck:false,
+            disabled: true,
 
         }
     },
     created(){
         this.getList();
         this.getLinie();
-
         // 判断是否从AEKO查看跳转进入该页面 并且底部表单多一个冻结时间字段
         const {query} = this.$route;
         const {from=''} = query;
@@ -176,6 +176,8 @@ export default {
                 const {code,data} = res;
                 if(code == 200){
                     this.basicInfo = data;
+                    const roleList = this.roleList;
+                    this.disabled = !(roleList.includes('AEKOGLY') && data.coverStatus=='MEETING_PASS'); // AKEO管理员,AEKO状态为会议通过:可以取消通过
                     this.tableTDataCost = data.coverCostsWithCarType || []; // 费用汇总 车型维度
                     if(type == 'refresh') this.$emit('getBbasicInfo');
                 }else{
@@ -251,16 +253,15 @@ export default {
 
         // 取消通过
         cancelPass(){
-            const {query} = this.$route;
-            const { requirementAekoId ='',} = query;
+            const aekoManageId = this.basicInfo.aekoManageId
             this.$confirm(this.language('cancelPassSure','请再次确认是否取消通过该封面？')).then(confirmInfo => {
 				if (confirmInfo === 'confirm') {
                     this.canceling = true
-                    cancelPass(requirementAekoId).then(res => {
+                    cancelPass(aekoManageId).then(res => {
                         if (res.code === '200') {
                             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
                             // 刷新页面
-                            this.$emit('getBbasicInfo');
+                            this.getList();
                         } else {
                             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                         }

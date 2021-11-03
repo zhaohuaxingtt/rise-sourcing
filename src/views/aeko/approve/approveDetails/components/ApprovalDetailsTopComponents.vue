@@ -2,9 +2,9 @@
   <div class="margin-bottom25" style="display: flex;justify-content: space-between;align-items: center">
     <span class="akeoTitle">Aeko号:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
     <div style="display: flex;justify-content: space-between;align-items: center">
-      <iNavMvp :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
-      <i-button v-if="$route.name !== 'explainattach'&& !disabled" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_VIEW_APPROVED|查看已审批" @click="goViewApproved"  class="margin-left25">{{language('LK_CHAKANYISHENPI','查看已审批')}}</i-button>
-      <i-button v-if="$route.name !== 'explainattach'" @click="lookAEKODetails"  v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_AEKO_DETAILS|AEKO详情"   class="margin-left25">{{language('LK_AEKO详情','AEKO详情')}}</i-button>
+      <iNavMvp v-if="show" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
+      <i-button v-if="$route.name !== 'explainattach'&& !disabled && show" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_VIEW_APPROVED|查看已审批" @click="goViewApproved"  class="margin-left25">{{language('LK_CHAKANYISHENPI','查看已审批')}}</i-button>
+      <i-button v-if="$route.name !== 'explainattach' && show" @click="lookAEKODetails"  v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_AEKO_DETAILS|AEKO详情"   class="margin-left25">{{language('LK_AEKO详情','AEKO详情')}}</i-button>
       <log-button v-if="$route.name !== 'explainattach'" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
             class="log-icon margin-left20 cursor myLogIcon"></icon>
@@ -36,6 +36,9 @@ export default {
       this.disabled = false // 待审批
     } else if (this.transmitObj.option == 2) {
       this.disabled = true  // 已审批
+    }
+    if(this.queryParams?.goto || false){
+      this.show = false
     }
   },
   data() {
@@ -70,6 +73,7 @@ export default {
       ],
       disabled:false,
       showDialog: false,
+      show: true,
       bizId: ''
     }
   },
@@ -88,9 +92,11 @@ export default {
     },
     //查看已审批
     goViewApproved(){
+      let query = this.$route.query
+      query.goto = 'Recommendation'
       let routeData = this.$router.resolve({
         path: `/aeko/AEKOApprovalDetails/RecommendationTable`,
-        query: this.$route.query
+        query: query
       })
       window.open(routeData.href, '_blank')
     },

@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-01 15:54:15
+ * @LastEditTime: 2021-11-03 16:39:04
  * @Description: 
 -->
 <template>
@@ -21,7 +21,6 @@
         </iButton>
       </div>
       <tablelist
-          height="400"
           index
           :selection="true"
           :tableData="tableListData"
@@ -386,7 +385,7 @@ export default {
 
 .icon {
   svg {
-    font-size: 28px;
+    font-size: 24px;
   }
 }
 </style>

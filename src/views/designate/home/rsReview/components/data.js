@@ -103,10 +103,11 @@ export const tableTitle = [{
 	tooltip:true
 },
 {
-	props: 'signId',
+	props: 'signCode',
 	name: '签字单号',
 	key: 'nominationLanguage.QianZiDanHao',
-	tooltip:true
+	tooltip:true,
+  width: 150
 },
 {
   props: 'signStatusDesc',

@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-01 22:30:49
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-03 16:31:38
+ * @LastEditors:  
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
@@ -109,7 +109,7 @@
             
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
                   <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
-              </template>
+              </template>    
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
                   <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{scope.row[item.props]}}</span>
               </template>
@@ -150,6 +150,9 @@
               <span v-else>{{scope.row[item.props]}}</span>
                 <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
               </template>
+              <!-- <template v-else-if='removeKeysNumber(item.props) == "ebr"'>
+                <span>{{ebrShow(scope.row[item.props])}}</span>
+              </template> -->
               <template v-else>
                 <span>{{scope.row[item.props]}}</span>
               </template>
@@ -214,6 +217,14 @@ export default{
       }else{
         return data
       }
+    },
+    ebrShow(data) {
+      if(data == undefined )
+       return data 
+      else{
+        return (data*100)+'%'
+      }
+
     },
     sortChangeTable({column, prop, order}){
       this.$emit('sortChangeTabless',{prop:prop,props:order})

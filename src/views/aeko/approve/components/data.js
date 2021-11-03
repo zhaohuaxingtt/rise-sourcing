@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-13 15:32:56
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-02 18:31:50
  * @Description: 
  */
 
@@ -20,8 +20,10 @@ export const TAB = [
     value: 2,
     name: 'AEKO报表',
     message: 0,
-    url: '/projectmgt/projectoverview',
-    activePath: 'projectoverview',
+    url: '/aeko/report',
+    // url: '/projectmgt/projectoverview',
+    // activePath: 'projectoverview',
+    activePath: 'report',
     key: 'LK_AEKOBAOBIAO'
   },
 ]
