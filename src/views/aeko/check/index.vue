@@ -114,7 +114,6 @@ import {
     iInput,
     iPagination,
     iCard,
-    iButton,
     iMessage,
     icon,
 } from 'rise';
@@ -154,7 +153,6 @@ export default {
         tableList,
         iPagination,
         iCard,
-        iButton,
         icon,
         filesListDialog,
     },
