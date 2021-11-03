@@ -1,8 +1,8 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-26 11:06:24
- * @LastEditTime: 2021-10-09 14:17:00
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-03 16:39:06
+ * @LastEditors: Luoshuang
  * @Description: 项目管理-项目进度监控接口
  * @FilePath: \front-web\src\api\project\process.js
  */
@@ -180,6 +180,15 @@ export function backDelayReasonConfirm(data) {
 export function downloadProjectMonitorFile(data) {
   return downloadRequst({
     url: '/project-progress-monitor/projectMonitorFile',
+    method: 'POST',
+    data
+  })
+}
+
+// 导出延误原因汇总
+export function exportDelayReasonConfirm(data) {
+  return downloadRequst({
+    url: '/project-progress-monitor/exportDelayReasonConfirm',
     method: 'POST',
     data
   })
