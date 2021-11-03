@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2021-11-02 19:12:20
+ * @LastEditTime: 2021-11-03 17:41:50
  * @LastEditors:  
  */
 export const form = {
@@ -96,7 +96,7 @@ export const tableDetailTitle = [
   {
     props:'supplierId',
     name:'厂商',
-    key:'CHANGSHANGMING',
+    key:'CHANGSHANG',
     tooltip:true
   },
   {
@@ -124,31 +124,31 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'statusDesc',
+    props:'status',
     name:'状态',
     key:'ZHUANGTAI',
     tooltip:true
   },
   {
-    props:'aPriceNoModel',
+    props:'apriceNoModel',
     name:'A价',
     key:'AJIA',
     tooltip:true
   },
   {
-    props:'bPriceNoMode',
+    props:'bpriceNoModel',
     name:'B价',
     key:'BJIA',
     tooltip:true
   },
   {
-    props:'apriceMode',
+    props:'apriceModel',
     name:'含模A价',
     key:'HANMOAJIA',
     tooltip:true
   },
   {
-    props:'bpriceMode',
+    props:'bpriceModel',
     name:'含模B价',
     key:'HANMOBJIA',
     tooltip:true
@@ -191,13 +191,13 @@ export const tableDetailTitle = [
     width:140
   },
   {
-    props:'MOJUFENTAN',
+    props:'isModeApportion',
     name:'模具分摊',
     key:'MOJUFENTAN',
     tooltip:true
   },
   {
-    props:'fsNumber',
+    props:'moldApportionQuantity',
     name:'分摊数量',
     key:'FENTANSHULIANG',
     tooltip:true
@@ -219,6 +219,12 @@ export const tableDetailTitle = [
     props:'developApportionPrice',
     name:'开发费分摊',
     key:'KAIFAFEIFENTAN',
+    tooltip:true
+  },
+  {
+    props:'developApportionQuantity',
+    name:'分摊数量',
+    key:'FENTANSHULIANG',
     tooltip:true
   },
   {
