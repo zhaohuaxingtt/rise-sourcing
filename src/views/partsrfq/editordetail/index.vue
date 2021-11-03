@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-11-02 19:30:34
- * @LastEditors:  
+ * @LastEditTime: 2021-11-03 15:05:44
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
+ * @FilePath: \front-web\src\views\partsrfq\editordetail\index.vue
 -->
 <template>
   <iPage>
@@ -16,6 +16,9 @@
       </div>
       <div class="btnList">
         <span v-if="!disabled">
+          <iButton @click="handleApplyModuleTargetPrice" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
+            {{ language('SHENQINGMOJUMUBIAOJIA','申请模具目标价') }}
+          </iButton>
           <iButton :loading="newRfqOpenValidateLoading" @click="newRfq" v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND|新建RFQ轮次">
             {{
             language('LK_XINJIANRFQLUNCI','新建RFQ轮次')
@@ -223,6 +226,10 @@ export default {
     }
   },
   methods: {
+    handleApplyModuleTargetPrice() {
+      const item = {rfqId: this.baseInfo.id, applyType: '1'}
+      this.$router.push({path: '/modeltargetprice/detail', query: {item: JSON.stringify(item)}})
+    },
     registerFn(fn){
       this.childFnList.push(fn)
     },
@@ -276,14 +283,14 @@ export default {
           const resList = res.data
           if (resList.length > 0) {
             this.baseInfo = res.data[0]
+            // 定向刷新部分组件，当主数据更新后。
+            this.childFnList.forEach(i=>i())
             this.$store.state.rfq.partfunc
             if(typeof this.$store.state.rfq.partfunc === "function")
               this.getPartTableList()
           } else {
             this.baseInfo = ''
           }
-            //获取详细信息后 刷新tab栏里面的询价管理（只要存在轮次大于1则显示询价管理页签）
-          this.childFnList.forEach(i=>i())
           this.baseInfoLoading = false
         } catch {
           this.baseInfoLoading = false

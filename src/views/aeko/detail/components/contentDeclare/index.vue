@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-03 15:25:10
+ * @LastEditTime: 2021-11-03 15:27:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -233,8 +233,9 @@
         >
           <template #groupName="scope">
             <div class="aeko-combine-input" v-if="scope.row.groupCode">
-              <iInput type="textarea" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName">
+              <iInput type="textarea" v-if="!disabled" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName">
               </iInput>
+              <span v-else>{{scope.row.groupName}}</span>
             </div>
           </template>
           <template #oldPartNumPreset="scope">
@@ -532,6 +533,11 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.tableListData.map(o => {
+            // 分组管理需要备份原始分组名称
+            o.groupNameBak = o.groupName
+            return
+          })
           this.page.totalCount = res.total || 0
           this.rowspan(this.tableListData)
         } else {
@@ -566,11 +572,12 @@ export default {
     },
     jumpQuotation(row){
       const { quotationId="" } = row;
+      let { quotationFrom="" } = row; // 有quotationFrom则是绑定报价单，不能编辑
       const route = this.$router.resolve({
         path: '/aeko/quotationdetail',
         query: {
-          quotationId,
-          editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status)
+          quotationId: quotationFrom || quotationId,
+          editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status) || (quotationFrom?true:false)
         }
       })
 
@@ -1113,12 +1120,19 @@ export default {
   position: relative;
 }
 .aeko-combine-input {
-  width: 96%;
-  height: 96%;
+  width: 100%;
+  height: 100%;
   position: absolute;
-  left: 2%;
-  top: 2%;
-  border: 1px solid rgba(217, 222, 229, 1);
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  border: 1px solid rgba(217, 222, 229, 0.5);
   background: #fff;
+  ::v-deep.el-textarea {
+    .el-textarea__inner {
+      resize: none;
+      box-shadow: none;
+    }
+  }
 }
 </style>

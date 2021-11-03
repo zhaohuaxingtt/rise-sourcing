@@ -99,7 +99,9 @@ export default {
     } 
   },
   created(){
-    this.registerFn(this.updateTabs)
+    setTimeout(() => {
+      this.registerFn(this.updateTabs)
+    }, 1000);
   },
   methods: {
     jump(r){

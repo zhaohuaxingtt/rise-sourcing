@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-11-03 15:26:02
+ * @LastEditTime: 2021-11-03 15:27:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -172,6 +172,7 @@ export function getAekoOriginFactory(params) {
 export function sendSupplier(data) {
   return requst({
     url: '/aeko/aeko-content/supplier',
+    // url: '/aeko/aeko-content/sendSupplierQuotation',
     method: 'POST',
     data,
   }) 
@@ -249,7 +250,13 @@ export function searchInvestCar(requirementAekoId) {
     method: 'GET',
   })
 }
-
+// 推荐表-已审批列表查询
+export function searchApproved(requirementAekoId) {
+  return requst({
+    url: `/aeko/view/approved/${requirementAekoId}`,
+    method: 'GET',
+  })
+}
 // 保存一对多，多对一组合
 export function saveCombination(params) {
   return requst({

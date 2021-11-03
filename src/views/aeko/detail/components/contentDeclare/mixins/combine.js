@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-11-02 11:12:44
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-02 18:06:54
+ * @LastEditTime: 2021-11-03 15:05:38
  * @Description: 内容表态组合相关功能
  */
 
@@ -39,10 +39,12 @@ export const combine = {
         this.$message.error(this.language('XUXUANZHONGMEIBEIFENZUDELINGJIAN','需选中没有被分组的零件行项目，请重新选择！'))
         return
       }
+      const requirementAekoId = this.$route.query.requirementAekoId
       const oldPartNumPreset = dataList.map(o => o.oldPartNumPreset)
       const partNum = dataList.map(o => o.partNum)
       const ids = dataList.map(o => o.objectAekoPartId)
       const params = {
+        requirementAekoId,
         groupName: '',
         ids,
         oldPartNumPreset,
@@ -79,13 +81,15 @@ export const combine = {
       const oldPartNumPreset = dataList.map(o => o.oldPartNumPreset)
       const partNum = dataList.map(o => o.partNum)
       const ids = dataList.map(o => o.objectAekoPartId)
+      const requirementAekoId = this.$route.query.requirementAekoId
       const params = {
+        requirementAekoId,
         groupCode,
         ids,
         oldPartNumPreset,
         partNum
       }
-      this.$confirm(this.language('NINQUEDINGYAOZHIXINGZUHE', '您确定要执行组合吗')).then(confirmInfo => {
+      this.$confirm(this.language('SHIFOUQUXAIODANGQIANGOUXUANZUHE', '是否取消当前勾选组合？')).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
           cancelCombination(params).then(res => {
             if (res && res.code === '200') {
@@ -104,12 +108,14 @@ export const combine = {
     updateGroupName(row) {
       const groupName = row.groupName
       const groupCode = row.groupCode
-      if (groupName && groupCode) {
+      const requirementAekoId = this.$route.query.requirementAekoId
+      if (groupName && groupCode && groupName !== row.groupNameBak) {
         const dataList = this.tableListData.filter(o => o.groupCode === groupCode)
         const oldPartNumPreset = dataList.map(o => o.oldPartNumPreset)
         const partNum = dataList.map(o => o.partNum)
         const ids = dataList.map(o => o.objectAekoPartId)
         const params = {
+          requirementAekoId,
           groupName,
           groupCode,
           ids,
@@ -151,7 +157,6 @@ export const combine = {
           }else{
             spanArr.push(1);
             position = index;
-            console.log('position', position)
           }
         }
         return item
@@ -159,7 +164,6 @@ export const combine = {
       // 处理回调
       typeof cb === 'function' && (cb(dataList, spanArr))
       this.spanArr = spanArr
-      console.log('spanArr', spanArr)
       return spanArr
     },
     spanMethod({row, column, rowIndex, columnIndex}) {
