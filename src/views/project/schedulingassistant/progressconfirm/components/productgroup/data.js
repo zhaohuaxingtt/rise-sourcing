@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 11:09:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-30 18:14:03
+ * @LastEditTime: 2021-11-03 16:27:39
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\data.js
  */
@@ -16,16 +16,16 @@ export const searchList = [
 ]
 
 export const tableTitle = [
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
-  {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true},
-  {props:'productGroupZh',name:'产品组中文名称', key: "CHANPINZUZHONGWENMINGCHENG", tooltip: true},
-  {props:'productGroupDe',name:'产品组德文名称', key: "CHANPINZUDEWENMINGCHENG", tooltip: true},
-  {props:'scheBfToFirstTryoutWeek',name:'BF-1st tryout (周)', key: "BF1STTRYOUTZHOU", tooltip: true},
-  {props:'scheFirstTryEmWeek',name:'1st tryout-EM (周)', key: "1STTRYOUTEMZHOU", tooltip: true},
-  {props:'scheFirstTryOtsWeek',name:'1st tryout-OTS (周)', key: "1STTRYOUTOTSZHOU", tooltip: true},
-  {props:'fs',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
-  {props:'confirmDateDeadline',name:'确认截止日期', key: "QUERENJIEZHIRIQI", tooltip: true},
-  {props:'confirmStatus',name:'确认状态', key: "QUERENZHUANGTAI", tooltip: true},
-  {props:'confirmDate',name:'确认时间',key:'QUERENSHIJIAN',tooltip: true},
-  {props:'remark',name:'备注', key: "BEIZHU", tooltip: true},
+  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 120},
+  {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true, minWidth: 120},
+  {props:'productGroupZh',name:'产品组中文名称', key: "CHANPINZUZHONGWENMINGCHENG", tooltip: true, minWidth: 150},
+  {props:'productGroupDe',name:'产品组德文名称', key: "CHANPINZUDEWENMINGCHENG", tooltip: true, minWidth: 150},
+  {props:'scheBfToFirstTryoutWeek',name:'BF-1st tryout (周)', key: "BF1STTRYOUTZHOU", tooltip: true, minWidth: 160},
+  {props:'scheFirstTryEmWeek',name:'1st tryout-EM (周)', key: "1STTRYOUTEMZHOU", tooltip: true, minWidth: 160},
+  {props:'scheFirstTryOtsWeek',name:'1st tryout-OTS (周)', key: "1STTRYOUTOTSZHOU", tooltip: true, minWidth: 160},
+  {props:'fs',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, minWidth: 120},
+  {props:'confirmDateDeadline',name:'确认截止日期', key: "QUERENJIEZHIRIQI", tooltip: true, minWidth: 150},
+  {props:'confirmStatus',name:'确认状态', key: "QUERENZHUANGTAI", tooltip: true, minWidth: 120},
+  {props:'confirmDate',name:'确认时间',key:'QUERENSHIJIAN',tooltip: true, minWidth: 150},
+  {props:'remark',name:'备注', key: "BEIZHU", tooltip: true, minWidth: 150},
 ]
