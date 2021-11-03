@@ -20,7 +20,7 @@
         <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_PARTNUM">
           <iInput
             v-model="form.partNum"
-            :disabled="disabled"
+
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
