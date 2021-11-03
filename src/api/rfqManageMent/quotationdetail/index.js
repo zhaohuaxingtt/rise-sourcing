@@ -545,3 +545,11 @@ export function getNoticeDetail(data) {
     data
   })
 }
+
+export function getCategoryDetail(data) {
+  return requst({
+    url: `/part/getCategoryDetail`,
+    method: 'POST',
+    data
+  })
+}

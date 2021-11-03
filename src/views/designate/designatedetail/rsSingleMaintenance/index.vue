@@ -43,12 +43,13 @@
       <div class="margin-bottom20 clearFloat">
           <div class="floatright">
             <!--------------------返回按钮----------------------------------->
-            <iButton @click="handleSave" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
+            <iButton v-if="!nominationDisabled && !rsDisabled" @click="handleSave" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
             <!--------------------选择按钮----------------------------------->
-            <iButton @click="downloadTemp" :loading="downloadLoading">{{language('XIAZAIMOBAN','下载模板')}}</iButton>
+            <iButton v-if="!nominationDisabled && !rsDisabled" @click="downloadTemp" :loading="downloadLoading">{{language('XIAZAIMOBAN','下载模板')}}</iButton>
             <!--------------------返回按钮----------------------------------->
             <!-- <iButton @click="goBack">上传</iButton> -->
             <el-upload
+              v-if="!nominationDisabled && !rsDisabled" 
               class=" margin-left10 margin-right10"
               :action="uploadUrl + '/rs/uploadNomiRsDoc'"
               accept='.xlsx'
@@ -61,16 +62,15 @@
               <iButton :loading='uploadLoading' >{{language('SHANGCHUAN','上传')}}</iButton>
             </el-upload>
             <!--------------------选择按钮----------------------------------->
-            <iButton @click="handleReadQuotation" :loading="readQuotationLoading">{{language('DUQUBAOJIADAN','读取报价单')}}</iButton>
+            <iButton v-if="!nominationDisabled && !rsDisabled" @click="handleReadQuotation" :loading="readQuotationLoading">{{language('DUQUBAOJIADAN','读取报价单')}}</iButton>
             <!--------------------RS单预览按钮----------------------------------->
             <iButton @click="handlePreviewRS">{{language('RSDANYULAN','RS单预览')}}</iButton>
-            
           </div>
       </div>
         <!------------------------------------------------------------------------>
         <!--                  表格模块                                          --->
         <!------------------------------------------------------------------------>
-        <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' @changeTableValue="changeTableValue">
+        <tableList :disabled="nominationDisabled || rsDisabled" :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' @changeTableValue="changeTableValue">
           <!-- 年降开始时间 -->
           <template #beginYearReduce="scope">
             <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
@@ -91,6 +91,8 @@ import { getList, readQuotation, downloadRSDoc, updateRS } from '@/api/designate
 import { cloneDeep } from 'lodash'
 import moment from 'moment'
 import {partProjTypes} from '@/config'
+import { nominateAppSDetail } from "@/api/designate"
+import { getNominateDisabled } from "rise/web/common"
 export default {
   components: { iPage, iCard, iButton, tableList, iSearch, iInput, detailTop, rsDialog },
   data() {
@@ -119,6 +121,11 @@ export default {
     }
   },
   computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
+    }),
     tableTitle() {
       if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING].includes(this.partProjectType)) {
         return rsTableTitle
@@ -127,10 +134,24 @@ export default {
     }
   },
   created() {
+    this.nominateAppSDetail()
     this.otherNominationId = this.$route.query.desinateId
     this.getTableList()
   },
   methods: {
+    nominateAppSDetail() {
+      nominateAppSDetail({
+        nominateAppId: this.$route.query.desinateId
+      })
+      .then(res => {
+        if (res.code == 200) {
+            this.$store.dispatch('setNominationDisabled', getNominateDisabled({ ...res.data, designateType: this.$route.query.designateType } || {}))
+            this.$store.dispatch('setRsDisabled', res.data.rsStatus === "FROZEN")
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+      })
+    },
     // 单独处理下年降或年降计划
     resetLtcData(row=[],type){
       // 年降开始时间

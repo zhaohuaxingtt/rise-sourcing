@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-11-03 15:18:23
+ * @LastEditTime: 2021-11-03 15:21:03
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
@@ -255,5 +255,31 @@ export function searchApproved(requirementAekoId) {
   return requst({
     url: `/aeko/view/approved/${requirementAekoId}`,
     method: 'GET',
+  })
+}
+// 保存一对多，多对一组合
+export function saveCombination(params) {
+  return requst({
+    url: `/aeko/save/combination`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 修改组合名称
+export function updateGroupName(params) {
+  return requst({
+    url: `/aeko/update/groupName`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 取消组合名称
+export function cancelCombination(params) {
+  return requst({
+    url: `/aeko/cancel/combination`,
+    method: 'POST',
+    data: params
   })
 }

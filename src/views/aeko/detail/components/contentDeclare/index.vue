@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-02 22:05:07
+ * @LastEditTime: 2021-11-03 15:21:50
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -157,6 +157,15 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
       <template v-slot:header-control>
+        <iButton v-if="!disabled && !cantBeCombine" :loading="declareToggleLoading" @click="combine" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_COMBINE|组合">
+          {{ language("nominationSuggestion_ZuHe", "组合") }}
+          <el-tooltip effect="light" popper-class="custom-card-tooltip" :content="language('LK_AEKONEIRONGZUHECOMMENTS','多变一或多变多组合操作，用于系统计算封面表态的单车成本变化。')" placement="top">
+            <i class="el-icon-warning-outline bule iconSuffix"></i>
+          </el-tooltip>
+        </iButton>
+        <iButton v-if="!disabled && cantBeCombine" @click="cancelCombination" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_CANCELCOMBINE|取消组合">{{language("nominationSuggestion_QuXiaoZuHe", "取消组合")}}</iButton>
+
+
         <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE|无关相关切换">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
         <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET|表态重置">{{ language("AEKO_YUANLINGJIANHAOCHONGZHI", "原零件号重置") }}</iButton>
         <iButton v-if="!disabled" :loading="declareSendSupplier" @click="sendSupplierPrice"  v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION|发放供应商报价">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
@@ -211,8 +220,16 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          :span-method="spanMethod"
           @handleSelectionChange="handleSelectionChange"
         >
+          <template #groupName="scope">
+            <div class="aeko-combine-input" v-if="scope.row.groupCode">
+              <iInput type="textarea" v-if="!disabled" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName">
+              </iInput>
+              <span v-else>{{scope.row.groupName}}</span>
+            </div>
+          </template>
           <template #oldPartNumPreset="scope">
             <iInput v-if="scope.row.status === 'EMPTY'||scope.row.status === 'TOBE_STATED' && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly>
               <div class="inputSearchIcon" slot="suffix">
@@ -297,13 +314,16 @@ import { cloneDeep, chunk, debounce } from "lodash"
 import investCarTypeProDialog from './components/investCarTypeProDialog' 
 import priceAxisDialog from './components/priceAxisDialog' 
 
+// 组合相关功能
+import {combine} from './mixins/combine'
+
 
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog },
-  mixins: [ pageMixins ],
+  mixins: [ pageMixins, combine ],
   props: {
     aekoInfo: {
       type: Object,
@@ -501,7 +521,13 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.tableListData.map(o => {
+            // 分组管理需要备份原始分组名称
+            o.groupNameBak = o.groupName
+            return
+          })
           this.page.totalCount = res.total || 0
+          this.rowspan(this.tableListData)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -1049,6 +1075,32 @@ export default {
   }
   .tipsIcon{
     transform: rotate(180deg);
+  }
+}
+::v-deep.el-button {
+  &:hover {
+    .iconSuffix {
+      color: #ffffff;
+    }
+  }
+}
+.el-table_1_column_3 .cell {
+  position: relative;
+}
+.aeko-combine-input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  border: 1px solid rgba(217, 222, 229, 0.5);
+  background: #fff;
+  ::v-deep.el-textarea {
+    .el-textarea__inner {
+      resize: none;
+      box-shadow: none;
+    }
   }
 }
 </style>

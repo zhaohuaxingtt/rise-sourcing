@@ -168,7 +168,6 @@ import {
   iButton,
   iPagination,
   icon,
-  iMessage,
   iLog
 } from 'rise';
 import { searchList,tableTitle } from './data';
@@ -323,7 +322,7 @@ export default {
               }
             })
           }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         })
       },
@@ -373,7 +372,7 @@ export default {
         // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
         if(partNum && partNum.trim().length < 9){
           this.loading = false;
-          return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+          return this.$message.warning(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
         }
         await getManageList({...searchParams,...data}).then((res)=>{
           this.loading = false;
@@ -383,7 +382,7 @@ export default {
               this.tableListData = records;
               this.page.totalCount = total;
           }else{
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         }).catch((err)=>{
           this.loading = false;
@@ -399,7 +398,7 @@ export default {
             this.selectOptions.aekoStatusList = data;
             this.selectOptionsCopy.aekoStatusList = data;
           }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
          //品牌
@@ -412,7 +411,7 @@ export default {
             this.selectOptions.brand = data;
             this.selectOptionsCopy.brand = data;
           }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
         // 封面状态
@@ -422,7 +421,7 @@ export default {
             this.selectOptions.coverStatusList = data;
             this.selectOptionsCopy.coverStatusList = data;
           }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
 
@@ -437,7 +436,7 @@ export default {
             this.selectOptions.carTypeCodeList = data;
             this.selectOptionsCopy.carTypeCodeList = data;
           }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
 
@@ -452,7 +451,7 @@ export default {
             this.selectOptions.linieDeptNumList = data;
             this.selectOptionsCopy.linieDeptNumList = data;
           }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
 
@@ -468,7 +467,7 @@ export default {
             this.selectOptions.buyerName = data;
             this.selectOptionsCopy.buyerName = data;
           }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         })
       },
@@ -486,7 +485,7 @@ export default {
         window.open(routeData.href, '_blank')
       },
 
-      //BI逾期报表 
+      //BI逾期报表
       gotoBIPage(){
         const routeData = this.$router.resolve({
           path: '/aeko/BIPage',
@@ -496,7 +495,7 @@ export default {
       },
       // 查看日志
       checkLog(row){
-        this.bizId = row.requirementAekoId || iMessage.error('AEKO id 获取失败')
+        this.bizId = row.requirementAekoId || this.$message.error('AEKO id 获取失败')
         if(this.bizId)
         this.showDialog = true
       },
@@ -523,7 +522,7 @@ export default {
           const {selectItems} = this;
           tips = tips || this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据');
           if(!selectItems.length){
-              iMessage.warn(tips);
+              this.$message.warning(tips);
               return false;
           }else{
               if(type){
@@ -542,7 +541,7 @@ export default {
          const tips = this.language('LK_AEKO_GOUXUANXIANGBAOHANYICHEXIAOAEKOWUFACAOZUO','勾选项包含已撤销AEKO,不能进行操作');
          const filterItem = selectItems.filter((item)=>item.aekoStatus == 'CANCELED');
          if(filterItem.length){
-           iMessage.warn(tips);
+           this.$message.warning(tips);
             return false;
          }else{
            return true;
@@ -556,11 +555,11 @@ export default {
         if(!this.isCancledItem()) return;
         // 一次只能撤销一个AEKO
         const {selectItems} = this;
-        if(selectItems.length > 1) return iMessage.warn(this.language('LK_AEKO_YICIZHINENGCHEXIAOYIGEAEKO','一次只能撤销一个AEKO，请修改！'));
+        if(selectItems.length > 1) return this.$message.warning(this.language('LK_AEKO_YICIZHINENGCHEXIAOYIGEAEKO','一次只能撤销一个AEKO，请修改！'));
         // 选中的aeko非处于”已导入”或”已分配”状态  不能进行撤销操作
         const {aekoStatus=''} = selectItems[0];
         if(aekoStatus != 'IMPORTED' && aekoStatus !='ASSIGNED'){
-          return iMessage.warn(this.language('LK_AEKO_DANGQIANAEKOBUNENGJINXINGCAOZUO','当前aeko不能进行撤销操作'));
+          return this.$message.warning(this.language('LK_AEKO_DANGQIANAEKOBUNENGJINXINGCAOZUO','当前aeko不能进行撤销操作'));
         }
         this.changeVisible('revokeVisible',true);
       },
@@ -623,10 +622,10 @@ export default {
         await uploadFiles(params).then((res)=>{
           this.btnLoading.uploadFiles = false;
           if(res.code ==200){
-            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getList();
           }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
         }).catch((err)=>{
           this.btnLoading.uploadFiles = false;
@@ -652,10 +651,10 @@ export default {
             deleteAeko({requirementAekoIds}).then((res)=>{
               this.btnLoading.deleteItem = false;
               if(res.code ==200){
-                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                 this.getList();
               }else{
-                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
               }
             })
           }).catch(()=>{
@@ -670,13 +669,13 @@ export default {
         await importAeko(newFormData).then((res)=>{
           const {code} = res;
           if(code!=200){
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }else{
-            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getList();
           }
         }).catch((e)=>{
-          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+          this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         });
       },
 
@@ -766,10 +765,11 @@ export default {
           const arr = selectItems.map((item)=>item.aekoManageId);
           adoptedMeeting(arr).then((res)=>{
             if(res.code == 200){
-             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+             this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
              this.getList();
             }else{
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+              this.getList();
+              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
           })
         }).catch(()=>{
@@ -784,7 +784,7 @@ export default {
         await synAekoFromTCM().then((res)=>{
           this.btnLoading.tcm = false;
           if(res.code == 200) {
-            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getList();
           }
         }).catch((err)=>{
@@ -798,7 +798,7 @@ export default {
         await synAekoAttachmentFromTCM().then((res)=>{
           this.btnLoading.tcmFiles = false;
           if(res.code == 200) {
-            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getList();
           }
         }).catch((err)=>{
