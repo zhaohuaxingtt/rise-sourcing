@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-11-02 17:06:55
+ * @LastEditTime: 2021-11-02 20:18:00
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -237,6 +237,7 @@ export default [
           },
         ]
       },
+      // 逾期报表
       {
         path: "bipage",
         name: "bipage",
@@ -244,6 +245,24 @@ export default [
           title: 'AEKO-逾期报表'
         },
         component: () => import("@/views/aeko/BIPage"),
+      },{
+        path: "report",
+        name: "report",
+        meta: {
+          title: 'AEKO报表'
+        },
+        component: () => import("@/views/aeko/BIPage/reportPage"),
+        redirect: "/aeko/report/item",
+        children:[
+          {
+            path: "item",
+            name: "reportitem",
+            meta: {
+              title: 'AEKO报表'
+            },
+            component: () => import("@/views/aeko/BIPage"),
+          },
+        ]
       }
     ]
   }

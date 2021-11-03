@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-02 18:31:50
+ * @LastEditTime: 2021-11-02 20:26:21
  * @Description: 
  */
 
@@ -13,7 +13,7 @@ export const TAB = [
     name: 'AEKO操作',
     message: 0,
     url: '/aeko/approve',
-    activePath: 'projectoverview',
+    activePath: '/approve',
     key: 'LK_AEKOCAOZUO'
   },
   {
@@ -23,7 +23,7 @@ export const TAB = [
     url: '/aeko/report',
     // url: '/projectmgt/projectoverview',
     // activePath: 'projectoverview',
-    activePath: 'report',
+    activePath: '/report',
     key: 'LK_AEKOBAOBIAO'
   },
 ]
@@ -85,19 +85,18 @@ export  const AEKOAPPROVEMENU=[
 export const SUBMENU = [
   {
     value: 1,
-    name: 'AEKO审批',
+    name: '状态跟踪报表',
     message: 0,
-    url: '/aeko/approve',
-    activePath: 'projectoverview',
-    key: 'LK_AEKOSHENPI'
-  },
-  {
+    url: '/aeko/report/item',
+    activePath: '/item',
+    key: 'ZHUANGTAIGENZONGBAOBIAO'
+  },{
     value: 2,
-    name: 'AEKO查看',
+    name: '状态跟踪报表',
     message: 0,
-    url: '/aeko/approve',
-    activePath: 'projectoverview',
-    key: 'LK_AEKOCHAKAN'
+    url: '/aeko/report/item2',
+    activePath: '/item2',
+    key: 'ZHUANGTAIGENZONGBAOBIAO'
   },
 ]
 // 主菜单
