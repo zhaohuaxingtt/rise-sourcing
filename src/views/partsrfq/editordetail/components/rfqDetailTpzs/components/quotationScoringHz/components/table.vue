@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-03 16:31:38
+ * @LastEditTime: 2021-11-03 20:11:37
  * @LastEditors:  
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -106,7 +106,9 @@
               <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
                   <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
               </template>
-            
+              <template v-else-if='removeKeysNumber(item.props) == "ebr"'>
+                <span>{{ebrShow(scope.row[item.props])}}</span>
+              </template>
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
                   <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
               </template>    
@@ -150,9 +152,6 @@
               <span v-else>{{scope.row[item.props]}}</span>
                 <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
               </template>
-              <!-- <template v-else-if='removeKeysNumber(item.props) == "ebr"'>
-                <span>{{ebrShow(scope.row[item.props])}}</span>
-              </template> -->
               <template v-else>
                 <span>{{scope.row[item.props]}}</span>
               </template>
@@ -219,10 +218,14 @@ export default{
       }
     },
     ebrShow(data) {
-      if(data == undefined )
+      console.log('data=',data,'--------------------------------------');
+      console.log('data*100=',data*100,'--------------------------------------');
+      if(data == undefined || data == 'Budget' || data == 'KM'  )
        return data 
       else{
-        return (data*100)+'%'
+        // eslint-disable-next-line no-undef
+        const result = math.multiply(math.bignumber(data), 100).toString() + '%'
+        return result
       }
 
     },

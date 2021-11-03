@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-09-18 16:03:50
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-03 21:24:54
+ * @LastEditors:  
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
 -->
@@ -71,7 +71,7 @@
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('LK_LINGJIANLEIXING','零件类型')">
-          <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.partType">
+          <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.partType" :disabled="isDisabled">
             <el-option
               :value="item.code"
               :label="item.name"
@@ -94,10 +94,11 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_CAIGOUGONGCHANG','采购工厂')">
+        <el-form-item :label="language('LK_CAIGOUGONGCHANG','采购工厂')" >
           <iSelect
             :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model="batch.procureFactory"
+            :disabled="isDisabled"
           >
             <el-option
               :value="item.code"
@@ -108,7 +109,7 @@
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('LK_DANWEI','价格单位')">
-          <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.unit">
+          <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.unit" :disabled="isDisabled">
             <el-option
               :value="item.code"
               :label="item.name"
@@ -121,6 +122,7 @@
           <iSelect
             :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model="batch.cfController"
+            :disabled="isDisabled"
           >
             <el-option
               :value="item.id"
@@ -273,13 +275,15 @@ export default {
       startLoding: false,
       purchaseProjectIds: [],
       saveButchLoading:false,
-      stuffLoading:false
+      stuffLoading:false,
+      isDisabled:false
     };
   },
   created() {
     this.getProcureGroup();
     this.purchasingDept()
     this.purchaseProjectIds = this.$route.query.ids
+    partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey ? this.isDisabled = true : this.isDisabled = false 
   },
   computed: {
     // eslint-disable-next-line no-undef

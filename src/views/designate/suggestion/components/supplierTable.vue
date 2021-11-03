@@ -458,8 +458,8 @@ export default {
       }else {
         let nom = this.selectData[0].nominateId
         let item =[]
-        item = this.selectData.map(val => val.partProjectId).join(',')
-        window.open(`http://10.122.17.38/portal/#/mtz/create?nom=`+nom+`&item=`+item,'_blank')
+        item = this.selectData.map(val => val.partNum).join(',')
+        window.open(` http://10.122.17.38/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?id=`+nom+`&item=`+item,'_blank')
       }
     }
   }
