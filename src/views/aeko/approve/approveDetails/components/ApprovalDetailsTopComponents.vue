@@ -34,10 +34,10 @@ export default {
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
     if (this.transmitObj.option == 1) {
       this.disabled = false // 待审批
-    } else if (this.transmitObj.option == 2) {
-      this.disabled = true  // 已审批
+    } else if (this.transmitObj.option == 2 || this.transmitObj.aekoApprovalDetails.linieId) {
+      this.disabled = true  // 已审批 // 预览
     }
-    if(this.queryParams?.goto || false){
+    if(this.queryParams?.goto || false){  // 查看已审批隐藏部分按钮
       this.show = false
     }
   },
