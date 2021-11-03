@@ -434,11 +434,20 @@ module.exports = {
           '^/nominateRecord':'',
         }
       },
+
       '/priceRecord':{
         target: 'http://10.160.143.208:8026',
         changeOrigin:true,
         pathRewrite: {
           '^/priceRecord':'',
+        }
+      },
+    //二组采购申请详情查询接口
+      '/purchaseApply': {
+        target: 'http://10.122.18.166:8026',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/purchaseApply':''
         }
       }
     },

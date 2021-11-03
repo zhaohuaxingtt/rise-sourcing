@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-01 22:30:49
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-03 15:36:37
+ * @LastEditors:  
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
@@ -218,16 +218,14 @@ export default{
         return data
       }
     },
-//     ebrShow(data) {
-//       if(data === 0 )
-//         {
-//           parseInt(data)
-//           return data = data + '%'
-//         } else if(data) {
-//           return
-//         }
-// 
-//     },
+    ebrShow(data) {
+      if(data == undefined )
+       return data 
+      else{
+        return (data*100)+'%'
+      }
+
+    },
     sortChangeTable({column, prop, order}){
       this.$emit('sortChangeTabless',{prop:prop,props:order})
     },
