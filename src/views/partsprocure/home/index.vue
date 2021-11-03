@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-10-29 09:48:31
+ * @LastEditTime: 2021-11-03 11:57:50
  * @LastEditors:  
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -350,7 +350,6 @@ export default {
         query: {
           item: JSON.stringify(item),
           businessKey:item.partProjectType, //新增业务标识。
-          code:item.code //采购申请编号
         },
       });
       window.open(openParts.href,'_blank')
