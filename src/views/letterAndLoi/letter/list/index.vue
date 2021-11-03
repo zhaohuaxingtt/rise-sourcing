@@ -19,7 +19,7 @@
                   </el-option>  
                 </iSelect> 
                 <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
-                <iInput :maxlength="item.maxlength" :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]"></iInput> 
+                <iInput :maxlength="item.maxlength" :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]" @input="item.inputType ? handleInput($event, item, searchParams) : ''"></iInput> 
             </el-form-item>
         </el-form>
     </iSearch>
@@ -132,6 +132,7 @@ import {
     letterExport,
 } from '@/api/letterAndLoi/letter'
 import { getDictByCode } from '@/api/dictionary'
+import { numberProcessor } from '@/utils' 
 export default {
     name:'letterList',
     mixins: [pageMixins],
@@ -179,7 +180,7 @@ export default {
     },
     created(){
         // 添加默认筛选参数
-        const acceptKeys = ['status','linieName','csfCssName']
+        const acceptKeys = ['status','linieName','csfCssName', 'currentUser', 'isDelay']
         Object.keys(this.$route.query).forEach(key => {
             acceptKeys.includes(key) && (this.$set(this.searchParams, `${ key }`, this.$route.query[key]))
         })
@@ -470,6 +471,15 @@ export default {
                 return ''
             }
         },
+
+        handleInput(value, item, obj) {
+            switch(item.inputType) {
+                case "int":
+                    this.$set(obj, item.props, numberProcessor(value, 0))
+                    break
+                default:
+            }
+        }
     }
 }
 </script>

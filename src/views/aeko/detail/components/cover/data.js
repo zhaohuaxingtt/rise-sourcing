@@ -11,7 +11,7 @@ export const previewBaicFrom = [
     {label:'主要供应商',labelKey:'LK_AEKO_ZHUYAOGONGYINGSHANG',props:'mainSupplier',type:'input',required:true,editable:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_MAINSUPPLIER|主要供应商',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_INPUT_MAINSUPPLIER|主要供应商-编辑',},
     {label:'新⾸批送样周期(周数)',labelKey:'LK_AEKO_XINSHOUPISONGYANGZHOUQI',props:'sendCycle',type:'input',required:true,editable:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_SENDCYCLE|新⾸批送样周期',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_INPUT_SENDCYCLE||新⾸批送样周期-编辑',},
     {label:'影响进度',labelKey:'LK_AEKO_YINGXIANGJINDU',props:'isEffectpro',type:'select',selectOption:'isEffectpro',required:true,editable:true,isObj:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_ISEFFECTPRO|影响进度',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_SELECT_ISEFFECTPRO|影响进度-编辑',},
-    {label:'指定前期采购',labelKey:'LK_AEKO_ZHIDINGQIANQICAIGOU',props:'fsName',type:'select',selectOption:'fsList',required:true,editable:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FSNAME|指定前期采购',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_SELECT_FSNAME|指定前期采购-编辑',},
+    {label:'指定前期采购',labelKey:'LK_AEKO_ZHIDINGQIANQICAIGOU',props:'fsName',type:'select',selectOption:'fsList',clearable:true,required:true,editable:true,filterable:true,permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FSNAME|指定前期采购',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_SELECT_FSNAME|指定前期采购-编辑',},
     {label:'封⾯状态',labelKey:'LK_AEKOFENGMIANZHUANGTAI',props:'coverStatusDesc',permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FENGMIANZHUANGTAI|封⾯状态',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FENGMIANZHUANGTAI_LINIE|封⾯状态—LINIE'},
 ]
 

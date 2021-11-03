@@ -1,3 +1,10 @@
+<!--
+ * @Description: 
+ * @Author: tyra liu
+ * @Date: 2021-10-15 11:20:31
+ * @LastEditTime: 2021-10-28 22:21:22
+ * @LastEditors:  
+-->
 <template>
   <div class="batchMaintain">
     <iButton @click="openBatchMiantainOutputPlan">{{ language("PILIANGWEIHUCHANLIANGJIHUA", "批量维护产量计划") }}</iButton>
@@ -32,7 +39,7 @@ export default {
             )
           )
         } else {
-          let planItemsIds = this.planItems.map((res) => res.id)
+          let planItemsIds = this.planItems.map((res) => res.purchaseProjectId)
           this.planItemsIds = planItemsIds
           this.batchdialogVisible = true
         }

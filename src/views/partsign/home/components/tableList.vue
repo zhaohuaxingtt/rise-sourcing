@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-10-25 21:41:05
+ * @LastEditTime: 2021-10-26 16:42:47
  * @LastEditors:  
  * @Description: 零件签收-table组件。
  * @FilePath: \front-web\src\views\partsign\home\components\tableList.vue
@@ -91,6 +91,9 @@ export default{
     },
     openPage(e){
       this.$emit('openPage',e)
+    },
+    openPageTwo(e){
+      this.$emit('openPageTwo',e)
     },
     translateData(key,row){
       try {

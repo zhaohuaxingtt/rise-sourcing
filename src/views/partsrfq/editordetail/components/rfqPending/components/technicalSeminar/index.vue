@@ -1,13 +1,13 @@
 <template>
-  <div v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE">
+  <div v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE|技术交底会">
     <iCard>
       <div class="margin-bottom5 clearFloat" v-if="!disabled">
         <div class="floatright">
-          <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">
+          <iButton @click="addSupplier" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER|技术交底会-添加供应商">
             {{ language('LK_TIANJIAGONGYINGSHANG','添加供应商') }}
           </iButton>
           <iButton @click="sendToMyEmail"
-                   v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">
+                   v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL|技术交底会-发送至我的邮箱">
             {{ language('LK_FASONGZHIWODEYOUXIANG','发送至我的邮箱') }}
           </iButton>
         </div>
@@ -44,11 +44,11 @@
     <!------------------------------------------------------------------------>
     <!--                  供应商材料准备                                      --->
     <!------------------------------------------------------------------------>
-    <supplier-material-preparation class="margin-top20" ref="supplierMaterialPreparation"/>
+    <supplier-material-preparation v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SUPPLIERDOCUMENTS|技术交底会-供应商材料准备" class="margin-top20" ref="supplierMaterialPreparation"/>
     <!------------------------------------------------------------------------>
     <!--                  会议其它信息                                      --->
     <!------------------------------------------------------------------------>
-    <other-meeting-information class="margin-top20" ref="otherMeetingInformation"/>
+    <other-meeting-information v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_OTHERINFO|技术交底会-会议其它信息" class="margin-top20" ref="otherMeetingInformation"/>
     <!------------------------------------------------------------------------>
     <!--                  图纸弹框                                      --->
     <!------------------------------------------------------------------------>
@@ -158,6 +158,12 @@ export default {
         iMessage.warn(this.language('LK_QINGTIANJIAGONGYINGSHANG','请添加供应商!'))
         return
       }
+
+      if (!otherMeetingInformationData.meetingDate) return iMessage.warn(this.language("QINGXUANZEHUIYISHIJIAN", "请选择会议时间"))
+      if (!otherMeetingInformationData.meetingLocation) return iMessage.warn(this.language("QINGSHURUHUIYIDIDIAN", "请输入会议地点"))
+      if (!meetingStuffList.length) return iMessage.warn(this.language("QINGTIANXIEWANZHENGGONGYINGSHANGCAILIAO", "请填写完整供应商材料"))
+      if (!this.selectTableData.length) return iMessage.warn(this.language("QINGXUANZEZHISHAOLINGJIAN", "请选择至少一个零件"))
+
       const req = {
         rfqId: id,
         userId: store.state.permission.userInfo.id,
@@ -169,7 +175,14 @@ export default {
         supplierIds: supplierIdList,
         partNums: partNumsList,
         partsInfo: this.selectTableData,
-        supplierInfo: this.addSupplierList
+        supplierInfo: this.addSupplierList.map(item => ({
+          email: item.email,
+          isMbdl: item.isMbdl,
+          sapNum: item.sapNum || item.sapCode,
+          supplierContactNameZh: item.supplierContactNameZh,
+          supplierId: item.supplierId,
+          supplierName: item.supplierNameZh
+        }))
       }
       const res = await addTechnology(req)
       this.resultMessage(res)

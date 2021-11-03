@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-10-21 15:14:31
+ * @LastEditTime: 2021-10-27 13:26:16
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
@@ -9,10 +9,10 @@
 <template>
   <iCard class="volume">
     <div class="header clearFloat">
-      <span class="title">{{ language('LK_MEICHEYONGLIANG','每车用量') }}（{{ language('LK_DANGQIANBANBEN','当前版本') }} : V{{ version }}）</span>
+      <span class="title">{{ language('LK_MEICHEYONGLIANG','每车用量') }}（{{ language('LK_DANGQIANBANBEN','当前版本') }} : {{ versionComputed }}）</span>
       <div class="control">
-        <iButton v-if="!disabled" @click="jump" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_ALL">{{ language('LK_CHAKANQUANBUBANBEN','查看全部版本') }}</iButton>
-        <iButton v-if="!disabled" @click="download" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT">{{ language('LK_DAOCHU','导出') }}</iButton>
+        <iButton v-if="!disabled" @click="jump" v-permission.auto="PARTSIGN_EDITORDETAIL_VOLUME_ALL|每车用量查看全部版本">{{ language('LK_CHAKANQUANBUBANBEN','查看全部版本') }}</iButton>
+        <iButton v-if="!disabled" @click="download" v-permission.auto="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT|每车用量导出">{{ language('LK_DAOCHU','导出') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">
@@ -67,6 +67,13 @@ export default {
   },
   created() {
     this.getVolume()
+  },
+  computed: {
+    versionComputed() {
+      const str = this.version ? this.version + "" : "V1"
+      
+      return !/^v\d+$/i.test(str) ? `V${ str }` : str 
+    }
   },
   methods: {
     async getVolume() {

@@ -45,7 +45,7 @@
           </el-col>
           <el-col :span='6'>
             <i-form-item label="封面状态:">
-              <i-text>{{ auditCover.coverStatusDesc }}</i-text>
+              <i-text>{{ coverStatusDesc }}</i-text>
             </i-form-item>
           </el-col>
         </el-row>
@@ -76,7 +76,7 @@
             label="增加材料成本(RMB/车)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.materialIncrease|numFilter }}</span>
+            <span>{{ scope.row.materialIncrease|numberToCurrencyNo2 }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
                         :content="queryRowMaterialIncreaseTipContent(scope.row)" placement="top">
               <i class="el-icon-warning-outline bule margin-left5"></i>
@@ -123,7 +123,7 @@
 
 <script>
 import {iInput, iCard, iFormItem, iFormGroup, iText} from "rise"
-import {fixNumber, numberToCurrencyNo} from "../../../../../utils/cutOutNum";
+import {fixNumber, numberToCurrencyNo, numberToCurrencyNo2} from "../../../../../utils/cutOutNum";
 
 export default {
   name: "CoverStatementComponents",
@@ -136,7 +136,22 @@ export default {
   },
   filters: {
     numFilter(value) {
+      if (value == null || value == '') return ''
       return numberToCurrencyNo(value)
+    },
+    numberToCurrencyNo2(value) {
+      if (value == null || value == '') return ''
+      return numberToCurrencyNo2(value)
+
+    }
+  },
+  computed: {
+    coverStatusDesc: function () {
+      if ((this.auditCover.coverStatusDesc == null || this.auditCover.coverStatusDesc == undefined)
+          && this.auditCover.coverStatus == 'APPROVED') {
+        return '已审批'
+      }
+      return this.auditCover.coverStatusDesc
     }
   },
 
@@ -202,7 +217,7 @@ export default {
       const {columns, data} = param;
       const sums = [];
       columns.forEach((column, index) => {
-        if(index==0){
+        if (index == 0) {
           sums[index] = '';
           return;
         }
@@ -211,11 +226,14 @@ export default {
           return;
         }
         const values = data.map(item => Number(item[column.property]));
-        let maxNum6 = Math.max(...values);
-        sums[index] = numberToCurrencyNo(maxNum6)
-        /*if (!values.every(value => isNaN(value))) {
+        if (column.property == 'materialIncrease') {
+          let maxNum6 = Math.max(...values);
+          sums[index] = numberToCurrencyNo2(maxNum6)
+          return;
+        }
+        if (!values.every(value => isNaN(value))) {
           let mValue = values.reduce((prev, curr) => {
-            let value = Number(curr);
+            const value = Number(curr);
             if (!isNaN(value)) {
               return prev + curr;
             } else {
@@ -223,9 +241,9 @@ export default {
             }
           }, 0);
           sums[index] = numberToCurrencyNo(mValue)
-        }*/
-      });
+        }
 
+      });
       return sums;
     }
   }

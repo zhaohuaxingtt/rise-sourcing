@@ -3,17 +3,18 @@
     <span class="akeoTitle">Aeko号:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
     <div style="display: flex;justify-content: space-between;align-items: center">
       <iNavMvp :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
-      <i-button v-if="$route.name !== 'explainattach'" @click="goViewApproved"  class="margin-left25">查看已审批</i-button>
-      <i-button v-if="$route.name !== 'explainattach'" @click="lookAEKODetails" class="margin-left25">AEKO详情</i-button>
-      <log-button v-if="$route.name !== 'explainattach'" class="margin-left25"/>
+      <i-button v-if="$route.name !== 'explainattach'&& !disabled" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_VIEW_APPROVED|查看已审批" @click="goViewApproved"  class="margin-left25">{{language('LK_CHAKANYISHENPI','查看已审批')}}</i-button>
+      <i-button v-if="$route.name !== 'explainattach'" @click="lookAEKODetails"  v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_AEKO_DETAILS|AEKO详情"   class="margin-left25">{{language('LK_AEKO详情','AEKO详情')}}</i-button>
+      <log-button v-if="$route.name !== 'explainattach'" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
             class="log-icon margin-left20 cursor myLogIcon"></icon>
+      <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
     </div>
   </div>
 </template>
 
 <script>
-import {iNavMvp, icon, iButton} from "rise"
+import {iNavMvp, icon, iButton, iLog, iMessage} from "rise"
 import LogButton from "./LogButton";
 
 export default {
@@ -22,12 +23,20 @@ export default {
     LogButton,
     iNavMvp,
     icon,
-    iButton
+    iButton,
+    iLog
   },
   created() {
     this.queryParams = this.$route.query
+    // 标记审批单跳转的参数
+    this.queryParams.from = 'approve'
     let str_json = window.atob(this.queryParams.transmitObj)
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
+    if (this.transmitObj.option == 1) {
+      this.disabled = false // 待审批
+    } else if (this.transmitObj.option == 2) {
+      this.disabled = true  // 已审批
+    }
   },
   data() {
     return {
@@ -59,6 +68,9 @@ export default {
           key: "审批附件",
         },
       ],
+      disabled:false,
+      showDialog: false,
+      bizId: ''
     }
   },
   methods: {
@@ -81,6 +93,13 @@ export default {
         query: this.$route.query
       })
       window.open(routeData.href, '_blank')
+    },
+    // 打开跳转
+    openLog(){
+      this.bizId = this.transmitObj.aekoApprovalDetails.requirementAekoId || iMessage.error('AEKO id 获取失败')
+      this.bizId = Number(this.bizId)
+      if(this.bizId)
+      this.showDialog = true
     },
     gotoDBhistory() {
     }

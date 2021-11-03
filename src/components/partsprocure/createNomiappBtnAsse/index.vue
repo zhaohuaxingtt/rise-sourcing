@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-10-22 15:51:31
+ * @LastEditTime: 2021-10-26 21:45:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
@@ -48,7 +48,7 @@ export default{
       tableTitle:tableTitle,
       rate:'',
       ontologyList:[],
-      isUserPackage:false,
+      isUserPackage:true,
       loadingbtn:false
     }
   },
@@ -56,6 +56,13 @@ export default{
     totalSupplier(){
       const s = this.ontologyList.find(i=>i.partType == 'S')
       return s?s.sname:''
+    }
+  },
+  watch: {
+    diologShow(nv) {
+      if (!nv) {
+        this.isUserPackage = true
+      }
     }
   },
   methods:{
@@ -78,7 +85,11 @@ export default{
         iMessage.warn(this.language('DANGQLJHANYOUDUOGEJIAGONG','您已选择过零件类型含有加工装配的供应商，切勿重复选择！'))
       }else{
         this.ontologyList = [...new Set([...this.ontologyList,...this.tableList.filter(items=>items.supplierId === row.supplierId)])]
-        this.ontologyList.forEach(r => this.$refs.tabel.toggleRowSelection(r))
+        this.ontologyList.forEach(r => {
+          if(!r.addAssemblyNomi){
+            this.$refs.tabel.toggleRowSelection(r)
+          }
+        })
       }
     },
     selectData(row,select){
@@ -130,7 +141,8 @@ export default{
       this.rate = numberProcessor(a,2,false) > 100 ? 100:numberProcessor(a,2,false)
     },
     numberBlur(){
-      this.rate = this.rate.indexOf('%')>-1?this.rate:this.rate+'%'
+      const rate = this.rate.toString()
+      this.rate = rate.indexOf('%') >- 1 ? this.rate : (rate ? this.rate + '%' : '')
     },
     partsAssemblyOutPlans(){
       return partsAssemblyOutPlan(this.detailData().id)
@@ -204,7 +216,7 @@ export default{
       const sendData = {
         isUserPackage:this.isUserPackage,
         ontologyList:this.ontologyList.filter(r=>!r.needRow).filter(r=>!r.addAssemblyNomi),
-        rate:this.rate.indexOf('%')>-1?JSON.parse(JSON.stringify(this.rate)).substring(0,this.rate.length - 1):this.rate, //将rate后面的百分号去除
+        rate:this.rate.toString().indexOf('%')>-1?JSON.parse(JSON.stringify(this.rate)).substring(0,this.rate.length - 1):this.rate, //将rate后面的百分号去除
         purchaseProjectPartId:this.detailData().id
       }
       nomiAutoPartsAssembly(sendData).then(res=>{

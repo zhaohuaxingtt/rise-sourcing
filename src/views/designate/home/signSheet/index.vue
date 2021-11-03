@@ -5,8 +5,12 @@
 -->
 <template>
   <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE|签字单列表">
+    <div class="margin-bottom20 clearFloat">
+      <span class="font18 font-weight">{{ language("MQIANZIDAN", "M签字单") }}</span>
+    </div>
+
     <!-- 搜索区 -->
-    <search @search="getFetchData" />
+    <search @search="handSearch" ref="searchForm"/>
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -37,11 +41,11 @@
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- 签字单 -->
-      <template #id="scope">
+      <template #signCode="scope">
         <a
           href="javascript:;"
           @click="viewDetail(scope.row)">
-          {{scope.row.id}}
+          {{scope.row.signCode}}
         </a>
       </template>
       <!-- 提交日期 -->
@@ -123,6 +127,10 @@ export default {
     this.getFetchData()
   },
   methods: {
+    handSearch(data) {
+      this.page.currPage = 1
+      this.getFetchData()
+    },
     // 新建签字单
     createSignSheet() {
       let query = {}
@@ -158,10 +166,10 @@ export default {
         // window.open(routeData.href, '_blank')
     },
     // 获取定点管理列表
-    getFetchData(params = {}) {
+    getFetchData() {
       this.tableLoading = true
       getSignList({
-        ...params,
+         ...this.$refs.searchForm.form,
         current: this.page.currPage,
         size: this.page.pageSize
       }).then(res => {
@@ -306,7 +314,6 @@ export default {
         }
       }
     }
-
   }
 }
 </script>

@@ -36,7 +36,16 @@
               <iInput  v-if="item.props == 'sendCycle'" :disabled="disabled"  @input="handleNumber($event,basicInfo,'sendCycle')" v-model="basicInfo[item.props]"  />
               <iInput v-else :disabled="disabled" v-model="basicInfo[item.props]"  />
             </template>
-            <iSelect v-else-if="item.type === 'select'" v-model="basicInfo[item.props]" :disabled="disabled" >
+            <iSelect 
+              v-else-if="item.type === 'select'" 
+              :filterable="item.filterable"
+              :clearable="item.clearable"
+              v-model="basicInfo[item.props]" 
+              :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+              @visible-change="selectVisibleChange($event, item.selectOption)"
+              :disabled="disabled" 
+              
+            >
               <el-option
                 :value="item.value"
                 :label="item.label"
@@ -111,7 +120,6 @@ import {
   iInput,
   iSelect,
   iText,
-  iMessage,
 } from 'rise';
 import { previewBaicFrom,coverTableTitleCost } from '../../data'
 import tableList from "../tableList"
@@ -179,6 +187,9 @@ export default {
           ],
           fsList:[],
         },
+        selectOptionsCopy:{
+          fsList:[],
+        },
         tableData:[],
         tableTitle:coverTableTitleCost,
         tableLoading:false,
@@ -225,7 +236,7 @@ export default {
 
             this.tableData = costData;
           }else{
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         }).catch((err)=>{
           this.tableLoading = false;
@@ -241,8 +252,9 @@ export default {
               item.value = item.id;
             });
             this.selectOptions['fsList'] = data;
+            this.selectOptionsCopy['fsList'] = data;
           }else{
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         })
       },
@@ -289,19 +301,30 @@ export default {
           await checkAekoContentSubmitState(requirementAekoId).then((res)=>{
             if(res.code == 200){
               if(res.data){
-                this.$confirm(
-                  this.language('LK_TIPS_AKEO_COVER_DANGQIANFENGMIANXIAYOUDAISHENPIDENEIRONGBIAOTAI','当前封面下有待审批的内容表态，将和封面一同提交审批，请确认'),
-                  this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
-                  ).then(()=>{
+                const tips = this.language('LK_TIPS_AKEO_COVER_DANGQIANFENGMIANXIAYOUDAISHENPIDENEIRONGBIAOTAI','当前封面下有已提交待审批的内容表态，将和封面一同提交审批。');
+                this.$message({
+                  type:'success',
+                  message: tips,
+                  duration: 2000,
+                  onClose:()=>{
                     this.submitCover(data);
-                  }).catch(()=>{
-                    this.btnLoading = false;
-                  })
+                  }
+                })
+                // this.submitCover(data);
+
+                // this.$confirm(
+                //   this.language('LK_TIPS_AKEO_COVER_DANGQIANFENGMIANXIAYOUDAISHENPIDENEIRONGBIAOTAI','当前封面下有已提交待审批的内容表态，将和封面一同提交审批。'),
+                //   this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
+                //   ).then(()=>{
+                //     this.submitCover(data);
+                //   }).catch(()=>{
+                //     this.btnLoading = false;
+                //   })
               }else{
                 this.submitCover(data);
               }
             }else{
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
           }).catch(()=>{
             this.btnLoading = false;
@@ -312,10 +335,10 @@ export default {
             this.btnLoading = false;
             const {code} = res;
             if(code == 200){
-              iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+              this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
               this.getDetail();
             }else{
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
 
           }).catch((err)=>{
@@ -330,11 +353,11 @@ export default {
               this.btnLoading = false;
               const {code} = res;
               if(code == 200){
-                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                 this.$emit('getBbasicInfo');
                 this.getDetail();
               }else{
-                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
               }
 
             }).catch((err)=>{
@@ -351,7 +374,7 @@ export default {
           if(basic['required']){
               if((!data[basic['props']] && basic['type']=='input') || (data[basic['props']]==='' && basic['type']=='select')){
                 const tips = this.language(basicTitle[i]['labelKey'],basicTitle[i]['label'])+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
-                iMessage.warn(tips);
+                this.$message.warning(tips);
                 isValidate = false;
                 break;
               }
@@ -361,7 +384,7 @@ export default {
           // 备注
           if(isValidate && !data.remark){
             const tips = this.language('LK_BEIZHU','备注')+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
-            iMessage.warn(tips);
+            this.$message.warning(tips);
             isValidate = false;
           }
 
@@ -372,7 +395,7 @@ export default {
               const cost = coverCostsWithCarType[i] || {};
               if(!cost['investmentIncrease'] || !cost['materialIncrease'] ||!cost['otherCost']){
                 const tips = this.language('LK_AEKO_BIAODANNEIFEIYONG','表单内费用') + this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
-                iMessage.warn(tips);
+                this.$message.warning(tips);
                 isValidate = false;
                 break;
               }
@@ -401,14 +424,44 @@ export default {
         await coverCancel({aekoCoverId}).then((res)=>{
           this.btnLoading = false;
           if(res.code == 200){
-            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getDetail();
           }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         }).catch((err)=>{
           this.btnLoading = false;
         })
+      },
+
+      // 指定前期采购员模糊搜索处理
+      dataFilter(val,props){
+        // 去除前后空格
+        const trimVal = val.trim();
+        const { selectOptions=[],selectOptionsCopy=[]} = this;
+        if(trimVal){
+            // 人名要特殊处理 --- 可搜索英文去除大小写
+          if(props == 'fsList'){
+            const list = selectOptions[props].filter((item) => {
+              if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                return true
+              }
+            })
+            this.selectOptions[props] = list;
+          }
+        }else{
+          this.selectOptions[props] = selectOptionsCopy[props];
+        }
+      },
+      selectVisibleChange(visible, key){
+        switch(key) {
+          case "fsList":
+          if (!visible) {
+            this.selectOptions['fsList'] = this.selectOptionsCopy['fsList']
+          }
+          break
+          default:
+        }
       },
     }
 }

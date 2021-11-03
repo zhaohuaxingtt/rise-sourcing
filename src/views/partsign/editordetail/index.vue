@@ -95,7 +95,7 @@ export default {
     // 页面是否处于预览模式
     isDisabled() {
       return this.$route.meta.isPreview
-    }
+    },
   },
   created() {
     this.getPartInfo();
@@ -103,7 +103,7 @@ export default {
   methods: {
     //如果当前状态的信息单是已经签收的，则签收和退回需要变成灰色
     tpInfoStuats(){
-      if(this.partDetails.status == "已签收"){
+      if(this.partDetails.status == "已签收" || this.partDetails.status == "已更新" || this.partDetails.status == "已退回"){
         return true
       } else {
         return false  
@@ -121,7 +121,7 @@ export default {
         this.language('LK_WENXINTISHI','温馨提示'), 
         { confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }
       ).then(res=>{
-        this.patchRecords(2)
+        this.patchRecords("ACCEPTED")
       })
     },
     //退回
@@ -136,7 +136,7 @@ export default {
     sureBackmark(val) {
       this.backMark = val
       this.diologBack = false;
-      this.patchRecords(3)
+      this.patchRecords("REFUSED")
     },
     // 确定转派
     sureChangeItems(val) {

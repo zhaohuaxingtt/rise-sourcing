@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-09-28 13:54:19
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-01 16:42:07
+ * @LastEditors: Please set LastEditors
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js
  */
@@ -149,4 +149,10 @@ export const getEnumValue = function(fullKey) {
   } catch {
     return ""
   }
+}
+
+export const roundsType = {
+  zxjjys:'biddingRound',
+  putongxunjia:'commonRound',
+  zxkb:'bidRound'
 }

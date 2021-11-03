@@ -60,7 +60,7 @@
     </iSearch>
       <iCard :title="language('LK_AEKO_PARTSLIST','零件清单')" class="margin-top20">
         <!-- 按钮区域 -->
-        <template v-slot:header-control v-if="!isLinie">
+        <template v-slot:header-control v-if="!isLinie && queryFrom != 'check'">
             <div>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
@@ -218,6 +218,7 @@ export default {
         // 判断下多角色情况 若多角色时就判断url的跳转来源
         const {query} = this.$route;
         const {from=''} = query;
+        this.queryFrom = from;
         const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
         if(roleArr.length > 1){
             if(from == 'manage'){
@@ -248,6 +249,11 @@ export default {
         } else {
             this.SearchList = []
             this.tableTitle = []
+        }
+
+        // 当AEKO查看跳转过来的时候
+        if(from == 'check'){
+            this.tableTitle = linieTableTitle
         }
 
     },
@@ -292,6 +298,7 @@ export default {
             isCommodityCoordinator: false,
             isLinie: false,
             addPartskVisible:false,
+            queryFrom:null,
         }
     },
     methods:{

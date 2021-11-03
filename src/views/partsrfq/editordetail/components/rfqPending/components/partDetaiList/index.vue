@@ -7,15 +7,15 @@
 <template>
   <iCard>
     <div class="header flex-align-center" v-if="!disabled">
-      <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE">{{
+      <iButton @click="deleteItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE|删除">{{
           language('delete','删除')
         }}
       </iButton>
       <iButton @click="sendKM" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_SENDKM|发送KM">{{ language('FASONGKM', '发送KM') }}</iButton>
-      <iButton @click="showApplyPrice" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE">
+      <iButton @click="showApplyPrice" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
         {{ language('LK_XINSHENQINGCAIWUMUBIAOJIA','新申请财务目标价') }}
       </iButton>
-      <iButton @click="againApply" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE">
+      <iButton @click="againApply" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE|再申请财务目标价">
         {{ language('LK_ZAICISHENGQINGCAIWUMUBIAOJIA','再申请财务目标价') }}
       </iButton>
     </div>
@@ -36,7 +36,7 @@
           <icon symbol name="iconshaixuankuangsousuo" @click.native="queryParts" />
         </div>
       </iInput>
-      <iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">
+      <iButton @click="start" :loading="addLoding" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD|零件清单添加">
         {{ language('LK_TIANJIA','添加') }}
       </iButton>
     </div>
@@ -291,7 +291,7 @@ export default {
     queryParts() {
       this.queryForm = { ...this.queryForm, partNumList: this.partNumList }
       this.$refs.partsTable.page.currPage = 1
-      this.$refs.partsTable.getTableList()
+      this.$refs.partsTable.getTableList(this.queryForm)
     },
   },
 };

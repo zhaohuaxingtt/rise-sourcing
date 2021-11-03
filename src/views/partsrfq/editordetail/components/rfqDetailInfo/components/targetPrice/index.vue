@@ -4,7 +4,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('LK_CAIWUMUBIAOJIA','财务目标价')}}</span>
         <div class="floatright">
-          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_EXPORT">{{language('LK_DAOCHU','导出')}}</iButton>
+          <iButton @click="exports" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{language('LK_DAOCHU','导出')}}</iButton>
         </div>
       </div>
       <tablelist

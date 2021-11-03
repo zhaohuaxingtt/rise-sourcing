@@ -40,7 +40,7 @@
 				</div>
 				<!-- 保存 -->
 				<span class="save">
-					<iButton v-if="!disabled" @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE">{{ language('LK_BAOCUN','保存') }}
+					<iButton v-if="!disabled" @click="save" v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE|保存">{{ language('LK_BAOCUN','保存') }}
 					</iButton>
 				</span>
 

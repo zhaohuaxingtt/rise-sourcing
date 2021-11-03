@@ -3,7 +3,7 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
-          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_LOGISTICSREQUIREMENTS_EXPORT">{{ language('LK_DAOCHU','导出') }}</iButton>
+          <iButton @click="exports" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_LOGISTICSREQUIREMENTS_EXPORT|物流要求-导出">{{ language('LK_DAOCHU','导出') }}</iButton>
         </div>
       </div>
       <tablelist
@@ -90,10 +90,10 @@ export default {
         }
         try {
           const res = await pageByRfqId(req)
-          this.tableListData = res.data.partLogisticRequirementsVOList;
-          this.page.currPage = res.data.pageNum
-          this.page.pageSize = res.data.pageSize
-          this.page.totalCount = res.data.total
+          this.tableListData = res.data;
+          this.page.currPage = res.pageNum
+          this.page.pageSize = res.pageSize
+          this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;

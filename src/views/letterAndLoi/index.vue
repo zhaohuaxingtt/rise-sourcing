@@ -4,7 +4,7 @@
  * @Description: 定点信/LOI 列表页
 -->
 <template>
-  <iPage class="letterAndLoi">
+  <iPage class="letterAndLoi" v-permission.auto="LK_LETTERANDLOI_PAGE|定点信/LOI页面">
     <div class="headerNav">
     <iNavMvp :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
     <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" />
@@ -13,13 +13,13 @@
     <div class="headerNav-sub margin-top30">
       <iTabsList type="card" v-model="cardType">
       <template v-for="(item,index) in tabData">
-        <el-tab-pane lazy  :key="'tabData_'+index" :label="language(item.label,item.name)" :name="item.key"></el-tab-pane>
+        <el-tab-pane lazy  :key="'tabData_'+index" :label="language(item.label,item.name)" v-permission.dynamic="item.permissionKey" :name="item.key"></el-tab-pane>
       </template>
       </iTabsList>
     </div>
 
-    <letterList  class="margin-top30" v-if="cardType=='letter'"/>
-    <loiList  class="margin-top30" v-if="cardType=='LOI'"/>
+    <letterList  class="margin-top30" v-if="cardType=='letter'" v-permission.auto="LK_LETTERANDLOI_LETTER_PAGE|定点信页面" />
+    <loiList  class="margin-top30" v-if="cardType=='LOI'" v-permission.auto="LK_LETTERANDLOI_LOI_PAGE|LOI页面" />
   </iPage>
 </template>
 

@@ -10,7 +10,7 @@
             <div class="flex flex-between-center-center">
                 <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></span>
                 <span class="select-text margin-left10">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
-                <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType || nominationDisabled">
+                <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType || nominationDisabled || rsDisabled" v-permission.auto="NOMINATION_MENU_CHANGENOMINATETYPE|定点申请类型">
                     <el-option
                     :value="item.id"
                     :label="language(item.key,item.name)"
@@ -20,18 +20,18 @@
                 </iSelect>
             </div>
             <div class="btnList flex-align-center">
-                <iButton @click="gotoRsMainten" v-if="!nominationDisabled && designateType === 'MEETING'">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
-                <iButton v-if="showExport" @click="doExport">{{language('LK_DAOCHU','导出')}}</iButton>
-                <iButton v-if="!nominationDisabled" @click="submit" :loading="submitting">{{language('LK_TIJIAO','提交')}}</iButton>
-                <iButton v-if="!nominationDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton>
+                <iButton @click="gotoRsMainten" v-if="designateType === 'MEETING'" v-permission.auto="NOMINATION_MENU_RSTYPEMANTAINCE|RS单维护">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
+                <iButton v-if="showExport" @click="doExport" v-permission.auto="NOMINATION_MENU_EXPORT|导出">{{language('LK_DAOCHU','导出')}}</iButton>
+                <iButton v-if="!nominationDisabled && !rsDisabled" @click="submit" :loading="submitting" v-permission.auto="NOMINATION_MENU_SUBMIT|提交">{{language('LK_TIJIAO','提交')}}</iButton>
+                <iButton v-if="!nominationDisabled && !rsDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true" v-permission.auto="NOMINATION_MENU_METTINGRESULT|会议结论">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton>
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
-                <iButton v-if="isDecision" @click="preview">{{language('LK_YULAN','预览')}}</iButton>
-                <logButton class="margin-left20" @click="log"  />
+                <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
+                <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
             </div>
         </div>
         <!-- 步骤栏 -->
-        <div class="step-list flex-between-center-center margin-top30 margin-bottom30">
+        <div class="step-list flex-between-center-center margin-top30 margin-bottom30" v-permission.auto="NOMINATION_MOUDULES_STEPSTABLE|定点管理步骤栏">
             <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
                 <!-- 下一步的图标或者是决策资料的图标支持灰色可点击 -->
                 <div :class="(item.id === 5 || phaseType + 1 >=item.id) ? 'click-item step-list-item' : 'step-list-item' " @click="toAnyNomiStep(item)">
@@ -153,6 +153,7 @@ export default {
         // eslint-disable-next-line no-undef
         ...Vuex.mapState({
             nominationDisabled: state => state.nomination.nominationDisabled,
+            rsDisabled: state => state.nomination.rsDisabled,
         }),
         phaseType(){
             return this.$store.getters.phaseType;

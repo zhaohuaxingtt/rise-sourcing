@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-10-25 16:22:48
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-03 14:46:34
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -157,6 +157,15 @@
     </iSearch>
     <iCard class="margin-top20" :title="language('NEIRONGBIAOTAI', '内容表态')">
       <template v-slot:header-control>
+        <iButton v-if="!disabled && !cantBeCombine" :loading="declareToggleLoading" @click="combine" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_COMBINE|组合">
+          {{ language("nominationSuggestion_ZuHe", "组合") }}
+          <el-tooltip effect="light" popper-class="custom-card-tooltip" :content="language('LK_AEKONEIRONGZUHECOMMENTS','多变一或多变多组合操作，用于系统计算封面表态的单车成本变化。')" placement="top">
+            <i class="el-icon-warning-outline bule iconSuffix"></i>
+          </el-tooltip>
+        </iButton>
+        <iButton v-if="!disabled && cantBeCombine" @click="cancelCombination" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_CANCELCOMBINE|取消组合">{{language("nominationSuggestion_QuXiaoZuHe", "取消组合")}}</iButton>
+
+
         <iButton v-if="!disabled" :loading="declareToggleLoading" @click="handleDeclareToggle" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARETOGGLE|无关相关切换">{{ language("WUGUANXIANGGUANQIEHUAN", "⽆关相关切换") }}</iButton>
         <iButton v-if="!disabled" :loading="declareResetLoading" @click="handleDeclareReset" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_DECLARERESET|表态重置">{{ language("AEKO_YUANLINGJIANHAOCHONGZHI", "原零件号重置") }}</iButton>
         <iButton v-if="!disabled" :loading="declareSendSupplier" @click="sendSupplierPrice"  v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_GRANTSUPPLIERQUOTATION|发放供应商报价">{{ language("FAFANGGONGYINGSHANGBAOJIA", "发放供应商报价") }}</iButton>
@@ -211,10 +220,18 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          :span-method="spanMethod"
           @handleSelectionChange="handleSelectionChange"
         >
+          <template #groupName="scope">
+            <div class="aeko-combine-input" v-if="scope.row.groupCode">
+              <iInput type="textarea" v-if="!disabled" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName">
+              </iInput>
+              <span v-else>{{scope.row.groupName}}</span>
+            </div>
+          </template>
           <template #oldPartNumPreset="scope">
-            <iInput v-if="scope.row.status === 'EMPTY' && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly>
+            <iInput v-if="scope.row.status === 'EMPTY'||scope.row.status === 'TOBE_STATED' && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly>
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
@@ -248,11 +265,15 @@
             </iSelect>
           </template>
           <template #isMtz="scope">
-            <span v-if="scope.row.isMtz == 1" class="link-underline-disabled" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <!-- 是否待报价 -->
           <template #isReplace="scope">
             <span v-if="scope.row.isReplace!==null">{{scope.row.isReplace ? language('nominationLanguage.Yes','是')  : language('nominationLanguage.No','否')}}</span>
+          </template>
+          <!-- 合并原承运方式和新承运方式 -->
+          <template #tranWayDesc="scope">
+            <span>{{getRranWayDesc(scope.row)}}</span>
           </template>
         </tableList>
         <iPagination 
@@ -293,13 +314,16 @@ import { cloneDeep, chunk, debounce } from "lodash"
 import investCarTypeProDialog from './components/investCarTypeProDialog' 
 import priceAxisDialog from './components/priceAxisDialog' 
 
+// 组合相关功能
+import {combine} from './mixins/combine'
+
 
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog },
-  mixins: [ pageMixins ],
+  mixins: [ pageMixins, combine ],
   props: {
     aekoInfo: {
       type: Object,
@@ -308,7 +332,10 @@ export default {
   },
   computed: {
     disabled() {
-      return this.aekoInfo.aekoStatus == "CANCELED"
+      // AEKO状态为撤销以及从AEKO查看跳转过来的
+      const {query} = this.$route;
+      const {from=''} = query;
+      return this.aekoInfo.aekoStatus == "CANCELED"  || from == 'check';
     },
     // 判断展示车型还是车型项目 展示label
     showCarTypeLabel(){
@@ -370,6 +397,16 @@ export default {
         console.error(e)
       }
     }
+
+    const {query} = this.$route;
+    const {from=''} = query;
+    // AEKO查看跳转过来的数据table的新承运方式和原承运方式合并成一列
+    if(from == 'check'){
+      this.tableTitle = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc')
+    }else{
+      this.tableTitle = tableTitle.filter((item)=>item.props!='tranWayDesc')
+    }
+    
   },
   methods: {
     searchCartypeProject() {
@@ -484,7 +521,13 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.tableListData.map(o => {
+            // 分组管理需要备份原始分组名称
+            o.groupNameBak = o.groupName
+            return
+          })
           this.page.totalCount = res.total || 0
+          this.rowspan(this.tableListData)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -521,16 +564,28 @@ export default {
         path: '/aeko/quotationdetail',
         query: {
           quotationId,
+          editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status)
         }
       })
 
       window.open(route.href, "_blank")
     },
-    view() {},
+    // 查看mtz变更
+    view(row) {
+      this.$router.push({name: 'aekoMtzDetails', query: {
+        objectAekoPartId: row.objectAekoPartId,
+        aekoNum: this.aekoInfo.aekoCode
+      }})
+    },
     oldPartNumPresetSelect(row) {
       // if (!row.oldPartNumPreset) return
+      // 如果是从AEKO查看跳转过来的 不允许跳转
+      const routeQuery = this.$route.query;
+      const {from=''} = routeQuery;
+      if(from == 'check') return;
 
       const query = {
+        partNum: row.partNum,
         requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: row.objectAekoPartId,
         oldPartNumPreset: typeof row.oldPartNumPreset === "string" && row.oldPartNumPreset.trim()
@@ -665,8 +720,8 @@ export default {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIJIAOBIAOTAIDELINGJIAN", "请选择需要提交表态的零件"))
 
       for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
-        if (item.status !== "TOBE_STATED" && item.status !== "QUOTING" && item.status !== "QUOTED")
-          return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价的零件进行提交"))
+        if (!['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(item.status))
+          return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"))
       }
 
       this.submitLoading = true
@@ -797,7 +852,7 @@ export default {
           // 存在一品多点
           if(Array.isArray(res.data) && res.data.length > 0){
             this.$confirm(
-            this.language('LK_TIPS_AKEO_LINGJIANCUNZAIYIPINDUODIAN','当前选中的零件中存在一品多点，是否继续发送报价'),
+            this.language('LK_TIPS_AKEO_LINGJIANCUNZAIYIPINDUODIAN','当前选中的零件中存在一品多点，将同时发送报价至相关供应商，是否继续发送报价？'),
             this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
             {
                 confirmButtonText: this.language('nominationLanguage.Yes','是'),
@@ -921,6 +976,21 @@ export default {
       })
     },
 
+    // 承运方式展示字段
+    getRranWayDesc(row){
+      console.log(row,'getRranWayDesc');
+      if(row.originBnkTranWay==null && row.newBnkTranWay==null){
+        return ' '
+      }else if(row.originBnkTranWay == row.newBnkTranWay){ //若新原零件承运方式相同，则承运方式显示自运或者承运
+        return row.originBnkTranWayDesc
+      }else if(row.originBnkTranWay != row.newBnkTranWay){  //若新原零件承运方式不同 则承运方式显示原承运方式&（原）&-&新承运方式&（新）
+        return `${row.originBnkTranWayDesc || '-'}(原)-${row.newBnkTranWayDesc || '-'}(新)`
+      }else{
+        return ' '
+      }
+      
+    }
+
   },
 };
 </script>
@@ -1004,6 +1074,32 @@ export default {
   }
   .tipsIcon{
     transform: rotate(180deg);
+  }
+}
+::v-deep.el-button {
+  &:hover {
+    .iconSuffix {
+      color: #ffffff;
+    }
+  }
+}
+.el-table_1_column_3 .cell {
+  position: relative;
+}
+.aeko-combine-input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  border: 1px solid rgba(217, 222, 229, 0.5);
+  background: #fff;
+  ::v-deep.el-textarea {
+    .el-textarea__inner {
+      resize: none;
+      box-shadow: none;
+    }
   }
 }
 </style>

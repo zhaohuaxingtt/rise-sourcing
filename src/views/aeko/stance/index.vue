@@ -120,6 +120,7 @@
       <!-- 附件列表查看 -->
       <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     </div>
+    <iLog :show.sync="showDialog" :bizId="bizId" />
   </iPage>
 </template>
 
@@ -135,6 +136,7 @@ import {
   iPagination,
   icon,
   iMessage,
+  iLog
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
@@ -149,11 +151,13 @@ import {
   searchCoverStatus,
   searchCartypeProject,
   getSearchCartype,
+  getLogCount,
 } from '@/api/aeko/manage'
 import aekoSelect from '../components/aekoSelect'
+import { roleMixins } from "@/utils/roleMixins";
 export default {
     name:'aekoStanceList',
-    mixins: [pageMixins],
+    mixins: [pageMixins,roleMixins],
     components:{
       iPage,
       iNavMvp,
@@ -167,6 +171,7 @@ export default {
       icon,
       filesListDialog,
       aekoSelect,
+      iLog
     },
     data(){
       return{
@@ -198,6 +203,8 @@ export default {
           uploadFiles:false,
         },
         itemFileData:{},
+        showDialog: false,
+        bizId: ''
       }
     },
     computed: {
@@ -210,11 +217,12 @@ export default {
     created(){
       this.getList();
       this.getSearchList();
+      this.getLogCount();
       
-      
-      this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
-      this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
-      this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+      const roleList = this.roleList;
+      this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
+      this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+      this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
 
       const { isAekoManager,isCommodityCoordinator,isLinie,$route } = this;
       const role = {
@@ -239,6 +247,24 @@ export default {
 
     },
     methods:{
+      // 查询待办数量
+      getLogCount(){
+        let params = {
+          pageCode:'LINIE',  // LINIE: AEKO表态; ADMIN: AEKO管理; SPR: AEKO审批
+          id: this.userInfo.id
+        }
+        getLogCount(params).then(res=>{
+          if(res?.code==200){
+            this.navList.forEach(item=>{
+              if(item.name=='AEKO表态'){
+                item.message = res.data
+              }
+            })
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        })
+      },
       // 重置
       reset(){
         this.searchParams = {
@@ -378,7 +404,9 @@ export default {
 
       // 查看日志
       checkLog(row){
-         iMessage.warn('暂未开通此功能')
+        this.bizId = row.requirementAekoId || iMessage.error('AEKO id 获取失败')
+        if(this.bizId)
+        this.showDialog = true
       },
 
       // 查看描述

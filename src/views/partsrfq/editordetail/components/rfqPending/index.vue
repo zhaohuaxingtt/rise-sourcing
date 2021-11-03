@@ -6,9 +6,11 @@
  -->
 <template>
   <iTabsList type="card" @tab-click="handleTabClick"  class="margin-top20">
-    <el-tab-pane lazy :label="language(item.key,item.label)" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
-      <component :is="item.component" v-if="activityTabIndex === item.index"/>
-    </el-tab-pane>
+    <template v-for="item of tabList">
+      <el-tab-pane :label="language(item.key,item.label)" :key="item.label" v-if='showTab(item.index)' v-permisstion='item.permissionKey'>
+        <component :ref='item.component' :key='hashCode' :is="item.component" v-if="activityTabIndex === item.index" @jump='jump'/>
+      </el-tab-pane>
+    </template>
   </iTabsList>
 </template>
 
@@ -19,6 +21,7 @@ import BDL from "./components/BDL";
 import supplierScore from "./components/supplierScore";
 import moldBudgetApplication from "./components/moldBudgetApplication";
 import technicalSeminar from "./components/technicalSeminar";
+import inquiryManagement from 'front-bidding/src/views/manage/bidding/project/inquiry';
 export default {
   components: {
     iTabsList,
@@ -26,10 +29,13 @@ export default {
     BDL,
     supplierScore,
     moldBudgetApplication,
-    technicalSeminar
+    technicalSeminar,
+    inquiryManagement
   },
+  inject:['getbaseInfoData','registerFn'],
   data() {
     return {
+      hashCode:'12099923883',
       activityTabIndex: '0',
       tabList: [
         {
@@ -67,15 +73,46 @@ export default {
           permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE',
           key: 'LK_JISHUJIAOLIUHUI'
         },
+        {
+          index: '5',
+          label: '询价管理',
+          component: 'inquiryManagement',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE',
+          key: 'XUNJIAGUANLI'
+        }
       ]
     };
   },
+  computed:{
+    showTab: function(){
+      return index => {
+        if(index <= 4) {
+          return true
+        }else{
+          if(this.getbaseInfoData().currentRounds > 0){
+            return true
+          }else {
+            return false
+          }
+        }
+      }
+    } 
+  },
+  created(){
+    setTimeout(() => {
+      this.registerFn(this.updateTabs)
+    }, 1000);
+  },
   methods: {
+    jump(r){
+      window.open(process.env.VUE_APP_ONLINEBIDDING + (r.roundType == "02"?`bidding/open/${r.id}`:`bidding/competition/base/${r.id}`),'_blank')
+    },
     handleTabClick(target) {
       this.activityTabIndex = target.index
     },
-    updateTabs(parmras){
-    },
+    updateTabs(){
+      this.hashCode = Math.random() * 10000000000
+    } 
   }
 };
 </script>

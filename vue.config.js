@@ -58,7 +58,7 @@ module.exports = {
             compress: {
               drop_debugger: true,
               drop_console: true,
-              pure_funcs: ['console.log'],
+              pure_funcs: ['console.log','console.warn'],
             },
           },
           sourceMap: false,
@@ -117,10 +117,32 @@ module.exports = {
     https: false,
     hot: true,
     proxy: {
+      '/supplierApiDL': {
+        target: 'http://10.122.17.38:8025',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/supplierApiDL': '',
+        },
+      },
+      '/supplierApiWJS': {
+        target: 'http://10.122.17.38:8025',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/supplierApiWJS': '',
+        },
+      },
+      "/supplierservice": {
+        target: "http://10.122.17.38:8010",
+        changeOrigin: true,
+      },
+      // ------------------ 共用地址 end ------------------------------
+      // ------------------ 共用地址 start ----------------------------
+      "/supplier": {
+        target: "http://10.122.17.38:8017",
+        changeOrigin: true
+      },
       '/projectApi': {
         target: 'http://10.122.17.38:8005',
-        // target: 'http://10.122.17.38:8005', //dev
-        // target: 'http://10.160.141.116:10085',
         changeOrigin: true,
         pathRewrite: {
           '^/projectApi': '',
@@ -133,14 +155,6 @@ module.exports = {
           '^/approvalApi': '',
         },
       },
-      '/api': {
-        // target: 'http://10.160.138.38:8788',
-        target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': '',
-        },
-      },
       '/quotationApiDL': {
         // target: 'http://10.160.138.38:8788',
         target: 'http://10.122.17.38:8025',
@@ -149,15 +163,7 @@ module.exports = {
           '^/quotationApiDL': '',
         },
       },
-      '/supplierApiDL': {
-        // 供应商
-        // target: 'http://10.160.138.216:9029',
-        target: 'http://10.122.17.38:8025',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierApiDL': '',
-        },
-      },
+
       '/supplierApiWdl': {
         //   供应商
         target: 'http://10.122.17.38:8025',
@@ -182,7 +188,7 @@ module.exports = {
           '^/sourcingApiBob': '',
         },
       },
-      supplierApiMH: {
+      '/supplierApiMH': {
         target: 'http://10.122.17.38:8025',
         // target: 'http://192.168.50.50:8029/',
         changeOrigin: true,
@@ -190,7 +196,7 @@ module.exports = {
           '^/supplierApiMH': '',
         },
       },
-      supplierApiWDL: {
+      '/supplierApiWDL': {
         target: 'http://10.122.17.38:8025',
         // target: 'http://10.160.137.16:8029/',
         changeOrigin: true,
@@ -198,7 +204,7 @@ module.exports = {
           '^/supplierApiWDL': '',
         },
       },
-      supplierApiTYP: {
+      '/supplierApiTYP': {
         target: 'http://10.122.17.38:8025',
         // target: 'http://192.168.50.152:8029/',
         changeOrigin: true,
@@ -206,23 +212,11 @@ module.exports = {
           '^/supplierApiTYP': '',
         },
       },
-      procurementrequirementZZB: {
+      '/procurementrequirementZZB': {
         target: 'http://10.122.17.38:8023',
-        // target: 'http://10.160.141.45:8023/',
-        // target: 'http://10.160.136.144:8023/',
         changeOrigin: true,
         pathRewrite: {
           '^/procurementrequirementZZB': '',
-        },
-      },
-      '/supplierApiWJS': {
-        //王洁松服务地址
-        // target: 'http://192.168.50.89:8029',
-        // target: 'http://192.168.50.239:8029',
-        target: 'http://10.122.17.38:8025',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierApiWJS': '',
         },
       },
       '/mock': {
@@ -240,26 +234,20 @@ module.exports = {
         },
       },
       '/tpInfoApi': {
-        //高攀弘服务地址http://10.122.17.38:8023/
         target: 'http://10.122.17.38:8023',
-        //target: 'http://10.160.143.194:8023',
-        // target: 'http://10.160.141.45:8023',
         changeOrigin: true,
         pathRewrite: {
           '^/tpInfoApi': '',
         },
       },
       '/partProcureApi': {
-        //赵文鹏服务地址
         target: 'http://10.122.17.38:8025',
-        //target: 'http://10.160.137.254:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/partProcureApi': '',
         },
       },
       '/commonApi': {
-        //向东，common模块的api地址
         target: 'http://10.122.17.38:8014',
         changeOrigin: true,
         pathRewrite: {
@@ -267,15 +255,7 @@ module.exports = {
         },
       },
       '/rfqApi': {
-        //周德华，rfq模块的api地址
         target: 'http://10.122.17.38:8025',
-        // target: 'http://10.160.143.190:8025',
-        // target: 'http://rise-front-web.apps.vmocp-dev.csvw.com', // SIT
-        // target: 'http://10.160.137.16:8029',  // 周德华
-        // target: 'http://192.168.50.89:8029', // 王洁松
-        // target: 'http://10.160.141.72:8029', // 李自豪
-        // target: 'http://192.168.50.152:8029', // 谭易平
-        // target: 'http://10.160.137.16:8029', // 马浩
         changeOrigin: true,
         pathRewrite: {
           '^/rfqApi': '',
@@ -318,20 +298,13 @@ module.exports = {
         },
       },
       '/ws2Api': {
-        // ws2Api.../ 王鹏霄
-        // target: 'http://10.122.17.38:8022', //	dev
         target: 'http://10.122.17.38:8022',	//	vmsit
-        // target: 'http://192.168.50.160:8022', // 圆圆
-        // target: 'http://192.168.50.166:8022', // 立立
-        // target: 'http://192.168.50.94:8022',// 永厚
-        // target: 'http://140cc4e9da89.ngrok.io',
         changeOrigin: true,
         pathRewrite: {
           '^/ws2Api': '',
         },
       },
       '/supplierApiRfqlist': {
-        //   供应商
         target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
@@ -339,7 +312,6 @@ module.exports = {
         },
       },
       '/supplierApi': {
-        //   供应商
         target: 'http://10.122.17.38:8010',
         changeOrigin: true,
         pathRewrite: {
@@ -347,12 +319,7 @@ module.exports = {
         },
       },
       '/quotationApi': {
-        // 供应商报价
-        // target: 'http://10.160.136.42:8021',
         target: 'http://10.122.17.38:8025/',
-        // target: 'http://10.160.136.83:8021', // 智博
-        // target: 'http://10.160.138.206:8093', // 顾晓炜
-        // target: 'http://10.122.17.38:8093', // 高攀弘
         changeOrigin: true,
         pathRewrite: {
           '^/quotationApi': '',
@@ -366,8 +333,6 @@ module.exports = {
         },
       },
       '/aonApi': {
-        //  target: 'http://10.122.17.38:8036',
-        // target: 'http://10.160.143.174:8036',
         target: 'http://10.122.17.38:8036',
         changeOrigin: true,
         pathRewrite: {
@@ -394,6 +359,10 @@ module.exports = {
         pathRewrite: {
           '^/biddingApi': '',
         },
+      },
+      '/bidding': {
+        target: 'http://10.122.17.38:8056',
+        changeOrigin: true,
       },
       //cf组件代理
       '/baseInfo': {
@@ -459,13 +428,17 @@ module.exports = {
         },
       },
       '/nominateRecord':{
-        //龙行伟定点记录接口
-        // target:'http://10.160.141.127:8888',
-        // target:'http://10.160.140.240:8888',
-        target:'http://10.160.139.195:8888',
+        target: 'http://10.160.141.219:8888',
         changeOrigin:true,
         pathRewrite: {
           '^/nominateRecord':'',
+        }
+      },
+      '/priceRecord':{
+        target: 'http://10.160.143.208:8026',
+        changeOrigin:true,
+        pathRewrite: {
+          '^/priceRecord':'',
         }
       }
     },

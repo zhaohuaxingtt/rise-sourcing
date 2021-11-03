@@ -34,7 +34,7 @@
         :cellClassName="cellClass"
         @handleSelectionChange="handleSelectionChange">
         <template #sendKmFlag="scope">
-          <span>{{ scope.row.cbdLevel == "L3" ? scope.row.sendKmFlag : "" }}</span>
+          <span>{{ scope.row.cbdLevelCode == "3" ? scope.row.sendKmFlag : "" }}</span>
         </template>  
       </tableList>
     </div>
@@ -143,12 +143,12 @@ export default {
       .catch(() => this.loading = false)
     },
     handleSelectionChange(list) {
-      this.multipleSelection = list.filter(item => item.cbdLevel === "L3")
+      this.multipleSelection = list.filter(item => item.cbdLevelCode == "3")
     },
     // 提交
     handleSend() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
-      if (this.multipleSelection.some(item => item.cbdLevel != "L3")) return iMessage.warn(this.language("QINGXUANZECBDCENGJIWEIL3DESHUJU", "请选择CBD层级为L3的数据"))
+      if (this.multipleSelection.some(item => item.cbdLevelCode != "3")) return iMessage.warn(this.language("QINGXUANZECBDCENGJIWEIL3DESHUJU", "请选择CBD层级为L3的数据"))
       if (this.multipleSelection.some(item => item.sendKmFlag == 1)) return iMessage.warn(this.language("QINGWUXUANZEYIFASONGDESHUJU", "请勿选择已发送的数据"))
 
       this.sendLoading = true
@@ -179,7 +179,7 @@ export default {
     // 撤回
     handleRecall() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
-      if (this.multipleSelection.some(item => item.cbdLevel != "L3")) return iMessage.warn(this.language("QINGXUANZECBDCENGJIWEIL3DESHUJU", "请选择CBD层级为L3的数据"))
+      if (this.multipleSelection.some(item => item.cbdLevelCode != "3")) return iMessage.warn(this.language("QINGXUANZECBDCENGJIWEIL3DESHUJU", "请选择CBD层级为L3的数据"))
       if (this.multipleSelection.some(item => item.sendKmFlag == 0)) return iMessage.warn(this.language("QINGWUXUANZEWEIFASONGDESHUJU", "请勿选择未发送的数据"))
 
       this.recallLoading = true
@@ -201,7 +201,7 @@ export default {
       .catch(() => this.recallLoading = false)
     },
     cellClass(row) {
-      if (row.row.cbdLevel != "L3" || !row.row.isQuotationCbd || row.row.isQuotationCbd === "否") {
+      if (row.row.cbdLevelCode != "3" || !row.row.isQuotationCbd || row.row.isQuotationCbd === "否") {
         return "hideCheckbox"
       }
     }

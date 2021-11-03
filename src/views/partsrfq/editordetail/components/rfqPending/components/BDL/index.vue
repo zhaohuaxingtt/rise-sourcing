@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
- * @LastEditors: Please set LastEditors
+ * @LastEditors: Hao,Jiang
 * @Description: BDL列表
  -->
 <template>
@@ -17,14 +17,14 @@
       </div>
       <div v-if="!disabled">
         <div v-if="!addCustomStatus">
-          <iButton v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" @click="handleAdd">{{ language("TIANJIA", "添加") }}</iButton>
-          <!-- <iButton v-if="editSelectTableDataCache.length" @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ language('LK_QUEREN','确认') }}</iButton> -->
-          <iButton v-if="selectTableDataCache.length" @click="handleDelete" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER" :loading="deleteLoading">{{ language('LK_SHANCHUGONGYINGSHANG','删除供应商') }}</iButton>
-          <iButton @click="addCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM">{{ language('LK_TIANJIAZIDINGYIPINGFENXIANG','添加自定义评分项') }}</iButton>
+          <iButton v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL|BDL添加" @click="handleAdd">{{ language("TIANJIA", "添加") }}</iButton>
+          <!-- <iButton v-if="editSelectTableDataCache.length" @click="handleSave" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL|确认" :loading="saveLoading">{{ language('LK_QUEREN','确认') }}</iButton> -->
+          <iButton v-if="selectTableDataCache.length" @click="handleDelete" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER|BDL删除供应商" :loading="deleteLoading">{{ language('LK_SHANCHUGONGYINGSHANG','删除供应商') }}</iButton>
+          <iButton @click="addCustom" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM|添加自定义评分项">{{ language('LK_TIANJIAZIDINGYIPINGFENXIANG','添加自定义评分项') }}</iButton>
         </div>
         <div v-else>
-          <iButton @click="handleSaveCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SAVECUSTOM">{{ language('LK_BAOCUN','保存') }}</iButton>
-          <iButton @click="handleBack" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BACKCUSTOM">{{ language('LK_FANHUI','返回') }}</iButton>
+          <iButton @click="handleSaveCustom" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SAVECUSTOM|BDL保存">{{ language('LK_BAOCUN','保存') }}</iButton>
+          <iButton @click="handleBack" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_BACKCUSTOM|返回">{{ language('LK_FANHUI','返回') }}</iButton>
         </div>
       </div>
     </div>

@@ -1,9 +1,14 @@
 <template>
   <div>
     <i-card>
-      <span class="card-title"
-        >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatus }}</span
-      >
+      <div class="margin-bottom15">
+        <span class="card-title"
+          >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatus }}</span>
+        <span class="floatright">
+          <iButton @click="toMtzUrl">{{ language('LK_CHAKANMTZBIANGENG',"查看MTZ变更") }}</iButton>
+        </span>
+      </div>
+      
       <i-table-custom
         class="margin-top24"
         :columns="recommendationFormPendingApprovalTitle"
@@ -32,7 +37,7 @@
 </template>
 
 <script>
-import { iCard, iPagination, iMessage } from "rise";
+import { iCard, iPagination, iButton, iMessage } from "rise";
 import iTableCustom from "@/components/iTableCustom";
 import { pageMixins } from "@/utils/pageMixins";
 import filters from "@/utils/filters";
@@ -44,6 +49,7 @@ export default {
     iCard,
     iTableCustom,
     iPagination,
+    iButton
   },
   props: {
     auditContents: { type: Object, require: true, default: () => [] },
@@ -192,6 +198,7 @@ export default {
           tooltip: true,
         },
       ],
+      transmitObj: {}
     };
   },
   created() {
@@ -203,6 +210,26 @@ export default {
     this.auditContentStatus = sessionStorage.getItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`)
   },
   methods: {
+    // 查看mtz变更
+    toMtzUrl() {
+      !this.transmitObj && (this.transmitObj = {})
+      const aekoNum = this.transmitObj.aekoApprovalDetails.aekoNum
+      const workflow = this.transmitObj.aekoApprovalDetails.workFlowDTOS || []
+      const workflowDecy = window.btoa(unescape(encodeURIComponent(JSON.stringify(workflow))))
+      const requirementAekoId = this.transmitObj.aekoApprovalDetails.requirementAekoId
+
+      const params = {
+        name: 'aekoMtzlist',
+        query: {
+          requirementAekoId,
+          aekoNum,
+          workflow: workflowDecy
+        }
+      }
+      const routeData = this.$router.resolve(params)
+      window.open(routeData.href, '_blank')
+      // console.log(params, this.transmitObj)
+    },
     loadRecommendData() {
       this.recommendationFormPendingApprovalList = this.auditContents.slice(
         (this.page.currPage - 1) * this.page.pageSize,

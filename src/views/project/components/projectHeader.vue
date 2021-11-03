@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-14 14:00:08
+ * @LastEditTime: 2021-11-03 12:44:34
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -14,12 +14,13 @@
       <iNavMvp v-if="subNavList" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
       <logButton class="margin-left20" @click="toLogPage" />
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
+      <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
     </div>
   </div>
 </template>
 
 <script>
-import { iNavMvp, icon } from "rise"
+import { iNavMvp, icon, iLog } from "rise"
 import { TAB } from "./data"
 import logButton from "@/components/logButton"
 
@@ -27,7 +28,14 @@ export default {
   components: {
     iNavMvp,
     logButton,
-    icon
+    icon,
+    iLog
+  },
+  data() {
+    return {
+      bizId: 'scheduleRecordId',
+      showDialog: false
+    }
   },
   props: {
     // eslint-disable-next-line no-undef
@@ -42,9 +50,9 @@ export default {
   methods: {
     // 跳转查看日志
     toLogPage() {
-      const id = 'scheduleRecordId'
-      const router =  this.$router.resolve({path: `/log?recordId=${id}`})
-      window.open(router.href, '_blank')
+      this.showDialog = true
+      // const router =  this.$router.resolve({path: `/log?recordId=${id}`})
+      // window.open(router.href, '_blank')
     },
     gotoDBhistory() {
       const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`})

@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-09-13 18:56:05
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-01 17:28:45
+ * @LastEditors: Hao,Jiang
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
 -->
@@ -20,7 +20,7 @@
               <span>{{language('LK_LINGJIANQIANSHOU','零件签收')}}</span>
             </div>
             <div class="dashboard-card-content">
-              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong class="cursor" @click="toLink('/sourceinquirypoint/sourcing/partsign')">{{basicData.partSigningNum || 0}}</strong></dd></dl>
+              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong class="cursor" @click="toLink('/sourceinquirypoint/sourcing/partsign?currentUser=true')">{{basicData.partSigningNum || 0}}</strong></dd></dl>
             </div>
           </iCard>
         </el-col>
@@ -35,15 +35,15 @@
               <dl>
                 <dt>{{language('WEICHUANGJIANCAIGOUXIANGMU','未创建采购项目')}}</dt>
                 <dd>
-                <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
-                /<span class="cursor"  @click="toLink(unCrePartsprocureURL)">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItemSum || 0}}</span>
+                <strong class="note cursor" @click="toLink(unCrePartsprocureURL(true))">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItem || 0}}</strong>
+                /<span class="cursor"  @click="toLink(unCrePartsprocureURL(false))">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notPurchaseItemSum || 0}}</span>
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('WEIJIARURFQ','未加入RFQ')}}</dt>
                 <dd>
-                  <strong class="note">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
-                  /<span class="cursor" @click="toLink(unJoinRFQURL)">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfqSum || 0}}</span>
+                  <strong class="note cursor" @click="toLink(unJoinRFQURL(true))">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfq || 0}}</strong>
+                  /<span class="cursor" @click="toLink(unJoinRFQURL(false))">{{basicData.purchaseItemOverviewDTO && basicData.purchaseItemOverviewDTO.notJoinRfqSum || 0}}</span>
                 </dd>
               </dl>
             </div>
@@ -61,14 +61,14 @@
                 <dl>
                   <dt>{{language('WEIZHUANTANPAN','未转谈判')}}</dt>
                   <dd>
-                    <strong class="note">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.notNego || 0}}</strong>
-                    /{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.notNegoSum || 0}}
+                    <strong class="note cursor" @click="toLink(rfqURL('未转谈判', true, true))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.notNego || 0}}</strong>
+                    /<span class="cursor" @click="toLink(rfqURL('未转谈判', false, true))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.notNegoSum || 0}}</span>
                   </dd>
                 </dl>
                 <dl>
                   <dt>{{language('DAISHANGHUIORLIUZHUAN','待上会/流转')}}</dt>
                   <dd>
-                    <strong class="note">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.circulation || 0}}</strong>
+                    <strong class="note cursor" @click="toLink(rfqURL('待上会/流转', true, true))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.circulation || 0}}</strong>
                   </dd>
                 </dl>
               </div>
@@ -76,22 +76,22 @@
                 <dl>
                   <dt>{{language('LK_CAIWUMUBIAOJIA','财务目标价')}}</dt>
                   <dd>
-                    <strong class="note">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.financialPrice || 0}}</strong>
-                    /{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.financialPriceSum || 0}}
+                    <strong class="note cursor" @click="toLink(rfqURL('财务目标价', true))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.financialPrice || 0}}</strong>
+                    /<span class="cursor" @click="toLink(rfqURL('财务目标价', false))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.financialPriceSum || 0}}</span>
                   </dd>
                 </dl>
                 <dl>
                   <dt>{{language('EPPINGFEN','EP评分')}}</dt>
                   <dd>
-                    <strong class="note">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.epScore || 0}}</strong>
-                    /{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.epScoreSum || 0}}
+                    <strong class="note cursor" @click="toLink(rfqURL('EP评分', true))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.epScore || 0}}</strong>
+                    /<span class="cursor" @click="toLink(rfqURL('EP评分', false))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.epScoreSum || 0}}</span>
                   </dd>
                 </dl>
                 <dl>
                   <dt>{{language('MQPINGFEN','MQ评分')}}</dt>
                   <dd>
-                    <strong class="note">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.mqScore || 0}}</strong>
-                    /{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.mqScoreSum || 0}}
+                    <strong class="note cursor" @click="toLink(rfqURL('MQ评分', true))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.mqScore || 0}}</strong>
+                    /<span class="cursor" @click="toLink(rfqURL('MQ评分', false))">{{basicData.rfqOverviewDTO && basicData.rfqOverviewDTO.mqScoreSum || 0}}</span>
                   </dd>
                 </dl>
               </div>
@@ -107,8 +107,13 @@
             </div>
             <div class="dashboard-card-content">
               <dl>
-                <dt>{{language('LK_DAIDINGDIAN','待定点')}}</dt>
-                <dd><strong class="note">{{basicData.nomiManageNum || 0}}</strong>
+                <dt>{{language('LK_SHANGHUIZHONG','上会中')}}</dt>
+                <dd><strong class="note cursor" @click="toLink(nomiURL('上会'))">{{basicData.nomiManageDTO && basicData.nomiManageDTO.meetingNum || 0}}</strong>
+                </dd>
+              </dl>
+              <dl>
+                <dt>{{language('LK_LIUZHUANZHONG','流转中')}}</dt>
+                <dd><strong class="note cursor" @click="toLink(nomiURL('流转'))">{{basicData.nomiManageDTO &&  basicData.nomiManageDTO.tranformNum || 0}}</strong>
                 </dd>
               </dl>
             </div>
@@ -125,13 +130,13 @@
               <dl>
                 <dt>{{language('LK_DAIQUERENDINGDIANXIN','待确认定点信')}}</dt>
                 <dd>
-                  <strong class="cursor" @click="toLink(letterURL)">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLetterNum || 0}}</strong>
+                  <strong class="cursor" @click="toLink(letterAndLoiURL(1))">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLetterNum || 0}}</strong>
                 </dd>
               </dl>
               <dl>
                 <dt>{{language('LK_DAIQUERENLOI','待确认LOI')}}</dt>
                 <dd>
-                  <strong class="cursor" @click="toLink(loiURL)">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLoiNum || 0}}</strong>
+                  <strong class="cursor" @click="toLink(letterAndLoiURL(2))">{{basicData.rfqOverviewDTO && basicData.nomiLetterOverviewDTO.nomiLoiNum || 0}}</strong>
                 </dd>
               </dl>
             </div>
@@ -160,6 +165,12 @@ import pieCharts from './components/pieCharts'
 import {sourcingOverview} from '@/api/dashboard'
 import {iPage, iCard, icon, iMessage} from 'rise'
 import {roleMixins} from '@/utils/roleMixins'
+import {selectDictByKeyss} from '@/api/dictionary'
+// 定点类型
+import { applyType } from '@/layout/nomination/components/data'
+import {
+  nomiApplicationStatus
+} from '@/views/designate/home/components/options'
 
 export default {
   mixins: [roleMixins],
@@ -171,51 +182,107 @@ export default {
     nomicharts,
     pieCharts
   },
-  computed: {
-    // 前期采购员待确认定点信链接
-    letterURL() {
-      let status = ''
-      // 前期采购员
-      if (this.userRole.isQQCG) status = 'CSF_HANDLING'
-      // 专业采购员
-      if (this.userRole.isZYCG) status = 'LINIE_CONFIRING'
-      // 前期采购员 && 专业采购员
-      if (this.userRole.isZYCG && this.userRole.isQQCG) status = 'CSF_HANDLING'
-      return `/sourceinquirypoint/sourcing/partsletter?status=${status}${this.userRoleParams(['csfCssName'])}`
-    },
-    // 前期采购员待确认定点信链接
-    loiURL() {
-      let status = ''
-      // 前期采购员
-      if (this.userRole.isQQCG) status = 'CSF_HANDLING'
-      // 专业采购员
-      if (this.userRole.isZYCG) status = 'LINIE_CONFIRING'
-      // 前期采购员 && 专业采购员
-      if (this.userRole.isZYCG && this.userRole.isQQCG) status = 'CSF_HANDLING'
-      return `/sourceinquirypoint/sourcing/partsletter?cardType=LOI&loiStatus=${status}${this.userRoleParams(['csfName'])}`
-    },
-    // 未创建采购项目链接
-    unCrePartsprocureURL() {
-      return `/sourceinquirypoint/sourcing/partsprocure?status=10${this.userRoleParams()}`
-    },
-    // 未创建采购项目链接
-    unJoinRFQURL() {
-      return `/sourceinquirypoint/sourcing/partsprocure?status=11${this.userRoleParams()}`
-    }
-  },
   data() {
     return {
       // 基本卡片统计信息
       basicData: {},
       materialGroupData: {},
       circulationData: {},
-      loading: false
+      loading: false,
+      // 跳采购项目建立
+      options: {}
     }
   },
   created() {
     this.init()
+    this.getSearchOptions()
   },
   methods: {
+    // 未创建采购项目链接
+    unCrePartsprocureURL(isDelay=false) {
+      const data = (this.options['RFQ_PART_STATUS_CODE_TYPE'] || []).find(o => o.name === '无采购项目编号')
+      const code = data && data.code || 'NO_NR'
+      return `/sourceinquirypoint/sourcing/partsprocure?status=${code}&currentUser=true&isDelay=${isDelay}`
+    },
+    // 未加入RFQ
+    unJoinRFQURL(isDelay=false) {
+      const data = (this.options['RFQ_PART_STATUS_CODE_TYPE'] || []).find(o => o.name === '未加入RFQ')
+      const code = data && data.code || 'NOT_IN_RFQ'
+      return `/sourceinquirypoint/sourcing/partsprocure?status=${code}&currentUser=true&isDelay=${isDelay}`
+    },
+    // rfq链接
+    /**
+     * @description: 
+     * @param {*} name 名称
+     * @param {*} isDelay 是否统计延误数据
+     * @param {*} isRfq 是否跳转到rfq管理
+     * @return {*}
+     */    
+    rfqURL(name, isDelay=false, isRfq = false) {
+      const data = (this.options['RFQ_OVERVIEW_TYPE'] || []).find(o => o.name === name)
+      const code = data && data.code || ''
+      const URL = isRfq ? '/sourceinquirypoint/sourcing/partsrfq':'/sourceinquirypoint/sourcing/reportmgmt/details'
+      return `${URL}?type=${code}&currentUser=true&isDelay=${isDelay}`
+    },
+    // 前期采购员待确认定点信链接
+    // type:1 定点信 2：LOI
+    letterAndLoiURL(type) {
+      // let status = ''
+      // // 只查询 定点信 前期处理中状态
+      // const letterData = (this.options['NOMINATION_LETTER_STATUS'] || []).find(o => o.name === '前期处理中')
+      // const letterCode = letterData && letterData.code || 'CSF_HANDLING'
+      // // 只查询 LOI 前期处理中状态
+      // const loiData = (this.options['NOMINATION_LETTER_STATUS'] || []).find(o => o.name === '前期处理中')
+      // const loiCode = loiData && loiData.code || 'LINIE_CONFIRING'
+      // // 前期采购员
+      // if (this.userRole.isQQCG) status = letterCode
+      // // 专业采购员
+      // if (this.userRole.isZYCG) status = loiCode
+      // // 前期采购员 && 专业采购员
+      // if (this.userRole.isZYCG && this.userRole.isQQCG) status = letterCode
+
+      // const types = {
+      //   1 : `/sourceinquirypoint/sourcing/partsletter?status=${status}&currentUser=true&isDelay=false`,
+      //   2 : `/sourceinquirypoint/sourcing/partsletter?cardType=LOI&loiStatus=${status}&currentUser=true&isDelay=false`
+      // }
+      const types = {
+        1 : `/sourceinquirypoint/sourcing/partsletter?currentUser=true&isDelay=false`,
+        2 : `/sourceinquirypoint/sourcing/partsletter?cardType=LOI&currentUser=true&isDelay=false`
+      }
+      return types[type]
+    },
+    nomiURL(type){
+      const data = applyType.find(o => o.name === type)
+      const code = data && data.id || ''
+      const applicationStatus = nomiApplicationStatus.find(o => o.name === '流转中')
+      const applicationStatusCode = applicationStatus && applicationStatus.id || ''
+      const nominateParams = type === '流转' ? `nominateProcessType=${code}&applicationStatus=${applicationStatusCode}&` : ''
+      return `/sourcing/partsnomination?${nominateParams}currentUser=true&isDelay=true`
+    },
+    // 获取下拉值
+    getSearchOptions() {
+      const types = [
+        // 跳转采购项目建立，零件状态列表
+        'RFQ_PART_STATUS_CODE_TYPE',
+        // RFQ 时间轴状态列表
+        'RFQ_OVERVIEW_TYPE',
+        // 定点信状态
+        'NOMINATION_LETTER_STATUS',
+        // LOI 状态
+        'NOMINATION_LOI_STATUS'
+      ];
+      selectDictByKeyss(types).then((res) => {
+        types.forEach(optionKey => {
+          const options = res.data && res.data[optionKey] || [];
+          this.options[optionKey] = options.map(o => {
+            o.value = o.value || o.name || o.nameEn
+            if (this.lang) o.value = this.$i18n.locale === 'zh' ? o.value : o.nameEn
+            return o
+          })
+        })
+        
+      });
+    },
     // 专业采购员和前期采购员要传的参数
     userRoleParams(args = []) {
       let paramTxt = ''
@@ -246,6 +313,7 @@ export default {
           const materialGroupOverviewDTO = res.data.materialGroupOverviewDTO || []
           this.materialGroupData = {
             freqData: materialGroupOverviewDTO.map(o => o.avgPeriodPercent || 0) || [],
+            partsProcureData: materialGroupOverviewDTO.map(o => o.timeRateSum || 0) || [],
             nomiData: materialGroupOverviewDTO.map(o => o.timeRatePercent) || [],
             fugroup: materialGroupOverviewDTO.map(o => `${o.materialGroupName} ${o.materialCode}`) || [],
           }

@@ -28,6 +28,8 @@ export const TAB = [
         value: 3,
         name: "AEKO查看",
         message: 0,
+        url: "/aeko/checklist",
+        activePath: "/checklist",
         key: "LK_AEKOCHAKAN",
         permissionKey:'AEKO_CHECK',
         role:['isAekoManager','isCommodityCoordinator','isLinie'],
@@ -64,7 +66,36 @@ export const filterRole = function(role = {}){
         }
     })
     const filterTab = TAB.filter((item)=>item.show);
+    filterTab.map((item,index)=>{
+        item.value = index+1;
+    })
     return filterTab
 }
 
+
+export const getLeftTab = function(index=0){
+    let leftTab = [
+        {
+            value: 1,
+            name: 'AEKO操作',
+            message: 0,
+            key: 'LK_AEKOCAOZUO'
+        },
+        {
+            value: 2,
+            name: 'AEKO报表',
+            message: 0,
+            url: '/projectmgt/projectoverview',
+            activePath: 'projectoverview',
+            key: 'LK_AEKOBAOBIAO',
+            permissionKey:'LK_AEKOBAOBIAO',
+        },
+    ];
+    const item = TAB[index];
+    leftTab[0].url = item.url;
+    leftTab[0].activePath = item.activePath;
+    leftTab[0].permissionKey = item.permissionKey;
+
+    return leftTab;
+}
 

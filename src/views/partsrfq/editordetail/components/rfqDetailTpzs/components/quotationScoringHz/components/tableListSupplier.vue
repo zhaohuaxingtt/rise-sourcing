@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-10-13 15:55:25
+ * @LastEditTime: 2021-11-03 10:38:13
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -30,7 +30,7 @@
         >
           <!----------在表头上方需要显示评分的点，插入表头标签------>
           <template slot="header" slot-scope="scope">
-            <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
+            <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
             <div class="headerContent" v-if='scope.column.label == "Supplier"'>
               <div class="c" :style="{width:cWidth}">
                 <ul class="ca" :style="{width:250 + 'PX'}">
@@ -40,7 +40,10 @@
                 </ul>
                 <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
                   <template v-for="(itemss,index) in supplierLeftLit">
-                      <li :key='index' v-if='itemss.name != "F-Target"'>{{items[itemss.props]}}</li>
+                     <template v-if='itemss.name != "F-Target"'>
+                        <li :key='index' v-if='itemss.props == "partNo"'>{{items[itemss.props] + '-' + items['partName']}}</li>
+                        <li :key='index' v-else>{{items[itemss.props]}}</li>
+                     </template>
                       <li :key="index" v-else class="ftaget">
                         <!-- <span>{{items['cfPartAPrice']}}</span>
                         <span style="width:99PX"></span>
@@ -68,7 +71,7 @@
               </div>
             
             </div>
-            <span class="price pricea" v-if='removeKeysNumber(scope.column.property) == "lcAPrice"'>
+            <span :class="{price:true,pricea:true,redPrice:getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartAPriceStatus') == 2}" v-if='removeKeysNumber(scope.column.property) == "lcAPrice"'>
                 {{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartAPrice')}}
             </span>
           </template>
@@ -86,7 +89,7 @@
                   <el-tooltip :content='levelTowItem.label' effect='light'>
                     <span class="overText">{{levelTowItem.label}}</span>
                   </el-tooltip>
-                  <span class="price priceb" v-if='removeKeysNumber(scope.column.property) == "lcBPrice"'>{{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPrice')}}</span>
+                  <span :class="{price:true,priceb:true,redPrice:getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPriceStatus') == 2}" v-if='removeKeysNumber(scope.column.property) == "lcBPrice"'>{{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPrice')}}</span>
                 </template>
                 </el-table-column>
             </template>
@@ -381,6 +384,9 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .redPrice{
+    color:red;
+  }
   .supplier{
     position: relative;
     .leftFlex{

@@ -6,8 +6,8 @@
 
 // homepage的类型tab
 export const letterAndLoiType = [
-    {label:'LK_DINGDIANXIN',key:'letter',name:'定点信'},
-    {label:'LK_LOI',key:'LOI',name:'LOI'},
+    {label:'LK_DINGDIANXIN',key:'letter',name:'定点信', permissionKey: 'LK_LETTERANDLOI_LETTER_PAGE'},
+    {label:'LK_LOI',key:'LOI',name:'LOI', permissionKey: 'LK_LETTERANDLOI_LOI_PAGE'},
 ]
 
 // 定点信搜索条件
@@ -19,8 +19,8 @@ export const letterListSearch =[
     {props:'csfCssName',label:'询价采购员',type:'input',labelKey:'partsprocure.PARTSPROCUREINQUIRYBUYER'},
     {props:'linieName',label:'LINIE',type:'input',labelKey:'partsprocure.PARTSPROCURELINIE'},
     {props:'status',label:'定点信状态',type:'select',labelKey:'LK_DINGDIANXINZHUANGTAI',selectOption:'status'},
-    {props:'rfqId',label:'RFQ编号',type:'input',labelKey:'costanalysismanage.RfqBianHao'},
-    {props:'nominateAppId',label:'定点申请单号',type:'input',labelKey:'LK_DINGDIANXINDANHAO'},
+    {props:'rfqId',label:'RFQ编号',type:'input',labelKey:'costanalysismanage.RfqBianHao',inputType:'int'},
+    {props:'nominateAppId',label:'定点申请单号',type:'input',labelKey:'LK_DINGDIANXINDANHAO',inputType:'int'},
     {props:'supplierName',label:'供应商名称',type:'input',labelKey:'LK_GONGYINGSHANGMINGCHENG'},
     {props:'supplierSapNum',label:'供应商SAP号',type:'input',labelKey:'LK_GONGYINGSHANGSAPHAO'},
     {props:'nominateDate',label:'定点时间起⽌',type:'datePicker',labelKey:'LK_DINGDIANSHIJIANQIZHI_1'},
@@ -36,8 +36,8 @@ export const loiListSearch = [
   {props:'csfName',label:'询价采购员',type:'input',labelKey:'partsprocure.PARTSPROCUREINQUIRYBUYER'},
   {props:'lineName',label:'LINIE',type:'input',labelKey:'partsprocure.PARTSPROCURELINIE'},
   {props:'loiStatus',label:'LOI状态',type:'select',labelKey:'LK_LOIZHUANGTAI',selectOption:'status'},
-  {props:'rfqId',label:'RFQ编号',type:'input',labelKey:'costanalysismanage.RfqBianHao'},
-  {props:'nominateAppId',label:'定点申请单号',type:'input',labelKey:'LK_DINGDIANXINDANHAO'},
+  {props:'rfqId',label:'RFQ编号',type:'input',labelKey:'costanalysismanage.RfqBianHao',inputType:'int'},
+  {props:'nominateAppId',label:'定点申请单号',type:'input',labelKey:'LK_DINGDIANXINDANHAO',inputType:'int'},
   {props:'supplierName',label:'供应商名称',type:'input',labelKey:'LK_GONGYINGSHANGMINGCHENG'},
   {props:'sapNum',label:'供应商SAP号',type:'input',labelKey:'LK_GONGYINGSHANGSAPHAO'},
   {props:'nominateDate',label:'LOI⽣成时间',type:'datePicker',labelKey:'LK_LOISHENGCHENGSHIJIAN'},

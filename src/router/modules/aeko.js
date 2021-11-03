@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-10-21 19:10:59
+ * @LastEditTime: 2021-11-02 17:06:55
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -33,6 +33,15 @@ export default [
             title: 'AEKO表态'
         },
         component: () => import ("@/views/aeko/stance")
+    },
+    {
+      // AEKO查看
+      path: "checklist",
+      name: "aekoCheckList",
+      meta: {
+          title: 'AEKO查看'
+      },
+      component: () => import ("@/views/aeko/check")
     },
       // 
       {
@@ -198,6 +207,43 @@ export default [
           title: 'AEKO-关联零件'
         },
         component: () => import("@/views/aeko/relatingParts"),
+      },
+      {
+        path: "mtz",
+        name: "mtz",
+        meta: {
+          title: 'mtz'
+        },
+        component: () => import("@/views/aeko/mtz/index"),
+        redirect: "/aeko/mtz/list",
+        children: [
+          {
+            path: 'list',
+            name: "aekoMtzlist",
+            prop:true,
+            meta: {
+              title: "AEKO-mtz查看",
+            },
+            component: () => import("@/views/aeko/mtz/list"),
+          },
+          {
+            path: 'details',
+            name: "aekoMtzDetails",
+            prop:true,
+            meta: {
+              title: "AEKO-mtz变更",
+            },
+            component: () => import("@/views/aeko/mtz/details"),
+          },
+        ]
+      },
+      {
+        path: "bipage",
+        name: "bipage",
+        meta: {
+          title: 'AEKO-逾期报表'
+        },
+        component: () => import("@/views/aeko/BIPage"),
       }
     ]
   }

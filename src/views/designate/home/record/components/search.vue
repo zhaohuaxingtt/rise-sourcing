@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 14:17:55
- * @LastEditTime: 2021-10-25 20:48:10
+ * @LastEditTime: 2021-10-30 10:53:51
  * @LastEditors:  
 -->
 <template>
@@ -60,7 +60,7 @@
               language('LK_QINGXUANZE','请选择') +
               language('CHEXINGXIANGMU','车型项目')
             "
-            v-model="formRecord.carProject"
+            v-model="formRecord.carTypeProj"
           >
             <el-option
               value=""
@@ -76,7 +76,7 @@
         </el-form-item>
         <el-form-item :label="language('JIAGEZHUANGTAI','价格状态')">
            <iSelect 
-            v-model="formRecord.partProjType"
+            v-model="formRecord.applicationStatus"
             :placeholder="
             language('partsprocure.CHOOSE','请选择') +
             language('JIAGEZHUANGTAI','价格状态')
@@ -94,13 +94,13 @@
             ></el-option>
           </iSelect> 
         </el-form-item>
-        <el-form-item :label="language('DINGDIANGONGYINGSHANG','定点供应商')">
+        <!-- <el-form-item :label="language('DINGDIANGONGYINGSHANG','定点供应商')">
           <iInput
             v-model="formRecord.rfqSupplierName"
             :placeholder="language('LK_QINGSHURU','请输入')"
           >
           </iInput> 
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="language('LINGJIANXIANGMULEIXING','零件项目类型')">
           <iSelect 
             v-model="formRecord.partProjType"
@@ -147,22 +147,25 @@
               :label="language('all','全部') | capitalizeFilter"
             ></el-option>
             <el-option
-            :value="item.id"
-            :label="item.desc"
-            v-for="(item, index)  in (fromGroup && fromGroup['applyType']) || []"
-            :key="index"
+              :value="item.id"
+              :label="language(item.key,item.name)"
+              v-for="(item, index)  in (fromGroup && fromGroup['applyType']) || []"
+              :key="index"
             ></el-option>
           </iSelect>
         </el-form-item>
-          <el-form-item :label="language('DINGDIANSHIJIAN','定点时间')">
-          <iDatePicker v-moudel='formRecord.nominateTime' type="date"></iDatePicker>
+        <el-form-item :label="language('DINGDIANSHIJIAN','定点时间')">
+          <iDatePicker 
+          v-model='formRecord.nominateTime'
+           value-format="yyyy-MM-dd">
+           </iDatePicker>
         </el-form-item>
       </el-form>
   </iSearch>
   </div>
 </template>
 <script>
-import {iSearch, iInput, iSelect, iDatePicker} from 'rise'
+import {iSearch, iInput, iSelect, iDatePicker, iMessage} from 'rise'
 import {selectDictByKeyss} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
 
@@ -207,14 +210,21 @@ export default {
         this.getNominate()
         this.getCar()
       });
-      
-     
-      console.log(this.fromGroup,'====================-----------------------');
     },
     getNominate(){
       getNominateType().then(res => {
-        this.$set(this.fromGroup,'applyType',res.data)
-      })
+        if (res?.result) {
+            const apply = []
+            Array.from(res.data).forEach(item => {
+                apply.push({id:item.code,name:item.desc,key:item.code})
+            })
+            this.$set(this.fromGroup,'applyType',apply)
+        } else {
+            this.applyType = []
+            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+        })
+
     },
     getCar(){
        getCartypeDict().then(res=> {

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2021-10-25 15:57:06
+ * @LastEditTime: 2021-11-02 19:12:20
  * @LastEditors:  
  */
 export const form = {
@@ -23,8 +23,8 @@ export const form = {
 export const tableTitle = [
   {
     props:'fsnrGsnrNum',
-    name:'FS号',
-    key:'FSNUMBER',
+    name:'FS/GS/SP No.',
+    key:'FSGSSPNO',
     tooltip:true
   },
   {
@@ -34,7 +34,7 @@ export const tableTitle = [
     tooltip:true
   },
   {
-    props:'partName',
+    props:'partNameCn',
     name:'零件名称',
     key:'nominationLanguage_LingJianMingCheng',
     tooltip:true
@@ -46,21 +46,27 @@ export const tableTitle = [
     tooltip:true
   },
   {
-    props:'carTypeProj',
+    props:'carType',
     name:'车型',
     key:'CHEXING',
     tooltip:true
   },
   {
-    props:'carProject',
+    props:'carTypeProj',
     name:'车型项目',
     key:'CHEXINGXIANGMU',
     tooltip:true
   },
   {
-    props:'rfqSupplierName',
-    name:'定点供应商',
-    key:'DINGDIANGONGYINGSHANG',
+    props:'buyerName',
+    name:'询价采购员',
+    key:'XUNJIACAIGOUYUAN',
+    tooltip:true
+  },
+  {
+    props:'linie',
+    name:'LINIE采购员',
+    key:'RECORDLINIECAIGOUYUAN',
     tooltip:true
   },
   {
@@ -90,7 +96,7 @@ export const tableDetailTitle = [
   {
     props:'supplierId',
     name:'厂商',
-    key:'CHANGSHANG',
+    key:'CHANGSHANGMING',
     tooltip:true
   },
   {
@@ -118,7 +124,7 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'qualtity',
+    props:'statusDesc',
     name:'状态',
     key:'ZHUANGTAI',
     tooltip:true
@@ -136,7 +142,13 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'bPriceMode',
+    props:'apriceMode',
+    name:'含模A价',
+    key:'HANMOAJIA',
+    tooltip:true
+  },
+  {
+    props:'bpriceMode',
     name:'含模B价',
     key:'HANMOBJIA',
     tooltip:true
@@ -151,6 +163,12 @@ export const tableDetailTitle = [
     props:'transportPrice',
     name:'运输费',
     key:'YUNSHUFEI',
+    tooltip:true
+  },
+  {
+    props:'operatePrice',
+    name:'操作费',
+    key:'CAOZUOFEI',
     tooltip:true
   },
   {
@@ -169,12 +187,19 @@ export const tableDetailTitle = [
     props:'moldPrice',
     name:'模具价格(不含税)',
     key:'MOJIJIAGEBUHANSHUI',
-    tooltip:true
+    tooltip:true,
+    width:140
   },
   {
     props:'MOJUFENTAN',
     name:'模具分摊',
     key:'MOJUFENTAN',
+    tooltip:true
+  },
+  {
+    props:'fsNumber',
+    name:'分摊数量',
+    key:'FENTANSHULIANG',
     tooltip:true
   },
   {
@@ -187,7 +212,8 @@ export const tableDetailTitle = [
     props:'developPrice',
     name:'开发费(不含税)',
     key:'KAIFAFEIBUHANSHUI',
-    tooltip:true
+    tooltip:true,
+    width:140
   },
   {
     props:'developApportionPrice',
@@ -196,21 +222,34 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'fsNumber',
-    name:'分摊数量',
-    key:'FENTANSHULIANG',
-    tooltip:true
-  },
-  {
     props:'tpGrade',
-    name:'TP评分',
-    key:'TPPINGFEN',
+    name:'技术评分',
+    key:'JISHUPINGFEN',
     tooltip:true
   },
   {
     props:'mqGrade',
-    name:'MQ评分',
-    key:'MAPINGFEN',
+    name:'质量评分',
+    key:'ZHILIANGPINGFEN',
     tooltip:true
+  },
+  {
+    props:'plGrade',
+    name:'物流评分',
+    key:'WULIUPINGFEN',
+    tooltip:true
+  },
+  {
+    props:'ltcRate',
+    name:'年降',
+    key:'NIANJIANG',
+    tooltip:true
+  },
+  {
+    props:'ltcDate',
+    name:'年降开始时间',
+    key:'NIANJIANGKAISHISHIJIAN',
+    tooltip:true,
+    width:150
   }
 ]
