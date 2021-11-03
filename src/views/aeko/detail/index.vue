@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-11-02 17:24:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-03 17:39:10
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
 -->
@@ -30,8 +30,10 @@ import {
  } from "rise"
 import logButton from "@/components/logButton"
 import pageContent from "./components"
+import { roleMixins } from "@/utils/roleMixins";
 
 export default {
+  mixins:[roleMixins],
   components: { 
     iPage, 
     iButton,
@@ -48,7 +50,7 @@ export default {
     return {
       aekoInfo: {},
       showDialog: false,
-      bizId: ''
+      bizId: '',
     }
   },
   methods: {
@@ -73,15 +75,14 @@ export default {
     // 跳转到审批单预览
     goToApprovalform(){
        const { aekoInfo } = this;
-       console.log(aekoInfo);
        let transmitObj = {
             option: 4,
             aekoApprovalDetails: {
+              linieId: this.userInfo.id,
               aekoNum: aekoInfo.aekoCode,
               requirementAekoId: aekoInfo.requirementAekoId,
               aekoManageId: aekoInfo.aekoManageId,
-              // aekoAuditType: aekoInfo.auditType||'',
-              // workFlowDTOS: aekoInfo.data||''
+              workFlowDTOS:[]
             }
        }
       let routeData = this.$router.resolve({
@@ -90,8 +91,6 @@ export default {
           from:'aekodetail',
           requirementAekoId: aekoInfo.requirementAekoId,
           aekoManageId: aekoInfo.aekoManageId,
-          linieId: this.$store.state.permission.userInfo.id,
-          taskId: '1',
           transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj))))
         }
       })

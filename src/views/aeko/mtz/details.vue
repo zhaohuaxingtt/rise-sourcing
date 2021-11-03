@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-30 11:52:44
+ * @LastEditTime: 2021-11-03 17:50:52
  * @Description: 
 -->
 <template>
@@ -348,11 +348,11 @@ export default {
       const confirmInfo = await this.$confirm(this.language('saveSure','您确定要保存吗？'))
       if (confirmInfo !== 'confirm') return
       const paramsList = window._.cloneDeep(this.selectTableData)
-      paramsList.map(o => {
-        o.newStartDate = String(o.newStartDate).split(' ').length === 1 ? `${o.newStartDate} 00:00:00` : o.newStartDate
-        o.newEndDate = String(o.newEndDate).split(' ').length === 1 ? `${o.newEndDate} 00:00:00` : o.newEndDate
-        return o
-      })
+      // paramsList.map(o => {
+      //   o.newStartDate = String(o.newStartDate).split(' ').length === 1 ? `${o.newStartDate} 00:00:00` : o.newStartDate
+      //   o.newEndDate = String(o.newEndDate).split(' ').length === 1 ? `${o.newEndDate} 00:00:00` : o.newEndDate
+      //   return o
+      // })
       try {
         const res = await saveAekoMtz(paramsList)
         if (res.code === '200') {

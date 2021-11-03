@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-03 09:47:22
+ * @LastEditTime: 2021-11-03 15:43:42
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -91,6 +91,14 @@ export function getAekoCheckAuditForm(requirementId) {
   return requst({
     url: `/aeko/view/auditForm/${requirementId}`,
     method: 'GET',
+  })
+}
+// Linie表态跳转过来获取审批详情
+export function getAekoCheckPreview(data) {
+  return requst({
+    url: `/aeko/auditForm/preview`,
+    method: 'POST',
+    data
   })
 }
 
