@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-04 17:27:03
+ * @LastEditTime: 2021-11-04 17:37:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -655,8 +655,12 @@
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
 					}
-					if(this.detailData.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
-						this.$refs.materialGroupInfo.getMaterialGroup()
+					if(this.detailData.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU && this.infoItem.id){
+						try {
+							this.$refs.materialGroupInfo.getMaterialGroup()
+						} catch (error) {
+							console.warn('at first times the components will be to go mounted...')
+						}
 					}
 					this.getProcureGroup()
 				});
