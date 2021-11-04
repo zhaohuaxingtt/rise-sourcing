@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-04 13:54:47
- * @LastEditTime: 2021-10-27 16:16:03
+ * @LastEditTime: 2021-11-04 14:24:14
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\components\onlyPartsChange.vue
@@ -28,6 +28,7 @@ import {tableTitleOnlyPartsChange} from './data'
 import {getDataListBatchList} from '@/api/partsprocure/editordetail'
 import selectOldpartsNumber from '@/views/partsprocure/editordetail/components/selectOldpartsNumber'
 import BatchMiantainOutputPlan from '../../home/components/batchMiantainOutputPlan.vue'
+import {dictkey} from "@/api/partsprocure/editordetail";
 export default{
   components:{iCard,iTalbeList,selectOldpartsNumber,iInput, BatchMiantainOutputPlan},
   data(){return {
@@ -80,7 +81,16 @@ export default{
       }).catch(err=>{
         this.loading = false
       })
-    }
+      dictkey().then(res => {
+        if(res.data) {
+          this.tableData.forEach(val=>{
+             res.data.PART_TYPE.forEach(value =>{
+              val.partType = value.code == val.partType ? value.name : val.partType
+              })
+          })
+        }
+      })
+    },
   }
 }
 </script>
