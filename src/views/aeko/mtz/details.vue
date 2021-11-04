@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-03 17:50:52
+ * @LastEditTime: 2021-11-04 17:21:06
  * @Description: 
 -->
 <template>
@@ -177,9 +177,13 @@ export default {
         this.$set(row, 'validateStartError', true)
         this.$set(row, 'validateEndError', true)
       }
-      let dataList = window._.cloneDeep(this.tableListData)
+
+      // 校验是否有相同的开始时间或者结束时间
+      let theSameNewStartDate = ''
+      let theSameNewEndDate = ''
+      // ***检查时间交叉****
       // 根据开始日期排序
-      dataList = window._.sortBy(dataList, 'newStartDate')
+      const dataList = window._.sortBy(this.tableListData, 'newStartDate')
       // 上一次结束时间
       let parEndId = dataList.length && dataList[0] && dataList[0].id
       let parEndDate = dataList.length && dataList[0] && dataList[0].newEndDate
@@ -195,6 +199,19 @@ export default {
           this.$set(parItem, 'validateEndError', true)
           this.$set(curItem, 'validateStartError', true)
         }
+
+        // 校验是否有相同的开始时间或者结束时间
+        const theSameStartDateLength = this.tableListData.filter(o => o.newStartDate === item.newStartDate).length
+        const theSameEndDateLength = this.tableListData.filter(o => o.newEndDate === item.newEndDate).length
+        if (theSameStartDateLength > 1 && !theSameNewStartDate) theSameNewStartDate = item.newStartDate
+        if (theSameEndDateLength > 1 && !theSameNewEndDate) theSameNewEndDate = item.newEndDate
+        theSameNewStartDate === item.newStartDate && (this.$set(item, 'validateStartError', true))
+        theSameNewEndDate === item.newEndDate && (this.$set(item, 'validateEndError', true))
+        if (state && theSameStartDateLength > 1 || theSameEndDateLength > 1) {
+          state = false
+          errorInfo = this.language('LINGJIANSHIJIANDUANCONGDIECUOWU','所填零件行项目有时间段重叠,请修改')
+        }
+        
         // 记录上一次
         parEndId = item.id
         parEndDate = item.newEndDate
@@ -267,6 +284,7 @@ export default {
         return
       }
       const copyData = window._.cloneDeep(this.selectTableData).map(o => {
+        o.id = Math.floor(Math.random() * 10000000)
         o.isNew = true
         return o
       })
@@ -328,18 +346,16 @@ export default {
       }
     },
     async saveAekoMtz() {
-      if (!this.selectTableData.length) {
-        iMessage.warn(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
-        return
-      }
+      // if (!this.selectTableData.length) {
+      //   iMessage.warn(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
+      //   return
+      // }
       // 校验每一行数据是否合法
       let state = true
-      let errorInfo = ''
-      this.selectTableData.forEach(o => {
+      this.tableListData.forEach(o => {
         if (state) {
           const validation = this.validateDueDateInput(o) || {}
           state = validation.state
-          errorInfo = validation.errorInfo
           console.log(validation)
         }
       })
@@ -347,12 +363,12 @@ export default {
 
       const confirmInfo = await this.$confirm(this.language('saveSure','您确定要保存吗？'))
       if (confirmInfo !== 'confirm') return
-      const paramsList = window._.cloneDeep(this.selectTableData)
-      // paramsList.map(o => {
-      //   o.newStartDate = String(o.newStartDate).split(' ').length === 1 ? `${o.newStartDate} 00:00:00` : o.newStartDate
-      //   o.newEndDate = String(o.newEndDate).split(' ').length === 1 ? `${o.newEndDate} 00:00:00` : o.newEndDate
-      //   return o
-      // })
+      const paramsList = window._.cloneDeep(this.tableListData)
+      paramsList.map(o => {
+        o.newStartDate = String(o.newStartDate).split(' ').length === 1 ? `${o.newStartDate} 00:00:00` : o.newStartDate
+        o.newEndDate = String(o.newEndDate).split(' ').length === 1 ? `${o.newEndDate} 00:00:00` : o.newEndDate
+        return o
+      })
       try {
         const res = await saveAekoMtz(paramsList)
         if (res.code === '200') {

@@ -53,15 +53,15 @@ export const applicationStatus = [
 export const RSReviewApplicationStatus = [
   {id:'NEW',name:'草稿',key:'LK_CAOGAO'},
   {id:'SUBMIT',name:'已提交',key:'LK_YITIJIAO'},
-  {id:'NOTPASS',name:'未通过',key:'LK_WEITONGGUO'},
-  {id:'PASS',name:'通过',key:'LK_TONGGUO'},
+  {id:'FREERE',name:'冻结',key:'DONGJIE'},
+  // {id:'NOTPASS',name:'未通过',key:'LK_WEITONGGUO'},
+  {id:'PASS',name:'会议通过',key:'LK_HUIYITONGGUO'},
   {id:'CHECK_INPROCESS',name:'复核中',key:'LK_FUHEZHONG'},
   {id:'CHECK_PASS',name:'复核通过',key:'LK_FUHETONGGUO'},
-  {id:'CHECK_FAIL',name:'复核失败',key:'LK_FUHESHIBAI'},
-  {id:'FREERE',name:'已冻结',key:'LK_YIDONGJIE'},
-  {id:'M_CHECK_INPROCESS',name:'M审批中',key:'LK_MSHENPIZHONG'},
-  {id:'M_CHECK_FAIL',name:'M审批退回',key:'LK_MSHENPITUIHUI'},
-  {id:'NOMINATE',name:'已定点',key:'LK_YIDINGDIAN'},
+  {id:'CHECK_FAIL',name:'复核未通过',key:'FUHEWEITONGGUO'},
+  {id:'M_CHECK_INPROCESS',name:'M审核中',key:'MSHENHEZHONG'},
+  {id:'M_CHECK_FAIL',name:'M退回',key:'MTUIHUI'},
+  {id:'NOMINATE',name:'定点',key:'DINGDIAN'},
 ]
 // SEL单据确认状态
 export const selStatus = [
@@ -77,12 +77,12 @@ export const signSheetselStatus = [
 // 报价一致性校验
 export const priceConsistentStatus = [
   {id:0,name:'未通过',key:'LK_WEITONGGUO'},
-  {id:1,name:'已通过',key:'LK_TONGGUO'},
+  {id:1,name:'通过',key:'TONGGUO'},
 ]
 // 签字单状态
 export const signSheetStatus =[
   {id:2,name:'草稿',key:'LK_CAOGAO'},
   {id:3,name:'审批中',key:'LK_SHENPIZHONG'},
-  {id:4,name:'通过',key:'TONGGUO'},
+  {id:4,name:'已通过',key:'YITONGGUO'},
   {id:1,name:'已拒绝',key:'LK_YIJUJUE'}
 ]

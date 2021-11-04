@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-11-02 20:18:00
+ * @LastEditTime: 2021-11-04 17:00:00
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -234,6 +234,46 @@ export default [
               title: "AEKO-mtz变更",
             },
             component: () => import("@/views/aeko/mtz/details"),
+          },
+        ]
+      },
+      // 待审批，已审批页面
+      {
+        path: "AKEOPageContent",
+        name: "AKEOPageContent",
+        meta: {
+          title: 'AEKO-审批'
+        },
+        component: () => import("@/views/aeko/approve/pageContent"),
+        redirect: "/aeko/AKEOPageContent/approvelistcsf",
+        children:[
+          
+          {
+            path: "approvelistcsf",
+            name: "aekoApprove-listcsf",
+            meta: {
+              title: "AEKO-审批列表",
+            },
+            component: () => import("@/views/aeko/approve/approveList/approveList"),
+            redirect: "/aeko/AKEOPageContent/approvelistcsf/AKEOPendingPage",
+            children:[
+              {
+                path: "AKEOPendingPage",
+                name: "AKEOPendingPage",
+                meta: {
+                  title: "AEKO-待审批列表",
+                },
+                component: () => import("@/views/aeko/approve/approveList/AKEOPendingPage"),
+              },
+              {
+                path: "AKEOApprovedPage",
+                name: "AKEOApprovedPage",
+                meta: {
+                  title: "AEKO-已审批列表",
+                },
+                component: () => import("@/views/aeko/approve/approveList/AKEOApprovedPage"),
+              }
+            ]
           },
         ]
       },
