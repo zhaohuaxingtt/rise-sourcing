@@ -326,7 +326,7 @@ module.exports = {
         },
       },
       '/partApi': {
-        target: 'http://10.160.138.31:8788',
+        target: 'http://10.122.17.38:8788',
         changeOrigin: true,
         pathRewrite: {
           '^/partApi': '',
@@ -388,7 +388,7 @@ module.exports = {
         },
       },
       '/lier': {
-        target: 'http://10.160.142.130:8036',
+        target: 'http://10.122.17.38:8036',
         changeOrigin: true,
         pathRewrite: {
           '^/lier': '',
@@ -428,7 +428,7 @@ module.exports = {
         },
       },
       '/nominateRecord':{
-        target: 'http://10.160.141.219:8888',
+        target: 'http://10.122.17.38:8888',
         changeOrigin:true,
         pathRewrite: {
           '^/nominateRecord':'',
@@ -436,7 +436,7 @@ module.exports = {
       },
 
       '/priceRecord':{
-        target: 'http://10.160.143.208:8026',
+        target: 'http://10.122.17.38:8026',
         changeOrigin:true,
         pathRewrite: {
           '^/priceRecord':'',
