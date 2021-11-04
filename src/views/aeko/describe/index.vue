@@ -6,15 +6,18 @@
 
 <template>
   <iPage class="aekoDescribe">
-      <h2 class="title">
+      <div class="flex-between-center-center padding-left5 padding-right5">
+        <h2 class="title">
         {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
-      </h2>
-       <iNavMvp :list="describeTab" lang  :lev="2" routerPage right></iNavMvp>
+        </h2>
+       <iNavMvp v-if="queryFrom == 'approve'" :list="describeTab" lang  :lev="2" routerPage right></iNavMvp>
+      </div>
+      
 
       <div class="contain margin-top20" ref="aekoDescribe">
-        <el-row :gutter="10">
+        <el-row :gutter="20">
           <el-col :span="6">
-            <iCard :class="noScorll.files ? 'needScorll' : ''" :title="language('LK_AEKOFUJIAN','AEKO附件')">
+            <iCard :class="`${noScorll.files ? 'needScorll' : ''}`+' filesCard'" :title="language('LK_AEKOFUJIAN','AEKO附件')">
               <aekoFilesList class="card-files" :attachmentList="attachmentList"/>
             </iCard>
           </el-col>
@@ -68,6 +71,7 @@ export default {
           files:false,
         },
         describeTab:describeTab,
+        queryFrom:'',
       }
     },
     created(){
@@ -75,6 +79,7 @@ export default {
       // 把当前路由的参数带过去
        const {query} = this.$route;
        const {from=null} = query;
+       this.queryFrom = from;
        if(from!='approve'){
         this.describeTab = describeTab.slice(0,1);
       }else{
@@ -130,6 +135,15 @@ export default {
     .needScorll{
       ::v-deep.cardBody{
         overflow-y: scroll;
+      }
+    }
+    .filesCard{
+      padding-bottom: 20px;
+      ::v-deep .cardHeader {
+        padding-bottom: 0;
+        .title{
+          text-indent: -15px;
+        }
       }
     }
     ::v-deep.cardBody{
