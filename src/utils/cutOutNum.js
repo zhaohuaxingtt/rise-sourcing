@@ -94,3 +94,24 @@ export function numberToCurrencyNo2(value) {
     }
     return intPartFormat+'.00'
 }
+
+//通用千分位
+/**
+* 参数说明
+* @param s：要格式化的数字
+* @param n：保留几位小数
+* */
+export function formatCurrency(s, n) {
+    n = n > 0 && n <= 20 ? n : 0; //n大于0小于等于20时，值为n，否则默认为2
+    //将要格式化的数字转换成字符串，并去掉其中匹配的其他字符后返回一个浮点数。
+    //把 Number 四舍五入为指定位数的数字后，最终在转换成字符串。
+    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+    var numArry = s.split("."), //分隔字符串 0 -> 小数点前面数值 1 -> 小数点后面的尾数
+        l = numArry[0].split("").reverse(), //将前面数值再分隔，并反转顺序
+        t = "";
+    for (var i = 0; i < l.length; i++) { //每隔三位小数分始开隔
+        t += l[i] + ( (i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "" );
+    }
+    //将顺序反转回来，并返回一个字符串
+    return t.split("").reverse().join("") + "." + numArry[1];
+}
