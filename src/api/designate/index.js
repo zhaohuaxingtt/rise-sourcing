@@ -1,15 +1,17 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-08-17 18:09:24
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-04 14:31:13
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
  */
 import axios from "@/utils/axios"
 import { serialize } from "@/utils"
+import download from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_RFQ)
+const fileRequst = download(process.env.VUE_APP_RFQ)
 
 // 获取模具预算管理列表
 export function getMouldBudget(params) {
@@ -169,11 +171,11 @@ export function tabPageLayoutsReset(nominateId) {
 }
 
 // 决策资料-RS - 导出
-export function rsAttachExport(data) {
-  return requst({
+export function rsAttachExport(params) {
+  return fileRequst({
       url: "/rs/downCapacityExpRs",
-      method: "POST",
-      data,
+      method: "GET",
+      params,
   })
 }
 

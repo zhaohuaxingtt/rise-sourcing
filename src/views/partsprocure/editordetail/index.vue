@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-03 12:04:26
+ * @LastEditTime: 2021-11-04 11:56:39
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -855,7 +855,6 @@
 				let data = JSON.parse(this.$route.query.item)
 				this.itemPurchase.riseCode = data.code
 				this.itemPurchase.sapItem = data.item
-				console.log(this.itemPurchase,'++++++++++++++++++++++++++++++');
 			}
 		}
 }

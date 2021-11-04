@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-28 16:01:28
- * @LastEditTime: 2021-11-03 14:00:28
+ * @LastEditTime: 2021-11-04 14:35:52
  * @LastEditors:  
 -->
 <template>
@@ -13,15 +13,15 @@
     @close="clearDiolog"
   >
     <iFormGroup row="4" :rules="rules" >
-      <iFormItem v-for="(item, index) in detailList" :key="index" :label="item.label">
-        <iText>{{item.value}}</iText>
+      <iFormItem v-for="(item, index) in detailTitle" :key="index" :label="item.label">
+        <iText>{{detailList[item.props]}}</iText>
       </iFormItem>
     </iFormGroup>
   </iDialog>
 </template>
 <script>
 import {iDialog, iFormGroup, iFormItem, iText} from 'rise' 
-import {detailList} from './data'
+import {detailTitle} from './data'
 import {getPurchaseDetail} from '@/api/partsprocure/editordetail'
 export default {
   components: {
@@ -42,7 +42,8 @@ export default {
   },
   data() {
     return {
-      detailList
+      detailTitle,
+      detailList:{}
     }
   },
   watch:{
@@ -61,7 +62,7 @@ export default {
       }
       console.log(data);
       getPurchaseDetail(data).then(res => {
-        console.log(res);
+        this.detailList = res.data[0]
       })
     }
   }
