@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:14:21
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-08 21:12:04
+ * @LastEditTime: 2021-11-04 16:53:01
  * @Description: 节点视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
 -->
@@ -105,8 +105,11 @@ export default {
         if (res?.result) {
           this.products = res.data || []
         } else {
+          this.products = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).catch(e => {
+        this.products = []
       }).finally(() => {
         this.loading = false
       })
