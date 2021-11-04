@@ -78,6 +78,7 @@ export default {
           type: "index",
           align: "center",
           label: "#",
+          minWidth:50
         },
         {
           prop: "partNum",
@@ -86,6 +87,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:128
         },
         {
           prop: "partNameZh",
@@ -94,6 +96,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:100
         },
         {
           prop: "cartypeZh",
@@ -101,6 +104,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:140,
           width:100,
         },
         {
@@ -110,6 +114,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:128
         },
         {
           prop: "linieDeptName",
@@ -118,6 +123,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:72
         },
         {
           prop: "linieName",
@@ -126,6 +132,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:85
         },
         {
           prop: "newAPrice",
@@ -134,6 +141,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:82
         },
         {
           prop: "apriceChange",
@@ -142,6 +150,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:96
         },
         {
           prop: "bnkChange",
@@ -150,6 +159,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:100
         },
         {
           prop: "newBPrice",
@@ -158,6 +168,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:82
         },
         {
           prop: "incInvestmentCost",
@@ -166,6 +177,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:162,
           width:150,
         },
         {
@@ -175,6 +187,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:86
         },
         {
           prop: "procureFactory",
@@ -183,6 +196,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:100
         },
         {
           prop: "supplierSapCode",
@@ -200,6 +214,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:114
         },
       ],
       transmitObj: {},
