@@ -1,14 +1,14 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-26 16:47:13
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-27 09:58:16
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-04 17:11:08
  * @Description: 审批列表 Commodity审批人/CSF审批人
 -->
 <template>
   <div class="aeko-assign">
     <!-- tab 待审批/已审批切换 -->
-    <div class="headerNav-sub margin-top30">
+    <div class="headerNav-sub">
       <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
         <el-tab-pane lazy v-for="(item,index) in navList" :key="index" :label="language(item.key, item.name)"
                      :name="item.code"></el-tab-pane>
@@ -45,20 +45,24 @@ export default {
   methods: {
     //tab切换
     handleTabClick(tab) {
-      console.log(this.$route.name)
+      let isOutSide = false
+      // 外部使用待审批，已审批页面
+      if(this.$route.path.indexOf('AKEOPageContent')>-1){
+        isOutSide = true
+      }
 
       if (tab.name == '1') {
         this.tab='1'
         if(this.$route.name!='AKEOPendingPage'){
           this.$router.replace({
-            path: `/aeko/approve/approvelistcsf/AKEOPendingPage`,
+            path: `/aeko/${isOutSide?'AKEOPageContent':'approve'}/approvelistcsf/AKEOPendingPage`,
           })
         }
       } else if (tab.name == '2') {
         this.tab='2'
         if(this.$route.name!='AKEOApprovedPage'){
           this.$router.replace({
-            path: `/aeko/approve/approvelistcsf/AKEOApprovedPage`,
+            path: `/aeko/${isOutSide?'AKEOPageContent':'approve'}/approvelistcsf/AKEOApprovedPage`,
           })
         }
       }

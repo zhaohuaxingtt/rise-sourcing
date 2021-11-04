@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-11-01 14:15:26
+ * @LastEditTime: 2021-11-04 17:27:36
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -169,14 +169,20 @@ export default {
   },
   async created() {
     this.partNum = this.$route.query.partNum  // 零件号
+    this.isDeclare = this.$route.query.isDeclare  // 是否预设零件号，0是，1不是
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
     this.oldPartNumPreset = this.$route.query.oldPartNumPreset
     await this.getAekoOriginFactory()
     // 新零件号一定存在，所以不需要else
     // if (this.oldPartNumPreset || this.partNum) {
-      this.form.partNum = this.oldPartNumPreset || this.partNum
-      this.judgeRight('init')  // 初次进入查询新零件
+      if(this.isDeclare==0){ // 优先选择新零件
+        this.form.partNum = this.partNum || this.oldPartNumPreset
+        this.judgeRight('init')  // 初次进入查询新零件
+      }else{  // 优先选择原零件
+        this.form.partNum = this.oldPartNumPreset || this.partNum
+        this.judgeRight()  // 查询原零件
+      }
     // } else {
       // this.procureFactorySelectVo()
     //   // this.getAekoOriginPartInfo()
@@ -207,13 +213,13 @@ export default {
     judgeRight(flag='') {
       judgeRight([
         {
-          partNum: this.oldPartNumPreset || this.partNum,
+          partNum: this.form.partNum,
           userId: this.userInfo.id
         }
       ])
       .then(res => {
         if (res.code == 200) {
-          if (!res.data[0].isView) {
+          if (res.data[0].isView) {
             this.procureFactorySelectVo()
             this.getAekoOriginPartInfo(flag)
           } else {
@@ -268,11 +274,19 @@ export default {
           this.tableListData = Array.isArray(res.data) ? res.data : []
           this.page.totalCount = res.total || 0
           if(flag=='init'){
-            this.disabled = res.total&&true||false
+            this.disabled = res.total?true:false
+            if(!this.disabled&&this.oldPartNumPreset){
+              this.form.partNum = this.oldPartNumPreset
+              this.judgeRight()
+            }
           }
         } else {
           if(flag=='init'){
             this.disabled = false
+            if(this.oldPartNumPreset){
+              this.form.partNum = this.oldPartNumPreset
+              this.judgeRight()
+            }
           }
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

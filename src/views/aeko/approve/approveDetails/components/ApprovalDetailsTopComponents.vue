@@ -114,21 +114,27 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.akeoTitle {
-  font-size: 20px;
-  font-family: Arial;
-  font-weight: bold;
+.header-nav{
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  color: #000000;
+
+  .akeoTitle {
+    font-size: 20px;
+    font-family: Arial;
+    font-weight: bold;
+    align-items: center;
+    color: #000000;
+
+  }
+
+  ::v-deep .myLogIcon {
+    width: 21px;
+    height: 21px;
+  }
 
 }
-
-.myLogIcon {
-  width: 21px;
-  height: 21px;
-}
-
-.margin-left25 {
-  margin-left: 25px !important;
-}
+  .margin-left25 {
+    margin-left: 25px !important;
+  }
 </style>
