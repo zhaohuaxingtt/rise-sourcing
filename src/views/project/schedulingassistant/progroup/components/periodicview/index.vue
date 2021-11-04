@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-21 10:56:22
+ * @LastEditTime: 2021-11-04 16:53:23
  * @Description: 周期视图
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -245,8 +245,11 @@ export default {
         if (res?.result) {
           this.products = res.data
         } else {
+          this.products = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).catch(e => {
+        this.products = []
       }).finally(() => {
         this.loading = false
       })

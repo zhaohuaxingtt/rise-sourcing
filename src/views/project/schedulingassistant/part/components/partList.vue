@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 16:15:32
+ * @LastEditTime: 2021-11-04 16:51:14
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -727,6 +727,7 @@ export default {
         return result 
       })
       this.partLength = this.parts.length 
+      this.sliceArr = [0, 10]
       setTimeout(() => { 
         this.loading = false 
       }, 500); 
@@ -783,7 +784,7 @@ export default {
           this.parts = selectPartNumsArrLength < 1 ? [...partList] : partList.filter(item => selectPartNumsArr.includes(item.partNum))
           // eslint-disable-next-line no-undef 
           this.partsTemp = _.cloneDeep(partList) 
-          // this.partLength = this.parts.length
+          this.partLength = this.parts.length
           this.checkAll = false 
           this.isIndeterminate = false 
         } else { 
@@ -792,9 +793,14 @@ export default {
           this.partLength = 0
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
         } 
+      }).catch(e => {
+        this.parts = [] 
+        this.partsTemp = [] 
+        this.partLength = 0
       }).finally(() => {  
         this.loading = false 
-      }) 
+        this.sliceArr = [0, 10]
+      })
     }, 
     /**
      * @Description: 判断time1是否大于time2,time1和time2格式为'2021-KW21' 
