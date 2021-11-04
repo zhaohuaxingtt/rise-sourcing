@@ -29,7 +29,7 @@ export const queryForm = {
   supplierSapCode: "", // 供应商SAP号
   supplierName: "", // 供应商名称
   modelNameZh: "", // 车型
-  cartypeProject: "", // 车型项目
+  carTypeProject: "", // 车型项目
 }
 
 export const tableTitle = [
