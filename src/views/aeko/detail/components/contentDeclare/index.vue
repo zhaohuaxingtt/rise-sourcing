@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-03 15:27:14
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-04 17:26:34
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -599,6 +599,7 @@ export default {
 
       const query = {
         partNum: row.partNum,
+        isDeclare: row.isDeclare, // 0: 预设原零件，1: 选择的原零件
         requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: row.objectAekoPartId,
         oldPartNumPreset: typeof row.oldPartNumPreset === "string" && row.oldPartNumPreset.trim()

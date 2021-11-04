@@ -3,7 +3,7 @@
   <div v-permission.auto="AEKO_PENDING_APPROVAL_PAGE|待审批页面">
     <!--搜索区--->
     <i-search class="margin-bottom20" @sure="queryPendingAKEOForm" @reset="restQueryForm" :resetKey="QUEREN"
-              :searchKey="REST" v-permission.auto="AEKO_PENDING_APPROVAL_PAGE_SEARCHAREA|待审批页面搜索区">
+              :searchKey="REST" :icon="true" v-permission.auto="AEKO_PENDING_APPROVAL_PAGE_SEARCHAREA|待审批页面搜索区">
       <el-form :model="queryAkeoForm" ref="AKEOQueryFormRef">
         <!-- AEKO号 -->
         <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')" prop='aekoNum'>

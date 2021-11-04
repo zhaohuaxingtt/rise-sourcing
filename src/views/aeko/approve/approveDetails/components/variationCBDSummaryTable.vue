@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-03 19:45:02
+ * @LastEditTime: 2021-11-03 20:24:43
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -307,20 +307,25 @@ export default {
         this.loading = false;
         return;
       }
-      cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
-        (res) => {
-          if (res?.code === "200") {
-            let data = res.data;
-            this.switchPartsTable = [data?.extSnapshotVO];
-            this.aPriceChangeData = data;
-            this.loading = false;
-            this.hasData = true;
-          } else {
-            this.loading = false;
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+      if(this.workFlowId){
+        cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
+          (res) => {
+            if (res?.code === "200") {
+              let data = res.data;
+              this.switchPartsTable = [data?.extSnapshotVO];
+              this.aPriceChangeData = data;
+              this.loading = false;
+              this.hasData = true;
+            } else {
+              this.loading = false;
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
           }
-        }
-      );
+        );
+      }else{
+        // 预览查询接口
+        iMessage.warn('接口调试中');
+      }
 
       this.tabChange();
     },

@@ -1,6 +1,6 @@
 <template>
-  <div class="margin-bottom25" style="display: flex;justify-content: space-between;align-items: center">
-    <span class="akeoTitle">Aeko号:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
+  <div class="header-nav margin-bottom25">
+    <span class="akeoTitle">AEKO号:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
     <div style="display: flex;justify-content: space-between;align-items: center">
       <iNavMvp v-if="show" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
       <i-button v-if="$route.name !== 'explainattach'&& !disabled && show" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_VIEW_APPROVED|查看已审批" @click="goViewApproved"  class="margin-left25">{{language('LK_CHAKANYISHENPI','查看已审批')}}</i-button>
@@ -114,21 +114,27 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.akeoTitle {
-  font-size: 20px;
-  font-family: Arial;
-  font-weight: bold;
+.header-nav{
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  color: #000000;
+
+  .akeoTitle {
+    font-size: 20px;
+    font-family: Arial;
+    font-weight: bold;
+    align-items: center;
+    color: #000000;
+
+  }
+
+  ::v-deep .myLogIcon {
+    width: 21px;
+    height: 21px;
+  }
 
 }
-
-.myLogIcon {
-  width: 21px;
-  height: 21px;
-}
-
-.margin-left25 {
-  margin-left: 25px !important;
-}
+  .margin-left25 {
+    margin-left: 25px !important;
+  }
 </style>
