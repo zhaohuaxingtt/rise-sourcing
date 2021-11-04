@@ -444,7 +444,7 @@ module.exports = {
       },
     //二组采购申请详情查询接口
       '/purchaseApply': {
-        target: 'http://10.122.18.166:8026',
+        target: 'http://10.122.17.38:8026',
         changeOrigin:true,
         pathRewrite:{
           '^/purchaseApply':''

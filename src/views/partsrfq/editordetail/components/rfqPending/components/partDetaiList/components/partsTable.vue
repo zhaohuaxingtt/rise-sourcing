@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-11-01 21:16:42
+ * @LastEditTime: 2021-11-04 14:29:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
@@ -96,6 +96,7 @@ export default {
         this.parmarsNotHasRfq['partProjectType'] = queryForm.partProjectType
         this.parmarsNotHasRfq['partNumList'] = queryForm.partNumList
         this.parmarsNotHasRfq['isNotInRfqList'] = true
+        this.parmarsNotHasRfq['rfqId'] = this.$route.query.id
         getTabelData(this.parmarsNotHasRfq).then(res => {
           this.tableLoading = false
           this.page.currPage = res.pageNum

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-04 17:26:34
+ * @LastEditTime: 2021-11-04 17:31:32
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -173,6 +173,8 @@
         <iButton v-if="!disabled" @click="handleExport" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_EXPORT|导出">
           {{ language("DAOCHU", "导出") }}
           <el-tooltip 
+            effect="light" 
+            popper-class="custom-card-tooltip"
             :content="`${language('LK_AEKO_NEIRONGBIAOTAIDAOCHUTISHI','勾选零件行项目-->导出->批量维护原零件信息-->导入')}`"
             placement="top">
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
@@ -191,6 +193,8 @@
         <iButton v-if="!disabled" :loading="cancelLoading" @click="cancelContent" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
           {{ language("CHEHUI", "撤回") }}
           <el-tooltip 
+            effect="light" 
+            popper-class="custom-card-tooltip"
             :content="`${language('LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI_CAOZUO','审批前，可对已提交的单据进行撤回。此处只针对内容撤回，如需撤回封面表态，请在封面表态中操作【撤回】')}`"
             placement="top">
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
@@ -1130,9 +1134,11 @@ export default {
   border: 1px solid rgba(217, 222, 229, 0.5);
   background: #fff;
   ::v-deep.el-textarea {
+    height: 100%;
     .el-textarea__inner {
       resize: none;
       box-shadow: none;
+      height: 100%;
     }
   }
 }
