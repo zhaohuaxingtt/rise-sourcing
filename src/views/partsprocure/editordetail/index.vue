@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-04 17:37:02
+ * @LastEditTime: 2021-11-04 17:57:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -51,7 +51,7 @@
 						v-if="detailData.status != '16'">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
 					<iButton :loading='saveLoading' @click="saveFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE|保存零件采购项目按钮">{{ language("LK_BAOCUN",'保存') }}
 					</iButton>
-					<iButton @click="back">{{ language("LK_FANHUI",'返回') }}</iButton>
+					<!-- <iButton @click="back">{{ language("LK_FANHUI",'返回') }}</iButton> -->
 				</span>
 				<logButton class="margin-left20" @click="log" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOG|log" />
 				<span>

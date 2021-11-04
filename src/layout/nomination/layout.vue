@@ -88,6 +88,8 @@ export default {
           if (res.code == 200) {
             this.$store.dispatch('setNominationDisabled', getNominateDisabled({ ...res.data, designateType: this.$route.query.designateType } || {}))
             this.$store.dispatch('setRsDisabled', res.data.rsStatus === "FROZEN")
+            this.$store.dispatch('setApplicationStatus', res.data.applicationStatus)
+            this.$store.dispatch('setNominationType', res.data.nominateProcessType)
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
