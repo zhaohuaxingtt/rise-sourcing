@@ -105,7 +105,6 @@ export default {
     if(businessKey == partProjTypes.AEKOLINGJIAN){
       this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
     }
-
     await this.getTableList()
   },
   watch:{
