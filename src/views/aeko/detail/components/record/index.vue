@@ -167,6 +167,14 @@ export default {
     // 查询审批数据
     this.getFetchData()
   },
+  created(){
+    // 如果是从AEKO查看过来的 tableTitle需要展示一个提交人字段
+    const {query} = this.$route;
+    const {from=''} = query;
+    if(from != 'check'){
+      this.tableTitle = tableTitle.filter((item)=>item.key !=='AEKO_DETAIL_RECORD_TIJIAOREN');
+    }
+  },
   methods: {
     selectable(row) {
       return !this.itemIsCanReply(row)
