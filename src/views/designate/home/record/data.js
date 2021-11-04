@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2021-11-03 17:41:50
+ * @LastEditTime: 2021-11-04 11:51:33
  * @LastEditors:  
  */
 export const form = {
@@ -246,13 +246,14 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'ltcRate',
+    props:'ltc',
     name:'年降',
     key:'NIANJIANG',
-    tooltip:true
+    tooltip:true,
+    width:200
   },
   {
-    props:'ltcDate',
+    props:'beginYearReduce',
     name:'年降开始时间',
     key:'NIANJIANGKAISHISHIJIAN',
     tooltip:true,

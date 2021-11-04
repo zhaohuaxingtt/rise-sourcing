@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-10-21 20:03:23
- * @LastEditors:  
+ * @LastEditTime: 2021-11-04 14:15:23
+ * @LastEditors: Hao,Jiang
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -278,9 +278,9 @@ export default [
           },
           {
             path: "/designate/decisiondata/abprice",
-            name: "designateDecisionRS",
+            name: "designateDecisionAbPrice",
             meta: {
-                title: "定点管理-决策资料-RS",
+                title: "定点管理-决策资料-abprice",
             },
             component: () =>
               import ("@/views/designate/designatedetail/decisionData/abPrice")
