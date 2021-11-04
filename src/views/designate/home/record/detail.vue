@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 19:56:57
- * @LastEditTime: 2021-10-28 20:58:33
+ * @LastEditTime: 2021-11-04 14:35:24
  * @LastEditors:  
 -->
 <template>
@@ -33,6 +33,16 @@
         :selection="false"
         @openPage="openPage"
         >
+
+        <template #ltc="scope">
+          <span>{{resetLtcData (scope.row.ltcs,'ltc')}}</span>
+        </template>
+
+        <!-- 年降开始时间 -->
+        <template #beginYearReduce="scope">
+          <span>{{resetLtcData (scope.row.ltcs,'beginYearReduce')}}</span>
+        </template>
+
       </tablelist>
       <iPagination
         v-update
@@ -110,6 +120,28 @@ export default {
         }
       })
       window.open(openPageRs.href,'_blank')
+    },
+       // 单独处理下年降或年降计划
+    resetLtcData (row=[],type) {
+      // 年降开始时间
+      if(type == 'beginYearReduce'){
+        // 取第一个非0的年份
+        const list = row.filter((item)=> item.priceReduceRate!='0');
+        return list.length ? list[0].yearMonth : '-'
+      }else{ // 年降
+       // 从非0开始至非0截至的数据 不包含0
+       let strList = [];
+        const priceReduceRateArr = row.map(item => item.priceReduceRate)
+
+        let i = 0
+        do {
+          i = priceReduceRateArr.length
+          if (priceReduceRateArr[0] == 0) priceReduceRateArr.shift()
+          if (priceReduceRateArr[priceReduceRateArr.length - 1] == 0) priceReduceRateArr.pop()
+        } while (i !== priceReduceRateArr.length)
+
+        return priceReduceRateArr.length ? priceReduceRateArr.join('/') : '-'
+      }
     }
   }
 }
