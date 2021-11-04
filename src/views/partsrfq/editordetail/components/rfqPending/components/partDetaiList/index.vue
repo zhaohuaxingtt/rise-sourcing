@@ -195,7 +195,6 @@ export default {
         if (res.data && res.data.rfqId) {
           this.resultMessage(res)
           await this.getTableList()
-          //this.$refs.applyPrice.getTableList()
           this.queryForm = { ...this.queryForm, partNumList: this.partNumList }
           this.$refs.partsTable.page.currPage = 1
           this.$refs.partsTable && this.$refs.partsTable.getTableList()
