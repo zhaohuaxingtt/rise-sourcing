@@ -1,6 +1,6 @@
 <template>
   <div class="margin-bottom25" style="display: flex;justify-content: space-between;align-items: center">
-    <span class="akeoTitle">Aeko号:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
+    <span class="akeoTitle">{{language('LK_AEKOHAO_APPROVEDETAILS','AEKO号')}}:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
     <div style="display: flex;justify-content: space-between;align-items: center">
       <iNavMvp v-if="show" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
       <i-button v-if="$route.name !== 'explainattach'&& !disabled && show" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_VIEW_APPROVED|查看已审批" @click="goViewApproved"  class="margin-left25">{{language('LK_CHAKANYISHENPI','查看已审批')}}</i-button>

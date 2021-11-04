@@ -101,6 +101,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          width:100,
         },
         {
           prop: "originPartNum",
@@ -165,6 +166,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          width:150,
         },
         {
           prop: "developmentCost",
@@ -189,6 +191,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          width:100,
         },
         {
           prop: "supplierNameZh",

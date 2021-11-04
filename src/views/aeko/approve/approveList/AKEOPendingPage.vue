@@ -2,7 +2,7 @@
 <template>
   <div v-permission.auto="AEKO_PENDING_APPROVAL_PAGE|待审批页面">
     <!--搜索区--->
-    <i-search class="margin-bottom20" @sure="queryPendingAKEOForm" @reset="restQueryForm" :resetKey="QUEREN"
+    <i-search class="margin-bottom20" @sure="queryPendingAKEOForm" @reset="restQueryForm" :icon="true" :resetKey="QUEREN"
               :searchKey="REST" v-permission.auto="AEKO_PENDING_APPROVAL_PAGE_SEARCHAREA|待审批页面搜索区">
       <el-form :model="queryAkeoForm" ref="AKEOQueryFormRef">
         <!-- AEKO号 -->
