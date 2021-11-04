@@ -118,7 +118,7 @@
         </el-form-item>
         <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
           <iSelect
-            v-model="form.cartypeProject"
+            v-model="form.carTypeProject"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
           >
             <el-option

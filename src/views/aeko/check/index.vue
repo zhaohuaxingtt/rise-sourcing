@@ -5,8 +5,14 @@
 -->
 <template>
     <iPage class="aeko-check-list">
-        <iNavMvp :lev="1" :list="leftTab" :lang="true" routerPage left class="check-nav margin-bottom10" />
-        <iNavMvp :list="navList" lang  :lev="2" routerPage right class="margin-bottom10"/>
+        <div class="flex-between-center-center">
+          <iNavMvp :lev="1" :list="leftTab" :lang="true" routerPage left class="margin-bottom10" />
+          <div>
+            <iNavMvp :list="navList" lang  :lev="2" routerPage right class="margin-bottom10"/>
+          </div>
+          
+        </div>
+        
         
         <!-- 搜索区域 -->
         <iSearch @sure="sure" @reset="reset">
@@ -138,6 +144,7 @@ import {
 import {user as configUser } from '@/config'
 import { debounce } from "lodash";
 import { lookDetails } from '../approve/approveList/lib'
+import logButton from "@/components/logButton"
 
 export default {
     name:'aekoCheck',
@@ -155,6 +162,7 @@ export default {
         iCard,
         icon,
         filesListDialog,
+        logButton,
     },
     computed: {
         //eslint-disable-next-line no-undef
@@ -464,19 +472,12 @@ export default {
       changeVisible(type,visible){
           this[type] = visible;
       },
-      // 导出
-      exportAeko(){
-
-      },
     }
 }
 </script>
 
 <style lang="scss" scoped>
     .aeko-check-list{
-        .check-nav{
-            float: left;
-        }
         .table-item-aeko{
             position: relative;
             .link{
