@@ -142,7 +142,7 @@
             <template slot-scope="scope">
               <!-- 装车率加个% -->
               <template v-if="item.props == 'assemblyRate'"
-                >{{ scope.row[item.props]*100 }}%</template
+                >{{ calculatePercentage(scope.row)}}%</template
               >
               <template v-else>{{ scope.row[item.props] }}</template>
             </template>
@@ -268,6 +268,10 @@ export default {
     };
   },
   methods: {
+
+    calculatePercentage(row){
+      return Number(row.assemblyRate*100).toFixed(2)
+    },
     // 提交时校验一下沿⽤原零件份额:usePortion
     validateData() {
       let isValidate = true;

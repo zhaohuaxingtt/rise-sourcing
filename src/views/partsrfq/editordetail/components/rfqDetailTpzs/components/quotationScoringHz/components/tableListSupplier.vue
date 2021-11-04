@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-03 10:38:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-03 20:24:33
+ * @LastEditors:  
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
@@ -41,7 +41,7 @@
                 <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
                   <template v-for="(itemss,index) in supplierLeftLit">
                      <template v-if='itemss.name != "F-Target"'>
-                        <li :key='index' v-if='itemss.props == "partNo"'>{{items[itemss.props] + '-' + items['partName']}}</li>
+                        <li :key='index' v-if='itemss.props == "partNo"'>{{items[itemss.props] + '-' + items['partName']||''+'-'+items['partNameDe']||''}}</li>
                         <li :key='index' v-else>{{items[itemss.props]}}</li>
                      </template>
                       <li :key="index" v-else class="ftaget">
@@ -364,7 +364,7 @@ export default{
       }
     },
     cellClassName({row, column, rowIndex, columnIndex}) { 
-      if(row.suggestFlag === 1){
+      if(row.partInfoList.suggestPartFlag === 1){
         if(column.label =='LC A Price' ) {
           return 'priceUnderLinePrice'
         }      
