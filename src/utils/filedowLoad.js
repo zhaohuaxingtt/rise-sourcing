@@ -11,7 +11,7 @@ export function excelExport(data,title,fileName= new Date().getTime()){
   try {
     // eslint-disable-next-line no-undef
     if (!data&&!title) return console.warn(Vue.$t('LK_MEIYOUKEYIXIAZHAIDEXINXI'))
-    let worksheet = window.XLSX.utils.aoa_to_sheet(data,title)
+    let worksheet = window.XLSX.utils.aoa_to_sheet(translateData(data,title))
     // 创建工作簿
     let newWorkbook = window.XLSX.utils.book_new()
     // 将工作表附加到工作簿
