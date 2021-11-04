@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-10-29 11:12:32
+ * @LastEditTime: 2021-11-04 13:41:58
  * @LastEditors: Please set LastEditors
  * @Description: 
 -->
@@ -220,6 +220,9 @@ export default {
   .basic-form{
     ::v-deep.el-form-item__content {
       margin-left: 0!important;
+    }
+    ::v-deep.el-form-item{
+      margin-bottom: 0;
     }
   }
   .aekodetail-tabs {

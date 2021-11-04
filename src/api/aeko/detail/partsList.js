@@ -88,3 +88,12 @@ export function partListGetCartype(requirementAekoId) {
     method: 'GET',
   })
 }
+
+// 内容状态下拉框
+export function searchContentStatus(params) {
+  return requst({
+    url: '/aeko/purchasing/search-content-status',
+    method: 'GET',
+    params,
+  })
+}
