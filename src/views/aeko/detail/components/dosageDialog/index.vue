@@ -270,7 +270,7 @@ export default {
   methods: {
 
     calculatePercentage(row){
-      return Number(row.assemblyRate*100).toFixed(2)
+      return Number(row.assemblyRate*100).toFixed(0)
     },
     // 提交时校验一下沿⽤原零件份额:usePortion
     validateData() {
