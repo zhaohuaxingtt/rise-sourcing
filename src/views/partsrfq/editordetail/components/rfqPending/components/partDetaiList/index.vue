@@ -107,10 +107,6 @@ export default {
     }
 
     await this.getTableList()
-    this.queryForm.buyerId = this.$store.state.permission.userInfo.id
-    if(this.queryForm.buyerId != undefined){
-        this.$refs.partsTable && this.$refs.partsTable.getTableList() 
-    }
   },
   watch:{
     disabled(val){
