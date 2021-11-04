@@ -167,7 +167,7 @@ export const tableTitle = [
 
 // 表头
 export const tableCsfTitle = [
-  { props: "isTop", name: "", key: "", tooltip: false, width:30 },
+  { props: "isTop", name: "", key: "", tooltip: false, width:35 },
   { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO", tooltip: true,width:110 },
   { props: "auditTypeName", name: "审批类型", key: "SHENPILEIXING", tooltip: true, width:110  },
   { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true },
