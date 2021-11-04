@@ -16,18 +16,18 @@
           <!------------------------------------------------------------------------------->
           <div class="floatright" v-if="!isEdit">
             <!--------------------同步按钮----------------------------------->
-            <span v-if="!nominationDisabled && !rsDisabled" class="cursor tongbu" @click="synchronization" :loading="approvalSyncLoading" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ASYNC|同步"><icon symbol class="margin-right8" name='icontongbu' ></icon>{{language('LK_TONGBU','同步')}}</span>
+            <span v-if="MeetingPassForDDGL || (!nominationDisabled && !rsDisabled)" class="cursor tongbu" @click="synchronization" :loading="approvalSyncLoading" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ASYNC|同步"><icon symbol class="margin-right8" name='icontongbu' ></icon>{{language('LK_TONGBU','同步')}}</span>
             <!--------------------审批流按钮----------------------------------->
             <iButton @click="openAprroveFlow" v-permission.auto="SOURCING_NOMINATION_APPROVAL_SHENPILIU|审批流">{{language('SHENPILIU','审批流')}}</iButton>
             <!--------------------编辑按钮----------------------------------->
-            <iButton v-if="!nominationDisabled && !rsDisabled" @click="handleEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EDIT|编辑">{{language('LK_BIANJI','编辑')}}</iButton>
+            <iButton v-if="MeetingPassForDDGL || (!nominationDisabled && !rsDisabled)" @click="handleEdit" v-permission.auto="SOURCING_NOMINATION_APPROVAL_EDIT|编辑">{{language('LK_BIANJI','编辑')}}</iButton>
             
           </div>
           <!------------------------------------------------------------------------------->
           <!-------------------------编辑状态下的按钮---------------------------------------->
           <!------------------------------------------------------------------------------->
           <div class="floatright" v-else>
-            <span v-if="!nominationDisabled && !rsDisabled">
+            <span v-if="MeetingPassForDDGL || (!nominationDisabled && !rsDisabled)">
               <!--------------------新增按钮----------------------------------->
               <iButton @click="handleAdd" v-permission.auto="SOURCING_NOMINATION_APPROVAL_ADD|新增">{{language('LK_XINZENG','新增')}}</iButton>
               <!--------------------删除按钮----------------------------------->
@@ -43,6 +43,7 @@
       </div>
       <tableList 
         v-update
+        ref="table"
         :editCompare="false" 
         :tableLoading="tableLoading" 
         :tableTitle="tableTitle" 
@@ -67,8 +68,10 @@ import { tableTitle } from './data'
 import { cloneDeep, omit } from 'lodash'
 import approvalFlowDialog from './approvalFlow'
 import { getApprovalNode, approvalSync, updateApprovalNode, getDept, getSubDeptListByParam, getDeptListByParam } from '@/api/designate/decisiondata/approval'
+import { roleMixins } from "@/utils/roleMixins";
 export default {
   components: { iPage, iCard, tableList, iButton, approvalFlowDialog, icon },
+  mixins: [roleMixins],
   data() {
     return {
       isEdit: false,
@@ -89,6 +92,8 @@ export default {
     ...Vuex.mapState({
       nominationDisabled: state => state.nomination.nominationDisabled,
       rsDisabled: state => state.nomination.rsDisabled,
+      applicationStatus: state => state.applicationStatus,
+      nominationType: state => state.nominationType
     }),
     tableTitle() {
       return tableTitle.map(item => {
@@ -100,7 +105,14 @@ export default {
       })
     },
     tableData() {
+      this.$nextTick(() => {
+        this.$refs.table.clearAllSelectPopDom()
+      })
+      
       return this.tableDataTemp.filter(item => !item.isDelete)
+    },
+    MeetingPassForDDGL() {
+      return this.nominationType === 'MEETING' && this.applicationStatus === 'PASS' && this.userRole.isDDGL
     }
   },
   created() {
@@ -164,6 +176,8 @@ export default {
           deptSubOptions: []
         }
       ]
+
+      this.$refs.table.clearAllSelectPopDom()
     },
     /**
      * @Description: 获取部门下拉列表
@@ -268,6 +282,7 @@ export default {
      */    
     handleEdit() {
       this.isEdit = true
+      this.$refs.table.clearAllSelectPopDom()
     },
     /**
      * @Description: 取消编辑按钮点击事件
@@ -300,7 +315,7 @@ export default {
         }).map(item => omit(item, ['deptOptions','deptSubOptions'])),
         nominateAppId: this.$route.query.desinateId //this.$route.query.desinateId
       }
-      console.log(params)
+      
       updateApprovalNode(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
