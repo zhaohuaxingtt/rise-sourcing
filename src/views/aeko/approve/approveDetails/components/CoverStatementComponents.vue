@@ -82,8 +82,10 @@
           <template slot-scope="scope">
             <span>{{ scope.row.materialIncrease|numberToCurrencyNo2 }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
-                        :content="queryRowMaterialIncreaseTipContent(scope.row)" placement="top">
-              <i class="el-icon-warning-outline bule margin-left5"></i>
+                        placement="top">
+              <div slot="content" v-html="queryRowMaterialIncreaseTipContent(scope.row)"></div>
+              <div class="oneLine">{{ queryRowMaterialIncreaseTipContent(scope.row) }}</div>
+              <i class="el-icon-warning-outline bule"></i>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -95,8 +97,10 @@
           <template slot-scope="scope">
             <span>{{ scope.row.investmentIncrease | numFilter }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
-                        :content="queryRowInvestmentIncreaseTipContent(scope.row)" placement="top">
-              <i class="el-icon-warning-outline bule margin-left5"></i>
+                        placement="top">
+              <div slot="content" v-html="queryRowInvestmentIncreaseTipContent(scope.row)"></div>
+              <div class="oneLine">{{ queryRowInvestmentIncreaseTipContent(scope.row) }}</div>
+              <i class="el-icon-warning-outline bule"></i>
             </el-tooltip>
           </template>
 
@@ -109,8 +113,10 @@
           <template slot-scope="scope">
             <span>{{ scope.row.otherCost | numFilter }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
-                        :content="queryRowotherCostTipContent(scope.row)" placement="top">
-              <i class="el-icon-warning-outline bule margin-left5"></i>
+                        placement="top">
+              <div slot="content" v-html="queryRowotherCostTipContent(scope.row)"></div>
+              <div class="oneLine">{{ queryRowotherCostTipContent(scope.row) }}</div>
+              <i class="el-icon-warning-outline bule"></i>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -188,7 +194,8 @@ export default {
         costsWithLinie.forEach(item => {
           strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.investmentIncrease)} \n`
         })
-        return strTip
+        return strTip.split("\n").join("<br/>")
+
       }
       return ''
     },
@@ -198,9 +205,9 @@ export default {
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.materialIncrease)} \n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo2(item.materialIncrease)} \n`
         })
-        return strTip
+        return strTip.split("\n").join("<br/>")
       }
       return ''
     },
@@ -212,7 +219,7 @@ export default {
         costsWithLinie.forEach(item => {
           strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.otherCost)} \n`
         })
-        return strTip
+        return strTip.split("\n").join("<br/>")
       }
       return ''
     },
